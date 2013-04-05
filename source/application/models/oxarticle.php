@@ -2041,7 +2041,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      *
      * @param float $dAmount Number of articles sold
      *
-     * @return bool
+     * @return mixed
      */
     public function updateSoldAmount( $dAmount = 0 )
     {
@@ -2059,7 +2059,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             $rs = $oDb->execute( "update oxarticles set oxarticles.oxsoldamount = oxarticles.oxsoldamount + $dAmount where oxarticles.oxid = ".$oDb->quote($this->oxarticles__oxid->value));
         } elseif ( $this->oxarticles__oxparentid->value) {
             // article is variant - should be updated this article parent amount
-            $oUpdateArticle = oxNewArticle( $this->oxarticles__oxparentid->value );
+            $oUpdateArticle = $this->getParentArticle();
             $oUpdateArticle->updateSoldAmount( $dAmount );
         }
 

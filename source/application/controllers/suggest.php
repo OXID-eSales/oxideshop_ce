@@ -163,8 +163,10 @@ class Suggest extends oxUBase
         if ( $this->_oProduct === null ) {
             $this->_oProduct = false;
 
-            if ( $sAnid = oxConfig::getParameter( 'anid' ) ) {
-                $this->_oProduct = oxNewArticle( $sAnid );
+            if ( $sProductId = $this->getConfig()->getRequestParameter( 'anid' ) ) {
+                $oProduct = oxNew( 'oxArticle' );
+                $oProduct->load( $sProductId );
+                $this->_oProduct = $oProduct;
             }
         }
         return $this->_oProduct;

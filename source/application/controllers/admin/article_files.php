@@ -108,8 +108,11 @@ class Article_Files extends oxAdminDetails
         if ($this->_oArticle !== null && !$blReset) {
             return $this->_oArticle;
         }
-        $sOxid = $this->getEditObjectId();
-        $this->_oArticle = oxNewArticle($sOxid);
+        $sProductId = $this->getEditObjectId();
+
+        $oProduct = oxNew( 'oxArticle' );
+        $oProduct->load( $sProductId );
+        $this->_oArticle = $oProduct;
 
         return $this->_oArticle;
     }

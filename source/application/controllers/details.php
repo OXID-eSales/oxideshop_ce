@@ -261,15 +261,16 @@ class Details extends oxUBase
      *
      * @param string $sParentId parent product id
      *
-     * @return oxarticle
+     * @return oxArticle
      */
     protected function _getParentProduct( $sParentId )
     {
         if ( $sParentId && $this->_oParentProd === null ) {
             $this->_oParentProd = false;
-            if ( ( $oParent = oxNewArticle( $sParentId ) ) ) {
-                $this->_processProduct( $oParent );
-                $this->_oParentProd = $oParent;
+            $oProduct = oxNew( 'oxArticle' );
+            if ( ( $oProduct->load( $sParentId ) ) ) {
+                $this->_processProduct( $oProduct );
+                $this->_oParentProd = $oProduct;
             }
         }
         return $this->_oParentProd;

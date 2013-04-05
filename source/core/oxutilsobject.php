@@ -64,8 +64,6 @@ class oxUtilsObject
     /**
      * Class instance array
      *
-     * @deprecated since v4.7.5-5.0.5 (2013-03-29); not used
-     *
      * @var array
      */
     protected static $_aClassInstances = array();
@@ -105,8 +103,6 @@ class oxUtilsObject
      * @param string $sClassName Class name expected to be later supplied over oxNew
      * @param object $oInstance  Instance object
      *
-     * @deprecated since v4.7.5-5.0.5 (2013-03-29); not used
-     *
      * @return null;
      */
     public static function setClassInstance( $sClassName, $oInstance )
@@ -117,8 +113,6 @@ class oxUtilsObject
 
     /**
      * Resets previously set instances
-     *
-     * @deprecated since v4.7.5-5.0.5 (2013-03-29); not used
      *
      * @return null;
      */
@@ -253,6 +247,8 @@ class oxUtilsObject
      *
      * @param string $sOxID       ID to load subclass type from database
      * @param array  $aProperties array of properties to assign
+     *
+     * @deprecated since v4.7.5-5.0.5 (2013-03-29); use oxNew
      *
      * @return object
      */

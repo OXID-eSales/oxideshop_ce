@@ -50,7 +50,7 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
 //---------------------------- general functions --------------------------------
 
     /**
-     * Sets up default environment for tests
+     * Sets up default environment for tests.
      *
      * @param bool $skipDemoData
      */
@@ -69,7 +69,7 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
     }
 
    /**
-     * Restores database after every test
+     * Restores database after every test.
      *
      */
     protected function tearDown()
@@ -80,7 +80,7 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
     }
 
     /**
-     * adds some demo data to database
+     * adds some demo data to database.
      */
     public function addDemoData($demo=demoData)
     {
@@ -109,7 +109,7 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
     }
 
     /**
-     * opens shop frontend and runs checkForErrors()
+     * opens shop frontend and runs checkForErrors().
      *
      */
     public function openShop($blForceMainShop = false, $isSubShop = false)
@@ -125,7 +125,7 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
     }
 
     /**
-     * tests if none of php possible errors are displayed into shop frontend page
+     * tests if none of php possible errors are displayed into shop frontend page.
      */
     public function checkForErrors()
     {
@@ -149,11 +149,11 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
     }
 
     /**
-     * removes \n signs and it leading spaces from string. keeps only single space in the ends of each row
+     * removes \n signs and it leading spaces from string. keeps only single space in the ends of each row.
      *
-     * @param string $sLine not formatted string (with spaces and \n signs)
+     * @param string $sLine not formatted string (with spaces and \n signs).
      *
-     * @return string formatted string with single spaces and no \n signs
+     * @return string formatted string with single spaces and no \n signs.
      */
     public function clearString( $sLine )
     {
@@ -162,10 +162,10 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
 
     /**
      * clicks link/button and waits till page will be loaded. then checks for errors.
-     * recommended to use in frontend. use in admin only, if this click wont relode frames
+     * recommended to use in frontend. use in admin only, if this click wont relode frames.
      *
-     * @param string $locator link/button locator in the page
-     * @param string $element element locator for additional check if page is fully loaded (optional)
+     * @param string $locator link/button locator in the page.
+     * @param string $element element locator for additional check if page is fully loaded (optional).
      */
     public function clickAndWait($locator, $element=null)
     {
@@ -174,7 +174,7 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
         }
         $this->click($locator);
         $this->waitForPageToLoad("90000");
-        //additional check if page is really loaded. on demand only for places, that have this problem
+        //additional check if page is really loaded. on demand only for places, that have this problem.
         if ($element) {
             sleep(1);
             $this->waitForElement($element);
@@ -183,12 +183,12 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
     }
 
     /**
-     * selects label in selectlist and waits till page will be loaded. then checks for errors.
-     * recommended to use in frontend. use in admin only, if this select wont relode frames
+     * selects label in select list and waits till page will be loaded. then checks for errors.
+     * recommended to use in frontend. use in admin only, if this select wont reload frames.
      *
-     * @param string $locator selectlist locator
-     * @param string $selection   option to select
-     * @param string $element element locator for additional check if page is fully loaded (optional)
+     * @param string $locator select list locator.
+     * @param string $selection   option to select.
+     * @param string $element element locator for additional check if page is fully loaded (optional).
      */
     public function selectAndWait($locator, $selection, $element=null)
     {
@@ -197,7 +197,7 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
         }
         $this->select($locator, $selection);
         $this->waitForPageToLoad("90000");
-        //additional check if page is really loaded. on demand only for places, that have this problem
+        //additional check if page is really loaded. on demand only for places, that have this problem.
         if ($element) {
             sleep(1);
             $this->waitForElement($element);
@@ -206,9 +206,9 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
     }
 
     /**
-     * waits till element will appear in page (only IF such element DID NOT EXIST BEFORE)
+     * waits till element will appear in page (only IF such element DID NOT EXIST BEFORE).
      *
-     * @param $element element locator
+     * @param $element element locator.
      */
     public function waitForElement($element)
     {
@@ -231,9 +231,9 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
     }
 
     /**
-     * waits for element to show up (only IF such element ALREADY EXIST AS HIDDEN AND WILL BE SHOWN AS VISIBLE)
+     * waits for element to show up (only IF such element ALREADY EXIST AS HIDDEN AND WILL BE SHOWN AS VISIBLE).
      *
-     * @param string $locator element locator
+     * @param string $locator element locator.
      */
     public function waitForItemAppear( $locator )
     {
@@ -254,9 +254,9 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
     }
 
     /**
-     * waits for element to disappear (only IF such element WILL BE MARKED AS NOT VISIBLE)
+     * waits for element to disappear (only IF such element WILL BE MARKED AS NOT VISIBLE).
      *
-     * @param string $locator element locator
+     * @param string $locator element locator.
      */
     public function waitForItemDisappear( $locator )
     {
@@ -274,11 +274,11 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
     }
 
     /**
-     * Waits till text will appear in page. If array is passed, waits for any of texts in array to appear
+     * Waits till text will appear in page. If array is passed, waits for any of texts in array to appear.
      *
-     * @param string $textMsg text
-     * @param bool $printSource print source (default false)
-     * @param int $timeout timeout (default 90)
+     * @param string $textMsg text.
+     * @param bool $printSource print source (default false).
+     * @param int $timeout timeout (default 90).
      */
     public function waitForText($textMsg, $printSource = false, $timeout=90 )
     {
@@ -307,9 +307,9 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
     }
 
     /**
-     * waits till text will disappear from page
+     * waits till text will disappear from page.
      *
-     * @param string $textLine text
+     * @param string $textLine text.
      */
     public function waitForTextDisappear( $textLine )
     {
@@ -329,15 +329,15 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
 //---------------------------------- Admin side only functions --------------------------
 
     /**
-     * logins to admin with default admin pass and opens needed menu
+     * login to admin with default admin pass and opens needed menu.
      *
-     * @param string $menuLink1     menu link (e.g. master settings, shop settings)
-     * @param string $menuLink2     submenu link (e.g. administer products, discounts, vat)
-     * @param string $editElement   element to check in edit frame (optional)
-     * @param string $listElement   element to check in list frame (optional)
-     * @param bool   $forceMainShop force main shop
-     * @param string $user          shop admin username
-     * @param string $pass          shop admin password
+     * @param string $menuLink1     menu link (e.g. master settings, shop settings).
+     * @param string $menuLink2     sub menu link (e.g. administer products, discounts, vat).
+     * @param string $editElement   element to check in edit frame (optional).
+     * @param string $listElement   element to check in list frame (optional).
+     * @param bool   $forceMainShop force main shop.
+     * @param string $user          shop admin username.
+     * @param string $pass          shop admin password.
      */
     public function loginAdmin($menuLink1, $menuLink2, $editElement=null, $listElement=null, $forceMainShop=false, $user="admin@myoxideshop.com", $pass="admin0303")
     {
@@ -368,15 +368,15 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
     }
 
     /**
-     * logins to admin for paypal shop with admin pass and opens needed menu
+     * login to admin for PayPal shop with admin pass and opens needed menu.
      *
-    * @param string $menuLink1     menu link (e.g. master settings, shop settings)
-    * @param string $menuLink2     submenu link (e.g. administer products, discounts, vat)
-    * @param string $editElement   element to check in edit frame (optional)
-    * @param string $listElement   element to check in list frame (optional)
-    * @param bool   $forceMainShop force main shop
-    * @param string $user          shop admin username
-    * @param string $pass          shop admin password
+    * @param string $menuLink1     menu link (e.g. master settings, shop settings).
+    * @param string $menuLink2     sub menu link (e.g. administer products, discounts, vat).
+    * @param string $editElement   element to check in edit frame (optional).
+    * @param string $listElement   element to check in list frame (optional).
+    * @param bool   $forceMainShop force main shop.
+    * @param string $user          shop admin username.
+    * @param string $pass          shop admin password.
     */
     public function loginAdminForModule($menuLink1, $menuLink2, $editElement=null, $listElement=null, $forceMainShop=false, $user="admin", $pass="admin")
     {
@@ -411,12 +411,12 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
     }
 
     /**
-     * selects other menu in admin interface
+     * selects other menu in admin interface.
      *
-     * @param string $menuLink1   menu link (e.g. master settings, shop settings)
-     * @param string $menuLink2   submenu link (e.g. administer products, discounts, vat)
-     * @param string $editElement element to check in edit frame (optional)
-     * @param string $listElement element to check in list frame (optional)
+     * @param string $menuLink1   menu link (e.g. master settings, shop settings).
+     * @param string $menuLink2   sub menu link (e.g. administer products, discounts, vat).
+     * @param string $editElement element to check in edit frame (optional).
+     * @param string $listElement element to check in list frame (optional).
      */
     public function selectMenu($menuLink1, $menuLink2, $editElement=null, $listElement=null)
     {
@@ -436,10 +436,10 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
     }
 
     /**
-     * select frame in Admin interface
+     * select frame in Admin interface.
      *
      * @param string $frameLocator name of needed admin frame.
-     * @param string $frameElement name of element to check (optional)
+     * @param string $frameElement name of element to check (optional).
      */
     public function frame($frameLocator, $frameElement=null)
     {
@@ -458,12 +458,12 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
     }
 
     /**
-     * selects element and waits till needed frame will be loaded. same frame as before will be selected
+     * selects element and waits till needed frame will be loaded. same frame as before will be selected.
      *
-     * @param string $locator   selectlist locator
-     * @param string $selection option to select
-     * @param string $frame     frame wich should be also loaded (this frame will be loaded after current frame is loaded)
-     * @param string $element   element locator for additional check if page is fully loaded (optional)
+     * @param string $locator   select list locator.
+     * @param string $selection option to select.
+     * @param string $frame     frame which should be also loaded (this frame will be loaded after current frame is loaded).
+     * @param string $element   element locator for additional check if page is fully loaded (optional).
      */
     public function selectAndWaitFrame($locator, $selection, $frame, $element=null)
     {
@@ -480,12 +480,12 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
     }
 
     /**
-     * selects element and waits till needed frame will be loaded. same frame as before will be selected
+     * selects element and waits till needed frame will be loaded. same frame as before will be selected.
      *
-     * @param string $locator selectlist locator
-     * @param string $frame   frame wich should be also loaded (this frame will be loaded after current frame is loaded)
-     * @param string $element element locator for additional check if page is fully loaded (optional)
-     * @param int    $sleep   seconds to wait, default 1
+     * @param string $locator select list locator.
+     * @param string $frame   frame which should be also loaded (this frame will be loaded after current frame is loaded).
+     * @param string $element element locator for additional check if page is fully loaded (optional).
+     * @param int    $sleep   seconds to wait, default 1.
      */
     public function clickAndWaitFrame($locator, $frame, $element=null, $sleep = 1)
     {
@@ -505,9 +505,9 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
     /**
      * clicks entered link in list frame and selects edit frame.
      *
-     * @param string $linkLocator    link name or tab name that is presed
-     * @param string $elementLocator locator for element which will be checked for page loading success (optional)
-     * @param int    $sleep          seconds to wait, default 1
+     * @param string $linkLocator    link name or tab name that is pressed.
+     * @param string $elementLocator locator for element which will be checked for page loading success (optional).
+     * @param int    $sleep          seconds to wait, default 1.
      */
     public function openTab($linkLocator, $elementLocator="btn.help", $sleep = 1)
     {
@@ -522,11 +522,11 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
     }
 
     /**
-     * click button and confirms dialog
+     * click button and confirms dialog.
      *
-     * @param string $locator locator for delete button
-     * @param string $element locator for element which will be checked for page loading success. default value submitit
-     * @param string $frame   frame wich should be also loaded (this frame will be loaded after current frame is loaded)
+     * @param string $locator locator for delete button.
+     * @param string $element locator for element which will be checked for page loading success.
+     * @param string $frame   frame which should be also loaded (this frame will be loaded after current frame is loaded).
      */
     public function clickAndConfirm($locator, $element=null, $frame="edit")
     {
@@ -547,9 +547,8 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
 //---------------------------- Ajax functions for admin side ------------------------------------------------
 
     /**
-     * selects popUp window and waits till it is fully loaded
-     *
-     * @param string $popUpElement element used to check if popUp is fully loaded
+     * selects popUp window and waits till it is fully loaded.
+     * @param string $popUpElement element used to check if popUp is fully loaded.
      */
     public function usePopUp($popUpElement="//div[@id='container1_c']/table/tbody[2]/tr[1]/td[1]")
     {
@@ -562,10 +561,9 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
     }
 
     /**
-     * waits for element to show up in specific place
-     *
-     * @param stirng $value   expected text to show up
-     * @param string $locator place where specified text must show up
+     * waits for element to show up in specific place.
+     * @param string $value   expected text to show up.
+     * @param string $locator place where specified text must show up.
      */
     public function waitForAjax( $value, $locator )
     {
@@ -587,10 +585,9 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
     }
 
     /**
-     * drags and drops element to specified location
-     *
-     * @param stirng $item      element which will be dragged and dropped
-     * @param string $container place where to drop specified element
+     * drags and drops element to specified location.
+     * @param string $item      element which will be dragged and dropped.
+     * @param string $container place where to drop specified element.
      */
     public function dragAndDrop($item, $container)
     {
@@ -602,10 +599,9 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
 //------------------------ Subshop related functions ----------------------------------------
 
     /**
-     * logins to admin with admin pass, selects subshop and opens needed menu
-     *
-     * @param string $menuLink1 menu link (e.g. master settings, shop settings)
-     * @param string $menuLink2 submenu link (e.g. administer products, discounts, vat)
+     * login to admin with admin pass, selects subshop and opens needed menu.
+     * @param string $menuLink1 menu link (e.g. master settings, shop settings).
+     * @param string $menuLink2 sub menu link (e.g. administer products, discounts, vat).
      */
     public function loginSubshopAdmin($menuLink1, $menuLink2)
     {
@@ -635,7 +631,7 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
     }
 
     /**
-     * opens subshop frontend and switch to EN language
+     * opens subshop frontend and switch to EN language.
      */
     public function openSubshopFrontend()
     {
@@ -644,10 +640,9 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
 
 //---------------------------- Setup related functions ------------------------------
     /**
-     * prints error message, closes active browsers windows and stops
-     *
-     * @param string    $sErrorMsg       message to display about error place (more easy to find for programmers)
-     * @param Exception $oErrorException Exception to throw on error
+     * prints error message, closes active browsers windows and stops.
+     * @param string    $sErrorMsg       message to display about error place (more easy to find for programmers).
+     * @param Exception $oErrorException Exception to throw on error.
      */
     public function stopTesting($sErrorMsg, $oErrorException = null)
     {
@@ -668,12 +663,12 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
 
 //----------------------------- eFire modules for shop ------------------------------------
     /**
-     * downloads efire connector
+     * downloads eFire connector.
      *
-     * @param string $sNameEfi user name for eFire
-     * @param string $sPswEfi  user password for eFire
-     * @param string $user     user name for login to shop admin
-     * @param string $pass     user password for login to shop admin
+     * @param string $sNameEfi user name for eFire.
+     * @param string $sPswEfi  user password for eFire.
+     * @param string $user     user name for login to shop admin.
+     * @param string $pass     user password for login to shop admin.
      */
     public function downloadConnector($sNameEfi, $sPswEfi, $user="admin@myoxideshop.com", $pass="admin0303")
     {
@@ -711,11 +706,11 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
 
 //----------------------------- new templates for eShop frontend ------------------------------------
     /**
-     * logins customer by using login flyout form
+     * login customer by using login fly out form.
      *
-     * @param string $userName user name (email)
-     * @param string $userPass user password
-     * @param boolean $waitForLogin if needed to wait until user get logged in
+     * @param string $userName user name (email).
+     * @param string $userPass user password.
+     * @param boolean $waitForLogin if needed to wait until user get logged in.
      */
     public function loginInFrontend($userName, $userPass, $waitForLogin = true)
     {
@@ -732,10 +727,9 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
     }
 
     /**
-     * mouseOver element and then click specified link
-     *
-     * @param string $element1 mouseOver element
-     * @param string $element2 clickable element
+     * mouseOver element and then click specified link.
+     * @param string $element1 mouseOver element.
+     * @param string $element2 clickable element.
      */
     public function mouseOverAndClick($element1, $element2)
     {
@@ -745,9 +739,8 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
     }
 
     /**
-     * performs search for selected parameter
-     *
-     * @param string $searchParam search parameter
+     * performs search for selected parameter.
+     * @param string $searchParam search parameter.
      */
     public function searchFor($searchParam)
     {
@@ -758,9 +751,8 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
     }
 
     /**
-     * opens basket
-     *
-     * @param string $language  active language in shop
+     * opens basket.
+     * @param string $language  active language in shop.
      */
     public function openBasket($language="English")
     {
@@ -775,11 +767,11 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
     }
 
     /**
-     * selects specified value from dropdown (sorting, items per page etc)
+     * selects specified value from dropdown (sorting, items per page etc).
      *
-     * @param int    $elementId  drop down element id
-     * @param string $itemValue  item to select
-     * @param string $extraIdent additional identificator for element
+     * @param int    $elementId  drop down element id.
+     * @param string $itemValue  item to select.
+     * @param string $extraIdent additional identification for element.
      */
     public function selectDropDown($elementId, $itemValue='', $extraIdent='')
     {
@@ -795,12 +787,12 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
     }
 
     /**
-     * selects specified value from dropdown (for multidimensional variants)
+     * selects specified value from dropdown (for multidimensional variants).
      *
-     * @param string $elementId  container id
-     * @param int    $elementNr  select list number (e.g. 1, 2)
-     * @param string $itemValue  item to select
-     * @param string $textMsg    text that must appear after selecting md variant
+     * @param string $elementId  container id.
+     * @param int    $elementNr  select list number (e.g. 1, 2).
+     * @param string $itemValue  item to select.
+     * @param string $textMsg    text that must appear after selecting md variant.
      */
     public function selectVariant($elementId, $elementNr, $itemValue, $textMsg='')
     {
@@ -817,9 +809,8 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
     }
 
     /**
-     * executes given sql. for EE version cash is also cleared
-     *
-     * @param string $sql  sql line
+     * executes given sql. for EE version cash is also cleared.
+     * @param string $sql  sql line.
      */
     public function executeSql($sql)
     {
@@ -827,10 +818,8 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
     }
 
     /**
-     * gets clean heading text without any additional info as rss labels and so.
-     *
-     * @param string $element path to element
-     *
+     * gets clean heading text without any additional info as rss labels and so..
+     * @param string $element path to element.
      * @return string
      */
     public function getHeadingText($element)
@@ -844,9 +833,8 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
     }
 
     /**
-     * selects esho language in frontend
-     *
-     * @param string $language language title
+     * selects shop language in frontend.
+     * @param string $language language title.
      */
     public function switchLanguage($language)
     {
@@ -859,8 +847,7 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
     // --------------------------- trusted shops ------------------------------
 
     /**
-     * logins to trusted shops in admin
-     *
+     * login to trusted shops in admin.
      * @param string $link1
      * @param string $link2
      */
@@ -929,11 +916,11 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
 
     /**
      * Creates a dump of the current database, stored in the file '/tmp/tmp_db_dump'
-     * the dump includes the data and sql insert statements
+     * the dump includes the data and sql insert statements.
      *
-     * @param string $sTmpPrefix temp file name
+     * @param string $sTmpPrefix temp file name.
      *
-     * @throws Exception on error while dumping
+     * @throws Exception on error while dumping.
      *
      * @return null
      */
@@ -1026,7 +1013,7 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
     }
 
     /**
-     * Overrides original method - additionaly can check
+     * Overrides original method - additionally can check
      * is text present by parsing text according given path
      *
      * @param string $sText text to be searched

@@ -1012,8 +1012,18 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
      *
      * @return bool
      */
-    public function isObjectCorrect($sClassName, $sOxid, $aClassParams = null)
+    public function isObjectCorrect($sClassName, $sOxid = null, $aClassParams = null)
     {
+        // We might not have oxid if object is created with seleniums.
+        // In such case we take last create record.
+        if (!$sOxid) {
+            $sOxid = $this->getLatestCreateRowId($sClassName);
+            // We cannot create and check object if we do not have its id.
+            if (!$sOxid) {
+                return false;
+            }
+        }
+
         $oObject = $this->getObject($sClassName, $sOxid);
         // Check if object exist. We cannot perform any check on not existing object.
         if (null === $oObject) {
@@ -1045,6 +1055,28 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
             $oObject = null;
         }
         return $oObject;
+    }
+
+    /**
+     * Get id of latest created row.
+     * @param string $sClassName class name.
+     * @return string|null
+     */
+    public function getLatestCreateRowId($sClassName)
+    {
+        $sOxid = null;
+        $oDb = oxDb::getDb( oxDb::FETCH_MODE_ASSOC );
+
+        $sTableName = $this->getTableNameFromClassName($sClassName);
+        $sSql = 'SELECT OXID FROM '. $sTableName .' ORDER BY OXTIMESTAMP LIMIT 1';
+        $rs = $oDb->select($sSql);
+
+        if ($rs != false && $rs->recordCount() > 0) {
+            $aFields = $rs->fields;
+            $sOxid = $aFields['OXID'];
+        }
+
+        return $sOxid;
     }
 
     /**

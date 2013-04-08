@@ -60,7 +60,7 @@ class Unit_Views_contactTest extends OxidTestCase
         $this->assertFalse( $oContact->send() );
 
         //checking if warning was added to errors list
-        $sErr = oxLang::getInstance()->translateString( 'EXCEPTION_INPUT_NOVALIDEMAIL' );
+        $sErr = oxLang::getInstance()->translateString( 'ERROR_MESSAGE_INPUT_NOVALIDEMAIL' );
         $aEx = oxSession::getVar( 'Errors' );
         $oErr = unserialize( $aEx['default'][0] );
 
@@ -84,7 +84,7 @@ class Unit_Views_contactTest extends OxidTestCase
         $this->assertFalse( $oContact->send() );
 
         //checking if warning was added to errors list
-        $sErr = oxLang::getInstance()->translateString( 'EXCEPTION_INPUT_WRONGCAPTCHA' );
+        $sErr = oxLang::getInstance()->translateString( 'MESSAGE_WRONG_VERIFICATION_CODE' );
         $aEx = oxSession::getVar( 'Errors' );
         $oErr = unserialize( $aEx['default'][0] );
 
@@ -109,7 +109,7 @@ class Unit_Views_contactTest extends OxidTestCase
         $this->assertFalse( $oContact->send() );
 
         //checking if warning was added to errors list
-        $sErr = oxLang::getInstance()->translateString( 'EXCEPTION_INPUT_NOTALLFIELDS' );
+        $sErr = oxLang::getInstance()->translateString( 'ERROR_MESSAGE_INPUT_NOTALLFIELDS' );
         $aEx = oxSession::getVar( 'Errors' );
         $oErr = unserialize( $aEx['default'][0] );
 
@@ -225,7 +225,7 @@ class Unit_Views_contactTest extends OxidTestCase
         modConfig::setParameter( "c_subject", "subject" );
 
         $oLang = oxLang::getInstance();
-        $sMessage = $oLang->translateString( 'CONTACT_FROM' ) . " " . $oLang->translateString( 'MR' ) ." admin admin(info@oxid-esales.com)<br /><br />message";
+        $sMessage = $oLang->translateString( 'MESSAGE_FROM' ) . " " . $oLang->translateString( 'MR' ) ." admin admin(info@oxid-esales.com)<br /><br />message";
 
         $oEmail = $this->getMock( "oxemail", array( "sendContactMail" ) );
         $oEmail->expects( $this->once() )->method( 'sendContactMail')->with( $this->equalTo( 'info@oxid-esales.com' ), $this->equalTo( 'subject' ), $this->equalTo( $sMessage ) )->will( $this->returnValue( true ) );

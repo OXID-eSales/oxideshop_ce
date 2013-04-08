@@ -47,7 +47,7 @@
     [{block name="widget_product_listitem_line_picturebox"}]
         <div class="pictureBox">
             <a class="sliderHover" href="[{ $_productLink }]" title="[{ $product->oxarticles__oxtitle->value}] [{$product->oxarticles__oxvarselect->value}]"></a>
-            <a href="[{$_productLink}]" class="viewAllHover glowShadow corners" title="[{ $product->oxarticles__oxtitle->value}] [{$product->oxarticles__oxvarselect->value}]"><span>[{oxmultilang ident="WIDGET_PRODUCT_PRODUCT_DETAILS"}]</span></a>
+            <a href="[{$_productLink}]" class="viewAllHover glowShadow corners" title="[{ $product->oxarticles__oxtitle->value}] [{$product->oxarticles__oxvarselect->value}]"><span>[{oxmultilang ident="PRODUCT_DETAILS"}]</span></a>
             <img src="[{$product->getThumbnailUrl()}]" alt="[{ $product->oxarticles__oxtitle->value}] [{$product->oxarticles__oxvarselect->value}]">
         </div>
     [{/block}]
@@ -96,11 +96,9 @@
             [{/if}]
             [{block name="widget_product_listitem_line_price"}]
                 [{oxhasrights ident="SHOWARTICLEPRICE"}]
-                    [{assign var=tprice value=$product->getTPrice()}]
-                    [{assign var=price  value=$product->getPrice()}]
-                    [{if $tprice && $tprice->getBruttoPrice() > $price->getBruttoPrice()}]
+                    [{if $product->getTPrice()}]
                         <span class="oldPrice">
-                            [{oxmultilang ident="WIDGET_PRODUCT_PRODUCT_REDUCEDFROM"}] <del>[{$product->getFTPrice()}] [{$currency->sign}]</del>
+                            [{oxmultilang ident="REDUCED_FROM_2"}] <del>[{$product->getFTPrice()}] [{$currency->sign}]</del>
                         </span>
                     [{/if}]
                     [{block name="widget_product_listitem_line_price_value"}]
@@ -138,8 +136,8 @@
                         </span>
                     [{elseif $product->oxarticles__oxweight->value  }]
                         <span id="productPricePerUnit_[{$testid}]" class="pricePerUnit">
-                            <span title="weight">[{ oxmultilang ident="WIDGET_PRODUCT_PRODUCT_ARTWEIGHT" }]</span>
-                            <span class="value">[{ $product->oxarticles__oxweight->value }] [{ oxmultilang ident="WIDGET_PRODUCT_PRODUCT_ARTWEIGHT2" }]</span>
+                            <span title="weight">[{ oxmultilang ident="WEIGHT" suffix="COLON" }]</span>
+                            <span class="value">[{ $product->oxarticles__oxweight->value }] [{ oxmultilang ident="KG" }]</span>
                         </span>
                     [{/if}]
                 [{/oxhasrights}]
@@ -149,13 +147,13 @@
                     [{if $blShowToBasket }]
                         [{oxhasrights ident="TOBASKET"}]
                             <input id="amountToBasket_[{$testid}]" type="text" name="am" value="1" size="3" autocomplete="off" class="textbox">
-                            <button id="toBasket_[{$testid}]" type="submit" class="submitButton largeButton">[{oxmultilang ident="DETAILS_ADDTOCART"}]</button>
+                            <button id="toBasket_[{$testid}]" type="submit" class="submitButton largeButton">[{oxmultilang ident="ADD_TO_CART"}]</button>
                         [{/oxhasrights}]
                     [{else}]
-                        <a class="submitButton largeButton" href="[{ $_productLink }]" >[{ oxmultilang ident="WIDGET_PRODUCT_PRODUCT_MOREINFO" }]</a>
+                        <a class="submitButton largeButton" href="[{ $_productLink }]" >[{ oxmultilang ident="MORE_INFO" }]</a>
                     [{/if}]
                     [{if $removeFunction && (($owishid && ($owishid==$oxcmp_user->oxuser__oxid->value)) || (($wishid==$oxcmp_user->oxuser__oxid->value)) || $recommid) }]
-                        <button triggerForm="remove_[{$removeFunction}][{$testid}]" type="submit" class="submitButton largeButton removeButton"><span>[{ oxmultilang ident="WIDGET_PRODUCT_PRODUCT_REMOVE" }]</span></button>
+                        <button triggerForm="remove_[{$removeFunction}][{$testid}]" type="submit" class="submitButton largeButton removeButton"><span>[{ oxmultilang ident="REMOVE" }]</span></button>
                     [{/if}]
                 </div>
             [{/block}]

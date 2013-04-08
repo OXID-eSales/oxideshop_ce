@@ -69,7 +69,7 @@ class Unit_Views_tagsTest extends OxidTestCase
     {
         $oView = $this->getMock( "Tags", array( "getActPage" ) );
         $oView->expects( $this->once() )->method( 'getActPage')->will( $this->returnValue( 1 ) );
-        $this->assertEquals( oxLang::getInstance()->translateString( 'INC_HEADER_TITLEPAGE' ). 2, $oView->getTitlePageSuffix() );
+        $this->assertEquals( oxLang::getInstance()->translateString( 'PAGE' )." ". 2, $oView->getTitlePageSuffix() );
     }
 
     /**

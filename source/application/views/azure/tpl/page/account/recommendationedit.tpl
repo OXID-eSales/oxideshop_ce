@@ -1,5 +1,5 @@
 [{capture append="oxidBlock_content"}]
-    [{assign var="template_title" value="PAGE_ACCOUNT_RECOMMENDATIONLIST_TITLE"|oxmultilangassign }]
+    [{assign var="template_title" value="LISTMANIA"|oxmultilangassign }]
     [{if $oView->getActiveRecommList() }]
         [{assign var="_actvrecommlist" value=$oView->getActiveRecommList() }]
         [{assign var="recommendation_head" value=$_actvrecommlist->oxrecommlists__oxtitle->value}]

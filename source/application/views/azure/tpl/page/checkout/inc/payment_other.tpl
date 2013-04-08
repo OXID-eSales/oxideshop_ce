@@ -4,7 +4,7 @@
         <label for="payment_[{$sPaymentID}]"><b>[{ $paymentmethod->oxpayments__oxdesc->value}]
         [{ if $paymentmethod->getPrice() }]
             [{if $oxcmp_basket->getPayCostNet() }]
-                ([{ $paymentmethod->getFNettoPrice() }] [{ $currency->sign}] [{ oxmultilang ident="PAGE_CHECKOUT_BASKETCONTENTS_PLUSTAX1" }] [{ $paymentmethod->getFPriceVat() }] )
+                ([{ $paymentmethod->getFNettoPrice() }] [{ $currency->sign}] [{ oxmultilang ident="PLUS_VAT" }] [{ $paymentmethod->getFPriceVat() }] )
             [{else}]
                 ([{ $paymentmethod->getFBruttoPrice() }] [{ $currency->sign}])
             [{/if}]

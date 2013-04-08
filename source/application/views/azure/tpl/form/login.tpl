@@ -8,18 +8,18 @@
             [{ $oViewConf->getNavFormParams() }]
             <input type="hidden" name="fnc" value="login_noredirect">
             <input type="hidden" name="cl" value="[{ $oViewConf->getActiveClassName() }]">
-            <label class="short">[{ oxmultilang ident="WIDGET_LOGINBOX_EMAIL_ADDRESS" }]</label>
+            <label class="short">[{ oxmultilang ident="EMAIL_ADDRESS" }]</label>
             <input type="text" name="lgn_usr" class="textbox js-oxValidate js-oxValidate_notEmpty" data-fieldsize="pair-xsmall">
             <p class="underInput short oxValidateError">
-                <span class="js-oxError_notEmpty">[{ oxmultilang ident="EXCEPTION_INPUT_NOTALLFIELDS" }]</span>
+                <span class="js-oxError_notEmpty">[{ oxmultilang ident="ERROR_MESSAGE_INPUT_NOTALLFIELDS" }]</span>
             </p>
         </li>
         <li [{if $aErrors}]class="oxInValid"[{/if}]>
-            <label class="short">[{ oxmultilang ident="WIDGET_LOGINBOX_PASSWORD" }]</label>
+            <label class="short">[{ oxmultilang ident="PASSWORD" }]</label>
             <input type="password" name="lgn_pwd" class="js-oxValidate js-oxValidate_notEmpty textbox stepsPasswordbox" data-fieldsize="pair-xsmall">
-            &nbsp;<strong><a class="forgotPasswordOpener" id="step2PswdOpener" href="#" title="[{ oxmultilang ident="WIDGET_LOGINBOX_FORGOT_PASSWORD" }]">?</a></strong>
+            &nbsp;<strong><a class="forgotPasswordOpener" id="step2PswdOpener" href="#" title="[{ oxmultilang ident="FORGOT_PASSWORD" }]">?</a></strong>
             <p class="underInput short oxValidateError">
-                <span class="js-oxError_notEmpty">[{ oxmultilang ident="EXCEPTION_INPUT_NOTALLFIELDS" }]</span>
+                <span class="js-oxError_notEmpty">[{ oxmultilang ident="ERROR_MESSAGE_INPUT_NOTALLFIELDS" }]</span>
             </p>
         </li>
         <li><button type="submit" class="submitButton">[{ oxmultilang ident="LOGIN" }]</button></li>

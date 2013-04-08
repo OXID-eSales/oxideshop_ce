@@ -372,7 +372,7 @@ class Basket extends oxUBase
         $aPath = array();
 
 
-        $aPath['title'] = oxRegistry::getLang()->translateString( 'PAGE_CHECKOUT_VIEWCART', oxRegistry::getLang()->getBaseLanguage(), false );
+        $aPath['title'] = oxRegistry::getLang()->translateString( 'CART', oxRegistry::getLang()->getBaseLanguage(), false );
         $aPath['link']  = $this->getLink();
         $aPaths[] = $aPath;
 

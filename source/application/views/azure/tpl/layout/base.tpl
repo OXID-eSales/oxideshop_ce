@@ -6,6 +6,9 @@
     [{assign var="_sMetaTitleSuffix" value=$oView->getTitleSuffix() }]
     [{assign var="_sMetaTitlePageSuffix" value=$oView->getTitlePageSuffix() }]
     [{assign var="_sMetaTitle" value=$oView->getTitle() }]
+    [{if !$_sMetaTitle }]
+        [{assign var="_sMetaTitle" value=$template_title }]
+    [{/if}]
 
     <title>[{ $_sMetaTitlePrefix }][{if $_sMetaTitlePrefix && $_sMetaTitle }] | [{/if}][{$_sMetaTitle|strip_tags}][{if $_sMetaTitleSuffix && ($_sMetaTitlePrefix || $_sMetaTitle) }] | [{/if}][{$_sMetaTitleSuffix}] [{if $_sMetaTitlePageSuffix }] | [{ $_sMetaTitlePageSuffix }] [{/if}]</title>
 
@@ -68,7 +71,8 @@
 
 [{/capture}]
 <!DOCTYPE HTML>
-<html lang="[{ $oView->getActiveLangAbbr() }]" [{if $oViewConf->getShowFbConnect() }]xmlns:fb="http://www.facebook.com/2008/fbml"[{/if}]>
+[{assign var="sLanguage" value=$oView->getActiveLangAbbr()}]
+<html [{if $sLanguage}]lang="[{$sLanguage}]"[{/if}] [{if $oViewConf->getShowFbConnect() }]xmlns:fb="http://www.facebook.com/2008/fbml"[{/if}]>
 <head>
     [{foreach from=$oxidBlock_pageHead item="_block"}]
         [{$_block}]

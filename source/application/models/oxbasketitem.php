@@ -469,7 +469,7 @@ class oxBasketItem extends oxSuperCfg
             if ( !$this->_oArticle->load( $sProductId ) ) {
                 $oEx = oxNew( 'oxNoArticleException' );
                 $oLang = oxRegistry::getLang();
-                $oEx->setMessage( sprintf($oLang->translateString( 'EXCEPTION_ARTICLE_ARTICELDOESNOTEXIST', $oLang->getBaseLanguage() ), $sProductId) );
+                $oEx->setMessage( sprintf($oLang->translateString( 'ERROR_MESSAGE_ARTICLE_ARTICLE_DOES_NOT_EXIST', $oLang->getBaseLanguage() ), $sProductId) );
                 $oEx->setArticleNr( $sProductId );
                 $oEx->setProductId( $sProductId );
                 throw $oEx;
@@ -479,7 +479,7 @@ class oxBasketItem extends oxSuperCfg
             if ( $blCheckProduct && !$this->_oArticle->isVisible() ) {
                 $oEx = oxNew( 'oxNoArticleException' );
                 $oLang = oxRegistry::getLang();
-                $oEx->setMessage( sprintf($oLang->translateString( 'EXCEPTION_ARTICLE_ARTICELDOESNOTEXIST', $oLang->getBaseLanguage() ), $this->_oArticle->oxarticles__oxartnum->value) );
+                $oEx->setMessage( sprintf($oLang->translateString( 'ERROR_MESSAGE_ARTICLE_ARTICLE_DOES_NOT_EXIST', $oLang->getBaseLanguage() ), $this->_oArticle->oxarticles__oxartnum->value) );
                 $oEx->setArticleNr( $sProductId );
                 $oEx->setProductId( $sProductId );
                 throw $oEx;

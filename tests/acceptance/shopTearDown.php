@@ -38,14 +38,6 @@ class shopTearDown extends oxidAdditionalSeleniumFunctions
     /**
      * closes all open firefox windows
      */
-    public function testRestoreDb()
-    {
-        $this->restoreDB("orig_db_dump");
-    }
-
-    /**
-     * closes all open firefox windows
-     */
     public function testCloseFirefox()
     {
         echo "Closing active browser windows: ";

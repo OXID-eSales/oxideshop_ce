@@ -96,7 +96,8 @@ class oxPaymentList extends oxList
 
         $sTable = getViewName( 'oxpayments' );
         $sQ  = "select {$sTable}.* from ( select distinct {$sTable}.* from {$sTable}, oxobject2group, oxobject2payment ";
-        $sQ .= "where {$sTable}.oxactive='1' and oxobject2group.oxobjectid = {$sTable}.oxid ";
+        // removing and oxobject2group.oxobjectid = {$sTable}.oxid as when no groups are assigned, payment should be available for all.
+        $sQ .= "where {$sTable}.oxactive='1' "; 
         $sQ .= "and oxobject2payment.oxpaymentid = {$sTable}.oxid and oxobject2payment.oxobjectid = ".$oDb->quote( $sShipSetId );
         $sQ .= " and {$sTable}.oxfromboni <= ".$oDb->quote( $sBoni ) ." and {$sTable}.oxfromamount <= ".$oDb->quote( $dPrice ) ." and {$sTable}.oxtoamount >= ".$oDb->quote( $dPrice );
 

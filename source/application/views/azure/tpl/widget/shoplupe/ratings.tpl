@@ -1,9 +1,9 @@
 <div class="box">
-    <h3>[{ oxmultilang ident="WIDGET_SHOPLUPE" }]</h3>
+    <h3>[{ oxmultilang ident="SHOPLUPE" }]</h3>
     <div class="content">
         <p class="shoplupe">
-            <a href="http://www.shoplupe.com" target="_blank" title="[{ oxmultilang ident="WIDGET_SHOPLUPE_RATINGS_INFO_URL_TITLE" }]">
-                <img src="[{$oViewConf->getImageUrl('shoplupe.jpg')}]" alt="[{ oxmultilang ident="WIDGET_SHOPLUPE_RATINGS_ALT" }]">
+            <a href="http://www.shoplupe.com" target="_blank" title="[{ oxmultilang ident="SHOPLUPE" }]">
+                <img src="[{$oViewConf->getImageUrl('shoplupe.jpg')}]" alt="[{ oxmultilang ident="SHOPLUPE" }]">
             </a>
         </p>
     </div>

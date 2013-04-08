@@ -6,7 +6,7 @@
     [{oxscript add="$('div.dropDown p').oxDropDown();"}]
     <div class="dropDown js-fnLink" id="viewOptions">
         <p>
-            <label>[{oxmultilang ident="view"}]:</label>
+            <label>[{oxmultilang ident="LIST_DISPLAY_TYPE" suffix="COLON" }]</label>
             <span>[{oxmultilang ident=$listType}]</span>
         </p>
         <ul class="drop FXgradGreyLight shadow">

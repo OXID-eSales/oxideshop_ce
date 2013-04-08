@@ -10,7 +10,7 @@
     [{/block}]
 
     [{block name="sidebar_categoriestree"}]
-        [{if $oView->getClassName() != 'start'}]
+        [{if $oView->getClassName() != 'start' && $oView->getClassName() != 'compare'}]
             [{oxid_include_widget cl="oxwCategoryTree" cnid=$oView->getCategoryId() deepLevel=0 noscript=1 nocookie=1}]
         [{/if}]
     [{/block}]
@@ -30,8 +30,8 @@
     [{/block}]
 
     [{block name="sidebar_boxproducts"}]
-        [{if $oView->getClassName() eq "start" && $oView->getTop5ArticleList()}]
-            [{include file="widget/product/boxproducts.tpl" _boxId="topBox" _oBoxProducts=$oView->getTop5ArticleList() _sHeaderIdent="BOX_TOPOFTHESHOP_HEADER"}]
+        [{if $oView->getTop5ArticleList()}]
+            [{include file="widget/product/boxproducts.tpl" _boxId="topBox" _oBoxProducts=$oView->getTop5ArticleList() _sHeaderIdent="TOP_OF_THE_SHOP"}]
         [{/if}]
     [{/block}]
 
@@ -58,7 +58,7 @@
     [{block name="sidebar_facebookfacepile"}]
           [{if $oView->isActive('FbFacepile') && $oView->isConnectedWithFb()}]
             <div id="facebookFacepile" class="box">
-                <h3>[{oxmultilang ident="WIDGET_FACEBOOK_FACEPILE_HEADER"}]</h3>
+                <h3>[{oxmultilang ident="FACEBOOK_FACEPILE"}]</h3>
                 <div class="content" id="productFbFacePile">
                     [{include file="widget/facebook/enable.tpl" source="widget/facebook/facepile.tpl" ident="#productFbFacePile" type="text"}]
                 </div>

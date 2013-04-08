@@ -185,7 +185,7 @@ class Register extends User
         $aPaths = array();
         $aPath = array();
 
-        $aPath['title'] = oxRegistry::getLang()->translateString( 'PAGE_ACCOUNT_REGISTER_REGISTER', oxRegistry::getLang()->getBaseLanguage(), false );
+        $aPath['title'] = oxRegistry::getLang()->translateString( 'REGISTER', oxRegistry::getLang()->getBaseLanguage(), false );
         $aPath['link']  = $this->getLink();
         $aPaths[] = $aPath;
 

@@ -175,7 +175,7 @@ class Wishlist extends oxUBase
         $aPaths = array();
         $aPath = array();
 
-        $aPath['title'] = oxRegistry::getLang()->translateString( 'PAGE_WISHLIST_PRODUCTS_TITLE', oxRegistry::getLang()->getBaseLanguage(), false );
+        $aPath['title'] = oxRegistry::getLang()->translateString( 'PUBLIC_GIFT_REGISTRIES', oxRegistry::getLang()->getBaseLanguage(), false );
         $aPath['link']  = $this->getLink();
         $aPaths[] = $aPath;
 

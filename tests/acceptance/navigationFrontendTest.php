@@ -36,6 +36,7 @@ class Acceptance_navigationFrontendTest extends oxidAdditionalSeleniumFunctions
 
     /**
      * switching languages in frontend
+     *
      * @group navigation
      * @group frontend
      */
@@ -1514,7 +1515,7 @@ class Acceptance_navigationFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->clickAndWait("//div[@id='modalbasketFlyout']//a[text()='Display Cart']");
         $this->assertEquals("You are here: / View cart", $this->getText("breadCrumb"));
         $this->assertEquals("1", $this->getText("//div[@id='miniBasket']/span"));
-        $this->assertEquals("Test product 0 [EN] šÄßüл Art.No.: 1000", $this->clearString($this->getText("//tr[@id='cartItem_1']/td[3]")));
+        $this->assertEquals("Test product 0 [EN] šÄßüл Art.No. 1000", $this->clearString($this->getText("//tr[@id='cartItem_1']/td[3]")));
         $this->clickAndWait("link=Home");
         $this->searchFor("1003");
         $this->assertFalse($this->isElementPresent("modalbasketFlyout"));

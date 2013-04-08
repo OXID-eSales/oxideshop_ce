@@ -19,7 +19,7 @@
  * @package   tests
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id: oxwcookienoteTest.php 51741 2012-11-13 10:00:42Z vilma $
+ * @version   SVN: $Id$
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -51,6 +51,18 @@ class Unit_Components_Widgets_oxwCookieNoteTest extends OxidTestCase
         $this->setConfigParam("blShowCookiesNotification", true);
         $oCookieNote = new oxwCookieNote();
         $this->assertTrue( $oCookieNote->isEnabled() );
+    }
+
+    /**
+     * Testing oxwCookieNote::isEnabled()
+     *
+     * @return null
+     */
+    public function testIsNotEnabled()
+    {
+        $this->setConfigParam("blShowCookiesNotification", false);
+        $oCookieNote = new oxwCookieNote();
+        $this->assertFalse( $oCookieNote->isEnabled() );
     }
 
 }

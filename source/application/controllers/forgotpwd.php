@@ -84,7 +84,7 @@ class ForgotPwd extends oxUBase
             $iSuccess = $oEmail->sendForgotPwdEmail( $sEmail );
         }
         if ( $iSuccess !== true ) {
-            $sError = ($iSuccess === false)? 'FORGOTPWD_ERREMAILINVALID' : 'FORGOTPWD_ERRUNABLETOSEND';
+            $sError = ($iSuccess === false)? 'ERROR_MESSAGE_PASSWORD_EMAIL_INVALID' : 'MESSAGE_NOT_ABLE_TO_SEND_EMAIL';
             oxRegistry::get("oxUtilsView")->addErrorToDisplay($sError, false, true);
             $this->_sForgotEmail = false;
         }
@@ -104,11 +104,11 @@ class ForgotPwd extends oxUBase
         $oUser = oxNew( 'oxuser' );
         if ( ( $oExcp = $oUser->checkPassword( $sNewPass, $sConfPass, true ) ) ) {
             switch ( $oExcp->getMessage() ) {
-                case 'EXCEPTION_INPUT_EMPTYPASS':
-                case 'EXCEPTION_INPUT_PASSTOOSHORT':
-                    return oxRegistry::get("oxUtilsView")->addErrorToDisplay('FORGOTPWD_ERRPASSWORDTOSHORT', false, true);
+                case 'ERROR_MESSAGE_INPUT_EMPTYPASS':
+                case 'ERROR_MESSAGE_PASSWORD_TOO_SHORT':
+                    return oxRegistry::get("oxUtilsView")->addErrorToDisplay('ERROR_MESSAGE_PASSWORD_TOO_SHORT', false, true);
                 default:
-                    return oxRegistry::get("oxUtilsView")->addErrorToDisplay('FORGOTPWD_ERRPASSWDONOTMATCH', false, true);
+                    return oxRegistry::get("oxUtilsView")->addErrorToDisplay('ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH', false, true);
             }
         }
 
@@ -129,7 +129,7 @@ class ForgotPwd extends oxUBase
             return 'forgotpwd?success=1';
         } else {
             // expired reminder
-            return oxRegistry::get("oxUtilsView")->addErrorToDisplay( 'FORGOTPWD_ERRLINKEXPIRED', false, true );
+            return oxRegistry::get("oxUtilsView")->addErrorToDisplay( 'ERROR_MESSAGE_PASSWORD_LINK_EXPIRED', false, true );
         }
     }
 
@@ -197,7 +197,7 @@ class ForgotPwd extends oxUBase
         $aPaths = array();
         $aPath = array();
 
-        $aPath['title'] = oxRegistry::getLang()->translateString( 'PAGE_ACCOUNT_FORGOTPWD_TITLE', oxRegistry::getLang()->getBaseLanguage(), false );
+        $aPath['title'] = oxRegistry::getLang()->translateString( 'FORGOT_PASSWORD', oxRegistry::getLang()->getBaseLanguage(), false );
         $aPath['link']  = $this->getLink();
         $aPaths[] = $aPath;
 

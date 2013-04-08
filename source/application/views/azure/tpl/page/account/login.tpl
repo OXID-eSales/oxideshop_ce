@@ -1,8 +1,8 @@
-[{assign var="template_title" value="PAGE_ACCOUNT_INC_LOGIN_LOGIN"|oxmultilangassign }]
+[{assign var="template_title" value="LOGIN"|oxmultilangassign }]
 [{capture append="oxidBlock_content"}]
     <div class="accountLoginView">
-        <h1 id="loginAccount" class="pageHead">[{ oxmultilang ident="PAGE_ACCOUNT_INC_LOGIN_LOGIN" }]</h1>
-        <p>[{ oxmultilang ident="PAGE_ACCOUNT_INC_LOGIN_ALREADYCUSTOMER" }]</p>
+        <h1 id="loginAccount" class="pageHead">[{ oxmultilang ident="LOGIN" }]</h1>
+        <p>[{ oxmultilang ident="LOGIN_ALREADY_CUSTOMER" suffix="COLON" }]</p>
 
         [{include file="form/login_account.tpl"}]
     </div>

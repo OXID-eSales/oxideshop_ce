@@ -7,10 +7,10 @@
     <dd class="[{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]activePayment[{/if}]">
         <ul class="form">
             <li>
-                <label>[{ oxmultilang ident="PAGE_CHECKOUT_PAYMENT_CREDITCARD" }]</label>
+                <label>[{ oxmultilang ident="CREDITCARD" suffix="COLON" }]</label>
                 <select name="dynvalue[kktype]">
-                    <option value="mcd" [{ if ($dynvalue.kktype == "mcd" || !$dynvalue.kktype)}]selected[{/if}]>[{ oxmultilang ident="PAGE_CHECKOUT_PAYMENT_MASTERCARD" }]</option>
-                    <option value="vis" [{ if $dynvalue.kktype == "vis"}]selected[{/if}]>[{ oxmultilang ident="PAGE_CHECKOUT_PAYMENT_VISA" }]</option>
+                    <option value="mcd" [{ if ($dynvalue.kktype == "mcd" || !$dynvalue.kktype)}]selected[{/if}]>[{ oxmultilang ident="CARD_MASTERCARD" }]</option>
+                    <option value="vis" [{ if $dynvalue.kktype == "vis"}]selected[{/if}]>[{ oxmultilang ident="CARD_VISA" }]</option>
                     <!--
                     <option value="amx" [{ if $dynvalue.kktype == "amx"}]selected[{/if}]>American Express</option>
                     <option value="dsc" [{ if $dynvalue.kktype == "dsc"}]selected[{/if}]>Discover</option>
@@ -23,23 +23,23 @@
                 </select>
             </li>
             <li>
-                <label>[{ oxmultilang ident="PAGE_CHECKOUT_PAYMENT_NUMBER" }]</label>
-                <input type="text" class="js-oxValidate js-oxValidate_notEmpty" size="20" maxlength="64" name="dynvalue[kknumber]" value="[{ $dynvalue.kknumber }]">
+                <label>[{ oxmultilang ident="NUMBER" suffix="COLON" }]</label>
+                <input type="text" class="js-oxValidate js-oxValidate_notEmpty" size="20" maxlength="64" name="dynvalue[kknumber]" autocomplete="off" value="[{ $dynvalue.kknumber }]">
                 <p class="oxValidateError">
-                    <span class="js-oxError_notEmpty">[{ oxmultilang ident="EXCEPTION_INPUT_NOTALLFIELDS" }]</span>
+                    <span class="js-oxError_notEmpty">[{ oxmultilang ident="ERROR_MESSAGE_INPUT_NOTALLFIELDS" }]</span>
                 </p>
             </li>
             <li>
-                <label>[{ oxmultilang ident="PAGE_CHECKOUT_PAYMENT_ACCOUNTHOLDER" }]</label>
+                <label>[{ oxmultilang ident="BANK_ACCOUNT_HOLDER" suffix="COLON" }]</label>
                 <input type="text" size="20" class="js-oxValidate js-oxValidate_notEmpty" maxlength="64" name="dynvalue[kkname]" value="[{ if $dynvalue.kkname }][{ $dynvalue.kkname }][{else}][{$oxcmp_user->oxuser__oxfname->value}] [{$oxcmp_user->oxuser__oxlname->value}][{/if}]">
                 <p class="oxValidateError">
-                    <span class="js-oxError_notEmpty">[{ oxmultilang ident="EXCEPTION_INPUT_NOTALLFIELDS" }]</span>
+                    <span class="js-oxError_notEmpty">[{ oxmultilang ident="ERROR_MESSAGE_INPUT_NOTALLFIELDS" }]</span>
                 </p>
                 <br>
-                <div class="note">[{ oxmultilang ident="PAGE_CHECKOUT_PAYMENT_DIFFERENTBILLINGADDRESS" }]</div>
+                <div class="note">[{ oxmultilang ident="IF_DIFFERENT_FROM_BILLING_ADDRESS" }]</div>
             </li>
             <li>
-                <label>[{ oxmultilang ident="PAGE_CHECKOUT_PAYMENT_VALIDUNTIL" }]</label>
+                <label>[{ oxmultilang ident="VALID_UNTIL" suffix="COLON" }]</label>
                 <select name="dynvalue[kkmonth]">
                   <option [{ if $dynvalue.kkmonth == "01"}]selected[{/if}]>01</option>
                   <option [{ if $dynvalue.kkmonth == "02"}]selected[{/if}]>02</option>
@@ -64,13 +64,13 @@
                 </select>
             </li>
             <li>
-                <label>[{ oxmultilang ident="PAGE_CHECKOUT_PAYMENT_SECURITYCODE" }]</label>
-                <input type="text" class="js-oxValidate js-oxValidate_notEmpty" size="20" maxlength="64" name="dynvalue[kkpruef]" value="[{ $dynvalue.kkpruef }]">
+                <label>[{ oxmultilang ident="CARD_SECURITY_CODE" suffix="COLON"}]</label>
+                <input type="text" class="js-oxValidate js-oxValidate_notEmpty" size="20" maxlength="64" name="dynvalue[kkpruef]" autocomplete="off" value="[{ $dynvalue.kkpruef }]">
                 <p class="oxValidateError">
-                    <span class="js-oxError_notEmpty">[{ oxmultilang ident="EXCEPTION_INPUT_NOTALLFIELDS" }]</span>
+                    <span class="js-oxError_notEmpty">[{ oxmultilang ident="ERROR_MESSAGE_INPUT_NOTALLFIELDS" }]</span>
                 </p>
                 <br>
-                <div class="note">[{ oxmultilang ident="PAGE_CHECKOUT_PAYMENT_SECURITYCODEDESCRIPTION" }]</div>
+                <div class="note">[{ oxmultilang ident="CARD_SECURITY_CODE_DESCRIPTION" }]</div>
             </li>
         </ul>
 

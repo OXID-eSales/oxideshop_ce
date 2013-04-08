@@ -230,7 +230,7 @@ class oxUtils extends oxSuperCfg
      *
      * @param string $sValue Formatted price
      *
-     * @return string
+     * @return float
      */
     public function currency2Float( $sValue)
     {
@@ -246,7 +246,6 @@ class oxUtils extends oxSuperCfg
         $fRet = str_replace( ",", ".", $fRet);
         return (float) $fRet;
     }
-
 
     /**
      * Returns formatted float, according to formatting standards.

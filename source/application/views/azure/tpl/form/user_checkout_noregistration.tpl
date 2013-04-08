@@ -18,8 +18,8 @@
         <input type="hidden" name="blshowshipaddress" value="1">
 
         <div class="lineBox clear">
-            <a href="[{ oxgetseourl ident=$oViewConf->getBasketLink() }]" class="prevStep submitButton largeButton" id="userBackStepTop">[{ oxmultilang ident="FORM_USER_CHECKOUT_NOREGISTRATION_BACKSTEP" }]</a>
-            <button id="userNextStepTop" class="submitButton largeButton nextStep" name="userform" type="submit">[{ oxmultilang ident="FORM_USER_CHECKOUT_NOREGISTRATION_NEXTSTEP" }]</button>
+            <a href="[{ oxgetseourl ident=$oViewConf->getBasketLink() }]" class="prevStep submitButton largeButton" id="userBackStepTop">[{ oxmultilang ident="PREVIOUS_STEP" }]</a>
+            <button id="userNextStepTop" class="submitButton largeButton nextStep" name="userform" type="submit">[{ oxmultilang ident="CONTINUE_TO_NEXT_STEP" }]</button>
         </div>
 
         <div class="checkoutCollumns clear">
@@ -30,14 +30,14 @@
                 </ul>
             </div>
             <div class="collumn">
-                <h3 class="blockHead">[{ oxmultilang ident="FORM_REGISTER_BILLINGADDRESS" }]</h3>
+                <h3 class="blockHead">[{ oxmultilang ident="BILLING_ADDRESS" }]</h3>
                 <ul class="form">
                 [{ include file="form/fieldset/user_billing.tpl" noFormSubmit=true blOrderRemark=true}]
                 </ul>
             </div>
             <div class="collumn">
-                <h3 class="blockHead">[{ oxmultilang ident="FORM_REGISTER_SHIPPINGADDRESS" }]</h3>
-                <p><input type="checkbox" name="blshowshipaddress" id="showShipAddress" [{if !$oView->showShipAddress()}]checked[{/if}] value="0"><label for="showShipAddress">[{ oxmultilang ident="FORM_REGISTER_USE_BILLINGADDRESS_FOR_SHIPPINGADDRESS" }]</label></p>
+                <h3 class="blockHead">[{ oxmultilang ident="SHIPPING_ADDRESS" }]</h3>
+                <p><input type="checkbox" name="blshowshipaddress" id="showShipAddress" [{if !$oView->showShipAddress()}]checked[{/if}] value="0"><label for="showShipAddress">[{ oxmultilang ident="USE_BILLINGADDRESS_FOR_SHIPPINGADDRESS" }]</label></p>
                 <ul id="shippingAddress" class="form" [{if !$oView->showShipAddress()}]style="display: none;"[{/if}]>
                 [{ include file="form/fieldset/user_shipping.tpl" noFormSubmit=true}]
                 </ul>
@@ -52,8 +52,8 @@
         [{oxscript add="$('#showShipAddress').change( function() { $('#shippingAddress').toggle($(this).is(':not(:checked)'));});"}]
 
         <div class="lineBox clear">
-            <a href="[{ oxgetseourl ident=$oViewConf->getBasketLink() }]" class="prevStep submitButton largeButton" id="userBackStepBottom">[{ oxmultilang ident="FORM_USER_CHECKOUT_NOREGISTRATION_BACKSTEP" }]</a>
-            <button id="userNextStepBottom" class="submitButton largeButton nextStep" name="userform" type="submit">[{ oxmultilang ident="FORM_USER_CHECKOUT_NOREGISTRATION_NEXTSTEP" }]</button>
+            <a href="[{ oxgetseourl ident=$oViewConf->getBasketLink() }]" class="prevStep submitButton largeButton" id="userBackStepBottom">[{ oxmultilang ident="PREVIOUS_STEP" }]</a>
+            <button id="userNextStepBottom" class="submitButton largeButton nextStep" name="userform" type="submit">[{ oxmultilang ident="CONTINUE_TO_NEXT_STEP" }]</button>
         </div>
     [{/block}]
     </form>

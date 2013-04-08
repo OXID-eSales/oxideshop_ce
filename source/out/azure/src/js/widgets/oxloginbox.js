@@ -35,7 +35,7 @@
                 return false;
             });
 
-            $(".altLoginBox .fb_button").live("click", function(){
+            $(".altLoginBox .fb_button").on("click", function(){
                 $("#loginBox").hide();
             });
 

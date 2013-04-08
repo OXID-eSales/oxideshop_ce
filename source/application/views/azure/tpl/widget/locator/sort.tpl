@@ -8,7 +8,7 @@
     [{oxscript add="$('div.dropDown p').oxDropDown();"}]
     <div class="dropDown js-fnLink" id="sortItems">
         <p>
-            <label>[{ oxmultilang ident="SORT_BY" }]</label>
+            <label>[{ oxmultilang ident="SORT_BY" suffix="COLON" }]</label>
             <span class="[{$oView->getListOrderDirection()}]">
                 [{if $oView->getListOrderBy() }]
                     [{oxmultilang ident=$oView->getListOrderBy()|upper }]

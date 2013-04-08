@@ -316,7 +316,7 @@ class Unit_Views_accountTest extends OxidTestCase
         $this->assertEquals( 1, count( $aBreadCrumbs ) );
         $this->assertTrue( isset( $aBreadCrumbs[0]['title'] ) );
         $this->assertTrue( isset( $aBreadCrumbs[0]['link'] ) );
-        $this->assertEquals( 'Anmeldung', $aBreadCrumbs[0]['title'] );
+        $this->assertEquals( 'Anmelden', $aBreadCrumbs[0]['title'] );
     }
 
     /**

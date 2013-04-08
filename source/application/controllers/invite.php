@@ -24,7 +24,7 @@
 
 /**
  * Article suggestion page.
- * Collects some article base information, sets default recomendation text,
+ * Collects some article base information, sets default recommendation text,
  * sends suggestion mail to user.
  */
 class Invite extends oxUBase
@@ -48,13 +48,13 @@ class Invite extends oxUBase
     protected $_aReqFields = array( 'rec_email', 'send_name', 'send_email', 'send_message', 'send_subject' );
 
     /**
-     * CrossSelling articlelist
+     * CrossSelling article list
      * @var object
      */
     protected $_oCrossSelling = null;
 
     /**
-     * Similar products articlelist
+     * Similar products article list
      * @var object
      */
     protected $_oSimilarProducts = null;
@@ -133,7 +133,7 @@ class Invite extends oxUBase
 
         if ( !$oCaptcha->pass( $sMac, $sMacHash ) ) {
             // even if there is no exception, use this as a default display method
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay( 'EXCEPTION_INPUT_WRONGCAPTCHA' );
+            oxRegistry::get("oxUtilsView")->addErrorToDisplay( 'MESSAGE_WRONG_VERIFICATION_CODE' );
             return;
         }
 
@@ -152,7 +152,7 @@ class Invite extends oxUBase
 
                 //counting entered eMails
                 if ( count( $aParams[$sFieldName] ) < 1 ) {
-                    $oUtilsView->addErrorToDisplay('EXCEPTION_INVITE_COMLETECORRECTLYFIELDS');
+                    $oUtilsView->addErrorToDisplay('ERROR_MESSAGE_COMPLETE_FIELDS_CORRECTLY');
                     return;
                 }
 
@@ -161,7 +161,7 @@ class Invite extends oxUBase
             }
 
             if ( !isset( $aParams[$sFieldName] ) || !$aParams[$sFieldName] ) {
-                $oUtilsView->addErrorToDisplay('EXCEPTION_INVITE_COMLETECORRECTLYFIELDS');
+                $oUtilsView->addErrorToDisplay('ERROR_MESSAGE_COMPLETE_FIELDS_CORRECTLY');
                 return;
             }
         }
@@ -171,13 +171,13 @@ class Invite extends oxUBase
         //validating entered emails
         foreach ( $aParams["rec_email"] as $sRecipientEmail ) {
             if ( !$oUtils->isValidEmail( $sRecipientEmail ) ) {
-                $oUtilsView->addErrorToDisplay('EXCEPTION_INVITE_INCORRECTEMAILADDRESS');
+                $oUtilsView->addErrorToDisplay('ERROR_MESSAGE_INVITE_INCORRECTEMAILADDRESS');
                 return;
             }
         }
 
         if ( !$oUtils->isValidEmail( $aParams["send_email"] ) ) {
-            $oUtilsView->addErrorToDisplay('EXCEPTION_INVITE_INCORRECTEMAILADDRESS');
+            $oUtilsView->addErrorToDisplay('ERROR_MESSAGE_INVITE_INCORRECTEMAILADDRESS');
             return;
         }
 
@@ -190,10 +190,10 @@ class Invite extends oxUBase
             //getting active user
             $oUser = $this->getUser();
 
-            //saving statitics for sended emails
+            //saving statistics for sent emails
             $oUser->updateInvitationStatistics( $aParams["rec_email"] );
         } else {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay('EXCEPTION_INVITE_ERRORWHILESENDINGMAIL');
+            oxRegistry::get("oxUtilsView")->addErrorToDisplay('ERROR_MESSAGE_INVITE_ERRORWHILESENDINGMAIL');
         }
     }
 
@@ -256,7 +256,7 @@ class Invite extends oxUBase
         $aPaths = array();
         $aPath = array();
 
-        $aPath['title'] = oxRegistry::getLang()->translateString( 'PAGE_PRIVATESALES_INVITE_TITLE', oxRegistry::getLang()->getBaseLanguage(), false );
+        $aPath['title'] = oxRegistry::getLang()->translateString( 'INVITE_YOUR_FRIENDS', oxRegistry::getLang()->getBaseLanguage(), false );
         $aPath['link']  = $this->getLink();
         $aPaths[] = $aPath;
 

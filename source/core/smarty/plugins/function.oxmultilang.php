@@ -42,6 +42,7 @@ function smarty_function_oxmultilang( $params, &$smarty )
     $oLang = oxRegistry::getLang();
     $sIdent  = isset( $params['ident'] ) ? $params['ident'] : 'IDENT MISSING';
     $aArgs = isset( $params['args'] ) ? $params['args'] : 0 ;
+    $sSuffix = isset( $params['suffix'] ) ? $params['suffix'] : 'NO_SUFFIX';
 
     $iLang   = null;
     $blAdmin = $oLang->isAdmin();
@@ -55,6 +56,9 @@ function smarty_function_oxmultilang( $params, &$smarty )
 
     try {
         $sTranslation = $oLang->translateString( $sIdent, $iLang, $blAdmin );
+        if ( 'NO_SUFFIX' != $sSuffix ) {
+            $sSuffixTranslation = $oLang->translateString( $sSuffix, $iLang, $blAdmin );
+        }
     } catch ( oxLanguageException $oEx ) {
         // is thrown in debug mode and has to be caught here, as smarty hangs otherwise!
     }
@@ -77,5 +81,8 @@ function smarty_function_oxmultilang( $params, &$smarty )
 
     stopProfile("smarty_function_oxmultilang");
 
+    if ( 'NO_SUFFIX' != $sSuffix ) {
+        $sTranslation .= $sSuffixTranslation;
+    }
     return $sTranslation;
 }

@@ -1,9 +1,9 @@
 [{oxscript add="$('a.js-external').attr('target', '_blank');"}]
 [{capture append="oxidBlock_content"}]
-[{assign var="search_title" value="PAGE_SEARCH_SEARCH_TITLE"|oxmultilangassign}]
+[{assign var="search_title" value="SEARCH"|oxmultilangassign}]
 [{assign var="searchparamforhtml" value=$oView->getSearchParamForHtml() }]
 [{assign var="template_title" value="$search_title - $searchparamforhtml"}]
-[{assign var="search_head" value="PAGE_SEARCH_SEARCH_HITSFOR"|oxmultilangassign}]
+[{assign var="search_head" value="HITS_FOR"|oxmultilangassign}]
 [{assign var="search_head" value=$oView->getArticleCount()|cat:" "|cat:$search_head|cat:" &quot;"|cat:$oView->getSearchParamForHtml()|cat:"&quot;"}]
 [{assign var='rsslinks' value=$oView->getRssLinks() }]
 [{if $rsslinks.searchArticles}]
@@ -20,7 +20,7 @@
         [{/block}]
     </div>
   [{else}]
-    <div>[{ oxmultilang ident="PAGE_SEARCH_SEARCH_NOITEMSFOUND" }]</div>
+    <div>[{ oxmultilang ident="NO_ITEMS_FOUND" }]</div>
   [{/if}]
   [{if $oView->getArticleList() }]
     [{foreach from=$oView->getArticleList() name=search item=product}]
@@ -33,6 +33,6 @@
   [{/block}]
 [{ insert name="oxid_tracker" title=$template_title }]
 [{/capture}]
-[{assign var="template_title" value="PAGE_SEARCH_SEARCH_TITLE"|oxmultilangassign}]
+[{assign var="template_title" value="SEARCH"|oxmultilangassign}]
 
-[{include file="layout/page.tpl" title=$template_title location="PAGE_SEARCH_SEARCH_LOCATION"|oxmultilangassign sidebar="Left"}]
+[{include file="layout/page.tpl" title=$template_title location="SEARCH"|oxmultilangassign sidebar="Left"}]

@@ -1,36 +1,55 @@
 <script language=javascript type="text/javascript">
 
 <!-- Hide script from older browsers
-function popUp(evt,currElem)
-{
-    var popUpWin = document.getElementById(currElem);
-    var y = parseInt(evt.clientY) - 33 - parseInt((17.5*(popUpWin.innerHTML.split(/<br[ 	\/^>]*>/gi).length-1)));
-    var x = parseInt(evt.clientX) - 50;
 
-  
-	if(document.all){
-		if ( x > document.body.clientWidth - 150 ){
-	        x = parseInt(document.body.clientWidth) - 150;
-            y = y - 15;
-    	}
-	}
-	else{
-	    if ( x > self.innerWidth - 170 ){
-	        x = parseInt(self.innerWidth) - 170;
-	    }
+var PopUp = {
+    popup: null,
+    parent: null,
+    show: function(event, elem) {
+        this.popup = document.getElementById(elem);
+        this.parent = event.target;
+
+        this.parent.addEventListener('mousemove', this.move, false);
+        this.popup.style.visibility = "visible";
+        window.status = "";
+    },
+    hide: function() {
+        if (this.popup !== null && this.parent !== null) {
+            this.parent.removeEventListener('mousemove', this.move);
+            this.popup.style.visibility ="hidden";
+        }
+        this.popup = this.parent = null;
+    },
+    move: function(e) {
+        var y = parseInt(e.clientY) - 33 - parseInt((17.5*(PopUp.popup.innerHTML.split(/<br[ 	\/^>]*>/gi).length-1)));
+        var x = parseInt(e.clientX) - 50;
+
+        if(document.all){
+            if ( x > document.body.clientWidth - 150 ){
+                x = parseInt(document.body.clientWidth) - 150;
+                y = y - 15;
+            }
+        } else{
+            if ( x > self.innerWidth - 170 ){
+                x = parseInt(self.innerWidth) - 170;
+            }
+            if ( y <= 0 ) {
+                y = parseInt(e.clientY)+10;
+            }
+        }
+        PopUp.popup.style.top = Math.max(2,y)+'px';
+        PopUp.popup.style.left= Math.max(2,x)+'px';
     }
-    
-    popUpWin.style.top = Math.max(2,y)+'px';
-    popUpWin.style.left= Math.max(2,x)+'px';
-    popUpWin.style.visibility = "visible";
-    window.status = "";
-    
-    
 }
+
+function popUp(evt, currElem)
+{
+    PopUp.show(evt, currElem);
+}
+
 function popDown(currElem)
 {
-    var popUpWin = document.getElementById(currElem);
-    popUpWin.style.visibility ="hidden"
+    PopUp.hide();
 }
 
 // End hiding script -->

@@ -731,7 +731,7 @@ class Payment extends oxUBase
         $aPath = array();
 
 
-        $aPath['title'] = oxRegistry::getLang()->translateString( 'PAGE_CHECKOUT_PAY', oxRegistry::getLang()->getBaseLanguage(), false );
+        $aPath['title'] = oxRegistry::getLang()->translateString( 'PAY', oxRegistry::getLang()->getBaseLanguage(), false );
         $aPath['link']  = $this->getLink();
 
         $aPaths[] = $aPath;

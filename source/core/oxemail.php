@@ -19,6 +19,8 @@
  * @package   core
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
+ * @version   SVN: $Id: oxemail.php 56820 2013-03-21 15:22:36Z tadas.rimkus $
+ * @version OXID eShop CE
  * @version   SVN: $Id$
  */
 /**
@@ -103,14 +105,14 @@ class oxEmail extends PHPMailer
      *
      * @var string
      */
-    protected $_sSenedNowTemplate = "email/html/sendednow.tpl";
+    protected $_sSenedNowTemplate = "email/html/ordershipped.tpl";
 
     /**
      * Send order notification plain mail template
      *
      * @var string
      */
-    protected $_sSenedNowTemplatePlain = "email/plain/sendednow.tpl";
+    protected $_sSenedNowTemplatePlain = "email/plain/ordershipped.tpl";
 
     /**
      * Send ordered download links mail template
@@ -840,7 +842,7 @@ class oxEmail extends PHPMailer
 
         $this->setBody( $oSmarty->fetch( $this->_sNewsletterOptInTemplate ) );
         $this->setAltBody( $oSmarty->fetch( $this->_sNewsletterOptInTemplatePlain ) );
-        $this->setSubject( ( $sSubject !== null ) ? $sSubject : oxRegistry::getLang()->translateString("EMAIL_NEWSLETTERDBOPTINMAIL_SUBJECT") . " " . $oShop->oxshops__oxname->getRawValue() );
+        $this->setSubject( ( $sSubject !== null ) ? $sSubject : oxRegistry::getLang()->translateString("NEWSLETTER") . " " . $oShop->oxshops__oxname->getRawValue() );
 
         $sFullName = $oUser->oxuser__oxfname->getRawValue() . " " . $oUser->oxuser__oxlname->getRawValue();
 
@@ -1146,7 +1148,7 @@ class oxEmail extends PHPMailer
         $oSmarty->security_settings['INCLUDE_ANY'] = $aStore['INCLUDE_ANY'] ;
 
         //Sets subject to email
-        $this->setSubject( ( $sSubject !== null ) ? $sSubject : $oLang->translateString("EMAIL_SENDDOWNLOADS_SUBJECT", null, false) );
+        $this->setSubject( ( $sSubject !== null ) ? $sSubject : $oLang->translateString("DOWNLOAD_LINKS", null, false) );
 
         $sFullName = $oOrder->oxorder__oxbillfname->getRawValue() . " " . $oOrder->oxorder__oxbilllname->getRawValue();
 
@@ -1280,7 +1282,7 @@ class oxEmail extends PHPMailer
             $this->setFrom( $oShop->oxshops__oxowneremail->value, $oShop->oxshops__oxname->getRawValue() );
             $this->setBody( $oSmarty->fetch( $this->getConfig()->getTemplatePath( $this->_sReminderMailTemplate, false ) ) );
             $this->setAltBody( "" );
-            $this->setSubject( ( $sSubject !== null ) ? $sSubject : $oLang->translateString( 'EMAIL_STOCKREMINDER_SUBJECT' ) );
+            $this->setSubject( ( $sSubject !== null ) ? $sSubject : $oLang->translateString( 'STOCK_LOW' ) );
 
             $blSend = $this->send();
         }
@@ -1360,8 +1362,8 @@ class oxEmail extends PHPMailer
         // Process view data array through oxOutput processor
         $this->_processViewArray();
 
-        $this->setRecipient( $oShop->oxshops__oxorderemail->value, $oShop->oxshops__oxname->value );
-        $this->setSubject( ( $sSubject !== null ) ? $sSubject : $oLang->translateString( 'EMAIL_PRICEALARM_OWNER_SUBJECT', $iAlarmLang ) . " " . $oArticle->oxarticles__oxtitle->value );
+        $this->setRecipient( $oShop->oxshops__oxorderemail->value, $oShop->oxshops__oxname->getRawValue() );
+        $this->setSubject( ( $sSubject !== null ) ? $sSubject : $oLang->translateString( 'PRICE_ALERT_FOR_PRODUCT', $iAlarmLang ) . " " . $oArticle->oxarticles__oxtitle->getRawValue() );
         $this->setBody( $oSmarty->fetch( $this->_sOwnerPricealarmTemplate ) );
         $this->setFrom( $aParams['email'], "" );
         $this->setReplyTo( $aParams['email'], "" );

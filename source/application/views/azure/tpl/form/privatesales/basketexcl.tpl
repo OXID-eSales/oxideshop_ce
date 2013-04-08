@@ -1,7 +1,7 @@
-<h3>[{ oxmultilang ident="FORM_PRIVATESALES_BASKET_EXCLUDE_HEAD" }]</h3>
-[{ oxmultilang ident="FORM_PRIVATESALES_BASKET_EXCLUDE_MSG" }]<br><br>
+<h3>[{ oxmultilang ident="ROOT_CATEGORY_CHANGED" }]</h3>
+[{ oxmultilang ident="MESSAGE_DENIED_BY_SHOP_RULES" }]<br><br>
 <div class="introtext">
-[{ oxmultilang ident="FORM_PRIVATESALES_BASKET_EXCLUDE_INFO" }]<br><br>
+[{ oxmultilang ident="MESSAGE_BASKET_EXCLUDE_INFO" }]<br><br>
 </div>
 <form action="[{ $oViewConf->getCurrentHomeDir() }]index.php" method="post">
     <div>
@@ -19,9 +19,9 @@
           <input type="hidden" name="anid" value="[{ $product->oxarticles__oxnid->value }]">
         [{/if}]
         [{oxhasrights ident="TOBASKET"}]
-        <button name="tobasket" value="1" class="submitButton" type="submit">[{ oxmultilang ident="FORM_PRIVATESALES_BASKET_EXCLUDE_DISPLAYCART" }]</button>
+        <button name="tobasket" value="1" class="submitButton" type="submit">[{ oxmultilang ident="CHECKOUT" }]</button>
         [{/oxhasrights}]
-        <button class="submitButton" type="submit">[{ oxmultilang ident="FORM_PRIVATESALES_BASKET_EXCLUDE_CONTINUESHOPPING" }]</button>
+        <button class="submitButton" type="submit">[{ oxmultilang ident="CONTINUE_SHOPPING" }]</button>
     </div>
 </form>
 

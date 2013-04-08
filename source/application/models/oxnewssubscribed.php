@@ -111,7 +111,7 @@ class oxNewsSubscribed extends oxBase
     public function loadFromUserId( $sOxUserId )
     {
         $oDb = oxDb::getDb();
-        $sOxId = $oDb->getOne( "select oxid from oxnewssubscribed where oxuserid = " . $oDb->quote( $sOxUserId ) );
+        $sOxId = $oDb->getOne( "select oxid from oxnewssubscribed where oxuserid = {$oDb->quote( $sOxUserId )} and oxshopid = {$oDb->quote( $this->getConfig()->getShopId() )}" );
         return $this->load( $sOxId );
     }
 

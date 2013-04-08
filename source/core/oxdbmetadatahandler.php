@@ -190,6 +190,8 @@ class oxDbMetaDataHandler extends oxSuperCfg
         $aRes = oxDb::getDb()->getAll( "show create table {$sTable}" );
         $sTableSql = $aRes[0][1];
 
+        // removing comments;
+        $sTableSql = preg_replace('/COMMENT \\\'.*?\\\'/', '', $sTableSql);
         preg_match( "/.*,\s+(['`]?".preg_quote($sField, '/')."['`]?\s+[^,]+),.*/", $sTableSql, $aMatch );
         $sFieldSql = $aMatch[1];
 

@@ -50,7 +50,6 @@ class SelectList_Main extends oxAdminDetails
         $myConfig = $this->getConfig();
         parent::render();
 
-
         $sOxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         $sArticleTable = getViewName('oxarticles');
 
@@ -61,7 +60,7 @@ class SelectList_Main extends oxAdminDetails
             // generating category tree for select list
             // A. hack - passing language by post as lists uses only language passed by POST/GET/SESSION
             $_POST["language"] = $this->_iEditLang;
-            $sChosenArtCat = $this->_getCategoryTree( "artcattree", $sChosenArtCat, $sOxId);
+            $this->_createCategoryTree( "artcattree", $sOxId);
 
             // load object
             $oAttr = oxNew( "oxselectlist" );

@@ -86,7 +86,8 @@ class Newsletter_Send extends Newsletter_Selection
                from oxnewssubscribed left join oxobject2group on
                oxobject2group.oxobjectid = oxnewssubscribed.oxuserid where
                ( oxobject2group.oxshopid = '{$sShopId}' or oxobject2group.oxshopid is null ) and
-               $sQGroups and oxnewssubscribed.oxdboptin = 1 group by oxnewssubscribed.oxemail";
+               $sQGroups and oxnewssubscribed.oxdboptin = 1 and oxnewssubscribed.oxshopid = '{$sShopId}'
+               group by oxnewssubscribed.oxemail";
 
         $oRs = $oDB->selectLimit( $sQ, 100, $iStart );
         $blContinue = ( $oRs != false && $oRs->recordCount() > 0 );

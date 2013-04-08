@@ -38,18 +38,18 @@ class Attribute_Main extends oxAdminDetails
      * @return string
      */
     public function render()
-    {   $myConfig = $this->getConfig();
-
+    {
         parent::render();
+
+        $myConfig = $this->getConfig();
+
         $oAttr = oxNew( "oxattribute" );
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
-        $sArticleTable = getViewName('oxarticles');
 
         // copy this tree for our article choose
-        $sChosenArtCat = oxConfig::getParameter( "artcat");
         if ( $soxId != "-1" && isset( $soxId)) {
             // generating category tree for select list
-            $sChosenArtCat = $this->_getCategoryTree( "artcattree", $sChosenArtCat, $soxId);
+            $this->_createCategoryTree( "artcattree", $soxId);
             // load object
             $oAttr->loadInLang( $this->_iEditLang, $soxId );
 
@@ -75,7 +75,7 @@ class Attribute_Main extends oxAdminDetails
 
         $this->_aViewData["edit"] =  $oAttr;
 
-        if ( oxConfig::getParameter("aoc") ) {
+        if ( $myConfig->getRequestParameter("aoc") ) {
             $oAttributeMainAjax = oxNew( 'attribute_main_ajax' );
             $this->_aViewData['oxajax'] = $oAttributeMainAjax->getColumns();
 

@@ -7,7 +7,7 @@
         <li>
           <dl>
                 <dt>
-                    <strong>[{ $oOrderArticle.oxarticletitle }] - [{ oxmultilang ident="ORDER_NUMBER" }]: [{ $oOrderArticle.oxordernr }], [{ $oOrderArticle.oxorderdate|date_format:"%d.%m.%Y"}]</strong>
+                    <strong>[{ $oOrderArticle.oxarticletitle }] - [{ oxmultilang ident="ORDER_NUMBER" suffix="COLON" }] [{ $oOrderArticle.oxordernr }], [{ $oOrderArticle.oxorderdate|date_format:"%d.%m.%Y"}]</strong>
                 </dt>
                 [{foreach from=$oOrderArticle.oxorderfiles item="oOrderFile"}]
                 <dd>

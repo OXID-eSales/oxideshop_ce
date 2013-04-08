@@ -5,14 +5,14 @@
 [{include file="email/html/header.tpl" title=$shop->oxshops__oxname->value}]
 
     <h3 style="font-weight: bold; margin: 20px 0 7px; padding: 0; line-height: 35px; font-size: 12px;font-family: Arial, Helvetica, sans-serif; text-transform: uppercase; border-bottom: 4px solid #ddd;">
-        [{ oxmultilang ident="EMAIL_SUGGEST_HTML_POSTCARDFROM" }]
+        [{ oxmultilang ident="POST_CARD_FROM" }]
     </h3>
 
     <table border="0" width="100%"cellspacing="10" cellpadding="0">
         <tr>
             <td width="10%" style="padding: 5px; border-bottom: 1px solid #ddd;">
                 <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                    <b>[{ oxmultilang ident="EMAIL_SUGGEST_HTML_FROM" }]</b>
+                    <b>[{ oxmultilang ident="FROM" suffix="COLON" }]</b>
                 </p>
             </td>
             <td>
@@ -24,7 +24,7 @@
         <tr>
             <td width="10%" style="padding: 5px; border-bottom: 1px solid #ddd;">
                 <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                    <b>[{ oxmultilang ident="EMAIL_SUGGEST_HTML_EMAIL" }]</b>
+                    <b>[{ oxmultilang ident="EMAIL" suffix="COLON" }]</b>
                 </p>
             </td>
             <td>
@@ -36,7 +36,7 @@
         <tr>
             <td width="10%" style="padding: 5px; border-bottom: 1px solid #ddd;">
                 <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                    <b>[{ oxmultilang ident="EMAIL_SUGGEST_HTML_TO" }]</b>
+                    <b>[{ oxmultilang ident="TO" suffix="COLON" }]</b>
                 </p>
             </td>
             <td>
@@ -48,7 +48,7 @@
         <tr>
             <td width="10%" style="padding: 5px; border-bottom: 1px solid #ddd;">
                 <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                    <b>[{ oxmultilang ident="EMAIL_SUGGEST_HTML_EMAIL2" }]</b>
+                    <b>[{ oxmultilang ident="EMAIL" suffix="COLON" }]</b>
                 </p>
             </td>
             <td>
@@ -67,7 +67,7 @@
     </table>
 
     <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px;">
-        [{ oxmultilang ident="EMAIL_SUGGEST_HTML_MENYGREETINGS" }] [{$userInfo->send_name|oxescape}]
+        [{ oxmultilang ident="MANY_GREETINGS" }] [{$userInfo->send_name|oxescape}]
     </p>
 
     <br>

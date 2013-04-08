@@ -1,5 +1,3 @@
-[{if $oxcmp_basket->getProductsCount() && $_newitem}]
 [{oxhasrights ident="TOBASKET"}]
-    <span id="newItemMsg">[{ oxmultilang ident="WIDGET_NEWBASKETITEMMSG" }]</span>
+    <span id="newItemMsg">[{ oxmultilang ident="NEW_BASKET_ITEM_MSG" }]</span>
 [{/oxhasrights}]
-[{/if}]

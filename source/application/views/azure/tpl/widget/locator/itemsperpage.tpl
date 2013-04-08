@@ -3,12 +3,12 @@
 [{oxscript add="$('div.dropDown p').oxDropDown();"}]
 <div class="dropDown js-fnLink" id="itemsPerPage">
     <p>
-        <label>[{oxmultilang ident="WIDGET_PRODUCT_LOCATOR_ARTICLE_PER_PAGE"}]</label>
+        <label>[{oxmultilang ident="PRODUCTS_PER_PAGE" suffix="COLON" }]</label>
         <span>
             [{if $oViewConf->getArtPerPageCount() }]
                 [{ $oViewConf->getArtPerPageCount() }]
             [{else}]
-                [{oxmultilang ident="WIDGET_LOCATOR_CHOOSE"}]
+                [{oxmultilang ident="CHOOSE"}]
             [{/if}]
         </span>
     </p>

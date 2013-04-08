@@ -323,7 +323,7 @@ div.sidebarRight #sidebar {
 .specBox h3{
     background: #389cb4 url(../bg/svg/grad_blue.svg);
     background: -moz-linear-gradient(#adefff, #389cb4, #18778e);
-    background: -ms-linear-gradient(#defff, #389cb4, #18778e);
+    background: -ms-linear-gradient(#adefff, #389cb4, #18778e);
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #adefff), color-stop(50%, #389cb4), color-stop(100%, #18778e));
     background: -webkit-linear-gradient(#adefff, #389cb4, #18778e);
     background: -o-linear-gradient(#adefff, #389cb4, #18778e);
@@ -1456,8 +1456,8 @@ a.submitButton {
     text-transform: uppercase;
     font-size: 10px;
     font-weight: 700;
+    line-height: 15px;
     padding: 0 11px 0 10px;
-    line-height:14px;
     list-style: none;
     background: url(../../img/menu-divider.png) no-repeat 100% 2px;
 }
@@ -1846,7 +1846,11 @@ div.searchBox input.textbox:focus {
     padding: 0;
 }
 
-#footer dl dt {color:#29373C; padding:2px 20px;}
+#footer dl dt {
+    color:#29373C;
+    padding:2px 20px;
+    text-transform: uppercase;
+}
 
 #footer .list a  { line-height: 100%; display:block; padding:4px 20px; color: #29373c; text-shadow: 0px 1px 2px #fff;}
 #footer .list a:hover  {
@@ -2639,7 +2643,7 @@ a.compare.remove {display:none}
 #sidebar .tree li.exp>a {
     background: #18778e url(../bg/svg/grad_blue.svg);
     background: -moz-linear-gradient(#adefff, #389cb4, #18778e);
-    background: -ms-linear-gradient(#defff, #389cb4, #18778e);
+    background: -ms-linear-gradient(#adefff, #389cb4, #18778e);
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #adefff), color-stop(50%, #389cb4), color-stop(100%, #18778e));
     background: -webkit-linear-gradient(#adefff, #389cb4, #18778e);
     background: -o-linear-gradient(#adefff, #389cb4, #18778e);
@@ -2756,6 +2760,7 @@ a.compare.remove {display:none}
     background-image: none;
     text-align: center;
     padding: 5px 10px;
+    text-transform: uppercase;
 }
 
 .bottomParams a.prev,
@@ -3965,6 +3970,10 @@ dl.review .param {
     width: 190px;
 }
 
+.form select[data-fieldsize="normal"] {
+	width: 202px;
+}
+
 .form input[data-fieldsize="xsmall"] {
     width: 25px;
 }
@@ -4217,6 +4226,11 @@ label.innerLabel.textArea{
 }
 
 #promotionSlider {
+    height: 220px;
+}
+
+#promotionSlider img {
+    width: 940px;
     height: 220px;
 }
 

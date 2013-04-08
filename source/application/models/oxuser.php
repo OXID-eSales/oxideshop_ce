@@ -519,7 +519,7 @@ class oxUser extends oxBase
         //add registered remark
         if ( $blAddRemark && $blRet ) {
             $oRemark = oxNew( 'oxremark' );
-            $oRemark->oxremark__oxtext     = new oxField(oxRegistry::getLang()->translateString( 'usrRegistered' ), oxField::T_RAW);
+            $oRemark->oxremark__oxtext     = new oxField(oxRegistry::getLang()->translateString( 'usrRegistered', null, true ), oxField::T_RAW);
             $oRemark->oxremark__oxtype     = new oxField('r', oxField::T_RAW);
             $oRemark->oxremark__oxparentid = new oxField($this->getId(), oxField::T_RAW);
             $oRemark->save();
@@ -827,7 +827,7 @@ class oxUser extends oxBase
             if ( $oDb->getOne( $sQ, false, false ) ) {
                 $oEx = oxNew( 'oxUserException' );
                 $oLang = oxRegistry::getLang();
-                $oEx->setMessage( sprintf( $oLang->translateString( 'EXCEPTION_USER_USEREXISTS', $oLang->getTplLanguage() ), $this->oxuser__oxusername->value ) );
+                $oEx->setMessage( sprintf( $oLang->translateString( 'ERROR_MESSAGE_USER_USEREXISTS', $oLang->getTplLanguage() ), $this->oxuser__oxusername->value ) );
                 throw $oEx;
             }
         }
@@ -1306,7 +1306,7 @@ class oxUser extends oxBase
                 $sSelect = "select $sWhat from oxuser where oxrights = 'malladmin' ";
             } elseif ( $blDemoMode ) {
                 $oEx = oxNew( 'oxUserException' );
-                $oEx->setMessage( 'EXCEPTION_USER_NOVALIDLOGIN' );
+                $oEx->setMessage( 'ERROR_MESSAGE_USER_NOVALIDLOGIN' );
                 throw $oEx;
             }
         }
@@ -1371,7 +1371,7 @@ class oxUser extends oxBase
     {
         if ( $this->isAdmin() && !count( oxRegistry::get("oxUtilsServer")->getOxCookie() ) ) {
             $oEx = oxNew( 'oxCookieException' );
-            $oEx->setMessage( 'EXCEPTION_COOKIE_NOCOOKIE' );
+            $oEx->setMessage( 'ERROR_MESSAGE_COOKIE_NOCOOKIE' );
             throw $oEx;
         }
 
@@ -1388,7 +1388,7 @@ class oxUser extends oxBase
 
                 if ( !$this->load( $sOXID ) ) {
                     $oEx = oxNew( 'oxUserException' );
-                    $oEx->setMessage( 'EXCEPTION_USER_NOVALIDLOGIN' );
+                    $oEx->setMessage( 'ERROR_MESSAGE_USER_NOVALIDLOGIN' );
                     throw $oEx;
                 }
             }
@@ -1416,7 +1416,7 @@ class oxUser extends oxBase
             return true;
         } else {
             $oEx = oxNew( 'oxUserException' );
-            $oEx->setMessage( 'EXCEPTION_USER_NOVALIDLOGIN' );
+            $oEx->setMessage( 'ERROR_MESSAGE_USER_NOVALIDLOGIN' );
             throw $oEx;
         }
     }

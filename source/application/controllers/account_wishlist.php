@@ -221,7 +221,7 @@ class Account_Wishlist extends Account
 
             if ( !isset( $aParams['rec_name'] ) || !isset( $aParams['rec_email'] ) ||
                  !$aParams['rec_name'] || !$aParams['rec_email'] ) {
-                return oxRegistry::get("oxUtilsView")->addErrorToDisplay( 'FORM_WISHLIST_SUGGEST_ERRCOMLETEFIELDSCORRECTLY', false, true );
+                return oxRegistry::get("oxUtilsView")->addErrorToDisplay( 'ERROR_MESSAGE_COMPLETE_FIELDS_CORRECTLY', false, true );
             } else {
 
                 if ( $oUser = $this->getUser() ) {
@@ -231,7 +231,7 @@ class Account_Wishlist extends Account
 
                     $this->_blEmailSent = oxNew( 'oxemail' )->sendWishlistMail( $oParams );
                     if ( !$this->_blEmailSent ) {
-                        return oxRegistry::get("oxUtilsView")->addErrorToDisplay( 'FORM_WISHLIST_SUGGEST_ERRWRONGEMAIL', false, true );
+                        return oxRegistry::get("oxUtilsView")->addErrorToDisplay( 'ERROR_MESSAGE_CHECK_EMAIL', false, true );
                     }
                 }
             }
@@ -339,11 +339,11 @@ class Account_Wishlist extends Account
         $aPaths = array();
         $aPath = array();
 
-        $aPath['title'] = oxRegistry::getLang()->translateString( 'PAGE_ACCOUNT_MY_ACCOUNT', oxRegistry::getLang()->getBaseLanguage(), false );
+        $aPath['title'] = oxRegistry::getLang()->translateString( 'MY_ACCOUNT', oxRegistry::getLang()->getBaseLanguage(), false );
         $aPath['link']  = oxRegistry::get("oxSeoEncoder")->getStaticUrl( $this->getViewConfig()->getSelfLink() . 'cl=account' );
         $aPaths[] = $aPath;
 
-        $aPath['title'] = oxRegistry::getLang()->translateString( 'PAGE_ACCOUNT_WISHLIST_TITLE', oxRegistry::getLang()->getBaseLanguage(), false );
+        $aPath['title'] = oxRegistry::getLang()->translateString( 'MY_GIFT_REGISTRY', oxRegistry::getLang()->getBaseLanguage(), false );
         $aPath['link']  = $this->getLink();
         $aPaths[] = $aPath;
 

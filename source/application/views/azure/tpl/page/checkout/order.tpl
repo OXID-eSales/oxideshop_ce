@@ -2,7 +2,7 @@
 
     [{block name="checkout_order_errors"}]
         [{ if $oView->isConfirmAGBActive() && $oView->isConfirmAGBError() == 1 }]
-            [{include file="message/error.tpl" statusMessage="PAGE_CHECKOUT_ORDER_READANDCONFIRMTERMS"|oxmultilangassign }]
+            [{include file="message/error.tpl" statusMessage="READ_AND_CONFIRM_TERMS"|oxmultilangassign }]
         [{/if}]
         [{assign var="iError" value=$oView->getAddressError() }]
         [{ if $iError == 1}]
@@ -17,14 +17,14 @@
         [{if !$oView->showOrderButtonOnTop()}]
             <div class="lineBox clear">
                 <span>&nbsp;</span>
-                <span class="title">[{ oxmultilang ident="PAGE_CHECKOUT_ORDER_TITLE2" }]</span>
+                <span class="title">[{ oxmultilang ident="MESSAGE_SUBMIT_BOTTOM" }]</span>
             </div>
         [{/if}]
 
         [{block name="checkout_order_details"}]
             [{ if !$oxcmp_basket->getProductsCount()  }]
                 [{block name="checkout_order_emptyshippingcart"}]
-                <div class="status corners error">[{ oxmultilang ident="PAGE_CHECKOUT_ORDER_BASKETEMPTY" }]</div>
+                <div class="status corners error">[{ oxmultilang ident="BASKET_EMPTY" }]</div>
                 [{/block}]
             [{else}]
                 [{assign var="currency" value=$oView->getActCurrency() }]
@@ -72,8 +72,8 @@
 
                             [{if $oView->showOrderButtonOnTop()}]
                                 <div class="lineBox clear">
-                                    <a href="[{ oxgetseourl ident=$oViewConf->getPaymentLink() }]" class="prevStep submitButton largeButton">[{ oxmultilang ident="PAGE_CHECKOUT_ORDER_BACKSTEP" }]</a>
-                                    <button type="submit" class="submitButton nextStep largeButton">[{ oxmultilang ident="PAGE_CHECKOUT_ORDER_SUBMITORDER" }]</button>
+                                    <a href="[{ oxgetseourl ident=$oViewConf->getPaymentLink() }]" class="prevStep submitButton largeButton">[{ oxmultilang ident="PREVIOUS_STEP" }]</a>
+                                    <button type="submit" class="submitButton nextStep largeButton">[{ oxmultilang ident="SUBMIT_ORDER" }]</button>
                                 </div>
                             [{/if}]
                         </form>
@@ -82,12 +82,12 @@
 
                 [{block name="checkout_order_vouchers"}]
                     [{ if $oViewConf->getShowVouchers() && $oxcmp_basket->getVouchers()}]
-                        [{ oxmultilang ident="PAGE_CHECKOUT_ORDER_USEDCOUPONS" }]
+                        [{ oxmultilang ident="USED_COUPONS" }]
                         <div>
                             [{foreach from=$Errors.basket item=oEr key=key }]
                                 [{if $oEr->getErrorClassType() == 'oxVoucherException'}]
-                                    [{ oxmultilang ident="PAGE_CHECKOUT_ORDER_COUPONNOTACCEPTED1" }] [{ $oEr->getValue('voucherNr') }] [{ oxmultilang ident="PAGE_CHECKOUT_ORDER_COUPONNOTACCEPTED2" }]<br>
-                                    [{ oxmultilang ident="PAGE_CHECKOUT_ORDER_REASON" }]
+                                    [{ oxmultilang ident="COUPON_NOT_ACCEPTED" args=$oEr->getValue('voucherNr') }]<br>
+                                    [{ oxmultilang ident="REASON" suffix="COLON" }]
                                     [{ $oEr->getOxMessage() }]<br>
                                 [{/if}]
                             [{/foreach}]
@@ -102,15 +102,15 @@
                     <div id="orderAddress">
                         <form action="[{ $oViewConf->getSslSelfLink() }]" method="post">
                             <h3 class="section">
-                            <strong>[{ oxmultilang ident="PAGE_CHECKOUT_ORDER_ADDRESSES" }]</strong>
+                            <strong>[{ oxmultilang ident="ADDRESSES" }]</strong>
                             [{ $oViewConf->getHiddenSid() }]
                             <input type="hidden" name="cl" value="user">
                             <input type="hidden" name="fnc" value="">
-                            <button type="submit" class="submitButton largeButton">[{ oxmultilang ident="PAGE_CHECKOUT_ORDER_MODIFYADDRESS" }]</button>
+                            <button type="submit" class="submitButton largeButton">[{ oxmultilang ident="EDIT" }]</button>
                             </h3>
                         </form>
                         <dl>
-                            <dt>[{ oxmultilang ident="PAGE_CHECKOUT_ORDER_BILLINGADDRESS" }]</dt>
+                            <dt>[{ oxmultilang ident="BILLING_ADDRESS" }]</dt>
                             <dd>
                                 [{include file="widget/address/billing_address.tpl"}]
                             </dd>
@@ -118,7 +118,7 @@
                         [{assign var="oDelAdress" value=$oView->getDelAddress() }]
                         [{if $oDelAdress }]
                         <dl class="shippingAddress">
-                            <dt>[{ oxmultilang ident="PAGE_CHECKOUT_ORDER_SHIPPINGADDRESS" }]</dt>
+                            <dt>[{ oxmultilang ident="SHIPPING_ADDRESS" }]</dt>
                             <dd>
                                 [{include file="widget/address/shipping_address.tpl" delivadr=$oDelAdress}]
                             </dd>
@@ -127,7 +127,7 @@
 
                         [{if $oView->getOrderRemark() }]
                             <dl class="orderRemarks">
-                                <dt>[{ oxmultilang ident="PAGE_CHECKOUT_ORDER_WHATIWANTEDTOSAY" }]</dt>
+                                <dt>[{ oxmultilang ident="WHAT_I_WANTED_TO_SAY" }]</dt>
                                 <dd>
                                     [{ $oView->getOrderRemark() }]
                                 </dd>
@@ -141,11 +141,11 @@
                     <div id="orderShipping">
                     <form action="[{ $oViewConf->getSslSelfLink() }]" method="post">
                         <h3 class="section">
-                            <strong>[{ oxmultilang ident="PAGE_CHECKOUT_ORDER_SHIPPINGCARRIER" }]</strong>
+                            <strong>[{ oxmultilang ident="SHIPPING_CARRIER" }]</strong>
                             [{ $oViewConf->getHiddenSid() }]
                             <input type="hidden" name="cl" value="payment">
                             <input type="hidden" name="fnc" value="">
-                            <button type="submit" class="submitButton largeButton">[{ oxmultilang ident="PAGE_CHECKOUT_ORDER_MODIFY2" }]</button>
+                            <button type="submit" class="submitButton largeButton">[{ oxmultilang ident="EDIT" }]</button>
                         </h3>
                     </form>
                     [{assign var="oShipSet" value=$oView->getShipSet() }]
@@ -155,11 +155,11 @@
                     <div id="orderPayment">
                         <form action="[{ $oViewConf->getSslSelfLink() }]" method="post">
                             <h3 class="section">
-                                <strong>[{ oxmultilang ident="PAGE_CHECKOUT_ORDER_PAYMENTMETHOD" }]</strong>
+                                <strong>[{ oxmultilang ident="PAYMENT_METHOD" }]</strong>
                                 [{ $oViewConf->getHiddenSid() }]
                                 <input type="hidden" name="cl" value="payment">
                                 <input type="hidden" name="fnc" value="">
-                                <button type="submit" class="submitButton largeButton">[{ oxmultilang ident="PAGE_CHECKOUT_ORDER_MODIFY3" }]</button>
+                                <button type="submit" class="submitButton largeButton">[{ oxmultilang ident="EDIT" }]</button>
                             </h3>
                         </form>
                         [{assign var="payment" value=$oView->getPayment() }]
@@ -170,11 +170,11 @@
                 <div id="orderEditCart">
                     <form action="[{ $oViewConf->getSslSelfLink() }]" method="post">
                         <h3 class="section">
-                            <strong>[{ oxmultilang ident="PAGE_CHECKOUT_ORDER_BASKET" }]</strong>
+                            <strong>[{ oxmultilang ident="CART" }]</strong>
                             [{ $oViewConf->getHiddenSid() }]
                             <input type="hidden" name="cl" value="basket">
                             <input type="hidden" name="fnc" value="">
-                            <button type="submit" class="submitButton largeButton">[{ oxmultilang ident="PAGE_CHECKOUT_ORDER_MODIFY4" }]</button>
+                            <button type="submit" class="submitButton largeButton">[{ oxmultilang ident="EDIT" }]</button>
                         </h3>
                     </form>
                 </div>
@@ -212,8 +212,8 @@
                             </div>
 
                             <div class="lineBox clear">
-                                <a href="[{ oxgetseourl ident=$oViewConf->getPaymentLink() }]" class="prevStep submitButton largeButton">[{ oxmultilang ident="PAGE_CHECKOUT_ORDER_BACKSTEP" }]</a>
-                                <button type="submit" class="submitButton nextStep largeButton">[{ oxmultilang ident="PAGE_CHECKOUT_ORDER_SUBMITORDER" }]</button>
+                                <a href="[{ oxgetseourl ident=$oViewConf->getPaymentLink() }]" class="prevStep submitButton largeButton">[{ oxmultilang ident="PREVIOUS_STEP" }]</a>
+                                <button type="submit" class="submitButton nextStep largeButton">[{ oxmultilang ident="SUBMIT_ORDER" }]</button>
                             </div>
                         </form>
                     [{/block}]
@@ -224,5 +224,5 @@
     [{insert name="oxid_tracker" title=$template_title }]
 [{/capture}]
 
-[{assign var="template_title" value="PAGE_CHECKOUT_ORDER_TITLE"|oxmultilangassign}]
+[{assign var="template_title" value="REVIEW_YOUR_ORDER"|oxmultilangassign}]
 [{include file="layout/page.tpl" title=$template_title location=$template_title}]

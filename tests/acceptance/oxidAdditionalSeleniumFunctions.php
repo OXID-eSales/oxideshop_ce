@@ -63,6 +63,8 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
             $this->setBrowser(browserName);
             $this->setBrowserUrl(shopURL);
 
+            $this->setTimeout(90000);
+
         } catch (Exception $e) {
             $this->stopTesting("Failed preparing testing environment! Reason: ".$e->getMessage());
         }

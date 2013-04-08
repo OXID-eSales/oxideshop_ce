@@ -5,11 +5,11 @@
     [{if $oView->displayInBox() }]
         [{* Display tags in separate box *}]
         <div id="tagBox" class="box tagCloud">
-            <h3>[{ oxmultilang ident="WIDGET_TAGS_HEADER" }]</h3>
+            <h3>[{ oxmultilang ident="TAGS" }]</h3>
             <div class="content">
     [{else}]
         <div class="categoryTagsBox">
-            <h3>[{ oxmultilang ident="WIDGET_TAGS_HEADER" }]</h3>
+            <h3>[{ oxmultilang ident="TAGS" }]</h3>
             <div class="categoryTags">
     [{/if}]
     [{foreach from=$oTagsManager->getCloudArray() item=iCount key=sTagTitle }]
@@ -17,7 +17,7 @@
     [{/foreach}]
     [{if $oView->isMoreTagsVisible()}]
         <br>
-        <a href="[{ oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=tags" }]" class="readMore">[{ oxmultilang ident="WIDGET_TAGS_LINKMORE" }]</a>
+        <a href="[{ oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=tags" }]" class="readMore">[{ oxmultilang ident="MORE" suffix="ELLIPSIS" }]</a>
     [{/if}]
         </div>
     </div>

@@ -105,11 +105,11 @@ class Newsletter extends oxUBase
         $this->_aRegParams = $aParams;
 
         if ( !$aParams['oxuser__oxusername'] ) {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay('NEWSLETTER_COMPLETEALLFIELEDS');
+            oxRegistry::get("oxUtilsView")->addErrorToDisplay('ERROR_MESSAGE_COMPLETE_FIELDS_CORRECTLY');
             return;
         } elseif ( !oxRegistry::getUtils()->isValidEmail( $aParams['oxuser__oxusername'] ) ) {
             // #1052C - eMail validation added
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay('NEWSLETTER_INVALIDEMAIL');
+            oxRegistry::get("oxUtilsView")->addErrorToDisplay('MESSAGE_INVALID_EMAIL');
             return;
         }
 
@@ -160,7 +160,7 @@ class Newsletter extends oxUBase
                     $this->_iNewsletterStatus = 2;
                 }
             } else {
-                oxRegistry::get("oxUtilsView")->addErrorToDisplay('NEWSLETTER_NOTABLETOSENDEMAIL');
+                oxRegistry::get("oxUtilsView")->addErrorToDisplay('MESSAGE_NOT_ABLE_TO_SEND_EMAIL');
             }
         } elseif ( !$blSubscribe && $blUserLoaded ) {
             // unsubscribing user
@@ -306,7 +306,7 @@ class Newsletter extends oxUBase
     {
         $aPaths = array();
         $aPath  = array();
-        $aPath['title'] = oxRegistry::getLang()->translateString( 'PAGE_INFO_NEWSLETTER_STAYINFORMED', oxRegistry::getLang()->getBaseLanguage(), false );
+        $aPath['title'] = oxRegistry::getLang()->translateString( 'STAY_INFORMED', oxRegistry::getLang()->getBaseLanguage(), false );
         $aPath['link']  = $this->getLink();
 
         $aPaths[] = $aPath;

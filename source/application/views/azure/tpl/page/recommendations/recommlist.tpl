@@ -2,7 +2,7 @@
 [{capture append="oxidBlock_content"}]
     [{if $oView->getActiveRecommList() }]
         [{assign var="_actvrecommlist" value=$oView->getActiveRecommList() }]
-        [{assign var="recommendation_head" value="PAGE_RECOMMENDATIONS_PRODUCTS_LISTBY"|oxmultilangassign}]
+        [{assign var="recommendation_head" value="LIST_BY"|oxmultilangassign}]
         [{assign var="recommendation_head" value=$_actvrecommlist->oxrecommlists__oxtitle->value|cat:" <span>("|cat:$recommendation_head|cat:" "|cat:$_actvrecommlist->oxrecommlists__oxauthor->value|cat:")</span>"}]
         [{assign var="rsslinks" value=$oView->getRssLinks() }]
         <h1 class="pageHead">[{$recommendation_head}]
@@ -40,13 +40,13 @@
         [{include file="widget/locator/listlocator.tpl" locator=$oView->getPageNavigation() place="bottom"}]
         [{if $oView->isReviewActive()}]
         <div class="widgetBox reviews">
-            <h4>[{oxmultilang ident="DETAILS_PRODUCTREVIEW"}]</h4>
+            <h4>[{oxmultilang ident="WRITE_PRODUCT_REVIEW"}]</h4>
             [{include file="widget/reviews/reviews.tpl"}]
         </div>
         [{/if}]
     [{else}]
 
-        [{assign var="hitsfor" value="PAGE_RECOMMENDATIONS_PRODUCTS_HITSFOR"|oxmultilangassign }]
+        [{assign var="hitsfor" value="HITS_FOR"|oxmultilangassign }]
         [{assign var="recommendation_head" value=$oView->getArticleCount()|cat:" "|cat:$hitsfor|cat:" &quot;"|cat:$oView->getSearchForHtml()|cat:"&quot;" }]
 
         <h1 class="pageHead">[{$recommendation_head}]</h1>

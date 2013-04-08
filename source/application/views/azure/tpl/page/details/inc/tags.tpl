@@ -9,7 +9,7 @@
     <p class="tagCloud">
         [{assign var="oCloudManager" value=$oView->getTagCloudManager()}]
         [{if $oCloudManager->getCloudArray()|count < 0}]
-            [{oxmultilang ident="PAGE_DETAILS_TAGS_NOTAGS"}]
+            [{oxmultilang ident="NO_TAGS"}]
         [{/if}]
         [{foreach from=$oCloudManager->getCloudArray() item=iCount key=sTagTitle}]
             <a class="tagitem_[{$oCloudManager->getTagSize($sTagTitle)}]" href="[{$oCloudManager->getTagLink($sTagTitle)}]">[{$oCloudManager->getTagTitle($sTagTitle)}]</a>
@@ -24,7 +24,7 @@
           <input type="hidden" name="aid" value="[{$oDetailsProduct->oxarticles__oxid->value}]">
           <input type="hidden" name="anid" value="[{$oDetailsProduct->oxarticles__oxnid->value}]">
           <input type="hidden" name="fnc" value="editTags">
-          <button class="submitButton" id="editTag" type="submit">[{oxmultilang ident="PAGE_DETAILS_TAGS_EDIT"}]</button>
+          <button class="submitButton" id="editTag" type="submit">[{oxmultilang ident="EDIT_TAGS"}]</button>
         </div>
       </form>
     [{/if}]

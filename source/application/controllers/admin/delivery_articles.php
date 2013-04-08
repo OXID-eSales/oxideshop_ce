@@ -45,10 +45,9 @@ class Delivery_Articles extends oxAdminDetails
         parent::render();
 
         $soxId = $this->getEditObjectId();
-        $sChosenArtCat2 = oxConfig::getParameter( "artcat2");
 
         if ( $soxId != "-1" && isset( $soxId)) {
-            $sChosenArtCat2 = $this->_getCategoryTree( "artcattree", $sChosenArtCat2);
+            $this->_createCategoryTree( "artcattree");
 
             // load object
             $oDelivery = oxNew( "oxdelivery" );

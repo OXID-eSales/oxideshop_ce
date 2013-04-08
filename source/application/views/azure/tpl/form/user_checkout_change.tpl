@@ -13,8 +13,8 @@
         <input type="hidden" name="blshowshipaddress" value="1">
 
         <div class="lineBox clear">
-            <a href="[{ oxgetseourl ident=$oViewConf->getBasketLink() }]" class="prevStep submitButton largeButton" id="userBackStepTop">[{ oxmultilang ident="FORM_USER_CHECKOUT_CHANGE_BACKSTEP" }]</a>
-            <button id="userNextStepTop" class="submitButton largeButton nextStep" name="userform" type="submit">[{ oxmultilang ident="FORM_USER_CHECKOUT_CHANGE_NEXTSTEP" }]</button>
+            <a href="[{ oxgetseourl ident=$oViewConf->getBasketLink() }]" class="prevStep submitButton largeButton" id="userBackStepTop">[{ oxmultilang ident="PREVIOUS_STEP" }]</a>
+            <button id="userNextStepTop" class="submitButton largeButton nextStep" name="userform" type="submit">[{ oxmultilang ident="CONTINUE_TO_NEXT_STEP" }]</button>
         </div>
 
         <div class="checkoutCollumns clear">
@@ -22,10 +22,14 @@
                 [{block name="user_checkout_billing"}]
                     [{block name="user_checkout_billing_head"}]
                         <h3 class="blockHead">
-                            [{oxmultilang ident="FORM_REGISTER_BILLINGADDRESS" }]
-                            <button id="userChangeAddress" class="submitButton largeButton" name="changeBillAddress" type="submit">[{oxmultilang ident="PAGE_CHECKOUT_BASKET_CHANGE" }]</button>
+                            [{oxmultilang ident="BILLING_ADDRESS" }]
+                            <button id="userChangeAddress" class="submitButton largeButton" name="changeBillAddress" type="submit">[{oxmultilang ident="CHANGE" }]</button>
                         </h3>
                         [{oxscript add="$('#userChangeAddress').click( function() { $('#addressForm').show();$('#addressText').hide();$('#userChangeAddress').hide();return false;});"}]
+                        [{oxscript add="$('#userChangeAddress').click( function() { $('#addressForm').show();$('#addressText').hide();$('#userChangeAddress').hide();return false;});"}]
+                        [{if $aErrors}]
+                            [{oxscript add="$(document).ready(function(){ $('#userChangeAddress').trigger('click');});"}]
+                        [{/if}]
                     [{/block}]
                     [{block name="user_checkout_billing_form"}]
                         <ul class="form" style="display: none;" id="addressForm">
@@ -44,15 +48,14 @@
             <div class="collumn">
                 [{block name="user_checkout_shipping"}]
                     [{block name="user_checkout_shipping_head"}]
-                        <h3 class="blockHead">[{ oxmultilang ident="FORM_REGISTER_SHIPPINGADDRESS" }]
-                            [{if $oView->showShipAddress() and $oxcmp_user->getSelectedAddress()}]
-                                <button id="userChangeShippingAddress" class="submitButton largeButton" name="changeShippingAddress" type="submit" [{if !$oView->showShipAddress() and $oxcmp_user->getSelectedAddress()}] style="display: none;" [{/if}]>[{ oxmultilang ident="PAGE_CHECKOUT_BASKET_CHANGE" }]</button>
-                            [{/if}]
+                        <h3 class="blockHead">[{ oxmultilang ident="SHIPPING_ADDRESS" }]
+                            <button id="userChangeShippingAddress" class="submitButton largeButton" name="changeShippingAddress" type="submit" [{if !$oView->showShipAddress() or !$oxcmp_user->getSelectedAddress()}] style="display: none;" [{/if}]>[{ oxmultilang ident="CHANGE" }]</button>
                         </h3>
-                        [{oxscript add="$('#userChangeShippingAddress').toggle($(this).is(':not(:checked)'));"}]
+                        [{oxscript add="$('#showShipAddress').change(function() { $('#userChangeShippingAddress').toggle($(this).is(':not(:checked)') && $('#addressId').val() != -1 ); }); "}]
+                        [{oxscript add="$('#addressId').change(function() { $('#userChangeShippingAddress').toggle($('#addressId').val() != -1 ); }); "}]
                     [{/block}]
                     [{block name="user_checkout_shipping_change"}]
-                        <p><input type="checkbox" name="blshowshipaddress" id="showShipAddress" [{if !$oView->showShipAddress()}]checked[{/if}] value="0"><label for="showShipAddress">[{ oxmultilang ident="FORM_REGISTER_USE_BILLINGADDRESS_FOR_SHIPPINGADDRESS" }]</label></p>
+                        <p><input type="checkbox" name="blshowshipaddress" id="showShipAddress" [{if !$oView->showShipAddress()}]checked[{/if}] value="0"><label for="showShipAddress">[{ oxmultilang ident="USE_BILLINGADDRESS_FOR_SHIPPINGADDRESS" }]</label></p>
                         [{oxscript add="$('#showShipAddress').change( function() { $('#shippingAddress').toggle($(this).is(':not(:checked)'));});"}]
                     [{/block}]
                     [{block name="user_checkout_shipping_form"}]
@@ -73,8 +76,8 @@
         </div>
 
         <div class="lineBox clear">
-            <a href="[{ oxgetseourl ident=$oViewConf->getBasketLink() }]" class="prevStep submitButton largeButton" id="userBackStepBottom">[{ oxmultilang ident="FORM_USER_CHECKOUT_CHANGE_BACKSTEP" }]</a>
-            <button id="userNextStepBottom" class="submitButton largeButton nextStep" name="userform" type="submit">[{ oxmultilang ident="FORM_USER_CHECKOUT_CHANGE_NEXTSTEP" }]</button>
+            <a href="[{ oxgetseourl ident=$oViewConf->getBasketLink() }]" class="prevStep submitButton largeButton" id="userBackStepBottom">[{ oxmultilang ident="PREVIOUS_STEP" }]</a>
+            <button id="userNextStepBottom" class="submitButton largeButton nextStep" name="userform" type="submit">[{ oxmultilang ident="CONTINUE_TO_NEXT_STEP" }]</button>
         </div>
     [{/block}]
     </form>

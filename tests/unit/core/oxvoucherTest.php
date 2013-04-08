@@ -197,7 +197,7 @@ class Unit_Core_oxvoucherTest extends OxidTestCase
         try {
             $this->assertTrue( $oNewVoucher->checkBasketVoucherAvailability( $aVouchers, 100 ) );
         } catch ( oxVoucherException $oEx ) {
-            $this->assertEquals( 'EXCEPTION_VOUCHER_NOTALLOWEDSAMESERIES', $oEx->getMessage() );
+            $this->assertEquals( 'ERROR_MESSAGE_VOUCHER_NOTALLOWEDSAMESERIES', $oEx->getMessage() );
             return;
         }
         $this->fail( 'error in '.$this->getName() );
@@ -225,7 +225,7 @@ class Unit_Core_oxvoucherTest extends OxidTestCase
         try {
             $this->assertTrue( $oNewVoucher->checkBasketVoucherAvailability( $aVouchers, 100 ) );
         } catch ( oxVoucherException $oEx ) {
-            $this->assertEquals( 'EXCEPTION_VOUCHER_NOTALLOWEDOTHERSERIES', $oEx->getMessage() );
+            $this->assertEquals( 'ERROR_MESSAGE_VOUCHER_NOTALLOWEDOTHERSERIES', $oEx->getMessage() );
             return;
         }
         $this->fail( 'error in '.$this->getName() );
@@ -517,7 +517,7 @@ class Unit_Core_oxvoucherTest extends OxidTestCase
         try {
             $oNewVoucher->checkVoucherAvailability( $aVouchers, $dInitPrice );
         } catch ( oxVoucherException $oEx ) {
-            $this->assertEquals( 'EXCEPTION_VOUCHER_NOTALLOWEDSAMESERIES', $oEx->getMessage() );
+            $this->assertEquals( 'ERROR_MESSAGE_VOUCHER_NOTALLOWEDSAMESERIES', $oEx->getMessage() );
             return ;
         }
         $this->fail();
@@ -538,7 +538,7 @@ class Unit_Core_oxvoucherTest extends OxidTestCase
         try {
             $oNewVoucher->checkVoucherAvailability( $aVouchers, $dInitPrice );
         } catch ( oxVoucherException $oEx ) {
-            $this->assertEquals( 'EXCEPTION_VOUCHER_NOTALLOWEDOTHERSERIES', $oEx->getMessage() );
+            $this->assertEquals( 'ERROR_MESSAGE_VOUCHER_NOTALLOWEDOTHERSERIES', $oEx->getMessage() );
             return;
         }
         $this->fail();
@@ -620,7 +620,7 @@ class Unit_Core_oxvoucherTest extends OxidTestCase
             $sErrorMsg = $oEx->getMessage();
         }
 
-        $this->assertEquals( 'EXCEPTION_VOUCHER_INCORRECTPRICE', $sErrorMsg );
+        $this->assertEquals( 'ERROR_MESSAGE_VOUCHER_INCORRECTPRICE', $sErrorMsg );
     }
 
     /**
@@ -828,10 +828,10 @@ class Unit_Core_oxvoucherTest extends OxidTestCase
         try {
             $oNewVoucher->UNITisValidDate();
         } catch ( oxVoucherException $oException ) {
-            $this->assertEquals( 'EXCEPTION_VOUCHER_ISNOTVALIDDATE', $oException->getMessage() );
+            $this->assertEquals( 'MESSAGE_COUPON_EXPIRED', $oException->getMessage() );
             return;
         }
-        $this->fail( 'Expected EXCEPTION_VOUCHER_ISNOTVALIDDATE' );
+        $this->fail( 'Expected MESSAGE_COUPON_EXPIRED' );
     }
     public function testIsValidDate3_3()
     {
@@ -851,10 +851,10 @@ class Unit_Core_oxvoucherTest extends OxidTestCase
         try {
             $oNewVoucher->UNITisValidDate();
         } catch ( oxVoucherException $oException ) {
-            $this->assertEquals( 'EXCEPTION_VOUCHER_ISNOTVALIDDATE', $oException->getMessage() );
+            $this->assertEquals( 'MESSAGE_COUPON_EXPIRED', $oException->getMessage() );
             return;
         }
-        $this->fail( 'Expected EXCEPTION_VOUCHER_ISNOTVALIDDATE' );
+        $this->fail( 'Expected MESSAGE_COUPON_EXPIRED' );
     }
     public function testIsValidDate4()
     {
@@ -993,7 +993,7 @@ class Unit_Core_oxvoucherTest extends OxidTestCase
         try {
             $oNewVoucher->checkUserAvailability( $oUser );
         } catch ( oxVoucherException $oEx ) {
-            $this->assertEquals( 'EXCEPTION_VOUCHER_NOTVALIDUSERGROUP', $oEx->getMessage() );
+            $this->assertEquals( 'ERROR_MESSAGE_VOUCHER_NOTVALIDUSERGROUP', $oEx->getMessage() );
             return;
         }
         $this->fail();
@@ -1021,7 +1021,7 @@ class Unit_Core_oxvoucherTest extends OxidTestCase
         try {
             $oNewVoucher->checkUserAvailability( $oUser );
         } catch ( oxVoucherException $oEx ) {
-            $this->assertEquals( 'EXCEPTION_VOUCHER_NOTAVAILABLEINOTHERORDER', $oEx->getMessage() );
+            $this->assertEquals( 'ERROR_MESSAGE_VOUCHER_NOTALLOWEDSAMESERIES', $oEx->getMessage() );
             return;
         }
         $this->fail();

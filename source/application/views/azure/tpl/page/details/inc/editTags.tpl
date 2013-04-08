@@ -1,6 +1,6 @@
 [{assign var="oDetailsProduct" value=$oView->getProduct() }]
 [{if $oView->showTags() && $oView->getTagCloudManager() && $oDetailsProduct && $oView->canChangeTags()}]
-    <p>[{oxmultilang ident="PAGE_DETAILS_TAGS_HIGHLIHGT_INSTRUCTIONS"}]</p>
+    <p>[{oxmultilang ident="HIGHLIHGT_TAGS"}]</p>
     <p class="tagCloud">
         [{assign var="oCloudManager" value=$oView->getTagCloudManager()}]
         [{foreach from=$oCloudManager->getCloudArray() item=iCount key=sTagTitle name="taglist"}]
@@ -8,9 +8,10 @@
         [{/foreach}]
     </p>
 
-    <p class="tagError">[{oxmultilang ident="PAGE_DETAILS_TAGS_ALREADYADDEDTAG"}]</p>
+    <p class="tagError inlist" >[{oxmultilang ident="ALREADY_ADDED_TAG" suffix="COLON" }] <span></span></p>
+    <p class="tagError invalid">[{oxmultilang ident="INVALID_TAGS_REMOVED" suffix="COLON" }] <span></span></p>
     <form action="[{$oViewConf->getSelfActionLink()}]#tags" method="post" id="tagsForm" >
-        <div>
+    <div>
         [{$oViewConf->getHiddenSid()}]
         [{$oViewConf->getNavFormParams()}]
         <input type="hidden" name="cl" value="[{$oViewConf->getActiveClassName()}]">
@@ -18,10 +19,10 @@
         <input type="hidden" name="anid" value="[{$oDetailsProduct->oxarticles__oxnid->value}]">
         <input type="hidden" id="tagsInput" name="highTags">
         <input type="hidden" name="fnc" value="addTags">
-        <label for="newTags">[{oxmultilang ident="PAGE_DETAILS_TAGS_ADD"}]</label>
+        <label for="newTags">[{oxmultilang ident="ADD_TAGS" suffix='COLON' }]</label>
         <input class="input" type="text" name="newTags" id="newTags" maxlength="[{$oCloudManager->getTagMaxLength()}]">
-        <button class="submitButton" id="saveTag" type="submit">[{oxmultilang ident="PAGE_DETAILS_TAGS_SUBMIT"}]</button>
-        <button class="submitButton" id="cancelTag" type="submit">[{oxmultilang ident="PAGE_DETAILS_TAGS_CANCEL"}]</button>
+        <button class="submitButton" id="saveTag" type="submit">[{oxmultilang ident="SUBMIT"}]</button>
+        <button class="submitButton" id="cancelTag" type="submit">[{oxmultilang ident="CANCEL"}]</button>
     </div>
 </form>
 [{/if}]

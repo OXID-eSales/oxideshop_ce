@@ -178,7 +178,7 @@ class aList extends oxUBase
         $this->_blIsCat = false;
 
         // A. checking for fake "more" category
-        if ( 'oxmore' == oxConfig::getParameter( 'cnid' ) ) {
+        if ( 'oxmore' == $myConfig->getRequestParameter( 'cnid' ) ) {
             // overriding some standard value and parameters
             $this->_sThisTemplate = $this->_sThisMoreTemplate;
             $oCategory = oxNew( 'oxcategory' );
@@ -733,7 +733,7 @@ class aList extends oxUBase
     public function getTitlePageSuffix()
     {
         if ( ( $iPage = $this->getActPage() ) ) {
-            return oxRegistry::getLang()->translateString( 'INC_HEADER_TITLEPAGE' ). ( $iPage + 1 );
+            return oxRegistry::getLang()->translateString( 'PAGE' )." ". ( $iPage + 1 );
         }
     }
 
@@ -824,7 +824,7 @@ class aList extends oxUBase
     public function getCatTreePath()
     {
         if ( $this->_sCatTreePath === null ) {
-             $this->_sCatTreePath = false;
+            $this->_sCatTreePath = false;
             // category path
             if ( $oCatTree = $this->getCategoryTree() ) {
                 $this->_sCatTreePath = $oCatTree->getPath();
@@ -856,7 +856,7 @@ class aList extends oxUBase
 
         if ( 'oxmore' == oxConfig::getParameter( 'cnid' ) ) {
             $aPath = array();
-            $aPath['title'] = oxRegistry::getLang()->translateString( 'PAGE_PRODUCT_MORECATEGORIES', oxRegistry::getLang()->getBaseLanguage(), false );
+            $aPath['title'] = oxRegistry::getLang()->translateString( 'CATEGORY_OVERVIEW', oxRegistry::getLang()->getBaseLanguage(), false );
             $aPath['link']  = $this->getLink();
 
             $aPaths[] = $aPath;

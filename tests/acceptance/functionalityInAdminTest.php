@@ -960,7 +960,7 @@ class Acceptance_functionalityInAdminTest extends oxidAdditionalSeleniumFunction
         $this->searchFor("1001");
         $this->assertEquals("1 Hits for \"1001\"", $this->getHeadingText("//h1"));
         $this->clickAndWait("searchList_1");
-        $this->assertEquals("Art.No.: 1001", $this->getText("productArtnum"));
+        $this->assertEquals("Art.No. 1001", $this->getText("productArtnum"));
         $this->clickAndWait("link=Home");
         //LT lang
         $this->switchLanguage("Lietuviu");
@@ -1780,14 +1780,14 @@ class Acceptance_functionalityInAdminTest extends oxidAdditionalSeleniumFunction
         $this->openBasket();
         //Display attribute's value for products in checkout
           $this->assertEquals("Harness MADTRIXX", $this->getText("//tr[@id='cartItem_1']/td/div[1]"));
-        $this->assertEquals("Art.No.: 1402", $this->getText("//tr[@id='cartItem_1']/td/div[2]"));
+        $this->assertEquals("Art.No. 1402", $this->getText("//tr[@id='cartItem_1']/td/div[2]"));
         $this->assertEquals("Black", $this->getText("//tr[@id='cartItem_1']/td/div[3]"));
          $this->assertTrue($this->isTextPresent("Black"));
         $this->clickAndWait("//button[text()='Continue to Next Step']");
         $this->clickAndWait("//button[text()='Continue to Next Step']");
         $this->clickAndWait("//button[text()='Continue to Next Step']");
         $this->assertEquals("Harness MADTRIXX", $this->getText("//tr[@id='cartItem_1']/td/div[1]"));
-        $this->assertEquals("Art.No.: 1402", $this->getText("//tr[@id='cartItem_1']/td/div[2]"));
+        $this->assertEquals("Art.No. 1402", $this->getText("//tr[@id='cartItem_1']/td/div[2]"));
         $this->assertEquals("Black", $this->getText("//tr[@id='cartItem_1']/td/div[3]"));
         $this->assertTrue($this->isTextPresent("Black"));
          $this->clickAndWait("//button[text()='Order now']");
@@ -1806,13 +1806,13 @@ class Acceptance_functionalityInAdminTest extends oxidAdditionalSeleniumFunction
         $this->openBasket();
         //Checking if does not display attribute's value for products in checkout
           $this->assertEquals("Harness MADTRIXX", $this->getText("//tr[@id='cartItem_1']/td/div[1]"));
-        $this->assertEquals("Art.No.: 1402", $this->getText("//tr[@id='cartItem_1']/td/div[2]"));
+        $this->assertEquals("Art.No. 1402", $this->getText("//tr[@id='cartItem_1']/td/div[2]"));
         $this->assertFalse($this->isTextPresent("Black"));
         $this->clickAndWait("//button[text()='Continue to Next Step']");
         $this->clickAndWait("//button[text()='Continue to Next Step']");
         $this->clickAndWait("//button[text()='Continue to Next Step']");
         $this->assertEquals("Harness MADTRIXX", $this->getText("//tr[@id='cartItem_1']/td/div[1]"));
-        $this->assertEquals("Art.No.: 1402", $this->getText("//tr[@id='cartItem_1']/td/div[2]"));
+        $this->assertEquals("Art.No. 1402", $this->getText("//tr[@id='cartItem_1']/td/div[2]"));
         $this->assertFalse($this->isTextPresent("Black"));
         $this->clickAndWait("//button[@type='submit']");
     }
@@ -2011,8 +2011,6 @@ class Acceptance_functionalityInAdminTest extends oxidAdditionalSeleniumFunction
         }
 
     }
-
-
     /**
     * Testing staging mode and demo mode license functionality
     * login with admin:admin, orange banners and info in html source code

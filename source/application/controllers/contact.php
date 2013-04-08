@@ -86,7 +86,7 @@ class Contact extends oxUBase
 
         // checking email address
         if ( !oxRegistry::getUtils()->isValidEmail( $aParams['oxuser__oxusername'] ) ) {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay( 'EXCEPTION_INPUT_NOVALIDEMAIL' );
+            oxRegistry::get("oxUtilsView")->addErrorToDisplay( 'ERROR_MESSAGE_INPUT_NOVALIDEMAIL' );
             return false;
         }
 
@@ -97,19 +97,19 @@ class Contact extends oxUBase
 
         if ( !$oCaptcha->pass( $sMac, $sMacHash ) ) {
             // even if there is no exception, use this as a default display method
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay( 'EXCEPTION_INPUT_WRONGCAPTCHA' );
+            oxRegistry::get("oxUtilsView")->addErrorToDisplay( 'MESSAGE_WRONG_VERIFICATION_CODE' );
             return false;
         }
 
         $sSubject = oxConfig::getParameter( 'c_subject' );
         if ( !$aParams['oxuser__oxfname'] || !$aParams['oxuser__oxlname'] || !$aParams['oxuser__oxusername'] || !$sSubject ) {
             // even if there is no exception, use this as a default display method
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay( 'EXCEPTION_INPUT_NOTALLFIELDS' );
+            oxRegistry::get("oxUtilsView")->addErrorToDisplay( 'ERROR_MESSAGE_INPUT_NOTALLFIELDS' );
             return false;
         }
 
         $oLang = oxRegistry::getLang();
-        $sMessage  = $oLang->translateString( 'CONTACT_FROM' ) . " " .
+        $sMessage  = $oLang->translateString( 'MESSAGE_FROM' ) . " " .
                      $oLang->translateString( $aParams['oxuser__oxsal'] ) ." " .
                      $aParams['oxuser__oxfname'] . " " .
                      $aParams['oxuser__oxlname'] . "(" .$aParams['oxuser__oxusername'] . ")<br /><br />" .
@@ -195,7 +195,7 @@ class Contact extends oxUBase
         $aPaths = array();
         $aPath = array();
 
-        $aPath['title'] = oxRegistry::getLang()->translateString( 'PAGE_INFO_CONTACT_TITLECONTACT', oxRegistry::getLang()->getBaseLanguage(), false );
+        $aPath['title'] = oxRegistry::getLang()->translateString( 'CONTACT', oxRegistry::getLang()->getBaseLanguage(), false );
         $aPath['link']  = $this->getLink();
         $aPaths[] = $aPath;
 

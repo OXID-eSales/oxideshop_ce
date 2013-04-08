@@ -69,7 +69,7 @@ class Links extends oxUBase
     {
         $aPaths = array();
         $aPath  = array();
-        $aPath['title'] = oxRegistry::getLang()->translateString( 'PAGE_INFO_LINKS_TITLE', oxRegistry::getLang()->getBaseLanguage(), false );
+        $aPath['title'] = oxRegistry::getLang()->translateString( 'LINKS', oxRegistry::getLang()->getBaseLanguage(), false );
         $aPath['link']  = $this->getLink();
         
         $aPaths[] = $aPath;

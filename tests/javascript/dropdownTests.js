@@ -13,8 +13,8 @@ module('oxDropDown', {
                     '</p>' +
                     '<input type="hidden" value="" name="selectVal">' +
                     '<ul class="drop vardrop FXgradGreyLight shadow">' +
-                        '<li class=""><a class="selected" href="#" data-seletion-id="cda7a650c5856cf2f6738072447d7825">gray</a></li>' +
-                        '<li class=""><a id="val2" class="" href="#" data-seletion-id="fe01d67a002dfa0f3ac084298142eccd">orange</a></li>' +
+                        '<li class=""><a class="selected" href="#" data-selection-id="cda7a650c5856cf2f6738072447d7825">gray</a></li>' +
+                        '<li class=""><a id="val2" class="" href="#" data-selection-id="fe01d67a002dfa0f3ac084298142eccd">orange</a></li>' +
                     '</ul>' +
                 '</div>' +
             '</div>'

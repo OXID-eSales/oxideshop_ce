@@ -7,7 +7,7 @@
             [{ $oViewConf->getHiddenSid() }]
             <input type="hidden" name="cl" value="search">
             [{block name="header_search_field"}]
-                <label for="searchParam" class="innerLabel">[{oxmultilang ident="SEARCH_TITLE" }]</label>
+                <label for="searchParam" class="innerLabel">[{oxmultilang ident="SEARCH" }]</label>
                 <input class="textbox" type="text" id="searchParam" name="searchparam" value="[{$oView->getSearchParamForHtml()}]">
             [{/block}]
             <input class="searchSubmit" type="submit" value="">

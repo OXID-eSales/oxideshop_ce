@@ -7,7 +7,7 @@
         [{assign var="currency" value=$oView->getActCurrency() }]
         [{if !$oxcmp_basket->getProductsCount()  }]
             [{block name="checkout_basket_emptyshippingcart"}]
-                <div class="status corners error">[{ oxmultilang ident="PAGE_CHECKOUT_BASKET_EMPTYSHIPPINGCART" }]</div>
+                <div class="status corners error">[{ oxmultilang ident="BASKET_EMPTY" }]</div>
             [{/block}]
         [{else }]
             <div class="lineBox clear">
@@ -18,7 +18,7 @@
                                 [{ $oViewConf->getHiddenSid() }]
                                 <input type="hidden" name="cl" value="basket">
                                 <input type="hidden" name="fnc" value="backtoshop">
-                                <button type="submit" class="submitButton largeButton">[{ oxmultilang ident="PAGE_CHECKOUT_BASKET_CONTINUESHOPPING" }]</button>
+                                <button type="submit" class="submitButton largeButton">[{ oxmultilang ident="CONTINUE_SHOPPING" }]</button>
                             </form>
                         </div>
                     [{/block}]
@@ -26,14 +26,14 @@
 
                 [{if $oView->isLowOrderPrice() }]
                     [{block name="checkout_basket_loworderprice_top"}]
-                        <div>[{ oxmultilang ident="PAGE_CHECKOUT_BASKET_MINORDERPRICE" }] [{ $oView->getMinOrderPrice() }] [{ $currency->sign }]</div>
+                        <div>[{ oxmultilang ident="MIN_ORDER_PRICE" }] [{ $oView->getMinOrderPrice() }] [{ $currency->sign }]</div>
                     [{/block}]
                 [{else}]
                     [{block name="basket_btn_next_top"}]
                         <form action="[{ $oViewConf->getSslSelfLink() }]" method="post">
                             [{ $oViewConf->getHiddenSid() }]
                             <input type="hidden" name="cl" value="user">
-                            <button type="submit" class="submitButton largeButton nextStep">[{ oxmultilang ident="PAGE_CHECKOUT_BASKET_NEXTSTEP" }]</button>
+                            <button type="submit" class="submitButton largeButton nextStep">[{ oxmultilang ident="CONTINUE_TO_NEXT_STEP" }]</button>
                         </form>
                     [{/block}]
                 [{/if}]
@@ -41,7 +41,7 @@
 
             <div class="lineBox">
                 [{include file="page/checkout/inc/basketcontents.tpl" editable=true}]
-                
+
                 [{if $oViewConf->getShowVouchers()}]
                     [{block name="checkout_basket_vouchers"}]
                         [{oxscript include="js/widgets/oxinputvalidator.js" priority=10 }]
@@ -52,20 +52,20 @@
                                     [{foreach from=$Errors.basket item=oEr key=key}]
                                         [{if $oEr->getErrorClassType() == 'oxVoucherException'}]
                                             <div class="inlineError">
-                                                [{ oxmultilang ident="PAGE_CHECKOUT_BASKET_COUPONNOTACCEPTED1" }] <strong>&ldquo;[{ $oEr->getValue('voucherNr') }]&rdquo;</strong> [{ oxmultilang ident="PAGE_CHECKOUT_BASKET_COUPONNOTACCEPTED2" }]<br>
-                                                <strong>[{ oxmultilang ident="PAGE_CHECKOUT_BASKET_REASON" }]</strong>
+                                                [{ oxmultilang ident="COUPON_NOT_ACCEPTED" args=$oEr->getValue('voucherNr') }]
+                                                <strong>[{ oxmultilang ident="REASON" suffix="COLON" }]</strong>
                                                 [{ $oEr->getOxMessage() }]
                                             </div>
                                         [{/if}]
                                     [{/foreach}]
-                                    <label>[{ oxmultilang ident="PAGE_CHECKOUT_BASKET_ENTERCOUPONNUMBER" }]</label>
+                                    <label>[{ oxmultilang ident="ENTER_COUPON_NUMBER" suffix="COLON" }]</label>
                                     [{ $oViewConf->getHiddenSid() }]
                                     <input type="hidden" name="cl" value="basket">
                                     <input type="hidden" name="fnc" value="addVoucher">
                                     <input type="text" size="20" name="voucherNr" class="textbox js-oxValidate js-oxValidate_notEmpty">
-                                    <button type="submit" class="submitButton">[{ oxmultilang ident="PAGE_CHECKOUT_BASKET_SUBMITCOUPON" }]</button>
+                                    <button type="submit" class="submitButton">[{ oxmultilang ident="SUBMIT_COUPON" }]</button>
                                     <p class="oxValidateError">
-                                        <span class="js-oxError_notEmpty">[{ oxmultilang ident="EXCEPTION_INPUT_NOTALLFIELDS" }]</span>
+                                        <span class="js-oxError_notEmpty">[{ oxmultilang ident="ERROR_MESSAGE_INPUT_NOTALLFIELDS" }]</span>
                                     </p>
                                     <input type="hidden" name="CustomError" value='basket'>
                                 </div>
@@ -75,7 +75,7 @@
                 [{/if}]
             </div>
 
-            
+
             <div class="lineBox clear">
                 [{if $oView->showBackToShop()}]
                     [{block name="checkout_basket_backtoshop_bottom"}]
@@ -84,7 +84,7 @@
                                 [{ $oViewConf->getHiddenSid() }]
                                 <input type="hidden" name="cl" value="basket">
                                 <input type="hidden" name="fnc" value="backtoshop">
-                                <button type="submit" class="submitButton largeButton">[{ oxmultilang ident="PAGE_CHECKOUT_BASKET_CONTINUESHOPPING" }]</button>
+                                <button type="submit" class="submitButton largeButton">[{ oxmultilang ident="CONTINUE_SHOPPING" }]</button>
                             </div>
                         </form>
                     [{/block}]
@@ -92,14 +92,14 @@
 
                 [{if $oView->isLowOrderPrice() }]
                     [{block name="checkout_basket_loworderprice_bottom"}]
-                        <div>[{ oxmultilang ident="PAGE_CHECKOUT_BASKET_MINORDERPRICE" }] [{ $oView->getMinOrderPrice() }] [{ $currency->sign }]</div>
+                        <div>[{ oxmultilang ident="MIN_ORDER_PRICE" }] [{ $oView->getMinOrderPrice() }] [{ $currency->sign }]</div>
                     [{/block}]
                 [{else}]
                     [{block name="basket_btn_next_bottom"}]
                         <form action="[{ $oViewConf->getSslSelfLink() }]" method="post">
                             [{ $oViewConf->getHiddenSid() }]
                             <input type="hidden" name="cl" value="user">
-                            <button type="submit" class="submitButton largeButton nextStep">[{ oxmultilang ident="PAGE_CHECKOUT_BASKET_NEXTSTEP" }]</button>
+                            <button type="submit" class="submitButton largeButton nextStep">[{ oxmultilang ident="CONTINUE_TO_NEXT_STEP" }]</button>
                         </form>
                     [{/block}]
                 [{/if}]

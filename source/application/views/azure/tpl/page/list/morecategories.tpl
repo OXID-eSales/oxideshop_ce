@@ -1,7 +1,7 @@
 [{oxscript include="js/widgets/oxarticlebox.js" priority=10 }]
 [{oxscript add="$( '#content' ).oxArticleBox();"}]
 [{capture append="oxidBlock_content"}]
-    <h1 class="pageHead">[{ oxmultilang ident="PAGE_PRODUCT_MORECATEGORIES" }]</h1>
+    <h1 class="pageHead">[{ oxmultilang ident="CATEGORY_OVERVIEW" }]</h1>
 
     [{assign var="_navcategorytree" value=$oView->getCategoryTree()}]
     [{assign var="_iCategoriesPerRow"  value=4}]

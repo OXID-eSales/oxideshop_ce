@@ -54,8 +54,9 @@ class voucherserie_groups_ajax extends ajaxListComponent
         // looking for table/view
         $sGroupTable = $this->_getViewName('oxgroups');
         $oDb = oxDb::getDb();
-        $sVoucherId      = oxConfig::getParameter( 'oxid' );
-        $sSynchVoucherId = oxConfig::getParameter( 'synchoxid' );
+        $oConfig = oxRegistry::getConfig();
+        $sVoucherId      = $oConfig->getRequestParameter( 'oxid' );
+        $sSynchVoucherId = $oConfig->getRequestParameter( 'synchoxid' );
 
         // category selected or not ?
         if ( !$sVoucherId) {
@@ -81,7 +82,7 @@ class voucherserie_groups_ajax extends ajaxListComponent
     public function removeGroupFromVoucher()
     {
         $aRemoveGroups = $this->_getActionIds( 'oxobject2group.oxid' );
-        if ( oxConfig::getParameter( 'all' ) ) {
+        if ( oxRegistry::getConfig()->getRequestParameter( 'all' ) ) {
 
             $sQ = $this->_addFilter( "delete oxobject2group.* ".$this->_getQuery() );
             oxDb::getDb()->Execute( $sQ );
@@ -99,10 +100,11 @@ class voucherserie_groups_ajax extends ajaxListComponent
      */
     public function addGroupToVoucher()
     {
+        $oConfig = oxRegistry::getConfig();
         $aChosenCat = $this->_getActionIds( 'oxgroups.oxid' );
-        $soxId      = oxConfig::getParameter( 'synchoxid');
+        $soxId      = $oConfig->getRequestParameter( 'synchoxid');
 
-        if ( oxConfig::getParameter( 'all' ) ) {
+        if ( $oConfig->getRequestParameter( 'all' ) ) {
             $sGroupTable = $this->_getViewName('oxgroups');
             $aChosenCat = $this->_getAll( $this->_addFilter( "select $sGroupTable.oxid ".$this->_getQuery() ) );
         }

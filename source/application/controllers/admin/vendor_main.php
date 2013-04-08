@@ -54,7 +54,7 @@ class Vendor_Main extends oxAdminDetails
             $this->_aViewData["edit"] =  $oVendor;
 
             // category tree
-            $sChosenArtCat = $this->_getCategoryTree( "artcattree", oxConfig::getParameter( "artcat"));
+            $this->_createCategoryTree( "artcattree");
 
             //Disable editing for derived articles
             if ($oVendor->isDerived())

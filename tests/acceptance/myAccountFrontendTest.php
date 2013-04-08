@@ -100,9 +100,9 @@ class Acceptance_myAccountFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->clickAndWait("link=Home");
         $this->clickAndWait("//ul[@id='newItems']/li[1]//a");
 
-        $this->assertEquals("My Product Compare", $this->clearString($this->getText("//ul[@id='services']/li[3]")));
-        $this->assertEquals("My Wish List", $this->clearString($this->getText("//ul[@id='services']/li[4]")));
-        $this->assertEquals("My Gift Registry", $this->clearString($this->getText("//ul[@id='services']/li[5]")));
+        $this->assertEquals("My Product Compare", $this->clearString($this->getText("//ul[@id='services']/li[4]")));
+        $this->assertEquals("My Wish List", $this->clearString($this->getText("//ul[@id='services']/li[5]")));
+        $this->assertEquals("My Gift Registry", $this->clearString($this->getText("//ul[@id='services']/li[6]")));
         $this->click("productLinks");
         $this->waitForItemAppear("addToCompare");
         $this->clickAndWait("addToCompare");
@@ -114,9 +114,9 @@ class Acceptance_myAccountFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->clickAndWait("linkToWishList");
         $this->click("servicesTrigger");
         $this->waitForItemAppear("services");
-        $this->assertEquals("My Product Compare1", $this->clearString($this->getText("//ul[@id='services']/li[3]")));
-        $this->assertEquals("My Wish List1", $this->clearString($this->getText("//ul[@id='services']/li[4]")));
-        $this->assertEquals("My Gift Registry1", $this->clearString($this->getText("//ul[@id='services']/li[5]")));
+        $this->assertEquals("My Product Compare1", $this->clearString($this->getText("//ul[@id='services']/li[4]")));
+        $this->assertEquals("My Wish List1", $this->clearString($this->getText("//ul[@id='services']/li[5]")));
+        $this->assertEquals("My Gift Registry1", $this->clearString($this->getText("//ul[@id='services']/li[6]")));
         $this->clickAndWait("//ul[@id='services']/li[2]/a");
         $this->assertEquals("My Account - \"birute_test@nfq.lt\"", $this->getText("//h1"));
         $this->assertEquals("My Wish List", $this->getText("//div[@id='content']//div[2]/dl[1]/dt"));
@@ -486,12 +486,12 @@ class Acceptance_myAccountFrontendTest extends oxidAdditionalSeleniumFunctions
         //wish list testing
         $this->click("servicesTrigger");
         $this->waitForItemAppear("services");
-        $this->assertEquals("My Wish List1", $this->clearString($this->getText("//ul[@id='services']/li[4]")));
-        $this->clickAndWAit("//ul[@id='services']/li[4]/a");
+        $this->assertEquals("My Wish List1", $this->clearString($this->getText("//ul[@id='services']/li[5]")));
+        $this->clickAndWAit("//ul[@id='services']/li[5]/a");
         $this->assertEquals("My Wish List", $this->getText("//h1"));
         $this->assertEquals("You are here: / My Account / My Wish List", $this->getText("breadCrumb"));
         $this->assertEquals("Test product 3 [EN] šÄßüл", $this->getText("//ul[@id='noticelistProductList']/li/form[@name='tobasket.noticelistProductList_1']/div[2]/div/a"));
-        //$this->assertEquals("Art.No.: 1003", $this->getText("//form[@name='tobasket.noticelistProductList_1']/div[2]/div/span"));
+        //$this->assertEquals("Art.No. 1003", $this->getText("//form[@name='tobasket.noticelistProductList_1']/div[2]/div/span"));
         $this->assertEquals("Test product 3 short desc [EN] šÄßüл", $this->getText("//form[@name='tobasket.noticelistProductList_1']/div[2]/div[2]"));
         $this->assertEquals("75,00 € *",$this->getText("productPrice_noticelistProductList_1"));
         $this->clickAndWait("//form[@name='tobasket.noticelistProductList_1']/div/a");
@@ -500,13 +500,13 @@ class Acceptance_myAccountFrontendTest extends oxidAdditionalSeleniumFunctions
 
         $this->click("servicesTrigger");
         $this->waitForItemAppear("services");
-        $this->clickAndWAit("//ul[@id='services']/li[4]/a");
+        $this->clickAndWAit("//ul[@id='services']/li[5]/a");
         $this->clickAndWait("//form[@name='tobasket.noticelistProductList_1']/div[2]/div/a");
         $this->assertEquals("Test product 3 [EN] šÄßüл", $this->getText("//h1"));
 
         $this->click("servicesTrigger");
         $this->waitForItemAppear("services");
-        $this->clickAndWAit("//ul[@id='services']/li[4]/a");
+        $this->clickAndWAit("//ul[@id='services']/li[5]/a");
         $this->type("amountToBasket_noticelistProductList_1", "2");
         $this->clickAndWait("toBasket_noticelistProductList_1");
         $this->assertEquals("2", $this->getText("//div[@id='miniBasket']/span"));
@@ -539,8 +539,8 @@ class Acceptance_myAccountFrontendTest extends oxidAdditionalSeleniumFunctions
 
         $this->click("servicesTrigger");
         $this->waitForItemAppear("services");
-        $this->assertEquals("My Gift Registry1", $this->clearString($this->getText("//ul[@id='services']/li[5]")));
-        $this->clickAndWAit("//ul[@id='services']/li[5]/a");
+        $this->assertEquals("My Gift Registry1", $this->clearString($this->getText("//ul[@id='services']/li[6]")));
+        $this->clickAndWAit("//ul[@id='services']/li[6]/a");
         $this->assertEquals("You are here: / My Account / My Gift Registry", $this->getText("breadCrumb"));
         $this->assertEquals("My Gift Registry", $this->getText("//h1"));
 
@@ -570,7 +570,7 @@ class Acceptance_myAccountFrontendTest extends oxidAdditionalSeleniumFunctions
 
         $this->click("servicesTrigger");
         $this->waitForItemAppear("services");
-        $this->clickAndWAit("//ul[@id='services']/li[5]/a");
+        $this->clickAndWAit("//ul[@id='services']/li[6]/a");
         $this->assertTrue($this->isTextPresent("Click here to send your gift registry to your friends"));
 
         $this->clickAndWait("link=Click here to send your gift registry to your friends.");
@@ -605,8 +605,8 @@ class Acceptance_myAccountFrontendTest extends oxidAdditionalSeleniumFunctions
 
         $this->click("servicesTrigger");
         $this->waitForItemAppear("services");
-        $this->assertEquals("My Gift Registry1", $this->clearString($this->getText("//ul[@id='services']/li[5]")));
-        $this->clickAndWAit("//ul[@id='services']/li[5]/a");
+        $this->assertEquals("My Gift Registry1", $this->clearString($this->getText("//ul[@id='services']/li[6]")));
+        $this->clickAndWAit("//ul[@id='services']/li[6]/a");
         $this->assertEquals("You are here: / My Account / My Gift Registry", $this->getText("breadCrumb"));
 
         $this->assertEquals("Test product 0 [EN] šÄßüл", $this->getText("//ul[@id='wishlistProductList']/li/form[@name='tobasket.wishlistProductList_1']/div[2]/div[1]/a"));
@@ -619,12 +619,12 @@ class Acceptance_myAccountFrontendTest extends oxidAdditionalSeleniumFunctions
 
         $this->click("servicesTrigger");
         $this->waitForItemAppear("services");
-        $this->clickAndWAit("//ul[@id='services']/li[5]/a");
+        $this->clickAndWAit("//ul[@id='services']/li[6]/a");
         $this->clickAndWait("//form[@name='tobasket.wishlistProductList_1']/div[2]/div[1]/a");
         $this->assertEquals("Test product 0 [EN] šÄßüл", $this->getText("//h1"));
         $this->click("servicesTrigger");
         $this->waitForItemAppear("services");
-        $this->clickAndWAit("//ul[@id='services']/li[5]/a");
+        $this->clickAndWAit("//ul[@id='services']/li[6]/a");
         $this->type("amountToBasket_wishlistProductList_1", "2");
         $this->clickAndWait("toBasket_wishlistProductList_1");
         $this->assertEquals("2", $this->getText("//div[@id='miniBasket']/span"));
@@ -690,8 +690,7 @@ class Acceptance_myAccountFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->loginInFrontend("birute_test@nfq.lt", "useruser");
         $this->click("servicesTrigger");
         $this->waitForItemAppear("services");
-        $this->clickAndWAit("//ul[@id='services']/li[5]/a");
-
+        $this->clickAndWAit("//ul[@id='services']/li[6]/a");
         $this->clickAndWait("//button[@triggerform='remove_towishlistwishlistProductList_1']");
         $this->assertTrue($this->isTextPresent("The Gift Registry is empty."));
 
@@ -762,8 +761,8 @@ class Acceptance_myAccountFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->loginInFrontend("birute_test@nfq.lt", "useruser");
         $this->click("servicesTrigger");
         $this->waitForItemAppear("services");
-        $this->assertEquals("My Product Compare3", $this->clearString($this->getText("//ul[@id='services']/li[3]")));
-        $this->clickAndWAit("//ul[@id='services']/li[3]/a");
+        $this->assertEquals("My Product Compare3", $this->clearString($this->getText("//ul[@id='services']/li[4]")));
+        $this->clickAndWAit("//ul[@id='services']/li[4]/a");
         $this->assertEquals("You are here: / My Account / Product Comparison", $this->getText("breadCrumb"));
         $this->assertEquals("Product Comparison", $this->getText("//h1"));
 
@@ -774,9 +773,9 @@ class Acceptance_myAccountFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->assertEquals("Test product 0 [EN] šÄßüл", $this->clearString($this->getText("//tr[@id='firstTr']/td[1]/div[2]/strong")));
         $this->assertEquals("Test product 1 [EN] šÄßüл", $this->clearString($this->getText("//tr[@id='firstTr']/td[2]/div[2]/strong")));
         $this->assertEquals("Test product 2 [EN] šÄßüл", $this->clearString($this->getText("//tr[@id='firstTr']/td[3]/div[2]/strong")));
-        $this->assertEquals("Weight: 2 kg Art.No.: 1000", $this->clearString($this->getText("//tr[@id='firstTr']/td[1]/div[2]/span")));
-        $this->assertEquals("Art.No.: 1001", $this->getText("//tr[@id='firstTr']/td[2]/div[2]/span"));
-        $this->assertEquals("Art.No.: 1002", $this->getText("//tr[@id='firstTr']/td[3]/div[2]/span"));
+        $this->assertEquals("Weight: 2 kg Art.No. 1000", $this->clearString($this->getText("//tr[@id='firstTr']/td[1]/div[2]/span")));
+        $this->assertEquals("Art.No. 1001", $this->getText("//tr[@id='firstTr']/td[2]/div[2]/span"));
+        $this->assertEquals("Art.No. 1002", $this->getText("//tr[@id='firstTr']/td[3]/div[2]/span"));
 
         $this->assertEquals("selvar1 [EN] šÄßüл +1,00 € selvar2 [EN] šÄßüл selvar3 [EN] šÄßüл -2,00 € selvar4 [EN] šÄßüл +2%", $this->clearString($this->getText("//div[@id='compareSelections_2']//ul")));
         $this->assertEquals("var1 [EN] šÄßüл var2 [EN] šÄßüл", $this->clearString($this->getText("//div[@id='compareVariantSelections_3']//ul")));
@@ -784,12 +783,12 @@ class Acceptance_myAccountFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->assertEquals("Test product 0 [EN] šÄßüл", $this->getText("//h1"));
         $this->click("servicesTrigger");
         $this->waitForItemAppear("services");
-        $this->clickAndWAit("//ul[@id='services']/li[3]/a");
+        $this->clickAndWAit("//ul[@id='services']/li[4]/a");
         $this->clickAndWait("//tr[@id='firstTr']/td[2]/div[2]/strong/a");
         $this->assertEquals("Test product 1 [EN] šÄßüл", $this->getText("//h1"));
         $this->click("servicesTrigger");
         $this->waitForItemAppear("services");
-        $this->clickAndWAit("//ul[@id='services']/li[3]/a");
+        $this->clickAndWAit("//ul[@id='services']/li[4]/a");
         $this->clickAndWait("//tr[@id='firstTr']/td[1]//button");
         $this->clickAndWait("//tr[@id='firstTr']/td[1]//button");
         $this->assertEquals("Test attribute 1 [EN] šÄßüл:", $this->getText("cmpAttrTitle_1"));
@@ -1117,18 +1116,18 @@ class Acceptance_myAccountFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->assertEquals("3",$this->clearString($this->getText("//p[@id='servicesTrigger']/span")));
         $this->click("servicesTrigger");
         $this->waitForItemAppear("services");
-        $this->assertEquals("My Wish List1", $this->clearString($this->getText("//ul[@id='services']/li[4]")));
-        $this->assertEquals("My Gift Registry1", $this->clearString($this->getText("//ul[@id='services']/li[5]")));
-        $this->clickAndWait("//ul[@id='services']/li[4]/a");
+        $this->assertEquals("My Wish List1", $this->clearString($this->getText("//ul[@id='services']/li[5]")));
+        $this->assertEquals("My Gift Registry1", $this->clearString($this->getText("//ul[@id='services']/li[6]")));
+        $this->clickAndWait("//ul[@id='services']/li[5]/a");
         $this->clickAndWait("//button[@triggerform='remove_tonoticelistnoticelistProductList_1']");
         $this->click("servicesTrigger");
         $this->waitForItemAppear("services");
-        $this->assertEquals("My Wish List", $this->clearString($this->getText("//ul[@id='services']/li[4]")));
-        $this->clickAndWait("//ul[@id='services']/li[5]/a");
+        $this->assertEquals("My Wish List", $this->clearString($this->getText("//ul[@id='services']/li[5]")));
+        $this->clickAndWait("//ul[@id='services']/li[6]/a");
         $this->clickAndWait("//button[@triggerform='remove_towishlistwishlistProductList_1']");
         $this->click("servicesTrigger");
         $this->waitForItemAppear("services");
-        $this->assertEquals("My Gift Registry", $this->clearString($this->getText("//ul[@id='services']/li[5]")));
+        $this->assertEquals("My Gift Registry", $this->clearString($this->getText("//ul[@id='services']/li[6]")));
     }
 
 }

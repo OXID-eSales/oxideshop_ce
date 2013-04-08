@@ -58,8 +58,8 @@
             }).val("");
             $('#shippingAddressForm').show();
             $('#shippingAddressText').hide();
-            $("select[name='deladr[oxaddress__oxcountryid]']").children("option").attr("selected", null);
-            $("select[name='deladr[oxaddress__oxstateid]']").children('option[value=""]').attr("selected", "selected");
+            $("select[name='deladr[oxaddress__oxcountryid]']").children("option").prop("selected", null);
+            $("select[name='deladr[oxaddress__oxstateid]']").children('option[value=""]').prop("selected", "selected");
         },
 
         /**

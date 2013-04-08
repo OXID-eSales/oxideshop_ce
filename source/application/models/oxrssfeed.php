@@ -19,6 +19,8 @@
  * @package   core
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
+ * @version   SVN: $Id: oxrssfeed.php 56749 2013-03-20 09:30:01Z tadas.rimkus $
+ * @version OXID eShop CE
  * @version   SVN: $Id$
  */
 
@@ -83,10 +85,13 @@ class oxRssFeed extends oxSuperCfg
         $this->_aChannel['selflink'] = '';
         if ( oxRegistry::getUtils()->isValidEmail( $oShop->oxshops__oxinfoemail->value )) {
             $this->_aChannel['managingEditor'] = $oShop->oxshops__oxinfoemail->value;
+            if ( $oShop->oxshops__oxfname ) {
+                $this->_aChannel['managingEditor'] .= " ({$oShop->oxshops__oxfname} {$oShop->oxshops__oxlname})";
+            }
         }
         //$this->_aChannel['webMaster']      = '';
 
-        $this->_aChannel['generator']      = 'OXID eShop '.$oShop->oxshops__oxversion->value;
+        $this->_aChannel['generator']      = $oShop->oxshops__oxname->value;
         $this->_aChannel['image']['url']   = $this->getConfig()->getImageUrl().'logo.png';
 
 
@@ -229,7 +234,7 @@ class oxRssFeed extends oxSuperCfg
     /**
      * _prepareUrl make url from uri
      *
-     * @param string $sUri   standart uri
+     * @param string $sUri   standard uri
      * @param string $sTitle page title
      *
      * @access protected
@@ -333,7 +338,7 @@ class oxRssFeed extends oxSuperCfg
     {
         $oLang = oxRegistry::getLang();
         $iLang = $oLang->getBaseLanguage();
-        return $this->_prepareFeedName( $oLang->translateString( 'RSS_TOPSHOP_TITLE', $iLang ) );
+        return $this->_prepareFeedName( $oLang->translateString( 'TOP_OF_THE_SHOP', $iLang ) );
     }
 
     /**
@@ -368,7 +373,7 @@ class oxRssFeed extends oxSuperCfg
         $this->_loadData(
             self::RSS_TOPSHOP,
             $this->getTopInShopTitle(),
-            $oLang->translateString( 'RSS_TOPSHOP_DESCRIPTION', $oLang->getBaseLanguage() ),
+            $oLang->translateString( 'TOP_SHOP_PRODUCTS', $oLang->getBaseLanguage() ),
             $this->_getArticleItems($oArtList),
             $this->getTopInShopUrl()
         );
@@ -387,7 +392,7 @@ class oxRssFeed extends oxSuperCfg
     {
         $oLang = oxRegistry::getLang();
         $iLang = $oLang->getBaseLanguage();
-        return $this->_prepareFeedName( $oLang->translateString( 'RSS_NEWESTARTICLES_TITLE', $iLang ) );
+        return $this->_prepareFeedName( $oLang->translateString( 'NEWEST_SHOP_PRODUCTS', $iLang ) );
     }
 
     /**
@@ -421,7 +426,7 @@ class oxRssFeed extends oxSuperCfg
         $this->_loadData(
             self::RSS_NEWARTS,
             $this->getNewestArticlesTitle( ),
-            $oLang->translateString( 'RSS_NEWESTARTICLES_DESCRIPTION', $oLang->getBaseLanguage() ),
+            $oLang->translateString( 'NEWEST_SHOP_PRODUCTS', $oLang->getBaseLanguage() ),
             $this->_getArticleItems($oArtList),
             $this->getNewestArticlesUrl()
         );
@@ -442,7 +447,7 @@ class oxRssFeed extends oxSuperCfg
         $oLang  = oxRegistry::getLang();
         $iLang  = $oLang->getBaseLanguage();
         $sTitle = $this->_getCatPath($oCat);
-        return $this->_prepareFeedName( $sTitle . $oLang->translateString( 'RSS_CATEGORYARTICLES_TITLE', $iLang ) );
+        return $this->_prepareFeedName( $sTitle . $oLang->translateString( 'PRODUCTS', $iLang ) );
     }
 
     /**
@@ -479,7 +484,7 @@ class oxRssFeed extends oxSuperCfg
     {
         $oLang = oxRegistry::getLang();
         return $this->_prepareUrl("cl=rss&amp;fnc=catarts&amp;cat=".urlencode($oCat->getId()),
-                sprintf($oLang->translateString( 'RSS_CATEGORYARTICLES_URL', $oLang->getBaseLanguage() ), $oCat->oxcategories__oxtitle->value));
+                sprintf($oLang->translateString( 'CATEGORY_PRODUCTS_S', $oLang->getBaseLanguage() ), $oCat->oxcategories__oxtitle->value));
     }
 
     /**
@@ -506,7 +511,7 @@ class oxRssFeed extends oxSuperCfg
         $this->_loadData(
             self::RSS_CATARTS.$sId,
             $this->getCategoryArticlesTitle($oCat),
-            sprintf($oLang->translateString( 'RSS_CATEGORYARTICLES_DESCRIPTION', $oLang->getBaseLanguage() ), $oCat->oxcategories__oxtitle->value),
+            sprintf($oLang->translateString( 'S_CATEGORY_PRODUCTS', $oLang->getBaseLanguage() ), $oCat->oxcategories__oxtitle->value),
             $this->_getArticleItems($oArtList),
             $this->getCategoryArticlesUrl($oCat),
             $oCat->getLink()
@@ -528,7 +533,7 @@ class oxRssFeed extends oxSuperCfg
      */
     public function getSearchArticlesTitle($sSearch, $sCatId, $sVendorId, $sManufacturerId)
     {
-        return $this->_prepareFeedName( getStr()->htmlspecialchars($this->_getSearchParamsTranslation('RSS_SEARCHARTICLES_TITLE', $sSearch, $sCatId, $sVendorId, $sManufacturerId)) );
+        return $this->_prepareFeedName( getStr()->htmlspecialchars($this->_getSearchParamsTranslation('SEARCH_FOR_PRODUCTS_CATEGORY_VENDOR_MANUFACTURER', $sSearch, $sCatId, $sVendorId, $sManufacturerId)) );
     }
 
     /**
@@ -587,8 +592,8 @@ class oxRssFeed extends oxSuperCfg
      * _getSearchParamsTranslation translates text for given lang id
      * loads category and vendor to take their titles.
      *
-     * @param string $sId             language id
      * @param string $sSearch         search param
+     * @param string $sId             language id
      * @param string $sCatId          category id
      * @param string $sVendorId       vendor id
      * @param string $sManufacturerId Manufacturer id
@@ -596,23 +601,23 @@ class oxRssFeed extends oxSuperCfg
      * @access protected
      * @return string
      */
-    protected function _getSearchParamsTranslation($sId, $sSearch, $sCatId, $sVendorId, $sManufacturerId)
+    protected function _getSearchParamsTranslation($sSearch, $sId, $sCatId, $sVendorId, $sManufacturerId)
     {
         $oLang = oxRegistry::getLang();
         $sCatTitle = '';
         if ($sTitle = $this->_getObjectField($sCatId, 'oxcategory', 'oxcategories__oxtitle')) {
-            $sCatTitle = sprintf($oLang->translateString( 'RSS_SEARCHARTICLES_TAG_CATEGORY', $oLang->getBaseLanguage() ), $sTitle);
+            $sCatTitle = sprintf($oLang->translateString( 'CATEGORY_S', $oLang->getBaseLanguage() ), $sTitle);
         }
         $sVendorTitle = '';
         if ($sTitle = $this->_getObjectField($sVendorId, 'oxvendor', 'oxvendor__oxtitle')) {
-            $sVendorTitle = sprintf($oLang->translateString( 'RSS_SEARCHARTICLES_TAG_VENDOR', $oLang->getBaseLanguage() ), $sTitle);
+            $sVendorTitle = sprintf($oLang->translateString( 'VENDOR_S', $oLang->getBaseLanguage() ), $sTitle);
         }
         $sManufacturerTitle = '';
         if ($sTitle = $this->_getObjectField($sManufacturerId, 'oxmanufacturer', 'oxmanufacturers__oxtitle')) {
-            $sManufacturerTitle = sprintf($oLang->translateString( 'RSS_SEARCHARTICLES_TAG_MANUFACTURER', $oLang->getBaseLanguage() ), $sTitle);
+            $sManufacturerTitle = sprintf($oLang->translateString( 'MANUFACTURER_S', $oLang->getBaseLanguage() ), $sTitle);
         }
 
-        $sRet = sprintf($oLang->translateString( $sId, $oLang->getBaseLanguage() ), $sSearch);
+        $sRet = sprintf($oLang->translateString( $sSearch, $oLang->getBaseLanguage() ), $sId);
 
         $sRet = str_replace('<TAG_CATEGORY>', $sCatTitle, $sRet);
         $sRet = str_replace('<TAG_VENDOR>', $sVendorTitle, $sRet);
@@ -636,7 +641,7 @@ class oxRssFeed extends oxSuperCfg
     public function getSearchArticlesUrl( $sSearch, $sCatId, $sVendorId, $sManufacturerId )
     {
         $oLang = oxRegistry::getLang();
-        $sUrl = $this->_prepareUrl("cl=rss&amp;fnc=searcharts", $oLang->translateString( 'RSS_SEARCHARTICLES_URL', $oLang->getBaseLanguage()));
+        $sUrl = $this->_prepareUrl("cl=rss&amp;fnc=searcharts", $oLang->translateString( 'SEARCH', $oLang->getBaseLanguage()));
 
         $sJoin = '?';
         if (strpos($sUrl, '?') !== false) {
@@ -674,7 +679,7 @@ class oxRssFeed extends oxSuperCfg
             null,
             //self::RSS_SEARCHARTS.md5($sSearch.$sCatId.$sVendorId),
             $this->getSearchArticlesTitle($sSearch, $sCatId, $sVendorId, $sManufacturerId),
-            $this->_getSearchParamsTranslation('RSS_SEARCHARTICLES_DESCRIPTION', getStr()->htmlspecialchars( $sSearch ), $sCatId, $sVendorId, $sManufacturerId),
+            $this->_getSearchParamsTranslation('SEARCH_FOR_PRODUCTS_CATEGORY_VENDOR_MANUFACTURER', getStr()->htmlspecialchars( $sSearch ), $sCatId, $sVendorId, $sManufacturerId),
             $this->_getArticleItems($oArtList),
             $this->getSearchArticlesUrl($sSearch, $sCatId, $sVendorId, $sManufacturerId),
             $this->_getShopUrl()."cl=search&amp;".$this->_getSearchParamsUrl($sSearch, $sCatId, $sVendorId, $sManufacturerId)
@@ -692,7 +697,7 @@ class oxRssFeed extends oxSuperCfg
     {
         $oLang = oxRegistry::getLang();
         $iLang = $oLang->getBaseLanguage();
-        return $this->_prepareFeedName( sprintf($oLang->translateString( 'RSS_ARTRECOMMLISTS_TITLE', $iLang ), $oArticle->oxarticles__oxtitle->value) );
+        return $this->_prepareFeedName( sprintf($oLang->translateString( 'LISTMANIA_LIST_FOR', $iLang ), $oArticle->oxarticles__oxtitle->value) );
     }
 
     /**
@@ -707,7 +712,7 @@ class oxRssFeed extends oxSuperCfg
         $oLang = oxRegistry::getLang();
         $iLang = $oLang->getBaseLanguage();
         return $this->_prepareUrl("cl=rss&amp;fnc=recommlists&amp;anid=".$oArticle->getId(),
-                sprintf($oLang->translateString( 'RSS_ARTRECOMMLISTS_URL', $iLang ), $oArticle->oxarticles__oxtitle->value));
+                $oLang->translateString( "LISTMANIA", $iLang ) . "/" . $oArticle->oxarticles__oxtitle->value );
     }
 
     /**
@@ -758,7 +763,7 @@ class oxRssFeed extends oxSuperCfg
         $this->_loadData(
             self::RSS_ARTRECOMMLISTS.$oArticle->getId(),
             $this->getRecommListsTitle($oArticle),
-            sprintf($oLang->translateString( 'RSS_ARTRECOMMLISTS_DESCRIPTION', $oLang->getBaseLanguage() ), $oArticle->oxarticles__oxtitle->value),
+            sprintf($oLang->translateString( 'LISTMANIA_LIST_FOR', $oLang->getBaseLanguage() ), $oArticle->oxarticles__oxtitle->value),
             $this->_getRecommListItems($oList),
             $this->getRecommListsUrl($oArticle),
             $oArticle->getLink()
@@ -776,7 +781,7 @@ class oxRssFeed extends oxSuperCfg
     {
         $oLang = oxRegistry::getLang();
         $iLang = $oLang->getBaseLanguage();
-        return $this->_prepareFeedName( sprintf($oLang->translateString( 'RSS_RECOMMLISTARTICLES_TITLE', $iLang ), $oRecommList->oxrecommlists__oxtitle->value) );
+        return $this->_prepareFeedName( sprintf($oLang->translateString( 'LISTMANIA_LIST_PRODUCTS', $iLang ), $oRecommList->oxrecommlists__oxtitle->value) );
     }
 
     /**
@@ -791,7 +796,7 @@ class oxRssFeed extends oxSuperCfg
         $oLang = oxRegistry::getLang();
         $iLang = $oLang->getBaseLanguage();
         return $this->_prepareUrl("cl=rss&amp;fnc=recommlistarts&amp;recommid=".$oRecommList->getId(),
-                sprintf($oLang->translateString( 'RSS_RECOMMLISTARTICLES_URL', $iLang ), $oRecommList->oxrecommlists__oxtitle->value));
+                $oLang->translateString( "LISTMANIA", $iLang ) . "/" . $oRecommList->oxrecommlists__oxtitle->value );
     }
 
     /**
@@ -814,7 +819,7 @@ class oxRssFeed extends oxSuperCfg
         $this->_loadData(
             self::RSS_RECOMMLISTARTS.$oRecommList->getId(),
             $this->getRecommListArticlesTitle($oRecommList),
-            sprintf($oLang->translateString( 'RSS_RECOMMLISTARTICLES_DESCRIPTION', $oLang->getBaseLanguage() ), $oRecommList->oxrecommlists__oxtitle->value),
+            sprintf($oLang->translateString( 'LISTMANIA_LIST_PRODUCTS', $oLang->getBaseLanguage() ), $oRecommList->oxrecommlists__oxtitle->value),
             $this->_getArticleItems($oList),
             $this->getRecommListArticlesUrl($oRecommList),
             $oRecommList->getLink()
@@ -832,7 +837,7 @@ class oxRssFeed extends oxSuperCfg
     {
         $oLang = oxRegistry::getLang();
         $iLang = $oLang->getBaseLanguage();
-        return $this->_prepareFeedName( $oLang->translateString( 'RSS_BARGAIN_TITLE', $iLang ) );
+        return $this->_prepareFeedName( $oLang->translateString( 'BARGAIN', $iLang ) );
     }
 
     /**
@@ -867,7 +872,7 @@ class oxRssFeed extends oxSuperCfg
         $this->_loadData(
             self::RSS_BARGAIN,
             $this->getBargainTitle(),
-            $oLang->translateString( 'RSS_BARGAIN_DESCRIPTION', $oLang->getBaseLanguage() ),
+            $oLang->translateString( 'BARGAIN_PRODUCTS', $oLang->getBaseLanguage() ),
             $this->_getArticleItems($oArtList),
             $this->getBargainUrl()
         );

@@ -100,7 +100,6 @@ $aLang = array(
 'GENERAL_ARTICLE_OXVAT'                                    => 'Product VAT',
 'GENERAL_ARTICLE_OXTHUMB'                                  => 'Preview Picture',
 'GENERAL_ARTICLE_OXICON'                                   => 'Icon',
-'GENERAL_ARTICLE_OXPICSGENERATED'                          => 'Pictures generated',
 'GENERAL_ARTICLE_PICTURES'                                 => 'Product pictures',
 'GENERAL_ARTICLE_OXPIC1'                                   => 'Picture1',
 'GENERAL_ARTICLE_OXPIC2'                                   => 'Picture2',

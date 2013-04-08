@@ -24,21 +24,18 @@
 
 switch (getenv('OXID_VERSION')) {
     case 'EE':
-        define ('oxCCTempDir', '/tmp/oxCCTempDir_ee/');
         define('OXID_VERSION_EE', true );
         define('OXID_VERSION_PE', false);
         define('OXID_VERSION_PE_PE', false );
         define('OXID_VERSION_PE_CE', false );
         break;
     case 'PE':
-        define ('oxCCTempDir', '/tmp/oxCCTempDir_pe/');
         define('OXID_VERSION_EE',    false);
         define('OXID_VERSION_PE',    true );
         define('OXID_VERSION_PE_PE', true );
         define('OXID_VERSION_PE_CE', false );
         break;
     case 'CE':
-        define ('oxCCTempDir', '/tmp/oxCCTempDir_ce/');
         define('OXID_VERSION_EE',    false);
         define('OXID_VERSION_PE',    true );
         define('OXID_VERSION_PE_PE', false );
@@ -79,8 +76,6 @@ if (getenv('MODULE_PKG_DIR')) {
 if (getenv('SHOP_REMOTE')) {
     define ('SHOP_REMOTE', getenv('SHOP_REMOTE'));
 }
-
-define('shopURL', getenv('SELENIUM_TARGET'));
 
 if (getenv('oxSKIPSHOPSETUP') == 1) {
     define ('SKIPSHOPSETUP', true);

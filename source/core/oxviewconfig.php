@@ -770,11 +770,13 @@ class oxViewConfig extends oxSuperCfg
     /**
      * Returns config param "blShowFinalStep" value
      *
-     * @return string
+     * @deprecated since 2012-11-19. Option blShowFinalStep is removed
+     *
+     * @return bool
      */
     public function showFinalStep()
     {
-        return $this->getConfig()->getConfigParam( 'blShowFinalStep' );
+        return true;
     }
 
     /**

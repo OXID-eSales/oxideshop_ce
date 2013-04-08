@@ -622,7 +622,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         $sPaymentsTable = getViewName( 'oxpayments' );
 
         $sTestQ  = "select $sTable.* from( select distinct $sTable.* from $sTable, oxobject2group, oxobject2payment ";
-        $sTestQ .= "where $sTable.oxactive='1' and oxobject2group.oxobjectid = $sTable.oxid ";
+        $sTestQ .= "where $sTable.oxactive='1' "; // and oxobject2group.oxobjectid = $sTable.oxid
         $sTestQ .= "and oxobject2payment.oxpaymentid = $sTable.oxid and oxobject2payment.oxobjectid = 'xxx' ";
         $sTestQ .= "and $sPaymentsTable.oxfromboni <= '0' and $sPaymentsTable.oxfromamount <= '666' and $sPaymentsTable.oxtoamount >= '666' ";
         $sTestQ .= " ) as $sTable where ( select if( exists( select 1 from oxobject2payment as ss1, $sCountryTable where $sCountryTable.oxid=ss1.oxobjectid and ss1.oxpaymentid=$sTable.OXID and ss1.oxtype='oxcountry' limit 1),
@@ -634,13 +634,18 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
 
         $this->assertEquals( $this->cleanSQL( $sTestQ ), $this->cleanSQL( $sQ ) );
     }
-    // passing admin user
+
+    /**
+     * Testing SQL getter when  no user passed
+     */
     public function testGetFilterSelectAdminUser()
     {
         $this->oUser->addToGroup( '_testGroupId' );
+        $sGroupIds = '';
         foreach ( $this->oUser->getUserGroups() as $oGroup ) {
-            if ( $sGroupIds )
+            if ( $sGroupIds ) {
                 $sGroupIds .= ', ';
+            }
             $sGroupIds .= "'".$oGroup->getId()."'";
         }
 
@@ -649,7 +654,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         $sCountryTable = getViewName( 'oxcountry' );
 
         $sTestQ  = "select $sTable.* from( select distinct $sTable.* from $sTable, oxobject2group, oxobject2payment ";
-        $sTestQ .= "where $sTable.oxactive='1' and oxobject2group.oxobjectid = $sTable.oxid ";
+        $sTestQ .= "where $sTable.oxactive='1' "; //  and oxobject2group.oxobjectid = $sTable.oxid
         $sTestQ .= "and oxobject2payment.oxpaymentid = $sTable.oxid and oxobject2payment.oxobjectid = 'xxx' ";
         $sTestQ .= "and $sTable.oxfromboni <= '1000' and $sTable.oxfromamount <= '666' and $sTable.oxtoamount >= '666' ";
         $sTestQ .= ") as $sTable where ( select if( exists( select 1 from oxobject2payment as ss1, $sCountryTable where $sCountryTable.oxid=ss1.oxobjectid and ss1.oxpaymentid=$sTable.OXID and ss1.oxtype='oxcountry' limit 1),
@@ -714,6 +719,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         $oList = new oxpaymentlist();
         $this->assertEquals( array(), $oList->getPaymentList( $this->oDelSet->getId(), 666666, $this->oUser ) );
     }
+
     // all input is just fine + admin user
     public function testGetPaymentListAllIsFinePlusUserIsPassed()
     {

@@ -11,7 +11,7 @@
                                 [{assign var="editclass" value="account_recommlist&amp;fnc=editList"}]
                             [{/if}]
                             <a href="[{ oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=`$editclass`" params="recommid=`$recommlist->oxrecommlists__oxid->value`&amp;searchrecomm=`$searchrecomm`" }]" class="title" title="[{ $recommlist->oxrecommlists__oxtitle->value}]">[{ $recommlist->oxrecommlists__oxtitle->value }]</a></b>
-                            : [{ oxmultilang ident="PAGE_RECOMMENDATIONS_PRODUCTS_LISTBY" }] [{ $recommlist->oxrecommlists__oxauthor->value }]
+                            : [{ oxmultilang ident="LIST_BY" }] [{ $recommlist->oxrecommlists__oxauthor->value }]
                             <div class="editButtons">
                                 [{ if $blEdit }]
                                     <form action="[{ $oViewConf->getSelfActionLink() }]" method="post">
@@ -19,7 +19,7 @@
                                     <input type="hidden" name="cl" value="account_recommlist">
                                     <input type="hidden" name="fnc" value="editList">
                                     <input type="hidden" name="recommid" value="[{$recommlist->getId()}]">
-                                    <button class="textButton" type="submit" name="deleteList" value="1">[{ oxmultilang ident="PAGE_RECOMMENDATIONS_LIST_REMOVE" }]</button> | <button class="textButton" type="submit" name="editList">[{ oxmultilang ident="PAGE_RECOMMENDATIONS_LIST_EDIT" }]</button>
+                                    <button class="textButton" type="submit" name="deleteList" value="1">[{ oxmultilang ident="REMOVE" }]</button> | <button class="textButton" type="submit" name="editList">[{ oxmultilang ident="EDIT" }]</button>
                                     </form>
                                 [{/if}]
                             </div>
@@ -31,5 +31,5 @@
         [{/foreach}]
     </ul>
 [{else}]
-    [{ oxmultilang ident="PAGE_RECOMMENDATIONS_LIST_NOLISTS" }]
+    [{ oxmultilang ident="NO_LISTMANIA_LIST_FOUND" }]
 [{/if}]

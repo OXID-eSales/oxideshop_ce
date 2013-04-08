@@ -778,7 +778,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         //uncoment line to generate template for checking mail body
         //file_put_contents ('unit/email_templates/azure/'.__FUNCTION__.'_.html', $oEmail->getBody() );
 
-        if ( !$this->checkMailBody('testSendSendedNowMail', $oEmail->getBody() ) ) {
+        if ( !$this->checkMailBody('testSendNowMailSent', $oEmail->getBody() ) ) {
             $this->fail('Incorect mail body');
         }
     }
@@ -900,7 +900,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         // check mail fields
         $aFields['sRecipient']     = 'shopOwner@shopOwnerEmail.nl';
         $aFields['sRecipientName'] = 'testShopName';
-        $aFields['sSubject']       = oxLang::getInstance()->translateString('EMAIL_STOCKREMINDER_SUBJECT', 0 );
+        $aFields['sSubject']       = oxLang::getInstance()->translateString('STOCK_LOW', 0 );
         $aFields['sFrom']          = 'shopOwner@shopOwnerEmail.nl';
         $aFields['sFromName']      = 'testShopName';
 
@@ -985,7 +985,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
             // check mail fields
             $aFields['sRecipient']     = 'orderemail@orderemail.nl';
             $aFields['sRecipientName'] = 'testShopName';
-            $aFields['sSubject']       = oxLang::getInstance()->translateString('EMAIL_PRICEALARM_OWNER_SUBJECT', 0 ) . " testArticle";
+            $aFields['sSubject']       = oxLang::getInstance()->translateString('PRICE_ALERT_FOR_PRODUCT', 0 ) . " testArticle";
             $aFields['sFrom']          = 'username@useremail.nl';
             $aFields['sReplyTo']       = 'username@useremail.nl';
 

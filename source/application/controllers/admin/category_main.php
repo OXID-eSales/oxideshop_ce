@@ -44,12 +44,11 @@ class Category_Main extends oxAdminDetails
         parent::render();
 
         $this->_aViewData["edit"] = $oCategory = oxNew( "oxcategory" );;
-        $sChosenArtCat = oxConfig::getParameter( "artcat");
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if ( $soxId != "-1" && isset( $soxId)) {
 
             // generating category tree for select list
-            $sChosenArtCat = $this->_getCategoryTree( "artcattree", $sChosenArtCat, $soxId );
+            $this->_createCategoryTree( "artcattree", $soxId );
 
             // load object
             $oCategory->loadInLang( $this->_iEditLang, $soxId );
@@ -80,7 +79,7 @@ class Category_Main extends oxAdminDetails
 
             $this->_aViewData["defsort"] = $oCategory->oxcategories__oxdefsort->value;
         } else
-            $this->_getCategoryTree( "cattree", "", "", true, $myConfig->getShopId());
+            $this->_createCategoryTree( "cattree", "", true, $myConfig->getShopId());
 
         $this->_aViewData["sortableFields"] = $this->getSortableFields();
 
@@ -104,7 +103,7 @@ class Category_Main extends oxAdminDetails
         $aSkipFields = array( "OXID", "OXSHOPID", "OXSHOPINCL", "OXSHOPEXCL", "OXPARENTID", "OXACTIVE", "OXACTIVEFROM"
             , "OXACTIVETO", "OXSHORTDESC"
             , "OXUNITNAME", "OXUNITQUANTITY", "OXEXTURL", "OXURLDESC", "OXURLIMG", "OXVAT"
-            , "OXTHUMB", "OXPICSGENERATED", "OXPIC1", "OXPIC2", "OXPIC3", "OXPIC4", "OXPIC5"
+            , "OXTHUMB", "OXPIC1", "OXPIC2", "OXPIC3", "OXPIC4", "OXPIC5"
             , "OXPIC6", "OXPIC7", "OXPIC8", "OXPIC9", "OXPIC10", "OXPIC11", "OXPIC12", "OXSTOCKFLAG"
             , "OXSTOCKTEXT", "OXNOSTOCKTEXT", "OXDELIVERY", "OXFILE", "OXSEARCHKEYS", "OXTEMPLATE"
             , "OXQUESTIONEMAIL", "OXISSEARCH", "OXISCONFIGURABLE", "OXBUNDLEID", "OXFOLDER", "OXSUBCLASS"

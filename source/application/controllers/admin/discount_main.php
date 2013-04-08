@@ -79,7 +79,7 @@ class Discount_Main extends oxAdminDetails
                 return "popups/discount_main.tpl";
             } elseif ( $iAoc == "2" ) {
                 // generating category tree for artikel choose select list
-                $this->_getCategoryTree( "artcattree", null );
+                $this->_createCategoryTree( "artcattree" );
 
                 $oDiscountItemAjax = oxNew( 'discount_item_ajax' );
                 $this->_aViewData['oxajax'] = $oDiscountItemAjax->getColumns();

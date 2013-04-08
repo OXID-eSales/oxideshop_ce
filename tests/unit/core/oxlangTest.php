@@ -1505,35 +1505,32 @@ class Unit_Core_oxLangTest extends OxidTestCase
         $oLang = new oxLang();
 
         // non admin
-        $aRes = $oLang->getSimilarByKey( "DETAILS_VPE_MESSAGE_", 0, false );
-        $this->assertTrue( count( $aRes ) == 2 );
-        $this->assertTrue( isset( $aRes["DETAILS_VPE_MESSAGE_1"] ) );
-        $this->assertTrue( isset( $aRes["DETAILS_VPE_MESSAGE_2"] ) );
+        $aRes = $oLang->getSimilarByKey( "DETAILS_VPE_MESSAGE", 0, false );
+        $this->assertEquals(1, count( $aRes ) );
+        $this->assertTrue( isset( $aRes["DETAILS_VPE_MESSAGE"] ) );
 
-        $aRes = $oLang->getSimilarByKey( "DETAILS_VPE_MESSAGE_", 1, false );
-        $this->assertTrue( count( $aRes ) == 2 );
-        $this->assertTrue( isset( $aRes["DETAILS_VPE_MESSAGE_1"] ) );
-        $this->assertTrue( isset( $aRes["DETAILS_VPE_MESSAGE_2"] ) );
+        $aRes = $oLang->getSimilarByKey( "DETAILS_VPE_MESSAGE", 1, false );
+        $this->assertEquals( 1, count( $aRes ) );
+        $this->assertTrue( isset( $aRes["DETAILS_VPE_MESSAGE"] ) );
 
         // non admin from map
-        $aRes = $oLang->getSimilarByKey( "ADD_RECOMM_", 0, false );
-        $this->assertTrue( count( $aRes ) == 6 );
-        $this->assertTrue( isset( $aRes["ADD_RECOMM_ADDRECOMMLINK1"] ) );
-        $this->assertTrue( isset( $aRes["ADD_RECOMM_YOURCOMMENT"] ) );
-
-        $aRes = $oLang->getSimilarByKey( "ADD_RECOMM_", 1, false );
-        $this->assertTrue( count( $aRes ) == 6 );
-        $this->assertTrue( isset( $aRes["ADD_RECOMM_ADDRECOMMLINK1"] ) );
-        $this->assertTrue( isset( $aRes["ADD_RECOMM_YOURCOMMENT"] ) );
+//      map is being removed, deprecated
+//        $aRes = $oLang->getSimilarByKey( "ADD_RECOMM_", 0, false );
+//        $this->assertEquals( 2, count( $aRes ) );
+//        $this->assertTrue( isset( $aRes["ADD_RECOMM_ADDRECOMMLINK1"] ) );
+//
+//        $aRes = $oLang->getSimilarByKey( "ADD_RECOMM_", 1, false );
+//        $this->assertEquals( 2, count( $aRes ) );
+//        $this->assertTrue( isset( $aRes["ADD_RECOMM_ADDRECOMMLINK1"] ) );
 
         // admin
         $aRes = $oLang->getSimilarByKey( "GENERAL_FIELDS_", 0, true );
-        $this->assertTrue( count( $aRes ) == 3 );
+        $this->assertEquals( 3, count( $aRes ) );
         $this->assertTrue( isset( $aRes["GENERAL_FIELDS_ADD"] ) );
         $this->assertTrue( isset( $aRes["GENERAL_FIELDS_DELETE"] ) );
 
         $aRes = $oLang->getSimilarByKey( "GENERAL_FIELDS_", 1, true );
-        $this->assertTrue( count( $aRes ) == 3 );
+        $this->assertEquals( 3, count( $aRes ) );
         $this->assertTrue( isset( $aRes["GENERAL_FIELDS_ADD"] ) );
         $this->assertTrue( isset( $aRes["GENERAL_FIELDS_DELETE"] ) );
     }

@@ -4,7 +4,7 @@
     <div id="zoomModal" class="popupBox corners FXgradGreyLight glowShadow">
         <img src="[{$oViewConf->getImageUrl('x.png')}]" alt="" class="closePop">
         <div class="zoomHead">
-            [{oxmultilang ident="PAGE_DETAILS_ZOOMPOP"}]
+            [{oxmultilang ident="PRODUCT_IMAGES"}]
             <a href="#zoom"><span></span></a>
         </div>
         <div class="zoomed">

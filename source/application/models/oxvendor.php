@@ -145,7 +145,7 @@ class oxVendor extends oxI18n implements oxIUrl
     {
         $this->setId( 'root' );
         $this->oxvendor__oxicon = new oxField( '', oxField::T_RAW );
-        $this->oxvendor__oxtitle = new oxField( oxRegistry::getLang()->translateString( 'byVendor', $this->getLanguage(), false ), oxField::T_RAW );
+        $this->oxvendor__oxtitle = new oxField( oxRegistry::getLang()->translateString( 'BY_VENDOR', $this->getLanguage(), false ), oxField::T_RAW );
         $this->oxvendor__oxshortdesc = new oxField( '', oxField::T_RAW );
 
         return true;

@@ -7,9 +7,7 @@
 [{/if}]
 
 [{if $oView->showZoomPics()}]
-    [{oxscript add="$( '#zoomTrigger' ).oxModalPopup({target:'#zoomModal'});"}]
     [{oxscript add="$( '#morePicsContainer' ).oxMorePictures();"}]
-    [{oxscript add="$('.cloud-zoom, .cloud-zoom-gallery').CloudZoom();"}]
 [{/if}]
 
 [{oxscript add="$( '#productTitle' ).oxArticleActionLinksSelect();"}]

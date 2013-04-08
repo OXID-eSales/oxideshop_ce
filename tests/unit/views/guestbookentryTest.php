@@ -74,7 +74,7 @@ class Unit_Views_GuestbookEntryTest extends OxidTestCase
 
         $oExcp = unserialize( $aErrors['default'][0] );
         $this->assertTrue( $oExcp instanceof oxDisplayError );
-        $this->assertEquals( oxLang::getInstance()->translateString( "EXCEPTION_GUESTBOOKENTRY_ERRLOGGINTOWRITEENTRY" ), $oExcp->getOxMessage() );
+        $this->assertEquals( oxLang::getInstance()->translateString( "ERROR_MESSAGE_GUESTBOOK_ENTRY_ERR_LOGIN_TO_WRITE_ENTRY" ), $oExcp->getOxMessage() );
     }
 
     /**
@@ -99,7 +99,7 @@ class Unit_Views_GuestbookEntryTest extends OxidTestCase
 
         $oExcp = unserialize( $aErrors['default'][0] );
         $this->assertTrue( $oExcp instanceof oxDisplayError );
-        $this->assertEquals( oxLang::getInstance()->translateString( "EXCEPTION_GUESTBOOKENTRY_ERRUNDEFINEDSHOP" ), $oExcp->getOxMessage() );
+        $this->assertEquals( oxLang::getInstance()->translateString( "ERROR_MESSAGE_GUESTBOOK_ENTRY_ERR_UNDEFINED_SHOP" ), $oExcp->getOxMessage() );
     }
 
     /**
@@ -120,7 +120,7 @@ class Unit_Views_GuestbookEntryTest extends OxidTestCase
 
         $oExcp = unserialize( $aErrors['default'][0] );
         $this->assertTrue( $oExcp instanceof oxDisplayError );
-        $this->assertEquals( oxLang::getInstance()->translateString( "EXCEPTION_GUESTBOOKENTRY_ERRREVIEWCONTAINSNOTEXT" ), $oExcp->getOxMessage() );
+        $this->assertEquals( oxLang::getInstance()->translateString( "ERROR_MESSAGE_GUESTBOOK_ENTRY_ERR_REVIEW_CONTAINS_NO_TEXT" ), $oExcp->getOxMessage() );
     }
 
     /**
@@ -143,7 +143,7 @@ class Unit_Views_GuestbookEntryTest extends OxidTestCase
 
         $oExcp = unserialize( $aErrors['default'][0] );
         $this->assertTrue( $oExcp instanceof oxDisplayError );
-        $this->assertEquals( oxLang::getInstance()->translateString( "EXCEPTION_GUESTBOOKENTRY_ERRMAXIMUMNOMBEREXCEEDED" ), $oExcp->getOxMessage() );
+        $this->assertEquals( oxLang::getInstance()->translateString( "ERROR_MESSAGE_GUESTBOOK_ENTRY_ERR_MAXIMUM_NUMBER_EXCEEDED" ), $oExcp->getOxMessage() );
     }
 
     /**

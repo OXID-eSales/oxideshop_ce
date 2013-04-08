@@ -139,7 +139,7 @@ class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
      */
     public function testGetCreateTableSetSql()
     {
-        $sTestSql = "CREATE TABLE `oxcountry_set1` (`OXID` char(32) COLLATE latin1_general_ci NOT NULL, PRIMARY KEY (`OXID`)) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci";
+        $sTestSql = "CREATE TABLE `oxcountry_set1` (`OXID` char(32) COLLATE latin1_general_ci NOT NULL, PRIMARY KEY (`OXID`)) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci COMMENT='Countries list'";
 
         $oDbMeta = $this->getProxyClass( "oxDbMetaDataHandler" );
 
@@ -152,7 +152,7 @@ class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
      */
     public function testGetAddFieldSql()
     {
-        $sTestSql = "alter TABLE `oxcountry` ADD `OXTITLE_4` char(128) collate latin1_general_ci NOT NULL default '' AFTER `OXTITLE_3`";
+        $sTestSql = "alter TABLE `oxcountry` ADD `OXTITLE_4` char(128) collate latin1_general_ci NOT NULL default ''  AFTER `OXTITLE_3`";
 
         $oDbMeta = $this->getProxyClass( "oxDbMetaDataHandler" );
 
@@ -228,9 +228,9 @@ class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
      */
     public function testAddNewMultilangFieldAlterTable()
     {
-        $aTestSql[] = "ALTER TABLE `oxcountry` ADD `OXTITLE_4` char(128) collate latin1_general_ci NOT NULL default '' AFTER `OXTITLE_3`";
-        $aTestSql[] = "ALTER TABLE `oxcountry` ADD `OXSHORTDESC_4` char(128) collate latin1_general_ci NOT NULL default '' AFTER `OXSHORTDESC_3`";
-        $aTestSql[] = "ALTER TABLE `oxcountry` ADD `OXLONGDESC_4` char(255) collate latin1_general_ci NOT NULL default '' AFTER `OXLONGDESC_3`";
+        $aTestSql[] = "ALTER TABLE `oxcountry` ADD `OXTITLE_4` char(128) collate latin1_general_ci NOT NULL default ''  AFTER `OXTITLE_3`";
+        $aTestSql[] = "ALTER TABLE `oxcountry` ADD `OXSHORTDESC_4` char(128) collate latin1_general_ci NOT NULL default ''  AFTER `OXSHORTDESC_3`";
+        $aTestSql[] = "ALTER TABLE `oxcountry` ADD `OXLONGDESC_4` char(255) collate latin1_general_ci NOT NULL default ''  AFTER `OXLONGDESC_3`";
 
         $oDbMeta = $this->getMock( 'oxdbmetadatahandler', array( 'executeSql' ) );
 
@@ -244,10 +244,10 @@ class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
      */
     public function testAddNewMultilangFieldCreateTable()
     {
-        $aTestSql[] = "CREATE TABLE `oxcountry_set1` (`OXID` char(32) COLLATE latin1_general_ci NOT NULL, PRIMARY KEY (`OXID`)) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci";
-        $aTestSql[] = "ALTER TABLE `oxcountry_set1` ADD `OXTITLE_8` char(128) collate latin1_general_ci NOT NULL default ''";
-        $aTestSql[] = "ALTER TABLE `oxcountry_set1` ADD `OXSHORTDESC_8` char(128) collate latin1_general_ci NOT NULL default ''";
-        $aTestSql[] = "ALTER TABLE `oxcountry_set1` ADD `OXLONGDESC_8` char(255) collate latin1_general_ci NOT NULL default ''";
+        $aTestSql[] = "CREATE TABLE `oxcountry_set1` (`OXID` char(32) COLLATE latin1_general_ci NOT NULL, PRIMARY KEY (`OXID`)) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci COMMENT='Countries list'";
+        $aTestSql[] = "ALTER TABLE `oxcountry_set1` ADD `OXTITLE_8` char(128) collate latin1_general_ci NOT NULL DEFAULT '' ";
+        $aTestSql[] = "ALTER TABLE `oxcountry_set1` ADD `OXSHORTDESC_8` char(128) collate latin1_general_ci NOT NULL DEFAULT '' ";
+        $aTestSql[] = "ALTER TABLE `oxcountry_set1` ADD `OXLONGDESC_8` char(255) collate latin1_general_ci NOT NULL DEFAULT '' ";
 
         $oDbMeta = $this->getMock( 'oxdbmetadatahandler', array( 'executeSql','getCurrentMaxLangId' ) );
         $oDbMeta->expects( $this->any() )->method( 'getCurrentMaxLangId' )->will( $this->returnValue( 7 ) );

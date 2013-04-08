@@ -129,7 +129,7 @@ function callFunctionOnObject($sClassName, $sFunctionName, $sOxid = null, $sClas
 
 function getTableNameFromClassName($sClassName)
 {
-    $aClassNameWithoutS   = array("oxarticle", "oxrole", "oxrating", "oxreview", "oxrecommlist", "oxmanufacturer", "oxvoucherserie");
+    $aClassNameWithoutS   = array("oxarticle", "oxrole", "oxrating", "oxreview","oxrecommlist", "oxmanufacturer", "oxvoucherserie");
     $aClassNameWithoutIes = array("oxcategory");
 
     $sTableName = strtolower($sClassName);

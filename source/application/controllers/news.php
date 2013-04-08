@@ -96,7 +96,7 @@ class News extends oxUBase
         $aPaths = array();
         $aPath  = array();
 
-        $aPath['title'] = oxRegistry::getLang()->translateString( 'PAGE_INFO_NEWS_TITLE', oxRegistry::getLang()->getBaseLanguage(), false );
+        $aPath['title'] = oxRegistry::getLang()->translateString( 'LATEST_NEWS_AND_UPDATES_AT', oxRegistry::getLang()->getBaseLanguage(), false );
         $aPath['link']  = $this->getLink();
 
         $aPaths[] = $aPath;

@@ -301,12 +301,12 @@ class Unit_Views_compareTest extends OxidTestCase
         $aCatPath = array();
         $aResult  = array();
 
-        $aCatPath['title'] = oxLang::getInstance()->translateString( 'PAGE_ACCOUNT_MY_ACCOUNT', 0, false );
+        $aCatPath['title'] = oxLang::getInstance()->translateString( 'MY_ACCOUNT', 0, false );
         $aCatPath['link']  = oxSeoEncoder::getInstance()->getStaticUrl( $oCompare->getViewConfig()->getSelfLink() . 'cl=account' );
 
         $aResult[] = $aCatPath;
 
-        $aCatPath['title'] = oxLang::getInstance()->translateString( 'PAGE_PRODUCT_COMPARE_TITLE', 0, false );
+        $aCatPath['title'] = oxLang::getInstance()->translateString( 'PRODUCT_COMPARISON', 0, false );
         $aCatPath['link']  = $oCompare->getLink();
 
         $aResult[] = $aCatPath;

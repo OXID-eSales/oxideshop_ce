@@ -53,7 +53,7 @@ class Unit_Views_linksTest extends OxidTestCase
         $aResult  = array();
         $aResults = array();
 
-        $aResult["title"] = oxLang::getInstance()->translateString( 'PAGE_INFO_LINKS_TITLE', oxLang::getInstance()->getBaseLanguage(), false );
+        $aResult["title"] = oxLang::getInstance()->translateString( 'LINKS', oxLang::getInstance()->getBaseLanguage(), false );
         $aResult["link"]  = $oLinks->getLink();
 
         $aResults[] = $aResult;

@@ -80,7 +80,7 @@ class Tags extends oxUBase
     public function getTitlePageSuffix()
     {
         if ( ( $iPage = $this->getActPage() ) ) {
-            return oxRegistry::getLang()->translateString( 'INC_HEADER_TITLEPAGE' ). ( $iPage + 1 );
+            return oxRegistry::getLang()->translateString( 'PAGE' )." ". ( $iPage + 1 );
         }
     }
 

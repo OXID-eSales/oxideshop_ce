@@ -314,26 +314,26 @@ class GuestBook extends oxUBase
 
         // guest book`s entry is validated
         if ( !$sUserId ) {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay( 'EXCEPTION_GUESTBOOKENTRY_ERRLOGGINTOWRITEENTRY' );
+            oxRegistry::get("oxUtilsView")->addErrorToDisplay( 'ERROR_MESSAGE_GUESTBOOK_ENTRY_ERR_LOGIN_TO_WRITE_ENTRY' );
             //return to same page
             return;
         }
 
         if ( !$sShopId ) {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay( 'EXCEPTION_GUESTBOOKENTRY_ERRUNDEFINEDSHOP' );
+            oxRegistry::get("oxUtilsView")->addErrorToDisplay( 'ERROR_MESSAGE_GUESTBOOK_ENTRY_ERR_UNDEFINED_SHOP' );
             return 'guestbookentry';
         }
 
         // empty entries validation
         if ( '' == $sReviewText ) {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay( 'EXCEPTION_GUESTBOOKENTRY_ERRREVIEWCONTAINSNOTEXT' );
+            oxRegistry::get("oxUtilsView")->addErrorToDisplay( 'ERROR_MESSAGE_GUESTBOOK_ENTRY_ERR_REVIEW_CONTAINS_NO_TEXT' );
             return 'guestbook';
         }
 
         // flood protection
         $oEntrie = oxNew( 'oxgbentry' );
         if ( $oEntrie->floodProtection( $sShopId, $sUserId ) ) {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay( 'EXCEPTION_GUESTBOOKENTRY_ERRMAXIMUMNOMBEREXCEEDED' );
+            oxRegistry::get("oxUtilsView")->addErrorToDisplay( 'ERROR_MESSAGE_GUESTBOOK_ENTRY_ERR_MAXIMUM_NUMBER_EXCEEDED' );
             return 'guestbookentry';
         }
 
@@ -360,7 +360,7 @@ class GuestBook extends oxUBase
         $aPaths = array();
         $aPath = array();
 
-        $aPath['title'] = oxRegistry::getLang()->translateString( 'PAGE_GUESTBOOK_LIST_GUESTBOOK', oxRegistry::getLang()->getBaseLanguage(), false );
+        $aPath['title'] = oxRegistry::getLang()->translateString( 'GUESTBOOK', oxRegistry::getLang()->getBaseLanguage(), false );
         $aPath['link']  = $this->getLink();
         $aPaths[] = $aPath;
 

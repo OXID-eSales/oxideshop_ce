@@ -59,7 +59,6 @@ function smarty_modifier_oxmultilangassign( $sIdent, $args = null )
     if ( $sTranslation == $sIdent ) {
         $sTranslation = '<b>ERROR : Translation for '.$sIdent.' not found!</b>';
     }
-
     if ( $args ) {
         if ( is_array( $args ) ) {
             $sTranslation = vsprintf( $sTranslation, $args );
@@ -67,6 +66,5 @@ function smarty_modifier_oxmultilangassign( $sIdent, $args = null )
             $sTranslation = sprintf( $sTranslation, $args );
         }
     }
-
     return $sTranslation;
 }

@@ -19,7 +19,7 @@
  *   change config
  */
 $aData = array(
-
+    'skipped' => 1,
     'skipped' => 1, // while not fixed 0004631: Discount quantity and purchase price filters are working incorrectly
 
     'articles' => array (

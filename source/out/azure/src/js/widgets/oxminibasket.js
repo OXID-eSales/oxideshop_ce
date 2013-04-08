@@ -53,6 +53,14 @@
                 return false;
             });
 
+            // close basket on ESC key
+            $(document).keydown( function( e ) {
+                if( e.which == 27) {
+                    $(".basketFlyout").hide();
+                    clearTimeout(timeout);
+                }
+             });
+
             // show / hide added article message
             if($("#newItemMsg").length > 0){
                 $("#countValue").hide();

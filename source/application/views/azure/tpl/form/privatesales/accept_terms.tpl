@@ -1,4 +1,4 @@
-<div class="col">
+<div>
     [{oxscript include="js/widgets/oxinputvalidator.js" priority=10 }]
     [{oxscript add="$('form.js-oxValidate').oxInputValidator();"}]
     <form name="login" class="js-oxValidate" action="[{ $oViewConf->getSslSelfLink() }]" method="post">
@@ -18,15 +18,15 @@
             [{/if}]
             <input type="hidden" name="ord_agb" value="0">
         </div>
-        <ul class="clear">
+            <ul class="clear agb">
             <li>
                 <input id="orderConfirmAgb" type="checkbox" name="ord_agb" value="1">
-                <label id="confirmLabel">[{oxifcontent ident="oxrighttocancellegend" object="oContent"}]
+                <label id="confirmLabel" for="orderConfirmAgb">[{oxifcontent ident="oxrighttocancellegend" object="oContent"}]
                     [{ $oContent->oxcontents__oxcontent->value }]
                     [{/oxifcontent}]</label>
             </li>
             <li class="formSubmit">
-                <button id="confirmButton" type="submit" class="submitButton largeButton">[{ oxmultilang ident="FORM_LOGIN_ACCOUNT_LOGIN" }]</button>
+                <button id="confirmButton" type="submit" class="submitButton largeButton">[{ oxmultilang ident="LOGIN" }]</button>
             </li>
         </ul>
     </form>

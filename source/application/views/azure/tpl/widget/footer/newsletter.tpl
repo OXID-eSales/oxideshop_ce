@@ -7,8 +7,8 @@
         [{assign var="product" value=$oView->getProduct() }]
         <input type="hidden" name="anid" value="[{ $product->oxarticles__oxnid->value }]">
     [{/if}]
-    <label>[{ oxmultilang ident="WIDGET_FOOTER_NEWSLETTER_TITLE" }]</label>
+    <label>[{ oxmultilang ident="NEWSLETTER" }]</label>
     <input class="textbox" type="text" name="editval[oxuser__oxusername]" value="">
-    <button class="submitButton largeButton" type="submit">[{ oxmultilang ident="FORM_NEWSLETTER_SUBSCRIBE" }]</button>
+    <button class="submitButton largeButton" type="submit">[{ oxmultilang ident="SUBSCRIBE" }]</button>
   </div>
 </form>

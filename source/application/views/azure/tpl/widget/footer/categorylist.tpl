@@ -2,7 +2,7 @@
     [{assign var="categories" value=$oxcmp_categories }]
     [{block name="footer_categories"}]
     <dl class="categories" id="footerCategories">
-        <dt>[{oxmultilang ident="FOOTER_CATEGORIES" }]</dt>
+        <dt>[{oxmultilang ident="CATEGORIES" }]</dt>
         <dd>
             <ul class="list categories">
                 [{foreach from=$categories item=_cat}]

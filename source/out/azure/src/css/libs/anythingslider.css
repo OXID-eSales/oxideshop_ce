@@ -201,6 +201,10 @@ div.anythingSlider, div.anythingSlider .anythingWindow, div.anythingSlider .thum
     font-size: 14px;
 }
 
+.promoBox.wide {
+    width: 400px;
+}
+
 .promoBox strong {
     float: left;
     display: block;
@@ -214,7 +218,15 @@ div.anythingSlider, div.anythingSlider .anythingWindow, div.anythingSlider .thum
     text-shadow: 0px -1px 0px #486066;
 }
 
+.promoBox strong.promoPrice.wide {
+    width: 120px;
+}
+
 .promoBox strong.promoTitle {
     width: 200px;
     text-shadow: 0px 1px 1px #fff;
+}
+
+.promoBox strong.promoTitle.wide {
+    width: 240px;
 }

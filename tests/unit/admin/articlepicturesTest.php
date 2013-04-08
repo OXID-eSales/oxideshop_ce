@@ -258,13 +258,11 @@ class Unit_Admin_ArticlePicturesTest extends OxidTestCase
         $oArtPic = $this->getMock( "Article_Pictures", array( "_resetMasterPicture" ) );
         $oArtPic->expects( $this->once() )->method( '_resetMasterPicture' );
 
-        $this->_oArticle->oxarticles__oxpicsgenerated = new oxField( 2 );
         $this->_oArticle->save();
 
         $oArtPic->deletePicture();
 
         $this->_oArticle->load( "_testArtId" );
-        $this->assertEquals( 0, $this->_oArticle->oxarticles__oxpicsgenerated->value );
     }
 
     /**

@@ -6,18 +6,18 @@
     [{assign var="currency" value=$oView->getActCurrency() }]
     [{block name="checkout_wrapping_header"}]
         <div class="wrappingIntro clear">
-            <h3>[{ oxmultilang ident="PAGE_CHECKOUT_WRAPPING_GIFTOPTION" }]</h3>
-            <img src="[{$oViewConf->getImageUrl('gift-wrapping.jpg')}]" alt="[{ oxmultilang ident="PAGE_CHECKOUT_WRAPPING_ADDWRAPPING" }]">
+            <h3>[{ oxmultilang ident="GIFT_OPTION" }]</h3>
+            <img src="[{$oViewConf->getImageUrl('gift-wrapping.jpg')}]" alt="[{ oxmultilang ident="ADD_WRAPPING" }]">
             <div class="introtext">
-                [{ oxmultilang ident="PAGE_CHECKOUT_WRAPPING_PERSONALMESSAGE" }]
+                [{ oxmultilang ident="WRAPPING_DESCRIPTION" }]
             </div>
         </div>
     [{/block}]
 
     [{block name="checkout_wrapping_contents"}]
-        <h3 class="blockHead">[{ oxmultilang ident="PAGE_CHECKOUT_WRAPPING_ADDWRAPPING" }]</h3>
+        <h3 class="blockHead">[{ oxmultilang ident="ADD_WRAPPING" }]</h3>
         [{if !$oxcmp_basket->getProductsCount()}]
-            <div>[{ oxmultilang ident="PAGE_CHECKOUT_WRAPPING_BASKETEMPTY" }]</div>
+            <div>[{ oxmultilang ident="BASKET_EMPTY" }]</div>
         [{else}]
             <form name="basket" action="[{ $oViewConf->getSelfActionLink() }]" method="post">
                 [{ $oViewConf->getHiddenSid() }]
@@ -50,7 +50,7 @@
                                         <ul id="wrapp_[{$smarty.foreach.wrappArt.iteration}]">
                                             <li>
                                                 <input class="radiobox" type="radio" name="wrapping[[{$basketindex}]]" id="wrapping_[{$basketindex}]" value="0" [{ if !$basketitem->getWrappingId()}]CHECKED[{/if}]>
-                                                <label for="wrapping_[{$basketindex}]">[{ oxmultilang ident="PAGE_CHECKOUT_WRAPPING_NONE" }]</label><strong>0,00 [{ $currency->sign}]</strong>
+                                                <label for="wrapping_[{$basketindex}]">[{ oxmultilang ident="NONE" }]</label><strong>0,00 [{ $currency->sign}]</strong>
                                             </li>
                                             [{assign var="ictr" value="1"}]
                                             [{foreach from=$oView->getWrappingList() item=wrapping name=Wraps}]
@@ -78,12 +78,12 @@
                 [{assign var="oCardList" value=$oView->getCardList()}]
                 [{if $oCardList->count()}]
                     [{block name="checkout_wrapping_cards"}]
-                        <h3 class="blockHead">[{ oxmultilang ident="PAGE_CHECKOUT_WRAPPING_GREETINGCARD" }]</h3>
+                        <h3 class="blockHead">[{ oxmultilang ident="GREETING_CARD" }]</h3>
                         <ul class="wrappingCard clear" id="wrappCard">
                             <li>
                                 <p class="clear">
                                     <input type="radio" class="radiobox" name="chosencard" id="chosencard" value="0" [{ if !$oxcmp_basket->getCardId() }]CHECKED[{/if}]>
-                                    <label for="chosencard">[{ oxmultilang ident="PAGE_CHECKOUT_WRAPPING_NOGREETINGCARD" }]</label>
+                                    <label for="chosencard">[{ oxmultilang ident="NO_GREETING_CARD" }]</label>
                                 </p>
                             </li>
                         [{assign var="icounter" value="0"}]
@@ -107,15 +107,15 @@
                     [{/block}]
                     [{block name="checkout_wrapping_comment"}]
                         <div class="wrappingComment">
-                            <label>[{ oxmultilang ident="PAGE_CHECKOUT_WRAPPING_GREETINGMESSAGE" }]</label>
+                            <label>[{ oxmultilang ident="GREETING_MESSAGE" }]</label>
                             <textarea cols="102" rows="5" name="giftmessage" class="areabox">[{$oxcmp_basket->getCardMessage()}]</textarea>
                         </div>
                     [{/block}]
                 [{/if}]
                 [{block name="checkout_wrapping_submit"}]
                     <div class="submitForm clear">
-                        <button type="submit" class="submitButton largeButton">[{ oxmultilang ident="PAGE_CHECKOUT_WRAPPING_BACKTOORDER" }]</button>
-                        <button class="textButton largeButton closePop">[{ oxmultilang ident="PAGE_CHECKOUT_WRAPPING_CANCEL" }]</button>
+                        <button type="submit" class="submitButton largeButton">[{ oxmultilang ident="APPLAY" }]</button>
+                        <button class="textButton largeButton closePop">[{ oxmultilang ident="CANCEL" }]</button>
                     </div>
                 [{/block}]
             </form>

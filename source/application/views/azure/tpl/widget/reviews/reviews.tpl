@@ -16,7 +16,7 @@
                             </li>
                             [{section name=star start=1 loop=6}]
                                 <li class="s[{$smarty.section.star.index}]">
-                                  <a class="ox-write-review ox-rateindex-[{$smarty.section.star.index}]" rel="nofollow" title="[{$smarty.section.star.index}] [{if $smarty.section.star.index==1}][{oxmultilang ident="DETAILS_STAR"}][{else}][{oxmultilang ident="DETAILS_STARS"}][{/if}]"></a>
+                                  <a class="ox-write-review ox-rateindex-[{$smarty.section.star.index}]" rel="nofollow" title="[{$smarty.section.star.index}] [{if $smarty.section.star.index==1}][{oxmultilang ident="STAR"}][{else}][{oxmultilang ident="STARS"}][{/if}]"></a>
                                 </li>
                             [{/section}]
                         </ul>
@@ -38,12 +38,12 @@
                     [{/if}]
 
                     <textarea  rows="15" name="rvw_txt" class="areabox"></textarea><br>
-                    <button id="reviewSave" type="submit" class="submitButton">[{oxmultilang ident="DETAILS_SAVEREVIEW"}]</button>
+                    <button id="reviewSave" type="submit" class="submitButton">[{oxmultilang ident="SAVE_RATING_AND_REVIEW"}]</button>
                 </div>
             </form>
-            <a id="writeNewReview" rel="nofollow"><b>[{oxmultilang ident="DETAILS_WRITEREVIEW"}]</b></a>
+            <a id="writeNewReview" rel="nofollow"><b>[{oxmultilang ident="WRITE_REVIEW"}]</b></a>
         [{else}]
-            <a id="reviewsLogin" rel="nofollow" href="[{oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=account" params="anid=`$oDetailsProduct->oxarticles__oxnid->value`"|cat:"&amp;sourcecl="|cat:$oViewConf->getActiveClassName()|cat:$oViewConf->getNavUrlParams()}]"><b>[{oxmultilang ident="DETAILS_LOGINTOWRITEREVIEW"}]</b></a>
+            <a id="reviewsLogin" rel="nofollow" href="[{oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=account" params="anid=`$oDetailsProduct->oxarticles__oxnid->value`"|cat:"&amp;sourcecl="|cat:$oViewConf->getActiveClassName()|cat:$oViewConf->getNavUrlParams()}]"><b>[{oxmultilang ident="MESSAGE_LOGIN_TO_WRITE_REVIEW"}]</b></a>
         [{/if}]
     [{/block}]
 
@@ -54,7 +54,7 @@
                 [{block name="widget_reviews_record"}]
                     <dt id="reviewName_[{$smarty.foreach.ReviewsCounter.iteration}]" class="clear item">
                         <span>
-                            <span>[{$review->oxuser__oxfname->value}]</span> [{oxmultilang ident="DETAILS_WRITES"}]
+                            <span>[{$review->oxuser__oxfname->value}]</span> [{oxmultilang ident="WRITES" suffix="COLON" }]
                             <span>[{$review->oxreviews__oxcreate->value|date_format:"%d.%m.%Y"}]</span>
                         </span>
                         [{if $review->oxreviews__oxrating->value}]
@@ -73,7 +73,7 @@
     [{else}]
         <dl>
             <dt id="reviewName_[{$smarty.foreach.ReviewsCounter.iteration}]">
-                [{oxmultilang ident="DETAILS_REVIEWNOTAVAILABLE"}]
+                [{oxmultilang ident="NO_REVIEW_AVAILABLE"}]
             </dt>
             <dd></dd>
         </dl>

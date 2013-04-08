@@ -27,6 +27,18 @@ require_once realpath( "." ).'/unit/test_config.inc.php';
 
 /**
  * Tests language files and templates for missing constants.
+ * Slower tests at the end.
+ * Tests cases:
+ * - language file encoding
+ * - identifier checks
+ *   -checks that language constants are equal
+ *   -checks that map constants are equal
+ * - check if all maps are bound to the same translations
+ * - check if there are no colons at the end
+ * - check if translations are unique and can't be changed.
+ * - ensure html entities are'nt used
+ * - make sure all templates have translations
+ * - find unused translations. Too long, not to be used for automatic testing.
  */
 class Unit_Maintenance_langFileIntegrityTest extends OxidTestCase
 {
@@ -42,446 +54,783 @@ class Unit_Maintenance_langFileIntegrityTest extends OxidTestCase
     }
 
     /**
-     * Test if generic language files encodding is correct.
+     * dataProvider with language values
      *
-     * @return null
+     * @return array
      */
-    public function testLanguageFileEncodingGeneric()
+    public function providerLang()
     {
-        $aLangDE = $this->_getLanguageArray('', 1, 'de', '*.php', $sLangDE);
-        $aLangEN = $this->_getLanguageArray('', 1, 'en', '*.php', $sLangEN);
-
-        $this->assertEquals( 'ISO-8859-15', mb_detect_encoding($sLangDE, "ISO-8859-15, UTF-8", true));
-        $this->assertEquals( 'ISO-8859-15', mb_detect_encoding($sLangEN, "ISO-8859-15, UTF-8", true));
-
-        $this->assertEquals( 'ISO-8859-15', $aLangDE['charset'], 'Charset must be ISO-8859-15');
-        $this->assertEquals( 'ISO-8859-15', $aLangEN['charset'], 'Charset must be ISO-8859-15');
-
-        $this->assertEquals( utf8_decode($sLangDE), utf8_decode(utf8_decode($sLangDE)), 'No double utf8 encoding');
-        $this->assertEquals( utf8_decode($sLangEN), utf8_decode(utf8_decode($sLangEN)), 'No double utf8 encoding');
-
-        $this->assertEquals( str_replace("\t", "", $sLangDE), $sLangDE, 'No tab characters allowed');
-        $this->assertEquals( str_replace("\t", "", $sLangEN), $sLangEN, 'No tab characters allowed');
+        return array(
+            array('de'),
+            array('en')
+        );
     }
 
     /**
-     * Test if azure language files encodding is correct.
-
-     * @return null
+     * dataProvider with theme values
+     *
+     * @return array
      */
-    public function testLanguageFileEncodingAzure()
+    public function providerTheme()
     {
-        $aLangDE = $this->_getLanguageArray('azure', 1, 'de', '*.php', $sLangDE);
-        $aLangEN = $this->_getLanguageArray('azure', 1, 'en', '*.php', $sLangEN);
-
-        $this->assertEquals( 'ISO-8859-15', mb_detect_encoding($sLangDE, "ISO-8859-15, UTF-8", true));
-        $this->assertEquals( 'ISO-8859-15', mb_detect_encoding($sLangEN, "ISO-8859-15, UTF-8", true));
-
-        $this->assertEquals( 'ISO-8859-15', $aLangDE['charset'], 'Charset must be ISO-8859-15');
-        $this->assertEquals( 'ISO-8859-15', $aLangEN['charset'], 'Charset must be ISO-8859-15');
-
-        $this->assertEquals( utf8_decode($sLangDE), utf8_decode(utf8_decode($sLangDE)), 'No double utf8 encoding');
-        $this->assertEquals( utf8_decode($sLangEN), utf8_decode(utf8_decode($sLangEN)), 'No double utf8 encoding');
-
-        $this->assertEquals( str_replace("\t", "", $sLangDE), $sLangDE, 'No tab characters allowed');
-        $this->assertEquals( str_replace("\t", "", $sLangEN), $sLangEN, 'No tab characters allowed');
+        return array(
+            array(''),
+            array('azure'),
+            array('admin')
+        );
+    }
+    /**
+     * dataProvider with language and theme values without admin values
+     *
+     * @return array
+     */
+    public function providerLangTheme()
+    {
+        return array(
+            array('de', ''),
+            array('en', ''),
+            array('de', 'azure'),
+            array('en', 'azure')
+        );
     }
 
     /**
-     * Test if admin language files encodding is correct.
+     * dataProvider with language and theme values with admin values
      *
-     * @return null
+     * @return array
      */
-    public function testLanguageFileEncodingAdmin()
+    public function providerLangThemeWithAdmin()
     {
-        $aLangDE = $this->_getLanguageArray('admin', 1, 'de', '*.php', $sLangDE);
-        $aLangEN = $this->_getLanguageArray('admin', 1, 'en', '*.php', $sLangEN);
-
-        $this->assertEquals( 'ISO-8859-15', mb_detect_encoding($sLangDE, "ISO-8859-15, UTF-8", true));
-        $this->assertEquals( 'ISO-8859-15', mb_detect_encoding($sLangEN, "ISO-8859-15, UTF-8", true));
-
-        $this->assertEquals( 'ISO-8859-15', $aLangDE['charset'], 'Charset must be ISO-8859-15');
-        $this->assertEquals( 'ISO-8859-15', $aLangEN['charset'], 'Charset must be ISO-8859-15');
-
-        $this->assertEquals( utf8_decode($sLangDE), utf8_decode(utf8_decode($sLangDE)), 'No double utf8 encoding');
-        $this->assertEquals( utf8_decode($sLangEN), utf8_decode(utf8_decode($sLangEN)), 'No double utf8 encoding');
-
-        $this->assertEquals( str_replace("\t", "", $sLangDE), $sLangDE, 'No tab characters allowed');
-        $this->assertEquals( str_replace("\t", "", $sLangEN), $sLangEN, 'No tab characters allowed');
+        return array(
+            array('de', ''),
+            array('en', ''),
+            array('de', 'azure'),
+            array('en', 'azure'),
+            array('de', 'admin'),
+            array('en', 'admin')
+        );
     }
+
+    /**
+     * dataProvider with language, theme and filename values
+     *
+     * @return array
+     */
+    public function providerLangThemeFilename()
+    {
+        return array(
+            array('de', '', 'lang.php'),
+            array('en', '', 'lang.php'),
+            array('de', 'azure', 'lang.php'),
+            array('en', 'azure', 'lang.php'),
+            array('de', 'azure', 'map.php'),
+            array('en', 'azure', 'map.php'),
+            array('de', 'admin', 'lang.php'),
+            array('en', 'admin', 'lang.php')
+        );
+    }
+
+
+    /**
+     * Test if generic language files encoding is correct.
+     *
+     * @dataProvider providerLangThemeWithAdmin
+     */
+    public function testLanguageFileEncoding($sLanguage, $sTheme)
+    {
+        $aLang = $this->_getLanguage( $sTheme, $sLanguage );
+        $sLang = $this->_getLangFileContents($sTheme, $sLanguage, '*.php');
+
+        $this->assertEquals( 'ISO-8859-15', mb_detect_encoding($sLang, "ISO-8859-15, UTF-8", true));
+        $this->assertEquals( 'ISO-8859-15', $aLang['charset'], 'Charset must be ISO-8859-15');
+        $this->assertEquals( utf8_decode($sLang), utf8_decode(utf8_decode($sLang)), 'No double utf8 encoding');
+        $this->assertEquals( str_replace("\t", "", $sLang), $sLang, 'No tab characters allowed');
+
+    }
+
+
+    /**
+     * Test if map identifiers are the same.
+     *
+     */
+    public function testAzureMapIdentsMatch()
+    {
+        $aMapIdentsDE     =  $this->_getMap('azure', 'de');
+        $aMapIdentsEN     =  $this->_getMap('azure', 'en');
+
+        if ( ( $aMapIdentsDE == array() ) || ( $aMapIdentsEN == array() ) ) {
+            $this->fail( ' Map array is empty' );
+        }
+
+        $this->assertEquals( array(), array_diff_key($aMapIdentsDE, $aMapIdentsEN), 'Ident does not match EN misses some maps');
+        $this->assertEquals( array(), array_diff_key($aMapIdentsEN, $aMapIdentsDE), 'Ident does not match DE misses some maps');
+    }
+
 
     /**
      * Test if generic language file idents are the same.
      *
-     * @return null
+     * @dataProvider providerTheme
      */
-    public function testGenericTemplateSetIdentMatch()
+    public function testIdentsMatch($sTheme)
     {
-        $aLangIdentsDE = array_keys( $this->_getLanguageArray('', 1, 'de') );
-        $aLangIdentsEN = array_keys( $this->_getLanguageArray('', 1, 'en') );
+        $aLangIdentsDE = $this->_getLanguage($sTheme, 'de');
+        $aLangIdentsEN = $this->_getLanguage($sTheme, 'en');
 
-        $this->assertEquals( array(), array_diff($aLangIdentsDE, $aLangIdentsEN), 'ident does not match EN misses');
-        $this->assertEquals( array(), array_diff($aLangIdentsEN, $aLangIdentsDE), 'ident does not match DE misses');
+        $this->assertEquals( array(), array_diff_key($aLangIdentsDE, $aLangIdentsEN), 'ident does not match, EN misses translations');
+        $this->assertEquals( array(), array_diff_key($aLangIdentsEN, $aLangIdentsDE), 'ident does not match, DE misses translations');
         $this->assertEquals( count($aLangIdentsDE), count($aLangIdentsEN), 'ident count does not match');
-        //$this->assertEquals( $aLangIdentsDE, $aLangIdentsEN,'ident order match');
     }
 
+
     /**
-     * Test if azure template set language idents are the same.
+     * Test if there are'nt any html encodings in language constants
      *
-     * @return null
+     * @dataProvider providerLangTheme
      */
-    public function testAzureTemplateSetIdentMatch()
+    public function testNoFrontendHtmlEntitiesAllowed($sLang, $sTheme)
     {
-        $aGenericIdentsDE = $this->_getLanguageArray('', 1, 'de');
-        $aGenericIdentsEN = $this->_getLanguageArray('', 1, 'en');
-        $aMapIdentsDE     = $this->_getLanguageMapArray('azure', 'de');
-        $aMapIdentsEN     = $this->_getLanguageMapArray('azure', 'en');
-        $aAzureIdentsDE   = $this->_getLanguageArray('azure', 1, 'de');
-        $aAzureIdentsEN   = $this->_getLanguageArray('azure', 1, 'en');
-        $aLangIdentsDE    = array_keys(array_merge($aGenericIdentsDE, $aMapIdentsDE, $aAzureIdentsDE));
-        $aLangIdentsEN    = array_keys(array_merge($aGenericIdentsEN, $aMapIdentsEN, $aAzureIdentsEN));
+        $aLangIndents = $this->_getLanguage($sTheme, $sLang, '*.php');
 
-        $this->assertEquals( array(), array_diff($aLangIdentsDE, $aLangIdentsEN), 'ident does not match EN misses');
-        $this->assertEquals( array(), array_diff($aLangIdentsEN, $aLangIdentsDE), 'ident does not match DE misses');
-        $this->assertEquals( count($aLangIdentsDE), count($aLangIdentsEN), 'ident count does not match');
-        //$this->assertEquals( $aLangIdentsDE, $aLangIdentsEN,'ident order match');
+        $aLangIndents = str_replace( '&amp;', '(amp)', $aLangIndents );
+        $aIncorrectIndents = array();
+
+        foreach ( $aLangIndents as $sValue ) {
+            if ( $sValue != html_entity_decode( $sValue, ENT_COMPAT | ENT_HTML401, 'UTF-8' ) ) {
+                $aIncorrectIndents[] = $sValue;
+            }
+        }
+        $this->assertEquals( array() , $aIncorrectIndents, "html entities found. Params: lang - $sLang, theme - $sTheme " );
+
     }
 
     /**
-     * Test if admin template set language idents are the same.
+     * Tests if maps are bound to the same language constants
      *
-     * @return null
+     * @depends testAzureMapIdentsMatch
      */
-    public function testAdminIdentMatch()
+    public function testMapEquality()
     {
-        $aLangIdentsDE = array_keys( $this->_getLanguageArray( 'admin', 1, 'de') );
-        $aLangIdentsEN = array_keys( $this->_getLanguageArray( 'admin', 1, 'en') );
+        $aMapIdentsDE     = $this->_getMap('azure', 'de');
+        $aMapIdentsEN     = $this->_getMap('azure', 'en');
 
-        $this->assertEquals( array(), array_diff($aLangIdentsDE, $aLangIdentsEN), 'ident does not match EN misses');
-        $this->assertEquals( array(), array_diff($aLangIdentsEN, $aLangIdentsDE), 'ident does not match DE misses');
-        $this->assertEquals( count($aLangIdentsDE), count($aLangIdentsEN), 'ident count does not match');
-        //$this->assertEquals( $aLangIdentsDE, $aLangIdentsEN,'ident order match');
+        if ( ( $aMapIdentsDE == array() ) || ( $aMapIdentsEN == array() ) ) {
+            $this->fail( 'array is empty' );
+        }
+
+        foreach ( $aMapIdentsEN as $sKey => $sValue ) {
+            if ( $aMapIdentsDE[$sKey] == $sValue ) {
+                unset($aMapIdentsDE[$sKey]);
+            }
+        }
+        $this->assertEquals( array(), $aMapIdentsDE, 'Maps are bound differently');
     }
 
     /**
-     * Test if there are no duplicated language idents.
+     * Test if there are'nt any html encodings in map constants.
      *
-     * @return null
+     * @dataProvider providerLang
      */
-    public function testDublicateConstats()
+    public function testMapNoFrontendHtmlEntitiesAllowed($sLang)
     {
-        $aLangIdentsDE = $this->_getLanguageConst( 'admin', 'de' );
-        $aLangIdentsEN = $this->_getLanguageConst( 'admin', 'en' );
-        $aFillIdentsDE = array_unique($aLangIdentsDE);
-        $aFillIdentsEN = array_unique($aLangIdentsEN);
-        $this->assertEquals( array(), array_diff_key($aLangIdentsDE, $aFillIdentsDE), 'ident does not match');
-        $this->assertEquals( array(), array_diff_key($aLangIdentsEN, $aFillIdentsEN), 'ident does not match');
+        $aMapIndents = $this->_getMap('azure', 'de');
 
-        $aLangIdentsDE = $this->_getLanguageConst( 'azure', 'de');
-        $aLangIdentsEN = $this->_getLanguageConst( 'azure', 'en');
-        $aFillIdentsDE = array_unique($aLangIdentsDE);
-        $aFillIdentsEN = array_unique($aLangIdentsEN);
-        $this->assertEquals( array(), array_diff_key($aLangIdentsDE, $aFillIdentsDE), 'ident does not match');
-        $this->assertEquals( array(), array_diff_key($aLangIdentsEN, $aFillIdentsEN), 'ident does not match');
+        if ( $aMapIndents == array() ) {
+            $this->fail( ' Map array is empty' );
+        }
 
-        // test generic lang file
-        $aLangIdentsDE = $this->_getLanguageConst( '', 'de' );
-        $aLangIdentsEN = $this->_getLanguageConst( '', 'en' );
-        $aFillIdentsDE = array_unique($aLangIdentsDE);
-        $aFillIdentsEN = array_unique($aLangIdentsEN);
-        $this->assertEquals( array(), array_diff_key($aLangIdentsDE, $aFillIdentsDE), 'ident does not match');
-        $this->assertEquals( array(), array_diff_key($aLangIdentsEN, $aFillIdentsEN), 'ident does not match');
+        $aMapIndents = str_replace( '&amp;', '(amp)', $aMapIndents );
+        $aIncorrectIndents = array();
 
-        // test generic map file
-        $aLangIdentsDE = $this->_getLanguageConst( 'azure', 'de', 'map.php');
-        $aLangIdentsEN = $this->_getLanguageConst( 'azure', 'en', 'map.php');
-        $aFillIdentsDE = array_unique($aLangIdentsDE);
-        $aFillIdentsEN = array_unique($aLangIdentsEN);
-        $this->assertEquals( array(), array_diff_key($aLangIdentsDE, $aFillIdentsDE), 'ident does not match');
-        $this->assertEquals( array(), array_diff_key($aLangIdentsEN, $aFillIdentsEN), 'ident does not match');
+        foreach ( $aMapIndents as $sValue ) {
+            if ( $sValue != html_entity_decode( $sValue, ENT_COMPAT | ENT_HTML401, 'UTF-8' ) ) {
+                $aIncorrectIndents[] = $sValue;
+            }
+        }
+        $this->assertEquals( array() , $aIncorrectIndents, "html entities found. Params: lang - $sLang " );
+    }
+
+
+    /**
+     * Test if mapped constants have translations
+     *
+     * @dataProvider providerLang
+     *
+     */
+    public function testAzureMapConstantsInGeneric($sLang)
+    {
+        $aMapIdents = $this->_getMap('azure', $sLang);
+        if ( array() == $aMapIdents ) {
+            $this->fail( ' Map array is empty' );
+        }
+
+        $aLangIdents = $this->_getLanguage('', $sLang);
+        if ( array() == $aLangIdents ) {
+            $this->fail( 'Language array is empty' );
+        }
+        $aIncorrectMap = array();
+
+        foreach ( $aMapIdents as $sIdent => $sValue ) {
+            if ( !isset( $aLangIdents[$sValue] ) ) {
+                $aIncorrectMap[$sIdent] = $sValue;
+            }
+        }
+        $this->assertEquals( array(), $aIncorrectMap, "missing translations in generic $sLang file" );
+    }
+
+
+    /**
+     * Test if there are no colons at the end for strings. It ignores translations equaling to ':'
+     * This does not test admin translations
+     *
+     * @dataProvider providerLangTheme
+     */
+    public function testColonsAtTheEnd($sLang, $sTheme)
+    {
+
+        $aIdents = $this->_getLanguage($sTheme, $sLang);
+
+        $this->assertEquals( array( ), $this->_getConstantsWithColons($aIdents), "$sLang has colons. Theme - $sTheme" );
+
     }
 
     /**
-     * Test if there are no missing constant language idents used in azure templates.
+     * Tests that generic translations are not faded out by theme translations
+     *
+     * @dataProvider providerLang
+     */
+    public function testThemeTranslationsNotEqualsGenericTranslations( $sLang )
+    {
+        $aGenericTranslations = $this->_getLanguage('', $sLang);
+        $aThemeTranslations = $this->_getLanguage('azure', $sLang);
+        $aIntersectionsDE = array_intersect_key( $aThemeTranslations, $aGenericTranslations );
+
+        $this->assertEquals( array( 'charset' => 'ISO-8859-15' ), $aIntersectionsDE, "some $sLang translations in theme overrides generic translations" );
+    }
+
+    /**
+     *  Tests that all translations are unique
+     *
+     */
+    public function testDuplicates()
+    {
+        $aThemeTranslationsDE = $this->_getLanguage('azure', 'de');
+        $aRTranslationsDE = array_merge($aThemeTranslationsDE, $this->_getLanguage('', 'de'));
+        $aTranslationsDE = $this->_stripLangParts($aRTranslationsDE);
+
+        $aThemeTranslationsEN = $this->_getLanguage('azure', 'en');
+        $aRTranslationsEN = array_merge($aThemeTranslationsEN, $this->_getLanguage('', 'en'));
+        $aTranslationsEN = $this->_stripLangParts($aRTranslationsEN);
+
+        $aStrippedUniqueTranslationsDE = array_unique($aTranslationsDE);
+        $aStrippedUniqueTranslationsEN = array_unique($aTranslationsEN);
+
+
+        $aDifferentKeysDE = array_diff_key($aTranslationsDE, $aStrippedUniqueTranslationsDE);
+        $aDifferentKeysEN = array_diff_key($aTranslationsEN, $aStrippedUniqueTranslationsEN);
+
+        $aRTranslationsDE = $this->_excludeByPattern($aRTranslationsDE);
+        $aRTranslationsEN = $this->_excludeByPattern($aRTranslationsEN);
+
+        $aDuplicatesDE = array();
+        $aDuplicatesEN = array();
+        foreach ($aTranslationsDE as $sKey => $sTranslation) {
+            if (in_array($sTranslation, $aDifferentKeysDE)) {
+                $aDuplicatesDE[$sKey] = $sTranslation;
+            }
+        }
+        foreach ($aTranslationsEN as $sKey => $sTranslation) {
+            if (in_array($sTranslation, $aDifferentKeysEN)) {
+                $aDuplicatesEN[$sKey] = $sTranslation;
+            }
+        }
+        $aDuplicatesDE = $this->_excludeByPattern($aDuplicatesDE);
+        $aDuplicatesEN = $this->_excludeByPattern($aDuplicatesEN);
+        asort($aDuplicatesDE);
+        asort($aDuplicatesEN);
+
+        $sDuplicates = '';
+        $aIntersectionsDE = array_intersect_key($aDuplicatesDE, $aDuplicatesEN);
+        $aIntersectionsEN = array_intersect_key($aDuplicatesEN, $aDuplicatesDE);
+        $aIntersections = array($aIntersectionsDE, $aIntersectionsEN);
+
+        foreach ($aIntersections as $aIntersection) {
+            $sCurTrans = '';
+            $iCounter = 0;
+            // saving a line, so that we won't print one liners
+            $sLineToPrint = '';
+
+            foreach ($aIntersection as $sKey => $sTranslation) {
+                if ( $sTranslation != '' ) {
+                    if ($sCurTrans != $sTranslation) {
+                        $sCurTrans = $sTranslation;
+                        if ($iCounter > 1) {
+                            $sDuplicates .= "\r\n";
+                        }
+                        $iCounter = 0;
+                        $sLineToPrint = '';
+                    }
+
+                    $iCounter++;
+                    $sLineToPrint .= "$sKey => " . $aRTranslationsDE[$sKey] . " | " . $aRTranslationsEN[$sKey] . "\r\n";
+                    if ($iCounter > 1) {
+                        $sDuplicates .= $sLineToPrint;
+                        $sLineToPrint = ''; // clearing line
+                    }
+                }
+
+            }
+        }
+
+
+        $this->assertEquals('', $sDuplicates, 'some translations are duplicated');
+    }
+
+    /**
+     * Test if there are no missing constant language identifiers in azure templates.
+     * Checking just one version, because above tests checks that both languages have the same identifiers.
+     * Dependency added only for map, because can't add dependency on test with data provider.
+     * Granted there are workarounds to make it depend on test with data provider, it is not the best practice.
+     * So, if testIdentsMatch fails, this test might not give correct results. In such a case, fix idents first!
      *
      * @return null
      */
     public function testMissingAzureTemplateConstants()
     {
-        $aTemplateLangIdents = $this->_getTemplateConstants('azure', 1, 'de');
-        $aConstantLangIdents = array_merge( array_keys( $this->_getLanguageArrayMappedWithGeneric('azure', 1, 'de') ), array_keys( $this->_getLanguageArray( 'admin', 1, 'de') ) );
+        $aTemplateLangIdents = $this->_getTemplateConstants( 'azure' );
+        $aConstantLangIdents = array_keys( array_merge($this->_getLanguage( '', 'de' ), $this->_getMap( 'azure', 'de' )) ) ;
 
-        $this->assertEquals( array(), array_diff($aTemplateLangIdents, $aConstantLangIdents), 'missing constants in templates');
+        $this->assertEquals( array( 'MONTH_NAME_' ), array_values(array_diff($aTemplateLangIdents, $aConstantLangIdents)), 'missing constants in templates');
+    }
+    /**
+     * Test to make sure there are no unused and not needed translations
+     *
+     */
+    public function testNotUsedTranslations()
+    {
+        $this->markTestSkipped( 'this test is slow, only to be used locally when checking for translations that are not being used' );
+        $aUsedConstants =  $this->_getTemplateConstants( 'azure' );
+
+        $sFile = oxConfig::getInstance()->getAppDir()."/translations/de/lang.php";
+        include $sFile;
+
+
+        $aTemp = array_diff( array_keys($aLang), $aUsedConstants );
+        $sConstructedFile = oxConfig::getInstance()->getAppDir()."/translations/de/constructed_lang.php";
+        $sNotUsedFile = oxConfig::getInstance()->getAppDir()."/translations/de/notused_lang.php";
+        $aExcludeFirst = array();
+        if ( file_exists( $sConstructedFile ) ) {
+            include $sConstructedFile;
+            $aExcludeFirst = array_merge( $aExcludeFirst, $aLang );
+        }
+        if ( file_exists( $sNotUsedFile ) ) {
+            include $sNotUsedFile;
+            $aExcludeFirst = array_merge( $aExcludeFirst, $aLang );
+        }
+
+
+
+        $aTemp = array_diff( $aTemp, array_keys($aExcludeFirst) );
+        // got some remaining stuff to check ? check in all files
+        if ( count( $aTemp ) > 10 ) {
+            $aTemp = $this->_findUsages( $aTemp );
+        }
+        if ( count( $aTemp ) > 10  ) {
+            $aTemp = $this->_reduceByExcluding( $aTemp );
+        }
+
+        $this->assertEquals( array('charset'), $aTemp );
     }
 
     /**
-     * Test if there html entities are not used in azure templates.
+     * Copies constants to a certain file
      *
-     * @return null
+     * @param $aConstants
+     * @param string $type prefix of filename $type_lang.php
      */
-    public function testNoFrontendHtmlEntitiesAllowed()
-    {
-        // Azure
-        $aLangIdentsDE = $this->_getLanguageArray('azure', 1, 'de', '*.php');
-        foreach ( $aLangIdentsDE as $sIdent => $sValue ) {
-            $sValue = str_replace( '&amp;', '(amp)', $sValue );
-            $sDecodedValue = html_entity_decode( $sValue, ENT_QUOTES, 'UTF-8' );
-            $this->assertEquals( $sDecodedValue, $sValue, "html entities found for ident $sIdent" );
-        }
+    private function _moveConstants( $aConstants, $type = 'constructed' ) {
+        $sLocation = oxConfig::getInstance()->getAppDir().'/translations/%s/%s_lang.php';
+        $aLangs = array( 'de', 'en' );
 
-        $aLangIdentsEN = $this->_getLanguageArray('azure', 1, 'en', '*.php');
-        foreach ( $aLangIdentsEN as $sIdent => $sValue ) {
-            $sValue = str_replace( '&amp;', '(amp)', $sValue );
-            $sDecodedValue = html_entity_decode( $sValue, ENT_QUOTES, 'UTF-8' );
-            $this->assertEquals( $sDecodedValue, $sValue, "html entities found for ident $sIdent" );
-        }
 
-        // Generic
-        $aLangIdentsDE = $this->_getLanguageArray('', 1, 'de');
-        foreach ( $aLangIdentsDE as $sIdent => $sValue ) {
-            $sValue = str_replace( '&amp;', '(amp)', $sValue );
-            $sDecodedValue = html_entity_decode( $sValue, ENT_QUOTES, 'UTF-8' );
-            $this->assertEquals( $sDecodedValue, $sValue, "html entities found for ident $sIdent" );
-        }
+        foreach ($aLangs as $sLang) {
+            $sFile = sprintf($sLocation, $sLang, $type);
+            include oxConfig::getInstance()->getAppDir()."/translations/$sLang/lang.php";
+            $sOutput = "<?php \n //this is generated by langFileIntegrityTest\n//";
+            $sOutput .= $type . '_lang.php' . PHP_EOL . PHP_EOL;
 
-        $aLangIdentsEN = $this->_getLanguageArray('', 1, 'en');
-        foreach ( $aLangIdentsEN as $sIdent => $sValue ) {
-            $sValue = str_replace( '&amp;', '(amp)', $sValue );
-            $sDecodedValue = html_entity_decode( $sValue, ENT_QUOTES, 'UTF-8' );
-            $this->assertEquals( $sDecodedValue, $sValue, "html entities found for ident $sIdent" );
-        }
+            $sOutput .= '$aLang = array( ' . PHP_EOL;
+            foreach ( $aConstants as $sKey => $sValue ) {
+                $sSpaces = space( 63 - strlen( $sValue ) );
+                $sOutput .= "'$sValue' $sSpaces => \"" . str_replace('"','\"',$aLang[$sValue]) ."\",\n" ;
+            }
 
-        // Map
-        $aLangIdentsDE = $this->_getLanguageMapArray('azure', 'de');
-        foreach ( $aLangIdentsDE as $sIdent => $sValue ) {
-            $sValue = str_replace( '&amp;', '(amp)', $sValue );
-            $sDecodedValue = html_entity_decode( $sValue, ENT_QUOTES, 'UTF-8' );
-            $this->assertEquals( $sDecodedValue, $sValue, "html entities found for ident $sIdent" );
-        }
-
-        $aLangIdentsEN = $this->_getLanguageMapArray('azure', 'en');
-        foreach ( $aLangIdentsEN as $sIdent => $sValue ) {
-            $sValue = str_replace( '&amp;', '(amp)', $sValue );
-            $sDecodedValue = html_entity_decode( $sValue, ENT_QUOTES, 'UTF-8' );
-            $this->assertEquals( $sDecodedValue, $sValue, "html entities found for ident $sIdent" );
-        }
-    }
-
-    /**
-     * Test if there html entities are not used in admin templates.
-     *
-     * @return null
-     */
-    public function testNoAdminHtmlEntitiesAllowed()
-    {
-        $aLangIdentsDE = $this->_getLanguageArray('admin', 1, 'de');
-
-        foreach ( $aLangIdentsDE as $sIdent => $sValue ) {
-            $sValue = str_replace( '&amp;', '(amp)', $sValue );
-            $sDecodedValue = html_entity_decode( $sValue, ENT_QUOTES, 'UTF-8' );
-            $this->assertEquals( $sDecodedValue, $sValue, "html entities found for ident $sIdent" );
-        }
-
-        $aLangIdentsEN = $this->_getLanguageArray('admin', 1, 'en');
-        foreach ( $aLangIdentsEN as $sIdent => $sValue ) {
-            $sValue = str_replace( '&amp;', '(amp)', $sValue );
-            $sDecodedValue = html_entity_decode( $sValue, ENT_QUOTES, 'UTF-8' );
-            $this->assertEquals( $sDecodedValue, $sValue, "html entities found for ident $sIdent" );
+            $sOutput .= "'charset' => 'ISO-8859-15');\n\n";
+            $sOutput .= '$sSearch = "/\b' . implode( '\b|\b', $aConstants ) . '\b/";' . PHP_EOL . PHP_EOL;
+            echo $sOutput;
+            file_put_contents( $sFile, $sOutput );
         }
     }
 
 
     /**
-     * Test if constants of map
+     * Reduces array by excluding some values according to pattern
+     * This is being done, because some values can't be removed, and this saves the time and effort of writing
+     * everything to assertEquals array
      *
-     * @return null
+     * @param $aData
+     * @param array $aExclusionPatterns
+     *
+     * @return mixed
      */
-    public function testAzureMapConstantsInGeneric()
+    private function _excludeByPattern( $aData, $aExclusionPatterns = array() ) {
+        // default patterns
+        if ( $aExclusionPatterns == array() ) {
+            $aExclusionPatterns[] = '\bOX[A-Z0-9]*\b';
+            $aExclusionPatterns[] = '\bERROR_MESSAGE_CONNECTION_[A-Z]*\b';
+            $aExclusionPatterns[] = '\bCOLON\b';
+            $aExclusionPatterns[] = '\b_UNIT_[A-Z0-9]*\b';
+            $aExclusionPatterns[] = '\bMONTH_NAME_[0-9]*\b';
+            $aExclusionPatterns[] = '\bPAGE_TITLE_[A-Z0-9_]*\b';
+            $aExclusionPatterns[] = '\bDELIVERYTIME[A-Z0-9_]*\b';
+        }
+        $sSearch = '/'.implode("|",$aExclusionPatterns).'/';
+        $aExcludedConstants = array();
+        foreach ( $aData as $sKey => $sValue ) {
+            preg_match( $sSearch, $sKey, $match );
+            if ($match[0]) {
+                $aExcludedConstants[] = $aData[$sKey];
+                unset ($aData[$sKey]);
+            }
+        }
+        return $aData;
+    }
+
+    /**
+     * Reduces array by excluding some values according to pattern
+     *
+     * @param $aData
+     * @param array $aExclusionPatterns
+     *
+     * @return mixed
+     */
+    private function _reduceByExcluding( $aData, $aExclusionPatterns = array() ) {
+        // default patterns
+        if ( $aExclusionPatterns == array() ) {
+            $aExclusionPatterns[] = '\bOX[A-Z0-9]*\b';
+            $aExclusionPatterns[] = '\b_UNIT_[A-Z0-9]*\b';
+            $aExclusionPatterns[] = '\bMONTH_NAME_[0-9]*\b';
+            $aExclusionPatterns[] = '\bPAGE_TITLE_[A-Z0-9_]*\b';
+        }
+        $sSearch = '/'.implode("|",$aExclusionPatterns).'/';
+        $aExcludedConstants = array();
+        foreach ( $aData as $key => $sValue ) {
+            preg_match( $sSearch, $sValue, $match );
+            if ($match[0]) {
+                $aExcludedConstants[] = $aData[$key];
+                unset ($aData[$key]);
+            }
+        }
+// these 2 functions copy not used and constructed constants to separate files
+//        $this->_moveConstants( $aExcludedConstants );
+//        $this->_moveConstants( $aData, "notused" );
+        return $aData;
+    }
+    /** find all files in given path
+     *
+     * @param array $aIncludeDirs paths to include in search
+     * @param array $aExcludePaths paths to exclude from search
+     * @param array $aExtensions what file extensions to use, default all
+     *
+     * @return array
+     */
+    private function _getFiles( $aIncludeDirs = array(), $aExcludePaths = array(), $aExtensions = array( '*.*' ) )
     {
-        $aMapIdentsDE = $this->_getLanguageMapArray('azure', 'de');
-        $aLangIdentsDE = $this->_getLanguageArray('', 1, 'de');
-        foreach ( $aMapIdentsDE as $sIdent => $sValue ) {
-            $this->assertTrue( isset($aLangIdentsDE[$sValue]), "has no translation in generic file $sIdent => $sValue" );
+        $aFiles = array();
+        $aExcludeDirPattern = array();
+
+        // default locations
+        if ( $aIncludeDirs == array() ) {
+            $aIncludeDirs[] = oxConfig::getInstance()->getAppDir().'../core';
+            $aIncludeDirs[] = oxConfig::getInstance()->getAppDir();
+        }
+        // default exclude paths
+        if ( $aExcludePaths == array() ) {
+            $aExcludeDirPattern[] = '/source/application/translations';
+            $aExcludeDirPattern[] = '/source/application/views/admin';
+            $aExcludeDirPattern[] = '/source/application/views/azure/en';
+            $aExcludeDirPattern[] = '/source/application/views/azure/de';
+        } else {
+            $aExcludeDirPattern = $aExcludePaths;
         }
 
-        $aMapIdentsEn = $this->_getLanguageMapArray('azure', 'en');
-        $aLangIdentsEn = $this->_getLanguageArray('', 1, 'en');
-        foreach ( $aMapIdentsEn as $sIdent => $sValue ) {
-            $this->assertTrue( isset($aLangIdentsEn[$sValue]), "has no translation in generic file $sIdent => $sValue" );
+
+        $aFiles = array();
+        $blBreak = false;
+
+        foreach ($aIncludeDirs as $sDir) {
+            if ( is_dir($sDir) ) {
+                $aDirs = new RecursiveIteratorIterator(
+                    new RecursiveDirectoryIterator($sDir),
+                    RecursiveIteratorIterator::SELF_FIRST);
+
+                foreach ($aDirs as $oTplDir) {
+                    foreach ( $aExcludeDirPattern as $sPattern ) {
+                        if ( strpos($oTplDir->getRealpath(), $sPattern) != false ) {
+                            $blBreak = true;
+                            break;
+                        }
+                    }
+                    if ( $oTplDir->isDir() && !$blBreak ) {
+                        foreach ( $aExtensions as $sExtension ) {
+                            $aFiles = array_merge($aFiles, glob($oTplDir->getRealpath().DIRECTORY_SEPARATOR.$sExtension));
+                        }
+                    }
+                    $blBreak = false;
+                }
+                // adds files from base dir, ex.: /mnt/~...~www/
+                foreach ( $aExtensions as $sExtension ) {
+                    $aFiles = array_merge($aFiles, glob($sDir.DIRECTORY_SEPARATOR.$sExtension));
+                }
+            }
         }
+        return $aFiles;
+    }
+
+
+    /**
+     * Find if given array constants are found anywhere in source
+     *  this check will be slow
+     *
+     * @param $aConstants array
+     *
+     * @return array
+     */
+    private function _findUsages( $aConstants ) {
+        $aFiles = $this->_getFiles(array(), array(), array( '*.php' ));
+        $aUsages = array();
+        $sSearch = '/\b' . implode( '\b|\b', $aConstants ) . '\b/';
+
+        foreach ( $aFiles as $sFile ) {
+            $sTpl =  file_get_contents( $sFile );
+            preg_match_all($sSearch, $sTpl, $aMatches);
+
+            $aUsages = array_merge( $aMatches[0], $aUsages);
+
+            foreach ($aMatches[0] as $sMatch) {
+                $sSearch = str_replace( "\b$sMatch\b", '', $sSearch );
+                $sSearch = str_replace( array('||', '|/', '/|'), array('|', '/', '/'), $sSearch );
+            }
+
+            if ( $sSearch == '//' ) {
+                break;
+            }
+        }
+
+        $aResults = array_diff( $aConstants, array_unique( $aUsages ) );
+        return $aResults;
+
+    }
+
+    /**
+     * Removes parts from the constants, colons(:) by default,
+     * anything else you want, added by parameters
+     *
+     * @param $aTranslations
+     *
+     * @return mixed
+     */
+    private function _stripLangParts( $aTranslations )
+    {
+        $aLangParts = array( ':' );
+        $aStrippedTranslations = str_replace($aLangParts, '', $aTranslations);
+        return $aStrippedTranslations;
+    }
+
+    /**
+     * Get all constants that have colons at the end
+     *
+     * @param $aLang
+     *
+     * @return array
+     */
+    private function _getConstantsWithColons( $aLang ) {
+        $aColonArray = array();
+        foreach ( $aLang as $key => $sTranslation ) {
+            if ( substr( $sTranslation, -1) == ':' && $sTranslation != ':') {
+                $aColonArray[$key] = $sTranslation;
+            }
+        }
+        return $aColonArray;
     }
 
     /**
      * Get language array by given theme, shop and language.
      *
      * @param string $sTheme       theme name
-     * @param string $sShop        shop id
      * @param string $sLang        languge abbr
      * @param string $sFilePattern pattern
      *
      * @return array
      */
-    private function _getLanguageArray( $sTheme, $sShop, $sLang, $sFilePattern = '*lang.php', &$sFileContent = '')
+    private function _getLangFileContents( $sTheme,  $sLang, $sFilePattern = '*lang.php')
     {
-        $aLang    = array();
-        $aAllLang = array();
-
-        $aFile = array( 'application' );
-        if ($sTheme != '') {
-            $aFile[] = 'views';
-            $aFile[] = $sTheme;
-        } else {
-            $aFile[] = 'translations';
-        }
-        $aFile[] = $sLang;
-        $aFile[] = $sFilePattern;
-        $sMask = oxConfig::getInstance()->getConfigParam( 'sShopDir' ).DIRECTORY_SEPARATOR.implode(DIRECTORY_SEPARATOR, array_diff($aFile, array(null, '')));
-
+        $sFileContent = '';
+        $sMask = $sFile = $this->_getLanguageFilePath(  $sTheme, $sLang, $sFilePattern );
         foreach ( glob($sMask) as $sFile ) {
             if (is_readable($sFile)) {
                 include $sFile;
-                $aAllLang = array_merge($aAllLang, $aLang);
                 $sFileContent .= file_get_contents($sFile).PHP_EOL.PHP_EOL;
-            } else {
-                $aLang = array();
             }
         }
-
-        return $aAllLang;
+        return $sFileContent;
     }
 
     /**
-     * Get mapped language array by given theme, shop and language.
-     *
-     * @param string $sTheme       theme name
-     * @param string $sShop        shop id
-     * @param string $sLang        languge abbr
-     * @param string $sFilePattern pattern
-     *
-     * @return array
-     */
-    private function _getLanguageArrayMappedWithGeneric( $sTheme, $sShop, $sLang, $sFilePattern = '*lang.php' )
-    {
-        $aLang    = array();
-        $aAllLang = array();
-
-        $aFile = array( 'out', $sTheme, $sLang, $sFilePattern );
-        $sMask = oxConfig::getInstance()->getConfigParam( 'sShopDir' ).DIRECTORY_SEPARATOR.implode(DIRECTORY_SEPARATOR, array_diff($aFile, array(null, '')));
-
-        foreach ( glob($sMask) as $sFile ) {
-            if (is_readable($sFile)) {
-                include $sFile;
-                $aAllLang = array_merge($aAllLang, $aLang);
-            } else {
-                $aLang = array();
-            }
-        }
-        $aAllLang = array_merge($aAllLang, $this->_getLanguageMapArray($sTheme, $sLang));
-        $aAllLang = array_merge($aAllLang, $this->_getLanguageArray('', 1, $sLang));
-
-        return $aAllLang;
-    }
-
-    /**
-     * Get mapped language array by given theme and language.
+     * Get specific map by given theme and language
      *
      * @param string $sTheme theme name
-     * @param string $sLang  languge abbr
+     * @param string $sLang  language abbreviation
      *
      * @return array
      */
-    private function _getLanguageMapArray( $sTheme, $sLang )
+    private function _getMap( $sTheme, $sLang )
     {
-        $sFile = oxConfig::getInstance()->getConfigParam( 'sShopDir' ).DIRECTORY_SEPARATOR.'application/views'.DIRECTORY_SEPARATOR.$sTheme.DIRECTORY_SEPARATOR.$sLang.DIRECTORY_SEPARATOR.'map.php';
-
-        if (is_readable($sFile)) {
+        $sFile = oxConfig::getInstance()->getAppDir()."views/$sTheme/$sLang/map.php";
+        if ( is_readable($sFile) ) {
             include $sFile;
             return $aMap;
         }
-
         return array();
     }
 
     /**
-     * Get used language constants in given language file (parsing php file).
+     * Get specific language by given theme, language abbreviation and filename
      *
      * @param string $sTheme    theme name
-     * @param string $sLang     languge abbr
+     * @param string $sLang     language abbreviation
      * @param string $sFileName lang file name
      *
      * @return array
      */
-    private function _getLanguageConst( $sTheme, $sLang, $sFileName = "lang.php" )
+    private function _getLanguage( $sTheme, $sLang, $sFileName = "lang.php" )
     {
-        $aSkip = array();
-        $aLang = array();
-        $sFile = oxConfig::getInstance()->getConfigParam( 'sShopDir' )."application";
-        if ($sTheme != '') {
-            $sFile .= '/views'.DIRECTORY_SEPARATOR.$sTheme;
-        } else {
-            $sFile .= '/translations';
+        $aAllLang = array();
+        $sInputFile = $this->_getLanguageFilePath(  $sTheme, $sLang, $sFileName );
+        if ( is_readable( $sInputFile ) ) {
+            include $sInputFile;
+            return $aLang;
         }
 
-        $sFile .= DIRECTORY_SEPARATOR.$sLang.DIRECTORY_SEPARATOR.$sFileName;
-        $sArray = file_get_contents($sFile);
-        $sReg = "/'([A-Z\_0-9]+)' +=/i";
-        $sArray = preg_match_all($sReg, $sArray, $aMatches);
-        foreach ($aMatches[1] as $sConst) {
-            if ( !in_array($sConst, $aSkip) ) {
-                $aLang[] = trim($sConst);
+        // if we give pattern, not a direct file, do the search
+        foreach ( glob($sInputFile) as $sFile ) {
+            if (is_readable($sFile)) {
+                include $sFile;
+                $aAllLang = array_merge($aAllLang, $aLang);
             }
         }
-        return $aLang;
+        if ( array() == $aAllLang) {
+            echo $sFile.' cannot be read'.PHP_EOL;
+        }
+
+        return $aAllLang;
     }
 
     /**
-     * Get used language constants in given language file (parsing lang.php file).
+     * Returns path to language file
+     *
+     * @param $sTheme
+     * @param $sLang
+     * @param $sFile
+     *
+     * @return string pathname
+     */
+    private function _getLanguageFilePath( $sTheme, $sLang, $sFile)
+    {
+        $sDir = oxConfig::getInstance()->getAppDir();
+        if ($sTheme != '') {
+            $sDir .= '/views' . DIRECTORY_SEPARATOR . $sTheme . DIRECTORY_SEPARATOR . $sLang . DIRECTORY_SEPARATOR . $sFile;
+        } else {
+            $sDir .= '/translations' . DIRECTORY_SEPARATOR . $sLang . DIRECTORY_SEPARATOR . $sFile;
+        }
+        return $sDir;
+    }
+
+    /**
+     * Get theme templates.
      *
      * @param string $sTheme theme name
-     * @param string $sLang  languge abbr
      *
-     * @return array
+     * @return array template file array
      */
+    private function _getTemplates( $sTheme )
+    {
+        $sDir  = oxConfig::getInstance()->getAppDir()."views/$sTheme/tpl";
+        $aTemplates = array();
+
+        if (is_dir($sDir)) {
+            $aDirs = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($sDir),
+                RecursiveIteratorIterator::SELF_FIRST);
+
+            foreach ($aDirs as $oTplDir) {
+                if ( $oTplDir->isDir() ) {
+                    $aTemplates = array_merge($aTemplates, glob($oTplDir->getRealpath().DIRECTORY_SEPARATOR."*.tpl"));
+                }
+            }
+        }
+
+        return $aTemplates;
+    }
     /**
      * Get used language constants in given template set (parsing *.tpl files).
      *
      * @param string $sTheme theme name
-     * @param string $sShop  shom id
-     * @param string $sLang  languge abbr
      *
      * @return array
      */
-    private function _getTemplateConstants( $sTheme, $sShop, $sLang)
+    private function _getTemplateConstants( $sTheme = 'azure' )
     {
         $aLang = array();
-        $aDir  = array('out', $sTheme, 'tpl' );
-        $sDir  = oxConfig::getInstance()->getConfigParam( 'sShopDir' ).DIRECTORY_SEPARATOR.implode(DIRECTORY_SEPARATOR, array_diff($aDir, array(null, '')));
 
-        if (is_dir($sDir)) {
-           $aMatches = array();
-           $aDirs    = array_merge( array($sDir), glob($sDir.DIRECTORY_SEPARATOR."*", GLOB_ONLYDIR) );
-           foreach ($aDirs as $sTplDir) {
-               foreach (glob($sTplDir.DIRECTORY_SEPARATOR."*.tpl") as $tpl) {
-                   $sTpl =  file_get_contents($tpl);
-                   $sReg = '/oxmultilang +ident="([A-Z\_0-9]+)"/i';
-                   preg_match_all($sReg, $sTpl, $aMatches);
+        $aTemplates = $this->_getTemplates( $sTheme );
 
-                   foreach ($aMatches[1] as $sConst) {
-                       $aLang[] = $sConst;
-                   }
-
-                   $sReg = '/"([A-Z\_0-9]+)"\|oxmultilangassign/i';
-                   preg_match_all($sReg, $sTpl, $aMatches);
-
-                   foreach ($aMatches[1] as $sConst) {
-                       $aLang[] = $sConst;
-                   }
-               }
-           }
+        if ( count( $aTemplates ) == 0) {
+            echo '_getTemplateConstants: Didn\'t find any templates.';
         }
 
-        return array_unique($aLang);
+        foreach ( $aTemplates as $tpl ) {
+            $sTpl =  file_get_contents( $tpl );
+            $sReg = '/oxmultilang +ident="([A-Z\_0-9]+)"/i';
+            preg_match_all( $sReg, $sTpl, $aMatches );
+
+            foreach ( $aMatches[1] as $sConst ) {
+                $aLang[] = $sConst;
+            }
+
+            $sReg = '/"([A-Z\_0-9]+)"\|oxmultilangassign/i';
+            preg_match_all( $sReg, $sTpl, $aMatches );
+
+            foreach ( $aMatches[1] as $sConst ) {
+                $aLang[] = $sConst;
+            }
+        }
+
+        if ( count( $aLang ) == 0) {
+            echo '_getTemplateConstants: array is empty, check if directories are correctly set in the method.';
+        }
+        return array_unique( $aLang );
     }
 
+}
+
+/**
+ * Recursive space placement
+ * Simply for formatting the output easier
+ */
+function space( $amount ) {
+    if ( $amount <= 0 ) {
+        return ' ';
+    }
+    return ' ' . space( $amount - 1 );
 }

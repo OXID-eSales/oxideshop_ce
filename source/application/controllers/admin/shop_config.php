@@ -92,7 +92,6 @@ class Shop_Config extends oxAdminDetails
 
         $this->_aViewData["var_constraints"] = $aDbVariables['constraints'];
         $this->_aViewData["var_grouping"]    = $aDbVariables['grouping'];
-
         foreach ($this->_aConfParams as $sType => $sParam) {
             $this->_aViewData[$sParam] = $aConfVars[$sType];
         }
@@ -137,7 +136,6 @@ class Shop_Config extends oxAdminDetails
 
         $sShopId = $this->getEditObjectId();
         $sModule = $this->_getModuleForConfigVars();
-
         foreach ($this->_aConfParams as $sType => $sParam) {
             $aConfVars = oxConfig::getParameter($sParam);
             if (is_array($aConfVars)) {
@@ -215,7 +213,6 @@ class Shop_Config extends oxAdminDetails
             "arr"     => array(),
             "aarr"    => array(),
             "select"  => array(),
-            "num"     => array(),
         );
         $aVarConstraints = array();
         $aGrouping       = array();
@@ -314,8 +311,8 @@ class Shop_Config extends oxAdminDetails
 
             case "str":
             case "select":
-            case "int":
             case "num":
+            case "int":
                 $mData = $oStr->htmlentities( $sValue );
                 if (in_array($sName, $this->_aParseFloat)) {
                     $mData = str_replace( ',', '.', $mData );

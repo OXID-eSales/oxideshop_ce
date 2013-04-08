@@ -12,12 +12,10 @@
     [{capture name=product_price}]
         [{block name="widget_product_listitem_grid_price"}]
             [{oxhasrights ident="SHOWARTICLEPRICE"}]
-                [{assign var=tprice value=$product->getTPrice()}]
-                [{assign var=price  value=$product->getPrice()}]
-                [{if $tprice && $tprice->getBruttoPrice() > $price->getBruttoPrice()}]
-                <span class="priceOld">
-                    [{ oxmultilang ident="WIDGET_PRODUCT_PRODUCT_REDUCEDFROM" }] <del>[{ $product->getFTPrice()}] [{ $currency->sign}]</del>
-                </span>
+                [{if $product->getTPrice()}]
+                    <span class="priceOld">
+                        [{ oxmultilang ident="REDUCED_FROM_2" }] <del>[{ $product->getFTPrice()}] [{ $currency->sign}]</del>
+                    </span>
                 [{/if}]
                 [{block name="widget_product_listitem_grid_price_value"}]
                     [{if $product->getFPrice()}]
@@ -48,8 +46,8 @@
                     </span>
                 [{elseif $product->oxarticles__oxweight->value  }]
                     <span id="productPricePerUnit_[{$testid}]" class="pricePerUnit">
-                        <span title="weight">[{ oxmultilang ident="WIDGET_PRODUCT_PRODUCT_ARTWEIGHT" }]</span>
-                        <span class="value">[{ $product->oxarticles__oxweight->value }] [{ oxmultilang ident="WIDGET_PRODUCT_PRODUCT_ARTWEIGHT2" }]</span>
+                        <span title="weight">[{ oxmultilang ident="WEIGHT" suffix="COLON" }]</span>
+                        <span class="value">[{ $product->oxarticles__oxweight->value }] [{ oxmultilang ident="KG" }]</span>
                     </span>
                 [{/if }]
             [{/oxhasrights}]
@@ -66,10 +64,10 @@
             [{oxhasrights ident="TOBASKET"}]
                 [{$smarty.capture.product_price}]
                 [{if !$blShowToBasket }]
-                    <a href="[{ $_productLink }]" class="toCart button">[{ oxmultilang ident="WIDGET_PRODUCT_PRODUCT_MOREINFO" }]</a>
+                    <a href="[{ $_productLink }]" class="toCart button">[{ oxmultilang ident="MORE_INFO" }]</a>
                 [{else}]
                     [{assign var="listType" value=$oView->getListType()}]
-                    <a href="[{$oView->getLink()|oxaddparams:"listtype=`$listType`&amp;fnc=tobasket&amp;aid=`$product->oxarticles__oxid->value`&amp;am=1" }]" class="toCart button" title="[{oxmultilang ident="WIDGET_PRODUCT_PRODUCT_ADDTOCART" }]">[{oxmultilang ident="WIDGET_PRODUCT_PRODUCT_ADDTOCART" }]</a>
+                    <a href="[{$oView->getLink()|oxaddparams:"listtype=`$listType`&amp;fnc=tobasket&amp;aid=`$product->oxarticles__oxid->value`&amp;am=1" }]" class="toCart button" title="[{oxmultilang ident="TO_CART" }]">[{oxmultilang ident="TO_CART" }]</a>
                 [{/if}]
             [{/oxhasrights}]
         </div>

@@ -191,13 +191,11 @@ $aLang = array(
 'FORM_WISHLIST_SEARCH_RESULTS'                    => "Gift registry search results:",
 
 
-'FORM_REGISTER_IAGREETOTERMS1'                            => "I agree to the",
-'FORM_REGISTER_IAGREETOTERMS2'                            => "Terms and Conditions",
-'FORM_REGISTER_IAGREETOTERMS3'                            => "",
 'FORM_REGISTER_IAGREETORIGHTOFWITHDRAWAL1'                => "I have been informed about my",
 'FORM_REGISTER_IAGREETORIGHTOFWITHDRAWAL3'                => "",
 
-
+'FORM_REGISTER_IAGREETOTERMS1'                    => "I agree to the",
+'FORM_REGISTER_IAGREETOTERMS2'                    => "",
 
 'NEWSLETTER_NEWSLWTTERTITLE'                      => "Latest News and Updates at",
 'NEWSLETTER_COMPLETEALLFIELEDS'                   => "Please complete all fields correctly!",
@@ -792,7 +790,7 @@ $aLang = array(
 'EMAIL_INVITE_HTML_EMAIL'                              => "eMail:",
 'EMAIL_INVITE_HTML_MENYGREETINGS'                      => "Many Greetings,",
 
-'EMAIL_ORDER_CUST_HTML_ORDERNOMBER'               =>"Order No.",
+'EMAIL_ORDER_CUST_HTML_ORDERNUMBER'               =>"Order No.",
 'EMAIL_ORDER_CUST_HTML_PRODUCT'                   =>"Product",
 'EMAIL_ORDER_CUST_HTML_UNITPRICE'                 =>"Unit Price",
 'EMAIL_ORDER_CUST_HTML_QUANTITY'                  =>"Quantity",

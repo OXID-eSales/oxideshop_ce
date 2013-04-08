@@ -2,7 +2,7 @@
 [{if $vendors->count()}]
     [{block name="footer_vendors"}]
     <dl id="footerVendors">
-        <dt>[{oxmultilang ident="FOOTER_DISTRIBUTORS" }]</dt>
+        <dt>[{oxmultilang ident="DISTRIBUTORS" }]</dt>
         <dd>
             <ul class="list">
               [{foreach from=$vendors item=_vnd}]

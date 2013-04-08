@@ -32,7 +32,7 @@
 
             el.click(function(){
                 if(el.is('input')){
-                    self.toggleChecks( el.attr('checked') );
+                    self.toggleChecks( el.prop('checked') );
                     return true;
                 } else {
                     self.toggleChecks( self.toggleMainCheck() );
@@ -42,15 +42,15 @@
         },
 
         toggleChecks : function( blChecked ){
-            $( ".basketitems .checkbox input" ).attr( "checked", blChecked );
+            $( ".basketitems .checkbox input" ).prop( "checked", blChecked );
         },
 
         toggleMainCheck : function(){
-            if ( $( "#checkAll" ).attr( "checked" ) ) {
-                $( "#checkAll" ).attr( "checked", false );
+            if ( $( "#checkAll" ).prop( "checked" ) ) {
+                $( "#checkAll" ).prop( "checked", false );
                 return false;
             } else {
-                $( "#checkAll" ).attr( "checked", true );
+                $( "#checkAll" ).prop( "checked", true );
                 return true;
             }
         }

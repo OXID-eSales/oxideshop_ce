@@ -11,45 +11,49 @@
     </div>
     <ul class="form clear">
         <li>
-            <label>[{ oxmultilang ident="FORM_CONTACT_TITLE" }]</label>
-            [{include file="form/fieldset/salutation.tpl" name="editval[oxuser__oxsal]" value=$editval.oxuser__oxsal }]
+            <label>[{ oxmultilang ident="TITLE" }]</label>
+            [{if $oxcmp_user && !$editval.oxuser__oxsal}]
+                [{include file="form/fieldset/salutation.tpl" name="editval[oxuser__oxsal]" value=$oxcmp_user->oxuser__oxsal->value }]
+            [{else}]
+                [{include file="form/fieldset/salutation.tpl" name="editval[oxuser__oxsal]" value=$editval.oxuser__oxsal }]
+            [{/if}]
         </li>
         <li [{if $aErrors.oxuser__oxfname}]class="oxInValid"[{/if}]>
-            <label class="req">[{ oxmultilang ident="FORM_CONTACT_FIRSTNAME" }]</label>
-            <input type="text" name="editval[oxuser__oxfname]" size="70" maxlength="40" value="[{$editval.oxuser__oxfname}]" class="js-oxValidate js-oxValidate_notEmpty">
+            <label class="req">[{ oxmultilang ident="FIRST_NAME" suffix="COLON" }]</label>
+            <input type="text" name="editval[oxuser__oxfname]" size="70" maxlength="40" value="[{if $oxcmp_user && !$editval.oxuser__oxfname}][{$oxcmp_user->oxuser__oxfname->value}][{else}][{$editval.oxuser__oxfname}][{/if}]" class="js-oxValidate js-oxValidate_notEmpty">
             <p class="oxValidateError">
-                <span class="js-oxError_notEmpty">[{ oxmultilang ident="EXCEPTION_INPUT_NOTALLFIELDS" }]</span>
+                <span class="js-oxError_notEmpty">[{ oxmultilang ident="ERROR_MESSAGE_INPUT_NOTALLFIELDS" }]</span>
                 [{include file="message/inputvalidation.tpl" aErrors=$aErrors.oxuser__oxfname}]
             </p>
         </li>
         <li [{if $aErrors.oxuser__oxlname}]class="oxInValid"[{/if}]>
-            <label class="req">[{ oxmultilang ident="FORM_CONTACT_LASTNAME" }]</label>
-            <input type="text" name="editval[oxuser__oxlname]" size=70 maxlength=40 value="[{$editval.oxuser__oxlname}]" class="js-oxValidate js-oxValidate_notEmpty">
+            <label class="req">[{ oxmultilang ident="LAST_NAME" }]</label>
+            <input type="text" name="editval[oxuser__oxlname]" size=70 maxlength=40 value="[{if $oxcmp_user && !$editval.oxuser__oxlname}][{$oxcmp_user->oxuser__oxlname->value}][{else}][{$editval.oxuser__oxlname}][{/if}]" class="js-oxValidate js-oxValidate_notEmpty">
             <p class="oxValidateError">
-                <span class="js-oxError_notEmpty">[{ oxmultilang ident="EXCEPTION_INPUT_NOTALLFIELDS" }]</span>
+                <span class="js-oxError_notEmpty">[{ oxmultilang ident="ERROR_MESSAGE_INPUT_NOTALLFIELDS" }]</span>
             </p>
         </li>
         <li [{if $aErrors.oxuser__oxusername}]class="oxInValid"[{/if}]>
-            <label class="req">[{ oxmultilang ident="FORM_CONTACT_EMAIL2" }]</label>
-            <input id="contactEmail" type="text" name="editval[oxuser__oxusername]"  size=70 maxlength=40 value="[{$editval.oxuser__oxusername}]" class="js-oxValidate js-oxValidate_notEmpty js-oxValidate_email">
+            <label class="req">[{ oxmultilang ident="EMAIL" suffix="COLON" }]</label>
+            <input id="contactEmail" type="text" name="editval[oxuser__oxusername]"  size=70 maxlength=40 value="[{if $oxcmp_user && !$editval.oxuser__oxusername}][{$oxcmp_user->oxuser__oxusername->value}][{else}][{$editval.oxuser__oxusername}][{/if}]" class="js-oxValidate js-oxValidate_notEmpty js-oxValidate_email">
             <p class="oxValidateError">
-                <span class="js-oxError_notEmpty">[{ oxmultilang ident="EXCEPTION_INPUT_NOTALLFIELDS" }]</span>
-                <span class="js-oxError_email">[{ oxmultilang ident="EXCEPTION_INPUT_NOVALIDEMAIL" }]</span>
+                <span class="js-oxError_notEmpty">[{ oxmultilang ident="ERROR_MESSAGE_INPUT_NOTALLFIELDS" }]</span>
+                <span class="js-oxError_email">[{ oxmultilang ident="ERROR_MESSAGE_INPUT_NOVALIDEMAIL" }]</span>
             </p>
         </li>
         <li [{if $aErrors && !$oView->getContactSubject()}]class="oxInValid"[{/if}]>
-            <label class="req">[{ oxmultilang ident="FORM_CONTACT_SUBJECT" }]</label>
+            <label class="req">[{ oxmultilang ident="SUBJECT" suffix="COLON" }]</label>
             <input type="text" name="c_subject" size="70" maxlength=80 value="[{$oView->getContactSubject()}]" class="js-oxValidate js-oxValidate_notEmpty">
                     <p class="oxValidateError">
-                <span class="js-oxError_notEmpty">[{ oxmultilang ident="EXCEPTION_INPUT_NOTALLFIELDS" }]</span>
+                <span class="js-oxError_notEmpty">[{ oxmultilang ident="ERROR_MESSAGE_INPUT_NOTALLFIELDS" }]</span>
             </p>
         </li>
         <li>
-            <label>[{ oxmultilang ident="FORM_CONTACT_MESSAGE" }]</label>
+            <label>[{ oxmultilang ident="MESSAGE" suffix="COLON" }]</label>
             <textarea rows="15" cols="70" name="c_message" class="areabox">[{$oView->getContactMessage()}]</textarea>
         </li>
         <li class="verify">
-            <label class="req">[{ oxmultilang ident="FORM_CONTACT_VERIFICATIONCODE" }]</label>
+            <label class="req">[{ oxmultilang ident="VERIFICATION_CODE" suffix="COLON" }]</label>
             [{assign var="oCaptcha" value=$oView->getCaptcha() }]
             [{if $oCaptcha->isImageVisible()}]
                 <img src="[{$oCaptcha->getImageUrl()}]" alt="">
@@ -58,14 +62,14 @@
             [{/if}]
             <input type="text" data-fieldsize="verify" name="c_mac" value="" class="js-oxValidate js-oxValidate_notEmpty">
             <p class="oxValidateError">
-                <span class="js-oxError_notEmpty">[{ oxmultilang ident="EXCEPTION_INPUT_NOTALLFIELDS" }]</span>
+                <span class="js-oxError_notEmpty">[{ oxmultilang ident="ERROR_MESSAGE_INPUT_NOTALLFIELDS" }]</span>
             </p>
         </li>
         <li class="formNote">
-            [{ oxmultilang ident="FORM_CONTACT_COMPLETEMARKEDFIELDS2" }]
+            [{ oxmultilang ident="COMPLETE_MARKED_FIELDS" }]
         </li>
         <li>
-            <button class="submitButton largeButton" type="submit">[{ oxmultilang ident="FORM_CONTACT_SEND" }]</button>
+            <button class="submitButton largeButton" type="submit">[{ oxmultilang ident="SEND" }]</button>
         </li>
     </ul>
 </form>

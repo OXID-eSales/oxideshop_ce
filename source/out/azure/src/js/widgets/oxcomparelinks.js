@@ -39,8 +39,8 @@
         {
             if (list) {
                 $.each(list, function(id) {
-                    $('a.compare.add[data-aid='+id+']').css('display','none');
-                    $('a.compare.remove[data-aid='+id+']').css('display','block');
+                    $("a.compare.add[data-aid='"+id+"']").css('display','none');
+                    $("a.compare.remove[data-aid='"+id+"']").css('display','block');
                 });
             }
         }

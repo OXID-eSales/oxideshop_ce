@@ -6,6 +6,6 @@
     [{if $delivadr->oxaddress__oxstateid->value}][{$delivadr->oxaddress__oxstateid->value}] [{/if}]
     [{if $delivadr->oxaddress__oxzip->value || $delivadr->oxaddress__oxcity->value}][{ $delivadr->oxaddress__oxzip->value }]&nbsp;[{ $delivadr->oxaddress__oxcity->value }]<br>[{/if}]
     [{if $delivadr->oxaddress__oxcountry->value }][{ $delivadr->oxaddress__oxcountry->value }]<br><br>[{/if}]
-    [{if $delivadr->oxaddress__oxfon->value }][{ oxmultilang ident="PHONE_2" }] [{ $delivadr->oxaddress__oxfon->value }]<br>[{/if}]
-    [{if $delivadr->oxaddress__oxfax->value }][{ oxmultilang ident="FAX" }] [{ $delivadr->oxaddress__oxfax->value }]<br>[{/if}]
+    [{if $delivadr->oxaddress__oxfon->value }][{ oxmultilang ident="PHONE" suffix="COLON" }] [{ $delivadr->oxaddress__oxfon->value }]<br>[{/if}]
+    [{if $delivadr->oxaddress__oxfax->value }][{ oxmultilang ident="FAX" suffix="COLON" }] [{ $delivadr->oxaddress__oxfax->value }]<br>[{/if}]
 [{/if}]

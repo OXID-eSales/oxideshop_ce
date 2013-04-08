@@ -35,9 +35,9 @@
                 <div id="[{$_prefix}]basketFlyout" class="basketFlyout corners[{if $scrollableBasket}] scrollable[{/if}]">
                     <p class="title">
                         [{if $_prefix != "modal"}]
-                            <strong>[{$oxcmp_basket->getItemsCount()}] [{ oxmultilang ident="WIDGET_MINIBASKET_ITEMS_IN_BASKET" }]</strong>
+                            <strong>[{$oxcmp_basket->getItemsCount()}] [{ oxmultilang ident="ITEMS_IN_BASKET" suffix="COLON" }]</strong>
                         [{else}]
-                            <strong class="note">[{ oxmultilang ident="WIDGET_NEWBASKETITEMMSG" }]</strong>
+                            <strong class="note">[{ oxmultilang ident="NEW_BASKET_ITEM_MSG" }]</strong>
                         [{/if}]
                         <img src="[{$oViewConf->getImageUrl('x.png')}]" alt="" class="closePop">
                     </p>
@@ -83,7 +83,7 @@
                     [{/if}]
                     [{block name="widget_minibasket_total"}]
                         <p class="totals">
-                           <span class="item">[{ oxmultilang ident="WIDGET_MINIBASKET_TOTAL" }]</span>
+                           <span class="item">[{ oxmultilang ident="TOTAL" }]</span>
                            <strong class="price">
                            [{if $oxcmp_basket->isPriceViewModeNetto()}]
                            [{ $oxcmp_basket->getProductsNetPrice()}]
@@ -97,11 +97,11 @@
                     [{include file="widget/minibasket/countdown.tpl"}]
                     <p class="functions clear">
                        [{if $oxcmp_user}]
-                            <a href="[{ oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=payment" }]" class="submitButton largeButton">[{ oxmultilang ident="WIDGET_MINIBASKET_CHECKOUT" }]</a>
+                            <a href="[{ oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=payment" }]" class="submitButton largeButton">[{ oxmultilang ident="CHECKOUT" }]</a>
                        [{else}]
-                            <a href="[{ oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=user" }]" class="submitButton largeButton">[{ oxmultilang ident="WIDGET_MINIBASKET_CHECKOUT" }]</a>
+                            <a href="[{ oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=user" }]" class="submitButton largeButton">[{ oxmultilang ident="CHECKOUT" }]</a>
                        [{/if}]
-                       <a href="[{ oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=basket" }]" class="textButton">[{ oxmultilang ident="WIDGET_MINIBASKET_DISPLAY_BASKET" }]</a>
+                       <a href="[{ oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=basket" }]" class="textButton">[{ oxmultilang ident="DISPLAY_BASKET" }]</a>
                     </p>
                 </div>
             [{/oxhasrights}]

@@ -3,15 +3,15 @@
 [{ assign var="user"      value=$oEmailView->getUser() }]
 
 
-[{ oxmultilang ident="EMAIL_WISHLIST_HTML_MYWISHLISTBY" }] [{ $shop->oxshops__oxname->getRawValue() }]
+[{ oxmultilang ident="GIFT_REGISTRY_OF_2" }] [{ $shop->oxshops__oxname->getRawValue() }]
 
 [{$userinfo->send_message}]
 
-[{ oxmultilang ident="EMAIL_WISHLIST_HTML_TOMYWISHLISTCLICKHERE1" }] [{ oxmultilang ident="EMAIL_WISHLIST_HTML_TOMYWISHLISTCLICKHERE2" }]
+[{ oxmultilang ident="TO_MY_WISHLIST" }] [{ oxmultilang ident="CLICK_HERE" }]
 
 [{ $oViewConf->getBaseDir() }]index.php?cl=wishlist&wishid=[{$userinfo->send_id}]
 
-[{ oxmultilang ident="EMAIL_WISHLIST_HTML_WITHLOVE" }]
+[{ oxmultilang ident="WITH_LOVE" }]
 
 [{$userinfo->send_name}]
 

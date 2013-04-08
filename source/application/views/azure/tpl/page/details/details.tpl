@@ -5,17 +5,23 @@
   [{assign var="sPageHeadTitle" value=$oDetailsProduct->oxarticles__oxtitle->value|cat:' '|cat:$oDetailsProduct->oxarticles__oxvarselect->value}]
 
     [{if $oView->getPriceAlarmStatus() == 1}]
-        [{assign var="_statusMessage1" value="PAGE_DETAILS_THANKYOUMESSAGE1"|oxmultilangassign|cat:" "|cat:$oxcmp_shop->oxshops__oxname->value}]
-        [{assign var="_statusMessage2" value="PAGE_DETAILS_THANKYOUMESSAGE2"|oxmultilangassign|cat:" "}]
-        [{assign var="_statusMessage3" value="PAGE_DETAILS_THANKYOUMESSAGE3"|oxmultilangassign|cat:" "|cat:$oView->getBidPrice()|cat:" "|cat:$currency->sign|cat:" "}]
-        [{assign var="_statusMessage4" value="PAGE_DETAILS_THANKYOUMESSAGE4"|oxmultilangassign}]
-        [{include file="message/success.tpl" statusMessage=`$_statusMessage1``$_statusMessage2``$_statusMessage3``$_statusMessage4`}]
+        [{assign var="shop_name" value=$oxcmp_shop->oxshops__oxname->value}]
+        [{assign var="bid_price" value=$oView->getBidPrice()}]
+        [{assign var="currency_sign" value=$currency->sign}]
+        [{assign_adv var="message_vars" value="array
+        (
+         '0' => '$shop_name',
+         '1' => '$bid_price',
+         '2' => '$currency_sign'
+        )"}]
+        [{assign var="_statusMessage" value="PRICE_ALERT_THANK_YOU_MESSAGE"|oxmultilangassign:$message_vars}]
+        [{include file="message/success.tpl" statusMessage=`$_statusMessage`}]
     [{elseif $oView->getPriceAlarmStatus() == 2}]
-        [{assign var="_statusMessage" value="PAGE_DETAILS_WRONGVERIFICATIONCODE"|oxmultilangassign}]
+        [{assign var="_statusMessage" value="MESSAGE_WRONG_VERIFICATION_CODE"|oxmultilangassign}]
         [{include file="message/error.tpl" statusMessage=$_statusMessage}]
     [{elseif $oView->getPriceAlarmStatus() === 0}]
-        [{assign var="_statusMessage1" value="PAGE_DETAILS_NOTABLETOSENDEMAIL"|oxmultilangassign|cat:"<br> "}]
-        [{assign var="_statusMessage2" value="PAGE_DETAILS_VERIFYYOUREMAIL"|oxmultilangassign}]
+        [{assign var="_statusMessage1" value="MESSAGE_NOT_ABLE_TO_SEND_EMAIL"|oxmultilangassign|cat:"<br> "}]
+        [{assign var="_statusMessage2" value="MESSAGE_VERIFY_YOUR_EMAIL"|oxmultilangassign}]
         [{include file="message/error.tpl" statusMessage=`$_statusMessage1``$_statusMessage2`}]
     [{/if}]
 
@@ -35,16 +41,16 @@
         [{* details locator  *}]
         [{assign var="actCategory" value=$oView->getActiveCategory()}]
         <div id="overviewLink">
-            <a href="[{ $actCategory->toListLink }]" class="overviewLink">[{ oxmultilang ident="WIDGET_BREADCRUMB_OVERVIEW" }]</a>
+            <a href="[{ $actCategory->toListLink }]" class="overviewLink">[{ oxmultilang ident="BACK_TO_OVERVIEW" }]</a>
         </div>
         <h2 class="pageHead">[{$sPageHeadTitle|truncate:80}]</h2>
         <div class="detailsParams listRefine bottomRound">
             <div class="pager refineParams clear" id="detailsItemsPager">
-                [{if $actCategory->prevProductLink}]<a id="linkPrevArticle" class="prev" href="[{$actCategory->prevProductLink}]">[{oxmultilang ident="DETAILS_LOCATOR_PREVIOUSPRODUCT"}]</a>[{/if}]
+                [{if $actCategory->prevProductLink}]<a id="linkPrevArticle" class="prev" href="[{$actCategory->prevProductLink}]">[{oxmultilang ident="PREVIOUS_PRODUCT"}]</a>[{/if}]
                 <span class="page">
-                   [{oxmultilang ident="DETAILS_LOCATOR_PRODUCT"}] [{$actCategory->iProductPos}] [{oxmultilang ident="DETAILS_LOCATOR_FROM"}] [{$actCategory->iCntOfProd}]
+                   [{oxmultilang ident="PRODUCT"}] [{$actCategory->iProductPos}] [{oxmultilang ident="OF"}] [{$actCategory->iCntOfProd}]
                 </span>
-                [{if $actCategory->nextProductLink}]<a id="linkNextArticle" href="[{$actCategory->nextProductLink}]" class="next">[{oxmultilang ident="DETAILS_LOCATOR_NEXTPRODUCT"}]</a>[{/if}]
+                [{if $actCategory->nextProductLink}]<a id="linkNextArticle" href="[{$actCategory->nextProductLink}]" class="next">[{oxmultilang ident="NEXT_PRODUCT"}]</a>[{/if}]
             </div>
         </div>
 
@@ -53,6 +59,6 @@
             [{include file="page/details/inc/fullproductinfo.tpl"}]
         </div>
     </div>
-    [{ insert name="oxid_tracker" title="DETAILS_PRODUCTDETAILS"|oxmultilangassign product=$oDetailsProduct cpath=$oView->getCatTreePath() }]
+    [{ insert name="oxid_tracker" title="PRODUCT_DETAILS"|oxmultilangassign product=$oDetailsProduct cpath=$oView->getCatTreePath() }]
 [{/capture}]
 [{include file="layout/page.tpl" sidebar="Left"}]

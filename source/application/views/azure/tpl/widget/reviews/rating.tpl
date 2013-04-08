@@ -5,11 +5,11 @@
     [{math equation="x*y" x=20 y=$oView->getRatingValue() assign="iRatingAverage"}]
 
     [{if !$oxcmp_user}]
-        [{assign var="_star_title" value="DETAILS_LOGIN"|oxmultilangassign}]
+        [{assign var="_star_title" value="MESSAGE_LOGIN_TO_RATE"|oxmultilangassign}]
     [{elseif !$oView->canRate()}]
-        [{assign var="_star_title" value="DETAILS_ALREADYRATED"|oxmultilangassign}]
+        [{assign var="_star_title" value="MESSAGE_ALREADY_RATED"|oxmultilangassign}]
     [{else}]
-        [{assign var="_star_title" value="DETAILS_RATETHISARTICLE"|oxmultilangassign}]
+        [{assign var="_star_title" value="MESSAGE_RATE_THIS_ARTICLE"|oxmultilangassign}]
     [{/if}]
 
     <li class="currentRate" style="width: [{$iRatingAverage}]%;">
@@ -33,7 +33,7 @@
             [{if $oView->getRatingCount()}]
                 ([{$oView->getRatingCount()}])
             [{else}]
-                [{oxmultilang ident="DETAILS_NORATINGS"}]
+                [{oxmultilang ident="NO_RATINGS"}]
             [{/if}]
         </a>
     </li>

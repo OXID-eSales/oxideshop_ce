@@ -206,9 +206,9 @@ class Acceptance_productInfoFrontendTest extends oxidAdditionalSeleniumFunctions
 
     /**
      * Check is Compare options works corectly
-      * @group navigation
+     * @group navigation
      * @group product
-    */
+     */
     public function testCompareInFrontend()
     {
 
@@ -221,7 +221,7 @@ class Acceptance_productInfoFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->clickAndWait('toCmp_productList_1');
         $this->click("servicesTrigger");
         $this->waitForItemAppear("services");
-        $this->clickAndWAit("//ul[@id='services']/li[3]/a");
+        $this->clickAndWAit("//ul[@id='services']/li[4]/a");
         $this->assertTrue($this->isElementPresent('productPrice_1'));
         $this->assertTrue($this->isElementPresent("//a[text()='Test product 0 [EN] šÄßüл ']"));
         $this->assertTrue($this->isElementPresent('productPrice_2'));
@@ -237,12 +237,12 @@ class Acceptance_productInfoFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->clickAndWait('removeCmp_productList_1');
         $this->click("servicesTrigger");
         $this->waitForItemAppear("services");
-        $this->clickAndWAit("//ul[@id='services']/li[3]/a");
+        $this->clickAndWAit("//ul[@id='services']/li[4]/a");
         $this->assertFalse($this->isElementPresent('productPrice_1'));
         $this->assertFalse($this->isElementPresent('productPrice_2'));
         $this->assertFalse($this->isElementPresent('productPrice_3'));
         $this->assertTrue($this->isTextPresent("Please select at least two products to be compared."));
-     }
+    }
 
     /**
      * Product details. Sending remommendation of product
@@ -499,7 +499,7 @@ class Acceptance_productInfoFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->searchFor("10014");
         $this->clickAndWait("searchList_1");
         $this->assertEquals("14 EN product šÄßüл", $this->getText("//h1"));
-        $this->assertEquals("Art.No.: 10014", $this->getText("productArtnum"));
+        $this->assertEquals("Item #: 10014", $this->getText("productArtnum"));
         $this->assertEquals("13 EN description šÄßüл", $this->getText("productShortdesc"));
         $this->assertEquals("from 15,00 € *", $this->getText("productPrice"));
         $this->assertFalse($this->isEditable("toBasket"));
@@ -520,7 +520,7 @@ class Acceptance_productInfoFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->assertFalse($this->isEditable("toBasket"));
         $this->selectVariant("variants", 3, "lether", "Selected combination: S, black, lether");
         $this->assertEquals("14 EN product šÄßüл S | black | lether", $this->getText("//h1"));
-        $this->assertEquals("Art.No.: 10014-1-1", $this->getText("productArtnum"));
+        $this->assertEquals("Item #: 10014-1-1", $this->getText("productArtnum"));
         $this->assertEquals("25,00 € *", $this->getText("productPrice"));
         $this->assertTrue($this->isEditable("toBasket"));
 
@@ -531,7 +531,7 @@ class Acceptance_productInfoFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->assertTrue($this->isElementPresent("//div[@id='variants']//li[@class='js-disabled disabled']/a[text()='lether']"));
         $this->assertTrue($this->isElementPresent("//div[@id='variants']//li[@class='js-disabled disabled']/a[text()='material']"));
         $this->assertEquals("14 EN product šÄßüл S | white", $this->getText("//h1"));
-        $this->assertEquals("Art.No.: 10014-1-3", $this->getText("productArtnum"));
+        $this->assertEquals("Item #: 10014-1-3", $this->getText("productArtnum"));
         $this->assertEquals("15,00 € *", $this->getText("productPrice"));
         $this->assertTrue($this->isEditable("toBasket"));
 
@@ -543,11 +543,11 @@ class Acceptance_productInfoFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->assertTrue($this->isEditable("toBasket"));
 
         $this->assertEquals("14 EN product šÄßüл S | black | material", $this->getText("//h1"));
-        $this->assertEquals("Art.No.: 10014-1-2", $this->getText("productArtnum"));
+        $this->assertEquals("Item #: 10014-1-2", $this->getText("productArtnum"));
         $this->assertEquals("15,00 € *", $this->getText("productPrice"));
         $this->selectVariant("variants", 3, "lether", "Selected combination: S, black, lether");
         $this->assertEquals("14 EN product šÄßüл S | black | lether", $this->getText("//h1"));
-        $this->assertEquals("Art.No.: 10014-1-1", $this->getText("productArtnum"));
+        $this->assertEquals("Item #: 10014-1-1", $this->getText("productArtnum"));
         $this->assertEquals("25,00 € *", $this->getText("productPrice"));
         $this->assertTrue($this->isEditable("toBasket"));
 
@@ -557,7 +557,7 @@ class Acceptance_productInfoFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->selectVariant("variants", 2, "red", "Selected combination: M, red");
         $this->assertTrue($this->isElementPresent("//div[@id='variants']//li[@class='js-disabled disabled']/a[text()='lether']"));
         $this->assertEquals("14 EN product šÄßüл M | red", $this->getText("//h1"));
-        $this->assertEquals("Art.No.: 10014-2-4", $this->getText("productArtnum"));
+        $this->assertEquals("Item #: 10014-2-4", $this->getText("productArtnum"));
         $this->assertEquals("15,00 € *", $this->getText("productPrice"));
         $this->assertTrue($this->isEditable("toBasket"));
 
@@ -573,7 +573,7 @@ class Acceptance_productInfoFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->selectVariant("variants", 1, "L", "Selected combination: L, black, lether");
         $this->assertTrue($this->isElementPresent("//div[@id='variants']//li[@class='js-disabled disabled']/a[text()='red']"));
         $this->assertEquals("14 EN product šÄßüл L | black | lether", $this->getText("//h1"));
-        $this->assertEquals("Art.No.: 10014-3-1", $this->getText("productArtnum"));
+        $this->assertEquals("Item #: 10014-3-1", $this->getText("productArtnum"));
         $this->assertEquals("15,00 € *", $this->getText("productPrice"));
         $this->assertTrue($this->isEditable("toBasket"));
         $this->type("amountToBasket", "2");
@@ -582,14 +582,14 @@ class Acceptance_productInfoFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->click("//a[text()='Reset selection']");
         $this->waitForTextDisappear("Selected combination");
         $this->assertEquals("14 EN product šÄßüл", $this->getText("//h1"));
-        $this->assertEquals("Art.No.: 10014", $this->getText("productArtnum"));
+        $this->assertEquals("Item #: 10014", $this->getText("productArtnum"));
         $this->assertEquals("13 EN description šÄßüл", $this->getText("productShortdesc"));
         $this->assertEquals("from 15,00 € *", $this->getText("productPrice"));
         $this->assertFalse($this->isEditable("toBasket"));
 
         $this->openBasket();
         $this->assertEquals("14 EN product šÄßüл, L | black | lether", $this->clearString($this->getText("//tr[@id='cartItem_1']/td[3]//a")));
-        $this->assertEquals("Art.No.: 10014-3-1", $this->clearString($this->getText("//tr[@id='cartItem_1']/td[3]/div[2]")));
+        $this->assertEquals("Item #: 10014-3-1", $this->clearString($this->getText("//tr[@id='cartItem_1']/td[3]/div[2]")));
         $this->assertEquals("2", $this->getValue("am_1"));
         $this->assertFalse($this->isElementPresent("cartItem_2"));
         $this->assertEquals("30,00 €", $this->getText("//div[@id='basketSummary']//tr[4]/td"));
@@ -648,16 +648,16 @@ class Acceptance_productInfoFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->assertTrue($this->isElementPresent("variantselector_searchList_1"));
 
         $this->assertEquals(
-                "size[EN] | color | type: Choose variant S | black | lether S | black | material S | white S | red M | black | material M | white M | red L | black | lether L | black | material L | white",
-                $this->clearString($this->getText("variantselector_searchList_1"))
+            "size[EN] | color | type: Choose variant S | black | lether S | black | material S | white S | red M | black | material M | white M | red L | black | lether L | black | material L | white",
+            $this->clearString($this->getText("variantselector_searchList_1"))
         );
         $this->selectVariant("variantselector_searchList_1", 1, "S | black | material");
 
         $this->assertEquals("14 EN product šÄßüл S | black | material", $this->getText("//h1"));
         $this->assertTrue($this->isTextPresent("Selected combination: S | black | material"));
         $this->assertEquals(
-                "Choose variant S | black | lether S | black | material S | white S | red M | black | material M | white M | red L | black | lether L | black | material L | white",
-                $this->clearString($this->getText("//div[@id='variants']//ul"))
+            "Choose variant S | black | lether S | black | material S | white S | red M | black | material M | white M | red L | black | lether L | black | material L | white",
+            $this->clearString($this->getText("//div[@id='variants']//ul"))
         );
         $this->assertTrue($this->isEditable("toBasket"));
 
@@ -678,8 +678,8 @@ class Acceptance_productInfoFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->assertEquals("14 EN product šÄßüл", $this->getText("//h1"));
         $this->assertFalse($this->isEditable("toBasket"));
         $this->assertEquals(
-                "S | black | lether S | black | material S | white S | red M | black | lether M | black | material M | white M | red L | black | lether L | black | material L | white",
-                $this->clearString($this->getText("//div[@id='variants']//ul"))
+            "S | black | lether S | black | material S | white S | red M | black | lether M | black | material M | white M | red L | black | lether L | black | material L | white",
+            $this->clearString($this->getText("//div[@id='variants']//ul"))
         );
         $this->assertTrue($this->isElementPresent("//div[@id='variants']//ul//a[text()='M | black | lether']"));
         $this->assertTrue($this->isElementPresent("//div[@id='variants']//ul//a[text()='M | black | material']"));

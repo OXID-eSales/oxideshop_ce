@@ -38,7 +38,7 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
      * Basket flyout
      * @group navigation
      * @group order
-     * @group basketfrontend
+     * @gruop basketfrontend
      */
     public function testFrontendBasketFlyout()
     {
@@ -94,7 +94,7 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
      * Frontend: product is sold out by other user during order process.
      * testing if no fatal errors or exceptions are thrown
      * @group order
-     * @group basketfrontend
+     * @gruop basketfrontend
      */
     public function testFrontendOutOfStockOfflineProductDuringOrder()
     {
@@ -274,7 +274,7 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
      * @group navigation
      * @group user
      * @group order
-     * @group basketfrontend
+     * @gruop basketfrontend
      */
     public function testFrontendMinOrderSum()
     {
@@ -318,7 +318,7 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
     /**
      * Checking VAT displaying for all additional products in 1st order step
      * @group order
-     * @group basketfrontend
+     * @gruop basketfrontend
      */
     public function testFrontendVATOptions()
     {
@@ -365,7 +365,7 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
     /**
      * Vats for products (category, product and personal product vat)
      * @group vat
-     * @group basketfrontend
+     * @gruop basketfrontend
      */
     public function testFrontendVAT()
     {
@@ -458,7 +458,7 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
      * @group navigation
      * @group order
      * @group main
-     * @group basketfrontend
+     * @gruop basketfrontend
      */
     public function testFrontendPersParamSaveBasket()
     {
@@ -577,7 +577,7 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
      * @group navigation
      * @group user
      * @group order
-     * @group basketfrontend
+     * @gruop basketfrontend
      */
     public function testFrontendMyAccountOrdersHistory()
     {
@@ -639,7 +639,7 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
      * @group order
      * @group user
      * @group navigation
-     * @group basketfrontend
+     * @gruop basketfrontend
      */
     public function testFrontendOrderStep1Navigation()
     {
@@ -662,10 +662,10 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->assertEquals("Test product 2 [EN] šÄßüл, var2 [EN] šÄßüл", $this->getText("//tr[@id='cartItem_2']/td[3]//a"));
         $this->assertEquals("Test product 3 [EN] šÄßüл", $this->getText("//tr[@id='cartItem_3']/td[3]//a"));
         $this->assertEquals("Test product 0 [EN] šÄßüл", $this->getText("//tr[@id='cartItem_4']/td[3]//a"));
-        $this->assertEquals("Art.No.: 1000", $this->getText("//tr[@id='cartItem_4']/td[3]/div[2]"));
-        $this->assertEquals("Art.No.: 1001", $this->getText("//tr[@id='cartItem_1']/td[3]/div[2]"));
-        $this->assertEquals("Art.No.: 1002-2", $this->getText("//tr[@id='cartItem_2']/td[3]/div[2]"));
-        $this->assertEquals("Art.No.: 1003", $this->getText("//tr[@id='cartItem_3']/td[3]/div[2]"));
+        $this->assertEquals("Art.No. 1000", $this->getText("//tr[@id='cartItem_4']/td[3]/div[2]"));
+        $this->assertEquals("Art.No. 1001", $this->getText("//tr[@id='cartItem_1']/td[3]/div[2]"));
+        $this->assertEquals("Art.No. 1002-2", $this->getText("//tr[@id='cartItem_2']/td[3]/div[2]"));
+        $this->assertEquals("Art.No. 1003", $this->getText("//tr[@id='cartItem_3']/td[3]/div[2]"));
 
         //testing navigation to details page
         $this->clickAndWait("//tr[@id='cartItem_4']/td[2]//img");
@@ -693,7 +693,7 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
     /**
      * Vouchers is disabled via performance options
      * @group navigation
-     * @group basketfrontend
+     * @gruop basketfrontend
      */
     public function testFrontendDisabledVouchers()
     {
@@ -710,7 +710,7 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
     /**
      * Vouchers for specific products and categories
      * @group navigation
-     * @group basketfrontend
+     * @gruop basketfrontend
      */
     public function testFrontendVouchersForSpecificCategoriesAndProducts()
     {
@@ -749,13 +749,12 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->assertEquals("-3,00 €", $this->getText("//div[@id='basketSummary']//tr[6]/td"));
     }
 
-
     /**
      * Orders: buying more items than available
      * @group order
      * @group user
      * @group navigation
-     * @group basketfrontend
+     * @gruop basketfrontend
      */
     public function testFrontendOrderStep1BuyingLimit()
     {
@@ -790,7 +789,7 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
     /**
      * Discounts for products (category, product and itm discounts)
      * @group discount
-     * @group basketfrontend
+     * @gruop basketfrontend
      */
     public function testFrontendDiscounts()
     {
@@ -821,7 +820,7 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->type("am_1", "5");
         $this->clickAndWait("basketUpdate");
 
-        $this->assertEquals("Test product 3 [EN] šÄßüл Art.No.: 1003", $this->clearString($this->getText("//tr[@id='cartItem_3']/td[3]")));
+        $this->assertEquals("Test product 3 [EN] šÄßüл Art.No. 1003", $this->clearString($this->getText("//tr[@id='cartItem_3']/td[3]")));
         $this->assertEquals("+1", $this->getText("//tr[@id='cartItem_3']/td[5]"));
 
         $this->assertEquals("297,48 €", $this->getText("basketTotalProductsNetto"),"Neto price changed or did't displayed");
@@ -853,7 +852,7 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
      * @group order
      * @group user
      * @group navigation
-     * @group basketfrontend
+     * @gruop basketfrontend
      */
     public function testFrontendOrderToOtherCountries()
     {
@@ -890,7 +889,7 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
      * @group order
      * @group user
      * @group navigation
-      * @group basketfrontend
+      * @gruop basketfrontend
      */
     public function testFrontendOrderStep2Options()
     {
@@ -941,7 +940,7 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
      * @group order
      * @group user
      * @group navigation
-     * @group basketfrontend
+     * @gruop basketfrontend
      */
     public function testFrontendOrderStep2And3()
     {
@@ -1019,7 +1018,7 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
      * @group order
      * @group user
      * @group navigation
-     * @group basketfrontend
+    * @gruop basketfrontend
      */
     public function testFrontendOrderStep4()
     {
@@ -1114,7 +1113,7 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
      * @group order
      * @group user
      * @group navigation
-     * @group basketfrontend
+     * @gruop basketfrontend
      */
     public function testFrontendOrderStep4and5()
     {
@@ -1173,7 +1172,7 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
      * Checking Performance options
      * option: Load "Customers who bought this product also purchased..."
      * @group navigation
-     * @group basketfrontend
+     * @gruop basketfrontend
      */
     public function testFrontendPerfOptionsAlsoBought()
     {
@@ -1245,7 +1244,7 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
      * @group order
      * @group user
      * @group navigation
-     * @group basketfrontend
+     * @gruop basketfrontend
      */
     public function testFrontendOrderGiftWrapping()
     {
@@ -1285,7 +1284,7 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
     /**
      * Gift wrapping is disabled via performance options
      * @group navigation
-     * @group basketfrontend
+     * @gruop basketfrontend
      */
     public function testFrontendDisabledGiftWrapping()
     {
@@ -1304,7 +1303,7 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
     /**
      * Checking VAT functionality, when it is calculated for Shipping country
      * @group navigation
-     * @group basketfrontend
+     * @gruop basketfrontend
      */
     public function testFrontendVatForShippingCountry()
     {
@@ -1401,7 +1400,7 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
     * @group order
     * @group user
     * @group navigation
-    * @group basketfrontend
+    * @gruop basketfrontend
     */
     public function testFrontendOrderStep4ChangedAddress()
     {
@@ -1437,12 +1436,15 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->clickAndWait("accUserSaveTop");
         $this->close();
         $this->selectWindow(null);
+
         // submit
         $this->click("//form[@id='orderConfirmAgbTop']/div/input[@name='ord_agb' and @value='1']");
         $this->clickAndWait("//form[@id='orderConfirmAgbTop']//button");
+
         //delivery country was changed and we are redirected to payment step
         $this->clickAndWait("//button[text()='Continue to Next Step']");
         $this->assertFalse($this->isTextPresent("Billing or shipping address have been changed during checkout. Please check again."));
+
         //changing billing address once more
         $this->openWindow(shopURL."en/my-address/", "222");
         $this->selectWindow("222");
@@ -1456,14 +1458,15 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
 
         // submit
         $this->click("//form[@id='orderConfirmAgbTop']/div/input[@name='ord_agb' and @value='1']");
-
         $this->clickAndWait("//form[@id='orderConfirmAgbTop']//button");
-         //billing address was changed, so messega was displayed:" Billing or shipping address have been changed during checkout. Please check again."
-        //$this->assertTrue($this->isTextPresent("Billing or shipping address have been changed during checkout. Please check again."));
-            // submit
+
+        //billing address was changed, so messega was displayed:" Billing or shipping address have been changed during checkout. Please check again."
         $this->click("//form[@id='orderConfirmAgbTop']/div/input[@name='ord_agb' and @value='1']");
         $this->clickAndWait("//form[@id='orderConfirmAgbTop']//button");
         $this->assertEquals("You are here: / Order Completed", $this->getText("breadCrumb"));
+        $this->assertTrue($this->isTextPresent("We registered your order under the number: 12"));
+        $this->assertTrue($this->isElementPresent("backToShop"));
+        $this->assertEquals("back to Startpage", $this->getText("backToShop"));
     }
 
 }

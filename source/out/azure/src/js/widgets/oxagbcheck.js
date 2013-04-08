@@ -31,7 +31,7 @@
                 el      = self.element;
 
              el.closest('form').submit(function() {
-                if( el.attr('checked') ){
+                if( el.prop('checked') ){
                     return true;
                 } else {
                     $("p[name='agbError']").show();
@@ -41,11 +41,11 @@
             });
 
             el.click(function() {
-                if( el.attr('checked') ){
-                    el.attr('checked', true);
+                if( el.prop('checked') ){
+                    el.prop('checked', true);
                     $("p[name='agbError']").hide();
                 } else {
-                    el.attr('checked', false);
+                    el.prop('checked', false);
                 }
             });
         }

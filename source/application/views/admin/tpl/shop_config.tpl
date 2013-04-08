@@ -402,7 +402,7 @@ function showInvitations()
             <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{ oxmultilang ident="SHOP_OPTIONS_GROUP_VAT" }]</b></a>
             <dl>
                 <dt>
-                    <input type=text class="txt" style="width:70" name=confstrs[dDefaultVAT] value="[{$confstrs.dDefaultVAT}]" [{ $readonly}]>
+                    <input type=text class="txt" style="width:70" name=confnum[dDefaultVAT] value="[{$confnum.dDefaultVAT}]" [{ $readonly}]>
                     [{ oxinputhelp ident="HELP_SHOP_CONFIG_DEFAULTVAT" }]
                 </dt>
                 <dd>

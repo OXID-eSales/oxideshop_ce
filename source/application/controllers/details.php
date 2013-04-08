@@ -606,26 +606,52 @@ class Details extends oxUBase
         $oArticleTagList = oxNew( "oxarticletaglist" );
         $oArticleTagList->load( $oProduct->getId() );
         $sSeparator = $oArticleTagList->get()->getSeparator();
-        $aTags = explode( $sSeparator, $sTags );
-        $blAddedTag = false;
-        foreach ( $aTags as $sTag ) {
-            $oTag = oxNew( "oxtag" );
-            $oTag->set( $sTag );
-            if ( $aAddedTags[$oTag->get()] != 1 ) {
-                $oArticleTagList->addTag( $oTag );
-                $aAddedTags[$oTag->get()] = 1;
-                $blAddedTag = true;
-            }
-        }
-        if ( $blAddedTag ) {
+        $aTags = array_unique( explode( $sSeparator, $sTags ) );
+
+        $aResult = $this->_addTagsToList( $oArticleTagList, $aTags, $aAddedTags);
+
+        if ( !empty( $aResult['tags'] ) ) {
             $oArticleTagList->save();
+            foreach ( $aResult['tags'] as $sTag) {
+                $aAddedTags[ $sTag ] = 1;
+            }
             $aTaggedProducts[$oProduct->getId()] = $aAddedTags;
             oxRegistry::getSession()->setVariable( 'aTaggedProducts', $aTaggedProducts);
         }
         // for ajax call
         if ( $this->getConfig()->getRequestParameter( 'blAjax', true ) ) {
-            oxRegistry::getUtils()->showMessageAndExit( $blAddedTag );
+            oxRegistry::getUtils()->showMessageAndExit( json_encode( $aResult ) );
         }
+    }
+
+    /**
+     * Adds tags to passed oxArticleTagList object
+     *
+     * @param oxArticleTagList $oArticleTagList article tags list object
+     * @param array            $aTags           tags array to add to list
+     * @param array            $aAddedTags      tags, which are already added to list
+     *
+     * @return array
+     */
+    protected function _addTagsToList( $oArticleTagList, $aTags, $aAddedTags)
+    {
+        $aResult = array( 'tags' => array(), 'invalid' => array(), 'inlist' => array() );
+
+        foreach ( $aTags as $sTag ) {
+            $oTag = oxNew( "oxtag", $sTag );
+            if ( $aAddedTags[$oTag->get()] != 1 ) {
+                if ( $oTag->isValid() ) {
+                    $oArticleTagList->addTag( $oTag );
+                    $aResult['tags'][] = $oTag->get();
+                } else {
+                    $aResult['invalid'][] = $oTag->get();
+                }
+            } else {
+                $aResult['inlist'][] = $oTag->get();
+            }
+        }
+
+        return $aResult;
     }
 
     /**
@@ -1459,7 +1485,7 @@ class Details extends oxUBase
             $sSearchParam = $this->getSearchParamForHtml();
 
             $aCatPath = array();
-            $aCatPath['title'] = sprintf( oxRegistry::getLang()->translateString( 'searchResult', oxRegistry::getLang()->getBaseLanguage(), false ), $sSearchParam );
+            $aCatPath['title'] = sprintf( oxRegistry::getLang()->translateString( 'SEARCH_RESULT', oxRegistry::getLang()->getBaseLanguage(), false ), $sSearchParam );
             $aCatPath['link']  = $this->getViewConfig()->getSelfLink() . 'stoken=' . oxSession::getVar('sess_stoken') . "&amp;cl=search&amp;searchparam=" . $sSearchParam;
 
             $aPaths[] = $aCatPath;
@@ -1480,7 +1506,7 @@ class Details extends oxUBase
         } elseif ( 'recommlist' == oxConfig::getParameter( 'listtype' ) ) {
 
             $aCatPath = array();
-            $aCatPath['title'] = oxRegistry::getLang()->translateString( 'PAGE_RECOMMENDATIONS_PRODUCTS_TITLE', oxRegistry::getLang()->getBaseLanguage(), false );
+            $aCatPath['title'] = oxRegistry::getLang()->translateString( 'LISTMANIA', oxRegistry::getLang()->getBaseLanguage(), false );
             $aPaths[] = $aCatPath;
         } else {
 

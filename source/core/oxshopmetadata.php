@@ -57,7 +57,7 @@ class oxShopMetaData extends oxSuperCfg
 
     /**
      * Returns integer number with bit set according to $iShopId.
-     * The acttion performed could be represented as pow(2, $iShopId - 1)
+     * The action performed could be represented as pow(2, $iShopId - 1)
      * We use mySQL to calculate that, as currently php int size is only 32 bit.
      *
      * @param int $iShopId current shop id

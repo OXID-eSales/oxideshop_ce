@@ -65,14 +65,41 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
 
         curl_close($ch);
     }
+
+    /**
+     * Copy files to shop
+     *
+     * @param string $sCopyDir copy dir
+     * @param string $sShopDir shop dir
+     *
+     * @return void
+     */
+    public function copyFile($sCopyDir, $sShopDir)
+    {
+        $sCmd = "cp -frT ".escapeshellarg($sCopyDir)." ".escapeshellarg($sShopDir);
+        if (SHOP_REMOTE) {
+            $sCmd = "scp -rp ".escapeshellarg($sCopyDir."/.")." ".escapeshellarg(SHOP_REMOTE);
+        }
+        exec($sCmd, $sOut, $ret);
+        $sOut = implode("\n",$sOut);
+        if ( $ret > 0 ) {
+            throw new Exception( $sOut );
+        }
+    }
     // ------------------------ eFire modules for eShop ----------------------------------
 
     /**
-    * test for activating PayPal and sending conector
+    * test for activating PayPal and sending connector
     * @group paypal
     */
-    public function testActivatePaypal()
+    public function testActivatePayPal()
     {
+        //copy module files to shop
+        $sModuleDir = MODULE_PKG_DIR;
+        $sCopyDir = rtrim($sModuleDir, "/") . "/copy_this";
+        $this->copyFile( $sCopyDir, oxPATH );
+        $sCopyDir = rtrim($sModuleDir, "/") . "/changed_full";
+        $this->copyFile( $sCopyDir, oxPATH );
         $this->open(shopURL."_prepareDB.php?version=".$this->_sVersion);
         $this->open(shopURL."admin");
         $this->loginAdminForModule("Extensions", "Modules");
@@ -1561,7 +1588,7 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
         sleep(10);
         $this->clickAndWait("id=continue");
         $this->waitForItemAppear("id=breadCrumb");
-        
+
         //Check are all info in the last order step correct
         $this->assertTrue($this->isElementPresent("link=Test product 1"), "Purchased product name is not displayed in last order step");
         $this->assertTrue($this->isTextPresent("Art.No.: 1001"),"Product number not displayed in last order step");

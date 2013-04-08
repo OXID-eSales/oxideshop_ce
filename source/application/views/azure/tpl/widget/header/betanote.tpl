@@ -7,7 +7,7 @@
         [{oxmultilang ident='BETA_NOTE_MIDDLE'}]
         [{ $oxcmp_shop->oxshops__oxversion->value|regex_replace:"/[_a-zA-Z]+[0-9]+/":""}]
         [{oxmultilang ident='BETA_NOTE_FAQ'}]
-        <span class="dismiss"><a href="#" title="[{oxmultilang ident='BETA_NOTE_CLOSE'}]">x</a></span>
+        <span class="dismiss"><a href="#" title="[{oxmultilang ident='CLOSE'}]">x</a></span>
     </div>
 </div>
 [{oxscript add="$('#betaNote').oxBetaNote();"}]

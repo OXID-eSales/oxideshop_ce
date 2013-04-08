@@ -36,7 +36,7 @@
             el      = self.element;
 
             el.bind ( "keyup", function() {
-                self.showInput( el, el.val() != el.attr( "defaultValue" ), options.metodEnterPasswd );
+                self.showInput( el, el.val() != el.prop( "defaultValue" ), options.metodEnterPasswd );
             });
         },
 

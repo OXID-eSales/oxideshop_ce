@@ -34,7 +34,7 @@
                 $("#tagsForm"),
                 {//targetEl, onSuccess, onError, additionalData
                     'targetEl' : $("#tags"),
-                    'additionalData' : {'highTags' : oSelf.prev().text()},
+                    'additionalData' : {'highTags' : oSelf.prev().text(), 'blAjax' : '1'},
                     'onSuccess' : function(response, params) {
                         oSelf.prev().addClass('taggedText');
                         oSelf.hide();
@@ -53,10 +53,17 @@
                     'targetEl' : $("#tags"),
                     'additionalData' : {'blAjax' : '1'},
                     'onSuccess' : function(response, params) {
-                        if ( response ) {
-                            $(".tagCloud").append("<span class='taggedText'>" + params["newTags"] + "</span> ");
-                        } else {
-                            $("p.tagError").show();
+                        response = JSON.parse(response);
+                        if ( response.tags.length > 0 ) {
+                            $(".tagCloud").append("<span class='taggedText'>, " + response.tags + "</span> ");
+                        }
+                        if ( response.invalid.length > 0 ) {
+                            var tagError = $("p.tagError.invalid").show();
+                            $("span", tagError).text( response.invalid );
+                        }
+                        if ( response.inlist.length > 0 ) {
+                            var tagError = $("p.tagError.inlist").show();
+                            $("span", tagError).text( response.inlist );
                         }
                     }
                 }

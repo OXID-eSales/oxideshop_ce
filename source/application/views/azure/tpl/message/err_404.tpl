@@ -1,10 +1,12 @@
 [{capture append="oxidBlock_content"}]
-<h1 class="pageHead">[{ oxmultilang ident="MESSAGE_ERR_404TITLE" }]</h1>
+<h1 class="pageHead">[{ oxmultilang ident="ERROR" }]</h1>
 <p>
     [{if $sUrl}]
-        [{ oxmultilang ident="MESSAGE_ERR_404_PREURL" }] <i><strong>'[{$sUrl|escape}]'</strong></i> [{ oxmultilang ident="MESSAGE_ERR_404_POSTURL" }]
+        [{assign var="sModifiedUrl" value=$sUrl|escape }]
+        [{assign var="sModifiedUrl" value="<i><strong>'"|cat:$sModifiedUrl|cat:"'</strong></i>"}]
+        [{ oxmultilang ident="ERROR_404" args=$sModifiedUrl }]
     [{else}]
-        [{ oxmultilang ident="MESSAGE_ERR_404" }]
+        [{ oxmultilang ident="ERROR_404" args=''}]
     [{/if}]
 </p>
 [{/capture}]

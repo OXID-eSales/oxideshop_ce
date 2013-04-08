@@ -431,7 +431,7 @@ class oxLang extends oxSuperCfg
      */
     public function translateString( $sStringToTranslate, $iLang = null, $blAdminMode = null )
     {
-        // checking if in cash exist
+        // checking if in cache exist
         $aLang = $this->_getLangTranslationArray( $iLang, $blAdminMode );
         if ( isset( $aLang[$sStringToTranslate] ) ) {
             return $aLang[$sStringToTranslate];
@@ -497,12 +497,12 @@ class oxLang extends oxSuperCfg
         $aSimilarConst = $this->_collectSimilar( $aLang, $sKey );
 
         // checking if in map exist
-        $aMap = $this->_getLanguageMap( $iLang, $blAdminMode );
+        $aMap = $this->_getLanguageMap( $iLang, $blAdmin );
         $aSimilarConst = $this->_collectSimilar( $aMap, $sKey, $aSimilarConst );
 
         // checking if in theme options exist
         if ( count( $this->_aAdditionalLangFiles ) ) {
-            $aLang = $this->_getLangTranslationArray( $iLang, $blAdminMode, $this->_aAdditionalLangFiles);
+            $aLang = $this->_getLangTranslationArray( $iLang, $blAdmin, $this->_aAdditionalLangFiles);
             $aSimilarConst = $this->_collectSimilar( $aLang, $sKey, $aSimilarConst );
         }
 
@@ -957,6 +957,7 @@ class oxLang extends oxSuperCfg
             $sMapFile = $myConfig->getAppDir() . '/views/' .  ( $blAdmin ? 'admin' : $myConfig->getConfigParam( "sTheme" ) ) .'/' . oxRegistry::getLang()->getLanguageAbbr( $iLang ) . '/map.php';
             if ( $sMapFile ) {
                 if ( file_exists( $sMapFile ) && is_readable( $sMapFile ) ) {
+                    $aMap = array();
                     include $sMapFile;
                     $this->_aLangMap[$sKey] = $aMap;
                 }

@@ -11,7 +11,7 @@
         [{elseif !$blHideDefault}]
             <span [{if $blInDetails}]class="selectMessage"[{/if}]>
                 [{if $sFieldName == "sel" }]
-                    [{ oxmultilang ident="WIDGET_PRODUCT_ATTRIBUTES_PLEASECHOOSE" }]
+                    [{ oxmultilang ident="PLEASE_CHOOSE" }]
                 [{else}]
                     [{ oxmultilang ident="CHOOSE_VARIANT" }]
                 [{/if}]
@@ -24,7 +24,7 @@
             [{if $oActiveSelection && !$blHideDefault}]
                 <li><a rel="" href="#">
                     [{if $sFieldName == "sel" }]
-                        [{ oxmultilang ident="WIDGET_PRODUCT_ATTRIBUTES_PLEASECHOOSE" }]
+                        [{ oxmultilang ident="PLEASE_CHOOSE" }]
                     [{else}]
                         [{ oxmultilang ident="CHOOSE_VARIANT" }]
                     [{/if}]
@@ -32,7 +32,7 @@
             [{/if}]
             [{foreach from=$oSelections item=oSelection}]
                 <li class="[{if $oSelection->isDisabled()}]js-disabled disabled[{/if}]">
-                    <a data-seletion-id="[{$oSelection->getValue()}]" href="[{$oSelection->getLink()}]" class="[{if $oSelection->isActive()}]selected[{/if}]">[{$oSelection->getName()}]</a>
+                    <a data-selection-id="[{$oSelection->getValue()}]" href="[{$oSelection->getLink()}]" class="[{if $oSelection->isActive()}]selected[{/if}]">[{$oSelection->getName()}]</a>
                 </li>
             [{/foreach}]
         </ul>
@@ -41,7 +41,7 @@
 [{else}]
 <a href="[{ $_productLink }]" class="variantMessage">
 [{if $sFieldName == "sel" }]
-    [{ oxmultilang ident="WIDGET_PRODUCT_ATTRIBUTES_PLEASECHOOSE" }]
+    [{ oxmultilang ident="PLEASE_CHOOSE" }]
 [{else}]
     [{ oxmultilang ident="CHOOSE_VARIANT" }]
 [{/if}]

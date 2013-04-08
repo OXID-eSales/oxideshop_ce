@@ -51,9 +51,8 @@ class Article_Extend extends oxAdminDetails
         $this->_aViewData['edit'] = $oArticle = oxNew( 'oxarticle' );
 
         $soxId = $this->getEditObjectId();
-        $sCatView = getViewName( 'oxcategories' );
 
-        $sChosenArtCat = $this->_getCategoryTree( "artcattree", oxConfig::getParameter( "artcat"));
+        $this->_createCategoryTree( "artcattree");
 
         // all categories
         if ( $soxId != "-1" && isset( $soxId ) ) {
@@ -152,7 +151,7 @@ class Article_Extend extends oxAdminDetails
         }
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxConfig::getParameter( "editval");
+        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval");
         // checkbox handling
         if ( !isset( $aParams['oxarticles__oxissearch'])) {
             $aParams['oxarticles__oxissearch'] = 0;

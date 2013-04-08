@@ -143,6 +143,7 @@
             var type   = "";
             if (activator[0].tagName == 'FORM') {
                 $("input", activator).each(function() {
+                    if (this.type == 'checkbox' && !this.checked) return true;
                     inputs[this.name] = this.value;
                 });
                 action = activator.attr("action");
@@ -221,6 +222,11 @@
             try {
                 $("script", container).each(function(){
                     try {
+                        if (this.src != '' && $('body > script[src="'+this.src+'"]').length == 0) {
+                            $('body').append(this);
+                            document.body.appendChild(this);
+                            return true;
+                        }
                         eval(this.innerHTML);
                     } catch (e) {
                        self.reportJSError(e);

@@ -256,7 +256,6 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
         $aParams['artperpageform'] = $myConfig->getShopCurrentURL();
         $aParams['buyableparent']  = $aParams['isbuyableparent'] = $myConfig->getConfigParam( 'blVariantParentBuyable' );
         $aParams['blshowbirthdayfields'] = $myConfig->getConfigParam( 'blShowBirthdayFields' );
-        $aParams['blshowfinalstep']   = $myConfig->getConfigParam( 'blShowFinalStep' );
         $aParams['anrofcatarticles']  = $myConfig->getConfigParam( 'aNrofCatArticles' );
         $aParams['blautosearchoncat'] = $myConfig->getConfigParam( 'blAutoSearchOnCat' );
         $aParams['cnid'] = $aParams['actcatid'] = null;
@@ -2077,13 +2076,8 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
      */
     public function testShowFinalStep()
     {
-        $this->getConfig()->setConfigParam( "blShowFinalStep", true );
-
         $oViewConf = new oxViewConfig();
         $this->assertTrue( $oViewConf->showFinalStep() );
-
-        $this->getConfig()->setConfigParam( "blShowFinalStep", false );
-        $this->assertFalse( $oViewConf->showFinalStep() );
     }
 
     /**

@@ -64,7 +64,6 @@ $aLang = array(
 'SHOP_THEME_blShowBirthdayFields'               => 'Display input fields for date of birth when users enter their personal data',//SHOP_CONFIG_SHOWBIRTHDAYFIELDS
 
 'SHOP_THEME_iTopNaviCatCount'                   => 'Amount of categories that is displayed at top',//SHOP_CONFIG_TOPNAVICATCOUNT
-'SHOP_THEME_blShowFinalStep'                    => 'Show order confirmation after order is finished (5th Step in Checkout)',//SHOP_SYSTEM_SHOWFINALSTEP
 'SHOP_THEME_iNewBasketItemMessage'              => 'Select action when product is added to cart',//SHOP_SYSTEM_SHOWNEWBASKETITEMMESSAGE
 'HELP_SHOP_THEME_iNewBasketItemMessage'         => 'When customer adds products to cart, OXID eShop can behave differently. Set up what shall happen to give proper feedback to customer.',//SHOP_SYSTEM_SHOWNEWBASKETITEMMESSAGE
 'SHOP_THEME_iNewBasketItemMessage_0'            => 'None',

@@ -246,11 +246,11 @@ class article_extend_ajax extends ajaxListComponent
 
         // #0003650: increment all product references independent to active shop
         $sQ = "update oxobject2category set oxtime = oxtime + 10 where oxobjectid = " . $oDb->quote( $soxId );
-        oxDb::getDb()->Execute($sQ);
+        oxDb::getInstance()->getDb()->Execute($sQ);
 
         // set main category for active shop
         $sQ = "update oxobject2category set oxtime = 0 where oxobjectid = " . $oDb->quote( $soxId ) . " and oxcatnid = " . $oDb->quote( $sDefCat ) . " $sShopCheck ";
-        oxDb::getDb()->Execute($sQ);
+        oxDb::getInstance()->getDb()->Execute($sQ);
         //echo "\n$sQ\n";
 
         // #0003366: invalidate article SEO for all shops

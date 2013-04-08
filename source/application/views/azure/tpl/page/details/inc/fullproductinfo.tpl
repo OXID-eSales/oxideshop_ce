@@ -5,11 +5,11 @@
     <div class="relatedInfo[{if !$oView->getSimilarProducts() && !$oView->getCrossSelling() && !$oView->getAccessoires()}] relatedInfoFull[{/if}]">
         [{include file="page/details/inc/tabs.tpl"}]
         [{if $oView->getAlsoBoughtTheseProducts()}]
-            [{include file="widget/product/list.tpl" type="grid" listId="alsoBought" header="light" head="PAGE_DETAILS_CUSTOMERS_ALSO_BOUGHT"|oxmultilangassign products=$oView->getAlsoBoughtTheseProducts()}]
+            [{include file="widget/product/list.tpl" type="grid" listId="alsoBought" header="light" head="CUSTOMERS_ALSO_BOUGHT"|oxmultilangassign|colon products=$oView->getAlsoBoughtTheseProducts()}]
         [{/if}]
         [{if $oView->isReviewActive() }]
         <div class="widgetBox reviews">
-            <h4>[{oxmultilang ident="DETAILS_PRODUCTREVIEW"}]</h4>
+            <h4>[{oxmultilang ident="WRITE_PRODUCT_REVIEW"}]</h4>
             [{include file="widget/reviews/reviews.tpl"}]
         </div>
         [{/if}]

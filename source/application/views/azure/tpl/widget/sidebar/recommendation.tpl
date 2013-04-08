@@ -4,7 +4,7 @@
 
 [{ if $_oRecommendationList || $oRecommList->getRecommSearch() }]
 <div class="box" id="recommendationsBox">
-    <h3>[{ oxmultilang ident="WIDGET_RECOMMENDATIONLIST_HEADER" }]
+    <h3>[{ oxmultilang ident="LISTMANIA" }]
     [{assign var='rsslinks' value=$oRecommList->getRssLinks() }]
     [{if $rsslinks.recommlists}]
         <a class="rss js-external" id="rssRecommLists" href="[{$rsslinks.recommlists.link}]" title="[{$rsslinks.recommlists.title}]">
@@ -31,7 +31,7 @@
             [{foreach from=$_oRecommendationList item=_oListItem name="testRecommendationsList"}]
                 <li>
                     <a href="[{ $_oListItem->getLink() }]"><b>[{ $_oListItem->oxrecommlists__oxtitle->value|strip_tags }]</b></a>
-                    <div class="desc">[{ oxmultilang ident="WIDGET_RECOMMENDATIONLIST_LISTBY" }]: [{ $_oListItem->oxrecommlists__oxauthor->value|strip_tags }]</div>
+                    <div class="desc">[{ oxmultilang ident="LIST_BY" suffix="COLON" }] [{ $_oListItem->oxrecommlists__oxauthor->value|strip_tags }]</div>
                 </li>
             [{/foreach}]
         [{/if}]
@@ -42,9 +42,9 @@
                         <input type="hidden" name="cl" value="recommlist">
                         [{ $oViewConf->getHiddenSid() }]
                     </div>
-                    <label>[{ oxmultilang ident="WIDGET_RECOMMENDATIONLIST_SEARCHFORLISTS" }]</label>
+                    <label>[{ oxmultilang ident="SEARCH_FOR_LISTS" suffix="COLON" }]</label>
                     <input type="text" name="searchrecomm" id="searchRecomm" value="[{$oRecommList->getRecommSearch()}]" class="searchInput">
-                    <button class="submitButton largeButton" type="submit">[{ oxmultilang ident="WIDGET_RECOMMENDATIONLIST_SEARCHBUTTON" }]</button>
+                    <button class="submitButton largeButton" type="submit">[{ oxmultilang ident="GO" }]</button>
                 </form>
             </li>
             [{/if}]

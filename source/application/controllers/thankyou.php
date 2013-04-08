@@ -35,12 +35,6 @@ class Thankyou extends oxUBase
     protected $_oBasket = null;
 
     /**
-     * Show final (5th) step
-     * @var bool
-     */
-    protected $_blShowFinalStep = null;
-
-    /**
      * List of customer also bought thies products
      * @var object
      */
@@ -168,17 +162,13 @@ class Thankyou extends oxUBase
     /**
      * Template variable getter. Returns if to show final (5th) step
      *
+     * @deprecated since 2012-11-19. Option blShowFinalStep is removed
+     *
      * @return string
      */
     public function showFinalStep()
     {
-        if ( $this->_blShowFinalStep === null ) {
-            $this->_blShowFinalStep = false;
-            if ( $this->getConfig()->getConfigParam( 'blShowFinalStep' ) ) {
-                $this->_blShowFinalStep = true;
-            }
-        }
-        return $this->_blShowFinalStep;
+        return true;
     }
 
     /**
@@ -191,12 +181,10 @@ class Thankyou extends oxUBase
         if ( $this->_aLastProducts === null ) {
             $this->_aLastProducts = false;
             // 5th order step
-            if ( $this->showFinalStep() ) {
-                $aBasketContents = array_values($this->getBasket()->getContents());
-                if ( $oBasketItem = $aBasketContents[0] ) {
-                    if ( $oProduct = $oBasketItem->getArticle(false) ) {
-                        $this->_aLastProducts = $oProduct->getCustomerAlsoBoughtThisProducts();
-                    }
+            $aBasketContents = array_values($this->getBasket()->getContents());
+            if ( $oBasketItem = $aBasketContents[0] ) {
+                if ( $oProduct = $oBasketItem->getArticle(false) ) {
+                    $this->_aLastProducts = $oProduct->getCustomerAlsoBoughtThisProducts();
                 }
             }
         }
@@ -341,7 +329,7 @@ class Thankyou extends oxUBase
         $aPath = array();
 
 
-        $aPath['title'] = oxRegistry::getLang()->translateString( 'PAGE_CHECKOUT_THANKYOU', oxRegistry::getLang()->getBaseLanguage(), false );
+        $aPath['title'] = oxRegistry::getLang()->translateString( 'ORDER_COMPLETED', oxRegistry::getLang()->getBaseLanguage(), false );
         $aPath['link']  = $this->getLink();
         $aPaths[] = $aPath;
 

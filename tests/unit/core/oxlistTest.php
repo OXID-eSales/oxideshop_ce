@@ -449,4 +449,29 @@ class Unit_Core_oxlistTest extends OxidTestCase
         }
         $this->assertEquals( $iTotal, $iCount );
     }
+
+    /**
+     * Testing oxList::rewind()
+     *
+     * @return null
+     */
+    public function testRewind()
+    {
+        $aArray = array( 1 => '1',
+                         2 => '2',
+                         3 => '3',
+                         4 => '4' );
+
+        $oList = new oxlist();
+        $oList->assign( $aArray );
+        foreach ($oList as $key => $val) {
+            if ($key == 3) {
+                break;
+            }
+        }
+        $this->assertEquals( 3, $oList->current() );
+        $oList->rewind();
+        $this->assertEquals( 1, $oList->current() );
+    }
+
 }

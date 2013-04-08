@@ -4564,7 +4564,7 @@ class Unit_Core_oxarticleTest extends OxidTestCase
         $oArticle->oxarticles__oxprice = new oxField(10);
 
         $oArticle->setVar( 'blIsRangePrice', true);
-        $sPricePrefics = oxLang::getInstance()->translateString('priceFrom').' ';
+        $sPricePrefics = oxLang::getInstance()->translateString('PRICE_FROM').' ';
         $this->assertEquals($sPricePrefics, $oArticle->getPriceFromPrefix());
     }
 
@@ -5520,23 +5520,18 @@ class Unit_Core_oxarticleTest extends OxidTestCase
         $oParentArticle->oxarticles__oxicon  = new oxField('parent_ico.jpg', oxField::T_RAW);
         $oParentArticle->oxarticles__oxthumb = new oxField('parent_thumb.jpg', oxField::T_RAW);
         $oParentArticle->oxarticles__oxzoom1 = new oxField('parent_zoom1.jpg', oxField::T_RAW);
-        $oParentArticle->oxarticles__oxpicsgenerated = new oxField( 2, oxField::T_RAW);
 
         $oVarArticle = $this->getMock('oxarticle', array( 'getParentArticle', '_hasMasterImage' ) );
         $oVarArticle->expects( $this->any() )->method( 'getParentArticle' )->will( $this->returnValue( $oParentArticle ) );
         $oVarArticle->expects( $this->any() )->method( '_hasMasterImage' )->will( $this->returnValue( true ) );
 
         $oVarArticle->oxarticles__oxpic1  = new oxField('30-360-back_p1_z_f_th_665.jpg', oxField::T_RAW);
-        $oVarArticle->oxarticles__oxpicsgenerated = new oxField( 1, oxField::T_RAW);
 
         $oVarArticle->UNITassignParentFieldValue( "oxicon" );
         $this->assertEquals( "30-360-back_p1_z_f_th_665.jpg", basename( $oVarArticle->getIconUrl() ) );
 
         $oVarArticle->UNITassignParentFieldValue( "oxthumb" );
         $this->assertEquals( "30-360-back_p1_z_f_th_665.jpg", basename( $oVarArticle->getThumbnailUrl() ) ) ;
-
-        $oVarArticle->UNITassignParentFieldValue( "oxpicsgenerated" );
-        $this->assertEquals( 1, $oVarArticle->oxarticles__oxpicsgenerated->value);
 
     }
 

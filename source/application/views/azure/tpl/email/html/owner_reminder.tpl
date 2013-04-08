@@ -4,19 +4,19 @@
 [{include file="email/html/header.tpl" title=$shop->oxshops__oxname->value}]
 
 <h3 style="font-weight: bold; margin: 20px 0 7px; padding: 0; line-height: 35px; font-size: 12px;font-family: Arial, Helvetica, sans-serif; text-transform: uppercase; border-bottom: 4px solid #ddd;">
-    [{ oxmultilang ident="EMAIL_OWNER_REMINDER_HTML_STOCKLOW" }]
+    [{ oxmultilang ident="MESSAGE_STOCK_LOW" }]
 </h3>
 
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
     <tr>
         <td style="padding: 5px; border-bottom: 2px solid #ccc;">
-            <b>[{ oxmultilang ident="EMAIL_OWNER_REMINDER_HTML_PRODUCT" }]</b>
+            <b>[{ oxmultilang ident="PRODUCT" }]</b>
         </td>
         <td style="padding: 5px; border-bottom: 2px solid #ccc;">
             &nbsp;
         </td>
         <td style="padding: 5px; border-bottom: 2px solid #ccc;">
-            <b>[{ oxmultilang ident="EMAIL_OWNER_REMINDER_HTML_QUANTITY" }]</b>
+            <b>[{ oxmultilang ident="TOTAL_QUANTITY" }]</b>
         </td>
     </tr>
     [{foreach from=$articles item=oProduct}]
@@ -34,7 +34,7 @@
                     [{/foreach}]
                 [{/if}]
                 <br>
-                [{ oxmultilang ident="EMAIL_OWNER_REMINDER_HTML_ARTNOMBER" }] [{ $oProduct->oxarticles__oxartnum->value }]
+                [{ oxmultilang ident="PRODUCT_NO" suffix="COLON" }] [{ $oProduct->oxarticles__oxartnum->value }]
             </p>
         </td>
         <td style="padding: 5px; border-bottom: 1px solid #ddd;">

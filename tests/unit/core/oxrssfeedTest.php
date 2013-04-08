@@ -19,6 +19,8 @@
  * @package   tests
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
+ * @version   SVN: $Id: oxrssfeedTest.php 56749 2013-03-20 09:30:01Z tadas.rimkus $
+ * @version OXID eShop CE
  * @version   SVN: $Id$
  */
 
@@ -70,6 +72,8 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
         $oShop = new oxShop();
         $oShop->oxshops__oxname = new oxField('name');
         $oShop->oxshops__oxversion = new oxField('oxversion');
+        $oShop->oxshops__oxfname = new oxField('John');
+        $oShop->oxshops__oxlname = new oxField('Doe');
         $oCfg->expects($this->any())->method( 'getActiveShop')->will( $this->returnValue( $oShop ) );
         $oCfg->expects($this->any())->method( 'getShopUrl')->will( $this->returnValue( "http://homeurl/" ) );
         $oCfg->expects($this->any())->method( 'getImageUrl')->will( $this->returnValue( "http://homeurl/lalala/" ) );
@@ -83,7 +87,7 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
             'language' => 'bb',
             'copyright' => 'name',
             'selflink' => '',
-            'generator' => 'OXID eShop oxversion',
+            'generator' => 'name',
             'image' => array
                 (
                     'url' => 'http://homeurl/lalala/logo.png',
@@ -108,8 +112,8 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
             'language' => 'bb',
             'copyright' => 'name',
             'selflink' => '',
-            'managingEditor' => 'emaiail.com',
-            'generator' => 'OXID eShop oxversion',
+            'managingEditor' => 'emaiail.com (John Doe)',
+            'generator' => 'name',
             'image' => array(
                 'url' => 'http://homeurl/lalala/logo.png',
                 'title' => 'name',
@@ -579,7 +583,7 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
         $oCfg->expects($this->any())->method( 'getActiveShop')->will( $this->returnValue( $oShop ) );
         $oRss->setConfig( $oCfg );
 
-        $this->assertEquals('Test Shop/RSS_TOPSHOP_TITLEtr', $oRss->getTopInShopTitle());
+        $this->assertEquals('Test Shop/TOP_OF_THE_SHOPtr', $oRss->getTopInShopTitle());
     }
 
     public function testGetTopInShopUrl()
@@ -615,7 +619,7 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
             'data' => array(
                 '0' => 'RSS_TopShop',
                 '1' => 'topshoptitle',
-                '2' => 'RSS_TOPSHOP_DESCRIPTIONtr',
+                '2' => 'TOP_SHOP_PRODUCTStr',
                 '3' => 'loadtop5',
                 '4' => 'topshopurl',
             )
@@ -633,7 +637,7 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
         $oShop->oxshops__oxname = new oxField('Test Shop');
         $oCfg->expects($this->any())->method( 'getActiveShop')->will( $this->returnValue( $oShop ) );
         $oRss->setConfig( $oCfg );
-        $this->assertEquals('Test Shop/RSS_NEWESTARTICLES_TITLEtr', $oRss->getNewestArticlesTitle());
+        $this->assertEquals('Test Shop/NEWEST_SHOP_PRODUCTStr', $oRss->getNewestArticlesTitle());
     }
 
     public function testGeNewestArticlesUrl()
@@ -670,7 +674,7 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
             'data' => array(
                 '0' => 'RSS_NewArts',
                 '1' => 'dastitle',
-                '2' => 'RSS_NEWESTARTICLES_DESCRIPTIONtr',
+                '2' => 'NEWEST_SHOP_PRODUCTStr',
                 '3' => 'loaded50',
                 '4' => 'surl',
             )
@@ -705,7 +709,7 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
 
         $oCat = new oxcategory;
         $oCat->load($sCatId);
-        $this->assertEquals('Test Shop/'.$sTitle.'RSS_CATEGORYARTICLES_TITLE', $oRss->getCategoryArticlesTitle($oCat));
+        $this->assertEquals('Test Shop/'.$sTitle.'PRODUCTS', $oRss->getCategoryArticlesTitle($oCat));
     }
 
     public function testGetCategoryArticlesUrl()
@@ -718,7 +722,7 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
         $oCat = new oxcategory;
         $oCat->setId('ajai');
         $oCat->oxcategories__oxtitle = new oxField('tsss');
-        $this->assertEquals(array("cl=rss&amp;fnc=catarts&amp;cat=ajai", "RSS_CATEGORYARTICLES_URLtsss"), $oRss->getCategoryArticlesUrl($oCat));
+        $this->assertEquals(array("cl=rss&amp;fnc=catarts&amp;cat=ajai", "CATEGORY_PRODUCTS_Stsss"), $oRss->getCategoryArticlesUrl($oCat));
     }
 
     public function testLoadCategoryArticles()
@@ -754,7 +758,7 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
             'data' => array(
                 '0' => 'RSS_CatArtsajai',
                 '1' => 'dastitle',
-                '2' => 'RSS_CATEGORYARTICLES_DESCRIPTIONtr',
+                '2' => 'S_CATEGORY_PRODUCTStr',
                 '3' => 'loadedajai50',
                 '4' => 'surl',
                 '5' => 'klnk'
@@ -789,7 +793,7 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
         $oRss = oxnew('oxrssfeed');
 
         $this->assertEquals('asrch"', $oRss->p_getSearchParamsTranslation('a', 'srch"', 'cat', 'vend', 'man'));
-        $this->assertEquals('RSS_SEARCHARTICLES_TAG_CATEGORYcatoxcategoryoxcategories__oxtitleaRSS_SEARCHARTICLES_TAG_VENDORvendoxvendoroxvendor__oxtitlesrch', $oRss->p_getSearchParamsTranslation('<TAG_CATEGORY>a<TAG_VENDOR>', 'srch', 'cat', 'vend', 'man'));
+        $this->assertEquals('CATEGORY_Scatoxcategoryoxcategories__oxtitleaVENDOR_Svendoxvendoroxvendor__oxtitlesrch', $oRss->p_getSearchParamsTranslation('<TAG_CATEGORY>a<TAG_VENDOR>', 'srch', 'cat', 'vend', 'man'));
 
 
         oxTestModules::addFunction('oxrssfeed', '_getObjectField', '{return "";}');
@@ -807,7 +811,7 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
         $oShop->oxshops__oxname = new oxField('Test Shop');
         $oCfg->expects($this->any())->method( 'getActiveShop')->will( $this->returnValue( $oShop ) );
         $oRss->setConfig( $oCfg );
-        $this->assertEquals('Test Shop/RSS_SEARCHARTICLES_TITLEtssscatvendman', $oRss->getSearchArticlesTitle('tsss', 'cat', 'vend', 'man'));
+        $this->assertEquals('Test Shop/SEARCH_FOR_PRODUCTS_CATEGORY_VENDOR_MANUFACTURERtssscatvendman', $oRss->getSearchArticlesTitle('tsss', 'cat', 'vend', 'man'));
     }
 
     public function testGetSearchParamsUrl()
@@ -834,8 +838,8 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
         $oCat = new oxcategory;
         $oCat->setId('ajai');
         $oCat->oxcategories__oxtitle = new oxField('tsss');
-        $this->assertEquals("url?cl=rss&amp;fnc=searchartsRSS_SEARCHARTICLES_URL%s&amp;|a|", $oRss->getSearchArticlesUrl('a', '', '', ''));
-        $this->assertEquals("url?cl=rss&amp;fnc=searchartsRSS_SEARCHARTICLES_URL%s&amp;|abcd|", $oRss->getSearchArticlesUrl('a', 'b', 'c', 'd'));
+        $this->assertEquals("url?cl=rss&amp;fnc=searchartsSEARCH%s&amp;|a|", $oRss->getSearchArticlesUrl('a', '', '', ''));
+        $this->assertEquals("url?cl=rss&amp;fnc=searchartsSEARCH%s&amp;|abcd|", $oRss->getSearchArticlesUrl('a', 'b', 'c', 'd'));
     }
     public function testGetSearchArticlesUrlWithParams()
     {
@@ -848,8 +852,8 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
         $oCat = new oxcategory;
         $oCat->setId('ajai');
         $oCat->oxcategories__oxtitle = new oxField('tsss');
-        $this->assertEquals("cl=rss&amp;fnc=searchartsRSS_SEARCHARTICLES_URL%s?|a|", $oRss->getSearchArticlesUrl('a', '', '', ''));
-        $this->assertEquals("cl=rss&amp;fnc=searchartsRSS_SEARCHARTICLES_URL%s?|abcd|", $oRss->getSearchArticlesUrl('a', 'b', 'c', 'd'));
+        $this->assertEquals("cl=rss&amp;fnc=searchartsSEARCH%s?|a|", $oRss->getSearchArticlesUrl('a', '', '', ''));
+        $this->assertEquals("cl=rss&amp;fnc=searchartsSEARCH%s?|abcd|", $oRss->getSearchArticlesUrl('a', 'b', 'c', 'd'));
     }
 
     public function testLoadSearchArticles()
@@ -889,7 +893,7 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
             'data' => array(
                 '0' => null,
                 '1' => 'dastitle',
-                '2' => 'RSS_SEARCHARTICLES_DESCRIPTIONtr',
+                '2' => 'SEARCH_FOR_PRODUCTS_CATEGORY_VENDOR_MANUFACTURERtr',
                 '3' => $oArtList,//'loadedAABBCCDD'.oxNew('oxarticle')->getViewName().'.oxtimestamp desc',
                 '4' => 'surl',
                 '5' => 'shopurl?cl=search&amp;klnk'
@@ -948,20 +952,52 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
         $oRss->setConfig( $oCfg );
         $oArt = new oxarticle();
         $oArt->oxarticles__oxtitle = new oxField('tsss');
-        $this->assertEquals('Test Shop/RSS_ARTRECOMMLISTS_TITLEtsss', $oRss->getRecommListsTitle($oArt));
+        $this->assertEquals('Test Shop/LISTMANIA_LIST_FORtsss', $oRss->getRecommListsTitle($oArt));
     }
 
-    public function testGetRecommListsUrl()
+    /**
+     * Test getRecommListsUrl method without Seo
+     */
+    public function testGetRecommListsUrlSeoOff()
     {
-        oxTestModules::addFunction('oxrssfeed', '_prepareUrl', '{ return $aA; }');
-        oxTestModules::addFunction('oxrssfeed', 'getRecommListsTitle', '{ return "title"; }');
-        oxTestModules::addFunction('oxLang', 'getBaseLanguage', '{return 4;}');
-        oxTestModules::addFunction('oxLang', 'translateString', '{return $aA[0]."%s";}');
-        $oRss = oxNew('oxrssfeed');
+        $oLang = oxRegistry::getLang();
+        $oLang->setBaseLanguage( 1 );
+        oxRegistry::set( 'oxLang', $oLang );
+
+        $oConfig = oxConfig::getInstance();
+        $oConfig->setConfigParam( 'blSeoMode', false );
+        $oConfig->setConfigParam( 'sShopURL', 'http://myshop/' );
+
+        $oRss = oxNew( 'oxrssfeed' );
+
         $oArt = new oxarticle();
         $oArt->setId('ajai');
         $oArt->oxarticles__oxtitle = new oxField('tsss');
-        $this->assertEquals(array("cl=rss&amp;fnc=recommlists&amp;anid=ajai", "RSS_ARTRECOMMLISTS_URLtsss"), $oRss->getRecommListsUrl($oArt));
+        $sCheckString = "http://myshop/?cl=rss&amp;fnc=recommlists&amp;anid=ajai&amp;lang=1";
+        $this->assertEquals( $sCheckString, $oRss->getRecommListsUrl($oArt));
+    }
+
+    /**
+     * Test getRecommListsUrl method with Seo
+     */
+    public function testGetRecommListsUrlSeoOn()
+    {
+        $oLang = oxRegistry::getLang();
+        $oLang->setBaseLanguage( 1 );
+        oxRegistry::set( 'oxLang', $oLang );
+
+        $oConfig = oxConfig::getInstance();
+        $oConfig->setConfigParam( 'blSeoMode', true );
+        $oConfig->setConfigParam( 'sShopURL', 'http://myshop/' );
+
+        $oRss = oxNew( 'oxrssfeed' );
+
+        $oArt = new oxarticle();
+        $oArt->setId('ajai');
+        $oArt->oxarticles__oxtitle = new oxField('tsss');
+
+        $sCheckString = "http://myshop/en/rss/Listmania/tsss/";
+        $this->assertEquals( $sCheckString, $oRss->getRecommListsUrl($oArt));
     }
 
     public function testLoadRecommLists()
@@ -996,7 +1032,7 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
             'data' => array(
                 '0' => 'RSS_ARTRECOMMLISTSajai',
                 '1' => 'dastitle',
-                '2' => 'RSS_ARTRECOMMLISTS_DESCRIPTIONtr',
+                '2' => 'LISTMANIA_LIST_FORtr',
                 '3' => 'loadedarray(0=>array(0=>\'ajai\',),)',
                 '4' => 'surl',
                 '5' => 'klnk'
@@ -1040,7 +1076,7 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
             'data' => array(
                 '0' => 'RSS_ARTRECOMMLISTSajai',
                 '1' => 'dastitle',
-                '2' => 'RSS_ARTRECOMMLISTS_DESCRIPTIONtr',
+                '2' => 'LISTMANIA_LIST_FORtr',
                 '3' => '',
                 '4' => 'surl',
                 '5' => 'klnk'
@@ -1062,20 +1098,52 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
         $oRss->setConfig( $oCfg );
         $oRecommList = new oxRecommList();
         $oRecommList->oxrecommlists__oxtitle = new oxField('tsss');
-        $this->assertEquals('Test Shop/RSS_RECOMMLISTARTICLES_TITLEtsss', $oRss->getRecommListArticlesTitle($oRecommList));
+        $this->assertEquals('Test Shop/LISTMANIA_LIST_PRODUCTStsss', $oRss->getRecommListArticlesTitle($oRecommList));
     }
 
-    public function testGetRecommListArticlesUrl()
+    /**
+     * Tests that getRecommListArticlesUrl return proper URL, with SEO turned off
+     */
+    public function testGetRecommListArticlesUrlSeoOff()
     {
-        oxTestModules::addFunction('oxrssfeed', '_prepareUrl', '{ return $aA; }');
-        oxTestModules::addFunction('oxrssfeed', 'getRecommListArticlesTitle', '{ return "title"; }');
-        oxTestModules::addFunction('oxLang', 'getBaseLanguage', '{return 4;}');
-        oxTestModules::addFunction('oxLang', 'translateString', '{return $aA[0]."%s";}');
-        $oRss = oxNew('oxrssfeed');
+        $oLang = oxRegistry::getLang();
+        $oLang->setBaseLanguage( 1 );
+        oxRegistry::set( 'oxLang', $oLang );
+
+        $oConfig = oxConfig::getInstance();
+        $oConfig->setConfigParam( 'blSeoMode', false );
+        $oConfig->setConfigParam( 'sShopURL', 'http://myshop/' );
+
+        $oRss = oxNew( 'oxrssfeed' );
+
+
         $oRecommList = new oxRecommList();
         $oRecommList->setId('ajai');
         $oRecommList->oxrecommlists__oxtitle = new oxField('tsss');
-        $this->assertEquals(array("cl=rss&amp;fnc=recommlistarts&amp;recommid=ajai", "RSS_RECOMMLISTARTICLES_URLtsss"), $oRss->getRecommListArticlesUrl($oRecommList));
+        $sCheckString = "http://myshop/?cl=rss&amp;fnc=recommlistarts&amp;recommid=ajai&amp;lang=1";
+        $this->assertEquals($sCheckString, $oRss->getRecommListArticlesUrl($oRecommList));
+    }
+
+    /**
+     * Tests that getRecommListArticlesUrl return proper URL, with SEO turned on
+     */
+    public function testGetRecommListArticlesUrlSeoOn()
+    {
+        $oLang = oxRegistry::getLang();
+        $oLang->setBaseLanguage( 1 );
+        oxRegistry::set( 'oxLang', $oLang );
+
+        $oConfig = oxConfig::getInstance();
+        $oConfig->setConfigParam( 'blSeoMode', true );
+        $oConfig->setConfigParam( 'sShopURL', 'http://myshop/' );
+
+        $oRss = oxNew( 'oxrssfeed' );
+
+        $oRecommList = new oxRecommList();
+        $oRecommList->setId('ajai');
+        $oRecommList->oxrecommlists__oxtitle = new oxField('tsssactive');
+        $sCheckString = "http://myshop/en/rss/Listmania/tsssactive/";
+        $this->assertEquals($sCheckString, $oRss->getRecommListArticlesUrl( $oRecommList ) );
     }
 
     public function testLoadRecommListArticles()
@@ -1110,7 +1178,7 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
             'data' => array(
                 '0' => 'RSS_RECOMMLISTARTSajai',
                 '1' => 'dastitle',
-                '2' => 'RSS_RECOMMLISTARTICLES_DESCRIPTIONtr',
+                '2' => 'LISTMANIA_LIST_PRODUCTStr',
                 '3' => 'loadedarray()',
                 '4' => 'surl',
                 '5' => 'klnk'
@@ -1131,7 +1199,7 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
         $oShop->oxshops__oxname = new oxField('Test Shop');
         $oCfg->expects($this->any())->method( 'getActiveShop')->will( $this->returnValue( $oShop ) );
         $oRss->setConfig( $oCfg );
-        $this->assertEquals('Test Shop/RSS_BARGAIN_TITLEtr', $oRss->getBargainTitle());
+        $this->assertEquals('Test Shop/BARGAINtr', $oRss->getBargainTitle());
     }
 
     public function testGetBargainUrl()
@@ -1167,7 +1235,7 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
             'data' => array(
                 '0' => 'RSS_Bargain',
                 '1' => 'bargaintitle',
-                '2' => 'RSS_BARGAIN_DESCRIPTIONtr',
+                '2' => 'BARGAIN_PRODUCTStr',
                 '3' => 'loadbargainart',
                 '4' => 'bargainurl',
             )

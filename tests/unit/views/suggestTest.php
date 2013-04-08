@@ -263,7 +263,7 @@ class Unit_Views_suggestTest extends OxidTestCase
         $aResults = array();
         $aResult  = array();
 
-        $aResult["title"] = oxLang::getInstance()->translateString( 'PAGE_INFO_SUGGEST_TITLE', oxLang::getInstance()->getBaseLanguage(), false );
+        $aResult["title"] = oxLang::getInstance()->translateString( 'RECOMMEND_PRODUCT', oxLang::getInstance()->getBaseLanguage(), false );
         $aResult["link"]  = $oSuggest->getLink();
 
         $aResults[] = $aResult;

@@ -7,7 +7,7 @@
 [{/if}]
 [{assign var="oxcmp_categories" value=$oxcmp_categories }]
 <ul id="navigation" class="sf-menu">
-    <li [{if $homeSelected == 'true' }]class="current"[{/if}]><a [{if $homeSelected == 'true'}]class="current"[{/if}] href="[{$oViewConf->getHomeLink()}]">[{oxmultilang ident="TOP_CATEGORIES_HOME"}]</a></li>
+    <li [{if $homeSelected == 'true' }]class="current"[{/if}]><a [{if $homeSelected == 'true'}]class="current"[{/if}] href="[{$oViewConf->getHomeLink()}]">[{oxmultilang ident="HOME"}]</a></li>
 
     [{assign var="iAllCatCount" value=$oxcmp_categories|count }]
     [{if $iAllCatCount > $oView->getTopNavigationCatCnt() }]
@@ -72,7 +72,7 @@
     [{if $iAllCatCount > $oView->getTopNavigationCatCnt()}]
         <li>
             [{assign var="_catMoreUrl" value=$oView->getCatMoreUrl()}]
-            <a href="[{ oxgetseourl ident="`$_catMoreUrl`&amp;cl=alist" }]">[{ oxmultilang ident="TOP_CATEGORIES_MORE" }]</a>
+            <a href="[{ oxgetseourl ident="`$_catMoreUrl`&amp;cl=alist" }]">[{ oxmultilang ident="MORE" }]</a>
             <ul>
                 [{foreach from=$moreLinks item=link}]
                    [{$link}]

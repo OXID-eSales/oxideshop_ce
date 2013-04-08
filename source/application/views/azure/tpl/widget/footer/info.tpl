@@ -1,6 +1,6 @@
 [{block name="footer_information"}]
     <dl id="footerInformation">
-        <dt>[{oxmultilang ident="FOOTER_INFORMATION" }]</dt>
+        <dt>[{oxmultilang ident="INFORMATION" }]</dt>
         <dd>
             <ul class="list services">
                 [{oxifcontent ident="oximpressum" object="_cont"}]
@@ -24,7 +24,7 @@
                 [{oxifcontent ident="oxcredits" object="oCont"}]
                     <li><a href="[{ $oCont->getLink() }]" rel="nofollow">[{ $oCont->oxcontents__oxtitle->value }]</a></li>
                 [{/oxifcontent}]
-                <li><a href="[{ oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=newsletter" }]" rel="nofollow">[{ oxmultilang ident="WIDGET_SERVICES_NEWSLETTER" }]</a></li>
+                <li><a href="[{ oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=newsletter" }]" rel="nofollow">[{ oxmultilang ident="NEWSLETTER" }]</a></li>
             </ul>
         </dd>
     </dl>

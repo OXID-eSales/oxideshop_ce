@@ -16,11 +16,11 @@
     <span class="identifier">
         [{if $product->oxarticles__oxweight->value }]
             <div>
-                <span title="weight">[{ oxmultilang ident="PAGE_PRODUCT_INC_PRODUCT_ARTWEIGHT" }]</span>
-                <span class="value">[{ $product->oxarticles__oxweight->value }] [{ oxmultilang ident="PAGE_PRODUCT_INC_PRODUCT_ARTWEIGHT2" }]</span>
+                <span title="weight">[{ oxmultilang ident="WEIGHT" suffix="COLON" }]</span>
+                <span class="value">[{ $product->oxarticles__oxweight->value }] [{ oxmultilang ident="KG" }]</span>
             </div>
         [{/if}]
-        <span title="sku">[{ oxmultilang ident="PAGE_PRODUCT_INC_PRODUCT_ARTNOMBER2" }]</span>
+        <span title="sku">[{ oxmultilang ident="PRODUCT_NO" suffix="COLON" }]</span>
         <span class="value">[{ $product->oxarticles__oxartnum->value }]</span>
     </span>
 
@@ -82,18 +82,24 @@
 
         <div class="tobasket">
             [{oxhasrights ident="SHOWARTICLEPRICE"}]
-                [{assign var=tprice value=$product->getTPrice()}]
-                [{assign var=price  value=$product->getPrice()}]
-                [{if $tprice && $tprice->getBruttoPrice() > $price->getBruttoPrice()}]
+                [{if $product->getTPrice()}]
                     <p class="oldPrice">
-                        <strong>[{oxmultilang ident="DETAILS_REDUCEDFROM"}] <del>[{$product->getFTPrice()}] [{$currency->sign}]</del></strong>
+                        <strong>[{oxmultilang ident="REDUCED_FROM_2"}] <del>[{$product->getFTPrice()}] [{$currency->sign}]</del></strong>
                     </p>
-                 [{/if}]
+                [{/if}]
             [{/oxhasrights}]
             <div class="tobasketFunction clear">
                 [{oxhasrights ident="SHOWARTICLEPRICE"}]
+                    [{assign var="sFrom" value=""}]
+                    [{assign var="fPrice" value=$product->getFPrice()}]
+                    [{if $product->isParentNotBuyable() }]
+                        [{assign var="fPrice" value=$product->getFVarMinPrice()}]
+                        [{if $product->isRangePrice() }]
+                            [{assign var="sFrom" value="PRICE_FROM"|oxmultilangassign}]
+                        [{/if}]
+                    [{/if}]
                     <label id="productPrice_[{$testid}]" class="price">
-                        <strong>[{$product->getFPrice()}] [{$currency->sign}] [{ if $blShowToBasket }]*[{/if}]</strong>
+                        <strong>[{$sFrom}] [{$fPrice}] [{$currency->sign}] [{ if $blShowToBasket }]*[{/if}]</strong>
                     </label>
                     [{if $product->loadAmountPriceInfo()}]
                         [{oxscript include="js/widgets/oxamountpriceselect.js" priority=10 }]
@@ -104,13 +110,13 @@
                 [{ if $blShowToBasket }]
                     [{oxhasrights ident="TOBASKET"}]
                         <p class="fn clear">
-                            <input type="text" name="am" value="1" size="3" autocomplete="off" class="textbox" title="[{ oxmultilang ident="DETAILS_QUANTITY" }]">
-                            <button type="submit" class="submitButton largeButton">[{oxmultilang ident="PAGE_PRODUCT_INC_PRODUCT_ADDTOCARD2"}]</button>
+                            <input type="text" name="am" value="1" size="3" autocomplete="off" class="textbox" title="[{ oxmultilang ident="QUANTITY" suffix="COLON" }]">
+                            <button type="submit" class="submitButton largeButton">[{oxmultilang ident="ADD_TO_CART"}]</button>
                         </p>
                     [{/oxhasrights}]
                 [{else}]
                     <span >
-                        <a id="variantMoreInfo_[{$testid}]" class="submitButton" href="[{ $_productLink }]" onclick="oxid.mdVariants.getMdVariantUrl('mdVariant_[{$testid}]'); return false;">[{ oxmultilang ident="PAGE_PRODUCT_INC_PRODUCT_VARIANTS_MOREINFO" }]</a>
+                        <a id="variantMoreInfo_[{$testid}]" class="submitButton" href="[{ $_productLink }]" onclick="oxid.mdVariants.getMdVariantUrl('mdVariant_[{$testid}]'); return false;">[{ oxmultilang ident="MORE_INFO" }]</a>
                     </span>
                 [{/if}]
             </div>
@@ -126,22 +132,22 @@
                             [{if $product->oxarticles__oxnostocktext->value}]
                                 [{$product->oxarticles__oxnostocktext->value}]
                             [{elseif $oViewConf->getStockOffDefaultMessage()}]
-                                [{oxmultilang ident="DETAILS_NOTONSTOCK"}]
+                                [{oxmultilang ident="MESSAGE_NOT_ON_STOCK"}]
                             [{/if}]
                             [{if $product->getDeliveryDate()}]
-                                [{oxmultilang ident="DETAILS_AVAILABLEON"}] [{$product->getDeliveryDate()}]
+                                [{oxmultilang ident="AVAILABLE_ON"}] [{$product->getDeliveryDate()}]
                             [{/if}]
                         </span>
                     [{elseif $product->getStockStatus() == 1}]
                         <span class="stockFlag lowStock">
-                            [{oxmultilang ident="DETAILS_LOWSTOCK"}]
+                            [{oxmultilang ident="LOW_STOCK"}]
                         </span>
                     [{elseif $product->getStockStatus() == 0}]
                         <span class="stockFlag">
                             [{if $product->oxarticles__oxstocktext->value}]
                                 [{$product->oxarticles__oxstocktext->value}]
                             [{elseif $oViewConf->getStockOnDefaultMessage()}]
-                                [{oxmultilang ident="DETAILS_READYFORSHIPPING"}]
+                                [{oxmultilang ident="READY_FOR_SHIPPING"}]
                             [{/if}]
                         </span>
                     [{/if}]

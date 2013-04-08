@@ -117,7 +117,7 @@ class Unit_Views_forgotpwdTest extends OxidTestCase
             $blExcp = false;
             $oView->updatePassword();
         } catch ( Exception $oExcp ) {
-            $blExcp = $oExcp->getMessage() == 'FORGOTPWD_ERRPASSWORDTOSHORT';
+            $blExcp = $oExcp->getMessage() == 'ERROR_MESSAGE_PASSWORD_TOO_SHORT';
         }
         $this->assertTrue( $blExcp );
 
@@ -128,7 +128,7 @@ class Unit_Views_forgotpwdTest extends OxidTestCase
             $blExcp = false;
             $oView->updatePassword();
         } catch ( Exception $oExcp ) {
-            $blExcp = $oExcp->getMessage() == 'FORGOTPWD_ERRPASSWDONOTMATCH';
+            $blExcp = $oExcp->getMessage() == 'ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH';
         }
         $this->assertTrue( $blExcp );
 
@@ -139,7 +139,7 @@ class Unit_Views_forgotpwdTest extends OxidTestCase
             $blExcp = false;
             $oView->updatePassword();
         } catch ( Exception $oExcp ) {
-            $blExcp = $oExcp->getMessage() == 'FORGOTPWD_ERRPASSWORDTOSHORT';
+            $blExcp = $oExcp->getMessage() == 'ERROR_MESSAGE_PASSWORD_TOO_SHORT';
         }
 
         $this->assertTrue( $blExcp );
@@ -164,7 +164,7 @@ class Unit_Views_forgotpwdTest extends OxidTestCase
         try {
             $oView->updatePassword();
         } catch ( Exception $oExcp ) {
-            $blExcp = $oExcp->getMessage() == 'FORGOTPWD_ERRLINKEXPIRED';
+            $blExcp = $oExcp->getMessage() == 'ERROR_MESSAGE_PASSWORD_LINK_EXPIRED';
         }
 
         $this->assertTrue( $blExcp );

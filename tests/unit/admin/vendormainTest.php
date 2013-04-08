@@ -40,8 +40,8 @@ class Unit_Admin_VendorMainTest extends OxidTestCase
         modConfig::setParameter( "oxid", "testId" );
 
         // testing..
-        $oView = $this->getMock( "Vendor_Main", array( "_getCategoryTree" ) );
-        $oView->expects( $this->once() )->method( '_getCategoryTree');
+        $oView = $this->getMock( "Vendor_Main", array( "_createCategoryTree" ) );
+        $oView->expects( $this->once() )->method( '_createCategoryTree');
         $this->assertEquals( 'vendor_main.tpl', $oView->render() );
         $aViewData = $oView->getViewData();
         $this->assertTrue( isset( $aViewData['edit'] ) );

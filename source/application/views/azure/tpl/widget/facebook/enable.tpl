@@ -10,7 +10,7 @@
         </p>
     [{else}]
         <div class="oxfbenable fbEnableButton corners">
-            <a href="#">[{oxmultilang ident="FACEBOOK_ENABLEBUTTONTEXT"}]</a>
+            <a href="#">[{oxmultilang ident="ENABLE"}]</a>
             <a href="#" class="oxfbinfo helpText">?</a>
         </div>
     [{/if}]

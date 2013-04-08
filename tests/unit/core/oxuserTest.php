@@ -1838,7 +1838,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
             $oUser->createUser();
         } catch ( Exception $oExcp ) {
             $oLang = oxLang::getInstance();
-            $this->assertEquals( sprintf( $oLang->translateString( 'EXCEPTION_USER_USEREXISTS', $oLang->getTplLanguage() ), $oUser->oxuser__oxusername->value ), $oExcp->getMessage() );
+            $this->assertEquals( sprintf( $oLang->translateString( 'ERROR_MESSAGE_USER_USEREXISTS', $oLang->getTplLanguage() ), $oUser->oxuser__oxusername->value ), $oExcp->getMessage() );
             return;
         }
 
@@ -2236,7 +2236,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
     // 3. if user tries to change login CORRECT password must be entered ...
     public function testCheckLoginNewLoginWrongPass()
     {
-        oxTestModules::addFunction( "oxInputValidator", "checkLogin", "{ throw new oxUserException('EXCEPTION_USER_PWDDONTMATCH'); }");
+        oxTestModules::addFunction( "oxInputValidator", "checkLogin", "{ throw new oxUserException('ERROR_MESSAGE_USER_PWDDONTMATCH'); }");
         //
         try {
             $oUser =  $this->getProxyClass("oxUser");
@@ -2248,7 +2248,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
 
             $oUser->UNITcheckLogin( '', $aInvAdress );
         } catch ( oxUserException $oEx){
-            $this->assertEquals( $oEx->getMessage(), 'EXCEPTION_USER_PWDDONTMATCH');
+            $this->assertEquals( $oEx->getMessage(), 'ERROR_MESSAGE_USER_PWDDONTMATCH');
             return;
         }
         $this->fail( 'failed test__checkLogin_userWithouPassDublicateLogin test ' );
@@ -2346,12 +2346,12 @@ class Unit_Core_oxuserTest extends OxidTestCase
     // 2. for user without password - and check if it is empty on
     public function testCheckPasswordUserWithoutPassword()
     {
-        oxTestModules::addFunction( "oxInputValidator", "checkPassword", "{ throw new oxInputException('EXCEPTION_INPUT_EMPTYPASS'); }");
+        oxTestModules::addFunction( "oxInputValidator", "checkPassword", "{ throw new oxInputException('ERROR_MESSAGE_INPUT_EMPTYPASS'); }");
         try {
             $oUser = $this->getProxyClass("oxuser");
             $oUser->checkPassword( '', '', true );
         } catch ( oxInputException $oEx ) {
-            $this->assertEquals( $oEx->getMessage(), 'EXCEPTION_INPUT_EMPTYPASS');
+            $this->assertEquals( $oEx->getMessage(), 'ERROR_MESSAGE_INPUT_EMPTYPASS');
             return;
         }
         $this->fail( 'failed test__checkPassword_passIsEmpty test ' );
@@ -2359,12 +2359,12 @@ class Unit_Core_oxuserTest extends OxidTestCase
     // 3. for user without password - no checks
     public function testCheckPasswordPassTooShort()
     {
-        oxTestModules::addFunction( "oxInputValidator", "checkPassword", "{ throw new oxInputException('EXCEPTION_INPUT_PASSTOOSHORT'); }");
+        oxTestModules::addFunction( "oxInputValidator", "checkPassword", "{ throw new oxInputException('ERROR_MESSAGE_PASSWORD_TOO_SHORT'); }");
         try {
             $oUser = $this->getProxyClass("oxuser");
             $oUser->checkPassword( 'xxx', '', true );
         } catch ( oxInputException $oEx ) {
-            $this->assertEquals( $oEx->getMessage(), 'EXCEPTION_INPUT_PASSTOOSHORT');
+            $this->assertEquals( $oEx->getMessage(), 'ERROR_MESSAGE_PASSWORD_TOO_SHORT');
             return;
         }
         $this->fail( 'failed test__checkPassword_passTooShort test ' );
@@ -2372,12 +2372,12 @@ class Unit_Core_oxuserTest extends OxidTestCase
     // 4. for user without password - no checks
     public function testCheckPasswordPassDoNotMatch()
     {
-        oxTestModules::addFunction( "oxInputValidator", "checkPassword", "{ throw new oxUserException('EXCEPTION_USER_PWDDONTMATCH'); }");
+        oxTestModules::addFunction( "oxInputValidator", "checkPassword", "{ throw new oxUserException('ERROR_MESSAGE_USER_PWDDONTMATCH'); }");
         try {
             $oUser = $this->getProxyClass("oxuser");
             $oUser->checkPassword( 'xxxxxx', 'yyyyyy', $blCheckLenght = false  );
         } catch ( oxUserException $oEx ) {
-            $this->assertEquals( $oEx->getMessage(), 'EXCEPTION_USER_PWDDONTMATCH');
+            $this->assertEquals( $oEx->getMessage(), 'ERROR_MESSAGE_USER_PWDDONTMATCH');
             return;
         }
         $this->fail( 'failed test__checkPassword_passDoNotMatch test ' );
@@ -2916,7 +2916,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
             $oUser->login( oxADMIN_LOGIN, oxADMIN_PASSWD);
         } catch ( Exception $oExcp ) {
 
-            $this->assertEquals( 'EXCEPTION_USER_NOVALIDLOGIN', $oExcp->getMessage() );
+            $this->assertEquals( 'ERROR_MESSAGE_USER_NOVALIDLOGIN', $oExcp->getMessage() );
             return;
         }
         $this->fail( 'exception must be thrown due to problems loading user object' );
@@ -2936,7 +2936,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
         try {
             $oUser->login( oxADMIN_LOGIN, oxADMIN_PASSWD);
         } catch ( Exception $oExcp ) {
-            $this->assertEquals( 'EXCEPTION_USER_NOVALIDLOGIN', $oExcp->getMessage() );
+            $this->assertEquals( 'ERROR_MESSAGE_USER_NOVALIDLOGIN', $oExcp->getMessage() );
             return;
         }
         $this->fail( 'exception must be thrown due to problems loading user object' );
@@ -2990,7 +2990,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
         try {
             $oUser->login( 'nonadmin', oxADMIN_PASSWD);
         } catch ( Exception $oExcp ) {
-            $this->assertEquals( 'EXCEPTION_USER_NOVALIDLOGIN', $oExcp->getMessage() );
+            $this->assertEquals( 'ERROR_MESSAGE_USER_NOVALIDLOGIN', $oExcp->getMessage() );
             return;
         }
         $this->fail( 'exception must be thrown' );

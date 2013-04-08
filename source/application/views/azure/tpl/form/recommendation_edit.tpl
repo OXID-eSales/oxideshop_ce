@@ -8,23 +8,23 @@
             <input type="hidden" name="recommid" value="[{$actvrecommlist->getId()}]">
         [{/if}]
         [{if $actvrecommlist && $oView->isSavedList()}]
-            [{ oxmultilang ident="PAGE_RECOMMENDATIONS_EDIT_LISTSAVED" }]
+            [{ oxmultilang ident="LISTMANIA_LIST_SAVED" }]
         [{/if}]
         <ul class="form clear">
             <li>
-                <label class="req">[{ oxmultilang ident="FORM_RECOMMENDATION_EDIT_LISTTITLE" }]:</label>
+                <label class="req">[{ oxmultilang ident="TITLE" suffix="COLON" }]</label>
                 <input type="text" name="recomm_title" size=73 maxlength=73 value="[{$actvrecommlist->oxrecommlists__oxtitle->value}]" >
             </li>
             <li>
-                <label>[{ oxmultilang ident="FORM_RECOMMENDATION_EDIT_LISTAUTHOR" }]:</label>
+                <label>[{ oxmultilang ident="AUTHOR" suffix="COLON" }]</label>
                 <input type="text" name="recomm_author" size=73 maxlength=73 value="[{if $actvrecommlist->oxrecommlists__oxauthor->value}][{$actvrecommlist->oxrecommlists__oxauthor->value}][{elseif !$actvrecommlist}][{ $oxcmp_user->oxuser__oxfname->value }] [{ $oxcmp_user->oxuser__oxlname->value }][{/if}]" >
             </li>
             <li>
-                <label>[{ oxmultilang ident="FORM_RECOMMENDATION_EDIT_LISTDESC" }]:</label>
+                <label>[{ oxmultilang ident="INTRODUCTION" suffix="COLON" }]</label>
                 <textarea class="areabox" cols="70" rows="8" name="recomm_desc" >[{$actvrecommlist->oxrecommlists__oxdesc->value}]</textarea>
             </li>
             <li class="formSubmit">
-                <button class="submitButton" type="submit">[{ oxmultilang ident="FORM_RECOMMENDATION_EDIT_SAVE" }]</button>
+                <button class="submitButton" type="submit">[{ oxmultilang ident="SAVE" }]</button>
             </li>
         </ul>
     </div>

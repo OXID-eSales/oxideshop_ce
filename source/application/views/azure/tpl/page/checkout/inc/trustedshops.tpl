@@ -1,10 +1,10 @@
 [{block name="checkout_payment_trustedshops"}]
     [{if $oView->getTSExcellenceId()}]
         <div id="tsBox">
-            <h3 class="blockHead" id="tsProtectionHeader">[{ oxmultilang ident="PAGE_CHECKOUT_PAYMENT_TSPROTECTION" }]</h3>
+            <h3 class="blockHead" id="tsProtectionHeader">[{ oxmultilang ident="TRUSTED_SHOP_BUYER_PROTECTION" }]</h3>
             <div class="etrustlogocol">
             <a href="https://www.trustedshops.com/shop/certificate.php?shop_id=[{$oView->getTSExcellenceId()}]" target="_blank">
-              <img src="[{$oViewConf->getImageUrl('trustedshops_m.gif')}]" title="[{ oxmultilang ident="INC_TRUSTEDSHOPS_ITEM_IMGTITLE" }]">
+              <img src="[{$oViewConf->getImageUrl('trustedshops_m.gif')}]" title="[{ oxmultilang ident="TRUSTED_SHOPS_IMGTITLE" }]">
             </a>
             </div>
             <div>
@@ -14,24 +14,24 @@
             <select name="stsprotection">
               [{foreach from=$aTsProtections item=oTsProduct}]
                   [{if $oView->isPaymentVatSplitted() }]
-                     <option value="[{$oTsProduct->getTsId()}]" [{if $oView->getCheckedTsProductId() == $oTsProduct->getTsId()}]SELECTED[{/if}]>[{ oxmultilang ident="PAGE_CHECKOUT_PAYMENT_TSPROTECTIONFOR" }] [{ $oTsProduct->getAmount() }] [{ $currency->sign}] ([{ $oTsProduct->getFNettoPrice() }] [{ $currency->sign}] [{ oxmultilang ident="PAGE_CHECKOUT_BASKETCONTENTS_PLUSTAX1" }] [{ $oTsProduct->getFVatValue() }] [{ $currency->sign}] ) </option>
+                     <option value="[{$oTsProduct->getTsId()}]" [{if $oView->getCheckedTsProductId() == $oTsProduct->getTsId()}]SELECTED[{/if}]>[{ oxmultilang ident="TRUSTED_SHOP_PROTECTION_FROM" }] [{ $oTsProduct->getAmount() }] [{ $currency->sign}] ([{ $oTsProduct->getFNettoPrice() }] [{ $currency->sign}] [{ oxmultilang ident="PLUS_VAT" }] [{ $oTsProduct->getFVatValue() }] [{ $currency->sign}] ) </option>
                   [{else}]
-                      <option value="[{$oTsProduct->getTsId()}]" [{if $oView->getCheckedTsProductId() == $oTsProduct->getTsId()}]SELECTED[{/if}]>[{ oxmultilang ident="PAGE_CHECKOUT_PAYMENT_TSPROTECTIONFOR" }] [{ $oTsProduct->getAmount() }] [{ $currency->sign}] ([{ $oTsProduct->getFPrice() }] [{ $currency->sign}] [{ oxmultilang ident="PAGE_CHECKOUT_PAYMENT_INCLUDEVAT" }]) </option>
+                      <option value="[{$oTsProduct->getTsId()}]" [{if $oView->getCheckedTsProductId() == $oTsProduct->getTsId()}]SELECTED[{/if}]>[{ oxmultilang ident="TRUSTED_SHOP_PROTECTION_FROM" }] [{ $oTsProduct->getAmount() }] [{ $currency->sign}] ([{ $oTsProduct->getFPrice() }] [{ $currency->sign}] [{ oxmultilang ident="INCLUDE_VAT" }]) </option>
                   [{/if}]
               [{/foreach}]
             </select>
             [{else}]
                 [{assign var="oTsProduct" value=$aTsProtections[0] }]
                 [{if $oView->isPaymentVatSplitted() }]
-                <input type="hidden" name="stsprotection" value="[{$oTsProduct->getTsId()}]">[{ oxmultilang ident="PAGE_CHECKOUT_PAYMENT_TSPROTECTIONFOR" }] [{ $oTsProduct->getAmount() }] [{ $currency->sign}] ([{ $oTsProduct->getFNettoPrice() }] [{ $currency->sign}] [{ oxmultilang ident="PAGE_CHECKOUT_BASKETCONTENTS_PLUSTAX1" }] [{ $oTsProduct->getFVatValue() }] [{ $currency->sign}])
+                <input type="hidden" name="stsprotection" value="[{$oTsProduct->getTsId()}]">[{ oxmultilang ident="TRUSTED_SHOP_PROTECTION_FROM" }] [{ $oTsProduct->getAmount() }] [{ $currency->sign}] ([{ $oTsProduct->getFNettoPrice() }] [{ $currency->sign}] [{ oxmultilang ident="PLUS_VAT" }] [{ $oTsProduct->getFVatValue() }] [{ $currency->sign}])
                 [{else}]
-                <input type="hidden" name="stsprotection" value="[{$oTsProduct->getTsId()}]">[{ oxmultilang ident="PAGE_CHECKOUT_PAYMENT_TSPROTECTIONFOR" }] [{ $oTsProduct->getAmount() }] [{ $currency->sign}] ([{ $oTsProduct->getFPrice() }] [{ $currency->sign}] [{ oxmultilang ident="PAGE_CHECKOUT_PAYMENT_INCLUDEVAT" }])
+                <input type="hidden" name="stsprotection" value="[{$oTsProduct->getTsId()}]">[{ oxmultilang ident="TRUSTED_SHOP_PROTECTION_FROM" }] [{ $oTsProduct->getAmount() }] [{ $currency->sign}] ([{ $oTsProduct->getFPrice() }] [{ $currency->sign}] [{ oxmultilang ident="INCLUDE_VAT" }])
                 [{/if}]
             [{/if}]
               <br>
               <br>
-            [{ oxmultilang ident="PAGE_CHECKOUT_PAYMENT_TSPROTECTIONTEXT" }] <a href="http://www.trustedshops.com/shop/data_privacy.php?shop_id=[{$oView->getTSExcellenceId()}]" target="_blank">[{ oxmultilang ident="PAGE_CHECKOUT_PAYMENT_TSPROTECTIONTEXT2" }]</a>
-            [{ oxmultilang ident="PAGE_CHECKOUT_PAYMENT_TSPROTECTIONTEXT3" }] <a href="http://www.trustedshops.com/shop/protection_conditions.php?shop_id=[{$oView->getTSExcellenceId()}]" target="_blank">[{ oxmultilang ident="PAGE_CHECKOUT_PAYMENT_TSPROTECTIONTEXT4" }]</a> [{ oxmultilang ident="PAGE_CHECKOUT_PAYMENT_TSPROTECTIONTEXT5" }]
+            [{ oxmultilang ident="TRUSTED_SHOPS_PROTECTION_TEXT" }] <a href="http://www.trustedshops.com/shop/data_privacy.php?shop_id=[{$oView->getTSExcellenceId()}]" target="_blank">[{ oxmultilang ident="TRUSTED_SHOPS_PROTECTION_TEXT2" }]</a>
+            [{ oxmultilang ident="TRUSTED_SHOPS_PROTECTION_TEXT3" }] <a href="http://www.trustedshops.com/shop/protection_conditions.php?shop_id=[{$oView->getTSExcellenceId()}]" target="_blank">[{ oxmultilang ident="TRUSTED_SHOPS_PROTECTION_TEXT4" }]</a> [{ oxmultilang ident="TRUSTED_SHOPS_PROTECTION_TEXT5" }]
             </div>
             <div class="clear"></div>
         </div>

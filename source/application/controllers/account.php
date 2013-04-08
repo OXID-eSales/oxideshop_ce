@@ -312,9 +312,9 @@ class Account extends oxUBase
         $aPaths = array();
         $aPath  = array();
         if ( $oUser = $this->getUser() ) {
-            $aPath['title'] = oxRegistry::getLang()->translateString( 'PAGE_ACCOUNT_DASHBOARD_MYACCOUNT', oxRegistry::getLang()->getBaseLanguage(), false ) . $oUser->oxuser__oxusername->value;
+            $aPath['title'] = oxRegistry::getLang()->translateString( 'MY_ACCOUNT', oxRegistry::getLang()->getBaseLanguage(), false ) . " - " . $oUser->oxuser__oxusername->value;
         } else {
-            $aPath['title'] = oxRegistry::getLang()->translateString( 'PAGE_ACCOUNT_INC_LOGIN_LOGIN', oxRegistry::getLang()->getBaseLanguage(), false );
+            $aPath['title'] = oxRegistry::getLang()->translateString( 'LOGIN', oxRegistry::getLang()->getBaseLanguage(), false );
         }
         $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;

@@ -133,7 +133,7 @@ class Unit_Core_oxCountryTest extends OxidTestCase
         $oSubj = new oxCountry();
         $oSubj->load('8f241f11095649d18.02676059');
         $aStates = $oSubj->getStates();
-        $this->assertEquals('Manitoba', $aStates['MB']->oxstates__oxtitle->value);
+        $this->assertEquals('Manitoba', $aStates['1']->oxstates__oxtitle->value);
 
     }
 

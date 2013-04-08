@@ -214,7 +214,7 @@ class oxSeoEncoder extends oxSuperCfg
     /**
      * Returns dynamic object SEO URI
      *
-     * @param string $sStdUrl standart url
+     * @param string $sStdUrl standard url
      * @param string $sSeoUrl seo uri
      * @param int    $iLang   active language
      *
@@ -1216,7 +1216,7 @@ class oxSeoEncoder extends oxSuperCfg
     /**
      * getDynamicUrl acts similar to static urls,
      * except, that dynamic url are not shown in admin
-     * and they can be reencoded by providing new seo url
+     * and they can be re-encoded by providing new seo url
      *
      * @param string $sStdUrl standard url
      * @param string $sSeoUrl part of URL query which will be attached to standard shop url
@@ -1229,7 +1229,7 @@ class oxSeoEncoder extends oxSuperCfg
     public function getDynamicUrl( $sStdUrl, $sSeoUrl, $iLang )
     {
         startProfile("getDynamicUrl");
-        $sDynUrl = $this->_getFullUrl( $this->_getDynamicUri( $sStdUrl, $sSeoUrl, $iLang ), strpos( $sStdUrl, "https:" ) === 0 );
+        $sDynUrl = $this->_getFullUrl( $this->_getDynamicUri( $sStdUrl, $sSeoUrl, $iLang ), $iLang, strpos( $sStdUrl, "https:" ) === 0 );
         stopProfile("getDynamicUrl");
         return $sDynUrl;
     }

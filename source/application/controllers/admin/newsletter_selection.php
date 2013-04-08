@@ -99,13 +99,14 @@ class Newsletter_Selection extends oxAdminDetails
                 if ( !$blSep ) {
                     $sSelectGroups = " oxobject2group.oxobjectid is null ";
                 }
-
+                $sShopId = $this->getConfig()->getShopID();
                 $sQ = "select count(*) from ( select oxnewssubscribed.oxemail as _icnt from oxnewssubscribed left join
                        oxobject2group on oxobject2group.oxobjectid = oxnewssubscribed.oxuserid
-                       where ( oxobject2group.oxshopid = '".$this->getConfig()->getShopID()."'
+                       where ( oxobject2group.oxshopid = '{$sShopId}'
                        or oxobject2group.oxshopid is null ) and {$sSelectGroups} and
                        oxnewssubscribed.oxdboptin = 1 and ( not ( oxnewssubscribed.oxemailfailed = '1') )
-                       and (not(oxnewssubscribed.oxemailfailed = '1')) group by oxnewssubscribed.oxemail ) as _tmp";
+                       and (not(oxnewssubscribed.oxemailfailed = '1')) and oxnewssubscribed.oxshopid = '{$sShopId}'
+                       group by oxnewssubscribed.oxemail ) as _tmp";
 
                 $this->_iUserCount = $oDB->getOne( $sQ, false, false );
             }

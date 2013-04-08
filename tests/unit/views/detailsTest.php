@@ -458,6 +458,36 @@ class Unit_Views_detailsTest extends OxidTestCase
     }
 
     /**
+     * Test adding of tags and getting error with ajax enabled
+     *
+     * @return null
+     */
+    public function testAddTagsErrorAjax()
+    {
+        $this->setRequestParam( 'blAjax', true );
+        $this->setRequestParam( 'newTags', "admin,tag1,tag2,tag3,tag3,tag3" );
+
+        $oArticle = new oxArticle();
+        $oArticle->setId("_testArt");
+
+        $oDetails = $this->getMock( 'details', array( 'getProduct' ));
+        $oDetails->expects( $this->any() )
+                 ->method( 'getProduct')
+                 ->will($this->returnValue( $oArticle ));
+
+        $sResult = '{"tags":["tag1","tag2","tag3"],"invalid":["admin"],"inlist":[]}';
+
+        $oUtils = $this->getMock('oxUtils', array('showMessageAndExit'));
+        $oUtils->expects( $this->any() )
+               ->method( 'showMessageAndExit')
+               ->with( $this->equalTo( $sResult ) );
+
+        oxRegistry::set( "oxUtils", $oUtils );
+
+        $oDetails->addTags();
+    }
+
+    /**
      * Test highlighting tags.
      * If tag does not exists, it should be created.
      *

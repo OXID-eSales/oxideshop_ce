@@ -45,10 +45,10 @@ class Article_Crossselling extends oxAdminDetails
         $this->_aViewData['edit'] = $oArticle = oxNew( 'oxarticle' );
 
         // crossselling
-        $sChosenArtCat = $this->_getCategoryTree( "artcattree", oxConfig::getParameter( "artcat"));
+        $this->_createCategoryTree( "artcattree");
 
         // accessoires
-        $sChosenArtCat2 = $this->_getCategoryTree( "artcattree2", oxConfig::getParameter( "artcat2"));
+        $this->_createCategoryTree( "artcattree2");
 
         $soxId = $this->getEditObjectId();
         if ( $soxId != "-1" && isset( $soxId ) ) {

@@ -1,7 +1,7 @@
 [{if $pages->changePage}]
     <div class="pager [{if $place eq "bottom"}] lineBox[{/if}]" id="itemsPager[{$place}]">
     [{if $pages->previousPage }]
-        <a class="prev" href="[{$pages->previousPage}]">[{oxmultilang ident="WIDGET_PRODUCT_LOCATOR_PREV"}]</a>
+        <a class="prev" href="[{$pages->previousPage}]">[{oxmultilang ident="PREVIOUS"}]</a>
     [{/if}]
         [{assign var="i" value=1}]
         [{foreach key=iPage from=$pages->changePage item=page}]
@@ -19,7 +19,7 @@
             [{/if}]
         [{/foreach}]
     [{if $pages->nextPage }]
-        <a class="next" href="[{$pages->nextPage}]">[{oxmultilang ident="WIDGET_PRODUCT_LOCATOR_NEXT"}]</a>
+        <a class="next" href="[{$pages->nextPage}]">[{oxmultilang ident="NEXT"}]</a>
     [{/if}]
      </div>
 [{/if}]

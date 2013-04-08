@@ -1,16 +1,16 @@
 [{capture append="oxidBlock_content"}]
-    [{assign var="template_title" value="PAGE_ACCOUNT_REGISTER_SUCCESS_WELCOME"|oxmultilangassign }]
-    <h1 id="openAccHeader" class="pageHead">[{ oxmultilang ident="PAGE_ACCOUNT_REGISTER_SUCCESS_WELCOME" }]</h1>
+    [{assign var="template_title" value="MESSAGE_WELCOME_REGISTERED_USER"|oxmultilangassign }]
+    <h1 id="openAccHeader" class="pageHead">[{ oxmultilang ident="MESSAGE_WELCOME_REGISTERED_USER" }]</h1>
     <div class="box info">
       [{if $oView->getRegistrationStatus() == 1}]
-        [{ oxmultilang ident="PAGE_ACCOUNT_REGISTER_SUCCESS_EMAILCONFIRMATION" }]
+        [{ oxmultilang ident="MESSAGE_CONFIRMING_REGISTRATION" }]<br><br>[{ oxmultilang ident="THANK_YOU" SUFFIC="." }]
       [{elseif $oView->getRegistrationStatus() == 2}]
-        [{ oxmultilang ident="PAGE_ACCOUNT_REGISTER_SUCCESS_ACTIVATIONEMAIL" }]
+        [{ oxmultilang ident="MESSAGE_SENT_CONFIRMATION_EMAIL" }]<br><br>[{ oxmultilang ident="THANK_YOU" SUFFIC="." }]
       [{/if}]
 
       [{if $oView->getRegistrationError() == 4}]
         <div>
-          [{ oxmultilang ident="PAGE_ACCOUNT_REGISTER_SUCCESS_NOTABLETOSENDEMAIL" }]
+          [{ oxmultilang ident="MESSAGE_NOT_ABLE_TO_SEND_EMAIL" }]<br>[{ oxmultilang ident="MESSAGE_VERIFY_YOUR_EMAIL" }]
         </div>
       [{/if}]
     </div>

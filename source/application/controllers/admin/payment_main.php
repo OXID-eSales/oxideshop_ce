@@ -132,6 +132,7 @@ class Payment_Main extends oxAdminDetails
         }
         $oPayment->oxpayments__oxaddsumrules = new oxField( array_sum( $aRules ) );
 
+
         //#708
         if ( !is_array( $this->_aFieldArray))
             $this->_aFieldArray = oxRegistry::getUtils()->assignValuesFromText( $oPayment->oxpayments__oxvaldesc->value );

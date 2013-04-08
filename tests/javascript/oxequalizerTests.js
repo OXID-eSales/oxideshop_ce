@@ -16,9 +16,9 @@ module('oxEqualizer', {
             '<div class="column2" id="column23" style="height:150px;"></div>'+
         '</div>'+
         '<div id="container3">'+
-            '<div class="column3 catPicOnly" id="column31"></div>'+
+            '<div class="column3 catPicOnly" id="column31" style="height:100px;padding:0px"></div>'+
             '<div class="column3" id="column32"></div>'+
-            '<div class="column3" id="column33" style="height:100px;"></div>'+
+            '<div class="column3" id="column33" style="height:70px; padding:10px"></div>'+
         '</div>'+
         '<div id="target4" style="height:200px;"></div>'+
         '<div id="container4">'+
@@ -66,9 +66,9 @@ test("equalizeColumnsWithPics", function (){
     // setting widget 3
     oxEqualizer.equalHeight($('.column3'));
 
-    equals( $('#column31').css("height"), '120px', "case3: Added heigh");
+    equals( $('#column31').css("height"), '100px', "case3: Added heigh");
     equals( $('#column32').css("height"), '100px', "case3: Added heigh");
-    equals( $('#column33').css("height"), '100px', "case3: Added heigh");
+    equals( $('#column33').css("height"), '80px', "case3: Added heigh");
 });
 
 

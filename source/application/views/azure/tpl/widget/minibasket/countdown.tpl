@@ -1,7 +1,7 @@
 [{if $oViewConf->getShowBasketTimeout()}]
     <p class="totals">
         <span class="item">
-            [{ oxmultilang ident="WIDGET_COUNTDOWN_BASKET_TIMEOUT" }]
+            [{ oxmultilang ident="EXPIRES_IN" suffix="COLON"}]
             [{counter name="mini_basket_countdown_nr" assign="countdown_nr"}]
         </span>
         <strong class="price" id="countdown">[{$oViewConf->getBasketTimeLeft()|oxformattime}]</strong>

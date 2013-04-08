@@ -403,7 +403,7 @@ class Unit_Views_userTest extends OxidTestCase
         $aResult  = array();
         $aResults = array();
 
-        $aResult["title"] = oxLang::getInstance()->translateString( 'PAGE_CHECKOUT_USER', oxLang::getInstance()->getBaseLanguage(), false );
+        $aResult["title"] = oxLang::getInstance()->translateString( 'ADDRESS', oxLang::getInstance()->getBaseLanguage(), false );
         $aResult["link"]  = $oUser->getLink();
 
         $aResults[] = $aResult;

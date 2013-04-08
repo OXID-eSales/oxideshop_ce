@@ -53,7 +53,7 @@ class Discount_Articles extends oxAdminDetails
                 $this->_aViewData['readonly'] =  true;
 
             // generating category tree for artikel choose select list
-            $this->_getCategoryTree( "artcattree", null );
+            $this->_createCategoryTree( "artcattree" );
         }
 
         $iAoc = oxConfig::getParameter("aoc");

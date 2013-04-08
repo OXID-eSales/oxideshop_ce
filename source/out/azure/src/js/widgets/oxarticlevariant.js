@@ -45,7 +45,7 @@
 
                 // setting new selection
                 if ( obj.parents().hasClass("js-fnSubmit") ){
-                    obj.parent('li').parent('ul').siblings('input:hidden').attr( "value", obj.attr("data-seletion-id") );
+                    obj.parent('li').parent('ul').siblings('input:hidden').attr( "value", obj.attr("data-selection-id") );
 
                     var form = obj.closest("form");
                     $('input[name=fnc]', form).val("");

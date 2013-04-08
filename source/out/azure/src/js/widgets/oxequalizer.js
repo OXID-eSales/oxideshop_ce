@@ -36,7 +36,8 @@
         {
             var self    = this,
                 newh    = 0,
-                tallest = 0;
+                tallest = 0,
+                elementh = 0;
 
             if ( target ) {
                 if (group.height() < target.height()){
@@ -52,11 +53,9 @@
                         $(this).css('height','');
                         $(this).removeClass('oxEqualized');
                     }
-                    newh = tallest;
-                    if ($(this).height() < newh && $(this).hasClass('catPicOnly')) {
-                        newh += 20;
-                    }
-                    if ($(this).height() < newh) {
+                    elementh = $(this).outerHeight();
+                    if (elementh < tallest) {
+                        newh = tallest - (elementh - $(this).height());
                         $(this).height(newh).addClass('oxEqualized');
                     }
                 });
@@ -72,7 +71,7 @@
         {
             var tallest = 0;
             el.each(function(){
-                var thisHeight = $(this).height();
+                var thisHeight = $(this).outerHeight();
                 if (!$(this).hasClass('oxEqualized') && thisHeight > tallest) {
                     tallest = thisHeight;
                 }

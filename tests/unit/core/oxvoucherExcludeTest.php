@@ -460,7 +460,7 @@ class Unit_Core_oxvoucherExcludeTest extends OxidTestCase
         }
         catch (oxVoucherException $oEx)
         {
-            $this->assertEquals('EXCEPTION_VOUCHER_NOVOUCHER', $oEx->getMessage());
+            $this->assertEquals('ERROR_MESSAGE_VOUCHER_NOVOUCHER', $oEx->getMessage());
             $blException = true;
         }
 
@@ -486,7 +486,7 @@ class Unit_Core_oxvoucherExcludeTest extends OxidTestCase
         }
         catch (oxVoucherException $oEx)
         {
-            $this->assertEquals('EXCEPTION_VOUCHER_NOVOUCHER', $oEx->getMessage());
+            $this->assertEquals('ERROR_MESSAGE_VOUCHER_NOVOUCHER', $oEx->getMessage());
             $blException = true;
         }
 

@@ -1261,7 +1261,7 @@ class Unit_utf8Test extends OxidTestCase
         $oShop->oxshops__oxname = new oxField('Test Shop');
         $oCfg->expects($this->any())->method( 'getActiveShop')->will( $this->returnValue( $oShop ) );
         $oRss->setConfig( $oCfg );
-        $this->assertEquals('Test Shop/RSS_SEARCHARTICLES_TITLEtssscat'.$sValue.'man', $oRss->getSearchArticlesTitle('tsss', 'cat', $sValue, 'man'));
+        $this->assertEquals('Test Shop/SEARCH_FOR_PRODUCTS_CATEGORY_VENDOR_MANUFACTURERtssscat'.$sValue.'man', $oRss->getSearchArticlesTitle('tsss', 'cat', $sValue, 'man'));
     }
 
     public function testOxSearchGetWhereWithSearchIngLongDescSecondLanguage()
@@ -1469,7 +1469,7 @@ class Unit_utf8Test extends OxidTestCase
 
     public function testOxUserCheckPassword()
     {
-        oxTestModules::addFunction( "oxInputValidator", "checkPassword", "{ throw new oxInputException('EXCEPTION_INPUT_EMPTYPASS'); }");
+        oxTestModules::addFunction( "oxInputValidator", "checkPassword", "{ throw new oxInputException('ERROR_MESSAGE_INPUT_EMPTYPASS'); }");
         $sValue = 'ūЛü';
 
         $oUser = oxNew( 'oxuser' );

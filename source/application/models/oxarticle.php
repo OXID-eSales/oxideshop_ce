@@ -2975,6 +2975,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     /**
      * Returns article file url
      *
+     * @deprecated as article file is duplicate of media. Use getMediaUrls() instead for file media.
+     *
      * @return string
      */
     public function getFileUrl()
@@ -3661,9 +3663,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
                 if ( $this->_isFieldEmpty( $sCopyFieldName ) && !$this->_hasMasterImage( $iIndex ) && !$this->_hasMasterImage( 1 ) ) {
                     $this->$sCopyFieldName = clone $oParentArticle->$sCopyFieldName;
                 }
-            } elseif ( stristr($sCopyFieldName, '_oxpicsgenerated') && $this->{$sCopyFieldName}->value == 0 ) {
-                // if no pics generated for variants, load all from
-                $this->$sCopyFieldName = clone $oParentArticle->$sCopyFieldName;
             } elseif ($this->_isFieldEmpty($sCopyFieldName) || in_array( $sCopyFieldName, $this->_aCopyParentField ) ) {
                 $this->$sCopyFieldName = clone $oParentArticle->$sCopyFieldName;
             }

@@ -4,7 +4,7 @@
         [{counter assign="slideCount"}]
             <li>
                 <a href="[{ $oManufacturer->getLink() }]" class="viewAllHover">
-                    <span>[{ oxmultilang ident="WIDGET_MANUFACTURERS_SLIDER_VIEWALL" }]</span>
+                    <span>[{ oxmultilang ident="VIEW_ALL_PRODUCTS" }]</span>
                 </a>
                 <a class="sliderHover" href="[{ $oManufacturer->getLink() }]"></a>
                 <img src="[{ $oManufacturer->getIconUrl() }]" alt="[{ $oManufacturer->oxmanufacturers__oxtitle->value }]">
@@ -18,7 +18,7 @@
     [{oxscript add="$( '#manufacturerSlider' ).oxManufacturerSlider();"}]
     <div class="itemSlider">
         <div class="leftHolder">            
-            <div class="titleBlock slideNav"><strong>[{ oxmultilang ident="WIDGET_MANUFACTURERS_SLIDER_OURBRANDS" }]</strong></div>
+            <div class="titleBlock slideNav"><strong>[{ oxmultilang ident="OUR_BRANDS" }]</strong></div>
             <a class="prevItem slideNav" href="#" rel="nofollow"><span class="slidePointer">&laquo;</span><span class="slideBg"></span></a>
         </div>
         <a class="nextItem slideNav" href="#" rel="nofollow"><span class="slidePointer">&raquo;</span><span class="slideBg"></span></a>

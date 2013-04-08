@@ -2,23 +2,23 @@
 [{ assign var="oViewConf" value=$oEmailView->getViewConfig() }]
 [{ assign var="user"     value=$oEmailView->getUser() }]
 
-[{ oxmultilang ident="EMAIL_SUGGEST_HTML_PRODUCTPOSTCARDFROM" }] [{ $shop->oxshops__oxname->getRawValue() }]
+[{ oxmultilang ident="PRODUCT_POST_CARD_FROM" }] [{ $shop->oxshops__oxname->getRawValue() }]
 
-[{ oxmultilang ident="EMAIL_SUGGEST_HTML_FROM" }] [{$userinfo->send_name}]
-[{ oxmultilang ident="EMAIL_SUGGEST_HTML_EMAIL" }] [{$userinfo->send_email}]
+[{ oxmultilang ident="FROM" suffix="COLON" }] [{$userinfo->send_name}]
+[{ oxmultilang ident="EMAIL" suffix="COLON" }] [{$userinfo->send_email}]
 
-[{ oxmultilang ident="EMAIL_SUGGEST_HTML_TO" }] [{$userinfo->rec_name}]
-[{ oxmultilang ident="EMAIL_SUGGEST_HTML_EMAIL2" }] [{$userinfo->rec_email}]
+[{ oxmultilang ident="TO" suffix="COLON" }] [{$userinfo->rec_name}]
+[{ oxmultilang ident="EMAIL" suffix="COLON" }] [{$userinfo->rec_email}]
 
 [{$userinfo->send_message}]
 
-[{ oxmultilang ident="EMAIL_SUGGEST_HTML_MENYGREETINGS" }] [{$userinfo->send_name}]
+[{ oxmultilang ident="MANY_GREETINGS" }] [{$userinfo->send_name}]
 
-[{ oxmultilang ident="EMAIL_SUGGEST_PLAIN_RECOMMENDED" }]
+[{ oxmultilang ident="RECOMMENDED_PRODUCTS" suffix="COLON" }]
 
 [{ $product->oxarticles__oxtitle->getRawValue()|strip_tags }]
 [{ $product->oxarticles__oxshortdesc->getRawValue() }]
 
-[{ oxmultilang ident="EMAIL_SUGGEST_PLAIN_CHECK" }] [{ $sArticleUrl }]
+[{ oxmultilang ident="CHECK" }] [{ $sArticleUrl }]
 
 [{ oxcontent ident="oxemailfooterplain" }]

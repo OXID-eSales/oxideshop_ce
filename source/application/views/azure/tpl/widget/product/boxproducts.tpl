@@ -43,7 +43,10 @@
                                                     [{ $_oBoxProduct->getFVarMinPrice() }]
                                                 [{/if}]
                                         [{/if}]
-                                [{ $currency->sign}]</strong>
+                                [{ $currency->sign}]
+                                [{if $oView->isVatIncluded() }]
+                                    [{if !( $_oBoxProduct->hasMdVariants() || ($oViewConf->showSelectListsInList()&&$_oBoxProduct->getSelections(1)) || $_oBoxProduct->getVariants() )}]*[{/if}]
+                                [{/if}]</strong>
                             [{/if}]
                         [{/oxhasrights}]
                     </a>

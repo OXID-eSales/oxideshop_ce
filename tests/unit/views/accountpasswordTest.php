@@ -51,14 +51,14 @@ class Unit_Views_accountPasswordTest extends OxidTestCase
      */
     public function testChangePasswordEmptyNewPass()
     {
-        oxTestModules::addFunction( 'oxUtilsView', 'addErrorToDisplay', '{ return "EXCEPTION_INPUT_EMPTYPASS"; }' );
+        oxTestModules::addFunction( 'oxUtilsView', 'addErrorToDisplay', '{ return "ERROR_MESSAGE_INPUT_EMPTYPASS"; }' );
 
         $oUser = $this->getMock( "oxUser", array( "checkPassword" ) );
-        $oUser->expects( $this->any() )->method( 'checkPassword')->will( $this->returnValue( new Exception( "EXCEPTION_INPUT_EMPTYPASS" ) ) );
+        $oUser->expects( $this->any() )->method( 'checkPassword')->will( $this->returnValue( new Exception( "ERROR_MESSAGE_INPUT_EMPTYPASS" ) ) );
 
         $oView = $this->getMock( "Account_Password", array( "getUser" ) );
         $oView->expects( $this->any() )->method( 'getUser')->will( $this->returnValue( $oUser ) );
-        $this->assertEquals( "EXCEPTION_INPUT_EMPTYPASS", $oView->changePassword() );
+        $this->assertEquals( "ERROR_MESSAGE_INPUT_EMPTYPASS", $oView->changePassword() );
         $this->assertFalse( $oView->isPasswordChanged() );
     }
 
@@ -69,14 +69,14 @@ class Unit_Views_accountPasswordTest extends OxidTestCase
      */
     public function testChangePasswordTooShortNewPass()
     {
-        oxTestModules::addFunction( 'oxUtilsView', 'addErrorToDisplay', '{ return "EXCEPTION_INPUT_PASSTOOSHORT"; }' );
+        oxTestModules::addFunction( 'oxUtilsView', 'addErrorToDisplay', '{ return "ERROR_MESSAGE_PASSWORD_TOO_SHORT"; }' );
 
         $oUser = $this->getMock( "oxUser", array( "checkPassword" ) );
-        $oUser->expects( $this->any() )->method( 'checkPassword')->will( $this->returnValue( new Exception( "EXCEPTION_INPUT_PASSTOOSHORT" ) ) );
+        $oUser->expects( $this->any() )->method( 'checkPassword')->will( $this->returnValue( new Exception( "ERROR_MESSAGE_PASSWORD_TOO_SHORT" ) ) );
 
         $oView = $this->getMock( "Account_Password", array( "getUser" ) );
         $oView->expects( $this->any() )->method( 'getUser')->will( $this->returnValue( $oUser ) );
-        $this->assertEquals( "EXCEPTION_INPUT_PASSTOOSHORT", $oView->changePassword() );
+        $this->assertEquals( "ERROR_MESSAGE_PASSWORD_TOO_SHORT", $oView->changePassword() );
         $this->assertFalse( $oView->isPasswordChanged() );
     }
 

@@ -42,7 +42,7 @@ RewriteRule (\.jpe?g|\.gif|\.png)$ core/utils/getimg.php
 </IfModule>
 
 # disabling log file access from outside
-<FilesMatch "(EXCEPTION_LOG\.txt|\.log$|\.tpl$|pkg\.rev|\.ini|pkg\.info)">
+<FilesMatch "(EXCEPTION_LOG\.txt|\.log$|\.tpl$|pkg\.rev|\.ini)">
 order allow,deny
 deny from all
 </FilesMatch>

@@ -384,7 +384,7 @@ class Unit_Views_newsletterTest extends OxidTestCase
         $oTestNews->send();
         $aErrors = oxSession::getVar( 'Errors' );
         $oErr = unserialize( $aErrors['default'][0] );
-        $this->assertEquals( oxLang::getInstance()->translateString('NEWSLETTER_COMPLETEALLFIELEDS'), $oErr->getOxMessage() ) ;
+        $this->assertEquals( oxLang::getInstance()->translateString('ERROR_MESSAGE_COMPLETE_FIELDS_CORRECTLY'), $oErr->getOxMessage() ) ;
 
         //reseting errors
         oxSession::setVar( 'Errors', null );
@@ -396,7 +396,7 @@ class Unit_Views_newsletterTest extends OxidTestCase
 
         $aErrors = oxSession::getVar( 'Errors' );
         $oErr = unserialize( $aErrors['default'][0] );
-        $this->assertEquals( oxLang::getInstance()->translateString('NEWSLETTER_INVALIDEMAIL'), $oErr->getOxMessage() ) ;
+        $this->assertEquals( oxLang::getInstance()->translateString('MESSAGE_INVALID_EMAIL'), $oErr->getOxMessage() ) ;
     }
 
     /**
@@ -421,7 +421,7 @@ class Unit_Views_newsletterTest extends OxidTestCase
 
         $aErrors = oxSession::getVar( 'Errors' );
         $oErr = unserialize( $aErrors['default'][0] );
-        $this->assertEquals( oxLang::getInstance()->translateString('NEWSLETTER_NOTABLETOSENDEMAIL'), $oErr->getOxMessage() ) ;
+        $this->assertEquals( oxLang::getInstance()->translateString('MESSAGE_NOT_ABLE_TO_SEND_EMAIL'), $oErr->getOxMessage() ) ;
     }
     
     /**

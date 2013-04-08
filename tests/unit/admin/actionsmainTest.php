@@ -59,8 +59,8 @@ class Unit_Admin_ActionsMainTest extends OxidTestCase
         $this->setRequestParam( "oxid", oxDb::getDb()->getOne( "select oxid from oxactions" ) );
 
         // testing..
-        $oView = $this->getMock( "Actions_Main", array( "_getCategoryTree" ) );
-        $oView->expects( $this->any() )->method( '_getCategoryTree' )->will( $this->returnValue( false ) );
+        $oView = $this->getMock( "Actions_Main", array( "_createCategoryTree" ) );
+        $oView->expects( $this->any() )->method( '_createCategoryTree' )->will( $this->returnValue( false ) );
         $sTplName = $oView->render();
 
         // testing view data
@@ -111,9 +111,9 @@ class Unit_Admin_ActionsMainTest extends OxidTestCase
         $oPromotion->load($sPromotion);
 
         // testing..
-        $oView = $this->getMock( "Actions_Main", array( "getViewDataElement", "_getCategoryTree" ) );
+        $oView = $this->getMock( "Actions_Main", array( "getViewDataElement", "_createCategoryTree" ) );
         $oView->expects( $this->once() )->method( 'getViewDataElement' )->will( $this->returnValue( $oPromotion ) );
-        $oView->expects( $this->once() )->method( '_getCategoryTree' );
+        $oView->expects( $this->once() )->method( '_createCategoryTree' );
         $sTplName = $oView->render();
 
 
@@ -141,9 +141,9 @@ class Unit_Admin_ActionsMainTest extends OxidTestCase
         $oPromotion->load($sPromotion);
 
         // testing..
-        $oView = $this->getMock( "Actions_Main", array( "getViewDataElement", "_getCategoryTree" ) );
+        $oView = $this->getMock( "Actions_Main", array( "getViewDataElement", "_createCategoryTree" ) );
         $oView->expects( $this->once() )->method( 'getViewDataElement' )->will( $this->returnValue( $oPromotion ) );
-        $oView->expects( $this->never() )->method( '_getCategoryTree' );
+        $oView->expects( $this->never() )->method( '_createCategoryTree' );
         $sTplName = $oView->render();
 
 

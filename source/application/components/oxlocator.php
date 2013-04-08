@@ -298,7 +298,7 @@ class oxLocator extends oxSuperCfg
             $oSearchCat->nextProductLink = $this->_oNextProduct?$this->_makeLink( $this->_oNextProduct->getLink(), $sAddSearch ):null;
             $oSearchCat->prevProductLink = $this->_oBackProduct?$this->_makeLink( $this->_oBackProduct->getLink(), $sAddSearch ):null;
 
-            $sFormat = oxRegistry::getLang()->translateString( 'searchResult' );
+            $sFormat = oxRegistry::getLang()->translateString( 'SEARCH_RESULT' );
             $oLocatorTarget->setSearchTitle( sprintf( $sFormat, $sSearchFormParam ) );
             $oLocatorTarget->setActiveCategory( $oSearchCat );
         }

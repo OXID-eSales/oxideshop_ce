@@ -91,7 +91,7 @@
          * @return null
          */
         select : function( oSelectLink ) {
-            this.selectedValue.val( oSelectLink.attr('data-seletion-id') );
+            this.selectedValue.val( oSelectLink.attr('data-selection-id') );
             this.selectedValueLabel.text( oSelectLink.text() );
             $('a', this.valueList).removeClass('selected');
             oSelectLink.addClass('selected');

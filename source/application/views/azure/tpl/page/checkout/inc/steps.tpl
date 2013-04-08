@@ -8,7 +8,7 @@
             <li class="step1[{ if $active == 1}] active [{elseif $active > 1}] passed [{/if}]">
                 <span>
                     [{if $showStepLinks}]<a rel="nofollow" href="[{ oxgetseourl ident=$oViewConf->getBasketLink() }]">[{/if}]
-                    [{ oxmultilang ident="PAGE_CHECKOUT_STEPS_BASKET" }]
+                    [{ oxmultilang ident="STEPS_BASKET" }]
                     [{if $showStepLinks}]</a>[{/if}]
                 </span>
             </li>
@@ -23,7 +23,7 @@
             <li class="step2[{ if $active == 2}] active [{elseif $active > 2}] passed [{/if}]">
                 <span>
                     [{if $showStepLinks}]<a rel="nofollow" href="[{ oxgetseourl ident=$oViewConf->getOrderLink() }]">[{/if}]
-                    [{ oxmultilang ident="PAGE_CHECKOUT_STEPS_SEND" }]
+                    [{ oxmultilang ident="STEPS_SEND" }]
                     [{if $showStepLinks}]</a>[{/if}]
                 </span>
             </li>
@@ -38,7 +38,7 @@
             <li class="step3[{ if $active == 3}] active [{elseif $active > 3}] passed [{/if}]">
                 <span>
                     [{if $showStepLinks}]<a rel="nofollow" [{if $oViewConf->getActiveClassName() == "user"}]id="paymentStep"[{/if}] href="[{ oxgetseourl ident=$oViewConf->getPaymentLink() }]">[{/if}]
-                    [{ oxmultilang ident="PAGE_CHECKOUT_STEPS_PAY" }]
+                    [{ oxmultilang ident="STEPS_PAY" }]
                     [{if $showStepLinks}]</a>[{/if}]
                 </span>
             </li>
@@ -54,7 +54,7 @@
             <li class="step4[{ if $active == 4}] active [{elseif $active > 4}] passed [{/if}]">
                 <span>
                     [{if $showStepLinks}]<a rel="nofollow" [{if $oViewConf->getActiveClassName() == "payment"}]id="orderStep"[{/if}] href="[{ if $oViewConf->getActiveClassName() == "payment"}]javascript:document.forms.order.submit();[{else}][{ oxgetseourl ident=$oViewConf->getOrderConfirmLink() }][{/if}]">[{/if}]
-                    [{ oxmultilang ident="PAGE_CHECKOUT_STEPS_ORDER" }]
+                    [{ oxmultilang ident="STEPS_ORDER" }]
                     [{if $showStepLinks}]</a>[{/if}]
                 </span>
             </li>
@@ -64,7 +64,7 @@
         [{block name="checkout_steps_laststep"}]
             <li class="step5[{ if $active == 5}] activeLast [{else}] defaultLast [{/if}] ">
                 <span>
-                    [{ oxmultilang ident="PAGE_CHECKOUT_STEPS_LASTSTEP" }]
+                    [{ oxmultilang ident="READY" }]
                 </span>
             </li>
         [{/block}]

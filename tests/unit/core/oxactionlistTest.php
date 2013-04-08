@@ -163,13 +163,13 @@ class Unit_Core_oxActionListTest extends OxidTestCase
                     1)
             ) ";
 
-        $oGroup1 = $this->getMock( "oxStdClass", array( "getId" ) );
+        $oGroup1 = $this->getMock( "oxGroups", array( "getId" ) );
         $oGroup1->expects( $this->once() )->method( 'getId' )->will( $this->returnValue( "id1" ) );
 
-        $oGroup2 = $this->getMock( "oxStdClass", array( "getId" ) );
+        $oGroup2 = $this->getMock( "oxGroups", array( "getId" ) );
         $oGroup2->expects( $this->once() )->method( 'getId' )->will( $this->returnValue( "id2" ) );
 
-        $oGroup3 = $this->getMock( "oxStdClass", array( "getId" ) );
+        $oGroup3 = $this->getMock( "oxGroups", array( "getId" ) );
         $oGroup3->expects( $this->once() )->method( 'getId' )->will( $this->returnValue( "id3" ) );
 
         $oUser = $this->getMock( "oxUser", array( "getUserGroups" ) );

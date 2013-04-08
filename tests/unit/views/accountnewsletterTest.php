@@ -62,12 +62,12 @@ class Unit_Views_accountNewsletterTest extends OxidTestCase
      */
     public function testSubscribeNoStatusDefined()
     {
-        modConfig::setParameter( "status", false );
+        $this->setRequestParam( "status", false );
 
-        $oSubscription = $this->getMock( "oxStdClass", array( "setOptInStatus" ) );
+        $oSubscription = $this->getMock( "oxNewsSubscribed", array( "setOptInStatus" ) );
         $oSubscription->expects( $this->once() )->method( 'setOptInStatus')->with( $this->equalTo( 0 ) );
 
-        $oUser = $this->getMock( "oxStdClass", array( "removeFromGroup", "getNewsSubscription" ) );
+        $oUser = $this->getMock( "oxUser", array( "removeFromGroup", "getNewsSubscription" ) );
         $oUser->expects( $this->once() )->method( 'removeFromGroup')->with( $this->equalTo( 'oxidnewsletter' ) );
         $oUser->expects( $this->once() )->method( 'getNewsSubscription')->will( $this->returnValue( $oSubscription ) );
 
@@ -84,13 +84,13 @@ class Unit_Views_accountNewsletterTest extends OxidTestCase
      */
     public function testSubscribeCustomStatus()
     {
-        modConfig::setParameter( "status", true );
+        $this->setRequestParam( "status", true );
 
-        $oSubscription = $this->getMock( "oxStdClass", array( "setOptInStatus", "setOptInEmailStatus" ) );
+        $oSubscription = $this->getMock( "oxNewsSubscribed", array( "setOptInStatus", "setOptInEmailStatus" ) );
         $oSubscription->expects( $this->once() )->method( 'setOptInStatus')->with( $this->equalTo( 1 ) );
         $oSubscription->expects( $this->once() )->method( 'setOptInEmailStatus')->with( $this->equalTo( 0 ) );
 
-        $oUser = $this->getMock( "oxStdClass", array( "addToGroup", "getNewsSubscription" ) );
+        $oUser = $this->getMock( "oxUser", array( "addToGroup", "getNewsSubscription" ) );
         $oUser->expects( $this->atLeastOnce() )->method( 'addToGroup')->with( $this->equalTo( 'oxidnewsletter' ) );
         $oUser->expects( $this->atLeastOnce() )->method( 'getNewsSubscription')->will( $this->returnValue( $oSubscription ) );
 
@@ -119,10 +119,10 @@ class Unit_Views_accountNewsletterTest extends OxidTestCase
      */
     public function testIsNewsletter()
     {
-        $oSubscription = $this->getMock( "oxStdClass", array( "getOptInStatus" ) );
+        $oSubscription = $this->getMock( "oxNewsSubscribed", array( "getOptInStatus" ) );
         $oSubscription->expects( $this->once() )->method( 'getOptInStatus')->will( $this->returnValue( 1 ) );
 
-        $oUser = $this->getMock( "oxStdClass", array( "inGroup", "getNewsSubscription" ) );
+        $oUser = $this->getMock( "oxUser", array( "inGroup", "getNewsSubscription" ) );
         $oUser->expects( $this->once() )->method( 'getNewsSubscription')->will( $this->returnValue( $oSubscription ) );
         $oUser->expects( $this->once() )->method( 'inGroup')->with( $this->equalTo( 'oxidnewsletter' ) )->will( $this->returnValue( true ) );
 

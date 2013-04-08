@@ -38,12 +38,6 @@ class Unit_Views_rssTest extends OxidTestCase
         $this->assertEquals('asd', $o->getChannel());
     }
 
-    public function testGetXmlDef()
-    {
-        $o = oxNew('rss');
-        $this->assertEquals(array('start'=>'<?xml', 'end'=>'?>'), $o->getXmlDef());
-    }
-
     public function testProcessOutput()
     {
         $oRss = new rss();
@@ -72,7 +66,7 @@ class Unit_Views_rssTest extends OxidTestCase
 
     public function testRender()
     {
-        $oSmarty = $this->getMock('stdclass', array('assign_by_ref', 'assign', 'fetch'));
+        $oSmarty = $this->getMock('Smarty', array('assign_by_ref', 'assign', 'fetch'));
         $oSmarty->expects($this->any())->method('assign_by_ref');
         $oSmarty->expects($this->once())->method('fetch')->with($this->equalTo('widget/rss.tpl'), $this->equalTo('viewid'))->will($this->returnValue('smarty processed xml'));
         $oUtilsView = $this->getMock('oxUtilsView', array('getSmarty'));
@@ -97,12 +91,12 @@ class Unit_Views_rssTest extends OxidTestCase
 
     public function testTopShopDisabled()
     {
-        $oCfg = $this->getMock('stdclass', array('getConfigParam'));
+        $oCfg = $this->getMock('oxConfig', array('getConfigParam'));
         $oCfg->expects($this->once())->method('getConfigParam')->with($this->equalTo('bl_rssTopShop'))->will($this->returnValue(false));
         $oRss = $this->getMock('Rss', array('getConfig'));
         $oRss->expects($this->once())->method('getConfig')->will($this->returnValue($oCfg));
 
-        $oUtils = $this->getMock('stdclass', array('handlePageNotFoundError'));
+        $oUtils = $this->getMock('oxutils', array('handlePageNotFoundError'));
         $oUtils->expects($this->once())->method('handlePageNotFoundError')->with($this->equalTo(''));
         oxTestModules::addModuleObject('oxutils', $oUtils);
 
@@ -112,14 +106,14 @@ class Unit_Views_rssTest extends OxidTestCase
 
     public function testTopShopEnabled()
     {
-        $oCfg = $this->getMock('stdclass', array('getConfigParam'));
+        $oCfg = $this->getMock('oxConfig', array('getConfigParam'));
         $oCfg->expects($this->once())->method('getConfigParam')->with($this->equalTo('bl_rssTopShop'))->will($this->returnValue(true));
 
-        $oUtils = $this->getMock('stdclass', array('handlePageNotFoundError'));
+        $oUtils = $this->getMock('oxutils', array('handlePageNotFoundError'));
         $oUtils->expects($this->never())->method('handlePageNotFoundError');
         oxTestModules::addModuleObject('oxutils', $oUtils);
 
-        $oRssFeed = $this->getMock('stdclass', array('loadTopInShop'));
+        $oRssFeed = $this->getMock('oxRssFeed', array('loadTopInShop'));
         $oRssFeed->expects($this->once())->method('loadTopInShop');
 
         $oRss = $this->getMock('Rss', array('getConfig', '_getRssFeed'));
@@ -135,12 +129,12 @@ class Unit_Views_rssTest extends OxidTestCase
 
     public function testNewArtsDisabled()
     {
-        $oCfg = $this->getMock('stdclass', array('getConfigParam'));
+        $oCfg = $this->getMock('oxConfig', array('getConfigParam'));
         $oCfg->expects($this->once())->method('getConfigParam')->with($this->equalTo('bl_rssNewest'))->will($this->returnValue(false));
         $oRss = $this->getMock('Rss', array('getConfig'));
         $oRss->expects($this->once())->method('getConfig')->will($this->returnValue($oCfg));
 
-        $oUtils = $this->getMock('stdclass', array('handlePageNotFoundError'));
+        $oUtils = $this->getMock('oxutils', array('handlePageNotFoundError'));
         $oUtils->expects($this->once())->method('handlePageNotFoundError')->with($this->equalTo(''));
         oxTestModules::addModuleObject('oxutils', $oUtils);
 
@@ -150,14 +144,14 @@ class Unit_Views_rssTest extends OxidTestCase
 
     public function testNewArtsEnabled()
     {
-        $oCfg = $this->getMock('stdclass', array('getConfigParam'));
+        $oCfg = $this->getMock('oxConfig', array('getConfigParam'));
         $oCfg->expects($this->once())->method('getConfigParam')->with($this->equalTo('bl_rssNewest'))->will($this->returnValue(true));
 
-        $oUtils = $this->getMock('stdclass', array('handlePageNotFoundError'));
+        $oUtils = $this->getMock('oxutils', array('handlePageNotFoundError'));
         $oUtils->expects($this->never())->method('handlePageNotFoundError');
         oxTestModules::addModuleObject('oxutils', $oUtils);
 
-        $oRssFeed = $this->getMock('stdclass', array('loadNewestArticles'));
+        $oRssFeed = $this->getMock('oxRssFeed', array('loadNewestArticles'));
         $oRssFeed->expects($this->once())->method('loadNewestArticles');
 
         $oRss = $this->getMock('Rss', array('getConfig', '_getRssFeed'));
@@ -173,12 +167,12 @@ class Unit_Views_rssTest extends OxidTestCase
 
     public function testSearchArtsDisabled()
     {
-        $oCfg = $this->getMock('stdclass', array('getConfigParam'));
+        $oCfg = $this->getMock('oxConfig', array('getConfigParam'));
         $oCfg->expects($this->once())->method('getConfigParam')->with($this->equalTo('bl_rssSearch'))->will($this->returnValue(false));
         $oRss = $this->getMock('Rss', array('getConfig'));
         $oRss->expects($this->once())->method('getConfig')->will($this->returnValue($oCfg));
 
-        $oUtils = $this->getMock('stdclass', array('handlePageNotFoundError'));
+        $oUtils = $this->getMock('oxUtils', array('handlePageNotFoundError'));
         $oUtils->expects($this->once())->method('handlePageNotFoundError')->with($this->equalTo(''));
         oxTestModules::addModuleObject('oxutils', $oUtils);
 
@@ -188,10 +182,10 @@ class Unit_Views_rssTest extends OxidTestCase
 
     public function testSearchArtsEnabled()
     {
-        $oCfg = $this->getMock('stdclass', array('getConfigParam'));
+        $oCfg = $this->getMock('oxConfig', array('getConfigParam'));
         $oCfg->expects($this->once())->method('getConfigParam')->with($this->equalTo('bl_rssSearch'))->will($this->returnValue(true));
 
-        $oUtils = $this->getMock('stdclass', array('handlePageNotFoundError'));
+        $oUtils = $this->getMock('oxutils', array('handlePageNotFoundError'));
         $oUtils->expects($this->never())->method('handlePageNotFoundError');
         oxTestModules::addModuleObject('oxutils', $oUtils);
 
@@ -222,12 +216,12 @@ class Unit_Views_rssTest extends OxidTestCase
 
     public function testBargainDisabled()
     {
-        $oCfg = $this->getMock('stdclass', array('getConfigParam'));
+        $oCfg = $this->getMock('oxConfig', array('getConfigParam'));
         $oCfg->expects($this->once())->method('getConfigParam')->with($this->equalTo('bl_rssBargain'))->will($this->returnValue(false));
         $oRss = $this->getMock('Rss', array('getConfig'));
         $oRss->expects($this->once())->method('getConfig')->will($this->returnValue($oCfg));
 
-        $oUtils = $this->getMock('stdclass', array('handlePageNotFoundError'));
+        $oUtils = $this->getMock('oxutils', array('handlePageNotFoundError'));
         $oUtils->expects($this->once())->method('handlePageNotFoundError')->with($this->equalTo(''));
         oxTestModules::addModuleObject('oxutils', $oUtils);
 
@@ -237,14 +231,14 @@ class Unit_Views_rssTest extends OxidTestCase
 
     public function testBargainEnabled()
     {
-        $oCfg = $this->getMock('stdclass', array('getConfigParam'));
+        $oCfg = $this->getMock('oxConfig', array('getConfigParam'));
         $oCfg->expects($this->once())->method('getConfigParam')->with($this->equalTo('bl_rssBargain'))->will($this->returnValue(true));
 
-        $oUtils = $this->getMock('stdclass', array('handlePageNotFoundError'));
+        $oUtils = $this->getMock('oxutils', array('handlePageNotFoundError'));
         $oUtils->expects($this->never())->method('handlePageNotFoundError');
         oxTestModules::addModuleObject('oxutils', $oUtils);
 
-        $oRssFeed = $this->getMock('stdclass', array('loadBargain'));
+        $oRssFeed = $this->getMock('oxRssFeed', array('loadBargain'));
         $oRssFeed->expects($this->once())->method('loadBargain');
 
         $oRss = $this->getMock('Rss', array('getConfig', '_getRssFeed'));
@@ -255,19 +249,14 @@ class Unit_Views_rssTest extends OxidTestCase
     }
 
 
-
-
-
-
-
     public function testCatArtsDisabled()
     {
-        $oCfg = $this->getMock('stdclass', array('getConfigParam'));
+        $oCfg = $this->getMock('oxConfig', array('getConfigParam'));
         $oCfg->expects($this->once())->method('getConfigParam')->with($this->equalTo('bl_rssCategories'))->will($this->returnValue(false));
         $oRss = $this->getMock('Rss', array('getConfig'));
         $oRss->expects($this->once())->method('getConfig')->will($this->returnValue($oCfg));
 
-        $oUtils = $this->getMock('stdclass', array('handlePageNotFoundError'));
+        $oUtils = $this->getMock('oxutils', array('handlePageNotFoundError'));
         $oUtils->expects($this->once())->method('handlePageNotFoundError')->with($this->equalTo(''));
         oxTestModules::addModuleObject('oxutils', $oUtils);
 
@@ -277,17 +266,17 @@ class Unit_Views_rssTest extends OxidTestCase
 
     public function testCatArtsEnabled()
     {
-        $oCfg = $this->getMock('stdclass', array('getConfigParam'));
+        $oCfg = $this->getMock('oxConfig', array('getConfigParam'));
         $oCfg->expects($this->once())->method('getConfigParam')->with($this->equalTo('bl_rssCategories'))->will($this->returnValue(true));
 
-        $oObj = $this->getMock('stdclass', array('load'));
+        $oObj = $this->getMock('oxCategory', array('load'));
         $oObj->expects($this->once())->method('load')->with($this->equalTo('x&amp;objid'))->will($this->returnValue(true));
 
-        $oUtils = $this->getMock('stdclass', array('handlePageNotFoundError'));
+        $oUtils = $this->getMock('oxutils', array('handlePageNotFoundError'));
         $oUtils->expects($this->never())->method('handlePageNotFoundError');
         oxTestModules::addModuleObject('oxutils', $oUtils);
 
-        $oRssFeed = $this->getMock('stdclass', array('loadCategoryArticles'));
+        $oRssFeed = $this->getMock('oxRssFeed', array('loadCategoryArticles'));
         $oRssFeed->expects($this->once())->method('loadCategoryArticles')->with($this->equalTo($oObj));
 
         $oRss = $this->getMock('Rss', array('getConfig', '_getRssFeed'));
@@ -305,32 +294,31 @@ class Unit_Views_rssTest extends OxidTestCase
 
     public function testRecommListsDisabled()
     {
-        $oCfg = $this->getMock('stdclass', array('getConfigParam'));
+        $oCfg = $this->getMock('oxConfig', array('getConfigParam'));
         $oCfg->expects($this->once())->method('getConfigParam')->with($this->equalTo('bl_rssRecommLists'))->will($this->returnValue(false));
         $oRss = $this->getMock('Rss', array('getConfig'));
         $oRss->expects($this->once())->method('getConfig')->will($this->returnValue($oCfg));
 
-        $oUtils = $this->getMock('stdclass', array('handlePageNotFoundError'));
+        $oUtils = $this->getMock('oxutils', array('handlePageNotFoundError'));
         $oUtils->expects($this->once())->method('handlePageNotFoundError')->with($this->equalTo(''));
         oxTestModules::addModuleObject('oxutils', $oUtils);
 
         $oRss->recommlists();
     }
 
-
     public function testRecommListsEnabled()
     {
-        $oCfg = $this->getMock('stdclass', array('getConfigParam'));
+        $oCfg = $this->getMock('oxConfig', array('getConfigParam'));
         $oCfg->expects($this->once())->method('getConfigParam')->with($this->equalTo('bl_rssRecommLists'))->will($this->returnValue(true));
 
-        $oObj = $this->getMock('stdclass', array('load'));
+        $oObj = $this->getMock('oxarticle', array('load'));
         $oObj->expects($this->once())->method('load')->with($this->equalTo('x&amp;objid'))->will($this->returnValue(true));
 
-        $oUtils = $this->getMock('stdclass', array('handlePageNotFoundError'));
+        $oUtils = $this->getMock('oxutils', array('handlePageNotFoundError'));
         $oUtils->expects($this->never())->method('handlePageNotFoundError');
         oxTestModules::addModuleObject('oxutils', $oUtils);
 
-        $oRssFeed = $this->getMock('stdclass', array('loadRecommLists'));
+        $oRssFeed = $this->getMock('oxRssFeed', array('loadRecommLists'));
         $oRssFeed->expects($this->once())->method('loadRecommLists')->with($this->equalTo($oObj));
 
         $oRss = $this->getMock('Rss', array('getConfig', '_getRssFeed'));
@@ -350,12 +338,12 @@ class Unit_Views_rssTest extends OxidTestCase
 
     public function testRecommListArtsDisabled()
     {
-        $oCfg = $this->getMock('stdclass', array('getConfigParam'));
+        $oCfg = $this->getMock('oxConfig', array('getConfigParam'));
         $oCfg->expects($this->once())->method('getConfigParam')->with($this->equalTo('bl_rssRecommListArts'))->will($this->returnValue(false));
         $oRss = $this->getMock('Rss', array('getConfig'));
         $oRss->expects($this->once())->method('getConfig')->will($this->returnValue($oCfg));
 
-        $oUtils = $this->getMock('stdclass', array('handlePageNotFoundError'));
+        $oUtils = $this->getMock('oxutils', array('handlePageNotFoundError'));
         $oUtils->expects($this->once())->method('handlePageNotFoundError')->with($this->equalTo(''));
         oxTestModules::addModuleObject('oxutils', $oUtils);
 
@@ -365,17 +353,17 @@ class Unit_Views_rssTest extends OxidTestCase
 
     public function testRecommListArtsEnabled()
     {
-        $oCfg = $this->getMock('stdclass', array('getConfigParam'));
+        $oCfg = $this->getMock('oxConfig', array('getConfigParam'));
         $oCfg->expects($this->once())->method('getConfigParam')->with($this->equalTo('bl_rssRecommListArts'))->will($this->returnValue(true));
 
-        $oObj = $this->getMock('stdclass', array('load'));
+        $oObj = $this->getMock('oxrecommlist', array('load'));
         $oObj->expects($this->once())->method('load')->with($this->equalTo('x&amp;objid'))->will($this->returnValue(true));
 
-        $oUtils = $this->getMock('stdclass', array('handlePageNotFoundError'));
+        $oUtils = $this->getMock('oxutils', array('handlePageNotFoundError'));
         $oUtils->expects($this->never())->method('handlePageNotFoundError');
         oxTestModules::addModuleObject('oxutils', $oUtils);
 
-        $oRssFeed = $this->getMock('stdclass', array('loadRecommListArticles'));
+        $oRssFeed = $this->getMock('oxRssFeed', array('loadRecommListArticles'));
         $oRssFeed->expects($this->once())->method('loadRecommListArticles')->with($this->equalTo($oObj));
 
         $oRss = $this->getMock('Rss', array('getConfig', '_getRssFeed'));
@@ -390,13 +378,13 @@ class Unit_Views_rssTest extends OxidTestCase
 
     public function testRecommListArtsEnabledNoList()
     {
-        $oCfg = $this->getMock('stdclass', array('getConfigParam'));
+        $oCfg = $this->getMock('oxCofig', array('getConfigParam'));
         $oCfg->expects($this->once())->method('getConfigParam')->with($this->equalTo('bl_rssRecommListArts'))->will($this->returnValue(true));
 
-        $oObj = $this->getMock('stdclass', array('load'));
+        $oObj = $this->getMock('oxrecommlist', array('load'));
         $oObj->expects($this->once())->method('load')->with($this->equalTo('x&amp;objid'))->will($this->returnValue(false));
 
-        $oUtils = $this->getMock('stdclass', array('handlePageNotFoundError'));
+        $oUtils = $this->getMock('oxutils', array('handlePageNotFoundError'));
         $oUtils->expects($this->once())->method('handlePageNotFoundError');
         oxTestModules::addModuleObject('oxutils', $oUtils);
 
@@ -412,13 +400,13 @@ class Unit_Views_rssTest extends OxidTestCase
 
     public function testRecommListsEnabledNoList()
     {
-        $oCfg = $this->getMock('stdclass', array('getConfigParam'));
+        $oCfg = $this->getMock('oxConfig', array('getConfigParam'));
         $oCfg->expects($this->once())->method('getConfigParam')->with($this->equalTo('bl_rssRecommLists'))->will($this->returnValue(true));
 
-        $oObj = $this->getMock('stdclass', array('load'));
+        $oObj = $this->getMock('oxarticle', array('load'));
         $oObj->expects($this->once())->method('load')->with($this->equalTo('x&amp;objid'))->will($this->returnValue(false));
 
-        $oUtils = $this->getMock('stdclass', array('handlePageNotFoundError'));
+        $oUtils = $this->getMock('oxutils', array('handlePageNotFoundError'));
         $oUtils->expects($this->once())->method('handlePageNotFoundError');
         oxTestModules::addModuleObject('oxutils', $oUtils);
 
@@ -431,6 +419,7 @@ class Unit_Views_rssTest extends OxidTestCase
 
         $oRss->recommlists();
     }
+
 
 }
 

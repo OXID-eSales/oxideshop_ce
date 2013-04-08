@@ -64,7 +64,7 @@ class oxLegacyDb extends oxSuperCfg
     }
 
      /**
-     * Return conection to db
+     * Return connection to db
      *
      * @param bool $blType - connection type
      *
@@ -79,9 +79,9 @@ class oxLegacyDb extends oxSuperCfg
     /**
      * Get value
      *
-     * @param string $sSql    Query
-     * @param array  $aParams Array of parameters
-     * @param bool   $blType  connection type
+     * @param string     $sSql    Query
+     * @param array|bool $aParams Array of parameters
+     * @param bool       $blType  connection type
      *
      * @return string
      */
@@ -93,9 +93,9 @@ class oxLegacyDb extends oxSuperCfg
     /**
      * Get value
      *
-     * @param string $sSql    Query
-     * @param array  $aParams Array of parameters
-     * @param bool   $blType  connection type
+     * @param string     $sSql    Query
+     * @param array|bool $aParams Array of parameters
+     * @param bool       $blType  connection type
      *
      * @return string
      */
@@ -107,9 +107,9 @@ class oxLegacyDb extends oxSuperCfg
     /**
      * Get value
      *
-     * @param string $sSql    Query
-     * @param array  $aParams Array of parameters
-     * @param bool   $blType  connection type
+     * @param string     $sSql    Query
+     * @param array|bool $aParams Array of parameters
+     * @param bool       $blType  connection type
      *
      * @return string
      */
@@ -121,9 +121,9 @@ class oxLegacyDb extends oxSuperCfg
     /**
      * Get value
      *
-     * @param string $sSql    Query
-     * @param array  $aParams Array of parameters
-     * @param bool   $blType  connection type
+     * @param string     $sSql    Query
+     * @param array|bool $aParams Array of parameters
+     * @param bool       $blType  connection type
      *
      * @return array
      */
@@ -136,9 +136,9 @@ class oxLegacyDb extends oxSuperCfg
     /**
      * Get value
      *
-     * @param string $sSql    Query
-     * @param array  $aParams Array of parameters
-     * @param bool   $blType  connection type
+     * @param string     $sSql    Query
+     * @param array|bool $aParams Array of parameters
+     * @param bool       $blType  connection type
      *
      * @return object
      */
@@ -150,9 +150,9 @@ class oxLegacyDb extends oxSuperCfg
     /**
      * Get value
      *
-     * @param string $sSql    Query
-     * @param array  $aParams Array of parameters
-     * @param bool   $blType  connection type
+     * @param string     $sSql    Query
+     * @param array|bool $aParams Array of parameters
+     * @param bool       $blType  connection type
      *
      * @return object
      */
@@ -164,9 +164,9 @@ class oxLegacyDb extends oxSuperCfg
     /**
      * Get column value
      *
-     * @param string $sSql    Query
-     * @param array  $aParams Array of parameters
-     * @param bool   $blType  connection type
+     * @param string     $sSql    Query
+     * @param array|bool $aParams Array of parameters
+     * @param bool       $blType  connection type
      *
      * @return object
      */
@@ -178,11 +178,11 @@ class oxLegacyDb extends oxSuperCfg
     /**
      * Get array
      *
-     * @param string $sSql    Query
-     * @param int    $iRows   Rows
-     * @param int    $iOffset Offset
-     * @param array  $aParams Array of parameters
-     * @param bool   $blType  connection type
+     * @param string     $sSql    Query
+     * @param int        $iRows   Rows
+     * @param int        $iOffset Offset
+     * @param array|bool $aParams Array of parameters
+     * @param bool       $blType  connection type
      *
      * @return object
      */
@@ -194,8 +194,8 @@ class oxLegacyDb extends oxSuperCfg
     /**
      * Execute query
      *
-     * @param string $sSql    Query
-     * @param array  $aParams Array of parameters
+     * @param string     $sSql    Query
+     * @param array|bool $aParams Array of parameters
      *
      * @return object
      */
@@ -207,8 +207,8 @@ class oxLegacyDb extends oxSuperCfg
     /**
      * Execute query
      *
-     * @param string $sSql    Query
-     * @param array  $aParams Array of parameters
+     * @param string     $sSql    Query
+     * @param array|bool $aParams Array of parameters
      *
      * @return object
      */
@@ -256,7 +256,7 @@ class oxLegacyDb extends oxSuperCfg
      */
     public function qstr( $sValue )
     {
-        return $this->getDb()->qstr( $sValue );
+        return $this->getDb( false )->qstr( $sValue );
     }
 
     /**
@@ -268,7 +268,7 @@ class oxLegacyDb extends oxSuperCfg
      */
     public function quote( $sValue )
     {
-        return $this->getDb()->quote( $sValue );
+        return $this->getDb( false )->quote( $sValue );
     }
 
     /**
@@ -280,7 +280,7 @@ class oxLegacyDb extends oxSuperCfg
      */
     public function metaColumns( $sTable )
     {
-        return $this->getDb()->MetaColumns( $sTable );
+        return $this->getDb( false )->MetaColumns( $sTable );
     }
 
     /**
@@ -293,7 +293,7 @@ class oxLegacyDb extends oxSuperCfg
      */
     public function metaColumnNames( $sTable, $blNumIndexes=false )
     {
-        return $this->getDb()->MetaColumnNames( $sTable, $numIndexes );
+        return $this->getDb( false )->MetaColumnNames( $sTable, $blNumIndexes );
     }
 
     /**
@@ -336,22 +336,26 @@ class oxLegacyDb extends oxSuperCfg
      */
     public function setTransactionIsolationLevel( $sLevel = null )
     {
+        $blResult = false;
+
         $aLevels = array( 'READ UNCOMMITTED', 'READ COMMITTED', 'REPEATABLE READ', 'SERIALIZABLE' );
         if ( in_array( strtoupper( $sLevel ), $aLevels ) ) {
-            return $this->getDb( false )->execute( 'SET TRANSACTION ISOLATION LEVEL ' . $sLevel );
+            $blResult =  $this->getDb( false )->execute( 'SET TRANSACTION ISOLATION LEVEL ' . $sLevel );
         }
+
+        return $blResult;
     }
 
     /**
      * Calls Db UI method
      *
-     * @param type $pollsecs poll seconds
+     * @param integer $iPollSecs poll seconds
      *
      * @return null
      */
-    public function UI( $pollsecs=5 )
+    public function UI( $iPollSecs=5 )
     {
-        $this->getDb( false )->UI( $pollsecs );
+        $this->getDb( false )->UI( $iPollSecs );
     }
 
 }

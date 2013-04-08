@@ -36,7 +36,7 @@ class Unit_Core_oxsimpleVariantTest extends OxidTestCase
     {
         $this->cleanUpTable( 'oxdiscount' );
         oxTestModules::cleanAllModules();
-        oxDiscountList::getInstance()->forceReload();
+        oxRegistry::get("oxDiscountList")->forceReload();
         $this->cleanUpTable('oxarticles');
 
         parent::tearDown();
@@ -55,7 +55,7 @@ class Unit_Core_oxsimpleVariantTest extends OxidTestCase
         $oVariant = $this->getMock( 'oxSimpleVariant', array( 'getSelectLists' ) );
         $oVariant->expects( $this->once() )->method( 'getSelectLists' )->will( $this->returnValue( "testSelLists" ) );
 
-        $this->assertEquals( "testSelLists", $oVariant->aSelectlist );
+        $this->assertEquals( "testSelLists", $oVariant->getSelectLists() );
     }
 
     /**
@@ -201,7 +201,7 @@ class Unit_Core_oxsimpleVariantTest extends OxidTestCase
     public function testSelectListGetter()
     {
         $oSimpleVar = new oxSimpleVariant();
-        $this->assertNull( $oSimpleVar->aSelectlist );
+        $this->assertNull( $oSimpleVar->getSelectLists() );
     }
 
     public function testGetSelectLists()
@@ -282,7 +282,7 @@ class Unit_Core_oxsimpleVariantTest extends OxidTestCase
 
     public function testGetPriceWithDiscount()
     {
-        oxDiscountList::getInstance()->forceReload();
+        oxRegistry::get("oxDiscountList")->forceReload();
 
         $oDiscount = oxNew( 'oxDiscount' );
         $oDiscount->setId( "_testDiscount" );
@@ -431,16 +431,6 @@ class Unit_Core_oxsimpleVariantTest extends OxidTestCase
 
         $this->assertEquals( $sLink, $oSubj->getLink(1) );
     }*/
-
-
-    public function testSetLongDesc()
-    {
-        modConfig::getInstance()->setConfigParam('bl_perfParseLongDescinSmarty', 1);
-
-        $oSubj = $this->getProxyClass("oxSimpleVariant");
-        $oSubj->UNITsetLongDesc( '[{if 1}]ads[{/if}]dsa' );
-        $this->assertEquals( '', $oSubj->oxarticles__oxlongdesc->value);
-    }
 
 
 

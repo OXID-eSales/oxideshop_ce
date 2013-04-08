@@ -35,18 +35,18 @@ class Unit_Core_oxthemeTest extends OxidTestCase
     public function testLoadAndgetInfo()
     {
         $oTheme = $this->getProxyClass('oxTheme');
-        $this->assertTrue($oTheme->load('basic'));
+        $this->assertTrue($oTheme->load('azure'));
 
         foreach (array('id','title','description','thumbnail','version','author','active') as $key) {
             $this->assertNotNull($oTheme->getInfo($key));
         }
         $this->assertNull($oTheme->getInfo('asdasdasd'));
-        $this->assertEquals('basic', $oTheme->getInfo('id'));
+        $this->assertEquals('azure', $oTheme->getInfo('id'));
     }
 
     public function testGetList()
     {
-        $iCount = 2;
+        $iCount = 1;
         $aKeys = array('id','title','description','thumbnail','version','author','active');
 
         $aThemeList = $this->getProxyClass('oxTheme')->getList();
@@ -167,10 +167,10 @@ class Unit_Core_oxthemeTest extends OxidTestCase
     public function testGetParent()
     {
         $oTheme = $this->getMock('oxTheme', array('getInfo'));
-        $oTheme->expects($this->any())->method('getInfo')->with($this->equalTo('parentTheme'))->will($this->returnValue('basic'));
+        $oTheme->expects($this->any())->method('getInfo')->with($this->equalTo('parentTheme'))->will($this->returnValue('azure'));
         $oParent = $oTheme->getParent();
         $this->assertTrue($oParent instanceof oxTheme);
-        $this->assertEquals('basic', $oParent->getInfo('id'));
+        $this->assertEquals('azure', $oParent->getInfo('id'));
     }
 
 

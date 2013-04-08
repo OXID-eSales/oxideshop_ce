@@ -44,6 +44,6 @@ class Unit_Admin_ThemeListTest extends OxidTestCase
         $aViewData = $oView->getViewData();
         $this->assertTrue( isset( $aViewData['mylist'] ) );
         $this->assertTrue( is_array($aViewData['mylist']) );
-        $this->assertEquals( 2, count($aViewData['mylist']) );
+        $this->assertEquals( 1, count($aViewData['mylist']) );
     }
 }

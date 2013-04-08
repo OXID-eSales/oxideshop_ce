@@ -37,4 +37,6 @@ class Unit_Core_oxshopTest extends OxidTestCase
 
     protected $_aLangTables = array();
 
+
+
 }

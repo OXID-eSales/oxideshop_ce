@@ -155,7 +155,7 @@ class oxField // extends oxSuperCfg
      */
     public function convertToFormattedDbDate()
     {
-        $this->setValue(oxUtilsDate::getInstance()->formatDBDate( $this->rawValue ), self::T_RAW);
+        $this->setValue(oxRegistry::get("oxUtilsDate")->formatDBDate( $this->rawValue ), self::T_RAW);
     }
 
     /**

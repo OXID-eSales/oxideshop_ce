@@ -41,15 +41,15 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         oxDb::getDb()->execute( "delete from oxuserbaskets" );
         parent::tearDown();
     }
-    
+
     /**
      * Test for function _convProd2EmosItem. testing with umlauts
      */
-    public function testConvProd2EmosItem() 
+    public function testConvProd2EmosItem()
     {
         $oCurr = new oxStdClass;
         $oCurr->rate = 2;
-        
+
         $oPrice = $this->getMock( 'oxPrice', array ( 'getBruttoPrice' ) );
         $oPrice->expects( $this->once() )->method( 'getBruttoPrice')->will( $this->returnValue( 10 ) );
 
@@ -61,44 +61,44 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         $oProduct->oxarticles__oxartnum = new oxField( '123' );
         $oProduct->oxarticles__oxtitle = new oxField( 'oxütitle' );
         $oProduct->oxarticles__oxvarselect = new oxField( 'oxüvarselect' );
-        
+
         $sContent = "SHOP/oxütitle";
         $sCharset = oxLang::getInstance()->translateString( 'charset' );
         $sResult = iconv( $sCharset, 'UTF-8', $sContent );
-        
+
         $oConfig = $this->getMock( 'oxConfig', array( 'isUtf', 'getActShopCurrencyObject' ) );
         $oConfig->expects( $this->any() )->method( 'isUtf')->will( $this->returnValue( false ) );
         $oConfig->expects( $this->once() )->method( 'getActShopCurrencyObject')->will( $this->returnValue( $oCurr ) );
-        
+
         $oEmosAdapter = $this->getMock( 'oxEmosAdapter', array( 'getConfig' ) );
         $oEmosAdapter->expects( $this->any() )->method( 'getConfig' )->will( $this->returnValue( $oConfig ) );
         $oEmosItem = $oEmosAdapter->UNITconvProd2EmosItem( $oProduct, 'SHOP' );
-      
+
         $this->assertEquals( $sResult, $oEmosItem->productGroup );
         $this->assertEquals( 5, $oEmosItem->price );
     }
-    
+
     public function testPrepareProductTitle()
     {
         $oProduct = new oxStdClass;
         $oProduct->oxarticles__oxtitle = new oxField( 'oxütitle' );
         $oProduct->oxarticles__oxvarselect = new oxField( 'oxüvarselect' );
-        
+
         $sContent = "oxütitle oxüvarselect";
         $sCharset = oxLang::getInstance()->translateString( 'charset' );
         $sConverted = iconv( $sCharset, 'UTF-8', $sContent );
-        
+
         $oConfig = $this->getMock( 'oxConfig', array( 'isUtf' ) );
         $oConfig->expects( $this->once() )->method( 'isUtf')->will( $this->returnValue( false ) );
 
         $oEmosAdapter = $this->getMock( 'oxEmosAdapter', array( 'getConfig' ) );
         $oEmosAdapter->expects( $this->any() )->method( 'getConfig' )->will( $this->returnValue( $oConfig ) );
-        
+
         $this->assertEquals( $sConverted, $oEmosAdapter->UNITprepareProductTitle( $oProduct ) );
     }
-    
+
     /**
-     * Test for function _convertToUtf - check wether this function 
+     * Test for function _convertToUtf - check wether this function
      * returns string converted to Utf8, when shop is not in Utf mode
      */
     public function testConvertToUtf()
@@ -108,13 +108,13 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
 
         $oEmosAdapter = $this->getMock( 'oxEmosAdapter', array( 'getConfig' ) );
         $oEmosAdapter->expects( $this->any() )->method( 'getConfig' )->will( $this->returnValue( $oConfig ) );
-       
+
         $sContent = "Zurück zum Shop";
         $sCharset = oxLang::getInstance()->translateString( 'charset' );
-        
+
         $sConverted = iconv( $sCharset, 'UTF-8', $sContent );
         $sResult = $oEmosAdapter->UNITconvertToUtf( $sContent );
-        
+
         $this->assertNotEquals( $sContent, $sResult );
         $this->assertEquals( $sConverted, $sResult );
     }
@@ -191,9 +191,9 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
 
         $sContent = "1ü/2ü/3ü";
         $sCharset = oxLang::getInstance()->translateString( 'charset' );
-        
+
         $sConverted = iconv( $sCharset, 'UTF-8', $sContent );
-        
+
         $this->assertEquals( $sConverted, $oEmosCode->UNITgetEmosCatPath() );
     }
 
@@ -477,12 +477,12 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
 
     public function testGetCodeForSearch()
     {
-        $this->markTestSkipped("Skipped as iArtCnt parameter is deprecated, getter should be tested here");
         $aParams = null;
-        $oSmarty = new oxstdclass();
+        $oSmarty = new stdClass();
 
-        $oSmarty->_tpl_vars['pageNavigation'] = new oxstdclass();
-        $oSmarty->_tpl_vars['pageNavigation']->iArtCnt = 100;
+        $oMock = $this->getMock('stdClass', array('getArticleCount'));
+        $oMock->expects($this->any())->method('getArticleCount')->will($this->returnValue(100));
+        $oSmarty->_tpl_vars['oView'] = $oMock;
 
         modConfig::setParameter( 'searchparam', 'searchParam' );
 

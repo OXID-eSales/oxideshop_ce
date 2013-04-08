@@ -130,13 +130,14 @@ class Unit_Core_oxoutputTest extends OxidTestCase
         $sMajorVersion = '9';
 
         $oOutput = new oxOutput();
-        $sTest = "<head>foo</head>bar";
+        // should add tag only to first head item
+        $sTest = "<head>foo</head>bar<head>test2</head>";
         $sRes = $oOutput->addVersionTags( $sTest );
         //reset value
         $myConfig->getActiveShop()->oxshops__oxversion = new oxField($sVersion, oxField::T_RAW);
 
             $this->assertNotEquals($sTest, $sRes);
-            $this->assertEquals( "<head>foo</head>\n  <!-- OXID eShop Community Edition, Version $sMajorVersion, Shopping Cart System (c) OXID eSales AG 2003 - $sCurYear - http://www.oxid-esales.com -->bar", $sRes );
+            $this->assertEquals( "<head>foo</head>\n  <!-- OXID eShop Community Edition, Version $sMajorVersion, Shopping Cart System (c) OXID eSales AG 2003 - $sCurYear - http://www.oxid-esales.com -->bar<head>test2</head>", $sRes );
 
 
     }
@@ -182,7 +183,7 @@ class Unit_Core_oxoutputTest extends OxidTestCase
     public function testProcessEmail()
     {
         $oOutput = oxNew( 'oxOutput' );
-        $oEmail = new Oxstdclass();
+        $oEmail = new oxEmail();
         $oEmail->email = 1;
         $oEmail2 = clone $oEmail;
         $oOutput->processEmail( $oEmail );

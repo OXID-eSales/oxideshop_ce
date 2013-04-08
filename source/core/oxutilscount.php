@@ -44,23 +44,13 @@ class oxUtilsCount extends oxSuperCfg
     /**
      * Returns object instance
      *
+     * @deprecated since v5.0 (2012-08-10); Use oxRegistry::get("oxUtilsCount") instead.
+     *
      * @return oxUtilsCount
      */
     public static function getInstance()
     {
-        // disable caching for test modules
-        if ( defined( 'OXID_PHP_UNIT' ) ) {
-            self::$_instance = modInstances::getMod( __CLASS__ );
-        }
-
-        if ( !self::$_instance instanceof oxUtilsCount ) {
-
-            self::$_instance = oxNew( 'oxUtilsCount' );
-            if ( defined( 'OXID_PHP_UNIT' ) ) {
-                modInstances::addMod( __CLASS__, self::$_instance);
-            }
-        }
-        return self::$_instance;
+        return oxRegistry::get("oxUtilsCount");
     }
 
     /**
@@ -161,7 +151,7 @@ class oxUtilsCount extends oxSuperCfg
      * Saves and returns category article count into cache
      *
      * @param array  $aCache    Category cache data
-     * @param string $sCatId    Unique category ident
+     * @param string $sCatId    Unique category identifier
      * @param string $sActIdent ID
      *
      * @return int
@@ -174,13 +164,10 @@ class oxUtilsCount extends oxSuperCfg
         $oDb = oxDb::getDb();
 
         // we use distinct if article is assigned to category twice
-        $sQ = "SELECT count(*) FROM (
-                   SELECT count(*) FROM $sO2CView LEFT JOIN $sTable ON $sO2CView.oxobjectid=$sTable.oxid
-                       WHERE $sO2CView.oxcatnid = ".$oDb->quote( $sCatId ) ." AND
-                             $sTable.oxparentid='' AND
-                             ".$oArticle->getSqlActiveSnippet() ."
-                       GROUP BY $sTable.oxid
-                   ) AS ox2cat";
+        $sQ = "SELECT COUNT( DISTINCT $sTable.`oxid` )
+               FROM $sO2CView
+                   INNER JOIN $sTable ON $sO2CView.`oxobjectid` = $sTable.`oxid` AND $sTable.`oxparentid` = ''
+               WHERE $sO2CView.`oxcatnid` = " . $oDb->quote( $sCatId ) . " AND " . $oArticle->getSqlActiveSnippet();
 
         $aCache[$sCatId][$sActIdent] = $oDb->getOne( $sQ );
 
@@ -291,7 +278,7 @@ class oxUtilsCount extends oxSuperCfg
     {
         if ( !$sCatId ) {
             $this->getConfig()->setGlobalParameter( 'aLocalCatCache', null );
-            oxUtils::getInstance()->toFileCache( 'aLocalCatCache', '' );
+            oxRegistry::getUtils()->toFileCache( 'aLocalCatCache', '' );
         } else {
             // loading from cache
             $aCatData = $this->_getCatCache();
@@ -369,7 +356,7 @@ class oxUtilsCount extends oxSuperCfg
     {
         if ( !$sVendorId ) {
             $this->getConfig()->setGlobalParameter( 'aLocalVendorCache', null );
-            oxUtils::getInstance()->toFileCache( 'aLocalVendorCache', '' );
+            oxRegistry::getUtils()->toFileCache( 'aLocalVendorCache', '' );
         } else {
             // loading from cache
             $aVendorData = $this->_getVendorCache();
@@ -392,7 +379,7 @@ class oxUtilsCount extends oxSuperCfg
     {
         if ( !$sManufacturerId ) {
             $this->getConfig()->setGlobalParameter( 'aLocalManufacturerCache', null );
-            oxUtils::getInstance()->toFileCache( 'aLocalManufacturerCache', '' );
+            oxRegistry::getUtils()->toFileCache( 'aLocalManufacturerCache', '' );
         } else {
             // loading from cache
             $aManufacturerData = $this->_getManufacturerCache();
@@ -418,7 +405,7 @@ class oxUtilsCount extends oxSuperCfg
 
         // if local cache is not set - loading from file cache
         if ( !$aLocalCatCache ) {
-            $sLocalCatCache = oxUtils::getInstance()->fromFileCache( 'aLocalCatCache');
+            $sLocalCatCache = oxRegistry::getUtils()->fromFileCache( 'aLocalCatCache');
             if ( $sLocalCatCache ) {
                 $aLocalCatCache = $sLocalCatCache;
             } else {
@@ -439,7 +426,7 @@ class oxUtilsCount extends oxSuperCfg
     protected function _setCatCache( $aCache )
     {
         $this->getConfig()->setGlobalParameter( 'aLocalCatCache', $aCache );
-        oxUtils::getInstance()->toFileCache( 'aLocalCatCache', $aCache );
+        oxRegistry::getUtils()->toFileCache( 'aLocalCatCache', $aCache );
     }
 
     /**
@@ -452,7 +439,7 @@ class oxUtilsCount extends oxSuperCfg
     protected function _setVendorCache( $aCache )
     {
         $this->getConfig()->setGlobalParameter( 'aLocalVendorCache', $aCache );
-        oxUtils::getInstance()->toFileCache( 'aLocalVendorCache', $aCache );
+        oxRegistry::getUtils()->toFileCache( 'aLocalVendorCache', $aCache );
     }
 
     /**
@@ -465,7 +452,7 @@ class oxUtilsCount extends oxSuperCfg
     protected function _setManufacturerCache( $aCache )
     {
         $this->getConfig()->setGlobalParameter( 'aLocalManufacturerCache', $aCache );
-        oxUtils::getInstance()->toFileCache( 'aLocalManufacturerCache', $aCache );
+        oxRegistry::getUtils()->toFileCache( 'aLocalManufacturerCache', $aCache );
     }
 
     /**
@@ -481,7 +468,7 @@ class oxUtilsCount extends oxSuperCfg
         $aLocalVendorCache = $myConfig->getGlobalParameter('aLocalVendorCache');
         // if local cache is not set - loading from file cache
         if ( !$aLocalVendorCache ) {
-            $sLocalVendorCache = oxUtils::getInstance()->fromFileCache( 'aLocalVendorCache' );
+            $sLocalVendorCache = oxRegistry::getUtils()->fromFileCache( 'aLocalVendorCache' );
             if ( $sLocalVendorCache ) {
                 $aLocalVendorCache = $sLocalVendorCache;
             } else {
@@ -505,7 +492,7 @@ class oxUtilsCount extends oxSuperCfg
         $aLocalManufacturerCache = $myConfig->getGlobalParameter('aLocalManufacturerCache');
         // if local cache is not set - loading from file cache
         if ( !$aLocalManufacturerCache ) {
-            $sLocalManufacturerCache = oxUtils::getInstance()->fromFileCache( 'aLocalManufacturerCache' );
+            $sLocalManufacturerCache = oxRegistry::getUtils()->fromFileCache( 'aLocalManufacturerCache' );
             if ( $sLocalManufacturerCache ) {
                 $aLocalManufacturerCache = $sLocalManufacturerCache;
             } else {
@@ -519,7 +506,7 @@ class oxUtilsCount extends oxSuperCfg
     /**
     * Returns user view id (Shop, language, RR group index...)
     *
-    * @param bool $blReset optiona, default = false
+    * @param bool $blReset optional, default = false
     *
     * @return string
     */
@@ -532,7 +519,7 @@ class oxUtilsCount extends oxSuperCfg
         // loading R&R data from session
         $aRRIdx = null;
 
-        $this->_sUserViewId = md5($this->getConfig()->getShopID().oxLang::getInstance()->getLanguageTag().serialize($aRRIdx).(int) $this->isAdmin() );
+        $this->_sUserViewId = md5($this->getConfig()->getShopID().oxRegistry::getLang()->getLanguageTag().serialize($aRRIdx).(int) $this->isAdmin() );
         return $this->_sUserViewId;
     }
 

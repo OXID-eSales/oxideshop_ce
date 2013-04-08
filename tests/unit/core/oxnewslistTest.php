@@ -127,7 +127,7 @@ class Unit_Core_oxnewslistTest extends OxidTestCase
      */
     public function testSetUserAndGetUser()
     {
-        $oUser = new Oxstdclass();
+        $oUser = new oxUser();
         $oUser->xxx = 'yyy';
 
         $oNewsList = new oxnewslist();

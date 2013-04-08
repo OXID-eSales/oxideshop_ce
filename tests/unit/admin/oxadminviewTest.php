@@ -312,7 +312,8 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
     {
         $oUU = $this->getMock( 'oxUtilsUrl', array( 'processUrl' ) );
         $oUU->expects( $this->any() )->method( 'processUrl' )->will( $this->returnValue( 'sess:url' ) );
-        modInstances::addMod('oxUtilsUrl', $oUU);
+        //modInstances::addMod('oxUtilsUrl', $oUU);
+        oxTestModules::addModuleObject('oxUtilsUrl', $oUU);
 
         $oAView = new oxAdminView();
         $oAView->addGlobalParams();
@@ -363,11 +364,11 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
      */
     public function testGetCountryByCodeNoEng()
     {
-        $oLang = $this->getMock('oxlang', array('getLanguageIds'));
-        $oLang->expects($this->once())->method('getLanguageIds')->will($this->returnValue(array('de')));
-        modInstances::addMod('oxLang', $oLang);
+        $oLang = $this->getMock('oxLang', array('getLanguageIds'));
+        $oLang->expects($this->any())->method('getLanguageIds')->will($this->returnValue(array('de')));
+        oxTestModules::addModuleObject( 'oxLang', $oLang );
 
-        $oSubj = $this->getProxyClass("oxadminView");
+        $oSubj = new oxadminView();
         $sTestCode = "de";
         $this->assertEquals("germany", $oSubj->UNITgetCountryByCode($sTestCode));
     }
@@ -384,14 +385,13 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
 
         $oLangMock = $this->getMock("oxLang", array("getLanguageIds"));
         $oLangMock->expects($this->atLeastOnce())->method("getLanguageIds")->will($this->returnValue($aLangArray));
-
-        modInstances::addMod("oxLang", $oLangMock);
+        oxTestModules::addModuleObject( 'oxLang', $oLangMock );
 
         $oSubj = $this->getProxyClass("oxadminView");
         $sTestCode = "de";
 
-        //expecting different result due to faked language array
-        $this->assertEquals("deutschland", $oSubj->UNITgetCountryByCode($sTestCode));
+        //expecting same result due to faked language array
+        $this->assertEquals("germany", $oSubj->UNITgetCountryByCode($sTestCode));
     }
 
     /**

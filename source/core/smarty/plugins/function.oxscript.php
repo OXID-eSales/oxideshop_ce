@@ -46,15 +46,17 @@
  */
 function smarty_function_oxscript($params, &$smarty)
 {
-    $myConfig  = oxConfig::getInstance();
-    $sSufix    = ($smarty->_tpl_vars["__oxid_include_dynamic"])?'_dynamic':'';
-    $sIncludes = 'includes'.$sSufix;
-    $sScripts  = 'scripts'.$sSufix;
-    $iPriority = ($params['priority'])?$params['priority']:3;
+    $myConfig             = oxRegistry::getConfig();
+    $sSufix               = ($smarty->_tpl_vars["__oxid_include_dynamic"])?'_dynamic':'';
+    $sIncludes            = 'includes'.$sSufix;
+    $sScripts             = 'scripts'.$sSufix;
+    $iPriority            = ($params['priority'])?$params['priority']:3;
+    $sWidget              = ($params['widget']?$params['widget']:'');
+    $blInWidget           = ($params['inWidget']?$params['inWidget']:false);
+    $aScript              = (array) $myConfig->getGlobalParameter($sScripts);
+    $aInclude             = (array) $myConfig->getGlobalParameter($sIncludes);
+    $sOutput              = '';
 
-    $aScript  = (array) $myConfig->getGlobalParameter($sScripts);
-    $aInclude = (array) $myConfig->getGlobalParameter($sIncludes);
-    $sOutput  = '';
 
     if ( $params['add'] ) {
         $sScript = trim( $params['add'] );
@@ -93,32 +95,121 @@ function smarty_function_oxscript($params, &$smarty)
             $aInclude[$iPriority]   = array_unique($aInclude[$iPriority]);
             $myConfig->setGlobalParameter($sIncludes, $aInclude);
         }
-    } else {
-        // Sort by priority.
-        ksort( $aInclude );
-        $aUsedSrc = array();
-        foreach ($aInclude as $aPriority) {
-            foreach ($aPriority as $sSrc) {
-                // Check for duplicated lower priority resources #3062.
-                if (!in_array($sSrc, $aUsedSrc)) {
-                    $sOutput .= '<script type="text/javascript" src="'.$sSrc.'"></script>'.PHP_EOL;
-                }
-                $aUsedSrc[] = $sSrc;
-            }
-        }
-        $myConfig->setGlobalParameter($sIncludes, null);
-
-        if (count($aScript)) {
-            $sOutput .= '<script type="text/javascript">' . "\n";
-            foreach ($aScript as $sScriptToken) {
-                $sOutput .= $sScriptToken. "\n";
-            }
-            $sOutput .= '</script>' . PHP_EOL;
-
-            $myConfig->setGlobalParameter($sScripts, null);
+    } elseif ( !$sWidget || $blInWidget ) {
+        // Form output for includes.
+        $sOutput .= _oxscript_include( $aInclude, $sWidget );
+        $myConfig->setGlobalParameter( $sIncludes, null );
+        if ( $sWidget ) {
+            $aIncludeDyn = (array) $myConfig->getGlobalParameter( $sIncludes .'_dynamic' );
+            $sOutput .= _oxscript_include( $aIncludeDyn, $sWidget );
+            $myConfig->setGlobalParameter( $sIncludes .'_dynamic', null );
         }
 
+        // Form output for adds.
+        $sScriptOutput = '';
+        $sScriptOutput .= _oxscript_execute( $aScript, $sWidget, $sScripts );
+        $myConfig->setGlobalParameter( $sScripts, null );
+        if ( $sWidget ) {
+            $aScriptDyn = (array) $myConfig->getGlobalParameter( $sScripts .'_dynamic' );
+            $sScriptOutput .= _oxscript_execute( $aScriptDyn, $sWidget, $sScripts );
+            $myConfig->setGlobalParameter( $sScripts .'_dynamic', null );
+        }
+        $sOutput .= _oxscript_execute_enclose( $sScriptOutput, $sWidget );
     }
 
+    return $sOutput;
+}
+
+/**
+ * Form output for includes.
+ *
+ * @param array  $aInclude string files to include.
+ * @param string $sWidget  widget name.
+ *
+ * @return string
+ */
+function _oxscript_include( $aInclude, $sWidget )
+{
+    $myConfig    = oxRegistry::getConfig();
+    $sOutput     = '';
+    $sLoadOutput = '';
+
+    if ( !count( $aInclude ) ) {
+        return '';
+    }
+
+    // Sort by priority.
+    ksort( $aInclude );
+    $aUsedSrc = array();
+    $aWidgets = array();
+    foreach ( $aInclude as $aPriority ) {
+        foreach ( $aPriority as $sSrc ) {
+            // Check for duplicated lower priority resources #3062.
+            if ( !in_array( $sSrc, $aUsedSrc )) {
+                if ( $sWidget ) {
+                    $aWidgets[] = $sSrc;
+                } else {
+                    $sOutput .= '<script type="text/javascript" src="'.$sSrc.'"></script>'.PHP_EOL;
+                }
+            }
+            $aUsedSrc[] = $sSrc;
+        }
+    }
+
+    if ( $sWidget && count( $aWidgets ) ) {
+        $sLoadOutput .= 'if ( load_oxwidgets ==undefined ) { var load_oxwidgets = new Array(); }'."\n";
+        $sLoadOutput .= 'var load_'. strtolower( $sWidget ) .'= new Array("'. implode( '","', $aWidgets ) . "\");". PHP_EOL;
+        $sLoadOutput .= 'load_oxwidgets=load_oxwidgets.concat(load_'. strtolower( $sWidget ) .');'."\n";
+
+        $sOutput .= '<script type="text/javascript">' . PHP_EOL . $sLoadOutput . '</script>' . PHP_EOL;
+    }
+
+    return $sOutput;
+}
+
+/**
+ * Form output for adds.
+ *
+ * @param array  $aScript scripts to execute (from add).
+ * @param string $sWidget widget name.
+ *
+ * @return string
+ */
+function _oxscript_execute( $aScript, $sWidget )
+{
+    $myConfig = oxRegistry::getConfig();
+    $sOutput  = '';
+
+    if (count($aScript)) {
+        foreach ($aScript as $sScriptToken) {
+            $sOutput .= $sScriptToken. PHP_EOL;
+        }
+    }
+
+    return $sOutput;
+}
+
+/**
+ * Enclose with script tag or add in function for wiget.
+ *
+ * @param string $sScriptsOutput javascript to be enclosed.
+ * @param string $sWidget        widget name.
+ *
+ * @return string
+ */
+function _oxscript_execute_enclose( $sScriptsOutput, $sWidget )
+{
+    if ( !$sScriptsOutput && !$sWidget ) {
+        return '';
+    }
+
+    $sOutput  = '';
+    $sOutput .= '<script type="text/javascript">' . PHP_EOL;
+    if ( $sWidget ) {
+        $sOutput .= 'function init_'. strtolower( $sWidget ) .'() {'. PHP_EOL . $sScriptsOutput .'}'. PHP_EOL;
+    } else {
+        $sOutput .= $sScriptsOutput;
+    }
+    $sOutput .= '</script>' . PHP_EOL;
     return $sOutput;
 }

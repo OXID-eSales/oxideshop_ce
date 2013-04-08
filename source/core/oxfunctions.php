@@ -44,7 +44,7 @@ function oxAutoload( $sClass )
     //loading very base classes. We can do this as we know they exists,
     //moreover even further method code could not execute without them
     $sBaseClassLocation = null;
-    $aBaseClasses = array("oxutils", "oxsupercfg", "oxutilsobject", "oxconfig");
+    $aBaseClasses = array("oxutils", "oxsupercfg", "oxutilsobject");
     if (in_array($sClass, $aBaseClasses)) {
         $sFilename = getShopBasePath() ."core/" . $sClass . ".php" ;
         include $sFilename;
@@ -53,29 +53,18 @@ function oxAutoload( $sClass )
 
     static $aClassPaths;
 
-    if (!$aClassPaths) {
-        //removed due to #2931
-        //$aClassPaths = oxUtils::getInstance()->fromPhpFileCache("class_file_paths");
-    }
-
     if (isset($aClassPaths[$sClass])) {
         stopProfile("oxAutoload");
         include $aClassPaths[$sClass];
         return;
     }
 
+   $sBasePath = getShopBasePath();
+
+
     // initializing paths
     if ( $aClassDirs == null ) {
-        $sBasePath = getShopBasePath();
-        $aClassDirs = array( $sBasePath . 'core/',
-                             $sBasePath . 'views/',
-                             $sBasePath . 'core/exception/',
-                             $sBasePath . 'core/interface/',
-                             $sBasePath . 'admin/reports/',
-                             $sBasePath . 'admin/',
-                             $sBasePath . 'modules/',
-                             $sBasePath
-                            );
+        $aClassDirs = getClassDirs ( $sBasePath );
     }
 
     foreach ( $aClassDirs as $sDir ) {
@@ -83,7 +72,7 @@ function oxAutoload( $sClass )
         if ( file_exists( $sFilename ) ) {
             if (!isset($aClassPaths[$sClass])) {
                 $aClassPaths[$sClass] = $sFilename;
-                //oxUtils::getInstance()->toPhpFileCache("class_file_paths", $aClassPaths);
+                //oxRegistry::getUtils()->toPhpFileCache("class_file_paths", $aClassPaths);
             }
             stopProfile("oxAutoload");
             include $sFilename;
@@ -91,8 +80,11 @@ function oxAutoload( $sClass )
         }
     }
 
+
+
     // Files registered by modules
-    $aModuleFiles = oxConfig::getInstance()->getConfigParam( 'aModuleFiles' );
+    //$aModuleFiles = oxRegistry::getConfig()->getConfigParam( 'aModuleFiles' );
+    $aModuleFiles = oxUtilsObject::getInstance()->getModuleVar( 'aModuleFiles' );
     if ( is_array( $aModuleFiles ) ) {
         $sBasePath   = getShopBasePath();
         $oModulelist = oxNew('oxmodulelist');
@@ -105,7 +97,7 @@ function oxAutoload( $sClass )
                     if ( file_exists( $sFilename ) ) {
                         if (!isset($aClassPaths[$sClass])) {
                             $aClassPaths[$sClass] = $sFilename;
-                            oxUtils::getInstance()->toPhpFileCache("class_file_paths", $aClassPaths);
+                            oxRegistry::getUtils()->toPhpFileCache("class_file_paths", $aClassPaths);
                         }
                         stopProfile("oxAutoload");
                         include $sFilename;
@@ -120,12 +112,12 @@ function oxAutoload( $sClass )
     $sClass = preg_replace( '/_parent$/i', '', $sClass );
 
     // special case
-    if ( !in_array( $sClass, $aTriedClasses ) && is_array( $aModules = oxConfig::getInstance()->getConfigParam( 'aModules' ) ) ) {
+    if ( !in_array( $sClass, $aTriedClasses ) && is_array( $aModules = oxUtilsObject::getInstance()->getModuleVar( 'aModules' ) ) ) {
 
         $myUtilsObject = oxUtilsObject::getInstance();
         foreach ( $aModules as $sParentName => $sModuleName ) {
             // looking for module parent class
-            if (  preg_match('/\b'.$sClass.'($|\&)/i', $sModuleName )  ) {  
+            if (  preg_match('/\b'.$sClass.'($|\&)/i', $sModuleName )  ) {
                 $myUtilsObject->getClassName( $sParentName );
                 break;
             }
@@ -134,6 +126,106 @@ function oxAutoload( $sClass )
     }
 
     stopProfile("oxAutoload");
+}
+
+/**
+ * Return array with classes paths.
+ *
+ * @param string $sBasePath path to shop base ddirectory.
+ *
+ * @return array
+ */
+function getClassDirs($sBasePath)
+{
+    $aClassDirs = array( $sBasePath . 'core/',
+                         $sBasePath . 'application/components/widgets/',
+                         $sBasePath . 'application/components/',
+                         $sBasePath . 'application/models/',
+                         $sBasePath . 'application/controllers/',
+                         $sBasePath . 'application/controllers/admin/',
+                         $sBasePath . 'application/controllers/admin/reports/',
+                         $sBasePath . 'views/',
+                         $sBasePath . 'core/exception/',
+                         $sBasePath . 'core/interface/',
+                         $sBasePath . 'core/cache/',
+                         $sBasePath . 'core/cache/connectors/',
+                         $sBasePath . 'core/wysiwigpro/',
+                         $sBasePath . 'admin/reports/',
+                         $sBasePath . 'admin/',
+                         $sBasePath . 'modules/',
+                         $sBasePath
+                        );
+    return $aClassDirs;
+}
+
+
+if ( !function_exists( 'getShopBasePath' ) ) {
+    /**
+     * Returns framework base path.
+     *
+     * @return string
+     */
+    function getShopBasePath()
+    {
+        return OX_BASE_PATH;
+    }
+}
+
+/**
+ * Returns true in case framework is called from shop administrator environment.
+ *
+ * @return bool
+ */
+function isAdmin()
+{
+    if (defined('OX_IS_ADMIN')) {
+        return OX_IS_ADMIN;
+    }
+
+    return false;
+}
+
+/**
+ * Sets default PHP parameters.
+ *
+ * @return null;
+ */
+function setPhpIniParams()
+{
+    //setting required PHP configuration parameters
+    ini_set('session.name', 'sid');
+    ini_set('session.use_cookies', 0);
+    ini_set('session.use_trans_sid', 0);
+    ini_set('url_rewriter.tags', '');
+    ini_set('magic_quotes_runtime', 0);
+}
+
+/**
+ * Strips magic quotes
+ *
+ * @return null
+ */
+function stripGpcMagicQuotes()
+{
+    if (!get_magic_quotes_gpc()) {
+        return;
+    }
+    $_REQUEST = _stripMagicQuotes($_REQUEST);
+    $_POST = _stripMagicQuotes($_POST);
+    $_GET = _stripMagicQuotes($_GET);
+    $_COOKIE = _stripMagicQuotes($_COOKIE);
+}
+
+/**
+ * Recursively removes slashes from arrays
+ *
+ * @param mixed $mInput the input from which the slashes should be removed
+ *
+ * @return mixed
+ */
+function _stripMagicQuotes($mInput)
+{
+    return is_array($mInput) ? array_map( '_stripMagicQuotes', $mInput ) : stripslashes( $mInput );
 }
 
 if ( !function_exists( 'error_404_handler' ) ) {
@@ -146,7 +238,7 @@ if ( !function_exists( 'error_404_handler' ) ) {
      */
     function error_404_handler($sUrl = '')
     {
-        oxUtils::getInstance()->handlePageNotFoundError($sUrl);
+        oxRegistry::getUtils()->handlePageNotFoundError($sUrl);
     }
 }
 
@@ -163,7 +255,7 @@ if ( !function_exists( 'error_404_handler' ) ) {
  */
 function warningHandler($iErrorNr, $sErrorText)
 {
-    echo "<div class='error_box'>".oxLang::getInstance()->translateString('userError')."<code>[$iErrorNr] $sErrorText</code></div>";
+    echo "<div class='error_box'>".oxRegistry::getLang()->translateString('userError')."<code>[$iErrorNr] $sErrorText</code></div>";
 }
 
 /**
@@ -176,7 +268,7 @@ function warningHandler($iErrorNr, $sErrorText)
  */
 function dumpVar( $mVar, $blToFile = false )
 {
-    $myConfig = oxConfig::getInstance();
+    $myConfig = oxRegistry::getConfig();
     if ( $blToFile ) {
         $out = var_export( $mVar, true );
         $f = fopen( $myConfig->getConfigParam( 'sCompileDir' )."/vardump.txt", "a" );
@@ -184,30 +276,8 @@ function dumpVar( $mVar, $blToFile = false )
         fclose( $f );
     } else {
         echo '<pre>';
-        print_r( $mVar );
+        var_export( $mVar );
         echo '</pre>';
-    }
-}
-
-if ( !function_exists( 'isAdmin' ) ) {
-    /**
-     * Returns false as function returning true is supposed to be defined in admin/index.php dir.
-     * In OXID you can use isAdmin() to detect if code is executed in admin.
-     * Note: It does not detect if admion is logged in just identifies the place where it is called from.
-     *
-     * @return bool
-     */
-    function isAdmin()
-    {
-        //additionally checking maybe oxConfig::blAdmin is already set
-        if ( class_exists( 'oxConfig', false ) ) {
-            $blAdmin = oxConfig::getInstance()->getConfigParam( 'blAdmin' );
-            if ( isset( $blAdmin ) ) {
-                stopProfile('isAdmin');
-                return $blAdmin;
-            }
-        }
-        return false;
     }
 }
 
@@ -321,6 +391,8 @@ function oxNew( $sClassName )
  *
  * @param string $sArtId product id
  *
+ * @deprecated since v4.7.5-5.0.5 (2013-03-29); use oxNew
+ *
  * @return oxarticle
  */
 function oxNewArticle( $sArtId )
@@ -362,7 +434,7 @@ function getStr()
 function ox_get_template( $sTplName, &$sTplSource, $oSmarty )
 {
     $sTplSource = $oSmarty->oxidcache->value;
-    if ( oxConfig::getInstance()->isDemoShop() ) {
+    if ( oxRegistry::getConfig()->isDemoShop() ) {
         $oSmarty->security = true;
     }
 
@@ -430,7 +502,7 @@ if ( !function_exists( 'getLangTableIdx' ) ) {
      */
     function getLangTableIdx( $iLangId )
     {
-        $iLangPerTable = oxConfig::getInstance()->getConfigParam( "iLangPerTable" );
+        $iLangPerTable = oxRegistry::getConfig()->getConfigParam( "iLangPerTable" );
         //#0002718 min language count per table 2
         $iLangPerTable = ( $iLangPerTable > 1 ) ? $iLangPerTable : 8;
 
@@ -452,8 +524,8 @@ if ( !function_exists( 'getLangTableName' ) ) {
     function getLangTableName( $sTable, $iLangId )
     {
         $iTableIdx = getLangTableIdx( $iLangId );
-        if ( $iTableIdx && in_array($sTable, oxLang::getInstance()->getMultiLangTables())) {
-            $sLangTableSuffix = oxConfig::getInstance()->getConfigParam( "sLangTableSuffix" );
+        if ( $iTableIdx && in_array($sTable, oxRegistry::getLang()->getMultiLangTables())) {
+            $sLangTableSuffix = oxRegistry::getConfig()->getConfigParam( "sLangTableSuffix" );
             $sLangTableSuffix = $sLangTableSuffix ? $sLangTableSuffix : "_set";
 
             $sTable .= $sLangTableSuffix . $iTableIdx;
@@ -476,15 +548,15 @@ if ( !function_exists( 'getViewName' ) ) {
      */
     function getViewName( $sTable, $iLangId = null, $sShopId = null )
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         if ( !$myConfig->getConfigParam( 'blSkipViewUsage' ) ) {
             $sViewSfx = '';
 
 
-            $blIsMultiLang = in_array( $sTable, oxLang::getInstance()->getMultiLangTables() );
+            $blIsMultiLang = in_array( $sTable, oxRegistry::getLang()->getMultiLangTables() );
             if ( $iLangId != -1 && $blIsMultiLang ) {
-                $oLang = oxLang::getInstance();
-                $iLangId = $iLangId !== null ? $iLangId : oxLang::getInstance()->getBaseLanguage();
+                $oLang = oxRegistry::getLang();
+                $iLangId = $iLangId !== null ? $iLangId : oxRegistry::getLang()->getBaseLanguage();
                 $sAbbr = $oLang->getLanguageAbbr( $iLangId );
                 $sViewSfx .= "_{$sAbbr}";
             }

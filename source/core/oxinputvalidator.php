@@ -95,25 +95,13 @@ class oxInputValidator extends oxSuperCfg
     /**
      * Returns oxInputValidator instance
      *
+     * @deprecated since v5.0 (2012-08-10); Use oxRegistry::get("oxInputValidator") instead
+     *
      * @return oxInputValidator
      */
     static function getInstance()
     {
-        if ( defined('OXID_PHP_UNIT')) {
-            if ( ($oClassMod = modInstances::getMod(__CLASS__))  && is_object($oClassMod) ) {
-                return $oClassMod;
-            } else {
-                 $inst = oxNew( 'oxInputValidator' );
-                 modInstances::addMod( __CLASS__, $inst );
-                 return $inst;
-            }
-        }
-
-        if ( !isset( self::$_instance ) ) {
-            // allow modules
-            self::$_instance = oxNew( 'oxInputValidator' );
-        }
-        return self::$_instance;
+        return oxRegistry::get("oxInputValidator");
     }
 
     /**
@@ -135,7 +123,7 @@ class oxInputValidator extends oxSuperCfg
             throw $oEx;
         }
 
-        if ( !oxConfig::getInstance()->getConfigParam( 'blAllowUnevenAmounts' ) ) {
+        if ( !oxRegistry::getConfig()->getConfigParam( 'blAllowUnevenAmounts' ) ) {
             $dAmount = round( ( string ) $dAmount );
         }
 
@@ -271,7 +259,7 @@ class oxInputValidator extends oxSuperCfg
         if ( $oUser->checkIfEmailExists( $sLogin ) ) {
             //if exists then we do now allow to do that
             $oEx = oxNew( 'oxUserException' );
-            $oLang = oxLang::getInstance();
+            $oLang = oxRegistry::getLang();
             $oEx->setMessage( sprintf( $oLang->translateString( 'EXCEPTION_USER_USEREXISTS', $oLang->getTplLanguage() ), $sLogin ) );
 
             return $this->_addValidationError( "oxuser__oxusername", $oEx );
@@ -298,7 +286,7 @@ class oxInputValidator extends oxSuperCfg
         }
 
         // invalid email address ?
-        if ( !oxUtils::getInstance()->isValidEmail( $sEmail ) ) {
+        if ( !oxRegistry::getUtils()->isValidEmail( $sEmail ) ) {
             $oEx = oxNew( 'oxInputException' );
             $oEx->setMessage( 'EXCEPTION_INPUT_NOVALIDEMAIL' );
 
@@ -364,7 +352,7 @@ class oxInputValidator extends oxSuperCfg
                               'oxuser__oxzip',
                               'oxuser__oxcity' );
 
-        // config shoud override default fields
+        // config should override default fields
         $aMustFillFields = $this->getConfig()->getConfigParam( 'aMustFillFields' );
         if ( is_array( $aMustFillFields ) ) {
             $aMustFields = $aMustFillFields;

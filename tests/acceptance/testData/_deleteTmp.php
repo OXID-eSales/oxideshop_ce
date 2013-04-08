@@ -11,13 +11,24 @@ class _config {
 }
 $_cfg = new _config();
 echo "clearing tmp files...";
-foreach (glob($_cfg->sCompileDir."/*") as $filename) {
-    if (is_file($filename)){
-        unlink($filename);
+
+# recursively remove a directory
+function rrmdir($dir) {
+    foreach(glob($dir . '/*') as $file) {
+        if(is_dir($file))
+            rrmdir($file);
+        else
+            unlink($file);
     }
-    if (is_dir($filename)){
-        rmdir($filename);
-    }
-    //echo "* ".$filename."\n";
+    rmdir($dir);
 }
+if ($_cfg->sCompileDir) {
+    foreach(glob($_cfg->sCompileDir . '/*') as $file) {
+        if(is_dir($file))
+            rrmdir($file);
+        else
+            unlink($file);
+    }
+}
+
 echo " done.";

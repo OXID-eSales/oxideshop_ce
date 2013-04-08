@@ -1500,7 +1500,6 @@ class Acceptance_searchAndSortingAdminTest extends oxidAdditionalSeleniumFunctio
         $this->waitForPageToLoad("30000");
         $this->assertTrue($this->isElementPresent("row.2"));
 
-
     }
 
     /**
@@ -3258,6 +3257,7 @@ class Acceptance_searchAndSortingAdminTest extends oxidAdditionalSeleniumFunctio
     /**
      * searching Price Alert
      * @group admin
+     * @group main
      * @group search_sort
      */
     public function testSearchPriceAlert()

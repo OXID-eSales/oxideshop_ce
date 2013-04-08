@@ -133,7 +133,6 @@ class Unit_Admin_OrderArticleTest extends OxidTestCase
     public function testAddThisArticle()
     {
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxConfig::getInstance()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
-
         modConfig::setParameter( "aid", '_testArticle' );
         modConfig::setParameter( "am", 4 );
         modConfig::setParameter( "oxid", '_testOrder');
@@ -142,7 +141,7 @@ class Unit_Admin_OrderArticleTest extends OxidTestCase
         $oObj->addThisArticle();
 
         // now reading order articles table
-        $oOrder = oxNew( "oxOrder" );
+        $oOrder = new oxorder();
         $oOrder->load( '_testOrder' );
         $oOrderArticles = $oOrder->getOrderArticles();
 

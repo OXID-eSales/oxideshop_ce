@@ -189,7 +189,7 @@ class oxExceptionToDisplay implements oxIDisplayError
         if ( $this->_blDebug ) {
             return $this;
         } else {
-             $sString = oxLang::getInstance()->translateString($this->_sMessage);
+             $sString = oxRegistry::getLang()->translateString($this->_sMessage);
 
              if ( !empty( $this->_aMessageArgs ) ) {
                  $sString = vsprintf( $sString, $this->_aMessageArgs );
@@ -206,7 +206,7 @@ class oxExceptionToDisplay implements oxIDisplayError
      */
     public function __toString()
     {
-        $sRes = $this->getErrorClassType() . " (time: " . date('Y-m-d H:i:s', oxUtilsDate::getInstance()->getTime()) . "): " . $this->getOxMessage() . " \n Stack Trace: " . $this->getStackTrace() . "\n";
+        $sRes = $this->getErrorClassType() . " (time: " . date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime()) . "): " . $this->getOxMessage() . " \n Stack Trace: " . $this->getStackTrace() . "\n";
         foreach ( $this->_aValues as $key => $value ) {
             $sRes .= $key. " => ". $value . "\n";
         }

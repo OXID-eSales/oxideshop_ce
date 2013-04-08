@@ -201,7 +201,7 @@ class Unit_Admin_ShopSeoTest extends OxidTestCase
         $oDb = oxDb::getDb();
 
         // inserting test record
-        $oDb->getOne( "insert into oxseo values( 'testObjectId', 'testident', '1', '0', 'teststdurl', 'testseourl', 'static', '0', '', '' )" );
+        $oDb->getOne( "insert into oxseo (`OXOBJECTID`, `OXIDENT`, `OXSHOPID`, `OXLANG`, `OXSTDURL`, `OXSEOURL`, `OXTYPE`, `OXFIXED`, `OXEXPIRED`, `OXPARAMS`) values( 'testObjectId', 'testident', '1', '0', 'teststdurl', 'testseourl', 'static', '0', '', '' )" );
         $this->assertEquals( 1, $oDb->getOne( "select 1 from oxseo where oxobjectid = 'testObjectId' and oxshopid = '1'" ) );
 
         // testing..

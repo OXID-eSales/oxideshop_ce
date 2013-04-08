@@ -1047,27 +1047,30 @@ class Unit_Core_oxdeliverylistTest extends OxidTestCase
      */
     public function testGetListSpecialCase()
     {
-        $sQ = "INSERT INTO `oxdelivery` VALUES ('b763e957be61108f8.80080127', 'oxbaseshop', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Test Bestellwert Inland unter ¤ 40,00 = ¤ 2,60', '', '', '', 'abs', 2.6, 'p', 10, 39.99, 0, 9999, 1),
-               ('3033e968fb5b30930.92732498', 'oxbaseshop', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Test Bestellwert Inland über ¤ 40,00 = portofrei', '', '', '', 'abs', 0, 'p', 40, 1000000, 0, 9999, 1),
-               ('a713e96c15c7bf3c7.45279281', 'oxbaseshop', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Test Mindermengenzuschlag bis ¤ 10,00 = ¤ 3,50', '', '', '', 'abs', 3.5, 'p', 0, 9.99, 0, 9999, 1),
-               ('a713e96c1aeaefa75.74010807', 'oxbaseshop', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Test Bestellwert europ. Ausland pauschal EURO 6,00', '', '', '', 'abs', 6, 'p', 0, 5000, 0, 9999, 1),
-               ('bdd46f9f2455153b9.22318118', 'oxbaseshop', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Test Bestellwert außereurop. Ausland EURO 9,50', '', '', '', 'abs', 9.5, 'a', 0, 5000, 0, 9999, 1)";
+        $sQ = "INSERT INTO `oxdelivery` VALUES
+               ('b763e957be61108f8.80080127', 'oxbaseshop', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Test Bestellwert Inland unter ¤ 40,00 = ¤ 2,60', '', '', '', 'abs', 2.6, 'p', 10, 39.99, 0, 9999, 1, NOW()),
+               ('3033e968fb5b30930.92732498', 'oxbaseshop', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Test Bestellwert Inland über ¤ 40,00 = portofrei', '', '', '', 'abs', 0, 'p', 40, 1000000, 0, 9999, 1, NOW()),
+               ('a713e96c15c7bf3c7.45279281', 'oxbaseshop', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Test Mindermengenzuschlag bis ¤ 10,00 = ¤ 3,50', '', '', '', 'abs', 3.5, 'p', 0, 9.99, 0, 9999, 1, NOW()),
+               ('a713e96c1aeaefa75.74010807', 'oxbaseshop', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Test Bestellwert europ. Ausland pauschal EURO 6,00', '', '', '', 'abs', 6, 'p', 0, 5000, 0, 9999, 1, NOW()),
+               ('bdd46f9f2455153b9.22318118', 'oxbaseshop', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Test Bestellwert außereurop. Ausland EURO 9,50', '', '', '', 'abs', 9.5, 'a', 0, 5000, 0, 9999, 1, NOW())";
         oxDb::getDb()->execute( $sQ );
-        $sQ = "INSERT INTO `oxdel2delset` VALUES ('b3b46b74d44224772.61045591', 'b763e957be61108f8.80080127', 'b3b46b74d3894f9f5.62965460'),
-               ('87a46ff51e18cffb7.32142202', '3033e968fb5b30930.92732498', 'db046b85bd9ecca78.15075258'),
-               ('87a46ff51e18cdc07.84474619', 'b763e957be61108f8.80080127', 'db046b85bd9ecca78.15075258'),
-               ('87046fd251e929865.64580766', 'a713e96c15c7bf3c7.45279281', 'b3b46b74d3894f9f5.62965460'),
-               ('b3b46b74d44226de8.09907681', '3033e968fb5b30930.92732498', 'b3b46b74d3894f9f5.62965460'),
-               ('87a46ff51e18d1b15.20021730', 'a713e96c15c7bf3c7.45279281', 'db046b85bd9ecca78.15075258'),
-               ('84747302b831b36c9.47406525', 'bdd46f9f2455153b9.22318118', '00c47010695b17720.89704467'),
-               ('00c470107507b6fd5.42311521', 'a713e96c1aeaefa75.74010807', '00c4701074960ca97.47102377')";
+        $sQ = "INSERT INTO `oxdel2delset` VALUES
+               ('b3b46b74d44224772.61045591', 'b763e957be61108f8.80080127', 'b3b46b74d3894f9f5.62965460', NOW()),
+               ('87a46ff51e18cffb7.32142202', '3033e968fb5b30930.92732498', 'db046b85bd9ecca78.15075258', NOW()),
+               ('87a46ff51e18cdc07.84474619', 'b763e957be61108f8.80080127', 'db046b85bd9ecca78.15075258', NOW()),
+               ('87046fd251e929865.64580766', 'a713e96c15c7bf3c7.45279281', 'b3b46b74d3894f9f5.62965460', NOW()),
+               ('b3b46b74d44226de8.09907681', '3033e968fb5b30930.92732498', 'b3b46b74d3894f9f5.62965460', NOW()),
+               ('87a46ff51e18d1b15.20021730', 'a713e96c15c7bf3c7.45279281', 'db046b85bd9ecca78.15075258', NOW()),
+               ('84747302b831b36c9.47406525', 'bdd46f9f2455153b9.22318118', '00c47010695b17720.89704467', NOW()),
+               ('00c470107507b6fd5.42311521', 'a713e96c1aeaefa75.74010807', '00c4701074960ca97.47102377', NOW())";
         oxDb::getDb()->execute( $sQ );
-        $sQ = "INSERT INTO `oxdeliveryset` VALUES ('b3b46b74d3894f9f5.62965460', 'oxbaseshop', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Test DHL/DPD Inland', 'DHL/DPD Inland', '', '', 0)";
+        $sQ = "INSERT INTO `oxdeliveryset` VALUES ('b3b46b74d3894f9f5.62965460', 'oxbaseshop', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'Test DHL/DPD Inland', 'DHL/DPD Inland', '', '', 0, NOW())";
         oxDb::getDb()->execute( $sQ );
-        $sQ = "INSERT INTO `oxobject2delivery` VALUES ('b3b46b74d10909465.50250935', '3033e968fb5b30930.92732498', 'a7c40f631fc920687.20179984', 'oxcountry'),
-               ('bdd46f9f27a6759a1.51238581', 'bdd46f9f2455153b9.22318118', '8f241f110962e40e6.75062153', 'oxcountry'),
-               ('87046fd23d581ed04.18664580', 'b763e957be61108f8.80080127', 'a7c40f631fc920687.20179984', 'oxcountry'),
-               ('bb346bb5318166468.44951132', 'a713e96c1aeaefa75.74010807', 'a7c40f632e04633c9.47194042', 'oxcountry')";
+        $sQ = "INSERT INTO `oxobject2delivery` VALUES
+               ('b3b46b74d10909465.50250935', '3033e968fb5b30930.92732498', 'a7c40f631fc920687.20179984', 'oxcountry', NOW()),
+               ('bdd46f9f27a6759a1.51238581', 'bdd46f9f2455153b9.22318118', '8f241f110962e40e6.75062153', 'oxcountry', NOW()),
+               ('87046fd23d581ed04.18664580', 'b763e957be61108f8.80080127', 'a7c40f631fc920687.20179984', 'oxcountry', NOW()),
+               ('bb346bb5318166468.44951132', 'a713e96c1aeaefa75.74010807', 'a7c40f632e04633c9.47194042', 'oxcountry', NOW())";
         oxDb::getDb()->execute( $sQ );
         $oUser = oxNew( 'oxUser' );
         $oUser->load( 'oxdefaultadmin' );

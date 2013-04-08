@@ -42,7 +42,7 @@ class Unit_Core_oxtsprotectionTest extends OxidTestCase
 
         $this->assertEquals( 'TS080501_500_30_EUR', $oProduct->getTsId() );
         $this->assertEquals( 500, $oProduct->getAmount() );
-        $this->assertEquals( '0,98', $oProduct->getFPrice() );
+        $this->assertEquals( '0,82', $oProduct->getFPrice() );
     }
 
     /**
@@ -57,7 +57,7 @@ class Unit_Core_oxtsprotectionTest extends OxidTestCase
 
         $this->assertEquals( 'TS080501_500_30_EUR', $oProduct->getTsId() );
         $this->assertEquals( 500, $oProduct->getAmount() );
-        $this->assertEquals( '0,98', $oProduct->getFPrice() );
+        $this->assertEquals( '0,82', $oProduct->getFPrice() );
     }
 
     /**

@@ -39,8 +39,75 @@ class Unit_Maintenance_langFileIntegrityTest extends OxidTestCase
     protected function setUp()
     {
         parent::setUp();
-    //    $this->markTestSkipped("");
+    }
 
+    /**
+     * Test if generic language files encodding is correct.
+     *
+     * @return null
+     */
+    public function testLanguageFileEncodingGeneric()
+    {
+        $aLangDE = $this->_getLanguageArray('', 1, 'de', '*.php', $sLangDE);
+        $aLangEN = $this->_getLanguageArray('', 1, 'en', '*.php', $sLangEN);
+
+        $this->assertEquals( 'ISO-8859-15', mb_detect_encoding($sLangDE, "ISO-8859-15, UTF-8", true));
+        $this->assertEquals( 'ISO-8859-15', mb_detect_encoding($sLangEN, "ISO-8859-15, UTF-8", true));
+
+        $this->assertEquals( 'ISO-8859-15', $aLangDE['charset'], 'Charset must be ISO-8859-15');
+        $this->assertEquals( 'ISO-8859-15', $aLangEN['charset'], 'Charset must be ISO-8859-15');
+
+        $this->assertEquals( utf8_decode($sLangDE), utf8_decode(utf8_decode($sLangDE)), 'No double utf8 encoding');
+        $this->assertEquals( utf8_decode($sLangEN), utf8_decode(utf8_decode($sLangEN)), 'No double utf8 encoding');
+
+        $this->assertEquals( str_replace("\t", "", $sLangDE), $sLangDE, 'No tab characters allowed');
+        $this->assertEquals( str_replace("\t", "", $sLangEN), $sLangEN, 'No tab characters allowed');
+    }
+
+    /**
+     * Test if azure language files encodding is correct.
+
+     * @return null
+     */
+    public function testLanguageFileEncodingAzure()
+    {
+        $aLangDE = $this->_getLanguageArray('azure', 1, 'de', '*.php', $sLangDE);
+        $aLangEN = $this->_getLanguageArray('azure', 1, 'en', '*.php', $sLangEN);
+
+        $this->assertEquals( 'ISO-8859-15', mb_detect_encoding($sLangDE, "ISO-8859-15, UTF-8", true));
+        $this->assertEquals( 'ISO-8859-15', mb_detect_encoding($sLangEN, "ISO-8859-15, UTF-8", true));
+
+        $this->assertEquals( 'ISO-8859-15', $aLangDE['charset'], 'Charset must be ISO-8859-15');
+        $this->assertEquals( 'ISO-8859-15', $aLangEN['charset'], 'Charset must be ISO-8859-15');
+
+        $this->assertEquals( utf8_decode($sLangDE), utf8_decode(utf8_decode($sLangDE)), 'No double utf8 encoding');
+        $this->assertEquals( utf8_decode($sLangEN), utf8_decode(utf8_decode($sLangEN)), 'No double utf8 encoding');
+
+        $this->assertEquals( str_replace("\t", "", $sLangDE), $sLangDE, 'No tab characters allowed');
+        $this->assertEquals( str_replace("\t", "", $sLangEN), $sLangEN, 'No tab characters allowed');
+    }
+
+    /**
+     * Test if admin language files encodding is correct.
+     *
+     * @return null
+     */
+    public function testLanguageFileEncodingAdmin()
+    {
+        $aLangDE = $this->_getLanguageArray('admin', 1, 'de', '*.php', $sLangDE);
+        $aLangEN = $this->_getLanguageArray('admin', 1, 'en', '*.php', $sLangEN);
+
+        $this->assertEquals( 'ISO-8859-15', mb_detect_encoding($sLangDE, "ISO-8859-15, UTF-8", true));
+        $this->assertEquals( 'ISO-8859-15', mb_detect_encoding($sLangEN, "ISO-8859-15, UTF-8", true));
+
+        $this->assertEquals( 'ISO-8859-15', $aLangDE['charset'], 'Charset must be ISO-8859-15');
+        $this->assertEquals( 'ISO-8859-15', $aLangEN['charset'], 'Charset must be ISO-8859-15');
+
+        $this->assertEquals( utf8_decode($sLangDE), utf8_decode(utf8_decode($sLangDE)), 'No double utf8 encoding');
+        $this->assertEquals( utf8_decode($sLangEN), utf8_decode(utf8_decode($sLangEN)), 'No double utf8 encoding');
+
+        $this->assertEquals( str_replace("\t", "", $sLangDE), $sLangDE, 'No tab characters allowed');
+        $this->assertEquals( str_replace("\t", "", $sLangEN), $sLangEN, 'No tab characters allowed');
     }
 
     /**
@@ -52,28 +119,6 @@ class Unit_Maintenance_langFileIntegrityTest extends OxidTestCase
     {
         $aLangIdentsDE = array_keys( $this->_getLanguageArray('', 1, 'de') );
         $aLangIdentsEN = array_keys( $this->_getLanguageArray('', 1, 'en') );
-
-        $this->assertEquals( array(), array_diff($aLangIdentsDE, $aLangIdentsEN), 'ident does not match EN misses');
-        $this->assertEquals( array(), array_diff($aLangIdentsEN, $aLangIdentsDE), 'ident does not match DE misses');
-        $this->assertEquals( count($aLangIdentsDE), count($aLangIdentsEN), 'ident count does not match');
-        //$this->assertEquals( $aLangIdentsDE, $aLangIdentsEN,'ident order match');
-    }
-
-    /**
-     * Test if basic template set language idents are the same.
-     *
-     * @return null
-     */
-    public function testBasicTemplateSetIdentMatch()
-    {
-        $aGenericIdentsDE = $this->_getLanguageArray('', 1, 'de');
-        $aGenericIdentsEN = $this->_getLanguageArray('', 1, 'en');
-        $aMapIdentsDE     = $this->_getLanguageMapArray('basic', 'de');
-        $aMapIdentsEN     = $this->_getLanguageMapArray('basic', 'en');
-        $aBasicIdentsDE   = $this->_getLanguageArray('basic', 1, 'de');
-        $aBasicIdentsEN   = $this->_getLanguageArray('basic', 1, 'en');
-        $aLangIdentsDE    = array_keys(array_merge($aGenericIdentsDE, $aMapIdentsDE, $aBasicIdentsDE));
-        $aLangIdentsEN    = array_keys(array_merge($aGenericIdentsEN, $aMapIdentsEN, $aBasicIdentsEN));
 
         $this->assertEquals( array(), array_diff($aLangIdentsDE, $aLangIdentsEN), 'ident does not match EN misses');
         $this->assertEquals( array(), array_diff($aLangIdentsEN, $aLangIdentsDE), 'ident does not match DE misses');
@@ -133,13 +178,6 @@ class Unit_Maintenance_langFileIntegrityTest extends OxidTestCase
         $this->assertEquals( array(), array_diff_key($aLangIdentsDE, $aFillIdentsDE), 'ident does not match');
         $this->assertEquals( array(), array_diff_key($aLangIdentsEN, $aFillIdentsEN), 'ident does not match');
 
-        $aLangIdentsDE = $this->_getLanguageConst( 'basic', 'de');
-        $aLangIdentsEN = $this->_getLanguageConst( 'basic', 'en');
-        $aFillIdentsDE = array_unique($aLangIdentsDE);
-        $aFillIdentsEN = array_unique($aLangIdentsEN);
-        $this->assertEquals( array(), array_diff_key($aLangIdentsDE, $aFillIdentsDE), 'ident does not match');
-        $this->assertEquals( array(), array_diff_key($aLangIdentsEN, $aFillIdentsEN), 'ident does not match');
-
         $aLangIdentsDE = $this->_getLanguageConst( 'azure', 'de');
         $aLangIdentsEN = $this->_getLanguageConst( 'azure', 'en');
         $aFillIdentsDE = array_unique($aLangIdentsDE);
@@ -162,27 +200,6 @@ class Unit_Maintenance_langFileIntegrityTest extends OxidTestCase
         $aFillIdentsEN = array_unique($aLangIdentsEN);
         $this->assertEquals( array(), array_diff_key($aLangIdentsDE, $aFillIdentsDE), 'ident does not match');
         $this->assertEquals( array(), array_diff_key($aLangIdentsEN, $aFillIdentsEN), 'ident does not match');
-
-        // test generic map file
-        $aLangIdentsDE = $this->_getLanguageConst( 'basic', 'de', 'map.php');
-        $aLangIdentsEN = $this->_getLanguageConst( 'basic', 'en', 'map.php');
-        $aFillIdentsDE = array_unique($aLangIdentsDE);
-        $aFillIdentsEN = array_unique($aLangIdentsEN);
-        $this->assertEquals( array(), array_diff_key($aLangIdentsDE, $aFillIdentsDE), 'ident does not match');
-        $this->assertEquals( array(), array_diff_key($aLangIdentsEN, $aFillIdentsEN), 'ident does not match');
-    }
-
-    /**
-     * Test if there are no missing constant language idents used in basic templates.
-     *
-     * @return null
-     */
-    public function testMissingBasicTemplateConstants()
-    {
-        $aTemplateLangIdents = $this->_getTemplateConstants('basic', 1, 'de');
-        $aConstantLangIdents = array_merge( array_keys( $this->_getLanguageArrayMappedWithGeneric('basic', 1, 'de') ), array_keys( $this->_getLanguageArray( 'admin', 1, 'de') ) );
-
-        $this->assertEquals( array(), array_diff($aTemplateLangIdents, $aConstantLangIdents), 'missing constants in templates');
     }
 
     /**
@@ -199,27 +216,12 @@ class Unit_Maintenance_langFileIntegrityTest extends OxidTestCase
     }
 
     /**
-     * Test if there html entities are not used in basic templates.
+     * Test if there html entities are not used in azure templates.
      *
      * @return null
      */
     public function testNoFrontendHtmlEntitiesAllowed()
     {
-        // Basic
-        $aLangIdentsDE = $this->_getLanguageArray('basic', 1, 'de', '*.php'); // changed pattern to checkt theme_options.php
-        foreach ( $aLangIdentsDE as $sIdent => $sValue ) {
-            $sValue = str_replace( '&amp;', '(amp)', $sValue );
-            $sDecodedValue = html_entity_decode( $sValue, ENT_QUOTES, 'UTF-8' );
-            $this->assertEquals( $sDecodedValue, $sValue, "html entities found for ident $sIdent" );
-        }
-
-        $aLangIdentsEN = $this->_getLanguageArray('basic', 1, 'en', '*.php');
-        foreach ( $aLangIdentsEN as $sIdent => $sValue ) {
-            $sValue = str_replace( '&amp;', '(amp)', $sValue );
-            $sDecodedValue = html_entity_decode( $sValue, ENT_QUOTES, 'UTF-8' );
-            $this->assertEquals( $sDecodedValue, $sValue, "html entities found for ident $sIdent" );
-        }
-
         // Azure
         $aLangIdentsDE = $this->_getLanguageArray('azure', 1, 'de', '*.php');
         foreach ( $aLangIdentsDE as $sIdent => $sValue ) {
@@ -244,21 +246,6 @@ class Unit_Maintenance_langFileIntegrityTest extends OxidTestCase
         }
 
         $aLangIdentsEN = $this->_getLanguageArray('', 1, 'en');
-        foreach ( $aLangIdentsEN as $sIdent => $sValue ) {
-            $sValue = str_replace( '&amp;', '(amp)', $sValue );
-            $sDecodedValue = html_entity_decode( $sValue, ENT_QUOTES, 'UTF-8' );
-            $this->assertEquals( $sDecodedValue, $sValue, "html entities found for ident $sIdent" );
-        }
-
-        // Map
-        $aLangIdentsDE = $this->_getLanguageMapArray('basic', 'de');
-        foreach ( $aLangIdentsDE as $sIdent => $sValue ) {
-            $sValue = str_replace( '&amp;', '(amp)', $sValue );
-            $sDecodedValue = html_entity_decode( $sValue, ENT_QUOTES, 'UTF-8' );
-            $this->assertEquals( $sDecodedValue, $sValue, "html entities found for ident $sIdent" );
-        }
-
-        $aLangIdentsEN = $this->_getLanguageMapArray('basic', 'en');
         foreach ( $aLangIdentsEN as $sIdent => $sValue ) {
             $sValue = str_replace( '&amp;', '(amp)', $sValue );
             $sDecodedValue = html_entity_decode( $sValue, ENT_QUOTES, 'UTF-8' );
@@ -304,25 +291,6 @@ class Unit_Maintenance_langFileIntegrityTest extends OxidTestCase
         }
     }
 
-    /**
-     * Test if constants of map
-     *
-     * @return null
-     */
-    public function testBasicMapConstantsInGeneric()
-    {
-        $aMapIdentsDE = $this->_getLanguageMapArray('basic', 'de');
-        $aLangIdentsDE = $this->_getLanguageArray('', 1, 'de');
-        foreach ( $aMapIdentsDE as $sIdent => $sValue ) {
-            $this->assertTrue( isset($aLangIdentsDE[$sValue]), "has no translation in generic file $sIdent => $sValue" );
-        }
-
-        $aMapIdentsEn = $this->_getLanguageMapArray('basic', 'en');
-        $aLangIdentsEn = $this->_getLanguageArray('', 1, 'en');
-        foreach ( $aMapIdentsEn as $sIdent => $sValue ) {
-            $this->assertTrue( isset($aLangIdentsEn[$sValue]), "has no translation in generic file $sIdent => $sValue" );
-        }
-    }
 
     /**
      * Test if constants of map
@@ -354,14 +322,17 @@ class Unit_Maintenance_langFileIntegrityTest extends OxidTestCase
      *
      * @return array
      */
-    private function _getLanguageArray( $sTheme, $sShop, $sLang, $sFilePattern = '*lang.php' )
+    private function _getLanguageArray( $sTheme, $sShop, $sLang, $sFilePattern = '*lang.php', &$sFileContent = '')
     {
         $aLang    = array();
         $aAllLang = array();
 
-        $aFile = array( 'out' );
+        $aFile = array( 'application' );
         if ($sTheme != '') {
+            $aFile[] = 'views';
             $aFile[] = $sTheme;
+        } else {
+            $aFile[] = 'translations';
         }
         $aFile[] = $sLang;
         $aFile[] = $sFilePattern;
@@ -371,6 +342,7 @@ class Unit_Maintenance_langFileIntegrityTest extends OxidTestCase
             if (is_readable($sFile)) {
                 include $sFile;
                 $aAllLang = array_merge($aAllLang, $aLang);
+                $sFileContent .= file_get_contents($sFile).PHP_EOL.PHP_EOL;
             } else {
                 $aLang = array();
             }
@@ -421,7 +393,7 @@ class Unit_Maintenance_langFileIntegrityTest extends OxidTestCase
      */
     private function _getLanguageMapArray( $sTheme, $sLang )
     {
-        $sFile = oxConfig::getInstance()->getConfigParam( 'sShopDir' ).DIRECTORY_SEPARATOR.'out'.DIRECTORY_SEPARATOR.$sTheme.DIRECTORY_SEPARATOR.$sLang.DIRECTORY_SEPARATOR.'map.php';
+        $sFile = oxConfig::getInstance()->getConfigParam( 'sShopDir' ).DIRECTORY_SEPARATOR.'application/views'.DIRECTORY_SEPARATOR.$sTheme.DIRECTORY_SEPARATOR.$sLang.DIRECTORY_SEPARATOR.'map.php';
 
         if (is_readable($sFile)) {
             include $sFile;
@@ -444,10 +416,13 @@ class Unit_Maintenance_langFileIntegrityTest extends OxidTestCase
     {
         $aSkip = array();
         $aLang = array();
-        $sFile = oxConfig::getInstance()->getConfigParam( 'sShopDir' )."out";
+        $sFile = oxConfig::getInstance()->getConfigParam( 'sShopDir' )."application";
         if ($sTheme != '') {
-            $sFile .= DIRECTORY_SEPARATOR.$sTheme;
+            $sFile .= '/views'.DIRECTORY_SEPARATOR.$sTheme;
+        } else {
+            $sFile .= '/translations';
         }
+
         $sFile .= DIRECTORY_SEPARATOR.$sLang.DIRECTORY_SEPARATOR.$sFileName;
         $sArray = file_get_contents($sFile);
         $sReg = "/'([A-Z\_0-9]+)' +=/i";

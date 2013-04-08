@@ -336,7 +336,7 @@ class Unit_Admin_AjaxListComponentTest extends OxidTestCase
         $sTableName = getViewName( "oxarticles" );
         $sQ = "$sTableName.oxartnum like 'a%'  and $sTableName.oxtitle like 'b%' ";
 
-        $oConfig = $this->getMock( "oxStdClass", array( "isUtf" ) );
+        $oConfig = $this->getMock( "oxConfig", array( "isUtf" ) );
         $oConfig->expects( $this->any() )->method( 'isUtf' )->will( $this->returnValue( false ) );
 
         $oComponent = $this->getMock( "ajaxListComponent", array( "_getColNames", "getConfig" ) );
@@ -439,7 +439,7 @@ class Unit_Admin_AjaxListComponentTest extends OxidTestCase
         $aData['records'][0] = array( 0 => "a", 1 => "b" );
         $aData['records'][1] = array( 0 => "c", 1 => "d" );
 
-        $oConfig = $this->getMock( "oxStdClass", array( "isUtf" ) );
+        $oConfig = $this->getMock( "oxConfig", array( "isUtf" ) );
         $oConfig->expects( $this->any() )->method( 'isUtf' )->will( $this->returnValue( false ) );
 
         $oComponent = $this->getMock( "ajaxListComponent", array( "getConfig", "_output" ) );
@@ -455,7 +455,7 @@ class Unit_Admin_AjaxListComponentTest extends OxidTestCase
      */
     public function testGetData()
     {
-        $oConfig = $this->getMock( "oxStdClass", array( "getConfigParam" ) );
+        $oConfig = $this->getMock( "oxConfig", array( "getConfigParam" ) );
         $oConfig->expects( $this->any() )->method( 'getConfigParam' )->will( $this->returnValue( 1 ) );
 
         $oComponent = $this->getMock( "ajaxListComponent", array( "getConfig", "_addFilter", "_getStartIndex", "_getSortCol", "_getSortDir", "_getTotalCount", "_getSorting", "_getLimit", "_getDataFields" ) );
@@ -508,7 +508,7 @@ class Unit_Admin_AjaxListComponentTest extends OxidTestCase
      */
     public function testResetContentCache()
     {
-        $oConfig = $this->getMock( "oxStdClass", array( "getConfigParam" ) );
+        $oConfig = $this->getMock( "oxConfig", array( "getConfigParam" ) );
         $oConfig->expects( $this->any() )->method( 'getConfigParam' )->will( $this->returnValue( false ) );
 
         $oComponent = $this->getMock( "ajaxListComponent", array( "getConfig" ) );
@@ -535,7 +535,7 @@ class Unit_Admin_AjaxListComponentTest extends OxidTestCase
     {
         oxTestModules::addFunction( 'oxUtilsCount', 'resetPriceCatArticleCount', '{ throw new Exception( "resetPriceCatArticleCount" ); }');
 
-        $oConfig = $this->getMock( "oxStdClass", array( "getConfigParam" ) );
+        $oConfig = $this->getMock( "oxConfig", array( "getConfigParam" ) );
         $oConfig->expects( $this->any() )->method( 'getConfigParam' )->will( $this->returnValue( false ) );
 
         $oComponent = $this->getMock( "ajaxListComponent", array( "getConfig" ) );
@@ -559,7 +559,7 @@ class Unit_Admin_AjaxListComponentTest extends OxidTestCase
     {
         oxTestModules::addFunction( 'oxUtilsCount', 'resetCatArticleCount', '{ throw new Exception( "resetCatArticleCount" ); }');
 
-        $oConfig = $this->getMock( "oxStdClass", array( "getConfigParam" ) );
+        $oConfig = $this->getMock( "oxConfig", array( "getConfigParam" ) );
         $oConfig->expects( $this->any() )->method( 'getConfigParam' )->will( $this->returnValue( false ) );
 
         $oComponent = $this->getMock( "ajaxListComponent", array( "getConfig" ) );
@@ -583,7 +583,7 @@ class Unit_Admin_AjaxListComponentTest extends OxidTestCase
     {
         oxTestModules::addFunction( 'oxUtilsCount', 'resetVendorArticleCount', '{ throw new Exception( "resetVendorArticleCount" ); }');
 
-        $oConfig = $this->getMock( "oxStdClass", array( "getConfigParam" ) );
+        $oConfig = $this->getMock( "oxConfig", array( "getConfigParam" ) );
         $oConfig->expects( $this->any() )->method( 'getConfigParam' )->will( $this->returnValue( false ) );
 
         $oComponent = $this->getMock( "ajaxListComponent", array( "getConfig" ) );
@@ -607,7 +607,7 @@ class Unit_Admin_AjaxListComponentTest extends OxidTestCase
     {
         oxTestModules::addFunction( 'oxUtilsCount', 'resetManufacturerArticleCount', '{ throw new Exception( "resetManufacturerArticleCount" ); }');
 
-        $oConfig = $this->getMock( "oxStdClass", array( "getConfigParam" ) );
+        $oConfig = $this->getMock( "oxConfig", array( "getConfigParam" ) );
         $oConfig->expects( $this->any() )->method( 'getConfigParam' )->will( $this->returnValue( false ) );
 
         $oComponent = $this->getMock( "ajaxListComponent", array( "getConfig" ) );

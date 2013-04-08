@@ -403,8 +403,8 @@ class Unit_Core_oxorderarticleTest extends OxidTestCase
         $oSelList->oxselectlist__oxvaldesc = new oxField('big!P!10__@@middle!P!10__@@small!P!10__@@', oxField::T_RAW);
         $oSelList->save();
 
-        $sQ1 = 'insert into oxobject2selectlist values ("_testO2SlId1", "1126", "_testSelListId1", 1); ';
-        $sQ2 = 'insert into oxobject2selectlist values ("_testO2SlId2", "1126", "_testSelListId2", 2); ';
+        $sQ1 = 'insert into oxobject2selectlist (OXID,OXOBJECTID,OXSELNID,OXSORT) values ("_testO2SlId1", "1126", "_testSelListId1", 1); ';
+        $sQ2 = 'insert into oxobject2selectlist (OXID,OXOBJECTID,OXSELNID,OXSORT) values ("_testO2SlId2", "1126", "_testSelListId2", 2); ';
         $myDB->Execute( $sQ1 );
         $myDB->Execute( $sQ2 );
 
@@ -439,8 +439,8 @@ class Unit_Core_oxorderarticleTest extends OxidTestCase
         $oSelList->oxselectlist__oxvaldesc = new oxField('big!P!10__@@middle!P!10__@@small!P!10__@@', oxField::T_RAW);
         $oSelList->save();
 
-        $sQ1 = 'insert into oxobject2selectlist values ("_testO2SlId3", "1126", "_testSelListId3", 1); ';
-        $sQ2 = 'insert into oxobject2selectlist values ("_testO2SlId4", "1126", "_testSelListId4", 2); ';
+        $sQ1 = 'insert into oxobject2selectlist (OXID,OXOBJECTID,OXSELNID,OXSORT) values ("_testO2SlId3", "1126", "_testSelListId3", 1); ';
+        $sQ2 = 'insert into oxobject2selectlist (OXID,OXOBJECTID,OXSELNID,OXSORT) values ("_testO2SlId4", "1126", "_testSelListId4", 2); ';
         $myDB->Execute( $sQ1 );
         $myDB->Execute( $sQ2 );
 
@@ -513,7 +513,6 @@ class Unit_Core_oxorderarticleTest extends OxidTestCase
         $oArticle->load( "_testArticleId" );
 
         $this->assertEquals( 7, $oArticle->oxarticles__oxstock->value );
-        $this->assertEquals( 3, $oArticle->oxarticles__oxsoldamount->value );
         $this->assertNotEquals( '2005-03-24 14:33:53', $oDB->getOne("select oxtimestamp from oxarticles where oxid = '_testArticleId'") );
     }
 

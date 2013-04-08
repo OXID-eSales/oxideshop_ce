@@ -27,6 +27,11 @@ require_once realpath( "." ).'/unit/test_config.inc.php';
 
 class Unit_Core_oxUtilsUrlTest extends OxidTestCase
 {
+    protected function setUp()
+    {
+        parent::setUp();
+    }
+
     /**
      * Tear down the fixture.
      *
@@ -112,19 +117,18 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
     public function testPrepareUrlForNoSession()
     {
         oxTestModules::addFunction('oxUtils', 'seoIsActive', '{return false;}');
-        modConfig::getInstance()->addClassFunction('isMall', create_function('', 'return false;'));
-
         oxTestModules::addFunction('oxLang', 'getBaseLanguage', '{return 3;}');
-        $this->assertEquals('sdf?lang=1', oxUtilsUrl::getInstance()->prepareUrlForNoSession('sdf?sid=111&lang=1'));
-        $this->assertEquals('sdf?a&lang=1', oxUtilsUrl::getInstance()->prepareUrlForNoSession('sdf?sid=111&a&lang=1'));
-        $this->assertEquals('sdf?a&amp;lang=1', oxUtilsUrl::getInstance()->prepareUrlForNoSession('sdf?sid=111&a&amp;lang=1'));
-        $this->assertEquals('sdf?a&&amp;lang=3', oxUtilsUrl::getInstance()->prepareUrlForNoSession('sdf?sid=111&a&'));
-        $this->assertEquals('sdf?lang=3', oxUtilsUrl::getInstance()->prepareUrlForNoSession('sdf'));
-
-        modConfig::getInstance()->addClassFunction('isMall', create_function('', 'return true;'));
-        modConfig::getInstance()->addClassFunction('getShopId', create_function('', 'return 5;'));
 
         $sShopId = '';
+
+        $this->assertEquals('sdf?lang=1' . $sShopId, oxUtilsUrl::getInstance()->prepareUrlForNoSession('sdf?sid=111&lang=1'));
+        $this->assertEquals('sdf?a&lang=1' . $sShopId, oxUtilsUrl::getInstance()->prepareUrlForNoSession('sdf?sid=111&a&lang=1'));
+        $this->assertEquals('sdf?a&amp;lang=1' . $sShopId, oxUtilsUrl::getInstance()->prepareUrlForNoSession('sdf?sid=111&a&amp;lang=1'));
+        $this->assertEquals('sdf?a&&amp;lang=3' . $sShopId, oxUtilsUrl::getInstance()->prepareUrlForNoSession('sdf?sid=111&a&'));
+        $this->assertEquals('sdf?lang=3' . $sShopId, oxUtilsUrl::getInstance()->prepareUrlForNoSession('sdf'));
+
+        $sShopId = '';
+        $this->getConfig()->setShopId(5);
 
         $this->assertEquals('sdf?lang=3'.$sShopId, oxUtilsUrl::getInstance()->prepareUrlForNoSession('sdf?sid=asd'));
         $this->assertEquals('sdf?lang=2'.$sShopId, oxUtilsUrl::getInstance()->prepareUrlForNoSession('sdf?sid=das&lang=2'));
@@ -223,4 +227,41 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
         $this->assertEquals( $sUrl, $oUtils->processSeoUrl( $sUrl ) );
 
     }
+
+    public function testGetCurrentUrl_dataProvider()
+    {
+        $aData = array(
+            array('', '', 'www.testshop.com', '', 'http://www.testshop.com'),
+            array('', '', 'www.testshop.com:8080', '', 'http://www.testshop.com:8080'),
+            array('', '', 'www.testshop.com', '/testFolder/index.php', 'http://www.testshop.com/testFolder/index.php'),
+            array('', '', 'www.testshop.com', '/testFolder/index.php?lang=1', 'http://www.testshop.com/testFolder/index.php?lang=1'),
+            array('1', '', 'www.testshop.com', '/testFolder/', 'https://www.testshop.com/testFolder/'),
+            array('on', '', 'www.testshop.com', '/testFolder/index.php', 'https://www.testshop.com/testFolder/index.php'),
+            array('', 'https', 'www.testshop.com', '/testFolder/index.php?lang=1', 'https://www.testshop.com/testFolder/index.php?lang=1'),
+        );
+
+        return $aData;
+    }
+
+    /**
+     * oxUtilsUrl::getCurrentUrl() test case
+     *
+     * @dataProvider testGetCurrentUrl_dataProvider
+     *
+     * @return null
+     */
+    public function testGetCurrentUrl( $sHttps, $sHttpXForwarded, $sHttpHost, $sRequestUri, $sResult )
+    {
+        $oUtils = new oxUtilsUrl();
+
+        $oUtilsServer = $this->getMock( 'oxUtilsServer', array( 'getServerVar' ) );
+        $oUtilsServer->expects( $this->at(0) )->method( 'getServerVar' )->with( $this->equalTo("HTTPS") )->will( $this->returnValue($sHttps) );
+        $oUtilsServer->expects( $this->at(1) )->method( 'getServerVar' )->with( $this->equalTo("HTTP_X_FORWARDED_PROTO") )->will( $this->returnValue($sHttpXForwarded) );
+        $oUtilsServer->expects( $this->at(2) )->method( 'getServerVar' )->with( $this->equalTo("HTTP_HOST") )->will( $this->returnValue($sHttpHost) );
+        $oUtilsServer->expects( $this->at(3) )->method( 'getServerVar' )->with( $this->equalTo("REQUEST_URI") )->will( $this->returnValue($sRequestUri) );
+        oxTestModules::addModuleObject( 'oxUtilsServer', $oUtilsServer );
+
+        $this->assertEquals( $sResult, $oUtils->getCurrentUrl() );
+    }
+
 }

@@ -40,15 +40,15 @@ class Unit_Views_oxCmpShopTest extends OxidTestCase
         $sRedirUrl = oxConfig::getInstance()->getShopMainUrl().'offline.html';
         $this->setExpectedException('oxException', $sRedirUrl);
 
-        $oView = $this->getMock( "oxStdClass", array( "getClassName" ) );
+        $oView = $this->getMock( "oxView", array( "getClassName" ) );
         $oView->expects( $this->once() )->method('getClassName')->will( $this->returnValue( "test" ) );
 
-        $oShop = new oxStdClass();
+        $oShop = new oxShop();
         $oShop->oxshops__oxactive = new oxField( 0 );
 
         oxTestModules::addFunction('oxUtils', 'redirect($url, $blAddRedirectParam = true, $iHeaderCode = 301)', '{throw new oxException($url);}');
 
-        $oConfig = $this->getMock( "oxStdClass", array( "getConfigParam", "getActiveView", "getActiveShop" ) );
+        $oConfig = $this->getMock( "oxConfig", array( "getConfigParam", "getActiveView", "getActiveShop" ) );
         $oConfig->expects( $this->once() )->method('getActiveView')->will( $this->returnValue( $oView ) );
         $oConfig->expects( $this->any() )->method('getConfigParam')->will( $this->returnValue( false ) );
         $oConfig->expects( $this->once() )->method('getActiveShop')->will( $this->returnValue( $oShop ) );
@@ -58,34 +58,6 @@ class Unit_Views_oxCmpShopTest extends OxidTestCase
         $oCmp->expects( $this->once() )->method('isAdmin')->will( $this->returnValue( false ) );
 
         $oCmp->render();
-    }
-
-    /**
-     * Testing oxcmp_shop::render()
-     *
-     * @return null
-     */
-    public function testRenderPE()
-    {
-
-        $sLogoPath = oxConfig::getInstance()->getConfigParam( "sShopDir" )."/out/azure/img/";
-
-        $oShop = new oxShop();
-        $oShop->oxshops__oxactive = new oxField( 1 );
-
-        $oParent = $this->getMock( "oxStdClass", array( "setShopLogo" ) );
-        $oParent->expects( $this->once() )->method('setShopLogo');
-
-        $oConfig = $this->getMock( "oxStdClass", array( "getConfigParam", "getImageDir", "getActiveShop" ) );
-        $oConfig->expects( $this->at( 0 ) )->method('getConfigParam')->with( $this->equalTo( "sShopLogo" ) )->will( $this->returnValue( "stars.jpg" ) );
-        $oConfig->expects( $this->at( 1 ) )->method('getImageDir')->will( $this->returnValue( $sLogoPath ) );
-        $oConfig->expects( $this->at( 2 ) )->method('getActiveShop')->will( $this->returnValue( $oShop ) );
-
-        $oCmp = $this->getMock( "oxcmp_shop", array( "getConfig", "isAdmin" ), array(), '', false );
-        $oCmp->expects( $this->once() )->method('getConfig')->will( $this->returnValue( $oConfig ) );
-        $oCmp->setParent( $oParent );
-
-        $this->assertTrue( $oCmp->render() instanceof oxShop );
     }
 }
 

@@ -164,7 +164,7 @@ class Unit_Core_oxmanufacturerTest extends OxidTestCase
         $oManufacturer->setLanguage( 0 );
         $oManufacturer->load( $sManufacturerId );
 
-        $this->assertEquals( oxConfig::getInstance()->getShopUrl().'Nach-Marke/'.str_replace( ' ', '-', $sManufacturerTitle ).'/', $oManufacturer->getLink() );
+        $this->assertEquals( oxConfig::getInstance()->getShopUrl().'Nach-Hersteller/'.str_replace( ' ', '-', $sManufacturerTitle ).'/', $oManufacturer->getLink() );
     }
 
     public function testGetLinkSeoEng()
@@ -184,7 +184,7 @@ class Unit_Core_oxmanufacturerTest extends OxidTestCase
         $oManufacturer = new oxManufacturer();
         $oManufacturer->loadInLang( 1, $sManufacturerId );
 
-        $this->assertEquals( oxConfig::getInstance()->getShopUrl().'en/By-Brand/'.str_replace( ' ', '-', $sManufacturerTitle ).'/', $oManufacturer->getLink() );
+        $this->assertEquals( oxConfig::getInstance()->getShopUrl().'en/By-Manufacturer/'.str_replace( ' ', '-', $sManufacturerTitle ).'/', $oManufacturer->getLink() );
     }
 
     public function testGetLink()
@@ -222,7 +222,7 @@ class Unit_Core_oxmanufacturerTest extends OxidTestCase
         $oManufacturer->setLanguage(1);
         $oManufacturer->load( $sManufacturerId );
 
-        $this->assertEquals( oxConfig::getInstance()->getShopUrl().'Nach-Marke/'.str_replace( ' ', '-', $sManufacturerTitle ).'/', $oManufacturer->getLink(0) );
+        $this->assertEquals( oxConfig::getInstance()->getShopUrl().'Nach-Hersteller/'.str_replace( ' ', '-', $sManufacturerTitle ).'/', $oManufacturer->getLink(0) );
     }
 
     public function testGetLinkSeoEngWithLangParam()
@@ -242,7 +242,7 @@ class Unit_Core_oxmanufacturerTest extends OxidTestCase
         $oManufacturer = new oxManufacturer();
         $oManufacturer->loadInLang( 0, $sManufacturerId );
 
-        $this->assertEquals( oxConfig::getInstance()->getShopUrl().'en/By-Brand/'.str_replace( ' ', '-', $sManufacturerTitle ).'/', $oManufacturer->getLink(1) );
+        $this->assertEquals( oxConfig::getInstance()->getShopUrl().'en/By-Manufacturer/'.str_replace( ' ', '-', $sManufacturerTitle ).'/', $oManufacturer->getLink(1) );
     }
 
     public function testGetLinkWithLangParam()

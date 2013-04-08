@@ -95,7 +95,7 @@ class Unit_Admin_OrderListTest extends OxidTestCase
     public function testPrepareWhereQuery()
     {
         oxTestModules::addFunction( "oxlang", "isAdmin", "{return 1;}" );
-        $sExpQ = " and ( oxorder.oxfolder = 'ORDERFOLDER_NEW' or oxorder.oxfolder = 'Neu' )";
+        $sExpQ = " and ( oxorder.oxfolder = 'ORDERFOLDER_NEW' )";
         $oOrderList = new order_list();
         $sQ = $oOrderList->UNITprepareWhereQuery(array(), "");
         $this->assertEquals( $sExpQ, $sQ  );
@@ -110,7 +110,7 @@ class Unit_Admin_OrderListTest extends OxidTestCase
     {
         oxTestModules::addFunction( "oxlang", "isAdmin", "{return 1;}" );
         modConfig::setParameter( 'folder', 'ORDERFOLDER_FINISHED' );
-        $sExpQ = " and ( oxorder.oxfolder = 'ORDERFOLDER_FINISHED' or oxorder.oxfolder = 'Bearbeitet' )";
+        $sExpQ = " and ( oxorder.oxfolder = 'ORDERFOLDER_FINISHED' )";
         $oOrderList = new order_list();
         $sQ = $oOrderList->UNITprepareWhereQuery(array(), "");
         $this->assertEquals( $sExpQ, $sQ  );

@@ -53,7 +53,7 @@ class Unit_Views_accountPasswordTest extends OxidTestCase
     {
         oxTestModules::addFunction( 'oxUtilsView', 'addErrorToDisplay', '{ return "EXCEPTION_INPUT_EMPTYPASS"; }' );
 
-        $oUser = $this->getMock( "oxStdClass", array( "checkPassword" ) );
+        $oUser = $this->getMock( "oxUser", array( "checkPassword" ) );
         $oUser->expects( $this->any() )->method( 'checkPassword')->will( $this->returnValue( new Exception( "EXCEPTION_INPUT_EMPTYPASS" ) ) );
 
         $oView = $this->getMock( "Account_Password", array( "getUser" ) );
@@ -71,7 +71,7 @@ class Unit_Views_accountPasswordTest extends OxidTestCase
     {
         oxTestModules::addFunction( 'oxUtilsView', 'addErrorToDisplay', '{ return "EXCEPTION_INPUT_PASSTOOSHORT"; }' );
 
-        $oUser = $this->getMock( "oxStdClass", array( "checkPassword" ) );
+        $oUser = $this->getMock( "oxUser", array( "checkPassword" ) );
         $oUser->expects( $this->any() )->method( 'checkPassword')->will( $this->returnValue( new Exception( "EXCEPTION_INPUT_PASSTOOSHORT" ) ) );
 
         $oView = $this->getMock( "Account_Password", array( "getUser" ) );
@@ -89,7 +89,7 @@ class Unit_Views_accountPasswordTest extends OxidTestCase
     {
         oxTestModules::addFunction( 'oxUtilsView', 'addErrorToDisplay', '{ return "ACCOUNT_PASSWORD_ERRPASSWDONOTMATCH"; }' );
 
-        $oUser = $this->getMock( "oxStdClass", array( "checkPassword" ) );
+        $oUser = $this->getMock( "oxUser", array( "checkPassword" ) );
         $oUser->expects( $this->any() )->method( 'checkPassword')->will( $this->returnValue( new Exception( "ACCOUNT_PASSWORD_ERRPASSWDONOTMATCH" ) ) );
 
         $oView = $this->getMock( "Account_Password", array( "getUser" ) );
@@ -108,7 +108,7 @@ class Unit_Views_accountPasswordTest extends OxidTestCase
         modConfig::setParameter( 'password_old', null );
         oxTestModules::addFunction( 'oxUtilsView', 'addErrorToDisplay', '{ return "ACCOUNT_PASSWORD_ERRINCORRECTCURRENTPASSW"; }' );
 
-        $oUser = $this->getMock( "oxStdClass", array( "checkPassword", "isSamePassword" ) );
+        $oUser = $this->getMock( "oxUser", array( "checkPassword", "isSamePassword" ) );
         $oUser->expects( $this->any() )->method( 'checkPassword');
         $oUser->expects( $this->any() )->method( 'isSamePassword')->will( $this->returnValue( false ));
 
@@ -129,7 +129,7 @@ class Unit_Views_accountPasswordTest extends OxidTestCase
         modConfig::setParameter( 'password_new', "newpassword" );
         modConfig::setParameter( 'password_new_confirm', "newpassword" );
 
-        $oUser = $this->getMock( "oxStdClass", array( "checkPassword", "isSamePassword", "setPassword", "save" ) );
+        $oUser = $this->getMock( "oxUser", array( "checkPassword", "isSamePassword", "setPassword", "save" ) );
         $oUser->expects( $this->any() )->method( 'checkPassword');
         $oUser->expects( $this->any() )->method( 'isSamePassword' )->with( $this->equalTo( "oldpassword" ) )->will( $this->returnValue( true ) ) ;
         $oUser->expects( $this->any() )->method( 'setPassword' )->with( $this->equalTo( "newpassword" ) );
@@ -210,7 +210,7 @@ class Unit_Views_accountPasswordTest extends OxidTestCase
         modConfig::setParameter( 'password_new', $sPass );
         modConfig::setParameter( 'password_new_confirm', $sPass );
 
-        $oUser = $this->getMock( 'oxStdClass', array( 'checkPassword', 'isSamePassword' ) );
+        $oUser = $this->getMock( 'oxUser', array( 'checkPassword', 'isSamePassword' ) );
         $oUser->expects( $this->once() )
             ->method( 'checkPassword' )
             ->with( $this->equalTo( $sPass ), $this->equalTo( $sPass ), $this->equalTo( true ) );

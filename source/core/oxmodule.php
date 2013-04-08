@@ -64,6 +64,18 @@ class oxModule extends oxSuperCfg
     protected $_blLegacy     = false;
 
     /**
+     * Set passed module data
+     *
+     * @param array $aModule module data
+     *
+     * @return null
+     */
+    public function setModuleData( $aModule )
+    {
+        $this->_aModule = $aModule;
+    }
+
+    /**
      * Load module info
      *
      * @param string $sModuleId Module ID
@@ -90,6 +102,7 @@ class oxModule extends oxSuperCfg
      */
     public function loadByDir( $sModuleDir )
     {
+        $sModuleId    = null;
         $aModulePaths = $this->getModulePaths();
 
         if ( is_array($aModulePaths) ) {
@@ -192,7 +205,7 @@ class oxModule extends oxSuperCfg
      */
     public function getDescription()
     {
-        $iLang = oxLang::getInstance()->getTplLanguage();
+        $iLang = oxRegistry::getLang()->getTplLanguage();
 
         return $this->getInfo( "description", $iLang );
     }
@@ -204,7 +217,7 @@ class oxModule extends oxSuperCfg
      */
     public function getTitle()
     {
-        $iLang = oxLang::getInstance()->getTplLanguage();
+        $iLang = oxRegistry::getLang()->getTplLanguage();
 
         return $this->getInfo( "title", $iLang );
     }
@@ -222,7 +235,7 @@ class oxModule extends oxSuperCfg
     /**
      * Get module ID
      *
-     * @param string $sModule extention full path
+     * @param string $sModule extension full path
      *
      * @return string
      */
@@ -263,7 +276,7 @@ class oxModule extends oxSuperCfg
             if ( $iLang !== null && is_array($this->_aModule[$sName]) ) {
                 $sValue = null;
 
-                $sLang = oxLang::getInstance()->getLanguageAbbr( $iLang );
+                $sLang = oxRegistry::getLang()->getLanguageAbbr( $iLang );
 
                 if ( !empty($this->_aModule[$sName]) ) {
                     if ( !empty( $this->_aModule[$sName][$sLang] ) ) {
@@ -385,7 +398,7 @@ class oxModule extends oxSuperCfg
     public function activate()
     {
         if (isset($this->_aModule['extend']) && is_array($this->_aModule['extend'])) {
-            $oConfig     = $this->getConfig();
+            $oConfig     = oxRegistry::getConfig();
             $aAddModules = $this->_aModule['extend'];
             $sModuleId   = $this->getId();
 
@@ -400,7 +413,6 @@ class oxModule extends oxSuperCfg
 
             if ( isset($aDisabledModules) && is_array($aDisabledModules) ) {
                 $aDisabledModules = array_diff($aDisabledModules, array($sModuleId));
-
                 $oConfig->setConfigParam('aDisabledModules', $aDisabledModules);
                 $oConfig->saveShopConfVar('arr', 'aDisabledModules', $aDisabledModules);
             }
@@ -423,8 +435,17 @@ class oxModule extends oxSuperCfg
             // Add module settings
             $this->_addModuleSettings($this->getInfo("settings"));
 
+            // Add module version
+            $this->_addModuleVersion($this->getInfo("version"));
+
+            // Add module events
+            $this->_addModuleEvents($this->getInfo("events"));
+
             //resets cache
             $this->_resetCache();
+
+
+            $this->_callEvent('onActivate', $sModuleId);
 
             return true;
         }
@@ -445,6 +466,9 @@ class oxModule extends oxSuperCfg
             $sModuleId = $this->getId();
         }
         if (isset($sModuleId)) {
+
+            $this->_callEvent('onDeactivate', $sModuleId);
+
             $aDisabledModules = $this->getDisabledModules();
 
             if (!is_array($aDisabledModules)) {
@@ -462,9 +486,31 @@ class oxModule extends oxSuperCfg
             //resets cache
             $this->_resetCache();
 
+
             return true;
         }
         return false;
+    }
+
+    /**
+     * Call module event.
+     *
+     * @param string $sEvent    Event name
+     * @param string $sModuleId Module Id
+     *
+     * @return null
+     */
+    protected function _callEvent($sEvent, $sModuleId)
+    {
+        $aModuleEvents = $this->getModuleEvents();
+
+        if (isset($aModuleEvents[$sModuleId], $aModuleEvents[$sModuleId][$sEvent])) {
+            $mEvent = $aModuleEvents[$sModuleId][$sEvent];
+
+            if (is_callable($mEvent)) {
+                call_user_func($mEvent);
+            }
+        }
     }
 
     /**
@@ -475,7 +521,7 @@ class oxModule extends oxSuperCfg
      *
      * @return null
      */
-    protected function _changeBlockStatus( $sModule, $iStatus = '0' )
+    protected function _changeBlockStatus( $sModule, $iStatus = 0 )
     {
         $oDb = oxDb::getDb();
         $sShopId   = $this->getConfig()->getShopId();
@@ -483,18 +529,23 @@ class oxModule extends oxSuperCfg
     }
 
     /**
-     * Resets tamplate, language and menu xml cache
+     * Resets template, language and menu xml cache
      *
      * @return null
      */
     protected function _resetCache()
     {
-        $oUtils = oxUtils::getInstance();
         $aTemplates = $this->getTemplates();
+        $oUtils = oxRegistry::getUtils();
         $oUtils->resetTemplateCache($aTemplates);
         $oUtils->resetLanguageCache();
         $oUtils->resetMenuCache();
+
+        $oUtilsObject = oxUtilsObject::getInstance();
+        $oUtilsObject->resetModuleVars();
     }
+
+
     /**
      * Build module chains from nested array
      *
@@ -545,7 +596,7 @@ class oxModule extends oxSuperCfg
     }
 
     /**
-     * Filter module array using modue id
+     * Filter module array using module id
      *
      * @param array  $aModules  Module array (nested format)
      * @param string $sModuleId Module id/folder name
@@ -651,6 +702,26 @@ class oxModule extends oxSuperCfg
     }
 
     /**
+     * Get module versions
+     *
+     * @return array
+     */
+    public function getModuleVersions()
+    {
+        return (array) $this->getConfig()->getConfigParam('aModuleVersions');
+    }
+
+    /**
+     * Get module events
+     *
+     * @return array
+     */
+    public function getModuleEvents()
+    {
+        return (array) $this->getConfig()->getConfigParam('aModuleEvents');
+    }
+
+    /**
      * Checks if module has installed template blocks
      *
      * @param string $sModuleId Module ID
@@ -701,7 +772,7 @@ class oxModule extends oxSuperCfg
     }
 
     /**
-     * Add module tamplate files to config for smarty.
+     * Add module template files to config for smarty.
      *
      * @param array  $aModuleTemplates Module templates array
      * @param string $sModuleId        Module id
@@ -725,7 +796,55 @@ class oxModule extends oxSuperCfg
     }
 
     /**
-     * Add module files to config for autoload.
+     * Add module version to config.
+     *
+     * @param string $sModuleVersion Module version
+     * @param string $sModuleId      Module id
+     *
+     * @return null
+     */
+    protected function _addModuleVersion( $sModuleVersion, $sModuleId = null)
+    {
+        if (is_null($sModuleId)) {
+            $sModuleId = $this->getId();
+        }
+
+        $oConfig = $this->getConfig();
+        $aVersions  = $this->getModuleVersions();
+        if ( is_array($aVersions) ) {
+            $aVersions[$sModuleId] = $sModuleVersion;
+        }
+
+        $oConfig->setConfigParam('aModuleVersions', $aVersions);
+        $oConfig->saveShopConfVar('aarr', 'aModuleVersions', $aVersions);
+    }
+
+    /**
+     * Add module events to config.
+     *
+     * @param array  $aModuleEvents Module events
+     * @param string $sModuleId     Module id
+     *
+     * @return null
+     */
+    protected function _addModuleEvents( $aModuleEvents, $sModuleId = null)
+    {
+        if (is_null($sModuleId)) {
+            $sModuleId = $this->getId();
+        }
+
+        $oConfig = $this->getConfig();
+        $aEvents  = $this->getModuleEvents();
+        if ( is_array($aEvents) ) {
+            $aEvents[$sModuleId] = $aModuleEvents;
+        }
+
+        $oConfig->setConfigParam('aModuleEvents', $aEvents);
+        $oConfig->saveShopConfVar('aarr', 'aModuleEvents', $aEvents);
+    }
+
+    /**
+     * Add module files to config for auto loader.
      *
      * @param array  $aModuleFiles Module files array
      * @param string $sModuleId    Module id
@@ -767,7 +886,7 @@ class oxModule extends oxSuperCfg
 
         if ( is_array($aModuleSettings) ) {
 
-            foreach ( $aModuleSettings as $aValue ) {                
+            foreach ( $aModuleSettings as $aValue ) {
                 $sOxId = oxUtilsObject::getInstance()->generateUId();
 
                 $sModule     = 'module:'.$sModuleId;
@@ -775,14 +894,14 @@ class oxModule extends oxSuperCfg
                 $sType       = $aValue["type"];
                 $sValue      = is_null($oConfig->getConfigParam($sName))?$aValue["value"]:$oConfig->getConfigParam($sName);
                 $sGroup      = $aValue["group"];
-                
+
                 $sConstraints = "";
                 if ( $aValue["constraints"] ) {
                     $sConstraints = $aValue["constraints"];
                 } elseif ( $aValue["constrains"] ) {
                     $sConstraints = $aValue["constrains"];
                 }
-                
+
                 $iPosition   = $aValue["position"]?$aValue["position"]:1;
 
                 $oConfig->setConfigParam($sName, $sValue);
@@ -799,7 +918,7 @@ class oxModule extends oxSuperCfg
     }
 
     /**
-     * Return tempates affected by template blocks for given module id.
+     * Return templates affected by template blocks for given module id.
      *
      * @param string $sModuleId Module id
      *
@@ -812,19 +931,20 @@ class oxModule extends oxSuperCfg
         }
 
         if (!$sModuleId) {
-            return;
+            return array();
         }
 
         $sShopId   = $this->getConfig()->getShopId();
+
         $aTemplates = oxDb::getDb()->getCol("SELECT oxtemplate FROM oxtplblocks WHERE oxmodule = '$sModuleId' AND oxshopid = '$sShopId'" );
 
         return $aTemplates;
     }
 
     /**
-     * Enables modules, that dont have metadata file activation/deactivation.
+     * Enables modules, that don't have metadata file activation/deactivation.
      * Writes to "aLegacyModules" config variable classes, that current module
-     * extedens.
+     * extends.
      *
      * @param string $sModuleId   Module id
      * @param string $sModuleName Module name

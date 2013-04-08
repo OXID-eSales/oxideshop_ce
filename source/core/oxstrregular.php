@@ -368,4 +368,18 @@ class oxStrRegular
         }
         return strip_tags( $sString, $sAllowableTags );
     }
+
+    /**
+     * Compares two strings. Case sensitive.
+     * For use in sorting with reverse order
+     *
+     * @param string $sStr1 String to compare
+     * @param string $sStr2 String to compare
+     *
+     * @return int > 0 if str1 is less than str2; < 0 if str1 is greater than str2, and 0 if they are equal.
+     */
+    public function strrcmp( $sStr1, $sStr2 )
+    {
+        return -strcmp( $sStr1, $sStr2 );
+    }
 }

@@ -39,7 +39,7 @@ class Unit_Views_downloadTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setParameter('sorderfileid', "_testOrderFile");
+        $this->setRequestParam('sorderfileid', "_testOrderFile");
         $oOrderFile = $this->getMock( 'oxOrderFile', array( 'load', 'processOrderFile' ));
         $oOrderFile->expects( $this->any() )->method( 'load')->will( $this->returnValue( true ) );
         $oOrderFile->expects( $this->any() )->method( 'processOrderFile')->will( $this->returnValue( '_fileId' ) );
@@ -82,7 +82,7 @@ class Unit_Views_downloadTest extends OxidTestCase
     {
         oxTestModules::addFunction( "oxUtils", "redirect", "{ throw new exception( 'testDownload', 123 );}" );
         oxTestModules::addFunction( "oxFile", "download", "{ throw new exception( 'testDownload', 123 );}" );
-        modConfig::setParameter('sorderfileid', "_testOrderFile");
+        $this->setRequestParam('sorderfileid', "_testOrderFile");
         $oOrderFile = $this->getMock( 'oxOrderFile', array( 'load', 'processOrderFile' ));
         $oOrderFile->expects( $this->any() )->method( 'load')->will( $this->returnValue( true ) );
         $oOrderFile->expects( $this->any() )->method( 'processOrderFile')->will( $this->returnValue( '_fileId' ) );
@@ -108,7 +108,7 @@ class Unit_Views_downloadTest extends OxidTestCase
     public function testRenderFileDoesnotExists()
     {
         oxTestModules::addFunction( "oxUtils", "redirect", "{ throw new exception( 'testDownload', 123 );}" );
-        modConfig::setParameter('sorderfileid', "_testOrderFile");
+        $this->setRequestParam('sorderfileid', "_testOrderFile");
         $oOrderFile = $this->getMock( 'oxOrderFile', array( 'load', 'processOrderFile' ));
         $oOrderFile->expects( $this->any() )->method( 'load')->will( $this->returnValue( true ) );
         $oOrderFile->expects( $this->any() )->method( 'processOrderFile')->will( $this->returnValue( '_fileId' ) );
@@ -119,6 +119,25 @@ class Unit_Views_downloadTest extends OxidTestCase
             $oDownloads->render();
         } catch ( Exception $oEx ) {
             $this->assertEquals( 123, $oEx->getCode(), 'Error executing "testRenderWrongLink" test' );
+            return;
+        }
+    }
+
+     /**
+     * Test get article list.
+     *
+     * @return null
+     */
+    public function testRenderFaildDownloadingFile()
+    {
+        oxTestModules::addFunction( "oxUtils", "redirect", "{ throw new exception( 'testDownload', 123 );}" );
+        $this->setRequestParam('sorderfileid', "_testOrderFile");
+
+        try {
+            $oDownloads = $this->getProxyClass( 'Download' );
+            $oDownloads->render();
+        } catch ( Exception $oEx ) {
+            $this->assertEquals( 123, $oEx->getCode(), 'Error executing "ERROR_MESSAGE_FILE_DOWNLOAD_FAILED" test' );
             return;
         }
     }

@@ -110,7 +110,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
         oxDb::getDb()->execute( 'delete from oxarticles where oxid = "testart"' );
         oxDb::getDb()->execute( 'delete from oxobject2category where oxobjectid = "testart"' );
 
-        oxConfig::getInstance()->setActiveView( null );
+        //oxConfig::getInstance()->setActiveView( null );
 
         parent::tearDown();
     }
@@ -130,12 +130,12 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
      */
     public function testGetAltUriVendor()
     {
-        $oEncoder = $this->getMock( "oxSeoEncoderArticle", array( "_getListType", "_getArticleVendorUri", "_getArticleManufacturerUri", "_getArticleTagUri", "_getArticleUri" ) );
+        $oEncoder = $this->getMock( "oxSeoEncoderArticle", array( "_getListType", "getArticleVendorUri", "getArticleManufacturerUri", "getArticleTagUri", "getArticleUri" ) );
         $oEncoder->expects( $this->once() )->method( '_getListType' )->will( $this->returnValue( "vendor" ) );
-        $oEncoder->expects( $this->once() )->method( '_getArticleVendorUri' )->will( $this->returnValue( "vendorUri" ) );
-        $oEncoder->expects( $this->never() )->method( '_getArticleManufacturerUri' );
-        $oEncoder->expects( $this->never() )->method( '_getArticleTagUri' );
-        $oEncoder->expects( $this->never() )->method( '_getArticleUri' );
+        $oEncoder->expects( $this->once() )->method( 'getArticleVendorUri' )->will( $this->returnValue( "vendorUri" ) );
+        $oEncoder->expects( $this->never() )->method( 'getArticleManufacturerUri' );
+        $oEncoder->expects( $this->never() )->method( 'getArticleTagUri' );
+        $oEncoder->expects( $this->never() )->method( 'getArticleUri' );
 
         $this->assertEquals( "vendorUri", $oEncoder->UNITgetAltUri( '1126', 0 ) );
     }
@@ -147,12 +147,12 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
      */
     public function testGetAltUriManufacturer()
     {
-        $oEncoder = $this->getMock( "oxSeoEncoderArticle", array( "_getListType", "_getArticleVendorUri", "_getArticleManufacturerUri", "_getArticleTagUri", "_getArticleUri" ) );
+        $oEncoder = $this->getMock( "oxSeoEncoderArticle", array( "_getListType", "getArticleVendorUri", "getArticleManufacturerUri", "getArticleTagUri", "getArticleUri" ) );
         $oEncoder->expects( $this->once() )->method( '_getListType' )->will( $this->returnValue( "manufacturer" ) );
-        $oEncoder->expects( $this->never() )->method( '_getArticleVendorUri' );
-        $oEncoder->expects( $this->once() )->method( '_getArticleManufacturerUri' )->will( $this->returnValue( "manufacturerUri" ) );
-        $oEncoder->expects( $this->never() )->method( '_getArticleTagUri' );
-        $oEncoder->expects( $this->never() )->method( '_getArticleUri' );
+        $oEncoder->expects( $this->never() )->method( 'getArticleVendorUri' );
+        $oEncoder->expects( $this->once() )->method( 'getArticleManufacturerUri' )->will( $this->returnValue( "manufacturerUri" ) );
+        $oEncoder->expects( $this->never() )->method( 'getArticleTagUri' );
+        $oEncoder->expects( $this->never() )->method( 'getArticleUri' );
 
         $this->assertEquals( "manufacturerUri", $oEncoder->UNITgetAltUri( '1126', 0 ) );
     }
@@ -164,12 +164,12 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
      */
     public function testGetAltUriTag()
     {
-        $oEncoder = $this->getMock( "oxSeoEncoderArticle", array( "_getListType", "_getArticleVendorUri", "_getArticleManufacturerUri", "_getArticleTagUri", "_getArticleUri" ) );
+        $oEncoder = $this->getMock( "oxSeoEncoderArticle", array( "_getListType", "getArticleVendorUri", "getArticleManufacturerUri", "getArticleTagUri", "getArticleUri" ) );
         $oEncoder->expects( $this->once() )->method( '_getListType' )->will( $this->returnValue( "tag" ) );
-        $oEncoder->expects( $this->never() )->method( '_getArticleVendorUri' );
-        $oEncoder->expects( $this->never() )->method( '_getArticleManufacturerUri' );
-        $oEncoder->expects( $this->once() )->method( '_getArticleTagUri' )->will( $this->returnValue( "tagUri" ) );
-        $oEncoder->expects( $this->never() )->method( '_getArticleUri' );
+        $oEncoder->expects( $this->never() )->method( 'getArticleVendorUri' );
+        $oEncoder->expects( $this->never() )->method( 'getArticleManufacturerUri' );
+        $oEncoder->expects( $this->once() )->method( 'getArticleTagUri' )->will( $this->returnValue( "tagUri" ) );
+        $oEncoder->expects( $this->never() )->method( 'getArticleUri' );
 
         $this->assertEquals( "tagUri", $oEncoder->UNITgetAltUri( '1126', 0 ) );
     }
@@ -181,12 +181,12 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
      */
     public function testGetAltUriDefault()
     {
-        $oEncoder = $this->getMock( "oxSeoEncoderArticle", array( "_getListType", "_getArticleVendorUri", "_getArticleManufacturerUri", "_getArticleTagUri", "_getArticleUri" ) );
+        $oEncoder = $this->getMock( "oxSeoEncoderArticle", array( "_getListType", "getArticleVendorUri", "getArticleManufacturerUri", "getArticleTagUri", "getArticleUri" ) );
         $oEncoder->expects( $this->once() )->method( '_getListType' );
-        $oEncoder->expects( $this->never() )->method( '_getArticleVendorUri' );
-        $oEncoder->expects( $this->never() )->method( '_getArticleManufacturerUri' );
-        $oEncoder->expects( $this->never() )->method( '_getArticleTagUri' );
-        $oEncoder->expects( $this->once() )->method( '_getArticleUri' )->will( $this->returnValue( "defaultUri" ) );
+        $oEncoder->expects( $this->never() )->method( 'getArticleVendorUri' );
+        $oEncoder->expects( $this->never() )->method( 'getArticleManufacturerUri' );
+        $oEncoder->expects( $this->never() )->method( 'getArticleTagUri' );
+        $oEncoder->expects( $this->once() )->method( 'getArticleUri' )->will( $this->returnValue( "defaultUri" ) );
 
 
         $this->assertEquals( "defaultUri", $oEncoder->UNITgetAltUri( '1126', 0 ) );
@@ -209,17 +209,17 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
 
     public function testGetArticleUrlRecommType()
     {
-        $oEncoder = $this->getMock( "oxSeoEncoderArticle", array( "_getArticleVendorUri", "_getArticleManufacturerUri",
-                                                                  "_getArticleTagUri", "_getArticleRecommUri",
-                                                                  "_getArticleUri", "_getArticleMainUri", "_getFullUrl" ) );
+        $oEncoder = $this->getMock( "oxSeoEncoderArticle", array( "getArticleVendorUri", "getArticleManufacturerUri",
+                                                                  "getArticleTagUri", "getArticleRecommUri",
+                                                                  "getArticleUri", "getArticleMainUri", "_getFullUrl" ) );
 
-        $oEncoder->expects( $this->never() )->method( '_getArticleVendorUri' );
-        $oEncoder->expects( $this->never() )->method( '_getArticleManufacturerUri' );
-        $oEncoder->expects( $this->never() )->method( '_getArticleTagUri' );
-        $oEncoder->expects( $this->never() )->method( '_getArticleUri' );
-        $oEncoder->expects( $this->never() )->method( '_getArticleMainUri' );
+        $oEncoder->expects( $this->never() )->method( 'getArticleVendorUri' );
+        $oEncoder->expects( $this->never() )->method( 'getArticleManufacturerUri' );
+        $oEncoder->expects( $this->never() )->method( 'getArticleTagUri' );
+        $oEncoder->expects( $this->never() )->method( 'getArticleUri' );
+        $oEncoder->expects( $this->never() )->method( 'getArticleMainUri' );
 
-        $oEncoder->expects( $this->once() )->method( '_getArticleRecommUri' )->will( $this->returnValue( "testRecommUrl" ) );
+        $oEncoder->expects( $this->once() )->method( 'getArticleRecommUri' )->will( $this->returnValue( "testRecommUrl" ) );
         $oEncoder->expects( $this->once() )->method( '_getFullUrl' )->will( $this->returnValue( "testFullRecommUrl" ) );
 
         $this->assertEquals( "testFullRecommUrl", $oEncoder->getArticleUrl( new oxArticle, 0, OXARTICLE_LINKTYPE_RECOMM ));
@@ -533,7 +533,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
         $oEncoder->expects( $this->once() )->method( '_prepareArticleTitle' )->will( $this->returnValue( "testArticleTitle" ) );
         $oEncoder->expects( $this->once() )->method( '_processSeoUrl' )->with( $this->equalTo( $sRecommSeoUrl."testArticleTitle" ), $this->equalTo( $oArticle->getId() ), $this->equalTo( $iLang ) )->will( $this->returnValue( $sRecommSeoUrl."testArticleTitle/" ) );
         $oEncoder->expects( $this->once() )->method( '_getListType' )->will( $this->returnValue( "recommlist" ) );
-        $this->assertEquals( $sRecommSeoUrl."testArticleTitle/", $oEncoder->UNITgetArticleRecommUri( $oArticle, $iLang ) );
+        $this->assertEquals( $sRecommSeoUrl."testArticleTitle/", $oEncoder->getArticleRecommUri( $oArticle, $iLang ) );
     }
 
     public function testGetArticleMainUriDataInDbFound()
@@ -552,7 +552,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
         $oEncoder->expects( $this->never() )->method( '_prepareArticleTitle' );
         $oEncoder->expects( $this->never() )->method( '_saveToDb' );
 
-        $this->assertEquals( 'testSeoUri', $oEncoder->UNITgetArticleMainUri( $oArticle, 0 ) );
+        $this->assertEquals( 'testSeoUri', $oEncoder->getArticleMainUri( $oArticle, 0 ) );
     }
 
     public function testGetArticleMainUriHasCategory()
@@ -576,7 +576,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
         $oEncoder->expects( $this->never() )->method( '_prepareArticleTitle' );
         $oEncoder->expects( $this->never() )->method( '_saveToDb' );
 
-        $this->assertEquals( 'testSeoUri', $oEncoder->UNITgetArticleMainUri( $oArticle, 0 ) );
+        $this->assertEquals( 'testSeoUri', $oEncoder->getArticleMainUri( $oArticle, 0 ) );
     }
 
     public function testGetArticleMainUriVariantHasCategory()
@@ -601,7 +601,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
         $oEncoder->expects( $this->never() )->method( '_prepareArticleTitle' );
         $oEncoder->expects( $this->never() )->method( '_saveToDb' );
 
-        $this->assertEquals( 'testSeoUri', $oEncoder->UNITgetArticleMainUri( $oArticle, 0 ) );
+        $this->assertEquals( 'testSeoUri', $oEncoder->getArticleMainUri( $oArticle, 0 ) );
     }
 
     public function testGetArticleMainUriHasNoCategory()
@@ -621,7 +621,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
 
         $oEncoder->expects( $this->never() )->method( '_createArticleCategoryUri' );
 
-        $this->assertEquals( 'testSeoUri', $oEncoder->UNITgetArticleMainUri( $oArticle, 0 ) );
+        $this->assertEquals( 'testSeoUri', $oEncoder->getArticleMainUri( $oArticle, 0 ) );
     }
 
     public function testGetArticleTagUri()
@@ -636,10 +636,10 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
 
         $oSeoEncoderArticle->expects( $this->any() )->method('_getTag')->will( $this->returnValue( $sTag ) );
 
-        $this->assertEquals( $sTagUrl, $oSeoEncoderArticle->UNITgetArticleTagUri( $oArticle, 0 ) );
+        $this->assertEquals( $sTagUrl, $oSeoEncoderArticle->getArticleTagUri( $oArticle, 0 ) );
 
         // chache works ?
-        $this->assertEquals( $sTagUrl, $oSeoEncoderArticle->UNITgetArticleTagUri( $oArticle, 0 ) );
+        $this->assertEquals( $sTagUrl, $oSeoEncoderArticle->getArticleTagUri( $oArticle, 0 ) );
     }
 
     public function testGetProductForLang()
@@ -689,7 +689,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
 
         $oEncoder = $this->getMock( "oxSeoEncoderArticle", array( "_getVendor" ) );
         $oEncoder->expects( $this->once() )->method('_getVendor')->will( $this->returnValue( $oVendor ) );
-        $this->assertEquals( $sSeoUri, $oEncoder->UNITgetArticleVendorUri( $oArticle, 0 ) );
+        $this->assertEquals( $sSeoUri, $oEncoder->getArticleVendorUri( $oArticle, 0 ) );
     }
 
     public function testGetArticleManufacturerUriArticleHasNoManufacturerAssigned()
@@ -697,7 +697,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
         $sManufacturerId = oxDb::getDb()->getOne( "select oxid from oxmanufacturers" );
         $oManufacturer = new oxManufacturer();
         $oManufacturer->load( $sManufacturerId );
-        $sSeoUri = "Nach-Marke/".str_replace( array(' ', '.', '+'), '-', $oManufacturer->oxmanufacturers__oxtitle->value )."/oxid-test-article-title-oxid-test-article-var-select.html";
+        $sSeoUri = "Nach-Hersteller/".str_replace( array(' ', '.', '+'), '-', $oManufacturer->oxmanufacturers__oxtitle->value )."/oxid-test-article-title-oxid-test-article-var-select.html";
 
         $oArticle = new oxarticle();
         $oArticle->oxarticles__oxtitle     = new oxField( 'oxid test article title' );
@@ -706,7 +706,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
 
         $oEncoder = $this->getMock( "oxSeoEncoderArticle", array( "_getManufacturer" ) );
         $oEncoder->expects( $this->once() )->method('_getManufacturer')->will( $this->returnValue( $oManufacturer ) );
-        $this->assertEquals( $sSeoUri, $oEncoder->UNITgetArticleManufacturerUri( $oArticle, 0 ) );
+        $this->assertEquals( $sSeoUri, $oEncoder->getArticleManufacturerUri( $oArticle, 0 ) );
     }
 
     public function testGetArticleVendorUriArticleArticleIsAssignedToVendor()
@@ -724,7 +724,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
 
         $oEncoder = $this->getMock( "oxSeoEncoderArticle", array( "_getVendor" ) );
         $oEncoder->expects( $this->once() )->method('_getVendor')->will( $this->returnValue( $oVendor ) );
-        $this->assertEquals( $sSeoUri, $oEncoder->UNITgetArticleVendorUri( $oArticle, 0 ) );
+        $this->assertEquals( $sSeoUri, $oEncoder->getArticleVendorUri( $oArticle, 0 ) );
     }
 
     public function testGetArticleManufacturerUriArticleArticleIsAssignedToManufacturer()
@@ -733,7 +733,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
         $oManufacturer = new oxManufacturer();
         $oManufacturer->load( $sManufacturerId );
 
-        $sSeoUri = 'Nach-Marke/'.str_replace( array(' ', '.', '+'), '-', $oManufacturer->oxmanufacturers__oxtitle->value ).'/oxid-test-article-title-oxid-test-article-var-select.html';
+        $sSeoUri = 'Nach-Hersteller/'.str_replace( array(' ', '.', '+'), '-', $oManufacturer->oxmanufacturers__oxtitle->value ).'/oxid-test-article-title-oxid-test-article-var-select.html';
 
         $oArticle = new oxarticle();
         $oArticle->oxarticles__oxtitle     = new oxField( 'oxid test article title' );
@@ -742,7 +742,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
 
         $oEncoder = $this->getMock( "oxSeoEncoderArticle", array( "_getManufacturer" ) );
         $oEncoder->expects( $this->once() )->method('_getManufacturer')->will( $this->returnValue( $oManufacturer ) );
-        $this->assertEquals( $sSeoUri, $oEncoder->UNITgetArticleManufacturerUri( $oArticle, 0 ) );
+        $this->assertEquals( $sSeoUri, $oEncoder->getArticleManufacturerUri( $oArticle, 0 ) );
     }
 
     public function testGetArticleVendorUriArticleArticleIsAssignedToVendorWithLangParam()
@@ -766,7 +766,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
 
         $oEncoder = $this->getMock( "oxSeoEncoderArticle", array( "_getVendor" ) );
         $oEncoder->expects( $this->once() )->method('_getVendor')->will( $this->returnValue( $oVendor ) );
-        $this->assertEquals( $sSeoUri, $oEncoder->UNITgetArticleVendorUri( $oArticle, 0 ) );
+        $this->assertEquals( $sSeoUri, $oEncoder->getArticleVendorUri( $oArticle, 0 ) );
     }
 
     public function testGetArticleManufacturerUriArticleArticleIsAssignedToManufacturerWithLangParam()
@@ -780,7 +780,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
             $sArtId = '1354';
             $oxtitle   = 'Wanduhr-SPIDER';
 
-        $sSeoUri = 'Nach-Marke/'.str_replace( array(' ', '.', '+'), '-', $oManufacturer->oxmanufacturers__oxtitle->value ).'/'.$oxtitle.'-oxid-test-article-var-select.html';
+        $sSeoUri = 'Nach-Hersteller/'.str_replace( array(' ', '.', '+'), '-', $oManufacturer->oxmanufacturers__oxtitle->value ).'/'.$oxtitle.'-oxid-test-article-var-select.html';
 
         $oArticle->setId($sArtId);
         $oArticle->oxarticles__oxtitle     = new oxField( $oxtitle );
@@ -790,7 +790,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
 
         $oEncoder = $this->getMock( "oxSeoEncoderArticle", array( "_getManufacturer" ) );
         $oEncoder->expects( $this->once() )->method('_getManufacturer')->will( $this->returnValue( $oManufacturer ) );
-        $this->assertEquals( $sSeoUri, $oEncoder->UNITgetArticleManufacturerUri( $oArticle, 0 ) );
+        $this->assertEquals( $sSeoUri, $oEncoder->getArticleManufacturerUri( $oArticle, 0 ) );
     }
 
     public function testGetArticleVendorUriArticleArticleIsAssignedToVendorEngWithLangParam()
@@ -814,7 +814,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
 
         $oEncoder = $this->getMock( "oxSeoEncoderArticle", array( "_getVendor" ) );
         $oEncoder->expects( $this->once() )->method('_getVendor')->will( $this->returnValue( $oVendor ) );
-        $this->assertEquals( $sSeoUri, $oEncoder->UNITgetArticleVendorUri( $oArticle, 1 ) );
+        $this->assertEquals( $sSeoUri, $oEncoder->getArticleVendorUri( $oArticle, 1 ) );
     }
 
     public function testGetArticleManufacturerUriArticleArticleIsAssignedToManufacturerEngWithLangParam()
@@ -828,7 +828,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
             $sArtId = '1354';
             $oxtitle   = 'Wall-Clock-SPIDER';
 
-        $sSeoUri = 'en/By-Brand/'.str_replace( array(' ', '.', '+'), '-', $oManufacturer->oxmanufacturers__oxtitle->value ).'/'.$oxtitle.'-oxid-test-article-var-select.html';
+        $sSeoUri = 'en/By-Manufacturer/'.str_replace( array(' ', '.', '+'), '-', $oManufacturer->oxmanufacturers__oxtitle->value ).'/'.$oxtitle.'-oxid-test-article-var-select.html';
 
         $oArticle->setId($sArtId);
         $oArticle->oxarticles__oxtitle     = new oxField( $oxtitle );
@@ -838,7 +838,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
 
         $oEncoder = $this->getMock( "oxSeoEncoderArticle", array( "_getManufacturer" ) );
         $oEncoder->expects( $this->once() )->method('_getManufacturer')->will( $this->returnValue( $oManufacturer ) );
-        $this->assertEquals( $sSeoUri, $oEncoder->UNITgetArticleManufacturerUri( $oArticle, 1 ) );
+        $this->assertEquals( $sSeoUri, $oEncoder->getArticleManufacturerUri( $oArticle, 1 ) );
     }
 
     public function testPrepareArticleTitle()
@@ -887,11 +887,11 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
         $oArticle = $this->getMock( 'oxarticle', array( 'getLanguage' ) );
         $oArticle->expects( $this->once() )->method('getLanguage')->will( $this->returnValue( 0 ) );
 
-        $oEncoder = $this->getMock( 'oxSeoEncoderArticle', array( '_getFullUrl', '_getArticleUri', '_getArticleVendorUri', '_getArticleManufacturerUri', '_getArticleMainUri' ) );
-        $oEncoder->expects( $this->once() )->method('_getArticleUri')->will( $this->returnValue( "seoArticleUri" ) );
-        $oEncoder->expects( $this->never() )->method('_getArticleVendorUri');
-        $oEncoder->expects( $this->never() )->method('_getArticleManufacturerUri');
-        $oEncoder->expects( $this->never() )->method('_getArticleMainUri');
+        $oEncoder = $this->getMock( 'oxSeoEncoderArticle', array( '_getFullUrl', 'getArticleUri', 'getArticleVendorUri', 'getArticleManufacturerUri', 'getArticleMainUri' ) );
+        $oEncoder->expects( $this->once() )->method('getArticleUri')->will( $this->returnValue( "seoArticleUri" ) );
+        $oEncoder->expects( $this->never() )->method('getArticleVendorUri');
+        $oEncoder->expects( $this->never() )->method('getArticleManufacturerUri');
+        $oEncoder->expects( $this->never() )->method('getArticleMainUri');
         $oEncoder->expects( $this->once() )->method('_getFullUrl')->will( $this->returnValue( 'seoarturl' ) );
 
         $this->assertEquals( 'seoarturl', $oEncoder->getArticleUrl( $oArticle ) );
@@ -902,12 +902,12 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
         $oArticle = $this->getMock( 'oxarticle', array( 'getLanguage' ) );
         $oArticle->expects( $this->once() )->method('getLanguage')->will( $this->returnValue( 0 ) );
 
-        $oEncoder = $this->getMock( 'oxSeoEncoderArticle', array( '_getFullUrl', '_getArticleUri', '_getArticleVendorUri', '_getArticleManufacturerUri', '_getArticleMainUri' ) );
+        $oEncoder = $this->getMock( 'oxSeoEncoderArticle', array( '_getFullUrl', 'getArticleUri', 'getArticleVendorUri', 'getArticleManufacturerUri', 'getArticleMainUri' ) );
         $oEncoder->expects( $this->once() )->method('_getFullUrl')->will( $this->returnValue( 'seoarturl' ) );
-        $oEncoder->expects( $this->never() )->method('_getArticleUri');
-        $oEncoder->expects( $this->once() )->method('_getArticleVendorUri')->will( $this->returnValue( 'seoarturl' ) );;
-        $oEncoder->expects( $this->never() )->method('_getArticleManufacturerUri');
-        $oEncoder->expects( $this->never() )->method('_getArticleMainUri');
+        $oEncoder->expects( $this->never() )->method('getArticleUri');
+        $oEncoder->expects( $this->once() )->method('getArticleVendorUri')->will( $this->returnValue( 'seoarturl' ) );;
+        $oEncoder->expects( $this->never() )->method('getArticleManufacturerUri');
+        $oEncoder->expects( $this->never() )->method('getArticleMainUri');
 
         $this->assertEquals( 'seoarturl', $oEncoder->getArticleUrl( $oArticle, null, 1 ) );
     }
@@ -917,12 +917,12 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
         $oArticle = $this->getMock( 'oxarticle', array( 'getLanguage' ) );
         $oArticle->expects( $this->once() )->method('getLanguage')->will( $this->returnValue( 0 ) );
 
-        $oEncoder = $this->getMock( 'oxSeoEncoderArticle', array( '_getFullUrl', '_getArticleUri', '_getArticleVendorUri', '_getArticleManufacturerUri', '_getArticleMainUri' ) );
+        $oEncoder = $this->getMock( 'oxSeoEncoderArticle', array( '_getFullUrl', 'getArticleUri', 'getArticleVendorUri', 'getArticleManufacturerUri', 'getArticleMainUri' ) );
         $oEncoder->expects( $this->once() )->method('_getFullUrl')->will( $this->returnValue( 'seoarturl' ) );
-        $oEncoder->expects( $this->never() )->method('_getArticleUri');
-        $oEncoder->expects( $this->never() )->method('_getArticleVendorUri');
-        $oEncoder->expects( $this->once() )->method('_getArticleManufacturerUri')->will( $this->returnValue( 'seoarturl' ) );
-        $oEncoder->expects( $this->never() )->method('_getArticleMainUri');
+        $oEncoder->expects( $this->never() )->method('getArticleUri');
+        $oEncoder->expects( $this->never() )->method('getArticleVendorUri');
+        $oEncoder->expects( $this->once() )->method('getArticleManufacturerUri')->will( $this->returnValue( 'seoarturl' ) );
+        $oEncoder->expects( $this->never() )->method('getArticleMainUri');
 
         $this->assertEquals( 'seoarturl', $oEncoder->getArticleUrl( $oArticle, null, 2 ) );
     }
@@ -932,12 +932,12 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
         $oArticle = $this->getMock( 'oxarticle', array( 'getLanguage' ) );
         $oArticle->expects( $this->once() )->method('getLanguage')->will( $this->returnValue( 0 ) );
 
-        $oEncoder = $this->getMock( 'oxSeoEncoderArticle', array( '_getFullUrl', '_getArticleUri', '_getArticleVendorUri', '_getArticleManufacturerUri', '_getArticleMainUri' ) );
+        $oEncoder = $this->getMock( 'oxSeoEncoderArticle', array( '_getFullUrl', 'getArticleUri', 'getArticleVendorUri', 'getArticleManufacturerUri', 'getArticleMainUri' ) );
         $oEncoder->expects( $this->once() )->method('_getFullUrl')->will( $this->returnValue( 'seoarturl' ) );
-        $oEncoder->expects( $this->once() )->method('_getArticleUri')->will( $this->returnValue( 'seoarturl' ) );
-        $oEncoder->expects( $this->never() )->method('_getArticleVendorUri');
-        $oEncoder->expects( $this->never() )->method('_getArticleManufacturerUri');
-        $oEncoder->expects( $this->never() )->method('_getArticleMainUri');
+        $oEncoder->expects( $this->once() )->method('getArticleUri')->will( $this->returnValue( 'seoarturl' ) );
+        $oEncoder->expects( $this->never() )->method('getArticleVendorUri');
+        $oEncoder->expects( $this->never() )->method('getArticleManufacturerUri');
+        $oEncoder->expects( $this->never() )->method('getArticleMainUri');
 
         $this->assertEquals( 'seoarturl', $oEncoder->getArticleUrl( $oArticle, null, 3 ) );
     }
@@ -947,14 +947,14 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
         $oArticle = $this->getMock( 'oxarticle', array( 'getLanguage' ) );
         $oArticle->expects( $this->once() )->method('getLanguage')->will( $this->returnValue( 0 ) );
 
-        $oEncoder = $this->getMock( 'oxSeoEncoderArticle', array( '_getFullUrl', '_getArticleTagUri', '_getArticlePriceCategoryUri', '_getArticleUri', '_getArticleVendorUri', '_getArticleManufacturerUri', '_getArticleMainUri' ) );
+        $oEncoder = $this->getMock( 'oxSeoEncoderArticle', array( '_getFullUrl', 'getArticleTagUri', '_getArticlePriceCategoryUri', 'getArticleUri', 'getArticleVendorUri', 'getArticleManufacturerUri', 'getArticleMainUri' ) );
         $oEncoder->expects( $this->once() )->method('_getFullUrl')->will( $this->returnValue( 'seoarturl' ) );
-        $oEncoder->expects( $this->once() )->method('_getArticleTagUri')->will( $this->returnValue( 'seoarturl' ) );
+        $oEncoder->expects( $this->once() )->method('getArticleTagUri')->will( $this->returnValue( 'seoarturl' ) );
         $oEncoder->expects( $this->never() )->method('_getArticlePriceCategoryUri');
-        $oEncoder->expects( $this->never() )->method('_getArticleUri');
-        $oEncoder->expects( $this->never() )->method('_getArticleVendorUri');
-        $oEncoder->expects( $this->never() )->method('_getArticleManufacturerUri');
-        $oEncoder->expects( $this->never() )->method('_getArticleMainUri');
+        $oEncoder->expects( $this->never() )->method('getArticleUri');
+        $oEncoder->expects( $this->never() )->method('getArticleVendorUri');
+        $oEncoder->expects( $this->never() )->method('getArticleManufacturerUri');
+        $oEncoder->expects( $this->never() )->method('getArticleMainUri');
 
         $this->assertEquals( 'seoarturl', $oEncoder->getArticleUrl( $oArticle, null, 4 ) );
     }
@@ -978,7 +978,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
         $sUrl = oxSeoEncoder::getInstance()->UNITprepareTitle($oCategory->oxcategories__oxtitle->value ).'/Messerblock-VOODOO-test-var-select.html';
         $oEncoder = $this->getMock( "oxSeoEncoderArticle", array( "_getCategory" ) );
         $oEncoder->expects( $this->once() )->method( '_getCategory' )->will( $this->returnValue( $oCategory ) );
-        $this->assertEquals( $sUrl, $oEncoder->UNITgetArticleUri( $oArticle, 0 ) );
+        $this->assertEquals( $sUrl, $oEncoder->getArticleUri( $oArticle, 0 ) );
     }
 
     public function testGetArticleUriWithoutTitle()
@@ -998,7 +998,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
         $oEncoder->expects( $this->once() )->method( '_getCategory' )->will( $this->returnValue( $oCategory ) );
         $oEncoder->expects( $this->once() )->method( '_loadFromDb' )->will( $this->returnValue( false ) );
 
-        $this->assertEquals( oxSeoEncoder::getInstance()->UNITprepareTitle($oCategory->oxcategories__oxtitle->value)."/123.html", $oEncoder->UNITgetArticleUri( $oArticle, 0 ) );
+        $this->assertEquals( oxSeoEncoder::getInstance()->UNITprepareTitle($oCategory->oxcategories__oxtitle->value)."/123.html", $oEncoder->getArticleUri( $oArticle, 0 ) );
     }
 
     public function testGetArticleUriWithoutTitleInEnglish()
@@ -1018,7 +1018,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
         $oEncoder->expects( $this->once() )->method( '_getCategory' )->will( $this->returnValue( $oCategory ) );
         $oEncoder->expects( $this->once() )->method( '_loadFromDb' )->will( $this->returnValue( false ) );
 
-        $this->assertEquals( "en/".oxSeoEncoder::getInstance()->UNITprepareTitle($oCategory->oxcategories__oxtitle->value)."/123.html", $oEncoder->UNITgetArticleUri( $oArticle, 1 ) );
+        $this->assertEquals( "en/".oxSeoEncoder::getInstance()->UNITprepareTitle($oCategory->oxcategories__oxtitle->value)."/123.html", $oEncoder->getArticleUri( $oArticle, 1 ) );
     }
 
     public function testGetArticleUriVariantWithCategory()
@@ -1036,7 +1036,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
         $oEncoder->expects( $this->once() )->method( '_getCategory' )->will( $this->returnValue( $oCategory ) );
         $oEncoder->expects( $this->once() )->method( '_loadFromDb' )->will( $this->returnvalue( false ) );
 
-        $sSeoUrl = $oEncoder->UNITgetArticleUri( $oArticle, 0 );
+        $sSeoUrl = $oEncoder->getArticleUri( $oArticle, 0 );
         $this->assertEquals( $sUrl, $sSeoUrl );
     }
 
@@ -1064,7 +1064,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
         oxDb::getDb()->execute( 'delete from oxseo where oxtype != "static"' );
         oxDb::getDb()->execute( 'delete from oxseohistory' );
 
-        $this->assertEquals( $sUrl, $oEncoder->UNITgetArticleUri( $oArticle, 1 ) );
+        $this->assertEquals( $sUrl, $oEncoder->getArticleUri( $oArticle, 1 ) );
     }
 
     public function testGetArticleUriVariantWithCategoryWithLangParam()
@@ -1082,7 +1082,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
         $oEncoder->expects( $this->once() )->method( '_getCategory' )->will( $this->returnValue( $oCategory ) );
         $oEncoder->expects( $this->any() )->method( '_loadFromDb' )->will( $this->returnvalue( false ) );
 
-        $this->assertEquals( $sUrl, $oEncoder->UNITgetArticleUri( $oArticle, 0 ) );
+        $this->assertEquals( $sUrl, $oEncoder->getArticleUri( $oArticle, 0 ) );
     }
 
     public function testEncodeArtUrlvariantWithCategoryInEnglishWithLangParam()
@@ -1107,7 +1107,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
         oxDb::getDb()->execute( 'delete from oxseo where oxtype != "static"' );
         oxDb::getDb()->execute( 'delete from oxseohistory' );
 
-        $this->assertEquals( $sUrl, $oEncoder->UNITgetArticleUri( $oArticle, 1 ) );
+        $this->assertEquals( $sUrl, $oEncoder->getArticleUri( $oArticle, 1 ) );
     }
 
     /**
@@ -1253,8 +1253,8 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
         $oA   = $this->getMock('oxarticle', array('getLanguage'));
         $oA->expects($this->any())->method('getLanguage')->will( $this->returnValue( 1 ));
 
-        $oSEA = $this->getMock('oxSeoEncoderArticle', array('_getFullUrl', '_getArticleMainUri'));
-        $oSEA->expects($this->once())->method('_getArticleMainUri')
+        $oSEA = $this->getMock('oxSeoEncoderArticle', array('_getFullUrl', 'getArticleMainUri'));
+        $oSEA->expects($this->once())->method('getArticleMainUri')
             ->with(
                 $this->equalTo($oA),
                 $this->equalTo(1)
@@ -1269,7 +1269,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
     }
 
     /**
-     * oxSeoEncoderArticle::_getArticleUri() test case
+     * oxSeoEncoderArticle::getArticleUri() test case
      *
      * @return null
      */
@@ -1289,7 +1289,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
         $oEncoder->expects( $this->once( ))->method( '_getCategory' )->will( $this->returnValue( false ) );
         $oEncoder->expects( $this->once( ))->method( '_loadFromDb' )->will( $this->returnValue( false ) );
         $oEncoder->expects( $this->once( ))->method( '_getMainCategory' )->will( $this->returnValue( $oCategory ) );
-        $this->assertEquals( $sBaseUri . "Bar-Set-ABSINTH.html", $oEncoder->UNITgetArticleUri( $oProduct, 0 ) );
+        $this->assertEquals( $sBaseUri . "Bar-Set-ABSINTH.html", $oEncoder->getArticleUri( $oProduct, 0 ) );
     }
 
     /**

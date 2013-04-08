@@ -50,23 +50,23 @@ class Unit_Setup_oxSetupControllerTest extends OxidTestCase
      */
     public function testSystemReq()
     {
-        $oView = $this->getMock( "oxStdClass", array( "setTitle", "setViewParam" ) );
+        $oView = $this->getMock( "oxSetupView", array( "setTitle", "setViewParam" ) );
         $oView->expects( $this->at( 0 ) )->method( "setTitle" )->with( $this->equalTo( 'STEP_0_TITLE' ) );
         $oView->expects( $this->at( 1 ) )->method( "setViewParam" )->with( $this->equalTo( 'blContinue' ) );
         $oView->expects( $this->at( 2 ) )->method( "setViewParam" )->with( $this->equalTo( 'aGroupModuleInfo' ) );
         $oView->expects( $this->at( 3 ) )->method( "setViewParam" )->with( $this->equalTo( 'aLanguages' ) );
         $oView->expects( $this->at( 4 ) )->method( "setViewParam" )->with( $this->equalTo( 'sSetupLang' ), $this->equalTo( "testLangId" ) );
 
-        $oSetup = $this->getMock( "oxStdClass", array( "getModuleClass" ) );
+        $oSetup = $this->getMock( "oxSetup", array( "getModuleClass" ) );
         $oSetup->expects( $this->any() )->method( "getModuleClass" )->will( $this->returnValue( "testModuleClass" ) );
 
-        $oLang = $this->getMock( "oxStdClass", array( "getModuleName" ) );
+        $oLang = $this->getMock( "oxSetupLang", array( "getModuleName" ) );
         $oLang->expects( $this->any() )->method( "getModuleName" )->will( $this->returnValue( "testModuleName" ) );
 
-        $oSession = $this->getMock( "oxStdClass", array( "getSessionParam" ) );
+        $oSession = $this->getMock( "oxSetupSession", array( "getSessionParam" ), array(), '', null );
         $oSession->expects( $this->once() )->method( "getSessionParam" )->with( $this->equalTo( 'setup_lang' ) )->will( $this->returnValue( "testLangId" ) );
 
-        $oUtils = $this->getMock( "oxStdClass", array( "getDefaultPathParams", "extractRewriteBase", "updateHtaccessFile" ) );
+        $oUtils = $this->getMock( "oxSetupUtils", array( "getDefaultPathParams", "extractRewriteBase", "updateHtaccessFile" ) );
         $oUtils->expects( $this->once() )->method( "getDefaultPathParams" )->will( $this->returnValue( array( "sBaseUrlPath" => "sBaseUrlPath", "sShopURL" => "sShopURL" ) ) );
         $oUtils->expects( $this->once() )->method( "extractRewriteBase" )->with( $this->equalTo( 'sShopURL' ) )->will( $this->returnValue( "sBaseUrlPath" ) );
         $oUtils->expects( $this->once() )->method( "updateHtaccessFile" );
@@ -87,14 +87,14 @@ class Unit_Setup_oxSetupControllerTest extends OxidTestCase
      */
     public function testWelcome()
     {
-        $oSession = $this->getMock( "oxStdClass", array( "getSessionParam" ) );
+        $oSession = $this->getMock( "oxSetupSession", array( "getSessionParam" ), array(), '', null );
         $oSession->expects( $this->at( 0 ) )->method( "getSessionParam" )->will( $this->returnValue( "en" ) );
         $oSession->expects( $this->at( 1 ) )->method( "getSessionParam" )->will( $this->returnValue( "de" ) );
 
-        $oUtils = $this->getMock( "oxStdClass", array( "setCookie" ) );
+        $oUtils = $this->getMock( "oxSetupUtils", array( "setCookie" ) );
         $oUtils->expects( $this->once() )->method( "setCookie" )->with( $this->equalTo( "oxidadminlanguage" ) );
 
-        $oView = $this->getMock( "oxStdClass", array( "setTitle", "setViewParam" ) );
+        $oView = $this->getMock( "oxSetupView", array( "setTitle", "setViewParam" ) );
         $oView->expects( $this->at( 0 ) )->method( "setTitle" )->with( $this->equalTo( 'STEP_1_TITLE' ) );
         $oView->expects( $this->at( 1 ) )->method( "setViewParam" )->with( $this->equalTo( 'aCountries' ) );
         $oView->expects( $this->at( 2 ) )->method( "setViewParam" )->with( $this->equalTo( 'aLocations' ) );
@@ -104,7 +104,7 @@ class Unit_Setup_oxSetupControllerTest extends OxidTestCase
         $oView->expects( $this->at( 6 ) )->method( "setViewParam" )->with( $this->equalTo( 'sLocationLang' ) );
         $oView->expects( $this->at( 7 ) )->method( "setViewParam" )->with( $this->equalTo( 'sCountryLang' ) );
 
-        $oLang = $this->getMock( "oxStdClass", array( "getSetupLang" ) );
+        $oLang = $this->getMock( "oxSetupLang", array( "getSetupLang" ) );
         $oLang->expects( $this->once() )->method( "getSetupLang" )->will( $this->returnValue( "oxidadminlanguage" ) );
 
         $oController = $this->getMock( "oxSetupController", array( "getView", "getInstance" ) );
@@ -122,14 +122,14 @@ class Unit_Setup_oxSetupControllerTest extends OxidTestCase
      */
     public function testLicense()
     {
-        $oView = $this->getMock( "oxStdClass", array( "setTitle", "setViewParam" ) );
+        $oView = $this->getMock( "oxSetupView", array( "setTitle", "setViewParam" ) );
         $oView->expects( $this->at( 0 ) )->method( "setTitle" )->with( $this->equalTo( 'STEP_2_TITLE' ) );
         $oView->expects( $this->at( 1 ) )->method( "setViewParam" )->with( $this->equalTo( 'aLicenseText' ) );
 
-        $oLang = $this->getMock( "oxStdClass", array( "getSetupLang" ) );
+        $oLang = $this->getMock( "oxSetupLang", array( "getSetupLang" ) );
         $oLang->expects( $this->once() )->method( "getSetupLang" )->will( $this->returnValue( "de" ) );
 
-        $oUtils = $this->getMock( "oxStdClass", array( "getFileContents" ) );
+        $oUtils = $this->getMock( "oxSetupUtils", array( "getFileContents" ) );
         $oLang->expects( $this->once() )->method( "getSetupLang" )->will( $this->returnValue( "contents" ) );
 
         $iAt = 0;
@@ -147,17 +147,17 @@ class Unit_Setup_oxSetupControllerTest extends OxidTestCase
      */
     public function testDbInfoCanceledSetup()
     {
-        $oView = $this->getMock( "oxStdClass", array( "setMessage" ) );
+        $oView = $this->getMock( "oxSetupView", array( "setMessage" ) );
         $oView->expects( $this->once() )->method( "setMessage" );
 
-        $oSetup = $this->getMock( "oxStdClass", array( "getStep", "setNextStep" ) );
+        $oSetup = $this->getMock( "oxSetup", array( "getStep", "setNextStep" ) );
         $oSetup->expects( $this->once() )->method( "getStep" )->with( $this->equalTo( "STEP_WELCOME" ) );
         $oSetup->expects( $this->once() )->method( "setNextStep" );
 
-        $oSession = $this->getMock( "oxStdClass", array( "getSessionParam" ) );
+        $oSession = $this->getMock( "oxSetupSession", array( "getSessionParam" ), array(), '', null );
         $oSession->expects( $this->once() )->method( "getSessionParam" )->will( $this->returnValue( false ) );
 
-        $oLang = $this->getMock( "oxStdClass", array( "getText" ) );
+        $oLang = $this->getMock( "oxSetupLang", array( "getText" ) );
         $oLang->expects( $this->once() )->method( "getText" )->with( $this->equalTo( "ERROR_SETUP_CANCELLED" ) )->will( $this->returnValue( false ) );
 
         $oUtils = $this->getMock( "oxSetupUtils", array( "getRequestVar" ) );
@@ -179,13 +179,13 @@ class Unit_Setup_oxSetupControllerTest extends OxidTestCase
      */
     public function testDbInfo()
     {
-        $oView = $this->getMock( "oxStdClass", array( "setTitle", "setViewParam" ) );
+        $oView = $this->getMock( "oxSetupView", array( "setTitle", "setViewParam" ) );
         $oView->expects( $this->at( 0 ) )->method( "setTitle" )->with( $this->equalTo( 'STEP_3_TITLE' ) );
         $oView->expects( $this->at( 1 ) )->method( "setViewParam" )->with( $this->equalTo( 'aDB' ) );
         $oView->expects( $this->at( 2 ) )->method( "setViewParam" )->with( $this->equalTo( 'blMbStringOn' ) );
         $oView->expects( $this->at( 3 ) )->method( "setViewParam" )->with( $this->equalTo( 'blUnicodeSupport' ) );
 
-        $oSession = $this->getMock( "oxStdClass", array( "getSessionParam" ) );
+        $oSession = $this->getMock( "oxSetupSession", array( "getSessionParam" ), array(), '', null );
         $oSession->expects( $this->at( 0 ) )->method( "getSessionParam" )->will( $this->returnValue( true ) );
         $oSession->expects( $this->at( 1 ) )->method( "getSessionParam" )->will( $this->returnValue( null ) );
 
@@ -206,17 +206,17 @@ class Unit_Setup_oxSetupControllerTest extends OxidTestCase
      */
     public function testDirsInfo()
     {
-        $oView = $this->getMock( "oxStdClass", array( "setTitle", "setViewParam" ) );
+        $oView = $this->getMock( "oxSetupView", array( "setTitle", "setViewParam" ) );
         $oView->expects( $this->at( 0 ) )->method( "setTitle" )->with( $this->equalTo( 'STEP_4_TITLE' ) );
         $oView->expects( $this->at( 1 ) )->method( "setViewParam" )->with( $this->equalTo( 'aSetupConfig' ) );
         $oView->expects( $this->at( 2 ) )->method( "setViewParam" )->with( $this->equalTo( 'aAdminData' ) );
         $oView->expects( $this->at( 3 ) )->method( "setViewParam" )->with( $this->equalTo( 'aPath' ) );
 
-        $oSession = $this->getMock( "oxStdClass", array( "getSessionParam" ) );
+        $oSession = $this->getMock( "oxSetupSession", array( "getSessionParam" ), array(), '', null );
         $oSession->expects( $this->at( 0 ) )->method( "getSessionParam" )->with( $this->equalTo( "aSetupConfig" ) );
         $oSession->expects( $this->at( 1 ) )->method( "getSessionParam" )->with( $this->equalTo( "aAdminData" ) );
 
-        $oUtils = $this->getMock( "oxStdClass", array( "getDefaultPathParams" ) );
+        $oUtils = $this->getMock( "oxSetupUtils", array( "getDefaultPathParams" ) );
         $oUtils->expects( $this->once() )->method( "getDefaultPathParams" );
 
         $oController = $this->getMock( "oxSetupController", array( "getView", "getInstance" ) );
@@ -233,17 +233,17 @@ class Unit_Setup_oxSetupControllerTest extends OxidTestCase
      */
     public function testDbConnectMissingParameters()
     {
-        $oView = $this->getMock( "oxStdClass", array( "setTitle", "setMessage" ) );
+        $oView = $this->getMock( "oxSetupView", array( "setTitle", "setMessage" ) );
         $oView->expects( $this->once() )->method( "setTitle" )->with( $this->equalTo( "STEP_3_1_TITLE" ) );
         $oView->expects( $this->once() )->method( "setMessage" );
 
-        $oLang = $this->getMock( "oxStdClass", array( "getText" ) );
+        $oLang = $this->getMock( "oxSetupLang", array( "getText" ) );
         $oLang->expects( $this->once() )->method( "getText" )->with( $this->equalTo( "ERROR_FILL_ALL_FIELDS" ) );
 
-        $oSession = $this->getMock( "oxStdClass", array( "setSessionParam" ) );
+        $oSession = $this->getMock( "oxSetupSession", array( "setSessionParam" ), array(), '', null );
         $oSession->expects( $this->once() )->method( "setSessionParam" )->with( $this->equalTo( "aDB" ) );
 
-        $oSetup = $this->getMock( "oxStdClass", array( "setNextStep", "getStep" ) );
+        $oSetup = $this->getMock( "oxSetup", array( "setNextStep", "getStep" ) );
         $oSetup->expects( $this->once() )->method( "setNextStep" );
         $oSetup->expects( $this->once() )->method( "getStep" )->with( $this->equalTo( "STEP_DB_INFO" ) );
 
@@ -266,24 +266,24 @@ class Unit_Setup_oxSetupControllerTest extends OxidTestCase
      */
     public function testDbConnectUnableToConnect()
     {
-        $oView = $this->getMock( "oxStdClass", array( "setTitle", "setMessage" ) );
+        $oView = $this->getMock( "oxSetupView", array( "setTitle", "setMessage" ) );
         $oView->expects( $this->once() )->method( "setTitle" )->with( $this->equalTo( "STEP_3_1_TITLE" ) );
         $oView->expects( $this->once() )->method( "setMessage" );
 
-        $oLang = $this->getMock( "oxStdClass", array( "getText" ) );
+        $oLang = $this->getMock( "oxSetupLang", array( "getText" ) );
         $oLang->expects( $this->once() )->method( "getText" )->with( $this->equalTo( "ERROR_DB_CONNECT" ) );
 
-        $oSession = $this->getMock( "oxStdClass", array( "setSessionParam" ) );
+        $oSession = $this->getMock( "oxSetupSession", array( "setSessionParam" ), array(), '', null );
         $oSession->expects( $this->once() )->method( "setSessionParam" )->with( $this->equalTo( "aDB" ) );
 
-        $oSetup = $this->getMock( "oxStdClass", array( "setNextStep", "getStep" ) );
+        $oSetup = $this->getMock( "oxSetup", array( "setNextStep", "getStep" ) );
         $oSetup->expects( $this->once() )->method( "setNextStep" );
         $oSetup->expects( $this->once() )->method( "getStep" )->with( $this->equalTo( "STEP_DB_INFO" ) );
 
-        $oUtils = $this->getMock( "oxStdClass", array( "getRequestVar" ) );
+        $oUtils = $this->getMock( "oxSetupUtils", array( "getRequestVar" ) );
         $oUtils->expects( $this->any() )->method( "getRequestVar" )->will( $this->returnValue( array( "dbHost" => "testHost", "dbName" => "testName" ) ) );
 
-        $oDb = $this->getMock( "oxStdClass", array( "openDatabase" ) );
+        $oDb = $this->getMock( "oxSetupDb", array( "openDatabase" ) );
         $oDb->expects( $this->once() )->method( "openDatabase" )->will( $this->throwException( new Exception( "", oxSetupDb::ERROR_DB_CONNECT ) ) );
 
         $oController = $this->getMock( "oxSetupController", array( "getView", "getInstance" ) );
@@ -303,21 +303,21 @@ class Unit_Setup_oxSetupControllerTest extends OxidTestCase
      */
     public function testDbConnectUnableToCreateDb()
     {
-        $oView = $this->getMock( "oxStdClass", array( "setTitle", "setMessage" ) );
+        $oView = $this->getMock( "oxSetupView", array( "setTitle", "setMessage" ) );
         $oView->expects( $this->once() )->method( "setTitle" )->with( $this->equalTo( "STEP_3_1_TITLE" ) );
         $oView->expects( $this->once() )->method( "setMessage" );
 
-        $oSession = $this->getMock( "oxStdClass", array( "setSessionParam" ) );
+        $oSession = $this->getMock( "oxSetupSession", array( "setSessionParam" ), array(), '', null );
         $oSession->expects( $this->once() )->method( "setSessionParam" )->with( $this->equalTo( "aDB" ) );
 
-        $oSetup = $this->getMock( "oxStdClass", array( "setNextStep", "getStep" ) );
+        $oSetup = $this->getMock( "oxSetup", array( "setNextStep", "getStep" ) );
         $oSetup->expects( $this->once() )->method( "setNextStep" );
         $oSetup->expects( $this->once() )->method( "getStep" )->with( $this->equalTo( "STEP_DB_INFO" ) );
 
-        $oUtils = $this->getMock( "oxStdClass", array( "getRequestVar" ) );
+        $oUtils = $this->getMock( "oxSetupUtils", array( "getRequestVar" ) );
         $oUtils->expects( $this->any() )->method( "getRequestVar" )->will( $this->returnValue( array( "dbHost" => "testHost", "dbName" => "testName" ) ) );
 
-        $oDb = $this->getMock( "oxStdClass", array( "openDatabase", "createDb" ) );
+        $oDb = $this->getMock( "oxSetupDb", array( "openDatabase", "createDb" ) );
         $oDb->expects( $this->once() )->method( "openDatabase" )->will( $this->throwException( new Exception( "" ) ) );
         $oDb->expects( $this->once() )->method( "createDb" )->will( $this->throwException( new Exception( "" ) ) );
 
@@ -338,22 +338,22 @@ class Unit_Setup_oxSetupControllerTest extends OxidTestCase
      */
     public function testDbConnect()
     {
-        $oView = $this->getMock( "oxStdClass", array( "setTitle", "setViewParam" ) );
+        $oView = $this->getMock( "oxSetupView", array( "setTitle", "setViewParam" ) );
         $oView->expects( $this->at( 0 ) )->method( "setTitle" )->with( $this->equalTo( "STEP_3_1_TITLE" ) );
         $oView->expects( $this->at( 1 ) )->method( "setViewParam" )->with( $this->equalTo( "blCreated" ) );
         $oView->expects( $this->at( 2 ) )->method( "setViewParam" )->with( $this->equalTo( "aDB" ) );
 
-        $oSession = $this->getMock( "oxStdClass", array( "setSessionParam" ) );
+        $oSession = $this->getMock( "oxSetupSession", array( "setSessionParam" ), array(), '', null );
         $oSession->expects( $this->once() )->method( "setSessionParam" )->with( $this->equalTo( "aDB" ) );
 
-        $oSetup = $this->getMock( "oxStdClass", array( "setNextStep", "getStep" ) );
+        $oSetup = $this->getMock( "oxSetup", array( "setNextStep", "getStep" ) );
         $oSetup->expects( $this->once() )->method( "setNextStep" );
         $oSetup->expects( $this->once() )->method( "getStep" )->with( $this->equalTo( "STEP_DB_CREATE" ) );
 
-        $oUtils = $this->getMock( "oxStdClass", array( "getRequestVar" ) );
+        $oUtils = $this->getMock( "oxSetupUtils", array( "getRequestVar" ) );
         $oUtils->expects( $this->any() )->method( "getRequestVar" )->will( $this->returnValue( array( "dbHost" => "testHost", "dbName" => "testName" ) ) );
 
-        $oDb = $this->getMock( "oxStdClass", array( "openDatabase", "createDb" ) );
+        $oDb = $this->getMock( "oxSetupDb", array( "openDatabase", "createDb" ) );
         $oDb->expects( $this->once() )->method( "openDatabase" )->will( $this->throwException( new Exception( "" ) ) );
         $oDb->expects( $this->once() )->method( "createDb" );
 
@@ -374,24 +374,24 @@ class Unit_Setup_oxSetupControllerTest extends OxidTestCase
      */
     public function testDbCreateDbExists()
     {
-        $oSetup = $this->getMock( "oxStdClass", array( "setNextStep", "getStep" ) );
+        $oSetup = $this->getMock( "oxSetup", array( "setNextStep", "getStep" ) );
         $oSetup->expects( $this->once() )->method( "getStep" )->with( $this->equalTo( "STEP_DB_CREATE" ) );
 
-        $oSession = $this->getMock( "oxStdClass", array( "getSessionParam", "getSid" ) );
+        $oSession = $this->getMock( "oxSetupSession", array( "getSessionParam", "getSid" ), array(), '', null );
         $oSession->expects( $this->once() )->method( "getSessionParam" )->with( $this->equalTo( "aDB" ) );
         $oSession->expects( $this->once() )->method( "getSid" );
 
-        $oLang = $this->getMock( "oxStdClass", array( "getText" ) );
+        $oLang = $this->getMock( "oxSetupLang", array( "getText" ) );
         $oLang->expects( $this->atLeastOnce() )->method( "getText" );
 
-        $oView = $this->getMock( "oxStdClass", array( "setTitle", "setMessage" ) );
+        $oView = $this->getMock( "oxSetupView", array( "setTitle", "setMessage" ) );
         $oView->expects( $this->once() )->method( "setTitle" )->with( $this->equalTo( "STEP_3_2_TITLE" ) );
         $oView->expects( $this->once() )->method( "setMessage" );
 
-        $oUtils = $this->getMock( "oxStdClass", array( "getRequestVar" ) );
+        $oUtils = $this->getMock( "oxSetupUtils", array( "getRequestVar" ) );
         $oUtils->expects( $this->once() )->method( "getRequestVar" );
 
-        $oDb = $this->getMock( "oxStdClass", array( "openDatabase", "execSql", "testCreateView" ) );
+        $oDb = $this->getMock( "oxSetupDb", array( "openDatabase", "execSql", "testCreateView" ) );
         $oDb->expects( $this->once() )->method( "openDatabase" );
         $oDb->expects( $this->once() )->method( "execSql" );
         $oDb->expects( $this->once() )->method( "testCreateView" );
@@ -413,20 +413,20 @@ class Unit_Setup_oxSetupControllerTest extends OxidTestCase
      */
     public function testDbCreateFailedDbCreation()
     {
-        $oSetup = $this->getMock( "oxStdClass", array( "getVersionPrefix" ) );
+        $oSetup = $this->getMock( "oxSetup", array( "getVersionPrefix" ) );
         $oSetup->expects( $this->any() )->method( "getVersionPrefix" );
 
-        $oSession = $this->getMock( "oxStdClass", array( "getSessionParam" ) );
+        $oSession = $this->getMock( "oxSetupSession", array( "getSessionParam" ), array(), '', null );
         $oSession->expects( $this->once() )->method( "getSessionParam" )->with( $this->equalTo( "aDB" ) );
 
-        $oView = $this->getMock( "oxStdClass", array( "setTitle", "setMessage" ) );
+        $oView = $this->getMock( "oxSetupView", array( "setTitle", "setMessage" ) );
         $oView->expects( $this->once() )->method( "setTitle" )->with( $this->equalTo( "STEP_3_2_TITLE" ) );
         $oView->expects( $this->once() )->method( "setMessage" );
 
-        $oUtils = $this->getMock( "oxStdClass", array( "getRequestVar" ) );
+        $oUtils = $this->getMock( "oxSetupUtils", array( "getRequestVar" ) );
         $oUtils->expects( $this->once() )->method( "getRequestVar" );
 
-        $oDb = $this->getMock( "oxStdClass", array( "openDatabase", "execSql", "setMySqlCollation", "queryFile", "testCreateView" ) );
+        $oDb = $this->getMock( "oxSetupDb", array( "openDatabase", "execSql", "setMySqlCollation", "queryFile", "testCreateView" ) );
         $oDb->expects( $this->once() )->method( "openDatabase" );
         $oDb->expects( $this->once() )->method( "setMySqlCollation" );
         $oDb->expects( $this->once() )->method( "execSql" )->will( $this->throwException( new Exception ));
@@ -450,23 +450,23 @@ class Unit_Setup_oxSetupControllerTest extends OxidTestCase
      */
     public function testDbCreateFailedDataInsert()
     {
-        $oSetup = $this->getMock( "oxStdClass", array( "getVersionPrefix" ) );
+        $oSetup = $this->getMock( "oxSetup", array( "getVersionPrefix" ) );
         $oSetup->expects( $this->any() )->method( "getVersionPrefix" );
 
-        $oSession = $this->getMock( "oxStdClass", array( "getSessionParam" ) );
+        $oSession = $this->getMock( "oxSetupSession", array( "getSessionParam" ), array(), '', null );
         $oSession->expects( $this->once() )->method( "getSessionParam" )->with( $this->equalTo( "aDB" ) )->will( $this->returnValue( array( "dbiDemoData" => 1 ) ) );
 
-        $oView = $this->getMock( "oxStdClass", array( "setTitle", "setMessage" ) );
+        $oView = $this->getMock( "oxSetupView", array( "setTitle", "setMessage" ) );
         $oView->expects( $this->once() )->method( "setTitle" )->with( $this->equalTo( "STEP_3_2_TITLE" ) );
         $oView->expects( $this->once() )->method( "setMessage" );
 
-        $oUtils = $this->getMock( "oxStdClass", array( "getRequestVar" ) );
+        $oUtils = $this->getMock( "oxSetupUtils", array( "getRequestVar" ) );
         $oUtils->expects( $this->once() )->method( "getRequestVar" );
 
-        $oLang = $this->getMock( "oxStdClass", array( "getText" ) );
+        $oLang = $this->getMock( "oxSetupLang", array( "getText" ) );
         $oLang->expects( $this->atLeastOnce() )->method( "getText" );
 
-        $oDb = $this->getMock( "oxStdClass", array( "openDatabase", "execSql", "setMySqlCollation", "queryFile", "testCreateView" ) );
+        $oDb = $this->getMock( "oxSetupDb", array( "openDatabase", "execSql", "setMySqlCollation", "queryFile", "testCreateView" ) );
         $oDb->expects( $this->at( 0 ) )->method( "openDatabase" );
         $oDb->expects( $this->at( 1 ) )->method( "testCreateView" );
         $oDb->expects( $this->at( 2 ) )->method( "execSql" )->will( $this->throwException( new Exception ));
@@ -491,24 +491,24 @@ class Unit_Setup_oxSetupControllerTest extends OxidTestCase
      */
     public function testDbCreateFailedEnDataInsert()
     {
-        $oSetup = $this->getMock( "oxStdClass", array( "getVersionPrefix" ) );
+        $oSetup = $this->getMock( "oxSetup", array( "getVersionPrefix" ) );
         $oSetup->expects( $this->any() )->method( "getVersionPrefix" );
 
-        $oSession = $this->getMock( "oxStdClass", array( "getSessionParam" ) );
+        $oSession = $this->getMock( "oxSetupSession", array( "getSessionParam" ), array(), '', null );
         $oSession->expects( $this->at( 0 ) )->method( "getSessionParam" )->with( $this->equalTo( "aDB" ) )->will( $this->returnValue( array( "dbiDemoData" => 1 ) ) );
         $oSession->expects( $this->at( 1 ) )->method( "getSessionParam" )->with( $this->equalTo( "location_lang" ) )->will( $this->returnValue( "en" ) );
 
-        $oView = $this->getMock( "oxStdClass", array( "setTitle", "setMessage" ) );
+        $oView = $this->getMock( "oxSetupView", array( "setTitle", "setMessage" ) );
         $oView->expects( $this->once() )->method( "setTitle" )->with( $this->equalTo( "STEP_3_2_TITLE" ) );
         $oView->expects( $this->once() )->method( "setMessage" );
 
-        $oUtils = $this->getMock( "oxStdClass", array( "getRequestVar" ) );
+        $oUtils = $this->getMock( "oxSetupUtils", array( "getRequestVar" ) );
         $oUtils->expects( $this->once() )->method( "getRequestVar" );
 
-        $oLang = $this->getMock( "oxStdClass", array( "getText" ) );
+        $oLang = $this->getMock( "oxSetupLang", array( "getText" ) );
         $oLang->expects( $this->atLeastOnce() )->method( "getText" );
 
-        $oDb = $this->getMock( "oxStdClass", array( "openDatabase", "execSql", "setMySqlCollation", "queryFile", "testCreateView" ) );
+        $oDb = $this->getMock( "oxSetupDb", array( "openDatabase", "execSql", "setMySqlCollation", "queryFile", "testCreateView" ) );
         $oDb->expects( $this->at( 0 ) )->method( "openDatabase" );
         $oDb->expects( $this->at( 1 ) )->method( "testCreateView" );
         $oDb->expects( $this->at( 2 ) )->method( "execSql" )->will( $this->throwException( new Exception ));
@@ -534,21 +534,21 @@ class Unit_Setup_oxSetupControllerTest extends OxidTestCase
      */
     public function testDbCreateFailedViewTest()
     {
-        $oSetup = $this->getMock( "oxStdClass", array( "setNextStep", "getStep" ) );
+        $oSetup = $this->getMock( "oxSetup", array( "setNextStep", "getStep" ) );
         $oSetup->expects( $this->once() )->method( "setNextStep" );
         $oSetup->expects( $this->once() )->method( "getStep" );
 
-        $oSession = $this->getMock( "oxStdClass", array( "getSessionParam" ) );
+        $oSession = $this->getMock( "oxSetupSession", array( "getSessionParam" ), array(), '', null );
         $oSession->expects( $this->at( 0 ) )->method( "getSessionParam" )->with( $this->equalTo( "aDB" ) )->will( $this->returnValue( array( "dbiDemoData" => 1 ) ) );
 
-        $oView = $this->getMock( "oxStdClass", array( "setTitle", "setMessage" ) );
+        $oView = $this->getMock( "oxSetupView", array( "setTitle", "setMessage" ) );
         $oView->expects( $this->once() )->method( "setTitle" )->with( $this->equalTo( "STEP_3_2_TITLE" ) );
         $oView->expects( $this->once() )->method( "setMessage" );
 
-        $oUtils = $this->getMock( "oxStdClass", array( "getRequestVar" ) );
+        $oUtils = $this->getMock( "oxSetupUtils", array( "getRequestVar" ) );
         $oUtils->expects( $this->once() )->method( "getRequestVar" );
 
-        $oDb = $this->getMock( "oxStdClass", array( "openDatabase", "testCreateView" ) );
+        $oDb = $this->getMock( "oxSetupDb", array( "openDatabase", "testCreateView" ) );
         $oDb->expects( $this->at( 0 ) )->method( "openDatabase" );
         $oDb->expects( $this->at( 1 ) )->method( "testCreateView" )->will( $this->throwException( new Exception ));
 
@@ -569,26 +569,26 @@ class Unit_Setup_oxSetupControllerTest extends OxidTestCase
      */
     public function testDbCreate()
     {
-        $oSetup = $this->getMock( "oxStdClass", array( "getVersionPrefix", "setNextStep", "getStep" ) );
+        $oSetup = $this->getMock( "oxSetup", array( "getVersionPrefix", "setNextStep", "getStep" ) );
         $oSetup->expects( $this->any() )->method( "getVersionPrefix" );
         $oSetup->expects( $this->once() )->method( "setNextStep" );
         $oSetup->expects( $this->once() )->method( "getStep" )->with( $this->equalTo( 'STEP_DIRS_INFO' ) );
 
-        $oSession = $this->getMock( "oxStdClass", array( "getSessionParam" ) );
+        $oSession = $this->getMock( "oxSetupSession", array( "getSessionParam" ), array(), '', null );
         $oSession->expects( $this->at( 0 ) )->method( "getSessionParam" )->with( $this->equalTo( "aDB" ) )->will( $this->returnValue( array( "dbiDemoData" => 1, "iUtfMode" => 1 ) ) );
         $oSession->expects( $this->at( 1 ) )->method( "getSessionParam" )->with( $this->equalTo( "location_lang" ) )->will( $this->returnValue( "en" ) );
 
-        $oView = $this->getMock( "oxStdClass", array( "setTitle", "setMessage" ) );
+        $oView = $this->getMock( "oxSetupView", array( "setTitle", "setMessage" ) );
         $oView->expects( $this->once() )->method( "setTitle" )->with( $this->equalTo( "STEP_3_2_TITLE" ) );
         $oView->expects( $this->once() )->method( "setMessage" );
 
-        $oUtils = $this->getMock( "oxStdClass", array( "getRequestVar" ) );
+        $oUtils = $this->getMock( "oxSetupUtils", array( "getRequestVar" ) );
         $oUtils->expects( $this->once() )->method( "getRequestVar" );
 
-        $oLang = $this->getMock( "oxStdClass", array( "getText" ) );
+        $oLang = $this->getMock( "oxSetupLang", array( "getText" ) );
         $oLang->expects( $this->atLeastOnce() )->method( "getText" );
 
-        $oDb = $this->getMock( "oxStdClass", array( "openDatabase", "execSql", "setMySqlCollation", "queryFile", "saveDynPagesSettings", "convertConfigTableToUtf", "testCreateView" ) );
+        $oDb = $this->getMock( "oxSetupDb", array( "openDatabase", "execSql", "setMySqlCollation", "queryFile", "saveDynPagesSettings", "convertConfigTableToUtf", "testCreateView" ) );
         $oDb->expects( $this->at( 0 ) )->method( "openDatabase" );
         $oDb->expects( $this->at( 1 ) )->method( "testCreateView" );
         $oDb->expects( $this->at( 2 ) )->method( "execSql" )->will( $this->throwException( new Exception ));
@@ -618,11 +618,11 @@ class Unit_Setup_oxSetupControllerTest extends OxidTestCase
      */
     public function testFinish()
     {
-        $oSession = $this->getMock( "oxStdClass", array( "getSessionParam" ) );
+        $oSession = $this->getMock( "oxSetupSession", array( "getSessionParam" ), array(), '', null );
         $oSession->expects( $this->at( 0 ) )->method( "getSessionParam" )->will( $this->returnValue( array( "sShopDir" => getShopBasePath() )));
         $oSession->expects( $this->at( 1 ) )->method( "getSessionParam" )->with( $this->equalTo( "aSetupConfig" ) );
 
-        $oView = $this->getMock( "oxStdClass", array( "setTitle", "setViewParam" ) );
+        $oView = $this->getMock( "oxSetupView", array( "setTitle", "setViewParam" ) );
         $oView->expects( $this->at( 0 ) )->method( "setTitle" )->with( $this->equalTo( "STEP_6_TITLE" ) );
         $oView->expects( $this->at( 1 ) )->method( "setViewParam" )->with( $this->equalTo( "aPath" ));
         $oView->expects( $this->at( 2 ) )->method( "setViewParam" )->with( $this->equalTo( "aSetupConfig" ));
@@ -642,24 +642,24 @@ class Unit_Setup_oxSetupControllerTest extends OxidTestCase
     public function testDirsWriteMissingPathParameters()
     {
         $iAt = 0;
-        $oView = $this->getMock( "oxStdClass", array( "setTitle", "setMessage" ) );
+        $oView = $this->getMock( "oxSetupView", array( "setTitle", "setMessage" ) );
         $oView->expects( $this->at( $iAt++ ) )->method( "setTitle" )->with( $this->equalTo( "STEP_4_1_TITLE" ) );
         $oView->expects( $this->at( $iAt++ ) )->method( "setMessage" );
 
-        $oSetup = $this->getMock( "oxStdClass", array( "setNextStep", "getStep" ) );
+        $oSetup = $this->getMock( "oxSetup", array( "setNextStep", "getStep" ) );
         $oSetup->expects( $this->once() )->method( "setNextStep" );
         $oSetup->expects( $this->once() )->method( "getStep" )->with( $this->equalTo( "STEP_DIRS_INFO" ) );
 
         $iAt = 0;
-        $oSession = $this->getMock( "oxStdClass", array( "setSessionParam" ) );
+        $oSession = $this->getMock( "oxSetupSession", array( "setSessionParam" ), array(), '', null );
         $oSession->expects( $this->at( $iAt++ ) )->method( "setSessionParam" )->with( $this->equalTo( "aPath" ) );
         $oSession->expects( $this->at( $iAt++ ) )->method( "setSessionParam" )->with( $this->equalTo( "aSetupConfig" ) );
 
-        $oLang = $this->getMock( "oxStdClass", array( "getText" ) );
+        $oLang = $this->getMock( "oxSetupLang", array( "getText" ) );
         $oLang->expects( $this->atLeastOnce() )->method( "getText" );
 
         $iAt = 0;
-        $oUtils = $this->getMock( "oxStdClass", array( "getRequestVar", "preparePath", "extractRewriteBase" ) );
+        $oUtils = $this->getMock( "oxSetupUtils", array( "getRequestVar", "preparePath", "extractRewriteBase" ) );
         $oUtils->expects( $this->exactly( 3 ) )->method( "getRequestVar" );
         $oUtils->expects( $this->exactly( 3 ) )->method( "preparePath" );
         $oUtils->expects( $this->exactly( 1 ) )->method( "extractRewriteBase" );
@@ -682,24 +682,24 @@ class Unit_Setup_oxSetupControllerTest extends OxidTestCase
     public function testDirsWritePasswordTooShort()
     {
         $iAt = 0;
-        $oView = $this->getMock( "oxStdClass", array( "setTitle", "setMessage" ) );
+        $oView = $this->getMock( "oxSetupView", array( "setTitle", "setMessage" ) );
         $oView->expects( $this->at( $iAt++ ) )->method( "setTitle" )->with( $this->equalTo( "STEP_4_1_TITLE" ) );
         $oView->expects( $this->at( $iAt++ ) )->method( "setMessage" );
 
-        $oSetup = $this->getMock( "oxStdClass", array( "setNextStep", "getStep" ) );
+        $oSetup = $this->getMock( "oxSetup", array( "setNextStep", "getStep" ) );
         $oSetup->expects( $this->once() )->method( "setNextStep" );
         $oSetup->expects( $this->once() )->method( "getStep" )->with( $this->equalTo( "STEP_DIRS_INFO" ) );
 
         $iAt = 0;
-        $oSession = $this->getMock( "oxStdClass", array( "setSessionParam" ) );
+        $oSession = $this->getMock( "oxSetupSession", array( "setSessionParam" ), array(), '', null );
         $oSession->expects( $this->at( $iAt++ ) )->method( "setSessionParam" )->with( $this->equalTo( "aPath" ) );
         $oSession->expects( $this->at( $iAt++ ) )->method( "setSessionParam" )->with( $this->equalTo( "aSetupConfig" ) );
 
-        $oLang = $this->getMock( "oxStdClass", array( "getText" ) );
+        $oLang = $this->getMock( "oxSetupLang", array( "getText" ) );
         $oLang->expects( $this->atLeastOnce() )->method( "getText" )->with( $this->equalTo( "ERROR_PASSWORD_TOO_SHORT" ) );
 
         $iAt = 0;
-        $oUtils = $this->getMock( "oxStdClass", array( "getRequestVar", "preparePath", "checkPaths", "extractRewriteBase" ) );
+        $oUtils = $this->getMock( "oxSetupUtils", array( "getRequestVar", "preparePath", "checkPaths", "extractRewriteBase" ) );
         $oUtils->expects( $this->at( $iAt++ ) )->method( "getRequestVar" )->with( $this->equalTo( "aPath" ), $this->equalTo( "post" ) )->will( $this->returnValue( array( "sShopURL" => "sShopURL", "sShopDir" => "sShopDir", "sCompileDir" => "sCompileDir" ) ) );
         $oUtils->expects( $this->at( $iAt++ ) )->method( "getRequestVar" )->with( $this->equalTo( "aSetupConfig" ), $this->equalTo( "post" ) )->will( $this->returnValue( array( "blDelSetupDir" => 1 ) ));
         $oUtils->expects( $this->at( $iAt++ ) )->method( "getRequestVar" )->with( $this->equalTo( "aAdminData" ), $this->equalTo( "post" ) )->will( $this->returnValue( array( "sLoginName" => "sLoginName", "sPassword" => "sPass", "sPasswordConfirm" => "sPassword" ) ));
@@ -726,24 +726,24 @@ class Unit_Setup_oxSetupControllerTest extends OxidTestCase
     public function testDirsWriteEmailDoesNotMatchExpectedPattern()
     {
         $iAt = 0;
-        $oView = $this->getMock( "oxStdClass", array( "setTitle", "setMessage" ) );
+        $oView = $this->getMock( "oxSetupView", array( "setTitle", "setMessage" ) );
         $oView->expects( $this->at( $iAt++ ) )->method( "setTitle" )->with( $this->equalTo( "STEP_4_1_TITLE" ) );
         $oView->expects( $this->at( $iAt++ ) )->method( "setMessage" );
 
-        $oSetup = $this->getMock( "oxStdClass", array( "setNextStep", "getStep" ) );
+        $oSetup = $this->getMock( "oxSetup", array( "setNextStep", "getStep" ) );
         $oSetup->expects( $this->once() )->method( "setNextStep" );
         $oSetup->expects( $this->once() )->method( "getStep" )->with( $this->equalTo( "STEP_DIRS_INFO" ) );
 
         $iAt = 0;
-        $oSession = $this->getMock( "oxStdClass", array( "setSessionParam" ) );
+        $oSession = $this->getMock( "oxSetupSession", array( "setSessionParam" ), array(), '', null );
         $oSession->expects( $this->at( $iAt++ ) )->method( "setSessionParam" )->with( $this->equalTo( "aPath" ) );
         $oSession->expects( $this->at( $iAt++ ) )->method( "setSessionParam" )->with( $this->equalTo( "aSetupConfig" ) );
 
-        $oLang = $this->getMock( "oxStdClass", array( "getText" ) );
+        $oLang = $this->getMock( "oxSetupLang", array( "getText" ) );
         $oLang->expects( $this->atLeastOnce() )->method( "getText" )->with( $this->equalTo( "ERROR_USER_NAME_DOES_NOT_MATCH_PATTERN" ) );
 
         $iAt = 0;
-        $oUtils = $this->getMock( "oxStdClass", array( "getRequestVar", "preparePath", "extractRewriteBase", "isValidEmail" ) );
+        $oUtils = $this->getMock( "oxSetupUtils", array( "getRequestVar", "preparePath", "extractRewriteBase", "isValidEmail" ) );
         $oUtils->expects( $this->at( $iAt++ ) )->method( "getRequestVar" )->with( $this->equalTo( "aPath" ), $this->equalTo( "post" ) )->will( $this->returnValue( array( "sShopURL" => "sShopURL", "sShopDir" => "sShopDir", "sCompileDir" => "sCompileDir" ) ) );
         $oUtils->expects( $this->at( $iAt++ ) )->method( "getRequestVar" )->with( $this->equalTo( "aSetupConfig" ), $this->equalTo( "post" ) )->will( $this->returnValue( array( "blDelSetupDir" => 1 ) ));
         $oUtils->expects( $this->at( $iAt++ ) )->method( "getRequestVar" )->with( $this->equalTo( "aAdminData" ), $this->equalTo( "post" ) )->will( $this->returnValue( array( "sLoginName" => "sLoginName", "sPassword" => "sPassword", "sPasswordConfirm" => "sPassword" ) ));
@@ -771,24 +771,24 @@ class Unit_Setup_oxSetupControllerTest extends OxidTestCase
     public function testDirsWritePasswordsDoNotMatch()
     {
         $iAt = 0;
-        $oView = $this->getMock( "oxStdClass", array( "setTitle", "setMessage" ) );
+        $oView = $this->getMock( "oxSetupView", array( "setTitle", "setMessage" ) );
         $oView->expects( $this->at( $iAt++ ) )->method( "setTitle" )->with( $this->equalTo( "STEP_4_1_TITLE" ) );
         $oView->expects( $this->at( $iAt++ ) )->method( "setMessage" );
 
-        $oSetup = $this->getMock( "oxStdClass", array( "setNextStep", "getStep" ) );
+        $oSetup = $this->getMock( "oxSetup", array( "setNextStep", "getStep" ) );
         $oSetup->expects( $this->once() )->method( "setNextStep" );
         $oSetup->expects( $this->once() )->method( "getStep" )->with( $this->equalTo( "STEP_DIRS_INFO" ) );
 
         $iAt = 0;
-        $oSession = $this->getMock( "oxStdClass", array( "setSessionParam" ) );
+        $oSession = $this->getMock( "oxSetupSession", array( "setSessionParam" ), array(), '', null );
         $oSession->expects( $this->at( $iAt++ ) )->method( "setSessionParam" )->with( $this->equalTo( "aPath" ) );
         $oSession->expects( $this->at( $iAt++ ) )->method( "setSessionParam" )->with( $this->equalTo( "aSetupConfig" ) );
 
-        $oLang = $this->getMock( "oxStdClass", array( "getText" ) );
+        $oLang = $this->getMock( "oxSetupLang", array( "getText" ) );
         $oLang->expects( $this->atLeastOnce() )->method( "getText" )->with( $this->equalTo( "ERROR_PASSWORDS_DO_NOT_MATCH" ) );
 
         $iAt = 0;
-        $oUtils = $this->getMock( "oxStdClass", array( "getRequestVar", "preparePath", "checkPaths", "extractRewriteBase" ) );
+        $oUtils = $this->getMock( "oxSetupUtils", array( "getRequestVar", "preparePath", "checkPaths", "extractRewriteBase" ) );
         $oUtils->expects( $this->at( $iAt++ ) )->method( "getRequestVar" )->with( $this->equalTo( "aPath" ), $this->equalTo( "post" ) )->will( $this->returnValue( array( "sShopURL" => "sShopURL", "sShopDir" => "sShopDir", "sCompileDir" => "sCompileDir" ) ) );
         $oUtils->expects( $this->at( $iAt++ ) )->method( "getRequestVar" )->with( $this->equalTo( "aSetupConfig" ), $this->equalTo( "post" ) )->will( $this->returnValue( array( "blDelSetupDir" => 1 ) ));
         $oUtils->expects( $this->at( $iAt++ ) )->method( "getRequestVar" )->with( $this->equalTo( "aAdminData" ), $this->equalTo( "post" ) )->will( $this->returnValue( array( "sLoginName" => "sLoginName", "sPassword" => "sPasswor", "sPasswordConfirm" => "sPassword" ) ));
@@ -815,24 +815,17 @@ class Unit_Setup_oxSetupControllerTest extends OxidTestCase
     public function testDirsWriteChecksPathsFails()
     {
         $iAt = 0;
-        $oView = $this->getMock( "oxStdClass", array( "setTitle", "setMessage" ) );
+        $oView = $this->getMock( "oxSetupView", array( "setTitle", "setMessage" ) );
         $oView->expects( $this->at( $iAt++ ) )->method( "setTitle" )->with( $this->equalTo( "STEP_4_1_TITLE" ) );
         $oView->expects( $this->at( $iAt++ ) )->method( "setMessage" );
 
-        //$oSetup = $this->getMock( "oxStdClass", array( "setNextStep", "getStep" ) );
-        //$oSetup->expects( $this->once() )->method( "setNextStep" );
-        //$oSetup->expects( $this->once() )->method( "getStep" )->with( $this->equalTo( "STEP_DIRS_INFO" ) );
-
         $iAt = 0;
-        $oSession = $this->getMock( "oxStdClass", array( "setSessionParam" ) );
+        $oSession = $this->getMock( "oxSetupSession", array( "setSessionParam" ), array(), '', null );
         $oSession->expects( $this->at( $iAt++ ) )->method( "setSessionParam" )->with( $this->equalTo( "aPath" ) );
         $oSession->expects( $this->at( $iAt++ ) )->method( "setSessionParam" )->with( $this->equalTo( "aSetupConfig" ) );
 
-        //$oLang = $this->getMock( "oxStdClass", array( "getText" ) );
-        //$oLang->expects( $this->atLeastOnce() )->method( "getText" );
-
         $iAt = 0;
-        $oUtils = $this->getMock( "oxStdClass", array( "getRequestVar", "preparePath", "checkPaths", "extractRewriteBase", "isValidEmail" ) );
+        $oUtils = $this->getMock( "oxSetupUtils", array( "getRequestVar", "preparePath", "checkPaths", "extractRewriteBase", "isValidEmail" ) );
         $oUtils->expects( $this->at( $iAt++ ) )->method( "getRequestVar" )->with( $this->equalTo( "aPath" ), $this->equalTo( "post" ) )->will( $this->returnValue( array( "sShopURL" => "sShopURL", "sShopDir" => "sShopDir", "sCompileDir" => "sCompileDir" ) ) );
         $oUtils->expects( $this->at( $iAt++ ) )->method( "getRequestVar" )->with( $this->equalTo( "aSetupConfig" ), $this->equalTo( "post" ) )->will( $this->returnValue( array( "blDelSetupDir" => 1 ) ));
         $oUtils->expects( $this->at( $iAt++ ) )->method( "getRequestVar" )->with( $this->equalTo( "aAdminData" ), $this->equalTo( "post" ) )->will( $this->returnValue( array( "sLoginName" => "sLoginName", "sPassword" => "sPassword", "sPasswordConfirm" => "sPassword" ) ));
@@ -843,7 +836,7 @@ class Unit_Setup_oxSetupControllerTest extends OxidTestCase
         $oUtils->expects( $this->at( $iAt++ ) )->method( "isValidEmail" )->will( $this->returnValue( true ) );
         $oUtils->expects( $this->at( $iAt++ ) )->method( "checkPaths" )->will( $this->throwException( new Exception ) );
 
-        $oDb = $this->getMock( "oxStdClass", array( "writeAdminLoginData" ) );
+        $oDb = $this->getMock( "oxSetupDb", array( "writeAdminLoginData" ) );
         $oDb->expects( $this->once() )->method( "writeAdminLoginData" );
 
         $iAt = 0;
@@ -865,26 +858,23 @@ class Unit_Setup_oxSetupControllerTest extends OxidTestCase
     public function testDirsWriteConfigUpdateFails()
     {
         $iAt = 0;
-        $oView = $this->getMock( "oxStdClass", array( "setTitle", "setMessage" ) );
+        $oView = $this->getMock( "oxSetupView", array( "setTitle", "setMessage" ) );
         $oView->expects( $this->at( $iAt++ ) )->method( "setTitle" )->with( $this->equalTo( "STEP_4_1_TITLE" ) );
         $oView->expects( $this->at( $iAt++ ) )->method( "setMessage" );
 
-        $oSetup = $this->getMock( "oxStdClass", array( "setNextStep", "getStep" ) );
+        $oSetup = $this->getMock( "oxSetup", array( "setNextStep", "getStep" ) );
         $oSetup->expects( $this->once() )->method( "setNextStep" );
         $oSetup->expects( $this->once() )->method( "getStep" )->with( $this->equalTo( "STEP_DIRS_INFO" ) );
 
         $iAt = 0;
-        $oSession = $this->getMock( "oxStdClass", array( "setSessionParam", "getSessionParam" ) );
+        $oSession = $this->getMock( "oxSetupSession", array( "setSessionParam", "getSessionParam" ), array(), '', null );
         $oSession->expects( $this->at( $iAt++ ) )->method( "setSessionParam" )->with( $this->equalTo( "aPath" ) );
         $oSession->expects( $this->at( $iAt++ ) )->method( "setSessionParam" )->with( $this->equalTo( "aSetupConfig" ) );
         $oSession->expects( $this->at( $iAt++ ) )->method( "setSessionParam" )->with( $this->equalTo( "aAdminData" ) );
         $oSession->expects( $this->at( $iAt++ ) )->method( "getSessionParam" )->with( $this->equalTo( "aDB" ) )->will( $this->returnValue( array() ));
 
-        //$oLang = $this->getMock( "oxStdClass", array( "getText" ) );
-        //$oLang->expects( $this->atLeastOnce() )->method( "getText" );
-
         $iAt = 0;
-        $oUtils = $this->getMock( "oxStdClass", array( "getRequestVar", "preparePath", "checkPaths", "updateConfigFile", "extractRewriteBase", "isValidEmail" ) );
+        $oUtils = $this->getMock( "oxSetupUtils", array( "getRequestVar", "preparePath", "checkPaths", "updateConfigFile", "extractRewriteBase", "isValidEmail" ) );
         $oUtils->expects( $this->at( $iAt++ ) )->method( "getRequestVar" )->with( $this->equalTo( "aPath" ), $this->equalTo( "post" ) )->will( $this->returnValue( array( "sShopURL" => "sShopURL", "sShopDir" => "sShopDir", "sCompileDir" => "sCompileDir" ) ) );
         $oUtils->expects( $this->at( $iAt++ ) )->method( "getRequestVar" )->with( $this->equalTo( "aSetupConfig" ), $this->equalTo( "post" ) )->will( $this->returnValue( array( "blDelSetupDir" => 1 ) ));
         $oUtils->expects( $this->at( $iAt++ ) )->method( "getRequestVar" )->with( $this->equalTo( "aAdminData" ), $this->equalTo( "post" ) )->will( $this->returnValue( array( "sLoginName" => "sLoginName", "sPassword" => "sPassword", "sPasswordConfirm" => "sPassword" ) ));
@@ -896,7 +886,7 @@ class Unit_Setup_oxSetupControllerTest extends OxidTestCase
         $oUtils->expects( $this->at( $iAt++ ) )->method( "checkPaths" );
         $oUtils->expects( $this->at( $iAt++ ) )->method( "updateConfigFile" )->will( $this->throwException( new Exception ));
 
-        $oDb = $this->getMock( "oxStdClass", array( "writeAdminLoginData" ) );
+        $oDb = $this->getMock( "oxSetupDb", array( "writeAdminLoginData" ) );
         $oDb->expects( $this->once() )->method( "writeAdminLoginData" );
 
         $iAt = 0;
@@ -918,30 +908,30 @@ class Unit_Setup_oxSetupControllerTest extends OxidTestCase
     public function testDirsWrite()
     {
         $iAt = 0;
-        $oView = $this->getMock( "oxStdClass", array( "setTitle", "setMessage", "setViewParam" ) );
+        $oView = $this->getMock( "oxSetupView", array( "setTitle", "setMessage", "setViewParam" ) );
         $oView->expects( $this->at( $iAt++ ) )->method( "setTitle" )->with( $this->equalTo( "STEP_4_1_TITLE" ) );
         $oView->expects( $this->at( $iAt++ ) )->method( "setMessage" );
         $oView->expects( $this->at( $iAt++ ) )->method( "setViewParam" )->with( $this->equalTo( "aPath" ) );
         $oView->expects( $this->at( $iAt++ ) )->method( "setViewParam" )->with( $this->equalTo( "aSetupConfig" ) );
 
-        $oSetup = $this->getMock( "oxStdClass", array( "setNextStep", "getStep" ) );
+        $oSetup = $this->getMock( "oxSetup", array( "setNextStep", "getStep" ) );
         $oSetup->expects( $this->once() )->method( "setNextStep" );
 
 
             $oSetup->expects( $this->once() )->method( "getStep" )->with( $this->equalTo( "STEP_FINISH" ) );
 
         $iAt = 0;
-        $oSession = $this->getMock( "oxStdClass", array( "setSessionParam", "getSessionParam" ) );
+        $oSession = $this->getMock( "oxSetupSession", array( "setSessionParam", "getSessionParam" ), array(), '', null );
         $oSession->expects( $this->at( $iAt++ ) )->method( "setSessionParam" )->with( $this->equalTo( "aPath" ) );
         $oSession->expects( $this->at( $iAt++ ) )->method( "setSessionParam" )->with( $this->equalTo( "aSetupConfig" ) );
         $oSession->expects( $this->at( $iAt++ ) )->method( "setSessionParam" )->with( $this->equalTo( "aAdminData" ) );
         $oSession->expects( $this->at( $iAt++ ) )->method( "getSessionParam" )->with( $this->equalTo( "aDB" ) )->will( $this->returnValue( array() ));
 
-        $oLang = $this->getMock( "oxStdClass", array( "getText" ) );
+        $oLang = $this->getMock( "oxSetupLang", array( "getText" ) );
         $oLang->expects( $this->atLeastOnce() )->method( "getText" );
 
         $iAt = 0;
-        $oUtils = $this->getMock( "oxStdClass", array( "getRequestVar", "preparePath", "checkPaths", "updateConfigFile", "extractRewriteBase", "updateHtaccessFile", "isValidEmail" ) );
+        $oUtils = $this->getMock( "oxSetupUtils", array( "getRequestVar", "preparePath", "checkPaths", "updateConfigFile", "extractRewriteBase", "updateHtaccessFile", "isValidEmail" ) );
         $oUtils->expects( $this->at( $iAt++ ) )->method( "getRequestVar" )->with( $this->equalTo( "aPath" ), $this->equalTo( "post" ) )->will( $this->returnValue( array( "sShopURL" => "sShopURL", "sShopDir" => "sShopDir", "sCompileDir" => "sCompileDir" ) ) );
         $oUtils->expects( $this->at( $iAt++ ) )->method( "getRequestVar" )->with( $this->equalTo( "aSetupConfig" ), $this->equalTo( "post" ) )->will( $this->returnValue( array( "blDelSetupDir" => 1 ) ));
         $oUtils->expects( $this->at( $iAt++ ) )->method( "getRequestVar" )->with( $this->equalTo( "aAdminData" ), $this->equalTo( "post" ) )->will( $this->returnValue( array( "sLoginName" => "sLoginName", "sPassword" => "sPassword", "sPasswordConfirm" => "sPassword" ) ));
@@ -954,7 +944,7 @@ class Unit_Setup_oxSetupControllerTest extends OxidTestCase
         $oUtils->expects( $this->at( $iAt++ ) )->method( "updateConfigFile" );
         $oUtils->expects( $this->at( $iAt++ ) )->method( "updateHtaccessFile" );
 
-        $oDb = $this->getMock( "oxStdClass", array( "writeAdminLoginData" ) );
+        $oDb = $this->getMock( "oxSetupDb", array( "writeAdminLoginData" ) );
         $oDb->expects( $this->once() )->method( "writeAdminLoginData" );
 
         $iAt = 0;

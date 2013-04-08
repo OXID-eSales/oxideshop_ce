@@ -48,7 +48,7 @@ class Unit_Admin_PriceAlarmListTest extends OxidTestCase
 
         // testing..
         $oView = new PriceAlarm_List();
-        $this->assertEquals( $sSql, $oView->UNITbuildSelectString( new oxStdClass() ) );
+        $this->assertEquals( $sSql, $oView->UNITbuildSelectString( new stdClass() ) );
     }
 
     /**

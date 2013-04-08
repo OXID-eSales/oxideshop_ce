@@ -42,5 +42,5 @@ function smarty_modifier_oxaddparams( $sUrl, $sDynParams )
     if ( $sDynParams ) {
         $sUrl .= ( ( strpos( $sUrl, '?' ) !== false ) ? "&amp;":"?" ) . $sDynParams;
     }
-    return oxUtilsUrl::getInstance()->processSeoUrl( $sUrl );
+    return oxRegistry::get("oxUtilsUrl")->processSeoUrl( $sUrl );
 }

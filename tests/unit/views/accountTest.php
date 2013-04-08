@@ -52,9 +52,8 @@ class Unit_Views_accountTest extends OxidTestCase
      */
     public function testRenderNoTerms()
     {
-        $oUser = new oxStdClass();
-        $oUser->oxuser__oxpassword = new oxStdClass();
-        $oUser->oxuser__oxpassword->value = "psw";
+        $oUser = new oxUser();
+        $oUser->oxuser__oxpassword = new oxField( "psw" );
         $oUserView = $this->getMock( 'account', array( 'confirmTerms', 'getUser', 'getOrderCnt', "isEnabledPrivateSales" ) );
         $oUserView->expects( $this->any() )->method( 'confirmTerms' )->will( $this->returnValue( false ) );
         $oUserView->expects( $this->any() )->method( 'getUser' )->will( $this->returnValue( $oUser ) );
@@ -74,7 +73,7 @@ class Unit_Views_accountTest extends OxidTestCase
         modConfig::setParameter('term', '2');
         $this->assertEquals( '2', $oView->confirmTerms());
     }
-    
+
     /**
      * Test confirmTerms().
      *
@@ -83,14 +82,14 @@ class Unit_Views_accountTest extends OxidTestCase
     public function testConfirmTermsForPrivateSales()
     {
         modConfig::setParameter('term', false);
-        
+
         $oView = $this->getMock( "account", array( "isEnabledPrivateSales", "getUser" ) );
         $oUser = $this->getMock( "oxuser", array( "isTermsAccepted" ) );
-        
+
         $oView->expects( $this->once() )->method( 'isEnabledPrivateSales' )->will( $this->returnValue( true ) );
         $oUser->expects( $this->once() )->method( "isTermsAccepted" )->will( $this->returnValue( false ) );
         $oView->expects( $this->once() )->method( "getUser" )->will( $this->returnValue( $oUser ) );
-        
+
         $this->assertTrue( $oView->confirmTerms() );
     }
 
@@ -110,60 +109,6 @@ class Unit_Views_accountTest extends OxidTestCase
         $oView = $this->getMock( "account", array( "getArticleId" ) );
         $oView->expects( $this->once() )->method( "getArticleId" )->will( $this->returnValue( true ) );
         $this->assertEquals( 'testListType', $oView->getListType() );
-    }
-
-    /**
-     * Test get search manufacturer.
-     *
-     * @return null
-     */
-    public function testGetSearchManufacturer()
-    {
-        modConfig::setParameter( 'searchmanufacturer', 'testmanufacturer' );
-
-        $oView = $this->getMock( "account", array( "getArticleId" ) );
-        $oView->expects( $this->once() )->method( "getArticleId" )->will( $this->returnValue( false ) );
-        $this->assertFalse( $oView->getSearchManufacturer() );
-
-        $oView = $this->getMock( "account", array( "getArticleId" ) );
-        $oView->expects( $this->once() )->method( "getArticleId" )->will( $this->returnValue( true ) );
-        $this->assertEquals( 'testmanufacturer', $oView->getSearchManufacturer() );
-    }
-
-    /**
-     * Test get search vendor.
-     *
-     * @return null
-     */
-    public function testGetSearchVendor()
-    {
-        modConfig::setParameter( 'searchvendor', 'testvendor' );
-
-        $oView = $this->getMock( "account", array( "getArticleId" ) );
-        $oView->expects( $this->once() )->method( "getArticleId" )->will( $this->returnValue( false ) );
-        $this->assertFalse( $oView->getSearchVendor() );
-
-        $oView = $this->getMock( "account", array( "getArticleId" ) );
-        $oView->expects( $this->once() )->method( "getArticleId" )->will( $this->returnValue( true ) );
-        $this->assertEquals( 'testvendor', $oView->getSearchVendor() );
-    }
-
-    /**
-     * Test get search category id.
-     *
-     * @return null
-     */
-    public function testGetSearchCatId()
-    {
-        modConfig::setParameter( 'searchcnid', 'testcnid' );
-
-        $oView = $this->getMock( "account", array( "getArticleId" ) );
-        $oView->expects( $this->once() )->method( "getArticleId" )->will( $this->returnValue( false ) );
-        $this->assertFalse( $oView->getSearchCatId() );
-
-        $oView = $this->getMock( "account", array( "getArticleId" ) );
-        $oView->expects( $this->once() )->method( "getArticleId" )->will( $this->returnValue( true ) );
-        $this->assertEquals( 'testcnid', $oView->getSearchCatId() );
     }
 
     /**
@@ -330,33 +275,33 @@ class Unit_Views_accountTest extends OxidTestCase
 
         $this->assertEquals( 'page/privatesales/login.tpl', $oView->render() );
     }
-    
+
     /**
      * Test Account::getBreadCrumb()
      *
      * @return null
      */
     public function testGetBreadCrumb()
-    {   
+    {
         $sUsername = 'Username';
         $sLink = 'Link url';
         $oUser = new oxuser();
         $oUser->oxuser__oxusername = new oxField( $sUsername );
-        
+
         $oView = $this->getMock( "account", array( 'getUser', 'getLink' ) );
         $oView->expects( $this->once() )->method( 'getUser' )->will( $this->returnValue( $oUser ) );
         $oView->expects( $this->once() )->method( 'getLink' )->will( $this->returnValue( $sLink ) );
-        
+
         $aBreadCrumbs = $oView->getBreadCrumb();
-        
+
         $this->assertTrue( is_array( $aBreadCrumbs ) );
         $this->assertEquals( 1, count( $aBreadCrumbs ) );
         $this->assertTrue( isset( $aBreadCrumbs[0]['title'] ) );
         $this->assertTrue( isset( $aBreadCrumbs[0]['link'] ) );
         $this->assertEquals( 'Mein Konto - '.$sUsername, $aBreadCrumbs[0]['title'] );
-        $this->assertEquals( $sLink, $aBreadCrumbs[0]['link'] );        
+        $this->assertEquals( $sLink, $aBreadCrumbs[0]['link'] );
     }
-    
+
     /**
      * Test Account::getBreadCrumb()
      *
@@ -366,11 +311,24 @@ class Unit_Views_accountTest extends OxidTestCase
     {
         $oAcc = new account();
         $aBreadCrumbs = $oAcc->getBreadCrumb();
-        
+
         $this->assertTrue( is_array( $aBreadCrumbs ) );
         $this->assertEquals( 1, count( $aBreadCrumbs ) );
         $this->assertTrue( isset( $aBreadCrumbs[0]['title'] ) );
-        $this->assertTrue( isset( $aBreadCrumbs[0]['link'] ) );        
+        $this->assertTrue( isset( $aBreadCrumbs[0]['link'] ) );
         $this->assertEquals( 'Anmeldung', $aBreadCrumbs[0]['title'] );
+    }
+
+    /**
+     * Testing account::getCompareItemsCnt()
+     *
+     * @return null
+     */
+    public function testGetCompareItemsCnt()
+    {
+        oxSession::setVar( 'aFiltcompproducts', array('1','2') );
+
+        $oAcc = new account();
+        $this->assertEquals( 2, $oAcc->getCompareItemsCnt() );
     }
 }

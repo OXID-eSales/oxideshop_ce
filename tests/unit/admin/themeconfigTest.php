@@ -37,19 +37,70 @@ class Unit_Admin_ThemeConfigTest extends OxidTestCase
      */
     public function testRender()
     {
-        $this->markTestIncomplete();
-        // testing..
         $oView = new Theme_Config();
         $this->assertEquals( 'theme_config.tpl', $oView->render() );
     }
 
-
+    /**
+     * Shop_Config::testGetModuleForConfigVars() test case
+     *
+     * @return null
+     */
     public function testGetModuleForConfigVars()
     {
-        $this->markTestIncomplete();
-        $sCl = oxTestModules::publicize('Shop_Theme', '_getModuleForConfigVars');
-        $oTest = new $sCl;
-        $this->assertEquals('theme:azure', $oTest->p_getModuleForConfigVars());
+        $sThemeName = 'testtheme';
+        $oTheme_Config = $this->getMock('Theme_Config', array('getEditObjectId'));
+        $oTheme_Config->expects($this->any())->method('getEditObjectId')->will($this->returnValue($sThemeName));
+        $this->assertEquals('theme:'. $sThemeName, $oTheme_Config->UNITgetModuleForConfigVars());
+    }
+
+    /**
+     * Shop_Config::testSaveConfVars() test case
+     *
+     * @return null
+     */
+    public function testSaveConfVars()
+    {
+        // Params from oxConfig as it is used in theme_config.
+//        $_aConfParams = array(
+//            "bool"   => 'confbools',
+//            "str"    => 'confstrs',
+//            "arr"    => 'confarrs',
+//            "aarr"   => 'confaarrs',
+//            "select" => 'confselects',
+//            "num"    => 'confnum',
+//        );
+
+        $iShopId = 125;
+        $sName = 'someName';
+        $sValue = 'someValue';
+        $sThemeName = 'testtheme';
+
+        // Check if saveShopConfVar is called with correct values.
+        $aParams = array($sName => $sValue);
+        $oConfig = $this->getMock('oxConfig', array('getShopId', 'getRequestParameter', 'saveShopConfVar'));
+        $oConfig->expects($this->atLeastOnce())->method('getShopId')->will($this->returnValue($iShopId));
+        $oConfig->expects($this->atLeastOnce())->method('getRequestParameter')->will($this->returnValue($aParams));
+            $oConfig->expects($this->at(2))->method('saveShopConfVar')->with('bool', $sName, $sValue, $iShopId, 'theme:'. $sThemeName
+                                    )->will($this->returnValue(true));
+            $oConfig->expects($this->at(4))->method('saveShopConfVar')->with('str', $sName, $sValue, $iShopId, 'theme:'. $sThemeName
+                                    )->will($this->returnValue(true));
+            $oConfig->expects($this->at(6))->method('saveShopConfVar')->with('arr', $sName, $sValue, $iShopId, 'theme:'. $sThemeName
+                                    )->will($this->returnValue(true));
+            $oConfig->expects($this->at(8))->method('saveShopConfVar')->with('aarr', $sName, $sValue, $iShopId, 'theme:'. $sThemeName
+                                    )->will($this->returnValue(true));
+            $oConfig->expects($this->at(10))->method('saveShopConfVar')->with('select', $sName, $sValue, $iShopId, 'theme:'. $sThemeName
+                                    )->will($this->returnValue(true));
+            $oConfig->expects($this->at(12))->method('saveShopConfVar')->with('num', $sName, $sValue, $iShopId, 'theme:'. $sThemeName
+                                    )->will($this->returnValue(true));
+
+        $oTheme_Config = $this->getMock('Theme_Config', array('getConfig', 'getEditObjectId', '_serializeConfVar')
+                                        , array(), '', false);
+        $oTheme_Config->expects($this->atLeastOnce())->method('getConfig')->will($this->returnValue($oConfig));
+        $oTheme_Config->expects($this->once())->method('getEditObjectId')->will($this->returnValue($sThemeName));
+        $oTheme_Config->expects($this->atLeastOnce())->method('_serializeConfVar')->will($this->returnValue($sValue));
+
+        $oTheme_Config->saveConfVars();
     }
 
 }

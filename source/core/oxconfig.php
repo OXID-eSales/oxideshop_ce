@@ -22,6 +22,7 @@
  * @version   SVN: $Id$
  */
 
+//max integer
 define( 'MAX_64BIT_INTEGER', '18446744073709551615' );
 
 /**
@@ -32,7 +33,7 @@ define( 'MAX_64BIT_INTEGER', '18446744073709551615' );
 class oxConfig extends oxSuperCfg
 {
     // this column of params are defined in config.inc.php file,
-    // so for backwards compat. names starts without underscore
+    // so for backwards compatibility. names starts without underscore
 
     /**
      * Database host name
@@ -111,7 +112,7 @@ class oxConfig extends oxSuperCfg
      *   1 = smarty
      *   2 = SQL
      *   3 = SQL + smarty
-     *   4 = SQL + smarty + shoptemplate data
+     *   4 = SQL + smarty + shop template data
      *   5 = Delivery Cost calculation info
      *   6 = SMTP Debug Messages
      *   7 = Slow SQL query indication
@@ -135,13 +136,6 @@ class oxConfig extends oxSuperCfg
     protected $blSessionUseCookies = null;
 
     /**
-     * Default max article count in select lists
-     *
-     * @var int
-     */
-    //protected $iMaxArticles = 6000;
-
-    /**
      * Default image loading location.
      * If $blNativeImages is set to true the shop loads images from current domain,
      * otherwise images are loaded from the domain specified in config.inc.php.
@@ -153,7 +147,7 @@ class oxConfig extends oxSuperCfg
     protected $blNativeImages = true;
 
     /**
-     * Names of tables what are multishop
+     * Names of tables what are multi-shop
      *
      * @var array
      */
@@ -165,14 +159,14 @@ class oxConfig extends oxSuperCfg
     /**
      * oxConfig instance
      *
-     * @var oxconfig
+     * @var oxConfig
      */
     private static $_instance = null;
 
     /**
      * Application starter instance
      *
-     * @var oxstart
+     * @var oxStart
      */
     private $_oStart = null;
 
@@ -185,13 +179,13 @@ class oxConfig extends oxSuperCfg
     protected $_oActShop       = null;
 
     /**
-     * Active View object. Object has setters/getters for these properties:
+     * Active Views object array. Object has setters/getters for these properties:
      *   _sClass - name of current view class
      *   _sFnc   - name of current action function
      *
-     * @var object
+     * @var array
      */
-    protected $_oActView       = null;
+    protected $_aActiveViews   = array();
 
     /**
      * Array of global parameters.
@@ -300,25 +294,27 @@ class oxConfig extends oxSuperCfg
     protected $_oActCurrencyObject = null;
 
     /**
-     * prefix for oxmodule field for themes in oxconfig and oxconfigdisplay tables
+     * Indicates if OxConfig::init() method has been already run.
+     * Is checked for loading config variables on demand.
+     * Used in OxConfig::getConfigParam() method
+     *
+     * @var bool
+     */
+    protected $_blInit = false;
+
+    /**
+     * prefix for oxModule field for themes in oxConfig and oxConfigDisplay tables
      *
      * @var string
      */
     const OXMODULE_THEME_PREFIX = 'theme:';
 
     /**
-     * prefix for oxmodule field for modules in oxconfig and oxconfigdisplay tables
+     * prefix for oxModule field for modules in oxConfig and oxConfigDisplay tables
      *
      * @var string
      */
     const OXMODULE_MODULE_PREFIX = 'module:';
-
-    /**
-     * The biggest amount of possible subshops
-     *
-     * @var integer
-     */
-    const OXMAX_SHOP_COUNT = 256;
 
     /**
      * Returns config parameter value if such parameter exists
@@ -329,6 +325,7 @@ class oxConfig extends oxSuperCfg
      */
     public function getConfigParam( $sName )
     {
+
         if ( defined( 'OXID_PHP_UNIT' ) ) {
             if ( isset( modConfig::$unitMOD ) && is_object( modConfig::$unitMOD ) ) {
                 $sValue = modConfig::$unitMOD->getModConfigParam( $sName );
@@ -338,15 +335,20 @@ class oxConfig extends oxSuperCfg
             }
         }
 
-        if ( isset( $this->$sName ) ) {
-            return $this->$sName;
-        } elseif ( isset ( $this->_aConfigParams[$sName] ) ) {
+        $this->init();
+
+        if ( isset ( $this->_aConfigParams[$sName] ) ) {
             return $this->_aConfigParams[$sName];
         }
+
+        if ( isset( $this->$sName ) ) {
+            return $this->$sName;
+        }
+
     }
 
     /**
-     * Stores config parameter value in cofig
+     * Stores config parameter value in config
      *
      * @param string $sName  config parameter name
      * @param string $sValue config parameter value
@@ -384,66 +386,22 @@ class oxConfig extends oxSuperCfg
      */
     public function init()
     {
+        // Duplicated init protection
+        if ($this->_blInit) {
+           return;
+        }
+        $this->_blInit = true;
+
         $this->_loadVarsFromFile();
 
         include getShopBasePath().'core/oxconfk.php';
 
-
-        // some important defaults
-        if( !$this->getConfigParam( 'sDefaultLang' ) )
-            $this->setConfigParam( 'sDefaultLang', 0 );
-
-
-        $this->setConfigParam( 'sTheme', 'basic' );
-
-
-        $blLogChangesInAdmin = $this->getConfigParam( 'blLogChangesInAdmin' );
-        if( !isset( $blLogChangesInAdmin ) )
-            $this->setConfigParam( 'blLogChangesInAdmin', false );
-
-        $blCheckTemplates = $this->getConfigParam( 'blCheckTemplates' );
-        if( !isset( $blCheckTemplates ) )
-            $this->setConfigParam( 'blCheckTemplates', false );
-
-        $blAllowArticlesubclass = $this->getConfigParam( 'blAllowArticlesubclass' );
-        if( !isset( $blAllowArticlesubclass ) )
-            $this->setConfigParam( 'blAllowArticlesubclass', false );
-
-        $iAdminListSize = $this->getConfigParam( 'iAdminListSize' );
-        if( !isset( $iAdminListSize ) )
-            $this->setConfigParam( 'iAdminListSize', 9 );
-
-        // #1173M  for EE - not all pic are deleted
-        $iPicCount = $this->getConfigParam( 'iPicCount' );
-        if ( !isset( $iPicCount ) )
-            $this->setConfigParam( 'iPicCount', 7 );
-
-        $iZoomPicCount = $this->getConfigParam( 'iZoomPicCount' );
-        if ( !isset( $iZoomPicCount ) )
-            $this->setConfigParam( 'iZoomPicCount', 4 );
-
-        //max shop id default value
-        $iMaxShopId = $this->getConfigParam( 'iMaxShopId' );
-        if ( !isset( $iMaxShopId ) ) {
-            $this->setConfigParam( 'iMaxShopId', 128 );
-        } elseif ( $iMaxShopId > self::OXMAX_SHOP_COUNT ) {
-            $this->setConfigParam( 'iMaxShopId', self::OXMAX_SHOP_COUNT );
-        }
-
-        // disabling caching according to DODGER #655 : disable Caching as it doesnt work good enought
-        $this->setConfigParam( 'blTemplateCaching', false );
-
-        //setting ADODB timeout
+        // setting ADODB timeout
         global  $ADODB_SESS_LIFE;
         $ADODB_SESS_LIFE  = 1;
 
-        // ADODB cachelifetime
-        $iDBCacheLifeTime = $this->getConfigParam( 'iDBCacheLifeTime' );
-        if ( !isset( $iDBCacheLifeTime ) )
-            $this->setConfigParam( 'iDBCacheLifeTime', 3600 ); // 1 hour
-
-        $sCoreDir = $this->getConfigParam( 'sShopDir' );
-        $this->setConfigParam( 'sCoreDir', $sCoreDir.'/core/' );
+        // some important defaults
+        $this->_setDefaults();
 
         try {
             $sShopID = $this->getShopId();
@@ -451,7 +409,7 @@ class oxConfig extends oxSuperCfg
 
             // loading shop config
             if ( empty($sShopID) || !$blConfigLoaded ) {
-                // if no config values where loaded (some problmems with DB), throwing an exception
+                // if no config values where loaded (some problems with DB), throwing an exception
                 $oEx = oxNew( "oxConnectionException" );
                 $oEx->setMessage( "Unable to load shop config values from database" );
                 throw $oEx;
@@ -480,7 +438,7 @@ class oxConfig extends oxSuperCfg
             if ( defined( 'OXID_PHP_UNIT' ) ) {
                 return false;
             } elseif ( 0 != $this->iDebug ) {
-                oxUtils::getInstance()->showMessageAndExit( $oEx->getString() );
+                oxRegistry::getUtils()->showMessageAndExit( $oEx->getString() );
             } else {
                 header( "HTTP/1.1 500 Internal Server Error");
                 header( "Location: offline.html");
@@ -494,10 +452,17 @@ class oxConfig extends oxSuperCfg
             $this->getSession()->start();
 
             // redirect to start page and display the error
-            oxUtilsView::getInstance()->addErrorToDisplay( $oEx );
-            oxUtils::getInstance()->redirect( $this->getShopHomeURL() .'cl=start', true, 302 );
+            oxRegistry::get("oxUtilsView")->addErrorToDisplay( $oEx );
+            oxRegistry::getUtils()->redirect( $this->getShopHomeURL() .'cl=start', true, 302 );
         }
 
+
+        // Admin handling
+        $this->setConfigParam( 'blAdmin', isAdmin() );
+
+        if ( defined('OX_ADMIN_DIR') ) {
+            $this->setConfigParam( 'sAdminDir', OX_ADMIN_DIR );
+        }
 
         $this->_loadVarsFromFile();
 
@@ -507,26 +472,15 @@ class oxConfig extends oxSuperCfg
     }
 
     /**
-     * Returns singleton oxConfig object instance or create new if needed
+     * Returns oxConfig instance
+     *
+     * @deprecated since v5.0 (2012-08-10); In order to get oxConfig instance use Registry functionality instead ( oxRegistry::getConfig() )
      *
      * @return oxConfig
      */
     public static function getInstance()
     {
-
-        if ( defined( 'OXID_PHP_UNIT' ) ) {
-            if ( isset( modConfig::$unitMOD ) && is_object( modConfig::$unitMOD ) ) {
-                return modConfig::$unitMOD;
-            }
-        }
-
-        if ( !self::$_instance instanceof oxConfig ) {
-                //exceptions from here go directly to global exception handler
-                //if no init is possible whole application has to die!
-                self::$_instance = new oxConfig();
-                self::$_instance->init();
-        }
-        return self::$_instance;
+        return oxRegistry::getConfig();
     }
 
     /**
@@ -540,14 +494,64 @@ class oxConfig extends oxSuperCfg
         include getShopBasePath().'/config.inc.php';
 
         //adding trailing slashes
-        $oFileUtils = oxUtilsFile::getInstance();
+        $oFileUtils = oxRegistry::get("oxUtilsFile");
         $this->sShopDir     = $oFileUtils->normalizeDir($this->sShopDir);
         $this->sCompileDir  = $oFileUtils->normalizeDir($this->sCompileDir);
         $this->sShopURL     = $oFileUtils->normalizeDir($this->sShopURL);
         $this->sSSLShopURL  = $oFileUtils->normalizeDir($this->sSSLShopURL);
         $this->sAdminSSLURL = $oFileUtils->normalizeDir($this->sAdminSSLURL);
-        
+
         $this->_loadCustomConfig();
+    }
+
+    /**
+     * Set important defaults.
+     *
+     * @return null;
+     */
+    protected function _setDefaults()
+    {
+
+        // some important defaults
+        if( !$this->getConfigParam( 'sDefaultLang' ) )
+            $this->setConfigParam( 'sDefaultLang', 0 );
+
+
+        $this->setConfigParam( 'sTheme', 'azure' );
+
+
+        $blLogChangesInAdmin = $this->getConfigParam( 'blLogChangesInAdmin' );
+        if( !isset( $blLogChangesInAdmin ) )
+            $this->setConfigParam( 'blLogChangesInAdmin', false );
+
+        $blCheckTemplates = $this->getConfigParam( 'blCheckTemplates' );
+        if( !isset( $blCheckTemplates ) )
+            $this->setConfigParam( 'blCheckTemplates', false );
+
+        $blAllowArticlesubclass = $this->getConfigParam( 'blAllowArticlesubclass' );
+        if( !isset( $blAllowArticlesubclass ) )
+            $this->setConfigParam( 'blAllowArticlesubclass', false );
+
+        $iAdminListSize = $this->getConfigParam( 'iAdminListSize' );
+        if( !isset( $iAdminListSize ) )
+            $this->setConfigParam( 'iAdminListSize', 9 );
+
+        // #1173M  for EE - not all pic are deleted
+        $iPicCount = $this->getConfigParam( 'iPicCount' );
+        if ( !isset( $iPicCount ) )
+            $this->setConfigParam( 'iPicCount', 7 );
+
+        $iZoomPicCount = $this->getConfigParam( 'iZoomPicCount' );
+        if ( !isset( $iZoomPicCount ) )
+            $this->setConfigParam( 'iZoomPicCount', 4 );
+
+        // ADODB cache life time
+        $iDBCacheLifeTime = $this->getConfigParam( 'iDBCacheLifeTime' );
+        if ( !isset( $iDBCacheLifeTime ) )
+            $this->setConfigParam( 'iDBCacheLifeTime', 3600 ); // 1 hour
+
+        $sCoreDir = $this->getConfigParam( 'sShopDir' );
+        $this->setConfigParam( 'sCoreDir', $sCoreDir.'/core/' );
     }
 
     /**
@@ -562,7 +566,7 @@ class oxConfig extends oxSuperCfg
             include $sCustConfig;
         }
     }
-    
+
     /**
      * Load config values from DB
      *
@@ -659,12 +663,34 @@ class oxConfig extends oxSuperCfg
      */
     public function pageClose()
     {
+        if ( $this->hasActiveViewsChain() ) {
+            // do not commit session until active views chain exists
+            return;
+        }
+
         return $this->_oStart->pageClose();
     }
 
     /**
      * Returns value of parameter stored in POST,GET.
-     * For security reasons performed oxconfig::checkSpecialChars().
+     * For security reasons performed checkParamSpecialChars().
+     * use $blRaw very carefully if you want to get unescaped
+     * parameter.
+     *
+     * @param string $sName Name of parameter
+     * @param bool   $blRaw Get unescaped parameter
+     *
+     * @deprecated since v5.0.0 (2012-08-27); Use public getRequestParameter()
+     * @return mixed
+     */
+    public static function getParameter( $sName, $blRaw = false )
+    {
+        return oxRegistry::getConfig()->getRequestParameter( $sName, $blRaw );
+    }
+
+    /**
+     * Returns value of parameter stored in POST,GET.
+     * For security reasons performed oxconfig->checkParamSpecialChars().
      * use $blRaw very carefully if you want to get unescaped
      * parameter.
      *
@@ -673,7 +699,7 @@ class oxConfig extends oxSuperCfg
      *
      * @return mixed
      */
-    public static function getParameter(  $sName, $blRaw = false )
+    public function getRequestParameter( $sName, $blRaw = false )
     {
         if ( defined( 'OXID_PHP_UNIT' ) ) {
             if ( isset( modConfig::$unitMOD ) && is_object( modConfig::$unitMOD ) ) {
@@ -681,9 +707,9 @@ class oxConfig extends oxSuperCfg
                     $sValue = modConfig::getParameter(  $sName, $blRaw );
 
                     // TODO: remove this after special chars concept implementation
-                    $blIsAdmin = modConfig::getInstance()->isAdmin() || isAdmin();
+                    $blIsAdmin = modConfig::getInstance()->isAdmin() || modSession::getInstance()->getVariable(  "blIsAdmin" );
                     if ( $sValue !== null && !$blIsAdmin && (!$blRaw || is_array($blRaw))) {
-                        self::checkSpecialChars( $sValue, $blRaw );
+                        $this->checkParamSpecialChars( $sValue, $blRaw );
                     }
 
                     return $sValue;
@@ -702,9 +728,9 @@ class oxConfig extends oxSuperCfg
         }
 
         // TODO: remove this after special chars concept implementation
-        $blIsAdmin = oxConfig::getInstance()->isAdmin() && oxSession::getVar("blIsAdmin");
+        $blIsAdmin = $this->isAdmin() && $this->getSession()->getVariable( "blIsAdmin" );
         if ( $sValue !== null && !$blIsAdmin && (!$blRaw || is_array($blRaw))) {
-            self::checkSpecialChars( $sValue, $blRaw );
+            $this->checkParamSpecialChars( $sValue, $blRaw );
         }
 
         return $sValue;
@@ -758,9 +784,25 @@ class oxConfig extends oxSuperCfg
      * @param mixed &$sValue value to process escaping
      * @param array $aRaw    keys of unescaped values
      *
+     * @deprecated since v5.0.0 (2012-08-27); Use public checkParamSpecialChars().
+     *
      * @return mixed
      */
     public static function checkSpecialChars( & $sValue, $aRaw = null )
+    {
+        return oxRegistry::getConfig()->checkParamSpecialChars( $sValue, $aRaw );
+    }
+
+    /**
+     * Checks if passed parameter has special chars and replaces them.
+     * Returns checked value.
+     *
+     * @param mixed &$sValue value to process escaping
+     * @param array $aRaw    keys of unescaped values
+     *
+     * @return mixed
+     */
+    public function checkParamSpecialChars( & $sValue, $aRaw = null )
     {
         if ( is_object( $sValue ) ) {
             return $sValue;
@@ -771,8 +813,8 @@ class oxConfig extends oxSuperCfg
             foreach ( $sValue as $sKey => $sVal ) {
                 $sValidKey = $sKey;
                 if ( !$aRaw || !in_array($sKey, $aRaw) ) {
-                    self::checkSpecialChars( $sValidKey );
-                    self::checkSpecialChars( $sVal );
+                    $this->checkParamSpecialChars( $sValidKey );
+                    $this->checkParamSpecialChars( $sVal );
                     if ($sValidKey != $sKey) {
                         unset ($sValue[$sKey]);
                     }
@@ -801,7 +843,7 @@ class oxConfig extends oxSuperCfg
             $this->_iShopId = $this->getBaseShopId();
 
 
-        oxSession::setVar( 'actshop', $this->_iShopId );
+        $this->getSession()->setVariable( 'actshop', $this->_iShopId );
         return $this->_iShopId;
     }
 
@@ -815,8 +857,52 @@ class oxConfig extends oxSuperCfg
      */
     public function setShopId( $sShopId )
     {
-        oxSession::setVar( 'actshop', $sShopId );
+        $this->getSession()->setVariable( 'actshop', $sShopId );
         $this->_iShopId = $sShopId;
+    }
+
+
+
+     /**
+     * Set is shop url
+     *
+     * @param bool $blIsSsl - state bool value
+     *
+     * @return string
+     */
+    public function setIsSsl( $blIsSsl = false )
+    {
+        $this->_blIsSsl = $blIsSsl;
+    }
+
+    /**
+     * Checks if WEB session is SSL.
+     *
+     * @return null
+     */
+    protected function _checkSsl()
+    {
+            $myUtilsServer   = oxRegistry::get("oxUtilsServer");
+            $aServerVars     = $myUtilsServer->getServerVar();
+            $aHttpsServerVar = $myUtilsServer->getServerVar( 'HTTPS' );
+
+            $this->setIsSsl();
+            if (isset( $aHttpsServerVar ) && ($aHttpsServerVar === 'on' || $aHttpsServerVar === 'ON' || $aHttpsServerVar == '1' )) {
+                // "1&1" hoster provides "1"
+                $this->setIsSsl($this->getConfigParam('sSSLShopURL') || $this->getConfigParam('sMallSSLShopURL')) ;
+                if ($this->isAdmin() && !$this->_blIsSsl) {
+                    //#4026
+                     $this->setIsSsl( !is_null($this->getConfigParam('sAdminSSLURL')) );
+                }
+            }
+
+            //additional special handling for profihost customers
+            if ( isset( $aServerVars['HTTP_X_FORWARDED_SERVER'] ) &&
+                 ( strpos( $aServerVars['HTTP_X_FORWARDED_SERVER'], 'ssl' ) !== false ||
+                 strpos( $aServerVars['HTTP_X_FORWARDED_SERVER'], 'secure-online-shopping.de' ) !== false ) ) {
+                 $this->setIsSsl( true );
+            }
+
     }
 
 
@@ -828,29 +914,8 @@ class oxConfig extends oxSuperCfg
     public function isSsl()
     {
         if ( is_null( $this->_blIsSsl ) ) {
-
-            $myUtilsServer   = oxUtilsServer::getInstance();
-            $aServerVars     = $myUtilsServer->getServerVar();
-            $aHttpsServerVar = $myUtilsServer->getServerVar( 'HTTPS' );
-
-            $this->_blIsSsl = false;
-            if (isset( $aHttpsServerVar ) && ($aHttpsServerVar === 'on' || $aHttpsServerVar === 'ON' || $aHttpsServerVar == '1' )) {
-                // "1&1" hoster provides "1"
-                $this->_blIsSsl = ($this->getConfigParam('sSSLShopURL') || $this->getConfigParam('sMallSSLShopURL'));
-                if ($this->isAdmin() && !$this->_blIsSsl) {
-                    //#4026
-                    $this->_blIsSsl = !is_null($this->getConfigParam('sAdminSSLURL')) ? true : false;
-                }
-            }
-
-            //additional special handling for profihost customers
-            if ( isset( $aServerVars['HTTP_X_FORWARDED_SERVER'] ) &&
-                 ( strpos( $aServerVars['HTTP_X_FORWARDED_SERVER'], 'ssl' ) !== false ||
-                 strpos( $aServerVars['HTTP_X_FORWARDED_SERVER'], 'secure-online-shopping.de' ) !== false ) ) {
-                $this->_blIsSsl = true;
-            }
+            $this->_checkSsl();
         }
-
         return $this->_blIsSsl;
     }
 
@@ -863,35 +928,29 @@ class oxConfig extends oxSuperCfg
      */
     public function isCurrentUrl( $sURL )
     {
-        if ( !$sURL ) {
-            return false;
+        // Missing protocol, cannot proceed, assuming true.
+        if ( !$sURL || (strpos( $sURL, "http" ) !== 0)) {
+            return true;
         }
 
-        $oUtilsServer = oxUtilsServer::getInstance();
+        return oxRegistry::get("oxUtilsServer")->isCurrentUrl($sURL);
+    }
 
-        // #4010: force_sid added in https to every link
-        preg_match("/^(https?:\/\/)?([^\/]+)/i", $sURL, $matches);
-        $sUrlHost = $matches[2];
-
-        // #4010: force_sid added in https to every link
-        preg_match("/^(https?:\/\/)?([^\/]+)/i", $oUtilsServer->getServerVar( 'HTTP_HOST' ), $matches);
-        $sRealHost = $matches[2];
-
-        $sCurrentHost = preg_replace( '/\/\w*\.php.*/', '', $oUtilsServer->getServerVar( 'HTTP_HOST' ) . $oUtilsServer->getServerVar( 'SCRIPT_NAME' ) );
-
-        //remove double slashes all the way
-        $sCurrentHost = str_replace( '/', '', $sCurrentHost );
-        $sURL = str_replace( '/', '', $sURL );
-
-        if ( getStr()->strpos( $sURL, $sCurrentHost ) !== false ) {
-
-            //bug fix #0002991
-            if ( $sUrlHost == $sRealHost ) {
-                return true;
-            }
+    /**
+     * Compares current protocol to supplied url string
+     *
+     * @param string $sURL URL
+     *
+     * @return bool true if $sURL is equal to current page URL
+     */
+    public function isCurrentProtocol( $sURL )
+    {
+        // Missing protocol, cannot proceed, assuming true.
+        if ( !$sURL || (strpos( $sURL, "http" ) !== 0)) {
+            return true;
         }
 
-        return false;
+        return (strpos( $sURL, "https:" ) === 0) == $this->isSsl();
     }
 
     /**
@@ -910,17 +969,17 @@ class oxConfig extends oxSuperCfg
         }
 
         // #680 per language another URL
-        $iLang = isset( $iLang ) ? $iLang : oxLang::getInstance()->getBaseLanguage();
+        $iLang = isset( $iLang ) ? $iLang : oxRegistry::getLang()->getBaseLanguage();
         $aLanguageURLs = $this->getConfigParam( 'aLanguageURLs' );
         if ( isset( $iLang ) && isset( $aLanguageURLs[$iLang] ) && !empty( $aLanguageURLs[$iLang] ) ) {
-            $aLanguageURLs[$iLang] = oxUtils::getInstance()->checkUrlEndingSlash( $aLanguageURLs[$iLang] );
+            $aLanguageURLs[$iLang] = oxRegistry::getUtils()->checkUrlEndingSlash( $aLanguageURLs[$iLang] );
             return $aLanguageURLs[$iLang];
         }
 
         //normal section
         $sMallShopURL = $this->getConfigParam( 'sMallShopURL' );
         if ( $sMallShopURL ) {
-            $sMallShopURL = oxUtils::getInstance()->checkUrlEndingSlash( $sMallShopURL );
+            $sMallShopURL = oxRegistry::getUtils()->checkUrlEndingSlash( $sMallShopURL );
             return $sMallShopURL;
         }
 
@@ -937,21 +996,21 @@ class oxConfig extends oxSuperCfg
     public function getSslShopUrl( $iLang = null )
     {
         // #680 per language another URL
-        $iLang = isset( $iLang ) ? $iLang : oxLang::getInstance()->getBaseLanguage();
+        $iLang = isset( $iLang ) ? $iLang : oxRegistry::getLang()->getBaseLanguage();
         $aLanguageSSLURLs = $this->getConfigParam( 'aLanguageSSLURLs' );
         if ( isset( $iLang ) && isset( $aLanguageSSLURLs[$iLang] ) && !empty( $aLanguageSSLURLs[$iLang] ) ) {
-            $aLanguageSSLURLs[$iLang] = oxUtils::getInstance()->checkUrlEndingSlash( $aLanguageSSLURLs[$iLang] );
+            $aLanguageSSLURLs[$iLang] = oxRegistry::getUtils()->checkUrlEndingSlash( $aLanguageSSLURLs[$iLang] );
             return $aLanguageSSLURLs[$iLang];
         }
 
         //mall mode
         if ( ( $sMallSSLShopURL = $this->getConfigParam( 'sMallSSLShopURL' ) ) ) {
-            $sMallSSLShopURL = oxUtils::getInstance()->checkUrlEndingSlash( $sMallSSLShopURL );
+            $sMallSSLShopURL = oxRegistry::getUtils()->checkUrlEndingSlash( $sMallSSLShopURL );
             return $sMallSSLShopURL;
         }
 
         if ( ( $sMallShopURL = $this->getConfigParam( 'sMallShopURL' ) ) ) {
-            $sMallShopURL = oxUtils::getInstance()->checkUrlEndingSlash( $sMallShopURL );
+            $sMallShopURL = oxRegistry::getUtils()->checkUrlEndingSlash( $sMallShopURL );
             return $sMallShopURL;
         }
 
@@ -1017,7 +1076,7 @@ class oxConfig extends oxSuperCfg
             $sURL = $this->getShopURL( $iLang );
         }
 
-        return oxUtilsUrl::getInstance()->processUrl( $sURL.'index.php', false );
+        return oxRegistry::get("oxUtilsUrl")->processUrl( $sURL.'index.php', false );
     }
 
     /**
@@ -1030,7 +1089,20 @@ class oxConfig extends oxSuperCfg
      */
     public function getShopHomeUrl( $iLang = null, $blAdmin = null )
     {
-        return oxUtilsUrl::getInstance()->processUrl($this->getShopUrl( $iLang, $blAdmin).'index.php', false );
+        return oxRegistry::get("oxUtilsUrl")->processUrl($this->getShopUrl( $iLang, $blAdmin).'index.php', false );
+    }
+
+    /**
+     * Returns widget start non SSL URL including widget.php and sid.
+     *
+     * @param int  $iLang   language
+     * @param bool $blAdmin if admin
+     *
+     * @return string
+     */
+    public function getWidgetUrl( $iLang = null, $blAdmin = null )
+    {
+        return oxRegistry::get("oxUtilsUrl")->processUrl($this->getShopUrl( $iLang, $blAdmin).'widget.php', false );
     }
 
     /**
@@ -1040,7 +1112,7 @@ class oxConfig extends oxSuperCfg
      */
     public function getShopSecureHomeUrl()
     {
-        return  oxUtilsUrl::getInstance()->processUrl( $this->getSslShopUrl().'index.php', false );
+        return  oxRegistry::get("oxUtilsUrl")->processUrl( $this->getSslShopUrl().'index.php', false );
     }
 
     /**
@@ -1051,9 +1123,9 @@ class oxConfig extends oxSuperCfg
     public function getShopCurrency()
     {
         $iCurr = null;
-        if ( ( null === ( $iCurr = oxConfig::getParameter( 'cur' ) ) ) ) {
-            if ( null === ( $iCurr = oxConfig::getParameter( 'currency' ) ) ) {
-                $iCurr = oxSession::getVar( 'currency' );
+        if ( ( null === ( $iCurr = $this->getRequestParameter( 'cur' ) ) ) ) {
+            if ( null === ( $iCurr = $this->getRequestParameter( 'currency' ) ) ) {
+                $iCurr = $this->getSession()->getVariable( 'currency' );
             }
         }
         return (int) $iCurr;
@@ -1094,7 +1166,7 @@ class oxConfig extends oxSuperCfg
     {
         $aCurrencies = $this->getCurrencyArray();
         if ( isset( $aCurrencies[$iCur] ) ) {
-            oxSession::setVar( 'currency', $iCur );
+            $this->getSession()->setVariable( 'currency', $iCur );
             $this->_oActCurrencyObject = null;
         }
     }
@@ -1112,6 +1184,57 @@ class oxConfig extends oxSuperCfg
             return $this->getConfigParam('sShopDir').$this->_sOutDir.'/';
         } else {
             return $this->_sOutDir.'/';
+        }
+    }
+
+    /**
+     * Returns path to out dir
+     *
+     * @param bool $blAbsolute mode - absolute/relative path
+     *
+     * @return string
+     */
+    public function getViewsDir( $blAbsolute = true )
+    {
+        if ($blAbsolute) {
+            return $this->getConfigParam('sShopDir'). 'application/views/';
+        } else {
+            return 'application/views/';
+        }
+    }
+
+    /**
+     * Returns path to translations dir
+     *
+     * @param string $sFile      File name
+     * @param string $sDir       Directory name
+     * @param bool   $blAbsolute mode - absolute/relative path
+     *
+     * @return string
+     */
+    public function getTranslationsDir( $sFile, $sDir, $blAbsolute = true )
+    {
+        $sPath = $blAbsolute ? $this->getConfigParam( 'sShopDir' ) : '';
+        $sPath .= 'application/translations/';
+        if ( is_readable( $sPath. $sDir. '/'. $sFile ) ) {
+            return $sPath. $sDir. '/'. $sFile;
+        }
+        return false;
+    }
+
+    /**
+     * Returns path to out dir
+     *
+     * @param bool $blAbsolute mode - absolute/relative path
+     *
+     * @return string
+     */
+    public function getAppDir( $blAbsolute = true )
+    {
+        if ($blAbsolute) {
+            return $this->getConfigParam('sShopDir'). 'application/';
+        } else {
+            return 'application/';
         }
     }
 
@@ -1159,7 +1282,7 @@ class oxConfig extends oxSuperCfg
      *
      * @return string
      */
-    public function getDir($sFile, $sDir, $blAdmin, $iLang = null, $iShop = null, $sTheme = null, $blAbsolute = true, $blIgnoreCust = false )
+    public function getDir($sFile, $sDir, $blAdmin, $iLang = null, $iShop = null, $sTheme = null, $blAbsolute = true, $blIgnoreCust = false  )
     {
         if ( is_null($sTheme) ) {
             $sTheme = $this->getConfigParam( 'sTheme' );
@@ -1169,13 +1292,18 @@ class oxConfig extends oxSuperCfg
             $sTheme = 'admin';
         }
 
-        $sBase    = $this->getOutDir( $blAbsolute );
-        $sAbsBase = $this->getOutDir();
+        if ( $sDir != $this->_sTemplateDir ) {
+            $sBase    = $this->getOutDir( $blAbsolute );
+            $sAbsBase = $this->getOutDir();
+        } else {
+            $sBase    = $this->getViewsDir( $blAbsolute );
+            $sAbsBase = $this->getViewsDir();
+        }
 
         $sLang = '-';
         // FALSE means skip language folder check
         if ( $iLang !== false ) {
-            $oLang = oxLang::getInstance();
+            $oLang = oxRegistry::getLang();
 
             if ( is_null( $iLang ) ) {
                 $iLang = $oLang->getEditLanguage();
@@ -1192,7 +1320,7 @@ class oxConfig extends oxSuperCfg
         $sPath = "{$sTheme}/{$iShop}/{$sLang}/{$sDir}/{$sFile}";
         $sCacheKey = $sPath . "_{$blIgnoreCust}{$blAbsolute}";
 
-        if ( ( $sReturn = oxutils::getInstance()->fromStaticCache( $sCacheKey ) ) !== null ) {
+        if ( ( $sReturn = oxRegistry::getUtils()->fromStaticCache( $sCacheKey ) ) !== null ) {
             return $sReturn;
         }
 
@@ -1245,7 +1373,7 @@ class oxConfig extends oxSuperCfg
         }
 
         // to cache
-        oxutils::getInstance()->toStaticCache( $sCacheKey, $sReturn );
+        oxRegistry::getUtils()->toStaticCache( $sCacheKey, $sReturn );
 
         return $sReturn;
     }
@@ -1271,6 +1399,7 @@ class oxConfig extends oxSuperCfg
                                 $this->getOutUrl($blSSL, $blAdmin, $blNativeImg),
                                 $this->getDir( $sFile, $sDir, $blAdmin, $iLang, $iShop, $sTheme )
                             );
+
         return $sUrl;
     }
 
@@ -1370,7 +1499,7 @@ class oxConfig extends oxSuperCfg
      */
     public function getPictureUrl( $sFile, $blAdmin = false, $blSSL = null, $iLang = null, $iShopId = null, $sDefPic = "master/nopic.jpg" )
     {
-        if ( $sAltUrl = oxPictureHandler::getInstance()->getAltImageUrl('/', $sFile, $blSSL) ) {
+        if ( $sAltUrl = oxRegistry::get("oxPictureHandler")->getAltImageUrl('/', $sFile, $blSSL) ) {
             return $sAltUrl;
         }
 
@@ -1382,25 +1511,6 @@ class oxConfig extends oxSuperCfg
             $sUrl = $this->getUrl( $sDefPic, $this->_sPictureDir, $blAdmin, $blSSL, $blNativeImg, $iLang, $iShopId );
         }
         return $sUrl;
-    }
-
-    /**
-     * Finds and returns product, category icon file
-     *
-     * @param string $sFile   File name
-     * @param bool   $blAdmin Whether to force admin
-     * @param bool   $blSSL   Whether to force ssl
-     * @param int    $iLang   Language
-     * @param int    $iShopId Shop id
-     * @param string $sDefPic Default (nopic) image path ["icon/nopic_ico.jpg"]
-     *
-     * @deprecated
-     *
-     * @return string
-     */
-    public function getIconUrl( $sFile, $blAdmin = false , $blSSL = null , $iLang = null, $iShopId = null, $sDefPic = "master/nopic.jpg" )
-    {
-        return $this->getPictureUrl( $sFile, $blAdmin, $blSSL, $iLang, $iShopId, $sDefPic );
     }
 
     /**
@@ -1473,7 +1583,7 @@ class oxConfig extends oxSuperCfg
      */
     public function getTemplateUrl( $sFile = null, $blAdmin = false, $blSSL = null , $iLang = null )
     {
-        return $this->getUrl( $sFile, $this->_sTemplateDir, $blAdmin, $blSSL, false, $iLang );
+        return $this->getShopMainUrl() . $this->getDir( $sFile, $this->_sTemplateDir, $blAdmin, $iLang, null, null, false );
     }
 
     /**
@@ -1490,7 +1600,7 @@ class oxConfig extends oxSuperCfg
     }
 
     /**
-     * Finds and returns resouce (css, js, etc..) files or folders path
+     * Finds and returns resource (css, js, etc..) files or folders path
      *
      * @param string $sFile   File name
      * @param bool   $blAdmin Whether to force admin
@@ -1519,7 +1629,7 @@ class oxConfig extends oxSuperCfg
     }
 
     /**
-     * Finds and returns resouce (css, js, etc..) file or folder url
+     * Finds and returns resource (css, js, etc..) file or folder url
      *
      * @param string $sFile   File name
      * @param bool   $blAdmin Whether to force admin
@@ -1535,7 +1645,7 @@ class oxConfig extends oxSuperCfg
     }
 
     /**
-     * Finds and returns resouce (css, js, etc..) folders path
+     * Finds and returns resource (css, js, etc..) folders path
      *
      * @param bool $blAdmin Whether to force admin
      *
@@ -1544,57 +1654,6 @@ class oxConfig extends oxSuperCfg
     public function getResourceDir( $blAdmin )
     {
         return $this->getDir( null, $this->_sResourceDir, $blAdmin );
-    }
-
-    /**
-     * Finds and returns language files or folders path
-     *
-     * @param string $sFile   File name
-     * @param bool   $blAdmin Whether to force admin
-     * @param int    $iLang   Language id
-     * @param int    $iShop   Shop id
-     * @param string $sTheme  Theme name
-     *
-     * @deprecated,  should not be used any more (2011.07.06)
-     *
-     * @return string
-     */
-    public function getLanguagePath( $sFile, $blAdmin, $iLang = null, $iShop = null, $sTheme = null )
-    {
-        return $this->getDir( $sFile, oxLang::getInstance()->getLanguageAbbr( $iLang ), $blAdmin, $iLang, $iShop, $sTheme );
-    }
-
-    /**
-     * Returns standard (current theme) language files or folders path
-     *
-     * @param string $sFile   File name
-     * @param bool   $blAdmin Whether to force admin
-     * @param int    $iLang   Language id
-     *
-     * @deprecated,  should not be used any more (2011.07.06)
-     *
-     * @return string
-     */
-    public function getStdLanguagePath( $sFile, $blAdmin, $iLang = null )
-    {
-        $sDir = null;
-        if ( $iLang !== false ) {
-            $sDir = oxLang::getInstance()->getLanguageAbbr( $iLang );
-        }
-
-        return $this->getDir( $sFile, $sDir, $blAdmin, $iLang, null, $this->getConfigParam( "sTheme" ), true, true );
-    }
-
-    /**
-     * Finds and returns language folders path
-     *
-     * @param bool $blAdmin Whether to force admin
-     *
-     * @return string
-     */
-    public function getLanguageDir( $blAdmin )
-    {
-        return $this->getDir( null, null, $blAdmin );
     }
 
     /**
@@ -1629,7 +1688,7 @@ class oxConfig extends oxSuperCfg
         reset( $aConfCurrencies );
         while ( list( $key, $val ) = each( $aConfCurrencies ) ) {
             if ( $val ) {
-                $oCur = new oxStdClass();
+                $oCur = new stdClass();
                 $oCur->id      = $key;
                 $sCur = explode( '@', $val);
                 $oCur->name     = trim( $sCur[0] );
@@ -1809,24 +1868,18 @@ class oxConfig extends oxSuperCfg
         switch ( $sVarType ) {
             case 'arr':
             case 'aarr':
-                if (is_array($sVarVal)) {
-                    $sValue = serialize( $sVarVal );
-                } else {
-                    // Deprecated functionality
-                    $sValue  = $sVarVal ;
-                    $sVarVal = unserialize( $sVarVal );
-                }
-                break;
-            case 'num':
-                //config param
-                $sVarVal = $sVarVal != ''? oxUtils::getInstance()->string2Float( $sVarVal ) : '';
-                $sValue = $sVarVal;
+                $sValue = serialize( $sVarVal );
                 break;
             case 'bool':
                 //config param
                 $sVarVal = (( $sVarVal == 'true' || $sVarVal) && $sVarVal && strcasecmp($sVarVal, "false"));
                 //db value
                 $sValue  = $sVarVal?"1":"";
+                break;
+            case 'num':
+                //config param
+                $sVarVal = $sVarVal != ''? oxRegistry::getUtils()->string2Float( $sVarVal ) : '';
+                $sValue = $sVarVal;
                 break;
             default:
                 $sValue  = $sVarVal;
@@ -1857,8 +1910,13 @@ class oxConfig extends oxSuperCfg
 
         $sQ = "insert into oxconfig (oxid, oxshopid, oxmodule, oxvarname, oxvartype, oxvarvalue)
                values($sNewOXIDdQuoted, $sShopIdQuoted, $sModuleQuoted, $sVarNameQuoted, $sVarTypeQuoted, ENCODE( $sVarValueQuoted, $sConfigKeyQuoted) )";
+
         $oDb->execute( $sQ );
+
+
+
     }
+
 
     /**
      * Retrieves shop configuration parameters from DB.
@@ -1965,12 +2023,12 @@ class oxConfig extends oxSuperCfg
     /**
      * Loads and returns active shop object
      *
-     * @return oxshop
+     * @return oxShop
      */
     public function getActiveShop()
     {
         if ( $this->_oActShop && $this->_iShopId == $this->_oActShop->getId() &&
-             $this->_oActShop->getLanguage() == oxLang::getInstance()->getBaseLanguage() ) {
+             $this->_oActShop->getLanguage() == oxRegistry::getLang()->getBaseLanguage() ) {
             return $this->_oActShop;
         }
 
@@ -1980,18 +2038,45 @@ class oxConfig extends oxSuperCfg
     }
 
     /**
-     * Returns active view object. If this object was not defined - returns oxview object
+     * Returns active view object. If this object was not defined - returns oxubase object
      *
-     * @return oxview
+     * @return oxView
      */
     public function getActiveView()
     {
-        if ( $this->_oActView != null ) {
-            return $this->_oActView;
+        if ( count( $this->_aActiveViews ) ) {
+            $oActView = end( $this->_aActiveViews );
+        }
+        if ( $oActView == null ) {
+            $oActView = oxNew( 'oxubase' );
+            $this->_aActiveViews[] = $oActView;
         }
 
-        $this->_oActView = oxNew( 'oxubase' );
-        return $this->_oActView;
+        return $oActView;
+    }
+
+    /**
+     * Returns top active view object from views chain.
+     *
+     * @return oxView
+     */
+    public function getTopActiveView()
+    {
+        if ( count( $this->_aActiveViews ) ) {
+            return reset( $this->_aActiveViews );
+        } else {
+            return $this->getActiveView();
+        }
+    }
+
+    /**
+     * Returns all active views objects list.
+     *
+     * @return array
+     */
+    public function getActiveViewsList()
+    {
+        return $this->_aActiveViews;
     }
 
     /**
@@ -2003,7 +2088,45 @@ class oxConfig extends oxSuperCfg
      */
     public function setActiveView( $oView )
     {
-        $this->_oActView = $oView;
+        $this->_aActiveViews[] = $oView;
+    }
+
+    /**
+     * Drop last active view object
+     *
+     * @return null
+     */
+    public function dropLastActiveView()
+    {
+        array_pop( $this->_aActiveViews );
+    }
+
+    /**
+     * Check if there is more than one active view
+     *
+     * @return null
+     */
+    public function hasActiveViewsChain()
+    {
+        return ( count( $this->_aActiveViews ) > 1 );
+    }
+
+    /**
+     * Get active views names list
+     *
+     * @return array
+     */
+    public function getActiveViewsNames()
+    {
+        $aNames = array();
+
+        if ( is_array( $this->getActiveViewsList() ) ) {
+            foreach ($this->getActiveViewsList() as $oView ) {
+                $aNames[] = $oView->getClassName();
+            }
+        }
+
+        return $aNames;
     }
 
     /**
@@ -2045,7 +2168,7 @@ class oxConfig extends oxSuperCfg
      */
     public function getShopMainUrl()
     {
-        return $this->isSsl() ? $this->getConfigParam( 'sSSLShopURL' ) : $this->getConfigParam( 'sShopURL' );
+        return $this->_blIsSsl ? $this->getConfigParam( 'sSSLShopURL' ) : $this->getConfigParam( 'sShopURL' );
     }
 
     /**
@@ -2081,6 +2204,16 @@ class oxConfig extends oxSuperCfg
         }
 
         return $aModuleArray;
+    }
+
+    /**
+     * Return active shop ids
+     *
+     * @return boolean
+     */
+    public function getShopIds()
+    {
+        return oxDb::getDb()->getCol( "SELECT `oxid` FROM `oxshops`" );
     }
 
 }

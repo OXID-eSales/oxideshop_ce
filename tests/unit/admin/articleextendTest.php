@@ -139,7 +139,7 @@ class Unit_Admin_ArticleExtendTest extends OxidTestCase
         modConfig::setParameter( "mediaUrl", "testUrl" );
         modConfig::setParameter( "mediaDesc", "testDesc" );
 
-        $oConfig = $this->getMock( "oxStdClass", array( "getUploadedFile" ,"isDemoShop" ) );
+        $oConfig = $this->getMock( "oxConfig", array( "getUploadedFile" ,"isDemoShop" ) );
         $oConfig->expects( $this->exactly(2) )->method( 'getUploadedFile' )->will( $this->returnValue( array( "name" => "testName" ) ) );
         $oConfig->expects( $this->once() )->method( 'isDemoShop' )->will( $this->returnValue( false ) );
 
@@ -165,7 +165,7 @@ class Unit_Admin_ArticleExtendTest extends OxidTestCase
         modConfig::setParameter( "mediaUrl", "testUrl" );
         modConfig::setParameter( "mediaDesc", "testDesc" );
 
-        $oConfig = $this->getMock( "oxStdClass", array( "getUploadedFile", "isDemoShop" ) );
+        $oConfig = $this->getMock( "oxConfig", array( "getUploadedFile", "isDemoShop" ) );
         $oConfig->expects( $this->exactly(2) )->method( 'getUploadedFile' )->will( $this->returnValue( array( "name" => "testName" ) ) );
         $oConfig->expects( $this->once() )->method( 'isDemoShop' )->will( $this->returnValue( false ) );
 
@@ -184,7 +184,7 @@ class Unit_Admin_ArticleExtendTest extends OxidTestCase
         }
         $this->fail( "error in Article_Extend::save()" );
     }
-    
+
  /**
      * Article_Extend::Save() test case when demoShop = true and upload file
      *
@@ -192,9 +192,9 @@ class Unit_Admin_ArticleExtendTest extends OxidTestCase
      */
     public function testSaveDemoShopFileUpload()
     {
-        $oConfig = $this->getMock( "oxStdClass", array( "getUploadedFile", "isDemoShop" ) );
+        $oConfig = $this->getMock( "oxConfig", array( "getUploadedFile", "isDemoShop" ) );
         $oConfig->expects( $this->once() )->method( 'isDemoShop' )->will( $this->returnValue( true ) );
-        $oConfig->expects( $this->exactly(2) )->method( 'getUploadedFile' )->will( $this->onConsecutiveCalls( 
+        $oConfig->expects( $this->exactly(2) )->method( 'getUploadedFile' )->will( $this->onConsecutiveCalls(
             array( "name" => array('FL@oxarticles__oxfile' => "testFile") ), array( "name" => "testName") ) );
         // testing..
         $oView = $this->getMock( "Article_Extend", array( "getConfig", "resetContentCache" ), array(), '', false );

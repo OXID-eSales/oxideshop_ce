@@ -33,7 +33,7 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
     public function setUp(){
         parent::setUp();
         if (strpos($this->getName(), 'testGetTemplateBlocks') === 0) {
-            oxDb::getDb()->Execute("insert into oxtplblocks values (
+            oxDb::getDb()->Execute("insert into oxtplblocks (OXID,OXACTIVE,OXSHOPID,OXTEMPLATE,OXBLOCKNAME,OXPOS,OXFILE,OXMODULE) values (
                                        'test_1',
                                        '1',
                                        '15',
@@ -44,7 +44,7 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
                                        'module1'
                                     )"
             );
-            oxDb::getDb()->Execute("insert into oxtplblocks values (
+            oxDb::getDb()->Execute("insert into oxtplblocks (OXID,OXACTIVE,OXSHOPID,OXTEMPLATE,OXBLOCKNAME,OXPOS,OXFILE,OXMODULE) values (
                                        'test_2',
                                        '1',
                                        '15',
@@ -55,7 +55,7 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
                                        'module2'
                                     )"
             );
-            oxDb::getDb()->Execute("insert into oxtplblocks values (
+            oxDb::getDb()->Execute("insert into oxtplblocks (OXID,OXACTIVE,OXSHOPID,OXTEMPLATE,OXBLOCKNAME,OXPOS,OXFILE,OXMODULE) values (
                                        'test_3',
                                        '1',
                                        '15',
@@ -67,7 +67,7 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
                                     )"
             );
             // one non active - to be sure it is not loaded
-            oxDb::getDb()->Execute("insert into oxtplblocks values (
+            oxDb::getDb()->Execute("insert into oxtplblocks (OXID,OXACTIVE,OXSHOPID,OXTEMPLATE,OXBLOCKNAME,OXPOS,OXFILE,OXMODULE) values (
                                        'test_4',
                                        '0',
                                        '15',
@@ -78,7 +78,7 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
                                        'module2'
                                     )"
             );
-            oxDb::getDb()->Execute("insert into oxtplblocks values (
+            oxDb::getDb()->Execute("insert into oxtplblocks (OXID,OXACTIVE,OXSHOPID,OXTEMPLATE,OXBLOCKNAME,OXPOS,OXFILE,OXMODULE) values (
                                        'test_5',
                                        '1',
                                        '15',
@@ -214,12 +214,14 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
         $aErrors = oxSession::getVar('Errors');
         $oEx = unserialize($aErrors['myDest'][0]);
         $this->assertEquals("testMessage", $oEx->getOxMessage());
+        $this->assertNull(oxSession::getVar('ErrorController'));
     }
 
     public function testAddErrorToDisplayCustomDestinationFromPost()
     {
         $myConfig = oxConfig::getInstance();
-        modConfig::setParameter('CustomError', 'myDest');
+        $this->setRequestParam('CustomError', 'myDest');
+        $this->setRequestParam( 'actcontrol', 'oxwminibasket' );
 
         $oSession = $this->getMock( 'oxSession', array( 'getId' ) );
         $oSession->expects( $this->once() )->method( 'getId' )->will( $this->returnValue( true ) );
@@ -231,10 +233,13 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
         $aErrors = oxSession::getVar('Errors');
         $oEx = unserialize($aErrors['myDest'][0]);
         $this->assertEquals("testMessage", $oEx->getOxMessage());
+        $aErrorController = oxSession::getVar('ErrorController');
+        $this->assertEquals("oxwminibasket", $aErrorController['myDest']);
     }
 
     public function testAddErrorToDisplayDefaultDestination()
     {
+        $this->setRequestParam( 'actcontrol', 'start' );
         $oSession = $this->getMock( 'oxSession', array( 'getId' ) );
         $oSession->expects( $this->once() )->method( 'getId' )->will( $this->returnValue( true ) );
 
@@ -245,6 +250,8 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
         $aErrors = oxSession::getVar('Errors');
         $oEx = unserialize($aErrors['default'][0]);
         $this->assertEquals("testMessage", $oEx->getOxMessage());
+        $aErrorController = oxSession::getVar('ErrorController');
+        $this->assertEquals("start", $aErrorController['default']);
     }
 
     public function testAddErrorToDisplayUsingExeptionObject()
@@ -280,6 +287,7 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
         //$oEx = unserialize($aErrors['default'][0]);
         //$this->assertEquals("", $oEx->getOxMessage());
         $this->assertFalse( isset( $aErrors['default'][0] ) );
+        $this->assertNull(oxSession::getVar('ErrorController'));
     }
 
     public function testAddErrorToDisplay_startsSessionIfNotStarted()
@@ -301,7 +309,7 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
      */
     public function testParseThroughSmarty()
     {
-        $aData['shop'] = new oxstdclass();
+        $aData['shop'] = new stdClass();
         $aData['shop']->urlSeparator = '?';
 
         $oActView = $this->getMock( 'oxview', array( 'getViewData' ) );
@@ -346,8 +354,8 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
                          'left_delimiter'  => '[{',
                          'right_delimiter' => '}]',
                          'caching'         => false,
-                         'compile_dir'     => $myConfig->getConfigParam( 'sCompileDir' ),
-                         'cache_dir'       => $myConfig->getConfigParam( 'sCompileDir' ),
+                         'compile_dir'     => $myConfig->getConfigParam( 'sCompileDir' ) . "/smarty/",
+                         'cache_dir'       => $myConfig->getConfigParam( 'sCompileDir' ) . "/smarty/",
                          'template_dir'    => $aTemplatesDir,
                          'compile_id'      => md5($myConfig->getTemplateDir( false ).'__'.$myConfig->getShopId()),
                          'debugging'       => true,
@@ -437,8 +445,8 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
                          'left_delimiter'  => '[{',
                          'right_delimiter' => '}]',
                          'caching'         => false,
-                         'compile_dir'     => $myConfig->getConfigParam( 'sCompileDir' ),
-                         'cache_dir'       => $myConfig->getConfigParam( 'sCompileDir' ),
+                         'compile_dir'     => $myConfig->getConfigParam( 'sCompileDir' ) . "/smarty/",
+                         'cache_dir'       => $myConfig->getConfigParam( 'sCompileDir' ) . "/smarty/",
                          'template_dir'    => $aTemplatesDir,
                          'compile_id'      => md5($myConfig->getTemplateDir( false ).'__'.$myConfig->getShopId()),
                          'debugging'       => true,
@@ -511,7 +519,8 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
     {
         $oCfg = $this->getMock('oxConfig', array('getShopId'));
         $oCfg->expects($this->at(0))->method('getShopId')->will($this->returnValue('15'));
-        $oCfg->expects($this->at(1))->method('getShopId')->will($this->returnValue('25'));
+        $oCfg->expects($this->at(1))->method('getShopId')->will($this->returnValue('15'));
+        $oCfg->expects($this->at(2))->method('getShopId')->will($this->returnValue('25'));
         $aInfo = array( 'module1' => 'module1', 'module2' => 'module2' );
 
         $o = $this->getMock('oxUtilsView', array('getConfig', '_getActiveModuleInfo', '_getTemplateBlock'));
@@ -553,7 +562,8 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
     {
         $oCfg = $this->getMock('oxConfig', array('getShopId'));
         $oCfg->expects($this->at(0))->method('getShopId')->will($this->returnValue('15'));
-        $oCfg->expects($this->at(1))->method('getShopId')->will($this->returnValue('25'));
+        $oCfg->expects($this->at(1))->method('getShopId')->will($this->returnValue('15'));
+        $oCfg->expects($this->at(2))->method('getShopId')->will($this->returnValue('25'));
         $aInfo = array( 'module1' => 'module1', 'module2' => 'module2' );
 
         $oE = $this->getMock('oxException', array('debugOut'));
@@ -598,6 +608,7 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
     {
         $oCfg = $this->getMock('oxConfig', array('getShopId'));
         $oCfg->expects($this->at(0))->method('getShopId')->will($this->returnValue('15'));
+        $oCfg->expects($this->at(1))->method('getShopId')->will($this->returnValue('15'));
         $aInfo = array( 'module99' => 'module99' );
 
         $o = $this->getMock('oxUtilsView', array('getConfig', '_getTemplateBlock', '_getActiveModuleInfo'));
@@ -626,6 +637,19 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
         $oUV = $this->getProxyClass('oxUtilsView');
 
         $this->assertTrue($oUV->UNITgetActiveModuleInfo());
+    }
+
+    /**
+     * tests oxutilsView::getSmartyDir()
+     */
+    public function testGetSmartyDir()
+    {
+        $oUV = new oxUtilsView();
+
+        $sExp = $this->getConfigParam( 'sCompileDir' ) . "/smarty/";
+
+        $this->assertSame( $sExp, $oUV->getSmartyDir() );
+
     }
 
 }

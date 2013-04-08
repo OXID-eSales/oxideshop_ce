@@ -115,7 +115,8 @@ class Unit_Admin_OrderDownloadsTest extends OxidTestCase
         oxDb::getDB()->execute( 'insert into oxorderfiles set oxid="_testOrderFile", oxfileid="fileId", oxmaxdownloadcount="10", oxlinkexpirationtime="24",
                          oxdownloadexpirationtime="12", oxvaliduntil="2011-10-20 12:12:00", oxdownloadcount="2", oxfirstdownload="2011-10-10", oxlastdownload="2011-10-20"' );
 
-        $sDate = date( 'Y-m-d H:i:s', mktime( date("H") + 24, date("i"), 0, date("m"), date("d"), date("Y")) );
+        $sNow = oxRegistry::get("oxUtilsDate")->getTime();
+        $sDate = date( 'Y-m-d H:i:s', $sNow );
 
         $oView = new Order_Downloads();
         $oView->resetDownloadLink();

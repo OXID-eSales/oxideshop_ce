@@ -80,7 +80,7 @@ class oxERPType_OrderArticle extends oxERPType
     {
             return;
 
-        if ($oObj->oxorderarticles__oxordershopid->value != oxConfig::getInstance()->getShopId()) {
+        if ($oObj->oxorderarticles__oxordershopid->value != oxRegistry::getConfig()->getShopId()) {
             throw new Exception( oxERPBase::$ERROR_USER_NO_RIGHTS);
         }
 

@@ -41,7 +41,9 @@ class Unit_Core_oxattributelistTest extends OxidTestCase
 
         $myDB->Execute( 'delete from oxattribute where oxid = "test%" ');
         $myDB->Execute( 'delete from oxobject2attribute where oxid = "test%" ');
-
+        
+        $myDB->Execute( "update oxattribute set oxdisplayinbasket = 0 where oxid = '8a142c3f0b9527634.96987022' " );
+        
         parent::tearDown();
     }
 
@@ -111,6 +113,50 @@ class Unit_Core_oxattributelistTest extends OxidTestCase
         $sAttribValue = $oAttrList[$sID]->oxobject2attribute__oxvalue->value;
         $this->assertEquals( $sExpectedValue, $sAttribValue);
     }
+    
+	/**
+     * Test load attributes.
+     *
+     * @return null
+     */
+    public function testLoadAttributesWithParent()
+    {
+        $oAttrList = new oxAttributelist();
+        $oAttrList->loadAttributes('1672', '1351');
+        $this->assertEquals( 9, $oAttrList->count() );
+    }
+    
+    
+    /**
+     * Test load displayable in basket/order attributes.
+     *
+     * @return null
+     */
+    public function testLoadAttributesDisplayableInBasket()
+    {
+        $sSelect = "update oxattribute set oxdisplayinbasket = 1 where oxid = '8a142c3f0b9527634.96987022' ";
+        $rs = oxDb::getDB()->execute($sSelect);
+        
+        $oAttrList = new oxAttributelist();
+        $oAttrList->loadAttributesDisplayableInBasket('1672');
+        $sAttribValue = $oAttrList['8a142c3f0c0baa3f4.54955953']->oxattribute__oxvalue->rawValue;
+        $this->assertEquals( '25 cm', $sAttribValue );
+        
+    }
+    
+    /**
+     * Test load displayable in basket/order attributes, when all are not dispayable.
+     *
+     * @return null
+     */
+    public function testLoadAttributesDisplayableInBasketNoAttributes()
+    {
+        $oAttrList = new oxAttributelist();
+        $oAttrList->loadAttributesDisplayableInBasket('1672');
+        $this->assertEquals( 0, count( $oAttrList ) );
+        
+    }
+
 
     /**
      * Test load attributes in other language.

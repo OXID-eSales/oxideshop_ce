@@ -68,7 +68,7 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
     // ------------------------ eFire modules for eShop ----------------------------------
 
     /**
-     * test for activating PayPal and sending conector
+    * test for activating PayPal and sending conector
     * @group paypal
     */
     public function testActivatePaypal()
@@ -85,18 +85,24 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
     }
 
     /**
+     * Perform login to paypal.
+     */
+    protected function _loginToSandbox()
+    {
+        $this->open("https://www.paypal.com/webapps/auth/protocol/openidconnect/v1/authorize?client_id=eee5d94d000903b29b1263ae5654b369&response_type=code&scope=openid%20profile%20email%20address%20https://uri.paypal.com/services/paypalattributes&redirect_uri=https://developer.paypal.com/webapps/developer/access&nonce=05d0a60ee1f44361f449496505e05116&state=784d8bc3fe3a48a5105b4f8ddd8ae0e7");
+        $this->type("email", "caroline.helbing@oxid-esales.com");
+        $this->type("password", "QT0Km5OyJzoiUC" );
+        $this->click("name=_eventId_submit");
+        $this->waitForPageToLoad("30000");
+    }
+    /**
      * testing paypal payment selection
     * @group paypal
     */
     public function testPaypalPayment1()
     {
-
         //login to sanbox
-        $this->open("https://developer.paypal.com/");
-        $this->type("login_email", "testoxideshop@gmail.com");
-        $this->type("login_password", "xxxxxxxxx");
-        $this->click("name=submit");
-        $this->waitForPageToLoad("30000");
+        $this->_loginToSandbox();
 
         $this->openShop();
         $this->switchLanguage("Deutsch");
@@ -116,14 +122,12 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
         $this->type("login_password", "xxxxxxxxx");
         $this->click("id=submitLogin");
         $this->waitForItemAppear("id=continue");
-        // Sleep for couple seconds as button might be visible but not available.
-        sleep(5);
         $this->click("id=continue");
         $this->waitForText("Senden Sie Ihre Bestellung am unteren Ende dieser Übersicht ab");
         $this->assertEquals("Gesamtsumme 0,99 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[5]")));
         $this->assertEquals("Zahlungsart ändern PayPal", $this->clearString($this->getText("orderPayment")));
         $this->assertEquals("Versandart ändern Test S&H set", $this->clearString($this->getText("orderShipping")));
-        $this->assertEquals("Adressen ändern Rechnungsadresse E-Mail: birute_test@nfq.lt SeleniumTestCase Äß'ü Testing acc for Selenium Herr Testing user acc Äß'ü PayPal Äß'ü Musterstr. Äß'ü 1 79098 Musterstadt Äß'ü Deutschland Ihre Mitteilung an uns: Testing paypal", $this->clearString($this->getText("orderAddress")));
+        $this->assertEquals("Adressen ändern Rechnungsadresse E-Mail: birute_test@nfq.lt SeleniumTestCase Äß'ü Testing acc for Selenium Herr Testing user acc Äß'ü PayPal Äß'ü Musterstr. Äß'ü 1 79098 Musterstadt Äß'ü Deutschland Ihre Mitteilung an uns Testing paypal", $this->clearString($this->getText("orderAddress")));
         $this->clickAndWait("//button[text()='Zahlungspflichtig bestellen']");
         $this->assertTrue($this->isTextPresent("Vielen Dank für Ihre Bestellung im OXID eShop"), "Order is not finished successful");
 
@@ -146,12 +150,8 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
     */
     public function testPaypalExpress2()
     {
-
-        $this->open("https://developer.paypal.com/");
-        $this->type("login_email", "testoxideshop@gmail.com");
-        $this->type("login_password", "xxxxxxxxx");
-        $this->click("name=submit");
-        $this->waitForPageToLoad("30000");
+        //login to sanbox
+        $this->_loginToSandbox();
 
         //Testing when user is logged in
         $this->openShop();
@@ -232,12 +232,8 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
     */
     public function testPaypalExpressWhenPaypalInactive()
     {
-
-        $this->open("https://developer.paypal.com/");
-        $this->type("login_email", "testoxideshop@gmail.com");
-        $this->type("login_password", "xxxxxxxxx");
-        $this->click("name=submit");
-        $this->waitForPageToLoad("30000");
+        //login to sanbox
+        $this->_loginToSandbox();
 
         //Disable Paypal
         $this->loginAdminForModule("Extensions", "Modules");
@@ -281,13 +277,8 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
     */
     public function testPaypalPaymentForGermany()
     {
-
-        // Login to the sandbox
-        $this->open("https://developer.paypal.com/");
-        $this->type("login_email", "testoxideshop@gmail.com");
-        $this->type("login_password", "xxxxxxxxx");
-        $this->click("name=submit");
-        $this->waitForPageToLoad("30000");
+        //login to sanbox
+        $this->_loginToSandbox();
 
         //Make an order with paypal
         $this->openShop();
@@ -333,14 +324,14 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
         $this->frame("list");
         $this->openTab("link=Products", "//input[@value='Update']");
         $this->assertEquals("1", $this->getValue("//tr[@id='art.1']/td[1]/input"), "Quantity of product is not correct in admin");
-        $this->assertEquals("0,99 EUR", $this->getText("//tr[@id='art.1']/td[8]"), "Unit price is not displayed in admin");
-        $this->assertEquals("0,99 EUR", $this->getText("//tr[@id='art.1']/td[9]"));
+        $this->assertEquals("0,99 EUR", $this->getText("//tr[@id='art.1']/td[7]"), "Unit price is not displayed in admin");
+        $this->assertEquals("0,99 EUR", $this->getText("//tr[@id='art.1']/td[8]"), "Total price is not displayed in admin");
 
         //Update product quantities to 5
         $this->type("//tr[@id='art.1']/td[1]/input", "5");
         $this->clickAndWait("//input[@value='Update']");
-        $this->assertEquals("0,99 EUR", $this->getText("//tr[@id='art.1']/td[8]"));
-        $this->assertEquals("4,95 EUR", $this->getText("//tr[@id='art.1']/td[9]"), "Total price is incorrect after update");
+        $this->assertEquals("0,99 EUR", $this->getText("//tr[@id='art.1']/td[7]"), "Unit price is not displayed in admin");
+        $this->assertEquals("4,95 EUR", $this->getText("//tr[@id='art.1']/td[8]"), "Total price is incorrect after update");
         $this->assertEquals("4,95", $this->getText("//table[@id='order.info']/tbody/tr[7]/td[2]"));
         $this->frame("list");
         $this->openTab("link=Main", "setDelSet");
@@ -422,7 +413,7 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
         //Go to next step and change country to Germany
         $this->click("xpath=(//button[@type='submit'])[3]");
         $this->waitForItemAppear("id=userChangeAddress");
-          $this->click("id=userChangeAddress");
+        $this->click("id=userChangeAddress");
         $this->click("id=invCountrySelect");
         $this->select("id=invCountrySelect", "label=Germany");
         $this->click("id=userNextStepTop");
@@ -458,8 +449,8 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
         $this->frame("list");
         $this->openTab("link=Products", "//input[@value='Update']");
         $this->assertEquals("5", $this->getValue("//tr[@id='art.1']/td[1]/input"), "Product quantities are incorect in admin");
-        $this->assertEquals("0,99 EUR", $this->getText("//tr[@id='art.1']/td[8]"), "Product price is incorect in admin");
-        $this->assertEquals("4,95 EUR", $this->getText("//tr[@id='art.1']/td[9]"), "Product total is incorect in admin");
+        $this->assertEquals("0,99 EUR", $this->getText("//tr[@id='art.1']/td[7]"), "Product price is incorect in admin");
+        $this->assertEquals("4,95 EUR", $this->getText("//tr[@id='art.1']/td[8]"), "Product total is incorect in admin");
         $this->assertEquals("4,95", $this->getText("//table[@id='order.info']/tbody/tr[7]/td[2]"), "Product total is incorect in admin");
         $this->frame("list");
         $this->openTab("link=Main", "setDelSet");
@@ -495,8 +486,8 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
         $this->assertTrue($this->isTextPresent("Test S&H set"));
        // $this->assertFalse($this->isTextPresent("PayPal"));
         $this->assertTrue($this->isTextPresent("COD"));
-        $this->clickAndWait("//button[text()='Purchase']");
-        $this->assertTrue($this->isTextPresent("Thank you for your order in OXID eShop 4"), "Order is not finished successful");
+        $this->clickAndWait("//button[text()='Order now']");
+        $this->assertTrue($this->isTextPresent("Thank you for your order in OXID eShop"), "Order is not finished successful");
 
         // After sucsessful purchase, go to admin and check order status
         $this->loginAdminForModule("Administer Orders", "Orders", "btn.help", "link=2");
@@ -523,18 +514,14 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
 
 
     /**
-     * testing different countries with shipping rules assigned to this countries 
+     * testing different countries with shipping rules assigned to this countries
     * @group paypal
     */
     public function testPaypalPaymentForLoginUser()
     {
-
-        //Login to the sandbox
-        $this->open("https://developer.paypal.com/");
-        $this->type("login_email", "testoxideshop@gmail.com");
-        $this->type("login_password", "xxxxxxxxx");
-        $this->click("name=submit");
-        $this->waitForPageToLoad("30000");
+        //login to sanbox
+        $this->_loginToSandbox();
+        
         $this->openShop();
 
         //Search for the product and add to cart
@@ -765,8 +752,8 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
         $this->assertEquals("Grand Total: 20,20 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[5]")),"Grand total is not displayed correctly");
         $this->assertTrue($this->isTextPresent("Test Paypal:6 hour"), "Shipping cost is not calculated in PayPal");
         $this->assertTrue($this->isTextPresent("PayPal"),"Payment method not displayed in last order step");
-        $this->clickAndWait("//button[text()='Purchase']");
-        $this->assertTrue($this->isTextPresent("Thank you for your order in OXID eShop 4"), "Order is not finished successful");
+        $this->clickAndWait("//button[text()='Order now']");
+        $this->assertTrue($this->isTextPresent("Thank you for your order in OXID eShop"), "Order is not finished successful");
 
     }
 
@@ -779,11 +766,7 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
     {
 
         //Login to sanbox
-        $this->open("https://developer.paypal.com/");
-        $this->type("login_email", "testoxideshop@gmail.com");
-        $this->type("login_password", "xxxxxxxxx");
-        $this->click("name=submit");
-        $this->waitForPageToLoad("30000");
+        $this->_loginToSandbox();
 
         //Login to shop and go standart paypal
         $this->openShop();
@@ -809,13 +792,13 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
         $this->click("id=continue");
         $this->assertEquals("Ihre Zahlungsinformationen auf einen Blick - PayPal", $this->getTitle());
         $this->assertTrue($this->isTextPresent("PayPal"),"Payment method not displayed in last order step");
-        $this->clickAndWait("//button[text()='Purchase']");
+        $this->clickAndWait("//button[text()='Order now']");
         $this->assertTrue($this->isTextPresent("Thank you for your order in OXID eShop"), "Order is not finished successful");
 
     }
 
 
-    /*
+    /**
     * test if payment method PAYPAL is deactivated in shop backend, the paypal express button should also disappear.
     * @group paypal
     */
@@ -848,7 +831,7 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
     }
 
 
-    /*
+    /**
     * test if discounts working correct with PayPal.
     * @group paypal
     */
@@ -856,15 +839,10 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
     {
 
         //Login to sanbox
-        $this->open("https://developer.paypal.com/");
-        $this->type("login_email", "testoxideshop@gmail.com");
-        $this->type("login_password", "xxxxxxxxx");
-        $this->click("name=submit");
-        $this->waitForPageToLoad("30000");
+        $this->_loginToSandbox();
 
         // Add vouchers to shop
             $this->open(shopURL."/_updateDB.php?filename=newDiscounts_pe.sql");
-
         //Go to shop and add product
         $this->openShop();
         $this->switchLanguage("English");
@@ -877,14 +855,8 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
         $this->assertTrue($this->isTextPresent("Test product 0"));
         $this->assertTrue($this->isTextPresent("Test product 1"), "Purchased product name is not displayed");
         $this->assertTrue($this->isTextPresent("+1"));
-//        $this->assertEquals("5,00 €", $this->getText("basketGrandTotal"),"Garnd total price chenged or did't displayed");
-//        $this->assertEquals("5,00 € \n10,00 €", $this->getText("//tr[@id='cartItem_1']/td[6]"),"price with discount not shown in basket");
-
-        $this->assertEquals("Discount  discount for category", $this->getText("//div[@id='basketSummary']/table/tbody/tr[2]/th"), "Discount is not displayed in basket");
-        $this->assertEquals("-5,00 €", $this->getText("//div[@id='basketSummary']/table/tbody/tr[2]/td"));
-        $this->assertEquals("Grand Total: 5,00 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[6]")),"Grand total is not displayed correctly");
-
-
+        $this->assertEquals("5,00 €", $this->getText("basketGrandTotal"),"Garnd total price chenged or did't displayed");
+        $this->assertEquals("5,00 € \n10,00 €", $this->getText("//tr[@id='cartItem_1']/td[6]"),"price with discount not shown in basket");
         // Go to 2nd step
         $this->clickAndWait("//button[text()='Continue to Next Step']");
 
@@ -910,7 +882,7 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
         $this->assertTrue($this->isTextPresent("buyger_1346652948_pre@gmail.com"));
         $this->assertTrue($this->isTextPresent("Ihr Warenkorb"));
         $this->assertTrue($this->isTextPresent("Artikelnummer: 1000"), "Product number not shown in Paypal");
-        $this->assertTrue($this->isTextPresent("Artikelpreis: €10,00"), "Product price not shown in Paypal");
+        $this->assertTrue($this->isTextPresent("Artikelpreis: €5,00"), "Product price not shown in Paypal");
         $this->assertTrue($this->isTextPresent("Anzahl: 1"), "Product quantity is not shown in Paypal");
         $this->assertTrue($this->isTextPresent("Artikelnummer: 1001"), "Product number not shown in Paypal");
         $this->assertEquals("Artikelpreis: €0,00", $this->getText("//li[@id='multiitem1']/ul[2]/li[3]"), "Product price not shown in Paypal");
@@ -927,15 +899,13 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
         $this->assertEquals("Art.No.: 1001", $this->getText("//tr[@id='cartItem_2']/td[2]/div[2]"),"Product number not displayed in last order step");
         $this->assertEquals("Art.No.: 1000", $this->getText("//tr[@id='cartItem_1']/td[2]/div[2]"),"Product number not displayed in last order step");
         $this->assertTrue($this->isTextPresent("1 +1"));
-        $this->assertEquals("-5,00 €", $this->getText("//div[@id='basketSummary']/table/tbody/tr[2]/td"));
+        $this->assertEquals("4,20 €", $this->getText("basketTotalProductsNetto"),"Neto price changed or did't displayed");
+        $this->assertEquals("plus VAT 19% Amount: 0,80 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[2]")));
+        $this->assertEquals("5,00 €", $this->getText("basketTotalProductsGross"),"Bruto price changed  or did't displayed");
+        $this->assertEquals("0,00 €", $this->getText("basketDeliveryGross"),"Shipping price changed  or did't displayed");
+        $this->assertEquals("5,00 €", $this->getText("basketGrandTotal"),"Garnd total price chenged or did't displayed");
 
-        $this->assertEquals("Total Products (gross): 10,00 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[1]")));
-        $this->assertEquals("Discount discount for category -5,00 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[2]")));
-        $this->assertEquals("Total Products (net): 4,20 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[3]")));
-        $this->assertEquals("plus VAT 19% Amount: 0,80 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[4]")));
-        $this->assertEquals("Shipping cost 0,00 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[5]")), "Shipping cost is not displayed correctly");
-        $this->assertEquals("Grand Total: 5,00 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[6]")),"Grand total is not displayed correctly");
-        $this->clickAndWait("//button[text()='Purchase']");
+        $this->clickAndWait("//button[text()='Order now']");
         $this->assertTrue($this->isTextPresent("Thank you for your order in OXID eShop"), "Order is not finished successful");
 
         //Go to admin and check the order
@@ -945,10 +915,10 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
         $this->openTab("link=2", "setfolder");
         $this->frame("edit");
         $this->assertTrue($this->isTextPresent("Internal Status: OK"));
-        $this->assertEquals("10,00 EUR", $this->getText("//td[5]"));
+        $this->assertEquals("5,00 EUR", $this->getText("//td[5]"));
         $this->assertEquals("Billing Address: Company SeleniumTestCase Äß'ü Testing acc for Selenium Mr Testing user acc Äß'ü PayPal Äß'ü Musterstr. Äß'ü 1 79098 Musterstadt Äß'ü Germany E-mail: birute_test@nfq.lt", $this->clearString($this->getText("//td[1]/table[1]/tbody/tr/td[1]")));
-        $this->assertEquals("10,00", $this->getText("//table[@id='order.info']/tbody/tr[1]/td[2]"));
-        $this->assertEquals("- 5,00", $this->getText("//table[@id='order.info']/tbody/tr[2]/td[2]"));
+        $this->assertEquals("5,00", $this->getText("//table[@id='order.info']/tbody/tr[1]/td[2]"));
+        $this->assertEquals("- 0,00", $this->getText("//table[@id='order.info']/tbody/tr[2]/td[2]"));
         $this->assertEquals("4,20", $this->getText("//table[@id='order.info']/tbody/tr[3]/td[2]"));
         $this->assertEquals("0,80", $this->getText("//table[@id='order.info']/tbody/tr[4]/td[2]"));
         $this->assertEquals("0,00", $this->getText("//table[@id='order.info']/tbody/tr[5]/td[2]"));
@@ -963,7 +933,7 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
     }
 
 
-    /*
+    /**
     * test if few different discounts working correct with PayPal.
     * @group paypal
     */
@@ -971,11 +941,7 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
     {
 
         //Login to sanbox
-        $this->open("https://developer.paypal.com/");
-        $this->type("login_email", "testoxideshop@gmail.com");
-        $this->type("login_password", "xxxxxxxxx");
-        $this->click("name=submit");
-        $this->waitForPageToLoad("30000");
+        $this->_loginToSandbox();
 
         // Add vouchers to shop
             $this->open(shopURL."/_updateDB.php?filename=newDiscounts_pe.sql");
@@ -1109,8 +1075,8 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
         $this->assertEquals("plus VAT 19% Amount: 6,83 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[4]")));
         $this->assertEquals("Shipping cost 0,00 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[5]")), "Shipping cost is not displayed correctly");
         $this->assertEquals("Grand Total: 42,75 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[6]")),"Grand total is not displayed correctly");
-        $this->clickAndWait("//button[text()='Purchase']");
-        $this->assertTrue($this->isTextPresent("Thank you for your order in OXID eShop 4"), "Order is not finished successful");
+        $this->clickAndWait("//button[text()='Order now']");
+        $this->assertTrue($this->isTextPresent("Thank you for your order in OXID eShop"), "Order is not finished successful");
 
         //Go to admin and check the order
         $this->loginAdminForModule("Administer Orders", "Orders", "btn.help", "link=2");
@@ -1137,8 +1103,7 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
 
     }
 
-
-    /*
+    /**
     * test if vouchers working correct with PayPal
     * @group paypal
     */
@@ -1146,11 +1111,7 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
     {
 
         //Login to sanbox
-        $this->open("https://developer.paypal.com/");
-        $this->type("login_email", "testoxideshop@gmail.com");
-        $this->type("login_password", "xxxxxxxxx");
-        $this->click("name=submit");
-        $this->waitForPageToLoad("30000");
+        $this->_loginToSandbox();
 
         // Add vouchers to shop
             $this->open(shopURL."/_updateDB.php?filename=newVouchers_pe.sql");
@@ -1216,8 +1177,8 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
         $this->assertEquals("plus VAT 19% Amount: 0,80 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[2]")));
         $this->assertEquals("Shipping cost 0,00 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[5]")), "Shipping cost is not displayed correctly");
         $this->assertEquals("Grand Total: 5,00 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[6]")),"Grand total is not displayed correctly");
-        $this->clickAndWait("//button[text()='Purchase']");
-        $this->assertTrue($this->isTextPresent("Thank you for your order in OXID eShop 4"), "Order is not finished successful");
+        $this->clickAndWait("//button[text()='Order now']");
+        $this->assertTrue($this->isTextPresent("Thank you for your order in OXID eShop"), "Order is not finished successful");
 
         //Go to admin and check the order
         $this->loginAdminForModule("Administer Orders", "Orders", "btn.help", "link=2");
@@ -1247,19 +1208,14 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
     }
 
 
-    /*
+    /**
     * test if VAT is calculated in PayPal corect with different VAT options setted in admins
     * @group paypal
     */
     public function testPaypaVAT()
     {
-
         //Login to sanbox
-        $this->open("https://developer.paypal.com/");
-        $this->type("login_email", "testoxideshop@gmail.com");
-        $this->type("login_password", "xxxxxxxxx");
-        $this->click("name=submit");
-        $this->waitForPageToLoad("30000");
+        $this->_loginToSandbox();
 
         // Change price for PayPal payment methode
         $this->open(shopURL."/_updateDB.php?filename=vatOptions.sql");
@@ -1301,8 +1257,9 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
         $this->assertEquals("Total Products (gross): 17,85 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[3]")));
         $this->assertEquals("Shipping (net): 13,00 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[4]")));
         $this->assertEquals("plus VAT 19% Amount: 2,47 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[5]")));
-        $this->assertEquals("Gift Wrapping/Greeting Card 7,08 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[6]")));
-        $this->assertEquals("Grand Total: 40,40 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[7]")),"Grand total is not displayed correctly");
+        $this->assertEquals("3,51 €", $this->getText("basketWrappingGross"),"Wraping price chenged or did't displayed");
+        $this->assertEquals("3,57 €", $this->getText("basketGiftCardGross"),"Card price chenged or did't displayed");
+        $this->assertEquals("40,40 €", $this->getText("basketGrandTotal"),"Garnd total price chenged or did't displayed");
 
         // Go to 2nd step
         $this->clickAndWait("//button[text()='Continue to Next Step']");
@@ -1318,7 +1275,8 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
         $this->assertEquals("Pay with a PayPal account - PayPal", $this->getTitle());
         $this->assertTrue($this->isTextPresent("€17,85"));
         $this->assertTrue($this->isTextPresent("€12,50"));
-        $this->assertTrue($this->isTextPresent("€7,08"));
+        $this->assertTrue($this->isTextPresent("€3,51"));
+        $this->assertTrue($this->isTextPresent("€3,57"));
         $this->assertEquals("Total €52,90 EUR", $this->getText("//div[@id='miniCart']/div[3]/ul/li/span"));
         $this->assertTrue($this->isTextPresent("Item total €37,43"));
         $this->assertTrue($this->isTextPresent("Shipping and handling:"));
@@ -1338,9 +1296,13 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
         $this->assertEquals("Artikelpreis: €12,50", $this->getText("//li[@id='multiitem1']/ul[2]/li[2]"), "Product price not shown in Paypal");
         $this->assertEquals("Anzahl: 1", $this->getText("//li[@id='multiitem1']/ul[2]/li[3]"), "Product quantity is not shown in Paypal");
 
-        $this->assertTrue($this->isTextPresent("Gift Wrapping/Greeting Card"));
-        $this->assertEquals("Artikelpreis: €7,08", $this->getText("//li[@id='multiitem1']/ul[3]/li[2]"), "Product price not shown in Paypal");
+        $this->assertTrue($this->isTextPresent("Giftwrapper"));
+        $this->assertEquals("Artikelpreis: €3,51", $this->getText("//li[@id='multiitem1']/ul[3]/li[2]"), "Product price not shown in Paypal");
         $this->assertEquals("Anzahl: 1", $this->getText("//li[@id='multiitem1']/ul[3]/li[3]"), "Product quantity is not shown in Paypal");
+
+        $this->assertTrue($this->isTextPresent("Greeting Card"));
+        $this->assertEquals("Artikelpreis: €3,57", $this->getText("//li[@id='multiitem1']/ul[4]/li[2]"), "Product price not shown in Paypal");
+        $this->assertEquals("Anzahl: 1", $this->getText("//li[@id='multiitem1']/ul[4]/li[3]"), "Product quantity is not shown in Paypal");
 
         $this->assertTrue($this->isTextPresent("Warenwert€37,43"), "Product price is not displayed in Paypal");
         $this->assertEquals("Gesamtbetrag €52,90 EUR", $this->getText("//div[@id='miniCart']/div[3]/ul/li/span"), "Total price is not displayed in PayPal");
@@ -1355,7 +1317,7 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
         $this->assertEquals("Art.No.: 1003", $this->getText("//tr[@id='cartItem_1']/td[2]/div[2]"),"Product number not displayed in last order step");
         $this->assertTrue($this->isTextPresent("Greeting Card"));
         $this->assertEquals("3,57 €", $this->getText("id=orderCardTotalPrice"));
-        $this->assertEquals("7,08 €", $this->getText("//div[@id='basketSummary']/table/tbody/tr[8]/td"));
+        $this->assertEquals("3,51 €", $this->getText("//div[@id='basketSummary']/table/tbody/tr[8]/td"));
 
         $this->assertEquals("Total Products (net): 15,00 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[1]")));
         $this->assertEquals("plus VAT 19% Amount: 2,85 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[2]")));
@@ -1364,11 +1326,11 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
         $this->assertEquals("plus VAT 19% Amount: 2,47 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[5]")));
         $this->assertEquals("Surcharge Type of Payment: 10,50 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[6]")));
         $this->assertEquals("Surcharge VAT 19 % Amount: 2,00 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[7]")));
-        $this->assertEquals("Gift Wrapping/Greeting Card 7,08 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[8]")));
-        $this->assertEquals("Grand Total: 52,90 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[9]")),"Grand total is not displayed correctly");
-
-        $this->clickAndWait("//button[text()='Purchase']");
-        $this->assertTrue($this->isTextPresent("Thank you for your order in OXID eShop 4"), "Order is not finished successful");
+        $this->assertEquals("3,51 €", $this->getText("basketWrappingGross"),"Wraping price chenged or did't displayed");
+        $this->assertEquals("3,57 €", $this->getText("basketGiftCardGross"),"Card price chenged or did't displayed");
+        $this->assertEquals("52,90 €", $this->getText("basketGrandTotal"),"Garnd total price chenged or did't displayed");
+        $this->clickAndWait("//button[text()='Order now']");
+        $this->assertTrue($this->isTextPresent("Thank you for your order in OXID eShop"), "Order is not finished successful");
 
         //Go to admin and check the order
         $this->loginAdminForModule("Administer Orders", "Orders", "btn.help", "link=2");
@@ -1385,8 +1347,9 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
         $this->assertEquals("2,85", $this->getText("//table[@id='order.info']/tbody/tr[4]/td[2]"));
         $this->assertEquals("15,47", $this->getText("//table[@id='order.info']/tbody/tr[5]/td[2]"));
         $this->assertEquals("12,50", $this->getText("//table[@id='order.info']/tbody/tr[6]/td[2]"));
-        $this->assertEquals("7,08", $this->getText("//table[@id='order.info']/tbody/tr[7]/td[2]"));
-        $this->assertEquals("52,90", $this->getText("//table[@id='order.info']/tbody/tr[8]/td[2]"));
+        $this->assertEquals("3,51", $this->getText("//table[@id='order.info']/tbody/tr[7]/td[2]"));
+        $this->assertEquals("3,57", $this->getText("//table[@id='order.info']/tbody/tr[8]/td[2]"));
+        $this->assertEquals("52,90", $this->getText("//table[@id='order.info']/tbody/tr[9]/td[2]"));
 
         $this->assertTrue($this->isElementPresent("//table[@id='order.info']/tbody/tr[2]"), "line with discount info is not displayed");
         $this->assertTrue($this->isElementPresent("//table[@id='order.info']/tbody/tr[2]/td[1]"), "line with discount info is not displayed");
@@ -1397,7 +1360,7 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
     }
 
 
-    /*
+    /**
     * test if option "Calculate default Shipping costs when User is not logged in yet" is working correct in PayPal
     * @group paypal
     */
@@ -1405,16 +1368,12 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
     {
 
         //Login to sanbox
-        $this->open("https://developer.paypal.com/");
-        $this->type("login_email", "testoxideshop@gmail.com");
-        $this->type("login_password", "xxxxxxxxx");
-        $this->click("name=submit");
-        $this->waitForPageToLoad("30000");
+        $this->_loginToSandbox();
 
         // Change price for PayPal payment methode
         $this->open(shopURL."/_updateDB.php?filename=vatOptions.sql");
 
-        // Go to admin and set on all VAT options
+        // Go to admin and set on "Calculate default Shipping costs when User is not logged in yet "
         $this->loginAdminForModule("Master Settings", "Core Settings");
         $this->openTab("link=Settings");
         $this->click("link=Other settings");
@@ -1442,17 +1401,20 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
         $this->assertEquals("plus VAT 19% Amount: 2,39 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[2]")));
         $this->assertEquals("Total Products (gross): 15,00 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[3]")));
         $this->assertEquals("Shipping cost 3,90 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[4]")), "Shipping cost is not displayed correctly");
-        $this->assertEquals("Gift Wrapping/Greeting Card 5,95 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[5]")));
-        $this->assertEquals("Grand Total: 24,85 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[6]")),"Grand total is not displayed correctly");
+        $this->assertEquals("2,95 €", $this->getText("basketWrappingGross"),"Wraping price chenged or did't displayed");
+        $this->assertEquals("24,85 €", $this->getText("basketGrandTotal"),"Garnd total price chenged or did't displayed");
 
         //Go to paypal express
         $this->click("name=paypalExpressCheckoutButton");
         $this->waitForItemAppear("id=submitLogin");
+
+        //Go to PayPal
         $this->assertEquals("Pay with a PayPal account - PayPal", $this->getTitle());
 
         $this->assertTrue($this->isTextPresent("€15.00"));
         $this->assertTrue($this->isTextPresent("€10.50"));
-        $this->assertTrue($this->isTextPresent("€5.95"));
+        $this->assertTrue($this->isTextPresent("€2.95"));
+        $this->assertTrue($this->isTextPresent("€3.00"));
         $this->assertTrue($this->isTextPresent("Item total €31.45"));
 
        //Login to PayPal express
@@ -1469,9 +1431,13 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
         $this->assertEquals("Artikelpreis: €10,50", $this->getText("//li[@id='multiitem1']/ul[2]/li[2]"), "Product price not shown in Paypal");
         $this->assertEquals("Anzahl: 1", $this->getText("//li[@id='multiitem1']/ul[2]/li[3]"), "Product quantity is not shown in Paypal");
 
-        $this->assertTrue($this->isTextPresent("Gift Wrapping/Greeting Card"));
-        $this->assertEquals("Artikelpreis: €5,95", $this->getText("//li[@id='multiitem1']/ul[3]/li[2]"), "Product price not shown in Paypal");
+        $this->assertTrue($this->isTextPresent("Giftwrapper"));
+        $this->assertEquals("Artikelpreis: €2,95", $this->getText("//li[@id='multiitem1']/ul[3]/li[2]"), "Product price not shown in Paypal");
         $this->assertEquals("Anzahl: 1", $this->getText("//li[@id='multiitem1']/ul[3]/li[3]"), "Product quantity is not shown in Paypal");
+
+        $this->assertTrue($this->isTextPresent("Greeting Card"));
+        $this->assertEquals("Artikelpreis: €3,00", $this->getText("//li[@id='multiitem1']/ul[4]/li[2]"), "Product price not shown in Paypal");
+        $this->assertEquals("Anzahl: 1", $this->getText("//li[@id='multiitem1']/ul[4]/li[3]"), "Product quantity is not shown in Paypal");
 
         $this->assertTrue($this->isTextPresent("Warenwert€31,45"), "Product total is not displayed in Paypal");
         $this->assertEquals("Gesamtbetrag €31,45 EUR", $this->getText("//div[@id='miniCart']/div[3]/ul/li/span"), "Total price is not displayed in PayPal");
@@ -1480,43 +1446,9 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
         $this->waitForTextPresent("Gesamtbetrag €44,45 EUR");
 
         $this->click("id=continue_abovefold");
+        $this->clickAndWait("id=continue");
         $this->waitForItemAppear("id=breadCrumb");
 
-        //Now user on the 1st Cart step
-       /* $this->assertTrue($this->isTextPresent("Based on your choice in PayPal Express Checkout, order total has changed. Please check your shopping cart and continue. Hint: for continuing with Express Checkout press Express Checkout button again."));
-        $this->assertTrue($this->isElementPresent("paypalExpressCheckoutButton"), "PayPal express button not displayed in the cart");
-
-        //User goes to express checkout once again
-        $this->click("name=paypalExpressCheckoutButton");
-        $this->waitForItemAppear("id=submitLogin");
-        $this->type("login_email", "buyger_1346652948_pre@gmail.com");
-        $this->type("login_password", "xxxxxxxxx");
-        $this->click("id=submitLogin");
-        $this->waitForItemAppear("id=continue");
-        $this->waitForItemAppear("id=displayShippingAmount");
-
-        $this->assertTrue($this->isTextPresent("Artikelnummer: 1003"), "Product number not shown in Paypal");
-        $this->assertEquals("Artikelpreis: €15,00", $this->getText("//li[@id='multiitem1']/ul/li[3]"), "Product price not shown in Paypal");
-        $this->assertEquals("Anzahl: 1", $this->getText("//li[@id='multiitem1']/ul/li[4]"), "Product quantity is not shown in Paypal");
-
-        $this->assertTrue($this->isTextPresent("Surcharge Type of Payment"));
-        $this->assertEquals("Artikelpreis: €10,50", $this->getText("//li[@id='multiitem1']/ul[2]/li[2]", "Product price not shown in Paypal"));
-        $this->assertEquals("Anzahl: 1", $this->getText("//li[@id='multiitem1']/ul[2]/li[3]"), "Product quantity is not shown in Paypal");
-
-        $this->assertTrue($this->isTextPresent("Gift Wrapping/Greeting Card"));
-        $this->assertEquals("Artikelpreis: €5,95", $this->getText("//li[@id='multiitem1']/ul[3]/li[2]"), "Product price not shown in Paypal");
-        $this->assertEquals("Anzahl: 1", $this->getText("//li[@id='multiitem1']/ul[3]/li[3]"), "Product quantity is not shown in Paypal");
-
-        $this->assertTrue($this->isTextPresent("Warenwert€31,45"), "Product total is not displayed in Paypal");
-        $this->assertEquals("Gesamtbetrag €31,45 EUR", $this->getText("//div[@id='miniCart']/div[3]/ul/li/span"), "Total price is not displayed in PayPal");
-        $this->assertTrue($this->isTextPresent("buyger_1346652948_pre@gmail.com"));
-        $this->assertTrue($this->isTextPresent("Ihr Warenkorb"));
-        $this->waitForTextPresent("Gesamtbetrag €44,45 EUR");
-        $this->click("id=continue_abovefold");
-
-        //Go to shop to finish the order
-        $this->clickAndWait("id=continue");
-        $this->waitForItemAppear("id=breadCrumb");*/
         $this->assertTrue($this->isTextPresent("Test product 3"));
         $this->assertEquals("Art.No.: 1003", $this->getText("//tr[@id='cartItem_1']/td[2]/div[2]"),"Product number not displayed in last order step");
         $this->assertTrue($this->isTextPresent("Greeting Card"));
@@ -1527,11 +1459,11 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
         $this->assertEquals("Total Products (gross): 15,00 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[3]")));
         $this->assertEquals("Shipping cost 13,00 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[4]")), "Shipping cost is not displayed correctly");
         $this->assertEquals("Surcharge Type of Payment: 10,50 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[5]")));
-        $this->assertEquals("Gift Wrapping/Greeting Card 5,95 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[6]")));
-        $this->assertEquals("Grand Total: 44,45 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[7]")),"Grand total is not displayed correctly");
+        $this->assertEquals("2,95 €", $this->getText("basketWrappingGross"),"Wraping price chenged or did't displayed");
+        $this->assertEquals("44,45 €", $this->getText("basketGrandTotal"),"Garnd total price chenged or did't displayed");
 
-        $this->clickAndWait("//button[text()='Purchase']");
-        $this->assertTrue($this->isTextPresent("Thank you for your order in OXID eShop 4"), "Order is not finished successful");
+        $this->clickAndWait("//button[text()='Order now']");
+        $this->assertTrue($this->isTextPresent("Thank you for your order in OXID eShop"), "Order is not finished successful");
 
         //Go to admin and check the order
         $this->loginAdminForModule("Administer Orders", "Orders", "btn.help", "link=2");
@@ -1548,8 +1480,9 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
         $this->assertEquals("2,39", $this->getText("//table[@id='order.info']/tbody/tr[4]/td[2]"));
         $this->assertEquals("13,00", $this->getText("//table[@id='order.info']/tbody/tr[5]/td[2]"));
         $this->assertEquals("10,50", $this->getText("//table[@id='order.info']/tbody/tr[6]/td[2]"));
-        $this->assertEquals("5,95", $this->getText("//table[@id='order.info']/tbody/tr[7]/td[2]"));
-        $this->assertEquals("44,45", $this->getText("//table[@id='order.info']/tbody/tr[8]/td[2]"));
+        $this->assertEquals("2,95", $this->getText("//table[@id='order.info']/tbody/tr[7]/td[2]"));
+        $this->assertEquals("3,00", $this->getText("//table[@id='order.info']/tbody/tr[8]/td[2]"));
+        $this->assertEquals("44,45", $this->getText("//table[@id='order.info']/tbody/tr[9]/td[2]"));
 
         $this->assertTrue($this->isElementPresent("//table[@id='order.info']/tbody/tr[2]"), "line with discount info is not displayed");
         $this->assertTrue($this->isElementPresent("//table[@id='order.info']/tbody/tr[2]/td[1]"), "line with discount info is not displayed");
@@ -1559,96 +1492,7 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
     }
 
 
-    /*
-    * test if paypal works with new registered customer
-    * @group paypal
-    */
-    public function testPaypalAsNewCustomer()
-    {
-
-        //Login to sanbox
-        $this->open("https://developer.paypal.com/");
-        $this->type("login_email", "testoxideshop@gmail.com");
-        $this->type("login_password", "xxxxxxxxx");
-        $this->click("name=submit");
-        $this->waitForPageToLoad("30000");
-
-        //Go to shop and add product
-        $this->openShop();
-        $this->switchLanguage("English");
-        $this->searchFor("1003");
-        $this->clickAndWait("//form[@name='tobasketsearchList_1']//button");
-        $this->openBasket("English");
-        $this->assertTrue($this->isTextPresent("Test product 3"));
-        $this->assertEquals("Test product 3", $this->getText("//tr[@id='cartItem_1']/td[3]/div[1]"));
-
-        $this->clickAndWait("//button[text()='Continue to Next Step']");
-        $this->clickAndWait("//button[text()='Next']");
-
-        $this->type("id=userLoginName", "birute_test2@nfq.lt");
-        $this->type("name=invadr[oxuser__oxfname]", "John");
-        $this->type("name=invadr[oxuser__oxlname]", "Smith");
-        $this->type("name=invadr[oxuser__oxstreet]", "Street22");
-        $this->type("name=invadr[oxuser__oxstreet]", "Street 22");
-        $this->type("name=invadr[oxuser__oxstreetnr]", "25");
-        $this->type("name=invadr[oxuser__oxzip]", "LT3265");
-        $this->type("name=invadr[oxuser__oxcity]", "Melburg");
-        $this->select("id=invCountrySelect", "label=Germany");
-        $this->click("id=userNextStepBottom");
-        $this->waitForPageToLoad("30000");
-        $this->click("name=sShipSet");
-        $this->select("name=sShipSet", "label=Test S&H set");
-
-        $this->click("id=payment_oxidpaypal");
-        $this->click("id=paymentNextStepBottom");
-        $this->waitForPageToLoad("30000");
-        $this->type("login_email", "buyger_1346652948_pre@gmail.com");
-        $this->type("id=login_password", "xxxxxxxxx");
-        $this->click("id=submitLogin");
-        $this->waitForItemAppear("id=continue");
-        //$this->waitForItemAppear("id=displayShippingAmount");
-        $this->assertEquals("Artikelpreis: €15,00", $this->getText("//li[@id='multiitem1']/ul/li[3]"), "Product price not shown in Paypal");
-        $this->assertEquals("Anzahl: 1", $this->getText("//li[@id='multiitem1']/ul/li[4]"), "Product quantity is not shown in Paypal");
-        $this->assertEquals("Gesamtbetrag €15,00 EUR", $this->getText("//div[@id='miniCart']/div[3]/ul/li/span"), "Total price is not displayed in PayPal");
-        $this->click("id=continue");
-        $this->waitForItemAppear("id=breadCrumb");
-        $this->assertTrue($this->isTextPresent("Test product 3"));
-        $this->assertEquals("Art.No.: 1003", $this->getText("//tr[@id='cartItem_1']/td[2]/div[2]"),"Product number not displayed in last order step");
-
-        $this->assertEquals("Total Products (net): 12,61 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[1]")));
-        $this->assertEquals("plus VAT 19% Amount: 2,39 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[2]")));
-        $this->assertEquals("Total Products (gross): 15,00 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[3]")));
-        $this->assertEquals("Shipping cost 0,00 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[4]")), "Shipping cost is not displayed correctly");
-        $this->assertEquals("Grand Total: 15,00 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[5]")),"Grand total is not displayed correctly");
-
-        $this->clickAndWait("//button[text()='Purchase']");
-        $this->assertTrue($this->isTextPresent("Thank you for your order in OXID eShop 4"), "Order is not finished successful");
-        //Go to admin and check the order
-        $this->loginAdminForModule("Administer Orders", "Orders", "btn.help", "link=2");
-        $this->assertEquals("John", $this->getText("//tr[@id='row.1']/td[4]"));
-        $this->assertEquals("Smith", $this->getText("//tr[@id='row.1']/td[5]"));
-        $this->openTab("link=2", "setfolder");
-        $this->frame("edit");
-        $this->assertTrue($this->isTextPresent("Internal Status: OK"));
-        $this->assertEquals("15,00 EUR", $this->getText("//td[5]"));
-        $this->assertEquals("Billing Address: Mr John Smith Street 22 25 LT3265 Melburg Germany E-mail: birute_test2@nfq.lt", $this->clearString($this->getText("//td[1]/table[1]/tbody/tr/td[1]")));
-        $this->assertEquals("15,00", $this->getText("//table[@id='order.info']/tbody/tr[1]/td[2]"));
-        $this->assertEquals("- 0,00", $this->getText("//table[@id='order.info']/tbody/tr[2]/td[2]"));
-        $this->assertEquals("12,61", $this->getText("//table[@id='order.info']/tbody/tr[3]/td[2]"));
-        $this->assertEquals("2,39", $this->getText("//table[@id='order.info']/tbody/tr[4]/td[2]"));
-        $this->assertEquals("0,00", $this->getText("//table[@id='order.info']/tbody/tr[5]/td[2]"));
-        $this->assertEquals("0,00", $this->getText("//table[@id='order.info']/tbody/tr[6]/td[2]"));
-        $this->assertEquals("15,00", $this->getText("//table[@id='order.info']/tbody/tr[7]/td[2]"));
-
-        $this->assertTrue($this->isElementPresent("//table[@id='order.info']/tbody/tr[2]"), "line with discount info is not displayed");
-        $this->assertTrue($this->isElementPresent("//table[@id='order.info']/tbody/tr[2]/td[1]"), "line with discount info is not displayed");
-        $this->assertTrue($this->isElementPresent("//table[@id='order.info']/tbody/tr[2]/td[2]"), "line with discount info is not displayed");
-        $this->assertEquals("PayPal", $this->getText("//table[4]/tbody/tr[1]/td[2]"),"Payment method not displayed in admin");
-        $this->assertEquals("Test S&H set", $this->getText("//table[4]/tbody/tr[2]/td[2]"), "Shipping method is not displayed in admin");
-
-    }
-    
-   /*
+    /**
     * test if paypal works corect when last product ir purchased.
     * @group paypal
     */
@@ -1657,11 +1501,7 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
         //$this->markTestSkipped("Temporarry skipping test");
 
         //Login to sanbox
-        $this->open("https://developer.paypal.com/");
-        $this->type("login_email", "testoxideshop@gmail.com");
-        $this->type("login_password", "xxxxxxxxx");
-        $this->click("name=submit");
-        $this->waitForPageToLoad("30000");
+        $this->_loginToSandbox();
 
         $this->open(shopURL."/_updateDB.php?filename=changeStock.sql");
         $this->openShop();
@@ -1721,7 +1561,7 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
         sleep(10);
         $this->clickAndWait("id=continue");
         $this->waitForItemAppear("id=breadCrumb");
-
+        
         //Check are all info in the last order step correct
         $this->assertTrue($this->isElementPresent("link=Test product 1"), "Purchased product name is not displayed in last order step");
         $this->assertTrue($this->isTextPresent("Art.No.: 1001"),"Product number not displayed in last order step");
@@ -1729,8 +1569,317 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
         $this->assertEquals("OXID Surf and Kite Shop | Order | purchase online", $this->getTitle());
         $this->assertEquals("Grand Total: 0,99 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[5]")),"Grand total is not displayed correctly");
         $this->assertTrue($this->isTextPresent("PayPal"),"Payment method not displayed in last order step");
-        $this->clickAndWait("//button[text()='Purchase']");
+        $this->clickAndWait("//button[text()='Order now']");
         $this->assertTrue($this->isTextPresent("Thank you for your order in OXID eShop"), "Order is not finished successful");
-    }    
+    }
+
+    /**
+     * test if paypal works when proportional calculation is used for additional products. 
+    * @group paypal
+    */
+    public function testPaypalProportional()
+    {
+    
+        //Login to sanbox
+        $this->_loginToSandbox();
+    
+         // Change price for PayPal payment methode
+        $this->open(shopURL."/_updateDB.php?filename=newVAT.sql");
+
+        // Go to admin and set on all VAT options
+        $this->loginAdminForModule("Master Settings", "Core Settings");
+        $this->openTab("link=Settings");
+        $this->click("link=VAT");
+        sleep(1);
+        $this->check("//input[@name='confbools[blShowVATForWrapping]'and @value='true']");
+        $this->check("//input[@name='confbools[blShowVATForDelivery]'and @value='true']");
+        $this->check("//input[@name='confbools[blShowVATForPayCharge]'and @value='true']");
+        $this->clickAndWait("save");
+
+        //Go to shop and add product
+        $this->openShop();
+        $this->switchLanguage("English");
+        $this->searchFor("100");
+        $this->clickAndWait("//form[@name='tobasketsearchList_1']//button");
+        $this->clickAndWait("//form[@name='tobasketsearchList_2']//button");
+        $this->clickAndWait("//form[@name='tobasketsearchList_3']//button");
+        $this->clickAndWait("//form[@name='tobasketsearchList_4']//button");
+
+        $this->openBasket("English");
+
+        //Login to shop and go to basket
+        $this->loginInFrontend("birute_test@nfq.lt", "useruser");
+        $this->assertTrue($this->isTextPresent("Test product 0"));
+        $this->assertTrue($this->isTextPresent("Test product 1"));
+        $this->assertTrue($this->isTextPresent("Test product 3"));
+        $this->assertTrue($this->isTextPresent("Test product 4"));
+
+        //Added wrapping and card to basket
+        $this->click("id=header");
+        $this->click("link=add");
+        $this->click("id=wrapping_a6840cc0ec80b3991.74884864");
+        $this->click("id=chosen_81b40cf0cd383d3a9.70988998");
+        $this->clickAndWait("//button[text()='Apply']");
+        $this->assertEquals("Total Products (net): 36,33 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[1]")));
+        $this->assertEquals("plus VAT 2% Amount: 0,20 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[2]")));
+        $this->assertEquals("plus VAT 13% Amount: 0,11 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[3]")));
+        $this->assertEquals("plus VAT 15% Amount: 1,96 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[4]")));
+        $this->assertEquals("plus VAT 19% Amount: 2,39 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[5]")));
+        
+        $this->assertEquals("Total Products (gross): 40,99 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[6]")));
+        $this->assertEquals("Shipping cost 0,00 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[7]")));
+        $this->assertEquals("Gift Wrapping (net): 2,89 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[8]")));
+        $this->assertEquals("2,89 €", $this->getText("basketWrappingNetto"),"Wraping price chenged or did't displayed");
+        $this->assertEquals("0,06 €", $this->getText("basketWrappingVat"),"Wraping vat chenged or did't displayed");
+        
+        $this->assertEquals("2,52 €", $this->getText("basketGiftCardNetto"),"Card price chenged or did't displayed");
+        $this->assertEquals("0,48 €", $this->getText("basketGiftCardVat"),"Card VAT price chenged or did't displayed");
+        $this->assertEquals("46,94 €", $this->getText("basketGrandTotal"),"Garnd total price chenged or did't displayed");
+
+        // Go to 2nd step
+        $this->clickAndWait("//button[text()='Continue to Next Step']");
+
+        //Go to 3rd step and select paypla as payment method
+        $this->clickAndWait("//button[text()='Continue to Next Step']");
+        $this->waitForItemAppear("id=payment_oxidpaypal");
+        $this->click("id=payment_oxidpaypal");
+        $this->clickAndWait("//button[text()='Continue to Next Step']");
+
+        //Go to PayPal
+        $this->waitForItemAppear("id=submitLogin");
+        $this->assertEquals("Pay with a PayPal account - PayPal", $this->getTitle());
+        $this->assertTrue($this->isTextPresent("€10,00"));
+        $this->assertTrue($this->isTextPresent("€0,99"));
+        $this->assertTrue($this->isTextPresent("€15,00"));
+        $this->assertTrue($this->isTextPresent("€2,95"));
+        $this->assertTrue($this->isTextPresent("€3,00"));
+        $this->assertEquals("Total €46,94 EUR", $this->getText("//div[@id='miniCart']/div[3]/ul/li/span"));
+        $this->assertTrue($this->isTextPresent("Item total €46,94"));
+        
+        //Login to PayPal express
+        $this->type("login_email", "buyger_1346652948_pre@gmail.com");
+        $this->type("login_password", "xxxxxxxxx");
+        $this->click("id=submitLogin");
+        $this->waitForItemAppear("id=continue");
+
+        $this->assertTrue($this->isTextPresent("Artikelnummer: 1000"), "Product number not shown in Paypal");
+        $this->assertEquals("Artikelpreis: €10,00", $this->getText("//li[@id='multiitem1']/ul/li[3]"), "Product price not shown in Paypal");
+        $this->assertEquals("Anzahl: 1", $this->getText("//li[@id='multiitem1']/ul/li[4]"), "Product quantity is not shown in Paypal");
+        
+        $this->assertTrue($this->isTextPresent("Artikelnummer: 1001"), "Product number not shown in Paypal");
+        $this->assertEquals("Artikelpreis: €0,99", $this->getText("//li[@id='multiitem1']/ul[2]/li[3]"), "Product price not shown in Paypal");
+        $this->assertEquals("Anzahl: 1", $this->getText("//li[@id='multiitem1']/ul[2]/li[4]"), "Product quantity is not shown in Paypal");
+        
+        $this->assertTrue($this->isTextPresent("Artikelnummer: 1003"), "Product number not shown in Paypal");
+        $this->assertEquals("Artikelpreis: €15,00", $this->getText("//li[@id='multiitem1']/ul[3]/li[3]"), "Product price not shown in Paypal");
+        $this->assertEquals("Anzahl: 1", $this->getText("//li[@id='multiitem1']/ul[3]/li[4]"), "Product quantity is not shown in Paypal");
+        
+        $this->assertTrue($this->isTextPresent("Artikelnummer: 1004"), "Product number not shown in Paypal");
+        $this->assertEquals("Artikelpreis: €15,00", $this->getText("//li[@id='multiitem1']/ul[4]/li[3]"), "Product price not shown in Paypal");
+        $this->assertEquals("Anzahl: 1", $this->getText("//li[@id='multiitem1']/ul[4]/li[4]"), "Product quantity is not shown in Paypal");
+
+        $this->assertTrue($this->isTextPresent("Giftwrapper"));
+        $this->assertEquals("Artikelpreis: €2,95", $this->getText("//li[@id='multiitem1']/ul[5]/li[2]"), "Product price not shown in Paypal");
+        $this->assertEquals("Anzahl: 1", $this->getText("//li[@id='multiitem1']/ul[5]/li[3]"), "Product quantity is not shown in Paypal");
+
+        $this->assertTrue($this->isTextPresent("Greeting Card"));
+        $this->assertEquals("Artikelpreis: €3,00", $this->getText("//li[@id='multiitem1']/ul[6]/li[2]"), "Product price not shown in Paypal");
+        $this->assertEquals("Anzahl: 1", $this->getText("//li[@id='multiitem1']/ul[6]/li[3]"), "Product quantity is not shown in Paypal");
+
+        $this->assertTrue($this->isTextPresent("Warenwert€46,94"), "Product price is not displayed in Paypal");
+        $this->assertEquals("Gesamtbetrag €46,94 EUR", $this->getText("//div[@id='miniCart']/div[3]/ul/li/span"), "Total price is not displayed in PayPal");
+        $this->assertTrue($this->isTextPresent("buyger_1346652948_pre@gmail.com"));
+        $this->assertTrue($this->isTextPresent("Ihr Warenkorb"));
+        $this->click("id=continue_abovefold");
+
+        //Go to shop to finish the order
+        $this->clickAndWait("id=continue");
+        $this->waitForItemAppear("id=breadCrumb");
+        $this->assertTrue($this->isTextPresent("Test product 0"));
+        $this->assertEquals("Art.No.: 1000", $this->getText("//tr[@id='cartItem_1']/td[2]/div[2]"),"Product number not displayed in last order step");
+        $this->assertTrue($this->isTextPresent("Test product 1"));
+        $this->assertEquals("Art.No.: 1001", $this->getText("//tr[@id='cartItem_2']/td[2]/div[2]"),"Product number not displayed in last order step");
+        $this->assertTrue($this->isTextPresent("Test product 3"));
+        $this->assertEquals("Art.No.: 1003", $this->getText("//tr[@id='cartItem_3']/td[2]/div[2]"),"Product number not displayed in last order step");
+        $this->assertTrue($this->isTextPresent("Test product 4"));
+        $this->assertEquals("Art.No.: 1004", $this->getText("//tr[@id='cartItem_4']/td[2]/div[2]"),"Product number not displayed in last order step");
+        $this->assertTrue($this->isTextPresent("Greeting Card"));
+
+        $this->assertEquals("36,33 €", $this->getText("basketTotalProductsNetto"),"Neto price changed or did't displayed");
+        $this->assertEquals("0,20 €", $this->getText("//div[@id='basketSummary']//tr[2]/td"),"VAT 2% changed ");
+        $this->assertEquals("0,11 €", $this->getText("//div[@id='basketSummary']//tr[3]/td"),"VAT 13% changed ");
+        $this->assertEquals("1,96 €", $this->getText("//div[@id='basketSummary']//tr[4]/td"),"VAT 15% changed ");
+        $this->assertEquals("2,39 €", $this->getText("//div[@id='basketSummary']//tr[5]/td"),"VAT 19% changed ");
+        $this->assertEquals("40,99 €", $this->getText("basketTotalProductsGross"),"Bruto price changed  or did't displayed");
+        $this->assertEquals("0,00 €", $this->getText("basketDeliveryGross"),"Shipping price changed  or did't displayed");
+        $this->assertEquals("2,89 €", $this->getText("basketWrappingNetto"), "Wraping price changed  or did't displayed");
+        $this->assertEquals("0,06 €", $this->getText("basketWrappingVat"),"Wraping price changed  or did't displayed");
+        $this->assertEquals("2,52 €", $this->getText("basketGiftCardNetto"), "Wraping price changed  or did't displayed");
+        $this->assertEquals("0,48 €", $this->getText("basketGiftCardVat"),"Wraping price changed  or did't displayed");
+        $this->assertEquals("46,94 €", $this->getText("basketGrandTotal"),"Garnd total price changed  or did't displayed");
+
+        $this->clickAndWait("//button[text()='Order now']");
+        $this->assertTrue($this->isTextPresent("Thank you for your order in OXID eShop"), "Order is not finished successful");
+        
+        //Go to admin to activate proprtional calculation
+        $this->loginAdminForModule("Master Settings", "Core Settings");
+        $this->openTab("link=Settings");
+        $this->click("link=VAT");
+        sleep(1);
+        $this->check("//input[@name='confstrs[sAdditionalServVATCalcMethod]'and @value='proportional']");
+        $this->clickAndWait("save");
+        
+        //Go to shop and add product
+        $this->openShop();
+        $this->switchLanguage("English");
+        $this->searchFor("100");
+        $this->clickAndWait("//form[@name='tobasketsearchList_1']//button");
+        $this->clickAndWait("//form[@name='tobasketsearchList_2']//button");
+        $this->clickAndWait("//form[@name='tobasketsearchList_3']//button");
+        $this->clickAndWait("//form[@name='tobasketsearchList_4']//button");
+        
+        $this->openBasket("English");
+        
+        //Login to shop and go to basket
+        $this->loginInFrontend("birute_test@nfq.lt", "useruser");
+        $this->assertTrue($this->isTextPresent("Test product 0"));
+        $this->assertTrue($this->isTextPresent("Test product 1"));
+        $this->assertTrue($this->isTextPresent("Test product 3"));
+        $this->assertTrue($this->isTextPresent("Test product 4"));
+        
+        //Added wrapping and card to basket
+        $this->click("id=header");
+        $this->click("link=add");
+        $this->click("id=wrapping_a6840cc0ec80b3991.74884864");
+        $this->click("id=chosen_81b40cf0cd383d3a9.70988998");
+        $this->clickAndWait("//button[text()='Apply']");
+        
+        $this->assertEquals("Total Products (net): 36,33 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[1]")));
+        $this->assertEquals("plus VAT 2% Amount: 0,20 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[2]")));
+        $this->assertEquals("plus VAT 13% Amount: 0,11 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[3]")));
+        $this->assertEquals("plus VAT 15% Amount: 1,96 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[4]")));
+        $this->assertEquals("plus VAT 19% Amount: 2,39 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[5]")));
+        
+        $this->assertEquals("Total Products (gross): 40,99 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[6]")));
+        $this->assertEquals("Shipping cost 0,00 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[7]")));
+        $this->assertEquals("Gift Wrapping (net): 2,89 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[8]")));
+        $this->assertEquals("2,89 €", $this->getText("basketWrappingNetto"),"Wraping price chenged or did't displayed");
+        $this->assertEquals("0,06 €", $this->getText("basketWrappingVat"),"Wraping vat chenged or did't displayed");
+        $this->assertEquals("2,66 €", $this->getText("basketGiftCardNetto"),"Card price chenged or did't displayed");
+        $this->assertEquals("0,34 €", $this->getText("basketGiftCardVat"),"Card VAT price chenged or did't displayed");
+        $this->assertEquals("46,94 €", $this->getText("basketGrandTotal"),"Garnd total price chenged or did't displayed");
+        
+        // Go to 2nd step
+        $this->clickAndWait("//button[text()='Continue to Next Step']");
+        
+        //Go to 3rd step and select paypla as payment method
+        $this->clickAndWait("//button[text()='Continue to Next Step']");
+        $this->waitForItemAppear("id=payment_oxidpaypal");
+        $this->click("id=payment_oxidpaypal");
+        $this->clickAndWait("//button[text()='Continue to Next Step']");
+        
+        //Go to PayPal
+        $this->waitForItemAppear("id=submitLogin");
+        $this->assertEquals("Pay with a PayPal account - PayPal", $this->getTitle());
+        $this->assertTrue($this->isTextPresent("€10,00"));
+        $this->assertTrue($this->isTextPresent("€0,99"));
+        $this->assertTrue($this->isTextPresent("€15,00"));
+        $this->assertTrue($this->isTextPresent("€2,95"));
+        $this->assertTrue($this->isTextPresent("€3,00"));
+        $this->assertEquals("Total €46,94 EUR", $this->getText("//div[@id='miniCart']/div[3]/ul/li/span"));
+        $this->assertTrue($this->isTextPresent("Item total €46,94"));
+        
+        //Login to PayPal express
+        $this->type("login_email", "buyger_1346652948_pre@gmail.com");
+        $this->type("login_password", "xxxxxxxxx");
+        $this->click("id=submitLogin");
+        $this->waitForItemAppear("id=continue");
+        
+        $this->assertTrue($this->isTextPresent("Artikelnummer: 1000"), "Product number not shown in Paypal");
+        $this->assertEquals("Artikelpreis: €10,00", $this->getText("//li[@id='multiitem1']/ul/li[3]"), "Product price not shown in Paypal");
+        $this->assertEquals("Anzahl: 1", $this->getText("//li[@id='multiitem1']/ul/li[4]"), "Product quantity is not shown in Paypal");
+        
+        $this->assertTrue($this->isTextPresent("Artikelnummer: 1001"), "Product number not shown in Paypal");
+        $this->assertEquals("Artikelpreis: €0,99", $this->getText("//li[@id='multiitem1']/ul[2]/li[3]"), "Product price not shown in Paypal");
+        $this->assertEquals("Anzahl: 1", $this->getText("//li[@id='multiitem1']/ul[2]/li[4]"), "Product quantity is not shown in Paypal");
+        
+        $this->assertTrue($this->isTextPresent("Artikelnummer: 1003"), "Product number not shown in Paypal");
+        $this->assertEquals("Artikelpreis: €15,00", $this->getText("//li[@id='multiitem1']/ul[3]/li[3]"), "Product price not shown in Paypal");
+        $this->assertEquals("Anzahl: 1", $this->getText("//li[@id='multiitem1']/ul[3]/li[4]"), "Product quantity is not shown in Paypal");
+        
+        $this->assertTrue($this->isTextPresent("Artikelnummer: 1004"), "Product number not shown in Paypal");
+        $this->assertEquals("Artikelpreis: €15,00", $this->getText("//li[@id='multiitem1']/ul[4]/li[3]"), "Product price not shown in Paypal");
+        $this->assertEquals("Anzahl: 1", $this->getText("//li[@id='multiitem1']/ul[4]/li[4]"), "Product quantity is not shown in Paypal");
+        
+        $this->assertTrue($this->isTextPresent("Giftwrapper"));
+        $this->assertEquals("Artikelpreis: €2,95", $this->getText("//li[@id='multiitem1']/ul[5]/li[2]"), "Product price not shown in Paypal");
+        $this->assertEquals("Anzahl: 1", $this->getText("//li[@id='multiitem1']/ul[5]/li[3]"), "Product quantity is not shown in Paypal");
+        
+        $this->assertTrue($this->isTextPresent("Greeting Card"));
+        $this->assertEquals("Artikelpreis: €3,00", $this->getText("//li[@id='multiitem1']/ul[6]/li[2]"), "Product price not shown in Paypal");
+        $this->assertEquals("Anzahl: 1", $this->getText("//li[@id='multiitem1']/ul[6]/li[3]"), "Product quantity is not shown in Paypal");
+        
+        $this->assertTrue($this->isTextPresent("Warenwert€46,94"), "Product price is not displayed in Paypal");
+        $this->assertEquals("Gesamtbetrag €46,94 EUR", $this->getText("//div[@id='miniCart']/div[3]/ul/li/span"), "Total price is not displayed in PayPal");
+        $this->assertTrue($this->isTextPresent("buyger_1346652948_pre@gmail.com"));
+        $this->assertTrue($this->isTextPresent("Ihr Warenkorb"));
+        $this->click("id=continue_abovefold");
+        
+        //Go to shop to finish the order
+        $this->clickAndWait("id=continue");
+        $this->waitForItemAppear("id=breadCrumb");
+        $this->assertTrue($this->isTextPresent("Test product 0"));
+        $this->assertEquals("Art.No.: 1000", $this->getText("//tr[@id='cartItem_1']/td[2]/div[2]"),"Product number not displayed in last order step");
+        $this->assertTrue($this->isTextPresent("Test product 1"));
+        $this->assertEquals("Art.No.: 1001", $this->getText("//tr[@id='cartItem_2']/td[2]/div[2]"),"Product number not displayed in last order step");
+        $this->assertTrue($this->isTextPresent("Test product 3"));
+        $this->assertEquals("Art.No.: 1003", $this->getText("//tr[@id='cartItem_3']/td[2]/div[2]"),"Product number not displayed in last order step");
+        $this->assertTrue($this->isTextPresent("Test product 4"));
+        $this->assertEquals("Art.No.: 1004", $this->getText("//tr[@id='cartItem_4']/td[2]/div[2]"),"Product number not displayed in last order step");
+        $this->assertTrue($this->isTextPresent("Greeting Card"));
+        
+        $this->assertEquals("36,33 €", $this->getText("basketTotalProductsNetto"),"Neto price changed or did't displayed");
+        $this->assertEquals("0,20 €", $this->getText("//div[@id='basketSummary']//tr[2]/td"),"VAT 2% changed ");
+        $this->assertEquals("0,11 €", $this->getText("//div[@id='basketSummary']//tr[3]/td"),"VAT 13% changed ");
+        $this->assertEquals("1,96 €", $this->getText("//div[@id='basketSummary']//tr[4]/td"),"VAT 15% changed ");
+        $this->assertEquals("2,39 €", $this->getText("//div[@id='basketSummary']//tr[5]/td"),"VAT 19% changed ");
+        $this->assertEquals("40,99 €", $this->getText("basketTotalProductsGross"),"Bruto price changed  or did't displayed");
+        $this->assertEquals("0,00 €", $this->getText("basketDeliveryGross"),"Shipping price changed  or did't displayed");
+        $this->assertEquals("2,89 €", $this->getText("basketWrappingNetto"), "Wraping price changed  or did't displayed");
+        $this->assertEquals("0,06 €", $this->getText("basketWrappingVat"),"Wraping price changed  or did't displayed");
+        $this->assertEquals("2,66 €", $this->getText("basketGiftCardNetto"), "Wraping price changed  or did't displayed");
+        $this->assertEquals("0,34 €", $this->getText("basketGiftCardVat"),"Wraping price changed  or did't displayed");
+        $this->assertEquals("46,94 €", $this->getText("basketGrandTotal"),"Garnd total price changed  or did't displayed");
+        
+        $this->clickAndWait("//button[text()='Order now']");
+        $this->assertTrue($this->isTextPresent("Thank you for your order in OXID eShop"), "Order is not finished successful");        
+        
+        //Go to admin and check the order
+        $this->loginAdminForModule("Administer Orders", "Orders", "btn.help", "link=2");
+        $this->assertEquals("Testing user acc Äß'ü", $this->getText("//tr[@id='row.2']/td[4]"), "Wrong user name is displayed in order");
+        $this->assertEquals("PayPal Äß'ü", $this->getText("//tr[@id='row.2']/td[5]"), "Wrong user last name is displayed in order");
+        $this->openTab("link=2", "setfolder");
+        $this->frame("edit");
+        $this->assertTrue($this->isTextPresent("Internal Status: OK"));
+        $this->assertEquals("10,00 EUR", $this->getText("//td[5]"));
+
+        $this->assertEquals("Billing Address: Company SeleniumTestCase Äß'ü Testing acc for Selenium Mr Testing user acc Äß'ü PayPal Äß'ü Musterstr. Äß'ü 1 79098 Musterstadt Äß'ü Germany E-mail: birute_test@nfq.lt", $this->clearString($this->getText("//td[1]/table[1]/tbody/tr/td[1]")));
+        $this->assertEquals("40,99", $this->getText("//table[@id='order.info']/tbody/tr[1]/td[2]"));
+        $this->assertEquals("- 0,00", $this->getText("//table[@id='order.info']/tbody/tr[2]/td[2]"));
+        $this->assertEquals("36,33", $this->getText("//table[@id='order.info']/tbody/tr[3]/td[2]"));
+        $this->assertEquals("0,20", $this->getText("//table[@id='order.info']/tbody/tr[4]/td[2]"));
+        $this->assertEquals("0,11", $this->getText("//table[@id='order.info']/tbody/tr[5]/td[2]"));
+        $this->assertEquals("0,00", $this->getText("//table[@id='order.info']/tbody/tr[6]/td[2]"));
+        $this->assertEquals("0,00", $this->getText("//table[@id='order.info']/tbody/tr[7]/td[2]"));
+        $this->assertEquals("2,95", $this->getText("//table[@id='order.info']/tbody/tr[8]/td[2]"));
+        $this->assertEquals("3,00", $this->getText("//table[@id='order.info']/tbody/tr[9]/td[2]"));
+        $this->assertEquals("46,94", $this->getText("//table[@id='order.info']/tbody/tr[10]/td[2]"));
+
+        $this->assertTrue($this->isElementPresent("//table[@id='order.info']/tbody/tr[2]"), "line with discount info is not displayed");
+        $this->assertTrue($this->isElementPresent("//table[@id='order.info']/tbody/tr[2]/td[1]"), "line with discount info is not displayed");
+        $this->assertTrue($this->isElementPresent("//table[@id='order.info']/tbody/tr[2]/td[2]"), "line with discount info is not displayed");
+        $this->assertEquals("PayPal", $this->getText("//table[4]/tbody/tr[1]/td[2]"),"Payment method not displayed in admin");
+        $this->assertEquals("Test S&H set", $this->getText("//table[4]/tbody/tr[2]/td[2]"), "Shipping method is not displayed in admin");
+    }
  }
 

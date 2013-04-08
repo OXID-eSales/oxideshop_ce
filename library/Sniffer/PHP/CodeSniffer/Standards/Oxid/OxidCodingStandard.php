@@ -52,6 +52,7 @@ class PHP_CodeSniffer_Standards_Oxid_OxidCodingStandard extends PHP_CodeSniffer_
                 'PEAR/Sniffs/Files/IncludingFileSniff.php',
                 'PEAR/Sniffs/Files/LineEndingsSniff.php',
                 'PEAR/Sniffs/Functions/FunctionCallArgumentSpacingSniff.php',
+                //'PEAR/Sniffs/Functions/FunctionCallSignatureSniff.php',
                 'PEAR/Sniffs/Functions/ValidDefaultValueSniff.php',
                 'PEAR/Sniffs/WhiteSpace/ScopeClosingBraceSniff.php',
                 'Squiz/Sniffs/Functions/GlobalFunctionSniff.php',
@@ -68,6 +69,7 @@ class PHP_CodeSniffer_Standards_Oxid_OxidCodingStandard extends PHP_CodeSniffer_
     {
         return array(
             'Oxid/Sniffs/VersionControl/SubversionPropertiesSniff.php',
+            'Oxid/Sniffs/Functions/FunctionCallSignatureSniff.php',
         );
     }
 

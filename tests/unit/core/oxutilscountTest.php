@@ -241,7 +241,6 @@ class Unit_Core_oxUtilsCountTest extends OxidTestCase
 
     public function testSetPriceCatArticleCount()
     {
-
         $myUtilsTest = new oxutilscount();
 
         $sRetSet = oxUtilsCount::getInstance()->setPriceCatArticleCount(array(), '30e44ab8338d7bf06.79655612', $myUtilsTest->UNITgetUserViewId(), 10, 100 );
@@ -249,7 +248,7 @@ class Unit_Core_oxUtilsCountTest extends OxidTestCase
         $this->assertEquals($sRetSet, $sRetGet);
 
 
-            $this->assertEquals(34, $sRetSet);
+            $this->assertEquals(35, $sRetSet);
     }
 
     public function testSetVendorArticleCount()
@@ -600,7 +599,7 @@ class Unit_Core_oxUtilsCountTest extends OxidTestCase
         $myConfig = oxConfig::getInstance();
         $myUtilsTest = new oxutilscount();
 
-        $sExpected = md5($myConfig->GetShopID().oxLang::getInstance()->getLanguageTag().serialize(null).(int)isAdmin());
+        $sExpected = md5($myConfig->GetShopID().oxLang::getInstance()->getLanguageTag().serialize(null).'0');
         $this->assertEquals($sExpected, $myUtilsTest->UNITgetUserViewId());
     }
 

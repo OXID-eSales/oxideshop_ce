@@ -103,9 +103,9 @@ class AcceptanceEfire_dhlTest extends oxidAdditionalSeleniumFunctions
         $this->click("//input[@value='efidhlprsnl']");
         $this->clickAndWait("//button[text()='Continue to payment selection']");
         $this->assertEquals("Charges: 11,40 €", $this->getText("shipSetCost"));
-        $this->assertEquals("GoGreen (0,10 €)", $this->clearString($this->getText("//form[@id='dhlpayment']//dl[1]")));
-        $this->assertEquals("Delivery to addressee only (1,80 €)", $this->clearString($this->getText("//form[@id='dhlpayment']//dl[2]")));
-        $this->assertEquals("Supplementary insurance (3,50 €)", $this->clearString($this->getText("//form[@id='dhlpayment']//dl[3]")));
+        $this->assertEquals("GoGreen 0,10 €", $this->clearString($this->getText("//form[@id='dhlpayment']//dl[1]")));
+        $this->assertEquals("Delivery to addressee only 1,80 €", $this->clearString($this->getText("//form[@id='dhlpayment']//dl[2]")));
+        $this->assertEquals("Supplementary insurance 3,50 €", $this->clearString($this->getText("//form[@id='dhlpayment']//dl[3]")));
         $this->assertTrue($this->isElementPresent("payment_oxidcashondel"));
         $this->assertFalse($this->isElementPresent("payment_oxidpayadvance"));
         $this->assertFalse($this->isElementPresent("payment_oxidcreditcard"));
@@ -131,12 +131,8 @@ class AcceptanceEfire_dhlTest extends oxidAdditionalSeleniumFunctions
         $this->assertEquals("Shipping cost 6,00 €", $this->getText("//div[@id='basketSummary']//tr[4]"));
         $this->assertEquals("Surcharge Type of Payment: 5,00 €", $this->getText("//div[@id='basketSummary']//tr[5]"));
         $this->assertEquals("Grand Total: 12,00 €", $this->getText("//div[@id='basketSummary']//tr[6]"));
-        $this->clickAndWait("//button[text()='Purchase']");
+        $this->clickAndWait("//button[text()='Order now']");
         $this->assertTrue($this->isTextPresent("We registered your order"));
-
-
-
-
 
     }
 
@@ -273,7 +269,7 @@ class AcceptanceEfire_dhlTest extends oxidAdditionalSeleniumFunctions
     }
 
 
-    /*
+    /**
     * dhl with packstation
     * @group dhl
     */
@@ -355,7 +351,6 @@ class AcceptanceEfire_dhlTest extends oxidAdditionalSeleniumFunctions
         $this->assertTrue($this->isTextPresent("PP123"));
         $this->assertTrue($this->isTextPresent("shipping city_šÄßüл"));
         $this->assertTrue($this->isTextPresent("Germany"));
-        $this->click("//form[@id='orderConfirmAgbBottom']/div/input[@name='ord_agb' and @value='1']");
         $this->clickAndWait("//form[@id='orderConfirmAgbBottom']//button");
         $this->assertTrue($this->isTextPresent("We registered your order"));
 
@@ -403,10 +398,11 @@ class AcceptanceEfire_dhlTest extends oxidAdditionalSeleniumFunctions
 
     }
 
-        /*
-    * dhl with packstation
-    * @group dhl
-    */
+
+    /**
+     * dhl in frontend
+     * @group dhl
+     */
     public function testDhlPackstationTabDHL()
     {
         //testing search
@@ -455,7 +451,6 @@ class AcceptanceEfire_dhlTest extends oxidAdditionalSeleniumFunctions
         $this->assertEquals("DHL Paket Weltpaket DHL Europaket", $this->getText("name=sShipSet"));
         $this->clickAndWait("//button[text()='Continue to Next Step']");
 
-        $this->click("//form[@id='orderConfirmAgbBottom']/div/input[@name='ord_agb' and @value='1']");
         $this->clickAndWait("//form[@id='orderConfirmAgbBottom']//button");
        // $this->clickAndWait("//button[text()='Submit Order']");
         $this->assertTrue($this->isTextPresent("We registered your order"));
@@ -522,5 +517,178 @@ class AcceptanceEfire_dhlTest extends oxidAdditionalSeleniumFunctions
         $this->assertEquals("10", $this->getText("//select[@id='_package_count']/option[@value='10']"));
         $this->assertEquals("11", $this->getText("//select[@id='_package_count']/option[@value='11']"));
 
+    }
+   /**
+    * DHL in neto mode
+    * @group dhl
+    */
+    public function testDhlPackstationNetoMode()
+    {
+        // Go to admin and activate the necessary options Neto mode
+        $this->loginAdmin("Master Settings", "Core Settings");
+        $this->openTab("link=Settings");
+        $this->click("link=VAT");
+        $this->check("//input[@name='confbools[blShowNetPrice]'and @value='true']");
+        $this->check("//input[@name='confbools[blShowVATForDelivery]'and @value='true']");
+        $this->clickAndWait("save");
+        //Go to shop and add product 1401
+	    $this->openShop();
+        $this->searchFor("1401");
+        $this->clickAndWait("//form[@name='tobasketsearchList_1']//button");
+        $this->waitForItemAppear("countValue");
+        $this->assertEquals("1", $this->getText("countValue"));
+        $this->loginInFrontend("birute_test@nfq.lt", "useruser");
+        //OpenBasket
+        $this->openBasket();
+        $this->clickAndWait("//button[text()='Continue to Next Step']");
+        $this->clickAndWait("//button[text()='Continue to Next Step']");
+		//Select label DHL Paket
+        $this->selectAndWait("sShipSet", "label=DHL Paket");
+        $this->assertEquals("Charges: 5,04 € (plus VAT 0,96 €)", $this->getText("shipSetCost"));
+		$this->assertEquals("Additional shipping services", $this->getText("deliveryServicesHeader"));
+	    $this->assertEquals("GoGreen 0,08 € (plus VAT 0,02 €)", $this->clearString($this->getText("//form[@id='dhlpayment']//dl[1]")));
+		$this->assertEquals("Delivery to addressee only 1,51 € (plus VAT 0,29 €)", $this->clearString($this->getText("//form[@id='dhlpayment']//dl[2]")));
+		$this->assertEquals("Transport insurance (up to 500,00 €)", $this->clearString($this->getText("//form[@id='dhlpayment']//dl[3]")));
+		$this->assertEquals("Supplementary insurance 2,94 € (plus VAT 0,56 €)", $this->clearString($this->getText("//form[@id='dhlpayment']//dl[4]")));
+		//Europaket
+		$this->selectAndWait("sShipSet", "label=DHL Europaket");
+		$this->assertEquals("Charges: 11,76 € (plus VAT 2,24 €)", $this->getText("shipSetCost"));
+		$this->assertTrue($this->isTextPresent("Please enter a phone number. This is required for the shipment via Weltpaket."),"error message is not displayed in fronted");
+		$this->selectAndWait("sShipSet", "label=Weltpaket");
+		$this->assertEquals("Charges: 26,89 € (plus VAT 5,11 €)", $this->getText("shipSetCost"));
+		$this->assertTrue($this->isTextPresent("Please enter a phone number. This is required for the shipment via Weltpaket."),"error message is not displayed in fronted");
+        //select DHL Paket
+        $this->selectAndWait("sShipSet", "label=DHL Paket");
+        $this->clickAndWait("//button[text()='Select Packstation']");
+        $this->select("packstationId","label=New Address");
+        // go to fill packstation form
+        $this->type("//ul[@id='packstationAddressForm']//li[4]//input[@name='deladr[oxaddress__oxfname]']", "shipping name_šÄßüл");
+        $this->type("//ul[@id='packstationAddressForm']//li[5]//input[@name='deladr[oxaddress__oxlname]']", "shipping surname_šÄßüл");
+        $this->type("//ul[@id='packstationAddressForm']//li[6]//input[@name='deladr[oxaddress__oxaddinfo]']", "post_nr_321");
+        $this->type("//ul[@id='packstationAddressForm']//li[7]//input[@name='deladr[oxaddress__oxstreetnr]']", "packst_nr_123");
+        $this->type("//ul[@id='packstationAddressForm']//li[8]//input[@name='deladr[oxaddress__oxzip]']", "PP123");
+        $this->type("//ul[@id='packstationAddressForm']//li[8]//input[@name='deladr[oxaddress__oxcity]']", "shipping city_šÄßüл");
+        $this->select("//ul[@id='packstationAddressForm']//li[9]//select[@name='deladr[oxaddress__oxcountryid]']", "label=Germany");
+        $this->type("//ul[@id='packstationAddressForm']/li[10]/input", "+49 761 36889-0");
+        $this->clickAndWait("//button[text()='Continue to Next Step']");
+		 //checking dhl paket in neto mode
+		$this->assertEquals("GoGreen 0,08 € (plus VAT 0,02 €)", $this->clearString($this->getText("//form[@id='dhlpayment']//dl[1]")), "Additional shipping services (Go green) price in neto mode is not displayed");
+		$this->assertEquals("Delivery to addressee only 1,51 € (plus VAT 0,29 €)", $this->clearString($this->getText("//form[@id='dhlpayment']//dl[2]")),  "Additional shipping services  (Delivery to addressee) price in neto mode is not displayed");
+		$this->assertEquals("Transport insurance (up to 500,00 €)", $this->clearString($this->getText("//form[@id='dhlpayment']//dl[3]")));
+		$this->assertEquals("Supplementary insurance 2,94 € (plus VAT 0,56 €)", $this->clearString($this->getText("//form[@id='dhlpayment']//dl[4]")));
+		$this->click("//input[@value='efidhlggrn']");
+        $this->clickAndWait("//button[text()='Continue to payment selection']");
+	    $this->assertEquals("GoGreen (0,08 € plus VAT 0,02 €)", $this->clearString($this->getText("//form[@id='dhlpayment']//dl[1]")));
+        $this->clickAndWait("//button[text()='Continue to Next Step']");
+        $this->assertTrue($this->isTextPresent("Mr shipping name_šÄßüл"), "Mr shipping name_šÄßüл is not displayed");
+        $this->assertTrue($this->isTextPresent("shipping surname_šÄßüл"), "shipping surname_šÄßüл is not displayed");
+        $this->assertTrue($this->isTextPresent("post_nr_321"),  "post_nr_321 is not displayed");
+        $this->assertTrue($this->isTextPresent("packst_nr_123"));
+        $this->assertTrue($this->isTextPresent("PP123"));
+        $this->assertTrue($this->isTextPresent("shipping city_šÄßüл"));
+        $this->assertTrue($this->isTextPresent("Germany"));
+        $this->clickAndWait("//form[@id='orderConfirmAgbBottom']//button");
+        $this->assertTrue($this->isTextPresent("We registered your order"));
+        //Go to admin and check the order
+        $this->loginAdmin("Administer Orders", "Orders");
+        $this->frame("list");
+        $this->clickAndWait("link=2");
+        $this->frame("edit");
+        $this->selectAndWait("setfolder", "label=Finished");
+        $this->assertTrue($this->isTextPresent("Internal Status: OK"));
+        $this->assertEquals("108,40", $this->getText("//table[@id='order.info']/tbody/tr[1]/td[2]"), "Product Net Price is not displayed");
+        $this->assertEquals("- 0,00", $this->getText("//table[@id='order.info']/tbody/tr[2]/td[2]"), "Discount price is not displayed");
+        $this->assertEquals("20,60", $this->getText("//table[@id='order.info']/tbody/tr[3]/td[2]"), "VAT (19%) price is not displayed");
+        $this->assertEquals("129,00", $this->getText("//table[@id='order.info']/tbody/tr[4]/td[2]"), "Product Gross Price is not displayed");
+        $this->assertEquals("7,50", $this->getText("//table[@id='order.info']/tbody/tr[6]/td[2]"));
+        $this->assertTrue($this->isElementPresent("//table[@id='order.info']/tbody/tr[4]"));
+        $this->assertTrue($this->isElementPresent("//table[@id='order.info']/tbody/tr[4]/td[1]"));
+        $this->assertTrue($this->isElementPresent("//table[@id='order.info']/tbody/tr[4]/td[2]"));
+        $this->assertEquals("6,10", $this->getText("//table[@id='order.info']/tbody/tr[5]/td[2]"));
+        $this->assertEquals("DHL Paket", $this->getText("//table[4]/tbody/tr[2]/td[2]"));
+        $this->assertEquals("Finished", $this->getSelectedLabel("setfolder"));
+        $this->frame("list");
+        $this->selectAndWait("folder", "label=Finished");
+		// go to Main tab
+        $this->openTab("link=Main", "editval[oxorder__oxordernr]");
+        $this->assertEquals("2", $this->getValue("editval[oxorder__oxordernr]"));
+        $this->assertEquals("", $this->getValue("editval[oxorder__oxbillnr]"));
+        $this->assertEquals("", $this->getValue("editval[oxorder__oxtrackcode]"));
+        $this->assertEquals("6.1", $this->getValue("editval[oxorder__oxdelcost]"));
+        $this->assertEquals("0", $this->getValue("editval[oxorder__oxdiscount]"));
+        $this->assertEquals("0000-00-00 00:00:00", $this->getValue("editval[oxorder__oxpaid]"));
+        $this->assertEquals("DHL Paket", $this->getSelectedLabel("setDelSet"));
+       //go to Overview tab
+        $this->frame("list");
+        $this->openTab("link=Overview");
+        $this->assertEquals("Finished", $this->getSelectedLabel("setfolder"));
+        $this->assertEquals("129,00", $this->getText("//table[@id='order.info']/tbody/tr[4]/td[2]"));
+        $this->assertEquals("- 0,00", $this->getText("//table[@id='order.info']/tbody/tr[2]/td[2]"));
+        $this->assertEquals("7,50", $this->getText("//table[@id='order.info']/tbody/tr[6]/td[2]"));
+    }
+	
+    /**
+    * dhl with proportional Vat
+    * @group dhl
+    */
+	public function testDhlPackstationProportionalVat()
+    {
+       // Go to admin and activate the necessary options for proportional Vat
+        $this->loginAdmin("Master Settings", "Core Settings");
+        $this->openTab("link=Settings");
+        $this->click("link=VAT");
+        $this->check("//input[@name='confbools[blShowVATForDelivery]'and @value='true']");
+		$this->click("//input[@value='proportional']");
+        $this->clickAndWait("save");
+        //Testing search
+	    $this->openShop();
+        $this->searchFor("1008");
+        $this->clickAndWait("//form[@name='tobasketsearchList_1']//button");
+	    $this->searchFor("1009");
+        $this->clickAndWait("//form[@name='tobasketsearchList_1']//button");
+        $this->waitForItemAppear("countValue");
+        $this->assertEquals("2", $this->getText("countValue"));
+        $this->loginInFrontend("birute_test@nfq.lt", "useruser");
+        //openBasket
+        $this->openBasket();
+        $this->clickAndWait("//button[text()='Continue to Next Step']");
+		$this->clickAndWait("//button[text()='Continue to Next Step']");
+		$this->selectAndWait("sShipSet", "label=DHL Paket");
+        $this->clickAndWait("//button[text()='Select Packstation']");
+        $this->select("packstationId","label=New Address");
+        //Go to fill packstation form
+        $this->type("//ul[@id='packstationAddressForm']//li[4]//input[@name='deladr[oxaddress__oxfname]']", "shipping name_šÄßüл");
+        $this->type("//ul[@id='packstationAddressForm']//li[5]//input[@name='deladr[oxaddress__oxlname]']", "shipping surname_šÄßüл");
+        $this->type("//ul[@id='packstationAddressForm']//li[6]//input[@name='deladr[oxaddress__oxaddinfo]']", "post_nr_321");
+        $this->type("//ul[@id='packstationAddressForm']//li[7]//input[@name='deladr[oxaddress__oxstreetnr]']", "packst_nr_123");
+        $this->type("//ul[@id='packstationAddressForm']//li[8]//input[@name='deladr[oxaddress__oxzip]']", "PP123");
+        $this->type("//ul[@id='packstationAddressForm']//li[8]//input[@name='deladr[oxaddress__oxcity]']", "shipping city_šÄßüл");
+        $this->select("//ul[@id='packstationAddressForm']//li[9]//select[@name='deladr[oxaddress__oxcountryid]']", "label=Germany");
+        $this->type("//ul[@id='packstationAddressForm']/li[10]/input", "+49 761 36889-0");
+        $this->clickAndWait("//button[text()='Continue to Next Step']");
+		//DHL Paket
+        $this->assertEquals("Charges: 5,54 € (plus VAT 0,46 €)", $this->getText("shipSetCost"));
+		$this->assertEquals("Additional shipping services", $this->getText("deliveryServicesHeader"));
+	    $this->assertEquals("GoGreen 0,09 € (plus VAT 0,01 €)", $this->clearString($this->getText("//form[@id='dhlpayment']//dl[1]")),"Additional shipping services (Go green) price in neto mode is not displayed");
+		$this->assertEquals("Delivery to addressee only 1,66 € (plus VAT 0,14 €)", $this->clearString($this->getText("//form[@id='dhlpayment']//dl[2]")),"Additional shipping services (Delivery to addressee only) price in neto mode is not displayed");
+		$this->assertEquals("Transport insurance (up to 500,00 €)", $this->clearString($this->getText("//form[@id='dhlpayment']//dl[3]")), "Additional shipping services (Transport insurance) price in neto mode is not displayed");
+		$this->assertEquals("Supplementary insurance 3,23 € (plus VAT 0,27 €)", $this->clearString($this->getText("//form[@id='dhlpayment']//dl[4]")), "Additional shipping services (Supplementary insurance) price in neto mode is not displayed");
+		//Europaket 
+		$this->selectAndWait("sShipSet", "label=DHL Europaket");
+		$this->assertEquals("Charges: 12,92 € (plus VAT 1,08 €)", $this->getText("shipSetCost"));
+		$this->assertFalse($this->isTextPresent("Please enter a phone number. This is required for the shipment via Weltpaket."),"error message is displayed in fronted");
+		$this->assertEquals("GoGreen 0,09 € (plus VAT 0,01 €)", $this->clearString($this->getText("//form[@id='dhlpayment']//dl[1]")));
+		//Welpaket
+		$this->selectAndWait("sShipSet", "label=Weltpaket");
+		$this->assertEquals("Charges: 29,54 € (plus VAT 2,46 €)", $this->getText("shipSetCost"));
+		$this->assertFalse($this->isTextPresent("Please enter a phone number. This is required for the shipment via Weltpaket."),"error message is displayed in fronted");
+        $this->assertEquals("GoGreen 0,09 € (plus VAT 0,01 €)", $this->clearString($this->getText("//form[@id='dhlpayment']//dl[1]")));
+		$this->selectAndWait("sShipSet", "label=DHL Paket");	
+        $this->click("//input[@value='efidhlggrn']");
+        $this->clickAndWait("//button[text()='Continue to payment selection']");
+	    $this->assertEquals("GoGreen (0,09 € plus VAT 0,01 €)", $this->clearString($this->getText("//form[@id='dhlpayment']//dl[1]")));
+        $this->clickAndWait("//button[text()='Continue to Next Step']");;
+        $this->clickAndWait("//form[@id='orderConfirmAgbBottom']//button");
+        $this->assertTrue($this->isTextPresent("We registered your order"));
     }
 }

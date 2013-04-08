@@ -133,7 +133,7 @@ class Acceptance_userRegistrationFrontendTest extends oxidAdditionalSeleniumFunc
         $this->type("invadr[oxuser__oxfname]", "user2 name2_šÄßüл");
         $this->type("invadr[oxuser__oxlname]", "user2 last name2_šÄßüл");
         $this->type("invadr[oxuser__oxcompany]", "user2 company_šÄßüл");
-		$this->type("invadr[oxuser__oxaddinfo]", "user2 additional info_šÄßüл");
+        $this->type("invadr[oxuser__oxaddinfo]", "user2 additional info_šÄßüл");
         $this->type("invadr[oxuser__oxstreet]", "user2 street_šÄßüл");
         $this->type("invadr[oxuser__oxstreetnr]", "2");
         $this->type("invadr[oxuser__oxzip]", "22");
@@ -156,7 +156,7 @@ class Acceptance_userRegistrationFrontendTest extends oxidAdditionalSeleniumFunc
         $this->type("deladr[oxaddress__oxfname]", "user2_2 name_šÄßüл");
         $this->type("deladr[oxaddress__oxlname]", "user2_2 last name_šÄßüл");
         $this->type("deladr[oxaddress__oxcompany]", "user2_2 company_šÄßüл");
-		$this->type("deladr[oxaddress__oxaddinfo]", "user2_2 additional info_šÄßüл");
+        $this->type("deladr[oxaddress__oxaddinfo]", "user2_2 additional info_šÄßüл");
         $this->type("deladr[oxaddress__oxstreet]", "user2_2 street_šÄßüл");
         $this->type("deladr[oxaddress__oxstreetnr]", "2_2");
         $this->type("deladr[oxaddress__oxzip]", "2_2");
@@ -170,8 +170,8 @@ class Acceptance_userRegistrationFrontendTest extends oxidAdditionalSeleniumFunc
         $this->clickAndWait("//button[text()='Continue to Next Step']");
         $this->click("payment_oxidcashondel");
         $this->clickAndWait("//button[text()='Continue to Next Step']");
-        $this->assertEquals("E-mail: birute01@nfq.lt user2 company_šÄßüл user2 additional info_šÄßüл Mr user2 name2_šÄßüл user2 last name2_šÄßüл user2 street_šÄßüл 2 BE 22 user2 city_šÄßüл Germany Phone: 222-222 Fax: 222-222-222 Celluar Phone: 222-222222 Personal Phone: 222222222", $this->clearString($this->getText("//div[@id='orderAddress']/dl/dd[1]")));
-        $this->assertEquals("user2_2 company_šÄßüл user2_2 additional info_šÄßüл Mr user2_2 name_šÄßüл user2_2 last name_šÄßüл user2_2 street_šÄßüл 2_2 BB 2_2 user2_2 city_šÄßüл Germany Phone: 222-222 Fax: 222-222-222", $this->clearString($this->getText("//div[@id='orderAddress']/dl/dd[2]")));
+        $this->assertEquals("E-mail: birute01@nfq.lt user2 company_šÄßüл user2 additional info_šÄßüл Mr user2 name2_šÄßüл user2 last name2_šÄßüл user2 street_šÄßüл 2 BE 22 user2 city_šÄßüл Germany Phone: 222-222 Fax: 222-222-222 Celluar Phone: 222-222222 Personal Phone: 222222222", $this->clearString($this->getText("//div[@id='orderAddress']/dl[1]/dd")));
+        $this->assertEquals("user2_2 company_šÄßüл user2_2 additional info_šÄßüл Mr user2_2 name_šÄßüл user2_2 last name_šÄßüл user2_2 street_šÄßüл 2_2 BB 2_2 user2_2 city_šÄßüл Germany Phone: 222-222 Fax: 222-222-222", $this->clearString($this->getText("//div[@id='orderAddress']/dl[2]/dd")));
 
         //check in admin if information is saved correctly
         $this->loginAdmin("Administer Users", "Users");
@@ -290,9 +290,9 @@ class Acceptance_userRegistrationFrontendTest extends oxidAdditionalSeleniumFunc
         $this->clickAndWait("//button[text()='Continue to Next Step']");
         $this->click("payment_oxidcashondel");
         $this->clickAndWait("//button[text()='Continue to Next Step']");
-        $this->assertTrue($this->isTextPresent("What I wanted to say ...: remark text"));
-        $this->assertEquals("E-mail: birute01@nfq.lt user3 company_šÄßüл user3 additional info_šÄßüл Mr user3 name2_šÄßüл user3 last name2_šÄßüл user3 street_šÄßüл 3 BE 33 user3 city_šÄßüл Germany Phone: 333-333 Fax: 333-333-333 Celluar Phone: 333-333333 Personal Phone: 333333333", $this->clearString($this->getText("//div[@id='orderAddress']/dl/dd[1]")));
-        $this->assertEquals("user3_2 company_šÄßüл user3_2 additional info_šÄßüл Mr user3_2 name_šÄßüл user3_2 last name_šÄßüл user3_2 street_šÄßüл 3_2 BB 3_2 user3_2 city_šÄßüл Germany Phone: 333-333 Fax: 333-333-333", $this->clearString($this->getText("//div[@id='orderAddress']/dl/dd[2]")));
+        $this->assertTrue($this->isTextPresent("What I wanted to say remark text"));
+        $this->assertEquals("E-mail: birute01@nfq.lt user3 company_šÄßüл user3 additional info_šÄßüл Mr user3 name2_šÄßüл user3 last name2_šÄßüл user3 street_šÄßüл 3 BE 33 user3 city_šÄßüл Germany Phone: 333-333 Fax: 333-333-333 Celluar Phone: 333-333333 Personal Phone: 333333333", $this->clearString($this->getText("//div[@id='orderAddress']/dl[1]/dd")));
+        $this->assertEquals("user3_2 company_šÄßüл user3_2 additional info_šÄßüл Mr user3_2 name_šÄßüл user3_2 last name_šÄßüл user3_2 street_šÄßüл 3_2 BB 3_2 user3_2 city_šÄßüл Germany Phone: 333-333 Fax: 333-333-333", $this->clearString($this->getText("//div[@id='orderAddress']/dl[2]/dd")));
 
         //check in admin if information is saved correctly
         $this->loginAdmin("Administer Users", "Users");

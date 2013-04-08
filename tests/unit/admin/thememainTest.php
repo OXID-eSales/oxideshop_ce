@@ -51,9 +51,9 @@ class Unit_Admin_ThemeMainTest extends OxidTestCase
     public function testSetTheme()
     {
         $oTM = $this->getMock('Theme_Main', array('getEditObjectId'));
-        $oTM->expects($this->any())->method('getEditObjectId')->will($this->returnValue('basic'));
+        $oTM->expects($this->any())->method('getEditObjectId')->will($this->returnValue('azure'));
 
-        oxTestModules::addFunction('oxTheme', 'load($name)', '{if ($name != "basic") throw new Exception("FAIL TO LOAD"); return true;}');
+        oxTestModules::addFunction('oxTheme', 'load($name)', '{if ($name != "azure") throw new Exception("FAIL TO LOAD"); return true;}');
         oxTestModules::addFunction('oxTheme', 'activate', '{throw new Exception("OK");}');
 
         try {
@@ -63,17 +63,17 @@ class Unit_Admin_ThemeMainTest extends OxidTestCase
             $this->assertEquals('OK', $e->getMessage());
         }
     }
-    
+
     /**
      * Test if theme in config checking was called.
      */
     public function testThemeConfigExceptionInRender()
-    {        
+    {
         $oTM = $this->getMock( 'Theme_Main', array( 'themeInConfigFile' ) );
         $oTM->expects( $this->once() )->method( 'themeInConfigFile' );
         $oTM->render();
     }
-    
+
     /**
      * Check if theme checking works correct.
      */
@@ -82,7 +82,7 @@ class Unit_Admin_ThemeMainTest extends OxidTestCase
         $oView = new Theme_Main();
         $this->assertEquals( false, $oView->themeInConfigFile(), 'Should not be theme in config file by default.' );
     }
-    
+
     /**
      * Check if theme checking works correct when only sTheme is set in config.
      */
@@ -91,12 +91,12 @@ class Unit_Admin_ThemeMainTest extends OxidTestCase
         $oConfig = new oxConfig();
         $oConfig->sTheme = 'azure';
         $oConfig->sCustomTheme = null;
-        
+
         $oView = new Theme_Main();
         $oView->setConfig( $oConfig );
         $this->assertEquals( true, $oView->themeInConfigFile(), 'Should return true as there is sTheme.' );
     }
-    
+
     /**
      * Check if theme checking works correct when only sCustomTheme is set in config.
      */
@@ -105,12 +105,12 @@ class Unit_Admin_ThemeMainTest extends OxidTestCase
         $oConfig = new oxConfig();
         $oConfig->sTheme = null;
         $oConfig->sCustomTheme = 'someTheme';
-        
+
         $oView = new Theme_Main();
         $oView->setConfig( $oConfig );
         $this->assertEquals( true, $oView->themeInConfigFile(), 'Should return true as there is sCustomTheme.' );
     }
-    
+
     /**
      * Check if theme checking works correct when sTheme and sCustomTheme is set in config.
      */
@@ -119,7 +119,7 @@ class Unit_Admin_ThemeMainTest extends OxidTestCase
         $oConfig = new oxConfig();
         $oConfig->sTheme = 'azure';
         $oConfig->sCustomTheme = 'someTheme';
-        
+
         $oView = new Theme_Main();
         $oView->setConfig( $oConfig );
         $this->assertEquals( true, $oView->themeInConfigFile(), 'Should return true as there is sTheme and sCustomTheme.' );

@@ -1045,7 +1045,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
 
     public function testGetNewsSubsLink()
     {
-        $sUrl = oxConfig::getInstance()->getShopHomeURL().'cl=newsletter&amp;fnc=addme&amp;uid=XXXX';
+        $sUrl = oxConfig::getInstance()->getShopHomeURL().'cl=newsletter&amp;fnc=addme&amp;uid=XXXX&amp;lang=0';
         $this->assertEquals($sUrl, $this->_oEmail->UNITgetNewsSubsLink('XXXX'));
         $oActShop = oxConfig::getInstance()->getActiveShop();
         $oActShop->setLanguage(1);
@@ -1054,7 +1054,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
 
     public function testGetNewsSubsLinkWithConfirm()
     {
-        $sUrl = oxConfig::getInstance()->getShopHomeURL().'cl=newsletter&amp;fnc=addme&amp;uid=XXXX&amp;confirm=AAAA';
+        $sUrl = oxConfig::getInstance()->getShopHomeURL().'cl=newsletter&amp;fnc=addme&amp;uid=XXXX&amp;lang=0&amp;confirm=AAAA';
         $this->assertEquals($sUrl, $this->_oEmail->UNITgetNewsSubsLink('XXXX', 'AAAA'));
         $oActShop = oxConfig::getInstance()->getActiveShop();
         $oActShop->setLanguage(1);

@@ -1014,58 +1014,29 @@ class Unit_Views_orderTest extends OxidTestCase
     }
 
     /**
-     * Testing address error getters
+     * Testing address encoding
      *
      * @return null
      */
     public function testGetDeliveryAddressMD5()
     {
-        $sUserAddress = 'companyusernamefnamelnamestreetstreetnraddinfoustidcitycountryidstatidzipfonfaxsal';
-        $sDelAddress = 'companyfnamelnamestreetstreetnraddinfocitycountryidstatidzipfonfaxsal';
-
-        $oDelAddress = oxNew( 'oxbase' );
+        $oDelAddress = oxNew( 'oxaddress' );
         $oDelAddress->init( 'oxaddress' );
         $oDelAddress->setId( '_testDelAddrId' );
         $oDelAddress->oxaddress__oxcompany = new oxField( "company" );
-        $oDelAddress->oxaddress__oxfname = new oxField( "fname" );
-        $oDelAddress->oxaddress__oxlname = new oxField( "lname" );
-        $oDelAddress->oxaddress__oxstreet = new oxField( "street" );
-        $oDelAddress->oxaddress__oxstreetnr = new oxField( "streetnr" );
-        $oDelAddress->oxaddress__oxaddinfo = new oxField( "addinfo" );
-        $oDelAddress->oxaddress__oxcity = new oxField( "city" );
-        $oDelAddress->oxaddress__oxcountryid = new oxField( "countryid" );
-        $oDelAddress->oxaddress__oxstateid = new oxField( "statid" );
-        $oDelAddress->oxaddress__oxzip = new oxField( "zip" );
-        $oDelAddress->oxaddress__oxfon = new oxField( "fon" );
-        $oDelAddress->oxaddress__oxfax = new oxField( "fax" );
-        $oDelAddress->oxaddress__oxsal = new oxField( "sal" );
         $oDelAddress->save();
 
-        $oUser = new oxuser;
-        $oUser->oxuser__oxcompany = new oxField( "company" );
-        $oUser->oxuser__oxusername = new oxField( "username" );
-        $oUser->oxuser__oxfname = new oxField( "fname" );
-        $oUser->oxuser__oxlname = new oxField( "lname" );
-        $oUser->oxuser__oxstreet = new oxField( "street" );
-        $oUser->oxuser__oxstreetnr = new oxField( "streetnr" );
-        $oUser->oxuser__oxaddinfo = new oxField( "addinfo" );
-        $oUser->oxuser__oxustid = new oxField( "ustid" );
-        $oUser->oxuser__oxcity = new oxField( "city" );
-        $oUser->oxuser__oxcountryid = new oxField( "countryid" );
-        $oUser->oxuser__oxstateid = new oxField( "statid" );
-        $oUser->oxuser__oxzip = new oxField( "zip" );
-        $oUser->oxuser__oxfon = new oxField( "fon" );
-        $oUser->oxuser__oxfax = new oxField( "fax" );
-        $oUser->oxuser__oxsal = new oxField( "sal" );
+        $oUser = $this->getMock('oxuser', array('getEncodedDeliveryAddress'));
+        $oUser->expects( $this->any() )->method( 'getEncodedDeliveryAddress')->will( $this->returnValue( 'encodedAddress' ) );
 
         $oOrder = $this->getMock( "order", array( "getUser" ) );
         $oOrder->expects( $this->any() )->method( 'getUser')->will( $this->returnValue( $oUser ) );
 
-        $this->assertEquals( md5( $sUserAddress ), $oOrder->getDeliveryAddressMD5() );
+        $this->assertEquals( $oUser->getEncodedDeliveryAddress(), $oOrder->getDeliveryAddressMD5() );
 
         oxSession::setVar( 'deladrid', _testDelAddrId );
 
-        $this->assertEquals( md5( $sUserAddress.$sDelAddress ), $oOrder->getDeliveryAddressMD5() );
+        $this->assertEquals( $oUser->getEncodedDeliveryAddress().$oDelAddress->getEncodedDeliveryAddress(), $oOrder->getDeliveryAddressMD5() );
 
     }
 

@@ -120,7 +120,7 @@ body {background:url(bg.png);}
                             <div class="loginForm corners fx-gradient-bg">
                                 <h4>Login</h4>
                                 <p><input type="text" class="textbox innerLabel " value="Email address" name="lgn_usr" id="loginEmail"></p>
-                                <p><input type="password" value="Password" class="textbox passwordbox innerLabel" name="lgn_pwd"><strong><a title="Forgot password?" href="#" id="forgotPasswordOpener">?</a></strong></p>
+                                <p><input type="password" value="Password" class="textbox passwordbox innerLabel" name="lgn_pwd"><strong><a title="Forgot password?" href="#" class="forgotPasswordOpener">?</a></strong></p>
                                 <p class="errorMsg" id="errorBadLogin">Wrong e-Mail or password!</p>
                                 <p class="checkFields clear"><input type="checkbox" id="remember" name="lgn_cook" value="1" class="checkbox"><label for="remember">Remember me</label></p>
                                 <p><button class="submitButton" type="submit">Login</button></p>
@@ -659,7 +659,7 @@ body {background:url(bg.png);}
                     </li>                    
                     <li class="formNote">Form note text text text text text text</li>
                     <li class="formSubmit">
-                        <button class="submitButton" title="Save" type="button">Form submit button</button>
+                        <button class="submitButton" type="button">Form submit button</button>
                     </li>
 
                 </ul>
@@ -1290,7 +1290,7 @@ body {background:url(bg.png);}
                             <span class="price" id="productPrice_productList_1">879,00 € *</span>
                             <div class="tobasketFunction clear">
                                 <input type="text" class="textbox" autocomplete="off" size="3" value="1" name="am" id="amountToBasket_productList_1">
-                                <button title="add to Cart" class="submitButton largeButton" type="submit" id="toBasket_productList_1">add to Cart</button>
+                                <button class="submitButton largeButton" type="submit" id="toBasket_productList_1">add to Cart</button>
                             </div>
                        </div>
                 </form>
@@ -1419,8 +1419,8 @@ body {background:url(bg.png);}
                                     <a id="amountPrice" href="#priceinfo" class="selector corners FXgradBlueDark" style="left: 82px; position: static;"><img alt="Select" longdesc="../../../source/out/azure/img/selectbutton.png" src="../../../source/out/azure/img/selectbutton.png"></a>
                                                                                  
                                     <input type="text" class="textbox" autocomplete="off" size="3" value="1" name="am" id="amountToBasket">                                  
-                                    <button title="add to Cart" class="submitButton largeButton" type="submit" id="toBasket">add to Cart</button>   
-                                    <button title="add to Cart" class="submitButton largeButton" disabled="disabled" type="submit" id="toBasket">add to Cart</button>                                                                     
+                                    <button class="submitButton largeButton" type="submit" id="toBasket">add to Cart</button>   
+                                    <button class="submitButton largeButton" disabled="disabled" type="submit" id="toBasket">add to Cart</button>                                                                     
                                 </div>
                                 <div class="additionalInfo clear">
                                     <span class="stockFlag onStock">Ready for shipping</span>
@@ -1455,7 +1455,7 @@ body {background:url(bg.png);}
                                         <li><label>20</label><span>21,90 €</span></li>
                                     </ul>                                                                                 
                                     <input type="text" class="textbox" autocomplete="off" size="3" value="1" name="am" id="amountToBasket">                                  
-                                    <button title="add to Cart" class="submitButton largeButton" type="submit" id="toBasket">add to Cart</button>                                                                        
+                                    <button class="submitButton largeButton" type="submit" id="toBasket">add to Cart</button>                                                                        
                                 </div>                                                                                         
                             </div>
                                                                                       
@@ -1658,7 +1658,7 @@ body {background:url(bg.png);}
                                                         </label>
                                                         <p class="fn clear">
                                                             <input type="text" title="Quantity:" class="textbox" autocomplete="off" size="3" value="1" name="am">
-                                                            <button title="add to Cart" class="submitButton largeButton" type="button">add to Cart</button>
+                                                            <button class="submitButton largeButton" type="button">add to Cart</button>
                                                         </p>
                                                     </div>
                                                 </div>
@@ -1691,7 +1691,7 @@ body {background:url(bg.png);}
                                                         </label>
                                                         <p class="fn clear">
                                                             <input type="text" title="Quantity:" class="textbox" autocomplete="off" size="3" value="1" name="am">
-                                                            <button title="add to Cart" class="submitButton largeButton" type="button">add to Cart</button>
+                                                            <button class="submitButton largeButton" type="button">add to Cart</button>
                                                         </p>
                                                     </div>
                                                 </div>
@@ -1703,14 +1703,14 @@ body {background:url(bg.png);}
                                     <td align="center">
                                         <form>
                                             <div>
-                                                <button name="send" title="remove" type="button" class="submitButton">remove</button>
+                                                <button name="send" type="button" class="submitButton">remove</button>
                                             </div>
                                         </form>
                                     </td>
                                     <td align="center">
                                         <form>
                                             <div>
-                                                <button name="send" title="remove" type="submit" class="submitButton">remove</button>
+                                                <button name="send" type="submit" class="submitButton">remove</button>
                                             </div>
                                         </form>
                                     </td>

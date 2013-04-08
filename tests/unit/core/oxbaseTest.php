@@ -149,59 +149,7 @@ class _oxBase extends oxBase
         return parent::_insert();
     }
 
-    /**
-     * Set errors.
-     *
-     * @param array $aError error array.
-     *
-     * @return mixed
-     */
-    public function setErrors($aError)
-    {
-        $this->_aErrors = $aError;
-    }
 
-    /**
-     * Force validate_oxactions__oxtitle.
-     *
-     * @return string
-     */
-    public function validate_oxactions__oxtitle()
-    {
-        return 'testError';
-    }
-
-    /**
-     * Force _blIsNewCache property.
-     *
-     * @param bool $blIsNewCache new cache
-     *
-     * @return null
-     */
-    public function set_rebuildCache($blIsNewCache)
-    {
-        $this->_blIsNewCache = $blIsNewCache;
-    }
-
-    /**
-     * Force get _blIsNewCache property.
-     *
-     * @return bool
-     */
-    function get_rebuildCache()
-    {
-        return $this->_blIsNewCache;
-    }
-
-    /**
-     * Force rebuildCache.
-     *
-     * @return string
-     */
-    public function rebuildCache()
-    {
-        return $this->_rebuildCache();
-    }
 
     /**
      * Force getObjectViewName.
@@ -225,20 +173,6 @@ class _oxBase extends oxBase
     public function initDataStructure($blForceFullStructure = false)
     {
         return parent::_initDataStructure($blForceFullStructure);
-    }
-
-    /**
-     * Force setRecordNumber.
-     *
-     * @param string $sMaxField  max field
-     * @param array  $aWhere     where
-     * @param int    $iMaxTryCnt mac retry count
-     *
-     * @return mixed
-     */
-    public function setRecordNumber( $sMaxField, $aWhere = null, $iMaxTryCnt = 5 )
-    {
-        return $this->_setRecordNumber( $sMaxField, $aWhere, $iMaxTryCnt);
     }
 
     /**
@@ -833,7 +767,7 @@ class Unit_Core_oxbaseTest extends OxidTestCase
         $oBase->setClassVar( '_aSkipSaveFields', array('oxtitle') );
 
 
-            $sGetUpdateFields = "oxid = 'test1',oxshopid = '',oxtype = '',oxtitle = 'title1',oxtitle_1 = '',oxtitle_2 = '',oxtitle_3 = '',oxlongdesc = '',oxlongdesc_1 = '',oxlongdesc_2 = '',oxlongdesc_3 = '',oxactive = '1',oxactivefrom = '0000-00-00 00:00:00',oxactiveto = '0000-00-00 00:00:00',oxpic = '',oxpic_1 = '',oxpic_2 = '',oxpic_3 = '',oxlink = '',oxlink_1 = '',oxlink_2 = '',oxlink_3 = '',oxsort = '0'";
+            $sGetUpdateFields = "oxid = 'test1',oxshopid = '',oxtype = '',oxtitle = 'title1',oxtitle_1 = '',oxtitle_2 = '',oxtitle_3 = '',oxlongdesc = '',oxlongdesc_1 = '',oxlongdesc_2 = '',oxlongdesc_3 = '',oxactive = '1',oxactivefrom = '0000-00-00 00:00:00',oxactiveto = '0000-00-00 00:00:00',oxpic = '',oxpic_1 = '',oxpic_2 = '',oxpic_3 = '',oxlink = '',oxlink_1 = '',oxlink_2 = '',oxlink_3 = '',oxsort = '0',oxtimestamp = 'CURRENT_TIMESTAMP'";
         $this->assertEquals($sGetUpdateFields, $oBase->UNITgetUpdateFields(false));
     }
 
@@ -852,7 +786,7 @@ class Unit_Core_oxbaseTest extends OxidTestCase
         $oBase->setClassVar( '_aSkipSaveFields', array('oxtitle') );
 
 
-            $sGetUpdateFields = "oxid = 'test1',oxshopid = '',oxtype = '',oxtitle_1 = '',oxtitle_2 = '',oxtitle_3 = '',oxlongdesc = '',oxlongdesc_1 = '',oxlongdesc_2 = '',oxlongdesc_3 = '',oxactive = '1',oxactivefrom = '0000-00-00 00:00:00',oxactiveto = '0000-00-00 00:00:00',oxpic = '',oxpic_1 = '',oxpic_2 = '',oxpic_3 = '',oxlink = '',oxlink_1 = '',oxlink_2 = '',oxlink_3 = '',oxsort = '0'";
+            $sGetUpdateFields = "oxid = 'test1',oxshopid = '',oxtype = '',oxtitle_1 = '',oxtitle_2 = '',oxtitle_3 = '',oxlongdesc = '',oxlongdesc_1 = '',oxlongdesc_2 = '',oxlongdesc_3 = '',oxactive = '1',oxactivefrom = '0000-00-00 00:00:00',oxactiveto = '0000-00-00 00:00:00',oxpic = '',oxpic_1 = '',oxpic_2 = '',oxpic_3 = '',oxlink = '',oxlink_1 = '',oxlink_2 = '',oxlink_3 = '',oxsort = '0',oxtimestamp = 'CURRENT_TIMESTAMP'";
 
         $this->assertEquals($sGetUpdateFields, $oBase->UNITgetUpdateFields());
     }
@@ -1297,13 +1231,13 @@ class Unit_Core_oxbaseTest extends OxidTestCase
      */
     public function testBuildSelectString()
     {
-        $oBase = new _oxBase();
+        $oBase = new oxBase();
         $oBase->init("oxactions");
         $sView = getViewName("oxactions", -1);
         $sSelect = $oBase->buildSelectString(array("$sView.oxid" => "oxstart"));
         $sSelect = str_replace("  ", " ", $sSelect);
 
-        $this->assertEquals("select $sView.oxid, $sView.oxshopid, $sView.oxtype, $sView.oxtitle, $sView.oxtitle_1, $sView.oxtitle_2, $sView.oxtitle_3, $sView.oxlongdesc, $sView.oxlongdesc_1, $sView.oxlongdesc_2, $sView.oxlongdesc_3, $sView.oxactive, $sView.oxactivefrom, $sView.oxactiveto, $sView.oxpic, $sView.oxpic_1, $sView.oxpic_2, $sView.oxpic_3, $sView.oxlink, $sView.oxlink_1, $sView.oxlink_2, $sView.oxlink_3, $sView.oxsort from $sView where 1 and $sView.oxid = 'oxstart'", $sSelect);
+        $this->assertEquals("select `$sView`.`oxid`, `$sView`.`oxshopid`, `$sView`.`oxtype`, `$sView`.`oxtitle`, `$sView`.`oxtitle_1`, `$sView`.`oxtitle_2`, `$sView`.`oxtitle_3`, `$sView`.`oxlongdesc`, `$sView`.`oxlongdesc_1`, `$sView`.`oxlongdesc_2`, `$sView`.`oxlongdesc_3`, `$sView`.`oxactive`, `$sView`.`oxactivefrom`, `$sView`.`oxactiveto`, `$sView`.`oxpic`, `$sView`.`oxpic_1`, `$sView`.`oxpic_2`, `$sView`.`oxpic_3`, `$sView`.`oxlink`, `$sView`.`oxlink_1`, `$sView`.`oxlink_2`, `$sView`.`oxlink_3`, `$sView`.`oxsort`, `$sView`.`oxtimestamp` from $sView where 1 and $sView.oxid = 'oxstart'", $sSelect);
     }
 
     /**
@@ -1313,11 +1247,11 @@ class Unit_Core_oxbaseTest extends OxidTestCase
      */
     public function testBuildSelectStringWithoutShopId()
     {
-        $oBase = new _oxBase();
+        $oBase = new oxBase();
         $oBase->init("oxattribute");
         $sSelect = $oBase->buildSelectString(array("oxid" => "111"));
         $sSelect = str_replace("  ", " ", $sSelect);
-            $this->assertEquals("select oxv_oxattribute.oxid, oxv_oxattribute.oxshopid, oxv_oxattribute.oxtitle, oxv_oxattribute.oxtitle_1, oxv_oxattribute.oxtitle_2, oxv_oxattribute.oxtitle_3, oxv_oxattribute.oxpos from oxv_oxattribute where 1 and oxid = '111'", $sSelect);
+            $this->assertEquals("select `oxv_oxattribute`.`oxid`, `oxv_oxattribute`.`oxshopid`, `oxv_oxattribute`.`oxtitle`, `oxv_oxattribute`.`oxtitle_1`, `oxv_oxattribute`.`oxtitle_2`, `oxv_oxattribute`.`oxtitle_3`, `oxv_oxattribute`.`oxpos`, `oxv_oxattribute`.`oxtimestamp`, `oxv_oxattribute`.`oxdisplayinbasket` from oxv_oxattribute where 1 and oxid = '111'", $sSelect);
     }
 
     /**
@@ -1327,11 +1261,11 @@ class Unit_Core_oxbaseTest extends OxidTestCase
      */
     public function  testBuildSelectStringWithShopId()
     {
-        $oBase = new _oxBase();
+        $oBase = new oxBase();
         $oBase->init("oxattribute");
         $sSelect = $oBase->buildSelectString(array("oxid" => "111"));
         $sSelect = str_replace("  ", " ", $sSelect);
-            $this->assertEquals("select oxv_oxattribute.oxid, oxv_oxattribute.oxshopid, oxv_oxattribute.oxtitle, oxv_oxattribute.oxtitle_1, oxv_oxattribute.oxtitle_2, oxv_oxattribute.oxtitle_3, oxv_oxattribute.oxpos from oxv_oxattribute where 1 and oxid = '111'", $sSelect);
+            $this->assertEquals("select `oxv_oxattribute`.`oxid`, `oxv_oxattribute`.`oxshopid`, `oxv_oxattribute`.`oxtitle`, `oxv_oxattribute`.`oxtitle_1`, `oxv_oxattribute`.`oxtitle_2`, `oxv_oxattribute`.`oxtitle_3`, `oxv_oxattribute`.`oxpos`, `oxv_oxattribute`.`oxtimestamp`, `oxv_oxattribute`.`oxdisplayinbasket` from oxv_oxattribute where 1 and oxid = '111'", $sSelect);
     }
 
     /**
@@ -1384,11 +1318,11 @@ class Unit_Core_oxbaseTest extends OxidTestCase
      */
     public function  testGetSelectFields()
     {
-        $oBase = new _oxBase();
+        $oBase = new oxBase();
         $oBase->init('oxactions');
 
         $sView = getViewName('oxactions', -1);
-        $this->assertEquals("$sView.oxid, $sView.oxshopid, $sView.oxtype, $sView.oxtitle, $sView.oxtitle_1, $sView.oxtitle_2, $sView.oxtitle_3, $sView.oxlongdesc, $sView.oxlongdesc_1, $sView.oxlongdesc_2, $sView.oxlongdesc_3, $sView.oxactive, $sView.oxactivefrom, $sView.oxactiveto, $sView.oxpic, $sView.oxpic_1, $sView.oxpic_2, $sView.oxpic_3, $sView.oxlink, $sView.oxlink_1, $sView.oxlink_2, $sView.oxlink_3, $sView.oxsort", $oBase->getSelectFields());
+        $this->assertEquals("`$sView`.`oxid`, `$sView`.`oxshopid`, `$sView`.`oxtype`, `$sView`.`oxtitle`, `$sView`.`oxtitle_1`, `$sView`.`oxtitle_2`, `$sView`.`oxtitle_3`, `$sView`.`oxlongdesc`, `$sView`.`oxlongdesc_1`, `$sView`.`oxlongdesc_2`, `$sView`.`oxlongdesc_3`, `$sView`.`oxactive`, `$sView`.`oxactivefrom`, `$sView`.`oxactiveto`, `$sView`.`oxpic`, `$sView`.`oxpic_1`, `$sView`.`oxpic_2`, `$sView`.`oxpic_3`, `$sView`.`oxlink`, `$sView`.`oxlink_1`, `$sView`.`oxlink_2`, `$sView`.`oxlink_3`, `$sView`.`oxsort`, `$sView`.`oxtimestamp`", $oBase->getSelectFields());
     }
 
     /**
@@ -1398,8 +1332,8 @@ class Unit_Core_oxbaseTest extends OxidTestCase
      */
     public function  testGetSelectFieldsNoFields()
     {
-        $oBase = new _oxBase();
-        $this->assertEquals($oBase->getSelectFields(), ".oxid");
+        $oBase = new oxBase();
+        $this->assertEquals($oBase->getSelectFields(), ".`oxid`");
     }
 
     /**
@@ -1657,27 +1591,25 @@ class Unit_Core_oxbaseTest extends OxidTestCase
     }
 
     /**
-     * Test save if exists in admin mode with time stamp.
+     * Test save if timestamp updated.
      *
      * @return null
      */
     public function  testSaveIfExistsInAdminTimeStamp()
     {
         $myDB    = oxDb::getDb( oxDB::FETCH_MODE_ASSOC );
-            $sInsert = "Insert into oxarticles (`OXID`,`OXTITLE`) values ('_test','test')";
+        $sInsert = "Insert into oxuserbaskets (`OXID`,`OXUSERID`,`OXTITLE`) values ('_test','test','test')";
         $myDB->Execute($sInsert);
-        //oxConfig::getInstance()->blAdmin = true;
         $oBase = new _oxBase();
-        $oBase->init('oxarticles');
+        $oBase->init('oxuserbaskets');
         $oBase->load("_test");
-        $oBase->oxarticles__oxtimestamp = new oxField("2007.07.07", oxField::T_RAW);
+        $oBase->oxuserbaskets__oxupdate = new oxField("2007.07.07", oxField::T_RAW);
         $sResult = $oBase->save();
 
-        //oxConfig::getInstance()->blAdmin = false;
         $this->assertNotNull( $sResult );
         $myDB    = oxDb::getDb( oxDB::FETCH_MODE_ASSOC );
-        $res = $myDB->Execute("select oxtimestamp from oxarticles where oxid='_test'");
-        $this->assertEquals( "2007-07-07 00:00:00", $res->fields['oxtimestamp'] );
+        $res = $myDB->Execute("select oxupdate from oxuserbaskets where oxid='_test'");
+        $this->assertNotEquals( "2007-07-07 00:00:00", $res->fields['oxupdate'] );
     }
 
     /**
@@ -1884,148 +1816,6 @@ class Unit_Core_oxbaseTest extends OxidTestCase
 
 
     /**
-     * Test has errorsm, positive.
-     *
-     * @return null
-     */
-    public function  testHasErrors()
-    {
-        $oBase = new _oxBase();
-        $oBase->setErrors(array('Test error'));
-        $sResult = $oBase->hasErrors();
-        $this->assertTrue($sResult );
-    }
-
-    /**
-     * Test has errors, negative.
-     *
-     * @return null
-     */
-    public function  testHasNoErrors()
-    {
-        $oBase = new _oxBase();
-        $oBase->setErrors(null);
-        $sResult = $oBase->hasErrors();
-        $this->assertFalse( $sResult );
-    }
-
-    /**
-     *  Test get errors, positive.
-     *
-     * @return null
-     */
-    public function  testGetErrors()
-    {
-        $oBase = new _oxBase();
-        $oBase->setErrors(array('Test error'));
-        $sResult = $oBase->getErrors();
-        $this->assertEquals( array('Test error'), $sResult );
-    }
-
-    /**
-     * Test get errors, negative.
-     *
-     * @return null
-     */
-    public function  testGetNoErrors()
-    {
-        $oBase = new _oxBase();
-        $oBase->setErrors(null);
-        $sResult = $oBase->getErrors();
-        $this->assertEquals( null, $sResult );
-    }
-
-    /**
-     * Test get error, positive.
-     *
-     * @return null
-     */
-    public function  testGetError()
-    {
-        $oBase = new _oxBase();
-        $oBase->setErrors(array('Test error'));
-        $sResult = $oBase->getError(0);
-        $this->assertEquals( 'Test error', $sResult );
-    }
-
-    /**
-     * Test get non existing error.
-     *
-     * @return null
-     */
-    public function  testGetNotExistingError()
-    {
-        $oBase = new _oxBase();
-        $oBase->setErrors(array('Test error'));
-        $sResult = $oBase->getError(1);
-        $this->assertNull( $sResult );
-    }
-
-    /**
-     * Test get html error.
-     *
-     * @return null
-     */
-    public function  testGetHtmlError()
-    {
-        $oBase = new _oxBase();
-        $oBase->setErrors(array('Test error'));
-        $sResult = $oBase->getHtmlError(0);
-        $this->assertEquals( 'Test error', $sResult );
-    }
-
-    /**
-     * Test validate.
-     *
-     * @return null
-     */
-    public function  testValidate()
-    {
-        $oBase = new _oxBase();
-        $oBase->init('oxactions');
-        $this->assertFalse( $oBase->validate());
-    }
-
-    /**
-     * Test validate without errors.
-     *
-     * @return null
-     */
-    public function  testValidateNoErrors()
-    {
-        $oBase = new _oxBase();
-        $oBase->init('oxattribute');
-        $sResult = $oBase->validate();
-        $this->assertTrue( $sResult );
-    }
-
-    /**
-     * Test rebuild cache if not new cache.
-     *
-     * @return null
-     */
-    public function  testRebuildCacheIfNotNewCache()
-    {
-        $oBase = new _oxBase();
-        $oBase->set_rebuildCache(true);
-        $oBase->rebuildCache();
-        $this->assertTrue( $oBase->get_rebuildCache());
-    }
-
-    /**
-     * Test rebuild cache if new cache.
-     *
-     * @return null
-     */
-    public function  testRebuildCacheIfNewCache()
-    {
-        $oBase = new _oxBase();
-        $oBase->set_rebuildCache(false);
-        $oBase->rebuildCache();
-        $this->assertTrue($oBase->get_rebuildCache());
-    }
-
-    /**
      * Test get object view name.
      *
      * @return null
@@ -2064,66 +1854,7 @@ class Unit_Core_oxbaseTest extends OxidTestCase
 
 
 
-    /**
-     * Test set record number.
-     *
-     * @return null
-     */
-    public function testSetRecordNumber()
-    {
-        $myDB    = oxDb::getDb();
-        $sInsert = "Insert into oxorder (`oxid`, `oxordernr`) values ('_test', '158')";
-        $myDB->Execute($sInsert);
 
-        $oBase = new _oxBase();
-        $oBase->init('oxorder');
-        $oBase->load('_test');
-        $oBase->setRecordNumber('oxordernr');
-
-        $sQ = "select oxordernr from oxorder where oxid = '_test' ";
-        $this->assertEquals(159, $myDB->getOne($sQ));
-    }
-
-    /**
-     * Test set record number with where clause.
-     *
-     * @return null
-     */
-    public function  testSetRecordNumberWithWhere()
-    {
-        $myDB    = oxDb::getDb();
-        $sInsert = "Insert into oxorder (`oxid`, `oxordernr`, `oxshopid`) values ('_test1', '158', '1')";
-        $myDB->Execute($sInsert);
-        $sInsert = "Insert into oxorder (`oxid`, `oxordernr`, `oxshopid`) values ('_test2', '159', '2')";
-        $myDB->Execute($sInsert);
-
-        $oBase = new _oxBase();
-        $oBase->init('oxorder');
-        $oBase->load('_test1');
-        $oBase->setRecordNumber('oxordernr', array('oxshopid = "1"'));
-
-        $sQ = "select oxordernr from oxorder where oxid = '_test1' ";
-        $this->assertEquals(159, $myDB->getOne($sQ));
-        $sQ = "select oxordernr from oxorder where oxid = '_test2' ";
-        $this->assertEquals(159, $myDB->getOne($sQ));
-    }
-
-    /**
-     * Test set record number with wrong update.
-     *
-     * @return null
-     */
-    public function  testSetRecordNumberWrongUpdate()
-    {
-        $myDB    = oxDb::getDb();
-        $sInsert = "Insert into oxorder (`oxid`, `oxordernr`, `oxshopid`) values ('_test1', '158', '1')";
-        $myDB->Execute($sInsert);
-
-        $oBase = new _oxBase();
-        $oBase->init('oxorder');
-        $oBase->load('_test1');
-        $this->assertFalse( $oBase->setRecordNumber( 'oxordernr', array( 'oxshopid = "2"' ) ) );
-    }
 
     /**
      * Test get all fields.
@@ -2314,6 +2045,19 @@ class Unit_Core_oxbaseTest extends OxidTestCase
         $oField11->has_default = true;
         $oField11->default_value = '0';
 
+        $oField12 = new ADOFieldObject();
+        $oField12->name = 'OXTIMESTAMP';
+        $oField12->max_length = '10';
+        $oField12->type = 'timestamp';
+        $oField12->scale = null;
+        $oField12->not_null = true;
+        $oField12->primary_key = false;
+        $oField12->auto_increment = false;
+        $oField12->binary = false;
+        $oField12->unsigned = false;
+        $oField12->has_default = true;
+        $oField12->default_value = 'CURRENT_TIMESTAMP';
+
         $aExpectedFields[] = $oField5;
         $aExpectedFields[] = $oField51;
         $aExpectedFields[] = $oField52;
@@ -2330,6 +2074,7 @@ class Unit_Core_oxbaseTest extends OxidTestCase
         $aExpectedFields[] = $oField102;
         $aExpectedFields[] = $oField103;
         $aExpectedFields[] = $oField11;
+        $aExpectedFields[] = $oField12;
 
         $this->assertEquals( $aExpectedFields, $oBase->UNITgetAllFields() );
     }
@@ -2343,7 +2088,7 @@ class Unit_Core_oxbaseTest extends OxidTestCase
     {
         $oBase = new _oxBase();
         $oBase->init('oxactions');
-        $aExpectedFields = array('oxid' => 0, 'oxshopid'=>0, 'oxtype'=>0, 'oxtitle' => 0, 'oxtitle_1' => 0, 'oxtitle_2' => 0, 'oxtitle_3' => 0, 'oxlongdesc' => 0, 'oxlongdesc_1' => 0, 'oxlongdesc_2' => 0, 'oxlongdesc_3' => 0, 'oxactive'=>0, 'oxactivefrom'=>0, 'oxactiveto'=>0, 'oxpic'=>0, 'oxpic_1'=>0, 'oxpic_2'=>0, 'oxpic_3'=>0, 'oxlink'=>0, 'oxlink_1'=>0, 'oxlink_2'=>0, 'oxlink_3'=>0, 'oxsort'=>0);
+        $aExpectedFields = array('oxid' => 0, 'oxshopid'=>0, 'oxtype'=>0, 'oxtitle' => 0, 'oxtitle_1' => 0, 'oxtitle_2' => 0, 'oxtitle_3' => 0, 'oxlongdesc' => 0, 'oxlongdesc_1' => 0, 'oxlongdesc_2' => 0, 'oxlongdesc_3' => 0, 'oxactive'=>0, 'oxactivefrom'=>0, 'oxactiveto'=>0, 'oxpic'=>0, 'oxpic_1'=>0, 'oxpic_2'=>0, 'oxpic_3'=>0, 'oxlink'=>0, 'oxlink_1'=>0, 'oxlink_2'=>0, 'oxlink_3'=>0, 'oxsort'=>0, 'oxtimestamp'=>0);
 
         $this->assertEquals($aExpectedFields, $oBase->UNITgetAllFields(true));
     }

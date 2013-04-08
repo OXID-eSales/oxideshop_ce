@@ -35,11 +35,11 @@
  *
  * @return string
  */
-function smarty_modifier_oxnumberformat( $sFormat = "EUR@ 1.00@ ,@ .@ ¤@ 2", $sValue)
+function smarty_modifier_oxnumberformat( $sFormat = "EUR@ 1.00@ ,@ .@ ï¿½@ 2", $sValue = 0)
 {
     // logic copied from oxconfig::getCurrencyArray()
     $sCur = explode( "@", $sFormat);
-    $oCur           = new oxStdClass();
+    $oCur           = new stdClass();
     $oCur->id       = 0;
     $oCur->name     = @trim($sCur[0]);
     $oCur->rate     = @trim($sCur[1]);
@@ -53,5 +53,5 @@ function smarty_modifier_oxnumberformat( $sFormat = "EUR@ 1.00@ ,@ .@ ¤@ 2", $sV
         $oCur->side = @trim($sCur[6]);
     }
 
-    return oxLang::getInstance()->formatCurrency($sValue, $oCur);
+    return oxRegistry::getLang()->formatCurrency($sValue, $oCur);
 }

@@ -224,7 +224,7 @@ class Unit_Admin_GenImportMainTest extends OxidTestCase
         $sFileName = md5( time() );
 
         // testing..
-        $oConfig = $this->getMock( "oxStdClass", array( "getUploadedFile", "getConfigParam" ) );
+        $oConfig = $this->getMock( "oxConfig", array( "getUploadedFile", "getConfigParam" ) );
         $oConfig->expects( $this->once() )->method( 'getUploadedFile' )->will( $this->returnValue( array( "name" => $sFileName, "tmp_name" => rtrim( sys_get_temp_dir(), '/' ) . '/' . $sFileName ) ) );
         $oConfig->expects( $this->once() )->method( 'getConfigParam' )->will( $this->returnValue( oxConfig::getInstance()->getConfigParam( "sCompileDir" ) ) );
 
@@ -245,7 +245,7 @@ class Unit_Admin_GenImportMainTest extends OxidTestCase
         oxTestModules::addFunction( 'oxUtilsView', 'addErrorToDisplay', '{ throw new Exception( "addErrorToDisplay" );}');
 
         // defining parameters
-        $oErpImport = $this->getMock( "oxStdClass", array( "getStatistics" ) );
+        $oErpImport = $this->getMock( "oxErpGenImport", array( "getStatistics" ) );
         $oErpImport->expects( $this->once() )->method( 'getStatistics' )->will( $this->returnValue( array( array( "r" => false, "m" => true )) ) );
 
         try {

@@ -30,10 +30,10 @@ class Unit_Maintenance_pluginSmartyOxContentTest extends OxidTestCase
 {
     public function testGetContentWhenShopIsNotProductiveAndContentDoesNotExist()
     {
-        oxTestModules::addFunction( "oxconfig", "getActiveShop", "{ \$oShop = new oxStdClass(); \$oShop->oxshops__oxproductive = new oxField();  return \$oShop;}" );
+        oxTestModules::addFunction( "oxconfig", "getActiveShop", "{ \$oShop = new oxShop(); \$oShop->oxshops__oxproductive = new oxField();  return \$oShop;}" );
 
         $aParams['ident'] = 'testident';
-        $oSmarty = new oxStdClass();
+        $oSmarty = new Smarty();
 
         $sText = "<b>content not found ! check ident(".$aParams['ident'].") !</b>";
 
@@ -43,7 +43,7 @@ class Unit_Maintenance_pluginSmartyOxContentTest extends OxidTestCase
 
     public function testGetContentNoParamsPassedShopIsProductive()
     {
-        $this->assertEquals( "<b>content not found ! check ident() !</b>", smarty_function_oxcontent( array(), new oxStdClass() ) );
+        $this->assertEquals( "<b>content not found ! check ident() !</b>", smarty_function_oxcontent( array(), new stdClass() ) );
     }
 
     public function testGetContentLoadByIdent()

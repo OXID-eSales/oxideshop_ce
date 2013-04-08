@@ -192,7 +192,9 @@ class Unit_Views_suggestTest extends OxidTestCase
 
         oxTestModules::addModuleObject('oxemail', $oEmail );
 
-        $oProduct = $this->getMock( "stdclass", array( 'getId' ) );
+        //T20120724
+        //$oProduct = $this->getMock( "stdclass", array( 'getId' ) );
+        $oProduct = $this->getMock( "oxarticle", array( 'getId' ) );
         $oProduct->expects( $this->once() )->method( 'getId')->will($this->returnValue( 'XProduct' ) );
 
         $oCaptcha = $this->getMock( "stdclass", array( 'pass' ) );

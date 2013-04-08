@@ -206,15 +206,15 @@ class oxSeoDecoder extends oxSuperCfg
             // in case SEO url is actual
             if ( is_array( $aGet = $this->decodeUrl( $sParams ) ) ) {
                 $_GET = array_merge( $aGet, $_GET );
-                oxLang::getInstance()->resetBaseLanguage();
+                oxRegistry::getLang()->resetBaseLanguage();
             } elseif ( ( $sRedirectUrl = $this->_decodeOldUrl( $sParams ) ) ) {
                 // in case SEO url was changed - redirecting to new location
-                oxUtils::getInstance()->redirect( $this->getConfig()->getShopURL().$sRedirectUrl, false );
+                oxRegistry::getUtils()->redirect( $this->getConfig()->getShopURL().$sRedirectUrl, false );
             } elseif ( ( $sRedirectUrl = $this->_decodeSimpleUrl( $sParams ) ) ) {
                 // old type II seo urls
-                oxUtils::getInstance()->redirect( $this->getConfig()->getShopURL().$sRedirectUrl, false );
+                oxRegistry::getUtils()->redirect( $this->getConfig()->getShopURL().$sRedirectUrl, false );
             } else {
-                oxSession::getInstance()->start();
+                oxRegistry::getSession()->start();
                 // unrecognized url
                 error_404_handler( $sParams );
             }
@@ -241,7 +241,7 @@ class oxSeoDecoder extends oxSuperCfg
 
         if ( $sLastParam ) {
 
-            $iLanguage  = oxLang::getInstance()->getBaseLanguage();
+            $iLanguage  = oxRegistry::getLang()->getBaseLanguage();
 
             // article ?
             if ( strpos( $sLastParam, '.htm' ) !== false ) {
@@ -307,7 +307,7 @@ class oxSeoDecoder extends oxSuperCfg
 
         // this should not happen on most cases, because this redirect is handled by .htaccess
         if ( $sParams && !$oStr->preg_match( '/\.html$/', $sParams ) && !$oStr->preg_match( '/\/$/', $sParams ) ) {
-            oxUtils::getInstance()->redirect( $this->getConfig()->getShopURL() . $sParams . '/', false );
+            oxRegistry::getUtils()->redirect( $this->getConfig()->getShopURL() . $sParams . '/', false );
         }
 
         return $sParams;

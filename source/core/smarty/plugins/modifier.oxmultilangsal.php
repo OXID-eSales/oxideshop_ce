@@ -35,7 +35,7 @@
  */
 function smarty_modifier_oxmultilangsal( $sIdent )
 {
-    $oLang = oxLang::getInstance();
+    $oLang = oxRegistry::getLang();
     $iLang = $oLang->getTplLanguage();
 
     if ( !isset( $iLang ) ) {
@@ -46,7 +46,7 @@ function smarty_modifier_oxmultilangsal( $sIdent )
     }
 
     try {
-        $sTranslation = $oLang->translateString( $sIdent, $iLang, isAdmin() );
+        $sTranslation = $oLang->translateString( $sIdent, $iLang, $oLang->isAdmin() );
     } catch ( oxLanguageException $oEx ) {
         // is thrown in debug mode and has to be caught here, as smarty hangs otherwise!
     }

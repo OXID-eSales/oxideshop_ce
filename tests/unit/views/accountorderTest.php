@@ -63,7 +63,7 @@ class Unit_Views_accountOrderTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxarticlelist', 'loadOrderArticles', '{ return "testOrderArticles"; }' );
 
-        $oOrderList = $this->getMock( "oxStdClass", array( "count" ) );
+        $oOrderList = $this->getMock( "oxlist", array( "count" ) );
         $oOrderList->expects( $this->any() )->method( 'count')->will( $this->returnValue( 1 ) );
 
         $oView = $this->getMock( "Account_Order", array( "getOrderList" ) );
@@ -90,7 +90,7 @@ class Unit_Views_accountOrderTest extends OxidTestCase
      */
     public function testGetOrderList()
     {
-        $oUser = $this->getMock( "oxStdClass", array( "getOrders", "getOrderCount" ) );
+        $oUser = $this->getMock( "oxUser", array( "getOrders", "getOrderCount" ) );
         $oUser->expects( $this->once() )->method( 'getOrders')->will( $this->returnValue( "testOrders" ) );
         $oUser->expects( $this->once() )->method( 'getOrderCount')->will( $this->returnValue( 1 ) );
 
@@ -126,7 +126,7 @@ class Unit_Views_accountOrderTest extends OxidTestCase
         $this->assertEquals( 'page/account/order.tpl', $oView->render() );
     }
 
-	/**
+    /**
      * Testing Account_Orders::getBreadCrumb()
      *
      * @return null

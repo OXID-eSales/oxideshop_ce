@@ -118,24 +118,6 @@ class Unit_Views_startTest extends OxidTestCase
         $this->assertEquals(2, $aList->count());
     }
 
-    /**
-     * Testing start::getTagCloudManager()
-     *
-     * @return null
-     */
-    public function testGetTagCloudManager()
-    {
-        $oView = new Start();
-        $this->assertTrue( $oView->getTagCloudManager() instanceof oxTagCloud );
-    }
-
-    public function testIsMoreTagsVisible()
-    {
-        $oStart = $this->getProxyClass( 'start' );
-
-        $this->assertTrue($oStart->isMoreTagsVisible());
-    }
-
     public function testPrepareMetaKeyword()
     {
         modConfig::getInstance()->setConfigParam( 'bl_perfLoadAktion', 1 );

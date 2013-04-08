@@ -38,34 +38,22 @@ class Unit_Core_oxshoplistTest extends OxidTestCase
     protected function setUp()
     {
         parent::setUp();
-        oxDb::getDb()->Execute( "delete from oxshops where oxid > 1" );
+
+        $oDb = oxDb::getDb();
+        $oDb->execute( "DELETE FROM `oxshops` WHERE `oxid` > 1" );
+
         for ( $i = 2; $i < 5; $i++ ) {
-            $sQ = "insert into `oxshops` (OXID, OXACTIVE, OXNAME) VALUES ($i, 1, 'Test Shop $i') ";
-            oxDb::getDb()->Execute( $sQ );
+            $oDb->execute( "INSERT INTO `oxshops` (OXID, OXACTIVE, OXNAME) VALUES ($i, 1, 'Test Shop $i')" );
         }
     }
 
     /**
-     * Tear down the fixture.
-     *
-     * @return null
+     * All shop list test
      */
-    protected function tearDown()
+    public function testGetAll()
     {
-        parent::tearDown();
-    }
-
-    /**
-     * Testing if shop list loading succeded
-     */
-    public function testLoad()
-    {
-        $oShopList = new oxShoplist();
-        $oShopList->selectString( 'select * from oxshops where oxactive = 1 order by oxid ' );
+        $oShopList = new oxShopList();
+        $oShopList->getAll();
         $this->assertEquals( 4, $oShopList->count() );
-
-            $aIds = array( 2, 3, 4, oxConfig::getInstance()->getBaseShopId() );
-        // checking ids of loaded shops
-        $this->assertEquals( $aIds, $oShopList->arrayKeys() );
     }
 }

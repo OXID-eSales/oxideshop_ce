@@ -117,7 +117,7 @@ class Unit_Admin_SelectListMainTest extends OxidTestCase
     {
         oxTestModules::addFunction( 'oxselectlist', 'loadInLang', '{ return true; }');
         oxTestModules::addFunction( 'oxselectlist', 'isDerived', '{ return false; }');
-        oxTestModules::addFunction( 'oxUtils', 'assignValuesFromText', '{ $oField1 = new OxStdClass(); $oField1->name = "testField1";$oField2 = new OxStdClass(); $oField2->name = "testField2"; return array( $oField1, $oField2 ); }');
+        oxTestModules::addFunction( 'oxUtils', 'assignValuesFromText', '{ $oField1 = new stdClass(); $oField1->name = "testField1";$oField2 = new stdClass(); $oField2->name = "testField2"; return array( $oField1, $oField2 ); }');
 
         modConfig::setParameter( "aFields", array( "testField1", "testField2" ) );
 
@@ -157,7 +157,7 @@ class Unit_Admin_SelectListMainTest extends OxidTestCase
         modConfig::setParameter( "sAddFieldPos", 1 );
 
         oxTestModules::addFunction( 'oxselectlist', 'loadInLang', '{ return true; }');
-        oxTestModules::addFunction( 'oxUtils', 'assignValuesFromText', '{ $oField1 = new OxStdClass();$oField1->name = "testField1";$oField2 = new OxStdClass();$oField2->name = "testField2";return array( 1 => $oField1, 2 => $oField2 ); }');
+        oxTestModules::addFunction( 'oxUtils', 'assignValuesFromText', '{ $oField1 = new stdClass();$oField1->name = "testField1";$oField2 = new stdClass();$oField2->name = "testField2";return array( 1 => $oField1, 2 => $oField2 ); }');
 
         // testing..
         $oView = $this->getMock( "SelectList_Main", array( "_rearrangeFields", "save" ) );
@@ -178,7 +178,7 @@ class Unit_Admin_SelectListMainTest extends OxidTestCase
         modConfig::setParameter( "sAddFieldPos", 1 );
 
         oxTestModules::addFunction( 'oxselectlist', 'loadInLang', '{ return true; }');
-        oxTestModules::addFunction( 'oxUtils', 'assignValuesFromText', '{ $oField1 = new OxStdClass();$oField1->name = "testField1";$oField2 = new OxStdClass();$oField2->name = "testField2";return array( 1 => $oField1, 2 => $oField2 ); }');
+        oxTestModules::addFunction( 'oxUtils', 'assignValuesFromText', '{ $oField1 = new stdClass();$oField1->name = "testField1";$oField2 = new stdClass();$oField2->name = "testField2";return array( 1 => $oField1, 2 => $oField2 ); }');
 
         // testing..
         $oView = $this->getMock( "SelectList_Main", array( "_rearrangeFields", "save" ) );
@@ -214,7 +214,7 @@ class Unit_Admin_SelectListMainTest extends OxidTestCase
         modConfig::setParameter( "sAddFieldPos", 1 );
 
         oxTestModules::addFunction( 'oxselectlist', 'loadInLang', '{ return true; }');
-        oxTestModules::addFunction( 'oxUtils', 'assignValuesFromText', '{ $oField1 = new OxStdClass();$oField1->name = "testField1";$oField2 = new OxStdClass();$oField2->name = "testField2";return array( 1 => $oField1, 2 => $oField2 ); }');
+        oxTestModules::addFunction( 'oxUtils', 'assignValuesFromText', '{ $oField1 = new stdClass();$oField1->name = "testField1";$oField2 = new stdClass();$oField2->name = "testField2";return array( 1 => $oField1, 2 => $oField2 ); }');
 
         // testing..
         $oView = $this->getMock( "SelectList_Main", array( "parseFieldName", "_rearrangeFields", "save" ) );
@@ -236,7 +236,7 @@ class Unit_Admin_SelectListMainTest extends OxidTestCase
         modConfig::setParameter( "sAddFieldPos", 1 );
 
         oxTestModules::addFunction( 'oxselectlist', 'loadInLang', '{ return true; }');
-        oxTestModules::addFunction( 'oxUtils', 'assignValuesFromText', '{ $oField1 = new OxStdClass();$oField1->name = "testField1";$oField2 = new OxStdClass();$oField2->name = "testField2";return array( 1 => $oField1, 2 => $oField2 ); }');
+        oxTestModules::addFunction( 'oxUtils', 'assignValuesFromText', '{ $oField1 = new stdClass();$oField1->name = "testField1";$oField2 = new stdClass();$oField2->name = "testField2";return array( 1 => $oField1, 2 => $oField2 ); }');
 
         // testing..
         $oView = $this->getMock( "SelectList_Main", array( "parseFieldName", "_rearrangeFields", "save" ) );

@@ -46,15 +46,15 @@ class Unit_Admin_ArticleExtendAjaxTest extends OxidTestCase
         
             $this->setCategoriesViewTable( 'oxv_oxcategories_de' );
             $this->setObject2CategoryViewTable( 'oxobject2category' );
-            $this->setShopId( 'oxbaseshop' );
+            $this->setShopIdTest( 'oxbaseshop' );
             
-            oxDb::getDb()->execute( "insert into oxcategories set oxid='_testCategory', oxtitle='_testCategory', oxshopid='".$this->getShopId()."'" );
+            oxDb::getDb()->execute( "insert into oxcategories set oxid='_testCategory', oxtitle='_testCategory', oxshopid='".$this->getShopIdTest()."'" );
             oxDb::getDb()->execute( "insert into oxobject2category set oxid='_testObject2Category', oxcatnid='_testCategory', oxobjectid = '_testObject'" );
             
             
-            oxDb::getDb()->execute( "insert into oxcategories set oxid='_testCategory1', oxtitle='_testCategory1', oxshopid='".$this->getShopId()."'" );
-            oxDb::getDb()->execute( "insert into oxcategories set oxid='_testCategory2', oxtitle='_testCategory2', oxshopid='".$this->getShopId()."'" );
-            oxDb::getDb()->execute( "insert into oxcategories set oxid='_testCategory3', oxtitle='_testCategory3', oxshopid='".$this->getShopId()."'" );
+            oxDb::getDb()->execute( "insert into oxcategories set oxid='_testCategory1', oxtitle='_testCategory1', oxshopid='".$this->getShopIdTest()."'" );
+            oxDb::getDb()->execute( "insert into oxcategories set oxid='_testCategory2', oxtitle='_testCategory2', oxshopid='".$this->getShopIdTest()."'" );
+            oxDb::getDb()->execute( "insert into oxcategories set oxid='_testCategory3', oxtitle='_testCategory3', oxshopid='".$this->getShopIdTest()."'" );
             
             oxDb::getDb()->execute( "insert into oxobject2category set oxid='_testObject2CategoryRemove1', oxcatnid='_testCategory1', oxobjectid = '_testObjectRemove'" );
             oxDb::getDb()->execute( "insert into oxobject2category set oxid='_testObject2CategoryRemove2', oxcatnid='_testCategory2', oxobjectid = '_testObjectRemove'" );
@@ -103,7 +103,7 @@ class Unit_Admin_ArticleExtendAjaxTest extends OxidTestCase
         $this->_sObject2CategoryView = $sParam;
     }
     
-    public function setShopId( $sParam )
+    public function setShopIdTest( $sParam )
     {
         $this->_sShopId = $sParam;
     }
@@ -118,7 +118,7 @@ class Unit_Admin_ArticleExtendAjaxTest extends OxidTestCase
         return $this->_sObject2CategoryView;
     }
     
-    public function getShopId()
+    public function getShopIdTest()
     {
         return $this->_sShopId;
     }

@@ -53,7 +53,7 @@ perl -p \
 -e 's@^.*eshop/source/core/smarty3?/plugins/oxemosadapter\.php@@g;' \
 -e 's@^.*eshop/source/admin/dtaus/.*$@@g;' \
 -e 's@^.*eshop/source/admin/reports/jpgraph/.*$@@g;' \
--e 's@^.*eshop/source/admin/wysiwigpro/.*$@@g;' \
+-e 's@^.*eshop/source/core/wysiwigpro/.*$@@g;' \
 -e 's@^.*support/oxchkversion\.php$@@g;' \
 -e 's@^.*eshop/source/core/oxserial\.php$@@g;' \
 | grep -ve '^\$' | sed -e 's/^[A-Z]\ \{3\}\(.*\)$/\1/g' \

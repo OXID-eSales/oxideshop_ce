@@ -690,8 +690,8 @@ class Emos
  * and items and we can (hopefully) keep the rest of code.
  *
  * Shopping carts:
- *    A shopping cart / basket is a simple Array[] of EMOS items.
- *    Convert your cart to a Array of EMOS_Items and your job is nearly done.
+ *	A shopping cart / basket is a simple Array[] of EMOS items.
+ *	Convert your cart to a Array of EMOS_Items and your job is nearly done.
  */
 class EMOS_Item
 {

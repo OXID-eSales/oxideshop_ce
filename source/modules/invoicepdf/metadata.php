@@ -19,7 +19,7 @@
  * @package   main
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id: theme.php 25466 2010-02-01 14:12:07Z alfonsas $
+ * @version   SVN: $Id: metadata.php 25466 2010-02-01 14:12:07Z alfonsas $
  */
 
 /**

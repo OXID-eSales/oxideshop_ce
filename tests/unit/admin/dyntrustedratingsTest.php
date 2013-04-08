@@ -51,15 +51,15 @@ class Unit_Admin_dyntrustedratingsTest extends OxidTestCase
     {
         $sLangAbbr = oxLang::getInstance()->getLanguageAbbr();
 
-        modConfig::setParameter( "confaarrs", array( "aTsLangIds" => array( $sLangAbbr => "testId" ) ) );
-        modConfig::setParameter( "confbools", array( "blTsWidget" => "true" ) );
-        modConfig::setParameter( "oxid", "testShopId" );
+        $this->setRequestParam( "confaarrs", array( "aTsLangIds" => array( $sLangAbbr => "testId" ) ) );
+        $this->setRequestParam( "confbools", array( "blTsWidget" => "true" ) );
+        $this->setRequestParam( "oxid", "testShopId" );
         $sPkg = "OXID_ESALES";
 
         $oConfig = $this->getMock( "oxConfig", array( "saveShopConfVar" ) );
         $oConfig->expects( $this->at( 0 ) )->method( 'saveShopConfVar' )->with( $this->equalTo( "arr" ), $this->equalTo( "aTsActiveLangIds" ), $this->equalTo( array( $sLangAbbr => true ) ), $this->equalTo( "testShopId" ) );
-        $oConfig->setConfigParam( "sTsUser", "testUser" );
-        $oConfig->setConfigParam( "sTsPass", "testPass" );
+        $this->setConfigParam( "sTsUser", "testUser" );
+        $this->setConfigParam( "sTsPass", "testPass" );
 
         $oView = $this->getMock( "dyn_trusted_ratings", array( "getConfig", "_validateId" ), array(), '', false );
         $oView->expects( $this->any() )->method( 'getConfig' )->will( $this->returnValue( $oConfig ) );

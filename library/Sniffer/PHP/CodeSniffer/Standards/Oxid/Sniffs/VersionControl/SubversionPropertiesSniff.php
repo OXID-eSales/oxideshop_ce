@@ -62,7 +62,6 @@ class Oxid_Sniffs_VersionControl_SubversionPropertiesSniff extends Generic_Sniff
         $properties = $this->properties($path);
 
         foreach (($properties + $this->properties) as $key => $value) {
-
             if (isset($properties[$key]) === false
                 && isset($this->properties[$key]) === true
             ) {

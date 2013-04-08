@@ -78,19 +78,34 @@ function oxClassCacheKey($reset = false, $sProvide = null)
 
 function oxAddClassModule($sModuleClass, $sClass)
 {
-        $myConfig = modConfig::getInstance();
-        $aModules = $myConfig->getConfigParam( 'aModules' );
-        if ($aModules[strtolower($sClass)])
-            $sModuleClass = $aModules[strtolower($sClass)].'&'.$sModuleClass;
-        $aModules[strtolower($sClass)] = $sModuleClass;
-        $myConfig->setConfigParam( 'aModules', $aModules );
-        oxClassCacheKey(true);
+    //$myConfig = modConfig::getInstance();
+    //$aModules = $myConfig->getConfigParam( 'aModules' );
+    $oFactory = new oxUtilsObject();
+    $aModules = $oFactory->getModuleVar("aModules");
+
+    //unsetting _possible_ registry instance
+    oxRegistry::set($sClass, null);
+
+    if ($aModules[strtolower($sClass)])
+        $sModuleClass = $aModules[strtolower($sClass)].'&'.$sModuleClass;
+    $aModules[strtolower($sClass)] = $sModuleClass;
+
+    //$myConfig->setConfigParam( 'aModules', $aModules );
+    $oFactory->setModuleVar("aModules", $aModules);
+
+    oxClassCacheKey(true);
 }
 
 function oxRemClassModule($sModuleClass, $sClass = '')
 {
-    $myConfig = modConfig::getInstance();
-    $aModules = $myConfig->getConfigParam( 'aModules' );
+    //$myConfig = modConfig::getInstance();
+    //$aModules = $myConfig->getConfigParam( 'aModules' );
+
+    //unsetting _possible_ registry instance
+    oxRegistry::set($sClass, null);
+
+    $oFactory = new oxUtilsObject();
+    $aModules = $oFactory->getModuleVar("aModules");
 
     if (!$aModules)
         $aModules = array();
@@ -103,8 +118,10 @@ function oxRemClassModule($sModuleClass, $sClass = '')
             unset($aModules[$sKey]);
         }
     }
-    $myConfig->setConfigParam( 'aModules', $aModules );
-       oxClassCacheKey(true);
+    //$myConfig->setConfigParam( 'aModules', $aModules );
+    $oFactory->setModuleVar("aModules", $aModules);
+
+    oxClassCacheKey(true);
 }
 
 class oxTestModules
@@ -154,6 +171,7 @@ class oxTestModules
     {
         $class = strtolower($class);
         $name = self::_getNextName($class);
+
         if ($cnt = count(self::$_addedmods[$class])) {
             $last = self::$_addedmods[$class][$cnt-1];
         } else {
@@ -252,12 +270,16 @@ class oxTestModules
      */
     public static function addModuleObject($sClassName, $oObject)
     {
+        oxRegistry::set( $sClassName, null);
+        oxUtilsObject::setClassInstance( $sClassName, $oObject );
+        /*
         $sClassName = strtolower($sClassName);
         if (!self::$_oOrigOxUtilsObj) {
             self::$_oOrigOxUtilsObj = oxUtilsObject::getInstance();
             self::addFunction('oxUtilsObject', 'oxNew($class)', '{return oxTestModules::getModuleObject($class);}');
         }
         self::$_aModuleMap[$sClassName] = $oObject;
+        */
     }
 
     /**
@@ -267,7 +289,7 @@ class oxTestModules
      *
      * @return object
      */
-    public static function getModuleObject($sClassName)
+    /*public static function getModuleObject($sClassName)
     {
         $sClassName = strtolower($sClassName);
         if (isset(self::$_aModuleMap[$sClassName])) {
@@ -277,7 +299,7 @@ class oxTestModules
             throw new Exception("TEST ERROR: original oxUtilsObject is badly initialized");
         }
         return self::$_oOrigOxUtilsObj->oxNew($sClassName);
-    }
+    }*/
 
     /**
      * publicize method = creates a wrapper for it named p_XXX instead of _XXX
@@ -425,7 +447,9 @@ abstract class modOXID
         $oConfig->setUser( null );
         $oConfig->setAdminMode( null );
 
-
+        if ( defined('OXID_VERSION_EE') && OXID_VERSION_EE ) :
+            $oConfig->setRights( null );
+        endif;
         oxTestModules::cleanAllModules();
     }
 
@@ -487,7 +511,7 @@ abstract class modOXID
     // instance.
     // NOTE: after cleanup, all changes to oxConfig while modConfig was active are LOST.
     //        if (array_key_exists($nm, $this->_vars)) {
-            $this->_vars[$nm] = &$val;
+            $this->_vars[$nm] = $val;
     //            return;
     //        }
     //        $this->_oRealInstance->$nm = &$val;
@@ -799,6 +823,7 @@ class modInstances
 
     public static function getMod( $sModId )
     {
+        //print_r(array_keys(self::$_aInst));
         return self::$_aInst[strtolower($sModId).oxClassCacheKey()];
     }
 
@@ -968,7 +993,6 @@ if (!function_exists('stripCodeLines')) {
     {
         if (!file_exists($sFile)) {
             throw new Exception("\n".'File "'.$sFile.'" does not exists, skipping');
-            return null;
         }
 
 

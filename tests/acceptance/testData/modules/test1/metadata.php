@@ -33,6 +33,6 @@ $aModule = array(
     'version'      => '1.0',
     'author'       => 'OXID',
     'extend'      => array(
-        'info' => 'test1/view/myinfo1'
+        'content' => 'test1/view/myinfo1'
     )
 );

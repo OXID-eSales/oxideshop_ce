@@ -194,7 +194,7 @@ class Unit_Core_oxvendorlistTest extends OxidTestCase
         $this->assertEquals( $myConfig->getShopHomeURL()."cl=vendorlist&amp;cnid={$oVendor->oxcategories__oxid->value}", $oVendor->getLink() );
 
         $this->assertTrue( $oVendor->getIsVisible() );
-        $this->assertFalse( $oVendor->hasVisibleSubCats );
+        $this->assertFalse( $oVendor->getHasVisibleSubCats() );
     }
 
     /**
@@ -211,60 +211,12 @@ class Unit_Core_oxvendorlistTest extends OxidTestCase
 
         //check if SEO link was added for each vendor item
         foreach ($oVendorlist as $sVndId => $value) {
-            $sVendorLink = $oVendorlist[$sVndId]->link;
+            $sVendorLink = $oVendorlist[$sVndId]->getLink();
             if ( !$sVendorLink || strstr( $sVendorLink, 'index.php' ) !== false ) {
                 $this->fail( "SEO link was not added to vendor object ({$sVendorLink})");
             }
         }
 
-    }
-
-    public function testGetHtmlPathRootVendorWithSeo()
-    {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxConfig::getInstance()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
-        oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
-
-        $oVendorTree = new oxvendorlist();
-        $oVendorTree->buildVendorTree( 'vendorlist', 'v_root', oxConfig::getInstance()->getShopHomeURL() );
-
-        $sHtmlPath = $oVendorTree->getHtmlPath();
-        $sShopUrl = oxConfig::getInstance()->getShopUrl();
-        $sExpt = " <a href='".$sShopUrl."Nach-Lieferant/'>Nach Lieferant</a>";
-        //substringing due to special chars in the link (should be fixed by seo)
-        //anyway we check something else
-        $this->assertEquals( $sExpt, $sHtmlPath);
-    }
-
-    public function testGetHtmlPathWithSeo()
-    {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxConfig::getInstance()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
-        oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
-
-        $oVendorTree = new oxvendorlist();
-        $sVendId = 'v_68342e2955d7401e6.18967838';
-        $oVendorTree->buildVendorTree( 'vendorlist', $sVendId, oxConfig::getInstance()->getShopHomeURL() );
-
-        $sHtmlPath = $oVendorTree->getHtmlPath();
-        $sShopUrl = oxConfig::getInstance()->getShopUrl();
-
-        $sExpt = " <a href='".$sShopUrl."Nach-Lieferant/'>Nach Lieferant</a> / <a href='".$sShopUrl."Nach-Lieferant/Hersteller-1/'>Hersteller 1</a>";
-            $sExpt = " <a href='".$sShopUrl."Nach-Lieferant/'>Nach Lieferant</a> / <a href='".$sShopUrl."Nach-Lieferant/Haller-Stahlwaren/'>Haller Stahlwaren</a>";
-        $this->assertEquals( $sExpt, $sHtmlPath);
-    }
-
-    public function testGetHtmlPath()
-    {
-        oxTestModules::addFunction("oxutils", "seoIsActive", "{return false;}");
-        $oVendorTree = new oxvendorlist();
-        $sVendId = 'v_68342e2955d7401e6.18967838';
-        $oVendorTree->buildVendorTree( 'vendorlist', $sVendId, oxConfig::getInstance()->getShopHomeURL() );
-
-        $sHtmlPath = $oVendorTree->getHtmlPath();
-        $sShopUrl = oxConfig::getInstance()->getShopHomeUrl();
-
-        $sExpt = " <a href='".$sShopUrl."cl=vendorlist&amp;cnid=v_root'>Nach Lieferant</a> / <a href='".$sShopUrl."cl=vendorlist&amp;cnid=".$sVendId."'>Hersteller 1</a>";
-            $sExpt = " <a href='".$sShopUrl."cl=vendorlist&amp;cnid=v_root'>Nach Lieferant</a> / <a href='".$sShopUrl."cl=vendorlist&amp;cnid=".$sVendId."'>Haller Stahlwaren</a>";
-        $this->assertEquals( $sExpt, $sHtmlPath);
     }
 
 }

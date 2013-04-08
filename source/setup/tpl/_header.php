@@ -130,8 +130,7 @@
     <div id="header">
         <?php
         $iCntr = 0;
-        foreach ( $this->getSetupSteps() as $iTab ) {
-
+        foreach ( $this->getSetupSteps() as $iTab ) :
             // only "real" steps
             if ( fmod( $iTab, 100 ) ) {
                 continue;
@@ -140,13 +139,20 @@
             $blAct = ( floor( $this->getCurrentSetupStep() / 100 ) == ( $iTab / 100 ) );
             $iStepId = floor( $iTab / 100 ) - 1;
             $iCntr++;
-        ?>
-        <dl class="tab <?php if( $blAct ) echo "act"; ?>">
-            <dt><?php if( $blAct ): ?><a href="index.php?istep=<?php echo $iTab; ?>&sid=<?php $this->getSid();?>"><?php endif;?><?php echo $iCntr ,'. ',$this->getText( 'TAB_'.$iStepId.'_TITLE', false ); ?><?php if( $blAct ): ?></a><?php endif;?></dt>
-            <dd><?php if( $blAct ): ?><a href="index.php?istep=<?php echo $iTab; ?>&sid=<?php $this->getSid();?>"><?php endif;?><?php $this->getText( 'TAB_'.$iStepId.'_DESC'); ?><?php if( $blAct ): ?></a><?php endif;?></dd>
-        </dl>
+
+            $sTabClass = $sTabLinkOpen = $sTabLinkClose = '';
+            if ( $blAct ) {
+                $sTabClass     = 'act';
+                $sTabLinkOpen  = '<a href="index.php?istep='.$iTab.'&sid='.$this->getSid(false).'">';
+                $sTabLinkClose = '</a>';
+            }
+         ?>
+            <dl class="tab <?php echo $sTabClass; ?>">
+                <dt><?php echo $sTabLinkOpen ?><?php echo $iCntr ,'. ',$this->getText( 'TAB_'.$iStepId.'_TITLE', false ); ?><?php echo $sTabLinkClose?></dt>
+                <dd><?php echo $sTabLinkOpen ?><?php $this->getText( 'TAB_'.$iStepId.'_DESC'); ?><?php echo $sTabLinkClose?></dd>
+            </dl>
         <?php
-        }
+        endforeach;
         ?>
     </div>
 

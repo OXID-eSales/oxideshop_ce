@@ -117,8 +117,8 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
         $iShopId = oxConfig::getInstance()->getShopId();
 
         // creating few oxprice2article records
-        $oDb->execute( "INSERT INTO `oxobject2attribute` VALUES ('".$oUtils->generateUId()."', '_testArtId', '_testObjId', '0', '0', '0', '0', '0' );" );
-        $oDb->execute( "INSERT INTO `oxobject2attribute` VALUES ('".$oUtils->generateUId()."', '_testArtId', '_testObjId', '0', '0', '0', '0', '0' );" );
+        $oDb->execute( "INSERT INTO `oxobject2attribute` (OXID,OXOBJECTID,OXATTRID,OXVALUE,OXPOS,OXVALUE_1,OXVALUE_2,OXVALUE_3) VALUES ('".$oUtils->generateUId()."', '_testArtId', '_testObjId', '0', '0', '0', '0', '0' );" );
+        $oDb->execute( "INSERT INTO `oxobject2attribute` (OXID,OXOBJECTID,OXATTRID,OXVALUE,OXPOS,OXVALUE_1,OXVALUE_2,OXVALUE_3) VALUES ('".$oUtils->generateUId()."', '_testArtId', '_testObjId', '0', '0', '0', '0', '0' );" );
 
         $oView = new Article_Main();
         $oView->UNITcopyAttributes( "_testArtId", "_testArtId2" );
@@ -138,8 +138,8 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
         $iShopId = oxConfig::getInstance()->getShopId();
 
         // creating few oxprice2article records
-        $oDb->execute( "INSERT INTO `oxobject2selectlist` VALUES ('".$oUtils->generateUId()."', '_testArtId', '_testObjId', 0);" );
-        $oDb->execute( "INSERT INTO `oxobject2selectlist` VALUES ('".$oUtils->generateUId()."', '_testArtId', '_testObjId', 0);" );
+        $oDb->execute( "INSERT INTO `oxobject2selectlist` (OXID,OXOBJECTID,OXSELNID,OXSORT) VALUES ('".$oUtils->generateUId()."', '_testArtId', '_testObjId', 0);" );
+        $oDb->execute( "INSERT INTO `oxobject2selectlist` (OXID,OXOBJECTID,OXSELNID,OXSORT) VALUES ('".$oUtils->generateUId()."', '_testArtId', '_testObjId', 0);" );
 
         $oView = new Article_Main();
         $oView->UNITcopySelectlists( "_testArtId", "_testArtId2" );
@@ -180,8 +180,8 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
         $iShopId = oxConfig::getInstance()->getShopId();
 
         // creating few oxprice2article records
-        $oDb->execute( "INSERT INTO `oxobject2article` VALUES ('".$oUtils->generateUId()."', '_testObjId', '_testArtId', 0);" );
-        $oDb->execute( "INSERT INTO `oxobject2article` VALUES ('".$oUtils->generateUId()."', '_testObjId', '_testArtId', 0);" );
+        $oDb->execute( "INSERT INTO `oxobject2article` (OXID,OXOBJECTID,OXARTICLENID,OXSORT) VALUES ('".$oUtils->generateUId()."', '_testObjId', '_testArtId', 0);" );
+        $oDb->execute( "INSERT INTO `oxobject2article` (OXID,OXOBJECTID,OXARTICLENID,OXSORT) VALUES ('".$oUtils->generateUId()."', '_testObjId', '_testArtId', 0);" );
 
         $oView = new Article_Main();
         $oView->UNITcopyCrossseling( "_testArtId", "_testArtId2" );
@@ -201,8 +201,8 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
         $iShopId = oxConfig::getInstance()->getShopId();
 
         // creating few oxprice2article records
-        $oDb->execute( "INSERT INTO `oxaccessoire2article` VALUES ('".$oUtils->generateUId()."', '_testObjId', '_testArtId', 0);" );
-        $oDb->execute( "INSERT INTO `oxaccessoire2article` VALUES ('".$oUtils->generateUId()."', '_testObjId', '_testArtId', 0);" );
+        $oDb->execute( "INSERT INTO `oxaccessoire2article` (OXID,OXOBJECTID,OXARTICLENID,OXSORT) VALUES ('".$oUtils->generateUId()."', '_testObjId', '_testArtId', 0);" );
+        $oDb->execute( "INSERT INTO `oxaccessoire2article` (OXID,OXOBJECTID,OXARTICLENID,OXSORT) VALUES ('".$oUtils->generateUId()."', '_testObjId', '_testArtId', 0);" );
 
         $oView = new Article_Main();
         $oView->UNITcopyAccessoires( "_testArtId", "_testArtId2" );
@@ -223,8 +223,8 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
         $iShopId = oxConfig::getInstance()->getShopId();
 
         // creating few oxprice2article records
-        $oDb->execute( "INSERT INTO `oxprice2article` VALUES ('".$oUtils->generateUId()."', '{$iShopId}', '_testArtId', 1, 0, 2, 3);" );
-        $oDb->execute( "INSERT INTO `oxprice2article` VALUES ('".$oUtils->generateUId()."', '{$iShopId}', '_testArtId', 0.5, 0, 4, 5);" );
+        $oDb->execute( "INSERT INTO `oxprice2article` (OXID,OXSHOPID,OXARTID,OXADDABS,OXADDPERC,OXAMOUNT,OXAMOUNTTO) VALUES ('".$oUtils->generateUId()."', '{$iShopId}', '_testArtId', 1, 0, 2, 3);" );
+        $oDb->execute( "INSERT INTO `oxprice2article` (OXID,OXSHOPID,OXARTID,OXADDABS,OXADDPERC,OXAMOUNT,OXAMOUNTTO) VALUES ('".$oUtils->generateUId()."', '{$iShopId}', '_testArtId', 0.5, 0, 4, 5);" );
 
         $oView = new Article_Main();
         $oView->UNITcopyStaffelpreis( "_testArtId", "_testArtId2" );
@@ -364,11 +364,11 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
      */
     public function testGetTitle()
     {
-        $oO1 = new oxStdClass();
+        $oO1 = new oxArticle();
         $oO1->oxarticles__oxtitle = $this->getMock( "oxfield", array( "__get" ) );
         $oO1->oxarticles__oxtitle->expects( $this->once() )->method( '__get' )->will( $this->returnValue( "oxtitle" ) );
 
-        $oO2 = new oxStdClass();
+        $oO2 = new oxArticle();
         $oO2->oxarticles__oxtitle = $this->getMock( "oxfield", array( "__get" ) );
         $oO2->oxarticles__oxtitle->expects( $this->once() )->method( '__get' )->will( $this->returnValue( null ) );
         $oO2->oxarticles__oxvarselect = $this->getMock( "oxfield", array( "__get" ) );
@@ -447,6 +447,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
     public function testSaveTrimsArticleTitle()
     {
         $oConfig = oxConfig::getInstance();
+        modConfig::setParameter( 'oxid', '_testArtId' );
         $aParams['oxid'] = '_testArtId';
         $aParams['oxarticles__oxtitle'] = ' _testArticleTitle   ';
 
@@ -455,14 +456,13 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
         $oArticle->oxarticles__oxtitle = new oxField( $aParams['oxarticles__oxtitle'] );
         $oArticle->save();
 
-        $oConfig->setParameter( "editval", $aParams );
+        modConfig::setParameter( "editval", $aParams );
 
         $oArtView = $this->getProxyClass( "article_main" );
         $oArtView->save();
 
         $oArticle = oxNew( 'oxArticle' );
         $oArticle->load( '_testArtId' );
-
         $this->assertEquals( '_testArticleTitle', $oArticle->oxarticles__oxtitle->value );
     }
 
@@ -475,7 +475,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
     {
         oxTestModules::addFunction( 'oxarticle', 'save', '{ return true; }');
         oxTestModules::addFunction( 'oxarticle', 'assignRecord', '{ return true; }');
-        oxTestModules::addFunction( 'oxarticle', 'saveTags', '{ throw new Exception( "saveTags" ); }');
+        oxTestModules::addFunction( 'oxarticletaglist', 'save', '{ throw new Exception( "saveTags" ); }');
 
         modConfig::setParameter( "oxid", -1 );
         modConfig::setParameter( "oxparentid", "-1" );
@@ -501,7 +501,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
     {
         oxTestModules::addFunction( 'oxarticle', 'save', '{ return true; }');
         oxTestModules::addFunction( 'oxarticle', 'assignRecord', '{ return true; }');
-        oxTestModules::addFunction( 'oxarticle', 'saveTags', '{ throw new Exception( "saveTags" ); }');
+        oxTestModules::addFunction( 'oxarticletaglist', 'save', '{ throw new Exception( "saveTags" ); }');
 
         modConfig::setParameter( "oxid", -1 );
         modConfig::setParameter( "oxparentid", "132" );
@@ -525,10 +525,10 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
      */
     public function testFormJumpListParent()
     {
-        $oVar1 = new oxStdClass();
+        $oVar1 = new oxArticle();
         $oVar1->oxarticles__oxid = new oxField( "testId1" );
 
-        $oVar2 = new oxStdClass();
+        $oVar2 = new oxArticle();
         $oVar2->oxarticles__oxid = new oxField( "testId2" );
 
         $oParentVariants = new oxList();
@@ -543,7 +543,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
         $oVariants->offsetSet( "var1", $oVar1 );
         $oVariants->offsetSet( "var2", $oVar2 );
 
-        $oArticle = $this->getMock( "oxStdClass", array( "getAdminVariants" ) );
+        $oArticle = $this->getMock( "oxArticle", array( "getAdminVariants" ) );
         $oArticle->expects( $this->once() )->method( 'getAdminVariants' )->will( $this->returnValue( $oVariants ) );
         $oArticle->oxarticles__oxid = new oxField( "testId2" );
 
@@ -566,17 +566,17 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
      */
     public function testFormJumpList()
     {
-        $oVar1 = new oxStdClass();
+        $oVar1 = new oxArticle();
         $oVar1->oxarticles__oxid = new oxField( "testId1" );
 
-        $oVar2 = new oxStdClass();
+        $oVar2 = new oxArticle();
         $oVar2->oxarticles__oxid = new oxField( "testId2" );
 
         $oVariants = new oxList();
         $oVariants->offsetSet( "var1", $oVar1 );
         $oVariants->offsetSet( "var2", $oVar2 );
 
-        $oArticle = $this->getMock( "oxStdClass", array( "getAdminVariants" ) );
+        $oArticle = $this->getMock( "oxArticle", array( "getAdminVariants" ) );
         $oArticle->expects( $this->once() )->method( 'getAdminVariants' )->will( $this->returnValue( $oVariants ) );
         $oArticle->oxarticles__oxid = new oxField( "testId2" );
 

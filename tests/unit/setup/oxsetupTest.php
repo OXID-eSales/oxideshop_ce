@@ -62,10 +62,10 @@ class Unit_Setup_oxSetupTest extends OxidTestCase
      */
     public function testGetCurrentStep()
     {
-        $oUtils = $this->getMock( "oxStdClass", array( "getRequestVar" ) );
+        $oUtils = $this->getMock( "oxSetupUtils", array( "getRequestVar" ) );
         $oUtils->expects( $this->once() )->method( "getRequestVar" )->with( $this->equalTo( 'istep' ) )->will( $this->returnValue( null ) );
 
-        $oSetup = $this->getMock( "OxSetup", array( "getInstance", "getStep" ));
+        $oSetup = $this->getMock( "oxSetup", array( "getInstance", "getStep" ));
         $oSetup->expects( $this->once() )->method( "getInstance" )->with( $this->equalTo( 'oxSetupUtils' ) )->will( $this->returnValue( $oUtils ) );
         $oSetup->expects( $this->once() )->method( "getStep" )->will( $this->returnValue( 1 ) );
         $this->assertEquals( 1, $oSetup->getCurrentStep() );

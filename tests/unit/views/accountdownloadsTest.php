@@ -49,7 +49,7 @@ class Unit_Views_accountdownloadsTest extends OxidTestCase
      */
     public function testGetDownloadError()
     {
-        modConfig::setParameter( 'download_error', 'aaa' );
+        $this->setRequestParam( 'download_error', 'aaa' );
 
         $oAccDownloads = new Account_Downloads();
 
@@ -66,15 +66,37 @@ class Unit_Views_accountdownloadsTest extends OxidTestCase
         $oUser = $this->getMock( 'oxUser', array( 'getId' ));
         $oUser->expects( $this->any() )->method( 'getId')->will( $this->returnValue( "userId" ) );
 
+        $oFileOrder = oxNew("oxorderfile");
+        $oFileOrder->oxorderfiles__oxorderarticleid = new oxField("testArtNr");
+        $oFileOrder->oxorderfiles__oxordernr = new oxField("testOrder");
+        $oFileOrder->oxorderfiles__oxorderdate = new oxField("2011-11-11 11:11:11");
+        $oFileOrder->oxorderfiles__oxarticletitle = new oxField("testArtTitle");
+
         $oOrderFileList = $this->getMock( 'oxOrderFileList', array( 'loadUserFiles' ));
         $oOrderFileList->expects( $this->any() )->method( 'loadUserFiles')->will( $this->returnValue( "orderfilelist" ) );
+        $oOrderFileList[] = $oFileOrder;
         oxTestModules::addModuleObject( 'oxOrderFileList', $oOrderFileList );
 
-        $oAccDownloads = $this->getMock( 'Account_Downloads', array( '_prepareForTemplate', 'getUser' ));
-        $oAccDownloads->expects( $this->any() )->method( '_prepareForTemplate')->will( $this->returnValue( "preparedorderfilelist" ) );
+        $oAccDownloads = $this->getMock( 'Account_Downloads', array( 'getUser' ));
         $oAccDownloads->expects( $this->any() )->method( 'getUser')->will( $this->returnValue( $oUser ) );
 
-        $this->assertEquals( 'preparedorderfilelist', $oAccDownloads->getOrderFilesList() );
+        $aOrderFilesList = $oAccDownloads->getOrderFilesList();
+        $this->assertEquals( "testOrder", $aOrderFilesList["testArtNr"]["oxordernr"] );
+        $this->assertEquals( "2011-11-11 11:11", $aOrderFilesList["testArtNr"]["oxorderdate"] );
+        $this->assertEquals( "testArtTitle", $aOrderFilesList["testArtNr"]["oxarticletitle"] );
+        $this->assertTrue( $aOrderFilesList["testArtNr"]["oxorderfiles"][0] instanceof oxorderfile );
+    }
+
+     /**
+     * Test get article list.
+     *
+     * @return null
+     */
+    public function testGetArticleListIsSet()
+    {
+        $oAccDownloads = $this->getProxyClass('Account_Downloads');
+        $oAccDownloads->setNonPublicVar( '_oOrderFilesList', "testOrder" );
+        $this->assertEquals( "testOrder", $oAccDownloads->getOrderFilesList() );
     }
 
 }

@@ -41,7 +41,7 @@
 /**
  * Includes emos script formatter class
  */
-require_once oxConfig::getInstance()->getConfigParam( 'sCoreDir' ) . 'smarty/plugins/emos.php';
+require_once oxRegistry::getConfig()->getConfigParam( 'sCoreDir' ) . 'smarty/plugins/emos.php';
 
 /**
  * This class is a reference implementation of a PHP Function to include
@@ -74,16 +74,15 @@ class oxEmosAdapter extends oxSuperCfg
     private static $_instance = null;
 
     /**
-     * resturns a single instance of this class
+     * Return a single instance of this class
+     *
+     * @deprecated since v5.0 (2012-08-10); Use oxRegistry::get("oxEmosAdapter") instead.
      *
      * @return oxUtils
      */
     public static function getInstance()
     {
-        if ( !self::$_instance instanceof oxEmosAdapter ) {
-            self::$_instance = oxNew('oxEmosAdapter');
-        }
-        return self::$_instance;
+        return oxRegistry::get("oxEmosAdapter");
     }
 
     /**
@@ -125,7 +124,7 @@ class oxEmosAdapter extends oxSuperCfg
             $this->_oEmos->addPageId( $this->_getEmosPageId( $this->_getTplName() ) );
 
             // language id
-            $this->_oEmos->addLangId( oxLang::getInstance()->getBaseLanguage() );
+            $this->_oEmos->addLangId( oxRegistry::getLang()->getBaseLanguage() );
 
             // set site ID
             $this->_oEmos->addSiteId( $this->getConfig()->getShopId() );
@@ -136,12 +135,12 @@ class oxEmosAdapter extends oxSuperCfg
 
     /**
      * Checks whether shop is in utf, if not - iconv string for using with econda json_encode
-     *
+     * 
      * @param string $sContent
-     *
-     * @return string
+     * 
+     * @return string 
      */
-    protected function _convertToUtf( $sContent )
+    protected function _convertToUtf( $sContent ) 
     {
         $myConfig  = $this->getConfig();
         if ( !$myConfig->isUtf() ) {
@@ -232,7 +231,7 @@ class oxEmosAdapter extends oxSuperCfg
      *
      * @return string
      */
-    protected function _getEmosCatPath()
+    protected function _getEmosCatPath() 
     {
         // #4016: econda: json function returns null if title has an umlaut
         if ($this->_sEmosCatPath === null) {
@@ -279,7 +278,7 @@ class oxEmosAdapter extends oxSuperCfg
             }
         }
         $sCatPath = $this->_convertToUtf( $sCatPath );
-
+        
         return $sCatPath;
     }
 
@@ -460,7 +459,7 @@ class oxEmosAdapter extends oxSuperCfg
                 // #4042: Contact page is erroneously tracked as contact event
                 if ( $oCurrView->getContactSendStatus() ) {
                     $oEmos->addContent( 'Service/Kontakt/Success' );
-                    $oEmos->addContact( 'Kontakt' );
+                    $oEmos->addContact( 'Kontakt' );                    
                 }
                 else {
                     $oEmos->addContent( 'Service/Kontakt/Form' );

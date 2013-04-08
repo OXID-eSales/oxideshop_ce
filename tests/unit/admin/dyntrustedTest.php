@@ -67,7 +67,7 @@ class Unit_Admin_dyntrustedTest extends OxidTestCase
      */
     public function testSave()
     {
-        $oResults = new oxStdClass();
+        $oResults = new stdClass();
         $oResults->stateEnum = 'TEST';
         $oResults->typeEnum = 'EXCELLENCE';
         modConfig::setParameter( "aShopID_TrustedShops", array("test") );
@@ -76,7 +76,7 @@ class Unit_Admin_dyntrustedTest extends OxidTestCase
         modConfig::setParameter( "tsSealActive", true );
         modConfig::setParameter( "tsTestMode", false );
 
-        $oConfig = $this->getMock( "oxStdClass", array( "getShopId", "saveShopConfVar" ) );
+        $oConfig = $this->getMock( "oxConfig", array( "getShopId", "saveShopConfVar" ) );
         $oConfig->expects( $this->at(0) )->method( 'getShopId' )->will( $this->returnValue( "shopid" ) );
         $oConfig->expects( $this->at(1) )->method( 'saveShopConfVar' )->with( $this->equalTo( "aarr" ), $this->equalTo( "iShopID_TrustedShops" ), $this->equalTo( array("test") ), $this->equalTo( "shopid" ) );
         $oConfig->expects( $this->at(2) )->method( 'saveShopConfVar' )->with( $this->equalTo( "aarr" ), $this->equalTo( "aTsUser" ), $this->equalTo( 'testUser' ), $this->equalTo( "shopid" ) );

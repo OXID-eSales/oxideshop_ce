@@ -94,7 +94,6 @@ class Acceptance_myAccountFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->assertEquals("Open account", $this->getText("//h1"));
         $this->assertTrue($this->isTextPresent("Account information"));
         $this->assertTrue($this->isTextPresent("Billing Address"));
-
         $this->loginInFrontend("birute_test@nfq.lt", "useruser");
         $this->assertEquals("You are here: / Register", $this->getText("breadCrumb"));
         $this->assertEquals("Open account", $this->getText("//h1"));
@@ -157,8 +156,8 @@ class Acceptance_myAccountFrontendTest extends oxidAdditionalSeleniumFunctions
         //changing password
         $this->assertEquals("You are here: / My Account - birute_test@nfq.lt", $this->getText("breadCrumb"));
         $this->assertEquals("UserNamešÄßüл UserSurnamešÄßüл", $this->clearString($this->getText("//ul[@id='topMenu']/li/a")));
-        $this->clickAndWait("//div[@id='sidebar']//li/a[text()='Personal Settings']");
-        $this->assertEquals("Personal Settings", $this->getText("//h1"));
+        $this->clickAndWait("//div[@id='sidebar']//li/a[text()='Change Password']");
+        $this->assertEquals("Change Password", $this->getText("//h1"));
         $this->assertFalse($this->isVisible("//span[text()='Error: your password is too short.']"));
         $this->assertFalse($this->isVisible('//span[text()="Passwords don\'t match!"]'));
 
@@ -172,7 +171,7 @@ class Acceptance_myAccountFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->waitForItemAppear('//div[@id="content"]//li[3]//span[text()="Passwords don\'t match!"]');
 
         //new pass is too short
-        $this->clickAndWait("//div[@id='sidebar']//li/a[text()='Personal Settings']");
+        $this->clickAndWait("//div[@id='sidebar']//li/a[text()='Change Password']");
         $this->type("passwordOld", "useruser");
         $this->type("password_new", "user");
         $this->fireEvent("password_new", "blur");
@@ -191,11 +190,11 @@ class Acceptance_myAccountFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->clickAndWait("savePass");
         $this->assertFalse($this->isVisible("//span[text()='Error: your password is too short.']"));
         $this->assertFalse($this->isVisible('//span[text()="Passwords don\'t match!"]'));
-        $this->assertEquals("Personal Settings", $this->getText("//h1"));
+        $this->assertEquals("Change Password", $this->getText("//h1"));
         $this->assertTrue($this->isTextPresent("Your Password has changed."));
         $this->clickAndWait("//ul[@id='topMenu']//a[text()='Logout']");
         $this->assertFalse($this->isTextPresent("Wrong e-Mail or password!"));
-        $this->loginInFrontend("birute_test@nfq.lt", "useruser");
+        $this->loginInFrontend("birute_test@nfq.lt", "useruser", false);
         $this->assertTrue($this->isTextPresent("Wrong e-mail or password!"));
         $this->loginInFrontend("birute_test@nfq.lt", "user1user");
         $this->assertEquals("UserNamešÄßüл UserSurnamešÄßüл", $this->clearString($this->getText("//ul[@id='topMenu']/li[1]/a[1]")));
@@ -203,10 +202,9 @@ class Acceptance_myAccountFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->click("servicesTrigger");
         $this->waitForItemAppear("services");
         $this->clickAndWait("//ul[@id='services']/li[2]/a");
-        $this->assertEquals("Personal Settings", $this->getText("//div[@id='content']//dl[1]/dt"));
-        $this->assertEquals("Change Account Password", $this->getText("//div[@id='content']//dl[1]/dd"));
+        $this->assertEquals("Change Password", $this->getText("//div[@id='content']//dl[1]/dt"));
         $this->clickAndWait("//div[@id='content']//dl[1]/dt/a");
-        $this->assertEquals("Personal Settings", $this->getText("//h1"));
+        $this->assertEquals("Change Password", $this->getText("//h1"));
     }
 
     /**
@@ -238,13 +236,12 @@ class Acceptance_myAccountFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->clickAndWait("//div[@id='content']//button[text()='Request Password']");
         $this->assertFalse($this->isTextPresent("The e-mail address you have entered is invalid. Please enter a valid e-mail address."));
         $this->assertTrue($this->isTextPresent("Password was sent to: birute_test@nfq.lt"));
-
         //pasword reminder opened via login popup
         $this->clickAndWait("link=Home");
         $this->assertFalse($this->isVisible("forgotPassword"));
         $this->click("//ul[@id='topMenu']/li[1]/a");
-        $this->waitForItemAppear("forgotPasswordOpener");
-        $this->click("forgotPasswordOpener");
+        $this->waitForItemAppear("//a[@class='forgotPasswordOpener']");
+        $this->click("//a[@class='forgotPasswordOpener']");
         $this->waitForItemAppear("forgotPassword");
         $this->assertTrue($this->isTextPresent("Have you forgotten your password?"));
         $this->assertEquals("", $this->getValue("forgotPasswordUserLoginNamePopup"));
@@ -257,8 +254,8 @@ class Acceptance_myAccountFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->clickAndWait("link=Home");
         $this->assertFalse($this->isVisible("forgotPassword"));
         $this->click("//ul[@id='topMenu']/li[1]/a");
-        $this->waitForItemAppear("forgotPasswordOpener");
-        $this->click("forgotPasswordOpener");
+        $this->waitForItemAppear("//a[@class='forgotPasswordOpener']");
+        $this->click("//a[@class='forgotPasswordOpener']");
         $this->waitForItemAppear("forgotPassword");
         $this->assertTrue($this->isTextPresent("Have you forgotten your password?"));
         $this->type("forgotPasswordUserLoginNamePopup", "birute_test@nfq.lt");
@@ -400,7 +397,7 @@ class Acceptance_myAccountFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->type("user_password", "useruser");
         $this->clickAndWait("accUserSaveTop");
         $this->clickAndWait("//ul[@id='topMenu']//a[text()='Logout']");
-        $this->loginInFrontend("birute_test@nfq.lt", "useruser");
+        $this->loginInFrontend("birute_test@nfq.lt", "useruser", false);
         $this->assertTrue($this->isTextPresent("Wrong e-mail or password!"));
         $this->loginInFrontend("birute01@nfq.lt", "useruser");
         $this->clickAndWait("//ul[@id='topMenu']/li/a");
@@ -824,7 +821,10 @@ class Acceptance_myAccountFrontendTest extends oxidAdditionalSeleniumFunctions
     public function testListmaniaCreating()
     {
         //deleting existing recommlists for better possibility to test creating of new recomlist
-        $this->executeSql("delete from oxrecommlists");
+        $aRecommListParams = array("OXTITLE" => 'Kite-Equipment');
+        $this->callShopSC("oxRecommList", "delete", "e7a0b1906e0d94e05693f06b0b6fcc32", $aRecommListParams);
+        $aRecommListParams = array("OXTITLE" => 'recomm title');
+        $this->callShopSC("oxRecommList", "delete", "testrecomm", $aRecommListParams);
         $this->openShop();
         $this->loginInFrontend("birute_test@nfq.lt", "useruser");
         $this->searchFor("1000");
@@ -876,8 +876,10 @@ class Acceptance_myAccountFrontendTest extends oxidAdditionalSeleniumFunctions
      */
     public function testFrontendListmaniaInfo()
     {
-        $this->executeSql("DELETE FROM `oxreviews` WHERE `OXID` = 'testrecomreview'");
-        $this->executeSql("DELETE FROM `oxratings` WHERE `OXID` = 'testrecomrating'");
+        $aWrappingParams = array("OXTYPE" => 'oxrecommlist');
+        $this->callShopSC("oxReview", "delete", $sOxid ="testrecomreview" , $aWrappingParams);
+        $aRatingParams = array("OXTYPE" => 'oxrecommlist');
+        $this->callShopSC("oxRating", "delete", $sOxid ="testrecomrating" , $aRatingParams);
         $this->openShop();
         $this->loginInFrontend("birute_test@nfq.lt", "useruser");
         //checking small listmania box
@@ -1070,6 +1072,10 @@ class Acceptance_myAccountFrontendTest extends oxidAdditionalSeleniumFunctions
      */
     public function testFrontendDetailsForLoggedInUsers()
     {
+        if ( isSUBSHOP ) {
+            $this->executeSql("UPDATE `oxrecommlists` SET `OXSHOPID` = ".oxSHOPID."  WHERE 1");
+            $this->executeSql("UPDATE `oxratings` SET `OXSHOPID` = ".oxSHOPID."  WHERE 1");
+        }
         $this->openShop();
         $this->searchFor("1001");
         $this->clickAndWait("searchList_1");
@@ -1099,15 +1105,16 @@ class Acceptance_myAccountFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->assertEquals("(1)", $this->getText("itemRatingText"));
 
         //wish list and gift registry
-        $this->assertFalse($this->isElementPresent("//p[@id='servicesTrigger']/span"));
+        $this->assertTrue($this->isElementPresent("//p[@id='servicesTrigger']/span"));
+    
         $this->click("productLinks");
         $this->waitForItemAppear("linkToNoticeList");
         $this->clickAndWait("linkToNoticeList");
-        $this->assertEquals("1",$this->clearString($this->getText("//p[@id='servicesTrigger']/span")));
+        $this->assertEquals("2",$this->clearString($this->getText("//p[@id='servicesTrigger']/span")));
         $this->click("productLinks");
         $this->waitForItemAppear("linkToWishList");
         $this->clickAndWait("linkToWishList");
-        $this->assertEquals("2",$this->clearString($this->getText("//p[@id='servicesTrigger']/span")));
+        $this->assertEquals("3",$this->clearString($this->getText("//p[@id='servicesTrigger']/span")));
         $this->click("servicesTrigger");
         $this->waitForItemAppear("services");
         $this->assertEquals("My Wish List1", $this->clearString($this->getText("//ul[@id='services']/li[4]")));

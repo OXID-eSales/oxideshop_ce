@@ -144,7 +144,7 @@ class oxSysRequirements
 
     /**
      * Returns PHP consntant PHP_INT_SIZE
-     * 
+     *
      * @return integer
      */
     protected function _getPhpIntSize()
@@ -193,7 +193,17 @@ class oxSysRequirements
      */
     public function getConfig()
     {
-        return oxConfig::getInstance();
+        return oxRegistry::getConfig();
+    }
+
+    /**
+     * Possibility to mock isAdmin() function as we do not extend oxsuperconfig.
+     *
+     * @return bool
+     */
+    public function isAdmin()
+    {
+        return isAdmin();
     }
 
     /**
@@ -239,7 +249,7 @@ class oxSysRequirements
                                       );
 
 
-            if ( isAdmin() ) {
+            if ( $this->isAdmin() ) {
                 $aRequiredServerConfigs[] = 'mysql_version';
             }
             $this->_aRequiredModules = array_fill_keys( $aRequiredPHPExtensions, 'php_extennsions' ) +
@@ -262,7 +272,7 @@ class oxSysRequirements
         if ( $this->_getPhpIntSize() > 4 ) {
             return 2;
         }
-  
+
         $iState = 1;
         if ( version_compare( PHP_VERSION, "5.3", ">=" ) ) {
             if ( version_compare( PHP_VERSION, "5.3.5", ">=" ) && version_compare( PHP_VERSION, "5.3.7", "!=" ) ) {
@@ -312,8 +322,8 @@ class oxSysRequirements
         // special config file check
         $sFullPath = $sPath . "config.inc.php";
         if ( !is_readable( $sFullPath ) ||
-             ( isAdmin() && is_writable( $sFullPath ) ) ||
-             ( !isAdmin() && !is_writable( $sFullPath ) )
+             ( $this->isAdmin() && is_writable( $sFullPath ) ) ||
+             ( !$this->isAdmin() && !is_writable( $sFullPath ) )
            ) {
             return 0;
         }
@@ -328,9 +338,10 @@ class oxSysRequirements
 
         $aPathsToCheck = array(
                             $sPath."out/pictures{$sVerPrefix}/promo/",
-                            $sPath."out/pictures{$sVerPrefix}/media/",
                             $sPath."out/pictures{$sVerPrefix}/master/",
                             $sPath."out/pictures{$sVerPrefix}/generated/",
+                            $sPath."out/pictures{$sVerPrefix}/media/", // @deprecated, use out/media instead
+                            $sPath."out/media/",
                             $sPath."log/",
                             $sTmp
                             );
@@ -452,7 +463,7 @@ class oxSysRequirements
      */
     protected function _getShopHostInfo()
     {
-        if ( isAdmin() ) {
+        if ( $this->isAdmin() ) {
             return $this->_getShopHostInfoFromConfig();
         } else {
             return $this->_getShopHostInfoFromServerVars();
@@ -467,7 +478,7 @@ class oxSysRequirements
      */
     protected function _getShopSSLHostInfo()
     {
-        if ( isAdmin() ) {
+        if ( $this->isAdmin() ) {
             return $this->_getShopSSLHostInfoFromConfig();
         }
         return false;

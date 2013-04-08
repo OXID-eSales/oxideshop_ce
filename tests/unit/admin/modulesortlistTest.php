@@ -54,7 +54,7 @@ class Unit_Admin_ModuleSortListTest extends OxidTestCase
     {
         $json = json_encode(array( "oxarticle" => array("dir1/module1","dir2/module2") ));
         modConfig::setParameter( "aModules", $json );
-        modConfig::getInstance()->setConfigParam( 'blAdmin', true );
+        modConfig::getInstance()->setAdminMode( true );
         // result data
         $aModules = array( "oxarticle" => "dir1/module1&dir2/module2" );
 

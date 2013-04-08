@@ -302,66 +302,7 @@ class Unit_Core_oxUtilsFileTest extends OxidTestCase
         $this->assertEquals( "<?php", substr( $oUtilsFile->readRemoteFileAsString( getShopBasePath()."index.php" ), 0, 5 ) );
     }
 
-    /**
-     * Test case for #0001451: media file get double extension
-     * @return
-     */
-    public function testHandleUploadedFileForUseCase()
-    {
-        $sUploadPath = 'testUploadPath';
-        $aFileInfo['name'] = 'example.xls';
-        $aFileInfo['tmp_name'] = 'tmpexample.xls';
-        $sBasePath = oxConfig::getInstance()->getConfigParam('sShopDir');
-        $sUrl = oxConfig::getInstance()->getShopUrl() . $sUploadPath . "/" . $aFileInfo['name'];
 
-        $oUtilsFile = $this->getMock( "oxUtilsFile", array( "_moveImage" ) );
-        $oUtilsFile->expects( $this->once() )->method( '_moveImage' )->with( $this->equalTo( $aFileInfo['tmp_name'] ), $this->equalTo( $sBasePath . $sUploadPath . "/" . $aFileInfo['name'] ) );
-
-        $this->assertEquals( str_replace('http:/', 'http://', str_replace('//', '/', $sUrl) ), $oUtilsFile->handleUploadedFile( $aFileInfo, $sUploadPath ) );
-
-    }
-
-    public function testHandleUploadedFileEmpty()
-    {
-        try {
-            oxUtilsFile::getInstance()->handleUploadedFile(null, '/out/media/');
-        }
-        catch (oxException $e)
-        {
-            $this->assertEquals('EXCEPTION_NOFILE', $e->getMessage());
-            return;
-        }
-        $this->fail('Not a $_FILE array supplied');
-    }
-
-    public function testHandleUploadedFileWrongChar1()
-    {
-        $aFiles['name'] = 'testfile_\xc4\xaf\xc5\xa1.jpg';
-        $aFiles['tmp_name'] = 'testfile';
-        try {
-            oxUtilsFile::getInstance()->handleUploadedFile($aFiles, '/out/media/');
-        }
-        catch (oxException $e)
-        {
-            $this->assertEquals('EXCEPTION_FILENAMEINVALIDCHARS', $e->getMessage());
-            return;
-        }
-        $this->fail('Wrong char slipped');
-    }
-
-    public function testHandleUploadedFileWrongChar2()
-    {
-        $aFiles['name'] = 'TEST.te.stfile_0__.jpg';
-        $aFiles['tmp_name'] = 'testfile';
-        try {
-            oxUtilsFile::getInstance()->handleUploadedFile($aFiles, '/out/media/');
-        }
-        catch (oxException $e)
-        {
-            $this->fail('Wrong exception' . $e->getMessage());
-            return;
-        }
-    }
 
     public function testHandleUploadedWrongFileType()
     {
@@ -464,29 +405,14 @@ class Unit_Core_oxUtilsFileTest extends OxidTestCase
         $this->assertEquals( null, oxUtilsFile::getInstance()->normalizeDir(null) );
     }
 
-    public function testHandleUploadedFileTooBigFile()
-    {
-        $aFiles['name']     = 'testfile.jpg';
-        $aFiles['tmp_name'] = 'testfile.jpg';
-        $aFiles['error']    = 1;
 
-        try {
-            oxUtilsFile::getInstance()->handleUploadedFile($aFiles, '/out/media/');
-        }
-        catch (oxException $e)
-        {
-            return;
-        }
-        $this->fail('Wrongfile type slipped');
-    }
-    
     public function testTranslateError()
     {
-    	$oUF = new oxUtilsFile();
-    	$this->assertEquals(
-    	   '',
-    	   $oUF->getInstance()->translateError( 0, 'fileName' )
-    	);
+        $oUF = new oxUtilsFile();
+        $this->assertEquals(
+           '',
+           $oUF->getInstance()->translateError( 0, 'fileName' )
+        );
         $this->assertEquals(
            'EXCEPTION_FILEUPLOADERROR_1',
            $oUF->getInstance()->translateError( 1, 'fileName' )
@@ -544,7 +470,7 @@ class Unit_Core_oxUtilsFileTest extends OxidTestCase
 
         $oUtilsFile->setConfig( $oConfig );
         $oUtilsFile->processFiles( new oxArticle() );
-        
+
         $this->assertEquals( $oUtilsFile->getNewFilesCounter(), 2, "Check how much new files add.");
     }
 

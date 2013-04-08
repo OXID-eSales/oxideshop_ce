@@ -37,7 +37,7 @@
  * @return string
  */
 function smarty_insert_oxid_cssmanager($params, &$smarty)
-{   $myConfig = oxConfig::getInstance();
+{   $myConfig = oxRegistry::getConfig();
 
     $smarty->caching = false;
 

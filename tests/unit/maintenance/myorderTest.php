@@ -220,20 +220,6 @@ class Unit_Maintenance_myorderTest extends OxidTestCase
         // getProductVats does not return VATs
     }
 
-    /**
-     * Testing myOrder::getVats()
-     *
-     * @return null
-     */
-    public function testGetVatsGetProductVatsDoesNotReturnVat()
-    {
-        // getProductVats returns VATs array
-        $oMyOrder = $this->getMock( "MyOrder", array( "getProductVats" ) );
-        $oMyOrder->expects( $this->once() )->method( 'getProductVats')->will( $this->returnValue( false ));
-
-        $this->assertEquals( array(), $oMyOrder->getVats() );
-    }
-
     /*
      * Testing PdfBlock class
      */
@@ -488,15 +474,13 @@ class Unit_Maintenance_myorderTest extends OxidTestCase
 
 
         //checking values
-        $this->assertEquals( 'ORDER_OVERVIEW_PDF_SHIPCOST ORDER_OVERVIEW_PDF_NETTO', $aCache[0]->aParams[2] );
-        $this->assertEquals( '17,65 EUR', trim($aCache[1]->aParams[2]) );
+        /*$this->assertEquals( 'ORDER_OVERVIEW_PDF_SHIPCOST', $aCache[0]->aParams[2] );
+        $this->assertEquals( '21,00 EUR', trim($aCache[1]->aParams[2]) );
         $this->assertEquals( 'ORDER_OVERVIEW_PDF_ZZGLVAT19ORDER_OVERVIEW_PDF_PERCENTSUM', $aCache[2]->aParams[2] );
-        $this->assertEquals( '3,35 EUR', trim($aCache[3]->aParams[2]) );
+        $this->assertEquals( '3,35 EUR', trim($aCache[3]->aParams[2]) );*/
 
-        /**
-        $this->assertEquals( 'ORDER_OVERVIEW_PDF_SHIPCOST ORDER_OVERVIEW_PDF_BRUTTO', trim($aCache[5]->aParams[2]) );
-        $this->assertEquals( '21,00 EUR', trim($aCache[6]->aParams[2]) );
-        **/
+        $this->assertEquals( 'ORDER_OVERVIEW_PDF_SHIPCOST', trim($aCache[0]->aParams[2]) );
+        $this->assertEquals( '21,00 EUR', trim($aCache[1]->aParams[2]) );
     }
 
     /**
@@ -517,12 +501,12 @@ class Unit_Maintenance_myorderTest extends OxidTestCase
         $aCache = $oPdfArtSum->getVar('_aCache');
 
         //checking values
-        $this->assertEquals( 'ORDER_OVERVIEW_PDF_WRAPPING ORDER_OVERVIEW_PDF_NETTO', $aCache[0]->aParams[2] );
-        $this->assertEquals( '6,72 EUR', trim($aCache[1]->aParams[2]) );
-        $this->assertEquals( 'ORDER_OVERVIEW_PDF_ZZGLVAT19ORDER_OVERVIEW_PDF_PERCENTSUM', $aCache[2]->aParams[2] );
+        $this->assertEquals( 'WRAPPING_COSTS ORDER_OVERVIEW_PDF_BRUTTO', $aCache[0]->aParams[2] );
+        $this->assertEquals( '8,00 EUR', trim($aCache[1]->aParams[2]) );
+        /*$this->assertEquals( 'ORDER_OVERVIEW_PDF_ZZGLVAT19ORDER_OVERVIEW_PDF_PERCENTSUM', $aCache[2]->aParams[2] );
         $this->assertEquals( '1,28 EUR', trim($aCache[3]->aParams[2]) );
         $this->assertEquals( 'ORDER_OVERVIEW_PDF_WRAPPING ORDER_OVERVIEW_PDF_BRUTTO', trim($aCache[5]->aParams[2]) );
-        $this->assertEquals( '8,00 EUR', trim($aCache[6]->aParams[2]) );
+        $this->assertEquals( '8,00 EUR', trim($aCache[6]->aParams[2]) );*/
     }
 
     /**
@@ -543,12 +527,12 @@ class Unit_Maintenance_myorderTest extends OxidTestCase
         $aCache = $oPdfArtSum->getVar('_aCache');
 
         //checking values
-        $this->assertEquals( 'ORDER_OVERVIEW_PDF_PAYMENTIMPACT ORDER_OVERVIEW_PDF_NETTO', $aCache[0]->aParams[2] );
-        $this->assertEquals( '5,04 EUR', trim($aCache[1]->aParams[2]) );
-        $this->assertEquals( 'ORDER_OVERVIEW_PDF_ZZGLVAT19ORDER_OVERVIEW_PDF_PERCENTSUM', $aCache[2]->aParams[2] );
+        $this->assertEquals( 'ORDER_OVERVIEW_PDF_PAYMENTIMPACT', $aCache[0]->aParams[2] );
+        $this->assertEquals( '6,00 EUR', trim($aCache[1]->aParams[2]) );
+       /* $this->assertEquals( 'ORDER_OVERVIEW_PDF_ZZGLVAT19ORDER_OVERVIEW_PDF_PERCENTSUM', $aCache[2]->aParams[2] );
         $this->assertEquals( '0,96 EUR', trim($aCache[3]->aParams[2]) );
         $this->assertEquals( 'ORDER_OVERVIEW_PDF_PAYMENTIMPACT', trim($aCache[4]->aParams[2]) );
-        $this->assertEquals( '6,00 EUR', trim($aCache[5]->aParams[2]) );
+        $this->assertEquals( '6,00 EUR', trim($aCache[5]->aParams[2]) );*/
     }
 
     /**
@@ -569,10 +553,8 @@ class Unit_Maintenance_myorderTest extends OxidTestCase
         $aCache = $oPdfArtSum->getVar('_aCache');
 
         //checking values
-        $this->assertEquals( 'ORDER_OVERVIEW_PDF_ALLSUM_NET', $aCache[1]->aParams[2] );
-        $this->assertEquals( '41,41 EUR', trim($aCache[2]->aParams[2]) );
-        $this->assertEquals( 'ORDER_OVERVIEW_PDF_ALLSUM', $aCache[3]->aParams[2] );
-        $this->assertEquals( '25,00 EUR', trim($aCache[4]->aParams[2]) );
+        $this->assertEquals( 'ORDER_OVERVIEW_PDF_ALLSUM', $aCache[1]->aParams[2] );
+        $this->assertEquals( '25,00 EUR', trim($aCache[2]->aParams[2]) );
     }
 
     /**
@@ -636,7 +618,7 @@ class Unit_Maintenance_myorderTest extends OxidTestCase
         $aCache = $oPdfArtSum->getVar('_aCache');
 
         //checking values
-        $this->assertEquals( 'ORDER_OVERVIEW_PDF_PAYUPTO'.date( 'd.m.Y', mktime( 0, 0, 0, date ( 'm' ), date ( 'd' ) + 7, date( 'Y' ) )), $aCache[1]->aParams[2] );
+        $this->assertEquals( 'ORDER_OVERVIEW_PDF_PAYUPTO'. '0000-00-00', $aCache[1]->aParams[2] );
     }
 
     /**
@@ -1036,5 +1018,29 @@ class Unit_Maintenance_myorderTest extends OxidTestCase
         $oMyOrder->setNonPublicVar( '_iSelectedLang', 1 );
 
         $this->assertEquals( 1, $oMyOrder->getSelectedLang() );
+    }
+
+    /**
+     * Data provider for testMyOrder_getPaymentTerm
+     *
+     * @return array
+     */
+    public function getPaymentDataProvider()
+    {
+        return array( array(null, 7), array(10, 10), array(0, 0) );
+    }
+
+    /**
+     * Testing getPaymentTerm() method
+     * getPaymentTerm() method returns config param iPaymentTerm, default value is 7;
+     *
+     * @dataProvider getPaymentDataProvider
+     */
+    public function testMyOrder_getPaymentTerm($param, $expect)
+    {
+        $oMyOrder = new MyOrder();
+        oxConfig::getInstance()->setConfigParam('iPaymentTerm', $param);
+
+        $this->assertEquals( $expect, $oMyOrder->getPaymentTerm() );
     }
 }

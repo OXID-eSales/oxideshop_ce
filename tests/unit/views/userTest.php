@@ -412,24 +412,13 @@ class Unit_Views_userTest extends OxidTestCase
     }
 
     /**
-     * Testing user::getCountryList()
-     *
-     * @return null
-     */
-    public function testGetCountryList()
-    {
-        $oUser = new User();
-        $this->assertTrue( count( $oUser->getCountryList() ) > 0 );
-    }
-
-    /**
      * Testing user::modifyBillAddress()
      *
      * @return null
      */
     public function testModifyBillAddress()
     {
-        oxConfig::getInstance()->setParameter('blnewssubscribed', true);
+        $this->setConfigParam('blnewssubscribed', true);
 
         $oUser = new User();
         $this->assertEquals( oxConfig::getInstance()->getParameter('blnewssubscribed'), $oUser->modifyBillAddress() );

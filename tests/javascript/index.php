@@ -14,6 +14,7 @@
     <!-- Your project file goes here -->
     <script type="text/javascript" src="http://<?php echo $shopUrl ?>/out/azure/src/js/widgets/oxrating.js"></script>
     <script type="text/javascript" src="http://<?php echo $shopUrl ?>/out/azure/src/js/widgets/oxcompare.js"></script>
+    <script type="text/javascript" src="http://<?php echo $shopUrl ?>/out/azure/src/js/widgets/oxcomparelinks.js"></script>
     <script type="text/javascript" src="http://<?php echo $shopUrl ?>/out/azure/src/js/widgets/oxcountrystateselect.js"></script>
     <script type="text/javascript" src="http://<?php echo $shopUrl ?>/out/azure/src/js/widgets/oxslider.js"></script>
     <script type="text/javascript" src="http://<?php echo $shopUrl ?>/out/azure/src/js/widgets/oxarticleactionlinksselect.js"></script>
@@ -28,6 +29,7 @@
     <script type="text/javascript" src="inputvalidatorTests.js"></script>
     <script type="text/javascript" src="countrystateselectTests.js"></script>
     <script type="text/javascript" src="comparelistTests.js"></script>
+    <script type="text/javascript" src="oxcomparelinksTests.js"></script>
     <script type="text/javascript" src="sliderTests.js"></script>
     <script type="text/javascript" src="ratingTests.js"></script>
     <script type="text/javascript" src="dropdownTests.js"></script>

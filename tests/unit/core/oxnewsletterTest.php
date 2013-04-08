@@ -61,7 +61,7 @@ class modEmailOxNewsLetter2 extends oxEmail
 
 /*
  * Dummy class for newsletter subject test.
- * 
+ *
  */
 class modEmailOxNewsLetterSubject extends oxEmail
 {
@@ -97,22 +97,53 @@ class Unit_Core_oxnewsletterTest extends OxidTestCase
 
         $oDB = oxDb::getDb();
 
-        $sInsert = "INSERT INTO `oxnewsletter` VALUES ( 'newstest', 'oxbaseshop', 'Test', 'TestHTML', 'TestPlain', 'TestSubject' )";
+        $sInsert = "INSERT INTO `oxnewsletter` VALUES ( 'newstest', 'oxbaseshop', 'Test', 'TestHTML', 'TestPlain', 'TestSubject', NOW() )";
         $oDB->Execute( $sInsert );
 
-        $sInsert = "INSERT INTO `oxobject2group` VALUES ( 'test', 'oxbaseshop', 'newstest', 'oxidnewcustomer' )";
+        $sInsert = "INSERT INTO `oxobject2group` VALUES ( 'test', 'oxbaseshop', 'newstest', 'oxidnewcustomer', NOW() )";
         $oDB->Execute( $sInsert );
 
-        $sInsert = "INSERT INTO `oxorder` VALUES ('9a94569819f6c7368.72892345', 'oxbaseshop', 'oxdefaultadmin', '2006-11-26 13:59:34', 8, 'Ihr Firmenname', '".oxADMIN_LOGIN."', 'Hans', 'Mustermann', 'Musterstr.', '10', '', '', 'Musterstadt', 'a7c40f631fc920687.20179984', '','79098', '0800 1234567', '0800 1234567', 'Herr', '', '', '', '', '', '', '', '', '', '', '', '','', '', 'oxidcreditcard', 3.9, 0, 20.9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, '', '', '0000-00-00 00:00:00', 'Hier können Sie uns noch etwas mitteilen.', 0, 'EUR', 1, 'Neu', '', '', '', '0000-00-00 00:00:00', '', '', 'OK', 0, 0, 'oxidstandard', '', '')";
+        $sInsert = "INSERT INTO `oxorder` SET
+          `OXID` = '9a94569819f6c7368.72892345',
+          `OXSHOPID` = 'oxbaseshop',
+          `OXUSERID` = 'oxdefaultadmin',
+          `OXORDERDATE` = '2006-11-26 13:59:34',
+          `OXORDERNR` = '8',
+          `OXBILLCOMPANY` = 'Ihr Firmenname',
+          `OXBILLEMAIL` = '".oxADMIN_LOGIN."',
+          `OXBILLFNAME` = 'Hans',
+          `OXBILLLNAME` = 'Mustermann',
+          `OXBILLSTREET` = 'Musterstr.',
+          `OXBILLSTREETNR` = '10',
+          `OXBILLCITY` = 'Musterstadt',
+          `OXBILLCOUNTRYID` = 'a7c40f631fc920687.20179984',
+          `OXBILLZIP` = '79098',
+          `OXBILLFON` = '0800 1234567',
+          `OXBILLFAX` = '0800 1234567',
+          `OXBILLSAL` = 'Herr',
+          `OXPAYMENTTYPE` = 'oxidcreditcard',
+          `OXTOTALNETSUM` = 3.9,
+          `OXTOTALBRUTSUM` = 0,
+          `OXTOTALORDERSUM` = 20.9,
+          `OXREMARK` = 'Hier können Sie uns noch etwas mitteilen.',
+          `OXVOUCHERDISCOUNT` = 0,
+          `OXCURRENCY` = 'EUR',
+          `OXCURRATE` = 1,
+          `OXFOLDER` = 'Neu',
+          `OXTRANSSTATUS` = 'OK',
+          `OXLANG` = 0,
+          `OXINVOICENR` = 0,
+          `OXDELTYPE` = 'oxidstandard'
+        ";
         $oDB->Execute( $sInsert );
 
-        $sInsert = "INSERT INTO `oxorderarticles` VALUES ('9a9456981a6530fe2.51471234', '9a94569819f6c7368.72892345', 1, '2080', '2080', 'Eiswürfel HERZ', 'Das Original aus Filmen wie Eis am Stil & Co.', '', 68.88, 68.88, 0, 0, '', 79.9, 0, 89.9, '', '', '', '', '0/1964_th.jpg', '1/1964_p1.jpg', '2/nopic.jpg', '3/nopic.jpg', '4/nopic.jpg', '5/nopic.jpg', 0, 0, 0x303030302d30302d3030, 0x303030302d30302d3030, 0x323030352d30372d32382030303a30303a3030, 0, 0, 0, '', '', '', '', 1, '', '', '', 'oxbaseshop', 0)";
+        $sInsert = "INSERT INTO `oxorderarticles` VALUES ('9a9456981a6530fe2.51471234', '9a94569819f6c7368.72892345', 1, '2080', '2080', 'Eiswürfel HERZ', 'Das Original aus Filmen wie Eis am Stil & Co.', '', 68.88, 68.88, 0, 0, '', 79.9, 0, 89.9, '', '', '', '', '0/1964_th.jpg', '1/1964_p1.jpg', '2/nopic.jpg', '3/nopic.jpg', '4/nopic.jpg', '5/nopic.jpg', 0, 0, 0x303030302d30302d3030, 0x303030302d30302d3030, 0x323030352d30372d32382030303a30303a3030, 0, 0, 0, '', '', '', '', 1, '', '', '', 'oxbaseshop', 0 )";
         $oDB->Execute( $sInsert );
 
-        $sInsert = "INSERT INTO `oxactions2article` VALUES ('d8842e3ca1c35e146.46512345', 'oxbaseshop', 'oxnewsletter', '1351', 0)";
+        $sInsert = "INSERT INTO `oxactions2article` VALUES ('d8842e3ca1c35e146.46512345', 'oxbaseshop', 'oxnewsletter', '1351', 0, NOW())";
         $oDB->Execute( $sInsert );
 
-        $sInsert = "INSERT INTO `oxactions2article` VALUES ('d8842e3ca27489886.81509876', 'oxbaseshop', 'oxnewsletter', '2000', 1)";
+        $sInsert = "INSERT INTO `oxactions2article` VALUES ('d8842e3ca27489886.81509876', 'oxbaseshop', 'oxnewsletter', '2000', 1, NOW())";
         $oDB->Execute( $sInsert );
     }
 
@@ -351,27 +382,27 @@ class Unit_Core_oxnewsletterTest extends OxidTestCase
         $oTestNews->UNITsetUser( 'oxdefaultadmin' );
         $blMailWasSent = $oTestNews->send();
         $this->assertTrue( $blMailWasSent );
-    }	
-	
+    }
+
     /*
      * oxNewsletter::send - Testing for correct subject value.
-     * 
+     *
      * @return null
      */
     public function testSendMail_Subject()
     {
         oxAddClassModule( 'modEmailOxNewsLetterSubject', 'oxEmail' );
-		
-        $oTestNews = oxNew( "oxNewsLetter" );		
+
+        $oTestNews = oxNew( "oxNewsLetter" );
         if ( !$oTestNews->load( 'oxidnewsletter' ) )
              $this->fail( 'can not load news' );
-		
+
 		$oTestNews->oxnewsletter__oxsubject->value = "TestSubject";
-		
+
 		$this->setExpectedException('oxException', "TestSubject");
-		
+
         $oTestNews->UNITsetUser( 'oxdefaultadmin' );
-        $blMailWasSent = $oTestNews->send();       
+        $blMailWasSent = $oTestNews->send();
     }
 
     public function testSendMailAndFail()

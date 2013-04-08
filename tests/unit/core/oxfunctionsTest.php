@@ -123,10 +123,10 @@ class Unit_Core_oxfunctionsTest extends OxidTestCase
      */
     public function testCmpart()
     {
-        $oA = new Oxstdclass();
+        $oA = new stdClass();
         $oA->cnt = 10;
 
-        $oB = new Oxstdclass();
+        $oB = new stdClass();
         $oB->cnt = 10;
 
         $this->assertTrue( cmpart( $oA, $oB ) == 0);
@@ -199,7 +199,7 @@ class Unit_Core_oxfunctionsTest extends OxidTestCase
 
     public function testError_404_handler()
     {
-        $oUtils = $this->getMock('stdclass', array('handlePageNotFoundError'));
+        $oUtils = $this->getMock('oxutils', array('handlePageNotFoundError'));
         $oUtils->expects($this->at(0))->method('handlePageNotFoundError')->with($this->equalTo(''));
         $oUtils->expects($this->at(1))->method('handlePageNotFoundError')->with($this->equalTo('asd'));
         oxTestModules::addModuleObject('oxutils', $oUtils);
@@ -207,4 +207,5 @@ class Unit_Core_oxfunctionsTest extends OxidTestCase
         error_404_handler();
         error_404_handler('asd');
     }
+
 }

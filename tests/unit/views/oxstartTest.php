@@ -112,10 +112,10 @@ class Unit_Views_oxstartTest extends OxidTestCase
             return ;
 
         oxAddClassModule("oxUtilsRedirect", "oxutils");
-        modConfig::setParameter( 'redirected', 1 );
+        $this->setConfigParam( 'redirected', 1 );
 
         $oSerial = $this->getMock( 'oxserial', array( 'isUnlicensedSerial' ) );
-        $oSerial->expects( $this->once() )->method( 'isUnlicensedSerial')->will( $this->returnValue( true ) );
+        $oSerial->expects( $this->atLeastOnce() )->method( 'isUnlicensedSerial')->will( $this->returnValue( true ) );
 
         $oConfig = $this->getMock( 'oxconfig', array( 'isProductiveMode', 'getSerial', 'saveShopConfVar' ) );
         $oConfig->expects( $this->exactly(2) )->method( 'isProductiveMode')->will( $this->returnValue( false ) );
@@ -134,7 +134,7 @@ class Unit_Views_oxstartTest extends OxidTestCase
         $oStart->appInit();
 
         //$this->assertEquals( 'index.php?sid='.oxSession::getInstance()->getId().'&amp;cl=oxstart&execerror=unlicensed' , oxUtils::getInstance()->sRedirectUrl );
-        $this->assertEquals( 'index.php?cl=oxstart&execerror=unlicensed', oxUtils::getInstance()->sRedirectUrl );
+        $this->assertEquals( $oConfig->getShopHomeURL() . 'cl=oxstart&execerror=unlicensed', oxUtils::getInstance()->sRedirectUrl );
     }
 
     public function testAppInitUnlicensedPE()
@@ -148,7 +148,7 @@ class Unit_Views_oxstartTest extends OxidTestCase
         modConfig::setParameter( 'cl', 'someClass' );
 
         $oSerial = $this->getMock( 'oxserial', array( 'isUnlicensedSerial' ) );
-        $oSerial->expects( $this->once() )->method( 'isUnlicensedSerial')->will( $this->returnValue( true ) );
+        $oSerial->expects( $this->atLeastOnce() )->method( 'isUnlicensedSerial')->will( $this->returnValue( true ) );
 
         $oConfig = $this->getMock( 'oxconfig', array( 'isProductiveMode', 'saveShopConfVar', 'getSerial' ) );
         $oConfig->expects( $this->once() )->method( 'isProductiveMode' )->will( $this->onConsecutiveCalls( false ) );
@@ -163,7 +163,7 @@ class Unit_Views_oxstartTest extends OxidTestCase
         try {
             $oStart->appInit();
         } catch ( exception $oExcp ) {
-            $this->assertEquals( 'index.php?cl=oxstart&execerror=unlicensed', $oExcp->getMessage() );
+            $this->assertEquals( $oConfig->getShopHomeURL() .  'cl=oxstart&execerror=unlicensed', $oExcp->getMessage() );
             return;
         }
         $this->fail( 'error in testAppInitUnlicensedPE' );

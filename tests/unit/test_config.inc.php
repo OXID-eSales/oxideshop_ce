@@ -29,12 +29,25 @@ ini_set('display_errors', true);
 define ('OXID_PHP_UNIT', true);
 
 $_sOverridenShopBasePath = null;
+
+/**
+ * Sets a path to the test shop
+ *
+ * @deprecated Define OX_BASE_PATH constant instead
+ *
+ * @param string $sPath New path to shop
+ */
 function overrideGetShopBasePath($sPath)
 {
+    //TS2012-06-06
+    die("overrideGetShopBasePath() is deprecated use OX_BASE_PATH constant instead. ALWAYS.");
     global $_sOverridenShopBasePath;
     $_sOverridenShopBasePath = $sPath;
 }
 
+define( 'OX_BASE_PATH',  isset( $_sOverridenShopBasePath ) ? $_sOverridenShopBasePath : oxPATH  );
+
+/*
 function getShopBasePath()
 {
     global $_sOverridenShopBasePath;
@@ -42,7 +55,7 @@ function getShopBasePath()
         return $_sOverridenShopBasePath;
     }
     return oxPATH;
-}
+}*/
 
 function getTestsBasePath()
 {
@@ -52,7 +65,18 @@ function getTestsBasePath()
 require_once 'test_utils.php';
 
 // Generic utility method file.
-require_once getShopBasePath() . 'core/oxfunctions.php';
+require_once OX_BASE_PATH . 'core/oxfunctions.php';
+
+// As in new bootstrap to get db instance.
+$oConfigFile = new OxConfigFile( OX_BASE_PATH . "config.inc.php" );
+OxRegistry::set("OxConfigFile", $oConfigFile);
+oxRegistry::set("oxConfig", new oxConfig());
+
+// As in new bootstrap to get db instance.
+$oDb = new oxDb();
+$oDb->setConfig( $oConfigFile );
+$oLegacyDb = $oDb->getDb();
+OxRegistry::set( 'OxDb', $oLegacyDb );
 
 oxConfig::getInstance();
 
@@ -79,9 +103,6 @@ class modOxUtilsDate extends oxUtilsDate
 
 // Utility class
 require_once getShopBasePath() . 'core/oxutils.php';
-
-// Standard class
-require_once getShopBasePath() . 'core/oxstdclass.php';
 
 // Database managing class.
 require_once getShopBasePath() . 'core/adodblite/adodb.inc.php';

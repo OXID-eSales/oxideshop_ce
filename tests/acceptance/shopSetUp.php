@@ -224,11 +224,11 @@ class shopSetUp extends oxidAdditionalSeleniumFunctions
                 $this->executeSql("UPDATE `oxconfig` SET `OXVARVALUE` = 0x4dba832f744c5786a371ca8c397d859f64f905bbe2b18fd3713157ee3461a76287f66569a2a53eb9389ac7dcf68296847dc5e404801da7ecb34b3af7a9070c2709e9578711d01627ced7588bf6bbc35986fb1e0f00347b12eb6b26a42b233f6c65fce7d0b39fd3abcfa3a10e7779cbe82026d9ac33e2df16f12df15bf4784793595cbe225432febd18d5555371a8818c95ec5b12bc4b31dffcf54acf93ed5a7d14080ff0d0bf67cc63eb18633c716561822c0ebb029771aca4fd9e8c27dc WHERE `OXVARNAME` = 'aLanguageParams'");
             }
 
-            if ( OXID_THEME == 'basic' ) {
-                // swich basic theme on
-                $this->executeSql("UPDATE `oxconfig` SET `OXVARVALUE` = 0x55044545ae WHERE `OXVARNAME` = 'sTheme'");
-            }
-            $this->clearTmp();
+            $this->open(shopURL."_cc.php");
+            $this->checkForErrors();
+            $this->assertFalse($this->isElementPresent("link=subshop"), "Element should not exist: link=subshop");
+            $this->assertTrue($this->isTextPresent("Just arrived!"));
+            $this->assertFalse($this->isTextPresent("Frisch eingetroffen!"));
         } catch (Exception $e) {
             $this->stopTesting("Failed to setup languages: ". $e->getMessage() );
         }
@@ -238,7 +238,6 @@ class shopSetUp extends oxidAdditionalSeleniumFunctions
             $this->selectWindow(null);
             $this->windowMaximize(null);
             $this->selectFrame("relative=top");
-            $this->clearTmp();
             $this->open(shopURL."_cc.php");
             $this->open(shopURL."admin");
             $this->checkForErrors();
@@ -323,12 +322,9 @@ class shopSetUp extends oxidAdditionalSeleniumFunctions
         //checking if shop is loading after setup
         try {
             //checking frontend
-            if ( OXID_THEME == 'basic' ) {
-            }
             $this->selectWindow(null);
             $this->windowMaximize(null);
             $this->selectFrame("relative=top");
-            $this->clearTmp();
             $this->open(shopURL."_cc.php");
             $this->checkForErrors();
             $this->assertFalse($this->isElementPresent("link=subshop"), "Element should not exist: link=subshop");

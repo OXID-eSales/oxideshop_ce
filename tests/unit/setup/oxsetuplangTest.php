@@ -55,15 +55,15 @@ class Unit_Setup_oxSetupLangTest extends OxidTestCase
      */
     public function testGetSetupLangLanguageIdentIsPassedByRequest()
     {
-        $oSession = $this->getMock( "oxStdClass", array( "setSessionParam", "getSessionParam" ) );
+        $oSession = $this->getMock( "oxSetupSession", array( "setSessionParam", "getSessionParam" ), array(), '', null );
         $oSession->expects( $this->at( 0 ) )->method( "setSessionParam" )->with( $this->equalTo( 'setup_lang' ) );
         $oSession->expects( $this->at( 1 ) )->method( "getSessionParam" )->with( $this->equalTo( 'setup_lang' ) );
 
-        $oUtils = $this->getMock( "oxStdClass", array( "getRequestVar" ) );
+        $oUtils = $this->getMock( "oxSetupUtils", array( "getRequestVar" ) );
         $oUtils->expects( $this->at( 0 ) )->method( "getRequestVar" )->with( $this->equalTo( 'setup_lang' ), $this->equalTo( 'post' ) )->will( $this->returnValue( "de" ) );
         $oUtils->expects( $this->at( 1 ) )->method( "getRequestVar" )->with( $this->equalTo( 'setup_lang_submit' ), $this->equalTo( 'post' ) )->will( $this->returnValue( "de" ) );
 
-        $oSetup = $this->getMock( "oxStdClass", array( "getStep" ) );
+        $oSetup = $this->getMock( "oxSetup", array( "getStep" ) );
         $oSetup->expects( $this->at( 0 ) )->method( "getStep" )->with( $this->equalTo( 'STEP_WELCOME' ) );
 
         $oLang = $this->getMock( "oxSetupLang", array( "getInstance", "setViewParam" ) );
@@ -84,11 +84,11 @@ class Unit_Setup_oxSetupLangTest extends OxidTestCase
         $sBrowserLang = strtolower( substr( $_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2 ) );
         $sBrowserLang = ( in_array($sBrowserLang, $aLangs) ) ? $sBrowserLang : $aLangs[0];
 
-        $oSession = $this->getMock( "oxStdClass", array( "setSessionParam", "getSessionParam" ) );
+        $oSession = $this->getMock( "oxSetupSession", array( "setSessionParam", "getSessionParam" ), array(), '', null );
         $oSession->expects( $this->at( 0 ) )->method( "getSessionParam" )->with( $this->equalTo( 'setup_lang' ) )->will( $this->returnValue( null ));
         $oSession->expects( $this->at( 1 ) )->method( "setSessionParam" )->with( $this->equalTo( 'setup_lang' ), $this->equalTo( $sBrowserLang ));
 
-        $oUtils = $this->getMock( "oxStdClass", array( "getRequestVar" ) );
+        $oUtils = $this->getMock( "oxSetupUtils", array( "getRequestVar" ) );
         $oUtils->expects( $this->at( 0 ) )->method( "getRequestVar" )->with( $this->equalTo( 'setup_lang' ), $this->equalTo( 'post' ) )->will( $this->returnValue( null ) );
 
         $oLang = $this->getMock( "oxSetupLang", array( "getInstance", "setViewParam" ) );

@@ -46,22 +46,13 @@ class oxShopMetaData extends oxSuperCfg
     /**
      * resturns a single instance of this class
      *
+     * @deprecated since v5.0 (2012-08-10); Use oxRegistry::get("oxShopMetaData") instead
+     *
      * @return oxShopMetaData
      */
     public static function getInstance()
     {
-        // disable caching for test modules
-        if ( defined( 'OXID_PHP_UNIT' ) ) {
-            self::$_instance = modInstances::getMod( __CLASS__ );
-        }
-
-        if ( !(self::$_instance instanceof oxShopMetaData) ) {
-            self::$_instance = oxNew( 'oxShopMetaData' );
-            if ( defined( 'OXID_PHP_UNIT' ) ) {
-                modInstances::addMod( __CLASS__, self::$_instance);
-            }
-        }
-        return self::$_instance;
+        return oxRegistry::get("oxShopMetadata");
     }
 
     /**

@@ -1,87 +1,13 @@
 <?php
 
+print("start"."\r\n");
+
+require_once dirname(__FILE__) . "/bootstrap.php";
+
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
 
-print("start"."\r\n");
-
-// Bootstrap starts
-
-//Know exactly where in the code the event occurred.
-//Zend platform only.
-if (function_exists('monitor_set_aggregation_hint') && isset($_REQUEST['cl'])) {
-    $sAgregationHint = htmlentities($_REQUEST['cl'], ENT_QUOTES, 'UTF-8') . '/';
-    if (isset($_REQUEST['fnc']))
-        $sAgregationHint .= htmlentities($_REQUEST['fnc'], ENT_QUOTES, 'UTF-8');
-    monitor_set_aggregation_hint($sAgregationHint);
-}
-
-// Local this file exists. Cant add to deploy tags as deploy do not parse this file.
-if (file_exists('_version_define.php')) {
-    include_once('_version_define.php');
-}
-
-//setting basic configuration parameters
-ini_set('session.name', 'sid' );
-ini_set('session.use_cookies', 0 );
-ini_set('session.use_trans_sid', 0);
-ini_set('url_rewriter.tags', '');
-ini_set('magic_quotes_runtime', 0);
-
-/**
- * Returns shop base path.
- *
- * @return string
- */
-function getShopBasePath()
-{
-    return dirname(__FILE__).'/';
-}
-
-
-if ( !function_exists( 'isAdmin' )) {
-    /**
-     * Returns false.
-     *
-     * @return bool
-     */
-    function isAdmin()
-    {
-        return false;
-    }
-}
-
-// custom functions file
-require getShopBasePath() . 'modules/functions.php';
-
-// Generic utility method file
-require_once getShopBasePath() . 'core/oxfunctions.php';
-
-
-// set the exception handler already here to catch everything, also uncaught exceptions from the config or utils
-
-// initializes singleton config class
-$myConfig = oxConfig::getInstance();
-
-//strips magics quote if any
-oxUtils::getInstance()->stripGpcMagicQuotes();
-
-// reset it so it is done with oxnew
-$iDebug = $myConfig->getConfigParam('iDebug');
-set_exception_handler(array(oxNew('oxexceptionhandler', $iDebug), 'handleUncaughtException'));
-// Admin handling
-if ( isAdmin() ) {
-    $myConfig->setConfigParam( 'blAdmin', true );
-    $myConfig->setConfigParam( 'blTemplateCaching', false );
-    if ($sAdminDir)
-        $myConfig->setConfigParam( 'sAdminDir', $sAdminDir );
-    else
-        $myConfig->setConfigParam( 'sAdminDir', "admin" );
-}
-
-// Bootstrap ends
-
-$oxConfig = oxConfig::getInstance();
+$oxConfig = oxRegistry::getConfig();
 
 // Get active shop as it might be different if subshops are active.
 // It is impossible to change data in different shops while they are not active.
@@ -123,7 +49,7 @@ switch (strtolower($sClassName)) {
  */
 function callFunctionOnConfig($sClassName, $sFunctionName, $sClassParams = null)
 {
-    $oConfig = oxConfig::getInstance();
+    $oConfig = oxRegistry::getConfig();
     if ($sClassParams) {
         foreach ($sClassParams as $sParamKey => $aParams) {
             if ($aParams) {
@@ -148,6 +74,11 @@ function callFunctionOnConfig($sClassName, $sFunctionName, $sClassParams = null)
                         $sValue = unserialize(htmlspecialchars_decode($sValue));
                     }
                     call_user_func(array($oConfig, $sFunctionName), $sType, $sParamKey, $sValue, null, $sModule);
+                    //flush cache if needed
+                    $oCache = oxRegistry::get( 'oxReverseProxyBackend' );
+                    if ( $oCache->isActive() ) {
+                        $oCache->execute();
+                    }
                 }
             }
         }
@@ -179,6 +110,11 @@ function callFunctionOnObject($sClassName, $sFunctionName, $sOxid = null, $sClas
         }
     }
     call_user_func(array($oObject, $sFunctionName));
+    //flush cache if needed
+    $oCache = oxRegistry::get( 'oxReverseProxyBackend' );
+    if ( $oCache->isActive() ) {
+        $oCache->execute();
+    }
 }
 
 /**
@@ -193,7 +129,7 @@ function callFunctionOnObject($sClassName, $sFunctionName, $sOxid = null, $sClas
 
 function getTableNameFromClassName($sClassName)
 {
-    $aClassNameWithoutS   = array("oxarticle", "oxrole");
+    $aClassNameWithoutS   = array("oxarticle", "oxrole", "oxrating", "oxreview", "oxrecommlist", "oxmanufacturer", "oxvoucherserie");
     $aClassNameWithoutIes = array("oxcategory");
 
     $sTableName = strtolower($sClassName);

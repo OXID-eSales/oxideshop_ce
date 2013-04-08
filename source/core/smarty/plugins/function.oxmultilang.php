@@ -26,7 +26,9 @@
  * Smarty function
  * -------------------------------------------------------------
  * Purpose: Output multilang string
- * add [{ oxmultilang ident="..." }] where you want to display content
+ * add [{ oxmultilang ident="..." args=... }] where you want to display content
+ * ident - language constant
+ * args - array of argument that can be parsed to language constant threw %s
  * -------------------------------------------------------------
  *
  * @param array  $params  params
@@ -36,12 +38,13 @@
 */
 function smarty_function_oxmultilang( $params, &$smarty )
 {
-
     startProfile("smarty_function_oxmultilang");
+    $oLang = oxRegistry::getLang();
     $sIdent  = isset( $params['ident'] ) ? $params['ident'] : 'IDENT MISSING';
+    $aArgs = isset( $params['args'] ) ? $params['args'] : 0 ;
+
     $iLang   = null;
-    $blAdmin = isAdmin();
-    $oLang = oxLang::getInstance();
+    $blAdmin = $oLang->isAdmin();
 
     if ( $blAdmin ) {
         $iLang = $oLang->getTplLanguage();
@@ -64,6 +67,13 @@ function smarty_function_oxmultilang( $params, &$smarty )
         $sTranslation = $params['alternative'];
     }
 
+    if ( $aArgs ) {
+        if ( is_array( $aArgs ) ) {
+            $sTranslation = vsprintf( $sTranslation, $aArgs );
+        } else {
+            $sTranslation = sprintf( $sTranslation, $aArgs );
+        }
+    }
 
     stopProfile("smarty_function_oxmultilang");
 

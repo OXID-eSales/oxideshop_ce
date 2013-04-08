@@ -40,7 +40,7 @@ class Unit_Views_oxCmpUtilsTest extends OxidTestCase
          modConfig::getInstance()->setConfigParam( 'blAllowRemoteArticleInfo', 1 );
 
         oxTestModules::addFunction( 'oxUtils', 'showMessageAndExit', '{ throw new Exception( $aA[0] ); }' );
-        oxTestModules::addFunction( 'oxarticlelist', 'loadAktionArticles', '{}' );
+        oxTestModules::addFunction( 'oxarticlelist', 'loadActionArticles', '{}' );
         oxTestModules::addFunction( 'oxarticlelist', 'current', '{}' );
 
         modConfig::setParameter( 'oxid', false );
@@ -127,11 +127,11 @@ class Unit_Views_oxCmpUtilsTest extends OxidTestCase
         modConfig::setParameter( "addcompare", true );
         modConfig::setParameter( 'removecompare', null );
 
-        $oProduct = $this->getMock( "oxStdClass", array( "getId", "setOnComparisonList" ) );
+        $oProduct = $this->getMock( "oxArticle", array( "getId", "setOnComparisonList" ) );
         $oProduct->expects( $this->exactly( 2 ) )->method( 'getId' )->will( $this->returnValue( "1126" ) );
         $oProduct->expects( $this->exactly( 2 ) )->method( 'setOnComparisonList' )->with( $this->equalTo( true ) );
 
-        $oParentView = $this->getMock( "oxStdClass", array( "getViewProduct", "getViewProductList" ) );
+        $oParentView = $this->getMock( "oxView", array( "getViewProduct", "getViewProductList" ) );
         $oParentView->expects( $this->once() )->method('getViewProduct')->will( $this->returnValue( $oProduct ) );
         $oParentView->expects( $this->once() )->method('getViewProductList')->will( $this->returnValue( array( $oProduct ) ) );
 
@@ -154,11 +154,11 @@ class Unit_Views_oxCmpUtilsTest extends OxidTestCase
         modConfig::setParameter( 'removecompare', true );
         modConfig::setParameter( 'aFiltcompproducts', array( "1126" ) );
 
-        $oProduct = $this->getMock( "oxStdClass", array( "getId", "setOnComparisonList" ) );
+        $oProduct = $this->getMock( "oxArticle", array( "getId", "setOnComparisonList" ) );
         $oProduct->expects( $this->exactly( 2 ) )->method( 'getId' )->will( $this->returnValue( "1126" ) );
         $oProduct->expects( $this->exactly( 2 ) )->method( 'setOnComparisonList' )->with( $this->equalTo( false ) );
 
-        $oParentView = $this->getMock( "oxStdClass", array( "getViewProduct", "getViewProductList" ) );
+        $oParentView = $this->getMock( "oxView", array( "getViewProduct", "getViewProductList" ) );
         $oParentView->expects( $this->once() )->method('getViewProduct')->will( $this->returnValue( $oProduct ) );
         $oParentView->expects( $this->once() )->method('getViewProductList')->will( $this->returnValue( array( $oProduct ) ) );
 
@@ -208,11 +208,11 @@ class Unit_Views_oxCmpUtilsTest extends OxidTestCase
     {
         modConfig::getInstance()->setConfigParam( "blAllowUnevenAmounts", false );
 
-        $oBasket = $this->getMock( "oxStdClass", array( "addItemToBasket", "getItemCount" ) );
+        $oBasket = $this->getMock( "oxBasket", array( "addItemToBasket", "getItemCount" ) );
         $oBasket->expects( $this->once() )->method('addItemToBasket')->with( $this->equalTo( "1126" ), $this->equalTo( 999 ), $this->equalTo( 'sel' ) );
         $oBasket->expects( $this->once() )->method('getItemCount');
 
-        $oUser = $this->getMock( "oxStdClass", array( "getBasket" ) );
+        $oUser = $this->getMock( "oxUser", array( "getBasket" ) );
         $oUser->expects( $this->once() )->method('getBasket')->with( $this->equalTo( 'testList' ) )->will( $this->returnValue( $oBasket ) );
 
         $oCmp = $this->getMock( "oxcmp_utils", array( "getUser" ) );
@@ -231,12 +231,10 @@ class Unit_Views_oxCmpUtilsTest extends OxidTestCase
         modConfig::setParameter( 'wishid', "testWishId" );
         oxTestModules::addFunction( 'oxuser', 'load', '{ return true; }' );
 
-        $oParentView = $this->getMock( "oxStdClass", array( "setWishlistName", "setMenueList" ) );
-        $oParentView->expects( $this->at( 0 ) )->method('setWishlistName');
-        $oParentView->expects( $this->at( 1 ) )->method('setMenueList');
+        $oParentView = $this->getMock( "oxView", array( "setMenueList" ) );
+        $oParentView->expects( $this->at( 0 ) )->method('setMenueList');
 
-        $oCmp = $this->getMock( "oxcmp_utils", array( "getUser", "getParent" ) );
-        $oCmp->expects( $this->once() )->method('getUser')->will( $this->returnValue( true ) );
+        $oCmp = $this->getMock( "oxcmp_utils", array( "getParent" ) );
         $oCmp->expects( $this->once() )->method('getParent')->will( $this->returnValue( $oParentView ) );
         $this->assertNull( $oCmp->render() );
     }
@@ -256,13 +254,10 @@ class Unit_Views_oxCmpUtilsTest extends OxidTestCase
 
         oxTestModules::addFunction( 'oxuser', 'load', '{ return true; }' );
 
-        $oParentView = $this->getMock( "oxStdClass", array( "setWishlistName", "setMenueList", "setCompareItemsCnt" ) );
-        $oParentView->expects( $this->at( 0 ) )->method( 'setWishlistName' );
-        $oParentView->expects( $this->at( 1 ) )->method( 'setMenueList' );
-        $oParentView->expects( $this->at( 2 ) )->method( 'setCompareItemsCnt' );
+        $oParentView = $this->getMock( "oxView", array( "setMenueList" ) );
+        $oParentView->expects( $this->at( 0 ) )->method( 'setMenueList' );
 
-        $oCmp = $this->getMock( "oxcmp_utils", array( "getUser", "getParent" ) );
-        $oCmp->expects( $this->once() )->method('getUser')->will( $this->returnValue( true ) );
+        $oCmp = $this->getMock( "oxcmp_utils", array( "getParent" ) );
         $oCmp->expects( $this->once() )->method('getParent')->will( $this->returnValue( $oParentView ) );
         $oCmp->render();
     }

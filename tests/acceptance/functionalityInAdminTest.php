@@ -35,6 +35,156 @@ class Acceptance_functionalityInAdminTest extends oxidAdditionalSeleniumFunction
      // ------------------------ Admin interface functionality ----------------------------------
 
     /**
+     * Testing downloadable product in admin ant frontend
+     * @group admin
+     * @group adminFunctionality
+     */
+    public function testDownloadableFiles()
+    {
+        if (!isSUBSHOP) {
+            // Enable downloadable files
+            $this->loginAdmin("Master Settings", "Core Settings");
+            $this->openTab("link=Settings");
+            $this->click("link=Downloadable products");
+            $this->check("//input[@name='confbools[blEnableDownloads]' and @value='true']");
+            $this->clearString("confstrs[iMaxDownloadsCount]");
+            $this->type("confstrs[iMaxDownloadsCount]", "2");
+            $this->clearString("confstrs[iLinkExpirationTime]");
+            $this->type("confstrs[iLinkExpirationTime]", "240");
+            $this->clearString("confstrs[iDownloadExpirationTime]");
+            $this->type("confstrs[iDownloadExpirationTime]", "24");
+            $this->clearString("confstrs[iMaxDownloadsCountUnregistered]");
+            $this->type("confstrs[iMaxDownloadsCountUnregistered]", "2");
+            $this->clickAndWait("save");
+
+            // Select product with downloadable file
+            $this->selectMenu("Administer Products", "Products");
+            $this->type("where[oxarticles][oxartnum]", "1002");
+            $this->clickAndWait("submitit");
+            $this->clickAndWaitFrame("link=1002", "edit");
+            $this->openTab("link=Downloads");
+            $this->check("//input[@name='editval[oxarticles__oxisdownloadable]' and @value='1']");
+            $this->clickAndWait("save");
+
+            // Make purchase complete
+            $this->openShop();
+            $this->loginInFrontend("birute_test@nfq.lt", "useruser");
+            $this->searchFor("1002");
+            $this->assertEquals("Test product 2 [EN] šÄßüл", $this->getText("searchList_1"));
+            $this->selectVariant("variantselector_searchList_1", 1, "var1 [EN] šÄßüл");
+            $this->type("amountToBasket", "10");
+            $this->clickAndWait("toBasket");
+            $this->openBasket();
+            $this->clickAndWait("//button[text()='Continue to Next Step']");
+            $this->clickAndWait("//button[text()='Continue to Next Step']");
+            $this->clickAndWait("//button[text()='Continue to Next Step']");
+            $this->check("//form[@id='orderConfirmAgbTop']//input[@name='ord_agb' and @value='1']");
+            $this->clickAndWait("//form[@id='orderConfirmAgbTop']//button");
+            $this->assertEquals("You are here: / Order Completed", $this->getText("breadCrumb"));
+
+            //Check if file appears in My Downloads
+            $this->click("servicesTrigger");
+            $this->waitForItemAppear("services");
+            $this->clickAndWAit("//ul[@id='services']/li[7]/a");
+            $this->assertTrue($this->isTextPresent("Payment of the order is not yet complete."));
+
+            //Make order complete
+            $this->loginAdmin("Administer Orders", "Orders");
+            $this->clickAndWaitFrame("link=12", "edit");
+            $this->openTab("link=Downloads");
+            $this->assertEquals("1002-1", $this->getText("//div[2]/table/tbody/tr[2]/td[1]"));
+            $this->assertEquals("Test product 2 [EN] šÄßüл", $this->getText("//div[2]/table/tbody/tr[2]/td[2]"));
+            $this->assertEquals("testFile3", $this->getText("//div[2]/table/tbody/tr[2]/td[3]"));
+            $this->assertEquals("0000-00-00 00:00:00", $this->getText("//div[2]/table/tbody/tr[2]/td[4]"));
+            $this->assertEquals("0000-00-00 00:00:00", $this->getText("//div[2]/table/tbody/tr[2]/td[5]"));
+            $this->assertEquals("0", $this->getText("//div[2]/table/tbody/tr[2]/td[6]"));
+            $this->assertEquals("20", $this->getText("//div[2]/table/tbody/tr[2]/td[7]"));
+            $this->assertEquals("0", $this->getText("//div[2]/table/tbody/tr[2]/td[9]"));
+            $this->frame("list");
+            $this->openTab("link=Main");
+            $this->click("link=Current Date");
+            $this->clickAndWait("saveFormButton");
+
+            //Check if file appears in My Downloads
+            $this->openShop();
+            $this->loginInFrontend("birute_test@nfq.lt", "useruser");
+            $this->click("servicesTrigger");
+            $this->waitForItemAppear("services");
+            $this->clickAndWAit("//ul[@id='services']/li[7]/a");
+            $this->assertFalse($this->isTextPresent("Payment of the order is not yet complete."));
+            $this->click("link=testFile3");
+            $this->click("link=testFile3");
+            $this->click("link=testFile3");
+
+            $this->loginAdmin("Administer Orders", "Orders");
+            $this->clickAndWaitFrame("link=12", "edit");
+            $this->openTab("link=Downloads");
+            $this->assertEquals("1002-1", $this->getText("//div[2]/table/tbody/tr[2]/td[1]"));
+            $this->assertEquals("Test product 2 [EN] šÄßüл", $this->getText("//div[2]/table/tbody/tr[2]/td[2]"));
+            $this->assertEquals("testFile3", $this->getText("//div[2]/table/tbody/tr[2]/td[3]"));
+            $this->assertEquals("20", $this->getText("//div[2]/table/tbody/tr[2]/td[7]"));
+            $this->assertEquals("0", $this->getText("//div[2]/table/tbody/tr[2]/td[9]"));
+        }
+    }
+
+
+    /**
+     * CMS page in ident place (frontend)
+     * @group admin
+     * @group adminFunctionality
+     */
+    public function testCMSpageChangeIdent()
+    {
+        // Information about CMS page we use in this test.
+        $sCMSPageName = "standard footer";
+        $sCMSPageLink = "link=". $sCMSPageName;
+        $sCMSPageDemoIdent = "oxstdfooter";
+        $sCMSPageNewIdent = "_test_oxstdfooter";
+
+        /// Check if data corectly prepeared.
+        // Check if data corectly prepeared in admin.
+        $this->loginAdmin("Customer Info", "CMS Pages");
+        // ToDo: Maybe openTab() should know how to handle message if element is not presented ?
+        $this->assertTrue($this->isElementPresent($sCMSPageLink), "There should be CMS page with title '". $sCMSPageName ."' prepeared with demo data. Trying to find it with link: '". $sCMSPageLink ."'.");
+
+        $this->openTab($sCMSPageLink);
+        $this->assertEquals("on", $this->getValue("editval[oxcontents__oxactive]"), "CMS page with title '". $sCMSPageName ."' should be turned on as active with demo data.");
+        $this->assertEquals($sCMSPageDemoIdent, $this->getValue("editval[oxcontents__oxloadid]"), "CMS page with title '". $sCMSPageName ."' should have such ident so it will be visible in frontend footer.");
+        // Get CMS page content from textarea.
+            $this->assertTrue($this->isElementPresent("editor_oxcontents__oxcontent"));
+            $sCMSPageContent = $this->getValue("editor_oxcontents__oxcontent");
+
+        // Check if data corectly prepeared in frontend - CMS page content is visible.
+        $this->openShop();
+        // Strip HTML elements as we look only for text.
+        $this->assertTrue($this->isTextPresent(strip_tags($sCMSPageContent)), "CMS page with title '". $sCMSPageName ."' should be visible in frontend footer. Trying to find it with text: '". strip_tags($sCMSPageContent) ."' This should be prepeared with demo data.");
+
+        /// Turning off CMS page by changing ident. Check if not visible in frontend.
+        $this->loginAdmin("Customer Info", "CMS Pages");
+        $this->openTab($sCMSPageLink);
+        $this->assertEquals($sCMSPageDemoIdent, $this->getValue("editval[oxcontents__oxloadid]"), "CMS page with title '". $sCMSPageName ."' should have such ident so it will be visible in frontend footer.");
+        $this->type("editval[oxcontents__oxloadid]", $sCMSPageNewIdent);
+        $this->assertEquals($sCMSPageNewIdent, $this->getValue("editval[oxcontents__oxloadid]"), "CMS page with title '". $sCMSPageName ."' should have new ident as we just chane it in this selenium test.");
+        $this->clickAndWait("//input[@value='Save']");
+
+        $this->openShop();
+        // Strip HTML elements as we look only for text.
+        $this->assertFalse($this->isTextPresent(strip_tags($sCMSPageContent)), "CMS page with title '". $sCMSPageName ."' should not be visible in frontend footer. Trying to find it with text: '". strip_tags($sCMSPageContent) ."' This is because we change ident to not existing one in this selenium test.");
+
+        /// Turning on CMS page by changing ident. Check if visible in frontend.
+        $this->loginAdmin("Customer Info", "CMS Pages");
+        $this->openTab($sCMSPageLink);
+        $this->assertEquals($sCMSPageNewIdent, $this->getValue("editval[oxcontents__oxloadid]"), "CMS page with title '". $sCMSPageName ."' should have new ident as we previously chane it in this selenium test.");
+        $this->type("editval[oxcontents__oxloadid]", $sCMSPageDemoIdent);
+        $this->assertEquals($sCMSPageDemoIdent, $this->getValue("editval[oxcontents__oxloadid]"), "CMS page with title '". $sCMSPageName ."' should have demo ident as we just chane it in this selenium test.");
+        $this->clickAndWait("//input[@value='Save']");
+
+        $this->openShop();
+        // Strip HTML elements as we look only for text.
+        $this->assertTrue($this->isTextPresent(strip_tags($sCMSPageContent)), "CMS page with title '". $sCMSPageName ."' should be visible in frontend footer. Trying to find it with text: '". strip_tags($sCMSPageContent) ."' This is because we change ident to demo one in this selenium test.");
+    }
+
+    /**
      * checking if order info is displayed correctly
      * @group admin
      * @group order
@@ -87,6 +237,9 @@ class Acceptance_functionalityInAdminTest extends oxidAdditionalSeleniumFunction
      */
     public function testEditingOrdersMain()
     {
+        $this->captureScreenshotOnFailure = false; // Workaround for phpunit 3.6, disable screenshots before skip!
+        $this->markTestIncomplete("Waiting for fix");
+
         $this->executeSql( "UPDATE `oxorder` SET `OXFOLDER` = 'ORDERFOLDER_FINISHED' WHERE `OXID` = 'testorder7'" );
         $this->loginAdmin("Administer Orders", "Orders");
         $this->selectAndWait("folder", "label=Finished");
@@ -152,12 +305,8 @@ class Acceptance_functionalityInAdminTest extends oxidAdditionalSeleniumFunction
         $this->executeSql( "UPDATE `oxorder` SET `OXFOLDER` = 'ORDERFOLDER_FINISHED' WHERE `OXID` = 'testorder7'" );
         $this->loginAdmin("Administer Orders", "Orders");
         $this->selectAndWait("folder", "label=Finished", "link=1");
-        $this->clickAndWaitFrame("link=1", "edit", "link=Main");
-        $this->openTab("link=Main", "editval[oxorder__oxdelcost]");
-        $this->type("editval[oxorder__oxdelcost]", "10");
-        $this->clickAndWaitFrame("saveFormButton", "list", "editval[oxorder__oxdelcost]");
-        $this->frame("list", "link=Addresses");
-        $this->openTab("link=Addresses");
+        $this->clickAndWaitFrame("link=1", "edit");
+        $this->openTab("link=Addresses", "editval[oxorder__oxbillsal]");
         //billing address
         $this->assertEquals("Mr", $this->getSelectedLabel("editval[oxorder__oxbillsal]"));
         $this->assertEquals("1useršÄßüл", $this->getValue("editval[oxorder__oxbillfname]"));
@@ -212,12 +361,12 @@ class Acceptance_functionalityInAdminTest extends oxidAdditionalSeleniumFunction
         $this->assertEquals("NI", $this->getValue("editval[oxorder__oxbillstateid]"));
         $this->frame("list");
         $this->openTab("link=Main");
-        $this->assertEquals("10", $this->getValue("editval[oxorder__oxdelcost]"));
+        $this->assertEquals("0", $this->getValue("editval[oxorder__oxdelcost]"));
         $this->assertEquals("10", $this->getValue("editval[oxorder__oxdiscount]"));
         $this->frame("list");
         $this->openTab("link=Overview");
         $this->assertEquals("Finished", $this->getSelectedLabel("setfolder"));
-        $this->assertEquals("107,50", $this->getText("//table[@id='order.info']/tbody/tr[7]/td[2]"));
+        $this->assertEquals("97,50", $this->getText("//table[@id='order.info']/tbody/tr[6]/td[2]"));
         $this->frame("list");
         $this->openTab("link=Addresses");
         $this->assertEquals("NI", $this->getValue("editval[oxorder__oxbillstateid]"));
@@ -226,7 +375,7 @@ class Acceptance_functionalityInAdminTest extends oxidAdditionalSeleniumFunction
         $this->clickAndWait("save");
         $this->frame("list", "link=Main");
         $this->openTab("link=Main", "editval[oxorder__oxdelcost]");
-        $this->assertEquals("10", $this->getValue("editval[oxorder__oxdelcost]"));
+        $this->assertEquals("0", $this->getValue("editval[oxorder__oxdelcost]"));
         $this->assertEquals("10", $this->getValue("editval[oxorder__oxdiscount]"));
         $this->frame("list");
         $this->openTab("link=Overview");
@@ -266,13 +415,12 @@ class Acceptance_functionalityInAdminTest extends oxidAdditionalSeleniumFunction
         $this->frame("list");
         $this->openTab("link=Overview");
         $this->assertEquals("Finished", $this->getSelectedLabel("setfolder"));
-        $this->assertEquals("107,50", $this->getText("//table[@id='order.info']/tbody/tr[7]/td[2]"));
+        $this->assertEquals("97,50", $this->getText("//table[@id='order.info']/tbody/tr[6]/td[2]"));
         $this->assertEquals("Billing Address: Company UserCompany User additional info Mrs UserName UserSurname Musterstr 10 790980 Musterstadt Ireland VAT ID: 123 E-mail: birute_test@nfq.com", $this->clearString($this->getText("//td[1]/table[1]/tbody/tr/td[1]")));
         $this->assertEquals("Shipping Address: Firma company add info Mrs name surname street 1 HE zip city Germany", $this->clearString($this->getText("//td[1]/table[1]/tbody/tr/td[2]")));
         $this->frame("list");
         $this->openTab("link=Main");
-        $this->assertTrue($this->isTextPresent("192.168.1.999"));
-        $this->assertEquals("10", $this->getValue("editval[oxorder__oxdelcost]"));
+        $this->assertEquals("0", $this->getValue("editval[oxorder__oxdelcost]"));
         $this->assertEquals("10", $this->getValue("editval[oxorder__oxdiscount]"));
     }
 
@@ -327,6 +475,8 @@ class Acceptance_functionalityInAdminTest extends oxidAdditionalSeleniumFunction
         $this->openTab("link=Overview");
         $this->assertEquals("Finished", $this->getSelectedLabel("setfolder"));
         $this->assertEquals("- 10,00", $this->getText("//table[@id='order.info']/tbody/tr[2]/td[2]"));
+        $this->assertEquals("9,90", $this->getText("//table[@id='order.info']/tbody/tr[5]/td[2]"));
+        $this->assertEquals("107,40", $this->getText("//table[@id='order.info']/tbody/tr[7]/td[2]"));
         $this->frame("list");
     }
 
@@ -338,6 +488,9 @@ class Acceptance_functionalityInAdminTest extends oxidAdditionalSeleniumFunction
      */
     public function testEditingOrdersProducts()
     {
+        $this->captureScreenshotOnFailure = false; // Workaround for phpunit 3.6, disable screenshots before skip!
+	    $this->markTestSkipped(" fix test after bug 0004624 fix , so we need to move test to integration test with correct information");
+
         $this->executeSql( "UPDATE `oxorder` SET `OXFOLDER` = 'ORDERFOLDER_FINISHED' WHERE `OXID` = 'testorder7'" );
         $this->loginAdmin("Administer Orders", "Orders");
         $this->selectAndWait("folder", "label=Finished");
@@ -360,7 +513,7 @@ class Acceptance_functionalityInAdminTest extends oxidAdditionalSeleniumFunction
         $this->assertEquals("selvar1 [EN] šÄßüл selvar2 [EN] šÄßüл selvar3 [EN] šÄßüл selvar4 [EN] šÄßüл", $this->getText("test_select__0"));
         $this->type("sSearchArtNum", "1002");
         $this->clickAndWait("//input[@name='search']");
-        $this->assertEquals("Test product 2 [EN] šÄßüл priceFrom 55,00 EUR Test product 2 [EN] šÄßüл var1 [EN] šÄßüл 55,00 EUR Test product 2 [EN] šÄßüл var2 [EN] šÄßüл 67,00 EUR", $this->clearString($this->getText("aid")));
+        $this->assertEquals("Test product 2 [EN] šÄßüл 55,00 EUR Test product 2 [EN] šÄßüл var1 [EN] šÄßüл 55,00 EUR Test product 2 [EN] šÄßüл var2 [EN] šÄßüл 67,00 EUR", $this->clearString($this->getText("aid")));
         $this->assertFalse($this->isElementPresent("test_select__0"));
         $this->type("sSearchArtNum", "100");
         $this->clickAndWait("//input[@name='search']");
@@ -372,8 +525,8 @@ class Acceptance_functionalityInAdminTest extends oxidAdditionalSeleniumFunction
         $this->assertEquals("Test product 3 [EN] šÄßüл 75,00 EUR", $this->clearString($this->getText("aid")));
         $this->type("am", "2");
         $this->clickAndWait("add");
-        $this->assertEquals("250,00",  $this->getText("//table[@id='order.info']/tbody/tr[1]/td[2]"));
-        $this->assertEquals("- 25,00", $this->getText("//table[@id='order.info']/tbody/tr[2]/td[2]"));
+        $this->assertEquals("225,00",  $this->getText("//table[@id='order.info']/tbody/tr[1]/td[2]"));
+        $this->assertEquals("- 0,00", $this->getText("//table[@id='order.info']/tbody/tr[2]/td[2]"));
         $this->assertEquals("199,16",  $this->getText("//table[@id='order.info']/tbody/tr[3]/td[2]"));
         $this->assertEquals("4,29",    $this->getText("//table[@id='order.info']/tbody/tr[4]/td[2]"));
         $this->assertEquals("21,55",   $this->getText("//table[@id='order.info']/tbody/tr[5]/td[2]"));
@@ -393,11 +546,11 @@ class Acceptance_functionalityInAdminTest extends oxidAdditionalSeleniumFunction
         $this->clickAndWait("save");
         $this->assertTrue($this->isTextPresent("Shipped on ".date("Y-m-d")));
         $this->assertEquals("0,00", $this->getText("//table[@id='order.info']/tbody/tr[6]/td[2]"));
-        $this->assertEquals("- 25,00", $this->getText("//table[@id='order.info']/tbody/tr[2]/td[2]"));
+        $this->assertEquals("- 0,00", $this->getText("//table[@id='order.info']/tbody/tr[2]/td[2]"));
         $this->clickAndWait("//input[@name='save' and @value='Reset Shipping Date']");
         $this->assertTrue($this->isTextPresent("Order not shipped yet."));
         $this->assertEquals("0,00", $this->getText("//table[@id='order.info']/tbody/tr[6]/td[2]"));
-        $this->assertEquals("- 25,00", $this->getText("//table[@id='order.info']/tbody/tr[2]/td[2]"));
+        $this->assertEquals("- 0,00", $this->getText("//table[@id='order.info']/tbody/tr[2]/td[2]"));
         $this->frame("list");
         $this->openTab("link=Main");
         $this->frame("list");
@@ -436,7 +589,7 @@ class Acceptance_functionalityInAdminTest extends oxidAdditionalSeleniumFunction
         $this->clickAndWait("//button[text()='Continue to Next Step']");
         $this->click("payment_oxidcashondel");
         $this->clickAndWait("//button[text()='Continue to Next Step']");
-        $this->assertTrue($this->isTextPresent("What I wanted to say ...: remark text"));
+        $this->assertTrue($this->isTextPresent("What I wanted to say remark text"));
         $this->check("//form[@id='orderConfirmAgbTop']//input[@name='ord_agb' and @value='1']");
         $this->clickAndWait("//form[@id='orderConfirmAgbTop']//button");
 
@@ -612,7 +765,7 @@ class Acceptance_functionalityInAdminTest extends oxidAdditionalSeleniumFunction
      */
     public function testProductExport()
     {
-            $this->clearTmp();
+            //$this->clearTmp();
             $this->loginAdmin("Administer Products", "Products");
             //testing export
             $this->selectFrame("relative=top");
@@ -848,8 +1001,8 @@ class Acceptance_functionalityInAdminTest extends oxidAdditionalSeleniumFunction
     /**
      * Administer Products -> Products (variants should inherit parents selection lists)
      * @group admin
-     * @group main
      * @group adminFunctionality
+     * @group main
      */
     public function testVariantsInheritsSelectionLists()
     {
@@ -876,7 +1029,6 @@ class Acceptance_functionalityInAdminTest extends oxidAdditionalSeleniumFunction
         $this->openTab("link=Main");
         //checking if selection list is assigned to variant also
         $this->selectAndWaitFrame( "art_variants", "label=- var1 [DE]", "list");
-
         $this->assertEquals("1002-1", $this->getValue("editval[oxarticles__oxartnum]"));
         $this->Frame("list");
         $this->openTab("link=Selection");
@@ -904,7 +1056,6 @@ class Acceptance_functionalityInAdminTest extends oxidAdditionalSeleniumFunction
         $this->assertTrue($this->isElementPresent("cartItemSelections_2"));
         $this->assertEquals("test selection list [EN] šÄßüл: selvar2 [EN] šÄßüл", $this->getText("//div[@id='cartItemSelections_2']//p"));
     }
-
 
     /**
      * Core settings -> Settings -> Active Category at Start
@@ -1185,35 +1336,6 @@ class Acceptance_functionalityInAdminTest extends oxidAdditionalSeleniumFunction
 */
     }
 
-
-
-    /**
-     * Core settings options saving. checking if saving options does not break the shop
-     * @group admin
-     * @group adminFunctionality
-     */
-    public function testCoreSettingsSave()
-    {
-        $this->loginAdmin("Master Settings", "Core Settings");
-        $this->openTab("link=Settings");
-        $this->clickAndWaitFrame("save", "list");
-        $this->frame("list");
-        $this->openTab("link=System");
-        $this->clickAndWaitFrame("save", "list");
-        $this->frame("list");
-        $this->openTab("link=Perform.");
-        $this->clickAndWaitFrame("save", "list");
-        $this->frame("list");
-        $this->openTab("link=SEO");
-        $this->clickAndWaitFrame("save", "list");
-        $this->openShop();
-        $this->clickAndWait("link=Test category 0 [EN] šÄßüл");
-        $this->assertEquals("You are here: / Test category 0 [EN] šÄßüл", $this->getText("breadCrumb"));
-        $this->assertEquals("Test product 1 [EN] šÄßüл", $this->getText("//ul[@id='productList']/li[2]/form/div/div/a"));
-        $this->assertEquals("100,00 €", $this->getText("//ul[@id='productList']/li[2]//span[2]"));
-    }
-
-
     /**
      * My Account navigation: Order history
      * Product amounts after order and while editing order in admin
@@ -1269,7 +1391,8 @@ class Acceptance_functionalityInAdminTest extends oxidAdditionalSeleniumFunction
         $this->openTab("link=Products");
         $this->assertTrue($this->isElementPresent("//tr[@id='art.1']"));
         $this->assertFalse($this->isElementPresent("//tr[@id='art.2']"));
-        $this->clickAndConfirm("//tr[@id='art.1']/td[11]/a");
+        $this->clickAndConfirm("//tr[@id='art.1']/td/a[@class='delete']");
+        //$this->clickAndConfirm("//tr[@id='art.1']/td[11]/a[@class='delete']");
         $this->assertFalse($this->isElementPresent("//tr[@id='art.1']"));
         $this->assertFalse($this->isElementPresent("//tr[@id='art.2']"));
         $this->selectMenu("Administer Products", "Products", "btn.new", "where[oxarticles][oxartnum]");
@@ -1312,8 +1435,10 @@ class Acceptance_functionalityInAdminTest extends oxidAdditionalSeleniumFunction
         $this->selectMenu("Administer Orders", "Orders");
         $this->clickAndWaitFrame("link=12", "edit");
         $this->openTab("link=Products");
-        $this->clickAndConfirm("//tr[@id='art.2']/td[12]/a");
-        $this->clickAndConfirm("//tr[@id='art.1']/td[12]/a");
+        //$this->clickAndConfirm("//tr[@id='art.2']/td[12]/a");
+        //$this->clickAndConfirm("//tr[@id='art.1']/td[12]/a");
+        $this->clickAndConfirm("//tr[@id='art.2']/td/a[@class='pause']");
+        $this->clickAndConfirm("//tr[@id='art.1']/td/a[@class='pause']");
         $this->selectMenu("Administer Products", "Products");
         $this->type("where[oxarticles][oxartnum]", "1000");
         $this->clickAndWait("submitit");
@@ -1465,8 +1590,8 @@ class Acceptance_functionalityInAdminTest extends oxidAdditionalSeleniumFunction
             $this->clickAndWait("//button[text()='Continue to Next Step']");
             $this->clickAndWait("//button[text()='Continue to Next Step']");
             $this->clickAndWait("//button[text()='Continue to Next Step']");
-            $this->check("//form[@id='orderConfirmAgbBottom']/div/input[@name='ord_agb' and @value='1']");
-            $this->clickAndWait("//form[@id='orderConfirmAgbBottom']//button");
+            $this->check("//form[@id='orderConfirmAgbTop']/div/input[@name='ord_agb' and @value='1']");
+            $this->clickAndWait("//form[@id='orderConfirmAgbTop']//button");
         }
         $this->loginAdmin("Administer Products", "Products");
         $this->type("where[oxarticles][oxartnum]", "1003");
@@ -1532,8 +1657,8 @@ class Acceptance_functionalityInAdminTest extends oxidAdditionalSeleniumFunction
             $this->clickAndWait("//button[text()='Continue to Next Step']");
             $this->clickAndWait("//button[text()='Continue to Next Step']");
             $this->clickAndWait("//button[text()='Continue to Next Step']");
-            $this->check("//form[@id='orderConfirmAgbBottom']/div/input[@name='ord_agb' and @value='1']");
-            $this->clickAndWait("//form[@id='orderConfirmAgbBottom']//button");
+            $this->check("//form[@id='orderConfirmAgbTop']/div/input[@name='ord_agb' and @value='1']");
+            $this->clickAndWait("//form[@id='orderConfirmAgbTop']//button");
         }
         $this->loginAdmin("Administer Products", "Products");
         $this->type("where[oxarticles][oxartnum]", "1003");
@@ -1576,29 +1701,142 @@ class Acceptance_functionalityInAdminTest extends oxidAdditionalSeleniumFunction
         $this->assertEquals("8", $this->getValue("editval[oxarticles__oxstock]"));
     }
 
+
+     /**
+     * checking does work in frontend multidimensional variants which have stock prices
+     * @group admin
+     */
+    public function testMultidimensionalVariantsWhichHaveStockPrices()
+    {
+        $this->loginAdmin("Administer Products", "Products");
+        $this->type("where[oxarticles][oxartnum]", "3570");
+        $this->clickAndWait("//input[@name='submitit']");
+        $this->clickAndWaitFrame("link=3570", "edit");
+        $this->frame("list");
+        $this->openTab("link=Variants");
+        $this->waitForElementPresent("test_variant.4");
+        $this->click("//tr[@id='test_variant.4']/td[1]/a");
+        $this->waitForFrameToLoad("list");
+        $this->frame("list");
+        $this->openTab("link=Stock");
+        $this->waitForElementPresent("test_editlanguage");
+        $this->type("editval[oxprice2article__oxamount]", "1");
+        $this->type("editval[oxprice2article__oxamountto]", "5");
+        $this->type("editval[price]", "10");
+        $this->clickAndWait("document.myedit.save[1]");
+        $this->openShop();
+        $this->searchFor("3570");
+        $this->clickAndWait("searchList_1");
+        $this->assertEquals("Kuyichi Jeans ANNA", $this->getText("//h1"));
+        $this->selectVariant("variants", 1, "W 30/L 30", "Selected combination: W 30/L 30");
+        $this->selectVariant("variants", 2, "Blue", "Selected combination: W 30/L 30, Blue");
+        $this->assertEquals("10,00 € *", $this->getText("//label[@id='productPrice']"));
+        $this->selectVariant("variants", 2, "Smoke Gray", "Selected combination: W 30/L 30, Smoke Gray");
+        $this->assertEquals("99,90 € *", $this->getText("//label[@id='productPrice']"));
+    }
+
+
+    /**
+     * checking if Display attribute's value for products in checkout is on
+     * @group admin
+     */
+
+     public function testDisplayAttributesValueForProductInCheckout()
+    {
+        $this->loginAdmin("Administer Products", "Attributes", null, null, true);
+        $this->type("where[oxattribute][oxtitle]", "Color");
+        $this->clickAndWait("submitit", "link=Color");
+        $this->openTab("link=Color", "editval[oxattribute__oxtitle]");
+        $this->check("//input[@name='editval[oxattribute__oxdisplayinbasket]' and @value='1']");
+        $this->clickAndWait("//input[@value='Save']");
+        $this->selectMenu("Administer Products", "Products");
+        $this->assertEquals("English", $this->getSelectedLabel("changelang"));
+        $this->type("where[oxarticles][oxartnum]", "1402");
+        $this->clickAndWait("submitit", "link=1402");
+        $this->openTab("link=1402", "editval[oxarticles__oxtitle]");
+        $this->Frame("list");
+        $this->openTab("link=Selection");
+        //creating attribute's value for products
+        $this->click("//input[@value='Assign Attributes']");
+        $this->usePopUp();
+        $this->type("_0", "Color");
+        $this->keyUp("_0", "t");
+        $this->waitForAjax("Color", "//div[@id='container1_c']/table/tbody[2]/tr[1]/td[1]");
+        $this->dragAndDrop("//div[@id='container1_c']/table/tbody[2]/tr[1]/td[1]", "container2");
+        $this->waitForAjax("Color", "//div[@id='container2_c']/table/tbody[2]/tr[1]/td[1]");
+        $this->click("//div[@id='container2_c']/table/tbody[2]/tr[1]/td[1]/div");
+        $this->type("//input[@id='attr_value']", "Black");
+        $this->click("//input[@value='Save']");
+        $this->close();
+        $this->selectWindow(null);
+        $this->windowMaximize(null);
+        //open frontend and adding products to the basket
+        $this->openShop();
+        $this->loginInFrontend("birute_test@nfq.lt", "useruser");
+        $this->searchFor("1402");
+        $this->clickAndWait("searchList_1");
+        $this->type("amountToBasket", "2");
+        $this->clickAndWait("toBasket");
+        $this->openBasket();
+        //Display attribute's value for products in checkout
+          $this->assertEquals("Harness MADTRIXX", $this->getText("//tr[@id='cartItem_1']/td/div[1]"));
+        $this->assertEquals("Art.No.: 1402", $this->getText("//tr[@id='cartItem_1']/td/div[2]"));
+        $this->assertEquals("Black", $this->getText("//tr[@id='cartItem_1']/td/div[3]"));
+         $this->assertTrue($this->isTextPresent("Black"));
+        $this->clickAndWait("//button[text()='Continue to Next Step']");
+        $this->clickAndWait("//button[text()='Continue to Next Step']");
+        $this->clickAndWait("//button[text()='Continue to Next Step']");
+        $this->assertEquals("Harness MADTRIXX", $this->getText("//tr[@id='cartItem_1']/td/div[1]"));
+        $this->assertEquals("Art.No.: 1402", $this->getText("//tr[@id='cartItem_1']/td/div[2]"));
+        $this->assertEquals("Black", $this->getText("//tr[@id='cartItem_1']/td/div[3]"));
+        $this->assertTrue($this->isTextPresent("Black"));
+         $this->clickAndWait("//button[text()='Order now']");
+        $this->loginAdmin("Administer Products", "Attributes", null, null, true);
+        $this->type("where[oxattribute][oxtitle]", "Color");
+        $this->clickAndWait("submitit", "link=Color");
+        $this->openTab("link=Color", "editval[oxattribute__oxtitle]");
+        $this->uncheck("//input[@name='editval[oxattribute__oxdisplayinbasket]' and @value='1']");
+        $this->clickAndWait("//input[@value='Save']");
+        $this->openShop();
+        $this->loginInFrontend("birute_test@nfq.lt", "useruser");
+        $this->searchFor("1402");
+        $this->clickAndWait("searchList_1");
+        $this->type("amountToBasket", "1");
+        $this->clickAndWait("toBasket");
+        $this->openBasket();
+        //Checking if does not display attribute's value for products in checkout
+          $this->assertEquals("Harness MADTRIXX", $this->getText("//tr[@id='cartItem_1']/td/div[1]"));
+        $this->assertEquals("Art.No.: 1402", $this->getText("//tr[@id='cartItem_1']/td/div[2]"));
+        $this->assertFalse($this->isTextPresent("Black"));
+        $this->clickAndWait("//button[text()='Continue to Next Step']");
+        $this->clickAndWait("//button[text()='Continue to Next Step']");
+        $this->clickAndWait("//button[text()='Continue to Next Step']");
+        $this->assertEquals("Harness MADTRIXX", $this->getText("//tr[@id='cartItem_1']/td/div[1]"));
+        $this->assertEquals("Art.No.: 1402", $this->getText("//tr[@id='cartItem_1']/td/div[2]"));
+        $this->assertFalse($this->isTextPresent("Black"));
+        $this->clickAndWait("//button[@type='submit']");
+    }
+
     /**
      * checking if switching themes works
      * @group admin
-     * @group adminFunctionality
      */
     public function testSwitchingThemes()
     {
-        $this->loginAdmin("Master Settings", "Themes", "//form[@id='transfer']", "link=Basic");
-        $this->openTab("link=Basic", "//input[@value='Activate']");
-        $this->assertTrue($this->isTextPresent("Basic theme by OXID"));
+        $this->captureScreenshotOnFailure = false; // Workaround for phpunit 3.6, disable screenshots before skip!
+        $this->markTestSkipped("There is no more basic theme, so we can't switch to it.");
+
+        $this->loginAdmin("Master Settings", "Themes", "//form[@id='transfer']", "link=testtheme");
+        $this->openTab("link=testtheme", "//input[@value='Activate']");
+        $this->assertTrue($this->isTextPresent("Test theme by OXID eSales AG"));
         $this->clickAndWaitFrame("//input[@value='Activate']", "list");
         $this->assertFalse($this->isElementPresent("//input[@value='Activate']"));
         $this->frame("list");
         $this->openTab("link=Settings", "//input[@value='Save']");
-        $this->click("link=Images");
-        $this->waitForItemAppear("confstrs[sIconsize]");
-        $this->assertTrue($this->isTextPresent("Icon size"));
-        $this->clearTmp();
+        $this->assertTrue($this->isTextPresent("testtheme"));
+        //$this->clearTmp();
         $this->openShop();
-        $this->assertTrue($this->isElementPresent("path"));
-        $this->assertTrue($this->isElementPresent("test_Lang_Deutsch"));
-        $this->clickAndWait("link=Test category 0 [EN] šÄßüл");
-        $this->assertTrue($this->isElementPresent("test_cntr_2_1001"));
+        $this->assertTrue($this->isTextPresent("Welcome, this is Test Theme!"));
 
         //azure theme on
         $this->loginAdmin("Master Settings", "Themes");
@@ -1611,7 +1849,7 @@ class Acceptance_functionalityInAdminTest extends oxidAdditionalSeleniumFunction
         $this->click("link=Images");
         $this->waitForItemAppear("confstrs[sIconsize]");
         $this->assertTrue($this->isTextPresent("Icon size"));
-        $this->clearTmp();
+        //$this->clearTmp();
         $this->openShop();
         $this->assertTrue($this->isElementPresent("topMenu"));
         $this->assertTrue($this->isElementPresent("footerServices"));
@@ -1627,6 +1865,9 @@ class Acceptance_functionalityInAdminTest extends oxidAdditionalSeleniumFunction
      */
     public function testConversionRateOptions()
     {
+        $this->captureScreenshotOnFailure = false; // Workaround for phpunit 3.6, disable screenshots before skip!
+        $this->markTestSkipped("There is not done test, so we need to decide  finish or  delete test ");
+
         //basic theme on
         $this->loginAdmin("Master Settings", "Core Settings");
         $this->openTab("link=System", "link=Order");
@@ -1635,7 +1876,7 @@ class Acceptance_functionalityInAdminTest extends oxidAdditionalSeleniumFunction
         $this->assertTrue($this->isElementPresent("confbools[blDisableNavBars]"));
         //checking in basic theme
         $this->selectMenu("Master Settings", "Themes");
-        $this->openTab("link=Basic", "//input[@value='Activate']");
+        $this->openTab("link=testtheme", "//input[@value='Activate']");
         $this->clickAndWaitFrame("//input[@value='Activate']", "list");
         $this->frame("list");
         $this->openTab("link=Settings", "//input[@value='Save']");
@@ -1652,7 +1893,7 @@ class Acceptance_functionalityInAdminTest extends oxidAdditionalSeleniumFunction
     {
         //activating econda
         $this->executeSql("UPDATE `oxconfig` SET `OXVARVALUE` = 0xce92 WHERE `OXVARNAME` = 'sShopCountry'");
-        $this->clearTmp();
+        //$this->clearTmp();
         $this->loginAdmin("Shop controlling", "econda", "confbools[blEcondaActive]");
         $this->frame("edit");
         $this->click("//input[@name='confbools[blEcondaActive]' and @type='checkbox']");
@@ -1664,7 +1905,9 @@ class Acceptance_functionalityInAdminTest extends oxidAdditionalSeleniumFunction
         $this->assertTrue($this->isTextPresent("function(){var URL_TRACKING_ALLOWED=true"));
         $this->goBack();
         //home page checking
+        $this->openShop();
         $htmlSource = $this->getHtmlSource();
+
         $this->assertContains("window.emosPropertiesEvent(emospro);", $htmlSource);
         $this->assertContains('emospro.content = "Start";', $htmlSource);
         $this->assertContains('emospro.langid = 1;', $htmlSource);
@@ -1747,180 +1990,27 @@ class Acceptance_functionalityInAdminTest extends oxidAdditionalSeleniumFunction
     */
     public function testIsFacebookPluginEnabled()
     {
-        $this->loginAdmin("Master Settings", "Core Settings");
-        $this->openTab("link=Settings", "link=Facebook");
-        $this->click("link=Facebook");
-        $this->check("//input[@name='confbools[blFacebookConfirmEnabled]' and @value='true']");
-        $this->type("confstrs[sFbAppId]", "129895460367329");
-        $this->type(" confstrs[sFbSecretKey]", "1e5f848786f334becd745476c71eb6dd");
-        $this->select("confstrs[blFbLikeEnabled]", "label=Enable");
-        $this->clickAndWait("save");
-        $this->openShop();
-        $this->assertEquals('-1', $this->getEval('this.page().findElement("footerFbLike").innerHTML.search("<fb:like");'), "Facebook like should not be loaded at first visit in shop");
-        $this->assertTrue($this->isElementPresent("//div[@id='footerFbLike']//a[text()='Enable']"));
-        $this->assertTrue($this->isElementPresent("//div[@id='footerFbLike']//a[text()='?']"));
-        $this->click("//div[@id='footerFbLike']//a[text()='Enable']");
-        sleep(5);
-        $this->assertEquals('1', $this->getEval('this.page().findElement("footerFbLike").innerHTML.search("<fb:like");'), "Facebook like should be loaded after enabling it");
-        $this->assertFalse($this->isElementPresent("//div[@id='footerFbLike']//a[text()='Enable']"));
-        $this->assertFalse($this->isElementPresent("//div[@id='footerFbLike']//a[text()='?']"));
-    }
-
-
-   /**
-    * Testing downloadable product in admin ant frontend
-    * @group admin
-    * @group adminFunctionality
-    */
-    public function testDownloadableFiles()
-    {
-            if (!isSUBSHOP) {
-            // Enable downloadable files
+        if (!isSUBSHOP) {
             $this->loginAdmin("Master Settings", "Core Settings");
-            $this->openTab("link=Settings");
-            $this->click("link=Downloadable products");
-            $this->check("//input[@name='confbools[blEnableDownloads]' and @value='true']");
-            $this->clearString("confstrs[iMaxDownloadsCount]");
-            $this->type("confstrs[iMaxDownloadsCount]", "2");
-            $this->clearString("confstrs[iLinkExpirationTime]");
-            $this->type("confstrs[iLinkExpirationTime]", "240");
-            $this->clearString("confstrs[iDownloadExpirationTime]");
-            $this->type("confstrs[iDownloadExpirationTime]", "24");
-            $this->clearString("confstrs[iMaxDownloadsCountUnregistered]");
-            $this->type("confstrs[iMaxDownloadsCountUnregistered]", "2");
+            $this->openTab("link=Settings", "link=Facebook");
+            $this->click("link=Facebook");
+            $this->check("//input[@name='confbools[blFacebookConfirmEnabled]' and @value='true']");
+            $this->type("confstrs[sFbAppId]", "129895460367329");
+            $this->type(" confstrs[sFbSecretKey]", "1e5f848786f334becd745476c71eb6dd");
+            $this->select("confstrs[blFbLikeEnabled]", "label=Enable");
             $this->clickAndWait("save");
-
-            // Select product with downloadable file
-            $this->loginAdmin("Administer Products", "Products");
-            $this->type("where[oxarticles][oxartnum]", "1002");
-            $this->clickAndWait("submitit");
-            $this->clickAndWaitFrame("link=1002", "edit");
-
-            $this->Frame("list");
-            $this->openTab("link=Downloads");
-            $this->check("//input[@name='editval[oxarticles__oxisdownloadable]' and @value='1']");
-            $this->clickAndWait("save");
-
-            // Make purchase complete
             $this->openShop();
-            $this->loginInFrontend("birute_test@nfq.lt", "useruser");
-            $this->searchFor("1002");
-            $this->assertEquals("Test product 2 [EN] šÄßüл", $this->getText("searchList_1"));
-            $this->selectVariant("variantselector_searchList_1", 1, "var1 [EN] šÄßüл");
-            $this->type("amountToBasket", "10");
-            $this->clickAndWait("toBasket");
-            $this->openBasket();
-            $this->clickAndWait("//button[text()='Continue to Next Step']");
-            $this->clickAndWait("//button[text()='Continue to Next Step']");
-            $this->clickAndWait("//button[text()='Continue to Next Step']");
-            $this->check("//form[@id='orderConfirmAgbTop']//input[@name='ord_agb' and @value='1']");
-            $this->clickAndWait("//form[@id='orderConfirmAgbTop']//button");
-
-            $this->assertEquals("You are here: / Order Completed", $this->getText("breadCrumb"));
-
-            //Check if file appears in My Downloads
-            $this->click("servicesTrigger");
-            $this->waitForItemAppear("services");
-            $this->clickAndWAit("//ul[@id='services']/li[7]/a");
-
-            $this->assertTrue($this->isTextPresent("Payment of the order is not yet complete."));
-
-
-            //Make order complete
-            $this->loginAdmin("Administer Orders", "Orders");
-            $this->clickAndWaitFrame("link=12", "edit");
-            $this->openTab("link=Downloads");
-            $this->assertEquals("1002-1", $this->getText("//div[2]/table/tbody/tr[2]/td[1]"));
-            $this->assertEquals("Test product 2 [EN] šÄßüл", $this->getText("//div[2]/table/tbody/tr[2]/td[2]"));
-            $this->assertEquals("testFile3", $this->getText("//div[2]/table/tbody/tr[2]/td[3]"));
-            $this->assertEquals("0000-00-00 00:00:00", $this->getText("//div[2]/table/tbody/tr[2]/td[4]"));
-            $this->assertEquals("0000-00-00 00:00:00", $this->getText("//div[2]/table/tbody/tr[2]/td[5]"));
-            $this->assertEquals("0", $this->getText("//div[2]/table/tbody/tr[2]/td[6]"));
-            $this->assertEquals("20", $this->getText("//div[2]/table/tbody/tr[2]/td[7]"));
-            $this->assertEquals("0", $this->getText("//div[2]/table/tbody/tr[2]/td[9]"));
-            $this->frame("list");
-            $this->openTab("link=Main");
-            $this->click("link=Current Date");
-            $this->clickAndWait("saveFormButton");
-            //Check if file appears in My Downloads
-            $this->openShop();
-            $this->loginInFrontend("birute_test@nfq.lt", "useruser");
-            $this->click("servicesTrigger");
-            $this->waitForItemAppear("services");
-            $this->clickAndWAit("//ul[@id='services']/li[7]/a");
-            $this->assertFalse($this->isTextPresent("Payment of the order is not yet complete."));
-            $this->click("link=testFile3");
-            $this->click("link=testFile3");
-            $this->click("link=testFile3");
-            $this->loginAdmin("Administer Orders", "Orders");
-            $this->clickAndWaitFrame("link=12", "edit");
-            $this->openTab("link=Downloads");
-            $this->assertEquals("1002-1", $this->getText("//div[2]/table/tbody/tr[2]/td[1]"));
-            $this->assertEquals("Test product 2 [EN] šÄßüл", $this->getText("//div[2]/table/tbody/tr[2]/td[2]"));
-            $this->assertEquals("testFile3", $this->getText("//div[2]/table/tbody/tr[2]/td[3]"));
-            $this->assertEquals("20", $this->getText("//div[2]/table/tbody/tr[2]/td[7]"));
-            $this->assertEquals("0", $this->getText("//div[2]/table/tbody/tr[2]/td[9]"));
-
-}
-    }
-
-    /**
-     * Testing administration for  GUI modules
-    * @group admin
-    * @group adminFunctionality
-    */
-        public function testGuiModulesAdministartion()
-{
-      if (!isSUBSHOP) {
-
-
-
-              $this->executeSql("INSERT INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`, `OXVARNAME`, `OXVARTYPE`, `OXVARVALUE`) VALUES('testisModulesConfigId', 'oxbaseshop', 'module:test1', 'sTestInvoicePdfOption', 'str', 0x9382574762414966e5)");
-              $this->executeSql("INSERT INTO `oxconfigdisplay` (`OXID`, `OXCFGMODULE`, `OXCFGVARNAME`, `OXGROUPING`, `OXVARCONSTRAINT`, `OXPOS`) VALUES('testisModulesConfigDisplayId', 'module:test1', 'sTestInvoicePdfOption', 'features', '', 1)");
-
-
-            $this->loginAdmin("Extensions", "Modules");
-            $this->clickAndWait("link=Test module #1");
-            $this->frame("edit");
-            $this->clickAndWait("//form[@id='myedit']//input[@value='Activate']");
-            $this->loginAdmin("Extensions", "Modules");
-            $this->clickAndWait("link=Test module #2");
-            $this->frame("edit");
-            $this->clickAndWait("//form[@id='myedit']//input[@value='Activate']");
-            $this->loginAdmin("Extensions", "Modules");
-            $this->clickAndWait("link=test3");
-            $this->frame("edit");
-            $this->type("moduleName", "test3");
-            $this->type("aExtendedClasses", "info=>test3/view/myinfo3");
-            $this->clickAndWait("//form[@id='myedit2']//input[@value='Save']");
-            $this->clickAndWait("//form[@id='myedit']//input[@value='Activate']");
-
-            $this->loginAdmin("Extensions", "Modules");
-            $this->clickAndWait("link=Test module #1");
-            $this->frame("list");
-            $this->openTab("link=Settings","link=Features");
-            $this->click("link=Features");
-            $this->clearString("confstrs[sTestInvoicePdfOption]");
-            $this->type("confstrs[sTestInvoicePdfOption]", "text1");
-            $this->clickAndWait("save");
-            $this->frame("list");
-            $this->openTab("link=Settings","link=Features");
-            $this->click("link=Features");
-            $this->assertTrue($this->isElementPresent("confstrs[sTestInvoicePdfOption]"));
-
-            $this->loginAdmin("Extensions", "Modules");
-            $this->clickAndWait("link=Test module #1");
-            $this->clickAndWaitFrame("link=Test module #1", "edit");
-            $this->frame("list");
-            $this->openTab("link=Installed Shop Modules");
-
-
+            $this->assertEquals('-1', $this->getEval('this.page().findElement("footerFbLike").innerHTML.search("<fb:like");'), "Facebook like should not be loaded at first visit in shop");
+            $this->assertTrue($this->isElementPresent("//div[@id='footerFbLike']//a[text()='Enable']"));
+            $this->assertTrue($this->isElementPresent("//div[@id='footerFbLike']//a[text()='?']"));
+            $this->click("//div[@id='footerFbLike']//a[text()='Enable']");
+            sleep(5);
+            $this->assertEquals('1', $this->getEval('this.page().findElement("footerFbLike").innerHTML.search("<fb:like");'), "Facebook like should be loaded after enabling it");
+            $this->assertFalse($this->isElementPresent("//div[@id='footerFbLike']//a[text()='Enable']"));
+            $this->assertFalse($this->isElementPresent("//div[@id='footerFbLike']//a[text()='?']"));
         }
 
-
-
-
-}
+    }
 
 
     /**
@@ -1929,16 +2019,48 @@ class Acceptance_functionalityInAdminTest extends oxidAdditionalSeleniumFunction
     * @group admin
     * @group adminFunctionality
     */
-        public function testStagingDemoModes()
-{
-      if (!isSUBSHOP) {
-
-            // skip CE edition as it has no license
+    public function testStagingDemoModes()
+    {
+        if (!isSUBSHOP) {
+             // skip CE edition as it has no license
         }
-}
+    }
+
+
+   /**
+    Testing modules in vendor directory. Checking when any file with source code class of module is deleted.
+    @group admin
+    */
+     public function testModulesHandlingDeleteFile()
+    {
+       if (!isSUBSHOP) {
+        }
+    }
 
 
 
+   /**
+    Testing modules in vendor directory. Cheking when any file with source code class of module is deleted.
+    @group admin
+    */
+    public function testModulesHandlingDeleteVendorDir()
+    {
+        $this->captureScreenshotOnFailure = false; // Workaround for phpunit 3.6, disable screenshots before skip!
+        $this->markTestSkipped("Need to check if changing vendor name is actually done. Also frame edit looks like shouldn't be called.");
+
+        if (!isSUBSHOP) {
+        }
+    }
+
+  /**
+    If the same class extending two modules and for one modules dir is delete cheching does not break the shop.
+    @group admin
+    */
+      public function testModulesHandlingExtendingClass()
+    {
+       if (!isSUBSHOP) {
+        }
+    }
 
 }
 

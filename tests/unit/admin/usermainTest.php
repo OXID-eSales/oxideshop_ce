@@ -154,7 +154,7 @@ class Unit_Admin_UserMainTest extends OxidTestCase
         $sPass = '&quot;&#34;"o?p[]XfdKvA=#3K8tQ%';
         modConfig::setParameter( 'newPassword', $sPass );
 
-        $oUser = $this->getMock( 'oxStdClass', array( 'setPassword', 'checkIfEmailExists', 'load' ) );
+        $oUser = $this->getMock( 'oxuser', array( 'setPassword', 'checkIfEmailExists', 'load' ) );
         $oUser->expects( $this->once() )->method( 'setPassword' )->with( $this->equalTo( $sPass ) );
         $oUser->expects( $this->once() )->method( 'checkIfEmailExists' )->will( $this->returnValue( true ) );
         oxTestModules::addModuleObject( 'oxuser', $oUser );

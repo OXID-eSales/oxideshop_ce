@@ -53,7 +53,7 @@ class oxERPType_User extends oxERPType
      */
     public function getSQL( $sWhere, $iLanguage = 0,$iShopId = 1)
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         // add type 'user' for security reasons
         if (strstr( $sWhere, 'where')) {
@@ -82,7 +82,7 @@ class oxERPType_User extends oxERPType
     {
             return;
         
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         if (!$myConfig->getConfigParam('blMallUsers')) {
             parent::checkWriteAccess($oObj, $aData);

@@ -50,11 +50,11 @@ class Unit_Views_oxCmpNewsTest extends OxidTestCase
      */
     public function testRenderPerfLoadNewsOnlyStart()
     {
-        $oView = $this->getMock( "oxStdClass", array( "getIsOrderStep", "getClassName" ) );
+        $oView = $this->getMock( "oxView", array( "getIsOrderStep", "getClassName" ) );
         $oView->expects( $this->never() )->method('getIsOrderStep');
         $oView->expects( $this->once() )->method('getClassName')->will( $this->returnValue( "test" ) );
 
-        $oConfig = $this->getMock( "oxStdClass", array( "getConfigParam", "getActiveView" ) );
+        $oConfig = $this->getMock( "oxConfig", array( "getConfigParam", "getActiveView" ) );
         $oConfig->expects( $this->at( 0 ) )->method('getActiveView')->will( $this->returnValue( $oView ) );
         $oConfig->expects( $this->at( 1 ) )->method('getConfigParam')->with( $this->equalTo( "bl_perfLoadNews" ) )->will( $this->returnValue( true ) );
         $oConfig->expects( $this->at( 2 ) )->method('getConfigParam')->with( $this->equalTo( "blDisableNavBars" ) )->will( $this->returnValue( false ) );

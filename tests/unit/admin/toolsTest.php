@@ -52,7 +52,7 @@ class Unit_Admin_ToolsTest extends OxidTestCase
         oxTestModules::addFunction( 'oxUtils', 'showMessageAndExit', '{ return "Access denied !"; }');
 
 
-        $oConfig = $this->getMock( "oxStdClass", array( "isDemoShop" ) );
+        $oConfig = $this->getMock( "oxConfig", array( "isDemoShop" ) );
         $oConfig->expects( $this->once() )->method( 'isDemoShop' )->will( $this->returnValue( true ) );
 
         // testing..

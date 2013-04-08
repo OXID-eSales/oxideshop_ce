@@ -78,11 +78,11 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
      */
     public function testQueryFileUnexistingFile()
     {
-        $oSetup = $this->getMock( "oxStdClass", array( "getStep", "setNextStep" ) );
+        $oSetup = $this->getMock( "oxSetup", array( "getStep", "setNextStep" ) );
         $oSetup->expects( $this->once() )->method( "getStep" )->with( $this->equalTo( "STEP_DB_INFO" ) );
         $oSetup->expects( $this->once() )->method( "setNextStep" );
 
-        $oLang = $this->getMock( "oxStdClass", array( "getText" ) );
+        $oLang = $this->getMock( "oxSetupLang", array( "getText" ) );
         $oLang->expects( $this->once() )->method( "getText" );
 
         $iAt = 0;
@@ -234,11 +234,11 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
      */
     public function testCreateDb()
     {
-        $oSetup = $this->getMock( "oxStdClass", array( "setNextStep", "getStep" ) );
+        $oSetup = $this->getMock( "oxSetup", array( "setNextStep", "getStep" ) );
         $oSetup->expects( $this->once() )->method( "setNextStep" );
         $oSetup->expects( $this->once() )->method( "getStep" )->with( $this->equalTo( "STEP_DB_INFO" ) );
 
-        $oLang = $this->getMock( "oxStdClass", array( "getText" ) );
+        $oLang = $this->getMock( "oxSetupLang", array( "getText" ) );
         $oLang->expects( $this->once() )->method( "getText" )->with( $this->equalTo( "ERROR_COULD_NOT_CREATE_DB" ) );
 
         $oDb = $this->getMock( "OxSetupDb", array( "execSql", "getInstance" ) );
@@ -260,11 +260,11 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
      */
     public function testSaveDynPagesSettings()
     {
-        $oUtils = $this->getMock( "oxStdClass", array( "generateUid" ) );
+        $oUtils = $this->getMock( "oxSetupUtils", array( "generateUid" ) );
         $oUtils->expects( $this->any() )->method( "generateUid" )->will( $this->returnValue( "testid" ) );
 
         $iAt = 0;
-        $oSession = $this->getMock( "oxStdClass", array( "setSessionParam", "getSessionParam" ) );
+        $oSession = $this->getMock( "oxSetupSession", array( "setSessionParam", "getSessionParam" ), array(), '', null );
 
             $oSession->expects( $this->at( $iAt++ ) )->method( "getSessionParam" )->with( $this->equalTo( "location_lang" ) )->will( $this->returnValue( null ) );
             $oSession->expects( $this->at( $iAt++ ) )->method( "setSessionParam" )->with( $this->equalTo( "use_dynamic_pages" ), $this->equalTo( "false" ) );
@@ -274,7 +274,7 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
         $oSession->expects( $this->at( $iAt++ ) )->method( "getSessionParam" )->with( $this->equalTo( "check_for_updates" ) );
         $oSession->expects( $this->at( $iAt++ ) )->method( "getSessionParam" )->with( $this->equalTo( "country_lang" ) );
 
-        $oSetup = $this->getMock( "oxStdClass", array( "getShopId" ) );
+        $oSetup = $this->getMock( "oxSetup", array( "getShopId" ) );
         $oSetup->expects( $this->any() )->method( "getShopId" );
 
         $iAt = 0;
@@ -336,7 +336,7 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
      */
     public function testWriteUtfMode()
     {
-        $oSetup = $this->getMock( "oxStdClass", array( "getShopId" ) );
+        $oSetup = $this->getMock( "oxSetup", array( "getShopId" ) );
         $oSetup->expects( $this->once() )->method( "getShopId" )->will( $this->returnValue( 'testShopId' ) );
 
         $oConfk = new Conf();
@@ -360,7 +360,7 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
         $sPassword  = 'testPassword';
         $sPassSalt  = 'testSalt';
 
-        $oUtils = $this->getMock( "oxStdClass", array( "generateUID" ) );
+        $oUtils = $this->getMock( "oxSetupUtils", array( "generateUID" ) );
         $oUtils->expects( $this->once() )->method( "generateUID" )->will( $this->returnValue( $sPassSalt ) );
 
         $iAt = 0;
@@ -385,7 +385,7 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
         $rResult = mysql_query( "SELECT oxvarname, oxvartype, DECODE( oxvarvalue, '".$oConfk->sConfigKey."') AS oxvarvalue FROM oxconfig WHERE oxvartype IN ('str', 'arr', 'aarr')" );
         $iConfRecordsCount = oxDb::getDb()->getOne( "SELECT count(*) FROM oxconfig WHERE oxvartype IN ('str', 'arr', 'aarr')" );
 
-        $oUtils = $this->getMock( "oxStdClass", array( "convertToUtf8" ) );
+        $oUtils = $this->getMock( "oxSetupUtils", array( "convertToUtf8" ) );
         $oUtils->expects( $this->exactly( (int) $iConfRecordsCount ) )->method( "convertToUtf8" )->will( $this->returnValue( 'testValue' ) );
 
         $oDb = $this->getMock( "OxSetupDb", array( "getInstance", "execSql", "getConnection" ) );

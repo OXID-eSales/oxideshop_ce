@@ -110,7 +110,7 @@ class Acceptance_productInfoFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->assertEquals("Tags", $this->clearString($this->getText("//ul[@id='itemTabs']/li[4]")));
         $this->click("//ul[@id='itemTabs']/li[4]/a");
         $this->waitForItemAppear("tags");
-        $this->assertEquals("[EN] tag šÄßüл 1", $this->clearString($this->getText("tags")));
+        $this->assertEquals("šÄßüл tag [EN] 1", $this->clearString($this->getText("tags")));
 
         //buying product
         $this->click("//div[@id='productSelections']//ul/li[2]/a");
@@ -132,6 +132,10 @@ class Acceptance_productInfoFrontendTest extends oxidAdditionalSeleniumFunctions
      */
     public function testFrontendDetailsAdditionalInfo()
     {
+        if ( isSUBSHOP ) {
+            $this->executeSql("UPDATE `oxrecommlists` SET `OXSHOPID` = ".oxSHOPID."  WHERE 1");
+            $this->executeSql("UPDATE `oxratings` SET `OXSHOPID` = ".oxSHOPID."  WHERE 1");
+        }
         $this->openShop();
         $this->searchFor("1003");
         $this->clickAndWait("//ul[@id='searchList']//a");
@@ -174,7 +178,7 @@ class Acceptance_productInfoFrontendTest extends oxidAdditionalSeleniumFunctions
         //check if compare products are not gone after you login
         $this->clickAndWait("//dl[@id='footerServices']//a[text()='Account']");
         $this->loginInFrontend("birute_test@nfq.lt", "useruser");
-        $this->assertEquals("1",$this->clearString($this->getText("//p[@id='servicesTrigger']/span")));
+        $this->assertEquals("2",$this->clearString($this->getText("//p[@id='servicesTrigger']/span")));
         $this->assertEquals("Product: 1",$this->clearString($this->getText("//div[@id='content']//div[2]/dl[3]/dd")));
     }
 
@@ -185,7 +189,8 @@ class Acceptance_productInfoFrontendTest extends oxidAdditionalSeleniumFunctions
      */
     public function testFrontendDisabledCompare()
     {
-        $this->executeSql("UPDATE `oxconfig` SET `OXVARVALUE` = '' WHERE `OXVARNAME` = 'bl_showCompareList'");
+        //(Use compare->callShopSC("oxConfig", "saveShopConfVar", null, array("bl_showCompareList" => array("type" => "bool", "value" => "false", "module" => "theme:azure")));
+        $this->callShopSC("oxConfig", "saveShopConfVar", null, array("bl_showCompareList" => array("type" => "bool", "value" => "false", "module" => "theme:azure")));
         $this->openShop();
         $this->searchFor("1003");
         $this->clickAndWait("//ul[@id='searchList']//a");
@@ -207,37 +212,36 @@ class Acceptance_productInfoFrontendTest extends oxidAdditionalSeleniumFunctions
     public function testCompareInFrontend()
     {
 
-       	$this->openShop();
-    	$this->clickAndWait('toCmp_newItems_1');
-    	$this->searchFor("1");
-    	$this->clickAndWait('toCmp_searchList_1');
-    	$this->clickAndWait("link=Kiteboarding");
-    	$this->clickAndWait("link=Kites");
-    	$this->clickAndWait('toCmp_productList_1');
-    	$this->click("servicesTrigger");
-    	$this->waitForItemAppear("services");
-    	$this->clickAndWAit("//ul[@id='services']/li[3]/a");
-    	$this->assertTrue($this->isElementPresent('productPrice_1'));
-    	$this->assertTrue($this->isElementPresent("//a[text()='Test product 0 [EN] šÄßüл ']"));
-    	$this->assertTrue($this->isElementPresent('productPrice_2'));
-    	$this->assertTrue($this->isElementPresent("//a[text()='Kite CORE GTS ']"));
-    	$this->assertTrue($this->isElementPresent('productPrice_3'));
-    	$this->assertTrue($this->isElementPresent("//a[text()='Harness MADTRIXX ']"));
-    	$this->clickAndWait("link=Home");
-    	$this->clickAndWait('removeCmp_newItems_1');
-    	$this->searchFor("1");
-    	$this->clickAndWait('removeCmp_searchList_1');
-    	$this->clickAndWait("link=Kiteboarding");
-    	$this->clickAndWait("link=Kites");
-    	$this->clickAndWait('removeCmp_productList_1');
-    	$this->click("servicesTrigger");
-    	$this->waitForItemAppear("services");
-    	$this->clickAndWAit("//ul[@id='services']/li[3]/a");
-    	$this->assertFalse($this->isElementPresent('productPrice_1'));
-    	$this->assertFalse($this->isElementPresent('productPrice_2'));
-    	$this->assertFalse($this->isElementPresent('productPrice_3'));
-    	$this->assertTrue($this->isTextPresent("Please select at least two products to be compared."));
-
+        $this->openShop();
+        $this->clickAndWait('toCmp_newItems_1');
+        $this->searchFor("1");
+        $this->clickAndWait('toCmp_searchList_1');
+        $this->clickAndWait("link=Kiteboarding");
+        $this->clickAndWait("link=Kites");
+        $this->clickAndWait('toCmp_productList_1');
+        $this->click("servicesTrigger");
+        $this->waitForItemAppear("services");
+        $this->clickAndWAit("//ul[@id='services']/li[3]/a");
+        $this->assertTrue($this->isElementPresent('productPrice_1'));
+        $this->assertTrue($this->isElementPresent("//a[text()='Test product 0 [EN] šÄßüл ']"));
+        $this->assertTrue($this->isElementPresent('productPrice_2'));
+        $this->assertTrue($this->isElementPresent("//a[text()='Kite CORE GTS ']"));
+        $this->assertTrue($this->isElementPresent('productPrice_3'));
+        $this->assertTrue($this->isElementPresent("//a[text()='Harness MADTRIXX ']"));
+        $this->clickAndWait("link=Home");
+        $this->clickAndWait('removeCmp_newItems_1');
+        $this->searchFor("1");
+        $this->clickAndWait('removeCmp_searchList_1');
+        $this->clickAndWait("link=Kiteboarding");
+        $this->clickAndWait("link=Kites");
+        $this->clickAndWait('removeCmp_productList_1');
+        $this->click("servicesTrigger");
+        $this->waitForItemAppear("services");
+        $this->clickAndWAit("//ul[@id='services']/li[3]/a");
+        $this->assertFalse($this->isElementPresent('productPrice_1'));
+        $this->assertFalse($this->isElementPresent('productPrice_2'));
+        $this->assertFalse($this->isElementPresent('productPrice_3'));
+        $this->assertTrue($this->isTextPresent("Please select at least two products to be compared."));
      }
 
     /**
@@ -337,7 +341,6 @@ class Acceptance_productInfoFrontendTest extends oxidAdditionalSeleniumFunctions
     {
         $this->openShop();
         $this->searchFor("1002");
-
         $this->clickAndWait("//ul[@id='searchList']//a");
         $this->assertEquals("from 55,00 € *", $this->getText("productPrice"));
         $this->assertEquals("Art.No.: 1002", $this->getText("productArtnum"));
@@ -357,11 +360,11 @@ class Acceptance_productInfoFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->type("amountToBasket", "2");
         $this->clickAndWait("toBasket");
         $this->assertEquals("2 x Test product 2 [EN] šÄßüл, var1 [EN] šÄßüл 110,00 €", $this->clearString($this->getText("//div[@id='basketFlyout']//li[1]")));
-        $this->assertEquals("Total110,00 €", $this->clearString($this->getText("//div[@id='basketFlyout']/p[2]")));
+        $this->assertEquals("Total 110,00 €", $this->clearString($this->getText("//div[@id='basketFlyout']/p[2]")));
         $this->type("amountToBasket", "1");
         $this->clickAndWait("toBasket");
         $this->assertEquals("3 x Test product 2 [EN] šÄßüл, var1 [EN] šÄßüл 165,00 €", $this->clearString($this->getText("//div[@id='basketFlyout']//li[1]")));
-        $this->assertEquals("Total165,00 €", $this->clearString($this->getText("//div[@id='basketFlyout']/p[2]")));
+        $this->assertEquals("Total 165,00 €", $this->clearString($this->getText("//div[@id='basketFlyout']/p[2]")));
 
         $this->selectVariant("variants", 1, "var2 [EN] šÄßüл", "review for var2 šÄßüл");
         $this->assertEquals("Test product 2 [EN] šÄßüл var2 [EN] šÄßüл", $this->getText("//h1"));
@@ -378,7 +381,7 @@ class Acceptance_productInfoFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->assertEquals("6", $this->getText("//div[@id='miniBasket']/span"));
         $this->assertEquals("3 x Test product 2 [EN] šÄßüл, var1 [EN] šÄßüл 165,00 €", $this->clearString($this->getText("//div[@id='basketFlyout']//li[1]")));
         $this->assertEquals("3 x Test product 2 [EN] šÄßüл, var2 [EN] šÄßüл 201,00 €", $this->clearString($this->getText("//div[@id='basketFlyout']//li[2]")));
-        $this->assertEquals("Total366,00 €", $this->clearString($this->getText("//div[@id='basketFlyout']/p[2]")));
+        $this->assertEquals("Total 366,00 €", $this->clearString($this->getText("//div[@id='basketFlyout']/p[2]")));
     }
 
     /**
@@ -396,7 +399,6 @@ class Acceptance_productInfoFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->openShop();
         $this->searchFor("1002");
         $this->clickAndWait("searchList_1");
-
         $this->assertEquals("Test product 2 [EN] šÄßüл", $this->getText("//h1"));
         $this->assertEquals("55,00 € *", $this->getText("productPrice"));
         $this->assertTrue($this->isEditable("toBasket")); //parent article is buyable
@@ -407,8 +409,7 @@ class Acceptance_productInfoFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->assertFalse($this->isElementPresent("//div[@id='miniBasket']/span"));
         $this->clickAndWait("toBasket");
         $this->assertEquals("Test product 2 [EN] šÄßüл 55,00 €", $this->clearString($this->getText("//div[@id='basketFlyout']//li[1]")));
-        $this->assertEquals("Total55,00 €", $this->clearString($this->getText("//div[@id='basketFlyout']/p[2]")));
-    
+        $this->assertEquals("Total 55,00 €", $this->clearString($this->getText("//div[@id='basketFlyout']/p[2]")));
 
         $this->selectVariant("variants", 1, "var1 [EN] šÄßüл", "Test product 2 [EN] šÄßüл var1 [EN] šÄßüл");
         $this->assertEquals("Test product 2 [EN] šÄßüл var1 [EN] šÄßüл", $this->getText("//h1"));
@@ -645,8 +646,9 @@ class Acceptance_productInfoFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->searchFor("10014");
         $this->selectDropDown("viewOptions", "Line");
         $this->assertTrue($this->isElementPresent("variantselector_searchList_1"));
+
         $this->assertEquals(
-                "size[EN] | color | type: Choose variant S | black | lether S | black | material S | white S | red M | white M | red L | black | lether L | black | material L | white",
+                "size[EN] | color | type: Choose variant S | black | lether S | black | material S | white S | red M | black | material M | white M | red L | black | lether L | black | material L | white",
                 $this->clearString($this->getText("variantselector_searchList_1"))
         );
         $this->selectVariant("variantselector_searchList_1", 1, "S | black | material");
@@ -654,18 +656,21 @@ class Acceptance_productInfoFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->assertEquals("14 EN product šÄßüл S | black | material", $this->getText("//h1"));
         $this->assertTrue($this->isTextPresent("Selected combination: S | black | material"));
         $this->assertEquals(
-                "Choose variant S | black | lether S | black | material S | white S | red M | white M | red L | black | lether L | black | material L | white",
+                "Choose variant S | black | lether S | black | material S | white S | red M | black | material M | white M | red L | black | lether L | black | material L | white",
                 $this->clearString($this->getText("//div[@id='variants']//ul"))
         );
         $this->assertTrue($this->isEditable("toBasket"));
 
         //10014-2-1: out of stock - offline
         $this->assertFalse($this->isElementPresent("//div[@id='variants']//ul//a[text()='M | black | lether']"));
-        //10014-2-2: out of stock - not orderable
-        $this->assertFalse($this->isElementPresent("//div[@id='variants']//ul//a[text()='M | black | material']"));
-        //making 10014-2-1 and 10014-2-2 variants in stock
-        $this->executeSql("UPDATE `oxarticles` SET `OXSTOCK`=1 WHERE `OXID`='1001421' OR `OXID`='1001422';");
 
+        //10014-2-2: out of stock - not orderable
+        $this->assertTrue($this->isElementPresent("//div[@id='variants']//ul//a[text()='M | black | material']"));
+
+        //making 10014-2-1 and 10014-2-2 variants in stock
+        $aArticleParams = array("oxstock" => 1);
+        $this->callShopSC("oxArticle", "save", "1001421", $aArticleParams);
+        $this->callShopSC("oxArticle", "save", "1001422", $aArticleParams);
         $this->selectVariant("variants", 1, "S | white", "Selected combination: S | white");
         $this->assertEquals("14 EN product šÄßüл S | white", $this->getText("//h1"));
         $this->click("link=Reset selection");
@@ -704,15 +709,12 @@ class Acceptance_productInfoFrontendTest extends oxidAdditionalSeleniumFunctions
             $this->assertEquals("Grand Total: 50,00 €", $this->clearString($this->getText("//div[@id='basketSummary']//tr[4]")));
     }
 
-
-
-
     /**
-     * Product details. checking product price A
+     * Product details. checking product price A, B, C
      * @group navigation
      * @group product
      */
-    public function testFrontendPriceA()
+    public function testFrontendPriceABC()
     {
         $this->openShop();
         //option "Use normal article price instead of zero A, B, C price" is ON
@@ -722,14 +724,10 @@ class Acceptance_productInfoFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->assertEquals("100,00 €", $this->clearString($this->getText("productPrice_productList_2")));
         $this->loginInFrontend("birute0a@nfq.lt", "userAuser");
         $this->selectDropDown("viewOptions", "Line");
-        $this->assertEquals("35,00 € *", $this->clearString($this->getText("productPrice_productList_1")));
         $this->assertEquals("100,00 €", $this->clearString($this->getText("productPrice_productList_2")));
         $this->clickAndWait("productList_1");
-
         $this->assertTrue($this->isElementPresent("breadCrumb"));
-        $this->assertEquals("35,00 € *", $this->getText("productPrice"));
         $this->assertEquals("17,50 €/kg", $this->getText("productPriceUnit"));
-
         $this->clickAndWait("link=Test category 0 [EN] šÄßüл");
         $this->clickAndWait("productList_2");
         $this->clickAndWait("toBasket");
@@ -738,128 +736,60 @@ class Acceptance_productInfoFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->clickAndWait("//ul[@id='searchList']/li[1]//a");
         $this->assertEquals("from 45,00 € *", $this->getText("productPrice"));
         $this->clickAndWait("//ul[@id='topMenu']//a[text()='Logout']");
-
         $this->searchFor("1003");
         $this->clickAndWait("//ul[@id='searchList']/li[1]//a");
         $this->assertEquals("75,00 € *", $this->getText("productPrice"));
         $this->loginInFrontend("birute0a@nfq.lt", "userAuser");
-        $this->assertTrue($this->isElementPresent("productPrice"));
-        $this->assertEquals("70,00 € *", $this->getText("productPrice"));
         $this->clickAndWait("toBasket");
         $this->openBasket();
         $this->type("am_2", "3");
         $this->clickAndWait("basketUpdate");
-        $this->assertEquals("101,00 €", $this->getText("//tr[@id='cartItem_1']/td[6]"));
-        $this->assertEquals("70,00 €", $this->getText("//tr[@id='cartItem_2']/td[6]"));
-        if (!isSUBSHOP) {  //staffepreis is not inherited to subshp
+        $this->assertEquals("96,00 € \n101,00 €", $this->getText("//tr[@id='cartItem_1']/td[6]"),"price with discount not shown in basket");
+        $this->assertEquals("63,00 € \n70,00 €", $this->getText("//tr[@id='cartItem_2']/td[6]"),"price with discount not shown in basket");
+        if (!isSUBSHOP) {  //staffepreis is not inherited to subshop
             $this->type("am_2", "7");
             $this->clickAndWait("basketUpdate");
-            $this->assertEquals("56,00 €", $this->getText("//tr[@id='cartItem_2']/td[6]"));
+            $this->assertEquals("50,40 € \n56,00 €", $this->getText("//tr[@id='cartItem_2']/td[6]"),"price with discount not shown in basket");
         }
+        //checking price C
+        $this->openShop();
+        $this->clickAndWait("link=Test category 0 [EN] šÄßüл");
+        $this->loginInFrontend("birute0c@nfq.lt", "userCuser");
+        $this->clickAndWait("//ul[@id='productList']/li[1]//a");
+        $this->assertEquals("27,50 €/kg", $this->getText("productPriceUnit"));
+        $this->searchFor("1003");
+        $this->clickAndWait("//ul[@id='searchList']/li[1]//a");
+        $this->clickAndWait("//button[@id='toBasket']");
+        $this->openBasket();
+        $this->type("am_1", "3");
+        $this->clickAndWait("basketUpdate");
+        $this->assertEquals("67,50 € \n75,00 €", $this->getText("//tr[@id='cartItem_1']/td[6]"),"price with discount not shown in basket");
 
+        //checking price B
+        $this->openShop();
+        $this->clickAndWait("link=Test category 0 [EN] šÄßüл");
+        $this->loginInFrontend("birute0b@nfq.lt", "userBuser");
+        $this->clickAndWait("//ul[@id='productList']/li[1]//a");
+        $this->assertEquals("22,50 €/kg", $this->getText("productPriceUnit"));
+        $this->searchFor("1003");
+        $this->clickAndWait("//ul[@id='searchList']/li[1]//a");
+        $this->clickAndWait("//button[@id='toBasket']");
+        $this->openBasket();
+        $this->type("am_1", "2");
+        $this->clickAndWait("basketUpdate");
+        if (!isSUBSHOP) {  //staffepreis(stock price for product) is not inherited to subshp
+            $this->assertEquals("67,50 € \n75,00 €", $this->getText("//tr[@id='cartItem_1']/td[6]"),"price with discount not shown in basket");
+        } else {
+            $this->assertEquals("76,50 € \n85,00 €", $this->getText("//tr[@id='cartItem_1']/td[6]"),"price with discount not shown in basket");
+        }
         //option "Use normal article price instead of zero A, B, C price" is OFF
-        $this->executeSql("UPDATE `oxconfig` SET `OXVARVALUE` = 0x7900fdf51e WHERE `OXVARNAME` = 'blOverrideZeroABCPrices'");
+        $this->callShopSC("oxConfig", "saveShopConfVar", null, array("blOverrideZeroABCPrices" => array("type" => "bool", "value" => "false")));
         $this->openShop();
         $this->clickAndWait("link=Test category 0 [EN] šÄßüл");
         $this->selectDropDown("viewOptions", "Line");
-        $this->assertEquals("50,00 € *", $this->clearString($this->getText("productPrice_productList_1")));
-        $this->assertEquals("100,00 €", $this->clearString($this->getText("productPrice_productList_2")));
         $this->loginInFrontend("birute0a@nfq.lt", "userAuser");
         $this->assertEquals("35,00 € *", $this->clearString($this->getText("productPrice_productList_1")));
         $this->assertEquals("0,00 €", $this->clearString($this->getText("productPrice_productList_2")));
-
-    }
-
-    /**
-     * Product details. checking price B
-     * @group navigation
-     * @group user
-     * @group product
-     */
-    public function testFrontendPriceB()
-    {
-        $this->openShop();
-        //option "Use normal article price instead of zero A, B, C price" is ON
-        $this->clickAndWait("link=Test category 0 [EN] šÄßüл");
-        $this->assertEquals("50,00 € *", $this->clearString($this->getText("//ul[@id='productList']/li[1]//span[@class='price']")));
-        $this->assertEquals("100,00 €", $this->clearString($this->getText("//ul[@id='productList']/li[2]//span[@class='price']")));
-        $this->loginInFrontend("birute0b@nfq.lt", "userBuser");
-        $this->assertEquals("45,00 € *", $this->clearString($this->getText("//ul[@id='productList']/li[1]//span[@class='price']")));
-        $this->clickAndWait("//ul[@id='productList']/li[1]//a");
-        $this->assertEquals("45,00 € *", $this->getText("productPrice"));
-        $this->assertEquals("22,50 €/kg", $this->getText("productPriceUnit"));
-
-        $this->clickAndWait("//div[@id='overviewLink']/a");
-        $this->assertEquals("45,00 € *", $this->clearString($this->getText("//ul[@id='productList']/li[1]//span[@class='price']")));
-        $this->clickAndWait("//ul[@id='topMenu']//a[text()='Logout']");
-        $this->assertEquals("50,00 € *", $this->clearString($this->getText("//ul[@id='productList']/li[1]//span[@class='price']")));
-        $this->searchFor("1003");
-        $this->clickAndWait("//ul[@id='searchList']/li[1]//a");
-        $this->assertEquals("75,00 € *", $this->getText("productPrice"));
-        $this->loginInFrontend("birute0b@nfq.lt", "userBuser");
-        $this->assertEquals("85,00 € *", $this->getText("productPrice"));
-        $this->clickAndWait("//button[@id='toBasket']");
-        $this->assertEquals("1", $this->getText("//div[@id='miniBasket']/span"));
-        $this->openBasket();
-        $this->assertEquals("85,00 €", $this->getText("//tr[@id='cartItem_1']/td[6]"));
-        $this->type("am_1", "7");
-        $this->clickAndWait("basketUpdate");
-        if (!isSUBSHOP) {  //staffepreis is not inherited to subshp
-            $this->assertEquals("68,00 €", $this->getText("//tr[@id='cartItem_1']/td[6]"));
-        } else {
-            $this->assertEquals("85,00 €", $this->getText("//tr[@id='cartItem_1']/td[6]"));
-        }
-        $this->type("am_1", "2");
-        $this->clickAndWait("basketUpdate");
-        if (!isSUBSHOP) {  //staffepreis is not inherited to subshp
-            $this->assertEquals("75,00 €", $this->getText("//tr[@id='cartItem_1']/td[6]"));
-        } else {
-            $this->assertEquals("85,00 €", $this->getText("//tr[@id='cartItem_1']/td[6]"));
-        }
-        $this->type("am_1", "1");
-        $this->clickAndWait("basketUpdate");
-        $this->assertEquals("85,00 €", $this->getText("//tr[@id='cartItem_1']/td[6]"));
-    }
-
-    /**
-     * Product details. checking prices A, B, C
-     * @group navigation
-     * @group user
-     * @group product
-     */
-    public function testFrontendPriceC()
-    {
-        $this->openShop();
-        //option "Use normal article price instead of zero A, B, C price" is ON
-        $this->clickAndWait("link=Test category 0 [EN] šÄßüл");
-        $this->assertEquals("50,00 € *", $this->clearString($this->getText("//ul[@id='productList']/li[1]//span[@class='price']")));
-        $this->assertEquals("100,00 €", $this->clearString($this->getText("//ul[@id='productList']/li[2]//span[@class='price']")));
-        $this->clickAndWait("//ul[@id='productList']/li[1]//a");
-        $this->assertEquals("50,00 € *", $this->getText("productPrice"));
-        $this->clickAndWait("//div[@id='overviewLink']/a");
-        $this->assertEquals("50,00 € *", $this->clearString($this->getText("//ul[@id='productList']/li[1]//span[@class='price']")));
-
-        $this->loginInFrontend("birute0c@nfq.lt", "userCuser");
-        $this->assertEquals("55,00 € *", $this->clearString($this->getText("//ul[@id='productList']/li[1]//span[@class='price']")));
-        $this->clickAndWait("//ul[@id='productList']/li[1]//a");
-        $this->assertEquals("55,00 € *", $this->getText("productPrice"));
-        $this->assertEquals("27,50 €/kg", $this->getText("productPriceUnit"));
-        $this->clickAndWait("//div[@id='overviewLink']/a");
-        $this->assertEquals("55,00 € *", $this->clearString($this->getText("//ul[@id='productList']/li[1]//span[@class='price']")));
-        $this->clickAndWait("//ul[@id='topMenu']//a[text()='Logout']");
-        $this->assertEquals("50,00 € *", $this->clearString($this->getText("//ul[@id='productList']/li[1]//span[@class='price']")));
-
-        $this->searchFor("1003");
-        $this->clickAndWait("//ul[@id='searchList']/li[1]//a");
-        $this->assertEquals("75,00 € *", $this->getText("productPrice"));
-        $this->clickAndWait("//button[@id='toBasket']");
-
-        $this->openBasket();
-        $this->loginInFrontend("birute0c@nfq.lt", "userCuser");
-        $this->assertEquals("75,00 €", $this->getText("//tr[@id='cartItem_1']/td[6]"));
-        $this->type("am_1", "3");
-        $this->clickAndWait("basketUpdate");
-        $this->assertEquals("75,00 €", $this->getText("//tr[@id='cartItem_1']/td[6]"));
     }
 
     /**

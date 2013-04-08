@@ -854,6 +854,11 @@ class Unit_Core_oxDeliverysetListTest extends OxidTestCase
         $oP2DelSet1->oxobject2delivery__oxtype = new oxField("rdfadeliveryset", oxField::T_RAW);
         $oP2DelSet1->save();
 
+        $oDeliverySet = oxNew( 'oxDeliverySet' );
+        $oDeliverySet->load( '_oxidstandard' );
+        $oDeliverySet->oxdeliveryset__oxactive = new oxField(0, oxField::T_RAW);
+        $oDeliverySet->save();
+
         $oDeliverySetList = new oxDeliverySetList();
         $oDeliverySetList->loadRDFaDeliverySetList();
         $this->assertEquals( 3, $oDeliverySetList->count());

@@ -59,14 +59,14 @@ function smarty_function_oxgetseourl( $params, &$smarty )
                 $sUrl = $oObject->getLink();
             }
         }
-    } elseif ( $sUrl && oxUtils::getInstance()->seoIsActive() ) {
+    } elseif ( $sUrl && oxRegistry::getUtils()->seoIsActive() ) {
         // if SEO is on ..
-        $oEncoder = oxSeoEncoder::getInstance();
+        $oEncoder = oxRegistry::get("oxSeoEncoder");
         if ( ( $sStaticUrl = $oEncoder->getStaticUrl( $sUrl ) ) ) {
             $sUrl = $sStaticUrl;
         } else {
             // in case language parameter is not added to url
-            $sUrl = oxUtilsUrl::getInstance()->processUrl( $sUrl );
+            $sUrl = oxRegistry::get("oxUtilsUrl")->processUrl( $sUrl );
         }
     }
 

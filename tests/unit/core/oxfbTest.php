@@ -116,14 +116,12 @@ class Unit_Core_oxfbTest extends OxidTestCase
     *
     * @return null
     */
-    public function testIsConnected_noFbSession()
+    public function testIsConnected_noFbSession_withUser()
     {
-        $this->markTestSkipped();
-
         modConfig::getInstance()->setConfigParam( "bl_showFbConnect", true );
 
         $oFb = $this->getMock( 'oxFb', array( 'getUser' ) );
-        $oFb->expects( $this->never() )->method( 'getUser');
+        $oFb->expects( $this->once() )->method( 'getUser')->will($this->returnValue(10));
 
         $this->assertFalse( $oFb->isConnected() );
     }

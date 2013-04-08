@@ -108,11 +108,11 @@ class oxSuperCfg
             if ( isset( $this->unitCustModConf ) ) {
                 return $this->unitCustModConf;
             }
-            return oxConfig::getInstance();
+            return oxRegistry::getConfig();
         }
 
         if ( self::$_oConfig == null ) {
-            self::$_oConfig = oxConfig::getInstance();
+            self::$_oConfig = oxRegistry::getConfig();
         }
 
         return self::$_oConfig;
@@ -146,11 +146,11 @@ class oxSuperCfg
             if ( isset( $this->unitCustModSess ) ) {
                 return $this->unitCustModSess;
             }
-            return oxSession::getInstance();
+            return oxRegistry::getSession();
         }
 
         if ( self::$_oSession == null ) {
-            self::$_oSession = oxSession::getInstance();
+            self::$_oSession = oxRegistry::getSession();
         }
 
         return self::$_oSession;

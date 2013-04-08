@@ -88,11 +88,12 @@ class oxCaptcha extends oxSuperCfg
         $sTextHash = $this->getTextHash( $sText );
 
         // if session is started - storing captcha info here
-        if ( $this->getSession()->isSessionStarted() ) {
+        $session = $this->getSession();
+        if ( $session->isSessionStarted() ) {
             $sHash = oxUtilsObject::getInstance()->generateUID();
-            $aHash = oxSession::getVar( "aCaptchaHash" );
+            $aHash = $session->getVariable( "aCaptchaHash" );
             $aHash[$sHash] = array( $sTextHash => $iTime );
-            oxSession::setVar( "aCaptchaHash", $aHash );
+            $session->setVariable( "aCaptchaHash", $aHash );
         } else {
             $oDb = oxDb::getDb();
             $sQ = "insert into oxcaptcha ( oxhash, oxtime ) values ( '{$sTextHash}', '{$iTime}' )";
@@ -127,7 +128,7 @@ class oxCaptcha extends oxSuperCfg
     public function getImageUrl()
     {
         $sUrl = $this->getConfig()->getCoreUtilsURL() . "verificationimg.php?e_mac=";
-        $sUrl .= oxUtils::getInstance()->strMan( $this->getText() );
+        $sUrl .= oxRegistry::getUtils()->strMan( $this->getText() );
 
         return $sUrl;
     }
@@ -154,13 +155,14 @@ class oxCaptcha extends oxSuperCfg
     protected function _passFromSession( $sMacHash, $sHash, $iTime )
     {
         $blPass = null;
-        if ( ( $aHash = oxSession::getVar( "aCaptchaHash" ) ) ) {
+        $oSession = $this->getSession();
+        if ( ( $aHash = $oSession->getVariable( "aCaptchaHash" ) ) ) {
             $blPass = ( isset( $aHash[$sMacHash][$sHash] ) && $aHash[$sMacHash][$sHash] >= $iTime ) ? true : false;
             unset( $aHash[$sMacHash] );
             if ( !empty( $aHash ) ) {
-                oxSession::setVar( "aCaptchaHash", $aHash );
+                $oSession->setVariable( "aCaptchaHash", $aHash );
             } else {
-                oxSession::deleteVar( "aCaptchaHash" );
+                $oSession->deleteVariable( "aCaptchaHash" );
             }
         }
         return $blPass;

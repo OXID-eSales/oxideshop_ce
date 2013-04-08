@@ -289,19 +289,19 @@ class Unit_Core_oxvoucherTest extends OxidTestCase
     {
         // Create new voucher
         $sVoucherNr = '_test_testGetVoucherByNrNoDateUsed';
-        
+
         $oNewVoucher = oxNew( "oxvoucher" );
         $oNewVoucher->oxvouchers__oxvouchernr      = new oxField( $sVoucherNr );
         $oNewVoucher->oxvouchers__oxvoucherserieid = new oxField( $this->_aSerieOxid[0] );
         $oNewVoucher->setId( '_test_testGetVoucherByNrNoDateUsed' );
         $oNewVoucher->save();
-        
+
         $oNewVoucher = oxNew( 'oxvoucher' );
         $oNewVoucher->getVoucherByNr( $sVoucherNr );
-        
+
         $oNewVoucher->oxvouchers__oxdateused       = new oxField( date('Y-m-d') );
         $oNewVoucher->save();
-        
+
         $oNewVoucher = oxNew( 'oxvoucher' );
         try {
             $oNewVoucher->getVoucherByNr( $sVoucherNr );
@@ -317,19 +317,19 @@ class Unit_Core_oxvoucherTest extends OxidTestCase
     {
         // Create new voucher
         $sVoucherNr = '_test_testGetVoucherByNrUsedOrderId';
-        
+
         $oNewVoucher = oxNew( "oxvoucher" );
         $oNewVoucher->oxvouchers__oxvouchernr      = new oxField( $sVoucherNr );
         $oNewVoucher->oxvouchers__oxvoucherserieid = new oxField( $this->_aSerieOxid[0] );
         $oNewVoucher->setId( '_test_testGetVoucherByNrUsedOrderId' );
         $oNewVoucher->save();
-        
+
         $oNewVoucher = oxNew( 'oxvoucher' );
         $oNewVoucher->getVoucherByNr( $sVoucherNr );
-        
+
         $oNewVoucher->oxvouchers__oxorderid        = new oxField( oxUtilsObject::getInstance()->generateUID() );
         $oNewVoucher->save();
-        
+
         $oNewVoucher = oxNew( 'oxvoucher' );
         try {
             $oNewVoucher->getVoucherByNr( $sVoucherNr );
@@ -500,7 +500,7 @@ class Unit_Core_oxvoucherTest extends OxidTestCase
         }
         $this->fail();
     }
-    
+
     public function testCheckVoucherAvailability1()
     {
         $sOXID = $this->_aVoucherOxid[$this->_aSerieOxid[0]][0];
@@ -624,33 +624,6 @@ class Unit_Core_oxvoucherTest extends OxidTestCase
     }
 
     /**
-     * Checking prices when price is below minimum value
-     */
-    public function testIsAvailablePriceWhenDiscountIsNegative()
-    {
-        $sOXID = $this->_aVoucherOxid[$this->_aSerieOxid[0]][getRandLTAmnt()];
-        $oSerie = oxNew( 'oxvoucherserie' );
-        $oSerie->load($this->_aSerieOxid[0]);
-        $oSerie->oxvoucherseries__oxminimumvalue = new oxField(10, oxField::T_RAW);
-        $oSerie->oxvoucherseries__oxdiscount = new oxField(-1, oxField::T_RAW);
-        $oSerie->save();
-
-        $oNewVoucher = oxNew( 'oxvoucher' );
-        $oNewVoucher->oxvouchers__oxvoucherserieid = new oxField($this->_aSerieOxid[0], oxField::T_RAW);
-
-        $iErrorMsgId = null;
-        $dPrice  = 9;
-
-        try {
-            $aErrors = $oNewVoucher->UNITisAvailablePrice( $dPrice );
-        } catch (oxVoucherException $oEx) {
-            $sErrorMsg = $oEx->getMessage();
-        }
-
-        $this->assertEquals( 'EXCEPTION_VOUCHER_TOTALBELOWZERO', $sErrorMsg );
-    }
-
-    /**
      * Checking availability with same series
      */
     public function testIsAvailableWithSameSeries0()
@@ -762,7 +735,7 @@ class Unit_Core_oxvoucherTest extends OxidTestCase
         $oSerie->oxvoucherseries__oxbegindate = new oxField( '0000-00-00 00:00:00', oxField::T_RAW );
         $oSerie->oxvoucherseries__oxenddate = new oxField( '0000-00-00 00:00:00', oxField::T_RAW );
         $oSerie->save();
-        
+
         $sOXID = $this->_aVoucherOxid[$this->_aSerieOxid[1]][getRandLTAmnt()];
         $oNewVoucher = oxNew( 'oxvoucher' );
         if ( !$oNewVoucher->Load( $sOXID ) ) {
@@ -778,7 +751,7 @@ class Unit_Core_oxvoucherTest extends OxidTestCase
         $oSerie->load($this->_aSerieOxid[0]);
         $oSerie->oxvoucherseries__oxenddate = new oxField( null, oxField::T_RAW );
         $oSerie->save();
-        
+
         $sOXID = $this->_aVoucherOxid[$this->_aSerieOxid[0]][getRandLTAmnt()];
         $oNewVoucher = oxNew( 'oxvoucher' );
         if ( !$oNewVoucher->Load( $sOXID ) ) {
@@ -807,17 +780,17 @@ class Unit_Core_oxvoucherTest extends OxidTestCase
         $oSerie->oxvoucherseries__oxbegindate = new oxField( date( 'Y-m-d H:i:s', time() + 3600) , oxField::T_RAW );
         $oSerie->oxvoucherseries__oxenddate = new oxField( date( 'Y-m-d H:i:s', time() + 8600) , oxField::T_RAW );
         $oSerie->save();
-        
+
         $sOXID = $this->_aVoucherOxid[$this->_aSerieOxid[0]][getRandLTAmnt()];
         $oNewVoucher = oxNew( 'oxvoucher' );
         if ( !$oNewVoucher->Load( $sOXID ) ) {
             $this->fail( 'can not load voucher' );
             return;
         }
-        
+
         $oNewVoucher->UNITisValidDate();
     }
-    
+
     public function testIsValidDate_WhenEndDateIsAutoSetInFuture()
     {
         $this->setExpectedException('oxVoucherException','ERROR_MESSAGE_VOUCHER_NOVOUCHER');
@@ -826,17 +799,17 @@ class Unit_Core_oxvoucherTest extends OxidTestCase
         $oSerie->oxvoucherseries__oxbegindate = new oxField( date( 'Y-m-d H:i:s', time() + 3600) , oxField::T_RAW );
         $oSerie->oxvoucherseries__oxenddate = new oxField( '0000-00-00 00:00:00' , oxField::T_RAW );
         $oSerie->save();
-        
+
         $sOXID = $this->_aVoucherOxid[$this->_aSerieOxid[0]][getRandLTAmnt()];
         $oNewVoucher = oxNew( 'oxvoucher' );
         if ( !$oNewVoucher->Load( $sOXID ) ) {
             $this->fail( 'can not load voucher' );
             return;
         }
-        
+
         $oNewVoucher->UNITisValidDate();
     }
-    
+
     public function testIsValidDate3_2()
     {
         $oSerie = oxNew( 'oxvoucherserie' );
@@ -844,7 +817,7 @@ class Unit_Core_oxvoucherTest extends OxidTestCase
         $oSerie->oxvoucherseries__oxbegindate = new oxField( date('Y-m-d H:i:s', time() - 8600), oxField::T_RAW );
         $oSerie->oxvoucherseries__oxenddate = new oxField( date('Y-m-d H:i:s', time() - 3600), oxField::T_RAW );
         $oSerie->save();
-        
+
         $sOXID = $this->_aVoucherOxid[$this->_aSerieOxid[0]][getRandLTAmnt()];
         $oNewVoucher = oxNew( 'oxvoucher' );
         if ( !$oNewVoucher->Load( $sOXID ) ) {
@@ -867,7 +840,7 @@ class Unit_Core_oxvoucherTest extends OxidTestCase
         $oSerie->oxvoucherseries__oxbegindate = new oxField( '0000-00-00 00:00:00', oxField::T_RAW );
         $oSerie->oxvoucherseries__oxenddate = new oxField(date( 'Y-m-d H:i:s', time() - 3600), oxField::T_RAW );
         $oSerie->save();
- 
+
         $sOXID = $this->_aVoucherOxid[$this->_aSerieOxid[0]][getRandLTAmnt()];
         $oNewVoucher = oxNew( 'oxvoucher' );
         if ( !$oNewVoucher->Load( $sOXID ) ) {
@@ -1001,7 +974,7 @@ class Unit_Core_oxvoucherTest extends OxidTestCase
     public function testCheckUserAvailabilityIfNotValidUserGroup()
     {
         $myDB    = oxDb::getDb();
-        
+
         $sOXID = $this->_aVoucherOxid[$this->_aSerieOxid[1]][getRandLTAmnt()];
         $oNewVoucher = oxNew( 'oxvoucher' );
         if ( !$oNewVoucher->Load( $sOXID ) ) {
@@ -1161,7 +1134,7 @@ class Unit_Core_oxvoucherTest extends OxidTestCase
         $oUser->oxuser__oxusername = new oxField('test', oxField::T_RAW);
         $oUser->save();
         $this->_sTestUserId = $oUser->getId();
-        $sQ = 'insert into oxobject2group values ( "'.$oUser->getId().'", "'.$myConfig->getBaseShopId().'", "'.$oUser->getId().'", "oxidpricec" )';
+        $sQ = 'insert into oxobject2group (oxid,oxshopid,oxobjectid,oxgroupsid) values ( "'.$oUser->getId().'", "'.$myConfig->getBaseShopId().'", "'.$oUser->getId().'", "oxidpricec" )';
         $myDB->Execute( $sQ );
 
         $sOXID = $this->_aVoucherOxid[$this->_aSerieOxid[0]][getRandLTAmnt()];
@@ -1240,7 +1213,7 @@ class Unit_Core_oxvoucherTest extends OxidTestCase
         $oVoucher = oxNew('oxvoucher' );
         $oVoucher->load( $sVoucher );
 
-        $oSimpleVoucher = new OxstdClass();
+        $oSimpleVoucher = new stdClass();
         $oSimpleVoucher->sVoucherId = $oVoucher->getId();
         $oSimpleVoucher->sVoucherNr = $oVoucher->oxvouchers__oxvouchernr->value;
         //$oSimpleVoucher->fVoucherdiscount = oxLang::getInstance()->formatCurrency( $oVoucher->oxvouchers__oxdiscount->value );

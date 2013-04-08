@@ -37,7 +37,7 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
     protected $_aArray = array();
 
     /**
-     * Save the state, that active element was unsetted
+     * Save the state, that active element was unset
      * needed for proper foreach iterator functionality
      *
      * @var bool $_blRemovedActive
@@ -186,7 +186,7 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
     /**
      * previous / first array element
      *
-     * @return prev array element
+     * @return mixed
      */
     public function prev()
     {
@@ -274,7 +274,7 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
 
     /**
      * -----------------------------------------------------------------------------------------------------
-     * SPL implmentation end
+     * SPL implementation end
      * -----------------------------------------------------------------------------------------------------
      */
 
@@ -326,12 +326,8 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
      *
      * @return mixed
      */
-    public function __get( $sName)
+    public function __get( $sName )
     {
-        //throw new Exception( 'oxList Access to undefined variable '. $sName);
-        //echo( "Access to ".$sName.PHP_EOL);
-
-        // TMP
         if ( $sName == 'aList') {
             return $this->_aArray;
         }
@@ -418,6 +414,34 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
         }
     }
 
+
+    /**
+     * Assign data from array to list
+     *
+     * @param array $aData data for list
+     *
+     * @return null;
+     */
+    public function assignArray( $aData )
+    {
+        $this->clear();
+        if ( count( $aData ) ) {
+
+            $oSaved = clone $this->getBaseObject();
+
+            foreach ($aData as $aItem) {
+                $oListObject = clone $oSaved;
+                $this->_assignElement( $oListObject, $aItem );
+                if ( $oListObject->getId() ) {
+                    $this->_aArray[ $oListObject->getId() ] = $oListObject;
+                } else {
+                    $this->_aArray[] = $oListObject;
+                }
+            }
+        }
+    }
+
+
     /**
      * Sets SQL Limit
      *
@@ -453,7 +477,7 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
     }
 
     /**
-     * Generic function for laoding the list
+     * Generic function for loading the list
      *
      * @return null;
      */
@@ -475,7 +499,7 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
      * It is if you want to execute any functionality on every list ELEMENT after it is fully loaded (assigned).
      *
      * @param oxBase $oListObject List object (the one derived from oxBase)
-     * @param array  $aDbFields   An array holding db field values (normaly the result of oxDb::Execute())
+     * @param array  $aDbFields   An array holding db field values (normally the result of oxDb::Execute())
      *
      * @return null;
      */

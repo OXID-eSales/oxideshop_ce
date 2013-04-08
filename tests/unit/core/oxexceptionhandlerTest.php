@@ -151,7 +151,7 @@ class Unit_Core_oxexceptionhandlerTest extends OxidTestCase
         $oTestUtils->expects($this->once())->method("writeToLog");
         $oTestException = new Exception("testMsg");
 
-        modInstances::addMod("oxUtils", $oTestUtils);
+        oxTestModules::addModuleObject( 'oxUtils', $oTestUtils );
 
         try {
             $oTestObject->UNITdealWithNoOxException($oTestException);

@@ -90,22 +90,22 @@ class Unit_Core_oxuserpaymentTest extends OxidTestCase
     {
         $aDynValues = array();
 
-        $oVal = new oxStdClass();
+        $oVal = new stdClass();
         $oVal->name = 'lsbankname';
         $oVal->value = '12613212';
         $aDynValues[] = $oVal;
 
-        $oVal = new oxStdClass();
+        $oVal = new stdClass();
         $oVal->name = 'lsblz';
         $oVal->value = '132132132';
         $aDynValues[] = $oVal;
 
-        $oVal = new oxStdClass();
+        $oVal = new stdClass();
         $oVal->name = 'lsktonr';
         $oVal->value = '1331321321';
         $aDynValues[] = $oVal;
 
-        $oVal = new oxStdClass();
+        $oVal = new stdClass();
         $oVal->name = 'lsktoinhaber';
         $oVal->value = 'Dainius O&quot;bryan';
         $aDynValues[] = $oVal;

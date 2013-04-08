@@ -23,12 +23,12 @@ RewriteCond %{REQUEST_URI} oxseo\.php$
 RewriteCond %{QUERY_STRING} mod_rewrite_module_is=off
 RewriteRule oxseo\.php$ oxseo.php?mod_rewrite_module_is=on [L]
 
-RewriteCond %{REQUEST_URI} !(\/admin\/|\/core\/|\/export\/|\/modules\/|\/out\/|\/setup\/|\/tmp\/|\/views\/)
+RewriteCond %{REQUEST_URI} !(\/admin\/|\/core\/|\/application\/|\/export\/|\/modules\/|\/out\/|\/setup\/|\/tmp\/|\/views\/)
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule !(\.html|\/|\.jpg|\.css|\.pdf|\.doc|\.gif|\.png|\.js|\.htc)$ %{REQUEST_URI}/ [R=301,L]
 
-RewriteCond %{REQUEST_URI} !(\/admin\/|\/core\/|\/export\/|\/modules\/|\/out\/|\/setup\/|\/tmp\/|\/views\/)
+RewriteCond %{REQUEST_URI} !(\/admin\/|\/core\/|\/application\/|\/export\/|\/modules\/|\/out\/|\/setup\/|\/tmp\/|\/views\/)
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule (\.html|\/)$ oxseo.php
@@ -42,7 +42,7 @@ RewriteRule (\.jpe?g|\.gif|\.png)$ core/utils/getimg.php
 </IfModule>
 
 # disabling log file access from outside
-<FilesMatch "(EXCEPTION_LOG\.txt|\.log$|\.tpl$|pkg\.rev)">
+<FilesMatch "(EXCEPTION_LOG\.txt|\.log$|\.tpl$|pkg\.rev|\.ini|pkg\.info)">
 order allow,deny
 deny from all
 </FilesMatch>

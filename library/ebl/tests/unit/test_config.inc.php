@@ -80,9 +80,6 @@ class modOxUtilsDate extends oxUtilsDate
 // Utility class
 require_once getShopBasePath() . 'core/oxutils.php';
 
-// Standard class
-require_once getShopBasePath() . 'core/oxstdclass.php';
-
 // Database managing class.
 require_once getShopBasePath() . 'core/adodblite/adodb.inc.php';
 

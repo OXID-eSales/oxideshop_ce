@@ -63,9 +63,34 @@ abstract class oxERPBase
         '2.9.0' => '8', // added new fields to oxcategories, oxorderarticle
     );
 
+    /**
+     * Imported id array
+     * @var array
+     */
+    protected $_aImportedIds = array();
+
+    /**
+     * Imported row count
+     * @var array
+     */
+    protected $_iImportedRowCount = 0;
+
     public $_aStatistics = array();
     public $_iIdx        = 0;
 
+    /** gets count of imported rows, total, during import
+     *
+     * @return int $_iImportedRowCount
+     */
+    public abstract function getImportedRowCount();
+
+    /** adds true to $_aImportedIds where key is given
+     *
+     * @param mixed $key - given key
+     *
+     * @return null
+     */
+    public abstract function setImportedIds( $key );
     /**
      * _aStatistics getter
      *
@@ -193,13 +218,13 @@ abstract class oxERPBase
     {
         ini_set('session.use_cookies', 0);
         $_COOKIE = array('admin_sid' => false);
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         $myConfig->setConfigParam( 'blForceSessionStart', 1 );
         $myConfig->setConfigParam( 'blSessionUseCookies', 0);
         $myConfig->setConfigParam( 'blAdmin', 1 );
         $myConfig->setAdminMode( true );
 
-        $mySession = oxSession::getInstance();
+        $mySession = oxRegistry::getSession();
         @$mySession->start();
 
 
@@ -252,10 +277,10 @@ abstract class oxERPBase
         }
         $_COOKIE = array('admin_sid' => $sSessionID);
         // start session
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         $myConfig->setConfigParam( 'blAdmin', 1 );
         $myConfig->setAdminMode( true );
-        $mySession = oxSession::getInstance();
+        $mySession = oxRegistry::getSession();
 
         // change session if needed
         if ($sSessionID != session_id()) {
@@ -350,7 +375,7 @@ abstract class oxERPBase
     {
         global $ADODB_FETCH_MODE;
 
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         // prepare
         $oType   = $this->_getInstanceOfType($sType);
         //$sSQL    = $oType->getSQL($sWhere, $this->_iLanguage, $this->_iShopID);
@@ -476,7 +501,7 @@ abstract class oxERPBase
      */
     protected function _checkAccess($oType, $blWrite, $sOxid = null)
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         static $aAccessCache;
 
         if (!$this->_blInit) {
@@ -520,7 +545,13 @@ abstract class oxERPBase
             }
 
             try {
-                $blImport = $this->$sFnc($oType, $aData);
+                $iId = $this->$sFnc($oType, $aData);
+                if ( !$iId )
+                    $blImport = false;
+                else {
+                    $this->setImportedIds( $iId );
+                    $blImport = true;
+                }
                 $sMessage = '';
             } catch (Exception $e) {
                 $sMessage = $e->getMessage();
@@ -547,7 +578,7 @@ abstract class oxERPBase
      */
     protected function _save(oxERPType &$oType, $aData, $blAllowCustomShopId = false)
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         // check rights
         $sOxid = null;
@@ -568,7 +599,7 @@ abstract class oxERPBase
      */
     protected static function _checkShopVersion()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         if ( method_exists($myConfig, 'getSerial') ) {
             if ($myConfig->getSerial() instanceof oxSerial) {
                 return;

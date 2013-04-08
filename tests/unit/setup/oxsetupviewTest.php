@@ -90,10 +90,10 @@ class Unit_Setup_oxSetupViewTest extends OxidTestCase
      */
     public function testGetText()
     {
-        $oInst = $this->getMock( "oxStdClass", array( "getText" ) );
+        $oInst = $this->getMock( "oxSetupLang", array( "getText" ) );
         $oInst->expects( $this->once() )->method( "getText" )->with( $this->equalTo( "testId" ) );
 
-        $oSetupView = $this->getMock( "oxsetupView", array( "getInstance" ) );
+        $oSetupView = $this->getMock( "oxSetupView", array( "getInstance" ) );
         $oSetupView->expects( $this->once() )->method( "getInstance" )->with( $this->equalTo( "oxSetupLang" ) )->will( $this->returnValue( $oInst ) );
         $oSetupView->getText( "testId", false );
     }
@@ -117,7 +117,7 @@ class Unit_Setup_oxSetupViewTest extends OxidTestCase
      */
     public function testGetSetupStep()
     {
-        $oInst = $this->getMock( "oxStdClass", array( "getStep" ) );
+        $oInst = $this->getMock( "oxSetup", array( "getStep" ) );
         $oInst->expects( $this->once() )->method( "getStep" )->with( $this->equalTo( "testStepId" ) );
 
         $oSetupView = $this->getMock( "oxsetupView", array( "getInstance" ) );
@@ -132,7 +132,7 @@ class Unit_Setup_oxSetupViewTest extends OxidTestCase
      */
     public function testGetNextSetupStep()
     {
-        $oInst = $this->getMock( "oxStdClass", array( "getNextStep" ) );
+        $oInst = $this->getMock( "oxSetup", array( "getNextStep" ) );
         $oInst->expects( $this->once() )->method( "getNextStep" );
 
         $oSetupView = $this->getMock( "oxsetupView", array( "getInstance" ) );
@@ -147,7 +147,7 @@ class Unit_Setup_oxSetupViewTest extends OxidTestCase
      */
     public function testGetCurrentSetupStep()
     {
-        $oInst = $this->getMock( "oxStdClass", array( "getCurrentStep" ) );
+        $oInst = $this->getMock( "oxSetup", array( "getCurrentStep" ) );
         $oInst->expects( $this->once() )->method( "getCurrentStep" );
 
         $oSetupView = $this->getMock( "oxsetupView", array( "getInstance" ) );
@@ -162,7 +162,7 @@ class Unit_Setup_oxSetupViewTest extends OxidTestCase
      */
     public function testGetSetupSteps()
     {
-        $oInst = $this->getMock( "oxStdClass", array( "getSteps" ) );
+        $oInst = $this->getMock( "oxSetup", array( "getSteps" ) );
         $oInst->expects( $this->once() )->method( "getSteps" );
 
         $oSetupView = $this->getMock( "oxsetupView", array( "getInstance" ) );
@@ -190,19 +190,19 @@ class Unit_Setup_oxSetupViewTest extends OxidTestCase
     {
         $sPath  = getInstallPath();
 
-        $oInst1 = $this->getMock( "oxStdClass", array( "getSessionParam" ) );
+        $oInst1 = $this->getMock( "oxSetupSession", array( "getSessionParam" ), array(), '', null );
         $oInst1->expects( $this->at( 0 ) )->method( "getSessionParam" )->will( $this->returnValue( array( "dbiDemoData" => 0 ) ) );
         $oInst1->expects( $this->at( 1 ) )->method( "getSessionParam" )->will( $this->returnValue( array( "blDelSetupDir" => true ) ) );
 
-        $oInst2 = $this->getMock( "oxStdClass", array( "removeDir" ) );
+        $oInst2 = $this->getMock( "oxSetupUtils", array( "removeDir" ) );
         $oInst2->expects( $this->at( 0 ) )->method( "removeDir" )->with( $this->equalTo( $sPath . "out/pictures_/generated" ), $this->equalTo( true ) )->will( $this->returnValue( true ) );
         $oInst2->expects( $this->at( 1 ) )->method( "removeDir" )->with( $this->equalTo( $sPath . "out/pictures_/master" ), $this->equalTo( true ), $this->equalTo( 1 ), $this->equalTo( array( "nopic.jpg" ) ) )->will( $this->returnValue( true ) );
         $oInst2->expects( $this->at( 2 ) )->method( "removeDir" )->with( $this->equalTo( $sPath . "setup" ), $this->equalTo( true ) )->will( $this->returnValue( true ) );
 
-        $oInst3 = $this->getMock( "oxStdClass", array( "getVersionPrefix" ) );
+        $oInst3 = $this->getMock( "oxSetup", array( "getVersionPrefix" ) );
         $oInst3->expects( $this->once() )->method( "getVersionPrefix" )->will( $this->returnValue( "_" ) );
 
-        $oSetupView = $this->getMock( "oxsetupView", array( "getInstance" ) );
+        $oSetupView = $this->getMock( "oxSetupView", array( "getInstance" ) );
         $oSetupView->expects( $this->at( 0 ) )->method( "getInstance" )->with( $this->equalTo( "OxSetupSession" ) )->will( $this->returnValue( $oInst1 ) );
         $oSetupView->expects( $this->at( 1 ) )->method( "getInstance" )->with( $this->equalTo( "oxSetupUtils" ) )->will( $this->returnValue( $oInst2 ) );
         $oSetupView->expects( $this->at( 2 ) )->method( "getInstance" )->with( $this->equalTo( "oxSetup" ) )->will( $this->returnValue( $oInst3 ) );
@@ -231,7 +231,7 @@ class Unit_Setup_oxSetupViewTest extends OxidTestCase
      */
     public function testGetSid()
     {
-        $oInst = $this->getMock( "oxStdClass", array( "getSid" ) );
+        $oInst = $this->getMock( "oxSetupSession", array( "getSid" ), array(), '', false );
         $oInst->expects( $this->once() )->method( "getSid" )->will( $this->returnValue( "testSid" ) );
 
         $oSetupView = $this->getMock( "oxsetupView", array( "getInstance" ) );

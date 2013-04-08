@@ -88,4 +88,21 @@ class Unit_Admin_ToolsListTest extends OxidTestCase
         $oView = new Tools_List();
         $this->assertEquals( 'tools_list.tpl', $oView->render() );
     }
+
+    /**
+     * Tools_List::updateViews() test case
+     *
+     * @return null
+     */
+    public function testUpdateViews()
+    {
+        modSession::getInstance()->setVar( 'malladmin', true );
+
+        $oView = new Tools_List();
+        $oView->updateViews();
+
+        // assert that updating was successful
+        $aViewData = $oView->getViewData();
+        $this->assertTrue( $aViewData['blViewSuccess'] );
+    }
 }

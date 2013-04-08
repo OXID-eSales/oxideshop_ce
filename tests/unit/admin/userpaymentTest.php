@@ -161,7 +161,7 @@ class Unit_Admin_userPaymentTest extends OxidTestCase
     public function testGetPaymentIdFromUserPayment()
     {
         modConfig::setParameter( 'oxpaymentid', null );
-        $oUserPayment  = new oxStdClass();
+        $oUserPayment  = new oxUserPayment();
         $oUserPayment->oxuserpayments__oxid = new oxField('oxidinvoice');
         $oUser = $this->getMock( 'oxuser', array( 'getUserPayments' ) );
         $oUser->expects( $this->once() )->method( 'getUserPayments')->will( $this->returnValue( array($oUserPayment) ) );

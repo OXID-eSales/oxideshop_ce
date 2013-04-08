@@ -77,7 +77,7 @@ class Acceptance_privateSalesTest extends oxidAdditionalSeleniumFunctions
         $this->assertTrue($this->isElementPresent("//button[text()='Continue Shopping']"));
         $this->clickAndWait("tobasket");
         $this->assertEquals("You are here: / View cart", $this->getText("breadCrumb"));
-        $this->assertTrue($this->isElementPresent("//tr[@id='cartItem_1']//a[text()='Test product 0 [EN] šÄßüл']"));
+        $this->assertTrue($this->isElementPresent("//tr[@id='cartItem_1']//a/b[text()='Test product 0 [EN] šÄßüл']"));
         $this->clickAndWait("link=Home");
         $this->assertEquals("1", $this->getText("//div[@id='miniBasket']/span"));
         $this->clickAndWait("link=Test category 0 [EN] šÄßüл");
@@ -117,7 +117,7 @@ class Acceptance_privateSalesTest extends oxidAdditionalSeleniumFunctions
         }
 
         //enabling basket exclusion
-        $this->executeSql("UPDATE `oxconfig` SET `OXVARVALUE` = 0x07 WHERE `OXVARNAME` = 'blBasketExcludeEnabled'");
+        $this->callShopSC("oxConfig", "saveShopConfVar", null, array("blBasketExcludeEnabled" => array("type" => "bool", "value" => 'true')));
         //checking in frontend
         $this->openShop();
         $this->clickAndWait("link=Test category 0 [EN] šÄßüл");
@@ -234,7 +234,8 @@ class Acceptance_privateSalesTest extends oxidAdditionalSeleniumFunctions
      */
     public function testPrivateShoppingInvitations()
     {
-        $this->executeSql("UPDATE `oxconfig` SET `OXVARVALUE`='' WHERE `OXVARNAME`='iUseGDVersion'");
+      //Installed GDLib Version with empty value
+        $this->callShopSC("oxConfig", "saveShopConfVar", null, array("iUseGDVersion" => array("type" => "str", "value" => "")));
         //checking if functionality is disabled in frontend
         $this->openShop();
         $this->assertFalse($this->isElementPresent("test_link_service_invite"));
@@ -434,7 +435,7 @@ class Acceptance_privateSalesTest extends oxidAdditionalSeleniumFunctions
         $this->assertFalse($this->isElementPresent("footer"));
 
         //checking if module works together with basket exclusion and basket expiration
-        $this->executeSql("UPDATE `oxconfig` SET `OXVARVALUE` = 0x07 WHERE `OXVARNAME` = 'blBasketExcludeEnabled'");
+        $this->callShopSC("oxConfig", "saveShopConfVar", null, array("blBasketExcludeEnabled" => array("type" => "bool", "value" => 'true')));
         //register as new user (when other shopping club modules are on)
         $this->loginAdmin("Master Settings", "Core Settings");
         $this->openTab("link=Settings");
@@ -446,7 +447,6 @@ class Acceptance_privateSalesTest extends oxidAdditionalSeleniumFunctions
         $this->waitForItemAppear("confstrs[iPsBasketReservationTimeout]");
         $this->type("confstrs[iPsBasketReservationTimeout]", "10");
         $this->clickAndWait("save");
-        $this->clearTmp();
         $this->openShop();
         $this->clickAndWait("openAccountLink");
         $this->assertEquals("Open account", $this->getText("openAccHeader"));

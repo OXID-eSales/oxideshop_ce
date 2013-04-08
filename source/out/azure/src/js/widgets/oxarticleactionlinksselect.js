@@ -72,10 +72,10 @@
 
             //if user comes first time to details shows action links box
             //and sets to cookie, not to show it later
-            if ($("#showLinksOnce").length > 0) {
+            if( !$.cookie("showlinksonce") ) {
                 $("ul.actionLinks").slideDown('normal').delay(2000).slideUp('normal', function(){
-                     document.cookie = "showlinksonce=1; path=/";
-                });
+                  });
+                $.cookie("showlinksonce", 1, { path: '/' });
             }
 
             $('select[id^=sellist]').change (function() {

@@ -22,17 +22,6 @@
  * @version   SVN: $Id$
  */
 
-
-/*
-class oxTestRegister {
-    public static $callbacks = array();
-    public static function execute() {
-        foreach (self::$callbacks as $func) {
-            call_user_func($func);
-        }
-    }
-}
-*/
 require_once 'test_config.inc.php';
 
 class OxidMockStubFunc implements PHPUnit_Framework_MockObject_Stub
@@ -67,6 +56,36 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     protected static $_aInitialDbChecksum = null;
 
     /**
+     * Calling parent constructor, to fix possible problems with dataprovider
+     *
+     * @param  string $name
+     * @param  array  $data
+     * @param  string $dataName
+     */
+    public function __construct( $name = NULL, array $data = array(), $dataName = '')
+    {
+        parent::__construct($name, $data, $dataName);
+    }
+
+    /**
+     * Cleans up the registry before/after the test execution
+     *
+     * @return null;
+     */
+    protected function _resetRegistry()
+    {
+        $aRegKeys = oxRegistry::getKeys();
+
+        $aSkippedClasses = array( "oxconfigfile");
+
+        foreach ($aRegKeys as $sKey) {
+            if ( !in_array( $sKey, $aSkippedClasses )) {
+                oxRegistry::set( $sKey, null );
+            }
+        }
+    }
+
+    /**
      * Initialize the fixture.
      *
      * @return null
@@ -83,12 +102,16 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
         error_reporting( (E_ALL ^ E_NOTICE) | E_STRICT );
         ini_set('display_errors', true);
 
-        modConfig::getInstance();
-        modSession::getInstance();
+        $this->getConfig();
+        $this->getSession();
+        $this->setAdminMode(false);
+        $this->setShopId(null);
+        oxAddClassModule( 'modOxUtilsDate', 'oxUtilsDate' );
 
         oxUtils::getInstance()->cleanStaticCache();
         error_reporting( (E_ALL ^ E_NOTICE) | E_STRICT );
         ini_set('display_errors', true);
+
     }
 
     /**
@@ -98,9 +121,8 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      */
     public static function tearDownAfterClass()
     {
-        modSession::getInstance()->cleanup();
-        modDb::getInstance()->cleanup();
-        modConfig::getInstance()->cleanup();
+        self::getSession()->cleanup();
+        self::getConfig()->cleanup();
 
         self::checkDbChecksums();
         if (function_exists('memory_get_usage')) {
@@ -116,7 +138,9 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        overrideGetShopBasePath(null);
+        //TS2012-06-06
+        //deprecated method call
+        //overrideGetShopBasePath(null);
 
         oxTestsStaticCleaner::clean('oxSeoEncoder', '_instance');
         oxTestsStaticCleaner::clean('oxSeoEncoderArticle', '_instance');
@@ -129,10 +153,10 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
         modInstances::cleanup();
         oxTestModules::cleanUp();
         modOxid::globalCleanup();
+        modDB::getInstance()->cleanup();
 
-        modSession::getInstance()->cleanup();
-        modDb::getInstance()->cleanup();
-        modConfig::getInstance()->cleanup();
+        $this->getSession()->cleanup();
+        $this->getConfig()->cleanup();
 
         $_SERVER  = $this->_aBackup['_SERVER'];
         $_POST    = $this->_aBackup['_POST'];
@@ -140,8 +164,175 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
         $_SESSION = $this->_aBackup['_SESSION'];
         $_COOKIE  = $this->_aBackup['_COOKIE'];
 
+
+        $this->_resetRegistry();
+
+        oxUtilsObject::resetClassInstances();
+        oxUtilsObject::resetModuleVars();
+
         parent::tearDown();
-        //oxTestRegister::execute();
+    }
+
+    /**
+     * Get parameter from session object.
+
+     * @param string $sParam parameter name.
+     */
+    public function getSessionParam( $sParam )
+    {
+        return $this->getSession()->getVar( $sParam );
+    }
+
+    /**
+     * Set parameter to session object.
+
+     * @param string $sParam parameter name.
+     * @param object $oVal   any parameter value, default null.
+     */
+    public function setSessionParam( $sParam, $oVal = null )
+    {
+        return $this->getSession()->setVar( $sParam, $oVal );
+    }
+
+    /**
+     * Get parameter from config request object.
+
+     * @param string $sParam parameter name.
+     */
+    public function getRequestParam( $sParam )
+    {
+        return $this->getConfig()->getParameter( $sParam );
+    }
+
+    /**
+     * Set parameter to config request object.
+
+     * @param string $sParam parameter name.
+     * @param object $oVal   any parameter value, default null.
+     */
+    public function setRequestParam( $sParam, $oVal = null )
+    {
+        return $this->getConfig()->setParameter( $sParam, $oVal );
+    }
+
+    /**
+     * Get parameter from config object.
+
+     * @param string $sParam parameter name.
+     */
+    public function getConfigParam( $sParam )
+    {
+        return $this->getConfig()->getConfigParam( $sParam );
+    }
+
+    /**
+     * Set parameter to config object.
+
+     * @param string $sParam parameter name.
+     * @param object $oVal   any parameter value, default null.
+     */
+    public function setConfigParam( $sParam, $oVal = null )
+    {
+        return $this->getConfig()->setConfigParam( $sParam, $oVal );
+    }
+
+    /**
+     * Sets OXID shop admin mode.
+     *
+     * @param bool $blAdmin set to admin mode TRUE / FALSE.
+     * @return null
+     */
+    public function setAdminMode( $blAdmin )
+    {
+        $this->setSessionParam( 'blIsAdmin', $blAdmin );
+        return $this->getConfig()->setAdminMode( $blAdmin );
+    }
+
+    /**
+     * Get OXID shop ID.
+     *
+     * @return string
+     */
+    public function getShopId()
+    {
+        return $this->getConfig()->getShopId();
+    }
+
+    /**
+     * Sets OXID shop ID.
+     *
+     * @param string $sShopId set active shop ID.
+     * @return null
+     */
+    public function setShopId( $sShopId )
+    {
+        return $this->getConfig()->setShopId( $sShopId );
+    }
+
+    /**
+     * Set static time value for testing.
+     *
+     * @param int $oVal
+     * @return null
+     */
+    public function setTime( $oVal = null )
+    {
+        return modOxUtilsDate::getInstance()->UNITSetTime( $oVal );
+    }
+
+    /**
+     * Get static / real time value for testing.
+     *
+     * @return int
+     */
+    public function getTime()
+    {
+        return modOxUtilsDate::getInstance()->getTime();
+    }
+
+    public static function getSession()
+    {
+        return modSession::getInstance();
+    }
+
+    public static function getConfig()
+    {
+        return modConfig::getInstance();
+    }
+
+    public static function getDb( $iFetchMode = null )
+    {
+        $oDB = oxDb::getDb();
+        if ( $iFetchMode !== null ) {
+            $oDB->setFetchMode( $iFetchMode );
+        }
+
+        return $oDB;
+    }
+
+    public function getCacheBackend()
+    {
+        return oxRegistry::get('oxCacheBackend');
+    }
+
+    public function setLanguage( $iLangId )
+    {
+        return oxLang::getInstance()->setBaseLanguage( $iLangId );
+    }
+
+    public function getLanguage()
+    {
+        return oxLang::getInstance()->getBaseLanguage();
+    }
+
+    public function setTplLanguage( $iLangId )
+    {
+        return oxLang::getInstance()->setTplLanguage( $iLangId );
+    }
+
+    public function getTplLanguage()
+    {
+        return oxLang::getInstance()->getTplLanguage();
     }
 
     /**
@@ -150,7 +341,6 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     protected function sharedAssertions()
     {
         // it runs before tearDown, so our tearDown will be able to use db again
-        modDb::getInstance()->cleanup();
     }
 
     /**
@@ -239,7 +429,7 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
 
         //deletes allrecords where oxid or specified column name values starts with underscore(_)
         $sQ = "delete from $sTable where $sCol like '\_%' ";
-        oxDb::getDb()->Execute($sQ);
+        $this->getDb()->Execute($sQ);
     }
 
     /**
@@ -344,8 +534,9 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      */
     protected static function getDbChecksum()
     {
-        $myDB = oxDb::getDB();
-        $myConfig = modConfig::getInstance();
+        //modDB::getInstance();
+        $myDB = self::getDb();
+        $myConfig = self::getConfig();
         $sSelect = 'select t.TABLE_NAME from INFORMATION_SCHEMA.tables as t where t.TABLE_SCHEMA = "'.$myConfig->getConfigParam( 'dbName' ).'" and t.TABLE_NAME not like "oxv_%"';
         $aTables = $myDB->getCol($sSelect);
         $sTableSet = implode(", ", $aTables);

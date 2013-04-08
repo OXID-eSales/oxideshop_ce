@@ -78,8 +78,8 @@ class Unit_Core_oxSeoEncoderContentTest extends OxidTestCase
     {
         oxTestModules::addFunction("oxcontent", "loadInLang", "{ return true; }");
 
-        $oEncoder = $this->getMock( "oxSeoEncoderContent", array( "_getContentUri" ) );
-        $oEncoder->expects( $this->once() )->method( '_getContentUri' )->will( $this->returnValue( "contentUri" ) );
+        $oEncoder = $this->getMock( "oxSeoEncoderContent", array( "getContentUri" ) );
+        $oEncoder->expects( $this->once() )->method( 'getContentUri' )->will( $this->returnValue( "contentUri" ) );
 
         $this->assertEquals( "contentUri", $oEncoder->UNITgetAltUri( '1126', 0 ) );
     }
@@ -186,7 +186,7 @@ class Unit_Core_oxSeoEncoderContentTest extends OxidTestCase
         $oContent->expects( $this->never() )->method('_getUniqueSeoUrl');
         $oContent->expects( $this->never() )->method('_saveToDb');
 
-        $this->assertEquals( 'seocontenturl', $oEncoder->UNITgetContentUri( $oContent ) );
+        $this->assertEquals( 'seocontenturl', $oEncoder->getContentUri( $oContent ) );
     }
     public function testGetContentUriExistingSeqCheckWithLangParam()
     {
@@ -200,7 +200,7 @@ class Unit_Core_oxSeoEncoderContentTest extends OxidTestCase
         $oContent->expects( $this->never() )->method('_getUniqueSeoUrl');
         $oContent->expects( $this->never() )->method('_saveToDb');
 
-        $this->assertEquals( 'seocontenturl', $oEncoder->UNITgetContentUri( $oContent, 0 ) );
+        $this->assertEquals( 'seocontenturl', $oEncoder->getContentUri( $oContent, 0 ) );
     }
 
     public function testGetContentUriNotExistingSeqCheck()
@@ -218,7 +218,7 @@ class Unit_Core_oxSeoEncoderContentTest extends OxidTestCase
         $oEncoder->expects( $this->once() )->method('_processSeoUrl')->with( $this->equalTo( 'content-title/' ), $this->equalTo( 'contentid' ), $this->equalTo( 0 ) )->will( $this->returnValue( 'content-title/' ) );
         $oEncoder->expects( $this->once() )->method('_saveToDb')->with( $this->equalTo( 'oxcontent' ), $this->equalTo( 'contentid' ), $this->equalTo( 'stdlink' ), $this->equalTo( 'content-title/' ), $this->equalTo( 0 ) );
 
-        $this->assertEquals( 'content-title/', $oEncoder->UNITgetContentUri( $oContent, 0 ) );
+        $this->assertEquals( 'content-title/', $oEncoder->getContentUri( $oContent, 0 ) );
     }
 
     public function testGetContentUriNotExistingSeqCheckChangeLang()
@@ -240,7 +240,7 @@ class Unit_Core_oxSeoEncoderContentTest extends OxidTestCase
         $oEncoder->expects( $this->once() )->method('_processSeoUrl')->with( $this->equalTo( 'content-title-new/' ), $this->equalTo( 'contentid' ), $this->equalTo( 0 ) )->will( $this->returnValue( 'content-title-new/' ) );
         $oEncoder->expects( $this->once() )->method('_saveToDb')->with( $this->equalTo( 'oxcontent' ), $this->equalTo( 'contentid' ), $this->equalTo( 'stdlink' ), $this->equalTo( 'content-title-new/' ), $this->equalTo( 0 ) );
 
-        $this->assertEquals( 'content-title-new/', $oEncoder->UNITgetContentUri( $oContent, 0 ) );
+        $this->assertEquals( 'content-title-new/', $oEncoder->getContentUri( $oContent, 0 ) );
     }
 
     public function testonDeleteContent()

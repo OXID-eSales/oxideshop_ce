@@ -22,11 +22,6 @@
  * @version   SVN: $Id: $
  */
 
-error_reporting( (E_ALL ^ E_NOTICE) | E_STRICT );
-ini_set('display_errors', true);
-
-define ('OXID_PHP_UNIT', true);
-
 if (getenv('oxPATH')) {
     define ('oxPATH', getenv('oxPATH'));
 } else {
@@ -35,6 +30,7 @@ if (getenv('oxPATH')) {
 if (!defined('oxPATH')) {
     die('oxPATH is not defined');
 }
+
 
 
 if (!defined('OXID_VERSION_SUFIX')) {
@@ -50,13 +46,22 @@ require_once 'unit/test_utils.php';
 // Generic utility method file.
 require_once getShopBasePath() . 'core/oxfunctions.php';
 
+// As in new bootstrap to get db instance.
+$oConfigFile = new OxConfigFile( getShopBasePath() . "config.inc.php" );
+
+OxRegistry::set("OxConfigFile", $oConfigFile);
+oxRegistry::set("oxConfig", new oxConfig());
+
+// As in new bootstrap to get db instance.
+$oDb = new oxDb();
+$oDb->setConfig( $oConfigFile );
+$oLegacyDb = $oDb->getDb();
+OxRegistry::set( 'OxDb', $oLegacyDb );
+
 oxConfig::getInstance();
 
 // Utility class
 require_once getShopBasePath() . 'core/oxutils.php';
-
-// Standard class
-require_once getShopBasePath() . 'core/oxstdclass.php';
 
 // Database managing class.
 require_once getShopBasePath() . 'core/adodblite/adodb.inc.php';
@@ -64,5 +69,5 @@ require_once getShopBasePath() . 'core/adodblite/adodb.inc.php';
 // Session managing class.
 require_once getShopBasePath() . 'core/oxsession.php';
 
-// DB managing class.
+// config
 require_once getShopBasePath() . 'core/oxconfig.php';

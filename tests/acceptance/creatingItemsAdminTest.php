@@ -298,7 +298,7 @@ class Acceptance_creatingItemsAdminTest extends oxidAdditionalSeleniumFunctions
         $this->type("editval[sort]", ""); //leaving empty
         $this->clickAndWaitFrame("saveArticle", "list", "oLockButton");
         $this->assertTrue($this->isTextPresent("Please don't forget to update the database views under Service->Tools"));
-        $this->assertTrue($this->isTextPresent("Attention: No language files were found in theme or /out dir for selected language!"));
+        $this->assertTrue($this->isTextPresent("Attention: No language files were found in templates dir for selected language!"));
         $this->frame("list", "//tr[@id='row.3']");
         $this->assertEquals("šÄß", $this->getText("//tr[@id='row.3']/td[2]"));
         $this->assertEquals("Language_šÄßüл", $this->getText("//tr[@id='row.3']/td[3]"));
@@ -883,7 +883,7 @@ class Acceptance_creatingItemsAdminTest extends oxidAdditionalSeleniumFunctions
         sleep(1);
         $this->selectFrame("dynexport_do");
         $this->waitForText("Coupons export completed");
-        $this->checkForErrors();
+        //$this->checkForErrors();
         $this->selectFrame("relative=up");
         $this->checkForErrors();
         //testing if other tabs are working
@@ -1239,7 +1239,7 @@ class Acceptance_creatingItemsAdminTest extends oxidAdditionalSeleniumFunctions
         $this->loginAdmin("Administer Products", "Products");
         $this->frame("edit");
         //Product tab
-        $this->clickAndWaitFrame("btn.new", "edit");
+     // $this->clickAndWaitFrame("btn.new", "edit");
         $this->assertEquals("0", $this->getValue("editval[oxarticles__oxactive]"));
         $this->assertFalse($this->isElementPresent("editval[oxarticles__oxactivefrom]"));
         $this->assertFalse($this->isElementPresent("editval[oxarticles__oxactiveto]"));
@@ -1384,7 +1384,6 @@ class Acceptance_creatingItemsAdminTest extends oxidAdditionalSeleniumFunctions
      */
     public function testCreateProductStockPrices()
     {
-
         $this->loginAdmin("Administer Products", "Products");
         $this->frame("edit");
         //Product tab
@@ -1411,7 +1410,7 @@ class Acceptance_creatingItemsAdminTest extends oxidAdditionalSeleniumFunctions
         $this->assertEquals("5",  $this->getValue("//fieldset[@title='Scale Prices']/table/tbody/tr/td[1]/input[2]"));
         $this->assertEquals("oxprice2article__oxaddabs", $this->getValue("//fieldset[@title='Scale Prices']/table/tbody/tr/td[2]/select[1]"));
         $this->assertEquals("10", $this->getValue("//fieldset[@title='Scale Prices']/table/tbody/tr/td[2]/input[1]"));
-        $this->assertEquals("5",$this->getXpathCount("//fieldset[@title='Scale Prices']/table/tbody/tr"));
+        $this->assertEquals("6",$this->getXpathCount("//fieldset[@title='Scale Prices']/table/tbody/tr"));
 
         $this->type("editval[oxprice2article__oxamount]", "6");
         $this->type("editval[oxprice2article__oxamountto]", "99999");
@@ -1420,58 +1419,58 @@ class Acceptance_creatingItemsAdminTest extends oxidAdditionalSeleniumFunctions
 
         $this->clickAndWait("document.myedit.save[1]");
 
-        $this->assertEquals("6",     $this->getValue("//fieldset[@title='Scale Prices']/table/tbody/tr[2]/td[1]/input[1]"));
-        $this->assertEquals("99999", $this->getValue("//fieldset[@title='Scale Prices']/table/tbody/tr[2]/td[1]/input[2]"));
-        $this->assertEquals("oxprice2article__oxaddperc", $this->getValue("//fieldset[@title='Scale Prices']/table/tbody/tr[2]/td[2]/select[1]"));
-        $this->assertEquals("15",    $this->getValue("//fieldset[@title='Scale Prices']/table/tbody/tr[2]/td[2]/input[1]"));
-        $this->assertEquals("6",$this->getXpathCount("//fieldset[@title='Scale Prices']/table/tbody/tr"));
+        $this->assertEquals("6",     $this->getValue("//fieldset[@title='Scale Prices']/table/tbody/tr[3]/td[1]/input[1]"));
+        $this->assertEquals("99999", $this->getValue("//fieldset[@title='Scale Prices']/table/tbody/tr[3]/td[1]/input[2]"));
+        $this->assertEquals("oxprice2article__oxaddperc", $this->getValue("//fieldset[@title='Scale Prices']/table/tbody/tr[3]/td[2]/select[1]"));
+        $this->assertEquals("15",    $this->getValue("//fieldset[@title='Scale Prices']/table/tbody/tr[3]/td[2]/input[1]"));
+        $this->assertEquals("7",$this->getXpathCount("//fieldset[@title='Scale Prices']/table/tbody/tr"));
 
         //test updating
-  		$this->type("//fieldset[@title='Scale Prices']/table/tbody/tr/td/input", "2");
-		$this->type("//fieldset[@title='Scale Prices']/table/tbody/tr/td/input[2]", "20");
-		$this->select("//fieldset[@title='Scale Prices']/table/tbody/tr/td[2]/select", "label=% Discount");
-		$this->type("//fieldset[@title='Scale Prices']/table/tbody/tr/td[2]/input", "11");
-		$this->type("//fieldset[@title='Scale Prices']/table/tbody/tr[2]/td/input", "21");
-		$this->type("//fieldset[@title='Scale Prices']/table/tbody/tr[2]/td/input[2]", "99998");
-		$this->select("//fieldset/table/tbody/tr[2]/td[2]/select", "label=abs");
-		$this->type("//fieldset[@title='Scale Prices']/table/tbody/tr[2]/td[2]/input", "19");
+        $this->type("//fieldset[@title='Scale Prices']/table/tbody/tr[1]/td/input", "2");
+        $this->type("//fieldset[@title='Scale Prices']/table/tbody/tr[1]/td/input[2]", "20");
+        $this->select("//fieldset[@title='Scale Prices']/table/tbody/tr[1]/td[2]/select", "label=% Discount");
+        $this->type("//fieldset[@title='Scale Prices']/table/tbody/tr[1]/td[2]/input", "11");
+        $this->type("//fieldset[@title='Scale Prices']/table/tbody/tr[3]/td/input", "21");
+        $this->type("//fieldset[@title='Scale Prices']/table/tbody/tr[3]/td/input[2]", "99998");
+        $this->select("//fieldset/table/tbody/tr[3]/td[2]/select", "label=abs");
+        $this->type("//fieldset[@title='Scale Prices']/table/tbody/tr[3]/td[2]/input", "19");
 
         $this->clickAndWait("document.myedit.saveAll");
 
-        $this->assertEquals("2",  $this->getValue("//fieldset[@title='Scale Prices']/table/tbody/tr/td[1]/input[1]"));
-        $this->assertEquals("20",  $this->getValue("//fieldset[@title='Scale Prices']/table/tbody/tr/td[1]/input[2]"));
-        $this->assertEquals("oxprice2article__oxaddperc", $this->getValue("//fieldset[@title='Scale Prices']/table/tbody/tr/td[2]/select[1]"));
-        $this->assertEquals("11", $this->getValue("//fieldset[@title='Scale Prices']/table/tbody/tr/td[2]/input[1]"));
-        $this->assertEquals("21",     $this->getValue("//fieldset[@title='Scale Prices']/table/tbody/tr[2]/td[1]/input[1]"));
-        $this->assertEquals("99998", $this->getValue("//fieldset[@title='Scale Prices']/table/tbody/tr[2]/td[1]/input[2]"));
-        $this->assertEquals("19",    $this->getValue("//fieldset[@title='Scale Prices']/table/tbody/tr[2]/td[2]/input[1]"));
-        $this->assertEquals("oxprice2article__oxaddabs", $this->getValue("//fieldset[@title='Scale Prices']/table/tbody/tr[2]/td[2]/select[1]"));
-        $this->assertEquals("6",$this->getXpathCount("//fieldset[@title='Scale Prices']/table/tbody/tr"));
+        $this->assertEquals("2",  $this->getValue("//fieldset[@title='Scale Prices']/table/tbody/tr[2]/td[1]/input[1]"));
+        $this->assertEquals("20",  $this->getValue("//fieldset[@title='Scale Prices']/table/tbody/tr[2]/td[1]/input[2]"));
+        $this->assertEquals("oxprice2article__oxaddperc", $this->getValue("//fieldset[@title='Scale Prices']/table/tbody/tr[2]/td[2]/select[1]"));
+        $this->assertEquals("11", $this->getValue("//fieldset[@title='Scale Prices']/table/tbody/tr[2]/td[2]/input[1]"));
+        $this->assertEquals("21",     $this->getValue("//fieldset[@title='Scale Prices']/table/tbody/tr[4]/td[1]/input[1]"));
+        $this->assertEquals("99998", $this->getValue("//fieldset[@title='Scale Prices']/table/tbody/tr[4]/td[1]/input[2]"));
+        $this->assertEquals("19",    $this->getValue("//fieldset[@title='Scale Prices']/table/tbody/tr[4]/td[2]/input[1]"));
+        $this->assertEquals("oxprice2article__oxaddabs", $this->getValue("//fieldset[@title='Scale Prices']/table/tbody/tr[4]/td[2]/select[1]"));
+        $this->assertEquals("8",$this->getXpathCount("//fieldset[@title='Scale Prices']/table/tbody/tr"));
 
         //editing scale price
-        $this->type("//fieldset[@title='Scale Prices']/table/tbody/tr/td[1]/input[1]", "3");
-        $this->type("//fieldset[@title='Scale Prices']/table/tbody/tr/td[1]/input[2]", "21");
-        $this->type("//fieldset[@title='Scale Prices']/table/tbody/tr/td[2]/input[1]", "12");
-        $this->select("//fieldset[@title='Scale Prices']/table/tbody/tr/td[2]/select", "label=abs");
-        $this->type("//fieldset[@title='Scale Prices']/table/tbody/tr[2]/td/input", "22");
-        $this->type("//fieldset[@title='Scale Prices']/table/tbody/tr[2]/td/input[2]", "99999");
-        $this->type("//fieldset[@title='Scale Prices']/table/tbody/tr[2]/td[2]/input", "20");
-        $this->select("//fieldset/table/tbody/tr[2]/td[2]/select", "label=% Discount");
+        $this->type("//fieldset[@title='Scale Prices']/table/tbody/tr[2]/td[1]/input[1]", "3");
+        $this->type("//fieldset[@title='Scale Prices']/table/tbody/tr[2]/td[1]/input[2]", "21");
+        $this->type("//fieldset[@title='Scale Prices']/table/tbody/tr[2]/td[2]/input[1]", "12");
+        $this->select("//fieldset[@title='Scale Prices']/table/tbody/tr[2]/td[2]/select", "label=abs");
+        $this->type("//fieldset[@title='Scale Prices']/table/tbody/tr[4]/td/input", "22");
+        $this->type("//fieldset[@title='Scale Prices']/table/tbody/tr[4]/td/input[2]", "99999");
+        $this->type("//fieldset[@title='Scale Prices']/table/tbody/tr[4]/td[2]/input", "20");
+        $this->select("//fieldset/table/tbody/tr[4]/td[2]/select", "label=% Discount");
         $this->clickAndWait("document.myedit.saveAll");
 
-        $this->assertEquals("3",  $this->getValue("//fieldset[@title='Scale Prices']/table/tbody/tr/td[1]/input[1]"));
-        $this->assertEquals("21",  $this->getValue("//fieldset[@title='Scale Prices']/table/tbody/tr/td[1]/input[2]"));
-        $this->assertEquals("oxprice2article__oxaddabs", $this->getValue("//fieldset[@title='Scale Prices']/table/tbody/tr/td[2]/select[1]"));
-        $this->assertEquals("12", $this->getValue("//fieldset[@title='Scale Prices']/table/tbody/tr/td[2]/input[1]"));
-        $this->assertEquals("22",     $this->getValue("//fieldset[@title='Scale Prices']/table/tbody/tr[2]/td[1]/input[1]"));
-        $this->assertEquals("99999", $this->getValue("//fieldset[@title='Scale Prices']/table/tbody/tr[2]/td[1]/input[2]"));
-        $this->assertEquals("20",    $this->getValue("//fieldset[@title='Scale Prices']/table/tbody/tr[2]/td[2]/input[1]"));
-        $this->assertEquals("oxprice2article__oxaddperc", $this->getValue("//fieldset[@title='Scale Prices']/table/tbody/tr[2]/td[2]/select[1]"));
+        $this->assertEquals("3",  $this->getValue("//fieldset[@title='Scale Prices']/table/tbody/tr[2]/td[1]/input[1]"));
+        $this->assertEquals("21",  $this->getValue("//fieldset[@title='Scale Prices']/table/tbody/tr[2]/td[1]/input[2]"));
+        $this->assertEquals("oxprice2article__oxaddabs", $this->getValue("//fieldset[@title='Scale Prices']/table/tbody/tr[2]/td[2]/select[1]"));
+        $this->assertEquals("12", $this->getValue("//fieldset[@title='Scale Prices']/table/tbody/tr[2]/td[2]/input[1]"));
+        $this->assertEquals("22",     $this->getValue("//fieldset[@title='Scale Prices']/table/tbody/tr[4]/td[1]/input[1]"));
+        $this->assertEquals("99999", $this->getValue("//fieldset[@title='Scale Prices']/table/tbody/tr[4]/td[1]/input[2]"));
+        $this->assertEquals("20",    $this->getValue("//fieldset[@title='Scale Prices']/table/tbody/tr[4]/td[2]/input[1]"));
+        $this->assertEquals("oxprice2article__oxaddperc", $this->getValue("//fieldset[@title='Scale Prices']/table/tbody/tr[4]/td[2]/select[1]"));
 
         //delete created prices
-        $this->clickAndConfirm("//fieldset[@title='Scale Prices']/table/tbody/tr/td[3]/a", "document.myedit.save[1]");
+        $this->clickAndConfirm("//fieldset[@title='Scale Prices']/table/tbody/tr[2]/td[3]/a", "document.myedit.save[1]");
         $this->assertEquals("5",$this->getXpathCount("//fieldset[@title='Scale Prices']/table/tbody/tr"));
-        $this->clickAndConfirm("//fieldset[@title='Scale Prices']/table/tbody/tr/td[3]/a", "document.myedit.save[1]");
+        $this->clickAndConfirm("//fieldset[@title='Scale Prices']/table/tbody/tr[1]/td[3]/a", "document.myedit.save[1]");
         $this->assertEquals("2",$this->getXpathCount("//fieldset[@title='Scale Prices']/table/tbody/tr"));
     }
 
@@ -1593,7 +1592,8 @@ class Acceptance_creatingItemsAdminTest extends oxidAdditionalSeleniumFunctions
     public function testCreateProductMultidimensionalVariants()
     {
          $this->executeSql("DELETE FROM `oxconfig` WHERE `OXVARNAME`='blUseMultidimensionVariants'");
-         $this->executeSql( "INSERT INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXVARNAME`, `OXVARTYPE`, `OXVARVALUE`) VALUES ('9d1ee3af23795yytr96terf2d1e', 'oxbaseshop', 'blUseMultidimensionVariants', 'bool', 0x07);" );
+
+            $this->executeSql( "INSERT INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXVARNAME`, `OXVARTYPE`, `OXVARVALUE`) VALUES ('9d1ee3af23795yytr96terf2d1e', 'oxbaseshop', 'blUseMultidimensionVariants', 'bool', 0x07);" );
         $this->loginAdmin("Administer Products", "Products");
         $this->openTab("link=10010");
         $this->assertEquals("1.5", $this->getValue("editval[oxarticles__oxprice]"));
@@ -1691,7 +1691,7 @@ class Acceptance_creatingItemsAdminTest extends oxidAdditionalSeleniumFunctions
         $this->assertFalse($this->isElementPresent("test_variant.16"));
         $this->frame("list");
         $this->openTab("link=Main");
-        $this->assertEquals("1 EN product šÄßüл - selvar1 [EN] šÄßüл | selvar1 [EN] šÄßüл - selvar1 [EN] šÄßüл | selvar2 [EN] šÄßüл - selvar1 [EN] šÄßüл | selvar3 [EN] šÄßüл - selvar1 [EN] šÄßüл | selvar4 [EN] šÄßüл - selvar2 [EN] šÄßüл | selvar1 [EN] šÄßüл - selvar2 [EN] šÄßüл | selvar2 [EN] šÄßüл - selvar2 [EN] šÄßüл | selvar3 [EN] šÄßüл - selvar2 [EN] šÄßüл | selvar4 [EN] šÄßüл - selvar3 [EN] šÄßüл | selvar1 [EN] šÄßüл - selvar3 [EN] šÄßüл | selvar2 [EN] šÄßüл - selvar3 [EN] šÄßüл | selvar3 [EN] šÄßüл - selvar3 [EN] šÄßüл | selvar4 [EN] šÄßüл - selvar4 [EN] šÄßüл | selvar1 [EN] šÄßüл - selvar4 [EN] šÄßüл | selvar2 [EN] šÄßüл - selvar4 [EN] šÄßüл | selvar3 [EN] šÄßüл", $this->clearString($this->getText("document.forms[1].elements[25]")));
+        $this->assertEquals("1 EN product šÄßüл - selvar1 [EN] šÄßüл | selvar1 [EN] šÄßüл - selvar1 [EN] šÄßüл | selvar2 [EN] šÄßüл - selvar1 [EN] šÄßüл | selvar3 [EN] šÄßüл - selvar1 [EN] šÄßüл | selvar4 [EN] šÄßüл - selvar2 [EN] šÄßüл | selvar1 [EN] šÄßüл - selvar2 [EN] šÄßüл | selvar2 [EN] šÄßüл - selvar2 [EN] šÄßüл | selvar3 [EN] šÄßüл - selvar2 [EN] šÄßüл | selvar4 [EN] šÄßüл - selvar3 [EN] šÄßüл | selvar1 [EN] šÄßüл - selvar3 [EN] šÄßüл | selvar2 [EN] šÄßüл - selvar3 [EN] šÄßüл | selvar3 [EN] šÄßüл - selvar3 [EN] šÄßüл | selvar4 [EN] šÄßüл - selvar4 [EN] šÄßüл | selvar1 [EN] šÄßüл - selvar4 [EN] šÄßüл | selvar2 [EN] šÄßüл - selvar4 [EN] šÄßüл | selvar3 [EN] šÄßüл", $this->clearString($this->getText("art_variants")));
     }
 
     /**
@@ -2050,7 +2050,7 @@ class Acceptance_creatingItemsAdminTest extends oxidAdditionalSeleniumFunctions
         $this->frame("list");
         $this->openTab("link=History");
         $this->assertNotEquals("", $this->getText("//select[@name='rem_oxid']"));
-        $this->clickAndWait("btn.newremark");
+        $this->clickAndWaitFrame("btn.newremark", "edit");
         $this->type("remarktext", "new note_šÄßüл");
         $this->clickAndWait("save");
         $this->selectAndWait("//select[@name='rem_oxid']", "index=0");
@@ -2153,7 +2153,7 @@ class Acceptance_creatingItemsAdminTest extends oxidAdditionalSeleniumFunctions
         $this->openTab("link=Addresses");
         //creating addresses
         $this->assertEquals("-", $this->getSelectedLabel("//select"));
-        $this->clickAndWait("btn.newaddress");
+        $this->clickAndWaitFrame("btn.newaddress", "edit");
         $this->select("editval[oxaddress__oxsal]", "label=Mr");
         $this->type("editval[oxaddress__oxfname]", "shipping name_šÄßüл");
         $this->type("editval[oxaddress__oxlname]", "shipping surname_šÄßüл");
@@ -2179,7 +2179,7 @@ class Acceptance_creatingItemsAdminTest extends oxidAdditionalSeleniumFunctions
         $this->assertEquals("Italy", $this->getSelectedLabel("editval[oxaddress__oxcountryid]"));
         $this->assertEquals("7778788", $this->getValue("editval[oxaddress__oxfon]"));
         $this->assertEquals("8887877", $this->getValue("editval[oxaddress__oxfax]"));
-        $this->clickAndWait("btn.newaddress");
+        $this->clickAndWaitFrame("btn.newaddress", "edit");
         $this->select("editval[oxaddress__oxsal]", "label=Mrs");
         $this->type("editval[oxaddress__oxfname]", "name2");
         $this->type("editval[oxaddress__oxlname]", "last name 2");
@@ -2589,13 +2589,20 @@ class Acceptance_creatingItemsAdminTest extends oxidAdditionalSeleniumFunctions
     public function testCreatePromotions()
     {
         // deleting azure theme banners
-         $this->executeSql( "DELETE FROM `oxactions` WHERE `OXTITLE` = 'Banner 1';" );
-         $this->executeSql( "DELETE FROM `oxactions` WHERE `OXTITLE` = 'Banner 2';" );
-         $this->executeSql( "DELETE FROM `oxactions` WHERE `OXTITLE` = 'Banner 3';" );
-         $this->executeSql( "DELETE FROM `oxactions` WHERE `OXTITLE` = 'Banner 4';" );
+        $aActionsParams = array("OXTITLE" => 'Banner 1');
+        $this->callShopSC("oxActions", "delete", "b5639c6431b26687321f6ce654878fa5", $aActionsParams);
+
+        $aActionsParams = array("OXTITLE" => 'Banner 2');
+        $this->callShopSC("oxActions", "delete", "b56a097dedf5db44e20ed56ac6defaa8",  $aActionsParams);
+
+        $aActionsParams = array("OXTITLE" => 'Banner 3');
+        $this->callShopSC("oxActions", "delete", "b56efaf6c93664b6dca5b1cee1f87057",   $aActionsParams);
+
+        $aActionsParams = array("OXTITLE" => 'Banner 4');
+        $this->callShopSC("oxActions", "delete", "cb34f86f56162d0c95890b5985693710",   $aActionsParams);
 
          $this->executeSql( "UPDATE `oxactions` SET `OXACTIVE` = '1';" );
-         $this->executeSql( "DELETE FROM `oxactions` WHERE `OXID` = 'oxnewsletter';" );
+        $this->executeSql( "DELETE FROM `oxactions` WHERE `OXID` = 'oxnewsletter';" );
         $this->loginAdmin("Customer Info", "Promotions");
         $this->assertFalse($this->isElementPresent("nav.page.2"));
         $this->frame("edit", "btn.new");
@@ -2650,13 +2657,21 @@ class Acceptance_creatingItemsAdminTest extends oxidAdditionalSeleniumFunctions
     {
 
          // deleting azure theme banners
-         $this->executeSql( "DELETE FROM `oxactions` WHERE `OXTITLE` = 'Banner 1';" );
-         $this->executeSql( "DELETE FROM `oxactions` WHERE `OXTITLE` = 'Banner 2';" );
-         $this->executeSql( "DELETE FROM `oxactions` WHERE `OXTITLE` = 'Banner 3';" );
-         $this->executeSql( "DELETE FROM `oxactions` WHERE `OXTITLE` = 'Banner 4';" );
+        $aActionsParams = array("OXTITLE" => 'Banner 1');
+        $this->callShopSC("oxActions", "delete", "b5639c6431b26687321f6ce654878fa5", $aActionsParams);
+
+        $aActionsParams = array("OXTITLE" => 'Banner 2');
+        $this->callShopSC("oxActions", "delete", "b56a097dedf5db44e20ed56ac6defaa8", $aActionsParams);
+
+        $aActionsParams = array("OXTITLE" => 'Banner 3');
+        $this->callShopSC("oxActions", "delete", "b56efaf6c93664b6dca5b1cee1f87057", $aActionsParams);
+
+        $aActionsParams = array("OXTITLE" => 'Banner 4');
+        $this->callShopSC("oxActions", "delete", "cb34f86f56162d0c95890b5985693710", $aActionsParams);
 
          $this->executeSql( "UPDATE `oxactions` SET `OXACTIVE` = '1';" );
              $this->executeSql( "DELETE FROM `oxactions` WHERE `OXID` = 'oxnewsletter';" );
+
         $this->loginAdmin("Customer Info", "Promotions");
         $this->assertFalse($this->isElementPresent("nav.page.2"));
         $this->frame("edit", "btn.new");

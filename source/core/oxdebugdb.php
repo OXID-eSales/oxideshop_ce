@@ -65,7 +65,7 @@ class oxDebugDb
     protected static function _isSkipped($sSql)
     {
         if ( !count(self::$_aSkipSqls ) ) {
-            $sFile = oxConfig::getInstance()->getLogsDir() . 'oxdebugdb_skipped.sql';
+            $sFile = oxRegistry::getConfig()->getLogsDir() . 'oxdebugdb_skipped.sql';
             if (is_readable($sFile)) {
                 $aSkip = explode('-- -- ENTRY END', file_get_contents( $sFile ));
                 foreach ( $aSkip as $sQ ) {
@@ -300,6 +300,6 @@ class oxDebugDb
             $sLogMsg .= "{$w['check']}: {$w['time']} - ".$oStr->htmlentities($w['sql'])."\n\n";
             $sLogMsg .= $w['trace']."\n\n\n\n";
         }
-        oxUtils::getInstance()->writeToLog( $sLogMsg, 'oxdebugdb.txt' );
+        oxRegistry::getUtils()->writeToLog( $sLogMsg, 'oxdebugdb.txt' );
     }
 }

@@ -401,7 +401,8 @@ class Acceptance_ajaxFunctionalityAdminTest extends oxidAdditionalSeleniumFuncti
      */
     public function testAjaxDiscountsAssignAllProducts()
     {
-         $this->executeSql("UPDATE `oxconfig` SET `OXVARVALUE` = 0x07 WHERE `OXVARNAME` = 'blVariantsSelection'");
+        $this->callShopSC("oxConfig", "saveShopConfVar", null, array("blVariantsSelection" => array("type" => "bool", "value" => 'true')));
+
         $this->loginAdmin("Shop Settings", "Discounts");
         $this->selectAndWaitFrame("changelang", "label=Deutsch", "edit");
         $this->clickAndWait("link=Name");
@@ -819,7 +820,8 @@ class Acceptance_ajaxFunctionalityAdminTest extends oxidAdditionalSeleniumFuncti
      */
     public function testAjaxDeliveryAssignProducts()
     {
-         $this->executeSql("UPDATE `oxconfig` SET `OXVARVALUE` = 0x07 WHERE `OXVARNAME` = 'blVariantsSelection'");
+       // active config option blVariantsSelection
+        $this->callShopSC("oxConfig", "saveShopConfVar", null, array("blVariantsSelection" => array("type" => "bool", "value" => 'true')));
         $this->loginAdmin("Shop Settings", "Shipping Cost Rules");
         $this->selectAndWaitFrame("changelang", "label=Deutsch", "edit");
         $this->clickAndWait("link=Name");
@@ -1029,7 +1031,8 @@ class Acceptance_ajaxFunctionalityAdminTest extends oxidAdditionalSeleniumFuncti
      */
     public function testAjaxCouponsAssignProducts()
     {
-         $this->executeSql("UPDATE `oxconfig` SET `OXVARVALUE` = 0x07 WHERE `OXVARNAME` = 'blVariantsSelection'");
+        //active config option blVariantsSelection
+        $this->callShopSC("oxConfig", "saveShopConfVar", null, array("blVariantsSelection" => array("type" => "bool", "value" => 'true')));
         $this->loginAdmin("Shop Settings", "Coupon Series");
         $this->clickAndWait("link=Name");
         $this->clickAndWaitFrame("link=2 Coupon šÄßüл", "edit");
@@ -1337,9 +1340,11 @@ class Acceptance_ajaxFunctionalityAdminTest extends oxidAdditionalSeleniumFuncti
         $this->usePopUp();
         $this->type("_0", "1001");
         $this->keyUp("_0", "1");
-        $this->waitForAjax("10016", "//div[@id='container1_c']/table/tbody[2]/tr[8]/td[1]");
-        $this->assertEquals("10016", $this->getText("//div[@id='container1_c']/table/tbody[2]/tr[8]/td[1]"));
-        $this->assertEquals("15 DE product šÄßüл", $this->getText("//div[@id='container1_c']/table/tbody[2]/tr[8]/td[2]"));
+        $this->waitForAjax("10016", "//div[@id='container1_c']/table/tbody[2]/tr[7]/td[1]");
+        $this->assertEquals("1001", $this->getText("//div[@id='container1_c']/table/tbody[2]/tr[1]/td"));
+        $this->assertEquals("10016", $this->getText("//div[@id='container1_c']/table/tbody[2]/tr[7]/td"));
+        $this->assertEquals("15 DE product šÄßüл", $this->getText("//div[@id='container1_c']/table/tbody[2]/tr[7]/td[2]"));
+
         //assignAll btn
         $this->click("container1_btn");
         $this->waitForAjax("1001", "//div[@id='container2_c']/table/tbody[2]/tr[1]/td[1]");
@@ -1354,6 +1359,7 @@ class Acceptance_ajaxFunctionalityAdminTest extends oxidAdditionalSeleniumFuncti
         $this->waitForAjax("10011", "//div[@id='container2_c']/table/tbody[2]/tr[3]/td[1]");
         $this->assertEquals("1001", $this->getText("//div[@id='container2_c']/table/tbody[2]/tr[1]/td[1]"));
         $this->assertEquals("10016", $this->getText("//div[@id='container2_c']/table/tbody[2]/tr[7]/td[1]"));
+
         //unassignAll btn
         $this->click("container2_btn");
         $this->waitForAjax("1001", "//div[@id='container1_c']/table/tbody[2]/tr[1]/td[1]");
@@ -1373,7 +1379,8 @@ class Acceptance_ajaxFunctionalityAdminTest extends oxidAdditionalSeleniumFuncti
      */
     public function testAjaxAttributesAssignProducts()
     {
-         $this->executeSql("UPDATE `oxconfig` SET `OXVARVALUE` = 0x07 WHERE `OXVARNAME` = 'blVariantsSelection'");
+        // turn on config blVariantsSelection
+        $this->callShopSC("oxConfig", "saveShopConfVar", null, array("blVariantsSelection" => array("type" => "bool", "value" => 'true')));
         $this->loginAdmin("Administer Products", "Attributes");
         $this->selectAndWaitFrame("changelang", "label=Deutsch", "edit");
         $this->clickAndWait("link=Name");
@@ -1749,7 +1756,8 @@ class Acceptance_ajaxFunctionalityAdminTest extends oxidAdditionalSeleniumFuncti
      */
     public function testAjaxSelectionListsAssignAllProducts()
     {
-         $this->executeSql("UPDATE `oxconfig` SET `OXVARVALUE` = 0x07 WHERE `OXVARNAME` = 'blVariantsSelection'");
+        //active config option blVariantsSelection
+        $this->callShopSC("oxConfig", "saveShopConfVar", null, array("blVariantsSelection" => array("type" => "bool", "value" => 'true')));
         $this->loginAdmin("Administer Products", "Selection Lists");
         $this->selectAndWaitFrame("changelang", "label=Deutsch", "edit");
         $this->clickAndWait("link=Title");
@@ -1905,7 +1913,8 @@ class Acceptance_ajaxFunctionalityAdminTest extends oxidAdditionalSeleniumFuncti
      */
     public function testAjaxPromotionsAssignProducts()
     {
-         $this->executeSql("UPDATE `oxconfig` SET `OXVARVALUE` = 0x07 WHERE `OXVARNAME` = 'blVariantsSelection'");
+        //active config option blVariantsSelection
+        $this->callShopSC("oxConfig", "saveShopConfVar", null, array("blVariantsSelection" => array("type" => "bool", "value" => 'true')));
         $this->loginAdmin("Customer Info", "Promotions");
         $this->clickAndWait("link=Type");
         $this->openTab("link=Week's Special");

@@ -29,7 +29,7 @@ require_once getShopBasePath() . 'core/adodblite/adodb.inc.php';
 /**
  * Database connection class
  */
-class oxDb extends oxSuperCfg
+class oxDb
 {
     /**
      * Fetch mode - numeric
@@ -42,6 +42,12 @@ class oxDb extends oxSuperCfg
      * @var int
      */
     const FETCH_MODE_ASSOC = ADODB_FETCH_ASSOC;
+
+    /**
+     * Enter description here ...
+     * @var unknown_type
+     */
+    public static $configSet = false;
 
     /**
      * oxDb instance.
@@ -57,7 +63,6 @@ class oxDb extends oxSuperCfg
      */
     protected static $_oDB = null;
 
-
     /**
      * Database tables descriptions cache array
      *
@@ -66,7 +71,132 @@ class oxDb extends oxSuperCfg
     protected static $_aTblDescCache = array();
 
     /**
-     * Returns Singelton instance
+     * Enter description here ...
+     * @var string
+     */
+    private static $_dbType = '';
+
+    /**
+     * Enter description here ...
+     * @var string
+     */
+    private static $_dbUser = '';
+
+    /**
+     * Enter description here ...
+     * @var string
+     */
+    private static $_dbPwd  = '';
+
+    /**
+     * Enter description here ...
+     * @var string
+     */
+    private static $_dbName = '';
+
+    /**
+     * Enter description here ...
+     * @var string
+     */
+    private static $_dbHost = '';
+
+    /**
+     * Enter description here ...
+     * @var int
+     */
+    private static $_iDebug = 0;
+
+    /**
+     * Enter description here ...
+     * @var bool
+     */
+    private static $_blLogChangesInAdmin = false;
+
+    /**
+     * Enter description here ...
+     * @var int
+     */
+    private static $_iUtfMode = 0;
+
+    /**
+     * Enter description here ...
+     * @var string
+     */
+    private static $_sDefaultDatabaseConnection = null;
+
+    /**
+     * Enter description here ...
+     * @var array
+     */
+    private static $_aSlaveHosts;
+
+    /**
+     * Enter description here ...
+     * @var string
+     */
+    private static $_sAdminEmail;
+
+    /**
+     * Enter description here ...
+     * @var int
+     */
+    private static $_iMasterSlaveBalance;
+
+    /**
+     * Enter description here ...
+     * @var string
+     */
+    private static $_sLocalTimeFormat;
+
+    /**
+     * Enter description here ...
+     * @var string
+     */
+    private static $_sLocalDateFormat;
+
+    /**
+     * Sets configs object with method getVar() and properties needed for successful connection.
+     *
+     * @param object $oConfig configs.
+     *
+     * @return void
+     */
+    public static function setConfig( $oConfig )
+    {
+        self::$_dbType                     = $oConfig->getVar( 'dbType' );
+        self::$_dbUser                     = $oConfig->getVar( 'dbUser' );
+        self::$_dbPwd                      = $oConfig->getVar( 'dbPwd' );
+        self::$_dbName                     = $oConfig->getVar( 'dbName' );
+        self::$_dbHost                     = $oConfig->getVar( 'dbHost' );
+        self::$_iDebug                     = $oConfig->getVar( 'iDebug' );
+        self::$_blLogChangesInAdmin        = $oConfig->getVar( 'blLogChangesInAdmin' );
+        self::$_iUtfMode                   = $oConfig->getVar( 'iUtfMode' );
+        self::$_sDefaultDatabaseConnection = $oConfig->getVar( 'sDefaultDatabaseConnection' );
+        self::$_aSlaveHosts                = $oConfig->getVar( 'aSlaveHosts' );
+        self::$_iMasterSlaveBalance        = $oConfig->getVar( 'iMasterSlaveBalance' );
+        self::$_sAdminEmail                = $oConfig->getVar( 'sAdminEmail' );
+        self::$_sLocalTimeFormat           = $oConfig->getVar( 'sLocalTimeFormat' );
+        self::$_sLocalDateFormat           = $oConfig->getVar( 'sLocalDateFormat' );
+    }
+
+    /**
+     * Return local config value by given name.
+     *
+     * @param string $sConfigName returning config name.
+     *
+     * @return mixed
+     */
+    protected static function _getConfigParam( $sConfigName )
+    {
+        if ( isset( self::$$sConfigName ) ) {
+            return self::$$sConfigName;
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns Singleton instance
      *
      * @return oxdb
      */
@@ -80,13 +210,23 @@ class oxDb extends oxSuperCfg
         if ( !self::$_instance instanceof oxDb ) {
 
             //do not use simple oxNew here as it goes to eternal cycle
-            self::$_instance = oxNew( 'oxdb' );
+            self::$_instance = new oxDb();
 
             if ( defined( 'OXID_PHP_UNIT' ) ) {
                 modInstances::addMod( __CLASS__, self::$_instance);
             }
         }
         return self::$_instance;
+    }
+
+    /**
+     * Cal function is admin from oxFunction. Need to mock in tests.
+     *
+     * @return bool
+     */
+    protected function isAdmin()
+    {
+        return isAdmin();
     }
 
     /**
@@ -97,18 +237,17 @@ class oxDb extends oxSuperCfg
     protected function _getModules()
     {
         //adding exception handler for SQL errors
-        $myConfig = $this->getConfig();
-        if ( ( $iDebug = $myConfig->getConfigParam( 'iDebug' ) ) ) {
+        if ( ( $_iDebug = self::_getConfigParam( '_iDebug' ) ) ) {
             include_once getShopBasePath() . 'core/adodblite/adodb-exceptions.inc.php';
         }
 
         $sModules = '';
-        if (  $iDebug == 2 || $iDebug == 3 || $iDebug == 4 || $iDebug == 7  ) {
+        if (  $_iDebug == 2 || $_iDebug == 3 || $_iDebug == 4 || $_iDebug == 7  ) {
             $sModules = 'perfmon';
         }
 
         // log admin changes ?
-        if ( $myConfig->isAdmin() && $myConfig->getConfigParam( 'blLogChangesInAdmin' ) ) {
+        if ( $this->isAdmin() && self::_getConfigParam( '_blLogChangesInAdmin' ) ) {
             $sModules .= ( $sModules ? ':' : '' ) . 'oxadminlog';
         }
 
@@ -124,9 +263,8 @@ class oxDb extends oxSuperCfg
      */
     protected function _setUp( $oDb )
     {
-        $myConfig = $this->getConfig();
-        $iDebug = $myConfig->getConfigParam( 'iDebug' );
-        if ( $iDebug == 2 || $iDebug == 3 || $iDebug == 4  || $iDebug == 7 ) {
+        $_iDebug = self::_getConfigParam( '_iDebug' );
+        if ( $_iDebug == 2 || $_iDebug == 3 || $_iDebug == 4  || $_iDebug == 7 ) {
             try {
                 $oDb->execute( 'truncate table adodb_logsql' );
             } catch ( ADODB_Exception $e ) {
@@ -140,14 +278,14 @@ class oxDb extends oxSuperCfg
         $oDb->cacheSecs = 60 * 10; // 10 minute caching
         $oDb->execute( 'SET @@session.sql_mode = ""' );
 
-        if ( $myConfig->isUtf() ) {
+        if ( self::_getConfigParam( '_iUtfMode' ) ) {
             $oDb->execute( 'SET NAMES "utf8"' );
             $oDb->execute( 'SET CHARACTER SET utf8' );
             $oDb->execute( 'SET CHARACTER_SET_CONNECTION = utf8' );
             $oDb->execute( 'SET CHARACTER_SET_DATABASE = utf8' );
             $oDb->execute( 'SET character_set_results = utf8' );
             $oDb->execute( 'SET character_set_server = utf8' );
-        } elseif ( ( $sConn = $myConfig->getConfigParam('sDefaultDatabaseConnection') ) != '' ) {
+        } elseif ( ( $sConn = self::_getConfigParam('_sDefaultDatabaseConnection') ) != '' ) {
             $oDb->execute( 'SET NAMES "' . $sConn . '"' );
         }
     }
@@ -183,9 +321,8 @@ class oxDb extends oxSuperCfg
      */
     protected function _notifyConnectionErrors( $oDb )
     {
-        $myConfig = $this->getConfig();
         // notifying shop owner about connection problems
-        if ( ( $sAdminEmail = $myConfig->getConfigParam( 'sAdminEmail' ) ) ) {
+        if ( ( $sAdminEmail = self::_getConfigParam( '_sAdminEmail' ) ) ) {
             $sFailedShop = isset( $_REQUEST['shp'] ) ? addslashes( $_REQUEST['shp'] ) : 'Base shop';
 
             $sDate = date( 'l dS of F Y h:i:s A');
@@ -211,12 +348,12 @@ class oxDb extends oxSuperCfg
         //only exception to default construction method
         $oEx = new oxConnectionException();
         $oEx->setMessage( 'EXCEPTION_CONNECTION_NODB' );
-        $oEx->setConnectionError( $myConfig->getConfigParam( 'dbUser' ) . 's' . getShopBasePath() . $oDb->errorMsg() );
+        $oEx->setConnectionError( self::_getConfigParam( '_dbUser' ) . 's' . getShopBasePath() . $oDb->errorMsg() );
         throw $oEx;
     }
 
     /**
-     * In case of connection is errorous - redirects to setup
+     * In case of connection error - redirects to setup
      * or send notification message for shop owner
      *
      * @param ADOConnection $oDb database connection instance
@@ -228,14 +365,23 @@ class oxDb extends oxSuperCfg
         $sVerPrefix = '';
             $sVerPrefix = '_ce';
 
+
+
         $sConfig = join( '', file( getShopBasePath().'config.inc.php' ) );
+
         if ( strpos( $sConfig, '<dbHost'.$sVerPrefix.'>' ) !== false &&
              strpos( $sConfig, '<dbName'.$sVerPrefix.'>' ) !== false ) {
             // pop to setup as there is something wrong
-            oxUtils::getInstance()->redirect( "setup/index.php", true, 302 );
+            //oxRegistry::getUtils()->redirect( "setup/index.php", true, 302 );
+            $sHeaderCode = "HTTP/1.1 302 Found";
+            header( $sHeaderCode );
+            header( "Location: setup/index.php" );
+            header( "Connection: close" );
+            exit();
         } else {
             // notifying about connection problems
             $this->_notifyConnectionErrors( $oDb );
+
         }
     }
 
@@ -249,13 +395,11 @@ class oxDb extends oxSuperCfg
      */
     protected function _getDbInstance( $iInstType = false )
     {
-        $oConfig = $this->getConfig();
-
-        $sHost = $oConfig->getConfigParam( "dbHost" );
-        $sUser = $oConfig->getConfigParam( "dbUser" );
-        $sPwd  = $oConfig->getConfigParam( "dbPwd" );
-        $sName = $oConfig->getConfigParam( "dbName" );
-        $sType = $oConfig->getConfigParam( "dbType" );
+        $sHost = self::_getConfigParam( "_dbHost" );
+        $sUser = self::_getConfigParam( "_dbUser" );
+        $sPwd  = self::_getConfigParam( "_dbPwd" );
+        $sName = self::_getConfigParam( "_dbName" );
+        $sType = self::_getConfigParam( "_dbType" );
 
         $oDb = ADONewConnection( $sType, $this->_getModules() );
 
@@ -264,30 +408,22 @@ class oxDb extends oxSuperCfg
                 $this->_onConnectionError( $oDb );
             }
 
-        $this->_setUp( $oDb );
+        self::_setUp( $oDb );
 
         return $oDb;
     }
 
-
     /**
      * Returns database object
      *
-     * @param boolean $iFetchMode - fetche mode default numeric - 0
+     * @param int $iFetchMode - fetch mode default numeric - 0
      *
      * @throws oxConnectionException error while initiating connection to DB
      *
-     * @return ADOConnection
+     * @return oxLegacyDb
      */
     public static function getDb( $iFetchMode = oxDb::FETCH_MODE_NUM )
     {
-        //Added for 0003480 bug; needed as backward compatibility; @deprecated in 4.6 since 2012-01-15; must be removed;
-        if ( $iFetchMode === true ) {
-            $iFetchMode = oxDb::FETCH_MODE_ASSOC;
-        } elseif ( $iFetchMode === false ) {
-            $iFetchMode = oxDb::FETCH_MODE_NUM;
-        }
-
         if ( defined( 'OXID_PHP_UNIT' ) ) {
             if ( isset( modDB::$unitMOD ) && is_object( modDB::$unitMOD ) ) {
                 return modDB::$unitMOD;
@@ -297,7 +433,9 @@ class oxDb extends oxSuperCfg
         if ( self::$_oDB === null ) {
 
             $oInst = self::getInstance();
-            $myConfig = $oInst->getConfig();
+
+            //setting configuration on the first call
+            $oInst->setConfig( oxRegistry::get("oxConfigFile") );
 
              global  $ADODB_SESSION_TBL,
                     $ADODB_SESSION_CONNECT,
@@ -316,15 +454,16 @@ class oxDb extends oxSuperCfg
             //You can find the redefinition of ADODB_SESS_LIFE @ oxconfig.php:: line ~ 390.
             $ADODB_SESS_LIFE       = 3000 * 60;
             $ADODB_SESSION_TBL     = "oxsessions";
-            $ADODB_SESSION_DRIVER  = $myConfig->getConfigParam( 'dbType' );
-            $ADODB_SESSION_USER    = $myConfig->getConfigParam( 'dbUser' );
-            $ADODB_SESSION_PWD     = $myConfig->getConfigParam( 'dbPwd' );
-            $ADODB_SESSION_DB      = $myConfig->getConfigParam( 'dbName' );
-            $ADODB_SESSION_CONNECT = $myConfig->getConfigParam( 'dbHost' );
+            $ADODB_SESSION_DRIVER  = self::_getConfigParam( '_dbType' );
+            $ADODB_SESSION_USER    = self::_getConfigParam( '_dbUser' );
+            $ADODB_SESSION_PWD     = self::_getConfigParam( '_dbPwd' );
+            $ADODB_SESSION_DB      = self::_getConfigParam( '_dbName' );
+            $ADODB_SESSION_CONNECT = self::_getConfigParam( '_dbHost' );
             $ADODB_SESS_DEBUG      = false;
 
-            $oDb = oxNew( 'oxLegacyDb' );
-            $oDb->setConnection( $oInst->_getDbInstance() );
+            $oDb = new oxLegacyDb();
+            $oDbInst = $oInst->_getDbInstance();
+            $oDb->setConnection( $oDbInst );
 
             self::$_oDB = $oDb;
         }
@@ -332,36 +471,6 @@ class oxDb extends oxSuperCfg
         self::$_oDB->setFetchMode( $iFetchMode );
 
         return self::$_oDB;
-    }
-
-    /**
-     * Returns database field name with _ Language ID if needed
-     *
-     * @param string $sField the field name
-     *
-     * @deprecated in v4.6 2012-03-30; no where used;
-     *
-     * @return string
-     */
-    public function getMultiLangFieldName( $sField )
-    {
-        return $sField . oxLang::getInstance()->getLanguageTag();
-    }
-
-    /**
-     * Checks if field, according to field type, must be surrounded with quote
-     * symbols. Returns true if yes.
-     *
-     * @param string $sFieldtype Type of field
-     *
-     * @deprecated in v4.6 2012-03-30; no where used;
-     *
-     * @return bool
-     */
-    public function isQuoteNeeded( $sFieldtype)
-    {
-        $aTypesWoQuotes = array('int', 'decimal', 'float', 'tinyint', 'smallint', 'mediumint', 'bigint', 'double');
-        return !in_array( $sFieldtype, $aTypesWoQuotes);
     }
 
     /**
@@ -419,118 +528,13 @@ class oxDb extends oxSuperCfg
      * @param bool   $blToTimeStamp set TRUE to format MySQL compatible value
      * @param bool   $blOnlyDate    set TRUE to format "date" type field
      *
+     * @deprecated from 2012-11-21, use oxRegistry::get('oxUtilsDate')->convertDBDateTime()
+     *
      * @return string
      */
     public function convertDBDateTime( $oObject, $blToTimeStamp = false, $blOnlyDate = false )
     {
-        $sDate = $oObject->value;
-
-        // defining time format
-        $sLocalDateFormat = $this->_defineAndCheckDefaultDateValues( $blToTimeStamp );
-        $sLocalTimeFormat = $this->_defineAndCheckDefaultTimeValues( $blToTimeStamp );
-
-        // default date/time patterns
-        $aDefDatePatterns = $this->_defaultDatePattern();
-
-        // regexps to validate input
-        $aDatePatterns = $this->_regexp2ValidateDateInput();
-        $aTimePatterns = $this->_regexp2ValidateTimeInput();
-
-        // date/time formatting rules
-        $aDFormats  = $this->_defineDateFormattingRules();
-        $aTFormats  = $this->_defineTimeFormattingRules();
-
-        // empty date field value ? setting default value
-        if ( !$sDate) {
-            $this->_setDefaultDateTimeValue($oObject, $sLocalDateFormat, $sLocalTimeFormat, $blOnlyDate);
-            return $oObject->value;
-        }
-
-        $blDefDateFound = false;
-        $oStr = getStr();
-
-        // looking for default values that are formatted by MySQL
-        foreach ( array_keys( $aDefDatePatterns ) as $sDefDatePattern ) {
-            if ( $oStr->preg_match( $sDefDatePattern, $sDate)) {
-                $blDefDateFound = true;
-                break;
-            }
-        }
-
-        // default value is set ?
-        if ( $blDefDateFound) {
-            $this->_setDefaultFormatedValue($oObject, $sDate, $sLocalDateFormat, $sLocalTimeFormat, $blOnlyDate);
-            return $oObject->value;
-        }
-
-        $blDateFound = false;
-        $blTimeFound = false;
-        $aDateMatches = array();
-        $aTimeMatches = array();
-
-        // looking for date field
-        foreach ( $aDatePatterns as $sPattern => $sType) {
-            if ( $oStr->preg_match( $sPattern, $sDate, $aDateMatches)) {
-                $blDateFound = true;
-
-                // now we know the type of passed date
-                $sDateFormat = $aDFormats[$sLocalDateFormat][0];
-                $aDFields    = $aDFormats[$sType][1];
-                break;
-            }
-        }
-
-        // no such date field available ?
-        if ( !$blDateFound) {
-            return $sDate;
-        }
-
-        if ( $blOnlyDate) {
-            $this->_setDate($oObject, $sDateFormat, $aDFields, $aDateMatches);
-            return $oObject->value;
-        }
-
-        // looking for time field
-        foreach ( $aTimePatterns as $sPattern => $sType) {
-            if ( $oStr->preg_match( $sPattern, $sDate, $aTimeMatches)) {
-                $blTimeFound = true;
-
-                // now we know the type of passed time
-                $sTimeFormat = $aTFormats[$sLocalTimeFormat][0];
-                $aTFields    = $aTFormats[$sType][1];
-
-                //
-                if ( $sType == "USA" && isset($aTimeMatches[4])) {
-                    $iIntVal = (int) $aTimeMatches[1];
-                    if ( $aTimeMatches[4] == "PM") {
-                        if ( $iIntVal < 13) {
-                            $iIntVal += 12;
-                        }
-                    } elseif ( $aTimeMatches[4] == "AM" && $aTimeMatches[1] == "12") {
-                        $iIntVal = 0;
-                    }
-
-                    $aTimeMatches[1] = sprintf("%02d", $iIntVal);
-                }
-
-                break;
-            }
-        }
-
-        if ( !$blTimeFound) {
-            //return $sDate;
-            // #871A. trying to keep date as possible correct
-            $this->_setDate($oObject, $sDateFormat, $aDFields, $aDateMatches);
-            return $oObject->value;
-        }
-
-        $this->_formatCorrectTimeValue($oObject, $sDateFormat, $sTimeFormat, $aDateMatches, $aTimeMatches, $aTFields, $aDFields);
-
-        // on some cases we get empty value
-        if ( !$oObject->fldmax_length) {
-            return $this->convertDBDateTime( $oObject, $blToTimeStamp, $blOnlyDate);
-        }
-        return $oObject->value;
+        return oxRegistry::get('oxUtilsDate')->convertDBDateTime( $oObject, $blToTimeStamp, $blOnlyDate );
     }
 
     /**
@@ -539,48 +543,13 @@ class oxDb extends oxSuperCfg
      * @param object $oObject       oxField type object that keeps db field info
      * @param bool   $blToTimeStamp if true - converts value to database compatible timestamp value
      *
+     * @deprecated from 2012-11-21, use oxRegistry::get('oxUtilsDate')->convertDBTimestamp()
+     *
      * @return string
      */
     public function convertDBTimestamp( $oObject, $blToTimeStamp = false )
     {
-         // on this case usually means that we gonna save value, and value is formatted, not plain
-        $sSQLTimeStampPattern = "/^([0-9]{4})([0-9]{2})([0-9]{2})([0-9]{2})([0-9]{2})([0-9]{2})$/";
-        $sISOTimeStampPattern = "/^([0-9]{4})-([0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2}):([0-9]{2})$/";
-        $aMatches = array();
-        $oStr = getStr();
-
-        // preparing value to save
-        if ( $blToTimeStamp) {
-            // reformatting value to ISO
-            $this->convertDBDateTime( $oObject, $blToTimeStamp );
-
-            if ( $oStr->preg_match( $sISOTimeStampPattern, $oObject->value, $aMatches)) {
-                // changing layout
-                $oObject->setValue($aMatches[1].$aMatches[2].$aMatches[3].$aMatches[4].$aMatches[5].$aMatches[6]);
-                $oObject->fldmax_length = strlen( $oObject->value);
-                return $oObject->value;
-            }
-        } else {
-            // loading and formatting value
-            // checking and parsing SQL timestamp value
-            //$sSQLTimeStampPattern = "/^([0-9]{4})([0-9]{2})([0-9]{2})([0-9]{2})([0-9]{2})([0-9]{2})$/";
-            if ( $oStr->preg_match( $sSQLTimeStampPattern, $oObject->value, $aMatches ) ) {
-                $iTimestamp = mktime( $aMatches[4], //h
-                                        $aMatches[5], //m
-                                        $aMatches[6], //s
-                                        $aMatches[2], //M
-                                        $aMatches[3], //d
-                                        $aMatches[1]); //y
-                if ( !$iTimestamp ) {
-                    $iTimestamp = "0";
-                }
-
-                $oObject->setValue(trim( date( "Y-m-d H:i:s", $iTimestamp)));
-                $oObject->fldmax_length = strlen( $oObject->value);
-                $this->convertDBDateTime( $oObject, $blToTimeStamp );
-                return $oObject->value;
-            }
-        }
+        return oxRegistry::get('oxUtilsDate')->convertDBTimestamp( $oObject, $blToTimeStamp );
     }
 
     /**
@@ -589,94 +558,14 @@ class oxDb extends oxSuperCfg
      * @param object $oObject       oxField type object that keeps db field info
      * @param bool   $blToTimeStamp if true - converts value to database compatible timestamp value
      *
+     * @deprecated from 2012-11-21, use oxRegistry::get('oxUtilsDate')->convertDBDate()
+     *
      * @return string
      */
     public function convertDBDate( $oObject, $blToTimeStamp = false )
     {
-        return $this->convertDBDateTime( $oObject, $blToTimeStamp, true );
+        return oxRegistry::get('oxUtilsDate')->convertDBDate( $oObject, $blToTimeStamp );
     }
-
-    /**
-     * Takes Array and creates IN() list for SQL statement
-     *
-     * @param array $aArray array of string to join
-     *
-     * @deprecated in v4.6 2012-03-30; no where used;
-     *
-     * @return string
-     */
-    public function createSQLList( $aArray )
-    {
-        $sRet = "";
-
-        $blSep = false;
-        foreach ( $aArray as $aToken) {
-            if ( !$aToken[0]) {
-                continue;
-            }
-            if ( $blSep) {
-                $sRet .= ",";
-            }
-            $sRet .= "'".$aToken[0]."'";
-            $blSep = true;
-        }
-        return $sRet;
-    }
-
-    /**
-     * Start mysql transaction
-     *
-     * @deprecated in v4.6 2012-04-10; use oxlegacydb::startTransaction();
-     *
-     * @return null
-     */
-    static public function startTransaction()
-    {
-        return self::getDb()->execute( 'START TRANSACTION' );
-    }
-
-    /**
-     * Commit mysql transaction
-     *
-     * @deprecated in v4.6 2012-04-10; use oxlegacydb::commitTransaction();
-     *
-     * @return null
-     */
-    static public function commitTransaction()
-    {
-        return self::getDb()->execute( 'COMMIT' );
-    }
-
-    /**
-     * RollBack mysql transaction
-     *
-     * @deprecated in v4.6 2012-04-10; use oxlegacydb::rollbackTransaction();
-     *
-     * @return null
-     */
-    static public function rollbackTransaction()
-    {
-        return self::getDb()->execute( 'ROLLBACK' );
-    }
-
-    /**
-     * Set transaction isolation level
-     * Allowed values READ UNCOMMITTED, READ COMMITTED, REPEATABLE READ, SERIALIZABLE
-     *
-     * @param string $sLevel level
-     *
-     * @deprecated in v4.6 2012-04-10; use oxlegacydb::setTransactionIsolationLevel()
-     *
-     * @return null
-     */
-    static public function setTransactionIsolationLevel( $sLevel = null )
-    {
-        $aLevels = array( 'READ UNCOMMITTED', 'READ COMMITTED', 'REPEATABLE READ', 'SERIALIZABLE' );
-        if ( in_array( strtoupper( $sLevel ), $aLevels ) ) {
-            return self::getDb()->execute( 'SET TRANSACTION ISOLATION LEVEL ' . $sLevel );
-        }
-    }
-
 
     /**
      * Checks if given string is valid database field name.
@@ -700,53 +589,25 @@ class oxDb extends oxSuperCfg
      * @param string $sLocalTimeFormat local format
      * @param bool   $blOnlyDate       marker to format only date field (no time)
      *
+     * @deprecated from 2012-11-21, not used here anymore. All date formatting moved to oxutilsdate
+     *
      * @return null
      */
     protected function _setDefaultFormatedValue( $oObject, $sDate, $sLocalDateFormat, $sLocalTimeFormat, $blOnlyDate )
     {
-        $aDefTimePatterns = $this->_defaultTimePattern();
-        $aDFormats  = $this->_defineDateFormattingRules();
-        $aTFormats  = $this->_defineTimeFormattingRules();
-        $oStr = getStr();
-
-        foreach ( array_keys( $aDefTimePatterns ) as $sDefTimePattern ) {
-            if ( $oStr->preg_match( $sDefTimePattern, $sDate ) ) {
-                $blDefTimeFound = true;
-                break;
-            }
-        }
-
-        // setting and returning default formatted value
-        if ( $blOnlyDate) {
-            $oObject->setValue(trim( $aDFormats[$sLocalDateFormat][2] ));// . " " . @$aTFormats[$sLocalTimeFormat][2]);
-            // increasing(decreasing) field lenght
-            $oObject->fldmax_length = strlen( $oObject->value );
-            return ;
-        } elseif ( $blDefTimeFound ) {
-            // setting value
-            $oObject->setValue(trim( $aDFormats[$sLocalDateFormat][2] . " " . $aTFormats[$sLocalTimeFormat][2] ));
-            // increasing(decreasing) field lenght
-            $oObject->fldmax_length = strlen( $oObject->value );
-            return ;
-        }
     }
 
     /**
-     * defines and checks dafault time values
+     * defines and checks default time values
      *
      * @param bool $blToTimeStamp -
      *
-     * @return string
+     * @deprecated from 2012-11-21, not used here anymore. All date formatting moved to oxutilsdate
+     *
+     * @return null
      */
     protected function _defineAndCheckDefaultTimeValues( $blToTimeStamp )
     {
-        // defining time format
-        // checking for default values
-        $sLocalTimeFormat = $this->getConfig()->getConfigParam( 'sLocalTimeFormat' );
-        if ( !$sLocalTimeFormat || $blToTimeStamp) {
-            $sLocalTimeFormat = "ISO";
-        }
-        return $sLocalTimeFormat;
     }
 
     /**
@@ -754,81 +615,62 @@ class oxDb extends oxSuperCfg
      *
      * @param bool $blToTimeStamp marker how to format
      *
-     * @return string
+     * @deprecated from 2012-11-21, not used here anymore. All date formatting moved to oxutilsdate
+     *
+     * @return null
      */
     protected function _defineAndCheckDefaultDateValues( $blToTimeStamp )
     {
-        // defining time format
-        // checking for default values
-        $sLocalDateFormat = $this->getConfig()->getConfigParam( 'sLocalDateFormat' );
-        if ( !$sLocalDateFormat || $blToTimeStamp) {
-            $sLocalDateFormat = "ISO";
-        }
-        return $sLocalDateFormat;
     }
 
     /**
      * sets default date pattern
      *
-     * @return array
+     * @deprecated from 2012-11-21, not used here anymore. All date formatting moved to oxutilsdate
+     *
+     * @return null
      */
     protected function _defaultDatePattern()
     {
-        // default date patterns
-        $aDefDatePatterns = array("/^0000-00-00/"   => "ISO",
-                                  "/^00\.00\.0000/" => "EUR",
-                                  "/^00\/00\/0000/" => "USA"
-                                 );
-        return $aDefDatePatterns;
     }
 
     /**
      * sets default time pattern
      *
-     * @return array
+     * @deprecated from 2012-11-21, not used here anymore. All date formatting moved to oxutilsdate
+     *
+     * @return null
      */
     protected function _defaultTimePattern()
     {
-        // default time patterns
-        $aDefTimePatterns = array("/00:00:00$/"    => "ISO",
-                                  "/00\.00\.00$/"  => "EUR",
-                                  "/00:00:00 AM$/" => "USA"
-                                 );
-        return $aDefTimePatterns;
     }
 
     /**
      * regular expressions to validate date input
      *
-     * @return array
+     * @deprecated from 2012-11-21, not used here anymore. All date formatting moved to oxutilsdate
+     *
+     * @return null
      */
     protected function _regexp2ValidateDateInput()
     {
-        // regexps to validate input
-        $aDatePatterns = array("/^([0-9]{4})-([0-9]{2})-([0-9]{2})/"   => "ISO",
-                               "/^([0-9]{2})\.([0-9]{2})\.([0-9]{4})/" => "EUR",
-                               "/^([0-9]{2})\/([0-9]{2})\/([0-9]{4})/" => "USA"
-                              );
-        return $aDatePatterns;
     }
 
     /**
      * regular expressions to validate time input
      *
-     * @return array
+     * @deprecated from 2012-11-21, not used here anymore. All date formatting moved to oxutilsdate
+     *
+     * @return null
      */
     protected function _regexp2ValidateTimeInput()
     {
-        // regexps to validate input
-        $aTimePatterns = array("/([0-9]{2}):([0-9]{2}):([0-9]{2})$/"   => "ISO",
-                               "/([0-9]{2})\.([0-9]{2})\.([0-9]{2})$/" => "EUR",
-                               "/([0-9]{2}):([0-9]{2}):([0-9]{2}) ([AP]{1}[M]{1})$/" => "USA"
-                              );
-        return $aTimePatterns;
     }
 
     /**
      * define date formatting rules
+     *
+     * @deprecated from 2012-11-21, not used here anymore. All date formatting moved to oxutilsdate
      *
      * @return array
      */
@@ -844,6 +686,8 @@ class oxDb extends oxSuperCfg
 
     /**
      * defines time formatting rules
+     *
+     * @deprecated from 2012-11-21, not used here anymore. All date formatting moved to oxutilsdate
      *
      * @return array
      */
@@ -865,6 +709,8 @@ class oxDb extends oxSuperCfg
      * @param string $sLocalTimeFormat local format
      * @param bool   $blOnlyDate       marker to format only date field (no time)
      *
+     * @deprecated from 2012-11-21, not used here anymore. All date formatting moved to oxUtilsDate
+     *
      * @return null
      */
     protected function _setDefaultDateTimeValue( $oObject, $sLocalDateFormat, $sLocalTimeFormat, $blOnlyDate )
@@ -882,7 +728,7 @@ class oxDb extends oxSuperCfg
         } else {
             $oObject->value = trim($sReturn);
         }
-        // increasing(decreasing) field lenght
+        // increasing(decreasing) field length
         $oObject->fldmax_length = strlen( $oObject->value);
     }
 
@@ -893,6 +739,8 @@ class oxDb extends oxSuperCfg
      * @param string $sDateFormat  date format
      * @param array  $aDFields     days
      * @param array  $aDateMatches new date as array (month, year)
+     *
+     * @deprecated from 2012-11-21, not used here anymore. All date formatting moved to oxutilsdate
      *
      * @return null
      */
@@ -908,7 +756,7 @@ class oxDb extends oxSuperCfg
         } else {
             $oObject->value = @date( $sDateFormat, $iTimestamp );
         }
-        // we should increase (decrease) field lenght
+        // we should increase (decrease) field length
         $oObject->fldmax_length = strlen( $oObject->value );
     }
 
@@ -922,6 +770,8 @@ class oxDb extends oxSuperCfg
      * @param array  $aTimeMatches new time
      * @param array  $aTFields     defines the time fields
      * @param array  $aDFields     defines the date fields
+     *
+     * @deprecated from 2012-11-21, not used here anymore. All date formatting moved to oxutilsdate
      *
      * @return null
      */
@@ -941,7 +791,7 @@ class oxDb extends oxSuperCfg
             $oObject->value = trim( @date( $sDateFormat." ".$sTimeFormat, $iTimestamp ) );
         }
 
-        // we should increase (decrease) field lenght
+        // we should increase (decrease) field length
         $oObject->fldmax_length = strlen( $oObject->value );
     }
 
@@ -964,10 +814,9 @@ class oxDb extends oxSuperCfg
      */
     public function escapeString( $sString )
     {
-        $myConfig  = $this->getConfig();
-        if ( 'mysql' == $myConfig->getConfigParam( "dbType" )) {
+        if ( 'mysql' == self::_getConfigParam( "_dbType" )) {
             return mysql_real_escape_string( $sString, $this->_getConnectionId() );
-        } elseif ( 'mysqli' == $myConfig->getConfigParam( "dbType" )) {
+        } elseif ( 'mysqli' == self::_getConfigParam( "_dbType" )) {
             return mysqli_real_escape_string( $this->_getConnectionId(), $sString );
         } else {
             return mysql_real_escape_string( $sString, $this->_getConnectionId() );
@@ -979,25 +828,13 @@ class oxDb extends oxSuperCfg
      *
      * @param array $aTables If you need to update specific tables, just pass its names as array [optional]
      *
-     * @return null
+     * @deprecated since v5.0.1 (2012-11-05); Use public oxDbMetaDataHandler::updateViews().
+     *
+     * @return bool
      */
     public function updateViews( $aTables = null )
     {
-        set_time_limit(0);
-
-        $myConfig  = $this->getConfig();
-        $oShopList = oxNew("oxshoplist" );
-        $oShopList->selectString( "select * from oxshops"); // Shop view may not exist at this point
-
-        $aTables = $aTables ? $aTables : $myConfig->getConfigParam( 'aMultiShopTables' );
-        foreach ( $oShopList as $key => $oShop ) {
-            $oShop->setMultiShopTables( $aTables );
-            $blMultishopInherit = $myConfig->getShopConfVar( 'blMultishopInherit_oxcategories', $oShop->sOXID );
-            $aMallInherit = array();
-            foreach ( $aTables as $sTable ) {
-                $aMallInherit[$sTable] = $myConfig->getShopConfVar( 'blMallInherit_' . $sTable, $oShop->sOXID );
-            }
-            $oShop->generateViews( $blMultishopInherit, $aMallInherit );
-        }
+        $oMetaData = oxNew('oxDbMetaDataHandler');
+        return $oMetaData->updateViews();
     }
 }

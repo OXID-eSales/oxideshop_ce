@@ -30,16 +30,17 @@
  * -------------------------------------------------------------
  *
  * @param string $sIdent language constant ident
+ * @param mixed  $args   for constants using %s notations
  *
  * @return string
  */
-function smarty_modifier_oxmultilangassign( $sIdent )
+function smarty_modifier_oxmultilangassign( $sIdent, $args = null )
 {
     if ( !isset( $sIdent ) ) {
         $sIdent = 'IDENT MISSING';
     }
 
-    $oLang = oxLang::getInstance();
+    $oLang = oxRegistry::getLang();
     $iLang = $oLang->getTplLanguage();
 
     if ( !isset( $iLang ) ) {
@@ -50,13 +51,21 @@ function smarty_modifier_oxmultilangassign( $sIdent )
     }
 
     try {
-        $sTranslation = $oLang->translateString( $sIdent, $iLang, isAdmin() );
+        $sTranslation = $oLang->translateString( $sIdent, $iLang, $oLang->isAdmin() );
     } catch ( oxLanguageException $oEx ) {
         // is thrown in debug mode and has to be caught here, as smarty hangs otherwise!
     }
 
     if ( $sTranslation == $sIdent ) {
         $sTranslation = '<b>ERROR : Translation for '.$sIdent.' not found!</b>';
+    }
+
+    if ( $args ) {
+        if ( is_array( $args ) ) {
+            $sTranslation = vsprintf( $sTranslation, $args );
+        } else {
+            $sTranslation = sprintf( $sTranslation, $args );
+        }
     }
 
     return $sTranslation;

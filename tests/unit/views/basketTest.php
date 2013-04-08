@@ -42,23 +42,6 @@ class Unit_Views_basketTest extends OxidTestCase
     }
 
     /**
-     * Test oxViewConfig::getShowListmania() affection
-     *
-     * @return null
-     */
-    public function testgetSimilarRecommListsIfOff()
-    {
-        $oCfg = $this->getMock( "stdClass", array( "getShowListmania" ) );
-        $oCfg->expects( $this->once() )->method( 'getShowListmania')->will($this->returnValue( false ) );
-
-        $oBasket = $this->getMock( "basket", array( "getViewConfig", 'getArticleList' ) );
-        $oBasket->expects( $this->once() )->method( 'getViewConfig')->will($this->returnValue( $oCfg ) );
-        $oBasket->expects( $this->never() )->method( 'getArticleList');
-
-        $this->assertSame(false, $oBasket->getSimilarRecommLists());
-    }
-
-    /**
      * Test oxViewConfig::getShowVouchers() affection
      *
      * @return null
@@ -99,7 +82,8 @@ class Unit_Views_basketTest extends OxidTestCase
      */
     public function testRenderNoSE()
     {
-        oxTestModules::addFunction('oxUtils', 'isSearchEngine($sClient = NULL)', '{return false;}');
+        oxUtils::getInstance()->setSearchEngine(false);
+
         $oBasket = new basket();
 
         $this->assertEquals('page/checkout/basket.tpl', $oBasket->render());
@@ -112,7 +96,8 @@ class Unit_Views_basketTest extends OxidTestCase
      */
     public function testRenderSE()
     {
-        oxTestModules::addFunction('oxUtils', 'isSearchEngine($sClient = NULL)', '{return true;}');
+        oxUtils::getInstance()->setSearchEngine(true);
+
         $oBasket = $this->getMock( "basket", array( "getBasketArticles", 'getBasketSimilarList', 'getSimilarRecommLists', 'showBackToShop' ) );
         $oBasket->expects( $this->never() )->method( 'getBasketArticles')->will($this->returnValue( 'getBasketArticles' ) );
         $oBasket->expects( $this->never() )->method( 'getBasketSimilarList')->will($this->returnValue( 'getBasketSimilarList' ) );
@@ -176,7 +161,7 @@ class Unit_Views_basketTest extends OxidTestCase
         $o = $this->getMock('Basket', array('getSession'));
         $o->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
 
-        modConfig::setParameter( 'voucherNr', 'vouchnr' );
+        $this->setRequestParam( 'voucherNr', 'vouchnr' );
         $this->assertEquals(null, $o->addVoucher());
     }
 
@@ -189,7 +174,7 @@ class Unit_Views_basketTest extends OxidTestCase
         $o = $this->getMock('Basket', array('getSession'));
         $o->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
 
-        modConfig::setParameter( 'voucherId', 'vouchnr' );
+        $this->setRequestParam( 'voucherId', 'vouchnr' );
         $this->assertEquals(null, $o->removeVoucher());
     }
 
@@ -227,29 +212,27 @@ class Unit_Views_basketTest extends OxidTestCase
         $this->assertSame('', oxSession::getVar( '_backtoshop')  );
     }
 
-    public function testGetSimilarRecommLists()
+    /**
+     * Test get ids for similar recommendation list.
+     *
+     * @return null
+     */
+    public function testGetSimilarRecommListIds()
     {
-        $oP = $this->getMock('stdclass', array('getId'));
-        $oP->expects($this->once())->method('getId')->will($this->returnValue('fds'));
-        $oVC = $this->getMock('stdclass', array('getShowListmania'));
-        $oVC->expects($this->once())->method('getShowListmania')->will($this->returnValue(true));
-        $o = $this->getMock('Basket', array('getFirstBasketProduct', 'getViewConfig'));
-        $o->expects($this->once())->method('getFirstBasketProduct')->will($this->returnValue($oP));
-        $o->expects($this->once())->method('getViewConfig')->will($this->returnValue($oVC));
+        $articleId = "articleId";
+        $aArrayKeys = array( $articleId );
+        $oProduct = $this->getMock( "oxarticle", array( "getId" ) );
+        $oProduct->expects( $this->once() )->method( "getId" )->will( $this->returnValue( $articleId ) );
 
-        $oRecommList = $this->getMock('stdclass', array('getRecommListsByIds'));
-        $oRecommList->expects($this->once())->method('getRecommListsByIds')->with($this->equalTo(array('fds')))->will($this->returnValue('asdads'));
-        $oUtilsObj = $this->getMock('oxUtilsObject', array('oxNew'));
-        $oUtilsObj->expects($this->once())->method('oxNew')->with($this->equalTo('oxrecommlist'))->will($this->returnValue($oRecommList));
-        modInstances::addMod('oxUtilsObject', $oUtilsObj);
-
-        $this->assertEquals('asdads', $o->getSimilarRecommLists());
+        $oDetails = $this->getMock( "basket", array( "getFirstBasketProduct" ) );
+        $oDetails->expects( $this->once() )->method( "getFirstBasketProduct" )->will( $this->returnValue( $oProduct ) );
+        $this->assertEquals( $aArrayKeys, $oDetails->getSimilarRecommListIds(), "getSimilarRecommListIds() should return array of key from result of getFirstBasketProduct()" );
     }
 
 
     public function testRenderDoesNotCleanReservationsIfOff()
     {
-        modConfig::getInstance()->setConfigParam('blPsBasketReservationEnabled', false);
+        $this->setConfigParam('blPsBasketReservationEnabled', false);
 
         $oS = $this->getMock('oxsession', array('getBasketReservations'));
         $oS->expects($this->never())->method('getBasketReservations');
@@ -261,7 +244,7 @@ class Unit_Views_basketTest extends OxidTestCase
     }
     public function testRenderDoesCleanReservationsIfOn()
     {
-        modConfig::getInstance()->setConfigParam('blPsBasketReservationEnabled', true);
+        $this->setConfigParam('blPsBasketReservationEnabled', true);
 
         $oR = $this->getMock('stdclass', array('renewExpiration'));
         $oR->expects($this->once())->method('renewExpiration')->will($this->returnValue(null));
@@ -288,36 +271,62 @@ class Unit_Views_basketTest extends OxidTestCase
     }
 
     /**
+     * Testing Basket::getWrappingList()
+     *
+     * @return null
+     */
+    public function testGetWrappingList()
+    {
+        oxTestModules::addFunction('oxwrapping', 'getWrappingList', '{ return "getWrappingList"; }' );
+
+        $oView = new Basket();
+        $this->assertEquals( "getWrappingList", $oView->getWrappingList() );
+    }
+
+    /**
+     * Testing Basket::getCardList()
+     *
+     * @return null
+     */
+    public function testGetCardList()
+    {
+        oxTestModules::addFunction('oxwrapping', 'getWrappingList', '{ return "getCardList"; }' );
+
+        $oView = new Basket();
+        $this->assertEquals( "getCardList", $oView->getCardList() );
+    }
+
+    /**
      * Testing Wrapping::changeWrapping()
      *
      * @return null
      */
     public function testChangeWrapping()
     {
-        modConfig::setParameter( "wrapping", array( 1 => 2 ) );
-        modConfig::setParameter( "giftmessage", "testCardMessage" );
-        modConfig::setParameter( "chosencard", "testCardId" );
+        $this->setRequestParam( "wrapping", array( 1 => 2 ) );
+        $this->setRequestParam( "giftmessage", "testCardMessage" );
+        $this->setRequestParam( "chosencard", "testCardId" );
 
-        $oBasketItem1 = $this->getMock( "oxStdClass", array( "setWrapping" ));
+        $oBasketItem1 = $this->getMock( "oxBasketItem", array( "setWrapping" ));
         $oBasketItem1->expects( $this->once() )->method( 'setWrapping' )->with( $this->equalTo( 2 ) );
 
-        $oBasketItem2 = $this->getMock( "oxStdClass", array( "setWrapping" ));
+        $oBasketItem2 = $this->getMock( "oxBasketItem", array( "setWrapping" ));
         $oBasketItem2->expects( $this->never() )->method( 'setWrapping' );
 
         $oContents = new oxList();
         $oContents->offsetSet( 1 , $oBasketItem1 );
         $oContents->offsetSet( 2 , $oBasketItem2 );
 
-        $oBasket = $this->getMock( "oxStdClass", array( "getContents", "setCardMessage", "setCardId", "onUpdate" ) );
+        $oBasket = $this->getMock( "oxBasket", array( "getContents", "setCardMessage", "setCardId", "onUpdate" ) );
         $oBasket->expects( $this->once() )->method( 'getContents' )->will( $this->returnValue( $oContents ) );
         $oBasket->expects( $this->once() )->method( 'setCardMessage' )->with( $this->equalTo( "testCardMessage" ) );
         $oBasket->expects( $this->once() )->method( 'setCardId' )->with( $this->equalTo( "testCardId" ) );
         $oBasket->expects( $this->once() )->method( 'onUpdate' );
 
-        $oSession = $this->getMock( "oxStdClass", array( "getBasket" ) );
+        $oSession = $this->getMock( "oxSession", array( "getBasket" ) );
         $oSession->expects( $this->once() )->method( 'getBasket' )->will( $this->returnValue( $oBasket ) );
 
-        $oViewConfig = $this->getMock( "oxStdClass", array( "getShowGiftWrapping" ) );
+        $oViewConfig = $this->getMock( "oxViewConfig", array( "getShowGiftWrapping" ) );
         $oViewConfig->expects( $this->once() )->method( 'getShowGiftWrapping' )->will( $this->returnValue( true ) );
 
         $oView = $this->getMock( "basket", array( "getViewConfig", "getSession" ), array(), '', false );
@@ -325,4 +334,29 @@ class Unit_Views_basketTest extends OxidTestCase
         $oView->expects( $this->once() )->method( 'getSession' )->will( $this->returnValue( $oSession ) );
         $oView->changeWrapping();
     }
+
+    /**
+     * Test is Wrapping
+     *
+     * @return null
+     */
+    public function testIsWrapping()
+    {
+        $oView = new Basket();
+        $this->assertTrue( $oView->isWrapping() );
+    }
+
+    /**
+     * Test oxViewConfig::getShowGiftWrapping() affection
+     *
+     * @return null
+     */
+    public function testIsWrappingIfWrappingIsOff()
+    {
+        $this->setConfigParam( 'bl_showGiftWrapping', false );
+
+        $oView = new Basket();
+        $this->assertSame(false, $oView->isWrapping());
+    }
+
 }

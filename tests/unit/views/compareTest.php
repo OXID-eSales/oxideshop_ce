@@ -208,6 +208,13 @@ class Unit_Views_compareTest extends OxidTestCase
         $this->assertEquals(  2, $oCompare->getCompareItemsCnt());
     }
 
+    public function testGetSetCompareItemsCnt()
+    {
+        $oView = $this->getProxyClass( 'compare' );
+        $oView->setCompareItemsCnt( 10 );
+        $this->assertEquals( 10, $oView->getCompareItemsCnt() );
+    }
+
     /**
      * Test get attribute list.
      *
@@ -229,21 +236,19 @@ class Unit_Views_compareTest extends OxidTestCase
     }
 
     /**
-     * Test get similar recommendation lists.
+     * Test get ids for similar recommendation list.
      *
      * @return null
      */
-    public function testGetSimilarRecommLists()
+    public function testGetSimilarRecommListIds()
     {
-        modConfig::setParameter( 'recommid', 'testlist' );
-        $oCompare = $this->getProxyClass( "compare" );
-        $oArticle = oxNew("oxarticle");
-        $oCompare->setNonPublicVar( "_oArtList", array ( '2000' => $oArticle) );
-        $aLists = $oCompare->getSimilarRecommLists();
-        $this->assertTrue( $aLists instanceof oxList );
-        $this->assertEquals( 1, $aLists->count() );
-        $this->assertEquals( 'testlist', $aLists['testlist']->getId() );
-        $this->assertTrue( in_array( $aLists['testlist']->getFirstArticle()->getId(), array('2000') ) );
+        $sArrayKey = "articleId";
+        $aArrayKeys = array( $sArrayKey );
+        $oArtList = array( $sArrayKey => "zyyy" );
+
+        $oSearch = $this->getMock( "compare", array( "getCompArtList" ) );
+        $oSearch->expects( $this->once() )->method( "getCompArtList" )->will( $this->returnValue( $oArtList ) );
+        $this->assertEquals( $aArrayKeys, $oSearch->getSimilarRecommListIds(), "getSimilarRecommListIds() should return array of keys from result of getCompArtList()" );
     }
 
     /**
@@ -256,23 +261,6 @@ class Unit_Views_compareTest extends OxidTestCase
         $oCompare = $this->getMock( 'compare', array( 'generatePageNavigation' ));
         $oCompare->expects( $this->any() )->method( 'generatePageNavigation')->will($this->returnValue( "aaa" ) );
         $this->assertEquals( 'aaa', $oCompare->getPageNavigation() );
-    }
-
-    /**
-     * Test oxViewConfig::getShowListmania() affection
-     *
-     * @return null
-     */
-    public function testgetSimilarRecommListsIfOff()
-    {
-        $oCfg = $this->getMock( "stdClass", array( "getShowListmania" ) );
-        $oCfg->expects( $this->once() )->method( 'getShowListmania')->will($this->returnValue( false ) );
-
-        $oRecomm = $this->getMock( "compare", array( "getViewConfig", 'getArticleList' ) );
-        $oRecomm->expects( $this->once() )->method( 'getViewConfig')->will($this->returnValue( $oCfg ) );
-        $oRecomm->expects( $this->never() )->method( 'getArticleList');
-
-        $this->assertSame(false, $oRecomm->getSimilarRecommLists());
     }
 
     /**
@@ -312,17 +300,17 @@ class Unit_Views_compareTest extends OxidTestCase
         $oCompare = new Compare();
         $aCatPath = array();
         $aResult  = array();
-        
+
         $aCatPath['title'] = oxLang::getInstance()->translateString( 'PAGE_ACCOUNT_MY_ACCOUNT', 0, false );
         $aCatPath['link']  = oxSeoEncoder::getInstance()->getStaticUrl( $oCompare->getViewConfig()->getSelfLink() . 'cl=account' );
-        
+
         $aResult[] = $aCatPath;
-        
+
         $aCatPath['title'] = oxLang::getInstance()->translateString( 'PAGE_PRODUCT_COMPARE_TITLE', 0, false );
         $aCatPath['link']  = $oCompare->getLink();
 
         $aResult[] = $aCatPath;
-        
+
         $this->assertEquals( $aResult, $oCompare->getBreadCrumb() );
     }
 

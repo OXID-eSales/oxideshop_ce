@@ -67,7 +67,7 @@ class oxOutput extends oxSuperCfg
      */
     public function __construct()
     {
-        $this->setIsSearchEngine( oxUtils::getInstance()->isSearchEngine() );
+        $this->setIsSearchEngine( oxRegistry::getUtils()->isSearchEngine() );
     }
 
     /**
@@ -124,7 +124,13 @@ class oxOutput extends oxSuperCfg
 
 
         // Replacing only once per page
-        $sOutput = str_ireplace("</head>", "</head>\n  <!-- OXID eShop {$sEdition}, Version {$sMajorVersion}{$sShopMode}, Shopping Cart System (c) OXID eSales AG 2003 - {$sCurYear} - http://www.oxid-esales.com -->", ltrim($sOutput));
+        $sSearch = "</head>";
+        $sReplace = "</head>\n  <!-- OXID eShop {$sEdition}, Version {$sMajorVersion}{$sShopMode}, Shopping Cart System (c) OXID eSales AG 2003 - {$sCurYear} - http://www.oxid-esales.com -->";
+
+        $sOutput = ltrim($sOutput);
+        if ( ($pos = stripos( $sOutput, $sSearch )) !== false) {
+            $sOutput = substr_replace($sOutput, $sReplace, $pos, strlen($sSearch));
+        }
 
         return $sOutput;
     }
@@ -229,11 +235,11 @@ class oxOutput extends oxSuperCfg
     {
         switch ($this->_sOutputFormat) {
             case self::OUTPUT_FORMAT_JSON:
-                oxUtils::getInstance()->setHeader( "Content-Type: application/json; charset=".$this->_sCharset );
+                oxRegistry::getUtils()->setHeader( "Content-Type: application/json; charset=".$this->_sCharset );
                 break;
             case self::OUTPUT_FORMAT_HTML:
             default:
-                oxUtils::getInstance()->setHeader( "Content-Type: text/html; charset=".$this->_sCharset );
+                oxRegistry::getUtils()->setHeader( "Content-Type: text/html; charset=".$this->_sCharset );
                 break;
         }
     }

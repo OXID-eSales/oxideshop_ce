@@ -22,8 +22,33 @@
  * @version   SVN: $Id: $
  */
 
+switch (getenv('OXID_VERSION')) {
+    case 'EE':
+        define ('oxCCTempDir', '/tmp/oxCCTempDir_ee/');
+        define('OXID_VERSION_EE', true );
+        define('OXID_VERSION_PE', false);
+        define('OXID_VERSION_PE_PE', false );
+        define('OXID_VERSION_PE_CE', false );
+        break;
+    case 'PE':
+        define ('oxCCTempDir', '/tmp/oxCCTempDir_pe/');
+        define('OXID_VERSION_EE',    false);
+        define('OXID_VERSION_PE',    true );
+        define('OXID_VERSION_PE_PE', true );
+        define('OXID_VERSION_PE_CE', false );
+        break;
+    case 'CE':
+        define ('oxCCTempDir', '/tmp/oxCCTempDir_ce/');
+        define('OXID_VERSION_EE',    false);
+        define('OXID_VERSION_PE',    true );
+        define('OXID_VERSION_PE_PE', false );
+        define('OXID_VERSION_PE_CE', true );
+        break;
 
-
+    default:
+        die('bad version--- : '."'".getenv('OXID_VERSION')."'");
+    break;
+}
 
 // browser name which will be used for testing. Possible values: *iexplore, *iehta, *firefox, *chrome, *piiexplore, *pifirefox, *safari, *opera
 // make sure that path to browser executable is known for the system
@@ -33,14 +58,11 @@ define('browserName', '*firefox' );
 define('shopURL', getenv('SELENIUM_TARGET'));
 define('hostUrl', getenv('SELENIUM_SERVER'));
 
-//define('OXID_TEMPLATE_BASIC', getenv('OXID_TPL_BASIC'));
-define('OXID_THEME', getenv('OXID_THEME'));
-
 define ('oxCCTempDir', oxPATH.'/tmp/');
 
 // if running on NON-parsed source - change shopPrefix value to '_ee'
 define('shopPrefix', '');
-
+define('isSUBSHOP', OXID_VERSION_EE && (oxSHOPID > 1));
 
 if (getenv('OXID_LOCALE') == 'international') {
     define ('oxTESTSUITEDIR', 'acceptanceInternational');
@@ -49,6 +71,16 @@ if (getenv('OXID_LOCALE') == 'international') {
 } else {
     define ('oxTESTSUITEDIR', 'acceptance');
 }
+
+if (getenv('MODULE_PKG_DIR')) {
+    define ('MODULE_PKG_DIR', getenv('MODULE_PKG_DIR'));
+}
+
+if (getenv('SHOP_REMOTE')) {
+    define ('SHOP_REMOTE', getenv('SHOP_REMOTE'));
+}
+
+define('shopURL', getenv('SELENIUM_TARGET'));
 
 if (getenv('oxSKIPSHOPSETUP') == 1) {
     define ('SKIPSHOPSETUP', true);
@@ -100,10 +132,6 @@ class AllTestsSelenium extends PHPUnit_Framework_TestCase
             $oAdditionalFunctions->addDemoData($sFileName);
 
         }
-        if (OXID_THEME == 'basic') {
-            $sFileName = "acceptance/demodata_basic.sql";
-            $oAdditionalFunctions->addDemoData($sFileName);
-        }
 
         // dumping database for selenium tests
         try {
@@ -117,9 +145,7 @@ class AllTestsSelenium extends PHPUnit_Framework_TestCase
             $sFilter = '*';
         }
         $sGlob = oxTESTSUITEDIR."/{$sFilter}Test.php";
-        if (OXID_THEME == 'basic') {
-            $sGlob = oxTESTSUITEDIR."/{$sFilter}TestBasic.php";
-        }
+
         foreach ( glob($sGlob) as $sFilename) {
             include_once $sFilename;
             $sFilename = oxTESTSUITEDIR.'_'.str_replace("/", "_", str_replace( array( ".php", oxTESTSUITEDIR.'/'), "", $sFilename));

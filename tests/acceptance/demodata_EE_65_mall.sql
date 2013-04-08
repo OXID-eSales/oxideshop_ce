@@ -9,8 +9,6 @@ INSERT INTO `oxfiles` (`OXID`, `OXARTID`, `OXFILENAME`, `OXPURCHASEDONLY`) VALUE
 
 #config demodata
 UPDATE `oxconfig` SET `OXVARVALUE` = 0x93ea1218   WHERE `OXVARNAME` = 'bl_perfLoadSelectLists'         AND `OXSHOPID` = 65;
-UPDATE `oxconfig` SET `OXVARVALUE` = 0x93ea1218   WHERE `OXVARNAME` = 'bl_perfShowLeftBasket'          AND `OXSHOPID` = 65;
-UPDATE `oxconfig` SET `OXVARVALUE` = 0x93ea1218   WHERE `OXVARNAME` = 'bl_perfShowRightBasket'         AND `OXSHOPID` = 65;
 UPDATE `oxconfig` SET `OXVARVALUE` = 0x93ea1218   WHERE `OXVARNAME` = 'bl_perfUseSelectlistPrice'      AND `OXSHOPID` = 65;
 UPDATE `oxconfig` SET `OXVARVALUE` = 0x93ea1218   WHERE `OXVARNAME` = 'bl_perfLoadSelectListsInAList'  AND `OXSHOPID` = 65;
 UPDATE `oxconfig` SET `OXVARVALUE` = 0x7900fdf51e WHERE `OXVARNAME` = 'blShowVATForDelivery'           AND `OXSHOPID` = 65;
@@ -22,7 +20,6 @@ UPDATE `oxconfig` SET `OXVARVALUE` = 0xde         WHERE `OXVARNAME` = 'iNewBaske
 UPDATE `oxconfig` SET `OXVARVALUE` = 0x7900fdf51e WHERE `OXVARNAME` = 'blCheckTemplates'               AND `OXSHOPID` = 65;
 UPDATE `oxconfig` SET `OXVARVALUE` = 0x93ea1218   WHERE `OXVARNAME` = 'blDisableNavBars'               AND `OXSHOPID` = 65;
 UPDATE `oxconfig` SET `OXVARVALUE` = 0x93ea1218   WHERE `OXVARNAME` = 'blAllowUnevenAmounts'           AND `OXSHOPID` = 65;
-UPDATE `oxconfig` SET `OXVARVALUE` = ''           WHERE `OXVARNAME` = 'blTopNaviLayout'                AND `OXSHOPID` = 65 AND `OXMODULE` = 'theme:basic';
 UPDATE `oxconfig` SET `OXVARVALUE` = 0x07         WHERE `OXVARNAME` = 'blConfirmAGB'                   AND `OXSHOPID` = 65;
 UPDATE `oxconfig` SET `OXVARVALUE` = 0xb0         WHERE `OXVARNAME` = 'iTopNaviCatCount'               AND `OXSHOPID` = 65 AND `OXMODULE` = 'theme:azure';
 UPDATE `oxconfig` SET `OXVARVALUE` = 0x4dbace29724a51b6af7d09aac117301142e91c3c5b7eed9a850f85c1e3d58739aa9ea92523f05320a95060d60d57fbb027bad88efdaa0b928ebcd6aacf58084d31dd6ed5e718b833f1079b3805d28203f284492955c82cea3405879ea7588ec610ccde56acede495 WHERE `OXVARNAME` = 'aInterfaceProfiles' AND `OXSHOPID` = 65;
@@ -40,7 +37,6 @@ INSERT INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXVARNAME`,               `OXVARTYP
                        ('14c52', 65,         'bl_rssBargain',           'bool',       0x07),
                        ('2bck2', 65,         'bl_rssRecommLists',       'bool',       0x07),
                        ('2bcr2', 65,         'bl_rssRecommListArts',    'bool',       0x07),
-                       ('ggt52', 65,         'bl_perfLoadVendorTree',   'bool',       0x07),
                        ('a6ba2', 65,         'blOrderDisWithoutReg',    'bool',       ''),
                        ('asdf2', 65,         'blBasketExcludeEnabled',  'str',        ''),
                        ('5s8fu', 65,         'blPerfNoBasketSaving',    'bool',       0x93ea1218);

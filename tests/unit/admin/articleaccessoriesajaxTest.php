@@ -236,7 +236,7 @@ class Unit_Admin_ArticleAccessoriesAjaxTest extends OxidTestCase
         modConfig::setParameter( "all", true );
         
         //count how much articles gets filtered
-        $iCount = oxDb::getDb()->getOne( "select count(oxid) from ".$this->getArticleViewTable()." where 1  and ".$this->getArticleViewTable().".oxparentid = ''  and ".$this->getArticleViewTable().".oxid not in (  select oxaccessoire2article.oxobjectid from oxaccessoire2article  where oxaccessoire2article.oxarticlenid = '$sSynchoxid'  ) and ".$this->getArticleViewTable().".oxid != '$sSynchoxid'" );
+        $iCount = oxDb::getDb()->getOne( "select count(oxid) from ".$this->getArticleViewTable()." where 1  and ".$this->getArticleViewTable().".oxparentid = ''  and ".$this->getArticleViewTable().".oxid not in (  select oxaccessoire2article.oxobjectid from oxaccessoire2article  where oxaccessoire2article.oxarticlenid = '$sSynchoxid'  )  and ".$this->getArticleViewTable().".oxid != '$sSynchoxid'" );
         
         $oView->expects( $this->any() )->method( '_getActionIds')->will( $this->returnValue( array( '_testGroupAdd1', '_testGroupAdd2' ) ) );
         

@@ -58,15 +58,6 @@ class oxBase extends oxSuperCfg
     protected $_blIsSimplyClonable = true;
 
     /**
-     * Array of errors.
-     *
-     * @deprecated since 20110823
-     *
-     * @var array
-     */
-    protected $_aErrors = array();
-
-    /**
      * Name of current class.
      * @var string
      */
@@ -78,15 +69,6 @@ class oxBase extends oxSuperCfg
      * @var string
      */
     protected $_sCoreTable = null;
-
-    /**
-     * Object core table name, used in core classes
-     *
-     * @deprecated since v4.6.0 (2012-02-21); Use $_sCoreTable.
-     *
-     * @var string
-     */
-    protected $_sCoreTbl = null;
 
     /**
      * Current view name where object record is supposed to be SELECTED from.
@@ -101,12 +83,6 @@ class oxBase extends oxSuperCfg
      * @var array
      */
     protected $_aFieldNames = array('oxid' => 0);
-
-    /**
-     * Cache control variable (default false).
-     * @var bool
-     */
-    protected $_blIsNewCache = false;
 
     /**
      * Cache key. Assigned to object depending on active view. Is used for object caching identification in lazy loading mechanism.
@@ -127,7 +103,15 @@ class oxBase extends oxSuperCfg
      *
      * @var array
      */
-    protected $_aSkipSaveFields = array();
+    protected $_aSkipSaveFields = array('oxtimestamp');
+
+
+    /**
+     * Enable skip save fields usage
+     *
+     * @var bool
+     */
+    protected $_blUseSkipSaveFields = true;
 
     /**
      * SQL query string for searching in DB (??)
@@ -196,6 +180,29 @@ class oxBase extends oxSuperCfg
      */
     protected $_blEmployMultilanguage = false;
 
+
+    /**
+     * Getting use skip fields or not
+     *
+     * @return bool
+     */
+    public function getUseSkipSaveFields()
+    {
+        return $this->_blUseSkipSaveFields;
+    }
+
+    /**
+     * Setting use skip fields or not
+     *
+     * @param bool $blUseSkipSaveFields - true or false
+     *
+     * @return null
+     */
+    public function setUseSkipSaveFields( $blUseSkipSaveFields )
+    {
+        $this->_blUseSkipSaveFields = $blUseSkipSaveFields;
+    }
+
     /**
      * Class constructor, sets active shop.
      */
@@ -204,6 +211,8 @@ class oxBase extends oxSuperCfg
         // set active shop
         $myConfig = $this->getConfig();
         $this->_sCacheKey = $this->getViewName();
+
+
         if ( $this->_blUseLazyLoading ) {
             $this->_sCacheKey .= $myConfig->getActiveView()->getClassName();
         } else {
@@ -304,7 +313,7 @@ class oxBase extends oxSuperCfg
 
                     //save names to cache for next loading
                     if ($this->_sCacheKey) {
-                        $myUtils = oxUtils::getInstance();
+                        $myUtils = oxRegistry::getUtils();
                         $sCacheKey = 'fieldnames_' . $this->_sCoreTable . "_" . $this->_sCacheKey;
                         $aFieldNames = $myUtils->fromFileCache( $sCacheKey );
                         $aFieldNames[$sFieldName] = $iFieldStatus;
@@ -322,7 +331,7 @@ class oxBase extends oxSuperCfg
             oxUtilsObject::getInstance()->resetInstanceCache(get_class($this));
         }
 
-        //returns oxStdClass implementing __toString() method due to uknown scenario where this var should be used.
+        //returns stdClass implementing __toString() method due to uknown scenario where this var should be used.
         if (!isset( $this->$sName ) ) {
             $this->$sName = null;
         }
@@ -343,7 +352,7 @@ class oxBase extends oxSuperCfg
     }
 
     /**
-     * Magic fuinction invoked on object cloning. Basically takes care about cloning properly DB fields.
+     * Magic function invoked on object cloning. Basically takes care about cloning properly DB fields.
      *
      * @return null;
      */
@@ -394,9 +403,6 @@ class oxBase extends oxSuperCfg
         } else {
             $this->_sCoreTable = $sTableName;
         }
-
-        // compatibility due to parameter deprecation
-        $this->_sCoreTbl = $sTableName;
 
         // reset view table
         $this->_sViewTable = false;
@@ -527,7 +533,7 @@ class oxBase extends oxSuperCfg
             if ( ( $blForceCoreTableUsage !== null ) && $blForceCoreTableUsage ) {
                 $iShopId = -1;
             } else {
-                $iShopId = oxConfig::getInstance()->getShopId();
+                $iShopId = oxRegistry::getConfig()->getShopId();
             }
 
 
@@ -543,7 +549,7 @@ class oxBase extends oxSuperCfg
     /**
      * Lazy loading cache key modifier.
      *
-     * @param string $sCacheKey  kache  key
+     * @param string $sCacheKey  cache  key
      * @param bool   $blOverride marker to force override cache key
      *
      * @return null;
@@ -558,7 +564,7 @@ class oxBase extends oxSuperCfg
     }
 
     /**
-     * Disables lazy loading mechanism and inits object fully
+     * Disables lazy loading mechanism and init object fully
      *
      * @return null;
      */
@@ -593,8 +599,8 @@ class oxBase extends oxSuperCfg
     }
 
     /**
-     * Returns true, if object has multilanguage fields (if object is derived from oxi18n class).
-     * In oxBase it is always returns false, as oxBase treats all fields as non multilanguage.
+     * Returns true, if object has multi language fields (if object is derived from oxi18n class).
+     * In oxBase it is always returns false, as oxBase treats all fields as non multi language.
      *
      * @return bool
      */
@@ -612,16 +618,8 @@ class oxBase extends oxSuperCfg
      *
      * @return bool
      */
-    public function load( $sOXID)
+    public function load( $sOXID )
     {
-        /*
-        if( !isset($oxID)){
-            $oEx = oxNew('oxObjectException','core');
-            $oEx->setMessage('EXCEPTION_OBJECT_OXIDNOTSET');
-            $oEx->setObject($this);
-            throw $oEx;
-        }*/
-
         $blExistingOldForceCoreTable = $this->_blForceCoreTableUsage;
 
         $this->_blForceCoreTableUsage = true;
@@ -629,8 +627,8 @@ class oxBase extends oxSuperCfg
         //getting at least one field before lazy loading the object
         $this->_addField('oxid', 0);
         $sSelect = $this->buildSelectString( array( $this->getViewName().".oxid" => $sOXID));
-
         $this->_isLoaded = $this->assignRecord( $sSelect );
+
         $this->_blForceCoreTableUsage = $blExistingOldForceCoreTable;
 
         return $this->_isLoaded;
@@ -656,7 +654,7 @@ class oxBase extends oxSuperCfg
     public function buildSelectString( $aWhere = null)
     {
         $oDB = oxDb::getDb();
-        $myUtils = oxUtils::getInstance();
+        $myUtils = oxRegistry::getUtils();
 
         $sGet = $this->getSelectFields();
         $sSelect = "select $sGet from " . $this->getViewName() . " where 1 ";
@@ -721,7 +719,12 @@ class oxBase extends oxSuperCfg
         $sViewName = $this->getViewName( $blForceCoreTableUsage );
 
         foreach ( $this->_aFieldNames as $sKey => $sField ) {
-            $aSelectFields[] = $sViewName . '.' . $sKey;
+            if ( $sViewName ) {
+                $aSelectFields[] = "`$sViewName`.`$sKey`";
+            } else {
+                $aSelectFields[] = ".`$sKey`";
+            }
+
         }
 
         $sSelectFields = join( ", ", $aSelectFields );
@@ -780,11 +783,11 @@ class oxBase extends oxSuperCfg
             foreach ($this->_aFieldNames as $sName => $sVal) {
                 $sLongName = $this->_getFieldLongName($sName);
                 if ( isset($this->$sLongName->fldtype) && $this->$sLongName->fldtype == "datetime" ) {
-                    oxDb::getInstance()->convertDBDateTime( $this->$sLongName, true );
+                    oxRegistry::get("oxUtilsDate")->convertDBDateTime( $this->$sLongName, true );
                 } elseif ( isset($this->$sLongName->fldtype) && $this->$sLongName->fldtype == "timestamp" ) {
-                    oxDb::getInstance()->convertDBTimestamp( $this->$sLongName, true);
+                    oxRegistry::get("oxUtilsDate")->convertDBTimestamp( $this->$sLongName, true);
                 } elseif ( isset($this->$sLongName->fldtype) && $this->$sLongName->fldtype == "date" ) {
-                    oxDb::getInstance()->convertDBDate( $this->$sLongName, true);
+                    oxRegistry::get("oxUtilsDate")->convertDBDate( $this->$sLongName, true);
                 }
             }
         }
@@ -873,38 +876,13 @@ class oxBase extends oxSuperCfg
         // has 'activefrom'/'activeto' fields ?
         if ( isset( $this->_aFieldNames['oxactivefrom'] ) && isset( $this->_aFieldNames['oxactiveto'] ) ) {
 
-            $sDate = date( 'Y-m-d H:i:s', oxUtilsDate::getInstance()->getTime() );
+            $sDate = date( 'Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime() );
 
             $sQ = $sQ?" $sQ or ":'';
             $sQ = " ( $sQ ( $sTable.oxactivefrom < '$sDate' and $sTable.oxactiveto > '$sDate' ) ) ";
         }
 
         return $sQ;
-    }
-
-    /**
-     * Checks if methods, stored in _aIdx2FldName array exists in running
-     * object methods collection. Returns true if method exists.
-     *
-     * @deprecated since 20110823
-     *
-     * @return bool
-     */
-    public function validate()
-    {
-        $this->_aErrors = array();
-        foreach ($this->_aFieldNames as $fName => $iVal) {
-
-            $fName = $this->_getFieldLongName($fName);
-
-            if ( method_exists ( $this, "validate_$fName")) {
-                $validatorMethod = "validate_$fName";
-                if ( $error = $this->$validatorMethod()) {
-                    $this->_aErrors[$fName] = $error;
-                }
-            }
-        }
-        return !$this->hasErrors();
     }
 
     /**
@@ -933,66 +911,6 @@ class oxBase extends oxSuperCfg
     {
     }
 
-
-    /**
-     * Returns number of errors.
-     *
-     * @deprecated since 20110823
-     *
-     * @return integer
-     */
-    public function hasErrors()
-    {
-        return count($this->_aErrors) > 0;
-    }
-
-    /**
-     * Returns an errors array.
-     *
-     * @deprecated since 20110823
-     *
-     * @return array
-     */
-    public function getErrors()
-    {
-        return $this->_aErrors;
-    }
-
-    /**
-     * Returns error description of false if error field unavailable.
-     *
-     * @param string $sField name of error
-     *
-     * @deprecated since 20110823
-     *
-     * @return string
-     */
-    public function getError( $sField)
-    {
-        if (isset($this->_aErrors[$sField])) {
-            return $this->_aErrors[$sField];
-        }
-
-        //T2007-10-19
-        //return array();
-        return null;
-    }
-
-    /**
-     * Returns errors if available.
-     *
-     * @param string $sField name of error
-     *
-     * @deprecated since 20110823
-     *
-     * @return array
-     */
-    public function getHtmlError( $sField)
-    {
-        if ( $error = $this->getError($sField) ) {
-            return $error;
-        }
-    }
 
     /**
      * Sets item as list element
@@ -1040,7 +958,7 @@ class oxBase extends oxSuperCfg
      */
     protected function _getTableFields($sTable, $blReturnSimple = false)
     {
-        $myUtils = oxUtils::getInstance();
+        $myUtils = oxRegistry::getUtils();
 
         $sCacheKey   = $sTable . "_allfields_" . $blReturnSimple;
         $aMetaFields = $myUtils->fromFileCache( $sCacheKey );
@@ -1089,7 +1007,7 @@ class oxBase extends oxSuperCfg
     }
 
     /**
-     * Initilizes object data structure.
+     * Initializes object data structure.
      * Either by trying to load from cache or by calling $this->_getNonCachedFieldNames
      *
      * @param bool $blForceFullStructure Set to true if you want to load full structure in any case.
@@ -1098,7 +1016,7 @@ class oxBase extends oxSuperCfg
      */
     protected function _initDataStructure($blForceFullStructure = false)
     {
-        $myUtils = oxUtils::getInstance();
+        $myUtils = oxRegistry::getUtils();
 
         //get field names from cache
         $aFieldNames = null;
@@ -1125,7 +1043,7 @@ class oxBase extends oxSuperCfg
      * Returns the list of fields. This function is slower and its result is normally cached.
      * Basically we have 3 separate cases here:
      *  1. We are in admin so we need extended info for all fields (name, field length and field type)
-     *  2. Object is not lazy loaded so we will return all data fields as simple array, as we nede only names
+     *  2. Object is not lazy loaded so we will return all data fields as simple array, as we need only names
      *  3. Object is lazy loaded so we will return empty array as all fields are loaded on request (in __get()).
      *
      * @param bool $blForceFullStructure Whether to force loading of full data structure
@@ -1173,8 +1091,8 @@ class oxBase extends oxSuperCfg
     }
 
     /**
-     * Returns _aFieldName[] value. 0 means - non multilanguage, 1 - multilanguage field. But this is defined only in derived oxi18n class.
-     * In oxBase it is always 0, as oxBase treats all fields as non multilanguage.
+     * Returns _aFieldName[] value. 0 means - non multi language, 1 - multi language field. But this is defined only in derived oxi18n class.
+     * In oxBase it is always 0, as oxBase treats all fields as non multi language.
      *
      * @param string $sFieldName Field name
      *
@@ -1189,7 +1107,7 @@ class oxBase extends oxSuperCfg
      * Adds additional field to meta structure
      *
      * @param string $sName   Field name
-     * @param int    $iStatus Field name status. In derived classes it indicates multilanguage status.
+     * @param int    $iStatus Field name status. In derived classes it indicates multi language status.
      * @param string $sType   Field type
      * @param string $sLength Field Length
      *
@@ -1203,7 +1121,7 @@ class oxBase extends oxSuperCfg
         //adding field names element
         $this->_aFieldNames[$sName] = $iStatus;
 
-        //allready set?
+        //already set?
         $sLongName = $this->_getFieldLongName($sName);
         if ( isset($this->$sLongName) ) {
             return;
@@ -1264,7 +1182,7 @@ class oxBase extends oxSuperCfg
         //$sLongFieldName = $this->_sCoreTable . "__" . strtolower($sFieldName);
 
         //T2008-03-14
-        //doing this because in lazy loaded lists on first load it is harmful to have initilised fields but not yet set
+        //doing this because in lazy loaded lists on first load it is harmful to have initialised fields but not yet set
         //situation: only first article is loaded fully for "select oxid from oxarticles"
         /*
         if ($this->_blUseLazyLoading && !isset($this->$sLongFieldName))
@@ -1388,7 +1306,7 @@ class oxBase extends oxSuperCfg
 
     /**
      * Update this Object into the database, this function only works on
-     * the main table, it will not save any dependend tables, which might
+     * the main table, it will not save any dependent tables, which might
      * be loaded through oxlist.
      *
      * @throws oxObjectException Throws on failure inserting
@@ -1410,7 +1328,7 @@ class oxBase extends oxSuperCfg
             throw $oEx;
         }
 
-        $sIDKey = oxUtils::getInstance()->getArrFldName( $this->_sCoreTable.".oxid");
+        $sIDKey = oxRegistry::getUtils()->getArrFldName( $this->_sCoreTable.".oxid");
         $this->$sIDKey = new oxField($this->getId(), oxField::T_RAW);
         $oDb = oxDb::getDb();
 
@@ -1421,14 +1339,13 @@ class oxBase extends oxSuperCfg
         $this->beforeUpdate();
 
         $blRet = (bool) $oDb->execute( $sUpdate);
-        $this->_rebuildCache();
 
         return $blRet;
     }
 
     /**
      * Insert this Object into the database, this function only works
-     * on the main table, it will not save any dependend tables, which
+     * on the main table, it will not save any dependent tables, which
      * might be loaded through oxlist.
      *
      * @return bool
@@ -1438,7 +1355,7 @@ class oxBase extends oxSuperCfg
 
         $oDb      = oxDb::getDb( oxDb::FETCH_MODE_ASSOC );
         $myConfig = $this->getConfig();
-        $myUtils  = oxUtils::getInstance();
+        $myUtils  = oxRegistry::getUtils();
 
         // let's get a new ID
         if ( !$this->getId()) {
@@ -1457,68 +1374,11 @@ class oxBase extends oxSuperCfg
         }
 
 
-        $sInsert .= $this->_getUpdateFields( false );
-        $blRet = (bool) $oDb->execute( $sInsert);
+        $sInsert .= $this->_getUpdateFields( $this->getUseSkipSaveFields() );
 
-        $this->_rebuildCache();
+        $blRet = (bool) $oDb->execute( $sInsert );
 
         return $blRet;
-
-    }
-
-    /**
-     * Clears Smarty cache data.
-     *
-     * @return null
-     */
-    protected function _rebuildCache()
-    {
-        if ( !$this->_blIsNewCache) {
-            oxUtils::getInstance()->rebuildCache();
-            $this->_blIsNewCache = true;
-        }
-    }
-
-    /**
-     * Tries to fetch and set next record number in DB. Returns true on success
-     *
-     * @param string $sMaxField  field name where record number is stored
-     * @param string $aWhere     where condition array
-     * @param int    $iMaxTryCnt max number of tryouts
-     *
-     * @deprecated - set from 2011.10.07 in version 4.6; in oxOrder class use _setNumber
-     *
-     * @return bool
-     */
-    protected function _setRecordNumber( $sMaxField, $aWhere = null, $iMaxTryCnt = 5 )
-    {
-        // filtering
-        $sWhere = "";
-        if ( is_array( $aWhere ) && count( $aWhere ) > 0) {
-            $sWhere = implode(" and ", $aWhere).' and ';
-        }
-        $oDb = oxDb::getDb( oxDb::FETCH_MODE_ASSOC );
-
-        // SQL to set record number
-        $sUpdate = "update {$this->getViewName()} as t1, (select (max($sMaxField)+1) as t2max from {$this->getViewName()} where $sWhere 1) as t2 set t1.$sMaxField=t2.t2max where t1.oxid = ".$oDb->quote( $this->getId() );
-
-        // SQL to check record number dublicates
-        //this should not happen normally but we prefer to take extra care in this case due to parallel script execution etc.
-        $sMaxSelect = "select $sMaxField from ".$this->getViewName()." where oxid=".$oDb->quote( $this->getId() );
-        $sCheck = "select count(oxid) from ".$this->getViewName()." where $sMaxField = ($sMaxSelect) and $sWhere 1 ";
-
-        do {
-            if ( $oDb->execute( $sUpdate ) === false ) {
-                return false;
-            }
-
-            $iChkCnt = $oDb->getOne( $sCheck );
-        } while ( ( $iChkCnt > 1 ) && $iMaxTryCnt-- );
-
-        $sFieldName = $this->getViewName().'__'.$sMaxField;
-        $this->$sFieldName = new oxField( $oDb->getOne( $sMaxSelect ), oxField::T_RAW);//int value
-
-        return ( $iChkCnt == 1 );
     }
 
     /**
@@ -1599,7 +1459,7 @@ class oxBase extends oxSuperCfg
 
 
     /**
-     * Returns -1, means object is not multilanguage
+     * Returns -1, means object is not multi language
      *
      * @return int
      */
@@ -1607,4 +1467,5 @@ class oxBase extends oxSuperCfg
     {
         return -1;
     }
+
 }

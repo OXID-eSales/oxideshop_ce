@@ -45,17 +45,17 @@ class Unit_Admin_ActionsMainAjaxTest extends OxidTestCase
     {
             $this->setArticleViewTable( 'oxv_oxarticles_de' );
             $this->setObject2CategoryViewTable( 'oxobject2category' );
-            $this->setShopId( 'oxbaseshop' );
+            $this->setShopIdTest( 'oxbaseshop' );
             
-            oxDb::getDb()->execute( "insert into oxarticles set oxid='_testArticle1', oxshopid='".$this->getShopId()."', oxtitle='_testArticle1'" );
-            oxDb::getDb()->execute( "insert into oxarticles set oxid='_testArticle2', oxshopid='".$this->getShopId()."', oxtitle='_testArticle2'" );
+            oxDb::getDb()->execute( "insert into oxarticles set oxid='_testArticle1', oxshopid='".$this->getShopIdTest()."', oxtitle='_testArticle1'" );
+            oxDb::getDb()->execute( "insert into oxarticles set oxid='_testArticle2', oxshopid='".$this->getShopIdTest()."', oxtitle='_testArticle2'" );
 
         
         parent::setUp();
         
         
-        oxDb::getDb()->execute( "insert into oxactions2article set oxid='_testActionAdd1', oxactionid='_testActionAdd', oxshopid='".$this->getShopId()."', oxartid='_testArticle1'" );
-        oxDb::getDb()->execute( "insert into oxactions2article set oxid='_testActionAdd2', oxactionid='_testActionAdd', oxshopid='".$this->getShopId()."', oxartid='_testArticle2'" );
+        oxDb::getDb()->execute( "insert into oxactions2article set oxid='_testActionAdd1', oxactionid='_testActionAdd', oxshopid='".$this->getShopIdTest()."', oxartid='_testArticle1'" );
+        oxDb::getDb()->execute( "insert into oxactions2article set oxid='_testActionAdd2', oxactionid='_testActionAdd', oxshopid='".$this->getShopIdTest()."', oxartid='_testArticle2'" );
     }
     
     /**
@@ -84,7 +84,7 @@ class Unit_Admin_ActionsMainAjaxTest extends OxidTestCase
         $this->_sObject2CategoryView = $sParam;
     }
     
-    public function setShopId( $sParam )
+    public function setShopIdTest( $sParam )
     {
         $this->_sShopId = $sParam;
     }
@@ -99,7 +99,7 @@ class Unit_Admin_ActionsMainAjaxTest extends OxidTestCase
         return $this->_sObject2CategoryView;
     }
     
-    public function getShopId()
+    public function getShopIdTest()
     {
         return $this->_sShopId;
     }
@@ -137,7 +137,7 @@ class Unit_Admin_ActionsMainAjaxTest extends OxidTestCase
         $sSynchoxid = '_testAction';
         modConfig::setParameter( "synchoxid", $sSynchoxid );
         $oView = oxNew( 'actions_main_ajax' );
-        $this->assertEquals( "from ".$this->getArticleViewTable()." where 1  and ".$this->getArticleViewTable().".oxparentid = ''  and ".$this->getArticleViewTable().".oxid not in ( select oxactions2article.oxartid from oxactions2article  where oxactions2article.oxactionid = '$sSynchoxid' and oxactions2article.oxshopid = '".$this->getShopId()."' )", trim( $oView->UNITgetQuery() ) );
+        $this->assertEquals( "from ".$this->getArticleViewTable()." where 1  and ".$this->getArticleViewTable().".oxparentid = ''  and ".$this->getArticleViewTable().".oxid not in ( select oxactions2article.oxartid from oxactions2article  where oxactions2article.oxactionid = '$sSynchoxid' and oxactions2article.oxshopid = '".$this->getShopIdTest()."' )", trim( $oView->UNITgetQuery() ) );
     }
     
     /**
@@ -151,7 +151,7 @@ class Unit_Admin_ActionsMainAjaxTest extends OxidTestCase
         modConfig::setParameter( "synchoxid", $sSynchoxid );
         modconfig::getInstance()->setConfigParam( "blVariantsSelection", true );
         $oView = oxNew( 'actions_main_ajax' );
-        $this->assertEquals( "from ".$this->getArticleViewTable()." where 1  and ".$this->getArticleViewTable().".oxid not in ( select oxactions2article.oxartid from oxactions2article  where oxactions2article.oxactionid = '$sSynchoxid' and oxactions2article.oxshopid = '".$this->getShopId()."' )", trim( $oView->UNITgetQuery() ) );
+        $this->assertEquals( "from ".$this->getArticleViewTable()." where 1  and ".$this->getArticleViewTable().".oxid not in ( select oxactions2article.oxartid from oxactions2article  where oxactions2article.oxactionid = '$sSynchoxid' and oxactions2article.oxshopid = '".$this->getShopIdTest()."' )", trim( $oView->UNITgetQuery() ) );
     }
     
     /**
@@ -164,7 +164,7 @@ class Unit_Admin_ActionsMainAjaxTest extends OxidTestCase
         $sOxid = '_testAction';
         modConfig::setParameter( "oxid", $sOxid );
         $oView = oxNew( 'actions_main_ajax' );
-        $this->assertEquals( "from ".$this->getArticleViewTable()." left join oxactions2article on ".$this->getArticleViewTable().".oxid=oxactions2article.oxartid  where oxactions2article.oxactionid = '$sOxid' and oxactions2article.oxshopid = '".$this->getShopId()."'", trim( $oView->UNITgetQuery() ) );
+        $this->assertEquals( "from ".$this->getArticleViewTable()." left join oxactions2article on ".$this->getArticleViewTable().".oxid=oxactions2article.oxartid  where oxactions2article.oxactionid = '$sOxid' and oxactions2article.oxshopid = '".$this->getShopIdTest()."'", trim( $oView->UNITgetQuery() ) );
     }
     
     /**
@@ -180,7 +180,7 @@ class Unit_Admin_ActionsMainAjaxTest extends OxidTestCase
         modConfig::setParameter( "synchoxid", $sSynchoxid );
         
         $oView = oxNew( 'actions_main_ajax' );
-        $this->assertEquals( "from ".$this->getObject2CategoryViewTable()." left join ".$this->getArticleViewTable()." on  ".$this->getArticleViewTable().".oxid=".$this->getObject2CategoryViewTable().".oxobjectid  where ".$this->getObject2CategoryViewTable().".oxcatnid = '$sOxid' and ".$this->getArticleViewTable().".oxid not in ( select oxactions2article.oxartid from oxactions2article  where oxactions2article.oxactionid = '$sSynchoxid' and oxactions2article.oxshopid = '".$this->getShopId()."' )", trim( $oView->UNITgetQuery() ) );
+        $this->assertEquals( "from ".$this->getObject2CategoryViewTable()." left join ".$this->getArticleViewTable()." on  ".$this->getArticleViewTable().".oxid=".$this->getObject2CategoryViewTable().".oxobjectid  where ".$this->getObject2CategoryViewTable().".oxcatnid = '$sOxid' and ".$this->getArticleViewTable().".oxid not in ( select oxactions2article.oxartid from oxactions2article  where oxactions2article.oxactionid = '$sSynchoxid' and oxactions2article.oxshopid = '".$this->getShopIdTest()."' )", trim( $oView->UNITgetQuery() ) );
     }
     
     /**
@@ -197,7 +197,7 @@ class Unit_Admin_ActionsMainAjaxTest extends OxidTestCase
         modconfig::getInstance()->setConfigParam( "blVariantsSelection", true );
         
         $oView = oxNew( 'actions_main_ajax' );
-        $this->assertEquals( "from ".$this->getObject2CategoryViewTable()." left join ".$this->getArticleViewTable()." on  ( ".$this->getArticleViewTable().".oxid=".$this->getObject2CategoryViewTable().".oxobjectid or ".$this->getArticleViewTable().".oxparentid=".$this->getObject2CategoryViewTable().".oxobjectid)  where ".$this->getObject2CategoryViewTable().".oxcatnid = '$sOxid' and ".$this->getArticleViewTable().".oxid not in ( select oxactions2article.oxartid from oxactions2article  where oxactions2article.oxactionid = '$sSynchoxid' and oxactions2article.oxshopid = '".$this->getShopId()."' )", trim( $oView->UNITgetQuery() ) );
+        $this->assertEquals( "from ".$this->getObject2CategoryViewTable()." left join ".$this->getArticleViewTable()." on  ( ".$this->getArticleViewTable().".oxid=".$this->getObject2CategoryViewTable().".oxobjectid or ".$this->getArticleViewTable().".oxparentid=".$this->getObject2CategoryViewTable().".oxobjectid)  where ".$this->getObject2CategoryViewTable().".oxcatnid = '$sOxid' and ".$this->getArticleViewTable().".oxid not in ( select oxactions2article.oxartid from oxactions2article  where oxactions2article.oxactionid = '$sSynchoxid' and oxactions2article.oxshopid = '".$this->getShopIdTest()."' )", trim( $oView->UNITgetQuery() ) );
     }
     
     /**
@@ -322,7 +322,7 @@ class Unit_Admin_ActionsMainAjaxTest extends OxidTestCase
         modConfig::setParameter( "all", true );
         
         //count how much articles gets filtered
-        $iCount = oxDb::getDb()->getOne( "select count(".$this->getArticleViewTable().".oxid)  from ".$this->getArticleViewTable()." where 1  and ".$this->getArticleViewTable().".oxparentid = ''  and ".$this->getArticleViewTable().".oxid not in ( select oxactions2article.oxartid from oxactions2article  where oxactions2article.oxactionid = '$sSynchoxid' and oxactions2article.oxshopid = '".$this->getShopId()."' )" );
+        $iCount = oxDb::getDb()->getOne( "select count(".$this->getArticleViewTable().".oxid)  from ".$this->getArticleViewTable()." where 1  and ".$this->getArticleViewTable().".oxparentid = ''  and ".$this->getArticleViewTable().".oxid not in ( select oxactions2article.oxartid from oxactions2article  where oxactions2article.oxactionid = '$sSynchoxid' and oxactions2article.oxshopid = '".$this->getShopIdTest()."' )" );
         
         $this->assertGreaterThan( 0, $iCount );
         $this->assertEquals( 0, oxDb::getDb()->getOne( "select count(oxid) from oxactions2article where oxactionid='$sSynchoxid'" ) );
@@ -339,7 +339,7 @@ class Unit_Admin_ActionsMainAjaxTest extends OxidTestCase
      */
     public function testSetSorting()
     {
-        $aData = array( 'startIndex' => 0, 'sort' => _0, 'dir' => asc, 'countsql' => "select count( * )  from ".$this->getArticleViewTable()." left join oxactions2article on ".$this->getArticleViewTable().".oxid=oxactions2article.oxartid  where oxactions2article.oxactionid = '_testSetSorting' and oxactions2article.oxshopid = '".$this->getShopId()."' " , 'records' =>array(), 'totalRecords' => 0);
+        $aData = array( 'startIndex' => 0, 'sort' => _0, 'dir' => asc, 'countsql' => "select count( * )  from ".$this->getArticleViewTable()." left join oxactions2article on ".$this->getArticleViewTable().".oxid=oxactions2article.oxartid  where oxactions2article.oxactionid = '_testSetSorting' and oxactions2article.oxshopid = '".$this->getShopIdTest()."' " , 'records' =>array(), 'totalRecords' => 0);
 
         modconfig::getInstance()->setConfigParam( "iDebug", 1 );
         $sOxid = '_testSetSorting';
@@ -359,7 +359,7 @@ class Unit_Admin_ActionsMainAjaxTest extends OxidTestCase
     {
         $sOxid = '_testActionAddAct';
         modConfig::setParameter( "oxid", $sOxid );
-        $aData = array( 'startIndex' => 0, 'sort' => _0, 'dir' => asc, 'countsql' => "select count( * )  from ".$this->getArticleViewTable()." left join oxactions2article on ".$this->getArticleViewTable().".oxid=oxactions2article.oxartid  where oxactions2article.oxactionid = '_testSetSorting' and oxactions2article.oxshopid = '".$this->getShopId()."' ", 'records' =>array(), 'totalRecords' => 0);
+        $aData = array( 'startIndex' => 0, 'sort' => _0, 'dir' => asc, 'countsql' => "select count( * )  from ".$this->getArticleViewTable()." left join oxactions2article on ".$this->getArticleViewTable().".oxid=oxactions2article.oxartid  where oxactions2article.oxactionid = '_testSetSorting' and oxactions2article.oxshopid = '".$this->getShopIdTest()."' ", 'records' =>array(), 'totalRecords' => 0);
 
         $sOxid = '_testSetSorting';
         modConfig::setParameter( "oxid", $sOxid );

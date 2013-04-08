@@ -119,7 +119,7 @@ class Unit_Admin_DynExportBaseTest extends OxidTestCase
     {
 
         // testing..
-        oxTestModules::addFunction( 'oxCategoryList', 'buildList', '{ throw new Exception( "buildList" ); }');
+        oxTestModules::addFunction( 'oxCategoryList', 'loadList', '{ throw new Exception( "buildList" ); }');
 
         // testing..
         try {
@@ -214,10 +214,55 @@ class Unit_Admin_DynExportBaseTest extends OxidTestCase
         $oView = $this->getMock( "_DynExportBase", array( "nextTick" ) );
         $oView->expects( $this->any() )->method( 'nextTick' )->will( $this->returnValue( 5 ));
         $oView->setVar( 'sFilePath', getTestsBasePath()."/misc/test.txt" );
+        $oView->setExportPerTick( 30 );
         $oView->run();
         $this->assertEquals( 0, $oView->getViewDataElement( "refresh" ) );
         $this->assertEquals( 30, $oView->getViewDataElement( "iStart" ) );
         $this->assertEquals( 5, $oView->getViewDataElement( "iExpItems" ) );
+    }
+
+    /**
+     * DynExportBase::Run() test case with default per tick count
+     *
+     * @return null
+     */
+    public function testRunWithDefaultConfigPerTickCount()
+    {
+        modConfig::setParameter("iStart", 0);
+        modConfig::setParameter("aExportResultset", array("aaaaa"));
+        modConfig::getInstance()->setConfigParam( "iExportNrofLines", 10 );
+
+        // testing..
+        $oView = $this->getMock( "_DynExportBase", array( "nextTick" ) );
+        $oView->expects( $this->any() )->method( 'nextTick' )->will( $this->returnValue( 5 ));
+        $oView->setVar( 'sFilePath', getTestsBasePath()."/misc/test.txt" );
+        $oView->run();
+        $this->assertEquals( 0, $oView->getViewDataElement( "refresh" ) );
+        $this->assertEquals( 10, $oView->getViewDataElement( "iStart" ) );
+        $this->assertEquals( 5, $oView->getViewDataElement( "iExpItems" ) );
+    }
+
+    /**
+     * test setting and getting export per tick count
+     *
+     * @return null
+     */
+    public function testSetGetExportPerTick()
+    {
+        $oView = new DynExportBase();
+
+        // if not set yet, should take value from config
+        modConfig::getInstance()->setConfigParam( "iExportNrofLines", 150 );
+        $this->assertEquals( 150, $oView->getExportPerTick() );
+
+        // if not set in config, should use default value
+        $oView->setExportPerTick( null );
+        modConfig::getInstance()->setConfigParam( "iExportNrofLines", 0 );
+        $this->assertEquals( $oView->iExportPerTick, $oView->getExportPerTick() );
+
+        // Should be able to set this value too
+        $oView->setExportPerTick( 190 );
+        $this->assertEquals( 190, $oView->getExportPerTick() );
     }
 
     /**
@@ -624,17 +669,17 @@ class Unit_Admin_DynExportBaseTest extends OxidTestCase
         $oArticle = $this->getMock( "oxArticle", array( "getCategoryIds" ) );
         $oArticle->expects( $this->once() )->method( 'getCategoryIds' )->will( $this->returnValue( array( "cat1", "cat2", "cat3" ) ) );
 
-        $aCache["cat1"] = new oxStdClass();
+        $aCache["cat1"] = new stdClass();
         $aCache["cat1"]->ilevel     = 1;
         $aCache["cat1"]->oxtitle    = "cat1";
         $aCache["cat1"]->oxparentid = "oxrootid";
 
-        $aCache["cat2"] = new oxStdClass();
+        $aCache["cat2"] = new stdClass();
         $aCache["cat2"]->ilevel     = 2;
         $aCache["cat2"]->oxtitle    = "cat2";
         $aCache["cat2"]->oxparentid = "cat1";
 
-        $aCache["cat3"] = new oxStdClass();
+        $aCache["cat3"] = new stdClass();
         $aCache["cat3"]->ilevel     = 3;
         $aCache["cat3"]->oxtitle    = "cat3";
         $aCache["cat3"]->oxparentid = "cat2";

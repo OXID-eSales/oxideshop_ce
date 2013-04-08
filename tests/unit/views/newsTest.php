@@ -123,4 +123,16 @@ class Unit_Views_newsTest extends OxidTestCase
         $this->assertEquals( $aResults, $oNews->getBreadCrumb() );
     }
 
+    /**
+     * Test get list page navigation.
+     *
+     * @return null
+     */
+    public function testGetPageNavigation()
+    {
+        $oObj = $this->getMock( 'News', array( 'generatePageNavigation' ));
+        $oObj->expects( $this->any() )->method( 'generatePageNavigation')->will($this->returnValue( "aaa" ) );
+        $this->assertEquals( 'aaa', $oObj->getPageNavigation() );
+    }
+
 }

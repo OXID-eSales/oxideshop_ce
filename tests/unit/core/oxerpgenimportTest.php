@@ -211,7 +211,7 @@ class Unit_Core_oxErpGenImportTest extends OxidTestCase
         $oUser = $this->getMock( 'oxuser', array( 'isAdmin' ) );
         $oUser->expects( $this->any() )->method( 'isAdmin')->will( $this->returnValue( true ) );
         $oUser->login( oxADMIN_LOGIN, oxADMIN_PASSWD );
-        $oUser = oxUser::getAdminUser();
+        $oUser->loadAdminUser();
 
         $this->assertTrue( $oImport->init( null, null ) );
         $this->assertEquals( oxSession::getInstance()->getId(), $oImport->getNonPublicVar('_sSID') );
@@ -248,7 +248,7 @@ class Unit_Core_oxErpGenImportTest extends OxidTestCase
         $oUser = $this->getMock( 'oxuser', array( 'isAdmin' ) );
         $oUser->expects( $this->any() )->method( 'isAdmin')->will( $this->returnValue( true ) );
         $oUser->login( oxADMIN_LOGIN, oxADMIN_PASSWD );
-        $oUser = oxUser::getAdminUser();
+        $oUser->loadAdminUser();
 
         $oImport->init( null, null );
     }
@@ -279,11 +279,12 @@ class Unit_Core_oxErpGenImportTest extends OxidTestCase
      */
     public function testGetTotalImportedRowsNumber()
     {
-        $aStat = array( array( 'r' => true), array( 'r' => true), array( 'r' => false) );
-        $oImport = $this->getMock( 'oxErpGenImport', array( 'getStatistics') );
-        $oImport->expects( $this->once() )->method( 'getStatistics' )->will( $this->returnValue( $aStat ) );
+        $oCsv = new oxErpGenImport();
+        $oCsv->setImportedIds( 12 );
+        $oCsv->setImportedIds( 12 );
+        $oCsv->setImportedIds( 120 );
 
-        $this->assertEquals( 2, $oImport->getTotalImportedRowsNumber() );
+        $this->assertEquals( 2, $oCsv->getTotalImportedRowsNumber() );
     }
 
     /*
@@ -379,13 +380,13 @@ class Unit_Core_oxErpGenImportTest extends OxidTestCase
         $oImport = $this->getProxyClass( "oxErpGenImport" );
 
         $this->assertEquals( ",", $oImport->UNITgetCsvFieldsTerminator() );
-        
+
         modConfig::getInstance()->setConfigParam( 'sGiCsvFieldTerminator', ";");
         modConfig::getInstance()->setConfigParam( 'sCSVSign', ",");
         $oImport = $this->getProxyClass( "oxErpGenImport" );
 
         $this->assertEquals( ";", $oImport->UNITgetCsvFieldsTerminator() );
-        
+
     }
 
     /*

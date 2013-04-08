@@ -148,7 +148,7 @@ class Acceptance_navigationFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->openShop();
         $this->assertTrue($this->isElementPresent("panel"));
         //checking if delivery note is displayed
-        $this->assertTrue($this->isElementPresent("//div[@id='panel']/div[1]//*[text()='* All prices incl. VAT, plus shipping']"));
+        $this->assertTrue($this->isTextPresent("exact:* incl. VAT, plus shipping"));
 
         //checking if newsletter fields exist. functionality is checked in other test
         $this->assertTrue($this->isElementPresent("//div[@id='panel']/div[1]//label[text()='Newsletter']"));
@@ -251,7 +251,7 @@ class Acceptance_navigationFrontendTest extends oxidAdditionalSeleniumFunctions
         //MANUFACTURERS links
         $this->assertTrue($this->isElementPresent("footerManufacturers"));
         $this->clickAndWait("//dl[@id='footerManufacturers']//a[text()='Manufacturer [EN] šÄßüл']");
-        $this->assertEquals("You are here: / By Brand / Manufacturer [EN] šÄßüл", $this->getText("breadCrumb"));
+        $this->assertEquals("You are here: / By Manufacturer / Manufacturer [EN] šÄßüл", $this->getText("breadCrumb"));
         $this->assertEquals("Manufacturer [EN] šÄßüл", $this->getText("//h1"));
         $this->selectDropDown("viewOptions", "Line");
         $this->assertTrue($this->isElementPresent("//ul[@id='productList']/li[1]//a[@id='productList_1']"));
@@ -418,8 +418,8 @@ class Acceptance_navigationFrontendTest extends oxidAdditionalSeleniumFunctions
      */
     public function testFrontendTags()
     {
-        $this->clearTmp();
         $this->openShop();
+        $this->loginInFrontend("birute_test@nfq.lt", "useruser");
         $this->assertTrue($this->isElementPresent("tagBox"));
         $this->assertEquals("Tags", $this->getText("//div[@id='tagBox']/h3"));
         $this->assertTrue($this->isElementPresent("//div[@id='tagBox']//a[text()='More...']"));
@@ -451,7 +451,7 @@ class Acceptance_navigationFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->click("//ul[@id='itemTabs']/li[2]/a");
         $this->waitForItemAppear("tags");
         $this->assertTrue($this->isVisible("link=tag"));
-        $this->loginInFrontend("birute_test@nfq.lt", "useruser");
+
         $this->assertEquals("Test product 2 [EN] šÄßüл", $this->getText("//h1"));
 
         //adding new tag
@@ -481,7 +481,6 @@ class Acceptance_navigationFrontendTest extends oxidAdditionalSeleniumFunctions
      */
     public function testFrontendTagsNavigation()
     {
-        $this->clearTmp();
         $this->openShop();
         $this->assertTrue($this->isElementPresent("tagBox"));
         $this->assertEquals("Tags", $this->getText("//div[@id='tagBox']/h3"));
@@ -543,7 +542,7 @@ class Acceptance_navigationFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->assertTrue($this->isElementPresent("newsBox"));
         $this->assertEquals("The latest news... Read more", $this->clearString($this->getText("//div[@id='newsBox']//li[1]")));
         $this->assertFalse($this->isElementPresent("//div[@id='newsBox']//li[2]"));
-        //$this->executeSql("DELETE FROM `oxnews` WHERE `OXSHORTDESC` = 'News'");
+        //Delete new from database where short description is News
         $sOxid = (oxDb::getDb()->getOne("SELECT oxid FROM oxnews WHERE OXSHORTDESC = 'News'"));
         $this->assertFalse(is_null($sOxid), "Oxid was not found in database for OXSHORTDESC='News'");
         $this->callShopSC("oxNews", "delete", $sOxid);
@@ -641,6 +640,7 @@ class Acceptance_navigationFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->assertEquals("Test product 0 [EN] šÄßüл 50,00 €", $this->clearString($this->getText("//div[@id='topBox']//li[2]")));
         $this->clickAndWait("//div[@id='topBox']//li[2]/a");
         $this->assertEquals("You are here: / Test category 0 [EN] šÄßüл", $this->getText("breadCrumb"));
+
         //testing top of the shop in category page
         $this->clickAndWait("link=Test category 0 [EN] šÄßüл");
         $this->assertFalse($this->isElementPresent("topBox"));
@@ -721,7 +721,7 @@ class Acceptance_navigationFrontendTest extends oxidAdditionalSeleniumFunctions
 
         $this->selectDropDown("viewOptions", "Line");
         $this->assertTrue($this->isElementPresent('productList_1'));
-            $this->selectDropDown("attributeFilter[testattribute1]", "Please choose");
+        $this->selectDropDown("attributeFilter[testattribute1]", "Please choose");
         $this->assertTrue($this->isElementPresent("//div[@id='itemsPager']//a[text()='1']"));
         $this->assertTrue($this->isElementPresent("//div[@id='itemsPager']//a[text()='2']"));
         $this->assertTrue($this->isElementPresent("//ul[@id='productList']/li[1]//input[@name='aid' and @value='1000']"));
@@ -880,15 +880,11 @@ class Acceptance_navigationFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->selectDropDown("sortItems", "", "li[3]");
         $this->assertTrue($this->isElementPresent("productList_1"));
         $this->assertTrue($this->isElementPresent("productList_2"));
-       // $this->assertTrue($this->isElementPresent("//ul[@id='productList']/li[1]//span[text()='Test product 1 [EN] šÄßüл']"));
-    //    $this->assertTrue($this->isElementPresent("//ul[@id='productList']/li[2]//span[text()='Test product 0 [EN] šÄßüл']"));
         $this->assertFalse($this->isElementPresent("//ul[@id='productList']/li[3]"));
 
         $this->selectDropDown("sortItems", "", "li[2]");
         $this->assertTrue($this->isElementPresent("productList_1"));
         $this->assertTrue($this->isElementPresent("productList_2"));
-      //  $this->assertTrue($this->isElementPresent("//ul[@id='productList']/li[1]//span[text()='Test product 0 [EN] šÄßüл']"));
-     //   $this->assertTrue($this->isElementPresent("//ul[@id='productList']/li[2]//span[text()='Test product 1 [EN] šÄßüл']"));
         $this->assertFalse($this->isElementPresent("//ul[@id='productList']/li[3]"));
 
         //disabling option (Users can sort Product Lists)
@@ -1106,7 +1102,7 @@ class Acceptance_navigationFrontendTest extends oxidAdditionalSeleniumFunctions
     {
         $this->openShop();
         $this->clickAndWait("//dl[@id='footerManufacturers']//a[text()='Manufacturer [EN] šÄßüл']");
-        $this->assertEquals("You are here: / By Brand / Manufacturer [EN] šÄßüл", $this->getText("breadCrumb"));
+        $this->assertEquals("You are here: / By Manufacturer / Manufacturer [EN] šÄßüл", $this->getText("breadCrumb"));
         $this->assertEquals("Manufacturer [EN] šÄßüл", $this->getText("//h1"));
         $this->assertEquals("Manufacturer description [EN] šÄßüл", $this->getText("catDesc"));
         $this->assertTrue($this->isElementPresent("viewOptions"));
@@ -1118,13 +1114,13 @@ class Acceptance_navigationFrontendTest extends oxidAdditionalSeleniumFunctions
 
         //going to vendor root by path link (you are here)
         $this->clickAndWait("//div[@id='breadCrumb']/a[1]");
-        $this->assertEquals("You are here: / By Brand", $this->getText("breadCrumb"));
+        $this->assertEquals("You are here: / By Manufacturer", $this->getText("breadCrumb"));
         $this->assertFalse($this->isElementPresent("//h1"));
         //going to vendor via menu link
          //  $this->assertTrue($this->isElementPresent("//a[@id='moreSubCat_7']/@title"), "attribute title is gone from link. in 450 it was for manufacturers names, that were shortened");
             $this->assertEquals("Manufacturer [EN] šÄßüл", $this->clearString($this->getAttribute("//a[@id='moreSubCat_8']/@title")));
             $this->clickAndWait("moreSubCat_8");
-        $this->assertEquals("You are here: / By Brand / Manufacturer [EN] šÄßüл", $this->getText("breadCrumb"));
+        $this->assertEquals("You are here: / By Manufacturer / Manufacturer [EN] šÄßüл", $this->getText("breadCrumb"));
         $this->assertEquals("Manufacturer [EN] šÄßüл", $this->getText("//h1"));
         $this->assertEquals("Manufacturer description [EN] šÄßüл", $this->getText("catDesc"));
         $this->assertTrue($this->isElementPresent("viewOptions"));
@@ -1149,7 +1145,8 @@ class Acceptance_navigationFrontendTest extends oxidAdditionalSeleniumFunctions
     public function testFrontendDistributors()
     {
         $this->openShop();
-        $this->clickAndWait("//dl[@id='footerVendors']//a[text()='Distributor [EN] šÄßüл']");
+        $this->open(shopURL."index.php?cl=vendorlist&cnid=root");
+        $this->clickAndWait("moreSubCat_1");
 
         $this->assertEquals("You are here: / By Distributor / Distributor [EN] šÄßüл", $this->getText("breadCrumb"));
         $this->assertEquals("Distributor [EN] šÄßüл", $this->getText("//h1"));
@@ -1195,7 +1192,7 @@ class Acceptance_navigationFrontendTest extends oxidAdditionalSeleniumFunctions
         // Articles with ID's 1001 and 1002 have MultiDimensional variants so they shouldn't have the input[@name='aid']
         $this->openShop();
         $this->clickAndWait("//dl[@id='footerManufacturers']//a[text()='Manufacturer [EN] šÄßüл']");
-        $this->assertEquals("You are here: / By Brand / Manufacturer [EN] šÄßüл", $this->getText("breadCrumb"));
+        $this->assertEquals("You are here: / By Manufacturer / Manufacturer [EN] šÄßüл", $this->getText("breadCrumb"));
         $this->assertFalse($this->isElementPresent("itemsPager"));
 
         //top navigation
@@ -1282,11 +1279,7 @@ class Acceptance_navigationFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->callShopSC("oxConfig", "saveShopConfVar", null, array("aSortCols" => array("type" => "arr", "value" => serialize(array("oxtitle", "oxvarminprice", "oxartnum")))));
 
         //DE lang
-        $this->click("languageTrigger");
-        $this->waitForItemAppear("languages");
-        $this->click("//ul[@id='languages']/li[2]/a");
-        $this->waitForItemDisappear("languages");
-
+        $this->switchLanguage("Deutsch");
         $this->selectDropDown("sortItems", "", "li[3]"); //title desc
 
         $this->assertEquals("[DE 1] Test product 1 šÄßüл", $this->getText("searchList_1"));
@@ -1517,7 +1510,7 @@ class Acceptance_navigationFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->waitForItemAppear("modalbasketFlyout");
 
         $this->assertEquals("Test product 0 [EN] šÄßüл 50,00 €", $this->getText("//div[@id='modalbasketFlyout']//ul/li[1]"));
-        $this->assertEquals("Total50,00 €", $this->clearString($this->getText("//div[@id='modalbasketFlyout']//p[2]")));
+        $this->assertEquals("Total 50,00 €", $this->clearString($this->getText("//div[@id='modalbasketFlyout']//p[2]")));
         $this->clickAndWait("//div[@id='modalbasketFlyout']//a[text()='Display Cart']");
         $this->assertEquals("You are here: / View cart", $this->getText("breadCrumb"));
         $this->assertEquals("1", $this->getText("//div[@id='miniBasket']/span"));
@@ -1529,7 +1522,7 @@ class Acceptance_navigationFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->waitForItemAppear("modalbasketFlyout");
         $this->assertEquals("Test product 0 [EN] šÄßüл 50,00 €", $this->getText("//div[@id='modalbasketFlyout']//ul/li[1]"));
         $this->assertEquals("Test product 3 [EN] šÄßüл 75,00 €", $this->getText("//div[@id='modalbasketFlyout']//ul/li[2]"));
-        $this->assertEquals("Total125,00 €", $this->clearString($this->getText("//div[@id='modalbasketFlyout']//p[2]")));
+        $this->assertEquals("Total 125,00 €", $this->clearString($this->getText("//div[@id='modalbasketFlyout']//p[2]")));
         $this->clickAndWait("//div[@id='modalbasketFlyout']//a[text()='Checkout']");
         $this->assertEquals("You are here: / Address", $this->getText("breadCrumb"));
         $this->assertEquals("2", $this->getText("//div[@id='miniBasket']/span"));
@@ -1648,7 +1641,6 @@ class Acceptance_navigationFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->assertTrue($this->isElementPresent("//div[@id='specCatBox']/h2"));
         $this->assertEquals("Wakeboards", $this->getText("//div[@id='specCatBox']/h2"));
         //fix it in future: mouseOver effect is implemented via css. selenium does not support it yet
-        //$this->mouseOverAndClick("//div[@id='specCatBox']", "//div[@id='specCatBox']/a");
         $this->clickAndWait("//div[@id='specCatBox']/a");
         $this->assertEquals("You are here: / Wakeboarding / Wakeboards", $this->getText("breadCrumb"));
         $this->assertEquals("Wakeboards", $this->getHeadingText("//h1"));
@@ -1664,10 +1656,11 @@ class Acceptance_navigationFrontendTest extends oxidAdditionalSeleniumFunctions
     {
         $this->openShop();
         $this->assertEquals("50,00 € *", $this->getText("//ul[@id='newItems']/li[1]//span[@class='price']"));
-        $this->assertTrue($this->isElementPresent("//div[@id='topBox']/ul/li[2]//strong[text()='50,00 €']"));
-        $this->executeSql("UPDATE `oxconfig` SET `OXVARVALUE`=0x93ea1218 WHERE `OXVARNAME`='bl_perfShowActionCatArticleCnt'");
-        $this->executeSql("UPDATE `oxconfig` SET `OXVARVALUE`=0x7900fdf51e WHERE `OXVARNAME`='bl_perfLoadDelivery'");
-        $this->executeSql("UPDATE `oxconfig` SET `OXVARVALUE`=0x7900fdf51e WHERE `OXVARNAME`='bl_perfLoadPriceForAddList'");
+        $this->assertEquals("50,00 €", $this->getText("//div[@id='topBox']/ul/li[2]//strong"));
+        $this->callShopSC("oxConfig", "saveShopConfVar", null, array("bl_perfShowActionCatArticleCnt" => array("type" => "bool", "value" => true)));
+        $this->callShopSC("oxConfig", "saveShopConfVar", null, array("bl_perfLoadDelivery" => array("type" => "bool", "value" => false)));
+        $this->callShopSC("oxConfig", "saveShopConfVar", null, array("bl_perfLoadPriceForAddList" => array("type" => "bool", "value" => false)));
+
         $this->openShop();
         $this->assertFalse($this->isElementPresent("//ul[@id='newItems']/li[1]//strong[text()='50,00 € *']"));
         $this->assertFalse($this->isElementPresent("//div[@id='topBox']/ul/li[1]//strong[text()='50,00 €']"));
@@ -1703,19 +1696,18 @@ class Acceptance_navigationFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->assertFalse($this->isElementPresent("similar"));
         $this->assertFalse($this->isElementPresent("cross"));
         $this->assertFalse($this->isElementPresent("accessories"));
-        $this->loginInFrontend("birute_test@nfq.lt", "useruser");
+        //$this->loginInFrontend("birute_test@nfq.lt", "useruser");
         $this->click("productLinks");
         $this->waitForItemAppear("suggest");
         $this->assertFalse($this->isElementPresent("addToCompare"));
         $this->clickAndWait("//dl[@id='footerServices']//a[text()='Account']");
         $this->assertFalse($this->isElementPresent("link=My Product Comparison"));
 
-        $this->callShopSC("oxConfig", "saveShopConfVar", null, array("bl_perfLoadCatTree" => array("type" => "bool", "value" => "false")));
         $this->callShopSC("oxConfig", "saveShopConfVar", null, array("bl_perfLoadAktion" => array("type" => "bool", "value" => "false")));
         $this->callShopSC("oxConfig", "saveShopConfVar", null, array("bl_perfLoadCurrency" => array("type" => "bool", "value" => "false")));
         $this->callShopSC("oxConfig", "saveShopConfVar", null, array("bl_perfLoadLanguages" => array("type" => "bool", "value" => "false")));
 
-        $this->checkForErrors();
+        $this->openShop();
         $this->assertFalse($this->isElementPresent("link=Test category 0 [EN] šÄßüл (2)"));
         $this->assertFalse($this->isElementPresent("footerCategories"));
         $this->assertFalse($this->isElementPresent("titleBargain_1"));
@@ -1735,7 +1727,6 @@ class Acceptance_navigationFrontendTest extends oxidAdditionalSeleniumFunctions
     {
         //buyable product as bargain
         $this->executeSql("UPDATE `oxactions2article` SET `OXARTID` = '1000'  WHERE `OXACTIONID` = 'oxbargain';");
-        $this->clearTmp();
         $this->openShop();
         $this->assertEquals("Test product 0 [EN] šÄßüл", $this->getText("//div[@id='specBox']/div/a"));
         $this->clickAndWait("//div[@id='specBox']/div/a");
@@ -1745,7 +1736,7 @@ class Acceptance_navigationFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->assertEquals("add to Cart", $this->clearString($this->getText("//div[@id='priceBargain_1']//a")));
         $this->clickAndWait("//div[@id='priceBargain_1']//a");
         $this->openBasket();
-        $this->assertTrue($this->isElementPresent("//tr[@id='cartItem_1']//a[text()='Test product 0 [EN] šÄßüл']"));
+        $this->assertTrue($this->isElementPresent("//tr[@id='cartItem_1']//a/b[text()='Test product 0 [EN] šÄßüл']"));
 
         //configurable product as bargain
         $this->executeSql("UPDATE `oxactions2article` SET `OXARTID` = '1001'  WHERE `OXACTIONID` = 'oxbargain';");
@@ -1782,6 +1773,7 @@ class Acceptance_navigationFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->assertTrue($this->isElementPresent("//form[@name='tobasketsearchList_1']//a[text()='more Info']"));
         $this->assertTrue($this->isElementPresent("//form[@name='tobasketsearchList_2']//a[text()='more Info']"));
         $this->clickAndWait("//form[@name='tobasketsearchList_1']//a[text()='more Info']");
+
         $this->assertEquals("Test product 2 [EN] šÄßüл", $this->getText("//h1"));
         $this->clickAndWait("//div[@id='overviewLink']/a");
         $this->waitForElement("searchList");
@@ -1815,18 +1807,46 @@ class Acceptance_navigationFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->clickAndWait("//ul[@id='searchList']/li[2]//a[text()='more Info']");
         $this->assertEquals("Kuyichi Jeans ANNA", $this->getText("//h1"));
 
-          //Check functionality if "Load Variants in Lists" is disabled in admin area
+         //Check functionality if "Load Variants in Lists" is disabled in admin area
         $this->callShopSC("oxConfig", "saveShopConfVar", null, array("blLoadVariants" => array("type" => "bool", "value" => "false")));
-		  $this->openShop();
+
+        $this->openShop();
         $this->searchFor("3570");
         $this->assertTrue($this->isElementPresent("link=Kuyichi Jeans ANNA"));
         $this->assertTrue($this->isElementPresent("link=Choose variant"));
         $this->clickAndWait("link=Choose variant ");
         $this->assertTrue($this->isTextPresent("Please select a variant"));
-
-
     }
 
-
-
+    /**
+    * Testing Cookie solution. Is Message appears in frontend about cookies saving
+    * @group navigation
+    */
+    public function testCookieSettingsInFrontend()
+    {
+        //check if cookie option is off
+        $this->openShop();
+        $this->assertFalse($this->isElementPresent("cookieNote"));
+        $this->loginAdmin("Master Settings", "Core Settings");
+        $this->openTab("link=Settings");
+        $this->click("link=Other settings");
+        $this->assertEquals("false", $this->getValue("confbools[blShowCookiesNotification]"));
+        $this->assertFalse($this->isChecked("confbools[blShowCookiesNotification]"));
+        //turn on cookie option
+        $this->check("//input[@name='confbools[blShowCookiesNotification]' and @value='true']");
+        $this->clickAndWait("save");
+         //check cookie message in frontend
+        $this->openShop();
+        $this->assertTrue($this->isElementPresent("cookieNote"));
+       // navigate to link where all cookie is deled
+        $this->clickAndWait("link=If you do not agree, please click here.");
+        $this->assertTrue($this->isTextPresent("You have decided to not accept cookies from our online shop. The cookies have been removed. You can deactivate the usage of cookies in the settings of your browser and visit the online shop with some functional limitations. You can also return to the shop without changing the browser settings and enjoy the full functionality."));
+        $this->assertTrue($this->isTextPresent("Information about Cookies"));
+        // do not turn off browser cookie settings and check in frontend is the message still apears
+        $this->clickAndWait("link=Home");
+        $this->assertTrue($this->isElementPresent("cookieNote"));
+        // change language in DE and check cookie message
+        $this->switchLanguage("Deutsch");
+        $this->assertFalse($this->isElementPresent("cookieNote"));
+    }
 }

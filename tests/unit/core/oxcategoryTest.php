@@ -462,7 +462,6 @@ class Unit_Core_oxCategoryTest extends OxidTestCase
     {
         $oObj2 = $this->getMock( 'oxcategory', array( 'isAdmin' ) );
         $oObj2->expects( $this->any() )->method( 'isAdmin' )->will( $this->returnValue( true ) );
-        $oObj2->load('test2');
         $oObj2->oxcategories__oxparentid = new oxField("oxrootid", oxField::T_RAW);
         $oObj2->save(); // call update
         $this->assertEquals("oxrootid", $oObj2->oxcategories__oxparentid->value);
@@ -742,15 +741,6 @@ class Unit_Core_oxCategoryTest extends OxidTestCase
         $this->assertTrue( $oCategory->getHasVisibleSubCats() );
     }
 
-    public function testSetSubCatDoesNotCallSort()
-    {
-        $oSubCat = $this->getMock( 'oxcategory', array( 'getIsVisible' ) );
-        $oSubCat->expects( $this->any() )->method( 'getIsVisible' )->will( $this->returnValue( true ) );
-        $oCategory = $this->getMock( 'oxcategory', array( 'sortSubCats' ) );
-        $oCategory->expects( $this->never() )->method( 'sortSubCats' );
-        $oCategory->setSubCat( $oSubCat, null, true );
-    }
-
     public function testSetGetContentCats()
     {
         $oCategory = $this->getProxyClass( "oxcategory" );
@@ -769,31 +759,6 @@ class Unit_Core_oxCategoryTest extends OxidTestCase
         $this->assertEquals( array ("aaa", "test" => "aaa"), $oCategory->getContentCats() );
     }
 
-    public function testCmpCat()
-    {
-        $oCat = new oxcategory();
-        $oCat->oxcategories__oxid = new oxField(0);
-        $oCat2 = new oxcategory();
-        $oCat2->oxcategories__oxid = new oxField(1);
-        $oCategory = $this->getProxyClass( "oxcategory" );
-        $oCategory->setSortingIds( array( 0, 1 ) );
-        $this->assertEquals( -1, $oCategory->cmpCat($oCat, $oCat2) );
-        // if sort match
-        $oCat2->oxcategories__oxid = new oxField(0);
-        $this->assertEquals( 0, $oCategory->cmpCat($oCat, $oCat2) );
-    }
-
-    public function testSortSubCats()
-    {
-        $oCat = new oxcategory();
-        $oCat->oxcategories__oxsort = new oxField(2);
-        $oCat2 = new oxcategory();
-        $oCat2->oxcategories__oxsort = new oxField(1);
-        $oCategory = $this->getProxyClass( "oxcategory" );
-        $oCategory->setSortingIds( array( $oCat->getId() => 1, $oCat2->getId() => 0 ) );
-        $oCategory->setSubCats( array( 0 => $oCat, 1 => $oCat2 ) );
-        $this->assertEquals( array( 1 => $oCat2, 0 => $oCat ), $oCategory->getSubCats() );
-    }
 
     public function testSortSubCatsIfSortingNotSet()
     {
@@ -850,16 +815,6 @@ class Unit_Core_oxCategoryTest extends OxidTestCase
         $this->assertTrue($oCategory->expanded );
     }
 
-    public function testGetExpanded()
-    {
-        modConfig::getInstance()->setConfigParam( 'blTopNaviLayout', false );
-        modConfig::getInstance()->setConfigParam( 'blLoadFullTree', true );
-        $oCategory = $this->getProxyClass( "oxcategory" );
-        $this->assertTrue( $oCategory->getExpanded() );
-        //testing magic getter
-        $this->assertTrue($oCategory->expanded );
-    }
-
     public function testGetHasSubCats()
     {
         $oCategory = $this->getProxyClass( "oxcategory" );
@@ -890,7 +845,10 @@ class Unit_Core_oxCategoryTest extends OxidTestCase
 
     public function testGetParentCategory()
     {
-        $this->assertEquals( $this->_oCategoryB->oxcategories__oxparentid->value, $this->_oCategoryB->getParentCategory()->getId() );
+        $oCategory = new oxCategory();
+        $oCategory->load('test2');
+        $oParent = $oCategory->getParentCategory();
+        $this->assertEquals( $oCategory->oxcategories__oxparentid->value, $oParent->getId() );
     }
 
     public function testGetParentCategoryWrongCat()
@@ -1085,5 +1043,40 @@ class Unit_Core_oxCategoryTest extends OxidTestCase
         $oCat = new oxCategory();
         $oCat->oxcategories__oxtitle = new oxField( "testtitle" );
         $this->assertEquals( $sTitle, $oCat->getTitle() );
+    }
+
+    /**
+     * Category::testGetDefaultSort() test case
+     *
+     * @return null
+     */
+    public function testGetDefaultSort()
+    {
+        $oCategory = new oxCategory();
+        $this->assertNull( $oCategory->getDefaultSorting() );
+
+        $oCategory->load("30e44ab85808a1f05.26160932");
+        $this->assertEquals( '', $oCategory->getDefaultSorting() );
+
+        $oCategory->oxcategories__oxdefsort = new oxField("testtitle");
+        $this->assertEquals( "testtitle", $oCategory->getDefaultSorting() );
+    }
+
+    /**
+     * Category::testGetDefaultSortMode() test case
+     *
+     * @return null
+     */
+    public function testGetDefaultSortMode()
+    {
+        $oCategory = new oxCategory();
+        $this->assertNull( $oCategory->getDefaultSortingMode() );
+
+        $oCategoryId  = '8a142c3e60a535f16.78077188';
+        $oCategory->load($oCategoryId);
+        $this->assertEquals( 0, $oCategory->getDefaultSortingMode() );
+
+        $oCategory->oxcategories__oxdefsortmode = new oxField( 'desc' );
+        $this->assertEquals( 'desc', $oCategory->getDefaultSortingMode() );
     }
 }

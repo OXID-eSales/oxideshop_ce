@@ -56,13 +56,13 @@ class Acceptance_trustedShopsTest extends oxidAdditionalSeleniumFunctions
             $this->type("aShopID_TrustedShops[0]", "XA2A8D35838AF5F63E5EB0E05847B1CB8");
             $this->check("//input[@name='tsTestMode' and @value='true']");
             $this->check("//input[@name='tsSealActive' and @value='true']");
-          //  $this->assertEquals("Lastschrift/Bankeinzug Kreditkarte Rechnung Nachnahme Vorauskasse / Überweisung Verrechnungsscheck Paybox PayPal Zahlung bei Abholung Finanzierung Leasing T-Pay Click&Buy (Firstgate) Giropay Google Checkout Online Shop Zahlungskarte Sofortüberweisung.de Andere Zahlungsart", $this->getText("paymentids[oxidcashondel]"));
+            $this->assertEquals("Direct debit Credit Card Invoice Cash on delivery Prepayment Cheque Paybox PayPal Cash on pickup Financing Leasing T-Pay Click&Buy (Firstgate) Giropay Google Checkout Online shop payment card Sofortüberweisung.de Other method of payment", $this->getText("paymentids[oxidcashondel]"));
             $this->assertTrue($this->isTextPresent("Test payment method [EN] šÄßüл"));
-            $this->assertEquals("Lastschrift/Bankeinzug Kreditkarte Rechnung Nachnahme Vorauskasse / Überweisung Verrechnungsscheck Paybox PayPal Zahlung bei Abholung Finanzierung Leasing T-Pay Click&Buy (Firstgate) Giropay Google Checkout Online Shop Zahlungskarte Sofortüberweisung.de Andere Zahlungsart", $this->getText("paymentids[testpayment]"));
-            $this->select("paymentids[testpayment]", "label=Kreditkarte");
+            $this->assertEquals("Direct debit Credit Card Invoice Cash on delivery Prepayment Cheque Paybox PayPal Cash on pickup Financing Leasing T-Pay Click&Buy (Firstgate) Giropay Google Checkout Online shop payment card Sofortüberweisung.de Other method of payment", $this->getText("paymentids[testpayment]"));
+            $this->select("paymentids[testpayment]", "label=Credit Card");
             $this->clickAndWait("save");
             $this->assertFalse($this->isTextPresent("Invalid Trusted Shops ID"), "Invalid Trusted Shops ID for testing");
-            $this->assertEquals("Kreditkarte", $this->getSelectedLabel("paymentids[testpayment]"));
+            $this->assertEquals("Credit Card", $this->getSelectedLabel("paymentids[testpayment]"));
             $this->assertEquals("on", $this->getValue("//input[@name='tsSealActive' and @value='true']"));
             $this->assertEquals("on", $this->getValue("//input[@name='tsTestMode' and @value='true']"));
             $this->assertEquals("XA2A8D35838AF5F63E5EB0E05847B1CB8", $this->getValue("aShopID_TrustedShops[0]"));
@@ -71,7 +71,6 @@ class Acceptance_trustedShopsTest extends oxidAdditionalSeleniumFunctions
             $this->clickAndWait("save");
             $this->assertTrue($this->isTextPresent("The certificate does not exist"));
             $this->assertEquals("XA2A8D35838AF5F63E5EB0E05847B1CB8", $this->getValue("aShopID_TrustedShops[0]"));
-
 
             $this->captureScreenshotOnFailure = false; // Workaround for phpunit 3.6, disable screenshots before skip!
             $this->markTestSkipped("waiting for shop lupes where put TS logo");
@@ -137,10 +136,10 @@ class Acceptance_trustedShopsTest extends oxidAdditionalSeleniumFunctions
             $this->click("payment_oxidcashondel");
             $this->waitForItemAppear("bltsprotection");
             $this->assertFalse($this->isVisible("stsprotection"));
-            $this->assertTrue($this->isTextPresent("Käuferschutz von 500 € (0,98 € inkl. MwSt.)"));
+            $this->assertTrue($this->isTextPresent("Käuferschutz von 500 € (0,90 € inkl. MwSt.)"));
             $this->check("bltsprotection");
             $this->clickAndWait("//button[text()='Weiter zum nächsten Schritt']");
-            $this->assertTrue($this->isTextPresent("0,98 €"));
+            $this->assertTrue($this->isTextPresent("0,90 €"));
             $this->assertTrue($this->isTextPresent("Trusted Shops Käuferschutz"));
             $this->check("//form[@id='orderConfirmAgbTop']//input[@name='ord_agb' and @value='1']");
             $this->clickAndWait("//form[@id='orderConfirmAgbTop']//button");
@@ -155,11 +154,11 @@ class Acceptance_trustedShopsTest extends oxidAdditionalSeleniumFunctions
             $this->clickAndWait("//button[text()='Weiter zum nächsten Schritt']");
             $this->assertTrue($this->isElementPresent("bltsprotection"));
             $this->assertTrue($this->isElementPresent("stsprotection"));
-            $this->assertEquals("Käuferschutz von 500 € (0,98 € inkl. MwSt.) Käuferschutz von 1500 € (2,94 € inkl. MwSt.)", $this->getText("stsprotection"));
-            $this->select("stsprotection", "label=Käuferschutz von 1500 € (2,94 € inkl. MwSt.)");
+            $this->assertEquals("Käuferschutz von 500 € (0,90 € inkl. MwSt.) Käuferschutz von 1500 € (2,72 € inkl. MwSt.)", $this->getText("stsprotection"));
+            $this->select("stsprotection", "label=Käuferschutz von 1500 € (2,72 € inkl. MwSt.)");
             $this->check("bltsprotection");
             $this->clickAndWait("//button[text()='Weiter zum nächsten Schritt']");
-            $this->assertTrue($this->isTextPresent("2,94 €"));
+            $this->assertTrue($this->isTextPresent("2,72 €"));
             $this->assertTrue($this->isTextPresent("Trusted Shops Käuferschutz"));
             $this->check("//form[@id='orderConfirmAgbTop']//input[@name='ord_agb' and @value='1']");
             $this->clickAndWait("//form[@id='orderConfirmAgbTop']//button");
@@ -168,10 +167,10 @@ class Acceptance_trustedShopsTest extends oxidAdditionalSeleniumFunctions
             $this->loginAdmin("Administer Orders", "Orders");
             $this->waitForElement("link=12");
             $this->openTab("link=12");
-            $this->assertTrue($this->isTextPresent("0,98"));
+            $this->assertTrue($this->isTextPresent("0,90"));
             $this->frame("list");
             $this->openTab("link=13");
-            $this->assertTrue($this->isTextPresent("2,94"));
+            $this->assertTrue($this->isTextPresent("2,72"));
     }
 
      /**

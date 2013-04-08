@@ -209,37 +209,18 @@ class Unit_Views_vendorlistTest extends OxidTestCase
 
         modConfig::setParameter( 'cnid', $sVendorId );
         modConfig::getInstance()->setConfigParam( 'iNrofCatArticles', 20 );
-        $oVendorTree = new oxvendorlist();
-        $oVendorTree->buildVendorTree( 'vendorlist', $sVendorId, oxConfig::getInstance()->getShopHomeURL() );
+       // $oVendorTree = new oxvendorlist();
+       // $oVendorTree->buildVendorTree( 'vendorlist', $sVendorId, oxConfig::getInstance()->getShopHomeURL() );
 
         $oVendor = new oxVendor();
-        $oVendor->load($sVendorId);
+        $oVendor->load( $sVendorId );
 
-        $oVendorList = $this->getProxyClass( "vendorlist" );
-        $oVendorList->setVendorTree( $oVendorTree );
-        $oVendorList->setNonPublicVar( "_oActVendor", $oVendor );
+        $oVendorList = new vendorList();
+       // $oVendorList->setVendorTree( $oVendorTree );
+        $oVendorList->setActVendor( $oVendor );
         $oArtList = $oVendorList->getArticleList();
 
         $this->assertEquals(oxUtilsCount::getInstance()->getVendorArticleCount( $sVendorId ), $oArtList->count());
-    }
-
-    // (buglist_322) if vendorlist view is opened vendortree must be opend too (aVendorlist)
-    public function testLoadVendorTreeInVendorlistView()
-    {
-        oxTestModules::addFunction('oxUtilsServer', 'getServerVar', '{ if ( $aA[0] == "HTTP_HOST") { return "shop.com/"; } else { return "test.php";} }');
-        modConfig::getInstance()->setConfigParam( 'bl_perfLoadVendorTree', 1 );
-
-        modConfig::setParameter( 'cnid', 'v_root' );
-        $oVendorTree = new oxvendorlist();
-        $oVendorTree->buildVendorTree( 'vendorlist', 'v_root', oxConfig::getInstance()->getShopHomeURL() );
-
-        $oVendor = $this->getProxyClass( "vendorlist" );
-        $oVendor->setVendorTree( $oVendorTree );
-        $oVendor->init();
-        $oVendor->render();
-        $aViewData = $oVendor->getNonPublicVar( '_aViewData' );
-
-        $this->assertEquals( 3, count($oVendor->getVendorlist()) );
     }
 
     public function testGetPageNavigation()
@@ -269,18 +250,6 @@ class Unit_Views_vendorlistTest extends OxidTestCase
         $oVendorList = $this->getProxyClass( "vendorlist" );
         $oVendorList->setNonPublicVar( "_oActVendor", $oVendor );
         $this->assertEquals( $oVendor->getLink(), $oVendorList->generatePageNavigationUrl() );
-    }
-
-    public function testGetRecommList()
-    {
-        oxTestModules::addFunction('oxRecommList', 'getRecommListsByIds', '{ return "testRecomm"; }');
-        $oArtList = new oxarticlelist();
-
-        $oVendor = $this->getProxyClass( "vendorlist" );
-        $oVendor->setNonPublicVar( "_aArticleList", $oArtList );
-        $oVendor->setNonPublicVar( "_iArticleCnt", 1 );
-
-        $this->assertEquals( "testRecomm", $oVendor->getSimilarRecommLists() );
     }
 
     public function testGetCatTitle()
@@ -344,82 +313,6 @@ class Unit_Views_vendorlistTest extends OxidTestCase
         $oVendorList->setNonPublicVar( "_oActVendor", $oVendor );
 
         $this->assertEquals( 'online kaufen', $oVendorList->getTitleSuffix() );
-    }
-
-    public function testGetMetaKeywords()
-    {
-            $sVendorId = '77442e37fdf34ccd3.94620745';
-            $sRez = 'are, here, ein, authentisches, glanzstück, seiner, zeit, -, original, bush, beach, radio';
-
-
-        $oVendor = new oxVendor();
-        $oVendor->load($sVendorId);
-
-        $oCat = new oxcategory();
-        $oCat->oxcategories__oxtitle = new oxField( 'you are here' );
-
-        $oListView = $this->getMock( "vendorlist", array( 'getActVendor', 'getVendorTree', 'getCatTreePath' ) );
-        $oListView->expects( $this->atLeastOnce() )->method( 'getActVendor')->will( $this->returnValue( $oVendor ) );
-        $oListView->expects( $this->atLeastOnce() )->method( 'getVendorTree' )->will( $this->returnValue( new oxvendorlist() ) );
-        $oListView->expects( $this->atLeastOnce() )->method( 'getCatTreePath' )->will( $this->returnValue( array( $oCat ) ) );
-
-        $this->assertEquals( $sRez, $oListView->getMetaKeywords() );
-    }
-
-    public function testSetMetaKeywordsIfPathNotSet()
-    {
-            $sVendorId = '77442e37fdf34ccd3.94620745';
-            $sRez = 'by, distributor, ein, authentisches, glanzstück, seiner, zeit, -, original, bush, beach, radio';
-
-
-        $oVendor = new oxVendor();
-        $oVendor->load($sVendorId);
-
-        $oCat = new oxcategory();
-        $oCat->oxcategories__oxtitle = new oxField( 'By Distributor' );
-
-        $oListView = $this->getMock( "vendorlist", array( 'getActVendor', 'getVendorTree', 'getCatTreePath' ) );
-        $oListView->expects( $this->atLeastOnce() )->method( 'getActVendor')->will( $this->returnValue( $oVendor ) );
-        $oListView->expects( $this->atLeastOnce() )->method( 'getVendorTree' )->will( $this->returnValue( new oxvendorlist() ) );
-        $oListView->expects( $this->atLeastOnce() )->method( 'getCatTreePath' )->will( $this->returnValue( array( $oCat ) ) );
-
-        $this->assertEquals( $sRez, $oListView->getMetaKeywords() );
-
-    }
-
-    public function testGetMetaDescription()
-    {
-            $sVendorId = '77442e37fdf34ccd3.94620745';
-            $sRez = 'by distributor - Original BUSH Beach Radio';
-
-        $oVendor = new oxVendor();
-        $oVendor->load($sVendorId);
-
-        $oCat = new oxcategory();
-        $oCat->oxcategories__oxtitle = new oxField( 'By Distributor' );
-
-        $oListView = $this->getMock( "vendorlist", array( 'getActVendor', 'getVendorTree', 'getCatTreePath' ) );
-        $oListView->expects( $this->atLeastOnce() )->method( 'getActVendor')->will( $this->returnValue( $oVendor ) );
-        $oListView->expects( $this->atLeastOnce() )->method( 'getVendorTree' )->will( $this->returnValue( new oxvendorlist() ) );
-        $oListView->expects( $this->atLeastOnce() )->method( 'getCatTreePath' )->will( $this->returnValue( array( $oCat ) ) );
-
-        $this->assertEquals( $sRez, $oListView->getMetaDescription() );
-    }
-
-    public function testSetMetaDescriptionIfPathNotSet()
-    {
-            $sVendorId = '68342e2955d7401e6.18967838';
-            $sRez = 'By Distributor - Dolch &quot;Die geflügelte Kaiserin&quot;';
-
-        $oVendor = new oxVendor();
-        $oVendor->load($sVendorId);
-
-        $oVendorList = $this->getProxyClass( "vendorlist" );
-        $oVendorList->setVendorTree( new oxvendorlist() );
-        $oVendorList->setNonPublicVar( "_oActVendor", $oVendor );
-        $oVendorList->setNonPublicVar( "_sCatPathString", 'By Distributor' );
-        $oVendorList->setMetaDescription( null );
-        $this->assertEquals( $sRez, $oVendorList->getMetaDescription() );
     }
 
     public function testAddPageNrParamIfSeo()

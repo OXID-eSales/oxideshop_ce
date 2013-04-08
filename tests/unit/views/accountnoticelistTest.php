@@ -35,25 +35,18 @@ class Unit_Views_accountNoticelistTest extends OxidTestCase
      *
      * @return null
      */
-    public function testGetSimilarRecommListsEmptyNoticeProductList()
+    public function testGetSimilarRecommListIds()
     {
-        $oView = $this->getMock( "Account_Noticelist", array( "getNoticeProductList" ) );
-        $oView->expects( $this->any() )->method( 'getNoticeProductList')->will( $this->returnValue( false ) );
-        $this->assertFalse( $oView->getSimilarRecommLists() );
-    }
+        $sArrayKey = "articleId";
+        $aArrayKeys = array( $sArrayKey );
+        $aNoticeProdList = array( $sArrayKey => "zyyy" );
 
-    /**
-     * Testing Account_Noticelist::getSimilarRecommLists()
-     *
-     * @return null
-     */
-    public function testGetSimilarRecommLists()
-    {
-        oxTestModules::addFunction('oxrecommlist', 'getRecommListsByIds', '{ return "testList"; }' );
-
-        $oView = $this->getMock( "Account_Noticelist", array( "getNoticeProductList" ) );
-        $oView->expects( $this->any() )->method( 'getNoticeProductList')->will( $this->returnValue( array( "1126" ) ) );
-        $this->assertEquals( "testList", $oView->getSimilarRecommLists() );
+        $oSearch = $this->getMock( "account_noticelist", array( "getNoticeProductList" ) );
+        $oSearch->expects( $this->once() )->method( "getNoticeProductList" )->will( $this->returnValue( $aNoticeProdList ) );
+        $this->assertEquals( $aArrayKeys
+                             , $oSearch->getSimilarRecommListIds()
+                             , "getSimilarRecommListIds() should return array of keys from result of getNoticeProductList()"
+                            );
     }
 
     /**
@@ -75,7 +68,7 @@ class Unit_Views_accountNoticelistTest extends OxidTestCase
      */
     public function testGetSimilarProducts()
     {
-        $oProduct = $this->getMock( "oxStdClass", array( "getSimilarProducts" ) );
+        $oProduct = $this->getMock( "oxArticleList", array( "getSimilarProducts" ) );
         $oProduct->expects( $this->any() )->method( 'getSimilarProducts')->will( $this->returnValue( "testSimilarProducts" ) );
 
         $oView = $this->getMock( "Account_Noticelist", array( "getNoticeProductList" ) );
@@ -102,10 +95,10 @@ class Unit_Views_accountNoticelistTest extends OxidTestCase
      */
     public function testGetNoticeProductList()
     {
-        $oBasket = $this->getMock( "oxStdClass", array( "getArticles" ) );
+        $oBasket = $this->getMock( "oxBasket", array( "getArticles" ) );
         $oBasket->expects( $this->once() )->method( 'getArticles')->will( $this->returnValue( "articles" ) );
 
-        $oUser = $this->getMock( "oxStdClass", array( "getBasket" ) );
+        $oUser = $this->getMock( "oxUser", array( "getBasket" ) );
         $oUser->expects( $this->once() )->method( 'getBasket')->with( $this->equalTo( "noticelist" ))->will( $this->returnValue( $oBasket ) );
 
         $oView = $this->getMock( "Account_Noticelist", array( "getUser" ) );
@@ -140,7 +133,7 @@ class Unit_Views_accountNoticelistTest extends OxidTestCase
         $this->assertEquals( 'page/account/noticelist.tpl', $oView->render() );
     }
 
-	/**
+    /**
      * Testing Account_Newsletter::getBreadCrumb()
      *
      * @return null

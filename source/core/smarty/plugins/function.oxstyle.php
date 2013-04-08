@@ -45,13 +45,21 @@
  */
 function smarty_function_oxstyle($params, &$smarty)
 {
-    $myConfig = oxConfig::getInstance();
-    $sSufix   = ($smarty->_tpl_vars["__oxid_include_dynamic"])?'_dynamic':'';
+    $myConfig   = oxRegistry::getConfig();
+    $sSufix     = ($smarty->_tpl_vars["__oxid_include_dynamic"])?'_dynamic':'';
+    $sWidget    = ($params['widget']?$params['widget']:'');
+    $blInWidget = ($params['inWidget']?$params['inWidget']:false);
+
     $sCtyles  = 'conditional_styles'.$sSufix;
     $sStyles  = 'styles'.$sSufix;
 
     $aCtyles  = (array) $myConfig->getGlobalParameter($sCtyles);
     $aStyles  = (array) $myConfig->getGlobalParameter($sStyles);
+
+
+    if ( $sWidget && !$blInWidget ) {
+        return;
+    }
 
     $sOutput  = '';
     if ( $params['include'] ) {
@@ -92,7 +100,7 @@ function smarty_function_oxstyle($params, &$smarty)
         }
     } else {
         foreach ($aStyles as $sSrc) {
-            $sOutput .= '<link rel="stylesheet" type="text/css" href="'.$sSrc.'">'.PHP_EOL;
+            $sOutput .= '<link rel="stylesheet" type="text/css" href="'.$sSrc.'" />'.PHP_EOL;
         }
         foreach ($aCtyles as $sSrc => $sCondition) {
             $sOutput .= '<!--[if '.$sCondition.']><link rel="stylesheet" type="text/css" href="'.$sSrc.'"><![endif]-->'.PHP_EOL;

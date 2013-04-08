@@ -478,4 +478,5 @@ class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
         $oDbMeta->resetLanguage( 1, "testDbMetaDataHandler" );
     }
 
+
 }

@@ -109,7 +109,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
         $oUtilsPic->expects( $this->at( 1 ) )->method( 'safePictureDelete' )->with( $this->equalTo( $aDelPics[1]["sFileName"] ), $this->equalTo( $sAbsImageDir.$aDelPics[1]["sDir"] ), $this->equalTo( "oxarticles" ), $this->equalTo( $aDelPics[1]["sField"] ) )->will( $this->returnValue( true ) );
         $oUtilsPic->expects( $this->at( 2 ) )->method( 'safePictureDelete' )->with( $this->equalTo( $aDelPics[2]["sFileName"] ), $this->equalTo( $sAbsImageDir.$aDelPics[2]["sDir"] ), $this->equalTo( "oxarticles" ), $this->equalTo( $aDelPics[2]["sField"] ) )->will( $this->returnValue( true ) );
 
-        modInstances::addMod( "oxUtilsPic", $oUtilsPic );
+        oxTestModules::addModuleObject('oxUtilsPic', $oUtilsPic);
 
         $oPicHandler = $this->getMock( 'oxPictureHandler', array( 'getZoomName', 'getMainIconName', 'getThumbName', 'deleteZoomPicture' ) );
         $oPicHandler->expects( $this->any() )->method( 'getZoomName' )->will( $this->returnValue( "testZoomPic1.jpg" ) );
@@ -149,7 +149,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
         $oUtilsPic->expects( $this->at( 1 ) )->method( 'safePictureDelete' )->with( $this->equalTo( $aDelPics[1]["sFileName"] ), $this->equalTo( $sAbsImageDir.$aDelPics[1]["sDir"] ), $this->equalTo( "oxarticles" ), $this->equalTo( $aDelPics[1]["sField"] ) );
         $oUtilsPic->expects( $this->at( 2 ) )->method( 'safePictureDelete' )->with( $this->equalTo( $aDelPics[2]["sFileName"] ), $this->equalTo( $sAbsImageDir.$aDelPics[2]["sDir"] ), $this->equalTo( "oxarticles" ), $this->equalTo( $aDelPics[2]["sField"] ) );
 
-        modInstances::addMod( "oxUtilsPic", $oUtilsPic );
+        oxTestModules::addModuleObject('oxUtilsPic', $oUtilsPic);
 
         $oPicHandler = $this->getMock( 'oxPictureHandler', array( 'deleteZoomPicture', 'getMainIconName', 'getThumbName' ) );
         $oPicHandler->expects( $this->once() )->method( 'deleteZoomPicture' );
@@ -181,7 +181,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
         $oUtilsPic = $this->getMock( 'oxUtilsPic', array( 'safePictureDelete' ) );
         $oUtilsPic->expects( $this->once() )->method( 'safePictureDelete' )->with( $this->equalTo( $aDelPics[0]["sFileName"] ), $this->equalTo( $sAbsImageDir.$aDelPics[0]["sDir"] ), $this->equalTo( "oxarticles" ), $this->equalTo( $aDelPics[0]["sField"] ) )->will( $this->returnValue( true ) );
 
-        modInstances::addMod( "oxUtilsPic", $oUtilsPic );
+        oxTestModules::addModuleObject('oxUtilsPic', $oUtilsPic);
 
         $oPicHandler = $this->getMock( 'oxPictureHandler', array( 'deleteZoomPicture', 'getMainIconName', 'getThumbName' ) );
         $oPicHandler->expects( $this->once() )->method( 'deleteZoomPicture' );
@@ -205,7 +205,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
         $oUtilsPic = $this->getMock( 'oxUtilsPic', array( 'safePictureDelete' ) );
         $oUtilsPic->expects( $this->any() )->method( 'safePictureDelete' );
 
-        modInstances::addMod( "oxUtilsPic", $oUtilsPic );
+        oxTestModules::addModuleObject('oxUtilsPic', $oUtilsPic);
 
         $oPicHandler = $this->getMock( 'oxPictureHandler', array( 'deleteZoomPicture' ) );
         $oPicHandler->expects( $this->once() )->method( 'deleteZoomPicture' )->with( $this->isInstanceOf( "oxArticle" ), $this->equalTo( 1 ) );
@@ -229,7 +229,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
         $oUtilsPic = $this->getMock( 'oxUtilsPic', array( 'safePictureDelete' ) );
         $oUtilsPic->expects( $this->never() )->method( 'safePictureDelete' );
 
-        modInstances::addMod( "oxUtilsPic", $oUtilsPic );
+        oxTestModules::addModuleObject('oxUtilsPic', $oUtilsPic);
 
         $oPicHandler = new oxPictureHandler();
         $oPicHandler->deleteArticleMasterPicture( $oArticle, 1, false );
@@ -257,7 +257,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
         $oUtilsPic = $this->getMock( 'oxUtilsPic', array( 'safePictureDelete' ) );
         $oUtilsPic->expects( $this->at( 0 ) )->method( 'safePictureDelete' )->with( $this->equalTo( $sFileName ), $this->equalTo( $sAbsImageDir.$sDir ), $this->equalTo( "oxarticles" ), $this->equalTo( $sField ) );
 
-        modInstances::addMod( "oxUtilsPic", $oUtilsPic );
+        oxTestModules::addModuleObject('oxUtilsPic', $oUtilsPic);
 
         $oPicHandler = $this->getMock( 'oxPictureHandler', array( 'getZoomName', 'getMainIconName', 'getThumbName' ) );
         $oPicHandler->expects( $this->any() )->method( 'getZoomName' )->will( $this->returnValue( "testZoomPic1.jpg" ) );
@@ -287,7 +287,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
         $oUtilsPic->expects( $this->exactly( 1 ) )->method( 'safePictureDelete' );
         $oUtilsPic->expects( $this->at( 0 ) )->method( 'safePictureDelete' )->with( $this->equalTo( $sFileName ), $this->equalTo( $sAbsImageDir . $sDir ), $this->equalTo( "oxarticles" ), $this->equalTo( $sField ) );
 
-        modInstances::addMod( "oxUtilsPic", $oUtilsPic );
+        oxTestModules::addModuleObject('oxUtilsPic', $oUtilsPic);
 
         $oPicHandler = new oxPictureHandler();
         $oPicHandler->deleteMainIcon( $oArticle );
@@ -307,7 +307,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
         $oUtilsPic = $this->getMock( 'oxUtilsPic', array( 'safePictureDelete' ) );
         $oUtilsPic->expects( $this->never() )->method( 'safePictureDelete' );
 
-        modInstances::addMod( "oxUtilsPic", $oUtilsPic );
+        oxTestModules::addModuleObject('oxUtilsPic', $oUtilsPic);
 
         $oPicHandler = new oxPictureHandler();
         $oPicHandler->deleteMainIcon( $oArticle );
@@ -333,7 +333,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
         $oUtilsPic->expects( $this->exactly( 1 ) )->method( 'safePictureDelete' );
         $oUtilsPic->expects( $this->at( 0 ) )->method( 'safePictureDelete' )->with( $this->equalTo( $sFileName ), $this->equalTo( $sAbsImageDir . $sDir ), $this->equalTo( "oxarticles" ), $this->equalTo( $sField ) );
 
-        modInstances::addMod( "oxUtilsPic", $oUtilsPic );
+        oxTestModules::addModuleObject('oxUtilsPic', $oUtilsPic);
 
         $oPicHandler = new oxPictureHandler();
         $oPicHandler->deleteThumbnail( $oArticle );
@@ -352,7 +352,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
         $oUtilsPic = $this->getMock( 'oxUtilsPic', array( 'safePictureDelete' ) );
         $oUtilsPic->expects( $this->never() )->method( 'safePictureDelete' );
 
-        modInstances::addMod( "oxUtilsPic", $oUtilsPic );
+        oxTestModules::addModuleObject('oxUtilsPic', $oUtilsPic);
 
         $oPicHandler = new oxPictureHandler();
         $oPicHandler->deleteThumbnail( $oArticle );
@@ -379,7 +379,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
         $oUtilsPic->expects( $this->exactly( 1 ) )->method( 'safePictureDelete' );
         $oUtilsPic->expects( $this->at( 0 ) )->method( 'safePictureDelete' )->with( $this->equalTo( $sFileName ), $this->equalTo( $sAbsImageDir . $sDir ), $this->equalTo( "oxarticles" ), $this->equalTo( $sField ) );
 
-        modInstances::addMod( "oxUtilsPic", $oUtilsPic );
+        oxTestModules::addModuleObject('oxUtilsPic', $oUtilsPic);
 
         $oPicHandler = new oxPictureHandler();
         $oPicHandler->deleteZoomPicture( $oArticle, 2 );
@@ -400,7 +400,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
         $oUtilsPic = $this->getMock( 'oxUtilsPic', array( 'safePictureDelete' ) );
         $oUtilsPic->expects( $this->never() )->method( 'safePictureDelete' );
 
-        modInstances::addMod( "oxUtilsPic", $oUtilsPic );
+        oxTestModules::addModuleObject('oxUtilsPic', $oUtilsPic);
 
         $oPicHandler = new oxPictureHandler();
         $oPicHandler->deleteZoomPicture( $oArticle, 1 );
@@ -421,7 +421,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
         $oUtilsPic = $this->getMock( 'oxUtilsPic', array( 'safePictureDelete' ) );
         $oUtilsPic->expects( $this->never() )->method( 'safePictureDelete' );
 
-        modInstances::addMod( "oxUtilsPic", $oUtilsPic );
+        oxTestModules::addModuleObject('oxUtilsPic', $oUtilsPic);
 
         $oPicHandler = new oxPictureHandler();
         $oPicHandler->deleteZoomPicture( $oArticle, 1 );
@@ -448,7 +448,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
         $oUtilsPic->expects( $this->exactly( 1 ) )->method( 'safePictureDelete' );
         $oUtilsPic->expects( $this->at( 0 ) )->method( 'safePictureDelete' )->with( $this->equalTo( $aDelPics[0]["sFileName"] ), $this->equalTo( $sAbsImageDir.$aDelPics[0]["sDir"] ), $this->equalTo( "oxarticles" ), $this->equalTo( $aDelPics[0]["sField"] ) );
 
-        modInstances::addMod( "oxUtilsPic", $oUtilsPic );
+        oxTestModules::addModuleObject('oxUtilsPic', $oUtilsPic);
 
         $oPicHandler = new oxPictureHandler();
         $oPicHandler->deleteZoomPicture( $oArticle, 2 );

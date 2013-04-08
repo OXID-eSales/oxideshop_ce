@@ -96,11 +96,21 @@ class Unit_Setup_oxSetupSessionTest extends OxidTestCase
     /**
      * Testing oxSetupSession::_getNewSessionID().
      *
+     * php bug id=55267 fixed in #55267
+     * When unit testing session-related code in a CLI environment, appropriate PHP ini settings combined
+     * with passing false to session_cache_limiter can allow sessions to be started
+     * even if output has been already sent.
+     *
+     * @requires PHP 5.3.9
+     *
      * @return null
      */
     public function testGetNewSessionID()
     {
-        $this->markTestSkipped('Can\'t mock session functions.');
+        // Can only be run above 5.3.9 version as there is session regeneration bug.
+        if (version_compare(PHP_VERSION, "5.3.9", '<')) {
+            return;
+        }
 
         $oSession = $this->_getSessionMock();
         $oSession->setNonPublicVar('_blNewSession', 'test');

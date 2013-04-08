@@ -19,13 +19,43 @@
  * @package   main
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id: _cc.php 25466 2010-02-01 14:12:07Z alfonsas $
+ * @version   SVN: $Id: _cc.php 48931 2012-08-22 13:57:51Z vilma $
  */
 
 /**
- * This script unsets all domain cookies
+ * This script unsets all domain cookies and cache
  */
+require 'bootstrap.php';
+/**
+ * Delete all files and dirs recursively
+ *
+ * @param string $dir directory to delete
+ *
+ * @return null
+ */
+function rrmdir($dir)
+{
+    foreach (glob($dir . '/*') as $file) {
+        if (is_dir($file)) {
+            rrmdir($file);
+        } else {
+            unlink($file);
+        }
+    }
+    rmdir($dir);
+}
+if ( $sCompileDir = oxRegistry::get('oxConfigFile')->getVar('sCompileDir') ) {
+    foreach (glob($sCompileDir."/*") as $file) {
+        if (is_dir($file)) {
+            rrmdir($file);
+        } else {
+            unlink($file);
+        }
+    }
+}
 
+
+// Clean tmp
 if (isset($_SERVER['HTTP_COOKIE'])) {
     $aCookies = explode(';', $_SERVER['HTTP_COOKIE']);
     foreach ($aCookies as $sCookie) {
@@ -34,27 +64,6 @@ if (isset($_SERVER['HTTP_COOKIE'])) {
     }
 }
 
-// also clean tmp dir
-class _config {
-    function __construct(){
-        if (file_exists('_version_define.php')) {
-            include "_version_define.php";
-        }
-        include "config.inc.php";
-        include "config.inc.php";
-    }
+if ( !isset( $_GET['no_redirect'])) {
+    header("Location: ". dirname($_SERVER['REQUEST_URI']));
 }
-
-$_cfg = new _config();
-
-foreach (glob($_cfg->sCompileDir."/*") as $filename) {
-    if (is_file($filename)){
-        unlink($filename);
-    }
-    if (is_dir($filename)){
-        rmdir($filename);
-    }
-}
-
-
-header("Location: ".dirname($_SERVER['REQUEST_URI']));

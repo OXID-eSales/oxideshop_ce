@@ -102,22 +102,9 @@ class Unit_Core_oxVatSelectorTest extends OxidTestCase
         parent::tearDown();
     }
 
-
-    public function testGetInstance()
-    {
-        oxTestModules::addFunction('oxVatSelector', 'setInst', '{oxVatSelector::$_instance = $aA[0];}');
-        oxNew('oxVatSelector')->setInst(null);
-        oxTestModules::addFunction('oxVatSelector', 'ping', '{return "pong";}');
-        $this->assertEquals('pong', oxVatSelector::getInstance()->ping());
-        oxTestModules::addFunction('oxVatSelector', 'ping', '{return "another pong cached";}');
-        $this->assertEquals('pong', oxVatSelector::getInstance()->ping());
-        oxNew('oxVatSelector')->setInst(null);
-    }
-
     /**
      * testing user VAT getter
      */
-
     public function testGetUserVat()
     {
         $oVatSelector = $this->getMock( 'oxVatSelector', array( '_getForeignCountryUserVat' ) );

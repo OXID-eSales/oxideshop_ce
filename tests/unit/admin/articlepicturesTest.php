@@ -321,7 +321,7 @@ class Unit_Admin_ArticlePicturesTest extends OxidTestCase
      */
     public function testDeleteMainIcon()
     {
-            $oArticle = $this->getMock( "oxStdClass", array( 'isDerived' ) );
+            $oArticle = $this->getMock( "oxArticle", array( 'isDerived' ) );
             $oArticle->expects($this->once())->method('isDerived')->will($this->returnValue(null));
 
         $oArticle->oxarticles__oxicon = new oxField( "testIcon.jpg" );
@@ -329,7 +329,7 @@ class Unit_Admin_ArticlePicturesTest extends OxidTestCase
         $oPicHandler = $this->getMock( "oxPictureHandler", array( "deleteMainIcon" ) );
         $oPicHandler->expects( $this->once() )->method( 'deleteMainIcon' ) ;
 
-        modInstances::addMod( "oxPictureHandler", $oPicHandler );
+        oxTestModules::addModuleObject( "oxPictureHandler", $oPicHandler );
 
         $oArtPic = $this->getProxyClass( "Article_Pictures" );
         $oArtPic->UNITdeleteMainIcon( $oArticle );
@@ -344,7 +344,7 @@ class Unit_Admin_ArticlePicturesTest extends OxidTestCase
      */
     public function testDeleteThumbnail()
     {
-            $oArticle = $this->getMock( "oxStdClass", array( 'isDerived' ) );
+            $oArticle = $this->getMock( "oxArticle", array( 'isDerived' ) );
             $oArticle->expects($this->once())->method('isDerived')->will($this->returnValue(null));
 
         $oArticle->oxarticles__oxthumb = new oxField( "testThumb.jpg" );
@@ -352,7 +352,7 @@ class Unit_Admin_ArticlePicturesTest extends OxidTestCase
         $oPicHandler = $this->getMock( "oxPictureHandler", array( "deleteThumbnail" ) );
         $oPicHandler->expects( $this->once() )->method( 'deleteThumbnail' ) ;
 
-        modInstances::addMod( "oxPictureHandler", $oPicHandler );
+        oxTestModules::addModuleObject( "oxPictureHandler", $oPicHandler );
 
         $oArtPic = $this->getProxyClass( "Article_Pictures" );
         $oArtPic->UNITdeleteThumbnail( $oArticle );
@@ -367,7 +367,7 @@ class Unit_Admin_ArticlePicturesTest extends OxidTestCase
      */
     public function testResetMasterPicture()
     {
-            $oArticle = $this->getMock( "oxStdClass", array( 'isDerived' ) );
+            $oArticle = $this->getMock( "oxArticle", array( 'isDerived' ) );
             $oArticle->expects($this->once())->method('isDerived')->will($this->returnValue(null));
 
         $oArticle->oxarticles__oxpic2 = new oxField( "testPic2.jpg" );
@@ -375,7 +375,7 @@ class Unit_Admin_ArticlePicturesTest extends OxidTestCase
         $oPicHandler = $this->getMock( "oxPictureHandler", array( "deleteArticleMasterPicture" ) );
         $oPicHandler->expects( $this->once() )->method( 'deleteArticleMasterPicture' )->with( $this->equalTo( $oArticle ), $this->equalTo( 2 ), $this->equalTo( false ) ) ;
 
-        modInstances::addMod( "oxPictureHandler", $oPicHandler );
+        oxTestModules::addModuleObject( "oxPictureHandler", $oPicHandler );
 
         $oArtPic = $this->getProxyClass( "Article_Pictures" );
         $oArtPic->UNITresetMasterPicture( $oArticle, 2 );
@@ -392,7 +392,7 @@ class Unit_Admin_ArticlePicturesTest extends OxidTestCase
      */
     public function testResetMasterPicture_makesCleanupOnFields()
     {
-            $oArticle = $this->getMock( "oxStdClass", array( 'isDerived' ) );
+            $oArticle = $this->getMock( "oxArticle", array( 'isDerived' ) );
             $oArticle->expects($this->any())->method('isDerived')->will($this->returnValue(null));
 
         $oArticle->oxarticles__oxpic1 = new oxField( "testPic1.jpg" );
@@ -401,7 +401,7 @@ class Unit_Admin_ArticlePicturesTest extends OxidTestCase
         $oPicHandler = $this->getMock( "oxPictureHandler", array( "deleteArticleMasterPicture" ) );
         $oPicHandler->expects( $this->exactly( 2 ) )->method( 'deleteArticleMasterPicture' );
 
-        modInstances::addMod( "oxPictureHandler", $oPicHandler );
+        oxTestModules::addModuleObject( "oxPictureHandler", $oPicHandler );
 
         $oArtPic = $this->getMock( "Article_Pictures", array( "_cleanupCustomFields" ) );
         $oArtPic->expects( $this->never() )->method( '_cleanupCustomFields' );
@@ -452,22 +452,6 @@ class Unit_Admin_ArticlePicturesTest extends OxidTestCase
         $oArticle->load( "_testArtId" );
         $this->assertEquals( "5", $oArticle->oxarticles__oxpicsgenerated->value );
     }*/
-
-    /**
-     * Article_Pictures::_getMinUploadedMasterPicIndex()
-     *
-     * @return null
-     */
-    public function testGetMinUploadedMasterPicIndex()
-    {
-        $_FILES['myfile']['name']["M2"] = "value1";
-        $_FILES['myfile']['name']["M3"] = "value3";
-        $_FILES['myfile']['name']["M7"] = "value7";
-
-        $oArtPic = $this->getProxyClass( "Article_Pictures" );
-
-        $this->assertEquals( array( "2", "3", "7" ), $oArtPic->UNITgetUploadedMasterPicIndexes() );
-    }
 
     /**
      * Article_Pictures::_cleanupZoomFields()
@@ -566,7 +550,7 @@ class Unit_Admin_ArticlePicturesTest extends OxidTestCase
         $aEx = oxSession::getVar( "Errors" );
         $oEx = unserialize( $aEx["default"][0] );
 
-        $this->assertEquals( "ARTICLE_PICTURES_UPLOADISDISABLED", $oEx->getOxMessage() );
+        $this->assertTrue( $oEx instanceof oxExceptionToDisplay );
      }
 
     /**
@@ -588,7 +572,7 @@ class Unit_Admin_ArticlePicturesTest extends OxidTestCase
         $aEx = oxSession::getVar( "Errors" );
         $oEx = unserialize( $aEx["default"][0] );
 
-        $this->assertEquals( "ARTICLE_PICTURES_UPLOADISDISABLED", $oEx->getOxMessage() );
+        $this->assertTrue( $oEx instanceof oxExceptionToDisplay );
     }
 
     /**

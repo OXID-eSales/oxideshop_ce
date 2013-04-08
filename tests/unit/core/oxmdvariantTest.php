@@ -364,9 +364,9 @@ class Unit_Core_oxmdvariantTest extends OxidTestCase
      */
     public function testGetFPrice()
     {
-        $this->assertEquals('<span class="pricefrom">ab</span> 1,00 ¤', $this->_oSubj->getFPrice());
-        $this->assertEquals('<span class="pricefrom">ab</span> 1,00 ¤', $this->_oSubj->getMdSubvariantByName("Red")->getFPrice());
-        $this->assertEquals('<span class="pricefrom">ab</span> 1,00 ¤', $this->_oSubj->getMdSubvariantByName("Red")->getMdSubvariantByName("L")->getFPrice());
+        $this->assertEquals('ab 1,00 ¤', $this->_oSubj->getFPrice());
+        $this->assertEquals('ab 1,00 ¤', $this->_oSubj->getMdSubvariantByName("Red")->getFPrice());
+        $this->assertEquals('ab 1,00 ¤', $this->_oSubj->getMdSubvariantByName("Red")->getMdSubvariantByName("L")->getFPrice());
         $this->assertEquals('1,00 ¤', $this->_oSubj->getMdSubvariantByName("Red")->getMdSubvariantByName("L")->getMdSubvariantByName("Silk")->getFPrice());
         $this->assertEquals('2,00 ¤', $this->_oSubj->getMdSubvariantByName("Red")->getMdSubvariantByName("L")->getMdSubvariantByName("Wool")->getFPrice());
     }
@@ -381,8 +381,8 @@ class Unit_Core_oxmdvariantTest extends OxidTestCase
 
         $oSubj = new oxMdVariant();
         $sArtId = '';
-        $aNames = array(); 
-        $dPrice = 10.10; 
+        $aNames = array();
+        $dPrice = 10.10;
         $sUrl = '';
         $oSubj->addNames( $sArtId, $aNames, $dPrice, $sUrl );
         $iPrice = $oSubj->getFPrice();

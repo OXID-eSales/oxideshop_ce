@@ -423,7 +423,9 @@ class Unit_Core_oxmoduleTest extends OxidTestCase
         $aExtend  = array('extend' => array('oxtest' => 'testdir/mytest'), 'id' => 'test', 'dir' => 'testdir');
         $oModule->setNonPublicVar( "_aModule", $aExtend );
 
-        modConfig::getInstance()->setConfigParam( "aModules", $aModulesBefore );
+        //odConfig::getInstance()->setConfigParam( "aModules", $aModulesBefore );
+        oxRegistry::getConfig()->setConfigParam( "aModules", $aModulesBefore );
+
         $this->assertEquals($aModulesBefore, modConfig::getInstance()->getConfigParam("aModules") );
 
         $this->assertTrue($oModule->activate());
@@ -446,8 +448,11 @@ class Unit_Core_oxmoduleTest extends OxidTestCase
         $aExtend = array('extend' => array('oxtest' => 'test/mytest'), 'id' => 'test');
         $oModule->setNonPublicVar( "_aModule", $aExtend );
 
-        modConfig::getInstance()->setConfigParam( "aModules", $aModulesBefore );
-        modConfig::getInstance()->setConfigParam( "aDisabledModules", $aDisabledModulesBefore );
+        //modConfig::getInstance()->setConfigParam( "aModules", $aModulesBefore );
+        //modConfig::getInstance()->setConfigParam( "aDisabledModules", $aDisabledModulesBefore );
+        oxRegistry::getConfig()->setConfigParam( "aModules", $aModulesBefore);
+        oxRegistry::getConfig()->setConfigParam( "aDisabledModules", $aDisabledModulesBefore );
+
         $this->assertEquals($aModulesBefore, modConfig::getInstance()->getConfigParam("aModules") );
         $this->assertEquals($aDisabledModulesBefore, modConfig::getInstance()->getConfigParam("aDisabledModules") );
 
@@ -470,7 +475,8 @@ class Unit_Core_oxmoduleTest extends OxidTestCase
         $aExtend  = array('extend' => array('oxtest' => 'test1/mytest1'));
         $oModule->setNonPublicVar( "_aModule", $aExtend );
 
-        modConfig::getInstance()->setConfigParam( "aModules", $aModulesBefore );
+        //modConfig::getInstance()->setConfigParam( "aModules", $aModulesBefore );
+        oxRegistry::getConfig()->setConfigParam("aModules", $aModulesBefore);
         $this->assertEquals($aModulesBefore, modConfig::getInstance()->getConfigParam("aModules") );
 
         $this->assertTrue($oModule->activate());
@@ -488,14 +494,15 @@ class Unit_Core_oxmoduleTest extends OxidTestCase
         $oConfig->expects( $this->once() )->method('saveShopConfVar')->with($this->equalTo("arr"), $this->equalTo("aDisabledModules"), $this->equalTo(array("testId1", "testId2")) );
         $oConfig->expects( $this->once() )->method('setConfigParam')->with($this->equalTo("aDisabledModules"), $this->equalTo(array("testId1", "testId2")) );
 
-        $oModule = $this->getMock( 'oxModule', array('getId', 'getDisabledModules', 'getConfig'), array(), "", false );
+        $oModule = $this->getMock( 'oxModule', array('getId', 'getModuleEvents', 'getDisabledModules', 'getConfig'), array(), "", false );
         $oModule->expects( $this->any() )->method('getId')->will( $this->returnValue( "testId2" ) );
+        $oModule->expects( $this->once() )->method('getModuleEvents')->will( $this->returnValue( array() ) );
         $oModule->expects( $this->once() )->method('getDisabledModules')->will( $this->returnValue( array("testId1") ) );
         $oModule->expects( $this->any() )->method('getConfig')->will( $this->returnValue( $oConfig ) );
 
         $this->assertTrue( $oModule->deactivate() );
     }
-    
+
     /**
      * oxmodule::deactivate() test case, when disabling two identical modules
      *
@@ -507,8 +514,9 @@ class Unit_Core_oxmoduleTest extends OxidTestCase
         $oConfig->expects( $this->once() )->method('saveShopConfVar')->with($this->equalTo("arr"), $this->equalTo("aDisabledModules"), $this->equalTo(array("testId1")) );
         $oConfig->expects( $this->once() )->method('setConfigParam')->with($this->equalTo("aDisabledModules"), $this->equalTo(array("testId1")) );
 
-        $oModule = $this->getMock( 'oxModule', array('getId', 'getDisabledModules', 'getConfig'), array(), "", false );
+        $oModule = $this->getMock( 'oxModule', array('getId', 'getModuleEvents','getDisabledModules', 'getConfig'), array(), "", false );
         $oModule->expects( $this->any() )->method('getId')->will( $this->returnValue( "testId1" ) );
+        $oModule->expects( $this->once() )->method('getModuleEvents')->will( $this->returnValue( array() ) );
         $oModule->expects( $this->once() )->method('getDisabledModules')->will( $this->returnValue( array("testId1") ) );
         $oModule->expects( $this->any() )->method('getConfig')->will( $this->returnValue( $oConfig ) );
 
@@ -866,7 +874,8 @@ class Unit_Core_oxmoduleTest extends OxidTestCase
         $oUtilsObject = $this->getMock( 'oxUtilsObject', array('generateUId') );
         $oUtilsObject->expects( $this->at(0) )->method( 'generateUId' )->will( $this->returnValue('_testId1') );
         $oUtilsObject->expects( $this->at(1) )->method( 'generateUId' )->will( $this->returnValue('_testId2') );
-        modInstances::addMod( 'oxUtilsObject', $oUtilsObject );
+
+        oxTestModules::addModuleObject('oxUtilsObject', $oUtilsObject);
 
         $aModuleBlocks = array(
             //shop template path, block name, block filename, block possition
@@ -883,7 +892,7 @@ class Unit_Core_oxmoduleTest extends OxidTestCase
         $aRes[] = array( "OXID"=>"_testId1", "OXACTIVE"=>"1", "OXSHOPID"=>$sShopId, "OXTEMPLATE"=>"page/checkout/basket.tpl", "OXBLOCKNAME"=>"basket_btn_next_top", "OXPOS"=>"1", "OXFILE"=>"oepaypalexpresscheckout.tpl", "OXMODULE"=>"testModuleId" ) ;
         $aRes[] = array( "OXID"=>"_testId2", "OXACTIVE"=>"1", "OXSHOPID"=>$sShopId, "OXTEMPLATE"=>"page/checkout/order.tpl", "OXBLOCKNAME"=>"basket_btn_next_bottom", "OXPOS"=>"2", "OXFILE"=>"oepaypalorder.tpl", "OXMODULE"=>"testModuleId" ) ;
 
-        $aBlocks = oxDb::getDb( oxDb::FETCH_MODE_ASSOC )->getAll( "SELECT * FROM oxtplblocks WHERE oxid IN ('_testId1','_testId2') ORDER BY oxid" );
+        $aBlocks = oxDb::getDb( oxDb::FETCH_MODE_ASSOC )->getAll( "SELECT OXID,OXACTIVE,OXSHOPID,OXTEMPLATE,OXBLOCKNAME,OXPOS,OXFILE,OXMODULE FROM oxtplblocks WHERE oxid IN ('_testId1','_testId2') ORDER BY oxid" );
 
         $this->assertEquals( $aRes, $aBlocks );
     }
@@ -934,6 +943,27 @@ class Unit_Core_oxmoduleTest extends OxidTestCase
     }
 
     /**
+     * oxmodule::_addModuleVersion() test case
+     *
+     * @return null
+     */
+    public function testAddModuleVersion()
+    {
+        $oConfig   = new oxConfig();
+        $sShopId   = $oConfig->getShopId();
+        $sModuleId = 'testmodule';
+        $sModuleVersion = "1.1";
+
+        $oModule = new oxmodule();
+        $oModule->_addModuleVersion( $sModuleVersion, $sModuleId);
+
+        $aConfigModuleVersions = $oConfig->getConfigParam('aModuleVersions');
+
+        $this->assertArrayHasKey($sModuleId, $aConfigModuleVersions);
+        $this->assertEquals( $sModuleVersion, $aConfigModuleVersions[$sModuleId] );
+    }
+
+    /**
      * oxmodule::_addTemplateFiles() test case
      *
      * @return null
@@ -974,7 +1004,7 @@ class Unit_Core_oxmoduleTest extends OxidTestCase
         $oUtilsObject->expects( $this->at(1) )->method( 'generateUId' )->will( $this->returnValue('_testId1') );
         $oUtilsObject->expects( $this->at(2) )->method( 'generateUId' )->will( $this->returnValue('_testId2') );
         $oUtilsObject->expects( $this->at(3) )->method( 'generateUId' )->will( $this->returnValue('_testId2') );
-        modInstances::addMod( 'oxUtilsObject', $oUtilsObject );
+        oxTestModules::addModuleObject('oxUtilsObject', $oUtilsObject);
 
         $sModuleId       = 'testmodule';
         // test different constraints for #4255
@@ -992,7 +1022,7 @@ class Unit_Core_oxmoduleTest extends OxidTestCase
         $aRes[] = array( "OXID" => "_testId1", "OXCFGMODULE" => "module:".$sModuleId, "OXCFGVARNAME" => "test_var_1", "OXGROUPING" => "test1", "OXPOS" => "1", "OXVARCONSTRAINT" => "compatibility1" ) ;
         $aRes[] = array( "OXID" => "_testId2", "OXCFGMODULE" => "module:".$sModuleId, "OXCFGVARNAME" => "test_var_2", "OXGROUPING" => "test2", "OXPOS" => "2", "OXVARCONSTRAINT" => "compatibility2" ) ;
 
-        $aSettings = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getAll( "SELECT * FROM oxconfigdisplay WHERE oxcfgvarname IN ('test_var_1','test_var_2') ORDER BY oxid" );
+        $aSettings = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getAll( "SELECT OXID,OXCFGMODULE,OXCFGVARNAME,OXGROUPING,OXPOS,OXVARCONSTRAINT FROM oxconfigdisplay WHERE oxcfgvarname IN ('test_var_1','test_var_2') ORDER BY oxid" );
 
         $this->assertEquals( $aRes, $aSettings );
     }

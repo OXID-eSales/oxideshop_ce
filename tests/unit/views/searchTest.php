@@ -100,16 +100,17 @@ class Unit_Views_searchTest extends OxidTestCase
             $this->assertEquals( 8, $oSearch->getArticleList()->count() );
     }
 
-    public function testGetSimilarRecommLists()
+    public function testGetSimilarRecommListIds()
     {
-        oxTestModules::addFunction('oxUtilsServer', 'getServerVar', '{ if ( $aA[0] == "HTTP_HOST") { return "shop.com/"; } else { return "test.php";} }');
-        oxTestModules::addFunction('oxRecommList', 'getRecommListsByIds', '{ return "testRecomm"; }');
+        $aArrayKeys = array( "articleId" );
+        $oArtList = $this->getMock( "oxarticlelist", array( "count", "arrayKeys" ) );
+        $oArtList->expects( $this->once() )->method( "count" )->will( $this->returnValue( 1 ) );
+        $oArtList->expects( $this->once() )->method( "arrayKeys" )->will( $this->returnValue( $aArrayKeys ) );
 
-        $oSearch = $this->getProxyClass( 'search' );
-        modConfig::setParameter( 'searchparam', 'bar' );
-        $oSearch->init();
 
-        $this->assertEquals( "testRecomm", $oSearch->getSimilarRecommLists() );
+        $oSearch = $this->getMock( "search", array( "getArticleList" ) );
+        $oSearch->expects( $this->once() )->method( "getArticleList" )->will( $this->returnValue( $oArtList ) );
+        $this->assertEquals( $aArrayKeys, $oSearch->getSimilarRecommListIds(), "getSimilarRecommListIds() should return array of keys from result of getArticleList()" );
     }
 
     public function testGetSearchParamForHtml()
@@ -160,23 +161,6 @@ class Unit_Views_searchTest extends OxidTestCase
         $oSearch = $this->getMock( 'search', array( 'getActSearch' ));
         $oSearch->expects( $this->any() )->method( 'getActSearch')->will($this->returnValue( "aaa" ) );
         $this->assertEquals( 'aaa', $oSearch->getActiveCategory() );
-    }
-
-    /**
-     * Test oxViewConfig::getShowListmania() affection
-     *
-     * @return null
-     */
-    public function testgetSimilarRecommListsIfOff()
-    {
-        $oCfg = $this->getMock( "stdClass", array( "getShowListmania" ) );
-        $oCfg->expects( $this->once() )->method( 'getShowListmania')->will($this->returnValue( false ) );
-
-        $oSearch = $this->getMock( "search", array( "getViewConfig", 'getArticleList' ) );
-        $oSearch->expects( $this->once() )->method( 'getViewConfig')->will($this->returnValue( $oCfg ) );
-        $oSearch->expects( $this->never() )->method( 'getArticleList');
-
-        $this->assertSame(false, $oSearch->getSimilarRecommLists());
     }
 
     public function testRender()
@@ -290,4 +274,12 @@ class Unit_Views_searchTest extends OxidTestCase
         $oSearch = new search();
         $this->assertFalse($oSearch->UNITcanRedirect());
    }
+
+    public function testGetArticleCount()
+    {
+        $oSearch = $this->getProxyClass( 'search' );
+        $oSearch->setNonPublicVar( '_iAllArtCnt', 3 );
+
+        $this->assertEquals( 3, $oSearch->getArticleCount() );
+    }
 }

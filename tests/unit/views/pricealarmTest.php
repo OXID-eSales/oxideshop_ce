@@ -1,4 +1,6 @@
 <?php
+
+
 /**
  *    This file is part of OXID eShop Community Edition.
  *

@@ -1,0 +1,3 @@
+[{assign var="_additionalParams" value=$oView->getAdditionalParams()}]
+<a class="compare remove clear" data-aid="[{$_compare_aid}]" id="removeCmp[{$_compare_testid}]" href="[{$oView->getLink()|oxaddparams:"am=1&amp;removecompare=1&amp;fnc=tocomparelist&amp;aid=`$_compare_aid`&amp;anid=`$_compare_anid`&amp;pgNr=`$_compare_page`&amp;$_additionalParams"}]" rel="nofollow">[{ oxmultilang ident="WIDGET_PRODUCT_REMOVEFROMCOMPARELIST" }]</a>
+<a class="compare add clear" data-aid="[{$_compare_aid}]" id="toCmp[{$_compare_testid}]" href="[{$oView->getLink()|oxaddparams:"am=1&amp;addcompare=1&amp;fnc=tocomparelist&aid=`$_compare_aid`&amp;anid=`$_compare_anid`&amp;pgNr=`$_compare_page`&amp;$_additionalParams"}]" rel="nofollow">[{ oxmultilang ident="WIDGET_PRODUCT_COMPARE" }]</a>

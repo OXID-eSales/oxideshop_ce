@@ -55,14 +55,16 @@ if (getenv('CODECOVERAGE')) {
     PHPUnit_Util_Filter::addDirectoryToFilter(oxPATH);
     */
 
-    PHPUnit_Util_Filter::addDirectoryToWhitelist(oxPATH.'/admin');
+    //PHPUnit_Util_Filter::addDirectoryToWhitelist(oxPATH.'/admin');
     PHPUnit_Util_Filter::addDirectoryToWhitelist(oxPATH.'/core');
-    PHPUnit_Util_Filter::addDirectoryToWhitelist(oxPATH.'/views/');
+    PHPUnit_Util_Filter::addDirectoryToWhitelist(oxPATH.'/application');
 
-    PHPUnit_Util_Filter::removeDirectoryFromWhitelist(oxPATH.'/admin/inc/');
+    //PHPUnit_Util_Filter::addDirectoryToWhitelist(oxPATH.'/views/');
+
+   //PHPUnit_Util_Filter::removeDirectoryFromWhitelist(oxPATH.'/admin/inc/');
         PHPUnit_Util_Filter::removeDirectoryFromWhitelist(oxPATH.'/core/phpdtaus/');
-        PHPUnit_Util_Filter::removeDirectoryFromWhitelist(oxPATH.'/admin/reports/jpgraph/');
-        PHPUnit_Util_Filter::removeDirectoryFromWhitelist(oxPATH.'/admin/reports/');
+        PHPUnit_Util_Filter::removeDirectoryFromWhitelist(oxPATH.'/core/jpgraph/');
+        PHPUnit_Util_Filter::removeDirectoryFromWhitelist(oxPATH.'/application/controllers/admin/reports/');
     //PHPUnit_Util_Filter::removeDirectoryFromWhitelist(oxPATH.'/core/openid/');
     PHPUnit_Util_Filter::removeDirectoryFromWhitelist(oxPATH.'/core/adodblite/');
     PHPUnit_Util_Filter::removeDirectoryFromWhitelist(oxPATH.'/core/tcpdf/');
@@ -70,6 +72,7 @@ if (getenv('CODECOVERAGE')) {
     PHPUnit_Util_Filter::removeDirectoryFromWhitelist(oxPATH.'/core/smarty/');
     PHPUnit_Util_Filter::removeDirectoryFromWhitelist(oxPATH.'/core/utils/');
     PHPUnit_Util_Filter::removeDirectoryFromWhitelist(oxPATH.'/core/facebook/');
+    PHPUnit_Util_Filter::removeDirectoryFromWhitelist(oxPATH.'/application/views/');
     PHPUnit_Util_Filter::removeDirectoryFromWhitelist(oxPATH.'/out/');
     PHPUnit_Util_Filter::removeDirectoryFromWhitelist(oxPATH.'/tmp/');
     PHPUnit_Util_Filter::removeDirectoryFromWhitelist(oxPATH.'/core/objects/');

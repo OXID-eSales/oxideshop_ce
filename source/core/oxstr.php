@@ -72,7 +72,7 @@ class oxStr
      */
     protected function _getStrHandler()
     {
-        if (oxConfig::getInstance()->isUtf() && function_exists('mb_strlen')) {
+        if (oxRegistry::getConfig()->isUtf() && function_exists('mb_strlen')) {
             return oxNew("oxStrMb");
         }
 

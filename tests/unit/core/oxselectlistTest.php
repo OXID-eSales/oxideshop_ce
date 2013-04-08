@@ -47,7 +47,7 @@ class Unit_Core_oxselectlistTest extends OxidTestCase
             $sQ = 'insert into oxselectlist (oxid, oxshopid, oxtitle, oxident, oxvaldesc) values ("oxsellisttest", "'.$sShopId.'", "oxsellisttest", "oxsellisttest", "'.$sVal.'")';
         $myDB->Execute( $sQ );
 
-        $sQ = 'insert into oxobject2selectlist values ("oxsellisttest", "oxsellisttest", "oxsellisttest", 1) ';
+        $sQ = 'insert into oxobject2selectlist (OXID,OXOBJECTID,OXSELNID,OXSORT) values ("oxsellisttest", "oxsellisttest", "oxsellisttest", 1) ';
         $myDB->Execute( $sQ );
     }
 
@@ -91,15 +91,15 @@ class Unit_Core_oxselectlistTest extends OxidTestCase
 
     public function testGetFieldList()
     {
-        $aSelList[0] = new Oxstdclass();
+        $aSelList[0] = new stdclass();
         $aSelList[0]->name  = '&amp;amp;&amp;test1, 10';
         $aSelList[0]->value = null;
 
-        $aSelList[1] = new Oxstdclass();
+        $aSelList[1] = new stdclass();
         $aSelList[1]->name  = 'test2, 10';
         $aSelList[1]->value = null;
 
-        $aSelList[2] = new Oxstdclass();
+        $aSelList[2] = new stdclass();
         $aSelList[2]->name  = 'test3, 10';
         $aSelList[2]->value = null;
 
@@ -158,13 +158,13 @@ class Unit_Core_oxselectlistTest extends OxidTestCase
      */
     public function testSetActiveSelectionByIndex()
     {
-        $oSel0 = $this->getMock( "oxStdClass", array( "setActiveState" ) );
+        $oSel0 = $this->getMock( "oxSelection", array( "setActiveState" ), array(), '', false   );
         $oSel0->expects( $this->once() )->method( 'setActiveState' )->with( $this->equalTo( false ) );
 
-        $oSel1 = $this->getMock( "oxStdClass", array( "setActiveState" ) );
+        $oSel1 = $this->getMock( "oxSelection", array( "setActiveState" ), array(), '', false  );
         $oSel1->expects( $this->once() )->method( 'setActiveState' )->with( $this->equalTo( false ) );
 
-        $oSel2 = $this->getMock( "oxStdClass", array( "setActiveState" ) );
+        $oSel2 = $this->getMock( "oxSelection", array( "setActiveState" ), array(), '', false  );
         $oSel2->expects( $this->once() )->method( 'setActiveState' )->with( $this->equalTo( true ) );
 
         $aSelections = array( $oSel0, $oSel1, $oSel2 );
@@ -183,11 +183,11 @@ class Unit_Core_oxselectlistTest extends OxidTestCase
      */
     public function testGetActiveSelection()
     {
-        $aSelections = array( "oxStdClass0", "oxStdClass1", "oxStdClass2" );
+        $aSelections = array( "oxSel0", "oxSel1", "oxSel2" );
 
         $oSelectList = $this->getMock( "oxselectlist", array( "getSelections" ) );
         $oSelectList->expects( $this->once() )->method( 'getSelections' )->will( $this->returnValue( $aSelections ) );
-        $this->assertEquals( "oxStdClass0", $oSelectList->getActiveSelection() );
+        $this->assertEquals( "oxSel0", $oSelectList->getActiveSelection() );
     }
 
     /**

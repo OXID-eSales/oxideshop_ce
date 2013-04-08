@@ -58,25 +58,6 @@ class Unit_Core_oxratingTest extends OxidTestCase
         parent::tearDown();
     }
 
-    public function testInsert()
-    {
-        // cleanup before test ..
-        oxDb::getDb()->execute( "delete from oxratings where oxid='test'" );
-
-        $sTime = time();
-        oxTestModules::addFunction( "oxUtilsDate", "getTime", "{return '$sTime';}" );
-
-        $oRating = new oxrating();
-        $oRating->setId( 'test' );
-        $oRating->oxratings__oxshopid = new oxfield( oxConfig::getInstance()->getShopId() );
-        $oRating->save();
-
-        $oRating = new oxrating();
-        $oRating->load( 'test' );
-        $this->assertEquals( date( 'Y-m-d H:i:s', $sTime ), $oRating->oxratings__oxtimestamp->value );
-
-    }
-
     public function testAllowRating()
     {
         $oRating = oxNew( 'oxrating' );

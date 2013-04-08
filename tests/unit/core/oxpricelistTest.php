@@ -76,11 +76,11 @@ class Unit_Core_oxpricelistTest extends OxidTestCase
      */
     public function testGetNettoSum()
     {
-        $oList = new oxpricelist();
+        $oList = new oxPriceList();
         $oList->addToPriceList( $this->aPrices[0] );
         $oList->addToPriceList( $this->aPrices[3] );
 
-        $this->assertEquals( 10/1.05 + 40/1.20, $oList->getNettoSum() );
+        $this->assertEquals( round( 10/1.05, 2 ) + round(40/1.20, 2), $oList->getNettoSum() );
     }
 
     /**
@@ -99,8 +99,36 @@ class Unit_Core_oxpricelistTest extends OxidTestCase
                            10 =>  100 - 100 / 1.1,
                            20 =>  40 -  40 / 1.2);
 
+        $this->assertEquals( $aVatInfo, $oList->getVatInfo(false), '', 0.0000001 );
+
+        $aVatInfo = array(  5 =>  10 * 0.05,
+                           10 =>  100 * 0.1,
+                           20 =>  40 * 0.2);
+
         $this->assertEquals( $aVatInfo, $oList->getVatInfo(), '', 0.0000001 );
     }
+
+    /**
+     * Testing Vat info getter
+     */
+    public function testGetSum()
+    {
+        $oList = new oxPriceList();
+
+        $oPrice = new oxPrice();
+        $oPrice->setNettoPriceMode();
+        $oPrice->setPrice(10, 10);
+        $oList->addToPriceList( $oPrice );
+
+        $oPrice = new oxPrice();
+        $oPrice->setNettoPriceMode();
+        $oPrice->setPrice(20, 20);
+        $oList->addToPriceList( $oPrice );
+
+        $this->assertEquals( 35, $oList->getSum(false), '', 0.0000001 );
+        $this->assertEquals( 30, $oList->getSum(), '', 0.0000001 );
+    }
+
 
     /**
      * testing price info getter
@@ -136,9 +164,104 @@ class Unit_Core_oxpricelistTest extends OxidTestCase
         $this->assertEquals( 10, $oList->getMostUsedVatPercent() );
     }
 
+    /**
+     * Proportional VAT percent getter
+     */
+    public function testGetProportionalVatPercent()
+    {
+        $oList = new oxPriceList();
+
+        $oPrice = new oxPrice();
+        $oPrice->setBruttoPriceMode();
+        $oPrice->setPrice(118, 18);
+        $oList->addToPriceList( $oPrice );
+
+        $oPrice = new oxPrice();
+        $oPrice->setBruttoPriceMode();
+        $oPrice->setPrice(121, 21);
+        $oList->addToPriceList( $oPrice );
+        $this->assertEquals( 19.5, $oList->getProportionalVatPercent() );
+
+
+        $oList = new oxPriceList();
+        $oPrice = new oxPrice();
+        $oPrice->setBruttoPriceMode();
+        $oPrice->setPrice(590, 18);
+        $oList->addToPriceList( $oPrice );
+
+        $oPrice = new oxPrice();
+        $oPrice->setBruttoPriceMode();
+        $oPrice->setPrice(121, 21);
+        $oList->addToPriceList( $oPrice );
+
+        $oPrice = new oxPrice();
+        $oPrice->setBruttoPriceMode();
+        $oPrice->setPrice(0, 19);
+        $oList->addToPriceList( $oPrice );
+
+        $oPrice = new oxPrice();
+        $oPrice->setBruttoPriceMode();
+        $oPrice->setPrice(0, 0);
+        $oList->addToPriceList( $oPrice );
+
+        $this->assertEquals( 18.5, $oList->getProportionalVatPercent() );
+
+        $oList = new oxPriceList();
+        $oPrice = new oxPrice();
+        $oPrice->setBruttoPriceMode();
+        $oPrice->setPrice(0, 10);
+        $oList->addToPriceList( $oPrice );
+
+        $this->assertEquals( 0, $oList->getProportionalVatPercent() );
+
+        $oList = new oxPriceList();
+        $oPrice = new oxPrice();
+        $oPrice->setBruttoPriceMode();
+        $oPrice->setPrice(0, 0);
+        $oList->addToPriceList( $oPrice );
+
+        $this->assertEquals( 0, $oList->getProportionalVatPercent() );
+
+        $oList = new oxPriceList();
+        $oPrice = new oxPrice();
+        $oPrice->setBruttoPriceMode();
+        $oPrice->setPrice(1, 0);
+        $oList->addToPriceList( $oPrice );
+
+        $this->assertEquals( 0, $oList->getProportionalVatPercent() );
+    }
+
+    /**
+     * Price calculator
+     */
+    public function testCalculateToPrice()
+    {
+        $oList = new oxPriceList();
+
+        $oPrice = new oxPrice();
+        $oPrice->setBruttoPriceMode();
+        $oPrice->setPrice(118, 18);
+        $oList->addToPriceList( $oPrice );
+
+
+        $oPrice = new oxPrice();
+        $oPrice->setBruttoPriceMode();
+        $oPrice->setPrice(121, 21);
+        $oList->addToPriceList( $oPrice );
+
+        $oPrice = $oList->calculateToPrice();
+
+        $this->assertEquals( 200, $oPrice->getNettoPrice() );
+        $this->assertEquals( 239, $oPrice->getBruttoPrice() );
+        $this->assertEquals( 39, $oPrice->getVatValue() );
+        $this->assertEquals( 19.5, $oPrice->getVat() );
+
+    }
+
+
     public function testGetMostUsedVatPercentIfPriceListNotSet()
     {
-        $oList = new oxpricelist();
+        $oList = new oxPriceList();
 
         $this->assertNull( $oList->getMostUsedVatPercent() );
     }

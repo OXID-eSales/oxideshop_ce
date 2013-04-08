@@ -97,7 +97,7 @@ class Unit_Maintenance_emosTest extends OxidTestCase
      */
     public function testEmosItemFormat()
     {
-        $oItem = new oxStdClass;
+        $oItem = new stdClass;
         $oItem->productId    = 'prodid';
         $oItem->productName  = 'prodname';
         $oItem->productGroup = 'prodgrp';

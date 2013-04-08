@@ -22,35 +22,19 @@
  * @version   SVN: $Id$
  */
 
-/**
- * Returns path to main script files.
- *
- * @return string
- */
-function getShopBasePath()
-{
-    //file location [shoproot]/core/utils/verificationimg.php
-    return realpath(dirname(__FILE__).'/../..').'/';
+// #1428C - spam spider prevention
+if (isset($_GET['e_mac'])) {
+    $sEMac = $_GET['e_mac'];
+} else {
+    return;
 }
 
+require_once '../oxfunctions.php';
 
-// skip session start for this file
-$_GET['skipSession'] = 1;
-
-/**
- * Includes utils class
- */
-require_once getShopBasePath() . 'modules/functions.php';
-
-require_once getShopBasePath() . 'core/oxfunctions.php' ;
-
-// Including main ADODB include
-require_once getShopBasePath() . 'core/adodblite/adodb.inc.php';
-
-if ( !function_exists('generateVerificationImg')) {
+if ( !function_exists( 'generateVerificationImg' ) ) {
 
     /**
-     * Genrates image
+     * Generates image
      *
      * @param string $sMac verification code
      *
@@ -80,10 +64,10 @@ if ( !function_exists('generateVerificationImg')) {
         $aColors["text"] = imagecolorallocate($oImage, 0, 0, 0);
         $aColors["shadow1"] = imagecolorallocate($oImage, 200, 200, 200);
         $aColors["shadow2"] = imagecolorallocate($oImage, 100, 100, 100);
-        $aColors["blacground"] = imagecolorallocate($oImage, 255, 255, 255);
+        $aColors["background"] = imagecolorallocate($oImage, 255, 255, 255);
         $aColors["border"] = imagecolorallocate($oImage, 0, 0, 0);
 
-        imagefill($oImage, 0, 0, $aColors["blacground"]);
+        imagefill($oImage, 0, 0, $aColors["background"]);
         imagerectangle ( $oImage, 0, 0, $iWidth-1, $iHeight-1, $aColors["border"] );
         imagestring( $oImage, $iFontSize, $iTextX + 1, $iTextY + 0, $sMac, $aColors["shadow2"] );
         imagestring( $oImage, $iFontSize, $iTextX + 0, $iTextY + 1, $sMac, $aColors["shadow1"] );
@@ -94,13 +78,61 @@ if ( !function_exists('generateVerificationImg')) {
         imagedestroy($oImage );
     }
 }
-// #1428C - spam spider prevension
-if (isset($_GET['e_mac'])) {
-    $sEMac = $_GET['e_mac'];
-} else {
-    return;
+
+if ( !function_exists( 'strRem' ) ) {
+    /**
+     * OXID specific string manipulation method
+     *
+     * @param string $sVal string
+     *
+     * @return string
+     */
+    function strRem( $sVal)
+    {
+        $oCfg = new oxConfKey();
+
+        $sKey = $oCfg->sConfigKey;
+        $sKey = str_repeat( $sKey, strlen( $sVal ) / strlen( $sKey ) + 5 );
+
+        $sVal = substr( $sVal, 3 );
+        $sVal = str_replace( '!', '=', $sVal );
+        $sVal = base64_decode( $sVal );
+        $sVal = $sVal ^ $sKey;
+        $sVal = str_rot13($sVal);
+
+        return substr( $sVal, 2, -2 );
+    }
 }
 
-$sMac = oxUtils::getInstance()->strRem($sEMac);
+/**
+ * Simple class returning config key.
+ */
+class oxConfKey
+{
+    /**
+     * @var $sConfigKey string
+     */
+    public $sConfigKey;
+
+    /**
+     * Config class constructor.
+     */
+    function __construct()
+    {
+        include_once '../oxconfk.php';
+    }
+
+    /**
+     * Config key getter.
+     *
+     * @return string
+     */
+    function get()
+    {
+        return $this->sConfigKey;
+    }
+}
+
+$sMac = strRem($sEMac);
 
 generateVerificationImg($sMac);

@@ -76,7 +76,6 @@ class Unit_Core_oxlistTest extends OxidTestCase
 
     public function testSplIterator()
     {
-
         $oTest = new stdClass();
         $oTest->sTest = "HELLO";
         $this->_oList[] = $oTest;
@@ -93,7 +92,7 @@ class Unit_Core_oxlistTest extends OxidTestCase
         $this->assertEquals( "HELLO AGAIN", $sTest);
     }
 
-    public function testAssignArray()
+    public function testAssign()
     {
         $oTest = oxNew('oxList');
         $oTest[] = "A";
@@ -112,6 +111,29 @@ class Unit_Core_oxlistTest extends OxidTestCase
         }
         $this->assertEquals($i, 3);
 
+    }
+
+    public function testAssignArray()
+    {
+        $aData = array();
+        $aData[] = array( 'oxid' => 1, 'oxtitle' => 'name1' );
+        $aData[] = array( 'oxid' => 2, 'oxtitle' => 'name2' );
+        $aData[] = array( 'oxid' => 3, 'oxtitle' => 'name3' );
+        $aData[] = array( 'oxid' => 4, 'oxtitle' => 'name4' );
+
+
+        $oList = new oxList;
+        $oList->init('oxCategory');
+        $oList->assignArray( $aData );
+
+        $i = 0;
+        foreach ($oList as $value) {
+            $this->assertEquals($aData[$i]['oxid'], $value->oxcategories__oxid->value);
+            $this->assertEquals($aData[$i]['oxtitle'], $value->oxcategories__oxtitle->value);
+            ++$i;
+        }
+
+        $this->assertEquals($i, 4);
     }
 
     public function testSplCount()
@@ -341,11 +363,6 @@ class Unit_Core_oxlistTest extends OxidTestCase
         $this->assertEquals($sCoreTable . "__" . $sFieldName, $oSubj->UNITgetFieldLongName($sFieldName));
     }
 
-    /**
-     * Testing oxList::unset() in foreach loop
-     *
-     * @return null
-     */
     public function testUnsetForeach()
     {
         $oList = new oxlist();
@@ -388,11 +405,6 @@ class Unit_Core_oxlistTest extends OxidTestCase
         $this->assertEquals( $iTotal, $iCount );
     }
 
-    /**
-     * Testing oxList::unset() in while loop
-     *
-     * @return null
-     */
     public function testUnsetWhile()
     {
         $oList = new oxlist();

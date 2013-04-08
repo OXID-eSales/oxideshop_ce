@@ -145,7 +145,7 @@ class oxException extends Exception
         //We are most likely are already dealing with an exception so making sure no other exceptions interfere
         try {
             $sLogMsg = $this->getString() . "\n---------------------------------------------\n";
-            oxUtils::getInstance()->writeToLog( $sLogMsg, $this->getLogFileName() );
+            oxRegistry::getUtils()->writeToLog( $sLogMsg, $this->getLogFileName() );
         } catch (Exception $e) {
         }
     }

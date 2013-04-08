@@ -38,22 +38,13 @@ class oxPictureHandler extends oxSuperCfg
     /**
      * Returns object instance
      *
+     * @deprecated since v5.0 (2012-08-10); Use Registry getter instead - oxRegistry::get("oxPictureHandler");
+     *
      * @return oxPictureHandler
      */
     public static function getInstance()
     {
-        // disable caching for test modules
-        if ( defined( 'OXID_PHP_UNIT' ) ) {
-            self::$_instance = modInstances::getMod( __CLASS__ );
-        }
-
-        if ( !self::$_instance instanceof oxPictureHandler ) {
-            self::$_instance = oxNew( 'oxPictureHandler' );
-            if ( defined( 'OXID_PHP_UNIT' ) ) {
-                modInstances::addMod( __CLASS__, self::$_instance);
-            }
-        }
-        return self::$_instance;
+        return oxRegistry::get("oxPictureHandler");
     }
 
     /**
@@ -70,8 +61,8 @@ class oxPictureHandler extends oxSuperCfg
     public function deleteArticleMasterPicture( $oObject, $iIndex, $blDeleteMasterPicture = true )
     {
         $myConfig   = $this->getConfig();
-        $myUtilsPic = oxUtilsPic::getInstance();
-        $oUtilsFile = oxUtilsFile::getInstance();
+        $myUtilsPic = oxRegistry::get("oxUtilsPic");
+        $oUtilsFile = oxRegistry::get("oxUtilsFile");
         $blGeneratedImagesOnly = !$blDeleteMasterPicture;
 
         $sAbsDynImageDir = $myConfig->getPictureDir(false);
@@ -132,8 +123,8 @@ class oxPictureHandler extends oxSuperCfg
     public function deleteMainIcon( $oObject )
     {
         if ( ( $sMainIcon = $oObject->oxarticles__oxicon->value ) ) {
-            $sPath = $this->getConfig()->getPictureDir( false ) . oxUtilsFile::getInstance()->getImageDirByType( "ICO" );
-            oxUtilsPic::getInstance()->safePictureDelete( $sMainIcon, $sPath, "oxarticles", "oxicon" );
+            $sPath = $this->getConfig()->getPictureDir( false ) . oxRegistry::get("oxUtilsFile")->getImageDirByType( "ICO" );
+            oxRegistry::get("oxUtilsPic")->safePictureDelete( $sMainIcon, $sPath, "oxarticles", "oxicon" );
         }
     }
 
@@ -148,8 +139,8 @@ class oxPictureHandler extends oxSuperCfg
     {
         if ( ( $sThumb = $oObject->oxarticles__oxthumb->value ) ) {
             // deleting article main icon and thumb picture
-            $sPath = $this->getConfig()->getPictureDir( false ) . oxUtilsFile::getInstance()->getImageDirByType( "TH" );
-            oxUtilsPic::getInstance()->safePictureDelete( $sThumb, $sPath, "oxarticles", "oxthumb" );
+            $sPath = $this->getConfig()->getPictureDir( false ) . oxRegistry::get("oxUtilsFile")->getImageDirByType( "TH" );
+            oxRegistry::get("oxUtilsPic")->safePictureDelete( $sThumb, $sPath, "oxarticles", "oxthumb" );
         }
     }
 
@@ -180,8 +171,8 @@ class oxPictureHandler extends oxSuperCfg
 
         if ( $sZoomPicName && $sZoomPicName != "nopic.jpg" ) {
             // deleting zoom picture
-            $sPath = $this->getConfig()->getPictureDir( false ) . oxUtilsFile::getInstance()->getImageDirByType( "Z" . $iIndex );
-            oxUtilsPic::getInstance()->safePictureDelete( $sZoomPicName, $sPath, "oxarticles", $sFieldToCheck );
+            $sPath = $this->getConfig()->getPictureDir( false ) . oxRegistry::get("oxUtilsFile")->getImageDirByType( "Z" . $iIndex );
+            oxRegistry::get("oxUtilsPic")->safePictureDelete( $sZoomPicName, $sPath, "oxarticles", $sFieldToCheck );
         }
     }
 

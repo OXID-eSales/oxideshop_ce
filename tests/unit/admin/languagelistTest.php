@@ -86,7 +86,7 @@ class Unit_Admin_LanguageListTest extends OxidTestCase
      */
     public function testGetLanguagesList()
     {
-        $oLang1 = new oxStdClass();
+        $oLang1 = new stdClass();
         $oLang1->id = 0;
         $oLang1->oxid = 'de';
         $oLang1->abbr = 'de';
@@ -96,7 +96,7 @@ class Unit_Admin_LanguageListTest extends OxidTestCase
         $oLang1->selected = 1;
         $oLang1->default = true;
 
-        $oLang2 = new oxStdClass();
+        $oLang2 = new stdClass();
         $oLang2->id = 1;
         $oLang2->oxid = 'en';
         $oLang2->abbr = 'en';
@@ -119,21 +119,21 @@ class Unit_Admin_LanguageListTest extends OxidTestCase
     {
         $oView = $this->getProxyClass( "Language_List" );
 
-        $oLang1 = new oxStdClass();
+        $oLang1 = new stdClass();
         $oLang1->sort = 'EN';
-        $oLang2 = new oxStdClass();
+        $oLang2 = new stdClass();
         $oLang2->sort = 'DE';
         $this->assertEquals( 1, $oView->UNITsortLanguagesCallback( $oLang1, $oLang2 ) );
 
-        $oLang1 = new oxStdClass();
+        $oLang1 = new stdClass();
         $oLang1->sort = 'DE';
-        $oLang2 = new oxStdClass();
+        $oLang2 = new stdClass();
         $oLang2->sort = 'EN';
         $this->assertEquals( -1, $oView->UNITsortLanguagesCallback( $oLang1, $oLang2 ) );
 
-        $oLang1 = new oxStdClass();
+        $oLang1 = new stdClass();
         $oLang1->sort = 1;
-        $oLang2 = new oxStdClass();
+        $oLang2 = new stdClass();
         $oLang2->sort = 2;
         $oView->setNonPublicVar( "_sDefSortOrder", "desc" );
         $this->assertEquals( 1, $oView->UNITsortLanguagesCallback( $oLang1, $oLang2 ) );

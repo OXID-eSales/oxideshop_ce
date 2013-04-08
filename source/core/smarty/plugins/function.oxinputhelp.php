@@ -37,8 +37,8 @@
 function smarty_function_oxinputhelp($params, &$smarty)
 {
     $sIdent = $params['ident'];
-    $myConfig  = oxConfig::getInstance();
-    $oLang = oxLang::getInstance();
+    $myConfig  = oxRegistry::getConfig();
+    $oLang = oxRegistry::getLang();
     $iLang  = $oLang->getTplLanguage();
 
     try {

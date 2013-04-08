@@ -41,7 +41,7 @@
  */
 function smarty_block_oxifcontent( $params, $content, &$smarty, &$repeat)
 {
-    $myConfig = oxConfig::getInstance();
+    $myConfig = oxRegistry::getConfig();
 
     $sIdent  = isset( $params['ident'] )?$params['ident']:null;
     $sOxid   = isset( $params['oxid'] )?$params['oxid']:null;
@@ -57,10 +57,10 @@ function smarty_block_oxifcontent( $params, $content, &$smarty, &$repeat)
                  ( $sOxid && isset( $aContentCache[$sOxid] ) ) ) {
                 $oContent = $sOxid ? $aContentCache[$sOxid] : $aContentCache[$sIdent];
             } else {
-                $oContent = oxNew( "oxcontent" );
+                $oContent = oxNew( "oxContent" );
                 $blLoaded = $sOxid ? $oContent->load( $sOxid ) : ( $oContent->loadbyIdent( $sIdent ) );
-                if ( $blLoaded ) {
-                    $aContentCache[$oContent->getId()] = $aContentCache[$oContent->oxcontents__oxloadid->value] = $oContent;
+                if ( $blLoaded && $oContent->isActive() ) {
+                    $aContentCache[$oContent->getId()] = $aContentCache[$oContent->getLoadId()] = $oContent;
                 } else {
                     $oContent = false;
                     if ( $sOxid ) {
@@ -72,7 +72,7 @@ function smarty_block_oxifcontent( $params, $content, &$smarty, &$repeat)
             }
 
             $blLoaded = false;
-            if ( $oContent && $oContent->oxcontents__oxactive->value ) {
+            if ( $oContent ) {
                 $smarty->assign($sObject, $oContent);
                 $blLoaded = true;
             }
@@ -84,7 +84,7 @@ function smarty_block_oxifcontent( $params, $content, &$smarty, &$repeat)
         $oStr = getStr();
         $blHasSmarty = $oStr->strstr( $content, '[{' );
         if ( $blHasSmarty  ) {
-            $content = oxUtilsView::getInstance()->parseThroughSmarty( $content, $sIdent.md5($content), $myConfig->getActiveView() );
+            $content = oxRegistry::get("oxUtilsView")->parseThroughSmarty( $content, $sIdent.md5($content), $myConfig->getActiveView() );
         }
 
         if ($sAssign) {

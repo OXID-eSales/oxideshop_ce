@@ -22,37 +22,11 @@
  * @version   SVN: $Id: cron.php 25467 2010-02-01 14:14:26Z Arvydas $
  */
 
-/**
- * Returns shop base path.
- *
- * @return string
- */
-function getShopBasePath()
-{
-    return dirname(__FILE__).'/../';
-}
 
-
-if ( !function_exists( 'isAdmin' )) {
-    /**
-     * Returns false.
-     *
-     * @return bool
-     */
-    function isAdmin()
-    {
-        return false;
-    }
-}
-
-// custom functions file
-require getShopBasePath() . 'modules/functions.php';
-
-// Generic utility method file
-require_once getShopBasePath() . 'core/oxfunctions.php';
+require_once dirname(__FILE__) . "/../bootstrap.php";
 
 // initializes singleton config class
-$myConfig = oxConfig::getInstance();
+$myConfig = oxRegistry::getConfig();
 
 // executing maintenance tasks..
 oxNew( "oxmaintenance" )->execute();

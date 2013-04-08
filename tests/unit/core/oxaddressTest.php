@@ -110,6 +110,32 @@ class Unit_Core_oxAddressTest extends OxidTestCase
     }
 
     /**
+     * Testing encoding of delivery address.
+     * Checks whether it generates different hashes for different data and
+     * eqal hashes for eqal data.
+     *
+     * @return null
+     */
+    public function testGetEncodedDeliveryAddress()
+    {
+        $oSubj = new oxAddress();
+        $oSubj->oxaddress__oxcompany   = new oxField('Company');
+        $oSubj->oxaddress__oxfname     = new oxField('First name');
+        $oSubj->oxaddress__oxlname     = new oxField('Last name');
+        $oSubj->oxaddress__oxstreet    = new oxField('Street');
+        $oSubj->oxaddress__oxstreetnr  = new oxField('Street number');
+        $sEncoded = $oSubj->getEncodedDeliveryAddress();
+
+        $oSubj->oxaddress__oxstreetnr  = new oxField('Street 41');
+
+        $this->assertNotEquals( $sEncoded, $oSubj->getEncodedDeliveryAddress() );
+
+        $oSubj->oxaddress__oxstreetnr  = new oxField('Street number');
+
+        $this->assertEquals( $sEncoded, $oSubj->getEncodedDeliveryAddress() );
+    }
+
+    /**
      * Testing state getter
      *
      * @return null

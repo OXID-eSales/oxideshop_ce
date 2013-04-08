@@ -93,7 +93,7 @@ class oxDebugInfo
      */
     public function formatExecutionTime($dTotalTime)
     {
-        $sLog = 'Execution time :'.round($dTotalTime, 4).'<br />';
+        $sLog = 'Execution time:'.round($dTotalTime, 4).'<br />';
         global $aProfileTimes;
         global $aExecutionCounts;
         global $aProfileBacktraces;
@@ -144,8 +144,8 @@ class oxDebugInfo
      */
     public function formatGeneralInfo()
     {
-        $sLog =  "cl=".oxConfig::getInstance()->getActiveView()->getClassName();
-        if ( ($sFnc = oxConfig::getInstance()->getActiveView()->getFncName() ) ) {
+        $sLog =  "cl=".oxRegistry::getConfig()->getActiveView()->getClassName();
+        if ( ($sFnc = oxRegistry::getConfig()->getActiveView()->getFncName() ) ) {
             $sLog .= " fnc=$sFnc";
         }
         return $sLog;
@@ -187,4 +187,19 @@ class oxDebugInfo
         }
         return '';
     }
+
+    /**
+     * Forms view name and timestamp to.
+     *
+     * @return string
+     */
+    public function formatTimeStamp()
+    {
+        $sLog = '';
+        $sClassName = oxRegistry::getConfig()->getActiveView()->getClassName();
+        $sLog .= "<div id='". $sClassName ."_executed'>Executed: ". date( 'Y-m-d H:i:s' ) ."</div>";
+        $sLog .= "<div id='". $sClassName ."_timestamp'>Timestamp: ". microtime(true) ."</div>";
+        return $sLog;
+    }
+
 }

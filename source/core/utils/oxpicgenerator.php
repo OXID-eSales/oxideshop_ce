@@ -31,7 +31,7 @@ if ( !function_exists( "getGdVersion" ) ) {
      */
     function getGdVersion()
     {
-        return oxConfig::getInstance()->getConfigParam( 'iUseGDVersion' );
+        return oxRegistry::getConfig()->getConfigParam( 'iUseGDVersion' );
     }
 }
 

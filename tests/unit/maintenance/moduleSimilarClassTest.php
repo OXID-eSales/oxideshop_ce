@@ -27,24 +27,20 @@ require_once realpath( "." ).'/unit/test_config.inc.php';
 
 class Unit_Maintenance_moduleSimilarClassTest extends OxidTestCase
 {
-    
+
     /**
      * test when overloading class in module with similar name as other module
      */
     public function testModuleSimilarName()
     {
-        $sMdir = realpath((dirname(__FILE__).'/'));
-        modConfig::getInstance()->setConfigParam( "sShopDir", $sMdir."/" );
-        modConfig::getInstance()->setConfigParam('aModules', array(
-            
-            'oxbasketitem' => 'test/testbasketitem','oxbasket' => 'test/testbasket&test/testbasket2'
-            ));
-        
-        $oBask = oxNew( 'testbasket' );
-        
-        $this->assertEquals( 'testbasket', get_class($oBask) );
+        oxUtilsObject::getInstance()->setModuleVar( 'aModules', array('oxbasketitem'=>'testbasketitem', 'oxbasket'=>'testbasket') );
+
+        include_once dirname(__FILE__).'/modules/testbasket.php';
+
+        $oTestMod = oxNew('testbasket');
+        $this->assertEquals( "Hi!", $oTestMod->sayHi() );
     }
-  
+
     /**
      * test catching exception when calling not existent similar module
      */

@@ -411,7 +411,7 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
             $sArticleId                 = "1964";
             $sArticleSeoUrl             = $sShopUrl."Geschenke/Original-BUSH-Beach-Radio.html";
             $sArticleVendorSeoUrl       = $sShopUrl."Nach-Lieferant/Bush/Original-BUSH-Beach-Radio.html";
-            $sArticleManufacturerSeoUrl = $sShopUrl."Nach-Marke/Bush/Original-BUSH-Beach-Radio.html";
+            $sArticleManufacturerSeoUrl = $sShopUrl."Nach-Hersteller/Bush/Original-BUSH-Beach-Radio.html";
             $sArticlePriceCatSeoUrl     = $sShopUrl."Test-Price-Category-DE/Original-BUSH-Beach-Radio.html";
             $sArticleTagSeoUrl          = $sShopUrl."tag/seiner/Original-BUSH-Beach-Radio.html";
 
@@ -422,7 +422,7 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
         $sContentSeoUrl = $sShopUrl."Datenschutz/";
 
             $sManufacturerId = "fe07958b49de225bd1dbc7594fb9a6b0";
-            $sManufacturerSeoUrl = $sShopUrl."Nach-Marke/Haller-Stahlwaren/";
+            $sManufacturerSeoUrl = $sShopUrl."Nach-Hersteller/Haller-Stahlwaren/";
 
             $sVendorId = "68342e2955d7401e6.18967838";
             $sVendorSeoUrl = $sShopUrl."Nach-Lieferant/Haller-Stahlwaren/";
@@ -430,10 +430,10 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
         $oCategory = new oxCategory();
         $oCategory->load( $sCategoryId );
 
-        $oView = $this->getMock( "oxUBase", array( "getTag", "getActCategory" ) );
+        $oView = $this->getMock( "oxUBase", array( "getTag", "getActiveCategory" ) );
             $oView->expects( $this->once() )->method('getTag')->will( $this->returnValue( 'seiner' ) );
-        $oView->expects( $this->at( 0 ) )->method('getActCategory')->will( $this->returnValue( $oCategory ) );
-        $oView->expects( $this->at( 1 ) )->method('getActCategory')->will( $this->returnValue( $oPriceCategory ) );
+        $oView->expects( $this->at( 0 ) )->method('getActiveCategory')->will( $this->returnValue( $oCategory ) );
+        $oView->expects( $this->at( 1 ) )->method('getActiveCategory')->will( $this->returnValue( $oPriceCategory ) );
 
         $myConfig->setActiveView( $oView );
 
@@ -505,7 +505,7 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
             $sArticleId                 = "1964";
             $sArticleSeoUrl             = $sShopUrl."en/Gifts/Original-BUSH-Beach-Radio.html";
             $sArticleVendorSeoUrl       = $sShopUrl."en/By-Distributor/Bush/Original-BUSH-Beach-Radio.html";
-            $sArticleManufacturerSeoUrl = $sShopUrl."en/By-Brand/Bush/Original-BUSH-Beach-Radio.html";
+            $sArticleManufacturerSeoUrl = $sShopUrl."en/By-Manufacturer/Bush/Original-BUSH-Beach-Radio.html";
             $sArticlePriceCatSeoUrl     = $sShopUrl."en/Test-Price-Category-DE/Original-BUSH-Beach-Radio.html";
             $sArticleTagSeoUrl          = $sShopUrl."en/tag/original/Original-BUSH-Beach-Radio.html";
             $sTag = "original";
@@ -517,7 +517,7 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
         $sContentSeoUrl = $sShopUrl."en/Privacy-Policy/";
 
             $sManufacturerId = "fe07958b49de225bd1dbc7594fb9a6b0";
-            $sManufacturerSeoUrl = $sShopUrl."en/By-Brand/Haller-Stahlwaren/";
+            $sManufacturerSeoUrl = $sShopUrl."en/By-Manufacturer/Haller-Stahlwaren/";
 
             $sVendorId = "68342e2955d7401e6.18967838";
             $sVendorSeoUrl = $sShopUrl."en/By-Distributor/Haller-Stahlwaren/";
@@ -525,10 +525,10 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
         $oCategory = new oxCategory();
         $oCategory->load( $sCategoryId );
 
-        $oView = $this->getMock( "oxUBase", array( "getTag", "getActCategory" ) );
+        $oView = $this->getMock( "oxUBase", array( "getTag", "getActiveCategory" ) );
         $oView->expects( $this->once() )->method('getTag')->will( $this->returnValue( $sTag ) );
-        $oView->expects( $this->at( 0 ) )->method('getActCategory')->will( $this->returnValue( $oCategory ) );
-        $oView->expects( $this->at( 1 ) )->method('getActCategory')->will( $this->returnValue( $oPriceCategory ) );
+        $oView->expects( $this->at( 0 ) )->method('getActiveCategory')->will( $this->returnValue( $oCategory ) );
+        $oView->expects( $this->at( 1 ) )->method('getActiveCategory')->will( $this->returnValue( $oPriceCategory ) );
 
         $myConfig->setActiveView( $oView );
 
@@ -1511,20 +1511,13 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
 
     public function testGetMetaData()
     {
+        $iShopId = oxConfig::getInstance()->getBaseShopId();
+        $oDb = oxDb::getDb();
+        $oDb->execute( "insert into oxobject2seodata (`oxobjectid`, `oxkeywords`, `oxshopid`, `oxlang`) values( 'xxx', 'yyy', '$iShopId', 0)" );
+
         $oEncoder = new oxSeoEncoder();
 
-        $this->aSQL = array();
-        $this->aRET = array();
-
-        $oDb = modDB::getInstance();
-        $oDb->addClassFunction( 'GetOne', array( $this, '__SaveToDbCreatesGoodMd5Callback' ) );
-
-        $oEncoder->getMetaData( 'xxx', 'yyy' );
-
-        $iShopId = oxConfig::getInstance()->getBaseShopId();
-
-        $sQ = "select yyy from oxobject2seodata where oxobjectid = 'xxx' and oxshopid = '{$iShopId}' and oxlang = '0'";
-        $this->assertEquals( $sQ, $this->aSQL[0] );
+        $this->assertEquals( 'yyy', $oEncoder->getMetaData( 'xxx', 'oxkeywords' ) );
     }
 
     public function testGetSeoIdent()

@@ -187,12 +187,6 @@
 
 
     /**
-     * saves subshopid in session
-     */
-    $this->blDeprecatedSubshopsInSessions = false;
-
-
-    /**
      * Default database conection character set
      */
     $this->sDefaultDatabaseConnection = '';

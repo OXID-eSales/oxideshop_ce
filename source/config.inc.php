@@ -130,7 +130,8 @@
     $this->sTsTestProtectionUrl = "https://protection-qa.trustedshops.com/ts/protectionservices/ApplicationRequestService?wsdl";
 
     // Trusted Shops Ratings login info
-    // Do not change credentials unless instructed otherwise by Trusted Shops!
+    // The public username and password are provided in TrustedShops documentation and helps to identify the functionality provided by OXID eShop
+    // Do not change this information unless instructed otherwise
     $this->sTsUser = "oxid_esales";
     $this->sTsPass = "V1AoGEXm";
 
@@ -171,8 +172,6 @@
      */
     $this->aUserComponentNames = null;
 
-
-
     /**
      * Default database conection character set
      */
@@ -187,5 +186,4 @@
      * Instructs shop that price update is perfomed by cron (time based job sheduler)
      */
     $this->blUseCron = false;
-
 

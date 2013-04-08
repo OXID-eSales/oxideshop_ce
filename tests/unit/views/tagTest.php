@@ -33,14 +33,14 @@ class Unit_Views_tagTest extends OxidTestCase
     public function testSetItemSorting()
     {
         $oView = new tag();
-        $oView->setItemSorting( null, "testSortBy", "testSortOrder" );
+        $oView->setItemSorting( 'alist', "testSortBy", "testSortOrder" );
 
-        $aSorting = modSession::getInstance()->getVar( "aSorting" );
+        $aSorting = $this->getSession()->getVar( "aSorting" );
 
         $this->assertNotNull( $aSorting );
-        $this->assertTrue( isset( $aSorting["oxtags"] ) );
-        $this->assertEquals( "testSortBy", $aSorting["oxtags"]["sortby"] );
-        $this->assertEquals( "testSortOrder", $aSorting["oxtags"]["sortdir"] );
+        $this->assertTrue( isset( $aSorting["alist"] ) );
+        $this->assertEquals( "testSortBy", $aSorting["alist"]["sortby"] );
+        $this->assertEquals( "testSortOrder", $aSorting["alist"]["sortdir"] );
     }
 
     public function testRender()
@@ -52,27 +52,16 @@ class Unit_Views_tagTest extends OxidTestCase
     }
 
     /**
-     * Testing if render method calls output of 404 error if articles list is empty
+     * Testing if render method calls empty category should be outputted
      */
-    /* removing, since when no articles is found, should render empty articles list
     public function testRender_noArticlesForTag()
     {
         modConfig::setParameter( "pgNr", 999 );
-        oxTestModules::addFunction( "oxUtils", "handlePageNotFoundError", "{ throw new Exception('OK'); }" );
-
         modConfig::setParameter( "searchtag", "notexistingtag" );
 
         $oView = new tag();
-        try {
-            $oView->render();
-        } catch ( Exception $oExcp ) {
-            $this->assertEquals( 'OK', $oExcp->getMessage(), 'failed redirect on inactive category' );
-            return;
-        }
-
-        $this->fail( 'failed redirect on inactive category' );
+        $this->assertEquals( "page/list/list.tpl", $oView->render() );
     }
-    */
 
     public function testGetAddUrlParams()
     {
@@ -199,13 +188,6 @@ class Unit_Views_tagTest extends OxidTestCase
     {
         $oTagView = new tag();
         $this->assertEquals( OXARTICLE_LINKTYPE_TAG, $oTagView->UNITgetProductLinkType() );
-    }
-
-    public function testGetActiveCategory()
-    {
-        $oTagView = $this->getMock( 'tag', array( 'getActTag' ) );
-        $oTagView->expects( $this->any() )->method( 'getActTag')->will( $this->returnValue( 'testtag' ) );
-        $this->assertEquals( "testtag", $oTagView->getActiveCategory() );
     }
 
     public function testPrepareMetaKeyword()

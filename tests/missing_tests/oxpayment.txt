@@ -1,16 +1,16 @@
 oxpayment.php
-	* uzkomentuoti sie testai, kodel? jei todel, kad neveikia - reikia pataisyti. jei todel, kad nebeliko susijusio kodo, tada nelaikyti ir testu...
-		+ public function testIsValidPayment_NoCreditCardCheckingIPayment()
-		+ public function testLogIPayment()
-		+ public function testLogIPaymentWhenLoggingIsOff()
-		+ public function testGetPaymentPriceNegativePrice()
-		+ public function testGetBasketPriceSpecCurrency()
-		+ public function testIsIPaymentHasModulePaymentIsOn()
-		+ public function testIsIPaymentHasModulePaymentIsOff()
-		+ public function testIsIPaymentHasNotModulePaymentIsOff()
-	* del pilnumo funkcija public function getPaymentValue( $dBaseprice ) testuoti ir su ribine reiksme $dBaseprice = 0
-	* funkcija getPaymentPrice( $oBasket ) testuoti ir kuomet 'blCalcVATForPayCharge' yra false
-	* teste testGetPaymentPricePositivePrice() aprasomi, bet nenaudojami objektai $oPrice0 ir $oPrice1
-	* funkcija getPaymentPrice( $oBasket ) testuoti ir kuomet gaunamas neigiamas payment price
-	* funkcija public function getCountries()   testuoti ir tuomet, kai payment nepriskirta nei viena salis
-	* teste testDeleteNotSetObject() tikrinama, ar neistrinta ivesta payment info, taciau tai neuztikrina/nepatikrina to, ar delete metu buvo istrintas aktyvus/reikiamas payment
+    * uzkomentuoti sie testai, kodel? jei todel, kad neveikia - reikia pataisyti. jei todel, kad nebeliko susijusio kodo, tada nelaikyti ir testu...
+        + public function testIsValidPayment_NoCreditCardCheckingIPayment()
+        + public function testLogIPayment()
+        + public function testLogIPaymentWhenLoggingIsOff()
+        + public function testGetPaymentPriceNegativePrice()
+        + public function testGetBasketPriceSpecCurrency()
+        + public function testIsIPaymentHasModulePaymentIsOn()
+        + public function testIsIPaymentHasModulePaymentIsOff()
+        + public function testIsIPaymentHasNotModulePaymentIsOff()
+    * del pilnumo funkcija public function getPaymentValue( $dBaseprice ) testuoti ir su ribine reiksme $dBaseprice = 0
+    * funkcija getPaymentPrice( $oBasket ) testuoti ir kuomet 'blShowVATForPayCharge' yra false
+    * teste testGetPaymentPricePositivePrice() aprasomi, bet nenaudojami objektai $oPrice0 ir $oPrice1
+    * funkcija getPaymentPrice( $oBasket ) testuoti ir kuomet gaunamas neigiamas payment price
+    * funkcija public function getCountries()   testuoti ir tuomet, kai payment nepriskirta nei viena salis
+    * teste testDeleteNotSetObject() tikrinama, ar neistrinta ivesta payment info, taciau tai neuztikrina/nepatikrina to, ar delete metu buvo istrintas aktyvus/reikiamas payment

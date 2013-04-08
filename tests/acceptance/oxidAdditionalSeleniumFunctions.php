@@ -112,12 +112,15 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
      * opens shop frontend and runs checkForErrors()
      *
      */
-    public function openShop()
+    public function openShop($blForceMainShop = false, $isSubShop = false)
     {
         $this->selectWindow(null);
         $this->windowMaximize(null);
         $this->selectFrame("relative=top");
-        $this->open(shopURL."_cc.php");
+        //$this->open(shopURL."_cc.php");
+        // Remove port if there is one, as we want to call _cc.php directly.
+        $this->open(preg_replace('/:{1}\d{1,}/','',shopURL)."_cc.php?no_redirect=1");
+        $this->open(shopURL);
         $this->checkForErrors();
     }
 
@@ -126,14 +129,14 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
      */
     public function checkForErrors()
     {
+
         if (($this->isTextPresent("Warning: "))  ||  ($this->isTextPresent("ADODB_Exception"))||
             ($this->isTextPresent("Fatal error: "))  || ($this->isTextPresent("Catchable fatal error: ")) ||
             ($this->isTextPresent("Notice: "))  || ($this->isTextPresent("exception '")) ||
             ($this->isTextPresent("ERROR : Tran")) ||($this->isTextPresent("does not exist or is not accessible!")) ||
-            ($this->isTextPresent("EXCEPTION_")) )   {
-
-             $this->refresh();
-         }
+            ($this->isTextPresent("EXCEPTION_")) ) {
+				$this->refresh();
+			}
         $this->assertFalse($this->isTextPresent("Warning: "), "PHP Warning is in the page");
         $this->assertFalse($this->isTextPresent("ADODB_Exception"), "ADODB Exception is in the page");
         $this->assertFalse($this->isTextPresent("Fatal error: "), "PHP Fatal error is in the page");
@@ -209,21 +212,21 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
      */
     public function waitForElement($element)
     {
-        $refreshed = false;
-        for ($second = 0; $second <= 30; $second++) {
-            if ($second >= 30 && !$refreshed) {
-                $refreshed = true;
-                $second = 0;
-                $this->refresh();
-            } else if ($second >= 30) {
-                $this->assertTrue($this->isElementPresent($element), "timeout while waiting for element ".$element);
-            }
-            try {
-                if ($this->isElementPresent($element)) {
-                    break;
-                }
-            } catch (Exception $e) {}
-            sleep(1);
+                $refreshed = false;
+                for ($second = 0; $second <= 30; $second++) {
+                    if ($second >= 30 && !$refreshed) {
+                        $refreshed = true;
+                        $second = 0;
+                        $this->refresh();
+                    } else if ($second >= 30) {
+                        $this->assertTrue($this->isElementPresent($element), "timeout while waiting for element ".$element);
+                    }
+                    try {
+                        if ($this->isElementPresent($element)) {
+                            break;
+                        }
+                    } catch (Exception $e) {}
+                    sleep(1);
         }
     }
 
@@ -380,8 +383,8 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
         $this->selectWindow(null);
         $this->windowMaximize(null);
         $this->selectFrame("relative=top");
-        $this->open(shopURL."/_cc.php");
-        $this->open(shopURL."/admin");
+        $this->open(shopURL."_cc.php");
+        $this->open(shopURL."admin");
         $this->checkForErrors();
         $this->assertTrue($this->isElementPresent("user"), "Admin login page failed to load");
         $this->assertTrue($this->isElementPresent("pwd"), "Admin login page failed to load");
@@ -468,7 +471,7 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
             $this->waitForElement($locator);
         }
         $this->select($locator, $selection);
-        $this->waitForFrameToLoad($frame);
+        $this->waitForFrameToLoad($frame, "90000");
         sleep(1);
         if ($element) {
             $this->waitForElement($element);
@@ -491,7 +494,7 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
         }
         $this->setTimeout(90);
         $this->click($locator);
-        $this->waitForFrameToLoad($frame);
+        $this->waitForFrameToLoad($frame, "90000");
         sleep($sleep);
         if ($element) {
             $this->waitForElement($element);
@@ -510,7 +513,7 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
     {
         $frameLocator="edit";
         $this->click($linkLocator);
-        $this->waitForFrameToLoad($frameLocator);
+        $this->waitForFrameToLoad($frameLocator, "90000");
         sleep($sleep);
         $this->waitForElement($linkLocator);
         $this->assertTrue($this->isElementPresent($linkLocator), "problems with reloading frame. Element ".$linkLocator." not found in it.");
@@ -533,7 +536,7 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
         $this->click($locator);
         sleep(1);
         $this->getConfirmation();
-        $this->waitForFrameToLoad($frame);
+        $this->waitForFrameToLoad($frame, "90000");
         if ($element) {
             sleep(1);
             $this->waitForElement($element);
@@ -636,12 +639,7 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
      */
     public function openSubshopFrontend()
     {
-        $this->selectWindow(null);
-        $this->windowMaximize(null);
-        $this->selectFrame("relative=top");
-        $this->open(shopURL."_cc.php");
-        $this->clickAndWait("link=subshop");
-        $this->checkForErrors();
+        $this->openShop(false, true);
     }
 
 //---------------------------- Setup related functions ------------------------------
@@ -702,11 +700,11 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
 
         //testing edit frame for errors
         $this->frame("edit");
-        $this->assertFalse($this->isTextPresent("*connector downloaded successfully"));
+        $this->assertFalse($this->isTextPresent("Shop connector downloaded successfully"));
         $this->type("etUsername", $sNameEfi);
         $this->type("etPassword", $sPswEfi);
         $this->clickAndWait("etSubmit");
-        $this->assertTrue($this->isTextPresent("*connector downloaded successfully"), "connector was not downloaded successfully");
+        $this->assertTrue($this->isTextPresent("Shop connector downloaded successfully"), "connector was not downloaded successfully");
         $this->clearTmp();
         echo " connector downloaded successfully. ";
     }
@@ -717,15 +715,20 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
      *
      * @param string $userName user name (email)
      * @param string $userPass user password
+     * @param boolean $waitForLogin if needed to wait until user get logged in
      */
-    public function loginInFrontend($userName, $userPass)
+    public function loginInFrontend($userName, $userPass, $waitForLogin = true)
     {
         $this->selectWindow(null);
         $this->click("//ul[@id='topMenu']/li[1]/a");
         $this->waitForItemAppear("loginBox");
         $this->type("//div[@id='loginBox']//input[@name='lgn_usr']", $userName);
         $this->type("//div[@id='loginBox']//input[@name='lgn_pwd']", $userPass);
-        $this->clickAndWait("//div[@id='loginBox']//button[@type='submit']");
+        if ($waitForLogin) {
+            $this->clickAndWait("//div[@id='loginBox']//button[@type='submit']", "//a[text()='Logout']");
+        } else {
+            $this->clickAndWait("//div[@id='loginBox']//button[@type='submit']");
+        }
     }
 
     /**
@@ -973,7 +976,7 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
      */
     public function callShopSC($sCl, $sFnc, $sOxid = null, $aClassParams = array(), $sShopId = null)
     {
-        $oConfig = oxConfig::getInstance();
+        $oConfig = oxRegistry::getConfig();
 
         $sShopUrl = $oConfig->getShopMainUrl() . '/_sc.php';
         $sClassParams = '';
@@ -1019,7 +1022,7 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
      */
     public function getShopVersionNumber()
     {
-        return '4';
+        return '5';
     }
 
     /**

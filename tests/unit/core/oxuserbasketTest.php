@@ -156,8 +156,6 @@ class Unit_Core_oxuserbasketTest extends OxidTestCase
         $oBasket = new oxUserBasket();
         $oBasket->setId( "_testUserBasketId" );
         $oBasket->save();
-
-        $this->assertEquals( $iTime, $oBasket->oxuserbaskets__oxcreate->value );
         $this->assertEquals( $iTime, $oBasket->oxuserbaskets__oxupdate->value );
     }
 
@@ -358,7 +356,8 @@ class Unit_Core_oxuserbasketTest extends OxidTestCase
         $aSel    = array("A");
         $aParam  = array("B");
 
-        oxTestModules::addFunction('oxUtilsDate', 'getTime', '{return 99999;}');
+        $this->setTime(99999);
+
         $oBasket = new oxUserBasket();
         $oBasket->load( "testUserBasket" );
         $oBasket->setIsNewBasket();
@@ -497,12 +496,12 @@ class Unit_Core_oxuserbasketTest extends OxidTestCase
      */
     public function testSetIsNewBasket()
     {
-        oxTestModules::addFunction('oxUtilsDate', 'getTime', '{return 3333;}');
+        $this->setTime(3333);
+
         $oBasket = new oxUserBasket();
         $oBasket->setIsNewBasket();
 
         $this->assertTrue( $oBasket->isNewBasket() );
-        $this->assertEquals( 3333, $oBasket->oxuserbaskets__oxcreate->value );
         $this->assertEquals( 3333, $oBasket->oxuserbaskets__oxupdate->value );
     }
 }

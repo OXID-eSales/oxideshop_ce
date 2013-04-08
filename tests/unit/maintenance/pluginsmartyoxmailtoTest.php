@@ -41,7 +41,7 @@ class Unit_Maintenance_pluginSmartyOxMailToTest extends OxidTestCase
         $aParams['extra']      = 'extra';
         $aParams['text']       = 'text';
 
-        $oSmarty = new oxStdClass();
+        $oSmarty = new Smarty();
 
         $sMailTo  = "admin@myoxideshop.com?cc=cc@myoxideshop.com&bcc=bcc@myoxideshop.com&followupto=followupto@myoxideshop.com";
         $sMailTo .= "&subject=subject&newsgroups=newsgroups";

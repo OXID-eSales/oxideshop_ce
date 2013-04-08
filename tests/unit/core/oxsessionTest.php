@@ -116,7 +116,7 @@ class testSession extends oxSession
         if (isset( self::$_aSessionVars[$sVar]))
             return self::$_aSessionVars[$sVar];
 
-        return parent::getVar($sVar);
+        return oxRegistry::getSession()->getVariable( $sVar );
     }
 
     /**
@@ -289,7 +289,7 @@ class Unit_Core_oxsessionTest extends OxidTestCase
         $oSession->expects( $this->any() )->method( '_sessionStart');
         $oSession->start();
 
-        $aErrors = oxSession::getVar( 'Errors' );
+        $aErrors = $this->getSession()->getVariable( 'Errors' );
 
         $this->assertTrue( is_array( $aErrors ) );
         $this->assertEquals( 1, count( $aErrors ) );
@@ -304,12 +304,8 @@ class Unit_Core_oxsessionTest extends OxidTestCase
     {
         $sUrl = "someurl";
 
-        $oConfig = $this->getMock( "oxconfig", array( "isCurrentUrl" ) );
-        $oConfig->expects( $this->once() )->method( 'isCurrentUrl')->with( $this->equalTo( $sUrl ) )->will( $this->returnValue( false ) );
-
         $oSession = $this->getMock( "oxSession", array( "getConfig", '_getSessionUseCookies' ) );
         $oSession->expects( $this->once() )->method( '_getSessionUseCookies')->will( $this->returnValue( false ) );
-        $oSession->expects( $this->once() )->method( 'getConfig')->will( $this->returnValue( $oConfig ) );
         $this->assertTrue( $oSession->isSidNeeded( $sUrl ) );
     }
 
@@ -317,8 +313,8 @@ class Unit_Core_oxsessionTest extends OxidTestCase
     {
         $sUrl = "https://someurl";
 
-        $oConfig = $this->getMock( "oxconfig", array( "isSsl" ) );
-        $oConfig->expects( $this->once() )->method( 'isSsl')->will( $this->returnValue( false ) );
+        $oConfig = $this->getMock( "oxconfig", array( "isCurrentProtocol" ) );
+        $oConfig->expects( $this->once() )->method( 'isCurrentProtocol')->will( $this->returnValue( false ) );
 
         $oSession = $this->getMock( "oxSession", array( "getConfig", '_getSessionUseCookies', '_getCookieSid' ) );
         $oSession->expects( $this->once() )->method( '_getSessionUseCookies')->will( $this->returnValue( true ) );
@@ -490,7 +486,7 @@ class Unit_Core_oxsessionTest extends OxidTestCase
 
         $oSession = new oxsession();
         $this->assertTrue( $oSession->isSidNeeded() );
-        $this->assertTrue( oxSession::getVar( 'blSidNeeded' ) );
+        $this->assertTrue( $oSession->getVariable( 'blSidNeeded' ) );
     }
 
     public function testIsSidNeededRegularPageViewNoSessionNeeded()
@@ -653,9 +649,9 @@ class Unit_Core_oxsessionTest extends OxidTestCase
      */
     function testAllowSessionStartForSearchEngines()
     {
-        oxConfig::getInstance()->setGlobalParameter( 'blIsSearchEngine', true );
+        oxUtils::getInstance()->setSearchEngine(true);
         $this->assertFalse($this->oSession->UNITallowSessionStart());
-        oxConfig::getInstance()->setGlobalParameter( 'blIsSearchEngine', false );
+        oxUtils::getInstance()->setSearchEngine(false);
     }
 
     /**
@@ -681,9 +677,9 @@ class Unit_Core_oxsessionTest extends OxidTestCase
      */
     function testIsSwappedClientForSearchEngines()
     {
-        oxConfig::getInstance()->setGlobalParameter( 'blIsSearchEngine', true );
+        oxUtils::getInstance()->setSearchEngine(true);
         $this->assertFalse($this->oSession->UNITisSwappedClient());
-        oxConfig::getInstance()->setGlobalParameter( 'blIsSearchEngine', false );
+        oxUtils::getInstance()->setSearchEngine(false);
     }
 
     /**
@@ -705,7 +701,7 @@ class Unit_Core_oxsessionTest extends OxidTestCase
 
         $oSubj = $this->getMock("oxSession", array('_checkUserAgent'));
         $oSubj->expects($this->any())->method('_checkUserAgent')->will($this->returnValue(true));
-        $oSubj->setVar('_rtoken', 'test1');
+        $oSubj->setVariable( '_rtoken', 'test1' );
         $this->assertFalse( $oSubj->UNITisSwappedClient() );
     }
 
@@ -1051,7 +1047,7 @@ class Unit_Core_oxsessionTest extends OxidTestCase
      */
     function testSetSessionIdSearchEngines()
     {
-        oxConfig::getInstance()->setGlobalParameter( 'blIsSearchEngine', true );
+        oxUtils::getInstance()->setSearchEngine(true);
 
         $oSession = $this->getMock( "oxsession", array( "_getNewSessionId", "_allowSessionStart" ) );
         $oSession->expects( $this->any() )->method( '_getNewSessionId');
@@ -1075,7 +1071,7 @@ class Unit_Core_oxsessionTest extends OxidTestCase
         $this->assertNotEquals( $oSession->getId(), 'testSid');
 
         //teardown
-        oxConfig::getInstance()->setGlobalParameter( 'blIsSearchEngine', false );
+        oxUtils::getInstance()->setSearchEngine(false);
     }
 
     /**
@@ -1118,9 +1114,9 @@ class Unit_Core_oxsessionTest extends OxidTestCase
     {
         //taking real session object
         $testSession = new oxSession();
-        $testSession->setVar('testVar', 'testVal');
-        $this->assertTrue( $testSession->hasVar('testVar'));
-        $this->assertEquals( 'testVal', $testSession->getVar('testVar'));
+        $testSession->setVariable( 'testVar', 'testVal' );
+        $this->assertTrue( $testSession->hasVariable( 'testVar' ) );
+        $this->assertEquals( 'testVal', $testSession->getVariable( 'testVar' ) );
     }
 
     /**
@@ -1205,12 +1201,27 @@ class Unit_Core_oxsessionTest extends OxidTestCase
      */
     function testHiddenSidIsAdmin()
     {
-        $oSession = $this->getMock( 'testSession', array( 'isAdmin', 'getSessionChallengeToken' ) );
+        $oSession = $this->getMock( 'testSession', array( 'isAdmin', 'getSessionChallengeToken', 'isSidNeeded' ) );
         $oSession->expects( $this->any() )->method( 'getSessionChallengeToken')->will( $this->returnValue( 'stok' ) );
         $oSession->expects( $this->any() )->method( 'isAdmin')->will( $this->returnValue( true ) );
+        $oSession->expects( $this->any() )->method( 'isSidNeeded')->will( $this->returnValue( true ) );
         $oSession->UNITsetSessionId('testSid');
         $sSid = $oSession->hiddenSid();
-        $this->assertEquals('<input type="hidden" name="stoken" value="stok"><input type="hidden" name="force_sid" value="testSid">', $sSid);
+        $this->assertEquals('<input type="hidden" name="stoken" value="stok" /><input type="hidden" name="force_sid" value="testSid" />', $sSid);
+    }
+
+    /**
+     * oxsession::hiddenSid() test
+     */
+    function testHiddenSidIsAdminWithCookies()
+    {
+        $oSession = $this->getMock( 'testSession', array( 'isAdmin', 'getSessionChallengeToken', 'isSidNeeded' ) );
+        $oSession->expects( $this->any() )->method( 'getSessionChallengeToken')->will( $this->returnValue( 'stok' ) );
+        $oSession->expects( $this->any() )->method( 'isAdmin')->will( $this->returnValue( true ) );
+        $oSession->expects( $this->any() )->method( 'isSidNeeded')->will( $this->returnValue( false ) );
+        $oSession->UNITsetSessionId('testSid');
+        $sSid = $oSession->hiddenSid();
+        $this->assertEquals('<input type="hidden" name="stoken" value="stok" />', $sSid);
     }
 
     /**
@@ -1218,12 +1229,27 @@ class Unit_Core_oxsessionTest extends OxidTestCase
      */
     function testHiddenSidNotAdmin()
     {
-        $oSession = $this->getMock( 'testSession', array( 'isAdmin', 'getSessionChallengeToken' ) );
+        $oSession = $this->getMock( 'testSession', array( 'isAdmin', 'getSessionChallengeToken', 'isSidNeeded' ) );
         $oSession->expects( $this->any() )->method( 'getSessionChallengeToken')->will( $this->returnValue( 'stok' ) );
         $oSession->expects( $this->any() )->method( 'isAdmin')->will( $this->returnValue( false ) );
+        $oSession->expects( $this->any() )->method( 'isSidNeeded')->will( $this->returnValue( true ) );
         $oSession->UNITsetSessionId('testSid');
         $sSid = $oSession->hiddenSid();
-        $this->assertEquals('<input type="hidden" name="stoken" value="stok"><input type="hidden" name="force_sid" value="testSid">', $sSid);
+        $this->assertEquals('<input type="hidden" name="stoken" value="stok" /><input type="hidden" name="force_sid" value="testSid" />', $sSid);
+    }
+
+    /**
+     * oxsession::hiddenSid() test
+     */
+    function testHiddenSidNotAdminWithCookies()
+    {
+        $oSession = $this->getMock( 'testSession', array( 'isAdmin', 'getSessionChallengeToken', 'isSidNeeded' ) );
+        $oSession->expects( $this->any() )->method( 'getSessionChallengeToken')->will( $this->returnValue( 'stok' ) );
+        $oSession->expects( $this->any() )->method( 'isAdmin')->will( $this->returnValue( false ) );
+        $oSession->expects( $this->any() )->method( 'isSidNeeded')->will( $this->returnValue( false ) );
+        $oSession->UNITsetSessionId('testSid');
+        $sSid = $oSession->hiddenSid();
+        $this->assertEquals('<input type="hidden" name="stoken" value="stok" />', $sSid);
     }
 
     /**
@@ -1498,7 +1524,7 @@ class Unit_Core_oxsessionTest extends OxidTestCase
     public function testGetRemoteAccessTokenNotGenerated()
     {
         $oSubj = new oxSession();
-        $oSubj->deleteVar('_rtoken');
+        $oSubj->deleteVariable( '_rtoken' );
         $sTestToken = $oSubj->getRemoteAccessToken(false);
 
         $this->assertNull($sTestToken);
@@ -1512,7 +1538,7 @@ class Unit_Core_oxsessionTest extends OxidTestCase
     public function testGetRemoteAccessTokenTwice()
     {
         $oSubj = new oxSession();
-        $oSubj->deleteVar('_rtoken');
+        $oSubj->deleteVariable( '_rtoken' );
         $sToken1 = $oSubj->getRemoteAccessToken();
         $sToken2 = $oSubj->getRemoteAccessToken();
 
@@ -1525,7 +1551,7 @@ class Unit_Core_oxsessionTest extends OxidTestCase
         modConfig::setParameter('rtoken', 'test1');
 
         $oSubj = $this->getProxyClass('oxSession');
-        $oSubj->setVar('_rtoken', 'test1');
+        $oSubj->setVariable( '_rtoken', 'test1' );
         $this->assertTrue($oSubj->UNITisValidRemoteAccessToken());
     }
 
@@ -1534,7 +1560,7 @@ class Unit_Core_oxsessionTest extends OxidTestCase
         modConfig::setParameter('stoken', 'test1');
 
         $oSubj = $this->getProxyClass('oxSession');
-        $oSubj->setVar('_stoken', 'test2');
+        $oSubj->setVariable( '_stoken', 'test2' );
         $this->assertFalse($oSubj->UNITisValidRemoteAccessToken());
     }
 

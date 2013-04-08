@@ -65,7 +65,7 @@ class Unit_Setup_oxSetupApsTest extends OxidTestCase
     public function testInstall()
     {
         $iAt = 0;
-        $oUtils = $this->getMock( "oxStdClass", array( "getEnvVar", "checkPaths", "updateConfigFile", "updateHtaccessFile" ) );
+        $oUtils = $this->getMock( "oxSetupUtils", array( "getEnvVar", "checkPaths", "updateConfigFile", "updateHtaccessFile" ) );
         $oUtils->expects( $this->at( $iAt++ ) )->method( "getEnvVar" )->with( $this->equalTo( "DB_main_PORT" ) )->will( $this->returnValue( "testPort" ));
         $oUtils->expects( $this->at( $iAt++ ) )->method( "getEnvVar" )->with( $this->equalTo( "DB_main_HOST" ) )->will( $this->returnValue( "testHost" ));
         $oUtils->expects( $this->at( $iAt++ ) )->method( "getEnvVar" )->with( $this->equalTo( "DB_main_LOGIN" ) )->will( $this->returnValue( "testLogin" ));
@@ -88,7 +88,7 @@ class Unit_Setup_oxSetupApsTest extends OxidTestCase
         $oUtils->expects( $this->at( $iAt++ ) )->method( "updateHtaccessFile" );
 
         $iAt = 0;
-        $oDb = $this->getMock( "oxStdClass", array( "openDatabase", "setMySqlCollation", "queryFile", "saveDynPagesSettings", "convertConfigTableToUtf", "writeAdminLoginData" ) );
+        $oDb = $this->getMock( "oxSetupDb", array( "openDatabase", "setMySqlCollation", "queryFile", "saveDynPagesSettings", "convertConfigTableToUtf", "writeAdminLoginData" ) );
         $oDb->expects( $this->at( $iAt++ ) )->method( "openDatabase" );
         $oDb->expects( $this->at( $iAt++ ) )->method( "setMySqlCollation" );
         $oDb->expects( $this->at( $iAt++ ) )->method( "queryFile" );
@@ -117,18 +117,12 @@ class Unit_Setup_oxSetupApsTest extends OxidTestCase
     public function testRemove()
     {
         $iAt = 0;
-        $oUtils = $this->getMock( "oxStdClass", array( "removeDir"/*, "checkPaths", "updateConfigFile", "updateHtaccessFile"*/ ) );
+        $oUtils = $this->getMock( "oxSetupUtils", array( "removeDir" ) );
         $oUtils->expects( $this->at( $iAt++ ) )->method( "removeDir" );
-        //$oUtils->expects( $this->at( $iAt++ ) )->method( "getEnvVar" )->with( $this->equalTo( "DB_main_PORT" ) )->will( $this->returnValue( "testPort" ));
-        //$oUtils->expects( $this->at( $iAt++ ) )->method( "getEnvVar" )->with( $this->equalTo( "DB_main_HOST" ) )->will( $this->returnValue( "testHost" ));
-        //$oUtils->expects( $this->at( $iAt++ ) )->method( "getEnvVar" )->with( $this->equalTo( "DB_main_LOGIN" ) )->will( $this->returnValue( "testLogin" ));
-        //$oUtils->expects( $this->at( $iAt++ ) )->method( "getEnvVar" )->with( $this->equalTo( "DB_main_PASSWORD" ) )->will( $this->returnValue( "testPass" ));
-        //$oUtils->expects( $this->at( $iAt++ ) )->method( "getEnvVar" )->with( $this->equalTo( "DB_main_NAME" ) )->will( $this->returnValue( "testName" ));
 
         $iAt = 0;
         $oSetupAps = $this->getMock( "oxSetupAps", array( "getInstance" ) );
         $oSetupAps->expects( $this->at( $iAt++ ) )->method( "getInstance" )->with( $this->equalTo( "oxSetupUtils" ) )->will( $this->returnValue( $oUtils ));
-        //$oSetupAps->expects( $this->at( $iAt++ ) )->method( "getInstance" )->with( $this->equalTo( "oxSetupDb" ) )->will( $this->returnValue( $oDb ));
         $oSetupAps->remove();
     }
 
@@ -140,7 +134,7 @@ class Unit_Setup_oxSetupApsTest extends OxidTestCase
     public function testConfigure()
     {
         $iAt = 0;
-        $oUtils = $this->getMock( "oxStdClass", array( "getEnvVar", "generateUid" ) );
+        $oUtils = $this->getMock( "oxSetupUtils", array( "getEnvVar", "generateUid" ) );
         $oUtils->expects( $this->at( $iAt++ ) )->method( "getEnvVar" )->with( $this->equalTo( "DB_main_PORT" ) )->will( $this->returnValue( "testPort" ));
         $oUtils->expects( $this->at( $iAt++ ) )->method( "getEnvVar" )->with( $this->equalTo( "DB_main_HOST" ) )->will( $this->returnValue( "testHost" ));
         $oUtils->expects( $this->at( $iAt++ ) )->method( "getEnvVar" )->with( $this->equalTo( "DB_main_LOGIN" ) )->will( $this->returnValue( "testLogin" ));
@@ -151,11 +145,11 @@ class Unit_Setup_oxSetupApsTest extends OxidTestCase
         $oUtils->expects( $this->at( $iAt++ ) )->method( "generateUid" );
         $oUtils->expects( $this->at( $iAt++ ) )->method( "generateUid" );
 
-        $oDb = $this->getMock( "oxStdClass", array( "openDatabase", "execSql" ) );
+        $oDb = $this->getMock( "oxSetupDb", array( "openDatabase", "execSql" ) );
         $oDb->expects( $this->once() )->method( "openDatabase" );
         $oDb->expects( $this->exactly( 4 ) )->method( "execSql" );
 
-        $oSetup = $this->getMock( "oxStdClass", array( "getShopId" ) );
+        $oSetup = $this->getMock( "oxSetup", array( "getShopId" ) );
         $oSetup->expects( $this->once() )->method( "getShopId" );
 
         $iAt = 0;

@@ -131,7 +131,7 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
      */
     public function testGetPlainEditor()
     {
-        $oObject = new oxStdClass;
+        $oObject = new stdClass;
         $sEditorHtml = "<textarea id='editor_sField' style='width:100px; height:100px;'>sEditObjectValue</textarea>";
 
         $oAdminDetails = $this->getMock( 'oxadmindetails', array( '_getEditValue' ) );
@@ -157,10 +157,10 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
      */
     public function testGetEditValue()
     {
-        $oObject = new oxStdClass;
+        $oObject = new stdClass;
         $oObject->oField1 = new oxField( 'field1value' );
 
-        $oObject->oField2 = new oxStdClass;
+        $oObject->oField2 = new stdClass;
         $oObject->oField2->value = 'field2value';
 
         $oAdminDetails = new oxadmindetails();
@@ -176,7 +176,7 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
      */
     public function testGetEditValue_parseIsOff()
     {
-        $oObject = new oxStdClass;
+        $oObject = new stdClass;
         $oObject->oField = new oxField( 'test [{$oViewConf->getCurrentHomeDir()}]' );
 
         $myConfig = modConfig::getInstance();
@@ -247,9 +247,6 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
      */
     public function testGetTextEditor_httpsUrl()
     {
-        $oConfig = modConfig::getInstance();
-        $oConfig->setConfigParam( "sAdminSSLURL", "https://adminUrl" );
-
         $oAdminDetails = new oxadmindetails();
         $oEditor = $oAdminDetails->UNITgetTextEditor( 10, 10, new oxarticle, 'oxarticles__oxtitle', 'basket.tpl.css' );
 

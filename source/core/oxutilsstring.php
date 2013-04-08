@@ -46,25 +46,13 @@ class oxUtilsString
     /**
      * Returns string manipulation utility instance
      *
+     * @deprecated since v5.0 (2012-08-10); Use oxRegistry::get("oxUtilsString") instead.
+     *
      * @return oxUtilsString
      */
     public static function getInstance()
     {
-        // disable caching for test modules
-        if ( defined( 'OXID_PHP_UNIT' ) ) {
-            self::$_instance = modInstances::getMod( __CLASS__ );
-        }
-
-        if ( !self::$_instance instanceof oxUtilsString ) {
-
-
-            self::$_instance = oxNew( 'oxUtilsString' );
-
-            if ( defined( 'OXID_PHP_UNIT' ) ) {
-                modInstances::addMod( __CLASS__, self::$_instance);
-            }
-        }
-        return self::$_instance;
+        return oxRegistry::get("oxUtilsString");
     }
 
 

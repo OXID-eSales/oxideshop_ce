@@ -41,7 +41,7 @@ class oxDisplayError implements oxIDisplayError
      */
     public function getOxMessage()
     {
-        return oxLang::getInstance()->translateString( $this->_sMessage );
+        return oxRegistry::getLang()->translateString( $this->_sMessage );
     }
 
     /**

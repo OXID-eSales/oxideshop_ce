@@ -38,10 +38,10 @@ class Unit_Setup_oxSetupDispatcherTest extends OxidTestCase
      */
     public function testRun()
     {
-        $oView = $this->getMock( "oxStdClass", array( "display" ) );
+        $oView = $this->getMock( "oxSetupView", array( "display" ) );
         $oView->expects( $this->once() )->method( "display" );
 
-        $oController = $this->getMock( "oxStdClass", array( "getView", "testAction" ) );
+        $oController = $this->getMock( "oxSetupController", array( "getView", "testAction" ) );
         $oController->expects( $this->once() )->method( "getView" )->will( $this->returnValue( $oView ) );
         $oController->expects( $this->once() )->method( "testAction" );
 
@@ -58,7 +58,7 @@ class Unit_Setup_oxSetupDispatcherTest extends OxidTestCase
      */
     public function testChooseCurrentAction()
     {
-        $oSetup = $this->getMock( "oxStdClass", array( "getCurrentStep", "getSteps" ) );
+        $oSetup = $this->getMock( "oxSetup", array( "getCurrentStep", "getSteps" ) );
         $oSetup->expects( $this->once() )->method( "getCurrentStep" )->will( $this->returnValue( 1 ));
         $oSetup->expects( $this->once() )->method( "getSteps" )->will( $this->returnValue( array( "step1" => 0, "step2" => 1 ) ));
 

@@ -1,0 +1,218 @@
+<?php
+/**
+ *    This file is part of OXID eShop Community Edition.
+ *
+ *    OXID eShop Community Edition is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
+ *    (at your option) any later version.
+ *
+ *    OXID eShop Community Edition is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU General Public License for more details.
+ *
+ *    You should have received a copy of the GNU General Public License
+ *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @link      http://www.oxid-esales.com
+ * @package   tests
+ * @copyright (C) OXID eSales AG 2003-2013
+ * @version OXID eShop CE
+ * @version   SVN: $Id: deliveryarticlesajaxTest.php 31986 2010-12-17 14:03:45Z sarunas $
+ */
+
+require_once realpath( "." ).'/unit/OxidTestCase.php';
+require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once getShopBasePath().'/admin/oxajax.php';
+
+/**
+ * Tests for News_Main_Ajax class
+ */
+class Unit_Admin_NewsletterSelectionAjaxTest extends OxidTestCase
+{
+    protected $_sGroupsView = 'oxv_oxgroups_de';
+    
+    /**
+     * Initialize the fixture.
+     *
+     * @return null
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+        
+        oxDb::getDb()->execute( "insert into oxobject2group set oxid='_testGroupRemove1', oxobjectid='_testGroupRemove'" );
+        oxDb::getDb()->execute( "insert into oxobject2group set oxid='_testGroupRemove2', oxobjectid='_testGroupRemove'" );
+
+        oxDb::getDb()->execute( "insert into oxobject2group set oxid='_testGroupRemoveAll1', oxobjectid='_testGroupRemoveAll', oxgroupsid='_testGroup1'" );
+        oxDb::getDb()->execute( "insert into oxobject2group set oxid='_testGroupRemoveAll2', oxobjectid='_testGroupRemoveAll', oxgroupsid='_testGroup2'" );
+        oxDb::getDb()->execute( "insert into oxobject2group set oxid='_testGroupRemoveAll3', oxobjectid='_testGroupRemoveAll', oxgroupsid='_testGroup3'" );
+        
+        oxDb::getDb()->execute( "insert into oxgroups set oxid='_testGroup1', oxtitle='_testGroup1'" );
+        oxDb::getDb()->execute( "insert into oxgroups set oxid='_testGroup2', oxtitle='_testGroup2'" );
+        oxDb::getDb()->execute( "insert into oxgroups set oxid='_testGroup3', oxtitle='_testGroup3'" );
+    }
+    
+    /**
+     * Tear down the fixture.
+     *
+     * @return null
+     */
+    protected function tearDown()
+    {
+        oxDb::getDb()->execute( "delete from oxobject2group where oxobjectid='_testGroupRemove'" );
+        oxDb::getDb()->execute( "delete from oxobject2group where oxobjectid='_testGroupRemoveAll'" );
+        oxDb::getDb()->execute( "delete from oxobject2group where oxobjectid='_testGroupAdd'" );
+        oxDb::getDb()->execute( "delete from oxobject2group where oxobjectid='_testGroupAddAll'" );
+        
+        oxDb::getDb()->execute( "delete from oxgroups where oxid='_testGroup1'" );
+        oxDb::getDb()->execute( "delete from oxgroups where oxid='_testGroup2'" );
+        oxDb::getDb()->execute( "delete from oxgroups where oxid='_testGroup3'" );
+        
+        parent::tearDown();
+    }
+    
+    public function setGroupsViewTable( $sParam )
+    {
+        $this->_sGroupsView = $sParam;
+    }
+    
+    public function getGroupsViewTable()
+    {
+        return $this->_sGroupsView;
+    }
+    
+    /**
+     * NewsletterSelectionAjax::_getQuery() test case
+     *
+     * @return null
+     */
+    public function testGetQuery()
+    {
+        $oView = oxNew( 'newsletter_selection_ajax' );
+        $this->assertEquals( "from oxv_oxgroups_de where 1" , trim( $oView->UNITgetQuery() ) );
+    }
+    
+    /**
+     * NewsletterSelectionAjax::_getQuery() test case
+     *
+     * @return null
+     */
+    public function testGetQuerySynchoxid()
+    {
+        $sSynchoxid = '_testAction';
+        $this->getConfig()->setParameter( "synchoxid", $sSynchoxid );
+        
+        $oView = oxNew( 'newsletter_selection_ajax' );
+        $this->assertEquals( "from oxv_oxgroups_de where 1  and oxv_oxgroups_de.oxid not in (  select oxv_oxgroups_de.oxid from oxobject2group left join oxv_oxgroups_de on oxobject2group.oxgroupsid=oxv_oxgroups_de.oxid  where oxobject2group.oxobjectid = '".$sSynchoxid."' )", trim( $oView->UNITgetQuery() ) );
+    }
+    
+    /**
+     * NewsletterSelectionAjax::_getQuery() test case
+     *
+     * @return null
+     */
+    public function testGetQueryOxid()
+    {
+        $sOxid = '_testAction';
+        $this->getConfig()->setParameter( "oxid", $sOxid );
+        
+        $oView = oxNew( 'newsletter_selection_ajax' );
+        $this->assertEquals( "from oxobject2group left join oxv_oxgroups_de on oxobject2group.oxgroupsid=oxv_oxgroups_de.oxid  where oxobject2group.oxobjectid = '".$sOxid."'", trim( $oView->UNITgetQuery() ) );
+    }
+    
+    /**
+     * NewsletterSelectionAjax::_getQuery() test case
+     *
+     * @return null
+     */
+    public function testGetQueryOxidSynchoxid()
+    {
+        $sOxid = '_testAction';
+        $sSynchoxid = '_testActionSynch';
+        $this->getConfig()->setParameter( "oxid", $sOxid );
+        $this->getConfig()->setParameter( "synchoxid", $sSynchoxid );
+        
+        $oView = oxNew( 'newsletter_selection_ajax' );
+        $this->assertEquals( "from oxobject2group left join oxv_oxgroups_de on oxobject2group.oxgroupsid=oxv_oxgroups_de.oxid  where oxobject2group.oxobjectid = '".$sOxid."' and oxv_oxgroups_de.oxid not in (  select oxv_oxgroups_de.oxid from oxobject2group left join oxv_oxgroups_de on oxobject2group.oxgroupsid=oxv_oxgroups_de.oxid  where oxobject2group.oxobjectid = '".$sSynchoxid."' )", trim( $oView->UNITgetQuery() ) );
+    }
+    
+    /**
+     * NewsletterSelectionAjax::removeGroupFromNewsletter() test case
+     *
+     * @return null
+     */
+    public function testRemoveGroupFromNewsletter()
+    {
+        $oView = $this->getMock( "newsletter_selection_ajax", array( "_getActionIds" ) );
+        $oView->expects( $this->any() )->method( '_getActionIds')->will( $this->returnValue( array( '_testGroupRemove1', '_testGroupRemove2' ) ) );
+        
+        $sSql = "select count(oxid) from oxobject2group where oxid in ('_testGroupRemove1', '_testGroupRemove2')";
+        $this->assertEquals( 2, oxDb::getDb()->getOne( $sSql ) );
+        $oView->removeGroupFromNewsletter();
+        $this->assertEquals( 0, oxDb::getDb()->getOne( $sSql ) );
+    }
+    
+    /**
+     * NewsletterSelectionAjax::removeGroupFromNewsletter() test case
+     *
+     * @return null
+     */
+    public function testRemoveGroupFromNewsletterAll()
+    {
+        $sOxid = '_testGroupRemoveAll';
+        $this->getConfig()->setParameter( "oxid", $sOxid );
+        $this->getConfig()->setParameter( "all", true );
+        
+        $sSql = "select count(oxid) from oxobject2group where oxobjectid = '".$sOxid."'";
+        $oView = oxNew( 'newsletter_selection_ajax' );
+        $this->assertEquals( 3, oxDb::getDb()->getOne( $sSql ) );
+        $oView->removeGroupFromNewsletter();
+        $this->assertEquals( 0, oxDb::getDb()->getOne( $sSql ) );
+    }
+    
+    /**
+     * NewsletterSelectionAjax::addGroupToNewsletter() test case
+     *
+     * @return null
+     */
+    public function testAddGroupToNewsletter()
+    {
+        $sSynchoxid = '_testGroupAdd';
+        $this->getConfig()->setParameter( "synchoxid", $sSynchoxid );
+        
+        $sSql = "select count(oxid) from oxobject2group where oxobjectid='$sSynchoxid'";
+        $this->assertEquals( 0, oxDb::getDb()->getOne( $sSql ) );
+        
+        $oView = $this->getMock( "newsletter_selection_ajax", array( "_getActionIds" ) );
+        $oView->expects( $this->any() )->method( '_getActionIds')->will( $this->returnValue( array( '_testGroupAdd1', '_testGroupAdd2' ) ) );
+        
+        $oView->addGroupToNewsletter();
+        $this->assertEquals( 2, oxDb::getDb()->getOne( $sSql ) );
+    }
+    
+    /**
+     * NewsletterSelectionAjax::addGroupToNewsletter() test case
+     *
+     * @return null
+     */
+    public function testAddGroupToNewsletterAll()
+    {
+        $sSynchoxid = '_testGroupAddAll';
+        $this->getConfig()->setParameter( "synchoxid", $sSynchoxid );
+        $this->getConfig()->setParameter( "all", true );
+        
+        //count how much articles gets filtered
+        $iCount = oxDb::getDb()->getOne( "select count(oxv_oxgroups_de.oxid) from oxv_oxgroups_de where 1  and oxv_oxgroups_de.oxid not in ( select oxv_oxgroups_de.oxid from oxobject2group left join oxv_oxgroups_de on oxobject2group.oxgroupsid=oxv_oxgroups_de.oxid  where oxobject2group.oxobjectid = '".$sSynchoxid."' )" );
+        
+        $sSql = "select count(oxid) from oxobject2group where oxobjectid='$sSynchoxid'";
+        $this->assertEquals( 0, oxDb::getDb()->getOne( $sSql ) );
+        
+        $oView = $this->getMock( "newsletter_selection_ajax", array( "_getActionIds" ) );
+        $oView->expects( $this->any() )->method( '_getActionIds')->will( $this->returnValue( array( '_testGroupAdd1', '_testGroupAdd2' ) ) );
+        
+        $oView->addGroupToNewsletter();
+        $this->assertEquals( $iCount, oxDb::getDb()->getOne( $sSql ) );
+    }
+}

@@ -38,7 +38,7 @@
  */
 function smarty_insert_oxid_newbasketitem($params, &$smarty)
 {
-    $myConfig  = oxConfig::getInstance();
+    $myConfig  = oxRegistry::getConfig();
 
     $aTypes = array('0' => 'none','1' => 'message', '2' =>'popup', '3' =>'basket');
     $iType  = $myConfig->getConfigParam( 'iNewBasketItemMessage' );
@@ -56,7 +56,7 @@ function smarty_insert_oxid_newbasketitem($params, &$smarty)
 
     //fetching article data
     $oNewItem = oxSession::getVar( '_newitem' );
-    $oBasket  = oxSession::getInstance()->getBasket();
+    $oBasket  = oxRegistry::getSession()->getBasket();
 
     if ( $oNewItem ) {
         // loading article object here because on some system passing article by session couses problems

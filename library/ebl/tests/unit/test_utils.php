@@ -435,7 +435,7 @@ abstract class modOXID
     // instance.
     // NOTE: after cleanup, all changes to oxConfig while modConfig was active are LOST.
     //        if (array_key_exists($nm, $this->_vars)) {
-            $this->_vars[$nm] = &$val;
+            $this->_vars[$nm] = $val;
     //            return;
     //        }
     //        $this->_oRealInstance->$nm = &$val;
@@ -916,7 +916,6 @@ if (!function_exists('stripCodeLines')) {
     {
         if (!file_exists($sFile)) {
             throw new Exception("\n".'File "'.$sFile.'" does not exists, skipping');
-            return null;
         }
 
 

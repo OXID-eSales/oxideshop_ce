@@ -49,25 +49,13 @@ class oxUtilsPic extends oxSuperCfg
     /**
      * Returns image utils instance
      *
+     * @deprecated since v5.0 (2012-08-10); Use oxRegistry::get("oxUtilsPic") instead
+     *
      * @return oxUtilsPic
      */
     public static function getInstance()
     {
-        // disable caching for test modules
-        if ( defined( 'OXID_PHP_UNIT' ) ) {
-            self::$_instance = modInstances::getMod( __CLASS__ );
-        }
-
-        if ( !self::$_instance instanceof oxUtilsPic ) {
-
-
-            self::$_instance = oxNew( 'oxUtilsPic' );
-
-            if ( defined( 'OXID_PHP_UNIT' ) ) {
-                modInstances::addMod( __CLASS__, self::$_instance);
-            }
-        }
-        return self::$_instance;
+        return oxRegistry::get("oxUtilsPic");
     }
 
 
@@ -194,7 +182,7 @@ class oxUtilsPic extends oxSuperCfg
         if ( isset( $oObject->{$sPic} ) &&
              ( $_FILES['myfile']['size'][$sPicType.'@'.$sPic] > 0 || $aParams[$sPic] != $oObject->{$sPic}->value ) ) {
 
-            $sImgDir = $sAbsDynImageDir . oxUtilsFile::getInstance()->getImageDirByType($sPicType);
+            $sImgDir = $sAbsDynImageDir . oxRegistry::get("oxUtilsFile")->getImageDirByType($sPicType);
             $blDelete = $this->safePictureDelete($oObject->{$sPic}->value, $sImgDir, $sPicTable, $sPicField );
         }
 

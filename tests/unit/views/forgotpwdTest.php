@@ -50,7 +50,7 @@ class Unit_Views_forgotpwdTest extends OxidTestCase
      */
     public function testGetForgotEmail()
     {
-        modConfig::setParameter( 'lgn_usr', 'testuser' );
+        $this->setRequestParam( 'lgn_usr', 'testuser' );
         $oForgotPwd = $this->getProxyClass( 'forgotpwd' );
         $oForgotPwd->forgotPassword();
         $this->assertFalse( $oForgotPwd->getForgotEmail() );
@@ -66,7 +66,7 @@ class Unit_Views_forgotpwdTest extends OxidTestCase
         $oView = new forgotpwd();
         $this->assertNull( $oView->getUpdateId() );
 
-        modConfig::setParameter( 'uid', 'testuid' );
+        $this->setRequestParam( 'uid', 'testuid' );
         $this->assertEquals( 'testuid', $oView->getUpdateId() );
     }
 
@@ -80,7 +80,7 @@ class Unit_Views_forgotpwdTest extends OxidTestCase
         $oView = new forgotpwd();
         $this->assertFalse( $oView->showUpdateScreen() );
 
-        modConfig::setParameter( 'uid', 'testuid' );
+        $this->setRequestParam( 'uid', 'testuid' );
         $this->assertTrue( $oView->showUpdateScreen() );
     }
 
@@ -94,7 +94,7 @@ class Unit_Views_forgotpwdTest extends OxidTestCase
         $oView = new forgotpwd();
         $this->assertFalse( $oView->updateSuccess() );
 
-        modConfig::setParameter( 'success', 'testsuccess' );
+        $this->setRequestParam( 'success', 'testsuccess' );
         $this->assertTrue( $oView->updateSuccess() );
     }
 
@@ -111,8 +111,8 @@ class Unit_Views_forgotpwdTest extends OxidTestCase
         $oView = new forgotpwd();
 
         // no pass
-        modConfig::setParameter( 'password_new', null );
-        modConfig::setParameter( 'password_new_confirm', null );
+        $this->setRequestParam( 'password_new', null );
+        $this->setRequestParam( 'password_new_confirm', null );
         try {
             $blExcp = false;
             $oView->updatePassword();
@@ -122,8 +122,8 @@ class Unit_Views_forgotpwdTest extends OxidTestCase
         $this->assertTrue( $blExcp );
 
         // pass does not match
-        modConfig::setParameter( 'password_new', 'aaaaaa' );
-        modConfig::setParameter( 'password_new_confirm', 'bbbbbb' );
+        $this->setRequestParam('password_new', 'aaaaaa' );
+        $this->setRequestParam( 'password_new_confirm', 'bbbbbb' );
         try {
             $blExcp = false;
             $oView->updatePassword();
@@ -133,8 +133,8 @@ class Unit_Views_forgotpwdTest extends OxidTestCase
         $this->assertTrue( $blExcp );
 
         // pass too short
-        modConfig::setParameter( 'password_new', 'aaa' );
-        modConfig::setParameter( 'password_new_confirm', 'aaa' );
+        $this->setRequestParam( 'password_new', 'aaa' );
+        $this->setRequestParam( 'password_new_confirm', 'aaa' );
         try {
             $blExcp = false;
             $oView->updatePassword();
@@ -155,9 +155,9 @@ class Unit_Views_forgotpwdTest extends OxidTestCase
         // overriding utility function
         oxTestModules::addFunction( "oxUtilsView", "addErrorToDisplay", "{ throw new Exception( \$aA[0] ); }");
 
-        modConfig::setParameter( 'uid', 'aaaaaa' );
-        modConfig::setParameter( 'password_new', 'aaaaaa' );
-        modConfig::setParameter( 'password_new_confirm', 'aaaaaa' );
+        $this->setRequestParam( 'uid', 'aaaaaa' );
+        $this->setRequestParam( 'password_new', 'aaaaaa' );
+        $this->setRequestParam( 'password_new_confirm', 'aaaaaa' );
 
         $oView = new forgotpwd();
 
@@ -185,9 +185,9 @@ class Unit_Views_forgotpwdTest extends OxidTestCase
         $oUser->setUpdateKey();
 
         // overriding utility function
-        modConfig::setParameter( 'uid', $oUser->getUpdateId() );
-        modConfig::setParameter( 'password_new', 'aaaaaa' );
-        modConfig::setParameter( 'password_new_confirm', 'aaaaaa' );
+        $this->setRequestParam( 'uid', $oUser->getUpdateId() );
+        $this->setRequestParam( 'password_new', 'aaaaaa' );
+        $this->setRequestParam( 'password_new_confirm', 'aaaaaa' );
 
         $oView = new forgotpwd();
         $this->assertEquals( 'forgotpwd?success=1', $oView->updatePassword() );
@@ -214,14 +214,28 @@ class Unit_Views_forgotpwdTest extends OxidTestCase
     public function testUpdatePassword_passwordSpecChars()
     {
         $sPass = '&quot;&#34;"o?p[]XfdKvA=#3K8tQ%';
-        modConfig::setParameter( 'password_new', $sPass );
-        modConfig::setParameter( 'password_new_confirm', $sPass );
+        $this->setRequestParam( 'password_new', $sPass );
+        $this->setRequestParam( 'password_new_confirm', $sPass );
 
-        $oUser = $this->getMock( 'oxStdClass', array( 'checkPassword' ) );
+        $oUser = $this->getMock( 'oxUser', array( 'checkPassword' ) );
         $oUser->expects( $this->once() )->method( 'checkPassword' )->with( $this->equalTo( $sPass ), $this->equalTo( $sPass ), $this->equalTo( true ) )->will( $this->returnValue( new oxException() ) );
         oxTestModules::addModuleObject( 'oxuser', $oUser );
 
         $oView = new ForgotPwd();
         $oView->updatePassword();
     }
+
+    /**
+     * Test if link is expired
+     *
+     * @return null
+     */
+    public function testIsExpiredLink()
+    {
+        $this->setRequestParam( 'uid', 'aaaaaa' );
+
+        $oView = new forgotpwd();
+        $this->assertTrue( $oView->isExpiredLink() );
+    }
+
 }

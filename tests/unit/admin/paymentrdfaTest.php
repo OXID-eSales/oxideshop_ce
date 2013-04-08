@@ -126,7 +126,7 @@ class Unit_Admin_PaymentRDFaTest extends OxidTestCase
 
         $this->assertTrue( is_array($aCurrResp), 'Array should be returned' );
         $this->assertTrue( count($aCurrResp) > 0, 'Empty array returned' );
-        $this->assertTrue( current($aCurrResp) instanceof oxStdClass, 'Array elements should be of type oxStdClass' );
+        $this->assertTrue( current($aCurrResp) instanceof stdClass, 'Array elements should be of type stdClass' );
 
         $blFound = false;
         foreach ($aCurrResp as $oItem) {

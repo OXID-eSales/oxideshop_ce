@@ -54,6 +54,7 @@ class Unit_Admin_VoucherSerieExportTest extends OxidTestCase
         $myConfig = modConfig::getInstance();
 
         $myConfig->setConfigParam( "sAdminSSLURL", "sAdminSSLURL" );
+        oxUtilsUrl::getInstance()->setAdminMode( true );
         $sUrl = oxUtilsUrl::getInstance()->processUrl( 'sAdminSSLURL/index.php' );
 
         // ssl

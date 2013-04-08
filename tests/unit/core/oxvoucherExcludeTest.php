@@ -450,7 +450,8 @@ class Unit_Core_oxvoucherExcludeTest extends OxidTestCase
      */
     public function testGetProductDiscountValue_ThrowNoArticleException ()
     {
-        $oVoucher=oxNew('oxvoucher');
+        $oVoucher = $this->getMock( 'oxvoucher', array( 'isAdmin' ) );
+        $oVoucher->expects( $this->any() )->method( 'isAdmin' )->will( $this->returnValue( false ) );
         $oVoucher->load('test_111');
 
         // there are no items in basket matching this discount, expectig exception
@@ -475,7 +476,8 @@ class Unit_Core_oxvoucherExcludeTest extends OxidTestCase
      */
     public function testGetCategoryDiscountValue_ThrowNoArticleException ()
     {
-        $oVoucher=oxNew('oxvoucher');
+        $oVoucher = $this->getMock( 'oxvoucher', array( 'isAdmin' ) );
+        $oVoucher->expects( $this->any() )->method( 'isAdmin' )->will( $this->returnValue( false ) );
         $oVoucher->load('test_333');
 
         // there are no items in basket matching this discount, expectig exception

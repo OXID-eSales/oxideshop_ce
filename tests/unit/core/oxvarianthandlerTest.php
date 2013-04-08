@@ -74,7 +74,7 @@ class Unit_Core_oxvarianthandlerTest extends OxidTestCase
     {
         oxConfig::getInstance()->setConfigParam( 'bl_perfUseSelectlistPrice', 1 );
         oxConfig::getInstance()->setConfigParam( 'bl_perfLoadSelectLists', 1 );
-        $oValue = new oxStdClass();
+        $oValue = new stdClass();
         $oValue->price = '10';
         $oValue->fprice = '10,00';
         $oValue->priceUnit = 'abs';
@@ -86,7 +86,7 @@ class Unit_Core_oxvarianthandlerTest extends OxidTestCase
         $oValue->priceUnit = '%';
         $this->assertEquals( 1, $oVariantHandler->UNITgetValuePrice( $oValue, 10 ));
 
-        $oValue = new oxStdClass();
+        $oValue = new stdClass();
         $oValue->price  = -10;
         $oValue->fprice = '10,00';
         $oValue->priceUnit = '%';
@@ -98,14 +98,14 @@ class Unit_Core_oxvarianthandlerTest extends OxidTestCase
     public function testAssignValues()
     {
         $myDB = oxDb::getDB();
-        $oValue = new oxStdClass();
+        $oValue = new stdClass();
         $oValue->price = '10';
         $oValue->fprice = '10,00';
         $oValue->priceUnit = 'abs';
         $oValue->name = 'red';
         $oValue->value = '';
         $aValues[0] = $oValue;
-        $oValue2 = new oxStdClass();
+        $oValue2 = new stdClass();
         $oValue2->price = '10';
         $oValue2->fprice = '10,00';
         $oValue2->priceUnit = 'abs';
@@ -186,8 +186,8 @@ class Unit_Core_oxvarianthandlerTest extends OxidTestCase
                          'oxarticles__oxprice'          => "10",
                          'oxarticles__oxvarselect_1'    => "_testVar_1",
                          'oxarticles__oxid'             => "_testVar",
-                         'oxarticles__oxisconfigurable' => "1"
-        );
+                         'oxarticles__oxisconfigurable' => "1",
+                         );
         $oVariantHandler = oxNew("oxVariantHandler");
         $sVariantId = $oVariantHandler->UNITcreateNewVariant( $aParams, "_testArt" );
         $oVariant = oxNew("oxarticle");
@@ -213,7 +213,7 @@ class Unit_Core_oxvarianthandlerTest extends OxidTestCase
     {
         modConfig::getInstance()->setConfigParam( "blUseMultidimensionVariants", true );
 
-        $oArticle = new oxStdClass();
+        $oArticle = new oxArticle();
         $oArticle->oxarticles__oxvarselect = new oxField( " value | value ");
 
         $oVariantHandler = oxNew("oxVariantHandler");

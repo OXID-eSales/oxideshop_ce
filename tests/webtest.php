@@ -22,6 +22,8 @@
  * @version   SVN: $Id: $
  */
 
+error_reporting(E_ALL ^ E_NOTICE);
+
 if (isset($_GET["testClass"],$_GET["testMethod"])) {
     $testClass  = htmlspecialchars($_GET["testClass"]);
     $testMethod = htmlspecialchars($_GET["testMethod"]);
@@ -50,7 +52,7 @@ $aArg = $_GET;
 unset($aArg['XDEBUG_SESSION_START']);
 $aArg = array_keys($aArg);
 
-if (!$testClass) {
+if (!isset($testClass) || !$testClass) {
     exit();
 }
 
@@ -67,7 +69,9 @@ $aArgs[] = $testClass;
 
 $_SERVER['argv'] = $aArgs;
 
-set_include_path(".:/htdocs/oxideshop/eshop/library/PHPUnit:/htdocs/oxideshop/eshop/library/:/htdocs/oxideshop/eshop/tests/");
+$sCurrentDir = dirname(__FILE__);
+
+set_include_path(".:" . $sCurrentDir . "/../library/PHPUnit:" . $sCurrentDir . "/../library/:" . $sCurrentDir . "/" );
 
 echo "<pre>";
 require $sEShopDir.'/library/PHPUnit/phpunit.php';

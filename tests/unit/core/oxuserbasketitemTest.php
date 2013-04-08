@@ -217,12 +217,8 @@ class Unit_Core_oxuserbasketitemTest extends OxidTestCase
         $this->assertEquals( $oArticle->getItemKey(), "123" );
 
         // if thi line one day will faile, probebly becaus these parameters are not public any more :)
-        $this->assertTrue( $oArticle->getClassVar('_blSkipAbPrice') );
         // removed due to #4178
         //$this->assertFalse( $oArticle->getClassVar('_blLoadVariants') );
-
-        //$this->assertTrue( $oArticle->getNonPublicVar('_blForceSkipAbPrice') );
-        //$this->assertTrue( $oArticle->getNonPublicVar('_blDoNotLoadVariants') );
     }
     // testing article title formatting - article has NO parent
     public function testGetArticleTitleFormatterArticleHasNoParent()
@@ -257,29 +253,29 @@ class Unit_Core_oxuserbasketitemTest extends OxidTestCase
 
         $oArticle = $oBasketItem->getArticle( "123" );
 
-        $oR = new oxstdclass();
+        $oR = new stdclass();
         $oR->name     = 'R, 10';
         $oR->value = null;
         $oR->selected = 1;
 
-        $oG = new oxstdclass();
+        $oG = new stdclass();
         $oG->name  = 'G, 20';
         $oG->value = null;
 
-        $oB = new oxstdclass();
+        $oB = new stdclass();
         $oB->name  = 'B, 30';
         $oB->value = null;
 
-        $oS = new oxstdclass();
+        $oS = new stdclass();
         $oS->name     = 'S, 10';
         $oS->value = null;
 
-        $oM = new oxstdclass();
+        $oM = new stdclass();
         $oM->name  = 'M, 20';
         $oM->value = null;
         $oM->selected = 1;
 
-        $oL = new oxstdclass();
+        $oL = new stdclass();
         $oL->name  = 'L, 30';
         $oL->value = null;
 

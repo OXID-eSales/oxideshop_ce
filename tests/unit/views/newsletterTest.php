@@ -125,11 +125,6 @@ class Unit_Views_newsletterTest extends OxidTestCase
         $this->assertEquals(3, $iStatus );
     }
 
-    /**
-     * Test get newsletter status after add.
-     *
-     * @return null
-     */
     public function testGetNewsletterStatusAfterAddme()
     {
         $oUser = oxNew( 'oxuser' );

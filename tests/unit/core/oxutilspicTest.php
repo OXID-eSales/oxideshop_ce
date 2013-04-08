@@ -225,7 +225,7 @@ class Unit_Core_oxUtilsPicTest extends OxidTestCase
         $oUtilsPic = $this->getMock( 'oxutilspic', array( 'safePictureDelete' ) );
         $oUtilsPic->expects( $this->never() )->method( 'safePictureDelete');
 
-        $blFalse = $oUtilsPic->overwritePic( new Oxstdclass(), 'xxx', 'xxx', '', '', '', '' );
+        $blFalse = $oUtilsPic->overwritePic( new stdClass(), 'xxx', 'xxx', '', '', '', '' );
         $this->assertFalse( $blFalse );
     }
     // params are not ok
@@ -234,7 +234,7 @@ class Unit_Core_oxUtilsPicTest extends OxidTestCase
         $oUtilsPic = $this->getMock( 'oxutilspic', array( 'safePictureDelete' ) );
         $oUtilsPic->expects( $this->never() )->method( 'safePictureDelete');
 
-        $oObject = new Oxstdclass();
+        $oObject = new stdClass();
         $oObject->oxtbl__oxpic = new oxField('yyy', oxField::T_RAW);
 
         $blFalse = $oUtilsPic->overwritePic( $oObject, 'oxtbl', 'oxpic', '', '', array( 'oxtbl__oxpic' => 'yyy' ), '' );
@@ -245,12 +245,12 @@ class Unit_Core_oxUtilsPicTest extends OxidTestCase
     {
         $oFiles = $this->getMock('oxUtilsFile', array('getImageDirByType'));
         $oFiles->expects( $this->atLeastOnce() )->method('getImageDirByType')->will( $this->returnValue('/test_image_dir/') );
-        modInstances::addMod('oxUtilsFile', $oFiles);
+        oxTestModules::addModuleObject('oxUtilsFile', $oFiles);
 
         $oUtilsPic = $this->getMock( 'oxutilspic', array( 'safePictureDelete' ) );
         $oUtilsPic->expects( $this->once() )->method( 'safePictureDelete')->with( $this->equalTo( 'yyy' ), $this->equalTo( 'yyy/test_image_dir/' ), $this->equalTo( 'oxtbl' ), $this->equalTo( 'oxpic' ) )->will( $this->returnValue( true ) );
 
-        $oObject = new Oxstdclass();
+        $oObject = new stdClass();
         $oObject->oxtbl__oxpic = new oxField('yyy', oxField::T_RAW);
 
         $blTrue = $oUtilsPic->overwritePic( $oObject, 'oxtbl', 'oxpic', 'TEST_TYPE', '', array( 'oxtbl__oxpic' => 'xxx' ), 'yyy' );
@@ -262,12 +262,12 @@ class Unit_Core_oxUtilsPicTest extends OxidTestCase
     {
         $oFiles = $this->getMock('oxUtilsFile', array('getImageDirByType'));
         $oFiles->expects( $this->atLeastOnce() )->method('getImageDirByType')->will( $this->returnValue('/testType_dir/') );
-        modInstances::addMod('oxUtilsFile', $oFiles);
+        oxTestModules::addModuleObject('oxUtilsFile', $oFiles);
 
         $oUtilsPic = $this->getMock( 'oxutilspic', array( 'safePictureDelete' ) );
         $oUtilsPic->expects( $this->once() )->method( 'safePictureDelete')->with( $this->equalTo( 'testPictureName' ), $this->equalTo( 'testAbsPath/testType_dir/' ) );
 
-        $oObject = new Oxstdclass();
+        $oObject = new stdclass();
         $oObject->oxtbl__oxpic = new oxField('testPictureName', oxField::T_RAW);
 
         $blTrue = $oUtilsPic->overwritePic( $oObject, 'oxtbl', 'oxpic', 'testType', 'testPath', array( 'oxtbl__oxpic' => 'xxx' ), 'testAbsPath' );

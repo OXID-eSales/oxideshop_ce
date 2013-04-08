@@ -42,7 +42,8 @@ class Unit_Core_oxImexTest extends OxidTestCase
     public function test_exportLexwareArticles()
     {
         $myConfig = oxConfig::getInstance();
-        $sFile = $myConfig->sShopDir.'/tmp/test.xpr';
+        //$sFile = $myConfig->sShopDir.'/tmp/test.xpr';
+        $sFile = oxregistry::get( "oxConfigFile" )->getVar( "sCompileDir" ) .'/test.xpr';
         @unlink($sFile);
         $oImex = new oxImex();
         if (!$oImex->exportLexwareArticles(0, 1000, $sFile)){

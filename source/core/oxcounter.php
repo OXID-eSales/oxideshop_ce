@@ -39,7 +39,7 @@ class oxCounter
     public function getNext( $sIdent )
     {
         $oDb = oxDb::getDb();
-        oxDb::startTransaction();
+        $oDb->startTransaction();
 
         $sQ = "SELECT `oxcount` FROM `oxcounters` WHERE `oxident` = " . $oDb->quote( $sIdent ) . " FOR UPDATE";
 
@@ -52,7 +52,7 @@ class oxCounter
         $sQ = "UPDATE `oxcounters` SET `oxcount` = ? WHERE `oxident` = ?";
         $oDb->execute( $sQ, array( $iCnt, $sIdent ) );
 
-        oxDb::commitTransaction();
+        $oDb->commitTransaction();
 
         return $iCnt;
     }
@@ -69,7 +69,7 @@ class oxCounter
     public function update( $sIdent, $iCount )
     {
         $oDb = oxDb::getDb();
-        oxDb::startTransaction();
+        $oDb->startTransaction();
 
         $sQ = "SELECT `oxcount` FROM `oxcounters` WHERE `oxident` = " . $oDb->quote( $sIdent ) . " FOR UPDATE";
 
@@ -81,7 +81,7 @@ class oxCounter
             $blResult = $oDb->execute( $sQ, array( $iCount, $sIdent, $iCount ) );
         }
 
-        oxDb::commitTransaction();
+        $oDb->commitTransaction();
         return $blResult;
     }
 

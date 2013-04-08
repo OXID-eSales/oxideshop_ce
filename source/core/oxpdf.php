@@ -22,7 +22,7 @@
  * @version   SVN: $Id$
  */
 
-$myConfig = oxConfig::getInstance();
+$myConfig = oxRegistry::getConfig();
 
 $sTcPdfPath = $myConfig->getConfigParam( 'sCoreDir' ) . "tcpdf/";
 $sTcPdfUrl  = $myConfig->getConfigParam( 'sShopURL') . "/" . $myConfig->getConfigParam( 'sCoreDir' ) . "tcpdf/";
@@ -228,9 +228,9 @@ class oxPDF extends TCPDF
      */
     public function __construct( $orientation='P', $unit='mm', $format='A4', $unicode=true, $encoding='UTF-8', $diskcache=false )
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         $unicode  = $myConfig->isUtf();
-        $encoding = $unicode ? 'UTF-8' : oxLang::getInstance()->translateString( "charset" );
+        $encoding = $unicode ? 'UTF-8' : oxRegistry::getLang()->translateString( "charset" );
         //#1161: Thin line and unknown characters on every pdf page
         //we use myorder::pdfFooter()
         $this->setPrintFooter(false);
@@ -367,48 +367,6 @@ class oxPDF extends TCPDF
     }
 
     /**
-    * Prints a character string.
-    * The origin is on the left of the first charcter, on the baseline.
-    * This method allows to place a string precisely on the page.
-    *
-    * @param float   $x      Abscissa of the origin
-    * @param float   $y      Ordinate of the origin
-    * @param string  $txt    String to print
-    * @param int     $stroke outline size in points (0 = disable)
-    * @param boolean $clip   if true activate clipping mode (you must call StartTransform() before this function and StopTransform() to stop the clipping tranformation).
-    *
-    * @access public
-    * @return null
-    * @since 1.0
-    * @deprecated deprecated since version 4.3.005 (2008-11-25)
-    * @see Cell(), Write(), MultiCell(), WriteHTML(), WriteHTMLCell()
-    */
-    public function Text($x,$y,$txt, $stroke=0, $clip=false)
-    {
-        // replaces some special code to chars
-        $txt = str_replace( "&nbsp;", " ", $txt );
-        $txt = str_replace( "&auml;", "ä", $txt );
-        $txt = str_replace( "&ouml;", "ö", $txt );
-        $txt = str_replace( "&uuml;", "ü", $txt );
-        $txt = str_replace( "&Auml;", "Ä", $txt );
-        $txt = str_replace( "&Ouml;", "Ö", $txt );
-        $txt = str_replace( "&Uuml;", "Ü", $txt );
-        $txt = str_replace( "&szlig;", "ß", $txt);
-
-        // replacing html specific codes
-
-        // if this doesn't help, we should create own entity table
-        // and replace codes to symbols
-        $txt = html_entity_decode( $txt );
-
-        // cleaning up possible html code
-        $txt = strip_tags( $txt );
-
-        //parent::Text($x,$y,$txt, $stroke, $clip);
-        parent::Text( $x, $y, $txt );
-    }
-
-    /**
      * Sets font for current text line
      *
      * NOTICE: In case you have problems with fonts, you must override this function and set different font
@@ -424,7 +382,7 @@ class oxPDF extends TCPDF
     {
         if ( $family == 'Arial' ) {
             // overriding standard ..
-            $family = oxConfig::getInstance()->isUtf() ? 'freesans' : '';
+            $family = oxRegistry::getConfig()->isUtf() ? 'freesans' : '';
         }
 
         parent::SetFont($family, $style, $size, $fontfile);

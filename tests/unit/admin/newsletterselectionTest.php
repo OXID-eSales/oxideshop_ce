@@ -42,13 +42,13 @@ class Unit_Admin_NewsletterSelectionTest extends OxidTestCase
         parent::setUp();
         $oDB = oxDb::getDb();
 
-        $sInsert = "INSERT INTO `oxnewsletter` VALUES ( 'newstest', 'oxbaseshop', 'Test', 'TestHTML', 'TestPlain', 'TestSubject' )";
+        $sInsert = "INSERT INTO `oxnewsletter` VALUES ( 'newstest', 'oxbaseshop', 'Test', 'TestHTML', 'TestPlain', 'TestSubject', NOW() )";
         $oDB->Execute( $sInsert );
 
-        $sInsert = "INSERT INTO `oxobject2group` VALUES ( 'test', 'oxbaseshop', '_testUserId', 'oxidnewcustomer' )";
+        $sInsert = "INSERT INTO `oxobject2group` VALUES ( 'test', 'oxbaseshop', '_testUserId', 'oxidnewcustomer', NOW() )";
         $oDB->Execute( $sInsert );
 
-        $sInsert = "INSERT INTO `oxobject2group` VALUES ( 'test2', 'oxbaseshop', 'newstest', 'oxidnewcustomer' )";
+        $sInsert = "INSERT INTO `oxobject2group` VALUES ( 'test2', 'oxbaseshop', 'newstest', 'oxidnewcustomer', NOW() )";
         $oDB->Execute( $sInsert );
 
         $this->_oNewsSub = oxNew( "oxnewssubscribed" );

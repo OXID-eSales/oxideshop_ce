@@ -55,7 +55,7 @@ class Unit_Admin_PriceAlarmSendTest extends OxidTestCase
         modConfig::setParameter( "menu", $sNode );
         modConfig::setParameter( 'actedit', 1 );
 
-        $oNavigation = $this->getMock( "OxStdClass", array( "getTabs", "getActiveTab" ) );
+        $oNavigation = $this->getMock( "oxnavigationtree", array( "getTabs", "getActiveTab" ) );
         $oNavigation->expects( $this->any() )->method( 'getActiveTab' )->will( $this->returnValue( "testEdit" ) );
         $oNavigation->expects( $this->once() )->method( 'getTabs' )->with( $this->equalTo( $sNode ), $this->equalTo( 1 ) )->will( $this->returnValue( "editTabs" ) );
 

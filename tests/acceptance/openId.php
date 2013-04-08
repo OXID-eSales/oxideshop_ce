@@ -66,7 +66,6 @@ class Acceptance_openIdTest extends oxidAdditionalSeleniumFunctions
      */
     public function testFrontendOpenId()
     {
-        $this->clearTmp();
         $this->openShop();
         $this->assertFalse($this->isVisible("openId"));
         $this->assertFalse($this->isVisible("loginBox"));

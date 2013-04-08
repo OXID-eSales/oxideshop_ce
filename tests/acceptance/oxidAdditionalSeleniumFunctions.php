@@ -1002,6 +1002,82 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
     }
 
     /**
+     * Check if object parameters have same value as expected.
+     *
+     * @param string $sClassName class name.
+     * @param string $sOxid id of object.
+     * @param array  $aClassParams params to set to object.
+     *
+     * @return bool
+     */
+    public function isObjectCorrect($sClassName, $sOxid, $aClassParams = null)
+    {
+        $oObject = $this->getObject($sClassName, $sOxid);
+        // Check if object exist. We cannot perform any check on not existing object.
+        if (null === $oObject) {
+            return false;
+        }
+
+        foreach ($aClassParams as $sParamKey => $sParamValue) {
+            $sDBFieldName = $this->getDBFieldName($sClassName, $sParamKey);
+            if (!isset($oObject->$sDBFieldName->value) || $oObject->$sDBFieldName->value != $sParamValue) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Load and return object.
+     *
+     * @param string $sClassName class name.
+     * @param string $sOxid object id.
+     *
+     * @return object|null
+     */
+    public function getObject($sClassName, $sOxid)
+    {
+        $oObject = oxNew($sClassName);
+        if ( !$oObject->load($sOxid) ) {
+            $oObject = null;
+        }
+        return $oObject;
+    }
+
+    /**
+     * Form DB field name by class and param names.
+     * @param $sClassName
+     * @param $sParamKey
+     * @return string
+     */
+    public function getDBFieldName($sClassName, $sParamKey)
+    {
+        $sTableName = $this->getTableNameFromClassName($sClassName);
+        $sDBFieldName = $sTableName .'__'. $sParamKey;
+        return $sDBFieldName;
+    }
+
+    /**
+     * Return table name by class name.
+     * @param string $sClassName class name.
+     * @return string
+     */
+    public function getTableNameFromClassName($sClassName)
+    {
+        $aClassNameWithoutS   = array("oxarticle", "oxrole", "oxrating", "oxreview", "oxrecommlist", "oxmanufacturer", "oxvoucherserie");
+        $aClassNameWithoutIes = array("oxcategory");
+
+        $sTableName = strtolower($sClassName);
+        if (in_array(strtolower($sClassName), $aClassNameWithoutS)) {
+            $sTableName = strtolower($sClassName) ."s";
+        } elseif (in_array(strtolower($sClassName), $aClassNameWithoutIes)) {
+            $sTableName = substr(strtolower($sClassName), 0, -1) ."ies";
+        }
+        return $sTableName;
+    }
+
+    /**
      * Return main shop number.
      * To use to form link to main shop and etc.
      *

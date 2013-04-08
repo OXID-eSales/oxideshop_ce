@@ -41,6 +41,8 @@ function getShopBasePath() {
     return oxPATH;
 }
 
+require_once 'unit/oxPrinter.php';
+
 require_once 'unit/test_utils.php';
 
 // Generic utility method file.

@@ -1,0 +1,358 @@
+/* styles for dialog plugins */
+
+/* Reset CSS */
+
+input[type='text'] {
+	margin: 0px;
+}
+
+
+/* General HTML elements */
+body {
+	margin:0px;
+	padding:0px;
+	border-width:0px;
+	font-family:Verdana,Arial,Helvetica,sans-serif;
+	font-size:11px;
+	line-height: 12px;
+	background-color:threedface;
+}
+p {
+	margin: 6px 0px 6px 0px;
+}
+a {
+	color:#0000FF;
+}
+input,select,option,button {
+	font-family:Verdana,Arial,Helvetica,sans-serif;
+	font-size:11px;
+}
+input[type="text"] {
+	border-width: 1px;
+}
+fieldset {
+	margin-top: 5px;
+	margin-bottom: 5px;
+	padding-bottom: 0px;
+}
+legend {
+
+}
+ol, ul {
+	margin-top: 0px;
+}
+/* title bar, used only for iframe dialogs */
+.titleBar {
+	background-color: highlight;
+	color: highlighttext;
+	font-weight: bold;
+	padding: 5px;
+	text-align:left;
+	cursor:default;
+	-moz-user-select:none;
+}
+.titleBar .closeButton {
+	float: right;
+	cursor: default;
+	margin: -4px;
+}
+
+/* margin and border around body */
+.bodyHolder {
+	margin:3px;
+}
+/* */
+.wproFloatingDialog {
+	padding: 3px;
+	overflow: auto;
+}
+/* fieldset with border only along top */
+fieldset.singleLine {
+	padding-bottom: 5px;
+	border-bottom-width:0px;
+	border-left-width:0px;
+	border-right-width:0px;
+}
+/* framefix repairs display of iframe width in IE */
+fieldset.frameFix {
+	border-width:0px;
+	margin:0px;
+	padding:0px;
+}
+/* clear floating elements */
+.clear {
+	clear:both;
+}
+/* iframe used for showing previews */
+.previewFrame {
+	border:1px solid threedshadow;
+	background-color:#ffffff;
+}
+/* load message */
+div.wproLoadMessageHolder {
+	top:0px;
+	left:0px;
+	width:100%;
+	z-index:1000;
+}
+.wproLoadMessage {
+}
+/* holder for buttons along bottom of dialog window */
+.buttonHolderContainer {
+	border-top:2px groove threedhighlight;
+	position:absolute;
+	bottom:0px;
+	left:0px;
+	height: 40px;
+	width:100%;
+}
+.buttonHolder {
+	padding:5px;
+	text-align:right;
+}
+/* buttons */
+.messageExitButtons input,.buttonHolder input,input.button,input.largeButton, .messageExitButtons button,.buttonHolder button,button.button,button.largeButton {
+	margin:0px 2px 2px 2px;
+	padding-top:2px;
+	padding-bottom:2px;
+	width:8em;
+	text-align: center;
+}
+/* width for large buttons */
+input.largeButton, button.largeButton {
+	width:12em;
+}
+/* disabled */
+input[disabled], button[disabled] {
+	filter:alpha(opacity=40);
+	-moz-opacity:0.4;
+	opacity:0.4;
+}
+
+/* images within buttons */
+.messageExitButtons button img,.buttonHolder button img,button.button img,button.largeButton img {
+	vertical-align: top;
+}
+/* small buttons */
+button.chooserButton {
+	width: 18px; 
+	height: 18px; 
+	padding: 0px; 
+	margin: 0; 
+	border-width: 0px;
+	background-position: center center; 
+	background-repeat: no-repeat;
+}
+
+/* help bar at top of window */
+.helpBar {
+	text-align:right;
+	border-bottom:2px groove threedhighlight;
+	margin-bottom:5px;
+	padding:5px;
+}
+/* selected item colors */
+.selected,button.selected,a.selected {
+	color:highlighttext;
+	background-color:highlight;
+}
+/* indented borders */
+.inset {
+	border-right:1px solid threedhighlight;
+	border-top:1px solid threedshadow;
+	border-left:1px solid threedshadow;
+	border-bottom:1px solid threedhighlight;
+}
+/* indented borders, white background */
+.insetWhite {
+	border-right:1px solid threedhighlight;
+	border-top:1px solid threedshadow;
+	border-left:1px solid threedshadow;
+	border-bottom:1px solid threedhighlight;
+	background-color: #ffffff;
+}
+/* outdented borders */
+.outset {
+	border-right:threedshadow 1px solid;
+	border-top:threedhighlight 1px solid;
+	border-left:threedhighlight 1px solid;
+	border-bottom:threedshadow 1px solid;
+}
+/* color picker UI element */
+button.UIColorPicker {
+	padding:0px;
+	margin:0px;
+}
+button.UIColorPicker div {
+	margin:0px;
+	width:15px;
+	height:10px;
+	border:1px solid threeddarkshadow;
+	font-size:8px;
+}
+/* Image radio UI element */
+.UIImageRadio {
+	padding-top:5px;
+}
+.UIImageRadio a {
+	text-align:center;
+	margin:0px 3px 0px 0px;
+	padding:3px 0px 3px 0px;
+	display:block;
+	float:left;
+	text-decoration:none;
+	color:#000000;
+}
+.UIImageRadio a.selected {
+	color:highlighttext;
+}
+.UIImageRadio a img {
+	padding:0px;
+	margin:0px;
+	border:1px solid threedshadow;
+}
+/* Select list interface */
+.UISelectLeftCol {
+	float:left;
+	width:165px;
+	padding:0px;
+	margin-bottom:5px;
+	margin-right:3px;
+}
+.UISelectLeftCol select {
+	width:100%;
+}
+.UISelectRightCol {
+	margin-left:10px;
+}
+.UISelectRightCol .UISelectPane {
+	display:none;
+}
+.UISelectRightCol h2 {
+	font-size:12px;
+	margin:0px;
+	padding-bottom:5px;
+}
+/* drop-down list interface */
+.UIDropDownSelectHolder {
+}
+.UIDropDownPane {
+	display:none;
+}
+.UIDropDownPaneHolder {
+	padding:5px;
+}
+/* tabbed interface */
+.UITabbedTabHolder {
+	padding-left:10px;
+	padding-top:4px;
+	text-align:center;
+}
+.UITabbedTabHolder a {
+	color:#000000;
+	text-decoration:none;
+	display:block;
+	float:left;
+	padding:2px 10px;
+	border-bottom-width:0px;
+}
+.UITabbedTabHolder a.selected {
+	color:#000000;
+	background-color:threedface;
+	padding:4px 11px 4px 11px;
+	margin:-3px 0px -2px -2px;
+	border-width:2px;
+	border-bottom-width:0px;
+}
+.UITabbedPaneHolder {
+	padding:3px 5px 0px 5px;
+	margin-bottom:5px;
+	clear:both;
+	border-width:2px;
+}
+.UITabbedPane {
+	display:none;
+	margin: 0px;
+	padding: 0px;
+}
+/* 2 column table element */
+.UI2ColTable .row {
+	padding:2px;
+}
+.UI2ColTable .ltd {
+	padding-top:3px;
+	text-align:right;
+	float:left;
+	margin-right:3px;
+}
+.small .ltd {
+	width:90px;
+}
+.medium .ltd {
+	width:135px;
+}
+.large .ltd {
+	width:200px;
+}
+.small .rtd {
+	margin-left:95px;
+}
+.medium .rtd {
+	margin-left:140px;
+}
+/* tree UI */
+.UITreeNode {
+	color: #000000;
+	text-decoration: none;
+}
+.UITreeNodeSelected {
+	text-decoration: none;
+}
+/* small inline error messages */
+div.smallWarning {
+	padding: 3px;
+	border:1px solid threeddarkshadow;
+	background-color:#FFFF99;
+}
+.smallWarning img {
+	vertical-align:middle;
+}
+/* small inline information messages */
+div.smallInformation {
+	padding: 3px;
+	border:1px solid threeddarkshadow;
+	background-color:#FFFF99;
+}
+.smallInformation img {
+	vertical-align:middle;
+}
+/* message exit: error and information messages */
+.messageExitHolder {
+	text-align:center;
+	margin-top:50px;
+}
+.messageExitBorder {
+	text-align:left;
+	width:300px;
+	margin:0px auto;
+}
+.messageExitTitleBar {
+	font-weight:bold;
+	padding:5px;
+	border-bottom:2px groove threedhighlight;
+}
+.messageExitBody {
+	padding:10px;
+}
+.messageExitLeftCol {
+	float:left;
+	width:42px;
+}
+.messageExitRightCol {
+	margin-left:42px;
+}
+.messageExitButtons {
+	margin-top:10px;
+	clear:both;
+	text-align:right;
+}

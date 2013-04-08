@@ -1,0 +1,25 @@
+oxarticlelistTest.php
+	* funkcija loadAktionArticles testuoti paduodant tuscia $sActionID kintamaji
+	* funkcija loadArticleCrossSell testuoti kuomet nurodytas produktas neturi nei vieno crossselling'o
+	* funkcija loadRecommArticles nera testuojama, kuomet paduodamas antras parametras $sArticlesFilter
+	* funkcija loadRecommArticleIds testuoti, kuoment paduodamas antras parametras $sArticlesFilter NE null
+	* funkcija	_getCategorySelect. pagal aprasyma,  @param string $sFields - Fields which are loaded e.g. "oxid" or "*" etc. Taciau nera testuojama, kuomet  $sFields = "*"
+	* funkcija _getFilterSql testuoti kuomet paduodamas $aFilter array yra tuscias
+	* funkcijoje _getSearchSelect niekada nera testuojama salygos if ( $sUml ) teigiama reiksme
+	* funkcijai loadSearchIds paduodamas parametras pagal aprasyma $sSearchStr = '' gali buti tuscias, taciau toks atvejis nera istestuotas
+	* funkcija _getPriceSelect del pilnumo testuoti su:
+		- priceFrom = 0 (pvz 0 - 19)
+		- priceFrom > priceTo (pvz 47 - 10)
+		- kuomet nurodytam intervale prekiu nerasta
+	* funkcija loadPriceArticles del pilnumo testuoti su:
+		- price1 = 0 (pvz 0 - 19)
+		- price1 > price2 (pvz 47 - 10)
+		- kuomet nurodytam intervale prekiu nerasta
+	* funkcija loadPriceArticles testuoti ir kuomet kategorijos produktu skaicius yra nustatytas 0 bei -1
+	* pagal testo pavadinima testLoadTop5ArticlesNoneDoNotLoadPrice(), jame produkto kaina turetu buti nustatyta nekrauti kainu. taciau, atrodo, yra atvirksciai.
+	* del pilnumo testuoti funkcijas _getVendorSelect ir _getManufacturerSelect ir be custom sorting
+	* funkcijoje loadVendorArticles( $sVendorId, $oVendor = null ) antras parametras $oVendor aprasytas kaip Active vendor object. taciau lyg ir nenaudojamas kode bei testuose. jei visgi jis itakoja koda, reikia testuoti. jei niekur nenaudojamas, tuomet kam paliktas?
+	* funkcijoje loadManufacturerArticles( $sManufacturerId, $oManufacturer = null ) antras parametras $oManufacturer aprasytas kaip Active Manufacturer object. taciau lyg ir nenaudojamas kode bei testuose. jei visgi jis itakoja koda, reikia testuoti. jei niekur nenaudojamas, tuomet kam paliktas?
+	* funkcija selectString del pilnumo testuoti ir tuomet, kai $this->isAdmin() yra true
+	* funkcija GetTagArticleIds testuoti, kuomet nerandamas nei vienas produktas, atitinkantis nurodyta tag
+	

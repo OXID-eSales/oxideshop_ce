@@ -1,0 +1,64 @@
+body {
+	text-align: center;
+}
+fieldset.UIDropDown {
+	height:240px;
+}
+.colorTable {
+	width: 285px;
+}
+.colorTable a {
+	background-color: transparent;
+	border: 1px solid #000000;
+	width: 13px;
+	height: 13px;
+	display: block;
+	overflow:hidden;
+	float: left;
+	color: #000000;
+	text-decoration:none;
+	padding: 0px;
+	font-size: 6px;
+}
+.colorTable a.defaultColor {
+	font-size: 11px;
+	width:100%;
+	padding:4px 0px 4px 0px;
+	float:none;
+}
+#mOverColorDisplay {
+	border: 1px solid #000000;
+	height: 45px;
+}
+#selectedColorDisplay {
+	border: 1px solid #000000;
+	height: 25px;	
+}
+.cpRightCol input {
+	width: 55px;
+}
+.cpColHolder {
+	margin: 0px auto;
+	width: 200px;
+}
+.cpLeftCol {
+	float: left;
+	width: 60px;
+}
+.cpCenterCol {
+	margin-right: 65px;
+	margin-left: 65px;
+}
+.cpRightCol {
+	float: right;
+	width: 60px;
+}
+#recentlyUsed {
+	text-align: left;
+	clear: both;
+}
+.recentlyUsed {
+	height:15px; 
+	overflow:hidden;
+	padding-left: 10px;
+}

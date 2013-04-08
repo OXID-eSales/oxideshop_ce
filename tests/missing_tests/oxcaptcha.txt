@@ -1,0 +1,2 @@
+oxcaptcha.php
+	* funkcija public function getHash($sText = null) testuoti ir paduodant kintamaji $sText

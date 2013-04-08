@@ -1,0 +1,4 @@
+Media Plugins allow the Insert/Edit Media dialog to understand how to embed different types of media. 
+By default there are plugins for flash, images, quicktime and windows media.
+
+You may develop your own plugins. Take a look at the included plugins to see how they work.

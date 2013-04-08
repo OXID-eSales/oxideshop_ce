@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="ISO-8859-15"?>
+<OX>
+    <MAINMENU id="mxservicearea">
+        <SUBMENU  id="mxdynscreenlocal" cl="dynscreen_local" expand="none"></SUBMENU>
+    </MAINMENU>
+</OX>

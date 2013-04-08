@@ -1,0 +1,89 @@
+<!--
+  ~ Licensed to the Apache Software Foundation (ASF) under one
+  ~ or more contributor license agreements. See the NOTICE file
+  ~ distributed with this work for additional information
+  ~ regarding copyright ownership. The ASF licenses this file
+  ~ to you under the Apache License, Version 2.0 (the
+  ~ "License"); you may not use this file except in compliance
+  ~ with the License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied. See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
+<project basedir="../" default="create.war">
+	<property name="dist" value="dist" />
+	<property name="temp" value="${dist}/temp" />
+
+	<target name="init">
+		<mkdir dir="${dist}" />
+		<mkdir dir="${temp}" />
+		<copy toDir="${temp}">
+			<fileset dir="webapp">
+				<include name="**/**" />
+				<exclude name="**/web.xml"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	<target depends="init" name="prepare.repo">
+		
+		<!-- Copying the axis2 repository from ../repository -->
+		<copy toDir="${temp}/WEB-INF">
+			<fileset dir="repository">
+				<include name="**/**" />
+			</fileset>
+		</copy>
+
+		<!-- Creating the services.list -->
+		<path id="services.archives">
+			<fileset dir="${temp}/WEB-INF/services">
+				<include name="*.aar" />
+			</fileset>
+		</path>
+		<pathconvert pathsep="${line.separator}" property="echo.services.archives" refid="services.archives">
+			<flattenmapper />
+		</pathconvert>
+		<echo file="${temp}/WEB-INF/services/services.list" message="${echo.services.archives}" />
+
+		<!-- Creating the modules.list -->
+		<path id="modules.archives">
+			<fileset dir="${temp}/WEB-INF/modules">
+				<include name="*.mar" />
+			</fileset>
+		</path>
+		<pathconvert pathsep="${line.separator}" property="echo.modules.archives" refid="modules.archives">
+			<flattenmapper />
+		</pathconvert>
+		<echo file="${temp}/WEB-INF/modules/modules.list" message="${echo.modules.archives}" />
+
+		<!-- Copying the axis2.xml from ../conf -->
+		<mkdir dir="${temp}/WEB-INF/conf" />
+		<copy file="conf/axis2.xml" toDir="${temp}/WEB-INF/conf" />
+	</target>
+	
+	<target depends="init,prepare.repo" name="create.war">
+		<war destfile="dist/axis2.war" webxml="webapp/WEB-INF/web.xml">
+			<lib dir="lib">
+				<include name="**" />
+				<exclude name="**servlet**" />
+				<exclude name="ant*.jar" />
+				<exclude name="axis2-adb-codegen*.jar"/>
+				<exclude name="axis2-codegen*.jar"/>
+				<exclude name="jibx-bind*.jar"/>
+			</lib>
+			<webinf dir="${temp}/WEB-INF" />
+			<fileset dir="${temp}">
+				<include name="**/axis2-web/**" />
+			</fileset>
+		</war>
+		<delete dir="${temp}" />
+	</target>
+</project>
+

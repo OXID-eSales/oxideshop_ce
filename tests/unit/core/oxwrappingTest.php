@@ -1,0 +1,418 @@
+<?php
+/**
+ *    This file is part of OXID eShop Community Edition.
+ *
+ *    OXID eShop Community Edition is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
+ *    (at your option) any later version.
+ *
+ *    OXID eShop Community Edition is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU General Public License for more details.
+ *
+ *    You should have received a copy of the GNU General Public License
+ *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @link      http://www.oxid-esales.com
+ * @package   tests
+ * @copyright (C) OXID eSales AG 2003-2013
+ * @version OXID eShop CE
+ * @version   SVN: $Id$
+ */
+
+require_once realpath( "." ).'/unit/OxidTestCase.php';
+require_once realpath( "." ).'/unit/test_config.inc.php';
+
+class testOxWrapping extends oxWrapping
+{
+    public function __get($name)
+    {
+        if (isset($this->$name)) {
+            return $this->$name;
+        }
+        return null;
+    }
+
+    public function __set($name,$val)
+    {
+        $this->$name = $val;
+    }
+}
+
+/**
+ * Testing oxwrapping class
+ */
+class Unit_Core_oxwrappingTest extends OxidTestCase
+{
+    protected $_sCardOxid = null;
+    protected $_sWrapOxid = null;
+    protected $_dDefaultVAT;
+
+    /**
+     * Initialize the fixture.
+     *
+     * @return null
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+        $this->sTableName = getViewName("oxwrapping");
+
+        // card
+        // not active
+        $oCard = oxNew('oxbase' );
+        $oCard->init('oxwrapping');
+        $oCard->setId( '_testCard' );
+        $oCard->oxwrapping__oxname = new oxField('Test Card 1 DE', oxField::T_RAW);
+        $oCard->oxwrapping__oxname_1 = new oxField('Test Card 1 ENG', oxField::T_RAW);
+        $oCard->oxwrapping__oxtype = new oxField('CARD', oxField::T_RAW);
+        $oCard->oxwrapping__oxprice = new oxField(2.5, oxField::T_RAW);
+        $oCard->oxwrapping__oxactive = new oxField(0);
+        $oCard->oxwrapping__oxactive_1 = new oxField(0);
+        $oCard->save();
+
+        // active
+        $oCard = oxNew('oxbase' );
+        $oCard->init('oxwrapping');
+        $oCard->setId( '_testCard2' );
+        $oCard->oxwrapping__oxname = new oxField('Test Card 1 DE', oxField::T_RAW);
+        $oCard->oxwrapping__oxname_1 = new oxField('Test Card 1 ENG', oxField::T_RAW);
+        $oCard->oxwrapping__oxtype = new oxField('CARD', oxField::T_RAW);
+        $oCard->oxwrapping__oxprice = new oxField(2.5, oxField::T_RAW);
+        $oCard->oxwrapping__oxactive = new oxField(1);
+        $oCard->oxwrapping__oxactive_1 = new oxField(1);
+        $oCard->save();
+        $this->_sCardOxid = $oCard->getId();
+
+        // active and free
+        $oCard = oxNew('oxbase' );
+        $oCard->init('oxwrapping');
+        $oCard->setId( '_testCard3' );
+        $oCard->oxwrapping__oxname = new oxField('Test Card 1 DE', oxField::T_RAW);
+        $oCard->oxwrapping__oxname_1 = new oxField('Test Card 1 ENG', oxField::T_RAW);
+        $oCard->oxwrapping__oxtype = new oxField('CARD', oxField::T_RAW);
+        $oCard->oxwrapping__oxactive = new oxField(1);
+        $oCard->oxwrapping__oxactive_1 = new oxField(1);
+        $oCard->save();
+
+        // wrapping
+        // not active
+        $oWrapping = oxNew( 'oxbase' );
+        $oWrapping->init('oxwrapping');
+        $oWrapping->setId( '_testWrap' );
+        $oWrapping->oxwrapping__oxname = new oxField('Test Wrap 1 DE', oxField::T_RAW);
+        $oWrapping->oxwrapping__oxname_1 = new oxField('Test Wrap 1 ENG', oxField::T_RAW);
+        $oWrapping->oxwrapping__oxtype = new oxField('WRAP', oxField::T_RAW);
+        $oWrapping->oxwrapping__oxprice = new oxField(2.95, oxField::T_RAW);
+        $oWrapping->oxwrapping__oxactive = new oxField(0);
+        $oWrapping->oxwrapping__oxactive_1 = new oxField(0);
+        $oWrapping->save();
+
+        // active
+        $oWrapping = oxNew( 'oxbase' );
+        $oWrapping->init('oxwrapping');
+        $oWrapping->setId( '_testWrap2' );
+        $oWrapping->oxwrapping__oxname = new oxField('Test Wrap 1 DE', oxField::T_RAW);
+        $oWrapping->oxwrapping__oxname_1 = new oxField('Test Wrap 1 ENG', oxField::T_RAW);
+        $oWrapping->oxwrapping__oxtype = new oxField('WRAP', oxField::T_RAW);
+        $oWrapping->oxwrapping__oxprice = new oxField(2.95, oxField::T_RAW);
+        $oWrapping->oxwrapping__oxactive = new oxField(1);
+        $oWrapping->oxwrapping__oxactive_1 = new oxField(1);
+        $oWrapping->save();
+
+        $this->_sWrapOxid = $oWrapping->getId();
+
+        // active and free
+        $oWrapping = oxNew( 'oxbase' );
+        $oWrapping->init('oxwrapping');
+        $oWrapping->setId( '_testWrap3' );
+        $oWrapping->oxwrapping__oxname = new oxField('Test Wrap 1 DE', oxField::T_RAW);
+        $oWrapping->oxwrapping__oxname_1 = new oxField('Test Wrap 1 ENG', oxField::T_RAW);
+        $oWrapping->oxwrapping__oxtype = new oxField('WRAP', oxField::T_RAW);
+        $oWrapping->oxwrapping__oxactive = new oxField(1);
+        $oWrapping->oxwrapping__oxactive_1 = new oxField(1);
+        $oWrapping->save();
+
+        $this->_dDefaultVAT = oxConfig::getInstance()->getConfigParam( 'dDefaultVAT' );
+    }
+
+    /**
+     * Tear down the fixture.
+     *
+     * @return null
+     */
+    protected function tearDown()
+    {
+        $myConfig  = oxConfig::getInstance();
+        modConfig::getInstance()->setConfigParam( 'blEnterNetPrice', false );
+
+        // card
+        $oCard = oxNew( 'oxwrapping' );
+        $oCard->delete( '_testCard' );
+        $oCard->delete( '_testCard2' );
+        $oCard->delete( '_testCard3' );
+
+        // wrapping
+        $oWrapping = oxNew( 'oxwrapping' );
+        $oWrapping->delete( '_testWrap' );
+        $oWrapping->delete( '_testWrap2' );
+        $oWrapping->delete( '_testWrap3' );
+
+        parent::tearDown();
+    }
+
+    public function testGetWrappingCount()
+    {
+        $oWrap = oxNew( 'oxwrapping' );
+        $this->assertEquals( 4, $oWrap->getWrappingCount( 'WRAP' ) );
+        $this->assertEquals( 4, $oWrap->getWrappingCount( 'CARD' ) );
+        $this->assertEquals( 0, $oWrap->getWrappingCount( 'xxx' ) );
+    }
+
+    /**
+     * Testing what code is executed by GetNoSslDynImageDir getter
+     */
+    public function testGetNoSslDynImageDir()
+    {
+        $oConfig = $this->getMock( 'oxconfig', array( 'getPictureUrl' ) );
+        $oConfig->expects( $this->once() )->method( 'getPictureUrl' )
+                ->with(
+                        $this->equalTo( null ),
+                        $this->equalTo( false ),
+                        $this->equalTo( false ),
+                        $this->equalTo( null ),
+                        $this->equalTo( '123' )
+                )
+                ->will( $this->returnValue( 'testDynPath' ) );
+
+        $oWrapping = $this->getMock( 'oxwrapping', array( 'getConfig' ), array(), '', false );
+        $oWrapping->expects( $this->once() )->method( 'getConfig' )->will( $this->returnValue( $oConfig ) );
+        $oWrapping->oxwrapping__oxshopid = new oxField( '123' );
+
+        $this->assertEquals( 'testDynPath', $oWrapping->getNoSslDynImageDir() );
+    }
+
+    /**
+     * Checking if object is loaded and if type is valid
+     */
+    public function testLoadWrap()
+    {
+        $oWrapping = oxNew( 'oxwrapping' );
+        $oWrapping->Load( $this->_sWrapOxid );
+
+        $this->assertEquals('WRAP', $oWrapping->oxwrapping__oxtype->value);
+    }
+
+    public function testLoadCard()
+    {
+        $oCard = oxNew( 'oxwrapping' );
+        $oCard->Load( $this->_sCardOxid );
+
+        $this->assertEquals('CARD', $oCard->oxwrapping__oxtype->value);
+    }
+
+    public function testGetCardPrice()
+    {
+        $myUtils = oxUtils::getInstance();
+        $oCard = oxNew( 'oxwrapping' );
+        if (!$oCard->Load($this->_sCardOxid)) {
+            $this->fail('can not load wrapping');
+        }
+
+        $oCard->setWrappingVat( $this->_dDefaultVAT );
+        $oCardPrice = $oCard->getWrappingPrice();
+
+        $this->assertEquals(2.5, $oCardPrice->getBruttoPrice());
+        $this->assertEquals('2,10', oxLang::getInstance()->formatCurrency( $oCardPrice->getNettoPrice()));
+        $this->assertEquals('0,40', oxLang::getInstance()->formatCurrency($oCardPrice->getVATValue()));
+    }
+
+    public function testGetWrapPrice()
+    {
+        $myUtils = oxUtils::getInstance();
+
+        $oWrap = oxNew( 'oxwrapping' );
+        if (!$oWrap->Load($this->_sWrapOxid)) {
+            $this->fail('can not load wrapping');
+        }
+
+        $oWrap->setWrappingVat( $this->_dDefaultVAT );
+        $oWrapPrice = $oWrap->getWrappingPrice( 2 );
+
+        $this->assertEquals( 5.9, $oWrapPrice->getBruttoPrice());
+        $this->assertEquals( '4,96', oxLang::getInstance()->formatCurrency( $oWrapPrice->getNettoPrice()));
+        $this->assertEquals( '0,94', oxLang::getInstance()->formatCurrency($oWrapPrice->getVATValue()));
+    }
+
+    public function testGetWrapPriceVatOnTop()
+    {
+        modConfig::getInstance()->setConfigParam( 'blWrappingVatOnTop', true );
+        $oWrap = oxNew( 'oxwrapping' );
+        if (!$oWrap->Load($this->_sWrapOxid)) {
+            $this->fail('can not load wrapping');
+        }
+
+        $oWrap->setWrappingVat( $this->_dDefaultVAT );
+        $oWrapPrice = $oWrap->getWrappingPrice( 2 );
+
+        $dVat = 1+oxConfig::getInstance()->getConfigParam( 'dDefaultVAT' )/100;
+        $this->assertEquals( 5.9 * $dVat, $oWrapPrice->getBruttoPrice(), '', 2 );
+        $this->assertEquals( 5.9, $oWrapPrice->getNettoPrice() );
+        $this->assertEquals('7,02', oxLang::getInstance()->formatCurrency( $oWrapPrice->getBruttoPrice() ) );
+        $this->assertEquals('5,90', oxLang::getInstance()->formatCurrency( $oWrapPrice->getNettoPrice() ) );
+        $this->assertEquals('1,12', oxLang::getInstance()->formatCurrency( $oWrapPrice->getVATValue() ) );
+    }
+
+    /**
+     * Calculates prices in EUR
+     */
+    public function testCalcDPriceInEUR()
+    {
+        $myUtils  = oxUtils::getInstance();
+
+        $oWrapping = oxNew( 'oxwrapping' );
+        if (!$oWrapping->Load($this->_sWrapOxid)) {
+            $this->fail('can not load wrapping');
+        }
+
+        // validating
+        $oWrapping->setWrappingVat( $this->_dDefaultVAT );
+        $this->assertEquals(2.95, $oWrapping->getWrappingPrice()->getBruttoPrice() );
+    }
+
+    public function testCalcFPriceInEUR()
+    {
+        $myUtils  = oxUtils::getInstance();
+        $myConfig = oxConfig::getInstance();
+
+        $iTempCur = $myConfig->getActShopCurrencyObject()->id;
+
+        // setting active currency to EUR
+        $myConfig->setActShopCurrency(0);
+
+        $oWrapping = oxNew( 'oxwrapping' );
+        if (!$oWrapping->Load($this->_sWrapOxid)) {
+            $this->fail('can not load wrapping');
+        }
+
+        // validating
+        $oWrapping->setWrappingVat( $this->_dDefaultVAT );
+        $this->assertEquals('2,95', oxLang::getInstance()->formatCurrency($oWrapping->getWrappingPrice()->getBruttoPrice()) );
+    }
+
+    public function testCalcFPriceInGBP()
+    {
+        $myConfig = oxConfig::getInstance();
+
+        // setting active currency to GBP
+        $myConfig->setActShopCurrency(1);
+
+        $oWrapping = oxNew( 'oxwrapping' );
+        $oWrapping->Load( $this->_sWrapOxid );
+        $oWrapping->setWrappingVat( $this->_dDefaultVAT );
+        $sPrice = oxLang::getInstance()->formatCurrency($oWrapping->getWrappingPrice()->getBruttoPrice() );
+
+        // validating
+        $this->assertEquals('2.53', $sPrice );
+    }
+
+    public function testCalcFPriceInCHF()
+    {
+        $myConfig = oxConfig::getInstance();
+        $myUtils  = oxUtils::getInstance();
+
+        $iTempCur = $myConfig->getActShopCurrencyObject()->id;
+
+        // setting active currency to GHF
+        $myConfig->setActShopCurrency(2);
+
+        $oWrapping = oxNew( 'oxwrapping' );
+        if (!$oWrapping->Load($this->_sWrapOxid)) {
+            $this->fail('can not load wrapping');
+        }
+
+        $oWrapping->setWrappingVat( $this->_dDefaultVAT );
+        $sPrice = oxLang::getInstance()->formatCurrency($oWrapping->getWrappingPrice()->getBruttoPrice() );
+
+        // validating
+        $this->assertEquals('4,23', $sPrice );
+    }
+
+    public function testGetWrappingListIfNotAllActive()
+    {
+        $myUtils = oxUtils::getInstance();
+
+        $oWrap = oxNew( 'oxwrapping' );
+        $oWrapList = $oWrap->getWrappingList( 'WRAP' );
+
+        $this->assertEquals( 4, $oWrapList->count());
+        foreach ( $oWrapList as $oWrapping ) {
+            if ( $oWrapping->getId() == '_testWrap3' ) {
+                $this->assertEquals( '0,00', $oWrapping->getFPrice() );
+            } else {
+                $this->assertEquals( '2,95', $oWrapping->getFPrice() );
+            }
+        }
+
+        $oCardList = $oWrap->getWrappingList( 'CARD' );
+
+        foreach ( $oCardList as $oCard ) {
+            if ( $oCard->getId() == '_testCard3' ) {
+                $this->assertEquals( '0,00', $oCard->getFPrice() );
+            } elseif ( $oCard->getId() == '81b40cf0cd383d3a9.70988998' ) {
+                $this->assertEquals( '3,00', $oCard->getFPrice() );
+            } else {
+                $this->assertEquals( '2,50', $oCard->getFPrice() );
+            }
+        }
+
+        $this->assertEquals( 4, $oCardList->count());
+    }
+
+    public function testGetWrappingList()
+    {
+        $myUtils = oxUtils::getInstance();
+
+        $oWrap = oxNew( 'oxwrapping' );
+        $oWrap->load( $this->_sWrapOxid );
+        $oWrap->oxwrapping__oxactive = new oxField(1, oxField::T_RAW);
+        $oWrap->save();
+
+        $oWrapList = $oWrap->getWrappingList( 'WRAP' );
+
+        $this->assertEquals( 4, $oWrapList->count());
+    }
+
+    /**
+     * Testing formatted basket total price
+     */
+    public function testGetFPrice()
+    {
+        $oPrice = $this->getMock( 'oxprice', array( 'getBruttoPrice' ) );
+        $oPrice->expects( $this->once() )->method( 'getBruttoPrice' )->will( $this->returnValue( 11.588 ) );
+        $oWrap = $this->getProxyClass( "oxWrapping" );
+        $oWrap->setNonPublicVar('_oPrice', $oPrice );
+        $this->assertEquals( "11,59", $oWrap->getFPrice() );
+    }
+
+    public function testGetPictureUrl()
+    {
+        $oWrap = oxNew( 'oxwrapping' );
+        $this->assertNull( $oWrap->getPictureUrl() );
+
+        $oWrap->load( "a6840cc0ec80b3991.74884864" );
+        $this->assertEquals( modConfig::getInstance()->getPictureUrl( "master/wrapping/img_geschenkpapier_1_wp.gif", false, null, null, 1 ), $oWrap->getPictureUrl() );
+    }
+
+    /**
+     * Test wrapping config setter
+     */
+    public function testSetWrappingVatOnTop()
+    {
+        $oWrapping = $this->getProxyClass( "oxwrapping" );
+        $oWrapping->setWrappingVatOnTop( true );
+        $this->assertTrue( $oWrapping->getNonPublicVar( "_blWrappingVatOnTop" ));
+    }
+}

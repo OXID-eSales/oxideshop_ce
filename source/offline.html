@@ -1,0 +1,8 @@
+<html>
+<head></head>
+<body>
+
+Shop offline!
+
+</body>
+</html>

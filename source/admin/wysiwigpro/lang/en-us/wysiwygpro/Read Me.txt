@@ -1,0 +1,11 @@
+File descriptions:
+
+images: contains any images required by this language pack
+includes: contains language files used by plugins
+dialog.css: contains any modifications to the design of dialog windows that might be required to properly display this language
+document.css: contains any modifications to the hidden guidelines that might be required to properly display this language
+editor.css: contains any modifications to the design of the editor interface that might be required to properly display this language
+lang.inc.php: contains core translated language variables and calls to the PHP API
+
+PLEASE NOTE: The $lang variable contained in the translation files is NOT loaded into the global scope. 
+The language files are loaded into a class and will not interfere with any $lang variable in your application.

@@ -1,0 +1,15 @@
+#snippetFrame {
+	width:406px;
+	height: 327px;
+}
+.UISelectRightCol .UISelectPane {
+	display: block;
+}
+.UISelectLeftCol {
+	background-color: #ffffff;
+	overflow: auto;
+	height: 327px;
+}
+#snippetCache {
+	display:none;
+}

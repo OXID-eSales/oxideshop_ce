@@ -1,0 +1,9 @@
+/* styles for displaying table borders and other guidelines in this language */
+@media screen,projection {
+	form.wproGuide, form.wpguide {
+		background-image: url(images/form.gif);
+	}
+	.wproContentEditable, .wpcontenteditable {
+		background-image: url(images/editableRegion.gif);
+	}
+}

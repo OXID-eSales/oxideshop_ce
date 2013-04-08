@@ -1,0 +1,10 @@
+/* styles for displaying the editor */
+
+/* 
+ * NOTE: this stylesheet is also included into dialog windows.
+ * To isolate a style for the editor only use the .wproEditor prefix.
+ * To indicate a style that is shared between the editor and dialog windows use the .wproDialogEditorShared prefix.
+ * To indicate a style that should only be used for dialog windows use the .wproDialog prefix
+ *
+ * To ensure that editor styles for this theme are isolated from other editors on the same page that might use a different theme please prefix with the name of your theme.
+*/

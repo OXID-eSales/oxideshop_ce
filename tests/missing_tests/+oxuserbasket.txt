@@ -1,0 +1,8 @@
+-oxuserbasket.php
+	* funkcija  public function addItemToBasket( $sProductId = null, $dAmount = null, $aSel = null, $blOverride = false )  niekad netestuojama perduodant paskutini parametra true
+	* funkcija public function getItemCount( $blReload = false )  netestuojama perduodant $blReload true reiksme
+	* public function getItems( $blReload = false )   testuoti kuoment $blReload perduodamas true
+	* funkcija protected function _createItem( $sProductId, $aSelList = null ) testuoti kuoment $aSelList ne null
+	* tearDown funkcijoje yra $oSel->delete( 'yyy' ); taciau toks selection list lyg ir nesukuriamas setUp metu...
+	* del testu pilnumo, testuose, kur tikrinama ar teisingai veikia baske trynimas, reiketu pries kvieciant delete funkcija patikrinti, ar db tikrai buvo issaugotas basket
+	

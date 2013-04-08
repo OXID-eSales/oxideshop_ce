@@ -1,0 +1,51 @@
+# In case you want to add a .htpasswd authentification
+# you'll have to add the host of the shop as an allowed entity,
+# so that calls from the host skip the authentification
+# Example:
+# Order Deny,Allow
+# Deny from All
+# AuthType Basic
+# AuthName "Access not allowed"
+# AuthUserFile path_to_htpasswd_file/.htpasswd
+# Require valid-user
+# Allow from localhost
+# Satisfy Any
+
+<IfModule mod_rewrite.c>
+Options +FollowSymLinks
+RewriteEngine On
+RewriteBase /
+
+RewriteCond %{REQUEST_METHOD} ^(TRACE|TRACK)
+RewriteRule .* - [F]
+
+RewriteCond %{REQUEST_URI} oxseo\.php$
+RewriteCond %{QUERY_STRING} mod_rewrite_module_is=off
+RewriteRule oxseo\.php$ oxseo.php?mod_rewrite_module_is=on [L]
+
+RewriteCond %{REQUEST_URI} !(\/admin\/|\/core\/|\/export\/|\/modules\/|\/out\/|\/setup\/|\/tmp\/|\/views\/)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule !(\.html|\/|\.jpg|\.css|\.pdf|\.doc|\.gif|\.png|\.js|\.htc)$ %{REQUEST_URI}/ [R=301,L]
+
+RewriteCond %{REQUEST_URI} !(\/admin\/|\/core\/|\/export\/|\/modules\/|\/out\/|\/setup\/|\/tmp\/|\/views\/)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule (\.html|\/)$ oxseo.php
+
+
+RewriteCond %{REQUEST_URI} (\/out\/pictures\/)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule (\.jpe?g|\.gif|\.png)$ core/utils/getimg.php
+
+</IfModule>
+
+# disabling log file access from outside
+<FilesMatch "(EXCEPTION_LOG\.txt|\.log$|\.tpl$|pkg\.rev)">
+order allow,deny
+deny from all
+</FilesMatch>
+
+Options -Indexes
+DirectoryIndex index.php index.html

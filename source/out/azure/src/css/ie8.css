@@ -1,0 +1,174 @@
+/* IE */
+
+.button, .submitButton {
+    width: 1;
+}
+
+h1.page {
+    overflow: hidden;
+}
+
+/* Fix for adding spacer with hasLayout (http://www.satzansatz.de/cssd/onhavinglayout.html#list) */
+#footer .list li {
+    zoom: 1;
+}
+
+/* Fix for positioning */
+
+.submitButton {
+    width: 1;
+    padding: 0 12px 0 12px;
+}
+
+.removeButton {
+    padding-left: 5px;
+    padding-right: 10px;
+}
+
+#currencies li, #languages li {
+    overflow: hidden;
+}
+
+.box li {
+    border-radius: 0.1px;
+}
+
+.infogridView .titleBox, .infogridView .priceBox {
+    background: none;
+}
+
+
+
+
+/* gradients  */
+/* BLUE */
+.gridView .titleBox, .gridView .priceBox, .box h3, .box h2, .sectionHead, .pageHead, #currencies a.selected, #languages a.selected, .flyoutMenu a.selected, .dropDown a.selected, .thumbNav a.cur, .thumbNav a.cur:hover, .promoBox strong.promoPrice, .itemSlider .prevItem, .itemSlider .nextItem, .specBox h3{
+
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#ADEFFF, endColorstr=#19788F)";
+
+}
+
+/* Grey */
+.FXgradGrey,
+.promoBox strong.promoTitle,
+.specBoxTitles a.title{
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#f9fafa', endColorstr='#a9b1b4')";
+}
+
+.FXgradGreyLight,
+.sf-menu li ul,
+#footer #panel,
+.box ul,
+.box ol,
+.box .content,
+.loginForm,
+#currencies a,
+#languages a,
+.flyoutMenu a,
+.basketFlyout,
+div.anythingSlider .arrow,
+.thumbNav{
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#f9fafa', endColorstr='#a9b1b4')";
+}
+
+/* Orange */
+.FXgradOrange,
+.removeButton,
+.sf-menu li.current,
+.sf-menu li.sfHover, .sf-menu li:hover,
+.gridView div.priceBox:hover,
+.gridView div.titleBox:hover,
+.featuredList li.articleImage:hover + li.articleTitle > a,
+#footer .list a:hover,
+#currencies a:hover,
+#languages a:hover,
+.flyoutMenu a:hover,
+.submitButton:hover,
+.basketFlyout li a:hover,
+.dropDown ul a:hover,
+div.anythingSlider span.arrow:hover,
+.thumbNav a:hover,
+.slideNav:hover,
+a.viewAllHover,
+.specBoxTitles a.title:hover,
+.actionLinks li:hover {
+     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff8604', endColorstr='#ec6105')";
+}
+
+/* Light blue */
+.FXgradBlueLight, .fbEnableButton {
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#FFFFFF, endColorstr=#d7e3f1)";
+}
+
+/******/
+
+/*** SHADOWS -> ***/
+.shadow, #currencies, #languages, .loginForm, .altLoginBox, .flyoutMenu {
+     -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=3, Direction=135, Color='#666666')";
+}
+
+/* bottom shadow */
+.box h3, .box h2, .pageHead, .sectionHead {
+     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#ADEFFF, endColorstr=#19788F); progid:DXImageTransform.Microsoft.Shadow(Strength=5, Direction=180, Color='#666666')";
+}
+
+.basketFlyout {
+     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#f9fafa', endColorstr='#a9b1b4'); progid:DXImageTransform.Microsoft.Shadow(Strength=3, Direction=135, Color='#666666')";
+}
+
+.scrollable ul {
+     -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=3, Direction=135, Color='#666666')";
+}
+
+.basketItems {
+     -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=3, Direction=135, Color='#666666')";
+}
+
+div.anythingSlider .arrow {
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#f9fafa', endColorstr='#a9b1b4'); progid:DXImageTransform.Microsoft.Shadow(Strength=3, Direction=135, Color='#666666')";
+}
+
+.promoBox {
+    -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=3, Direction=135, Color='#666666')";
+}
+
+.rightShadow, .rightShadow h3 {
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#ADEFFF, endColorstr=#19788F); progid:DXImageTransform.Microsoft.Shadow(Strength=3, Direction=90, Color='#666666')";
+}
+
+.itemSlider .titleBlock, .itemSlider .titleBlock:hover {
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#ADEFFF, endColorstr=#19788F); progid:DXImageTransform.Microsoft.Alpha(opacity=90)";
+}
+
+.itemSlider .prevItem span.slideBg, .itemSlider .nextItem span.slideBg {
+    background: transparent;
+}
+
+.itemSlider .prevItem {
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#ADEFFF, endColorstr=#19788F); progid:DXImageTransform.Microsoft.Shadow(Strength=3, Direction=90, Color='#666666'); progid:DXImageTransform.Microsoft.Alpha(opacity=90)";
+}
+
+.itemSlider .nextItem {
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#ADEFFF, endColorstr=#19788F); progid:DXImageTransform.Microsoft.Shadow(Strength=3, Direction=270, Color='#666666'); progid:DXImageTransform.Microsoft.Alpha(opacity=90)";
+    right: 2px;
+}
+
+.itemSlider .prevItem:hover span.slideBg {
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff8604', endColorstr='#ec6105'); progid:DXImageTransform.Microsoft.Shadow(Strength=3, Direction=90, Color='#666666'); progid:DXImageTransform.Microsoft.Alpha(opacity=90)";
+}
+
+.itemSlider .nextItem:hover span.slideBg {
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff8604', endColorstr='#ec6105'); progid:DXImageTransform.Microsoft.Shadow(Strength=3, Direction=270, Color='#666666'); progid:DXImageTransform.Microsoft.Alpha(opacity=90)";
+}
+
+.itemSlider .nextItem:hover span.slidePointer {
+    right: -3px;
+}
+
+.box h3, .sectionHead, .specBox h3 {
+    z-index: auto;
+}
+
+.specBox .rss span {
+    right: -188px;
+}

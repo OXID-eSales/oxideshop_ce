@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ Licensed to the Apache Software Foundation (ASF) under one
+  ~ or more contributor license agreements. See the NOTICE file
+  ~ distributed with this work for additional information
+  ~ regarding copyright ownership. The ASF licenses this file
+  ~ to you under the Apache License, Version 2.0 (the
+  ~ "License"); you may not use this file except in compliance
+  ~ with the License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied. See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
+<wsdl:definitions xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://perf.samples" xmlns:intf="http://perf.samples" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://perf.samples">
+	<wsdl:types>
+		<schema elementFormDefault="qualified" targetNamespace="http://perf.samples" xmlns="http://www.w3.org/2001/XMLSchema">
+			<element name="inputElement">
+				<complexType>
+					<sequence>
+						<element maxOccurs="unbounded" minOccurs="0" name="item" type="xsd:string"/>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="outputElement" type="xsd:string"/>
+		</schema>
+	</wsdl:types>
+	<wsdl:message name="handleStringArrayResponse">
+		<wsdl:part name="output" element="impl:outputElement"/>
+	</wsdl:message>
+	<wsdl:message name="handleStringArrayRequest">
+		<wsdl:part name="input" element="impl:inputElement"/>
+	</wsdl:message>
+	<wsdl:portType name="PerfPortType">
+		<wsdl:operation name="handleStringArray" parameterOrder="input">
+			<wsdl:input name="handleStringArrayRequest" message="impl:handleStringArrayRequest"/>
+			<wsdl:output name="handleStringArrayResponse" message="impl:handleStringArrayResponse"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="PerformanceSoapBinding" type="impl:PerfPortType">
+		<wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="handleStringArray">
+			<wsdlsoap:operation soapAction="handleStringArray"/>
+			<wsdl:input>
+				<wsdlsoap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<wsdlsoap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="PerfSoapService">
+		<wsdl:port name="Performance" binding="impl:PerformanceSoapBinding">
+			<wsdlsoap:address location="http://localhost:8080/axis2/services/PerfPortType"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

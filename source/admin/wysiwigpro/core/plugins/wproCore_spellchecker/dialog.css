@@ -1,0 +1,33 @@
+.leftCol {
+	margin-right: 14em;	
+}
+.leftCol iframe {
+	width: 100%;
+	height: 160px;
+}
+.leftCol input, .leftCol select {
+	width: 97%;
+}
+.leftCol select {
+	height: 80px;
+	width: 98%;
+}
+.leftCol input.largeButton {
+	margin-bottom: 3px;
+}
+.rightCol {
+	text-align: center;
+	float: right;
+	width: 13em;
+}
+#foundMessage {
+	padding: 5px 0px 5px 0px;
+	font-weight: bold;
+	font-size: 12px;
+}
+.dictionaryChooser {
+	text-align: right;
+}
+.dictionaryChooser select {
+	/*width: 12em;*/
+}

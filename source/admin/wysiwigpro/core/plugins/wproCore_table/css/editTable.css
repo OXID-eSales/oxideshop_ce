@@ -1,0 +1,38 @@
+.leftColumn {
+	float: left;
+	margin-right: 3px;
+	width: 340px;
+}
+.rightColumn {
+	margin-left: 340px;
+}
+.UI2ColTable .row {
+	clear: both;
+}
+
+.FourCol .UI2ColTable .row {
+	/*width: 240px; float:left;*/
+}
+.UITabbedPane {
+	height: 395px;
+}
+.UITabbedPane .UITabbedPane {
+	height: 308px;
+}
+#t_tUI2_paneHolder .UITabbedPane {
+	height: 355px;
+}
+.rowCellChange {
+	position:absolute;
+	bottom:50px;
+	right: 8px;
+	text-align: right;
+}
+#tablePreview {
+	width:99%;
+	height: 352px;
+}
+
+#rowNumber, #cellNumber {
+	padding: 2px 3px 3px 3px;
+}

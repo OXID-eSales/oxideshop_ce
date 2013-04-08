@@ -1,0 +1,26 @@
+#!/bin/bash
+echo "$@"
+
+if ! test -z "$SEL" ; then
+    options="--dbreset=TF21"
+fi
+
+
+options="--verbose"
+
+proj_prefix="/var/www/oxideshop"
+if test `hostname` = "efire-linux" ; then
+    proj_prefix="/htdocs/testshops/features"
+fi
+
+php_settings="-d memory_limit=1536M -d include_path=.:$proj_prefix/library/PHPUnit:$proj_prefix/library/"
+
+PHPBIN="php"
+
+if ! test "$NB_DBG" = "" ; then
+    export XDEBUG_CONFIG="remote_port=9009 remote_enable=0 remote_host=$NB_DBG idekey=netbeans-xdebug remote-handler=dbgp"
+    php_settings="$php_settings -d xdebug.remote_enable=0 -d xdebug.remote_port=9009 -d xdebug.idekey=netbeans-xdebug -d xdebug.remote-handler=dbgp -d xdebug.remote_host=$NB_DBG"
+fi
+
+$PHPBIN ${php_settings} ${proj_prefix}/library/PHPUnit/phpunit.php $options "$@"
+

@@ -1,0 +1,64 @@
+.UISelectLeftCol select {
+	height: 230px;
+}
+
+.smallWarning {
+	height: 26px;
+	margin-left: 158px;
+}
+
+.characterScroll {
+	height: 204px;
+	overflow: auto;
+	/*background-color: #ffffff;*/
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+.characterScroll.small {
+	height: 170px;
+	overflow: auto;
+	/*background-color: #ffffff;*/
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+.characterScroll a {
+	/*border-width:0px;*/
+	border: 1px solid #000000;
+	border-width:0px 1px 1px 0px;
+	
+	width: 24px;
+	height: 24px;
+	font-size: 12px;
+	
+	text-decoration: none;
+	display: block;
+	float: left;
+	text-align: center;
+	padding: 3px 0px 0px 0px;
+	
+	voice-family: "\"}\"";
+	voice-family:inherit;
+	height: 21px;
+}
+a.cl {
+	background-color: #ffffff;
+	color: #000000;
+}
+
+.selectCharacter {
+	height: 35px;
+	text-align: center;
+	border-bottom: 2px groove threedhighlight;;
+	margin-bottom: 5px;
+}
+
+#charDisplay {
+	font-size: 18px;
+	padding: 0px 5px 0px 5px
+}
+#recentlyUsed {
+	clear: both;
+}
+#recentlyUsed div.characterScroll {
+	height: 24px;
+	overflow: hidden;
+}

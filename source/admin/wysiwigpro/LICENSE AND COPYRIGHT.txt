@@ -1,0 +1,67 @@
+WYSIWYGPRO 3.x COPYRIGHT AND LICENSING INFORMATION
+
+WysiwygPro is NOT open source software.
+WysiwygPro is NOT shareware.
+WysiwygPro is NOT Freeware.
+
+WysiwygPro is licensed under the terms of the WysiwygPro license. If you purchased WysiwygPro then you 
+will have received a copy of the license.
+
+If you are not a WysiwygPro license holder and you have received this software as part of a larger 
+application or website then you DO NOT have permission to use this software outside of that larger 
+application or website and you are not entitled to support from wysiwygpro.com. Use, modification or 
+distribution of this software by non-license holders is a violation of copyright law.
+
+WYSIWYGPRO 3.x CREDITS
+WysiwygPro includes the following script libraries and resources under an agreement with their copyright 
+owners or under the terms of their respective license. 
+All 3rd party libraries can be used as part of wysiwygPro in a commercial context.
+
+COOLjsTree Professional
+Copyright: CoolDev.Com.
+License: Commercial
+Your rights: You may not use this code outside of WysiwygPro without purchasing your own license.
+
+DOMIT!
+Copyright: John Heinstein.
+License: GNU Lesser General Public License (LGPL)
+Your rights: This package is included as a linked library under the terms of the LGPL license. 
+You are free to use, modify and distribute this software under the terms of the LGPL 
+license. Please see core/libs/domit/license.txt
+
+Draggable IFrame
+Copyright: Matt Kruse, JavascriptToolbox.com
+License: BSD Style
+Your rights: Please download your own copy from http://www.JavascriptToolbox.com/ as the copy included 
+with WysiwygPro is heavily modified.
+
+Emoticons
+Copyright: Bruce Corkhill, WebWizGuide.com
+License: The animated emoticons provided with WysiwygPro are included under an agreement with the
+copyright holder, Bruce Corkhill and WebWizGuide.com.  
+Purchasing a WysiwygPro license allows you to use the animated emoticons as part of
+the WysiwygPro editor component. 
+Emoticons may not be used, copied or redistributed outside of the WysiwygPro product, 
+without explicit permission from Bruce Corkhill.
+				
+GetID3
+Copyright: http://www.getid3.org 
+License: Commercial (GPL License also available)
+Your rights: Download your copy from http://www.getid3.org
+
+IconExperience Icon Collection
+Copyright: INCORS GmbH
+License: Commercial
+Your rights: You may not use these icons outside of WysiwygPro without purchasing your own license.
+
+JW FLV Media Player
+Copyright: JEROENWIJERING.COM
+License: Commercial (Creative Commons License also available)
+Your rights: Download your copy from http://www.jeroenwijering.com
+
+Xajax
+Copyright: Jared White & J. Max Wilson
+License: GNU Lesser General Public License (LGPL)
+Your rights: This package is included as a linked library under the terms of the LGPL license.
+You are free to use, modify and distribute this software under the terms of the LGPL 
+license.

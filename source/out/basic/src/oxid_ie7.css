@@ -1,0 +1,46 @@
+/* various margins fixes */
+hr {margin: -.4em 0;padding:0;}
+#left hr {margin: -.4em 10px;}
+input.chk {margin: -3px 1px -3px -4px;}
+p {margin:0}
+
+#body .product.big strong.h4{width: 549px;}
+
+/* line height containing <sup> fix */
+#body .product .price sup.dinfo a{font-size: 16px;}
+
+#body .product.thinest .price sup.dinfo a{font-size: 11px;}
+#body .product.details .price sup.dinfo{font-size: 12px;}
+#body .product.details .price sup.dinfo a{font-size: 13px;}
+#body .product.details .price sub.only{font-size: 13px;}
+#body .product span.btn a { line-height: 18px;}
+#body .product .flag {overflow: hidden;}
+
+
+/* right box'es goes under body fix */
+#right div.box {border-bottom:1px solid #fafafa;}
+
+/* expanding body > 580 with 5 small product boxes fix */
+div#body  {margin:0 204px 50px 190px;width:580px;}
+
+/* IE prev/next in basket/accounts fix */
+#body div.bar.prevnext input {overflow: visible; padding-top: 6px; padding-bottom: 4px;}
+#body span.btn input{overflow: visible;}
+
+#body .basket th.brd {border-bottom:1px solid #fff;}
+
+/* IE relative z-index calculation fix  - http://annevankesteren.nl/2005/06/z-index */
+dl.box, ul.menue li {z-index: 1000;}
+
+/* IE opacity */
+#mask.on { filter:Alpha(Opacity=70);}
+div.bar.links a.language.act img{filter:Alpha(Opacity=70);}
+
+/* IE fixing problem with collspan when <td> has colspan and nonbreakable content doesn't fit in it */
+.showHideShippAddr {width: 543px; overflow: hidden;}
+
+/* IE fixing 1px height gap in right top column near path, where we can see right column background */
+div#path {height: 13px;}
+
+/* IE 6 fixing problem with rss icon position */
+a.rss{ right:13px; top:9px;}

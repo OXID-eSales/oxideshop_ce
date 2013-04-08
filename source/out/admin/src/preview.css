@@ -1,0 +1,3 @@
+html{height: 100%;}
+body {padding:0;margin:0;height: 100%;background:#fff;}
+#box {margin:0 20px -1px;padding:10px;border:1px solid #7a7a7a;border-top: none;overflow: auto;height: 90%;overflow-x:hidden;}

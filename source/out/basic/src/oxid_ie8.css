@@ -1,0 +1,3 @@
+/* IE opacity */
+#mask.on { -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";}
+div.bar.links a.language.act img{-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";}

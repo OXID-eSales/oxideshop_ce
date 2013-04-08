@@ -1,0 +1,6 @@
+.UITabbedPane {
+	height: 220px;
+}
+#rowNumber, #cellNumber {
+	padding: 2px 3px 3px 3px;
+}

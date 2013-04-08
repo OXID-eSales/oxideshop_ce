@@ -1,0 +1,260 @@
+/* links */
+#webPreview {
+	width: 100%;
+	height: 320px;
+}
+#bookmarkSelect {
+	width: 99%;
+	height: 325px;
+}
+
+#siteFrame {
+	height: 350px;
+	width: 240px;
+	float: left;
+}
+#siteFrameHolder {
+	float: left;
+}
+
+#sitePreview {
+	height: 335px;
+	width: 380px;
+}
+#sitePreviewHolder {
+	margin-left: 250px;
+}
+
+/* end links */
+.UIDropDownPane {
+	height: 368px;
+	overflow: auto;
+}
+.centerPanes {
+	margin-left: 115px;
+}
+#uploadMessage {
+	background-color: #ffffff;
+	position:absolute;
+}
+
+.fbLoadMessage {
+	padding: 10px;
+	background-color: #ffffff;
+}
+.fbLoadMessage img {
+	vertical-align: top;
+}
+
+/* left column and outlook bar */
+.leftColumn {
+	float: left;
+	width: 110px;
+	text-align: center;
+}
+.outlookBar {
+	height: 470px;
+	width:108px;
+	overflow: auto;
+	overflow-x: hidden;
+	text-align: center;
+}
+.outlookList a {
+	display: block;
+	padding-top: 5px;
+	padding-bottom: 10px;
+	/*height: 74px;
+	overflow: hidden;*/
+	text-align: center;
+	text-decoration: none;
+	
+	/*border: 1px inset;*/
+	
+}
+.fl {
+	color: #000000;
+}
+
+.outlookList img {
+	border-width: 0px;
+}
+
+/* options */
+.fbButtons {
+	text-align: right;
+	position: absolute;
+	right: 5px;
+	bottom: 5px;
+}
+/* options */
+#removeLink {
+	text-align: right;
+	position: absolute;
+	right: 140px;
+	bottom: 8px;
+}
+.bottomOptions {
+	text-align: left;
+	position: absolute;
+	width: 638px;
+	height: 50px;
+	padding-top: 3px;
+	right: 3px;
+	bottom: 5px;
+	border-top: 2px groove threedhighlight;
+}
+.topOptions input {
+	/*width: 440px;*/
+}
+.fourCol .UI2ColTable .row {
+	width: 300px; float:left;
+}
+div.topOptions {
+	height: 50px;
+	border-bottom: 2px threedhighlight groove;
+	margin-left: 115px;
+	margin-bottom: 5px;
+	/*padding-bottom: 3px;*/
+}
+/* center column */
+.fileBrowserCenter {
+	margin-left: 6px;
+	/*margin-right: 285px;*/
+	float: left;
+}
+
+.fileHolder {
+	background-color: #FFFFFF;
+	height: 366px;
+	width: 340px;
+	overflow: auto;
+	position: relative;
+}
+
+.pageNavTop, .pageNavBottom {
+	background-color: threedshadow;
+	height: 22px;
+	text-align: right;
+	clear: both;
+}
+.pageNavTop {
+	border-bottom: 1px solid threeddarkshadow;
+}
+div.pageNavText {
+	float: left;
+	padding: 6px 0 0 3px;
+}
+
+
+.thumbHolder div {
+	overflow: hidden;
+	float: left;
+	width: 103px;
+	/*padding: 2px;*/
+	text-align: center;
+	margin: 1px;
+	cursor: default;
+}
+.thumbHolder div.thumb {
+	border: 1px solid threedshadow;
+	background-position: center center;
+	background-repeat:no-repeat;
+	float: none;
+	width: 97px;
+	height: 96px;
+}
+.thumbHolder div.thumb input {
+	float: left;
+}
+.thumbHolder label.name {
+	border-width: 0px;
+	margin: 0px;
+	white-space:nowrap;
+	float: none;
+}
+.thumbHolder label.name span {
+	color: #666666;
+	font-size: 10px;
+}
+
+.fileTable {
+	white-space:nowrap;
+	cursor:default;
+}
+.fileTable th {
+	font-weight: normal;
+	text-align: left;
+	padding: 2px;
+	white-space: nowrap;
+}
+.fileTable td {
+	font-weight: normal;
+	text-align: left;
+	padding: 2px;
+}
+
+/*.fileTable thead {
+	position:absolute;
+	top: 0px;
+	left: 0px;
+}*/
+.mediaOptionsCenter {
+	margin-left: 6px;
+	float: left;
+	width: 353px;
+}
+.mediaPositioningHolder {
+	float: right;
+	width: 270px;
+	margin-right: 3px;
+}
+
+.detailsHolder {
+	float: right;
+	width: 288px;
+	margin-right: 3px;
+}
+.detailsHolder iframe.previewFrame {
+	width: 99%;
+	height: 235px;
+}
+
+.hideDetails {
+	position: absolute;
+	right: 5px;
+}
+.hideDetails a {
+	color: #000000;
+	text-decoration: none;
+}
+.detailsHolder .UITabbedPane {
+	height: 381px;
+	width: 276px;
+	overflow: auto;
+}
+.displayDetails {
+	line-height: 16px;
+}
+.displayDetails div {
+	white-space: nowrap;
+}
+.displayDetails .fbLoadMessage {
+	padding: 2px;
+}
+#nothingPane, #folderPane, #multiplePane {
+	padding: 20px;
+}
+/* rename */
+#renameScroll {
+	height: 230px;
+	overflow: auto;
+	padding: 3px;
+}
+/* end rename */
+
+#messageBox {
+	z-index:1000;
+}
+#windowOptionsBox {
+	z-index:1000;
+}

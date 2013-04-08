@@ -1,0 +1,5 @@
+oxpaymentgateway.php
+	* nera unito protected function _isActive()   funkcijai
+	* funkcijoje public function executePayment( $dAmount, & $oOrder )   yra eilute: return true; // fake yes . reikia normalesnio komentaro kas ir kodel vietoj "fake" :D
+	* teste testSetPaymentParams() objekto $oUserpayment laukams reiketu suteikti skirtingas reiksmes o ne vien "test" bei tirinti ar visi laukai teisingai priskiriami, o ne vien oxuserpayments__oxvalue
+	* funkcijai  public function executePayment( $dAmount, & $oOrder )  perduodamas $dAmount parametras berods funkcijoj nenaudojamas...

@@ -1,0 +1,7 @@
+# disabling log file access from outside
+<FilesMatch .*>
+order allow,deny
+deny from all
+</FilesMatch>
+
+Options -Indexes

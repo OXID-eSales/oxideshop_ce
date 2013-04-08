@@ -1,0 +1,59 @@
+<!--
+  ~ Licensed to the Apache Software Foundation (ASF) under one
+  ~ or more contributor license agreements. See the NOTICE file
+  ~ distributed with this work for additional information
+  ~ regarding copyright ownership. The ASF licenses this file
+  ~ to you under the Apache License, Version 2.0 (the
+  ~ "License"); you may not use this file except in compliance
+  ~ with the License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied. See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
+<project basedir="." default="gen.skeleton">
+	
+	<property environment="env"/>
+	
+	<property name="project.base.dir" value="."/>
+	<property name="parent.dir" value=".."/>
+	
+	<property name="wsdl.uri" value="${parent.dir}/bank.wsdl"/>
+	
+	<property name="src" value="${project.base.dir}/src"/>
+	<property name="target" value="${project.base.dir}/target"/>
+	
+	<target name="check.dependency" unless="env.AXIS2_HOME">
+		<echo message="AXIS2_HOME must be set"/>
+	</target>
+	
+	<target name="gen.skeleton" if="env.AXIS2_HOME" depends="check.dependency">
+
+
+        <delete dir="${target}"/>
+		<mkdir dir="${target}"/>
+		<java classname="org.apache.axis2.wsdl.WSDL2Java" fork="true">
+			<arg line="-uri ${wsdl.uri}"/>
+			<arg line="-ss"/>
+			<arg line="-sd"/>
+			<arg line="-o ${target}"/> <!-- Output directory in which to generate files --> <!-- NB it generates to the src folder under this directory!! -->
+			<classpath>
+				<fileset dir="${env.AXIS2_HOME}\lib">
+					<include name="*.jar"/>
+				</fileset>
+			</classpath>
+		</java>
+	</target>
+	
+	<!-- Create the service archive by executing target\build.xml (jar.server) -->
+	<target name="jar.server" if="env.AXIS2_HOME">
+		<ant dir="${target}"/>
+		<copy file="${target}\build\lib\BankService.aar" todir=".."/>
+	</target>
+</project>

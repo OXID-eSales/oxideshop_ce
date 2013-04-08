@@ -1,0 +1,2 @@
+oxSearch.php
+	- vykdyti paieska, kai ieskoma ne vien tuscio stringo, bet tiesiog keliu tarpu '   '

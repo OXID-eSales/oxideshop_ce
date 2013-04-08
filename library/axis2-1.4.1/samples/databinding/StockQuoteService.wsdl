@@ -1,0 +1,64 @@
+<!--
+  ~ Licensed to the Apache Software Foundation (ASF) under one
+  ~ or more contributor license agreements. See the NOTICE file
+  ~ distributed with this work for additional information
+  ~ regarding copyright ownership. The ASF licenses this file
+  ~ to you under the Apache License, Version 2.0 (the
+  ~ "License"); you may not use this file except in compliance
+  ~ with the License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied. See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
+<definitions targetNamespace="http://w3.ibm.com/schemas/services/2002/11/15/stockquote/wsdl"
+	xmlns="http://schemas.xmlsoap.org/wsdl/" 
+	xmlns:tns="http://w3.ibm.com/schemas/services/2002/11/15/stockquote/wsdl" 
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+	xmlns:types="http://w3.ibm.com/schemas/services/2002/11/15/stockquote"
+	>
+
+	<import namespace="http://w3.ibm.com/schemas/services/2002/11/15/stockquote" location="StockQuote.xsd" />
+
+	<message name="getStockQuoteReq">
+		<part name="parameters" element="types:getStockQuote" />
+	</message>
+
+	<message name="getStockQuoteResp">
+		<part name="parameters" element="types:getStockQuoteResponse" />
+	</message>
+
+	<portType name="StockQuotePortType">
+		<operation name="getStockQuote">
+			<input message="tns:getStockQuoteReq" />
+			<output message="tns:getStockQuoteResp" />
+		</operation>
+	</portType>
+
+	<binding name="StockQuoteSOAPBinding" type="tns:StockQuotePortType">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<operation name="getStockQuote">
+			<soap:operation style="document" soapAction="getStockQuote" />
+			<input>
+				<soap:body use="literal" />
+			</input>
+			<output>
+				<soap:body use="literal" />
+			</output>
+		</operation>
+	</binding>
+
+	<service name="StockQuoteService">
+		<port name="StockQuoteSOAPPort" binding="tns:StockQuoteSOAPBinding">
+			<soap:address location="http://localhost:8080/axis2/services/StockQuoteService" />
+		</port>
+	</service>
+
+</definitions>

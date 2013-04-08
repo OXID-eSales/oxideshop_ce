@@ -1,0 +1,212 @@
+#string = tranlated_string
+charset = iso-8859-1
+fullDateFormat = Y-m-d H:i:s
+simpleDateFormat = Y-m-d
+mainCategory = Hauptkat.
+notAssigned = nicht zugeordnet
+none = keine
+viewAll = Alle anzeigen
+order = Bestellung
+noArticles = kein Artikel
+amount = Menge
+size = Grösse
+weight = Gewicht
+price = Preis
+bonus = Gutschein(e)
+shippingCosts = Versandkosten
+exceededShops = Your licensed shop number is exceeded, please contact <a href=mailto:info@oxid-esales.com>OXID eSales</a> for more information.
+user = Kunde
+mallAdmin = Mall Admin
+usrRegistered = Der Benutzer wird nach der Eingabe seines Passwortes registriert
+Import = Import
+Orders = Bestell.
+Articles = Produkte
+# ---- menue.xml ----
+mxmainmenu = Stammdaten
+mxlaw = Rechtliches
+mxcoresett = Grundeinstellungen
+mxshopgroups = Shop Gruppen
+mximex = Im-/Export
+mxsysinfo = Systeminfo
+mxtools = Tools
+mxgenexp = Gener. Export
+mxshopsett = Shopeinstellungen
+mxpaymeth = Bezahlmethoden
+mxdiscount = Rabatte
+mxtax = MwSt.
+mxtaxrule = MwSt.Regeln
+mxshipping = Versandkosten
+mxshippingset = Versandkosten-Sets
+mxvouchers = Gutscheine
+mxmanageprod = Produkte verwalten
+mxarticles = Artikel
+mxattributes = Attribute
+mxcategories = Kategorien
+mxsellist = Auswahllisten
+mxremlist = Bemerkungen Liste
+mxpricealarm = Preisalarm
+mxpricehammer = Preishammer
+mxuadmin = Benutzer verwalten
+mxactions = Aktionen verwalten
+mxusers = Benutzer
+mxugroups = Gruppen
+mxlist = Liste
+mxorders = Bestellungen
+mxdisplayorders = anzeigen
+mxorderovw = Bestellübersicht
+mxpacklist = Packliste
+mxcustnews = Kundeninformation
+mxnews = Nachrichten
+mxnewsletter = Newsletter
+mxcontent = CMS-Seiten
+mxurls = Links
+mxguestbook = Gästebuch
+mxstat = Statistiken
+mxservice = Service
+mxshow = ausgeben
+mxcountries = Länder
+mxvendor = Hersteller
+mxwrapping = Geschenkverpackung
+mxlooknfeel = Look&amp;Feel
+# ---- tabs.xml ----
+#newsletter_list
+tbclnewsletter_main = HTML
+tbclnewsletter_plain = TEXT
+tbclnewsletter_preview = Vorschau
+tbclnewsletter_selection = Selektion
+#adminlinks_list
+tbcladminlinks_main = Stamm
+#delivery_list
+tbcldelivery_main = Stamm
+tbcldelivery_art = Artikel
+tbcldelivery_usr = Benutzer
+#deliveryset_list
+tbcldeliveryset_main = Stamm
+tbcldeliveryset_payment = Bezahlme.
+tbcldeliveryset_user = Benutzer
+#discount_list
+tbcldiscount_main = Stamm
+tbcldiscount_art = Artikel
+tbcldiscount_usr = Benutzer
+#mallCategory_list
+tbclmallcategory_main = Stamm
+#news_list
+tbclnews_main = Stamm
+tbclnews_text = Text
+#vendor_list
+tbclvendor_main = Stamm
+#category_list
+tbclcategory_main = Stamm
+tbclcategory_text = Langtext
+tbclcategory_pictures = Bilder
+tbclcategory_order = Sortierung
+tbclcategory_yatego = Yatego
+#order_list
+tbclorder_overview = Übersicht
+tbclorder_main = Stamm
+tbclorder_address = Adressen
+tbclorder_article = Artikel
+tbclorder_remark = Historie
+tbclorder_buergel = Bürgel
+#payment_list
+tbclpayment_main = Stamm
+tbclpayment_country = Land
+#selectlist_list
+tbclselectlist_main = Stamm
+tbclselectlist_products = Produkte
+#shop_laws_list
+tbclshop_laws_basket = Warenkorb
+tbclshop_laws_order = Bestellung
+#shop_list
+tbclshop_main = Stamm
+tbclshop_extend = Info
+tbclshop_config = Einstell.
+tbclshop_agb = AGB
+tbclshop_impressum = Impress.
+tbclshop_system = System
+tbclshop_mall = Mall
+tbclshop_license = Lizenz
+tbclshop_performance = Perform.
+#statistic_list
+tbclstatistic_main = Stamm
+tbclstatistic_service = Wartung
+#user_list
+tbcluser_main = Stamm
+tbcluser_extend = Erweitert
+tbcluser_article = Artikel
+tbcluser_remark = Historie
+tbcluser_address = Adressen
+tbcluser_payment = Zahlung
+#usergroup_list
+tbclusergroup_main = Stamm
+#voucherserie_list
+tbclvoucherserie_main = Stamm
+tbclvoucherserie_groups = Gruppen
+tbclvoucherserie_export = Export
+#voucher_list
+tbclvoucher_main = Stamm
+#vat_list
+tbclvat_main = Stamm
+tbclvat_art = Artikel
+tbclvat_usr = Benutzer
+#vatrule_list
+tbclvatrule_main = MwSt.
+#imex_do
+tbclimex_export = Export
+tbclimex_export_user =  Benutzer
+tbclimex_import = Import
+#attribute_list
+tbclattribute_main = Stamm
+tbclattribute_category = Kategor.
+#article_list
+tbclarticle_main = Stamm
+tbclarticle_extend = Erweitert
+tbclarticle_stock = Lager
+tbclarticle_attribute = Auswahl
+tbclarticle_crossselling = Crosssell.
+tbclarticle_variant = Varianten
+tbclarticle_pictures = Bilder
+tbclarticle_review = Bewertung
+tbclarticle_overview = Statistik
+tbclarticle_amountprice = Staffel
+#dynscreen_list
+tbclremote_about = Allgemein
+tbclremote_technics = Technik
+tbclremote = Interface
+#userlist
+snpuserlistheader = Benutzerliste
+snpuserlistoxfname = Vorname
+snpuserlistoxlname = Nachname
+snpuserlistoxusername = E-Mail
+snpuserlistoxcreate = Registriert
+#reviewlist
+snpreviewlistheader = Bemerkungen Liste
+snpreviewlistoxcreate = Angelegt
+snpreviewlistoxtext = Inhalt
+snpreviewlistoxtitle = Artikel
+#orderlist
+snporderlistheader = Umsatzliste
+snporderlistoxorderdate = Datum
+snporderlistoxartnum = Art.-Nr.
+snporderlistsum = Anzahl
+snporderlistoxtitle = Beschreibung
+snporderlistround = Preis
+#actions
+tbclactions_main = Stamm
+#content_list
+tbclcontent_main = Stamm
+#Service Tools
+tbcltools_main = SQL
+tbcltools_backup = Backup
+#Pricealarm
+tbclpricealarm_main = Stamm
+tbclpricealarm_mail = Mail
+#Countries
+tbclcountry_main = Stamm
+#HTML editor
+editor_language_file = de-de.php
+#serials
+invalid_serial = Ungültiger Lizenzschlüssel
+nonstackable_serial_detected = Ein nicht erweiterbarer Lizenzschlüssel kann nicht hinzugefügt werden. Bitte fügen Sie diesen Schlüssel als ersten ein.
+serial_added = Neuer Lizenzschlüssel wurde aktiviert
+serial_updated = Lizenzschlüssel wurde aktualisiert

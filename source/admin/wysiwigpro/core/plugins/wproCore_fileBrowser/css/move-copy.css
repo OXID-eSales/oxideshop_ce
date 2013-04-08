@@ -1,0 +1,24 @@
+/* CSS Document */
+
+.leftColumn {
+	float: left;
+	width: 110px;
+	text-align: center;
+}
+.outlookBar {
+	height: 280px;
+	width:108px;
+	overflow: auto;
+	text-align: center;
+}
+
+.rightColumn {
+	margin-left: 116px;
+	height: 280px;
+}
+
+.overwriteTable th {
+	font-weight: normal;
+	text-align: left;
+	border-bottom: 1px solid #cccccc;
+}

@@ -1,0 +1,242 @@
+<?php
+/**
+ *    This file is part of OXID eShop Community Edition.
+ *
+ *    OXID eShop Community Edition is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
+ *    (at your option) any later version.
+ *
+ *    OXID eShop Community Edition is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU General Public License for more details.
+ *
+ *    You should have received a copy of the GNU General Public License
+ *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @link      http://www.oxid-esales.com
+ * @package   tests
+ * @copyright (C) OXID eSales AG 2003-2013
+ * @version OXID eShop CE
+ * @version   SVN: $Id$
+ */
+
+require_once realpath( "." ).'/unit/OxidTestCase.php';
+require_once realpath( "." ).'/unit/test_config.inc.php';
+
+/**
+ * Tests for contact class
+ */
+class Unit_Views_contactTest extends OxidTestCase
+{
+    /**
+     * Test view render.
+     *
+     * @return null
+     */
+    public function testRender()
+    {
+        $oContact = oxNew( 'Contact' );
+        $this->assertEquals( 'page/info/contact.tpl', $oContact->render() );
+    }
+
+    /**
+     * Test if send mail is not executed if user mail is not valid
+     * and warning message is displayed
+     *
+     * M#1001
+     *
+     * @return null
+     */
+    public function testSave_withIncorectEmail()
+    {
+        oxSession::deleteVar( 'Errors' );
+
+        $aParams['oxuser__oxusername'] = 'invalidEmail';
+        modConfig::setParameter( 'editval', $aParams );
+        $oContact = oxNew( 'Contact' );
+
+        $this->assertFalse( $oContact->send() );
+
+        //checking if warning was added to errors list
+        $sErr = oxLang::getInstance()->translateString( 'EXCEPTION_INPUT_NOVALIDEMAIL' );
+        $aEx = oxSession::getVar( 'Errors' );
+        $oErr = unserialize( $aEx['default'][0] );
+
+        $this->assertEquals( $sErr, $oErr->getOxMessage() );
+    }
+
+    /**
+     * Test if send mail is not executed if CAPTCHA image is not entered
+     * and warning message is displayed
+     *
+     * @return null
+     */
+    public function testSave_withoutCaptcha()
+    {
+        oxSession::deleteVar( 'Errors' );
+
+        $aParams['oxuser__oxusername'] = 'aaaa@aaa.com';
+        modConfig::setParameter( 'editval', $aParams );
+        $oContact = oxNew( 'Contact' );
+
+        $this->assertFalse( $oContact->send() );
+
+        //checking if warning was added to errors list
+        $sErr = oxLang::getInstance()->translateString( 'EXCEPTION_INPUT_WRONGCAPTCHA' );
+        $aEx = oxSession::getVar( 'Errors' );
+        $oErr = unserialize( $aEx['default'][0] );
+
+        $this->assertEquals( $sErr, $oErr->getOxMessage() );
+    }
+
+    /**
+     * Test if send mail is not executed if user data is not entered
+     * and warning message is displayed
+     *
+     * @return null
+     */
+    public function testSave_withoutUserData()
+    {
+        oxSession::deleteVar( 'Errors' );
+        oxTestModules::addFunction('oxCaptcha', 'pass', '{return true;}');
+
+        $aParams['oxuser__oxusername'] = 'aaaa@aaa.com';
+        modConfig::setParameter( 'editval', $aParams );
+        $oContact = oxNew( 'Contact' );
+
+        $this->assertFalse( $oContact->send() );
+
+        //checking if warning was added to errors list
+        $sErr = oxLang::getInstance()->translateString( 'EXCEPTION_INPUT_NOTALLFIELDS' );
+        $aEx = oxSession::getVar( 'Errors' );
+        $oErr = unserialize( $aEx['default'][0] );
+
+        $this->assertEquals( $sErr, $oErr->getOxMessage() );
+    }
+
+    /**
+     * Test send mail
+     *
+     * @return null
+     */
+    public function testSave()
+    {
+        oxTestModules::addFunction('oxCaptcha', 'pass', '{return true;}');
+        oxTestModules::addFunction('oxemail', 'sendContactMail', '{return true;}');
+
+        $aParams['oxuser__oxusername'] = 'aaaa@aaa.com';
+        $aParams['oxuser__oxfname'] = 'first name';
+        $aParams['oxuser__oxlname'] = 'last name';
+        modConfig::setParameter( 'editval', $aParams );
+        modConfig::setParameter( 'c_subject', "testSubject" );
+        $oObj = $this->getProxyClass("Contact");
+        $oObj->send();
+
+        $this->assertEquals( 1, $oObj->getNonPublicVar( '_blContactSendStatus' ) );
+    }
+
+    /**
+     * Test getting user data.
+     *
+     * @return null
+     */
+    public function testGetUserData()
+    {
+       modConfig::setParameter( 'editval', 'testval' );
+       $oObj = $this->getProxyClass("Contact");
+       $this->assertEquals( 'testval', $oObj->getUserData() );
+    }
+
+    /**
+     * Test getting subject.
+     *
+     * @return null
+     */
+    public function testGetContactSubject()
+    {
+       modConfig::setParameter( 'c_subject', 'testsubject' );
+       $oObj = $this->getProxyClass("Contact");
+       $this->assertEquals( 'testsubject', $oObj->getContactSubject() );
+    }
+
+    /**
+     * Test getting message.
+     *
+     * @return null
+     */
+    public function testGetContactMessage()
+    {
+       modConfig::setParameter( 'c_message', 'testmessage' );
+       $oObj = $this->getProxyClass("Contact");
+       $this->assertEquals( 'testmessage', $oObj->getContactMessage() );
+    }
+
+    /**
+     * Test getting object of handling CAPTCHA image
+     *
+     * @return null
+     */
+    public function testGetCaptcha()
+    {
+        $oObj = $this->getProxyClass( 'Contact' );
+        $this->assertEquals(oxNew('oxCaptcha'), $oObj->getCaptcha());
+    }
+
+    /**
+     * Test getting object of handling CAPTCHA image
+     *
+     * @return null
+     */
+    public function testGetContactSendStatus()
+    {
+        $oObj = $this->getProxyClass( 'Contact' );
+        $oObj->setNonPublicVar( '_blContactSendStatus', true );
+        $this->assertTrue($oObj->getContactSendStatus());
+    }
+
+     /**
+     * Testing Contact::getBreadCrumb()
+     *
+     * @return null
+     */
+    public function testGetBreadCrumb()
+    {
+        $oContact = new Contact();
+
+        $this->assertEquals(1, count($oContact->getBreadCrumb()));
+    }
+
+    /**
+     * Test case for bug #0002065: Contact-Mail shows MR or MRS instead of localized salutation
+     *
+     *  @return null
+     */
+    public function testSendForBugtrackEntry0002065()
+    {
+        $aParams = array( "oxuser__oxusername" => "info@oxid-esales.com",
+                          "oxuser__oxfname"    => "admin",
+                          "oxuser__oxlname"    => "admin",
+                          "oxuser__oxsal"      => "MR" );
+
+        modConfig::setParameter( "editval", $aParams );
+        modConfig::setParameter( "c_message", "message" );
+        modConfig::setParameter( "c_subject", "subject" );
+
+        $oLang = oxLang::getInstance();
+        $sMessage = $oLang->translateString( 'CONTACT_FROM' ) . " " . $oLang->translateString( 'MR' ) ." admin admin(info@oxid-esales.com)<br /><br />message";
+
+        $oEmail = $this->getMock( "oxemail", array( "sendContactMail" ) );
+        $oEmail->expects( $this->once() )->method( 'sendContactMail')->with( $this->equalTo( 'info@oxid-esales.com' ), $this->equalTo( 'subject' ), $this->equalTo( $sMessage ) );
+
+        oxTestModules::addModuleObject( 'oxemail', $oEmail );
+
+        $oCaptcha = $this->getMock( "oxCaptcha", array( "pass" ) );
+        $oCaptcha->expects( $this->once() )->method( 'pass')->will( $this->returnValue( true ) );
+
+        $oContact = $this->getMock( "Contact", array( "getCaptcha" ) );
+        $oContact->expects( $this->once() )->method( 'getCaptcha')->will( $this->returnValue( $oCaptcha ) );
+        $oContact->send();
+    }
+}

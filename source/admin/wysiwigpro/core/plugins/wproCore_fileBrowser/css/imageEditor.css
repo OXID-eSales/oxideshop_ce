@@ -1,0 +1,12 @@
+#imageBackground {
+	background-color: #FFFFFF;
+	text-align: center;
+	
+	height: 385px;
+	overflow: auto;
+}
+
+#details {
+	padding: 3px;
+	text-align: center;
+}

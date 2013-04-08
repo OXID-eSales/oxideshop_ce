@@ -1,0 +1,35 @@
+"OXID eShop calculation samples"								
+"by Lina Geèiauskaitë"								
+"bymbas@gmail.com"								
+								
+"Article base price calculation"								
+								
+"Supplied parameters"							"Result parameter"	
+"PADB"	"Article database price"						"PABase"	"Article Base price"
+"PAGroup [A]"	"Article A price"							
+"PAGroup[B]"	"Article B price"							
+"PAGroup[C]"	"Article C price"							
+"G"	"Active user group"							
+"PASL"	"Article specific selectlist Price"							
+								
+"Article nr."	"PADB"	"PAGroup[A]"	"PAGroup[B]"	"PAGroup[C]"	"G"	"PASL"		"PABase"
+9200	89,92	88	87	86	"B"			87
+9201	80,2	79	78,5	77,9	"C"			77,9
+9202	16,9	16,2	15,8	15	"A"			16,2
+9203	29,99	28,9	27	25				29,99
+9204	50	49,1	48,2		"B"			48,2
+9205	25,9	25,2	25		"C"			25,9
+9206	105,08	103	100		"A"			103
+9207	45,5	44,8	43					45,5
+9208	72,11	70,2		69,03	"B"			72,11
+9209	45,44	44		42,36	"C"			42,36
+9210	28,28	27,12		25,55	"A"			27,12
+9211	5,05	5		4,99				5,05
+9212	14,14		13,99	13	"B"			13,99
+9213	26,35		26,01	25,86	"C"			25,86
+9214	29,39		28,99	28,1	"A"			29,39
+9215	58,09		57,89	57,85				58,09
+9216	48,25				"B"			48,25
+9217	14,96				"C"			14,96
+9218	59,6				"A"			59,6
+9219	24,33							24,33

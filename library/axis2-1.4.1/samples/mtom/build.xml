@@ -1,0 +1,130 @@
+<!--
+  ~ Licensed to the Apache Software Foundation (ASF) under one
+  ~ or more contributor license agreements. See the NOTICE file
+  ~ distributed with this work for additional information
+  ~ regarding copyright ownership. The ASF licenses this file
+  ~ to you under the Apache License, Version 2.0 (the
+  ~ "License"); you may not use this file except in compliance
+  ~ with the License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied. See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
+<project name="mtom" basedir="." default="generate.service">
+
+	<property environment="env" />
+	<property name="build.dir" value="build" />
+	<property name="client.dir" value="${build.dir}/client" />
+	<property name="service.dir" value="${build.dir}/service" />
+	<property name="client.classes.dir" value="${client.dir}/classes" />
+	<property name="skeleton.path" value="src/sample/mtom/service/MTOMSampleSkeleton.java" />
+	<property name="client.path" value="src/sample/mtom/client/Client.java" />
+	<!-- USE AXIS2_HOME FOR THIS -->
+	<property name="lib.dir" value="../lib" />
+
+	<path id="class.path">
+		<fileset dir="../../lib">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<!-- Create Service -->
+	<target name="generate.service">
+
+		<java classname="org.apache.axis2.wsdl.WSDL2Java">
+			<arg value="-uri" />
+			<arg value="${basedir}/resources/MTOMSample.wsdl" />
+			<arg value="-ss" />
+                  <arg value="-ap" />
+			<arg value="-sd" />
+			<arg value="-p" />
+			<arg value="sample.mtom.service" />
+			<arg value="-o" />
+			<arg value="${service.dir}" />
+			<classpath refid="class.path" />
+		</java>
+		<copy file="${skeleton.path}" tofile="${service.dir}/${skeleton.path}" overwrite="true" />
+		<antcall target="jar.server"/>
+		<copy file="${service.dir}/sample-mtom.aar" tofile="../../repository/services/sample-mtom.aar" overwrite="true"/>
+	</target>
+	<target name="check-parameters">
+		<condition property="parameters.set">
+			<and>
+				<isset property="dest" />
+				<isset property="file" />
+			</and>
+		</condition>
+		<!-- This is a hack to get an if-else working in ant. Some much more "ANTy" person is welcome to improve this -->
+		<antcall target="print-usage" />
+	</target>
+
+	<target name="print-usage" unless="parameters.set">
+		<echo message="ant run.client -Dfile &lt;file to be transferred&gt;  -Ddest &lt;name of the destination file&gt;" />
+	</target>
+
+	<!-- Generate Client -->
+	<target name="generate.client">
+		<java classname="org.apache.axis2.wsdl.WSDL2Java">
+			<arg value="-uri" />
+			<arg value="resources/MTOMSample.wsdl" />
+			<arg value="-p" />
+			<arg value="-ap" />
+			<arg value="sample.mtom.service" />
+			<arg value="-o" />
+			<arg value="${client.dir}" />
+			<classpath refid="class.path" />
+		</java>
+
+		<copy file="${client.path}" tofile="${client.dir}/${client.path}" overwrite="true" />
+
+		<mkdir dir="${client.classes.dir}" />
+		<!-- Compile client -->
+		<javac srcdir="${client.dir}/src" destdir="${client.classes.dir}">
+			<classpath refid="class.path" />
+		</javac>
+    </target>	
+
+	<!-- Run Client -->
+	<target name="run.client" depends="check-parameters,generate.client" if="parameters.set">
+		<!-- Accept two arguments from the command line, Also use the class.path set earlier -->
+		<java classname="sample.mtom.client.Client" fork="true">
+			<arg value="-file" />
+			<arg value="${file}" />
+			<arg value="-dest" />
+			<arg value="${dest}" />
+			<classpath>
+				<fileset dir="../../lib">
+					<include name="**/*.jar" />
+				</fileset>
+				<dirset dir="${client.classes.dir}" />
+			</classpath>
+		</java>
+	</target>
+	<target  name="jar.server">
+		<mkdir dir="${service.dir}/classes" />
+		<javac debug="on" memoryMaximumSize="256m" memoryInitialSize="256m" fork="true" 		destdir="${service.dir}/classes" srcdir="${service.dir}/src">
+		<classpath refid="class.path"/>
+		</javac>
+
+		<copy toDir="${service.dir}/classes/META-INF" failonerror="false">
+		<fileset dir="${service.dir}/resources">
+		<include name="*.xml"/>
+		<include name="*.wsdl"/>
+		<include name="*.xsd"/>
+		</fileset>
+		</copy>
+		<jar destfile="${service.dir}/sample-mtom.aar">
+		<fileset excludes="**/Test.class" dir="${service.dir}/classes"/>
+		</jar>
+	</target>
+	<target name="clean">
+		<delete dir="build" />
+	</target>
+</project>

@@ -1,0 +1,153 @@
+<!--
+  ~ Licensed to the Apache Software Foundation (ASF) under one
+  ~ or more contributor license agreements. See the NOTICE file
+  ~ distributed with this work for additional information
+  ~ regarding copyright ownership. The ASF licenses this file
+  ~ to you under the Apache License, Version 2.0 (the
+  ~ "License"); you may not use this file except in compliance
+  ~ with the License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied. See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
+<project name="userguide" default="generate.service">
+    <property name="mainDir" value="../.."/>
+    <property name="classes.dir" value="build/classes"/>
+    <path id="axis.classpath">
+        <fileset dir="../../lib">
+            <include name="*.jar"/>
+        </fileset>
+        <pathelement location="build/userguide.jar"/>
+    </path>
+<mkdir dir="${basedir}/build/classes"/>
+
+
+    <target name="run.client.all"
+            depends="run.client.ping,run.client.blocking,run.client.blockingdual,run.client.nonblocking,run.client.nonblockingdual,run.client.servicewithmodule">
+    </target>
+    
+    <target name="compile">
+    		<mkdir dir="${classes.dir}" />
+		<javac srcdir="src" destdir="${classes.dir}">
+			<classpath refid="axis.classpath" />
+		</javac>
+		<jar destfile="build/userguide.jar">
+            		<fileset dir="${classes.dir}">
+                		<include name="userguide/**"/>
+            		</fileset>
+       		</jar>
+    </target>
+    
+    <target name="generate.service" depends="compile">
+            <jar destfile="build/MyService.aar">
+            <fileset dir="src/userguide/example1/">
+                <include name="META-INF/**"/>
+            </fileset>
+            <fileset dir="${classes.dir}">
+                <include name="userguide/example1/**/*.class"/>
+            </fileset>
+        </jar>
+        <copy file="build/MyService.aar" tofile="../../repository/services/sample-MyService.aar" overwrite="true"/>
+        <jar destfile="build/MyServiceWithModule.aar" >
+            <fileset dir="src/userguide/example2/">
+                <include name="META-INF/**"/>
+            </fileset>
+            <fileset dir="${classes.dir}">
+                <include name="userguide/example2/**/*.class"/>
+            </fileset>
+        </jar>
+        <copy file="build/MyServiceWithModule.aar" tofile="../../repository/services/sample-MyServiceWithModule.aar" overwrite="true"/>
+        <jar destfile="build/WsaMappingService.aar">
+            <fileset dir="src/userguide/example3/">
+                <include name="META-INF/**"/>
+            </fileset>
+            <fileset dir="${classes.dir}">
+                <include name="userguide/example3/**/*.class"/>
+            </fileset>
+        </jar>
+        <copy file="build/WsaMappingService.aar" tofile="../../repository/services/sample-WsaMappingService.aar" overwrite="true"/>
+    </target>
+    
+    <target name="generate.module">
+       <jar destfile="build/logging.mar">
+            <fileset dir="src/userguide/loggingmodule/">
+                <include name="META-INF/**"/>
+            </fileset>
+            <fileset dir="${classes.dir}">
+                <include name="userguide/loggingmodule/**/*.class"/>
+            </fileset>
+       </jar>
+       <copy file="build/logging.mar" tofile="../../repository/modules/sample-logging.mar" overwrite="true"/>
+       <echo message="*** Please add the logging phase to the ../../conf/axis2.xml. For more details please refer to the http://ws.apache.org/axis2/1_2/modules.html ***"/>
+    </target>
+
+    <target name="run.client.blocking" depends="compile">
+        <java classname="userguide.clients.EchoBlockingClient"
+              classpathref="axis.classpath" fork="true">
+            <jvmarg value="-Daxis2.repo=${mainDir}/repository"/>
+	    <jvmarg value="-Daxis2.xml=conf/axis2.xml"/>
+        </java>
+    </target>
+    <target name="run.client.blockingdual" depends="compile">
+        <java classname="userguide.clients.EchoBlockingDualClient"
+              classpathref="axis.classpath" fork="true">
+            <jvmarg value="-Daxis2.repo=${mainDir}/repository"/>
+	    <jvmarg value="-Daxis2.xml=conf/axis2.xml"/>
+        </java>
+    </target>
+    
+    <target name="run.client.nonblocking" depends="compile">
+        <java classname="userguide.clients.EchoNonBlockingClient"
+              classpathref="axis.classpath" fork="true">
+            <jvmarg value="-Daxis2.repo=${mainDir}/repository"/>
+	    <jvmarg value="-Daxis2.xml=conf/axis2.xml"/>
+        </java>
+    </target>
+    
+    <target name="run.client.nonblockingdual" depends="compile">
+        <java classname="userguide.clients.EchoNonBlockingDualClient"
+              classpathref="axis.classpath" fork="true">
+            <jvmarg value="-Daxis2.repo=${mainDir}/repository"/>
+	    <jvmarg value="-Daxis2.xml=conf/axis2.xml"/>
+        </java>
+    </target>
+    
+    <target name="run.client.ping" depends="compile">
+        <java classname="userguide.clients.PingClient"
+              classpathref="axis.classpath" fork="true">
+            <jvmarg value="-Daxis2.repo=${mainDir}/repository"/>
+	    <jvmarg value="-Daxis2.xml=conf/axis2.xml"/>
+        </java>
+    </target>
+    
+    <target name="run.client.servicewithmodule" depends="compile">
+    	<echo message="${mainDir}" />
+	<echo message="${mainDir}/repository/conf/axis2.xml" />
+        <java classname="userguide.clients.ClientForWebServiceWithModule"
+              classpathref="axis.classpath" fork="true">
+           <jvmarg value="-Daxis2.repo=${mainDir}/repository"/>	   
+	   <jvmarg value="-Daxis2.xml=conf/axis2.xml"/>
+        </java>
+    </target>
+    
+    <target name="run.client">
+	<echo message="Please use the following ant targets to run the clients" />
+	<echo message="run.client.ping" />
+	<echo message="run.client.blocking" />
+	<echo message="run.client.blockingdual" />
+	<echo message="run.client.nonblocking" />
+	<echo message="run.client.nonblockingdual" />
+	<echo message="run.client.servicewithmodule" />
+	<echo message="run.client.all  -  run all clients" />
+    </target>
+    <target name="clean">
+	<delete dir="build" />
+    </target>
+</project>

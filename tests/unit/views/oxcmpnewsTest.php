@@ -1,0 +1,83 @@
+<?php
+/**
+ *    This file is part of OXID eShop Community Edition.
+ *
+ *    OXID eShop Community Edition is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
+ *    (at your option) any later version.
+ *
+ *    OXID eShop Community Edition is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU General Public License for more details.
+ *
+ *    You should have received a copy of the GNU General Public License
+ *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @link      http://www.oxid-esales.com
+ * @package   tests
+ * @copyright (C) OXID eSales AG 2003-2013
+ * @version OXID eShop CE
+ * @version   SVN: $Id: oxcmpCurTest.php 25505 2010-02-02 02:12:13Z alfonsas $
+ */
+
+require_once realpath( "." ).'/unit/OxidTestCase.php';
+require_once realpath( "." ).'/unit/test_config.inc.php';
+
+/**
+ * oxcmp_news tests
+ */
+class Unit_Views_oxCmpNewsTest extends OxidTestCase
+{
+    /**
+     * Testing oxcmp_news::render()
+     *
+     * @return null
+     */
+    public function testRenderDisabledNavBars()
+    {
+        modConfig::getInstance()->setConfigParam( "bl_perfLoadNews", false );
+
+        $oCmp = new oxcmp_news();
+        $this->assertNull( $oCmp->render() );
+    }
+
+    /**
+     * Testing oxcmp_news::render()
+     *
+     * @return null
+     */
+    public function testRenderPerfLoadNewsOnlyStart()
+    {
+        $oView = $this->getMock( "oxStdClass", array( "getIsOrderStep", "getClassName" ) );
+        $oView->expects( $this->never() )->method('getIsOrderStep');
+        $oView->expects( $this->once() )->method('getClassName')->will( $this->returnValue( "test" ) );
+
+        $oConfig = $this->getMock( "oxStdClass", array( "getConfigParam", "getActiveView" ) );
+        $oConfig->expects( $this->at( 0 ) )->method('getActiveView')->will( $this->returnValue( $oView ) );
+        $oConfig->expects( $this->at( 1 ) )->method('getConfigParam')->with( $this->equalTo( "bl_perfLoadNews" ) )->will( $this->returnValue( true ) );
+        $oConfig->expects( $this->at( 2 ) )->method('getConfigParam')->with( $this->equalTo( "blDisableNavBars" ) )->will( $this->returnValue( false ) );
+        $oConfig->expects( $this->at( 3 ) )->method('getConfigParam')->with( $this->equalTo( "bl_perfLoadNewsOnlyStart" ) )->will( $this->returnValue( true ) );
+
+        $oCmp = $this->getMock( "oxcmp_news", array( "getConfig" ), array(), '', false );
+        $oCmp->expects( $this->once() )->method('getConfig')->will( $this->returnValue( $oConfig ) );
+        $this->assertNull( $oCmp->render() );
+    }
+
+    /**
+     * Testing oxcmp_news::render()
+     *
+     * @return null
+     */
+    public function testRender()
+    {
+        modConfig::getInstance()->setConfigParam( "bl_perfLoadNews", true );
+        modConfig::getInstance()->setConfigParam( "blDisableNavBars", false );
+        modConfig::getInstance()->setConfigParam( "bl_perfLoadNewsOnlyStart", false );
+
+        $oCmp = new oxcmp_news();
+        $this->assertTrue( $oCmp->render() instanceof oxnewslist );
+    }
+}
+

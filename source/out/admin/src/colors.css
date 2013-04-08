@@ -1,0 +1,8 @@
+/* main.css */
+#liste td.listitem1, #liste table td.listitem4 {background-color:#ff3600;border-color:#ff3600;}
+div.export  {background:#ff3600;}
+
+/* nav.css */
+.version, .act .rc,  .act .rc b {background-color: #ff3600;color:#fff;}
+span.new {color: #ff3600;}
+.main span.new {color: #535353;}

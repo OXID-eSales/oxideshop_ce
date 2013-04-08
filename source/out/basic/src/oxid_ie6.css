@@ -1,0 +1,92 @@
+/* IE6 header min-width  / min-heigth fix */
+#header div.bar {height: 1%;}
+#header div.bar .fixed {width:184px;}
+#header dl.box {height:95px;width:150px;}
+#header dl.box.basket dd.dropdown {width:150px;}
+#body .details {height:260px; }
+#right .listitem {height: 47px;}
+
+/* IE6 absolute position can supports only (top,left) fix */
+#body h1 small{top:9px;left:0; width:90%;margin-right:10%;text-align:right;}
+#body .product strong.h4 a.rss{top:12px;left:0; width:10%;margin-left:90%;text-align:right;display:block;}
+#body h1.head a.rss {top:12px;left:0; width:10%;margin-left:90%;text-align:right;display:block;}
+#right strong.h2 a.rss{top:7px;left:0; width:20%;margin-left:85%;text-align:right;display:block;}
+#path a.dinfo{left:0;width:99.7%;text-align:right;display:block;}
+
+/* various margins fixes */
+hr {margin: -.4em 0;padding:0;}
+#left hr {margin: -.4em 10px;}
+input.chk {margin: -3px 1px -3px -4px;}
+p {margin:0}
+
+#body .product.big strong.h4{width: 549px;}
+
+/* line height containing <sup> fix */
+#body .product .price sup.dinfo a{font-size: 16px;}
+
+#body .product .price sup.dinfo{_width: auto;}
+#body .product span.btn a { line-height: 14px;}
+#body .product .variants label { padding-bottom: 2px;}
+
+#body .product.thinest .price sup.dinfo a{font-size: 11px;}
+#body .product.details .price sup.dinfo{font-size: 12px;}
+#body .product.details .price sup.dinfo a{font-size: 13px;}
+#body .product.details .price sub.only{font-size: 13px;}
+#body .product .flag {overflow: hidden;}
+
+
+/* right box'es goes under body fix */
+#right div.box {border-bottom:1px solid #fafafa;}
+
+/* expanding body > 580 with 5 small product boxes fix */
+div#body  {margin:0 204px 50px 190px;width:580px;margin-left:187px;}
+
+/* IE6 double margin fix - http://www.positioniseverything.net/explorer/doubled-margin.html */
+#left, #right, #body .locator, #body .separator, #body .product, #body .box, #body .boxhead, #body .welcome, #body strong.head2, #body strong.h2, #body .lochead strong.h4, #body strong.h4, #body .div.bar.prevnext, #body .ordersteps, #body .basket, #body .errorbox, #body .morecats,#body .msg {display: inline;}
+
+
+/* IE prev/next in basket/accounts fix */
+#body div.bar.prevnext input {overflow: visible; padding-top: 6px; padding-bottom: 4px;}
+#body span.btn input{overflow: visible;}
+
+#body .basket th.brd {border-bottom:1px solid #fff;}
+
+/* IE relative z-index calculation fix  - http://annevankesteren.nl/2005/06/z-index */
+dl.box, ul.menue li {z-index: 1000;}
+
+/* IE right list long article title fix */
+#right .listitem .arttitle {overflow: hidden; width: 110px; display: block;}
+
+/* IE opacity */
+#mask.on { filter:Alpha(Opacity=70);}
+div.bar.links a.language.act img{filter:Alpha(Opacity=70);}
+
+/* IE6 iframe shim for select boxes */
+#mask.on iframe{visibility: visible;width:900px;height: 100%;width:100%;filter:mask();}
+
+/* IE6 position fixed workaround */
+#mask.on{ position:absolute;}
+div.popup { visibility:hidden;display:none;}
+div.popup.on { position:absolute;visibility:visible;display:block;_top:expression((_popup = document.documentElement.scrollTop) + document.documentElement.clientHeight/2 + 'px');}
+
+/* IE fixing problem with collspan when <td> has colspan and nonbreakable content doesn't fit in it */
+.showHideShippAddr {width: 543px; overflow: hidden;}
+
+/* IE 6 fixing problems with add to cart button on article details page */
+#body .details .tocart {display:inline;}
+
+/* IE fixing 1px height gap in right top column near path, where we can see right column background */
+div#path {height: 13px;}
+
+/* IE 6 fixing problem with rss icon position */
+a.rss{ right:13px; top:9px;}
+
+/* IE 6 left column categories menu 3-ird level background problem */
+ul.tree li a.last { background-image: none; }
+
+/* IE 6 bottom copyright fix */
+div.bar.copy{overflow: hidden;}
+
+/* IE 6 top popup category menu fix */
+div.bar.categories ul.menue.vertical    li { width: 1%;}
+div.bar.categories ul.menue.vertical    li a { width: 100%; padding-right: 0px; }

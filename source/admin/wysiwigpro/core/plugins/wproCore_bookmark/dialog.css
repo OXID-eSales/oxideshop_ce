@@ -1,0 +1,12 @@
+div.selectBookmark {
+	text-align: center;
+}
+div.selectBookmark select {
+	width: 300px;
+}
+div.selectBookmark input.button {
+	margin-top: 6px;
+}
+fieldset {
+	height:120px;
+}

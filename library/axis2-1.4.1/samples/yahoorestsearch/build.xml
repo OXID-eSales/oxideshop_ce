@@ -1,0 +1,51 @@
+<!--
+  ~ Licensed to the Apache Software Foundation (ASF) under one
+  ~ or more contributor license agreements. See the NOTICE file
+  ~ distributed with this work for additional information
+  ~ regarding copyright ownership. The ASF licenses this file
+  ~ to you under the Apache License, Version 2.0 (the
+  ~ "License"); you may not use this file except in compliance
+  ~ with the License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied. See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
+<project name="YahooRestSearchSample" default="run.client">
+	<property environment="env" />
+	<property name="axis2.home" value="../../" />
+	<property name="axis2.repo" value="${axis2.home}/repository" />
+	<property name="build.dir" value="build" />
+	<property name="client.classes.dir" value="${build.dir}/classes" />
+	<path id="axis.classpath">
+		<fileset dir="${axis2.home}/lib">
+			<include name="*.jar" />
+		</fileset>
+		<pathelement location="build/yahooRESTSearch.jar" />
+	</path>
+
+	<target name="compile">
+		<mkdir dir="${client.classes.dir}" />
+		<!-- Compile client -->
+		<javac srcdir="src" destdir="${client.classes.dir}">
+			<classpath refid="axis.classpath" />
+		</javac>
+		<jar destfile="${build.dir}/yahooRESTSearch.jar">
+			<fileset dir="${build.dir}/classes" />
+		</jar>
+	</target>
+	<target name="run.client" depends="compile">
+		<java classname="sample.yahooservices.RESTSearch.RESTSearchClient" classpathref="axis.classpath" fork="true">
+			<jvmarg value="-Daxis2.repo=${axis2.repo}" />
+		</java>
+	</target>
+	<target name="clean">
+		<delete dir="build" />
+	</target>
+</project>

@@ -1,0 +1,10 @@
+oxrecommlist.php
+	Testu pilnumui truksta tokiu testcase:
+		- testuojant delete() funkcija, pries ja iskvieciant reikia patikrinimu, ar tikrai yra ka trinti.
+		- teste testRemoveArticle taip pat truksta patikrinimu, ar trinamas tekstas tikrai egzistuoja, pries ivykdant delete funkcija
+		- funkcija AddArticle testuoti, kuomet produkto nr neuzsetintas, bei kai toks produktas jau yra db
+		- truksta testcase, kai funkcijai getRecommListsByIds paduodamas tuscias masyvas bei masyvas su neegzistuojanciais id
+		- protected funkcija loadFirstArticles neturi savo unit testu
+		- teste testGetRecommListsSorting() pradzioje if EE ir if PE salygose lyg ir vienodai viskas. kam tada isskirti pagal versijas?
+		
+		

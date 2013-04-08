@@ -1,0 +1,134 @@
+<!--
+  ~ Licensed to the Apache Software Foundation (ASF) under one
+  ~ or more contributor license agreements. See the NOTICE file
+  ~ distributed with this work for additional information
+  ~ regarding copyright ownership. The ASF licenses this file
+  ~ to you under the Apache License, Version 2.0 (the
+  ~ "License"); you may not use this file except in compliance
+  ~ with the License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied. See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
+<project name="pojoguidespring" basedir="." default="generate.service">
+
+	<property environment="env" />
+	<property name="service-name" value="WeatherSpringService" />
+	<property name="dest.dir" value="target" />
+	<property name="axis2.home" value="../../" />
+
+	<property name="repository.path" value="${axis2.home}/repository" />
+
+	<property name="dest.dir.classes" value="${dest.dir}/classes" />
+
+	<property name="dest.dir.lib" value="${dest.dir}/lib" />
+
+	<property name="catalina-modules" value="${env.CATALINA_HOME}/webapps/axis2/WEB-INF/services" />
+
+	<path id="build.class.path">
+		<fileset dir="${axis2.home}/lib">
+			<include name="*.jar" />
+		</fileset>
+		<!--add downloaded spring jars to classpath-->
+		<fileset dir="lib">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<path id="client.class.path">
+		<pathelement location="${dest.dir.classes}" />
+		<fileset dir="${axis2.home}/lib">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<target name="clean">
+		<delete dir="${dest.dir}" />
+	</target>
+
+	<target name="clean.libs">
+		<delete dir="lib" />
+	</target>
+
+	<target name="prepare" depends="clean">
+
+		<mkdir dir="${dest.dir}" />
+
+		<mkdir dir="${dest.dir.classes}" />
+
+		<mkdir dir="${dest.dir.classes}/META-INF" />
+		<antcall target="download.jars"/>
+	</target>
+
+	<target name="generate.service" depends="prepare">
+
+		<mkdir dir="${dest.dir}" />
+
+		<mkdir dir="${dest.dir.classes}" />
+		<mkdir dir="${dest.dir.classes}/META-INF" />
+
+		<copy file="src/META-INF/services.xml" tofile="${dest.dir.classes}/META-INF/services.xml" overwrite="true" />
+		<copy file="src/applicationContext.xml" tofile="${dest.dir.classes}/applicationContext.xml" overwrite="true" />
+
+		<javac debug="on" srcdir="src" destdir="${dest.dir.classes}" includes="sample/**">
+			<classpath refid="build.class.path" />
+		</javac>
+
+		<jar basedir="${dest.dir.classes}" destfile="${dest.dir}/${service-name}.aar" />
+
+		<copy file="${dest.dir}/${service-name}.aar" tofile="${repository.path}/services/${service-name}.aar" overwrite="true" />
+
+	</target>
+
+	<target name="rpc.client">
+		<antcall target="rpc.client.run" />
+	</target>
+
+	<target name="rpc.client.compile" depends="prepare">
+		<javac debug="on" srcdir="src" destdir="${dest.dir.classes}" includes="client/**">
+			<classpath refid="build.class.path" />
+		</javac>
+	</target>
+
+	<target name="rpc.client.run" depends="rpc.client.compile">
+		<echo message="${ant.file}" />
+		<java classname="client.WeatherSpringRPCClient">
+			<classpath refid="client.class.path" />
+		</java>
+	</target>
+
+	<target name="copy.to.tomcat" depends="generate.service">
+		<copy file="${dest.dir}/${service-name}.aar" todir="${catalina-modules}" />
+	</target>
+
+        <!--We are not shipping spring jar with the release. This target can be used to
+        download spring jar to run this sample.-->
+	<target name="checkSpringJarAvailability">
+	    <!--if either one of jar is not available, spring_available will set to false-->
+	    <condition property="spring_available">
+		<and>
+		        <available file="lib/spring-core-1.2.8.jar" />
+			<available file="lib/spring-context-1.2.8.jar" />			
+	         	<available file="lib/spring-beans-1.2.8.jar" />
+		</and>
+	    </condition>
+	</target>
+
+	<target name="download.jars" depends="checkSpringJarAvailability" unless="spring_available">
+	    <echo message="Spring jars not available.Downloading...."/>
+	    <mkdir dir="lib"/>
+            <get src="http://ws.zones.apache.org/repository/org.springframework/jars/spring-core-1.2.8.jar"
+	             dest="lib/spring-core-1.2.8.jar" verbose="true"/>
+	    <get src="http://ws.zones.apache.org/repository/org.springframework/jars/spring-context-1.2.8.jar"
+	             dest="lib/spring-context-1.2.8.jar" verbose="true"/>
+	    <get src="http://ws.zones.apache.org/repository/org.springframework/jars/spring-beans-1.2.8.jar"
+	             dest="lib/spring-beans-1.2.8.jar" verbose="true"/>
+	</target>
+</project>

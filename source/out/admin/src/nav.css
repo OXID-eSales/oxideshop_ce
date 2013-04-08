@@ -1,0 +1,46 @@
+body {margin:0;padding:0;background:#f0f0f0;font:12px/12px Trebuchet MS, Tahoma, Verdana, Arial, Helvetica, sans-serif;}
+
+
+a {text-decoration: none;color: #000;outline:0;}
+a:hover {text-decoration: underline;color: #000;}
+
+a.rc {display:block;padding:1px 0;color:#535353;outline:0;}
+a.rc b {display:block;margin:0 -1px;padding:2px;}
+
+ul {padding:0;margin:0;}
+ul li{list-style: none;}
+
+#nav{height:100%;}
+#nav body{height:100%;}
+#nav table {height:100%;width:100%;border-collapse: collapse;}
+#nav td.main{vertical-align:top;padding:10px 20px 0;}
+#nav td.extra{vertical-align:bottom;padding:5px 20px 10px;}
+
+#nav h2 {font-size:14px;border-bottom:1px solid #bdbdbd;padding-bottom: 10px;margin-bottom:10px;}
+#nav li {margin:2px 0;position:relative;}
+#nav li li {margin:0;}
+#nav li ul {padding:0 0 0 5px;display:none;}
+#nav ul a.rc b{background-image: url(bg/nav.gif);background-repeat: no-repeat; background-position:  0 center ;padding-left:15px;}
+
+#nav ul a.rc b span.efire{background: url(bg/link_efire.gif) no-repeat right; padding-right:18px;}
+
+#nav .exp ul{display:block;}
+#nav .exp a{color:#000;}
+#nav .exp > a.rc b{background-position: -2000px center;}
+#nav .act a.rc b{background-position: -1000px center;}
+
+.extra ul{ border-top:1px solid #bdbdbd;padding:5px 0;}
+.extra ul li a.rc b{ color:#000}
+.extra ul ul {border-top:none;padding:0;}
+.extra ul ul li a.rc b{ color:#535353}
+.extra a.ed{position:absolute;top:2px;right:0;font-size: 9px;}
+
+hr {margin:4px 0;height:1px;text-align:center;color:#cbcbcb;background-color:#cbcbcb;}
+
+#top {background:#fff url(bg/top_bg.gif) top left repeat-x;}
+#top body {background:transparent url(bg/top_lbg.gif) bottom left no-repeat;padding:17px 20px 13px;height: 24px;}
+#top li {float:left;}
+#top li.sep {padding-left:.5em;margin-left:1em;border-left:1px solid gray;}
+#top .rc b {padding:2px 10px;}
+
+.version {height: 30px;width:206px;position:absolute;top:0;right:0;padding:20px 10px  4px 240px;background: #000 url(bg/version_bg.png) 0 center no-repeat;color:#fff;vertical-align: middle;text-align: center;text-transform: uppercase;letter-spacing: 1px;}

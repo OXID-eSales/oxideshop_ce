@@ -1,0 +1,166 @@
+<!--
+  ~ Licensed to the Apache Software Foundation (ASF) under one
+  ~ or more contributor license agreements. See the NOTICE file
+  ~ distributed with this work for additional information
+  ~ regarding copyright ownership. The ASF licenses this file
+  ~ to you under the Apache License, Version 2.0 (the
+  ~ "License"); you may not use this file except in compliance
+  ~ with the License. You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied. See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
+<project name="pojo" basedir="." default="generate.service">
+
+	<property name="dest.dir" value="build" />
+
+	<property name="dest.dir.classes" value="${dest.dir}/classes" />
+
+	<property name="dest.dir.lib" value="${dest.dir}/lib" />
+
+	<property name="axis2.home" value="../../" />
+
+	<property name="repository.path" value="${axis2.home}/repository/services" />
+
+	<path id="build.class.path">
+		<fileset dir="${axis2.home}/lib">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<path id="client.class.path">
+		<fileset dir="${axis2.home}/lib">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${dest.dir.lib}">
+			<include name="*.jar" />
+		</fileset>
+
+	</path>
+	<target name="clean">
+		<delete dir="${dest.dir}" />
+		<delete dir="src" includes="sample/addressbook/stub/**"/>
+	</target>
+
+	<target name="prepare">
+
+		<mkdir dir="${dest.dir}" />
+
+		<mkdir dir="${dest.dir.classes}" />
+
+		<mkdir dir="${dest.dir.lib}" />
+
+		<mkdir dir="${dest.dir.classes}/META-INF" />
+
+	</target>
+
+	<target name="generate.service" depends="clean,prepare">
+
+		<copy file="src/META-INF/services.xml" tofile="${dest.dir.classes}/META-INF/services.xml" overwrite="true" />
+
+		<javac srcdir="src" destdir="${dest.dir.classes}" includes="sample/addressbook/service/**,sample/addressbook/entry/**">
+			<classpath refid="build.class.path" />
+		</javac>
+
+		<jar basedir="${dest.dir.classes}" destfile="${dest.dir}/AddressBookService.aar" />
+
+		<copy file="${dest.dir}/AddressBookService.aar" tofile="${repository.path}/AddressBookService.aar" overwrite="true" />
+
+	</target>
+
+	<target name="rpc.client" depends="clean,prepare">
+
+		<antcall target="rpc.client.compile" />
+
+		<antcall target="rpc.client.jar" />
+
+		<antcall target="rpc.client.run">
+			<param name="uri" value="${uri}"/>
+		</antcall>
+
+	</target>
+
+	<target name="rpc.client.compile">
+		<javac srcdir="src" destdir="${dest.dir.classes}" includes="sample/addressbook/rpcclient/**,sample/addressbook/entry/**">
+			<classpath refid="build.class.path" />
+		</javac>
+	</target>
+
+	<target name="rpc.client.jar">
+		<jar basedir="${dest.dir.classes}" destfile="${dest.dir.lib}/rpc-client.jar" includes="sample/addressbook/rpcclient/**,sample/addressbook/entry/**" />
+	</target>
+
+	<target name="rpc.client.run">
+		<java classname="sample.addressbook.rpcclient.AddressBookRPCClient">
+			<classpath refid="client.class.path" />
+			<arg value="${uri}" />
+		</java>
+	</target>
+
+	<target name="check-parameters">
+		<condition property="parameters.set">
+			<and>
+				<isset property="wsdl" />
+			</and>
+		</condition>
+		<!-- This is a hack to get a if-else working in ant. Some much more "ANTy" person is welcome to improve this -->
+		<antcall target="print-usage" />
+	</target>
+
+	<target name="print-usage" unless="parameters.set">
+		<echo message="ant adb.client -Dwsdl='http://&lt;yourhost>:&lt;yourport>/axis2/services/AdressBookService?wsdl'" />
+	</target>
+
+	<target name="adb.client" depends="check-parameters" if="parameters.set">
+
+		<antcall target="clean" />
+		<antcall target="prepare" />
+		<antcall target="adb.client.codegen-stub">
+			<param name="wsdl" value="${wsdl}"/>
+		</antcall>
+
+		<antcall target="adb.client.compile" />
+
+		<antcall target="adb.client.jar" />
+
+		<antcall target="adb.client.run" />
+
+	</target>
+
+	<target name="adb.client.codegen-stub">
+		<java classname="org.apache.axis2.wsdl.WSDL2Java">
+			<arg value="-uri" />
+			<arg value="${wsdl}" />
+			<arg value="-p" />
+			<arg value="sample.addressbook.stub" />
+			<arg value="-o" />
+			<arg value="src" />
+			<arg value="-f" />
+			<classpath refid="build.class.path" />
+		</java>
+	</target>
+
+	<target name="adb.client.compile">
+		<javac srcdir="src" destdir="${dest.dir.classes}" includes="sample/addressbook/adbclient/**,sample/addressbook/stub/**">
+			<classpath refid="build.class.path" />
+		</javac>
+	</target>
+
+	<target name="adb.client.jar">
+		<jar basedir="${dest.dir.classes}" destfile="${dest.dir.lib}/adb-client.jar" includes="sample/addressbook/adbclient/**,sample/addressbook/stub/**" />
+	</target>
+
+	<target name="adb.client.run">
+		<java classname="sample.addressbook.adbclient.AddressBookADBClient">
+			<classpath refid="client.class.path" />
+		</java>
+	</target>
+
+</project>

@@ -1,0 +1,1 @@
+<fb:login-button size="medium" autologoutlink="true" length="short"></fb:login-button>

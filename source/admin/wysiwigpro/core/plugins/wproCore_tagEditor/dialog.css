@@ -1,0 +1,7 @@
+.UISelectLeftCol select {
+	height: 295px;
+}
+.UISelectRightCol {
+	height: 295px;
+	overflow: auto;
+}

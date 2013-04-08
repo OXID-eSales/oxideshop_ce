@@ -1,0 +1,85 @@
+/* ie 7 fixes */
+body, html {
+	height: 100%;
+}
+
+/* hidden guides for the document being edited */
+@media screen,projection {
+	/* object placeholder */
+	img.wproFilePlugin {
+		border: 1px dotted #990000;
+		background-color: #CCCCCC;
+		margin: -1px;
+	}
+	
+	/* tables */
+	table.wproGuide,table.wpguide,table.wproGuide td,table.wproGuide th,table.wpguide td,table.wpguide th {
+		border-collapse: separate;
+		border:1px dotted #666666;
+		margin: -1px;
+	}
+	/* links */
+	a.wproGuide,a.wpguide {
+		padding-left:15px;
+		background-repeat:no-repeat;
+		background-position:top left;
+	}
+	/* forms */
+	form.wproGuide,form.wpguide {
+		border:1px dotted #FF9900;
+		margin: -1px;
+		padding-top:8px;
+		background-repeat:no-repeat;
+		background-position:top left;
+	}
+	/* uneditable regions */
+	.wproContentUneditable,.wpcontentuneditable {
+		/*content-editable:false;*/
+		border:1px dotted #cc0000;
+		margin: -1px;
+		-moz-user-focus:ignore;
+		-moz-user-modify:read-only;
+		-moz-user-select:none;
+	}
+	/* editable regions */
+	.wproContentEditable,.wpcontenteditable {
+		padding-top:8px;
+		margin: -1px;
+		background-repeat:no-repeat;
+		background-position:top left;
+		/*content-editable:true;*/
+		border:1px dotted #66cccc;
+		-moz-user-focus:none;
+		-moz-user-input:auto;
+		-moz-user-modify:read-write;
+		-moz-user-select:text;
+	}
+	
+	/* repeating regions */
+	.wproRepeatingBlock {
+		border: 1px dashed #66cccc;
+		margin: -1px;
+	}
+	.wproRepeatingBlock div.wproBlockBtns {
+		-moz-user-focus:ignore;
+		-moz-user-modify:read-only;
+		-moz-user-select:none;
+	}
+	.wproRepeatingBlock img.wproBlockDel, .wproRepeatingBlock img.wproBlockAdd {
+		float:right;
+		cursor:pointer;
+	}
+	.wproRepeatingBlock img.wproBlockDelHidden {
+		float:right;
+		cursor:pointer;
+		width: 0;
+		height: 0;
+	}
+	
+	/* highlighting */
+	td.wproHighlight,td.wphighlight,th.wproHighlight,th.wphighlight {
+		border-color: highlight;
+		background-color: highlight;
+		color: highlighttext;
+	}
+}

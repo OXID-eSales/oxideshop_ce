@@ -1,0 +1,3 @@
+oxrights.php
+	- funkcija LoadRights testuojama su admin user bei su neprisiloginusiu user. reiketu kad butu testuojama teisiu uzkrovimas useriui, kuriam dalis lauku yra leidziami, dalis uzdrausti
+	- jei viena ilga teksto eilute yra isskirstyta i kelias eilutes be papildomo sujungimo, code sniffer dali jos pazymi kaip netestuota. taip yra su SQL select sakiniais ($sQ = "select oxgroups.oxrrid from...");

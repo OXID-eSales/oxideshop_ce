@@ -1,0 +1,53 @@
+[{ assign var="shop"      value=$oEmailView->getShop() }]
+[{ assign var="oViewConf" value=$oEmailView->getViewConfig() }]
+
+[{block name="email_plain_sendednow_sendemail"}]
+[{ oxcontent ident="oxordersendplainemail" }]
+[{/block}]
+
+[{block name="email_plain_sendednow_infoheader"}]
+[{ oxmultilang ident="EMAIL_SENDEDNOW_HTML_ORDERSHIPPEDTO" }]
+[{/block}]
+
+[{block name="email_plain_sendednow_address"}]
+[{ if $order->oxorder__oxdellname->value }]
+    [{ $order->oxorder__oxdelcompany->getRawValue() }]
+    [{ $order->oxorder__oxdelfname->getRawValue() }] [{ $order->oxorder__oxdellname->getRawValue() }]
+    [{ $order->oxorder__oxdelstreet->getRawValue() }] [{ $order->oxorder__oxdelstreetnr->value }]
+    [{ $order->oxorder__oxdelstateid->value }]
+    [{ $order->oxorder__oxdelzip->value }] [{ $order->oxorder__oxdelcity->getRawValue() }]
+[{else}]
+    [{ $order->oxorder__oxbillcompany->getRawValue() }]
+    [{ $order->oxorder__oxbillfname->getRawValue() }] [{ $order->oxorder__oxbilllname->getRawValue() }]
+    [{ $order->oxorder__oxbillstreet->getRawValue() }] [{ $order->oxorder__oxbillstreetnr->value }]
+    [{ $order->oxorder__oxbillstateid->value }]
+    [{ $order->oxorder__oxbillzip->value }] [{ $order->oxorder__oxbillcity->getRawValue() }]
+[{/if}]
+[{/block}]
+
+[{block name="email_plain_sendednow_oxordernr"}]
+[{ oxmultilang ident="EMAIL_SENDEDNOW_HTML_ORDERNOMBER" }] [{ $order->oxorder__oxordernr->value }]
+[{/block}]
+
+[{block name="email_plain_sendednow_orderarticles"}]
+[{foreach from=$order->getOrderArticles(true) item=oOrderArticle}]
+[{ $oOrderArticle->oxorderarticles__oxamount->value }] [{ $oOrderArticle->oxorderarticles__oxtitle->getRawValue() }] [{ $oOrderArticle->oxorderarticles__oxselvariant->getRawValue() }]
+[{/foreach}]
+[{/block}]
+
+[{block name="email_plain_sendednow_infofooter"}]
+[{ oxmultilang ident="EMAIL_SENDEDNOW_HTML_YUORTEAM1" }] [{ $shop->oxshops__oxname->getRawValue() }] [{ oxmultilang ident="EMAIL_SENDEDNOW_HTML_YUORTEAM2" }]
+[{/block}]
+
+[{block name="email_html_sendednow_shipmenttrackingurl"}]
+[{if $order->getShipmentTrackingUrl()}][{ oxmultilang ident="EMAIL_SENDEDNOW_HTML_SHIPMENTTRACKING" }] [{ $order->getShipmentTrackingUrl()}][{/if}]
+[{/block}]
+
+[{block name="email_plain_sendednow_ts"}]
+[{if $oViewConf->showTs("ORDERCONFEMAIL") && $oViewConf->getTsId() }]
+[{ oxmultilang ident="EMAIL_SENDEDNOW_HTML_TS_RATINGS_RATEUS" }]
+[{ $oViewConf->getTsRatingUrl() }]
+[{/if}]
+[{/block}]
+
+[{ oxcontent ident="oxemailfooterplain" }]

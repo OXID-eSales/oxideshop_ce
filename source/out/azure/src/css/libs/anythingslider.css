@@ -1,0 +1,220 @@
+/*
+ AnythingSlider v1.4.1+ Default (base) theme
+ By Chris Coyier: http://css-tricks.com
+ with major improvements by Doug Neiner: http://pixelgraphics.us/
+ based on work by Remy Sharp: http://jqueryfordesigners.com/
+ */
+
+/******* SET DEFAULT DIMENSIONS HERE ********/
+div.anythingSlider {
+    width: 940px;
+    height: 220px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+/****** SET COLORS HERE *******/
+/* Default State */
+div.anythingSlider .thumbNav a.cur, div.anythingSlider .thumbNav a {
+    color: #000;
+}
+
+div.anythingSlider .anythingWindow {
+    z-index: 1;
+}
+
+div.anythingSlider .start-stop {
+    background-color: #040;
+    color: #fff;
+}
+
+div.anythingSlider .start-stop.playing {
+    background-color: #800;
+}
+
+div.anythingSlider .start-stop:hover, div.anythingSlider .start-stop.hover {
+    color: #ddd;
+}
+
+/* Active State */
+div.anythingSlider.activeSlider .anythingWindow {
+    border-color: #7C9127;
+}
+
+div.anythingSlider.activeSlider .thumbNav a.cur {
+    color: #fff;
+}
+
+div.anythingSlider .start-stop {
+    background-color: #080;
+    color: #fff;
+}
+
+div.anythingSlider .start-stop.playing {
+    background-color: #d00;
+}
+
+div.anythingSlider .start-stop:hover, div.anythingSlider .start-stop.hover {
+    color: #fff;
+}
+
+/**** DO NOT CHANGE BELOW THIS LINE ****/
+/* anythingSlider viewport window */
+div.anythingSlider .anythingWindow {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+/* wrapper: 45px right & left padding for the arrows, 28px @ bottom for navigation */
+div.anythingSlider {
+    position: relative;
+}
+
+/* anythingSlider base UL */
+ul.anythingBase {
+    background: transparent;
+    list-style: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
+}
+
+ul.anythingBase li.panel {
+    background: transparent;
+    display: block;
+    float: left;
+    padding: 0;
+    margin: 0;
+}
+
+/* Navigation Arrows */
+div.anythingSlider .arrow {
+    top: 90px;
+    position: absolute;
+    z-index: 2;
+    height: 50px;
+    width: 62px;
+    display: block;
+}
+
+div.anythingSlider .arrow a {
+    display: block;
+    margin: 0;
+    text-align: center;
+    outline: 0;
+    height: 50px;
+    text-indent: -9999px;
+}
+
+div.anythingSlider .forward {
+    right: -2px;
+}
+
+div.anythingSlider .back {
+    left: -2px;
+}
+
+div.anythingSlider .forward a {
+    background: url(../../../img/promo-arrows.png) no-repeat -85px 0;
+}
+
+div.anythingSlider .back a {
+    background: url(../../../img/promo-arrows.png) no-repeat -7px 0;
+}
+
+div.anythingSlider .forward a:hover {
+    background-position: -85px -76px;
+}
+
+div.anythingSlider .back a:hover {
+    background-position: -7px -76px;
+}
+
+/* Navigation Links */
+div.anythingSlider .anythingControls {
+    outline: 0;
+    position: absolute;
+    bottom: 0px;
+    z-index: 3;
+}
+
+div.anythingSlider .thumbNav {
+    margin: 0;
+    float: left;
+    padding: 0 10px;
+}
+
+div.anythingSlider .thumbNav li {
+    display: inline;
+}
+
+div.anythingSlider .thumbNav a {
+    font-size: 14px;
+    display: inline-block;
+    text-decoration: none;
+    padding: 2px 8px;
+    height: 18px;
+    line-height: 19px;
+    text-align: center;
+    outline: 0;
+    font-weight: 700;
+    text-shadow: 0px 1px 1px #fff;
+}
+
+div.anythingSlider .thumbNav a.cur, div.anythingSlider .thumbNav a:hover {
+    text-shadow: 0px -1px 0px #486066;
+}
+
+div.anythingSlider .thumbNav a:hover {
+    color: #fff;
+}
+
+/* slider autoplay right-to-left, reverse order of nav links to look better */
+div.anythingSlider.rtl .thumbNav a {
+    float: right;
+}
+ /* reverse order of nav links */
+div.anythingSlider.rtl .thumbNav {
+    float: left;
+}
+ /* move nav link group to left */
+/* div.anythingSlider.rtl .start-stop { float: right; } */ /* move start/stop button - in case you want to switch sides */
+/* Autoplay Start/Stop button */
+div.anythingSlider, div.anythingSlider .anythingWindow, div.anythingSlider .thumbNav a, div.anythingSlider .arrow a, div.anythingSlider .start-stop {
+    transition-duration: 0;
+    -o-transition-duration: 0;
+    -moz-transition-duration: 0;
+    -webkit-transition-duration: 0;
+}
+
+.promoBox {
+    position: absolute;
+    visibility: hidden;
+    display: block;
+    top: 40px;
+    left: 80px;
+    width: 320px;
+    font-size: 14px;
+}
+
+.promoBox strong {
+    float: left;
+    display: block;
+    padding: 7px 10px;
+}
+
+.promoBox strong.promoPrice {
+    text-align: center;
+    color: #fff;
+    width: 80px;
+    text-shadow: 0px -1px 0px #486066;
+}
+
+.promoBox strong.promoTitle {
+    width: 200px;
+    text-shadow: 0px 1px 1px #fff;
+}

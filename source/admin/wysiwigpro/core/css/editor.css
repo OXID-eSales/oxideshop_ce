@@ -1,0 +1,402 @@
+/* styles for the main editor interface */
+.wproEditor button {
+	text-align: left;
+	font-weight: normal;
+}
+/* used to hide elements */
+.wproHide, select.wproHide {
+	display:none;
+}
+/* display areas, used to switch views, DO NOT ALTER */
+.wproEditor div.wproVisibleTab {
+	display:block;
+}
+.wproEditor div.wproHiddenDesignTab {
+	height:0px;
+	width:0px;
+	visibility:hidden;
+}
+.wproEditor div.wproHiddenTab {
+	display:none;
+}
+/* general html elements */
+.wproEditor *{
+	font-family:Verdana,Arial,Helvetica,sans-serif;
+}
+.wproEditor div {
+	padding:0px;
+	margin:0px;
+	line-height: 1;
+	font-family:Verdana,Arial,Helvetica,sans-serif;
+	color:#000000;
+	background-color:transparent;
+	font-size:11px;
+}
+.wproEditor button {
+	border-width:0px;
+	background-color:transparent;
+	background-repeat:no-repeat;
+	background-position:center;
+	padding:0px;
+	margin:0px;
+	font-size:10px;
+	font-family:Verdana,Arial,Helvetica,sans-serif;
+	color:#000000;
+}
+.wproEditor select {
+	font-size:11px;
+	font-family:Verdana,Arial,Helvetica,sans-serif;
+	color:#000000;
+}
+.wproEditor img {
+	border-width:0px;
+	padding:0px;
+	margin:0px;
+}
+.wproEditor a,.wproEditor a:link,.wproEditor a:hover,.wproEditor a:visited,.wproEditor a:active {
+	font-size:11px;
+	font-family:Verdana,Arial,Helvetica,sans-serif;
+	color:#000000 !important;
+	text-decoration:none !important;
+	background-color:none !important;
+}
+.wproEditor {
+	text-align: left;
+}
+/* editor border and background */
+.wproEditor div.wproBorder {
+	border:1px solid threedshadow;
+	background-color:threedface;
+	padding:2px;
+}
+/* load message */
+.wproDialogEditorShared div.wproLoadMessageHolder {
+	position:absolute;
+	text-align:center;
+	padding:0px;
+}
+.wproDialogEditorShared div.wproLoadMessage {
+	background-color:#ffffff;
+	color:#333333;
+	font-weight:bold;
+	border:1px solid threeddarkshadow;
+	padding:11px;
+	margin:0px auto;
+	width:160px;
+	text-align: center !important;
+	filter:progid:DXImageTransform.Microsoft.Shadow(color=#707070,direction=135,strength=3);
+}
+.wproDialogEditorShared div.wproLoadMessage img {
+	vertical-align: top;
+}
+
+/* toolbars */
+.wproEditor div.wproToolbarHolder {
+}
+.wproEditor div.wproToolbar {
+	padding:1px;
+}
+/* toolbar buttons */
+.wproEditor button.wproReady,.wproEditor button.wproOver,.wproEditor button.wproDisabled,.wproEditor button.wproDown,.wproEditor button.wproLatched,.wproEditor button.wproLatchedOver {
+	width:22px;
+	height:22px;
+}
+.wproEditor button.wproReady,.wproEditor button.wproDisabled {
+	padding:1px;
+	margin:0px;
+}
+/* button over */
+.wproEditor button.wproOver {
+	border-right:threedshadow 1px solid;
+	border-top:threedhighlight 1px solid;
+	border-left:threedhighlight 1px solid;
+	border-bottom:threedshadow 1px solid;
+	padding:0px;
+	margin:0px;
+}
+/* button  down */
+.wproEditor button.wproDown,.wproEditor button.wproLatched,.wproEditor button.wproLatchedOver {
+	border-right:1px solid threedhighlight;
+	border-top:1px solid threedshadow;
+	border-left:1px solid threedshadow;
+	border-bottom:1px solid threedhighlight;
+	padding:0px;
+	margin:0px;
+}
+/* button active */
+.wproEditor button.wproLatched {
+	background-color:#f7f7f7;
+}
+/* button active over */
+.wproEditor button.wproLatchedOver {
+	background-color:threedface;
+}
+/* button disabled */
+.wproEditor button.wproDisabled {
+	filter:alpha(opacity=30);
+	-moz-opacity:0.3;
+	opacity:0.3;
+}
+/* not for IE 6 as this causes a scroll bug */
+* html .wproEditor button.wproDisabled {
+	filter: none;
+}
+
+/* hidden button disabled */
+.wproEditor button.wproHidden {
+	display: none;
+}
+/* textButton */
+.wproEditor button.wproTextButtonReady,
+.wproEditor button.wproTextButtonOver,
+.wproEditor button.wproTextButtonDisabled,
+.wproEditor button.wproTextButtonDown,
+.wproEditor button.wproTextButtonLatched,
+.wproEditor button.wproTextButtonLatchedOver {
+	background-position: center left;
+	padding-left: 20px;
+	display: inline;
+	width: auto;
+	white-space: nowrap;
+}
+.wproEditor button.wproTextButtonReady {
+	border: 1px solid transparent;
+	padding: 0px;
+	padding-left: 20px;
+	
+	
+}
+*html .wproEditor button.wproTextButtonReady {
+	/* transparent border fix for IE 6 */
+	border-color: threedface;
+   filter:chroma(color=threedface);
+}
+.wproEditor button.wproTextButtonReady img,
+.wproEditor button.wproTextButtonOver img,
+.wproEditor button.wproTextButtonDisabled img,
+.wproEditor button.wproTextButtonDown img,
+.wproEditor button.wproTextButtonLatched img,
+.wproEditor button.wproTextButtonLatchedOver img {
+	vertical-align:top;
+	margin-left: -3px;
+	margin-top: -3px;
+	margin-bottom: -10px;
+	position: relative;
+	top: -1px;
+}
+
+/* custom drop-down lists */
+.wproEditor button.wproDropDown {
+	background:right url(../images/downarrow.gif) no-repeat;
+	border:1px solid #ffffff;
+	height:20px;
+	padding: 0px;
+	padding-right: 10px;
+}
+.wproEditor button.wproDropDown span {
+	display: block;
+	overflow:hidden;
+	font-size: 10px;
+	height: 14px;
+	cursor: default;
+}
+/* used to group buttons */
+.wproEditor .wproToolbar span.wproToolGroup {
+	white-space:nowrap;
+}
+/* spacers */
+.wproEditor img.wproSpacer {
+	vertical-align:top;
+	margin-top:2px;
+	height:18px;
+}
+/* separators */
+.wproEditor img.wproSeparator {
+	vertical-align:top;
+	margin-top:2px;
+	height:18px;
+	width:0px;
+	border-left:2px groove threedhighlight !important;
+}
+/* framefix repairs display of iframe width DO NOT ALTER */
+.wproEditor fieldset.wproFrameFix {
+	border-width:0px;
+	margin:0px;
+	padding:0px;
+	border-top:1px solid threeddarkshadow;
+	border-left:1px solid threeddarkshadow;
+	border-right:1px solid threedshadow;
+	background-color:threedshadow;
+}
+/* editable document iframes and preview iframe. */
+.wproEditor iframe.wproEditFrame,.wproEditor iframe.wproPreviewFrame {
+	background-color:#ffffff;
+	width:100%;
+	border-width:0px;
+	margin:0px;
+	padding:0px;
+}
+/* tag path */
+.wproEditor div.wproTagPath {
+	border-left:1px solid threeddarkshadow;
+	border-right:1px solid threedshadow;
+	border-top:1px solid threedshadow;
+	height:20px;
+	overflow:hidden;
+}
+.wproEditor div.wproTagPath button.wproReady,.wproEditor div.wproTagPath button.wproOver,.wproEditor div.wproTagPath button.wproDisabled,.wproEditor div.wproTagPath button.wproDown,.wproEditor div.wproTagPath button.wproLatched,.wproEditor div.wproTagPath button.wproLatchedOver {
+	height: 18px;
+	width: auto;
+	text-align: center;
+}
+/* view tabs along bottom of editor */
+.wproEditor div.wproTabHolder {
+	white-space:nowrap;
+	height:20px;
+}
+.wproEditor div.wproTabHolder img {
+}
+/* spacer before tabs */
+.wproEditor div.wproTabNoTab {
+	display:block;
+	border-top:1px solid threeddarkshadow;
+	float:left;
+}
+/* generic link styles for tabs */
+.wproEditor .wproTabHolder .wproTabs button {
+	color:#000000;
+	white-space:nowrap;
+	padding:1px 5px 1px 2px;
+	width: 80px;
+	float:left;
+	font-size:10px;
+	font-weight: normal;
+	text-align: center;
+}
+/* active tab */
+.wproEditor button.wproTButtonUp {
+	border-top:1px solid #ffffff;
+	border-bottom:1px solid threeddarkshadow;
+	border-left:1px solid threeddarkshadow;
+	border-right:1px solid threeddarkshadow;
+	background-color:#ffffff;
+}
+/* mousedown on tab */
+.wproEditor button.wproTButtonMouseDown {
+	border:1px solid threeddarkshadow;
+	background-color:threedshadow;
+}
+/* inactive tab */
+.wproEditor button.wproTButtonDown {
+	border:1px solid threeddarkshadow;
+	background-color:transparent;
+}
+/* message area to right of tabs */
+.wproEditor div.wproMessages {
+	text-align:right !important;
+	border-top:1px solid threeddarkshadow;
+	font-size:10px;
+}
+/* button for resizing editor */
+.wproEditor .wproResizeCorner {
+	cursor:s-resize;
+	width:18px;
+	height:18px;
+	margin-left:6px;
+	background:bottom right no-repeat;
+}
+/* floating menus: custom drop-downs, menus and context menu */
+/* this holds menus while they are invisible */
+.wproEditor div.wproHiddenMenus {
+}
+/* menu borders and background */
+.wproEditor div.wproFloatingMenu,.wproEditor iframe.wproFloatingMenu {
+	position:absolute;
+	visibility:hidden;
+	display:block;
+	top:-800px;
+	left:-800px;
+	z-index: 2000;
+	/*overflow:auto;*/
+	padding:1px;
+	border:1px solid threeddarkshadow;
+	border-right:2px solid threeddarkshadow;
+	border-bottom:2px solid threeddarkshadow;
+	background: #F9F8F7;
+	
+	filter:progid:DXImageTransform.Microsoft.Shadow(color=#707070,direction=135,strength=3)
+}
+/* generic link styles for menus */
+.wproEditor div.wproFloatingMenu a,.wproEditor div.wproFloatingMenu a:link,.wproEditor div.wproFloatingMenu a:active,.wproEditor div.wproFloatingMenu a:hover,.wproEditor div.wproFloatingMenu a:visited {
+	padding:1px;
+	padding-right:18px;
+	white-space:nowrap;
+	display:block;
+	font-size:11px;
+	font-family:Verdana,Arial,Helvetica,sans-serif;
+	color:#000000;
+	cursor:default;
+	background-color:transparent;
+	text-decoration:none;
+	border-width: 0px;
+	font-weight: normal;
+}
+/* mouse over menu item */
+.wproEditor div.wproFloatingMenu a.wproOver,.wproEditor div.wproFloatingMenu a.wproOver:link,.wproEditor div.wproFloatingMenu a.wproOver:active,.wproEditor div.wproFloatingMenu a.wproOver:hover,.wproEditor div.wproFloatingMenu a.wproOver:visited {
+	color:highlighttext !important;
+	background-color:highlight;
+}
+/* separators in menus */
+.wproEditor div.wproFloatingMenu a img {
+	vertical-align:middle;
+	border-width:0px;
+	margin-right:6px;
+}
+.wproEditor div.wproFloatingMenu div.wproSeparator {
+	border-top:1px solid threedshadow;
+	margin:1px;
+	margin-left:28px;
+	padding:0px;
+}
+.wproEditor div.wproFloatingMenu div.wproTitleSeparator {
+	background-color: threedshadow;
+	color: highlighttext;
+	margin:1px;
+	padding:0px;
+}
+/* active menu items */
+.wproEditor div.wproFloatingMenu a.wproLatched {
+	padding:1px;
+	margin:0px;
+	color: highlighttext;
+	background-color: highlight;
+}
+/* disabled menu items */
+.wproEditor div.wproFloatingMenu a.wproDisabled {
+	display:none;
+}
+/* optional iframe dialogs */
+/* NOTE: so that we don't have to enter the design of this again for dialog windows we use the .wproDialogEditorShared prefex */
+.wproDialogEditorShared .wproFloatingDialog {
+	position:absolute;
+	display: none;
+	/*border:1px solid threeddarkshadow;
+	border-right:2px solid threeddarkshadow;
+	border-bottom:2px solid threeddarkshadow;*/
+	
+	border-left:2px solid threedlightshadow;
+	border-top:2px solid threedlightshadow;
+	border-right:2px solid threedshadow;
+	border-bottom:2px solid threeddarkshadow;
+	
+	background-color: threedface;
+	
+}
+.wproEditor iframe.wproFloatingDialog {
+	visibility:hidden;
+	display:block;
+	top:-800px;
+	left:-800px;
+	overflow:hidden;
+	background-color: threedface;
+}

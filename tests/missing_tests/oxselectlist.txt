@@ -1,0 +1,4 @@
+oxselectlist.php
+	- testDelete teste pries vykdant delete reiketu patikrinti, ar yra ka trinti
+	- netestuojama funkcijos delete() if ( !$sOXID ) { return false; } salyga
+	- testuojant getFieldList, netestuojamas atvejis, kuomet nei vieno field listo nera sukurta

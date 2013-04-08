@@ -1,0 +1,4 @@
+oxwrapping.php
+	- pataisyti demo duomenis:
+		* CARD bei WRAP demo duomenys, kuomet jie nieko nekainuoja (kaina = 0 EUR)
+		* is pridedami demo duomenys turetu buti ir aktyvus ir neaktyvus. dabar sukurtieji yra tik neaktyvus

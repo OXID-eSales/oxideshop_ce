@@ -1,0 +1,9 @@
+#!/bin/bash
+
+TARGET="$1"
+if test -z "$TARGET" ; then
+    TARGET="AllTests"
+fi
+./phpunit $2 $3 $4 ${TARGET/\//_}
+
+

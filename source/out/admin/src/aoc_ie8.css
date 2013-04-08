@@ -1,0 +1,3 @@
+/* IE8 overflow and expanding box bugs workaround */
+.oxid-aoc-category { padding-right: 36px;}
+.oxid-aoc-scrollbar { width: 35px;}

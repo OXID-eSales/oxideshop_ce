@@ -1,0 +1,41 @@
+.scroll {
+	overflow: auto;
+	height: 194px;
+	voice-family: "\"}\"";
+	voice-family:inherit;
+	height: 192px;
+	width: 265px;
+	/*background-color: #ffffff;*/
+}
+.scroll a {
+	text-decoration: none;
+	
+	display: block;
+	padding: 3px;
+	float: left;
+	white-space: nowrap;
+	/*border-right: 1px solid #000000;
+	border-bottom: 1px solid #000000;*/
+	
+}
+a.el {
+	color: #000000;
+	/*background-color: #ffffff;*/
+}
+.custom a {
+	padding: 6px;
+	/*voice-family: "\"}\"";
+	voice-family:inherit;
+	height: 187px;
+	width: 255px;*/
+}
+.default a {
+	width: 117px;
+	voice-family: "\"}\"";
+	voice-family:inherit;
+	width: 111px;
+}
+.scroll a img {
+	vertical-align: middle;
+	border-width: 0px;
+}

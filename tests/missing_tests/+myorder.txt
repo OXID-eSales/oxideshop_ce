@@ -1,0 +1,14 @@
+myorder.php
+	- visuose testuose, kur palieciamas skaiciavimas, truksta atvejo, kai orderis yra canceled.
+	- pdf produktu atvaizdavimo testuose truksta testcase, kai orderyje yra pirktas variantas
+	- pdf atvaizdavimo testuose truksta testcase, kai pdf yra didesnis nei 1 psl
+	- public function run( $oPdf ) - truksta testcase, kai count( $oItem->aParams ) = 0
+	- public function ajustHeight( $iDelta ) - truksta testo switch ( $oItem->sFunc ) default reiksmei
+	- truksta testcase kai payment neigiama suma (sconto)
+	- testuoti kai pilni vartotojo delivery ir payment adresai, su telefono numeriais ir pan.
+	- testuoti kai orderyje uzsakytas produktas su selection list (kuomet pasirenkama ne pati pirma selection list value bei kai to paties produkto uzsakoma kelios selection reiksmes)
+	- testuoti kai keli produktai su skirtingais vat viename orderyje
+		
+			
+			
+			

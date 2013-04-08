@@ -1,0 +1,7 @@
+.UITabbedPane {
+	height: 320px;
+}
+.scroll {
+	height: 310px;
+	overflow: auto;
+}

@@ -1,0 +1,9 @@
+File descriptions:
+
+buttons: contains buttons for toolbars and menus
+icons: contains file and folder icons
+misc: other interface graphics
+dialog.css: styles that effect dialog windows
+document.css: styles that effect the document being edited
+editor.css: styles that effect the editor interface
+theme.inc.php: contains calls to wysiwygpro's PHP API

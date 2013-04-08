@@ -337,7 +337,6 @@ $aLang = array(
 'MESSAGE_RATE_THIS_ARTICLE'                                   => "Rate this product!",
 'MESSAGE_READ_DETAILS'                                        => "Read our",
 'MESSAGE_RECOMMEND_CLICK_ON_SEND'                             => 'Click on "Send Recommendation" to send the e-mail.',
-'MESSAGE_SELECTED_IPAYMENT'                                   => 'You selected "iPayment" as your Payment Method.<br>Please enter all your payment data in the browser-window, which is going to be opened.<br><br>In case the iPayment browser-window doesn`t open automatically (e.g. because you deactivated Javascript in your browser), please click on the iPayment button below.',
 'MESSAGE_SELECT_AT_LEAST_ONE_PRODUCT'                         => "Please select at least one product.",
 'MESSAGE_SELECT_MORE_PRODUCTS'                                => "Please select products for comparison.",
 'MESSAGE_SEND_GIFT_REGISTRY'                                  => "Click here to send your gift registry to your friends.",
@@ -414,7 +413,7 @@ $aLang = array(
 'ORDER_IS_CANCELED'                                           => "Order is canceled.",
 'ORDER_NUMBER'                                                => "Order #",
 'BRAND'                                                       => "Brand",
-'OUR_BRANDS'                                                  => "Our<br>brands",
+'OUR_BRANDS'                                                  => "Our brands",
 'OUR_REGULAR_PRICE'                                           => "(Our regular price.)",
 'OXID_ESALES_URL'                                             => "http://www.oxid-esales.com/",
 'OXID_ESALES_URL_TITLE'                                       => "Shopping cart software by OXID eSales",
@@ -718,7 +717,7 @@ $aLang = array(
 'FACEBOOK_ENABLEINFOLINK'                                     => "View information about the data transmission.",
 'FACEBOOK_ENABLELINK'                                         => "DISPLAY FACEBOOK CONTENT",
 'FACEBOOK_ENABLETEXT'                                         => "Data is transmitted to Facebook.",
-'FACEBOOK_ENABLE_INFOTEXT'                                    => 'Here you can leave information about the transmission of personal data to Facebook.<br><br>While using Facebook plug-ins, a connection is established enabling the share of content with other users. Using plug-ins while browsing through the online shop being logged in on Facebook at the same time, your personal data is automatically transmitted to Facebook. You can find more information about collecting, using and processing of your personal data on <a href="http://www.facebook.com/policy.php" target="_blank">Facebook\'s Privacy Policy</a>.',
+'FACEBOOK_ENABLE_INFOTEXT'                                    => 'Here you can leave information about the transmission of personal data to Facebook.<br><br>While using Facebook plug-ins, a connection is established enabling the share of content with other users. Using plug-ins while browsing through the online shop being logged in on Facebook at the same time, your personal data is automatically transmitted to Facebook. You can find more information about collecting, using and processing of your personal data on <a href="http://www.facebook.com/policy.php" target="_blank">Facebook\'s Privacy Policy</a>.', // maybe move to CMS pages
 'FACEBOOK_ENABLE_INFOTEXTHEADER'                              => "Notes on data protection using Facebook plug-ins",
 '_UNIT_KG'                                                    => "kg",
 '_UNIT_G'                                                     => "g",
@@ -784,14 +783,14 @@ $aLang = array(
 
 'BETA_NOTE'                                                   => "Welcome to Release Candidate ",
 'BETA_NOTE_MIDDLE'                                            => " of OXID eShop ",
-'BETA_NOTE_FAQ'                                               => ". Please refer to our <a href='http://wiki.oxidforge.org/Development/Beta' class=\"external\">FAQ</a> if you have any questions.",
+'BETA_NOTE_FAQ'                                               => ". Please refer to our %s if you have any questions.",
 
 
 'NO_LISTMANIA_LIST'                                           => "There is no Listmania lists at the moment. To create a new list, please ",
 'DETAILS_VPE_MESSAGE'                                         => "This product can only be ordered in packaging units of %s",
 'DETAILS_CHOOSEVARIANT'                                       => "Please select a variant %s to visit %s",
 'INVITE_TO_SHOP'                                              => "An invitation from %s to visit %s",
-'PAYMENT_INFO_OFF'                                            => "<b>PAYMENT INFORMATION SWITCHED OFF</b> - to switch it on please edit application/views/[theme]/email/html/order_owner.tpl.",
+'PAYMENT_INFO_OFF'                                            => "PAYMENT INFORMATION SWITCHED OFF - to switch it on please edit application/views/[theme]/email/html/order_owner.tpl.",
 'DISTRIBUTORS'                                                => "Distributors",
 'MANUFACTURERS'                                               => "Brands",
 'SERVICES'                                                    => "Service",
@@ -800,7 +799,7 @@ $aLang = array(
 'SHOP_SUGGEST_MESSAGE'                                        => "Hello, I was looking at %s today and found something that might be interesting for you. Just click on the link below and you will be directed to the shop.",
 'SHOP_SUGGEST_BUY_FOR_ME'                                     => "Hi, I created a Gift Registry at %s . Great if you could buy something for me.",
 'GIFT_REGISTRY_SENT_SUCCESSFULLY'                             => "Your Gift Registry was sent successfully to: %s ",
-'NO_PAYMENT_METHOD'                                           => '<p>Currently we have no shipping method set up for this country.</p> <p>We are aiming to find a possible delivery method and we will inform you as soon as possible via e-mail about the result, including further information about delivery costs.</p>',
+'NO_PAYMENT_METHOD'                                           => '<p>Currently we have no shipping method set up for this country.</p> <p>We are aiming to find a possible delivery method and we will inform you as soon as possible via e-mail about the result, including further information about delivery costs.</p>', // custom page info
 'INCLUDE_VAT'                                                 => "incl. VAT",
 'COD_CHARGE'                                                  => "COD Charge",
 'TRUSTED_SHOPS_PROTECTION_TEXT'                               => "The Trusted Shops buyer protection secures your online purchase. I agree with the transfer and",
@@ -825,7 +824,7 @@ $aLang = array(
 'PRODUCT_RATING'                                              => 'Product Rating',
 'SHIPMENT_TRACKING'                                           => 'Your shipment tracking URL',
 'INFO_ABOUT_COOKIES'                                          => 'Information about Cookies',
-'COOKIES_EXPLANATION'                                         => 'You have decided to not accept cookies from our online shop. The cookies have been removed. You can deactivate the usage of cookies in the settings of your browser and visit the online shop with some functional limitations. You can also return to the shop without changing the browser settings and enjoy the full functionality.<br/><br/>Information about cookies at Wikipedia: <a href="http://en.wikipedia.org/wiki/HTTP_cookie"><strong>http://en.wikipedia.org/wiki/HTTP_cookie</strong></a>',
+'COOKIES_EXPLANATION'                                         => 'You have decided to not accept cookies from our online shop. The cookies have been removed. You can deactivate the usage of cookies in the settings of your browser and visit the online shop with some functional limitations. You can also return to the shop without changing the browser settings and enjoy the full functionality.<br/><br/>Information about cookies at Wikipedia: <a href="http://en.wikipedia.org/wiki/HTTP_cookie"><strong>http://en.wikipedia.org/wiki/HTTP_cookie</strong></a>',  //CMS page ?
 'PARTNERS'                                                    => 'Partners',
 
 //not used
@@ -833,5 +832,6 @@ $aLang = array(
 'FORM_REGISTER_COMPLETEMARKEDFIELDS'                          => "(Please fill in all mandatory fields labeled in bold.)",
 'MESSAGE_NO_DELIVERY_METHOD'                                  => '<p>Currently we have no delivery method set up for this country.</p> <p>We are aiming to find a possible delivery method and we will inform you as soon as possible via e-mail about the result, including further information about delivery costs.</p> <p>If you agree to this procedure, please select "move on to next step"</p>',
     'ERROR_MESSAGE_PAGE_HEADLINE'                                 => "The shop is temporary offline<br>Please come back later<br><br>Thank you for understanding.",
+    'MESSAGE_SELECTED_IPAYMENT'                                   => 'You selected "iPayment" as your Payment Method.<br>Please enter all your payment data in the browser-window, which is going to be opened.<br><br>In case the iPayment browser-window doesn`t open automatically (e.g. because you deactivated Javascript in your browser), please click on the iPayment button below.',
 
 );

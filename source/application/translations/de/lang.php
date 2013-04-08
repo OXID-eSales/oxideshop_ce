@@ -336,7 +336,6 @@ $aLang = array(
 'MESSAGE_RATE_THIS_ARTICLE'                                   => "Bewerten Sie diesen Artikel!",
 'MESSAGE_READ_DETAILS'                                        => "Lesen Sie Details zum",
 'MESSAGE_RECOMMEND_CLICK_ON_SEND'                             => 'Klicken Sie auf "Empfehlung abschicken" und versenden Sie dann die E-Mail',
-'MESSAGE_SELECTED_IPAYMENT'                                   => 'Sie haben als Zahlungsart "iPayment" gewählt.<br>Sie werden nun automatisch an iPayment weitergeleitet, wo Sie Ihre erforderlichen Daten für eine Bezahlung mit "iPayment" eingeben können.<br><br>Wenn dies nicht der Fall sein sollte, -z.B. wenn Sie Javascript deaktiviert haben- klicken Sie bitte auf das folgende "iPayment"-Symbol,um den Vorgang manuell auszuführen.',
 'MESSAGE_SELECT_AT_LEAST_ONE_PRODUCT'                         => "Bitte wählen Sie einen Artikel aus.",
 'MESSAGE_SELECT_MORE_PRODUCTS'                                => "Bitte wählen Sie Artikel zum Vergleichen aus.",
 'MESSAGE_SEND_GIFT_REGISTRY'                                  => "Klicken Sie hier, um Ihren Wunschzettel an Ihre Freunde zu versenden.",
@@ -786,14 +785,14 @@ $aLang = array(
 
 'BETA_NOTE'                                                   => "Willkommen zum Release-Kandidat ",
 'BETA_NOTE_MIDDLE'                                            => " von OXID eShop ",
-'BETA_NOTE_FAQ'                                               => ". Häufig gestellte Fragen und Antworten sind in der <a href='http://wiki.oxidforge.org/Development/Beta' class=\"external\">FAQ</a> gelistet.",
+'BETA_NOTE_FAQ'                                               => ". Häufig gestellte Fragen und Antworten sind in der %s gelistet.",
 
 
 'NO_LISTMANIA_LIST'                                           => "Es liegen zur Zeit keine Lieblingslisten vor. Um eine neue Lieblingsliste anzulegen, bitte ",
 'DETAILS_VPE_MESSAGE'                                         => "Dieser Artikel kann nur in Verpackungseinheiten zu je %s erworben werden.",
 'DETAILS_CHOOSEVARIANT'                                       => "Bitte wählen Sie eine Variante",
 'INVITE_TO_SHOP'                                              => "Eine Einladung von %s %s zu besuchen.",
-'PAYMENT_INFO_OFF'                                            => "<b>BEZAHLINFORMATIONEN AUSGESCHALTET</b> - um diese einzuschalten bitte application/views/[theme]/email/html/order_owner.tpl aendern.",
+'PAYMENT_INFO_OFF'                                            => "BEZAHLINFORMATIONEN AUSGESCHALTET - um diese einzuschalten bitte application/views/[theme]/email/html/order_owner.tpl aendern.",
 'DISTRIBUTORS'                                                => "Lieferanten",
 'MANUFACTURERS'                                               => "Marken",
 'SERVICES'                                                    => "Service",
@@ -834,5 +833,6 @@ $aLang = array(
 'FORM_REGISTER_COMPLETEMARKEDFIELDS'                          => "(Bitte alle fett beschrifteten Pflichtfelder ausfüllen.)",
 'MESSAGE_NO_DELIVERY_METHOD'                                  => '<p>Derzeit ist keine Versandart für dieses Land definiert.</p> <p>Wir werden versuchen, Liefermöglichkeiten zu finden und Sie über die Versandkosten informieren.</p> <p>Falls Sie hiermit einverstanden sind, wählen Sie "Weiter zum nächsten Schritt".</p>',
     'ERROR_MESSAGE_PAGE_HEADLINE'                                 => "Der Shop ist vorübergehend offline...",
+    'MESSAGE_SELECTED_IPAYMENT'                                   => 'Sie haben als Zahlungsart "iPayment" gewählt.<br>Sie werden nun automatisch an iPayment weitergeleitet, wo Sie Ihre erforderlichen Daten für eine Bezahlung mit "iPayment" eingeben können.<br><br>Wenn dies nicht der Fall sein sollte, -z.B. wenn Sie Javascript deaktiviert haben- klicken Sie bitte auf das folgende "iPayment"-Symbol,um den Vorgang manuell auszuführen.',
 
 );

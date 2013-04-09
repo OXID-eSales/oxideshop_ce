@@ -23,7 +23,7 @@ window.onload = function ()
 
 <div class="liste">
 <center>
-<h1>[{ oxmultilang ident="PRICEALARM_SEND_SENDED" }] [{ $iStart}] [{ oxmultilang ident="PRICEALARM_SEND_FROM" }] [{$iAllCnt}].</h1>
+<h1>[{ oxmultilang ident="PRICEALARM_MESSAGE_SENT" }] [{ $iStart}] [{ oxmultilang ident="PRICEALARM_SEND_FROM" }] [{$iAllCnt}].</h1>
 </center>
 </div>
 

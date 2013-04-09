@@ -376,7 +376,7 @@ window.onload = function ()
                     </tr>
                     <tr>
                       <td class="edittext" >
-                        [{ oxmultilang ident="SHOP_MAIN_NOWSENDEDSUBJECT" }]
+                        [{ oxmultilang ident="SHOP_MAIN_SENT_NOW_SUBJECT" }]
                       </td>
                       <td class="edittext">
                         <input type="text" class="editinput" size="35" maxlength="[{$edit->oxshops__oxsendednowsubject->fldmax_length}]" name="editval[oxshops__oxsendednowsubject]" value="[{$edit->oxshops__oxsendednowsubject->value}]" [{ $readonly}]>

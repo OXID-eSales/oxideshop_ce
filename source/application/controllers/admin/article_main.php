@@ -44,6 +44,11 @@ class Article_Main extends oxAdminDetails
 
         $this->_aViewData['edit'] = $oArticle = oxNew( 'oxarticle' );
 
+        if ( $myConfig->isAdmin() ) {
+            $oArticle->enablePriceLoad();
+            $myConfig->setConfigParam( 'bl_perfLoadPrice', true );
+        }
+
         $soxId = $this->getEditObjectId();
         $svoxId = oxConfig::getParameter( "voxid" );
         $soxparentId = oxConfig::getParameter( "oxparentid" );

@@ -398,9 +398,7 @@ class oxBase extends oxSuperCfg
     public function init( $sTableName = null, $blForceAllFields = false)
     {
 
-        if ( !$sTableName ) {
-            $sTableName = $this->_sCoreTable;
-        } else {
+        if ( $sTableName ) {
             $this->_sCoreTable = $sTableName;
         }
 

@@ -718,19 +718,34 @@ class Unit_Views_contentTest extends OxidTestCase
     }
     
     /**
-     * Content::getParsedContent() Test case
+     * Content::testGetParsedContent() Test case
      *
-     * @return null
+     * Add bugfix to #0004298: If there is smarty tag in content, then it is saved in same name template.
      */
     public function testGetParsedContent()
     {   
-        oxAddClassModule('contentTest_oxUtilsView', 'oxUtilsView');
-
-        $this->_oObj->oxcontents__oxcontent = new oxField('[{ $oxcmp_shop->oxshops__oxowneremail->value }]', oxField::T_RAW);
+        $this->_oObj->oxcontents__oxcontent = new oxField("[{ 'A'|cat:'B' }]SSSSSSSS", oxField::T_RAW);
         $this->_oObj->save();
         modConfig::setParameter( 'oxcid', $this->_oObj->getId() );
         $oContent = new content();
 
-        $this->assertEquals( $oContent->getContent()->oxcontents__oxcontent->value, $oContent->getParsedContent() );
+        $this->assertEquals( 'ABSSSSSSSS', $oContent->getParsedContent(), 'Result from smarty not same as in content page.' );
+
+        // Check if second CMS page will be generated with different content.
+        $oSecond = new oxcontent();
+        $oSecond->setId('_test_testGetParsedContent');// = new oxField('_test_testGetParsedContent');
+        $oSecond->oxcontents__oxtitle = new oxField('test', oxField::T_RAW);
+        $sShopId = modConfig::getInstance()->getShopId();
+        $oSecond->oxcontents__oxshopid = new oxField($sShopId, oxField::T_RAW);
+        $oSecond->oxcontents__oxloadid = new oxField('_testLoadId_testGetParsedContent', oxField::T_RAW);
+        $oSecond->oxcontents__oxcontent = new oxField("[{ 'A'|cat:'D' }]SSSSSSSS", oxField::T_RAW);
+        $oSecond->oxcontents__oxcontent_1 = new oxField("testcontentENG&, &, !@#$%^&*%$$&@'.,;p\"ss", oxField::T_RAW);
+        $oSecond->oxcontents__oxactive = new oxField('1', oxField::T_RAW);
+        $oSecond->oxcontents__oxactive_1 = new oxField('1', oxField::T_RAW);
+        $oSecond->save();
+        modConfig::setParameter( 'oxcid', $oSecond->getId() );
+        $oContent = new content();
+
+        $this->assertEquals( 'ADSSSSSSSS', $oContent->getParsedContent(), 'Content not as in second page. If result ABSSSSSSSS than it is ame as in first page, so used wrong smarty cache file.' );
     }
 }

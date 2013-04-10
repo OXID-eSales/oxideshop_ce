@@ -530,7 +530,7 @@ class Content extends oxUBase
      */
     public function getParsedContent()
     {        
-        return oxUtilsView::getInstance()->parseThroughSmarty( $this->getContent()->oxcontents__oxcontent->value );        
+        return oxUtilsView::getInstance()->parseThroughSmarty( $this->getContent()->oxcontents__oxcontent->value, $this->getContent()->getId() );
     }
 
 }

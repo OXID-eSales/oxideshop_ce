@@ -37,6 +37,8 @@ class shopTearDown extends oxidAdditionalSeleniumFunctions
      */
     protected function tearDown()
     {
+        $this->skipDbRestore = true;
+
         parent::tearDown(false);
     }
 

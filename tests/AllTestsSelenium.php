@@ -36,6 +36,7 @@ define('hostUrl', getenv('SELENIUM_SERVER'));
 //define('OXID_TEMPLATE_BASIC', getenv('OXID_TPL_BASIC'));
 define('OXID_THEME', getenv('OXID_THEME'));
 
+    define ('oxSHOPID', "oxbaseshop");
 define ('oxCCTempDir', oxPATH.'/tmp/');
 
 // if running on NON-parsed source - change shopPrefix value to '_ee'

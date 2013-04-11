@@ -151,7 +151,7 @@ class Account extends oxUBase
     }
 
     /**
-     * Return the active article id
+     * Confirms term agreement. Returns value of confirmed term
      *
      * @return string | bool
      */

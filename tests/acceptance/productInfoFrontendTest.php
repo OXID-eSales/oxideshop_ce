@@ -494,7 +494,7 @@ class Acceptance_productInfoFrontendTest extends oxidAdditionalSeleniumFunctions
         //multidimensional variants on
         //active product WHERE `OXID`='10014'
         $aArticleParams = array("oxactive" => 1);
-        $this->callShopSC("oxArticle", "save", "10014", $aArticleParams);
+        $this->callShopSC("oxArticle", "save", "10014", $aArticleParams, 1);
         $this->openShop();
         $this->searchFor("10014");
         $this->clickAndWait("searchList_1");

@@ -464,7 +464,7 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
     {
        // active option (Product can be customized) where product ID is `OXID` = '1000
         $aArticleParams = array("oxisconfigurable" => 1);
-        $this->callShopSC("oxArticle", "save", "1000", $aArticleParams);
+        $this->callShopSC("oxArticle", "save", "1000", $aArticleParams, 1);
 
        // active config option (Don't save Shopping Carts of registered Users)
         $this->callShopSC("oxConfig", "saveShopConfVar", null, array("blPerfNoBasketSaving" => array("type" => "bool", "value" => '')));

@@ -56,6 +56,7 @@ define('shopURL', getenv('SELENIUM_TARGET'));
 define('hostUrl', getenv('SELENIUM_SERVER'));
 
 
+    define ('oxSHOPID', "oxbaseshop");
 
 define ('oxCCTempDir', oxPATH.'/tmp/');
 

@@ -58,6 +58,9 @@ define('browserName', '*firefox' );
 define('shopURL', getenv('SELENIUM_TARGET'));
 define('hostUrl', getenv('SELENIUM_SERVER'));
 
+
+    define ('oxSHOPID', "oxbaseshop");
+
 define ('oxCCTempDir', oxPATH.'/tmp/');
 
 // if running on NON-parsed source - change shopPrefix value to '_ee'

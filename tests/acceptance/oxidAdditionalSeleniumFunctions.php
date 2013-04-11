@@ -72,11 +72,14 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
 
    /**
      * Restores database after every test.
+     * @param $blRestoreDb
      *
      */
-    protected function tearDown()
+    protected function tearDown($blRestoreDb = true)
     {
+        if ($blRestoreDb) {
         $this->restoreDB();
+        }
 
         parent::tearDown();
     }

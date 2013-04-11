@@ -31,9 +31,24 @@ class shopTearDown extends oxidAdditionalSeleniumFunctions
         parent::setUp(true);
     }
 
+    /**
+     * Restores database after every test
+     *
+     */
+    protected function tearDown()
+    {
+        parent::tearDown(false);
+    }
 
 //------------------------------- Tear down ---------------------------------
 
+    /**
+     * closes all open firefox windows
+     */
+    public function testRestoreDb()
+    {
+        $this->restoreDB("orig_db_dump");
+    }
 
     /**
      * closes all open firefox windows

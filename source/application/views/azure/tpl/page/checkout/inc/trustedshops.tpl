@@ -30,8 +30,11 @@
             [{/if}]
               <br>
               <br>
-            [{ oxmultilang ident="TRUSTED_SHOPS_PROTECTION_TEXT" }] <a href="http://www.trustedshops.com/shop/data_privacy.php?shop_id=[{$oView->getTSExcellenceId()}]" target="_blank">[{ oxmultilang ident="TRUSTED_SHOPS_PROTECTION_TEXT2" }]</a>
-            [{ oxmultilang ident="TRUSTED_SHOPS_PROTECTION_TEXT3" }] <a href="http://www.trustedshops.com/shop/protection_conditions.php?shop_id=[{$oView->getTSExcellenceId()}]" target="_blank">[{ oxmultilang ident="TRUSTED_SHOPS_PROTECTION_TEXT4" }]</a> [{ oxmultilang ident="TRUSTED_SHOPS_PROTECTION_TEXT5" }]
+                <div class="cmsContent">
+                    [{oxifcontent ident="oxtsprotectiontext" object="oCont"}]
+                        [{$oCont->oxcontents__oxcontent->value}]
+                    [{/oxifcontent}]
+                </div>
             </div>
             <div class="clear"></div>
         </div>

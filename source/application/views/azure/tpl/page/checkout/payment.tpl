@@ -127,7 +127,9 @@
                     [{block name="checkout_payment_nopaymentsfound"}]
                         <div class="lineBlock"></div>
                         <h3 id="paymentHeader" class="blockHead">[{ oxmultilang ident="PAYMENT_INFORMATION" }]</h3>
-                        [{ oxmultilang ident="NO_PAYMENT_METHOD" }]
+                        [{oxifcontent ident="oxnopaymentmethod" object="oCont"}]
+                            [{$oCont->oxcontents__oxcontent->value}]
+                        [{/oxifcontent}]
                         <input type="hidden" name="paymentid" value="oxempty">
                         <div class="lineBox clear">
                             <a href="[{ oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=user" }]" class="prevStep submitButton largeButton">[{ oxmultilang ident="PREVIOUS_STEP" }]</a>

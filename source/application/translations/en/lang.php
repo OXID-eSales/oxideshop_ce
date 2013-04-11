@@ -480,7 +480,6 @@ $aLang = array(
 'REDUCED_FROM'                                                => "Reduced from",
 'REDUCED_FROM_2'                                              => "RRP",
 'REGISTER'                                                    => "Register",
-'REGISTRATION_DESCRIPTION'                                    => "A customer with an account has advantages like:<br> - Administration of shipping addresses<br> - Check order status<br> - Order History<br> - Personal Wish List<br> - Personal Gift Registry<br> - Newsletter subscription<br> - Special offers and discounts", // maybe move to CMS page
 'REMEMBER_ME'                                                 => "Remember me",
 'REMOVE'                                                      => "Remove",
 'REMOVE_FROM_COMPARE_LIST'                                    => "Remove from compare list",
@@ -717,7 +716,6 @@ $aLang = array(
 'FACEBOOK_ENABLEINFOLINK'                                     => "View information about the data transmission.",
 'FACEBOOK_ENABLELINK'                                         => "DISPLAY FACEBOOK CONTENT",
 'FACEBOOK_ENABLETEXT'                                         => "Data is transmitted to Facebook.",
-'FACEBOOK_ENABLE_INFOTEXT'                                    => 'Here you can leave information about the transmission of personal data to Facebook.<br><br>While using Facebook plug-ins, a connection is established enabling the share of content with other users. Using plug-ins while browsing through the online shop being logged in on Facebook at the same time, your personal data is automatically transmitted to Facebook. You can find more information about collecting, using and processing of your personal data on <a href="http://www.facebook.com/policy.php" target="_blank">Facebook\'s Privacy Policy</a>.', // maybe move to CMS pages
 'FACEBOOK_ENABLE_INFOTEXTHEADER'                              => "Notes on data protection using Facebook plug-ins",
 '_UNIT_KG'                                                    => "kg",
 '_UNIT_G'                                                     => "g",
@@ -799,14 +797,8 @@ $aLang = array(
 'SHOP_SUGGEST_MESSAGE'                                        => "Hello, I was looking at %s today and found something that might be interesting for you. Just click on the link below and you will be directed to the shop.",
 'SHOP_SUGGEST_BUY_FOR_ME'                                     => "Hi, I created a Gift Registry at %s . Great if you could buy something for me.",
 'GIFT_REGISTRY_SENT_SUCCESSFULLY'                             => "Your Gift Registry was sent successfully to: %s ",
-'NO_PAYMENT_METHOD'                                           => '<p>Currently we have no shipping method set up for this country.</p> <p>We are aiming to find a possible delivery method and we will inform you as soon as possible via e-mail about the result, including further information about delivery costs.</p>', // custom page info
 'INCLUDE_VAT'                                                 => "incl. VAT",
 'COD_CHARGE'                                                  => "COD Charge",
-'TRUSTED_SHOPS_PROTECTION_TEXT'                               => "The Trusted Shops buyer protection secures your online purchase. I agree with the transfer and",
-'TRUSTED_SHOPS_PROTECTION_TEXT2'                              => "saving",
-'TRUSTED_SHOPS_PROTECTION_TEXT3'                              => "of my e-mail address for the buyer protection handling by Trusted Shops.",
-'TRUSTED_SHOPS_PROTECTION_TEXT4'                              => "Conditions",
-'TRUSTED_SHOPS_PROTECTION_TEXT5'                              => "for the buyer protection.",
 'REGISTERED_YOUR_ORDER'                                       => "We registered your order under the number: %s ",
 'THANK_YOU_FOR_ORDER'                                         => "Thank you for your order in",
 'PRICE_ALERT_THANK_YOU_MESSAGE'                               => "Thank you. %s appreciates your comments. We will inform you as soon as the price falls below %s %s.",
@@ -824,7 +816,6 @@ $aLang = array(
 'PRODUCT_RATING'                                              => 'Product Rating',
 'SHIPMENT_TRACKING'                                           => 'Your shipment tracking URL',
 'INFO_ABOUT_COOKIES'                                          => 'Information about Cookies',
-'COOKIES_EXPLANATION'                                         => 'You have decided to not accept cookies from our online shop. The cookies have been removed. You can deactivate the usage of cookies in the settings of your browser and visit the online shop with some functional limitations. You can also return to the shop without changing the browser settings and enjoy the full functionality.<br/><br/>Information about cookies at Wikipedia: <a href="http://en.wikipedia.org/wiki/HTTP_cookie"><strong>http://en.wikipedia.org/wiki/HTTP_cookie</strong></a>',  //CMS page ?
 'PARTNERS'                                                    => 'Partners',
 
 //not used

@@ -30,7 +30,9 @@
             <div class="lineBox option" id="optionRegistration">
                 <h3>[{ oxmultilang ident="OPEN_PERSONAL_ACCOUNT" }]</h3>
                 [{block name="checkout_options_reg_text"}]
-                    <p>[{ oxmultilang ident="REGISTRATION_DESCRIPTION" }]</p>
+                    [{oxifcontent ident="oxregistrationdescription" object="oCont"}]
+                        [{$oCont->oxcontents__oxcontent->value}]
+                    [{/oxifcontent}]
                 [{/block}]
                 <form action="[{ $oViewConf->getSslSelfLink() }]" method="post">
                     <p>

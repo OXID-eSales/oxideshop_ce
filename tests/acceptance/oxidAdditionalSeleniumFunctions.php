@@ -31,6 +31,7 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
 
     protected $screenshotPath = null;
     protected $screenshotUrl  = null;
+    protected $skipDbRestore  = false;
 
     /**
      * @param  string $name
@@ -75,9 +76,9 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
      * @param $blRestoreDb
      *
      */
-    protected function tearDown($blRestoreDb = true)
+    protected function tearDown()
     {
-        if ($blRestoreDb) {
+        if (!$this->skipDbRestore) {
         $this->restoreDB();
         }
 

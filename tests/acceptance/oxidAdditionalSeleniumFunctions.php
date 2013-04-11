@@ -75,7 +75,7 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
      */
     protected function tearDown()
     {
-        if ($this->skipDbRestore) {
+        if (!$this->skipDbRestore) {
         $this->restoreDB();
         }
 

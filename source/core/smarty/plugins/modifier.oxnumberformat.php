@@ -25,17 +25,17 @@
 /**
  * Smarty modifier
  * -------------------------------------------------------------
- * Name:     smarty_modifier_oxformdate<br>
+ * Name:     smarty_modifier_oxnumberformat<br>
  * Purpose:  Formats number for chosen locale
- * Example:  {$object|oxformdate:"foo"}
+ * Example:  $object = "EUR@ 1.00@ ,@ .@ EUR@ 2"{$object|oxnumberformat:2000.123}
  * -------------------------------------------------------------
  *
- * @param string $sFormat Number formatting rules (use default currency formattin rules defined in Admin)
+ * @param string $sFormat Number formatting rules (use default currency formatting rules defined in Admin)
  * @param string $sValue  Number to format
  *
  * @return string
  */
-function smarty_modifier_oxnumberformat( $sFormat = "EUR@ 1.00@ ,@ .@ �@ 2", $sValue = 0)
+function smarty_modifier_oxnumberformat( $sFormat = "EUR@ 1.00@ ,@ .@ EUR@ 2", $sValue = 0)
 {
     // logic copied from oxconfig::getCurrencyArray()
     $sCur = explode( "@", $sFormat);
@@ -46,7 +46,7 @@ function smarty_modifier_oxnumberformat( $sFormat = "EUR@ 1.00@ ,@ .@ �@ 2", $
     $oCur->dec      = @trim($sCur[2]);
     $oCur->thousand = @trim($sCur[3]);
     $oCur->sign     = @trim($sCur[4]);
-    $oCur->decimal  = 0;//trim($sCur[5]);
+    $oCur->decimal  = @trim($sCur[5]);
 
     // change for US version
     if (isset($sCur[6])) {

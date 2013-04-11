@@ -56,13 +56,14 @@ class Acceptance_trustedShopsTest extends oxidAdditionalSeleniumFunctions
             $this->type("aShopID_TrustedShops[0]", "XA2A8D35838AF5F63E5EB0E05847B1CB8");
             $this->check("//input[@name='tsTestMode' and @value='true']");
             $this->check("//input[@name='tsSealActive' and @value='true']");
-            $this->assertEquals("Direct debit Credit Card Invoice Cash on delivery Prepayment Cheque Paybox PayPal Cash on pickup Financing Leasing T-Pay Click&Buy (Firstgate) Giropay Google Checkout Online shop payment card Sofortüberweisung.de Other method of payment", $this->getText("paymentids[oxidcashondel]"));
+
+            $this->assertEquals("Direct debit Credit Card / Debit Card Invoice Cash on delivery Prepayment Cheque Paybox PayPal Amazon Payments Cash on pickup Financing Leasing T-Pay Click&Buy Giropay Google Checkout Online shop payment card SOFORT Banking moneybookers.com / Skrill Dotpay Przelewy24 Other method of payment", $this->getText("paymentids[oxidcashondel]"));
             $this->assertTrue($this->isTextPresent("Test payment method [EN] šÄßüл"));
-            $this->assertEquals("Direct debit Credit Card Invoice Cash on delivery Prepayment Cheque Paybox PayPal Cash on pickup Financing Leasing T-Pay Click&Buy (Firstgate) Giropay Google Checkout Online shop payment card Sofortüberweisung.de Other method of payment", $this->getText("paymentids[testpayment]"));
-            $this->select("paymentids[testpayment]", "label=Credit Card");
+            $this->assertEquals("Direct debit Credit Card / Debit Card Invoice Cash on delivery Prepayment Cheque Paybox PayPal Amazon Payments Cash on pickup Financing Leasing T-Pay Click&Buy Giropay Google Checkout Online shop payment card SOFORT Banking moneybookers.com / Skrill Dotpay Przelewy24 Other method of payment", $this->getText("paymentids[testpayment]"));
+            $this->select("paymentids[testpayment]", "label=Credit Card / Debit Card");
             $this->clickAndWait("save");
             $this->assertFalse($this->isTextPresent("Invalid Trusted Shops ID"), "Invalid Trusted Shops ID for testing");
-            $this->assertEquals("Credit Card", $this->getSelectedLabel("paymentids[testpayment]"));
+            $this->assertEquals("Credit Card / Debit Card", $this->getSelectedLabel("paymentids[testpayment]"));
             $this->assertEquals("on", $this->getValue("//input[@name='tsSealActive' and @value='true']"));
             $this->assertEquals("on", $this->getValue("//input[@name='tsTestMode' and @value='true']"));
             $this->assertEquals("XA2A8D35838AF5F63E5EB0E05847B1CB8", $this->getValue("aShopID_TrustedShops[0]"));

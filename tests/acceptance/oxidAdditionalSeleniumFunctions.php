@@ -72,10 +72,11 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
      * Restores database after every test
      *
      */
-    protected function tearDown()
+    protected function tearDown($blRestoreDb = true)
     {
+        if ($blRestoreDb) {
         $this->restoreDB();
-
+        }
         parent::tearDown();
     }
 
@@ -967,11 +968,10 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
      * @param string $sFnc function name.
      * @param string $sOxid id of object.
      * @param array  $aClassParams params to set to object.
-     * @param string $sShopId object shop id.
      *
      * @return void
      */
-    public function callShopSC($sCl, $sFnc, $sOxid = null, $aClassParams = array(), $sShopId = null)
+    public function callShopSC($sCl, $sFnc, $sOxid = null, $aClassParams = array())
     {
         $oConfig = oxConfig::getInstance();
 
@@ -993,14 +993,13 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
             . (!empty($sClassParams) ? $sClassParams : "");
 
 
-        // Pass shopId as to change in different shop we need to make it active.
-        if ($sShopId) {
-            $sParams .= "&shp=".$sShopId;
-        } else {
+        // Pass shopId when changing shop setting.
+        if(strtolower($sCl) == 'oxconfig') {
             $sParams .= "&shp=".oxSHOPID;
         }
 
         $ch = curl_init();
+
         curl_setopt($ch, CURLOPT_URL, $sShopUrl . $sParams);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);

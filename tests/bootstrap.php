@@ -37,8 +37,6 @@ if (!defined('OXID_VERSION_SUFIX')) {
     define('OXID_VERSION_SUFIX', '');
 }
 
-require_once 'unit/oxPrinter.php';
-
 require_once 'unit/test_config.inc.php';
 
 define('oxADMIN_LOGIN', oxDb::getDb()->getOne("select OXUSERNAME from oxuser where oxid='oxdefaultadmin'"));

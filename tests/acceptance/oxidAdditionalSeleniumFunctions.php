@@ -1144,4 +1144,31 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
             return parent::isTextPresent( $sText );
         }
     }
+
+    /**
+     * Fix for showing stack trace with phpunit 3.6
+     *
+     * @param Exception $e
+     */
+    protected function onNotSuccessfulTest(Exception $e) {
+        try {
+            parent::onNotSuccessfulTest($e);
+        }
+        catch (PHPUnit_Framework_IncompleteTestError $e) {
+            // Don't do anything with the incomplete test exception
+            throw $e;
+        }
+        catch (PHPUnit_Framework_SkippedTestError $e) {
+            // Don't do anything with the skipped test exception
+            throw $e;
+        }
+        catch (Exception $e_parent) {
+            $error_msg = "\n\n".
+                PHPUnit_Util_Filter::getFilteredStacktrace(
+                    $e
+                );
+
+            throw new PHPUnit_Framework_Error($e_parent->getMessage().$error_msg, $e_parent->getCode(), $e_parent->getFile(), $e_parent->getLine(), $e_parent->getTrace());
+        }
+    }
 }

@@ -1201,6 +1201,9 @@ class oxUtils extends oxSuperCfg
             // add price info into list
             if ( !$this->isAdmin() && $oObject->price != 0 ) {
                 $aName[0] .= " ";
+
+                $dPrice = $this->_preparePrice( $oObject->price, $dVat );
+
                 if ( $oObject->price > 0 ) {
                     $aName[0] .= "+";
                 }
@@ -1208,7 +1211,7 @@ class oxUtils extends oxSuperCfg
                 if ( $dVat != null && $oObject->priceUnit == 'abs' ) {
                     $oPrice = oxNew('oxPrice');
                     $oPrice->setPrice($oObject->price, $dVat);
-                    $aName[0] .= oxRegistry::getLang()->formatCurrency( $oPrice->getBruttoPrice() * $oCur->rate, $oCur);
+                    $aName[0] .= oxRegistry::getLang()->formatCurrency( $dPrice * $oCur->rate, $oCur);
                 } else {
                     $aName[0] .= $oObject->fprice;
                 }
@@ -1226,6 +1229,26 @@ class oxUtils extends oxSuperCfg
         return $oObject;
     }
 
+    /**
+     * Prepares price depending what options are used(show as net, brutto, etc.) for displaying
+     *
+     * @param $dPrice
+     * @param $dVat
+     *
+     * @return float
+     */
+    protected function _preparePrice( $dPrice, $dVat )
+    {
+        $blCalculationModeNetto = (bool) $this->getConfig()->getConfigParam('blShowNetPrice');
+
+        $blEnterNetPrice = $this->getConfig()->getConfigParam('blEnterNetPrice');
+        if ( $blCalculationModeNetto && !$blEnterNetPrice ) {
+            $dPrice = round( oxPrice::brutto2Netto( $dPrice, $dVat ), 2 );
+        } elseif ( !$blCalculationModeNetto && $blEnterNetPrice ) {
+            $dPrice = round( oxPrice::netto2Brutto( $dPrice, $dVat ), 2 );
+        }
+        return $dPrice;
+    }
     /**
      * returns manually set mime types
      *

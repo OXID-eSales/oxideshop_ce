@@ -187,6 +187,87 @@ class Unit_Core_oxutilsTest extends OxidTestCase
         $this->assertEquals($sShouldBeResult, oxUtils::getInstance()->getArrFldName($sTestString));
     }
 
+    public function optionsAndValuesProvider()
+    {
+        return array(
+            array( true, true, 1),
+            array( true, false, 1.2),
+            array( false, true, 1.2),
+            array( false, false, 1),
+        );
+    }
+
+    /**
+     * Tests how selection lists are outputted with show as net price option, and enter as net price option.
+     * Tests all 4 combination of both options.
+     *
+     * @dataProvider optionsAndValuesProvider
+     */
+    public function testValueCalculationBasedOnOptions( $blEnterNetPrice, $blShowNetPrice, $iVatModifier )
+    {
+        $myConfig = oxConfig::getInstance();
+        $oCurrency = $myConfig->getActShopCurrencyObject();
+
+        modConfig::getInstance()->setConfigParam( 'bl_perfLoadSelectLists', true );
+        modConfig::getInstance()->setConfigParam( 'bl_perfUseSelectlistPrice', true );
+
+        modConfig::getInstance()->setConfigParam( 'blEnterNetPrice', $blEnterNetPrice );
+        modConfig::getInstance()->setConfigParam( 'blShowNetPrice', $blShowNetPrice );
+
+        $sTestString = "one!P!99.5%__oneValue@@two!P!12,41__twoValue@@three!P!-5,99__threeValue@@Lagerort__Lager 1@@";
+        $aResult = oxUtils::getInstance()->assignValuesFromText( $sTestString, 20 );
+
+        $aShouldBe = array();
+        $oObject = new stdClass();
+        $oObject->price = '99.5';
+        $oObject->priceUnit = '%';
+        $oObject->fprice = '99.5%';
+        $oObject->name  = 'one +99.5%';
+        $oObject->value = 'oneValue';
+        $aShouldBe[] = $oObject;
+
+        $dPrice = str_replace( '.', ',', $this->_alterPrice( 12.41, $iVatModifier, $blShowNetPrice, $blEnterNetPrice ) );
+
+        $oObject = new stdClass();
+        $oObject->price  = '12.41';
+        $oObject->fprice = '12,41';
+        $oObject->priceUnit = 'abs';
+        $oObject->name  = "two +$dPrice " . $oCurrency->sign;
+        $oObject->value = 'twoValue';
+        $aShouldBe[] = $oObject;
+
+        $dPrice = str_replace( '.', ',', $this->_alterPrice( 5.99, $iVatModifier, $blShowNetPrice, $blEnterNetPrice ) );
+
+        $oObject = new stdClass();
+        $oObject->price  = '-5.99';
+        $oObject->fprice = '-5,99';
+        $oObject->priceUnit = 'abs';
+        $oObject->name  = "three -$dPrice " . $oCurrency->sign;
+        $oObject->value = 'threeValue';
+        $aShouldBe[] = $oObject;
+
+        $oObject = new stdClass();
+        $oObject->name  = 'Lagerort';
+        $oObject->value = 'Lager 1';
+        $aShouldBe[] = $oObject;
+
+        $this->assertEquals( $aShouldBe, $aResult );
+    }
+
+    /**
+     * Helper function to alter prices for checking correct vat prices
+     *
+     *
+     */
+    protected function _alterPrice( $dPrice, $iVatModifier, $blShowNetPrice, $blEnterNetPrice  )
+    {
+        if ( $blEnterNetPrice && !$blShowNetPrice ) {
+            $dPrice *= $iVatModifier;
+        } else {
+            $dPrice /= $iVatModifier;
+        }
+        return round( $dPrice, 2 );
+    }
     /**
      * Check of full version processor
      */

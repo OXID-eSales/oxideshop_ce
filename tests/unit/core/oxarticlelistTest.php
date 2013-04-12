@@ -19,7 +19,6 @@
  * @package   tests
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -2359,5 +2358,77 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
         $this->assertEquals( 30, (int) $oDb->getOne( $sQ, array( "_testProd1" ) ) );
         $this->assertEquals( 15, (int) $oDb->getOne( $sQ, array( "_testProd2" ) ) );
 
+    }
+
+    /**
+     * Test case for oxArticleList::updateUpcomingPrices()
+     * Checks oxvarminprice calculated correctly when one of childs is inactive
+     */
+    public function testUpdateUpcomingPrices_VarMinPriceWithInactiveChild()
+    {
+        $oArticle = new oxArticle();
+
+        $oArticle->setId( '_testParentArticle' );
+        $oArticle->oxarticles__oxactive = new oxField( 1, oxField::T_RAW );
+        $oArticle->oxarticles__oxstock = new oxField( 15, oxField::T_RAW );
+        $oArticle->oxarticles__oxprice = new oxField( 20, oxField::T_RAW );
+        $oArticle->save();
+
+        $oArticle->setId( '_testInactiveArticleChild' );
+        $oArticle->oxarticles__oxactive = new oxField( 0, oxField::T_RAW );
+        $oArticle->oxarticles__oxstock = new oxField( 15, oxField::T_RAW );
+        $oArticle->oxarticles__oxparentid = new oxField( '_testParentArticle' );
+        $oArticle->oxarticles__oxprice = new oxField( 9, oxField::T_RAW );
+        $oArticle->save();
+
+        $oArticle->setId( '_testActiveArticleChild' );
+        $oArticle->oxarticles__oxactive = new oxField( 1, oxField::T_RAW );
+        $oArticle->oxarticles__oxstock = new oxField( 15, oxField::T_RAW );
+        $oArticle->oxarticles__oxparentid = new oxField( '_testParentArticle' );
+        $oArticle->oxarticles__oxprice = new oxField( 10, oxField::T_RAW );
+        $oArticle->save();
+
+        $oArticleList = new oxArticleList();
+        $oArticleList->updateUpcomingPrices();
+
+        $sQ = "select oxvarminprice from oxarticles where oxid=?";
+        $iExpectedMinPrice = 10;
+        $this->assertEquals( $iExpectedMinPrice, (int) oxDb::getDB()->getOne( $sQ, array( "_testParentArticle" ) ) );
+    }
+
+    /**
+     * Test case for oxArticleList::updateUpcomingPrices()
+     * Checks oxvarmaxprice calculated correctly when one of childs is inactive
+     */
+    public function testUpdateUpcomingPrices_VarMaxPriceWithInactiveChild()
+    {
+        $oArticle = new oxArticle();
+
+        $oArticle->setId( '_testParentArticle' );
+        $oArticle->oxarticles__oxactive = new oxField( 1, oxField::T_RAW );
+        $oArticle->oxarticles__oxstock = new oxField( 15, oxField::T_RAW );
+        $oArticle->oxarticles__oxprice = new oxField( 20, oxField::T_RAW );
+        $oArticle->save();
+
+        $oArticle->setId( '_testInactiveArticleChild' );
+        $oArticle->oxarticles__oxactive = new oxField( 0, oxField::T_RAW );
+        $oArticle->oxarticles__oxstock = new oxField( 15, oxField::T_RAW );
+        $oArticle->oxarticles__oxparentid = new oxField( '_testParentArticle' );
+        $oArticle->oxarticles__oxprice = new oxField( 30, oxField::T_RAW );
+        $oArticle->save();
+
+        $oArticle->setId( '_testActiveArticleChild' );
+        $oArticle->oxarticles__oxactive = new oxField( 1, oxField::T_RAW );
+        $oArticle->oxarticles__oxstock = new oxField( 15, oxField::T_RAW );
+        $oArticle->oxarticles__oxparentid = new oxField( '_testParentArticle' );
+        $oArticle->oxarticles__oxprice = new oxField( 19, oxField::T_RAW );
+        $oArticle->save();
+
+        $oArticleList = new oxArticleList();
+        $oArticleList->updateUpcomingPrices();
+
+        $sQ = "select oxvarmaxprice from oxarticles where oxid=?";
+        $iExpectedMaxPrice = 19;
+        $this->assertEquals( $iExpectedMaxPrice, (int) oxDb::getDB()->getOne( $sQ, array( "_testParentArticle" ) ) );
     }
 }

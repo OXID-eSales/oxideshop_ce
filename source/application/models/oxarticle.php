@@ -1958,10 +1958,11 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
         // get base price
         $dBasePrice = $this->getBasePrice( $dAmount );
+
+        $dBasePrice = $this->_modifySelectListPrice( $dBasePrice, $aSelList );
         $dBasePrice = $this->_preparePrice( $dBasePrice, $this->getArticleVat(), $oBasket->isCalculationModeNetto() );
 
         // applying select list price
-        $dBasePrice = $this->_modifySelectListPrice( $dBasePrice, $aSelList );
 
         // setting price
         $oBasketPrice->setPrice( $dBasePrice );

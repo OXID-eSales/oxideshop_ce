@@ -473,38 +473,38 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->openShop();
         $this->loginInFrontend("birute_test@nfq.lt", "useruser");
         $this->searchFor("1001");
-        $this->selectVariant("selectlistsselector_searchList_1", 1, "selvar2 [EN] šÄßü?");
+        $this->selectVariant("selectlistsselector_searchList_1", 1, "selvar2 [EN] šÄßüл");
         $this->clickAndWait("toBasket");
-        $this->selectVariant("productSelections", 1, "selvar4 [EN] šÄßü? +2%", "Test product 1 [EN]");
+        $this->selectVariant("productSelections", 1, "selvar4 [EN] šÄßüл +2%", "Test product 1 [EN]");
         $this->clickAndWait("toBasket");
         $this->searchFor("1000");
         $this->clickAndWait("searchList_1");
         $this->assertTrue($this->isElementPresent("persparam[details]"),"persparam field should be visible");
         $this->clickAndWait("toBasket");
-        $this->type("persparam[details]", "test label šÄßü?");
+        $this->type("persparam[details]", "test label šÄßüл");
         $this->clickAndWait("toBasket");
 
         // Go to basket:check basket info; update product PersParam info and quantity;
         $this->openBasket();
-        $this->assertEquals("Test product 1 [EN] šÄßü?", $this->getText("//tr[@id='cartItem_1']/td[3]/div"));
-        $this->assertEquals("selvar2 [EN] šÄßü?", $this->getText("//div[@id='cartItemSelections_1']//span"));
-        $this->assertEquals("Test product 1 [EN] šÄßü?", $this->getText("//tr[@id='cartItem_2']/td[3]/div"));
-        $this->assertEquals("selvar4 [EN] šÄßü? +2%", $this->getText("//div[@id='cartItemSelections_2']//span"));
-        $this->assertEquals("Test product 0 [EN] šÄßü?", $this->getText("//tr[@id='cartItem_3']/td[3]/div"));
-        $this->assertEquals("Test product 0 [EN] šÄßü?", $this->getText("//tr[@id='cartItem_4']/td[3]/div"));
+        $this->assertEquals("Test product 1 [EN] šÄßüл", $this->getText("//tr[@id='cartItem_1']/td[3]/div"));
+        $this->assertEquals("selvar2 [EN] šÄßüл", $this->getText("//div[@id='cartItemSelections_1']//span"));
+        $this->assertEquals("Test product 1 [EN] šÄßüл", $this->getText("//tr[@id='cartItem_2']/td[3]/div"));
+        $this->assertEquals("selvar4 [EN] šÄßüл +2%", $this->getText("//div[@id='cartItemSelections_2']//span"));
+        $this->assertEquals("Test product 0 [EN] šÄßüл", $this->getText("//tr[@id='cartItem_3']/td[3]/div"));
+        $this->assertEquals("Test product 0 [EN] šÄßüл", $this->getText("//tr[@id='cartItem_4']/td[3]/div"));
         $this->assertEquals("", $this->getValue("//tr[@id='cartItem_3']/td[3]/p/input"));
-        $this->assertEquals("test label šÄßü?", $this->getValue("//tr[@id='cartItem_4']/td[3]/p/input"));
-        $this->selectVariant("cartItemSelections_1", 1, "selvar3 [EN] šÄßü? -2,00 €", "Grand Total");
+        $this->assertEquals("test label šÄßüл", $this->getValue("//tr[@id='cartItem_4']/td[3]/p/input"));
+        $this->selectVariant("cartItemSelections_1", 1, "selvar3 [EN] šÄßüл -2,00 €", "Grand Total");
         $this->type("am_3", "2");
-        $this->type("//tr[@id='cartItem_4']/td[3]/p/input", "test label šÄßü? 1");
+        $this->type("//tr[@id='cartItem_4']/td[3]/p/input", "test label šÄßüл 1");
         $this->clickAndWait("basketUpdate");
 
         // Check basket info after update
-        $this->assertEquals("selvar3 [EN] šÄßü? -2,00 €", $this->getText("//div[@id='cartItemSelections_1']//span"));
-        $this->assertEquals("selvar4 [EN] šÄßü? +2%", $this->getText("//div[@id='cartItemSelections_2']//span"));
+        $this->assertEquals("selvar3 [EN] šÄßüл -2,00 €", $this->getText("//div[@id='cartItemSelections_1']//span"));
+        $this->assertEquals("selvar4 [EN] šÄßüл +2%", $this->getText("//div[@id='cartItemSelections_2']//span"));
         $this->assertEquals("", $this->getValue("//tr[@id='cartItem_3']/td[3]/p/input"));
         $this->assertEquals("2", $this->getValue("am_3"));
-        $this->assertEquals("test label šÄßü? 1", $this->getValue("//tr[@id='cartItem_4']/td[3]/p/input"));
+        $this->assertEquals("test label šÄßüл 1", $this->getValue("//tr[@id='cartItem_4']/td[3]/p/input"));
         $this->assertEquals("1", $this->getValue("am_4"));
 
         // Checking if modified basket was saved
@@ -517,11 +517,11 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->openBasket();
         $this->type("am_2", "2");
         $this->clickAndWait("basketUpdate");
-        $this->assertEquals("selvar3 [EN] šÄßü? -2,00 €", $this->getText("//div[@id='cartItemSelections_3']//span"));
-        $this->assertEquals("selvar4 [EN] šÄßü? +2%", $this->getText("//div[@id='cartItemSelections_4']//span"));
+        $this->assertEquals("selvar3 [EN] šÄßüл -2,00 €", $this->getText("//div[@id='cartItemSelections_3']//span"));
+        $this->assertEquals("selvar4 [EN] šÄßüл +2%", $this->getText("//div[@id='cartItemSelections_4']//span"));
         $this->assertEquals("", $this->getValue("//tr[@id='cartItem_1']/td[3]/p/input"));
         $this->assertEquals("2", $this->getValue("am_1"));
-        $this->assertEquals("test label šÄßü? 1", $this->getValue("//tr[@id='cartItem_2']/td[3]/p/input"));
+        $this->assertEquals("test label šÄßüл 1", $this->getValue("//tr[@id='cartItem_2']/td[3]/p/input"));
         $this->assertEquals("1", $this->getValue("am_4"));
         $this->assertFalse($this->isElementPresent("cartItem_5"));
 
@@ -530,16 +530,16 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->clickAndWait("//button[text()='Continue to Next Step']");
         $this->click("payment_oxidcashondel");
         $this->clickAndWait("//button[text()='Continue to Next Step']");
-        $this->assertEquals("Test product 1 [EN] šÄßü?", $this->getText("//tr[@id='cartItem_3']/td[2]/div"));
-        $this->assertEquals("selvar3 [EN] šÄßü? -2,00 €", $this->getText("//div[@id='cartItemSelections_3']//span"));
+        $this->assertEquals("Test product 1 [EN] šÄßüл", $this->getText("//tr[@id='cartItem_3']/td[2]/div"));
+        $this->assertEquals("selvar3 [EN] šÄßüл -2,00 €", $this->getText("//div[@id='cartItemSelections_3']//span"));
         $this->assertFalse($this->isElementPresent("//div[@id='cartItemSelections_3']//ul"));
-        $this->assertEquals("Test product 1 [EN] šÄßü?", $this->getText("//tr[@id='cartItem_4']/td[2]/div"));
-        $this->assertEquals("selvar4 [EN] šÄßü? +2%", $this->getText("//div[@id='cartItemSelections_4']//span"));
+        $this->assertEquals("Test product 1 [EN] šÄßüл", $this->getText("//tr[@id='cartItem_4']/td[2]/div"));
+        $this->assertEquals("selvar4 [EN] šÄßüл +2%", $this->getText("//div[@id='cartItemSelections_4']//span"));
         $this->assertFalse($this->isElementPresent("//div[@id='cartItemSelections_4']//ul"));
-        $this->assertEquals("Test product 0 [EN] šÄßü?", $this->getText("//tr[@id='cartItem_1']/td[2]/div"));
-        $this->assertEquals("Test product 0 [EN] šÄßü?", $this->getText("//tr[@id='cartItem_2']/td[2]/div"));
+        $this->assertEquals("Test product 0 [EN] šÄßüл", $this->getText("//tr[@id='cartItem_1']/td[2]/div"));
+        $this->assertEquals("Test product 0 [EN] šÄßüл", $this->getText("//tr[@id='cartItem_2']/td[2]/div"));
         $this->assertFalse($this->isElementPresent("cartItem_5"));
-        $this->assertEquals("Label: test label šÄßü? 1", $this->clearString($this->getText("//tr[@id='cartItem_2']/td[2]/p")));
+        $this->assertEquals("Label: test label šÄßüл 1", $this->clearString($this->getText("//tr[@id='cartItem_2']/td[2]/p")));
         $this->assertEquals("379,40 €", $this->getText("basketGrandTotal"),"Grand total price chenged or did't displayed");
         $this->check("//form[@id='orderConfirmAgbTop']//input[@name='ord_agb' and @value='1']");
         $this->clickAndWait("//form[@id='orderConfirmAgbTop']//button");
@@ -547,20 +547,20 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
         //checking in Admin
         $this->loginAdmin("Administer Orders", "Orders");
         $this->openTab("link=12", "save");
-        $this->assertTrue($this->isTextPresent("Label: test label šÄßü? 1"));
+        $this->assertTrue($this->isTextPresent("Label: test label šÄßüл 1"));
         $this->assertEquals("2 *", $this->getText("//table[2]/tbody/tr/td[1]"));
         $this->assertEquals("Test product 0 [EN]", $this->getText("//td[3]"));
         $this->assertEquals("90,00 EUR", $this->getText("//td[5]"));
-        $this->assertTrue($this->isTextPresent("Label: test label šÄßü? 1"));
+        $this->assertTrue($this->isTextPresent("Label: test label šÄßüл 1"));
         $this->frame("list");
         $this->openTab("link=Products", "//input[@value='Update']");
         $this->assertEquals("2", $this->getValue("//tr[@id='art.2']/td[1]/input"));
-        $this->assertEquals("Label: test label šÄßü? 1", $this->getText("//tr[@id='art.2']/td[5]"));
+        $this->assertEquals("Label: test label šÄßüл 1", $this->getText("//tr[@id='art.2']/td[5]"));
         $this->assertEquals("45,00 EUR", $this->getText("//tr[@id='art.2']/td[7]"));
         $this->assertEquals("90,00 EUR", $this->getText("//tr[@id='art.2']/td[8]"));
         $this->type("//tr[@id='art.2']/td[1]/input", "1");
         $this->clickAndWait("//input[@value='Update']");
-        $this->assertEquals("Label: test label šÄßü? 1", $this->getText("//tr[@id='art.2']/td[5]"));
+        $this->assertEquals("Label: test label šÄßüл 1", $this->getText("//tr[@id='art.2']/td[5]"));
         $this->assertEquals("45,00 EUR", $this->getText("//tr[@id='art.2']/td[7]"));
         $this->assertEquals("45,00 EUR", $this->getText("//tr[@id='art.2']/td[8]"));
 

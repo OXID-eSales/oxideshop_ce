@@ -337,12 +337,5 @@ class shopSetUp extends oxidAdditionalSeleniumFunctions
         } catch (Exception $e) {
             $this->stopTesting("Failed to load shop frontend after setup was finished. ".$e->getMessage(), $e);
         }
-
-        try {
-            //dumping database for selenium tests
-            $this->dumpDB();
-        } catch (Exception $e) {
-            $this->stopTesting("Failed dumping db");
-        }
     }
 }

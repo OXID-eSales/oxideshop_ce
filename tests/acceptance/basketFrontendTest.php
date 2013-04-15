@@ -569,7 +569,7 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
 
         //Disabling option (Product can be customized) where product ID is `OXID` = '1000
         $aCategoryParams = array("oxisconfigurable" => 0);
-        $this->callShopSC("oxArticle", "save", "1000", $aCategoryParams);
+        $this->callShopSC("oxArticle", "save", "1000", $aCategoryParams, 1);
 
         //Check if persparam field is not available in shop after it was disabled
         $this->openShop();

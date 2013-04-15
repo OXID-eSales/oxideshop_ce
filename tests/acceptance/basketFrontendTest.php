@@ -38,7 +38,7 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
      * Basket flyout
      * @group navigation
      * @group order
-     * @gruop basketfrontend
+     * @group basketfrontend
      */
     public function testFrontendBasketFlyout()
     {
@@ -94,7 +94,7 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
      * Frontend: product is sold out by other user during order process.
      * testing if no fatal errors or exceptions are thrown
      * @group order
-     * @gruop basketfrontend
+     * @group basketfrontend
      */
     public function testFrontendOutOfStockOfflineProductDuringOrder()
     {
@@ -274,7 +274,7 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
      * @group navigation
      * @group user
      * @group order
-     * @gruop basketfrontend
+     * @group basketfrontend
      */
     public function testFrontendMinOrderSum()
     {
@@ -318,7 +318,7 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
     /**
      * Checking VAT displaying for all additional products in 1st order step
      * @group order
-     * @gruop basketfrontend
+     * @group basketfrontend
      */
     public function testFrontendVATOptions()
     {
@@ -365,7 +365,7 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
     /**
      * Vats for products (category, product and personal product vat)
      * @group vat
-     * @gruop basketfrontend
+     * @group basketfrontend
      */
     public function testFrontendVAT()
     {
@@ -458,16 +458,18 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
      * @group navigation
      * @group order
      * @group main
-     * @gruop basketfrontend
+     * @group basketfrontend
      */
     public function testFrontendPersParamSaveBasket()
     {
-       // active option (Product can be customized) where product ID is `OXID` = '1000
+        // Active option (Product can be customized) for product with ID 1000
         $aArticleParams = array("oxisconfigurable" => 1);
         $this->callShopSC("oxArticle", "save", "1000", $aArticleParams, 1);
 
-       // active config option (Don't save Shopping Carts of registered Users)
+        // Active config option (Don't save Shopping Carts of registered Users)
         $this->callShopSC("oxConfig", "saveShopConfVar", null, array("blPerfNoBasketSaving" => array("type" => "bool", "value" => '')));
+
+        // Go to shop and add to basket products with ID 1000 and 1001
         $this->openShop();
         $this->loginInFrontend("birute_test@nfq.lt", "useruser");
         $this->searchFor("1001");
@@ -477,12 +479,13 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->clickAndWait("toBasket");
         $this->searchFor("1000");
         $this->clickAndWait("searchList_1");
-        $this->assertTrue($this->isElementPresent("persparam[details]"));
+        $this->assertTrue($this->isElementPresent("persparam[details]"),"persparam field should be visible");
         $this->clickAndWait("toBasket");
         $this->type("persparam[details]", "test label šÄßüл");
         $this->clickAndWait("toBasket");
-        $this->openBasket();
 
+        // Go to basket:check basket info; update product PersParam info and quantity;
+        $this->openBasket();
         $this->assertEquals("Test product 1 [EN] šÄßüл", $this->getText("//tr[@id='cartItem_1']/td[3]/div"));
         $this->assertEquals("selvar2 [EN] šÄßüл", $this->getText("//div[@id='cartItemSelections_1']//span"));
         $this->assertEquals("Test product 1 [EN] šÄßüл", $this->getText("//tr[@id='cartItem_2']/td[3]/div"));
@@ -496,17 +499,21 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->type("//tr[@id='cartItem_4']/td[3]/p/input", "test label šÄßüл 1");
         $this->clickAndWait("basketUpdate");
 
+        // Check basket info after update
         $this->assertEquals("selvar3 [EN] šÄßüл -2,00 €", $this->getText("//div[@id='cartItemSelections_1']//span"));
         $this->assertEquals("selvar4 [EN] šÄßüл +2%", $this->getText("//div[@id='cartItemSelections_2']//span"));
         $this->assertEquals("", $this->getValue("//tr[@id='cartItem_3']/td[3]/p/input"));
         $this->assertEquals("2", $this->getValue("am_3"));
         $this->assertEquals("test label šÄßüл 1", $this->getValue("//tr[@id='cartItem_4']/td[3]/p/input"));
         $this->assertEquals("1", $this->getValue("am_4"));
-        //checking if this basket was saved
+
+        // Checking if modified basket was saved
         $this->openShop();
         $this->assertFalse($this->isElementPresent("//div[@id='miniBasket']/span"));
         $this->loginInFrontend("birute_test@nfq.lt", "useruser");
         $this->assertEquals("5", $this->getText("//div[@id='miniBasket']/span"));
+
+        // Open basket and modify it once again
         $this->openBasket();
         $this->type("am_2", "2");
         $this->clickAndWait("basketUpdate");
@@ -518,7 +525,7 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->assertEquals("1", $this->getValue("am_4"));
         $this->assertFalse($this->isElementPresent("cartItem_5"));
 
-        //submitting order
+        // Submitting order
         $this->clickAndWait("//button[text()='Continue to Next Step']");
         $this->clickAndWait("//button[text()='Continue to Next Step']");
         $this->click("payment_oxidcashondel");
@@ -556,19 +563,21 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->assertEquals("Label: test label šÄßüл 1", $this->getText("//tr[@id='art.2']/td[5]"));
         $this->assertEquals("45,00 EUR", $this->getText("//tr[@id='art.2']/td[7]"));
         $this->assertEquals("45,00 EUR", $this->getText("//tr[@id='art.2']/td[8]"));
-     //after recalculation fix sum total should be:
-       // $this->assertEquals("514,40", $this->getText("//table[@id='order.info']/tbody/tr[7]/td[2]"));
+
+        //After recalculation fix sum total should be:
         $this->assertEquals("336,42", $this->getText("//table[@id='order.info']/tbody/tr[8]/td[2]"));
 
-        //disabling option (Product can be customized) where product ID is `OXID` = '1000
-        $aCategoryParams = array("oxisconfigurable" => 0);
-        $this->callShopSC("oxArticle", "save", "1000", $aCategoryParams);
+        //Disabling option (Product can be customized) where product ID is `OXID` = '1000
+        $aArticleParams = array("oxisconfigurable" => 0);
+        $this->callShopSC("oxArticle", "save", "1000", $aArticleParams, 1);
 
+        //Check if persparam field is not available in shop after it was disabled
         $this->openShop();
         $this->searchFor("1000");
         $this->clickAndWait("//ul[@id='searchList']/li//a");
-        $this->assertFalse($this->isElementPresent("persparam[details]"));
+        $this->assertFalse($this->isElementPresent("persparam[details]"),"persparam field should not be visible");
     }
+
 
 
     /**
@@ -577,7 +586,7 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
      * @group navigation
      * @group user
      * @group order
-     * @gruop basketfrontend
+     * @group basketfrontend
      */
     public function testFrontendMyAccountOrdersHistory()
     {
@@ -639,7 +648,7 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
      * @group order
      * @group user
      * @group navigation
-     * @gruop basketfrontend
+     * @group basketfrontend
      */
     public function testFrontendOrderStep1Navigation()
     {
@@ -693,7 +702,7 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
     /**
      * Vouchers is disabled via performance options
      * @group navigation
-     * @gruop basketfrontend
+     * @group basketfrontend
      */
     public function testFrontendDisabledVouchers()
     {
@@ -710,7 +719,7 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
     /**
      * Vouchers for specific products and categories
      * @group navigation
-     * @gruop basketfrontend
+     * @group basketfrontend
      */
     public function testFrontendVouchersForSpecificCategoriesAndProducts()
     {
@@ -755,7 +764,7 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
      * @group order
      * @group user
      * @group navigation
-     * @gruop basketfrontend
+     * @group basketfrontend
      */
     public function testFrontendOrderStep1BuyingLimit()
     {
@@ -790,7 +799,7 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
     /**
      * Discounts for products (category, product and itm discounts)
      * @group discount
-     * @gruop basketfrontend
+     * @group basketfrontend
      */
     public function testFrontendDiscounts()
     {
@@ -853,7 +862,7 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
      * @group order
      * @group user
      * @group navigation
-     * @gruop basketfrontend
+     * @group basketfrontend
      */
     public function testFrontendOrderToOtherCountries()
     {
@@ -890,7 +899,7 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
      * @group order
      * @group user
      * @group navigation
-      * @gruop basketfrontend
+      * @group basketfrontend
      */
     public function testFrontendOrderStep2Options()
     {
@@ -941,7 +950,7 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
      * @group order
      * @group user
      * @group navigation
-     * @gruop basketfrontend
+     * @group basketfrontend
      */
     public function testFrontendOrderStep2And3()
     {
@@ -1019,7 +1028,7 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
      * @group order
      * @group user
      * @group navigation
-    * @gruop basketfrontend
+     * @group basketfrontend
      */
     public function testFrontendOrderStep4()
     {
@@ -1114,7 +1123,7 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
      * @group order
      * @group user
      * @group navigation
-     * @gruop basketfrontend
+     * @group basketfrontend
      */
     public function testFrontendOrderStep4and5()
     {
@@ -1173,7 +1182,7 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
      * Checking Performance options
      * option: Load "Customers who bought this product also purchased..."
      * @group navigation
-     * @gruop basketfrontend
+     * @group basketfrontend
      */
     public function testFrontendPerfOptionsAlsoBought()
     {
@@ -1245,7 +1254,7 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
      * @group order
      * @group user
      * @group navigation
-     * @gruop basketfrontend
+     * @group basketfrontend
      */
     public function testFrontendOrderGiftWrapping()
     {
@@ -1285,7 +1294,7 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
     /**
      * Gift wrapping is disabled via performance options
      * @group navigation
-     * @gruop basketfrontend
+     * @group basketfrontend
      */
     public function testFrontendDisabledGiftWrapping()
     {
@@ -1304,7 +1313,7 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
     /**
      * Checking VAT functionality, when it is calculated for Shipping country
      * @group navigation
-     * @gruop basketfrontend
+     * @group basketfrontend
      */
     public function testFrontendVatForShippingCountry()
     {
@@ -1401,7 +1410,7 @@ class Acceptance_basketFrontendTest extends oxidAdditionalSeleniumFunctions
     * @group order
     * @group user
     * @group navigation
-    * @gruop basketfrontend
+    * @group basketfrontend
     */
     public function testFrontendOrderStep4ChangedAddress()
     {

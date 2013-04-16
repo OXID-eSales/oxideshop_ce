@@ -102,7 +102,7 @@ class oxAdminDetails extends oxAdminView
                 // create a new instance of the wysiwygPro class:
                 $this->_oEditor = new wysiwygPro();
 
-                $sEditorUrl = "/core/{$sEditorPath}/";
+                $sEditorUrl = oxConfig::getInstance()->getConfigParam('sShopURL')."core/{$sEditorPath}/";
 
                 $this->_oEditor->editorURL = $sEditorUrl;
                 $this->_oEditor->urlFormat = 'preserve';

@@ -622,7 +622,7 @@ class oxOrderArticle extends oxBase implements oxIArticle
     {
         if ( $this->oxorderarticles__oxstorno->value == 0 ) {
             $myConfig = $this->getConfig();
-            $this->oxorderarticles__oxstorno->setValue( 1 );
+            $this->oxorderarticles__oxstorno = new oxField( 1 );
             if ( $this->save() ) {
                 $this->updateArticleStock( $this->oxorderarticles__oxamount->value, $myConfig->getConfigParam('blAllowNegativeStock') );
             }

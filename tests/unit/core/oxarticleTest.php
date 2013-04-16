@@ -355,13 +355,13 @@ class Unit_Core_oxarticleTest extends OxidTestCase
     }
 
     /**
-     * Test get price with given amount.
+     * Test get price with price modifier based on amount.
+     * Tests unit price with no price modifier and with 2 different modifiers
      *
      * @return null
      */
     public function testGetPriceWithGivenAmount()
     {
-        // assign scale price Amount 2-2 Price 11.95
         $oPrice2Prod = new oxBase();
         $oPrice2Prod->init( 'oxprice2article' );
         $oPrice2Prod->setId( '_testPrice2article' );
@@ -369,14 +369,25 @@ class Unit_Core_oxarticleTest extends OxidTestCase
         $oPrice2Prod->oxprice2article__oxartid    = new oxField( "1126" );
         $oPrice2Prod->oxprice2article__oxaddabs   = new oxField( 17 );
         $oPrice2Prod->oxprice2article__oxamount   = new oxField( 2 );
-        $oPrice2Prod->oxprice2article__oxamountto = new oxField( 2 );
+        $oPrice2Prod->oxprice2article__oxamountto = new oxField( 5 );
+        $oPrice2Prod->save();
+
+        $oPrice2Prod = new oxBase();
+        $oPrice2Prod->init( 'oxprice2article' );
+        $oPrice2Prod->setId( '_testPrice2article2' );
+        $oPrice2Prod->oxprice2article__oxshopid   = new oxField( oxConfig::getInstance()->getBaseShopId() );
+        $oPrice2Prod->oxprice2article__oxartid    = new oxField( "1126" );
+        $oPrice2Prod->oxprice2article__oxaddabs   = new oxField( 15 );
+        $oPrice2Prod->oxprice2article__oxamount   = new oxField( 6 );
+        $oPrice2Prod->oxprice2article__oxamountto = new oxField( 10 );
         $oPrice2Prod->save();
 
         $oProduct = new oxArticle();
         $oProduct->load( "1126" );
 
-        $this->assertEquals( 34, $oProduct->getPrice()->getBruttoPrice() );
-        $this->assertEquals( 17, $oProduct->getPrice( 2 )->getBruttoPrice() );
+        $this->assertEquals( 17, $oProduct->getPrice( 5 )->getBruttoPrice() );
+        $this->assertEquals( 15, $oProduct->getPrice( 8 )->getBruttoPrice() );
+        $this->assertEquals( 34, $oProduct->getPrice( 1 )->getBruttoPrice() );
     }
 
     /**

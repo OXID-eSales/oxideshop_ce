@@ -139,7 +139,7 @@ class AcceptanceEfire_webmilesTestBasic extends oxidAdditionalSeleniumFunctions
         $this->assertTrue($this->isElementPresent("where[oxorder][oxordernr]"));
         $this->clickAndConfirm("del.1");
         $this->assertTrue($this->isElementPresent("where[oxorder][oxordernr]"));
-        $this->assertFalse($this->isElementPresent("del.1"));
+        $this->assertFalse($this->isElementPresent("del.2"));
     }
 
 }

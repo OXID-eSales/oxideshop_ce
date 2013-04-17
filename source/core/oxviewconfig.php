@@ -1407,4 +1407,15 @@ class oxViewConfig extends oxSuperCfg
         return (bool) $this->getConfig()->getConfigParam( $sParamName );
     }
 
+    /**
+     * Returns active theme name
+     *
+     * @return string
+     */
+    public function getTheme()
+    {
+        $oTheme = new oxTheme();
+        return $oTheme->getActiveThemeId();
+    }
+
 }

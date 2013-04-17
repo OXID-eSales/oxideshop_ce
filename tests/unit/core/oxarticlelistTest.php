@@ -2362,9 +2362,9 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
 
     /**
      * Test case for oxArticleList::updateUpcomingPrices()
-     * Checks oxvarminprice calculated correctly when one of childs is inactive
+     * Checks oxvarminprice calculated correctly when one of children is inactive
      */
-    public function testUpdateUpcomingPrices_VarMinPriceWithInactiveChild()
+    public function testUpdateUpcomingPrices_VarMinPriceWithInactiveChildAndUpdateTimeIsTomorrow()
     {
         $oArticle = new oxArticle();
 
@@ -2386,10 +2386,12 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
         $oArticle->oxarticles__oxstock = new oxField( 15, oxField::T_RAW );
         $oArticle->oxarticles__oxparentid = new oxField( '_testParentArticle' );
         $oArticle->oxarticles__oxprice = new oxField( 10, oxField::T_RAW );
+        $oArticle->oxarticles__oxupdatepricetime = new oxField( date( 'Y-m-d H:i:s', time() + 86400 ) );
+        $oArticle->oxarticles__oxupdateprice = new oxField( 9 );
         $oArticle->save();
 
         $oArticleList = new oxArticleList();
-        $oArticleList->updateUpcomingPrices();
+        $oArticleList->updateUpcomingPrices( true );
 
         $sQ = "select oxvarminprice from oxarticles where oxid=?";
         $iExpectedMinPrice = 10;
@@ -2398,9 +2400,9 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
 
     /**
      * Test case for oxArticleList::updateUpcomingPrices()
-     * Checks oxvarmaxprice calculated correctly when one of childs is inactive
+     * Checks oxvarmaxprice calculated correctly when one of children is inactive
      */
-    public function testUpdateUpcomingPrices_VarMaxPriceWithInactiveChild()
+    public function testUpdateUpcomingPrices_VarMaxPriceWithInactiveChildAndUpdateTimeIsTomorrow()
     {
         $oArticle = new oxArticle();
 
@@ -2422,13 +2424,192 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
         $oArticle->oxarticles__oxstock = new oxField( 15, oxField::T_RAW );
         $oArticle->oxarticles__oxparentid = new oxField( '_testParentArticle' );
         $oArticle->oxarticles__oxprice = new oxField( 19, oxField::T_RAW );
+        $oArticle->oxarticles__oxupdatepricetime = new oxField( date( 'Y-m-d H:i:s', time() + 86400 ) );
+        $oArticle->oxarticles__oxupdateprice = new oxField( 20 );
         $oArticle->save();
 
         $oArticleList = new oxArticleList();
-        $oArticleList->updateUpcomingPrices();
+        $oArticleList->updateUpcomingPrices( true );
 
         $sQ = "select oxvarmaxprice from oxarticles where oxid=?";
         $iExpectedMaxPrice = 19;
         $this->assertEquals( $iExpectedMaxPrice, (int) oxDb::getDB()->getOne( $sQ, array( "_testParentArticle" ) ) );
+    }
+
+    /**
+     * Test case for oxArticleList::updateUpcomingPrices()
+     * Checks oxvarminprice calculated correctly when one of children is inactive and update time was yesterday
+     */
+    public function testUpdateUpcomingPrices_VarMinPriceWithInactiveChildAndUpdateTimeIsYesterday()
+    {
+        $oArticle = new oxArticle();
+
+        $oArticle->setId( '_testParentArticle' );
+        $oArticle->oxarticles__oxactive = new oxField( 1, oxField::T_RAW );
+        $oArticle->oxarticles__oxstock = new oxField( 15, oxField::T_RAW );
+        $oArticle->oxarticles__oxprice = new oxField( 20, oxField::T_RAW );
+        $oArticle->save();
+
+        $oArticle->setId( '_testInactiveArticleChild' );
+        $oArticle->oxarticles__oxactive = new oxField( 0, oxField::T_RAW );
+        $oArticle->oxarticles__oxstock = new oxField( 15, oxField::T_RAW );
+        $oArticle->oxarticles__oxparentid = new oxField( '_testParentArticle' );
+        $oArticle->oxarticles__oxprice = new oxField( 9, oxField::T_RAW );
+        $oArticle->save();
+
+        $oArticle->setId( '_testActiveArticleChild' );
+        $oArticle->oxarticles__oxactive = new oxField( 1, oxField::T_RAW );
+        $oArticle->oxarticles__oxstock = new oxField( 15, oxField::T_RAW );
+        $oArticle->oxarticles__oxparentid = new oxField( '_testParentArticle' );
+        $oArticle->oxarticles__oxprice = new oxField( 10, oxField::T_RAW );
+        $oArticle->oxarticles__oxupdatepricetime = new oxField( date( 'Y-m-d H:i:s', time() - 86400 ) );
+        $oArticle->oxarticles__oxupdateprice = new oxField( 9 );
+        $oArticle->save();
+
+        $oArticleList = new oxArticleList();
+        $oArticleList->updateUpcomingPrices( true );
+
+        $sQ = "select oxvarminprice from oxarticles where oxid=?";
+        $iExpectedMinPrice = 9;
+        $this->assertEquals( $iExpectedMinPrice, (int) oxDb::getDB()->getOne( $sQ, array( "_testParentArticle" ) ) );
+    }
+
+    /**
+     * Test case for oxArticleList::updateUpcomingPrices()
+     * Checks oxvarmaxprice calculated correctly when one of children is inactive and update time was yesterday
+     */
+    public function testUpdateUpcomingPrices_VarMaxPriceWithInactiveChildAndUpdateTimeIsYesterday()
+    {
+        $oArticle = new oxArticle();
+
+        $oArticle->setId( '_testParentArticle' );
+        $oArticle->oxarticles__oxactive = new oxField( 1, oxField::T_RAW );
+        $oArticle->oxarticles__oxstock = new oxField( 15, oxField::T_RAW );
+        $oArticle->oxarticles__oxprice = new oxField( 20, oxField::T_RAW );
+        $oArticle->save();
+
+        $oArticle->setId( '_testInactiveArticleChild' );
+        $oArticle->oxarticles__oxactive = new oxField( 0, oxField::T_RAW );
+        $oArticle->oxarticles__oxstock = new oxField( 15, oxField::T_RAW );
+        $oArticle->oxarticles__oxparentid = new oxField( '_testParentArticle' );
+        $oArticle->oxarticles__oxprice = new oxField( 30, oxField::T_RAW );
+        $oArticle->save();
+
+        $oArticle->setId( '_testActiveArticleChild' );
+        $oArticle->oxarticles__oxactive = new oxField( 1, oxField::T_RAW );
+        $oArticle->oxarticles__oxstock = new oxField( 15, oxField::T_RAW );
+        $oArticle->oxarticles__oxparentid = new oxField( '_testParentArticle' );
+        $oArticle->oxarticles__oxprice = new oxField( 19, oxField::T_RAW );
+        $oArticle->oxarticles__oxupdatepricetime = new oxField( date( 'Y-m-d H:i:s', time() - 86400 ) );
+        $oArticle->oxarticles__oxupdateprice = new oxField( 20 );
+        $oArticle->save();
+
+        $oArticleList = new oxArticleList();
+        $oArticleList->updateUpcomingPrices( true );
+
+        $sQ = "select oxvarmaxprice from oxarticles where oxid=?";
+        $iExpectedMaxPrice = 20;
+        $this->assertEquals( $iExpectedMaxPrice, (int) oxDb::getDB()->getOne( $sQ, array( "_testParentArticle" ) ) );
+    }
+
+    /**
+     * Test case for oxArticleList::updateUpcomingPrices()
+     * Checks oxvarminprice calculated correctly when there are no children and updatetime is tomorrow
+     */
+    public function testUpdateUpcomingPrices_VarMinPriceWithNoChildAndUpdateTimeIsTomorrow()
+    {
+        $oArticle = new oxArticle();
+
+        $oArticle->setId( '_testParentArticle' );
+        $oArticle->oxarticles__oxactive = new oxField( 1, oxField::T_RAW );
+        $oArticle->oxarticles__oxstock = new oxField( 15, oxField::T_RAW );
+        $oArticle->oxarticles__oxprice = new oxField( 20, oxField::T_RAW );
+        $oArticle->oxarticles__oxupdatepricetime = new oxField( date( 'Y-m-d H:i:s', time() + 86400 ) );
+        $oArticle->oxarticles__oxupdateprice = new oxField( 30 );
+        $oArticle->save();
+
+        $oArticleList = new oxArticleList();
+        $oArticleList->updateUpcomingPrices( true );
+
+        $sQ = "select oxvarminprice from oxarticles where oxid=?";
+        $iExpectedMaxPrice = 20;
+        $this->assertEquals( $iExpectedMaxPrice, (int) oxDb::getDB()->getOne( $sQ, array( "_testParentArticle" ) ) );
+    }
+
+    /**
+     * Test case for oxArticleList::updateUpcomingPrices()
+     * Checks oxvarminprice calculated correctly when there are no children and updatetime is yesterday
+     */
+    public function testUpdateUpcomingPrices_VarMinPriceWithNoChildAndUpdateTimeIsYesterday()
+    {
+        $oArticle = new oxArticle();
+
+        $oArticle->setId( '_testParentArticle' );
+        $oArticle->oxarticles__oxactive = new oxField( 1, oxField::T_RAW );
+        $oArticle->oxarticles__oxstock = new oxField( 15, oxField::T_RAW );
+        $oArticle->oxarticles__oxprice = new oxField( 20, oxField::T_RAW );
+        $oArticle->oxarticles__oxupdatepricetime = new oxField( date( 'Y-m-d H:i:s', time() - 86400 ) );
+        $oArticle->oxarticles__oxupdateprice = new oxField( 30 );
+        $oArticle->save();
+
+        $oArticleList = new oxArticleList();
+        $oArticleList->updateUpcomingPrices( true );
+
+        $sQ = "select oxvarminprice from oxarticles where oxid=?";
+        $iExpectedMaxPrice = 30;
+        $this->assertEquals( $iExpectedMaxPrice, (int) oxDb::getDB()->getOne( $sQ, array( "_testParentArticle" ) ) );
+    }
+
+    /**
+     * Test case for oxArticleList::updateUpcomingPrices()
+     * Checks oxvarmaxprice calculated correctly when there are no children
+     */
+    public function testUpdateUpcomingPrices_VarMaxPriceWithNoChildAndUpdateTimeIsTomorrow()
+    {
+        $oArticle = new oxArticle();
+
+        $oArticle->setId( '_testParentArticle' );
+        $oArticle->oxarticles__oxactive = new oxField( 1, oxField::T_RAW );
+        $oArticle->oxarticles__oxstock = new oxField( 15, oxField::T_RAW );
+        $oArticle->oxarticles__oxprice = new oxField( 21, oxField::T_RAW );
+        $oArticle->oxarticles__oxupdatepricetime = new oxField( date( 'Y-m-d H:i:s', time() + 86400 ) );
+        $oArticle->oxarticles__oxupdateprice = new oxField( 30 );
+        $oArticle->save();
+
+        $oArticleList = new oxArticleList();
+        $oArticleList->updateUpcomingPrices( true );
+
+        $sQ = "select oxvarmaxprice from oxarticles where oxid=?";
+        $iExpectedMaxPrice = 21;
+        $this->assertEquals( $iExpectedMaxPrice, (int) oxDb::getDB()->getOne( $sQ, array( "_testParentArticle" ) ) );
+    }
+
+    /**
+     * Test case for oxArticleList::updateUpcomingPrices()
+     * Checks oxvarminprice calculated correctly when there are no children and updatetime is yesterday
+     */
+    public function testUpdateUpcomingPrices_VarMaxPriceWithNoChildAndUpdateTimeIsYesterday()
+    {
+        $oArticle = new oxArticle();
+
+        $oArticle->setId( '_testParentArticle' );
+        $oArticle->oxarticles__oxactive = new oxField( 1, oxField::T_RAW );
+        $oArticle->oxarticles__oxstock = new oxField( 15, oxField::T_RAW );
+        $oArticle->oxarticles__oxprice = new oxField( 20, oxField::T_RAW );
+        $oArticle->oxarticles__oxupdatepricetime = new oxField( date( 'Y-m-d H:i:s', time() - 86400 ) );
+        $oArticle->oxarticles__oxupdateprice = new oxField( 30 );
+        $oArticle->save();
+
+        $oArticleList = new oxArticleList();
+        $oArticleList->updateUpcomingPrices( true );
+
+        $sQ = "select oxvarmaxprice from oxarticles where oxid=?";
+        $iExpectedMaxPrice = 30;
+        $this->assertEquals( $iExpectedMaxPrice, (int) oxDb::getDB()->getOne( $sQ, array( "_testParentArticle" ) ) );
+    }
+
+    protected function addChildArticles()
+    {
+
     }
 }

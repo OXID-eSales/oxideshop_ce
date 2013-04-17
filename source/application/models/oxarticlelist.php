@@ -960,9 +960,20 @@ class oxArticleList extends oxList
                     INNER JOIN `__oxprices` ON `__oxprices`.`oxid` = `oxarticles`.`oxid`
                   SET
                       `oxarticles`.`oxvarminprice` = `__oxprices`.`oxminprice`,
-                      `oxarticles`.`oxvarmaxprice` = `__oxprices`.`oxmaxprice";
-
+                      `oxarticles`.`oxvarmaxprice` = `__oxprices`.`oxmaxprice;";
             $blUpdated = $oDb->execute( $sQ );
+
+/*            $sQ = "UPDATE oxarticles
+                    LEFT JOIN oxarticles AS oxarticles_1
+                        ON oxarticles.oxid = oxarticles_1.oxparentid
+                    WHERE
+                      oxarticles_1.oxid IS NULL AND oxarticles.oxparentid = ''
+                                      SET
+                                          `oxarticles`.`oxvarminprice` = `oxarticles`.`oxprice`,
+                                          `oxarticles`.`oxvarmaxprice` = `oxarticles`.`oxprice`
+                                      WHERE `__oxparentprices`.`oxid` IS NULL;";
+            $blUpdated = $oDb->execute( $sQ );*/
+
             $blUpdated = $oDb->execute( "DROP TEMPORARY TABLE `__oxprices`" );
 
             // renew update time in case update is not forced

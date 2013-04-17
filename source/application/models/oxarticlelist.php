@@ -963,16 +963,13 @@ class oxArticleList extends oxList
                       `oxarticles`.`oxvarmaxprice` = `__oxprices`.`oxmaxprice;";
             $blUpdated = $oDb->execute( $sQ );
 
-/*            $sQ = "UPDATE oxarticles
-                    LEFT JOIN oxarticles AS oxarticles_1
-                        ON oxarticles.oxid = oxarticles_1.oxparentid
-                    WHERE
-                      oxarticles_1.oxid IS NULL AND oxarticles.oxparentid = ''
+            $sQ = "UPDATE oxarticles
+                    LEFT JOIN oxarticles AS oxarticles_1 ON oxarticles.oxid = oxarticles_1.oxparentid
                                       SET
                                           `oxarticles`.`oxvarminprice` = `oxarticles`.`oxprice`,
                                           `oxarticles`.`oxvarmaxprice` = `oxarticles`.`oxprice`
-                                      WHERE `__oxparentprices`.`oxid` IS NULL;";
-            $blUpdated = $oDb->execute( $sQ );*/
+                  WHERE oxarticles_1.oxid IS NULL AND oxarticles.oxparentid = ''";
+            $blUpdated = $oDb->execute( $sQ );
 
             $blUpdated = $oDb->execute( "DROP TEMPORARY TABLE `__oxprices`" );
 

@@ -115,7 +115,7 @@ function editThis( sID )
         <td class="listheader"><a href="javascript:top.oxid.admin.setSorting( document.forms.showlist, 'oxorderarticles', 'oxartnum', 'asc');document.forms.showlist.submit();" class="listheader">[{ oxmultilang ident="snporderlistoxartnum" }]</a></td>
         <td class="listheader"><a href="javascript:top.oxid.admin.setSorting( document.forms.showlist, '', 'oxorderamount', 'asc');document.forms.showlist.submit();" class="listheader">[{ oxmultilang ident="snporderlistsum" }]</a></td>
         <td class="listheader"><a href="javascript:top.oxid.admin.setSorting( document.forms.showlist, 'oxorderarticles', 'oxtitle', 'asc');document.forms.showlist.submit();" class="listheader">[{ oxmultilang ident="snporderlistoxtitle" }]</a></td>
-        <td class="listheader"><a href="javascript:top.oxid.admin.setSorting( document.forms.showlist, '', 'oxprice', 'asc');document.forms.showlist.submit();" class="listheader">[{ oxmultilang ident="price" }]</a></td>
+        <td class="listheader"><a href="javascript:top.oxid.admin.setSorting( document.forms.showlist, '', 'oxprice', 'asc');document.forms.showlist.submit();" class="listheader">[{ oxmultilang ident="SHOWLIST_SUM" }]</a></td>
     [{/block}]
 </tr>
 

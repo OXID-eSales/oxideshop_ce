@@ -2518,24 +2518,24 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     }
 
     /**
-     * oxViewconfig::getTheme() test case for main theme
+     * oxViewconfig::getActiveTheme() test case for main theme
      */
-    public function testGetTheme_mainTheme()
+    public function testGetActiveTheme_mainTheme()
     {
         $oViewConf = new oxViewConfig();
         $oViewConf->getConfig()->setConfigParam( "sTheme", "testTheme" );
-        $this->assertEquals( 'testTheme', $oViewConf->getTheme() );
+        $this->assertEquals( 'testTheme', $oViewConf->getActiveTheme() );
     }
 
     /**
-     * oxViewconfig::getTheme() test case for custom theme
+     * oxViewconfig::getActiveTheme() test case for custom theme
      */
-    public function testGetTheme_customTheme()
+    public function testGetActiveTheme_customTheme()
     {
         $oViewConf = new oxViewConfig();
         $oViewConf->getConfig()->setConfigParam( "sCustomTheme", "testCustomTheme" );
         $oViewConf->getConfig()->setConfigParam( "sTheme", "testTheme" );
-        $this->assertEquals( 'testCustomTheme', $oViewConf->getTheme() );
+        $this->assertEquals( 'testCustomTheme', $oViewConf->getActiveTheme() );
     }
 
 }

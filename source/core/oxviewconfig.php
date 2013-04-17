@@ -65,6 +65,13 @@ class oxViewConfig extends oxSuperCfg
     protected $_oCountryList = null;
 
     /**
+     * Active theme name
+     *
+     * @var null
+     */
+    protected $_sActiveTheme = null;
+
+    /**
      * Returns shops home link
      *
      * @return string
@@ -1410,10 +1417,13 @@ class oxViewConfig extends oxSuperCfg
      *
      * @return string
      */
-    public function getTheme()
+    public function getActiveTheme()
     {
+        if ( $this->_sActiveTheme === null ) {
         $oTheme = new oxTheme();
-        return $oTheme->getActiveThemeId();
+            $this->_sActiveTheme = $oTheme->getActiveThemeId();
+        }
+        return $this->_sActiveTheme;
     }
 
 }

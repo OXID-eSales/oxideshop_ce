@@ -258,6 +258,20 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
     }
 
     /**
+     * Test get text editor - uses admin https url if defined.
+     *
+     * @return null
+     */
+    public function testGetTextEditor_httpUrl()
+    {
+
+        $oAdminDetails = new oxadmindetails();
+        $oEditor = $oAdminDetails->UNITgetTextEditor( 10, 10, new oxarticle, 'oxarticles__oxtitle', 'basket.tpl.css' );
+
+            $this->assertFalse( $oEditor );
+
+    }
+    /**
      *  Test updating object folder parameters
      *
      *  @return null

@@ -996,9 +996,9 @@ class oxidAdditionalSeleniumFunctions extends PHPUnit_Extensions_SeleniumTestCas
 
 
         // Pass shopId as to change in different shop we need to make it active.
-        if ($sShopId) {
+        if ($sShopId && oxSHOPID != 'oxbaseshop') {
             $sParams .= "&shp=".$sShopId;
-        } else {
+        } elseif (isSUBSHOP) {
             $sParams .= "&shp=".oxSHOPID;
         }
 

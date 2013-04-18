@@ -85,7 +85,7 @@ $oxConfig = oxConfig::getInstance();
 
 // Get active shop as it might be different if subshops are active.
 // It is impossible to change data in different shops while they are not active.
-$sActiveShopId = $oxConfig->getRequestParameter('shp');
+$sActiveShopId = $oxConfig->getParameter('shp');
 if ($sActiveShopId ) {
     $oxConfig->setShopId($sActiveShopId);
 }

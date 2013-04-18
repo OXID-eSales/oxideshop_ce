@@ -2393,7 +2393,7 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
         $oArticle->oxarticles__oxstock = new oxField( 15, oxField::T_RAW );
         $oArticle->oxarticles__oxparentid = new oxField( '_testParentArticle' );
         $oArticle->oxarticles__oxprice = new oxField( 10, oxField::T_RAW );
-        $sTomorrow = date( 'Y-m-d H:i:s', time() + 86400 );
+        $sTomorrow = date( "Y-m-d H:i:s", oxRegistry::get("oxUtilsDate")->getTime() + 86400 );
         $oArticle->oxarticles__oxupdatepricetime = new oxField( $sTomorrow );
         $oArticle->oxarticles__oxupdateprice = new oxField( 9 );
         $oArticle->save();
@@ -2439,7 +2439,7 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
         $oArticle->oxarticles__oxstock = new oxField( 15, oxField::T_RAW );
         $oArticle->oxarticles__oxparentid = new oxField( '_testParentArticle' );
         $oArticle->oxarticles__oxprice = new oxField( 19, oxField::T_RAW );
-        $sTomorrow = date( 'Y-m-d H:i:s', time() + 86400 );
+        $sTomorrow = date( "Y-m-d H:i:s", oxRegistry::get("oxUtilsDate")->getTime() + 86400 );
         $oArticle->oxarticles__oxupdatepricetime = new oxField( $sTomorrow );
         $oArticle->oxarticles__oxupdateprice = new oxField( 20 );
         $oArticle->save();
@@ -2485,7 +2485,7 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
         $oArticle->oxarticles__oxstock = new oxField( 15, oxField::T_RAW );
         $oArticle->oxarticles__oxparentid = new oxField( '_testParentArticle' );
         $oArticle->oxarticles__oxprice = new oxField( 10, oxField::T_RAW );
-        $sYesterday = date( 'Y-m-d H:i:s', time() - 86400 );
+        $sYesterday = date( "Y-m-d H:i:s", oxRegistry::get("oxUtilsDate")->getTime() - 86400 );
         $oArticle->oxarticles__oxupdatepricetime = new oxField( $sYesterday );
         $oArticle->oxarticles__oxupdateprice = new oxField( 9 );
         $oArticle->save();
@@ -2531,7 +2531,7 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
         $oArticle->oxarticles__oxstock = new oxField( 15, oxField::T_RAW );
         $oArticle->oxarticles__oxparentid = new oxField( '_testParentArticle' );
         $oArticle->oxarticles__oxprice = new oxField( 19, oxField::T_RAW );
-        $sYesterday = date( 'Y-m-d H:i:s', time() - 86400 );
+        $sYesterday = date( "Y-m-d H:i:s", oxRegistry::get("oxUtilsDate")->getTime() - 86400 );
         $oArticle->oxarticles__oxupdatepricetime = new oxField( $sYesterday );
         $oArticle->oxarticles__oxupdateprice = new oxField( 20 );
         $oArticle->save();
@@ -2556,7 +2556,7 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
         $oArticle->oxarticles__oxactive = new oxField( 1, oxField::T_RAW );
         $oArticle->oxarticles__oxstock = new oxField( 15, oxField::T_RAW );
         $oArticle->oxarticles__oxprice = new oxField( 20, oxField::T_RAW );
-        $sTomorrow = date( 'Y-m-d H:i:s', time() + 86400 );
+        $sTomorrow = date( "Y-m-d H:i:s", oxRegistry::get("oxUtilsDate")->getTime() + 86400 );
         $oArticle->oxarticles__oxupdatepricetime = new oxField( $sTomorrow );
         $oArticle->oxarticles__oxupdateprice = new oxField( 30 );
         $oArticle->save();
@@ -2581,7 +2581,7 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
         $oArticle->oxarticles__oxactive = new oxField( 1, oxField::T_RAW );
         $oArticle->oxarticles__oxstock = new oxField( 15, oxField::T_RAW );
         $oArticle->oxarticles__oxprice = new oxField( 20, oxField::T_RAW );
-        $sYesterday = date( 'Y-m-d H:i:s', time() - 86400 );
+        $sYesterday = date( "Y-m-d H:i:s", oxRegistry::get("oxUtilsDate")->getTime() - 86400 );
         $oArticle->oxarticles__oxupdatepricetime = new oxField( $sYesterday );
         $oArticle->oxarticles__oxupdateprice = new oxField( 30 );
         $oArticle->save();
@@ -2606,7 +2606,7 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
         $oArticle->oxarticles__oxactive = new oxField( 1, oxField::T_RAW );
         $oArticle->oxarticles__oxstock = new oxField( 15, oxField::T_RAW );
         $oArticle->oxarticles__oxprice = new oxField( 21, oxField::T_RAW );
-        $sTomorrow = date( 'Y-m-d H:i:s', time() + 86400 );
+        $sTomorrow = date( "Y-m-d H:i:s", oxRegistry::get("oxUtilsDate")->getTime() + 86400 );
         $oArticle->oxarticles__oxupdatepricetime = new oxField( $sTomorrow );
         $oArticle->oxarticles__oxupdateprice = new oxField( 30 );
         $oArticle->save();
@@ -2631,7 +2631,7 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
         $oArticle->oxarticles__oxactive = new oxField( 1, oxField::T_RAW );
         $oArticle->oxarticles__oxstock = new oxField( 15, oxField::T_RAW );
         $oArticle->oxarticles__oxprice = new oxField( 20, oxField::T_RAW );
-        $sYesterday = date( 'Y-m-d H:i:s', time() - 86400 );
+        $sYesterday = date( "Y-m-d H:i:s", oxRegistry::get("oxUtilsDate")->getTime() - 86400 );
         $oArticle->oxarticles__oxupdatepricetime = new oxField( $sYesterday );
         $oArticle->oxarticles__oxupdateprice = new oxField( 30 );
         $oArticle->save();

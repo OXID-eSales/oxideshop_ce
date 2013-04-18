@@ -2381,6 +2381,13 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
         $oArticle->oxarticles__oxprice = new oxField( 9, oxField::T_RAW );
         $oArticle->save();
 
+        $oArticle->setId( '_testArticleChildPriceInheritedFromParent' );
+        $oArticle->oxarticles__oxactive = new oxField( 1, oxField::T_RAW );
+        $oArticle->oxarticles__oxstock = new oxField( 15, oxField::T_RAW );
+        $oArticle->oxarticles__oxparentid = new oxField( '_testParentArticle' );
+        $oArticle->oxarticles__oxprice = new oxField( 0, oxField::T_RAW );
+        $oArticle->save();
+
         $oArticle->setId( '_testActiveArticleChild' );
         $oArticle->oxarticles__oxactive = new oxField( 1, oxField::T_RAW );
         $oArticle->oxarticles__oxstock = new oxField( 15, oxField::T_RAW );
@@ -2418,6 +2425,13 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
         $oArticle->oxarticles__oxstock = new oxField( 15, oxField::T_RAW );
         $oArticle->oxarticles__oxparentid = new oxField( '_testParentArticle' );
         $oArticle->oxarticles__oxprice = new oxField( 30, oxField::T_RAW );
+        $oArticle->save();
+
+        $oArticle->setId( '_testArticleChildPriceInheritedFromParent' );
+        $oArticle->oxarticles__oxactive = new oxField( 1, oxField::T_RAW );
+        $oArticle->oxarticles__oxstock = new oxField( 15, oxField::T_RAW );
+        $oArticle->oxarticles__oxparentid = new oxField( '_testParentArticle' );
+        $oArticle->oxarticles__oxprice = new oxField( 0, oxField::T_RAW );
         $oArticle->save();
 
         $oArticle->setId( '_testActiveArticleChild' );
@@ -2459,6 +2473,13 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
         $oArticle->oxarticles__oxprice = new oxField( 9, oxField::T_RAW );
         $oArticle->save();
 
+        $oArticle->setId( '_testArticleChildPriceInheritedFromParent' );
+        $oArticle->oxarticles__oxactive = new oxField( 1, oxField::T_RAW );
+        $oArticle->oxarticles__oxstock = new oxField( 15, oxField::T_RAW );
+        $oArticle->oxarticles__oxparentid = new oxField( '_testParentArticle' );
+        $oArticle->oxarticles__oxprice = new oxField( 0, oxField::T_RAW );
+        $oArticle->save();
+
         $oArticle->setId( '_testActiveArticleChild' );
         $oArticle->oxarticles__oxactive = new oxField( 1, oxField::T_RAW );
         $oArticle->oxarticles__oxstock = new oxField( 15, oxField::T_RAW );
@@ -2496,6 +2517,13 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
         $oArticle->oxarticles__oxstock = new oxField( 15, oxField::T_RAW );
         $oArticle->oxarticles__oxparentid = new oxField( '_testParentArticle' );
         $oArticle->oxarticles__oxprice = new oxField( 30, oxField::T_RAW );
+        $oArticle->save();
+
+        $oArticle->setId( '_testArticleChildPriceInheritedFromParent' );
+        $oArticle->oxarticles__oxactive = new oxField( 1, oxField::T_RAW );
+        $oArticle->oxarticles__oxstock = new oxField( 15, oxField::T_RAW );
+        $oArticle->oxarticles__oxparentid = new oxField( '_testParentArticle' );
+        $oArticle->oxarticles__oxprice = new oxField( 0, oxField::T_RAW );
         $oArticle->save();
 
         $oArticle->setId( '_testActiveArticleChild' );

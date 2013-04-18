@@ -952,7 +952,7 @@ class oxArticleList extends oxList
                     PRIMARY KEY ( `oxid` )
                   ) ENGINE=MYISAM
                   SELECT `oxparentid` AS `oxid`, MIN(`oxprice`) AS `oxminprice`, MAX(`oxprice`) AS `oxmaxprice`
-                      FROM `oxarticles` WHERE `oxparentid` <> '' AND ". $this->getBaseObject()->getSqlActiveSnippet( true ) ." GROUP BY `oxparentid` ";
+                      FROM `oxarticles` WHERE `oxparentid` <> '' AND `oxprice` <> 0 AND ". $this->getBaseObject()->getSqlActiveSnippet( true ) ." GROUP BY `oxparentid` ";
 
                 $blUpdated = $oDb->execute( $sQ );
 
@@ -964,6 +964,7 @@ class oxArticleList extends oxList
 
             $blUpdated = $oDb->execute( $sQ );
 
+            // updates oxvarmin and oxvarmax fields from oxartciles with no children and no parents
             $sQ = "UPDATE `oxarticles`
                     LEFT JOIN `oxarticles` AS `oxarticles_1` ON `oxarticles`.`oxid` = `oxarticles_1`.`oxparentid`
                                       SET

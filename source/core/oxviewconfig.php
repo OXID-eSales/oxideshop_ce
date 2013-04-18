@@ -19,7 +19,6 @@
  * @package   views
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -1420,7 +1419,7 @@ class oxViewConfig extends oxSuperCfg
     public function getActiveTheme()
     {
         if ( $this->_sActiveTheme === null ) {
-        $oTheme = new oxTheme();
+            $oTheme = oxNew( 'oxTheme' );
             $this->_sActiveTheme = $oTheme->getActiveThemeId();
         }
         return $this->_sActiveTheme;

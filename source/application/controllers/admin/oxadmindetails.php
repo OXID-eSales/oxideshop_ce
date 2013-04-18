@@ -327,17 +327,15 @@ class oxAdminDetails extends oxAdminView
 
     /**
      * Function creates category tree for select list used in "Category main", "Article extend" etc.
-    * Returns ID of selected category if available
      *
      * @param string $sTplVarName     name of template variable where is stored category tree
-    * @param string $sSelectedCatId  ID of category witch was selected in select list
      * @param string $sEditCatId      ID of category witch we are editing
      * @param bool   $blForceNonCache Set to true to disable caching
      * @param int    $iTreeShopId     tree shop id
      *
      * @return string
      */
-    protected function _getCategoryTree( $sTplVarName, $sSelectedCatId, $sEditCatId = '', $blForceNonCache = false, $iTreeShopId = null )
+    protected function _createCategoryTree( $sTplVarName, $sEditCatId = '', $blForceNonCache = false, $iTreeShopId = null )
     {
         // caching category tree, to load it once, not many times
         if ( !isset( $this->oCatTree ) || $blForceNonCache ) {
@@ -363,6 +361,28 @@ class oxAdminDetails extends oxAdminView
         $oRoot->oxcategories__oxtitle = new oxField('--');
 
         $oCatTree->assign( array_merge( array( '' => $oRoot ), $oCatTree->getArray() ) );
+
+        // passing to view
+        $this->_aViewData[$sTplVarName] = $oCatTree;
+
+        return $oCatTree;
+    }
+
+    /**
+    * Function creates category tree for select list used in "Category main", "Article extend" etc.
+    * Returns ID of selected category if available
+    *
+    * @param string $sTplVarName     name of template variable where is stored category tree
+    * @param string $sSelectedCatId  ID of category witch was selected in select list
+    * @param string $sEditCatId      ID of category witch we are editing
+    * @param bool   $blForceNonCache Set to true to disable caching
+    * @param int    $iTreeShopId     tree shop id
+    *
+    * @return string
+    */
+    protected function _getCategoryTree( $sTplVarName, $sSelectedCatId, $sEditCatId = '', $blForceNonCache = false, $iTreeShopId = null )
+    {
+        $oCatTree = $this->_createCategoryTree($sTplVarName, $sEditCatId, $blForceNonCache, $iTreeShopId);
 
         // mark selected
         if ( $sSelectedCatId ) {

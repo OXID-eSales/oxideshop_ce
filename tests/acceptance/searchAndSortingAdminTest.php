@@ -2789,7 +2789,7 @@ class Acceptance_searchAndSortingAdminTest extends oxidAdditionalSeleniumFunctio
             $this->assertEquals("19.80", $this->getText("//tr[@id='row.1']/td[5]"));
             $this->assertEquals("32.00", $this->getText("//tr[@id='row.2']/td[5]"));
             $this->assertEquals("4.50", $this->getText("//tr[@id='row.3']/td[5]"));
-            $this->clickAndWait("link=Price");
+            $this->clickAndWait("link=Sum");
             $this->assertEquals("4.50", $this->getText("//tr[@id='row.7']/td[5]"));
             $this->assertEquals("19.80", $this->getText("//tr[@id='row.8']/td[5]"));
             $this->assertEquals("32.00", $this->getText("//tr[@id='row.9']/td[5]"));

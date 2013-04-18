@@ -876,9 +876,9 @@ class Acceptance_myAccountFrontendTest extends oxidAdditionalSeleniumFunctions
     public function testFrontendListmaniaInfo()
     {
         $aWrappingParams = array("OXTYPE" => 'oxrecommlist');
-        $this->callShopSC("oxReview", "delete", $sOxid ="testrecomreview" , $aWrappingParams);
+        $this->callShopSC("oxReview", "delete", $sOxid ="testrecomreview" , $aWrappingParams,1);
         $aRatingParams = array("OXTYPE" => 'oxrecommlist');
-        $this->callShopSC("oxRating", "delete", $sOxid ="testrecomrating" , $aRatingParams);
+        $this->callShopSC("oxRating", "delete", $sOxid ="testrecomrating" , $aRatingParams,1);
         $this->openShop();
         $this->loginInFrontend("birute_test@nfq.lt", "useruser");
         //checking small listmania box

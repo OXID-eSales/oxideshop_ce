@@ -155,9 +155,9 @@ class Acceptance_privateSalesTest extends oxidAdditionalSeleniumFunctions
     public function testPrivateShoppingBasketExpiration()
     {
         //products are offline, if bought out
-        $this->callShopSC("oxArticle", "save", "1000", array("oxstock" => 2, "oxstockflag" => 2));
+        $this->callShopSC("oxArticle", "save", "1000", array("oxstock" => 2, "oxstockflag" => 2),1);
 
-        //enabling functionality
+        //enabling functionality to set basket expiration for 20 sek.
         $this->loginAdmin("Master Settings", "Core Settings");
         $this->openTab("link=Settings");
         $this->click("link=Private Sales");
@@ -180,8 +180,8 @@ class Acceptance_privateSalesTest extends oxidAdditionalSeleniumFunctions
         $this->searchFor("1000");
         $this->assertEquals("1 Hits for \"1000\"", $this->getHeadingText("//h1"));
         $this->assertFalse($this->isTextPresent("Expires in:"));
-
         $this->selectDropDown("viewOptions", "Line");
+
         //adding product to basket
         $this->clickAndWait("//ul[@id='searchList']/li//button");
         $this->assertEquals("1", $this->getText("//div[@id='miniBasket']/span"));
@@ -203,6 +203,7 @@ class Acceptance_privateSalesTest extends oxidAdditionalSeleniumFunctions
         $this->assertFalse($this->isTextPresent("Expires in:"));
         $this->assertTrue($this->isTextPresent("1 Hits for \"1000\""));
         $this->assertEquals("You are here: / Search", $this->getText("breadCrumb"));
+
         //adding to basket again and finishing order
         $this->assertTrue($this->isElementPresent("//ul[@id='searchList']/li//button"));
         $this->clickAndWait("//ul[@id='searchList']/li//button");
@@ -221,9 +222,7 @@ class Acceptance_privateSalesTest extends oxidAdditionalSeleniumFunctions
         $this->clickAndWait("//form[@id='orderConfirmAgbTop']//button");
         $this->assertEquals("You are here: / Order Completed", $this->getText("breadCrumb"));
         $this->clickAndWait("link=Home");
-        // $this->assertEquals("Kuyichi leather belt JEVER", $this->getText("//a[@id='titleBargain_1']"));
         $this->assertFalse($this->isElementPresent("//ul[@id='newItems']//input[@name='aid' and @value='1000']"));
-
     }
 
     /**

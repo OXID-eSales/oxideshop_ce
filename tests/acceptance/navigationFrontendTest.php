@@ -1007,7 +1007,7 @@ class Acceptance_navigationFrontendTest extends oxidAdditionalSeleniumFunctions
         //testing #1582
 //        $this->executeSql("UPDATE `oxcategories` SET `OXACTIVE`='0', `OXACTIVE_1`='0' WHERE `OXID` = 'testcategory0';");
         $aCategoryParams = array("oxactive" => 0, "oxactive_1" => 0);
-        $this->callShopSC("oxCategory", "save", "testcategory0", $aCategoryParams);
+        $this->callShopSC("oxCategory", "save", "testcategory0", $aCategoryParams,1);
 
         //category is inactive
         $this->clickAndWait("link=Home");
@@ -1657,10 +1657,13 @@ class Acceptance_navigationFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->openShop();
         $this->assertEquals("50,00 € *", $this->getText("//ul[@id='newItems']/li[1]//span[@class='price']"));
         $this->assertEquals("50,00 €", $this->getText("//div[@id='topBox']/ul/li[2]//strong"));
-        $this->callShopSC("oxConfig", "saveShopConfVar", null, array("bl_perfShowActionCatArticleCnt" => array("type" => "bool", "value" => true)));
-        $this->callShopSC("oxConfig", "saveShopConfVar", null, array("bl_perfLoadDelivery" => array("type" => "bool", "value" => false)));
-        $this->callShopSC("oxConfig", "saveShopConfVar", null, array("bl_perfLoadPriceForAddList" => array("type" => "bool", "value" => false)));
 
+        // option -> performance-> "Display Number of contained Products behind Category Names"
+        $this->callShopSC("oxConfig", "saveShopConfVar", null, array("bl_perfShowActionCatArticleCnt" => array("type" => "bool", "value" => true)));
+        // option -> performance-> "Calculate Shipping Costs"
+        $this->callShopSC("oxConfig", "saveShopConfVar", null, array("bl_perfLoadDelivery" => array("type" => "bool", "value" => false)));
+        // option ->performance -> " Show Prices in "Top of the Shop" and "Just arrived!" "
+        $this->callShopSC("oxConfig", "saveShopConfVar", null, array("bl_perfLoadPriceForAddList" => array("type" => "bool", "value" => false)));
         $this->openShop();
         $this->assertFalse($this->isElementPresent("//ul[@id='newItems']/li[1]//strong[text()='50,00 € *']"));
         $this->assertFalse($this->isElementPresent("//div[@id='topBox']/ul/li[1]//strong[text()='50,00 €']"));
@@ -1679,11 +1682,17 @@ class Acceptance_navigationFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->selectAndWait("sShipSet", "label=Example Set1: UPS 48 hours");
         $this->assertFalse($this->isElementPresent("shipSetCost"));
 
+        //option -> performance->"Activate user Reviews and Ratings"
         $this->callShopSC("oxConfig", "saveShopConfVar", null, array("bl_perfLoadReviews" => array("type" => "bool", "value" => "false")));
+        //option -> performance->"Calculate Product Price"
         $this->callShopSC("oxConfig", "saveShopConfVar", null, array("bl_perfLoadPrice" => array("type" => "bool", "value" => "false")));
+        //option -> performance->"Load similar Products"
         $this->callShopSC("oxConfig", "saveShopConfVar", null, array("bl_perfLoadSimilar" => array("type" => "bool", "value" => "false")));
+        //option -> performance->" 	Load Crossselling "
         $this->callShopSC("oxConfig", "saveShopConfVar", null, array("bl_perfLoadCrossselling" => array("type" => "bool", "value" => "false")));
+        //option -> performance->"Load Accessories "
         $this->callShopSC("oxConfig", "saveShopConfVar", null, array("bl_perfLoadAccessoires" => array("type" => "bool", "value" => "false")));
+        //theme option-> "Use compare list"
         $this->callShopSC("oxConfig", "saveShopConfVar", null, array("bl_showCompareList" => array("type" => "bool", "value" => "false", "module" => "theme:azure")));
 
         $this->openShop();
@@ -1696,20 +1705,20 @@ class Acceptance_navigationFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->assertFalse($this->isElementPresent("similar"));
         $this->assertFalse($this->isElementPresent("cross"));
         $this->assertFalse($this->isElementPresent("accessories"));
-        //$this->loginInFrontend("birute_test@nfq.lt", "useruser");
         $this->click("productLinks");
         $this->waitForItemAppear("suggest");
         $this->assertFalse($this->isElementPresent("addToCompare"));
         $this->clickAndWait("//dl[@id='footerServices']//a[text()='Account']");
         $this->assertFalse($this->isElementPresent("link=My Product Comparison"));
 
+        // option -> performance->"Load Promotions"
         $this->callShopSC("oxConfig", "saveShopConfVar", null, array("bl_perfLoadAktion" => array("type" => "bool", "value" => "false")));
+        //option -> performance->" Display Currencies"
         $this->callShopSC("oxConfig", "saveShopConfVar", null, array("bl_perfLoadCurrency" => array("type" => "bool", "value" => "false")));
+        //option -> performance->" Display Languages"
         $this->callShopSC("oxConfig", "saveShopConfVar", null, array("bl_perfLoadLanguages" => array("type" => "bool", "value" => "false")));
 
         $this->openShop();
-        $this->assertFalse($this->isElementPresent("link=Test category 0 [EN] šÄßüл (2)"));
-        $this->assertFalse($this->isElementPresent("footerCategories"));
         $this->assertFalse($this->isElementPresent("titleBargain_1"));
         $this->assertFalse($this->isElementPresent("//div[@id='specCatBox']/h2"));
         $this->assertFalse($this->isElementPresent("topBox"));

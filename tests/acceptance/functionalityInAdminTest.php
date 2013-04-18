@@ -1895,6 +1895,7 @@ class Acceptance_functionalityInAdminTest extends oxidAdditionalSeleniumFunction
         $this->executeSql("UPDATE `oxconfig` SET `OXVARVALUE` = 0xce92 WHERE `OXVARNAME` = 'sShopCountry'");
         //$this->clearTmp();
         $this->loginAdmin("Shop controlling", "econda", "confbools[blEcondaActive]");
+
         $this->frame("edit");
         $this->click("//input[@name='confbools[blEcondaActive]' and @type='checkbox']");
         $this->clickAndWait("save");

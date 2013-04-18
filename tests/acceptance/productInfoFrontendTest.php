@@ -312,7 +312,7 @@ class Acceptance_productInfoFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->waitForItemAppear("c_mac");
 
         //disabling price alert for product(1001)
-        $this->callShopSC("oxArticle", "save", "1001", array("oxblfixedprice" => 1));
+        $this->callShopSC("oxArticle", "save", "1001", array("oxblfixedprice" => 1),1);
 
         $this->searchFor("1001");
         $this->clickAndWait("//ul[@id='searchList']//a");
@@ -605,7 +605,7 @@ class Acceptance_productInfoFrontendTest extends oxidAdditionalSeleniumFunctions
         //multidimensional variants on
         //active product WHERE `OXID`='10014'
         $aArticleParams = array("oxactive" => 1);
-        $this->callShopSC("oxArticle", "save", "10014", $aArticleParams);
+        $this->callShopSC("oxArticle", "save", "10014", $aArticleParams,1);
         $this->openShop();
         $this->searchFor("10014");
         $this->selectDropDown("viewOptions", "Line");
@@ -641,7 +641,7 @@ class Acceptance_productInfoFrontendTest extends oxidAdditionalSeleniumFunctions
         $this->callShopSC("oxConfig", "saveShopConfVar", null, array("blUseMultidimensionVariants" => array("type" => "bool", "value" => '')));
         //active product WHERE `OXID`='10014'
         $aArticleParams = array("oxactive" => 1);
-        $this->callShopSC("oxArticle", "save", "10014", $aArticleParams);
+        $this->callShopSC("oxArticle", "save", "10014", $aArticleParams,1);
         $this->openShop();
         $this->searchFor("10014");
         $this->selectDropDown("viewOptions", "Line");

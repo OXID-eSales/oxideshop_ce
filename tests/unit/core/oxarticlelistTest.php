@@ -2362,7 +2362,7 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
 
     /**
      * Test case for oxArticleList::updateUpcomingPrices()
-     * Checks oxvarminprice calculated correctly when one of children is inactive
+     * Checks is oxvarminprice calculated correctly when one of children is inactive
      */
     public function testUpdateUpcomingPrices_VarMinPriceWithInactiveChildAndUpdateTimeIsTomorrow()
     {
@@ -2401,7 +2401,7 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
 
     /**
      * Test case for oxArticleList::updateUpcomingPrices()
-     * Checks oxvarmaxprice calculated correctly when one of children is inactive
+     * Checks is oxvarmaxprice calculated correctly when one of children is inactive
      */
     public function testUpdateUpcomingPrices_VarMaxPriceWithInactiveChildAndUpdateTimeIsTomorrow()
     {
@@ -2440,7 +2440,7 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
 
     /**
      * Test case for oxArticleList::updateUpcomingPrices()
-     * Checks oxvarminprice calculated correctly when one of children is inactive and update time was yesterday
+     * Checks is oxvarminprice calculated correctly when one of children is inactive and update time was yesterday
      */
     public function testUpdateUpcomingPrices_VarMinPriceWithInactiveChildAndUpdateTimeIsYesterday()
     {
@@ -2479,7 +2479,7 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
 
     /**
      * Test case for oxArticleList::updateUpcomingPrices()
-     * Checks oxvarmaxprice calculated correctly when one of children is inactive and update time was yesterday
+     * Checks is oxvarmaxprice calculated correctly when one of children is inactive and update time was yesterday
      */
     public function testUpdateUpcomingPrices_VarMaxPriceWithInactiveChildAndUpdateTimeIsYesterday()
     {
@@ -2518,7 +2518,7 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
 
     /**
      * Test case for oxArticleList::updateUpcomingPrices()
-     * Checks oxvarminprice calculated correctly when there are no children and updatetime is tomorrow
+     * Checks is oxvarminprice calculated correctly when there are no children and updatetime is tomorrow
      */
     public function testUpdateUpcomingPrices_VarMinPriceWithNoChildAndUpdateTimeIsTomorrow()
     {
@@ -2543,7 +2543,7 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
 
     /**
      * Test case for oxArticleList::updateUpcomingPrices()
-     * Checks oxvarminprice calculated correctly when there are no children and updatetime is yesterday
+     * Checks is oxvarminprice calculated correctly when there are no children and updatetime is yesterday
      */
     public function testUpdateUpcomingPrices_VarMinPriceWithNoChildAndUpdateTimeIsYesterday()
     {
@@ -2568,7 +2568,7 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
 
     /**
      * Test case for oxArticleList::updateUpcomingPrices()
-     * Checks oxvarmaxprice calculated correctly when there are no children
+     * Checks is oxvarmaxprice calculated correctly when there are no children
      */
     public function testUpdateUpcomingPrices_VarMaxPriceWithNoChildAndUpdateTimeIsTomorrow()
     {
@@ -2593,7 +2593,7 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
 
     /**
      * Test case for oxArticleList::updateUpcomingPrices()
-     * Checks oxvarminprice calculated correctly when there are no children and updatetime is yesterday
+     * Checks is oxvarminprice calculated correctly when there are no children and updatetime is yesterday
      */
     public function testUpdateUpcomingPrices_VarMaxPriceWithNoChildAndUpdateTimeIsYesterday()
     {

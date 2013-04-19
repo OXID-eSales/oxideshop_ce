@@ -73,12 +73,6 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
     */
     public function testActivatePaypal()
     {
-        //copy module files to shop
-        $sModuleDir = MODULE_PKG_DIR;
-        $sCopyDir = rtrim($sModuleDir, "/") . "/copy_this";
-        $this->copyFile( $sCopyDir, oxPATH );
-        $sCopyDir = rtrim($sModuleDir, "/") . "/changed_full";
-        $this->copyFile( $sCopyDir, oxPATH );
         $this->open(shopURL."_prepareDB.php?version=".$this->_sVersion);
         $this->open(shopURL."admin");
         $this->loginAdminForModule("Extensions", "Modules");
@@ -382,9 +376,6 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
 
         //After login to PayPal check does all necessary element displayed correctly
         $this->click("id=submitLogin");
-        $this->waitForItemAppear("id=agree");
-        $this->check("id=esignOpt");
-        $this->click("id=agree");
         $this->waitForItemAppear("id=continue");
         $this->waitForItemAppear("id=displayShippingAmount");
         $this->assertTrue($this->isTextPresent("Test product 1"), "Purchased product name is not displayed in PayPal");

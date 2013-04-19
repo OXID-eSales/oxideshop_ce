@@ -19,7 +19,6 @@
  * @package   core
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 // defining supported link types
@@ -441,6 +440,11 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      */
     protected $_aArticleFiles = null;
 
+    /**
+     * If admin can edit any field.
+     * @var bool
+     */
+    protected $_blCanUpdateAnyField = null;
 
     /**
      * Constructor, sets shop ID for article (oxconfig::getShopId()),

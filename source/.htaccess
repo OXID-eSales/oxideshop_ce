@@ -37,7 +37,7 @@ RewriteRule (\.html|\/)$ oxseo.php
 RewriteCond %{REQUEST_URI} (\/out\/pictures\/)
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule (\.jpe?g|\.gif|\.png)$ core/utils/getimg.php
+RewriteRule (\.jpe?g|\.gif|\.png)$ getimg.php
 
 </IfModule>
 

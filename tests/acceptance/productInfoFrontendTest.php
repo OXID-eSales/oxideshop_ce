@@ -638,10 +638,10 @@ class Acceptance_productInfoFrontendTest extends oxidAdditionalSeleniumFunctions
     {
         //multidimensional variants off
         //selenium for bug #1427
-        $this->callShopSC("oxConfig", "saveShopConfVar", null, array("blUseMultidimensionVariants" => array("type" => "bool", "value" => '')));
+        $this->callShopSC("oxConfig", "saveShopConfVar", null, array("blUseMultidimensionVariants" => array("type" => "bool", "value" => '')),1);
         //active product WHERE `OXID`='10014'
         $aArticleParams = array("oxactive" => 1);
-        $this->callShopSC("oxArticle", "save", "10014", $aArticleParams,1);
+        $this->callShopSC("oxArticle", "save", "10014", $aArticleParams);
         $this->openShop();
         $this->searchFor("10014");
         $this->selectDropDown("viewOptions", "Line");
@@ -669,8 +669,8 @@ class Acceptance_productInfoFrontendTest extends oxidAdditionalSeleniumFunctions
 
         //making 10014-2-1 and 10014-2-2 variants in stock
         $aArticleParams = array("oxstock" => 1);
-        $this->callShopSC("oxArticle", "save", "1001421", $aArticleParams);
-        $this->callShopSC("oxArticle", "save", "1001422", $aArticleParams);
+        $this->callShopSC("oxArticle", "save", "1001421", $aArticleParams,1);
+        $this->callShopSC("oxArticle", "save", "1001422", $aArticleParams,1);
         $this->selectVariant("variants", 1, "S | white", "Selected combination: S | white");
         $this->assertEquals("14 EN product šÄßüл S | white", $this->getText("//h1"));
         $this->click("link=Reset selection");

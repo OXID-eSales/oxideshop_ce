@@ -85,6 +85,18 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
     }
 
     /**
+     * Perform login to paypal.
+     */
+    protected function _loginToSandbox()
+    {
+        $this->open("https://www.paypal.com/webapps/auth/protocol/openidconnect/v1/authorize?client_id=eee5d94d000903b29b1263ae5654b369&response_type=code&scope=openid%20profile%20email%20address%20https://uri.paypal.com/services/paypalattributes&redirect_uri=https://developer.paypal.com/webapps/developer/access&nonce=05d0a60ee1f44361f449496505e05116&state=784d8bc3fe3a48a5105b4f8ddd8ae0e7");
+        $this->type("email", "caroline.helbing@oxid-esales.com");
+        $this->type("password", "QT0Km5OyJzoiUC" );
+        $this->click("name=_eventId_submit");
+        $this->waitForPageToLoad("30000");
+    }
+
+    /**
      * testing paypal payment selection
     * @group paypal
     */
@@ -92,11 +104,7 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
     {
 
         //login to sanbox
-        $this->open("https://developer.paypal.com/");
-        $this->type("login_email", "testoxideshop@gmail.com");
-        $this->type("login_password", "xxxxxxxxx");
-        $this->click("name=submit");
-        $this->waitForPageToLoad("30000");
+        $this->_loginToSandbox();
 
         $this->openShop();
         $this->switchLanguage("Deutsch");
@@ -147,11 +155,8 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
     public function testPaypalExpress2()
     {
 
-        $this->open("https://developer.paypal.com/");
-        $this->type("login_email", "testoxideshop@gmail.com");
-        $this->type("login_password", "xxxxxxxxx");
-        $this->click("name=submit");
-        $this->waitForPageToLoad("30000");
+        //login to sanbox
+        $this->_loginToSandbox();
 
         //Testing when user is logged in
         $this->openShop();
@@ -233,11 +238,8 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
     public function testPaypalExpressWhenPaypalInactive()
     {
 
-        $this->open("https://developer.paypal.com/");
-        $this->type("login_email", "testoxideshop@gmail.com");
-        $this->type("login_password", "xxxxxxxxx");
-        $this->click("name=submit");
-        $this->waitForPageToLoad("30000");
+        //login to sanbox
+        $this->_loginToSandbox();
 
         //Disable Paypal
         $this->loginAdminForModule("Extensions", "Modules");
@@ -282,12 +284,8 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
     public function testPaypalPaymentForGermany()
     {
 
-        // Login to the sandbox
-        $this->open("https://developer.paypal.com/");
-        $this->type("login_email", "testoxideshop@gmail.com");
-        $this->type("login_password", "xxxxxxxxx");
-        $this->click("name=submit");
-        $this->waitForPageToLoad("30000");
+        //login to sanbox
+        $this->_loginToSandbox();
 
         //Make an order with paypal
         $this->openShop();
@@ -529,12 +527,9 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
     public function testPaypalPaymentForLoginUser()
     {
 
-        //Login to the sandbox
-        $this->open("https://developer.paypal.com/");
-        $this->type("login_email", "testoxideshop@gmail.com");
-        $this->type("login_password", "xxxxxxxxx");
-        $this->click("name=submit");
-        $this->waitForPageToLoad("30000");
+        //login to sanbox
+        $this->_loginToSandbox();
+
         $this->openShop();
 
         //Search for the product and add to cart
@@ -778,12 +773,8 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
     public function testPaypalStandart()
     {
 
-        //Login to sanbox
-        $this->open("https://developer.paypal.com/");
-        $this->type("login_email", "testoxideshop@gmail.com");
-        $this->type("login_password", "xxxxxxxxx");
-        $this->click("name=submit");
-        $this->waitForPageToLoad("30000");
+        //login to sanbox
+        $this->_loginToSandbox();
 
         //Login to shop and go standart paypal
         $this->openShop();
@@ -855,12 +846,8 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
     public function testPaypalDiscountsCategory()
     {
 
-        //Login to sanbox
-        $this->open("https://developer.paypal.com/");
-        $this->type("login_email", "testoxideshop@gmail.com");
-        $this->type("login_password", "xxxxxxxxx");
-        $this->click("name=submit");
-        $this->waitForPageToLoad("30000");
+        //login to sanbox
+        $this->_loginToSandbox();
 
         // Add vouchers to shop
             $this->open(shopURL."/_updateDB.php?filename=newDiscounts_pe.sql");
@@ -970,12 +957,8 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
     public function testPaypalDiscountsFromTill()
     {
 
-        //Login to sanbox
-        $this->open("https://developer.paypal.com/");
-        $this->type("login_email", "testoxideshop@gmail.com");
-        $this->type("login_password", "xxxxxxxxx");
-        $this->click("name=submit");
-        $this->waitForPageToLoad("30000");
+        //login to sanbox
+        $this->_loginToSandbox();
 
         // Add vouchers to shop
             $this->open(shopURL."/_updateDB.php?filename=newDiscounts_pe.sql");
@@ -1145,12 +1128,8 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
     public function testPaypalVouchers()
     {
 
-        //Login to sanbox
-        $this->open("https://developer.paypal.com/");
-        $this->type("login_email", "testoxideshop@gmail.com");
-        $this->type("login_password", "xxxxxxxxx");
-        $this->click("name=submit");
-        $this->waitForPageToLoad("30000");
+        //login to sanbox
+        $this->_loginToSandbox();
 
         // Add vouchers to shop
             $this->open(shopURL."/_updateDB.php?filename=newVouchers_pe.sql");
@@ -1254,12 +1233,8 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
     public function testPaypaVAT()
     {
 
-        //Login to sanbox
-        $this->open("https://developer.paypal.com/");
-        $this->type("login_email", "testoxideshop@gmail.com");
-        $this->type("login_password", "xxxxxxxxx");
-        $this->click("name=submit");
-        $this->waitForPageToLoad("30000");
+        //login to sanbox
+        $this->_loginToSandbox();
 
         // Change price for PayPal payment methode
         $this->open(shopURL."/_updateDB.php?filename=vatOptions.sql");
@@ -1404,12 +1379,8 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
     public function testPaypalShippingCostNotLoginUser()
     {
 
-        //Login to sanbox
-        $this->open("https://developer.paypal.com/");
-        $this->type("login_email", "testoxideshop@gmail.com");
-        $this->type("login_password", "xxxxxxxxx");
-        $this->click("name=submit");
-        $this->waitForPageToLoad("30000");
+        //login to sanbox
+        $this->_loginToSandbox();
 
         // Change price for PayPal payment methode
         $this->open(shopURL."/_updateDB.php?filename=vatOptions.sql");
@@ -1566,12 +1537,8 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
     public function testPaypalAsNewCustomer()
     {
 
-        //Login to sanbox
-        $this->open("https://developer.paypal.com/");
-        $this->type("login_email", "testoxideshop@gmail.com");
-        $this->type("login_password", "xxxxxxxxx");
-        $this->click("name=submit");
-        $this->waitForPageToLoad("30000");
+        //login to sanbox
+        $this->_loginToSandbox();
 
         //Go to shop and add product
         $this->openShop();
@@ -1656,12 +1623,8 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
     {
         //$this->markTestSkipped("Temporarry skipping test");
 
-        //Login to sanbox
-        $this->open("https://developer.paypal.com/");
-        $this->type("login_email", "testoxideshop@gmail.com");
-        $this->type("login_password", "xxxxxxxxx");
-        $this->click("name=submit");
-        $this->waitForPageToLoad("30000");
+        //login to sanbox
+        $this->_loginToSandbox();
 
         $this->open(shopURL."/_updateDB.php?filename=changeStock.sql");
         $this->openShop();

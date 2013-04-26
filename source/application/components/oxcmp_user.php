@@ -19,7 +19,6 @@
  * @package   views
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 // defining login/logout states
@@ -224,7 +223,7 @@ class oxcmp_user extends oxView
             $this->setLoginStatus( USER_LOGIN_SUCCESS );
         } catch ( oxUserException $oEx ) {
             // for login component send excpetion text to a custom component (if defined)
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay( $oEx, false, true, '', 'oxwservicemenu' );
+            oxRegistry::get("oxUtilsView")->addErrorToDisplay( $oEx, false, true, '', false );
             return 'user';
         } catch( oxCookieException $oEx ){
             oxRegistry::get("oxUtilsView")->addErrorToDisplay( $oEx );

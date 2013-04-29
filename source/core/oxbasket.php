@@ -19,7 +19,6 @@
  * @package   core
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -2220,7 +2219,11 @@ class oxBasket extends oxSuperCfg
      */
     public function getPaymentCosts()
     {
-        return $this->getCosts( 'oxpayment' )->getBruttoPrice();
+        $oPaymentCost = $this->getCosts( 'oxpayment' );
+        if ( $oPaymentCost && $oPaymentCost->getBruttoPrice() ) {
+            return $oPaymentCost->getBruttoPrice();
+        }
+        return false;
     }
 
     /**

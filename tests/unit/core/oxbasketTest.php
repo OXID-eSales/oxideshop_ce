@@ -19,7 +19,6 @@
  * @package   tests
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -4084,10 +4083,23 @@ class Unit_Core_oxbasketTest extends OxidTestCase
     public function testGetPaymentCosts()
     {
         $oPrice = $this->getMock( 'oxprice', array( 'getBruttoPrice' ) );
-        $oPrice->expects( $this->once() )->method( 'getBruttoPrice' )->will( $this->returnValue( 11.588 ) );
-        $oBasket = $this->getProxyClass( "oxBasket" );
-        $oBasket->setNonPublicVar('_aCosts', array ( "oxpayment" => $oPrice ) );
+        $oPrice->expects( $this->any() )->method( 'getBruttoPrice' )->will( $this->returnValue( 11.588 ) );
+        $oBasket = $this->getMock( 'oxBasket', array( 'getCosts' ) );
+        $oBasket->expects( $this->once() )->method( 'getCosts' )->will( $this->returnValue( $oPrice ) );
         $this->assertEquals( 11.588, $oBasket->getPaymentCosts() );
+    }
+
+
+    /**
+     * Testing payment brutto price getter
+     *
+     * @return null
+     */
+    public function testGetPaymentCosts_notCalculated()
+    {
+        $oBasket = $this->getMock( 'oxBasket', array( 'getCosts' ) );
+        $oBasket->expects( $this->once() )->method( 'getCosts' )->will( $this->returnValue( null ) );
+        $this->assertFalse ( $oBasket->getPaymentCosts() );
     }
 
     /**

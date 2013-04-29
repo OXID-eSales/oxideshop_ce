@@ -19,7 +19,6 @@
  * @package   core
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -1242,7 +1241,7 @@ class oxOrder extends oxBase
             $iOnStock = $oProd->checkForStock( $oContent->getAmount(), $dArtStockAmount );
             if ( $iOnStock !== true ) {
                 $oEx = oxNew( 'oxOutOfStockException' );
-                $oEx->setMessage( 'EXCEPTION_OUTOFSTOCK_OUTOFSTOCK' );
+                $oEx->setMessage( 'ERROR_MESSAGE_OUTOFSTOCK_OUTOFSTOCK' );
                 $oEx->setArticleNr( $oProd->oxarticles__oxartnum->value );
                 $oEx->setProductId( $oProd->getId() );
 

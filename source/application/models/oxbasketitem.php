@@ -391,7 +391,7 @@ class oxBasketItem extends oxSuperCfg
 
         if ( $iOnStock !== true ) {
             $oEx = oxNew( 'oxOutOfStockException' );
-            $oEx->setMessage( 'EXCEPTION_OUTOFSTOCK_OUTOFSTOCK' );
+            $oEx->setMessage( 'ERROR_MESSAGE_OUTOFSTOCK_OUTOFSTOCK' );
             $oEx->setArticleNr( $oArticle->oxarticles__oxartnum->value );
             $oEx->setProductId( $oArticle->getProductId() );
             $oEx->setRemainingAmount( $this->_dAmount );

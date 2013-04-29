@@ -19,7 +19,6 @@
  * @package   tests
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -52,7 +51,7 @@ class Unit_Core_oxoutofstockexceptionTest extends OxidTestCase
         $this->assertEquals( $this->_sMsg, $this->_oTestObject->getMessage() );
 
         $this->_oTestObject->setDestination( null );
-        $this->assertEquals( $this->_sMsg . " " .$this->_iAmount, $this->_oTestObject->getMessage() );
+        $this->assertEquals( $this->_sMsg . ": " .$this->_iAmount, $this->_oTestObject->getMessage() );
     }
 
     public function testSetGetRemainingAmount()

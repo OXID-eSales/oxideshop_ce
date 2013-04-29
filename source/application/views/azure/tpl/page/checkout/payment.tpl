@@ -15,7 +15,7 @@
                         <input type="hidden" name="cl" value="[{ $oViewConf->getActiveClassName() }]">
                         <input type="hidden" name="fnc" value="changeshipping">
                     </div>
-                    <h3 id="deliveryHeader" class="blockHead">[{ if $oView->getAllSetsCnt() > 1 }][{ oxmultilang ident="SELECTED_SHIPPING_CARRIER" suffix="COLON" }][{else}][{ oxmultilang ident="SELECTED_SHIPPING_CARRIER" }]:[{/if}]</h3>
+                    <h3 id="deliveryHeader" class="blockHead">[{ if $oView->getAllSetsCnt() > 1 }][{ oxmultilang ident="SELECT_SHIPPING_METHOD" suffix="COLON" }][{else}][{ oxmultilang ident="SELECT_SHIPPING_METHOD" suffix="COLON"}][{/if}]</h3>
                     <ul>
                         <li>
                             [{block name="act_shipping"}]

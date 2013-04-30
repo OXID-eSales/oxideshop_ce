@@ -383,9 +383,6 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
 
         //After login to PayPal check does all necessary element displayed correctly
         $this->click("id=submitLogin");
-        $this->waitForItemAppear("id=agree");
-        $this->check("id=esignOpt");
-        $this->click("id=agree");
         $this->waitForItemAppear("id=continue");
         $this->waitForItemAppear("id=displayShippingAmount");
         $this->assertTrue($this->isTextPresent("Test product 1"), "Purchased product name is not displayed in PayPal");

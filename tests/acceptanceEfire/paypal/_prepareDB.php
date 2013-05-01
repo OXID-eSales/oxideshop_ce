@@ -99,6 +99,8 @@ echo "<ol>";
 
     echo "<li><b>Adding PayPal data - 'selenium_paypalSetup.sql'</b></li>";
     passthru ('mysql -u'.$_cfg->dbUser.' -p'.$_cfg->dbPwd.' '.$_cfg->dbName.' < '.dirname(__FILE__).$sPaypalSetupFile);
+    $sUtf8Mode = $_cfg->iUtfMode? "--default-character-set=utf8" : "";
+    passthru ('mysql -u'.$_cfg->dbUser.' -p'.$_cfg->dbPwd.' '.$sUtf8Mode.' '.$_cfg->dbName.' < '.dirname(__FILE__).$sPaypalSetupFile);
 
     echo "<li>set configuration parameters</li>";
     mysql_query( "delete from oxconfig where oxvarname in ('iSetUtfMode','blLoadDynContents','sShopCountry')", $oDB);

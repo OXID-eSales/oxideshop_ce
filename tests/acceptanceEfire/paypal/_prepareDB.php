@@ -94,8 +94,33 @@ echo "<ol>";
     $_key      = $_cfg->sConfigKey;
     $oDB       = mysql_connect( 'localhost', $_cfg->dbUser, $_cfg->dbPwd);
 
+    if ($_cfg->iUtfMode) {
+        mysql_query("anter schema character set utf8 collate utf8_general_ci",$oDB);
+        mysql_query("set names 'utf8'",$oDB);
+        mysql_query("set character_set_database=utf8",$oDB);
+        mysql_query("set character set utf8",$oDB);
+        mysql_query("set character_set_connection = utf8",$oDB);
+        mysql_query("set character_set_results = utf8",$oDB);
+        mysql_query("set character_set_server = utf8",$oDB);
+    } else {
+        mysql_query("alter schema character set latin1 collate latin1_general_ci",$oDB);
+        mysql_query("set character set latin1",$oDB);
+    }
+
+    echo "<li>drop database '".$_cfg->dbName."'</li>";
+    mysql_query( 'drop   database '.$_cfg->dbName, $oDB);
+
+    echo "<li>create database '".$_cfg->dbName."'</li>";
+    mysql_query( 'create database '.$_cfg->dbName, $oDB);
+
     echo "<li>select database '".$_cfg->dbName."'</li>";
     mysql_select_db( $_cfg->dbName , $oDB);
+
+    echo "<li>insert 'database.sql'</li>";
+    passthru ('mysql -u'.$_cfg->dbUser.' -p'.$_cfg->dbPwd.' '.$_cfg->dbName.' < '.dirname(__FILE__).'/setup/sql/database.sql');
+
+    echo "<li>insert 'demodata.sql'</li>";
+    passthru ('mysql -u'.$_cfg->dbUser.' -p'.$_cfg->dbPwd.' '.$_cfg->dbName.' < '.dirname(__FILE__).'/setup/sql/demodata.sql');
 
     echo "<li><b>Configuring shop - 'selenium_shopConfig.sql'</b></li>";
     passthru ('mysql -u'.$_cfg->dbUser.' -p'.$_cfg->dbPwd.' '.$_cfg->dbName.' < '.dirname(__FILE__).'/setup/sql/selenium_shopConfig.sql');

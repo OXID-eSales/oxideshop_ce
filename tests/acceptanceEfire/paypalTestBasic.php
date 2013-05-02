@@ -103,6 +103,8 @@ class AcceptanceEfire_paypalTestBasic extends oxidAdditionalSeleniumFunctions
      */
     public function testPaypalPayment()
     {
+        //login to sanbox
+        $this->_loginToSandbox();
         $this->openShop();
         $this->clickAndWait("test_Lang_Deutsch");
         $this->type("f.search.param", "1001");
@@ -118,8 +120,8 @@ class AcceptanceEfire_paypalTestBasic extends oxidAdditionalSeleniumFunctions
         $this->click("//input[@name='paymentid' and @value='oxidpaypal']");
         $this->click("test_PaymentNextStepBottom");
         $this->waitForElement("login.x");
-        $this->type("login_email", "caroline.helbing@oxid-esales.com");
-        $this->type("login_password", "QT0Km5OyJzoiUC");
+        $this->type("login_email", "buyger_1346652948_pre@gmail.com");
+        $this->type("login_password", "xxxxxxxxx");
         $this->clickAndWait("login.x");
         //$this->waitForText("Lieferadresse", false, 120);
         $this->clickAndWait("continue");
@@ -148,6 +150,8 @@ class AcceptanceEfire_paypalTestBasic extends oxidAdditionalSeleniumFunctions
      */
     public function testPaypalExpress()
     {
+        //login to sanbox
+        $this->_loginToSandbox();
         //express when user logged in
         $this->openShop();
         $this->clickAndWait("test_Lang_Deutsch");
@@ -161,8 +165,8 @@ class AcceptanceEfire_paypalTestBasic extends oxidAdditionalSeleniumFunctions
         $this->clickAndWait("test_RightLogin_Login");
         $this->assertTrue($this->isElementPresent("//input[@class='paypalbutton']"));
         $this->clickAndWait("submit");
-        $this->type("login_email", "caroline.helbing@oxid-esales.com");
-        $this->type("login_password", "QT0Km5OyJzoiUC");
+        $this->type("login_email", "buyger_1346652948_pre@gmail.com");
+        $this->type("login_password", "xxxxxxxxx");
         $this->clickAndWait("login.x");
         $this->waitForText("Zahlungsmethode", false, 120);
         $this->clickAndWait("continue");
@@ -179,8 +183,8 @@ class AcceptanceEfire_paypalTestBasic extends oxidAdditionalSeleniumFunctions
         $this->clickAndWait("test_toBasket_Search_1001");
         $this->clickAndWait("test_RightBasketOpen");
         $this->clickAndWait("submit");
-        $this->type("login_email", "caroline.helbing@oxid-esales.com");
-        $this->type("login_password", "QT0Km5OyJzoiUC");
+        $this->type("login_email", "buyger_1346652948_pre@gmail.com");
+        $this->type("login_password", "xxxxxxxxx");
         $this->clickAndWait("login.x");
         $this->waitForText("Zahlungsmethode", false, 120);
         $this->clickAndWait("continue");
@@ -209,8 +213,8 @@ class AcceptanceEfire_paypalTestBasic extends oxidAdditionalSeleniumFunctions
         $this->clickAndWait("test_toBasket_Search_1001");
         $this->clickAndWait("test_RightBasketOpen");
         $this->clickAndWait("submit");
-        $this->type("login_email", "caroline.helbing@oxid-esales.com");
-        $this->type("login_password", "QT0Km5OyJzoiUC");
+        $this->type("login_email", "buyger_1346652948_pre@gmail.com");
+        $this->type("login_password", "xxxxxxxxx");
         $this->clickAndWait("login.x");
         $this->waitForText("Zahlungsmethode", false, 120);
         $this->clickAndWait("continue");
@@ -227,6 +231,8 @@ class AcceptanceEfire_paypalTestBasic extends oxidAdditionalSeleniumFunctions
     */
     public function testPaypalExpressWhenPaypalInactive()
     {
+        //login to sanbox
+        $this->_loginToSandbox();
     	//disable Paypal
     	$this->executeSql("UPDATE `oxpayments` SET `OXACTIVE` = '0' WHERE `OXID` = 'oxidpaypal';");
     	$this->openShop();

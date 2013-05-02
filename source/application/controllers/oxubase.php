@@ -19,7 +19,6 @@
  * @package   views
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -2113,28 +2112,28 @@ class oxUBase extends oxView
     }
 
     /**
-     * Template variable getter. Returns page navigation with 7 positions
+     * Template variable getter. Returns page navigation with default 7 positions
+     *
+     * @param int $iPositionCount - paging positions count ( 0 - unlimited )
      *
      * @return object
      */
-    public function getPageNavigationLimitedTop()
+    public function getPageNavigationLimitedTop( $iPositionCount = 7 )
     {
-
-        $this->_oPageNavigation = $this->generatePageNavigation( 7 );
-
+        $this->_oPageNavigation = $this->generatePageNavigation( $iPositionCount );
         return $this->_oPageNavigation;
     }
 
     /**
-     * Template variable getter. Returns page navigation with 11 positions
+     * Template variable getter. Returns page navigation with default 11 positions
+     *
+     * @param int $iPositionCount - paging positions count ( 0 - unlimited )
      *
      * @return object
      */
-    public function getPageNavigationLimitedBottom()
+    public function getPageNavigationLimitedBottom( $iPositionCount = 11 )
     {
-
-        $this->_oPageNavigation = $this->generatePageNavigation( 11 );
-
+        $this->_oPageNavigation = $this->generatePageNavigation( $iPositionCount );
         return $this->_oPageNavigation;
     }
 
@@ -2142,9 +2141,9 @@ class oxUBase extends oxView
     /**
      * Generates variables for page navigation
      *
-     * @param int $iPositionCount - paging possitions count ( 0 - unlimited )
+     * @param int $iPositionCount - paging positions count ( 0 - unlimited )
      *
-     * @return  stdClass    $pageNavigation Object with pagenavigation data
+     * @return  stdClass    $pageNavigation Object with page navigation data
      */
     public function generatePageNavigation( $iPositionCount = 0 )
     {

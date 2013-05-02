@@ -19,7 +19,6 @@
  * @package   lang
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /*
@@ -2048,7 +2047,7 @@ $aLang = array(
 'TOTAL_PLUS_PROPORTIONAL_VAT'                              => "plus VAT (proportionally calculated)",
 
 'BUTTON_DOWNLOAD'                                          => 'Download',
-'PACKAGE_FILE_NAME'                                        => 'pkg.info',
+'BUILD_NUMBER'                                        => 'Build number',
 );
 
 /*

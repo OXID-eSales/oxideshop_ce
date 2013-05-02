@@ -94,6 +94,9 @@ echo "<ol>";
     $_key      = $_cfg->sConfigKey;
     $oDB       = mysql_connect( 'localhost', $_cfg->dbUser, $_cfg->dbPwd);
 
+    echo "<li>select database '".$_cfg->dbName."'</li>";
+    mysql_select_db( $_cfg->dbName , $oDB);
+
     echo "<li><b>Configuring shop - 'selenium_shopConfig.sql'</b></li>";
     passthru ('mysql -u'.$_cfg->dbUser.' -p'.$_cfg->dbPwd.' '.$_cfg->dbName.' < '.dirname(__FILE__).'/setup/sql/selenium_shopConfig.sql');
 

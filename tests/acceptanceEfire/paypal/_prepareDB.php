@@ -69,6 +69,7 @@ if ($_GET["version"]) {
     }
 }
 
+$sTheme = $_GET["theme"]? $_GET["theme"] : 'azure';
 
 echo "<hr>";
 
@@ -121,6 +122,11 @@ echo "<ol>";
 
     echo "<li>insert 'demodata.sql'</li>";
     passthru ('mysql -u'.$_cfg->dbUser.' -p'.$_cfg->dbPwd.' '.$_cfg->dbName.' < '.dirname(__FILE__).'/setup/sql/demodata.sql');
+
+    if ($sTheme == 'basic') {
+        echo "<li>Swich to basic theme (insert 'demodata_basic.sql')</li>";
+        passthru ('mysql -u'.$_cfg->dbUser.' -p'.$_cfg->dbPwd.' '.$_cfg->dbName.' < '.dirname(__FILE__).'/setup/sql/demodata_basic.sql');
+    }
 
     echo "<li><b>Configuring shop - 'selenium_shopConfig.sql'</b></li>";
     passthru ('mysql -u'.$_cfg->dbUser.' -p'.$_cfg->dbPwd.' '.$_cfg->dbName.' < '.dirname(__FILE__).'/setup/sql/selenium_shopConfig.sql');

@@ -19,7 +19,6 @@
  * @package   lang
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /*
@@ -1038,7 +1037,7 @@ $aLang = array(
 'PRICEALARM_MAIN_REGULARPRICE'                             => 'Regular Price',
 'PRICEALARM_MAIN_EMAILSEND'                                => 'Send e-mail',
 'PRICEALARM_SEND_TITLE'                                    => 'oxid Price Alert',
-'PRICEALARM_MESSAGE_SENT'                                     => 'Sent :', //PRICEALARM_SEND_SENDED
+'PRICEALARM_SEND_SENDED'                                   => 'Sended :',
 'PRICEALARM_SEND_FROM'                                     => 'from',
 'REPORT_CANCELED_ORDERS'                                   => 'Order Cancellations',
 'REPORT_CONVERSION_RATE'                                   => 'Conversion Rate',
@@ -1158,7 +1157,7 @@ $aLang = array(
 'SHOP_MAIN_NEWSHOP_WARNING'                                => 'Attention: Creating this sub shop you have to update views, otherwise shops will not work! While generating views, the performance of OXID eShop could be affected.',
 'SHOP_MAIN_FORGOTPWDSUBJECT'                               => 'Forgot Password e-mail Subject',
 'SHOP_MAIN_INFOEMAIL'                                      => 'Info e-mail Address',
-'SHOP_MAIN_SENT_NOW_SUBJECT'                               => 'Shipped now e-mail Subject', //SHOP_MAIN_NOWSENDEDSUBJECT
+'SHOP_MAIN_NOWSENDEDSUBJECT'                               => 'Shipped now e-mail Subject',
 'SHOP_MAIN_ORDEREMAIL'                                     => 'Order e-mail reply',
 'SHOP_MAIN_OWNEREMAIL'                                     => 'Order e-mails to ',
 'SHOP_MAIN_ORDERSUBJECT'                                   => 'Order e-mail Subject',
@@ -2047,7 +2046,6 @@ $aLang = array(
 'TOTAL_PLUS_PROPORTIONAL_VAT'                              => "plus VAT (proportionally calculated)",
 
 'BUTTON_DOWNLOAD'                                          => 'Download',
-'PACKAGE_FILE_NAME'                                        => 'pkg.info',
 );
 
 /*

@@ -19,7 +19,6 @@
  * @package   lang
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 $sLangName  = 'Deutsch';
@@ -96,6 +95,7 @@ $aLang = array(
 'GENERAL_ARTICLE_OXVAT'                                    => 'Artikel MwSt.',
 'GENERAL_ARTICLE_OXTHUMB'                                  => 'Vorschaubild',
 'GENERAL_ARTICLE_OXICON'                                   => 'Icon',
+'GENERAL_ARTICLE_OXPICSGENERATED'                          => 'Bilder erzeugt',
 'GENERAL_ARTICLE_PICTURES'                                 => 'Artikelbilder',
 'GENERAL_ARTICLE_OXPIC1'                                   => 'Bild1',
 'GENERAL_ARTICLE_OXPIC2'                                   => 'Bild2',
@@ -751,7 +751,7 @@ $aLang = array(
 'EXCEPTION_CONNECTION_NODB'                                => 'Keine Verbindung zur Datenbank möglich!',
 'EXCEPTION_ACCESSRIGHT_ACCESSDENIED'                       => 'Zugriff verweigert, keine ausreichende Rechte!',
 'EXCEPTION_DELETING_VALID_FILE'                            => 'Sie können diese Datei nicht löschen, solange es dafür gültige Downloads gibt',
-'EXCEPTION_NOFILE'                                         => 'Keine Datei hochgeladen',
+'EXCEPTION_NOFILE'                                         => 'Keine Dateien hochgeladen',
 'EXCEPTION_FILENAMEINVALIDCHARS'                           => 'Ungültige Zeichen im Dateinamne',
 'EXCEPTION_FILEUPLOADERROR_1'                              => 'Die Datei überschreitet die erlaubte Maximalgröße', // message is taken from php docu
 'EXCEPTION_FILEUPLOADERROR_2'                              => 'Die Datei überschreitet die erlaubte Maximalgröße', // message is taken from php docu
@@ -1036,7 +1036,7 @@ $aLang = array(
 'PRICEALARM_MAIN_REGULARPRICE'                             => 'Normal. Preis',
 'PRICEALARM_MAIN_EMAILSEND'                                => 'E-Mail senden',
 'PRICEALARM_SEND_TITLE'                                    => 'oxid Pricealarm',
-'PRICEALARM_MESSAGE_SENT'                                     => 'Gesendet :', //PRICEALARM_SEND_SENDED
+'PRICEALARM_SEND_SENDED'                                   => 'Gesendet :',
 'PRICEALARM_SEND_FROM'                                     => 'von insgesamt',
 'REPORT_CANCELED_ORDERS'                                   => 'Bestellabbrueche',
 'REPORT_CONVERSION_RATE'                                   => 'Conversion Rate',
@@ -2048,7 +2048,6 @@ $aLang = array(
 'TOTAL_PLUS_PROPORTIONAL_VAT'                              => "plus MwSt. (anteilig berechnet)",
 
 'BUTTON_DOWNLOAD'                                          => 'Herunterladen',
-'PACKAGE_FILE_NAME'                                        => 'pkg.info',
 );
 
 /*

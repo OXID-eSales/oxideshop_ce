@@ -39,10 +39,6 @@
     <th>[{ oxmultilang ident="SYSTEMINFO_VARIABLE" }]</th>
     <th>[{ oxmultilang ident="SYSTEMINFO_VALUE" }]</th>
 </tr>
-<tr>
-    <td class="e">[{ oxmultilang ident="PACKAGE_FILE_NAME" }]</td>
-    <td class="v">[{$oView->getPackageInfo()}]</td>
-</tr>
 [{foreach key=name item=value from=$aSystemInfo}]
 <tr>
     <td class="e">[{$name}]</td>

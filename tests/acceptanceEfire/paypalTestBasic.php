@@ -30,6 +30,68 @@ class AcceptanceEfire_paypalTestBasic extends oxidAdditionalSeleniumFunctions
     protected function setUp($skipDemoData=false)
     {
         parent::setUp(false);
+            $this->_sVersion = "CE";
+    }
+
+
+    /**
+     * Executed after test is down
+     *
+     */
+    protected function tearDown()
+    {
+        $this->callUrl(shopURL."/_restoreDB.php", "restoreDb=1");
+        parent::tearDown();
+    }
+
+    /**
+     * Call script file
+     *
+     * @return void
+     */
+    public function callUrl($sShopUrl, $sParams = "")
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $sShopUrl);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+
+        curl_setopt( $ch, CURLOPT_POST, 1 );
+        curl_setopt( $ch, CURLOPT_POSTFIELDS, $sParams );
+        curl_setopt( $ch, CURLOPT_USERAGENT, "OXID-SELENIUMS-CONNECTOR" );
+        $sRes = curl_exec($ch);
+
+        curl_close($ch);
+    }
+    // ------------------------ eFire modules for eShop ----------------------------------
+
+    /**
+     * test for activating PayPal and sending conector
+     * @group paypal
+     */
+    public function testActivatePaypal()
+    {
+        $this->open(shopURL."_prepareDB.php?version=".$this->_sVersion.'&theme=basic');
+        $this->open(shopURL."admin");
+        $this->loginAdminForModule("Extensions", "Modules");
+        $this->openTab("link=PayPal");
+        $this->frame("edit");
+        $this->clickAndWait("module_activate");
+        $this->downloadConnector("ee_paypal_demo", "pp6677ggR");
+        $this->callUrl(shopURL."/_restoreDB.php", "dumpDb=1");
+        // $this->waitForText("db Dumptime:");
+    }
+
+    /**
+     * Perform login to paypal.
+     */
+    protected function _loginToSandbox()
+    {
+        $this->open("https://www.paypal.com/webapps/auth/protocol/openidconnect/v1/authorize?client_id=eee5d94d000903b29b1263ae5654b369&response_type=code&scope=openid%20profile%20email%20address%20https://uri.paypal.com/services/paypalattributes&redirect_uri=https://developer.paypal.com/webapps/developer/access&nonce=05d0a60ee1f44361f449496505e05116&state=784d8bc3fe3a48a5105b4f8ddd8ae0e7");
+        $this->type("email", "caroline.helbing@oxid-esales.com");
+        $this->type("password", "QT0Km5OyJzoiUC" );
+        $this->click("name=_eventId_submit");
+        $this->waitForPageToLoad("30000");
     }
 
     // ------------------------ eFire modules for eShop ----------------------------------

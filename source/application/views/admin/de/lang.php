@@ -2048,7 +2048,6 @@ $aLang = array(
 'TOTAL_PLUS_PROPORTIONAL_VAT'                              => "plus MwSt. (anteilig berechnet)",
 
 'BUTTON_DOWNLOAD'                                          => 'Herunterladen',
-'BUILD_NUMBER'                                             => 'Build number',
 );
 
 /*

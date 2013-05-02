@@ -2047,7 +2047,6 @@ $aLang = array(
 'TOTAL_PLUS_PROPORTIONAL_VAT'                              => "plus VAT (proportionally calculated)",
 
 'BUTTON_DOWNLOAD'                                          => 'Download',
-'BUILD_NUMBER'                                        => 'Build number',
 );
 
 /*

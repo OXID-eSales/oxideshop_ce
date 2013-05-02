@@ -19,7 +19,6 @@
  * @package   admin
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -49,6 +48,7 @@ class SystemInfo extends oxAdminView
         if ( $blisMallAdmin && !$myConfig->isDemoShop()) {
             $aClassVars = get_object_vars( $myConfig);
             $aSystemInfo = array();
+            $aSystemInfo['pkg.info'] = $myConfig->getPackageInfo();
             $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
             while (list($name, $value) = each($aClassVars)) {
                 if (gettype($value)=="object")

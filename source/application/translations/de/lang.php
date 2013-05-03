@@ -366,7 +366,6 @@ $aLang = array(
 'MESSAGE_NEWSLETTER_SUBSCRIPTION'                             => "Sie können den Newsletter jederzeit kostenlos abbestellen.",
 'MESSAGE_NEWSLETTER_SUBSCRIPTION_ACTIVATED'                   => "Sie sind nun freigeschaltet für den Empfang unseres Newsletters.",
 'MESSAGE_NEWSLETTER_SUBSCRIPTION_CANCELED'                    => "Sie haben den Empfang unseres Newsletters erfolgreich abbestellt.",
-'MESSAGE_NEWSLETTER_SUBSCRIPTION_CENCELED'                    => "Der Newsletter wurde abbestellt.",
 'MESSAGE_NEWSLETTER_SUBSCRIPTION_SUCCESS'                     => "Der Newsletter wurde abonniert.",
 'MESSAGE_NOT_ABLE_SEND_CONFIRMATION_EMAIL'                    => "Leider konnten wir Ihnen keine E-Mail zur Bestätigung des Newsletterempfanges zustellen. <br>Bitte kontrollieren Sie doch die E-Mail-Adresse.<br>",
 'MESSAGE_NOT_ABLE_TO_SEND_EMAIL'                              => "Leider konnten wir Ihnen keine E-Mail zustellen.",

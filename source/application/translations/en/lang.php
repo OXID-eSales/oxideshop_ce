@@ -366,7 +366,6 @@ $aLang = array(
 'MESSAGE_NEWSLETTER_SUBSCRIPTION'                             => "It's possible to cancel newsletter at any time.",
 'MESSAGE_NEWSLETTER_SUBSCRIPTION_ACTIVATED'                   => "Your subscription to our Newsletter has now been activated.",
 'MESSAGE_NEWSLETTER_SUBSCRIPTION_CANCELED'                    => "Your subscription to our Newsletter has been canceled.",
-'MESSAGE_NEWSLETTER_SUBSCRIPTION_CENCELED'                    => "The Newsletter subscription has been canceled.",
 'MESSAGE_NEWSLETTER_SUBSCRIPTION_SUCCESS'                     => "The Newsletter subscription was successful.",
 'MESSAGE_NOT_ABLE_SEND_CONFIRMATION_EMAIL'                    => "Unfortunately we were not able to send you a Newsletter activation e-mail.<br>Please verify your e-mail address.<br>",
 'MESSAGE_NOT_ABLE_TO_SEND_EMAIL'                              => "Unfortunately we were not able to send you an e-mail.",

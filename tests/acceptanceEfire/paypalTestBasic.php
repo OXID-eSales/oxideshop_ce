@@ -73,6 +73,12 @@ class AcceptanceEfire_paypalTestBasic extends oxidAdditionalSeleniumFunctions
      */
     public function testActivatePaypal()
     {
+        //copy module files to shop
+        $sModuleDir = MODULE_PKG_DIR;
+        $sCopyDir = rtrim($sModuleDir, "/") . "/copy_this";
+        $this->copyFile( $sCopyDir, oxPATH );
+        $sCopyDir = rtrim($sModuleDir, "/") . "/changed_full";
+        $this->copyFile( $sCopyDir, oxPATH );
         $this->open(shopURL."_prepareDB.php?version=".$this->_sVersion.'&theme=basic');
         $this->open(shopURL."admin");
         $this->loginAdminForModule("Extensions", "Modules");

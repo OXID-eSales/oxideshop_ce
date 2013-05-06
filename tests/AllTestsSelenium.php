@@ -50,6 +50,9 @@ if (getenv('OXID_LOCALE') == 'international') {
 } else {
     define ('oxTESTSUITEDIR', 'acceptance');
 }
+if (getenv('MODULE_PKG_DIR')) {
+    define ('MODULE_PKG_DIR', getenv('MODULE_PKG_DIR'));
+}
 
 if (getenv('oxSKIPSHOPSETUP') == 1) {
     define ('SKIPSHOPSETUP', true);

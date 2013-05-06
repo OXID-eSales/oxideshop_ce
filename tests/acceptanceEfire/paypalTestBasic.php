@@ -26,10 +26,12 @@ require_once 'acceptance/oxidAdditionalSeleniumFunctions.php';
 
 class AcceptanceEfire_paypalTestBasic extends oxidAdditionalSeleniumFunctions
 {
+    protected $_sVersion = "EE";
 
     protected function setUp($skipDemoData=false)
     {
         parent::setUp(false);
+
             $this->_sVersion = "CE";
     }
 

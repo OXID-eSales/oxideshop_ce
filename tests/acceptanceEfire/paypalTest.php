@@ -797,7 +797,9 @@ class AcceptanceEfire_paypalTest extends oxidAdditionalSeleniumFunctions
         $this->click("id=continue");
         $this->assertEquals("Ihre Zahlungsinformationen auf einen Blick - PayPal", $this->getTitle());
         $this->assertTrue($this->isTextPresent("PayPal"),"Payment method not displayed in last order step");
+        sleep(3);
         $this->clickAndWait("//button[text()='Purchase']");
+        sleep(3);
         $this->assertTrue($this->isTextPresent("Thank you for your order in OXID eShop"), "Order is not finished successful");
 
     }

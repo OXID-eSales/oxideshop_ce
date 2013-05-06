@@ -65,6 +65,27 @@ class AcceptanceEfire_paypalTestBasic extends oxidAdditionalSeleniumFunctions
 
         curl_close($ch);
     }
+
+    /**
+     * Copy files to shop
+     *
+     * @param string $sCopyDir copy dir
+     * @param string $sShopDir shop dir
+     *
+     * @return void
+     */
+    public function copyFile($sCopyDir, $sShopDir)
+    {
+        $sCmd = "cp -frT ".escapeshellarg($sCopyDir)." ".escapeshellarg($sShopDir);
+        if (SHOP_REMOTE) {
+            $sCmd = "scp -rp ".escapeshellarg($sCopyDir."/.")." ".escapeshellarg(SHOP_REMOTE);
+        }
+        exec($sCmd, $sOut, $ret);
+        $sOut = implode("\n",$sOut);
+        if ( $ret > 0 ) {
+            throw new Exception( $sOut );
+        }
+    }
     // ------------------------ eFire modules for eShop ----------------------------------
 
     /**

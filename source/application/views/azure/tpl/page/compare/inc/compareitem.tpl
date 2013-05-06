@@ -111,7 +111,7 @@
                     [{oxhasrights ident="TOBASKET"}]
                         <p class="fn clear">
                             <input type="text" name="am" value="1" size="3" autocomplete="off" class="textbox" title="[{ oxmultilang ident="QUANTITY" suffix="COLON" }]">
-                            <button type="submit" class="submitButton largeButton">[{oxmultilang ident="ADD_TO_CART"}]</button>
+                            <button type="submit" class="submitButton largeButton">[{oxmultilang ident="TO_CART"}]</button>
                         </p>
                     [{/oxhasrights}]
                 [{else}]

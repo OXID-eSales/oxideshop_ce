@@ -147,7 +147,7 @@
                     [{if $blShowToBasket }]
                         [{oxhasrights ident="TOBASKET"}]
                             <input id="amountToBasket_[{$testid}]" type="text" name="am" value="1" size="3" autocomplete="off" class="textbox">
-                            <button id="toBasket_[{$testid}]" type="submit" class="submitButton largeButton">[{oxmultilang ident="ADD_TO_CART"}]</button>
+                            <button id="toBasket_[{$testid}]" type="submit" class="submitButton largeButton">[{oxmultilang ident="TO_CART"}]</button>
                         [{/oxhasrights}]
                     [{else}]
                         <a class="submitButton largeButton" href="[{ $_productLink }]" >[{ oxmultilang ident="MORE_INFO" }]</a>

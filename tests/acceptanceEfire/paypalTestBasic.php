@@ -126,7 +126,7 @@ class AcceptanceEfire_paypalTestBasic extends oxidAdditionalSeleniumFunctions
         //$this->waitForText("Lieferadresse", false, 120);
         $this->clickAndWait("continue");
         //$this->waitForTextDisappear("Lieferadresse auswählen");
-        $this->assertEquals("0,01 €", $this->getText("test_orderGrandTotal"));
+        $this->assertEquals("0,99 €", $this->getText("test_orderGrandTotal"));
         $this->assertEquals("PayPal", $this->getText("test_orderPayment"));
         $this->assertEquals("Test S&H set", $this->getText("test_orderShipping"));
         $this->assertEquals("Rechnungsadresse E-Mail: birute_test@nfq.lt SeleniumTestCase Äß'ü Herr Testing user acc Äß'ü PayPal Äß'ü Testing acc for Selenium Musterstr. Äß'ü 1 79098 Musterstadt Äß'ü Deutschland", $this->clearString($this->getText("test_orderBillAdress")));

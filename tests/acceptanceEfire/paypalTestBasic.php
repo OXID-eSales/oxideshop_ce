@@ -222,7 +222,7 @@ class AcceptanceEfire_paypalTestBasic extends oxidAdditionalSeleniumFunctions
        // $this->waitForTextDisappear("Lieferadresse");
         //switching possible deliveySets
         $this->assertEquals("PayPal", $this->getText("test_orderPayment"));
-        $this->assertEquals("0,01 €", $this->getText("test_orderGrandTotal"));
+        $this->assertEquals("0,99 €", $this->getText("test_orderGrandTotal"));
     }
 
     /*

@@ -19,7 +19,6 @@
  * @package   core
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -1690,14 +1689,14 @@ class oxBasket extends oxSuperCfg
     }
 
     /**
-     * Formatting discounts
+     * Formating discounts
      *
      * @return null
      */
     protected function formatDiscount()
     {
         // discount information
-        // formatting discount value
+        // formating discount value
         $this->aDiscounts = $this->getDiscounts();
         if ( count($this->aDiscounts) > 0 ) {
             $oLang = oxRegistry::getLang();
@@ -2119,9 +2118,9 @@ class oxBasket extends oxSuperCfg
     }
 
     /**
-     * Returns array of plain of formatted VATs which were calculated for basket
+     * Returns array of palain of formatted VATs which were calculated for basket
      *
-     * @param bool $blFormatCurrency enables currency formatting
+     * @param bool $blFormatCurrency enambles currency formating
      *
      * @return array
      */

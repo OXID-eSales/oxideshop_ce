@@ -2318,7 +2318,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
                 return $iOnStock;
             } else {
                 $oEx = oxNew( 'oxArticleInputException' );
-                $oEx->setMessage( 'EXCEPTION_ARTICLE_ARTICELNOTBUYABLE' );
+                $oEx->setMessage( 'ERROR_MESSAGE_ARTICLE_ARTICLE_NOT_BUYABLE' );
                 oxRegistry::get("oxUtilsView")->addErrorToDisplay( $oEx );
                 return false;
             }

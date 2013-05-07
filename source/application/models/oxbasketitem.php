@@ -19,7 +19,6 @@
  * @package   core
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -488,7 +487,7 @@ class oxBasketItem extends oxSuperCfg
             // cant put not buyable product to basket
             if ( $blCheckProduct && !$this->_oArticle->isBuyable() ) {
                 $oEx = oxNew( 'oxArticleInputException' );
-                $oEx->setMessage( 'EXCEPTION_ARTICLE_ARTICELNOTBUYABLE' );
+                $oEx->setMessage( 'ERROR_MESSAGE_ARTICLE_ARTICLE_NOT_BUYABLE' );
                 $oEx->setArticleNr( $sProductId );
                 $oEx->setProductId( $sProductId );
                 throw $oEx;

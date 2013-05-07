@@ -106,7 +106,7 @@ class oxActions extends oxI18n
         }
 
 
-        // remove actionss from articles also
+        // remove actions from articles also
         $oDb = oxDb::getDb();
         $sDelete = "delete from oxactions2article where oxactionid = ".$oDb->quote($sOxId)." and oxshopid = '" . $this->getShopId() . "'";
         $oDb->execute( $sDelete );
@@ -264,7 +264,7 @@ class oxActions extends oxI18n
             }
             return  oxRegistry::get("oxUtilsUrl")->processUrl( $sUrl );
         } else {
-            // if article is assinged to banner, getting article link
+            // if article is assigned to banner, getting article link
             if ( $oArticle = $this->getBannerArticle() ) {
                 return $oArticle->getLink();
             }

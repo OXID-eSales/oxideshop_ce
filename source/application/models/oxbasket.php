@@ -128,14 +128,14 @@ class oxBasket extends oxSuperCfg
     protected $_aCosts = array();
 
     /**
-     * Sum price of articles applicapable to discounts
+     * Sum price of articles applicable to discounts
      *
      * @var oxPrice
      */
     protected $_oDiscountProductsPriceList = null;
 
     /**
-     * Sum price of articles not applicapable to discounts
+     * Sum price of articles not applicable to discounts
      *
      * @var oxPrice
      */
@@ -149,7 +149,7 @@ class oxBasket extends oxSuperCfg
     protected $_blUpdateNeeded = true;
 
     /**
-     * oxbasket summary object, usually used for discount calcualtions etc
+     * oxBasket summary object, usually used for discount calculations etc
      *
      * @var array
      */
@@ -385,15 +385,15 @@ class oxBasket extends oxSuperCfg
     }
 
     /**
-     * Adds user item to basket. Returns oxbasketitem object if adding succeded
+     * Adds user item to basket. Returns oxBasketItem object if adding succeeded
      *
      * @param string $sProductID       id of product
      * @param double $dAmount          product amount
-     * @param array  $aSel             product select lists (default null)
-     * @param array  $aPersParam       product persistent parameters (default null)
-     * @param bool   $blOverride       marker to acumulate passed amount or renew (default false)
+     * @param mixed  $aSel             product select lists (default null)
+     * @param mixed  $aPersParam       product persistent parameters (default null)
+     * @param bool   $blOverride       marker to accumulate passed amount or renew (default false)
      * @param bool   $blBundle         marker if product is bundle or not (default false)
-     * @param string $sOldBasketItemId id if old basket item if to change it
+     * @param mixed $sOldBasketItemId id if old basket item if to change it
      *
      * @throws oxOutOfStockException oxArticleInputException, oxNoArticleException
      *
@@ -431,7 +431,7 @@ class oxBasket extends oxSuperCfg
         // after some checks item must be removed from basket
         $blRemoveItem = false;
 
-        // initialting exception storage
+        // initialling exception storage
         $oEx = null;
 
         if ( isset( $this->_aBasketContents[$sItemId] ) ) {
@@ -1000,7 +1000,7 @@ class oxBasket extends oxSuperCfg
 
  //P
     /**
-     * Performs final sum calculations and roundings.
+     * Performs final sum calculation and rounding.
      *
      * @return null
      *
@@ -1118,20 +1118,20 @@ class oxBasket extends oxSuperCfg
                                 }
                             }
 
-                            // applay discout to vat
+                            // apply discount to vat
                             foreach ( $this->_aDiscountedVats as $sKey => $dVat ) {
                                 $this->_aDiscountedVats[$sKey] = oxPrice::percent( $dVat, $dVatPart);
                             }
                         }
 
-                        // acumulating discount value
+                        // accumulating discount value
                         $this->_oVoucherDiscount->add( $dVoucherdiscount );
 
                         // collecting formatted for preview
                         $oStdVoucher->fVoucherdiscount = $oLang->formatCurrency( $dVoucherdiscount, $this->getBasketCurrency() );
                         $oStdVoucher->dVoucherdiscount = $dVoucherdiscount;
 
-                        // substracting voucher discount
+                        // subtracting voucher discount
                         $dPrice = $dPrice - $dVoucherdiscount;
 
 
@@ -1184,7 +1184,7 @@ class oxBasket extends oxSuperCfg
         }
     }
     /**
-     * Retruns true if view mode is netto
+     * Returns true if view mode is netto
      *
      * @return bool
      */
@@ -1264,21 +1264,21 @@ class oxBasket extends oxSuperCfg
 
             $dVatPart = 100 - $oDiscount->getPercentage( $dOldprice );
 
-            // if discoount is more than basket sum
+            // if discount is more than basket sum
             if ( $dOldprice < $oStdDiscount->dDiscount ) {
                 $oStdDiscount->dDiscount = $dOldprice;
                 $dVatPart = 0;
             }
 
-            // applay discout to vat
+            // apply discount to vat
             foreach ( $this->_aDiscountedVats as $sKey => $dVat ) {
                 $this->_aDiscountedVats[$sKey] = oxPrice::percent( $dVat, $dVatPart);
             }
 
-            //storring discount
+            //storing discount
             if ($oStdDiscount->dDiscount != 0) {
                 $this->_aDiscounts[$oDiscount->getId()] = $oStdDiscount;
-                // substracting product price after discount
+                // subtracting product price after discount
                 $dOldprice = $dOldprice - $oStdDiscount->dDiscount;
             }
         }
@@ -1501,7 +1501,7 @@ class oxBasket extends oxSuperCfg
         //  9.1: delivery
         $this->setCost( 'oxdelivery', $this->_calcDeliveryCost() );
 
-        //  9.2: adding wrapping and giftcard costs
+        //  9.2: adding wrapping and gift card costs
         $this->setCost( 'oxwrapping', $this->_calcBasketWrapping() );
 
         $this->setCost( 'oxgiftcard', $this->_calcBasketGiftCard() );
@@ -1515,7 +1515,7 @@ class oxBasket extends oxSuperCfg
         //  10. calculate total price
         $this->_calcTotalPrice();
 
-        //  11. formating discounts
+        //  11. formatting discounts
         $this->formatDiscount();
 
         //  12.setting to up-to-date status
@@ -1655,7 +1655,7 @@ class oxBasket extends oxSuperCfg
     }
 
     /**
-     * Removes voucher from basket and unreserves it.
+     * Removes voucher from basket and unreserved it.
      *
      * @param string $sVoucherId removable voucher ID
      *

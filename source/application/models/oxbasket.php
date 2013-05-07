@@ -1690,14 +1690,14 @@ class oxBasket extends oxSuperCfg
     }
 
     /**
-     * Formating discounts
+     * Formatting discounts
      *
      * @return null
      */
     protected function formatDiscount()
     {
         // discount information
-        // formating discount value
+        // formatting discount value
         $this->aDiscounts = $this->getDiscounts();
         if ( count($this->aDiscounts) > 0 ) {
             $oLang = oxRegistry::getLang();
@@ -2119,9 +2119,9 @@ class oxBasket extends oxSuperCfg
     }
 
     /**
-     * Returns array of palain of formatted VATs which were calculated for basket
+     * Returns array of plain of formatted VATs which were calculated for basket
      *
-     * @param bool $blFormatCurrency enambles currency formating
+     * @param bool $blFormatCurrency enables currency formatting
      *
      * @return array
      */

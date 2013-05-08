@@ -63,7 +63,7 @@ class oxFile extends oxBase
     protected $_blIsPaid = null;
 
     /**
-     * Full URL wher article could be downloaded from.
+     * Full URL where article could be downloaded from.
      * Is set to false in case download is not available for current user
      *
      * @var string|bool
@@ -87,7 +87,6 @@ class oxFile extends oxBase
     /**
      * Initialises the instance
      *
-     * @return null
      */
     public function __construct()
     {
@@ -179,7 +178,7 @@ class oxFile extends oxBase
     }
 
     /**
-     * Returns relative file path from oxconfig 'sDownloadsDir' variable.
+     * Returns relative file path from oxConfig 'sDownloadsDir' variable.
      *
      * @return string
      */
@@ -297,7 +296,7 @@ class oxFile extends oxBase
 
     /**
      * Checks if file is not used for  other objects.
-     * If not used, unlinks the file.
+     * If not used, unlink the file.
      *
      * @return null
      */
@@ -357,7 +356,7 @@ class oxFile extends oxBase
     }
 
     /**
-     * Checks if this file hase valid ordered downloads
+     * Checks if this file has valid ordered downloads
      *
      * @return bool
      */

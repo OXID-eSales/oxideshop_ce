@@ -46,7 +46,7 @@ class oxNewslist extends oxList
      * Loads news stored in DB, filtered by user groups, returns array, filled with
      * objects, that keeps news data.
      *
-     * @param integer $iFrom  number from wich start selecting
+     * @param integer $iFrom  number from which start selecting
      * @param integer $iLimit Limit of records to fetch from DB(default 0)
      *
      * @return array

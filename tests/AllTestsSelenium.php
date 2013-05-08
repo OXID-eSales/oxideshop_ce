@@ -54,6 +54,10 @@ if (getenv('MODULE_PKG_DIR')) {
     define ('MODULE_PKG_DIR', getenv('MODULE_PKG_DIR'));
 }
 
+if (getenv('SHOP_REMOTE')) {
+    define ('SHOP_REMOTE', getenv('SHOP_REMOTE'));
+}
+
 if (getenv('oxSKIPSHOPSETUP') == 1) {
     define ('SKIPSHOPSETUP', true);
 } else {

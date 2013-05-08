@@ -95,7 +95,6 @@ $aLang = array(
 'GENERAL_ARTICLE_OXVAT'                                    => 'Artikel MwSt.',
 'GENERAL_ARTICLE_OXTHUMB'                                  => 'Vorschaubild',
 'GENERAL_ARTICLE_OXICON'                                   => 'Icon',
-'GENERAL_ARTICLE_OXPICSGENERATED'                          => 'Bilder erzeugt',
 'GENERAL_ARTICLE_PICTURES'                                 => 'Artikelbilder',
 'GENERAL_ARTICLE_OXPIC1'                                   => 'Bild1',
 'GENERAL_ARTICLE_OXPIC2'                                   => 'Bild2',

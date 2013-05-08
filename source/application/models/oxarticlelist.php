@@ -964,7 +964,7 @@ class oxArticleList extends oxList
 
             $blUpdated = $oDb->execute( $sQ );
 
-            // updates oxvarmin and oxvarmax fields from oxartciles with no children and no parents
+            // updates oxvarminprice and oxvarmaxprice fields from oxArticles with no children
             $sQ = "UPDATE `oxarticles`
                     LEFT JOIN `oxarticles` AS `oxarticles_1` ON `oxarticles`.`oxid` = `oxarticles_1`.`oxparentid`
                                       SET

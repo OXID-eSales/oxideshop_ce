@@ -242,7 +242,7 @@ class Unit_Admin_ArticleFilesTest extends OxidTestCase
         $oView->upload();
         $aErr = oxSession::getVar( 'Errors' );
         $oErr = unserialize($aErr['default'][0]);
-        $this->assertEquals( 'Keine Datei hochgeladen', $oErr->getOxMessage());
+        $this->assertEquals( 'Keine Dateien hochgeladen', $oErr->getOxMessage());
 
     }
 
@@ -268,7 +268,7 @@ class Unit_Admin_ArticleFilesTest extends OxidTestCase
         $this->setAdminMode( true );
         $aErr = oxSession::getVar( 'Errors' );
         $oErr = unserialize($aErr['default'][0]);
-        $this->assertEquals( 'Keine Datei hochgeladen', $oErr->getOxMessage());
+        $this->assertEquals( 'Keine Dateien hochgeladen', $oErr->getOxMessage());
 
     }
 

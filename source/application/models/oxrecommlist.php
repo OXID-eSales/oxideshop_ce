@@ -225,8 +225,8 @@ class oxRecommList extends oxBase implements oxIUrl
     }
 
     /**
-     * get recommendation lists wich include given article ids
-     * also sort these lists by these criterias:
+     * get recommendation lists which include given article ids
+     * also sort these lists by these criteria:
      *     1. show lists, that has more requested articles first
      *     2. show lists, that have more any articles
      *

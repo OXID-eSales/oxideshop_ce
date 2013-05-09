@@ -8,6 +8,7 @@
 </form>
 
 [{if $oTheme}]
+[{block name="admin_theme_main_form"}]
 <table cellspacing="10" width="98%">
     <tr>
         <td width="20%" valign="top"><img src="[{ $oViewConf->getBaseDir() }]/out/[{$oTheme->getInfo('id')}]/[{$oTheme->getInfo('thumbnail')}]" hspace="20" vspace="10"></td>
@@ -55,6 +56,7 @@
         [{/if}]
     </tr>
 </table>
+[{/block}]
 [{/if}]
 
 [{include file="bottomnaviitem.tpl"}]

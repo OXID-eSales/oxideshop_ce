@@ -214,7 +214,7 @@ class oxPricealarm extends oxBase
     }
 
     /**
-     * Returns formated proposed price
+     * Returns formatted proposed price
      *
      * @return string
      */

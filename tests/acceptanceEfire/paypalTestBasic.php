@@ -188,11 +188,11 @@ class AcceptanceEfire_paypalTestBasic extends oxidAdditionalSeleniumFunctions
         $this->clickAndWait("test_searchGo");
         $this->clickAndWait("test_toBasket_Search_1001");
         $this->clickAndWait("test_RightBasketOpen");
-        $this->assertTrue($this->isElementPresent("//input[@class='paypalbutton']"));
+        $this->assertTrue($this->isElementPresent("//input[@class='paypalExpressCheckoutSubmitButton']"));
         $this->type("test_RightLogin_Email", "birute_test@nfq.lt");
         $this->type("test_RightLogin_Pwd", "useruser");
         $this->clickAndWait("test_RightLogin_Login");
-        $this->assertTrue($this->isElementPresent("//input[@class='paypalbutton']"));
+        $this->assertTrue($this->isElementPresent("//input[@class='paypalExpressCheckoutSubmitButton']"));
         $this->clickAndWait("submit");
         $this->type("login_email", "buyger_1346652948_pre@gmail.com");
         $this->type("login_password", "xxxxxxxxx");
@@ -270,11 +270,11 @@ class AcceptanceEfire_paypalTestBasic extends oxidAdditionalSeleniumFunctions
     	$this->clickAndWait("test_searchGo");
     	$this->clickAndWait("test_toBasket_Search_1001");
     	$this->clickAndWait("test_RightBasketOpen");
-    	$this->assertFalse($this->isElementPresent("//input[@class='paypalbutton']"));
+    	$this->assertFalse($this->isElementPresent("//input[@class='paypalExpressCheckoutSubmitButton']"));
     	$this->type("test_RightLogin_Email", "birute_test@nfq.lt");
     	$this->type("test_RightLogin_Pwd", "useruser");
     	$this->clickAndWait("test_RightLogin_Login");
-    	$this->assertFalse($this->isElementPresent("//input[@class='paypalbutton']"));
+    	$this->assertFalse($this->isElementPresent("//input[@class='paypalExpressCheckoutSubmitButton']"));
 
     }
 }

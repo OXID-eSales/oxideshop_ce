@@ -439,7 +439,7 @@ class aList extends oxUBase
      *
      * @param string $sMeta     category path
      * @param int    $iLength   max length of result, -1 for no truncation
-     * @param bool   $blDescTag if true - performs additional dublicate cleaning
+     * @param bool   $blDescTag if true - performs additional duplicate cleaning
      *
      * @return  string  $sString    converted string
      */

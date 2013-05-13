@@ -39,6 +39,6 @@ Also, please provide PHP unit tests for your code.
 When sending your pull request, please provide a clear, meaningful and detailed information about what your code is about and what it will do, best including a screen shot if possible.
 If you want to discuss your contribution and your code before committing it, please go to the dev-general mailing list: http://lists.oxidforge.org/mailman/listinfo/dev-general.
 
-####Useful links:
-Project home page - http://www.oxid-esales.com
+Useful links:<br>
+Project home page - http://www.oxid-esales.com<br>
 Wiki - http://www.oxidforge.org

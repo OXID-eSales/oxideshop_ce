@@ -23,15 +23,15 @@ That's why, before contributing for the first time, you must send the filled for
 information about it on the FAQ page OXID Contribution and Contributor Agreement FAQ
 http://wiki.oxidforge.org/OXID_Contribution_and_Contributor_Agreement_FAQ
 
-Process:
+Process:<br>
 First off, you have to fork the repository OXID-eSales/oxideshop_ce to your list of repositories. Change whatever you want and push it back to the original repository. Now you'll be asked for signing an OXID Contributor Agreement (this has to be done once). After that we can start checking your code. In every case, whether or not we could take your over your contribution, you'll be informed.
 
-![Image alt](https://raw.github.com/OXID-eSales/oxideshop_ce/master/git_contributor-activity.png)
+![Image alt](git_contributor-activity.png)
 
 You will find technical help with Git and GitHub on this place:
 Please refer to https://help.github.com/
 
-Code quality:
+Code quality:<br>
 We are still working on providing OXID specific code guidlines and tutorials to you. Until this, we propose to refer to 
 http://framework.zend.com/manual/1.12/en/coding-standard.coding-style.html
 Also, please provide PHP unit tests for your code.
@@ -39,6 +39,6 @@ Also, please provide PHP unit tests for your code.
 When sending your pull request, please provide a clear, meaningful and detailed information about what your code is about and what it will do, best including a screen shot if possible.
 If you want to discuss your contribution and your code before committing it, please go to the dev-general mailing list: http://lists.oxidforge.org/mailman/listinfo/dev-general.
 
-Useful links:
+####Useful links:
 Project home page - http://www.oxid-esales.com
 Wiki - http://www.oxidforge.org

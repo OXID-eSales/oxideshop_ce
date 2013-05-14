@@ -34,7 +34,7 @@ Please refer to https://help.github.com/
 Code quality:
 We are still working on providing OXID specific code guidlines and tutorials to you. Until this, we propose to refer to 
 http://framework.zend.com/manual/1.12/en/coding-standard.coding-style.html
-Also, please provide PHP unit tests for your code.
+Also, please provide PHP Unit tests for your code.
 
 When sending your pull request, please provide a clear, meaningful and detailed information about what your code is about and what it will do, best including a screen shot if possible.
 If you want to discuss your contribution and your code before committing it, please go to the dev-general mailing list: http://lists.oxidforge.org/mailman/listinfo/dev-general.

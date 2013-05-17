@@ -19,7 +19,6 @@
  * @package   core
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -492,7 +491,7 @@ class oxLang extends oxSuperCfg
         $iLang   = isset( $iLang ) ? $iLang : $this->getTplLanguage();
         $blAdmin = isset( $blAdmin ) ? $blAdmin : $this->isAdmin();
 
-        // checking if in cash exist
+        // checking if exists in cache
         $aLang = $this->_getLangTranslationArray( $iLang, $blAdmin );
         $aSimilarConst = $this->_collectSimilar( $aLang, $sKey );
 

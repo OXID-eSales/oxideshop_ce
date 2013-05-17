@@ -1,2 +1,0 @@
-oxexceptionhandler.php
-	-  public function __call( $sMethod, $aArgs) - truksta testavimo, kai kvieciamas neegzistuojantis/nepasiekiamas metodas

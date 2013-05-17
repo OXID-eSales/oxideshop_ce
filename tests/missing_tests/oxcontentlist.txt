@@ -1,3 +1,0 @@
-oxcontentlist.php
-	* funkcija protected function _loadMenue( $iType, $sSQLAdd = null )     neturi savo unit testo
-	

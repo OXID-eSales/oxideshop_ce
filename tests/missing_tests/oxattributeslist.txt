@@ -1,3 +1,0 @@
-oxattributeslist.php
-	* funkcija loadAttributesByIds( $aIds) testuoti kuomet paduodamas id masyvas yra is daugiau nei 1 elemento
-	* funkcija protected function _createAttributeListFromSql( $sSelect) neturi savo unit testu

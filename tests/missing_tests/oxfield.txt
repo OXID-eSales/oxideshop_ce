@@ -1,9 +1,0 @@
-oxfield.php
-	* nera unit testo funkcijai protected function _initValue( $value = null, $type = self::T_TEXT)         
-	* funkcijos __toString()  komentaruose nurodyta: TODO: remove this. Pasalinti?
-    * funkcija public function __get( $sName )      neturi savo unit testu
-	* testai public function test_construct() ir public function test__getValue_setValue() yra beveik identiski (getValue_setValue testas turi 1 eilute daugiau). taip neturetu buti. Arba reikia testuoti skirtingus dalykus, arba apjungti i viena testa
-	* teste testConvertToFormattedDbDate() salyga if ( oxLang::getInstance()->getBaseLanguage() == 1 ) nera vykdoma, nes niekur nenustatoma 1 kalba. turetu buti testuojama tiek su 0 kalba, tiek ir su 1 kalba
-	* uzkomentuoti testai testSetValue_inAdmin() ir testSetValue_inNonAdmin(). kodel? jei nebereikalingi - istrinti. jei neveikia - pataisyti
-	* testuojant funkcija getRawValue()  netestuojamas atvejis, kuomet null === $this->rawValue
-	

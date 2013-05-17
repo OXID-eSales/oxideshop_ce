@@ -1,2 +1,0 @@
-SpellCheck plugins control where the spellchecker gets its spelling suggestions from.
-You may create your own plugins. Take a look at the included plugins to see how they work.

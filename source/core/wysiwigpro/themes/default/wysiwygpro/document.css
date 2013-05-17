@@ -1,9 +1,0 @@
-/* styles for displaying theme specific table borders and other guidelines */
-@media screen,projection {
-	a.wproGuide, a.wpguide {
-		background-image: url(buttons/bookmark.gif);
-	}
-	img.wproFilePlugin {
-		background: #cccccc url(misc/media48.gif) no-repeat center center;
-	}
-}

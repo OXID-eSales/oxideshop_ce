@@ -1,4 +1,0 @@
-oxvoucher.php
-	- testuoti kuomet i viena orderi bandoma ideti kelis voucherius:
-		* kai visi voucheriai galimi viename orderyje
-		* kai pirmas voucheris sekmingai priimamas, o antro voucherio ideti negalima del apribojimu (ta pati serija, kita serija, kitas orderis, minimali suma, vartotojo grupes, vartotojai)

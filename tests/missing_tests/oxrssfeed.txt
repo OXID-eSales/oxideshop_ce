@@ -1,3 +1,0 @@
-oxrssfeed.php
-	- nera unit testu funkcijai protected function _getCatPath
-	- funkcijos _loadData testavimo metu ivertinti atveji, kai $sTargetUrl = null

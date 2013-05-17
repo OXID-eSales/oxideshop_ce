@@ -1,3 +1,0 @@
-@php  -f c:\htdocs\oxideshop\eshop\trunk\eshop\library\Sniffer\phpcs -- -n --version
-@php  -d display_errors=0 -d include_path=.;c:\htdocs\oxideshop\eshop\trunk\eshop\library\Sniffer\PHP\CodeSniffer;c:\htdocs\oxideshop\eshop\trunk\eshop\library -f c:\htdocs\oxideshop\eshop\trunk\eshop\library\Sniffer\phpcs -- -n --standard=Oxid --report=xml --ignore=*/phpdtaus/*,*/ERP/*,*/wysiwigpro/*,*/smarty/*,*/adodblite/*,*/ccval/*,*/tcpdf/*,*/phpmailer/*,*/emailvalidation/*,*/openid/*,*/jpgraph/*,*/facebook/*  D:\Dev\htdocs\eshop\trunk\eshop\source\core\%1 %2 %3 %4 %5 > c:\htdocs\oxideshop\eshop\trunk\eshop\library\Sniffer\result.xml
-@echo Done..

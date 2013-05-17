@@ -1,4 +1,0 @@
-oxuserpayment.php
-	- testavimo pilnumui uztikrinti funkcija public function getPaymentByPaymentType( $oUser = null, $sPaymentType = null ) reiketu testuoti ir su:
-		* getPaymentByPaymentType( $oUser)	(kai payment nenurodytas/null)
-		* getPaymentByPaymentType()			(kai nei user nei payment nenurodyti/null)

@@ -1,3 +1,0 @@
-oxpaymentlist.php
-	* funkcija public static function getInstance()     neturi savo unit testo
-	

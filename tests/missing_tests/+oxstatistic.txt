@@ -1,2 +1,0 @@
-oxstatistic.php
-	* visai netestuojama protected function _setFieldData( $sFieldName, $sValue, $iDataType = oxField::T_TEXT ) 

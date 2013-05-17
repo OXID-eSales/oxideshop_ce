@@ -1,4 +1,0 @@
--oxuserbasketitem.php
-	* demoduomenyse sukuriame 2 oxselectlist. abiejuose yra dabar abs kainos. viename is ju reiketu naudoti %
-	* funkcija protected function _setFieldData( $sFieldName, $sValue, $iDataType = oxField::T_TEXT) niekur netestuojama perduodant ir trecia galima kintamaji kitoki
-	* funkcija protected function _setFieldData( $sFieldName, $sValue, $iDataType = oxField::T_TEXT) reiketu testuoti ir su tokiais duomenimis, kai salyga if ('oxsellist' === strtolower($sFieldName) || 'oxuserbasketitems__oxsellist' === strtolower($sFieldName)) yra false

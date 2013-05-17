@@ -1,3 +1,0 @@
-oxvoucherserie.php
-	- reiketu papildyti demo data ir testuose taip pat naudoti serija kuponu, kur nuolaida yra % (dabar testuojama tik su abs)
-	- bent vienas is demo duomenu kuponu turetu buti pazymetas kaip 'used'

@@ -1,1 +1,0 @@
-This sample will show how to create a dynamic client/service using JAX-WS.

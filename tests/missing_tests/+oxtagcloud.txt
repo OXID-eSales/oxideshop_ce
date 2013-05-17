@@ -1,6 +1,0 @@
--oxtagcloud.php
-	* visai netestuojama public static function generateTagsFromLongDescription($iLang = 0)     
-	* berods netestuojamas atvejis, kuomet nera/nerandama nei vieno tag
-	* salyga if ($sTagCloud) { return $sTagCloud; } is funkcijos getTagCloud niekada negauna true reiksmes
-	* del testu pilnumo truksta funkcijos getTags testavimo, kai paduodamas ir produkto nr ir $blExtended = true
-	

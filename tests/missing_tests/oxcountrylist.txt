@@ -1,2 +1,0 @@
-oxcountrylist.php
-	* oxcountrylitTest teste testuojama funkcija testSelectString, kurios oxcountrylist klaseje nera. kodel?

@@ -1,3 +1,0 @@
-oxrole.php
-	- oxrole klaseje delete funkcijoje trinama ir is oxobjectrights db lenteles. taciau testuose nei demo duomenys, nei assert jai netaikomi ?
-	- delete funkcija galima kviesti ir nurodant $sOxid, taciau testuose visur kvieciama tik delete(). reiketu testcase, kai perduodamas kintamasis.

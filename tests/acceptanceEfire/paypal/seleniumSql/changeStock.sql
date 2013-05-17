@@ -1,1 +1,0 @@
-UPDATE `oxarticles` SET `OXSTOCK` = '1' WHERE `oxarticles`.`OXARTNUM` = '1001';

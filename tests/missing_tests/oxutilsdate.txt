@@ -1,5 +1,0 @@
-oxutilsdate.php
-	* visai netestuojama if ( !self::$_instance instanceof oxUtilsDate ) salyga funkcijoje public static function getInstance()    
-	* funkcijai protected function _processDate( $aTime, $aDate, $blGerman, $sFormat )     nera unit testu
-	
-	

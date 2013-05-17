@@ -1,3 +1,0 @@
-oxdiscountlist.php
-	* funkcija protected function _getList( $oUser = null )  netestuojama kuomet if ( $this->_blReload || $sUserId !== $this->_sUserId ) salyga yra false
-	* funkcija  protected function _getFilterSelect( $oUser ) netestuojama kuomet vartotojas nepriklauso jokiai grupei

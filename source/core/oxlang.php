@@ -492,7 +492,7 @@ class oxLang extends oxSuperCfg
         $iLang   = isset( $iLang ) ? $iLang : $this->getTplLanguage();
         $blAdmin = isset( $blAdmin ) ? $blAdmin : $this->isAdmin();
 
-        // checking if in cash exist
+        // checking if exists in cache
         $aLang = $this->_getLangTranslationArray( $iLang, $blAdmin );
         $aSimilarConst = $this->_collectSimilar( $aLang, $sKey );
 

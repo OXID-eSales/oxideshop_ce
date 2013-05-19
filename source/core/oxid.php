@@ -32,7 +32,7 @@ class Oxid
      *
      * @static
      *
-     * @return int
+     * @return void
      */
     static public function run()
     {
@@ -45,7 +45,7 @@ class Oxid
      *
      * @static
      *
-     * @return int
+     * @return void
      */
     static public function runWidget()
     {

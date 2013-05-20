@@ -51,10 +51,10 @@ if (getenv('oxADMIN_PASSWD')) {
 if ( getenv('CODECOVERAGE') && isset(PHPUnit_Util_Filter::$addUncoveredFilesFromWhitelist) ) {
 
     // PHPUnit_Util_Filter configuration
-    PHPUnit_Util_Filter::$addUncoveredFilesFromWhitelist = true;
-    /*
+    /*PHPUnit_Util_Filter::$addUncoveredFilesFromWhitelist = true;
+
     PHPUnit_Util_Filter::addDirectoryToFilter(oxPATH);
-    */
+
 
     //PHPUnit_Util_Filter::addDirectoryToWhitelist(oxPATH.'/admin');
     PHPUnit_Util_Filter::addDirectoryToWhitelist(oxPATH.'/core');
@@ -66,6 +66,7 @@ if ( getenv('CODECOVERAGE') && isset(PHPUnit_Util_Filter::$addUncoveredFilesFrom
         PHPUnit_Util_Filter::removeDirectoryFromWhitelist(oxPATH.'/core/phpdtaus/');
         PHPUnit_Util_Filter::removeDirectoryFromWhitelist(oxPATH.'/core/jpgraph/');
         PHPUnit_Util_Filter::removeDirectoryFromWhitelist(oxPATH.'/application/controllers/admin/reports/');
+
     //PHPUnit_Util_Filter::removeDirectoryFromWhitelist(oxPATH.'/core/openid/');
     PHPUnit_Util_Filter::removeDirectoryFromWhitelist(oxPATH.'/core/adodblite/');
     PHPUnit_Util_Filter::removeDirectoryFromWhitelist(oxPATH.'/core/tcpdf/');
@@ -78,15 +79,16 @@ if ( getenv('CODECOVERAGE') && isset(PHPUnit_Util_Filter::$addUncoveredFilesFrom
     PHPUnit_Util_Filter::removeDirectoryFromWhitelist(oxPATH.'/tmp/');
     PHPUnit_Util_Filter::removeDirectoryFromWhitelist(oxPATH.'/core/objects/');
 
-    PHPUnit_Util_Filter::removeFileFromWhitelist(oxPATH.'/admin/index.php');
+    /*PHPUnit_Util_Filter::removeFileFromWhitelist(oxPATH.'/admin/index.php');
     PHPUnit_Util_Filter::removeFileFromWhitelist(oxPATH.'/core/oxerpbase.php');
     PHPUnit_Util_Filter::removeFileFromWhitelist(oxPATH.'/core/oxerpcsv.php');
+    */
     //PHPUnit_Util_Filter::removeFileFromWhitelist(oxPATH.'/core/oxopeniddb.php');
     //PHPUnit_Util_Filter::removeFileFromWhitelist(oxPATH.'/core/oxopenidhttpfetcher.php');
     //PHPUnit_Util_Filter::removeFileFromWhitelist(oxPATH.'/core/oxopenidgenericconsumer.php');
 
 
-
+/*
     // add separate files
     PHPUnit_Util_Filter::addFileToWhitelist(oxPATH.'/core/smarty/plugins/block.oxhasrights.php');
     PHPUnit_Util_Filter::addFileToWhitelist(oxPATH.'/core/smarty/plugins/emos.php');
@@ -114,6 +116,7 @@ if ( getenv('CODECOVERAGE') && isset(PHPUnit_Util_Filter::$addUncoveredFilesFrom
     PHPUnit_Util_Filter::addFileToWhitelist(oxPATH.'/core/smarty/plugins/modifier.oxupper.php');
     PHPUnit_Util_Filter::addFileToWhitelist(oxPATH.'/core/smarty/plugins/modifier.oxwordwrap.php');
     PHPUnit_Util_Filter::addFileToWhitelist(oxPATH.'/core/smarty/plugins/oxemosadapter.php');
+    */
 }
 
 

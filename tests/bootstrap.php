@@ -48,8 +48,6 @@ if (getenv('oxADMIN_PASSWD')) {
 
 
 if (getenv('CODECOVERAGE')) {
-    // PHPUnit_Util_Filter configuration
-    PHPUnit_Util_Filter::$addUncoveredFilesFromWhitelist = true;
     /*
     PHPUnit_Util_Filter::addDirectoryToFilter(oxPATH);
     */

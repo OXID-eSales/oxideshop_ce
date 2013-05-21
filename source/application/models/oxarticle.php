@@ -562,7 +562,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         //do not check for variants
         if ( $myConfig->getConfigParam( 'blUseStock' ) ) {
             $sQ = " and ( $sTable.oxstockflag != 2 or ( $sTable.oxstock + $sTable.oxvarstock ) > 0  ) ";
-            //V #M513: When Parent article is not purchaseble, it's visibility should be displayed in shop only if any of Variants is available.
+            //V #M513: When Parent article is not purchasable, it's visibility should be displayed in shop only if any of Variants is available.
             if ( !$myConfig->getConfigParam( 'blVariantParentBuyable' ) ) {
                 $sTimeCheckQ = '';
                 if ( $myConfig->getConfigParam( 'blUseTimeCheck' ) ) {

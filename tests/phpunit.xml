@@ -1,0 +1,70 @@
+<phpunit backupGlobals="true"
+         backupStaticAttributes="false"
+         bootstrap="bootstrap.php"
+         cacheTokens="true"
+         colors="false"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         forceCoversAnnotation="false"
+         mapTestClassNameToCoveredClassName="false"
+         printerClass="PHPUnit_TextUI_ResultPrinter"
+         processIsolation="false"
+         stopOnError="false"
+         stopOnFailure="false"
+         stopOnIncomplete="false"
+         stopOnSkipped="false"
+         testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader"
+         strict="false"
+         verbose="false">
+    <filter>
+        <whitelist addUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">core</directory>
+            <directory suffix=".php">application</directory>
+            <exclude>
+                <directory suffix=".php">core/phpdtaus/</directory>;
+                <directory suffix=".php">core/jpgraph/</directory>;
+                <directory suffix=".php">application/controllers/admin/reports/</directory>;
+                <directory suffix=".php">core/adodblite/</directory>
+                <directory suffix=".php">core/tcpdf/</directory>
+                <directory suffix=".php">core/phpmailer/</directory>
+                <directory suffix=".php">core/smarty/</directory>
+                <directory suffix=".php">core/utils/</directory>
+                <directory suffix=".php">core/facebook/</directory>
+                <directory suffix=".php">application/views/</directory>
+                <directory suffix=".php">out/</directory>
+                <directory suffix=".php">tmp/</directory>
+                <directory suffix=".php">core/objects/</directory>
+                <file>admin/index.php</file>
+                <file>core/oxerpbase.php</file>
+                <file>core/oxerpcsv.php</file>
+            </exclude>
+            <file>core/smarty/plugins/block.oxhasrights.php</file>
+            <file>core/smarty/plugins/emos.php</file>
+            <file>core/smarty/plugins/function.oxcontent.php</file>
+            <file>core/smarty/plugins/function.oxgetseourl.php</file>
+            <file>core/smarty/plugins/function.oxid_include_dynamic.php</file>
+            <file>core/smarty/plugins/function.oxinputhelp.php</file>
+            <file>core/smarty/plugins/function.oxmultilang.php</file>
+            <file>core/smarty/plugins/function.oxscript.php</file>
+            <file>core/smarty/plugins/function.oxvariantselect.php</file>
+            <file>core/smarty/plugins/insert.oxid_cmplogin.php</file>
+            <file>core/smarty/plugins/insert.oxid_cssmanager.php</file>
+            <file>core/smarty/plugins/insert.oxid_newbasketitem.php</file>
+            <file>core/smarty/plugins/insert.oxid_nocache.php</file>
+            <file>core/smarty/plugins/insert.oxid_tracker.php</file>
+            <file>core/smarty/plugins/modifier.oxaddparams.php</file>
+            <file>core/smarty/plugins/modifier.oxaddslashes.php</file>
+            <file>core/smarty/plugins/modifier.oxenclose.php</file>
+            <file>core/smarty/plugins/modifier.oxformdate.php</file>
+            <file>core/smarty/plugins/modifier.oxlower.php</file>
+            <file>core/smarty/plugins/modifier.oxmultilangassign.php</file>
+            <file>core/smarty/plugins/modifier.oxmultilangsal.php</file>
+            <file>core/smarty/plugins/modifier.oxnumberformat.php</file>
+            <file>core/smarty/plugins/modifier.oxtruncate.php</file>
+            <file>core/smarty/plugins/modifier.oxupper.php</file>
+            <file>core/smarty/plugins/modifier.oxwordwrap.php</file>
+            <file>core/smarty/plugins/oxemosadapter.php</file>
+        </whitelist>
+    </filter>
+</phpunit>

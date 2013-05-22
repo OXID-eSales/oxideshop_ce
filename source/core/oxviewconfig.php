@@ -813,6 +813,28 @@ class oxViewConfig extends oxSuperCfg
     {
         return $this->getConfig()->getConfigParam( 'bl_showWishlist' );
     }
+    
+    /**
+     * Template variable getter. Returns Top 5 article list
+     *
+     * @return array
+     */
+    public function getTop5ArticleList()
+    {
+        if ( $this->_aTop5ArticleList === null ) {
+            $this->_aTop5ArticleList = false;
+            $myConfig = $this->getConfig();
+            if ( $myConfig->getConfigParam( 'bl_perfLoadAktion' ) ) {
+                // top 5 articles
+                $oArtList = oxNew( 'oxarticlelist' );
+                $oArtList->loadTop5Articles();
+                if ( $oArtList->count() ) {
+                    $this->_aTop5ArticleList = $oArtList;
+                }
+            }
+        }
+        return $this->_aTop5ArticleList;
+    }    
 
     /**
      * Returns config param "bl_showCompareList" value

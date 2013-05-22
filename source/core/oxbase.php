@@ -19,7 +19,6 @@
  * @package   core
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -75,6 +74,7 @@ class oxBase extends oxSuperCfg
      * @var string
      */
     protected $_sViewTable  = null;
+
 
     /**
      * Field name list
@@ -420,6 +420,7 @@ class oxBase extends oxSuperCfg
             return;
         }
 
+
         reset($dbRecord );
         while ( list( $sName, $sValue ) = each( $dbRecord ) ) {
 
@@ -523,6 +524,7 @@ class oxBase extends oxSuperCfg
                 return $this->_sCoreTable;
             }
 
+
             if ( ( $blForceCoreTableUsage !== null ) && $blForceCoreTableUsage ) {
                 $iShopId = -1;
             } else {
@@ -566,6 +568,7 @@ class oxBase extends oxSuperCfg
         $this->_initDataStructure(true);
     }
 
+
     /**
      * Returns true in case the item represented by this object is derived from parent shop
      *
@@ -573,6 +576,7 @@ class oxBase extends oxSuperCfg
      */
     public function isDerived()
     {
+
         return $this->_blIsDerived;
     }
 
@@ -644,8 +648,6 @@ class oxBase extends oxSuperCfg
     public function buildSelectString( $aWhere = null)
     {
         $oDB = oxDb::getDb();
-        //TODO Check if $myUtils is used in PE or EE. In CE it is unused and can be deleted.
-        $myUtils = oxRegistry::getUtils();
 
         $sGet = $this->getSelectFields();
         $sSelect = "select $sGet from " . $this->getViewName() . ' where 1 ';
@@ -744,6 +746,7 @@ class oxBase extends oxSuperCfg
             return false;
         }
 
+
         $oDB = oxDb::getDb( oxDb::FETCH_MODE_ASSOC );
         $sDelete = "delete from $this->_sCoreTable where oxid = " . $oDB->quote( $sOXID );
         $oDB->execute( $sDelete );
@@ -753,6 +756,7 @@ class oxBase extends oxSuperCfg
 
         return $blDelete;
     }
+
 
     /**
      * Save this Object to database, insert or update as needed.
@@ -898,6 +902,7 @@ class oxBase extends oxSuperCfg
     {
     }
 
+
     /**
      * Sets item as list element
      *
@@ -930,6 +935,7 @@ class oxBase extends oxSuperCfg
     {
         return getViewName( $sTable, -1, $sShopID);
     }
+
 
     /**
      * Returns meta field or simple array of all object fields.
@@ -1162,6 +1168,7 @@ class oxBase extends oxSuperCfg
      */
     protected function _setFieldData( $sFieldName, $sValue, $iDataType = oxField::T_TEXT )
     {
+
         $sLongFieldName = $this->_getFieldLongName( $sFieldName);
         //$sLongFieldName = $this->_sCoreTable . "__" . strtolower($sFieldName);
 
@@ -1358,6 +1365,7 @@ class oxBase extends oxSuperCfg
             $this->$sShopField = new oxField( $myConfig->getShopId(), oxField::T_RAW );
         }
 
+
         $sInsert .= $this->_getUpdateFields( $this->getUseSkipSaveFields() );
 
         $blRet = (bool) $oDb->execute( $sInsert );
@@ -1440,6 +1448,7 @@ class oxBase extends oxSuperCfg
         $sName = strtolower( $sName );
         $this->_aFieldNames[$sName] = 0;
     }
+
 
     /**
      * Returns -1, means object is not multi language

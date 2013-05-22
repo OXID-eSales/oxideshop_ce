@@ -50,7 +50,7 @@ class oxTsProtection extends oxSuperCfg
      * @var array
      */
     protected $_sTsCurrencyProducts = array(
-                                       "TS080501_500_30_EUR"   => array( "GBP" => "TS100629_500_30_GBP", "CHF" => "TS100629_500_30_GBP", "USD" => "TS080501_500_30_USD" ),
+                                       "TS080501_500_30_EUR"   => array( "GBP" => "TS100629_500_30_GBP", "CHF" => "TS100629_500_30_CHF", "USD" => "TS080501_500_30_USD" ),
                                        "TS080501_1500_30_EUR"  => array( "GBP" => "TS100629_1500_30_GBP", "CHF" => "TS100629_1500_30_CHF", "USD" => "TS100629_1500_30_USD" ),
                                        "TS080501_2500_30_EUR"  => array( "GBP" => "TS100629_2500_30_GBP", "CHF" => "TS100629_2500_30_CHF", "USD" => "TS100629_2500_30_USD" ),
                                        "TS080501_5000_30_EUR"  => array( "GBP" => "TS100629_5000_30_GBP", "CHF" => "TS100629_5000_30_CHF", "USD" => "TS100629_5000_30_USD" ),

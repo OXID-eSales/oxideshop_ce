@@ -35,6 +35,13 @@ class oxRegistry
     protected static $_aInstances = array();
 
     /**
+     * Simple types array
+     *
+     * @var array
+     */
+    protected static $_aSimpleTypes = array();
+
+    /**
      * Instance getter. Return existing instance or initializes the new one
      *
      * @param string $sClassName Class name
@@ -52,6 +59,25 @@ class oxRegistry
             self::$_aInstances[$sClassName] = oxNew( $sClassName );
             return self::$_aInstances[$sClassName];
         }
+    }
+
+    /**
+     * Variable getter. Return value of named var or default value if it does not exist in registry.
+     *
+     * @param string $sVarName      Name of variable to get
+     * @param mixed  $mDefaultValue Value to return if sVarName is not found
+     *
+     * @static
+     *
+     * @return mixed
+     */
+    public static function getVar( $sVarName, $mDefaultValue = false )
+    {
+        if ( isset( self::$_aSimpleTypes[$sVarName] ) ) {
+            return self::$_aSimpleTypes[$sVarName];
+        }
+
+        return $mDefaultValue;
     }
 
     /**
@@ -74,6 +100,21 @@ class oxRegistry
         }
 
         self::$_aInstances[$sClassName] = $oInstance;
+    }
+
+    /**
+     * Variable setter. Saves the given variable and it's value to the registry.
+     *
+     * @param string $sVarName Name of variable to save to registry
+     * @param mixed  $mValue   Value to save to registry
+     *
+     * @static
+     *
+     * @return void
+     */
+    public static function setVar( $sVarName, $mValue )
+    {
+        self::$_aSimpleTypes[$sVarName] = $mValue;
     }
 
     /**

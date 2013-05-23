@@ -42,3 +42,4 @@ If you want to discuss your contribution and your code before committing it, ple
 Useful links:<br>
 Project home page - http://www.oxid-esales.com<br>
 Wiki - http://www.oxidforge.org
+Bug tracker - https://bugs.oxid-esales.com

@@ -19,7 +19,6 @@
  * @package   tests
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -354,7 +353,8 @@ class Unit_Core_oxCategoryListTest extends OxidTestCase
                            .' tablex.oxdesc as oxdesc,'
                            .' tablex.oxpricefrom as oxpricefrom,'
                            .' tablex.oxpriceto as oxpriceto,'
-                           .' tablex.oxicon as oxicon, tablex.oxextlink as oxextlink ,';
+                           .' tablex.oxicon as oxicon, tablex.oxextlink as oxextlink,'
+                           .' tablex.oxthumb as oxthumb, tablex.oxpromoicon as oxpromoicon ,';
 
            $sExpect .= 'not tablex.oxactive as oxppremove';
            //
@@ -386,7 +386,8 @@ class Unit_Core_oxCategoryListTest extends OxidTestCase
                            .' tablex.oxdesc as oxdesc,'
                            .' tablex.oxpricefrom as oxpricefrom,'
                            .' tablex.oxpriceto as oxpriceto,'
-                           .' tablex.oxicon as oxicon, tablex.oxextlink as oxextlink ,';
+                           .' tablex.oxicon as oxicon, tablex.oxextlink as oxextlink,'
+                           .' tablex.oxthumb as oxthumb, tablex.oxpromoicon as oxpromoicon ,';
 
            $sExpect .= 'not tablex.oxactive as oxppremove';
            //

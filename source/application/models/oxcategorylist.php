@@ -19,7 +19,6 @@
  * @package   core
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 
@@ -167,7 +166,8 @@ class oxCategoryList extends oxList
                     ." $sTable.oxrootid as oxrootid, $sTable.oxsort as oxsort,"
                     ." $sTable.oxtitle as oxtitle, $sTable.oxdesc as oxdesc,"
                     ." $sTable.oxpricefrom as oxpricefrom, $sTable.oxpriceto as oxpriceto,"
-                    ." $sTable.oxicon as oxicon, $sTable.oxextlink as oxextlink ";
+            ." $sTable.oxicon as oxicon, $sTable.oxextlink as oxextlink,"
+            ." $sTable.oxthumb as oxthumb, $sTable.oxpromoicon as oxpromoicon ";
 
             $sFieldList.= ",not $sTable.oxactive as oxppremove";
 

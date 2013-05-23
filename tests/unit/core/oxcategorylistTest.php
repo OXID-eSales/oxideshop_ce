@@ -354,7 +354,7 @@ class Unit_Core_oxCategoryListTest extends OxidTestCase
                            .' tablex.oxpricefrom as oxpricefrom,'
                            .' tablex.oxpriceto as oxpriceto,'
                            .' tablex.oxicon as oxicon, tablex.oxextlink as oxextlink,'
-                           .' tablex.oxthumb as oxthumb, tablex.oxpromoicon as oxpromoicon ,';
+                           .' tablex.oxthumb as oxthumb, tablex.oxpromoicon as oxpromoicon,';
 
            $sExpect .= 'not tablex.oxactive as oxppremove';
            //
@@ -387,7 +387,7 @@ class Unit_Core_oxCategoryListTest extends OxidTestCase
                            .' tablex.oxpricefrom as oxpricefrom,'
                            .' tablex.oxpriceto as oxpriceto,'
                            .' tablex.oxicon as oxicon, tablex.oxextlink as oxextlink,'
-                           .' tablex.oxthumb as oxthumb, tablex.oxpromoicon as oxpromoicon ,';
+                           .' tablex.oxthumb as oxthumb, tablex.oxpromoicon as oxpromoicon,';
 
            $sExpect .= 'not tablex.oxactive as oxppremove';
            //

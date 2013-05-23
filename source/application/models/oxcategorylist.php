@@ -167,7 +167,7 @@ class oxCategoryList extends oxList
                     ." $sTable.oxtitle as oxtitle, $sTable.oxdesc as oxdesc,"
                     ." $sTable.oxpricefrom as oxpricefrom, $sTable.oxpriceto as oxpriceto,"
             ." $sTable.oxicon as oxicon, $sTable.oxextlink as oxextlink,"
-            ." $sTable.oxthumb as oxthumb, $sTable.oxpromoicon as oxpromoicon ";
+            ." $sTable.oxthumb as oxthumb, $sTable.oxpromoicon as oxpromoicon";
 
             $sFieldList.= ",not $sTable.oxactive as oxppremove";
 

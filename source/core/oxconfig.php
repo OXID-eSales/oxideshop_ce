@@ -19,7 +19,6 @@
  * @package   core
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 //max integer
@@ -1797,7 +1796,7 @@ class oxConfig extends oxSuperCfg
     public function getRevision()
     {
         $sFileName = $this->getConfigParam( 'sShopDir' ) . "/pkg.rev";
-        $iRev = (int) trim(@file_get_contents($sFileName));
+        $iRev = trim(@file_get_contents($sFileName));
 
         if (!$iRev) {
             return false;

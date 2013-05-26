@@ -19,7 +19,6 @@
  * @package   core
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 DEFINE('_DB_SESSION_HANDLER', getShopBasePath() . 'core/adodblite/session/adodb-session.php');
@@ -685,10 +684,11 @@ class oxSession extends oxSuperCfg
             //#1746
             oxNew('oxbasketitem');
 
+            // init oxbasket through oxNew and not oxAutoload, Mantis-Bug #0004262
+            $oEmptyBasket = oxNew('oxbasket');
+            
             $oBasket = ( $sBasket && ( $oBasket = unserialize( $sBasket ) ) ) ? $oBasket : null;
 
-            //#3908
-            $oEmptyBasket = oxNew('oxbasket');
             if ( !$oBasket || ( get_class($oBasket) !== get_class($oEmptyBasket) ) ) {
                 $oBasket = $oEmptyBasket;
             }

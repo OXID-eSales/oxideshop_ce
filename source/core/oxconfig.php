@@ -1796,13 +1796,13 @@ class oxConfig extends oxSuperCfg
     public function getRevision()
     {
         $sFileName = $this->getConfigParam( 'sShopDir' ) . "/pkg.rev";
-        $iRev = trim(@file_get_contents($sFileName));
+        $sRev = trim(@file_get_contents($sFileName));
 
-        if (!$iRev) {
+        if (!$sRev) {
             return false;
         }
 
-        return $iRev;
+        return $sRev;
     }
 
     /**
@@ -1813,14 +1813,14 @@ class oxConfig extends oxSuperCfg
     public function getPackageInfo()
     {
         $sFileName = $this->getConfigParam( 'sShopDir' ) . "/pkg.info";
-        $iRev = @file_get_contents($sFileName);
-        $iRev = str_replace("\n", "<br>", $iRev);
+        $sRev = @file_get_contents($sFileName);
+        $sRev = str_replace("\n", "<br>", $sRev);
 
-        if (!$iRev) {
+        if (!$sRev) {
             return false;
         }
 
-        return $iRev;
+        return $sRev;
     }
 
 

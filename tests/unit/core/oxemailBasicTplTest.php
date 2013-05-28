@@ -179,14 +179,13 @@ class Unit_Core_oxemailBasicTplTest extends OxidTestCase
 
     protected function checkMailBody( $sFuncName, $sBody, $blWriteToTestFile = false )
     {
-
-            $sVersion = 'pe';
-
-        if ( oxConfig::getInstance()->isUtf() ) {
-            $sVersion = $sVersion.'_utf8';
-        }
-
         $sPath = getTestsBasePath().'/unit/email_templates/basic/'.$sFuncName;
+
+
+            $sPath .= '_pe';
+        if ( oxConfig::getInstance()->isUtf() ) {
+            $sPath .= $sPath.'_utf8';
+        }
         $sPath .= '.html';
         if ( !($sExpectedBody = file_get_contents($sPath)) ) {
             return false;

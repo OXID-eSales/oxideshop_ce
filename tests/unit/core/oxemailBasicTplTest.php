@@ -186,7 +186,8 @@ class Unit_Core_oxemailBasicTplTest extends OxidTestCase
             $sVersion = $sVersion.'_utf8';
         }
 
-        $sPath = getTestsBasePath().'/unit/email_templates/basic/'.$sFuncName.'_'.$sVersion.'.html';
+        $sPath = getTestsBasePath().'/unit/email_templates/basic/'.$sFuncName;
+        $sPath .= '.html';
         if ( !($sExpectedBody = file_get_contents($sPath)) ) {
             return false;
         }

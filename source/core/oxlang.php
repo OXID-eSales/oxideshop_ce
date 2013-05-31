@@ -174,7 +174,7 @@ class oxLang extends oxSuperCfg
                 }
             }
 
-            // if language still not setted and not search engine browsing,
+            // if language still not set and not search engine browsing,
             // getting language from browser
             if ( is_null( $this->_iBaseLanguageId ) && !$blAdmin && !oxRegistry::getUtils()->isSearchEngine() ) {
 

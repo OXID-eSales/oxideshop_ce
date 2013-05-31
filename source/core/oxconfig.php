@@ -440,7 +440,7 @@ class oxConfig extends oxSuperCfg
                 oxRegistry::getUtils()->showMessageAndExit( $oEx->getString() );
             } else {
                 header( "HTTP/1.1 500 Internal Server Error");
-                header( "Location: offline.html");
+                header( "Location: /offline.html");
                 header( "Connection: close");
             }
         } catch ( oxCookieException $oEx ) {

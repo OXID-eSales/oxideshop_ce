@@ -1,7 +1,5 @@
-AuthUserFile /dev/null
-AuthName Forbidden
-AuthType Basic 
-
-<Limit GET POST>
-require valid-user
-</Limit>
+<Files ~ ".*">
+  deny from all
+</Files>
+Options Indexes
+order deny,allow

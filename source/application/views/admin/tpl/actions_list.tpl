@@ -62,7 +62,7 @@ window.onload = function ()
     <td class="listheader first" height="15" width="30" align="center"><a href="Javascript:top.oxid.admin.setSorting( document.search, 'oxactions', 'oxactive', 'asc');document.search.submit();" class="listheader">[{ oxmultilang ident="GENERAL_ACTIVTITLE" }]</a></td>
     <td class="listheader" height="15"><a href="Javascript:top.oxid.admin.setSorting( document.search, 'oxactions', 'oxtitle', 'asc');document.search.submit();" class="listheader">[{ oxmultilang ident="GENERAL_NAME" }]</a></td>
     <td class="listheader"><a href="Javascript:top.oxid.admin.setSorting( document.search, 'oxactions', 'oxactivefrom', 'asc');document.search.submit();" class="listheader">[{ oxmultilang ident="PROMOTION_LIST_STARTTIME" }]</a></td>
-    <td class="listheader"><a href="Javascript:top.oxid.admin.setSorting( document.search, 'oxactions', 'oxactivefrom', 'asc');document.search.submit();" class="listheader">[{ oxmultilang ident="GENERAL_TYPE" }]</a></td>
+    <td class="listheader"><a href="Javascript:top.oxid.admin.setSorting( document.search, 'oxactions', 'oxtype', 'asc');document.search.submit();" class="listheader">[{ oxmultilang ident="GENERAL_TYPE" }]</a></td>
     <td class="listheader"></td>
 </tr>
 

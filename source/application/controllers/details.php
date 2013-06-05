@@ -1352,10 +1352,26 @@ class Details extends oxUBase
     public function getTitle()
     {
         if ( $oProduct = $this->getProduct() ) {
-            return $oProduct->oxarticles__oxtitle->value . ( $oProduct->oxarticles__oxvarselect->value ? ' ' . $oProduct->oxarticles__oxvarselect->value : '' );
+            $sTag = $this->getTag();
+            return $oProduct->oxarticles__oxtitle->value . ( $oProduct->oxarticles__oxvarselect->value ? ' ' . $oProduct->oxarticles__oxvarselect->value : '' ) . (!empty($sTag) ? ' - '.$sTag : '');
         }
     }
+    
+    /**
+     * Template variable getter. Returns meta description
+     *
+     * @return string
+     */
+    public function getMetaDescription()
+    {
+        $sMeta = parent::getMetaDescription();
 
+        if($sTag = $this->getTag()) {
+            $sMeta = $sTag.' - ' . $sMeta;
+        }
+
+        return $sMeta;
+    }
 
     /**
      * Template variable getter. Returns current tag

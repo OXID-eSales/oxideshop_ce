@@ -776,11 +776,12 @@ class oxArticleList extends oxList
     /**
      * Load the list by article ids
      *
-     * @param array $aIds Article ID array
+     * @param array $aIds               Article ID array
+     * @param bool  $blPreserveOrdering If true the ordering of the articles is preserved
      *
-     * @return null;
+     * @return null
      */
-    public function loadIds($aIds)
+    public function loadIds( $aIds, $blPreserveOrdering )
     {
         if (!count($aIds)) {
             $this->clear();
@@ -798,6 +799,10 @@ class oxArticleList extends oxList
         $sSelect  = "select $sArticleFields from $sArticleTable ";
         $sSelect .= "where $sArticleTable.oxid in ( '".implode("','", $aIds)."' ) and ";
         $sSelect .= $oBaseObject->getSqlActiveSnippet();
+
+        if ( $blPreserveOrdering ) {
+            $sSelect .= ' ORDER BY FIELD(`OXID`, \'' . implode('\',\'' , $aIds) . '\')';
+        }
 
         $this->selectString($sSelect);
     }

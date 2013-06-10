@@ -1247,25 +1247,6 @@ class Unit_Views_detailsTest extends OxidTestCase
 
         $this->assertEquals( 'product title and varselect', $oDetails->getTitle() );
     }
-    
-    /**
-     * Test base view class title getter with searchtag.
-     *
-     * @return null
-     */
-    public function testGetTitleWithTag()
-    {
-        $this->setRequestParam( 'searchtag', 'someTag' );
-        
-        $oProduct = new oxArticle();
-        $oProduct->oxarticles__oxtitle = new oxField( 'product title' );
-        $oProduct->oxarticles__oxvarselect = new oxField( 'and varselect' );
-
-        $oDetails = $this->getMock( 'details', array( 'getProduct' ) );
-        $oDetails->expects( $this->once() )->method( 'getProduct')->will( $this->returnValue( $oProduct ) );
-        
-        $this->assertEquals( 'product title and varselect - someTag', $oDetails->getTitle() );
-    }    
 
     /**
      * Test base view class title getter - no product.

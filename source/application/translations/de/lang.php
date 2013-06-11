@@ -675,6 +675,7 @@ $aLang = array(
 'VALID_UNTIL'                                                 => "Gültig bis:",
 'VAT'                                                         => "MwSt",
 'VAT_ID_NUMBER'                                               => "USt-ID:",
+'VAT_MESSAGE_ID_NOT_VALID'                                    => "USt-ID ist ungültig",
 'VENDOR'                                                      => "Lieferant",
 'VENDOR_S'                                                    => "| Lieferant: %s",
 'VERIFICATION_CODE'                                           => "Prüfcode",

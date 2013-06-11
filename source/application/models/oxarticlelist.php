@@ -926,6 +926,10 @@ class oxArticleList extends oxList
 
             $sCurrUpdateTime = date( "Y-m-d H:i:s", oxRegistry::get("oxUtilsDate")->getTime() );
 
+            // Collect article id's for later recalculation.
+            $sQ = "SELECT `oxid` FROM `oxarticles`
+                   WHERE `oxupdatepricetime` > 0 AND `oxupdatepricetime` <= '{$sCurrUpdateTime}'";
+            $aUpdatedArticleIds = $oDb->getCol( $sQ, false, false );
 
             // updating oxarticles
             $sQ = "UPDATE %s SET
@@ -944,43 +948,21 @@ class oxArticleList extends oxList
             $blUpdated = $oDb->execute( sprintf( $sQ, "`oxarticles`" ) );
 
 
-            // update oxvarminprice field value also
-            $sQ = "CREATE TEMPORARY TABLE IF NOT EXISTS `__oxprices` (
-                    `oxid` CHAR(32) character set latin1 collate latin1_general_ci NOT NULL,
-                    `oxminprice` DOUBLE NOT NULL,
-                    `oxmaxprice` DOUBLE NOT NULL,
-                    PRIMARY KEY ( `oxid` )
-                  ) ENGINE=MYISAM
-                  SELECT `oxparentid` AS `oxid`, MIN(`oxprice`) AS `oxminprice`, MAX(`oxprice`) AS `oxmaxprice`
-                      FROM `oxarticles` WHERE `oxparentid` <> '' AND `oxprice` <> 0 AND ". $this->getBaseObject()->getSqlActiveSnippet( true ) ." GROUP BY `oxparentid` ";
-
-                $blUpdated = $oDb->execute( $sQ );
-
-            $sQ = "UPDATE `oxarticles`
-                    INNER JOIN `__oxprices` ON `__oxprices`.`oxid` = `oxarticles`.`oxid`
-                  SET
-                      `oxarticles`.`oxvarminprice` = `__oxprices`.`oxminprice`,
-                      `oxarticles`.`oxvarmaxprice` = `__oxprices`.`oxmaxprice;";
-
-            $blUpdated = $oDb->execute( $sQ );
-
-            // updates oxvarminprice and oxvarmaxprice fields from oxArticles with no children
-            $sQ = "UPDATE `oxarticles`
-                    LEFT JOIN `oxarticles` AS `oxarticles_1` ON `oxarticles`.`oxid` = `oxarticles_1`.`oxparentid`
-                                      SET
-                                          `oxarticles`.`oxvarminprice` = `oxarticles`.`oxprice`,
-                                          `oxarticles`.`oxvarmaxprice` = `oxarticles`.`oxprice`
-                  WHERE `oxarticles_1`.`oxid` IS NULL AND `oxarticles`.`oxparentid` = ''";
-
-            $blUpdated = $oDb->execute( $sQ );
-            $blUpdated = $oDb->execute( "DROP TEMPORARY TABLE `__oxprices`" );
-
             // renew update time in case update is not forced
             if ( !$blForceUpdate ) {
                 $this->renewPriceUpdateTime();
             }
 
             $oDb->commitTransaction();
+
+            // recalculate oxvarminprice and oxvarmaxprice for parent
+            if( is_array($aUpdatedArticleIds) ) {
+                foreach ($aUpdatedArticleIds as $sArticleId) {
+                    $oArticle = oxNew('oxarticle');
+                    $oArticle->load($sArticleId);
+                    $oArticle->onChange();
+                }
+            }
 
         }
 

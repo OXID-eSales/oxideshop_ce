@@ -926,6 +926,10 @@ class oxArticleList extends oxList
 
             $sCurrUpdateTime = date( "Y-m-d H:i:s", oxRegistry::get("oxUtilsDate")->getTime() );
 
+            // Collect article id's for later recalculation.
+            $sQ = "SELECT `oxid` FROM `oxarticles`
+                   WHERE `oxupdatepricetime` > 0 AND `oxupdatepricetime` <= '{$sCurrUpdateTime}'";
+            $aUpdatedArticleIds = $oDb->getCol( $sQ, false, false );
 
             // updating oxarticles
             $sQ = "UPDATE %s SET
@@ -944,18 +948,21 @@ class oxArticleList extends oxList
             $blUpdated = $oDb->execute( sprintf( $sQ, "`oxarticles`" ) );
 
 
-            foreach ($aUpdatedArticleIds as $sArticleId) {
-                $oArticle = oxNew('oxarticle');
-                $oArticle->load($sArticleId);
-                $oArticle->onChange();
-            }
-
             // renew update time in case update is not forced
             if ( !$blForceUpdate ) {
                 $this->renewPriceUpdateTime();
             }
 
             $oDb->commitTransaction();
+
+            // recalculate oxvarminprice and oxvarmaxprice for parent
+            if( is_array($aUpdatedArticleIds) ) {
+                foreach ($aUpdatedArticleIds as $sArticleId) {
+                    $oArticle = oxNew('oxarticle');
+                    $oArticle->load($sArticleId);
+                    $oArticle->onChange();
+                }
+            }
 
         }
 

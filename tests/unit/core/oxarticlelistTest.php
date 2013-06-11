@@ -2448,7 +2448,7 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
         $oArticleList->updateUpcomingPrices( true );
 
         $sQ = "select oxvarmaxprice from oxarticles where oxid=?";
-        $iExpectedMaxPrice = 19;
+        $iExpectedMaxPrice = 20;
         $this->assertEquals( $iExpectedMaxPrice, (int) oxDb::getDB()->getOne( $sQ, array( "_testParentArticle" ) ) );
     }
 

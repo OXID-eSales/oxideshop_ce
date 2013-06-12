@@ -106,13 +106,13 @@
         dl.tab.act dd a{color: #000;}
 
         ul.req {padding:0 5px;border:1px solid #888;margin:5px 0;clear:both;display:block;}
-        ul.req li{list-style:none;margin:5px 0;border-left:14px solid gray;padding-left:.5em;}
-        ul.req li.pass{border-color:green;}
-        ul.req li.pmin{border-color:orange;}
-        ul.req li.fail{border-color:red;}
-        ul.req li.null{border-color:gray;}
+        ul.req li{list-style:none;margin:5px 0;padding-left:1.5em;}
+        ul.req li.pass{background-image:url('./out/src/img/pass.png');background-repeat: no-repeat;}
+        ul.req li.pmin{background-image:url('./out/src/img/pmin.png');background-repeat: no-repeat;}
+        ul.req li.fail{background-image:url('./out/src/img/fail.png');background-repeat: no-repeat;}
+        ul.req li.null{background-image:url('./out/src/img/null.png');background-repeat: no-repeat;}
         ul.req ul{padding:0;margin:0;}
-        ul.req li.group {border:none;float:left;font-weight:bold;width:32%;}
+        ul.req li.group {border:none;float:left;font-weight:bold;width:28%;}
         ul.req li.clear{clear:left;diplay:none;border:none;visibility:collapse;height:0px;padding:0;margin:0;display:block;line-height: 0;}
     </style>
 

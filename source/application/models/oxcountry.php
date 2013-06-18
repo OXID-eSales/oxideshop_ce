@@ -19,7 +19,6 @@
  * @package   core
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 
@@ -85,7 +84,7 @@ class oxCountry extends oxI18n
 
         $sCountryId = $this->getId();
         $sViewName = getViewName( "oxstates", $this->getLanguage() );
-        $sQ = "select * from {$sViewName} where oxcountryid = '$sCountryId' ";
+        $sQ = "select * from {$sViewName} where `oxcountryid` = '$sCountryId' order by `oxtitle`  ";
         $this->_aStates = oxNew("oxlist");
         $this->_aStates->init("oxstate");
         $this->_aStates->selectString($sQ);

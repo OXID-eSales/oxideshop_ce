@@ -2188,8 +2188,8 @@ CREATE TABLE `oxstates` (
 # Data for table `oxstates`
 #
 INSERT INTO `oxstates` (`OXID`, `OXCOUNTRYID`, `OXTITLE`, `OXISOALPHA2`, `OXTITLE_1`, `OXTITLE_2`, `OXTITLE_3`) VALUES
-('MB', '8f241f11095649d18.02676059', 'Alberta', 'AB', 'Alberta', '', ''),
-('MB', '8f241f11095649d18.02676059', 'Britisch-Kolumbien', 'BC', 'British Columbia', '', ''),
+('AB', '8f241f11095649d18.02676059', 'Alberta', 'AB', 'Alberta', '', ''),
+('BC', '8f241f11095649d18.02676059', 'Britisch-Kolumbien', 'BC', 'British Columbia', '', ''),
 ('MB', '8f241f11095649d18.02676059', 'Manitoba', 'MB', 'Manitoba', '', ''),
 ('NB', '8f241f11095649d18.02676059', 'Neubraunschweig', 'NB', 'New Brunswick', '', ''),
 ('NF', '8f241f11095649d18.02676059', 'Neufundland und Labrador', 'NF', 'Newfoundland and Labrador', '', ''),

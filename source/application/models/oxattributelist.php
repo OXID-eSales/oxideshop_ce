@@ -19,7 +19,6 @@
  * @package   core
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -138,19 +137,28 @@ class oxAttributeList extends oxList
      *
      * @return null;
      */
-    public function loadAttributesDisplayableInBasket( $sArtId )
+    public function loadAttributesDisplayableInBasket( $sArtId, $sParentId = null  )
     {
         if ( $sArtId ) {
+
+            $oDb = oxDb::getDb( oxDb::FETCH_MODE_ASSOC );
 
             $sAttrViewName = getViewName( 'oxattribute' );
             $sViewName     = getViewName( 'oxobject2attribute' );
 
             $sSelect  = "select {$sAttrViewName}.*, o2a.* from {$sViewName} as o2a ";
             $sSelect .= "left join {$sAttrViewName} on {$sAttrViewName}.oxid = o2a.oxattrid ";
-            $sSelect .= "where o2a.oxobjectid = '{$sArtId}' and {$sAttrViewName}.oxdisplayinbasket  = 1 and o2a.oxvalue != '' ";
+            $sSelect .= "where o2a.oxobjectid = '%s' and {$sAttrViewName}.oxdisplayinbasket  = 1 and o2a.oxvalue != '' ";
             $sSelect .= "order by o2a.oxpos, {$sAttrViewName}.oxpos";
 
-            $this->selectString( $sSelect );
+            $aAttributes = $oDb->getAll( sprintf( $sSelect, $sArtId ) );
+
+            if ( $sParentId ) {
+                $aParentAttributes = $oDb->getAll( sprintf( $sSelect, $sParentId ));
+                $aAttributes = $this->_mergeAttributes( $aAttributes, $aParentAttributes );
+            }
+
+            $this->assignArray( $aAttributes );
         }
     }
 

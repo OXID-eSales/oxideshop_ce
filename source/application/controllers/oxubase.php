@@ -1327,7 +1327,8 @@ class oxUBase extends oxView
         }
 
         if ( !is_array( $aNrofCatArticles ) || !isset( $aNrofCatArticles[0] ) ) {
-            $myConfig->setConfigParam( 'aNrofCatArticles', array( $iNrofCatArticles ) );
+            $aNrofCatArticles = array( $iNrofCatArticles );
+            $myConfig->setConfigParam( 'aNrofCatArticles', $aNrofCatArticles );
         } else {
             $iNrofCatArticles = $aNrofCatArticles[0];
         }

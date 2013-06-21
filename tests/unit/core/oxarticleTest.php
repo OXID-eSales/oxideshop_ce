@@ -4538,12 +4538,19 @@ class Unit_Core_oxarticleTest extends OxidTestCase
     {
         $sSelect = "update oxattribute set oxdisplayinbasket = 1 where oxid = '8a142c3f0b9527634.96987022' ";
         $rs = oxDb::getDB()->execute($sSelect);
+        $sSelect = "update oxattribute set oxdisplayinbasket = 1 where oxid = 'd8842e3b7c5e108c1.63072778' "; // texture
+        $rs = oxDb::getDB()->execute($sSelect);
 
         $oArticle = new oxarticle();
         $oArticle->load('1672');
+        $oArticle->oxarticles__oxparentid  = new oxField( '1351' );
+        $oArticle->save();
+
         $aAttrList = $oArticle->getAttributesDisplayableInBasket();
         $sAttribValue = $aAttrList['8a142c3f0c0baa3f4.54955953']->oxattribute__oxvalue->rawValue;
+        $sAttribParentValue = $aAttrList['d8842e3b7d4e7acb1.34583879']->oxattribute__oxvalue->rawValue;
         $this->assertEquals( '25 cm', $sAttribValue );
+        $this->assertEquals( 'Granit', $sAttribParentValue );
     }
 
     /**
@@ -4555,6 +4562,9 @@ class Unit_Core_oxarticleTest extends OxidTestCase
     {
         $oArticle = new oxarticle();
         $oArticle->load('1672');
+        $oArticle->oxarticles__oxparentid  = new oxField( '' );
+        $oArticle->save();
+
         $aAttrList = $oArticle->getAttributesDisplayableInBasket();
         $this->assertEquals( 0, count( $aAttrList ) );
     }

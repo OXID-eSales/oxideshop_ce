@@ -2406,7 +2406,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     {
         if ( $this->_oAttributeList === null ) {
             $this->_oAttributeList = oxNew( 'oxattributelist' );
-            $this->_oAttributeList->loadAttributesDisplayableInBasket( $this->getId() );
+            $this->_oAttributeList->loadAttributesDisplayableInBasket( $this->getId(), $this->getParentId() );
         }
 
         return $this->_oAttributeList;

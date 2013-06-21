@@ -19,7 +19,6 @@
  * @package   tests
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -136,16 +135,19 @@ class Unit_Core_oxattributelistTest extends OxidTestCase
     {
         $sSelect = "update oxattribute set oxdisplayinbasket = 1 where oxid = '8a142c3f0b9527634.96987022' ";
         $rs = oxDb::getDB()->execute($sSelect);
+        $sSelect = "update oxattribute set oxdisplayinbasket = 1 where oxid = 'd8842e3b7c5e108c1.63072778' ";
+        $rs = oxDb::getDB()->execute($sSelect);
         
         $oAttrList = new oxAttributelist();
-        $oAttrList->loadAttributesDisplayableInBasket('1672');
+        $oAttrList->loadAttributesDisplayableInBasket('1672', '1351');
         $sAttribValue = $oAttrList['8a142c3f0c0baa3f4.54955953']->oxattribute__oxvalue->rawValue;
+        $sAttribParentValue = $oAttrList['d8842e3b7d4e7acb1.34583879']->oxattribute__oxvalue->rawValue;
         $this->assertEquals( '25 cm', $sAttribValue );
-        
+        $this->assertEquals( 'Granit', $sAttribParentValue );
     }
     
     /**
-     * Test load displayable in basket/order attributes, when all are not dispayable.
+     * Test load displayable in basket/order attributes, when all are not displayable.
      *
      * @return null
      */

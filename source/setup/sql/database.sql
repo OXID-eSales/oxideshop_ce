@@ -2188,6 +2188,8 @@ CREATE TABLE `oxstates` (
 # Data for table `oxstates`
 #
 INSERT INTO `oxstates` (`OXID`, `OXCOUNTRYID`, `OXTITLE`, `OXISOALPHA2`, `OXTITLE_1`, `OXTITLE_2`, `OXTITLE_3`) VALUES
+('AB', '8f241f11095649d18.02676059', 'Alberta', 'AB', 'Alberta', '', ''),
+('BC', '8f241f11095649d18.02676059', 'Britisch-Kolumbien', 'BC', 'British Columbia', '', ''),
 ('MB', '8f241f11095649d18.02676059', 'Manitoba', 'MB', 'Manitoba', '', ''),
 ('NB', '8f241f11095649d18.02676059', 'Neubraunschweig', 'NB', 'New Brunswick', '', ''),
 ('NF', '8f241f11095649d18.02676059', 'Neufundland und Labrador', 'NF', 'Newfoundland and Labrador', '', ''),
@@ -2234,7 +2236,7 @@ INSERT INTO `oxstates` (`OXID`, `OXCOUNTRYID`, `OXTITLE`, `OXISOALPHA2`, `OXTITL
 ('NV', '8f241f11096877ac0.98748826', 'Nevada', 'NV', 'Nevada', '', ''),
 ('NH', '8f241f11096877ac0.98748826', 'New Hampshire', 'NH', 'New Hampshire', '', ''),
 ('NJ', '8f241f11096877ac0.98748826', 'New Jersey', 'NJ', 'New Jersey', '', ''),
-('NM', '8f241f11096877ac0.98748826', 'New Mexico', 'NM', 'Neumexiko', '', ''),
+('NM', '8f241f11096877ac0.98748826', 'Neumexiko', 'NM', 'New Mexico', '', ''),
 ('NY', '8f241f11096877ac0.98748826', 'New York', 'NY', 'New York', '', ''),
 ('NC', '8f241f11096877ac0.98748826', 'North Carolina', 'NC', 'North Carolina', '', ''),
 ('ND', '8f241f11096877ac0.98748826', 'North Dakota', 'ND', 'North Dakota', '', ''),
@@ -2246,8 +2248,8 @@ INSERT INTO `oxstates` (`OXID`, `OXCOUNTRYID`, `OXTITLE`, `OXISOALPHA2`, `OXTITL
 ('PA', '8f241f11096877ac0.98748826', 'Pennsylvania', 'PA', 'Pennsylvania', '', ''),
 ('PR', '8f241f11096877ac0.98748826', 'Puerto Rico', 'PR', 'Puerto Rico', '', ''),
 ('RI', '8f241f11096877ac0.98748826', 'Rhode Island', 'RI', 'Rhode Island', '', ''),
-('SC', '8f241f11096877ac0.98748826', 'South Carolina', 'SC', 'Südkarolina', '', ''),
-('SD', '8f241f11096877ac0.98748826', 'South Dakota', 'SD', 'Süddakota', '', ''),
+('SC', '8f241f11096877ac0.98748826', 'Südkarolina', 'SC', 'South Carolina', '', ''),
+('SD', '8f241f11096877ac0.98748826', 'Süddakota', 'SD', 'South Dakota', '', ''),
 ('TN', '8f241f11096877ac0.98748826', 'Tennessee', 'TN', 'Tennessee', '', ''),
 ('TX', '8f241f11096877ac0.98748826', 'Texas', 'TX', 'Texas', '', ''),
 ('UT', '8f241f11096877ac0.98748826', 'Utah', 'UT', 'Utah', '', ''),

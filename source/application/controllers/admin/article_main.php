@@ -19,7 +19,6 @@
  * @package   admin
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -275,6 +274,8 @@ class Article_Main extends oxAdminDetails
         $sValue = str_replace( '&amp;', '&', $sValue );
         $sValue = str_replace( '&quot;', '"', $sValue );
         $sValue = str_replace( '&lang=', '&amp;lang=', $sValue);
+        $sValue = str_replace( '<p>&nbsp;</p>', '', $sValue);
+        $sValue = str_replace( '<p>&nbsp; </p>', '', $sValue);
 
         return $sValue;
     }

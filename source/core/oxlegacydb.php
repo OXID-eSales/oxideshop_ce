@@ -97,7 +97,7 @@ class oxLegacyDb extends oxSuperCfg
      * @param array|bool $aParams Array of parameters
      * @param bool       $blType  connection type
      *
-     * @return string
+     * @return Array
      */
     public function getArray( $sSql, $aParams = false, $blType = true )
     {

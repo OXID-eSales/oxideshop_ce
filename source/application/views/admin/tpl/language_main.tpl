@@ -57,7 +57,7 @@ window.onload = function ()
                 [{ oxmultilang ident="LANGUAGE_ABBERVATION" }]
                 </td>
                 <td class="edittext">
-                <input type="text" class="editinput" size="5" maxlength="3" id="oLockTarget" name="editval[abbr]" value="[{$edit.abbr}]" [{ $readonly }]>
+                <input type="text" class="editinput" size="5" maxlength="10" id="oLockTarget" name="editval[abbr]" value="[{$edit.abbr}]" [{ $readonly }]>
                 [{ oxinputhelp ident="HELP_LANGUAGE_ABBERVATION" }]
                 </td>
             </tr>

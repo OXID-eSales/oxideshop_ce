@@ -89,7 +89,7 @@ class oxVoucher extends oxBase
 
             //voucher timeout for 3 hours
             if ( $blCheckavalability ) {
-                $iTime = time() - 3600 * 3;
+                $iTime = time() - $this->_getVoucherTimeout();
                 $sQ .= " and {$sViewName}.oxreserved < '{$iTime}' ";
             }
 
@@ -371,7 +371,7 @@ class oxVoucher extends oxBase
     protected function _isNotReserved()
     {
 
-        if ( $this->oxvouchers__oxreserved->value < time() - 3600 * 3 ) {
+        if ( $this->oxvouchers__oxreserved->value < time() - $this->_getVoucherTimeout() ) {
             return true;
         }
 
@@ -806,4 +806,18 @@ class oxVoucher extends oxBase
         }
         return parent::__get($sName);
     }
+    
+    /**
+     * Returns a configured value for voucher timeouts or a default
+     * of 3 hours if not configured
+     * 
+     * @return integer Seconds a voucher can stay in status reserved
+     */ 
+    protected function _getVoucherTimeout() 
+    {
+        $iVoucherTimeout =  intval(oxRegistry::getConfig()->getConfigParam( 'iVoucherTimeout' )) ? 
+            intval(oxRegistry::getConfig()->getConfigParam( 'iVoucherTimeout' )) : 
+            3 *3600;
+        return $iVoucherTimeout;
+    }    
 }

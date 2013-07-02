@@ -1,55 +1,39 @@
 <script language=javascript type="text/javascript">
 
 <!-- Hide script from older browsers
-
-var PopUp = {
-    popup: null,
-    parent: null,
-    show: function(event, elem) {
-        this.popup = document.getElementById(elem);
-        this.parent = event.target;
-
-        this.parent.addEventListener('mousemove', this.move, false);
-        this.popup.style.visibility = "visible";
-        window.status = "";
-    },
-    hide: function() {
-        if (this.popup !== null && this.parent !== null) {
-            this.parent.removeEventListener('mousemove', this.move);
-            this.popup.style.visibility ="hidden";
-        }
-        this.popup = this.parent = null;
-    },
-    move: function(e) {
-        var y = parseInt(e.clientY) - 33 - parseInt((17.5*(PopUp.popup.innerHTML.split(/<br[ 	\/^>]*>/gi).length-1)));
-        var x = parseInt(e.clientX) - 50;
-
-        if(document.all){
-            if ( x > document.body.clientWidth - 150 ){
-                x = parseInt(document.body.clientWidth) - 150;
-                y = y - 15;
-            }
-        } else{
-            if ( x > self.innerWidth - 170 ){
-                x = parseInt(self.innerWidth) - 170;
-            }
-            if ( y <= 0 ) {
-                y = parseInt(e.clientY)+10;
-            }
-        }
-        PopUp.popup.style.top = Math.max(2,y)+'px';
-        PopUp.popup.style.left= Math.max(2,x)+'px';
+function getOffset( el ) {
+    var _x = 0;
+    var _y = 0;
+    while( el && !isNaN( el.offsetLeft ) && !isNaN( el.offsetTop ) ) {
+        _x += el.offsetLeft - el.scrollLeft;
+        _y += el.offsetTop - el.scrollTop;
+        el = el.offsetParent;
     }
+    return { top: _y, left: _x };
 }
-
-function popUp(evt, currElem)
+function popUp(evt,currElem)
 {
-    PopUp.show(evt, currElem);
-}
+    var popUpWin = document.getElementById(currElem);
+    var obj = null;
+    if (evt.target) obj = evt.target;
+        else if (evt.srcElement) obj = evt.srcElement;
+    if (obj === null) return;
+    if (obj.nodeType == 3) // defeat Safari bug
+        obj = obj.parentNode;
 
+    var x = getOffset(obj).left + obj.offsetWidth + 5;
+    var y = getOffset(obj).top;
+
+    popUpWin.style.top = Math.max(2,y)+'px';
+    popUpWin.style.left= Math.max(2,x)+'px';
+    popUpWin.style.visibility = "visible";
+        window.status = "";
+
+}
 function popDown(currElem)
 {
-    PopUp.hide();
+    var popUpWin = document.getElementById(currElem);
+    popUpWin.style.visibility ="hidden"
 }
 
 // End hiding script -->

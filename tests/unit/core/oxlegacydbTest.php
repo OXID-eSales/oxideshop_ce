@@ -356,4 +356,19 @@ class Unit_Core_oxLegacyDbTest extends OxidTestCase
         $oLegacyDb->setTransactionIsolationLevel( $sLevel );
     }
 
+    /**
+     * Test case for oxLegacyDb::UI();
+     */
+    public function testUI()
+    {
+        $iParam = 10;
+        $oDbLib = $this->getMock( "dbLib", array( "UI" ) );
+        $oDbLib->expects( $this->once() )->method( 'UI' )->with($this->equalTo( $iParam ) );
+
+        $oLegacyDb = $this->getMock( "oxLegacyDb", array( "getDb" ) );
+        $oLegacyDb->expects( $this->once() )->method( 'getDb' )->with($this->equalTo( false ) )->will( $this->returnValue( $oDbLib ) );
+
+        $oLegacyDb->UI( $iParam );
+    }
+
 }

@@ -48,7 +48,7 @@ class Unit_Components_Widgets_oxwActionTest extends OxidTestCase
      */
     public function testGetAction()
     {
-        modConfig::getInstance()->setConfigParam( 'bl_perfLoadAktion', 1 );
+        $this->getConfig()->setConfigParam( 'bl_perfLoadAktion', 1 );
         
         $oAction = new oxwAction();
         $oAction->setViewParameters( array("action" => "oxtop5") );
@@ -68,6 +68,7 @@ class Unit_Components_Widgets_oxwActionTest extends OxidTestCase
         $oAction = new oxwAction();
         $oAction->setViewParameters( array("action" => "Bestseller") );
         $this->assertTrue( $oAction->getActionName() );
+        $this->assertEquals('Bestseller', $oAction->getActionName());
     }
     
     /**
@@ -80,6 +81,7 @@ class Unit_Components_Widgets_oxwActionTest extends OxidTestCase
         $oAction = new oxwAction();
         $oAction->setViewParameters( array("listtype" => "grid") );
         $this->assertTrue( $oAction->getListType() );
+        $this->assertEquals('grid', $oAction->getListType());
     }
 
 }

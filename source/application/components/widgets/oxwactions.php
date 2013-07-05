@@ -42,6 +42,11 @@ class oxwActions extends oxWidget
      */
     protected $_blLoadActions = null;
 
+    /**
+     * Returns article list with action articles
+     *
+     * @return object
+     */
     public function getAction()
     {
         $sActionId = $this->getViewParameter("action");
@@ -57,18 +62,13 @@ class oxwActions extends oxWidget
     }
 
     /**
-     * Template variable getter. Returns if actions are ON
+     * Returns if actions are ON
      *
      * @return string
      */
     protected function _getLoadActionsParam()
     {
-        if ( $this->_blLoadActions === null ) {
-            $this->_blLoadActions = false;
-            if ( $this->getConfig()->getConfigParam( 'bl_perfLoadAktion' ) ) {
-                $this->_blLoadActions = true;
-            }
-        }
+        $this->_blLoadActions = $this->getConfig()->getConfigParam( 'bl_perfLoadAktion' );
         return $this->_blLoadActions;
     }
 

@@ -17,7 +17,7 @@
 
     [{block name="sidebar_trustedshopsratings"}]
         [{if $oView->getClassName() eq "start"}]
-            [{if $oViewConf->showTs("WIDGET")}]
+            [{if $oViewConf->showTs("WIDGET") && $oViewConf->getTsId()}]
                 [{include file="widget/trustedshops/ratings.tpl" }]
             [{/if}]
         [{/if}]
@@ -25,7 +25,9 @@
 
     [{block name="sidebar_partners"}]
         [{if $oView->getClassName() eq "start"}]
+            [{if !$oViewConf->getTsId() || !$oViewConf->showTs("WIDGET") }]
             [{include file="widget/sidebar/partners.tpl" }]
+        [{/if}]
         [{/if}]
     [{/block}]
 

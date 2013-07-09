@@ -1141,6 +1141,8 @@ class oxViewConfig extends oxSuperCfg
     /**
      * Returns Trusted Shops Widget image url
      *
+     * @deprecated since v4.7.6/5.0.6 (2013-07-09); new Trusted Shops badge added
+     *
      * @return string
      */
     public function getTsWidgetUrl()
@@ -1166,6 +1168,8 @@ class oxViewConfig extends oxSuperCfg
 
     /**
      * Trusted Shops widget info url
+     *
+     * @deprecated since v4.7.6/5.0.6 (2013-07-09); new Trusted Shops badge added
      *
      * @return string | bool
      */

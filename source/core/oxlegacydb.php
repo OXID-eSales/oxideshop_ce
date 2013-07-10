@@ -63,7 +63,7 @@ class oxLegacyDb extends oxSuperCfg
 
     }
 
-     /**
+    /**
      * Return connection to db
      *
      * @param bool $blType - connection type

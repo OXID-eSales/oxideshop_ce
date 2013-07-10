@@ -37,9 +37,8 @@ class oxLegacyDb extends oxSuperCfg
     protected $_oDb = null;
 
 
-
      /**
-     * Set slave connect
+     * Set connection
      *
      * @param object $oConnection Connection
      *
@@ -97,7 +96,7 @@ class oxLegacyDb extends oxSuperCfg
      * @param array|bool $aParams Array of parameters
      * @param bool       $blType  connection type
      *
-     * @return Array
+     * @return array
      */
     public function getArray( $sSql, $aParams = false, $blType = true )
     {
@@ -111,7 +110,7 @@ class oxLegacyDb extends oxSuperCfg
      * @param array|bool $aParams Array of parameters
      * @param bool       $blType  connection type
      *
-     * @return string
+     * @return array
      */
     public function getRow( $sSql, $aParams = false, $blType = true )
     {
@@ -154,7 +153,7 @@ class oxLegacyDb extends oxSuperCfg
      * @param array|bool $aParams Array of parameters
      * @param bool       $blType  connection type
      *
-     * @return object
+     * @return array
      */
     public function getAssoc( $sSql, $aParams = false, $blType = true )
     {
@@ -240,7 +239,7 @@ class oxLegacyDb extends oxSuperCfg
     /**
      * Return error message
      *
-     * @return int
+     * @return string
      */
     public function errorMsg()
     {
@@ -252,7 +251,7 @@ class oxLegacyDb extends oxSuperCfg
      *
      * @param string $sValue value
      *
-     * @return object
+     * @return string
      */
     public function qstr( $sValue )
     {
@@ -264,7 +263,7 @@ class oxLegacyDb extends oxSuperCfg
      *
      * @param string $sValue value
      *
-     * @return object
+     * @return string
      */
     public function quote( $sValue )
     {
@@ -276,7 +275,7 @@ class oxLegacyDb extends oxSuperCfg
      *
      * @param string $sTable Table name
      *
-     * @return object
+     * @return array
      */
     public function metaColumns( $sTable )
     {
@@ -289,7 +288,7 @@ class oxLegacyDb extends oxSuperCfg
      * @param string $sTable       Table name
      * @param bool   $blNumIndexes Numeric indexes
      *
-     * @return object
+     * @return array
      */
     public function metaColumnNames( $sTable, $blNumIndexes=false )
     {
@@ -299,7 +298,7 @@ class oxLegacyDb extends oxSuperCfg
     /**
      * Start mysql transaction
      *
-     * @return null
+     * @return bool
      */
     public function startTransaction()
     {
@@ -309,7 +308,7 @@ class oxLegacyDb extends oxSuperCfg
     /**
      * Commit mysql transaction
      *
-     * @return null
+     * @return bool
      */
     public function commitTransaction()
     {
@@ -319,7 +318,7 @@ class oxLegacyDb extends oxSuperCfg
     /**
      * RollBack mysql transaction
      *
-     * @return null
+     * @return bool
      */
     public function rollbackTransaction()
     {
@@ -332,7 +331,7 @@ class oxLegacyDb extends oxSuperCfg
      *
      * @param string $sLevel level
      *
-     * @return null
+     * @return bool
      */
     public function setTransactionIsolationLevel( $sLevel = null )
     {

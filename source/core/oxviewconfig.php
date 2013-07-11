@@ -64,6 +64,13 @@ class oxViewConfig extends oxSuperCfg
     protected $_oCountryList = null;
 
     /**
+     * Trusted shop ratings
+     *
+     * @var null
+     */
+    protected $_aTrustedShopRatings = null;
+
+    /**
      * Active theme name
      *
      * @var null
@@ -1178,6 +1185,25 @@ class oxViewConfig extends oxSuperCfg
         }
 
         return $sUrl;
+    }
+
+    /**
+     * Gets Trusted shops ratings from Trusted shops
+     *
+     * @return array
+     */
+    public function getTsRatings()
+    {
+        if ( $this->_aTrustedShopRatings === null ) {
+            if ( $sTsId = $this->getTsId() ) {
+                $oTsRatings = oxNew( "oxTsRatings" );
+                $oTsRatings->setTsId( $sTsId );
+                $this->_aTrustedShopRatings = $oTsRatings->getRatings();
+
+                return $this->_aTrustedShopRatings;
+            }
+        }
+        return $this->_aTrustedShopRatings;
     }
 
     /**

@@ -25,4 +25,14 @@
         <img src="[{$oViewConf->getImageUrl($sTrustShopImg)}]" alt="[{ oxmultilang ident="MORE" }]">
     </a>
 [{/if}]
+[{assign var="tsRatings" value=$oViewConf->getTsRatings()}]
+[{if !$tsRatings.empty}]
+<span class='hidden' xmlns:v="http://rdf.data-vocabulary.org/#" typeof="v:Review-aggregate">
+    <span rel="v:rating">
+            <span property="v:value">[{$tsRatings.result}] </span>
+        </span> /
+    <span property="v:best">[{$tsRatings.max}] </span> von <span property="v:count">[{$tsRatings.count}]</span>
+        <a href="https://www.trustedshops.de/bewertung/info_[{$tsId}].html" title="[{$tsRatings.shopName}] Bewertungen">[{$tsRatings.shopName}] Bewertungen</a>
+</span>
+[{/if}]
 <!-- / Trusted Shops Siegel -->

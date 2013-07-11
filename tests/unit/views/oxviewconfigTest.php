@@ -19,7 +19,6 @@
  * @package   tests
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -64,6 +63,22 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
 
         $oViewConf = new oxViewConfig();
         $this->assertEquals( 123, $oViewConf->getTsId() );
+    }
+
+    /**
+     * oxViewConfig::getTsRatings test case
+     *
+     * @return null
+     */
+    public function testGetTsRatings()
+    {
+        $oViewConf = $this->getMock( "oxViewConfig", array( "getTsId" ) );
+        $oViewConf->expects( $this->any() )->method( "getTsId" )->will( $this->returnValue( 'xyz' ) );
+
+        $aTsRatings = $oViewConf->getTsRatings();
+
+        $this->assertArrayHasKey( 'empty', $aTsRatings );
+        $this->assertTrue( $aTsRatings['empty'] );
     }
 
     /**

@@ -5297,3 +5297,6 @@ a.downloadableFile.pending {
 #betaNote+#page {
     padding-top: 35px;
 }
+.hidden {
+    display: none;
+}

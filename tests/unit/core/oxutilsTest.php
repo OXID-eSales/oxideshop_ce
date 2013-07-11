@@ -1080,7 +1080,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
         @unlink($sFileName);
         $oUtils->toFileCache('testCache1', 'teststs');
         $oUtils->commitFileCache();
-        $this->assertEquals( serialize('teststs'), file_get_contents($sFileName) );
+        $this->assertEquals( serialize( array( 'content' => 'teststs' ) ), file_get_contents($sFileName) );
         unlink($sFileName);
     }
 
@@ -1092,7 +1092,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
         $oUtils->toFileCache('testCache2', 'teststs');
         $oUtils->commitFileCache();
         $sFileContents = file_get_contents($sFileName);
-        $this->assertEquals(serialize('teststs'), $sFileContents);
+        $this->assertEquals(serialize( array( 'content' => 'teststs' ) ), $sFileContents);
         unlink($sFileName);
     }
 
@@ -1107,7 +1107,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
         $oUtils1->commitFileCache();
         $oUtils2->commitFileCache();
         $sFileContents = file_get_contents($sFileName);
-        $this->assertEquals(serialize('instance1111'), $sFileContents);
+        $this->assertEquals(serialize( array( 'content' => 'instance1111' ) ), $sFileContents);
         unlink($sFileName);
     }
     public function testCachingLockRelease()
@@ -1125,7 +1125,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
 
         $oUtils1->commitFileCache();
         clearstatcache();
-        $this->assertEquals(serialize('instance1111'), file_get_contents($sFileName));
+        $this->assertEquals(serialize( array( 'content' => 'instance1111' ) ), file_get_contents($sFileName));
         $this->assertNotEquals(0, filesize($sFileName));
 
         $oUtils2 = new oxutils();
@@ -1136,7 +1136,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
 
         $oUtils2->commitFileCache();
         clearstatcache();
-        $this->assertEquals(serialize('instance2222'), file_get_contents($sFileName));
+        $this->assertEquals(serialize( array( 'content' => 'instance2222') ), file_get_contents($sFileName));
         $this->assertNotEquals(0, filesize($sFileName));
 
         unlink($sFileName);
@@ -1231,7 +1231,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
 
         include( $sFileName );
 
-        $this->assertEquals($_aCacheContents, $sTestArray);
+        $this->assertEquals($_aCacheContents['content'], $sTestArray);
         unlink( $sFileName );
     }
 
@@ -1335,5 +1335,39 @@ class Unit_Core_oxutilsTest extends OxidTestCase
 
         $this->assertEquals( serialize( 123 ), $oUtils->UNITprocessCache( 123, 123 ) );
         $this->assertNotEquals( serialize( 123 ), $oUtils->UNITprocessCache( 123, 123 ) );
+    }
+
+    /**
+     * Tests if cache works when TTL is not exceeded
+     */
+    public function testGetTtlCachingInTime()
+    {
+        $this->setTime( 10 );
+
+        $oUtils = new oxUtils();
+        $oUtils->toFileCache( 'anykey', 'test', 10 );
+        $oUtils->commitFileCache();
+
+        $oUtils2 = new oxUtils();
+
+        $this->setTime( 15 );
+        $this->assertEquals( 'test' , $oUtils2->fromFileCache( 'anykey' ) );
+    }
+
+    /**
+     * Tests if cache works when TTL is exceeded
+     */
+    public function testGetTtlCachingTooLate()
+    {
+        $this->setTime( 10 );
+        $oUtils = new oxUtils();
+        $oUtils->toFileCache( 'otherkey', 'test', 10 );
+        $oUtils->commitFileCache();
+
+        $oUtils2 = new oxUtils();
+
+        $this->setTime( 145 );
+        $this->assertEquals( null , $oUtils2->fromFileCache( 'otherkey' ) );
+
     }
 }

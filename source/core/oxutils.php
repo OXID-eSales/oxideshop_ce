@@ -19,7 +19,6 @@
  * @package   core
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -543,13 +542,19 @@ class oxUtils extends oxSuperCfg
      *
      * @param string $sKey      Cache key
      * @param mixed  $mContents Contents to cache
+     * @param int    $iTtl      Time to live in seconds (0 for forever).
      *
      * @return bool
      */
-    public function toFileCache( $sKey, $mContents )
+    public function toFileCache( $sKey, $mContents, $iTtl = 0 )
     {
-        $this->_aFileCacheContents[$sKey] = $mContents;
+        $aCacheData['content'] = $mContents;
         $aMeta = $this->getCacheMeta( $sKey );
+        if ( $iTtl ) {
+            $aCacheData['ttl'] = $iTtl;
+            $aCacheData['timestamp'] = oxRegistry::get("oxUtilsDate")->getTime();
+        }
+        $this->_aFileCacheContents[$sKey] = $aCacheData;
 
         // looking for cache meta
         $sCachePath = isset( $aMeta["cachepath"] ) ? $aMeta["cachepath"] : $this->getCacheFilePath( $sKey );
@@ -580,6 +585,15 @@ class oxUtils extends oxSuperCfg
                 $sRes = $blInclude ? $this->_includeFile( $sCachePath ) : $this->_readFile( $sCachePath );
             }
 
+            if ( isset( $sRes['ttl'] ) && $sRes['ttl'] != 0 ) {
+                $iTimestamp = $sRes['timestamp'];
+                $iTtl = $sRes['ttl'];
+
+                $iTime = oxRegistry::get("oxUtilsDate")->getTime();
+                if ( $iTime > $iTimestamp + $iTtl ) {
+                    return null;
+                }
+            }
             // release lock
             $this->_releaseFile( $sKey, LOCK_SH );
 
@@ -587,7 +601,7 @@ class oxUtils extends oxSuperCfg
             $this->_aFileCacheContents[$sKey] = $sRes;
         }
 
-        return $this->_aFileCacheContents[$sKey];
+        return $this->_aFileCacheContents[$sKey]['content'];
     }
 
     /**

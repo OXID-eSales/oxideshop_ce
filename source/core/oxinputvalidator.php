@@ -85,7 +85,6 @@ class oxInputValidator extends oxSuperCfg
    /**
      * Class constructor. The constructor is defined in order to be possible to call parent::__construct() in modules.
      *
-     * @return null;
      */
     public function __construct()
     {
@@ -181,23 +180,185 @@ class oxInputValidator extends oxSuperCfg
                     }
                 }
 
-                // cleaning up spaces
+                // Cleaning up spaces
                 $aDynvalue['lsblz']   = str_replace( ' ', '', $aDynvalue['lsblz'] );
                 $aDynvalue['lsktonr'] = str_replace( ' ', '', $aDynvalue['lsktonr'] );
 
-                //if konto number is shorter than 10, add zeros in front of number
-                if ( $oStr->strlen( $aDynvalue['lsktonr'] ) < 10 ) {
-                    $sNewNum = str_repeat( '0', 10 - $oStr->strlen( $aDynvalue['lsktonr'] ) ).$aDynvalue['lsktonr'];
-                    $aDynvalue['lsktonr'] = $sNewNum;
-                }
-
-                if ( $oStr->preg_match( "/^\d{5,8}$/", $aDynvalue['lsblz'] ) && $oStr->preg_match( "/\d{10}/", $aDynvalue['lsktonr'] ) ) {
+                // Check BIC / IBAN
+                if ( $this->_isValidBIC($aDynvalue['lsblz']) && $this->_isValidIBAN($aDynvalue['lsktonr']) ) {
                     $blOK = true;
                 }
+
+                // If can't meet BIC / IBAN formats check account number and bank code with old validation
+                if ( !$blOK ) {
+                    // If account number is shorter than 10, add zeros in front of number
+                    if ( $oStr->strlen( $aDynvalue['lsktonr'] ) < 10 ) {
+                        $sNewNum = str_repeat( '0', 10 - $oStr->strlen( $aDynvalue['lsktonr'] ) ).$aDynvalue['lsktonr'];
+                        $aDynvalue['lsktonr'] = $sNewNum;
+                    }
+
+                    if ( $oStr->preg_match( "/^\d{5,8}$/", $aDynvalue['lsblz'] ) && $oStr->preg_match( "/\d{10}/", $aDynvalue['lsktonr'] ) ) {
+                        $blOK = true;
+                    }
+                }
+
+
                 break;
         }
 
         return $blOK;
+    }
+
+    /**
+     * International bank account number validation
+     *
+     * An IBAN is validated by converting it into an integer and performing a basic mod-97 operation (as described in ISO 7064) on it.
+     * If the IBAN is valid, the remainder equals 1.
+     *
+     * @param string $sBIC code to check
+     *
+     * @return bool
+     */
+    protected function _isValidIBAN($sIBAN)
+    {
+        $blValid = true;
+        $oStr = getStr();
+        $sIBAN = strtoupper( trim($sIBAN) );
+
+        // 1. Check that the total IBAN length is correct as per the country. If not, the IBAN is invalid.
+        $sLangAbbr = $oStr->substr($sIBAN, 0, 2);
+        $iLength = $this->_getIBANLengthByCountry($sLangAbbr);
+        if (!is_null($iLength) && $oStr->strlen($sIBAN) != $iLength) {
+            $blValid = false;
+        }
+
+        // 2. Move the four initial characters to the end of the string.
+        $sInitialChars = $oStr->substr($sIBAN, 0, 4);
+        $sIBAN = substr_replace($sIBAN, '', 0, 4);
+        $sIBAN = $sIBAN . $sInitialChars;
+
+        // 3. Replace each letter in the string with two digits, thereby expanding the string, where A = 10, B = 11, ..., Z = 35.
+        $sIBAN= str_replace(
+            array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'),
+            array(10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35),
+            $sIBAN
+        );
+
+        // 4. Interpret the string as a decimal integer and compute the remainder of that number on division by 97.
+        $sModulus = bcmod($sIBAN, 97);
+        if ( (int)$sModulus != 1 ) {
+            $blValid = false;
+        }
+
+        // 5. Return validation result
+        return $blValid;
+    }
+
+    /**
+     * Get IBAN code length by specified country code
+     *
+     * @param string $sCountryCode country code
+     *
+     * @return int
+     */
+    protected function _getIBANLengthByCountry($sCountryCode)
+    {
+        $aIBANRegistry = $this->_getIBANLengthByCountryArray();
+        return $aIBANRegistry[$sCountryCode];
+    }
+
+    /**
+     * Get IBAN length by country data
+     *
+     * @return array
+     */
+    protected function _getIBANLengthByCountryArray()
+    {
+        return array(
+            'AL' => 28,
+            'AD' => 24,
+            'AT' => 20,
+            'AZ' => 28,
+            'BH' => 22,
+            'BE' => 16,
+            'BA' => 20,
+            'BR' => 29,
+            'BG' => 22,
+            'CR' => 21,
+            'HR' => 21,
+            'CY' => 28,
+            'CZ' => 24,
+            'DK' => 18, // Same DENMARK
+            'FO' => 18, // Same DENMARK
+            'GL' => 18, // Same DENMARK
+            'DO' => 28,
+            'EE' => 20,
+            'FI' => 18,
+            'FR' => 27,
+            'GE' => 22,
+            'DE' => 22,
+            'GI' => 23,
+            'GR' => 27,
+            'GT' => 28,
+            'HU' => 28,
+            'IS' => 26,
+            'IE' => 22,
+            'IL' => 23,
+            'IT' => 27,
+            'KZ' => 20,
+            'KW' => 30,
+            'LV' => 21,
+            'LB' => 28,
+            'LI' => 21,
+            'LT' => 20,
+            'LU' => 20,
+            'MK' => 19,
+            'MT' => 31,
+            'MR' => 27,
+            'MU' => 30,
+            'MD' => 24,
+            'MC' => 27,
+            'ME' => 22,
+            'NL' => 18,
+            'NO' => 15,
+            'PK' => 24,
+            'PS' => 29,
+            'PL' => 28,
+            'PL' => 28,
+            'PT' => 25,
+            'RO' => 24,
+            'SM' => 27,
+            'SA' => 24,
+            'RS' => 22,
+            'SK' => 24,
+            'SI' => 19,
+            'ES' => 24,
+            'SE' => 24,
+            'CH' => 21,
+            'TN' => 24,
+            'TR' => 26,
+            'AE' => 23,
+            'GB' => 22,
+            'VG' => 24
+        );
+    }
+
+    /**
+     * Business identifier code validation
+     *
+     * Structure
+     *  - 4 letters: Institution Code or bank code.
+     *  - 2 letters: ISO 3166-1 alpha-2 country code
+     *  - 2 letters or digits: location code
+     *  - 3 letters or digits: branch code, optional
+     *
+     * @param string $sBIC code to check
+     *
+     * @return bool
+     */
+    protected function _isValidBIC($sBIC)
+    {
+        return (bool)getStr()->preg_match("([a-zA-Z]{4}[a-zA-Z]{2}[a-zA-Z0-9]{2}([a-zA-Z0-9]{3})?)", $sBIC);
     }
 
     /**

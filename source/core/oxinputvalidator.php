@@ -20,11 +20,10 @@
  * @package   core
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
- * Calss for validating input
+ * Calls for validating input
  *
  */
 class oxInputValidator extends oxSuperCfg

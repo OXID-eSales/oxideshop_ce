@@ -25,6 +25,16 @@
 class oxTsRatings extends oxSuperCfg
 {
 
+    /**
+     * timeout in seconds for regenerating data (3h)
+     */
+    const CACHE_TTL = 43200;
+
+    /**
+     * data id for cache
+     */
+    const TS_RATINGS    = 'TS_RATINGS';
+
     const TS_ERROR_INVALID_TS = "We are sorry, but your requested TSID is invalid or our service is temporarily unavailable. Please refer to the documentation under http://www.trustedshops.com/api/ratings/v1/documentation.html' for further information.";
 
     /**
@@ -88,6 +98,9 @@ class oxTsRatings extends oxSuperCfg
      * @return array
      */
     public function getRatings() {
+        if ( ( $this->_aChannel = oxRegistry::getUtils()->fromFileCache( self::TS_RATINGS ) ) ) {
+            return $this->_aChannel;
+        }
         $tsId = $this->getTsId();
 
         $url = "https://www.trustedshops.com/bewertung/show_xml.php?tsid=".$tsId;
@@ -103,6 +116,7 @@ class oxTsRatings extends oxSuperCfg
             $this->_aChannel['max'] = "5.00";
             $this->_aChannel['count'] = (int)$xml->ratings["amount"];
             $this->_aChannel['shopName'] = (string)$xml->name;
+            oxRegistry::getUtils()->toFileCache( self::TS_RATINGS, $this->_aChannel, self::CACHE_TTL );
         }
         return $this->_aChannel;
     }

@@ -31,8 +31,8 @@
     <span rel="v:rating">
             <span property="v:value">[{$tsRatings.result}] </span>
         </span> /
-    <span property="v:best">[{$tsRatings.max}] </span> von <span property="v:count">[{$tsRatings.count}]</span>
-        <a href="https://www.trustedshops.de/bewertung/info_[{$tsId}].html" title="[{$tsRatings.shopName}] Bewertungen">[{$tsRatings.shopName}] Bewertungen</a>
+    <span property="v:best">[{$tsRatings.max}] </span> [{ oxmultilang ident="FROM" }] <span property="v:count">[{$tsRatings.count}]</span>
+        <a href="https://www.trustedshops.de/bewertung/info_[{$tsId}].html" title="[{$tsRatings.shopName}] [{ oxmultilang ident='RATINGS' }]">[{$tsRatings.shopName}] [{ oxmultilang ident='RATINGS' }]</a>
 </span>
 [{/if}]
 <!-- / Trusted Shops Siegel -->

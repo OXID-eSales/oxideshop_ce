@@ -19,7 +19,6 @@
  * @package   tests
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -298,6 +297,51 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
 
         $oValidator = new oxinputvalidator();
         $this->assertFalse( $oValidator->validatePaymentInputData( 'oxiddebitnote', $aDynvalue ) );
+    }
+
+    /**
+     * Check validation with both valid BIC and IBAN
+     */
+    public function testValidBICandIBAN()
+    {
+        $aDirectDebitData = array(
+            'lsbankname'   => 'SCHWEIZERISCHE NATIONALBANK',
+            'lsblz'        => 'SNBZCHZZ',              // BIC
+            'lsktonr'      => 'CH9300762011623852957', // IBAN
+            'lsktoinhaber' => 'John Doe'
+        );
+        $oValidator = new oxInputValidator();
+        $this->assertTrue( $oValidator->validatePaymentInputData('oxiddebitnote', $aDirectDebitData) );
+    }
+
+    /**
+     * Check validation with invalid BIC
+     */
+    public function testInvalidBIC()
+    {
+        $aDirectDebitData = array(
+            'lsbankname'   => 'SCHWEIZERISCHE NATIONALBANK',
+            'lsblz'        => '1234567',               // Invalid BIC
+            'lsktonr'      => 'CH9300762011623852957', // IBAN
+            'lsktoinhaber' => 'John Doe'
+        );
+        $oValidator = new oxInputValidator();
+        $this->assertFalse( $oValidator->validatePaymentInputData('oxiddebitnote', $aDirectDebitData) );
+    }
+
+    /**
+     * Check validation with invalid IBAN
+     */
+    public function testInvalidIBAN()
+    {
+        $aDirectDebitData = array(
+            'lsbankname'   => 'SCHWEIZERISCHE NATIONALBANK',
+            'lsblz'        => 'SNBZCHZ',               // BIC
+            'lsktonr'      => '123456789',             // Invalid IBAN
+            'lsktoinhaber' => 'John Doe'
+        );
+        $oValidator = new oxInputValidator();
+        $this->assertFalse( $oValidator->validatePaymentInputData('oxiddebitnote', $aDirectDebitData) );
     }
 
     /**

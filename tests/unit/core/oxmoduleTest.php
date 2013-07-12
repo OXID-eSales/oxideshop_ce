@@ -100,6 +100,17 @@ class Unit_Core_oxmoduleTest extends OxidTestCase
     }
 
     /**
+     * oxmodule::load() test case
+     *
+     * @return null
+     */
+    public function testLoadWhenModuleDoesNotExists()
+    {
+        $oModule = new oxModule;
+        $this->assertFalse( $oModule->load( 'non_existing_module' ) );
+    }
+
+    /**
      * oxmodule::load() test legacy modules loading from "aLegacyModules" config option
      *
      * @return null
@@ -345,6 +356,20 @@ class Unit_Core_oxmoduleTest extends OxidTestCase
         $oModule = $this->getProxyClass('oxmodule');
         $aModule  = array('id' => 'test');
         $oModule->setNonPublicVar( "_aModule", $aModule );
+
+        $this->assertFalse($oModule->isActive());
+    }
+
+    /**
+     * oxmodule::isActive() test case, active
+     *
+     * @return null
+     */
+    public function testIsActiveWithNonExistingModuleLoaded()
+    {
+        $oModule = $this->getMock("oxmodule", array("getDisabledModules"));
+        $oModule->expects( $this->any() )->method( 'getDisabledModules' )->will($this->returnValue( array() ));
+        $oModule->load('non_existing_module');
 
         $this->assertFalse($oModule->isActive());
     }
@@ -728,6 +753,60 @@ class Unit_Core_oxmoduleTest extends OxidTestCase
         $oModule = $this->getProxyClass('oxmodule');
 
         $this->assertEquals( $aModulePaths, $oModule->getModulePaths() );
+    }
+
+     /**
+     * oxmodule::testGetModuleFullPaths() test case
+     *
+     * @return null
+     */
+    public function testGetModuleFullPath()
+    {
+        $sModId = "testModule";
+
+        $oConfig = $this->getMock('oxconfig', array('getModulesDir'));
+        $oConfig->expects( $this->any() )
+                ->method( 'getModulesDir' )
+                ->will($this->returnValue( "/var/path/to/modules/" ));
+
+        $oModule = $this->getMock('oxmodule', array('getModulePath', 'getConfig'));
+        $oModule->expects( $this->any() )
+                ->method( 'getModulePath' )
+                ->with( $this->equalTo($sModId) )
+                ->will( $this->returnValue( "oe/module/" ) );
+
+        $oModule->expects( $this->any() )
+                ->method( 'getConfig' )
+                ->will( $this->returnValue( $oConfig ) );
+
+        $this->assertEquals( "/var/path/to/modules/oe/module/", $oModule->getModuleFullPath( $sModId ) );
+    }
+
+    /**
+     * oxmodule::testGetModuleFullPaths() test case
+     *
+     * @return null
+     */
+    public function testGetModuleFullPathWhenNoModulePathExists()
+    {
+        $sModId = "testModule";
+
+        $oConfig = $this->getMock('oxconfig', array('getModulesDir'));
+        $oConfig->expects( $this->any() )
+            ->method( 'getModulesDir' )
+            ->will($this->returnValue( "/var/path/to/modules/" ));
+
+        $oModule = $this->getMock('oxmodule', array('getModulePath', 'getConfig'));
+        $oModule->expects( $this->any() )
+            ->method( 'getModulePath' )
+            ->with( $this->equalTo($sModId) )
+            ->will( $this->returnValue( null ) );
+
+        $oModule->expects( $this->any() )
+            ->method( 'getConfig' )
+            ->will( $this->returnValue( $oConfig ) );
+
+        $this->assertEquals( false, $oModule->getModuleFullPath( $sModId ) );
     }
 
      /**

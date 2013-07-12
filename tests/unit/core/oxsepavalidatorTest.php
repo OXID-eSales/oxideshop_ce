@@ -36,6 +36,56 @@ require_once realpath( "." ).'/unit/test_config.inc.php';
 class Unit_Core_oxSepaValidatorTest extends OxidTestCase
 {
     /**
+     * IBAN Registry data provider
+     *
+     * @return array
+     */
+    public function _dpIBANRegistry()
+    {
+        $sNotValidMsg = "IBAN registry must be not valid";
+        $sValidMsg    = "IBAN registry must be valid";
+
+        return array(
+            array( true , null,                      $sValidMsg    ),
+            array( false, array("AL", "GR", 33, 21), $sNotValidMsg ),
+            array( false, array("GER" => 22       ), $sNotValidMsg ),
+            array( false, array("DE" => "twotwo"  ), $sNotValidMsg ),
+            array( false, array("de" => "22"      ), $sNotValidMsg ),
+            array( false, array("EN" => "2.2"     ), $sNotValidMsg ),
+            array( true , array("DE" => "22"      ), $sValidMsg    ),
+        );
+    }
+
+    /**
+     * IBAN validation data provider
+     *
+     * @return array
+     */
+    public function _dpIBANValidation()
+    {
+        $sNotValidMsg = "IBAN must be not valid";
+        $sValidMsg    = "IBAN must be valid";
+
+        return array(
+            array( true,  "AL47212110090000000235698741"    , $sValidMsg    ),
+            array( true,  "MT84MALT011000012345MTLCAST001S" , $sValidMsg    ),
+            array( true,  "NO9386011117947"                 , $sValidMsg    ),
+            array( false, "NX9386011117947"                 , $sNotValidMsg ),
+        );
+    }
+
+    public function _dpBICValidation()
+    {
+        $sNotValidMsg = "IBAN must be not valid";
+        $sValidMsg    = "IBAN must be valid";
+
+        return array(
+            array( true,  "ASPKAT2L", $sValidMsg    ),
+            array( false, "123ABCDE", $sNotValidMsg ),
+        );
+    }
+
+    /**
      * Test case to check getting IBAN registry records
      */
     public function testGetIBANRegistry()
@@ -52,40 +102,48 @@ class Unit_Core_oxSepaValidatorTest extends OxidTestCase
      */
     public function testSetIBANRegistry()
     {
-        $this->markTestIncomplete('not implemented');
         $oSepaValidator = new oxSepaValidator();
-        $oSepaValidator->setIBANRegistry();
+
+        $aIBANRegistry = array("DE" => 22);
+
+        $this->assertEquals( true,           $oSepaValidator->setIBANRegistry($aIBANRegistry), "IBAN registry must be set" );
+
+        $this->assertEquals( $aIBANRegistry, $oSepaValidator->getIBANRegistry(),               "IBAN registry must be set" );
     }
 
     /**
      * Test case to check IBAN registry validation
+     *
+     * @dataProvider _dpIBANRegistry
      */
-    public function testValidateIBANRegistry()
+    public function testValidateIBANRegistry($blExpected, $aIBANRegistry, $sMessage)
     {
-        $this->markTestIncomplete('not implemented');
-
         $oSepaValidator = new oxSepaValidator();
-        $this->assertEquals( true, $oSepaValidator->validateIBANRegistry(), "Default IBAN registry must be valid");
 
-        $oSepaValidator->setIBANRegistry();
-        $this->assertEquals( true, $oSepaValidator->validateIBANRegistry(), "Current IBAN registry must be valid");
+        $this->assertEquals( $blExpected, $oSepaValidator->isValidIBANRegistry($aIBANRegistry), $sMessage);
     }
 
     /**
      * Test case to check IBAN validation
+     *
+     * @dataProvider _dpIBANValidation
      */
-    public function testIsValidIBAN()
+    public function testIsValidIBAN($blExpected, $sIBAN, $sMessage)
     {
-        $this->markTestIncomplete('not implemented');
         $oSepaValidator = new oxSepaValidator();
+
+        $this->assertEquals( $blExpected, $oSepaValidator->isValidIBAN($sIBAN), $sMessage );
     }
 
     /**
      * Test case to check BIC validation
+     *
+     * @dataProvider _dpBICValidation
      */
-    public function testIsValidBIC()
+    public function testIsValidBIC($blExpected, $sBIC, $sMessage)
     {
-        $this->markTestIncomplete('not implemented');
         $oSepaValidator = new oxSepaValidator();
+
+        $this->assertEquals( $blExpected, $oSepaValidator->isValidBIC($sBIC), $sMessage );
     }
 }

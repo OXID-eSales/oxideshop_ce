@@ -74,6 +74,11 @@ class Unit_Core_oxSepaValidatorTest extends OxidTestCase
         );
     }
 
+    /**
+     * BIC validation data provider
+     *
+     * @return array
+     */
     public function _dpBICValidation()
     {
         $sNotValidMsg = "IBAN must be not valid";

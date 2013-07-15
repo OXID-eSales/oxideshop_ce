@@ -216,6 +216,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
      */
     public function test4CharLsblz()
     {
+        $iErr = -4;
         $aDynvalue = array( 'lsbankname'   => 'Bank name',
                             'lsblz'        => '1234',
                             'lsktonr'      => '123456789',
@@ -223,8 +224,8 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
                           );
 
 
-        $oValidator = new oxinputvalidator();
-        $this->assertFalse( $oValidator->validatePaymentInputData( 'oxiddebitnote', $aDynvalue ) );
+        $oValidator = new oxInputValidator();
+        $this->assertEquals( $iErr, $oValidator->validatePaymentInputData( 'oxiddebitnote', $aDynvalue ) );
     }
 
     /**
@@ -288,6 +289,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
      */
     public function test9CharLsblz()
     {
+        $iErr = -4;
         $aDynvalue = array( 'lsbankname'   => 'Bank name',
                             'lsblz'        => '123456789',
                             'lsktonr'      => '123456789',
@@ -295,68 +297,8 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
                           );
 
 
-        $oValidator = new oxinputvalidator();
-        $this->assertFalse( $oValidator->validatePaymentInputData( 'oxiddebitnote', $aDynvalue ) );
-    }
-
-    /**
-     * Check validation with both valid BIC and IBAN
-     */
-    public function testPaymentWithValidBICandIBAN()
-    {
-        $aDirectDebitData = array(
-            'lsbankname'   => 'SCHWEIZERISCHE NATIONALBANK',
-            'lsblz'        => 'SNBZCHZZ',              // BIC
-            'lsktonr'      => 'CH9300762011623852957', // IBAN
-            'lsktoinhaber' => 'John Doe'
-        );
         $oValidator = new oxInputValidator();
-        $this->assertEquals(true, $oValidator->validatePaymentInputData('oxiddebitnote', $aDirectDebitData), "Payment data should be valid");
-    }
-
-    /**
-     * Check validation with invalid BIC
-     */
-    public function testPaymentWithInvalidBIC()
-    {
-        $aDirectDebitData = array(
-            'lsbankname'   => 'SCHWEIZERISCHE NATIONALBANK',
-            'lsblz'        => 'SNBZ',                  // Invalid BIC
-            'lsktonr'      => 'CH9300762011623852957', // IBAN
-            'lsktoinhaber' => 'John Doe'
-        );
-        $oValidator = new oxInputValidator();
-        $this->assertEquals( false, $oValidator->validatePaymentInputData('oxiddebitnote', $aDirectDebitData), "Payment data should not be valid" );
-    }
-
-    /**
-     * Check validation with invalid IBAN length
-     */
-    public function testPaymentWithInvalidIBANLength()
-    {
-        $aDirectDebitData = array(
-            'lsbankname'   => 'SCHWEIZERISCHE NATIONALBANK',
-            'lsblz'        => 'SNBZCHZZ',               // BIC
-            'lsktonr'      => 'LT123456789',            // Invalid IBAN
-            'lsktoinhaber' => 'John Doe'
-        );
-        $oValidator = new oxInputValidator();
-        $this->assertEquals( false, $oValidator->validatePaymentInputData('oxiddebitnote', $aDirectDebitData), "Payment data should not be valid");
-    }
-
-    /**
-     * Check validation with invalid IBAN checksum
-     */
-    public function testPaymentWithInvalidIBANRemainder()
-    {
-        $aDirectDebitData = array(
-            'lsbankname'   => 'SCHWEIZERISCHE NATIONALBANK',
-            'lsblz'        => 'SNBZCHZZ',               // BIC
-            'lsktonr'      => 'LT123456789123456789',   // Invalid IBAN
-            'lsktoinhaber' => 'John Doe'
-        );
-        $oValidator = new oxInputValidator();
-        $this->assertEquals( false, $oValidator->validatePaymentInputData('oxiddebitnote', $aDirectDebitData), "Payment data should not be valid");
+        $this->assertEquals( $iErr, $oValidator->validatePaymentInputData( 'oxiddebitnote', $aDynvalue ) );
     }
 
     /**

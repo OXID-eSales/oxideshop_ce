@@ -19,7 +19,6 @@
  * @package   core
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -456,7 +455,12 @@ class oxPayment extends oxI18n
             return true;
         }
 
-        if ( !oxRegistry::get("oxInputValidator")->validatePaymentInputData( $this->oxpayments__oxid->value, $aDynvalue ) ) {
+        $mxValidationResult = oxRegistry::get("oxInputValidator")->validatePaymentInputData( $this->oxpayments__oxid->value, $aDynvalue );
+
+        if ( is_integer($mxValidationResult) ) {
+            $this->_iPaymentError = $mxValidationResult;
+            return false;
+        } elseif ($mxValidationResult === false) {
             $this->_iPaymentError = 1;
             return false;
         }

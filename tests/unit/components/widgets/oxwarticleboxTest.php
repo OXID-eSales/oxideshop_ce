@@ -35,9 +35,9 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
     public function _dpTemplateViewParams()
     {
         return array(
-            array( "product", "grid"    , "widget/product/listitem_grid.tpl"     ),
-            array( "product", "infogrid", "widget/product/listitem_infogrid.tpl" ),
-            array( "product", "line"    , "widget/product/listitem_line.tpl"     ),
+            array( "product", "listitem_grid"    , "widget/product/listitem_grid.tpl"     ),
+            array( "product", "listitem_infogrid", "widget/product/listitem_infogrid.tpl" ),
+            array( "product", "listitem_line"    , "widget/product/listitem_line.tpl"     ),
         );
     }
 

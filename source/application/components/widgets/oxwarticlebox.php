@@ -54,24 +54,9 @@ class oxwArticleBox extends oxWidget
         $sListType   = $this->getViewParameter('sListType');
 
         if ($sWidgetType) {
-            $this->_sTemplate = "widget/" . $sWidgetType . "/listitem_" . $sListType . ".tpl";
+            $this->_sTemplate = "widget/" . $sWidgetType . "/" . $sListType . ".tpl";
         }
 
         return $this->_sTemplate;
-    }
-
-    /**
-     * Get product article
-     *
-     * @return oxArticle
-     */
-    public function getProduct()
-    {
-        $sId = $this->getViewParameter('productId');
-
-        $oArticle = oxNew( 'oxArticle' );
-        $oArticle->load($sId);
-
-        return $oArticle;
     }
 }

@@ -25,7 +25,7 @@
     [{/if}]
     [{ if $blShowToBasket}]
         [{oxhasrights ident="TOBASKET"}]
-            <input type="hidden" name="cl" value="[{ $oViewConf->getTopActiveClassName() }]">
+            <input type="hidden" name="cl" value="[{ $oViewConf->getActiveClassName() }]">
             [{if $owishid}]
                 <input type="hidden" name="owishid" value="[{$owishid}]">
             [{/if}]

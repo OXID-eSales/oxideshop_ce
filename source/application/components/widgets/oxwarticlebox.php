@@ -41,6 +41,11 @@ class oxwArticleBox extends oxWidget
      */
     protected $_sTemplate = 'widget/product/box.tpl';
 
+    /*public function init()
+    {
+        parent::init();
+    }*/
+
     /**
      * Renders template based on widget type
      *
@@ -49,10 +54,6 @@ class oxwArticleBox extends oxWidget
     public function render()
     {
         parent::render();
-
-
-
-        $this->setClassName( $this->getViewConfig()->getTopActiveClassName() );
 
         $sWidgetType = $this->getViewParameter('sWidgetType');
         $sListType   = $this->getViewParameter('sListType');

@@ -616,7 +616,7 @@ class PdfArticleSummary extends PdfBlock
      */
     protected function _setPayUntilInfo( &$iStartPos )
     {
-        $text = $this->_oData->translate( 'ORDER_OVERVIEW_PDF_PAYUPTO' ) . $this->_oData->oxorder__oxbilldate->value; //date( 'd.m.Y', mktime( 0, 0, 0, date ( 'm' ), date ( 'd' ) + 7, date( 'Y' ) ) );
+        $text = $this->_oData->translate( 'ORDER_OVERVIEW_PDF_PAYUPTO' ) . date( 'd.m.Y', strtotime( '+' . $this->_oData->getPaymentTerm() . ' day', strtotime( $this->_oData->oxorder__oxbilldate->value ) ) );
         $this->font( $this->getFont(), '', 10 );
         $this->text( 15, $iStartPos + 4, $text );
         $iStartPos += 4;
@@ -850,7 +850,7 @@ class MyOrder extends MyOrder_parent
         // setting invoice number
         if ( !$this->oxorder__oxbillnr->value ) {
             $this->oxorder__oxbillnr->setValue($this->getNextBillNum());
-            $this->oxorder__oxbilldate->setValue( date( 'd.m.Y', mktime( 0, 0, 0, date ( 'm' ), date ( 'd' ) + $this->getPaymentTerm(), date( 'Y' ) ) ) );
+            $this->oxorder__oxbilldate->setValue( date( 'd.m.Y', mktime( 0, 0, 0, date ( 'm' ), date ( 'd' ), date( 'Y' ) ) ) );
             $this->save();
         }
 
@@ -1059,7 +1059,7 @@ class MyOrder extends MyOrder_parent
         }
 
         // shop city
-        $sText = $oShop->oxshops__oxcity->getRawValue().', '.date( 'd.m.Y' );
+        $sText = $oShop->oxshops__oxcity->getRawValue().', '.date( 'd.m.Y', strtotime($this->oxorder__oxbilldate->value ) );
         $oPdf->setFont( $oPdfBlock->getFont(), '', 10 );
         $oPdf->text( 195 - $oPdf->getStringWidth( $sText ), $iTop + 8, $sText );
 
@@ -1241,10 +1241,6 @@ class MyOrder extends MyOrder_parent
         $oPdf->line( 15, $siteH + 2, 195, $siteH + 2 );
         $siteH += 4;
 
-        // payment date
-        $oPdf->setFont( $oPdfBlock->getFont(), '', 10 );
-        $text = $this->translate( 'ORDER_OVERVIEW_PDF_PAYUPTO' ).date( 'd.m.Y', mktime( 0, 0, 0, date ( 'm' ), date ( 'd' ) + 7, date( 'Y' ) ) );
-        $oPdf->text( 15, $siteH + 4, $text );
     }
 
     /**

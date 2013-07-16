@@ -19,7 +19,6 @@
  * @package   smarty_plugins
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -41,7 +40,7 @@ function smarty_function_oxid_include_widget($params, &$oSmarty)
     $sClass     = strtolower($params['cl']);
     $params['cl'] = $sClass;
     $aParentViews = null;
-
+//    var_dump( $params["_navurlparams"] );
 
     unset($params['cl']);
 

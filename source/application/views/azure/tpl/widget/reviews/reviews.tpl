@@ -26,6 +26,8 @@
                     [{oxid_include_dynamic file="form/formparams.tpl"}]
                     <input type="hidden" name="fnc" value="savereview">
                     <input type="hidden" name="cl" value="[{$oViewConf->getActiveClassName()}]">
+
+                    [{assign var="oDetailsProduct" value=$oView->getProduct()}]
                     [{if $oDetailsProduct}]
                         <input type="hidden" name="anid" value="[{$oDetailsProduct->oxarticles__oxid->value}]">
                     [{else}]
@@ -33,6 +35,7 @@
                         <input type="hidden" name="recommid" value="[{$_actvrecommlist->oxrecommlists__oxid->value}]">
                     [{/if}]
 
+                    [{assign var="sReviewUserHash" value=$oView->getReviewUserHash()}]
                     [{if $sReviewUserHash}]
                         <input type="hidden" name="reviewuserhash" value="[{$sReviewUserHash}]">
                     [{/if}]

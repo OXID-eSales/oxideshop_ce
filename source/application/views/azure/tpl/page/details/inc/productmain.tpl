@@ -12,7 +12,7 @@
             [{assign var="_sSelectionHashCollection" value=$_sSelectionHashCollection|cat:"'`$_sSelectionHash`'"}]
         [{/if}]
     [{/foreach}]
-    [{oxscript add="var oxVariantSelections  = [`$_sSelectionHashCollection`];"}]
+    [{oxscript add="oxVariantSelections  = [`$_sSelectionHashCollection`];"}]
 [{/if}]
 
 [{oxhasrights ident="TOBASKET"}]

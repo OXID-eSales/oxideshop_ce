@@ -1,4 +1,3 @@
-
 [{assign var="oDetailsProduct" value=$oView->getProduct()}]
 [{assign var="oPictureProduct" value=$oView->getPicturesProduct()}]
 [{assign var="currency" value=$oView->getActCurrency()}]
@@ -60,4 +59,4 @@
     </div>
 </div>
 [{ insert name="oxid_tracker" title="PRODUCT_DETAILS"|oxmultilangassign product=$oDetailsProduct cpath=$oView->getCatTreePath() }]
-
+[{oxscript widget=$oView->getClassName()}]

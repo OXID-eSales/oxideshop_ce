@@ -20,7 +20,7 @@
         <div>
             [{$oViewConf->getHiddenSid()}]
             [{$oViewConf->getNavFormParams()}]
-            <input type="hidden" name="cl" value="[{$oViewConf->getActiveClassName()}]">
+            <input type="hidden" name="cl" value="[{$oViewConf->getTopActiveClassName()}]">
             <input type="hidden" name="aid" value="[{$oDetailsProduct->oxarticles__oxid->value}]">
             <input type="hidden" name="anid" value="[{$oDetailsProduct->oxarticles__oxnid->value}]">
             <input type="hidden" name="parentid" value="[{if !$oDetailsProduct->oxarticles__oxparentid->value}][{$oDetailsProduct->oxarticles__oxid->value}][{else}][{$oDetailsProduct->oxarticles__oxparentid->value}][{/if}]">
@@ -121,10 +121,10 @@
             [{/block}]
 
             [{* ratings *}]
-            [{if $oView->ratingIsActive()}]
+            [{ if $oView->ratingIsActive()}]
             [{block name="details_productmain_ratings"}]
                 <div class="rating clear">
-                    [{oxid_include_widget cl="oxwRating" blCanRate=$oView->canRate() _parent=$oView->getClassName() nocookie=1 sRateUrl=$oDetailsProduct->getLink() dRatingCount=$oView->getRatingCount() dRatingValue=$oView->getRatingValue()}]
+                    [{include file="widget/reviews/rating.tpl" itemid="anid=`$oDetailsProduct->oxarticles__oxnid->value`" sRateUrl=$oDetailsProduct->getLink() }]
                 </div>
             [{/block}]
             [{/if}]

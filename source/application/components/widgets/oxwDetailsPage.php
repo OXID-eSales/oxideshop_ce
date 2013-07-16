@@ -22,7 +22,8 @@
  * @version   SVN: $Id: oxwdetailspage.php 56456 13.7.12 11.20Z tadas.rimkus $
  */
 
-class oxwDetailsPage extends oxWidget{
+class oxwDetailsPage extends oxWidget
+{
     /**
      * List of article variants.
      *
@@ -34,7 +35,7 @@ class oxwDetailsPage extends oxWidget{
      * before any other regular operation.
      * @var array
      */
-    protected $_aComponentNames = array( 'oxcmp_cur' => 1 );
+    protected $_aComponentNames = array( 'oxcmp_cur' => 1, 'oxcmp_shop' => 1, 'oxcmp_basket' => 1, 'oxcmp_user' => 1 );
 
     /**
      * Current class template name.

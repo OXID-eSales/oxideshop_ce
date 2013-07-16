@@ -50,6 +50,10 @@ class oxwArticleBox extends oxWidget
     {
         parent::render();
 
+
+
+        $this->setClassName( $this->getViewConfig()->getTopActiveClassName() );
+
         $sWidgetType = $this->getViewParameter('sWidgetType');
         $sListType   = $this->getViewParameter('sListType');
 

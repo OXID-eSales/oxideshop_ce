@@ -41,11 +41,6 @@ class oxwArticleBox extends oxWidget
      */
     protected $_sTemplate = 'widget/product/box.tpl';
 
-    /*public function init()
-    {
-        parent::init();
-    }*/
-
     /**
      * Renders template based on widget type
      *

@@ -59,4 +59,19 @@ class oxwArticleBox extends oxWidget
 
         return $this->_sTemplate;
     }
+
+    /**
+     * Get product article
+     *
+     * @return oxArticle
+     */
+    public function getProduct()
+    {
+        $sId = $this->getViewParameter('productId');
+
+        $oArticle = oxNew( 'oxArticle' );
+        $oArticle->load($sId);
+
+        return $oArticle;
+    }
 }

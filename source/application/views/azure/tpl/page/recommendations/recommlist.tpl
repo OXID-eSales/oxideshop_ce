@@ -29,7 +29,7 @@
                     </div>
                     [{if $oView->isReviewActive()}]
                     <div class="rating clear">
-                        [{include file="widget/reviews/rating.tpl" itemid="recommid="|cat:$_actvrecommlist->getId() sRateUrl=$oViewConf->getSelfLink()|cat:"cl=recommlist"}]
+                        [{oxid_include_widget cl="oxwRating" blCanRate=$oView->canRate() _parent=$oView->getClassName() nocookie=1 sRateUrl=$oViewConf->getSelfLink()|cat:"cl=recommlist" dRatingCount=$oView->getRatingCount() dRatingValue=$oView->getRatingValue()}]
                     </div>
                     [{/if}]
                 </div>

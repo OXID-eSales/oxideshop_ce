@@ -19,7 +19,6 @@
  * @package   views
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -57,12 +56,6 @@ class Review extends Details
      * @var bool
      */
     protected $_blRate = null;
-
-    /**
-     * Array of reviews
-     * @var array
-     */
-    protected $_aReviews = null;
 
     /**
      * CrossSelling articlelist
@@ -335,22 +328,6 @@ class Review extends Details
             }
         }
         return $this->_blRate;
-    }
-
-    /**
-     * Template variable getter. Returns active object's reviews
-     *
-     * @return array
-     */
-    public function getReviews()
-    {
-        if ( $this->_aReviews === null ) {
-            $this->_aReviews = false;
-            if ( $oObject = $this->_getActiveObject() ) {
-                $this->_aReviews = $oObject->getReviews();
-            }
-        }
-        return $this->_aReviews;
     }
 
     /**

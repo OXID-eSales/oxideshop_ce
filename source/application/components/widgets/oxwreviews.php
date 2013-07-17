@@ -79,10 +79,10 @@ class oxwReviews extends oxWidget
 
             $oObject = null;
 
-            if ( $this->getReviewType() == 'article' ) {
+            if ( $this->getReviewType() == 'oxarticle' ) {
                 $oObject = $this->getArticle();
 
-            } elseif ( $this->getReviewType() == 'recommlist' ) {
+            } elseif ( $this->getReviewType() == 'oxrecommlist' ) {
                 $oReview = oxNew( 'Review' );
                 $oObject = $oReview->getActiveRecommList();
     }

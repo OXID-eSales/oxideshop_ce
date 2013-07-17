@@ -294,7 +294,7 @@ test('dateSelectSelectionValidate()', function() {
                     'name="invadr[oxuser__oxbirthdate][year]" class="oxYear js-oxValidate" id="oxYear" />' +
                 '<p class="oxValidateError" style="display: block;">' +
                     '<span class="js-oxError_notEmpty" style="display: inline;"> not empty error message </span>' +
-                    '<span class="js-oxError_incorrectDate">[TR]Incorrect date</span>' +
+                    '<span class="js-oxError_incorrectDate">Incorrect date</span>' +
                 '</p>' +
             '</li>';
 
@@ -379,7 +379,7 @@ test('dateSelectDateValidate()', function() {
                     'name="invadr[oxuser__oxbirthdate][year]" class="oxYear js-oxValidate" id="oxYear" />' +
                 '<p class="oxValidateError" style="display: block;">' +
                     '<span class="js-oxError_notEmpty" style="display: inline;"> not empty error message </span>' +
-                    '<span class="js-oxError_incorrectDate">[TR]Incorrect date</span>' +
+                    '<span class="js-oxError_incorrectDate">Incorrect date</span>' +
                 '</p>' +
             '</li>';
 

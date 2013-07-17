@@ -520,7 +520,7 @@ class oxwDetailsPage extends oxWidget
 //        }
 //    }
 //
-//    /**
+//    /** USED in recomadd.php extending details, not this.
 //     * Adds article to selected recommendation list
 //     *
 //     * @return null
@@ -583,37 +583,37 @@ class oxwDetailsPage extends oxWidget
             oxRegistry::getUtils()->showMessageAndExit( json_encode( $aResult ) );
         }
     }
-//
-//    /**
-//     * Adds tags to passed oxArticleTagList object
-//     *
-//     * @param oxArticleTagList $oArticleTagList article tags list object
-//     * @param array            $aTags           tags array to add to list
-//     * @param array            $aAddedTags      tags, which are already added to list
-//     *
-//     * @return array
-//     */
-//    protected function _addTagsToList( $oArticleTagList, $aTags, $aAddedTags)
-//    {
-//        $aResult = array( 'tags' => array(), 'invalid' => array(), 'inlist' => array() );
-//
-//        foreach ( $aTags as $sTag ) {
-//            $oTag = oxNew( "oxtag", $sTag );
-//            if ( $aAddedTags[$oTag->get()] != 1 ) {
-//                if ( $oTag->isValid() ) {
-//                    $oArticleTagList->addTag( $oTag );
-//                    $aResult['tags'][] = $oTag->get();
-//                } else {
-//                    $aResult['invalid'][] = $oTag->get();
-//                }
-//            } else {
-//                $aResult['inlist'][] = $oTag->get();
-//            }
-//        }
-//
-//        return $aResult;
-//    }
-//
+
+    /** NEEDED
+     * Adds tags to passed oxArticleTagList object
+     *
+     * @param oxArticleTagList $oArticleTagList article tags list object
+     * @param array            $aTags           tags array to add to list
+     * @param array            $aAddedTags      tags, which are already added to list
+     *
+     * @return array
+     */
+    protected function _addTagsToList( $oArticleTagList, $aTags, $aAddedTags)
+    {
+        $aResult = array( 'tags' => array(), 'invalid' => array(), 'inlist' => array() );
+
+        foreach ( $aTags as $sTag ) {
+            $oTag = oxNew( "oxtag", $sTag );
+            if ( $aAddedTags[$oTag->get()] != 1 ) {
+                if ( $oTag->isValid() ) {
+                    $oArticleTagList->addTag( $oTag );
+                    $aResult['tags'][] = $oTag->get();
+                } else {
+                    $aResult['invalid'][] = $oTag->get();
+                }
+            } else {
+                $aResult['inlist'][] = $oTag->get();
+            }
+        }
+
+        return $aResult;
+    }
+
     /**
      * Sets tags editing mode
      *
@@ -664,19 +664,19 @@ class oxwDetailsPage extends oxWidget
             oxRegistry::getUtils()->showMessageAndExit( $oSmarty->fetch( 'page/details/inc/tags.tpl', $this->getViewId() ) );
         }
     }
-//
-//    /**
-//     * Returns active product id to load its seo meta info
-//     *
-//     * @return string
-//     */
-//    protected function _getSeoObjectId()
-//    {
-//        if ( $oProduct = $this->getProduct() ) {
-//            return $oProduct->getId();
-//        }
-//    }
-//
+
+    /** NEEDED?
+     * Returns active product id to load its seo meta info
+     *
+     * @return string
+     */
+    protected function _getSeoObjectId()
+    {
+        if ( $oProduct = $this->getProduct() ) {
+            return $oProduct->getId();
+        }
+    }
+
     /** NEEDED
      * loading full list of attributes
      *
@@ -701,18 +701,17 @@ class oxwDetailsPage extends oxWidget
         }
         return $this->_aAttributes;
     }
-//
-//
-//    /**
-//     * Returns if tags will be edit
-//     *
-//     * @return bool
-//     */
-//    public function getEditTags()
-//    {
-//        return $this->_blEditTags;
-//    }
-//
+
+    /** NEEDED?
+     * Returns if tags will be edit
+     *
+     * @return bool
+     */
+    public function getEditTags()
+    {
+        return $this->_blEditTags;
+    }
+
     /** NEEDED
      * Returns all tags
      *
@@ -735,23 +734,6 @@ class oxwDetailsPage extends oxWidget
         $oManager->setProductId( $this->getProduct()->getId() );
         return $oManager;
     }
-//
-//    /**
-//     * Returns if tags can be changed, if user is loggen in and
-//     * product exists.
-//     *
-//     * @return bool
-//     */
-//    public function isEditableTags()
-//    {
-//        if ( $this->_blCanEditTags === null ) {
-//            $this->_blCanEditTags = false;
-//            if ( $this->getProduct() && $this->getUser()) {
-//                $this->_blCanEditTags = true;
-//                }
-//            }
-//        return $this->_blCanEditTags;
-//            }
 //
 ////    /**
 ////     * Returns current product
@@ -839,12 +821,6 @@ class oxwDetailsPage extends oxWidget
 
         return $this->_iLinkType;
     }
-//
-//    /**
-//     * Returns variant lists of current product
-//     *
-//     * @return array
-//     */
 
     /** NEEDED
      * Template variable getter. Returns object of handling CAPTCHA image
@@ -872,41 +848,28 @@ class oxwDetailsPage extends oxWidget
         }
         return $this->_aMediaFiles;
     }
-//
-//    /**
-//     * Template variable getter. Returns last seen products
-//     *
-//     * @param int $iCnt product count
-//     *
-//     * @return array
-//     */
-//    public function getLastProducts( $iCnt = 4 )
-//    {
-//        if ( $this->_aLastProducts === null ) {
-//            //last seen products for #768CA
-//            $oProduct = $this->getProduct();
-//            $sArtId = $oProduct->oxarticles__oxparentid->value?$oProduct->oxarticles__oxparentid->value:$oProduct->getId();
-//
-//            $oHistoryArtList = oxNew( 'oxarticlelist' );
-//            $oHistoryArtList->loadHistoryArticles( $sArtId, $iCnt );
-//            $this->_aLastProducts = $oHistoryArtList;
-//        }
-//        return $this->_aLastProducts;
-//    }
-//
-//    /**
-//     * Template variable getter. Returns product's vendor
-//     *
-//     * @return object
-//     */
-//    public function getVendor()
-//    {
-//        if ( $this->_oVendor === null ) {
-//            $this->_oVendor = $this->getProduct()->getVendor( false );
-//        }
-//        return $this->_oVendor;
-//    }
-//
+
+    /** NEEDED?
+     * Template variable getter. Returns last seen products
+     *
+     * @param int $iCnt product count
+     *
+     * @return array
+     */
+    public function getLastProducts( $iCnt = 4 )
+    {
+        if ( $this->_aLastProducts === null ) {
+            //last seen products for #768CA
+            $oProduct = $this->getProduct();
+            $sArtId = $oProduct->oxarticles__oxparentid->value?$oProduct->oxarticles__oxparentid->value:$oProduct->getId();
+
+            $oHistoryArtList = oxNew( 'oxarticlelist' );
+            $oHistoryArtList->loadHistoryArticles( $sArtId, $iCnt );
+            $this->_aLastProducts = $oHistoryArtList;
+        }
+        return $this->_aLastProducts;
+    }
+
     /** NEEDED
      * Template variable getter. Returns product's vendor
      *
@@ -919,62 +882,7 @@ class oxwDetailsPage extends oxWidget
         }
         return $this->_oManufacturer;
     }
-//
-//    /**
-//     * Template variable getter. Returns product's root category
-//     *
-//     * @return object
-//     */
-//    public function getCategory()
-//    {
-//        if ( $this->_oCategory === null ) {
-//            $this->_oCategory = $this->getProduct()->getCategory();
-//        }
-//        return $this->_oCategory;
-//    }
-//
-//    /**
-//     * Template variable getter. Returns if draw parent url
-//     *
-//     * @return bool
-//     */
-//    public function drawParentUrl()
-//    {
-//        return $this->getProduct()->isVariant();
-//    }
-//
-//    /**
-//     * Template variable getter. Returns parent article name
-//     *
-//     * @return string
-//     */
-//    public function getParentName()
-//    {
-//        if ( $this->_sParentName === null ) {
-//            $this->_sParentName = false;
-//            if ( ( $oParent = $this->_getParentProduct( $this->getProduct()->oxarticles__oxparentid->value ) ) ) {
-//                $this->_sParentName = $oParent->oxarticles__oxtitle->value;
-//            }
-//        }
-//        return $this->_sParentName;
-//    }
-//
-//    /**
-//     * Template variable getter. Returns parent article name
-//     *
-//     * @return string
-//     */
-//    public function getParentUrl()
-//    {
-//        if ( $this->_sParentUrl === null ) {
-//            $this->_sParentUrl = false;
-//            if ( ( $oParent = $this->_getParentProduct( $this->getProduct()->oxarticles__oxparentid->value ) ) ) {
-//                $this->_sParentUrl = $oParent->getLink();
-//            }
-//        }
-//        return $this->_sParentUrl;
-//    }
-//
+
     /** NEEDED
      * Template variable getter. Returns picture gallery of current article
      *
@@ -988,18 +896,7 @@ class oxwDetailsPage extends oxWidget
         }
         return $this->_aPicGallery;
     }
-//
-//    /**
-//     * Template variable getter. Returns id of active picture
-//     *
-//     * @return string
-//     */
-//    public function getActPictureId()
-//    {
-//        $aPicGallery = $this->getPictureGallery();
-//        return $aPicGallery['ActPicID'];
-//    }
-//
+
     /** NEEDED
      * Template variable getter. Returns active picture
      *
@@ -1021,31 +918,7 @@ class oxwDetailsPage extends oxWidget
         $aPicGallery = $this->getPictureGallery();
         return $aPicGallery['MorePics'];
     }
-//
-//    /**
-//     * Template variable getter. Returns pictures of current article
-//     *
-//     * @return array
-//     */
-//    public function getPictures()
-//    {
-//        $aPicGallery = $this->getPictureGallery();
-//        return $aPicGallery['Pics'];
-//    }
-//
-//    /**
-//     * Template variable getter. Returns selected picture
-//     *
-//     * @param string $sPicNr picture number
-//     *
-//     * @return string
-//     */
-//    public function getArtPic( $sPicNr )
-//    {
-//        $aPicGallery = $this->getPictureGallery();
-//        return $aPicGallery['Pics'][$sPicNr];
-//    }
-//
+
     /** NEEDED
      * Template variable getter. Returns icons of current article
      *
@@ -1089,22 +962,6 @@ class oxwDetailsPage extends oxWidget
         return 1;
     }
 
-//    /**
-//     * Template variable getter. Returns selectlists of current article
-//     *
-//     * @return array
-//     */
-//    public function getSelectLists()
-//    {
-//        if ( $this->_aSelectLists === null ) {
-//            $this->_aSelectLists = false;
-//            if ( $this->getConfig()->getConfigParam( 'bl_perfLoadSelectLists' ) ) {
-//                $this->_aSelectLists = $this->getProduct()->getSelectLists();
-//            }
-//        }
-//        return $this->_aSelectLists;
-//    }
-
     /**
      * Template variable getter. Returns reviews of current article
      *
@@ -1120,72 +977,72 @@ class oxwDetailsPage extends oxWidget
         }
         return $this->_aReviews;
     }
-//
-//    /**
-//     * Template variable getter. Returns crosssellings
-//     *
-//     * @return object
-//     */
-//    public function getCrossSelling()
-//    {
-//        if ( $this->_oCrossSelling === null ) {
-//            $this->_oCrossSelling = false;
-//            if ( $oProduct = $this->getProduct() ) {
-//                $this->_oCrossSelling = $oProduct->getCrossSelling();
-//            }
-//        }
-//        return $this->_oCrossSelling;
-//    }
-//
-//    /**
-//     * Template variable getter. Returns similar article list
-//     *
-//     * @return object
-//     */
-//    public function getSimilarProducts()
-//    {
-//        if ( $this->_oSimilarProducts === null ) {
-//            $this->_oSimilarProducts = false;
-//            if ( $oProduct = $this->getProduct() ) {
-//                $this->_oSimilarProducts = $oProduct->getSimilarProducts();
-//            }
-//        }
-//        return $this->_oSimilarProducts;
-//    }
-//
-//    /**
-//     * Return array of id to form recommend list.
-//     *
-//     * @return array
-//     */
-//    public function getSimilarRecommListIds()
-//    {
-//        if ( $this->_aSimilarRecommListIds === null ) {
-//            $this->_aSimilarRecommListIds = false;
-//
-//            if ( $oProduct = $this->getProduct() ) {
-//                $this->_aSimilarRecommListIds = array( $oProduct->getId() );
-//            }
-//        }
-//        return $this->_aSimilarRecommListIds;
-//    }
-//
-//    /**
-//     * Template variable getter. Returns accessories of article
-//     *
-//     * @return object
-//     */
-//    public function getAccessoires()
-//    {
-//        if ( $this->_oAccessoires === null ) {
-//            $this->_oAccessoires = false;
-//            if ( $oProduct = $this->getProduct() ) {
-//                $this->_oAccessoires = $oProduct->getAccessoires();
-//            }
-//        }
-//        return $this->_oAccessoires;
-//    }
-//
+
+    /** NEEDED? extending oxubase
+     * Template variable getter. Returns crosssellings
+     *
+     * @return object
+     */
+    public function getCrossSelling()
+    {
+        if ( $this->_oCrossSelling === null ) {
+            $this->_oCrossSelling = false;
+            if ( $oProduct = $this->getProduct() ) {
+                $this->_oCrossSelling = $oProduct->getCrossSelling();
+            }
+        }
+        return $this->_oCrossSelling;
+    }
+
+    /** NEEDED
+     * Template variable getter. Returns similar article list
+     *
+     * @return object
+     */
+    public function getSimilarProducts()
+    {
+        if ( $this->_oSimilarProducts === null ) {
+            $this->_oSimilarProducts = false;
+            if ( $oProduct = $this->getProduct() ) {
+                $this->_oSimilarProducts = $oProduct->getSimilarProducts();
+            }
+        }
+        return $this->_oSimilarProducts;
+    }
+
+    /** NEEDED
+     * Return array of id to form recommend list.
+     *
+     * @return array
+     */
+    public function getSimilarRecommListIds()
+    {
+        if ( $this->_aSimilarRecommListIds === null ) {
+            $this->_aSimilarRecommListIds = false;
+
+            if ( $oProduct = $this->getProduct() ) {
+                $this->_aSimilarRecommListIds = array( $oProduct->getId() );
+            }
+        }
+        return $this->_aSimilarRecommListIds;
+    }
+
+    /**
+     * Template variable getter. Returns accessories of article
+     *
+     * @return object
+     */
+    public function getAccessoires()
+    {
+        if ( $this->_oAccessoires === null ) {
+            $this->_oAccessoires = false;
+            if ( $oProduct = $this->getProduct() ) {
+                $this->_oAccessoires = $oProduct->getAccessoires();
+            }
+        }
+        return $this->_oAccessoires;
+    }
+
     /** NEEDED, unless used in another widget ?
      * Template variable getter. Returns list of customer also bought these products
      *
@@ -1216,20 +1073,20 @@ class oxwDetailsPage extends oxWidget
         }
         return 1;
     }
-//
-//    /**
-//     * returns object, associated with current view.
-//     * (the object that is shown in frontend)
-//     *
-//     * @param int $iLang language id
-//     *
-//     * @return object
-//     */
-//    protected function _getSubject( $iLang )
-//    {
-//        return $this->getProduct();
-//    }
-//
+
+    /** NEEDED? overriding oxubase
+     * returns object, associated with current view.
+     * (the object that is shown in frontend)
+     *
+     * @param int $iLang language id
+     *
+     * @return object
+     */
+    protected function _getSubject( $iLang )
+    {
+        return $this->getProduct();
+    }
+
     /** NEEDED
      * Returns search title. It will be setted in oxLocator
      *
@@ -1251,113 +1108,95 @@ class oxwDetailsPage extends oxWidget
     {
         $this->_sSearchTitle = $sTitle;
     }
-//
-//    /**
-//     * active category path setter
-//     *
-//     * @param string $sActCatPath category tree path
-//     *
-//     * @return string
-//     */
-//    public function setCatTreePath( $sActCatPath )
-//    {
-//        $this->_sCatTreePath = $sActCatPath;
-//    }
-//
-//    /**
-//     * If product details are accessed by vendor url
-//     * view must not be indexable
-//     *
-//     * @return int
-//     */
-//    public function noIndex()
-//    {
-//        $sListType = oxConfig::getParameter( 'listtype' );
-//        if ( $sListType && ( 'vendor' == $sListType || 'manufacturer' == $sListType ) ) {
-//            return $this->_iViewIndexState = VIEW_INDEXSTATE_NOINDEXFOLLOW;
-//        }
-//        return parent::noIndex();
-//    }
-//
-//    /**
-//     * Returns current view title. Default is null
-//     *
-//     * @return null
-//     */
-//    public function getTitle()
-//    {
-//        if ( $oProduct = $this->getProduct() ) {
-//            $sTag = $this->getTag();
-//            return $oProduct->oxarticles__oxtitle->value . ( $oProduct->oxarticles__oxvarselect->value ? ' ' . $oProduct->oxarticles__oxvarselect->value : '' ) . (!empty($sTag) ? ' - '.$sTag : '');
-//        }
-//    }
-//
-//    /**
-//     * Template variable getter. Returns meta description
-//     *
-//     * @return string
-//     */
-//    public function getMetaDescription()
-//    {
-//        $sMeta = parent::getMetaDescription();
-//
-//        if($sTag = $this->getTag()) {
-//            $sMeta = $sTag.' - ' . $sMeta;
-//        }
-//
-//        return $sMeta;
-//    }
-//
-//    /**
-//     * Template variable getter. Returns current tag
-//     *
-//     * @return string
-//     */
-//    public function getTag()
-//    {
-//        return oxConfig::getParameter("searchtag", 1);
-//    }
-//
-//    /**
-//     * Returns view canonical url
-//     *
-//     * @return string
-//     */
-//    public function getCanonicalUrl()
-//    {
-//        if ( ( $oProduct = $this->getProduct() ) ) {
-//            if ( $oProduct->oxarticles__oxparentid->value ) {
-//                $oProduct = $this->_getParentProduct( $oProduct->oxarticles__oxparentid->value );
-//            }
-//
-//            $oUtils = oxRegistry::get("oxUtilsUrl");
-//            if ( oxRegistry::getUtils()->seoIsActive() ) {
-//                $sUrl = $oUtils->prepareCanonicalUrl( $oProduct->getBaseSeoLink( $oProduct->getLanguage(), true ) );
-//            } else {
-//                $sUrl = $oUtils->prepareCanonicalUrl( $oProduct->getBaseStdLink( $oProduct->getLanguage() ) );
-//            }
-//            return $sUrl;
-//        }
-//    }
-//
-//    /**
-//     * Should we show MD variant selection? - Not for 1 dimension variants.
-//     *
-//     * @return bool
-//     */
-//    public function isMdVariantView()
-//    {
-//        if ( $this->_blMdView === null ) {
-//            $this->_blMdView = false;
-//            if ( $this->getConfig()->getConfigParam( 'blUseMultidimensionVariants' ) ) {
-//                $iMaxMdDepth = $this->getProduct()->getMdVariants()->getMaxDepth();
-//                $this->_blMdView = ($iMaxMdDepth > 1);
-//            }
-//        }
-//
-//        return $this->_blMdView;
-//    }
-//
+
+    /** NEEDED, oxlocator
+     * active category path setter
+     *
+     * @param string $sActCatPath category tree path
+     *
+     * @return string
+     */
+    public function setCatTreePath( $sActCatPath )
+    {
+        $this->_sCatTreePath = $sActCatPath;
+    }
+
+    /** NEEDED? overrides oxubase
+     * If product details are accessed by vendor url
+     * view must not be indexable
+     *
+     * @return int
+     */
+    public function noIndex()
+    {
+        $sListType = oxConfig::getParameter( 'listtype' );
+        if ( $sListType && ( 'vendor' == $sListType || 'manufacturer' == $sListType ) ) {
+            return $this->_iViewIndexState = VIEW_INDEXSTATE_NOINDEXFOLLOW;
+        }
+        return parent::noIndex();
+    }
+
+    /** NEEDED?
+     * Returns current view title. Default is null
+     *
+     * @return null
+     */
+    public function getTitle()
+    {
+        if ( $oProduct = $this->getProduct() ) {
+            $sTag = $this->getTag();
+            return $oProduct->oxarticles__oxtitle->value . ( $oProduct->oxarticles__oxvarselect->value ? ' ' . $oProduct->oxarticles__oxvarselect->value : '' ) . (!empty($sTag) ? ' - '.$sTag : '');
+        }
+    }
+
+    /** NEEDED, overrides oxubase
+     * Template variable getter. Returns meta description
+     *
+     * @return string
+     */
+    public function getMetaDescription()
+    {
+        $sMeta = parent::getMetaDescription();
+
+        if($sTag = $this->getTag()) {
+            $sMeta = $sTag.' - ' . $sMeta;
+        }
+
+        return $sMeta;
+    }
+
+    /** NEEDED, might be used from tag.php
+     * Template variable getter. Returns current tag
+     *
+     * @return string
+     */
+    public function getTag()
+    {
+        return oxConfig::getParameter("searchtag", 1);
+    }
+
+    /** NEEDED? base.tpl, overrides oxubase
+     * Returns view canonical url
+     *
+     * @return string
+     */
+    public function getCanonicalUrl()
+    {
+        if ( ( $oProduct = $this->getProduct() ) ) {
+            if ( $oProduct->oxarticles__oxparentid->value ) {
+                $oProduct = $this->_getParentProduct( $oProduct->oxarticles__oxparentid->value );
+            }
+
+            $oUtils = oxRegistry::get("oxUtilsUrl");
+            if ( oxRegistry::getUtils()->seoIsActive() ) {
+                $sUrl = $oUtils->prepareCanonicalUrl( $oProduct->getBaseSeoLink( $oProduct->getLanguage(), true ) );
+            } else {
+                $sUrl = $oUtils->prepareCanonicalUrl( $oProduct->getBaseStdLink( $oProduct->getLanguage() ) );
+            }
+            return $sUrl;
+        }
+    }
+
     /** NEEDED
      * Checks should persistent parameter input field be displayed
      *
@@ -1368,18 +1207,7 @@ class oxwDetailsPage extends oxWidget
         $oProduct = $this->getProduct();
         return $oProduct->oxarticles__oxisconfigurable->value;
     }
-//
-//    /**
-//     * Returns tag separator
-//     *
-//     * @return string
-//     */
-//    public function getTagSeparator()
-//    {
-//        $sSepartor = $this->getConfig()->getConfigParam("sTagSeparator");
-//        return $sSepartor;
-//    }
-//
+
     /**
      * Template variable getter. Returns rating value
      *
@@ -1424,62 +1252,6 @@ class oxwDetailsPage extends oxWidget
         return $this->_iRatingCnt;
     }
 
-//    /**
-//     * Returns Bread Crumb - you are here page1/page2/page3...
-//     *
-//     * @return array
-//     */
-//    public function getBreadCrumb()
-//    {
-//        $aPaths = array();
-//
-//        if ( 'search' == oxConfig::getParameter( 'listtype' ) ) {
-//            $sSearchParam = $this->getSearchParamForHtml();
-//
-//            $aCatPath = array();
-//            $aCatPath['title'] = sprintf( oxRegistry::getLang()->translateString( 'SEARCH_RESULT', oxRegistry::getLang()->getBaseLanguage(), false ), $sSearchParam );
-//            $aCatPath['link']  = $this->getViewConfig()->getSelfLink() . 'stoken=' . oxSession::getVar('sess_stoken') . "&amp;cl=search&amp;searchparam=" . $sSearchParam;
-//
-//            $aPaths[] = $aCatPath;
-//
-//        } elseif ( 'tag' == oxConfig::getParameter( 'listtype' ) ) {
-//
-//            $aCatPath = array();
-//
-//            $aCatPath['title'] = oxRegistry::getLang()->translateString( 'TAGS', oxRegistry::getLang()->getBaseLanguage(), false );
-//            $aCatPath['link']  = oxRegistry::get("oxSeoEncoder")->getStaticUrl( $this->getViewConfig()->getSelfLink() . 'cl=tags' );
-//            $aPaths[] = $aCatPath;
-//
-//            $oStr = getStr();
-//            $aCatPath['title'] = $oStr->ucfirst(oxConfig::getParameter( 'searchtag' ));
-//            $aCatPath['link']  = oxRegistry::get("oxSeoEncoderTag")->getTagUrl( oxConfig::getParameter( 'searchtag' ) );
-//            $aPaths[] = $aCatPath;
-//
-//        } elseif ( 'recommlist' == oxConfig::getParameter( 'listtype' ) ) {
-//
-//            $aCatPath = array();
-//            $aCatPath['title'] = oxRegistry::getLang()->translateString( 'LISTMANIA', oxRegistry::getLang()->getBaseLanguage(), false );
-//            $aPaths[] = $aCatPath;
-//        } else {
-//
-//            $oCatTree = $this->getCatTreePath();
-//
-//            if ( $oCatTree ) {
-//
-//                foreach ( $oCatTree as $oCat ) {
-//                    $aCatPath = array();
-//
-//                    $aCatPath['link'] = $oCat->getLink();
-//                    $aCatPath['title'] = $oCat->oxcategories__oxtitle->value;
-//
-//                    $aPaths[] = $aCatPath;
-//                }
-//            }
-//        }
-//
-//        return $aPaths;
-//    }
-//
     /** NEEDED, fnc for form
      * Validates email
      * address. If email is wrong - returns false and exits. If email
@@ -1530,7 +1302,7 @@ class oxwDetailsPage extends oxWidget
         $this->_iPriceAlarmStatus = (int) $oEmail->sendPricealarmNotification( $aParams, $oAlarm );
     }
 
-    /** NEEDED, unless pricealarr is integrated
+    /** NEEDED, unless pricealarm is integrated
      * Return price alarm status (if it was send)
      *
      * @return integer
@@ -1587,21 +1359,21 @@ class oxwDetailsPage extends oxWidget
         }
         return $this->getProduct();
     }
+
+    /** NEEDED? overriding oxubase
+     * Template variable getter. Returns search parameter for Html
+     *
+     * @return string
+     */
+    public function getSearchParamForHtml()
+    {
+        if ( $this->_sSearchParamForHtml === null ) {
+            $this->_sSearchParamForHtml = oxConfig::getParameter( 'searchparam' );
+        }
+        return $this->_sSearchParamForHtml;
+    }
 //
-//    /**
-//     * Template variable getter. Returns search parameter for Html
-//     *
-//     * @return string
-//     */
-//    public function getSearchParamForHtml()
-//    {
-//        if ( $this->_sSearchParamForHtml === null ) {
-//            $this->_sSearchParamForHtml = oxConfig::getParameter( 'searchparam' );
-//        }
-//        return $this->_sSearchParamForHtml;
-//    }
-//
-//    /**
+//    /** USED in details, RDFA
 //     * Returns if page has rdfa
 //     *
 //     * @return bool
@@ -1611,7 +1383,7 @@ class oxwDetailsPage extends oxWidget
 //        return $this->getConfig()->getConfigParam( 'blRDFaEmbedding' );
 //    }
 //
-//    /**
+//    /** USED in details, RDFA
 //     * Sets normalized rating
 //     *
 //     * @return array
@@ -1634,7 +1406,7 @@ class oxwDetailsPage extends oxWidget
 //        return false;
 //    }
 //
-//    /**
+//    /** USED in details, RDFA
 //     * Sets and returns validity period of given object
 //     *
 //     * @param string $sShopConfVar object name
@@ -1657,7 +1429,7 @@ class oxwDetailsPage extends oxWidget
 //        return false;
 //    }
 //
-//    /**
+//    /** USED in details, RDFA
 //     * Gets business function of the gr:Offering
 //     *
 //     * @return string
@@ -1667,7 +1439,7 @@ class oxwDetailsPage extends oxWidget
 //        return $this->getConfig()->getConfigParam("sRDFaBusinessFnc");
 //    }
 //
-//    /**
+//    /** USED in details, RDFA
 //     * Gets the types of customers for which the given gr:Offering is valid
 //     *
 //     * @return array
@@ -1677,7 +1449,7 @@ class oxwDetailsPage extends oxWidget
 //        return $this->getConfig()->getConfigParam("aRDFaCustomers");
 //    }
 //
-//    /**
+//    /** USED in details, RDFA
 //     * Gets information whether prices include vat
 //     *
 //     * @return int
@@ -1687,7 +1459,7 @@ class oxwDetailsPage extends oxWidget
 //        return $this->getConfig()->getConfigParam("iRDFaVAT");
 //    }
 //
-//    /**
+//    /** USED in details, RDFA
 //     * Gets a generic description of product condition
 //     *
 //     * @return string
@@ -1697,7 +1469,7 @@ class oxwDetailsPage extends oxWidget
 //        return $this->getConfig()->getConfigParam("iRDFaCondition");
 //    }
 //
-//    /**
+//    /** USED in details, RDFA
 //     * Returns bundle product
 //     *
 //     * @return object
@@ -1713,7 +1485,7 @@ class oxwDetailsPage extends oxWidget
 //        return false;
 //    }
 //
-//    /**
+//    /** USED in details, RDFA
 //     * Gets accepted payment methods
 //     *
 //     * @return array
@@ -1726,7 +1498,7 @@ class oxwDetailsPage extends oxWidget
 //        return $oPayments;
 //    }
 //
-//    /**
+//    /** USED in details, RDFA
 //     * Returns delivery methods with assigned deliverysets.
 //     *
 //     * @return object
@@ -1738,7 +1510,7 @@ class oxwDetailsPage extends oxWidget
 //        return $oDelSets;
 //    }
 //
-//    /**
+//    /** USED in details, RDFA
 //     * Template variable getter. Returns delivery list for current product
 //     *
 //     * @return object
@@ -1751,7 +1523,7 @@ class oxwDetailsPage extends oxWidget
 //        return $oDelList;
 //    }
 //
-//    /**
+//    /** USED in details, RDFA
 //     * Gets content id of delivery information page
 //     *
 //     * @return string
@@ -1761,7 +1533,7 @@ class oxwDetailsPage extends oxWidget
 //        return $this->getConfig()->getConfigParam("sRDFaDeliveryChargeSpecLoc");
 //    }
 //
-//    /**
+//    /** USED in details, RDFA
 //     * Gets content id of payments
 //     *
 //     * @return string
@@ -1771,7 +1543,7 @@ class oxwDetailsPage extends oxWidget
 //        return $this->getConfig()->getConfigParam("sRDFaPaymentChargeSpecLoc");
 //    }
 //
-//    /**
+//    /** USED in details, RDFA
 //     * Gets content id of company info page (About Us)
 //     *
 //     * @return string
@@ -1781,7 +1553,7 @@ class oxwDetailsPage extends oxWidget
 //        return $this->getConfig()->getConfigParam("sRDFaBusinessEntityLoc");
 //    }
 //
-//    /**
+//    /** USED in details, RDFA
 //     * Returns if to show products left stock
 //     *
 //     * @return string

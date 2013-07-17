@@ -53,10 +53,10 @@ class oxWidget extends oxUBase
     {
         self::$_aCollectedComponentNames = null;
 
-        if ( !empty( $this->_aComponentNames ) ) {
-            foreach ( $this->_aComponentNames as $sComponentName => $sCompCache ) {
                 $oActTopView = $this->getConfig()->getTopActiveView();
 
+        if ( !empty( $this->_aComponentNames ) ) {
+            foreach ( $this->_aComponentNames as $sComponentName => $sCompCache ) {
                 if ( $oActTopView ) {
                     $this->_oaComponents[$sComponentName] = $oActTopView->getComponent( $sComponentName );
                     if ( !isset( $this->_oaComponents[$sComponentName] ) ) {

@@ -121,11 +121,10 @@
             [{/block}]
 
             [{* ratings *}]
-            [{ if $oView->ratingIsActive()}]
+            [{if $oView->ratingIsActive()}]
             [{block name="details_productmain_ratings"}]
                 <div class="rating clear">
-                    <!-- rating widget should be here -->
-                    [{include file="widget/reviews/rating.tpl" itemid="anid=`$oDetailsProduct->oxarticles__oxnid->value`" sRateUrl=$oDetailsProduct->getLink() }]
+                    [{oxid_include_widget cl="oxwRating" blCanRate=$oView->canRate() _parent=$oView->getClassName() nocookie=1 sRateUrl=$oDetailsProduct->getLink() dRatingCount=$oView->getRatingCount() dRatingValue=$oView->getRatingValue()}]
                 </div>
             [{/block}]
             [{/if}]

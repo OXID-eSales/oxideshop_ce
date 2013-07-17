@@ -38,6 +38,5 @@
         </a>
     </li>
 </ul>
-[{oxscript widget=$oView->getClassName()}]
 
 

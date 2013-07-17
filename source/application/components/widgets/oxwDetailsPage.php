@@ -274,47 +274,7 @@ class oxwDetailsPage extends oxWidget
         }
         return $this->_oParentProd;
     }
-//
-//    /**
-//     * loading full list of variants,
-//     * if we are child and do not have any variants then let's load all parent variants as ours
-//     *
-//     * @return null
-//     */
-//    public function loadVariantInformation()
-//    {
-//        if ( $this->_aVariantList === null ) {
-//            $oProduct = $this->getProduct();
-//
-//            //if we are child and do not have any variants then let's load all parent variants as ours
-//            if ( $oParent = $oProduct->getParentArticle() ) {
-//                $myConfig = $this->getConfig();
-//
-//                $oParent->setNoVariantLoading(false);
-//                $this->_aVariantList = $oParent->getFullVariants( false );
-//
-//                //lets additionally add parent article if it is sellable
-//                if ( count( $this->_aVariantList ) && $myConfig->getConfigParam( 'blVariantParentBuyable' ) ) {
-//                    //#1104S if parent is buyable load selectlists too
-//                    $oParent->enablePriceLoad();
-//                    $oParent->aSelectlist = $oParent->getSelectLists();
-//                    $this->_aVariantList = array_merge( array( $oParent ), $this->_aVariantList->getArray() );
-//                }
-//            } else {
-//                //loading full list of variants
-//                $this->_aVariantList = $oProduct->getFullVariants( false );
-//            }
-//
-//            // setting link type for variants ..
-//            foreach ( $this->_aVariantList as $oVariant ) {
-//                $this->_processProduct( $oVariant );
-//            }
-//
-//        }
-//
-//        return $this->_aVariantList;
-//    }
-//
+
     /**
      * In case list type is "search" returns search parameters which will be added to product details link
      *
@@ -341,24 +301,24 @@ class oxwDetailsPage extends oxWidget
             $oProduct->appendLink( $sAddParams );
         }
     }
-//
-//    /**
-//     * Returns prefix ID used by template engine.
-//     *
-//     * @return  string  $this->_sViewID view id
-//     */
-//    public function getViewId()
-//    {
-//        if ( isset( $this->_sViewId )) {
-//            return $this->_sViewId;
-//        }
-//
-//            $sViewId = parent::getViewId().'|'.oxConfig::getParameter( 'anid' ).'|';
-//
-//
-//        return $this->_sViewId = $sViewId;
-//        }
-//
+
+    /** NEEDED?
+     * Returns prefix ID used by template engine.
+     *
+     * @return  string  $this->_sViewID view id
+     */
+    public function getViewId()
+    {
+        if ( isset( $this->_sViewId )) {
+            return $this->_sViewId;
+        }
+
+            $sViewId = parent::getViewId().'|'.oxConfig::getParameter( 'anid' ).'|';
+
+
+        return $this->_sViewId = $sViewId;
+    }
+
 ////
 ////    /**
 ////     * If possible loads additional article info (oxarticle::getCrossSelling(),
@@ -411,69 +371,69 @@ class oxwDetailsPage extends oxWidget
 ////                return $this->_sThisTemplate;
 ////        }
 ////    }
-//
-//    /**
-//     * Returns current view meta data
-//     * If $sMeta parameter comes empty, sets to it article title and description.
-//     * It happens if current view has no meta data defined in oxcontent table
-//     *
-//     * @param string $sMeta     user defined description, description content or empty value
-//     * @param int    $iLength   max length of result, -1 for no truncation
-//     * @param bool   $blDescTag if true - performs additional dublicate cleaning
-//     *
-//     * @return string
-//     */
-//    protected function _prepareMetaDescription( $sMeta, $iLength = 200, $blDescTag = false )
-//    {
-//        if ( !$sMeta ) {
-//            $oProduct = $this->getProduct();
-//
-//            if ( $this->getConfig()->getConfigParam( 'bl_perfParseLongDescinSmarty' ) ) {
-//                $sMeta = $oProduct->getLongDesc();
-//            } else {
-//                $sMeta = $oProduct->getLongDescription()->value;
-//            }
-//            if ( $sMeta == '' ) {
-//                $sMeta = $oProduct->oxarticles__oxshortdesc->value;
-//            }
-//            $sMeta = $oProduct->oxarticles__oxtitle->value.' - '.$sMeta;
-//        }
-//        return parent::_prepareMetaDescription( $sMeta, $iLength, $blDescTag );
-//    }
-//
-//    /**
-//     * Returns current view keywords seperated by comma
-//     * If $sKeywords parameter comes empty, sets to it article title and description.
-//     * It happens if current view has no meta data defined in oxcontent table
-//     *
-//     * @param string $sKeywords               user defined keywords, keywords content or empty value
-//     * @param bool   $blRemoveDuplicatedWords remove dublicated words
-//     *
-//     * @return string
-//     */
-//    protected function _prepareMetaKeyword( $sKeywords, $blRemoveDuplicatedWords = true )
-//    {
-//        if ( !$sKeywords ) {
-//            $oProduct = $this->getProduct();
-//            $sKeywords = trim( $this->getTitle() );
-//
-//            if ( $oCatTree = $this->getCategoryTree() ) {
-//                foreach ( $oCatTree->getPath() as $oCat ) {
-//                    $sKeywords .= ", " . trim( $oCat->oxcategories__oxtitle->value );
-//                }
-//            }
-//
-//            //adding search keys info
-//            if ( $sSearchKeys = trim( $oProduct->oxarticles__oxsearchkeys->value ) ) {
-//                $sKeywords .= ", ". $sSearchKeys;
-//                }
-//
-//            $sKeywords = parent::_prepareMetaKeyword( $sKeywords, $blRemoveDuplicatedWords );
-//        }
-//
-//        return $sKeywords;
-//    }
-//
+
+    /** NEEDED, extending oxubase
+     * Returns current view meta data
+     * If $sMeta parameter comes empty, sets to it article title and description.
+     * It happens if current view has no meta data defined in oxcontent table
+     *
+     * @param string $sMeta     user defined description, description content or empty value
+     * @param int    $iLength   max length of result, -1 for no truncation
+     * @param bool   $blDescTag if true - performs additional dublicate cleaning
+     *
+     * @return string
+     */
+    protected function _prepareMetaDescription( $sMeta, $iLength = 200, $blDescTag = false )
+    {
+        if ( !$sMeta ) {
+            $oProduct = $this->getProduct();
+
+            if ( $this->getConfig()->getConfigParam( 'bl_perfParseLongDescinSmarty' ) ) {
+                $sMeta = $oProduct->getLongDesc();
+            } else {
+                $sMeta = $oProduct->getLongDescription()->value;
+            }
+            if ( $sMeta == '' ) {
+                $sMeta = $oProduct->oxarticles__oxshortdesc->value;
+            }
+            $sMeta = $oProduct->oxarticles__oxtitle->value.' - '.$sMeta;
+        }
+        return parent::_prepareMetaDescription( $sMeta, $iLength, $blDescTag );
+    }
+
+    /** NEEDED, extending oxubase
+     * Returns current view keywords seperated by comma
+     * If $sKeywords parameter comes empty, sets to it article title and description.
+     * It happens if current view has no meta data defined in oxcontent table
+     *
+     * @param string $sKeywords               user defined keywords, keywords content or empty value
+     * @param bool   $blRemoveDuplicatedWords remove dublicated words
+     *
+     * @return string
+     */
+    protected function _prepareMetaKeyword( $sKeywords, $blRemoveDuplicatedWords = true )
+    {
+        if ( !$sKeywords ) {
+            $oProduct = $this->getProduct();
+            $sKeywords = trim( $this->getTitle() );
+
+            if ( $oCatTree = $this->getCategoryTree() ) {
+                foreach ( $oCatTree->getPath() as $oCat ) {
+                    $sKeywords .= ", " . trim( $oCat->oxcategories__oxtitle->value );
+                }
+            }
+
+            //adding search keys info
+            if ( $sSearchKeys = trim( $oProduct->oxarticles__oxsearchkeys->value ) ) {
+                $sKeywords .= ", ". $sSearchKeys;
+            }
+
+            $sKeywords = parent::_prepareMetaKeyword( $sKeywords, $blRemoveDuplicatedWords );
+        }
+
+        return $sKeywords;
+    }
+
     /** NEEDED
      * Checks if rating functionality is active
      *
@@ -505,7 +465,7 @@ class oxwDetailsPage extends oxWidget
         return $this->_blCanRate;
     }
 
-    /**
+    /** NEEDED
      * Checks if rating functionality is on and allowed to user
      *
      * @return bool
@@ -519,7 +479,7 @@ class oxwDetailsPage extends oxWidget
         return false;
     }
 
-//    /**
+//    /** NEEDED in main controller, used for reviews widget
 //     * Saves user ratings and review text (oxReview object)
 //     *
 //     * @return null
@@ -717,7 +677,7 @@ class oxwDetailsPage extends oxWidget
 //        }
 //    }
 //
-    /**
+    /** NEEDED
      * loading full list of attributes
      *
      * @return array $_aAttributes
@@ -753,17 +713,17 @@ class oxwDetailsPage extends oxWidget
 //        return $this->_blEditTags;
 //    }
 //
-//    /**
-//     * Returns all tags
-//     *
-//     * @return array
-//     */
-//    public function getTags()
-//    {
-//        return $this->_aTags;
-//    }
+    /** NEEDED
+     * Returns all tags
+     *
+     * @return array
+     */
+    public function getTags()
+    {
+        return $this->_aTags;
+    }
 
-    /**
+    /** NEEDED
      * Returns tag cloud manager class
      *
      * @return oxTagCloud
@@ -885,32 +845,8 @@ class oxwDetailsPage extends oxWidget
 //     *
 //     * @return array
 //     */
-//    public function getVariantList()
-//    {
-//        return $this->loadVariantInformation();
-//    }
-//
-//    /**
-//     * Returns variant lists of current product
-//     * excludes currently viewed product
-//     *
-//     * @return array
-//     */
-//    public function getVariantListExceptCurrent()
-//    {
-//        $oList = $this->getVariantList();
-//        if (is_object($oList)) {
-//            $oList = clone $oList;
-//        }
-//
-//        $sOxid = $this->getProduct()->getId();
-//        if (isset($oList[$sOxid])) {
-//            unset($oList[$sOxid]);
-//        }
-//        return $oList;
-//    }
 
-    /**
+    /** NEEDED
      * Template variable getter. Returns object of handling CAPTCHA image
      *
      * @return object
@@ -923,7 +859,7 @@ class oxwDetailsPage extends oxWidget
         return $this->_oCaptcha;
     }
 
-    /**
+    /** NEEDED
      * Template variable getter. Returns media files of current product
      *
      * @return array
@@ -1039,7 +975,7 @@ class oxwDetailsPage extends oxWidget
 //        return $this->_sParentUrl;
 //    }
 //
-    /**
+    /** NEEDED
      * Template variable getter. Returns picture gallery of current article
      *
      * @return array
@@ -1075,7 +1011,7 @@ class oxwDetailsPage extends oxWidget
         return $aPicGallery['ActPic'];
     }
 
-    /**
+    /** NEEDED
      * Template variable getter. Returns true if there more pictures
      *
      * @return bool
@@ -1110,7 +1046,7 @@ class oxwDetailsPage extends oxWidget
 //        return $aPicGallery['Pics'][$sPicNr];
 //    }
 //
-    /**
+    /** NEEDED
      * Template variable getter. Returns icons of current article
      *
      * @return array
@@ -1132,7 +1068,7 @@ class oxwDetailsPage extends oxWidget
         return $aPicGallery['ZoomPic'];
     }
 
-    /**
+    /** NEEDED
      * Template variable getter. Returns zoom pictures
      *
      * @return array
@@ -1143,7 +1079,7 @@ class oxwDetailsPage extends oxWidget
         return $aPicGallery['ZoomPics'];
     }
 
-    /**
+    /** ???? USED, but really, 1 ?
      * Template variable getter. Returns active zoom picture id
      *
      * @return array

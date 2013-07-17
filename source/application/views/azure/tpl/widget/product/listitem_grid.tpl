@@ -1,7 +1,7 @@
 [{block name="widget_product_listitem_grid"}]
     [{assign var="oViewParent" value=$oView->getParent()}]
 
-    [{assign var="product" value=$_product}]
+    [{assign var="product" value=$oView->getProduct()}]
 
     [{assign var="currency" value=$oView->getActCurrency()}]
     [{if $showMainLink}]

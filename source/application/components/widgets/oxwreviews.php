@@ -76,18 +76,6 @@ class oxwReviews extends oxWidget
     }
 
     /**
-     * Template variable getter. Returns active recommlist
-     *
-     * @return oxRecommList
-     */
-    public function getActiveRecommList()
-    {
-        $sParentClassName = $this->getParent()->getClassName();
-        $oParentClass = oxNew( $sParentClassName );
-        return $oParentClass->getActiveRecommList();
-    }
-
-    /**
      * Template variable getter. Returns active article
      *
      * @return oxArticle

@@ -38,6 +38,8 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
             array( "product", "listitem_grid"    , "widget/product/listitem_grid.tpl"     ),
             array( "product", "listitem_infogrid", "widget/product/listitem_infogrid.tpl" ),
             array( "product", "listitem_line"    , "widget/product/listitem_line.tpl"     ),
+            array( "product", "boxproduct"       , "widget/product/boxproduct.tpl"        ),
+            array( "product", "bargainitem"      , "widget/product/bargainitem.tpl"       ),
         );
     }
 
@@ -63,8 +65,24 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
             "sWidgetType" => $sWidgetType,
             "sListType"   => $sListType,
         );
-        $oArticleBox->setViewParameters($aViewParams) ;
+        $oArticleBox->setViewParameters($aViewParams);
 
         $this->assertEquals( $sExpected, $oArticleBox->render(), "Correct template should be loaded" );
+    }
+
+    /**
+     * Test for getting product by id set in view parameters
+     */
+    public function testGetProduct()
+    {
+        $oArticleBox = new oxwArticleBox();
+
+        $sId = "1126";
+        $aViewParams = array(
+            "sProductId" => $sId,
+        );
+        $oArticleBox->setViewParameters($aViewParams);
+
+        $this->assertEquals( $sId, $oArticleBox->getProduct()->getId(), "Correct product should be loaded" );
     }
 }

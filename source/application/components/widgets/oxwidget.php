@@ -19,7 +19,6 @@
  * @package   views
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -54,9 +53,10 @@ class oxWidget extends oxUBase
     {
         self::$_aCollectedComponentNames = null;
 
+        $oActTopView = $this->getConfig()->getTopActiveView();
+
         if ( !empty( $this->_aComponentNames ) ) {
             foreach ( $this->_aComponentNames as $sComponentName => $sCompCache ) {
-                $oActTopView = $this->getConfig()->getTopActiveView();
                 if ( $oActTopView ) {
                     $this->_oaComponents[$sComponentName] = $oActTopView->getComponent( $sComponentName );
                     if ( !isset( $this->_oaComponents[$sComponentName] ) ) {
@@ -67,8 +67,13 @@ class oxWidget extends oxUBase
                     }
                 }
             }
-
         }
+
+        if ( $oActTopView ) {
+            // Set parent view for widget
+            $this->setParent( $oActTopView );
+        }
+
         parent::init();
 
     }

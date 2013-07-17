@@ -5,11 +5,11 @@
 <div id="review">
     [{block name="widget_reviews_form"}]
         [{assign var="oViewParent" value=$oView->getParent()}]
-        [{assign var="oDetailsProduct" value=$oView->getProduct()}]
+        [{assign var="oArticle" value=$oView->getArticle()}]
         [{if $oxcmp_user}]
             <form action="[{$oViewConf->getSelfActionLink()}]" method="post" id="rating">
                 <div id="writeReview">
-                    [{if $oView->canRate()}]
+                    [{if $oViewParent->canRate()}]
                         <input id="productRating" type="hidden" name="artrating" value="0">
                         <input id="recommListRating" type="hidden" name="recommlistrating" value="0">
                         <ul id="reviewRating" class="rating">
@@ -29,8 +29,8 @@
                     <input type="hidden" name="fnc" value="savereview">
                     <input type="hidden" name="cl" value="[{$oViewParent->getClassName()}]">
 
-                    [{if $oDetailsProduct}]
-                        <input type="hidden" name="anid" value="[{$oDetailsProduct->oxarticles__oxid->value}]">
+                    [{if $oArticle}]
+                        <input type="hidden" name="anid" value="[{$oArticle->oxarticles__oxid->value}]">
                     [{else}]
                         [{assign var="_actvrecommlist" value=$oView->getActiveRecommList() }]
                         <input type="hidden" name="recommid" value="[{$_actvrecommlist->oxrecommlists__oxid->value}]">
@@ -47,7 +47,7 @@
             </form>
             <a id="writeNewReview" rel="nofollow"><b>[{oxmultilang ident="WRITE_REVIEW"}]</b></a>
         [{else}]
-            <a id="reviewsLogin" rel="nofollow" href="[{oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=account" params="anid=`$oDetailsProduct->oxarticles__oxnid->value`"|cat:"&amp;sourcecl="|cat:$oViewParent->getClassName()|cat:$oViewConf->getNavUrlParams()}]"><b>[{oxmultilang ident="MESSAGE_LOGIN_TO_WRITE_REVIEW"}]</b></a>
+            <a id="reviewsLogin" rel="nofollow" href="[{oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=account" params="anid=`$oArticle->oxarticles__oxnid->value`"|cat:"&amp;sourcecl="|cat:$oViewParent->getClassName()|cat:$oViewConf->getNavUrlParams()}]"><b>[{oxmultilang ident="MESSAGE_LOGIN_TO_WRITE_REVIEW"}]</b></a>
         [{/if}]
     [{/block}]
 

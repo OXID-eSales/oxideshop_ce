@@ -58,29 +58,30 @@ class oxwReviews extends oxWidget
      */
     public function getReviews()
     {
-        /** @var Review $oReview */
-        $oReview = oxNew( 'Review' );
-        return $oReview->getReviews();
+        $sParentClassName = $this->getParent()->getClassName();
+        $oParentClass = oxNew( $sParentClassName );
+        return $oParentClass->getReviews();
     }
 
     public function canRate()
     {
-        /** @var Review $oReview */
-        $oReview = oxNew( 'Review' );
-        return $oReview->canRate();
+        $sParentClassName = $this->getParent()->getClassName();
+        $oParentClass = oxNew( $sParentClassName );
+        return $oParentClass->canRate();
     }
 
     public function getActiveRecommList()
     {
-        /** @var Review $oReview */
-        $oReview = oxNew( 'Review' );
-        return $oReview->getActiveRecommList();
+        $sParentClassName = $this->getParent()->getClassName();
+        $oParentClass = oxNew( $sParentClassName );
+        return $oParentClass->getActiveRecommList();
     }
 
-    public function getProduct()
+    public function getArticle()
     {
-        /** @var Review $oReview */
-        $oReview = oxNew( 'Review' );
-        return $oReview->getProduct();
+        $sArticleId = $this->getViewParameter( 'anid' );
+        $oArticle = oxNew( 'oxArticle' );
+        $oArticle->load( $sArticleId );
+        return $oArticle;
     }
 }

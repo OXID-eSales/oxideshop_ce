@@ -67,11 +67,12 @@ class oxWidget extends oxUBase
                     }
                 }
             }
-
         }
 
+        if ( $oActTopView ) {
         // Set parent view for widget
-        $this->setParent($oActTopView);
+            $this->setParent( $oActTopView );
+        }
 
         parent::init();
 

@@ -68,7 +68,7 @@ class oxwArticleBox extends oxWidget
      */
     public function getProduct()
     {
-        $sId = $this->getViewParameter('productId');
+        $sId = $this->getViewParameter('sProductId');
 
         $oArticle = oxNew( 'oxArticle' );
         $oArticle->load($sId);

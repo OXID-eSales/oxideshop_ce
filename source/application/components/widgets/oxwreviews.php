@@ -63,13 +63,6 @@ class oxwReviews extends oxWidget
         return $oReview->getReviews();
     }
 
-    public function saveReview()
-    {
-        /** @var Review $oReview */
-        $oReview = oxNew( 'Review' );
-        $oReview->saveReview();
-    }
-
     public function canRate()
     {
         /** @var Review $oReview */

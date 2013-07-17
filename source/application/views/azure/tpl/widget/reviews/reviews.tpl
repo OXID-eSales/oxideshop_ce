@@ -9,7 +9,7 @@
         [{if $oxcmp_user}]
             <form action="[{$oViewConf->getSelfActionLink()}]" method="post" id="rating">
                 <div id="writeReview">
-                    [{if $oViewParent->canRate()}]
+                    [{if $oView->canRate()}]
                         <input id="productRating" type="hidden" name="artrating" value="0">
                         <input id="recommListRating" type="hidden" name="recommlistrating" value="0">
                         <ul id="reviewRating" class="rating">

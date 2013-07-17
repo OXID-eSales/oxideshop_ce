@@ -10,7 +10,8 @@
         [{if $oView->isReviewActive() }]
         <div class="widgetBox reviews">
             <h4>[{oxmultilang ident="WRITE_PRODUCT_REVIEW"}]</h4>
-            [{oxid_include_widget cl="oxwReviews" nocookie=1 noscript=1 _parent=$oView->getClassName()}]
+            [{assign var="product" value=$oView->getProduct()}]
+            [{oxid_include_widget cl="oxwReviews" nocookie=1 noscript=1 _parent=$oView->getClassName() anid=$product->oxarticles__oxnid->value}]
         </div>
         [{/if}]
     </div>

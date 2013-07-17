@@ -1372,197 +1372,197 @@ class oxwDetailsPage extends oxWidget
         }
         return $this->_sSearchParamForHtml;
     }
-//
-//    /** USED in details, RDFA
-//     * Returns if page has rdfa
-//     *
-//     * @return bool
-//     */
-//    public function showRdfa()
-//    {
-//        return $this->getConfig()->getConfigParam( 'blRDFaEmbedding' );
-//    }
-//
-//    /** USED in details, RDFA
-//     * Sets normalized rating
-//     *
-//     * @return array
-//     */
-//    public function getRDFaNormalizedRating()
-//    {
-//        $myConfig = $this->getConfig();
-//        $iMin = $myConfig->getConfigParam("iRDFaMinRating");
-//        $iMax = $myConfig->getConfigParam("iRDFaMaxRating");
-//
-//        $oProduct = $this->getProduct();
-//        $iCount = $oProduct->oxarticles__oxratingcnt->value;
-//        if ( isset($iMin) && isset($iMax) && $iMax != '' && $iMin != '' && $iCount > 0 ) {
-//            $aNomalizedRating = array();
-//            $iValue = ((4*($oProduct->oxarticles__oxrating->value - $iMin)/($iMax - $iMin)))+1;
-//            $aNomalizedRating["count"] = $iCount;
-//            $aNomalizedRating["value"] = round($iValue, 2);
-//            return $aNomalizedRating;
-//        }
-//        return false;
-//    }
-//
-//    /** USED in details, RDFA
-//     * Sets and returns validity period of given object
-//     *
-//     * @param string $sShopConfVar object name
-//     *
-//     * @return array
-//     */
-//    public function getRDFaValidityPeriod($sShopConfVar)
-//    {
-//        if ( $sShopConfVar ) {
-//            $aValidity = array();
-//            $iDays = $this->getConfig()->getConfigParam($sShopConfVar);
-//            $iFrom = oxRegistry::get("oxUtilsDate")->getTime();
-//
-//            $iThrough = $iFrom + ($iDays * 24 * 60 * 60);
-//            $aValidity["from"] = date('Y-m-d\TH:i:s', $iFrom)."Z";
-//            $aValidity["through"] = date('Y-m-d\TH:i:s', $iThrough)."Z";
-//
-//            return $aValidity;
-//        }
-//        return false;
-//    }
-//
-//    /** USED in details, RDFA
-//     * Gets business function of the gr:Offering
-//     *
-//     * @return string
-//     */
-//    public function getRDFaBusinessFnc()
-//    {
-//        return $this->getConfig()->getConfigParam("sRDFaBusinessFnc");
-//    }
-//
-//    /** USED in details, RDFA
-//     * Gets the types of customers for which the given gr:Offering is valid
-//     *
-//     * @return array
-//     */
-//    public function getRDFaCustomers()
-//    {
-//        return $this->getConfig()->getConfigParam("aRDFaCustomers");
-//    }
-//
-//    /** USED in details, RDFA
-//     * Gets information whether prices include vat
-//     *
-//     * @return int
-//     */
-//    public function getRDFaVAT()
-//    {
-//        return $this->getConfig()->getConfigParam("iRDFaVAT");
-//    }
-//
-//    /** USED in details, RDFA
-//     * Gets a generic description of product condition
-//     *
-//     * @return string
-//     */
-//    public function getRDFaGenericCondition()
-//    {
-//        return $this->getConfig()->getConfigParam("iRDFaCondition");
-//    }
-//
-//    /** USED in details, RDFA
-//     * Returns bundle product
-//     *
-//     * @return object
-//     */
-//    public function getBundleArticle()
-//    {
-//        $oProduct = $this->getProduct();
-//        if ( $oProduct && $oProduct->oxarticles__oxbundleid->value ) {
-//            $oArticle = oxNew("oxarticle");
-//            $oArticle->load($oProduct->oxarticles__oxbundleid->value);
-//            return $oArticle;
-//        }
-//        return false;
-//    }
-//
-//    /** USED in details, RDFA
-//     * Gets accepted payment methods
-//     *
-//     * @return array
-//     */
-//    public function getRDFaPaymentMethods()
-//    {
-//        $iPrice = $this->getProduct()->getPrice()->getBruttoPrice();
-//        $oPayments = oxNew("oxpaymentlist");
-//        $oPayments->loadRDFaPaymentList($iPrice);
-//        return $oPayments;
-//    }
-//
-//    /** USED in details, RDFA
-//     * Returns delivery methods with assigned deliverysets.
-//     *
-//     * @return object
-//     */
-//    public function getRDFaDeliverySetMethods()
-//    {
-//        $oDelSets = oxNew("oxdeliverysetlist");
-//        $oDelSets->loadRDFaDeliverySetList();
-//        return $oDelSets;
-//    }
-//
-//    /** USED in details, RDFA
-//     * Template variable getter. Returns delivery list for current product
-//     *
-//     * @return object
-//     */
-//    public function getProductsDeliveryList()
-//    {
-//        $oProduct = $this->getProduct();
-//        $oDelList = oxNew( "oxDeliveryList" );
-//        $oDelList->loadDeliveryListForProduct( $oProduct );
-//        return $oDelList;
-//    }
-//
-//    /** USED in details, RDFA
-//     * Gets content id of delivery information page
-//     *
-//     * @return string
-//     */
-//    public function getRDFaDeliveryChargeSpecLoc()
-//    {
-//        return $this->getConfig()->getConfigParam("sRDFaDeliveryChargeSpecLoc");
-//    }
-//
-//    /** USED in details, RDFA
-//     * Gets content id of payments
-//     *
-//     * @return string
-//     */
-//    public function getRDFaPaymentChargeSpecLoc()
-//    {
-//        return $this->getConfig()->getConfigParam("sRDFaPaymentChargeSpecLoc");
-//    }
-//
-//    /** USED in details, RDFA
-//     * Gets content id of company info page (About Us)
-//     *
-//     * @return string
-//     */
-//    public function getRDFaBusinessEntityLoc()
-//    {
-//        return $this->getConfig()->getConfigParam("sRDFaBusinessEntityLoc");
-//    }
-//
-//    /** USED in details, RDFA
-//     * Returns if to show products left stock
-//     *
-//     * @return string
-//     */
-//    public function showRDFaProductStock()
-//    {
-//        return $this->getConfig()->getConfigParam("blShowRDFaProductStock");
-//    }
-//
+
+    /** USED in details, RDFA
+     * Returns if page has rdfa
+     *
+     * @return bool
+     */
+    public function showRdfa()
+    {
+        return $this->getConfig()->getConfigParam( 'blRDFaEmbedding' );
+    }
+
+    /** USED in details, RDFA
+     * Sets normalized rating
+     *
+     * @return array
+     */
+    public function getRDFaNormalizedRating()
+    {
+        $myConfig = $this->getConfig();
+        $iMin = $myConfig->getConfigParam("iRDFaMinRating");
+        $iMax = $myConfig->getConfigParam("iRDFaMaxRating");
+
+        $oProduct = $this->getProduct();
+        $iCount = $oProduct->oxarticles__oxratingcnt->value;
+        if ( isset($iMin) && isset($iMax) && $iMax != '' && $iMin != '' && $iCount > 0 ) {
+            $aNomalizedRating = array();
+            $iValue = ((4*($oProduct->oxarticles__oxrating->value - $iMin)/($iMax - $iMin)))+1;
+            $aNomalizedRating["count"] = $iCount;
+            $aNomalizedRating["value"] = round($iValue, 2);
+            return $aNomalizedRating;
+        }
+        return false;
+    }
+
+    /** USED in details, RDFA
+     * Sets and returns validity period of given object
+     *
+     * @param string $sShopConfVar object name
+     *
+     * @return array
+     */
+    public function getRDFaValidityPeriod($sShopConfVar)
+    {
+        if ( $sShopConfVar ) {
+            $aValidity = array();
+            $iDays = $this->getConfig()->getConfigParam($sShopConfVar);
+            $iFrom = oxRegistry::get("oxUtilsDate")->getTime();
+
+            $iThrough = $iFrom + ($iDays * 24 * 60 * 60);
+            $aValidity["from"] = date('Y-m-d\TH:i:s', $iFrom)."Z";
+            $aValidity["through"] = date('Y-m-d\TH:i:s', $iThrough)."Z";
+
+            return $aValidity;
+        }
+        return false;
+    }
+
+    /** USED in details, RDFA
+     * Gets business function of the gr:Offering
+     *
+     * @return string
+     */
+    public function getRDFaBusinessFnc()
+    {
+        return $this->getConfig()->getConfigParam("sRDFaBusinessFnc");
+    }
+
+    /** USED in details, RDFA
+     * Gets the types of customers for which the given gr:Offering is valid
+     *
+     * @return array
+     */
+    public function getRDFaCustomers()
+    {
+        return $this->getConfig()->getConfigParam("aRDFaCustomers");
+    }
+
+    /** USED in details, RDFA
+     * Gets information whether prices include vat
+     *
+     * @return int
+     */
+    public function getRDFaVAT()
+    {
+        return $this->getConfig()->getConfigParam("iRDFaVAT");
+    }
+
+    /** USED in details, RDFA
+     * Gets a generic description of product condition
+     *
+     * @return string
+     */
+    public function getRDFaGenericCondition()
+    {
+        return $this->getConfig()->getConfigParam("iRDFaCondition");
+    }
+
+    /** USED in details, RDFA
+     * Returns bundle product
+     *
+     * @return object
+     */
+    public function getBundleArticle()
+    {
+        $oProduct = $this->getProduct();
+        if ( $oProduct && $oProduct->oxarticles__oxbundleid->value ) {
+            $oArticle = oxNew("oxarticle");
+            $oArticle->load($oProduct->oxarticles__oxbundleid->value);
+            return $oArticle;
+        }
+        return false;
+    }
+
+    /** USED in details, RDFA
+     * Gets accepted payment methods
+     *
+     * @return array
+     */
+    public function getRDFaPaymentMethods()
+    {
+        $iPrice = $this->getProduct()->getPrice()->getBruttoPrice();
+        $oPayments = oxNew("oxpaymentlist");
+        $oPayments->loadRDFaPaymentList($iPrice);
+        return $oPayments;
+    }
+
+    /** USED in details, RDFA
+     * Returns delivery methods with assigned deliverysets.
+     *
+     * @return object
+     */
+    public function getRDFaDeliverySetMethods()
+    {
+        $oDelSets = oxNew("oxdeliverysetlist");
+        $oDelSets->loadRDFaDeliverySetList();
+        return $oDelSets;
+    }
+
+    /** USED in details, RDFA
+     * Template variable getter. Returns delivery list for current product
+     *
+     * @return object
+     */
+    public function getProductsDeliveryList()
+    {
+        $oProduct = $this->getProduct();
+        $oDelList = oxNew( "oxDeliveryList" );
+        $oDelList->loadDeliveryListForProduct( $oProduct );
+        return $oDelList;
+    }
+
+    /** USED in details, RDFA
+     * Gets content id of delivery information page
+     *
+     * @return string
+     */
+    public function getRDFaDeliveryChargeSpecLoc()
+    {
+        return $this->getConfig()->getConfigParam("sRDFaDeliveryChargeSpecLoc");
+    }
+
+    /** USED in details, RDFA
+     * Gets content id of payments
+     *
+     * @return string
+     */
+    public function getRDFaPaymentChargeSpecLoc()
+    {
+        return $this->getConfig()->getConfigParam("sRDFaPaymentChargeSpecLoc");
+    }
+
+    /** USED in details, RDFA
+     * Gets content id of company info page (About Us)
+     *
+     * @return string
+     */
+    public function getRDFaBusinessEntityLoc()
+    {
+        return $this->getConfig()->getConfigParam("sRDFaBusinessEntityLoc");
+    }
+
+    /** USED in details, RDFA
+     * Returns if to show products left stock
+     *
+     * @return string
+     */
+    public function showRDFaProductStock()
+    {
+        return $this->getConfig()->getConfigParam("blShowRDFaProductStock");
+    }
+
     /** NEEDED
      * Get product article
      *
@@ -1643,6 +1643,7 @@ class oxwDetailsPage extends oxWidget
      */
     public function render()
     {
+
         $myConfig = $this->getConfig();
 
         $oProduct = $this->getProduct();
@@ -1685,7 +1686,6 @@ class oxwDetailsPage extends oxWidget
                     $oRss = oxNew('oxrssfeed');
                     $this->addRssFeed($oRss->getRecommListsTitle( $oProduct ), $oRss->getRecommListsUrl( $oProduct ), 'recommlists');
                 }
-
                 return $this->_sThisTemplate;
         }
     }

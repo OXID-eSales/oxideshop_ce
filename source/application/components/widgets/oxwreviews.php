@@ -63,6 +63,11 @@ class oxwReviews extends oxWidget
         return $oParentClass->getReviews();
     }
 
+    /**
+     * Template variable getter. Returns if user can rate
+     *
+     * @return bool
+     */
     public function canRate()
     {
         $sParentClassName = $this->getParent()->getClassName();
@@ -70,6 +75,11 @@ class oxwReviews extends oxWidget
         return $oParentClass->canRate();
     }
 
+    /**
+     * Template variable getter. Returns active recommlist
+     *
+     * @return oxRecommList
+     */
     public function getActiveRecommList()
     {
         $sParentClassName = $this->getParent()->getClassName();
@@ -77,6 +87,11 @@ class oxwReviews extends oxWidget
         return $oParentClass->getActiveRecommList();
     }
 
+    /**
+     * Template variable getter. Returns active article
+     *
+     * @return oxArticle
+     */
     public function getArticle()
     {
         $sArticleId = $this->getViewParameter( 'anid' );

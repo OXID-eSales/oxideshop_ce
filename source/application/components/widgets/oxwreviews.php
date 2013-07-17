@@ -42,6 +42,22 @@ class oxwReviews extends oxWidget
     protected $_sThisTemplate = 'widget/reviews/reviews.tpl';
 
     /**
+     * Array of reviews
+     * @var array
+     */
+    protected $_aReviews = null;
+
+    /**
+     * Template variable getter. Returns review type
+     *
+     * @return string
+     */
+    public function getReviewType()
+    {
+        return $this->getViewParameter( 'type' );
+    }
+
+    /**
      * Template variable getter. Returns review user id
      *
      * @return string
@@ -58,21 +74,23 @@ class oxwReviews extends oxWidget
      */
     public function getReviews()
     {
-        $sParentClassName = $this->getParent()->getClassName();
-        $oParentClass = oxNew( $sParentClassName );
-        return $oParentClass->getReviews();
+        if ( $this->_aReviews === null ) {
+            $this->_aReviews = false;
+
+            $oObject = null;
+
+            if ( $this->getReviewType() == 'article' ) {
+                $oObject = $this->getArticle();
+
+            } elseif ( $this->getReviewType() == 'recommlist' ) {
+                $oReview = oxNew( 'Review' );
+                $oObject = $oReview->getActiveRecommList();
     }
 
-    /**
-     * Template variable getter. Returns if user can rate
-     *
-     * @return bool
-     */
-    public function canRate()
-    {
-        $sParentClassName = $this->getParent()->getClassName();
-        $oParentClass = oxNew( $sParentClassName );
-        return $oParentClass->canRate();
+            $this->_aReviews = $oObject->getReviews();
+        }
+
+        return $this->_aReviews;
     }
 
     /**

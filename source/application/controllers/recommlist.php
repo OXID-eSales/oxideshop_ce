@@ -19,7 +19,6 @@
  * @package   views
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -46,12 +45,6 @@ class RecommList extends aList
      * @var oxrecommlist
      */
     protected $_oOtherRecommList = null;
-
-    /**
-     * Recommlist reviews
-     * @var array
-     */
-    protected $_aReviews = null;
 
     /**
      * Can user rate

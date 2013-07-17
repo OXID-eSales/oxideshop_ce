@@ -211,6 +211,12 @@
                                 [{/if}]
                             </div>
 
+                            [{oxifcontent ident="oxtsinternationalfees" object="oTSIFContent"}]
+                                <div class="lineBox clear">
+                                    [{ $oTSIFContent->oxcontents__oxcontent->value }]
+                                </div>
+                            [{/oxifcontent}]
+
                             <div class="lineBox clear">
                                 <a href="[{ oxgetseourl ident=$oViewConf->getPaymentLink() }]" class="prevStep submitButton largeButton">[{ oxmultilang ident="PREVIOUS_STEP" }]</a>
                                 <button type="submit" class="submitButton nextStep largeButton">[{ oxmultilang ident="SUBMIT_ORDER" }]</button>

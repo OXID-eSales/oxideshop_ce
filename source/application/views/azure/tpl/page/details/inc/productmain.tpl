@@ -124,6 +124,7 @@
             [{ if $oView->ratingIsActive()}]
             [{block name="details_productmain_ratings"}]
                 <div class="rating clear">
+                    <!-- rating widget should be here -->
                     [{include file="widget/reviews/rating.tpl" itemid="anid=`$oDetailsProduct->oxarticles__oxnid->value`" sRateUrl=$oDetailsProduct->getLink() }]
                 </div>
             [{/block}]

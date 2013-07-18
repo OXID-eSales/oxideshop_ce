@@ -79,3 +79,4 @@
         </div>
    [{/block}]
 [{/block}]
+[{oxscript widget=$oView->getClassName()}]

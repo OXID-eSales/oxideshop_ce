@@ -145,3 +145,4 @@
         </div>
     </form>
 [{/block}]
+[{oxscript widget=$oView->getClassName()}]

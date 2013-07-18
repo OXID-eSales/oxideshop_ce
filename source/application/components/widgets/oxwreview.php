@@ -25,7 +25,7 @@
 /**
  * Product reviews widget
  */
-class oxwReviews extends oxWidget
+class oxwReview extends oxWidget
 {
     /**
      * Names of components (classes) that are initiated and executed

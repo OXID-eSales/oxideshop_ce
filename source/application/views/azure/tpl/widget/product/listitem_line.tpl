@@ -178,3 +178,4 @@
         </form>
     [{/if}]
 [{/block}]
+[{oxscript widget=$oView->getClassName()}]

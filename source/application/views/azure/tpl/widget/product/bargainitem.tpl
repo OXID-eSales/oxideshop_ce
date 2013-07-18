@@ -49,4 +49,4 @@
         </div>
     </div>
     [{/block}]
-[{/capture}]
+[{/capture}][{oxscript widget=$oView->getClassName()}]

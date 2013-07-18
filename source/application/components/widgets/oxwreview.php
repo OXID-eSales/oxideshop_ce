@@ -48,6 +48,12 @@ class oxwReview extends oxWidget
     protected $_aReviews = null;
 
     /**
+     * Active recommendations list
+     * @var object
+     */
+    protected $_oActiveRecommList = null;
+
+    /**
      * Template variable getter. Returns review type
      *
      * @return string
@@ -83,8 +89,7 @@ class oxwReview extends oxWidget
                 $oObject = $this->getArticle();
 
             } elseif ( $this->getReviewType() == 'oxrecommlist' ) {
-                $oReview = oxNew( 'Review' );
-                $oObject = $oReview->getActiveRecommList();
+                $oObject = $this->getActiveRecommList();
     }
 
             $this->_aReviews = $oObject->getReviews();
@@ -104,5 +109,29 @@ class oxwReview extends oxWidget
         $oArticle = oxNew( 'oxArticle' );
         $oArticle->load( $sArticleId );
         return $oArticle;
+    }
+
+    /**
+     * Template variable getter. Returns active recommlist
+     *
+     * @return oxRecommList
+     */
+    public function getActiveRecommList()
+    {
+        if ( !$this->getViewConfig()->getShowListmania() ) {
+            return false;
+        }
+
+        if ( $this->_oActiveRecommList === null ) {
+            $this->_oActiveRecommList = false;
+
+            if ( $sRecommId = $this->getViewParameter( 'recommid' ) ) {
+                $oActiveRecommList = oxNew( 'oxRecommList' );
+                if ( $oActiveRecommList->load( $sRecommId ) ) {
+                    $this->_oActiveRecommList = $oActiveRecommList;
+                }
+            }
+        }
+        return $this->_oActiveRecommList;
     }
 }

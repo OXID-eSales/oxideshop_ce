@@ -1,7 +1,7 @@
 [{oxscript add="$('a.js-external').attr('target', '_blank');"}]
 [{foreach from=$oView->getBargainArticleList() item=_product name=bargainList}]
     [{if $smarty.foreach.bargainList.first}]
-        [{ oxid_include_widget cl="oxwArticleBox" cur=$oViewConf->getActCurrency() _parent=$oView->getClassName() nocookie=1 _navurlparams=$oViewConf->getNavUrlParams() sProductId=$_product->getId() sWidgetType=product sListType=bargainitem }]
+        [{oxid_include_widget cl="oxwArticleBox" cur=$oViewConf->getActCurrency() _parent=$oView->getClassName() nocookie=1 _navurlparams=$oViewConf->getNavUrlParams() sProductId=$_product->getId() sWidgetType=product sListType=bargainitem}]
                     [{/if}]
 [{/foreach}]
 <div class="specBoxTitles rightShadow">

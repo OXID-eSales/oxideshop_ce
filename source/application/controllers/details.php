@@ -19,7 +19,6 @@
  * @package   views
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -1124,13 +1123,13 @@ class Details extends oxUBase
 
     /**
      * Template variable getter. Returns if to show zoom pictures
+     * @deprecated since v5.1.0 (2013-07-18); duplicated code
      *
      * @return bool
      */
     public function showZoomPics()
     {
-        $aPicGallery = $this->getPictureGallery();
-        return $aPicGallery['ZoomPic'];
+        return $this->getZoomPics();
     }
 
     /**
@@ -1146,6 +1145,7 @@ class Details extends oxUBase
 
     /**
      * Template variable getter. Returns active zoom picture id
+     * @deprecated since v5.1.0 (2013-07-18); useless function
      *
      * @return array
      */

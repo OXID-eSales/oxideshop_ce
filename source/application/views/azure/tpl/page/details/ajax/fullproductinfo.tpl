@@ -6,7 +6,7 @@
     [{oxscript add="$(function(){oxFacebook.initDetailsPagePartial();});"}]
 [{/if}]
 
-[{if $oView->showZoomPics()}]
+[{if $oView->getZoomPics()}]
     [{oxscript add="$( '#morePicsContainer' ).oxMorePictures();"}]
 [{/if}]
 

@@ -35,7 +35,7 @@
     [{* article picture with zoom *}]
     [{block name="details_productmain_zoom"}]
         [{oxscript include="js/libs/cloudzoom.js" priority=10}]
-        [{if $oView->showZoomPics()}]
+        [{if $oView->getZoomPics()}]
             [{oxscript include="js/widgets/oxmodalpopup.js" priority=10 }]
             [{oxscript add="$('#zoomTrigger').oxModalPopup({target:'#zoomModal'});"}]
             <a id="zoomTrigger" rel="nofollow" href="#">Zoom</a>

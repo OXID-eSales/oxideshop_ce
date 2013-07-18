@@ -35,8 +35,6 @@ class oxTsRatings extends oxSuperCfg
      */
     const TS_RATINGS    = 'TS_RATINGS';
 
-    const TS_ERROR_INVALID_TS = "We are sorry, but your requested TSID is invalid or our service is temporarily unavailable. Please refer to the documentation under http://www.trustedshops.com/api/ratings/v1/documentation.html' for further information.";
-
     /**
      * _aChannel channel data to be passed to view
      *
@@ -81,13 +79,13 @@ class oxTsRatings extends oxSuperCfg
      */
     protected function _executeCurl( $sUrl )
     {
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_HEADER, false);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_POST, false);
-        curl_setopt($ch, CURLOPT_URL, $sUrl);
-        $output = curl_exec($ch);
-        curl_close($ch);
+        $oCurl = curl_init();
+        curl_setopt( $oCurl, CURLOPT_HEADER, false );
+        curl_setopt( $oCurl, CURLOPT_RETURNTRANSFER, 1 );
+        curl_setopt( $oCurl, CURLOPT_POST, false );
+        curl_setopt( $oCurl, CURLOPT_URL, $sUrl );
+        $output = curl_exec( $oCurl );
+        curl_close( $oCurl );
         return $output;
     }
 
@@ -97,26 +95,34 @@ class oxTsRatings extends oxSuperCfg
      *
      * @return array
      */
-    public function getRatings() {
+    public function getRatings()
+    {
         if ( ( $this->_aChannel = oxRegistry::getUtils()->fromFileCache( self::TS_RATINGS ) ) ) {
             return $this->_aChannel;
         }
-        $tsId = $this->getTsId();
+        $sTsId = $this->getTsId();
 
-        $url = "https://www.trustedshops.com/bewertung/show_xml.php?tsid=".$tsId;
-        $sOutput = $this->_executeCurl( $url );
+        $sUrl = "https://www.trustedshops.com/bewertung/show_xml.php?tsid=" . $sTsId;
+        $sOutput = $this->_executeCurl( $sUrl );
 
-        if ( self::TS_ERROR_INVALID_TS == $sOutput ) {
             $this->_aChannel['empty'] = true;
-        } elseif ( $xml = simplexml_load_string( $sOutput ) ) {
-            $this->_aChannel['empty'] = false;
-            $aResult = $xml->ratings->xpath('//result[@name="average"]');
 
-            $this->_aChannel['result'] = (float)$aResult[0];
+        try {
+            $oDomFile = new DomDocument();
+            if ( $oDomFile->loadXML( $sOutput ) ) {
+            $this->_aChannel['empty'] = false;
+                $oXPath = new DomXPath( $oDomFile );
+
+                $this->_aChannel['result'] = $oXPath->evaluate( 'string(//result[@name="average"])' );
             $this->_aChannel['max'] = "5.00";
-            $this->_aChannel['count'] = (int)$xml->ratings["amount"];
-            $this->_aChannel['shopName'] = (string)$xml->name;
+                $this->_aChannel['count'] = $oXPath->evaluate( 'string(//ratings/@amount)' );
+                $this->_aChannel['shopName'] = $oXPath->evaluate( 'string(//name)' );
             oxRegistry::getUtils()->toFileCache( self::TS_RATINGS, $this->_aChannel, self::CACHE_TTL );
+        }
+        } catch ( Exception $oEx ) {
+            $oEx = oxNew( "oxException" );
+            $oEx->setMessage( $oEx->getMessage() );
+            $oEx->debugOut();
         }
         return $this->_aChannel;
     }

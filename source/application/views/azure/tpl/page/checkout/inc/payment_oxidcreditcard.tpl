@@ -8,7 +8,7 @@
         <ul class="form">
             <li>
                 <label>[{ oxmultilang ident="CREDITCARD" suffix="COLON" }]</label>
-                <select name="dynvalue[kktype]">
+                <select class="credit_card" name="dynvalue[kktype]">
                     <option value="mcd" [{ if ($dynvalue.kktype == "mcd" || !$dynvalue.kktype)}]selected[{/if}]>[{ oxmultilang ident="CARD_MASTERCARD" }]</option>
                     <option value="vis" [{ if $dynvalue.kktype == "vis"}]selected[{/if}]>[{ oxmultilang ident="CARD_VISA" }]</option>
                     <!--
@@ -73,7 +73,8 @@
                 <div class="note">[{ oxmultilang ident="CARD_SECURITY_CODE_DESCRIPTION" }]</div>
             </li>
         </ul>
-
+        <div class="mcd" style="display: none;"><img  src="/out/azure/img/mcd_logo.png"></div>
+        <div class="vis" style="display: none;"><img  src="/out/azure/img/vis_logo.png"></div>
         [{block name="checkout_payment_longdesc"}]
             [{if $paymentmethod->oxpayments__oxlongdesc->value}]
                 <div class="desc">

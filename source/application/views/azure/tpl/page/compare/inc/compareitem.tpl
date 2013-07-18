@@ -1,3 +1,5 @@
+[{assign var="product" value=$oView->getProduct()}]
+
 <div class="compareItem">
     [{assign var="currency" value=$oView->getActCurrency()}]
     [{if $showMainLink}]
@@ -157,3 +159,4 @@
 
     </form>
 </div>
+[{oxscript widget=$oView->getClassName()}]

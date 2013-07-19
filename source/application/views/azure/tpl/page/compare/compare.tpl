@@ -54,8 +54,7 @@
                                     [{/if}]
                                     </div>
                                 [{/if}]
-                                [{oxid_include_widget cl="oxwArticleBox" cur=$oViewConf->getActCurrency() _parent=$oView->getClassName() nocookie=1 _navurlparams=$oViewConf->getNavUrlParams() sProductId=$product->getId() iIteration=$smarty.foreach.comparelist.iteration oxwtemplate="page/compare/inc/compareitem.tpl"}]
-                                [{*include file="page/compare/inc/compareitem.tpl" product=$product testid=$smarty.foreach.comparelist.iteration*}]
+                                [{oxid_include_widget cl="oxwArticleBox" cur=$oViewConf->getActCurrency() _parent=$oView->getClassName() nocookie=1 _navurlparams=$oViewConf->getNavUrlParams() sProductId=$product->getId() iIteration=$smarty.foreach.comparelist.iteration oxwtemplate=page/compare/inc/compareitem.tpl}]
                             </td>
                             [{/foreach}]
                         </tr>

@@ -1,5 +1,5 @@
 [{block name="widget_product_listitem_line"}]
-    [{assign var="product" value=$oView->getProduct()}]
+    [{assign var="product" value=$oView->getBoxProduct()}]
 
     [{oxscript include="js/widgets/oxlistremovebutton.js" priority=10 }]
     [{oxscript add="$('button.removeButton').oxListRemoveButton();"}]

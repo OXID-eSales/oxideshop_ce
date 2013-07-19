@@ -47,6 +47,12 @@ class RecommList extends aList
     protected $_oOtherRecommList = null;
 
     /**
+     * Recommlist reviews
+     * @var array
+     */
+    protected $_aReviews = null;
+
+    /**
      * Can user rate
      * @var bool
      */

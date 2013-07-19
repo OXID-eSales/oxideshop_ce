@@ -1,4 +1,5 @@
 [{block name="widget_product_listitem_grid"}]
+
     [{assign var="product" value=$oView->getBoxProduct()}]
 
     [{assign var="currency" value=$oView->getActCurrency()}]
@@ -70,7 +71,8 @@
                     <a href="[{ $_productLink }]" class="toCart button">[{ oxmultilang ident="MORE_INFO" }]</a>
                 [{else}]
                     [{assign var="listType" value=$oView->getListType()}]
-                    <a href="[{$oView->getParentLink()|oxaddparams:"listtype=`$listType`&amp;fnc=tobasket&amp;aid=`$product->oxarticles__oxid->value`&amp;am=1" }]" class="toCart button" title="[{oxmultilang ident="TO_CART" }]">[{oxmultilang ident="TO_CART" }]</a>
+
+                    <a href="[{$oView->getLink()|oxaddparams:"listtype=`$listType`&amp;fnc=tobasket&amp;aid=`$product->oxarticles__oxid->value`&amp;am=1" }]" class="toCart button" title="[{oxmultilang ident="TO_CART" }]">[{oxmultilang ident="TO_CART" }]</a>
                 [{/if}]
             [{/oxhasrights}]
         </div>

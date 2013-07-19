@@ -66,8 +66,8 @@ class oxWidget extends oxUBase
                     }
                 }
             }
-
         }
+
         parent::init();
 
     }

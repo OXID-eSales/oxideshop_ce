@@ -560,7 +560,8 @@ INSERT INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`, `OXVARNAME`, `OXVARTYPE`
 ('mhjf24905a5b49c8d60aa31087b9797f', 'oxbaseshop', '', 'blShowRememberMe', 'bool', 0x07),
 ('omc4555952125c3c2.98253113', 'oxbaseshop', '', 'blDisableNavBars', 'bool', 0x07),
 ('mhjf24905a5b49c8d60aa31087b97971', 'oxbaseshop', '', 'blEnableSeoCache', 'bool', 0x07),
-('l8g957be9e7b13412960c7670f71ba31', 'oxbaseshop', '', 'sAdditionalServVATCalcMethod', 'str', 0x55ca40ff0d0a72f5b908f2);
+('l8g957be9e7b13412960c7670f71ba31', 'oxbaseshop', '', 'sAdditionalServVATCalcMethod', 'str', 0x55ca40ff0d0a72f5b908f2),
+('fecfcd8dbd01a491a94557448425acc8', 'oxbaseshop', '', 'blShowTSInternationalFeesMessage', 'bool', 0x07);
 
 -- default unconfigurable values to fallback if theme does not provide alternatives
 INSERT INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`, `OXVARNAME`, `OXVARTYPE`, `OXVARVALUE`) VALUES

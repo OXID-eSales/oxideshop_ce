@@ -211,11 +211,14 @@
                                 [{/if}]
                             </div>
 
+                            [{assign var="oConf" value=$oViewConf->getConfig()}]
+                            [{if $oConf->getConfigParam("blShowTSInternationalFeesMessage")}]
                             [{oxifcontent ident="oxtsinternationalfees" object="oTSIFContent"}]
                                 <div class="lineBox clear">
                                     [{ $oTSIFContent->oxcontents__oxcontent->value }]
                                 </div>
                             [{/oxifcontent}]
+                            [{/if}]
 
                             <div class="lineBox clear">
                                 <a href="[{ oxgetseourl ident=$oViewConf->getPaymentLink() }]" class="prevStep submitButton largeButton">[{ oxmultilang ident="PREVIOUS_STEP" }]</a>

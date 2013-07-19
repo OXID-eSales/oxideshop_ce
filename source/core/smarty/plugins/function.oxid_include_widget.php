@@ -40,7 +40,7 @@ function smarty_function_oxid_include_widget($params, &$oSmarty)
     $sClass     = strtolower($params['cl']);
     $params['cl'] = $sClass;
     $aParentViews = null;
-//    var_dump( $params["_navurlparams"] );
+
 
     unset($params['cl']);
 

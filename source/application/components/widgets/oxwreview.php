@@ -58,6 +58,16 @@ class oxwReview extends oxWidget
      */
     public function getArticleId()
     {
+        return $this->getViewParameter( 'aid' );
+    }
+
+    /**
+     * Template variable getter. Returns article nid
+     *
+     * @return string
+     */
+    public function getArticleNId()
+    {
         return $this->getViewParameter( 'anid' );
     }
 
@@ -90,17 +100,4 @@ class oxwReview extends oxWidget
     {
         return $this->getViewParameter( 'reviewuserhash' );
         }
-
-    /**
-     * Template variable getter. Returns active article
-     *
-     * @return oxArticle
-     */
-    public function getArticle()
-    {
-        /** @var oxArticle $oArticle */
-        $oArticle = oxNew( 'oxArticle' );
-        $oArticle->load( $this->getArticleId() );
-        return $oArticle;
-    }
 }

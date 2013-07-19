@@ -1204,7 +1204,9 @@ a.rss span {
 a.rss:hover span {
     visibility: visible;
 }
-
+.alsoBoughtContainer {
+    float: left;
+}
 h3.lightHead {
     color: #1d7e96;
     text-shadow: 0px 1px 1px #fff;
@@ -3371,6 +3373,8 @@ a.fb_button_simple {
 .detailsRelated {
     clear:both;
     padding-top:20px;
+    float: left;
+    width: 576px;
 }
 
 .detailsInfo {
@@ -4936,18 +4940,6 @@ td.alignTop{
     position:fixed;
     bottom:-3px;
     right:-5px;
-    font-size:11px;
-    padding:4px 20px 6px 17px;
-    background:url(../../img/vatmsg-bg.png) no-repeat 0 0;
-    opacity:0.6;
-    filter:alpha(opacity=60);
-    z-index:9999;
-}
-
-#incVatMessageTsBadge{
-    position:fixed;
-    bottom:-3px;
-    right:100px;
     font-size:11px;
     padding:4px 20px 6px 17px;
     background:url(../../img/vatmsg-bg.png) no-repeat 0 0;

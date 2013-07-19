@@ -7,6 +7,7 @@
 [{/if}]
 
 [{oxscript add="$('a.js-external').attr('target', '_blank');"}]
+<div class="alsoBoughtContainer">
 [{if $head}]
     [{if $header eq "light"}]
         <h3 class="lightHead sectionHead">[{$head}]</h3>
@@ -28,4 +29,4 @@
             [{/if}]
         [{/foreach}]
     </ul>
-[{/if}]
+[{/if}]</div>

@@ -1,4 +1,5 @@
 [{assign var="_oBoxProduct" value=$oView->getProduct()}]
+[{$_oBoxProduct->getId()}]
 [{assign var="_sTitle" value="`$_oBoxProduct->oxarticles__oxtitle->value` `$_oBoxProduct->oxarticles__oxvarselect->value`"|strip_tags}]
 [{block name="widget_product_boxproduct_image"}]
     <li class="articleImage" [{if !$smarty.foreach._sProdList.first}] style="display:none;" [{/if}]>
@@ -9,7 +10,6 @@
 [{/block}]
 
 [{block name="widget_product_boxproduct_price"}]
-    [{assign var="currency" value=$oView->getActCurrency()}]
     <li class="articleTitle">
         <a href="[{ $_oBoxProduct->getMainLink() }]">
             [{ $_sTitle }]<br>

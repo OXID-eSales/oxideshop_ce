@@ -50,9 +50,9 @@
         [{/if}]
     [{/block}]
 
-
-    [{if $oViewParent->getReviews()}]
-        [{foreach from=$oViewParent->getReviews() item=review name=ReviewsCounter}]
+    [{assign var="aReviews" value=$oViewParent->getReviews()}]
+    [{if $aReviews}]
+        [{foreach from=$aReviews item=review name=ReviewsCounter}]
             <dl>
                 [{block name="widget_reviews_record"}]
                     <dt id="reviewName_[{$smarty.foreach.ReviewsCounter.iteration}]" class="clear item">

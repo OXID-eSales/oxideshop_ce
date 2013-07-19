@@ -69,7 +69,7 @@ class Unit_Components_Widgets_oxwratingTest extends OxidTestCase
      *
      * @return null
      */
-    public function testCanRatet()
+    public function testCanRate()
     {
         $oRating = new oxwRating();
         $oRating->setViewParameters(array("blCanRate" => true));

@@ -212,6 +212,8 @@ $aLang =  array(
 
 'HELP_SHOP_CONFIG_SHOWTSINTERNATIONALFEESMESSAGE' => '[TR]In 4th checkout step will be displayed CMS page with ident "oxtsinternationalfees"',
 
+'HELP_SHOP_CONFIG_SHOWTSCODMESSAGE'           => '[TR]In 4th checkout step will be displayed CMS page with ident "oxtscodmessage"',
+
 'HELP_SHOP_CONFIG_SHOWTAGS'                   => 'If not checked, no tags will be displayed in eShop. Pages that could be called via tag URL, are not accessible.',
 
 'HELP_SHOP_CONFIG_DOWNLOADS'                  => 'Shop with downloadable products. Activate here, that products can be ordered and downloaded.',

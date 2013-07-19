@@ -5,6 +5,9 @@
 <div id="review">
     [{block name="widget_reviews_form"}]
         [{assign var="oViewParent" value=$oView->getParent()}]
+        [{if $oView->getReviewType() == 'oxarticle'}]
+            [{assign var="oArticle" value=$oView->getArticle()}]
+        [{/if}]
         [{if $oxcmp_user}]
             <form action="[{$oViewConf->getSelfActionLink()}]" method="post" id="rating">
                 <div id="writeReview">
@@ -29,7 +32,7 @@
                     <input type="hidden" name="cl" value="[{$oViewParent->getClassName()}]">
 
                     [{if $oView->getReviewType() == 'oxarticle'}]
-                        <input type="hidden" name="anid" value="[{$oView->getArticleId()}]">
+                        <input type="hidden" name="anid" value="[{$oArticle->oxarticles__oxid->value}]">
                     [{elseif $oView->getReviewType() == 'oxrecommlist'}]
                         <input type="hidden" name="recommid" value="[{$oView->getRecommListId()}]">
                     [{/if}]
@@ -45,7 +48,6 @@
             </form>
             <a id="writeNewReview" rel="nofollow"><b>[{oxmultilang ident="WRITE_REVIEW"}]</b></a>
         [{else}]
-            [{assign var="oArticle" value=$oView->getArticle()}]
             <a id="reviewsLogin" rel="nofollow" href="[{oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=account" params="anid=`$oArticle->oxarticles__oxnid->value`"|cat:"&amp;sourcecl="|cat:$oViewParent->getClassName()|cat:$oViewConf->getNavUrlParams()}]"><b>[{oxmultilang ident="MESSAGE_LOGIN_TO_WRITE_REVIEW"}]</b></a>
         [{/if}]
     [{/block}]

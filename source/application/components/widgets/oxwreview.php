@@ -100,6 +100,7 @@ class oxwReview extends oxWidget
     {
         /** @var oxArticle $oArticle */
         $oArticle = oxNew( 'oxArticle' );
-        return $oArticle->load( $this->getArticleId() );
+        $oArticle->load( $this->getArticleId() );
+        return $oArticle;
     }
 }

@@ -49,7 +49,7 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
     public function testRender()
     {
         $oArticleBox = new oxwArticleBox();
-        $this->assertEquals( "widget/product/productbox.tpl", $oArticleBox->render(), "Default template should be loaded" );
+        $this->assertEquals( "widget/product/boxproduct.tpl", $oArticleBox->render(), "Default template should be loaded" );
     }
 
     /**
@@ -90,7 +90,7 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
     /**
      * Test for getting product by id set in view parameters
      */
-    public function testGetProduct()
+    public function testGetBoxProduct()
     {
         $oArticleBox = new oxwArticleBox();
 
@@ -100,6 +100,6 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
         );
         $oArticleBox->setViewParameters($aViewParams);
 
-        $this->assertEquals( $sId, $oArticleBox->getProduct()->getId(), "Correct product should be loaded" );
+        $this->assertEquals( $sId, $oArticleBox->getBoxProduct()->getId(), "Correct product should be loaded" );
     }
 }

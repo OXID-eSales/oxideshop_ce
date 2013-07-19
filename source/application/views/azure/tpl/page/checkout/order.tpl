@@ -215,7 +215,15 @@
                             [{if $oConf->getConfigParam("blShowTSInternationalFeesMessage")}]
                             [{oxifcontent ident="oxtsinternationalfees" object="oTSIFContent"}]
                                 <div class="lineBox clear">
-                                    [{ $oTSIFContent->oxcontents__oxcontent->value }]
+                                        <span class="title">[{ $oTSIFContent->oxcontents__oxcontent->value }]</span>
+                                    </div>
+                                [{/oxifcontent}]
+                            [{/if}]
+
+                            [{if $payment->oxpayments__oxid->value eq "oxidcashondel" && $oConf->getConfigParam("blShowTSCODMessage")}]
+                                [{oxifcontent ident="oxtscodmessage" object="oTSCODContent"}]
+                                    <div class="lineBox clear">
+                                        <span class="title">[{ $oTSCODContent->oxcontents__oxcontent->value }]</span>
                                 </div>
                             [{/oxifcontent}]
                             [{/if}]

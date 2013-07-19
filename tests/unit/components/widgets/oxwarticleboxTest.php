@@ -49,7 +49,7 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
     public function testRender()
     {
         $oArticleBox = new oxwArticleBox();
-        $this->assertEquals( "widget/product/box.tpl", $oArticleBox->render(), "Default template should be loaded" );
+        $this->assertEquals( "widget/product/productbox.tpl", $oArticleBox->render(), "Default template should be loaded" );
     }
 
     /**

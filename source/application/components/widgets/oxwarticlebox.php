@@ -23,7 +23,7 @@
  */
 
 /**
- * Mini basket widget
+ * Article box widget
  */
 class oxwArticleBox extends oxWidget
 {
@@ -33,13 +33,13 @@ class oxwArticleBox extends oxWidget
      * User component used in template.
      * @var array
      */
-    protected $_aComponentNames = array( 'oxcmp_cur' => 1, 'oxcmp_user' => 1, 'oxcmp_lang' => 1, 'oxcmp_basket' => 1 );
+    protected $_aComponentNames = array( 'oxcmp_cur' => 1, 'oxcmp_user' => 1, 'oxcmp_lang' => 1 );
 
     /**
      * Current class template name.
      * @var string
      */
-    protected $_sTemplate = 'widget/product/box.tpl';
+    protected $_sTemplate = 'widget/product/boxproduct.tpl';
 
 
     /**

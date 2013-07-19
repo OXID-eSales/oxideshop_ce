@@ -1,4 +1,4 @@
-[{assign var="product" value=$oView->getProduct()}]
+[{assign var="product" value=$oView->getBoxProduct()}]
 
 <div class="compareItem">
     [{assign var="currency" value=$oView->getActCurrency()}]

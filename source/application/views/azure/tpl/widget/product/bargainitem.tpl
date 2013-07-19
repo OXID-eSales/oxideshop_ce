@@ -1,4 +1,4 @@
-[{assign var="_product" value=$oView->getProduct()}]
+[{assign var="_product" value=$oView->getBoxProduct()}]
 
 [{assign var="sBargainArtTitle" value="`$_product->oxarticles__oxtitle->value` `$_product->oxarticles__oxvarselect->value`"}]
 [{capture name="bargainTitle"}]

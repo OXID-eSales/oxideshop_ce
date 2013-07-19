@@ -13,7 +13,7 @@
     [{/if}]
     <ul class="js-articleBox featuredList">
     [{foreach from=$_oBoxProducts item=_oBoxProduct name=_sProdList}]
-            [{oxid_include_widget cl="oxwArticleBox" _parent=$oView->getClassName() currency=$oView->getActCurrency() sProductId=$_oBoxProduct->getId() nocookie=1 sWidgetType=product sListType=boxproduct}]
+            [{oxid_include_widget cl="oxwArticleBox" _parent=$oView->getClassName() sProductId=$_oBoxProduct->getId() nocookie=1}]
     [{/foreach}]
     </ul>
 </div>

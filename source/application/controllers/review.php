@@ -58,6 +58,12 @@ class Review extends Details
     protected $_blRate = null;
 
     /**
+     * Array of reviews
+     * @var array
+     */
+    protected $_aReviews = null;
+
+    /**
      * CrossSelling articlelist
      * @var object
      */
@@ -328,6 +334,22 @@ class Review extends Details
             }
         }
         return $this->_blRate;
+    }
+
+    /**
+     * Template variable getter. Returns active object's reviews
+     *
+     * @return array
+     */
+    public function getReviews()
+    {
+        if ( $this->_aReviews === null ) {
+            $this->_aReviews = false;
+            if ( $oObject = $this->_getActiveObject() ) {
+                $this->_aReviews = $oObject->getReviews();
+            }
+        }
+        return $this->_aReviews;
     }
 
     /**

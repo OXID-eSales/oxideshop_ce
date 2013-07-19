@@ -49,9 +49,6 @@ class Oxid
      */
     static public function runWidget()
     {
-        /**
-         * @var $oWidgetControl oxWidgetControl
-         */
         $oWidgetControl = oxNew('oxWidgetControl');
         return $oWidgetControl->start();
     }

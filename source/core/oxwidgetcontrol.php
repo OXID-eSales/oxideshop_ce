@@ -67,17 +67,9 @@ class oxWidgetControl extends oxShopControl
     public function start( $sClass = null, $sFunction = null, $aParams = null, $aViewsChain = null )
     {
         //$aParams = ( isset($aParams) ) ? $aParams : oxConfig::getParameter( 'oxwparams' );
+
         if ( !isset($aViewsChain) && oxConfig::getParameter( 'oxwparent' ) ) {
             $aViewsChain =  explode( "|", oxConfig::getParameter( 'oxwparent' ) );
-        }
-
-        if ( !isset($aParams) && isset( $_GET['cl'] ) ) {
-            $sClass = $_GET['cl'];
-            unset( $_GET['cl'] );
-            if ( isset( $_GET['oxwparent'] ) ) {
-                unset( $_GET['oxwparent'] );
-            }
-            $aParams = $_GET;
         }
 
         parent::start( $sClass, $sFunction, $aParams, $aViewsChain );

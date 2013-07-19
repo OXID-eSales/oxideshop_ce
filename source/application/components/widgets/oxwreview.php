@@ -100,4 +100,15 @@ class oxwReview extends oxWidget
     {
         return $this->getViewParameter( 'reviewuserhash' );
         }
+
+    /**
+     * Template variable getter. Returns active object's reviews from parent class
+     *
+     * @return array
+     */
+    public function getReviews()
+    {
+        $oReview = oxNew( $this->getViewConfig()->getTopActiveClassName() );
+        return $oReview->getReviews();
+    }
 }

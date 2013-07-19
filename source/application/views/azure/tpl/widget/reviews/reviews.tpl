@@ -4,7 +4,6 @@
 [{oxscript add="$( '#writeNewReview' ).oxReview();"}]
 <div id="review">
     [{block name="widget_reviews_form"}]
-        [{assign var="oViewParent" value=$oView->getParent()}]
         [{if $oxcmp_user}]
             <form action="[{$oViewConf->getSelfActionLink()}]" method="post" id="rating">
                 <div id="writeReview">
@@ -26,7 +25,7 @@
                     [{$oViewConf->getNavFormParams()}]
                     [{oxid_include_dynamic file="form/formparams.tpl"}]
                     <input type="hidden" name="fnc" value="savereview">
-                    <input type="hidden" name="cl" value="[{$oViewParent->getClassName()}]">
+                    <input type="hidden" name="cl" value="[{$oViewConf->getTopActiveClassName()}]">
 
                     [{if $oView->getReviewType() == 'oxarticle'}]
                         <input type="hidden" name="anid" value="[{$oView->getArticleId()}]">
@@ -45,11 +44,12 @@
             </form>
             <a id="writeNewReview" rel="nofollow"><b>[{oxmultilang ident="WRITE_REVIEW"}]</b></a>
         [{else}]
-            <a id="reviewsLogin" rel="nofollow" href="[{oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=account" params="anid=`$oView->getArticleId()`"|cat:"&amp;sourcecl="|cat:$oViewParent->getClassName()|cat:$oViewConf->getNavUrlParams()}]"><b>[{oxmultilang ident="MESSAGE_LOGIN_TO_WRITE_REVIEW"}]</b></a>
+            [{assign var="sArticleId" value=$oView->getArticleId()}]
+            <a id="reviewsLogin" rel="nofollow" href="[{oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=account" params="anid=$sArticleId"|cat:"&amp;sourcecl="|cat:$oViewConf->getTopActiveClassName()|cat:$oViewConf->getNavUrlParams()}]"><b>[{oxmultilang ident="MESSAGE_LOGIN_TO_WRITE_REVIEW"}]</b></a>
         [{/if}]
     [{/block}]
 
-    [{assign var="aReviews" value=$oViewParent->getReviews()}]
+    [{assign var="aReviews" value=$oView->getReviews()}]
     [{if $aReviews}]
         [{foreach from=$aReviews item=review name=ReviewsCounter}]
             <dl>

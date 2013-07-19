@@ -1240,6 +1240,7 @@ $aLang = array(
 'SHOP_CONFIG_STOCKOFFDEFAULTMESSAGE'                       => 'Die "Nicht-auf-Lager"-Standardmeldung nutzen',
 'SHOP_CONFIG_STOCKONDEFAULTMESSAGE'                        => 'Die "Auf-Lager"-Standardmeldung nutzen',
 'SHOP_CONFIG_STORECREDITCARDINFO'                          => 'Kreditkarten-Informationen speichern',
+'SHOP_CONFIG_SHOWTSINTERNATIONALFEESMESSAGE'               => '[TR]Display message about possible international delivery fees',
 'SHOP_CONFIG_TIMEFORMAT'                                   => 'Zeitformat im Administrationsbereich',
 'SHOP_CONFIG_USEGDVERSION'                                 => 'Installierte Version der GDLib',
 'SHOP_CONFIG_USESTOCK'                                     => 'Lagerverwaltung aktiv',

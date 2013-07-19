@@ -42,25 +42,43 @@ class oxwReview extends oxWidget
     protected $_sThisTemplate = 'widget/reviews/reviews.tpl';
 
     /**
-     * Array of reviews
-     * @var array
-     */
-    protected $_aReviews = null;
-
-    /**
-     * Active recommendations list
-     * @var object
-     */
-    protected $_oActiveRecommList = null;
-
-    /**
      * Template variable getter. Returns review type
      *
      * @return string
      */
     public function getReviewType()
     {
-        return $this->getViewParameter( 'type' );
+        return strtolower( $this->getViewParameter( 'type' ) );
+    }
+
+    /**
+     * Template variable getter. Returns article id
+     *
+     * @return string
+     */
+    public function getArticleId()
+    {
+        return $this->getViewParameter( 'anid' );
+    }
+
+    /**
+     * Template variable getter. Returns recommlist id
+     *
+     * @return string
+     */
+    public function getRecommListId()
+    {
+        return $this->getViewParameter( 'recommid' );
+    }
+
+    /**
+     * Template variable getter. Returns whether user can rate
+     *
+     * @return string
+     */
+    public function canRate()
+    {
+        return $this->getViewParameter( 'canrate' );
     }
 
     /**
@@ -71,32 +89,7 @@ class oxwReview extends oxWidget
     public function getReviewUserHash()
     {
         return $this->getViewParameter( 'reviewuserhash' );
-    }
-
-    /**
-     * Template variable getter. Returns active object's reviews
-     *
-     * @return array
-     */
-    public function getReviews()
-    {
-        if ( $this->_aReviews === null ) {
-            $this->_aReviews = false;
-
-            $oObject = null;
-
-            if ( $this->getReviewType() == 'oxarticle' ) {
-                $oObject = $this->getArticle();
-
-            } elseif ( $this->getReviewType() == 'oxrecommlist' ) {
-                $oObject = $this->getActiveRecommList();
-    }
-
-            $this->_aReviews = $oObject->getReviews();
         }
-
-        return $this->_aReviews;
-    }
 
     /**
      * Template variable getter. Returns active article
@@ -105,33 +98,8 @@ class oxwReview extends oxWidget
      */
     public function getArticle()
     {
-        $sArticleId = $this->getViewParameter( 'anid' );
+        /** @var oxArticle $oArticle */
         $oArticle = oxNew( 'oxArticle' );
-        $oArticle->load( $sArticleId );
-        return $oArticle;
-    }
-
-    /**
-     * Template variable getter. Returns active recommlist
-     *
-     * @return oxRecommList
-     */
-    public function getActiveRecommList()
-    {
-        if ( !$this->getViewConfig()->getShowListmania() ) {
-            return false;
-        }
-
-        if ( $this->_oActiveRecommList === null ) {
-            $this->_oActiveRecommList = false;
-
-            if ( $sRecommId = $this->getViewParameter( 'recommid' ) ) {
-                $oActiveRecommList = oxNew( 'oxRecommList' );
-                if ( $oActiveRecommList->load( $sRecommId ) ) {
-                    $this->_oActiveRecommList = $oActiveRecommList;
-                }
-            }
-        }
-        return $this->_oActiveRecommList;
+        return $oArticle->load( $this->getArticleId() );
     }
 }

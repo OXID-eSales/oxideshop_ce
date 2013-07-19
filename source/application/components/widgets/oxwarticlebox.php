@@ -54,7 +54,7 @@ class oxwArticleBox extends oxWidget
         $sWidgetType = $this->getViewParameter('sWidgetType');
         $sListType   = $this->getViewParameter('sListType');
 
-        if ($sWidgetType) {
+        if ($sWidgetType && $sListType) {
             $this->_sTemplate = "widget/" . $sWidgetType . "/" . $sListType . ".tpl";
         }
 

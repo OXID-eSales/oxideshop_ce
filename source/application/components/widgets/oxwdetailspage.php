@@ -942,16 +942,6 @@ class oxwDetailsPage extends oxWidget
         return $aPicGallery['ZoomPics'];
     }
 
-    /** ???? USED, but really, 1 ?
-     * Template variable getter. Returns active zoom picture id
-     *
-     * @return array
-     */
-    public function getActZoomPic()
-    {
-        return 1;
-    }
-
     /**
      * Template variable getter. Returns reviews of current article
      *

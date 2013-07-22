@@ -14,11 +14,10 @@
                 [{oxhasrights ident="SHOWARTICLEPRICE"}]
                     [{if $_product->getTPrice()}]
                         <span class="priceOld">
-                            [{ oxmultilang ident="REDUCED_FROM_2" }] <del>[{ $_product->getFTPrice()}] [{ $currency->sign}]</del>
+                            [{ oxmultilang ident="REDUCED_FROM_2" }] <del>[{ $_product->getFTPrice()}] [{ $oView->getActCurrencySign()}]</del>
                         </span>
                     [{/if}]
                     [{if $_product->getFPrice()}]
-                        [{assign var="currency" value=$oView->getActCurrency()}]
                         [{assign var="sFrom" value=""}]
                         [{assign var="fPrice" value=$_product->getFPrice()}]
                         [{if $_product->isParentNotBuyable() }]
@@ -27,7 +26,7 @@
                                 [{assign var="sFrom" value="PRICE_FROM"|oxmultilangassign}]
                             [{/if}]
                         [{/if}]
-                        <span class="priceValue">[{$sFrom}] [{$fPrice}] [{$currency->sign}]
+                        <span class="priceValue">[{$sFrom}] [{$fPrice}] [{$oView->getActCurrencySign()}]
                         [{if $oView->isVatIncluded() }]
                             [{if !( $_product->hasMdVariants() || ($oViewConf->showSelectListsInList()&&$_product->getSelections(1)) || $_product->getVariants() )}]*[{/if}]
                         [{/if}]
@@ -35,7 +34,7 @@
                     [{/if}]
                     [{if $_product->getPricePerUnit()}]
                         <span class="pricePerUnit">
-                            [{$_product->oxarticles__oxunitquantity->value}] [{$_product->getUnitName()}] | [{$_product->getPricePerUnit()}] [{ $currency->sign}]/[{$_product->getUnitName()}]
+                            [{$_product->oxarticles__oxunitquantity->value}] [{$_product->getUnitName()}] | [{$_product->getPricePerUnit()}] [{ $oView->getActCurrencySign()}]/[{$_product->getUnitName()}]
                         </span>
                     [{/if}]
                     [{block name="widget_product_bargainitem_tobasket"}]

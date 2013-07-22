@@ -5,6 +5,7 @@
 
 [{assign var="articleList" value=$oView->getCompArtList() }]
 [{assign var="atributeList" value=$oView->getAttributeList() }]
+[{assign var="currency" value=$oView->getActCurrency()}]
 
 <h1 id="productComparisonHeader" class="pageHead">[{$template_title}]</h1>
 <div>
@@ -54,7 +55,7 @@
                                     [{/if}]
                                     </div>
                                 [{/if}]
-                                [{oxid_include_widget cl="oxwArticleBox" cur=$oViewConf->getActCurrency() _parent=$oView->getClassName() nocookie=1 _navurlparams=$oViewConf->getNavUrlParams() sProductId=$product->getId() iIteration=$smarty.foreach.comparelist.iteration oxwtemplate=page/compare/inc/compareitem.tpl}]
+                                [{oxid_include_widget cl="oxwArticleBox" currencySign=$currency->sign _parent=$oView->getClassName() nocookie=1 _navurlparams=$oViewConf->getNavUrlParams() sProductId=$product->getId() iIteration=$smarty.foreach.comparelist.iteration oxwtemplate=page/compare/inc/compareitem.tpl}]
                             </td>
                             [{/foreach}]
                         </tr>

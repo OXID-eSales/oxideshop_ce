@@ -28,7 +28,6 @@
  */
 class oxShopControl extends oxSuperCfg
 {
-
     /**
      * Used to force handling, it allows other place like widget controller to skip it.
      *

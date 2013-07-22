@@ -80,4 +80,17 @@ class oxwArticleBox extends oxWidget
 
         return $oArticle;
     }
+
+    /**
+     * Get link of current view
+     *
+     * @param int $iLang requested language
+     *
+     * @return string
+     */
+    public function getLink( $iLang = null )
+    {
+        $sTopActiveClassName = $this->getViewConfig()->getTopActiveClassName();
+        return oxNew($sTopActiveClassName)->getLink($iLang);
+    }
 }

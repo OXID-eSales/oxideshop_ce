@@ -56,12 +56,14 @@ class oxwRating extends oxWidget
     protected $_iRatingCnt = null;
 
     /**
-     * Executes parent::render(), assigns template name and returns it
+     * Executes parent::render().
+     * Returns name of template file to render.
      *
-     * @return string
+     * @return  string  cuurent template file name
      */
     public function render()
     {
+        oxRegistry::getConfig()->setGlobalParameter( 'noJSON', true );
         parent::render();
         return $this->_sThisTemplate;
     }

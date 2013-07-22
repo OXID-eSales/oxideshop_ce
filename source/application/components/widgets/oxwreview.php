@@ -42,6 +42,19 @@ class oxwReview extends oxWidget
     protected $_sThisTemplate = 'widget/reviews/reviews.tpl';
 
     /**
+     * Executes parent::render().
+     * Returns name of template file to render.
+     *
+     * @return  string  cuurent template file name
+     */
+    public function render()
+    {
+        oxRegistry::getConfig()->setGlobalParameter( 'noJSON', true );
+        parent::render();
+        return $this->_sThisTemplate;
+    }
+
+    /**
      * Template variable getter. Returns review type
      *
      * @return string

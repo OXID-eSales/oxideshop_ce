@@ -89,6 +89,6 @@ class oxwArticleBox extends oxWidget
     public function getParentLink()
     {
         $sTopActiveClassName = $this->getViewConfig()->getTopActiveClassName();
-        return oxNew($sTopActiveClassName)->getLink($iLang);
+        return oxNew($sTopActiveClassName)->getLink();
     }
 }

@@ -1,12 +1,7 @@
 [{assign var="product" value=$oView->getBoxProduct()}]
 
 <div class="compareItem">
-    [{assign var="currency" value=$oView->getActCurrency()}]
-    [{if $showMainLink}]
-        [{assign var='_productLink' value=$product->getMainLink()}]
-    [{else}]
         [{assign var='_productLink' value=$product->getLink()}]
-    [{/if}]
 
     <a href="[{ $_productLink }]" class="picture" [{if $oView->noIndex() }]rel="nofollow"[{/if}]>
       <img src="[{if $size=='big'}][{$product->getPictureUrl(1) }][{elseif $size=='thinest'}][{$product->getIconUrl() }][{else}][{ $product->getThumbnailUrl() }][{/if}]" alt="[{ $product->oxarticles__oxtitle->value|strip_tags }] [{ $product->oxarticles__oxvarselect->value|default:'' }]">
@@ -42,7 +37,7 @@
                 [{ if $blShowToBasket}]
                     [{ $oViewConf->getHiddenSid() }]
                     [{ $oViewConf->getNavFormParams() }]
-                    <input type="hidden" name="cl" value="[{ $oViewConf->getActiveClassName() }]">
+                    <input type="hidden" name="cl" value="[{ $oViewConf->getTopActiveClassName() }]">
                     [{if $owishid}]
                         <input type="hidden" name="owishid" value="[{$owishid}]">
                     [{/if}]
@@ -86,7 +81,7 @@
             [{oxhasrights ident="SHOWARTICLEPRICE"}]
                 [{if $product->getTPrice()}]
                     <p class="oldPrice">
-                        <strong>[{oxmultilang ident="REDUCED_FROM_2"}] <del>[{$product->getFTPrice()}] [{$currency->sign}]</del></strong>
+                        <strong>[{oxmultilang ident="REDUCED_FROM_2"}] <del>[{$product->getFTPrice()}] [{$oView->getActCurrencySign()}]</del></strong>
                     </p>
                 [{/if}]
             [{/oxhasrights}]
@@ -101,7 +96,7 @@
                         [{/if}]
                     [{/if}]
                     <label id="productPrice_[{$testid}]" class="price">
-                        <strong>[{$sFrom}] [{$fPrice}] [{$currency->sign}] [{ if $blShowToBasket }]*[{/if}]</strong>
+                        <strong>[{$sFrom}] [{$fPrice}] [{$oView->getActCurrencySign()}] [{ if $blShowToBasket }]*[{/if}]</strong>
                     </label>
                     [{if $product->loadAmountPriceInfo()}]
                         [{oxscript include="js/widgets/oxamountpriceselect.js" priority=10 }]
@@ -126,7 +121,7 @@
             [{* additional info *}]
             <div class="additionalInfo clear">
                     [{if $product->getPricePerUnit()}]
-                        <span id="productPriceUnit">[{$product->getPricePerUnit()}] [{$currency->sign}]/[{$product->getUnitName()}]</span>
+                        <span id="productPriceUnit">[{$product->getPricePerUnit()}] [{$oView->getActCurrencySign()}]/[{$product->getUnitName()}]</span>
                     [{/if}]
 
                     [{if $product->getStockStatus() == -1}]

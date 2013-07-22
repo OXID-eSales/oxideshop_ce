@@ -1,6 +1,7 @@
 [{block name="widget_product_listitem_line"}]
     [{assign var="product" value=$oView->getBoxProduct()}]
-
+    [{assign var="owishid" value=$oView->getWishId()}]
+    [{assign var="removeFunction" value=$oView->getRemoveFunction()}]
     [{oxscript include="js/widgets/oxlistremovebutton.js" priority=10 }]
     [{oxscript add="$('button.removeButton').oxListRemoveButton();"}]
 
@@ -165,7 +166,7 @@
         <form action="[{ $oViewConf->getSelfActionLink() }]" method="post" id="remove_[{$removeFunction}][{$testid}]">
             <div>
                 [{ $oViewConf->getHiddenSid() }]
-                <input type="hidden" name="cl" value="[{ $oViewConf->getActiveClassName() }]">
+                <input type="hidden" name="cl" value="[{ $oViewConf->getTopActiveClassName() }]">
                 <input type="hidden" name="fnc" value="[{$removeFunction}]">
                 <input type="hidden" name="aid" value="[{$product->oxarticles__oxid->value}]">
                 <input type="hidden" name="am" value="0">

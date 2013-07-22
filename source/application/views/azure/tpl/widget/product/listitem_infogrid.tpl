@@ -1,5 +1,8 @@
 [{block name="widget_product_listitem_infogrid"}]
     [{assign var="product" value=$oView->getBoxProduct()}]
+    [{assign var="owishid" value=$oView->getWishId()}]
+    [{assign var="removeFunction" value=$oView->getRemoveFunction()}]
+    [{assign var="toBasketFunction" value=$oView->getToBasketFunction()}]
 
     [{if $showMainLink}]
         [{assign var='_productLink' value=$product->getMainLink()}]

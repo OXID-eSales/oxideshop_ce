@@ -1,4 +1,3 @@
-[{assign var="currency" value=$oView->getActCurrency()}]
 [{assign var="_oBoxProduct" value=$oView->getBoxProduct()}]
 [{assign var="_sTitle" value="`$_oBoxProduct->oxarticles__oxtitle->value` `$_oBoxProduct->oxarticles__oxvarselect->value`"|strip_tags}]
 [{block name="widget_product_boxproduct_image"}]
@@ -30,7 +29,7 @@
                 [{/if}]
                 [{/if}]
                 [{ $currency->sign}]
-                [{if $oView->isVatIncluded() }]
+                        [{if $isVatIncluded }]
                 [{if !( $_oBoxProduct->hasMdVariants() || ($oViewConf->showSelectListsInList()&&$_oBoxProduct->getSelections(1)) || $_oBoxProduct->getVariants() )}]*[{/if}]
                         [{/if}]
                     </strong>

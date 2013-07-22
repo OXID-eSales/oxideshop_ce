@@ -102,4 +102,23 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
 
         $this->assertEquals( $sId, $oArticleBox->getBoxProduct()->getId(), "Correct product should be loaded" );
     }
+
+    /**
+     * Test for getting link
+     */
+    public function testGetLink()
+    {
+        $oView = new aList();
+        $oView->setClassName("alist");
+
+        oxRegistry::getConfig()->setActiveView($oView);
+
+        $oArticleBox = new oxwArticleBox();
+        $aViewParams = array(
+            "_parent" => $oView->getClassName()
+        );
+        $oArticleBox->setViewParameters($aViewParams);
+
+        $this->assertNotEquals( false, strpos( $oArticleBox->getLink(),"cl=alist" ) );
+    }
 }

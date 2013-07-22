@@ -2036,7 +2036,7 @@ class oxUBase extends oxView
         if ( $this->_sAdditionalParams === null ) {
             // #1018A
             $this->_sAdditionalParams  = parent::getAdditionalParams();
-            $this->_sAdditionalParams .= 'cl='.$this->getConfig()->getActiveView()->getClassName();
+            $this->_sAdditionalParams .= 'cl='.$this->getConfig()->getTopActiveView()->getClassName();
 
             // #1834M - specialchar search
             $sSearchParamForLink = rawurlencode( oxConfig::getParameter( 'searchparam', true ) );

@@ -33,7 +33,7 @@ class oxwArticleBox extends oxWidget
      * User component used in template.
      * @var array
      */
-    protected $_aComponentNames = array( 'oxcmp_user' => 1 );
+    protected $_aComponentNames = array( 'oxcmp_user' => 1, 'oxcmp_basket' => 1 );
 
     /**
      * Current class template name.
@@ -111,6 +111,46 @@ class oxwArticleBox extends oxWidget
     public function getActCurrencySign()
     {
         return $this->getViewParameter( "currencySign" );
+    }
+
+    /**
+     * Returns currency sign
+     *
+     * @return string
+     */
+    public function getWishId()
+    {
+        return $this->getViewParameter('owishid');
+    }
+
+    /**
+     * Returns currency sign
+     *
+     * @return string
+     */
+    public function getRemoveFunction()
+    {
+        return $this->getViewParameter('removeFunction');
+    }
+
+    /**
+     * Returns currency sign
+     *
+     * @return string
+     */
+    public function getToBasketFunction()
+    {
+        return $this->getViewParameter('toBasketFunction');
+    }
+
+    /**
+     * Returns currency sign
+     *
+     * @return string
+     */
+    public function getDisableToCart()
+    {
+        return $this->getViewParameter('blDisableToCart');
     }
 
 }

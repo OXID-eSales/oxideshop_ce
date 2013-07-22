@@ -13,7 +13,8 @@
     [{/if}]
     <ul class="js-articleBox featuredList">
     [{foreach from=$_oBoxProducts item=_oBoxProduct name=_sProdList}]
-            [{oxid_include_widget cl="oxwArticleBox" _parent=$oView->getClassName() _navurlparams=$oViewConf->getNavUrlParams() sProductId=$_oBoxProduct->getId() currency=$oView->getActCurrency() isVatIncluded=$oView->isVatIncluded() nocookie=1 sWidgetType=product sListType=boxproduct}]
+            [{assign var="iProdCount" value=$smarty.foreach._sProdList.first}]
+            [{oxid_include_widget cl="oxwArticleBox" _parent=$oView->getClassName() _navurlparams=$oViewConf->getNavUrlParams() sProductId=$_oBoxProduct->getId() currency=$oView->getActCurrency() isVatIncluded=$oView->isVatIncluded() iProdCount=$iProdCount nocookie=1 sWidgetType=product sListType=boxproduct}]
     [{/foreach}]
     </ul>
 </div>

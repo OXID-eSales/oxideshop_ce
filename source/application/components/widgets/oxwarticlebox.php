@@ -33,7 +33,7 @@ class oxwArticleBox extends oxWidget
      * User component used in template.
      * @var array
      */
-    protected $_aComponentNames = array( 'oxcmp_cur' => 1, 'oxcmp_user' => 1, 'oxcmp_lang' => 1 );
+    protected $_aComponentNames = array( 'oxcmp_user' => 1 );
 
     /**
      * Current class template name.
@@ -91,6 +91,26 @@ class oxwArticleBox extends oxWidget
     public function getLink( $iLang = null )
     {
         return $this->getConfig()->getTopActiveView()->getLink( $iLang );
+    }
+
+    /**
+     * Returns if VAT is included in price
+     *
+     * @return bool
+     */
+    public function isVatIncluded()
+    {
+        return $this->getViewParameter( "isVatIncluded" );
+    }
+
+    /**
+     * Returns currency sign
+     *
+     * @return string
+     */
+    public function getActCurrencySign()
+    {
+        return $this->getViewParameter( "currencySign" );
     }
 
 }

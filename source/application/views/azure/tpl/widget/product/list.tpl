@@ -20,11 +20,12 @@
     [{/if}]
 [{/if}]
 [{if $products|@count gt 0}]
+    [{assign var="currency" value=$oView->getActCurrency()}]
     <ul class="[{$type}]View clear" id="[{$listId}]">
         [{foreach from=$products item=_product name=productlist}]
             [{assign var="_sTestId" value=$listId|cat:"_"|cat:$smarty.foreach.productlist.iteration}]
             <li class="productData">
-                [{oxid_include_widget cl="oxwArticleBox" cur=$oViewConf->getActCurrency() _parent=$oView->getClassName() nocookie=1 _navurlparams=$oViewConf->getNavUrlParams() sProductId=$_product->getId() sWidgetType=product sListType=listitem_$type testid=$_sTestId blDisableToCart=$blDisableToCart}]
+                [{oxid_include_widget cl="oxwArticleBox" _parent=$oView->getClassName() nocookie=1 _navurlparams=$oViewConf->getNavUrlParams() sProductId=$_product->getId() sWidgetType=product sListType=listitem_$type testid=$_sTestId blDisableToCart=$blDisableToCart currencySign=$currency->sign}]
             </li>
             [{if ($type eq "infogrid" AND ($smarty.foreach.productlist.last) AND ($smarty.foreach.productlist.iteration % 2 != 0 )) }]
                 <li class="productData"></li>

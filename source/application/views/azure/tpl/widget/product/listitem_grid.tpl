@@ -2,7 +2,6 @@
 
     [{assign var="product" value=$oView->getBoxProduct()}]
 
-    [{assign var="currency" value=$oView->getActCurrency()}]
     [{if $showMainLink}]
         [{assign var='_productLink' value=$product->getMainLink()}]
     [{else}]
@@ -17,7 +16,7 @@
             [{oxhasrights ident="SHOWARTICLEPRICE"}]
                 [{if $product->getTPrice()}]
                     <span class="priceOld">
-                        [{ oxmultilang ident="REDUCED_FROM_2" }] <del>[{ $product->getFTPrice()}] [{ $currency->sign}]</del>
+                        [{ oxmultilang ident="REDUCED_FROM_2" }] <del>[{ $product->getFTPrice()}] [{ $oView->getActCurrencySign()}]</del>
                     </span>
                 [{/if}]
                 [{block name="widget_product_listitem_grid_price_value"}]
@@ -37,7 +36,7 @@
                                                     [{ $product->getFVarMinPrice() }]
                                                 [{/if}]
                                         [{/if}]
-                        </span> [{ $currency->sign}]
+                        </span> [{ $oView->getActCurrencySign()}]
                         [{if $oView->isVatIncluded() }]
                             [{if !($product->hasMdVariants() || ($oViewConf->showSelectListsInList() && $product->getSelections(1)) || $product->getVariants())}] *[{/if}]</strong>
                         [{/if}]
@@ -45,7 +44,7 @@
                 [{/block}]
                 [{if $product->getPricePerUnit()}]
                     <span id="productPricePerUnit_[{$testid}]" class="pricePerUnit">
-                        [{$product->oxarticles__oxunitquantity->value}] [{$product->getUnitName()}] | [{$product->getPricePerUnit()}] [{ $currency->sign}]/[{$product->getUnitName()}]
+                        [{$product->oxarticles__oxunitquantity->value}] [{$product->getUnitName()}] | [{$product->getPricePerUnit()}] [{$oView->getActCurrencySign()}]/[{$product->getUnitName()}]
                     </span>
                 [{elseif $product->oxarticles__oxweight->value  }]
                     <span id="productPricePerUnit_[{$testid}]" class="pricePerUnit">

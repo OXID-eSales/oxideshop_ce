@@ -153,4 +153,14 @@ class oxwArticleBox extends oxWidget
         return $this->getViewParameter('blDisableToCart');
     }
 
+    /**
+     * Returns list item id with identifier
+     *
+     * @return string
+     */
+    public function getTestId()
+    {
+        return $this->getViewParameter('testid');
+    }
+
 }

@@ -30,7 +30,7 @@ require_once realpath( "." ) . '/unit/test_config.inc.php';
 class Unit_Components_Widgets_oxwreviewTest extends OxidTestCase
 {
     /**
-     * Testing oxwRating::getReviewType()
+     * Testing oxwReview::getReviewType()
      *
      * @return null
      */
@@ -42,7 +42,7 @@ class Unit_Components_Widgets_oxwreviewTest extends OxidTestCase
     }
 
     /**
-     * Testing oxwRating::getReviewType()
+     * Testing oxwReview::getReviewType()
      *
      * @return null
      */
@@ -54,7 +54,7 @@ class Unit_Components_Widgets_oxwreviewTest extends OxidTestCase
     }
 
     /**
-     * Testing oxwRating::getArticleId()
+     * Testing oxwReview::getArticleId()
      *
      * @return null
      */
@@ -66,7 +66,7 @@ class Unit_Components_Widgets_oxwreviewTest extends OxidTestCase
     }
 
     /**
-     * Testing oxwRating::getArticleId()
+     * Testing oxwReview::getArticleId()
      *
      * @return null
      */
@@ -78,7 +78,7 @@ class Unit_Components_Widgets_oxwreviewTest extends OxidTestCase
     }
 
     /**
-     * Testing oxwRating::getRecommListId()
+     * Testing oxwReview::getRecommListId()
      *
      * @return null
      */
@@ -90,7 +90,7 @@ class Unit_Components_Widgets_oxwreviewTest extends OxidTestCase
     }
 
     /**
-     * Testing oxwRating::canRate()
+     * Testing oxwReview::canRate()
      *
      * @return null
      */
@@ -102,7 +102,7 @@ class Unit_Components_Widgets_oxwreviewTest extends OxidTestCase
     }
 
     /**
-     * Testing oxwRating::getReviewUserHash()
+     * Testing oxwReview::getReviewUserHash()
      *
      * @return null
      */

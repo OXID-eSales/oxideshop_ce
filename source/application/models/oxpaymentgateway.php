@@ -57,6 +57,10 @@ class oxPaymentGateway extends oxSuperCfg
      */
     protected $_sLastError     = null;
 
+	public function preparePayment($fAmount, oxOrder $oOrder) {
+
+	} // function
+
     /**
      * Sets payment parameters.
      *
@@ -68,6 +72,7 @@ class oxPaymentGateway extends oxSuperCfg
     {
         // store data
         $this->_oPaymentInfo = & $oUserpayment;
+	    return $this;
     }
 
     /**
@@ -86,6 +91,8 @@ class oxPaymentGateway extends oxSuperCfg
         if ( !$this->_isActive()) {
             return true;    // fake yes
         }
+
+	    // TODO Switch for mode.
 
         // proceed with no payment
         // used for other countries

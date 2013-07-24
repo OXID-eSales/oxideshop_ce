@@ -981,30 +981,53 @@ class oxOrder extends oxBase
      */
     protected function _executePayment( oxBasket $oBasket, $oUserpayment )
     {
+	    $mReturn = self::ORDER_STATE_PAYMENTERROR;
         $oPayTransaction = $this->_getGateway();
-        $oPayTransaction->setPaymentParams( $oUserpayment );
 
-        if ( !$oPayTransaction->executePayment( $oBasket->getPrice()->getBruttoPrice(), $this ) ) {
-            $this->delete();
+	    try {
+		    $oPayTransaction
+			    ->setPaymentParams($oUserpayment)
+			    ->preparePayment($oBasket->getPrice()->getBruttoPrice(), $oBasket, $this);
 
-            // checking for error messages
-            if ( method_exists( $oPayTransaction, 'getLastError' ) ) {
-                if ( ( $sLastError = $oPayTransaction->getLastError() ) ) {
-                    return $sLastError;
-                }
-            }
+		    if ($oPayTransaction->withRedirect()) {
+			    oxRegistry::getUtils()->redirect($oPayTransaction->getPaymentURL(), false, 307);
+				// TODO fill api.
+		    } else {
+			    if (!$oPayTransaction->executePayment()) {
+				    /* @var $oExc oxException */
+				   $oExc = oxNew('oxPaymentException'); // New
 
-            // checking for error codes
-            if ( method_exists( $oPayTransaction, 'getLastErrorNo' ) ) {
-                if ( ( $iLastErrorNo = $oPayTransaction->getLastErrorNo() ) ) {
-                    return $iLastErrorNo;
-                }
-            }
+				    // checking for error messages
+				    if (method_exists($oPayTransaction, 'getLastError')) {
+					    if (($sLastError = $oPayTransaction->getLastError())) {
+						    $oExc->setMessage($sLastError);
+					    }
+				    }
 
-            return self::ORDER_STATE_PAYMENTERROR; // means no authentication
-        }
-        return true; // everything fine
-    }
+				    // checking for error codes
+				    if (method_exists($oPayTransaction, 'getLastErrorNo')) {
+					    if (($iLastErrorNo = $oPayTransaction->getLastErrorNo())) {
+						    $oExc->setCode($iLastErrorNo); // TODO New.
+					    }
+				    }
+
+					throw $oExc;
+			    } else {
+				    $mReturn = true;
+			    } // else
+		    } // else
+	    } catch (oxPaymentException $oExc) {
+			$this->getConfig()->getConfigParam('bDeleteOrderAfterPaymentError') ? $this->delete() : $this->cancelOrder();
+
+		    if ($sMessage = $oExc->getMessage()) {
+				$mReturn = $sMessage;
+		    } else if ($mCode = $oExc->getCode()) {
+			    $mReturn = $mCode;
+		    } // elseif
+	    } // catch
+
+	    return $mReturn;
+    } // function
 
     /**
      * Returns the correct gateway. At the moment only switch between default

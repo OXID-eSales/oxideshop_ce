@@ -20,7 +20,8 @@
         <li class="s[{$smarty.section.star.index}]">
             <a  class="[{if $oView->canRate()}]ox-write-review[{/if}] ox-rateindex-[{$smarty.section.star.index}]" rel="nofollow"
                 [{if !$oxcmp_user}]
-                    href="[{ oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=account" params="anid=`$oDetailsProduct->oxarticles__oxnid->value`"|cat:"&amp;sourcecl="|cat:$oViewConf->getTopActiveClassName()|cat:$oViewConf->getNavUrlParams() }]"
+                    [{assign var="sAnid" value=$oView->getArticleNId()}]
+                    href="[{ oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=account" params="anid=$sAnid"|cat:"&amp;sourcecl="|cat:$oViewConf->getTopActiveClassName()|cat:$oViewConf->getNavUrlParams() }]"
                 [{elseif $oView->canRate()}]
                     href="#review"
                 [{/if}]

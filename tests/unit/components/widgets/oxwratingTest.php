@@ -75,4 +75,16 @@ class Unit_Components_Widgets_oxwratingTest extends OxidTestCase
         $oRating->setViewParameters(array("blCanRate" => true));
         $this->assertTrue( $oRating->canRate() );
     }
+
+    /**
+     * Testing oxwRating::getArticleId()
+     *
+     * @return null
+     */
+    public function testGetArticleNId()
+    {
+        $oReviewWidget = new oxwReview();
+        $oReviewWidget->setViewParameters( array( 'sAnid' => 'testanid' ) );
+        $this->assertEquals( 'testanid', $oReviewWidget->getArticleNId() );
+    }
 }

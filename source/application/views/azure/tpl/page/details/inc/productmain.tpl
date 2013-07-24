@@ -124,7 +124,7 @@
             [{if $oView->ratingIsActive()}]
             [{block name="details_productmain_ratings"}]
                 <div class="rating clear">
-                    [{oxid_include_widget cl="oxwRating" blCanRate=$oView->canRate() _parent=$oView->getClassName() nocookie=1 sRateUrl=$oDetailsProduct->getLink() dRatingCount=$oView->getRatingCount() dRatingValue=$oView->getRatingValue()}]
+                    [{oxid_include_widget cl="oxwRating" blCanRate=$oView->canRate() _parent=$oViewConf->getTopActiveClassName() nocookie=1 sRateUrl=$oDetailsProduct->getLink() dRatingCount=$oView->getRatingCount() dRatingValue=$oView->getRatingValue() sAnid=$oDetailsProduct->oxarticles__oxnid->value}]
                 </div>
             [{/block}]
             [{/if}]

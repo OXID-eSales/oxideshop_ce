@@ -105,4 +105,13 @@ class oxwRating extends oxWidget
         return $this->getViewParameter( "blCanRate" );
     }
 
+    /**
+     * Template variable getter. Returns article nid
+     *
+     * @return string
+     */
+    public function getArticleNId()
+    {
+        return $this->getViewParameter( 'sAnid' );
+    }
 }

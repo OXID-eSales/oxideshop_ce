@@ -486,106 +486,139 @@ class oxOrder extends oxBase
      */
     public function finalizeOrder( oxBasket $oBasket, $oUser, $blRecalculatingOrder = false )
     {
-        // check if this order is already stored
-        $sGetChallenge = oxSession::getVar( 'sess_challenge' );
-        if ( $this->_checkOrderExist( $sGetChallenge ) ) {
-            oxRegistry::getUtils()->logger( 'BLOCKER' );
-            // we might use this later, this means that somebody klicked like mad on order button
-            return self::ORDER_STATE_ORDEREXISTS;
-        }
+	    // Splitting of the payment process enabling easier payments.
+       $mReturn = $this->finalizeOrderPayment($blRecalculatingOrder, $oBasket, $oUser);
 
-        // if not recalculating order, use sess_challenge id, else leave old order id
-        if ( !$blRecalculatingOrder ) {
-            // use this ID
-            $this->setId( $sGetChallenge );
+	    if ($mReturn instanceof oxUserPayment) {
+		    $mReturn = $this->finalizePostPayment($blRecalculatingOrder, $oBasket, $oUser, $mReturn);
+	    } // if
 
-            // validating various order/basket parameters before finalizing
-            if ( $iOrderState = $this->validateOrder( $oBasket, $oUser ) ) {
-                return $iOrderState;
-            }
-        }
+	    return $mReturn;
+    } // function
 
-        // copies user info
-        $this->_setUser( $oUser );
+	/**
+	 * This method executes the preparations for an order payment and returns the userpayment or a boolean value if there is an error.
+	 * @param bool $blRecalculatingOrder
+	 * @param oxBasket $oBasket
+	 * @param oxUser   $oUser
+	 * @return int|void|oxUserPayment
+	 */
+	protected function finalizeOrderPayment($blRecalculatingOrder, oxBasket $oBasket, oxUser $oUser) {
+		// check if this order is already stored
+		$sGetChallenge = oxSession::getVar('sess_challenge');
+		if ($this->_checkOrderExist($sGetChallenge)) {
+			oxRegistry::getUtils()->logger('BLOCKER');
 
-        // copies basket info
-        $this->_loadFromBasket( $oBasket );
+			// we might use this later, this means that somebody klicked like mad on order button
+			return self::ORDER_STATE_ORDEREXISTS;
+		}
 
-        // payment information
-        $oUserPayment = $this->_setPayment( $oBasket->getPaymentId() );
+		// if not recalculating order, use sess_challenge id, else leave old order id
+		if (!$blRecalculatingOrder) {
+			// use this ID
+			$this->setId($sGetChallenge);
 
-        // set folder information, if order is new
-        // #M575 in recalculating order case folder must be the same as it was
-        if ( !$blRecalculatingOrder ) {
-            $this->_setFolder();
-        }
+			// validating various order/basket parameters before finalizing
+			if ($iOrderState = $this->validateOrder($oBasket, $oUser)) {
+				return $iOrderState;
+			}
+		}
 
-        // marking as not finished
-        $this->_setOrderStatus( 'NOT_FINISHED' );
+		// copies user info
+		$this->_setUser($oUser);
 
-        //saving all order data to DB
-        $this->save();
+		// copies basket info
+		$this->_loadFromBasket($oBasket);
 
-        // executing payment (on failure deletes order and returns error code)
-        // in case when recalculating order, payment execution is skipped
-        if ( !$blRecalculatingOrder ) {
-            $blRet = $this->_executePayment( $oBasket, $oUserPayment );
-            if ( $blRet !== true ) {
-                return $blRet;
-            }
-        }
+		// payment information
+		$oUserPayment = $this->_setPayment($oBasket->getPaymentId());
 
-        // executing TS protection
-        if ( !$blRecalculatingOrder && $oBasket->getTsProductId()) {
-            $blRet = $this->_executeTsProtection( $oBasket );
-            if ( $blRet !== true ) {
-                return $blRet;
-            }
-        }
+		// set folder information, if order is new
+		// #M575 in recalculating order case folder must be the same as it was
+		if (!$blRecalculatingOrder) {
+			$this->_setFolder();
+		}
 
-        // deleting remark info only when order is finished
-        oxSession::deleteVar( 'ordrem' );
-        oxSession::deleteVar( 'stsprotection' );
+		// marking as not finished
+		$this->_setOrderStatus('NOT_FINISHED');
 
-        if ( !$this->oxorder__oxordernr->value ) {
-            $this->_setNumber();
-        } else {
-            oxNew( 'oxCounter' )->update( $this->_getCounterIdent(), $this->oxorder__oxordernr->value );
-        }
+		$this->_setNumber();
 
-        //#4005: Order creation time is not updated when order processing is complete
-        if ( !$blRecalculatingOrder ) {
-           $this-> _updateOrderDate();
-        }
+		//saving all order data to DB
+		$this->save();
 
-        // updating order trans status (success status)
-        $this->_setOrderStatus( 'OK' );
+		// executing payment (on failure deletes order and returns error code)
+		// in case when recalculating order, payment execution is skipped
+		if (!$blRecalculatingOrder) {
+			$blRet = $this->_executePayment($oBasket, $oUserPayment);
+			if ($blRet !== true) {
+				return $blRet;
+			}
+		}
 
-        // store orderid
-        $oBasket->setOrderId( $this->getId() );
+		return $oUserPayment;
+	} // function
 
-        // updating wish lists
-        $this->_updateWishlist( $oBasket->getContents(), $oUser );
+	/**
+	 * This method executes the actions after paying an order either with the oxid default process or with a redirect payment module.
+	 * @param bool          $blRecalculatingOrder
+	 * @param oxBasket      $oBasket
+	 * @param oxUser        $oUser
+	 * @param oxUserPayment $oUserPayment
+	 * @return bool|int|mixed
+	 */
+	public function finalizePostPayment($blRecalculatingOrder, oxBasket $oBasket, oxUser $oUser, oxUserPayment $oUserPayment) {
+// executing TS protection
+		if (!$blRecalculatingOrder && $oBasket->getTsProductId()) {
+			$blRet = $this->_executeTsProtection($oBasket);
+			if ($blRet !== true) {
+				return $blRet;
+			}
+		}
 
-        // updating users notice list
-        $this->_updateNoticeList( $oBasket->getContents(), $oUser );
+		// deleting remark info only when order is finished
+		oxSession::deleteVar('ordrem');
+		oxSession::deleteVar('stsprotection');
 
-        // marking vouchers as used and sets them to $this->_aVoucherList (will be used in order email)
-        // skipping this action in case of order recalculation
-        if ( !$blRecalculatingOrder ) {
-            $this->_markVouchers( $oBasket, $oUser );
-        }
+		if (!$this->oxorder__oxordernr->value) {
+			$this->_setNumber();
+		} else {
+			oxNew('oxCounter')->update($this->_getCounterIdent(), $this->oxorder__oxordernr->value);
+		}
 
-        // send order by email to shop owner and current user
-        // skipping this action in case of order recalculation
-        if ( !$blRecalculatingOrder ) {
-            $iRet = $this->_sendOrderByEmail( $oUser, $oBasket, $oUserPayment );
-        } else {
-            $iRet = self::ORDER_STATE_OK;
-        }
+		//#4005: Order creation time is not updated when order processing is complete
+		if (!$blRecalculatingOrder) {
+			$this->_updateOrderDate();
+		}
 
-        return $iRet;
-    }
+		// updating order trans status (success status)
+		$this->_setOrderStatus('OK');
+
+		// store orderid
+		$oBasket->setOrderId($this->getId());
+
+		// updating wish lists
+		$this->_updateWishlist($oBasket->getContents(), $oUser);
+
+		// updating users notice list
+		$this->_updateNoticeList($oBasket->getContents(), $oUser);
+
+		// marking vouchers as used and sets them to $this->_aVoucherList (will be used in order email)
+		// skipping this action in case of order recalculation
+		if (!$blRecalculatingOrder) {
+			$this->_markVouchers($oBasket, $oUser);
+		}
+
+		// send order by email to shop owner and current user
+		// skipping this action in case of order recalculation
+		if (!$blRecalculatingOrder) {
+			$iRet = $this->_sendOrderByEmail($oUser, $oBasket, $oUserPayment);
+		} else {
+			$iRet = self::ORDER_STATE_OK;
+		}
+
+		return $iRet;
+	} // function
 
     /**
      * Return true if order store in netto mode

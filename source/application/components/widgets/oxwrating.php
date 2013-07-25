@@ -45,14 +45,12 @@ class oxwRating extends oxWidget
 
     /**
      * Rating value
-     *
      * @var double
      */
     protected $_dRatingValue = null;
 
     /**
      * Rating count
-     *
      * @var integer
      */
     protected $_iRatingCnt = null;
@@ -61,7 +59,7 @@ class oxwRating extends oxWidget
      * Executes parent::render().
      * Returns name of template file to render.
      *
-     * @return string current template file name
+     * @return  string  cuurent template file name
      */
     public function render()
     {
@@ -114,6 +112,6 @@ class oxwRating extends oxWidget
      */
     public function getArticleNId()
     {
-        return $this->getViewParameter( 'sAnid' );
+        return $this->getViewParameter( 'anid' );
     }
 }

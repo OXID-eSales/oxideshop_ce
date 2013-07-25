@@ -29,7 +29,7 @@
                     </div>
                     [{if $oView->isReviewActive()}]
                     <div class="rating clear">
-                        [{oxid_include_widget cl="oxwRating" blCanRate=$oView->canRate() _parent=$oView->getClassName() nocookie=1 sRateUrl=$oViewConf->getSelfLink()|cat:"cl=recommlist" dRatingCount=$oView->getRatingCount() dRatingValue=$oView->getRatingValue()}]
+                        [{oxid_include_widget cl="oxwRating" blCanRate=$oView->canRate() _parent=$oView->getClassName() nocookie=1 sRateUrl=$oViewConf->getSelfLink()|cat:"cl=recommlist" dRatingCount=$oView->getRatingCount() dRatingValue=$oView->getRatingValue() recommid=$_actvrecommlist->getId()}]
                     </div>
                     [{/if}]
                 </div>
@@ -41,7 +41,7 @@
         [{if $oView->isReviewActive()}]
         <div class="widgetBox reviews">
             <h4>[{oxmultilang ident="WRITE_PRODUCT_REVIEW"}]</h4>
-            [{include file="widget/reviews/reviews.tpl"}]
+            [{oxid_include_widget cl="oxwReview" nocookie=1 _parent=$oView->getClassName() type=oxrecommlist recommid=$_actvrecommlist->getId() canrate=$oView->canRate()}]
         </div>
         [{/if}]
     [{else}]

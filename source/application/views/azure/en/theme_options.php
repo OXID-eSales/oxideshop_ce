@@ -29,27 +29,27 @@ $aLang = array(
 'SHOP_THEME_GROUP_features'                     => 'Features',
 'SHOP_THEME_GROUP_display'                      => 'Display',
 
-'SHOP_THEME_sIconsize'                          => 'Icon size (width*height)',//SHOP_CONFIG_ICONSIZE
-'HELP_SHOP_THEME_sIconsize'                     => 'Icons are the smallest pictures of a product. They are used: <br>' .
+'SHOP_THEME_sIconsize'                          => 'Product icon size (width*height)',//SHOP_CONFIG_ICONSIZE
+'HELP_SHOP_THEME_sIconsize'                     => 'Product icons are the smallest pictures of a product. They are used: <br>' .
                                                  '<ul><li>in the shopping cart.</li>' .
                                                  '<li>if products are shown in the right menu (e.g. in <span class="filename_filepath_or_italic">TOP of the Shop</span> and <span class="filename_filepath_or_italic">Bargain</span>).</li></ul>' .
                                                  'For avoiding design issues caused by too big icons the icons are resized. Enter the maximum size for icons here.',
 
-'SHOP_THEME_sThumbnailsize'                     => 'Thumbnail size (width*height)',//SHOP_CONFIG_THUMBNAILSIZE
-'HELP_SHOP_THEME_sThumbnailsize'                => 'Thumbnails are small product pictures. They are used:<br>' .
+'SHOP_THEME_sThumbnailsize'                     => 'Product thumbnail size (width*height)',//SHOP_CONFIG_THUMBNAILSIZE
+'HELP_SHOP_THEME_sThumbnailsize'                => 'Product thumbnails are small product pictures. They are used:<br>' .
                                                  '<ul><li>in product lists.</li>' .
                                                  '<li>in promotions displayed in the middle of the front page, e. g. <span class="filename_filepath_or_italic">Just arrived!</span>.</li></ul>' .
                                                  'For avoiding design issues caused by too big thumbnails the thumbnails are resized. Enter the maximum size for thumbnails here.',
 
-'SHOP_THEME_sZoomImageSize'                     => 'Zoom picture size (width*height)',//SHOP_CONFIG_ZOOMIMAGESIZE
-'SHOP_THEME_sCatThumbnailsize'                  => 'Category picture size (width*height)',//SHOP_CONFIG_CATEGORYTHUMBNAILSIZE
+'SHOP_THEME_sZoomImageSize'                     => 'Product zoom picture size (width*height)',//SHOP_CONFIG_ZOOMIMAGESIZE
+'SHOP_THEME_sCatThumbnailsize'                  => 'Category thumbnail size (width*height)',//SHOP_CONFIG_CATEGORYTHUMBNAILSIZE
 'HELP_SHOP_THEME_sCatThumbnailsize'             => 'In category view, the picture of the selected category is displayed in the defined size.',//SHOP_CONFIG_CATEGORYTHUMBNAILSIZE
 'SHOP_THEME_aDetailImageSizes'                  => 'Product picture size (width*height)',//SHOP_CONFIG_DETAILIMAGESIZE
 
 'SHOP_THEME_sManufacturerIconsize'              => 'Manufacturer\'s/brand logo size', // Check if this is really manufacturer or if it is more like "brand"
 'HELP_SHOP_THEME_sManufacturerIconsize'         => 'Manufacturer\'s/brand logo is shown on start page in manufacturer\'s slider.',
 
-'SHOP_THEME_sCatIconsize'                       => 'Size of a subcategory\'s picture (width*height)',
+'SHOP_THEME_sCatIconsize'                       => 'Size of a subcategory\'s icon (width*height)',
 'HELP_SHOP_THEME_sCatIconsize'                  => 'In category view, the category pictures of subcategories are displayed in the defined size.',
 
 'SHOP_THEME_sCatPromotionsize'                  => 'Category picture size for promotion on startpage (width*height)',

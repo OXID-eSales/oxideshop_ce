@@ -84,7 +84,7 @@ class Unit_Components_Widgets_oxwratingTest extends OxidTestCase
     public function testGetArticleNId()
     {
         $oRating = new oxwRating();
-        $oRating->setViewParameters( array( 'sAnid' => 'testanid' ) );
+        $oRating->setViewParameters( array( 'anid' => 'testanid' ) );
         $this->assertEquals( 'testanid', $oRating->getArticleNId() );
     }
 }

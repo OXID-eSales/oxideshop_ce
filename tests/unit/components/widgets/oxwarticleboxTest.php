@@ -96,7 +96,7 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
 
         $sId = "1126";
         $aViewParams = array(
-            "sProductId" => $sId,
+            "anid" => $sId,
         );
         $oArticleBox->setViewParameters($aViewParams);
 

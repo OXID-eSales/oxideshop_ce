@@ -301,7 +301,8 @@ class oxUBase extends oxView
                                     'oxcmp_categories' => 0,
                                     'oxcmp_utils'      => 1,
                                     'oxcmp_news'       => 0,
-                                    'oxcmp_basket'     => 1
+                                    'oxcmp_basket'     => 1,
+	                                'oxcmp_payment'    => 1
                                   );
 
     /**

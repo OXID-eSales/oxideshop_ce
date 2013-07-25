@@ -57,6 +57,14 @@ class oxPaymentGateway extends oxSuperCfg
      */
     protected $_sLastError     = null;
 
+	public function callModulePayment($sMethod) {
+		return false;
+	} // function
+
+	protected function getPaymentMode() {
+		return '';
+	} // function
+
 	public function preparePayment($fAmount, oxOrder $oOrder) {
 
 	} // function
@@ -85,22 +93,38 @@ class oxPaymentGateway extends oxSuperCfg
      */
     public function executePayment( $dAmount, & $oOrder )
     {
-        $this->_iLastErrorNo = null;
-        $this->_sLastError = null;
+	    $bReturn             = true;
+	    $this->_iLastErrorNo = null;
+	    $this->_sLastError   = null;
 
-        if ( !$this->_isActive()) {
-            return true;    // fake yes
-        }
+        if ($this->_isActive() && ($this->_oPaymentInfo->oxuserpayments__oxpaymentsid->value !== 'oxempty')) {
+			$bReturn = false;
 
-	    // TODO Switch for mode.
+	        if ($sMode = $this->getPaymentMode()) {
+		        // TODO Fill Methods.
+		        switch ($sMode) {
+			        case 'authorize':
+				        // "Pay" the order, but do not mark it as paid, for example in the time of pending payment.
+				        $bReturn = $this->authorize();
+				        break;
 
-        // proceed with no payment
-        // used for other countries
-        if (@$this->_oPaymentInfo->oxuserpayments__oxpaymentsid->value == 'oxempty') {
-            return true;
-        }
+			        case 'pay':
+				        // Pay the order and mark it finished as paid, for example if the money "flowed" already.
+				        $bReturn = $this->pay();
+				        break;
 
-        return false;
+			        case 'reserve':
+				        // Just Reserve the order without any type of fixed payment action.
+				        $bReturn = $this->reserve();
+				        break;
+
+			        default:
+				        $bReturn = $this->callModulePayment($sMode);
+		        } // switch
+	        } // if
+        } // if
+
+	    return $bReturn;
     }
 
     /**

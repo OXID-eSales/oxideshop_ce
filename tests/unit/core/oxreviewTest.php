@@ -19,7 +19,6 @@
  * @package   tests
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -196,4 +195,33 @@ class Unit_Core_oxreviewTest extends OxidTestCase
         $this->assertEquals( 1, $oRev->loadList( 'oxarticle', 'xxx' )->count() );
     }
 
+    public function testGetObjectIdAndType()
+    {
+        // inserting few test records
+        $oRev = new oxreview();
+        $oRev->setId( 'id1' );
+        $oRev->oxreviews__oxactive   = new oxField( 1 );
+        $oRev->oxreviews__oxobjectid = new oxField( 'xx1' );
+        $oRev->oxreviews__oxtype     = new oxField( 'oxarticle' );
+        $oRev->oxreviews__oxtext     = new oxField( 'revtext' );
+        $oRev->save();
+
+        $oRev = new oxreview();
+        $oRev->setId( 'id2' );
+        $oRev->oxreviews__oxactive   = new oxField( 1 );
+        $oRev->oxreviews__oxobjectid = new oxField( 'xx2' );
+        $oRev->oxreviews__oxtype     = new oxField( 'oxrecommlist' );
+        $oRev->oxreviews__oxtext     = new oxField( 'revtext' );
+        $oRev->save();
+
+        $oRev = new oxreview();
+        $oRev->load( 'id1' );
+        $this->assertEquals( 'xx1', $oRev->getObjectId() );
+        $this->assertEquals( 'oxarticle', $oRev->getObjectType() );
+
+        $oRev = new oxreview();
+        $oRev->load( 'id2' );
+        $this->assertEquals( 'xx2', $oRev->getObjectId() );
+        $this->assertEquals( 'oxrecommlist', $oRev->getObjectType() );
+    }
 }

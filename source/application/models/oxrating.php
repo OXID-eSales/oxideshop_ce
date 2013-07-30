@@ -151,4 +151,24 @@ class oxRating extends oxBase
         return $iCount;
     }
 
+    /**
+     * Retuns review object type
+     *
+     * @return string
+     */
+    public function getObjectType()
+    {
+        return $this->oxratings__oxtype->value;
+    }
+
+    /**
+     * Retuns review object id
+     *
+     * @return string
+     */
+    public function getObjectId()
+    {
+        return $this->oxratings__oxobjectid->value;
+    }
+
 }

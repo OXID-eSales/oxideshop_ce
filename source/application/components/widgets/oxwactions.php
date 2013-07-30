@@ -81,13 +81,10 @@ class oxwActions extends oxWidget
     {
         $sActionId = $this->getViewParameter("action");
         $oAction = oxNew( "oxactions" );
-        $oAction->loadInLang( $this->getLanguage(), $sActionId);
-        $oOtherLang = $oAction->getAvailableInLangs();
-        if (!isset($oOtherLang[$this->getLanguage()]))
+        if($oAction->load( $sActionId ))
         {
-            $oAction->loadInLang( key($oOtherLang), $sActionId );
+            return $oAction->oxactions__oxtitle->value;
         }
-        return $oAction->oxactions__oxtitle->value;
     }
     
     /**

@@ -47,6 +47,9 @@ class version_checker_main extends oxAdminDetails
         parent::__construct();
 
         $this->_oVersionChecker = oxNew( 'oxversionchecker' );
+
+
+
     }
 
     /**
@@ -58,8 +61,9 @@ class version_checker_main extends oxAdminDetails
     {
         parent::render();
 
-        if ( $this->_oVersionChecker->hasError() )
+        if ( $this->_oVersionChecker->hasError() ) {
             $this->_aViewData['sErrorMessage'] = $this->_oVersionChecker->getErrorMessage();
+        }
 
         return "version_checker_main.tpl";
     }
@@ -71,10 +75,20 @@ class version_checker_main extends oxAdminDetails
      */
     public function startCheck()
     {
+        $this->_oVersionChecker->setBaseDirectory( $this->getConfig()->getConfigParam( 'sShopDir' ) );
+        $this->_oVersionChecker->setVersion( $this->getConfig()->getVersion() );
+        $this->_oVersionChecker->setEdition( $this->getConfig()->getEdition() );
+        $this->_oVersionChecker->setRevision( $this->getConfig()->getRevision() );
+
+        if ( $this->getConfig()->getRequestParameter('listAllFiles') == 'listAllFiles' ) {
+            $this->_oVersionChecker->setListAllFiles ( true );
+        }
+
         $this->_oVersionChecker->run();
 
-        if ($this->_oVersionChecker->hasError())
+        if ($this->_oVersionChecker->hasError()) {
             return;
+        }
 
         $sResult = $this->_oVersionChecker->readResultFile();
         $this->_aViewData['sResult'] = $sResult;
@@ -99,16 +113,18 @@ class version_checker_main extends oxAdminDetails
     public function getSupportContactForm()
     {
         $aLinks = array(
-            0 => "http://www.oxid-esales.com/de/support-services/supportanfrage.html",
-            1 => "http://www.oxid-esales.com/en/support-services/support-request.html"
+            "de" => "http://www.oxid-esales.com/de/support-services/supportanfrage.html",
+            "en" => "http://www.oxid-esales.com/en/support-services/support-request.html"
         );
 
         $oLang = oxRegistry::getLang();
-        $iLang = $oLang->getTplLanguage();
+        $aLanguages = $oLang->getLanguageArray();
+        $iLangId = $oLang->getTplLanguage();
+        $sLangCode = $aLanguages[$iLangId]->abbr;
 
-        if (!array_key_exists($iLang, $aLinks))
-           $iLang = 1;
+        if (!array_key_exists($sLangCode, $aLinks))
+            $sLangCode = "de";
 
-        return $aLinks[$iLang];
+        return $aLinks[$sLangCode];
     }
 }

@@ -4,7 +4,7 @@
     <!--
 
     function handleSubmit()
-    {   var aButton = document.myedit.saveButton;
+    {   var aButton = document.myedit.submitButton;
         aButton.disabled = true;
     }
     //-->
@@ -32,8 +32,10 @@
     <form name="myedit" id="myedit" action="[{ $oViewConf->getSelfLink() }]" onsubmit="handleSubmit()" method="post">
         <input type="hidden" name="cl" value="version_checker_main">
         <input type="hidden" name="fnc" value="startCheck">
-
-        <input type="submit" class="edittext" id="saveButton" name="saveButton" value="[{ oxmultilang ident="GENERAL_CHECKSTART" }]" >
+        <input type="checkbox" name="listAllFiles" value="listAllFiles" id="listAllFiles">
+        <label for="listAllFiles">List all files (also those which were OK)</label>
+        <br><br>
+        <input type="submit" class="edittext" id="submitButton" name="submitButton" value="[{ oxmultilang ident="GENERAL_CHECKSTART" }]" >
 
     </form>
 [{ /if}]

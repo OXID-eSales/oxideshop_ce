@@ -2050,6 +2050,20 @@ $aLang = array(
 'TOTAL_PLUS_PROPORTIONAL_VAT'                              => "plus VAT (proportionally calculated)",
 
 'BUTTON_DOWNLOAD'                                          => 'Download',
+
+'OXSHOPINTRO_INTROINFORMATION'                             => '<p>This script is intended to check consistency of your OXID eShop. It collects names of php files and templates, detects their MD5 checksum, connects for each file to OXID\'s webservice to determine if it fits this shop version.</p><p>It does neither collect nor transmit any license or personal information.</p><p>Data to be transmitted to OXID is:</p><ul><li>Filename to be checked</li><li>MD5 checksum</li><li>Version which was detected</li><li>Revision which was detected</li></ul><p>For more detailed information check out <a href="http://www.oxid-esales.com/de/news/blog/shop-checking-tool-oxchkversion-v3" target=_blank>OXID eSales\' Blog</a>.</p>',
+'OXSHOPINTRO_FORM'                                         => '<form action = ""><input type="hidden" name="job" value="checker" > <input type=checkbox name="listAllFiles" value="listAllFiles" id="listAllFiles"><label for="listAllFiles">List all files (also those which were OK)</label><br><br><input type="submit" name="" value=" Start to check this eShop right now (may take some time) " ></form>',
+'OXSHOPINTRO_LINKTOEXCHANGE'                               => '<b><ins><a>The latest version of our checker tool is available for free from our OXID eXchange. We recommend to download it for a more precise result. Please get the latest Oxchkversion at <a href="http://exchange.oxid-esales.com/de/OXID/Weitere-OXID-Extensions/">OXID Exchange.</a></ins></b>',
+'OXSHOPINTRO_ERRORMESSAGETEMPLATE'                         => '<p><span style="color: red"><b>These error(s) occured</b></span></p><ul>%s</ul>',
+'OXSHOPINTRO_ERRORMESSAGECURLISNOTINSTALLED'               => '<li><span style="color: red">Please take care if the library cURL is installed!</span></li>',
+'OXSHOPINTRO_ERRORMESSAGEWEBSERVICEISNOTREACHABLE'         => '<li><span style="color: red">WebService is not available currently. Please try again later.</span></li>',
+'OXSHOPINTRO_ERRORMESSAGEWEBSERVICERETURNEDNOXML'          => '<li><span style="color: red">WebService returned not a XML.</span></li>',
+'OXSHOPINTRO_ERRORMESSAGEVERSIONDOESNOTEXIST'              => '<li><span style="color: red">OXID eShop %s EDITION %s VERSION in Revision %s REVISION does not exist.</span></li>',
+'OXSHOPINTRO_ERRORVERSIONCOMPARE'                          => 'This text is not supposed to be here. Please try again. If it still appears, call OXID support.',
+'OXSHOPCHECK_MODIFIEDHINTS1'                               => 'OXID eShop has sophisticated possibility to extend it by modules without changing shipped files. It\'s not recommended and not needed to change shop files. See also our <a href="http://www.oxidforge.org/wiki/Tutorials#How_to_Extend_OXID_eShop_With_Modules_.28Part_1.29" target=_blank>tutorials</a>.',
+'OXSHOPCHECK_MODIFIEDHINTS2'                               => 'Since OXID eShop 4.2.0 it\'s possible to use <a href="http://www.oxidforge.org/wiki/Downloads/4.2.0#New_Features" target=_blank>your own templates without changing shipped ones</a>.',
+'OXSHOPCHECK_VERSIONMISMATCHHINTS'                         => 'Apparently one or more updates went wrong. See details link for more information about more details for each file. A left over file which is not any longer included in OXID eShop could also be a <u>possible</u> reason for version mismatch. For more information see <a href="http://www.oxid-esales.com/en/resources/help-faq/manual-eshop-pe-ce-4-0-0-0/upgrade-update-eshop" target=_blank>handbook</a>.'
+
 );
 
 /*

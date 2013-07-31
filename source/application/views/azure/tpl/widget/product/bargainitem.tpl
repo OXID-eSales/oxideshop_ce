@@ -1,6 +1,10 @@
 [{assign var="_product" value=$oView->getBoxProduct()}]
 [{assign var="iIteration" value=$oView->getIteration()}]
 
+[{assign var="sBargainArtTitle" value="`$_product->oxarticles__oxtitle->value` `$_product->oxarticles__oxvarselect->value`"}]
+[{capture name="bargainTitle"}]
+    <a id="titleBargain_[{$iIteration}]" href="[{$_product->getMainLink()}]" class="title">[{ $sBargainArtTitle|strip_tags }]</a>
+[{/capture}]
 [{capture name="bargainPic"}]
     <a href="[{$_product->getMainLink()}]"><img src="[{$_product->getThumbnailUrl()}]" alt="[{ $sBargainArtTitle|strip_tags }]" class="picture"></a>
 [{/capture}]
@@ -46,7 +50,16 @@
         </div>
     [{/block}]
 [{/capture}]
-
+<div class="specBoxTitles rightShadow">
+    <h3>
+        <strong>[{ oxmultilang ident="WEEK_SPECIAL" }]</strong>
+        [{assign var='rsslinks' value=$oView->getRssLinks() }]
+        [{if $rsslinks.bargainArticles}]
+            <a class="rss js-external" id="rssBargainProducts" href="[{$rsslinks.bargainArticles.link}]" title="[{$rsslinks.bargainArticles.title}]"><img src="[{$oViewConf->getImageUrl('rss.png')}]" alt="[{$rsslinks.bargainArticles.title}]"><span class="FXgradOrange corners glowShadow">[{$rsslinks.bargainArticles.title}]</span></a>
+        [{/if}]
+    </h3>
+    [{$smarty.capture.bargainTitle}]
+</div>
 <div class="specBoxInfo">
     [{$smarty.capture.bargainPrice}]
     [{$smarty.capture.bargainPic}]

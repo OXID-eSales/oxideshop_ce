@@ -104,9 +104,9 @@ class oxversionchecker
     /**
      * For result output
      *
-     * @var string
+     * @var mixed
      */
-    private $_sResultOutput = "";
+    private $_aResultOutput = "";
 
     /**
      * Array of all files which are to be checked
@@ -142,6 +142,13 @@ class oxversionchecker
      * @var string
      */
     private $_sVersionTag = "";
+
+    /**
+     * Link to checker page
+     *
+     * @var string
+     */
+    private $_sHomeLink = "";
 
     /**
      * Full Version tag of this OXID eShop
@@ -196,6 +203,39 @@ class oxversionchecker
     }
 
     /**
+     * working directory getter
+     *
+     * @return boolean
+     */
+    public function getListAllFiles()
+    {
+        return $this->_blListAllFiles;
+    }
+
+    /**
+     * Setter for home link
+     *
+     * @param $sLink string
+     */
+    public function setHomeLink( $sLink )
+    {
+        if ( !empty( $sLink ) )
+        {
+            $this->_sHomeLink = $sLink;
+        }
+    }
+
+    /**
+     * home link getter
+     *
+     * @return string
+     */
+    public function getHomeLink()
+    {
+        return $this->_sHomeLink;
+    }
+
+    /**
      * Setter for working directory
      *
      * @param $sDir string
@@ -209,6 +249,16 @@ class oxversionchecker
     }
 
    /**
+     * working directory getter
+     *
+     * @return string
+     */
+    public function getBaseDirectory()
+    {
+        return $this->_sBaseDirectory;
+    }
+
+    /**
      * Version setter
      *
      * @param $sVersion string
@@ -319,16 +369,6 @@ class oxversionchecker
 
         $this->_sVersionTag = $this->_sEdition."_".$this->_sVersion."_".$this->_sRevision;
 
-        $sDateTime = date('Y-m-d H:i:s', time());
-
-        $sMyUrl = 'http://'.$_SERVER['SERVER_NAME'].$_SERVER['SCRIPT_NAME'];
-        $sMyUrl = '<a href="'.$sMyUrl.'">'.$sMyUrl."</a>";
-
-        $this->_sTableContent .= "<tr><td colspan=2><h2>oxchkversion detected at ".$sMyUrl." at ".$sDateTime."</h2></td></tr>".PHP_EOL;
-        $this->_sTableContent .= "<tr><td><b>".oxRegistry::getLang()->translateString( 'OXCHKVERSION_EDITION' )."</b></td><td>".$this->_sEdition."</td></tr>".PHP_EOL;
-        $this->_sTableContent .= "<tr><td><b>".oxRegistry::getLang()->translateString( 'OXCHKVERSION_VERSION' )."</b></td><td>".$this->_sVersion."</td></tr>".PHP_EOL;
-        $this->_sTableContent .= "<tr><td><b>".oxRegistry::getLang()->translateString( 'OXCHKVERSION_REVISION' )."</b></td><td>".$this->_sRevision."</td></tr>".PHP_EOL;
-
         $this->_aResultCount['OK'] = 0;
         $this->_aResultCount['VERSIONMISMATCH'] = 0;
         $this->_aResultCount['UNKNOWN'] = 0;
@@ -339,11 +379,22 @@ class oxversionchecker
 
         $this->_checkOXIDfiles();
 
-        $this->_oUtils->toFileCache( "version_checker", $this->getResult() );
+        $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
+
+        $oSmarty->assign( "sVersion", $this->_sVersion );
+        $oSmarty->assign( "sEdition", $this->_sEdition );
+        $oSmarty->assign( "sRevision", $this->_sRevision );
+        $oSmarty->assign( "sVersionTag", $this->_sVersionTag );
+        $oSmarty->assign( "aResultCount", $this->_aResultCount );
+        $oSmarty->assign( "aResultOutput", $this->_aResultOutput );
+        $oSmarty->assign( "blShopIsOK", $this->_blShopIsOK );
+        $oSmarty->assign( "sDateTime", date( oxRegistry::getLang()->translateString( 'fullDateFormat' ), time() ) );
+        $oSmarty->assign( "iFilesCount", count($this->_aFiles) );
+        $oSmarty->assign( "sSelfLink", $this->_sHomeLink );
+
+        $this->_oUtils->toFileCache( "version_checker", $oSmarty->fetch( "version_checker_result.tpl" ) );
         $this->_sFilePath = $this->_oUtils->getCacheFilePath( "version_checker" );
     }
-
-
 
     /**
      * Checks version of all shop files
@@ -358,7 +409,7 @@ class oxversionchecker
         }
     }
 
-    /**     *
+    /**
      * This method gets the XML object for each file and checks the return values. The result will be saved in the
      * variable $sResultOutput.
      *
@@ -415,65 +466,12 @@ class oxversionchecker
         }
 
         if ( $sMessage ) {
-            $this->_sResultOutput .= "<tr><td>".$sFile."</td>";
-            $this->_sResultOutput .= "<td>";
-            $this->_sResultOutput .= "<b style=\"color:$sColor\">";
-            $this->_sResultOutput .= $sMessage;
-            $this->_sResultOutput .= "</b>";
-            $this->_sResultOutput .= "</td></tr>".PHP_EOL;
+            $this->_aResultOutput[] = array(
+                "file" => $sFile,
+                "color" => $sColor,
+                "message" => $sMessage
+            );
         }
-    }
-
-
-    /**
-     * Returns result of classes operations
-     *
-     * @return string
-     */
-    public function getResult()
-    {
-        // first build summary table
-        $this->_sTableContent .=  "<tr><td><b>&nbsp;</b></td><td>&nbsp;</td></tr>".PHP_EOL;
-        $this->_sTableContent .=  "<tr><td colspan=\"2\"><h2>".oxRegistry::getLang()->translateString( 'OXCHKVERSION_SUMMARY' )."</h2></td></tr>".PHP_EOL;
-        $this->_sTableContent .=  "<tr><td><b>".oxRegistry::getLang()->translateString( 'OXCHKVERSION_OK' )."</b></td><td>".$this->_aResultCount['OK']."</td></tr>".PHP_EOL;
-        $this->_sTableContent .=  "<tr><td><b>".oxRegistry::getLang()->translateString( 'OXCHKVERSION_MODIFIED' )."</b></td><td>".$this->_aResultCount['MODIFIED']."</td></tr>".PHP_EOL;
-        $this->_sTableContent .=  "<tr><td><b>".oxRegistry::getLang()->translateString( 'OXCHKVERSION_VERSION_MISMATCH' )."</b></td><td>".$this->_aResultCount['VERSIONMISMATCH']."</td></tr>".PHP_EOL;
-        $this->_sTableContent .=  "<tr><td><b>".oxRegistry::getLang()->translateString( 'OXCHKVERSION_UNKNOWN' )."</b></td><td>".$this->_aResultCount['UNKNOWN']."</td></tr>".PHP_EOL;
-        $this->_sTableContent .=  "<tr><td><b>".oxRegistry::getLang()->translateString( 'OXCHKVERSION_NUMBER_OF_INVESTIGATED_FILES' ).":</b>   </td><td>".count($this->_aFiles)."</td></tr>".PHP_EOL;
-
-        $this->_sTableContent .= "<tr><td><b>&nbsp;</b></td><td>&nbsp;</td></tr>".PHP_EOL;
-        if ($this->_blShopIsOK) {
-            $this->_sTableContent .= "<tr><td colspan=\"2\"><b><span style=\"color:green\">".oxRegistry::getLang()->translateString( 'OXCHKVERSION_SHOP_ORIGINAL' ).".</span></b></td></tr>".PHP_EOL;
-        } else {
-            $this->_sTableContent .= "<tr><td colspan=\"2\"><b><span style=\"color:red\">".oxRegistry::getLang()->translateString( 'OXCHKVERSION_SHOP_DOES_NOT_FIT' )." ".$this->_sVersionTag.".</span></b></td></tr>".PHP_EOL;
-        }
-
-        $sHints = "";
-        if ($this->_aResultCount['MODIFIED'] > 0) {
-            $sHints .=  "<tr><td colspan=\"2\">* ".oxRegistry::getLang()->translateString( 'OXCHKVERSION_MODIFIEDHINTS1' )."</td></tr>".PHP_EOL;
-            $sHints .=  "<tr><td colspan=\"2\">* ".oxRegistry::getLang()->translateString( 'OXCHKVERSION_MODIFIEDHINTS2' )."</td></tr>".PHP_EOL;
-        }
-
-        if ($this->_aResultCount['VERSIONMISMATCH'] > 0) {
-            $sHints .=  "<tr><td colspan=\"2\">* ".oxRegistry::getLang()->translateString( 'OXCHKVERSION_VERSIONMISMATCHHINTS' )."</td></tr>".PHP_EOL;
-        }
-
-        if ($sHints) {
-            $this->_sTableContent .=  "<tr><td colspan=\"2\"><b>&nbsp;</b></td></tr>".PHP_EOL;
-            $this->_sTableContent .=  "<tr><td colspan=\"2\"><h2>".oxRegistry::getLang()->translateString( 'OXCHKVERSION_HINTS' )."</h2>   </td></tr>".PHP_EOL;
-            $this->_sTableContent .= $sHints;
-        }
-
-
-        // then print result output
-        if ($this->_sResultOutput) {
-            $this->_sTableContent .=  "<tr><td><b>&nbsp;</b></td><td>&nbsp;</td></tr>".PHP_EOL;
-            $this->_sTableContent .=  $this->_sResultOutput;
-        }
-
-        $this->_sTableContent = "<table>".PHP_EOL.$this->_sTableContent.PHP_EOL."</table>";
-
-        return $this->_sTableContent;
     }
 
     /**
@@ -612,7 +610,6 @@ class oxversionchecker
 
         return false;
     }
-
 
     /**
      * Selects important directors and returns files in there

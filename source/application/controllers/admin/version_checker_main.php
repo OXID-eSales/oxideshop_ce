@@ -79,6 +79,7 @@ class version_checker_main extends oxAdminDetails
         $this->_oVersionChecker->setVersion( $this->getConfig()->getVersion() );
         $this->_oVersionChecker->setEdition( $this->getConfig()->getEdition() );
         $this->_oVersionChecker->setRevision( $this->getConfig()->getRevision() );
+        $this->_oVersionChecker->setHomeLink( $this->getConfig()->getCurrentShopUrl() );
 
         if ( $this->getConfig()->getRequestParameter('listAllFiles') == 'listAllFiles' ) {
             $this->_oVersionChecker->setListAllFiles ( true );

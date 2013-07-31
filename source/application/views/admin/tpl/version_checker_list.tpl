@@ -1,4 +1,4 @@
-[{include file="headitem.tpl" title="VERSIONCHECK_MAIN_TITLE"|oxmultilangassign box="list"}]
+[{include file="headitem.tpl" title="OXCHKVERSION_MAIN_TITLE"|oxmultilangassign box="list"}]
 
 <script type="text/javascript">
     if (parent.parent)

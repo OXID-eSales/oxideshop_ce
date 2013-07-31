@@ -185,37 +185,6 @@ class oxversionchecker
      */
     protected $_sBaseDirectory = '';
 
-
-    private static $aLanguage = array(
-        'oxShopIntro_IntroInformation'                          => '<p>This script is intended to check consistency of your OXID eShop. It collects names of php files and templates, detects their MD5 checksum, connects for each file to OXID\'s webservice to determine if it fits this shop version.</p><p>It does neither collect nor transmit any license or personal information.</p><p>Data to be transmitted to OXID is:</p><ul><li>Filename to be checked</li><li>MD5 checksum</li><li>Version which was detected</li><li>Revision which was detected</li></ul><p>For more detailed information check out <a href="http://www.oxid-esales.com/de/news/blog/shop-checking-tool-oxchkversion-v3" target=_blank>OXID eSales\' Blog</a>.</p>',
-        'oxShopIntro_Form'                                      => '<form action = ""><input type="hidden" name="job" value="checker" > <input type=checkbox name="listAllFiles" value="listAllFiles" id="listAllFiles"><label for="listAllFiles">List all files (also those which were OK)</label><br><br><input type="submit" name="" value=" Start to check this eShop right now (may take some time) " ></form>',
-        'oxShopIntro_LinkToExchange'                            => '<b><ins><a>The latest version of our checker tool is available for free from our OXID eXchange. We recommend to download it for a more precise result. Please get the latest Oxchkversion at <a href="http://exchange.oxid-esales.com/de/OXID/Weitere-OXID-Extensions/">OXID Exchange.</a></ins></b>',
-        'oxShopIntro_ErrorMessageTemplate'                      => '<p><span style="color: red"><b>These error(s) occured</b></span></p><ul>%ERRORS%</ul>',
-        'oxShopIntro_ErrorMessageCURLIsNotInstalled'            => '<li><span style="color: red">Please take care if the library cURL is installed!</span></li>',
-        'oxShopIntro_ErrorMessageWebServiceIsNotReachable'      => '<li><span style="color: red">WebService is not available currently. Please try again later.</span></li>',
-        'oxShopIntro_ErrorMessageWebServiceReturnedNoXML'       => '<li><span style="color: red">WebService returned not a XML.</span></li>',
-        'oxShopIntro_ErrorMessageVersionDoesNotExist'           => '<li><span style="color: red">OXID eShop %EDITION% %VERSION% in Revision %REVISION% does not exist.</span></li>',
-        'oxShopIntro_ErrorVersionCompare'                       => 'This text is not supposed to be here. Please try again. If it still appears, call OXID support.',
-        'oxShopCheck_ModifiedHints1'                            => 'OXID eShop has sophisticated possibility to extend it by modules without changing shipped files. It\'s not recommended and not needed to change shop files. See also our <a href="http://www.oxidforge.org/wiki/Tutorials#How_to_Extend_OXID_eShop_With_Modules_.28Part_1.29" target=_blank>tutorials</a>.',
-        'oxShopCheck_ModifiedHints2'                            => 'Since OXID eShop 4.2.0 it\'s possible to use <a href="http://www.oxidforge.org/wiki/Downloads/4.2.0#New_Features" target=_blank>your own templates without changing shipped ones</a>.',
-        'oxShopCheck_VersionMismatchHints'                      => 'Apparently one or more updates went wrong. See details link for more information about more details for each file. A left over file which is not any longer included in OXID eShop could also be a <u>possible</u> reason for version mismatch. For more information see <a href="http://www.oxid-esales.com/en/resources/help-faq/manual-eshop-pe-ce-4-0-0-0/upgrade-update-eshop" target=_blank>handbook</a>.'
-    );
-
-    /**
-     * returns the value of the language array
-     *
-     * @param string $sKey
-     * @return mixed
-     */
-    private function _getLanguageValueByKey( $sKey)
-    {
-        if (!array_key_exists( $sKey, self::$aLanguage ) ) {
-            return 'Language value for key "'.$sKey.'" is missing!';
-        }
-        return self::$aLanguage[$sKey];
-    }
-
-
     /**
      * Setter for working directory
      *
@@ -330,10 +299,10 @@ class oxversionchecker
             throw new Exception('Shop edition is not set, please use setter setEdition!' );
         }
 
-        $this->_oDirectoryReader = oxnew ( "oxdirectory" );
+        $this->_oDirectoryReader = oxNew ( "oxDirectory" );
         $this->_oDirectoryReader->setBaseDirectory( $this->_sBaseDirectory );
 
-        $this->_oCURLHandler = oxnew ( "oxcurl" );
+        $this->_oCURLHandler = oxNew ( "oxCurl" );
         $this->_oCURLHandler->setWebServiceURL ( $this->sWebServiceURL );
 
         $this->_oUtils = oxRegistry::getUtils();
@@ -356,9 +325,9 @@ class oxversionchecker
         $sMyUrl = '<a href="'.$sMyUrl.'">'.$sMyUrl."</a>";
 
         $this->_sTableContent .= "<tr><td colspan=2><h2>oxchkversion detected at ".$sMyUrl." at ".$sDateTime."</h2></td></tr>".PHP_EOL;
-        $this->_sTableContent .= "<tr><td><b>Edition</b></td><td>".$this->_sEdition."</td></tr>".PHP_EOL;
-        $this->_sTableContent .= "<tr><td><b>Version</b></td><td>".$this->_sVersion."</td></tr>".PHP_EOL;
-        $this->_sTableContent .= "<tr><td><b>Revision</b></td><td>".$this->_sRevision."</td></tr>".PHP_EOL;
+        $this->_sTableContent .= "<tr><td><b>".oxRegistry::getLang()->translateString( 'OXCHKVERSION_EDITION' )."</b></td><td>".$this->_sEdition."</td></tr>".PHP_EOL;
+        $this->_sTableContent .= "<tr><td><b>".oxRegistry::getLang()->translateString( 'OXCHKVERSION_VERSION' )."</b></td><td>".$this->_sVersion."</td></tr>".PHP_EOL;
+        $this->_sTableContent .= "<tr><td><b>".oxRegistry::getLang()->translateString( 'OXCHKVERSION_REVISION' )."</b></td><td>".$this->_sRevision."</td></tr>".PHP_EOL;
 
         $this->_aResultCount['OK'] = 0;
         $this->_aResultCount['VERSIONMISMATCH'] = 0;
@@ -398,12 +367,16 @@ class oxversionchecker
      */
     private function _checkFile( $sFile )
     {
+        if ( !file_exists( $this->_sBaseDirectory . $sFile ) ) {
+            return;
+        }
+
         $sMD5 = md5_file ( $this->_sBaseDirectory . $sFile );
 
         usleep( 100 );
         $oXML = $this->_getFileVersion( $sMD5, $sFile );
         $sColor = "blue";
-        $sMessage = $this->_getLanguageValueByKey( 'oxShopIntro_ErrorVersionCompare' );
+        $sMessage = oxRegistry::getLang()->translateString( 'OXCHKVERSION_ERRORVERSIONCOMPARE' );
 
         if (is_object( $oXML ) ) {
 
@@ -418,24 +391,24 @@ class oxversionchecker
                 } else {
                     $sMessage = '';
                     if ( $this->_blListAllFiles ) {
-                        $sMessage = 'OK';
+                        $sMessage = oxRegistry::getLang()->translateString( 'OXCHKVERSION_OK' );
                     }
                     $sColor = "green";
                 }
             } elseif ( $oXML->res == 'VERSIONMISMATCH' ) {
-                $sMessage = 'Version mismatch';
+                $sMessage = oxRegistry::getLang()->translateString( 'OXCHKVERSION_VERSION_MISMATCH' );
                 $sColor = 'red';
                 $this->_blShopIsOK = false;
             } elseif ( $oXML->res == 'MODIFIED' ) {
-                $sMessage = 'Modified';
+                $sMessage = oxRegistry::getLang()->translateString( 'OXCHKVERSION_MODIFIED' );
                 $sColor = 'red';
                 $this->_blShopIsOK = false;
             } elseif ( $oXML->res == 'OBSOLETE' ) {
-                $sMessage = 'Obsolete';
+                $sMessage = oxRegistry::getLang()->translateString( 'OXCHKVERSION_OBSOLETE' );
                 $sColor = 'red';
                 $this->_blShopIsOK = false;
             } elseif ( $oXML->res == 'UNKNOWN' ) {
-                $sMessage = 'Unknown';
+                $sMessage = oxRegistry::getLang()->translateString( 'OXCHKVERSION_UNKNOWN' );
                 $sColor = "green";
             }
             $this->_aResultCount[strval( $oXML->res)]++;
@@ -461,33 +434,33 @@ class oxversionchecker
     {
         // first build summary table
         $this->_sTableContent .=  "<tr><td><b>&nbsp;</b></td><td>&nbsp;</td></tr>".PHP_EOL;
-        $this->_sTableContent .=  "<tr><td colspan=\"2\"><h2>Summary</h2></td></tr>".PHP_EOL;
-        $this->_sTableContent .=  "<tr><td><b>OK</b></td><td>".$this->_aResultCount['OK']."</td></tr>".PHP_EOL;
-        $this->_sTableContent .=  "<tr><td><b>Modified</b></td><td>".$this->_aResultCount['MODIFIED']."</td></tr>".PHP_EOL;
-        $this->_sTableContent .=  "<tr><td><b>Version mismatch</b></td><td>".$this->_aResultCount['VERSIONMISMATCH']."</td></tr>".PHP_EOL;
-        $this->_sTableContent .=  "<tr><td><b>Unknown</b></td><td>".$this->_aResultCount['UNKNOWN']."</td></tr>".PHP_EOL;
-        $this->_sTableContent .=  "<tr><td><b>Number of investigated files in total:</b>   </td><td>".count($this->_aFiles)."</td></tr>".PHP_EOL;
+        $this->_sTableContent .=  "<tr><td colspan=\"2\"><h2>".oxRegistry::getLang()->translateString( 'OXCHKVERSION_SUMMARY' )."</h2></td></tr>".PHP_EOL;
+        $this->_sTableContent .=  "<tr><td><b>".oxRegistry::getLang()->translateString( 'OXCHKVERSION_OK' )."</b></td><td>".$this->_aResultCount['OK']."</td></tr>".PHP_EOL;
+        $this->_sTableContent .=  "<tr><td><b>".oxRegistry::getLang()->translateString( 'OXCHKVERSION_MODIFIED' )."</b></td><td>".$this->_aResultCount['MODIFIED']."</td></tr>".PHP_EOL;
+        $this->_sTableContent .=  "<tr><td><b>".oxRegistry::getLang()->translateString( 'OXCHKVERSION_VERSION_MISMATCH' )."</b></td><td>".$this->_aResultCount['VERSIONMISMATCH']."</td></tr>".PHP_EOL;
+        $this->_sTableContent .=  "<tr><td><b>".oxRegistry::getLang()->translateString( 'OXCHKVERSION_UNKNOWN' )."</b></td><td>".$this->_aResultCount['UNKNOWN']."</td></tr>".PHP_EOL;
+        $this->_sTableContent .=  "<tr><td><b>".oxRegistry::getLang()->translateString( 'OXCHKVERSION_NUMBER_OF_INVESTIGATED_FILES' ).":</b>   </td><td>".count($this->_aFiles)."</td></tr>".PHP_EOL;
 
         $this->_sTableContent .= "<tr><td><b>&nbsp;</b></td><td>&nbsp;</td></tr>".PHP_EOL;
         if ($this->_blShopIsOK) {
-            $this->_sTableContent .= "<tr><td colspan=\"2\"><b><span style=\"color:green\">This OXID eShop was not modified and is fully original.</span></b></td></tr>".PHP_EOL;
+            $this->_sTableContent .= "<tr><td colspan=\"2\"><b><span style=\"color:green\">".oxRegistry::getLang()->translateString( 'OXCHKVERSION_SHOP_ORIGINAL' ).".</span></b></td></tr>".PHP_EOL;
         } else {
-            $this->_sTableContent .= "<tr><td colspan=\"2\"><b><span style=\"color:red\">This OXID eShop does not fit 100% ".$this->_sVersionTag.".</span></b></td></tr>".PHP_EOL;
+            $this->_sTableContent .= "<tr><td colspan=\"2\"><b><span style=\"color:red\">".oxRegistry::getLang()->translateString( 'OXCHKVERSION_SHOP_DOES_NOT_FIT' )." ".$this->_sVersionTag.".</span></b></td></tr>".PHP_EOL;
         }
 
         $sHints = "";
         if ($this->_aResultCount['MODIFIED'] > 0) {
-            $sHints .=  "<tr><td colspan=\"2\">* ".$this->_getLanguageValueByKey('oxShopCheck_ModifiedHints1')."</td></tr>".PHP_EOL;
-            $sHints .=  "<tr><td colspan=\"2\">* ".$this->_getLanguageValueByKey('oxShopCheck_ModifiedHints2')."</td></tr>".PHP_EOL;
+            $sHints .=  "<tr><td colspan=\"2\">* ".oxRegistry::getLang()->translateString( 'OXCHKVERSION_MODIFIEDHINTS1' )."</td></tr>".PHP_EOL;
+            $sHints .=  "<tr><td colspan=\"2\">* ".oxRegistry::getLang()->translateString( 'OXCHKVERSION_MODIFIEDHINTS2' )."</td></tr>".PHP_EOL;
         }
 
         if ($this->_aResultCount['VERSIONMISMATCH'] > 0) {
-            $sHints .=  "<tr><td colspan=\"2\">* ".$this->_getLanguageValueByKey('oxShopCheck_VersionMismatchHints')."</td></tr>".PHP_EOL;
+            $sHints .=  "<tr><td colspan=\"2\">* ".oxRegistry::getLang()->translateString( 'OXCHKVERSION_VERSIONMISMATCHHINTS' )."</td></tr>".PHP_EOL;
         }
 
         if ($sHints) {
             $this->_sTableContent .=  "<tr><td colspan=\"2\"><b>&nbsp;</b></td></tr>".PHP_EOL;
-            $this->_sTableContent .=  "<tr><td colspan=\"2\"><h2>Hints</h2>   </td></tr>".PHP_EOL;
+            $this->_sTableContent .=  "<tr><td colspan=\"2\"><h2>".oxRegistry::getLang()->translateString( 'OXCHKVERSION_HINTS' )."</h2>   </td></tr>".PHP_EOL;
             $this->_sTableContent .= $sHints;
         }
 
@@ -518,11 +491,8 @@ class oxversionchecker
         if ( !$this->_isShopVersionIsKnown() )
     {
             $this->_blError = true;
-            $sError = $this->_getLanguageValueByKey( 'oxShopIntro_ErrorMessageVersionDoesNotExist' );
-
-            $sError = str_replace ('%EDITION%', $this->getEdition(), $sError );
-            $sError = str_replace ('%VERSION%', $this->getVersion(), $sError );
-            $sError = str_replace ('%REVISION%', $this->getRevision(), $sError );
+            $sError = sprintf( oxRegistry::getLang()->translateString( 'OXCHKVERSION_ERRORMESSAGEVERSIONDOESNOTEXIST' ),
+                $this->getEdition(), $this->getVersion(), $this->getRevision() );
 
             $this->_sErrorMessage .= $sError;
             return false;
@@ -596,19 +566,19 @@ class oxversionchecker
 
         if (empty( $sXML ) ) {
             $this->_blError = true;
-            $this->_sErrorMessage = $this->_getLanguageValueByKey( 'oxShopIntro_ErrorMessageWebServiceIsNotReachable' );
+            $this->_sErrorMessage = oxRegistry::getLang()->translateString( 'OXCHKVERSION_ERRORMESSAGEWEBSERVICEISNOTREACHABLE' );
         }
 
         try {
             $oXML = new SimpleXMLElement( $sXML );
         } catch (Exception $ex) {
             $this->_blError = true;
-            $this->_sErrorMessage .= $this->_getLanguageValueByKey( 'oxShopIntro_ErrorMessageWebServiceReturnedNoXML' );
+            $this->_sErrorMessage .= oxRegistry::getLang()->translateString( 'OXCHKVERSION_ERRORMESSAGEWEBSERVICERETURNEDNOXML' );
         }
 
         if (!is_object( $oXML ) ) {
             $this->_blError = true;
-            $this->_sErrorMessage .= $this->_getLanguageValueByKey( 'oxShopIntro_ErrorMessageVersionDoesNotExist' );
+            $this->_sErrorMessage .= oxRegistry::getLang()->translateString( 'OXCHKVERSION_ERRORMESSAGEVERSIONDOESNOTEXIST' );
         }
 
         return !$this->_blError;

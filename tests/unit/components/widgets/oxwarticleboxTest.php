@@ -153,4 +153,23 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
 
         $this->assertEquals( $iIteration, $oArticleBox->getIteration(), "Should get iteration" );
     }
+
+    /**
+     * Test case for getting RSS links
+     */
+    public function testGetRSSLinks()
+    {
+        $oArticleBox = new oxwArticleBox();
+
+        $aRSS = array(
+            'title' => 'OXID eShop 5/Bargain',
+            'link'  => 'http://trunk:8080/en/rss/OXID-eShop-5/Bargain/',
+        );
+        $aViewParams = array(
+            "rsslinks" => $aRSS,
+        );
+        $oArticleBox->setViewParameters($aViewParams);
+
+        $this->assertEquals( $aRSS, $oArticleBox->getRSSLinks(), "Should get RSS links' array" );
+    }
 }

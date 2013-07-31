@@ -53,7 +53,7 @@
 <div class="specBoxTitles rightShadow">
     <h3>
         <strong>[{ oxmultilang ident="WEEK_SPECIAL" }]</strong>
-        [{assign var='rsslinks' value=$oView->getRssLinks() }]
+        [{assign var="rsslinks" value=$oView->getRSSLinks()}]
         [{if $rsslinks.bargainArticles}]
             <a class="rss js-external" id="rssBargainProducts" href="[{$rsslinks.bargainArticles.link}]" title="[{$rsslinks.bargainArticles.title}]"><img src="[{$oViewConf->getImageUrl('rss.png')}]" alt="[{$rsslinks.bargainArticles.title}]"><span class="FXgradOrange corners glowShadow">[{$rsslinks.bargainArticles.title}]</span></a>
         [{/if}]

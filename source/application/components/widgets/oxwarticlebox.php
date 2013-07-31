@@ -163,4 +163,14 @@ class oxwArticleBox extends oxWidget
         return $this->getViewParameter('testid');
     }
 
+    /**
+     * Returns recommendation id
+     *
+     * @return string
+     */
+    public function getRecommId()
+    {
+        return $this->getViewParameter('recommid');
+    }
+
 }

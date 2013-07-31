@@ -1,4 +1,5 @@
 [{assign var="product" value=$oView->getBoxProduct()}]
+[{assign var="recommid" value=$oView->getRecommId()}]
 
 <div class="compareItem">
         [{assign var='_productLink' value=$product->getLink()}]

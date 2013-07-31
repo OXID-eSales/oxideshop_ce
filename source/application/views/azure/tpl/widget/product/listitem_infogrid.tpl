@@ -3,6 +3,7 @@
     [{assign var="owishid" value=$oView->getWishId()}]
     [{assign var="removeFunction" value=$oView->getRemoveFunction()}]
     [{assign var="toBasketFunction" value=$oView->getToBasketFunction()}]
+    [{assign var="recommid" value=$oView->getRecommId()}]
 
     [{if $showMainLink}]
         [{assign var='_productLink' value=$product->getMainLink()}]

@@ -121,4 +121,20 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
 
         $this->assertNotEquals( false, strpos( $oArticleBox->getLink(),"cl=alist" ) );
     }
+
+    /**
+     * Test case for getting recommendation id
+     */
+    public function testGetRecommId()
+    {
+        $oArticleBox = new oxwArticleBox();
+
+        $sId = "B6nu2IoqwNYq";
+        $aViewParams = array(
+            "recommid" => $sId,
+        );
+        $oArticleBox->setViewParameters($aViewParams);
+
+        $this->assertEquals( $sId, $oArticleBox->getRecommId(), "Correct recommid should be loaded" );
+    }
 }

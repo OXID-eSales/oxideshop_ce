@@ -183,4 +183,14 @@ class oxwArticleBox extends oxWidget
         return $this->getViewParameter('iIteration');
     }
 
+    /**
+     * Returns RSS links
+     *
+     * @return array
+     */
+    public function getRSSLinks()
+    {
+        return $this->getViewParameter('rsslinks');
+    }
+
 }

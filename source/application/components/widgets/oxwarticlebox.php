@@ -173,4 +173,14 @@ class oxwArticleBox extends oxWidget
         return $this->getViewParameter('recommid');
     }
 
+    /**
+     * Returns iteration number
+     *
+     * @return int
+     */
+    public function getIteration()
+    {
+        return $this->getViewParameter('iIteration');
+    }
+
 }

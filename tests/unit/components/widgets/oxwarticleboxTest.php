@@ -135,6 +135,22 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
         );
         $oArticleBox->setViewParameters($aViewParams);
 
-        $this->assertEquals( $sId, $oArticleBox->getRecommId(), "Correct recommid should be loaded" );
+        $this->assertEquals( $sId, $oArticleBox->getRecommId(), "Should get recommid" );
+    }
+
+    /**
+     * Test case for getting iteration
+     */
+    public function testGetIteration()
+    {
+        $oArticleBox = new oxwArticleBox();
+
+        $iIteration = "7";
+        $aViewParams = array(
+            "iIteration" => $iIteration,
+        );
+        $oArticleBox->setViewParameters($aViewParams);
+
+        $this->assertEquals( $iIteration, $oArticleBox->getIteration(), "Should get iteration" );
     }
 }

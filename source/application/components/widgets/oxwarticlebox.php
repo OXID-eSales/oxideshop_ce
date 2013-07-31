@@ -176,7 +176,7 @@ class oxwArticleBox extends oxWidget
     /**
      * Returns iteration number
      *
-     * @return int
+     * @return string
      */
     public function getIteration()
     {
@@ -186,11 +186,15 @@ class oxwArticleBox extends oxWidget
     /**
      * Returns RSS links
      *
-     * @return array
+     * @return array|null
      */
     public function getRSSLinks()
     {
-        return $this->getViewParameter('rsslinks');
+        $aRSS = $this->getViewParameter('rsslinks');
+        if ( !is_array($aRSS) ) {
+            $aRSS = null;
+        }
+        return $aRSS;
     }
 
 }

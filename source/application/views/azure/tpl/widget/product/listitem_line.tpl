@@ -2,6 +2,8 @@
     [{assign var="product" value=$oView->getBoxProduct()}]
     [{assign var="owishid" value=$oView->getWishId()}]
     [{assign var="removeFunction" value=$oView->getRemoveFunction()}]
+    [{assign var="recommid" value=$oView->getRecommId()}]
+
     [{oxscript include="js/widgets/oxlistremovebutton.js" priority=10 }]
     [{oxscript add="$('button.removeButton').oxListRemoveButton();"}]
 

@@ -1887,6 +1887,7 @@ $aLang = array(
 'nonstackable_serial_detected'                             => 'Ein nicht erweiterbarer Lizenzschlüssel kann nicht hinzugefügt werden. Bitte fügen Sie diesen Schlüssel als ersten ein.',
 'serial_added'                                             => 'Neuer Lizenzschlüssel wurde aktiviert',
 'serial_updated'                                           => 'Lizenzschlüssel wurde aktualisiert',
+'olc_error'                                                => '[tr] Invalid key or online check error detected. Please contact support.',
 
 'SHOP_OPTIONS_GROUP_GLOBAL'                                => 'Global',
 'SHOP_OPTIONS_GROUP_SEARCH'                                => 'Suche',

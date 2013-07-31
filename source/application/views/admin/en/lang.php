@@ -1888,6 +1888,7 @@ $aLang = array(
 'nonstackable_serial_detected'                             => 'Can\'t add non stackable license key. Please insert stackable license key first.',
 'serial_added'                                             => 'License key has beend added',
 'serial_updated'                                           => 'License key has been updated',
+'olc_error'                                                => '[tr] Invalid key or online check error detected. Please contact support.',
 
 'SHOP_OPTIONS_GROUP_GLOBAL'                                => 'Global',
 'SHOP_OPTIONS_GROUP_SEARCH'                                => 'Search',

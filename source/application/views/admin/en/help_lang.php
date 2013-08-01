@@ -210,9 +210,9 @@ $aLang =  array(
 
 'HELP_SHOP_CONFIG_ATTENTION'                  => 'Caution: Even if encryption is used, Credit Card contracts usually prohibit this strictly!',
 
-'HELP_SHOP_CONFIG_SHOWTSINTERNATIONALFEESMESSAGE' => '[TR]In 4th checkout step will be displayed CMS page with ident "oxtsinternationalfees"',
+'HELP_SHOP_CONFIG_SHOWTSINTERNATIONALFEESMESSAGE' => 'In the 4th step of the checkout process the CMS page "oxtsinternationalfees" is additionally displayed.',
 
-'HELP_SHOP_CONFIG_SHOWTSCODMESSAGE'           => '[TR]In 4th checkout step will be displayed CMS page with ident "oxtscodmessage"',
+'HELP_SHOP_CONFIG_SHOWTSCODMESSAGE'           => 'In the 4th step of the checkout process the CMS page "oxtscodmessage" is additionally displayed.',
 
 'HELP_SHOP_CONFIG_SHOWTAGS'                   => 'If not checked, no tags will be displayed in eShop. Pages that could be called via tag URL, are not accessible.',
 

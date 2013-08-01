@@ -1,9 +1,13 @@
 [{block name="widget_product_listitem_infogrid"}]
-    [{assign var="product" value=$oView->getBoxProduct()}]
-    [{assign var="owishid" value=$oView->getWishId()}]
-    [{assign var="removeFunction" value=$oView->getRemoveFunction()}]
+    [{assign var="product"              value=$oView->getBoxProduct()      }]
+    [{assign var="owishid"              value=$oView->getWishId()          }]
+    [{assign var="removeFunction"       value=$oView->getRemoveFunction()  }]
     [{assign var="toBasketFunction" value=$oView->getToBasketFunction()}]
-    [{assign var="recommid" value=$oView->getRecommId()}]
+    [{assign var="recommid"             value=$oView->getRecommId()        }]
+    [{assign var="showMainLink"         value=$oView->getShowMainLink()    }]
+    [{assign var="blDisableToCart"      value=$oView->getDisableToCart()   }]
+    [{assign var="testid"               value=$oView->getTestId()          }]
+    [{assign var="altproduct"           value=$oView->getAltProduct()      }]
 
     [{if $showMainLink}]
         [{assign var='_productLink' value=$product->getMainLink()}]
@@ -148,4 +152,5 @@
         </div>
     </form>
 [{/block}]
+
 [{oxscript widget=$oView->getClassName()}]

@@ -49,6 +49,7 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
     public function testRender()
     {
         $oArticleBox = new oxwArticleBox();
+
         $this->assertEquals( "widget/product/boxproduct.tpl", $oArticleBox->render(), "Default template should be loaded" );
     }
 
@@ -123,38 +124,6 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
     }
 
     /**
-     * Test case for getting recommendation id
-     */
-    public function testGetRecommId()
-    {
-        $oArticleBox = new oxwArticleBox();
-
-        $sId = "B6nu2IoqwNYq";
-        $aViewParams = array(
-            "recommid" => $sId,
-        );
-        $oArticleBox->setViewParameters($aViewParams);
-
-        $this->assertEquals( $sId, $oArticleBox->getRecommId(), "Should get recommid" );
-    }
-
-    /**
-     * Test case for getting iteration
-     */
-    public function testGetIteration()
-    {
-        $oArticleBox = new oxwArticleBox();
-
-        $iIteration = "7";
-        $aViewParams = array(
-            "iIteration" => $iIteration,
-        );
-        $oArticleBox->setViewParameters($aViewParams);
-
-        $this->assertEquals( $iIteration, $oArticleBox->getIteration(), "Should get iteration" );
-    }
-
-    /**
      * Test case for getting RSS links
      */
     public function testGetRSSLinks()
@@ -194,4 +163,41 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
 
         $this->assertEquals( null, $oArticleBox->getRSSLinks(), "Should get null" );
     }
+
+    /**
+     * View parameters test case data provider
+     *
+     * @return array
+     */
+    public function _dpViewParameters()
+    {
+        return array(
+            array( "recommid"           , "Z8oRXLEnInxn", "getRecommId"         , "Recommendation list id"                  ),
+            array( "iIteration"         , "7"           , "getIteration"        , "Iteration number"                        ),
+            array( "testid"             , "3"           , "getTestId"           , "Test id"                                 ),
+            array( "owishid"            , "7g7eZ6hxUsad", "getWishId"           , "Wishlist id"                             ),
+            array( "showMainLink"       , false         , "getShowMainLink"     , "Condition if main link is showed"        ),
+            array( "blDisableToCart"    , true          , "getDisableToCart"    , "Condition if to cart button is showed"   ),
+            array( "toBasketFunction"   , "tobasket"    , "getToBasketFunction" , "toBasket function"                       ),
+            array( "removeFunction"     , "remove"      , "getRemoveFunction"   , "Remove function"                         ),
+            array( "altproduct"         , false         , "getAltProduct"       , "Condition if alternate product exists"   ),
+        );
+    }
+
+    /**
+     * Test case for checking correct parameters return from view
+     *
+     * @dataProvider _dpViewParameters
+     */
+    public function testGetViewParameterValue($sKey, $mxValue, $sFunction, $sMessage)
+    {
+        $oArticleBox = new oxwArticleBox();
+
+        $aViewParams = array($sKey => $mxValue);
+        $oArticleBox->setViewParameters($aViewParams);
+
+        $this->assertEquals( $mxValue, $oArticleBox->$sFunction(), $sMessage );
+    }
+
+
 }

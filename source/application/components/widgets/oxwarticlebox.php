@@ -100,11 +100,11 @@ class oxwArticleBox extends oxWidget
      */
     public function isVatIncluded()
     {
-        return $this->getViewParameter( "isVatIncluded" );
+        return (bool) $this->getViewParameter( "isVatIncluded" );
     }
 
     /**
-     * Returns currency sign
+     * Returns active currency sign
      *
      * @return string
      */
@@ -114,7 +114,7 @@ class oxwArticleBox extends oxWidget
     }
 
     /**
-     * Returns currency sign
+     * Returns wishlist id
      *
      * @return string
      */
@@ -124,7 +124,7 @@ class oxwArticleBox extends oxWidget
     }
 
     /**
-     * Returns currency sign
+     * Returns remove function
      *
      * @return string
      */
@@ -134,7 +134,7 @@ class oxwArticleBox extends oxWidget
     }
 
     /**
-     * Returns currency sign
+     * Returns toBasket function
      *
      * @return string
      */
@@ -144,13 +144,13 @@ class oxwArticleBox extends oxWidget
     }
 
     /**
-     * Returns currency sign
+     * Returns if toCart must be disabled
      *
-     * @return string
+     * @return bool
      */
     public function getDisableToCart()
     {
-        return $this->getViewParameter('blDisableToCart');
+        return (bool) $this->getViewParameter('blDisableToCart');
     }
 
     /**
@@ -195,6 +195,26 @@ class oxwArticleBox extends oxWidget
             $aRSS = null;
         }
         return $aRSS;
+    }
+
+    /**
+     * Returns the answer if main link must be showed
+     *
+     * @return bool
+     */
+    public function getShowMainLink()
+    {
+        return (bool) $this->getViewParameter('showMainLink');
+    }
+
+    /**
+     * Returns if alternate product exists
+     *
+     * @return bool
+     */
+    public function getAltProduct()
+    {
+        return (bool) $this->getViewParameter('altproduct');
     }
 
 }

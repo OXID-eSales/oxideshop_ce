@@ -205,9 +205,9 @@ $aLang =  array(
 
 'HELP_SHOP_CONFIG_ATTENTION'                  => 'ACHTUNG! Üblicherweise ist in den Verträgen mit MasterCard und VISA die Speicherung der Daten ausdrücklich verboten.',
 
-'HELP_SHOP_CONFIG_SHOWTSINTERNATIONALFEESMESSAGE' => '[TR]In 4th checkout step will be displayed CMS page with ident "oxtsinternationalfees"',
+'HELP_SHOP_CONFIG_SHOWTSINTERNATIONALFEESMESSAGE' => 'Im 4. Schritt des Bestellprozesses wird die CMS-Seite "oxtsinternationalfees" ergänzend angezeigt.',
 
-'HELP_SHOP_CONFIG_SHOWTSCODMESSAGE'           => '[TR]In 4th checkout step will be displayed CMS page with ident "oxtscodmessage"',
+'HELP_SHOP_CONFIG_SHOWTSCODMESSAGE'           => 'Im 4. Schritt des Bestellprozesses wird die CMS-Seite "oxtscodmessage" ergänzend angezeigt.',
 
 'HELP_SHOP_CONFIG_SHOWTAGS'                   => 'Wenn nicht angehakt, werden keine Tags im eShop angezeigt. Auf Seiten, die über Tag URL aufgerufen werden könnten, kann nicht zugegriffen werden.',
 

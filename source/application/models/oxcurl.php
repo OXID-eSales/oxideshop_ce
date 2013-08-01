@@ -42,7 +42,7 @@ class oxCurl {
      *
      * @var string
      */
-    protected $_sWebServiceURL = '';
+    protected $_sWebServiceUrl = '';
 
     /**
      * Web service script
@@ -78,10 +78,10 @@ class oxCurl {
      *
      * @param $sServiceUrl string
      */
-    public function setWebServiceURL( $sServiceUrl )
+    public function setWebServiceUrl( $sServiceUrl )
     {
         if ( !empty( $sServiceUrl ) ) {
-            $this->_sWebServiceURL = $sServiceUrl;
+            $this->_sWebServiceUrl = $sServiceUrl;
         }
     }
 
@@ -90,9 +90,9 @@ class oxCurl {
      *
      * @return string
      */
-    public function getWebServiceURL()
+    public function getWebServiceUrl()
     {
-        return $this->_sWebServiceURL;
+        return $this->_sWebServiceUrl;
     }
 
 
@@ -109,13 +109,14 @@ class oxCurl {
     }
 
     /**
-     * web service parameter getter
+     * web service url getter
      *
+     * @param null $aServiceParams - optional  web service parameters can be set here instead of setter
      * @return string
      */
-    public function getWebServiceRequestURL( $aServiceParams = null )
+    public function getWebServiceRequestUrl( $aServiceParams = null )
     {
-        return $this->_sWebServiceURL . '?' . http_build_query( ( $aServiceParams != null ) ? $aServiceParams : $this->_aWebServiceParams );
+        return $this->_sWebServiceUrl . '?' . http_build_query( ( $aServiceParams != null ) ? $aServiceParams : $this->_aWebServiceParams );
     }
 
 
@@ -126,7 +127,7 @@ class oxCurl {
     public function callWebService( $aServiceParams = null )
     {
         $curl = curl_init();
-        curl_setopt( $curl,CURLOPT_URL, $this->getWebServiceRequestURL( $aServiceParams ) );
+        curl_setopt( $curl,CURLOPT_URL, $this->getWebServiceRequestUrl( $aServiceParams ) );
         curl_setopt( $curl,CURLOPT_RETURNTRANSFER, 1 );
         curl_setopt( $curl,CURLOPT_CONNECTTIMEOUT, $this->_iCurlTimeout );
         $sResponse = curl_exec( $curl );

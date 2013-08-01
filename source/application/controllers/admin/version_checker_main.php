@@ -30,11 +30,25 @@ class version_checker_main extends oxAdminDetails
 {
 
     /**
-     * Toggle debug
+     * Diagnostic check object
      *
-     * @var string
+     * @var mixed
      */
-    protected $_oVersionChecker = null;
+    protected $_oDiagnostics = null;
+
+    /**
+     * Result generator object
+     *
+     * @var mixed
+     */
+    protected $_oResultReport = null;
+
+    /**
+     * Result output object
+     *
+     * @var mixed
+     */
+    protected $_oOutput = null;
 
 
     /**
@@ -46,10 +60,9 @@ class version_checker_main extends oxAdminDetails
     {
         parent::__construct();
 
-        $this->_oVersionChecker = oxNew( 'oxversionchecker' );
-
-
-
+        $this->_oDiagnostics = oxNew( 'oxDiagnostics' );
+        $this->_oResultReport = oxNew ( "oxDiagnosticsReport" );
+        $this->_oOutput = oxNew ( "oxDiagnosticsOutput" );
     }
 
     /**
@@ -61,8 +74,8 @@ class version_checker_main extends oxAdminDetails
     {
         parent::render();
 
-        if ( $this->_oVersionChecker->hasError() ) {
-            $this->_aViewData['sErrorMessage'] = $this->_oVersionChecker->getErrorMessage();
+        if ( $this->_oDiagnostics->hasError() ) {
+            $this->_aViewData['sErrorMessage'] = $this->_oDiagnostics->getErrorMessage();
         }
 
         return "version_checker_main.tpl";
@@ -75,23 +88,37 @@ class version_checker_main extends oxAdminDetails
      */
     public function startCheck()
     {
-        $this->_oVersionChecker->setBaseDirectory( $this->getConfig()->getConfigParam( 'sShopDir' ) );
-        $this->_oVersionChecker->setVersion( $this->getConfig()->getVersion() );
-        $this->_oVersionChecker->setEdition( $this->getConfig()->getEdition() );
-        $this->_oVersionChecker->setRevision( $this->getConfig()->getRevision() );
-        $this->_oVersionChecker->setHomeLink( $this->getConfig()->getCurrentShopUrl() );
+
+
+        $this->_oDiagnostics->setBaseDirectory( $this->getConfig()->getConfigParam( 'sShopDir' ) );
+        $this->_oDiagnostics->setVersion( $this->getConfig()->getVersion() );
+        $this->_oDiagnostics->setEdition( $this->getConfig()->getEdition() );
+        $this->_oDiagnostics->setRevision( $this->getConfig()->getRevision() );
 
         if ( $this->getConfig()->getRequestParameter('listAllFiles') == 'listAllFiles' ) {
-            $this->_oVersionChecker->setListAllFiles ( true );
+            $this->_oDiagnostics->setListAllFiles ( true );
         }
 
-        $this->_oVersionChecker->run();
-
-        if ($this->_oVersionChecker->hasError()) {
+        if ( !$this->_oDiagnostics->init() ) {
             return;
         }
 
-        $sResult = $this->_oVersionChecker->readResultFile();
+        $this->_oDiagnostics->checkFiles();
+
+        if ( $this->_oDiagnostics->hasError() ) {
+            return;
+        }
+
+        $this->_oResultReport->setVersion( $this->getConfig()->getVersion() );
+        $this->_oResultReport->setEdition( $this->getConfig()->getEdition() );
+        $this->_oResultReport->setRevision( $this->getConfig()->getRevision() );
+        $this->_oResultReport->setHomeLink( $this->getConfig()->getCurrentShopUrl() );
+        $this->_oResultReport->setFileCheckerResult( $this->_oDiagnostics->getResult() );
+        $this->_oResultReport->setFileCheckerResultSummary( $this->_oDiagnostics->getResultSummary() );
+
+        $this->_oOutput->storeResult( $this->_oResultReport->getFileCheckerReport() );
+
+        $sResult = $this->_oOutput->readResultFile();
         $this->_aViewData['sResult'] = $sResult;
     }
 
@@ -102,7 +129,7 @@ class version_checker_main extends oxAdminDetails
      */
     public function downloadResultFile()
     {
-        $this->_oVersionChecker->downloadResultFile();
+        $this->_oOutput->downloadResultFile();
         exit();
     }
 

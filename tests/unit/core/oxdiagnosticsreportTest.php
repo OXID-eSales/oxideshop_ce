@@ -24,7 +24,7 @@
 require_once realpath( "." ).'/unit/OxidTestCase.php';
 require_once realpath( "." ).'/unit/test_config.inc.php';
 
-class Unit_Core_oxVersionCheckerTest extends OxidTestCase
+class Unit_Core_oxDiagnosticsReportTest extends OxidTestCase
 {
 
     /**
@@ -32,7 +32,7 @@ class Unit_Core_oxVersionCheckerTest extends OxidTestCase
      */
     public function testGetVersion()
     {
-        $oChecker = oxNew( "oxVersionChecker" );
+        $oChecker = oxNew( "oxDiagnosticsReport" );
         $oChecker->setVersion( "v123" );
 
         $this->assertEquals( "v123",  $oChecker->getVersion() );
@@ -43,7 +43,7 @@ class Unit_Core_oxVersionCheckerTest extends OxidTestCase
      */
     public function testGetEdition()
     {
-        $oChecker = oxNew( "oxVersionChecker" );
+        $oChecker = oxNew( "oxDiagnosticsReport" );
         $oChecker->setEdition( "e123" );
 
         $this->assertEquals( "e123",  $oChecker->getEdition() );
@@ -54,21 +54,10 @@ class Unit_Core_oxVersionCheckerTest extends OxidTestCase
      */
     public function testGetRevision()
     {
-        $oChecker = oxNew( "oxVersionChecker" );
+        $oChecker = oxNew( "oxDiagnosticsReport" );
         $oChecker->setRevision( "r123" );
 
         $this->assertEquals( "r123",  $oChecker->getRevision() );
-    }
-
-    /**
-     * Testing base directory getter and setter
-     */
-    public function testGetBaseDirectory()
-    {
-        $oChecker = oxNew( "oxVersionChecker" );
-        $oChecker->setBaseDirectory( "somedir" );
-
-        $this->assertEquals( "somedir",  $oChecker->getBaseDirectory() );
     }
 
     /**
@@ -76,24 +65,10 @@ class Unit_Core_oxVersionCheckerTest extends OxidTestCase
      */
     public function testGetHomeLink()
     {
-        $oChecker = oxNew( "oxVersionChecker" );
+        $oChecker = oxNew( "oxDiagnosticsReport" );
         $oChecker->setHomeLink( "someurl" );
 
         $this->assertEquals( "someurl",  $oChecker->getHomeLink() );
-    }
-
-    /**
-     * Testing revision getter and setter
-     */
-    public function testGetListAllFiles()
-    {
-        $oChecker = oxNew( "oxVersionChecker" );
-
-        $oChecker->setListAllFiles( true );
-        $this->assertTrue( $oChecker->getListAllFiles() );
-
-        $oChecker->setListAllFiles( false );
-        $this->assertFalse( $oChecker->getListAllFiles() );
     }
 
 

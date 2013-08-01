@@ -104,25 +104,10 @@ class Unit_Core_oxmoduleTest extends OxidTestCase
      *
      * @return null
      */
-    public function testLoad_WhenModuleDoesNotExists()
+    public function testLoadWhenModuleDoesNotExists()
     {
         $oModule = new oxModule;
         $this->assertFalse( $oModule->load( 'non_existing_module' ) );
-    }
-
-    /**
-     * oxmodule::load() test case, when there is standalone file
-     *
-     * @return null
-     */
-    public function testLoad_WhenModuleExistsAndIsStandaloneFile()
-    {
-        $oModule = new oxModule;
-        $sModuleName = 'oe_testable_module.php';
-        $sModulePath = $oModule->getConfig()->getModulesDir() . '/' . $sModuleName;
-        touch( $sModulePath );
-        $this->assertTrue( $oModule->load( $sModuleName ) );
-        unlink( $sModulePath );
     }
 
     /**

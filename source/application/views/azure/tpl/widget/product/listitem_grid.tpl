@@ -1,13 +1,15 @@
 [{block name="widget_product_listitem_grid"}]
-
-    [{assign var="product" value=$oView->getBoxProduct()}]
-    [{assign var="blDisableToCart" value=$oView->getDisableToCart()}]
+    [{assign var="product"              value=$oView->getBoxProduct()       }]
+    [{assign var="blDisableToCart"      value=$oView->getDisableToCart()    }]
+    [{assign var="testid"               value=$oView->getTestId()           }]
+    [{assign var="showMainLink"         value=$oView->getShowMainLink()     }]
 
     [{if $showMainLink}]
         [{assign var='_productLink' value=$product->getMainLink()}]
     [{else}]
         [{assign var='_productLink' value=$product->getLink()}]
     [{/if}]
+    [{assign var="aVariantSelections" value=$product->getVariantSelections(null,null,1)}]
     [{assign var="blShowToBasket" value=true}] [{* tobasket or more info ? *}]
     [{if $blDisableToCart || $product->isNotBuyable()||($aVariantSelections&&$aVariantSelections.selections)||$product->hasMdVariants()||($oViewConf->showSelectListsInList() && $product->getSelections(1))||$product->getVariants()}]
         [{assign var="blShowToBasket" value=false}]

@@ -432,4 +432,27 @@ class oxUtilsUrl extends oxSuperCfg
 
         return $sUrl;
     }
+
+    /**
+     * Forms parameters array out of a string
+     * Takes & and &amp; as delimiters
+     * Returns associative array with parameters
+     *
+     * @param $sValue string
+     *
+     * @return array
+     */
+    public function stringToParamsArray( $sValue )
+    {
+        // url building
+        // replace possible ampersands, explode, and filter out empty values
+        $aNavParams = array_filter( explode( "&", str_replace( "&amp;", "&", $sValue ) ) );
+        $aParams = array();
+        foreach ( $aNavParams as $sValue ) {
+            $exp = explode( "=", $sValue );
+            $aParams[$exp[0]] = $exp[1];
+        }
+
+        return $aParams;
+    }
 }

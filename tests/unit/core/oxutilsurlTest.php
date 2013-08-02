@@ -19,7 +19,6 @@
  * @package   tests
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -264,4 +263,32 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
         $this->assertEquals( $sResult, $oUtils->getCurrentUrl() );
     }
 
+    /**
+     * Test strings and return values
+     * @see testStringToParamsArray
+     *
+     * @return array
+     */
+    public function stringProvider()
+    {
+        return array(
+            array( "&a=b&c=2", array( "a" => "b", "c" => 2 ) ),
+            array( "&amp;a=b&c=2", array( "a" => "b", "c" => 2 ) ),
+            array( "&amp;a=bampc=2", array( "a" => "bampc" ) ),
+            array( "a=bc=2=4", array( "a" => "bc" ) ),
+            array( "a=b&c=2=4", array( "a" => "b", "c" => 2 ) ),
+            array( "&&&&a=b&c=2=4", array( "a" => "b", "c" => 2 ) ),
+            array( "", array( ) ),        );
+    }
+
+    /**
+     * Checks that parameter string is parsed properly
+     *
+     * @dataProvider stringProvider
+     */
+    public function testStringToParamsArray( $sString, $aExpected )
+    {
+        $oUtils = new oxUtilsUrl();
+        $this->assertEquals( $aExpected, $oUtils->stringToParamsArray( $sString ) );
+    }
 }

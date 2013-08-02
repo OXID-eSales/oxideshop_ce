@@ -2152,6 +2152,54 @@ $aLang = array(
 
 //final note
 'OXDIAG_FINALNOTE'					=>	'Ende der Auswertung',
+
+'OXCHKVERSION_MAIN_TITLE'                                  => '[TR]Shop Version Checker',
+'OXCHKVERSION_INTROINFORMATION'                            => '[TR]This script is intended to check consistency of your OXID eShop. It collects names of php files and templates, detects their MD5 checksum, connects for each file to OXID\'s webservice to determine if it fits this shop version.',
+'OXCHKVERSION_INTROINFORMATION_NO_PERSONAL_INFO'           => '[TR]It does neither collect nor transmit any license or personal information.',
+'OXCHKVERSION_INTROINFORMATION_DATA_TRANSMITTED'           => '[TR]Data to be transmitted to OXID is:',
+'OXCHKVERSION_INTROINFORMATION_FILENAME_TO_BE_CHECKED'     => '[TR]Filename to be checked',
+'OXCHKVERSION_INTROINFORMATION_MD5_CHECKSUM'               => '[TR]MD5 checksum',
+'OXCHKVERSION_INTROINFORMATION_VERSION_DETECTED'           => '[TR]Version which was detected',
+'OXCHKVERSION_INTROINFORMATION_REVISION_DETECTED'          => '[TR]Revision which was detected',
+'OXCHKVERSION_INTROINFORMATION_MORE_INFORMATION'           => '[TR]For more detailed information check out',
+'OXCHKVERSION_INTROINFORMATION_OXID_ESALES_BLOG'           => '[TR]OXID eSales\' Blog',
+'OXCHKVERSION_INTROINFORMATION_CONTACT_US'                 => '[TR]You can contact us using',
+'OXCHKVERSION_INTROINFORMATION_ONLINE_CONTACT_FORM'        => '[TR]Online Contact Form',
+
+'OXCHKVERSION_FORM_LIST_ALL_FILES'                         => '[TR]List all files (also those which were OK)',
+'OXCHKVERSION_FORM_START_CHECK'                            => '[TR]Start to check this eShop right now (may take some time)',
+
+'OXCHKVERSION_RESULT_SUCCESSFUL'                           => '[TR]System check successful.',
+'OXCHKVERSION_RESULT'                                      => '[TR]Version Checker Result',
+'OXCHKVERSION_DOWNLOAD_FILE'                               => '[TR]Click here to download the result file',
+'OXCHKVERSION_ERRORMESSAGETEMPLATE'                        => '[TR]These error(s) occured',
+'OXCHKVERSION_VERSION'                                     => '[TR]Version',
+'OXCHKVERSION_EDITION'                                     => '[TR]Edition',
+'OXCHKVERSION_REVISION'                                    => '[TR]Revision',
+'OXCHKVERSION_SUMMARY'                                     => '[TR]Summary',
+'OXCHKVERSION_HINTS'                                       => '[TR]Hints',
+'OXCHKVERSION_OK'                                          => '[TR]OK',
+'OXCHKVERSION_MODIFIED'                                    => '[TR]Modified',
+'OXCHKVERSION_OBSOLETE'                                    => '[TR]Obsolete',
+'OXCHKVERSION_VERSION_MISMATCH'                            => '[TR]Version mismatch',
+'OXCHKVERSION_UNKNOWN'                                     => '[TR]Unknown',
+'OXCHKVERSION_NUMBER_OF_INVESTIGATED_FILES'                => '[TR]Number of investigated files in total',
+'OXCHKVERSION_SHOP_DOES_NOT_FIT'                           => '[TR]This OXID eShop does not fit 100%',
+'OXCHKVERSION_SHOP_ORIGINAL'                               => '[TR]This OXID eShop was not modified and is fully original',
+
+'OXCHKVERSION_ERRORMESSAGEWEBSERVICEISNOTREACHABLE'        => '[TR]WebService is not available currently. Please try again later.',
+'OXCHKVERSION_ERRORMESSAGEWEBSERVICERETURNEDNOXML'         => '[TR]WebService returned not a XML.',
+'OXCHKVERSION_ERRORMESSAGEVERSIONDOESNOTEXIST'             => '[TR]OXID eShop %s %s in Revision %s does not exist.',
+'OXCHKVERSION_ERRORVERSIONCOMPARE'                         => '[TR]This text is not supposed to be here. Please try again. If it still appears, call OXID support.',
+'OXCHKVERSION_MODIFIEDHINTS1'                              => '[TR]OXID eShop has sophisticated possibility to extend it by modules without changing shipped files. It\'s not recommended and not needed to change shop files. See also our <a href="http://www.oxidforge.org/wiki/Tutorials#How_to_Extend_OXID_eShop_With_Modules_.28Part_1.29" target=_blank>tutorials</a>.',
+'OXCHKVERSION_MODIFIEDHINTS2'                              => '[TR]Since OXID eShop 4.2.0 it\'s possible to use <a href="http://www.oxidforge.org/wiki/Downloads/4.2.0#New_Features" target=_blank>your own templates without changing shipped ones</a>.',
+'OXCHKVERSION_VERSIONMISMATCHHINTS'                        => '[TR]Apparently one or more updates went wrong. See details link for more information about more details for each file. A left over file which is not any longer included in OXID eShop could also be a <u>possible</u> reason for version mismatch. For more information see <a href="http://www.oxid-esales.com/en/resources/help-faq/manual-eshop-pe-ce-4-0-0-0/upgrade-update-eshop" target=_blank>handbook</a>.',
+
+'OLC_ERROR_SERIAL_NOT_VALID'                               => '[TR]License key check failed. Try again or contact support if this occurs permanently.',
+'OLC_ERROR_RESPONSE_NOT_VALID'                             => '[TR]Service unavailable, try again later.. If this persists, please check that your shop can make outgoing connections.',
+'OLC_ERROR_REQUEST_FAILED'                                 => '[TR]Service unavailable, try again later.. If this persists, please check that your shop can make outgoing connections.',
+'OLC_ERROR_RESPONSE_UNEXPECTED'                            => '[TR]Service unavailable, try again later.. If this persists, please check that your shop can make outgoing connections.',
+
 );
 
 /*

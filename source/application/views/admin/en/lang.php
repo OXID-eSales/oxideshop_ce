@@ -1694,7 +1694,7 @@ $aLang = array(
 'mxshopsett'                                               => 'Shop Settings',
 'mxsysinfo'                                                => 'System Info',
 'mxsysreq'                                                 => 'System health',
-'mxversioncheck'                                           => 'Version checker',
+'mxversioncheck'                                           => 'Version check',
 'mxtools'                                                  => 'Tools',
 'mxtheme'                                                  => 'Themes',
 'mxmodule'                                                 => 'Modules',
@@ -2050,8 +2050,8 @@ $aLang = array(
 
 'BUTTON_DOWNLOAD'                                          => 'Download',
 
-'OXCHKVERSION_MAIN_TITLE'                                  => 'Shop Version Checker',
-'OXCHKVERSION_INTROINFORMATION'                            => 'This script is intended to check consistency of your OXID eShop. It collects names of php files and templates, detects their MD5 checksum, connects for each file to OXID\'s webservice to determine if it fits this shop version.',
+'OXCHKVERSION_MAIN_TITLE'                                  => 'Version check of your OXID eShop',
+'OXCHKVERSION_INTROINFORMATION'                            => 'This script is intended to check consistency of your OXID eShop. It collects names of php files and templates, detects their MD5 checksum, connects for each file to OXID\'s web service to determine if it fits this shop version.',
 'OXCHKVERSION_INTROINFORMATION_NO_PERSONAL_INFO'           => 'It does neither collect nor transmit any license or personal information.',
 'OXCHKVERSION_INTROINFORMATION_DATA_TRANSMITTED'           => 'Data to be transmitted to OXID is:',
 'OXCHKVERSION_INTROINFORMATION_FILENAME_TO_BE_CHECKED'     => 'Filename to be checked',
@@ -2066,8 +2066,8 @@ $aLang = array(
 'OXCHKVERSION_FORM_LIST_ALL_FILES'                         => 'List all files (also those which were OK)',
 'OXCHKVERSION_FORM_START_CHECK'                            => 'Start to check this eShop right now (may take some time)',
 
-'OXCHKVERSION_RESULT_SUCCESSFUL'                           => 'System check successful.',
-'OXCHKVERSION_RESULT'                                      => 'Version Checker Result',
+'OXCHKVERSION_RESULT_SUCCESSFUL'                           => 'Version check successful.',
+'OXCHKVERSION_RESULT'                                      => 'Version check result',
 'OXCHKVERSION_DOWNLOAD_FILE'                               => 'Click here to download the result file',
 'OXCHKVERSION_ERRORMESSAGETEMPLATE'                        => 'These error(s) occured',
 'OXCHKVERSION_VERSION'                                     => 'Version',
@@ -2084,13 +2084,13 @@ $aLang = array(
 'OXCHKVERSION_SHOP_DOES_NOT_FIT'                           => 'This OXID eShop does not fit 100%',
 'OXCHKVERSION_SHOP_ORIGINAL'                               => 'This OXID eShop was not modified and is fully original',
 
-'OXCHKVERSION_ERRORMESSAGEWEBSERVICEISNOTREACHABLE'        => 'WebService is not available currently. Please try again later.',
-'OXCHKVERSION_ERRORMESSAGEWEBSERVICERETURNEDNOXML'         => 'WebService returned not a XML.',
+'OXCHKVERSION_ERRORMESSAGEWEBSERVICEISNOTREACHABLE'        => 'Web service is not available currently. Please try again later.',
+'OXCHKVERSION_ERRORMESSAGEWEBSERVICERETURNEDNOXML'         => 'Web service returned not a XML.',
 'OXCHKVERSION_ERRORMESSAGEVERSIONDOESNOTEXIST'             => 'OXID eShop %s %s in Revision %s does not exist.',
-'OXCHKVERSION_ERRORVERSIONCOMPARE'                         => 'This text is not supposed to be here. Please try again. If it still appears, call OXID support.',
+'OXCHKVERSION_ERRORVERSIONCOMPARE'                         => 'This text is not supposed to be here. Please try again.',
 'OXCHKVERSION_MODIFIEDHINTS1'                              => 'OXID eShop has sophisticated possibility to extend it by modules without changing shipped files. It\'s not recommended and not needed to change shop files. See also our <a href="http://www.oxidforge.org/wiki/Tutorials#How_to_Extend_OXID_eShop_With_Modules_.28Part_1.29" target=_blank>tutorials</a>.',
 'OXCHKVERSION_MODIFIEDHINTS2'                              => 'Since OXID eShop 4.2.0 it\'s possible to use <a href="http://www.oxidforge.org/wiki/Downloads/4.2.0#New_Features" target=_blank>your own templates without changing shipped ones</a>.',
-'OXCHKVERSION_VERSIONMISMATCHHINTS'                        => 'Apparently one or more updates went wrong. See details link for more information about more details for each file. A left over file which is not any longer included in OXID eShop could also be a <u>possible</u> reason for version mismatch. For more information see <a href="http://www.oxid-esales.com/en/resources/help-faq/manual-eshop-pe-ce-4-0-0-0/upgrade-update-eshop" target=_blank>handbook</a>.'
+'OXCHKVERSION_VERSIONMISMATCHHINTS'                        => 'Apparently one or more updates went wrong. See details link for more information about more details for each file. A left over file which is not any longer included in OXID eShop could also be a <u>possible</u> reason for version mismatch. Find information about update in our <a href="http://www.oxid-esales.com/en/support-services/documentation-and-help/oxid-eshop/installation/oxid-eshop-update-installation" target=_blank>Documentation and help</a>.'
 
 );
 

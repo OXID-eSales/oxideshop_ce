@@ -416,7 +416,7 @@ a.viewAllHover,
 .specBoxTitles a.title:hover,
 .actionLinks li:hover {
     background: #ec6105 url("../bg/svg/grad_orange.svg");
-    background: -moz-linear-gradient(#ff8604, #lc6105);
+    background: -moz-linear-gradient(#ff8604, #ec6105);
     background: -ms-linear-gradient(#ff8604, #ec6105);
     background: -webkit-gradient(linear, left top, left bottom, from(#ff8604), to(#ec6105));
     background: -webkit-linear-gradient(#ff8604, #ec6105);
@@ -428,7 +428,7 @@ a.viewAllHover,
 .FXgradBlueLight, .fbEnableButton {
     background: #ffffff url("../bg/svg/grad_light_blue.svg");
     background: -moz-linear-gradient(#fff, #d7e3f1);
-    background: -ms-linear-gradient(#fff, #khgjhh);
+    background: -ms-linear-gradient(#fff, #d7e3f1);
     background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#d7e3f1));
     background: -webkit-linear-gradient(#fff, #d7e3f1);
     background: -o-linear-gradient(#fff, #d7e3f1);

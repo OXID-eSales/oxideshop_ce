@@ -24,39 +24,60 @@
 require_once realpath( "." ).'/unit/OxidTestCase.php';
 require_once realpath( "." ).'/unit/test_config.inc.php';
 
-class Unit_Core_oxDirectoryTest extends OxidTestCase
+class Unit_Core_oxFileCollectorTest extends OxidTestCase
 {
 
     /**
-     * Testing file list validation method     *
+     * Testing directory file list collecting     *
      */
-    public function testFileExists()
+    public function testAddDirectoryFilesWithExtensions()
     {
-        $oDirReader = oxNew( "oxDirectory" );
+        //TODO check adding directories recursively
+
+        $oDirReader = oxNew( "oxFileCollector" );
         $oDirReader->setBaseDirectory( oxConfig::getInstance()->getConfigParam( "sShopDir") );
 
-        $this->assertTrue( $oDirReader->fileExists("bin/cron.php") );
-        $this->assertFalse( $oDirReader->fileExists("bin/cron.log") );
+        $oDirReader->addDirectoryFiles( 'bin/', array( 'php', 'tpl' ) );
+        $aResultExistingPHP = $oDirReader->getFiles();
+
+        $this->assertEquals( 1, count( $aResultExistingPHP ) );
+        $this->assertContains( 'bin/cron.php', $aResultExistingPHP );
     }
 
     /**
-     * Testing file list validation method     *
+     * Testing directory file list collecting     *
      */
-    public function testGetDirectoryFiles()
+    public function testAddDirectoryFilesWithoutExtensions()
     {
-        $oDirReader = oxNew( "oxDirectory" );
+        $oDirReader = oxNew( "oxFileCollector" );
         $oDirReader->setBaseDirectory( oxConfig::getInstance()->getConfigParam( "sShopDir") );
 
-        $aResultExistingPHP = $oDirReader->getDirectoryFiles( 'bin/', array( 'php', 'tpl' ) );
-        $aResultExistingAll = $oDirReader->getDirectoryFiles( 'bin/' );
+        $oDirReader->addDirectoryFiles( 'bin/' );
+        $aResultExistingAll = $oDirReader->getFiles();
 
-        $this->assertEquals( 1, count($aResultExistingPHP) );
-        $this->assertContains( 'bin/cron.php', $aResultExistingPHP );
-
-        $this->assertEquals( 3, count($aResultExistingAll) );
+        $this->assertEquals( 3, count( $aResultExistingAll ) );
         $this->assertContains( 'bin/.htaccess', $aResultExistingAll );
         $this->assertContains( 'bin/cron.php',  $aResultExistingAll );
         $this->assertContains( 'bin/log.txt',   $aResultExistingAll );
 
     }
+
+    /**
+     * Testing adding files to collection     *
+     */
+    public function testAddFile()
+    {
+        $oDirReader = oxNew( "oxFileCollector" );
+        $oDirReader->setBaseDirectory( oxConfig::getInstance()->getConfigParam( "sShopDir") );
+
+        $oDirReader->addFile( 'index.php' );
+        $oDirReader->addFile( 'bin/nofile.php' );
+        $oDirReader->addFile( 'bin/cron.php' );
+        $aResult = $oDirReader->getFiles();
+
+        $this->assertEquals( 2, count( $aResult ) );
+        $this->assertContains( 'bin/cron.php', $aResult );
+        $this->assertContains( 'index.php', $aResult );
+    }
+
 }

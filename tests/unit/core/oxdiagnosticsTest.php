@@ -28,62 +28,29 @@ class Unit_Core_oxDiagnosticsTest extends OxidTestCase
 {
 
     /**
-     * Testing version getter and setter
+     * Testing FileCheckerPathList getter and setter
      */
-    public function testGetVersion()
+    public function testGetFileCheckerPathList()
     {
-        $oChecker = oxNew( "oxDiagnostics" );
-        $oChecker->setVersion( "v123" );
+        $oDiagnostics = oxNew( "oxDiagnostics" );
+        $oDiagnostics->setFileCheckerPathList( array( "admin", "views" ) );
 
-        $this->assertEquals( "v123",  $oChecker->getVersion() );
+        $this->assertEquals( 2,  count( $oDiagnostics->getFileCheckerPathList() ) );
+        $this->assertContains( "admin",  $oDiagnostics->getFileCheckerPathList() );
+        $this->assertContains( "views",  $oDiagnostics->getFileCheckerPathList() );
     }
 
     /**
-     * Testing edition getter and setter
+     * Testing FileCheckerPathList getter and setter
      */
-    public function testGetEdition()
+    public function testGetFileCheckerExtensionList()
     {
-        $oChecker = oxNew( "oxDiagnostics" );
-        $oChecker->setEdition( "e123" );
+        $oDiagnostics = oxNew( "oxDiagnostics" );
+        $oDiagnostics->setFileCheckerExtensionList( array( "ex1", "ex2" ) );
 
-        $this->assertEquals( "e123",  $oChecker->getEdition() );
-    }
-
-    /**
-     * Testing revision getter and setter
-     */
-    public function testGetRevision()
-    {
-        $oChecker = oxNew( "oxDiagnostics" );
-        $oChecker->setRevision( "r123" );
-
-        $this->assertEquals( "r123",  $oChecker->getRevision() );
-    }
-
-    /**
-     * Testing base directory getter and setter
-     */
-    public function testGetBaseDirectory()
-    {
-        $oChecker = oxNew( "oxDiagnostics" );
-        $oChecker->setBaseDirectory( "somedir" );
-
-        $this->assertEquals( "somedir",  $oChecker->getBaseDirectory() );
-    }
-
-
-    /**
-     * Testing revision getter and setter
-     */
-    public function testGetListAllFiles()
-    {
-        $oChecker = oxNew( "oxDiagnostics" );
-
-        $oChecker->setListAllFiles( true );
-        $this->assertTrue( $oChecker->getListAllFiles() );
-
-        $oChecker->setListAllFiles( false );
-        $this->assertFalse( $oChecker->getListAllFiles() );
+        $this->assertEquals( 2,  count( $oDiagnostics->getFileCheckerExtensionList() ) );
+        $this->assertContains( "ex1",  $oDiagnostics->getFileCheckerExtensionList() );
+        $this->assertContains( "ex2",  $oDiagnostics->getFileCheckerExtensionList() );
     }
 
 

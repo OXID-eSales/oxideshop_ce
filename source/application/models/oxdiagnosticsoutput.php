@@ -35,7 +35,7 @@ class oxDiagnosticsOutput {
      *
      * @var string
      */
-    protected $_sOutputKey             = "version_check";
+    protected $_sOutputKey             = "diagnostic_tool_result";
 
 
     /**
@@ -43,7 +43,7 @@ class oxDiagnosticsOutput {
      *
      * @var string
      */
-    protected $_sOutputFileName        = "version_check.html";
+    protected $_sOutputFileName        = "diagnostic_tool_result.html";
 
     /**
      * Utils object
@@ -104,7 +104,6 @@ class oxDiagnosticsOutput {
         return $this->_sOutputFileName;
     }
 
-
     /**
      * Stores result file in file cache
      *
@@ -112,9 +111,8 @@ class oxDiagnosticsOutput {
      */
     public function storeResult( $sResult )
     {
-        $this->_oUtils->toFileCache( $this->_sOutputKey, $sResult );
+        $this->_oUtils->toFileCache( $this->_sOutputKey, $sBody . $sResult );
     }
-
 
     /**
      * Reads exported result file contents

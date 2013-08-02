@@ -23,12 +23,12 @@
 
 /**
  * Directory reader.
- * Performs reading and checking of shop files list
+ * Performs reading of file list of one shop directory
  *
  * @package model
  */
 
-class oxDirectory
+class oxFileCollector
 {
     /**
      * base directory
@@ -37,6 +37,12 @@ class oxDirectory
      */
     protected $_sBaseDirectory;
 
+    /**
+     * array of collected files
+     *
+     * @var array
+     */
+    protected $_aFiles;
 
     /**
      * Setter for working directory
@@ -52,16 +58,41 @@ class oxDirectory
     }
 
     /**
-     * checks if file path exists, relative to shop base directory
+     * get collection files
      *
-     * @param string $sFile
-     *
-     * @return boolean
+     * @return mixed
      */
-    public function fileExists( $sFilePath )
+    public function getFiles()
     {
-        return is_file( $this->_sBaseDirectory . $sFilePath );
+        return $this->_aFiles;
     }
+
+    /**
+     * Add one file to collection if it exists
+     *
+     * @param string $sFile file name to add to collection
+     * @throws Exception
+     * @return null
+     */
+    public function addFile( $sFile )
+    {
+        if ( empty( $sFile ) ) {
+            throw new Exception( 'Parameter $sFile is empty!' );
+        }
+
+        if ( empty( $this->_sBaseDirectory ) ) {
+            throw new Exception( 'Base directory is not set, please use setter setBaseDirectory!' );
+    }
+
+        if ( is_file( $this->_sBaseDirectory .  $sFile ) ) {
+
+            $this->_aFiles[] = $sFile;
+            return true;
+        }
+
+        return false;
+    }
+
 
     /**
      * browse all folders and sub-folders after files which have given extensions
@@ -70,9 +101,9 @@ class oxDirectory
      * @param array $aExtensions list of extensions to scan - if empty all files are taken
      * @param boolean $blRecursive should directories be checked in recursive manner
      * @throws exception
-     * @return array list of files in given directory
+     * @return null
      */
-    public function getDirectoryFiles( $sFolder, $aExtensions = array(), $blRecursive = false )
+    public function addDirectoryFiles( $sFolder, $aExtensions = array(), $blRecursive = false )
     {
         if ( empty( $sFolder ) ) {
             throw new Exception( 'Parameter $sFolder is empty!' );
@@ -85,22 +116,21 @@ class oxDirectory
         $aCurrentList = array();
 
         if (!is_dir( $this->_sBaseDirectory . $sFolder ) ) {
-            return $aCurrentList;
+            return;
         }
 
         $handle = opendir( $this->_sBaseDirectory . $sFolder );
 
-        while ( $sFile = readdir( $handle ) )
-        {
+        while ( $sFile = readdir( $handle ) ){
 
-            if ( $sFile != "." && $sFile != "..")
-            {
+            if ( $sFile != "." && $sFile != "..") {
+                if ( is_dir( $this->_sBaseDirectory . $sFolder . $sFile ) ) {
+                    if ( $blRecursive ) {
+                        $aResultList = $this->addDirectoryFiles( $sFolder . $sFile . '/', $aExtensions, $blRecursive );
 
-                if ( is_dir( $this->_sBaseDirectory . $sFolder . $sFile ) )
-                {
-                    if ( $blRecursive )
-                    {
-                        $aCurrentList = array_merge( $aCurrentList, $this->getDirectoryFiles( $sFolder . $sFile . '/', $aExtensions, $blRecursive ) );
+                        if ( is_array( $aResultList ) ) {
+                            $aCurrentList = array_merge( $aCurrentList, $aResultList );
+                        }
                     }
                 }
                 else
@@ -110,16 +140,12 @@ class oxDirectory
                     if ( ( !empty( $aExtensions ) && is_array( $aExtensions ) && in_array( $sExt, $aExtensions ) ) ||
                          ( empty( $aExtensions ) ) ) {
 
-                        if ( is_file( $this->_sBaseDirectory . $sFolder . $sFile ) ) {
-                            $aCurrentList[] = $sFolder . $sFile;
-                        }
+                        $this->addFile( $sFolder . $sFile );
                     }
                 }
             }
         }
         closedir( $handle );
-
-        return $aCurrentList;
     }
 
 }

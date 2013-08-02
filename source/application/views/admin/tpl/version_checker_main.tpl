@@ -29,7 +29,7 @@
 [{else}]
     <form name="myedit" id="myedit" action="[{ $oViewConf->getSelfLink() }]" onsubmit="handleSubmit()" method="post">
         <input type="hidden" name="cl" value="version_checker_main">
-        <input type="hidden" name="fnc" value="startCheck">
+        <input type="hidden" name="fnc" value="startDiagnostic">
         <input type="checkbox" name="listAllFiles" value="listAllFiles" id="listAllFiles">
         <label for="listAllFiles">[{ oxmultilang ident="OXCHKVERSION_FORM_LIST_ALL_FILES" }]</label>
         <br><br>

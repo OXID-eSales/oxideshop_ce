@@ -30,6 +30,20 @@ class version_checker_main extends oxAdminDetails
 {
 
     /**
+     * error tag
+     *
+     * @var boolean
+     */
+    protected $_blError          = false;
+
+    /**
+     * error message
+     *
+     * @var string
+     */
+    protected $_sErrorMessage   = null;
+
+    /**
      * Diagnostic check object
      *
      * @var mixed
@@ -52,16 +66,44 @@ class version_checker_main extends oxAdminDetails
 
 
     /**
+     * Variable for storing shop root directory
+     *
+     * @var mixed|string
+     */
+    protected $_sShopDir = '';
+
+    /**
+     * Error status getter
+     *
+     * @return string
+     */
+    private function _hasError()
+    {
+        return $this->_blError;
+    }
+
+    /**
+     * Error status getter
+     *
+     * @return string
+     */
+    private function _getErrorMessage()
+    {
+        return $this->_sErrorMessage;
+    }
+
+
+
+    /**
      * Calls parent costructor and initializes checker object
      *
-     * @return null
      */
     public function __construct()
     {
         parent::__construct();
 
-        $this->_oDiagnostics = oxNew( 'oxDiagnostics' );
-        $this->_oResultReport = oxNew ( "oxDiagnosticsReport" );
+        $this->_sShopDir = $this->getConfig()->getConfigParam( 'sShopDir' );
+
         $this->_oOutput = oxNew ( "oxDiagnosticsOutput" );
     }
 
@@ -74,11 +116,94 @@ class version_checker_main extends oxAdminDetails
     {
         parent::render();
 
-        if ( $this->_oDiagnostics->hasError() ) {
-            $this->_aViewData['sErrorMessage'] = $this->_oDiagnostics->getErrorMessage();
+        if ( $this->_hasError() ) {
+            $this->_aViewData['sErrorMessage'] = $this->_getErrorMessage();
         }
 
         return "version_checker_main.tpl";
+    }
+
+    /**
+     * Gets list of files to be checked
+     *
+     * @return array list of shop files to be checked
+     */
+    private function _getFilesToCheck()
+    {
+        $oDiagnostics = oxNew( 'oxDiagnostics' );
+        $aFilePathList = $oDiagnostics->getFileCheckerPathList();
+        $aFileExtensionList = $oDiagnostics->getFileCheckerExtensionList();
+
+        $oFileCollector = oxNew ( "oxFileCollector" );
+        $oFileCollector->setBaseDirectory( $this->_sShopDir );
+
+        foreach ( $aFilePathList as $sPath ) {
+            if ( is_file( $this->_sShopDir . $sPath ) ) {
+                $oFileCollector->addFile( $sPath );
+            }
+            elseif ( is_dir( $this->_sShopDir . $sPath ) ) {
+                $oFileCollector->addDirectoryFiles( $sPath, $aFileExtensionList, true );
+            }
+        }
+
+        return $oFileCollector->getFiles();
+    }
+
+    /**
+     * Checks versions for list of oxid files
+     *
+     * @param $aFileList array list of files to be checked
+     * @return null|object
+     */
+    private function _checkOxidFiles( $aFileList )
+    {
+        $oFileChecker = oxNew ( "oxFileChecker" );
+        $oFileChecker->setBaseDirectory( $this->_sShopDir );
+        $oFileChecker->setVersion( $this->getConfig()->getVersion() );
+        $oFileChecker->setEdition( $this->getConfig()->getEdition() );
+        $oFileChecker->setRevision( $this->getConfig()->getRevision() );
+
+        if ( $this->getConfig()->getRequestParameter('listAllFiles') == 'listAllFiles' ) {
+            $oFileChecker->setListAllFiles ( true );
+        }
+
+        if ( !$oFileChecker->init() ) {
+            $this->_blError = true;
+            $this->_sErrorMessage = $oFileChecker->getErrorMessage();
+            return null;
+        }
+
+        $oFileCheckerResult = oxNew( "oxFileCheckerResult" );
+
+        foreach ( $aFileList as $sFile ) {
+            $aCheckResult = $oFileChecker->checkFile( $sFile );
+
+            if ( empty($aCheckResult) )
+                continue;
+
+            $oFileCheckerResult->addResult( $aCheckResult );
+        }
+
+        return $oFileCheckerResult;
+        }
+
+    /**
+     * Returns body of file check report
+     *
+     * @param  $oFileCheckerResult mixed file checker result object
+     * @return string body of report
+     */
+    private function _getFileCheckReport( $oFileCheckerResult )
+    {
+        $this->_oResultReport = oxNew ( "oxDiagnosticsReport" );
+
+        $this->_oResultReport->setVersion( $this->getConfig()->getVersion() );
+        $this->_oResultReport->setEdition( $this->getConfig()->getEdition() );
+        $this->_oResultReport->setRevision( $this->getConfig()->getRevision() );
+        $this->_oResultReport->setHomeLink( $this->getConfig()->getCurrentShopUrl() );
+        $this->_oResultReport->setFileCheckerResult( $oFileCheckerResult );
+
+        return $this->_oResultReport->getFileCheckerReport();
     }
 
     /**
@@ -86,37 +211,19 @@ class version_checker_main extends oxAdminDetails
      *
      * @return string
      */
-    public function startCheck()
+    public function startDiagnostic()
     {
+        $aFileList = $this->_getFilesToCheck();
 
+        $oFileCheckerResult = $this->_checkOxidFiles( $aFileList );
 
-        $this->_oDiagnostics->setBaseDirectory( $this->getConfig()->getConfigParam( 'sShopDir' ) );
-        $this->_oDiagnostics->setVersion( $this->getConfig()->getVersion() );
-        $this->_oDiagnostics->setEdition( $this->getConfig()->getEdition() );
-        $this->_oDiagnostics->setRevision( $this->getConfig()->getRevision() );
-
-        if ( $this->getConfig()->getRequestParameter('listAllFiles') == 'listAllFiles' ) {
-            $this->_oDiagnostics->setListAllFiles ( true );
-        }
-
-        if ( !$this->_oDiagnostics->init() ) {
+        if ( $this->_hasError() ) {
             return;
         }
 
-        $this->_oDiagnostics->checkFiles();
+        $sReport = $this->_getFileCheckReport( $oFileCheckerResult );
 
-        if ( $this->_oDiagnostics->hasError() ) {
-            return;
-        }
-
-        $this->_oResultReport->setVersion( $this->getConfig()->getVersion() );
-        $this->_oResultReport->setEdition( $this->getConfig()->getEdition() );
-        $this->_oResultReport->setRevision( $this->getConfig()->getRevision() );
-        $this->_oResultReport->setHomeLink( $this->getConfig()->getCurrentShopUrl() );
-        $this->_oResultReport->setFileCheckerResult( $this->_oDiagnostics->getResult() );
-        $this->_oResultReport->setFileCheckerResultSummary( $this->_oDiagnostics->getResultSummary() );
-
-        $this->_oOutput->storeResult( $this->_oResultReport->getFileCheckerReport() );
+        $this->_oOutput->storeResult( $sReport );
 
         $sResult = $this->_oOutput->readResultFile();
         $this->_aViewData['sResult'] = $sResult;

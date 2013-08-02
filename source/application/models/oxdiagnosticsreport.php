@@ -58,20 +58,6 @@ class oxDiagnosticsReport {
     private $_sHomeLink = "";
 
     /**
-     * For result output
-     *
-     * @var mixed
-     */
-    private $_aFileCheckerResult = array();
-
-    /**
-     * Counts number of matches for each type of result
-     *
-     * @var array
-     */
-    private $_aFileCheckerResultSummary = array();
-
-    /**
      * Setter for home link
      *
      * @param $sLink string
@@ -92,50 +78,6 @@ class oxDiagnosticsReport {
     public function getHomeLink()
     {
         return $this->_sHomeLink;
-    }
-
-    /**
-     * Setter for file Checker result data
-     *
-     * @param $aFileCheckerResult mixed
-     */
-    public function setFileCheckerResult( $aFileCheckerResult )
-    {
-        if ( !empty( $aFileCheckerResult ) ) {
-            $this->_aFileCheckerResult = $aFileCheckerResult;
-        }
-    }
-
-    /**
-     * Getter for file Checker result data
-     *
-     * @return mixed
-     */
-    public function getFileCheckerResult()
-    {
-        return $this->_aFileCheckerResult;
-    }
-
-    /**
-     * Setter for file Checker result summary data
-     *
-     * @param $aFileCheckerResultSummary mixed
-     */
-    public function setFileCheckerResultSummary( $aFileCheckerResultSummary )
-    {
-        if ( !empty( $aFileCheckerResultSummary ) ) {
-            $this->_aFileCheckerResultSummary = $aFileCheckerResultSummary;
-        }
-    }
-
-    /**
-     * Getter for file Checker result summary data
-     *
-     * @return mixed
-     */
-    public function getFileCheckerResultSummary()
-    {
-        return $this->_aFileCheckerResultSummary;
     }
 
     /**
@@ -217,8 +159,8 @@ class oxDiagnosticsReport {
         $oSmarty->assign( "sEdition", $this->getEdition() );
         $oSmarty->assign( "sRevision", $this->getRevision() );
         $oSmarty->assign( "sVersionTag",  $this->getEdition() ."_". $this->getVersion() ."_". $this->getRevision() );
-        $oSmarty->assign( "aResultSummary", $this->getFileCheckerResultSummary() );
-        $oSmarty->assign( "aResultOutput", $this->getFileCheckerResult() );
+        $oSmarty->assign( "aResultSummary", $this->_oFileCheckerResult->getResultSummary() );
+        $oSmarty->assign( "aResultOutput", $this->_oFileCheckerResult->getResult() );
         $oSmarty->assign( "sDateTime", date( oxRegistry::getLang()->translateString( 'fullDateFormat' ), time() ) );
         $oSmarty->assign( "sSelfLink", $this->getHomeLink() );
 

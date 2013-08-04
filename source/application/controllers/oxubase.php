@@ -3175,4 +3175,13 @@ class oxUBase extends oxView
         return false;
     }
 
+    /**
+     * Get widget link for Ajax calls
+     *
+     * @return string
+     */
+    public function getWidgetLink()
+    {
+        return oxRegistry::getConfig()->getWidgetUrl();
+    }
 }

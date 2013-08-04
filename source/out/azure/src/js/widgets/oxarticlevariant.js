@@ -22,8 +22,8 @@
  */
 ( function ( $ ) {
 
-    oxArticleVariant = {
 
+    oxWidgetReload = {
         _create: function() {
 
             var self = this;
@@ -35,7 +35,7 @@
             $("ul.vardrop a").click(function() {
 
                 var obj = $( this );
-
+                self.reselect();
                 // resetting
                 if ( obj.parents().hasClass("js-disabled") ) {
                     self.resetVariantSelections();
@@ -47,7 +47,7 @@
                 if ( obj.parents().hasClass("js-fnSubmit") ){
                     obj.parent('li').parent('ul').siblings('input:hidden').attr( "value", obj.attr("data-selection-id") );
 
-                    var form = obj.closest("form");
+                    var form = $("form.js-oxWidgetReload");
                     $('input[name=fnc]', form).val("");
                     form.submit();
                 }
@@ -59,61 +59,66 @@
              */
             $('div.variantReset a').click( function () {
                 self.resetVariantSelections();
-                var obj = $( this );
-                var form = obj.closest("form");
+                var form = $("form.js-oxWidgetReload");
                 $('input[name=fnc]', form).val("");
                 form.submit();
                 return false;
             });
-
-            $("form.js-oxProductForm").submit(function () {
+            function submitFunc( target ) {
+                var aOptions = {};
                 if (!$("input[name='fnc']", this).val()) {
                     if (($( "input[name=aid]", this ).val() == $( "input[name=parentid]", this ).val() )) {
-                        var aSelectionInputs = $("input[name^=varselid]", this);
+                        var aSelectionInputs = $("input[name^=varselid]", $("form.js-oxProductForm"));
                         if (aSelectionInputs.length) {
                             var hash = '';
+                            var sHash = '';
                             aSelectionInputs.not("*[value='']").each(function(i){
                                 hash = hash+i+':'+$(this).val()+"|";
+                                aOptions[$(this).attr( "name" )] = $(this).val();
+                                sHash = $(this).val();
                             });
                             if ( jQuery.inArray( hash, oxVariantSelections ) === -1 ) {
-                                return self.reloadProductPartially( $("form.js-oxProductForm"), 'detailsMain', $("#detailsMain"), $("#detailsMain")[0]);
+                                return self.reload( $(target), 'detailsMain', $("#details"), $("#details")[0], aOptions);
                             }
                         }
                     }
-                    return self.reloadProductPartially($("form.js-oxProductForm"),'productInfo',$("#productinfo"),$("#productinfo")[0]);
+                    return self.reload( $(target),'productInfo',$("#details"),$("#details")[0], aOptions);
                 }
-            });
-
+            }
+            $("form.js-oxWidgetReload").submit(function () { return submitFunc( "form.js-oxWidgetReload" ) });
+            $("form.js-oxProductForm").submit(function() { submitFunc( "form.js-oxProductForm" ) });
         },
 
         /**
-         * Runs defined scripts inside the method, before ajax is called
+         * Select actually selected options, and not the ones from browser cache
          */
-        _preAjaxCaller : function()
-        {
-            $('#zoomModal').remove();
+        reselect: function() {
+            var obj = $("input[name^=varselid]");
+            obj.each( function() {
+                var selected = this.parentNode.querySelector( ".selected" );
+                if ( selected !== null ) {
+                    this.value = selected.getAttribute("data-selection-id"); // not jquery, javascript !
+                } else {
+                    this.value = "";
+                }
+            });
         },
 
-        reloadProductPartially : function(activator, renderPart, highlightTargets, contentTarget) {
-
-            // calls some scripts before the ajax starts
+        reload: function(activator, renderPart, highlightTargets, contentTarget, aOptions) {
             this._preAjaxCaller();
-
             oxAjax.ajax(
-                activator,
-                {//targetEl, onSuccess, onError, additionalData
+                activator, {//targetEl, onSuccess, onError, additionalData
                     'targetEl'  : highlightTargets,
                     'iconPosEl' : $("#variants .dropDown"),
-                    'additionalData' : {'renderPartial' : renderPart},
+                    'additionalData' : aOptions,
                     'onSuccess' : function(r) {
-                        contentTarget.innerHTML = r['content'];
-                        oxAjax.evalScripts(contentTarget);
+                        contentTarget.innerHTML = r;
+                        init_oxwdetailspage();
                     }
                 }
             );
             return false;
         },
-
         resetVariantSelections : function()
         {
             var aVarSelections = $( "form.js-oxProductForm input[name^=varselid]" );
@@ -121,10 +126,15 @@
                 $( aVarSelections[i] ).attr( "value", "" );
             }
             $( "form.js-oxProductForm input[name=anid]" ).attr( "value", $( "form.js-oxProductForm input[name=parentid]" ).attr( "value" ) );
+        },
+        /**
+         * Runs defined scripts inside the method, before ajax is called
+         */
+        _preAjaxCaller : function()
+        {
+            $('#zoomModal').remove();
         }
-
     }
-
-    $.widget("ui.oxArticleVariant", oxArticleVariant );
+    $.widget("ui.oxWidgetReload", oxWidgetReload );
 
 })( jQuery );

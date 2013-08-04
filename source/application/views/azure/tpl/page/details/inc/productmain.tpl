@@ -15,6 +15,17 @@
     [{oxscript add="oxVariantSelections  = [`$_sSelectionHashCollection`];"}]
 [{/if}]
 
+<form class="js-oxWidgetReload" action="[{$oView->getWidgetLink()}]" method="get">
+    <div>
+        <input type="hidden" name="cl" value="[{$oView->getClassName()}]">
+        <input type="hidden" name="oxwparent" value="[{$oViewConf->getTopActiveClassName()}]">
+        <input type="hidden" name="listtype" value="[{$oView->getListType()}]">
+        <input type="hidden" name="nocookie" value="1">
+        <input type="hidden" name="cnid" value="[{$oView->getCategoryId()}]">
+        <input type="hidden" name="anid" value="[{if !$oDetailsProduct->oxarticles__oxparentid->value}][{$oDetailsProduct->oxarticles__oxid->value}][{else}][{$oDetailsProduct->oxarticles__oxparentid->value}][{/if}]">
+        <input type="hidden" name="actcontrol" value="[{$oViewConf->getTopActiveClassName()}]">
+         </div>
+</form>
 [{oxhasrights ident="TOBASKET"}]
     <form class="js-oxProductForm" action="[{$oViewConf->getSelfActionLink()}]" method="post">
         <div>
@@ -35,7 +46,7 @@
     [{* article picture with zoom *}]
     [{block name="details_productmain_zoom"}]
         [{oxscript include="js/libs/cloudzoom.js" priority=10}]
-        [{if $oView->showZoomPics()}]
+        [{if $oView->getZoomPics()}]
             [{oxscript include="js/widgets/oxmodalpopup.js" priority=10 }]
             [{oxscript add="$('#zoomTrigger').oxModalPopup({target:'#zoomModal'});"}]
             <a id="zoomTrigger" rel="nofollow" href="#">Zoom</a>
@@ -151,7 +162,7 @@
             [{if $aVariantSelections && $aVariantSelections.selections }]
                 [{oxscript include="js/widgets/oxajax.js" priority=10 }]
                 [{oxscript include="js/widgets/oxarticlevariant.js" priority=10 }]
-                [{oxscript add="$( '#variants' ).oxArticleVariant();"}]
+                [{oxscript add="$( '#variants' ).oxWidgetReload(); "}]
                 [{assign var="blCanBuy" value=$aVariantSelections.blPerfectFit}]
                 <div id="variants" class="selectorsBox js-fnSubmit clear">
                     [{assign var="blHasActiveSelections" value=false}]
@@ -222,7 +233,7 @@
                 [{oxhasrights ident="SHOWARTICLEPRICE"}]
                     [{if $oDetailsProduct->getTPrice()}]
                         <p class="oldPrice">
-                            <strong>[{oxmultilang ident="REDUCED_FROM_2"}] <del>[{$oDetailsProduct->getFTPrice()}] [{$currency->sign}]</del></strong>
+                            <strong>[{oxmultilang ident="REDUCED_FROM"}] <del>[{$oDetailsProduct->getFTPrice()}] [{$currency->sign}]</del></strong>
                         </p>
                     [{/if}]
                 [{/oxhasrights}]

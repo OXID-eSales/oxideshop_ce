@@ -222,7 +222,7 @@
                 [{oxhasrights ident="SHOWARTICLEPRICE"}]
                     [{if $oDetailsProduct->getTPrice()}]
                         <p class="oldPrice">
-                            <strong>[{oxmultilang ident="REDUCED_FROM"}] <del>[{$oDetailsProduct->getFTPrice()}] [{$currency->sign}]</del></strong>
+                            <strong>[{oxmultilang ident="REDUCED_FROM_2"}] <del>[{$oDetailsProduct->getFTPrice()}] [{$currency->sign}]</del></strong>
                         </p>
                     [{/if}]
                 [{/oxhasrights}]

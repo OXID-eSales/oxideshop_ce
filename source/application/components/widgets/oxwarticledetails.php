@@ -19,10 +19,10 @@
  * @package   tests
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id: oxwdetailspage.php 56456 13.7.12 11.20Z tadas.rimkus $
+ * @version   SVN: $Id: oxwarticledetails.php 56456 13.7.12 11.20Z tadas.rimkus $
  */
 
-class oxwDetailsPage extends oxWidget
+class oxwArticleDetails extends oxWidget
 {
     /**
      * List of article variants.

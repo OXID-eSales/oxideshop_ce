@@ -930,6 +930,16 @@ class oxwDetailsPage extends oxWidget
         return $aPicGallery['Icons'];
     }
 
+    /** NEEDED
+     * Template variable getter. Returns if to show zoom pictures
+     *
+     * @return bool
+     */
+    public function showZoomPics()
+    {
+        $aPicGallery = $this->getPictureGallery();
+        return $aPicGallery['ZoomPic'];
+    }
 
     /** NEEDED
      * Template variable getter. Returns zoom pictures

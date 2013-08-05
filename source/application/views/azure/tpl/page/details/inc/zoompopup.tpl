@@ -1,6 +1,6 @@
-[{if $oView->getZoomPics()}]
+[{if $oView->showZoomPics()}]
     [{assign var="aZoomPics" value=$oView->getZoomPics()}]
-    [{assign var="iZoomPic" value=1}]
+    [{assign var="iZoomPic" value=$oView->getActZoomPic()}]
     <div id="zoomModal" class="popupBox corners FXgradGreyLight glowShadow">
         <img src="[{$oViewConf->getImageUrl('x.png')}]" alt="" class="closePop">
         <div class="zoomHead">

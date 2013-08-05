@@ -35,7 +35,7 @@
     [{* article picture with zoom *}]
     [{block name="details_productmain_zoom"}]
         [{oxscript include="js/libs/cloudzoom.js" priority=10}]
-        [{if $oView->getZoomPics()}]
+        [{if $oView->showZoomPics()}]
             [{oxscript include="js/widgets/oxmodalpopup.js" priority=10 }]
             [{oxscript add="$('#zoomTrigger').oxModalPopup({target:'#zoomModal'});"}]
             <a id="zoomTrigger" rel="nofollow" href="#">Zoom</a>
@@ -222,7 +222,7 @@
                 [{oxhasrights ident="SHOWARTICLEPRICE"}]
                     [{if $oDetailsProduct->getTPrice()}]
                         <p class="oldPrice">
-                            <strong>[{oxmultilang ident="REDUCED_FROM"}] <del>[{$oDetailsProduct->getFTPrice()}] [{$currency->sign}]</del></strong>
+                            <strong>[{oxmultilang ident="REDUCED_FROM_2"}] <del>[{$oDetailsProduct->getFTPrice()}] [{$currency->sign}]</del></strong>
                         </p>
                     [{/if}]
                 [{/oxhasrights}]

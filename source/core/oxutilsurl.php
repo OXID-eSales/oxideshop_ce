@@ -446,7 +446,9 @@ class oxUtilsUrl extends oxSuperCfg
     {
         // url building
         // replace possible ampersands, explode, and filter out empty values
-        $aNavParams = array_filter( explode( "&", str_replace( "&amp;", "&", $sValue ) ) );
+        $sValue = str_replace( "&amp;", "&", $sValue );
+        $aNavParams = explode( "&", $sValue );
+        $aNavParams = array_filter( $aNavParams );
         $aParams = array();
         foreach ( $aNavParams as $sValue ) {
             $exp = explode( "=", $sValue );

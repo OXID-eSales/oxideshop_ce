@@ -2431,4 +2431,16 @@ class Unit_Views_oxubaseTest extends OxidTestCase
         $oView = new oxUbase();
         $this->assertFalse( $oView->isVatIncluded() );
     }
+
+    /**
+     * Check that widget link is retrieved properly
+     */
+    public function testGetWidgetLink()
+    {
+        $oView = new oxUbase();
+        $this->getConfig()->setConfigParam( "sShopURL", "testshop/" );
+        $this->setLanguage( 1 );
+
+        $this->assertEquals( "testshop/widget.php?lang=1&amp;", $oView->getWidgetLink() );
+    }
 }

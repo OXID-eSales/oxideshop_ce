@@ -13,9 +13,8 @@
         [{/if}]
     [{/foreach}]
     [{oxscript add="oxVariantSelections  = [`$_sSelectionHashCollection`];"}]
-[{/if}]
 
-<form class="js-oxWidgetReload" action="[{$oView->getWidgetLink()}]" method="get">
+    <form class="js-oxWidgetReload" action="[{$oView->getWidgetLink()}]" method="get">
     <div>
         <input type="hidden" name="cl" value="[{$oView->getClassName()}]">
         <input type="hidden" name="oxwparent" value="[{$oViewConf->getTopActiveClassName()}]">
@@ -25,7 +24,8 @@
         <input type="hidden" name="anid" value="[{if !$oDetailsProduct->oxarticles__oxparentid->value}][{$oDetailsProduct->oxarticles__oxid->value}][{else}][{$oDetailsProduct->oxarticles__oxparentid->value}][{/if}]">
         <input type="hidden" name="actcontrol" value="[{$oViewConf->getTopActiveClassName()}]">
          </div>
-</form>
+    </form>
+[{/if}]
 [{oxhasrights ident="TOBASKET"}]
     <form class="js-oxProductForm" action="[{$oViewConf->getSelfActionLink()}]" method="post">
         <div>

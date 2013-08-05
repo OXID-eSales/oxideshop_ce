@@ -1,51 +1,144 @@
-[{include file="headitem.tpl" title="OXCHKVERSION_MAIN_TITLE"|oxmultilangassign}]
+[{include file="headitem.tpl" title="OXDIAG_MAIN_TITLE"|oxmultilangassign}]
 
 <script type="text/javascript">
     <!--
 
     function handleSubmit()
-    {   var aButton = document.myedit.submitButton;
-        aButton.disabled = true;
+    {
+        var oButton = document.getElementById("submitButton");
+        oButton.disabled = true;
+    }
+
+    function handleCheck()
+    {
+        var oCheckbox = document.getElementById("oxdiag_frm_chkvers");
+        var oListAll = document.getElementById("listAllFiles");
+        var oComment = document.getElementById("version_checker_comment");
+        var oLabel = document.getElementById("labelCell");
+
+        oListAll.disabled = (!oCheckbox.checked);
+        if (!oCheckbox.checked) {
+            oListAll.checked = false;
+        }
+        oComment.setAttribute( 'class', (oCheckbox.checked) ? 'selected checker_comment' : 'hidden' );
+        oLabel.setAttribute( 'class', (oCheckbox.checked) ? 'selected' : '' );
     }
     //-->
 </script>
 
-<p>[{ oxmultilang ident="OXCHKVERSION_INTROINFORMATION" }]</p>
-<p>[{ oxmultilang ident="OXCHKVERSION_INTROINFORMATION_NO_PERSONAL_INFO" }]</p>
-<p>[{ oxmultilang ident="OXCHKVERSION_INTROINFORMATION_DATA_TRANSMITTED" }]</p>
-    <ul>
-        <li>[{ oxmultilang ident="OXCHKVERSION_INTROINFORMATION_FILENAME_TO_BE_CHECKED" }]</li>
-        <li>[{ oxmultilang ident="OXCHKVERSION_INTROINFORMATION_MD5_CHECKSUM" }]</li>
-        <li>[{ oxmultilang ident="OXCHKVERSION_INTROINFORMATION_VERSION_DETECTED" }]</li>
-        <li>[{ oxmultilang ident="OXCHKVERSION_INTROINFORMATION_REVISION_DETECTED" }]</li>
-    </ul>
-<p>[{ oxmultilang ident="OXCHKVERSION_INTROINFORMATION_MORE_INFORMATION" }] <strong><a href="http://www.oxid-esales.com/de/news/blog/shop-checking-tool-oxchkversion-v3" target=_blank>[{ oxmultilang ident="OXCHKVERSION_INTROINFORMATION_OXID_ESALES_BLOG" }]</a></strong>.</p>
-<p>[{ oxmultilang ident="OXCHKVERSION_INTROINFORMATION_CONTACT_US" }] <strong><a href="[{$oView->getSupportContactForm()}]" target=_blank>[{ oxmultilang ident="OXCHKVERSION_INTROINFORMATION_ONLINE_CONTACT_FORM" }]</a></strong>.</p>
+<style>
 
+    .hidden {
+        display: none;
+    }
 
-[{ if !empty($sErrorMessage) }]
-<p><span style="color: red"><b>[{ oxmultilang ident="OXCHKVERSION_ERRORMESSAGETEMPLATE" }]</b></span></p>
+    .checker_comment {
+        max-width: 600px;
+        padding: 5px;
+    }
+    .result {
+        padding: 15px;
+        background-color: #F0F0F0 !important;
+        border: 1px solid #C0C0C0 !important;
+    }
+
+    .selected {
+        background-color: #F0F0F0 !important;
+        border: 1px solid #C0C0C0 !important;
+    }
+
+</style>
+
+<h1>[{oxmultilang ident='OXDIAG_HOME'}]</h1>
+
+<p>[{oxmultilang ident='OXDIAG_ABOUT'}]</p>
+<p>[{ oxmultilang ident="OXDIAG_INTROINFORMATION_CONTACT_US" }] <strong><a href="[{$oView->getSupportContactForm()}]" target=_blank>[{ oxmultilang ident="OXDIAG_INTROINFORMATION_ONLINE_CONTACT_FORM" }]</a></strong>.</p>
+
+<table>
+    <tr>
+        <td valign="top">
+
+            [{ if !empty($sErrorMessage) }]
+                <p><span style="color: red"><b>[{ oxmultilang ident="OXDIAG_ERRORMESSAGETEMPLATE" }]</b></span></p>
     <span style="color: red">[{ $sErrorMessage }]</span>
-[{else}]
-    <form name="myedit" id="myedit" action="[{ $oViewConf->getSelfLink() }]" onsubmit="handleSubmit()" method="post">
+            [{elseif !$oView->getParam('runAnalysis')}]
+
+            <form name="diagnosticsForm" id="diagnosticsForm" action="[{ $oViewConf->getSelfLink() }]" onsubmit="handleSubmit()" method="post">
+                <table border="0" cellpadding="0">
+                    [{$oViewConf->getHiddenSid()}]
         <input type="hidden" name="cl" value="version_checker_main">
-        <input type="hidden" name="fnc" value="startDiagnostic">
-        <input type="checkbox" name="listAllFiles" value="listAllFiles" id="listAllFiles">
-        <label for="listAllFiles">[{ oxmultilang ident="OXCHKVERSION_FORM_LIST_ALL_FILES" }]</label>
+                    <input type="hidden" name="fnc" value="startDiagnostics">
+
+                    <input type="hidden" name="runAnalysis" value="1">
+
+                    <tr>
+                        <td><input type="checkbox" id="oxdiag_frm_modules" name="oxdiag_frm_modules" value="1" checked></td>
+                        <td><label for="oxdiag_frm_modules">[{oxmultilang ident='OXDIAG_COLLECT_MODULES'}]</label></td>
+                    </tr>
+
+                    <tr>
+                        <td><input type="checkbox" id="oxdiag_frm_health" name="oxdiag_frm_health" value="1" checked></td>
+                        <td><label for="oxdiag_frm_health">[{oxmultilang ident='OXDIAG_COLLECT_HEALTH'}]</label></td>
+                    </tr>
+
+                    <tr>
+                        <td><input type="checkbox" id="oxdiag_frm_php" name="oxdiag_frm_php" value="1" checked></td>
+                        <td><label for="oxdiag_frm_php">[{oxmultilang ident='OXDIAG_COLLECT_PHP'}]</label></td>
+                    </tr>
+
+                    <tr>
+                        <td><input type="checkbox" id="oxdiag_frm_server" name="oxdiag_frm_server" value="1" checked></td>
+                        <td><label for="oxdiag_frm_server">[{oxmultilang ident='OXDIAG_COLLECT_SERVER'}]</label></td>
+                    </tr>
+
+                    <tr>
+                        <td><input type="checkbox" id="oxdiag_frm_chkvers" name="oxdiag_frm_chkvers" onchange="handleCheck();" value="1"></td>
+                        <td id="labelCell"><label for="oxdiag_frm_chkvers">[{oxmultilang ident='OXDIAG_COLLECT_CHKVERS'}]</label></td>
+                    </tr>
+                    <tr><td></td><td><small>[{oxmultilang ident='OXDIAG_COLLECT_CHKVERS_DURATION'}]</small></td></tr>
+
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td><input type="checkbox" name="listAllFiles" value="listAllFiles" id="listAllFiles" disabled="true"> <label for="listAllFiles">[{oxmultilang ident='OXDIAG_FORM_LIST_ALL_FILES'}]</label></td>
+                    </tr>
+                </table>
+
         <br><br>
-        <input type="submit" class="edittext" id="submitButton" name="submitButton" value=" [{ oxmultilang ident="OXCHKVERSION_FORM_START_CHECK" }] " >
+                <input type="submit" class="edittext" id="submitButton" name="submitButton" value=" [{ oxmultilang ident="OXDIAG_FORM_START_CHECK" }] " >
 
     </form>
-[{ /if}]
+            [{ /if}]
+
+        </td>
+        <td valign="top" >
+            <div class="hidden" id="version_checker_comment">
+            <p>[{ oxmultilang ident="OXDIAG_INTROINFORMATION" }]</p>
+            <p>[{ oxmultilang ident="OXDIAG_INTROINFORMATION_NO_PERSONAL_INFO" }]</p>
+            <p>[{ oxmultilang ident="OXDIAG_INTROINFORMATION_DATA_TRANSMITTED" }]</p>
+            <ul>
+                <li>[{ oxmultilang ident="OXDIAG_INTROINFORMATION_FILENAME_TO_BE_CHECKED" }]</li>
+                <li>[{ oxmultilang ident="OXDIAG_INTROINFORMATION_MD5_CHECKSUM" }]</li>
+                <li>[{ oxmultilang ident="OXDIAG_INTROINFORMATION_VERSION_DETECTED" }]</li>
+                <li>[{ oxmultilang ident="OXDIAG_INTROINFORMATION_REVISION_DETECTED" }]</li>
+            </ul>
+            <p>[{ oxmultilang ident="OXDIAG_INTROINFORMATION_MORE_INFORMATION" }] <strong><a href="http://www.oxid-esales.com/de/news/blog/shop-checking-tool-oxchkversion-v3" target=_blank>[{ oxmultilang ident="OXDIAG_INTROINFORMATION_OXID_ESALES_BLOG" }]</a></strong>.</p>
+            </div>
+        </td>
+    </tr>
+</table>
+
+
 
 [{ if !empty($sResult) }]
-<h1>[{ oxmultilang ident="OXCHKVERSION_RESULT_SUCCESSFUL" }]</h1>
-<h2><strong><a href="[{ $oViewConf->getSelfLink() }]&amp;cl=version_checker_main&amp;fnc=downloadResultFile">[{ oxmultilang ident="OXCHKVERSION_DOWNLOAD_FILE" }]</a></strong>.</h2>
+<h1>[{ oxmultilang ident="OXDIAG_RESULT_SUCCESSFUL" }]</h1>
+<h2><strong><a href="[{ $oViewConf->getSelfLink() }]&amp;cl=version_checker_main&amp;fnc=downloadResultFile">[{ oxmultilang ident="OXDIAG_DOWNLOAD_FILE" }]</a></strong>.</h2>
 
-<h3>[{ oxmultilang ident="OXCHKVERSION_RESULT" }]:</h3>
+<h3>[{ oxmultilang ident="OXDIAG_RESULT" }]:</h3>
+<div class="result">
     <p>
     [{ $sResult }]
     </p>
+</div>
 [{ /if}]
 
 [{include file="bottomnaviitem.tpl"}]

@@ -291,19 +291,19 @@ class oxFileChecker {
 
         if (empty( $sXML ) ) {
             $this->_blError = true;
-            $this->_sErrorMessage = oxRegistry::getLang()->translateString( 'OXCHKVERSION_ERRORMESSAGEWEBSERVICEISNOTREACHABLE' );
+            $this->_sErrorMessage = oxRegistry::getLang()->translateString( 'OXDIAG_ERRORMESSAGEWEBSERVICEISNOTREACHABLE' );
         }
 
         try {
             $oXML = new SimpleXMLElement( $sXML );
         } catch (Exception $ex) {
             $this->_blError = true;
-            $this->_sErrorMessage .= oxRegistry::getLang()->translateString( 'OXCHKVERSION_ERRORMESSAGEWEBSERVICERETURNEDNOXML' );
+            $this->_sErrorMessage .= oxRegistry::getLang()->translateString( 'OXDIAG_ERRORMESSAGEWEBSERVICERETURNEDNOXML' );
         }
 
         if (!is_object( $oXML ) ) {
             $this->_blError = true;
-            $this->_sErrorMessage .= oxRegistry::getLang()->translateString( 'OXCHKVERSION_ERRORMESSAGEVERSIONDOESNOTEXIST' );
+            $this->_sErrorMessage .= oxRegistry::getLang()->translateString( 'OXDIAG_ERRORMESSAGEVERSIONDOESNOTEXIST' );
         }
 
         return !$this->_blError;
@@ -335,7 +335,7 @@ class oxFileChecker {
         }
 
         $this->_blError = true;
-        $sError = sprintf( oxRegistry::getLang()->translateString( 'OXCHKVERSION_ERRORMESSAGEVERSIONDOESNOTEXIST' ),
+        $sError = sprintf( oxRegistry::getLang()->translateString( 'OXDIAG_ERRORMESSAGEVERSIONDOESNOTEXIST' ),
             $this->getEdition(), $this->getVersion(), $this->getRevision() );
 
         $this->_sErrorMessage .= $sError;
@@ -368,7 +368,7 @@ class oxFileChecker {
         $oXML = $this->_getFileVersion( $sMD5, $sFile );
         $sColor = "blue";
         $blOk = true;
-        $sMessage = oxRegistry::getLang()->translateString( 'OXCHKVERSION_ERRORVERSIONCOMPARE' );
+        $sMessage = oxRegistry::getLang()->translateString( 'OXDIAG_ERRORVERSIONCOMPARE' );
 
         if (is_object( $oXML ) ) {
 
@@ -383,24 +383,24 @@ class oxFileChecker {
                 } else {
                     $sMessage = '';
                     if ( $this->_blListAllFiles ) {
-                        $sMessage = oxRegistry::getLang()->translateString( 'OXCHKVERSION_OK' );
+                        $sMessage = oxRegistry::getLang()->translateString( 'OXDIAG_OK' );
                     }
                     $sColor = "green";
                 }
             } elseif ( $oXML->res == 'VERSIONMISMATCH' ) {
-                $sMessage = oxRegistry::getLang()->translateString( 'OXCHKVERSION_VERSION_MISMATCH' );
+                $sMessage = oxRegistry::getLang()->translateString( 'OXDIAG_VERSION_MISMATCH' );
                 $sColor = 'red';
                 $blOk = false;
             } elseif ( $oXML->res == 'MODIFIED' ) {
-                $sMessage = oxRegistry::getLang()->translateString( 'OXCHKVERSION_MODIFIED' );
+                $sMessage = oxRegistry::getLang()->translateString( 'OXDIAG_MODIFIED' );
                 $sColor = 'red';
                 $blOk = false;
             } elseif ( $oXML->res == 'OBSOLETE' ) {
-                $sMessage = oxRegistry::getLang()->translateString( 'OXCHKVERSION_OBSOLETE' );
+                $sMessage = oxRegistry::getLang()->translateString( 'OXDIAG_OBSOLETE' );
                 $sColor = 'red';
                 $blOk = false;
             } elseif ( $oXML->res == 'UNKNOWN' ) {
-                $sMessage = oxRegistry::getLang()->translateString( 'OXCHKVERSION_UNKNOWN' );
+                $sMessage = oxRegistry::getLang()->translateString( 'OXDIAG_UNKNOWN' );
                 $sColor = "green";
         }
     }

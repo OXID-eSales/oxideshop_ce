@@ -194,8 +194,8 @@
             <SUBMENU id="mxsysreq" cl="sysreq" list="sysreq_list">
                 <TAB id="tbclsysreq_main" cl="sysreq_main" />
             </SUBMENU>
-            <SUBMENU id="mxversioncheck" cl="version_checker" list="version_checker_list">
-                <TAB id="mxversioncheck" cl="version_checker_main" />
+            <SUBMENU id="oxdiag_menu" cl="version_checker" list="version_checker_list">
+                <TAB id="oxdiag_menu" cl="version_checker_main" />
             </SUBMENU>
             <SUBMENU id="mxtools" cl="tools" list="tools_list" rights="malladmin" disableForDemoShop="1" >
                 <TAB id="tbcltools_main" cl="tools_main" disableForDemoShop="1" />

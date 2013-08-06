@@ -112,7 +112,6 @@
                     'additionalData' : aOptions,
                     'onSuccess' : function(r) {
                         contentTarget.innerHTML = r;
-                        init_oxwarticledetails();
                     }
                 }
             );

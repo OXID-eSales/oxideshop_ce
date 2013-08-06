@@ -19,7 +19,6 @@
  * @package   smarty_plugins
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -182,8 +181,12 @@ function _oxscript_execute( $aScript, $sWidget )
 
     if (count($aScript)) {
         foreach ($aScript as $sScriptToken) {
+            if ( $sWidget ) {
+                $sOutput .= 'WidgetsHandler.registerFunction( "'. $sScriptToken . '");'. PHP_EOL ;
+            } else {
             $sOutput .= $sScriptToken. PHP_EOL;
         }
+    }
     }
 
     return $sOutput;
@@ -206,7 +209,7 @@ function _oxscript_execute_enclose( $sScriptsOutput, $sWidget )
     $sOutput  = '';
     $sOutput .= '<script type="text/javascript">' . PHP_EOL;
     if ( $sWidget ) {
-        $sOutput .= 'function init_'. strtolower( $sWidget ) .'() {'. PHP_EOL . $sScriptsOutput .'}'. PHP_EOL;
+        $sOutput .= 'window.addEventListener("load", function() {'. PHP_EOL . $sScriptsOutput .'}, false )'. PHP_EOL;
     } else {
         $sOutput .= $sScriptsOutput;
     }

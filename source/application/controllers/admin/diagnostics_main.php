@@ -26,7 +26,7 @@
  * Admin Menu: Service -> Version Checker -> Main.
  * @package admin
  */
-class version_checker_main extends oxAdminDetails
+class diagnostics_main extends oxAdminDetails
 {
 
     /**
@@ -119,7 +119,7 @@ class version_checker_main extends oxAdminDetails
             $this->_aViewData['sErrorMessage'] = $this->_getErrorMessage();
         }
 
-        return "version_checker_main.tpl";
+        return "diagnostics_form.tpl";
     }
 
     /**
@@ -239,13 +239,19 @@ class version_checker_main extends oxAdminDetails
     private function _runBasicDiagnostics()
     {
         $aViewData = array();
+        $oDiagnostics = oxNew( 'oxDiagnostics' );
+
+        $oDiagnostics->setShopLink( oxRegistry::getConfig()->getConfigParam( 'sShopURL' ) );
+        $oDiagnostics->setEdition( oxRegistry::getConfig()->getFullEdition() );
+        $oDiagnostics->setVersion( oxRegistry::getConfig()->getVersion() );
+        $oDiagnostics->setRevision( oxRegistry::getConfig()->getRevision() );
 
         /**
          * Shop
          */
         if ( $this->getParam( 'runAnalysis' ) ) {
             $aViewData['runAnalysis'] = true;
-            $aViewData['aShopDetails'] = $this->_getShopDetails();
+            $aViewData['aShopDetails'] = $oDiagnostics->getShopDetails();
         }
 
         /**
@@ -278,17 +284,17 @@ class version_checker_main extends oxAdminDetails
          */
         if ( $this->getParam('oxdiag_frm_php' ) ) {
             $aViewData['oxdiag_frm_php'] = true;
-            $aViewData['aPhpConfigparams'] = $this->_getPhpSelection();
-            $aViewData['sPhpDecoder'] = $this->_getPhpDecoder();
+            $aViewData['aPhpConfigparams'] = $oDiagnostics->getPhpSelection();
+            $aViewData['sPhpDecoder'] = $oDiagnostics->getPhpDecoder();
         }
 
         /**
          * Server info
          */
         if ( $this->getParam('oxdiag_frm_server' ) ) {
-            $aViewData['isExecAllowed'] = $this->_isExecAllowed();
+            $aViewData['isExecAllowed'] = $oDiagnostics->isExecAllowed();
             $aViewData['oxdiag_frm_server'] = true;
-            $aViewData['aServerInfo'] = $this->_getServerInfo();
+            $aViewData['aServerInfo'] = $oDiagnostics->getServerInfo();
         }
 
         if ( $this->getParam('oxdiag_frm_chkvers' ) ) {
@@ -333,240 +339,14 @@ class version_checker_main extends oxAdminDetails
     }
 
     /**
-     * getParam
+     * Request parameter getter
      *
      * @param string $sParam
+     * @return string
      */
     public function getParam( $sParam )
     {
         return $this->getConfig()->getRequestParameter( $sParam );
-    }
-
-    /**
-     * _getShopDetails
-     * Collects information on the shop, like amount of categories, articles, users
-     *
-     * @return array
-     */
-    private function _getShopDetails()
-    {
-        $aShopDetails = array(
-            'Date'					=>	date( oxRegistry::getLang()->translateString( 'fullDateFormat' ), time() ),
-            'URL'					=>	$this->getConfig()->getConfigParam('sShopURL'),
-            'Edition'				=>	$this->getShopFullEdition(),
-            'Version'				=>	$this->getShopVersion(),
-            'Revision'				=>	$this->getRevision(),
-            'Subshops (Total)'		=>	$this->_countRows('oxshops',true),
-            'Subshops (Active)'		=>	$this->_countRows('oxshops',false),
-            'Categories (Total)'	=>	$this->_countRows('oxcategories',true),
-            'Categories (Active)'	=>	$this->_countRows('oxcategories',false),
-            'Articles (Total)'		=>	$this->_countRows('oxarticles',true),
-            'Articles (Active)'		=>	$this->_countRows('oxarticles',false),
-            'Users (Total)'			=>	$this->_countRows('oxuser',true),
-        );
-
-        return $aShopDetails;
-    }
-
-    /**
-     * countRows
-     *
-     * @param string $sTable, boolean $blMode
-     * @return integer
-     */
-    private function _countRows( $sTable,$blMode)
-    {
-        $oDb = oxDb::getDb();
-        $sRequest = 'SELECT COUNT(*) FROM '.$sTable;
-
-        if ( $blMode == false){
-            $sRequest .= ' WHERE oxactive = 1';
-        }
-
-        $aRes = $oDb->execute( $sRequest)->fields(0);
-        return $aRes[0];
-    }
-
-
-
-    /**
-     * _getPhpSelection
-     * Picks some pre-selected PHP configuration settings and returns them.
-     *
-     * @return array
-     */
-    private function _getPhpSelection()
-    {
-        $aPhpiniParams = array(
-            'allow_url_fopen',
-            'display_errors',
-            'file_uploads',
-            'max_execution_time',
-            'memory_limit',
-            'post_max_size',
-            'register_globals',
-            'upload_max_filesize',
-        );
-
-        $aPhpiniConf = array();
-
-        foreach ( $aPhpiniParams as $sParam){
-            $sValue = ini_get( $sParam);
-            $aPhpiniConf[$sParam] = $sValue;
-        }
-
-        return $aPhpiniConf;
-    }
-
-
-
-    /**
-     * _getPhpDecoder
-     * Returns the installed PHP devoder (like Zend Optimizer, Guard Loader)
-     *
-     * @eturn string
-     */
-    private function _getPhpDecoder()
-    {
-        $sReturn = 'Zend ';
-
-        if (function_exists('zend_optimizer_version' ) )
-        {
-            $sReturn .= 'Optimizer';
-        }
-
-        if (function_exists('zend_loader_enabled' ) )
-        {
-            $sReturn .= 'Guard Loader';
-        }
-
-        return $sReturn;
-    }
-
-
-
-    /**
-     * _getServerInfo
-     * Server information
-     *
-     * We will use the exec command here several times. In order tro prevent stop on failure, use $this->isExecAllowed().
-     *
-     * @return array
-     */
-    private function _getServerInfo()
-    {
-        // init empty variables (can be filled if exec is allowed)
-        $iCpuAmnt = $iCpuMhz = $iBogo = $iMemTotal = $iMemFree = $sCpuModelName = $sCpuModel = $sCpuFreq = $iCpuCores = null;
-
-        // fill, if exec is allowed
-        if ( $this->_isExecAllowed())
-        {
-            $iCpuAmnt = exec('cat /proc/cpuinfo | grep "processor" | sort -u | cut -d: -f2');
-            $iCpuMhz = round(exec('cat /proc/cpuinfo | grep "MHz" | sort -u | cut -d: -f2'),0);
-            $iBogo = exec('cat /proc/cpuinfo | grep "bogomips" | sort -u | cut -d: -f2');
-            $iMemTotal = exec('cat /proc/meminfo | grep "MemTotal" | sort -u | cut -d: -f2');
-            $iMemFree = exec('cat /proc/meminfo | grep "MemFree" | sort -u | cut -d: -f2');
-            $sCpuModelName = exec('cat /proc/cpuinfo | grep "model name" | sort -u | cut -d: -f2');
-            $sCpuModel = $iCpuAmnt.'x '.$sCpuModelName;
-            $sCpuFreq = $iCpuMhz.' MHz';
-
-            // prevent "division by zero" error
-            if ( $iBogo && $iCpuMhz){
-                $iCpuCores = $iBogo / $iCpuMhz;
-            }
-        }
-
-        $aServerInfo = array(
-            'Server OS'		=>	@php_uname('s'),
-            'VM'			=>	$this->_getVirtualizationSystem(),
-            'PHP'			=>	phpversion(),
-            'MySQL'			=>	mysql_get_server_info(),
-            'Apache'		=>	$this->_getApacheVersion(),
-            'Disk total'	=>	round( disk_total_space('/') / 1024 / 1024 , 0 ) .' GiB',
-            'Disk free'		=>	round( disk_free_space('/') / 1024 / 1024 , 0 ) .' GiB',
-            'Memory total'	=>	$iMemTotal,
-            'Memory free'	=>	$iMemFree,
-            'CPU Model'		=>	$sCpuModel,
-            'CPU frequency'	=>	$sCpuFreq,
-            'CPU cores'		=>	round( $iCpuCores,0),
-        );
-
-        return $aServerInfo;
-    }
-
-
-
-    /**
-     * _getApacheVersion
-     *
-     * @return string
-     */
-    private function _getApacheVersion()
-    {
-        if (function_exists('apache_get_version' ) ){
-            $sReturn = apache_get_version();
-        }
-        else{
-            $sReturn = $_SERVER['SERVER_SOFTWARE'];
-        }
-
-        return $sReturn;
-    }
-
-
-
-    /**
-     * _getVirtualizationSystem
-     * Tries to find out which VM is used
-     *
-     * @return string
-     */
-    private function _getVirtualizationSystem()
-    {
-        if ( $this->_isExecAllowed()){
-            //VMWare
-            @$sR = exec('lspci | grep -i vmware');
-            if ( $sR){
-                $sReturn = 'VMWare';
-                unset( $sR);
-            }
-
-            //VirtualBox
-            @$sR = exec('lspci | grep -i VirtualBox');
-            if( $sR){
-                $sReturn = 'VirtualBox';
-                unset( $sR);
-            }
-
-            if (!$sReturn){
-                return 'not detected';
-            }
-
-            return $sReturn;
-        }
-        else{
-            return null;
-        }
-    }
-
-
-
-    /**
-     * isExecAllowed
-     * Determines, whether the exec() command is allowed or not.
-     *
-     * @return boolean
-     */
-    private function _isExecAllowed()
-    {
-        if (function_exists('exec' ) ){
-            $blR = true;
-        }
-        else{
-            $blR = false;
-        }
-
-        return $blR;
     }
 
 }

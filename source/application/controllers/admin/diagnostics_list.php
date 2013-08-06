@@ -26,11 +26,11 @@
  * Admin Menu: Service -> Version Checker.
  * @package admin
  */
-class version_checker extends oxAdminView
+class diagnostics_list extends oxAdminList
 {
     /**
      * Current class template name.
      * @var string
      */
-    protected $_sThisTemplate = 'version_checker.tpl';
+    protected $_sThisTemplate = 'diagnostics_list.tpl';
 }

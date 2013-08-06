@@ -30,6 +30,13 @@
 class oxWidgetControl extends oxShopControl
 {
     /**
+     * Disallow setting env_key cookies for widget controller
+     *
+     * @var bool
+     */
+    protected $_blAllowEnvKeySetting = false;
+
+    /**
      * Skip handler set for widget as it already set in oxShopControl.
      *
      * @var bool

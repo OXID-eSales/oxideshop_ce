@@ -3,6 +3,8 @@
 <script type="text/javascript">
     <!--
 
+    var blIsHelpVisible = false;
+
     function handleSubmit()
     {
         var oButton = document.getElementById("submitButton");
@@ -13,16 +15,21 @@
     {
         var oCheckbox = document.getElementById("oxdiag_frm_chkvers");
         var oListAll = document.getElementById("listAllFiles");
-        var oComment = document.getElementById("version_checker_comment");
-        var oLabel = document.getElementById("labelCell");
 
         oListAll.disabled = (!oCheckbox.checked);
         if (!oCheckbox.checked) {
             oListAll.checked = false;
         }
-        oComment.setAttribute( 'class', (oCheckbox.checked) ? 'selected checker_comment' : 'hidden' );
-        oLabel.setAttribute( 'class', (oCheckbox.checked) ? 'selected' : '' );
     }
+
+    function handleHelp()
+    {
+        blIsHelpVisible = !blIsHelpVisible;
+
+        var oComment = document.getElementById("version_checker_comment");
+        oComment.setAttribute( 'class', (blIsHelpVisible) ? 'selected checker_comment' : 'hidden' );
+    }
+
     //-->
 </script>
 
@@ -93,7 +100,9 @@
 
                     <tr>
                         <td><input type="checkbox" id="oxdiag_frm_chkvers" name="oxdiag_frm_chkvers" onchange="handleCheck();" value="1"></td>
-                        <td id="labelCell"><label for="oxdiag_frm_chkvers">[{oxmultilang ident='OXDIAG_COLLECT_CHKVERS'}]</label></td>
+                        <td id="labelCell"><label for="oxdiag_frm_chkvers">[{oxmultilang ident='OXDIAG_COLLECT_CHKVERS'}]</label>
+                            <input type="button" id="helpBtn_chkvers" class="btnShowHelpPanel" onclick="handleHelp()">
+                        </td>
                     </tr>
                     <tr><td></td><td><small>[{oxmultilang ident='OXDIAG_COLLECT_CHKVERS_DURATION'}]</small></td></tr>
 

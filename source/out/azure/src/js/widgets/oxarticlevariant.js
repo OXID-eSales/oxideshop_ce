@@ -22,12 +22,11 @@
  */
 ( function ( $ ) {
 
+    oxArticleVariant = {
 
-    oxWidgetReload = {
         _create: function() {
 
             var self = this;
-            //var options = self.options;
 
             /**
              * Variant selection dropdown
@@ -78,11 +77,11 @@
                                 sHash = $(this).val();
                             });
                             if ( jQuery.inArray( hash, oxVariantSelections ) === -1 ) {
-                                return self.reload( $(target), 'detailsMain', $("#details"), $("#details")[0], aOptions);
+                                return self.reload( $(target), $("#details"), $("#details")[0], aOptions);
                             }
                         }
                     }
-                    return self.reload( $(target),'productInfo',$("#details"),$("#details")[0], aOptions);
+                    return self.reload( $(target),$("#details"),$("#details")[0], aOptions);
                 }
             }
             $("form.js-oxWidgetReload").submit(function () { return submitFunc( "form.js-oxWidgetReload" ) });
@@ -104,7 +103,7 @@
             });
         },
 
-        reload: function(activator, renderPart, highlightTargets, contentTarget, aOptions) {
+        reload: function(activator, highlightTargets, contentTarget, aOptions) {
             this._preAjaxCaller();
             oxAjax.ajax(
                 activator, {//targetEl, onSuccess, onError, additionalData
@@ -135,6 +134,6 @@
             $('#zoomModal').remove();
         }
     }
-    $.widget("ui.oxWidgetReload", oxWidgetReload );
+    $.widget("ui.oxArticleVariant", oxArticleVariant );
 
 })( jQuery );

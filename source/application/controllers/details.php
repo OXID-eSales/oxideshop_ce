@@ -1144,16 +1144,6 @@ class Details extends oxUBase
     }
 
     /**
-     * Template variable getter. Returns active zoom picture id
-     *
-     * @return array
-     */
-    public function getActZoomPic()
-    {
-        return 1;
-    }
-
-    /**
      * Template variable getter. Returns selectlists of current article
      *
      * @return array

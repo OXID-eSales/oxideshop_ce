@@ -254,6 +254,16 @@ class oxwArticleDetails extends oxWidget
     protected $_aSimilarRecommListIds = null;
 
 
+    /**
+     * Template variable getter. Returns active zoom picture id
+     *
+     * @return array
+     */
+    public function getActZoomPic()
+    {
+        return 1;
+    }
+
 //
     /**
      * Returns current product parent article object if it is available

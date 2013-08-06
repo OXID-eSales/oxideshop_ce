@@ -7214,6 +7214,8 @@ class Unit_Core_oxarticleTest extends OxidTestCase
         $this->assertEquals( 13, $oP->oxarticles__oxratingcnt->value );
     }
 
+
+
     /**
      * Checks article data retrieval via static cache
      */

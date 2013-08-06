@@ -112,7 +112,7 @@
                     'additionalData' : aOptions,
                     'onSuccess' : function(r) {
                         contentTarget.innerHTML = r;
-                        init_oxwdetailspage();
+                        init_oxwarticledetails();
                     }
                 }
             );

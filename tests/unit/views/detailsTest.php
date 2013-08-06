@@ -19,7 +19,6 @@
  * @package   tests
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -932,17 +931,6 @@ class Unit_Views_detailsTest extends OxidTestCase
         $oDetails = $this->getProxyClass( 'details' );
         $oDetails->setNonPublicVar( "_aPicGallery", $aPicGallery );
         $this->assertEquals('aaa', $oDetails->getZoomPics());
-    }
-
-    /**
-     * Test get active zoom picture.
-     *
-     * @return null
-     */
-    public function testGetActZoomPic()
-    {
-        $oDetails = $this->getProxyClass( 'details' );
-        $this->assertEquals(1, $oDetails->getActZoomPic());
     }
 
     /**

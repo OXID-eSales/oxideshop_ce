@@ -661,6 +661,8 @@ class oxBase extends oxSuperCfg
 
         // add active shop
 
+        //echo $sSelect;
+
         return $sSelect;
     }
 

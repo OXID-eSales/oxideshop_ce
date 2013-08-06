@@ -23,14 +23,14 @@
 
 /**
  * Checks Version of System files.
- * Admin Menu: Service -> Version Checker.
+ * Admin Menu: Service -> Diagnostics Tool.
  * @package admin
  */
-class version_checker_list extends oxAdminList
+class diagnostics extends oxAdminView
 {
     /**
      * Current class template name.
      * @var string
      */
-    protected $_sThisTemplate = 'version_checker_list.tpl';
+    protected $_sThisTemplate = 'diagnostics.tpl';
 }

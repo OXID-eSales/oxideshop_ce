@@ -73,7 +73,7 @@
             <form name="diagnosticsForm" id="diagnosticsForm" action="[{ $oViewConf->getSelfLink() }]" onsubmit="handleSubmit()" method="post">
                 <table border="0" cellpadding="0">
                     [{$oViewConf->getHiddenSid()}]
-        <input type="hidden" name="cl" value="version_checker_main">
+                    <input type="hidden" name="cl" value="diagnostics_main">
                     <input type="hidden" name="fnc" value="startDiagnostics">
 
                     <input type="hidden" name="runAnalysis" value="1">

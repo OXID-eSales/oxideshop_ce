@@ -162,7 +162,7 @@
             [{if $aVariantSelections && $aVariantSelections.selections }]
                 [{oxscript include="js/widgets/oxajax.js" priority=10 }]
                 [{oxscript include="js/widgets/oxarticlevariant.js" priority=10 }]
-                [{oxscript add="$( '#variants' ).oxWidgetReload(); "}]
+                [{oxscript add="$( '#variants' ).oxArticleVariant(); "}]
                 [{assign var="blCanBuy" value=$aVariantSelections.blPerfectFit}]
                 <div id="variants" class="selectorsBox js-fnSubmit clear">
                     [{assign var="blHasActiveSelections" value=false}]
@@ -233,7 +233,7 @@
                 [{oxhasrights ident="SHOWARTICLEPRICE"}]
                     [{if $oDetailsProduct->getTPrice()}]
                         <p class="oldPrice">
-                            <strong>[{oxmultilang ident="REDUCED_FROM"}] <del>[{$oDetailsProduct->getFTPrice()}] [{$currency->sign}]</del></strong>
+                            <strong>[{oxmultilang ident="REDUCED_FROM_2"}] <del>[{$oDetailsProduct->getFTPrice()}] [{$currency->sign}]</del></strong>
                         </p>
                     [{/if}]
                 [{/oxhasrights}]

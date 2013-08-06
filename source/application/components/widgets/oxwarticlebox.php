@@ -49,6 +49,7 @@ class oxwArticleBox extends oxWidget
      */
     public function render()
     {
+        oxRegistry::getConfig()->setGlobalParameter( 'noJSON', true );
         parent::render();
 
         $sWidgetType = $this->getViewParameter('sWidgetType');

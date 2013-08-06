@@ -2105,7 +2105,6 @@ $aLang = array(
 'OXDIAG_COLLECT_PHP'				=>	'Poll PHP configuration (selected parameters)',
 'OXDIAG_COLLECT_SERVER'				=>	'Poll system information (if possible)',
 'OXDIAG_COLLECT_CHKVERS'			=>	'Run <i>Version checker</i>',
-'HELP_OXDIAG_COLLECT_CHKVERS'		=>	'Run <i>Version checker</i> help',
 'OXDIAG_COLLECT_CHKVERS_DURATION'	=>	'This can engross the execution time of the module or execution might fail.',
 'OXDIAG_COLL_CHKV_NOTINST'			=>	'<i>Version checker</i> is not installed on this system. You may <a href="http://exchange.oxid-esales.com/OXID-oxid-oxid/Additional-OXID-Extensions/OXDIAG-3-1-0-Stable-CE-4-0-x-4-7-x.html">download the file from OXID eXchange</a> and install it in the root directory of the shop.',
 'OXDIAG_COLL_CHKV_FILE_GET'			=>	'The function <i>file_get_contents</i> is not available, <i>Version checker</i> cannot be accessed.',

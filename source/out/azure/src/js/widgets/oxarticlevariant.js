@@ -24,6 +24,10 @@
 
     var oxArticleVariant = {
 
+        /**
+         * Initiating article variants selector
+         * @private
+         */
         _create: function() {
             $("ul.vardrop a").click( variantSelectActionHandler );
             $('div.variantReset a').click( variantResetActionHandler );
@@ -32,8 +36,17 @@
             $("form.js-oxProductForm").submit( formSubmit );
         },
 
+        /**
+         * Reloads block
+         *
+         * @param activator
+         * @param highlightTargets
+         * @param contentTarget
+         * @param aOptions
+         * @returns {boolean}
+         */
         reload: function(activator, highlightTargets, contentTarget, aOptions) {
-            this._preAjaxCaller();
+            preAjaxCaller();
             oxAjax.ajax(
                 activator, {//targetEl, onSuccess, onError, additionalData
                     'targetEl'  : highlightTargets,
@@ -51,19 +64,12 @@
             );
             return false;
         },
-        resetVariantSelections : function() {
-            var aVarSelections = $( "form.js-oxProductForm input[name^=varselid]" );
-            for (var i = 0; i < aVarSelections.length; i++) {
-                $( aVarSelections[i] ).attr( "value", "" );
-            }
-            $( "form.js-oxProductForm input[name=anid]" ).attr( "value", $( "form.js-oxProductForm input[name=parentid]" ).attr( "value" ) );
-        },
+
             /**
-         * Runs defined scripts inside the method, before ajax is called
+         * Resets all variant selections
              */
-        _preAjaxCaller : function()
-        {
-            $('#zoomModal').remove();
+        resetVariantSelections: function() {
+            resetVariantSelections();
         }
     }
 
@@ -75,7 +81,7 @@
                 var obj = $( this );
                 // resetting
                 if ( obj.parents().hasClass("js-disabled") ) {
-            oxArticleVariant.resetVariantSelections();
+            resetVariantSelections();
                 } else {
                     $( "form.js-oxProductForm input[name=anid]" ).attr( "value", $( "form.js-oxProductForm input[name=parentid]" ).attr( "value" ) );
                 }
@@ -96,11 +102,22 @@
      * @returns {boolean}
              */
     function variantResetActionHandler( e ) {
-        oxArticleVariant.resetVariantSelections();
+        resetVariantSelections();
                 var form = $("form.js-oxWidgetReload");
                 $('input[name=fnc]', form).val("");
                 form.submit();
         e.stopPropagation();
+    }
+
+    /**
+     * Resets variant selections
+     */
+    function resetVariantSelections() {
+        var aVarSelections = $( "form.js-oxProductForm input[name^=varselid]" );
+        for (var i = 0; i < aVarSelections.length; i++) {
+            $( aVarSelections[i] ).attr( "value", "" );
+        }
+        $( "form.js-oxProductForm input[name=anid]" ).attr( "value", $( "form.js-oxProductForm input[name=parentid]" ).attr( "value" ) );
     }
 
     /**
@@ -127,6 +144,13 @@
             return oxArticleVariant.reload( $(target),$("#details"),$("#details")[0], aOptions);
                 }
             }
+
+    /**
+     * Runs defined scripts inside the method, before ajax is called
+     */
+    function preAjaxCaller() {
+        $('#zoomModal').remove();
+    }
 
     $.widget("ui.oxArticleVariant", oxArticleVariant );
 

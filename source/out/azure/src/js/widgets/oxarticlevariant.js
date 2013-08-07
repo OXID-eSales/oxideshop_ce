@@ -112,6 +112,11 @@
                     'additionalData' : aOptions,
                     'onSuccess' : function(r) {
                         contentTarget.innerHTML = r;
+                        if ( typeof WidgetsHandler !== 'undefined') {
+                            WidgetsHandler.reloadWidget('oxwarticledetails');
+                        } else {
+                            oxAjax.evalScripts(contentTarget);
+                        }
                     }
                 }
             );

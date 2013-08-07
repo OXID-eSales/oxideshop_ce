@@ -187,7 +187,7 @@
                     [{/if}]
                 [{/if}]
                     [{if !$blCanBuy }]
-                        <div class="variantMessage">[{oxmultilang ident="CHOOSE_VARIANT"}]</div>
+                        <div class="variantMessage">[{oxmultilang ident="DETAILS_CHOOSEVARIANT"}]</div>
                     [{/if}]
 
             [{/if}]

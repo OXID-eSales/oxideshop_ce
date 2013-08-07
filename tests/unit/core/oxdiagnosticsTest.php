@@ -28,6 +28,51 @@ class Unit_Core_oxDiagnosticsTest extends OxidTestCase
 {
 
     /**
+     * Testing version getter and setter
+     */
+    public function testGetVersion()
+    {
+        $oChecker = oxNew( "oxDiagnostics" );
+        $oChecker->setVersion( "v123" );
+
+        $this->assertEquals( "v123",  $oChecker->getVersion() );
+    }
+
+    /**
+     * Testing edition getter and setter
+     */
+    public function testGetEdition()
+    {
+        $oChecker = oxNew( "oxDiagnostics" );
+        $oChecker->setEdition( "e123" );
+
+        $this->assertEquals( "e123",  $oChecker->getEdition() );
+    }
+
+    /**
+     * Testing revision getter and setter
+     */
+    public function testGetRevision()
+    {
+        $oChecker = oxNew( "oxDiagnostics" );
+        $oChecker->setRevision( "r123" );
+
+        $this->assertEquals( "r123",  $oChecker->getRevision() );
+    }
+
+    /**
+     * Testing base directory getter and setter
+     */
+    public function testGetShopLink()
+    {
+        $oChecker = oxNew( "oxDiagnostics" );
+        $oChecker->setShopLink( "somelink" );
+
+        $this->assertEquals( "somelink",  $oChecker->getShopLink() );
+    }
+
+
+    /**
      * Testing FileCheckerPathList getter and setter
      */
     public function testGetFileCheckerPathList()
@@ -53,6 +98,9 @@ class Unit_Core_oxDiagnosticsTest extends OxidTestCase
         $this->assertContains( "ex2",  $oDiagnostics->getFileCheckerExtensionList() );
     }
 
+    /**
+     * Setting up test for getShopDetails
+     */
     protected function _setUpTestGetShopDetails()
     {
         $oDb = oxDb::getDb();
@@ -65,8 +113,8 @@ class Unit_Core_oxDiagnosticsTest extends OxidTestCase
         $oDb->execute( "DELETE FROM `oxcategories`" );
 
         for ( $i = 3; $i < 12; $i++ ) {
-            $oDb->execute( "Insert into oxcategories (`OXID`,`OXROOTID`,`OXLEFT`,`OXRIGHT`,`OXSHOPINCL`,`OXTITLE`,`OXACTIVE`,`OXPRICEFROM`,`OXPRICETO`)" .
-            "values ('test".$i."','test','1','4','1','test',".($i%2).",'10','50')" );
+            $oDb->execute( "Insert into oxcategories (`OXID`,`OXROOTID`,`OXLEFT`,`OXRIGHT`,`OXTITLE`,`OXACTIVE`,`OXPRICEFROM`,`OXPRICETO`)" .
+            "values ('test".$i."','test','1','4','test',".($i%2).",'10','50')" );
         }
 
         $this->getDb()->execute("delete from `oxarticles` ");
@@ -77,11 +125,14 @@ class Unit_Core_oxDiagnosticsTest extends OxidTestCase
 
         $this->getDb()->execute("delete from `oxuser` ");
         for ( $i = 2; $i < 11; $i++ ) {
-            $oDb->execute( "INSERT INTO `oxuser` (`OXID`, `OXACTIVE`, `OXRIGHTS`, `OXSHOPID`, `OXUSERNAME`, `OXPASSWORD`, `OXPASSSALT`, `OXCUSTNR`, `OXUSTID`, `OXUSTIDSTATUS`, `OXCOMPANY`, `OXFNAME`, `OXLNAME`, `OXSTREET`, `OXSTREETNR`, `OXADDINFO`, `OXCITY`, `OXCOUNTRYID`, `OXSTATEID`, `OXZIP`, `OXFON`, `OXFAX`, `OXSAL`, `OXBONI`, `OXCREATE`, `OXREGISTER`, `OXPRIVFON`, `OXMOBFON`, `OXBIRTHDATE`, `OXURL`, `OXDISABLEAUTOGRP`, `OXLDAPKEY`, `OXWRONGLOGINS`, `OXUPDATEKEY`, `OXUPDATEEXP`, `OXPOINTS`, `OXFBID`, `OXTIMESTAMP`) ".
-            " VALUES ('test_id".$i."', ".($i%2).", '', '1', 'test".$i."', '', '', NULL, '', '0', '', '', '', '', '', '', '', '', '', '', '', '', '', '0', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '', '0000-00-00', '', '0', '', '0', '', '0', '0', '0', CURRENT_TIMESTAMP)" );
+            $oDb->execute( "INSERT INTO `oxuser` (`OXID`, `OXACTIVE`, `OXRIGHTS`, `OXSHOPID`, `OXUSERNAME`, `OXPASSWORD`, `OXPASSSALT`, `OXTIMESTAMP`) ".
+            " VALUES ('test_id".$i."', ".($i%2).", '', '1', 'test".$i."', '', '', CURRENT_TIMESTAMP)" );
         }
     }
 
+    /**
+     * Testing getShopDetails
+     */
     public function testGetShopDetails()
     {
         $this->_setUpTestGetShopDetails();
@@ -107,9 +158,37 @@ class Unit_Core_oxDiagnosticsTest extends OxidTestCase
         $this->assertEquals( 7, $aResult['Articles (Total)'] );
         $this->assertEquals( 3, $aResult['Articles (Active)'] );
         $this->assertEquals( 9, $aResult['Users (Total)'] );
-
-
     }
 
+
+    /**
+     * Testing getServerInfo
+     */
+    public function testGetServerInfo()
+    {
+        $oDiagnostics = $this->getMock( 'oxDiagnostics', array( '_getCpuAmount', '_getCpuMhz', '_getBogoMips',
+            '_getMemoryTotal', '_getMemoryFree', '_getCpuModel', '_getVirtualizationSystem', 'getApacheVersion', 'isExecAllowed' ) );
+
+        $oDiagnostics->expects( $this->once() )->method( '_getCpuAmount' )->will( $this->returnValue( 5 ) );
+        $oDiagnostics->expects( $this->once() )->method( '_getCpuMhz' )->will( $this->returnValue( 500 ) );
+        $oDiagnostics->expects( $this->once() )->method( '_getBogoMips' )->will( $this->returnValue( 1000 ) );
+        $oDiagnostics->expects( $this->once() )->method( '_getMemoryTotal' )->will( $this->returnValue( "3000" ) );
+        $oDiagnostics->expects( $this->once() )->method( '_getMemoryFree' )->will( $this->returnValue( "1234" ) );
+        $oDiagnostics->expects( $this->once() )->method( '_getCpuModel' )->will( $this->returnValue( "Cpu Model" ) );
+        $oDiagnostics->expects( $this->once() )->method( '_getVirtualizationSystem' )->will( $this->returnValue( "LINUX" ) );
+        $oDiagnostics->expects( $this->once() )->method( 'getApacheVersion' )->will( $this->returnValue( 321 ) );
+        $oDiagnostics->expects( $this->once() )->method( 'isExecAllowed' )->will( $this->returnValue( true ) );
+
+        $aServerInfo = $oDiagnostics->getServerInfo();
+
+        $this->assertEquals( 12, count($aServerInfo) );
+        $this->assertEquals( 'LINUX', $aServerInfo['VM'] );
+        $this->assertEquals( 321, $aServerInfo['Apache'] );
+        $this->assertEquals( 3000, $aServerInfo['Memory total']	);
+        $this->assertEquals( 1234, $aServerInfo['Memory free'] );
+        $this->assertEquals( '5x Cpu Model', $aServerInfo['CPU Model'] );
+        $this->assertEquals( '500 MHz', $aServerInfo['CPU frequency'] );
+        $this->assertEquals( 2, $aServerInfo['CPU cores'] );
+    }
 
 }

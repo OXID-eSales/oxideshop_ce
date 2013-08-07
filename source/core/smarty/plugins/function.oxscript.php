@@ -56,6 +56,12 @@ function smarty_function_oxscript($params, &$smarty)
     $aInclude             = (array) $myConfig->getGlobalParameter($sIncludes);
     $sOutput              = '';
 
+    $blAjaxRequest = false;
+    if (isset($_SERVER['HTTP_X_REQUESTED_WITH'])
+        AND strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+        $blAjaxRequest = true;
+    }
+
 
     if ( $params['add'] ) {
         $sScript = trim( $params['add'] );
@@ -94,7 +100,8 @@ function smarty_function_oxscript($params, &$smarty)
             $aInclude[$iPriority]   = array_unique($aInclude[$iPriority]);
             $myConfig->setGlobalParameter($sIncludes, $aInclude);
         }
-    } elseif ( !$sWidget || $blInWidget ) {
+    } elseif ( !$sWidget || $blInWidget || $blAjaxRequest ) {
+        if ( !$blAjaxRequest ) {
         // Form output for includes.
         $sOutput .= _oxscript_include( $aInclude, $sWidget );
         $myConfig->setGlobalParameter( $sIncludes, null );
@@ -103,17 +110,18 @@ function smarty_function_oxscript($params, &$smarty)
             $sOutput .= _oxscript_include( $aIncludeDyn, $sWidget );
             $myConfig->setGlobalParameter( $sIncludes .'_dynamic', null );
         }
+        }
 
         // Form output for adds.
         $sScriptOutput = '';
-        $sScriptOutput .= _oxscript_execute( $aScript, $sWidget, $sScripts );
+        $sScriptOutput .= _oxscript_execute( $aScript, $sWidget, $blAjaxRequest );
         $myConfig->setGlobalParameter( $sScripts, null );
         if ( $sWidget ) {
             $aScriptDyn = (array) $myConfig->getGlobalParameter( $sScripts .'_dynamic' );
             $sScriptOutput .= _oxscript_execute( $aScriptDyn, $sWidget, $sScripts );
             $myConfig->setGlobalParameter( $sScripts .'_dynamic', null );
         }
-        $sOutput .= _oxscript_execute_enclose( $sScriptOutput, $sWidget );
+        $sOutput .= _oxscript_execute_enclose( $sScriptOutput, $sWidget, $blAjaxRequest );
     }
 
     return $sOutput;
@@ -174,15 +182,15 @@ function _oxscript_include( $aInclude, $sWidget )
  *
  * @return string
  */
-function _oxscript_execute( $aScript, $sWidget )
+function _oxscript_execute( $aScript, $sWidget, $blAjaxRequest )
 {
     $myConfig = oxRegistry::getConfig();
     $sOutput  = '';
 
     if (count($aScript)) {
         foreach ($aScript as $sScriptToken) {
-            if ( $sWidget ) {
-                $sOutput .= 'WidgetsHandler.registerFunction( "'. $sScriptToken . '");'. PHP_EOL ;
+            if ( $sWidget && !$blAjaxRequest ) {
+                $sOutput .= 'WidgetsHandler.registerFunction( "'. $sScriptToken . '", "'.$sWidget.'");'. PHP_EOL ;
             } else {
             $sOutput .= $sScriptToken. PHP_EOL;
         }
@@ -200,7 +208,7 @@ function _oxscript_execute( $aScript, $sWidget )
  *
  * @return string
  */
-function _oxscript_execute_enclose( $sScriptsOutput, $sWidget )
+function _oxscript_execute_enclose( $sScriptsOutput, $sWidget, $blAjaxRequest )
 {
     if ( !$sScriptsOutput && !$sWidget ) {
         return '';
@@ -208,7 +216,7 @@ function _oxscript_execute_enclose( $sScriptsOutput, $sWidget )
 
     $sOutput  = '';
     $sOutput .= '<script type="text/javascript">' . PHP_EOL;
-    if ( $sWidget ) {
+    if ( $sWidget && !$blAjaxRequest ) {
         $sOutput .= 'window.addEventListener("load", function() {'. PHP_EOL . $sScriptsOutput .'}, false )'. PHP_EOL;
     } else {
         $sOutput .= $sScriptsOutput;

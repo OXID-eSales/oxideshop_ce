@@ -71,7 +71,7 @@ class Unit_Maintenance_pluginSmartyOxScriptTest extends OxidTestCase
         $oSmarty = new Smarty();
         $this->assertEquals( '', smarty_function_oxscript( array('add' => 'oxidadd'), $oSmarty ) );
 
-        $sOutput.= '<script type="text/javascript">'. PHP_EOL .'oxidadd'. PHP_EOL .'</script>'. PHP_EOL;
+        $sOutput = '<script type="text/javascript">'. PHP_EOL .'oxidadd'. PHP_EOL .'</script>'. PHP_EOL;
 
         $this->assertEquals( $sOutput, smarty_function_oxscript( array(), $oSmarty ) );
     }
@@ -83,7 +83,7 @@ class Unit_Maintenance_pluginSmartyOxScriptTest extends OxidTestCase
 
         $sOutput = '<script type="text/javascript">'. PHP_EOL
                     .'window.addEventListener("load", function() {'. PHP_EOL
-                    .'WidgetsHandler.registerFunction( "oxidadd");'. PHP_EOL
+                    .'WidgetsHandler.registerFunction( "oxidadd", "somewidget");'. PHP_EOL
                     .'}, false )'. PHP_EOL
                     .'</script>'. PHP_EOL;
 

@@ -16,6 +16,8 @@
 
     <form class="js-oxWidgetReload" action="[{$oView->getWidgetLink()}]" method="get">
     <div>
+            [{$oViewConf->getHiddenSid()}]
+            [{$oViewConf->getNavFormParams()}]
         <input type="hidden" name="cl" value="[{$oView->getClassName()}]">
         <input type="hidden" name="oxwparent" value="[{$oViewConf->getTopActiveClassName()}]">
         <input type="hidden" name="listtype" value="[{$oView->getListType()}]">
@@ -201,7 +203,7 @@
                     [{/if}]
                 [{/if}]
                     [{if !$blCanBuy }]
-                        <div class="variantMessage">[{oxmultilang ident="CHOOSE_VARIANT"}]</div>
+                        <div class="variantMessage">[{oxmultilang ident="DETAILS_CHOOSEVARIANT"}]</div>
                     [{/if}]
 
             [{/if}]

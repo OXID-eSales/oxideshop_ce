@@ -27,7 +27,7 @@
 
 
 
-<h3><a id="shopbasics">[{oxmultilang ident='OXDIAG_BASICS'}]</a></h3>
+<h3><a id="shopbasics"></a>[{oxmultilang ident='OXDIAG_BASICS'}]</h3>
 <table border="0" cellpadding="3">
 	<tr class="h">
 	    <th>[{oxmultilang ident='OXDIAG_SERVERINFO_COMPONENT'}]</th>
@@ -35,7 +35,7 @@
 	</tr>
 	[{foreach from=$aShopDetails key=param item=value}]
 		[{if $value == ''}]
-			[{assign var="value" value="off"}]
+            [{assign var="value" value="OXDIAG_PHPINFO_OFF"|oxmultilangassign}]
 		[{/if}]
 		<tr>
 		<td>[{$param}]:</td><td>[{$value}]</td>
@@ -46,7 +46,7 @@
 
 
 [{if $oxdiag_frm_modules }]
-	<h3><a id="modules">[{oxmultilang ident='OXDIAG_MODULES'}]</a></h3>
+	<h3><a id="modules"></a>[{oxmultilang ident='OXDIAG_MODULES'}]</h3>
 	<table border="0" cellpadding="3">
 		<tr>
 		    <th>[{oxmultilang ident='OXDIAG_MODULES_STATE'}]</th>
@@ -71,7 +71,7 @@
 
 
 [{if $oxdiag_frm_health }]
-	<h3><a id="health">[{oxmultilang ident='OXDIAG_HEALTH'}]</a></h3>
+	<h3><a id="health"></a>[{oxmultilang ident='OXDIAG_HEALTH'}]</h3>
 	<table>
 	    [{foreach from=$aInfo item=aModules key=sGroupName}]
 	    <tr>
@@ -81,11 +81,11 @@
 	            <tr>
 	                <td>
 						[{if $iModuleState == 2 }]
-							OK
+                            [{oxmultilang ident='OXDIAG_HEALTH_OK'}]
 						[{elseif $iModuleState == 1 }]
-							MIN
+                            [{oxmultilang ident='OXDIAG_HEALTH_MIN'}]
 						[{else}]
-							FAIL
+							[{oxmultilang ident='OXDIAG_HEALTH_FAIL'}]
 						[{/if}]
 					</td>
 					
@@ -105,7 +105,7 @@
 
 
 [{if $oxdiag_frm_php }]
-	<h3><a id="phpinfo">[{oxmultilang ident='OXDIAG_PHPINFO'}]</a></h3>
+	<h3><a id="phpinfo"></a>[{oxmultilang ident='OXDIAG_PHPINFO'}]</h3>
 	<table border="0" cellpadding="3">
 		<tr class="h">
 		    <th>[{oxmultilang ident='OXDIAG_PHPINFO_PARAM'}]</th>
@@ -113,7 +113,7 @@
 		</tr>
 		[{foreach from=$aPhpConfigparams key=param item=value}]
 			[{if $value == ''}]
-				[{assign var="value" value="off"}]
+                [{assign var="value" value="OXDIAG_PHPINFO_OFF"|oxmultilangassign}]
 			[{/if}]
 			<tr>
 			<td>[{$param}]:</td><td>[{$value}]</td>
@@ -121,14 +121,15 @@
 		[{/foreach}]
 	</table>
 	
-	<h3><a id="phpext">[{oxmultilang ident='OXDIAG_PHPINFO_EXTENSIONS'}]</a></h3>
+	<h3><a id="phpext"></a>[{oxmultilang ident='OXDIAG_PHPINFO_EXTENSIONS'}]</h3>
 	[{oxmultilang ident='OXDIAG_PHPINFO_ZENDEX'}]: [{$sPhpDecoder}]
 [{/if}]
 
 
 
 [{if $oxdiag_frm_server }]
-	<h3><a id="serverinfo">[{oxmultilang ident='OXDIAG_SERVERINFO'}]</a></h3>
+	<h3><a id="serverinfo"></a>[{oxmultilang ident='OXDIAG_SERVERINFO'}]</h3>
+        <p>[{oxmultilang ident='OXDIAG_SRVINF_NOTE'}]</p>
 	[{if !$isExecAllowed }]
 		<p><span style="border-bottom:1px solid #f00;">[{oxmultilang ident='OXDIAG_SRVINF_NOTALL'}]</span></p>
 	[{/if}]
@@ -140,7 +141,7 @@
 		</tr>
 		[{foreach from=$aServerInfo key=param item=value}]
 			[{if $value == ''}]
-				[{assign var="value" value="not detected"}]
+                [{assign var="value" value="OXDIAG_SERVERINFO_NOT_DETECTED"|oxmultilangassign}]
 			[{/if}]
 			<tr>
 			<td>[{$param}]:</td><td>[{$value}]</td>

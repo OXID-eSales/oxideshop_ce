@@ -58,7 +58,6 @@ class oxDiagnostics
      */
     protected $_sShopLink         = "";
 
-
     /**
      * Array of all files and folders in shop root folder which are to be checked
      *
@@ -74,11 +73,6 @@ class oxDiagnostics
                                         'bin/',
                                         'core/',
                                         'modules/',
-                                        'views/',
-                                        //we need here the specific path because we do not want to scan the custom theme folders
-                                        'out/basic/',
-                                        'out/admin/',
-                                        'out/azure/',
                                     );
 
     /**
@@ -87,7 +81,6 @@ class oxDiagnostics
      * @var array
      */
     protected $_aFileCheckerExtensionList = array( 'php', 'tpl' );
-
 
     /**
      * Setter for list of files and folders to check
@@ -352,11 +345,11 @@ class oxDiagnostics
         $aServerInfo = array(
             'Server OS'		=>	@php_uname('s'),
             'VM'			=>	$this->_getVirtualizationSystem(),
-            'PHP'			=>	phpversion(),
-            'MySQL'			=>	mysql_get_server_info(),
-            'Apache'		=>	$this->getApacheVersion(),
+            'PHP'			=> $this->_getPhpVersion(),
+            'MySQL'			=> $this->_getMySqlServerInfo(),
+            'Apache'		=> $this->_getApacheVersion(),
             'Disk total'	=>	$this->_getDiskTotalSpace(),
-            'Disk free'		=>	round( disk_free_space('/') / 1024 / 1024 , 0 ) .' GiB',
+            'Disk free'		=> $this->_getDiskFreeSpace(),
             'Memory total'	=>	$iMemTotal,
             'Memory free'	=>	$iMemFree,
             'CPU Model'		=>	$sCpuModel,
@@ -372,7 +365,7 @@ class oxDiagnostics
      *
      * @return string
      */
-    public function getApacheVersion()
+    protected function _getApacheVersion()
     {
         if ( function_exists( 'apache_get_version' ) ){
             $sReturn = apache_get_version();
@@ -390,7 +383,7 @@ class oxDiagnostics
      */
     protected function _getVirtualizationSystem()
     {
-        $sSystemType = 'not detected';
+        $sSystemType = '';
 
         if ( $this->isExecAllowed() ){
             //VMWare
@@ -402,7 +395,7 @@ class oxDiagnostics
 
             //VirtualBox
             @$sDeviceList = $this->_getDeviceList( 'VirtualBox' );
-            if( $sDeviceList){
+            if( $sDeviceList ){
                 $sSystemType = 'VirtualBox';
                 unset( $sDeviceList );
             }
@@ -493,9 +486,44 @@ class oxDiagnostics
         return exec('cat /proc/cpuinfo | grep "model name" | sort -u | cut -d: -f2');
     }
 
+    /**
+     * Returns total disk space
+     *
+     * @return string
+     */
     protected function _getDiskTotalSpace()
     {
         return round( disk_total_space('/') / 1024 / 1024 , 0 ) .' GiB';
+    }
+
+    /**
+     * Returns free disk space
+     *
+     * @return string
+     */
+    protected function _getDiskFreeSpace()
+    {
+        return round(disk_free_space('/') / 1024 / 1024, 0) . ' GiB';
+    }
+
+    /**
+     * Returns PHP version
+     *
+     * @return string
+     */
+    protected function _getPhpVersion()
+    {
+        return phpversion();
+    }
+
+    /**
+     * Returns MySQL server Information
+     *
+     * @return string
+     */
+    protected function _getMySqlServerInfo()
+    {
+        return mysql_get_server_info();
     }
 
 

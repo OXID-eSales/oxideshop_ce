@@ -2121,6 +2121,9 @@ $aLang = array(
 'OXDIAG_RESTART'					=>	'Start new analysis',
 
 'OXDIAG_DISCL'						=>	'The analysis below the line has been stored in a report file.',
+'OXDIAG_HEALTH_OK'                  =>    'OK',
+'OXDIAG_HEALTH_MIN'                 =>    'MIN',
+'OXDIAG_HEALTH_FAIL'                =>    'FAIL',
 
 //modules
 'OXDIAG_MODULES_STATE'				=>	'Status',
@@ -2134,9 +2137,12 @@ $aLang = array(
 'OXDIAG_PHPINFO_PARAM'				=>	'Parameter',
 'OXDIAG_PHPINFO_VALUE'				=>	'Value',
 'OXDIAG_PHPINFO_ZENDEX'				=>	'Zend extension',
+'OXDIAG_PHPINFO_OFF'                =>    'Off',
 
 //server
 'OXDIAG_SRVINF_NOTALL'				=>	'Cannot request all values, due to disabled <i>exec</i> command on server.',
+'OXDIAG_SRVINF_NOTE'                =>    'Note: This information is gathered for the current runtime frontend server. Should you have more than one frontend server running, you may access those directly in order to gather their information.',
+'OXDIAG_SERVERINFO_NOT_DETECTED'    =>    'not detected',
 'OXDIAG_SERVERINFO_COMPONENT'		=>	'Component',
 'OXDIAG_CHKVERSION'					=>	'Output of Version check',
 'OXDIAG_CHKVERS_FULLREP'			=>	'Run Version check for full report',

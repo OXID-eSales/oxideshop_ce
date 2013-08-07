@@ -25,22 +25,11 @@
         _create: function(){
             var self = this,
                 options = self.options,
-                el = self.element,
-                shownName = $( ".credit_card option:selected" ).val(),
-                shownObject = $( "." + shownName );
-
-            shownObject.show();
+                el = self.element;
 
             $("dl dt input[type=radio]", el).click(function(){
                 $("dd", el).hide();
                 $(this).parents("dl").children("dd").toggle();
-            });
-
-            $(".credit_card option", el).click(function() {
-                shownName = this.value;
-                shownObject.hide();
-                shownObject = $("." + shownName);
-                shownObject.show();
             });
         }
     }

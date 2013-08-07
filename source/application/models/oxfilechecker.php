@@ -56,28 +56,28 @@ class oxFileChecker {
      *
      * @var string
      */
-    private $_oCurlHandler = null;
+    protected $_oCurlHandler = null;
 
     /**
      * Edition of THIS OXID eShop
      *
      * @var string
      */
-    private $_sEdition = "";
+    protected $_sEdition = "";
 
     /**
      * Version of THIS OXID eShop
      *
      * @var string
      */
-    private $_sVersion = "";
+    protected $_sVersion = "";
 
     /**
      * Revision of THIS OXID eShop
      *
      * @var string
      */
-    private $_sRevision = "";
+    protected $_sRevision = "";
 
     /**
      * base directory
@@ -92,7 +92,7 @@ class oxFileChecker {
      *
      * @var bool
      */
-    private $_blListAllFiles = false;
+    protected $_blListAllFiles = false;
 
     /**
      * Setter for working directory
@@ -280,7 +280,7 @@ class oxFileChecker {
      * in case if a general error is thrown by webservice
      * @return string error
      */
-    private function _isWebServiceOnline()
+    protected function _isWebServiceOnline()
     {
         $oXML = null;
         $aParams = array(
@@ -314,7 +314,7 @@ class oxFileChecker {
      * asks the webservice, if the shop version is known.
      * @return boolean
      */
-    private function _isShopVersionIsKnown()
+    protected function _isShopVersionIsKnown()
     {
         $aParams = array(
             'job' => 'existsversion',
@@ -426,7 +426,7 @@ class oxFileChecker {
      *
      * @return SimpleXMLElement
      */
-    private function _getFileVersion( $sMD5, $sFile)
+    protected function _getFileVersion( $sMD5, $sFile)
     {
         $aParams = array(
             'job' => 'md5check',

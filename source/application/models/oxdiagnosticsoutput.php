@@ -50,7 +50,7 @@ class oxDiagnosticsOutput {
      *
      * @var mixed
      */
-    private $_oUtils = null;
+    protected $_oUtils = null;
 
     /**
      * Object constructor

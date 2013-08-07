@@ -35,28 +35,28 @@ class oxDiagnostics
      *
      * @var string
      */
-    private $_sEdition          = "";
+    protected  $_sEdition          = "";
 
     /**
      * Version of THIS OXID eShop
      *
      * @var string
      */
-    private $_sVersion          = "";
+    protected $_sVersion          = "";
 
     /**
      * Revision of THIS OXID eShop
      *
      * @var string
      */
-    private $_sRevision         = "";
+    protected $_sRevision         = "";
 
     /**
      * Revision of THIS OXID eShop
      *
      * @var string
      */
-    private $_sShopLink         = "";
+    protected $_sShopLink         = "";
 
 
     /**
@@ -64,7 +64,7 @@ class oxDiagnostics
      *
      * @var array
      */
-    private $_aFileCheckerPathList   = array(
+    protected $_aFileCheckerPathList   = array(
                                         'bootstrap.php',
                                         'index.php',
                                         'oxid.php',
@@ -86,7 +86,7 @@ class oxDiagnostics
      *
      * @var array
      */
-    private $_aFileCheckerExtensionList = array( 'php', 'tpl' );
+    protected $_aFileCheckerExtensionList = array( 'php', 'tpl' );
 
 
     /**
@@ -286,8 +286,8 @@ class oxDiagnostics
 
         $aPhpIniConf = array();
 
-        foreach ( $aPhpIniParams as $sParam){
-            $sValue = ini_get( $sParam);
+        foreach ( $aPhpIniParams as $sParam ){
+            $sValue = ini_get( $sParam );
             $aPhpIniConf[$sParam] = $sValue;
         }
 
@@ -355,7 +355,7 @@ class oxDiagnostics
             'PHP'			=>	phpversion(),
             'MySQL'			=>	mysql_get_server_info(),
             'Apache'		=>	$this->getApacheVersion(),
-            'Disk total'	=>	round( disk_total_space('/') / 1024 / 1024 , 0 ) .' GiB',
+            'Disk total'	=>	$this->_getDiskTotalSpace(),
             'Disk free'		=>	round( disk_free_space('/') / 1024 / 1024 , 0 ) .' GiB',
             'Memory total'	=>	$iMemTotal,
             'Memory free'	=>	$iMemFree,
@@ -388,7 +388,7 @@ class oxDiagnostics
      *
      * @return string
      */
-    private function _getVirtualizationSystem()
+    protected function _getVirtualizationSystem()
     {
         $sSystemType = 'not detected';
 
@@ -492,4 +492,11 @@ class oxDiagnostics
     {
         return exec('cat /proc/cpuinfo | grep "model name" | sort -u | cut -d: -f2');
     }
+
+    protected function _getDiskTotalSpace()
+    {
+        return round( disk_total_space('/') / 1024 / 1024 , 0 ) .' GiB';
+    }
+
+
 }

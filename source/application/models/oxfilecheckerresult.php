@@ -35,14 +35,14 @@ class oxFileCheckerResult {
      *
      * @var mixed
      */
-    private $_aResult = array();
+    protected $_aResult = array();
 
     /**
      * Counts number of matches for each type of result
      *
      * @var array
      */
-    private $_aResultSummary = array();
+    protected $_aResultSummary = array();
 
     /**
      * Object constructor

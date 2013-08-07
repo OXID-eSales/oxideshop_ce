@@ -76,7 +76,7 @@ class diagnostics_main extends oxAdminDetails
      *
      * @return string
      */
-    private function _hasError()
+    protected function _hasError()
     {
         return $this->_blError;
     }
@@ -86,7 +86,7 @@ class diagnostics_main extends oxAdminDetails
      *
      * @return string
      */
-    private function _getErrorMessage()
+    protected function _getErrorMessage()
     {
         return $this->_sErrorMessage;
     }
@@ -127,7 +127,7 @@ class diagnostics_main extends oxAdminDetails
      *
      * @return array list of shop files to be checked
      */
-    private function _getFilesToCheck()
+    protected function _getFilesToCheck()
     {
         $oDiagnostics = oxNew( 'oxDiagnostics' );
         $aFilePathList = $oDiagnostics->getFileCheckerPathList();
@@ -154,7 +154,7 @@ class diagnostics_main extends oxAdminDetails
      * @param $aFileList array list of files to be checked
      * @return null|object
      */
-    private function _checkOxidFiles( $aFileList )
+    protected function _checkOxidFiles( $aFileList )
     {
         $oFileChecker = oxNew ( "oxFileChecker" );
         $oFileChecker->setBaseDirectory( $this->_sShopDir );
@@ -192,7 +192,7 @@ class diagnostics_main extends oxAdminDetails
      * @param  $oFileCheckerResult mixed file checker result object
      * @return string body of report
      */
-    private function _getFileCheckReport( $oFileCheckerResult )
+    protected function _getFileCheckReport( $oFileCheckerResult )
     {
         $aViewData = array(
             "sVersion" => $this->getConfig()->getVersion(),
@@ -236,7 +236,7 @@ class diagnostics_main extends oxAdminDetails
     }
 
 
-    private function _runBasicDiagnostics()
+    protected function _runBasicDiagnostics()
     {
         $aViewData = array();
         $oDiagnostics = oxNew( 'oxDiagnostics' );

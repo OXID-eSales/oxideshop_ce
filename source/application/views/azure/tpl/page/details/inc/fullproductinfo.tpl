@@ -11,7 +11,10 @@
         <div class="widgetBox reviews">
             <h4>[{oxmultilang ident="WRITE_PRODUCT_REVIEW"}]</h4>
             [{assign var="product" value=$oView->getProduct()}]
-            [{oxid_include_widget cl="oxwReview" nocookie=1 _parent=$oViewConf->getTopActiveClassName() type=oxarticle anid=$product->oxarticles__oxnid->value aid=$product->oxarticles__oxid->value canrate=$oView->canRate()}]
+            [{if $oxcmp_user}]
+                [{assign var="force_sid" value=$oViewConf->getSessionId()}]
+            [{/if}]
+            [{oxid_include_widget cl="oxwReview" nocookie=1 force_sid=$force_sid _parent=$oViewConf->getTopActiveClassName() type=oxarticle anid=$product->oxarticles__oxnid->value aid=$product->oxarticles__oxid->value canrate=$oView->canRate()}]
         </div>
         [{/if}]
     </div>

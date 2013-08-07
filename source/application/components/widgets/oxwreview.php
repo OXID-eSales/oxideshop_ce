@@ -41,6 +41,7 @@ class oxwReview extends oxWidget
      */
     protected $_sThisTemplate = 'widget/reviews/reviews.tpl';
 
+
     /**
      * Executes parent::render().
      * Returns name of template file to render.

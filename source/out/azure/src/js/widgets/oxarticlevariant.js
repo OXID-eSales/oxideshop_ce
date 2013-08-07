@@ -94,7 +94,7 @@
                     $('input[name=fnc]', form).val("");
                     form.submit();
                 }
-        e.stopPropagation();
+        return false;
     }
 
             /**
@@ -106,7 +106,7 @@
                 var form = $("form.js-oxWidgetReload");
                 $('input[name=fnc]', form).val("");
                 form.submit();
-        e.stopPropagation();
+        return false;
     }
 
     /**

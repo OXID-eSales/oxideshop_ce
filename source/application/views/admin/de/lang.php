@@ -2123,6 +2123,9 @@ $aLang = array(
 'OXDIAG_RESTART'					=>	'Neue Analyse',
 
 'OXDIAG_DISCL'						=>	'Die Informationen unterhalb der Linie wurden in einem Bericht gespeichert.',
+'OXDIAG_HEALTH_OK'                  =>    'OK',
+'OXDIAG_HEALTH_MIN'                 =>    'MiN',
+'OXDIAG_HEALTH_FAIL'                =>    'N OK',
 
 //modules
 'OXDIAG_MODULES_STATE'				=>	'Zustand',
@@ -2136,9 +2139,12 @@ $aLang = array(
 'OXDIAG_PHPINFO_PARAM'				=>	'Parameter',
 'OXDIAG_PHPINFO_VALUE'				=>	'Wert',
 'OXDIAG_PHPINFO_ZENDEX'				=>	'Zend-Erweiterung',
+'OXDIAG_PHPINFO_OFF'                =>    'Aus',
 
 //server
 'OXDIAG_SRVINF_NOTALL'				=>	'Es k&ouml;nnen nicht alle Werte abgefragt werden, weil der <i>exec</i>-Befehl auf dem Server nicht verf&uuml;gbar ist.',
+'OXDIAG_SRVINF_NOTE'                =>    'Bemerkung: Diese Informationen beziehen sich auf den aktuellen Runtime-Frontend-Server. Sollten Sie mehr als einen Frontend-Server in Betrieb haben, können Sie deren Informationen durch direkten Zugriff auf die entsprechenden Server abrufen.',
+'OXDIAG_SERVERINFO_NOT_DETECTED'    =>    '[TR]nicht erkannt',
 'OXDIAG_SERVERINFO_COMPONENT'		=>	'Komponente',
 'OXDIAG_CHKVERSION'					=>	'Oxchkversion-Ausgabe',
 'OXDIAG_CHKVERS_FULLREP'			=>	'Vollst&auml;ndige Auswertung von <i>Oxchkversion</i> durchf&uuml;hlren',

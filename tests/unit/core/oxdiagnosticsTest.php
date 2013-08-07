@@ -167,7 +167,8 @@ class Unit_Core_oxDiagnosticsTest extends OxidTestCase
     public function testGetServerInfo()
     {
         $oDiagnostics = $this->getMock( 'oxDiagnostics', array( '_getCpuAmount', '_getCpuMhz', '_getBogoMips',
-            '_getMemoryTotal', '_getMemoryFree', '_getCpuModel', '_getVirtualizationSystem', 'getApacheVersion', 'isExecAllowed' ) );
+            '_getMemoryTotal', '_getMemoryFree', '_getCpuModel', '_getVirtualizationSystem', '_getApacheVersion',
+            'isExecAllowed', '_getPhpVersion', '_getMySqlServerInfo', '_getDiskTotalSpace', '_getDiskFreeSpace' ) );
 
         $oDiagnostics->expects( $this->once() )->method( '_getCpuAmount' )->will( $this->returnValue( 5 ) );
         $oDiagnostics->expects( $this->once() )->method( '_getCpuMhz' )->will( $this->returnValue( 500 ) );
@@ -176,14 +177,22 @@ class Unit_Core_oxDiagnosticsTest extends OxidTestCase
         $oDiagnostics->expects( $this->once() )->method( '_getMemoryFree' )->will( $this->returnValue( "1234" ) );
         $oDiagnostics->expects( $this->once() )->method( '_getCpuModel' )->will( $this->returnValue( "Cpu Model" ) );
         $oDiagnostics->expects( $this->once() )->method( '_getVirtualizationSystem' )->will( $this->returnValue( "LINUX" ) );
-        $oDiagnostics->expects( $this->once() )->method( 'getApacheVersion' )->will( $this->returnValue( 321 ) );
-        $oDiagnostics->expects( $this->once() )->method( 'isExecAllowed' )->will( $this->returnValue( true ) );
+        $oDiagnostics->expects( $this->once() )->method( '_getApacheVersion' )->will( $this->returnValue( "321" ) );
+        $oDiagnostics->expects( $this->once() )->method( '_getPhpVersion' )->will( $this->returnValue( "654" ) );
+        $oDiagnostics->expects( $this->once() )->method( '_getMySqlServerInfo' )->will( $this->returnValue( "MySQL information" ) );
+        $oDiagnostics->expects( $this->once() )->method( '_getDiskTotalSpace' )->will( $this->returnValue( 9999 ) );
+        $oDiagnostics->expects( $this->once() )->method( '_getDiskFreeSpace' )->will( $this->returnValue( 3333 ) );
+        $oDiagnostics->expects( $this->any() )->method( 'isExecAllowed' )->will( $this->returnValue( true ) );
 
         $aServerInfo = $oDiagnostics->getServerInfo();
 
         $this->assertEquals( 12, count($aServerInfo) );
         $this->assertEquals( 'LINUX', $aServerInfo['VM'] );
-        $this->assertEquals( 321, $aServerInfo['Apache'] );
+        $this->assertEquals( "321", $aServerInfo['Apache'] );
+        $this->assertEquals( "654", $aServerInfo['PHP'] );
+        $this->assertEquals( "MySQL information", $aServerInfo['MySQL'] );
+        $this->assertEquals( 9999, $aServerInfo['Disk total'] );
+        $this->assertEquals( 3333, $aServerInfo['Disk free'] );
         $this->assertEquals( 3000, $aServerInfo['Memory total']	);
         $this->assertEquals( 1234, $aServerInfo['Memory free'] );
         $this->assertEquals( '5x Cpu Model', $aServerInfo['CPU Model'] );

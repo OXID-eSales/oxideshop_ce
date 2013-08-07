@@ -1,6 +1,6 @@
 
 <table>
-<tr><td colspan=2><h3><a id="chkversion">[{ oxmultilang ident='OXDIAG_VERSIONCHECKER'}]</a></h3></td></tr>
+<tr><td colspan=2><h3><a id="chkversion"></a>[{ oxmultilang ident='OXDIAG_VERSIONCHECKER'}]</h3></td></tr>
 <tr><td><b>[{ oxmultilang ident='OXDIAG_EDITION'}]</b></td><td>[{ $sEdition }]</td></tr>
 <tr><td><b>[{ oxmultilang ident='OXDIAG_VERSION'}]</b></td><td>[{ $sVersion }]</td></tr>
 <tr><td><b>[{ oxmultilang ident='OXDIAG_REVISION'}]</b></td><td>[{ $sRevision }]</td></tr>

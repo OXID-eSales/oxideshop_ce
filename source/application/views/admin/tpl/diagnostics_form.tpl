@@ -140,7 +140,7 @@
 
 [{ if !empty($sResult) }]
 <h1>[{ oxmultilang ident="OXDIAG_RESULT_SUCCESSFUL" }]</h1>
-<h2><strong><a href="[{ $oViewConf->getSelfLink() }]&amp;cl=version_checker_main&amp;fnc=downloadResultFile">[{ oxmultilang ident="OXDIAG_DOWNLOAD_FILE" }]</a></strong>.</h2>
+<h2><strong><a href="[{ $oViewConf->getSelfLink() }]&amp;cl=diagnostics_main&amp;fnc=downloadResultFile">[{ oxmultilang ident="OXDIAG_DOWNLOAD_FILE" }]</a></strong>.</h2>
 
 <h3>[{ oxmultilang ident="OXDIAG_RESULT" }]:</h3>
 <div class="result">

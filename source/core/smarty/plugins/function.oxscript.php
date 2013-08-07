@@ -179,6 +179,7 @@ function _oxscript_include( $aInclude, $sWidget )
  *
  * @param array  $aScript scripts to execute (from add).
  * @param string $sWidget widget name.
+ * @param bool $blAjaxRequest is ajax request
  *
  * @return string
  */
@@ -205,6 +206,7 @@ function _oxscript_execute( $aScript, $sWidget, $blAjaxRequest )
  *
  * @param string $sScriptsOutput javascript to be enclosed.
  * @param string $sWidget        widget name.
+ * @param bool $blAjaxRequest    is ajax request
  *
  * @return string
  */

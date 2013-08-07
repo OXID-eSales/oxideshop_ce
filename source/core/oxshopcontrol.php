@@ -29,6 +29,12 @@
 class oxShopControl extends oxSuperCfg
 {
     /**
+     * Allow setting env_key cookies for shopcontrol, but not for widget controller.
+     *
+     * @var bool
+     */
+    protected $_blAllowEnvKeySetting = true;
+    /**
      * Used to force handling, it allows other place like widget controller to skip it.
      *
      * @var bool

@@ -5,6 +5,10 @@
         [{assign var="recommendation_head" value="LIST_BY"|oxmultilangassign}]
         [{assign var="recommendation_head" value=$_actvrecommlist->oxrecommlists__oxtitle->value|cat:" <span>("|cat:$recommendation_head|cat:" "|cat:$_actvrecommlist->oxrecommlists__oxauthor->value|cat:")</span>"}]
         [{assign var="rsslinks" value=$oView->getRssLinks() }]
+        [{if $oxcmp_user}]
+            [{assign var="force_sid" value=$oViewConf->getSessionId()}]
+        [{/if}]
+
         <h1 class="pageHead">[{$recommendation_head}]
 
         [{assign var='rsslinks' value=$oView->getRssLinks() }]
@@ -29,7 +33,7 @@
                     </div>
                     [{if $oView->isReviewActive()}]
                     <div class="rating clear">
-                        [{oxid_include_widget cl="oxwRating" blCanRate=$oView->canRate() _parent=$oView->getClassName() nocookie=1 sRateUrl=$oViewConf->getSelfLink()|cat:"cl=recommlist" dRatingCount=$oView->getRatingCount() dRatingValue=$oView->getRatingValue() recommid=$_actvrecommlist->getId()}]
+                        [{oxid_include_widget cl="oxwRating" blCanRate=$oView->canRate() _parent=$oView->getClassName() nocookie=1 force_sid=$force_sid sRateUrl=$oViewConf->getSelfLink()|cat:"cl=recommlist" dRatingCount=$oView->getRatingCount() dRatingValue=$oView->getRatingValue() recommid=$_actvrecommlist->getId()}]
                     </div>
                     [{/if}]
                 </div>
@@ -41,7 +45,7 @@
         [{if $oView->isReviewActive()}]
         <div class="widgetBox reviews">
             <h4>[{oxmultilang ident="WRITE_PRODUCT_REVIEW"}]</h4>
-            [{oxid_include_widget cl="oxwReview" nocookie=1 _parent=$oView->getClassName() type=oxrecommlist recommid=$_actvrecommlist->getId() canrate=$oView->canRate()}]
+            [{oxid_include_widget cl="oxwReview" nocookie=1 force_sid=$force_sid _parent=$oView->getClassName() type=oxrecommlist recommid=$_actvrecommlist->getId() canrate=$oView->canRate()}]
         </div>
         [{/if}]
     [{else}]

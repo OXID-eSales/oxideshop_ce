@@ -46,7 +46,7 @@
     [{* article picture with zoom *}]
     [{block name="details_productmain_zoom"}]
         [{oxscript include="js/libs/cloudzoom.js" priority=10}]
-        [{if $oView->getZoomPics()}]
+        [{if $oView->showZoomPics()}]
             [{oxscript include="js/widgets/oxmodalpopup.js" priority=10 }]
             [{oxscript add="$('#zoomTrigger').oxModalPopup({target:'#zoomModal'});"}]
             <a id="zoomTrigger" rel="nofollow" href="#">Zoom</a>
@@ -135,7 +135,10 @@
             [{if $oView->ratingIsActive()}]
             [{block name="details_productmain_ratings"}]
                 <div class="rating clear">
-                    [{oxid_include_widget cl="oxwRating" blCanRate=$oView->canRate() _parent=$oViewConf->getTopActiveClassName() nocookie=1 sRateUrl=$oDetailsProduct->getLink() dRatingCount=$oView->getRatingCount() dRatingValue=$oView->getRatingValue() anid=$oDetailsProduct->oxarticles__oxnid->value}]
+                    [{if $oxcmp_user}]
+                        [{assign var="force_sid" value=$oViewConf->getSessionId()}]
+                    [{/if}]
+                    [{oxid_include_widget cl="oxwRating" blCanRate=$oView->canRate() _parent=$oViewConf->getTopActiveClassName() nocookie=1 force_sid=$force_sid sRateUrl=$oDetailsProduct->getLink() dRatingCount=$oView->getRatingCount() dRatingValue=$oView->getRatingValue() anid=$oDetailsProduct->oxarticles__oxnid->value}]
                 </div>
             [{/block}]
             [{/if}]

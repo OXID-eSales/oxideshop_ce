@@ -45,21 +45,24 @@ class oxwRating extends oxWidget
 
     /**
      * Rating value
+     *
      * @var double
      */
     protected $_dRatingValue = null;
 
     /**
      * Rating count
+     *
      * @var integer
      */
     protected $_iRatingCnt = null;
+
 
     /**
      * Executes parent::render().
      * Returns name of template file to render.
      *
-     * @return  string  cuurent template file name
+     * @return string current template file name
      */
     public function render()
     {

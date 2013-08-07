@@ -103,7 +103,8 @@
                             [{/if}]
                             [{block name="widget_product_listitem_infogrid_price_value"}]
                                 [{if $product->getFPrice()}]
-                                    <span class="price"><span>
+                                    <span class="price">
+                                        <span>
                                         [{if $product->isRangePrice()}]
                                                 [{ oxmultilang ident="PRICE_FROM" }]
                                                 [{if !$product->isParentNotBuyable() }]
@@ -117,11 +118,13 @@
                                                 [{else}]
                                                     [{ $product->getFVarMinPrice() }]
                                                 [{/if}]
-                                        [{/if}]</span>
-                                    [{ $oView->getActCurrencySign()}]
+                                            [{/if}]
+                                        </span>
+                                        [{$oView->getActCurrencySign()}]
                                     [{if $oView->isVatIncluded() }]
                                          [{if !($product->hasMdVariants() || ($oViewConf->showSelectListsInList() && $product->getSelections(1)) || $product->getVariants())}]*[{/if}]</span>
                                     [{/if}]
+                                    </span>
                                 [{/if}]
                             [{/block}]
                             [{ if $product->getPricePerUnit()}]

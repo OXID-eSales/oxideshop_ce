@@ -25,7 +25,7 @@
         [{foreach from=$products item=_product name=productlist}]
             [{assign var="_sTestId" value=$listId|cat:"_"|cat:$smarty.foreach.productlist.iteration}]
             <li class="productData">
-                [{oxid_include_widget cl="oxwArticleBox" _parent=$oView->getClassName() nocookie=1 _navurlparams=$oViewConf->getNavUrlParams() anid=$_product->getId() sWidgetType=product sListType=listitem_$type testid=$_sTestId blDisableToCart=$blDisableToCart currencySign=$currency->sign isVatIncluded=$oView->isVatIncluded() showMainLink=$showMainLink recommid=$recommid owishid=$owishid toBasketFunction=$toBasketFunction removeFunction=$removeFunction altproduct=$altproduct}]
+                [{oxid_include_widget cl="oxwArticleBox" _parent=$oView->getClassName() nocookie=1 _navurlparams=$oViewConf->getNavUrlParams() iLinkType=$_product->getLinkType() anid=$_product->getId() sWidgetType=product sListType=listitem_$type testid=$_sTestId blDisableToCart=$blDisableToCart currencySign=$currency->sign isVatIncluded=$oView->isVatIncluded() showMainLink=$showMainLink recommid=$recommid owishid=$owishid toBasketFunction=$toBasketFunction removeFunction=$removeFunction altproduct=$altproduct}]
             </li>
             [{if ($type eq "infogrid" AND ($smarty.foreach.productlist.last) AND ($smarty.foreach.productlist.iteration % 2 != 0 )) }]
                 <li class="productData"></li>

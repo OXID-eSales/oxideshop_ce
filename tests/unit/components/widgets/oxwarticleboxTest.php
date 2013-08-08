@@ -96,12 +96,15 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
         $oArticleBox = new oxwArticleBox();
 
         $sId = "1126";
+        $iLinkType = 4;
         $aViewParams = array(
             "anid" => $sId,
+            "iLinkType" => $iLinkType,
         );
         $oArticleBox->setViewParameters($aViewParams);
 
         $this->assertEquals( $sId, $oArticleBox->getBoxProduct()->getId(), "Correct product should be loaded" );
+        $this->assertEquals( $iLinkType, $oArticleBox->getBoxProduct()->getLinkType(), "Correct link type should be set" );
     }
 
     /**

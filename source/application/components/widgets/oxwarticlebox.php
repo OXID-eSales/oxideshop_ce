@@ -75,9 +75,14 @@ class oxwArticleBox extends oxWidget
     public function getBoxProduct()
     {
         $sId = $this->getViewParameter('anid');
+        $iLinkType = $this->getViewParameter('iLinkType');
 
         $oArticle = oxNew( 'oxArticle' );
         $oArticle->load($sId);
+
+        if ( $iLinkType ) {
+            $oArticle->setLinkType( $iLinkType );
+        }
 
         return $oArticle;
     }

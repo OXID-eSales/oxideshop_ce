@@ -158,7 +158,13 @@
 
             // sorting array to pass parameters alphabetically
             var aInputs = {};
-            Object.keys( inputs ).sort().forEach( function( i ) { aInputs[i] = inputs[i]; } )
+            var keys = Array();
+            for ( var key in inputs ) {
+                if ( inputs.hasOwnProperty( key ) ) {
+                    keys.push( key );
+                }
+            }
+            keys.sort().forEach( function( i ) { aInputs[i] = inputs[i]; } )
 
             var sLoadingScreen = null;
             if (params['targetEl']) {

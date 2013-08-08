@@ -1006,8 +1006,9 @@ class Details extends oxUBase
     public function getBreadCrumb()
     {
         $aPaths = array();
+        $oConfig = $this->getConfig();
 
-        if ( 'search' == oxConfig::getParameter( 'listtype' ) ) {
+        if ( 'search' == $oConfig->getRequestParameter( 'listtype' ) ) {
             $sSearchParam = $this->getSearchParamForHtml();
 
             $aCatPath = array();
@@ -1016,7 +1017,7 @@ class Details extends oxUBase
 
             $aPaths[] = $aCatPath;
 
-        } elseif ( 'tag' == oxConfig::getParameter( 'listtype' ) ) {
+        } elseif ( 'tag' == $oConfig->getRequestParameter( 'listtype' ) ) {
 
             $aCatPath = array();
 
@@ -1025,11 +1026,11 @@ class Details extends oxUBase
             $aPaths[] = $aCatPath;
 
             $oStr = getStr();
-            $aCatPath['title'] = $oStr->ucfirst(oxConfig::getParameter( 'searchtag' ));
-            $aCatPath['link']  = oxRegistry::get("oxSeoEncoderTag")->getTagUrl( oxConfig::getParameter( 'searchtag' ) );
+            $aCatPath['title'] = $oStr->ucfirst($oConfig->getRequestParameter( 'searchtag' ));
+            $aCatPath['link']  = oxRegistry::get("oxSeoEncoderTag")->getTagUrl( $oConfig->getRequestParameter( 'searchtag' ) );
             $aPaths[] = $aCatPath;
 
-        } elseif ( 'recommlist' == oxConfig::getParameter( 'listtype' ) ) {
+        } elseif ( 'recommlist' == $oConfig->getRequestParameter( 'listtype' ) ) {
 
             $aCatPath = array();
             $aCatPath['title'] = oxRegistry::getLang()->translateString( 'LISTMANIA', oxRegistry::getLang()->getBaseLanguage(), false );

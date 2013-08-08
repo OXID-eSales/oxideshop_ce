@@ -265,6 +265,10 @@ class Details extends oxUBase
                 return 'page/details/ajax/productmain.tpl';
                 break;
             default:
+                // can not be removed, as it is used for breadcrumb loading
+                $oLocator = oxNew( 'oxlocator', $this->getListType() );
+                $oLocator->setLocatorData( $oProduct, $this );
+
                 if ($myConfig->getConfigParam( 'bl_rssRecommLists' ) && $this->getSimilarRecommListIds()) {
                     $oRss = oxNew('oxrssfeed');
                     $this->addRssFeed($oRss->getRecommListsTitle( $oProduct ), $oRss->getRecommListsUrl( $oProduct ), 'recommlists');

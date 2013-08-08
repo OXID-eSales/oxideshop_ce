@@ -59,7 +59,6 @@
 <h1>[{oxmultilang ident='OXDIAG_HOME'}]</h1>
 
 <p>[{oxmultilang ident='OXDIAG_ABOUT'}]</p>
-<p>[{ oxmultilang ident="OXDIAG_INTROINFORMATION_CONTACT_US" }] <strong><a href="[{$oView->getSupportContactForm()}]" target=_blank>[{ oxmultilang ident="OXDIAG_INTROINFORMATION_ONLINE_CONTACT_FORM" }]</a></strong>.</p>
 
 <table>
     <tr>

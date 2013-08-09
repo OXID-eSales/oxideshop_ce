@@ -39,10 +39,6 @@ class Unit_Admin_ShopLicenseTest extends OxidTestCase
     {
         modSession::getInstance()->setVar("malladmin", true);
 
-        //licence check mock always return true
-        $oLicenceCheckMock = $this->getMock("oxonlinelicensecheck", array("validate"));
-        $oLicenceCheckMock->expects($this->any())->method('validate')->will($this->returnValue( true ));
-        oxTestModules::addModuleObject( "oxonlinelicensecheck", $oLicenceCheckMock );
 
         return parent::setUp();
     }

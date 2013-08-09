@@ -108,6 +108,25 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
     }
 
     /**
+     * Checking if additional parameters are being recieved and added properly
+     */
+    public function testGetBoxProductWithSearch()
+    {
+        $oArticleBox = new oxwArticleBox();
+        $this->setRequestParam( "urlParams", "listtype=search&searchparam=1000" );
+
+        $sId = "1126";
+        $iLinkType = 4;
+        $aViewParams = array(
+            "anid" => $sId,
+            "iLinkType" => $iLinkType,
+        );
+        $oArticleBox->setViewParameters($aViewParams);
+        $this->setLanguage( 1 );
+        $sLinkUrl = $this->getConfig()->getConfigParam( "sShopURL" ) . "en/oxid.html?listtype=search&amp;searchparam=1000";
+        $this->assertEquals( $sLinkUrl, $oArticleBox->getBoxProduct()->getMainLink(), "Correct product link with additional search parameters should be loaded" );
+    }
+    /**
      * Test for getting link
      */
     public function testGetLink()

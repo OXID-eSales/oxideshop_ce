@@ -421,7 +421,7 @@ class oxEmosAdapter extends oxSuperCfg
                 }
                 $oEmos->addEmosBasketPageArray( $aBasket );
                 break;
-            case 'oxwarticledetails':
+            case 'details':
                 if ( $oProduct ) {
                     //$oEmos->addContent( 'Shop/'.$this->_getEmosCatPath().'/'.strip_tags( $oProduct->oxarticles__oxtitle->value ) );
                     //$sPath = $this->_getDeepestCategoryPath( $oProduct );

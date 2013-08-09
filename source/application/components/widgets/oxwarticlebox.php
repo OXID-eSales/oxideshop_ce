@@ -76,9 +76,20 @@ class oxwArticleBox extends oxWidget
     {
         $sId = $this->getViewParameter('anid');
         $iLinkType = $this->getViewParameter('iLinkType');
+        $sAddDynParams = $this->getViewParameter( "urlParams" );
+
 
         $oArticle = oxNew( 'oxArticle' );
         $oArticle->load($sId);
+
+        if ( $sAddDynParams ) {
+            $blSeo = oxRegistry::getUtils()->seoIsActive();
+            if ( !$blSeo ) {
+                // only if seo is off..
+                $oArticle->appendStdLink( $sAddDynParams );
+            }
+            $oArticle->appendLink( $sAddDynParams );
+        }
 
         if ( $iLinkType ) {
             $oArticle->setLinkType( $iLinkType );

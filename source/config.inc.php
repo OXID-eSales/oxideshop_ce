@@ -139,9 +139,8 @@
     $this->aTsConfig = array( "blTestMode"   => false, // set TRUE to enable testing mode
                               "sTsUrl"       => "https://www.trustedshops.com", // Trusted Shops Rating main url
                               "sTsTestUrl"   => "https://qa.trustedshops.com",  // Trusted Shops Rating test url
-                                                     ),
                               "sTsRatingUri" => array( "de" => "bewertung/bewerten_%s.html", // DE rating url
-                                                       "en" => "buyerrating/rate_%s.html"    // EN rating url
+                                                       "en" => "buyerrating/rate_%s.html",   // EN rating info url
                                                      )
                              );
     // Trusted Shops Ratings service wsdl

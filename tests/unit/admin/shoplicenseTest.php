@@ -19,7 +19,6 @@
  * @package   tests
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -39,6 +38,12 @@ class Unit_Admin_ShopLicenseTest extends OxidTestCase
     public function setUp()
     {
         modSession::getInstance()->setVar("malladmin", true);
+
+        //licence check mock always return true
+        $oLicenceCheckMock = $this->getMock("oxonlinelicensecheck", array("validate"));
+        $oLicenceCheckMock->expects($this->any())->method('validate')->will($this->returnValue( true ));
+        oxTestModules::addModuleObject( "oxonlinelicensecheck", $oLicenceCheckMock );
+
         return parent::setUp();
     }
 

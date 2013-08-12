@@ -86,16 +86,29 @@ class Unit_Maintenance_pluginSmartyOxScriptTest extends OxidTestCase
     }
 
     /**
-     * Check for oxscript add method in widget
+     * Provides data for oxscript add function
      */
-    public function testSmartyFunctionOxScript_widget_add()
+    public function addProvider()
+    {
+        return array(
+            array( 'oxidadd', 'oxidadd' ),
+            array( '"oxidadd"', '\"oxidadd\"' ),
+            array( "'oxidadd'", "'oxidadd'" ),
+        );
+    }
+    /**
+     * Check for oxscript add method in widget
+     *
+     * @dataProvider addProvider
+     */
+    public function testSmartyFunctionOxScript_widget_add( $sScript, $sScriptOutput )
     {
         $oSmarty = new Smarty();
-        $this->assertEquals( '', smarty_function_oxscript( array( 'add' => 'oxidadd' ), $oSmarty ) );
+        $this->assertEquals( '', smarty_function_oxscript( array( 'add' => $sScript ), $oSmarty ) );
 
         $sOutput = '<script type="text/javascript">'. PHP_EOL
                     .'window.addEventListener("load", function() {'. PHP_EOL
-                    .'WidgetsHandler.registerFunction( "oxidadd", "somewidget");'. PHP_EOL
+                    .'WidgetsHandler.registerFunction( "'. $sScriptOutput .'", "somewidget");'. PHP_EOL
                     .'}, false )'. PHP_EOL
                     .'</script>'. PHP_EOL;
 

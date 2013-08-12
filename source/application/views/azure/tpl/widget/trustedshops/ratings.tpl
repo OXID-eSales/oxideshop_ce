@@ -1,8 +1,15 @@
-[{assign var=trustedShopId value=$oViewConf->getTsId()}]
-[{oxscript include='js/widgets/oxtsbadge.js'}]
-[{oxscript add="$( 'body' ).oxTsBadge({trustedShopId:'`$trustedShopId`'});"}]
-<noscript>
-    <a href="https://www.trustedshops.co.uk/shop/certificate.php?shop_id=[{$trustedShopId}]">
-        <img title="Trusted Shops Seal of Approval - click to verify." src="//widgets.trustedshops.com/images/badge.png" style="position:fixed;bottom:100;right:100;" />
+<div class="box">
+    <a href="[{ $oViewConf->getTsInfoUrl() }]" target="_blank" title="[{ oxmultilang ident="TRUSTED_SHOPS_RATINGS" }]">
+    <img src="[{ $oViewConf->getTsWidgetUrl() }]" border="0" alt="[{ oxmultilang ident="TRUSTED_SHOPS_RATINGS" }]">
     </a>
-</noscript>
+</div>
+[{assign var="tsRatings" value=$oViewConf->getTsRatings()}]
+[{if !$tsRatings.empty}]
+    <span class='hidden' xmlns:v="http://rdf.data-vocabulary.org/#" typeof="v:Review-aggregate">
+    <span rel="v:rating">
+            <span property="v:value">[{$tsRatings.result}] </span>
+        </span> /
+    <span property="v:best">[{$tsRatings.max}] </span> [{ oxmultilang ident="FROM" }] <span property="v:count">[{$tsRatings.count}]</span>
+        <a href="https://www.trustedshops.de/bewertung/info_[{$tsId}].html" title="[{$tsRatings.shopName}] [{ oxmultilang ident='RATINGS' }]">[{$tsRatings.shopName}] [{ oxmultilang ident='RATINGS' }]</a>
+</span>
+[{/if}]

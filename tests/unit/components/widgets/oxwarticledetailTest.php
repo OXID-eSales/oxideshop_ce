@@ -767,6 +767,14 @@ class Unit_Components_Widgets_oxwArticleDetailTest extends OxidTestCase
         $this->assertSame( false, $oView->getNonPublicVar( '_iRatingCnt' ) );
     }
 
+    public function testGetPriceAlarmStatus()
+    {
+        $this->setRequestParam( 'iPriceAlarmStatus', '514' );
+        $oDetails = new oxwArticleDetails();
+
+        $this->assertEquals( 514, $oDetails->getPriceAlarmStatus() );
+    }
+
     public function testGetBidPrice()
     {
         $aParams = array();

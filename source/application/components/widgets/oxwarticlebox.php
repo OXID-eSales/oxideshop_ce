@@ -76,7 +76,7 @@ class oxwArticleBox extends oxWidget
     {
         $sId = $this->getViewParameter('anid');
         $iLinkType = $this->getViewParameter('iLinkType');
-        $sAddDynParams = $this->getViewParameter( "urlParams" );
+        $sAddDynParams = $this->getConfig()->getTopActiveView()->getAddUrlParams();
 
 
         $oArticle = oxNew( 'oxArticle' );

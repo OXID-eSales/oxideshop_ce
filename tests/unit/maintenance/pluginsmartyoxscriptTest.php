@@ -38,6 +38,9 @@ class Unit_Maintenance_pluginSmartyOxScriptTest extends OxidTestCase
         $this->assertEquals( '', smarty_function_oxscript( array( 'include' => 'somescript.js' ), $oSmarty ) );
     }
 
+    /**
+     * Check oxscript include
+     */
     public function testSmartyFunctionOxScript_includeExist()
     {
         $oSmarty = new Smarty();
@@ -48,6 +51,9 @@ class Unit_Maintenance_pluginSmartyOxScriptTest extends OxidTestCase
         $this->assertEquals( $sOutput, smarty_function_oxscript( array( 'inWidget' => false ), $oSmarty ) );
     }
 
+    /**
+     * Check oxscript inclusion in widget
+     */
     public function testSmartyFunctionOxScript_widget_include()
     {
         $oSmarty = new Smarty();
@@ -66,6 +72,9 @@ class Unit_Maintenance_pluginSmartyOxScriptTest extends OxidTestCase
         $this->assertEquals( $sOutput, smarty_function_oxscript( array( 'widget' => 'somewidget', 'inWidget' => true ), $oSmarty ) );
     }
 
+    /**
+     * Check for oxscript add method
+     */
     public function testSmartyFunctionOxScript_add()
     {
         $oSmarty = new Smarty();
@@ -76,6 +85,9 @@ class Unit_Maintenance_pluginSmartyOxScriptTest extends OxidTestCase
         $this->assertEquals( $sOutput, smarty_function_oxscript( array(), $oSmarty ) );
     }
 
+    /**
+     * Check for oxscript add method in widget
+     */
     public function testSmartyFunctionOxScript_widget_add()
     {
         $oSmarty = new Smarty();

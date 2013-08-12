@@ -187,12 +187,6 @@ class oxwArticleDetails extends oxWidget
     protected $_sBidPrice = null;
 
     /**
-     * Price alarm status.
-     * @var integer
-     */
-    protected $_iPriceAlarmStatus = null;
-
-    /**
      * Array of id to form recommendation list.
      *
      * @var array
@@ -835,7 +829,7 @@ class oxwArticleDetails extends oxWidget
      */
     public function getPriceAlarmStatus()
     {
-        return $this->_iPriceAlarmStatus;
+        return $this->getViewParameter('iPriceAlarmStatus');
     }
 
     /**

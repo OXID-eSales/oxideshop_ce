@@ -25,7 +25,7 @@
         [{block name="layout_page_vatinclude"}]
         [{oxifcontent ident="oxdeliveryinfo" object="oCont"}]
             [{assign var="tsBadge" value=""}]
-            [{if $oViewConf->showTs("WIDGET")}]
+            [{if $oView->getTrustedShopId()}]
                 [{assign var="tsBadge" value="TsBadge"}]
             [{/if}]
             <div id="incVatMessage[{$tsBadge}]">

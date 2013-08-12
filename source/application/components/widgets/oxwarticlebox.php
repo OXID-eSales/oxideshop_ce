@@ -95,6 +95,10 @@ class oxwArticleBox extends oxWidget
             $oArticle->setLinkType( $iLinkType );
         }
 
+        if ( $oRecommList = $this->getActiveRecommList() ) {
+            $oArticle->text = $oRecommList->getArtDescription( $oArticle->getId() );
+        }
+
         return $oArticle;
     }
 
@@ -221,6 +225,7 @@ class oxwArticleBox extends oxWidget
      */
     public function getShowMainLink()
     {
+        dumpVar($this->getViewParameter('showMainLink'));
         return (bool) $this->getViewParameter('showMainLink');
     }
 

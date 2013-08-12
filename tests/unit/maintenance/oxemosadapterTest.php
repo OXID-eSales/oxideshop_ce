@@ -19,7 +19,6 @@
  * @package   tests
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -469,7 +468,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
 
         $oEmos = $this->getMock( 'oxEmosAdapter', array( 'getEmos', '_getEmosCl', '_convProd2EmosItem', '_getBasketProductCatPath' ) );
         $oEmos->expects( $this->once() )->method( 'getEmos')->will( $this->returnValue( $oFormatter ) );
-        $oEmos->expects( $this->once() )->method( '_getEmosCl')->will( $this->returnValue( 'details' ) );
+        $oEmos->expects( $this->once() )->method( '_getEmosCl')->will( $this->returnValue( 'oxwarticledetails' ) );
         $oEmos->expects( $this->once() )->method( '_convProd2EmosItem')->will( $this->returnValue( $oEmosItem ) );
         $oEmos->expects( $this->once() )->method( '_getBasketProductCatPath')->will( $this->returnValue( 'Bar-Equipment' ) );
         $oEmos->getCode( $aParams, $oSmarty );

@@ -963,7 +963,7 @@ class oxViewConfig extends oxSuperCfg
         if ( ( $sParams = $this->getViewConfigParam( 'navformparams' ) ) === null ) {
             $oStr = getStr();
             $sParams = '';
-            $aNavParams = $this->getConfig()->getActiveView()->getNavigationParams();
+            $aNavParams = $this->getConfig()->getTopActiveView()->getNavigationParams();
             foreach ( $aNavParams as $sName => $sValue ) {
                 if ( isset( $sValue ) ) {
                     $sParams .= "<input type=\"hidden\" name=\"{$sName}\" value=\"".$oStr->htmlentities( $sValue )."\" />\n";

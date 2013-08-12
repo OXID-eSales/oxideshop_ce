@@ -767,14 +767,6 @@ class Unit_Components_Widgets_oxwArticleDetailTest extends OxidTestCase
         $this->assertSame( false, $oView->getNonPublicVar( '_iRatingCnt' ) );
     }
 
-    public function testGetPriceAlarmStatus()
-    {
-        $oView = $this->getProxyClass( 'oxwArticleDetails' );
-        $oView->setNonPublicVar( '_iPriceAlarmStatus', 514 );
-
-        $this->assertSame( 514, $oView->getPriceAlarmStatus() );
-    }
-
     public function testGetBidPrice()
     {
         $aParams = array();

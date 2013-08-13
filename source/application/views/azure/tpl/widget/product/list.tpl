@@ -7,7 +7,6 @@
 [{/if}]
 
 [{oxscript add="$('a.js-external').attr('target', '_blank');"}]
-<div class="alsoBoughtContainer">
 [{if $head}]
     [{if $header eq "light"}]
         <h3 class="lightHead sectionHead">[{$head}]</h3>
@@ -21,7 +20,6 @@
     [{/if}]
 [{/if}]
 [{if $products|@count gt 0}]
-    [{assign var="currency" value=$oView->getActCurrency()}]
     <ul class="[{$type}]View clear" id="[{$listId}]">
         [{foreach from=$products item=_product name=productlist}]
             [{assign var="_sTestId" value=$listId|cat:"_"|cat:$smarty.foreach.productlist.iteration}]
@@ -33,4 +31,4 @@
             [{/if}]
         [{/foreach}]
     </ul>
-[{/if}]</div>
+[{/if}]

@@ -43,7 +43,7 @@ class oxwArticleBox extends oxWidget
 
 
     /**
-     * Renders template based on widget type
+     * Renders template based on widget type or just use directly passed path of template
      *
      * @return string
      */
@@ -56,6 +56,11 @@ class oxwArticleBox extends oxWidget
 
         if ($sWidgetType) {
             $this->_sTemplate = "widget/" . $sWidgetType . "/" . $sListType . ".tpl";
+        }
+
+        $sForceTemplate = $this->getViewParameter('oxwtemplate');
+        if ($sForceTemplate) {
+            $this->_sTemplate = $sForceTemplate;
         }
 
         return $this->_sTemplate;

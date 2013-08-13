@@ -71,6 +71,23 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
     }
 
     /**
+     * Test for rendering forced template
+     */
+    public function testRenderForcedTemplate()
+    {
+        $oArticleBox = new oxwArticleBox();
+
+        $sForcedTemplate = "page/compare/inc/compareitem.tpl";
+
+        $aViewParams = array(
+            "oxwtemplate" => $sForcedTemplate,
+        );
+        $oArticleBox->setViewParameters($aViewParams);
+
+        $this->assertEquals( $sForcedTemplate, $oArticleBox->render(), "Correct template should be loaded" );
+    }
+
+    /**
      * Test for getting product by id set in view parameters
      */
     public function testGetProduct()

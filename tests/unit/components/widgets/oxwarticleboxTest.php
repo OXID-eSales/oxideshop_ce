@@ -112,9 +112,8 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
      */
     public function testGetBoxProductWithSearch()
     {
-        $this->markTestIncomplete( "test marked incomplete because parameters have changed" );
         $oArticleBox = new oxwArticleBox();
-        $this->setRequestParam( "urlParams", "listtype=search&searchparam=1000" );
+        $this->setLanguage( 1 );
 
         $sId = "1126";
         $iLinkType = 4;
@@ -123,8 +122,18 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
             "iLinkType" => $iLinkType,
         );
         $oArticleBox->setViewParameters($aViewParams);
-        $this->setLanguage( 1 );
-        $sLinkUrl = $this->getConfig()->getConfigParam( "sShopURL" ) . "en/oxid.html?listtype=search&amp;searchparam=1000";
+        $sLinkUrl = $oArticleBox->getBoxProduct()->getMainLink();
+
+        $oArticleBox->setParent( "search" );
+        $oConfig = $this->getMock( "oxConfig", array( 'getTopActiveView' ) );
+        $oSearch = new Search();
+        $oConfig->expects( $this->any() )->method( 'getTopActiveView' )->will( $this->returnValue( $oSearch ) );
+
+        $oArticleBox->setConfig( $oConfig );
+        $sLinkUrl .= "?listtype=search&amp;searchparam=1126";
+
+
+        $this->setRequestParam( "searchparam", "1126" );
         $this->assertEquals( $sLinkUrl, $oArticleBox->getBoxProduct()->getMainLink(), "Correct product link with additional search parameters should be loaded" );
     }
     /**

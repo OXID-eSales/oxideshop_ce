@@ -1,4 +1,6 @@
 [{block name="widget_product_listitem_infogrid"}]
+    [{assign var="product" value=$oView->getProduct()}]
+
     [{assign var="currency" value=$oView->getActCurrency()}]
     [{if $showMainLink}]
         [{assign var='_productLink' value=$product->getMainLink()}]

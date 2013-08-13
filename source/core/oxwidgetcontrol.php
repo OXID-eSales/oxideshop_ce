@@ -72,17 +72,6 @@ class oxWidgetControl extends oxShopControl
             $aViewsChain =  explode( "|", oxConfig::getParameter( 'oxwparent' ) );
         }
 
-        // FOR DEVELOPMENT START
-        if ( !isset($aParams) && isset( $_GET['cl'] ) ) {
-            $sClass = $_GET['cl'];
-            unset( $_GET['cl'] );
-            if ( isset( $_GET['oxwparent'] ) ) {
-                unset( $_GET['oxwparent'] );
-            }
-            $aParams = $_GET;
-        }
-        // FOR DEVELOPMENT END
-
         parent::start( $sClass, $sFunction, $aParams, $aViewsChain );
 
         //perform tasks that should be done at the end of widget processing

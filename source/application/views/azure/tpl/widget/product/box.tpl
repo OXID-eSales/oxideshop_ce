@@ -1,0 +1,1 @@
+[{oxscript widget=$oView->getClassName()}]

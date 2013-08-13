@@ -1204,9 +1204,7 @@ a.rss span {
 a.rss:hover span {
     visibility: visible;
 }
-.alsoBoughtContainer {
-    float: left;
-}
+
 h3.lightHead {
     color: #1d7e96;
     text-shadow: 0px 1px 1px #fff;
@@ -3373,8 +3371,6 @@ a.fb_button_simple {
 .detailsRelated {
     clear:both;
     padding-top:20px;
-    float: left;
-    width: 576px;
 }
 
 .detailsInfo {

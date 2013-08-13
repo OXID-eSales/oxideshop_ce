@@ -25,14 +25,15 @@
 [{include file="message/error.tpl" statusMessage=`$_statusMessage1``$_statusMessage2`}]
 [{/if}]
 
+<div id="details">
     [{ if $oView->getSearchTitle() }]
-    [{ assign var="detailsLocation" value=$oView->getSearchTitle()}]
+        [{ assign var="detailsLocation" value=$oView->getSearchTitle()}]
     [{else}]
-    [{foreach from=$oView->getCatTreePath() item=oCatPath name="detailslocation"}]
-    [{if $smarty.foreach.detailslocation.last}]
-    [{assign var="detailsLocation" value=$oCatPath->oxcategories__oxtitle->value}]
-    [{/if}]
-    [{/foreach}]
+        [{foreach from=$oView->getCatTreePath() item=oCatPath name="detailslocation"}]
+            [{if $smarty.foreach.detailslocation.last}]
+                [{assign var="detailsLocation" value=$oCatPath->oxcategories__oxtitle->value}]
+            [{/if}]
+        [{/foreach}]
     [{/if }]
 
 
@@ -56,5 +57,6 @@
     <div id="productinfo">
         [{include file="page/details/inc/fullproductinfo.tpl"}]
     </div>
+</div>
 [{ insert name="oxid_tracker" title="PRODUCT_DETAILS"|oxmultilangassign product=$oDetailsProduct cpath=$oView->getCatTreePath() }]
 [{oxscript widget=$oView->getClassName()}]

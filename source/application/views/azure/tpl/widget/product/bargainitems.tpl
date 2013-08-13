@@ -3,5 +3,5 @@
 [{foreach from=$oView->getBargainArticleList() item=_product name=bargainList}]
     [{if $smarty.foreach.bargainList.first}]
         [{oxid_include_widget cl="oxwArticleBox" cur=$oViewConf->getActCurrency() _parent=$oView->getClassName() nocookie=1 _navurlparams=$oViewConf->getNavUrlParams() sProductId=$_product->getId() iIteration=$smarty.foreach.bargainList.iteration sWidgetType=product sListType=bargainitem}]
-                    [{/if}]
+    [{/if}]
 [{/foreach}]

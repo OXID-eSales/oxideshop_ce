@@ -33,13 +33,32 @@ class oxwArticleBox extends oxWidget
      * User component used in template.
      * @var array
      */
-    protected $_aComponentNames = array();
+    protected $_aComponentNames = array( 'oxcmp_cur' => 1, 'oxcmp_user' => 1, 'oxcmp_lang' => 1, 'oxcmp_basket' => 1 );
 
     /**
      * Current class template name.
      * @var string
      */
-    protected $_sThisTemplate = '';
+    protected $_sTemplate = 'widget/product/box.tpl';
+
+    /**
+     * Renders template based on widget type
+     *
+     * @return string
+     */
+    public function render()
+    {
+        parent::render();
+
+        $sWidgetType = $this->getViewParameter('sWidgetType');
+        $sListType   = $this->getViewParameter('sListType');
+
+        if ($sWidgetType) {
+            $this->_sTemplate = "widget/" . $sWidgetType . "/listitem_" . $sListType . ".tpl";
+        }
+
+        return $this->_sTemplate;
+    }
 
     /**
      * Get product article
@@ -51,7 +70,7 @@ class oxwArticleBox extends oxWidget
         $sId = $this->getViewParameter('productId');
 
         $oArticle = oxNew( 'oxArticle' );
-        $oArticle->load( $sId );
+        $oArticle->load($sId);
 
         return $oArticle;
     }

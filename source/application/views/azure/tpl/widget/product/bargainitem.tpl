@@ -65,4 +65,4 @@
     [{$smarty.capture.bargainPic}]
 </div>
 
-[{/capture}][{oxscript widget=$oView->getClassName()}]
+[{oxscript widget=$oView->getClassName()}]

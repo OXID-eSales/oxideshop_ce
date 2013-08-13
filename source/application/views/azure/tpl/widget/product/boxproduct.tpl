@@ -37,4 +37,5 @@
             [{/oxhasrights}]
         </a>
     </li>
-[{/block}][{oxscript widget=$oView->getClassName()}]
+[{/block}]
+[{oxscript widget=$oView->getClassName()}]

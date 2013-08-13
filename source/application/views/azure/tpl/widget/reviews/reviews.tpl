@@ -81,4 +81,5 @@
         </dl>
     [{/if}]
 
-</div>[{oxscript widget=$oView->getClassName()}]
+</div>
+[{oxscript widget=$oView->getClassName()}]

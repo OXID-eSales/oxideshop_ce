@@ -758,11 +758,13 @@ class oxView extends oxSuperCfg
      */
     public function isBetaVersion()
     {
+        $blbetaVersion = false;
+
         if ( stripos( $this->getConfig()->getVersion(), 'beta' ) !== false ) {
-            return true;
-        } else {
-            return false;
+            $blbetaVersion = true;
         }
+
+        return $blbetaVersion;
     }
 
     /**
@@ -772,11 +774,13 @@ class oxView extends oxSuperCfg
      */
     public function isRCVersion()
     {
+        $blRCVersion = false;
+
         if ( stripos( $this->getConfig()->getVersion(), 'rc' ) !== false ) {
-            return true;
-        } else {
-            return false;
+            $blRCVersion = true;
         }
+
+        return $blRCVersion;
     }
 
     /**
@@ -786,11 +790,13 @@ class oxView extends oxSuperCfg
      */
     public function showBetaNote()
     {
+        $blBetaNote = false;
+
         if ( $this->isBetaVersion() || $this->isRCVersion() ) {
-            return true;
-        } else {
-            return false;
+            $blBetaNote = true;
         }
+
+        return $blBetaNote;
     }
 
     /**

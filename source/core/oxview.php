@@ -786,9 +786,12 @@ class oxView extends oxSuperCfg
      */
     public function showBetaNote()
     {
-            // temporary do not show beta note
+        if ( $this->isBetaVersion() || $this->isRCVersion() ) {
+            return true;
+        } else {
             return false;
         }
+    }
 
     /**
      * Returns if current shop is demoshop

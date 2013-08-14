@@ -752,6 +752,48 @@ class oxView extends oxSuperCfg
     }
 
     /**
+     * Returns if current shop is beta version.
+     *
+     * @return bool
+     */
+    public function isBetaVersion()
+    {
+        if ( stripos( $this->getConfig()->getVersion(), 'beta' ) !== false ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Returns if current shop is release candidate version.
+     *
+     * @return bool
+     */
+    public function isRCVersion()
+    {
+        if ( stripos( $this->getConfig()->getVersion(), 'rc' ) !== false ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Template variable getter. Returns if beta banner can be displayed (for header.tpl)
+     *
+     * @return bool
+     */
+    public function showBetaBanner()
+    {
+        if ( $this->isBetaVersion() || $this->isRCVersion() ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Returns if current shop is demoshop
      *
      * @return string

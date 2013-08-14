@@ -2150,10 +2150,10 @@ $aLang = array(
 //final note
 'OXDIAG_FINALNOTE'					=>	'End of analysis.',
 
-'OLC_ERROR_SERIAL_NOT_VALID'                               => '[TR]License key check failed. Try again or contact support if this occurs permanently.',
-'OLC_ERROR_RESPONSE_NOT_VALID'                             => '[TR]Service unavailable, try again later.. If this persists, please check that your shop can make outgoing connections.',
-'OLC_ERROR_REQUEST_FAILED'                                 => '[TR]Service unavailable, try again later.. If this persists, please check that your shop can make outgoing connections.',
-'OLC_ERROR_RESPONSE_UNEXPECTED'                            => '[TR]Service unavailable, try again later.. If this persists, please check that your shop can make outgoing connections.',
+'OLC_ERROR_SERIAL_NOT_VALID'                               => 'License key check failed. Try again or contact support if this occurs permanently.',
+'OLC_ERROR_RESPONSE_NOT_VALID'                             => 'Service unavailable, try again later... If this persists, please check that your shop can make outgoing connections.',
+'OLC_ERROR_REQUEST_FAILED'                                 => 'Service unavailable, try again later... If this persists, please check that your shop can make outgoing connections.',
+'OLC_ERROR_RESPONSE_UNEXPECTED'                            => 'Service unavailable, try again later... If this persists, please check that your shop can make outgoing connections.',
 
 );
 

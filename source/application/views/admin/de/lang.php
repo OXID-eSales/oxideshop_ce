@@ -2052,7 +2052,7 @@ $aLang = array(
 
 'oxdiag_menu'						                 => 'Diagnosewerkzeug',
 
-'OXDIAG_MAIN_TITLE'                                  => '[TR]Diagnostics of your OXID eShop',
+'OXDIAG_MAIN_TITLE'                                  => 'Diagnose Ihres OXID Shops',
 'OXDIAG_VERSIONCHECKER'                              => 'Versionsprüfung',
 'OXDIAG_INTROINFORMATION'                            => 'Dieses Skript dient der Überprüfung der Konsistenz Ihres OXID eShop. Es ermittelt die Namen aller .php-Dateien und Templates. Für jede Datei wird eine Verbindung zum OXID Webservice hergestellt um zu prüfen, ob deren MD5-Checksumme zur Shop-Version passt.',
 'OXDIAG_INTROINFORMATION_NO_PERSONAL_INFO'           => 'Es werden weder Lizenzangaben, noch persönliche Informationen ermittelt und übertragen.',
@@ -2069,8 +2069,8 @@ $aLang = array(
 'OXDIAG_FORM_LIST_ALL_FILES'                         => 'Liste aller Dateien (auch die, welche OK sind)',
 'OXDIAG_FORM_START_CHECK'                            => 'Prüfung des eShop wird jetzt gestartet (kann eine Weile dauern)',
 
-'OXDIAG_RESULT_SUCCESSFUL'                           => '[TR]Diagnostics check successful.',
-'OXDIAG_RESULT'                                      => '[TR]Diagnostics check result',
+'OXDIAG_RESULT_SUCCESSFUL'                           => 'Diagnoseprüfung erfolgreich.',
+'OXDIAG_RESULT'                                      => 'Diagnose-Prüfergebnis',
 'OXDIAG_DOWNLOAD_FILE'                               => 'Hier klicken, um das Ergebnis als Datei herunterzuladen',
 'OXDIAG_ERRORMESSAGETEMPLATE'                        => 'Aufgetretene Fehler',
 'OXDIAG_VERSION'                                     => 'Version',

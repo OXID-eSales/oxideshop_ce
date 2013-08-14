@@ -2144,7 +2144,7 @@ $aLang = array(
 //server
 'OXDIAG_SRVINF_NOTALL'				=>	'Es k&ouml;nnen nicht alle Werte abgefragt werden, weil der <i>exec</i>-Befehl auf dem Server nicht verf&uuml;gbar ist.',
 'OXDIAG_SRVINF_NOTE'                =>    'Bemerkung: Diese Informationen beziehen sich auf den aktuellen Runtime-Frontend-Server. Sollten Sie mehr als einen Frontend-Server in Betrieb haben, können Sie deren Informationen durch direkten Zugriff auf die entsprechenden Server abrufen.',
-'OXDIAG_SERVERINFO_NOT_DETECTED'    =>    '[TR]nicht erkannt',
+'OXDIAG_SERVERINFO_NOT_DETECTED'    =>    'nicht erkannt',
 'OXDIAG_SERVERINFO_COMPONENT'		=>	'Komponente',
 'OXDIAG_CHKVERSION'					=>	'Oxchkversion-Ausgabe',
 'OXDIAG_CHKVERS_FULLREP'			=>	'Vollst&auml;ndige Auswertung von <i>Oxchkversion</i> durchf&uuml;hlren',

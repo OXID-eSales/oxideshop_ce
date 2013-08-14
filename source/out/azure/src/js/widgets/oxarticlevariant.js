@@ -113,7 +113,7 @@
      * Resets variant selections
      */
     function resetVariantSelections() {
-        var aVarSelections = $( "form.js-oxProductForm input[name^=varselid]" );
+        var aVarSelections = $( "form.js-oxProductForm input[name^=varselid], form.js-oxWidgetReload input[name^=varselid]" );
         for (var i = 0; i < aVarSelections.length; i++) {
             $( aVarSelections[i] ).attr( "value", "" );
         }

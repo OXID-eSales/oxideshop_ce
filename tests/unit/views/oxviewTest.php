@@ -542,6 +542,87 @@ class Unit_Views_oxviewTest extends OxidTestCase
         }
     }
 
+    /**
+     * testIsBetaVersion data provider.
+     */
+    public function _dptestIsBetaVersion()
+    {
+        return array(
+            array( '5.1.0', false ),
+            array( '5.1.0_beta', true ),
+            array( '5.1.0_beta1', true ),
+            array( '5.1.0_rc', false ),
+            array( '5.1.0_rc1', false ),
+        );
+    }
+
+    /**
+     * @dataProvider _dptestIsBetaVersion
+     */
+    public function testIsBetaVersion( $getVersion, $isBetaVersion )
+    {
+        $oConfig = $this->getMock( 'oxConfig', array( 'getVersion' ) );
+        $oConfig->expects( $this->any() )->method( 'getVersion' )->will( $this->returnValue( $getVersion ) );
+
+        $oView = $this->getMock( "oxView", array( 'getConfig' ), array(), '', false );
+        $oView->expects( $this->any() )->method( 'getConfig' )->will( $this->returnValue( $oConfig ) );
+
+        $this->assertEquals( $isBetaVersion, $oView->isBetaVersion() );
+    }
+
+    /**
+     * testIsRCVersion data provider.
+     */
+    public function _dptestIsRCVersion()
+    {
+        return array(
+            array( '5.1.0', false ),
+            array( '5.1.0_beta', false ),
+            array( '5.1.0_beta1', false ),
+            array( '5.1.0_rc', true ),
+            array( '5.1.0_rc1', true ),
+        );
+    }
+
+    /**
+     * @dataProvider _dptestIsRCVersion
+     */
+    public function testIsRCVersion( $getVersion, $isRCVersion )
+    {
+        $oConfig = $this->getMock( 'oxConfig', array( 'getVersion' ) );
+        $oConfig->expects( $this->any() )->method( 'getVersion' )->will( $this->returnValue( $getVersion ) );
+
+        $oView = $this->getMock( "oxView", array( 'getConfig' ), array(), '', false );
+        $oView->expects( $this->any() )->method( 'getConfig' )->will( $this->returnValue( $oConfig ) );
+
+        $this->assertEquals( $isRCVersion, $oView->isRCVersion() );
+    }
+
+    /**
+     * testShowBetaBanner data provider.
+     */
+    public function _dptestShowBetaBanner()
+    {
+        return array(
+            array( false, false, false ),
+            array( true, false, true ),
+            array( false, true, true ),
+            array( true, true, true ),
+        );
+    }
+
+    /**
+     * @dataProvider _dptestShowBetaBanner
+     */
+    public function testShowBetaBanner( $isBetaVersion, $isRCVersion, $showBetaBanner )
+    {
+        $oView = $this->getMock( "oxView", array( 'isBetaVersion', 'isRCVersion' ), array(), '', false );
+        $oView->expects( $this->any() )->method( 'isBetaVersion' )->will( $this->returnValue( $isBetaVersion ) );
+        $oView->expects( $this->any() )->method( 'isRCVersion' )->will( $this->returnValue( $isRCVersion ) );
+
+        $this->assertEquals( $showBetaBanner, $oView->showBetaBanner() );
+    }
+
     public function testEditionIsNotEmpty()
     {
         //edition is always set

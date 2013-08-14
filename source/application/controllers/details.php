@@ -194,6 +194,30 @@ class Details extends oxUBase
     }
 
     /**
+     * Returns array of params => values which are used in hidden forms and as additional url params.
+     * NOTICE: this method SHOULD return raw (non encoded into entities) parameters, because values
+     * are processed by htmlentities() to avoid security and broken templates problems
+     * This exact fix is added for article details to parse variant selection properly for widgets.
+     *
+     * @return array
+     */
+    public function getNavigationParams()
+    {
+        $aParams = parent::getNavigationParams();
+
+        $aVarselParams = oxRegistry::getConfig()->getRequestParameter( 'varselid' );
+        if ( !$aVarselParams ) {
+            return $aParams;
+        }
+
+        foreach ( $aVarselParams as $iKey => $sValue ) {
+            $aParams["varselid[$iKey]"] = $sValue;
+        }
+        return $aParams;
+    }
+
+
+    /**
      * Processes product by setting link type and in case list type is search adds search parameters to details link
      *
      * @param object $oProduct product to process

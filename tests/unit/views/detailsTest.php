@@ -109,6 +109,36 @@ class Unit_Views_detailsTest extends OxidTestCase
     }
 
     /**
+     * Returns variants and expected results
+     *
+     * @return array
+     */
+    public function variantProvider()
+    {
+        return array(
+            array( null, array() ),
+            array( array( 'abc' ), array( 'varselid[0]' => 'abc' ) ),
+            array( array( 'abc', 'cbe', 'ghf' ), array( 'varselid[0]' => 'abc', 'varselid[1]' => 'cbe', 'varselid[2]' => 'ghf' ) ),
+        );
+    }
+
+    /**
+     * Test getNavigationParams when passing various variants.
+     *
+     * @dataProvider variantProvider
+     */
+    public function testGetNavigationParams( $aVariants, $aExpected )
+    {
+        $this->getConfig()->setParameter( 'varselid', $aVariants );
+
+        $oDetails = new Details();
+        $oDetails->setParent( new oxUBase() );
+
+        $aExpected = array_merge( $aExpected, $oDetails->getParent()->getNavigationParams() );
+        $this->assertEquals( $aExpected, $oDetails->getNavigationParams() );
+    }
+
+    /**
      * Test get additionall url parameters.
      *
      * @return null

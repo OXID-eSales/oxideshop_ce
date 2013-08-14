@@ -599,9 +599,9 @@ class Unit_Views_oxviewTest extends OxidTestCase
     }
 
     /**
-     * testShowBetaBanner data provider.
+     * testShowBetaBote data provider.
      */
-    public function _dptestShowBetaBanner()
+    public function _dptestShowBetaNote()
     {
         return array(
             array( false, false, false ),
@@ -612,15 +612,15 @@ class Unit_Views_oxviewTest extends OxidTestCase
     }
 
     /**
-     * @dataProvider _dptestShowBetaBanner
+     * @dataProvider _dptestShowBetaNote
      */
-    public function testShowBetaBanner( $isBetaVersion, $isRCVersion, $showBetaBanner )
+    public function testShowBetaNote( $isBetaVersion, $isRCVersion, $showBetaNote )
     {
         $oView = $this->getMock( "oxView", array( 'isBetaVersion', 'isRCVersion' ), array(), '', false );
         $oView->expects( $this->any() )->method( 'isBetaVersion' )->will( $this->returnValue( $isBetaVersion ) );
         $oView->expects( $this->any() )->method( 'isRCVersion' )->will( $this->returnValue( $isRCVersion ) );
 
-        $this->assertEquals( $showBetaBanner, $oView->showBetaBanner() );
+        $this->assertEquals( $showBetaNote, $oView->showBetaNote() );
     }
 
     public function testEditionIsNotEmpty()

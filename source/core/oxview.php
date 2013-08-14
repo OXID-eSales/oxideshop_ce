@@ -780,13 +780,13 @@ class oxView extends oxSuperCfg
     }
 
     /**
-     * Template variable getter. Returns if beta banner can be displayed (for header.tpl)
+     * Template variable getter. Returns if beta note can be displayed (for header.tpl)
      *
      * @return bool
      */
-    public function showBetaBanner()
+    public function showBetaNote()
     {
-            // temporary do not show beta banner
+            // temporary do not show beta note
             return false;
         }
 

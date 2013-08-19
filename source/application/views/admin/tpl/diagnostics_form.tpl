@@ -129,7 +129,7 @@
                 <li>[{ oxmultilang ident="OXDIAG_INTROINFORMATION_VERSION_DETECTED" }]</li>
                 <li>[{ oxmultilang ident="OXDIAG_INTROINFORMATION_REVISION_DETECTED" }]</li>
             </ul>
-            <p>[{ oxmultilang ident="OXDIAG_INTROINFORMATION_MORE_INFORMATION" }] <strong><a href="http://www.oxid-esales.com/de/news/blog/shop-checking-tool-oxchkversion-v3" target=_blank>[{ oxmultilang ident="OXDIAG_INTROINFORMATION_OXID_ESALES_BLOG" }]</a></strong>.</p>
+            <p>[{ oxmultilang ident="OXDIAG_INTROINFORMATION_MORE_INFORMATION" }] <strong><a class="underlined" href="http://www.oxid-esales.com/de/news/blog/shop-checking-tool-oxchkversion-v3" target=_blank>[{ oxmultilang ident="OXDIAG_INTROINFORMATION_OXID_ESALES_BLOG" }]</a></strong>.</p>
             </div>
         </td>
     </tr>
@@ -139,7 +139,7 @@
 
 [{ if !empty($sResult) }]
 <h1>[{ oxmultilang ident="OXDIAG_RESULT_SUCCESSFUL" }]</h1>
-<h2><strong><a href="[{ $oViewConf->getSelfLink() }]&amp;cl=diagnostics_main&amp;fnc=downloadResultFile">[{ oxmultilang ident="OXDIAG_DOWNLOAD_FILE" }]</a></strong>.</h2>
+<h2><strong><a class="underlined" href="[{ $oViewConf->getSelfLink() }]&amp;cl=diagnostics_main&amp;fnc=downloadResultFile">[{ oxmultilang ident="OXDIAG_DOWNLOAD_FILE" }]</a></strong>.</h2>
 
 <h3>[{ oxmultilang ident="OXDIAG_RESULT" }]:</h3>
 <div class="result">

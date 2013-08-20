@@ -2051,6 +2051,8 @@ $aLang = array(
 'BUTTON_DOWNLOAD'                                          => 'Herunterladen',
 
 'oxdiag_menu'						                 => 'Diagnosewerkzeug',
+'OXDIAG_LIST_MENUITEM'                               => 'Service',
+'OXDIAG_LIST_MENUSUBITEM'                            => 'Diagnosewerkzeug',
 
 'OXDIAG_MAIN_TITLE'                                  => 'Diagnose Ihres OXID Shops',
 'OXDIAG_VERSIONCHECKER'                              => 'Versionsprüfung',

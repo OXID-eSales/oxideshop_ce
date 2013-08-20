@@ -608,7 +608,8 @@ class Unit_Maintenance_myorderTest extends OxidTestCase
     public function testPdfArticleSummary_setPayUntilInfo()
     {
         $oMyOrder = $this->_getTestMyOrder();
-
+        $oMyOrder->oxorder__oxbilldate = new oxField('2000-01-01', oxField::T_RAW);
+        
         $oPdf = new testPdfClass;
         $oPdfArtSum = new myOrder_PdfArticleSummary( $oMyOrder, $oPdf );
 
@@ -618,7 +619,7 @@ class Unit_Maintenance_myorderTest extends OxidTestCase
         $aCache = $oPdfArtSum->getVar('_aCache');
 
         //checking values
-        $this->assertEquals( 'ORDER_OVERVIEW_PDF_PAYUPTO'. '0000-00-00', $aCache[1]->aParams[2] );
+        $this->assertEquals( 'ORDER_OVERVIEW_PDF_PAYUPTO'. '08.01.2000', $aCache[1]->aParams[2] );
     }
 
     /**

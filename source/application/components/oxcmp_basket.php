@@ -461,3 +461,5 @@ class oxcmp_basket extends oxView
             $this->getParent()->setRootCatChanged( false );
         }
     }
+
+}

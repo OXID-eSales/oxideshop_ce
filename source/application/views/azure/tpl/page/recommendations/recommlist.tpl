@@ -33,7 +33,7 @@
                     </div>
                     [{if $oView->isReviewActive()}]
                     <div class="rating clear">
-                        [{oxid_include_widget cl="oxwRating" blCanRate=$oView->canRate() _parent=$oViewConf->getTopActiveClassName() nocookie=1 force_sid=$force_sid sRateUrl=$oViewConf->getSelfLink()|cat:"cl=recommlist" dRatingCount=$oView->getRatingCount() dRatingValue=$oView->getRatingValue() recommid=$_actvrecommlist->getId()}]
+                        [{oxid_include_widget cl="oxwRating" blCanRate=$oView->canRate() _parent=$oViewConf->getTopActiveClassName() nocookie=1 force_sid=$force_sid sRateUrl=$_actvrecommlist->getLink() dRatingCount=$oView->getRatingCount() dRatingValue=$oView->getRatingValue() recommid=$_actvrecommlist->getId()}]
                     </div>
                     [{/if}]
                 </div>

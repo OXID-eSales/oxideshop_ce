@@ -3343,6 +3343,7 @@ h3.section button {
 
 .social span {
     float: left;
+    z-index:3;
 }
 
 .fb_share_count_hidden {

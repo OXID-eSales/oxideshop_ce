@@ -19,7 +19,6 @@
  * @package   core
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -1771,26 +1770,6 @@ class oxBasket extends oxSuperCfg
             }
         }
     }
-
-    /**
-     * Adds item to saved basket (history)
-     *
-     * @param string $sProductId product id
-     * @param double $dAmount    item amount
-     * @param array  $aSel       article select lists
-     * @param bool   $blOverride override item amount or not
-     * @param array  $aPersParam product persistent parameters (default null)
-     *
-     * @return null
-     */
-    /*
-    protected function _addItemToSavedBasket( $sProductId , $dAmount, $aSel, $blOverride = false, $aPersParam = null )
-    {
-        // updating basket history
-        if ( $oUser = $this->getBasketUser() ) {
-            $oUser->getBasket( 'savedbasket' )->addItemToBasket( $sProductId, $dAmount, $aSel, $blOverride, $aPersParam );
-        }
-    }*/
 
     /**
      * Cleans up saved basket data. This method usually is initiated by

@@ -116,9 +116,12 @@ class Unit_Views_detailsTest extends OxidTestCase
     public function variantProvider()
     {
         return array(
-            array( null, array() ),
-            array( array( 'abc' ), array( 'varselid[0]' => 'abc' ) ),
-            array( array( 'abc', 'cbe', 'ghf' ), array( 'varselid[0]' => 'abc', 'varselid[1]' => 'cbe', 'varselid[2]' => 'ghf' ) ),
+            array( null, null, array() ),
+            array( array( 'abc' ), null, array( 'varselid[0]' => 'abc' ) ),
+            array( null, array( 'abc' ), array( 'sel[0]' => 'abc' ) ),
+            array( array( 'abc', 'cbe', 'ghf' ), null, array( 'varselid[0]' => 'abc', 'varselid[1]' => 'cbe', 'varselid[2]' => 'ghf' ) ),
+            array( null, array( 'abc', 'cbe', 'ghf' ), array( 'sel[0]' => 'abc', 'sel[1]' => 'cbe', 'sel[2]' => 'ghf' ) ),
+            array( array( 'abc', 'cbe', 'ghf' ), array( 'efg', 'hjk', 'lmn' ), array( 'varselid[0]' => 'abc', 'varselid[1]' => 'cbe', 'varselid[2]' => 'ghf', 'sel[0]' => 'efg', 'sel[1]' => 'hjk', 'sel[2]' => 'lmn' ) ),
         );
     }
 
@@ -127,9 +130,10 @@ class Unit_Views_detailsTest extends OxidTestCase
      *
      * @dataProvider variantProvider
      */
-    public function testGetNavigationParams( $aVariants, $aExpected )
+    public function testGetNavigationParams( $aVariants, $aSelectionVariants, $aExpected )
     {
         $this->getConfig()->setParameter( 'varselid', $aVariants );
+        $this->getConfig()->setParameter( 'sel', $aSelectionVariants );
 
         $oDetails = new Details();
         $oDetails->setParent( new oxUBase() );

@@ -206,12 +206,21 @@ class Details extends oxUBase
         $aParams = parent::getNavigationParams();
 
         $aVarselParams = oxRegistry::getConfig()->getRequestParameter( 'varselid' );
-        if ( !$aVarselParams ) {
+        $aSelectListParams = oxRegistry::getConfig()->getRequestParameter( 'sel' );
+        if ( !$aVarselParams && !$aSelectListParams ) {
             return $aParams;
         }
 
+        if ( $aVarselParams ) {
         foreach ( $aVarselParams as $iKey => $sValue ) {
             $aParams["varselid[$iKey]"] = $sValue;
+        }
+        }
+
+        if ( $aSelectListParams ) {
+            foreach ( $aSelectListParams as $iKey => $sValue ) {
+                $aParams["sel[$iKey]"] = $sValue;
+            }
         }
         return $aParams;
     }

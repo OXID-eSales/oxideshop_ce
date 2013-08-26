@@ -27,7 +27,6 @@ $aMap = array(
 'ADD_RECOMM_SELECTLIST'                                           => 'SELECT_LISTMANIA_LIST',
 'ADD_RECOMM_YOURCOMMENT'                                          => 'ADD_YOUR_COMMENTS',
 'BOOKMARKS_GENERAL_TITLE'                                         => 'ADD_THIS_PAGE_TO',
-'BOOKMARKS_YIEEHA_TITLE'                                          => 'ADD_THIS_PAGE_TO_YIEEHA',
 'CONTACT_FROM'                                                    => 'MESSAGE_FROM',
 'DETAILS_ADDTOCART'                                               => 'ADD_TO_CART',
 'DETAILS_ADDTONOTICELIST'                                         => 'ADD_TO_WISH_LIST',

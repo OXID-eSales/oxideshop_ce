@@ -48,7 +48,6 @@ $aLang = array(
 'ADDRESSES'                                                   => 'Addresses',
 'ADD_TAGS'                                                    => 'Add tags',
 'ADD_THIS_PAGE_TO'                                            => 'Add this page to',
-'ADD_THIS_PAGE_TO_WEBNEWS'                                    => 'Add this page to Webnews',
 'ADD_THIS_PAGE_TO_YIEEHA'                                     => 'Add this page to Yieeha',
 'ADD_TO_CART'                                                 => 'Add to Cart',
 'ADD_TO_GIFT_REGISTRY'                                        => 'Add to Gift Registry',

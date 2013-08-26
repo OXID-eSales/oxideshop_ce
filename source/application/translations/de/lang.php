@@ -47,7 +47,6 @@ $aLang = array(
 'ADDRESSES'                                                   => 'Adressen',
 'ADD_TAGS'                                                    => 'Tags hinzufügen',
 'ADD_THIS_PAGE_TO'                                            => 'Eintragen bei',
-'ADD_THIS_PAGE_TO_WEBNEWS'                                    => 'Diesen Beitrag bei Webnews verlinken',
 'ADD_THIS_PAGE_TO_YIEEHA'                                     => 'Auf yieeha wünschen',
 'ADD_TO_CART'                                                 => 'In den Warenkorb',
 'ADD_TO_GIFT_REGISTRY'                                        => 'Auf den Wunschzettel',

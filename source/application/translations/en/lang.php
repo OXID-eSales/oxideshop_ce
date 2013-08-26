@@ -812,11 +812,4 @@ $aLang = array(
 'INFO_ABOUT_COOKIES'                                          => 'Information about Cookies',
 'PARTNERS'                                                    => 'Partners',
 
-//not used
-'EMAIL_ORDER_CUST_HTML_PAYMENTCHARGEVAT1'                      => 'Payment Charge VAT',
-'FORM_REGISTER_COMPLETEMARKEDFIELDS'                          => '(Please fill in all mandatory fields labeled in bold.)',
-'MESSAGE_NO_DELIVERY_METHOD'                                  => '<p>Currently we have no delivery method set up for this country.</p> <p>We are aiming to find a possible delivery method and we will inform you as soon as possible via e-mail about the result, including further information about delivery costs.</p> <p>If you agree to this procedure, please select "move on to next step"</p>',
-    'ERROR_MESSAGE_PAGE_HEADLINE'                                 => 'The shop is temporary offline<br>Please come back later<br><br>Thank you for understanding.',
-    'MESSAGE_SELECTED_IPAYMENT'                                   => 'You selected "iPayment" as your Payment Method.<br>Please enter all your payment data in the browser-window, which is going to be opened.<br><br>In case the iPayment browser-window doesn`t open automatically (e.g. because you deactivated Javascript in your browser), please click on the iPayment button below.',
-
 );

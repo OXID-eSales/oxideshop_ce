@@ -813,11 +813,4 @@ $aLang = array(
 'INFO_ABOUT_COOKIES'                                          => 'Information über Cookies',
 'PARTNERS'                                                    => 'Partner',
 
-//not used
-'EMAIL_ORDER_CUST_HTML_PAYMENTCHARGEVAT1'                     => 'Aufsch. Zahl. MwSt.',
-'FORM_REGISTER_COMPLETEMARKEDFIELDS'                          => '(Bitte alle fett beschrifteten Pflichtfelder ausfüllen.)',
-'MESSAGE_NO_DELIVERY_METHOD'                                  => '<p>Derzeit ist keine Versandart für dieses Land definiert.</p> <p>Wir werden versuchen, Liefermöglichkeiten zu finden und Sie über die Versandkosten informieren.</p> <p>Falls Sie hiermit einverstanden sind, wählen Sie "Weiter zum nächsten Schritt".</p>',
-    'ERROR_MESSAGE_PAGE_HEADLINE'                                 => 'Der Shop ist vorübergehend offline...',
-    'MESSAGE_SELECTED_IPAYMENT'                                   => 'Sie haben als Zahlungsart "iPayment" gewählt.<br>Sie werden nun automatisch an iPayment weitergeleitet, wo Sie Ihre erforderlichen Daten für eine Bezahlung mit "iPayment" eingeben können.<br><br>Wenn dies nicht der Fall sein sollte, -z.B. wenn Sie Javascript deaktiviert haben- klicken Sie bitte auf das folgende "iPayment"-Symbol,um den Vorgang manuell auszuführen.',
-
 );

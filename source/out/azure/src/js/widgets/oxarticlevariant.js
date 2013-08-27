@@ -53,7 +53,7 @@
                     'iconPosEl' : $("#variants .dropDown"),
                     'additionalData' : aOptions,
                     'onSuccess' : function(r) {
-                        contentTarget.innerHTML = r;
+                        $( contentTarget ).html( r );
                         if ( typeof WidgetsHandler !== 'undefined') {
                             WidgetsHandler.reloadWidget('oxwarticledetails');
                         } else {
@@ -137,11 +137,11 @@
                                 aOptions[$(this).attr( "name" )] = $(this).val();
                             });
                     if ( jQuery.inArray( sHash, oxVariantSelections ) === -1 ) {
-                        return oxArticleVariant.reload( $(target), $("#details"), $("#details")[0], aOptions);
+                        return oxArticleVariant.reload( $(target), $("#details_container"), $("#details_container")[0], aOptions);
                             }
                         }
                     }
-            return oxArticleVariant.reload( $(target),$("#details"),$("#details")[0], aOptions);
+            return oxArticleVariant.reload( $(target),$("#details_container"),$("#details_container")[0], aOptions);
                 }
             }
 

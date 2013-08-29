@@ -137,9 +137,7 @@ function smarty_function_oxscript($params, &$smarty)
  */
 function _oxscript_include( $aInclude, $sWidget )
 {
-    $myConfig    = oxRegistry::getConfig();
     $sOutput     = '';
-    $sLoadOutput = '';
 
     if ( !count( $aInclude ) ) {
         return '';
@@ -148,13 +146,13 @@ function _oxscript_include( $aInclude, $sWidget )
     // Sort by priority.
     ksort( $aInclude );
     $aUsedSrc = array();
-    $aWidgets = array();
+    $aWidgets = '';
     foreach ( $aInclude as $aPriority ) {
         foreach ( $aPriority as $sSrc ) {
             // Check for duplicated lower priority resources #3062.
             if ( !in_array( $sSrc, $aUsedSrc )) {
                 if ( $sWidget ) {
-                    $aWidgets[] = $sSrc;
+                    $aWidgets .= 'WidgetsHandler.registerFile( "'. $sSrc . '", "'.$sWidget.'");'. PHP_EOL;
                 } else {
                     $sOutput .= '<script type="text/javascript" src="'.$sSrc.'"></script>'.PHP_EOL;
                 }
@@ -164,11 +162,10 @@ function _oxscript_include( $aInclude, $sWidget )
     }
 
     if ( $sWidget && count( $aWidgets ) ) {
-        $sLoadOutput .= 'if ( load_oxwidgets ==undefined ) { var load_oxwidgets = new Array(); }'."\n";
-        $sLoadOutput .= 'var load_'. strtolower( $sWidget ) .'= new Array("'. implode( '","', $aWidgets ) . "\");". PHP_EOL;
-        $sLoadOutput .= 'load_oxwidgets=load_oxwidgets.concat(load_'. strtolower( $sWidget ) .');'."\n";
-
-        $sOutput .= '<script type="text/javascript">' . PHP_EOL . $sLoadOutput . '</script>' . PHP_EOL;
+        $sOutput .= '
+            <script type="text/javascript">
+                window.addEventListener("load", function() {'. PHP_EOL . $aWidgets .'}, false )' . PHP_EOL .
+            '</script>' . PHP_EOL;
     }
 
     return $sOutput;
@@ -213,7 +210,7 @@ function _oxscript_execute( $aScript, $sWidget, $blAjaxRequest )
  */
 function _oxscript_execute_enclose( $sScriptsOutput, $sWidget, $blAjaxRequest )
 {
-    if ( !$sScriptsOutput && !$sWidget ) {
+    if ( !$sScriptsOutput ) {
         return '';
     }
 

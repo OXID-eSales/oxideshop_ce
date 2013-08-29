@@ -1,5 +1,5 @@
 var WidgetsHandler = (function() {
-    var oRegister= {}, blLoaded = false;
+    var oRegister = { files: [], functions: [] }, oWidgetRegister = {}, blLoaded = false;
 
     var obj = {
         /**
@@ -9,9 +9,21 @@ var WidgetsHandler = (function() {
          * @param sWidget widget name
          */
         registerFunction: function( sFunction, sWidget ) {
-            if ( !_isRegistered( sFunction ) ) {
-                _registerFunction( sFunction, sWidget );
-            }
+            _register( oRegister, sFunction, 'functions' );
+            _initWidget( sWidget );
+            _register( oWidgetRegister[ sWidget ], sFunction, 'functions' );
+        },
+
+        /**
+         * Registers files if it was not already registered
+         *
+         * @param sFile file name
+         * @param sWidget widget name
+         */
+        registerFile: function( sFile, sWidget ) {
+            _register( oRegister, sFile, 'files' );
+            _initWidget( sWidget );
+            _register( oWidgetRegister[ sWidget ], sFile, 'files' );
         },
 
         /**
@@ -32,14 +44,40 @@ var WidgetsHandler = (function() {
     }
 
     /**
-     * Checks whether given function is registered in all widgets
+     * Initiates widget
+     * @param sWidget
+     * @private
+     */
+    function _initWidget( sWidget )
+    {
+        if ( !( sWidget in oWidgetRegister ) ) {
+            oWidgetRegister[ sWidget ] = { files: [], functions: [] };
+        }
+    }
+
+    /**
+     * Registers given value to given register
      *
-     * @param sFunction
+     * @param oRegister
+     * @param sValue
+     * @param sGroup
+     */
+    function _register( oRegister, sValue, sGroup ) {
+        if ( !_isRegistered( oRegister[ sGroup ], sValue ) ) {
+            oRegister[ sGroup ].push( sValue );
+        }
+    }
+
+    /**
+     * Checks whether given needle is registered in given register
+     *
+     * @param oRegister
+     * @param sNeedle
      * @returns {boolean}
      */
-    function _isRegistered( sFunction ) {
+    function _isRegistered( oRegister, sNeedle ) {
         for ( var i in oRegister ) {
-            if ( oRegister[i].indexOf(sFunction) > -1 ) {
+            if ( oRegister[i].indexOf( sNeedle ) > -1 ) {
                 return true;
             }
         }
@@ -47,41 +85,54 @@ var WidgetsHandler = (function() {
     }
 
     /**
-     * Registers given function
-     *
-     * @param sFunction
-     * @param sWidget
-     * @private
-     */
-    function _registerFunction( sFunction, sWidget ) {
-        if ( !( sWidget in oRegister ) ) {
-            oRegister[ sWidget ] = [];
-        }
-        oRegister[ sWidget ].push( sFunction );
-    }
-
-    /**
-     * Loads all functions in registry
+     * Loads all functions and files in register
      *
      * @private
      */
     function _loadAll() {
         if ( blLoaded ) return;
-        for ( var sWidget in oRegister ) {
-            _loadWidget( sWidget );
-        }
+        _load( oRegister );
         blLoaded = true;
     }
 
     /**
-     * Loads all functions in registry
+     * Loads all widget functions and files from register
      *
      * @private
      */
     function _loadWidget( sWidget ) {
-        if ( ! sWidget in oRegister ) return;
-        for ( var i in oRegister[ sWidget ] ) {
-            $.globalEval( oRegister[ sWidget ][ i ] );
+        if ( sWidget in oWidgetRegister ) {
+            _load( oWidgetRegister[ sWidget ] );
+        }
+    }
+
+    /**
+     *
+     * @param oRegister
+     * @private
+     */
+    function _load( oRegister ) {
+        var iFilesLoaded = 0;
+        var iFilesTotal = oRegister[ 'files' ].length;
+        for ( var i in oRegister[ 'files' ] ) {
+            $.getScript( oRegister[ 'files' ][ i ], function() {
+                iFilesLoaded++
+                if ( iFilesLoaded == iFilesTotal) {
+                    _loadFunctions( oRegister );
+                }
+            });
+            //document.write('<script type="text/javascript" src="'+ oRegister[ sWidget ][ 'files' ][ i ] +'"></script>');
+        }
+    }
+
+    /**
+     * Loads widget functions from register
+     *
+     * @private
+     */
+    function _loadFunctions( oRegister ) {
+        for ( var i in oRegister[ 'functions' ] ) {
+            $.globalEval( oRegister[ 'functions' ][ i ] );
         }
     }
 

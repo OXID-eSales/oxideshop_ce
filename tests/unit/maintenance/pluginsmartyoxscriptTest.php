@@ -60,13 +60,8 @@ class Unit_Maintenance_pluginSmartyOxScriptTest extends OxidTestCase
         $this->assertEquals( '', smarty_function_oxscript( array( 'include' => 'http://someurl/src/js/libs/jquery.min.js' ), $oSmarty ) );
 
         $sOutput = '<script type="text/javascript">'. PHP_EOL
-                   .'if ( load_oxwidgets ==undefined ) { var load_oxwidgets = new Array(); }'. PHP_EOL
-                   .'var load_somewidget= new Array("http://someurl/src/js/libs/jquery.min.js");'. PHP_EOL
-                   .'load_oxwidgets=load_oxwidgets.concat(load_somewidget);'. PHP_EOL
-                   .'</script>'. PHP_EOL
-                   .'<script type="text/javascript">'. PHP_EOL
                    .'window.addEventListener("load", function() {'. PHP_EOL
-                   .'}, false )'. PHP_EOL
+                   .'WidgetsHandler.registerFile( "http://someurl/src/js/libs/jquery.min.js", "somewidget" );'. PHP_EOL
                    .'</script>'. PHP_EOL;
 
         $this->assertEquals( $sOutput, smarty_function_oxscript( array( 'widget' => 'somewidget', 'inWidget' => true ), $oSmarty ) );

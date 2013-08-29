@@ -152,7 +152,7 @@ function _oxscript_include( $aInclude, $sWidget )
             // Check for duplicated lower priority resources #3062.
             if ( !in_array( $sSrc, $aUsedSrc )) {
                 if ( $sWidget ) {
-                    $aWidgets .= 'WidgetsHandler.registerFile( "'. $sSrc . '", "'.$sWidget.'");'. PHP_EOL;
+                    $aWidgets .= 'WidgetsHandler.registerFile( "'. $sSrc . '", "'.$sWidget.'" );'. PHP_EOL;
                 } else {
                     $sOutput .= '<script type="text/javascript" src="'.$sSrc.'"></script>'.PHP_EOL;
                 }

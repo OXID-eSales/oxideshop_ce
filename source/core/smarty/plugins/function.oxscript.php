@@ -162,10 +162,9 @@ function _oxscript_include( $aInclude, $sWidget )
     }
 
     if ( $sWidget && count( $aWidgets ) ) {
-        $sOutput .= '
-            <script type="text/javascript">
-                window.addEventListener("load", function() {'. PHP_EOL . $aWidgets .'}, false )' . PHP_EOL .
-            '</script>' . PHP_EOL;
+        $sOutput .= '<script type="text/javascript">'
+            .'window.addEventListener("load", function() {'. PHP_EOL . $aWidgets .'}, false )' . PHP_EOL
+            .'</script>' . PHP_EOL;
     }
 
     return $sOutput;

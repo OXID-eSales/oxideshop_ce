@@ -62,6 +62,7 @@ class Unit_Maintenance_pluginSmartyOxScriptTest extends OxidTestCase
         $sOutput = '<script type="text/javascript">'. PHP_EOL
                    .'window.addEventListener("load", function() {'. PHP_EOL
                    .'WidgetsHandler.registerFile( "http://someurl/src/js/libs/jquery.min.js", "somewidget" );'. PHP_EOL
+                   .'}, false )'. PHP_EOL
                    .'</script>'. PHP_EOL;
 
         $this->assertEquals( $sOutput, smarty_function_oxscript( array( 'widget' => 'somewidget', 'inWidget' => true ), $oSmarty ) );

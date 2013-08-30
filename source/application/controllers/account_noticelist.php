@@ -19,7 +19,6 @@
  * @package   views
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -93,6 +92,22 @@ class Account_Noticelist extends Account
         }
 
         return $this->_sThisTemplate;
+    }
+
+    /**
+     * Returns array from parent::getNavigationParams(). If current request
+     * contains "sourcecl" and "anid" parameters - appends array with this
+     * data. Array is used to fill forms and append shop urls with actual
+     * state parameters
+     *
+     * @return array
+     */
+    public function getNavigationParams()
+    {
+        $aParams = parent::getNavigationParams();
+
+
+        return $aParams;
     }
 
     /**

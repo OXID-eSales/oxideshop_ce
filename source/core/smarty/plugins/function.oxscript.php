@@ -118,7 +118,7 @@ function smarty_function_oxscript($params, &$smarty)
         $myConfig->setGlobalParameter( $sScripts, null );
         if ( $sWidget ) {
             $aScriptDyn = (array) $myConfig->getGlobalParameter( $sScripts .'_dynamic' );
-            $sScriptOutput .= _oxscript_execute( $aScriptDyn, $sWidget, $sScripts );
+            $sScriptOutput .= _oxscript_execute( $aScriptDyn, $sWidget, $blAjaxRequest );
             $myConfig->setGlobalParameter( $sScripts .'_dynamic', null );
         }
         $sOutput .= _oxscript_execute_enclose( $sScriptOutput, $sWidget, $blAjaxRequest );

@@ -119,7 +119,7 @@ class oxContentList extends oxList
      *
      * @return null
      */
-    public function _load( $iType )
+    protected function _load( $iType )
     {
 
            $aData = $this->_loadFromDb( $iType );

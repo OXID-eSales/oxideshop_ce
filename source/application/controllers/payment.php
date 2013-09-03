@@ -19,7 +19,6 @@
  * @package   views
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -419,7 +418,6 @@ class Payment extends oxUBase
     protected function _setValues( & $aPaymentList, $oBasket = null )
     {
         if ( is_array($aPaymentList) ) {
-            $oLang = oxRegistry::getLang();
             foreach ( $aPaymentList as $oPayment ) {
                 $oPayment->calculate( $oBasket );
                 $oPayment->aDynValues     = $oPayment->getDynValues();

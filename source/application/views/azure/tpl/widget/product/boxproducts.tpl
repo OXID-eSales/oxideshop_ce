@@ -1,6 +1,7 @@
 [{oxscript add="$('a.js-external').attr('target', '_blank');"}]
 [{oxscript include="js/widgets/oxarticlebox.js" priority=10 }]
 [{oxscript add="$( 'ul.js-articleBox' ).oxArticleBox();" }]
+[{assign var="currency" value=$oView->getActCurrency()}]
 <div class="box" [{if $_boxId}]id="[{$_boxId}]"[{/if}]>
     [{if $_sHeaderIdent}]
         <h3 class="clear [{if $_sHeaderCssClass}] [{$_sHeaderCssClass}][{/if}]">
@@ -13,45 +14,8 @@
     [{/if}]
     <ul class="js-articleBox featuredList">
     [{foreach from=$_oBoxProducts item=_oBoxProduct name=_sProdList}]
-            [{ assign var="_sTitle" value="`$_oBoxProduct->oxarticles__oxtitle->value` `$_oBoxProduct->oxarticles__oxvarselect->value`"|strip_tags}]
-            [{block name="widget_product_boxproduct_image"}]
-                <li class="articleImage" [{if !$smarty.foreach._sProdList.first}] style="display:none;" [{/if}]>
-                    <a class="articleBoxImage" href="[{ $_oBoxProduct->getMainLink() }]">
-                        <img src="[{$_oBoxProduct->getIconUrl()}]" alt="[{$_sTitle}]">
-                    </a>
-                </li>
-            [{/block}]
-
-            [{block name="widget_product_boxproduct_price"}]
-                [{ assign var="currency" value=$oView->getActCurrency()}]
-                <li class="articleTitle">
-                    <a href="[{ $_oBoxProduct->getMainLink() }]">
-                        [{ $_sTitle }]<br>
-                        [{oxhasrights ident="SHOWARTICLEPRICE"}]
-                            [{if $_oBoxProduct->getFPrice()}]
-                                <strong> [{if $_oBoxProduct->isRangePrice()}]
-                                                [{ oxmultilang ident="PRICE_FROM" }]
-                                                [{if !$_oBoxProduct->isParentNotBuyable() }]
-                                                    [{ $_oBoxProduct->getFMinPrice() }]
-                                                [{else}]
-                                                    [{ $_oBoxProduct->getFVarMinPrice() }]
-                                                [{/if}]
-                                        [{else}]
-                                                [{if !$_oBoxProduct->isParentNotBuyable() }]
-                                                    [{ $_oBoxProduct->getFPrice() }]
-                                                [{else}]
-                                                    [{ $_oBoxProduct->getFVarMinPrice() }]
-                                                [{/if}]
-                                        [{/if}]
-                                [{ $currency->sign}]
-                                [{if $oView->isVatIncluded() }]
-                                    [{if !( $_oBoxProduct->hasMdVariants() || ($oViewConf->showSelectListsInList()&&$_oBoxProduct->getSelections(1)) || $_oBoxProduct->getVariants() )}]*[{/if}]
-                                [{/if}]</strong>
-                            [{/if}]
-                        [{/oxhasrights}]
-                    </a>
-                </li>
-            [{/block}]
+            [{assign var="iProdCount" value=$smarty.foreach._sProdList.first}]
+            [{oxid_include_widget cl="oxwArticleBox" _parent=$oView->getClassName() _navurlparams=$oViewConf->getNavUrlParams() iLinkType=$_oBoxProduct->getLinkType() anid=$_oBoxProduct->getId() currencySign=$currency->sign isVatIncluded=$oView->isVatIncluded() iProdCount=$iProdCount nocookie=1 sWidgetType=product sListType=boxproduct}]
     [{/foreach}]
     </ul>
 </div>

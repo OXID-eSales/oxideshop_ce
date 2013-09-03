@@ -32,7 +32,7 @@
 [{/if}]
 [{if $oProduct->getFPrice()}]
 [{$smarty.capture.sRDFaPriceStart}]
-            [{assign var=price value=$oDetailsProduct->getPrice()}]
+            [{assign var=price value=$oProduct->getPrice()}]
             <div property="gr:hasCurrencyValue" content="[{$price->getBruttoPrice()}]" datatype="xsd:float"></div>
             [{if isset($iRDFaMinAmount)}]
                 <div rel="gr:hasEligibleQuantity">

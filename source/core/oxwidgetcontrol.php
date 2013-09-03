@@ -29,6 +29,7 @@
  */
 class oxWidgetControl extends oxShopControl
 {
+
     /**
      * Skip handler set for widget as it already set in oxShopControl.
      *

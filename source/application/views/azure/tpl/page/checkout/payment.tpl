@@ -15,7 +15,7 @@
                         <input type="hidden" name="cl" value="[{ $oViewConf->getActiveClassName() }]">
                         <input type="hidden" name="fnc" value="changeshipping">
                     </div>
-                    <h3 id="deliveryHeader" class="blockHead">[{ if $oView->getAllSetsCnt() > 1 }][{ oxmultilang ident="SELECTED_SHIPPING_CARRIER" suffix="COLON" }][{else}][{ oxmultilang ident="SELECTED_SHIPPING_CARRIER" }]:[{/if}]</h3>
+                    <h3 id="deliveryHeader" class="blockHead">[{ if $oView->getAllSetsCnt() > 1 }][{ oxmultilang ident="SELECT_SHIPPING_METHOD" suffix="COLON" }][{else}][{ oxmultilang ident="SELECT_SHIPPING_METHOD" suffix="COLON"}][{/if}]</h3>
                     <ul>
                         <li>
                             [{block name="act_shipping"}]
@@ -72,6 +72,10 @@
                 <div class="status error">[{ oxmultilang ident="MESSAGE_NO_SHIPPING_METHOD_FOUND" }]</div>
             [{ elseif $iPayError == -3}]
                 <div class="status error">[{ oxmultilang ident="MESSAGE_PAYMENT_SELECT_ANOTHER_PAYMENT" }]</div>
+            [{ elseif $iPayError == -4}]
+                <div class="status error">[{ oxmultilang ident="MESSAGE_PAYMENT_BANK_CODE_INVALID" }]</div>
+            [{ elseif $iPayError == -5}]
+                <div class="status error">[{ oxmultilang ident="MESSAGE_PAYMENT_ACCOUNT_NUMBER_INVALID" }]</div>
             [{/if}]
         [{/block}]
 

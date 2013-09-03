@@ -465,11 +465,13 @@ span.new{
     padding: 1px 5px;
 }
 
-a#linkToUpdate {
+a#linkToUpdate,
+.underlined {
     text-decoration:underline;	
 }
 
-a#linkToUpdate:hover {
+a#linkToUpdate:hover,
+.underlined:hover {
     color: #787878;
 }
 #tShopLicense {

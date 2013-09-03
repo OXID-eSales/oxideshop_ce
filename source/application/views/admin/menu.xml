@@ -194,6 +194,9 @@
             <SUBMENU id="mxsysreq" cl="sysreq" list="sysreq_list">
                 <TAB id="tbclsysreq_main" cl="sysreq_main" />
             </SUBMENU>
+            <SUBMENU id="oxdiag_menu" cl="diagnostics" list="diagnostics_list">
+                <TAB id="oxdiag_menu" cl="diagnostics_main" />
+            </SUBMENU>
             <SUBMENU id="mxtools" cl="tools" list="tools_list" rights="malladmin" disableForDemoShop="1" >
                 <TAB id="tbcltools_main" cl="tools_main" disableForDemoShop="1" />
             </SUBMENU>

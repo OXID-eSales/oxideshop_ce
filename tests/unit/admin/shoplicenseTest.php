@@ -19,7 +19,6 @@
  * @package   tests
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -39,6 +38,8 @@ class Unit_Admin_ShopLicenseTest extends OxidTestCase
     public function setUp()
     {
         modSession::getInstance()->setVar("malladmin", true);
+
+
         return parent::setUp();
     }
 

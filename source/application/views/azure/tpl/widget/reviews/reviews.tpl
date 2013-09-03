@@ -25,14 +25,15 @@
                     [{$oViewConf->getNavFormParams()}]
                     [{oxid_include_dynamic file="form/formparams.tpl"}]
                     <input type="hidden" name="fnc" value="savereview">
-                    <input type="hidden" name="cl" value="[{$oViewConf->getActiveClassName()}]">
-                    [{if $oDetailsProduct}]
-                        <input type="hidden" name="anid" value="[{$oDetailsProduct->oxarticles__oxid->value}]">
-                    [{else}]
-                        [{assign var="_actvrecommlist" value=$oView->getActiveRecommList() }]
-                        <input type="hidden" name="recommid" value="[{$_actvrecommlist->oxrecommlists__oxid->value}]">
+                    <input type="hidden" name="cl" value="[{$oViewConf->getTopActiveClassName()}]">
+
+                    [{if $oView->getReviewType() == 'oxarticle'}]
+                        <input type="hidden" name="anid" value="[{$oView->getArticleId()}]">
+                    [{elseif $oView->getReviewType() == 'oxrecommlist'}]
+                        <input type="hidden" name="recommid" value="[{$oView->getRecommListId()}]">
                     [{/if}]
 
+                    [{assign var="sReviewUserHash" value=$oView->getReviewUserHash()}]
                     [{if $sReviewUserHash}]
                         <input type="hidden" name="reviewuserhash" value="[{$sReviewUserHash}]">
                     [{/if}]
@@ -43,13 +44,14 @@
             </form>
             <a id="writeNewReview" rel="nofollow"><b>[{oxmultilang ident="WRITE_REVIEW"}]</b></a>
         [{else}]
-            <a id="reviewsLogin" rel="nofollow" href="[{oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=account" params="anid=`$oDetailsProduct->oxarticles__oxnid->value`"|cat:"&amp;sourcecl="|cat:$oViewConf->getActiveClassName()|cat:$oViewConf->getNavUrlParams()}]"><b>[{oxmultilang ident="MESSAGE_LOGIN_TO_WRITE_REVIEW"}]</b></a>
+            [{assign var="sArticleId" value=$oView->getArticleId()}]
+            <a id="reviewsLogin" rel="nofollow" href="[{oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=account" params="anid=$sArticleId"|cat:"&amp;sourcecl="|cat:$oViewConf->getTopActiveClassName()|cat:$oViewConf->getNavUrlParams()}]"><b>[{oxmultilang ident="MESSAGE_LOGIN_TO_WRITE_REVIEW"}]</b></a>
         [{/if}]
     [{/block}]
 
-
-    [{if $oView->getReviews()}]
-        [{foreach from=$oView->getReviews() item=review name=ReviewsCounter}]
+    [{assign var="aReviews" value=$oView->getReviews()}]
+    [{if $aReviews}]
+        [{foreach from=$aReviews item=review name=ReviewsCounter}]
             <dl>
                 [{block name="widget_reviews_record"}]
                     <dt id="reviewName_[{$smarty.foreach.ReviewsCounter.iteration}]" class="clear item">
@@ -80,3 +82,4 @@
     [{/if}]
 
 </div>
+[{oxscript widget=$oView->getClassName()}]

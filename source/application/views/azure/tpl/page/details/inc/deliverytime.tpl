@@ -10,7 +10,7 @@
     [{if $oDetailsProduct->oxarticles__oxmaxdeltime->value > 1}]
         [{assign var="ident" value=$ident|cat:"S"}]
     [{/if}]
-    [{$oDetailsProduct->oxarticles__oxmaxdeltime->value}] [{oxmultilang ident=$ident}]
+    [{oxmultilang ident=$ident args=$oDetailsProduct->oxarticles__oxmaxdeltime->value}]
 [{/if}]
 </span>
 [{/if}]

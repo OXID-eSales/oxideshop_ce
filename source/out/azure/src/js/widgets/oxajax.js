@@ -156,6 +156,16 @@
                 $.each(params['additionalData'], function(i, f) {inputs[i] = f;});
             }
 
+            // sorting array to pass parameters alphabetically
+            var aInputs = {};
+            var keys = Array();
+            for ( var key in inputs ) {
+                if ( inputs.hasOwnProperty( key ) ) {
+                    keys.push( key );
+                }
+            }
+            keys.sort().forEach( function( i ) { aInputs[i] = inputs[i]; } )
+
             var sLoadingScreen = null;
             if (params['targetEl']) {
                 sLoadingScreen = self.loadingScreen.start(params['targetEl'], params['iconPosEl']);
@@ -166,11 +176,13 @@
             }
 
             jQuery.ajax({
-                data    : inputs,
+                data    : aInputs,
                 url     : action,
                 type    : type,
                 timeout : 30000,
-
+                beforeSend: function( jqXHR, settings ) {
+                    settings.url = settings.url.replace( "&&", "&" );
+                },
                 error   : function(jqXHR, textStatus, errorThrown) {
                     if (sLoadingScreen) {
                         self.loadingScreen.stop(sLoadingScreen);

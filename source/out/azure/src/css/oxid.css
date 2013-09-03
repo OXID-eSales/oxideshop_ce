@@ -3348,6 +3348,7 @@ h3.section button {
 
 .social span {
     float: left;
+    z-index:3;
 }
 
 .fb_share_count_hidden {
@@ -4944,6 +4945,18 @@ td.alignTop{
     z-index:9999;
 }
 
+#incVatMessageTsBadge{
+    position:fixed;
+    bottom:-3px;
+    right:100px;
+    font-size:11px;
+    padding:4px 20px 6px 17px;
+    background:url(../../img/vatmsg-bg.png) no-repeat 0 0;
+    opacity:0.6;
+    filter:alpha(opacity=60);
+    z-index:9999;
+}
+
 /* --- Plain errors ------------------------ */
 .errorBox {width: auto; font-size:12px; font-weight:bold; color:#D81F01; margin: 20px; padding: 0; border: none; width: 500px;}
 .errorBox a {color:#D81F01; text-decoration: underline;}
@@ -5296,4 +5309,7 @@ a.downloadableFile.pending {
 
 #betaNote+#page {
     padding-top: 35px;
+}
+.hidden {
+    display: none;
 }

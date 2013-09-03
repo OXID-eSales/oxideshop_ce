@@ -19,7 +19,6 @@
  * @package   views
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -541,7 +540,7 @@ class oxView extends oxSuperCfg
                 $sNewAction = $this->$sFunction();
                 self::$_blExecuted = true;
 
-                if (isset($sNewAction)) {
+                if ( isset ( $sNewAction ) ) {
                     $this->_executeNewAction( $sNewAction );
                 }
             } else {
@@ -590,6 +589,10 @@ class oxView extends oxSuperCfg
             $sUrl = "{$sUrl}index.php?{$sHeader}";
 
             $sUrl = oxRegistry::get("oxUtilsUrl")->processUrl($sUrl);
+
+            if ( oxRegistry::getUtils()->seoIsActive() && $sSeoUrl = oxRegistry::get( "oxSeoEncoder" )->getStaticUrl( $sUrl ) ) {
+                $sUrl = $sSeoUrl;
+            }
 
 
             //#M341 do not add redirect parameter
@@ -746,6 +749,54 @@ class oxView extends oxSuperCfg
             $this->_blDemoVersion = $this->getConfig()->detectVersion() == 1;
         }
         return $this->_blDemoVersion;
+    }
+
+    /**
+     * Returns if current shop is beta version.
+     *
+     * @return bool
+     */
+    public function isBetaVersion()
+    {
+        $blbetaVersion = false;
+
+        if ( stripos( $this->getConfig()->getVersion(), 'beta' ) !== false ) {
+            $blbetaVersion = true;
+        }
+
+        return $blbetaVersion;
+    }
+
+    /**
+     * Returns if current shop is release candidate version.
+     *
+     * @return bool
+     */
+    public function isRCVersion()
+    {
+        $blRCVersion = false;
+
+        if ( stripos( $this->getConfig()->getVersion(), 'rc' ) !== false ) {
+            $blRCVersion = true;
+        }
+
+        return $blRCVersion;
+    }
+
+    /**
+     * Template variable getter. Returns if beta note can be displayed (for header.tpl)
+     *
+     * @return bool
+     */
+    public function showBetaNote()
+    {
+        $blBetaNote = false;
+
+        if ( $this->isBetaVersion() || $this->isRCVersion() ) {
+            $blBetaNote = true;
+        }
+
+        return $blBetaNote;
     }
 
     /**

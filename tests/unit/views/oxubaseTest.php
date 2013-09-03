@@ -19,7 +19,6 @@
  * @package   tests
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -526,7 +525,7 @@ class Unit_Views_oxubaseTest extends OxidTestCase
      */
     public function testSetNrOfArtPerPageSetToSessionWithWrongNumber()
     {
-        $myConfig  = oxConfig::getInstance();
+        $myConfig  = $this->getConfig();
         $this->setRequestParam( '_artperpage', 200 );
 
         $oView = new oxubase();
@@ -538,6 +537,25 @@ class Unit_Views_oxubaseTest extends OxidTestCase
         $this->assertEquals( 10, $oViewConf->getViewConfigParam( 'iartPerPage' ) );
         $this->assertEquals( 10, $myConfig->getConfigParam('iNrofCatArticles') );
         $this->assertEquals( 10, $iCnt );
+    }
+
+    /*
+      * Test _setNrOfArtPerPage() with missing parameter aNrofCatArticles in database
+      */
+    public function testSetNrOfArtPerPageWhenConfigParamIsMissing()
+    {
+
+        $myConfig  = oxConfig::getInstance();
+        $myConfig->setConfigParam( 'iNrofCatArticles', 10 );
+        $myConfig->setConfigParam( 'aNrofCatArticles', null );
+        $this->setSessionParam("_artperpage", 20);
+
+
+        $oView = new oxubase();
+        $oView->UNITsetNrOfArtPerPage();
+
+        $this->assertEquals( 10, $myConfig->getConfigParam('iNrofCatArticles') );
+        $this->assertEquals( array( 10 ), $myConfig->getConfigParam('aNrofCatArticles') );
     }
 
     /*
@@ -2412,5 +2430,17 @@ class Unit_Views_oxubaseTest extends OxidTestCase
 
         $oView = new oxUbase();
         $this->assertFalse( $oView->isVatIncluded() );
+    }
+
+    /**
+     * Check that widget link is retrieved properly
+     */
+    public function testGetWidgetLink()
+    {
+        $oView = new oxUbase();
+        $this->getConfig()->setConfigParam( "sShopURL", "testshop/" );
+        $this->setLanguage( 1 );
+
+        $this->assertEquals( "testshop/widget.php?lang=1&amp;", $oView->getWidgetLink() );
     }
 }

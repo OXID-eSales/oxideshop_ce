@@ -1327,7 +1327,8 @@ class oxUBase extends oxView
         }
 
         if ( !is_array( $aNrofCatArticles ) || !isset( $aNrofCatArticles[0] ) ) {
-            $myConfig->setConfigParam( 'aNrofCatArticles', array( $iNrofCatArticles ) );
+            $aNrofCatArticles = array( $iNrofCatArticles );
+            $myConfig->setConfigParam( 'aNrofCatArticles', $aNrofCatArticles );
         } else {
             $iNrofCatArticles = $aNrofCatArticles[0];
         }
@@ -2035,7 +2036,7 @@ class oxUBase extends oxView
         if ( $this->_sAdditionalParams === null ) {
             // #1018A
             $this->_sAdditionalParams  = parent::getAdditionalParams();
-            $this->_sAdditionalParams .= 'cl='.$this->getConfig()->getActiveView()->getClassName();
+            $this->_sAdditionalParams .= 'cl='.$this->getConfig()->getTopActiveView()->getClassName();
 
             // #1834M - specialchar search
             $sSearchParamForLink = rawurlencode( oxConfig::getParameter( 'searchparam', true ) );
@@ -3174,4 +3175,13 @@ class oxUBase extends oxView
         return false;
     }
 
+    /**
+     * Get widget link for Ajax calls
+     *
+     * @return string
+     */
+    public function getWidgetLink()
+    {
+        return oxRegistry::getConfig()->getWidgetUrl();
+    }
 }

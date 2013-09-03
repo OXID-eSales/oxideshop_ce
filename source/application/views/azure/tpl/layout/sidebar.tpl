@@ -17,7 +17,7 @@
 
     [{block name="sidebar_trustedshopsratings"}]
         [{if $oView->getClassName() eq "start"}]
-            [{if $oViewConf->showTs("WIDGET")}]
+            [{if $oViewConf->showTs("WIDGET") }]
                 [{include file="widget/trustedshops/ratings.tpl" }]
             [{/if}]
         [{/if}]

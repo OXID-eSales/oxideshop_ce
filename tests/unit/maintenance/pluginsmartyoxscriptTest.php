@@ -38,6 +38,9 @@ class Unit_Maintenance_pluginSmartyOxScriptTest extends OxidTestCase
         $this->assertEquals( '', smarty_function_oxscript( array( 'include' => 'somescript.js' ), $oSmarty ) );
     }
 
+    /**
+     * Check oxscript include
+     */
     public function testSmartyFunctionOxScript_includeExist()
     {
         $oSmarty = new Smarty();
@@ -48,43 +51,61 @@ class Unit_Maintenance_pluginSmartyOxScriptTest extends OxidTestCase
         $this->assertEquals( $sOutput, smarty_function_oxscript( array( 'inWidget' => false ), $oSmarty ) );
     }
 
+    /**
+     * Check oxscript inclusion in widget
+     */
     public function testSmartyFunctionOxScript_widget_include()
     {
         $oSmarty = new Smarty();
         $this->assertEquals( '', smarty_function_oxscript( array( 'include' => 'http://someurl/src/js/libs/jquery.min.js' ), $oSmarty ) );
 
-        $sOutput.= '<script type="text/javascript">'. PHP_EOL
-                   .'if ( load_oxwidgets ==undefined ) { var load_oxwidgets = new Array(); }'. PHP_EOL
-                   .'var load_somewidget= new Array("http://someurl/src/js/libs/jquery.min.js");'. PHP_EOL
-                   .'load_oxwidgets=load_oxwidgets.concat(load_somewidget);'. PHP_EOL
-                   .'</script>'. PHP_EOL
-                   .'<script type="text/javascript">'. PHP_EOL
-                   .'function init_somewidget() {'. PHP_EOL
-                   .'}'. PHP_EOL
+        $sOutput = '<script type="text/javascript">'. PHP_EOL
+                   .'window.addEventListener("load", function() {'. PHP_EOL
+                   .'WidgetsHandler.registerFile( "http://someurl/src/js/libs/jquery.min.js", "somewidget" );'. PHP_EOL
+                   .'}, false )'. PHP_EOL
                    .'</script>'. PHP_EOL;
 
         $this->assertEquals( $sOutput, smarty_function_oxscript( array( 'widget' => 'somewidget', 'inWidget' => true ), $oSmarty ) );
     }
 
+    /**
+     * Check for oxscript add method
+     */
     public function testSmartyFunctionOxScript_add()
     {
         $oSmarty = new Smarty();
         $this->assertEquals( '', smarty_function_oxscript( array('add' => 'oxidadd'), $oSmarty ) );
 
-        $sOutput.= '<script type="text/javascript">'. PHP_EOL .'oxidadd'. PHP_EOL .'</script>'. PHP_EOL;
+        $sOutput = '<script type="text/javascript">'. PHP_EOL .'oxidadd'. PHP_EOL .'</script>'. PHP_EOL;
 
         $this->assertEquals( $sOutput, smarty_function_oxscript( array(), $oSmarty ) );
     }
 
-    public function testSmartyFunctionOxScript_widget_add()
+    /**
+     * Provides data for oxscript add function
+     */
+    public function addProvider()
+    {
+        return array(
+            array( 'oxidadd', 'oxidadd' ),
+            array( '"oxidadd"', '\"oxidadd\"' ),
+            array( "'oxidadd'", "'oxidadd'" ),
+        );
+    }
+    /**
+     * Check for oxscript add method in widget
+     *
+     * @dataProvider addProvider
+     */
+    public function testSmartyFunctionOxScript_widget_add( $sScript, $sScriptOutput )
     {
         $oSmarty = new Smarty();
-        $this->assertEquals( '', smarty_function_oxscript( array( 'add' => 'oxidadd' ), $oSmarty ) );
+        $this->assertEquals( '', smarty_function_oxscript( array( 'add' => $sScript ), $oSmarty ) );
 
-        $sOutput.= '<script type="text/javascript">'. PHP_EOL
-                    .'function init_somewidget() {'. PHP_EOL
-                    .'oxidadd'. PHP_EOL
-                    .'}'. PHP_EOL
+        $sOutput = '<script type="text/javascript">'. PHP_EOL
+                    .'window.addEventListener("load", function() {'. PHP_EOL
+                    .'WidgetsHandler.registerFunction( "'. $sScriptOutput .'", "somewidget");'. PHP_EOL
+                    .'}, false )'. PHP_EOL
                     .'</script>'. PHP_EOL;
 
         $this->assertEquals( $sOutput, smarty_function_oxscript( array( 'widget' => 'somewidget', 'inWidget' => true ), $oSmarty ) );

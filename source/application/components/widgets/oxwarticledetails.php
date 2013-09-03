@@ -1,0 +1,994 @@
+<?php
+/**
+ *    This file is part of OXID eShop Community Edition.
+ *
+ *    OXID eShop Community Edition is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
+ *    (at your option) any later version.
+ *
+ *    OXID eShop Community Edition is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU General Public License for more details.
+ *
+ *    You should have received a copy of the GNU General Public License
+ *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @link      http://www.oxid-esales.com
+ * @package   tests
+ * @copyright (C) OXID eSales AG 2003-2013
+ * @version OXID eShop CE
+ * @version   SVN: $Id: oxwarticledetails.php 56456 13.7.12 11.20Z tadas.rimkus $
+ */
+
+class oxwArticleDetails extends oxWidget
+{
+    /**
+     * List of article variants.
+     *
+     * @var array
+     */
+    protected $_aVariantList = null;
+    /**
+     * Names of components (classes) that are initiated and executed
+     * before any other regular operation.
+     * @var array
+     */
+    protected $_aComponentNames = array( 'oxcmp_cur' => 1, 'oxcmp_shop' => 1, 'oxcmp_basket' => 1, 'oxcmp_user' => 1 );
+
+    /**
+     * Current class template name.
+     * @var string
+     */
+    protected $_sThisTemplate = 'widget/product/details.tpl';
+
+    /**
+     * Current product parent article object
+     *
+     * @var oxArticle
+     */
+    protected $_oParentProd = null;
+
+    /**
+     * Marker if user can rate current product
+     *
+     * @var bool
+     */
+    protected $_blCanRate = null;
+
+    /**
+     * If tags can be changed
+     * @var bool
+     */
+    protected $_blCanEditTags = null;
+
+    /**
+     * Class handling CAPTCHA image.
+     * @var object
+     */
+    protected $_oCaptcha = null;
+
+    /**
+     * Media files
+     * @var array
+     */
+    protected $_aMediaFiles = null;
+
+    /**
+     * History (last seen) products
+     * @var array
+     */
+    protected $_aLastProducts = null;
+
+    /**
+     * Current product's vendor
+     * @var oxVendor
+     */
+    protected $_oVendor = null;
+
+    /**
+     * Current product's manufacturer
+     * @var oxManufacturer
+     */
+    protected $_oManufacturer = null;
+
+    /**
+     * Current product's category
+     * @var object
+     */
+    protected $_oCategory = null;
+
+    /**
+     * Current product's attributes
+     * @var object
+     */
+    protected $_aAttributes = null;
+
+    /**
+     * Picture gallery
+     * @var array
+     */
+    protected $_aPicGallery = null;
+
+    /**
+     * Reviews of current article
+     * @var array
+     */
+    protected $_aReviews = null;
+
+    /**
+     * CrossSelling article list
+     * @var object
+     */
+    protected $_oCrossSelling = null;
+
+    /**
+     * Similar products article list
+     * @var object
+     */
+    protected $_oSimilarProducts = null;
+
+    /**
+     * Accessories of current article
+     * @var object
+     */
+    protected $_oAccessoires = null;
+
+    /**
+     * List of customer also bought thies products
+     * @var object
+     */
+    protected $_aAlsoBoughtArts = null;
+
+    /**
+     * Search title
+     * @var string
+     */
+    protected $_sSearchTitle = null;
+
+    /**
+     * Marker if active product was fully initialized before returning it
+     * (see details::getProduct())
+     * @var bool
+     */
+    protected $_blIsInitialized = false;
+
+    /**
+     * Current view link type
+     *
+     * @var int
+     */
+    protected $_iLinkType = null;
+
+    /**
+     * Is multi dimension variant view
+     *
+     * @var bool
+     */
+    protected $_blMdView = null;
+
+    /**
+     * Rating value
+     * @var double
+     */
+    protected $_dRatingValue = null;
+
+    /**
+     * Ratng count
+     * @var integer
+     */
+    protected $_iRatingCnt = null;
+
+    /**
+     * Bid price.
+     * @var string
+     */
+    protected $_sBidPrice = null;
+
+    /**
+     * Array of id to form recommendation list.
+     *
+     * @var array
+     */
+    protected $_aSimilarRecommListIds = null;
+
+
+    /**
+     * Template variable getter. Returns active zoom picture id
+     *
+     * @return array
+     */
+    public function getActZoomPic()
+    {
+        return 1;
+    }
+
+    /**
+     * Returns current product parent article object if it is available
+     *
+     * @param string $sParentId parent product id
+     *
+     * @return oxArticle
+     */
+    protected function _getParentProduct( $sParentId )
+    {
+        if ( $sParentId && $this->_oParentProd === null ) {
+            $this->_oParentProd = false;
+            $oProduct = oxNew( 'oxArticle' );
+            if ( ( $oProduct->load( $sParentId ) ) ) {
+                $this->_processProduct( $oProduct );
+                $this->_oParentProd = $oProduct;
+            }
+        }
+        return $this->_oParentProd;
+    }
+
+    /**
+     * In case list type is "search" returns search parameters which will be added to product details link
+     *
+     * @return string | null
+     */
+    protected function _getAddUrlParams()
+    {
+        if ( $this->getListType() == "search" ) {
+            return $this->getDynUrlParams();
+        }
+    }
+
+    /**
+     * Processes product by setting link type and in case list type is search adds search parameters to details link
+     *
+     * @param object $oProduct product to process
+     *
+     * @return null
+     */
+    protected function _processProduct( $oProduct )
+    {
+        $oProduct->setLinkType( $this->getLinkType() );
+        if ( $sAddParams = $this->_getAddUrlParams() ) {
+            $oProduct->appendLink( $sAddParams );
+        }
+    }
+
+    /**
+     * Checks if rating functionality is active
+     *
+     * @return bool
+     */
+    public function ratingIsActive()
+    {
+        return $this->getConfig()->getConfigParam( 'bl_perfLoadReviews' );
+    }
+
+    /**
+     * Checks if rating functionality is on and allowed to user
+     *
+     * @return bool
+     */
+    public function canRate()
+    {
+        if ( $this->_blCanRate === null ) {
+
+            $this->_blCanRate = false;
+
+            if ( $this->ratingIsActive() && $oUser = $this->getUser() ) {
+
+                $oRating = oxNew( 'oxrating' );
+                $this->_blCanRate = $oRating->allowRating( $oUser->getId(), 'oxarticle', $this->getProduct()->getId() );
+            }
+        }
+
+        return $this->_blCanRate;
+    }
+
+    /**
+     * Checks if rating functionality is on and allowed to user
+     *
+     * @return bool
+     */
+    public function canChangeTags()
+    {
+        if ( $oUser = $this->getUser() ) {
+
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * loading full list of attributes
+     *
+     * @return array $_aAttributes
+     */
+    public function getAttributes()
+    {
+        if ( $this->_aAttributes === null ) {
+            // all attributes this article has
+            $aArtAttributes = $this->getProduct()->getAttributes();
+
+            //making a new array for backward compatibility
+            $this->_aAttributes = false;
+
+            if ( count( $aArtAttributes ) ) {
+                foreach ( $aArtAttributes as $sKey => $oAttribute ) {
+                    $this->_aAttributes[$sKey] = new stdClass();
+                    $this->_aAttributes[$sKey]->title = $oAttribute->oxattribute__oxtitle->value;
+                    $this->_aAttributes[$sKey]->value = $oAttribute->oxattribute__oxvalue->value;
+                }
+            }
+        }
+        return $this->_aAttributes;
+    }
+
+    /**
+     * Returns tag cloud manager class
+     *
+     * @return oxTagCloud
+     */
+    public function getTagCloudManager()
+    {
+        $oManager = oxNew( "oxTagCloud" );
+        $oManager->setExtendedMode( true );
+        $oManager->setProductId( $this->getProduct()->getId() );
+        return $oManager;
+    }
+
+    /**
+     * Returns if tags can be changed, if user is loggen in and
+     * product exists.
+     *
+     * @return bool
+     */
+    public function isEditableTags()
+    {
+        if ( $this->_blCanEditTags === null ) {
+            $this->_blCanEditTags = false;
+            if ( $this->getProduct() && $this->getUser()) {
+                $this->_blCanEditTags = true;
+            }
+        }
+        return $this->_blCanEditTags;
+    }
+
+    /**
+     * Returns current view link type
+     *
+     * @return int
+     */
+    public function getLinkType()
+    {
+        if ( $this->_iLinkType === null ) {
+            $sListType = oxConfig::getParameter( 'listtype' );
+            if ( 'vendor' == $sListType ) {
+                $this->_iLinkType = OXARTICLE_LINKTYPE_VENDOR;
+            } elseif ( 'manufacturer' == $sListType ) {
+                $this->_iLinkType = OXARTICLE_LINKTYPE_MANUFACTURER;
+            } elseif ( 'tag' == $sListType ) {
+                $this->_iLinkType = OXARTICLE_LINKTYPE_TAG;
+            } elseif ( 'recommlist' == $sListType ) {
+                $this->_iLinkType = OXARTICLE_LINKTYPE_RECOMM;
+            } else {
+                $this->_iLinkType = OXARTICLE_LINKTYPE_CATEGORY;
+
+                // price category has own type..
+                if ( ( $oCat = $this->getActiveCategory() ) && $oCat->isPriceCategory() ) {
+                    $this->_iLinkType = OXARTICLE_LINKTYPE_PRICECATEGORY;
+                }
+            }
+        }
+
+        return $this->_iLinkType;
+    }
+
+    /**
+     * Returns variant lists of current product
+     * excludes currently viewed product
+     *
+     * @return array
+     */
+    public function getVariantListExceptCurrent()
+    {
+        $oList = $this->getVariantList();
+        if (is_object($oList)) {
+            $oList = clone $oList;
+        }
+
+        $sOxid = $this->getProduct()->getId();
+        if (isset($oList[$sOxid])) {
+            unset($oList[$sOxid]);
+        }
+        return $oList;
+    }
+
+    /**
+     * loading full list of variants,
+     * if we are child and do not have any variants then let's load all parent variants as ours
+     *
+     * @return null
+     */
+    public function loadVariantInformation()
+    {
+        if ( $this->_aVariantList === null ) {
+            $oProduct = $this->getProduct();
+
+            //if we are child and do not have any variants then let's load all parent variants as ours
+            if ( $oParent = $oProduct->getParentArticle() ) {
+                $myConfig = $this->getConfig();
+
+                $oParent->setNoVariantLoading(false);
+                $this->_aVariantList = $oParent->getFullVariants( false );
+
+                //lets additionally add parent article if it is sellable
+                if ( count( $this->_aVariantList ) && $myConfig->getConfigParam( 'blVariantParentBuyable' ) ) {
+                    //#1104S if parent is buyable load selectlists too
+                    $oParent->enablePriceLoad();
+                    $oParent->aSelectlist = $oParent->getSelectLists();
+                    $this->_aVariantList = array_merge( array( $oParent ), $this->_aVariantList->getArray() );
+                }
+            } else {
+                //loading full list of variants
+                $this->_aVariantList = $oProduct->getFullVariants( false );
+            }
+
+            // setting link type for variants ..
+            foreach ( $this->_aVariantList as $oVariant ) {
+                $this->_processProduct( $oVariant );
+            }
+
+        }
+
+        return $this->_aVariantList;
+    }
+
+
+    /**
+     * Returns variant lists of current product
+     *
+     * @return array
+     */
+    public function getVariantList()
+    {
+        return $this->loadVariantInformation();
+    }
+
+    /**
+     * Template variable getter. Returns object of handling CAPTCHA image
+     *
+     * @return object
+     */
+    public function getCaptcha()
+    {
+        if ( $this->_oCaptcha === null ) {
+            $this->_oCaptcha = oxNew('oxCaptcha');
+        }
+        return $this->_oCaptcha;
+    }
+
+    /**
+     * Template variable getter. Returns media files of current product
+     *
+     * @return array
+     */
+    public function getMediaFiles()
+    {
+        if ( $this->_aMediaFiles === null ) {
+            $aMediaFiles = $this->getProduct()->getMediaUrls();
+            $this->_aMediaFiles = count($aMediaFiles) ? $aMediaFiles : false;
+        }
+        return $this->_aMediaFiles;
+    }
+
+    /**
+     * Template variable getter. Returns last seen products
+     *
+     * @param int $iCnt product count
+     *
+     * @return array
+     */
+    public function getLastProducts( $iCnt = 4 )
+    {
+        if ( $this->_aLastProducts === null ) {
+            //last seen products for #768CA
+            $oProduct = $this->getProduct();
+            $sArtId = $oProduct->oxarticles__oxparentid->value?$oProduct->oxarticles__oxparentid->value:$oProduct->getId();
+
+            $oHistoryArtList = oxNew( 'oxarticlelist' );
+            $oHistoryArtList->loadHistoryArticles( $sArtId, $iCnt );
+            $this->_aLastProducts = $oHistoryArtList;
+        }
+        return $this->_aLastProducts;
+    }
+
+    /**
+     * Template variable getter. Returns product's vendor
+     *
+     * @return object
+     */
+    public function getManufacturer()
+    {
+        if ( $this->_oManufacturer === null ) {
+            $this->_oManufacturer = $this->getProduct()->getManufacturer( false );
+        }
+        return $this->_oManufacturer;
+    }
+
+    /**
+     * Template variable getter. Returns product's vendor
+     *
+     * @return object
+     */
+    public function getVendor()
+    {
+        if ( $this->_oVendor === null ) {
+            $this->_oVendor = $this->getProduct()->getVendor( false );
+        }
+        return $this->_oVendor;
+    }
+
+    /**
+     * Template variable getter. Returns product's root category
+     *
+     * @return object
+     */
+    public function getCategory()
+    {
+        if ( $this->_oCategory === null ) {
+            $this->_oCategory = $this->getProduct()->getCategory();
+        }
+        return $this->_oCategory;
+    }
+
+    /**
+     * Template variable getter. Returns picture gallery of current article
+     *
+     * @return array
+     */
+    public function getPictureGallery()
+    {
+        if ( $this->_aPicGallery === null ) {
+            //get picture gallery
+            $this->_aPicGallery = $this->getPicturesProduct()->getPictureGallery();
+        }
+        return $this->_aPicGallery;
+    }
+
+    /**
+     * Template variable getter. Returns active picture
+     *
+     * @return object
+     */
+    public function getActPicture()
+    {
+        $aPicGallery = $this->getPictureGallery();
+        return $aPicGallery['ActPic'];
+    }
+
+    /**
+     * Template variable getter. Returns true if there more pictures
+     *
+     * @return bool
+     */
+    public function morePics()
+    {
+        $aPicGallery = $this->getPictureGallery();
+        return $aPicGallery['MorePics'];
+    }
+
+    /**
+     * Template variable getter. Returns icons of current article
+     *
+     * @return array
+     */
+    public function getIcons()
+    {
+        $aPicGallery = $this->getPictureGallery();
+        return $aPicGallery['Icons'];
+    }
+
+    /**
+     * Template variable getter. Returns if to show zoom pictures
+     *
+     * @return bool
+     */
+    public function showZoomPics()
+    {
+        $aPicGallery = $this->getPictureGallery();
+        return $aPicGallery['ZoomPic'];
+    }
+
+    /**
+     * Template variable getter. Returns zoom pictures
+     *
+     * @return array
+     */
+    public function getZoomPics()
+    {
+        $aPicGallery = $this->getPictureGallery();
+        return $aPicGallery['ZoomPics'];
+    }
+
+    /**
+     * Template variable getter. Returns reviews of current article
+     *
+     * @return array
+     */
+    public function getReviews()
+    {
+        if ( $this->_aReviews === null ) {
+            $this->_aReviews = false;
+            if ( $this->getConfig()->getConfigParam( 'bl_perfLoadReviews' ) ) {
+                $this->_aReviews = $this->getProduct()->getReviews();
+            }
+        }
+        return $this->_aReviews;
+    }
+
+    /**
+     * Template variable getter. Returns crosssellings
+     *
+     * @return object
+     */
+    public function getCrossSelling()
+    {
+        if ( $this->_oCrossSelling === null ) {
+            $this->_oCrossSelling = false;
+            if ( $oProduct = $this->getProduct() ) {
+                $this->_oCrossSelling = $oProduct->getCrossSelling();
+            }
+        }
+        return $this->_oCrossSelling;
+    }
+
+    /**
+     * Template variable getter. Returns similar article list
+     *
+     * @return object
+     */
+    public function getSimilarProducts()
+    {
+        if ( $this->_oSimilarProducts === null ) {
+            $this->_oSimilarProducts = false;
+            if ( $oProduct = $this->getProduct() ) {
+                $this->_oSimilarProducts = $oProduct->getSimilarProducts();
+            }
+        }
+        return $this->_oSimilarProducts;
+    }
+
+    /**
+     * Return array of id to form recommend list.
+     *
+     * @return array
+     */
+    public function getSimilarRecommListIds()
+    {
+        if ( $this->_aSimilarRecommListIds === null ) {
+            $this->_aSimilarRecommListIds = false;
+
+            if ( $oProduct = $this->getProduct() ) {
+                $this->_aSimilarRecommListIds = array( $oProduct->getId() );
+            }
+        }
+        return $this->_aSimilarRecommListIds;
+    }
+
+    /**
+     * Template variable getter. Returns accessories of article
+     *
+     * @return object
+     */
+    public function getAccessoires()
+    {
+        if ( $this->_oAccessoires === null ) {
+            $this->_oAccessoires = false;
+            if ( $oProduct = $this->getProduct() ) {
+                $this->_oAccessoires = $oProduct->getAccessoires();
+            }
+        }
+        return $this->_oAccessoires;
+    }
+
+    /**
+     * Template variable getter. Returns list of customer also bought these products
+     *
+     * @return object
+     */
+    public function getAlsoBoughtTheseProducts()
+    {
+        if ( $this->_aAlsoBoughtArts === null ) {
+            $this->_aAlsoBoughtArts = false;
+            if ( $oProduct = $this->getProduct() ) {
+                $this->_aAlsoBoughtArts = $oProduct->getCustomerAlsoBoughtThisProducts();
+            }
+        }
+        return $this->_aAlsoBoughtArts;
+    }
+
+    /**
+     * Template variable getter. Returns if price alarm is disabled
+     *
+     * @return object
+     */
+    public function isPriceAlarm()
+    {
+        // #419 disabling price alarm if article has fixed price
+        $oProduct = $this->getProduct();
+        if ( isset( $oProduct->oxarticles__oxblfixedprice->value ) && $oProduct->oxarticles__oxblfixedprice->value ) {
+            return 0;
+        }
+        return 1;
+    }
+
+    /**
+     * returns object, associated with current view.
+     * (the object that is shown in frontend)
+     *
+     * @param int $iLang language id
+     *
+     * @return object
+     */
+    protected function _getSubject( $iLang )
+    {
+        return $this->getProduct();
+    }
+
+    /**
+     * Returns search title. It will be set in oxLocator
+     *
+     * @return string
+     */
+    public function getSearchTitle()
+    {
+        return $this->_sSearchTitle;
+    }
+
+    /**
+     * Returns search title setter
+     *
+     * @param string $sTitle search title
+     *
+     * @return null
+     */
+    public function setSearchTitle( $sTitle )
+    {
+        $this->_sSearchTitle = $sTitle;
+    }
+
+    /**
+     * active category path setter
+     *
+     * @param string $sActCatPath category tree path
+     *
+     * @return string
+     */
+    public function setCatTreePath( $sActCatPath )
+    {
+        $this->_sCatTreePath = $sActCatPath;
+    }
+
+    /**
+     * Checks should persistent parameter input field be displayed
+     *
+     * @return bool
+     */
+    public function isPersParam()
+    {
+        $oProduct = $this->getProduct();
+        return $oProduct->oxarticles__oxisconfigurable->value;
+    }
+
+    /**
+     * Template variable getter. Returns rating value
+     *
+     * @return double
+     */
+    public function getRatingValue()
+    {
+
+        if ( $this->_dRatingValue === null ) {
+            $this->_dRatingValue = (double) 0;
+            if ( $this->isReviewActive() && ( $oDetailsProduct = $this->getProduct() ) ) {
+                $this->_dRatingValue = round( $oDetailsProduct->getArticleRatingAverage( $this->getConfig()->getConfigParam( 'blShowVariantReviews' ) ), 1);
+            }
+        }
+
+        return (double) $this->_dRatingValue;
+    }
+
+    /**
+     * Template variable getter. Returns if review module is on
+     *
+     * @return bool
+     */
+    public function isReviewActive()
+    {
+        return $this->getConfig()->getConfigParam( 'bl_perfLoadReviews' );
+    }
+
+    /**
+     * Template variable getter. Returns rating count
+     *
+     * @return integer
+     */
+    public function getRatingCount()
+    {
+        if ( $this->_iRatingCnt === null ) {
+            $this->_iRatingCnt = false;
+            if ( $this->isReviewActive() && ( $oDetailsProduct = $this->getProduct() ) ) {
+                $this->_iRatingCnt = $oDetailsProduct->getArticleRatingCount( $this->getConfig()->getConfigParam( 'blShowVariantReviews' ) );
+            }
+        }
+        return $this->_iRatingCnt;
+    }
+
+    /**
+     * Return price alarm status (if it was send)
+     *
+     * @return integer
+     */
+    public function getPriceAlarmStatus()
+    {
+        return $this->getViewParameter('iPriceAlarmStatus');
+    }
+
+    /**
+     * Template variable getter. Returns bid price
+     *
+     * @return string
+     */
+    public function getBidPrice()
+    {
+        if ( $this->_sBidPrice === null ) {
+            $this->_sBidPrice = false;
+
+            $aParams = oxConfig::getParameter( 'pa' );
+            $oCur = $this->getConfig()->getActShopCurrencyObject();
+            $iPrice = oxRegistry::getUtils()->currency2Float( $aParams['price'] );
+            $this->_sBidPrice = oxRegistry::getLang()->formatCurrency( $iPrice, $oCur );
+        }
+        return $this->_sBidPrice;
+    }
+
+    /**
+     * Returns variant selection
+     *
+     * @return oxVariantSelectList
+     */
+    public function getVariantSelections()
+    {
+        // finding parent
+        $oProduct = $this->getProduct();
+        if ( ( $oParent = $this->_getParentProduct( $oProduct->oxarticles__oxparentid->value ) ) ) {
+            return $oParent->getVariantSelections( oxConfig::getParameter( "varselid" ), $oProduct->getId() );
+        }
+
+        return $oProduct->getVariantSelections( oxConfig::getParameter( "varselid" ) );
+    }
+//
+    /**
+     * Returns pictures product object
+     *
+     * @return oxArticle
+     */
+    public function getPicturesProduct()
+    {
+        $aVariantSelections = $this->getVariantSelections();
+        if ($aVariantSelections && $aVariantSelections['oActiveVariant'] && !$aVariantSelections['blPerfectFit']) {
+            return $aVariantSelections['oActiveVariant'];
+        }
+        return $this->getProduct();
+    }
+
+    /**
+     * Get product article
+     *
+     * @return oxArticle
+     */
+    public function getProduct()
+    {
+        $myConfig = $this->getConfig();
+        $myUtils = oxRegistry::getUtils();
+
+        if ( $this->_oProduct === null ) {
+
+            //this option is only for lists and we must reset value
+            //as blLoadVariants = false affect "ab price" functionality
+            $myConfig->setConfigParam( 'blLoadVariants', true );
+
+            $sOxid = oxConfig::getParameter( 'anid' );
+
+            // object is not yet loaded
+            $this->_oProduct = oxNew( 'oxarticle' );
+
+            if ( !$this->_oProduct->load( $sOxid ) ) {
+                $myUtils->redirect( $myConfig->getShopHomeURL() );
+                $myUtils->showMessageAndExit( '' );
+            }
+
+            $aVariantSelections = $this->_oProduct->getVariantSelections( oxConfig::getParameter( "varselid" ) );
+            if ($aVariantSelections && $aVariantSelections['oActiveVariant'] && $aVariantSelections['blPerfectFit']) {
+                $this->_oProduct = $aVariantSelections['oActiveVariant'];
+            }
+        }
+
+        // additional checks
+        if ( !$this->_blIsInitialized ) {
+
+            $blContinue = true;
+            if ( !$this->_oProduct->isVisible() ) {
+                $blContinue = false;
+            } elseif ( $this->_oProduct->oxarticles__oxparentid->value ) {
+                $oParent = $this->_getParentProduct( $this->_oProduct->oxarticles__oxparentid->value );
+                if ( !$oParent || !$oParent->isVisible() ) {
+                    $blContinue = false;
+                }
+            }
+
+            if ( !$blContinue ) {
+                $myUtils->redirect( $myConfig->getShopHomeURL() );
+                $myUtils->showMessageAndExit( '' );
+            }
+
+            $this->_processProduct( $this->_oProduct );
+            $this->_blIsInitialized = true;
+        }
+
+        return $this->_oProduct;
+    }
+
+    /**
+     * Executes parent::render().
+     * Returns name of template file to render.
+     *
+     * @return  string  $this->_sThisTemplate   current template file name
+     */
+    public function render()
+    {
+        $oProduct = $this->getProduct();
+
+        parent::render();
+
+        $oCategory = new oxCategory();
+        $oCategory->setId( oxRegistry::getConfig()->getRequestParameter( "cnid" ) );
+        $this->setActiveCategory( $oCategory );
+
+                /**
+                 * @var $oLocator oxLocator
+                 */
+                $oLocator = oxNew( 'oxlocator', $this->getListType() );
+                $oLocator->setLocatorData( $oProduct, $this );
+                return $this->_sThisTemplate;
+
+        }
+
+    /**
+     * Should we show MD variant selection? - Not for 1 dimension variants.
+     *
+     * @return bool
+     */
+    public function isMdVariantView()
+    {
+        if ( $this->_blMdView === null ) {
+            $this->_blMdView = false;
+            if ( $this->getConfig()->getConfigParam( 'blUseMultidimensionVariants' ) ) {
+                $iMaxMdDepth = $this->getProduct()->getMdVariants()->getMaxDepth();
+                $this->_blMdView = ($iMaxMdDepth > 1);
+    }
+        }
+
+        return $this->_blMdView;
+    }
+
+    /**
+     * Returns tag separator
+     *
+     * @return string
+     */
+    public function getTagSeparator()
+    {
+        $sSepartor = $this->getConfig()->getConfigParam("sTagSeparator");
+        return $sSepartor;
+    }
+
+}

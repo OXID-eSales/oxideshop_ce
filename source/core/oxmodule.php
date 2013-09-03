@@ -126,12 +126,12 @@ class oxModule extends oxSuperCfg
      */
     public function loadModule( $sModuleId )
     {
-        $sModuleDir = $this->getModulePath( $sModuleId );
+        $sModulePath = $this->getModuleFullPath( $sModuleId );
+        $sMetadataPath = $sModulePath . "/metadata.php";
 
-        $sFilePath = $this->getConfig()->getModulesDir() . $sModuleDir . "/metadata.php";
-        if ( file_exists( $sFilePath ) && is_readable( $sFilePath ) ) {
+        if ( $sModulePath && file_exists( $sMetadataPath ) && is_readable( $sMetadataPath ) ) {
             $aModule = array();
-            include $sFilePath;
+            include $sMetadataPath;
             $this->_aModule = $aModule;
             $this->_blLegacy      = false;
             $this->_blRegistered  = true;
@@ -177,21 +177,23 @@ class oxModule extends oxSuperCfg
      */
     public function loadUnregisteredModule( $sModuleId )
     {
-        $oConfig = $this->getConfig();
-        $aModules = $this->getAllModules();
+        $sModulePath = $this->getModuleFullPath( $sModuleId );
 
-        $sModuleDir = $this->getModulePath( $sModuleId );
+        if ( !$sModulePath ) {
+            $sModulePath = $this->getConfig()->getModulesDir() . $sModuleId;
+        }
 
-        $sFilePath = $oConfig->getModulesDir() . $sModuleDir ;
-        if ( file_exists( $sFilePath ) && is_readable( $sFilePath ) ) {
+        if ( file_exists( $sModulePath ) && is_readable( $sModulePath ) ) {
+            $aModules = $this->getAllModules();
+
             $this->_aModule = array();
             $this->_aModule['id'] = $sModuleId;
             $this->_aModule['title'] = $sModuleId;
-            $this->_aModule['extend'] = $this->buildModuleChains($this->filterModuleArray($aModules, $sModuleId));
+            $this->_aModule['extend'] = $this->buildModuleChains( $this->filterModuleArray( $aModules, $sModuleId ) );
             $this->_blLegacy      = true;
             $this->_blRegistered  = false;
             $this->_blMetadata    = false;
-            $this->_blFile        = !is_dir($oConfig->getModulesDir() . $sModuleId);
+            $this->_blFile        = !is_dir($this->getConfig()->getModulesDir() . $sModuleId );
             $this->_aModule['active'] = $this->isActive();
             return true;
         }
@@ -239,7 +241,7 @@ class oxModule extends oxSuperCfg
      *
      * @return string
      */
-    public function getIdByPath($sModule)
+    public function getIdByPath( $sModule )
     {
         $myConfig     = $this->getConfig();
         $aModulePaths = $myConfig->getConfigParam( 'aModulePaths' );
@@ -281,7 +283,7 @@ class oxModule extends oxSuperCfg
                 if ( !empty($this->_aModule[$sName]) ) {
                     if ( !empty( $this->_aModule[$sName][$sLang] ) ) {
                         $sValue = $this->_aModule[$sName][$sLang];
-                    } elseif ( !empty($this->_aModule['lang']) ) {
+                    } elseif ( !empty( $this->_aModule['lang'] ) ) {
                         // trying to get value according default language
                         $sValue = $this->_aModule[$sName][$this->_aModule['lang']];
                     } else {
@@ -320,7 +322,7 @@ class oxModule extends oxSuperCfg
                 }
                 $blActive = $iClCount > 0 && $iActive == $iClCount;
 
-                $aDisabledModules = $this->getDisabledModules();
+            $aDisabledModules = $this->getDisabledModules();
                 if ( $blActive && ( is_array($aDisabledModules) && in_array($sId, $aDisabledModules) ) ) {
                     $blActive = false;
                 }
@@ -336,6 +338,7 @@ class oxModule extends oxSuperCfg
         return $blActive;
     }
 
+
     /**
      * Check if extension das any extended classes
      *
@@ -343,7 +346,7 @@ class oxModule extends oxSuperCfg
      */
     public function isExtended()
     {
-        if ($this->hasMetadata() && !empty($this->_aModule['extend'])) {
+        if ( $this->hasMetadata() && !empty( $this->_aModule['extend'] ) ) {
             return true;
         }
 
@@ -397,7 +400,7 @@ class oxModule extends oxSuperCfg
      */
     public function activate()
     {
-        if (isset($this->_aModule['extend']) && is_array($this->_aModule['extend'])) {
+        if ( isset( $this->_aModule['extend'] ) && is_array( $this->_aModule['extend'] ) ) {
             $oConfig     = oxRegistry::getConfig();
             $aAddModules = $this->_aModule['extend'];
             $sModuleId   = $this->getId();
@@ -459,7 +462,7 @@ class oxModule extends oxSuperCfg
      *
      * @return bool
      */
-    public function deactivate($sModuleId = null)
+    public function deactivate( $sModuleId = null )
     {
         $oConfig = $this->getConfig();
         if (!isset($sModuleId)) {
@@ -467,18 +470,18 @@ class oxModule extends oxSuperCfg
         }
         if (isset($sModuleId)) {
 
-            $this->_callEvent('onDeactivate', $sModuleId);
+            $this->_callEvent( 'onDeactivate', $sModuleId );
 
             $aDisabledModules = $this->getDisabledModules();
 
             if (!is_array($aDisabledModules)) {
                 $aDisabledModules = array();
             }
-            $aModules = array_merge($aDisabledModules, array($sModuleId));
+            $aModules = array_merge($aDisabledModules, array( $sModuleId ) );
             $aModules = array_unique($aModules);
 
-            $oConfig->saveShopConfVar('arr', 'aDisabledModules', $aModules);
-            $oConfig->setConfigParam('aDisabledModules', $aModules);
+            $oConfig->saveShopConfVar( 'arr', 'aDisabledModules', $aModules );
+            $oConfig->setConfigParam( 'aDisabledModules', $aModules );
 
             //deactivate oxblocks too
             $this->_changeBlockStatus( $sModuleId );
@@ -500,14 +503,14 @@ class oxModule extends oxSuperCfg
      *
      * @return null
      */
-    protected function _callEvent($sEvent, $sModuleId)
+    protected function _callEvent( $sEvent, $sModuleId )
     {
         $aModuleEvents = $this->getModuleEvents();
 
-        if (isset($aModuleEvents[$sModuleId], $aModuleEvents[$sModuleId][$sEvent])) {
+        if ( isset( $aModuleEvents[$sModuleId], $aModuleEvents[$sModuleId][$sEvent] ) ) {
             $mEvent = $aModuleEvents[$sModuleId][$sEvent];
 
-            if (is_callable($mEvent)) {
+            if ( is_callable( $mEvent ) ) {
                 call_user_func($mEvent);
             }
         }
@@ -525,7 +528,7 @@ class oxModule extends oxSuperCfg
     {
         $oDb = oxDb::getDb();
         $sShopId   = $this->getConfig()->getShopId();
-        $oDb->execute("UPDATE oxtplblocks SET oxactive = '".(int) $iStatus."' WHERE oxmodule =". $oDb->quote($sModule)."AND oxshopid = '$sShopId'");
+        $oDb->execute( "UPDATE oxtplblocks SET oxactive = '".(int) $iStatus."' WHERE oxmodule =". $oDb->quote( $sModule )."AND oxshopid = '$sShopId'" );
     }
 
     /**
@@ -639,6 +642,21 @@ class oxModule extends oxSuperCfg
         }
 
         return $sModulePath;
+    }
+
+    /**
+     * Returns full module path
+     *
+     * @param string $sModuleId
+     *
+     * @return string
+     */
+    public function getModuleFullPath( $sModuleId )
+    {
+        if ( $sModuleDir = $this->getModulePath( $sModuleId ) ) {
+            return $this->getConfig()->getModulesDir() . $sModuleDir;
+        }
+        return false;
     }
 
     /**

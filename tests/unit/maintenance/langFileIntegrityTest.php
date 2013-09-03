@@ -19,7 +19,6 @@
  * @package   tests
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -36,12 +35,18 @@ require_once realpath( "." ).'/unit/test_config.inc.php';
  * - check if all maps are bound to the same translations
  * - check if there are no colons at the end
  * - check if translations are unique and can't be changed.
- * - ensure html entities are'nt used
+ * - ensure html entities are not used
  * - make sure all templates have translations
  * - find unused translations. Too long, not to be used for automatic testing.
  */
 class Unit_Maintenance_langFileIntegrityTest extends OxidTestCase
 {
+    /**
+     * Theme to test against
+     *
+     * @var string
+     */
+    protected $_sTheme = 'azure';
 
     /**
      * Initialize the fixture.
@@ -51,6 +56,14 @@ class Unit_Maintenance_langFileIntegrityTest extends OxidTestCase
     protected function setUp()
     {
         parent::setUp();
+    }
+
+    /**
+     *  @return string theme name
+     */
+    public function getThemeName()
+    {
+       return $this->_sTheme;
     }
 
     /**
@@ -75,7 +88,7 @@ class Unit_Maintenance_langFileIntegrityTest extends OxidTestCase
     {
         return array(
             array(''),
-            array('azure'),
+            array($this->getThemeName()),
             array('admin')
         );
     }
@@ -89,8 +102,8 @@ class Unit_Maintenance_langFileIntegrityTest extends OxidTestCase
         return array(
             array('de', ''),
             array('en', ''),
-            array('de', 'azure'),
-            array('en', 'azure')
+            array('de', $this->getThemeName()),
+            array('en', $this->getThemeName())
         );
     }
 
@@ -104,8 +117,8 @@ class Unit_Maintenance_langFileIntegrityTest extends OxidTestCase
         return array(
             array('de', ''),
             array('en', ''),
-            array('de', 'azure'),
-            array('en', 'azure'),
+            array('de', $this->getThemeName()),
+            array('en', $this->getThemeName()),
             array('de', 'admin'),
             array('en', 'admin')
         );
@@ -121,10 +134,10 @@ class Unit_Maintenance_langFileIntegrityTest extends OxidTestCase
         return array(
             array('de', '', 'lang.php'),
             array('en', '', 'lang.php'),
-            array('de', 'azure', 'lang.php'),
-            array('en', 'azure', 'lang.php'),
-            array('de', 'azure', 'map.php'),
-            array('en', 'azure', 'map.php'),
+            array('de', $this->getThemeName(), 'lang.php'),
+            array('en', $this->getThemeName(), 'lang.php'),
+            array('de', $this->getThemeName(), 'map.php'),
+            array('en', $this->getThemeName(), 'map.php'),
             array('de', 'admin', 'lang.php'),
             array('en', 'admin', 'lang.php')
         );
@@ -153,10 +166,10 @@ class Unit_Maintenance_langFileIntegrityTest extends OxidTestCase
      * Test if map identifiers are the same.
      *
      */
-    public function testAzureMapIdentsMatch()
+    public function testMapIdentsMatch()
     {
-        $aMapIdentsDE     =  $this->_getMap('azure', 'de');
-        $aMapIdentsEN     =  $this->_getMap('azure', 'en');
+        $aMapIdentsDE     =  $this->_getMap($this->getThemeName(), 'de');
+        $aMapIdentsEN     =  $this->_getMap($this->getThemeName(), 'en');
 
         if ( ( $aMapIdentsDE == array() ) || ( $aMapIdentsEN == array() ) ) {
             $this->fail( ' Map array is empty' );
@@ -207,12 +220,12 @@ class Unit_Maintenance_langFileIntegrityTest extends OxidTestCase
     /**
      * Tests if maps are bound to the same language constants
      *
-     * @depends testAzureMapIdentsMatch
+     * @depends testMapIdentsMatch
      */
     public function testMapEquality()
     {
-        $aMapIdentsDE     = $this->_getMap('azure', 'de');
-        $aMapIdentsEN     = $this->_getMap('azure', 'en');
+        $aMapIdentsDE     = $this->_getMap($this->getThemeName(), 'de');
+        $aMapIdentsEN     = $this->_getMap($this->getThemeName(), 'en');
 
         if ( ( $aMapIdentsDE == array() ) || ( $aMapIdentsEN == array() ) ) {
             $this->fail( 'array is empty' );
@@ -227,13 +240,13 @@ class Unit_Maintenance_langFileIntegrityTest extends OxidTestCase
     }
 
     /**
-     * Test if there are'nt any html encodings in map constants.
+     * Test if there are not any html encodings in map constants.
      *
      * @dataProvider providerLang
      */
     public function testMapNoFrontendHtmlEntitiesAllowed($sLang)
     {
-        $aMapIndents = $this->_getMap('azure', 'de');
+        $aMapIndents = $this->_getMap($this->getThemeName(), 'de');
 
         if ( $aMapIndents == array() ) {
             $this->fail( ' Map array is empty' );
@@ -257,9 +270,9 @@ class Unit_Maintenance_langFileIntegrityTest extends OxidTestCase
      * @dataProvider providerLang
      *
      */
-    public function testAzureMapConstantsInGeneric($sLang)
+    public function testMapConstantsInGeneric($sLang)
     {
-        $aMapIdents = $this->_getMap('azure', $sLang);
+        $aMapIdents = $this->_getMap($this->getThemeName(), $sLang);
         if ( array() == $aMapIdents ) {
             $this->fail( ' Map array is empty' );
         }
@@ -302,7 +315,7 @@ class Unit_Maintenance_langFileIntegrityTest extends OxidTestCase
     public function testThemeTranslationsNotEqualsGenericTranslations( $sLang )
     {
         $aGenericTranslations = $this->_getLanguage('', $sLang);
-        $aThemeTranslations = $this->_getLanguage('azure', $sLang);
+        $aThemeTranslations = $this->_getLanguage($this->getThemeName(), $sLang);
         $aIntersectionsDE = array_intersect_key( $aThemeTranslations, $aGenericTranslations );
 
         $this->assertEquals( array( 'charset' => 'ISO-8859-15' ), $aIntersectionsDE, "some $sLang translations in theme overrides generic translations" );
@@ -314,11 +327,11 @@ class Unit_Maintenance_langFileIntegrityTest extends OxidTestCase
      */
     public function testDuplicates()
     {
-        $aThemeTranslationsDE = $this->_getLanguage('azure', 'de');
+        $aThemeTranslationsDE = $this->_getLanguage($this->getThemeName(), 'de');
         $aRTranslationsDE = array_merge($aThemeTranslationsDE, $this->_getLanguage('', 'de'));
         $aTranslationsDE = $this->_stripLangParts($aRTranslationsDE);
 
-        $aThemeTranslationsEN = $this->_getLanguage('azure', 'en');
+        $aThemeTranslationsEN = $this->_getLanguage($this->getThemeName(), 'en');
         $aRTranslationsEN = array_merge($aThemeTranslationsEN, $this->_getLanguage('', 'en'));
         $aTranslationsEN = $this->_stripLangParts($aRTranslationsEN);
 
@@ -387,7 +400,7 @@ class Unit_Maintenance_langFileIntegrityTest extends OxidTestCase
     }
 
     /**
-     * Test if there are no missing constant language identifiers in azure templates.
+     * Test if there are no missing constant language identifiers in templates.
      * Checking just one version, because above tests checks that both languages have the same identifiers.
      * Dependency added only for map, because can't add dependency on test with data provider.
      * Granted there are workarounds to make it depend on test with data provider, it is not the best practice.
@@ -395,10 +408,11 @@ class Unit_Maintenance_langFileIntegrityTest extends OxidTestCase
      *
      * @return null
      */
-    public function testMissingAzureTemplateConstants()
+    public function testMissingTemplateConstants()
     {
-        $aTemplateLangIdents = $this->_getTemplateConstants( 'azure' );
-        $aConstantLangIdents = array_keys( array_merge($this->_getLanguage( '', 'de' ), $this->_getMap( 'azure', 'de' )) ) ;
+        $aTemplateLangIdents = $this->_getTemplateConstants( $this->getThemeName() );
+        $aConstants = array_merge( array_merge($this->_getLanguage( '', 'de' ), $this->_getMap( $this->getThemeName(), 'de' ) ), $this->_getLanguage( $this->getThemeName(), 'de' ) );
+        $aConstantLangIdents = array_keys( $aConstants ) ;
 
         $this->assertEquals( array( 'MONTH_NAME_' ), array_values(array_diff($aTemplateLangIdents, $aConstantLangIdents)), 'missing constants in templates');
     }
@@ -409,7 +423,7 @@ class Unit_Maintenance_langFileIntegrityTest extends OxidTestCase
     public function testNotUsedTranslations()
     {
         $this->markTestSkipped( 'this test is slow, only to be used locally when checking for translations that are not being used' );
-        $aUsedConstants =  $this->_getTemplateConstants( 'azure' );
+        $aUsedConstants =  $this->_getTemplateConstants( $this->getThemeName() );
 
         $sFile = oxConfig::getInstance()->getAppDir()."/translations/de/lang.php";
         include $sFile;
@@ -558,8 +572,8 @@ class Unit_Maintenance_langFileIntegrityTest extends OxidTestCase
         if ( $aExcludePaths == array() ) {
             $aExcludeDirPattern[] = '/source/application/translations';
             $aExcludeDirPattern[] = '/source/application/views/admin';
-            $aExcludeDirPattern[] = '/source/application/views/azure/en';
-            $aExcludeDirPattern[] = '/source/application/views/azure/de';
+            $aExcludeDirPattern[] = '/source/application/views/' . $this->getThemeName() . '/en';
+            $aExcludeDirPattern[] = '/source/application/views/' . $this->getThemeName() . '/de';
         } else {
             $aExcludeDirPattern = $aExcludePaths;
         }

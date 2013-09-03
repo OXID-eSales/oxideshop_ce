@@ -19,7 +19,6 @@
  * @package   smarty_plugins
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**

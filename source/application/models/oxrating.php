@@ -19,7 +19,6 @@
  * @package   core
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -150,6 +149,26 @@ class oxRating extends oxBase
         $iCount = $oDb->getOne( $sSelect, false, false );
 
         return $iCount;
+    }
+
+    /**
+     * Retuns review object type
+     *
+     * @return string
+     */
+    public function getObjectType()
+    {
+        return $this->oxratings__oxtype->value;
+    }
+
+    /**
+     * Retuns review object id
+     *
+     * @return string
+     */
+    public function getObjectId()
+    {
+        return $this->oxratings__oxobjectid->value;
     }
 
 }

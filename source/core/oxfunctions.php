@@ -19,7 +19,6 @@
  * @package   core
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -549,6 +548,9 @@ if ( !function_exists( 'getViewName' ) ) {
     function getViewName( $sTable, $iLangId = null, $sShopId = null )
     {
         $myConfig = oxRegistry::getConfig();
+
+        //This config option should only be used in emergency case.
+        //Originally it was planned for the case when admin area is not reached due to the broken views.
         if ( !$myConfig->getConfigParam( 'blSkipViewUsage' ) ) {
             $sViewSfx = '';
 

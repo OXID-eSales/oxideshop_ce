@@ -1,3 +1,6 @@
+[{if $oView->showBetaNote()}]
+    [{oxid_include_widget cl="oxwBetaNote" noscript=1 nocookie=1}]
+[{/if}]
 [{if $oViewConf->getTopActionClassName() != 'clearcookies' && $oViewConf->getTopActionClassName() != 'mallstart'}]
     [{oxid_include_widget cl="oxwCookieNote" _parent=$oView->getClassName() nocookie=1}]
 [{/if}]

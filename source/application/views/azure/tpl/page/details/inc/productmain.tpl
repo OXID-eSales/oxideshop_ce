@@ -12,15 +12,28 @@
             [{assign var="_sSelectionHashCollection" value=$_sSelectionHashCollection|cat:"'`$_sSelectionHash`'"}]
         [{/if}]
     [{/foreach}]
-    [{oxscript add="var oxVariantSelections  = [`$_sSelectionHashCollection`];"}]
-[{/if}]
+    [{oxscript add="oxVariantSelections  = [`$_sSelectionHashCollection`];"}]
 
+    <form class="js-oxWidgetReload" action="[{$oView->getWidgetLink()}]" method="get">
+    <div>
+            [{$oViewConf->getHiddenSid()}]
+            [{$oViewConf->getNavFormParams()}]
+        <input type="hidden" name="cl" value="[{$oView->getClassName()}]">
+        <input type="hidden" name="oxwparent" value="[{$oViewConf->getTopActiveClassName()}]">
+        <input type="hidden" name="listtype" value="[{$oView->getListType()}]">
+        <input type="hidden" name="nocookie" value="1">
+        <input type="hidden" name="cnid" value="[{$oView->getCategoryId()}]">
+        <input type="hidden" name="anid" value="[{if !$oDetailsProduct->oxarticles__oxparentid->value}][{$oDetailsProduct->oxarticles__oxid->value}][{else}][{$oDetailsProduct->oxarticles__oxparentid->value}][{/if}]">
+        <input type="hidden" name="actcontrol" value="[{$oViewConf->getTopActiveClassName()}]">
+         </div>
+    </form>
+[{/if}]
 [{oxhasrights ident="TOBASKET"}]
     <form class="js-oxProductForm" action="[{$oViewConf->getSelfActionLink()}]" method="post">
         <div>
             [{$oViewConf->getHiddenSid()}]
             [{$oViewConf->getNavFormParams()}]
-            <input type="hidden" name="cl" value="[{$oViewConf->getActiveClassName()}]">
+            <input type="hidden" name="cl" value="[{$oViewConf->getTopActiveClassName()}]">
             <input type="hidden" name="aid" value="[{$oDetailsProduct->oxarticles__oxid->value}]">
             <input type="hidden" name="anid" value="[{$oDetailsProduct->oxarticles__oxnid->value}]">
             <input type="hidden" name="parentid" value="[{if !$oDetailsProduct->oxarticles__oxparentid->value}][{$oDetailsProduct->oxarticles__oxid->value}][{else}][{$oDetailsProduct->oxarticles__oxparentid->value}][{/if}]">
@@ -85,21 +98,21 @@
                                     [{if $oxcmp_user }]
                                         <a id="recommList" rel="nofollow" href="[{ oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=recommadd" params="aid=`$oDetailsProduct->oxarticles__oxnid->value`&amp;anid=`$oDetailsProduct->oxarticles__oxnid->value`"|cat:$oViewConf->getNavUrlParams() }]">[{ oxmultilang ident="ADD_TO_LISTMANIA_LIST" }]</a>
                                     [{ else}]
-                                        <a id="loginToRecommlist" rel="nofollow" href="[{ oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=account" params="anid=`$oDetailsProduct->oxarticles__oxnid->value`"|cat:"&amp;sourcecl="|cat:$oViewConf->getActiveClassName()|cat:$oViewConf->getNavUrlParams() }]">[{ oxmultilang ident="LOGIN_TO_ACCESS_LISTMANIA" }]</a>
+                                        <a id="loginToRecommlist" rel="nofollow" href="[{ oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=account" params="anid=`$oDetailsProduct->oxarticles__oxnid->value`"|cat:"&amp;sourcecl="|cat:$oViewConf->getTopActiveClassName()|cat:$oViewConf->getNavUrlParams() }]">[{ oxmultilang ident="LOGIN_TO_ACCESS_LISTMANIA" }]</a>
                                     [{/if}]
                                 </span>
                             </li>
                         [{ /if}]
                         [{if $oxcmp_user }]
-                            <li><span><a id="linkToNoticeList" href="[{ oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl="|cat:$oViewConf->getActiveClassName() params="aid=`$oDetailsProduct->oxarticles__oxnid->value`&amp;anid=`$oDetailsProduct->oxarticles__oxnid->value`&amp;fnc=tonoticelist&amp;am=1"|cat:$oViewConf->getNavUrlParams() }]" rel="nofollow">[{ oxmultilang ident="ADD_TO_WISH_LIST" }]</a></span></li>
+                            <li><span><a id="linkToNoticeList" href="[{ oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl="|cat:$oViewConf->getTopActiveClassName() params="aid=`$oDetailsProduct->oxarticles__oxnid->value`&amp;anid=`$oDetailsProduct->oxarticles__oxnid->value`&amp;fnc=tonoticelist&amp;am=1"|cat:$oViewConf->getNavUrlParams() }]" rel="nofollow">[{ oxmultilang ident="ADD_TO_WISH_LIST" }]</a></span></li>
                         [{else}]
-                            <li><span><a id="loginToNotice" href="[{ oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=account" params="anid=`$oDetailsProduct->oxarticles__oxnid->value`"|cat:"&amp;sourcecl="|cat:$oViewConf->getActiveClassName()|cat:$oViewConf->getNavUrlParams() }]" rel="nofollow">[{ oxmultilang ident="LOGIN_TO_ACCESS_WISH_LIST" }]</a></span></li>
+                            <li><span><a id="loginToNotice" href="[{ oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=account" params="anid=`$oDetailsProduct->oxarticles__oxnid->value`"|cat:"&amp;sourcecl="|cat:$oViewConf->getTopActiveClassName()|cat:$oViewConf->getNavUrlParams() }]" rel="nofollow">[{ oxmultilang ident="LOGIN_TO_ACCESS_WISH_LIST" }]</a></span></li>
                         [{/if}]
                         [{if $oViewConf->getShowWishlist()}]
                             [{if $oxcmp_user }]
-                                <li><span><a id="linkToWishList" href="[{ oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl="|cat:$oViewConf->getActiveClassName() params="aid=`$oDetailsProduct->oxarticles__oxnid->value`&anid=`$oDetailsProduct->oxarticles__oxnid->value`&amp;fnc=towishlist&amp;am=1"|cat:$oViewConf->getNavUrlParams() }]" rel="nofollow">[{ oxmultilang ident="ADD_TO_GIFT_REGISTRY" }]</a></span></li>
+                                <li><span><a id="linkToWishList" href="[{ oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl="|cat:$oViewConf->getTopActiveClassName() params="aid=`$oDetailsProduct->oxarticles__oxnid->value`&anid=`$oDetailsProduct->oxarticles__oxnid->value`&amp;fnc=towishlist&amp;am=1"|cat:$oViewConf->getNavUrlParams() }]" rel="nofollow">[{ oxmultilang ident="ADD_TO_GIFT_REGISTRY" }]</a></span></li>
                             [{else}]
-                                <li><span><a id="loginToWish" href="[{ oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=account" params="anid=`$oDetailsProduct->oxarticles__oxnid->value`"|cat:"&amp;sourcecl="|cat:$oViewConf->getActiveClassName()|cat:$oViewConf->getNavUrlParams() }]" rel="nofollow">[{ oxmultilang ident="LOGIN_TO_ACCESS_GIFT_REGISTRY" }]</a></span></li>
+                                <li><span><a id="loginToWish" href="[{ oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=account" params="anid=`$oDetailsProduct->oxarticles__oxnid->value`"|cat:"&amp;sourcecl="|cat:$oViewConf->getTopActiveClassName()|cat:$oViewConf->getNavUrlParams() }]" rel="nofollow">[{ oxmultilang ident="LOGIN_TO_ACCESS_GIFT_REGISTRY" }]</a></span></li>
                             [{/if}]
                         [{/if}]
 
@@ -121,10 +134,13 @@
             [{/block}]
 
             [{* ratings *}]
-            [{ if $oView->ratingIsActive()}]
+            [{if $oView->ratingIsActive()}]
             [{block name="details_productmain_ratings"}]
                 <div class="rating clear">
-                    [{include file="widget/reviews/rating.tpl" itemid="anid=`$oDetailsProduct->oxarticles__oxnid->value`" sRateUrl=$oDetailsProduct->getLink() }]
+                    [{if $oxcmp_user}]
+                        [{assign var="force_sid" value=$oViewConf->getSessionId()}]
+                    [{/if}]
+                    [{oxid_include_widget cl="oxwRating" blCanRate=$oView->canRate() _parent=$oViewConf->getTopActiveClassName() nocookie=1 force_sid=$force_sid sRateUrl=$oDetailsProduct->getLink() dRatingCount=$oView->getRatingCount() dRatingValue=$oView->getRatingValue() anid=$oDetailsProduct->oxarticles__oxnid->value}]
                 </div>
             [{/block}]
             [{/if}]
@@ -151,7 +167,7 @@
             [{if $aVariantSelections && $aVariantSelections.selections }]
                 [{oxscript include="js/widgets/oxajax.js" priority=10 }]
                 [{oxscript include="js/widgets/oxarticlevariant.js" priority=10 }]
-                [{oxscript add="$( '#variants' ).oxArticleVariant();"}]
+                [{oxscript add="$( '#variants' ).oxArticleVariant(); "}]
                 [{assign var="blCanBuy" value=$aVariantSelections.blPerfectFit}]
                 <div id="variants" class="selectorsBox js-fnSubmit clear">
                     [{assign var="blHasActiveSelections" value=false}]
@@ -187,7 +203,7 @@
                     [{/if}]
                 [{/if}]
                     [{if !$blCanBuy }]
-                        <div class="variantMessage">[{oxmultilang ident="CHOOSE_VARIANT"}]</div>
+                        <div class="variantMessage">[{oxmultilang ident="DETAILS_CHOOSEVARIANT"}]</div>
                     [{/if}]
 
             [{/if}]
@@ -222,7 +238,7 @@
                 [{oxhasrights ident="SHOWARTICLEPRICE"}]
                     [{if $oDetailsProduct->getTPrice()}]
                         <p class="oldPrice">
-                            <strong>[{oxmultilang ident="REDUCED_FROM"}] <del>[{$oDetailsProduct->getFTPrice()}] [{$currency->sign}]</del></strong>
+                            <strong>[{oxmultilang ident="REDUCED_FROM_2"}] <del>[{$oDetailsProduct->getFTPrice()}] [{$currency->sign}]</del></strong>
                         </p>
                     [{/if}]
                 [{/oxhasrights}]

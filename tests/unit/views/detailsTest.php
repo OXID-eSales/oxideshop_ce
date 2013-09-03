@@ -19,7 +19,6 @@
  * @package   tests
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -110,6 +109,40 @@ class Unit_Views_detailsTest extends OxidTestCase
     }
 
     /**
+     * Returns variants and expected results
+     *
+     * @return array
+     */
+    public function variantProvider()
+    {
+        return array(
+            array( null, null, array() ),
+            array( array( 'abc' ), null, array( 'varselid[0]' => 'abc' ) ),
+            array( null, array( 'abc' ), array( 'sel[0]' => 'abc' ) ),
+            array( array( 'abc', 'cbe', 'ghf' ), null, array( 'varselid[0]' => 'abc', 'varselid[1]' => 'cbe', 'varselid[2]' => 'ghf' ) ),
+            array( null, array( 'abc', 'cbe', 'ghf' ), array( 'sel[0]' => 'abc', 'sel[1]' => 'cbe', 'sel[2]' => 'ghf' ) ),
+            array( array( 'abc', 'cbe', 'ghf' ), array( 'efg', 'hjk', 'lmn' ), array( 'varselid[0]' => 'abc', 'varselid[1]' => 'cbe', 'varselid[2]' => 'ghf', 'sel[0]' => 'efg', 'sel[1]' => 'hjk', 'sel[2]' => 'lmn' ) ),
+        );
+    }
+
+    /**
+     * Test getNavigationParams when passing various variants.
+     *
+     * @dataProvider variantProvider
+     */
+    public function testGetNavigationParams( $aVariants, $aSelectionVariants, $aExpected )
+    {
+        $this->getConfig()->setParameter( 'varselid', $aVariants );
+        $this->getConfig()->setParameter( 'sel', $aSelectionVariants );
+
+        $oDetails = new Details();
+        $oDetails->setParent( new oxUBase() );
+
+        $aExpected = array_merge( $aExpected, $oDetails->getParent()->getNavigationParams() );
+        $this->assertEquals( $aExpected, $oDetails->getNavigationParams() );
+    }
+
+    /**
      * Test get additionall url parameters.
      *
      * @return null
@@ -160,56 +193,6 @@ class Unit_Views_detailsTest extends OxidTestCase
 
         $this->setRequestParam( 'searchtag', 'sometag' );
         $this->assertEquals( 'sometag', $oDetails->getTag() );
-    }
-
-    /**
-     * Test load variant information.
-     *
-     * @return null
-     */
-    public function testLoadVariantInformation()
-    {
-        $this->setConfigParam( 'blVariantParentBuyable', true );
-
-        $this->getProxyClass( 'oxarticle' );
-        $oProductParent = $this->getMock( 'oxarticlePROXY', array( 'getSelectLists', 'getId' ) );
-        $oProductParent->expects( $this->once() )->method( 'getSelectLists');
-        $oProductParent->expects( $this->atLeastOnce() )->method( 'getId')->will( $this->returnValue( '123' ) );
-        $oProductParent->oxarticles__oxvarcount = new oxField( 10 );
-
-        $oProduct = $this->getMock( 'oxarticle', array( 'getParentArticle', 'getVariants', 'getId' ) );
-        $oProduct->expects( $this->never() )->method( 'getVariants');
-        $oProduct->expects( $this->atLeastOnce() )->method( 'getId')->will( $this->returnValue( 'testArtId' ) );
-        $oProduct->oxarticles__oxvarcount = new oxField( 10 );
-
-        $oVar1 = new oxarticle();
-        $oVar1->setId( 'var1' );
-
-        $oVar2 = new oxarticle();
-        $oVar2->setId( 'var2' );
-
-        $oVar3 = new oxarticle();
-        $oVar3->setId( 'var3' );
-
-        $oVar4 = new oxarticle();
-        $oVar4->setId( 'var4' );
-
-        $oVarList = new oxlist();
-        $oVarList->offsetSet( $oProduct->getId(), $oProduct );
-        $oVarList->offsetSet( $oVar1->getId(), $oVar1 );
-        $oVarList->offsetSet( $oVar2->getId(), $oVar2 );
-        $oVarList->offsetSet( $oVar3->getId(), $oVar3 );
-        $oVarList->offsetSet( $oVar4->getId(), $oVar4 );
-
-        $oProductParent->setNonPublicVar( '_aVariantsWithNotOrderables', array( "full" => $oVarList ) );
-        $oProductParent->setNonPublicVar( '_blNotBuyableParent', true );
-
-        $oProduct->expects( $this->any() )->method( 'getParentArticle')->will( $this->returnValue( $oProductParent ) );
-
-        $oDetailsView = $this->getMock( 'details', array( 'getProduct', 'getLinkType' ) );
-        $oDetailsView->expects( $this->once() )->method( 'getProduct')->will( $this->returnValue( $oProduct ) );
-        $oDetailsView->expects( $this->exactly( 6 ) )->method( 'getLinkType');
-        $oDetailsView->loadVariantInformation();
     }
 
     /**
@@ -593,181 +576,6 @@ class Unit_Views_detailsTest extends OxidTestCase
     }
 
     /**
-     * Test get variant list.
-     *
-     * @return null
-     */
-    public function testGetVariantList()
-    {
-        $this->setRequestParam( 'anid', '2077' );
-
-        $oDetails = $this->getProxyClass( 'details' );
-        $this->assertEquals( 3, $oDetails->getVariantList()->count() );
-    }
-
-    /**
-     * Test get variant list.
-     *
-     * @return null
-     */
-    public function testGetVariantListExceptCurrent()
-    {
-        $oProd = new oxBase();
-        $oProd->setId('asdasd');
-
-        $oKeep1 = new stdClass();
-        $oKeep1->asd = 'asd';
-
-        $oKeep2 = new stdClass();
-        $oKeep2->asdd = 'asasdd';
-
-        $oList = new oxlist();
-        $oList->assign(array('asdasd' => $oKeep1, 'asd' => $oKeep2));
-
-        $oDetails = $this->getMock('details', array('getVariantList', 'getProduct'));
-        $oDetails->expects($this->once())->method('getVariantList')->will($this->returnValue($oList));
-        $oDetails->expects($this->once())->method('getProduct')->will($this->returnValue($oProd));
-
-        $aRet = $oDetails->getVariantListExceptCurrent();
-
-        $this->assertEquals(1, count($aRet));
-
-        $oExpect = new oxlist();
-        $oExpect->assign(array('asd' => $oKeep2));
-        $this->assertEquals($oExpect->getArray(), $aRet->getArray());
-
-        // do not reload nor clone articles
-        $this->assertSame($oKeep2, $aRet['asd']);
-
-        // original unchanged
-        $this->assertEquals(2, count($oList));
-    }
-
-    /**
-     * Test get media files.
-     *
-     * @return null
-     */
-    public function testGetMediaFiles()
-    {
-        $sQ = "insert into oxmediaurls (oxid, oxobjectid, oxurl, oxdesc) values ('_test2', '2000', 'http://www.youtube.com/watch?v=ZN239G6aJZo', 'test2')";
-        oxDb::getDb()->execute($sQ);
-
-        $oArt = new oxArticle();
-        $oArt->load('2000');
-        $oDetails = $this->getProxyClass( 'details' );
-        $oDetails->setNonPublicVar( "_oProduct", $oArt );
-        $oMediaUrls = $oDetails->getMediaFiles();
-
-        $this->assertEquals(1, count($oMediaUrls));
-        $this->assertTrue(isset($oMediaUrls['_test2']));
-        $this->assertEquals('test2', $oMediaUrls['_test2']->oxmediaurls__oxdesc->value);
-    }
-
-    /**
-     * Test get last seen product list.
-     *
-     * @return null
-     */
-    public function testGetLastProducts()
-    {
-        $this->setSessionParam('aHistoryArticles', array('1771'));
-
-        $this->setRequestParam( 'anid', '1771' );
-        $oDetails = new details();
-        $oDetails->init();
-        $oDetails->render();
-        $oDetails->getLastProducts();
-
-        $this->setRequestParam( 'anid', '2000' );
-        $oDetails = new details();
-        $oDetails->init();
-
-        $this->assertEquals('1771', $oDetails->getLastProducts()->current()->getId());
-    }
-
-    /**
-     * Test get vendor.
-     *
-     * @return null
-     */
-    public function testGetVendor()
-    {
-        $sVendId = '68342e2955d7401e6.18967838';
-
-        $oArticle = $this->getMock( 'oxarticle', array( 'getVendorId' ) );
-        $oArticle->expects( $this->any() )->method( 'getVendorId')->will( $this->returnValue( false ) );
-
-        $oDetails = $this->getMock( 'details', array( 'getProduct' ) );
-        $oDetails->expects( $this->once() )->method( 'getProduct')->will( $this->returnValue( $oArticle ) );
-
-        $oExpVendor = new oxvendor();
-        $oExpVendor->load($sVendId);
-        $oVendor = $oDetails->getVendor();
-        $this->assertEquals( $oExpVendor->oxvendors__oxtitle->value, $oVendor->oxvendors__oxtitle->value );
-    }
-
-    /**
-     * Test get manufacturer.
-     *
-     * @return null
-     */
-    public function testGetManufacturer()
-    {
-        $sManId = '68342e2955d7401e6.18967838';
-        $oArticle = $this->getMock( 'oxarticle', array( 'getManufacturerId' ) );
-        $oArticle->expects( $this->any() )->method( 'getManufacturerId')->will( $this->returnValue( false ) );
-
-        $oDetails = $this->getMock( 'details', array( 'getProduct' ) );
-        $oDetails->expects( $this->any() )->method( 'getProduct')->will( $this->returnValue( $oArticle ) );
-
-        $oExpVendor = new oxvendor();
-        $oExpVendor->load($sManId);
-
-        $oVendor = $oDetails->getManufacturer();
-        $this->assertEquals( $oExpVendor->oxvendors__oxtitle->value, $oVendor->oxvendors__oxtitle->value );
-    }
-
-    /**
-     * Test get category.
-     *
-     * @return null
-     */
-    public function testGetCategory()
-    {
-        $oArticle = new oxarticle();
-        $oArticle->load( '1126' );
-        $oDetails = $this->getProxyClass( 'details' );
-        $oDetails->setNonPublicVar( "_oProduct", $oArticle );
-        $oCategory = $oDetails->getCategory();
-
-            $sCatId = "8a142c3e49b5a80c1.23676990";
-
-        $this->assertNotNull( $oCategory );
-        $this->assertEquals( $sCatId, $oCategory->getId() );
-    }
-
-    /**
-     * Test get attributes.
-     *
-     * @return null
-     */
-    public function testGetAttributes()
-    {
-        $oArticle = new oxarticle();
-        $oArticle->load('1672');
-        $oDetails = $this->getProxyClass( 'details' );
-        $oDetails->setNonPublicVar( "_oProduct", $oArticle );
-        $sSelect = "select oxattrid from oxobject2attribute where oxobjectid = '$sArtID'";
-        $sID = oxDb::getDB()->getOne($sSelect);
-        $sSelect = "select oxvalue from oxobject2attribute where oxattrid = '$sID' and oxobjectid = '$sArtID'";
-        $sExpectedValue = oxDb::getDB()->getOne($sSelect);
-        $aAttrList = $oDetails->getAttributes();
-        $sAttribValue = $aAttrList[$sID]->oxobject2attribute__oxvalue->value;
-        $this->assertEquals( $sExpectedValue, $sAttribValue);
-    }
-
-    /**
      * Test draw parent url.
      *
      * @return null
@@ -794,7 +602,7 @@ class Unit_Views_detailsTest extends OxidTestCase
         $oProduct->load( '2000' );
         $oProduct->oxarticles__oxparentid = new oxField( 'parent' );
 
-        $oDetails = $this->getMock( 'details', array( '_getParentProduct', 'getProduct', 'getVariantList' ) );
+        $oDetails = $this->getMock( 'details', array( '_getParentProduct', 'getProduct' ) );
         $oDetails->expects( $this->any() )->method( 'getProduct')->will( $this->returnValue( $oProduct ) );
         $oDetails->expects( $this->any() )->method( '_getParentProduct')->will( $this->returnValue( $oProduct ) );
 
@@ -812,7 +620,7 @@ class Unit_Views_detailsTest extends OxidTestCase
         $oProduct->load( '2000' );
         $oProduct->oxarticles__oxparentid = new oxField( 'parent' );
 
-        $oDetails = $this->getMock( 'details', array( '_getParentProduct', 'getProduct', 'getVariantList' ) );
+        $oDetails = $this->getMock( 'details', array( '_getParentProduct', 'getProduct' ) );
         $oDetails->expects( $this->any() )->method( 'getProduct')->will( $this->returnValue( $oProduct ) );
         $oDetails->expects( $this->any() )->method( '_getParentProduct')->will( $this->returnValue( $oProduct ) );
 
@@ -866,21 +674,6 @@ class Unit_Views_detailsTest extends OxidTestCase
         $this->assertEquals('aaa', $oDetails->getActPicture());
     }
 
-
-    /**
-     * Test get more pictures.
-     *
-     * @return null
-     */
-    public function testMorePics()
-    {
-        $aPicGallery = array('MorePics'=>true);
-        $oDetails = $this->getProxyClass( 'details' );
-        $oDetails->setNonPublicVar( "_aPicGallery", $aPicGallery );
-        $this->assertTrue($oDetails->morePics());
-    }
-
-
     /**
      * Test get pictures.
      *
@@ -894,20 +687,6 @@ class Unit_Views_detailsTest extends OxidTestCase
         $this->assertEquals('aaa', $oDetails->getPictures());
     }
 
-
-    /**
-     * Test get icons.
-     *
-     * @return null
-     */
-    public function testGetIcons()
-    {
-        $aPicGallery = array('Icons'=>'aaa');
-        $oDetails = $this->getProxyClass( 'details' );
-        $oDetails->setNonPublicVar( "_aPicGallery", $aPicGallery );
-        $this->assertEquals('aaa', $oDetails->getIcons());
-    }
-
     /**
      * Test show zoom pictures.
      *
@@ -919,30 +698,6 @@ class Unit_Views_detailsTest extends OxidTestCase
         $oDetails = $this->getProxyClass( 'details' );
         $oDetails->setNonPublicVar( "_aPicGallery", $aPicGallery );
         $this->assertTrue($oDetails->showZoomPics());
-    }
-
-    /**
-     * Test get zoom pictures.
-     *
-     * @return null
-     */
-    public function testGetZoomPics()
-    {
-        $aPicGallery = array('ZoomPics'=>'aaa');
-        $oDetails = $this->getProxyClass( 'details' );
-        $oDetails->setNonPublicVar( "_aPicGallery", $aPicGallery );
-        $this->assertEquals('aaa', $oDetails->getZoomPics());
-    }
-
-    /**
-     * Test get active zoom picture.
-     *
-     * @return null
-     */
-    public function testGetActZoomPic()
-    {
-        $oDetails = $this->getProxyClass( 'details' );
-        $this->assertEquals(1, $oDetails->getActZoomPic());
     }
 
     /**
@@ -1423,66 +1178,6 @@ class Unit_Views_detailsTest extends OxidTestCase
     }
 
     /**
-     * Test is multidimensionall variants enabled.
-     *
-     * @return null
-     */
-    public function testIsMdVariantView()
-    {
-        $this->setConfigParam( 'blUseMultidimensionVariants', true );
-        $oMdVariant = $this->getMock( 'oxMdVariant', array( 'getMaxDepth' ) );
-        $oMdVariant->expects( $this->any() )->method( 'getMaxDepth')->will( $this->returnValue( 2 ) );
-        $oProduct = $this->getMock( 'oxarticle', array( 'getMdVariants' ) );
-        $oProduct->expects( $this->any() )->method( 'getMdVariants')->will( $this->returnValue( $oMdVariant ) );
-        $oDetails = $this->getMock( 'details', array( 'getProduct' ) );
-        $oDetails->expects( $this->any() )->method( 'getProduct')->will( $this->returnValue( $oProduct ) );
-
-        $this->assertTrue( $oDetails->isMdVariantView() );
-    }
-
-    /**
-     * Test is multidimensionall variants disabled.
-     *
-     * @return null
-     */
-    public function testIsMdVariantViewNotActive()
-    {
-        $this->setConfigParam( 'blUseMultidimensionVariants', false );
-        $oDetails = $this->getProxyClass( 'details' );
-        $this->assertFalse( $oDetails->isMdVariantView() );
-    }
-
-    /**
-     * Test is persistent parameter.
-     *
-     * @return null
-     */
-    public function testIsPersParam()
-    {
-        $oArt = new oxArticle();
-        $oArt->oxarticles__oxisconfigurable = new oxField(true);
-        $oSubj = $this->getProxyClass("details");
-        $oSubj->setNonPublicVar("_oProduct", $oArt);
-        $oSubj->setNonPublicVar("_blIsInitialized", true);
-        $this->assertTrue($oSubj->isPersParam());
-    }
-
-    /**
-     * Test is persistent parameter navigative.
-     *
-     * @return null
-     */
-    public function testIsPersParamNegative()
-    {
-        $oArt = new oxArticle();
-        $oArt->oxarticles__oxisconfigurable = new oxField(false);
-        $oSubj = $this->getProxyClass("details");
-        $oSubj->setNonPublicVar("_oProduct", $oArt);
-        $oSubj->setNonPublicVar("_blIsInitialized", true);
-        $this->assertFalse($oSubj->isPersParam());
-    }
-
-    /**
      * Test oxViewConfig::getShowListmania() affection
      *
      * @return null
@@ -1809,56 +1504,6 @@ class Unit_Views_detailsTest extends OxidTestCase
         $this->assertSame( true, $oView->getNonPublicVar( '_blEditTags' ) );
     }
 
-
-    public function testIsEditableTags()
-    {
-        $oView = $this->getMock( $this->getProxyClassName( 'Details' ), array( 'getProduct', 'getUser' ) );
-        $oView->expects( $this->once() )->method( 'getProduct' )->will( $this->returnValue( true ) );
-        $oView->expects( $this->once() )->method( 'getUser' )->will( $this->returnValue( true ) );
-
-        $this->assertTrue( $oView->isEditableTags() );
-        $this->assertTrue( $oView->getNonPublicVar( '_blCanEditTags' ) );
-    }
-
-    public function testGetTagSeparator()
-    {
-        $oConfig = $this->getMock( 'oxConfig', array( 'getConfigParam' ) );
-        $oConfig->expects( $this->once() )->method( 'getConfigParam' )->with( $this->equalTo( 'sTagSeparator' ) )->will( $this->returnValue( 'test_separator' ) );
-
-        $oView = $this->getMock( 'Details', array( 'getConfig' ) );
-        $oView->expects( $this->once() )->method( 'getConfig' )->will( $this->returnValue( $oConfig ) );
-
-        $this->assertSame( 'test_separator', $oView->getTagSeparator() );
-    }
-
-    public function testGetRatingValue_active()
-    {
-        $oConfig = $this->getMock( 'oxConfig', array( 'getConfigParam' ) );
-        $oConfig->expects( $this->once() )->method( 'getConfigParam' )->with( $this->equalTo( 'blShowVariantReviews' ) )->will( $this->returnValue( true ) );
-
-        $oProduct = $this->getMock( 'oxArticle', array( 'getArticleRatingAverage' ) );
-        $oProduct->expects( $this->once() )->method( 'getArticleRatingAverage' )->will( $this->returnValue( 123.855 ) );
-
-        $oView = $this->getMock( $this->getProxyClassName( 'Details' ), array( 'getConfig', 'isReviewActive', 'getProduct' ) );
-        $oView->expects( $this->once() )->method( 'getConfig' )->will( $this->returnValue( $oConfig ) );
-        $oView->expects( $this->once() )->method( 'isReviewActive' )->will( $this->returnValue( true ) );
-        $oView->expects( $this->once() )->method( 'getProduct' )->will( $this->returnValue( $oProduct ) );
-
-        $this->assertSame( 123.9, $oView->getRatingValue() );
-        $this->assertSame( 123.9, $oView->getNonPublicVar( '_dRatingValue' ) );
-    }
-
-    public function testGetRatingValue_inactive()
-    {
-        $oView = $this->getMock( $this->getProxyClassName( 'Details' ), array( 'getConfig', 'isReviewActive', 'getProduct' ) );
-        $oView->expects( $this->never() )->method( 'getConfig' );
-        $oView->expects( $this->once() )->method( 'isReviewActive' )->will( $this->returnValue( false ) );
-        $oView->expects( $this->never() )->method( 'getProduct' );
-
-        $this->assertSame( 0.0, $oView->getRatingValue() );
-        $this->assertSame( 0.0, $oView->getNonPublicVar( '_dRatingValue' ) );
-    }
-
     public function testIsReviewActive()
     {
         $oConfig = $this->getMock( 'oxConfig', array( 'getConfigParam' ) );
@@ -1868,34 +1513,6 @@ class Unit_Views_detailsTest extends OxidTestCase
         $oView->expects( $this->once() )->method( 'getConfig' )->will( $this->returnValue( $oConfig ) );
 
         $this->assertSame( 'test_isactive', $oView->isReviewActive() );
-    }
-
-     public function testGetRatingCount_active()
-    {
-        $oConfig = $this->getMock( 'oxConfig', array( 'getConfigParam' ) );
-        $oConfig->expects( $this->once() )->method( 'getConfigParam' )->with( $this->equalTo( 'blShowVariantReviews' ) )->will( $this->returnValue( true ) );
-
-        $oProduct = $this->getMock( 'oxArticle', array( 'getArticleRatingCount' ) );
-        $oProduct->expects( $this->once() )->method( 'getArticleRatingCount' )->will( $this->returnValue( 123 ) );
-
-        $oView = $this->getMock( $this->getProxyClassName( 'Details' ), array( 'getConfig', 'isReviewActive', 'getProduct' ) );
-        $oView->expects( $this->once() )->method( 'getConfig' )->will( $this->returnValue( $oConfig ) );
-        $oView->expects( $this->once() )->method( 'isReviewActive' )->will( $this->returnValue( true ) );
-        $oView->expects( $this->once() )->method( 'getProduct' )->will( $this->returnValue( $oProduct ) );
-
-        $this->assertSame( 123, $oView->getRatingCount() );
-        $this->assertSame( 123, $oView->getNonPublicVar( '_iRatingCnt' ) );
-    }
-
-    public function testGetRatingCount_inactive()
-    {
-        $oView = $this->getMock( $this->getProxyClassName( 'Details' ), array( 'getConfig', 'isReviewActive', 'getProduct' ) );
-        //$oView->expects( $this->never() )->method( 'getConfig' );
-        $oView->expects( $this->once() )->method( 'isReviewActive' )->will( $this->returnValue( false ) );
-        $oView->expects( $this->never() )->method( 'getProduct' );
-
-        $this->assertSame( false, $oView->getRatingCount() );
-        $this->assertSame( false, $oView->getNonPublicVar( '_iRatingCnt' ) );
     }
 
     public function testAddme_invalidCaptcha()
@@ -2036,35 +1653,6 @@ class Unit_Views_detailsTest extends OxidTestCase
         $oView->expects( $this->once() )->method( 'getProduct' )->will( $this->returnValue( $oProduct ) );
 
         $this->assertSame( 'page/details/ajax/productmain.tpl', $oView->render() );
-    }
-
-    /**
-     * Test if ratings are activated.
-     *
-     * @return null
-     */
-    public function testRatingIsActive()
-    {
-        $this->setConfigParam( 'bl_perfLoadReviews', true );
-        $oDetails = $this->getProxyClass( 'details' );
-        $this->assertTrue( $oDetails->ratingIsActive() );
-    }
-
-    public function testCanRate()
-    {
-        $oArt = new oxarticle();
-        $oArt->load('2000');
-
-        $oUser = new oxUser();
-        $oUser->load( 'oxdefaultadmin' );
-
-        $this->setConfigParam( 'bl_perfLoadReviews', true );
-
-        $oDetails = $this->getMock( 'details', array( 'getProduct', 'getUser' ) );
-        $oDetails->expects( $this->any() )->method( 'getProduct')->will( $this->returnValue( $oArt ) );
-        $oDetails->expects( $this->any() )->method( 'getUser')->will( $this->returnValue( $oUser ) );
-
-        $this->assertTrue( $oDetails->canRate() );
     }
 
     /**

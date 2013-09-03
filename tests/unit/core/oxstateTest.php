@@ -30,7 +30,7 @@ class Unit_Core_oxstateTest extends OxidTestCase
     {
         $oSubj = new oxstate();
         $oSubj->load('1');
-        $this->assertEquals('Manitoba', $oSubj->oxstates__oxtitle->value);
+        $this->assertEquals('Alberta', $oSubj->oxstates__oxtitle->value);
     }
 
     /**
@@ -41,7 +41,7 @@ class Unit_Core_oxstateTest extends OxidTestCase
     public function testGetIdByCode()
     {
         $oSubj = new oxState();
-        $this->assertEquals( '1', $oSubj->getIdByCode( 'MB', '8f241f11095649d18.02676059' ) );
+        $this->assertEquals( '3', $oSubj->getIdByCode( 'MB', '8f241f11095649d18.02676059' ) );
     }
 
 }

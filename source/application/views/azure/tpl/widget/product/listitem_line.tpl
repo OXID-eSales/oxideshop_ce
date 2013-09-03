@@ -1,7 +1,17 @@
 [{block name="widget_product_listitem_line"}]
+    [{assign var="product"          value=$oView->getBoxProduct()      }]
+    [{assign var="owishid"          value=$oView->getWishId()          }]
+    [{assign var="removeFunction"   value=$oView->getRemoveFunction()  }]
+    [{assign var="recommid"         value=$oView->getRecommId()        }]
+    [{assign var="testid"           value=$oView->getTestId()          }]
+    [{assign var="showMainLink"     value=$oView->getShowMainLink()    }]
+    [{assign var="blDisableToCart"  value=$oView->getDisableToCart()   }]
+    [{assign var="toBasketFunction" value=$oView->getToBasketFunction()}]
+    [{assign var="altproduct"       value=$oView->getAltProduct()      }]
+
     [{oxscript include="js/widgets/oxlistremovebutton.js" priority=10 }]
     [{oxscript add="$('button.removeButton').oxListRemoveButton();"}]
-    [{assign var="currency" value=$oView->getActCurrency()}]
+
     [{if $showMainLink}]
         [{assign var='_productLink' value=$product->getMainLink()}]
     [{else}]
@@ -22,7 +32,7 @@
     [{/if}]
     [{ if $blShowToBasket}]
         [{oxhasrights ident="TOBASKET"}]
-            <input type="hidden" name="cl" value="[{ $oViewConf->getActiveClassName() }]">
+            <input type="hidden" name="cl" value="[{ $oViewConf->getTopActiveClassName() }]">
             [{if $owishid}]
                 <input type="hidden" name="owishid" value="[{$owishid}]">
             [{/if}]
@@ -98,7 +108,7 @@
                 [{oxhasrights ident="SHOWARTICLEPRICE"}]
                     [{if $product->getTPrice()}]
                         <span class="oldPrice">
-                            [{oxmultilang ident="REDUCED_FROM_2"}] <del>[{$product->getFTPrice()}] [{$currency->sign}]</del>
+                            [{oxmultilang ident="REDUCED_FROM_2"}] <del>[{$product->getFTPrice()}] [{$oView->getActCurrencySign()}]</del>
                         </span>
                     [{/if}]
                     [{block name="widget_product_listitem_line_price_value"}]
@@ -118,7 +128,7 @@
                                                     [{ $product->getFVarMinPrice() }]
                                                 [{/if}]
                                         [{/if}]
-                            </span> [{ $currency->sign}]
+                            </span> [{ $oView->getActCurrencySign()}]
                             [{if $oView->isVatIncluded() }]
                                 [{if !($product->hasMdVariants() || ($oViewConf->showSelectListsInList() && $product->getSelections(1)) || $product->getVariants())}]*[{/if}]
                             [{/if}]
@@ -132,7 +142,7 @@
 
                     [{if $product->getPricePerUnit()}]
                         <span id="productPricePerUnit_[{$testid}]" class="pricePerUnit">
-                            [{$product->oxarticles__oxunitquantity->value}] [{$product->getUnitName()}] | [{$product->getPricePerUnit()}] [{ $currency->sign}]/[{$product->getUnitName()}]
+                            [{$product->oxarticles__oxunitquantity->value}] [{$product->getUnitName()}] | [{$product->getPricePerUnit()}] [{ $oView->getActCurrencySign()}]/[{$product->getUnitName()}]
                         </span>
                     [{elseif $product->oxarticles__oxweight->value  }]
                         <span id="productPricePerUnit_[{$testid}]" class="pricePerUnit">
@@ -163,7 +173,7 @@
         <form action="[{ $oViewConf->getSelfActionLink() }]" method="post" id="remove_[{$removeFunction}][{$testid}]">
             <div>
                 [{ $oViewConf->getHiddenSid() }]
-                <input type="hidden" name="cl" value="[{ $oViewConf->getActiveClassName() }]">
+                <input type="hidden" name="cl" value="[{ $oViewConf->getTopActiveClassName() }]">
                 <input type="hidden" name="fnc" value="[{$removeFunction}]">
                 <input type="hidden" name="aid" value="[{$product->oxarticles__oxid->value}]">
                 <input type="hidden" name="am" value="0">
@@ -175,3 +185,4 @@
         </form>
     [{/if}]
 [{/block}]
+[{oxscript widget=$oView->getClassName()}]

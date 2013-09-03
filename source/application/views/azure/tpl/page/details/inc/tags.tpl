@@ -20,7 +20,7 @@
         <div>
           [{$oViewConf->getHiddenSid()}]
           [{$oViewConf->getNavFormParams()}]
-          <input type="hidden" name="cl" value="[{$oViewConf->getActiveClassName()}]">
+          <input type="hidden" name="cl" value="[{$oViewConf->getTopActiveClassName()}]">
           <input type="hidden" name="aid" value="[{$oDetailsProduct->oxarticles__oxid->value}]">
           <input type="hidden" name="anid" value="[{$oDetailsProduct->oxarticles__oxnid->value}]">
           <input type="hidden" name="fnc" value="editTags">

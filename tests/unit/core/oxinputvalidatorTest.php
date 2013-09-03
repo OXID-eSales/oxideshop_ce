@@ -19,7 +19,6 @@
  * @package   tests
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -217,6 +216,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
      */
     public function test4CharLsblz()
     {
+        $iErr = -4;
         $aDynvalue = array( 'lsbankname'   => 'Bank name',
                             'lsblz'        => '1234',
                             'lsktonr'      => '123456789',
@@ -224,8 +224,8 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
                           );
 
 
-        $oValidator = new oxinputvalidator();
-        $this->assertFalse( $oValidator->validatePaymentInputData( 'oxiddebitnote', $aDynvalue ) );
+        $oValidator = new oxInputValidator();
+        $this->assertEquals( $iErr, $oValidator->validatePaymentInputData( 'oxiddebitnote', $aDynvalue ) );
     }
 
     /**
@@ -289,6 +289,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
      */
     public function test9CharLsblz()
     {
+        $iErr = -4;
         $aDynvalue = array( 'lsbankname'   => 'Bank name',
                             'lsblz'        => '123456789',
                             'lsktonr'      => '123456789',
@@ -296,8 +297,8 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
                           );
 
 
-        $oValidator = new oxinputvalidator();
-        $this->assertFalse( $oValidator->validatePaymentInputData( 'oxiddebitnote', $aDynvalue ) );
+        $oValidator = new oxInputValidator();
+        $this->assertEquals( $iErr, $oValidator->validatePaymentInputData( 'oxiddebitnote', $aDynvalue ) );
     }
 
     /**

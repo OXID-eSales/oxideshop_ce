@@ -145,5 +145,18 @@ class Unit_Views_accountNoticelistTest extends OxidTestCase
         $this->assertEquals(2, count($oAccNoticeList->getBreadCrumb()));
     }
 
+    /**
+     * Testing Account_Noticelist::getNavigationParams()
+     */
+    public function testGetNavigationParams()
+    {
+        $oAccNoticeList = new Account_Noticelist();
+
+        $this->getConfig()->setParameter('anid', 'testId');
+
+        $aParams = $oAccNoticeList->getNavigationParams();
+
+        $this->assertEquals( 'testId', $aParams['anid'], "Should have correct anid navigation parameter" );
+    }
 
 }

@@ -689,7 +689,7 @@ $aLang = array(
 'DYN_TRUSTED_CREDIT_CARD'                                  => 'Credit Card / Debit Card',
 'DYN_TRUSTED_INVOICE'                                      => 'Invoice',
 'DYN_TRUSTED_CASH_ON_DELIVERY'                             => 'Cash on delivery',
-'DYN_TRUSTED_PREPAYMENT'                                   => 'Prepayment',
+'DYN_TRUSTED_PREPAYMENT'                                   => 'Cash in advance',
 'DYN_TRUSTED_CHEQUE'                                       => 'Cheque',
 'DYN_TRUSTED_PAYBOX'                                       => 'Paybox',
 'DYN_TRUSTED_PAYPAL'                                       => 'PayPal',
@@ -917,8 +917,8 @@ $aLang = array(
 'ORDER_OVERVIEW_VATID'                                     => 'VAT ID:',
 'ORDER_OVERVIEW_DELTYPE'                                   => 'Shipped with',
 'ORDER_OVERVIEW_LSBANKNAME'                                => 'Bank',
-'ORDER_OVERVIEW_LSBLZ'                                     => 'Bank code',
-'ORDER_OVERVIEW_LSKTONR'                                   => 'Account No.',
+'ORDER_OVERVIEW_LSBLZ'                                     => 'Bank code (or BIC)',
+'ORDER_OVERVIEW_LSKTONR'                                   => 'Account No. (or IBAN)',
 'ORDER_OVERVIEW_LSKTOINHABER'                              => 'Account Holder',
 'ORDER_OVERVIEW_INFOLDER'                                  => 'In Folder',
 'ORDER_OVERVIEW_INTSTATUS'                                 => 'Internal Status',
@@ -971,8 +971,8 @@ $aLang = array(
 'ORDER_OVERVIEW_PDF_GREETINGS'                             => 'Thank you for your order! Please order from us again and recommend us to other.',
 'ORDER_OVERVIEW_PDF_PHONE'                                 => 'phone : ',
 'ORDER_OVERVIEW_PDF_FAX'                                   => 'fax : ',
-'ORDER_OVERVIEW_PDF_ACCOUNTNR'                             => 'Account No. ',
-'ORDER_OVERVIEW_PDF_BANKCODE'                              => 'Routing No.: ',
+'ORDER_OVERVIEW_PDF_ACCOUNTNR'                             => 'Account No. (or IBAN) : ',
+'ORDER_OVERVIEW_PDF_BANKCODE'                              => 'Bank Code (or BIC) : ',
 'ORDER_OVERVIEW_PDF_SELPAYMENT'                            => 'Payment Method: ',
 'ORDER_OVERVIEW_PDF_DELIVNOTE'                             => 'Delivery note nr.',
 'ORDER_OVERVIEW_PDF_TSPROTECTION'                          => 'Trusted Shops buyer protection',
@@ -1242,6 +1242,8 @@ $aLang = array(
 'SHOP_CONFIG_STOCKOFFDEFAULTMESSAGE'                       => 'Use default "out-of-stock" Message',
 'SHOP_CONFIG_STOCKONDEFAULTMESSAGE'                        => 'Use default "in-stock" Message',
 'SHOP_CONFIG_STORECREDITCARDINFO'                          => 'Save Credit Card information',
+'SHOP_CONFIG_SHOWTSINTERNATIONALFEESMESSAGE'               => 'Display a message about possible international delivery fees',
+'SHOP_CONFIG_SHOWTSCODMESSAGE'                             => 'Display a message about possible "cash on delivery" payment method fees',
 'SHOP_CONFIG_TIMEFORMAT'                                   => 'Time Format in eShop Admin',
 'SHOP_CONFIG_USEGDVERSION'                                 => 'Installed GDLib Version',
 'SHOP_CONFIG_USESTOCK'                                     => 'Activate Stock Management',
@@ -2046,6 +2048,115 @@ $aLang = array(
 'TOTAL_PLUS_PROPORTIONAL_VAT'                              => "plus VAT (proportionally calculated)",
 
 'BUTTON_DOWNLOAD'                                          => 'Download',
+
+'oxdiag_menu'						                 => 'Diagnostics tool',
+'OXDIAG_LIST_MENUITEM'                               => 'Service',
+'OXDIAG_LIST_MENUSUBITEM'                            => 'Diagnostics tool',
+
+'OXDIAG_MAIN_TITLE'                                  => 'Diagnostics of your OXID eShop',
+'OXDIAG_VERSIONCHECKER'                              => 'Version checker',
+'OXDIAG_INTROINFORMATION'                            => 'This script is intended to check consistency of your OXID eShop. It collects names of php files and templates, detects their MD5 checksum, connects for each file to OXID\'s web service to determine if it fits this shop version.',
+'OXDIAG_INTROINFORMATION_NO_PERSONAL_INFO'           => 'It does neither collect nor transmit any license or personal information.',
+'OXDIAG_INTROINFORMATION_DATA_TRANSMITTED'           => 'Data to be transmitted to OXID is:',
+'OXDIAG_INTROINFORMATION_FILENAME_TO_BE_CHECKED'     => 'Filename to be checked',
+'OXDIAG_INTROINFORMATION_MD5_CHECKSUM'               => 'MD5 checksum',
+'OXDIAG_INTROINFORMATION_VERSION_DETECTED'           => 'Version which was detected',
+'OXDIAG_INTROINFORMATION_REVISION_DETECTED'          => 'Revision which was detected',
+'OXDIAG_INTROINFORMATION_MORE_INFORMATION'           => 'For more detailed information check out',
+'OXDIAG_INTROINFORMATION_OXID_ESALES_BLOG'           => 'OXID eSales\' Blog',
+'OXDIAG_INTROINFORMATION_CONTACT_US'                 => 'You can contact us using',
+'OXDIAG_INTROINFORMATION_ONLINE_CONTACT_FORM'        => 'Online Contact Form',
+
+'OXDIAG_FORM_LIST_ALL_FILES'                         => 'List all files (also those which were OK)',
+'OXDIAG_FORM_START_CHECK'                            => 'Start to check this eShop right now (may take some time)',
+
+'OXDIAG_RESULT_SUCCESSFUL'                           => 'Diagnostics check successful.',
+'OXDIAG_RESULT'                                      => 'Diagnostics check result',
+'OXDIAG_DOWNLOAD_FILE'                               => 'Click here to download the result file',
+'OXDIAG_ERRORMESSAGETEMPLATE'                        => 'These error(s) occured',
+'OXDIAG_VERSION'                                     => 'Version',
+'OXDIAG_EDITION'                                     => 'Edition',
+'OXDIAG_REVISION'                                    => 'Revision',
+'OXDIAG_SUMMARY'                                     => 'Summary',
+'OXDIAG_HINTS'                                       => 'Hints',
+'OXDIAG_OK'                                          => 'OK',
+'OXDIAG_MODIFIED'                                    => 'Modified',
+'OXDIAG_OBSOLETE'                                    => 'Obsolete',
+'OXDIAG_VERSION_MISMATCH'                            => 'Version mismatch',
+'OXDIAG_UNKNOWN'                                     => 'Unknown',
+'OXDIAG_NUMBER_OF_INVESTIGATED_FILES'                => 'Number of investigated files in total',
+'OXDIAG_SHOP_DOES_NOT_FIT'                           => 'This OXID eShop does not fit 100%',
+'OXDIAG_SHOP_ORIGINAL'                               => 'This OXID eShop was not modified and is fully original',
+
+'OXDIAG_ERRORMESSAGEWEBSERVICEISNOTREACHABLE'        => 'Web service is not available currently. Please try again later.',
+'OXDIAG_ERRORMESSAGEWEBSERVICERETURNEDNOXML'         => 'Web service returned not a XML.',
+'OXDIAG_ERRORMESSAGEVERSIONDOESNOTEXIST'             => 'OXID eShop %s %s in Revision %s does not exist.',
+'OXDIAG_ERRORVERSIONCOMPARE'                         => 'This text is not supposed to be here. Please try again.',
+'OXDIAG_MODIFIEDHINTS1'                              => 'OXID eShop has sophisticated possibility to extend it by modules without changing shipped files. It\'s not recommended and not needed to change shop files. See also our <a href="http://www.oxidforge.org/wiki/Tutorials#How_to_Extend_OXID_eShop_With_Modules_.28Part_1.29" target=_blank>tutorials</a>.',
+'OXDIAG_MODIFIEDHINTS2'                              => 'Since OXID eShop 4.2.0 it\'s possible to use <a href="http://www.oxidforge.org/wiki/Downloads/4.2.0#New_Features" target=_blank>your own templates without changing shipped ones</a>.',
+'OXDIAG_VERSIONMISMATCHHINTS'                        => 'Apparently one or more updates went wrong. See details link for more information about more details for each file. A left over file which is not any longer included in OXID eShop could also be a <u>possible</u> reason for version mismatch. Find information about update in our <a href="http://www.oxid-esales.com/en/support-services/documentation-and-help/oxid-eshop/installation/oxid-eshop-update-installation" target=_blank>Documentation and help</a>.',
+
+
+'OXDIAG_HOME'						=>	'OXID Diagnostics',
+'OXDIAG_ABOUT'						=>	'This Diagnostics tool collects technical information about your shop and server. This information might be useful before updating, installing modules or on diagnostics.',
+'OXDIAG_DOWNLOADLOG'				=>	'Download report',
+
+//initial form
+'OXDIAG_COLLECT_MODULES'			=>	'Fetch modules',
+'OXDIAG_COLLECT_HEALTH'				=>	'Poll system health status',
+'OXDIAG_COLLECT_PHP'				=>	'Poll PHP configuration (selected parameters)',
+'OXDIAG_COLLECT_SERVER'				=>	'Poll system information (if possible)',
+'OXDIAG_COLLECT_CHKVERS'			=>	'Run <i>Version checker</i>',
+'OXDIAG_COLLECT_CHKVERS_DURATION'	=>	'This can engross the execution time of the module or execution might fail.',
+'OXDIAG_COLL_CHKV_NOTINST'			=>	'<i>Version checker</i> is not installed on this system. You may <a href="http://exchange.oxid-esales.com/OXID-oxid-oxid/Additional-OXID-Extensions/OXDIAG-3-1-0-Stable-CE-4-0-x-4-7-x.html">download the file from OXID eXchange</a> and install it in the root directory of the shop.',
+'OXDIAG_COLL_CHKV_FILE_GET'			=>	'The function <i>file_get_contents</i> is not available, <i>Version checker</i> cannot be accessed.',
+'OXDIAG_STORE_ANALYSIS'				=>	'Store results',
+'OXDIAG_COLLECT_START'				=>	'Start analysis!',
+
+//index
+'OXDIAG_GOTO'						=>	'Go to',
+'OXDIAG_BASICS'						=>	'Basics',
+'OXDIAG_MODULES'					=>	'Modules',
+'OXDIAG_HEALTH'						=>	'System health',
+'OXDIAG_PHPINFO'					=>	'PHP information',
+'OXDIAG_SERVERINFO'					=>	'Server information',
+'OXDIAG_RESTART'					=>	'Start new analysis',
+
+'OXDIAG_DISCL'						=>	'The analysis below the line has been stored in a report file.',
+'OXDIAG_HEALTH_OK'                  =>    'OK',
+'OXDIAG_HEALTH_MIN'                 =>    'MIN',
+'OXDIAG_HEALTH_FAIL'                =>    'FAIL',
+
+//modules
+'OXDIAG_MODULES_STATE'				=>	'Status',
+'OXDIAG_MODULES_NAME'				=>	'Name',
+'OXDIAG_MODULES_ID'					=>	'ID',
+'OXDIAG_MODULES_VERSION'			=>	'Version',
+'OXDIAG_MODULES_VENDOR'				=>	'Vendor',
+
+//php
+'OXDIAG_PHPINFO_EXTENSIONS'			=>	'PHP extensions',
+'OXDIAG_PHPINFO_PARAM'				=>	'Parameter',
+'OXDIAG_PHPINFO_VALUE'				=>	'Value',
+'OXDIAG_PHPINFO_ZENDEX'				=>	'Zend extension',
+'OXDIAG_PHPINFO_OFF'                =>    'Off',
+
+//server
+'OXDIAG_SRVINF_NOTALL'				=>	'Cannot request all values, due to disabled <i>exec</i> command on server.',
+'OXDIAG_SRVINF_NOTE'                =>    'Note: This information is gathered for the current runtime frontend server. Should you have more than one frontend server running, you may access those directly in order to gather their information.',
+'OXDIAG_SERVERINFO_NOT_DETECTED'    =>    'not detected',
+'OXDIAG_SERVERINFO_COMPONENT'		=>	'Component',
+'OXDIAG_CHKVERSION'					=>	'Output of Version check',
+'OXDIAG_CHKVERS_FULLREP'			=>	'Run Version check for full report',
+
+//final note
+'OXDIAG_FINALNOTE'					=>	'End of analysis.',
+
+'OLC_ERROR_SERIAL_NOT_VALID'                               => 'License key check failed. Try again or contact support if this occurs permanently.',
+'OLC_ERROR_RESPONSE_NOT_VALID'                             => 'Service unavailable, try again later... If this persists, please check that your shop can make outgoing connections.',
+'OLC_ERROR_REQUEST_FAILED'                                 => 'Service unavailable, try again later... If this persists, please check that your shop can make outgoing connections.',
+'OLC_ERROR_RESPONSE_UNEXPECTED'                            => 'Service unavailable, try again later... If this persists, please check that your shop can make outgoing connections.',
+
 );
 
 /*

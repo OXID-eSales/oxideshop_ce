@@ -22,107 +22,134 @@
  */
 ( function ( $ ) {
 
-    oxArticleVariant = {
+    var oxArticleVariant = {
 
+        /**
+         * Initiating article variants selector
+         * @private
+         */
         _create: function() {
+            $("ul.vardrop a").click( variantSelectActionHandler );
+            $('div.variantReset a').click( variantResetActionHandler );
 
-            var self = this;
-            //var options = self.options;
-
-            /**
-             * Variant selection dropdown
-             */
-            $("ul.vardrop a").click(function() {
-
-                var obj = $( this );
-
-                // resetting
-                if ( obj.parents().hasClass("js-disabled") ) {
-                    self.resetVariantSelections();
-                } else {
-                    $( "form.js-oxProductForm input[name=anid]" ).attr( "value", $( "form.js-oxProductForm input[name=parentid]" ).attr( "value" ) );
-                }
-
-                // setting new selection
-                if ( obj.parents().hasClass("js-fnSubmit") ){
-                    obj.parent('li').parent('ul').siblings('input:hidden').attr( "value", obj.attr("data-selection-id") );
-
-                    var form = obj.closest("form");
-                    $('input[name=fnc]', form).val("");
-                    form.submit();
-                }
-                return false;
-            });
-
-            /**
-             * variant reset link
-             */
-            $('div.variantReset a').click( function () {
-                self.resetVariantSelections();
-                var obj = $( this );
-                var form = obj.closest("form");
-                $('input[name=fnc]', form).val("");
-                form.submit();
-                return false;
-            });
-
-            $("form.js-oxProductForm").submit(function () {
-                if (!$("input[name='fnc']", this).val()) {
-                    if (($( "input[name=aid]", this ).val() == $( "input[name=parentid]", this ).val() )) {
-                        var aSelectionInputs = $("input[name^=varselid]", this);
-                        if (aSelectionInputs.length) {
-                            var hash = '';
-                            aSelectionInputs.not("*[value='']").each(function(i){
-                                hash = hash+i+':'+$(this).val()+"|";
-                            });
-                            if ( jQuery.inArray( hash, oxVariantSelections ) === -1 ) {
-                                return self.reloadProductPartially( $("form.js-oxProductForm"), 'detailsMain', $("#detailsMain"), $("#detailsMain")[0]);
-                            }
-                        }
-                    }
-                    return self.reloadProductPartially($("form.js-oxProductForm"),'productInfo',$("#productinfo"),$("#productinfo")[0]);
-                }
-            });
-
+            $("form.js-oxWidgetReload").submit( formSubmit );
+            $("form.js-oxProductForm").submit( formSubmit );
         },
 
         /**
-         * Runs defined scripts inside the method, before ajax is called
+         * Reloads block
+         *
+         * @param activator
+         * @param highlightTargets
+         * @param contentTarget
+         * @param aOptions
+         * @returns {boolean}
          */
-        _preAjaxCaller : function()
-        {
-            $('#zoomModal').remove();
-        },
-
-        reloadProductPartially : function(activator, renderPart, highlightTargets, contentTarget) {
-
-            // calls some scripts before the ajax starts
-            this._preAjaxCaller();
-
+        reload: function(activator, highlightTargets, contentTarget, aOptions) {
+            preAjaxCaller();
             oxAjax.ajax(
-                activator,
-                {//targetEl, onSuccess, onError, additionalData
+                activator, {//targetEl, onSuccess, onError, additionalData
                     'targetEl'  : highlightTargets,
                     'iconPosEl' : $("#variants .dropDown"),
-                    'additionalData' : {'renderPartial' : renderPart},
+                    'additionalData' : aOptions,
                     'onSuccess' : function(r) {
-                        contentTarget.innerHTML = r['content'];
-                        oxAjax.evalScripts(contentTarget);
+                        $( contentTarget ).html( r );
+                        if ( typeof WidgetsHandler !== 'undefined') {
+                            WidgetsHandler.reloadWidget('oxwarticledetails');
+                        } else {
+                            oxAjax.evalScripts(contentTarget);
+                        }
                     }
                 }
             );
             return false;
         },
 
-        resetVariantSelections : function()
-        {
-            var aVarSelections = $( "form.js-oxProductForm input[name^=varselid]" );
-            for (var i = 0; i < aVarSelections.length; i++) {
-                $( aVarSelections[i] ).attr( "value", "" );
-            }
-            $( "form.js-oxProductForm input[name=anid]" ).attr( "value", $( "form.js-oxProductForm input[name=parentid]" ).attr( "value" ) );
+            /**
+         * Resets all variant selections
+             */
+        resetVariantSelections: function() {
+            resetVariantSelections();
         }
+    }
 
+    /**
+     * Handles variant selection action
+     * @returns {boolean}
+     */
+    function variantSelectActionHandler( e ) {
+                var obj = $( this );
+                // resetting
+                if ( obj.parents().hasClass("js-disabled") ) {
+            resetVariantSelections();
+                } else {
+                    $( "form.js-oxProductForm input[name=anid]" ).attr( "value", $( "form.js-oxProductForm input[name=parentid]" ).attr( "value" ) );
+                }
+
+                // setting new selection
+        if ( obj.parents('.js-fnSubmit').length > 0 ) {
+            $('input:hidden', obj.parents('div.dropDown')).val( obj.data("selection-id") );
+
+                    var form = $("form.js-oxWidgetReload");
+                    $('input[name=fnc]', form).val("");
+                    form.submit();
+                }
+        return false;
+    }
+
+            /**
+     * Handles variant reset action
+     * @returns {boolean}
+             */
+    function variantResetActionHandler( e ) {
+        resetVariantSelections();
+                var form = $("form.js-oxWidgetReload");
+                $('input[name=fnc]', form).val("");
+                form.submit();
+        return false;
+    }
+
+    /**
+     * Resets variant selections
+     */
+    function resetVariantSelections() {
+        var aVarSelections = $( "form.js-oxProductForm input[name^=varselid], form.js-oxWidgetReload input[name^=varselid]" );
+        for (var i = 0; i < aVarSelections.length; i++) {
+            $( aVarSelections[i] ).attr( "value", "" );
+        }
+        $( "form.js-oxProductForm input[name=anid]" ).attr( "value", $( "form.js-oxProductForm input[name=parentid]" ).attr( "value" ) );
+    }
+
+    /**
+     * Handles form submit
+     *
+     * @returns {*}
+     */
+    function  formSubmit() {
+        var aOptions = {}, target = $(this);
+                if (!$("input[name='fnc']", this).val()) {
+                    if (($( "input[name=aid]", this ).val() == $( "input[name=parentid]", this ).val() )) {
+                        var aSelectionInputs = $("input[name^=varselid]", $("form.js-oxProductForm"));
+                        if (aSelectionInputs.length) {
+                            var sHash = '';
+                    aSelectionInputs.not("*[value='']").each(function(i) {
+                        sHash = sHash+i+':'+$(this).val()+"|";
+                                aOptions[$(this).attr( "name" )] = $(this).val();
+                            });
+                    if ( jQuery.inArray( sHash, oxVariantSelections ) === -1 ) {
+                        return oxArticleVariant.reload( $(target), $("#details_container"), $("#details_container")[0], aOptions);
+                            }
+                        }
+                    }
+            return oxArticleVariant.reload( $(target),$("#details_container"),$("#details_container")[0], aOptions);
+                }
+            }
+
+    /**
+     * Runs defined scripts inside the method, before ajax is called
+     */
+    function preAjaxCaller() {
+        $('#zoomModal').remove();
     }
 
     $.widget("ui.oxArticleVariant", oxArticleVariant );

@@ -175,7 +175,6 @@ $aLang = array(
 'ERROR_MESSAGE_INPUT_INVALIDAMOUNT'                           => 'Please enter a valid amount for this product!',
 'ERROR_MESSAGE_INPUT_NOTALLFIELDS'                            => 'Specify a value for this required field.',
 'ERROR_MESSAGE_INPUT_NOVALIDEMAIL'                            => 'Please enter a valid e-mail address',
-'ERROR_MESSAGE_INVITE_ERRORWHILESENDINGMAIL'                  => 'An error occurred sending the e-mail - please check the e-mail address.',
 'ERROR_MESSAGE_INVITE_INCORRECTEMAILADDRESS'                  => 'Incorrect e-mail address. Please check entered e-mail addresses.',
 'ERROR_MESSAGE_MANDATES_EXCEEDED'                             => 'The number of available mandates exceeds version limits, please contact %s for more information.',
 'ERROR_MESSAGE_MANDATES_EXCEEDED1'                            => 'The number of available mandates exceeds version limits, please contact',

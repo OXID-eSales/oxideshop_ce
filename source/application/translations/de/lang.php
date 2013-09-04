@@ -174,7 +174,6 @@ $aLang = array(
 'ERROR_MESSAGE_INPUT_INVALIDAMOUNT'                           => 'Bitte geben Sie eine gültige Menge für den Artikel ein!',
 'ERROR_MESSAGE_INPUT_NOTALLFIELDS'                            => 'Bitte Wert angeben!',
 'ERROR_MESSAGE_INPUT_NOVALIDEMAIL'                            => 'Bitte geben Sie eine gültige E-Mail-Adresse ein',
-'ERROR_MESSAGE_INVITE_ERRORWHILESENDINGMAIL'                  => 'Es ist ein Fehler beim Versenden der E-Mails aufgetreten. Bitte überprüfen Sie die E-Mail-Adressen.',
 'ERROR_MESSAGE_INVITE_INCORRECTEMAILADDRESS'                  => 'Ungültige E-Mail-Adresse. Bitte überprüfen Sie die E-Mail-Adressen.',
 'ERROR_MESSAGE_MANDATES_EXCEEDED'                             => 'Die Anzahl der lizenzierten Mandanten ist überschritten, tragen Sie bitte im Shop Admin eine gültige Lizenznr. ein - oder kontaktieren Sie %s für mehr Informationen.',
 'ERROR_MESSAGE_MANDATES_EXCEEDED1'                            => 'Die Anzahl der lizenzierten Mandanten ist überschritten, tragen Sie bitte im Shop Admin eine gültige Lizenznr. ein - oder kontaktieren Sie',

@@ -193,7 +193,7 @@ class Invite extends oxUBase
             //saving statistics for sent emails
             $oUser->updateInvitationStatistics( $aParams["rec_email"] );
         } else {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay('ERROR_MESSAGE_INVITE_ERRORWHILESENDINGMAIL');
+            oxRegistry::get("oxUtilsView")->addErrorToDisplay('ERROR_MESSAGE_CHECK_EMAIL');
         }
     }
 

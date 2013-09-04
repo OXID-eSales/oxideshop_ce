@@ -23,5 +23,6 @@
  */
 
 $aMap = array(
-    // place your mappings here
+    'MAPPED_UPDATE'                                                => 'UPDATE',
+    // use your own maps here, as shown
 );

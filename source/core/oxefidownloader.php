@@ -19,7 +19,6 @@
  * @package   core
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 
@@ -124,10 +123,11 @@ class oxEfiDownloader extends oxSuperCfg
     }
 
     /**
-     * Enter description here...
+     * Get contents of connector
      *
      * @param string $sShopVersion Shop edition and version (eg. 'CE 4.0.0.0')
      *
+     * @throws Exception
      * @return string
      */
     protected function _getConnectorContents($sShopVersion)

@@ -34,7 +34,7 @@ class oxOutOfStockException extends oxArticleException
     private $_iRemainingAmount = 0;
 
     /**
-     * Enter description here ...
+     * Basket index value
      *
      * @var string
      */

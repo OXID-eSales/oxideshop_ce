@@ -19,7 +19,6 @@
  * @package   core
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 
@@ -44,8 +43,8 @@ class oxDb
     const FETCH_MODE_ASSOC = ADODB_FETCH_ASSOC;
 
     /**
-     * Enter description here ...
-     * @var unknown_type
+     * Configuration value
+     * @var mixed
      */
     public static $configSet = false;
 
@@ -71,85 +70,85 @@ class oxDb
     protected static $_aTblDescCache = array();
 
     /**
-     * Enter description here ...
+     * Database type
      * @var string
      */
     private static $_dbType = '';
 
     /**
-     * Enter description here ...
+     * Database user name
      * @var string
      */
     private static $_dbUser = '';
 
     /**
-     * Enter description here ...
+     * Database password
      * @var string
      */
     private static $_dbPwd  = '';
 
     /**
-     * Enter description here ...
+     * Database table name
      * @var string
      */
     private static $_dbName = '';
 
     /**
-     * Enter description here ...
+     * Database hostname
      * @var string
      */
     private static $_dbHost = '';
 
     /**
-     * Enter description here ...
+     * Debug option value
      * @var int
      */
     private static $_iDebug = 0;
 
     /**
-     * Enter description here ...
+     * Should changes be logged in admin
      * @var bool
      */
     private static $_blLogChangesInAdmin = false;
 
     /**
-     * Enter description here ...
+     * UTF mode
      * @var int
      */
     private static $_iUtfMode = 0;
 
     /**
-     * Enter description here ...
+     * Default database connection value
      * @var string
      */
     private static $_sDefaultDatabaseConnection = null;
 
     /**
-     * Enter description here ...
+     * Array of slave hosts
      * @var array
      */
     private static $_aSlaveHosts;
 
     /**
-     * Enter description here ...
+     * Admin email value
      * @var string
      */
     private static $_sAdminEmail;
 
     /**
-     * Enter description here ...
+     * Value for master slave balance
      * @var int
      */
     private static $_iMasterSlaveBalance;
 
     /**
-     * Enter description here ...
+     * Local time format  value
      * @var string
      */
     private static $_sLocalTimeFormat;
 
     /**
-     * Enter description here ...
+     * Local date format value
      * @var string
      */
     private static $_sLocalDateFormat;

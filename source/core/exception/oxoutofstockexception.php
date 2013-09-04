@@ -19,7 +19,6 @@
  * @package   core
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -35,7 +34,7 @@ class oxOutOfStockException extends oxArticleException
     private $_iRemainingAmount = 0;
 
     /**
-     * Enter description here ...
+     * Basket index value
      *
      * @var string
      */

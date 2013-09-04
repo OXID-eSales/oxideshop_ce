@@ -401,6 +401,7 @@ class oxModule extends oxSuperCfg
     public function activate()
     {
         if ( isset( $this->_aModule['extend'] ) && is_array( $this->_aModule['extend'] ) ) {
+
             $oConfig     = oxRegistry::getConfig();
             $aAddModules = $this->_aModule['extend'];
             $sModuleId   = $this->getId();
@@ -546,6 +547,8 @@ class oxModule extends oxSuperCfg
 
         $oUtilsObject = oxUtilsObject::getInstance();
         $oUtilsObject->resetModuleVars();
+
+        $this->_clearApcCache();
     }
 
 
@@ -1030,6 +1033,16 @@ class oxModule extends oxSuperCfg
                 $aDisabledModules[$iOldKey] = $sModuleId;
                 $oConfig->saveShopConfVar( 'arr', 'aDisabledModules', $aDisabledModules );
             }
+        }
+    }
+
+    /**
+     * Cleans PHP APC cache
+     */
+    protected function _clearApcCache()
+    {
+        if ( extension_loaded( 'apc' ) && ini_get( 'apc.enabled' ) ) {
+            apc_clear_cache();
         }
     }
 }

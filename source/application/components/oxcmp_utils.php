@@ -19,7 +19,6 @@
  * @package   views
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -41,6 +40,8 @@ class oxcmp_utils extends oxView
      * otherwise - loads list of action articles oxarticlelist::loadActionArticles().
      * In this case, the last list object will be used. Loaded article info
      * is serialized and outputted to client system.
+     *
+     * @deprecated since v5.1 (2013-09-25); not used anywhere
      *
      * @return null
      */

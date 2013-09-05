@@ -950,7 +950,12 @@ class oxwArticleDetails extends oxWidget
         parent::render();
 
         $oCategory = new oxCategory();
-        $oCategory->setId( oxRegistry::getConfig()->getRequestParameter( "cnid" ) );
+
+        // if category parameter is not found, use category from product
+        if ( !$sCatId = $this->getViewParameter( "cnid" ) ) {
+            $sCatId = $oProduct->getCategory()->getId();
+        }
+        $oCategory->setId( $sCatId );
         $this->setActiveCategory( $oCategory );
 
                 /**

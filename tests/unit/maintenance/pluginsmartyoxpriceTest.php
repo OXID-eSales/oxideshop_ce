@@ -25,7 +25,7 @@ require_once realpath( "." ).'/unit/OxidTestCase.php';
 require_once realpath( "." ).'/unit/test_config.inc.php';
 require_once oxConfig::getInstance()->getConfigParam( 'sShopDir' ).'core/smarty/plugins/function.oxprice.php';
 
-class Unit_Maintenance_pluginSmartyOxContentTest extends OxidTestCase
+class Unit_Maintenance_pluginSmartyOxPriceTest extends OxidTestCase
 {
     /**
      * Data provider

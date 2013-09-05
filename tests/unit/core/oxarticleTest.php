@@ -7256,5 +7256,4 @@ class Unit_Core_oxarticleTest extends OxidTestCase
         $this->assertEquals( 2000, $oArticle->getFieldData( "oxparentid" ) );
     }
 
-
 }

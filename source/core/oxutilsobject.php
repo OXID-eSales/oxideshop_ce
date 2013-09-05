@@ -688,6 +688,9 @@ class oxUtilsObject
         if ( is_readable( $sFileName ) ) {
             $sValue = file_get_contents( $sFileName );
             $sValue = unserialize( $sValue );
+            if ( $sValue === false ) {
+                $sValue = null;
+            }
         }
 
         return $sValue ;

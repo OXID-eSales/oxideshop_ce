@@ -27,7 +27,9 @@
       [{else}]
           [{assign var="blAnon" value=1}]
       [{/if}]
+    <div id="minibasket_container">
     [{oxid_include_widget cl="oxwMiniBasket" nocookie=$blAnon force_sid=$force_sid}]
+    </div>
     [{include file="widget/header/search.tpl"}]
 </div>
 [{if $oView->getClassName()=='start' && $oView->getBanners()|@count > 0 }]

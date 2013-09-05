@@ -19,7 +19,6 @@
  * @package   admin
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -130,7 +129,11 @@ class Shop_License extends Shop_Config
         $sOutput = strip_tags($sOutput, "<br>, <b>");
         $aResult = explode("<br>", $sOutput);
         if ( strstr( $aResult[5], "update" ) ) {
-            $aResult[5] = "<a id='linkToUpdate' href='http://wiki.oxidforge.org/Category:Downloads' target='_blank'>" . $aResult[5] . "</a>";
+            $sUpdateLink = 'http://wiki.oxidforge.org/Category:Downloads';
+            if ( !OXID_VERSION_PE_CE ) {
+                $sUpdateLink = oxRegistry::getLang()->translateString( "VERSION_UPDATE_LINK" );
+            }
+            $aResult[5] = "<a id='linkToUpdate' href='$sUpdateLink' target='_blank'>" . $aResult[5] . "</a>";
         }
         $sOutput = implode("<br>", $aResult);
 

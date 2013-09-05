@@ -3,7 +3,6 @@
 [{assign var="currency" value=$oView->getActCurrency()}]
 [{assign var="sPageHeadTitle" value=$oDetailsProduct->oxarticles__oxtitle->value|cat:' '|cat:$oDetailsProduct->oxarticles__oxvarselect->value}]
 
-<!-- MAYBE REFACTOR THIS PART-->
 [{if $oView->getPriceAlarmStatus() == 1}]
 [{assign var="shop_name" value=$oxcmp_shop->oxshops__oxname->value}]
 [{assign var="bid_price" value=$oView->getBidPrice()}]

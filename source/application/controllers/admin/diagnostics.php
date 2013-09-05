@@ -26,7 +26,7 @@
  * Admin Menu: Service -> Diagnostics Tool.
  * @package admin
  */
-class diagnostics extends oxAdminView
+class Diagnostics extends oxAdminView
 {
     /**
      * Current class template name.

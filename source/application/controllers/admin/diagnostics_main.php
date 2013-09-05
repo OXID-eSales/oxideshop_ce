@@ -26,7 +26,7 @@
  * Admin Menu: Service -> Version Checker -> Main.
  * @package admin
  */
-class diagnostics_main extends oxAdminDetails
+class Diagnostics_Main extends oxAdminDetails
 {
 
     /**

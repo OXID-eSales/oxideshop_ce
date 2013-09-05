@@ -16,21 +16,28 @@
  *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @package   admin
+ * @package   tests
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
  */
 
+require_once realpath( "." ).'/unit/OxidTestCase.php';
+require_once realpath( "." ).'/unit/test_config.inc.php';
+
 /**
- * Checks Version of System files.
- * Admin Menu: Service -> Version Checker.
- * @package admin
+ * Tests for Discount class
  */
-class Diagnostics_List extends oxAdminList
+class Unit_Admin_DiagnosticsTest extends OxidTestCase
 {
     /**
-     * Current class template name.
-     * @var string
+     * Discount::Render() test case
+     *
+     * @return null
      */
-    protected $_sThisTemplate = 'diagnostics_list.tpl';
+    public function testRender()
+    {
+        // testing..
+        $oView = new Diagnostics();
+        $this->assertEquals( 'diagnostics.tpl', $oView->render() );
+    }
 }

@@ -19,7 +19,6 @@
  * @package   core
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -61,8 +60,8 @@ class oxPrice
     /**
      * Price entering mode
      * Reference to myConfig->blEnterNetPrice
-     * Then true  - setprice sets netto price and calculates brutto price
-     * Then false - setprice sets brutto price and calculates netto price
+     * Then true  - setPrice sets netto price and calculates brutto price
+     * Then false - setPrice sets brutto price and calculates netto price
      *
      * @var boolean
      */
@@ -85,7 +84,7 @@ class oxPrice
     }
 
     /**
-     * Netprice mode setter
+     * Netto price mode setter
      *
      * @return null
      */
@@ -95,7 +94,7 @@ class oxPrice
     }
 
     /**
-     * Brutprice mode setter
+     * Brutto price mode setter
      *
      * @return null
      */
@@ -105,7 +104,7 @@ class oxPrice
     }
 
     /**
-     * Sets new VAT percent, and recaluates price.
+     * Sets new VAT percent, and recalculates price.
      *
      * @param double $newVat vat percent
      *
@@ -139,7 +138,7 @@ class oxPrice
     }
 
     /**
-     * Returns setted VAT percent
+     * Returns VAT percent
      *
      * @return double
      */
@@ -230,7 +229,7 @@ class oxPrice
 
     /**
      * Subtracts given percent from price depending  on price entering mode,
-     * and recalulates price
+     * and recalculates price
      *
      * @param double $dValue percent to subtract from price
      *
@@ -244,7 +243,7 @@ class oxPrice
 
     /**
      * Adds given percent to price depending  on price entering mode,
-     * and recalulates price
+     * and recalculates price
      *
      * @param double $dValue percent to add to price
      *
@@ -273,7 +272,7 @@ class oxPrice
 
     /**
      * Adds given value to price depending  on price entering mode,
-     * and recalulates price
+     * and recalculates price
      *
      * @param double $dValue value to add to price
      *
@@ -287,7 +286,7 @@ class oxPrice
 
     /**
      * Subtracts given value from price depending  on price entering mode,
-     * and recalulates price
+     * and recalculates price
      *
      * @param double $dValue value to subtracts from price
      *
@@ -299,10 +298,10 @@ class oxPrice
     }
 
     /**
-     * Multiplies price by gived value depending on price entering mode,
-     * and recalulates price
+     * Multiplies price by given value depending on price entering mode,
+     * and recalculates price
      *
-     * @param double $dValue value for multipying price
+     * @param double $dValue value for multiplying price
      *
      * @return null
      */
@@ -313,10 +312,10 @@ class oxPrice
     }
 
     /**
-     * Divides price by gived value depending on price entering mode,
-     * and recalulates price
+     * Divides price by given value depending on price entering mode,
+     * and recalculates price
      *
-     * @param double $dValue value for divideing price
+     * @param double $dValue value for dividing price
      *
      * @return null
      */
@@ -327,7 +326,7 @@ class oxPrice
     }
 
     /**
-     * Compares this object to another oxPrice objects. Comparisson is performed on brutto price.
+     * Compares this object to another oxPrice objects. Comparison is performed on brutto price.
      * Result is equal to:
      *   0 - when prices are equal.
      *   1 - when this price is larger than $oPrice.
@@ -442,7 +441,7 @@ class oxPrice
 
 
     /**
-     * Sets dicount to price
+     * Sets discount to price
      *
      * @param double $dValue discount value
      * @param string $sType  discount type: abs or %
@@ -455,7 +454,7 @@ class oxPrice
     }
 
     /**
-     * Returns assignet discounts
+     * Returns assigned discounts
      *
      * @return array
      */
@@ -465,7 +464,7 @@ class oxPrice
     }
 
     /**
-     * Flush assignet discounts
+     * Flush assigned discounts
      *
      * @return null
      */

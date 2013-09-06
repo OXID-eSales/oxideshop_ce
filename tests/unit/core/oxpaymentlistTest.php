@@ -19,7 +19,6 @@
  * @package   tests
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -31,7 +30,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
     protected $_oDefPaymentList = null;
 
     /**
-     * Returns Unique Id with undescore as prefix
+     * Returns Unique Id with underscore as prefix
      *
      * @return string;
      */
@@ -55,11 +54,11 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
             return;
         }
 
-        $this->oUser = new oxuser();
+        $this->oUser = new oxUser();
         $this->oUser->load( 'oxdefaultadmin' );
 
         // disabling default payments
-        $this->_oDefPaymentList = new oxpaymentlist();
+        $this->_oDefPaymentList = new oxPaymentList();
         $this->_oDefPaymentList->selectString( 'select * from oxpayments where oxactive = 1' );
         foreach ( $this->_oDefPaymentList as $oPayment ) {
             $oPayment->oxpayments__oxactive = new oxField(0, oxField::T_RAW);
@@ -67,7 +66,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         }
 
         // creating few payments
-        $this->_aPayList[0] = new oxpayment();
+        $this->_aPayList[0] = new oxPayment();
         $this->_aPayList[0]->oxpayments__oxdesc = new oxField('Payment for user', oxField::T_RAW);
         $this->_aPayList[0]->oxpayments__oxaddsum = new oxField(1, oxField::T_RAW);
         $this->_aPayList[0]->oxpayments__oxaddsumtype = new oxField('abs', oxField::T_RAW);
@@ -76,7 +75,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         $this->_aPayList[0]->oxpayments__oxsort = new oxField(10, oxField::T_RAW);
         $this->_aPayList[0]->save();
 
-        $this->_aPayList[1] = new oxpayment();
+        $this->_aPayList[1] = new oxPayment();
         $this->_aPayList[1]->oxpayments__oxdesc = new oxField('Payment for group', oxField::T_RAW);
         $this->_aPayList[1]->oxpayments__oxaddsum = new oxField(2, oxField::T_RAW);
         $this->_aPayList[1]->oxpayments__oxaddsumtype = new oxField('abs', oxField::T_RAW);
@@ -85,7 +84,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         $this->_aPayList[1]->oxpayments__oxsort = new oxField(20, oxField::T_RAW);
         $this->_aPayList[1]->save();
 
-        $this->_aPayList[2] = new oxpayment();
+        $this->_aPayList[2] = new oxPayment();
         $this->_aPayList[2]->oxpayments__oxdesc = new oxField('Payment for country', oxField::T_RAW);
         $this->_aPayList[2]->oxpayments__oxaddsum = new oxField(3, oxField::T_RAW);
         $this->_aPayList[2]->oxpayments__oxaddsumtype = new oxField('abs', oxField::T_RAW);
@@ -94,7 +93,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         $this->_aPayList[2]->oxpayments__oxsort = new oxField(30, oxField::T_RAW);
         $this->_aPayList[2]->save();
 
-        $this->_aPayList[3] = new oxpayment();
+        $this->_aPayList[3] = new oxPayment();
         $this->_aPayList[3]->oxpayments__oxdesc = new oxField('Plain Payment', oxField::T_RAW);
         $this->_aPayList[3]->oxpayments__oxaddsum = new oxField(3, oxField::T_RAW);
         $this->_aPayList[3]->oxpayments__oxaddsumtype = new oxField('abs', oxField::T_RAW);
@@ -105,20 +104,20 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
 
         // assigning payments
         // for groups
-        $oO2Group = oxNew( "oxobject2group" );
+        $oO2Group = new oxObject2Group();
         $oO2Group->setId($this->_getUId());
         $oO2Group->oxobject2group__oxobjectid = new oxField($this->_aPayList[0]->getId(), oxField::T_RAW);
         $oO2Group->oxobject2group__oxgroupsid = new oxField('oxidadmin', oxField::T_RAW);
         $oO2Group->save();
 
-        $oO2Group = oxNew( "oxobject2group" );
+        $oO2Group = new oxObject2Group();
         $oO2Group->setId($this->_getUId());
         $oO2Group->oxobject2group__oxobjectid = new oxField($this->_aPayList[1]->getId(), oxField::T_RAW);
         $oO2Group->oxobject2group__oxgroupsid = new oxField('oxidadmin', oxField::T_RAW);
         $oO2Group->save();
 
         // for country
-        $oO2Pay = oxNew( 'oxbase' );
+        $oO2Pay = new oxBase();
         $oO2Pay->Init( 'oxobject2payment' );
         $oO2Group->setId($this->_getUId());
         $oO2Pay->oxobject2payment__oxpaymentid = new oxField($this->_aPayList[2]->getId(), oxField::T_RAW);
@@ -126,22 +125,22 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         $oO2Pay->oxobject2payment__oxtype = new oxField('oxcountry', oxField::T_RAW);
         $oO2Pay->save();
 
-        $oO2Group = oxNew( "oxobject2group" );
+        $oO2Group = new oxObject2Group();
         $oO2Group->setId($this->_getUId());
         $oO2Group->oxobject2group__oxobjectid = new oxField($this->_aPayList[2]->getId(), oxField::T_RAW);
         $oO2Group->oxobject2group__oxgroupsid = new oxField('oxidadmin', oxField::T_RAW);
         $oO2Group->save();
 
         // delivery set
-        $this->oDelSet = new oxdeliveryset();
+        $this->oDelSet = new oxDeliverySet();
         $this->oDelSet->setId($this->_getUId());
-        $this->oDelSet->oxdeliveryset__oxshopid = new oxField(oxConfig::getInstance()->getShopId(), oxField::T_RAW);
-        $this->oDelSet->oxdeliveryset__oxshopincl = new oxField(oxConfig::getInstance()->getShopId(), oxField::T_RAW);
+        $this->oDelSet->oxdeliveryset__oxshopid = new oxField($this->getConfig()->getShopId(), oxField::T_RAW);
+        $this->oDelSet->oxdeliveryset__oxshopincl = new oxField($this->getConfig()->getShopId(), oxField::T_RAW);
         $this->oDelSet->oxdeliveryset__oxactive = new oxField(1, oxField::T_RAW);
         $this->oDelSet->oxdeliveryset__oxtitle = new oxField("Test delivery set", oxField::T_RAW);
         $this->oDelSet->save();
 
-        $oO2Group = oxNew( "oxobject2group" );
+        $oO2Group = new oxObject2Group();
         $oO2Group->setId($this->_getUId());
         $oO2Group->oxobject2group__oxobjectid = new oxField($this->_aPayList[3]->getId(), oxField::T_RAW);
         $oO2Group->oxobject2group__oxgroupsid = new oxField('oxidadmin', oxField::T_RAW);
@@ -149,7 +148,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
 
         // assigning payments
         // user
-        $oObject = oxNew( 'oxbase' );
+        $oObject = new oxBase();
         $oObject->init( 'oxobject2payment' );
         $oObject->setId($this->_getUId());
         $oObject->oxobject2payment__oxpaymentid = new oxField($this->_aPayList[0]->getId(), oxField::T_RAW);
@@ -158,7 +157,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         $oObject->save();
 
         // group
-        $oObject = oxNew( 'oxbase' );
+        $oObject = new oxBase();
         $oObject->init( 'oxobject2payment' );
         $oO2Group->setId($this->_getUId());
         $oObject->oxobject2payment__oxpaymentid = new oxField($this->_aPayList[1]->getId(), oxField::T_RAW);
@@ -167,7 +166,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         $oObject->save();
 
         // country
-        $oObject = oxNew( 'oxbase' );
+        $oObject = new oxBase();
         $oObject->init( 'oxobject2payment' );
         $oO2Group->setId($this->_getUId());
         $oObject->oxobject2payment__oxpaymentid = new oxField($this->_aPayList[2]->getId(), oxField::T_RAW);
@@ -176,7 +175,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         $oObject->save();
 
         // default
-        $oObject = oxNew( 'oxbase' );
+        $oObject = new oxBase();
         $oObject->init( 'oxobject2payment' );
         $oO2Group->setId($this->_getUId());
         $oObject->oxobject2payment__oxpaymentid = new oxField($this->_aPayList[3]->getId(), oxField::T_RAW);
@@ -226,15 +225,15 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
 
         $oPaymentList = new oxPaymentList();
         $oPaymentList->getPaymentList( $sShipSetId, 10, $oUser );
-        $iListCOunt = $oPaymentList->count();
+        $iListCount = $oPaymentList->count();
 
         // list must contain at least one item
-        $this->assertTrue( $iListCOunt > 0 );
+        $this->assertTrue( $iListCount > 0 );
 
         $oPayment = $oPaymentList->current();
 
         // adding garbage
-        $oGarbage = new oxbase();
+        $oGarbage = new oxBase();
         $oGarbage->init( "oxobject2payment" );
         $oGarbage->setId( "_testoxobject2payment1" );
         $oGarbage->oxobject2payment__oxpaymentid = new oxField( $oPayment->getId() );
@@ -242,12 +241,12 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         $oGarbage->oxobject2payment__oxtype      = new oxField( "oxcountry" );
         $oGarbage->save();
 
-        $oGarbage = new oxbase();
+        $oGarbage = new oxBase();
         $oGarbage->init( "oxobject2group" );
         $oGarbage->setId( "_testoxobject2group" );
         $oGarbage->oxobject2payment__oxobjectid = new oxField( $oPayment->getId() );
         $oGarbage->oxobject2payment__oxgroupsid = new oxField( "yyy" );
-        $oGarbage->oxobject2payment__oxshopid   = new oxField( oxConfig::getInstance()->getShopId() );
+        $oGarbage->oxobject2payment__oxshopid   = new oxField( $this->getConfig()->getShopId() );
         $oGarbage->save();
 
         $oPaymentList = new oxPaymentList();
@@ -256,7 +255,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
 
         // list must contain at least one item
         $this->assertTrue( $iNewListCount > 0 );
-        $this->assertTrue( $iNewListCount === $iListCOunt );
+        $this->assertTrue( $iNewListCount === $iListCount );
 
         $blFound = false;
         foreach ( $oPaymentList as $oPay ) {
@@ -329,8 +328,8 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
      */
     public function testGetPaymentListforUseCase()
     {
-        $oDb = oxDb::getDb();
-        $iShopId = oxConfig::getInstance()->getShopId();
+        $oDb = $this->getDb();
+        $iShopId = $this->getConfig()->getShopId();
 
         $sGermanyId = "a7c40f631fc920687.20179984";
         $sSchweizId = "a7c40f6321c6f6109.43859248";
@@ -350,7 +349,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         $oPayment->save();
 
         // assigning groups
-        $oObjectToGroup = new oxbase();
+        $oObjectToGroup = new oxBase();
         $oObjectToGroup->init( 'oxobject2group' );
         $oObjectToGroup->setId($this->_getUId());
         $oObjectToGroup->oxobject2group__oxshopid   = new oxField( $iShopId );
@@ -359,7 +358,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         $oObjectToGroup->save();
 
         // assigning coutries (Deutschland)
-        $oObjectToPayment = new oxbase();
+        $oObjectToPayment = new oxBase();
         $oObjectToPayment->init( 'oxobject2payment' );
         $oObjectToPayment->setId($this->_getUId());
         $oObjectToPayment->oxobject2payment__oxpaymentid = new oxField( $oPayment->getId() );
@@ -380,7 +379,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         $oPayment->save();
 
         // assigning groups
-        $oObjectToGroup = new oxbase();
+        $oObjectToGroup = new oxBase();
         $oObjectToGroup->init( 'oxobject2group' );
         $oObjectToGroup->setId($this->_getUId());
         $oObjectToGroup->oxobject2group__oxshopid   = new oxField( $iShopId );
@@ -389,7 +388,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         $oObjectToGroup->save();
 
         // assigning coutries (Schweiz)
-        $oObjectToPayment = new oxbase();
+        $oObjectToPayment = new oxBase();
         $oObjectToPayment->init( 'oxobject2payment' );
         $oObjectToPayment->setId($this->_getUId());
         $oObjectToPayment->oxobject2payment__oxpaymentid = new oxField( $oPayment->getId() );
@@ -402,7 +401,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         // Versandkosten f�r Standard: Versandkostenfrei ab 80, - Germany only
         $oDb->execute( "delete from oxobject2delivery where oxdeliveryid='1b842e734b62a4775.45738618'" );
 
-        $oObjectToDelivery = new oxbase;
+        $oObjectToDelivery = new oxBase();
         $oObjectToDelivery->init( 'oxobject2delivery' );
         $oObjectToDelivery->setId($this->_getUId());
         $oObjectToDelivery->oxobject2delivery__oxdeliveryid = new oxField( "1b842e734b62a4775.45738618" );
@@ -413,7 +412,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         // Versandkosten f�r Standard: 3,90 Euro innerhalb Deutschland - Germany only
         $oDb->execute( "delete from oxobject2delivery where oxdeliveryid='1b842e73470578914.54719298'" );
 
-        $oObjectToDelivery = new oxbase;
+        $oObjectToDelivery = new oxBase();
         $oObjectToDelivery->init( 'oxobject2delivery' );
         $oObjectToDelivery->setId($this->_getUId());
         $oObjectToDelivery->oxobject2delivery__oxdeliveryid = new oxField( "1b842e73470578914.54719298" );
@@ -424,7 +423,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         // Versandkosten f�r Standard: 6,90 Rest EU - excluding Germany
         $oDb->execute( "delete from oxobject2delivery where oxdeliveryid='1b842e7352422a708.01472527'" );
 
-        $oObjectToDelivery = new oxbase;
+        $oObjectToDelivery = new oxBase();
         $oObjectToDelivery->init( 'oxobject2delivery' );
         $oObjectToDelivery->setId($this->_getUId());
         $oObjectToDelivery->oxobject2delivery__oxdeliveryid = new oxField( "1b842e7352422a708.01472527" );
@@ -435,7 +434,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         // Versandkosten f�r Beispiel Set1: UPS 48 Std.: 9,90. - all countries
         $oDb->execute( "delete from oxobject2delivery where oxdeliveryid='1b842e738970d31e3.71258327'" );
 
-        $oObjectToDelivery = new oxbase;
+        $oObjectToDelivery = new oxBase();
         $oObjectToDelivery->init( 'oxobject2delivery' );
         $oObjectToDelivery->setId($this->_getUId());
         $oObjectToDelivery->oxobject2delivery__oxdeliveryid = new oxField( "1b842e738970d31e3.71258327" );
@@ -443,7 +442,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         $oObjectToDelivery->oxobject2delivery__oxtype       = new oxField( "oxcountry" );
         $oObjectToDelivery->save();
 
-        $oObjectToDelivery = new oxbase;
+        $oObjectToDelivery = new oxBase();
         $oObjectToDelivery->init( 'oxobject2delivery' );
         $oObjectToDelivery->setId($this->_getUId());
         $oObjectToDelivery->oxobject2delivery__oxdeliveryid = new oxField( "1b842e738970d31e3.71258327" );
@@ -454,7 +453,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         // Versandkosten f�r Beispiel Set2: UPS 24 Std. Express: 12,90. - all countries
         $oDb->execute( "delete from oxobject2delivery where oxdeliveryid='1b842e738970d31e3.71258328'" );
 
-        $oObjectToDelivery = new oxbase;
+        $oObjectToDelivery = new oxBase();
         $oObjectToDelivery->init( 'oxobject2delivery' );
         $oObjectToDelivery->setId($this->_getUId());
         $oObjectToDelivery->oxobject2delivery__oxdeliveryid = new oxField( "1b842e738970d31e3.71258328" );
@@ -462,7 +461,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         $oObjectToDelivery->oxobject2delivery__oxtype       = new oxField( "oxcountry" );
         $oObjectToDelivery->save();
 
-        $oObjectToDelivery = new oxbase;
+        $oObjectToDelivery = new oxBase();
         $oObjectToDelivery->init( 'oxobject2delivery' );
         $oObjectToDelivery->setId($this->_getUId());
         $oObjectToDelivery->oxobject2delivery__oxdeliveryid = new oxField( "1b842e738970d31e3.71258328" );
@@ -474,7 +473,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         $oDb->execute( 'update oxdeliveryset set oxactive = 0' );
 
         //
-        $oDelSet = new oxDeliverySet;
+        $oDelSet = new oxDeliverySet();
         $oDelSet->setId('_'.md5(time()));
         $oDelSet->oxdeliveryset__oxshopid = new oxField( $iShopId );
         $oDelSet->oxdeliveryset__oxshopincl = new oxField( $iShopId );
@@ -485,7 +484,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         $oDelSet->save();
 
         // - countries: Schweiz only;
-        $oObject2Delivery = new oxbase();
+        $oObject2Delivery = new oxBase();
         $oObject2Delivery->init( 'oxobject2delivery' );
         $oObject2Delivery->setId($this->_getUId());
         $oObject2Delivery->oxobject2delivery__oxdeliveryid = new oxField( $oDelSet->getId() );
@@ -494,7 +493,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         $oObject2Delivery->save();
 
         // - payments: Nachnahme (COD)
-        $oObject = new oxbase();
+        $oObject = new oxBase();
         $oObject->init( 'oxobject2payment' );
         $oObject->setId($this->_getUId());
         $oObject->oxobject2payment__oxpaymentid = new oxField( "_bf741c04bf63f17f5e998d41236d55e" );
@@ -503,7 +502,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         $oObject->save();
 
         // - deliveries: Versandkosten f�r Beispiel Set2: UPS 24 Std. Express: 12,90.-;
-        $oDel2delset = new oxbase();
+        $oDel2delset = new oxBase();
         $oDel2delset->init( 'oxdel2delset' );
         $oDel2delset->setId($this->_getUId());
         $oDel2delset->oxdel2delset__oxdelid    = new oxField( "1b842e738970d31e3.71258327" );
@@ -512,7 +511,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
 
 
         //
-        $oDelSet = new oxDeliverySet;
+        $oDelSet = new oxDeliverySet();
         $oDelSet->setId($this->_getUId());
         $oDelSet->oxdeliveryset__oxshopid = new oxField( $iShopId );
         $oDelSet->oxdeliveryset__oxshopincl = new oxField( $iShopId );
@@ -523,7 +522,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         $oDelSet->save();
 
         // - countries: Germany only;
-        $oObject2Delivery = new oxbase();
+        $oObject2Delivery = new oxBase();
         $oObject2Delivery->init( 'oxobject2delivery' );
         $oObject2Delivery->setId($this->_getUId());
         $oObject2Delivery->oxobject2delivery__oxdeliveryid = new oxField( $oDelSet->getId() );
@@ -532,7 +531,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         $oObject2Delivery->save();
 
         // - payments: all available;
-        $oObject = new oxbase();
+        $oObject = new oxBase();
         $oObject->init( 'oxobject2payment' );
         $oObject->setId($this->_getUId());
         $oObject->oxobject2payment__oxpaymentid = new oxField( 'dbf741c04bf63f17f5e998d41236d55e' );
@@ -540,7 +539,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         $oObject->oxobject2payment__oxtype      = new oxField( "oxdelset" );
         $oObject->save();
 
-        $oObject = new oxbase();
+        $oObject = new oxBase();
         $oObject->init( 'oxobject2payment' );
         $oObject->setId($this->_getUId());
         $oObject->oxobject2payment__oxpaymentid = new oxField( 'oxidcashondel' );
@@ -549,7 +548,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         $oObject->save();
 
         // - deliveries: Versandkosten f�r Beispiel Set2: UPS 24 Std. Express: 12,90.-;
-        $oDel2delset = new oxbase();
+        $oDel2delset = new oxBase();
         $oDel2delset->init( 'oxdel2delset' );
         $oDel2delset->setId($this->_getUId());
         $oDel2delset->oxdel2delset__oxdelid    = new oxField( "1b842e738970d31e3.71258328" );
@@ -558,7 +557,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
 
 
         //
-        $oDelSet = new oxDeliverySet;
+        $oDelSet = new oxDeliverySet();
         $oDelSet->load( 'oxidstandard' );
         $oDelSet->oxdeliveryset__oxshopid = new oxField( $iShopId );
         $oDelSet->oxdeliveryset__oxshopincl = new oxField( $iShopId );
@@ -568,7 +567,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         $oDelSet->save();
 
         // - countries: Germany only;
-        $oObject2Delivery = new oxbase();
+        $oObject2Delivery = new oxBase();
         $oObject2Delivery->init( 'oxobject2delivery' );
         $oObject2Delivery->setId($this->_getUId());
         $oObject2Delivery->oxobject2delivery__oxdeliveryid = new oxField( $oDelSet->getId() );
@@ -577,7 +576,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         $oObject2Delivery->save();
 
         // - payments: Nachnahme, Rechnung, Vorauskasse 2% Skonto;
-        $oObject = new oxbase();
+        $oObject = new oxBase();
         $oObject->init( 'oxobject2payment' );
         $oObject->setId($this->_getUId());
         $oObject->oxobject2payment__oxpaymentid = new oxField( $oDelSet->getId() );
@@ -586,14 +585,14 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         $oObject->save();
 
         // - deliveries: Versandkosten f�r Standard: Versandkostenfrei ab 80,-;
-        $oDel2delset = new oxbase();
+        $oDel2delset = new oxBase();
         $oDel2delset->init( 'oxdel2delset' );
         $oDel2delset->setId($this->_getUId());
         $oDel2delset->oxdel2delset__oxdelid    = new oxField( "1b842e73470578914.54719298" );
         $oDel2delset->oxdel2delset__oxdelsetid = new oxField( $oDelSet->getId() );
         $oDel2delset->save();
 
-        $oDel2delset = new oxbase();
+        $oDel2delset = new oxBase();
         $oDel2delset->init( 'oxdel2delset' );
         $oDel2delset->setId($this->_getUId());
         $oDel2delset->oxdel2delset__oxdelid    = new oxField( "1b842e734b62a4775.45738618" );
@@ -601,10 +600,11 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         $oDel2delset->save();
 
         // finally testing
-        $oUser = new oxuser();
+        $oUser = new oxUser();
         $oUser->load( 'oxdefaultadmin' );
 
-        $aPaymentList = oxPaymentList::getInstance()->getPaymentList( "1b842e732a23255b1.91207751", 2.5, $oUser );
+        $oPaymentList = new oxPaymentList();
+        $aPaymentList = $oPaymentList->getPaymentList( "1b842e732a23255b1.91207751", 2.5, $oUser );
         $this->assertEquals( 1, count( $aPaymentList ) );
         $oPayment = current( $aPaymentList );
         $this->assertEquals( "oxidcashondel", $oPayment->getId() );
@@ -621,15 +621,16 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         $sCountryTable = getViewName( 'oxcountry' );
         $sPaymentsTable = getViewName( 'oxpayments' );
 
-        $sTestQ  = "select $sTable.* from( select distinct $sTable.* from $sTable, oxobject2group, oxobject2payment ";
+        $sTestQ  = "select $sTable.* from( select distinct $sTable.* from $sTable ";
+        $sTestQ .= "left join oxobject2group ON oxobject2group.oxobjectid = $sTable.oxid ";
+        $sTestQ .= "inner join oxobject2payment ON oxobject2payment.oxobjectid = 'xxx' and oxobject2payment.oxpaymentid = $sTable.oxid ";
         $sTestQ .= "where $sTable.oxactive='1' "; // and oxobject2group.oxobjectid = $sTable.oxid
-        $sTestQ .= "and oxobject2payment.oxpaymentid = $sTable.oxid and oxobject2payment.oxobjectid = 'xxx' ";
         $sTestQ .= "and $sPaymentsTable.oxfromboni <= '0' and $sPaymentsTable.oxfromamount <= '666' and $sPaymentsTable.oxtoamount >= '666' ";
         $sTestQ .= " ) as $sTable where ( select if( exists( select 1 from oxobject2payment as ss1, $sCountryTable where $sCountryTable.oxid=ss1.oxobjectid and ss1.oxpaymentid=$sTable.OXID and ss1.oxtype='oxcountry' limit 1),
                     exists( select 1 from oxobject2payment as s1 where s1.oxpaymentid=$sTable.OXID and s1.oxtype='oxcountry' and s1.OXOBJECTID='a7c40f631fc920687.20179984' limit 1 ), 1) &&
                     if( exists( select 1 from oxobject2group as ss3, $sGroupTable where $sGroupTable.oxid=ss3.oxgroupsid and ss3.OXOBJECTID=$sTable.OXID limit 1), 0, 1) ) ) order by $sTable.oxsort asc ";
 
-        $oList = new oxpaymentlist();
+        $oList = new oxPaymentList();
         $sQ = $oList->UNITgetFilterSelect( 'xxx', 666, null );
 
         $this->assertEquals( $this->cleanSQL( $sTestQ ), $this->cleanSQL( $sQ ) );
@@ -653,16 +654,17 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         $sGroupTable   = getViewName( 'oxgroups' );
         $sCountryTable = getViewName( 'oxcountry' );
 
-        $sTestQ  = "select $sTable.* from( select distinct $sTable.* from $sTable, oxobject2group, oxobject2payment ";
+        $sTestQ  = "select $sTable.* from( select distinct $sTable.* from $sTable ";
+        $sTestQ .= "left join oxobject2group ON oxobject2group.oxobjectid = $sTable.oxid ";
+        $sTestQ .= "inner join oxobject2payment ON oxobject2payment.oxobjectid = 'xxx' and oxobject2payment.oxpaymentid = $sTable.oxid ";
         $sTestQ .= "where $sTable.oxactive='1' "; //  and oxobject2group.oxobjectid = $sTable.oxid
-        $sTestQ .= "and oxobject2payment.oxpaymentid = $sTable.oxid and oxobject2payment.oxobjectid = 'xxx' ";
         $sTestQ .= "and $sTable.oxfromboni <= '1000' and $sTable.oxfromamount <= '666' and $sTable.oxtoamount >= '666' ";
         $sTestQ .= ") as $sTable where ( select if( exists( select 1 from oxobject2payment as ss1, $sCountryTable where $sCountryTable.oxid=ss1.oxobjectid and ss1.oxpaymentid=$sTable.OXID and ss1.oxtype='oxcountry' limit 1),
                     exists( select 1 from oxobject2payment as s1 where s1.oxpaymentid=$sTable.OXID and s1.oxtype='oxcountry' and s1.OXOBJECTID='a7c40f631fc920687.20179984' limit 1), 1) &&
                     if( exists( select 1 from oxobject2group as ss3, $sGroupTable where $sGroupTable.oxid=ss3.oxgroupsid and ss3.OXOBJECTID=$sTable.OXID limit 1),
                     exists( select 1 from oxobject2group as s3 where s3.OXOBJECTID=$sTable.OXID and s3.OXGROUPSID in ( $sGroupIds ) limit 1), 1) ) ) order by $sTable.oxsort asc ";
 
-        $oList = new oxpaymentlist();
+        $oList = new oxPaymentList();
         $sQ = $oList->UNITgetFilterSelect( 'xxx', 666, $this->oUser );
 
         $this->assertEquals( $this->cleanSQL( $sTestQ ), $this->cleanSQL( $sQ ) );
@@ -674,7 +676,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
     // testing home country setter and getter
     public function testSetHomeCountryAndGetCountryId()
     {
-        $oList = new oxpaymentlist();
+        $oList = new oxPaymentList();
 
         // testing default
         $this->assertEquals( 'a7c40f631fc920687.20179984', $oList->getCountryId( null ) );
@@ -704,9 +706,10 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
     // no valid delivery set - no payment in list
     public function testGetPaymentListNoValidDelSet()
     {
-        $oList = new oxpaymentlist();
+        $oList = new oxPaymentList();
         $this->assertEquals( array(), $oList->getPaymentList( 'xxx', 55, $this->oUser ) );
     }
+
     // valid delivery set, but price is too high
     public function testGetPaymentListPriceIsTooHigh()
     {
@@ -716,7 +719,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
             $oPayment->save();
         }
 
-        $oList = new oxpaymentlist();
+        $oList = new oxPaymentList();
         $this->assertEquals( array(), $oList->getPaymentList( $this->oDelSet->getId(), 666666, $this->oUser ) );
     }
 
@@ -729,9 +732,11 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
             $oPayment->save();
         }
 
-        $oList = new oxpaymentlist();
-        $this->assertEquals( array( $this->_aPayList[0]->getId(), $this->_aPayList[1]->getId(), $this->_aPayList[2]->getId(), $this->_aPayList[3]->getId() ), array_keys( $oList->getPaymentList( $this->oDelSet->getId(), 55, $this->oUser ) ) );
+        $aResult = array( $this->_aPayList[0]->getId(), $this->_aPayList[1]->getId(), $this->_aPayList[2]->getId(), $this->_aPayList[3]->getId() );
+        $oList = new oxPaymentList();
+        $this->assertEquals( $aResult, array_keys( $oList->getPaymentList( $this->oDelSet->getId(), 55, $this->oUser ) ) );
     }
+
     // all input is just fine + no user, will be used default country id from config
     public function testGetPaymentListAllIsFinePlusNoUser()
     {
@@ -741,9 +746,10 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
             $oPayment->save();
         }
 
-        $oList = new oxpaymentlist();
+        $oList = new oxPaymentList();
         $this->assertEquals( 0, count( $oList->getPaymentList( $this->oDelSet->getId(), 55 ) ) );
     }
+
     // buglist_332 sorting test
     public function testGetPaymentListAllIsFineInSpecSorting()
     {
@@ -761,7 +767,9 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         $this->_aPayList[3]->oxpayments__oxsort   = new oxField(3, oxField::T_RAW);
         $this->_aPayList[3]->save();
 
-        $this->assertEquals( array( $this->_aPayList[0]->getId(), $this->_aPayList[2]->getId(), $this->_aPayList[3]->getId(), $this->_aPayList[1]->getId() ), array_keys( oxPaymentList::getInstance()->getPaymentList( $this->oDelSet->getId(), 55, $this->oUser ) ) );
+        $aResult = array( $this->_aPayList[0]->getId(), $this->_aPayList[2]->getId(), $this->_aPayList[3]->getId(), $this->_aPayList[1]->getId() );
+        $oPaymentList = new oxPaymentList();
+        $this->assertEquals( $aResult, array_keys( $oPaymentList->getPaymentList( $this->oDelSet->getId(), 55, $this->oUser ) ) );
     }
 
     /**
@@ -775,7 +783,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
             $oPayment->save();
         }
 
-        $oObjectToPayment = new oxbase();
+        $oObjectToPayment = new oxBase();
         $oObjectToPayment->init( 'oxobject2payment' );
         $oObjectToPayment->setId('_testoxobject2payment');
         $oObjectToPayment->oxobject2payment__oxpaymentid = new oxField( $this->_aPayList[0]->getId() );
@@ -799,7 +807,7 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
             $oPayment->save();
         }
 
-        $oObjectToPayment = new oxbase();
+        $oObjectToPayment = new oxBase();
         $oObjectToPayment->init( 'oxobject2payment' );
         $oObjectToPayment->setId('_testoxobject2payment');
         $oObjectToPayment->oxobject2payment__oxpaymentid = new oxField( $this->_aPayList[0]->getId() );

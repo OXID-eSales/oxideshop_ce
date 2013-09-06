@@ -19,7 +19,6 @@
  * @package   core
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 /**
  * Payment list manager.
@@ -95,10 +94,10 @@ class oxPaymentList extends oxList
         $sBoni = ($oUser && $oUser->oxuser__oxboni->value )?$oUser->oxuser__oxboni->value:0;
 
         $sTable = getViewName( 'oxpayments' );
-        $sQ  = "select {$sTable}.* from ( select distinct {$sTable}.* from {$sTable}, oxobject2group, oxobject2payment ";
-        // removing and oxobject2group.oxobjectid = {$sTable}.oxid as when no groups are assigned, payment should be available for all.
+        $sQ  = "select {$sTable}.* from ( select distinct {$sTable}.* from {$sTable} ";
+        $sQ .= "left join oxobject2group ON oxobject2group.oxobjectid = {$sTable}.oxid ";
+		$sQ .= "inner join oxobject2payment ON oxobject2payment.oxobjectid = ".$oDb->quote( $sShipSetId )." and oxobject2payment.oxpaymentid = {$sTable}.oxid ";
         $sQ .= "where {$sTable}.oxactive='1' "; 
-        $sQ .= "and oxobject2payment.oxpaymentid = {$sTable}.oxid and oxobject2payment.oxobjectid = ".$oDb->quote( $sShipSetId );
         $sQ .= " and {$sTable}.oxfromboni <= ".$oDb->quote( $sBoni ) ." and {$sTable}.oxfromamount <= ".$oDb->quote( $dPrice ) ." and {$sTable}.oxtoamount >= ".$oDb->quote( $dPrice );
 
         // defining initial filter parameters
@@ -131,7 +130,6 @@ class oxPaymentList extends oxList
                     {$sGroupSql},
                     1)
                 )  order by {$sTable}.oxsort asc ";
-
         return $sQ;
     }
 

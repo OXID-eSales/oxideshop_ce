@@ -57,6 +57,8 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         $this->oUser = new oxUser();
         $this->oUser->load( 'oxdefaultadmin' );
 
+        $this->oUser->addToGroup('oxidadmin');
+
         // disabling default payments
         $this->_oDefPaymentList = new oxPaymentList();
         $this->_oDefPaymentList->selectString( 'select * from oxpayments where oxactive = 1' );
@@ -770,6 +772,45 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         $aResult = array( $this->_aPayList[0]->getId(), $this->_aPayList[2]->getId(), $this->_aPayList[3]->getId(), $this->_aPayList[1]->getId() );
         $oPaymentList = new oxPaymentList();
         $this->assertEquals( $aResult, array_keys( $oPaymentList->getPaymentList( $this->oDelSet->getId(), 55, $this->oUser ) ) );
+    }
+
+    /**
+     * Testing oxpaymentlist::getPaymentList()
+     */
+    public function testGetPaymentListWhenUserHasNoGroup()
+    {
+        $aResult = array( $this->_aPayList[0]->getId(), $this->_aPayList[1]->getId(), $this->_aPayList[2]->getId(), $this->_aPayList[3]->getId() );
+        $oList = new oxPaymentList();
+        $this->assertEquals( $aResult, array_keys( $oList->getPaymentList( $this->oDelSet->getId(), 55, $this->oUser) ) );
+
+        $this->oUser->removeFromGroup('oxidadmin');
+
+        $this->assertEquals( array(), array_keys( $oList->getPaymentList( $this->oDelSet->getId(), 55, $this->oUser) ) );
+    }
+
+    /**
+     * Testing oxpaymentlist::getPaymentList()
+     */
+    public function testGetPaymentListWhenPaymentIsAssignedToOtherGroupThanUser()
+    {
+        $oDb = $this->getDb();
+        $oDb->execute("DELETE FROM oxobject2group WHERE oxobjectid='oxdefaultadmin'");
+        $oDb->execute("DELETE FROM oxobject2group WHERE oxgroupsid='oxidadmin'");
+
+        $aResult = array( $this->_aPayList[0]->getId(), $this->_aPayList[1]->getId(), $this->_aPayList[2]->getId(), $this->_aPayList[3]->getId() );
+        $oList = new oxPaymentList();
+        $this->assertEquals( $aResult, array_keys( $oList->getPaymentList( $this->oDelSet->getId(), 55, $this->oUser) ) );
+
+        //assigning payment for group
+        $oO2Group = new oxObject2Group();
+        $oO2Group->setId($this->_getUId());
+        $oO2Group->oxobject2group__oxobjectid = new oxField($this->_aPayList[0]->getId(), oxField::T_RAW);
+        $oO2Group->oxobject2group__oxgroupsid = new oxField('oxidcustomer', oxField::T_RAW);
+        $oO2Group->save();
+
+        //remove first element
+        array_shift($aResult);
+        $this->assertEquals( $aResult, array_keys( $oList->getPaymentList( $this->oDelSet->getId(), 55, $this->oUser) ) );
     }
 
     /**

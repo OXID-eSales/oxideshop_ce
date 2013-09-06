@@ -88,22 +88,13 @@ class oxShop extends oxI18n
 
         $aQ = array();
 
-        $aViews = array();
-        $sSelect = "SELECT TABLE_NAME FROM information_schema.`TABLES` WHERE TABLE_NAME LIKE 'oxv_%' AND TABLE_TYPE LIKE 'VIEW' AND TABLE_SCHEMA LIKE '".$this->getConfig()->getConfigParam( 'dbName' )."'";
-        $aRez = oxDb::getDb()->getAll($sSelect);
-        foreach ( $aRez as $aRetTable ) {
-            $aViews[] = $aRetTable[0];
-        }
-
         // Generate multitable views
         foreach ( $aTables as $sTable ) {
             $aQ[] = 'CREATE OR REPLACE SQL SECURITY INVOKER VIEW oxv_'.$sTable.' AS SELECT * FROM '.$sTable.' '.$this->_getViewJoinAll($sTable);
-            $aViews = array_diff( $aViews, array( 'oxv_'.$sTable ) );
 
             if (in_array($sTable, $aMultilangTables)) {
                 foreach ($aLanguages as $iLang => $sLang) {
                     $aQ[] = 'CREATE OR REPLACE SQL SECURITY INVOKER VIEW oxv_'.$sTable.'_'.$sLang.' AS SELECT '.$this->_getViewSelect($sTable, $iLang).' FROM '.$sTable.' '.$this->_getViewJoinLang($sTable, $iLang);
-                    $aViews = array_diff( $aViews, array( 'oxv_'.$sTable.'_'.$sLang ) );
                 }
             }
         }
@@ -114,11 +105,6 @@ class oxShop extends oxI18n
                 $bSuccess = false;
             }
         }
-
-        foreach ($aViews as $sView) {
-            $oDb->execute( 'DROP VIEW IF EXISTS '. $sView );
-        }
-
         return $bSuccess;
     }
 

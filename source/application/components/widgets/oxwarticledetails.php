@@ -952,7 +952,8 @@ class oxwArticleDetails extends oxWidget
         $oCategory = new oxCategory();
 
         // if category parameter is not found, use category from product
-        if ( !$sCatId = $this->getViewParameter( "cnid" ) ) {
+        $sCatId = $this->getViewParameter( "cnid" );
+        if ( !$sCatId && $oProduct->getCategory() ) {
             $sCatId = $oProduct->getCategory()->getId();
         }
         $oCategory->setId( $sCatId );

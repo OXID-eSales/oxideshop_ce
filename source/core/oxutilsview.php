@@ -19,7 +19,6 @@
  * @package   core
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -30,14 +29,14 @@ class oxUtilsView extends oxSuperCfg
     /**
      * oxUtils class instance.
      *
-     * @var oxutils* instance
+     * @var oxUtils
      */
     private static $_instance = null;
 
     /**
      * Template processor object (smarty)
      *
-     * @var smarty
+     * @var Smarty
      */
     protected static $_oSmarty = null;
 

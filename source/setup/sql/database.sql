@@ -1559,7 +1559,9 @@ CREATE TABLE `oxobject2payment` (
   `OXOBJECTID` char(32) character set latin1 collate latin1_general_ci NOT NULL default '' COMMENT 'Object id (table determined by oxtype)',
   `OXTYPE` char(32) character set latin1 collate latin1_general_ci NOT NULL default '' COMMENT 'Record type',
   `OXTIMESTAMP` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP COMMENT 'Timestamp',
-  PRIMARY KEY  (`OXID`)
+  PRIMARY KEY  (`OXID`),
+  KEY ( `OXOBJECTID` ),
+  KEY ( `OXPAYMENTID` )
 ) ENGINE=MyISAM COMMENT 'Shows many-to-many relationship between payments and objects (table determined by oxtype)';
 
 #

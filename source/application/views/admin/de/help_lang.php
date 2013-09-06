@@ -294,7 +294,7 @@ $aLang =  array(
 
 
 
-'HELP_SHOP_MAIN_PRODUCTIVE'                   => 'So lange diese Einstellung <span class="warning_or_important_hint">nicht</span> aktiv ist, werden am unteren Ende jeder Seite Informationen zu Ladezeiten angezeigt. Außerdem werden Debug-Informationen angezeigt. Diese Informationen sind für Entwickler wichtig, wenn sie den OXID eShop anpassen.<br>' .
+'HELP_SHOP_MAIN_PRODUCTIVE'                   => '[tr] Non-productive eShop mode is intended for eShop installation, configuration, template customization and module debugging phase. As soon as productive mode is turned <span class="warning_or_important_hint">ON</span>, cache handling and error reporting behavior is optimised for live shop.<br>' .
                                                  '<span class="warning_or_important_hint">Aktivieren Sie diese Einstellung, bevor ihr eShop öffentlich zugänglich gemacht wird! Dadurch wird den Benutzern nur der eShop ohne die zusätzlichen Informationen angezeigt.</span><br>' .
                                                  'Weitere wichtige Hinweise für den Livegang des OXID eShop finden Sie in unserer <a href="http://wiki.oxidforge.org/Tutorials/Check_vor_dem_Livegang" target="_blank">OXIDforge</a>.',
 

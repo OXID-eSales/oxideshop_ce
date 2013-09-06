@@ -299,7 +299,7 @@ $aLang =  array(
 
 
 
-'HELP_SHOP_MAIN_PRODUCTIVE'                   => 'As long as this setting is <span class="warning_or_important_hint">not</span> active, information about execution times and debug information are displayed  at the bottom of each page. These information is useful when customizing eShop.<br>' .
+'HELP_SHOP_MAIN_PRODUCTIVE'                   => '[tr] Non-productive eShop mode is intended for eShop installation, configuration, template customization and module debugging phase. As soon as productive mode is turned <span class="warning_or_important_hint">ON</span>, cache handling and error reporting behavior is optimised for live shop.<br>' .
                                                  '<span class="warning_or_important_hint">Activate this setting when the eShop is launched. Thereby only the eShop without additional information is displayed to your users.</span><br>' .
                                                  'Find other important information for going live with OXID eShop in our <a href="http://wiki.oxidforge.org/Tutorials/Check_before_going_live" target="_blank">OXIDforge</a>.',
 

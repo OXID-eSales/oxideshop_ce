@@ -865,7 +865,9 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     protected function _loadFromDb( $sOXID )
     {
         $sSelect = $this->buildSelectString( array( $this->getViewName().".oxid" => $sOXID ));
+
         $aData = oxDb::getDb( oxDb::FETCH_MODE_ASSOC )->getRow( $sSelect );
+
         return $aData;
     }
 
@@ -2054,8 +2056,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             return;
         }
 
-        $this->beforeUpdate();
-
         // article is not variant - should be updated current amount
         if ( !$this->oxarticles__oxparentid->value ) {
             //updating by SQL query, due to wrong behaviour if saving article using not admin mode
@@ -2067,8 +2067,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             $oUpdateArticle = $this->getParentArticle();
             $oUpdateArticle->updateSoldAmount( $dAmount );
         }
-
-        $this->onChange( ACTION_UPDATE );
 
         return $rs;
     }

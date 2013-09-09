@@ -690,7 +690,7 @@
         [{/if}]
     [{/block}]
 
-    [{block name="email_html_order_cust_paymentinfo"}]
+    [{block name="email_html_order_cust_paymentinfo_top"}]
         [{if $payment->oxuserpayments__oxpaymentsid->value != "oxempty"}]
             <h3 style="font-weight: bold; margin: 20px 0 7px; padding: 0; line-height: 35px; font-size: 12px;font-family: Arial, Helvetica, sans-serif; text-transform: uppercase; border-bottom: 4px solid #ddd;">
                 [{ oxmultilang ident="PAYMENT_METHOD" suffix="COLON" }]

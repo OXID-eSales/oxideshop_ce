@@ -96,8 +96,7 @@ class Unit_Core_oxShopViewValidatorTest extends OxidTestCase
         $oShop->oxshop__oxname = new oxField( "Shop 19" );
         $oShop->save();
 
-        $oValidator = $this->getMock( 'oxShopViewValidator', array( '_getAllViews', ) );
-        $oValidator->expects( $this->once() )->method( '_getAllViews' )->will( $this->returnValue( array(
+        $aAllViews = array(
             'oxv_oxartextends',
             'oxv_oxartextends_en',
             'oxv_oxartextends_de',
@@ -105,20 +104,12 @@ class Unit_Core_oxShopViewValidatorTest extends OxidTestCase
             'oxv_oxarticles',
             'oxv_oxarticles_en',
             'oxv_oxarticles_de',
-            'oxv_oxarticles_ru',
-            'oxv_oxarticles_1',
-            'oxv_oxarticles_1_en',
-            'oxv_oxarticles_1_de',
-            'oxv_oxarticles_1_lt',
-            'oxv_oxarticles_10',
-            'oxv_oxarticles_10_en',
-            'oxv_oxarticles_10_de',
-            'oxv_oxarticles_10_lt',
-            'oxv_oxarticles_19',
-            'oxv_oxarticles_19_en',
-            'oxv_oxarticles_19_de',
-            'oxv_oxarticles_19_lt',
-        ) ) );
+            'oxv_oxarticles_ru'
+        );
+
+
+        $oValidator = $this->getMock( 'oxShopViewValidator', array( '_getAllViews', ) );
+        $oValidator->expects( $this->once() )->method( '_getAllViews' )->will( $this->returnValue( $aAllViews ) );
 
         $aLanguageIds = array( 0 => 'de', 1 => 'en' );
 
@@ -129,9 +120,10 @@ class Unit_Core_oxShopViewValidatorTest extends OxidTestCase
 
         $aResult = $oValidator->getInvalidViews();
 
-        $this->assertEquals( 3, count($aResult) );
+
+            $this->assertEquals( 2, count($aResult) );
+
         $this->assertContains( 'oxv_oxartextends_lt', $aResult );
-        $this->assertContains( 'oxv_oxarticles_1_lt', $aResult );
         $this->assertContains( 'oxv_oxarticles_ru', $aResult );
     }
 }

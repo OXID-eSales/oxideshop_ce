@@ -19,7 +19,6 @@
  * @package   views
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -389,7 +388,7 @@ class RecommList extends aList
     {
         if ( $this->_sSearch === null ) {
             $this->_sSearch = false;
-            if ( $sSearch = oxConfig::getParameter( 'searchrecomm', true ) ) {
+            if ( $sSearch = oxConfig::getParameter( 'searchrecomm', false ) ) {
                 $this->_sSearch = $sSearch;
             }
         }

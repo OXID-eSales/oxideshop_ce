@@ -105,6 +105,20 @@ class oxShop extends oxI18n
                 $bSuccess = false;
             }
         }
+
+        $oViewsValidator = oxNew( 'oxShopViewValidator' );
+
+        $oViewsValidator->setShopId( $this->getConfig()->getShopId() );
+        $oViewsValidator->setLanguages( $aLanguages );
+        $oViewsValidator->setMultiLangTables( $aMultilangTables );
+        $oViewsValidator->setMultiShopTables( $aMultishopTables );
+
+        $aViews = $oViewsValidator->getInvalidViews();
+
+        foreach ($aViews as $sView) {
+            $oDb->execute( 'DROP VIEW IF EXISTS '. $sView );
+        }
+
         return $bSuccess;
     }
 

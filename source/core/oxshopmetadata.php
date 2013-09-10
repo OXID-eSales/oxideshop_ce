@@ -142,10 +142,9 @@ class oxShopMetaData extends oxSuperCfg
             if ( $rs && $rs->recordCount()> 0 && $rs->fields[0] ) {
                 $iOXID     = $rs->fields[0];
                 $sParentID = $rs->fields[1];
-                //T2007-03-14
-                //taking oxparentid field not oxisherineted as in single case of oxobject2category table case when we call it
-                //this is exactly what we need
-                if ( !$blIsInherited ) {
+
+                //the default value is taking from the shop settings
+                if ( is_null($blIsInherited) ) {
                     $blIsInherited = $rs->fields[2];
                 }
                 $aShopSetBits[$this->getShopFieldSet($iOXID)][] = $this->getShopBit($iOXID);

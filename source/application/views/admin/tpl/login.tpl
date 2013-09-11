@@ -28,7 +28,7 @@
 
 <form action="[{ $oViewConf->getSelfLink() }]" target="_top" method="post" name="login" id="login">
     <p>
-        <img src="[{$oViewConf->getImageUrl()}]loginlogo.gif" alt="" class="logo">
+        <img src="[{$oViewConf->getImageUrl()}]loginlogo.png" alt="" class="logo">
 
         [{ $oViewConf->getHiddenSid() }]
 

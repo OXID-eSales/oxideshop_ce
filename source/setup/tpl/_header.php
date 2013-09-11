@@ -126,7 +126,7 @@
 <body>
 
 <div id="page">
-    <a href="index.php?istep=<?php $this->getSetupStep('STEP_SYSTEMREQ' ); ?>&sid=<?php $this->getSid(); ?>"><img src="<?php echo $this->getImageDir(); ?>/setup_logo.gif" alt="OXID eSales" hspace="5" vspace="5" border="0"></a>
+    <a href="index.php?istep=<?php $this->getSetupStep('STEP_SYSTEMREQ' ); ?>&sid=<?php $this->getSid(); ?>"><img src="<?php echo $this->getImageDir(); ?>/setup_logo.png" alt="OXID eSales" hspace="5" vspace="5" border="0"></a>
     <div id="header">
         <?php
         $iCntr = 0;

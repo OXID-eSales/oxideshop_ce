@@ -45,6 +45,13 @@ class oxFileCheckerResult {
     protected $_aResultSummary = array();
 
     /**
+     * If the variable is true, the script will show all files, even they are ok.
+     *
+     * @var bool
+     */
+    protected $_blListAllFiles = false;
+
+    /**
      * Object constructor
      */
     public function __construct()
@@ -55,6 +62,26 @@ class oxFileCheckerResult {
         $this->_aResultSummary['MODIFIED'] = 0;
         $this->_aResultSummary['FILES'] = 0;
         $this->_aResultSummary['SHOP_OK'] = true;
+    }
+
+    /**
+     * Setter for working directory
+     *
+     * @param $blListAllFiles boolean
+     */
+    public function setListAllFiles( $blListAllFiles )
+    {
+        $this->_blListAllFiles = $blListAllFiles;
+    }
+
+    /**
+     * working directory getter
+     *
+     * @return boolean
+     */
+    public function getListAllFiles()
+    {
+        return $this->_blListAllFiles;
     }
 
     /**
@@ -92,7 +119,9 @@ class oxFileCheckerResult {
             $this->_aResultSummary['SHOP_OK'] = false;
         }
 
+        if ( ( $aResult['ok'] && $this->getListAllFiles() ) || !$aResult['ok'] ) {
         $this->_aResult[] = $aResult;
+        }
 
         return $this->_aResultSummary;
     }

@@ -71,19 +71,6 @@ class Unit_Core_oxFileCheckerTest extends OxidTestCase
         $this->assertEquals( "somedir",  $oChecker->getBaseDirectory() );
     }
 
-    /**
-     * Testing revision getter and setter
-     */
-    public function testGetListAllFiles()
-    {
-        $oChecker = oxNew( "oxFileChecker" );
-
-        $oChecker->setListAllFiles( true );
-        $this->assertTrue( $oChecker->getListAllFiles() );
-
-        $oChecker->setListAllFiles( false );
-        $this->assertFalse( $oChecker->getListAllFiles() );
-    }
 
 
 }

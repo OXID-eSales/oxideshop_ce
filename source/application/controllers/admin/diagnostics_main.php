@@ -162,10 +162,6 @@ class Diagnostics_Main extends oxAdminDetails
         $oFileChecker->setEdition( $this->getConfig()->getEdition() );
         $oFileChecker->setRevision( $this->getConfig()->getRevision() );
 
-        if ( $this->getParam( 'listAllFiles' ) == 'listAllFiles' ) {
-            $oFileChecker->setListAllFiles ( true );
-        }
-
         if ( !$oFileChecker->init() ) {
             $this->_blError = true;
             $this->_sErrorMessage = $oFileChecker->getErrorMessage();
@@ -174,12 +170,11 @@ class Diagnostics_Main extends oxAdminDetails
 
         $oFileCheckerResult = oxNew( "oxFileCheckerResult" );
 
+        $blListAllFiles = ( $this->getParam( 'listAllFiles' ) == 'listAllFiles' );
+        $oFileCheckerResult->setListAllFiles( $blListAllFiles );
+
         foreach ( $aFileList as $sFile ) {
             $aCheckResult = $oFileChecker->checkFile( $sFile );
-
-            if ( empty( $aCheckResult) )
-                continue;
-
             $oFileCheckerResult->addResult( $aCheckResult );
         }
 

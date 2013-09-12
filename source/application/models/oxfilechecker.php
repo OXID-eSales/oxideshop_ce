@@ -206,26 +206,6 @@ class oxFileChecker {
     }
 
     /**
-     * Setter for working directory
-     *
-     * @param $blListAllFiles boolean
-     */
-    public function setListAllFiles( $blListAllFiles )
-    {
-        $this->_blListAllFiles = $blListAllFiles;
-    }
-
-    /**
-     * working directory getter
-     *
-     * @return boolean
-     */
-    public function getListAllFiles()
-    {
-        return $this->_blListAllFiles;
-    }
-
-    /**
      * Error status getter
      *
      * @return string
@@ -381,10 +361,7 @@ class oxFileChecker {
                     $sMessage = 'SOURCE|SNAPSHOT';
                     $sColor = 'red';
                 } else {
-                    $sMessage = '';
-                    if ( $this->_blListAllFiles ) {
                         $sMessage = oxRegistry::getLang()->translateString( 'OXDIAG_OK' );
-                    }
                     $sColor = "green";
                 }
             } elseif ( $oXML->res == 'VERSIONMISMATCH' ) {

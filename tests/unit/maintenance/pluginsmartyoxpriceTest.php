@@ -60,7 +60,7 @@ class Unit_Maintenance_pluginSmartyOxPriceTest extends OxidTestCase
     /**
      * Test using price as oxPrice object
      *
-     * @dataProvider pricesAsObject
+     * @dataProvider pricesAsObjects
      *
      * @param oxPrice $oPrice price
      * @param stdClass $oCurrency currency object

@@ -82,10 +82,40 @@ class oxArticleList extends oxList
     public function selectString( $sSelect )
     {
         startProfile("loadinglists");
-        $oRes = parent::selectString( $sSelect );
-        stopProfile("loadinglists");
+        $this->clear();
 
-        return $oRes;
+        $oDb = oxDb::getDb( oxDb::FETCH_MODE_ASSOC );
+        if ( $this->_aSqlLimit[0] || $this->_aSqlLimit[1]) {
+            $rs = $oDb->selectLimit( $sSelect, $this->_aSqlLimit[1], $this->_aSqlLimit[0] );
+        } else {
+            $rs = $oDb->select( $sSelect );
+        }
+
+        if ($rs != false && $rs->recordCount() > 0) {
+
+            $oSaved = clone $this->getBaseObject();
+
+            while (!$rs->EOF) {
+
+                $oListObject = clone $oSaved;
+
+                $this->_assignElement($oListObject, $rs->fields);
+
+                if ($oListObject->getId()) {
+                    $this->_aArray[$oListObject->getId()] = $oListObject;
+
+                    // Adding to static cache on article list load
+                    if ( $oListObject instanceof oxArticle ) {
+                        $oListObject->setArticleDataToStaticCache( $oListObject->getId(), $rs->fields );
+                    }
+                } else {
+                    $this->_aArray[] = $oListObject;
+                }
+
+                $rs->moveNext();
+            }
+        }
+        stopProfile("loadinglists");
     }
 
     /**

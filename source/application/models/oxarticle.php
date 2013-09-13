@@ -244,6 +244,11 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     static protected $_aSelList;
 
     /**
+     * Array containing statically cached articles, that are loaded from database
+     */
+    static protected $_aArticleData;
+
+    /**
      * Select lists for tpl
      *
      * @var array
@@ -496,6 +501,33 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     {
         parent::__set( $sName, $sValue );
     }
+
+    /**
+     * Sets article data to static cache article data array
+     *
+     * @param string $sId
+     * @param array  $aArticleData
+     */
+    public function setArticleDataToStaticCache( $sId, $aArticleData )
+    {
+        self::$_aArticleData[$sId] = $aArticleData;
+    }
+
+    /**
+     * Gets article data from static cache article data array
+     *
+     * @param string  $sId
+     *
+     * @return array|null
+     */
+    public function getArticleDataFromStaticCache( $sId )
+    {
+        if ( isset( self::$_aArticleData[$sId] ) ) {
+            return self::$_aArticleData[$sId];
+        }
+        return null;
+    }
+
 
     /**
      * Sets object ID, additionally sets $this->oxarticles__oxnid field value
@@ -873,6 +905,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
     /**
      * Loads object data from DB (object data ID must be passed to method).
+     * Saves object data to static cache
      * Converts dates (oxarticle::oxarticles__oxinsert)
      * to international format (oxutils.php oxRegistry::get("oxUtilsDate")->formatDBDate(...)).
      * Returns true if article was loaded successfully.
@@ -886,10 +919,19 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         // A. #1325 resetting to avoid problems when reloading (details etc)
         $this->_blNotBuyableParent = false;
 
+        $blFoundInCache = false;
+        $aData = $this->getArticleDataFromStaticCache( $sOXID );
+        if ( $aData ) {
+            $blFoundInCache = true;
+        } else {
 
             $aData = $this->_loadFromDb( $sOXID );
+        }
 
         if ( $aData ) {
+            if ( !$blFoundInCache ) {
+                $this->setArticleDataToStaticCache( $sOXID, $aData );
+            }
             $this->assign( $aData );
             // convert date's to international format
             $this->_isLoaded = true;

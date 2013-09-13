@@ -7212,5 +7212,22 @@ class Unit_Core_oxarticleTest extends OxidTestCase
         $this->assertEquals( 13, $oP->oxarticles__oxratingcnt->value );
     }
 
+    /**
+     * Checks article data retrieval via static cache
+     */
+    public function testStaticCacheDataRetrieval()
+    {
+        $oProduct = new oxArticle();
+
+        $oProduct->load( "_testArt" );
+        // _testArt is already called on shop setup, hence why it should be in cache
+        $this->assertEquals( array( "OXID" => "_testArt" ), $oProduct->getArticleDataFromStaticCache( "_testArt" ) );
+
+        $oProduct->setArticleDataToStaticCache( "_testArt", array( "OXID" => "_testArt", "test" => "test" ) );
+
+        $oNewProduct = new oxArticle();
+        $this->assertEquals( array( "OXID" => "_testArt", "test" => "test" ), $oNewProduct->getArticleDataFromStaticCache( "_testArt" ) );
+    }
+
 
 }

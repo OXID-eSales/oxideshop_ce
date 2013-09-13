@@ -19,7 +19,6 @@
  * @package   core
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 DEFINE('_DB_SESSION_HANDLER', getShopBasePath() . 'core/adodblite/session/adodb-session.php');
@@ -819,6 +818,19 @@ class oxSession extends oxSuperCfg
         }
 
         return $this->_blSidNeeded;
+    }
+
+    /**
+     * Checks if current session id is the same as in originally received cookie.
+     * This method is intended to indicate if new session cookie
+     * is to be sent as header from this script execution.
+     *
+     * @return bool
+     */
+    public function isActualSidInCookie()
+    {
+        $blReturn = ($_COOKIE[$this->getName()] == $this->getId());
+        $blReturn;
     }
 
     /**

@@ -1204,7 +1204,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     public function testGetSessionIdNull()
     {
         $oViewConf = new oxViewConfig();
-        $this->assertEquals( null, $oViewConf->getSessionId() );
+        $this->assertEquals( null, $oViewConf->getWidgetSid() );
     }
 
     /**

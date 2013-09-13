@@ -19,7 +19,6 @@
  * @package   tests
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -1589,4 +1588,32 @@ class Unit_Core_oxsessionTest extends OxidTestCase
         $oSession->setNonPublicVar( "_blStarted", true );
         $this->assertTrue( $oSession->isSessionStarted() );
     }
+
+    public function testIsActualSidInCookiePossitive()
+    {
+        $sOriginalVal = $_COOKIE["sid"];
+        $_COOKIE["sid"] = "testIdDifferent";
+        $oSession = $this->getMock('oxSession', array('getId'));
+        $oSession->expects($this->any())->method('getId')->will($this->returnValue('testId'));
+
+        $blRes = $oSession->isActualSidInCookie();
+
+        $_COOKIE["sid"] = $sOriginalVal;
+        $this->assertFalse($blRes);
+    }
+
+    public function testIsActualSidInCookieNegative()
+    {
+        $sOriginalVal = $_COOKIE["sid"];
+        $_COOKIE["sid"] = "testId";
+        $oSession = $this->getMock('oxSession', array('getId'));
+        $oSession->expects($this->any())->method('getId')->will($this->returnValue('testId'));
+
+        $blRes = $oSession->isActualSidInCookie();
+
+        $_COOKIE["sid"] = $sOriginalVal;
+
+        $this->assertTrue($blRes);
+    }
+
 }

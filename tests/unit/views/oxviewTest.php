@@ -931,4 +931,12 @@ class Unit_Views_oxviewTest extends OxidTestCase
         $this->assertEquals( $sTest, $oView->getRevision() );
     }
 
+    public function testGetWidgetSid()
+    {
+        $oSession = $this->getMock("oxSession", )
+        $this->assertEquals();
+
+
+        $oSession = $this->getMock( "oxSession", array( "isActual" ) );
+    }
 }

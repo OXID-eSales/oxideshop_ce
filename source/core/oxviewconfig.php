@@ -368,20 +368,6 @@ class oxViewConfig extends oxSuperCfg
     }
 
     /**
-     * Returns session id
-     *
-     * @return string
-     */
-    public function getSessionId()
-    {
-        if ( ( $sValue = $this->getViewConfigParam( 'sessionid' ) ) === null ) {
-            $sValue = $this->getSession()->getId();
-            $this->setViewConfigParam( 'sessionid', $sValue );
-        }
-        return $sValue;
-    }
-
-    /**
      * Returns forms hidden session parameters
      *
      * @return string

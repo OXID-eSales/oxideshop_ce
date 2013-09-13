@@ -582,6 +582,7 @@ class Unit_Core_oxarticleTest extends OxidTestCase
         $oA->load('_testArt');
 
         $this->assertTrue( $oA->UNIThasAnyVariant() );
+        $oA->resetStaticCache();
 
         $oA->load('_testVar');
         $this->assertFalse( $oA->UNIThasAnyVariant() );

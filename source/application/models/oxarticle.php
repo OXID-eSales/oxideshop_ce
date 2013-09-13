@@ -505,12 +505,13 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     /**
      * Sets article data to static cache article data array
      *
-     * @param string $sId
      * @param array  $aArticleData
      */
-    public function setArticleDataToStaticCache( $sId, $aArticleData )
+    protected function _setArticleDataToStaticCache( $aArticleData )
     {
-        self::$_aArticleData[$sId] = $aArticleData;
+        if ( $this->getId() ) {
+            self::$_aArticleData[$this->getId()] = $aArticleData;
+        }
     }
 
     /**
@@ -520,14 +521,22 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      *
      * @return array|null
      */
-    public function getArticleDataFromStaticCache( $sId )
+    protected function _getArticleDataFromStaticCache( $sId )
     {
+        $aArticleData = null;
         if ( isset( self::$_aArticleData[$sId] ) ) {
-            return self::$_aArticleData[$sId];
+            $aArticleData = self::$_aArticleData[$sId];
         }
-        return null;
+        return $aArticleData;
     }
 
+    /**
+     * Resets static cache array
+     */
+    public function resetStaticCache()
+    {
+        self::$_aArticleData = array();
+    }
 
     /**
      * Sets object ID, additionally sets $this->oxarticles__oxnid field value
@@ -882,7 +891,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         $this->_assignDynImageDir();
         $this->_assignComparisonListFlag();
 
-
+        $this->_setArticleDataToStaticCache( $aRecord );
         stopProfile('articleAssign');
     }
 
@@ -919,19 +928,14 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         // A. #1325 resetting to avoid problems when reloading (details etc)
         $this->_blNotBuyableParent = false;
 
-        $blFoundInCache = false;
-        $aData = $this->getArticleDataFromStaticCache( $sOXID );
-        if ( $aData ) {
-            $blFoundInCache = true;
-        } else {
+        $aData = $this->_getArticleDataFromStaticCache( $sOXID );
+        if ( !$aData ) {
 
             $aData = $this->_loadFromDb( $sOXID );
         }
 
         if ( $aData ) {
-            if ( !$blFoundInCache ) {
-                $this->setArticleDataToStaticCache( $sOXID, $aData );
-            }
+
             $this->assign( $aData );
             // convert date's to international format
             $this->_isLoaded = true;
@@ -2253,6 +2257,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      */
     public function onChange($sAction = null, $sOXID = null, $sParentID = null)
     {
+        unset( self::$_aArticleData[$this->getId()] );
+
         $myConfig = $this->getConfig();
 
         if (!isset($sOXID)) {
@@ -3964,6 +3970,12 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
                           oxshopid = $sOxShopId
             ";
             $oDb->execute( $sUpdate );
+
+            foreach ( self::$_aArticleData as $aArticle ) {
+                if ( $aArticle["OXPARENTID"] == $this->getId() ) {
+                    unset( self::$_aArticleData[$aArticle["OXID"]] );
+                }
+            }
         }
     }
 

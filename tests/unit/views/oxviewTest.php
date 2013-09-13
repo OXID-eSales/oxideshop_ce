@@ -931,30 +931,12 @@ class Unit_Views_oxviewTest extends OxidTestCase
         $this->assertEquals( $sTest, $oView->getRevision() );
     }
 
-    public function testGetSidForWidget()
+    public function testGetWidgetSid()
     {
-        $oSession = $this->getMock('oxSession', array('isActualSidInCookie', 'getId'));
-        $oSession->expects($this->once())->method('isActualSidInCookie')->will($this->returnValue(false));
-        $oSession->expects($this->once())->method('getId')->will($this->returnValue('testSid'));
+        $oSession = $this->getMock("oxSession", )
+        $this->assertEquals();
 
-        $oView = $this->getMock( "oxView", array( "getSession" ) );
-        $oView->expects( $this->any() )->method( "getSession" )->will( $this->returnValue( $oSession ) );
 
-        $this->assertEquals('testSid', $oView->getSidForWidget() );
+        $oSession = $this->getMock( "oxSession", array( "isActual" ) );
     }
-
-    public function testGetSidForWidget_CookieInSessionMatchesActualSid_expectNull()
-    {
-        $oSession = $this->getMock('oxSession', array('isActualSidInCookie', 'getId'));
-        $oSession->expects($this->once())->method('isActualSidInCookie')->will($this->returnValue(true));
-        $oSession->expects($this->never())->method('getId');
-
-        $oView = $this->getMock( "oxView", array( "getSession" ) );
-        $oView->expects( $this->any() )->method( "getSession" )->will( $this->returnValue( $oSession ) );
-
-        $this->assertNull($oView->getSidForWidget());
-    }
-
-
-
 }

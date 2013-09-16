@@ -1196,56 +1196,6 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     }
 
     /**
-     * oxViewconfig::getSessionId() test case
-     *
-     * @return null
-     */
-
-    public function testGetSessionIdNull()
-    {
-        $oViewConf = new oxViewConfig();
-        $this->assertEquals( null, $oViewConf->getWidgetSid() );
-    }
-
-    /**
-     * oxViewconfig::getSessionId() test case
-     *
-     * @return null
-     */
-
-    public function testGetSessionIdFromSession()
-    {
-        $sSid = "newSid";
-
-        $oViewConf = $this->getMock( "oxViewConfig", array( "getViewConfigParam", "getSession" ) );
-        $oViewConf->expects( $this->once() )->method( "getViewConfigParam" )->with( $this->equalTo( "sessionid" ))->will( $this->returnValue( $sSid ) );
-        $oViewConf->expects( $this->never() )->method( "getSession" );
-        $oViewConf->expects( $this->never() )->method( "setViewConfigParam" );
-
-        $this->assertEquals( $sSid, $oViewConf->getSessionId() );
-    }
-
-    /**
-     * oxViewconfig::getSessionId() test case
-     *
-     * @return null
-     */
-
-    public function testGetSessionIdFromNewSession()
-    {
-        $sSid = "newSid";
-        $oSession = $this->getMock( "oxSession", array( "getId" ) );
-        $oSession->expects( $this->once() )->method( "getId" )->will( $this->returnValue( $sSid ) );
-
-        $oViewConf = $this->getMock( "oxViewConfig", array( "getViewConfigParam", "getSession", "setViewConfigParam" ) );
-        $oViewConf->expects( $this->once() )->method( "getViewConfigParam" )->with( $this->equalTo( "sessionid" ))->will( $this->returnValue( null ) );
-        $oViewConf->expects( $this->once() )->method( "getSession" )->will( $this->returnValue( $oSession ) );
-        $oViewConf->expects( $this->once() )->method( "setViewConfigParam" )->with( $this->equalTo( "sessionid" ), $this->equalTo( $sSid ));
-
-        $this->assertEquals( $sSid, $oViewConf->getSessionId() );
-    }
-
-    /**
      * oxViewconfig::getHiddenSid() test case
      *
      * @return null

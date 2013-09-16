@@ -1616,4 +1616,18 @@ class Unit_Core_oxsessionTest extends OxidTestCase
         $this->assertTrue($blRes);
     }
 
+    public function testIsActualSidInCookieNotSet()
+    {
+        $sOriginalVal = $_COOKIE["sid"];
+        unset($_COOKIE["sid"]);
+        $oSession = $this->getMock('oxSession', array('getId'));
+        $oSession->expects($this->any())->method('getId')->will($this->returnValue('testId'));
+
+        $blRes = $oSession->isActualSidInCookie();
+
+        $_COOKIE["sid"] = $sOriginalVal;
+
+        $this->assertFalse($blRes);
+    }
+
 }

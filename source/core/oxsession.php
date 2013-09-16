@@ -829,8 +829,8 @@ class oxSession extends oxSuperCfg
      */
     public function isActualSidInCookie()
     {
-        $blReturn = ($_COOKIE[$this->getName()] == $this->getId());
-        $blReturn;
+        $blReturn = (isset($_COOKIE[$this->getName()]) &&  ($_COOKIE[$this->getName()] == $this->getId()));
+        return $blReturn;
     }
 
     /**

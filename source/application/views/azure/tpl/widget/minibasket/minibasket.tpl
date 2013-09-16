@@ -15,7 +15,7 @@
         <div>
             <input type="hidden" name="cl" value="[{$oView->getClassName()}]"/>
             <input type="hidden" name="nocookie" value="0"/>
-            <input type="hidden" name="force_sid" value="[{$oViewConf->getSessionId()}]"/>
+            <input type="hidden" name="force_sid" value="[{$oView->getSidForWidget()}]"/>
         </div>
     </form>
 

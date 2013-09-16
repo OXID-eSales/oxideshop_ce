@@ -10,7 +10,7 @@
 
   [{if $oxcmp_user || $oView->getCompareItemCount() || $Errors.loginBoxErrors}]
       [{assign var="blAnon" value=0}]
-      [{assign var="force_sid" value=$oViewConf->getSessionId()}]
+      [{assign var="force_sid" value=$oView->getSidForWidget()}]
   [{else}]
       [{assign var="blAnon" value=1}]
   [{/if}]
@@ -23,7 +23,7 @@
 
       [{if $oxcmp_basket->getProductsCount()}]
           [{assign var="blAnon" value=0}]
-          [{assign var="force_sid" value=$oViewConf->getSessionId()}]
+          [{assign var="force_sid" value=$oView->getSidForWidget()}]
       [{else}]
           [{assign var="blAnon" value=1}]
       [{/if}]

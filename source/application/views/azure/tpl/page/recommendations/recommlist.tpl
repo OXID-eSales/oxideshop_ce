@@ -6,7 +6,7 @@
         [{assign var="recommendation_head" value=$_actvrecommlist->oxrecommlists__oxtitle->value|cat:" <span>("|cat:$recommendation_head|cat:" "|cat:$_actvrecommlist->oxrecommlists__oxauthor->value|cat:")</span>"}]
         [{assign var="rsslinks" value=$oView->getRssLinks() }]
         [{if $oxcmp_user}]
-            [{assign var="force_sid" value=$oViewConf->getSessionId()}]
+            [{assign var="force_sid" value=$oView->getSidForWidget()}]
         [{/if}]
 
         <h1 class="pageHead">[{$recommendation_head}]

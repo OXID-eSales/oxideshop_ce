@@ -1018,4 +1018,24 @@ class oxView extends oxSuperCfg
         return false;
     }
 
+
+    /**
+     * Returns session ID, but only in case it is needed to be included for widget calls.
+     * This basically happens on session change,
+     * when session cookie is not equals to the actual session ID.
+     *
+     * @return string
+     */
+    public function getSidForWidget()
+    {
+        $sRet = null;
+        $oSession = $this->getSession();
+
+        if (!$oSession->isActualSidInCookie() ) {
+            $sRet = $oSession->getId();
+        }
+
+        return $sRet;
+    }
+
 }

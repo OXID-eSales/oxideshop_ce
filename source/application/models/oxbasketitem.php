@@ -453,6 +453,7 @@ class oxBasketItem extends oxSuperCfg
             }
 
             $this->_oArticle = oxNew( 'oxarticle' );
+            oxArticle::resetStaticCache();
             // #M773 Do not use article lazy loading on order save
             if ( $blDisableLazyLoading ) {
                 $this->_oArticle->modifyCacheKey('_allviews');

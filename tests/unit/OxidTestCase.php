@@ -19,7 +19,6 @@
  * @package   tests
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 require_once 'test_config.inc.php';
@@ -109,6 +108,7 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
         oxAddClassModule( 'modOxUtilsDate', 'oxUtilsDate' );
 
         oxUtils::getInstance()->cleanStaticCache();
+        oxArticle::resetStaticCache();
         error_reporting( (E_ALL ^ E_NOTICE) | E_STRICT );
         ini_set('display_errors', true);
 
@@ -169,6 +169,7 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
 
         oxUtilsObject::resetClassInstances();
         oxUtilsObject::resetModuleVars();
+        oxArticle::resetStaticCache();
 
         parent::tearDown();
     }

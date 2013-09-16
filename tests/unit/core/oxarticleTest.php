@@ -239,6 +239,7 @@ class Unit_Core_oxarticleTest extends OxidTestCase
         if ( $this->getName() == "testDeleteWithUnlimitedLanguages" ) {
             $this->_insertTestLanguage();
         }
+        oxArticle::resetStaticCache();
     }
 
     /**
@@ -582,7 +583,6 @@ class Unit_Core_oxarticleTest extends OxidTestCase
         $oA->load('_testArt');
 
         $this->assertTrue( $oA->UNIThasAnyVariant() );
-        $oA->resetStaticCache();
 
         $oA->load('_testVar');
         $this->assertFalse( $oA->UNIThasAnyVariant() );
@@ -6130,6 +6130,7 @@ class Unit_Core_oxarticleTest extends OxidTestCase
      */
     public function testUpdateVariantsRemind()
     {
+        $this->setAdminMode( true );
         $oParent = new oxArticle();
         $oParent->setId( "_testParent" );
         $oParent->oxarticles__oxshopid = new oxField(oxConfig::getInstance()->getBaseShopId(), oxField::T_RAW);

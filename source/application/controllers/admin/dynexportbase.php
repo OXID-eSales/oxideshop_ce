@@ -895,7 +895,6 @@ class DynExportBase extends oxAdminDetails
         $oRs = oxDb::getDb()->selectLimit( "select oxid from $sHeapTable", 1, $iCnt );
         if ( $oRs != false && $oRs->recordCount() > 0 ) {
             $oArticle = oxNew( 'oxarticle' );
-            $oArticle->resetStaticCache();
             $oArticle->setLoadParentData( true );
 
             $oArticle->setLanguage( oxSession::getVar( "iExportLanguage" ) );

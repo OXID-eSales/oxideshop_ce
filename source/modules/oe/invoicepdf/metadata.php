@@ -33,11 +33,11 @@ $sMetadataVersion = '1.0';
 $aModule = array(
     'id'           => 'invoicepdf',
     'title'        => 'Invoice PDF',
-    'description'  => 'Module for making invoice PDF files.',
+    'description'  => 'Module to export invoice PDF files.',
     'thumbnail'    => 'picture.png',
     'version'      => '1.0',
     'author'       => 'OXID eSales AG',
     'extend'       => array(
-        'oxorder' => 'invoicepdf/myorder'
+        'oxorder' => 'oe/invoicepdf/myorder'
     )
 );

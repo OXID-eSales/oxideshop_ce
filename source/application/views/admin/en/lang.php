@@ -33,7 +33,7 @@ $sLangName  = 'English';
 // -------------------------------
 $aLang = array(
 
-'charset'                                                  => 'UTF-8',
+'charset'                                                  => 'ISO-8859-15',
 'fullDateFormat'                                           => 'Y-m-d H:i:s',
 'simpleDateFormat'                                         => 'Y-m-d',
 

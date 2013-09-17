@@ -130,7 +130,7 @@ class oxShopControl extends oxSuperCfg
             if ( !$this->isAdmin() ) {
 
                 // first start of the shop
-                // check wether we have to display mall startscreen or not
+                // check whether we have to display mall start screen or not
                 if ( $myConfig->isMall() ) {
 
                     $iShopCount = oxDb::getDb()->getOne( 'select count(*) from oxshops where oxactive = 1' );

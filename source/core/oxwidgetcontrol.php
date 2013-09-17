@@ -102,10 +102,10 @@ class oxWidgetControl extends oxShopControl
         $oConfig = $this->getConfig();
 
         if ( $oConfig->hasActiveViewsChain() ) {
-            //removing current active view
+            // Removing current active view.
             $oConfig->dropLastActiveView();
 
-            // setting back last active view
+            // Setting back last active view.
             $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
             $oSmarty->assign('oView', $oConfig->getActiveView() );
         }
@@ -147,7 +147,7 @@ class oxWidgetControl extends oxShopControl
 
         $oWidgetViewObject = parent::_initializeViewObject( $sClass, $sFunction, $aParams );
 
-        //set template name for current widget
+        // Set template name for current widget.
         if ( $aParams['oxwtemplate'] ) {
             $oWidgetViewObject->setTemplateName( $aParams['oxwtemplate'] );
         }

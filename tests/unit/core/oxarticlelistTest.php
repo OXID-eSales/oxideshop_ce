@@ -2020,23 +2020,6 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
     }
 
     /**
-     * Testing if static cache works when working with article lists
-     */
-    public function testStaticCacheInArticleList()
-    {
-        $this->markTestIncomplete( "this test is not asserting correctly" );
-        $oTest = $this->getProxyClass('oxArticleList');
-
-            $sCatId = '8a142c3e49b5a80c1.23676990';
-        $oTest->loadCategoryArticles( $sCatId, null );
-        $oTest->loadCategoryIds( $sCatId, null );
-        $oArticle = new oxArticle();
-        foreach ( $oTest->getArray() as $sId ) {
-            $this->assertNotEquals( null, $oArticle->load( $sId ) );
-        }
-    }
-
-    /**
      * Test load tag articles lang 1.
      *
      * @return null

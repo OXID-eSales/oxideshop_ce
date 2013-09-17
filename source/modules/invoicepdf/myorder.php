@@ -1252,7 +1252,7 @@ class MyOrder extends MyOrder_parent
 
         // payment date
         $oPdf->setFont( $oPdfBlock->getFont(), '', 10 );
-        $text = $this->translate( 'ORDER_OVERVIEW_PDF_PAYUPTO' ).date( 'd.m.Y', mktime( 0, 0, 0, date ( 'm' ), date ( 'd' ) + 7, date( 'Y' ) ) );
+        $text = $this->translate( 'ORDER_OVERVIEW_PDF_PAYUPTO' ) . date( 'd.m.Y', strtotime( '+' . $this->getPaymentTerm() . ' day', strtotime( $this->oxorder__oxbilldate->value ) ) );
         $oPdf->text( 15, $siteH + 4, $text );
     }
 

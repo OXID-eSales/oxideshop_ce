@@ -50,7 +50,6 @@ class oxwReview extends oxWidget
      */
     public function render()
     {
-        oxRegistry::getConfig()->setGlobalParameter( 'noJSON', true );
         parent::render();
         return $this->_sThisTemplate;
     }

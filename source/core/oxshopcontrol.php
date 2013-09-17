@@ -405,6 +405,7 @@ class oxShopControl extends oxSuperCfg
             $oOutput->output('errors', $this->_getFormattedErrors( $oViewObject->getClassName() ));
         }
 
+
        $oOutput->sendHeaders();
 
 

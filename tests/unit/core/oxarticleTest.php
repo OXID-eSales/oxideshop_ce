@@ -7219,14 +7219,39 @@ class Unit_Core_oxarticleTest extends OxidTestCase
      */
     public function testStaticCacheDataRetrieval()
     {
-        $this->markTestIncomplete( "passing for now" );
-        $oArticle = $this->getMock( 'oxarticle' );
-        $oArticle->load( "_testArt" );
-        $oArticle->load( "_testArt" );
-        $oArticle->load( "_testArt" );
-        $oArticle->load( "_testArt" );
-        $oArticle->expects( $this->at( 0 ) )->method( '_loadFromDb' );
-        $this->assertEquals( true, $oArticle->load( "_testArt" ) );
+        oxArticle::resetStaticCache( "2176" );
+        /** @var oxArticle $oArticle */
+        $oArticle = $this->getMock( 'oxArticle', array( '_loadFromDb' ) );
+
+        $oArticle->expects( $this->exactly(2) )->method( '_loadFromDb' )->with( $this->equalTo( "2176" ) )->
+            will( $this->returnValue( array( "oxid" => 2176, "oxparentid" => 2000 ) ) );
+        $oArticle->load( "2176" );
+        $oArticle->load( "2176" );
+        oxArticle::resetStaticCache( "2176" );
+
+        $oArticle->load( "2176" );
+        $oArticle->load( "2176" );
+
+        $this->assertEquals( 2000, $oArticle->getFieldData( "oxparentid" ) );
+
+    }
+
+    /**
+     * Checks that in admin articles are not cached statically
+     */
+    public function testStaticCacheInAdmin()
+    {
+        $this->setAdminMode( 1 );
+        $oArticle = $this->getMock( 'oxArticle', array( '_loadFromDb' ) );
+
+        $oArticle->expects( $this->exactly(4) )->method( '_loadFromDb' )->with( $this->equalTo( "2176" ) )->
+            will( $this->returnValue( array( "oxid" => 2176, "oxparentid" => 2000 ) ) );
+        $oArticle->load( "2176" );
+        $oArticle->load( "2176" );
+        $oArticle->load( "2176" );
+        $oArticle->load( "2176" );
+
+        $this->assertEquals( 2000, $oArticle->getFieldData( "oxparentid" ) );
     }
 
 

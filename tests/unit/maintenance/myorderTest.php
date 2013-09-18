@@ -19,7 +19,6 @@
  * @package   tests
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -50,7 +49,7 @@ class testPdfClass
     }
 }
 
-require_once getShopBasePath() . 'modules/invoicepdf/myorder.php';
+require_once getShopBasePath() . 'modules/oe/invoicepdf/myorder.php';
 require_once getShopBasePath() . 'core/oxpdf.php';
 
 /**

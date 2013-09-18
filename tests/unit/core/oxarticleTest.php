@@ -239,7 +239,7 @@ class Unit_Core_oxarticleTest extends OxidTestCase
         if ( $this->getName() == "testDeleteWithUnlimitedLanguages" ) {
             $this->_insertTestLanguage();
         }
-        oxArticle::resetStaticCache();
+        $this->oArticle->resetStaticCache();
     }
 
     /**
@@ -7219,15 +7219,15 @@ class Unit_Core_oxarticleTest extends OxidTestCase
      */
     public function testStaticCacheDataRetrieval()
     {
-        oxArticle::resetStaticCache( "2176" );
         /** @var oxArticle $oArticle */
         $oArticle = $this->getMock( 'oxArticle', array( '_loadFromDb' ) );
+        $oArticle->resetStaticCache( "2176" );
 
         $oArticle->expects( $this->exactly(2) )->method( '_loadFromDb' )->with( $this->equalTo( "2176" ) )->
             will( $this->returnValue( array( "oxid" => 2176, "oxparentid" => 2000 ) ) );
         $oArticle->load( "2176" );
         $oArticle->load( "2176" );
-        oxArticle::resetStaticCache( "2176" );
+        $oArticle->resetStaticCache( "2176" );
 
         $oArticle->load( "2176" );
         $oArticle->load( "2176" );

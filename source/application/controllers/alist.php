@@ -19,7 +19,6 @@
  * @package   views
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -132,7 +131,6 @@ class aList extends oxUBase
      * @var array
      */
     protected $_aSimilarRecommListIds = null;
-
 
     /**
      * Generates (if not generated yet) and returns view ID (for

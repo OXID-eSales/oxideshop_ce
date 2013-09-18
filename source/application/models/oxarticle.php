@@ -2161,7 +2161,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      */
     public function resetParent()
     {
-        $sParentId = $this->oxarticles__oxparentid;
+        $sParentId = $this->oxarticles__oxparentid->value;
         $this->oxarticles__oxparentid = new oxField( '', oxField::T_RAW );
         $this->_blAllowEmptyParentId = true;
         $this->save();

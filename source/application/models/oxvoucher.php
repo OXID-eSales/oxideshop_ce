@@ -597,8 +597,8 @@ class oxVoucher extends oxBase
             if (!$oOrderArticle->skipDiscounts() && $oDiscount->isForBasketItem($oOrderArticle)) {
                 $aItems[$iCount] = array(
                     'oxid'     => $oOrderArticle->getProductId(),
-                    'price'    => $oOrderArticle->oxorderarticles__oxprice->value,
-                    'discount' => $oDiscount->getAbsValue($oOrderArticle->oxorderarticles__oxprice->value),
+                    'price'    => $oOrderArticle->oxorderarticles__oxbprice->value,
+                    'discount' => $oDiscount->getAbsValue($oOrderArticle->oxorderarticles__oxbprice->value),
                     'amount'   => $oOrderArticle->oxorderarticles__oxamount->value,
                 );
                 $iCount ++;

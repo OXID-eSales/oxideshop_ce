@@ -776,8 +776,8 @@ class MyOrder extends MyOrder_parent
         $oPdf->text( 150, 275, strip_tags( $oShop->oxshops__oxbankname->getRawValue() ) );
         $oPdf->text( 150, 278, $this->translate( 'ORDER_OVERVIEW_PDF_ACCOUNTNR' ).strip_tags( $oShop->oxshops__oxbanknumber->value ) );
         $oPdf->text( 150, 281, $this->translate( 'ORDER_OVERVIEW_PDF_BANKCODE' ).strip_tags( $oShop->oxshops__oxbankcode->value ) );
-        $oPdf->text( 150, 284, strip_tags( $oShop->oxshops__oxvatnumber->value ) );
-        $oPdf->text( 150, 287, '' );
+        $oPdf->text( 150, 284, $this->translate( 'ORDER_OVERVIEW_PDF_VATID' ).strip_tags( $oShop->oxshops__oxvatnumber->value ) );
+        $oPdf->text( 150, 287, $this->translate( 'ORDER_OVERVIEW_PDF_TAXID' ).strip_tags( $oShop->oxshops__oxtaxnumber->value ) );
     }
 
     /**

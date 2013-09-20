@@ -228,6 +228,16 @@ window.onload = function ()
                 [{ oxinputhelp ident="HELP_SHOP_MAIN_VATNUMBER" }]
                 </td>
             </tr>
+            
+            <tr>
+                <td class="edittext" >
+                            [{ oxmultilang ident="SHOP_MAIN_TAXNUMBER" }]
+                </td>
+                <td class="edittext">
+                <input type="text" name="editval[oxshops__oxtaxnumber]" value="[{$edit->oxshops__oxtaxnumber->value}]" size="35" maxlength="[{$edit->oxshops__oxtaxnumber->fldmax_length}]" class="editinput" [{ $readonly}]>
+                [{ oxinputhelp ident="HELP_SHOP_MAIN_TAXNUMBER" }]
+                </td>
+            </tr>
 
             <tr>
                 <td class="edittext" >

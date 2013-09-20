@@ -26,7 +26,7 @@
  * First letter is always capitalized
  * All nouns are capitalized
  */
-$sLangName  = "English";
+$sLangName  = "Deutsch";
 
 // -------------------------------
 // RESOURCE IDENTIFIER = STRING
@@ -54,6 +54,8 @@ $aLang = array(
     'ORDER_OVERVIEW_PDF_FAX'                => 'fax: ',
     'ORDER_OVERVIEW_PDF_ACCOUNTNR'          => 'Kontonummer (oder IBAN): ',
     'ORDER_OVERVIEW_PDF_BANKCODE'           => 'BLZ (oder BIC): ',
+    'ORDER_OVERVIEW_PDF_VATID'           	=> 'Ust.-ID: ',
+    'ORDER_OVERVIEW_PDF_TAXID'           	=> 'Steuernr.: ',
     'ORDER_OVERVIEW_PDF_AMOUNT'             => 'Menge',
     'ORDER_OVERVIEW_PDF_ARTID'              => 'Art.-Nr.',
     'ORDER_OVERVIEW_PDF_DESC'               => 'Beschreibung',

@@ -28,7 +28,7 @@
  *
  * @package model
  */
-class oxPayment extends oxI18n
+class oxPayment extends oxI18n implements oxPaymentIface
 {
     /**
      * Consider for calculation of base sum - Value of all goods in basket
@@ -96,6 +96,12 @@ class oxPayment extends oxI18n
      */
     protected $_iPaymentError = null;
 
+	/**
+	 * This is the payment adapter.
+	 * @var void|oxPaymentIface
+	 */
+	protected $_oPaymentAdapter = null;
+
     /**
      * Payment VAT config
      *
@@ -120,6 +126,34 @@ class oxPayment extends oxI18n
         $this->init( 'oxpayments' );
     }
 
+	/**
+	 * Returns a special payment adapter for special payment actions.
+	 * @return \oxPaymentIface
+	 */
+	public function getPaymentAdapter() {
+		if (!$this->_oPaymentAdapter) {
+			$this->setPaymentAdapter($this);
+
+			if (($this->getId()) && ($sClass = $this->oxpayments__oxsubclass->value)) { // TODO Add to database scheme.
+				$this->setPaymentAdapter(oxNew($sClass)); // TODO Missing class exception would be thrown with oxid.
+			} // if
+		} // if
+
+		return $this->_oPaymentAdapter;
+	} // function
+
+	/**
+	 * Sets the payment adapter for special payment actions.
+	 * @param \oxPaymentIface $oAdapter
+	 * @return \oxPayment
+	 */
+	public function setPaymentAdapter(\oxPaymentIface $oAdapter) {
+		$this->_oPaymentAdapter = $oAdapter;
+		unset($oAdapter);
+
+		return $this;
+	} // function
+
     /**
      * Payment VAT config setter
      *
@@ -131,6 +165,14 @@ class oxPayment extends oxI18n
     {
         $this->_blPaymentVatOnTop = $blOnTop;
     }
+
+	/**
+	 * Returns true if the gateway is used.
+	 * @return bool
+	 */
+	public function withGateway() {
+		return false;
+	} // function
 
     /**
      * Payment groups getter. Returns groups list

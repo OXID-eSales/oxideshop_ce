@@ -37,6 +37,12 @@ class oxPaymentGateway extends oxSuperCfg
      */
     protected $_blActive       = false;
 
+	/**
+	 * The payment class or null.
+	 * @var void|\oxPayment
+	 */
+	protected $_oPayment = null;
+
     /**
      * oUserpayment object (default null).
      * @var object
@@ -61,12 +67,35 @@ class oxPaymentGateway extends oxSuperCfg
 		return false;
 	} // function
 
+	/**
+	 * Returns the payment class.
+	 * @author blange <code@wbl-konzept.de>
+	 * @return \oxPayment|void
+	 * @todo Maybe everywhere "getPaymentType" and the user payment is "getPaymentParams".
+	 */
+	public function getPayment() {
+		return $this->_oPayment;
+	} // function
+
 	protected function getPaymentMode() {
 		return '';
 	} // function
 
 	public function preparePayment($fAmount, oxOrder $oOrder) {
 
+	} // function
+
+	/**
+	 * Sets the used payment class.
+	 * @author blange <code@wbl-konzept.de>
+	 * @param \oxPayment $oPayment Payment-class.
+	 * @return \oxPaymentGateway Fluent interface.
+	 */
+	public function setPayment(\oxPayment $oPayment) {
+		$this->_oPayment = $oPayment;
+		unset($oPayment);
+
+		return $this;
 	} // function
 
     /**
@@ -154,6 +183,6 @@ class oxPaymentGateway extends oxSuperCfg
      */
     protected function _isActive()
     {
-        return $this->_blActive;
-    }
+        return ($oPayment = $this->getPayment()) ? $oPayment->getPaymentAdapter()->withGateway() : $this->_blActive;
+    } // function
 }

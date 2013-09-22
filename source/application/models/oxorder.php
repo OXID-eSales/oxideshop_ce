@@ -979,10 +979,13 @@ class oxOrder extends oxBase
      *
      * @return  integer 2 or an error code
      */
-    protected function _executePayment( oxBasket $oBasket, $oUserpayment )
+    protected function _executePayment( oxBasket $oBasket, oxUserPayment $oUserpayment )
     {
 	    $mReturn = self::ORDER_STATE_PAYMENTERROR;
         $oPayTransaction = $this->_getGateway();
+
+	    // TODO Better API.
+	    $oPayTransaction->setPayment($this->getPayment());
 
 	    try {
 		    $oPayTransaction

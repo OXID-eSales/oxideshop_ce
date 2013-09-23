@@ -665,20 +665,6 @@ class Unit_Views_oxviewTest extends OxidTestCase
 
     }
 
-    public function testSetGetShopLogo()
-    {
-        $oView = new oxView();
-        $oView->setShopLogo( "testlogo" );
-        $this->assertEquals( "testlogo", $oView->getShopLogo() );
-    }
-
-    public function testSetGetShopLogoFromConfig()
-    {
-        $oView = new oxView();
-        $this->getConfig()->setConfigParam( "sShopLogo", 'logo' );
-        $this->assertEquals( "logo", $oView->getShopLogo() );
-    }
-
 
     public function testSetGetActCategory()
     {

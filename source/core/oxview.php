@@ -840,6 +840,8 @@ class oxView extends oxSuperCfg
     /**
      * Template variable getter. Returns shop logo from config option
      *
+     * @deprecated since v5.1.0 (2013-09-23); Use oxViewConfig::getShopLogo().
+     *
      * @return string
      */
     public function getShopLogo()
@@ -855,6 +857,8 @@ class oxView extends oxSuperCfg
      * Sets shop logo
      *
      * @param string $sLogo shop logo url
+     *
+     * @deprecated since v5.1.0 (2013-09-23); Use oxViewConfig::setShopLogo().
      *
      * @return null
      */

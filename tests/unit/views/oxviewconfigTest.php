@@ -2497,4 +2497,28 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
         $this->assertEquals( 'testCustomTheme', $oViewConf->getActiveTheme() );
     }
 
+    public function testSetGetShopLogo()
+    {
+        $oView = new oxViewConfig();
+        $oView->setShopLogo( "testlogo" );
+        $this->assertEquals( "testlogo", $oView->getShopLogo() );
+    }
+
+    public function testSetGetShopLogo_FromConfig()
+    {
+        $oView = new oxViewConfig();
+        $this->getConfig()->setConfigParam( "sShopLogo", 'logo' );
+        $this->assertEquals( "logo", $oView->getShopLogo() );
+    }
+
+    public function testSetGetShopLogo_DefaultValue()
+    {
+        $oView = new oxViewConfig();
+
+        $sLogo = "logo.png";
+
+        $this->assertEquals( $sLogo, $oView->getShopLogo() );
+    }
+
+
 }

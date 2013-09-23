@@ -78,6 +78,12 @@ class oxViewConfig extends oxSuperCfg
     protected $_sActiveTheme = null;
 
     /**
+     * Shop logo
+     * @var string
+     */
+    protected $_sShopLogo = null;
+
+    /**
      * Returns shops home link
      *
      * @return string
@@ -1443,4 +1449,36 @@ class oxViewConfig extends oxSuperCfg
         return $this->_sActiveTheme;
     }
 
+    /**
+     * Returns shop logo image file name from config option
+     *
+     * @return string
+     */
+    public function getShopLogo()
+    {
+        if ( is_null( $this->_sShopLogo ) ) {
+
+            $sLogoImage = $this->getConfig()->getConfigParam( 'sShopLogo' );
+            if ( empty( $sLogoImage ) )
+            {
+                $sLogoImage = "logo.png";
+            }
+
+            $this->setShopLogo( $sLogoImage );
+        }
+
+        return $this->_sShopLogo;
+    }
+
+    /**
+     * Sets shop logo
+     *
+     * @param string $sLogo shop logo image file name
+     *
+     * @return null
+     */
+    public function setShopLogo( $sLogo )
+    {
+        $this->_sShopLogo = $sLogo;
+    }
 }

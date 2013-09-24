@@ -19,7 +19,6 @@
  * @package   tests
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -39,6 +38,9 @@ class Unit_Core_oxSeoDecoderTest extends OxidTestCase
     protected function setUp()
     {
         modSeoEncoder_for_Unit_Core_oxSeoDecoderTest::clearCache();
+        $oArt = new oxArticle();
+        $oArt->resetStaticCache();
+
         return parent::setUp();
     }
     /**
@@ -70,6 +72,8 @@ class Unit_Core_oxSeoDecoderTest extends OxidTestCase
             // avoiding exceptions while removing columns ..
         }
         parent::tearDown();
+        $oArt = new oxArticle();
+        $oArt->resetStaticCache();
     }
 
     /**

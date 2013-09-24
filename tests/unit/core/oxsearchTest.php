@@ -19,7 +19,6 @@
  * @package   tests
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -42,6 +41,8 @@ class Unit_Core_oxsearchTest extends OxidTestCase
         $this->cleanUpTable( 'oxarticles' );
         $this->cleanUpTable( 'oxobject2category' );
         $this->cleanUpTable( 'oxcategories' );
+        $oArt = new oxArticle();
+        $oArt->resetStaticCache();
     }
 
     /**
@@ -57,6 +58,8 @@ class Unit_Core_oxsearchTest extends OxidTestCase
         $this->cleanUpTable( 'oxcategories' );
         $this->cleanUpTable( 'oxarticles' );
         $this->cleanUpTable( 'oxobject2category' );
+        $oArt = new oxArticle();
+        $oArt->resetStaticCache();
         parent::tearDown();
     }
 

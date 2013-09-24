@@ -108,8 +108,6 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
         oxAddClassModule( 'modOxUtilsDate', 'oxUtilsDate' );
 
         oxUtils::getInstance()->cleanStaticCache();
-        $oArticle = new oxArticle();
-        $oArticle->resetStaticCache();
         error_reporting( (E_ALL ^ E_NOTICE) | E_STRICT );
         ini_set('display_errors', true);
 
@@ -170,8 +168,6 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
 
         oxUtilsObject::resetClassInstances();
         oxUtilsObject::resetModuleVars();
-        $oArticle = new oxArticle();
-        $oArticle->resetStaticCache();
 
         parent::tearDown();
     }

@@ -40,8 +40,6 @@ class Unit_Core_oxsearchTest extends OxidTestCase
         $this->cleanUpTable( 'oxarticles' );
         $this->cleanUpTable( 'oxobject2category' );
         $this->cleanUpTable( 'oxcategories' );
-        $oArt = new oxArticle();
-        $oArt->resetStaticCache();
     }
 
     /**
@@ -57,8 +55,6 @@ class Unit_Core_oxsearchTest extends OxidTestCase
         $this->cleanUpTable( 'oxcategories' );
         $this->cleanUpTable( 'oxarticles' );
         $this->cleanUpTable( 'oxobject2category' );
-        $oArt = new oxArticle();
-        $oArt->resetStaticCache();
         parent::tearDown();
     }
 

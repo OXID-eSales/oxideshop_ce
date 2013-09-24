@@ -38,6 +38,7 @@ define( 'OXARTICLE_LINKTYPE_RECOMM', 5 );
  */
 class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 {
+
     /**
      * Current class name
      *

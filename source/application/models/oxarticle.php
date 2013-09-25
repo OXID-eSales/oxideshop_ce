@@ -950,6 +950,9 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
             $this->assign( $aData );
             // convert date's to international format
+
+            $this->_iStockStatusOnLoad = $this->_iStockStatus;
+
             $this->_isLoaded = true;
             return true;
         }

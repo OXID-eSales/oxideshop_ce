@@ -61,17 +61,18 @@ class Unit_Core_oxmoduleTest extends OxidTestCase
             $aModule = array(
                 'id'           => 'invoicepdf',
                 'title'        => 'Invoice PDF',
-                'description'  => 'Module for making invoice PDF files.',
+                'description'  => 'Module to export invoice PDF files.',
                 'thumbnail'    => 'picture.png',
                 'version'      => '1.0',
                 'author'       => 'OXID eSales AG',
-                'active'       => true,
-                'extend'       => array ('oxorder' => 'invoicepdf/myorder')
+                'extend'       => array(
+                    'oxorder' => 'oe/invoicepdf/myorder'
+                ),
+                'active' => ''
             );
 
             $oModule = $this->getProxyClass( 'oxmodule' );
-            $this->assertTrue( $oModule->load( 'invoicepdf' ) );
-
+            $this->assertTrue( $oModule->load( 'oe/invoicepdf' ) );
             $this->assertEquals( $oModule->getNonPublicVar( "_aModule" ), $aModule );
     }
 

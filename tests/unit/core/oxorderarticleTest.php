@@ -19,7 +19,6 @@
  * @package   tests
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -52,6 +51,7 @@ class Unit_Core_oxorderarticleTest extends OxidTestCase
 
 
         $oArticle->save();
+        $oArticle->resetStaticCache();
     }
 
     /**
@@ -63,7 +63,8 @@ class Unit_Core_oxorderarticleTest extends OxidTestCase
     {
         $this->cleanUpTable( 'oxorderarticles' );
         $this->cleanUpTable( 'oxarticles' );
-
+        $oArticle = new oxArticle();
+        $oArticle->resetStaticCache();
         parent::tearDown();
     }
 
@@ -709,18 +710,11 @@ class Unit_Core_oxorderarticleTest extends OxidTestCase
         // oxOrderArticle instance
 
         $oOrderArticle = $this->getProxyClass( 'oxOrderArticle' );
-        // overriding the oxOrder::load() method to only return true when 'test' is passed as ID
-        oxTestModules::addFunction( "oxorder", 'load($sOXID)', '{ return in_array( $sOXID, array("test")); }' );
 
         // checking if function returns NULL
         // when it's impossible to get the order object
-        $oOrderArticle->oxorderarticles__oxorderid = new oxField( 'test1' );
+        $oOrderArticle->oxorderarticles__oxorderid = new oxField( 'test' );
         $this->assertNull( $oOrderArticle->getOrder());
-
-        // checking if the function returns an oxOrder instance
-        // if oxorderarticles has an ID of the order
-        $oOrderArticle->oxorderarticles__oxorderid->setValue( 'test' );
-        $this->assertTrue( $oOrderArticle->getOrder() instanceof oxOrder );
 
         // checking if method returns the result from cache
         $oOrderArticle->setNonPublicVar( '_aOrderCache', array( 'test' => 'result' ));

@@ -19,7 +19,6 @@
  * @package   core
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -559,7 +558,7 @@ class oxVoucher extends oxBase
     /**
      * Returns basket item information array from session or order.
      *
-     * @param oxDisvount $oDiscount discount object
+     * @param oxDiscount $oDiscount discount object
      *
      * @return array
      */
@@ -577,7 +576,7 @@ class oxVoucher extends oxBase
     /**
      * Returns basket item information (id,amount,price) array takig item list from order.
      *
-     * @param oxDisvount $oDiscount discount object
+     * @param oxDiscount $oDiscount discount object
      *
      * @return array
      */

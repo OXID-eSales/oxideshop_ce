@@ -19,7 +19,6 @@
  * @package   tests
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -365,6 +364,13 @@ class Unit_Views_recommlistTest extends OxidTestCase
         modConfig::setParameter( 'searchrecomm', 'test' );
         $oRecomm = new RecommList();
         $this->assertEquals( 'test', $oRecomm->getRecommSearch() );
+    }
+
+    public function testGetRecommSearchSpecialChar()
+    {
+        modConfig::setParameter( 'searchrecomm', 'test"' );
+        $oRecomm = new RecommList();
+        $this->assertEquals( 'test&quot;', $oRecomm->getRecommSearch() );
     }
 
     // #M43

@@ -19,7 +19,6 @@
  * @package   core
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -178,6 +177,9 @@ class oxUtilsObject
             $sActionClassName = $this->getClassName( $sClassName );
             //expect __autoload() (oxfunctions.php) to do its job when class_exists() is called
             if ( !class_exists( $sActionClassName ) ) {
+                /**
+                * @var $oEx oxSystemComponentException
+                */
                 $oEx = oxNew( "oxSystemComponentException" );
                 $oEx->setMessage('EXCEPTION_SYSTEMCOMPONENT_CLASSNOTFOUND');
                 $oEx->setComponent($sClassName);
@@ -231,6 +233,9 @@ class oxUtilsObject
                     $oObj = $oRo->newInstanceArgs( $aParams );
                 } catch ( ReflectionException $oRefExcp ) {
                     // something went wrong?
+                    /**
+                     * @var $oEx oxSystemComponentException
+                     */
                     $oEx = oxNew( "oxSystemComponentException" );
                     $oEx->setMessage( $oRefExcp->getMessage() );
                     $oEx->setComponent( $sClassName );
@@ -683,6 +688,9 @@ class oxUtilsObject
         if ( is_readable( $sFileName ) ) {
             $sValue = file_get_contents( $sFileName );
             $sValue = unserialize( $sValue );
+            if ( $sValue === false ) {
+                $sValue = null;
+            }
         }
 
         return $sValue ;
@@ -705,7 +713,7 @@ class oxUtilsObject
         }
 
         $sFileName = $this->_getCacheFileName($sVarName, $sShopId);
-        file_put_contents( $sFileName, serialize($sValue) );
+        file_put_contents( $sFileName, serialize($sValue), LOCK_EX );
     }
 
 }

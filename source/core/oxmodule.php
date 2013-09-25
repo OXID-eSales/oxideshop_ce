@@ -308,46 +308,34 @@ class oxModule extends oxSuperCfg
     {
         $blActive = false;
         $sId = $this->getId();
+        if (isset($sId)) {
+            if ( is_array($this->_aModule['extend']) && !empty($this->_aModule['extend']) ) {
+                $aAddModules = $this->_aModule['extend'];
+                $aInstalledModules = $this->getAllModules();
+                $iClCount = count($aAddModules);
+                $iActive  = 0;
 
-        if ( isset( $sId ) ) {
+                foreach ($aAddModules as $sClass => $sModule) {
+                    if ( (isset($aInstalledModules[$sClass]) && in_array($sModule, $aInstalledModules[$sClass])) ) {
+                        $iActive ++;
+                    }
+                }
+                $blActive = $iClCount > 0 && $iActive == $iClCount;
+
             $aDisabledModules = $this->getDisabledModules();
-            if ( is_array( $this->_aModule['extend'] ) && !empty( $this->_aModule['extend'] ) ) {
-                $blActive = $this->_isClassListActive($this->_aModule['extend']);
-            if ( $blActive && ( is_array( $aDisabledModules ) && in_array( $sId, $aDisabledModules ) ) ) {
+                if ( $blActive && ( is_array($aDisabledModules) && in_array($sId, $aDisabledModules) ) ) {
                     $blActive = false;
                 }
             } else {
-                $aAllModules = $this->getAllModules();
                 //handling modules that does not extend any class
-                if ( is_array( $aDisabledModules ) && is_array( $aAllModules )
-                    && !in_array( $sId, $aDisabledModules ) && in_array( $sId, $aAllModules ) ) {
+                $aDisabledModules = $this->getDisabledModules();
+                if ( is_array($aDisabledModules) && !in_array($sId, $aDisabledModules) ) {
                     $blActive = true;
                 }
             }
         }
 
         return $blActive;
-    }
-
-    /**
-     * Checks whether all of given list classes are active
-     *
-     * @param array @aClassList
-     *
-     * @return array
-     */
-    protected function _isClassListActive( $aClassList )
-    {
-        $aExtendedClassList = $this->getAllModules();
-        $iClCount = count( $aClassList );
-        $iActive  = 0;
-
-        foreach ( $aClassList as $sClass => $sModuleClass ) {
-            if ( ( isset( $aExtendedClassList[$sClass] ) && in_array( $sModuleClass, $aExtendedClassList[$sClass] ) ) ) {
-                $iActive ++;
-            }
-        }
-        return $iClCount > 0 && $iActive == $iClCount;
     }
 
 
@@ -413,6 +401,7 @@ class oxModule extends oxSuperCfg
     public function activate()
     {
         if ( isset( $this->_aModule['extend'] ) && is_array( $this->_aModule['extend'] ) ) {
+
             $oConfig     = oxRegistry::getConfig();
             $aAddModules = $this->_aModule['extend'];
             $sModuleId   = $this->getId();
@@ -558,6 +547,8 @@ class oxModule extends oxSuperCfg
 
         $oUtilsObject = oxUtilsObject::getInstance();
         $oUtilsObject->resetModuleVars();
+
+        $this->_clearApcCache();
     }
 
 
@@ -1042,6 +1033,16 @@ class oxModule extends oxSuperCfg
                 $aDisabledModules[$iOldKey] = $sModuleId;
                 $oConfig->saveShopConfVar( 'arr', 'aDisabledModules', $aDisabledModules );
             }
+        }
+    }
+
+    /**
+     * Cleans PHP APC cache
+     */
+    protected function _clearApcCache()
+    {
+        if ( extension_loaded( 'apc' ) && ini_get( 'apc.enabled' ) ) {
+            apc_clear_cache();
         }
     }
 }

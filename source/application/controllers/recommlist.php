@@ -19,7 +19,6 @@
  * @package   views
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -176,7 +175,7 @@ class RecommList extends aList
     public function getAddSeoUrlParams()
     {
         $sAddParams = parent::getAddSeoUrlParams();
-        if ( $sParam = oxConfig::getParameter( "searchrecomm", true ) ) {
+        if ( $sParam = oxConfig::getParameter( "searchrecomm", true) ) {
             $sAddParams .= "&amp;searchrecomm=" . rawurlencode( $sParam );
         }
         return $sAddParams;
@@ -390,11 +389,10 @@ class RecommList extends aList
     {
         if ( $this->_sSearch === null ) {
             $this->_sSearch = false;
-            if ( $sSearch = oxConfig::getParameter( 'searchrecomm', true ) ) {
+            if ( $sSearch = oxConfig::getParameter( 'searchrecomm', false ) ) {
                 $this->_sSearch = $sSearch;
             }
         }
-//var_dump( $_GET );
         return $this->_sSearch;
     }
 

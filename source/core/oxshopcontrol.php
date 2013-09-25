@@ -19,7 +19,6 @@
  * @package   views
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -29,6 +28,7 @@
  */
 class oxShopControl extends oxSuperCfg
 {
+
     /**
      * Used to force handling, it allows other place like widget controller to skip it.
      *

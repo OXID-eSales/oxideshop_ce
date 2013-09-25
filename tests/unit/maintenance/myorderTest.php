@@ -696,13 +696,12 @@ class Unit_Maintenance_myorderTest extends OxidTestCase
      */
     public function testMyOrder_translate()
     {
-        $oMyOrder = $this->getProxyClass( "MyOrder" );
-        $oMyOrder->setNonPublicVar( '_iSelectedLang', 1 );
+        $oMyOrder =  new MyOrder();
 
-        //switching admin mode on, correct tranlation will be used
-        oxTestModules::addFunction( "oxlang", "isAdmin", "{return 1;}" );
+        $oMyOrder->setSelectedLang( 1 );
+        $this->setAdminMode( true );
 
-        $this->assertEquals( 'phone : ', $oMyOrder->translate('ORDER_OVERVIEW_PDF_PHONE') );
+        $this->assertEquals( 'phone: ', $oMyOrder->translate('ORDER_OVERVIEW_PDF_PHONE') );
     }
 
     /**

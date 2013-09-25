@@ -50,6 +50,8 @@ function smarty_function_oxprice( $params, &$smarty )
     $sPrice = ( $mPrice instanceof oxPrice ) ? $mPrice->getPrice() : $mPrice;
     $oCurrency = isset( $params['currency'] ) ? $params['currency'] : null;
 
+
+
     if ( !is_null( $oCurrency ) ) {
         $sDecimalsSeparator = ( $oCurrency->dec ) ? $oCurrency->dec : $sDecimalsSeparator;
         $sThousandSeparator = ( $oCurrency->thousand ) ? $oCurrency->thousand : $sThousandSeparator;

@@ -714,6 +714,17 @@ class MyOrder extends MyOrder_parent
      */
     protected $_oCur = null;
 
+
+    /**
+     * Set language for pdf generation
+     *
+     * @param $iLang
+     */
+    public function setSelectedLang( $iLang )
+    {
+       $this->_iSelectedLang = $iLang;
+    }
+
     /**
      * Returns active shop object
      *
@@ -740,7 +751,7 @@ class MyOrder extends MyOrder_parent
      */
     public function translate( $sString )
     {
-        return oxRegistry::getLang()->translateString( $sString, $this->_iSelectedLang );
+        return oxRegistry::getLang()->translateString( $sString, $this->getSelectedLang() );
     }
 
     /**
@@ -844,7 +855,7 @@ class MyOrder extends MyOrder_parent
     public function genPdf( $sFilename, $iSelLang = 0 )
     {
         // setting pdf language
-        $this->_iSelectedLang = $iSelLang;
+        $this->setSelectedLang( $iSelLang );
 
         $blIsNewOrder = 0;
         // setting invoice number
@@ -899,7 +910,7 @@ class MyOrder extends MyOrder_parent
         $oLang = oxRegistry::getLang();
         $sSal = $this->oxorder__oxbillsal->value;
         try {
-            $sSal = $oLang->translateString($this->oxorder__oxbillsal->value, $this->_iSelectedLang);
+            $sSal = $oLang->translateString($this->oxorder__oxbillsal->value, $this->getSelectedLang());
         } catch (Exception $e) {
         }
         $oPdfBlock = new PdfBlock();
@@ -926,7 +937,7 @@ class MyOrder extends MyOrder_parent
         $oLang = oxRegistry::getLang();
         $sSal = $this->oxorder__oxdelsal->value;
         try {
-            $sSal = $oLang->translateString($this->oxorder__oxdelsal->value, $this->_iSelectedLang);
+            $sSal = $oLang->translateString($this->oxorder__oxdelsal->value, $this->getSelectedLang());
         } catch (Exception $e) {
         }
         $oPdfBlock = new PdfBlock();
@@ -1153,7 +1164,7 @@ class MyOrder extends MyOrder_parent
         $oLang = oxRegistry::getLang();
         $sSal = $this->oxorder__oxdelsal->value;
         try {
-            $sSal = $oLang->translateString($this->oxorder__oxdelsal->value, $this->_iSelectedLang);
+            $sSal = $oLang->translateString($this->oxorder__oxdelsal->value, $this->getSelectedLang());
         } catch (Exception $e) {
         }
 

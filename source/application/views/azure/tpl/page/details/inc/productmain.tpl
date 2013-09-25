@@ -140,7 +140,7 @@
                     [{if $oxcmp_user}]
                         [{assign var="force_sid" value=$oView->getSidForWidget()}]
                     [{/if}]
-                    [{oxid_include_widget cl="oxwRating" blCanRate=$oView->canRate() _parent=$oViewConf->getTopActiveClassName() nocookie=1 force_sid=$force_sid sRateUrl=$oDetailsProduct->getLink() dRatingCount=$oView->getRatingCount() dRatingValue=$oView->getRatingValue() anid=$oDetailsProduct->oxarticles__oxnid->value skipESIforUser=1}]
+                    [{oxid_include_widget cl="oxwRating" blCanRate=$oView->canRate() _parent=$oViewConf->getTopActiveClassName() nocookie=1 force_sid=$force_sid sRateUrl=$oDetailsProduct->getLink() dRatingCount=$oView->getRatingCount() dRatingValue=$oView->getRatingValue() anid=$oDetailsProduct->oxarticles__oxnid->value}]
                 </div>
             [{/block}]
             [{/if}]
@@ -286,8 +286,9 @@
             [{* additional info *}]
             <div class="additionalInfo clear">
                 [{block name="details_productmain_priceperunit"}]
-                    [{if $oDetailsProduct->getPricePerUnit()}]
-                        <span id="productPriceUnit">[{$oDetailsProduct->getPricePerUnit()}] [{$currency->sign}]/[{$oDetailsProduct->getUnitName()}]</span>
+
+                    [{if $oDetailsProduct->getUnitPrice()}]
+                        <span id="productPriceUnit">[{oxprice price=$oDetailsProduct->getUnitPrice()  }] [{$currency->sign}]/[{$oDetailsProduct->getUnitName()}] </span>
                     [{/if}]
                 [{/block}]
 

@@ -38,7 +38,6 @@ define( 'OXARTICLE_LINKTYPE_RECOMM', 5 );
  */
 class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 {
-
     /**
      * Current class name
      *
@@ -532,17 +531,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     }
 
     /**
-     * Checks whether object is in list or not
-     * It's needed for oxArticle so that it can pass this to widgets
-
-     * @return bool
-     */
-    public function isInList()
-    {
-        return $this->_isInList();
-    }
-
-    /**
      * Resets static cache array, or removes a single entry if specified
      *
      * @param string $sOxId
@@ -961,9 +949,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
             $this->assign( $aData );
             // convert date's to international format
-
-            $this->_iStockStatusOnLoad = $this->_iStockStatus;
-
             $this->_isLoaded = true;
             return true;
         }
@@ -1277,16 +1262,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     }
 
     /**
-     * Returns amount of variants article has
-     *
-     * @return mixed
-     */
-    public function getVariantsCount()
-    {
-        return $this->oxarticles__oxvarcount->value;
-    }
-
-    /**
      * Checks if article has multidimensional variants
      *
      * @return bool
@@ -1398,7 +1373,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         $oVariants = array();
         if ( ( $sId = $this->getId() ) ) {
             //do not load me as a parent later
-            self::$_aLoadedParents[$sId . "_" . $this->getLanguage()] = $this;
+            self::$_aLoadedParents[$sId] = $this;
 
             $myConfig = $this->getConfig();
 
@@ -2336,7 +2311,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         // resetting articles count cache if stock has changed and some
         // articles goes offline (M:1448)
         if ( $sAction === ACTION_UPDATE_STOCK ) {
-            $this->_assignStock();
             $this->_onChangeStockResetCount( $sOXID );
         }
 
@@ -4756,6 +4730,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     /**
      * Returns formatted price per unit
      *
+     * @deprecated since v5.1 (2013-09-25); use oxPrice smarty plugin for formating in templates
      * @return string
      */
     public function getFUnitPrice()

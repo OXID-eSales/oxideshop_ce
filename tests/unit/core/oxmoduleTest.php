@@ -68,7 +68,7 @@ class Unit_Core_oxmoduleTest extends OxidTestCase
                 'extend'       => array(
                     'oxorder' => 'oe/invoicepdf/myorder'
                 ),
-                'active' => ''
+                'active' => 'true'
             );
 
             $oModule = $this->getProxyClass( 'oxmodule' );

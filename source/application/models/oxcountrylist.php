@@ -19,12 +19,11 @@
  * @package   core
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
- * Article list manager.
- * Collects list of article according to collection rules (categories, etc.).
+ * Country list manager class.
+ * Collects a list of countries according to collection rules (active).
  *
  * @package model
  */
@@ -47,7 +46,7 @@ class oxCountryList extends oxList
      *
      * @param integer $iLang language
      *
-     * @return null;
+     * @return null
      */
     public function loadActiveCountries( $iLang = null )
     {

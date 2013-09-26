@@ -57,6 +57,13 @@ Also, please provide PHP Unit tests for your code.
 When sending your pull request, please provide a clear, meaningful and detailed information about what your code is about and what it will do, best including a screen shot if possible.
 If you want to discuss your contribution and your code before committing it, please go to the dev-general mailing list: http://lists.oxidforge.org/mailman/listinfo/dev-general.
 
+How to use the issue tracker here at GitHub:
+* Issue entries on GitHub containing a pull request are welcome.
+* When entering a bug as an issue on GitHub without providing a pull request for it, you'll be gently but certainly pointed to the bug tracker at https://bugs.oxid-esales.com.
+* If this bug is already open in bug tracker, the GitHub issue will be closed with an appropriate comment.
+* If this bug is not entered at the official bug tracker yet, we'll ask if the reporter wants to open it himself. If he denies or doesn't answer in a certain time, we'll enter this bug by ourselves.
+
+
 Useful links:<br>
 Project home page - http://www.oxid-esales.com<br>
 Wiki - http://www.oxidforge.org<br>

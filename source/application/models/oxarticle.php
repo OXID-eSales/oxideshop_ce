@@ -2315,6 +2315,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         // resetting articles count cache if stock has changed and some
         // articles goes offline (M:1448)
         if ( $sAction === ACTION_UPDATE_STOCK ) {
+            $this->_assignStock();
             $this->_onChangeStockResetCount( $sOXID );
         }
 

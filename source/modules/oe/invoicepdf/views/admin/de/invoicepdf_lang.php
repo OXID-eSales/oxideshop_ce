@@ -26,7 +26,7 @@
  * First letter is always capitalized
  * All nouns are capitalized
  */
-$sLangName  = "English";
+$sLangName  = "Deutsch";
 
 // -------------------------------
 // RESOURCE IDENTIFIER = STRING

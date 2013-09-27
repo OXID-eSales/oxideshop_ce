@@ -240,7 +240,7 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
     public function testGetActiveCategory_ParentControllerActiveCategoryIsSet_ReturnCategory()
     {
         $oCategory = new oxCategory();
-        $oCategory->load( '30e44ab8593023055.23928895' );
+        $oCategory->load( '943a9ba3050e78b443c16e043ae60ef3' );
 
         $oList = new aList();
         $oList->setActiveCategory( $oCategory );
@@ -252,8 +252,8 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
         $oArticleBox->expects( $this->any() )->method( 'getConfig' )->will( $this->returnValue( $oConfig ) );
 
         $this->assertTrue( $oArticleBox->getActiveCategory() instanceof oxCategory );
-        $this->assertEquals( '30e44ab8593023055.23928895', $oArticleBox->getActiveCategory()->getId() );
-        $this->assertEquals( 'Bar-Equipment', $oArticleBox->getActiveCategory()->getTitle() );
+        $this->assertEquals( '943a9ba3050e78b443c16e043ae60ef3', $oArticleBox->getActiveCategory()->getId() );
+        $this->assertEquals( 'Eco-Fashion', $oArticleBox->getActiveCategory()->getTitle() );
     }
 
     /**

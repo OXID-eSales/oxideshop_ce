@@ -374,6 +374,22 @@ class oxViewConfig extends oxSuperCfg
     }
 
     /**
+     * Returns session id
+     *
+     * @deprecated Use conditional sid getter oxView::getSidForWidget() for widgets instead
+     *
+     * @return string
+     */
+    public function getSessionId()
+    {
+        if ( ( $sValue = $this->getViewConfigParam( 'sessionid' ) ) === null ) {
+            $sValue = $this->getSession()->getId();
+            $this->setViewConfigParam( 'sessionid', $sValue );
+        }
+        return $sValue;
+    }
+
+    /**
      * Returns forms hidden session parameters
      *
      * @return string

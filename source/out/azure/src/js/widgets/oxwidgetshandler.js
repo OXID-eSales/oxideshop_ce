@@ -114,6 +114,7 @@ var WidgetsHandler = (function() {
     function _load( oRegister ) {
         var iFilesLoaded = 0;
         var iFilesTotal = oRegister[ 'files' ].length;
+        $.ajaxSetup( {cache: true} );
         for ( var i in oRegister[ 'files' ] ) {
             $.getScript( oRegister[ 'files' ][ i ], function() {
                 iFilesLoaded++
@@ -121,8 +122,8 @@ var WidgetsHandler = (function() {
                     _loadFunctions( oRegister );
                 }
             });
-            //document.write('<script type="text/javascript" src="'+ oRegister[ sWidget ][ 'files' ][ i ] +'"></script>');
         }
+        $.ajaxSetup( {cache: false} );
     }
 
     /**

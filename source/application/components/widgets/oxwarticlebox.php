@@ -48,6 +48,21 @@ class oxwArticleBox extends oxWidget
      */
     protected $_oArticle = null;
 
+
+    /**
+     * Returns active category
+     *
+     * @return null|oxCategory
+     */
+    public function getActiveCategory()
+    {
+        $oCategory = $this->getConfig()->getTopActiveView()->getActiveCategory();
+        if ( $oCategory ) {
+            $this->setActiveCategory( $oCategory );
+        }
+        return $this->_oActCategory;
+    }
+
     /**
      * Renders template based on widget type or just use directly passed path of template
      *

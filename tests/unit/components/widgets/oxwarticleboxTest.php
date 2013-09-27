@@ -233,5 +233,48 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
         $this->assertEquals( $mxValue, $oArticleBox->$sFunction(), $sMessage );
     }
 
+    /**
+     * Check if category is being properly retrieved when it's set in parent controller
+     *
+     */
+    public function testGetActiveCategory_ParentControllerActiveCategoryIsSet_ReturnCategory()
+    {
+        $oCategory = new oxCategory();
+        $oCategory->load( '30e44ab8593023055.23928895' );
 
+        $oList = new aList();
+        $oList->setActiveCategory( $oCategory );
+
+        $oConfig = $this->getMock( 'oxConfig', array( 'getTopActiveView' ) );
+        $oConfig->expects( $this->any() )->method( 'getTopActiveView' )->will( $this->returnValue( $oList ) );
+
+        $oArticleBox = $this->getMock( 'oxwArticleBox', array( 'getConfig' ) );
+        $oArticleBox->expects( $this->any() )->method( 'getConfig' )->will( $this->returnValue( $oConfig ) );
+
+        $this->assertTrue( $oArticleBox->getActiveCategory() instanceof oxCategory );
+        $this->assertEquals( '30e44ab8593023055.23928895', $oArticleBox->getActiveCategory()->getId() );
+        $this->assertEquals( 'Bar-Equipment', $oArticleBox->getActiveCategory()->getTitle() );
+    }
+
+    /**
+     * Check if category is being properly retrieved when it's not set in parent controller
+     *
+     */
+    public function testGetActiveCategory_ParentControllerActiveCategoryIsNotSet_ReturnNull()
+    {
+        $oCategory = new oxCategory();
+
+        $oList = new aList();
+        $oList->setActiveCategory( $oCategory );
+
+        $oConfig = $this->getMock( 'oxConfig', array( 'getTopActiveView' ) );
+        $oConfig->expects( $this->any() )->method( 'getTopActiveView' )->will( $this->returnValue( $oList ) );
+
+        $oArticleBox = $this->getMock( 'oxwArticleBox', array( 'getConfig' ) );
+        $oArticleBox->expects( $this->any() )->method( 'getConfig' )->will( $this->returnValue( $oConfig ) );
+
+        $this->assertTrue( $oArticleBox->getActiveCategory() instanceof oxCategory );
+        $this->assertEquals( null, $oArticleBox->getActiveCategory()->getId() );
+        $this->assertEquals( null, $oArticleBox->getActiveCategory()->getTitle() );
+    }
 }

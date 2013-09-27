@@ -43,6 +43,12 @@ class oxwArticleBox extends oxWidget
 
 
     /**
+     * Current article
+     * @var null
+     */
+    protected $_oArticle = null;
+
+    /**
      * Renders template based on widget type or just use directly passed path of template
      *
      * @return string
@@ -73,14 +79,15 @@ class oxwArticleBox extends oxWidget
      */
     public function getBoxProduct()
     {
+        if ( is_null( $this->_oArticle ) ) {
         $sId = $this->getViewParameter('anid');
         $iLinkType = $this->getViewParameter('iLinkType');
         $sAddDynParams = $this->getConfig()->getTopActiveView()->getAddUrlParams();
 
 
+            /** @var oxArticle $oArticle */
         $oArticle = oxNew( 'oxArticle' );
         $oArticle->load($sId);
-
         if ( $sAddDynParams ) {
             $blSeo = oxRegistry::getUtils()->seoIsActive();
             if ( !$blSeo ) {
@@ -97,8 +104,10 @@ class oxwArticleBox extends oxWidget
         if ( $oRecommList = $this->getActiveRecommList() ) {
             $oArticle->text = $oRecommList->getArtDescription( $oArticle->getId() );
         }
+            $this->_oArticle = $oArticle;
+        }
 
-        return $oArticle;
+        return $this->_oArticle;
     }
 
     /**

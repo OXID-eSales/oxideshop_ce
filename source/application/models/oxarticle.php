@@ -1373,7 +1373,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         $oVariants = array();
         if ( ( $sId = $this->getId() ) ) {
             //do not load me as a parent later
-            self::$_aLoadedParents[$sId] = $this;
+            self::$_aLoadedParents[$sId . "_" . $this->getLanguage()] = $this;
 
             $myConfig = $this->getConfig();
 

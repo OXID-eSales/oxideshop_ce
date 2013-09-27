@@ -73,6 +73,16 @@ class oxwArticleBox extends oxWidget
     }
 
     /**
+     * Sets box product
+     *
+     * @param oxArticle $oArticle Box product
+     */
+    public function setBoxProduct( $oArticle )
+    {
+        $this->_oArticle = $oArticle;
+    }
+
+    /**
      * Get product article
      *
      * @return oxArticle
@@ -104,7 +114,7 @@ class oxwArticleBox extends oxWidget
         if ( $oRecommList = $this->getActiveRecommList() ) {
             $oArticle->text = $oRecommList->getArtDescription( $oArticle->getId() );
         }
-            $this->_oArticle = $oArticle;
+            $this->setBoxProduct( $oArticle );
         }
 
         return $this->_oArticle;

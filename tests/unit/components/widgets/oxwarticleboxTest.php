@@ -134,6 +134,8 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
 
 
         $this->setRequestParam( "searchparam", "1126" );
+        // removing cached object
+        $oArticleBox->setBoxProduct( null );
         $this->assertEquals( $sLinkUrl, $oArticleBox->getBoxProduct()->getMainLink(), "Correct product link with additional search parameters should be loaded" );
     }
     /**

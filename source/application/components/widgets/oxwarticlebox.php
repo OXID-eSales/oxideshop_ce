@@ -105,6 +105,7 @@ class oxwArticleBox extends oxWidget
     public function getBoxProduct()
     {
         if ( is_null( $this->_oArticle ) ) {
+            $blIsInList = $this->getViewParameter( 'inlist' );
         $sId = $this->getViewParameter('anid');
         $iLinkType = $this->getViewParameter('iLinkType');
         $sAddDynParams = $this->getConfig()->getTopActiveView()->getAddUrlParams();
@@ -113,6 +114,11 @@ class oxwArticleBox extends oxWidget
             /** @var oxArticle $oArticle */
         $oArticle = oxNew( 'oxArticle' );
         $oArticle->load($sId);
+
+            if ( $blIsInList ) {
+                $oArticle->setInList();
+            }
+
         if ( $sAddDynParams ) {
             $blSeo = oxRegistry::getUtils()->seoIsActive();
             if ( !$blSeo ) {

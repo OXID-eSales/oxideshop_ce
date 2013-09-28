@@ -949,7 +949,7 @@ class oxwArticleDetails extends oxWidget
 
         parent::render();
 
-        $oCategory = new oxCategory();
+        $oCategory = oxNew( 'oxCategory' );
 
         // if category parameter is not found, use category from product
         $sCatId = $this->getViewParameter( "cnid" );

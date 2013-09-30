@@ -2486,8 +2486,9 @@ class Unit_Views_oxubaseTest extends OxidTestCase
             $this->fail( 'error executing "testProcessRequestCantRedirect" test: '. $oEx->getMessage());
         }
 
+        $sShopId = oxConfig::getInstance()->getShopId();
         $sLangId = oxLang::getInstance()->getBaseLanguage();
-        $sIdent  = md5( strtolower( str_replace( '&', '&amp;', $sUri ) ) . '1' . $sLangId );
+        $sIdent  = md5( strtolower( str_replace( '&', '&amp;', $sUri ) ) . $sShopId . $sLangId );
 
         // testing if request was written in seo log table
         $this->assertEquals($blExpected, (bool) oxDb::getDb()->getOne( "select 1 from oxseologs where oxident='$sIdent'" ), $sMsg );

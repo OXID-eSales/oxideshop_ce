@@ -71,4 +71,15 @@ class oxWidget extends oxUBase
         parent::init();
 
     }
+
+    /**
+     * In widgets we do not need to parse seo and do any work related to that
+     * Shop main control is responsible for that, and that has to be done once
+     *
+     * @return null|void
+     */
+    protected function _processRequest()
+    {
+    }
+
 }

@@ -1466,6 +1466,8 @@ class Unit_Views_oxubaseTest extends OxidTestCase
         $oUbase->expects( $this->any() )->method( 'isAdmin' )->will( $this->returnValue( false ) );
         $oUbase->expects( $this->once() )->method( '_forceNoIndex' );
 
+        $this->setConfigParam( 'blSeoLogging', 1 );
+
         try {
             $oUbase->UNITprocessRequest();
         } catch ( Exception $oEx ) {
@@ -2442,5 +2444,52 @@ class Unit_Views_oxubaseTest extends OxidTestCase
         $this->setLanguage( 1 );
 
         $this->assertEquals( "testshop/widget.php?lang=1&amp;", $oView->getWidgetLink() );
+    }
+
+    /**
+     * @return array
+     */
+    public function _dpProductiveModeNotInfluencingSeoLogging()
+    {
+        return array(
+            array( 0, 0, false, "Url should not be processed" ),
+            array( 1, 0, false, "Url should not be processed" ),
+            array( 0, 1, true , "Url should be processed"     ),
+            array( 1, 1, true , "Url should be processed"     ),
+        );
+    }
+
+    /**
+     * Test case for bug #5409
+     *
+     * @dataProvider _dpProductiveModeNotInfluencingSeoLogging
+     */
+    public function testProductiveModeNotInfluencingSeoLogging($blProductive, $blSeoLogging, $blExpected, $sMsg)
+    {
+        $_SERVER["REQUEST_METHOD"] = 'GET';
+        $_SERVER['REQUEST_URI']    = $sUri = 'index.php?param1=value1&param2=value2';
+
+        oxTestModules::addFunction( "oxUtils", "redirect", "{ \$aArgs = func_get_args(); throw new exception( \$aArgs[0] ); }" );
+
+        $this->setConfigParam( 'blSeoLogging', $blSeoLogging );
+        $this->setConfigParam( 'blProductive', $blProductive );
+
+        $oUbase = $this->getMock( 'oxubase', array( '_canRedirect', 'getLink', 'isAdmin', '_forceNoIndex' ) );
+        $oUbase->expects( $this->any() )->method( '_canRedirect' )->will( $this->returnValue( false ) );
+        $oUbase->expects( $this->any() )->method( 'isAdmin' )->will( $this->returnValue( false ) );
+        $oUbase->expects( $this->once() )->method( '_forceNoIndex' );
+
+        try {
+            $oUbase->UNITprocessRequest();
+        } catch ( Exception $oEx ) {
+            // redirect must not be executed
+            $this->fail( 'error executing "testProcessRequestCantRedirect" test: '. $oEx->getMessage());
+        }
+
+        $sLangId = oxLang::getInstance()->getBaseLanguage();
+        $sIdent  = md5( strtolower( str_replace( '&', '&amp;', $sUri ) ) . '1' . $sLangId );
+
+        // testing if request was written in seo log table
+        $this->assertEquals($blExpected, (bool) oxDb::getDb()->getOne( "select 1 from oxseologs where oxident='$sIdent'" ), $sMsg );
     }
 }

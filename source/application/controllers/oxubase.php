@@ -562,7 +562,7 @@ class oxUBase extends oxView
                 // forcing to set noindex/follow meta
                 $this->_forceNoIndex();
 
-                if (!$this->getConfig()->isProductiveMode() || $this->getConfig()->getConfigParam('blSeoLogging')) {
+                if ( $this->getConfig()->getConfigParam('blSeoLogging') ) {
                     $sShopId = $this->getConfig()->getShopId();
                     $sLangId = oxRegistry::getLang()->getBaseLanguage();
                     $sIdent  = md5( strtolower( $sStdUrl ) . $sShopId . $sLangId );

@@ -2208,7 +2208,7 @@ class oxConfig extends oxSuperCfg
     /**
      * Return active shop ids
      *
-     * @return boolean
+     * @return array
      */
     public function getShopIds()
     {

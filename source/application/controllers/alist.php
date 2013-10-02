@@ -132,6 +132,7 @@ class aList extends oxUBase
      */
     protected $_aSimilarRecommListIds = null;
 
+
     /**
      * Generates (if not generated yet) and returns view ID (for
      * template engine caching).

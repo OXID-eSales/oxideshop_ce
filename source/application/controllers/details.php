@@ -161,6 +161,7 @@ class Details extends oxUBase
      */
     protected $_aSimilarRecommListIds = null;
 
+
     /**
      * Returns current product parent article object if it is available
      *

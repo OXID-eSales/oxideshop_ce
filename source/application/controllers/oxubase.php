@@ -696,7 +696,7 @@ class oxUBase extends oxView
      */
     public function getComponent( $sName )
     {
-        if ( $sName != null ) {
+        if ( isset( $sName ) && isset( $this->_oaComponents[$sName] ) ) {
             return $this->_oaComponents[$sName];
         }
     }

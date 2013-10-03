@@ -2873,6 +2873,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     /**
      * Returns formatted product's price.
      *
+     * @deprecated since v5.1 (2013-10-04); use oxPrice smarty plugin for formatting in templates
+     *
      * @return double
      */
     public function getFPrice()
@@ -4753,7 +4755,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
 
     /**
-     * Returns formatted price per unit
+     * Returns price per unit
      *
      * @return string
      */
@@ -4777,6 +4779,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     /**
      * Returns formatted article min price
      *
+     * @deprecated since v5.1 (2013-10-04); use oxPrice smarty plugin for formatting in templates
+     *
      * @return string
      */
     public function getFMinPrice()
@@ -4792,6 +4796,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
      /**
      * Returns formatted min article variant price
+     *
+     * @deprecated since v5.1 (2013-10-04); use oxPrice smarty plugin for formatting in templates
      *
      * @return string
      */

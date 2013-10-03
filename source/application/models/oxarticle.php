@@ -2909,7 +2909,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     /**
      * Returns formatted price per unit
      *
-     * @deprecated since v5.0 (2012-091-4); use getFUnitPrice();
+     * @deprecated since v5.0 (2012-01-4); use getFUnitPrice();
      *
      * @return string
      */
@@ -4730,7 +4730,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     /**
      * Returns formatted price per unit
      *
-     * @deprecated since v5.1 (2013-09-25); use oxPrice smarty plugin for formating in templates
+     * @deprecated since v5.1 (2013-09-25); use oxPrice smarty plugin for formatting in templates
      * @return string
      */
     public function getFUnitPrice()
@@ -4760,9 +4760,9 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         }
 
         $oPrice = null;
-        if ( (double) $this->oxarticles__oxunitquantity->value && $this->oxarticles__oxunitname->value ) {
+        if ( (double) $this->getUnitQuantity() && $this->oxarticles__oxunitname->value ) {
             $oPrice = clone $this->getPrice();
-            $oPrice->divide( (double) $this->oxarticles__oxunitquantity->value );
+            $oPrice->divide( (double) $this->getUnitQuantity() );
         }
 
         return $oPrice;
@@ -5060,6 +5060,11 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             $dPrice = oxDb::getDb()->getOne( $sSql );
         }
         return $dPrice;
+    }
+
+    public function getUnitQuantity()
+    {
+        return $this->oxarticles__oxunitquantity->value;
     }
 
 }

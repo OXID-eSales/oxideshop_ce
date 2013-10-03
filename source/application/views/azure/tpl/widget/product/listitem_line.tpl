@@ -108,7 +108,7 @@
                 [{oxhasrights ident="SHOWARTICLEPRICE"}]
                     [{if $product->getTPrice()}]
                         <span class="oldPrice">
-                            [{oxmultilang ident="REDUCED_FROM_2"}] <del>[{$product->getFTPrice()}] [{$oView->getActCurrencySign()}]</del>
+                            [{oxmultilang ident="REDUCED_FROM_2"}] <del>[{oxprice price=$product->getTPrice() currency=$oView->getActCurrency()}]</del>
                         </span>
                     [{/if}]
                     [{block name="widget_product_listitem_line_price_value"}]

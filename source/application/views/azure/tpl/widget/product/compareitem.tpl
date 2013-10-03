@@ -84,7 +84,7 @@
             [{oxhasrights ident="SHOWARTICLEPRICE"}]
                 [{if $product->getTPrice()}]
                     <p class="oldPrice">
-                        <strong>[{oxmultilang ident="REDUCED_FROM_2"}] <del>[{$product->getFTPrice()}] [{$oView->getActCurrencySign()}]</del></strong>
+                        <strong>[{oxmultilang ident="REDUCED_FROM_2"}] <del>[{oxprice price=$product->getTPrice() currency=$oView->getActCurrency()}]</del></strong>
                     </p>
                 [{/if}]
             [{/oxhasrights}]

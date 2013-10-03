@@ -101,25 +101,25 @@
                                 </span>
                             [{/if}]
                             [{block name="widget_product_listitem_infogrid_price_value"}]
-                                [{if $product->getFPrice()}]
+                                [{if $product->getPrice()}]
                                     <span class="price">
                                         <span>
                                         [{if $product->isRangePrice()}]
                                                 [{ oxmultilang ident="PRICE_FROM" }]
                                                 [{if !$product->isParentNotBuyable() }]
-                                                    [{ $product->getFMinPrice() }]
+                                                        [{assign var="oPrice" value=$product->getMinPrice() }]
                                                 [{else}]
-                                                    [{ $product->getFVarMinPrice() }]
+                                                        [{assign var="oPrice" value=$product->getVarMinPrice() }]
                                                 [{/if}]
                                         [{else}]
                                                 [{if !$product->isParentNotBuyable() }]
-                                                    [{ $product->getFPrice() }]
+                                                        [{assign var="oPrice" value=$product->getPrice() }]
                                                 [{else}]
-                                                    [{ $product->getFVarMinPrice() }]
+                                                        [{assign var="oPrice" value=$product->getVarMinPrice() }]
                                                 [{/if}]
                                             [{/if}]
                                         </span>
-                                        [{$oView->getActCurrencySign()}]
+                                        [{oxprice price=$oPrice currency=$oView->getActCurrency()}]
                                     [{if $oView->isVatIncluded() }]
                                          [{if !($product->hasMdVariants() || ($oViewConf->showSelectListsInList() && $product->getSelections(1)) || $product->getVariants())}]*[{/if}]</span>
                                     [{/if}]

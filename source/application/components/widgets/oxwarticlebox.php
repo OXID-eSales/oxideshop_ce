@@ -33,7 +33,7 @@ class oxwArticleBox extends oxWidget
      * User component used in template.
      * @var array
      */
-    protected $_aComponentNames = array( 'oxcmp_user' => 1, 'oxcmp_basket' => 1 );
+    protected $_aComponentNames = array( 'oxcmp_user' => 1, 'oxcmp_basket' => 1, 'oxcmp_cur' => 1 );
 
     /**
      * Current class template name.
@@ -41,27 +41,6 @@ class oxwArticleBox extends oxWidget
      */
     protected $_sTemplate = 'widget/product/boxproduct.tpl';
 
-
-    /**
-     * Current article
-     * @var null
-     */
-    protected $_oArticle = null;
-
-
-    /**
-     * Returns active category
-     *
-     * @return null|oxCategory
-     */
-    public function getActiveCategory()
-    {
-        $oCategory = $this->getConfig()->getTopActiveView()->getActiveCategory();
-        if ( $oCategory ) {
-            $this->setActiveCategory( $oCategory );
-        }
-        return $this->_oActCategory;
-    }
 
     /**
      * Renders template based on widget type or just use directly passed path of template
@@ -88,36 +67,19 @@ class oxwArticleBox extends oxWidget
     }
 
     /**
-     * Sets box product
-     *
-     * @param oxArticle $oArticle Box product
-     */
-    public function setBoxProduct( $oArticle )
-    {
-        $this->_oArticle = $oArticle;
-    }
-
-    /**
      * Get product article
      *
      * @return oxArticle
      */
     public function getBoxProduct()
     {
-        if ( is_null( $this->_oArticle ) ) {
-            $blIsInList = $this->getViewParameter( 'inlist' );
         $sId = $this->getViewParameter('anid');
         $iLinkType = $this->getViewParameter('iLinkType');
         $sAddDynParams = $this->getConfig()->getTopActiveView()->getAddUrlParams();
 
 
-            /** @var oxArticle $oArticle */
         $oArticle = oxNew( 'oxArticle' );
         $oArticle->load($sId);
-
-            if ( $blIsInList ) {
-                $oArticle->setInList();
-            }
 
         if ( $sAddDynParams ) {
             $blSeo = oxRegistry::getUtils()->seoIsActive();
@@ -135,10 +97,8 @@ class oxwArticleBox extends oxWidget
         if ( $oRecommList = $this->getActiveRecommList() ) {
             $oArticle->text = $oRecommList->getArtDescription( $oArticle->getId() );
         }
-            $this->setBoxProduct( $oArticle );
-        }
 
-        return $this->_oArticle;
+        return $oArticle;
     }
 
     /**

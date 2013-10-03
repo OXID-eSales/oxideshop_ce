@@ -2855,6 +2855,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     /**
      * Returns rounded T price.
      *
+     * @deprecated since v5.1 (2013-10-03); use getTPrice() and oxprice modifier;
+     *
      * @return double | bool
      */
     public function getFTPrice()

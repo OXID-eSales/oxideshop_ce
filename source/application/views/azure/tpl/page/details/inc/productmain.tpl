@@ -286,9 +286,8 @@
             [{* additional info *}]
             <div class="additionalInfo clear">
                 [{block name="details_productmain_priceperunit"}]
-
                     [{if $oDetailsProduct->getUnitPrice()}]
-                        <span id="productPriceUnit">[{oxprice price=$oDetailsProduct->getUnitPrice()  }] [{$currency->sign}]/[{$oDetailsProduct->getUnitName()}] </span>
+                        <span id="productPriceUnit">[{$oDetailsProduct->getUnitQuantity()}] [{$oDetailsProduct->getUnitName()}] | [{oxprice price=$oDetailsProduct->getUnitPrice() }] [{$currency->sign}]/[{$oDetailsProduct->getUnitName()}] </span>
                     [{/if}]
                 [{/block}]
 

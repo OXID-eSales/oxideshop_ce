@@ -126,9 +126,9 @@
                                     </span>
                                 [{/if}]
                             [{/block}]
-                            [{ if $product->getPricePerUnit()}]
+                            [{ if $product->getUnitPrice()}]
                                 <span id="productPricePerUnit_[{$testid}]" class="pricePerUnit">
-                                    [{$product->oxarticles__oxunitquantity->value}] [{$product->getUnitName()}] | [{$product->getPricePerUnit()}] [{ $oView->getActCurrencySign()}]/[{$product->getUnitName()}]
+                                    [{$product->getUnitQuantity()}] [{$product->getUnitName()}] | [{oxprice price=$product->getUnitPrice() currency=$oView->getActCurrency() }]/[{$product->getUnitName()}]
                                 </span>
                             [{elseif $product->oxarticles__oxweight->value  }]
                                 <span id="productPricePerUnit_[{$testid}]" class="pricePerUnit">

@@ -10,7 +10,7 @@
 [{/capture}]
 [{capture name="bargainPrice"}]
     [{block name="widget_product_bargainitem_price"}]
-        <div class="price [{if $_product->getPricePerUnit()}]tight[{/if}]" id="priceBargain_[{$iIteration}]">
+        <div class="price [{if $_product->getUnitPrice()}]tight[{/if}]" id="priceBargain_[{$iIteration}]">
             <div>
                 [{oxhasrights ident="SHOWARTICLEPRICE"}]
                     [{if $_product->getTPrice()}]
@@ -29,17 +29,17 @@
                         [{/if}]
                         <span class="priceValue">[{$sFrom}] [{$fPrice}] [{$oView->getActCurrencySign()}]
                         [{if $oView->isVatIncluded() }]
-                            [{if !( $_product->getVariantsCount() || $_product->hasMdVariants() || ($oViewConf->showSelectListsInList()&&$_product->getSelections(1)) )}]*[{/if}]
+                            [{if !( $_product->hasMdVariants() || ($oViewConf->showSelectListsInList()&&$_product->getSelections(1)) || $_product->getVariants() )}]*[{/if}]
                         [{/if}]
                         </span>
                     [{/if}]
-                    [{if $_product->getPricePerUnit()}]
+                    [{if $_product->getUnitPrice()}]
                         <span class="pricePerUnit">
-                            [{$_product->oxarticles__oxunitquantity->value}] [{$_product->getUnitName()}] | [{$_product->getPricePerUnit()}] [{ $oView->getActCurrencySign()}]/[{$_product->getUnitName()}]
+                            [{$_product->getUnitQuantity()}] [{$_product->getUnitName()}] | [{oxprice price=$_product->getUnitPrice() currency=$oView->getActCurrency()}]/[{$_product->getUnitName()}]
                         </span>
                     [{/if}]
                     [{block name="widget_product_bargainitem_tobasket"}]
-                        [{if !( $_product->getVariantsCount() || $_product->hasMdVariants() || ($oViewConf->showSelectListsInList() && $_product->getSelections(1)) )}]
+                        [{if !( $_product->hasMdVariants() || ($oViewConf->showSelectListsInList() && $_product->getSelections(1)) || $_product->getVariants() )}]
                             <a href="[{oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=start" params="fnc=tobasket&amp;aid=`$_product->oxarticles__oxid->value`&amp;am=1"}]" class="toCart button" title="[{oxmultilang ident="TO_CART" }]">[{oxmultilang ident="TO_CART" }]</a>
                         [{else}]
                             <a href="[{$_product->getMainLink()}]" class="toCart button">[{ oxmultilang ident="MORE_INFO" }]</a>

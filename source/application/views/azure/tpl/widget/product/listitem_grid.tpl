@@ -9,8 +9,9 @@
     [{else}]
         [{assign var='_productLink' value=$product->getLink()}]
     [{/if}]
+    [{assign var="aVariantSelections" value=$product->getVariantSelections(null,null,1)}]
     [{assign var="blShowToBasket" value=true}] [{* tobasket or more info ? *}]
-    [{if $blDisableToCart || $product->isNotBuyable()||$product->hasMdVariants()||($oViewConf->showSelectListsInList() && $product->getSelections(1))||$product->getVariants()}]
+    [{if $blDisableToCart || $product->isNotBuyable()||($aVariantSelections&&$aVariantSelections.selections)||$product->hasMdVariants()||($oViewConf->showSelectListsInList() && $product->getSelections(1))||$product->getVariants()}]
         [{assign var="blShowToBasket" value=false}]
     [{/if}]
     [{capture name=product_price}]
@@ -44,9 +45,9 @@
                         [{/if}]
                     [{/if}]
                 [{/block}]
-                [{if $product->getPricePerUnit()}]
+                [{if $product->getUnitPrice()}]
                     <span id="productPricePerUnit_[{$testid}]" class="pricePerUnit">
-                        [{$product->oxarticles__oxunitquantity->value}] [{$product->getUnitName()}] | [{$product->getPricePerUnit()}] [{$oView->getActCurrencySign()}]/[{$product->getUnitName()}]
+                        [{$product->getUnitQuantity()}] [{$product->getUnitName()}] | [{oxprice price=$product->getUnitPrice() currency=$oView->getActCurrency() }] /[{$product->getUnitName()}]
                     </span>
                 [{elseif $product->oxarticles__oxweight->value  }]
                     <span id="productPricePerUnit_[{$testid}]" class="pricePerUnit">

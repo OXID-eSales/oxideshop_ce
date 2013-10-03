@@ -123,8 +123,8 @@
 
             [{* additional info *}]
             <div class="additionalInfo clear">
-                    [{if $product->getPricePerUnit()}]
-                        <span id="productPriceUnit">[{$product->getPricePerUnit()}] [{$oView->getActCurrencySign()}]/[{$product->getUnitName()}]</span>
+                    [{if $product->getUnitPrice()}]
+                        <span id="productPriceUnit">[{$product->getUnitQuantity()}] [{$product->getUnitName()}] | [{oxprice price=$product->getUnitPrice() currency=$oView->getActCurrency() }]/[{$product->getUnitName()}]</span>
                     [{/if}]
 
                     [{if $product->getStockStatus() == -1}]

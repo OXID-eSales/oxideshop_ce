@@ -2719,6 +2719,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         $oArticleTags->addTag( $sTag );
         if ( $oArticleTags->save() ) {
             return true;
+            return true;
         }
         return false;
     }
@@ -2855,7 +2856,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     /**
      * Returns rounded T price.
      *
-     * @deprecated since v5.1 (2013-10-03); use getTPrice() and oxprice modifier;
+     * @deprecated since v5.1 (2013-10-03); use getTPrice() and oxPrice modifier;
      *
      * @return double | bool
      */
@@ -2898,6 +2899,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
     /**
      * Returns formatted product's NETTO price.
+     *
+     * @deprecated since v5.1 (2013-10-03); use getPrice() and oxPrice modifier;
      *
      * @return double
      */

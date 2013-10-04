@@ -532,6 +532,17 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     }
 
     /**
+     * Checks whether object is in list or not
+     * It's needed for oxArticle so that it can pass this to widgets
+
+     * @return bool
+     */
+    public function isInList()
+    {
+        return $this->_isInList();
+    }
+
+    /**
      * Resets static cache array, or removes a single entry if specified
      *
      * @param string $sOxId
@@ -1377,7 +1388,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         $oVariants = array();
         if ( ( $sId = $this->getId() ) ) {
             //do not load me as a parent later
-            self::$_aLoadedParents[$sId] = $this;
+            self::$_aLoadedParents[$sId . "_" . $this->getLanguage()] = $this;
 
             $myConfig = $this->getConfig();
 

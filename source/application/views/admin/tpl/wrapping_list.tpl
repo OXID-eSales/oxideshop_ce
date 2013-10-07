@@ -25,12 +25,19 @@ window.onload = function ()
 <table cellspacing="0" cellpadding="0" border="0" width="100%">
 <colgroup>
     [{block name="admin_wrapping_list_colgroup"}]
-        <col width="28%"><col width="30%"><col width="30%"><col width="2%">
+    	<col width="3%">
+        <col width="27%">
+        <col width="29%">
+        <col width="29%">
+        <col width="2%">
     [{/block}]
 </colgroup>
 <tr class="listfilter">
     [{block name="admin_wrapping_list_filter"}]
-        <td valign="top" class="listfilter first" height="20">
+    	 <td valign="top" class="listfilter first" align="right">
+        	<div class="r1"><div class="b1">&nbsp;</div></div>
+        </td>
+        <td valign="top" class="listfilter" height="20">
             <div class="r1"><div class="b1">&nbsp;</div></div>
         </td>
         <td valign="top" class="listfilter" height="20">
@@ -55,7 +62,8 @@ window.onload = function ()
 </tr>
 <tr>
     [{block name="admin_wrapping_list_sorting"}]
-        <td class="listheader first" height="15">&nbsp;<a href="Javascript:top.oxid.admin.setSorting( document.search, 'oxwrapping', 'oxtype', 'asc');document.search.submit();" class="listheader">[{ oxmultilang ident="GENERAL_TYPE" }]</a></td>
+    	<td class="listheader first" height="15" width="30" align="center"><a href="Javascript:top.oxid.admin.setSorting( document.search, 'oxwrapping', 'oxactive', 'asc');document.search.submit();" class="listheader">[{ oxmultilang ident="GENERAL_ACTIVTITLE" }]</a></td>
+        <td class="listheader" height="15">&nbsp;<a href="Javascript:top.oxid.admin.setSorting( document.search, 'oxwrapping', 'oxtype', 'asc');document.search.submit();" class="listheader">[{ oxmultilang ident="GENERAL_TYPE" }]</a></td>
         <td class="listheader"><a href="Javascript:top.oxid.admin.setSorting( document.search, 'oxwrapping', 'oxname', 'asc');document.search.submit();" class="listheader">[{ oxmultilang ident="GENERAL_NAME" }]</a></td>
         <td class="listheader" colspan="2"><a href="Javascript:top.oxid.admin.setSorting( document.search, 'oxwrapping', 'oxpic', 'asc');document.search.submit();" class="listheader">[{ oxmultilang ident="WRAPPING_LIST_PICTURE" }]</a></td>
     [{/block}]
@@ -75,6 +83,7 @@ window.onload = function ()
         [{ if $listitem->getId() == $oxid }]
             [{assign var="listclass" value=listitem4 }]
         [{ /if}]
+        <td valign="top" class="[{ $listclass}][{ if $listitem->oxwrapping__oxactive->value == 1}] active[{/if}]" height="15"><div class="listitemfloating">&nbsp</a></div></td>
         <td valign="top" class="[{ $listclass}]" height="15"><div class="listitemfloating">&nbsp;<a href="Javascript:top.oxid.admin.editThis('[{ $listitem->oxwrapping__oxid->value}]');" class="[{ $listclass}]">[{ if $listitem->oxwrapping__oxtype->value == "WRAP"}][{ oxmultilang ident="WRAPPING_LIST_PRESENTPACKUNG" }][{elseif $listitem->oxwrapping__oxtype->value == "CARD"}][{ oxmultilang ident="GENERAL_CARD" }][{/if}]</a></div></td>
         <td valign="top" class="[{ $listclass}]"><div class="listitemfloating"><a href="Javascript:top.oxid.admin.editThis('[{ $listitem->oxwrapping__oxid->value}]');" class="[{ $listclass}]">[{ if !$listitem->oxwrapping__oxname->value }]-[{ oxmultilang ident="GENERAL_NONAME" }]-[{else}][{ $listitem->oxwrapping__oxname->value }][{/if}]</a></div></td>
         <td valign="top" class="[{ $listclass}]"><div class="listitemfloating"><a href="Javascript:top.oxid.admin.editThis('[{ $listitem->oxwrapping__oxid->value }]');" class="[{ $listclass}]">[{ $listitem->oxwrapping__oxpic->value }]</a></div></td>
@@ -94,7 +103,7 @@ window.onload = function ()
 [{assign var="blWhite" value="2"}]
 [{/if}]
 [{/foreach}]
-[{include file="pagenavisnippet.tpl" colspan="4"}]
+[{include file="pagenavisnippet.tpl" colspan="5"}]
 </table>
 </form>
 </div>

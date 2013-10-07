@@ -27,12 +27,17 @@ window.onload = function ()
 <table cellspacing="0" cellpadding="0" border="0" width="100%">
 <colgroup>
     [{block name="admin_usergroup_list_colgroup"}]
-        <col width="98%"><col width="2%">
+    	<col width="3%">
+        <col width="95%">
+        <col width="2%">
     [{/block}]
 </colgroup>
 <tr class="listitem">
     [{block name="admin_usergroup_list_filter"}]
-        <td valign="top" class="listfilter first" height="20" colspan="2">
+    	<td valign="top" class="listfilter first" align="right">
+			<div class="r1"><div class="b1">&nbsp;</div></div>
+        </td>
+        <td valign="top" class="listfilter" height="20" colspan="2">
             <div class="r1"><div class="b1">
                 <div class="find">
                 <select name="changelang" class="editinput" onChange="Javascript:top.oxid.admin.changeLanguage();">
@@ -49,7 +54,8 @@ window.onload = function ()
 
 <tr>
     [{block name="admin_usergroup_list_sorting"}]
-        <td class="listheader first" height="15" colspan="2"><a href="Javascript:top.oxid.admin.setSorting( document.search, 'oxgroups', 'oxtitle', 'asc');document.search.submit();" class="listheader">[{ oxmultilang ident="GENERAL_NAME" }]</a></td>
+    	<td class="listheader first" height="15" width="30" align="center"><a href="Javascript:top.oxid.admin.setSorting( document.search, 'oxgroups', 'oxactive', 'asc');document.search.submit();" class="listheader">[{ oxmultilang ident="GENERAL_ACTIVTITLE" }]</a></td>
+        <td class="listheader" height="15" colspan="2"><a href="Javascript:top.oxid.admin.setSorting( document.search, 'oxgroups', 'oxtitle', 'asc');document.search.submit();" class="listheader">[{ oxmultilang ident="GENERAL_NAME" }]</a></td>
     [{/block}]
 </tr>
 
@@ -67,6 +73,7 @@ window.onload = function ()
         [{ if $listitem->getId() == $oxid }]
             [{assign var="listclass" value=listitem4 }]
         [{ /if}]
+        <td valign="top" class="[{ $listclass}][{ if $listitem->oxgroups__oxactive->value == 1}] active[{/if}]" height="15"><div class="listitemfloating">&nbsp</a></div></td>
         <td valign="top" class="[{ $listclass}]" height="15"><div class="listitemfloating"><a href="Javascript:top.oxid.admin.editThis('[{ $listitem->oxgroups__oxid->value}]');" class="[{ $listclass}]">[{ $listitem->oxgroups__oxtitle->value }]</a></div></td>
         <td class="[{ $listclass}]">
             [{ if !$listitem->isOx() && !$readonly}]
@@ -81,7 +88,7 @@ window.onload = function ()
 [{assign var="blWhite" value="2"}]
 [{/if}]
 [{/foreach}]
-[{include file="pagenavisnippet.tpl" colspan="2"}]
+[{include file="pagenavisnippet.tpl" colspan="3"}]
 </table>
 </form>
 </div>

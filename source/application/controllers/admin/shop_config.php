@@ -129,13 +129,20 @@ class Shop_Config extends oxAdminDetails
      *
      * @return null
      */
-    public function saveConfVars()
+    public function saveConfVars( $sModule = '' )
     {
         $myConfig = $this->getConfig();
 
-
+        if($sModule == '')
+        {
+        	$sModule = $this->_getModuleForConfigVars();
+        }
+        else
+        {
+        	$sModule = 'module:'.$sModule;
+        }
+        
         $sShopId = $this->getEditObjectId();
-        $sModule = $this->_getModuleForConfigVars();
         foreach ($this->_aConfParams as $sType => $sParam) {
             $aConfVars = oxConfig::getParameter($sParam);
             if (is_array($aConfVars)) {

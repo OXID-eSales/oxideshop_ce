@@ -953,13 +953,22 @@ class oxLang extends oxSuperCfg
         if ( !isset( $this->_aLangMap[$sKey] ) ) {
             $this->_aLangMap[$sKey] = array();
             $myConfig = $this->getConfig();
-            $sMapFile = $myConfig->getAppDir() . '/views/' .  ( $blAdmin ? 'admin' : $myConfig->getConfigParam( "sTheme" ) ) .'/' . oxRegistry::getLang()->getLanguageAbbr( $iLang ) . '/map.php';
+
+            $sMapFile = '';
+            $sParentMapFile = $myConfig->getAppDir() . '/views/' .  ( $blAdmin ? 'admin' : $myConfig->getConfigParam( "sTheme" ) ) .'/' . oxRegistry::getLang()->getLanguageAbbr( $iLang ) . '/map.php';
+            $sCustomThemeMapFile = $myConfig->getAppDir() . '/views/' .  ( $blAdmin ? 'admin' : $myConfig->getConfigParam( "sCustomTheme" ) ) .'/' . oxRegistry::getLang()->getLanguageAbbr( $iLang ) . '/map.php';
+
+            if ( file_exists( $sCustomThemeMapFile ) && is_readable( $sCustomThemeMapFile ) ) {
+                $sMapFile = $sCustomThemeMapFile;
+            } elseif ( file_exists( $sParentMapFile ) && is_readable( $sParentMapFile ) ) {
+                $sMapFile = $sParentMapFile;
+            }
+
             if ( $sMapFile ) {
-                if ( file_exists( $sMapFile ) && is_readable( $sMapFile ) ) {
                     include $sMapFile;
                     $this->_aLangMap[$sKey] = $aMap;
                 }
-            }
+
         }
 
         return $this->_aLangMap[$sKey];

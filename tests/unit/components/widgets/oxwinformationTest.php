@@ -19,7 +19,6 @@
  * @package   tests
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -32,13 +31,20 @@ class Unit_Components_Widgets_oxwInformationTest extends OxidTestCase
 {
     /**
      * Testing oxwInformation::render()
-     *
-     * @return null
      */
     public function testRender()
     {
         $oInformation = new oxwInformation();
         $this->assertEquals( 'widget/footer/info.tpl', $oInformation->render() );
+    }
+
+    /**
+     * Testing oxwInformation::getServicesList()
+     */
+    public function testGetServicesList()
+    {
+        $oInformation = new oxwInformation();
+        $this->assertEquals( true, $oInformation->getServicesList() instanceof oxContentList );
     }
 
 }

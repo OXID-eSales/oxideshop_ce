@@ -19,7 +19,6 @@
  * @package   core
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -128,4 +127,19 @@ class oxContentList extends oxList
     }
 
 
+    /**
+     * Load contents by idents passed
+     *
+     * @TODO use cache also
+     *
+     * @param $sIdents
+     */
+    public function loadByIdents($sIdents)
+    {
+        $sTable = $this->getBaseObject()->getViewName();
+        $sSQL = "SELECT * FROM {$sTable} WHERE OXACTIVE = 1 AND OXTYPE = 0
+                                        AND OXLOADID IN (".$sIdents.")
+                                        AND OXSHOPID = '".$this->getConfig()->getShopId()."'";
+        $this->selectString($sSQL);
+    }
 }

@@ -19,7 +19,6 @@
  * @package   tests
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -109,4 +108,25 @@ class Unit_Core_oxcontentlistTest extends OxidTestCase
         $this->assertEquals( $oList->aList['testoxcontentlist'][0]->oxcontents__oxloadid->value, "testid_Unit_oxcontentlistTest" );
     }
 
+
+    /**
+     * Test case for loading content list by passed idents
+     */
+    public function testLoadByIdents()
+    {
+        $sIdents = "'oximpressum', 'oxagb'";
+        $aExpectedTitles = array("AGB", "Impressum");
+
+        /**
+         * @var oxContentList $oContentList
+         */
+        $oContentList = oxNew( "oxContentList" );
+        $oContentList->loadByIdents($sIdents);
+
+        $this->assertEquals( 2, $oContentList->count() );
+
+        foreach($oContentList as $iKey => $oContent) {
+            $this->assertEquals( $aExpectedTitles[$iKey], $oContentList->oxcontents__oxtitle->value );
+        }
+    }
 }

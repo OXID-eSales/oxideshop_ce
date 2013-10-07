@@ -20,7 +20,6 @@
  * @package   views
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -35,5 +34,16 @@ class oxwInformation extends oxWidget
      * @var string
      */
     protected $_sThisTemplate = 'widget/footer/info.tpl';
+
+    /**
+     * Get services content list
+     *
+     * @return object oxContentList
+     */
+    public function getServicesList()
+    {
+        $oContentList = oxNew( "oxContentList" );
+        return $oContentList;
+    }
 
 }

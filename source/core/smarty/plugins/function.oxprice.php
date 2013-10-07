@@ -37,15 +37,17 @@
 */
 function smarty_function_oxprice( $params, &$smarty )
 {
+    $sOutput = '';
     $iDecimals = 2;
     $sDecimalsSeparator = ',';
     $sThousandSeparator = '.';
     $sCurrencySign = '';
     $sSide = '';
+    $mPrice = $params['price'];
 
-    $mPrice  = isset( $params['price'] ) ? $params['price'] : '';
+    if ( !is_null( $mPrice ) ) {
+
     $sPrice = ( $mPrice instanceof oxPrice ) ? $mPrice->getPrice() : $mPrice;
-
     $oCurrency = isset( $params['currency'] ) ? $params['currency'] : null;
 
     if ( !is_null( $oCurrency ) ) {
@@ -56,12 +58,14 @@ function smarty_function_oxprice( $params, &$smarty )
         $iDecimals = ( $oCurrency->decimal ) ? (int) $oCurrency->decimal : $iDecimals;
     }
 
+        if ( is_numeric( $sPrice ) ) {
+            if ( (float) $sPrice > 0 || $sCurrencySign  ) {
     $sPrice = number_format( $sPrice, $iDecimals, $sDecimalsSeparator, $sThousandSeparator );
-
-    if ($sCurrencySign) {
         $sOutput = ( isset($sSide) && $sSide == 'Front' ) ? $sCurrencySign . ' ' . $sPrice : $sPrice . ' ' . $sCurrencySign;
-    } else {
-        $sOutput = $sPrice;
+            }
+
+            $sOutput = trim($sOutput);
+        }
     }
 
     return $sOutput;

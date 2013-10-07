@@ -33,23 +33,13 @@ class Unit_Maintenance_pluginSmartyOxPriceTest extends OxidTestCase
      */
     public function pricesAsObjects()
     {
-        $oEURCurrency = new stdClass();
-        $oEURCurrency->dec      = ',';
-        $oEURCurrency->thousand = '.';
-        $oEURCurrency->sign     = 'EUR';
-        $oEURCurrency->decimal  = 2;
-
-        $oUSDCurrency = new stdClass();
-        $oUSDCurrency->dec      = '.';
-        $oUSDCurrency->thousand = ',';
-        $oUSDCurrency->sign     = 'USD';
-        $oUSDCurrency->decimal  = 3;
-        $oUSDCurrency->side  = 'Front';
-
+        $oEURCurrency = $this->_getEurCurrency();
+        $oUSDCurrency = $this->_getUsdCurrency();
         $oEmptyCurrency = new stdClass();
 
         return array(
             array( new oxPrice( 12.12 ), $oEURCurrency, '12,12 EUR' ),
+            array( new oxPrice( 0.12 ), $oEURCurrency, '0,12 EUR' ),
             array( new oxPrice( 120012.1 ), $oUSDCurrency, 'USD 120,012.100' ),
             array( new oxPrice( 1278 ), $oEURCurrency, '1.278,00 EUR' ),
             array( new oxPrice( 1992.45 ), $oEmptyCurrency, '1.992,45' ),
@@ -60,7 +50,7 @@ class Unit_Maintenance_pluginSmartyOxPriceTest extends OxidTestCase
     /**
      * Test using price as oxPrice object
      *
-     * @dataProvider pricesAsObject
+     * @dataProvider pricesAsObjects
      *
      * @param oxPrice $oPrice price
      * @param stdClass $oCurrency currency object
@@ -81,23 +71,13 @@ class Unit_Maintenance_pluginSmartyOxPriceTest extends OxidTestCase
      */
     public function pricesAsFloats()
     {
-        $oEURCurrency = new stdClass();
-        $oEURCurrency->dec      = ',';
-        $oEURCurrency->thousand = '.';
-        $oEURCurrency->sign     = 'EUR';
-        $oEURCurrency->decimal  = 2;
-
-        $oUSDCurrency = new stdClass();
-        $oUSDCurrency->dec      = '.';
-        $oUSDCurrency->thousand = ',';
-        $oUSDCurrency->sign     = 'USD';
-        $oUSDCurrency->decimal  = 3;
-        $oUSDCurrency->side  = 'Front';
-
+        $oEURCurrency = $this->_getEurCurrency();
+        $oUSDCurrency = $this->_getUsdCurrency();
         $oEmptyCurrency = new stdClass();
 
         return array(
             array( 12.12, $oEURCurrency, '12,12 EUR' ),
+            array( 0.12, $oEURCurrency, '0,12 EUR' ),
             array( 120012.1, $oUSDCurrency, 'USD 120,012.100' ),
             array( 1278, $oEURCurrency, '1.278,00 EUR' ),
             array( 1992.45, $oEmptyCurrency, '1.992,45' ),
@@ -121,5 +101,72 @@ class Unit_Maintenance_pluginSmartyOxPriceTest extends OxidTestCase
         $aParams['currency'] = $oCurrency;
 
         $this->assertEquals( $sExpectedOutput, smarty_function_oxprice( $aParams, $oSmarty ) );
+    }
+
+    /**
+     * Data provider
+     * @return array
+     */
+    public function pricesNullPrices()
+    {
+        $oEURCurrency = $this->_getEurCurrency();
+        $oUSDCurrency = $this->_getUsdCurrency();
+        $oEmptyCurrency = new stdClass();
+
+        return array(
+            array( '', $oEURCurrency, '' ),
+            array( null, $oUSDCurrency, '' ),
+            array( 0, $oEURCurrency, '0,00 EUR' ),
+            array( 0, $oUSDCurrency, 'USD 0.000' ),
+            array( 0, $oEmptyCurrency, '' ),
+            array( 0, null, '' ),
+        );
+    }
+
+    /**
+     * Test using price as null or zero
+     *
+     * @dataProvider pricesNullPrices
+     *
+     * @param float $fPrice price
+     * @param stdClass $oCurrency currency object
+     * @param string $sExpectedOutput expected output
+     */
+    public function testFormatPrice_badPriceOrCurrency( $fPrice, $oCurrency, $sExpectedOutput )
+    {
+        $oSmarty = new Smarty();
+        $aParams['price'] = $fPrice;
+        $aParams['currency'] = $oCurrency;
+
+        $this->assertEquals( $sExpectedOutput, smarty_function_oxprice( $aParams, $oSmarty ) );
+    }
+
+    /**
+     * @return stdClass
+     */
+    protected function _getUsdCurrency()
+    {
+        $oUSDCurrency = new stdClass();
+        $oUSDCurrency->dec = '.';
+        $oUSDCurrency->thousand = ',';
+        $oUSDCurrency->sign = 'USD';
+        $oUSDCurrency->decimal = 3;
+        $oUSDCurrency->side = 'Front';
+
+        return $oUSDCurrency;
+    }
+
+    /**
+     * @return stdClass
+     */
+    protected function _getEurCurrency()
+    {
+        $oEURCurrency = new stdClass();
+        $oEURCurrency->dec = ',';
+        $oEURCurrency->thousand = '.';
+        $oEURCurrency->sign = 'EUR';
+        $oEURCurrency->decimal = 2;
+
+        return $oEURCurrency;
     }
 }

@@ -28,7 +28,7 @@ class oxSimpleXml {
 
 
     /**
-     * Recursively converts OxStdClass object instance to SimpleXMLElement structure
+     * Recursively adds $oInput object data to SimpleXMLElement structure
      *
      * @param SimpleXMLElement    $oXml   Xml handler
      * @param string|array|object $oInput Input object

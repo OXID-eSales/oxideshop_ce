@@ -95,7 +95,12 @@ window.onload = function ()
         [{ if $listitem->oxvoucherseries__oxid->value == $oxid }]
             [{assign var="listclass" value=listitem4 }]
         [{ /if}]
-       	<td valign="top" class="[{ $listclass}][{ if $listitem->oxvoucherseries__oxbegindate->value <= $sCurrentDatetime && $sCurrentDatetime <= $listitem->oxvoucherseries__oxenddate->value}] active[{/if}]" height="15"><div class="listitemfloating">&nbsp</a></div></td>
+       	<td valign="top" class="[{ $listclass}][{ if 
+       			($listitem->oxvoucherseries__oxbegindate->value == '0000-00-00 00:00:00'  && $listitem->oxvoucherseries__oxenddate->value == '0000-00-00 00:00:00' ) ||
+       			 ($listitem->oxvoucherseries__oxbegindate->value == '0000-00-00 00:00:00'  && $sCurrentDatetime <= $listitem->oxvoucherseries__oxenddate->value) ||
+       			 ($listitem->oxvoucherseries__oxbegindate->value <= $sCurrentDatetime  && $listitem->oxvoucherseries__oxenddate->value == '0000-00-00 00:00:00' ) ||
+       			($listitem->oxvoucherseries__oxbegindate->value <= $sCurrentDatetime && $sCurrentDatetime <= $listitem->oxvoucherseries__oxenddate->value)
+       			}] active[{/if}]" height="15"><div class="listitemfloating">&nbsp</a></div></td>
         <td valign="top" class="[{ $listclass}]" height="15"><div class="listitemfloating">&nbsp;<a href="Javascript:top.oxid.admin.editThis('[{ $listitem->oxvoucherseries__oxid->value}]');" class="[{ $listclass}]">[{ if !$listitem->oxvoucherseries__oxserienr->value }]-[{ oxmultilang ident="GENERAL_NONAME" }]-[{else}][{ $listitem->oxvoucherseries__oxserienr->value }][{/if}]</a></div></td>
         <td valign="top" class="[{ $listclass}]"><div class="listitemfloating"><a href="Javascript:top.oxid.admin.editThis('[{ $listitem->oxvoucherseries__oxid->value }]');" class="[{ $listclass}]">[{ $listitem->oxvoucherseries__oxdiscount->value }][{if $listitem->oxvoucherseries__oxdiscounttype->value == "percent"}] %[{/if}]</a></div></td>
         <td valign="top" class="[{ $listclass}]"><div class="listitemfloating"><a href="Javascript:top.oxid.admin.editThis('[{ $listitem->oxvoucherseries__oxid->value }]');" class="[{ $listclass}]">[{ $listitem->oxvoucherseries__oxbegindate->value }]</a></div></td>

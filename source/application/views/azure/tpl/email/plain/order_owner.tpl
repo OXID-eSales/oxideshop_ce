@@ -40,10 +40,10 @@
 
 [{assign var=dRegUnitPrice value=$basketitem->getRegularUnitPrice()}]
 [{assign var=dUnitPrice value=$basketitem->getUnitPrice()}]
-[{ oxmultilang ident="UNIT_PRICE" }] [{ $basketitem->getFUnitPrice() }] [{ $currency->name}] [{if !$basketitem->isBundle() }] [{if $dRegUnitPrice->getPrice() > $dUnitPrice->getPrice() }] ([{ $basketitem->getFRegularUnitPrice() }] [{ $currency->sign}]) [{/if}][{/if}]
+[{ oxmultilang ident="UNIT_PRICE" }] [{oxprice price=$basketitem->getUnitPrice() currency=$currency }] [{if !$basketitem->isBundle() }] [{if $dRegUnitPrice->getPrice() > $dUnitPrice->getPrice() }] ([{oxprice price=$basketitem->getRegularUnitPrice() currency=$currency }]) [{/if}][{/if}]
 [{ oxmultilang ident="QUANTITY" }] [{$basketitem->getAmount()}]
 [{ oxmultilang ident="VAT" }] [{$basketitem->getVatPercent() }]%
-[{ oxmultilang ident="TOTAL" }] [{ $basketitem->getFTotalPrice() }] [{ $currency->name}]
+[{ oxmultilang ident="TOTAL" }] [{oxprice price=$basketitem->getPrice() currency=$currency}]
 [{/block}]
 [{/foreach}]
 ------------------------------------------------------------------

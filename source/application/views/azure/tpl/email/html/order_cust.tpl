@@ -94,12 +94,12 @@
                     </td>
                     <td style="padding: 5px; border-bottom: 4px solid #ddd;" align="right">
                         <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                            <b>[{if $basketitem->getFUnitPrice() }][{ $basketitem->getFUnitPrice() }] [{ $currency->sign}][{/if}]</b>
+                            <b>[{if $basketitem->getUnitPrice() }][{oxprice price=$basketitem->getUnitPrice() currency=$currency }][{/if}]</b>
                             [{if !$basketitem->isBundle() }]
                                 [{assign var=dRegUnitPrice value=$basketitem->getRegularUnitPrice()}]
                                 [{assign var=dUnitPrice value=$basketitem->getUnitPrice()}]
                                 [{if $dRegUnitPrice->getPrice() > $dUnitPrice->getPrice() }]
-                                <br><s>[{ $basketitem->getFRegularUnitPrice() }]&nbsp;[{ $currency->sign}]</s>
+                                <br><s>[{oxprice price=$basketitem->getRegularUnitPrice() currency=$currency }]</s>
                                 [{/if}]
                             [{/if}]
                         </p>
@@ -132,7 +132,7 @@
                     </td>
                     <td style="padding: 5px; border-bottom: 4px solid #ddd;" align="right">
                         <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                            <b>[{ $basketitem->getFTotalPrice() }] [{ $currency->sign}]</b>
+                            <b>[{oxprice price=$basketitem->getPrice() currency=$currency}]</b>
                         </p>
                     </td>
                     [{if $blShowReviewLink}]

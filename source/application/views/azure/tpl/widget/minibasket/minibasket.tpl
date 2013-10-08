@@ -79,7 +79,7 @@
                                         [{/if}]
                                         [{ $minibasketItemTitle|strip_tags }]
                                     </span>
-                                    <strong class="price">[{$_product->getFTotalPrice()}] [{ $currency->sign}]</strong>
+                                    <strong class="price">[{oxprice price=$_product->getPrice() currency=$currency}]</strong>
                                 </a>
                             </li>
                         [{/block}]

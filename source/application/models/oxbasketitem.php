@@ -916,6 +916,8 @@ class oxBasketItem extends oxSuperCfg
     /**
      * Returns formatted regular unit price
      *
+     * @deprecated in v4.8/5.1 on 2013-10-08; use oxPrice smarty formatter
+     *
      * @return string
      */
     public function getFRegularUnitPrice()
@@ -926,6 +928,8 @@ class oxBasketItem extends oxSuperCfg
     /**
      * Returns formatted unit price
      *
+     * @deprecated in v4.8/5.1 on 2013-10-08; use oxPrice smarty formatter
+     *
      * @return string
      */
     public function getFUnitPrice()
@@ -935,6 +939,8 @@ class oxBasketItem extends oxSuperCfg
 
     /**
      * Returns formatted total price
+     *
+     * @deprecated in v4.8/5.1 on 2013-10-08; use oxPrice smarty formatter
      *
      * @return string
      */

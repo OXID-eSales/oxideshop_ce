@@ -188,12 +188,12 @@
                     [{block name="checkout_basketcontents_basketitem_unitprice"}]
                         [{* product price *}]
                         <td class="unitPrice">
-                            [{if $basketitem->getFUnitPrice() }][{ $basketitem->getFUnitPrice() }]&nbsp;[{ $currency->sign}][{/if}]
+                            [{if $basketitem->getUnitPrice() }] [{oxprice price=$basketitem->getUnitPrice() currency=$currency }] [{/if}]
                             [{if !$basketitem->isBundle() }]
                                 [{assign var=dRegUnitPrice value=$basketitem->getRegularUnitPrice()}]
                                 [{assign var=dUnitPrice value=$basketitem->getUnitPrice()}]
                                 [{if $dRegUnitPrice->getPrice() > $dUnitPrice->getPrice() }]
-                                <br><s>[{ $basketitem->getFRegularUnitPrice() }]&nbsp;[{ $currency->sign}]</s>
+                                <br><s>[{oxprice price=$basketitem->getRegularUnitPrice() currency=$currency }]</s>
                                 [{/if}]
                             [{/if}]
                         </td>
@@ -209,7 +209,7 @@
                     [{block name="checkout_basketcontents_basketitem_totalprice"}]
                         [{* product quantity * price *}]
                         <td>
-                            [{ $basketitem->getFTotalPrice() }]&nbsp;[{ $currency->sign }]
+                            [{oxprice price=$basketitem->getPrice() currency=$currency}]
                         </td>
                     [{/block}]
                 </tr>

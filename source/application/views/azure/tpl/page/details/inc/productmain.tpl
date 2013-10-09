@@ -247,19 +247,18 @@
             <div class="tobasketFunction clear">
                 [{block name="details_productmain_price"}]
                     [{oxhasrights ident="SHOWARTICLEPRICE"}]
-                        [{if $oDetailsProduct->getFPrice()}]
+                        [{if $oDetailsProduct->getPrice()}]
                             <label id="productPrice" class="price">
                                 [{assign var="sFrom" value=""}]
-                                [{assign var="fPrice" value=$oDetailsProduct->getFPrice()}]
+                                [{assign var="oPrice" value=$oDetailsProduct->getPrice()}]
                                 [{if $oDetailsProduct->isParentNotBuyable() }]
-                                    [{assign var="fPrice" value=$oDetailsProduct->getFVarMinPrice()}]
+                                    [{assign var="oPrice" value=$oDetailsProduct->getVarMinPrice()}]
                                     [{if $oDetailsProduct->isRangePrice() }]
                                         [{assign var="sFrom" value="PRICE_FROM"|oxmultilangassign}]
                                     [{/if}]
                                 [{/if}]
                                 <strong >
-                                    <span>[{$sFrom}] [{$fPrice}]</span>
-                                    <span>[{ $currency->sign}]</span>
+                                    <span>[{$sFrom}] [{oxprice price=$oPrice currency=$currency}]</span>
                                     [{if $oView->isVatIncluded() }]
                                     <span>*</span>
                                     [{/if}]

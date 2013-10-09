@@ -17,15 +17,15 @@
             [{/if}]
             [{if $oArticle }]
                 [{assign var="sFrom" value=""}]
-                [{assign var="fPrice" value=$oArticle->getFPrice()}]
+                [{assign var="oPrice" value=$oArticle->getPrice()}]
                 [{if $oArticle->isParentNotBuyable() }]
-                    [{assign var="fPrice" value=$oArticle->getFVarMinPrice()}]
+                    [{assign var="oPrice" value=$oArticle->getVarMinPrice()}]
                     [{if $oArticle->isRangePrice() }]
                         [{assign var="sFrom" value="PRICE_FROM"|oxmultilangassign}]
                     [{/if}]
                 [{/if}]
                 <span class="promoBox [{if $sFrom }]wide[{/if}]">
-                    <strong class="promoPrice [{if $sFrom }]wide[{/if}]">[{$sFrom}] [{$fPrice}] [{ $currency->sign}]</strong>
+                    <strong class="promoPrice [{if $sFrom }]wide[{/if}]">[{$sFrom}] [{oxprice price=$oPrice currency=$currency }]</strong>
                     <strong class="promoTitle [{if $sFrom }]wide[{/if}]">[{ $oArticle->oxarticles__oxtitle->value }]</strong>
                 </span>
             [{/if}]

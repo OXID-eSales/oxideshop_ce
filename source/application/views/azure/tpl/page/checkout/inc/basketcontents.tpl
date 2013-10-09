@@ -516,7 +516,7 @@
                     [{block name="checkout_basketcontents_grandtotal"}]
                         <tr>
                             <th><strong>[{ oxmultilang ident="GRAND_TOTAL" suffix="COLON" }]</strong></th>
-                            <td id="basketGrandTotal"><strong>[{ $oxcmp_basket->getFPrice() }]&nbsp;[{ $currency->sign }]</strong></td>
+                            <td id="basketGrandTotal"><strong>[{oxprice price=$oxcmp_basket->getPrice() currency=$currency }]</strong></td>
                         </tr>
                     [{/block}]
 

@@ -19,7 +19,6 @@
  * @package   core
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -109,6 +108,16 @@ class oxModuleList extends oxSuperCfg
     public function getModuleVersions()
     {
         return $this->getConfig()->getConfigParam('aModuleVersions');
+    }
+
+    /**
+     * Get the list of modules
+     *
+     * @return array
+     */
+    public function getModules()
+    {
+        return $this->getConfig()->getConfigParam('aModules');
     }
 
     /**

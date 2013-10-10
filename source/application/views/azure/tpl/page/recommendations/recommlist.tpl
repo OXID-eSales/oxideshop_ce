@@ -45,7 +45,7 @@
         [{if $oView->isReviewActive()}]
         <div class="widgetBox reviews">
             <h4>[{oxmultilang ident="WRITE_PRODUCT_REVIEW"}]</h4>
-            [{oxid_include_widget cl="oxwReview" nocookie=1 force_sid=$force_sid _parent=$oView->getClassName() type=oxrecommlist recommid=$_actvrecommlist->getId() canrate=$oView->canRate() user=$oxcmp_user}]
+            [{oxid_include_widget cl="oxwReview" nocookie=1 force_sid=$force_sid _parent=$oView->getClassName() type=oxrecommlist recommid=$_actvrecommlist->getId() canrate=$oView->canRate() skipESIforUser=1}]
         </div>
         [{/if}]
     [{else}]

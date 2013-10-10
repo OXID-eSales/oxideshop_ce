@@ -45,7 +45,7 @@
         [{if $oxcmp_user}]
             [{assign var="force_sid" value=$oView->getSidForWidget()}]
         [{/if}]
-        [{oxid_include_widget cl="oxwReview" nocookie=1 force_sid=$force_sid _parent=$oView->getClassName() type=oxarticle anid=$product->oxarticles__oxnid->value aid=$product->oxarticles__oxid->value canrate=$oView->canRate() reviewuserhash=$oView->getReviewUserHash() user=$oxcmp_user}]
+        [{oxid_include_widget cl="oxwReview" nocookie=1 force_sid=$force_sid _parent=$oView->getClassName() type=oxarticle anid=$product->oxarticles__oxnid->value aid=$product->oxarticles__oxid->value canrate=$oView->canRate() reviewuserhash=$oView->getReviewUserHash() skipESIforUser=1}]
     </div>
     [{/if}]
 [{/capture}]

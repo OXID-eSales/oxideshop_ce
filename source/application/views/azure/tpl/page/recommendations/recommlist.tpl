@@ -33,7 +33,7 @@
                     </div>
                     [{if $oView->isReviewActive()}]
                     <div class="rating clear">
-                        [{oxid_include_widget cl="oxwRating" blCanRate=$oView->canRate() _parent=$oViewConf->getTopActiveClassName() nocookie=1 force_sid=$force_sid sRateUrl=$_actvrecommlist->getLink() dRatingCount=$oView->getRatingCount() dRatingValue=$oView->getRatingValue() recommid=$_actvrecommlist->getId() skipreverceproxy=$oxcmp_user}]
+                        [{oxid_include_widget cl="oxwRating" blCanRate=$oView->canRate() _parent=$oViewConf->getTopActiveClassName() nocookie=1 force_sid=$force_sid sRateUrl=$_actvrecommlist->getLink() dRatingCount=$oView->getRatingCount() dRatingValue=$oView->getRatingValue() recommid=$_actvrecommlist->getId() user=$oxcmp_user}]
                     </div>
                     [{/if}]
                 </div>
@@ -45,7 +45,7 @@
         [{if $oView->isReviewActive()}]
         <div class="widgetBox reviews">
             <h4>[{oxmultilang ident="WRITE_PRODUCT_REVIEW"}]</h4>
-            [{oxid_include_widget cl="oxwReview" nocookie=1 force_sid=$force_sid _parent=$oView->getClassName() type=oxrecommlist recommid=$_actvrecommlist->getId() canrate=$oView->canRate() skipreverceproxy=$oxcmp_user}]
+            [{oxid_include_widget cl="oxwReview" nocookie=1 force_sid=$force_sid _parent=$oView->getClassName() type=oxrecommlist recommid=$_actvrecommlist->getId() canrate=$oView->canRate() user=$oxcmp_user}]
         </div>
         [{/if}]
     [{else}]

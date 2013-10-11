@@ -28,34 +28,18 @@
 class OxSystemEventHandler
 {
     /**
-     * @Var oxOnlineModuleVersionNotifier
+     * @Var oxOnlineLicenseCheck
      */
-    private $_oOMVN = null;
-
+    private $_oOLC = null;
 
     /**
-     * OMVN dependency setter
+     * OLC dependency setter
      *
-     * @param oxOnlineModuleVersionNotifier $oOLC
+     * @param oxOnlineLicenseCheck $oOLC
      */
-    public function setOMVN($oOMVN)
+    public function setOLC($oOLC)
     {
-        $this->_oOMVN = $oOMVN;
-    }
-
-    /**
-     * OMVN dependency getter
-     *
-     * @return oxOnlineModuleVersionNotifier
-     */
-    public function getOMVN()
-    {
-        if (!$this->_oOMVN) {
-            $oOMVN = oxNew("oxOnlineModuleVersionNotifier");
-            $this->setOMVN( $oOMVN );
-        }
-
-        return $this->_oOMVN;
+        $this->_oOLC = $oOLC;
     }
 
     /**
@@ -66,11 +50,9 @@ class OxSystemEventHandler
     public function onAdminLogin( $sActiveShop )
     {
 
-        //Checks if newer versions of modules are available.
-        //Will be used by the upcoming online one click installer.
-        //Is still under development - still changes at the remote server are necessary - therefore ignoring the results for now
-        try {
-            $this->getOMVN()->versionNotify();
-        } catch (Exception $o) { }
+        //perform online module version check
+        //$oOMVN = oxNew("oxOnlineModuleVersionNotifier");
+        //$oOMVN->execute();
+
     }
 }

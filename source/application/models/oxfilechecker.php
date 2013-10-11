@@ -54,7 +54,7 @@ class oxFileChecker {
     /**
      * CURL handler
      *
-     * @var string
+     * @var oxCurl
      */
     protected $_oCurlHandler = null;
 
@@ -182,7 +182,6 @@ class oxFileChecker {
         return $this->_sRevision;
     }
 
-
     /**
      * Web service URL setter
      *
@@ -233,7 +232,7 @@ class oxFileChecker {
     public function init()
     {
         $this->_oCurlHandler = oxNew ( "oxCurl" );
-        $this->_oCurlHandler->setWebServiceUrl ( $this->_sWebServiceUrl );
+        $this->_oCurlHandler->setUrl ( $this->_sWebServiceUrl );
 
         if ( !$this->checkSystemRequirements() ) {
             $this->_blError = true;
@@ -267,7 +266,10 @@ class oxFileChecker {
             'job' => 'ping',
         );
 
-        $sXML = $this->_oCurlHandler->callWebService(  $aParams );
+        $this->_oCurlHandler->setMethod("GET");
+        $this->_oCurlHandler->setOption("CURLOPT_CONNECTTIMEOUT", 30);
+        $this->_oCurlHandler->setParameters(  $aParams );
+        $sXML = $this->_oCurlHandler->execute();
 
         if (empty( $sXML ) ) {
             $this->_blError = true;
@@ -414,7 +416,10 @@ class oxFileChecker {
             'md5' => $sMD5,
         );
 
-        $sXML = $this->_oCurlHandler->callWebService( $aParams );
+        $this->_oCurlHandler->setMethod("GET");
+        $this->_oCurlHandler->setOption("CURLOPT_CONNECTTIMEOUT", 30);
+        $this->_oCurlHandler->setParameters( $aParams );
+        $sXML = $this->_oCurlHandler->execute();
         $oXML = null;
         try {
             $oXML = new SimpleXMLElement( $sXML );

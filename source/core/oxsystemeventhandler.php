@@ -47,7 +47,7 @@ class OxSystemEventHandler
      *
      * @param string $sActiveShop Active shop
      */
-    public function onAdminLogin($sActiveShop)
+    public function onAdminLogin( $sActiveShop )
     {
 
         //perform online module version check

@@ -138,8 +138,7 @@ class oxContentList extends oxList
 
         $sIdents = $this->extractKeysFromArrayToQueryString( $aIdents );
 
-        $sSQL = "SELECT * FROM {$sTable} WHERE OXACTIVE = 1 AND OXTYPE = 0
-                                        AND OXLOADID IN (" . $sIdents . ")
+        $sSQL = "SELECT * FROM {$sTable} WHERE OXACTIVE = 1 AND OXLOADID IN (" . $sIdents . ")
                                         AND OXSHOPID = '" . $this->getConfig()->getShopId() . "'";
         $this->selectString( $sSQL );
     }

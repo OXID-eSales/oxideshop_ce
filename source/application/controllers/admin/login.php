@@ -19,7 +19,6 @@
  * @package   admin
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -126,6 +125,11 @@ class Login extends oxAdminView
 
         // success
         oxRegistry::getUtils()->logger( "login successful" );
+
+        //execute onAdminLogin() event
+        $oEvenHandler = oxNew("oxSystemEventHandler");
+        $oEvenHandler->onAdminLogin( oxRegistry::getConfig()->getShopId() );
+
         // #533
         if ( isset( $sProfile ) ) {
             $aProfiles = oxSession::getVar( "aAdminProfiles" );

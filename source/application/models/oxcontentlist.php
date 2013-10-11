@@ -52,7 +52,7 @@ class oxContentList extends oxList
      */
     public function __construct( $sObjectsInListName = 'oxcontent' )
     {
-        parent::__construct( 'oxcontent');
+        parent::__construct( 'oxcontent' );
     }
 
     /**

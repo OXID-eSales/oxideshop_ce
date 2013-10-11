@@ -118,13 +118,11 @@ class Shop_License extends Shop_Config
         $iLang = $oLang->getTplLanguage();
         $sLang = $oLang->getLanguageAbbr( $iLang );
         
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $aParams);
-        curl_setopt($ch, CURLOPT_URL, $sUrl . "/" . $sLang);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $sOutput = curl_exec($ch);
-        curl_close($ch);
+        $oCurl = oxNew('oxCurl');
+        $oCurl->setMethod("POST");
+        $oCurl->setUrl($sUrl . "/" . $sLang);
+        $oCurl->setParameters($aParams);
+        $sOutput = $oCurl->execute();
         
         $sOutput = strip_tags($sOutput, "<br>, <b>");
         $aResult = explode("<br>", $sOutput);

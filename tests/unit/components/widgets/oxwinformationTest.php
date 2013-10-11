@@ -30,21 +30,43 @@ require_once realpath( "." ).'/unit/test_config.inc.php';
 class Unit_Components_Widgets_oxwInformationTest extends OxidTestCase
 {
     /**
-     * Testing oxwInformation::render()
+     * Test render of default template
      */
     public function testRender()
     {
         $oInformation = new oxwInformation();
+
         $this->assertEquals( 'widget/footer/info.tpl', $oInformation->render() );
     }
 
     /**
-     * Testing oxwInformation::getServicesList()
+     * Test set / get template
+     */
+    public function testSetGetTemplate()
+    {
+        $oInformation = new oxwInformation();
+        $sExpected = 'widget/footer/helper.tpl';
+
+        $oInformation->setTemplate($sExpected);
+
+        $this->assertEquals( $sExpected, $oInformation->getTemplate() );
+    }
+
+    /**
+     * Test getting list of needed services
      */
     public function testGetServicesList()
     {
         $oInformation = new oxwInformation();
+
         $this->assertEquals( true, $oInformation->getServicesList() instanceof oxContentList );
+
+        $aServicesKeys = array("oximpressum, oxagb");
+        $oInformation->setServicesKeys($aServicesKeys);
+
+        $this->assertEquals( 2, $oInformation->getServicesList()->count() );
+
+
     }
 
 }

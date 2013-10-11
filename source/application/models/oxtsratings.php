@@ -79,14 +79,14 @@ class oxTsRatings extends oxSuperCfg
      */
     protected function _executeCurl( $sUrl )
     {
-        $oCurl = curl_init();
-        curl_setopt( $oCurl, CURLOPT_HEADER, false );
-        curl_setopt( $oCurl, CURLOPT_RETURNTRANSFER, 1 );
-        curl_setopt( $oCurl, CURLOPT_POST, false );
-        curl_setopt( $oCurl, CURLOPT_URL, $sUrl );
-        $output = curl_exec( $oCurl );
-        curl_close( $oCurl );
-        return $output;
+        $oCurl = oxNew('oxCurl');
+        $oCurl->setMethod("GET");
+        $oCurl->setUrl($sUrl);
+        $oCurl->setOption('CURLOPT_HEADER', false);
+        $oCurl->setOption('CURLOPT_POST', false);
+        $sOutput = $oCurl->execute();
+
+        return $sOutput;
     }
 
     /**

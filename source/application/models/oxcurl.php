@@ -141,7 +141,7 @@ class oxCurl
      */
     public function getUrl()
     {
-        if ($this->getMethod() == "GET") {
+        if ($this->getMethod() == "GET" && $this->getQuery()) {
             $this->_sUrl = $this->_sUrl . "?" . $this->getQuery();
         }
         return $this->_sUrl;
@@ -349,7 +349,8 @@ class oxCurl
         }
         $this->_setOpt( CURLOPT_URL, $this->getUrl() );
 
-        if ($this->getMethod() == "POST" && $this->getQuery()) {
+        if ( $this->getMethod() == "POST" ) {
+            $this->_setOpt( CURLOPT_POST, 1 );
             $this->_setOpt( CURLOPT_POSTFIELDS, $this->getQuery() );
         }
 

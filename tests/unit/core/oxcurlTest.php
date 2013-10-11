@@ -291,10 +291,29 @@ class Unit_Core_oxCurlTest extends OxidTestCase
     /**
      * Test oxCurl::execute()
      */
-    public function testExecute_noAdditionalOptionsSet()
+    public function testExecute_noAdditionalOptionsSetForGET()
     {
         $oCurl = $this->getMock( 'oxCurl', array( "_execute", '_setOpt', '_close', '_getErrorNumber', 'getHeader', 'getUrl', 'getQuery', 'getOptions' ) );
         $oCurl->expects( $this->exactly(1) )->method( '_setOpt' );
+        $oCurl->expects( $this->once() )->method( 'getHeader' );
+        $oCurl->expects( $this->once() )->method( 'getUrl' );
+        $oCurl->expects( $this->never() )->method( 'getQuery' );
+        $oCurl->expects( $this->once() )->method( 'getOptions' )->will( $this->returnValue( array() ) );
+        $oCurl->expects( $this->once() )->method( '_execute' )->will( $this->returnValue( 'rParam1=rValue1') );
+        $oCurl->expects( $this->once() )->method( '_getErrorNumber' )->will( $this->returnValue( false ) );
+        $oCurl->expects( $this->once() )->method( '_close' );
+        $oCurl->setMethod('GET');
+
+        $this->assertEquals( 'rParam1=rValue1', $oCurl->execute() );
+    }
+
+    /**
+     * Test oxCurl::execute()
+     */
+    public function testExecute_noAdditionalOptionsSetForPOST()
+    {
+        $oCurl = $this->getMock( 'oxCurl', array( "_execute", '_setOpt', '_close', '_getErrorNumber', 'getHeader', 'getUrl', 'getQuery', 'getOptions' ) );
+        $oCurl->expects( $this->exactly(3) )->method( '_setOpt' );
         $oCurl->expects( $this->once() )->method( 'getHeader' );
         $oCurl->expects( $this->once() )->method( 'getUrl' );
         $oCurl->expects( $this->once() )->method( 'getQuery' );
@@ -330,7 +349,7 @@ class Unit_Core_oxCurlTest extends OxidTestCase
         $oCurl = oxNew( "oxCurl" );
         $oCurl->setMethod( 'GET' );
         $oCurl->setUrl( "http://www.google.com" );
-        $this->assertEquals( "http://www.google.com?", $oCurl->getUrl() );
+        $this->assertEquals( "http://www.google.com", $oCurl->getUrl() );
     }
 
     /**
@@ -352,7 +371,7 @@ class Unit_Core_oxCurlTest extends OxidTestCase
         $oCurl->expects( $this->once() )->method( '_execute' )->will( $this->returnValue( 'rParam1=rValue1') );
         $oCurl->expects( $this->once() )->method( '_getErrorNumber' )->will( $this->returnValue( false ) );
         $oCurl->expects( $this->once() )->method( '_close' );
-        $oCurl->expects( $this->exactly(4) )->method( '_setOpt' );
+        $oCurl->expects( $this->exactly(5) )->method( '_setOpt' );
         $oCurl->setMethod('POST');
         $oCurl->setUrl( "http://www.google.com");
         $oCurl->setParameters(array( "param1" => "val1", "param2" => "val2" ));

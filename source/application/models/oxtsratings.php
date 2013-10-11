@@ -108,15 +108,15 @@ class oxTsRatings extends oxSuperCfg
             $this->_aChannel['empty'] = true;
 
         try {
-            $oDomFile = new DomDocument();
-            if ( $oDomFile->loadXML( $sOutput ) ) {
-            $this->_aChannel['empty'] = false;
-                $oXPath = new DomXPath( $oDomFile );
+            $oDomFile = oxNew( "oxSimpleXml" );
+            if ( $oXml = $oDomFile->xmlToObject( $sOutput ) ) {
+                $aResult = $oXml->ratings->xpath('//result[@name="average"]');
 
-                $this->_aChannel['result'] = $oXPath->evaluate( 'string(//result[@name="average"])' );
+                $this->_aChannel['empty'] = false;
+                $this->_aChannel['result'] = (float)$aResult[0];
             $this->_aChannel['max'] = "5.00";
-                $this->_aChannel['count'] = $oXPath->evaluate( 'string(//ratings/@amount)' );
-                $this->_aChannel['shopName'] = $oXPath->evaluate( 'string(//name)' );
+                $this->_aChannel['count'] = (int)$oXml->ratings["amount"];
+                $this->_aChannel['shopName'] = (string)$oXml->name;
             oxRegistry::getUtils()->toFileCache( self::TS_RATINGS, $this->_aChannel, self::CACHE_TTL );
         }
         } catch ( Exception $oEx ) {

@@ -21,8 +21,8 @@
  * @version OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath( "." ) . '/unit/OxidTestCase.php';
+require_once realpath( "." ) . '/unit/test_config.inc.php';
 
 class Unit_Core_oxcontentlistTest extends OxidTestCase
 {
@@ -39,14 +39,14 @@ class Unit_Core_oxcontentlistTest extends OxidTestCase
         parent::setUp();
         // creating demo content
         $this->_oContent = new oxcontent();
-        $this->_oContent->oxcontents__oxtitle = new oxField('test_Unit_oxcontentlistTest', oxField::T_RAW);
+        $this->_oContent->oxcontents__oxtitle = new oxField( 'test_Unit_oxcontentlistTest', oxField::T_RAW );
         $this->_sShopId = modConfig::getInstance()->getShopId();
-        $this->_oContent->oxcontents__oxshopid = new oxField($this->_sShopId, oxField::T_RAW);
-        $this->_oContent->oxcontents__oxloadid = new oxField('testid_Unit_oxcontentlistTest', oxField::T_RAW);
-        $this->_oContent->oxcontents__oxcontent = new oxField('Unit_oxcontentlistTest', oxField::T_RAW);
-        $this->_oContent->oxcontents__oxactive = new oxField('1', oxField::T_RAW);
-        $this->_oContent->oxcontents__oxtype = new oxField('1', oxField::T_RAW);
-        $this->_oContent->oxcontents__oxsnippet = new oxField('0', oxField::T_RAW);
+        $this->_oContent->oxcontents__oxshopid = new oxField( $this->_sShopId, oxField::T_RAW );
+        $this->_oContent->oxcontents__oxloadid = new oxField( 'testid_Unit_oxcontentlistTest', oxField::T_RAW );
+        $this->_oContent->oxcontents__oxcontent = new oxField( 'Unit_oxcontentlistTest', oxField::T_RAW );
+        $this->_oContent->oxcontents__oxactive = new oxField( '1', oxField::T_RAW );
+        $this->_oContent->oxcontents__oxtype = new oxField( '1', oxField::T_RAW );
+        $this->_oContent->oxcontents__oxsnippet = new oxField( '0', oxField::T_RAW );
         $this->_oContent->save();
     }
 
@@ -57,7 +57,7 @@ class Unit_Core_oxcontentlistTest extends OxidTestCase
      */
     protected function tearDown()
     {
-        modConfig::getInstance()->setShopId($this->_sShopId );
+        modConfig::getInstance()->setShopId( $this->_sShopId );
         // deleting ..
         $this->_oContent->delete();
         parent::tearDown();
@@ -88,8 +88,8 @@ class Unit_Core_oxcontentlistTest extends OxidTestCase
      */
     public function testLoadCatMenues()
     {
-        $this->_oContent->oxcontents__oxtype = new oxField('2', oxField::T_RAW);
-        $this->_oContent->oxcontents__oxcatid = new oxField('testoxcontentlist', oxField::T_RAW);
+        $this->_oContent->oxcontents__oxtype = new oxField( '2', oxField::T_RAW );
+        $this->_oContent->oxcontents__oxcatid = new oxField( 'testoxcontentlist', oxField::T_RAW );
         $this->_oContent->save();
 
         $oList = new oxcontentlist();

@@ -84,6 +84,13 @@ class oxCurl
     protected $_sHost = null;
 
     /**
+     * Curl Options
+     *
+     * @var array
+     */
+    protected $_aOptions = array('CURLOPT_RETURNTRANSFER' => 1);
+
+    /**
      * Sets resource
      *
      * @param resource $rCurl curl.
@@ -135,14 +142,27 @@ class oxCurl
      */
     public function getUrl()
     {
+        if ($this->getMethod() == "GET") {
+            $this->_sUrl = $this->_sUrl . "?" . $this->getQuery();
+        }
         return $this->_sUrl;
         }
 
     /**
      * Set query like "param1=value1&param2=values2.."
      */
-    public function setQuery( $sQuery )
+    public function setQuery( $sQuery = null )
     {
+        if ( is_null($sQuery) ) {
+            $sQuery = "";
+            if ($aParams = $this->getParameters()) {
+                $aParams = array_filter( $aParams );
+                $aParams = array_map(array($this, '_htmlDecode'), $aParams);
+
+                $sQuery = http_build_query( $aParams, "", "&" );
+            }
+        }
+
         $this->_sQuery = $sQuery;
     }
 
@@ -154,12 +174,7 @@ class oxCurl
     public function getQuery()
     {
         if ( is_null( $this->_sQuery ) ) {
-
-            $aParams = $this->getParameters();
-            $aParams = array_filter( $aParams );
-            $aParams = array_map(array($this, '_htmlDecode'), $aParams);
-
-            $this->setQuery( http_build_query( $aParams, "", "&" ) );
+            $this->setQuery();
         }
 
         return $this->_sQuery;
@@ -184,26 +199,6 @@ class oxCurl
     {
         return $this->_aParameters;
         }
-
-    /**
-     * Set connection charset
-     *
-     * @param string $sCharset charset
-     */
-    public function setConnectionCharset( $sCharset )
-    {
-        $this->_sConnectionCharset = $sCharset;
-    }
-
-    /**
-     * Return connection charset
-     *
-     * @return string
-     */
-    public function getConnectionCharset()
-    {
-        return $this->_sConnectionCharset;
-    }
 
     /**
      * Sets host.
@@ -268,7 +263,7 @@ class oxCurl
      *
      * @param string $sMethod method to send (POST/GET)
      *
-     * @return CurlWrapper
+     * @return null
      */
     public function setMethod($sMethod)
     {
@@ -290,6 +285,10 @@ class oxCurl
      *
      * @param string $sName  curl option name to set value to.
      * @param string $sValue curl option value to set.
+     *
+     * @throws oxException on curl errors
+     *
+     * @return null
      */
     public function setOption( $sName, $sValue )
     {
@@ -297,11 +296,90 @@ class oxCurl
             /**
              * @var oxException $oException
              */
-            $oException = oxNew( "oxException", 'EXCEPTION_NOT_VALID_CONSTANT' );
+            $oException = oxNew( "oxException", 'EXCEPTION_NOT_VALID_CURL_CONSTANT' );
             throw $oException;
         }
 
-        $this->_setOpt( $sName, $sValue );
+        $this->_aOptions[$sName] = $sValue;
+    }
+
+    /**
+     * Gets all options for a cURL transfer
+     *
+     * @return array
+     */
+    public function getOptions()
+    {
+        return $this->_aOptions;
+    }
+
+    /**
+     * Executes curl call and returns response data as associative array.
+     *
+     * @throws oxException on curl errors
+     *
+     * @return string
+     */
+    public function execute()
+    {
+        $this->_setOptions();
+
+        $sResponse = $this->_execute();
+
+        $this->_close();
+
+        $iCurlErrorNumber = $this->_getErrorNumber();
+        if ( $iCurlErrorNumber ) {
+            /**
+             * @var oxException $oException
+             */
+            $oException = oxNew( "oxException", 'EXCEPTION_CURL_ERROR' );
+            throw $oException;
+        }
+
+        return $sResponse;
+    }
+
+    /**
+     * Set Curl Options
+     */
+    protected function _setOptions()
+    {
+        if (!is_null($this->getHeader())) {
+            $this->_setOpt( CURLOPT_HTTPHEADER, $this->getHeader() );
+        }
+        $this->_setOpt( CURLOPT_URL, $this->getUrl() );
+
+        if ($this->getMethod() == "POST" && $this->getQuery()) {
+            $this->_setOpt( CURLOPT_POSTFIELDS, $this->getQuery() );
+        }
+
+        $aOptions = $this->getOptions();
+        if ( count($aOptions) ) {
+            foreach( $aOptions as $sName => $mValue  ) {
+                $this->_setOpt( constant( $sName ), $mValue );
+            }
+        }
+    }
+
+    /**
+     * Wrapper function to be mocked for testing.
+     *
+     * @return string
+     */
+    protected function _execute()
+    {
+        return curl_exec( $this->_getResource() );
+    }
+
+    /**
+     * Wrapper function to be mocked for testing.
+     *
+     * @return null
+     */
+    protected function _close()
+    {
+        curl_close( $this->_getResource() );
     }
 
     /**
@@ -316,17 +394,13 @@ class oxCurl
     }
 
     /**
-     * Set Curl Options.
+     * Check if curl has errors. Set error message if has.
+     *
+     * @return int
      */
-    protected function _setOptions()
+    protected function _getErrorNumber()
     {
-       /* foreach( $this->getEnvironmentParameters() as $sName => $mValue  ) {
-            $this->setOption( constant( $sName ), $mValue );
-        }*/
-
-        $this->_setOpt( CURLOPT_HTTPHEADER, $this->getHeader() );
-        $this->_setOpt( CURLOPT_URL, $this->getUrl() );
-        $this->_setOpt( CURLOPT_POSTFIELDS, $this->getQuery() );
+        return curl_errno( $this->_getResource() );
     }
 
     /**
@@ -341,6 +415,26 @@ class oxCurl
         $sString = html_entity_decode( stripslashes( $sString ), ENT_QUOTES, $this->getConnectionCharset() );
 
         return $sString;
+    }
+
+    /**
+     * Set connection charset
+     *
+     * @param string $sCharset charset
+     */
+    public function setConnectionCharset( $sCharset )
+    {
+        $this->_sConnectionCharset = $sCharset;
+    }
+
+    /**
+     * Return connection charset
+     *
+     * @return string
+     */
+    public function getConnectionCharset()
+    {
+        return $this->_sConnectionCharset;
     }
 
 }

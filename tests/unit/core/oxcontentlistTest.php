@@ -110,23 +110,40 @@ class Unit_Core_oxcontentlistTest extends OxidTestCase
 
 
     /**
-     * Test case for loading content list by passed idents
+     * Test case for loading content list by passed keys
      */
-    public function testLoadByIdents()
+    public function testLoadServicesFromDbByKeys()
     {
-        $sIdents = "'oximpressum', 'oxagb'";
-        $aExpectedTitles = array("AGB", "Impressum");
+        $aIdents = array( 'oximpressum', 'oxagb' );
+        $aExpectedTitles = array( "AGB", "Impressum" );
 
-        /**
-         * @var oxContentList $oContentList
-         */
+        /** * @var oxContentList $oContentList */
         $oContentList = oxNew( "oxContentList" );
-        $oContentList->loadByIdents($sIdents);
+
+        $oContentList->loadServicesFromDbByKeys( $aIdents );
 
         $this->assertEquals( 2, $oContentList->count() );
 
-        foreach($oContentList as $iKey => $oContent) {
+        foreach ( $oContentList as $iKey => $oContent ) {
             $this->assertEquals( $aExpectedTitles[$iKey], $oContentList->oxcontents__oxtitle->value );
         }
     }
+
+    /**
+     * Test case for extracting contents keys from array to DB query string
+     */
+    public function testExtractKeysFromArrayToQueryString()
+    {
+        $aIdents = array( 'oximpressum', 'oxagb', 'oxsecurityinfo' );
+        $sExpected = "'oximpressum','oxagb','oxsecurityinfo'";
+
+        /** * @var oxContentList $oContentList */
+        $oContentList = oxNew( "oxContentList" );
+
+        $this->assertEquals( $sExpected, $oContentList->extractKeysFromArrayToQueryString( $aIdents ) );
+
+        $this->assertFalse( $oContentList->extractKeysFromArrayToQueryString( array() ) );
+    }
+
+
 }

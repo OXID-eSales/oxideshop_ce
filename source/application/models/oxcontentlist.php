@@ -128,18 +128,46 @@ class oxContentList extends oxList
 
 
     /**
-     * Load contents by idents passed
+     * Load contents from db by passed keys
      *
-     * @TODO use cache also
-     *
-     * @param $sIdents
+     * @param $aIdents
      */
-    public function loadByIdents($sIdents)
+    public function loadServicesFromDbByKeys( $aIdents )
     {
         $sTable = $this->getBaseObject()->getViewName();
+
+        $sIdents = $this->extractKeysFromArrayToQueryString( $aIdents );
+
         $sSQL = "SELECT * FROM {$sTable} WHERE OXACTIVE = 1 AND OXTYPE = 0
-                                        AND OXLOADID IN (".$sIdents.")
-                                        AND OXSHOPID = '".$this->getConfig()->getShopId()."'";
-        $this->selectString($sSQL);
+                                        AND OXLOADID IN (" . $sIdents . ")
+                                        AND OXSHOPID = '" . $this->getConfig()->getShopId() . "'";
+        $this->selectString( $sSQL );
+    }
+
+
+    /**
+     * Extract ident keys from array to string
+     *
+     * @param $aKeys
+     * @return boolean|string
+     */
+    public function extractKeysFromArrayToQueryString( $aKeys )
+    {
+        if ( !is_array( $aKeys ) || empty( $aKeys ) ) {
+            return false;
+        }
+
+        $sKeys = "";
+
+        $iCount = count( $aKeys );
+
+        for ( $i = 0; $i < $iCount; $i++ ) {
+            $sKeys .= "'{$aKeys[$i]}'";
+            if ( $i !== $iCount - 1 ) {
+                $sKeys .= ",";
+            }
+        }
+
+        return $sKeys;
     }
 }

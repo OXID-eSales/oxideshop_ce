@@ -110,7 +110,6 @@ class oxCurl
         if ( is_null( $this->_rCurl ) ) {
             $this->_setResource( curl_init() );
         }
-
         return $this->_rCurl;
     }
 
@@ -231,7 +230,7 @@ class oxCurl
      */
     public function setHeader( $aHeader = null )
     {
-        if ( is_null( $aHeader ) ) {
+        if ( is_null( $aHeader ) && $this->getMethod() == "POST") {
             $sHost = $this->getHost();
 
             $aHeader = array();
@@ -325,10 +324,10 @@ class oxCurl
         $this->_setOptions();
 
         $sResponse = $this->_execute();
+        $iCurlErrorNumber = $this->_getErrorNumber();
 
         $this->_close();
 
-        $iCurlErrorNumber = $this->_getErrorNumber();
         if ( $iCurlErrorNumber ) {
             /**
              * @var oxException $oException
@@ -380,6 +379,7 @@ class oxCurl
     protected function _close()
     {
         curl_close( $this->_getResource() );
+        $this->_setResource( null );
     }
 
     /**

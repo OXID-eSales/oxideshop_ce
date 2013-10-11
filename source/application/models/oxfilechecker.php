@@ -231,8 +231,7 @@ class oxFileChecker {
      */
     public function init()
     {
-        $this->_oCurlHandler = oxNew ( "oxCurl" );
-        $this->_oCurlHandler->setUrl ( $this->_sWebServiceUrl );
+        $this->_oCurlHandler = oxNew( "oxCurl" );
 
         if ( !$this->checkSystemRequirements() ) {
             $this->_blError = true;
@@ -266,6 +265,7 @@ class oxFileChecker {
             'job' => 'ping',
         );
 
+        $this->_oCurlHandler->setUrl( $this->_sWebServiceUrl );
         $this->_oCurlHandler->setMethod("GET");
         $this->_oCurlHandler->setOption("CURLOPT_CONNECTTIMEOUT", 30);
         $this->_oCurlHandler->setParameters(  $aParams );
@@ -416,6 +416,7 @@ class oxFileChecker {
             'md5' => $sMD5,
         );
 
+        $this->_oCurlHandler->setUrl( $this->_sWebServiceUrl );
         $this->_oCurlHandler->setMethod("GET");
         $this->_oCurlHandler->setOption("CURLOPT_CONNECTTIMEOUT", 30);
         $this->_oCurlHandler->setParameters( $aParams );

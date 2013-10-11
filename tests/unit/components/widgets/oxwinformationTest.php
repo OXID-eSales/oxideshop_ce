@@ -21,8 +21,8 @@
  * @version OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath( "." ) . '/unit/OxidTestCase.php';
+require_once realpath( "." ) . '/unit/test_config.inc.php';
 
 /**
  * Tests for oxwInformation class
@@ -47,7 +47,7 @@ class Unit_Components_Widgets_oxwInformationTest extends OxidTestCase
         $oInformation = new oxwInformation();
         $sExpected = 'widget/footer/helper.tpl';
 
-        $oInformation->setTemplate($sExpected);
+        $oInformation->setTemplate( $sExpected );
 
         $this->assertEquals( $sExpected, $oInformation->getTemplate() );
     }
@@ -61,8 +61,8 @@ class Unit_Components_Widgets_oxwInformationTest extends OxidTestCase
 
         $this->assertEquals( true, $oInformation->getServicesList() instanceof oxContentList );
 
-        $aServicesKeys = array("oximpressum, oxagb");
-        $oInformation->setServicesKeys($aServicesKeys);
+        $aServicesKeys = array( "oximpressum, oxagb" );
+        $oInformation->setServicesKeys( $aServicesKeys );
 
         $this->assertEquals( 2, $oInformation->getServicesList()->count() );
 

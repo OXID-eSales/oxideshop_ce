@@ -96,6 +96,8 @@ class oxSimpleXml {
      * Parses XML string into object structure
      *
      * @param string $sXml XML Input
+     *
+     * @return SimpleXMLElement
      */
     public function xmlToObject($sXml)
     {

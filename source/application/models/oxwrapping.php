@@ -97,19 +97,6 @@ class oxWrapping extends oxI18n
     }
 
     /**
-     * Assigns oxwrapping object data and calculates dprice/fprice
-     *
-     * @param array $dbRecord object data
-     *
-     * @return null
-     */
-    public function assign( $dbRecord )
-    {
-        // loading object from database
-        parent::assign( $dbRecord );
-    }
-
-    /**
      * Returns oxprice object for wrapping
      *
      * @param int $dAmount article amount

@@ -262,7 +262,7 @@
                           <br>
                           <div id="orderCardText">[{ $oxcmp_basket->getCardMessage()|nl2br }]</div>
                       </td>
-                      <td id="orderCardPrice">[{ $oCard->getFPrice() }]&nbsp;[{ $currency->sign }]</td>
+                      <td id="orderCardPrice">[{oxprice price=$oCard->getPrice() currency=$currency }]</td>
                       <td>
                          [{if $oxcmp_basket->isProportionalCalculationOn() }]
                             [{ oxmultilang ident="PROPORTIONALLY_CALCULATED" }]</th>
@@ -270,7 +270,7 @@
                               [{if $oxcmp_basket->getGiftCardCostVat() }][{ $oxcmp_basket->getGiftCardCostVatPercent() }]%[{/if}]
                          [{/if}]
                       </td>
-                      <td id="orderCardTotalPrice" align="right">[{ $oCard->getFPrice() }]&nbsp;[{ $currency->sign }]</td>
+                      <td id="orderCardTotalPrice" align="right">[{oxprice price=$oCard->getPrice() currency=$currency}]</td>
                     </tr>
                   [{/if}]
               [{/if}]

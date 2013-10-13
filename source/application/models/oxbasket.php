@@ -2470,6 +2470,8 @@ class oxBasket extends oxSuperCfg
     /**
      * Returns VAT of wrapping costs
      *
+     * @deprecated
+     *
      * @return double
      */
     public function getWrappCostVatPercent()
@@ -2481,6 +2483,8 @@ class oxBasket extends oxSuperCfg
     /**
      * Returns VAT of gift card costs
      *
+     * @deprecated
+     *
      * @return double
      */
     public function getGiftCardCostVatPercent()
@@ -2490,6 +2494,8 @@ class oxBasket extends oxSuperCfg
 
     /**
      * Returns formatted VAT of wrapping costs
+     *
+     * @deprecated
      *
      * @return string | bool
      */
@@ -2510,6 +2516,8 @@ class oxBasket extends oxSuperCfg
     /**
      * Returns formatted netto price of wrapping costs
      *
+     * @deprecated
+     *
      * @return string
      */
     public function getWrappCostNet()
@@ -2529,6 +2537,8 @@ class oxBasket extends oxSuperCfg
     /**
      * Returns if exists formatted wrapping costs
      *
+     * @deprecated
+     *
      * @return string | bool
      */
     public function getFWrappingCosts()
@@ -2542,9 +2552,15 @@ class oxBasket extends oxSuperCfg
         return false;
     }
 
+    public function getWrappingCost()
+    {
+        return $this->getCosts( 'oxwrapping' );
+    }
 
     /**
      * Returns formatted VAT of gift card costs
+     *
+     * @deprecated
      *
      * @return string | bool
      */
@@ -2566,6 +2582,8 @@ class oxBasket extends oxSuperCfg
     /**
      * Returns formatted netto price of gift card costs
      *
+     * @deprecated
+     *
      * @return string
      */
     public function getGiftCardCostNet()
@@ -2585,6 +2603,8 @@ class oxBasket extends oxSuperCfg
     /**
      * Returns if exists formatted gift card costs
      *
+     * @deprecated
+     *
      * @return string | bool
      */
     public function getFGiftCardCosts()
@@ -2598,7 +2618,17 @@ class oxBasket extends oxSuperCfg
     }
 
     /**
+     * @return oxPrice
+     */
+    public function getGiftCardCost()
+    {
+        return $this->getCosts( 'oxgiftcard' );
+    }
+
+    /**
      * Returns formatted basket total price
+     *
+     * @deprecated
      *
      * @return string
      */
@@ -2904,6 +2934,8 @@ class oxBasket extends oxSuperCfg
     /**
      * Returns if exists formatted TS protection costs
      *
+     * @deprecated
+     *
      * @return string | bool
      */
     public function getFTsProtectionCosts()
@@ -2918,6 +2950,8 @@ class oxBasket extends oxSuperCfg
     /**
      * Returns VAT of TS protection costs
      *
+     * @deprecated
+     *
      * @return string | bool
      */
     public function getTsProtectionVatPercent()
@@ -2927,6 +2961,8 @@ class oxBasket extends oxSuperCfg
 
     /**
      * Returns formatted VAT of TS protection costs
+     *
+     * @deprecated
      *
      * @return string
      */
@@ -2943,6 +2979,8 @@ class oxBasket extends oxSuperCfg
     /**
      * Returns formatted netto price of TS protection costs
      *
+     * @deprecated
+     *
      * @return string
      */
     public function getTsProtectionNet()
@@ -2957,6 +2995,8 @@ class oxBasket extends oxSuperCfg
     /**
      * Returns TS protection costs brutto value
      *
+     * @deprecated
+     *
      * @return double
      */
     public function getTsProtectionCosts()
@@ -2967,6 +3007,17 @@ class oxBasket extends oxSuperCfg
         }
         return false;
     }
+
+    /**
+     * Returns TS protection costs brutto value
+     *
+     * @return double
+     */
+    public function getTrustedShopProtectionCost()
+    {
+        return $this->getCosts( 'oxtsprotection' );;
+    }
+
 
     /**
      * Returns pricelist object of not discounted products

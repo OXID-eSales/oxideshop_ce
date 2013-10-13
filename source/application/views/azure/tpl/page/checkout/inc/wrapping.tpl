@@ -50,7 +50,7 @@
                                         <ul id="wrapp_[{$smarty.foreach.wrappArt.iteration}]">
                                             <li>
                                                 <input class="radiobox" type="radio" name="wrapping[[{$basketindex}]]" id="wrapping_[{$basketindex}]" value="0" [{ if !$basketitem->getWrappingId()}]CHECKED[{/if}]>
-                                                <label for="wrapping_[{$basketindex}]">[{ oxmultilang ident="NONE" }]</label><strong>0,00 [{ $currency->sign}]</strong>
+                                                <label for="wrapping_[{$basketindex}]">[{ oxmultilang ident="NONE" }]</label><strong>[{oxprice price=0 currency=$currency}]</strong>
                                             </li>
                                             [{assign var="ictr" value="1"}]
                                             [{foreach from=$oView->getWrappingList() item=wrapping name=Wraps}]
@@ -60,7 +60,7 @@
                                                     <span><img src="[{$wrapping->getPictureUrl()}]" alt="[{$wrapping->oxwrapping__oxname->value}]"></span>
                                                     [{/if}]
                                                     <label for="wrapping_[{$wrapping->oxwrapping__oxid->value}]">[{$wrapping->oxwrapping__oxname->value}]</label>
-                                                    <strong>[{$wrapping->getFPrice()}] [{ $currency->sign}]</strong>
+                                                    <strong>[{oxprice price=$wrapping->getPrice() currency=$currency}]</strong>
                                                 </li>
                                                 [{assign var="ictr" value="`$ictr+1`"}]
                                             [{/foreach}]
@@ -93,7 +93,7 @@
                             <li>
                                 <p class="clear">
                                     <input class="radiobox" type="radio" name="chosencard" id="chosen_[{$card->oxwrapping__oxid->value}]" value="[{$card->oxwrapping__oxid->value}]" [{ if $oxcmp_basket->getCardId() == $card->oxwrapping__oxid->value}]CHECKED[{/if}]>
-                                    <label for="chosen_[{$card->oxwrapping__oxid->value}]">[{$card->oxwrapping__oxname->value}] <strong>[{$card->getFPrice() }] [{ $currency->sign}]</strong></label>
+                                    <label for="chosen_[{$card->oxwrapping__oxid->value}]">[{$card->oxwrapping__oxname->value}] <strong>[{oxprice price=$card->getPrice() currency=$currency}]</strong></label>
                                 </p>
                                 [{if $card->oxwrapping__oxpic->value}]
                                 <img src="[{$card->getPictureUrl()}]" alt="[{$card->oxwrapping__oxname->value}]">

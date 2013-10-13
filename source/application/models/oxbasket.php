@@ -2104,7 +2104,7 @@ class oxBasket extends oxSuperCfg
      *
      * @return array
      */
-    public function getProductVats( $blFormatCurrency = true)
+    public function getProductVats( $blFormatCurrency = true )
     {
         if ( !$this->_oNotDiscountedProductsPriceList ) {
             return array();

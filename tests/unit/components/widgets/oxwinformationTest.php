@@ -69,7 +69,7 @@ class Unit_Components_Widgets_oxwInformationTest extends OxidTestCase
 
         $this->assertArrayHasKey( 'oximpressum', $aServicesList );
         $this->assertArrayHasKey( 'oxagb', $aServicesList );
-        // oxcredits content unavailable in DE
-        $this->assertArrayNotHasKey( 'oxcredits', $aServicesList );
+
+        $this->assertArrayNotHasKey( 'oxcredits', $aServicesList, "oxcredits content must be unavailable" );
     }
 }

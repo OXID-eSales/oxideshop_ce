@@ -19,7 +19,6 @@
  * @package   core
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -108,9 +107,6 @@ class oxWrapping extends oxI18n
     {
         // loading object from database
         parent::assign( $dbRecord );
-
-        // setting image path
-        $myConfig = $this->getConfig();
     }
 
     /**
@@ -192,9 +188,21 @@ class oxWrapping extends oxI18n
     /**
      * Returns formatted wrapping price
      *
+     * @deprecated since v5.1 (2013-10-13); use oxPrice smarty plugin for formatting in templates
+     *
      * @return string
      */
     public function getFPrice()
+    {
+        $dPrice = $this->getPrice();
+
+        return oxRegistry::getLang()->formatCurrency( $dPrice, $this->getConfig()->getActShopCurrencyObject() );
+    }
+
+    /**
+     * @return double
+     */
+    public function getPrice()
     {
         if ( $this->_isPriceViewModeNetto() ) {
             $dPrice = $this->getWrappingPrice()->getNettoPrice();
@@ -202,7 +210,7 @@ class oxWrapping extends oxI18n
             $dPrice = $this->getWrappingPrice()->getBruttoPrice();
         }
 
-        return oxRegistry::getLang()->formatCurrency( $dPrice, $this->getConfig()->getActShopCurrencyObject() );
+        return $dPrice;
     }
 
     /**

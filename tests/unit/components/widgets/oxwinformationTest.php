@@ -45,6 +45,7 @@ class Unit_Components_Widgets_oxwInformationTest extends OxidTestCase
     public function testSetGetTemplate()
     {
         $oInformation = new oxwInformation();
+
         $sExpected = 'widget/footer/helper.tpl';
 
         $oInformation->setTemplate( $sExpected );
@@ -58,15 +59,16 @@ class Unit_Components_Widgets_oxwInformationTest extends OxidTestCase
     public function testGetServicesList()
     {
         $oInformation = new oxwInformation();
+        $aServicesKeys = array( 'oximpressum', 'oxagb' );
 
-        $this->assertEquals( true, $oInformation->getServicesList() instanceof oxContentList );
-
-        $aServicesKeys = array( "oximpressum, oxagb" );
         $oInformation->setServicesKeys( $aServicesKeys );
+        $aServicesList = $oInformation->getServicesList();
 
-        $this->assertEquals( 2, $oInformation->getServicesList()->count() );
+        $this->assertTrue( is_array( $aServicesList ) );
+        $this->assertEquals( 2, count( $aServicesList ) );
 
-
+        $this->assertArrayHasKey( 'oximpressum', $aServicesList );
+        $this->assertArrayHasKey( 'oxagb', $aServicesList );
     }
 
 }

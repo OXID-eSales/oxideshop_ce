@@ -77,7 +77,7 @@ class oxwInformation extends oxWidget
     /**
      * Get services content list
      *
-     * @return oxContentList
+     * @return array
      */
     public function getServicesList()
     {
@@ -86,8 +86,28 @@ class oxwInformation extends oxWidget
 
         $oContentList->loadServicesFromDbByKeys( $this->getServicesKeys() );
 
-        return $oContentList;
+        $aServices = $this->_extractListToArray($oContentList);
+
+        return $aServices;
     }
 
+    /**
+     * Extract oxContentList object to associative array with oxloadid as keys
+     *
+     * @param oxContentList $oContentList
+     *
+     * @return array
+     */
+    protected function _extractListToArray(oxContentList $oContentList)
+    {
+        $aContents = $oContentList->getArray();
 
+        $aExtractedContents = array();
+
+        foreach($aContents as $oContent) {
+            $aExtractedContents[$oContent->oxcontents__oxloadid->value] = $oContent;
+        }
+
+        return $aExtractedContents;
+    }
 }

@@ -394,51 +394,53 @@
                     [{/block}]
 
                     [{block name="checkout_basketcontents_delcosts"}]
-                        [{if $oxcmp_basket->getDelCostNet() }]
+                        [{assign var="deliveryCost" value=$oxcmp_basket->getDeliveryCost()}]
+                        [{if $deliveryCost && $deliveryCost->getPrice() > 0 }]
+                            [{if $oViewConf->isFunctionalityEnabled('blShowVATForDelivery') }]
                             <tr>
                                 <th>[{ oxmultilang ident="SHIPPING_NET" suffix="COLON" }]</th>
-                                <td id="basketDeliveryNetto">[{ $oxcmp_basket->getDelCostNet() }]&nbsp;[{ $currency->sign }]</td>
+                                    <td id="basketDeliveryNetto">[{oxprice price=$deliveryCost->getNettoPrice() currency=$currency }]</td>
                             </tr>
-                            [{if $oxcmp_basket->getDelCostVat() }]
                                 <tr>
                                     [{if $oxcmp_basket->isProportionalCalculationOn() }]
                                         <th>[{ oxmultilang ident="BASKET_TOTAL_PLUS_PROPORTIONAL_VAT" suffix="COLON" }]</th>
                                     [{else}]
-                                        <th>[{ oxmultilang ident="VAT_PLUS_PERCENT_AMOUNT" suffix="COLON" args=$oxcmp_basket->getDelCostVatPercent() }]
+                                        <th>[{ oxmultilang ident="VAT_PLUS_PERCENT_AMOUNT" suffix="COLON" args=$deliveryCost->getVat() }]
                                     [{/if}]
-                                    <td id="basketDeliveryVat">[{ $oxcmp_basket->getDelCostVat() }]&nbsp;[{ $currency->sign }]</td>
+                                    <td id="basketDeliveryVat">[{oxprice price=$deliveryCost->getVatValue() currency=$currency }]</td>
                                 </tr>
-                            [{/if }]
-                        [{elseif $oxcmp_basket->getFDeliveryCosts() }]
+                            [{else}]
                             <tr>
                                 <th>[{ oxmultilang ident="SHIPPING_COST" }]</th>
-                                <td id="basketDeliveryGross">[{ $oxcmp_basket->getFDeliveryCosts() }]&nbsp;[{ $currency->sign }]</td>
+                                    <td id="basketDeliveryGross">[{oxprice price=$deliveryCost->getBruttoPrice() currency=$currency }]</td>
                             </tr>
-                        [{/if }]
+                            [{/if}]
+                        [{/if}]
                     [{/block}]
 
                     [{block name="checkout_basketcontents_paymentcosts"}]
-                        [{if $oxcmp_basket->getPayCostNet() }]
+                        [{assign var="paymentCost" value=$oxcmp_basket->getPaymentCost()}]
+                        [{if $paymentCost && $paymentCost->getPrice() }]
+                            [{if $oViewConf->isFunctionalityEnabled('blShowVATForPayCharge') }]
                             <tr>
-                                <th>[{if $oxcmp_basket->getPaymentCosts() >= 0}][{ oxmultilang ident="SURCHARGE" }][{else}][{ oxmultilang ident="DEDUCTION" }][{/if}] [{ oxmultilang ident="PAYMENT_METHOD" }]</th>
-                                <td id="basketPaymentNetto">[{ $oxcmp_basket->getPayCostNet() }]&nbsp;[{ $currency->sign }]</td>
+                                    <th>[{if $paymentCost->getPrice() >= 0}][{ oxmultilang ident="SURCHARGE" }][{else}][{ oxmultilang ident="DEDUCTION" }][{/if}] [{ oxmultilang ident="PAYMENT_METHOD" }]</th>
+                                    <td id="basketPaymentNetto">[{oxprice price=$paymentCost->getNettoPrice() currency=$currency }]</td>
                             </tr>
-                            [{if $oxcmp_basket->getPayCostVat() }]
                                 <tr>
                                     [{if $oxcmp_basket->isProportionalCalculationOn() }]
                                         <th>[{ oxmultilang ident="BASKET_TOTAL_PLUS_PROPORTIONAL_VAT" suffix="COLON" }]</th>
                                     [{else}]
-                                        <th>[{ oxmultilang ident="SURCHARGE_PLUS_PERCENT_AMOUNT" suffix="COLON" args=$oxcmp_basket->getPayCostVatPercent() }]</th>
+                                        <th>[{ oxmultilang ident="SURCHARGE_PLUS_PERCENT_AMOUNT" suffix="COLON" args=$paymentCost->getVat() }]</th>
                                     [{/if}]
-                                    <td id="basketPaymentVat">[{ $oxcmp_basket->getPayCostVat() }]&nbsp;[{ $currency->sign }]</td>
+                                    <td id="basketPaymentVat">[{oxprice price=$paymentCost->getVatValue() currency=$currency }]</td>
                                 </tr>
-                            [{/if }]
-                        [{elseif $oxcmp_basket->getFPaymentCosts() }]
+                            [{else}]
                             <tr>
-                                <th>[{if $oxcmp_basket->getPaymentCosts() >= 0}][{ oxmultilang ident="SURCHARGE" }][{else}][{ oxmultilang ident="DEDUCTION" }][{/if}] [{ oxmultilang ident="PAYMENT_METHOD" }]</th>
-                                <td id="basketPaymentGross">[{ $oxcmp_basket->getFPaymentCosts() }]&nbsp;[{ $currency->sign }]</td>
+                                    <th>[{if $paymentCost->getPrice() >= 0}][{ oxmultilang ident="SURCHARGE" }][{else}][{ oxmultilang ident="DEDUCTION" }][{/if}] [{ oxmultilang ident="PAYMENT_METHOD" }]</th>
+                                    <td id="basketPaymentGross">[{oxprice price=$paymentCost->getBruttoPrice() currency=$currency }]</td>
                             </tr>
-                        [{/if }]
+                            [{/if}]
+                        [{/if}]
                     [{/block}]
 
                     [{block name="checkout_basketcontents_ts"}]

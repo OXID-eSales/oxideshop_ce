@@ -2326,6 +2326,8 @@ class oxBasket extends oxSuperCfg
     /**
      * Returns VAT of delivery costs
      *
+     * @deprecated
+     *
      * @return double
      */
     public function getDelCostVatPercent()
@@ -2335,6 +2337,8 @@ class oxBasket extends oxSuperCfg
 
     /**
      * Returns formatted VAT of delivery costs
+     *
+     * @deprecated
      *
      * @return string | bool
      */
@@ -2351,6 +2355,8 @@ class oxBasket extends oxSuperCfg
 
     /**
      * Returns formatted netto price of delivery costs
+     *
+     * @deprecated
      *
      * @return string
      */
@@ -2371,6 +2377,8 @@ class oxBasket extends oxSuperCfg
     /**
      * Returns VAT of payment costs
      *
+     * @deprecated
+     *
      * @return double
      */
     public function getPayCostVatPercent()
@@ -2380,6 +2388,8 @@ class oxBasket extends oxSuperCfg
 
     /**
      * Returns formatted VAT of payment costs
+     *
+     * @deprecated
      *
      * @return string
      */
@@ -2396,6 +2406,8 @@ class oxBasket extends oxSuperCfg
 
     /**
      * Returns formatted netto price of payment costs
+     *
+     * @deprecated
      *
      * @return string
      */
@@ -2414,6 +2426,8 @@ class oxBasket extends oxSuperCfg
     /**
      * Returns payment costs brutto value
      *
+     * @deprecated
+     *
      * @return double | bool
      */
     public function getPaymentCosts()
@@ -2425,7 +2439,19 @@ class oxBasket extends oxSuperCfg
     }
 
     /**
+     * Returns payment costs
+     *
+     * @return oxPrice
+     */
+    public function getPaymentCost()
+    {
+        return $this->getCosts( 'oxpayment' );
+    }
+
+    /**
      * Returns if exists formatted payment costs
+     *
+     * @deprecated
      *
      * @return string | bool
      */
@@ -2640,6 +2666,8 @@ class oxBasket extends oxSuperCfg
     /**
      * Returns if exists formatted delivery costs
      *
+     * @deprecated
+     *
      * @return string | bool
      */
     public function getFDeliveryCosts()
@@ -2655,6 +2683,8 @@ class oxBasket extends oxSuperCfg
     /**
      * Returns if exists delivery costs
      *
+     * @deprecated
+     *
      * @return string | bool
      */
     public function getDeliveryCosts()
@@ -2663,6 +2693,16 @@ class oxBasket extends oxSuperCfg
             return $oDeliveryCost->getBruttoPrice();
         }
         return false;
+    }
+
+    /**
+     * Returns delivery costs
+     *
+     * @return oxPrice
+     */
+    public function getDeliveryCost()
+    {
+        return $this->getCosts( 'oxdelivery' );
     }
 
     /**

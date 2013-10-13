@@ -59,7 +59,7 @@ class Unit_Components_Widgets_oxwInformationTest extends OxidTestCase
     public function testGetServicesList()
     {
         $oInformation = new oxwInformation();
-        $aServicesKeys = array( 'oximpressum', 'oxagb' );
+        $aServicesKeys = array( 'oximpressum', 'oxagb', 'oxcredits' );
 
         $oInformation->setServicesKeys( $aServicesKeys );
         $aServicesList = $oInformation->getServicesList();
@@ -69,6 +69,7 @@ class Unit_Components_Widgets_oxwInformationTest extends OxidTestCase
 
         $this->assertArrayHasKey( 'oximpressum', $aServicesList );
         $this->assertArrayHasKey( 'oxagb', $aServicesList );
+        // oxcredits content unavailable in DE
+        $this->assertArrayNotHasKey( 'oxcredits', $aServicesList );
     }
-
 }

@@ -384,7 +384,7 @@
                                         <a href="[{ $oViewConf->getSelfLink() }]&amp;cl=basket&amp;fnc=removeVoucher&amp;voucherId=[{ $sVoucher->sVoucherId }]&amp;CustomError=basket" class="removeFn" rel="nofollow">[{ oxmultilang ident="REMOVE" }]</a>
                                     [{/if}]
                                     </th>
-                                    <td>-<strong>[{ $sVoucher->fVoucherdiscount }]&nbsp;[{ $currency->sign }]</strong></td>
+                                    <td><strong>[{oxprice price=$sVoucher->dVoucherdiscount*-1 currency=$currency}]</strong></td>
                                 </tr>
                             [{/foreach}]
                         [{/if}]

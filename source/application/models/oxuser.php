@@ -19,7 +19,6 @@
  * @package   core
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -681,7 +680,7 @@ class oxUser extends oxBase
      * @param int $iLimit how many entries to load
      * @param int $iPage  which page to start
      *
-     * @return oxList
+     * @return object
      */
     public function getOrders( $iLimit = false, $iPage = 0 )
     {

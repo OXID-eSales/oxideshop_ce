@@ -84,7 +84,7 @@ class oxwInformation extends oxWidget
         /** * @var oxContentList $oContentList */
         $oContentList = oxNew( "oxContentList" );
 
-        $oContentList->loadServicesFromDbByKeys( $this->getServicesKeys() );
+        $oContentList->loadServicesByIdents( $this->getServicesKeys() );
 
         $aServices = $this->_extractListToArray( $oContentList );
 

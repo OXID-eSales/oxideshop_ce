@@ -2306,7 +2306,7 @@ class oxBasket extends oxSuperCfg
     /**
      * Formatted Products net price getter
      *
-     * @deprecated
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
      *
      * @return string
      */
@@ -2318,7 +2318,7 @@ class oxBasket extends oxSuperCfg
      /**
      * Formatted Products price getter
      *
-     * @deprecated
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
      *
      * @return string
      */
@@ -2330,7 +2330,7 @@ class oxBasket extends oxSuperCfg
     /**
      * Returns VAT of delivery costs
      *
-     * @deprecated
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
      *
      * @return double
      */
@@ -2342,7 +2342,7 @@ class oxBasket extends oxSuperCfg
     /**
      * Returns formatted VAT of delivery costs
      *
-     * @deprecated
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
      *
      * @return string | bool
      */
@@ -2360,7 +2360,7 @@ class oxBasket extends oxSuperCfg
     /**
      * Returns formatted netto price of delivery costs
      *
-     * @deprecated
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
      *
      * @return string
      */
@@ -2381,7 +2381,7 @@ class oxBasket extends oxSuperCfg
     /**
      * Returns VAT of payment costs
      *
-     * @deprecated
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
      *
      * @return double
      */
@@ -2393,7 +2393,7 @@ class oxBasket extends oxSuperCfg
     /**
      * Returns formatted VAT of payment costs
      *
-     * @deprecated
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
      *
      * @return string
      */
@@ -2411,7 +2411,7 @@ class oxBasket extends oxSuperCfg
     /**
      * Returns formatted netto price of payment costs
      *
-     * @deprecated
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
      *
      * @return string
      */
@@ -2430,7 +2430,7 @@ class oxBasket extends oxSuperCfg
     /**
      * Returns payment costs brutto value
      *
-     * @deprecated
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
      *
      * @return double | bool
      */
@@ -2455,7 +2455,7 @@ class oxBasket extends oxSuperCfg
     /**
      * Returns if exists formatted payment costs
      *
-     * @deprecated
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
      *
      * @return string | bool
      */
@@ -2500,7 +2500,7 @@ class oxBasket extends oxSuperCfg
     /**
      * Returns VAT of wrapping costs
      *
-     * @deprecated
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
      *
      * @return double
      */
@@ -2513,7 +2513,7 @@ class oxBasket extends oxSuperCfg
     /**
      * Returns VAT of gift card costs
      *
-     * @deprecated
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
      *
      * @return double
      */
@@ -2525,7 +2525,7 @@ class oxBasket extends oxSuperCfg
     /**
      * Returns formatted VAT of wrapping costs
      *
-     * @deprecated
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
      *
      * @return string | bool
      */
@@ -2546,7 +2546,7 @@ class oxBasket extends oxSuperCfg
     /**
      * Returns formatted netto price of wrapping costs
      *
-     * @deprecated
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
      *
      * @return string
      */
@@ -2567,7 +2567,7 @@ class oxBasket extends oxSuperCfg
     /**
      * Returns if exists formatted wrapping costs
      *
-     * @deprecated
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
      *
      * @return string | bool
      */
@@ -2590,7 +2590,7 @@ class oxBasket extends oxSuperCfg
     /**
      * Returns formatted VAT of gift card costs
      *
-     * @deprecated
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
      *
      * @return string | bool
      */
@@ -2612,7 +2612,7 @@ class oxBasket extends oxSuperCfg
     /**
      * Returns formatted netto price of gift card costs
      *
-     * @deprecated
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
      *
      * @return string
      */
@@ -2633,7 +2633,7 @@ class oxBasket extends oxSuperCfg
     /**
      * Returns if exists formatted gift card costs
      *
-     * @deprecated
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
      *
      * @return string | bool
      */
@@ -2658,7 +2658,7 @@ class oxBasket extends oxSuperCfg
     /**
      * Returns formatted basket total price
      *
-     * @deprecated
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
      *
      * @return string
      */
@@ -2670,7 +2670,7 @@ class oxBasket extends oxSuperCfg
     /**
      * Returns if exists formatted delivery costs
      *
-     * @deprecated
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
      *
      * @return string | bool
      */
@@ -2687,7 +2687,7 @@ class oxBasket extends oxSuperCfg
     /**
      * Returns if exists delivery costs
      *
-     * @deprecated
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
      *
      * @return string | bool
      */
@@ -2978,7 +2978,7 @@ class oxBasket extends oxSuperCfg
     /**
      * Returns if exists formatted TS protection costs
      *
-     * @deprecated
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
      *
      * @return string | bool
      */
@@ -2994,7 +2994,7 @@ class oxBasket extends oxSuperCfg
     /**
      * Returns VAT of TS protection costs
      *
-     * @deprecated
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
      *
      * @return string | bool
      */
@@ -3006,7 +3006,7 @@ class oxBasket extends oxSuperCfg
     /**
      * Returns formatted VAT of TS protection costs
      *
-     * @deprecated
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
      *
      * @return string
      */
@@ -3023,7 +3023,7 @@ class oxBasket extends oxSuperCfg
     /**
      * Returns formatted netto price of TS protection costs
      *
-     * @deprecated
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
      *
      * @return string
      */
@@ -3039,7 +3039,7 @@ class oxBasket extends oxSuperCfg
     /**
      * Returns TS protection costs brutto value
      *
-     * @deprecated
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
      *
      * @return double
      */
@@ -3055,18 +3055,18 @@ class oxBasket extends oxSuperCfg
     /**
      * Returns TS protection costs brutto value
      *
-     * @return double
+     * @return double in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
      */
     public function getTrustedShopProtectionCost()
     {
-        return $this->getCosts( 'oxtsprotection' );;
+        return $this->getCosts( 'oxtsprotection' );
     }
 
 
     /**
      * Returns pricelist object of not discounted products
      *
-     * @return oxprice
+     * @return oxprice in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
      */
     public function getNotDiscountProductsPrice()
     {

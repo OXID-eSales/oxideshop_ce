@@ -340,12 +340,9 @@
                             [{foreach from=$oxcmp_basket->getDiscounts() item=oDiscount name=test_Discounts}]
                                 <tr>
                                     <th>
-                                        <b>[{if $oDiscount->dDiscount < 0 }][{ oxmultilang ident="SURCHARGE" }][{else}][{ oxmultilang ident="DISCOUNT" }][{/if}]&nbsp;</b>
-                                        [{ $oDiscount->sDiscount }]
+                                        <b>[{if $oDiscount->dDiscount < 0 }][{ oxmultilang ident="SURCHARGE" }][{else}][{ oxmultilang ident="DISCOUNT" }][{/if}]&nbsp;</b>[{ $oDiscount->sDiscount }]
                                     </th>
-                                    <td>
-                                        [{if $oDiscount->dDiscount < 0 }][{ $oDiscount->fDiscount|replace:"-":"" }][{else}]-[{ $oDiscount->fDiscount }][{/if}]&nbsp;[{ $currency->sign }]
-                                    </td>
+                                    <td>[{oxprice price=$oDiscount->dDiscount*-1 currency=$currency}]</td>
                                 </tr>
                             [{/foreach}]
                         [{/block}]

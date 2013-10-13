@@ -112,7 +112,7 @@ class Unit_Core_oxcontentlistTest extends OxidTestCase
     /**
      * Test case for loading content list by passed keys
      */
-    public function testLoadServicesFromDbByKeys()
+    public function testLoadServicesFromDB()
     {
         $aIdents = array( 'oximpressum', 'oxagb' );
         $aExpectedTitles = array( "AGB", "Impressum" );
@@ -120,7 +120,9 @@ class Unit_Core_oxcontentlistTest extends OxidTestCase
         /** * @var oxContentList $oContentList */
         $oContentList = oxNew( "oxContentList" );
 
-        $oContentList->loadServicesFromDbByKeys( $aIdents );
+        $aData = $oContentList->loadServicesFromDB( $aIdents );
+
+        $oContentList->assignArray( $aData );
 
         $this->assertEquals( 2, $oContentList->count() );
 
@@ -128,6 +130,7 @@ class Unit_Core_oxcontentlistTest extends OxidTestCase
             $this->assertEquals( $aExpectedTitles[$iKey], $oContentList->oxcontents__oxtitle->value );
         }
     }
+
 
     /**
      * Test case for extracting contents keys from array to DB query string
@@ -144,6 +147,4 @@ class Unit_Core_oxcontentlistTest extends OxidTestCase
 
         $this->assertFalse( $oContentList->extractKeysFromArrayToQueryString( array() ) );
     }
-
-
 }

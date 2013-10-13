@@ -30,6 +30,13 @@
 class oxContentList extends oxList
 {
     /**
+     * Information content type
+     *
+     * @var int
+     */
+    const TYPE_INFORMATION_CONTENTS = 0;
+
+    /**
      * Main menu list type
      *
      * @var int
@@ -47,8 +54,6 @@ class oxContentList extends oxList
      * Class constructor, initiates parent constructor (parent::oxList()).
      *
      * @param string $sObjectsInListName optional and not used
-     *
-     * @return null
      */
     public function __construct( $sObjectsInListName = 'oxcontent' )
     {
@@ -57,8 +62,6 @@ class oxContentList extends oxList
 
     /**
      * Loads main menue entries and generates list with links
-     *
-     * @return null
      */
     public function loadMainMenulist()
     {
@@ -67,8 +70,6 @@ class oxContentList extends oxList
 
     /**
      * Load Array of Menue items and change keys of aList to catid
-     *
-     * @return null
      */
     public function loadCatMenues()
     {
@@ -128,11 +129,27 @@ class oxContentList extends oxList
 
 
     /**
+     * Load services
+     *
+     * @param array $aIdents of load IDs
+     */
+    public function loadServicesByIdents( $aIdents )
+    {
+
+            $aData = $this->loadServicesFromDB( $aIdents );
+
+        $this->assignArray( $aData );
+    }
+
+
+    /**
      * Load contents from db by passed keys
      *
-     * @param $aIdents
+     * @param array $aIdents of load IDs
+     *
+     * @return array
      */
-    public function loadServicesFromDbByKeys( $aIdents )
+    public function loadServicesFromDB( $aIdents )
     {
         $sTable = $this->getBaseObject()->getViewName();
 
@@ -140,12 +157,15 @@ class oxContentList extends oxList
 
         $sSQL = "SELECT * FROM {$sTable} WHERE OXACTIVE = 1 AND OXLOADID IN (" . $sIdents . ")
                                         AND OXSHOPID = '" . $this->getConfig()->getShopId() . "'";
-        $this->selectString( $sSQL );
+
+        $aData = oxDb::getDb( oxDb::FETCH_MODE_ASSOC )->getAll( $sSQL );
+
+        return $aData;
     }
 
 
     /**
-     * Extract ident keys from array to string
+     * Extract load IDs from array to string
      *
      * @param $aKeys
      * @return false|string

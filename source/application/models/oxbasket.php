@@ -2306,6 +2306,8 @@ class oxBasket extends oxSuperCfg
     /**
      * Formatted Products net price getter
      *
+     * @deprecated
+     *
      * @return string
      */
     public function getProductsNetPrice()
@@ -2315,6 +2317,8 @@ class oxBasket extends oxSuperCfg
 
      /**
      * Formatted Products price getter
+     *
+     * @deprecated
      *
      * @return string
      */

@@ -148,7 +148,7 @@ class oxContentList extends oxList
      * Extract ident keys from array to string
      *
      * @param $aKeys
-     * @return boolean|string
+     * @return false|string
      */
     public function extractKeysFromArrayToQueryString( $aKeys )
     {

@@ -421,7 +421,7 @@
                                         [{if $oPaymentCost->getPrice() >= 0}][{ oxmultilang ident="SURCHARGE" }][{else}][{ oxmultilang ident="DEDUCTION" }][{/if}] [{ oxmultilang ident="PAYMENT_METHOD" suffix="COLON" }]
                                     </p>
                                 </td>
-                                <td style="padding: 5px; border-bottom: 2px solid #ccc;[{ if $basket->getDelCostVat() }]border-bottom: 1px solid #ddd;[{/if}]" align="right">
+                                <td style="padding: 5px; border-bottom: 2px solid #ccc;[{if $basket->getDelCostVat() }]border-bottom: 1px solid #ddd;[{/if}]" align="right">
                                     <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
                                         [{oxprice price=$oPaymentCost->getNettoPrice() currency=$currency}]
                                     </p>
@@ -469,12 +469,12 @@
                         [{if $trustedShopProtectionCost && $trustedShopProtectionCost->getPrice() > 0  }]
                                 <!-- Trusted Shops -->
                                 <tr valign="top">
-                                    <td style="padding: 5px; border-bottom: 2px solid #ccc;[{ if $basket->getTsProtectionVat() }]border-bottom: 1px solid #ddd;[{/if}]">
+                                    <td style="padding: 5px; border-bottom: 2px solid #ccc;[{if $basket->getTsProtectionVat() }]border-bottom: 1px solid #ddd;[{/if}]">
                                         <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
                                             [{oxmultilang ident="TRUSTED_SHOP_BUYER_PROTECTION" suffix="COLON" }]
                                         </p>
                                     </td>
-                                    <td style="padding: 5px; border-bottom: 2px solid #ccc;[{ if $basket->getTsProtectionVat() }]border-bottom: 1px solid #ddd;[{/if}]" align="right">
+                                    <td style="padding: 5px; border-bottom: 2px solid #ccc;[{if $basket->getTsProtectionVat() }]border-bottom: 1px solid #ddd;[{/if}]" align="right">
                                         <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
                                         [{oxprice price=$trustedShopProtectionCost->getNettoPrice() currency=$currency}]
                                         </p>

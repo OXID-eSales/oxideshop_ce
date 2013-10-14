@@ -50,9 +50,12 @@ class OxSystemEventHandler
     public function onAdminLogin( $sActiveShop )
     {
 
-        //perform online module version check
-        //$oOMVN = oxNew("oxOnlineModuleVersionNotifier");
-        //$oOMVN->execute();
-
+        //Checks if newer versions of modules are available.
+        //Will be used by the upcoming online one click installer.
+        //Is still under development - still changes at the remote server are necessary - therefore ignoring the results for now
+        try {
+            $oOMVN = oxNew("oxOnlineModuleVersionNotifier");
+            $oOMVN->versionNotify();
+        } catch (Exception $o) { }
     }
 }

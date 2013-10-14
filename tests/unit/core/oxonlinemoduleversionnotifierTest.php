@@ -60,19 +60,11 @@ class Unit_Core_oxonlinemoduleversionnotifierTest extends OxidTestCase
     /**
      * Test if module notification was without exceptions.
      */
-    public function testVersionNotify_PassingOneMockedModule_NoExceptionsOccurs()
+    public function testVersionNotify()
     {
-        $oPreparedModule = new stdClass();
-        $oPreparedModule->id = "testID";
-        $oPreparedModule->version = "testVersion";
-        $oPreparedModule->active = true;
+        $oOmvn = new oxOnlineModuleVersionNotifier();
 
-        $aModules[] = $oPreparedModule;
-
-        $oOmvn = $this->getMock( 'oxOnlineModuleVersionNotifier' );
-        $oOmvn->expects( $this->any() )->method( 'getModules')->will( $this->returnValue( $aModules ) );
-
-        $oOmvn->versionNotify();
+        $this->assertTrue($oOmvn->versionNotify());
         $this->assertFalse($oOmvn->isException());
     }
 }

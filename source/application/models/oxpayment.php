@@ -332,11 +332,10 @@ class oxPayment extends oxI18n
 
     }
 
-
     /**
      * Returns calculated price.
      *
-     * @return oxprice
+     * @return oxPrice
      */
     public function getPrice()
     {
@@ -344,7 +343,9 @@ class oxPayment extends oxI18n
     }
 
     /**
-     * Returns formated netto price.
+     * Returns formatted netto price.
+     *
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
      *
      * @return string
      */
@@ -356,7 +357,9 @@ class oxPayment extends oxI18n
     }
 
     /**
-     * Returns formated brutto price.
+     * Returns formatted brutto price.
+     *
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
      *
      * @return string
      */
@@ -368,7 +371,9 @@ class oxPayment extends oxI18n
     }
 
     /**
-     * Returns formated vat value.
+     * Returns formatted vat value.
+     *
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
      *
      * @return string
      */

@@ -685,7 +685,6 @@ class oxUser extends oxBase
      */
     public function getOrders( $iLimit = false, $iPage = 0 )
     {
-        $myConfig = $this->getConfig();
         $oOrders = oxNew( 'oxlist' );
         $oOrders->init( 'oxorder' );
 

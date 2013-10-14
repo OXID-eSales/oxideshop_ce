@@ -52,22 +52,6 @@ class Unit_Core_oxCurlTest extends OxidTestCase
     }
 
     /**
-     * Test oxCurl::setUrl()
-     * Test oxCurl::getUrl()
-     */
-    public function testGetUrl_badUrlSet_Exception()
-    {
-        $this->setExpectedException( 'oxException' );
-
-        $sEndpointUrl = 'url';
-        $oCurl = new oxCurl();
-        $oCurl->setUrl( $sEndpointUrl );
-
-        $this->assertEquals( $sEndpointUrl, $oCurl->getUrl() );
-    }
-
-
-    /**
      * Test oxCurl::setQuery()
      */
     public function testSetQuery_set_get()

@@ -124,13 +124,6 @@ class oxCurl
      */
     public function setUrl( $sUrl )
     {
-        if ( false === filter_var( $sUrl, FILTER_VALIDATE_URL ) ) {
-            /**
-             * @var oxException $oException
-             */
-            $oException = oxNew( "oxException", 'EXCEPTION_NOT_VALID_URL' );
-            throw $oException;
-        }
         $this->_sUrl = $sUrl;
     }
 
@@ -295,7 +288,9 @@ class oxCurl
             /**
              * @var oxException $oException
              */
-            $oException = oxNew( "oxException", 'EXCEPTION_NOT_VALID_CURL_CONSTANT' );
+            $oException = oxNew( 'oxException' );
+            $oLang = oxRegistry::getLang();
+            $oException->setMessage( sprintf( $oLang->translateString( 'EXCEPTION_NOT_VALID_CURL_CONSTANT', $oLang->getTplLanguage() ), $sName ) );
             throw $oException;
         }
 
@@ -332,7 +327,9 @@ class oxCurl
             /**
              * @var oxException $oException
              */
-            $oException = oxNew( "oxException", 'EXCEPTION_CURL_ERROR' );
+            $oException = oxNew( 'oxException' );
+            $oLang = oxRegistry::getLang();
+            $oException->setMessage( sprintf( $oLang->translateString( 'EXCEPTION_CURL_ERROR', $oLang->getTplLanguage() ), $iCurlErrorNumber ) );
             throw $oException;
         }
 

@@ -4,11 +4,12 @@
         <label for="payment_[{$sPaymentID}]"><b>[{ $paymentmethod->oxpayments__oxdesc->value}]</b></label>
     </dt>
     <dd class="[{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]activePayment[{/if}]">
-        [{ if $paymentmethod->getPrice() }]
-            [{if $oxcmp_basket->getPayCostNet() }]
-                [{ $paymentmethod->getFNettoPrice() }] [{ $currency->sign}] [{ oxmultilang ident="PLUS_VAT" }] [{ $paymentmethod->getFPriceVat() }]
+        [{if $paymentmethod->getPrice()}]
+            [{assign var="oPaymentPrice" value=$paymentmethod->getPrice() }]
+            [{if $oViewConf->isFunctionalityEnabled('blShowVATForPayCharge') }]
+                ([{oxprice price=$oPaymentPrice->getNettoPrice() currency=$currency}] [{ oxmultilang ident="PLUS_VAT" }] [{oxprice price=$oPaymentPrice->getVatValue() currency=$currency }])
             [{else}]
-                [{ $paymentmethod->getFBruttoPrice() }] [{ $currency->sign}]
+                ([{oxprice price=$oPaymentPrice->getBruttoPrice() currency=$currency}])
             [{/if}]
         [{/if}]
         [{ oxmultilang ident="COD_CHARGE" }]

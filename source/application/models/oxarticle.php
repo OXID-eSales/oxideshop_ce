@@ -1277,6 +1277,16 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     }
 
     /**
+     * Returns amount of variants article has
+     *
+     * @return mixed
+     */
+    public function getVariantsCount()
+    {
+        return $this->oxarticles__oxvarcount->value;
+    }
+
+    /**
      * Checks if article has multidimensional variants
      *
      * @return bool

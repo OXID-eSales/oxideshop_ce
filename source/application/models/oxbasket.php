@@ -2482,7 +2482,9 @@ class oxBasket extends oxSuperCfg
     }
 
     /**
-     * Returns formated voucher discount
+     * Returns formatted voucher discount
+     *
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
      *
      * @return string | bool
      */

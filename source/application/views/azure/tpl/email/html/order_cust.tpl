@@ -1,13 +1,13 @@
-[{ assign var="shop"      value=$oEmailView->getShop() }]
-[{ assign var="oViewConf" value=$oEmailView->getViewConfig() }]
-[{ assign var="oConf"     value=$oViewConf->getConfig() }]
-[{ assign var="currency"  value=$oEmailView->getCurrency() }]
-[{ assign var="user"      value=$oEmailView->getUser() }]
-[{ assign var="oDelSet"   value=$order->getDelSet() }]
-[{ assign var="basket"    value=$order->getBasket() }]
-[{ assign var="payment"   value=$order->getPayment() }]
-[{ assign var="sOrderId"   value=$order->getId() }]
-[{ assign var="oOrderFileList"   value=$oEmailView->getOrderFileList($sOrderId) }]
+[{assign var="shop"      value=$oEmailView->getShop() }]
+[{assign var="oViewConf" value=$oEmailView->getViewConfig() }]
+[{assign var="oConf"     value=$oViewConf->getConfig() }]
+[{assign var="currency"  value=$oEmailView->getCurrency() }]
+[{assign var="user"      value=$oEmailView->getUser() }]
+[{assign var="oDelSet"   value=$order->getDelSet() }]
+[{assign var="basket"    value=$order->getBasket() }]
+[{assign var="payment"   value=$order->getPayment() }]
+[{assign var="sOrderId"   value=$order->getId() }]
+[{assign var="oOrderFileList"   value=$oEmailView->getOrderFileList($sOrderId) }]
 
 [{include file="email/html/header.tpl" title=$shop->oxshops__oxordersubject->value}]
 
@@ -60,9 +60,9 @@
                         [{if $oViewConf->getShowGiftWrapping() }]
                             [{assign var="oWrapping" value=$basketitem->getWrapping() }]
                             <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0; padding: 10px 0;">
-                                <b>[{ oxmultilang ident="GIFT_WRAPPING" suffix="COLON"}]&nbsp;</b>
-                                [{ if !$basketitem->getWrappingId() }]
-                                    [{ oxmultilang ident="NONE" }]
+                                <b>[{oxmultilang ident="GIFT_WRAPPING" suffix="COLON"}]&nbsp;</b>
+                                [{if !$basketitem->getWrappingId() }]
+                                    [{oxmultilang ident="NONE" }]
                                 [{else}]
                                     [{$oWrapping->oxwrapping__oxname->value}]
                                 [{/if}]
@@ -72,14 +72,14 @@
                     <td style="padding: 5px; border-bottom: 4px solid #ddd;">
                         <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0; padding: 10px 0;">
                             <b>[{$basketitem->getTitle()}]</b>
-                            [{ if $basketitem->getChosenSelList() }]
+                            [{if $basketitem->getChosenSelList() }]
                                 <ul style="padding: 0 10px; margin: 0; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">
                                     [{foreach from=$basketitem->getChosenSelList() item=oList}]
                                         <li style="padding: 3px;">[{ $oList->name }] [{ $oList->value }]</li>
                                     [{/foreach}]
                                 </ul>
                             [{/if}]
-                            [{ if $basketitem->getPersParams() }]
+                            [{if $basketitem->getPersParams() }]
                                 <ul style="padding: 0 10px; margin: 0; font-family: Arial, Helvetica, sans-serif; font-size: 12px;">
                                     [{foreach key=sVar from=$basketitem->getPersParams() item=aParam}]
                                         <li style="padding: 3px;">[{$sVar}] : [{$aParam}]</li>
@@ -114,7 +114,7 @@
                             </p>
                         [{/if}]
 
-                        [{ if $basketproduct->oxarticles__oxorderinfo->value }]
+                        [{if $basketproduct->oxarticles__oxorderinfo->value }]
                             <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px;">
                                 [{ $basketproduct->oxarticles__oxorderinfo->value }]
                             </p>
@@ -154,7 +154,7 @@
                   <tr>
                       <td colspan="2" style="padding: 5px; border-bottom: 4px solid #ddd;">
                           <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                              <b>[{ oxmultilang ident="YOUR_GREETING_CARD" suffix="COLON" }]</b>
+                              <b>[{oxmultilang ident="YOUR_GREETING_CARD" suffix="COLON" }]</b>
                           </p>
                       </td>
                   </tr>
@@ -164,7 +164,7 @@
                       </td>
                       <td style="padding: 5px; padding-left: 15px; border-bottom: 4px solid #ddd;">
                           <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                          [{ oxmultilang ident="WHAT_I_WANTED_TO_SAY" }]<br><br>
+                          [{oxmultilang ident="WHAT_I_WANTED_TO_SAY" }]<br><br>
                           [{$basket->getCardMessage()}]
                           </p>
                       </td>
@@ -184,17 +184,17 @@
                             <tr valign="top">
                                 <td style="padding: 5px 20px 5px 5px; border-bottom: 2px solid #ccc;">
                                     <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;  color: #555;">
-                                        <b>[{ oxmultilang ident="USED_COUPONS_2" }]</b>
+                                        <b>[{oxmultilang ident="USED_COUPONS_2" }]</b>
                                     </p>
                                 </td>
                                 <td style="padding: 5px 20px 5px 5px; border-bottom: 2px solid #ccc;">
                                     <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;  color: #555;">
-                                        <b>[{ oxmultilang ident="REBATE" }]</b>
+                                        <b>[{oxmultilang ident="REBATE" }]</b>
                                     </p>
                                 </td>
                             </tr>
-                            [{ foreach from=$order->getVoucherList() item=voucher}]
-                                [{ assign var="voucherseries" value=$voucher->getSerie() }]
+                            [{foreach from=$order->getVoucherList() item=voucher}]
+                                [{assign var="voucherseries" value=$voucher->getSerie() }]
                                 <tr valign="top">
                                     <td style="padding: 5px 20px 5px 5px;">
                                         <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
@@ -203,11 +203,11 @@
                                     </td>
                                     <td style="padding: 5px 20px 5px 5px;">
                                         <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                            [{$voucherseries->oxvoucherseries__oxdiscount->value}] [{ if $voucherseries->oxvoucherseries__oxdiscounttype->value == "absolute"}][{ $currency->sign}][{else}]%[{/if}]
+                                            [{$voucherseries->oxvoucherseries__oxdiscount->value}] [{if $voucherseries->oxvoucherseries__oxdiscounttype->value == "absolute"}][{ $currency->sign}][{else}]%[{/if}]
                                         </p>
                                     </td>
                                 </tr>
-                            [{/foreach }]
+                            [{/foreach}]
                         [{/if}]
                     </table>
                 [{/block}]
@@ -220,12 +220,12 @@
                             <tr valign="top">
                                 <td style="padding: 5px; border-bottom: 2px solid #ccc;">
                                     <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                        [{ oxmultilang ident="TOTAL_NET" suffix="COLON" }]
+                                        [{oxmultilang ident="TOTAL_NET" suffix="COLON" }]
                                     </p>
                                 </td>
                                 <td style="padding: 5px; border-bottom: 2px solid #ccc;" align="right" width="60">
                                     <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                        [{ oxprice price=$basket->getNettoSum() currency=$currency }]
+                                        [{oxprice price=$basket->getNettoSum() currency=$currency }]
                                     </p>
                                 </td>
                             </tr>
@@ -236,12 +236,12 @@
                                 <tr valign="top">
                                     <td style="padding: 5px; border-bottom: 2px solid #ccc;">
                                         <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                            [{ oxmultilang ident="VAT_PLUS_PERCENT_AMOUNT" suffix="COLON" args=$key}]
+                                            [{oxmultilang ident="VAT_PLUS_PERCENT_AMOUNT" suffix="COLON" args=$key}]
                                         </p>
                                     </td>
                                     <td style="padding: 5px; border-bottom: 2px solid #ccc;" align="right">
                                         <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                            [{ oxprice price=$VATitem currency=$currency }]
+                                            [{oxprice price=$VATitem currency=$currency }]
                                         </p>
                                     </td>
                                 </tr>
@@ -253,7 +253,7 @@
                             <tr valign="top">
                                 <td style="padding: 5px; border-bottom: 2px solid #ccc;">
                                     <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                        [{ oxmultilang ident="TOTAL_GROSS" suffix="COLON" }]
+                                        [{oxmultilang ident="TOTAL_GROSS" suffix="COLON" }]
                                     </p>
                                 </td>
                                 <td style="padding: 5px; border-bottom: 2px solid #ccc;" align="right">
@@ -264,8 +264,6 @@
                             </tr>
                         [{/block}]
                     [{/if}]
-
-
                     <!-- applied discounts -->
                     [{if $basket->getDiscounts()}]
 
@@ -275,7 +273,7 @@
                                 <tr valign="top">
                                     <td style="padding: 5px; border-bottom: 2px solid #ccc;">
                                         <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                            [{ oxmultilang ident="TOTAL_NET" suffix="COLON" }]
+                                            [{oxmultilang ident="TOTAL_NET" suffix="COLON" }]
                                         </p>
                                     </td>
                                     <td style="padding: 5px; border-bottom: 2px solid #ccc;" align="right" width="60">
@@ -291,7 +289,7 @@
                                 <tr valign="top">
                                     <td style="padding: 5px; border-bottom: 2px solid #ccc;">
                                         <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                            [{ oxmultilang ident="TOTAL_GROSS" suffix="COLON" }]
+                                            [{oxmultilang ident="TOTAL_GROSS" suffix="COLON" }]
                                         </p>
                                     </td>
                                     <td style="padding: 5px; border-bottom: 2px solid #ccc;" align="right">
@@ -314,20 +312,20 @@
                                     </td>
                                     <td style="padding: 5px; border-bottom: 1px solid #ddd;" align="right">
                                         <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                            [{if $oDiscount->dDiscount < 0 }][{ $oDiscount->fDiscount|replace:"-":"" }][{else}]-[{ $oDiscount->fDiscount }][{/if}] [{ $currency->sign}]
+                                            [{oxprice price=$oDiscount->dDiscount*-1 currency=$currency}]
                                         </p>
                                     </td>
                                 </tr>
                             [{/foreach}]
                         [{/block}]
 
-                        [{ if !$order->isNettoMode() }]
+                        [{if !$order->isNettoMode() }]
                         [{block name="email_html_order_cust_totalnet"}]
                             <!-- netto price -->
                             <tr valign="top">
                                 <td style="padding: 5px; border-bottom: 1px solid #ddd;">
                                     <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                        [{ oxmultilang ident="TOTAL_NET" suffix="COLON" }]
+                                        [{oxmultilang ident="TOTAL_NET" suffix="COLON" }]
                                     </p>
                                 </td>
                                 <td style="padding: 5px; border-bottom: 1px solid #ddd;" align="right">
@@ -345,7 +343,7 @@
                                 <tr valign="top">
                                     <td style="padding: 5px; border-bottom: 2px solid #ccc;">
                                         <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                            [{ oxmultilang ident="VAT_PLUS_PERCENT_AMOUNT" suffix="COLON" args=$key}]
+                                            [{oxmultilang ident="VAT_PLUS_PERCENT_AMOUNT" suffix="COLON" args=$key}]
                                         </p>
                                     </td>
                                     <td style="padding: 5px; border-bottom: 2px solid #ccc;" align="right">
@@ -357,13 +355,13 @@
                             [{/foreach}]
                         [{/block}]
 
-                        [{ if $order->isNettoMode() }]
+                        [{if $order->isNettoMode() }]
                         [{block name="email_html_order_cust_totalbrut"}]
                             <!-- brutto price -->
                             <tr valign="top">
                                 <td style="padding: 5px; border-bottom: 2px solid #ccc;">
                                     <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                        [{ oxmultilang ident="TOTAL_GROSS" suffix="COLON" }]
+                                        [{oxmultilang ident="TOTAL_GROSS" suffix="COLON" }]
                                     </p>
                                 </td>
                                 <td style="padding: 5px; border-bottom: 2px solid #ccc;" align="right">
@@ -382,12 +380,13 @@
                             <tr valign="top">
                                 <td style="padding: 5px; border-bottom: 2px solid #ccc;">
                                     <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                        [{ oxmultilang ident="COUPON" suffix="COLON" }]
+                                        [{oxmultilang ident="COUPON" suffix="COLON" }]
                                     </p>
                                 </td>
                                 <td style="padding: 5px; border-bottom: 2px solid #ccc;" align="right">
                                     <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                        [{ if $basket->getFVoucherDiscountValue() > 0 }]-[{/if}][{ $basket->getFVoucherDiscountValue()|replace:"-":"" }] [{ $currency->sign}]
+                                        [{assign var="oVoucherDiscount" value=$basket->getVoucherDiscount()}]
+                                        [{oxprice price=$oVoucherDiscount->getBruttoPrice()*-1 currency=$currency}]
                                     </p>
                                 </td>
                             </tr>
@@ -396,248 +395,249 @@
 
                     [{block name="email_html_order_cust_delcosts"}]
                         <!-- delivery costs -->
-                        [{if $basket->getDelCostNet() }]
+                    [{assign var="oDeliveryCost" value=$basket->getDeliveryCost()}]
+                    [{if $oDeliveryCost && $oDeliveryCost->getPrice() > 0 }]
+                        [{if $oViewConf->isFunctionalityEnabled('blShowVATForDelivery') }]
                             <tr valign="top">
                                 <td style="padding: 5px; border-bottom: 1px solid #ccc;">
                                     <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                        [{ oxmultilang ident="SHIPPING_NET" suffix="COLON" }]
+                                        [{oxmultilang ident="SHIPPING_NET" suffix="COLON" }]
                                     </p>
                                 </td>
                                 <td style="padding: 5px; border-bottom: 1px solid #ccc;" align="right">
                                     <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                        [{ $basket->getDelCostNet() }] [{ $currency->sign}]
+                                        [{oxprice price=$oDeliveryCost->getNettoPrice() currency=$currency}]
                                     </p>
                                 </td>
                             </tr>
-                            [{if $basket->getDelCostVat() }]
                                 <tr valign="top">
                                     [{if $basket->isProportionalCalculationOn() }]
                                         <td style="padding: 5px; border-bottom: 2px solid #ccc;">
                                             <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                                [{ oxmultilang ident="BASKET_TOTAL_PLUS_PROPORTIONAL_VAT" suffix="COLON" }]
+                                            [{oxmultilang ident="BASKET_TOTAL_PLUS_PROPORTIONAL_VAT" suffix="COLON" }]
                                             </p>
                                         </td>
                                     [{else}]
                                         <td style="padding: 5px; border-bottom: 2px solid #ccc;">
                                             <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                                [{ oxmultilang ident="VAT_PLUS_PERCENT_AMOUNT" suffix="COLON" args=$basket->getDelCostVatPercent() }]
+                                            [{oxmultilang ident="VAT_PLUS_PERCENT_AMOUNT" suffix="COLON" args=$oDeliveryCost->getVat() }]
                                             </p>
                                         </td>
                                     [{/if}]
                                     <td style="padding: 5px; border-bottom: 2px solid #ddd;" align="right">
                                         <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                            [{ $basket->getDelCostVat() }] [{ $currency->sign}]
+                                        [{oxprice price=$oDeliveryCost->getVatValue() currency=$currency}]
                                         </p>
                                     </td>
                                 </tr>
-                            [{/if }]
-                        [{elseif $basket->getFDeliveryCosts() }]
+                        [{else}]
                             <tr valign="top">
                                 <td style="padding: 5px; border-bottom: 2px solid #ccc;">
                                     <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                        [{ oxmultilang ident="SHIPPING_COST" suffix="COLON" }]
+                                        [{oxmultilang ident="SHIPPING_COST" suffix="COLON" }]
                                     </p>
                                 </td>
                                 <td style="padding: 5px; border-bottom: 2px solid #ccc;" align="right">
                                     <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                        [{ $basket->getFDeliveryCosts() }] [{ $currency->sign}]
+                                        [{oxprice price=$oDeliveryCost->getBruttoPrice() currency=$currency}]
                                     </p>
                                 </td>
                             </tr>
-                        [{/if }]
+                        [{/if}]
+                    [{/if}]
                     [{/block}]
 
                     [{block name="email_html_order_cust_paymentcosts"}]
                         <!-- payment sum -->
-                        [{ if $basket->getPayCostNet() }]
+                    [{assign var="oPaymentCost" value=$basket->getPaymentCost()}]
+                    [{if $oPaymentCost && $oPaymentCost->getPrice() }]
+                        [{if $oViewConf->isFunctionalityEnabled('blShowVATForPayCharge') }]
                             <tr valign="top">
-                                <td style="padding: 5px; border-bottom: 2px solid #ccc;[{ if $basket->getDelCostVat() }]border-bottom: 1px solid #ddd;[{/if}]">
+                                <td style="padding: 5px; border-bottom: 2px solid #ccc; border-bottom: 1px solid #ddd;">
                                     <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                        [{if $basket->getPaymentCosts() >= 0}][{ oxmultilang ident="SURCHARGE" }][{else}][{ oxmultilang ident="DEDUCTION" }][{/if}] [{ oxmultilang ident="PAYMENT_METHOD" suffix="COLON" }]
+                                        [{if $oPaymentCost->getPrice() >= 0}][{ oxmultilang ident="SURCHARGE" }][{else}][{ oxmultilang ident="DEDUCTION" }][{/if}] [{ oxmultilang ident="PAYMENT_METHOD" suffix="COLON" }]
                                     </p>
                                 </td>
-                                <td style="padding: 5px; border-bottom: 2px solid #ccc;[{ if $basket->getDelCostVat() }]border-bottom: 1px solid #ddd;[{/if}]" align="right">
+                                <td style="padding: 5px; border-bottom: 2px solid #ccc;[{if $basket->getDelCostVat() }]border-bottom: 1px solid #ddd;[{/if}]" align="right">
                                     <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                        [{ $basket->getPayCostNet() }] [{ $currency->sign}]
+                                        [{oxprice price=$oPaymentCost->getNettoPrice() currency=$currency}]
                                     </p>
                                 </td>
                             </tr>
-                            <!-- payment sum VAT (if available) -->
-                            [{ if $basket->getPayCostVat() }]
                                 <tr valign="top">
                                     [{if $basket->isProportionalCalculationOn() }]
                                         <td style="padding: 5px; border-bottom: 2px solid #ccc;">
                                             <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                                [{ oxmultilang ident="BASKET_TOTAL_PLUS_PROPORTIONAL_VAT" suffix="COLON" }]
+                                            [{oxmultilang ident="BASKET_TOTAL_PLUS_PROPORTIONAL_VAT" suffix="COLON" }]
                                             </p>
                                         </td>
                                     [{else}]
                                         <td style="padding: 5px; border-bottom: 2px solid #ccc;">
                                             <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                                [{ oxmultilang ident="VAT_PLUS_PERCENT_AMOUNT" suffix="COLON" args=$basket->getPayCostVatPercent()}]
+                                            [{oxmultilang ident="VAT_PLUS_PERCENT_AMOUNT" suffix="COLON" args=$oPaymentCost->getVat()}]
                                             </p>
                                         </td>
                                     [{/if}]
                                     <td style="padding: 5px; border-bottom: 2px solid #ccc;" align="right">
                                         <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                            [{ $basket->getPayCostVat() }] [{ $currency->sign}]
+                                        [{oxprice price=$oPaymentCost->getVatValue() currency=$currency}]
                                         </p>
                                     </td>
                                 </tr>
-                            [{/if}]
-                        [{elseif $basket->getFPaymentCosts() }]
+                        [{else}]
                             <tr valign="top">
                                 <td style="padding: 5px; border-bottom: 2px solid #ccc;">
                                     <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                        [{ oxmultilang ident="SURCHARGE" suffix="COLON" }]
+                                        [{oxmultilang ident="SURCHARGE" suffix="COLON" }]
                                     </p>
                                 </td>
                                 <td style="padding: 5px; border-bottom: 2px solid #ccc;" align="right">
                                     <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                        [{ $basket->getFPaymentCosts() }] [{ $currency->sign}]
+                                        [{oxprice price=$oPaymentCost->getBruttoPrice() currency=$currency}]
                                     </p>
                                 </td>
                             </tr>
                         [{/if}]
+                    [{/if}]
                     [{/block}]
 
                     [{block name="email_html_order_cust_ts"}]
-                        [{ if $basket->getTsProtectionCosts() }]
+                        [{assign var="trustedShopProtectionCost" value=$basket->getTrustedShopProtectionCost()}]
+                        [{if $trustedShopProtectionCost && $trustedShopProtectionCost->getPrice() > 0  }]
                             <!-- Trusted Shops -->
                             <tr valign="top">
-                                <td style="padding: 5px; border-bottom: 2px solid #ccc;[{ if $basket->getTsProtectionVat() }]border-bottom: 1px solid #ddd;[{/if}]">
+                                <td style="padding: 5px; border-bottom: 2px solid #ccc;[{if $basket->getTsProtectionVat() }]border-bottom: 1px solid #ddd;[{/if}]">
                                     <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                        [{ oxmultilang ident="TRUSTED_SHOP_BUYER_PROTECTION" suffix="COLON" }]
+                                        [{oxmultilang ident="TRUSTED_SHOP_BUYER_PROTECTION" suffix="COLON" }]
                                     </p>
                                 </td>
-                                <td style="padding: 5px; border-bottom: 2px solid #ccc;[{ if $basket->getTsProtectionVat() }]border-bottom: 1px solid #ddd;[{/if}]" align="right">
+                                <td style="padding: 5px; border-bottom: 2px solid #ccc;[{if $basket->getTsProtectionVat() }]border-bottom: 1px solid #ddd;[{/if}]" align="right">
                                     <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                        [{ $basket->getTsProtectionNet() }] [{ $currency->sign}]
+                                        [{oxprice price=$trustedShopProtectionCost->getNettoPrice() currency=$currency}]
                                     </p>
                                 </td>
                             </tr>
-                            [{ if $basket->getTsProtectionVat() }]
                                 <tr valign="top">
                                     [{if $basket->isProportionalCalculationOn() }]
                                         <td style="padding: 5px; border-bottom: 2px solid #ccc;">
                                             <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                                [{ oxmultilang ident="BASKET_TOTAL_PLUS_PROPORTIONAL_VAT" suffix="COLON" }]
+                                            [{oxmultilang ident="BASKET_TOTAL_PLUS_PROPORTIONAL_VAT" suffix="COLON" }]
                                             </p>
                                         </td>
                                     [{else}]
                                         <td style="padding: 5px; border-bottom: 2px solid #ccc;">
                                             <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                                [{ oxmultilang ident="VAT_PLUS_PERCENT_AMOUNT" suffix="COLON" args=$basket->getTsProtectionVatPercent()}]
+                                            [{oxmultilang ident="VAT_PLUS_PERCENT_AMOUNT" suffix="COLON" args=$trustedShopProtectionCost->getVat()}]
                                             </p>
                                         </td>
                                     [{/if}]
                                     <td style="padding: 5px; border-bottom: 2px solid #ccc;" align="right">
                                         <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                            [{ $basket->getTsProtectionVat() }]&nbsp;[{ $currency->sign}]
+                                        [{oxprice price=$trustedShopProtectionCost->getVatValue() currency=$currency}]
                                         </p>
                                     </td>
                                 </tr>
                             [{/if}]
-                        [{/if}]
                     [{/block}]
 
-                    [{ if $oViewConf->getShowGiftWrapping() }]
+                    [{if $oViewConf->getShowGiftWrapping() }]
                         [{block name="email_html_order_cust_wrappingcosts"}]
                             <!-- Gift wrapping -->
-                            [{if $basket->getWrappCostNet() }]
+                        [{assign var="wrappingCost" value=$basket->getWrappingCost()}]
+                        [{if $wrappingCost && $wrappingCost->getPrice() > 0 }]
+                            [{if $oViewConf->isFunctionalityEnabled('blShowVATForWrapping') }]
                                 <tr valign="top">
                                     <td style="padding: 5px; border-bottom: 1px solid #ccc;">
                                         <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                            [{ oxmultilang ident="BASKET_TOTAL_WRAPPING_COSTS_NET" suffix="COLON" }]
+                                            [{oxmultilang ident="BASKET_TOTAL_WRAPPING_COSTS_NET" suffix="COLON" }]
                                         </p>
                                     </td>
                                     <td style="padding: 5px; border-bottom: 1px solid #ccc;" align="right">
                                         <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                            [{ $basket->getWrappCostNet() }] [{ $currency->sign}]
+                                            [{oxprice price=$wrappingCost->getNettoPrice() currency=$currency}]
                                         </p>
                                     </td>
                                 </tr>
-                                [{if $basket->getWrappCostVat() }]
                                     <tr valign="top">
                                         <td style="padding: 5px; border-bottom: 2px solid #ccc;">
                                             <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                                [{ oxmultilang ident="PLUS_VAT" suffix="COLON" }]
+                                            [{oxmultilang ident="PLUS_VAT" suffix="COLON" }]
                                             </p>
                                         </td>
                                         <td style="padding: 5px; border-bottom: 2px solid #ccc;" align="right">
                                             <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                                [{ $basket->getWrappCostVat() }] [{ $currency->sign}]
+                                            [{oxprice price=$wrappingCost->getVatValue() currency=$currency}]
                                             </p>
                                         </td>
                                     </tr>
-                                [{/if}]
-                            [{elseif $basket->getFWrappingCosts() }]
+                            [{else}]
                                 <tr valign="top">
                                     <td style="padding: 5px; border-bottom: 2px solid #ccc;">
                                         <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                            [{ oxmultilang ident="GIFT_WRAPPING" suffix="COLON" }]
+                                            [{oxmultilang ident="GIFT_WRAPPING" suffix="COLON" }]
                                         </p>
                                     </td>
                                     <td style="padding: 5px; border-bottom: 2px solid #ccc;" align="right">
                                         <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                            [{ $basket->getFWrappingCosts() }] [{ $currency->sign}]
+                                            [{oxprice price=$wrappingCost->getBruttoPrice() currency=$currency}]
                                         </p>
                                     </td>
                                 </tr>
                             [{/if}]
+                        [{/if}]
                         [{/block}]
                         [{block name="email_html_order_cust_giftwrapping"}]
                             <!-- Greeting card -->
-                            [{if $basket->getGiftCardCostNet() }]
+                        [{assign var="giftCardCost" value=$basket->getGiftCardCost()}]
+                        [{if $giftCardCost && $giftCardCost->getPrice() > 0 }]
+                            [{if $oViewConf->isFunctionalityEnabled('blShowVATForWrapping') }]
                                 <tr valign="top">
                                     <td style="padding: 5px; border-bottom: 1px solid #ccc;">
                                         <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                            [{ oxmultilang ident="BASKET_TOTAL_GIFTCARD_COSTS_NET" suffix="COLON" }]
+                                            [{oxmultilang ident="BASKET_TOTAL_GIFTCARD_COSTS_NET" suffix="COLON" }]
                                         </p>
                                     </td>
                                     <td style="padding: 5px; border-bottom: 1px solid #ccc;" align="right">
                                         <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                            [{ $basket->getGiftCardCostNet() }] [{ $currency->sign}]
+                                            [{oxprice price=$giftCardCost->getNettoPrice() currency=$currency}]
                                         </p>
                                     </td>
                                 </tr>
-                                [{if $basket->getGiftCardCostVat() }]
                                 <tr>
                                     [{if $basket->isProportionalCalculationOn() }]
                                         <td style="padding: 5px; border-bottom: 2px solid #ccc;">
                                             <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                                [{ oxmultilang ident="BASKET_TOTAL_PLUS_PROPORTIONAL_VAT" suffix="COLON" }]
+                                                [{oxmultilang ident="BASKET_TOTAL_PLUS_PROPORTIONAL_VAT" suffix="COLON" }]
                                             </p>
                                         </td>
                                     [{else}]
                                         <td style="padding: 5px; border-bottom: 2px solid #ccc;">
                                             <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                                [{ oxmultilang ident="VAT_PLUS_PERCENT_AMOUNT" suffix="COLON" suffix="COLON" args=$basket->getGiftCardCostVatPercent()}]
+                                                [{oxmultilang ident="VAT_PLUS_PERCENT_AMOUNT" suffix="COLON" suffix="COLON" args=$giftCardCost->getVat()}]
                                             </p>
                                         </td>
                                     [{/if}]
                                     <td style="padding: 5px; border-bottom: 2px solid #ccc;" align="right">
                                         <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                            [{ $basket->getGiftCardCostVat() }] [{ $currency->sign}]
+                                            [{oxprice price=$giftCardCost->getVatValue() currency=$currency}]
                                         </p>
                                     </td>
                                 </tr>
-                                [{/if}]
-                            [{elseif $basket->getFGiftCardCosts() }]
+                            [{else}]
                                 <tr valign="top">
                                     <td style="padding: 5px; border-bottom: 2px solid #ccc;">
                                         <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                            [{ oxmultilang ident="GREETING_CARD" suffix="COLON" }]
+                                            [{oxmultilang ident="GREETING_CARD" suffix="COLON"}]
                                         </p>
                                     </td>
                                     <td style="padding: 5px; border-bottom: 2px solid #ccc;" align="right">
                                         <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                            [{ $basket->getFGiftCardCosts() }] [{ $currency->sign}]
+                                            [{oxprice price=$giftCardCost->getBruttoPrice() currency=$currency}]
                                         </p>
                                     </td>
                                 </tr>
                             [{/if}]
-
+                        [{/if}]
                         [{/block}]
                     [{/if}]
 
@@ -646,12 +646,12 @@
                         <tr valign="top">
                             <td style="padding: 5px; border-bottom: 2px solid #ccc;">
                                 <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                    <b>[{ oxmultilang ident="GRAND_TOTAL" suffix="COLON" }]</b>
+                                    <b>[{oxmultilang ident="GRAND_TOTAL" suffix="COLON" }]</b>
                                 </p>
                             </td>
                             <td style="padding: 5px; border-bottom: 2px solid #ccc;" align="right">
                                 <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                    <b>[{ $basket->getFPrice() }] [{ $currency->sign}]</b>
+                                    <b>[{oxprice price=$basket->getPrice() currency=$currency}]</b>
                                 </p>
                             </td>
                         </tr>
@@ -662,9 +662,9 @@
     </table>
 
     [{block name="email_html_order_cust_userremark"}]
-        [{ if $order->oxorder__oxremark->value }]
+        [{if $order->oxorder__oxremark->value }]
             <h3 style="font-weight: bold; margin: 20px 0 7px; padding: 0; line-height: 35px; font-size: 12px;font-family: Arial, Helvetica, sans-serif; text-transform: uppercase; border-bottom: 4px solid #ddd;">
-                [{ oxmultilang ident="WHAT_I_WANTED_TO_SAY" }]
+                [{oxmultilang ident="WHAT_I_WANTED_TO_SAY" }]
             </h3>
             <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 5px 0 10px;">
                 [{ $order->oxorder__oxremark->value|oxescape }]
@@ -673,9 +673,9 @@
     [{/block}]
 
     [{block name="email_html_order_cust_download_link"}]
-        [{ if $oOrderFileList and $oOrderFileList|count }]
+        [{if $oOrderFileList and $oOrderFileList|count }]
             <h3 style="font-weight: bold; margin: 20px 0 7px; padding: 0; line-height: 35px; font-size: 12px;font-family: Arial, Helvetica, sans-serif; text-transform: uppercase; border-bottom: 4px solid #ddd;">
-                [{ oxmultilang ident="MY_DOWNLOADS_DESC" }]
+                [{oxmultilang ident="MY_DOWNLOADS_DESC" }]
             </h3>
             [{foreach from=$oOrderFileList item="oOrderFile"}]
               <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 5px;">
@@ -683,7 +683,7 @@
                 <a href="[{ oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=download" params="sorderfileid="|cat:$oOrderFile->getId()}]" rel="nofollow">[{$oOrderFile->oxorderfiles__oxfilename->value}]</a> [{$oOrderFile->getFileSize()|oxfilesize}]
               [{else}]
                 <span>[{$oOrderFile->oxorderfiles__oxfilename->value}]</span>
-                <strong>[{ oxmultilang ident="DOWNLOADS_PAYMENT_PENDING" }]</strong>
+                <strong>[{oxmultilang ident="DOWNLOADS_PAYMENT_PENDING" }]</strong>
               [{/if}]
               </p>
             [{/foreach}]
@@ -693,17 +693,19 @@
     [{block name="email_html_order_cust_paymentinfo_top"}]
         [{if $payment->oxuserpayments__oxpaymentsid->value != "oxempty"}]
             <h3 style="font-weight: bold; margin: 20px 0 7px; padding: 0; line-height: 35px; font-size: 12px;font-family: Arial, Helvetica, sans-serif; text-transform: uppercase; border-bottom: 4px solid #ddd;">
-                [{ oxmultilang ident="PAYMENT_METHOD" suffix="COLON" }]
+                [{oxmultilang ident="PAYMENT_METHOD" suffix="COLON" }]
             </h3>
             <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 5px 0 10px;">
-                <b>[{ $payment->oxpayments__oxdesc->value }] [{ if $basket->getPaymentCosts() }]([{ $basket->getFPaymentCosts() }] [{ $currency->sign}])[{/if}]</b>
+                <b>[{ $payment->oxpayments__oxdesc->value }]
+                    [{assign var="oPaymentCostPrice" value=$basket->getPaymentCost()}]
+                    [{if $oPaymentCostPrice }]([{oxprice price=$oPaymentCostPrice->getBruttoPrice() currency=$currency}])[{/if}]</b>
             </p>
         [{/if}]
     [{/block}]
 
     [{block name="email_html_order_cust_username"}]
         <h3 style="font-weight: bold; margin: 20px 0 7px; padding: 0; line-height: 35px; font-size: 12px;font-family: Arial, Helvetica, sans-serif; text-transform: uppercase; border-bottom: 4px solid #ddd;">
-            [{ oxmultilang ident="EMAIL_ADDRESS" suffix="COLON" }]
+            [{oxmultilang ident="EMAIL_ADDRESS" suffix="COLON" }]
         </h3>
         <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 5px 0 10px;">
              [{ $user->oxuser__oxusername->value }]
@@ -713,13 +715,13 @@
     [{block name="email_html_order_cust_address"}]
         <!-- Address info -->
         <h3 style="font-weight: bold; margin: 20px 0 7px; padding: 0; line-height: 35px; font-size: 12px;font-family: Arial, Helvetica, sans-serif; text-transform: uppercase; border-bottom: 4px solid #ddd;">
-            [{ oxmultilang ident="ADDRESS" suffix="COLON" }]
+            [{oxmultilang ident="ADDRESS" suffix="COLON" }]
         </h3>
         <table colspan="0" rowspan="0" border="0">
             <tr valign="top">
                 <td style="padding-right: 30px">
                     <h4 style="font-weight: bold; margin: 0; padding: 0 0 5px; line-height: 20px; font-size: 11px;font-family: Arial, Helvetica, sans-serif; text-transform: uppercase;">
-                        [{ oxmultilang ident="BILLING_ADDRESS" suffix="COLON" }]
+                        [{oxmultilang ident="BILLING_ADDRESS" suffix="COLON" }]
                     </h4>
                     <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 1px;">
                         [{ $order->oxorder__oxbillcompany->value }]<br>
@@ -730,13 +732,13 @@
                         [{ $order->oxorder__oxbillzip->value }] [{ $order->oxorder__oxbillcity->value }]<br>
                         [{ $order->oxorder__oxbillcountry->value }]<br>
                         [{if $order->oxorder__oxbillustid->value}][{ oxmultilang ident="VAT_ID_NUMBER" suffix="COLON" }] [{ $order->oxorder__oxbillustid->value }]<br>[{/if}]
-                        [{ oxmultilang ident="PHONE" suffix="COLON" }] [{ $order->oxorder__oxbillfon->value }]<br><br>
+                        [{oxmultilang ident="PHONE" suffix="COLON" }] [{ $order->oxorder__oxbillfon->value }]<br><br>
                     </p>
                 </td>
-                [{ if $order->oxorder__oxdellname->value }]
+                [{if $order->oxorder__oxdellname->value }]
                     <td>
                         <h4 style="font-weight: bold; margin: 0; padding: 0 0 5px; line-height: 20px; font-size: 11px;font-family: Arial, Helvetica, sans-serif; text-transform: uppercase;">
-                            [{ oxmultilang ident="SHIPPING_ADDRESS" suffix="COLON" }]
+                            [{oxmultilang ident="SHIPPING_ADDRESS" suffix="COLON" }]
                         </h4>
                         <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 1px;">
                             [{ $order->oxorder__oxdelcompany->value }]<br>
@@ -756,7 +758,7 @@
     [{block name="email_html_order_cust_deliveryinfo"}]
         [{if $payment->oxuserpayments__oxpaymentsid->value != "oxempty"}]
             <h3 style="font-weight: bold; margin: 20px 0 7px; padding: 0; line-height: 35px; font-size: 12px;font-family: Arial, Helvetica, sans-serif; text-transform: uppercase; border-bottom: 4px solid #ddd;">
-                [{ oxmultilang ident="SELECTED_SHIPPING_CARRIER" suffix="COLON" }]
+                [{oxmultilang ident="SELECTED_SHIPPING_CARRIER" suffix="COLON" }]
             </h3>
             <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 5px 0 10px;">
                 <b>[{ $order->oDelSet->oxdeliveryset__oxtitle->value }]</b>
@@ -767,21 +769,21 @@
     [{block name="email_html_order_cust_paymentinfo"}]
         [{if $payment->oxuserpayments__oxpaymentsid->value == "oxidpayadvance"}]
             <h3 style="font-weight: bold; margin: 20px 0 7px; padding: 0; line-height: 35px; font-size: 12px;font-family: Arial, Helvetica, sans-serif; text-transform: uppercase; border-bottom: 4px solid #ddd;">
-                [{ oxmultilang ident="BANK_DETAILS" }]
+                [{oxmultilang ident="BANK_DETAILS" }]
             </h3>
             <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 5px 0 10px;">
-                [{ oxmultilang ident="BANK" suffix="COLON" }] [{$shop->oxshops__oxbankname->value}]<br>
-                [{ oxmultilang ident="BANK_CODE" suffix="COLON" }] [{$shop->oxshops__oxbankcode->value}]<br>
-                [{ oxmultilang ident="BANK_ACCOUNT_NUMBER" suffix="COLON" }] [{$shop->oxshops__oxbanknumber->value}]<br>
-                [{ oxmultilang ident="BIC" suffix="COLON"}] [{$shop->oxshops__oxbiccode->value}]<br>
-                [{ oxmultilang ident="IBAN" suffix="COLON"}] [{$shop->oxshops__oxibannumber->value}]
+                [{oxmultilang ident="BANK" suffix="COLON" }] [{$shop->oxshops__oxbankname->value}]<br>
+                [{oxmultilang ident="BANK_CODE" suffix="COLON" }] [{$shop->oxshops__oxbankcode->value}]<br>
+                [{oxmultilang ident="BANK_ACCOUNT_NUMBER" suffix="COLON" }] [{$shop->oxshops__oxbanknumber->value}]<br>
+                [{oxmultilang ident="BIC" suffix="COLON"}] [{$shop->oxshops__oxbiccode->value}]<br>
+                [{oxmultilang ident="IBAN" suffix="COLON"}] [{$shop->oxshops__oxibannumber->value}]
             </p>
         [{/if}]
     [{/block}]
 
     [{block name="email_html_order_cust_orderemailend"}]
         <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; padding-top: 15px;">
-            [{ oxcontent ident="oxuserorderemailend" }]
+            [{oxcontent ident="oxuserorderemailend" }]
         </p>
     [{/block}]
 
@@ -789,11 +791,11 @@
         [{if $oViewConf->showTs("ORDEREMAIL") && $oViewConf->getTsId() }]
             [{assign var="sTSRatingImg" value="https://www.trustedshops.com/bewertung/widget/img/bewerten_"|cat:$oViewConf->getActLanguageAbbr()|cat:".gif"}]
             <h3 style="font-weight: bold; margin: 20px 0 7px; padding: 0; line-height: 35px; font-size: 12px;font-family: Arial, Helvetica, sans-serif; text-transform: uppercase; border-bottom: 4px solid #ddd;">
-                [{ oxmultilang ident="RATE_OUR_SHOP" }]
+                [{oxmultilang ident="RATE_OUR_SHOP" }]
             </h3>
 
-            <a href="[{ $oViewConf->getTsRatingUrl() }]" target="_blank" title="[{ oxmultilang ident="TRUSTED_SHOPS_RATINGS" }]">
-                <img src="[{$sTSRatingImg}]" border="0" alt="[{ oxmultilang ident="WRITE_REVIEW_2" }]" align="middle">
+            <a href="[{ $oViewConf->getTsRatingUrl() }]" target="_blank" title="[{oxmultilang ident="TRUSTED_SHOPS_RATINGS" }]">
+                <img src="[{$sTSRatingImg}]" border="0" alt="[{oxmultilang ident="WRITE_REVIEW_2" }]" align="middle">
             </a>
         [{/if}]
     [{/block}]

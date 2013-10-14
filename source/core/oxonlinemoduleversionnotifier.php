@@ -160,7 +160,10 @@ class oxOnlineModuleVersionNotifier
             $oPreparedModule = new stdClass();
             $oPreparedModule->id = $oModule->getId();
             $oPreparedModule->version = $oModule->getInfo('version');
-            $oPreparedModule->active = $oModule->isActive();
+
+            $oPreparedModule->activeInShops = new stdClass();
+            $oPreparedModule->activeInShops->activeInShop = array( ($oModule->isActive() ? oxRegistry::getConfig()->getShopId() : null) );
+
             $aPreparedModules[] = $oPreparedModule;
         }
 
@@ -215,7 +218,7 @@ class oxOnlineModuleVersionNotifier
         $oRequestParams->version = oxRegistry::getConfig()->getVersion();
         $oRequestParams->shopurl = oxRegistry::getConfig()->getShopUrl();
         $oRequestParams->pversion = $this->_sProtocolversion;
-
+print_r($oRequestParams);exit;
         if ( !$sOutput = $this->_doRequest($oRequestParams) ){
             throw new oxException('OMVN_ERROR_REQUEST_FAILED');
         }

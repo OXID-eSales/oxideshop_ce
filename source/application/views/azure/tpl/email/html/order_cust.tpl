@@ -103,7 +103,6 @@
                                 [{/if}]
                             [{/if}]
                         </p>
-
                         [{if $basketitem->aDiscounts}]
                             <p>
                                 <em style="font-family: Arial, Helvetica, sans-serif; font-size: 11px;">[{ oxmultilang ident="DISCOUNT" suffix="COLON" }]
@@ -717,6 +716,7 @@
         <h3 style="font-weight: bold; margin: 20px 0 7px; padding: 0; line-height: 35px; font-size: 12px;font-family: Arial, Helvetica, sans-serif; text-transform: uppercase; border-bottom: 4px solid #ddd;">
             [{oxmultilang ident="ADDRESS" suffix="COLON" }]
         </h3>
+
         <table colspan="0" rowspan="0" border="0">
             <tr valign="top">
                 <td style="padding-right: 30px">

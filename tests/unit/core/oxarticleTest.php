@@ -7259,7 +7259,7 @@ class Unit_Core_oxarticleTest extends OxidTestCase
     /**
      * Checks that in admin articles are not cached statically
      */
-    public function testStaticCacheInAdmin()
+    public function testGetVariantsCount()
     {
         $oArticle = new oxArticle();
         $oArticle->oxarticles__oxvarcount = new oxField(39);

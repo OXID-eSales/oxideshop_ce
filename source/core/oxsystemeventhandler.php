@@ -28,33 +28,34 @@
 class OxSystemEventHandler
 {
     /**
-     * @Var oxOnlineLicenseCheck
+     * @Var oxOnlineModuleVersionNotifier
      */
-    private $_oOLC = null;
+    private $_oOMVN = null;
+
 
     /**
-     * OLC dependency setter
+     * OMVN dependency setter
      *
-     * @param oxOnlineLicenseCheck $oOLC
+     * @param oxOnlineModuleVersionNotifier $oOLC
      */
-    public function setOLC($oOLC)
+    public function setOMVN($oOMVN)
     {
-        $this->_oOLC = $oOLC;
+        $this->_oOMVN = $oOMVN;
     }
 
     /**
-     * OLC dependency getter
+     * OMVN dependency getter
      *
-     * @return oxOnlineLicenseCheck
+     * @return oxOnlineModuleVersionNotifier
      */
-    public function getOLC()
+    public function getOMVN()
     {
-        if (!$this->_oOLC) {
-            $oOlc = oxNew("oxOnlineLicenseCheck");
-            $this->setOLC( $oOlc );
+        if (!$this->_oOMVN) {
+            $oOMVN = oxNew("oxOnlineModuleVersionNotifier");
+            $this->setOMVN( $oOMVN );
         }
 
-        return $this->_oOLC;
+        return $this->_oOMVN;
     }
 
     /**

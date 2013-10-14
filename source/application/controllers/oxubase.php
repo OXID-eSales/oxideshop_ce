@@ -2508,7 +2508,7 @@ class oxUBase extends oxView
      * Template variable getter. Returns if order price is lower than
      * minimum order price setup (config param "iMinOrderPrice")
      *
-     * @depracated in v4.8/5.1 on 2013-10-14; use oxBasket method
+     * @deprecated in v4.8/5.1 on 2013-10-14; use oxBasket method
      *
      * @return bool
      */

@@ -24,26 +24,26 @@
         <table border="0" cellspacing="0" cellpadding="0" width="100%">
           <tr>
             <td height="15" width="100" style="padding: 5px; border-bottom: 4px solid #ddd;">
-                <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0; padding: 0;"><b>[{ oxmultilang ident="ORDER_NUMBER" }] [{ $order->oxorder__oxordernr->value }]</b></p>
+                <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0; padding: 0;"><b>[{oxmultilang ident="ORDER_NUMBER" }] [{ $order->oxorder__oxordernr->value }]</b></p>
             </td>
             <td style="padding: 5px; border-bottom: 4px solid #ddd;">
-              <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0; padding: 0; color: #555;"><b>[{ oxmultilang ident="PRODUCT" }]</b></p>
+              <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0; padding: 0; color: #555;"><b>[{oxmultilang ident="PRODUCT" }]</b></p>
             </td>
             <td style="padding: 5px; border-bottom: 4px solid #ddd;">
-              <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0; padding: 0; color: #555;"><b>[{ oxmultilang ident="UNIT_PRICE" }]</b></p>
+              <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0; padding: 0; color: #555;"><b>[{oxmultilang ident="UNIT_PRICE" }]</b></p>
             </td>
             <td style="padding: 5px; border-bottom: 4px solid #ddd;">
-              <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0; padding: 0; color: #555;"><b>[{ oxmultilang ident="QUANTITY" }]</b></p>
+              <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0; padding: 0; color: #555;"><b>[{oxmultilang ident="QUANTITY" }]</b></p>
             </td>
             <td style="padding: 5px; border-bottom: 4px solid #ddd;">
-              <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0; padding: 0; color: #555;"><b>[{ oxmultilang ident="VAT" }]</b></p>
+              <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0; padding: 0; color: #555;"><b>[{oxmultilang ident="VAT" }]</b></p>
             </td>
             <td style="padding: 5px; border-bottom: 4px solid #ddd;">
-              <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0; padding: 0; color: #555;"><b>[{ oxmultilang ident="TOTAL" }]</b></p>
+              <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0; padding: 0; color: #555;"><b>[{oxmultilang ident="TOTAL" }]</b></p>
             </td>
             [{if $blShowReviewLink}]
             <td style="padding: 5px; border-bottom: 4px solid #ddd;">
-              <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0; padding: 0; color: #555;"><b>[{ oxmultilang ident="PRODUCT_REVIEW" }]</b></p>
+              <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0; padding: 0; color: #555;"><b>[{oxmultilang ident="PRODUCT_REVIEW" }]</b></p>
             </td>
             [{/if}]
           </tr>
@@ -88,7 +88,7 @@
                             [{/if}]
                             <br>
                             <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0; padding: 10px 0;">
-                                <b>[{ oxmultilang ident="PRODUCT_NO" suffix="COLON" }] [{ $basketproduct->oxarticles__oxartnum->value }]</b>
+                                <b>[{oxmultilang ident="PRODUCT_NO" suffix="COLON" }] [{ $basketproduct->oxarticles__oxartnum->value }]</b>
                             </p>
                         </p>
                     </td>
@@ -105,7 +105,7 @@
                         </p>
                         [{if $basketitem->aDiscounts}]
                             <p>
-                                <em style="font-family: Arial, Helvetica, sans-serif; font-size: 11px;">[{ oxmultilang ident="DISCOUNT" suffix="COLON" }]
+                                <em style="font-family: Arial, Helvetica, sans-serif; font-size: 11px;">[{oxmultilang ident="DISCOUNT" suffix="COLON" }]
                                     [{foreach from=$basketitem->aDiscounts item=oDiscount}]
                                       <br>[{ $oDiscount->sDiscount }]
                                     [{/foreach}]
@@ -136,7 +136,7 @@
                     </td>
                     [{if $blShowReviewLink}]
                     <td style="padding: 5px; border-bottom: 4px solid #ddd;">
-                        <a href="[{ $oConf->getShopURL() }]index.php?shp=[{$shop->oxshops__oxid->value}]&amp;anid=[{$basketitem->getProductId()}]&amp;cl=review&amp;reviewuserhash=[{$user->getReviewUserHash($user->getId())}]" style="font-family: Arial, Helvetica, sans-serif; font-size: 12px;" target="_blank">[{ oxmultilang ident="REVIEW" }]</a>
+                        <a href="[{ $oConf->getShopURL() }]index.php?shp=[{$shop->oxshops__oxid->value}]&amp;anid=[{$basketitem->getProductId()}]&amp;cl=review&amp;reviewuserhash=[{$user->getReviewUserHash($user->getId())}]" style="font-family: Arial, Helvetica, sans-serif; font-size: 12px;" target="_blank">[{oxmultilang ident="REVIEW" }]</a>
                     </td>
                     [{/if}]
                 </tr>
@@ -306,7 +306,7 @@
                                 <tr valign="top">
                                     <td style="padding: 5px; border-bottom: 1px solid #ddd;">
                                         <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                            [{if $oDiscount->dDiscount < 0 }][{ oxmultilang ident="SURCHARGE" }][{else}][{ oxmultilang ident="DISCOUNT" }][{/if}] <em>[{ $oDiscount->sDiscount }]</em> :
+                                            [{if $oDiscount->dDiscount < 0 }][{oxmultilang ident="SURCHARGE" }][{else}][{oxmultilang ident="DISCOUNT" }][{/if}] <em>[{ $oDiscount->sDiscount }]</em> :
                                         </p>
                                     </td>
                                     <td style="padding: 5px; border-bottom: 1px solid #ddd;" align="right">
@@ -454,7 +454,7 @@
                             <tr valign="top">
                                 <td style="padding: 5px; border-bottom: 2px solid #ccc; border-bottom: 1px solid #ddd;">
                                     <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                        [{if $oPaymentCost->getPrice() >= 0}][{ oxmultilang ident="SURCHARGE" }][{else}][{ oxmultilang ident="DEDUCTION" }][{/if}] [{ oxmultilang ident="PAYMENT_METHOD" suffix="COLON" }]
+                                        [{if $oPaymentCost->getPrice() >= 0}][{oxmultilang ident="SURCHARGE" }][{else}][{oxmultilang ident="DEDUCTION" }][{/if}] [{oxmultilang ident="PAYMENT_METHOD" suffix="COLON" }]
                                     </p>
                                 </td>
                                 <td style="padding: 5px; border-bottom: 2px solid #ccc;[{if $basket->getDelCostVat() }]border-bottom: 1px solid #ddd;[{/if}]" align="right">
@@ -731,7 +731,7 @@
                         [{ $order->oxorder__oxbillstateid->value }]
                         [{ $order->oxorder__oxbillzip->value }] [{ $order->oxorder__oxbillcity->value }]<br>
                         [{ $order->oxorder__oxbillcountry->value }]<br>
-                        [{if $order->oxorder__oxbillustid->value}][{ oxmultilang ident="VAT_ID_NUMBER" suffix="COLON" }] [{ $order->oxorder__oxbillustid->value }]<br>[{/if}]
+                        [{if $order->oxorder__oxbillustid->value}][{oxmultilang ident="VAT_ID_NUMBER" suffix="COLON" }] [{ $order->oxorder__oxbillustid->value }]<br>[{/if}]
                         [{oxmultilang ident="PHONE" suffix="COLON" }] [{ $order->oxorder__oxbillfon->value }]<br><br>
                     </p>
                 </td>

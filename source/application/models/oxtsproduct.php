@@ -46,6 +46,8 @@ class oxTsProduct extends oxSuperCfg
     /**
      * Price of TS protection product
      *
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     *
      * @var float
      */
     protected $_fPrice = null;
@@ -53,12 +55,16 @@ class oxTsProduct extends oxSuperCfg
     /**
      * Price of TS protection netto product
      *
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     *
      * @var float
      */
     protected $_fNettoPrice = null;
 
     /**
      * Price of TS protection vat value
+     *
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
      *
      * @var float
      */
@@ -157,6 +163,8 @@ class oxTsProduct extends oxSuperCfg
     /**
      * Returns formatted brutto price of TS protection product
      *
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     *
      * @return string
      */
     public function getFPrice()
@@ -172,6 +180,8 @@ class oxTsProduct extends oxSuperCfg
     /**
      * Returns formatted brutto price of TS protection product
      *
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
+     *
      * @return string
      */
     public function getFNettoPrice()
@@ -186,6 +196,8 @@ class oxTsProduct extends oxSuperCfg
 
     /**
      * Returns formatted brutto price of TS protection product
+     *
+     * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
      *
      * @return string
      */

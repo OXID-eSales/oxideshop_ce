@@ -30,7 +30,7 @@
                 [{/if}]
                         [{ $oView->getActCurrencySign()}]
                         [{if $oView->isVatIncluded() }]
-                [{if !( $_oBoxProduct->hasMdVariants() || ($oViewConf->showSelectListsInList()&&$_oBoxProduct->getSelections(1)) || $_oBoxProduct->getVariants() )}]*[{/if}]
+                            [{if !( $_oBoxProduct->getVariantsCount() || $_oBoxProduct->hasMdVariants() || ($oViewConf->showSelectListsInList()&&$_oBoxProduct->getSelections(1)) )}]*[{/if}]
                         [{/if}]
                     </strong>
             [{/if}]

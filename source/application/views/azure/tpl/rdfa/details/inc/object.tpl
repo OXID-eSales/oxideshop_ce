@@ -1,5 +1,5 @@
 <div rel="gr:includes">
-    [{if $oProduct->getVariants() || $oView->drawParentUrl()}]
+    [{if $oProduct->getVariantsCount() || $oView->drawParentUrl()}]
         <div typeof="gr:ProductOrServiceModel" about="[{$sRDFaUrl}]#productdata">
     [{else}]
         <div typeof="gr:SomeItems" about="[{$sRDFaUrl}]#productdata">

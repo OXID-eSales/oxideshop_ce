@@ -3137,4 +3137,14 @@ class oxBasket extends oxSuperCfg
         return $this->_blDownloadableProducts;
     }
 
+    /**
+     * Returns min order price value
+     *
+     * @return decimal
+     */
+    public function getMinOrderPrice()
+    {
+        return oxPrice::getPriceInActCurrency( $this->getConfig()->getConfigParam( 'iMinOrderPrice' ) );
+    }
+
 }

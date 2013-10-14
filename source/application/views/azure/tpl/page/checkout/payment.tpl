@@ -37,7 +37,7 @@
                             [{if $oxcmp_basket->getDelCostVat() }]
                                     ([{ oxmultilang ident="PLUS_VAT" }]
                                     [{ $oxcmp_basket->getDelCostVat() }] [{ $currency->sign }])
-                            [{/if }]
+                            [{/if}]
                             </b>
                         </div>
                         [{ else }]
@@ -117,7 +117,7 @@
                     [{block name="checkout_payment_nextstep"}]
                         [{if $oView->isLowOrderPrice()}]
                             <div class="lineBox clear">
-                            <div><b>[{ oxmultilang ident="MIN_ORDER_PRICE" }] [{ $oView->getMinOrderPrice() }] [{ $currency->sign }]</b></div>
+                            <div><b>[{ oxmultilang ident="MIN_ORDER_PRICE" }] [{oxprice price=$oxcmp_basket->getMinOrderPrice() currency=$currency}]</b></div>
                             </div>
                         [{else}]
                             <div class="lineBox clear">

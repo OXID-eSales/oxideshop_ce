@@ -562,7 +562,7 @@ class oxUBase extends oxView
                 // forcing to set noindex/follow meta
                 $this->_forceNoIndex();
 
-                if ( $this->getConfig()->getConfigParam('blSeoLogging') ) {
+                if (!$this->getConfig()->isProductiveMode() || $this->getConfig()->getConfigParam('blSeoLogging')) {
                     $sShopId = $this->getConfig()->getShopId();
                     $sLangId = oxRegistry::getLang()->getBaseLanguage();
                     $sIdent  = md5( strtolower( $sStdUrl ) . $sShopId . $sLangId );
@@ -696,7 +696,7 @@ class oxUBase extends oxView
      */
     public function getComponent( $sName )
     {
-        if ( isset( $sName ) && isset( $this->_oaComponents[$sName] ) ) {
+        if ( $sName != null ) {
             return $this->_oaComponents[$sName];
         }
     }
@@ -2508,6 +2508,8 @@ class oxUBase extends oxView
      * Template variable getter. Returns if order price is lower than
      * minimum order price setup (config param "iMinOrderPrice")
      *
+     * @depracated in v4.8/5.1 on 2013-10-14; use oxBasket method
+     *
      * @return bool
      */
     public function isLowOrderPrice()
@@ -2521,6 +2523,8 @@ class oxUBase extends oxView
 
     /**
      * Template variable getter. Returns formatted min order price value
+     *
+     * @deprecated in v4.8/5.1 on 2013-10-14; use oxBasket method
      *
      * @return string
      */

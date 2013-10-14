@@ -225,14 +225,14 @@
                                 </td>
                                 <td style="padding: 5px; border-bottom: 2px solid #ccc;" align="right" width="60">
                                     <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                        [{ $basket->getProductsNetPrice() }] [{ $currency->sign}]
+                                        [{ oxprice price=$basket->getNettoSum() currency=$currency }]
                                     </p>
                                 </td>
                             </tr>
                         [{/block}]
                         [{block name="email_html_order_cust_nodiscountproductvats"}]
                             <!-- VATs -->
-                            [{foreach from=$basket->getProductVats() item=VATitem key=key}]
+                            [{foreach from=$basket->getProductVats(false) item=VATitem key=key}]
                                 <tr valign="top">
                                     <td style="padding: 5px; border-bottom: 2px solid #ccc;">
                                         <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
@@ -241,7 +241,7 @@
                                     </td>
                                     <td style="padding: 5px; border-bottom: 2px solid #ccc;" align="right">
                                         <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                            [{ $VATitem }] [{ $currency->sign}]
+                                            [{ oxprice price=$VATitem currency=$currency }]
                                         </p>
                                     </td>
                                 </tr>
@@ -258,7 +258,7 @@
                                 </td>
                                 <td style="padding: 5px; border-bottom: 2px solid #ccc;" align="right">
                                     <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                        [{ $basket->getFProductsPrice() }] [{ $currency->sign}]
+                                        [{oxprice price=$basket->getBruttoSum() currency=$currency }]
                                     </p>
                                 </td>
                             </tr>
@@ -280,7 +280,7 @@
                                     </td>
                                     <td style="padding: 5px; border-bottom: 2px solid #ccc;" align="right" width="60">
                                         <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                            [{ $basket->getProductsNetPrice() }] [{ $currency->sign}]
+                                            [{oxprice price=$basket->getNettoSum() currency=$currency }]
                                         </p>
                                     </td>
                                 </tr>
@@ -296,7 +296,7 @@
                                     </td>
                                     <td style="padding: 5px; border-bottom: 2px solid #ccc;" align="right">
                                         <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                            [{ $basket->getFProductsPrice() }] [{ $currency->sign}]
+                                            [{oxprice price=$basket->getBruttoSum() currency=$currency }]
                                         </p>
                                     </td>
                                 </tr>
@@ -332,7 +332,7 @@
                                 </td>
                                 <td style="padding: 5px; border-bottom: 1px solid #ddd;" align="right">
                                     <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                        [{ $basket->getProductsNetPrice() }] [{ $currency->sign}]
+                                        [{oxprice price=$basket->getNettoSum() currency=$currency }]
                                     </p>
                                 </td>
                             </tr>
@@ -341,7 +341,7 @@
 
                         [{block name="email_html_order_cust_productvats"}]
                             <!-- VATs -->
-                            [{foreach from=$basket->getProductVats() item=VATitem key=key}]
+                            [{foreach from=$basket->getProductVats(false) item=VATitem key=key}]
                                 <tr valign="top">
                                     <td style="padding: 5px; border-bottom: 2px solid #ccc;">
                                         <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
@@ -350,7 +350,7 @@
                                     </td>
                                     <td style="padding: 5px; border-bottom: 2px solid #ccc;" align="right">
                                         <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                            [{ $VATitem }] [{ $currency->sign}]
+                                            [{oxprice price=$VATitem currency=$currency }]
                                         </p>
                                     </td>
                                 </tr>
@@ -368,7 +368,7 @@
                                 </td>
                                 <td style="padding: 5px; border-bottom: 2px solid #ccc;" align="right">
                                     <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                        [{ $basket->getFProductsPrice() }] [{ $currency->sign}]
+                                        [{oxprice price=$basket->getBruttoSum() currency=$currency }]
                                     </p>
                                 </td>
                             </tr>

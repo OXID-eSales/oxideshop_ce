@@ -2123,6 +2123,8 @@ $aLang = array(
 'OLC_ERROR_REQUEST_FAILED'                                 => 'Dienst nicht verfügbar. Bitte versuchen Sie es später noch einmal. Falls das Problem weiterhin bestehen sollte, überprüfen Sie bitte, dass Ihr Shop ausgehende Verbindungen aufbauen kann.',
 'OLC_ERROR_RESPONSE_UNEXPECTED'                            => 'Dienst nicht verfügbar. Bitte versuchen Sie es später noch einmal. Falls das Problem weiterhin bestehen sollte, überprüfen Sie bitte, dass Ihr Shop ausgehende Verbindungen aufbauen kann.',
 
+'OMVN_ERROR_REQUEST_FAILED'                                => 'Dienst nicht verfügbar. Bitte versuchen Sie es später noch einmal. Falls das Problem weiterhin bestehen sollte, überprüfen Sie bitte, dass Ihr Shop ausgehende Verbindungen aufbauen kann.',
+
 'VERSION_UPDATE_LINK'                                         => 'http://www.oxid-esales.com/de/support-services/dokumentation-und-hilfe/oxid-eshop/installation/oxid-eshop-aktualisieren/update-vorbereiten.html',
 );
 

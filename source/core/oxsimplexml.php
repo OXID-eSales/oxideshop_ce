@@ -37,7 +37,13 @@ class oxSimpleXml {
      */
     protected function _addSimpleXmlElement($oXml, $oInput)
     {
+        if (is_object( $oInput )) {
         $aObjectVars = get_object_vars( $oInput );
+        } elseif (is_array($oInput) ) {
+            $aObjectVars = $oInput;
+        } else {
+            return $oXml;
+        }
 
         foreach ($aObjectVars as $sKey => $oVar) {
             if (is_object( $oVar ) ) {
@@ -47,7 +53,15 @@ class oxSimpleXml {
 
             } elseif (is_array( $oVar) ) {
                 foreach ($oVar as $oSubValue) {
+
+                    //this check for complex type is probably redundant, but I give up to solve it over single recursion call
+                    //use existing Unit tests for refactoring
+                    if (is_array($oSubValue) || is_object($oSubValue)) {
+                        $oChildNode = $oXml->addChild($sKey);
+                        $this->_addSimpleXmlElement($oChildNode, $oSubValue);
+                    } else {
                     $oXml->addChild($sKey, $oSubValue);
+                }
                 }
             } else {
                 //assume $oVar is string

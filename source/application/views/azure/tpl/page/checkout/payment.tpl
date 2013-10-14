@@ -30,19 +30,19 @@
                             [{/block}]
                         </li>
                     </ul>
-                    [{if $oxcmp_basket->getDeliveryCosts() }]
-                        [{if $oxcmp_basket->getDelCostNet()}]
+
+                    [{assign var="oDeliveryCostPrice" value=$oxcmp_basket->getDeliveryCost() }]
+                    [{if $oDeliveryCostPrice && $oDeliveryCostPrice->getPrice() > 0}]
+                        [{if $oViewConf->isFunctionalityEnabled('blShowVATForDelivery') }]
                         <div id="shipSetCost">
-                            <b>[{ oxmultilang ident="CHARGES" suffix="COLON"}] [{ $oxcmp_basket->getDelCostNet() }] [{ $currency->sign }]
-                            [{if $oxcmp_basket->getDelCostVat() }]
+                                <b>[{ oxmultilang ident="CHARGES" suffix="COLON"}] [{oxprice price=$oDeliveryCostPrice->getNettoPrice() currency=$currency}]
                                     ([{ oxmultilang ident="PLUS_VAT" }]
-                                    [{ $oxcmp_basket->getDelCostVat() }] [{ $currency->sign }])
-                            [{/if}]
+                                        [{oxprice price=$oDeliveryCostPrice->getVatValue() currency=$currency}])
                             </b>
                         </div>
-                        [{ else }]
+                        [{else}]
                         <div id="shipSetCost">
-                            <b>[{ oxmultilang ident="CHARGES" suffix="COLON" }] [{ $oxcmp_basket->getFDeliveryCosts() }] [{ $currency->sign}]</b>
+                                <b>[{ oxmultilang ident="CHARGES" suffix="COLON" }] [{oxprice price=$oDeliveryCostPrice->getBruttoPrice() currency=$currency}]</b>
                         </div>
                         [{/if}]
                     [{/if}]

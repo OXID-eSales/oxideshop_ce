@@ -142,7 +142,7 @@
                         [{* product wrapping *}]
                         [{if $oView->isWrapping() }]
                         <td>
-                                [{ if !$basketitem->getWrappingId() }]
+                                [{if !$basketitem->getWrappingId() }]
                                     [{if $editable }]
                                         <a class="wrappingTrigger" rel="nofollow" href="#" title="[{ oxmultilang ident="ADD" }]">[{ oxmultilang ident="ADD" }]</a>
                                     [{else}]
@@ -252,7 +252,7 @@
          [{block name="checkout_basketcontents_giftwrapping"}]
              [{if $oViewConf->getShowGiftWrapping() }]
                   [{assign var="oCard" value=$oxcmp_basket->getCard() }]
-                  [{ if $oCard }]
+                  [{if $oCard }]
                     <tr>
                       [{if $editable }]<td></td>[{/if}]
                       <td></td>
@@ -466,7 +466,7 @@
                     [{/block}]
 
                     [{block name="checkout_basketcontents_wrappingcosts"}]
-                        [{ if $oViewConf->getShowGiftWrapping() }]
+                        [{if $oViewConf->getShowGiftWrapping() }]
 
                             [{assign var="wrappingCost" value=$oxcmp_basket->getWrappingCost()}]
                             [{if $wrappingCost && $wrappingCost->getPrice() > 0 }]

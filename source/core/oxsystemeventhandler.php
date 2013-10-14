@@ -70,8 +70,7 @@ class OxSystemEventHandler
         //Will be used by the upcoming online one click installer.
         //Is still under development - still changes at the remote server are necessary - therefore ignoring the results for now
         try {
-            $oOMVN = oxNew("oxOnlineModuleVersionNotifier");
-            $oOMVN->versionNotify();
+            $this->getOMVN()->versionNotify();
         } catch (Exception $o) { }
     }
 }

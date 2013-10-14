@@ -43,6 +43,21 @@ class OxSystemEventHandler
     }
 
     /**
+     * OLC dependency getter
+     *
+     * @return oxOnlineLicenseCheck
+     */
+    public function getOLC()
+    {
+        if (!$this->_oOLC) {
+            $oOlc = oxNew("oxOnlineLicenseCheck");
+            $this->setOLC( $oOlc );
+        }
+
+        return $this->_oOLC;
+    }
+
+    /**
      * onAdminLogin() is called on every successful login to the backend
      *
      * @param string $sActiveShop Active shop

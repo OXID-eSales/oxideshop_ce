@@ -398,6 +398,7 @@
                                 <th>[{ oxmultilang ident="SHIPPING_NET" suffix="COLON" }]</th>
                                     <td id="basketDeliveryNetto">[{oxprice price=$deliveryCost->getNettoPrice() currency=$currency }]</td>
                             </tr>
+                                [{if $deliveryCost->getVatValue()}]
                                 <tr>
                                     [{if $oxcmp_basket->isProportionalCalculationOn() }]
                                         <th>[{ oxmultilang ident="BASKET_TOTAL_PLUS_PROPORTIONAL_VAT" suffix="COLON" }]</th>
@@ -406,6 +407,7 @@
                                     [{/if}]
                                     <td id="basketDeliveryVat">[{oxprice price=$deliveryCost->getVatValue() currency=$currency }]</td>
                                 </tr>
+                                [{/if}]
                             [{else}]
                             <tr>
                                 <th>[{ oxmultilang ident="SHIPPING_COST" }]</th>

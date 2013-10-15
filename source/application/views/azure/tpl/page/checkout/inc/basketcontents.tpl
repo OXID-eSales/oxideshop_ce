@@ -392,7 +392,7 @@
 
                     [{block name="checkout_basketcontents_delcosts"}]
                         [{assign var="deliveryCost" value=$oxcmp_basket->getDeliveryCost()}]
-                        [{if $deliveryCost  }]
+                        [{if $deliveryCost && ($oxcmp_basket->getBasketUser() || $oViewConf->isFunctionalityEnabled('blCalculateDelCostIfNotLoggedIn') ) }]
                             [{if $oViewConf->isFunctionalityEnabled('blShowVATForDelivery') }]
                             <tr>
                                 <th>[{ oxmultilang ident="SHIPPING_NET" suffix="COLON" }]</th>

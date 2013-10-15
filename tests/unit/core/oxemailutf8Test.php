@@ -75,12 +75,14 @@ class Unit_core_oxemailUtf8Test extends OxidTestCase
      */
     public function testSendOrderEmailToUser()
     {
-        $this->markTestIncomplete('fix test after oxprice plugin usage');
+        $oPrice = $this->getMock( 'oxprice' );
+        $oPrice->expects( $this->any() )->method( 'getPrice' )->will($this->returnValue( 256 ) );
+        $oPrice->expects( $this->any() )->method( 'getBruttoPrice' )->will($this->returnValue( 8 ) );
 
-        $oBasketItem = $this->getMock( 'oxbasketitem', array('getUnitPrice', 'getRegularUnitPrice', 'getFUnitPrice', 'getFTotalPrice', 'getVatPercent', 'getAmount', 'getTitle', 'getProductId') );
-        $oBasketItem->expects( $this->any() )->method( 'getFUnitPrice' )->will($this->returnValue( '256,00' ) );
-        $oBasketItem->expects( $this->any() )->method( 'getUnitPrice' )->will($this->returnValue( new oxPrice() ) );
-        $oBasketItem->expects( $this->any() )->method( 'getRegularUnitPrice' )->will($this->returnValue( new oxPrice() ) );
+
+        $oBasketItem = $this->getMock( 'oxbasketitem', array('getUnitPrice', 'getRegularUnitPrice', 'getVatPercent', 'getAmount', 'getTitle', 'getProductId') );
+        $oBasketItem->expects( $this->any() )->method( 'getUnitPrice' )->will($this->returnValue( $oPrice ) );
+        $oBasketItem->expects( $this->any() )->method( 'getRegularUnitPrice' )->will($this->returnValue( $oPrice ) );
         $oBasketItem->expects( $this->any() )->method( 'getTitle' )->will($this->returnValue( "testarticle" ) );
 
         // insert test article
@@ -92,14 +94,13 @@ class Unit_core_oxemailUtf8Test extends OxidTestCase
         $aBasketContents[] = $oBasketItem;
         $aBasketArticles[] = $oArticle;
 
+        $oPrice->setPrice( 0 );
+
         $oBasket = $this->getMock( 'oxBasket', array( "getBasketArticles", "getContents", "getCosts", "getFPrice", "getFProductsPrice", "getShowGiftWrapping", "getFGiftCardCosts" ) );
         $oBasket->expects( $this->any() )->method( 'getBasketArticles')->will( $this->returnValue( $aBasketArticles ));
         $oBasket->expects( $this->any() )->method( 'getContents')->will( $this->returnValue( $aBasketContents ));
-        $oBasket->expects( $this->any() )->method( 'getCosts')->will( $this->returnValue( new oxPrice(0) ));
-        $oBasket->expects( $this->any() )->method( 'getFPrice')->will( $this->returnValue( 8 ));
-        $oBasket->expects( $this->any() )->method( 'getFProductsPrice')->will( $this->returnValue( 7 ));
-        $oBasket->expects( $this->any() )->method( 'getShowGiftWrapping')->will( $this->returnValue( true ));
-        $oBasket->expects( $this->any() )->method( 'getFGiftCardCosts')->will( $this->returnValue( 3 ));
+        $oBasket->expects( $this->any() )->method( 'getCosts')->will( $this->returnValue( $oPrice ));
+        $oBasket->expects( $this->any() )->method( 'getBruttoSum')->will( $this->returnValue( 7 ));
 
         $oPayment = new oxPayment();
         $oPayment->oxpayments__oxdesc = new oxField( "testPaymentDesc" );

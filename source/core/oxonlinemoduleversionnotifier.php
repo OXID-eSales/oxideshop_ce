@@ -165,7 +165,9 @@ class oxOnlineModuleVersionNotifier
 
         foreach( $aModules as $sModule ) {
             $oModule = oxNew('oxModule');
-            $oModule->load($sModule);
+            if (!$oModule->load($sModule)) {
+                continue;
+            }
 
             $oPreparedModule = new stdClass();
             $oPreparedModule->id = $oModule->getId();

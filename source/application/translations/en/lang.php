@@ -771,7 +771,7 @@ $aLang = array(
 'WISHLIST_PRODUCTS'                                           => 'These products are on the wish list of %s. If you want to please him/her, purchase one or multiple of these products.',
 
 
-'BETA_NOTE'                                                   => 'Welcome to Beta ',
+'BETA_NOTE'                                                   => 'Welcome to Release Candidate ',
 'BETA_NOTE_MIDDLE'                                            => ' of OXID eShop ',
 'BETA_NOTE_FAQ'                                               => '. Please refer to our %s if you have any questions.',
 

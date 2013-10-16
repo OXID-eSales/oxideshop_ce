@@ -1,4 +1,5 @@
 [{assign var="_additionalParams" value=$oView->getAdditionalParams()}]
+[{assign var="_listType" value=$oView->getListDisplayType()}]
 [{oxscript include="js/widgets/oxdropdown.js" priority=10 }]
 [{oxscript add="$('div.dropDown p').oxDropDown();"}]
 <div class="dropDown js-fnLink" id="itemsPerPage">
@@ -14,7 +15,7 @@
     </p>
     <ul class="drop FXgradGreyLight shadow">
         [{foreach from=$oViewConf->getNrOfCatArticles() item=iItemsPerPage}]
-            <li><a href="[{ $oView->getLink()|oxaddparams:"ldtype=$listType&amp;_artperpage=$iItemsPerPage&amp;pgNr=0&amp;$_additionalParams"}]" rel="nofollow" [{if $oViewConf->getArtPerPageCount() == $iItemsPerPage }] class="selected"[{/if}]>[{$iItemsPerPage}]</a></li>
+            <li><a href="[{ $oView->getLink()|oxaddparams:"ldtype=$_listType&amp;_artperpage=$iItemsPerPage&amp;pgNr=0&amp;$_additionalParams"}]" rel="nofollow" [{if $oViewConf->getArtPerPageCount() == $iItemsPerPage }] class="selected"[{/if}]>[{$iItemsPerPage}]</a></li>
         [{/foreach}]
     </ul>
 </div>

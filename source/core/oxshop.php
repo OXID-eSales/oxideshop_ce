@@ -19,7 +19,6 @@
  * @package   core
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -73,7 +72,7 @@ class oxShop extends oxI18n
      * @param bool  $blMultishopInheritCategories config option blMultishopInherit
      * @param array $aMallInherit                 array of config options blMallInherit
      *
-     * @return null
+     * @return bool is all views generated successfully
      */
     public function generateViews( $blMultishopInheritCategories = false, $aMallInherit = null )
     {
@@ -95,9 +94,27 @@ class oxShop extends oxI18n
             }
         }
 
+        $bSuccess = true;
         foreach ($aQ as $sQ) {
-            $oDb->execute( $sQ );
+            if ( !$oDb->execute( $sQ ) ) {
+                $bSuccess = false;
+            }
         }
+
+        $oViewsValidator = oxNew( 'oxShopViewValidator' );
+
+        $oViewsValidator->setShopId( $this->getConfig()->getShopId() );
+        $oViewsValidator->setLanguages( $aLanguages );
+        $oViewsValidator->setMultiLangTables( $aMultilangTables );
+        $oViewsValidator->setMultiShopTables( $aMultishopTables );
+
+        $aViews = $oViewsValidator->getInvalidViews();
+
+        foreach ($aViews as $sView) {
+            $oDb->execute( 'DROP VIEW IF EXISTS '. $sView );
+        }
+
+        return $bSuccess;
     }
 
     /**

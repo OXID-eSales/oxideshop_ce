@@ -256,17 +256,16 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
      */
     public function testSendOrderEmailToUser()
     {
-        $this->markTestIncomplete('fix test after oxprice plugin usage');
-
         modConfig::getInstance()->setConfigParam( 'blSkipEuroReplace', true );
+        modConfig::getInstance()->setConfigParam( 'blShowVATForDelivery', false );
 
-        $oBasketItem = $this->getMock( 'oxbasketitem', array( 'getUnitPrice', 'getRegularUnitPrice',  'getFUnitPrice', 'getFTotalPrice', 'getVatPercent', 'getAmount', 'getTitle', 'getProductId') );
-        $oBasketItem->expects( $this->any() )->method( 'getFUnitPrice' )->will($this->returnValue( '256,00' ) );
+        $oPrice = oxNew ( 'oxprice' );
+        $oPrice->setPrice( 256 );
 
-        $oBasketItem->expects( $this->any() )->method( 'getUnitPrice' )->will($this->returnValue( new oxPrice() ) );
-        $oBasketItem->expects( $this->any() )->method( 'getRegularUnitPrice' )->will($this->returnValue( new oxPrice() ) );
+        $oBasketItem = $this->getMock( 'oxbasketitem',
+            array( 'getRegularUnitPrice', 'getVatPercent', 'getAmount', 'getTitle', 'getProductId' ) );
 
-        $oBasketItem->expects( $this->any() )->method( 'getFTotalPrice' )->will($this->returnValue( 256 ) );
+        $oBasketItem->expects( $this->any() )->method( 'getRegularUnitPrice' )->will($this->returnValue( $oPrice ) );
         $oBasketItem->expects( $this->any() )->method( 'getVatPercent' )->will($this->returnValue( 19 ) );
         $oBasketItem->expects( $this->any() )->method( 'getAmount' )->will($this->returnValue( 1 ) );
         $oBasketItem->expects( $this->any() )->method( 'getTitle' )->will($this->returnValue( "testArticle" ) );
@@ -276,22 +275,46 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         $oBasketItem->oxarticles__oxvarselect = new oxField();
         $oBasketItem->oxarticles__oxvarselect = new oxField();
 
+        $oBasketItem->setPrice( $oPrice );
+
         $aBasketContents[] = $oBasketItem;
         $aBasketArticles[] = $this->_oArticle;
 
-        $oBasket = $this->getMock( 'oxBasket', array( "getBasketArticles", "getContents", "getCosts", "getFPrice", "getFProductsPrice", "getProductsNetPrice", "getFDeliveryCosts", "getProductVats", "getFWrappingCosts", "getFGiftCardCosts", "getTsProtectionCosts", "getTsProtectionNet" ) );
+        $oPriceTotal = $this->getMock( 'oxprice' );
+        $oPriceTotal->expects( $this->any() )->method( 'getPrice' )->will($this->returnValue( 999 ) );
+        $oPriceTotal->expects( $this->any() )->method( 'getBruttoPrice' )->will($this->returnValue( 999 ) );
+
+        $oBasket = $this->getMock( 'oxBasket',
+            array( "getBasketArticles", "getContents", "getPrice", "getBruttoSum", "getNettoSum", "getProductVats" ) );
+
         $oBasket->expects( $this->any() )->method( 'getBasketArticles')->will( $this->returnValue( $aBasketArticles ));
         $oBasket->expects( $this->any() )->method( 'getContents')->will( $this->returnValue( $aBasketContents ));
-        $oBasket->expects( $this->any() )->method( 'getCosts')->will( $this->returnValue( new oxPrice(0) ));
-        $oBasket->expects( $this->any() )->method( 'getFPrice')->will( $this->returnValue( 999 ));
-        $oBasket->expects( $this->any() )->method( 'getFProductsPrice')->will( $this->returnValue( 888 ));
-        $oBasket->expects( $this->any() )->method( 'getProductsNetPrice')->will( $this->returnValue( 777 ));
-        $oBasket->expects( $this->any() )->method( 'getFDeliveryCosts')->will( $this->returnValue( 666 ));
+        $oBasket->expects( $this->any() )->method( 'getPrice')->will( $this->returnValue( $oPriceTotal ));
+        $oBasket->expects( $this->any() )->method( 'getBruttoSum')->will( $this->returnValue( 888 ));
+        $oBasket->expects( $this->any() )->method( 'getNettoSum')->will( $this->returnValue( 777 ));
         $oBasket->expects( $this->any() )->method( 'getProductVats')->will( $this->returnValue( array('19'=>14.35, '5' => 0.38 ) ));
-        $oBasket->expects( $this->any() )->method( 'getFWrappingCosts')->will( $this->returnValue(5) );
-        $oBasket->expects( $this->any() )->method( 'getFGiftCardCosts')->will( $this->returnValue(6) );
-        $oBasket->expects( $this->any() )->method( 'getTsProtectionCosts')->will( $this->returnValue(true) );
-        $oBasket->expects( $this->any() )->method( 'getTsProtectionNet')->will( $this->returnValue(7) );
+
+
+        $oPrice1 = $this->getMock( 'oxprice' );
+        $oPrice1->expects( $this->any() )->method( 'getPrice' )->will($this->returnValue( 256 ) );
+        $oPrice1->expects( $this->any() )->method( 'getBruttoPrice' )->will($this->returnValue( 666 ) );
+        $oBasket->setCost( 'oxdelivery', $oPrice1 );
+
+        $oPrice2 = $this->getMock( 'oxprice' );
+        $oPrice2->expects( $this->any() )->method( 'getPrice' )->will($this->returnValue( 256 ) );
+        $oPrice2->expects( $this->any() )->method( 'getBruttoPrice' )->will($this->returnValue( 5 ) );
+        $oBasket->setCost( 'oxwrapping', $oPrice2 );
+
+        $oPrice3 = $this->getMock( 'oxprice' );
+        $oPrice3->expects( $this->any() )->method( 'getPrice' )->will($this->returnValue( 256 ) );
+        $oPrice3->expects( $this->any() )->method( 'getBruttoPrice' )->will($this->returnValue( 6 ) );
+        $oBasket->setCost( 'oxgiftcard', $oPrice3 );
+
+        $oPrice4 = $this->getMock( 'oxprice' );
+        $oPrice4->expects( $this->any() )->method( 'getPrice' )->will($this->returnValue( 256 ) );
+        $oPrice4->expects( $this->any() )->method( 'getBruttoPrice' )->will($this->returnValue( true ) );
+        $oPrice4->expects( $this->any() )->method( 'getNettoPrice' )->will($this->returnValue( 7 ) );
+        $oBasket->setCost( 'oxtsprotection', $oPrice4 );
 
         $oPayment = new oxPayment();
         $oPayment->oxpayments__oxdesc = new oxField( "testPaymentDesc" );
@@ -345,17 +368,19 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
     /**
      * Test sending ordering mail to shop owner
      */
-    public function testSendOrderEMailToOwner()
+    public function testSendOrderEmailToOwner()
     {
-        $this->markTestIncomplete('fix test after oxprice plugin usage');
 
         oxConfig::getInstance()->setConfigParam( 'blSkipEuroReplace', true );
+        modConfig::getInstance()->setConfigParam( 'blShowVATForDelivery', false );
 
-        $oBasketItem = $this->getMock( 'oxbasketitem', array('getUnitPrice', 'getRegularUnitPrice', 'getFUnitPrice', 'getFTotalPrice', 'getVatPercent', 'getAmount', 'getTitle', 'getProductId') );
-        $oBasketItem->expects( $this->any() )->method( 'getFUnitPrice' )->will($this->returnValue( '256,00' ) );
-        $oBasketItem->expects( $this->any() )->method( 'getUnitPrice' )->will($this->returnValue( new oxPrice() ) );
-        $oBasketItem->expects( $this->any() )->method( 'getRegularUnitPrice' )->will($this->returnValue( new oxPrice() ) );
-        $oBasketItem->expects( $this->any() )->method( 'getFTotalPrice' )->will($this->returnValue( 256 ) );
+        $oPrice = oxNew ( 'oxprice' );
+        $oPrice->setPrice( 256 );
+
+        $oBasketItem = $this->getMock( 'oxbasketitem',
+            array( 'getRegularUnitPrice', 'getVatPercent', 'getAmount', 'getTitle', 'getProductId' ) );
+
+        $oBasketItem->expects( $this->any() )->method( 'getRegularUnitPrice' )->will($this->returnValue( $oPrice ) );
         $oBasketItem->expects( $this->any() )->method( 'getVatPercent' )->will($this->returnValue( 19 ) );
         $oBasketItem->expects( $this->any() )->method( 'getAmount' )->will($this->returnValue( 1 ) );
         $oBasketItem->expects( $this->any() )->method( 'getTitle' )->will($this->returnValue( "testArticle" ) );
@@ -365,22 +390,46 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         $oBasketItem->oxarticles__oxvarselect = new oxField();
         $oBasketItem->oxarticles__oxvarselect = new oxField();
 
+        $oBasketItem->setPrice( $oPrice );
+
         $aBasketContents[] = $oBasketItem;
         $aBasketArticles[] = $this->_oArticle;
 
-        $oBasket = $this->getMock( 'oxBasket', array( "getBasketArticles", "getContents", "getCosts", "getFPrice", "getFProductsPrice", "getProductsNetPrice", "getFDeliveryCosts", "getProductVats", "getFWrappingCosts", "getFGiftCardCosts", "getTsProtectionCosts", "getTsProtectionNet" ) );
+        $oPriceTotal = $this->getMock( 'oxprice' );
+        $oPriceTotal->expects( $this->any() )->method( 'getPrice' )->will($this->returnValue( 999 ) );
+        $oPriceTotal->expects( $this->any() )->method( 'getBruttoPrice' )->will($this->returnValue( 999 ) );
+
+        $oBasket = $this->getMock( 'oxBasket',
+            array( "getBasketArticles", "getContents", "getPrice", "getBruttoSum", "getNettoSum", "getProductVats" ) );
+
         $oBasket->expects( $this->any() )->method( 'getBasketArticles')->will( $this->returnValue( $aBasketArticles ));
         $oBasket->expects( $this->any() )->method( 'getContents')->will( $this->returnValue( $aBasketContents ));
-        $oBasket->expects( $this->any() )->method( 'getCosts')->will( $this->returnValue( new oxPrice(0) ));
-        $oBasket->expects( $this->any() )->method( 'getFPrice')->will( $this->returnValue( 999 ));
-        $oBasket->expects( $this->any() )->method( 'getFProductsPrice')->will( $this->returnValue( 888 ));
-        $oBasket->expects( $this->any() )->method( 'getProductsNetPrice')->will( $this->returnValue( 777 ));
-        $oBasket->expects( $this->any() )->method( 'getFDeliveryCosts')->will( $this->returnValue( 666 ));
+        $oBasket->expects( $this->any() )->method( 'getPrice')->will( $this->returnValue( $oPriceTotal ));
+        $oBasket->expects( $this->any() )->method( 'getBruttoSum')->will( $this->returnValue( 888 ));
+        $oBasket->expects( $this->any() )->method( 'getNettoSum')->will( $this->returnValue( 777 ));
         $oBasket->expects( $this->any() )->method( 'getProductVats')->will( $this->returnValue( array('19'=>14.35, '5' => 0.38 ) ));
-        $oBasket->expects( $this->any() )->method( 'getFWrappingCosts')->will( $this->returnValue(5) );
-        $oBasket->expects( $this->any() )->method( 'getFGiftCardCosts')->will( $this->returnValue(6) );
-        $oBasket->expects( $this->any() )->method( 'getTsProtectionCosts')->will( $this->returnValue(true) );
-        $oBasket->expects( $this->any() )->method( 'getTsProtectionNet')->will( $this->returnValue(7) );
+
+
+        $oPrice1 = $this->getMock( 'oxprice' );
+        $oPrice1->expects( $this->any() )->method( 'getPrice' )->will($this->returnValue( 256 ) );
+        $oPrice1->expects( $this->any() )->method( 'getBruttoPrice' )->will($this->returnValue( 666 ) );
+        $oBasket->setCost( 'oxdelivery', $oPrice1 );
+
+        $oPrice2 = $this->getMock( 'oxprice' );
+        $oPrice2->expects( $this->any() )->method( 'getPrice' )->will($this->returnValue( 256 ) );
+        $oPrice2->expects( $this->any() )->method( 'getBruttoPrice' )->will($this->returnValue( 5 ) );
+        $oBasket->setCost( 'oxwrapping', $oPrice2 );
+
+        $oPrice3 = $this->getMock( 'oxprice' );
+        $oPrice3->expects( $this->any() )->method( 'getPrice' )->will($this->returnValue( 256 ) );
+        $oPrice3->expects( $this->any() )->method( 'getBruttoPrice' )->will($this->returnValue( 6 ) );
+        $oBasket->setCost( 'oxgiftcard', $oPrice3 );
+
+        $oPrice4 = $this->getMock( 'oxprice' );
+        $oPrice4->expects( $this->any() )->method( 'getPrice' )->will($this->returnValue( 256 ) );
+        $oPrice4->expects( $this->any() )->method( 'getBruttoPrice' )->will($this->returnValue( true ) );
+        $oPrice4->expects( $this->any() )->method( 'getNettoPrice' )->will($this->returnValue( 7 ) );
+        $oBasket->setCost( 'oxtsprotection', $oPrice4 );
 
         $oPayment = new oxPayment();
         $oPayment->oxpayments__oxdesc = new oxField( "testPaymentDesc" );

@@ -79,8 +79,7 @@ class Unit_core_oxemailUtf8Test extends OxidTestCase
         $oPrice->expects( $this->any() )->method( 'getPrice' )->will($this->returnValue( 256 ) );
         $oPrice->expects( $this->any() )->method( 'getBruttoPrice' )->will($this->returnValue( 8 ) );
 
-
-        $oBasketItem = $this->getMock( 'oxbasketitem', array('getUnitPrice', 'getRegularUnitPrice', 'getVatPercent', 'getAmount', 'getTitle', 'getProductId') );
+        $oBasketItem = $this->getMock( 'oxbasketitem', array( 'getUnitPrice', 'getRegularUnitPrice', 'getTitle' ) );
         $oBasketItem->expects( $this->any() )->method( 'getUnitPrice' )->will($this->returnValue( $oPrice ) );
         $oBasketItem->expects( $this->any() )->method( 'getRegularUnitPrice' )->will($this->returnValue( $oPrice ) );
         $oBasketItem->expects( $this->any() )->method( 'getTitle' )->will($this->returnValue( "testarticle" ) );
@@ -96,7 +95,7 @@ class Unit_core_oxemailUtf8Test extends OxidTestCase
 
         $oPrice->setPrice( 0 );
 
-        $oBasket = $this->getMock( 'oxBasket', array( "getBasketArticles", "getContents", "getCosts", "getFPrice", "getFProductsPrice", "getShowGiftWrapping", "getFGiftCardCosts" ) );
+        $oBasket = $this->getMock( 'oxBasket', array( "getBasketArticles", "getContents", "getCosts",  "getBruttoSum", ) );
         $oBasket->expects( $this->any() )->method( 'getBasketArticles')->will( $this->returnValue( $aBasketArticles ));
         $oBasket->expects( $this->any() )->method( 'getContents')->will( $this->returnValue( $aBasketContents ));
         $oBasket->expects( $this->any() )->method( 'getCosts')->will( $this->returnValue( $oPrice ));

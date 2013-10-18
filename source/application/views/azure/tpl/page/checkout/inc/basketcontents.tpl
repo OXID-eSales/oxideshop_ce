@@ -425,6 +425,7 @@
                                     <th>[{if $paymentCost->getPrice() >= 0}][{ oxmultilang ident="SURCHARGE" }][{else}][{ oxmultilang ident="DEDUCTION" }][{/if}] [{ oxmultilang ident="PAYMENT_METHOD" }]</th>
                                     <td id="basketPaymentNetto">[{oxprice price=$paymentCost->getNettoPrice() currency=$currency }]</td>
                             </tr>
+                                [{if $paymentCost->getVatValue()}]
                                 <tr>
                                     [{if $oxcmp_basket->isProportionalCalculationOn() }]
                                         <th>[{ oxmultilang ident="BASKET_TOTAL_PLUS_PROPORTIONAL_VAT" suffix="COLON" }]</th>
@@ -433,6 +434,7 @@
                                     [{/if}]
                                     <td id="basketPaymentVat">[{oxprice price=$paymentCost->getVatValue() currency=$currency }]</td>
                                 </tr>
+                                [{/if}]
                             [{else}]
                             <tr>
                                     <th>[{if $paymentCost->getPrice() >= 0}][{ oxmultilang ident="SURCHARGE" }][{else}][{ oxmultilang ident="DEDUCTION" }][{/if}] [{ oxmultilang ident="PAYMENT_METHOD" }]</th>
@@ -450,6 +452,7 @@
                                     <th>[{ oxmultilang ident="TRUSTED_SHOP_BUYER_PROTECTION" }]</th>
                                     <td id="basketTSNetto">[{oxprice price=$trustedShopProtectionCost->getNettoPrice() currency=$currency}]</td>
                                 </tr>
+                                [{if $trustedShopProtectionCost->getVatValue()}]
                                     <tr>
                                         [{if $oxcmp_basket->isProportionalCalculationOn() }]
                                             <th>[{ oxmultilang ident="BASKET_TOTAL_PLUS_PROPORTIONAL_VAT" suffix="COLON" }]</th>
@@ -458,6 +461,7 @@
                                         [{/if}]
                                         <td id="basketTSVat">[{oxprice price=$trustedShopProtectionCost->getVatValue() currency=$currency}]</td>
                                     </tr>
+                                [{/if}]
                             [{else}]
                                 <tr>
                                     <th>[{ oxmultilang ident="TRUSTED_SHOP_BUYER_PROTECTION" }]</th>

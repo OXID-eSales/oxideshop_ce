@@ -409,6 +409,7 @@
                                     </p>
                                 </td>
                             </tr>
+                            [{if $oDeliveryCost->getVatValue()}]
                                 <tr valign="top">
                                     [{if $basket->isProportionalCalculationOn() }]
                                         <td style="padding: 5px; border-bottom: 2px solid #ccc;">
@@ -429,6 +430,7 @@
                                         </p>
                                     </td>
                                 </tr>
+                            [{/if}]
                         [{else}]
                             <tr valign="top">
                                 <td style="padding: 5px; border-bottom: 2px solid #ccc;">
@@ -463,6 +465,7 @@
                                     </p>
                                 </td>
                             </tr>
+                            [{if $oPaymentCost->getVatValue()}]
                                 <tr valign="top">
                                     [{if $basket->isProportionalCalculationOn() }]
                                         <td style="padding: 5px; border-bottom: 2px solid #ccc;">
@@ -483,6 +486,7 @@
                                         </p>
                                     </td>
                                 </tr>
+                            [{/if}]
                         [{else}]
                             <tr valign="top">
                                 <td style="padding: 5px; border-bottom: 2px solid #ccc;">
@@ -516,6 +520,7 @@
                                     </p>
                                 </td>
                             </tr>
+                            [{if $trustedShopProtectionCost->getVatValue()}]
                                 <tr valign="top">
                                     [{if $basket->isProportionalCalculationOn() }]
                                         <td style="padding: 5px; border-bottom: 2px solid #ccc;">
@@ -537,6 +542,7 @@
                                     </td>
                                 </tr>
                             [{/if}]
+                        [{/if}]
                     [{/block}]
 
                     [{if $oViewConf->getShowGiftWrapping() }]

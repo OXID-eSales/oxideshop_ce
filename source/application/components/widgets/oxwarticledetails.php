@@ -892,8 +892,8 @@ class oxwArticleDetails extends oxWidget
 
         if ( $this->_oProduct === null ) {
 
-            if ( $this->getViewParameter('object') ) {
-                $this->_oProduct = $this->getViewParameter('object');
+            if ( $this->getViewParameter( '_object' ) ) {
+                $this->_oProduct = $this->getViewParameter( '_object' );
                 $this->_blIsInitialized=true;
             } else {
                 //this option is only for lists and we must reset value

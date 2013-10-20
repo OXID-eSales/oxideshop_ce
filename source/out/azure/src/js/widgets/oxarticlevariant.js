@@ -56,6 +56,8 @@
                         $( contentTarget ).html( r );
                         if ( typeof WidgetsHandler !== 'undefined') {
                             WidgetsHandler.reloadWidget('oxwarticledetails');
+                            WidgetsHandler.reloadWidget('oxwrating');
+                            WidgetsHandler.reloadWidget('oxwreview');
                         } else {
                             oxAjax.evalScripts(contentTarget);
                         }

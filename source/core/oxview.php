@@ -206,7 +206,7 @@ class oxView extends oxSuperCfg
      *
      * @param string $sKey parameter key
      *
-     * @return array
+     * @return string
      */
     public function getViewParameter( $sKey )
     {

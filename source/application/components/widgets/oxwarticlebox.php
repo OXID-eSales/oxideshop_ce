@@ -108,36 +108,11 @@ class oxwArticleBox extends oxWidget
             if ( $this->getViewParameter( '_object' ) ) {
                 $this->_oArticle = $this->getViewParameter( '_object' );
             } else {
-                $blIsInList = $this->getViewParameter( 'inlist' );
-                $sId = $this->getViewParameter( 'anid' );
-                $iLinkType = $this->getViewParameter( 'iLinkType' );
                 $sAddDynParams = $this->getConfig()->getTopActiveView()->getAddUrlParams();
 
 
-                /** @var oxArticle $oArticle */
-                $oArticle = oxNew( 'oxArticle' );
-                $oArticle->load( $sId );
-
-                if ( $blIsInList ) {
-                    $oArticle->setInList();
-                }
-
-                if ( $sAddDynParams ) {
-                    $blSeo = oxRegistry::getUtils()->seoIsActive();
-                    if ( !$blSeo ) {
-                        // only if seo is off..
-                        $oArticle->appendStdLink( $sAddDynParams );
-                    }
-                    $oArticle->appendLink( $sAddDynParams );
-                }
-
-                if ( $iLinkType ) {
-                    $oArticle->setLinkType( $iLinkType );
-                }
-
-                if ( $oRecommList = $this->getActiveRecommList() ) {
-                    $oArticle->text = $oRecommList->getArtDescription( $oArticle->getId() );
-                }
+                $oArticle = $this->_getArticleById( $this->getViewParameter( 'anid' ) );
+                $this->_addDynParamsToLink( $sAddDynParams, $oArticle );
                 $this->setBoxProduct( $oArticle );
             }
         }
@@ -279,6 +254,57 @@ class oxwArticleBox extends oxWidget
     public function getAltProduct()
     {
         return (bool) $this->getViewParameter('altproduct');
+    }
+
+    /**
+     * Appends dyn params to url.
+     *
+     * @param $sAddDynParams
+     * @param $oArticle oxArticle
+     *
+     * @return bool
+     */
+    protected function _addDynParamsToLink( $sAddDynParams, $oArticle )
+    {
+        $blAddedParams = false;
+        if ( $sAddDynParams ) {
+            $blSeo = oxRegistry::getUtils()->seoIsActive();
+            if ( !$blSeo ) {
+                // only if seo is off..
+                $oArticle->appendStdLink( $sAddDynParams );
+            }
+            $oArticle->appendLink( $sAddDynParams );
+            $blAddedParams = true;
+        }
+
+        return $blAddedParams;
+    }
+
+    /**
+     * Returns prepared article by id.
+     *
+     * @param $sArticleId
+     *
+     * @return oxArticle
+     */
+    protected function _getArticleById( $sArticleId )
+    {
+        /** @var oxArticle $oArticle */
+        $oArticle = oxNew( 'oxArticle' );
+        $oArticle->load( $sArticleId );
+        $iLinkType = $this->getViewParameter( 'iLinkType' );
+
+        if ( $this->getViewParameter( 'inlist' ) ) {
+            $oArticle->setInList();
+        }
+        if ( $iLinkType ) {
+            $oArticle->setLinkType( $iLinkType );
+        }
+        if ( $oRecommList = $this->getActiveRecommList() ) {
+            $oArticle->text = $oRecommList->getArtDescription( $oArticle->getId() );
+        }
+
+        return $oArticle;
     }
 
 }

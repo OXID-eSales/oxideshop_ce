@@ -43,6 +43,27 @@ class oxwArticleBox extends oxWidget
 
 
     /**
+     * Current article
+     * @var null
+     */
+    protected $_oArticle = null;
+
+
+    /**
+     * Returns active category
+     *
+     * @return null|oxCategory
+     */
+    public function getActiveCategory()
+    {
+        $oCategory = $this->getConfig()->getTopActiveView()->getActiveCategory();
+        if ( $oCategory ) {
+            $this->setActiveCategory( $oCategory );
+        }
+        return $this->_oActCategory;
+    }
+
+    /**
      * Renders template based on widget type or just use directly passed path of template
      *
      * @return string
@@ -67,38 +88,61 @@ class oxwArticleBox extends oxWidget
     }
 
     /**
+     * Sets box product
+     *
+     * @param oxArticle $oArticle Box product
+     */
+    public function setBoxProduct( $oArticle )
+    {
+        $this->_oArticle = $oArticle;
+    }
+
+    /**
      * Get product article
      *
      * @return oxArticle
      */
     public function getBoxProduct()
     {
-        $sId = $this->getViewParameter('anid');
-        $iLinkType = $this->getViewParameter('iLinkType');
-        $sAddDynParams = $this->getConfig()->getTopActiveView()->getAddUrlParams();
+        if ( is_null( $this->_oArticle ) ) {
+            if ( $this->getViewParameter('object') ) {
+                $this->_oArticle = $this->getViewParameter('object');
+            } else {
+                $blIsInList = $this->getViewParameter( 'inlist' );
+                $sId = $this->getViewParameter('anid');
+                $iLinkType = $this->getViewParameter('iLinkType');
+                $sAddDynParams = $this->getConfig()->getTopActiveView()->getAddUrlParams();
 
 
-        $oArticle = oxNew( 'oxArticle' );
-        $oArticle->load($sId);
+                /** @var oxArticle $oArticle */
+                $oArticle = oxNew( 'oxArticle' );
+                $oArticle->load($sId);
 
-        if ( $sAddDynParams ) {
-            $blSeo = oxRegistry::getUtils()->seoIsActive();
-            if ( !$blSeo ) {
-                // only if seo is off..
-                $oArticle->appendStdLink( $sAddDynParams );
+                if ( $blIsInList ) {
+                    $oArticle->setInList();
+                }
+
+                if ( $sAddDynParams ) {
+                    $blSeo = oxRegistry::getUtils()->seoIsActive();
+                    if ( !$blSeo ) {
+                        // only if seo is off..
+                        $oArticle->appendStdLink( $sAddDynParams );
+                    }
+                    $oArticle->appendLink( $sAddDynParams );
+                }
+
+                if ( $iLinkType ) {
+                    $oArticle->setLinkType( $iLinkType );
+                }
+
+                if ( $oRecommList = $this->getActiveRecommList() ) {
+                    $oArticle->text = $oRecommList->getArtDescription( $oArticle->getId() );
+                }
+                $this->setBoxProduct( $oArticle );
             }
-            $oArticle->appendLink( $sAddDynParams );
         }
 
-        if ( $iLinkType ) {
-            $oArticle->setLinkType( $iLinkType );
-        }
-
-        if ( $oRecommList = $this->getActiveRecommList() ) {
-            $oArticle->text = $oRecommList->getArtDescription( $oArticle->getId() );
-        }
-
-        return $oArticle;
+        return $this->_oArticle;
     }
 
     /**

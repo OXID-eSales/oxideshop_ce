@@ -892,23 +892,28 @@ class oxwArticleDetails extends oxWidget
 
         if ( $this->_oProduct === null ) {
 
-            //this option is only for lists and we must reset value
-            //as blLoadVariants = false affect "ab price" functionality
-            $myConfig->setConfigParam( 'blLoadVariants', true );
+            if ( $this->getViewParameter('object') ) {
+                $this->_oProduct = $this->getViewParameter('object');
+                $this->_blIsInitialized=true;
+            } else {
+                //this option is only for lists and we must reset value
+                //as blLoadVariants = false affect "ab price" functionality
+                $myConfig->setConfigParam( 'blLoadVariants', true );
 
-            $sOxid = oxConfig::getParameter( 'anid' );
+                $sOxid = oxConfig::getParameter( 'anid' );
 
-            // object is not yet loaded
-            $this->_oProduct = oxNew( 'oxarticle' );
+                // object is not yet loaded
+                $this->_oProduct = oxNew( 'oxarticle' );
 
-            if ( !$this->_oProduct->load( $sOxid ) ) {
-                $myUtils->redirect( $myConfig->getShopHomeURL() );
-                $myUtils->showMessageAndExit( '' );
-            }
+                if ( !$this->_oProduct->load( $sOxid ) ) {
+                    $myUtils->redirect( $myConfig->getShopHomeURL() );
+                    $myUtils->showMessageAndExit( '' );
+                }
 
-            $aVariantSelections = $this->_oProduct->getVariantSelections( oxConfig::getParameter( "varselid" ) );
-            if ($aVariantSelections && $aVariantSelections['oActiveVariant'] && $aVariantSelections['blPerfectFit']) {
-                $this->_oProduct = $aVariantSelections['oActiveVariant'];
+                $aVariantSelections = $this->_oProduct->getVariantSelections( oxConfig::getParameter( "varselid" ) );
+                if ($aVariantSelections && $aVariantSelections['oActiveVariant'] && $aVariantSelections['blPerfectFit']) {
+                    $this->_oProduct = $aVariantSelections['oActiveVariant'];
+                }
             }
         }
 

@@ -33,12 +33,10 @@ class oxStart extends oxUBase
      */
     public function appInit()
     {
-        $myConfig = $this->getConfig();
         $this->pageStart();
 
         if ( 'oxstart' == oxConfig::getParameter( 'cl' )  || $this->isAdmin() )
             return;
-
 
     }
 
@@ -64,7 +62,7 @@ class oxStart extends oxUBase
         if ( $sTemplate ) {
             return $sTemplate;
         } else {
-            return 'start.tpl';
+            return 'message/err_unknown.tpl';
         }
     }
 

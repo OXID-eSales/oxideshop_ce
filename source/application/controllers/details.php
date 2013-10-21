@@ -19,7 +19,6 @@
  * @package   views
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -1812,6 +1811,28 @@ class Details extends oxUBase
     public function showRDFaProductStock()
     {
         return $this->getConfig()->getConfigParam("blShowRDFaProductStock");
+    }
+
+    /**
+     * Returns default category sorting for selected category
+     *
+     * @return array
+     */
+    public function getDefaultSorting()
+    {
+        $aSorting = parent::getDefaultSorting();
+
+        $oCategory = $this->getActiveCategory();
+        if ( $oCategory && $oCategory instanceof oxCategory ) {
+            if ( $sDefaultSorting = $oCategory->getDefaultSorting() ) {
+                $sArticleTable = getViewName( 'oxarticles' );
+                $sSortBy  = $sArticleTable.'.'.$sDefaultSorting;
+                $sSortDir = ( $oCategory->getDefaultSortingMode() ) ? "desc" : "asc";
+                $aSorting = array ( 'sortby' => $sSortBy, 'sortdir' => $sSortDir );
+            }
+        }
+
+        return $aSorting;
     }
 
 }

@@ -19,7 +19,6 @@
  * @package   tests
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -411,27 +410,6 @@ class Unit_Views_alistTest extends OxidTestCase
     }
 
     /**
-     * Test default Sorting
-     *
-     * @return null
-     */
-//    public function testGetDefaultSorting()
-//    {
-//        //$oList = new aList();
-//
-//        $oCat = new oxcategory();
-//        $sArticleTable = getViewName( 'oxarticles' );
-//        $aSorting = array( 'sortby' => $sArticleTable.'.'.'oxid', 'sortdir' => 'asc' );
-//
-//        $oCat->oxcategories__oxdefsort = new oxField( 'oxid' );
-//        //$oList->setActCategory($oCat);
-//        $oListView = $this->getMock( 'alist', array( 'getActiveCategory' ) );
-//        $oListView->expects( $this->once() )->method( 'getActiveCategory')->will( $this->returnValue( $oCat ) );
-//
-//        $this->assertEquals($aSorting ,$oListView->getDefaultSorting());
-//    }
-
-    /**
      * Test getDefaultSorting when default sorting is not set
      *
      * @return null
@@ -520,50 +498,6 @@ class Unit_Views_alistTest extends OxidTestCase
         $this->assertEquals( array( 'sortby' => $sArticleTable.'.'.'testsort', 'sortdir' => "desc" ), $oController->getDefaultSorting() );
     }
 
-    /**
-     * Test get list sorting descending
-     *
-     * @return null
-     */
-//    public function testGetSortingDesc()
-//    {
-//        /*$oCat = new oxcategory();
-//        $oCat->oxcategories__oxdefsort = $this->getMock( 'oxfield', array( '__get' ) );
-//        $oCat->oxcategories__oxdefsort->expects( $this->exactly( 2 ) )->method( '__get')->will( $this->returnValue( 'testsort' ) );
-//        $oCat->oxcategories__oxdefsortmode = $this->getMock( 'oxfield', "" );
-//        $oCat->oxcategories__oxdefsortmode->expects( $this->once() )->method( '__get')->will( $this->returnValue( true ) );
-//
-//        $oListView = $this->getMock( 'alist', array( 'getActiveCategory' ) );
-//        $oListView->expects( $this->once() )->method( 'getActiveCategory')->will( $this->returnValue( $oCat ) );
-//        $sArticleTable = getViewName( 'oxarticles' );
-//        $this->assertEquals( array( 'sortby' => $sArticleTable.'.'.'testsort', 'sortdir' => "desc" ), $oListView->getSorting( '999' ) );*/
-//
-//
-//
-//
-//
-//
-//
-//    }
-
-    /**
-     * Test get list sorting ascending
-     *
-     * @return null
-     */
-//    public function testGetSortingAsc()
-//    {
-//        $oCat = new oxcategory();
-//        $oCat->oxcategories__oxdefsort = $this->getMock( 'oxfield', array( '__get' ) );
-//        $oCat->oxcategories__oxdefsort->expects( $this->exactly( 2 ) )->method( '__get')->will( $this->returnValue( 'testsort' ) );
-//        $oCat->oxcategories__oxdefsortmode = $this->getMock( 'oxfield', array( '__get' ) );
-//        $oCat->oxcategories__oxdefsortmode->expects( $this->once() )->method( '__get')->will( $this->returnValue( 0 ) );
-//
-//        $oListView = $this->getMock( 'alist', array( 'getActiveCategory' ) );
-//        $oListView->expects( $this->once() )->method( 'getActiveCategory')->will( $this->returnValue( $oCat ) );
-//        $sArticleTable = getViewName( 'oxarticles' );
-//        $this->assertEquals( array( 'sortby' => $sArticleTable.'.testsort', 'sortdir' => "asc" ), $oListView->getSorting( '999' ) );
-//    }
     /**
      * Test list page navigation and seo url generation.
      *

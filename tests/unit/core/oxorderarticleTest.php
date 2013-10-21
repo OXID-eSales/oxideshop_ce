@@ -51,7 +51,6 @@ class Unit_Core_oxorderarticleTest extends OxidTestCase
 
 
         $oArticle->save();
-        $oArticle->resetStaticCache();
     }
 
     /**
@@ -64,7 +63,6 @@ class Unit_Core_oxorderarticleTest extends OxidTestCase
         $this->cleanUpTable( 'oxorderarticles' );
         $this->cleanUpTable( 'oxarticles' );
         $oArticle = new oxArticle();
-        $oArticle->resetStaticCache();
         parent::tearDown();
     }
 

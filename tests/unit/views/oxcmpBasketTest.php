@@ -19,7 +19,6 @@
  * @package   tests
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -813,15 +812,15 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
         $this->assertEquals( 'tobasket', $o->UNITgetLastCallFnc() );
     }
 
-    public function testExecuteuserchoiceToBasket()
+    public function testExecuteUserChoiceToBasket()
     {
-        modConfig::setParameter( 'tobasket', true );
+        $this->setRequestParam( 'tobasket', true );
 
         $oCB = new oxcmp_basket();
         $this->assertEquals( 'basket', $oCB->executeuserchoice() );
     }
 
-    public function testExecuteuserchoiceElseCase()
+    public function testExecuteUserChoiceElseCase()
     {
         $oB = $this->getMock('stdclass', array('deleteBasket'));
         $oB->expects($this->once())->method('deleteBasket')->will($this->returnValue( null ));

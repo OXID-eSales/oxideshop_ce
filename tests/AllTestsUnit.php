@@ -70,10 +70,22 @@ class AllTestsUnit extends PHPUnit_Framework_TestCase
         $oSuite = new PHPUnit_Framework_TestSuite( 'PHPUnit' );
         $sFilter = getenv("PREG_FILTER");
 
-        $aTestSuiteDirs = array( 'unit', 'integration' );
-        $aTestDirs = array( '', 'core', 'maintenance', 'views', 'admin', 'setup', 'components/widgets', 'price', 'timestamp' );
+        $aTestSuites = array(
+            'unit' => array( '', 'core', 'maintenance', 'views', 'admin', 'setup', 'components/widgets'  ),
+            'integration' => array( '', 'price', 'timestamp', 'cache' )
+        );
+
         if (getenv('TEST_DIRS')) {
-            $aTestDirs = explode('%', getenv('TEST_DIRS'));
+            $aTestSuitesDefault = $aTestSuites;
+            $aTestSuites = array();
+            foreach ( explode(',', getenv('TEST_DIRS')) as $sTestSuiteParts ) {
+                list( $sSuiteKey, $sSuiteTests ) = explode(':', $sTestSuiteParts);
+                if ( strpos($sSuiteKey, '%')) {
+                    $aTestSuites[ 'unit' ] = explode('%', $sSuiteKey);
+                } else {
+                    $aTestSuites[ $sSuiteKey ] = empty( $sSuiteTests )? $aTestSuitesDefault[ $sSuiteKey ] : explode('%', $sSuiteTests);
+                }
+            }
         }
 
         $sTestFileNameEnd = 'Test.php';
@@ -81,12 +93,12 @@ class AllTestsUnit extends PHPUnit_Framework_TestCase
             $sTestFileNameEnd = 'utf8Test.php';
         }
 
+        foreach ( $aTestSuites as $sTestSuiteDir => $aTestDirs ) {
         foreach ($aTestDirs as $sTestDir ) {
+
             if ($sTestDir == '_root_') {
                 $sTestDir = '';
             }
-
-            foreach ( $aTestSuiteDirs as $sTestSuiteDir ) {
 
                 $sDir = rtrim($sTestSuiteDir.'/'.$sTestDir, '/');
 

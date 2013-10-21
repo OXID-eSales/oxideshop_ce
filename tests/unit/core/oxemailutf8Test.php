@@ -79,7 +79,8 @@ class Unit_core_oxemailUtf8Test extends OxidTestCase
         $oPrice->expects( $this->any() )->method( 'getPrice' )->will($this->returnValue( 256 ) );
         $oPrice->expects( $this->any() )->method( 'getBruttoPrice' )->will($this->returnValue( 8 ) );
 
-        $oBasketItem = $this->getMock( 'oxbasketitem', array( 'getUnitPrice', 'getRegularUnitPrice', 'getTitle' ) );
+        $oBasketItem = $this->getMock( 'oxbasketitem', array( 'getPrice', 'getUnitPrice', 'getRegularUnitPrice', 'getTitle' ) );
+        $oBasketItem->expects( $this->any() )->method( 'getPrice' )->will($this->returnValue( $oPrice ) );
         $oBasketItem->expects( $this->any() )->method( 'getUnitPrice' )->will($this->returnValue( $oPrice ) );
         $oBasketItem->expects( $this->any() )->method( 'getRegularUnitPrice' )->will($this->returnValue( $oPrice ) );
         $oBasketItem->expects( $this->any() )->method( 'getTitle' )->will($this->returnValue( "testarticle" ) );

@@ -166,7 +166,7 @@ class Details extends oxUBase
      * Marked which defines if current view is sortable or not
      * @var bool
      */
-    protected $_blShowSorting = false;
+    protected $_blShowSorting = true;
 
     /**
      * Returns current product parent article object if it is available

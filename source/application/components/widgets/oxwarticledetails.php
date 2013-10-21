@@ -190,7 +190,7 @@ class oxwArticleDetails extends oxWidget
      * Marked which defines if current view is sortable or not
      * @var bool
      */
-    protected $_blShowSorting = false;
+    protected $_blShowSorting = true;
 
     /**
      * Array of id to form recommendation list.

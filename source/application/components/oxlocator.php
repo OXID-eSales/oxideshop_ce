@@ -19,7 +19,6 @@
  * @package   views
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -86,8 +85,8 @@ class oxLocator extends oxSuperCfg
     /**
      * Sets details locator data for articles that came from regular list.
      *
-     * @param oxubase   $oLocatorTarget view object
-     * @param oxarticle $oCurrArticle   current article
+     * @param oxUBase   $oLocatorTarget view object
+     * @param oxArticle $oCurrArticle   current article
      *
      * @return null
      */
@@ -95,7 +94,6 @@ class oxLocator extends oxSuperCfg
     {
         // if no active category is loaded - lets check for category passed by post/get
         if ( ( $oCategory = $oLocatorTarget->getActiveCategory() ) ) {
-            $sCatId = $oCategory->getId();
 
             $sOrderBy = null;
             if ( $oLocatorTarget->showSorting() ) {

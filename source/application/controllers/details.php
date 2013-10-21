@@ -40,7 +40,7 @@ class Details extends oxUBase
     /**
      * Current product parent article object
      *
-     * @var oxarticle
+     * @var oxArticle
      */
     protected $_oParentProd = null;
 
@@ -111,7 +111,7 @@ class Details extends oxUBase
     protected $_oAccessoires = null;
 
     /**
-     * List of customer also bought thies products
+     * List of customer also bought these products
      * @var object
      */
     protected $_aAlsoBoughtArts = null;
@@ -161,6 +161,12 @@ class Details extends oxUBase
      */
     protected $_aSimilarRecommListIds = null;
 
+
+    /**
+     * Marked which defines if current view is sortable or not
+     * @var bool
+     */
+    protected $_blShowSorting = false;
 
     /**
      * Returns current product parent article object if it is available
@@ -300,7 +306,7 @@ class Details extends oxUBase
                 break;
             default:
                 // can not be removed, as it is used for breadcrumb loading
-                $oLocator = oxNew( 'oxlocator', $this->getListType() );
+                $oLocator = oxNew( 'oxLocator', $this->getListType() );
                 $oLocator->setLocatorData( $oProduct, $this );
 
                 if ($myConfig->getConfigParam( 'bl_rssRecommLists' ) && $this->getSimilarRecommListIds()) {
@@ -595,7 +601,7 @@ class Details extends oxUBase
     /**
      * Returns current product
      *
-     * @return oxarticle
+     * @return oxArticle
      */
     public function getProduct()
     {
@@ -818,7 +824,7 @@ class Details extends oxUBase
     }
 
     /**
-     * Template variable getter. Returns crosssellings
+     * Template variable getter. Returns cross selling
      *
      * @return object
      */
@@ -927,7 +933,7 @@ class Details extends oxUBase
     }
 
     /**
-     * Returns search title. It will be setted in oxLocator
+     * Returns search title. It will be set in oxLocator
      *
      * @return string
      */
@@ -1465,4 +1471,27 @@ class Details extends oxUBase
         return $this->getConfig()->getConfigParam( 'bl_perfLoadReviews' );
     }
 
+    /**
+     * Returns default category sorting for selected category
+     *
+     * @return array
+     */
+    public function getDefaultSorting()
+    {
+        $aSorting = parent::getDefaultSorting();
+
+        $oCategory = $this->getActiveCategory();
+
+        if ( $oCategory && $oCategory instanceof oxCategory ) {
+
+            if ( $sDefaultSorting = $oCategory->getDefaultSorting() ) {
+                $sArticleTable = getViewName( 'oxarticles' );
+                $sSortBy  = $sArticleTable.'.'.$sDefaultSorting;
+                $sSortDir = ( $oCategory->getDefaultSortingMode() ) ? "desc" : "asc";
+                $aSorting = array ( 'sortby' => $sSortBy, 'sortdir' => $sSortDir );
+            }
+        }
+
+        return $aSorting;
+    }
 }

@@ -174,7 +174,7 @@ class oxUBase extends oxView
     protected $_sListOrderBy = null;
 
     /**
-     * Order directio of list
+     * Order direction of list
      * @var string
      */
     protected $_sListOrderDir = null;
@@ -562,7 +562,7 @@ class oxUBase extends oxView
                 // forcing to set noindex/follow meta
                 $this->_forceNoIndex();
 
-                if (!$this->getConfig()->isProductiveMode() || $this->getConfig()->getConfigParam('blSeoLogging')) {
+                if ( $this->getConfig()->getConfigParam('blSeoLogging') ) {
                     $sShopId = $this->getConfig()->getShopId();
                     $sLangId = oxRegistry::getLang()->getBaseLanguage();
                     $sIdent  = md5( strtolower( $sStdUrl ) . $sShopId . $sLangId );
@@ -696,7 +696,7 @@ class oxUBase extends oxView
      */
     public function getComponent( $sName )
     {
-        if ( $sName != null ) {
+        if ( isset( $sName ) && isset( $this->_oaComponents[$sName] ) ) {
             return $this->_oaComponents[$sName];
         }
     }
@@ -960,6 +960,8 @@ class oxUBase extends oxView
      */
     public function getUserSelectedSorting()
     {
+
+
         $aSorting = null;
         $oStr = getStr();
         $oConfig = oxRegistry::getConfig();
@@ -973,6 +975,9 @@ class oxUBase extends oxView
             $sSortDir && oxRegistry::getUtils()->isValidAlpha( $sSortDir ) && in_array( $oStr->strtolower($sSortDir), $aSortDirections ) ) {
             $aSorting = array ( 'sortby' => $sSortBy, 'sortdir' => $sSortDir );
         }
+
+
+
 
         return $aSorting;
     }

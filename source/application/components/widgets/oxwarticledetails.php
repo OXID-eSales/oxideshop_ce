@@ -187,6 +187,12 @@ class oxwArticleDetails extends oxWidget
     protected $_sBidPrice = null;
 
     /**
+     * Marked which defines if current view is sortable or not
+     * @var bool
+     */
+    protected $_blShowSorting = false;
+
+    /**
      * Array of id to form recommendation list.
      *
      * @var array
@@ -938,16 +944,19 @@ class oxwArticleDetails extends oxWidget
 
         // if category parameter is not found, use category from product
         $sCatId = $this->getViewParameter( "cnid" );
+
         if ( !$sCatId && $oProduct->getCategory() ) {
-            $sCatId = $oProduct->getCategory()->getId();
+            $oCategory = $oProduct->getCategory();
+        }else {
+            $oCategory->load( $sCatId );
         }
-        $oCategory->setId( $sCatId );
+
         $this->setActiveCategory( $oCategory );
 
                 /**
                  * @var $oLocator oxLocator
                  */
-                $oLocator = oxNew( 'oxlocator', $this->getListType() );
+        $oLocator = oxNew( 'oxLocator', $this->getListType() );
                 $oLocator->setLocatorData( $oProduct, $this );
                 return $this->_sThisTemplate;
 
@@ -978,8 +987,8 @@ class oxwArticleDetails extends oxWidget
      */
     public function getTagSeparator()
     {
-        $sSepartor = $this->getConfig()->getConfigParam("sTagSeparator");
-        return $sSepartor;
+        $sSeparator = $this->getConfig()->getConfigParam("sTagSeparator");
+        return $sSeparator;
     }
 
     /**
@@ -1009,6 +1018,30 @@ class oxwArticleDetails extends oxWidget
 
         $this->_processProduct( $this->_oProduct );
         $this->_blIsInitialized = true;
+    }
+
+    /**
+     * Returns default category sorting for selected category
+     *
+     * @return array
+     */
+    public function getDefaultSorting()
+    {
+        $aSorting = parent::getDefaultSorting();
+
+        $oCategory = $this->getActiveCategory();
+
+        if ( $oCategory && $oCategory instanceof oxCategory ) {
+
+            if ( $sDefaultSorting = $oCategory->getDefaultSorting() ) {
+                $sArticleTable = getViewName( 'oxarticles' );
+                $sSortBy  = $sArticleTable.'.'.$sDefaultSorting;
+                $sSortDir = ( $oCategory->getDefaultSortingMode() ) ? "desc" : "asc";
+                $aSorting = array ( 'sortby' => $sSortBy, 'sortdir' => $sSortDir );
+            }
+        }
+
+        return $aSorting;
     }
 
 }

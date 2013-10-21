@@ -239,7 +239,6 @@ class Unit_Core_oxarticleTest extends OxidTestCase
         if ( $this->getName() == "testDeleteWithUnlimitedLanguages" ) {
             $this->_insertTestLanguage();
         }
-        $this->oArticle->resetStaticCache();
     }
 
     /**
@@ -6130,7 +6129,6 @@ class Unit_Core_oxarticleTest extends OxidTestCase
      */
     public function testUpdateVariantsRemind()
     {
-        $this->setAdminMode( true );
         $oParent = new oxArticle();
         $oParent->setId( "_testParent" );
         $oParent->oxarticles__oxshopid = new oxField(oxConfig::getInstance()->getBaseShopId(), oxField::T_RAW);
@@ -7214,29 +7212,6 @@ class Unit_Core_oxarticleTest extends OxidTestCase
         $this->assertEquals( 13, $oP->oxarticles__oxratingcnt->value );
     }
 
-
-
-    /**
-     * Checks article data retrieval via static cache
-     */
-    public function testStaticCacheDataRetrieval()
-    {
-        /** @var oxArticle $oArticle */
-        $oArticle = $this->getMock( 'oxArticle', array( '_loadFromDb' ) );
-        $oArticle->resetStaticCache( "2176" );
-
-        $oArticle->expects( $this->exactly(2) )->method( '_loadFromDb' )->with( $this->equalTo( "2176" ) )->
-            will( $this->returnValue( array( "oxid" => 2176, "oxparentid" => 2000 ) ) );
-        $oArticle->load( "2176" );
-        $oArticle->load( "2176" );
-        $oArticle->resetStaticCache( "2176" );
-
-        $oArticle->load( "2176" );
-        $oArticle->load( "2176" );
-
-        $this->assertEquals( 2000, $oArticle->getFieldData( "oxparentid" ) );
-
-    }
 
     /**
      * Checks that in admin articles are not cached statically

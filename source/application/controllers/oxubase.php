@@ -797,7 +797,7 @@ class oxUBase extends oxView
             $this->_sCustomListDisplayType = oxConfig::getParameter( 'ldtype' );
 
             if ( !$this->_sCustomListDisplayType ) {
-                $this->_sCustomListDisplayType = oxSession::getVar( 'ldtype' );
+                $this->_sCustomListDisplayType = oxRegistry::getSession()->getVariable( 'ldtype' );
             }
         }
         return $this->_sCustomListDisplayType;
@@ -987,7 +987,7 @@ class oxUBase extends oxView
      */
     public function getSavedSorting( $sSortIdent )
     {
-        $aSorting = oxSession::getVar( 'aSorting' );
+        $aSorting = oxRegistry::getSession()->getVariable( 'aSorting' );
         if ( isset( $aSorting[$sSortIdent] ) ) {
             return $aSorting[$sSortIdent];
         }
@@ -1039,11 +1039,11 @@ class oxUBase extends oxView
 
             $this->_aSortColumns = $aSortColumns;
 
-            $sCnid = oxConfig::getParameter( 'cnid' );
+            $sCnid = oxRegistry::getConfig()->getRequestParameter( 'cnid' );
 
 
-            $sSortBy  = oxConfig::getParameter( $this->getSortOrderByParameterName() );
-            $sSortDir = oxConfig::getParameter( $this->getSortOrderParameterName() );
+            $sSortBy  = oxRegistry::getConfig()->getRequestParameter( $this->getSortOrderByParameterName() );
+            $sSortDir = oxRegistry::getConfig()->getRequestParameter( $this->getSortOrderParameterName() );
 
             $oStr = getStr();
             if ( (!$sSortBy || !in_array( $oStr->strtolower($sSortBy), $aSortColumns) || !in_array( $oStr->strtolower($sSortDir), $aSortDir) ) && $aSorting = $this->getSorting( $sCnid ) ) {
@@ -1227,7 +1227,7 @@ class oxUBase extends oxView
     public function getCompareItemCount()
     {
         if ( $this->_iCompItemsCnt === null ) {
-            $aItems = oxSession::getVar('aFiltcompproducts');
+            $aItems = oxRegistry::getSession()->getVariable('aFiltcompproducts');
             $this->_iCompItemsCnt = is_array($aItems)?count($aItems):0;
         }
         return $this->_iCompItemsCnt;
@@ -1340,7 +1340,7 @@ class oxUBase extends oxView
             $iNrofCatArticles = ( in_array( $iNrofArticles, $aNrofCatArticles ) ) ? $iNrofArticles : $iNrofCatArticles;
             $oViewConf->setViewConfigParam( 'iartPerPage', $iNrofCatArticles );
             oxSession::setVar( '_artperpage', $iNrofCatArticles );
-        } elseif ( ( $iSessArtPerPage = oxSession::getVar( '_artperpage' ) )&& is_numeric( $iSessArtPerPage ) ) {
+        } elseif ( ( $iSessArtPerPage = oxRegistry::getSession()->getVariable( '_artperpage' ) )&& is_numeric( $iSessArtPerPage ) ) {
             // M45 Possibility to push any "Show articles per page" number parameter
             $iNrofCatArticles = ( in_array( $iSessArtPerPage, $aNrofCatArticles ) ) ? $iSessArtPerPage : $iNrofCatArticles;
             $oViewConf->setViewConfigParam( 'iartPerPage', $iSessArtPerPage );
@@ -1509,11 +1509,11 @@ class oxUBase extends oxView
      */
     public function setItemSorting( $sSortIdent, $sSortBy, $sSortDir = null )
     {
-        $aSorting = oxSession::getVar( 'aSorting' );
+        $aSorting = oxRegistry::getSession()->getVariable( 'aSorting' );
         $aSorting[$sSortIdent]['sortby']  = $sSortBy;
         $aSorting[$sSortIdent]['sortdir'] = $sSortDir ? $sSortDir : null;
 
-        oxSession::setVar( 'aSorting', $aSorting );
+        oxRegistry::getSession()->setVariable( 'aSorting', $aSorting );
     }
 
     /**
@@ -1589,7 +1589,7 @@ class oxUBase extends oxView
 
 
     /**
-     * returns object, assosiated with current view.
+     * returns object, associated with current view.
      * (the object that is shown in frontend)
      *
      * @param int $iLang language id
@@ -2805,7 +2805,7 @@ class oxUBase extends oxView
             $this->_blCanAcceptFormData = false;
 
             $sFormId = oxConfig::getParameter( "uformid" );
-            $sSessionFormId = oxSession::getVar( "sessionuformid" );
+            $sSessionFormId = oxRegistry::getSession()->getVariable( "sessionuformid" );
 
             // testing if form and session ids matches
             if ( $sFormId && $sFormId === $sSessionFormId ) {
@@ -3168,7 +3168,7 @@ class oxUBase extends oxView
     public function getWishlistName()
     {
         if ( $this->getUser() ) {
-            $sUserId = oxConfig::getParameter( 'wishid') ? oxConfig::getParameter( 'wishid' ): oxSession::getVar( 'wishid');
+            $sUserId = oxConfig::getParameter( 'wishid') ? oxConfig::getParameter( 'wishid' ): oxRegistry::getSession()->getVariable( 'wishid');
             if ( $sUserId ) {
                 $oWishUser = oxNew( 'oxuser' );
                 if ( $oWishUser->load( $sUserId ) ) {

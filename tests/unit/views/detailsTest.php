@@ -1903,7 +1903,6 @@ class Unit_Views_detailsTest extends OxidTestCase
 
         $oController->setActiveCategory( $oCategory );
 
-        $sArticleTable = getViewName( 'oxarticles' );
         $this->assertNull( $oController->getDefaultSorting() );
     }
 

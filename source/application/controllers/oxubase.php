@@ -960,8 +960,6 @@ class oxUBase extends oxView
      */
     public function getUserSelectedSorting()
     {
-
-
         $aSorting = null;
         $oStr = getStr();
         $oConfig = oxRegistry::getConfig();
@@ -975,9 +973,6 @@ class oxUBase extends oxView
             $sSortDir && oxRegistry::getUtils()->isValidAlpha( $sSortDir ) && in_array( $oStr->strtolower($sSortDir), $aSortDirections ) ) {
             $aSorting = array ( 'sortby' => $sSortBy, 'sortdir' => $sSortDir );
         }
-
-
-
 
         return $aSorting;
     }
@@ -1549,13 +1544,13 @@ class oxUBase extends oxView
     /**
      * Returns part of SQL query with sorting params
      *
-     * @param string $sCnid sortable item id
+     * @param string $sIdent sortable item id
      *
      * @return string
      */
-    public function getSortingSql( $sCnid )
+    public function getSortingSql( $sIdent )
     {
-        $aSorting = $this->getSorting( $sCnid );
+        $aSorting = $this->getSorting( $sIdent );
         if ( is_array( $aSorting ) ) {
             return implode( " ", $aSorting );
         }

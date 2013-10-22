@@ -143,16 +143,6 @@ class oxwArticleBox extends oxWidget
     }
 
     /**
-     * Returns active currency sign
-     *
-     * @return string
-     */
-    public function getActCurrencySign()
-    {
-        return $this->getViewParameter( "currencySign" );
-    }
-
-    /**
      * Returns wishlist id
      *
      * @return string

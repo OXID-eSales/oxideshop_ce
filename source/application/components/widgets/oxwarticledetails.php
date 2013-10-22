@@ -136,7 +136,7 @@ class oxwArticleDetails extends oxWidget
     protected $_oAccessoires = null;
 
     /**
-     * List of customer also bought thies products
+     * List of customer also bought these products
      * @var object
      */
     protected $_aAlsoBoughtArts = null;
@@ -175,7 +175,7 @@ class oxwArticleDetails extends oxWidget
     protected $_dRatingValue = null;
 
     /**
-     * Ratng count
+     * Rating count
      * @var integer
      */
     protected $_iRatingCnt = null;
@@ -341,7 +341,7 @@ class oxwArticleDetails extends oxWidget
     }
 
     /**
-     * Returns if tags can be changed, if user is loggen in and
+     * Returns if tags can be changed, if user is logged in and
      * product exists.
      *
      * @return bool
@@ -400,9 +400,9 @@ class oxwArticleDetails extends oxWidget
             $oList = clone $oList;
         }
 
-        $sOxid = $this->getProduct()->getId();
-        if (isset($oList[$sOxid])) {
-            unset($oList[$sOxid]);
+        $sOxId = $this->getProduct()->getId();
+        if (isset($oList[$sOxId])) {
+            unset($oList[$sOxId]);
         }
         return $oList;
     }
@@ -427,7 +427,7 @@ class oxwArticleDetails extends oxWidget
 
                 //lets additionally add parent article if it is sellable
                 if ( count( $this->_aVariantList ) && $myConfig->getConfigParam( 'blVariantParentBuyable' ) ) {
-                    //#1104S if parent is buyable load selectlists too
+                    //#1104S if parent is buyable load select lists too
                     $oParent->enablePriceLoad();
                     $oParent->aSelectlist = $oParent->getSelectLists();
                     $this->_aVariantList = array_merge( array( $oParent ), $this->_aVariantList->getArray() );
@@ -499,7 +499,7 @@ class oxwArticleDetails extends oxWidget
             $oProduct = $this->getProduct();
             $sArtId = $oProduct->oxarticles__oxparentid->value?$oProduct->oxarticles__oxparentid->value:$oProduct->getId();
 
-            $oHistoryArtList = oxNew( 'oxarticlelist' );
+            $oHistoryArtList = oxNew( 'oxArticleList' );
             $oHistoryArtList->loadHistoryArticles( $sArtId, $iCnt );
             $this->_aLastProducts = $oHistoryArtList;
         }
@@ -631,7 +631,7 @@ class oxwArticleDetails extends oxWidget
     }
 
     /**
-     * Template variable getter. Returns crosssellings
+     * Template variable getter. Returns cross selling
      *
      * @return object
      */

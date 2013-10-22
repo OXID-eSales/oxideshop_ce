@@ -931,7 +931,7 @@ class oxwArticleDetails extends oxWidget
     /**
      * Set item sorting for widget based of retrieved parameters
      */
-    public function _setSortingParameters()
+    protected function _setSortingParameters()
     {
         $sSortingParameters = $this->getViewParameter( 'sorting' );
         if ( $sSortingParameters ) {

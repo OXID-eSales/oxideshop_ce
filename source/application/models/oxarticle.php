@@ -4912,25 +4912,22 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     protected function _getVarMinPrice()
     {
         if ( $this->_dVarMinPrice === null) {
-
             $sPriceSufix = $this->_getUserPriceSufix();
-            if ( $dPrice === null ) {
-                if ( $sPriceSufix === '' ) {
-                    $dPrice = $this->oxarticles__oxvarminprice->value;
+            if ( $sPriceSufix === '' ) {
+                $dPrice = $this->oxarticles__oxvarminprice->value;
+            } else {
+                $sSql = 'SELECT ';
+                if ( $this->getConfig()->getConfigParam( 'blOverrideZeroABCPrices' ) ) {
+                    $sSql .=  'MIN( IF(`oxprice'.$sPriceSufix.'` = 0, `oxprice`, `oxprice'.$sPriceSufix.'`) ) AS `varminprice` ';
                 } else {
-                    $sSql = 'SELECT ';
-                    if ( $this->getConfig()->getConfigParam( 'blOverrideZeroABCPrices' ) ) {
-                        $sSql .=  'MIN( IF(`oxprice'.$sPriceSufix.'` = 0, `oxprice`, `oxprice'.$sPriceSufix.'`) ) AS `varminprice` ';
-                    } else {
-                        $sSql .=  'MIN(`oxprice'.$sPriceSufix.'`) AS `varminprice` ';
-                    }
-
-                    $sSql .=  ' FROM ' . $this->getViewName(true) . '
-                        WHERE ' .$this->getSqlActiveSnippet(true) . '
-                            AND ( `oxparentid` = ' . oxDb::getDb()->quote( $this->getId() ) . ' )';
-
-                    $dPrice = oxDb::getDb()->getOne( $sSql );
+                    $sSql .=  'MIN(`oxprice'.$sPriceSufix.'`) AS `varminprice` ';
                 }
+
+                $sSql .=  ' FROM ' . $this->getViewName(true) . '
+                    WHERE ' .$this->getSqlActiveSnippet(true) . '
+                        AND ( `oxparentid` = ' . oxDb::getDb()->quote( $this->getId() ) . ' )';
+
+                $dPrice = oxDb::getDb()->getOne( $sSql );
             }
             $this->_dVarMinPrice = $dPrice;
         }
@@ -4973,25 +4970,22 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     protected function _getVarMaxPrice()
     {
         if ( $this->_dVarMaxPrice === null ) {
-
             $sPriceSufix = $this->_getUserPriceSufix();
-            if ( $dPrice === null ) {
-                if ( $sPriceSufix === '') {
-                    $dPrice = $this->oxarticles__oxvarmaxprice->value;
+            if ( $sPriceSufix === '') {
+                $dPrice = $this->oxarticles__oxvarmaxprice->value;
+            } else {
+                $sSql = 'SELECT ';
+                if ( $this->getConfig()->getConfigParam( 'blOverrideZeroABCPrices' ) ) {
+                    $sSql .=  'MAX( IF(`oxprice'.$sPriceSufix.'` = 0, `oxprice`, `oxprice'.$sPriceSufix.'`) ) AS `varmaxprice` ';
                 } else {
-                    $sSql = 'SELECT ';
-                    if ( $this->getConfig()->getConfigParam( 'blOverrideZeroABCPrices' ) ) {
-                        $sSql .=  'MAX( IF(`oxprice'.$sPriceSufix.'` = 0, `oxprice`, `oxprice'.$sPriceSufix.'`) ) AS `varmaxprice` ';
-                    } else {
-                        $sSql .=  'MAX(`oxprice'.$sPriceSufix.'`) AS `varmaxprice` ';
-                    }
-
-                    $sSql .=  ' FROM ' . $this->getViewName(true) . '
-                        WHERE ' .$this->getSqlActiveSnippet(true) . '
-                            AND ( `oxparentid` = ' . oxDb::getDb()->quote( $this->getId() ) . ' )';
-
-                    $dPrice = oxDb::getDb()->getOne( $sSql );
+                    $sSql .=  'MAX(`oxprice'.$sPriceSufix.'`) AS `varmaxprice` ';
                 }
+
+                $sSql .=  ' FROM ' . $this->getViewName(true) . '
+                    WHERE ' .$this->getSqlActiveSnippet(true) . '
+                        AND ( `oxparentid` = ' . oxDb::getDb()->quote( $this->getId() ) . ' )';
+
+                $dPrice = oxDb::getDb()->getOne( $sSql );
             }
             $this->_dVarMaxPrice = $dPrice;
         }

@@ -4890,16 +4890,16 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      */
     protected function _getPrice()
     {
-            $sPriceSufix = $this->_getUserPriceSufix();
-            if ( $sPriceSufix === '') {
-                $dPrice = $this->oxarticles__oxprice->value;
+        $sPriceSufix = $this->_getUserPriceSufix();
+        if ( $sPriceSufix === '') {
+            $dPrice = $this->oxarticles__oxprice->value;
+        } else {
+            if ( $this->getConfig()->getConfigParam( 'blOverrideZeroABCPrices' ) ) {
+                $dPrice = ($this->{oxarticles__oxprice.$sPriceSufix}->value !=0 )? $this->{oxarticles__oxprice.$sPriceSufix}->value : $this->oxarticles__oxprice->value;
             } else {
-                if ( $this->getConfig()->getConfigParam( 'blOverrideZeroABCPrices' ) ) {
-                    $dPrice = ($this->{oxarticles__oxprice.$sPriceSufix}->value !=0 )? $this->{oxarticles__oxprice.$sPriceSufix}->value : $this->oxarticles__oxprice->value;
-                } else {
-                    $dPrice = $this->{oxarticles__oxprice.$sPriceSufix}->value;
-                }
+                $dPrice = $this->{oxarticles__oxprice.$sPriceSufix}->value;
             }
+        }
         return $dPrice;
     }
 

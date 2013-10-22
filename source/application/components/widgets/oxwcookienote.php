@@ -39,7 +39,7 @@ class oxwCookieNote extends oxWidget
      * Executes parent::render(). Check if need to hide cookie note.
      * Returns name of template file to render.
      *
-     * @return  string  cuurent template file name
+     * @return  string  current template file name
      */
     public function render()
     {

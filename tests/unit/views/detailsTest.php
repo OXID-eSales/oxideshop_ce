@@ -1888,6 +1888,26 @@ class Unit_Views_detailsTest extends OxidTestCase
     }
 
     /**
+     * Test getDefaultSorting when sorting mode is set to 'desc'
+     *
+     * @return null
+     */
+    public function testDefaultSorting_SortingDefinedCameFromSearch_doNotSort()
+    {
+        $this->getConfig()->setParameter('listtype','search');
+        $oController = new Details();
+
+        $oCategory = $this->getMock('oxCategory', array( 'getDefaultSorting', 'getDefaultSortingMode' ));
+        $oCategory->expects( $this->any() )->method( 'getDefaultSorting' )->will( $this->returnValue( 'testsort' ) );
+        $oCategory->expects( $this->any() )->method( 'getDefaultSortingMode' )->will( $this->returnValue( true ) );
+
+        $oController->setActiveCategory( $oCategory );
+
+        $sArticleTable = getViewName( 'oxarticles' );
+        $this->assertNull( $oController->getDefaultSorting() );
+    }
+
+    /**
      * testGetSortingParameters data provider
      *
      * @return array
@@ -1913,3 +1933,5 @@ class Unit_Views_detailsTest extends OxidTestCase
         $this->assertEquals( $sExpected, $oController->getSortingParameters() );
     }
 }
+
+

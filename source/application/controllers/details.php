@@ -1501,6 +1501,9 @@ class Details extends oxUBase
     public function getSortingParameters()
     {
         $aSorting = $this->getSorting( $this->getSortIdent() );
+        if ( !is_array( $aSorting ) ) {
+            return null;
+        }
         return implode( '|', $aSorting);
     }
 }

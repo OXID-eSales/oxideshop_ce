@@ -1931,6 +1931,18 @@ class Unit_Views_detailsTest extends OxidTestCase
         $oController->setItemSorting( $sIdent, $sSortBy, $sSortOrder );
         $this->assertEquals( $sExpected, $oController->getSortingParameters() );
     }
+
+    /**
+     * Test that method returns null when getSorting doesnt return an array
+     */
+    public function testGetSortingParameters_ExpectNull()
+    {
+        $oController = $this->getMock( 'Details', array( 'getSorting' ) );
+        $oController->expects( $this->any() )->method( 'getSorting' )->will( $this->returnValue( null ) );
+
+        $this->assertNull( $oController->getSortingParameters() );
+
+    }
 }
 
 

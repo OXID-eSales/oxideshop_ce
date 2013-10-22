@@ -91,7 +91,7 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
     /**
      * Test for getting product by id set in view parameters
      */
-    public function testGetBoxProduct()
+    public function testGetProduct()
     {
         $oArticleBox = new oxwArticleBox();
 
@@ -103,14 +103,14 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
         );
         $oArticleBox->setViewParameters($aViewParams);
 
-        $this->assertEquals( $sId, $oArticleBox->getBoxProduct()->getId(), "Correct product should be loaded" );
-        $this->assertEquals( $iLinkType, $oArticleBox->getBoxProduct()->getLinkType(), "Correct link type should be set" );
+        $this->assertEquals( $sId, $oArticleBox->getProduct()->getId(), "Correct product should be loaded" );
+        $this->assertEquals( $iLinkType, $oArticleBox->getProduct()->getLinkType(), "Correct link type should be set" );
     }
 
     /**
      * Checking if additional parameters are being recieved and added properly
      */
-    public function testGetBoxProductWithSearch()
+    public function testGetProductWithSearch()
     {
         $oArticleBox = new oxwArticleBox();
         $this->setLanguage( 1 );
@@ -122,7 +122,7 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
             "iLinkType" => $iLinkType,
         );
         $oArticleBox->setViewParameters($aViewParams);
-        $sLinkUrl = $oArticleBox->getBoxProduct()->getMainLink();
+        $sLinkUrl = $oArticleBox->getProduct()->getMainLink();
 
         $oArticleBox->setParent( "search" );
         $oConfig = $this->getMock( "oxConfig", array( 'getTopActiveView' ) );
@@ -135,8 +135,8 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
 
         $this->setRequestParam( "searchparam", "1126" );
         // removing cached object
-        $oArticleBox->setBoxProduct( null );
-        $this->assertEquals( $sLinkUrl, $oArticleBox->getBoxProduct()->getMainLink(), "Correct product link with additional search parameters should be loaded" );
+        $oArticleBox->setProduct( null );
+        $this->assertEquals( $sLinkUrl, $oArticleBox->getProduct()->getMainLink(), "Correct product link with additional search parameters should be loaded" );
     }
     /**
      * Test for getting link

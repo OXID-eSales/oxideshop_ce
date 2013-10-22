@@ -1,5 +1,5 @@
 [{block name="widget_product_listitem_line"}]
-    [{assign var="product"          value=$oView->getBoxProduct()      }]
+    [{assign var="product"          value=$oView->getProduct()      }]
     [{assign var="owishid"          value=$oView->getWishId()          }]
     [{assign var="removeFunction"   value=$oView->getRemoveFunction()  }]
     [{assign var="recommid"         value=$oView->getRecommId()        }]
@@ -30,7 +30,7 @@
     [{if $recommid}]
         <input type="hidden" name="recommid" value="[{ $recommid }]">
     [{/if}]
-    [{ if $blShowToBasket}]
+    [{if $blShowToBasket}]
         [{oxhasrights ident="TOBASKET"}]
             <input type="hidden" name="cl" value="[{ $oViewConf->getTopActiveClassName() }]">
             [{if $owishid}]

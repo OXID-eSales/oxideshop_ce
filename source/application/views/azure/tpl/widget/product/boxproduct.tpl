@@ -1,4 +1,4 @@
-[{assign var="_oBoxProduct" value=$oView->getBoxProduct()}]
+[{assign var="_oBoxProduct" value=$oView->getProduct()}]
 [{assign var="_sTitle" value="`$_oBoxProduct->oxarticles__oxtitle->value` `$_oBoxProduct->oxarticles__oxvarselect->value`"|strip_tags}]
 [{block name="widget_product_boxproduct_image"}]
     <li class="articleImage" [{if !$iProdCount}] style="display:none;" [{/if}]>
@@ -30,7 +30,7 @@
                 [{/if}]
                         [{oxprice price=$oPrice currency=$oView->getActCurrency()}]
                         [{if $oView->isVatIncluded() }]
-                            [{if !( $_oBoxProduct->hasMdVariants() || ($oViewConf->showSelectListsInList()&&$_oBoxProduct->getSelections(1)) || $_oBoxProduct->getVariants() )}]*[{/if}]
+                            [{if !( $_oBoxProduct->getVariantsCount() || $_oBoxProduct->hasMdVariants() || ($oViewConf->showSelectListsInList()&&$_oBoxProduct->getSelections(1)) )}]*[{/if}]
                         [{/if}]
                     </strong>
             [{/if}]

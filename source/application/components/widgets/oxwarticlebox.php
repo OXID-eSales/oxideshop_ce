@@ -92,7 +92,7 @@ class oxwArticleBox extends oxWidget
      *
      * @param oxArticle $oArticle Box product
      */
-    public function setBoxProduct( $oArticle )
+    public function setProduct( $oArticle )
     {
         $this->_oArticle = $oArticle;
     }
@@ -102,18 +102,18 @@ class oxwArticleBox extends oxWidget
      *
      * @return oxArticle
      */
-    public function getBoxProduct()
+    public function getProduct()
     {
         if ( is_null( $this->_oArticle ) ) {
             if ( $this->getViewParameter( '_object' ) ) {
-                $this->_oArticle = $this->getViewParameter( '_object' );
+                $this->setProduct( $this->getViewParameter( '_object' ) );
             } else {
                 $sAddDynParams = $this->getConfig()->getTopActiveView()->getAddUrlParams();
 
 
                 $oArticle = $this->_getArticleById( $this->getViewParameter( 'anid' ) );
                 $this->_addDynParamsToLink( $sAddDynParams, $oArticle );
-                $this->setBoxProduct( $oArticle );
+                $this->setProduct( $oArticle );
             }
         }
 

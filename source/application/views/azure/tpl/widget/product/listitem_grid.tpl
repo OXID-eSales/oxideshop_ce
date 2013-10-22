@@ -1,5 +1,5 @@
 [{block name="widget_product_listitem_grid"}]
-    [{assign var="product"              value=$oView->getBoxProduct()       }]
+    [{assign var="product"              value=$oView->getProduct()       }]
     [{assign var="blDisableToCart"      value=$oView->getDisableToCart()    }]
     [{assign var="testid"               value=$oView->getTestId()           }]
     [{assign var="showMainLink"         value=$oView->getShowMainLink()     }]
@@ -9,9 +9,8 @@
     [{else}]
         [{assign var='_productLink' value=$product->getLink()}]
     [{/if}]
-    [{assign var="aVariantSelections" value=$product->getVariantSelections(null,null,1)}]
     [{assign var="blShowToBasket" value=true}] [{* tobasket or more info ? *}]
-    [{if $blDisableToCart || $product->isNotBuyable()||($aVariantSelections&&$aVariantSelections.selections)||$product->hasMdVariants()||($oViewConf->showSelectListsInList() && $product->getSelections(1))||$product->getVariants()}]
+    [{if $blDisableToCart || $product->isNotBuyable()||$product->hasMdVariants()||($oViewConf->showSelectListsInList() && $product->getSelections(1))||$product->getVariants()}]
         [{assign var="blShowToBasket" value=false}]
     [{/if}]
     [{capture name=product_price}]
@@ -54,7 +53,7 @@
                         <span title="weight">[{ oxmultilang ident="WEIGHT" suffix="COLON" }]</span>
                         <span class="value">[{ $product->oxarticles__oxweight->value }] [{ oxmultilang ident="KG" }]</span>
                     </span>
-                [{/if }]
+                [{/if}]
             [{/oxhasrights}]
         [{/block}]
     [{/capture}]

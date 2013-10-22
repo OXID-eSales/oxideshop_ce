@@ -1,4 +1,4 @@
-[{assign var="product" value=$oView->getBoxProduct()}]
+[{assign var="product" value=$oView->getProduct()}]
 [{assign var="recommid" value=$oView->getRecommId()}]
 [{assign var="testid" value=$oView->getTestId()}]
 [{assign var="altproduct" value=$oView->getAltProduct()}]
@@ -37,7 +37,7 @@
     <form name="tobasket.[{$testid}]" [{if $blShowToBasket}]action="[{ $oViewConf->getSelfActionLink() }]" method="post"[{else}]action="[{$_productLink}]" method="get"[{/if}]>
         <div class="variants">
             [{oxhasrights ident="TOBASKET"}]
-                [{ if $blShowToBasket}]
+                [{if $blShowToBasket}]
                     [{ $oViewConf->getHiddenSid() }]
                     [{ $oViewConf->getNavFormParams() }]
                     <input type="hidden" name="cl" value="[{ $oViewConf->getTopActiveClassName() }]">
@@ -99,7 +99,7 @@
                         [{/if}]
                     [{/if}]
                     <label id="productPrice_[{$testid}]" class="price">
-                        <strong>[{$sFrom}] [{oxprice price=$oPrice currency=$oView->getActCurrency()}] [{ if $blShowToBasket }]*[{/if}]</strong>
+                        <strong>[{$sFrom}] [{oxprice price=$oPrice currency=$oView->getActCurrency()}] [{if $blShowToBasket }]*[{/if}]</strong>
                     </label>
                     [{if $product->loadAmountPriceInfo()}]
                         [{oxscript include="js/widgets/oxamountpriceselect.js" priority=10 }]
@@ -107,7 +107,7 @@
                     [{/if}]
 
                 [{/oxhasrights}]
-                [{ if $blShowToBasket }]
+                [{if $blShowToBasket }]
                     [{oxhasrights ident="TOBASKET"}]
                         <p class="fn clear">
                             <input type="text" name="am" value="1" size="3" autocomplete="off" class="textbox" title="[{ oxmultilang ident="QUANTITY" suffix="COLON" }]">

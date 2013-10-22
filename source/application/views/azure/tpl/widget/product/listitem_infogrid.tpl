@@ -1,5 +1,5 @@
 [{block name="widget_product_listitem_infogrid"}]
-    [{assign var="product"              value=$oView->getBoxProduct()      }]
+    [{assign var="product"              value=$oView->getProduct()      }]
     [{assign var="owishid"              value=$oView->getWishId()          }]
     [{assign var="toBasketFunction" value=$oView->getToBasketFunction()}]
     [{assign var="recommid"             value=$oView->getRecommId()        }]
@@ -26,7 +26,7 @@
         [{if $recommid}]
             <input type="hidden" name="recommid" value="[{ $recommid }]">
         [{/if}]
-        [{ if $blShowToBasket}]
+        [{if $blShowToBasket}]
             [{oxhasrights ident="TOBASKET"}]
                 <input type="hidden" name="cl" value="[{ $oViewConf->getTopActiveClassName() }]">
                 [{if $owishid}]
@@ -69,7 +69,7 @@
 
         [{block name="widget_product_listitem_infogrid_selections"}]
                 <div class="selectorsBox">
-                    [{ if $aVariantSelections && $aVariantSelections.selections }]
+                    [{if $aVariantSelections && $aVariantSelections.selections }]
                         <div id="variantselector_[{$testid}]" class="selectorsBox js-fnSubmit clear">
                             [{foreach from=$aVariantSelections.selections item=oSelectionList key=iKey}]
                                 [{include file="widget/product/selectbox.tpl" oSelectionList=$oSelectionList sJsAction="js-fnSubmit"}]
@@ -84,7 +84,7 @@
                                 [{/foreach}]
                             </div>
                         [{/if}]
-                    [{/if }]
+                    [{/if}]
                 </div>
         [{/block}]
 
@@ -126,7 +126,7 @@
                                     </span>
                                 [{/if}]
                             [{/block}]
-                            [{ if $product->getUnitPrice()}]
+                            [{if $product->getUnitPrice()}]
                                 <span id="productPricePerUnit_[{$testid}]" class="pricePerUnit">
                                     [{$product->getUnitQuantity()}] [{$product->getUnitName()}] | [{oxprice price=$product->getUnitPrice() currency=$oView->getActCurrency() }]/[{$product->getUnitName()}]
                                 </span>
@@ -135,14 +135,14 @@
                                     <span title="weight">[{ oxmultilang ident="WEIGHT" suffix="COLON" }]</span>
                                     <span class="value">[{ $product->oxarticles__oxweight->value }] [{ oxmultilang ident="KG" }]</span>
                                 </span>
-                            [{/if }]
+                            [{/if}]
                         [{/oxhasrights}]
                     [{/block}]
                 </div>
             </div>
             [{block name="widget_product_listitem_infogrid_tobasket"}]
                 <div class="buttonBox">
-                    [{ if $blShowToBasket }]
+                    [{if $blShowToBasket }]
                         [{oxhasrights ident="TOBASKET"}]
                             <button type="submit" class="submitButton largeButton">[{oxmultilang ident="TO_CART" }]</button>
                         [{/oxhasrights}]

@@ -49,9 +49,9 @@ function smarty_function_oxscript($params, &$smarty)
     $sSufix               = ($smarty->_tpl_vars["__oxid_include_dynamic"])?'_dynamic':'';
     $sIncludes            = 'includes'.$sSufix;
     $sScripts             = 'scripts'.$sSufix;
-    $iPriority            = ($params['priority'])?$params['priority']:3;
-    $sWidget              = ($params['widget']?$params['widget']:'');
-    $blInWidget           = ($params['inWidget']?$params['inWidget']:false);
+    $iPriority            = isset($params['priority']) ? $params['priority'] : 3;
+    $sWidget              = isset($params['widget']) ? $params['widget'] : '');
+    $blInWidget           = isset($params['inWidget']) ? $params['inWidget'] : false);
     $aScript              = (array) $myConfig->getGlobalParameter($sScripts);
     $aInclude             = (array) $myConfig->getGlobalParameter($sIncludes);
     $sOutput              = '';
@@ -63,14 +63,14 @@ function smarty_function_oxscript($params, &$smarty)
     }
 
 
-    if ( $params['add'] ) {
+    if ( isset($params['add']) ) {
         $sScript = trim( $params['add'] );
         if ( !in_array($sScript, $aScript)) {
             $aScript[] = $sScript;
         }
         $myConfig->setGlobalParameter($sScripts, $aScript);
 
-    } elseif ( $params['include'] ) {
+    } elseif ( isset($params['include']) ) {
         $sScript = $params['include'];
         if (!preg_match('#^https?://#', $sScript)) {
             $sOriginalScript = $sScript;

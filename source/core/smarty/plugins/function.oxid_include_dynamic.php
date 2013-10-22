@@ -44,7 +44,7 @@ function smarty_function_oxid_include_dynamic($params, &$smarty)
         return;
     }
 
-    if ( $smarty->_tpl_vars["_render4cache"] ) {
+    if ( isset($smarty->_tpl_vars["_render4cache"]) ) {
         $sContent = "<oxid_dynamic>";
         foreach ($params as $key => $val) {
             $sContent .= " $key='".base64_encode($val)."'";

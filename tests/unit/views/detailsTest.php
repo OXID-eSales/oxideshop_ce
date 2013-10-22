@@ -2166,7 +2166,7 @@ class Unit_Views_detailsTest extends OxidTestCase
      *
      * @return null
      */
-    public function testGetDefaultSortingUndefinedSorting()
+    public function testGetDefaultSorting_UndefinedSorting()
     {
         $oController = new Details();
 
@@ -2182,7 +2182,7 @@ class Unit_Views_detailsTest extends OxidTestCase
      *
      * @return null
      */
-    public function testGetDefaultSortingDefinedSorting()
+    public function testGetDefaultSorting_DefinedSorting()
     {
         $oController = new Details();
 
@@ -2199,7 +2199,7 @@ class Unit_Views_detailsTest extends OxidTestCase
      *
      * @return null
      */
-    public function testDefaultSortingWhenSortingModeIsUndefined()
+    public function testDefaultSorting_WhenSortingModeIsUndefined()
     {
         $oController = new Details();
 
@@ -2218,7 +2218,7 @@ class Unit_Views_detailsTest extends OxidTestCase
      *
      * @return null
      */
-    public function testDefaultSortingWhenSortingModeIsAsc()
+    public function testDefaultSorting_WhenSortingModeIsAsc()
     {
         $oController = new Details();
 
@@ -2236,7 +2236,7 @@ class Unit_Views_detailsTest extends OxidTestCase
      *
      * @return null
      */
-    public function testDefaultSortingWhenSortingModeIsDesc()
+    public function testDefaultSorting_WhenSortingModeIsDesc()
     {
         $oController = new Details();
 
@@ -2248,6 +2248,26 @@ class Unit_Views_detailsTest extends OxidTestCase
 
         $sArticleTable = getViewName( 'oxarticles' );
         $this->assertEquals( array( 'sortby' => $sArticleTable.'.'.'testsort', 'sortdir' => "desc" ), $oController->getDefaultSorting() );
+    }
+
+    /**
+     * Test getDefaultSorting when sorting mode is set to 'desc'
+     *
+     * @return null
+     */
+    public function testDefaultSorting_SortingDefinedCameFromSearch_doNotSort()
+    {
+        $this->getConfig()->setParameter('listtype','search');
+        $oController = new Details();
+
+        $oCategory = $this->getMock('oxCategory', array( 'getDefaultSorting', 'getDefaultSortingMode' ));
+        $oCategory->expects( $this->any() )->method( 'getDefaultSorting' )->will( $this->returnValue( 'testsort' ) );
+        $oCategory->expects( $this->any() )->method( 'getDefaultSortingMode' )->will( $this->returnValue( true ) );
+
+        $oController->setActiveCategory( $oCategory );
+
+        $sArticleTable = getViewName( 'oxarticles' );
+        $this->assertNull( $oController->getDefaultSorting() );
     }
 
 }

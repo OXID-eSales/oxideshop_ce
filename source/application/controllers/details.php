@@ -1821,9 +1821,9 @@ class Details extends oxUBase
     public function getDefaultSorting()
     {
         $aSorting = parent::getDefaultSorting();
-
         $oCategory = $this->getActiveCategory();
-        if ( $oCategory && $oCategory instanceof oxCategory ) {
+
+        if ( $this->getListType() != 'search' &&  $oCategory && $oCategory instanceof oxCategory ) {
             if ( $sDefaultSorting = $oCategory->getDefaultSorting() ) {
                 $sArticleTable = getViewName( 'oxarticles' );
                 $sSortBy  = $sArticleTable.'.'.$sDefaultSorting;

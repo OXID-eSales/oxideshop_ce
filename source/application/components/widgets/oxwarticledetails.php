@@ -929,6 +929,18 @@ class oxwArticleDetails extends oxWidget
     }
 
     /**
+     * Set item sorting for widget based of retrieved parameters
+     */
+    public function _setSortingParameters()
+    {
+        $sSortingParameters = $this->getViewParameter( 'sorting' );
+        if ( $sSortingParameters ) {
+            list( $sSortBy, $sSortDir ) = explode( '|', $sSortingParameters );
+            $this->setItemSorting( 'alist', $sSortBy, $sSortDir );
+        }
+    }
+
+    /**
      * Executes parent::render().
      * Returns name of template file to render.
      *
@@ -950,6 +962,7 @@ class oxwArticleDetails extends oxWidget
         }else {
             $oCategory->load( $sCatId );
         }
+        $this->_setSortingParameters();
 
         $this->setActiveCategory( $oCategory );
 

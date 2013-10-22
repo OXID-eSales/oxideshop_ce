@@ -1494,4 +1494,15 @@ class Details extends oxUBase
 
         return $aSorting;
     }
+
+    /**
+     * Returns sorting parameters separated by "|"
+     *
+     * @return string
+     */
+    public function getSortingParameters()
+    {
+        $aSorting = $this->getSorting( $this->getSortIdent() );
+        return implode( '|', $aSorting);
+    }
 }

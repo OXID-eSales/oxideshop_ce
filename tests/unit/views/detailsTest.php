@@ -1887,4 +1887,29 @@ class Unit_Views_detailsTest extends OxidTestCase
         $this->assertEquals( array( 'sortby' => $sArticleTable.'.'.'testsort', 'sortdir' => "desc" ), $oController->getDefaultSorting() );
     }
 
+    /**
+     * testGetSortingParameters data provider
+     *
+     * @return array
+     */
+    public function getSortingDataProvider()
+    {
+        return array(
+            array( array( 'alist', 'oxvarminprice', 'desc' ), 'oxvarminprice|desc' ),
+            array( array( 'alist', null, null ), "|" ),
+        );
+    }
+
+    /**
+     * Test to check if sorting Parameters are formed correctly
+     *
+     * @dataProvider getSortingDataProvider
+     */
+    public function testGetSortingParameters( $aParams, $sExpected )
+    {
+        $oController = new Details();
+        list( $sIdent, $sSortBy, $sSortOrder ) = $aParams;
+        $oController->setItemSorting( $sIdent, $sSortBy, $sSortOrder );
+        $this->assertEquals( $sExpected, $oController->getSortingParameters() );
+    }
 }

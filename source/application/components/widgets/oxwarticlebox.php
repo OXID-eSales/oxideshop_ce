@@ -105,16 +105,18 @@ class oxwArticleBox extends oxWidget
     public function getProduct()
     {
         if ( is_null( $this->_oArticle ) ) {
+
             if ( $this->getViewParameter( '_object' ) ) {
-                $this->setProduct( $this->getViewParameter( '_object' ) );
+                $oArticle = $this->getViewParameter( '_object' );
             } else {
                 $sAddDynParams = $this->getConfig()->getTopActiveView()->getAddUrlParams();
 
 
                 $oArticle = $this->_getArticleById( $this->getViewParameter( 'anid' ) );
                 $this->_addDynParamsToLink( $sAddDynParams, $oArticle );
-                $this->setProduct( $oArticle );
             }
+
+            $this->setProduct( $oArticle );
         }
 
         return $this->_oArticle;

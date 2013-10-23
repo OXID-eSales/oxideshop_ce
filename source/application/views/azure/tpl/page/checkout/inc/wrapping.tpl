@@ -1,4 +1,4 @@
-[{oxscript include="js/widgets/oxmodalpopup.js" priority=10 }]
+[{oxscript include="js/widgets/oxmodalpopup.js" priority=10}]
 [{oxscript add="$('.wrappingTrigger').oxModalPopup({target: '.wrapping'});"}]
 
 <div class="wrapping popupBox corners FXgradGreyLight glowShadow">
@@ -24,7 +24,7 @@
                 <input type="hidden" name="cl" value="basket">
                 <input type="hidden" name="fnc" value="changewrapping">
                 [{assign var="oWrapList" value=$oView->getWrappingList()}]
-                [{if $oWrapList->count() }]
+                [{if $oWrapList->count()}]
                     [{* basket items *}]
                     [{assign var="icounter" value="0"}]
                     <table class="wrappingData">
@@ -36,11 +36,11 @@
                         [{assign var="basketitemlist" value=$oView->getBasketArticles()}]
                         [{foreach key=basketindex from=$oxcmp_basket->getContents() item=basketitem name=wrappArt}]
                             [{block name="checkout_wrapping_item"}]
-                                [{assign var="basketproduct" value=$basketitemlist.$basketindex }]
+                                [{assign var="basketproduct" value=$basketitemlist.$basketindex}]
                                 <tr>
                                     <td>
                                         <a href="[{$basketitem->getLink()}]">
-                                            <img src="[{$basketproduct->getThumbnailUrl() }]" alt="[{$basketitem->getTitle()|strip_tags}]">
+                                            <img src="[{$basketproduct->getThumbnailUrl()}]" alt="[{$basketitem->getTitle()|strip_tags}]">
                                         </a>
                                     </td>
                                     <td>
@@ -56,7 +56,7 @@
                                             [{foreach from=$oView->getWrappingList() item=wrapping name=Wraps}]
                                                 <li>
                                                     <input class="radiobox" type="radio" name="wrapping[[{$basketindex}]]" id="wrapping_[{$wrapping->oxwrapping__oxid->value}]" value="[{$wrapping->oxwrapping__oxid->value}]" [{if $basketitem->getWrappingId() == $wrapping->oxwrapping__oxid->value}]CHECKED[{/if}]>
-                                                    [{if $wrapping->oxwrapping__oxpic->value }]
+                                                    [{if $wrapping->oxwrapping__oxpic->value}]
                                                     <span><img src="[{$wrapping->getPictureUrl()}]" alt="[{$wrapping->oxwrapping__oxname->value}]"></span>
                                                     [{/if}]
                                                     <label for="wrapping_[{$wrapping->oxwrapping__oxid->value}]">[{$wrapping->oxwrapping__oxname->value}]</label>
@@ -64,7 +64,7 @@
                                                 </li>
                                                 [{assign var="ictr" value="`$ictr+1`"}]
                                             [{/foreach}]
-                                            [{oxscript add="$('#wrapp_`$smarty.foreach.wrappArt.iteration` img' ).click(function(){$(this).parent().parent().find('input').click();});"}]
+                                            [{oxscript add="$('#wrapp_`$smarty.foreach.wrappArt.iteration` img' ).click(function(){ $(this).parent().parent().find('input').click();});"}]
                                         </ul>
                                         
                                     </td>
@@ -101,7 +101,7 @@
                             </li>
                         [{assign var="icounter" value="`$icounter+1`"}]
                         [{/foreach}]
-                        [{oxscript add="$('#wrappCard img').click(function(){$(this).parent().find('input').click(); });"}]
+                        [{oxscript add="$('#wrappCard img').click(function(){ $(this).parent().find('input').click(); });"}]
                         </ul>
                         
                     [{/block}]

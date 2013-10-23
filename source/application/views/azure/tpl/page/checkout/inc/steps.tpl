@@ -1,6 +1,6 @@
 [{block name="checkout_steps_main"}]
     <ul class="checkoutSteps clear">
-        [{if $oxcmp_basket->getProductsCount() }]
+        [{if $oxcmp_basket->getProductsCount()}]
             [{assign var=showStepLinks value=true}]
         [{/if}]
 
@@ -15,7 +15,7 @@
         [{/block}]
 
         [{assign var=showStepLinks value=false}]
-        [{if !$oView->isLowOrderPrice() && $oxcmp_basket->getProductsCount() }]
+        [{if !$oView->isLowOrderPrice() && $oxcmp_basket->getProductsCount()}]
             [{assign var=showStepLinks value=true}]
         [{/if}]
 
@@ -30,7 +30,7 @@
         [{/block}]
 
         [{assign var=showStepLinks value=false}]
-        [{if $active != 1 && $oxcmp_user && !$oView->isLowOrderPrice() && $oxcmp_basket->getProductsCount() }]
+        [{if $active != 1 && $oxcmp_user && !$oView->isLowOrderPrice() && $oxcmp_basket->getProductsCount()}]
             [{assign var=showStepLinks value=true}]
         [{/if}]
 
@@ -42,7 +42,7 @@
                     [{if $showStepLinks}]</a>[{/if}]
                 </span>
             </li>
-            [{oxscript add="$('#paymentStep').click( function() {$('#userNextStepBottom').click();return false;});"}]
+            [{oxscript add="$('#paymentStep').click( function() { $('#userNextStepBottom').click();return false;});"}]
         [{/block}]
 
         [{assign var=showStepLinks value=false}]
@@ -58,7 +58,7 @@
                     [{if $showStepLinks}]</a>[{/if}]
                 </span>
             </li>
-            [{oxscript add="$('#orderStep').click( function() {$('#paymentNextStepBottom').click();return false;});"}]
+            [{oxscript add="$('#orderStep').click( function() { $('#paymentNextStepBottom').click();return false;});"}]
         [{/block}]
 
         [{block name="checkout_steps_laststep"}]

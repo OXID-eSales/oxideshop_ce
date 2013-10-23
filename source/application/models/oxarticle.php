@@ -2794,6 +2794,26 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     }
 
     /**
+     * Check if stock status has changed since loading the article
+     *
+     * @return bool
+     */
+    protected function _isStockStatusChanged()
+    {
+        return $this->_iStockStatus != $this->_iStockStatusOnLoad;
+    }
+
+    /**
+     * Check if visibility has changed since loading the article
+     *
+     * @return bool
+     */
+    protected function _isVisibilityChanged()
+    {
+        return $this->_isStockStatusChanged() && ($this->_iStockStatus == -1 || $this->_iStockStatusOnLoad == -1);
+    }
+
+    /**
      * Returns formatted delivery date. If the date is not set ('0000-00-00') returns false.
      *
      * @return string | bool

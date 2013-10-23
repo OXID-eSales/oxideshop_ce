@@ -1,6 +1,6 @@
 [{assign var="product" value=$oView->getProduct()}]
 [{assign var="recommid" value=$oView->getRecommId()}]
-[{assign var="testid" value=$oView->getTestId()}]
+[{assign var="iIndex" value=$oView->getIndex()}]
 [{assign var="altproduct" value=$oView->getAltProduct()}]
 
 <div class="compareItem">
@@ -34,7 +34,7 @@
         [{assign var="blShowToBasket" value=false}]
     [{/if}]
 
-    <form name="tobasket.[{$testid}]" [{if $blShowToBasket}]action="[{ $oViewConf->getSelfActionLink() }]" method="post"[{else}]action="[{$_productLink}]" method="get"[{/if}]>
+    <form name="tobasket.[{$iIndex}]" [{if $blShowToBasket}]action="[{ $oViewConf->getSelfActionLink() }]" method="post"[{else}]action="[{$_productLink}]" method="get"[{/if}]>
         <div class="variants">
             [{oxhasrights ident="TOBASKET"}]
                 [{if $blShowToBasket}]
@@ -63,7 +63,7 @@
             [{/oxhasrights}]
 
             [{if $aVariantSelections && $aVariantSelections.selections }]
-                <div class="selectorsBox js-fnSubmit clear" id="compareVariantSelections_[{$testid}]">
+                <div class="selectorsBox js-fnSubmit clear" id="compareVariantSelections_[{$iIndex}]">
                     [{foreach from=$aVariantSelections.selections item=oSelectionList key=iKey}]
                         [{include file="widget/product/selectbox.tpl" oSelectionList=$oSelectionList}]
                     [{/foreach}]
@@ -71,7 +71,7 @@
             [{elseif $oViewConf->showSelectListsInList()}]
                 [{assign var="oSelections" value=$product->getSelections(1)}]
                 [{if $oSelections}]
-                    <div class="selectorsBox js-fnSubmit clear" id="compareSelections_[{$testid}]">
+                    <div class="selectorsBox js-fnSubmit clear" id="compareSelections_[{$iIndex}]">
                         [{foreach from=$oSelections item=oList name=selections}]
                             [{include file="widget/product/selectbox.tpl" oSelectionList=$oList sFieldName="sel" iKey=$smarty.foreach.selections.index blHideDefault=true sSelType="seldrop"}]
                         [{/foreach}]
@@ -98,7 +98,7 @@
                             [{assign var="sFrom" value="PRICE_FROM"|oxmultilangassign}]
                         [{/if}]
                     [{/if}]
-                    <label id="productPrice_[{$testid}]" class="price">
+                    <label id="productPrice_[{$iIndex}]" class="price">
                         <strong>[{$sFrom}] [{oxprice price=$oPrice currency=$oView->getActCurrency()}] [{if $blShowToBasket }]*[{/if}]</strong>
                     </label>
                     [{if $product->loadAmountPriceInfo()}]
@@ -116,7 +116,7 @@
                     [{/oxhasrights}]
                 [{else}]
                     <span >
-                        <a id="variantMoreInfo_[{$testid}]" class="submitButton" href="[{ $_productLink }]" onclick="oxid.mdVariants.getMdVariantUrl('mdVariant_[{$testid}]'); return false;">[{ oxmultilang ident="MORE_INFO" }]</a>
+                        <a id="variantMoreInfo_[{$iIndex}]" class="submitButton" href="[{ $_productLink }]" onclick="oxid.mdVariants.getMdVariantUrl('mdVariant_[{$iIndex}]'); return false;">[{ oxmultilang ident="MORE_INFO" }]</a>
                     </span>
                 [{/if}]
             </div>

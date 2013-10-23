@@ -56,7 +56,7 @@
                                     </div>
                                 [{/if}]
 
-                                [{oxid_include_widget cl="oxwArticleBox" _parent=$oView->getClassName() iLinkType=$product->getLinkType() nocookie=1 _navurlparams=$oViewConf->getNavUrlParams() _object=$product anid=$product->getId() altproduct=$altproduct testid=$smarty.foreach.comparelist.iteration sWidgetType=product sListType=compareitem inlist=$product->isInList() skipESIforUser=1}]
+                                [{oxid_include_widget cl="oxwArticleBox" _parent=$oView->getClassName() iLinkType=$product->getLinkType() nocookie=1 _navurlparams=$oViewConf->getNavUrlParams() _object=$product anid=$product->getId() altproduct=$altproduct iIndex=$smarty.foreach.comparelist.iteration sWidgetType=product sListType=compareitem inlist=$product->isInList() skipESIforUser=1}]
                             </td>
                             [{/foreach}]
                         </tr>
@@ -93,7 +93,7 @@
                             [{foreach key=iProdNr from=$articleList item=product}]
                             <td class="alignTop">
                               <div id="cmpAttr_[{$smarty.foreach.CmpAttr.iteration}]_[{ $product->oxarticles__oxid->value }]">
-                                [{ if $oAttrib->aProd.$iProdNr && $oAttrib->aProd.$iProdNr->value}]
+                                [{if $oAttrib->aProd.$iProdNr && $oAttrib->aProd.$iProdNr->value}]
                                   [{ $oAttrib->aProd.$iProdNr->value }]
                                 [{else}]
                                   -

@@ -5,7 +5,7 @@
     [{assign var="recommid"             value=$oView->getRecommId()        }]
     [{assign var="showMainLink"         value=$oView->getShowMainLink()    }]
     [{assign var="blDisableToCart"      value=$oView->getDisableToCart()   }]
-    [{assign var="testid"               value=$oView->getTestId()          }]
+    [{assign var="iIndex"               value=$oView->getIndex()          }]
     [{assign var="altproduct"           value=$oView->getAltProduct()      }]
 
     [{if $showMainLink}]
@@ -19,7 +19,7 @@
         [{assign var="blShowToBasket" value=false}]
     [{/if}]
 
-    <form name="tobasket[{$testid}]" [{if $blShowToBasket}]action="[{ $oViewConf->getSelfActionLink() }]" method="post"[{else}]action="[{$_productLink}]" method="get"[{/if}]>
+    <form name="tobasket[{$iIndex}]" [{if $blShowToBasket}]action="[{ $oViewConf->getSelfActionLink() }]" method="post"[{else}]action="[{$_productLink}]" method="get"[{/if}]>
         [{ $oViewConf->getNavFormParams() }]
         [{ $oViewConf->getHiddenSid() }]
         <input type="hidden" name="pgNr" value="[{ $oView->getActPage() }]">
@@ -61,7 +61,7 @@
     <div class="listDetails">
         [{block name="widget_product_listitem_infogrid_titlebox"}]
             <div class="titleBox">
-                <a id="[{$testid}]" href="[{$_productLink}]" class="title" title="[{ $product->oxarticles__oxtitle->value}] [{$product->oxarticles__oxvarselect->value}]">
+                <a id="[{$iIndex}]" href="[{$_productLink}]" class="title" title="[{ $product->oxarticles__oxtitle->value}] [{$product->oxarticles__oxvarselect->value}]">
                     <span>[{ $product->oxarticles__oxtitle->value }] [{$product->oxarticles__oxvarselect->value}]</span>
                 </a>
             </div>
@@ -70,7 +70,7 @@
         [{block name="widget_product_listitem_infogrid_selections"}]
                 <div class="selectorsBox">
                     [{if $aVariantSelections && $aVariantSelections.selections }]
-                        <div id="variantselector_[{$testid}]" class="selectorsBox js-fnSubmit clear">
+                        <div id="variantselector_[{$iIndex}]" class="selectorsBox js-fnSubmit clear">
                             [{foreach from=$aVariantSelections.selections item=oSelectionList key=iKey}]
                                 [{include file="widget/product/selectbox.tpl" oSelectionList=$oSelectionList sJsAction="js-fnSubmit"}]
                             [{/foreach}]
@@ -78,7 +78,7 @@
                     [{elseif $oViewConf->showSelectListsInList()}]
                         [{assign var="oSelections" value=$product->getSelections(1)}]
                         [{if $oSelections}]
-                            <div id="selectlistsselector_[{$testid}]" class="selectorsBox js-fnSubmit clear">
+                            <div id="selectlistsselector_[{$iIndex}]" class="selectorsBox js-fnSubmit clear">
                                 [{foreach from=$oSelections item=oList name=selections}]
                                     [{include file="widget/product/selectbox.tpl" oSelectionList=$oList sFieldName="sel" iKey=$smarty.foreach.selections.index blHideDefault=true sSelType="seldrop" sJsAction="js-fnSubmit"}]
                                 [{/foreach}]
@@ -91,7 +91,7 @@
            <div class="priceBox">
                 <div class="content">
                     [{if $oViewConf->getShowCompareList()}]
-                        [{oxid_include_dynamic file="widget/product/compare_links.tpl" testid="_`$testid`" type="compare" aid=$product->oxarticles__oxid->value anid=$altproduct in_list=$product->isOnComparisonList() page=$oView->getActPage()}]
+                        [{oxid_include_dynamic file="widget/product/compare_links.tpl" testid="_`$iIndex`" type="compare" aid=$product->oxarticles__oxid->value anid=$altproduct in_list=$product->isOnComparisonList() page=$oView->getActPage()}]
                     [{/if}]
                     [{block name="widget_product_listitem_infogrid_price"}]
                         [{oxhasrights ident="SHOWARTICLEPRICE"}]
@@ -127,11 +127,11 @@
                                 [{/if}]
                             [{/block}]
                             [{if $product->getUnitPrice()}]
-                                <span id="productPricePerUnit_[{$testid}]" class="pricePerUnit">
+                                <span id="productPricePerUnit_[{$iIndex}]" class="pricePerUnit">
                                     [{$product->getUnitQuantity()}] [{$product->getUnitName()}] | [{oxprice price=$product->getUnitPrice() currency=$oView->getActCurrency() }]/[{$product->getUnitName()}]
                                 </span>
                             [{elseif $product->oxarticles__oxweight->value  }]
-                                <span id="productPricePerUnit_[{$testid}]" class="pricePerUnit">
+                                <span id="productPricePerUnit_[{$iIndex}]" class="pricePerUnit">
                                     <span title="weight">[{ oxmultilang ident="WEIGHT" suffix="COLON" }]</span>
                                     <span class="value">[{ $product->oxarticles__oxweight->value }] [{ oxmultilang ident="KG" }]</span>
                                 </span>

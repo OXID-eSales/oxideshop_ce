@@ -9,7 +9,7 @@
             [{assign var='rsslinks' value=$oView->getRssLinks() }]
             [{if $rsslinks.topArticles}]
                 <a class="rss js-external" id="rssTopProducts" href="[{$rsslinks.topArticles.link}]" title="[{$rsslinks.topArticles.title}]"><img src="[{$oViewConf->getImageUrl('rss.png')}]" alt="[{$rsslinks.topArticles.title}]"><span class="FXgradOrange corners glowShadow">[{$rsslinks.topArticles.title}]</span></a>
-            [{/if }]
+            [{/if}]
         </h3>
     [{/if}]
     <ul class="js-articleBox featuredList">

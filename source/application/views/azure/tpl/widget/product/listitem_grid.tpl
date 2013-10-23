@@ -1,7 +1,7 @@
 [{block name="widget_product_listitem_grid"}]
     [{assign var="product"              value=$oView->getProduct()       }]
     [{assign var="blDisableToCart"      value=$oView->getDisableToCart()    }]
-    [{assign var="testid"               value=$oView->getTestId()           }]
+    [{assign var="iIndex"               value=$oView->getIndex()           }]
     [{assign var="showMainLink"         value=$oView->getShowMainLink()     }]
 
     [{if $showMainLink}]
@@ -45,11 +45,11 @@
                     [{/if}]
                 [{/block}]
                 [{if $product->getUnitPrice()}]
-                    <span id="productPricePerUnit_[{$testid}]" class="pricePerUnit">
+                    <span id="productPricePerUnit_[{$iIndex}]" class="pricePerUnit">
                         [{$product->getUnitQuantity()}] [{$product->getUnitName()}] | [{oxprice price=$product->getUnitPrice() currency=$oView->getActCurrency() }] /[{$product->getUnitName()}]
                     </span>
                 [{elseif $product->oxarticles__oxweight->value  }]
-                    <span id="productPricePerUnit_[{$testid}]" class="pricePerUnit">
+                    <span id="productPricePerUnit_[{$iIndex}]" class="pricePerUnit">
                         <span title="weight">[{ oxmultilang ident="WEIGHT" suffix="COLON" }]</span>
                         <span class="value">[{ $product->oxarticles__oxweight->value }] [{ oxmultilang ident="KG" }]</span>
                     </span>
@@ -57,7 +57,7 @@
             [{/oxhasrights}]
         [{/block}]
     [{/capture}]
-    <a id="[{$testid}]" href="[{$_productLink}]" class="titleBlock title fn" title="[{ $product->oxarticles__oxtitle->value}] [{$product->oxarticles__oxvarselect->value}]">
+    <a id="[{$iIndex}]" href="[{$_productLink}]" class="titleBlock title fn" title="[{ $product->oxarticles__oxtitle->value}] [{$product->oxarticles__oxvarselect->value}]">
         <span>[{ $product->oxarticles__oxtitle->value }] [{$product->oxarticles__oxvarselect->value}]</span>
         <div class="gridPicture">
             <img src="[{$product->getThumbnailUrl()}]" alt="[{ $product->oxarticles__oxtitle->value }] [{$product->oxarticles__oxvarselect->value}]">

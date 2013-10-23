@@ -208,7 +208,7 @@ class Unit_Components_Widgets_oxwArticleBoxTest extends OxidTestCase
         return array(
             array( "recommid"           , "Z8oRXLEnInxn", "getRecommId"         , "Recommendation list id"                  ),
             array( "iIteration"         , "7"           , "getIteration"        , "Iteration number"                        ),
-            array( "testid"             , "3"           , "getTestId"           , "Test id"                                 ),
+            array( "testid"             , "3"           , "getIndex"           , "Test id"                                 ),
             array( "owishid"            , "7g7eZ6hxUsad", "getWishId"           , "Wishlist id"                             ),
             array( "showMainLink"       , false         , "getShowMainLink"     , "Condition if main link is showed"        ),
             array( "blDisableToCart"    , true          , "getDisableToCart"    , "Condition if to cart button is showed"   ),

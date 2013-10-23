@@ -54,22 +54,46 @@ class Unit_Components_Widgets_oxwInformationTest extends OxidTestCase
     }
 
     /**
-     * Test getting list of needed services
+     * Test if services list is array.
      */
-    public function testGetServicesList()
+    public function testGetServicesList_ChecksIfArray()
+    {
+        $aServicesList = $this->_getServicesList();
+        $this->assertTrue( is_array( $aServicesList ) );
+    }
+
+    /**
+     * Test services count.
+     */
+    public function testGetServicesList_ChecksServicesCount()
+    {
+        $aServicesList = $this->_getServicesList();
+        $this->assertEquals( 2, count( $aServicesList ) );
+    }
+
+    /**
+     * Test getting list of needed services.
+     */
+    public function testGetServicesList_CheckServices()
+    {
+        $aServicesList = $this->_getServicesList();
+        $this->assertArrayHasKey( 'oximpressum', $aServicesList );
+        $this->assertArrayHasKey( 'oxagb', $aServicesList );
+        $this->assertArrayNotHasKey( 'oxcredits', $aServicesList, "oxcredits content must be unavailable" );
+    }
+
+    /**
+     * Returns services list- array of objects.
+     *
+     * @return array
+     */
+    protected function _getServicesList()
     {
         $oInformation = new oxwInformation();
         $aServicesKeys = array( 'oximpressum', 'oxagb', 'oxcredits' );
-
         $oInformation->setServicesKeys( $aServicesKeys );
         $aServicesList = $oInformation->getServicesList();
 
-        $this->assertTrue( is_array( $aServicesList ) );
-        $this->assertEquals( 2, count( $aServicesList ) );
-
-        $this->assertArrayHasKey( 'oximpressum', $aServicesList );
-        $this->assertArrayHasKey( 'oxagb', $aServicesList );
-
-        $this->assertArrayNotHasKey( 'oxcredits', $aServicesList, "oxcredits content must be unavailable" );
+        return $aServicesList;
     }
 }

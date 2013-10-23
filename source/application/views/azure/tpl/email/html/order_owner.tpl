@@ -1,6 +1,5 @@
 [{assign var="shop"      value=$oEmailView->getShop() }]
 [{assign var="oViewConf" value=$oEmailView->getViewConfig() }]
-[{assign var="oConf"     value=$oViewConf->getConfig() }]
 [{assign var="currency"  value=$oEmailView->getCurrency() }]
 [{assign var="user"      value=$oEmailView->getUser() }]
 [{assign var="basket"    value=$order->getBasket() }]

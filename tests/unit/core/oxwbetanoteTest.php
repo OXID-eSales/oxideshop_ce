@@ -27,9 +27,9 @@ require_once realpath( "." ).'/unit/OxidTestCase.php';
 require_once realpath( "." ).'/unit/test_config.inc.php';
 
 /**
- * Testing oxvoucherserie class
+ * Testing beta note class
  */
-class Unit_Core_oxbetanoteTest extends OxidTestCase {
+class Unit_Core_oxwBetaNoteTest extends OxidTestCase {
 
     /**
      * Initialize the fixture.

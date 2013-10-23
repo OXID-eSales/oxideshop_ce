@@ -27,7 +27,7 @@ require_once realpath( "." ).'/unit/test_config.inc.php';
 /**
  * Testing oxAccessRightException class.
  */
-class Unit_Core_oxsystemhandlereventhandlerTest extends OxidTestCase
+class Unit_Core_oxSystemEventHandlerTest extends OxidTestCase
 {
 
     public function testOnAdminLoginOMVN()

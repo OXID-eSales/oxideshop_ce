@@ -191,7 +191,7 @@ class oxwArticleBox extends oxWidget
      */
     public function getIndex()
     {
-        return $this->getViewParameter('testid');
+        return $this->getViewParameter('iIndex');
     }
 
     /**

@@ -117,6 +117,6 @@ class Unit_Core_oxcontentlistTest extends OxidTestCase
         $oContent = new oxContentList();
         $oContent->loadServices();
 
-        $this->assertEquals( 7, count( $oContent ) );
+        $this->assertEquals( 6, count( $oContent ) );
     }
 }

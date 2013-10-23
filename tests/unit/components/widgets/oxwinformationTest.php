@@ -45,7 +45,7 @@ class Unit_Components_Widgets_oxwInformationTest extends OxidTestCase
     public function testGetServicesList_ChecksServicesCount()
     {
         $aServicesList = $this->_getServicesList();
-        $this->assertEquals( 7, count( $aServicesList ) );
+        $this->assertEquals( 6, count( $aServicesList ) );
     }
 
     /**

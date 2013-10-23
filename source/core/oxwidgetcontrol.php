@@ -148,7 +148,7 @@ class oxWidgetControl extends oxShopControl
         $oWidgetViewObject = parent::_initializeViewObject( $sClass, $sFunction, $aParams );
 
         // Set template name for current widget.
-        if ( isset($aParams['oxwtemplate']) ) {
+        if ( !empty($aParams['oxwtemplate']) ) {
             $oWidgetViewObject->setTemplateName( $aParams['oxwtemplate'] );
         }
 

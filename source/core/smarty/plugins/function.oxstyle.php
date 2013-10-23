@@ -46,9 +46,9 @@
 function smarty_function_oxstyle($params, &$smarty)
 {
     $myConfig   = oxRegistry::getConfig();
-    $sSufix     = isset($smarty->_tpl_vars["__oxid_include_dynamic"]) ? '_dynamic' : '';
-    $sWidget    = isset($params['widget']) ? $params['widget' ] : '');
-    $blInWidget = isset($params['inWidget']) ? $params['inWidget'] : false);
+    $sSufix     = !empty($smarty->_tpl_vars["__oxid_include_dynamic"]) ? '_dynamic' : '';
+    $sWidget    = !empty($params['widget']) ? $params['widget' ] : '');
+    $blInWidget = !empty($params['inWidget']) ? $params['inWidget'] : false);
 
     $sCtyles  = 'conditional_styles'.$sSufix;
     $sStyles  = 'styles'.$sSufix;
@@ -62,7 +62,7 @@ function smarty_function_oxstyle($params, &$smarty)
     }
 
     $sOutput  = '';
-    if ( isset($params['include']) ) {
+    if ( !empty($params['include']) ) {
         $sStyle = $params['include'];
         if (!preg_match('#^https?://#', $sStyle)) {
             $sOriginalStyle = $sStyle;
@@ -90,7 +90,7 @@ function smarty_function_oxstyle($params, &$smarty)
         }
 
         // Conditional comment ?
-        if ( isset($params['if']) ) {
+        if ( !empty($params['if']) ) {
             $aCtyles[$sStyle] = $params['if'];
             $myConfig->setGlobalParameter($sCtyles, $aCtyles);
         } else {

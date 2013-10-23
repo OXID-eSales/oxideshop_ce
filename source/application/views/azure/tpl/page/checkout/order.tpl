@@ -1,7 +1,7 @@
 [{capture append="oxidBlock_content"}]
 
     [{block name="checkout_order_errors"}]
-        [{ if $oView->isConfirmAGBActive() && $oView->isConfirmAGBError() == 1 }]
+        [{if $oView->isConfirmAGBActive() && $oView->isConfirmAGBError() == 1}]
             [{include file="message/error.tpl" statusMessage="READ_AND_CONFIRM_TERMS"|oxmultilangassign }]
         [{/if}]
         [{assign var="iError" value=$oView->getAddressError() }]
@@ -22,7 +22,7 @@
         [{/if}]
 
         [{block name="checkout_order_details"}]
-            [{ if !$oxcmp_basket->getProductsCount()  }]
+            [{if !$oxcmp_basket->getProductsCount()}]
                 [{block name="checkout_order_emptyshippingcart"}]
                 <div class="status corners error">[{ oxmultilang ident="BASKET_EMPTY" }]</div>
                 [{/block}]
@@ -36,7 +36,7 @@
                 [{else}]
 
                     <div id="orderAgbTop">
-                        <form action="[{ $oViewConf->getSslSelfLink() }]" method="post" id="orderConfirmAgbTop">
+                        <form action="[{$oViewConf->getSslSelfLink()}]" method="post" id="orderConfirmAgbTop">
                             [{ $oViewConf->getHiddenSid() }]
                             [{ $oViewConf->getNavFormParams() }]
                             <input type="hidden" name="cl" value="order">
@@ -68,11 +68,11 @@
                                 [{/if}]
                             </div>
 
-                            [{oxscript add="$('#checkAgbTop').click(function(){ $('input[name=ord_agb]').val( parseInt($('input[name=ord_agb]').val()) ^ 1);});"}]
+                            [{oxscript add="$('#checkAgbTop').click(function(){$('input[name=ord_agb]').val(parseInt($('input[name=ord_agb]').val())^1);});"}]
 
                             [{if $oView->showOrderButtonOnTop()}]
                                 <div class="lineBox clear">
-                                    <a href="[{ oxgetseourl ident=$oViewConf->getPaymentLink() }]" class="prevStep submitButton largeButton">[{ oxmultilang ident="PREVIOUS_STEP" }]</a>
+                                    <a href="[{oxgetseourl ident=$oViewConf->getPaymentLink()}]" class="prevStep submitButton largeButton">[{ oxmultilang ident="PREVIOUS_STEP" }]</a>
                                     <button type="submit" class="submitButton nextStep largeButton">[{ oxmultilang ident="SUBMIT_ORDER" }]</button>
                                 </div>
                             [{/if}]
@@ -81,7 +81,7 @@
                 [{/if}]
 
                 [{block name="checkout_order_vouchers"}]
-                    [{ if $oViewConf->getShowVouchers() && $oxcmp_basket->getVouchers()}]
+                    [{if $oViewConf->getShowVouchers() && $oxcmp_basket->getVouchers()}]
                         [{ oxmultilang ident="USED_COUPONS" }]
                         <div>
                             [{foreach from=$Errors.basket item=oEr key=key }]
@@ -93,14 +93,14 @@
                             [{/foreach}]
                             [{foreach from=$oxcmp_basket->getVouchers() item=sVoucher key=key name=aVouchers}]
                                 [{ $sVoucher->sVoucherNr }]<br>
-                            [{/foreach }]
+                            [{/foreach}]
                         </div>
                     [{/if}]
                 [{/block}]
 
                 [{block name="checkout_order_address"}]
                     <div id="orderAddress">
-                        <form action="[{ $oViewConf->getSslSelfLink() }]" method="post">
+                        <form action="[{$oViewConf->getSslSelfLink()}]" method="post">
                             <h3 class="section">
                             <strong>[{ oxmultilang ident="ADDRESSES" }]</strong>
                             [{ $oViewConf->getHiddenSid() }]
@@ -139,7 +139,7 @@
 
                 [{block name="shippingAndPayment"}]
                     <div id="orderShipping">
-                    <form action="[{ $oViewConf->getSslSelfLink() }]" method="post">
+                    <form action="[{$oViewConf->getSslSelfLink()}]" method="post">
                         <h3 class="section">
                             <strong>[{ oxmultilang ident="SHIPPING_CARRIER" }]</strong>
                             [{ $oViewConf->getHiddenSid() }]
@@ -153,7 +153,7 @@
                     </div>
 
                     <div id="orderPayment">
-                        <form action="[{ $oViewConf->getSslSelfLink() }]" method="post">
+                        <form action="[{$oViewConf->getSslSelfLink()}]" method="post">
                             <h3 class="section">
                                 <strong>[{ oxmultilang ident="PAYMENT_METHOD" }]</strong>
                                 [{ $oViewConf->getHiddenSid() }]
@@ -168,7 +168,7 @@
                 [{/block}]
 
                 <div id="orderEditCart">
-                    <form action="[{ $oViewConf->getSslSelfLink() }]" method="post">
+                    <form action="[{$oViewConf->getSslSelfLink()}]" method="post">
                         <h3 class="section">
                             <strong>[{ oxmultilang ident="CART" }]</strong>
                             [{ $oViewConf->getHiddenSid() }]
@@ -193,7 +193,7 @@
                     [{/block}]
                 [{else}]
                     [{block name="checkout_order_btn_confirm_bottom"}]
-                        <form action="[{ $oViewConf->getSslSelfLink() }]" method="post" id="orderConfirmAgbBottom">
+                        <form action="[{$oViewConf->getSslSelfLink()}]" method="post" id="orderConfirmAgbBottom">
                             [{ $oViewConf->getHiddenSid() }]
                             [{ $oViewConf->getNavFormParams() }]
                             <input type="hidden" name="cl" value="order">
@@ -211,8 +211,7 @@
                                 [{/if}]
                             </div>
 
-                            [{assign var="oConf" value=$oViewConf->getConfig()}]
-                            [{if $oConf->getConfigParam("blShowTSInternationalFeesMessage")}]
+                            [{if $oViewConf->isFunctionalityEnabled("blShowTSInternationalFeesMessage")}]
                             [{oxifcontent ident="oxtsinternationalfees" object="oTSIFContent"}]
                                 <div class="lineBox clear">
                                         <span class="title">[{ $oTSIFContent->oxcontents__oxcontent->value }]</span>
@@ -220,7 +219,7 @@
                                 [{/oxifcontent}]
                             [{/if}]
 
-                            [{if $payment->oxpayments__oxid->value eq "oxidcashondel" && $oConf->getConfigParam("blShowTSCODMessage")}]
+                            [{if $payment->oxpayments__oxid->value eq "oxidcashondel" && $oViewConf->isFunctionalityEnabled("blShowTSCODMessage")}]
                                 [{oxifcontent ident="oxtscodmessage" object="oTSCODContent"}]
                                     <div class="lineBox clear">
                                         <span class="title">[{ $oTSCODContent->oxcontents__oxcontent->value }]</span>
@@ -229,7 +228,7 @@
                             [{/if}]
 
                             <div class="lineBox clear">
-                                <a href="[{ oxgetseourl ident=$oViewConf->getPaymentLink() }]" class="prevStep submitButton largeButton">[{ oxmultilang ident="PREVIOUS_STEP" }]</a>
+                                <a href="[{oxgetseourl ident=$oViewConf->getPaymentLink()}]" class="prevStep submitButton largeButton">[{ oxmultilang ident="PREVIOUS_STEP" }]</a>
                                 <button type="submit" class="submitButton nextStep largeButton">[{ oxmultilang ident="SUBMIT_ORDER" }]</button>
                             </div>
                         </form>

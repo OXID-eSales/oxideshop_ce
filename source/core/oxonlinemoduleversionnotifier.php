@@ -47,7 +47,7 @@ class oxOnlineModuleVersionNotifier
      *
      * @var string
      */
-    protected $_sWebServiceUrl = 'https://admin.oxid-esales.com/omvn/check.php';
+    protected $_sWebServiceUrl = 'https://omvn.oxid-esales.com/check.php';
 
     /**
      * Raw response message received from Online Module Version Notifier web service.

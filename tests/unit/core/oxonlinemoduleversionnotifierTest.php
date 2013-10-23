@@ -35,7 +35,7 @@ class Unit_Core_oxonlinemoduleversionnotifierTest extends OxidTestCase
     {
         $oOmvn = new oxOnlineModuleVersionNotifier();
 
-        $sExpectedWebServiceUrl = 'https://admin.oxid-esales.com/omvn/check.php';
+        $sExpectedWebServiceUrl = 'https://omvn.oxid-esales.com/check.php';
         $sExpectedNewWebServiceUrl = 'new.webservice.url';
 
         $this->assertEquals( $sExpectedWebServiceUrl, $oOmvn->getWebServiceUrl() );

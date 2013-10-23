@@ -36,42 +36,19 @@ class oxwInformation extends oxWidget
     protected $_sThisTemplate = 'widget/footer/info.tpl';
 
     /**
-     * Default service keys
+     * @var oxContentList
+     */
+    protected $_oContentList;
+
+    /**
+     * Returns service keys.
      *
-     * @var array
-     */
-    protected $_aServiceKeys = array( 'oximpressum', 'oxagb', 'oxsecurityinfo', 'oxdeliveryinfo', 'oxrightofwithdrawal', 'oxorderinfo', 'oxcredits' );
-
-    /**
-     * @param string $sTemplate
-     */
-    public function setTemplate( $sTemplate )
-    {
-        $this->_sThisTemplate = $sTemplate;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTemplate()
-    {
-        return $this->_sThisTemplate;
-    }
-
-    /**
-     * @param $aKeys
-     */
-    public function setServicesKeys( $aKeys )
-    {
-        $this->_aServiceKeys = $aKeys;
-    }
-
-    /**
      * @return array
      */
     public function getServicesKeys()
     {
-        return $this->_aServiceKeys;
+        $oContentList = $this->_getContentList();
+        return $oContentList->getServiceKeys();
     }
 
     /**
@@ -81,33 +58,24 @@ class oxwInformation extends oxWidget
      */
     public function getServicesList()
     {
-        /** * @var oxContentList $oContentList */
-        $oContentList = oxNew( "oxContentList" );
+        $oContentList = $this->_getContentList();
 
-        $oContentList->loadServicesByIdents( $this->getServicesKeys() );
+        $oContentList->loadServices();
 
-        $aServices = $this->_extractListToArray( $oContentList );
-
-        return $aServices;
+        return $oContentList;
     }
 
     /**
-     * Extract oxContentList object to associative array with oxloadid as keys
+     * Returns content list object.
      *
-     * @param oxContentList $oContentList
-     *
-     * @return array
+     * @return object|oxContentList
      */
-    protected function _extractListToArray( oxContentList $oContentList )
+    protected function _getContentList()
     {
-        $aContents = $oContentList->getArray();
-
-        $aExtractedContents = array();
-
-        foreach ( $aContents as $oContent ) {
-            $aExtractedContents[$oContent->oxcontents__oxloadid->value] = $oContent;
+        if ( !$this->_oContentList ) {
+            $this->_oContentList = oxNew( "oxContentList" );
         }
 
-        return $aExtractedContents;
+        return $this->_oContentList;
     }
 }

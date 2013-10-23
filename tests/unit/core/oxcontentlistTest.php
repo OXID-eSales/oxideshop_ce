@@ -40,7 +40,7 @@ class Unit_Core_oxcontentlistTest extends OxidTestCase
         // creating demo content
         $this->_oContent = new oxcontent();
         $this->_oContent->oxcontents__oxtitle = new oxField( 'test_Unit_oxcontentlistTest', oxField::T_RAW );
-        $this->_sShopId = modConfig::getInstance()->getShopId();
+        $this->_sShopId = $this->getConfig()->getShopId();
         $this->_oContent->oxcontents__oxshopid = new oxField( $this->_sShopId, oxField::T_RAW );
         $this->_oContent->oxcontents__oxloadid = new oxField( 'testid_Unit_oxcontentlistTest', oxField::T_RAW );
         $this->_oContent->oxcontents__oxcontent = new oxField( 'Unit_oxcontentlistTest', oxField::T_RAW );
@@ -57,7 +57,7 @@ class Unit_Core_oxcontentlistTest extends OxidTestCase
      */
     protected function tearDown()
     {
-        modConfig::getInstance()->setShopId( $this->_sShopId );
+        $this->getConfig()->setShopId( $this->_sShopId );
         // deleting ..
         $this->_oContent->delete();
         parent::tearDown();
@@ -110,41 +110,13 @@ class Unit_Core_oxcontentlistTest extends OxidTestCase
 
 
     /**
-     * Test case for loading content list by passed keys
+     * Checks loaded services count.
      */
-    public function testLoadServicesFromDB()
+    public function testLoadServices()
     {
-        $aIdents = array( 'oximpressum', 'oxagb' );
-        $aExpectedTitles = array( "AGB", "Impressum" );
+        $oContent = new oxContentList();
+        $oContent->loadServices();
 
-        /** * @var oxContentList $oContentList */
-        $oContentList = oxNew( "oxContentList" );
-
-        $aData = $oContentList->loadServicesFromDB( $aIdents );
-
-        $oContentList->assignArray( $aData );
-
-        $this->assertEquals( 2, $oContentList->count() );
-
-        foreach ( $oContentList as $iKey => $oContent ) {
-            $this->assertEquals( $aExpectedTitles[$iKey], $oContentList->oxcontents__oxtitle->value );
-        }
-    }
-
-
-    /**
-     * Test case for extracting contents keys from array to DB query string
-     */
-    public function testExtractKeysFromArrayToQueryString()
-    {
-        $aIdents = array( 'oximpressum', 'oxagb', 'oxsecurityinfo' );
-        $sExpected = "'oximpressum','oxagb','oxsecurityinfo'";
-
-        /** * @var oxContentList $oContentList */
-        $oContentList = oxNew( "oxContentList" );
-
-        $this->assertEquals( $sExpected, $oContentList->extractKeysFromArrayToQueryString( $aIdents ) );
-
-        $this->assertFalse( $oContentList->extractKeysFromArrayToQueryString( array() ) );
+        $this->assertEquals( 7, count( $oContent ) );
     }
 }

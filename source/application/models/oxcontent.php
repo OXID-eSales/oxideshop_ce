@@ -30,14 +30,14 @@
 class oxContent extends oxI18n implements oxIUrl
 {
     /**
-     * Current class name
+     * Current class name.
      *
      * @var string
      */
     protected $_sClassName = 'oxcontent';
 
     /**
-     * Seo article urls for languages
+     * Seo article urls for languages.
      *
      * @var array
      */
@@ -51,21 +51,28 @@ class oxContent extends oxI18n implements oxIUrl
     protected $_sParentCatId = null;
 
     /**
-     * expanded state of a content category
+     * Expanded state of a content category.
      *
      * @var bool
      */
     protected $_blExpanded = null;
 
     /**
-     * Marks that current object is managed by SEO
+     * Marks that current object is managed by SEO.
      *
      * @var bool
      */
     protected $_blIsSeoObject = true;
 
     /**
-     * Extra getter to guarantee compatibility with templates
+     * Category id.
+     *
+     * @var string
+     */
+    protected $_sCategoryId;
+
+    /**
+     * Extra getter to guarantee compatibility with templates.
      *
      * @param string $sName parameter name
      *
@@ -91,7 +98,7 @@ class oxContent extends oxI18n implements oxIUrl
     }
 
     /**
-     * returns the expanded state of the content category
+     * Returns the expanded state of the content category.
      *
      * @return bool
      */
@@ -103,9 +110,29 @@ class oxContent extends oxI18n implements oxIUrl
         return $this->_blExpanded;
     }
 
+    /**
+     * Sets category id.
+     *
+     * @param string $sCategoryId
+     */
+    public function setCategoryId( $sCategoryId )
+    {
+        $this->oxcontents__oxcatid = new oxField( $sCategoryId );
+    }
 
     /**
-     * Get data from db
+     * Returns category id.
+     *
+     * @return string
+     */
+    public function getCategoryId()
+    {
+        return $this->oxcontents__oxcatid->value;
+    }
+
+
+    /**
+     * Get data from db.
      *
      * @param string $sLoadId id
      *
@@ -146,7 +173,7 @@ class oxContent extends oxI18n implements oxIUrl
     }
 
     /**
-     * Loads Content by using field oxloadid instead of oxid
+     * Loads Content by using field oxloadid instead of oxid.
      *
      * @param string $sLoadId content load ID
      *
@@ -187,7 +214,7 @@ class oxContent extends oxI18n implements oxIUrl
     }
 
     /**
-     * Replace the "&amp;" into "&" and call base class
+     * Replace the "&amp;" into "&" and call base class.
      *
      * @param array $dbRecord database record
      *
@@ -217,7 +244,7 @@ class oxContent extends oxI18n implements oxIUrl
     }
 
     /**
-     * getLink returns link for this content in the frontend
+     * getLink returns link for this content in the frontend.
      *
      * @param int $iLang language id [optional]
      *
@@ -289,7 +316,7 @@ class oxContent extends oxI18n implements oxIUrl
     }
 
     /**
-     * Returns standard URL to product
+     * Returns standard URL to product.
      *
      * @param integer $iLang   language
      * @param array   $aParams additional params to use [optional]
@@ -306,7 +333,7 @@ class oxContent extends oxI18n implements oxIUrl
     }
 
     /**
-     * Sets data field value
+     * Sets data field value.
      *
      * @param string $sFieldName index OR name (eg. 'oxarticles__oxtitle') of a data field to set
      * @param string $sValue     value of data field
@@ -363,7 +390,7 @@ class oxContent extends oxI18n implements oxIUrl
     }
 
     /**
-     * Returns latest terms version id
+     * Returns latest terms version id.
      *
      * @return string
      */
@@ -375,7 +402,7 @@ class oxContent extends oxI18n implements oxIUrl
     }
 
     /**
-     * Returns type of content
+     * Returns type of content.
      *
      * @return integer
      */

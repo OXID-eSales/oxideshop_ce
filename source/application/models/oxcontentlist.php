@@ -51,6 +51,40 @@ class oxContentList extends oxList
     const TYPE_CATEGORY_MENU = 2;
 
     /**
+     * Service list.
+     *
+     * @var int
+     */
+    const TYPE_SERVICE_LIST = 3;
+
+    /**
+     * List of services.
+     *
+     * @var array
+     */
+    protected $_aServiceKeys = array( 'oximpressum', 'oxagb', 'oxsecurityinfo', 'oxdeliveryinfo', 'oxrightofwithdrawal', 'oxorderinfo', 'oxcredits' );
+
+    /**
+     * Sets service keys.
+     *
+     * @param array $aServiceKeys
+     */
+    public function setServiceKeys( $aServiceKeys )
+    {
+        $this->_aServiceKeys = $aServiceKeys;
+    }
+
+    /**
+     * Gets services keys.
+     *
+     * @return array
+     */
+    public function getServiceKeys()
+    {
+        return $this->_aServiceKeys;
+    }
+
+    /**
      * Class constructor, initiates parent constructor (parent::oxList()).
      *
      * @param string $sObjectsInListName optional and not used
@@ -78,9 +112,9 @@ class oxContentList extends oxList
 
         if ( $this->count() ) {
             foreach ( $this as $oContent ) {
-                // add into cattree
-                if ( !isset( $aArray[$oContent->oxcontents__oxcatid->value] ) ) {
-                    $aArray[$oContent->oxcontents__oxcatid->value] = array();
+                // add into category tree
+                if ( !isset( $aArray[$oContent->getCategoryId()] ) ) {
+                    $aArray[$oContent->getCategoryId()] = array();
                 }
 
                 $aArray[$oContent->oxcontents__oxcatid->value][] = $oContent;
@@ -100,13 +134,7 @@ class oxContentList extends oxList
      */
     protected function _loadFromDb( $iType )
     {
-        $sSQLAdd = '';
-        if ( $iType == self::TYPE_CATEGORY_MENU ) {
-            $sSQLAdd = ' AND `oxcatid` IS NOT NULL';
-        }
-
-        $sViewName = $this->getBaseObject()->getViewName();
-        $sSql = "SELECT * FROM {$sViewName} WHERE `oxactive` = '1' AND `oxtype` = '$iType' AND `oxsnippet` = '0' AND `oxshopid` = '$this->_sShopID' $sSQLAdd ORDER BY `oxloadid`";
+        $sSql = $this->_getSQLByType( $iType );
         $aData = oxDb::getDb( oxDb::FETCH_MODE_ASSOC )->getAll( $sSql );
 
         return $aData;
@@ -119,7 +147,7 @@ class oxContentList extends oxList
      *
      * @return null
      */
-    public function _load( $iType )
+    protected function _load( $iType )
     {
 
            $aData = $this->_loadFromDb( $iType );
@@ -129,64 +157,54 @@ class oxContentList extends oxList
 
 
     /**
-     * Load services
+     * Load category list data.
      *
-     * @param array $aIdents of load IDs
+     * @return null
      */
-    public function loadServicesByIdents( $aIdents )
+    public function loadServices()
     {
-
-            $aData = $this->loadServicesFromDB( $aIdents );
-
-        $this->assignArray( $aData );
+        $this->_load( self::TYPE_SERVICE_LIST );
+        $this->_extractListToArray();
     }
 
-
     /**
-     * Load contents from db by passed keys
-     *
-     * @param array $aIdents of load IDs
-     *
-     * @return array
+     * Extract oxContentList object to associative array with oxloadid as keys.
      */
-    public function loadServicesFromDB( $aIdents )
+    protected function _extractListToArray()
     {
-        $sTable = $this->getBaseObject()->getViewName();
-
-        $sIdents = $this->extractKeysFromArrayToQueryString( $aIdents );
-
-        $sSQL = "SELECT * FROM {$sTable} WHERE OXACTIVE = 1 AND OXLOADID IN (" . $sIdents . ")
-                                        AND OXSHOPID = '" . $this->getConfig()->getShopId() . "'";
-
-        $aData = oxDb::getDb( oxDb::FETCH_MODE_ASSOC )->getAll( $sSQL );
-
-        return $aData;
+        $aExtractedContents = array();
+        foreach ( $this as $oContent ) {
+            $aExtractedContents[$oContent->getLoadId()] = $oContent;
     }
 
+        $this->_aArray = $aExtractedContents;
+    }
 
     /**
-     * Extract load IDs from array to string
+     * Creates SQL by type.
      *
-     * @param $aKeys
-     * @return false|string
+     * @param $iType
+     *
+     * @return string
      */
-    public function extractKeysFromArrayToQueryString( $aKeys )
+    protected function _getSQLByType( $iType )
     {
-        if ( !is_array( $aKeys ) || empty( $aKeys ) ) {
-            return false;
-        }
+        $sSQLAdd = '';
+        $oDb = oxDb::getDb();
+        $sSQLType = " AND `oxtype` = " . $oDb->quote( $iType );
 
-        $sKeys = "";
-
-        $iCount = count( $aKeys );
-
-        for ( $i = 0; $i < $iCount; $i++ ) {
-            $sKeys .= "'{$aKeys[$i]}'";
-            if ( $i !== $iCount - 1 ) {
-                $sKeys .= ",";
+        if ( $iType == self::TYPE_CATEGORY_MENU ) {
+            $sSQLAdd = " AND `oxcatid` IS NOT NULL AND `oxsnippet` = '0'";
             }
-        }
 
-        return $sKeys;
+        if ( $iType == self::TYPE_SERVICE_LIST ) {
+            $sIdents = implode( ", ", oxDb::getInstance()->quoteArray( $this->getServiceKeys() ) );
+            $sSQLAdd = " AND OXLOADID IN (" . $sIdents . ")";
+            $sSQLType = '';
+        }
+        $sViewName = $this->getBaseObject()->getViewName();
+        $sSql = "SELECT * FROM {$sViewName} WHERE `oxactive` = '1' $sSQLType AND `oxshopid` = " . $oDb->quote( $this->_sShopID ) . " $sSQLAdd ORDER BY `oxloadid`";
+
+        return $sSql;
     }
 }

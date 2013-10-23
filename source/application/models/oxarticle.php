@@ -325,6 +325,13 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     protected $_sToBasketLink = null;
 
     /**
+     * Article stock status when article is initially loaded.
+     *
+     * @var int
+     */
+    protected $_iStockStatusOnLoad = null;
+
+    /**
      * Stock status
      *
      * @var integer

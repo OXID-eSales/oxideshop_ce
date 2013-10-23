@@ -59,7 +59,6 @@ class oxwInformation extends oxWidget
     public function getServicesList()
     {
         $oContentList = $this->_getContentList();
-
         $oContentList->loadServices();
 
         return $oContentList;

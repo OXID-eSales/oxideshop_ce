@@ -40,46 +40,12 @@ class Unit_Components_Widgets_oxwInformationTest extends OxidTestCase
     }
 
     /**
-     * Test set / get template
-     */
-    public function testSetGetTemplate()
-    {
-        $oInformation = new oxwInformation();
-
-        $sExpected = 'widget/footer/helper.tpl';
-
-        $oInformation->setTemplate( $sExpected );
-
-        $this->assertEquals( $sExpected, $oInformation->getTemplate() );
-    }
-
-    /**
-     * Test if services list is array.
-     */
-    public function testGetServicesList_ChecksIfArray()
-    {
-        $aServicesList = $this->_getServicesList();
-        $this->assertTrue( is_array( $aServicesList ) );
-    }
-
-    /**
      * Test services count.
      */
     public function testGetServicesList_ChecksServicesCount()
     {
         $aServicesList = $this->_getServicesList();
-        $this->assertEquals( 2, count( $aServicesList ) );
-    }
-
-    /**
-     * Test getting list of needed services.
-     */
-    public function testGetServicesList_CheckServices()
-    {
-        $aServicesList = $this->_getServicesList();
-        $this->assertArrayHasKey( 'oximpressum', $aServicesList );
-        $this->assertArrayHasKey( 'oxagb', $aServicesList );
-        $this->assertArrayNotHasKey( 'oxcredits', $aServicesList, "oxcredits content must be unavailable" );
+        $this->assertEquals( 7, count( $aServicesList ) );
     }
 
     /**
@@ -90,8 +56,6 @@ class Unit_Components_Widgets_oxwInformationTest extends OxidTestCase
     protected function _getServicesList()
     {
         $oInformation = new oxwInformation();
-        $aServicesKeys = array( 'oximpressum', 'oxagb', 'oxcredits' );
-        $oInformation->setServicesKeys( $aServicesKeys );
         $aServicesList = $oInformation->getServicesList();
 
         return $aServicesList;

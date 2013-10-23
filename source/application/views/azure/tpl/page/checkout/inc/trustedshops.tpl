@@ -4,7 +4,7 @@
             <h3 class="blockHead" id="tsProtectionHeader">[{ oxmultilang ident="TRUSTED_SHOP_BUYER_PROTECTION" }]</h3>
             <div class="etrustlogocol">
             <a href="https://www.trustedshops.com/shop/certificate.php?shop_id=[{$oView->getTSExcellenceId()}]" target="_blank">
-              <img src="[{$oViewConf->getImageUrl('trustedshops_m.gif')}]" title="[{ oxmultilang ident="TRUSTED_SHOPS_IMGTITLE" }]">
+              <img src="[{$oViewConf->getImageUrl('trustedshops_m.gif')}]" title="[{oxmultilang ident="TRUSTED_SHOPS_IMGTITLE"}]">
             </a>
             </div>
             <div>
@@ -15,9 +15,9 @@
               [{foreach from=$aTsProtections item=oTsProduct}]
                   [{assign var='oTsProductPrice' value=$oTsProduct->getPrice() }]
                   [{if $oView->isPaymentVatSplitted() }]
-                     <option value="[{$oTsProduct->getTsId()}]" [{if $oView->getCheckedTsProductId() == $oTsProduct->getTsId()}]SELECTED[{/if}]>[{ oxmultilang ident="TRUSTED_SHOP_PROTECTION_FROM" }] [{oxprice price=$oTsProduct->getAmount() currency=$currency}] ([{oxprice price=$oTsProductPrice->getNettoPrice() currency=$currency}] [{ oxmultilang ident="PLUS_VAT" }] [{oxprice price=$oTsProductPrice->getVatValue() currency=$currency}] ) </option>
+                     <option value="[{$oTsProduct->getTsId()}]" [{if $oView->getCheckedTsProductId() == $oTsProduct->getTsId()}]SELECTED[{/if}]>[{oxmultilang ident="TRUSTED_SHOP_PROTECTION_FROM"}] [{oxprice price=$oTsProduct->getAmount() currency=$currency}] ([{oxprice price=$oTsProductPrice->getNettoPrice() currency=$currency}] [{oxmultilang ident="PLUS_VAT"}] [{oxprice price=$oTsProductPrice->getVatValue() currency=$currency}] ) </option>
                   [{else}]
-                      <option value="[{$oTsProduct->getTsId()}]" [{if $oView->getCheckedTsProductId() == $oTsProduct->getTsId()}]SELECTED[{/if}]>[{ oxmultilang ident="TRUSTED_SHOP_PROTECTION_FROM" }] [{oxprice price=$oTsProduct->getAmount() currency=$currency}] ([{oxprice price=$oTsProductPrice->getBruttoPrice() currency=$currency}] [{ oxmultilang ident="INCLUDE_VAT" }]) </option>
+                      <option value="[{$oTsProduct->getTsId()}]" [{if $oView->getCheckedTsProductId() == $oTsProduct->getTsId()}]SELECTED[{/if}]>[{oxmultilang ident="TRUSTED_SHOP_PROTECTION_FROM"}] [{oxprice price=$oTsProduct->getAmount() currency=$currency}] ([{oxprice price=$oTsProductPrice->getBruttoPrice() currency=$currency}] [{oxmultilang ident="INCLUDE_VAT"}]) </option>
                   [{/if}]
               [{/foreach}]
             </select>
@@ -25,9 +25,9 @@
                 [{assign var="oTsProduct" value=$aTsProtections[0] }]
                 [{assign var="oTsProductPrice" value=$oTsProduct->getPrice() }]
                 [{if $oView->isPaymentVatSplitted() }]
-                <input type="hidden" name="stsprotection" value="[{$oTsProduct->getTsId()}]">[{ oxmultilang ident="TRUSTED_SHOP_PROTECTION_FROM" }] [{oxprice price=$oTsProduct->getAmount() currency=$currency}] ([{oxprice price=$oTsProductPrice->getNettoPrice() currency=$currency}] [{ oxmultilang ident="PLUS_VAT" }] [{oxprice price=$oTsProductPrice->getVatValue() currency=$currency}])
+                <input type="hidden" name="stsprotection" value="[{$oTsProduct->getTsId()}]">[{oxmultilang ident="TRUSTED_SHOP_PROTECTION_FROM"}] [{oxprice price=$oTsProduct->getAmount() currency=$currency}] ([{oxprice price=$oTsProductPrice->getNettoPrice() currency=$currency}] [{oxmultilang ident="PLUS_VAT"}] [{oxprice price=$oTsProductPrice->getVatValue() currency=$currency}])
                 [{else}]
-                <input type="hidden" name="stsprotection" value="[{$oTsProduct->getTsId()}]">[{ oxmultilang ident="TRUSTED_SHOP_PROTECTION_FROM" }] [{oxprice price=$oTsProduct->getAmount() currency=$currency}] ([{oxprice price=$oTsProductPrice->getBruttoPrice() currency=$currency}] [{ oxmultilang ident="INCLUDE_VAT" }])
+                <input type="hidden" name="stsprotection" value="[{$oTsProduct->getTsId()}]">[{oxmultilang ident="TRUSTED_SHOP_PROTECTION_FROM"}] [{oxprice price=$oTsProduct->getAmount() currency=$currency}] ([{oxprice price=$oTsProductPrice->getBruttoPrice() currency=$currency}] [{oxmultilang ident="INCLUDE_VAT"}])
                 [{/if}]
             [{/if}]
               <br>

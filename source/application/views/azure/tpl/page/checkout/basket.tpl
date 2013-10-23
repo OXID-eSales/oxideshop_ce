@@ -14,7 +14,7 @@
                 [{if $oView->showBackToShop()}]
                     [{block name="checkout_basket_backtoshop_top"}]
                         <div class="backtoshop">
-                            <form action="[{ $oViewConf->getSslSelfLink() }]" method="post">
+                            <form action="[{$oViewConf->getSslSelfLink()}]" method="post">
                                 [{ $oViewConf->getHiddenSid() }]
                                 <input type="hidden" name="cl" value="basket">
                                 <input type="hidden" name="fnc" value="backtoshop">
@@ -30,7 +30,7 @@
                     [{/block}]
                 [{else}]
                     [{block name="basket_btn_next_top"}]
-                        <form action="[{ $oViewConf->getSslSelfLink() }]" method="post">
+                        <form action="[{$oViewConf->getSslSelfLink()}]" method="post">
                             [{ $oViewConf->getHiddenSid() }]
                             <input type="hidden" name="cl" value="user">
                             <button type="submit" class="submitButton largeButton nextStep">[{ oxmultilang ident="CONTINUE_TO_NEXT_STEP" }]</button>
@@ -47,7 +47,7 @@
                         [{oxscript include="js/widgets/oxinputvalidator.js" priority=10 }]
                         [{oxscript add="$('form.js-oxValidate').oxInputValidator();"}]
                         <div id="basketVoucher">
-                            <form name="voucher" action="[{ $oViewConf->getSelfActionLink() }]" method="post" class="js-oxValidate">
+                            <form name="voucher" action="[{$oViewConf->getSelfActionLink()}]" method="post" class="js-oxValidate">
                                 <div class="couponBox" id="coupon">
                                     [{foreach from=$Errors.basket item=oEr key=key}]
                                         [{if $oEr->getErrorClassType() == 'oxVoucherException'}]
@@ -79,7 +79,7 @@
             <div class="lineBox clear">
                 [{if $oView->showBackToShop()}]
                     [{block name="checkout_basket_backtoshop_bottom"}]
-                        <form action="[{ $oViewConf->getSslSelfLink() }]" method="post">
+                        <form action="[{$oViewConf->getSslSelfLink()}]" method="post">
                             <div class="backtoshop">
                                 [{ $oViewConf->getHiddenSid() }]
                                 <input type="hidden" name="cl" value="basket">
@@ -96,7 +96,7 @@
                     [{/block}]
                 [{else}]
                     [{block name="basket_btn_next_bottom"}]
-                        <form action="[{ $oViewConf->getSslSelfLink() }]" method="post">
+                        <form action="[{$oViewConf->getSslSelfLink()}]" method="post">
                             [{ $oViewConf->getHiddenSid() }]
                             <input type="hidden" name="cl" value="user">
                             <button type="submit" class="submitButton largeButton nextStep">[{ oxmultilang ident="CONTINUE_TO_NEXT_STEP" }]</button>
@@ -104,7 +104,7 @@
                     [{/block}]
                 [{/if}]
             </div>
-        [{/if }]
+        [{/if}]
         [{if $oView->isWrapping() }]
            [{include file="page/checkout/inc/wrapping.tpl"}]
         [{/if}]

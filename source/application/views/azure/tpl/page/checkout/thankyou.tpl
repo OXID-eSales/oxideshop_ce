@@ -24,10 +24,10 @@
 
             [{block name="checkout_thankyou_proceed"}]
                 [{ oxmultilang ident="YOU_CAN_GO" }]
-                <a id="backToShop" rel="nofollow" href="[{ oxgetseourl ident=$oViewConf->getHomeLink() }]" class="link">[{ oxmultilang ident="BACK_TO_START_PAGE" }]</a>
+                <a id="backToShop" rel="nofollow" href="[{oxgetseourl ident=$oViewConf->getHomeLink()}]" class="link">[{ oxmultilang ident="BACK_TO_START_PAGE" }]</a>
                 [{if $oxcmp_user->oxuser__oxpassword->value }]
                     [{ oxmultilang ident="OR" }]
-                    <a id="orderHistory" rel="nofollow" href="[{ oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=account_order" }]" class="link">[{ oxmultilang ident="CHECK_YOUR_ORDER_HISTORY" }]</a>.
+                    <a id="orderHistory" rel="nofollow" href="[{oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=account_order"}]" class="link">[{ oxmultilang ident="CHECK_YOUR_ORDER_HISTORY" }]</a>.
                 [{/if}]
             [{/block}]
 
@@ -37,8 +37,8 @@
                     <h3 class="blockHead">[{ oxmultilang ident="TRUSTED_SHOPS_CUSTOMER_RATINGS" }]</h3>
                     [{ oxmultilang ident="RATE_OUR_SHOP" }]
                     <div class="etrustTsRatingButton">
-                        <a href="[{ $oViewConf->getTsRatingUrl() }]" target="_blank" title="[{ oxmultilang ident="TRUSTED_SHOPS_RATINGS" }]">
-                            <img src="[{$sTSRatingImg}]" border="0" alt="[{ oxmultilang ident="WRITE_REVIEW_2" }]" align="middle">
+                        <a href="[{$oViewConf->getTsRatingUrl()}]" target="_blank" title="[{oxmultilang ident="TRUSTED_SHOPS_RATINGS"}]">
+                            <img src="[{$sTSRatingImg}]" border="0" alt="[{oxmultilang ident="WRITE_REVIEW_2"}]" align="middle">
                         </a>
                     </div>
                 [{/if}]
@@ -50,7 +50,7 @@
                     [{if $oView->getTrustedShopId()}]
                         <div class="etrustlogocol">
                             <a href="https://www.trustedshops.com/shop/certificate.php?shop_id=[{$oView->getTrustedShopId()}]" target="_blank">
-                                <img src="[{$oViewConf->getImageUrl('trustedshops_m.gif')}]" title="[{ oxmultilang ident="TRUSTED_SHOPS_IMGTITLE" }]">
+                                <img src="[{$oViewConf->getImageUrl('trustedshops_m.gif')}]" title="[{oxmultilang ident="TRUSTED_SHOPS_IMGTITLE"}]">
                             </a>
                         </div>
                         <form id="formTsShops" name="formTShops" method="post" action="https://www.trustedshops.com/shop/protection.php" target="_blank">
@@ -64,7 +64,7 @@
                               <input name="KDNR" type="hidden" value="[{ $oxcmp_user->oxuser__oxcustnr->value }]">
                               <input name="ORDERNR" type="hidden" value="[{ $order->oxorder__oxordernr->value }]">
                               [{ oxmultilang ident="TRUSTED_SHOP_REGISTRATION_MESSAGE" }]<br><br>
-                              <span><input type="submit" id="btnProtect" name="btnProtect" value="[{ oxmultilang ident="TRUSTED_SHOP_REGISTRATION" }]"></span>
+                              <span><input type="submit" id="btnProtect" name="btnProtect" value="[{oxmultilang ident="TRUSTED_SHOP_REGISTRATION"}]"></span>
                           </div>
                         </form>
                         <div class="clear"></div>

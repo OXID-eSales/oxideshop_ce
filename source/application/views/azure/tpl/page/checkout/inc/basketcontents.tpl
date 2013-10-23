@@ -2,17 +2,17 @@
 [{oxscript include="js/widgets/oxbasketchecks.js" priority=10 }]
 [{oxscript add="$('#checkAll, #basketRemoveAll').oxBasketChecks();"}]
 [{assign var="currency" value=$oView->getActCurrency()}]
-<form name="basket[{ $basketindex }]" action="[{ $oViewConf->getSelfActionLink() }]" method="post">
-    [{ $oViewConf->getHiddenSid() }]
+<form name="basket[{$basketindex}]" action="[{$oViewConf->getSelfActionLink()}]" method="post">
+    [{$oViewConf->getHiddenSid()}]
     <input type="hidden" name="cl" value="basket">
     <input type="hidden" name="fnc" value="changebasket">
     <input type="hidden" name="CustomError" value='basket'>
-    <table id="basket" class="basketitems[{if $oViewConf->getActiveClassName() == 'order' }] orderBasketItems[{/if}]">
+    <table id="basket" class="basketitems[{if $oViewConf->getActiveClassName() == 'order'}] orderBasketItems[{/if}]">
         <colgroup>
-            [{if $editable }]<col class="editCol">[{/if}]
+            [{if $editable}]<col class="editCol">[{/if}]
             <col class="thumbCol">
             <col>
-            [{if $oView->isWrapping() }]<col class="wrappingCol">[{/if}]
+            [{if $oView->isWrapping()}]<col class="wrappingCol">[{/if}]
             <col class="coutCol">
             <col class="priceCol">
             <col class="vatCol">
@@ -144,14 +144,14 @@
                         <td>
                                 [{if !$basketitem->getWrappingId() }]
                                     [{if $editable }]
-                                        <a class="wrappingTrigger" rel="nofollow" href="#" title="[{ oxmultilang ident="ADD" }]">[{ oxmultilang ident="ADD" }]</a>
+                                        <a class="wrappingTrigger" rel="nofollow" href="#" title="[{oxmultilang ident="ADD"}]">[{ oxmultilang ident="ADD" }]</a>
                                     [{else}]
                                         [{ oxmultilang ident="NONE" }]
                                     [{/if}]
                                 [{else}]
                                     [{assign var="oWrap" value=$basketitem->getWrapping() }]
                                     [{if $editable }]
-                                        <a class="wrappingTrigger" rel="nofollow" href="#" title="[{ oxmultilang ident="ADD" }]">[{$oWrap->oxwrapping__oxname->value}]</a>
+                                        <a class="wrappingTrigger" rel="nofollow" href="#" title="[{oxmultilang ident="ADD"}]">[{$oWrap->oxwrapping__oxname->value}]</a>
                                     [{else}]
                                         [{$oWrap->oxwrapping__oxname->value}]
                                     [{/if}]
@@ -265,7 +265,7 @@
                       <td id="orderCardPrice">[{oxprice price=$oCard->getPrice() currency=$currency }]</td>
                       <td>
                          [{if $oxcmp_basket->isProportionalCalculationOn() }]
-                            [{ oxmultilang ident="PROPORTIONALLY_CALCULATED" }]</th>
+                            [{oxmultilang ident="PROPORTIONALLY_CALCULATED"}]</th>
                          [{else}]
                               [{if $oxcmp_basket->getGiftCardCostVat() }][{ $oxcmp_basket->getGiftCardCostVatPercent() }]%[{/if}]
                          [{/if}]
@@ -381,7 +381,7 @@
                                 <tr class="couponData">
                                     <th><span><strong>[{ oxmultilang ident="COUPON" }]</strong>&nbsp;([{ oxmultilang ident="NUMBER_2" }] [{ $sVoucher->sVoucherNr }])</span>
                                     [{if $editable }]
-                                        <a href="[{ $oViewConf->getSelfLink() }]&amp;cl=basket&amp;fnc=removeVoucher&amp;voucherId=[{ $sVoucher->sVoucherId }]&amp;CustomError=basket" class="removeFn" rel="nofollow">[{ oxmultilang ident="REMOVE" }]</a>
+                                        <a href="[{$oViewConf->getSelfLink() }]&amp;cl=basket&amp;fnc=removeVoucher&amp;voucherId=[{ $sVoucher->sVoucherId }]&amp;CustomError=basket" class="removeFn" rel="nofollow">[{ oxmultilang ident="REMOVE" }]</a>
                                     [{/if}]
                                     </th>
                                     <td><strong>[{oxprice price=$sVoucher->dVoucherdiscount*-1 currency=$currency}]</strong></td>
@@ -401,17 +401,17 @@
                                 [{if $deliveryCost->getVatValue()}]
                                 <tr>
                                     [{if $oxcmp_basket->isProportionalCalculationOn() }]
-                                        <th>[{ oxmultilang ident="BASKET_TOTAL_PLUS_PROPORTIONAL_VAT" suffix="COLON" }]</th>
+                                            <th>[{oxmultilang ident="BASKET_TOTAL_PLUS_PROPORTIONAL_VAT" suffix="COLON"}]</th>
                                     [{else}]
-                                        <th>[{ oxmultilang ident="VAT_PLUS_PERCENT_AMOUNT" suffix="COLON" args=$deliveryCost->getVat() }]
+                                            <th>[{oxmultilang ident="VAT_PLUS_PERCENT_AMOUNT" suffix="COLON" args=$deliveryCost->getVat()}]
                                     [{/if}]
-                                    <td id="basketDeliveryVat">[{oxprice price=$deliveryCost->getVatValue() currency=$currency }]</td>
+                                        <td id="basketDeliveryVat">[{oxprice price=$deliveryCost->getVatValue() currency=$currency}]</td>
                                 </tr>
                                 [{/if}]
                             [{else}]
                             <tr>
                                 <th>[{ oxmultilang ident="SHIPPING_COST" }]</th>
-                                    <td id="basketDeliveryGross">[{oxprice price=$deliveryCost->getBruttoPrice() currency=$currency }]</td>
+                                    <td id="basketDeliveryGross">[{oxprice price=$deliveryCost->getBruttoPrice() currency=$currency}]</td>
                             </tr>
                             [{/if}]
                         [{/if}]

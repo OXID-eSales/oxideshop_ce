@@ -1,6 +1,6 @@
 [{block name="checkout_user_options"}]
     [{oxscript include="js/widgets/oxequalizer.js" priority=10 }]
-    [{oxscript add="$(function(){oxEqualizer.equalHeight($( '.checkoutOptions .option' ));});"}]
+    [{oxscript add="$(function(){oxEqualizer.equalHeight($('.checkoutOptions .option'));});"}]
     <div class="checkoutOptions clear">
         [{block name="checkout_options_noreg"}]
             [{if $oView->getShowNoRegOption() }]
@@ -12,7 +12,7 @@
                         <p class="errorMsg">[{ oxmultilang ident="MESSAGE_DOWNLOADABLE_PRODUCT" }]</p>
                     [{/if}]
                 [{/block}]
-                <form action="[{ $oViewConf->getSslSelfLink() }]" method="post">
+                <form action="[{$oViewConf->getSslSelfLink()}]" method="post">
                     <p>
                         [{ $oViewConf->getHiddenSid() }]
                         [{ $oViewConf->getNavFormParams() }]
@@ -34,7 +34,7 @@
                         [{$oCont->oxcontents__oxcontent->value}]
                     [{/oxifcontent}]
                 [{/block}]
-                <form action="[{ $oViewConf->getSslSelfLink() }]" method="post">
+                <form action="[{$oViewConf->getSslSelfLink()}]" method="post">
                     <p>
                         [{ $oViewConf->getHiddenSid() }]
                         [{ $oViewConf->getNavFormParams() }]

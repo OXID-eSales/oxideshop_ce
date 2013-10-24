@@ -51,6 +51,7 @@
         [{if $oView->showZoomPics()}]
             [{oxscript include="js/widgets/oxmodalpopup.js" priority=10 }]
             [{oxscript add="$('#zoomTrigger').oxModalPopup({target:'#zoomModal'});"}]
+            [{oxscript add="$('#zoom1').oxModalPopup({target:'#zoomModal'});"}]
             <a id="zoomTrigger" rel="nofollow" href="#">Zoom</a>
             [{oxscript add="$('#zoom1').attr( 'rel', $('#zoom1').attr('data-zoomparams'));"}]
             [{oxscript add="$('.cloud-zoom, .cloud-zoom-gallery').CloudZoom();"}]

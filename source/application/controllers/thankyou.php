@@ -19,7 +19,6 @@
  * @package   views
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -162,7 +161,7 @@ class Thankyou extends oxUBase
     /**
      * Template variable getter. Returns if to show final (5th) step
      *
-     * @deprecated since 2012-11-19. Option blShowFinalStep is removed
+     * @deprecated since v5.0.1 (2012-11-19). Option blShowFinalStep is removed
      *
      * @return string
      */

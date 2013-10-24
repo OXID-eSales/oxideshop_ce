@@ -1335,7 +1335,7 @@ class oxUser extends oxBase
     /**
      * Load saved user basket from the database after he logs in
      *
-     * @deprecated move this functionality in MAJOR version to function which calls login method (e.g. component or so)
+     * @deprecated v5.0.1 move this functionality in MAJOR version to function which calls login method (e.g. component or so)
      *
      * @return null
      */

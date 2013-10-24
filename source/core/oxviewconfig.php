@@ -376,7 +376,7 @@ class oxViewConfig extends oxSuperCfg
     /**
      * Returns session id
      *
-     * @deprecated Use conditional sid getter oxView::getSidForWidget() for widgets instead
+     * @deprecated v5.1.0 Use conditional sid getter oxView::getSidForWidget() for widgets instead
      *
      * @return string
      */

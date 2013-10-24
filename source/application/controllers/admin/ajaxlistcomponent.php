@@ -69,7 +69,7 @@ class ajaxListComponent extends oxSuperCfg
      *
      * @param array $aColumns Array of DB table columns which are loaded from DB.
      *
-     * @deprecated must be replaced with setColumns if needed
+     * @deprecated since v5.1.1 (2013.10.24); must be replaced with setColumns if needed
      *
      * @return null
      */

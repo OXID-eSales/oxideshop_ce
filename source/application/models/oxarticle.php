@@ -2618,7 +2618,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      *
      * @param string $sTag tag
      *
-     * @deprecated 2012-12-21. Use oxarticletags::getStdTagLink instead
+     * @deprecated since v5.0.3 (2012-12-21). Use oxarticletags::getStdTagLink instead
      *
      * @return string
      */
@@ -2632,7 +2632,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     /**
      * Returns article tags
      *
-     * @deprecated 2012-12-21. Use oxarticletags::getTags instead
+     * @deprecated since v5.0.3 (2012-12-21); Use oxarticletags::getTags instead
      *
      * @return string;
      */
@@ -2648,7 +2648,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      *
      * @param string $sTags article tag
      *
-     * @deprecated 2012-12-21. Use oxarticletags::saveTags instead
+     * @deprecated since v5.0.3 (2012-12-21); Use oxarticletags::saveTags instead
      *
      * @return bool
      */
@@ -2669,7 +2669,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      *
      * @param string $sTag new tag
      *
-     * @deprecated 2012-12-21. Use oxarticletags::addTag instead
+     * @deprecated since v5.0.3 (2012-12-21); Use oxarticletags::addTag instead
      *
      * @return bool
      */
@@ -3037,7 +3037,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     /**
      * Returns article file url
      *
-     * @deprecated as article file is duplicate of media. Use getMediaUrls() instead for file media.
+     * @deprecated since v5.0.1 (2012-11-15) as article file is duplicate of media. Use getMediaUrls() instead for file media.
      *
      * @return string
      */

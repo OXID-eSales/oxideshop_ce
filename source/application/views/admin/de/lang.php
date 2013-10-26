@@ -2013,6 +2013,7 @@ $aLang = array(
 'TOTAL_PLUS_PROPORTIONAL_VAT'                              => "plus MwSt. (anteilig berechnet)",
 
 'BUTTON_DOWNLOAD'                                          => 'Herunterladen',
+<<<<<<< HEAD
 
 'oxdiag_menu'						                 => 'Diagnosewerkzeug',
 'OXDIAG_LIST_MENUITEM'                               => 'Service',
@@ -2126,6 +2127,8 @@ $aLang = array(
 'OMVN_ERROR_REQUEST_FAILED'                                => 'Dienst nicht verfügbar. Bitte versuchen Sie es später noch einmal. Falls das Problem weiterhin bestehen sollte, überprüfen Sie bitte, dass Ihr Shop ausgehende Verbindungen aufbauen kann.',
 
 'VERSION_UPDATE_LINK'                                         => 'http://www.oxid-esales.com/de/support-services/dokumentation-und-hilfe/oxid-eshop/installation/oxid-eshop-aktualisieren/update-vorbereiten.html',
+=======
+>>>>>>> 8c0936ddc3fe54e690e1c1704643d94e82a098fc
 );
 
 /*

@@ -2497,6 +2497,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
         $this->assertEquals( 'testCustomTheme', $oViewConf->getActiveTheme() );
     }
 
+<<<<<<< HEAD
     public function testSetGetShopLogo()
     {
         $oView = new oxViewConfig();
@@ -2522,3 +2523,6 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
 
 
 }
+=======
+}
+>>>>>>> 8c0936ddc3fe54e690e1c1704643d94e82a098fc

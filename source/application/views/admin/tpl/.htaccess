@@ -1,5 +1,12 @@
+<<<<<<< HEAD
 <Files ~ ".*">
   deny from all
 </Files>
 Options Indexes
+=======
+<Files ~ ".*">
+  deny from all
+</Files>
+Options Indexes
+>>>>>>> 8c0936ddc3fe54e690e1c1704643d94e82a098fc
 order deny,allow

@@ -1798,12 +1798,20 @@ class Unit_Views_detailsTest extends OxidTestCase
         $this->assertTrue( $oDetails->showRDFaProductStock() );
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8c0936ddc3fe54e690e1c1704643d94e82a098fc
     /**
      * Test getDefaultSorting when default sorting is not set
      *
      * @return null
      */
+<<<<<<< HEAD
     public function testGetDefaultSortingUndefinedSorting()
+=======
+    public function testGetDefaultSorting_UndefinedSorting()
+>>>>>>> 8c0936ddc3fe54e690e1c1704643d94e82a098fc
     {
         $oController = new Details();
 
@@ -1819,7 +1827,11 @@ class Unit_Views_detailsTest extends OxidTestCase
      *
      * @return null
      */
+<<<<<<< HEAD
     public function testGetDefaultSortingDefinedSorting()
+=======
+    public function testGetDefaultSorting_DefinedSorting()
+>>>>>>> 8c0936ddc3fe54e690e1c1704643d94e82a098fc
     {
         $oController = new Details();
 
@@ -1836,7 +1848,11 @@ class Unit_Views_detailsTest extends OxidTestCase
      *
      * @return null
      */
+<<<<<<< HEAD
     public function testDefaultSortingWhenSortingModeIsUndefined()
+=======
+    public function testDefaultSorting_WhenSortingModeIsUndefined()
+>>>>>>> 8c0936ddc3fe54e690e1c1704643d94e82a098fc
     {
         $oController = new Details();
 
@@ -1855,7 +1871,11 @@ class Unit_Views_detailsTest extends OxidTestCase
      *
      * @return null
      */
+<<<<<<< HEAD
     public function testDefaultSortingWhenSortingModeIsAsc()
+=======
+    public function testDefaultSorting_WhenSortingModeIsAsc()
+>>>>>>> 8c0936ddc3fe54e690e1c1704643d94e82a098fc
     {
         $oController = new Details();
 
@@ -1873,7 +1893,11 @@ class Unit_Views_detailsTest extends OxidTestCase
      *
      * @return null
      */
+<<<<<<< HEAD
     public function testDefaultSortingWhenSortingModeIsDesc()
+=======
+    public function testDefaultSorting_WhenSortingModeIsDesc()
+>>>>>>> 8c0936ddc3fe54e690e1c1704643d94e82a098fc
     {
         $oController = new Details();
 
@@ -1903,6 +1927,7 @@ class Unit_Views_detailsTest extends OxidTestCase
 
         $oController->setActiveCategory( $oCategory );
 
+<<<<<<< HEAD
         $this->assertNull( $oController->getDefaultSorting() );
     }
 
@@ -1943,6 +1968,12 @@ class Unit_Views_detailsTest extends OxidTestCase
         $this->assertNull( $oController->getSortingParameters() );
 
     }
+=======
+        $sArticleTable = getViewName( 'oxarticles' );
+        $this->assertNull( $oController->getDefaultSorting() );
+    }
+
+>>>>>>> 8c0936ddc3fe54e690e1c1704643d94e82a098fc
 }
 
 

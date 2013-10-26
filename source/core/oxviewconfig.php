@@ -64,6 +64,7 @@ class oxViewConfig extends oxSuperCfg
     protected $_oCountryList = null;
 
     /**
+<<<<<<< HEAD
      * Trusted shop ratings
      *
      * @var null
@@ -71,6 +72,8 @@ class oxViewConfig extends oxSuperCfg
     protected $_aTrustedShopRatings = null;
 
     /**
+=======
+>>>>>>> 8c0936ddc3fe54e690e1c1704643d94e82a098fc
      * Active theme name
      *
      * @var null
@@ -78,12 +81,15 @@ class oxViewConfig extends oxSuperCfg
     protected $_sActiveTheme = null;
 
     /**
+<<<<<<< HEAD
      * Shop logo
      * @var string
      */
     protected $_sShopLogo = null;
 
     /**
+=======
+>>>>>>> 8c0936ddc3fe54e690e1c1704643d94e82a098fc
      * Returns shops home link
      *
      * @return string
@@ -1465,6 +1471,7 @@ class oxViewConfig extends oxSuperCfg
         return $this->_sActiveTheme;
     }
 
+<<<<<<< HEAD
     /**
      * Returns shop logo image file name from config option
      *
@@ -1497,4 +1504,6 @@ class oxViewConfig extends oxSuperCfg
     {
         $this->_sShopLogo = $sLogo;
     }
+=======
+>>>>>>> 8c0936ddc3fe54e690e1c1704643d94e82a098fc
 }

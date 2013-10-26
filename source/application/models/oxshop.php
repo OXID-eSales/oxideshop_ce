@@ -50,6 +50,8 @@ class oxShop extends oxI18n
     public function __construct()
     {
         parent::__construct();
+
+
         $this->init( 'oxshops' );
 
         if ( $iMax = $this->getConfig()->getConfigParam('iMaxShopId') ) {

@@ -20,6 +20,7 @@ function popUp(evt,currElem)
     if (obj === null) return;
     if (obj.nodeType == 3) // defeat Safari bug
         obj = obj.parentNode;
+<<<<<<< HEAD
 
     var x = getOffset(obj).left + obj.offsetWidth + 5;
     var y = getOffset(obj).top;
@@ -29,6 +30,17 @@ function popUp(evt,currElem)
     popUpWin.style.visibility = "visible";
         window.status = "";
 
+=======
+
+    var x = getOffset(obj).left + obj.offsetWidth + 5;
+    var y = getOffset(obj).top;
+    
+    popUpWin.style.top = Math.max(2,y)+'px';
+    popUpWin.style.left= Math.max(2,x)+'px';
+    popUpWin.style.visibility = "visible";
+    window.status = "";
+    
+>>>>>>> 8c0936ddc3fe54e690e1c1704643d94e82a098fc
 }
 function popDown(currElem)
 {

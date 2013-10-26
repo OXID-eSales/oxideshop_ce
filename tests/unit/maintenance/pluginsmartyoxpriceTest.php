@@ -1,5 +1,6 @@
 <?php
 /**
+<<<<<<< HEAD
  *    This file is part of OXID eShop Community Edition.
  *
  *    OXID eShop Community Edition is free software: you can redistribute it and/or modify
@@ -14,6 +15,22 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+=======
+ * This file is part of OXID eShop Community Edition.
+ *
+ * OXID eShop Community Edition is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * OXID eShop Community Edition is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+>>>>>>> 8c0936ddc3fe54e690e1c1704643d94e82a098fc
  *
  * @link      http://www.oxid-esales.com
  * @package   tests
@@ -33,13 +50,32 @@ class Unit_Maintenance_pluginSmartyOxPriceTest extends OxidTestCase
      */
     public function pricesAsObjects()
     {
+<<<<<<< HEAD
         $oEURCurrency = $this->_getEurCurrency();
         $oUSDCurrency = $this->_getUsdCurrency();
+=======
+        $oEURCurrency = new stdClass();
+        $oEURCurrency->dec      = ',';
+        $oEURCurrency->thousand = '.';
+        $oEURCurrency->sign     = 'EUR';
+        $oEURCurrency->decimal  = 2;
+
+        $oUSDCurrency = new stdClass();
+        $oUSDCurrency->dec      = '.';
+        $oUSDCurrency->thousand = ',';
+        $oUSDCurrency->sign     = 'USD';
+        $oUSDCurrency->decimal  = 3;
+        $oUSDCurrency->side  = 'Front';
+
+>>>>>>> 8c0936ddc3fe54e690e1c1704643d94e82a098fc
         $oEmptyCurrency = new stdClass();
 
         return array(
             array( new oxPrice( 12.12 ), $oEURCurrency, '12,12 EUR' ),
+<<<<<<< HEAD
             array( new oxPrice( 0.12 ), $oEURCurrency, '0,12 EUR' ),
+=======
+>>>>>>> 8c0936ddc3fe54e690e1c1704643d94e82a098fc
             array( new oxPrice( 120012.1 ), $oUSDCurrency, 'USD 120,012.100' ),
             array( new oxPrice( 1278 ), $oEURCurrency, '1.278,00 EUR' ),
             array( new oxPrice( 1992.45 ), $oEmptyCurrency, '1.992,45' ),
@@ -71,13 +107,32 @@ class Unit_Maintenance_pluginSmartyOxPriceTest extends OxidTestCase
      */
     public function pricesAsFloats()
     {
+<<<<<<< HEAD
         $oEURCurrency = $this->_getEurCurrency();
         $oUSDCurrency = $this->_getUsdCurrency();
+=======
+        $oEURCurrency = new stdClass();
+        $oEURCurrency->dec      = ',';
+        $oEURCurrency->thousand = '.';
+        $oEURCurrency->sign     = 'EUR';
+        $oEURCurrency->decimal  = 2;
+
+        $oUSDCurrency = new stdClass();
+        $oUSDCurrency->dec      = '.';
+        $oUSDCurrency->thousand = ',';
+        $oUSDCurrency->sign     = 'USD';
+        $oUSDCurrency->decimal  = 3;
+        $oUSDCurrency->side  = 'Front';
+
+>>>>>>> 8c0936ddc3fe54e690e1c1704643d94e82a098fc
         $oEmptyCurrency = new stdClass();
 
         return array(
             array( 12.12, $oEURCurrency, '12,12 EUR' ),
+<<<<<<< HEAD
             array( 0.12, $oEURCurrency, '0,12 EUR' ),
+=======
+>>>>>>> 8c0936ddc3fe54e690e1c1704643d94e82a098fc
             array( 120012.1, $oUSDCurrency, 'USD 120,012.100' ),
             array( 1278, $oEURCurrency, '1.278,00 EUR' ),
             array( 1992.45, $oEmptyCurrency, '1.992,45' ),
@@ -102,6 +157,7 @@ class Unit_Maintenance_pluginSmartyOxPriceTest extends OxidTestCase
 
         $this->assertEquals( $sExpectedOutput, smarty_function_oxprice( $aParams, $oSmarty ) );
     }
+<<<<<<< HEAD
 
     /**
      * Data provider
@@ -169,4 +225,6 @@ class Unit_Maintenance_pluginSmartyOxPriceTest extends OxidTestCase
 
         return $oEURCurrency;
     }
+=======
+>>>>>>> 8c0936ddc3fe54e690e1c1704643d94e82a098fc
 }

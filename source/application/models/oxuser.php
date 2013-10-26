@@ -680,11 +680,10 @@ class oxUser extends oxBase
      * @param int $iLimit how many entries to load
      * @param int $iPage  which page to start
      *
-     * @return object
+     * @return oxList
      */
     public function getOrders( $iLimit = false, $iPage = 0 )
     {
-        $myConfig = $this->getConfig();
         $oOrders = oxNew( 'oxlist' );
         $oOrders->init( 'oxorder' );
 
@@ -1141,7 +1140,7 @@ class oxUser extends oxBase
                     if ( $iOptInStatus != 2 ) {
                         // sending double-opt-in mail
                         $oEmail = oxNew( 'oxemail' );
-                        $blSuccess = $oEmail->sendNewsletterDBOptInMail( $this );
+                        $blSuccess = $oEmail->sendNewsletterDbOptInMail( $this );
                     } else {
                         // mail already was sent, so just confirming that
                         $blSuccess = true;

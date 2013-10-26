@@ -1,5 +1,6 @@
 <?php
 /**
+<<<<<<< HEAD
  *    This file is part of OXID eShop Community Edition.
  *
  *    OXID eShop Community Edition is free software: you can redistribute it and/or modify
@@ -14,6 +15,22 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+=======
+ * This file is part of OXID eShop Community Edition.
+ *
+ * OXID eShop Community Edition is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * OXID eShop Community Edition is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+>>>>>>> 8c0936ddc3fe54e690e1c1704643d94e82a098fc
  *
  * @link      http://www.oxid-esales.com
  * @package   tests
@@ -26,7 +43,11 @@ require_once realpath( "." ).'/unit/OxidTestCase.php';
 require_once realpath( "." ).'/unit/test_config.inc.php';
 require_once oxConfig::getInstance()->getConfigParam( 'sShopDir' ).'core/smarty/plugins/modifier.oxnumberformat.php';
 
+<<<<<<< HEAD
 class smartyModifierOxNumberFormatTest extends OxidTestCase
+=======
+class unit_maintenance_smartyModifierOxNumberFormatTest extends OxidTestCase
+>>>>>>> 8c0936ddc3fe54e690e1c1704643d94e82a098fc
 {
     /**
      * Provides number format, number and expected value

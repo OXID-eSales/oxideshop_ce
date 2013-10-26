@@ -7213,6 +7213,7 @@ class Unit_Core_oxarticleTest extends OxidTestCase
     }
 
 
+<<<<<<< HEAD
     /**
      * Checks that in admin articles are not cached statically
      */
@@ -7242,4 +7243,6 @@ class Unit_Core_oxarticleTest extends OxidTestCase
         $this->assertEquals( 39, $oArticle->getVariantsCount() );
     }
 
+=======
+>>>>>>> 8c0936ddc3fe54e690e1c1704643d94e82a098fc
 }

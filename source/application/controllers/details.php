@@ -1424,6 +1424,7 @@ class Details extends oxUBase
     }
 
     /**
+<<<<<<< HEAD
      * Checks if rating functionality is on and allowed to user
      *
      * @return bool
@@ -1472,6 +1473,8 @@ class Details extends oxUBase
     }
 
     /**
+=======
+>>>>>>> 8c0936ddc3fe54e690e1c1704643d94e82a098fc
      * Returns default category sorting for selected category
      *
      * @return array
@@ -1493,6 +1496,7 @@ class Details extends oxUBase
         return $aSorting;
     }
 
+<<<<<<< HEAD
     /**
      * Returns sorting parameters separated by "|"
      *
@@ -1506,4 +1510,6 @@ class Details extends oxUBase
         }
         return implode( '|', $aSorting);
     }
+=======
+>>>>>>> 8c0936ddc3fe54e690e1c1704643d94e82a098fc
 }

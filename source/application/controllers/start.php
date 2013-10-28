@@ -126,33 +126,6 @@ class Start extends oxUBase
     public function render()
     {
 
-
-
-
-
-        $oXml = new oxSimpleXml();
-
-        $oModule1 = new stdClass();
-        $oModule1->id = "id1";
-        $oModule1->active = true;
-
-        $oModule2 = new stdClass();
-        $oModule2->id = "id2";
-        $oModule2->active = false;
-
-        $oTestObject = new oxStdClass();
-        $oTestObject->title = "TestTitle";
-        $oTestObject->modules = new oxStdClass();
-        $oTestObject->modules->module = array($oModule1, $oModule2);
-
-        $sTestResult = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<testXml><title>TestTitle</title><modules><module><id>$oModule1->id</id><active>$oModule1->active</active></module><module><id>$oModule2->id</id><active>$oModule2->active</active></module></modules></testXml>\n";
-
-        $oXml->objectToXml( $oTestObject, "testXml" );
-
-
-        die();
-
-
         if ( oxConfig::getParameter( 'showexceptionpage' ) == '1' ) {
             return 'message/exception.tpl';
         }

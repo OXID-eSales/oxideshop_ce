@@ -1523,7 +1523,7 @@ class oxUBase extends oxView
      *
      * @return array
      */
-    public function getSorting( $sSortIdent )
+    public function getSorting( $sSortIdent  )
     {
         $aSorting = null;
 
@@ -1544,13 +1544,13 @@ class oxUBase extends oxView
     /**
      * Returns part of SQL query with sorting params
      *
-     * @param string $sCnid sortable item id
+     * @param string $sIdent sortable item id
      *
      * @return string
      */
-    public function getSortingSql( $sCnid )
+    public function getSortingSql( $sIdent )
     {
-        $aSorting = $this->getSorting( $sCnid );
+        $aSorting = $this->getSorting( $sIdent );
         if ( is_array( $aSorting ) ) {
             return implode( " ", $aSorting );
         }

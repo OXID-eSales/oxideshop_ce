@@ -1814,4 +1814,26 @@ class Details extends oxUBase
         return $this->getConfig()->getConfigParam("blShowRDFaProductStock");
     }
 
+    /**
+     * Returns default category sorting for selected category
+     *
+     * @return array
+     */
+    public function getDefaultSorting()
+    {
+        $aSorting = parent::getDefaultSorting();
+        $oCategory = $this->getActiveCategory();
+
+        if ( $this->getListType() != 'search' &&  $oCategory && $oCategory instanceof oxCategory ) {
+            if ( $sDefaultSorting = $oCategory->getDefaultSorting() ) {
+                $sArticleTable = getViewName( 'oxarticles' );
+                $sSortBy  = $sArticleTable.'.'.$sDefaultSorting;
+                $sSortDir = ( $oCategory->getDefaultSortingMode() ) ? "desc" : "asc";
+                $aSorting = array ( 'sortby' => $sSortBy, 'sortdir' => $sSortDir );
+            }
+        }
+
+        return $aSorting;
+    }
+
 }

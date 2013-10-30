@@ -1140,7 +1140,7 @@ class oxUser extends oxBase
                     if ( $iOptInStatus != 2 ) {
                         // sending double-opt-in mail
                         $oEmail = oxNew( 'oxemail' );
-                        $blSuccess = $oEmail->sendNewsletterDBOptInMail( $this );
+                        $blSuccess = $oEmail->sendNewsletterDbOptInMail( $this );
                     } else {
                         // mail already was sent, so just confirming that
                         $blSuccess = true;

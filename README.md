@@ -28,9 +28,9 @@ First off, you have to fork the repository OXID-eSales/oxideshop_ce to your list
 
 You will find three branches now in youraccount/oxideshop_ce:
 
-* <b>b-5.0-ce</b>, presently our main branch on this repo, is the <b>maintenance branch</b> for the present major version. Only bug fixes here, no new features, no DB changes, no template changes if possible.
+* <b>b-5.1-ce</b>, presently our main branch on this repo, is the <b>maintenance branch</b> for the present major version. Only bug fixes here, no new features, no DB changes, no template changes if possible.
 * <b>b-dev-ce</b> is the so called <b>feature branch</b>: All new features will be developed here as well as bug fixes for the next major version.
-* <b>b-4.6-ce</b> appears as the so called <b>legacy branch</b>: fixes for bugs with higher priority only.
+* <b>b-5.0-ce</b> appears as the so called <b>legacy branch</b>: fixes for bugs with higher priority only.
 
 In general, contributions can be taken over for all branches. Bug fixes committed to only one branch will be pushed to the other branches manually. Of course you can also consider to commit e.g. bug fixes to more than one branche.
 

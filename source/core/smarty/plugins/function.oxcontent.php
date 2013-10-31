@@ -70,8 +70,8 @@ function smarty_function_oxcontent( $params, &$smarty )
         }
     }
 
-    // if we write '[{oxcontent ident="oxfirststart" assign="fs_text"}]' the content wont be outputed.
-    // instead of this the content will be assignet to variable.
+    // if we write '[{oxcontent ident="oxemailfooterplain" assign="fs_text"}]' the content wont be outputted.
+    // instead of this the content will be assigned to variable.
     if( isset( $params['assign']) && $params['assign'])
         $smarty->assign($params['assign'], $sText);
     else

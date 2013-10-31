@@ -38,7 +38,6 @@
                     <input id="loginEmail" type="text" name="lgn_usr" value="" class="textbox">
                 </p>
                 <p>
-                    [{oxscript include="js/widgets/oxinnerlabel.js" priority=10 }]
                     [{oxscript add="$( '#loginPasword' ).oxInnerLabel();"}]
                     <label for="loginPasword" class="innerLabel">[{ oxmultilang ident="PASSWORD" }]</label>
                     <input id="loginPasword" type="password" name="lgn_pwd" class="textbox passwordbox" value=""><strong><a class="forgotPasswordOpener" href="#" title="[{ oxmultilang ident="FORGOT_PASSWORD" }]">?</a></strong>

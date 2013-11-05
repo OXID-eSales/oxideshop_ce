@@ -3169,9 +3169,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      */
     protected function _getGroupPrice()
     {
-        $sPriceSufix = $this->_getUserPriceSufix();
-        $sVarName = $this->oxarticles__oxprice . $sPriceSufix;
-        $dPrice = $this->$sVarName->value;
+        $sPriceSuffix = $this->_getUserPriceSufix();
+        $dPrice = $this->{oxarticles__oxprice . $sPriceSuffix}->value;
 
         // #1437/1436C - added config option, and check for zero A,B,C price values
         if ( $this->getConfig()->getConfigParam( 'blOverrideZeroABCPrices' ) && (double) $dPrice == 0 ) {
@@ -4917,14 +4916,14 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      */
     protected function _getPrice()
     {
-        $sPriceSufix = $this->_getUserPriceSufix();
-        if ( $sPriceSufix === '') {
+        $sPriceSuffix = $this->_getUserPriceSufix();
+        if ( $sPriceSuffix === '') {
             $dPrice = $this->oxarticles__oxprice->value;
         } else {
             if ( $this->getConfig()->getConfigParam( 'blOverrideZeroABCPrices' ) ) {
-                $dPrice = ($this->{oxarticles__oxprice.$sPriceSufix}->value !=0 )? $this->{oxarticles__oxprice.$sPriceSufix}->value : $this->oxarticles__oxprice->value;
+                $dPrice = ($this->{oxarticles__oxprice.$sPriceSuffix}->value !=0 )? $this->{oxarticles__oxprice.$sPriceSuffix}->value : $this->oxarticles__oxprice->value;
             } else {
-                $dPrice = $this->{oxarticles__oxprice.$sPriceSufix}->value;
+                $dPrice = $this->{oxarticles__oxprice.$sPriceSuffix}->value;
             }
         }
         return $dPrice;
@@ -4939,15 +4938,19 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     protected function _getVarMinPrice()
     {
         if ( $this->_dVarMinPrice === null) {
-            $sPriceSufix = $this->_getUserPriceSufix();
-            if ( $sPriceSufix === '' ) {
+            $dPrice = null;
+
+
+            if ( is_null( $dPrice ) ) {
+                $sPriceSuffix = $this->_getUserPriceSufix();
+                if ( $sPriceSuffix === '' ) {
                 $dPrice = $this->oxarticles__oxvarminprice->value;
             } else {
                 $sSql = 'SELECT ';
                 if ( $this->getConfig()->getConfigParam( 'blOverrideZeroABCPrices' ) ) {
-                    $sSql .=  'MIN( IF(`oxprice'.$sPriceSufix.'` = 0, `oxprice`, `oxprice'.$sPriceSufix.'`) ) AS `varminprice` ';
+                        $sSql .=  'MIN( IF(`oxprice'.$sPriceSuffix.'` = 0, `oxprice`, `oxprice'.$sPriceSuffix.'`) ) AS `varminprice` ';
                 } else {
-                    $sSql .=  'MIN(`oxprice'.$sPriceSufix.'`) AS `varminprice` ';
+                        $sSql .=  'MIN(`oxprice'.$sPriceSuffix.'`) AS `varminprice` ';
                 }
 
                 $sSql .=  ' FROM ' . $this->getViewName(true) . '
@@ -4956,6 +4959,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
                 $dPrice = oxDb::getDb()->getOne( $sSql );
             }
+            }
+
             $this->_dVarMinPrice = $dPrice;
         }
 
@@ -4972,12 +4977,12 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         $myConfig = $this->getConfig();
         $sShopId = $myConfig->getShopId();
         if ($this->getConfig()->getConfigParam( 'blMallCustomPrice' ) && $sShopId != $this->oxarticles__oxshopid->value ) {
-            $sPriceSufix = $this->_getUserPriceSufix();
+            $sPriceSuffix = $this->_getUserPriceSufix();
             $sSql = 'SELECT ';
-            if ( $sPriceSufix != '' && $this->getConfig()->getConfigParam( 'blOverrideZeroABCPrices' ) ) {
-                $sSql .=  'MIN(IF(`oxfield2shop`.`oxprice'.$sPriceSufix.'` = 0, `oxfield2shop`.`oxprice`, `oxfield2shop`.`oxprice'.$sPriceSufix.'`)) AS `varminprice` ';
+            if ( $sPriceSuffix != '' && $this->getConfig()->getConfigParam( 'blOverrideZeroABCPrices' ) ) {
+                $sSql .=  'MIN(IF(`oxfield2shop`.`oxprice'.$sPriceSuffix.'` = 0, `oxfield2shop`.`oxprice`, `oxfield2shop`.`oxprice'.$sPriceSuffix.'`)) AS `varminprice` ';
             } else {
-                $sSql .=  'MIN(`oxfield2shop`.`oxprice'.$sPriceSufix.'`) AS `varminprice` ';
+                $sSql .=  'MIN(`oxfield2shop`.`oxprice'.$sPriceSuffix.'`) AS `varminprice` ';
             }
             $sSql .=  ' FROM ' . getViewName('oxfield2shop') . ' AS oxfield2shop
                         INNER JOIN ' . $this->getViewName(true) . ' AS oxarticles ON `oxfield2shop`.`oxartid` = `oxarticles`.`oxid`
@@ -4997,15 +5002,19 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     protected function _getVarMaxPrice()
     {
         if ( $this->_dVarMaxPrice === null ) {
-            $sPriceSufix = $this->_getUserPriceSufix();
-            if ( $sPriceSufix === '') {
+
+            $dPrice = null;
+
+            if ( is_null( $dPrice ) ) {
+                $sPriceSuffix = $this->_getUserPriceSufix();
+                if ( $sPriceSuffix === '') {
                 $dPrice = $this->oxarticles__oxvarmaxprice->value;
             } else {
                 $sSql = 'SELECT ';
                 if ( $this->getConfig()->getConfigParam( 'blOverrideZeroABCPrices' ) ) {
-                    $sSql .=  'MAX( IF(`oxprice'.$sPriceSufix.'` = 0, `oxprice`, `oxprice'.$sPriceSufix.'`) ) AS `varmaxprice` ';
+                        $sSql .=  'MAX( IF(`oxprice'.$sPriceSuffix.'` = 0, `oxprice`, `oxprice'.$sPriceSuffix.'`) ) AS `varmaxprice` ';
                 } else {
-                    $sSql .=  'MAX(`oxprice'.$sPriceSufix.'`) AS `varmaxprice` ';
+                        $sSql .=  'MAX(`oxprice'.$sPriceSuffix.'`) AS `varmaxprice` ';
                 }
 
                 $sSql .=  ' FROM ' . $this->getViewName(true) . '
@@ -5014,6 +5023,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
                 $dPrice = oxDb::getDb()->getOne( $sSql );
             }
+            }
+
             $this->_dVarMaxPrice = $dPrice;
         }
 
@@ -5030,12 +5041,12 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         $myConfig = $this->getConfig();
         $sShopId = $myConfig->getShopId();
         if ($this->getConfig()->getConfigParam( 'blMallCustomPrice' ) && $sShopId != $this->oxarticles__oxshopid->value ) {
-            $sPriceSufix = $this->_getUserPriceSufix();
+            $sPriceSuffix = $this->_getUserPriceSufix();
             $sSql = 'SELECT ';
-            if ( $sPriceSufix != '' && $this->getConfig()->getConfigParam( 'blOverrideZeroABCPrices' ) ) {
-                $sSql .=  'MAX(IF(`oxfield2shop`.`oxprice'.$sPriceSufix.'` = 0, `oxfield2shop`.`oxprice`, `oxfield2shop`.`oxprice'.$sPriceSufix.'`)) AS `varmaxprice` ';
+            if ( $sPriceSuffix != '' && $this->getConfig()->getConfigParam( 'blOverrideZeroABCPrices' ) ) {
+                $sSql .=  'MAX(IF(`oxfield2shop`.`oxprice'.$sPriceSuffix.'` = 0, `oxfield2shop`.`oxprice`, `oxfield2shop`.`oxprice'.$sPriceSuffix.'`)) AS `varmaxprice` ';
             } else {
-                $sSql .=  'MAX(`oxfield2shop`.`oxprice'.$sPriceSufix.'`) AS `varmaxprice` ';
+                $sSql .=  'MAX(`oxfield2shop`.`oxprice'.$sPriceSuffix.'`) AS `varmaxprice` ';
             }
             $sSql .=  ' FROM ' . getViewName('oxfield2shop') . ' AS oxfield2shop
                         INNER JOIN ' . $this->getViewName(true) . ' AS oxarticles ON `oxfield2shop`.`oxartid` = `oxarticles`.`oxid`
@@ -5047,6 +5058,11 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         return $dPrice;
     }
 
+    /**
+     * Return unit quantity
+     *
+     * @return sting
+     */
     public function getUnitQuantity()
     {
         return $this->oxarticles__oxunitquantity->value;

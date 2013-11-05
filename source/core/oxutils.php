@@ -662,7 +662,7 @@ class oxUtils extends oxSuperCfg
      */
     public function commitFileCache()
     {
-        if ( count( $this->_aLockedFileHandles[LOCK_EX] ) ) {
+        if ( !empty( $this->_aLockedFileHandles[LOCK_EX] ) ) {
             startProfile("!__SAVING CACHE__! (warning)");
             foreach ( $this->_aLockedFileHandles[LOCK_EX] as $sKey => $rHandle ) {
                 if ( $rHandle !== false && isset( $this->_aFileCacheContents[$sKey] ) ) {

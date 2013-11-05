@@ -46,12 +46,12 @@
 function smarty_function_oxscript($params, &$smarty)
 {
     $myConfig             = oxRegistry::getConfig();
-    $sSufix               = ($smarty->_tpl_vars["__oxid_include_dynamic"])?'_dynamic':'';
-    $sIncludes            = 'includes'.$sSufix;
-    $sScripts             = 'scripts'.$sSufix;
+    $sSuffix               = ($smarty->_tpl_vars["__oxid_include_dynamic"])?'_dynamic':'';
+    $sIncludes            = 'includes'.$sSuffix;
+    $sScripts             = 'scripts'.$sSuffix;
     $iPriority            = !empty($params['priority']) ? $params['priority'] : 3;
-    $sWidget              = !empty($params['widget']) ? $params['widget'] : '');
-    $blInWidget           = !empty($params['inWidget']) ? $params['inWidget'] : false);
+    $sWidget              = !empty($params['widget']) ? $params['widget'] : '';
+    $blInWidget           = !empty($params['inWidget']) ? $params['inWidget'] : false;
     $aScript              = (array) $myConfig->getGlobalParameter($sScripts);
     $aInclude             = (array) $myConfig->getGlobalParameter($sIncludes);
     $sOutput              = '';

@@ -46,14 +46,14 @@
 function smarty_function_oxstyle($params, &$smarty)
 {
     $myConfig   = oxRegistry::getConfig();
-    $sSufix     = !empty($smarty->_tpl_vars["__oxid_include_dynamic"]) ? '_dynamic' : '';
-    $sWidget    = !empty($params['widget']) ? $params['widget' ] : '');
-    $blInWidget = !empty($params['inWidget']) ? $params['inWidget'] : false);
+    $sSuffix     = !empty($smarty->_tpl_vars["__oxid_include_dynamic"]) ? '_dynamic' : '';
+    $sWidget    = !empty($params['widget']) ? $params['widget' ] : '';
+    $blInWidget = !empty($params['inWidget']) ? $params['inWidget'] : false;
 
-    $sCtyles  = 'conditional_styles'.$sSufix;
-    $sStyles  = 'styles'.$sSufix;
+    $sCStyles  = 'conditional_styles'.$sSuffix;
+    $sStyles  = 'styles'.$sSuffix;
 
-    $aCtyles  = (array) $myConfig->getGlobalParameter($sCtyles);
+    $aCStyles  = (array) $myConfig->getGlobalParameter($sCStyles);
     $aStyles  = (array) $myConfig->getGlobalParameter($sStyles);
 
 
@@ -91,8 +91,8 @@ function smarty_function_oxstyle($params, &$smarty)
 
         // Conditional comment ?
         if ( !empty($params['if']) ) {
-            $aCtyles[$sStyle] = $params['if'];
-            $myConfig->setGlobalParameter($sCtyles, $aCtyles);
+            $aCStyles[$sStyle] = $params['if'];
+            $myConfig->setGlobalParameter($sCStyles, $aCStyles);
         } else {
             $aStyles[] = $sStyle;
             $aStyles = array_unique($aStyles);
@@ -102,7 +102,7 @@ function smarty_function_oxstyle($params, &$smarty)
         foreach ($aStyles as $sSrc) {
             $sOutput .= '<link rel="stylesheet" type="text/css" href="'.$sSrc.'" />'.PHP_EOL;
         }
-        foreach ($aCtyles as $sSrc => $sCondition) {
+        foreach ($aCStyles as $sSrc => $sCondition) {
             $sOutput .= '<!--[if '.$sCondition.']><link rel="stylesheet" type="text/css" href="'.$sSrc.'"><![endif]-->'.PHP_EOL;
         }
     }

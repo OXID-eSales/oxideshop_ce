@@ -4892,20 +4892,20 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      */
     protected function _getUserPriceSufix()
     {
-        $sPriceSufix = '';
+        $sPriceSuffix = '';
         $oUser = $this->getArticleUser();
 
         if ( $oUser ) {
             if ( $oUser->inGroup( 'oxidpricea' ) ) {
-                $sPriceSufix = 'a';
+                $sPriceSuffix = 'a';
             } elseif ( $oUser->inGroup( 'oxidpriceb' ) ) {
-                $sPriceSufix = 'b';
+                $sPriceSuffix = 'b';
             } elseif ( $oUser->inGroup( 'oxidpricec' ) ) {
-                $sPriceSufix = 'c';
+                $sPriceSuffix = 'c';
             }
         }
 
-        return $sPriceSufix;
+        return $sPriceSuffix;
     }
 
 

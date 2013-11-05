@@ -1255,11 +1255,13 @@ class oxUtils extends oxSuperCfg
     {
         $blCalculationModeNetto = (bool) $this->getConfig()->getConfigParam('blShowNetPrice');
 
+        $oCurrency = $this->getConfig()->getActShopCurrencyObject();
+
         $blEnterNetPrice = $this->getConfig()->getConfigParam('blEnterNetPrice');
         if ( $blCalculationModeNetto && !$blEnterNetPrice ) {
-            $dPrice = round( oxPrice::brutto2Netto( $dPrice, $dVat ), 2 );
+            $dPrice = round( oxPrice::brutto2Netto( $dPrice, $dVat ), $oCurrency->decimal );
         } elseif ( !$blCalculationModeNetto && $blEnterNetPrice ) {
-            $dPrice = round( oxPrice::netto2Brutto( $dPrice, $dVat ), 2 );
+            $dPrice = round( oxPrice::netto2Brutto( $dPrice, $dVat ), $oCurrency->decimal );
         }
         return $dPrice;
     }

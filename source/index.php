@@ -19,7 +19,6 @@
  * @package   main
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 require_once dirname(__FILE__) . "/bootstrap.php";

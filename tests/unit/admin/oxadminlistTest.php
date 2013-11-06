@@ -19,7 +19,6 @@
  * @package   tests
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -190,7 +189,7 @@ class Unit_Admin_oxAdminListTest extends OxidTestCase
      */
     public function testcalcListItemsCount()
     {
-        $sQ = 'select * from oxarticles';
+        $sQ = 'SELECT * from oxarticles ORder BY name';
 
         $oAdminList = $this->getProxyClass( 'oxadminlist' );
         $oAdminList->UNITcalcListItemsCount( $sQ );
@@ -198,7 +197,7 @@ class Unit_Admin_oxAdminListTest extends OxidTestCase
         $iTotalCount = oxDb::getDb()->getOne( 'select count(*) from oxarticles' );
 
         $this->assertEquals( $iTotalCount, $oAdminList->getNonPublicVar( '_iListSize' ) );
-        $this->assertEquals( $iTotalCount, oxSession::getVar( 'iArtCnt' ) );
+        $this->assertEquals( $iTotalCount, $this->getSession()->getVariable('iArtCnt' ) );
     }
 
     /**

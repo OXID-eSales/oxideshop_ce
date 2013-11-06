@@ -80,7 +80,6 @@ window.onload = function ()
         <td class="listheader" colspan="2"><a href="Javascript:top.oxid.admin.setSorting( document.search, 'oxvoucherseries', 'oxminimumvalue', 'asc');document.search.submit();" class="listheader">[{ oxmultilang ident="VOUCHERSERIE_LIST_MINVALUE" }]</a></td>
     [{/block}]
 </tr>
-[{assign var="sCurrentDatetime" value=$smarty.now|date_format:"%Y-%m-%d %H:%M:%S"}]
 [{assign var="blWhite" value=""}]
 [{assign var="_cnt" value=0}]
 [{foreach from=$mylist item=listitem}]
@@ -95,12 +94,7 @@ window.onload = function ()
         [{ if $listitem->oxvoucherseries__oxid->value == $oxid }]
             [{assign var="listclass" value=listitem4 }]
         [{ /if}]
-       	<td valign="top" class="[{ $listclass}][{ if 
-       			($listitem->oxvoucherseries__oxbegindate->value == '0000-00-00 00:00:00'  && $listitem->oxvoucherseries__oxenddate->value == '0000-00-00 00:00:00' ) ||
-       			 ($listitem->oxvoucherseries__oxbegindate->value == '0000-00-00 00:00:00'  && $sCurrentDatetime <= $listitem->oxvoucherseries__oxenddate->value) ||
-       			 ($listitem->oxvoucherseries__oxbegindate->value <= $sCurrentDatetime  && $listitem->oxvoucherseries__oxenddate->value == '0000-00-00 00:00:00' ) ||
-       			($listitem->oxvoucherseries__oxbegindate->value <= $sCurrentDatetime && $sCurrentDatetime <= $listitem->oxvoucherseries__oxenddate->value)
-       			}] active[{/if}]" height="15"><div class="listitemfloating">&nbsp</a></div></td>
+       	<td valign="top" class="[{ $listclass}][{ if  $listitem->getVoucherStatusByDatetime() == 1 }] active[{/if}]" height="15"><div class="listitemfloating">&nbsp</a></div></td>
         <td valign="top" class="[{ $listclass}]" height="15"><div class="listitemfloating">&nbsp;<a href="Javascript:top.oxid.admin.editThis('[{ $listitem->oxvoucherseries__oxid->value}]');" class="[{ $listclass}]">[{ if !$listitem->oxvoucherseries__oxserienr->value }]-[{ oxmultilang ident="GENERAL_NONAME" }]-[{else}][{ $listitem->oxvoucherseries__oxserienr->value }][{/if}]</a></div></td>
         <td valign="top" class="[{ $listclass}]"><div class="listitemfloating"><a href="Javascript:top.oxid.admin.editThis('[{ $listitem->oxvoucherseries__oxid->value }]');" class="[{ $listclass}]">[{ $listitem->oxvoucherseries__oxdiscount->value }][{if $listitem->oxvoucherseries__oxdiscounttype->value == "percent"}] %[{/if}]</a></div></td>
         <td valign="top" class="[{ $listclass}]"><div class="listitemfloating"><a href="Javascript:top.oxid.admin.editThis('[{ $listitem->oxvoucherseries__oxid->value }]');" class="[{ $listclass}]">[{ $listitem->oxvoucherseries__oxbegindate->value }]</a></div></td>

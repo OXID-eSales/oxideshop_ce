@@ -261,16 +261,16 @@ class oxAdminList extends oxAdminView
         $oStr = getStr();
 
         // count SQL
-        $sSql = $oStr->preg_replace( '/select .* from/', 'select count(*) from ', $sSql );
+        $sSql = $oStr->preg_replace( '/select .* from/i', 'select count(*) from ', $sSql );
 
         // removing order by
-        $sSql = $oStr->preg_replace( '/order by .*$/', '', $sSql );
+        $sSql = $oStr->preg_replace( '/order by .*$/i', '', $sSql );
 
         // con of list items which fits current search conditions
         $this->_iListSize = oxDb::getDb()->getOne( $sSql, false, false );
 
         // set it into session that other frames know about size of DB
-        oxSession::setVar( 'iArtCnt', $this->_iListSize );
+        oxRegistry::getSession()->setVariable( 'iArtCnt', $this->_iListSize );
     }
 
      /**

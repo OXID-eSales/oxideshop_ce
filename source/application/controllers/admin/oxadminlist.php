@@ -71,14 +71,14 @@ class oxAdminList extends oxAdminView
     protected $_aWhere = null;
 
     /**
-     * Enable/disable sorting by DESC (SQL) (defaultfalse - disable).
+     * Enable/disable sorting by DESC (SQL) (default false - disable).
      *
      * @var bool
      */
     protected $_blDesc = false;
 
     /**
-     * Set to true to enable multilanguage
+     * Set to true to enable multi language
      *
      * @var object
      */
@@ -331,7 +331,7 @@ class oxAdminList extends oxAdminView
                     //add table name to column name if no table name found attached to column name
                     $sSql .= ( ( ( $blSep ) ? ', ' : '' ) ) . oxDb::getInstance()->escapeString( $sField );
 
-                    //V oxactive field search always DESC
+                    //V oxActive field search always DESC
                     if ( $blSortDesc || $sColumn == "oxactive" || strcasecmp( $sSortDir, 'desc' ) == 0 ) {
                         $sSql .= ' desc ';
                     }
@@ -397,7 +397,7 @@ class oxAdminList extends oxAdminView
     }
 
     /**
-     * Checks if fulter contains wildcards like %
+     * Checks if filter contains wildcards like %
      *
      * @param string $sFieldValue filter value
      *
@@ -405,7 +405,7 @@ class oxAdminList extends oxAdminView
      */
     protected function _isSearchValue( $sFieldValue )
     {
-        //check if this is search string (conatains % sign at begining and end of string)
+        //check if this is search string (contains % sign at beginning and end of string)
         $blIsSearchValue = false;
         $oStr = getStr();
         if ( $oStr->preg_match( '/^%/', $sFieldValue ) && $oStr->preg_match( '/%$/', $sFieldValue ) ) {
@@ -433,7 +433,7 @@ class oxAdminList extends oxAdminView
             while ( list($sFieldName, $sFieldValue) = each( $aWhere ) ) {
                 $sFieldValue = trim( $sFieldValue );
 
-                //check if this is search string (conatains % sign at begining and end of string)
+                //check if this is search string (contains % sign at beginning and end of string)
                 $blIsSearchValue = $this->_isSearchValue( $sFieldValue );
 
                 //removing % symbols
@@ -442,7 +442,7 @@ class oxAdminList extends oxAdminView
                 if ( strlen($sFieldValue) ) {
                     $aVal = explode( ' ', $sFieldValue );
 
-                    //for each search field using AND anction
+                    //for each search field using AND action
                     $sSqlBoolAction = ' and (';
 
                     foreach ( $aVal as $sVal) {
@@ -659,46 +659,46 @@ class oxAdminList extends oxAdminView
         $iAdminListSize = $this->_getViewListSize();
         if ( $this->_iListSize > $iAdminListSize ) {
             // yes, we need to build the navigation object
-            $pagenavigation = new stdClass();
-            $pagenavigation->pages    = round( ( ( $this->_iListSize - 1 ) / $iAdminListSize ) + 0.5, 0 );
-            $pagenavigation->actpage  = ($pagenavigation->actpage > $pagenavigation->pages)? $pagenavigation->pages : round( ( $this->_iCurrListPos / $iAdminListSize ) + 0.5, 0 );
-            $pagenavigation->lastlink = ( $pagenavigation->pages - 1 ) * $iAdminListSize;
-            $pagenavigation->nextlink = null;
-            $pagenavigation->backlink = null;
+            $pageNavigation = new stdClass();
+            $pageNavigation->pages    = round( ( ( $this->_iListSize - 1 ) / $iAdminListSize ) + 0.5, 0 );
+            $pageNavigation->actpage  = ($pageNavigation->actpage > $pageNavigation->pages)? $pageNavigation->pages : round( ( $this->_iCurrListPos / $iAdminListSize ) + 0.5, 0 );
+            $pageNavigation->lastlink = ( $pageNavigation->pages - 1 ) * $iAdminListSize;
+            $pageNavigation->nextlink = null;
+            $pageNavigation->backlink = null;
 
             $iPos = $this->_iCurrListPos + $iAdminListSize;
             if ( $iPos < $this->_iListSize ) {
-                $pagenavigation->nextlink = $iPos = $this->_iCurrListPos + $iAdminListSize;
+                $pageNavigation->nextlink = $iPos = $this->_iCurrListPos + $iAdminListSize;
             }
 
             if ( ( $this->_iCurrListPos - $iAdminListSize ) >= 0 ) {
-                $pagenavigation->backlink = $iPos = $this->_iCurrListPos - $iAdminListSize;
+                $pageNavigation->backlink = $iPos = $this->_iCurrListPos - $iAdminListSize;
             }
 
             // calculating list start position
-            $iStart = $pagenavigation->actpage - 5;
+            $iStart = $pageNavigation->actpage - 5;
             $iStart = ( $iStart <= 0 ) ? 1 : $iStart;
 
             // calculating list end position
-            $iEnd = $pagenavigation->actpage + 5;
+            $iEnd = $pageNavigation->actpage + 5;
             $iEnd = ( $iEnd < $iStart + 10) ? $iStart + 10 : $iEnd;
-            $iEnd = ( $iEnd > $pagenavigation->pages ) ? $pagenavigation->pages : $iEnd;
+            $iEnd = ( $iEnd > $pageNavigation->pages ) ? $pageNavigation->pages : $iEnd;
 
             // once again adjusting start pos ..
             $iStart = ( $iEnd - 10 > 0 ) ? $iEnd - 10 : $iStart;
-            $iStart = ( $pagenavigation->pages <= 11) ? 1 : $iStart;
+            $iStart = ( $pageNavigation->pages <= 11) ? 1 : $iStart;
 
             // navigation urls
             for ( $i = $iStart; $i <= $iEnd; $i++ ) {
                 $page = new stdclass();
                 $page->selected = 0;
-                if ( $i == $pagenavigation->actpage ) {
+                if ( $i == $pageNavigation->actpage ) {
                     $page->selected = 1;
                 }
-                $pagenavigation->changePage[$i] = $page;
+                $pageNavigation->changePage[$i] = $page;
             }
 
-            $this->_aViewData['pagenavi'] = $pagenavigation;
+            $this->_aViewData['pagenavi'] = $pageNavigation;
 
             if ( isset( $this->_iOverPos)) {
                 $iPos = $this->_iOverPos;
@@ -741,7 +741,7 @@ class oxAdminList extends oxAdminView
         // navigation according to class
         if ( $sNode ) {
 
-            $myAdminNavig = $this->getNavigation();
+            $myAdminNavigation = $this->getNavigation();
 
             $sOxId = $this->getEditObjectId();
 
@@ -755,15 +755,15 @@ class oxAdminList extends oxAdminView
             }
 
             // tabs
-            $this->_aViewData['editnavi'] = $myAdminNavig->getTabs( $sNode, $iActTab );
+            $this->_aViewData['editnavi'] = $myAdminNavigation->getTabs( $sNode, $iActTab );
 
             // active tab
-            $this->_aViewData['actlocation'] = $myAdminNavig->getActiveTab( $sNode, $iActTab );
+            $this->_aViewData['actlocation'] = $myAdminNavigation->getActiveTab( $sNode, $iActTab );
 
             // default tab
-            $this->_aViewData['default_edit'] = $myAdminNavig->getActiveTab( $sNode, $this->_iDefEdit );
+            $this->_aViewData['default_edit'] = $myAdminNavigation->getActiveTab( $sNode, $this->_iDefEdit );
 
-            // passign active tab number
+            // assign active tab number
             $this->_aViewData['actedit'] = $iActTab;
         }
     }
@@ -771,7 +771,7 @@ class oxAdminList extends oxAdminView
     /**
      * Returns items list
      *
-     * @return oxlist
+     * @return oxList
      */
     public function getItemList()
     {
@@ -809,7 +809,7 @@ class oxAdminList extends oxAdminView
             // setting current list position (page)
             $this->_setCurrentListPosition( oxConfig::getParameter( 'jumppage' ) );
 
-            // settting additioan params for list: current list size
+            // setting addition params for list: current list size
             $this->_oList->setSqlLimit( $this->_iCurrListPos, $this->_getViewListSize() );
 
             $this->_oList->selectString( $sSql );
@@ -831,7 +831,7 @@ class oxAdminList extends oxAdminView
     /**
      * Returns item list base object
      *
-     * @return oxbase
+     * @return oxBase
      */
     public function getItemListBaseObject()
     {

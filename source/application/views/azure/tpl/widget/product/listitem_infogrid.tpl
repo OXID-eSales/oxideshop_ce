@@ -121,7 +121,7 @@
                                         </span>
                                         [{oxprice price=$oPrice currency=$oView->getActCurrency()}]
                                     [{if $oView->isVatIncluded() }]
-                                         [{if !($product->hasMdVariants() || ($oViewConf->showSelectListsInList() && $product->getSelections(1)) || $product->getVariants())}]*[{/if}]</span>
+                                             [{if !($product->hasMdVariants() || ($oViewConf->showSelectListsInList() && $product->getSelections(1)) || $product->getVariants())}]*[{/if}]
                                     [{/if}]
                                     </span>
                                 [{/if}]

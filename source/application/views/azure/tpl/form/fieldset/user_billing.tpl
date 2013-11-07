@@ -67,24 +67,42 @@
           [{/if}]
     </li>
     <li [{if $aErrors.oxuser__oxstreet}]class="oxInValid"[{/if}]>
-        <label [{if $oView->isFieldRequired(oxuser__oxstreet) || $oView->isFieldRequired(oxuser__oxstreetnr) }]class="req"[{/if}]>[{ oxmultilang ident="STREET_AND_STREETNO" suffix="COLON" }]</label>
+        <label [{if $oView->isFieldRequired(oxuser__oxstreet) }]class="req"[{/if}]>[{ oxmultilang ident="STREET" suffix="COLON" }]</label>
           <input [{if $oView->isFieldRequired(oxuser__oxstreet) }]class="js-oxValidate js-oxValidate_notEmpty" [{/if}]type="text" data-fieldsize="pair-xsmall" maxlength="255" name="invadr[oxuser__oxstreet]" value="[{if isset( $invadr.oxuser__oxstreet ) }][{ $invadr.oxuser__oxstreet }][{else }][{ $oxcmp_user->oxuser__oxstreet->value }][{/if}]">
-          <input [{if $oView->isFieldRequired(oxuser__oxstreetnr) }]class="js-oxValidate js-oxValidate_notEmpty" [{/if}]type="text" data-fieldsize="xsmall" maxlength="16" name="invadr[oxuser__oxstreetnr]" value="[{if isset( $invadr.oxuser__oxstreetnr ) }][{ $invadr.oxuser__oxstreetnr }][{else }][{ $oxcmp_user->oxuser__oxstreetnr->value }][{/if}]">
-          [{if $oView->isFieldRequired(oxuser__oxstreet) || $oView->isFieldRequired(oxuser__oxstreetnr) }]
+          [{if $oView->isFieldRequired(oxuser__oxstreet) }]
         <p class="oxValidateError">
             <span class="js-oxError_notEmpty">[{ oxmultilang ident="ERROR_MESSAGE_INPUT_NOTALLFIELDS" }]</span>
             [{include file="message/inputvalidation.tpl" aErrors=$aErrors.oxuser__oxstreet}]
         </p>
           [{/if}]
     </li>
+    <li [{if $aErrors.oxuser__oxstreetnr}]class="oxInValid"[{/if}]>
+        <label [{if $oView->isFieldRequired(oxuser__oxstreetnr) }]class="req"[{/if}]>[{ oxmultilang ident="STREETNO" suffix="COLON" }]</label>
+          <input [{if $oView->isFieldRequired(oxuser__oxstreetnr) }]class="js-oxValidate js-oxValidate_notEmpty" [{/if}]type="text" data-fieldsize="xsmall" maxlength="16" name="invadr[oxuser__oxstreetnr]" value="[{if isset( $invadr.oxuser__oxstreetnr ) }][{ $invadr.oxuser__oxstreetnr }][{else }][{ $oxcmp_user->oxuser__oxstreetnr->value }][{/if}]">
+          [{if $oView->isFieldRequired(oxuser__oxstreetnr) }]
+        <p class="oxValidateError">
+            <span class="js-oxError_notEmpty">[{ oxmultilang ident="ERROR_MESSAGE_INPUT_NOTALLFIELDS" }]</span>
+            [{include file="message/inputvalidation.tpl" aErrors=$aErrors.oxuser__oxstreetnr}]
+        </p>
+          [{/if}]
+    </li>
     <li [{if $aErrors.oxuser__oxzip}]class="oxInValid"[{/if}]>
-        <label [{if $oView->isFieldRequired(oxuser__oxzip) || $oView->isFieldRequired(oxuser__oxcity) }]class="req"[{/if}]>[{ oxmultilang ident="POSTAL_CODE_AND_CITY" suffix="COLON" }]</label>
+        <label [{if $oView->isFieldRequired(oxuser__oxzip) }]class="req"[{/if}]>[{ oxmultilang ident="POSTAL_CODE" suffix="COLON" }]</label>
           <input [{if $oView->isFieldRequired(oxuser__oxzip) }]class="js-oxValidate js-oxValidate_notEmpty" [{/if}]type="text" data-fieldsize="small" maxlength="16" name="invadr[oxuser__oxzip]" value="[{if isset( $invadr.oxuser__oxzip ) }][{ $invadr.oxuser__oxzip }][{else }][{ $oxcmp_user->oxuser__oxzip->value }][{/if}]">
-          <input [{if $oView->isFieldRequired(oxuser__oxcity) }]class="js-oxValidate js-oxValidate_notEmpty" [{/if}]type="text" data-fieldsize="pair-small" maxlength="255" name="invadr[oxuser__oxcity]" value="[{if isset( $invadr.oxuser__oxcity ) }][{ $invadr.oxuser__oxcity }][{else }][{ $oxcmp_user->oxuser__oxcity->value }][{/if}]">
-          [{if $oView->isFieldRequired(oxuser__oxzip) || $oView->isFieldRequired(oxuser__oxcity) }]
+          [{if $oView->isFieldRequired(oxuser__oxzip) }]
         <p class="oxValidateError">
             <span class="js-oxError_notEmpty">[{ oxmultilang ident="ERROR_MESSAGE_INPUT_NOTALLFIELDS" }]</span>
             [{include file="message/inputvalidation.tpl" aErrors=$aErrors.oxuser__oxzip}]
+        </p>
+          [{/if}]
+    </li>
+    <li [{if $aErrors.oxuser__oxcity}]class="oxInValid"[{/if}]>
+        <label [{if $oView->isFieldRequired(oxuser__oxcity) }]class="req"[{/if}]>[{ oxmultilang ident="POSTAL_CITY" suffix="COLON" }]</label>
+          <input [{if $oView->isFieldRequired(oxuser__oxcity) }]class="js-oxValidate js-oxValidate_notEmpty" [{/if}]type="text" data-fieldsize="pair-small" maxlength="255" name="invadr[oxuser__oxcity]" value="[{if isset( $invadr.oxuser__oxcity ) }][{ $invadr.oxuser__oxcity }][{else }][{ $oxcmp_user->oxuser__oxcity->value }][{/if}]">
+          [{if $oView->isFieldRequired(oxuser__oxcity) }]
+        <p class="oxValidateError">
+            <span class="js-oxError_notEmpty">[{ oxmultilang ident="ERROR_MESSAGE_INPUT_NOTALLFIELDS" }]</span>
+            [{include file="message/inputvalidation.tpl" aErrors=$aErrors.oxuser__oxcity}]
         </p>
           [{/if}]
     </li>

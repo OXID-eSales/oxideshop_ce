@@ -69,24 +69,41 @@
               [{/if }]
         </li>
         <li [{if $aErrors.oxaddress__oxstreet}]class="oxInValid"[{/if}]>
-            <label [{if $oView->isFieldRequired(oxaddress__oxstreet) || $oView->isFieldRequired(oxaddress__oxstreetnr) }]class="req"[{/if}]>[{ oxmultilang ident="STREET_AND_STREETNO" suffix="COLON" }]</label>
+            <label [{if $oView->isFieldRequired(oxaddress__oxstreet) }]class="req"[{/if}]>[{ oxmultilang ident="STREET" suffix="COLON" }]</label>
               <input [{if $oView->isFieldRequired(oxaddress__oxstreet) }] class="js-oxValidate js-oxValidate_notEmpty" [{/if }] type="text" data-fieldsize="pair-xsmall" maxlength="255" name="deladr[oxaddress__oxstreet]" value="[{if isset( $deladr.oxaddress__oxstreet ) }][{ $deladr.oxaddress__oxstreet }][{else}][{ $delivadr->oxaddress__oxstreet->value }][{/if }]">
-              <input [{if $oView->isFieldRequired(oxaddress__oxstreetnr) }] class="js-oxValidate js-oxValidate_notEmpty" [{/if }] type="text" data-fieldsize="xsmall" maxlength="16" name="deladr[oxaddress__oxstreetnr]" value="[{if isset( $deladr.oxaddress__oxstreetnr ) }][{ $deladr.oxaddress__oxstreetnr }][{else}][{ $delivadr->oxaddress__oxstreetnr->value }][{/if }]">
-              [{if $oView->isFieldRequired(oxaddress__oxstreet) || $oView->isFieldRequired(oxaddress__oxstreetnr) }]
+              [{if $oView->isFieldRequired(oxaddress__oxstreet) }]
             <p class="oxValidateError">
                 <span class="js-oxError_notEmpty">[{ oxmultilang ident="ERROR_MESSAGE_INPUT_NOTALLFIELDS" }]</span>
                 [{include file="message/inputvalidation.tpl" aErrors=$aErrors.oxaddress__oxstreet}]
             </p>
               [{/if }]
         </li>
-        <li [{if $aErrors.oxaddress__oxzip || $aErrors.oxaddress__oxcity}]class="oxInValid"[{/if}]>
-            <label [{if $oView->isFieldRequired(oxaddress__oxzip) || $oView->isFieldRequired(oxaddress__oxcity) }]class="req"[{/if}]>[{ oxmultilang ident="POSTAL_CODE_AND_CITY" suffix="COLON" }]</label>
+        <li [{if $aErrors.oxaddress__oxstreetnr}]class="oxInValid"[{/if}]>
+            <label [{if $oView->isFieldRequired(oxaddress__oxstreetnr) }]class="req"[{/if}]>[{ oxmultilang ident="STREETNO" suffix="COLON" }]</label>
+              <input [{if $oView->isFieldRequired(oxaddress__oxstreetnr) }] class="js-oxValidate js-oxValidate_notEmpty" [{/if }] type="text" data-fieldsize="xsmall" maxlength="16" name="deladr[oxaddress__oxstreetnr]" value="[{if isset( $deladr.oxaddress__oxstreetnr ) }][{ $deladr.oxaddress__oxstreetnr }][{else}][{ $delivadr->oxaddress__oxstreetnr->value }][{/if }]">
+              [{if $oView->isFieldRequired(oxaddress__oxstreetnr) }]
+            <p class="oxValidateError">
+                <span class="js-oxError_notEmpty">[{ oxmultilang ident="ERROR_MESSAGE_INPUT_NOTALLFIELDS" }]</span>
+                [{include file="message/inputvalidation.tpl" aErrors=$aErrors.oxaddress__oxstreetnr}]
+            </p>
+              [{/if }]
+        </li>
+        <li [{if $aErrors.oxaddress__oxzip}]class="oxInValid"[{/if}]>
+            <label [{if $oView->isFieldRequired(oxaddress__oxzip) }]class="req"[{/if}]>[{ oxmultilang ident="POSTAL_CODE" suffix="COLON" }]</label>
              <input [{if $oView->isFieldRequired(oxaddress__oxzip) }] class="js-oxValidate js-oxValidate_notEmpty" [{/if }] type="text" data-fieldsize="small" maxlength="50" name="deladr[oxaddress__oxzip]" value="[{if isset( $deladr.oxaddress__oxzip ) }][{ $deladr.oxaddress__oxzip }][{else}][{ $delivadr->oxaddress__oxzip->value }][{/if }]">
-              <input [{if $oView->isFieldRequired(oxaddress__oxcity) }] class="js-oxValidate js-oxValidate_notEmpty" [{/if }] type="text" data-fieldsize="pair-small" maxlength="255" name="deladr[oxaddress__oxcity]" value="[{if isset( $deladr.oxaddress__oxcity ) }][{ $deladr.oxaddress__oxcity }][{else}][{ $delivadr->oxaddress__oxcity->value }][{/if }]">
-              [{if $oView->isFieldRequired(oxaddress__oxzip) || $oView->isFieldRequired(oxaddress__oxcity) }]
+              [{if $oView->isFieldRequired(oxaddress__oxzip) }]
               <p class="oxValidateError">
                 <span class="js-oxError_notEmpty">[{ oxmultilang ident="ERROR_MESSAGE_INPUT_NOTALLFIELDS" }]</span>
                 [{include file="message/inputvalidation.tpl" aErrors=$aErrors.oxaddress__oxzip}]
+            </p>
+          [{/if }]
+        </li>
+        <li [{if $aErrors.oxaddress__oxcity}]class="oxInValid"[{/if}]>
+            <label [{if $oView->isFieldRequired(oxaddress__oxcity) }]class="req"[{/if}]>[{ oxmultilang ident="POSTAL_CITY" suffix="COLON" }]</label>
+              <input [{if $oView->isFieldRequired(oxaddress__oxcity) }] class="js-oxValidate js-oxValidate_notEmpty" [{/if }] type="text" data-fieldsize="pair-small" maxlength="255" name="deladr[oxaddress__oxcity]" value="[{if isset( $deladr.oxaddress__oxcity ) }][{ $deladr.oxaddress__oxcity }][{else}][{ $delivadr->oxaddress__oxcity->value }][{/if }]">
+              [{if $oView->isFieldRequired(oxaddress__oxcity) }]
+              <p class="oxValidateError">
+                <span class="js-oxError_notEmpty">[{ oxmultilang ident="ERROR_MESSAGE_INPUT_NOTALLFIELDS" }]</span>
                 [{include file="message/inputvalidation.tpl" aErrors=$aErrors.oxaddress__oxcity}]
             </p>
           [{/if }]

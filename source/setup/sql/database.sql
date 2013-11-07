@@ -1,3 +1,5 @@
+('42e4667ffcf844be0.22563656', 'oxemailfooter', 'oxbaseshop', 1, 0, 1, 1, '', 'E-Mail Fußtext', '<p align="left">--</p>\r\n<p>Bitte fügen Sie hier Ihre vollständige Anbieterkennzeichnung ein.</p>', 'E-mail footer', '<p align="left">--</p>\r\n<p>Please insert your imprint here</p>', 1, '', '', 0, '', '', '30e44ab83fdee7564.23264141', 'CMSFOLDER_EMAILS', ''),
+('3194668fde854d711.73798992', 'oxemailfooterplain', 'oxbaseshop', 1, 0, 1, 1, '', 'E-Mail Fußtext Plain', '-- Bitte fügen Sie hier Ihre vollständige Anbieterkennzeichnung ein.', 'E-mail footer plain', '-- Please insert your imprint here.', 1, '', '', 0, '', '', '30e44ab83fdee7564.23264141', 'CMSFOLDER_EMAILS', ''),
 SET @@session.sql_mode = '';
 
 #
@@ -76,8 +78,7 @@ CREATE TABLE `oxactions` (
 INSERT INTO `oxactions` (`OXID`, `OXSHOPID`, `OXTYPE`, `OXTITLE`, `OXTITLE_1`, `OXTITLE_2`, `OXTITLE_3`, `OXLONGDESC`, `OXLONGDESC_1`, `OXLONGDESC_2`, `OXLONGDESC_3`, `OXACTIVE`, `OXACTIVEFROM`, `OXACTIVETO`, `OXPIC`, `OXPIC_1`, `OXPIC_2`, `OXPIC_3`, `OXLINK`, `OXLINK_1`, `OXLINK_2`, `OXLINK_3`, `OXSORT`) VALUES
 ('oxstart',      'oxbaseshop', 0, 'Startseite unten', 'Start page bottom', '', '', '', '', '', '', 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '', '', '', '', '', '', '', 0),
 ('oxtopstart',   'oxbaseshop', 0, 'Topangebot Startseite', 'Top offer start page', '', '', '', '', '', '', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '', '', '', '', '', '', '', 0),
-('oxfirststart', 'oxbaseshop', 0, 'Angebot der Woche', 'Week''s Special', '', '', '', '', '', '', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '', '', '', '', '', '', '', 0),
-('oxbargain',    'oxbaseshop', 0, 'Schnï¿½ppchen', 'Bargain', '', '', '', '', '', '', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '', '', '', '', '', '', '', 0),
+('oxbargain',    'oxbaseshop', 0, 'Angebot der Woche', 'Week''s Special', '', '', '', '', '', '', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '', '', '', '', '', '', '', 0),
 ('oxtop5',       'oxbaseshop', 0, 'Topseller', 'Top seller', '', '', '', '', '', '', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '', '', '', '', '', '', '', 0),
 ('oxcatoffer',   'oxbaseshop', 0, 'Kategorien-Topangebot', 'Top offer in categories', '', '', '', '', '', '', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '', '', '', '', '', '', '', 0),
 ('oxnewest',     'oxbaseshop', 0, 'Frisch eingetroffen', 'Just arrived', '', '', '', '', '', '', 1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '', '', '', '', '', '', '', 0),

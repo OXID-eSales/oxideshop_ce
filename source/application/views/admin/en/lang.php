@@ -1141,6 +1141,7 @@ $aLang = array(
 'SHOP_MAIN_HRBNR'                                          => 'CRB',
 'SHOP_MAIN_IBANNUMBER'                                     => 'Bank IBAN',
 'SHOP_MAIN_VATNUMBER'                                      => 'Sales Tax ID',
+'SHOP_MAIN_TAXNUMBER'                                      => 'Tax ID',
 'SHOP_MAIN_PRODUCTIVE'                                     => 'Productive Mode',
 'SHOP_CONFIG_CSVSEPARATOR'                                 => 'CSV Separation Char for Im/Export',
 'SHOP_CONFIG_CSVFIELDENCLOSER'                             => 'CSV-Encloser for Im/Export',

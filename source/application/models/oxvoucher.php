@@ -720,7 +720,15 @@ class oxVoucher extends oxBase
         $oProductPrice  = oxNew('oxPrice');
         $oProductTotal  = oxNew('oxPrice');
 
+        // Is the voucher discount applied to at least one basket item
+        $blDiscountApplied = false;
+
         foreach ( $aBasketItems as $aBasketItem ) {
+
+            // If discount was already applied for the voucher to at least one basket items, then break
+            if ( $blDiscountApplied and !empty( $oSerie->oxvoucherseries__oxcalculateonce->value ) ) {
+                break;
+            }
 
             $oDiscountPrice->setPrice($aBasketItem['discount']);
             $oProductPrice->setPrice($aBasketItem['price']);
@@ -733,6 +741,10 @@ class oxVoucher extends oxBase
 
             $oVoucherPrice->add($oDiscountPrice->getBruttoPrice());
             $oProductTotal->add($oProductPrice->getBruttoPrice());
+
+            if ( !empty( $aBasketItem['discount'] ) ) {
+                $blDiscountApplied = true;
+            }
         }
 
         $dVoucher = $oVoucherPrice->getBruttoPrice();

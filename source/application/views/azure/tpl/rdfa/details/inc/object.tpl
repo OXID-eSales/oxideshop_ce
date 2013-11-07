@@ -10,7 +10,7 @@
                [{oxhasrights ident="SHOWLONGDESCRIPTION"}]
                [{assign var="oLongdesc" value=$oProduct->getLongDescription()}]
                [{if $oLongdesc->value}]
-                   <div property="gr:description" content="[{$oLongdesc->value|strip_tags|strip}]" [{if $oView->getActiveLangAbbr()}] xml:lang="[{$oView->getActiveLangAbbr()}]"[{/if}]></div>
+                   <div property="gr:description" content="[{oxeval var=$oLongdesc assign="sDesc"}][{$sDesc|strip_tags|strip}]" [{if $oView->getActiveLangAbbr()}] xml:lang="[{$oView->getActiveLangAbbr()}]"[{/if}]></div>
                [{/if}]
             [{/oxhasrights}]
             <div rel="foaf:depiction v:image" resource="[{$oView->getActPicture()}]"></div>

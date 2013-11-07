@@ -27,7 +27,8 @@ window.onload = function ()
 <table cellspacing="0" cellpadding="0" border="0" width="100%">
     <colgroup>
         [{block name="admin_voucherserie_list_colgroup"}]
-            <col width="39%">
+        	<col width="3%">
+            <col width="36%">
             <col width="15%">
             <col width="15%">
             <col width="15%">
@@ -37,7 +38,10 @@ window.onload = function ()
     </colgroup>
     <tr class="listitem">
     [{block name="admin_voucherserie_list_filter"}]
-        <td valign="top" class="listfilter first" height="20">
+    	<td valign="top" class="listfilter first" align="right">
+			<div class="r1"><div class="b1">&nbsp;</div></div>
+        </td>
+        <td valign="top" class="listfilter" height="20">
             <div class="r1"><div class="b1">
             <input class="listedit" type="text" size="30" maxlength="128" name="where[oxvoucherseries][oxserienr]" value="[{ $where.oxvoucherseries.oxserienr }]">
             </div></div>
@@ -68,14 +72,14 @@ window.onload = function ()
 
 <tr>
     [{block name="admin_voucherserie_list_sorting"}]
-        <td class="listheader first" height="15">&nbsp;<a href="Javascript:top.oxid.admin.setSorting( document.search, 'oxvoucherseries', 'oxserienr', 'asc');document.search.submit();" class="listheader">[{ oxmultilang ident="VOUCHERSERIE_LIST_SERIALNUM" }]</a></td>
+    	<td class="listheader first" height="15" width="30" align="center"><a href="javascript:void(0)" class="listheader">[{ oxmultilang ident="GENERAL_ACTIVTITLE" }]</a></td>
+        <td class="listheader" height="15">&nbsp;<a href="Javascript:top.oxid.admin.setSorting( document.search, 'oxvoucherseries', 'oxserienr', 'asc');document.search.submit();" class="listheader">[{ oxmultilang ident="VOUCHERSERIE_LIST_SERIALNUM" }]</a></td>
         <td class="listheader"><a href="Javascript:top.oxid.admin.setSorting( document.search, 'oxvoucherseries', 'oxdiscount', 'asc');document.search.submit();" class="listheader">[{ oxmultilang ident="GENERAL_DISCOUNT" }]</a></td>
         <td class="listheader"><a href="Javascript:top.oxid.admin.setSorting( document.search, 'oxvoucherseries', 'oxbegindate', 'asc');document.search.submit();" class="listheader">[{ oxmultilang ident="GENERAL_BEGINDATE" }]</a></td>
         <td class="listheader"><a href="Javascript:top.oxid.admin.setSorting( document.search, 'oxvoucherseries', 'oxenddate', 'asc');document.search.submit();" class="listheader">[{ oxmultilang ident="GENERAL_ENDDATE" }]</a></td>
         <td class="listheader" colspan="2"><a href="Javascript:top.oxid.admin.setSorting( document.search, 'oxvoucherseries', 'oxminimumvalue', 'asc');document.search.submit();" class="listheader">[{ oxmultilang ident="VOUCHERSERIE_LIST_MINVALUE" }]</a></td>
     [{/block}]
 </tr>
-
 [{assign var="blWhite" value=""}]
 [{assign var="_cnt" value=0}]
 [{foreach from=$mylist item=listitem}]
@@ -90,6 +94,7 @@ window.onload = function ()
         [{ if $listitem->oxvoucherseries__oxid->value == $oxid }]
             [{assign var="listclass" value=listitem4 }]
         [{ /if}]
+       	<td valign="top" class="[{ $listclass}][{ if  $listitem->getVoucherStatusByDatetime() == 1 }] active[{/if}]" height="15"><div class="listitemfloating">&nbsp</a></div></td>
         <td valign="top" class="[{ $listclass}]" height="15"><div class="listitemfloating">&nbsp;<a href="Javascript:top.oxid.admin.editThis('[{ $listitem->oxvoucherseries__oxid->value}]');" class="[{ $listclass}]">[{ if !$listitem->oxvoucherseries__oxserienr->value }]-[{ oxmultilang ident="GENERAL_NONAME" }]-[{else}][{ $listitem->oxvoucherseries__oxserienr->value }][{/if}]</a></div></td>
         <td valign="top" class="[{ $listclass}]"><div class="listitemfloating"><a href="Javascript:top.oxid.admin.editThis('[{ $listitem->oxvoucherseries__oxid->value }]');" class="[{ $listclass}]">[{ $listitem->oxvoucherseries__oxdiscount->value }][{if $listitem->oxvoucherseries__oxdiscounttype->value == "percent"}] %[{/if}]</a></div></td>
         <td valign="top" class="[{ $listclass}]"><div class="listitemfloating"><a href="Javascript:top.oxid.admin.editThis('[{ $listitem->oxvoucherseries__oxid->value }]');" class="[{ $listclass}]">[{ $listitem->oxvoucherseries__oxbegindate->value }]</a></div></td>
@@ -108,7 +113,7 @@ window.onload = function ()
 [{assign var="blWhite" value="2"}]
 [{/if}]
 [{/foreach}]
-[{include file="pagenavisnippet.tpl" colspan="6"}]
+[{include file="pagenavisnippet.tpl" colspan="7"}]
 </table>
 </form>
 </div>

@@ -29,14 +29,18 @@ window.onload = function ()
     <table cellspacing="0" cellpadding="0" border="0" width="100%">
         <colspan>
             [{block name="admin_delivery_list_colgroup"}]
+            	<col width="3%">
                 <col width="5%">
-                <col width="93%">
+                <col width="90%">
                 <col width="2%">
             [{/block}]
         </colspan>
         <tr class="listitem">
             [{block name="admin_delivery_list_filter"}]
-                <td valign="top" class="listfilter first" height="20">
+            	 <td valign="top" class="listfilter first" align="right">
+	                <div class="r1"><div class="b1">&nbsp;</div></div>
+	            </td>
+                <td valign="top" class="listfilter" height="20">
                     <div class="r1"><div class="b1">&nbsp;</div></div>
                 </td>
                 <td valign="top" class="listfilter" height="20" colspan="2">
@@ -56,7 +60,8 @@ window.onload = function ()
         </tr>
         <tr>
             [{block name="admin_delivery_list_sorting"}]
-                <td class="listheader first" height="15" align="center"><a href="Javascript:top.oxid.admin.setSorting( document.search, 'oxdelivery', 'oxsort', 'asc');document.search.submit();" class="listheader">[{ oxmultilang ident="GENERAL_SORT" }]</a></td>
+            	<td class="listheader first" height="15" width="30" align="center"><a href="Javascript:top.oxid.admin.setSorting( document.search, 'oxdelivery', 'oxactive', 'asc');document.search.submit();" class="listheader">[{ oxmultilang ident="GENERAL_ACTIVTITLE" }]</a></td>
+                <td class="listheader" height="15" align="center"><a href="Javascript:top.oxid.admin.setSorting( document.search, 'oxdelivery', 'oxsort', 'asc');document.search.submit();" class="listheader">[{ oxmultilang ident="GENERAL_SORT" }]</a></td>
                 <td class="listheader" height="15" colspan="2">&nbsp;<a href="Javascript:top.oxid.admin.setSorting( document.search, 'oxdelivery', 'oxtitle', 'asc');document.search.submit();" class="listheader">[{ oxmultilang ident="GENERAL_NAME" }]</a></td>
             [{/block}]
         </tr>
@@ -76,6 +81,7 @@ window.onload = function ()
             [{ if $listitem->getId() == $oxid }]
                 [{assign var="listclass" value=listitem4 }]
             [{ /if}]
+            <td valign="top" class="[{ $listclass}][{ if $listitem->oxdelivery__oxactive->value == 1}] active[{/if}]" height="15"><div class="listitemfloating">&nbsp</a></div></td>
             <td valign="top" align="center" class="[{ $listclass}]" height="15"><div class="listitemfloating">&nbsp;<a href="Javascript:top.oxid.admin.editThis('[{ $listitem->oxdelivery__oxid->value}]');" class="[{ $listclass}]">[{ $listitem->oxdelivery__oxsort->value }]</a></div></td>
             <td valign="top" class="[{ $listclass}]" height="15"><div class="listitemfloating">&nbsp;<a href="Javascript:top.oxid.admin.editThis('[{ $listitem->oxdelivery__oxid->value}]');" class="[{ $listclass}]">[{ $listitem->oxdelivery__oxtitle->value }]</a></div></td>
             <td class="[{ $listclass}]">
@@ -91,7 +97,7 @@ window.onload = function ()
 [{assign var="blWhite" value="2"}]
 [{/if}]
 [{/foreach}]
-[{include file="pagenavisnippet.tpl" colspan="3"}]
+[{include file="pagenavisnippet.tpl" colspan="4"}]
 </table>
 </form>
 </div>

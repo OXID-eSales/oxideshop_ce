@@ -159,4 +159,35 @@ class oxVoucherSerie extends oxBase
 
         return $aStatus;
     }
+    
+    /**
+     * Get voucher status base on given date (if nothing was passed, current datetime will be used as a measure).
+     * @param string 
+     */
+    public function getVoucherStatusByDatetime($sNow = null) {
+    	//return content
+    	$iActive = 1;
+    	$iInactive  = 0;
+    	
+    	$oUtilsDate =   oxRegistry::get("oxUtilsDate");
+    	//current object datetime
+    	$sBeginDate = $this->oxvoucherseries__oxbegindate->value;
+    	$sEndDate = $this->oxvoucherseries__oxenddate->value;
+    	 
+    	//If nothing pass, use current server time
+    	if($sNow == null) {
+    		$sNow   = date( 'Y-m-d H:i:s', $oUtilsDate->getTime() );
+    	}
+    	
+    	//Check for active status.
+    	if ( ($sBeginDate == '0000-00-00 00:00:00'  && $sEndDate == '0000-00-00 00:00:00' ) || //If both dates are empty => treat it as always active
+    			($sBeginDate == '0000-00-00 00:00:00'  && $sNow <= $sEndDate) || //check for end date without start date
+    			($sBeginDate <= $sNow  && $sEndDate == '0000-00-00 00:00:00' ) || //check for start date without end date
+    			($sBeginDate <= $sNow && $sNow <= $sEndDate) ) { //check for both start date and end date.
+    		return $iActive;
+    	} 
+    	
+    	//If active status code was reached, return as inactive
+    	return $iInactive;    	 
+    }
 }

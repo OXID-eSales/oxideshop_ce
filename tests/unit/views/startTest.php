@@ -93,14 +93,6 @@ class Unit_Views_startTest extends OxidTestCase
         $this->assertEquals(4, $aList->count());
     }
 
-    public function testGetFirstArticle()
-    {
-        $oStart = $this->getProxyClass( 'start' );
-
-        $oArt = $oStart->getFirstArticle();
-            $this->assertEquals('1964', $oArt->getId());
-    }
-
     public function testGetCatOfferArticle()
     {
         $oStart = $this->getProxyClass( 'start' );

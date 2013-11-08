@@ -19,7 +19,6 @@
  * @package   tests
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -91,14 +90,6 @@ class Unit_Views_startTest extends OxidTestCase
         $aList = $oStart->getNewestArticles();
         $this->assertTrue($aList instanceof oxarticlelist);
         $this->assertEquals(4, $aList->count());
-    }
-
-    public function testGetFirstArticle()
-    {
-        $oStart = $this->getProxyClass( 'start' );
-
-        $oArt = $oStart->getFirstArticle();
-            $this->assertEquals('1964', $oArt->getId());
     }
 
     public function testGetCatOfferArticle()

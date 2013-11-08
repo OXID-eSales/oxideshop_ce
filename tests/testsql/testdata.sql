@@ -19,7 +19,6 @@ INSERT INTO `oxactions2article` (`OXID`, `OXSHOPID`, `OXACTIONID`, `OXARTID`, `O
 ('79042e787800a8465.75238508', 'oxbaseshop', 'oxbargain', '85b42c94a32b3fdd2.66642220', 0),
 ('00f42e7bc564eb0c5.98400825', 'oxbaseshop', 'oxtop5', '2080', 0),
 ('0a842e4f4e51ca939.48788613', 'oxbaseshop', 'oxbargain', '1431', 1),
-('9f542c5221ba79456.89971266', 'oxbaseshop', 'oxfirststart', '1964', 0),
 ('95842e9fde5c6f051.82672143', 'oxbaseshop', 'oxnewest', '1952', 3),
 ('95842e9fdde94e653.04821580', 'oxbaseshop', 'oxnewest', 'be642cada8422f150.29332483', 2),
 ('95842e9fdd03b5296.91384984', 'oxbaseshop', 'oxnewest', 'd8842e3cb356356f4.93820547', 0),

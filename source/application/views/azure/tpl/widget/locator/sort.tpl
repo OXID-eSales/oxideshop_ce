@@ -1,3 +1,4 @@
+[{block name="widget_locator_sort"}]
 [{if $oView->showSorting()}]
     [{assign var="_listType" value=$oView->getListDisplayType()}]
     [{assign var="_additionalParams" value=$oView->getAdditionalParams()}]
@@ -29,3 +30,4 @@
         </ul>
     </div>
 [{/if}]
+[{/block}]

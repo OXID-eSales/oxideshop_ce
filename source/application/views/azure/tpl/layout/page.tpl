@@ -3,9 +3,13 @@
         [{ include file="rdfa/rdfa.tpl" }]
     [{/if}]
     <div id="page" class="[{if $sidebar}] sidebar[{$sidebar}][{/if}]">
-        [{include file="layout/header.tpl"}]
+        [{block name="layout_header"}]
+            [{include file="layout/header.tpl"}]
+        [{/block}]
         [{if $oView->getClassName() ne "start" && !$blHideBreadcrumb}]
+        [{block name="layout_breadcrumb"}]
            [{ include file="widget/breadcrumb.tpl"}]
+        [{/block}]
         [{/if}]
         [{if $sidebar}]
             <div id="sidebar">
@@ -13,10 +17,12 @@
             </div>
         [{/if}]
         <div id="content">
+        [{block name="content_main"}]
             [{include file="message/errors.tpl"}]
             [{foreach from=$oxidBlock_content item="_block"}]
                 [{$_block}]
             [{/foreach}]
+        [{/block}]
         </div>
         [{include file="layout/footer.tpl"}]
     </div>

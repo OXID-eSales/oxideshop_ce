@@ -1,3 +1,4 @@
+[{block name="widget_locator_paging"}]
 [{if $pages->changePage}]
     <div class="pager [{if $place eq "bottom"}] lineBox[{/if}]" id="itemsPager[{$place}]">
     [{if $pages->previousPage }]
@@ -23,3 +24,4 @@
     [{/if}]
      </div>
 [{/if}]
+[{/block}]

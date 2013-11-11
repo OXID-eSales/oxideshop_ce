@@ -26,6 +26,8 @@
 [{/capture}]
 
 [{capture append="oxidBlock_content"}]
+
+    [{block name="page_list_listhead"}]
         [{if $actCategory->oxcategories__oxthumb->value && $actCategory->getThumbUrl()}]
             <img src="[{$actCategory->getThumbUrl()}]" alt="[{$actCategory->oxcategories__oxtitle->value}]" class="categoryPicture">
         [{/if}]
@@ -112,7 +114,9 @@
             </li>
             </ul>
         [{/if}]
+    [{/block}]
 
+    [{block name="page_list_listbody"}]
     [{if $oView->getArticleList()|@count > 0}]
         <h1 class="pageHead">[{$oView->getTitle()}]
             [{assign var='rsslinks' value=$oView->getRssLinks() }]
@@ -136,6 +140,8 @@
         [{include file="widget/product/list.tpl" type=$oView->getListDisplayType() listId="productList" products=$oView->getArticleList()}]
         [{include file="widget/locator/listlocator.tpl" locator=$oView->getPageNavigationLimitedBottom() place="bottom"}]
     [{/if}]
+    [{/block}]
+    
     [{insert name="oxid_tracker"}]
 [{/capture}]
 [{include file="layout/page.tpl" sidebar="Left" tree_path=$oView->getTreePath()}]

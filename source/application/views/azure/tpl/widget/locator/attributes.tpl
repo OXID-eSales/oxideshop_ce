@@ -1,3 +1,4 @@
+[{block name="widget_locator_attributes"}]
 [{if $attributes }]
     <form method="post" action="[{ $oViewConf->getSelfActionLink() }]" name="_filterlist" id="filterList">
     <div class="listFilter js-fnSubmit clear">
@@ -36,3 +37,4 @@
     </div>
     </form>
 [{/if}]
+[{/block}]

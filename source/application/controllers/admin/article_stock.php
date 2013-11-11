@@ -190,7 +190,6 @@ class Article_Stock extends oxAdminDetails
         $oArticlePrice->$sType = new oxField( $dPrice );
 
         //validating
-
         if ($oArticlePrice->$sType->value &&
             $oArticlePrice->oxprice2article__oxamount->value &&
             $oArticlePrice->oxprice2article__oxamountto->value &&
@@ -203,9 +202,10 @@ class Article_Stock extends oxAdminDetails
         }
 
         // check if abs price is lower than base price
-        $oArticle = oxNew( "oxarticle");
+        $oArticle = oxNew( "oxArticle");
         $oArticle->loadInLang( $this->_iEditLang, $sOxArtId );
-        if ( $aParams['price'] >= $oArticle->oxarticles__oxprice->value) {
+
+        if ( ( $aParams['price'] >= $oArticle->oxarticles__oxprice->value) && ($aParams['pricetype'] == 'oxprice2article__oxaddabs' )  ) {
             if ( is_null($sOXID) ) {
                 $sOXID = $oArticlePrice->getId();
             }

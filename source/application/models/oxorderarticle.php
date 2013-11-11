@@ -412,7 +412,7 @@ class oxOrderArticle extends oxBase implements oxIArticle
             $aRet  = array();
 
             if ( $oArticle = $this->_getOrderArticle( $sArtId ) ) {
-                $aList = explode( ",", $sOrderArtSelList );
+                $aList = explode( ", ", $sOrderArtSelList );
                 $oStr = getStr();
 
                 $aArticleSelList = $oArticle->getSelectLists();

@@ -144,6 +144,10 @@ $aData = array(
                 'oxdeltype' => 'p',
                 'oxfinalize' => 1,
                 'oxparamend' => 99999,
+                'oxcategories' => array(
+                    'categoryId1',
+                    '...'
+                ),
                 '...' => ''
             ),
         ),

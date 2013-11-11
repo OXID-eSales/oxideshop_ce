@@ -323,10 +323,20 @@ class BasketConstruct
         
         foreach ( $aDeliveryCosts as $iKey => $aDelivery ) {
             $oDelivery = new oxDelivery();
+            $oDelivery->save();
             foreach ( $aDelivery as $sKey => $mxValue ) {
                 if ( !is_array( $mxValue ) ) {
                     $sField = "oxdelivery__" . $sKey;
                     $oDelivery->$sField = new oxField( "{$mxValue}" );
+                } else {
+                    foreach ( $mxValue as $sId ) {
+                        $aData = array (
+                            'oxdeliveryid' => $oDelivery->getId(),
+                            'oxobjectid' => $sId,
+                            'oxtype' => $sKey
+                        );
+                        $this->createObj2Obj( $aData, 'oxobject2delivery' );
+                    }
                 }
             }
             $oDelivery->save();

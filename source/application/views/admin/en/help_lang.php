@@ -19,7 +19,6 @@
  * @package   lang
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -458,7 +457,7 @@ $aLang =  array(
                                                  '<li><span class="userinput_or_code">For each product</span>: price is calculated for each product in the shopping cart.</li></ul>',
 
 'HELP_DELIVERY_MAIN_CONDITION'                => 'In <span class="navipath_or_inputname">Condition</span> you can specify that the shipping cost rule applies only to a certain condition. You can choose from among 4 conditions:' .
-                                                 '<ul><li><span class="userinput_or_code">Amount</span>: Number of products in the shopping car.</li>' .
+                                                 '<ul><li><span class="userinput_or_code">Amount</span>: Number of products in the shopping cart.</li>' .
                                                  '<li><span class="userinput_or_code">Size</span>: Total size of all products. In order for this setting to be used properly, the size must be entered for products.</li>' .
                                                  '<li><span class="userinput_or_code">Weight</span>: Total weight of the order in kilograms. In order for this setting to be used properly, the weight must be entered for products.</li>' .
                                                  '<li><span class="userinput_or_code">Price</span>: Purchase price of the order.</li></ul>' .

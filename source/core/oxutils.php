@@ -1090,6 +1090,9 @@ class oxUtils extends oxSuperCfg
             case 301:
                 $sHeaderCode = "HTTP/1.1 301 Moved Permanently";
                 break;
+	        case 307:
+		        $sHeaderCode = 'HTTP/1.1 307 Temporary Redirect';
+		        break;
             case 302:
             default:
                 $sHeaderCode = "HTTP/1.1 302 Found";

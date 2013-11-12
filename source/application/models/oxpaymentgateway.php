@@ -37,6 +37,12 @@ class oxPaymentGateway extends oxSuperCfg
      */
     protected $_blActive       = false;
 
+	/**
+	 * The payment class or null.
+	 * @var void|\oxPayment
+	 */
+	protected $_oPayment = null;
+
     /**
      * oUserpayment object (default null).
      * @var object
@@ -57,6 +63,41 @@ class oxPaymentGateway extends oxSuperCfg
      */
     protected $_sLastError     = null;
 
+	public function callModulePayment($sMethod) {
+		return false;
+	} // function
+
+	/**
+	 * Returns the payment class.
+	 * @author blange <code@wbl-konzept.de>
+	 * @return \oxPayment|void
+	 * @todo Maybe everywhere "getPaymentType" and the user payment is "getPaymentParams".
+	 */
+	public function getPayment() {
+		return $this->_oPayment;
+	} // function
+
+	protected function getPaymentMode() {
+		return '';
+	} // function
+
+	public function preparePayment($fAmount, oxOrder $oOrder) {
+
+	} // function
+
+	/**
+	 * Sets the used payment class.
+	 * @author blange <code@wbl-konzept.de>
+	 * @param \oxPayment $oPayment Payment-class.
+	 * @return \oxPaymentGateway Fluent interface.
+	 */
+	public function setPayment(\oxPayment $oPayment) {
+		$this->_oPayment = $oPayment;
+		unset($oPayment);
+
+		return $this;
+	} // function
+
     /**
      * Sets payment parameters.
      *
@@ -68,6 +109,7 @@ class oxPaymentGateway extends oxSuperCfg
     {
         // store data
         $this->_oPaymentInfo = & $oUserpayment;
+	    return $this;
     }
 
     /**
@@ -80,20 +122,38 @@ class oxPaymentGateway extends oxSuperCfg
      */
     public function executePayment( $dAmount, & $oOrder )
     {
-        $this->_iLastErrorNo = null;
-        $this->_sLastError = null;
+	    $bReturn             = true;
+	    $this->_iLastErrorNo = null;
+	    $this->_sLastError   = null;
 
-        if ( !$this->_isActive()) {
-            return true;    // fake yes
-        }
+        if ($this->_isActive() && ($this->_oPaymentInfo->oxuserpayments__oxpaymentsid->value !== 'oxempty')) {
+			$bReturn = false;
 
-        // proceed with no payment
-        // used for other countries
-        if (@$this->_oPaymentInfo->oxuserpayments__oxpaymentsid->value == 'oxempty') {
-            return true;
-        }
+	        if ($sMode = $this->getPaymentMode()) {
+		        // TODO Fill Methods.
+		        switch ($sMode) {
+			        case 'authorize':
+				        // "Pay" the order, but do not mark it as paid, for example in the time of pending payment.
+				        $bReturn = $this->authorize();
+				        break;
 
-        return false;
+			        case 'pay':
+				        // Pay the order and mark it finished as paid, for example if the money "flowed" already.
+				        $bReturn = $this->pay();
+				        break;
+
+			        case 'reserve':
+				        // Just Reserve the order without any type of fixed payment action.
+				        $bReturn = $this->reserve();
+				        break;
+
+			        default:
+				        $bReturn = $this->callModulePayment($sMode);
+		        } // switch
+	        } // if
+        } // if
+
+	    return $bReturn;
     }
 
     /**
@@ -123,6 +183,6 @@ class oxPaymentGateway extends oxSuperCfg
      */
     protected function _isActive()
     {
-        return $this->_blActive;
-    }
+        return ($oPayment = $this->getPayment()) ? $oPayment->getPaymentAdapter()->withGateway() : $this->_blActive;
+    } // function
 }

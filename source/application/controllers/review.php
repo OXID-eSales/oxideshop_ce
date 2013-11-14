@@ -194,7 +194,7 @@ class Review extends Details
                 }
 
                 //save rating
-                if ( $dRating !== null && $dRating >= 0 && $dRating <= 5 ) {
+                if ( $dRating !== null && $dRating >= 1 && $dRating <= 5 ) {
                     $oRating = oxNew( 'oxrating' );
                     if ( $oRating->allowRating( $oRevUser->getId(), $sType, $oActObject->getId() ) ) {
                         $oRating->oxratings__oxuserid   = new oxField( $oRevUser->getId() );

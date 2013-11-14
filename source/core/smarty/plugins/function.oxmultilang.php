@@ -41,7 +41,7 @@ function smarty_function_oxmultilang( $params, &$smarty )
     startProfile("smarty_function_oxmultilang");
     $oLang = oxRegistry::getLang();
     $sIdent  = isset( $params['ident'] ) ? $params['ident'] : 'IDENT MISSING';
-    $aArgs = isset( $params['args'] ) ? $params['args'] : 0 ;
+    $aArgs = isset( $params['args'] ) ? $params['args'] : false;
     $sSuffix = isset( $params['suffix'] ) ? $params['suffix'] : 'NO_SUFFIX';
 
     $iLang   = null;
@@ -71,7 +71,7 @@ function smarty_function_oxmultilang( $params, &$smarty )
         $sTranslation = $params['alternative'];
     }
 
-    if ( $aArgs ) {
+    if ( $aArgs !== false ) {
         if ( is_array( $aArgs ) ) {
             $sTranslation = vsprintf( $sTranslation, $aArgs );
         } else {

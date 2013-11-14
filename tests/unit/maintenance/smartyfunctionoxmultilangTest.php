@@ -99,7 +99,13 @@ class smartyFunctionoxmultilangTest extends OxidTestCase
                 'Alternative translation!', 1), // we can actually add any string at the end
             array(
                 array( 'ident' => 'FIRST_NAME_WRONG_HAS_ALTERNATIVE_NO_SUFFIX', 'alternative' => 'Vorname:'  ),
-                'Vorname:', 0)
+                'Vorname:', 0),
+            array(
+                array( 'ident' => 'VAT_PLUS_PERCENT_AMOUNT', 'args' => '19'  ),
+                'plus VAT 19% Amount', 1),
+            array(
+                array( 'ident' => 'VAT_PLUS_PERCENT_AMOUNT', 'args' => 0  ),
+                'plus VAT 0% Amount', 1)
         );
     }
 

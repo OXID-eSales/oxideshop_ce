@@ -1124,6 +1124,9 @@ class oxLang extends oxSuperCfg
      */
     public function detectLanguageByBrowser()
     {
+        if (!array_key_exists('HTTP_ACCEPT_LANGUAGE', $_SERVER)) {
+            return;
+        }
         $sBrowserLang = strtolower( substr( $_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2 ) );
 
         if ( !$sBrowserLang ) {

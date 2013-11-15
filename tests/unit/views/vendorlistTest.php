@@ -25,9 +25,9 @@ require_once realpath( "." ).'/unit/OxidTestCase.php';
 require_once realpath( "." ).'/unit/test_config.inc.php';
 
 /**
- * Testing oxvendorlist class
+ * Testing oxVendorList class
  */
-class Unit_Views_vendorlistTest extends OxidTestCase
+class Unit_Views_VendorListTest extends OxidTestCase
 {
     /**
      * Tear down the fixture.

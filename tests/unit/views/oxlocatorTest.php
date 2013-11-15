@@ -257,7 +257,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
     public function testSetVendorLocatorData()
     {
         // seo off
-        modConfig::getInstance()->setConfigParam( 'blSeoMode', false );
+        $this->getConfig()->setConfigParam( 'blSeoMode', false );
         oxUtils::getInstance()->seoIsActive( true );
 
         $myConfig = oxConfig::getInstance();
@@ -282,7 +282,6 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $oLocatorTarget->expects( $this->any() )->method( 'setCatTreePath' );
         $oLocatorTarget->expects( $this->any() )->method( 'getCatTreePath' );
         $oLocatorTarget->expects( $this->once() )->method( 'getActVendor' )->will( $this->returnValue( $oVendor ) );
-        $oLocatorTarget->expects( $this->once() )->method( 'getVendorTree' )->will( $this->returnValue( new oxvendorlist ) );
         $oLocatorTarget->expects( $this->once() )->method( 'showSorting' )->will( $this->returnValue( true ) );
         $oLocatorTarget->expects( $this->any() )->method( 'getLinkType' )->will( $this->returnValue( OXARTICLE_LINKTYPE_VENDOR ) );
 
@@ -326,7 +325,6 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $oLocatorTarget->expects( $this->any() )->method( 'setCatTreePath' );
         $oLocatorTarget->expects( $this->any() )->method( 'getCatTreePath' );
         $oLocatorTarget->expects( $this->once() )->method( 'getActVendor' )->will( $this->returnValue( $oVendor ) );
-        $oLocatorTarget->expects( $this->once() )->method( 'getVendorTree' )->will( $this->returnValue( new oxvendorlist ) );
         $oLocatorTarget->expects( $this->once() )->method( 'showSorting' )->will( $this->returnValue( true ) );
         $oLocatorTarget->expects( $this->any() )->method( 'getLinkType' )->will( $this->returnValue( OXARTICLE_LINKTYPE_VENDOR ) );
 

@@ -2045,7 +2045,7 @@ class oxConfig extends oxSuperCfg
         if ( count( $this->_aActiveViews ) ) {
             $oActView = end( $this->_aActiveViews );
         }
-        if ( $oActView == null ) {
+        if ( !isset($oActView) || $oActView == null ) {
             $oActView = oxNew( 'oxubase' );
             $this->_aActiveViews[] = $oActView;
         }

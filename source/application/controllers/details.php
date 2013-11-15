@@ -1052,7 +1052,8 @@ class Details extends oxUBase
         $aPaths = array();
         $oConfig = $this->getConfig();
 
-        if ( 'search' == $oConfig->getRequestParameter( 'listtype' ) ) {
+        if ( 'search' == $this->getListType() ) {
+
             $sSearchParam = $this->getSearchParamForHtml();
 
             $aCatPath = array();
@@ -1061,7 +1062,7 @@ class Details extends oxUBase
 
             $aPaths[] = $aCatPath;
 
-        } elseif ( 'tag' == $oConfig->getRequestParameter( 'listtype' ) ) {
+        } elseif ( 'tag' == $this->getListType() ) {
 
             $aCatPath = array();
 
@@ -1074,11 +1075,28 @@ class Details extends oxUBase
             $aCatPath['link']  = oxRegistry::get("oxSeoEncoderTag")->getTagUrl( $oConfig->getRequestParameter( 'searchtag' ) );
             $aPaths[] = $aCatPath;
 
-        } elseif ( 'recommlist' == $oConfig->getRequestParameter( 'listtype' ) ) {
+        } elseif ( 'recommlist' == $this->getListType() ) {
 
             $aCatPath = array();
             $aCatPath['title'] = oxRegistry::getLang()->translateString( 'LISTMANIA', oxRegistry::getLang()->getBaseLanguage(), false );
             $aPaths[] = $aCatPath;
+
+        } elseif ( 'vendor' == $this->getListType() ) {
+
+            $aCatPath = array();
+
+            $oCat = oxNew( 'oxVendor' );
+            $oCat->load('root');
+
+            $aCatPath['link'] = $oCat->getLink();
+            $aCatPath['title'] = $oCat->oxvendor__oxtitle->value;
+            $aPaths[] = $aCatPath;
+
+            $oCat = $this->getActVendor();
+            $aCatPath['link'] = $oCat->getLink();
+            $aCatPath['title'] = $oCat->oxvendor__oxtitle->value;
+            $aPaths[] = $aCatPath;
+
         } else {
 
             $oCatTree = $this->getCatTreePath();

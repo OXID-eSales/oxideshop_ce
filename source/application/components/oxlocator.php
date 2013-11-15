@@ -131,8 +131,8 @@ class oxLocator extends oxSuperCfg
     /**
      * Sets details locator data for articles that came from vendor list.
      *
-     * @param oxubase   $oLocatorTarget oxubase object
-     * @param oxarticle $oCurrArticle   current article
+     * @param oxUBase   $oLocatorTarget oxUBase object
+     * @param oxArticle $oCurrArticle   current article
      *
      * @return null
      */
@@ -145,7 +145,7 @@ class oxLocator extends oxSuperCfg
             $blSeo = $myUtils->seoIsActive();
 
             // loading data for article navigation
-            $oIdList = oxNew( "oxarticlelist" );
+            $oIdList = oxNew( "oxArticleList" );
             if ( $oLocatorTarget->showSorting() ) {
                 $oIdList->setCustomSorting( $oLocatorTarget->getSortingSql( $oLocatorTarget->getSortIdent() ) );
             }
@@ -171,14 +171,6 @@ class oxLocator extends oxSuperCfg
 
             $oVendor->nextProductLink = $this->_oNextProduct?$this->_makeLink( $this->_oNextProduct->getLink(), $sAdd ):null;
             $oVendor->prevProductLink = $this->_oBackProduct?$this->_makeLink( $this->_oBackProduct->getLink(), $sAdd ):null;
-
-            // active vendor
-            $oLocatorTarget->setActiveCategory( $oVendor );
-
-            // vendor path
-            if ( ( $oVendorTree = $oLocatorTarget->getVendorTree() ) ) {
-                $oLocatorTarget->setCatTreePath( $oVendorTree->getPath() );
-            }
         }
     }
 

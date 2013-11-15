@@ -1455,7 +1455,8 @@ class Details extends oxUBase
     {
         $aPaths = array();
 
-        if ( 'search' == oxConfig::getParameter( 'listtype' ) ) {
+        if ( 'search' == $this->getListType() ) {
+
             $sSearchParam = $this->getSearchParamForHtml();
 
             $aCatPath = array();
@@ -1464,7 +1465,7 @@ class Details extends oxUBase
 
             $aPaths[] = $aCatPath;
 
-        } elseif ( 'tag' == oxConfig::getParameter( 'listtype' ) ) {
+        } elseif ( 'tag' == $this->getListType() ) {
 
             $aCatPath = array();
 
@@ -1477,11 +1478,28 @@ class Details extends oxUBase
             $aCatPath['link']  = oxRegistry::get("oxSeoEncoderTag")->getTagUrl( oxConfig::getParameter( 'searchtag' ) );
             $aPaths[] = $aCatPath;
 
-        } elseif ( 'recommlist' == oxConfig::getParameter( 'listtype' ) ) {
+        } elseif ( 'recommlist' == $this->getListType() ) {
 
             $aCatPath = array();
             $aCatPath['title'] = oxRegistry::getLang()->translateString( 'PAGE_RECOMMENDATIONS_PRODUCTS_TITLE', oxRegistry::getLang()->getBaseLanguage(), false );
             $aPaths[] = $aCatPath;
+
+        } elseif ( 'vendor' == $this->getListType() ) {
+
+            $aCatPath = array();
+
+            $oCat = oxNew( 'oxVendor' );
+            $oCat->load('root');
+
+            $aCatPath['link'] = $oCat->getLink();
+            $aCatPath['title'] = $oCat->oxvendor__oxtitle->value;
+            $aPaths[] = $aCatPath;
+
+            $oCat = $this->getActVendor();
+            $aCatPath['link'] = $oCat->getLink();
+            $aCatPath['title'] = $oCat->oxvendor__oxtitle->value;
+            $aPaths[] = $aCatPath;
+
         } else {
 
             $oCatTree = $this->getCatTreePath();
@@ -1834,5 +1852,4 @@ class Details extends oxUBase
 
         return $aSorting;
     }
-
 }

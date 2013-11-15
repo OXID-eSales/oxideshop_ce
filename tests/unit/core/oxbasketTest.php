@@ -19,7 +19,6 @@
  * @package   tests
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -4501,11 +4500,43 @@ class Unit_Core_oxbasketTest extends OxidTestCase
         $this->assertEquals( 20, $oBasket->getAdditionalServicesVatPercent() );
     }
 
-    //TODO:
-    //getGiftCardCostVatPercent
-    //getGiftCardCostVat
-    //getGiftCardCostNet
-    //getFGiftCardCosts
 
+    /**
+     * testing the update of basket after adding two products with same selection list
+     *
+     * @return null
+     */
+    public function testGetBasketSummary_WithSelectionList()
+    {
+        $this->getConfig()->setConfigParam('bl_perfUseSelectlistPrice', true);
+        $this->getConfig()->setConfigParam('bl_perfLoadSelectLists', true);
+
+        $sArtId = '1126';
+        $oBasket = new oxBasket();
+
+        // creating selection list
+        $oSelList = new oxSelectlist;
+        $oSelList->setId( '_testoxsellist' );
+        $oSelList->oxselectlist__oxtitle   = new oxfield( 'testsel' );
+        $oSelList->oxselectlist__oxvaldesc = new oxfield( 'Large!P!10__@@Medium!P!20__@@Small!P!30__@@' );
+        $oSelList->save();
+
+        // assigning sel list
+        $oO2Sel = new oxBase;
+        $oO2Sel->init( "oxobject2selectlist" );
+        $oO2Sel->setId( '_testoxobject2selectlist' );
+        $oO2Sel->oxobject2selectlist__oxobjectid = new oxfield( $sArtId );
+        $oO2Sel->oxobject2selectlist__oxselnid   = new oxfield( $oSelList->getId() );
+        $oO2Sel->save();
+
+        // storing products to basket with diff sel list
+        $oBasket->addToBasket( $sArtId, 1, array( 0 ) );
+        $oBasket->calculateBasket();
+        $oBasket->onUpdate();
+        $oSummary = $oBasket->getBasketSummary();
+
+        // checking amounts
+        $this->assertEquals( 44, $oSummary->dArticleDiscountablePrice );
+    }
 
 }

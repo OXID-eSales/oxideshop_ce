@@ -29,7 +29,7 @@ class BasketConstruct
         $this->setOptions( $aOptions );
 
         // categories preparation
-        $this->_createCats( $aCats );
+        $this->_createCategories( $aCats );
 
         // article preparation, returns data required for adding to basket
         $aArtsForBasket = $this->_getArticles( $aArticles );
@@ -115,6 +115,7 @@ class BasketConstruct
     /**
      * Create user
      * @param array $aUser user data
+     * @return oxUser
      */
     protected function _createUser( $aUser )
     {
@@ -126,21 +127,20 @@ class BasketConstruct
      * Create categories with assigning articles
      * @param array $aCategories category data
      */
-    protected function _createCats( $aCategories )
+    protected function _createCategories( $aCategories )
     {
         if ( empty( $aCategories) ) {
             return;
         }
-        foreach ( $aCategories as $iKey => $aCat ) {
-            $oCat = $this->createObj( $aCat, 'oxcategory', ' oxcategories' );
-            if ( !empty( $aCat['oxarticles'] ) ) {
-                $iCnt = count( $aCat['oxarticles'] );
-                for ( $i = 0; $i < $iCnt; $i++ ) {
+        foreach ( $aCategories as $aCategory ) {
+            $oCat = $this->createObj( $aCategory, 'oxcategory', 'oxcategories' );
+            if ( !empty( $aCategory['oxarticles'] ) ) {
+                foreach ( $aCategory['oxarticles'] as $sArticleId ) {
                     $aData = array (
                             'oxcatnid' => $oCat->getId(),
-                            'oxobjectid' => $aCat['oxarticles'][$i]
+                            'oxobjectid' => $aCategory['oxarticles'][$sArticleId]
                     );
-                    $this->createObj2Obj( $aData, 'oxprice2article' );
+                    $this->createObj2Obj( $aData, 'oxobject2category' );
                 }
             }
         }    
@@ -191,7 +191,8 @@ class BasketConstruct
 
     /**
      * Creates price 2 article connection needed for scale prices
-     * @param array $aScalePrices of scale prices needed db fields
+     * @param array $oArt Article data
+     * @param array $aOptions Options
      */
     protected function _createField2Shop( $oArt, $aOptions )
     {
@@ -209,8 +210,6 @@ class BasketConstruct
         $oField2Shop->save();
     }
 
-
-
     /**
      * Creates discounts and assign them to according objects
      * @param array $aDiscounts discount data
@@ -220,28 +219,27 @@ class BasketConstruct
         if ( empty( $aDiscounts ) ) {
             return;
         }
-        foreach ( $aDiscounts as $iKey => $aDiscount ) {
+        foreach ( $aDiscounts as $aDiscount ) {
             // add discounts
             $oDiscount = new oxDiscount();
             $oDiscount->setId( $aDiscount['oxid'] );
             foreach ( $aDiscount as $sKey => $mxValue ) {
-                if ( !is_array( $mxValue ) ) {
+                if ( !is_array($mxValue) ) {
                     $sField = "oxdiscount__" . $sKey;
                     $oDiscount->$sField = new oxField( "{$mxValue}" );
-                } // if $sValue is not empty array then create oxobject2discount
-                $oDiscount->save();
-                if ( is_array( $mxValue ) && !empty( $mxValue ) ) {
-                    foreach ( $mxValue as $iArtId ) {
+                } else {
+                    foreach ( $mxValue as $iId ) {
                         $aData = array(
-                                'oxid' =>  $oDiscount->getId() . "_" . $iArtId,
+                            'oxid' =>  $oDiscount->getId() . "_" . $iId,
                                 'oxdiscountid' => $oDiscount->getId(),
-                                'oxobjectid' => $iArtId,
+                            'oxobjectid' => $iId,
                                 'oxtype' => $sKey
                         );
                         $this->createObj2Obj( $aData, "oxobject2discount" );
                     }
                 }
             }
+            $oDiscount->save();
         }
     }
 
@@ -472,6 +470,15 @@ class BasketConstruct
     }
     
     /**
+     * Create categories
+     * @param array $aCategories of categories data
+     */
+    public function setCategories( $aCategories )
+    {
+        $this->_createCategories( $aCategories );
+    }
+
+    /**
      * Create object 2 object connection in databse
      * @param array $aData db fields and values
      * @param string $sObj2ObjTable table name
@@ -481,16 +488,12 @@ class BasketConstruct
         if ( empty( $aData ) ) {
             return;
         }
-        $iCnt = count( $aData );
-        for ( $i = 0; $i < $iCnt; $i++ ) {
+
+        $aNewData = is_array( $aData[0] )? $aData : array( $aData );
+        foreach ( $aNewData as $aValues ) {
             $oObj = new oxBase();
             $oObj->init( $sObj2ObjTable );
-            if ( $iCnt < 2 ) {
-                $aObj = $aData[$i];
-            } else {
-                $aObj = $aData;
-            }
-            foreach( $aObj as $sKey => $sValue ) {
+            foreach( $aValues as $sKey => $sValue ) {
                 $sField = $sObj2ObjTable . "__" . $sKey;
                 $oObj->$sField = new oxField( $sValue, oxField::T_RAW);
             }

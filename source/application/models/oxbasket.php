@@ -1570,7 +1570,7 @@ class oxBasket extends oxSuperCfg
                 //#M530 if price is not loaded for articles
                 $dPrice = 0;
                 $dDiscountablePrice = 0;
-                if ( ( $oPrice = $oArticle->getPrice( $oBasketItem->getAmount() ) ) ) {
+                if ( ( $oPrice = $oArticle->getBasketPrice( $oBasketItem->getAmount(), $oBasketItem->getSelList(), $this ) ) ) {
                     $dPrice = $oPrice->getPrice();
                     if ( !$oArticle->skipDiscounts() ) {
                         $dDiscountablePrice = $dPrice;

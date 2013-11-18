@@ -1524,36 +1524,25 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      */
     public function getCategoryIds( $blActCats = false, $blSkipCache = false )
     {
-        $myConfig = $this->getConfig();
         if ( isset( self::$_aArticleCats[$this->getId()] ) && !$blSkipCache ) {
             return self::$_aArticleCats[$this->getId()];
         }
 
         // variant handling
         $sOXID = $this->getId();
+
+        $aRet = $this->_getArticleCategories( $sOXID, $blActCats );
+
         if (isset( $this->oxarticles__oxparentid->value) && $this->oxarticles__oxparentid->value) {
-            $sOXID = $this->oxarticles__oxparentid->value;
-        }
-
-        // we do not use lists here as we dont need this overhead right now
-        $sSql = $this->_getSelectCatIds( $sOXID, $blActCats );
-        $oDb = oxDb::getDb( oxDb::FETCH_MODE_ASSOC );
-        $rs = $oDb->select( $sSql );
-
-
-        $aRet = array();
-
-        if ($rs != false && $rs->recordCount() > 0) {
-            while (!$rs->EOF) {
-                $aRet[] = $rs->fields['oxcatnid'];
-                $rs->moveNext();
-            }
+            $aRet = array_merge( $aRet, $this->_getArticleCategories( $this->oxarticles__oxparentid->value, $blActCats ) );
         }
 
         // adding price categories if such exists
         $sSql = $this->getSqlForPriceCategories();
-        $oDb->setFetchMode( oxDb::FETCH_MODE_ASSOC );
+
+        $oDb = oxDb::getDb( oxDb::FETCH_MODE_ASSOC );
         $rs = $oDb->select( $sSql );
+
 
         if ($rs != false && $rs->recordCount() > 0) {
             while (!$rs->EOF) {
@@ -1571,6 +1560,34 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         }
 
         return self::$_aArticleCats[$this->getId()] = $aRet;
+    }
+
+    /**
+     * Returns ID's of categories where this article is assigned
+     *
+     * @param string $sOXID   Article Id for which category list should be returned
+     * @param bool $blActCats select categories if all parents are active
+     *
+     * @return array
+     */
+    protected function _getArticleCategories( $sOXID, $blActCats = false )
+    {
+        // we do not use lists here as we don't need this overhead right now
+        $sSql = $this->_getSelectCatIds( $sOXID, $blActCats );
+        $oDb = oxDb::getDb( oxDb::FETCH_MODE_ASSOC );
+        $rs = $oDb->select( $sSql );
+
+
+        $aRet = array();
+
+        if ($rs != false && $rs->recordCount() > 0) {
+            while (!$rs->EOF) {
+                $aRet[] = $rs->fields['oxcatnid'];
+                $rs->moveNext();
+            }
+        }
+
+        return $aRet;
     }
 
     /**

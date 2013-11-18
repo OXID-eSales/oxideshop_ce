@@ -6558,6 +6558,38 @@ class Unit_Core_oxarticleTest extends OxidTestCase
     }
 
     /**
+     * Tests if the "oxarticle::GetCategoryIds()" uses a cached value
+     *
+     * @return null
+     */
+    public function testGetCategoryIds_VariantAssignedToCategory()
+    {
+        $testCatId = 'testcatid';
+        $oCategory = new oxCategory();
+        $oCategory->setId($testCatId);
+        $oCategory->oxcategories__oxactive = new oxField(1, oxField::T_RAW);
+        $oCategory->oxcategories__oxparentid = new oxField('oxrootid', oxField::T_RAW);
+        $oCategory->oxcategories__oxshopid = new oxField(oxConfig::getInstance()->getBaseShopId(), oxField::T_RAW);
+        $oCategory->save();
+
+        $testAid = 'testaid';
+        $testParentid = 'testparentid';
+        $oArticle = new oxArticle();
+        $oArticle->setId( $testAid );
+        $oArticle->oxarticles__oxparentid = new oxField($testParentid, oxField::T_RAW);
+
+        // assigning articles to category
+        $oA2C = new oxbase();
+        $oA2C->init( 'oxobject2category' );
+        $oA2C->oxobject2category__oxobjectid = new oxField( $testAid );
+        $oA2C->oxobject2category__oxcatnid = new oxField( $testCatId );
+        $oA2C->setId( $testAid );
+        $oA2C->save();
+
+        $this->assertEquals( array( $testCatId ), $oArticle->getCategoryIds( false, true) );
+    }
+
+    /**
      * Test get standard link with parameters.
      *
      * @return null

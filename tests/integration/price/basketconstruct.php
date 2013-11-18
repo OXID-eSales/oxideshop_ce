@@ -138,7 +138,7 @@ class BasketConstruct
                 foreach ( $aCategory['oxarticles'] as $sArticleId ) {
                     $aData = array (
                             'oxcatnid' => $oCat->getId(),
-                            'oxobjectid' => $aCategory['oxarticles'][$sArticleId]
+                            'oxobjectid' => $sArticleId
                     );
                     $this->createObj2Obj( $aData, 'oxobject2category' );
                 }

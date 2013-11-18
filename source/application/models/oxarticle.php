@@ -1560,66 +1560,78 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             return self::$_aArticleCats[$this->getId()];
         }
 
-        // variant handling
-        $sOXID = $this->getId();
+        $sSql = $this->_getCategoryIdsSelect( $blActCats );
+        $aCategoryIds = $this->_selectCategoryIds( $sSql, 'oxcatnid' );
 
-        $aRet = $this->_getArticleCategories( $sOXID, $blActCats );
-
-        if (isset( $this->oxarticles__oxparentid->value) && $this->oxarticles__oxparentid->value) {
-            $aRet = array_merge( $aRet, $this->_getArticleCategories( $this->oxarticles__oxparentid->value, $blActCats ) );
-        }
-
-        // adding price categories if such exists
         $sSql = $this->getSqlForPriceCategories();
+        $aPriceCategoryIds = $this->_selectCategoryIds( $sSql, 'oxid' );
 
-        $oDb = oxDb::getDb( oxDb::FETCH_MODE_ASSOC );
-        $rs = $oDb->select( $sSql );
-
-
-        if ($rs != false && $rs->recordCount() > 0) {
-            while (!$rs->EOF) {
-
-                if ( is_array( $rs->fields ) ) {
-                   $rs->fields = array_change_key_case( $rs->fields, CASE_LOWER );
-                }
-
-
-                if ( !$aRet[$rs->fields['oxid']] ) {
-                    $aRet[] = $rs->fields['oxid'];
-                }
-                $rs->moveNext();
-            }
+        return self::$_aArticleCats[$this->getId()] = array_unique( array_merge( $aCategoryIds, $aPriceCategoryIds ) );
         }
 
-        return self::$_aArticleCats[$this->getId()] = $aRet;
+    /**
+     * Selects category IDs from given SQL statement and ID field name
+     *
+     * @param string $sSql   sql statement
+     * @param string $sField category ID field name
+     * @return array
+     */
+    protected function _selectCategoryIds( $sSql, $sField )
+    {
+        $oDb = oxDb::getDb( oxDb::FETCH_MODE_ASSOC );
+        $aResult = $oDb->getAll( $sSql );
+        $aReturn = array();
+
+
+        foreach ( $aResult as $aValue ) {
+            $aValue = array_change_key_case( $aValue, CASE_LOWER );
+
+
+            $aReturn[] = $aValue[$sField];
+        }
+
+        return $aReturn;
     }
 
     /**
-     * Returns ID's of categories where this article is assigned
+     * Returns query for article categories select
      *
-     * @param string $sOXID   Article Id for which category list should be returned
      * @param bool $blActCats select categories if all parents are active
      *
-     * @return array
+     * @return string
      */
-    protected function _getArticleCategories( $sOXID, $blActCats = false )
+    protected function _getCategoryIdsSelect( $blActCats = false )
     {
-        // we do not use lists here as we don't need this overhead right now
-        $sSql = $this->_getSelectCatIds( $sOXID, $blActCats );
-        $oDb = oxDb::getDb( oxDb::FETCH_MODE_ASSOC );
-        $rs = $oDb->select( $sSql );
+        $sO2CView = $this->_getObjectViewName('oxobject2category');
+        $sCatView = $this->_getObjectViewName('oxcategories');
 
+        $sArticleIdSql = 'oxobject2category.oxobjectid='.oxDb::getDb()->quote( $this->getId() );
+        if ( $this->getParentId() ) {
+            $sArticleIdSql = '('.$sArticleIdSql.' or oxobject2category.oxobjectid='.oxDb::getDb()->quote( $this->getParentId() ).')';
+        }
+        $sActiveCategorySql = $blActCats? $this->_getActiveCategorySelectSnippet() : '';
 
-        $aRet = array();
+        $sSelect =  "select
+                        oxobject2category.oxcatnid as oxcatnid
+                     from $sO2CView as oxobject2category
+                        left join $sCatView as oxcategories on oxcategories.oxid = oxobject2category.oxcatnid
+                    where $sArticleIdSql and oxcategories.oxid is not null and oxcategories.oxactive = 1 $sActiveCategorySql
+                    order by oxobject2category.oxtime";
 
-        if ($rs != false && $rs->recordCount() > 0) {
-            while (!$rs->EOF) {
-                $aRet[] = $rs->fields['oxcatnid'];
-                $rs->moveNext();
-            }
+        return $sSelect;
         }
 
-        return $aRet;
+    /**
+     * Returns active category select snippet
+     *
+     * @return string
+     */
+    protected function _getActiveCategorySelectSnippet()
+    {
+        $sCatView = $this->_getObjectViewName('oxcategories');
+        $sActiveCategorySql = "and oxcategories.oxhidden = 0 and (select count(cats.oxid) from $sCatView as cats where cats.oxrootid = oxcategories.oxrootid and cats.oxleft < oxcategories.oxleft and cats.oxright > oxcategories.oxright and ( cats.oxhidden = 1 or cats.oxactive = 0 ) ) = 0 ";
+
+        return $sActiveCategorySql;
     }
 
     /**
@@ -1627,6 +1639,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      *
      * @param string $sOXID     article id
      * @param bool   $blActCats select categories if all parents are active
+     *
+     * @deprecated since v5.2 (2013-11-18); use oxArticle::_getCategoryIdsSelect instead
      *
      * @return string
      */

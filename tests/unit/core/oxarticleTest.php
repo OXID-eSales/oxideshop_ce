@@ -152,7 +152,7 @@ class Unit_Core_oxarticleTest extends OxidTestCase
      *
      * @return null
      */
-    public function testGgg()
+    public function testGetViewName()
     {
         //
         $oProduct = new oxArticle();
@@ -167,7 +167,7 @@ class Unit_Core_oxarticleTest extends OxidTestCase
         //
         $oAddress = new oxAddress();
         $this->assertEquals( "oxaddress", $oAddress->getViewName( true ) );
-        $this->assertEquals( "oxaddress", $oAddress->getViewName( true ) );
+        $this->assertEquals( "oxaddress", $oAddress->getViewName() );
     }
 
     /**

@@ -97,6 +97,8 @@ class Integration_Price_PriceTest extends OxidTestCase
         // setup options
         $oConstruct->setOptions( $aTestCase['options'] );
 
+        // create categories
+        $oConstruct->setCategories( $aTestCase['categories'] );
 
         // create articles
         $aArts = $oConstruct->getArticles( $aTestCase['articles'] );

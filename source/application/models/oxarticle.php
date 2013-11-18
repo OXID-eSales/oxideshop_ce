@@ -1126,8 +1126,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
         if ( $this->_oAmountPriceInfo === null ) {
             $this->_oAmountPriceInfo = array();
-            if ( count( ( $oAmPriceList = $this->_getAmountPriceList() ) ) ) {
-                $this->_oAmountPriceInfo = $this->_fillAmountPriceList( $oAmPriceList );
+            if ( count( ( $aAmPriceList = $this->_getAmountPriceList()->getArray() ) ) ) {
+                $this->_oAmountPriceInfo = $this->_fillAmountPriceList( $aAmPriceList );
             }
         }
         return $this->_oAmountPriceInfo;
@@ -3203,17 +3203,17 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      /**
      * Fills amount price list object and sets amount price for article object
      *
-     * @param object $oAmPriceList Amount price list
+     * @param array $aAmPriceList Amount price list
      *
-     * @return object
+     * @return array
      */
-    protected function _fillAmountPriceList($oAmPriceList)
+    protected function _fillAmountPriceList($aAmPriceList)
     {
         $myConfig = $this->getConfig();
         $oLang = oxRegistry::getLang();
 
         // trying to find lowest price value
-        foreach ($oAmPriceList as $sId => $oItem) {
+        foreach ($aAmPriceList as $sId => $oItem) {
 
             $oItemPrice = $this->_getPriceObject();
             if ( $oItem->oxprice2article__oxaddabs->value ) {
@@ -3232,10 +3232,10 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             }
 
 
-            $oAmPriceList[$sId]->fbrutprice = $oLang->formatCurrency( $this->_getPriceForView( $oItemPrice ) );
+            $aAmPriceList[$sId]->fbrutprice = $oLang->formatCurrency( $this->_getPriceForView( $oItemPrice ) );
         }
 
-        return $oAmPriceList;
+        return $aAmPriceList;
     }
 
 

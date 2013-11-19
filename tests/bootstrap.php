@@ -22,6 +22,8 @@
  * @version   SVN: $Id: $
  */
 
+chdir(dirname(__FILE__));
+
 if (getenv('oxPATH')) {
     define ('oxPATH', getenv('oxPATH'));
 } else {

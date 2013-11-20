@@ -16,6 +16,8 @@
  */
 $aData = array(
 
+    'skipped' => 1,
+
     'categories' => array (
         0 =>  array (
             'oxid'       => 'testCategory1',

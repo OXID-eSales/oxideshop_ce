@@ -98,7 +98,7 @@ class Metrics
     }
 
     /**
-     * To start generated metrics xml file analizis for CCN, Crap index and NPath
+     * To start generated metrics xml file analysis for CCN, Crap index and NPath
      *
      * @return null
      */
@@ -106,11 +106,22 @@ class Metrics
     {
         if ( $this->isExistingMetricsFile() ) {
             $this->_resetTotalValues();
-            if ( isset($this->_oMetrics->package->class) ) {
-                foreach ( $this->_oMetrics->package->class as $oClass ) {
-                    $this->_readMetricsForClass( $oClass );
+
+            foreach ( $this->_oMetrics->package as $oPackage ) {
+                $this->_readClassMetricsPerPackage( $oPackage );
+            }
                 }
             }
+
+    /**
+     * To read metrics existing per package class
+     *
+     * @param object $oPackage package object
+     */
+    protected function _readClassMetricsPerPackage($oPackage)
+    {
+        foreach ( $oPackage as $oClass ) {
+            $this->_readMetricsForClass( $oClass );
         }
     }
 

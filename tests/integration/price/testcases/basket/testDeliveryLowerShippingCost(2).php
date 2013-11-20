@@ -5,7 +5,7 @@
  * Product count: 5;
  * VAT info:  count of used vat =3(20%, 10%);
  * Currency rate:1;
- * Costs VAT caclulation rule: biggest_net;
+ * Costs VAT calculation rule: biggest_net;
  * Costs:
  *  1. Delivery;
  * Brutto-Brutto mode.

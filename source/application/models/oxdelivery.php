@@ -363,7 +363,7 @@ class oxDelivery extends oxI18n
     /**
      * Checks if delivery fits for current basket
      *
-     * @param oxbasket $oBasket shop basket
+     * @param oxBasket $oBasket shop basket
      *
      * @return bool
      */
@@ -407,7 +407,7 @@ class oxDelivery extends oxI18n
                     if ( isset( self::$_aProductList[$sProductId] ) ) {
                         $oProduct = self::$_aProductList[$sProductId];
                     } else {
-                        $oProduct = oxNew( 'oxarticle' );
+                        $oProduct = oxNew( 'oxArticle' );
                         $oProduct->setSkipAssign( true );
 
                         if ( !$oProduct->load( $sProductId ) ) {
@@ -422,23 +422,20 @@ class oxDelivery extends oxI18n
 
                         if ( $oProduct->inCategory( $sCatId ) ) {
                             $blUse = true;
-
                             $iArtAmount = $this->getDeliveryAmount( $oContent );
                             if ( $this->oxdelivery__oxfixed->value > 0 ) {
                                 if ( $this->_isForArticle( $oContent, $iArtAmount ) ) {
                                     $blForBasket = true;
                                 }
                             }
-
-                            break;
-                        }
-                    }
                     if (!$blForBasket) {
                         $iAmount += $iArtAmount;
                     }
                 }
             }
 
+                }
+            }
         } else {
             // regular amounts check
             foreach ( $oBasket->getContents() as $oContent ) {

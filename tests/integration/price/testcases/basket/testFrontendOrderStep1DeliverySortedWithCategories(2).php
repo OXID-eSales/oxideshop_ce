@@ -11,7 +11,7 @@
  * Brutto-Brutto mode.
  * Short description:
  * Given 2 products, 2 categories and 2 delivery costs.
- * When in basket are added 2 items and cost rules are active for these items, also cost rules are sorted asc.
+ * When in basket are added 2 items and cost rules are active for these items, also cost rules are sorted desc.
  * Then prices are calculated with shipping cost.
  */
 $aData = array(
@@ -60,7 +60,7 @@ $aData = array(
                 'oxfinalize' => 1,
                 'oxparam' => 5, //from
                 'oxparamend' => 99999, //to
-                'oxsort' => 1,
+                'oxsort' => 2,
                 'oxcategories' => array(
                     'testCategory2' //uses article 1002
                 ),
@@ -73,7 +73,7 @@ $aData = array(
                 'oxfinalize' => 1,
                 'oxparam' => 0, //from
                 'oxparamend' => 99999, //to
-                'oxsort' => 2,
+                'oxsort' => 1,
                 'oxcategories' => array(
                     'testCategory1' //uses article 10012
                 ),

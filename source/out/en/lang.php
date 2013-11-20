@@ -73,9 +73,9 @@ $aLang = array(
 'BANK_ACCOUNT_HOLDER'                                         => "Account Holder",
 'BANK_ACCOUNT_HOLDER_2'                                       => "Account Holder:",
 'BANK_ACCOUNT_NUMBER'                                         => "Account No.",
-'BANK_ACCOUNT_NUMBER_2'                                       => "Account No.:",
+'BANK_ACCOUNT_NUMBER_2'                                       => "Account No. or IBAN:",
 'BANK_CODE'                                                   => "Bank code",
-'BANK_CODE_2'                                                 => "Bank code:",
+'BANK_CODE_2'                                                 => "Bank code or BIC:",
 'BANK_CODE_3'                                                 => "Bank Code:",
 'BARGAIN'                                                     => "Bargain",
 'BARGAIN_PRODUCTS'                                            => "Bargain products",
@@ -874,4 +874,7 @@ $aLang = array(
 'PAGE_TITLE_WISHLIST'                                         => 'Wishlist',
 'PAGE_TITLE_CONTACT'                                          => 'Contact',
 'PAGE_TITLE_LINKS'                                            => 'Links',
+
+'MESSAGE_PAYMENT_BANK_CODE_INVALID'                           => 'Please provide a valid bank code!',
+'MESSAGE_PAYMENT_ACCOUNT_NUMBER_INVALID'                      => 'Please provide a valid account number!',
 );

@@ -19,7 +19,6 @@
  * @package   lang
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /*
@@ -1016,8 +1015,8 @@ $aLang = array(
 'ORDER_OVERVIEW_VATID'                                     => 'VAT ID:',
 'ORDER_OVERVIEW_DELTYPE'                                   => 'Shipped with',
 'ORDER_OVERVIEW_LSBANKNAME'                                => 'Bank',
-'ORDER_OVERVIEW_LSBLZ'                                     => 'Bank code',
-'ORDER_OVERVIEW_LSKTONR'                                   => 'Account No.',
+'ORDER_OVERVIEW_LSBLZ'                                     => 'Bank code (or BIC)',
+'ORDER_OVERVIEW_LSKTONR'                                   => 'Account No. (or IBAN)',
 'ORDER_OVERVIEW_LSKTOINHABER'                              => 'Account Holder',
 'ORDER_OVERVIEW_INFOLDER'                                  => 'In Folder',
 'ORDER_OVERVIEW_INTSTATUS'                                 => 'Internal Status',
@@ -1069,8 +1068,8 @@ $aLang = array(
 'ORDER_OVERVIEW_PDF_GREETINGS'                             => 'Thank you for your order! Please order from us again and recommend us to other.',
 'ORDER_OVERVIEW_PDF_PHONE'                                 => 'phone : ',
 'ORDER_OVERVIEW_PDF_FAX'                                   => 'fax : ',
-'ORDER_OVERVIEW_PDF_ACCOUNTNR'                             => 'Account No. ',
-'ORDER_OVERVIEW_PDF_BANKCODE'                              => 'Routing No.: ',
+'ORDER_OVERVIEW_PDF_ACCOUNTNR'                             => 'Account No. (or IBAN): ',
+'ORDER_OVERVIEW_PDF_BANKCODE'                              => 'Bank Code (or BIC): ',
 'ORDER_OVERVIEW_PDF_SELPAYMENT'                            => 'Payment Method: ',
 'ORDER_OVERVIEW_PDF_DELIVNOTE'                             => 'Delivery note nr.',
 'ORDER_OVERVIEW_PDF_TSPROTECTION'                          => 'Trusted Shops buyer protection',

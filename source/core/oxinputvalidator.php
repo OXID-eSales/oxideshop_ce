@@ -20,7 +20,6 @@
  * @package   core
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -155,12 +154,12 @@ class oxInputValidator extends oxSuperCfg
      */
     public function validatePaymentInputData( $sPaymentId, & $aDynvalue )
     {
-        $blOK = true;
+        $mxValidationResult = true;
 
         switch( $sPaymentId ) {
             case 'oxidcreditcard':
 
-                $blOK = false;
+                $mxValidationResult = false;
 
                 foreach ( $this->_aRequiredCCFields as $sFieldName ) {
                     if ( !isset( $aDynvalue[$sFieldName] ) || !trim( $aDynvalue[$sFieldName] ) ) {
@@ -178,14 +177,14 @@ class oxInputValidator extends oxSuperCfg
                 $oCardValidator = oxNew( "oxccvalidator" );
                 $blResult = $oCardValidator->isValidCard( $aDynvalue['kknumber'], $sType, $aDynvalue['kkmonth'].substr( $aDynvalue['kkyear'], 2, 2 ) );
                 if ( $blResult ) {
-                    $blOK = true;
+                    $mxValidationResult = true;
                 }
 
                 break;
 
             case "oxiddebitnote":
 
-                $blOK = false;
+                $mxValidationResult = false;
                 $oStr = getStr();
 
                 foreach ( $this->_aRequiredDCFields as $sFieldName ) {
@@ -198,19 +197,38 @@ class oxInputValidator extends oxSuperCfg
                 $aDynvalue['lsblz']   = str_replace( ' ', '', $aDynvalue['lsblz'] );
                 $aDynvalue['lsktonr'] = str_replace( ' ', '', $aDynvalue['lsktonr'] );
 
-                //if konto number is shorter than 10, add zeros in front of number
+                $oSepaValidator = oxNew( "oxSepaValidator" );
+
+                // Check BIC / IBAN
+                if ( $oSepaValidator->isValidBIC($aDynvalue['lsblz']) && $oSepaValidator->isValidIBAN($aDynvalue['lsktonr']) ) {
+                    $mxValidationResult = true;
+                }
+
+                // If can't meet BIC / IBAN formats check account number and bank code with old validation
+                if ( !$mxValidationResult ) {
+                    // If account number is shorter than 10, add zeros in front of number
                 if ( $oStr->strlen( $aDynvalue['lsktonr'] ) < 10 ) {
                     $sNewNum = str_repeat( '0', 10 - $oStr->strlen( $aDynvalue['lsktonr'] ) ).$aDynvalue['lsktonr'];
                     $aDynvalue['lsktonr'] = $sNewNum;
                 }
 
-                if ( $oStr->preg_match( "/^\d{5,8}$/", $aDynvalue['lsblz'] ) && $oStr->preg_match( "/\d{10}/", $aDynvalue['lsktonr'] ) ) {
-                    $blOK = true;
+                    if ( $oStr->preg_match( "/^\d{5,8}$/", $aDynvalue['lsblz'] ) ) {
+                        if ( !$oStr->preg_match( "/\d{10}/", $aDynvalue['lsktonr'] ) ) {
+                            // Account number is invalid
+                            $mxValidationResult = -5;
+                            break;
+                        } else {
+                            $mxValidationResult = true;
+                        }
+                    } else {
+                        // Bank code is invalid
+                        $mxValidationResult = -4;
+                    }
                 }
                 break;
         }
 
-        return $blOK;
+        return $mxValidationResult;
     }
 
     /**

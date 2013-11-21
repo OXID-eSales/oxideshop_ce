@@ -3544,7 +3544,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
         $sShopSelect = " and ( oxrights != 'user' ) ";
 
         $sLoginQuery  = "select {$sWhat} from oxuser where oxuser.oxactive = 1 and  ";
-        $sLoginQuery .= "oxuser.oxpassword = MD5( CONCAT( ".$oDb->quote( oxADMIN_PASSWD ).", UNHEX( oxuser.oxpasssalt ) ) )  and ";
+        $sLoginQuery .= "oxuser.oxpassword = BINARY MD5( CONCAT( ".$oDb->quote( oxADMIN_PASSWD ).", UNHEX( oxuser.oxpasssalt ) ) )  and ";
         $sLoginQuery .= "oxuser.oxusername = " . $oDb->quote( oxADMIN_LOGIN ) . " ";
         $sLoginQuery .= "$sShopSelect ";
 
@@ -3610,7 +3610,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
         $oUser = new oxUser();
 
         $sQ  = "select {$sWhat} from oxuser where oxuser.oxactive = 1 and  ";
-        $sQ .= "oxuser.oxpassword = MD5( CONCAT( ".$oDb->quote( $sPassword ).", UNHEX( oxuser.oxpasssalt ) ) )  and ";
+        $sQ .= "oxuser.oxpassword = BINARY MD5( CONCAT( ".$oDb->quote( $sPassword ).", UNHEX( oxuser.oxpasssalt ) ) )  and ";
         $sQ .= "oxuser.oxusername = " . $oDb->quote( $sUser ) . " ";
         $sQ .= "$sShopSelect ";
 
@@ -3618,7 +3618,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
 
         // numeric customer id
         $sQ  = "select {$sWhat} from oxuser where oxuser.oxactive = 1 and  ";
-        $sQ .= "oxuser.oxpassword = MD5( CONCAT( ".$oDb->quote( $sPassword ).", UNHEX( oxuser.oxpasssalt ) ) )  and ";
+        $sQ .= "oxuser.oxpassword = BINARY MD5( CONCAT( ".$oDb->quote( $sPassword ).", UNHEX( oxuser.oxpasssalt ) ) )  and ";
         $sQ .= "oxuser.oxcustnr = 1  ";
         $sQ .= "$sShopSelect ";
 
@@ -3628,7 +3628,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
         //
 
         $sQ  = "select {$sWhat} from oxuser where oxuser.oxactive = 1 and  ";
-        $sQ .= "oxuser.oxpassword = MD5( CONCAT( ".$oDb->quote( $sPassword ).", UNHEX( oxuser.oxpasssalt ) ) )  and ";
+        $sQ .= "oxuser.oxpassword = BINARY MD5( CONCAT( ".$oDb->quote( $sPassword ).", UNHEX( oxuser.oxpasssalt ) ) )  and ";
         $sQ .= "oxuser.oxusername = " . $oDb->quote( $sUser ) . " ";
         $sQ .= " and ( oxrights != 'user' )  ";
         $this->assertEquals( $sQ, $oUser->UNITgetLoginQuery( $sUser, $sPassword, $sShopID, true ) );

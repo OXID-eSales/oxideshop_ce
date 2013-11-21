@@ -229,13 +229,16 @@ class oxUtilsView extends oxSuperCfg
      */
     public function parseThroughSmarty( $sDesc, $sOxid = null, $oActView = null, $blRecompile = false )
     {
+        if ( oxRegistry::getConfig()->isDemoShop() ) {
+            return $sDesc;
+        }
+
         startProfile("parseThroughSmarty");
 
         if (!is_array($sDesc) && strpos($sDesc, "[{") === false) {
             stopProfile("parseThroughSmarty");
             return $sDesc;
         }
-
 
         $iLang = oxRegistry::getLang()->getTplLanguage();
 

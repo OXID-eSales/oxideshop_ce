@@ -1428,7 +1428,7 @@ class Unit_utf8Test extends OxidTestCase
     {
         $sValue = 'agentūЛитовfür';
 
-        $aFields = array( 'oxuser__oxusername', 'oxuser__oxpassword',
+        $aFields = array( 'oxuser__oxusername',
                           'oxuser__oxustid', 'oxuser__oxcompany', 'oxuser__oxfname',
                           'oxuser__oxlname', 'oxuser__oxstreet', 'oxuser__oxstreetnr',
                           'oxuser__oxaddinfo', 'oxuser__oxcity', 'oxuser__oxzip',

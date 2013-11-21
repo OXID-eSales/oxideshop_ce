@@ -883,6 +883,6 @@ $aLang = array(
 'PAGE_TITLE_CONTACT'                                          => 'Kontakt',
 'PAGE_TITLE_LINKS'                                            => 'Links',
 
-'MESSAGE_PAYMENT_BANK_CODE_INVALID'                           => 'Please provide valid bank code![tr]',
-'MESSAGE_PAYMENT_ACCOUNT_NUMBER_INVALID'                      => 'Please provide valid account number![tr]',
+'MESSAGE_PAYMENT_BANK_CODE_INVALID'                           => 'Bitte geben Sie eine gültige Bankleitzahl an!',
+'MESSAGE_PAYMENT_ACCOUNT_NUMBER_INVALID'                      => 'Bitte geben Sie eine gültige Kontonummer an!',
 );

@@ -239,7 +239,7 @@ class oxDelivery extends oxI18n
                     break;
                 case 'w': // weight
                     if ( $this->oxdelivery__oxfixed->value == 2 ) {
-                        $dAmount += $oProduct->oxarticles__oxweight->value;
+                        $dAmount += $oProduct->getWeight();
                     } else {
                         $dAmount += $oBasketItem->getWeight();
                     }
@@ -266,7 +266,7 @@ class oxDelivery extends oxI18n
     /**
      * Delivery price setter
      *
-     * @param oxprice $oPrice delivery price to set
+     * @param oxPrice $oPrice delivery price to set
      *
      * @return null
      */
@@ -276,7 +276,7 @@ class oxDelivery extends oxI18n
     }
 
     /**
-     * Returns oxprice object for delivery costs
+     * Returns oxPrice object for delivery costs
      *
      * @param double $dVat delivery vat
      *
@@ -285,7 +285,7 @@ class oxDelivery extends oxI18n
     public function getDeliveryPrice( $dVat = null )
     {
         if ( $this->_oPrice === null ) {
-            // loading oxprice object for final price calculation
+            // loading oxPrice object for final price calculation
             $this->_oPrice = oxNew( 'oxPrice' );
 
             if ( !$this->_blDelVatOnTop ) {

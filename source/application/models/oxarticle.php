@@ -5115,4 +5115,14 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         return $dSize;
     }
 
+    /**
+     * Return product weight
+     *
+     * @return double
+     */
+    public function getWeight()
+    {
+        return $this->oxarticles__oxweight->value;
+    }
+
 }

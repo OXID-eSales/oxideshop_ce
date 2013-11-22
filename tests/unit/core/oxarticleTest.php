@@ -7274,4 +7274,18 @@ class Unit_Core_oxarticleTest extends OxidTestCase
         $this->assertEquals( 39, $oArticle->getVariantsCount() );
     }
 
+    /**
+     * Checks that in admin articles are not cached statically
+     */
+    public function testGetSize()
+    {
+        $oArticle = new oxArticle();
+        $oArticle->oxarticles__oxlength = new oxField(1);
+        $oArticle->oxarticles__oxwidth = new oxField(2);
+        $oArticle->oxarticles__oxheight = new oxField(3);
+
+        $this->assertEquals( 6, $oArticle->getSize() );
+    }
+
+
 }

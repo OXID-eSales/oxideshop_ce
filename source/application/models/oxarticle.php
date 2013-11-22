@@ -5101,4 +5101,18 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         return $this->oxarticles__oxunitquantity->value;
     }
 
+    /**
+     * Return Size of product: length*width*height
+     *
+     * @return double
+     */
+    public function getSize()
+    {
+        $dSize = $this->oxarticles__oxlength->value *
+            $this->oxarticles__oxwidth->value *
+            $this->oxarticles__oxheight->value;
+
+        return $dSize;
+    }
+
 }

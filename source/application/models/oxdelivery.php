@@ -245,9 +245,7 @@ class oxDelivery extends oxI18n
                     }
                     break;
                 case 's': // size
-                    $dAmount += $oProduct->oxarticles__oxlength->value *
-                                $oProduct->oxarticles__oxwidth->value *
-                                $oProduct->oxarticles__oxheight->value;
+                    $dAmount += $oProduct->getSize();
                     if ( $this->oxdelivery__oxfixed->value < 2 ) {
                         $dAmount *= $oBasketItem->getAmount();
                     }

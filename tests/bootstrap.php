@@ -21,9 +21,7 @@
  * @version OXID eShop CE
  * @version   SVN: $Id: $
  */
-
-chdir(dirname(__FILE__));
-
+chdir('/var/www/oxideshop_5_0/tests/');
 if (getenv('oxPATH')) {
     define ('oxPATH', getenv('oxPATH'));
 } else {

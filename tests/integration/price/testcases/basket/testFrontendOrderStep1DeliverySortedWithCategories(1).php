@@ -16,7 +16,7 @@
  */
 $aData = array(
 
-    'skipped' => 1,
+    //'skipped' => 1,
 
     'categories' => array (
         0 =>  array (
@@ -58,7 +58,7 @@ $aData = array(
                 'oxactive' => 1,
                 'oxaddsum' => 0,
                 'oxaddsumtype' => 'abs',
-                'oxdeltype' => 'p',
+                'oxdeltype' => 'a',
                 'oxfinalize' => 1,
                 'oxparam' => 5, //from
                 'oxparamend' => 99999, //to
@@ -71,7 +71,7 @@ $aData = array(
                 'oxactive' => 1,
                 'oxaddsum' => 2,
                 'oxaddsumtype' => 'abs',
-                'oxdeltype' => 'p',
+                'oxdeltype' => 'a',
                 'oxfinalize' => 1,
                 'oxparam' => 0, //from
                 'oxparamend' => 99999, //to
@@ -95,9 +95,9 @@ $aData = array(
                 20 => '20,00'
             ),
             'delivery' => array(
-                'brutto' => '2,00',
+                'brutto' => '0,00',
             ),
-            'grandTotal'  => '132,00'
+            'grandTotal'  => '130,00'
         ),
     ),
     'options' => array (

@@ -93,11 +93,22 @@ class Unit_Components_Widgets_oxwratingTest extends OxidTestCase
      *
      * @return null
      */
-    public function testGetRateUrl()
+    public function testGetRateUrl_RateUrlParamSet_RateUrlValue()
     {
         $oRating = new oxwRating();
         $oRating->setViewParameters( array( "sRateUrl" => "testUrl" ) );
         $this->assertEquals( 'testUrl', $oRating->getRateUrl() );
+    }
+
+    /**
+     * Testing oxwRating::getRateUrl()
+     *
+     * @return null
+     */
+    public function testGetRateUrl_NoRateUrlParam_Null()
+    {
+        $oRating = new oxwRating();
+        $this->assertEquals( null, $oRating->getRateUrl() );
     }
 
 }

@@ -29,6 +29,15 @@
  */
 class oxDelivery extends oxI18n
 {
+    const CALCULATION_RULE_ONCE_PER_CART              = 0;
+    const CALCULATION_RULE_FOR_EACH_DIFFERENT_PRODUCT = 1;
+    const CALCULATION_RULE_FOR_EACH_PRODUCT           = 2;
+
+    const CONDITION_TYPE_PRICE  = 'p';
+    const CONDITION_TYPE_AMOUNT = 'a';
+    const CONDITION_TYPE_SIZE   = 's';
+    const CONDITION_TYPE_WEIGHT = 'w';
+
     /**
      * Current class name
      *
@@ -63,7 +72,7 @@ class oxDelivery extends oxI18n
     /**
      * Current delivery price object which keeps price info
      *
-     * @var oxprice
+     * @var oxPrice
      */
     protected $_oPrice = null;
 
@@ -145,21 +154,13 @@ class oxDelivery extends oxI18n
      */
     public function getArticles()
     {
-        if ( $this->_aArtIds !== null ) {
-            return $this->_aArtIds;
-        }
-
+        if ( is_null( $this->_aArtIds ) ) {
         $oDb = oxDb::getDb();
         $sQ = "select oxobjectid from oxobject2delivery where oxdeliveryid=".$oDb->quote($this->getId())." and oxtype = 'oxarticles'";
-        $aArtIds = $oDb->getAll( $sQ );
-
-        //make single dimension array
-        foreach ( $aArtIds as $aItem ) {
-            $this->_aArtIds[] = $aItem[0];
+            $aArtIds = $oDb->getCol( $sQ );
+            $this->_aArtIds= $aArtIds;
         }
-
         return $this->_aArtIds;
-
     }
 
     /**
@@ -169,19 +170,12 @@ class oxDelivery extends oxI18n
      */
     public function getCategories()
     {
-        if ( $this->_aCatIds !== null ) {
-            return $this->_aCatIds;
-        }
-
+        if ( is_null( $this->_aCatIds ) ) {
         $oDb = oxDb::getDb();
         $sQ = "select oxobjectid from oxobject2delivery where oxdeliveryid=".$oDb->quote($this->getId())." and oxtype = 'oxcategories'";
-        $aCatIds = $oDb->getAll( $sQ );
-
-        //make single dimension array
-        foreach ( $aCatIds AS $aItem ) {
-            $this->_aCatIds[] = $aItem[0];
+            $aCatIds = $oDb->getCol( $sQ );
+            $this->_aCatIds = $aCatIds;
         }
-
         return $this->_aCatIds;
     }
 
@@ -229,28 +223,28 @@ class oxDelivery extends oxI18n
                 $this->_blFreeShipping = false;
             }
 
-            switch ( $this->oxdelivery__oxdeltype->value ) {
-                case 'p': // price
-                    if ( $this->oxdelivery__oxfixed->value == 2 ) {
+            switch ( $this->getConditionType() ) {
+                case self::CONDITION_TYPE_PRICE: // price
+                    if ( $this->getCalculationRule() == self::CALCULATION_RULE_FOR_EACH_PRODUCT ) {
                         $dAmount += $oProduct->getPrice()->getPrice();
                     } else {
                         $dAmount += $oBasketItem->getPrice()->getPrice(); // price// currency conversion must allready be done in price class / $oCur->rate; // $oBasketItem->oPrice->getPrice() / $oCur->rate;
                     }
                     break;
-                case 'w': // weight
-                    if ( $this->oxdelivery__oxfixed->value == 2 ) {
+                case self::CONDITION_TYPE_WEIGHT: // weight
+                    if ( $this->getCalculationRule() == self::CALCULATION_RULE_FOR_EACH_PRODUCT ) {
                         $dAmount += $oProduct->getWeight();
                     } else {
                         $dAmount += $oBasketItem->getWeight();
                     }
                     break;
-                case 's': // size
+                case self::CONDITION_TYPE_SIZE: // size
                     $dAmount += $oProduct->getSize();
-                    if ( $this->oxdelivery__oxfixed->value < 2 ) {
+                    if ( $this->getCalculationRule() != self::CALCULATION_RULE_FOR_EACH_PRODUCT ) {
                         $dAmount *= $oBasketItem->getAmount();
                     }
                     break;
-                case 'a': // amount
+                case self::CONDITION_TYPE_AMOUNT: // amount
                     $dAmount += $oBasketItem->getAmount();
                     break;
             }
@@ -285,76 +279,44 @@ class oxDelivery extends oxI18n
     public function getDeliveryPrice( $dVat = null )
     {
         if ( $this->_oPrice === null ) {
+
             // loading oxPrice object for final price calculation
-            $this->_oPrice = oxNew( 'oxPrice' );
-
-            if ( !$this->_blDelVatOnTop ) {
-                $this->_oPrice->setBruttoPriceMode();
-            } else {
-                $this->_oPrice->setNettoPriceMode();
-            }
-
-            $this->_oPrice->setVat( $dVat );
+            $oPrice = oxNew( 'oxPrice' );
+            $oPrice->setNettoMode( $this->_blDelVatOnTop );
+            $oPrice->setVat( $dVat );
 
             // if article is free shipping, price for delivery will be not calculated
-            if ( $this->_blFreeShipping ) {
-                return $this->_oPrice;
+            if ( !$this->_blFreeShipping ) {
+                $oPrice->add( $this->_getCostSum() );
             }
-
-            // calculating base price value
-            switch ( $this->oxdelivery__oxaddsumtype->value ) {
-                case 'abs':
-
-                    $dAmount = 0;
-
-                    if ( $this->oxdelivery__oxfixed->value == 0 ) {
-                        // 1. Once per Cart
-                        $dAmount = 1;
-                    } elseif ( $this->oxdelivery__oxfixed->value == 1 ) {
-                        // 2. Once per Product overall
-                        $dAmount = $this->_iProdCnt;
-                    } elseif ( $this->oxdelivery__oxfixed->value == 2 ) {
-                        // 3. Once per Product in Cart
-                        $dAmount = $this->_iItemCnt;
-                    }
-
-                    $oCur = $this->getConfig()->getActShopCurrencyObject();
-                    $this->_oPrice->add( $this->oxdelivery__oxaddsum->value * $oCur->rate );
-                    $this->_oPrice->multiply( $dAmount );
-                    break;
-                case '%':
-
-                    $this->_oPrice->add( $this->_dPrice /100 * $this->oxdelivery__oxaddsum->value );
-                    break;
-            }
+            $this->setDeliveryPrice( $oPrice );
         }
 
-        // calculating total price
         return $this->_oPrice;
     }
 
     /**
      * Delete this object from the database, returns true on success.
      *
-     * @param string $sOXID Object ID (default null)
+     * @param string $sOxId Object ID (default null)
      *
      * @return bool
      */
-    public function delete( $sOXID = null )
+    public function delete( $sOxId = null )
     {
-        if ( !$sOXID ) {
-            $sOXID = $this->getId();
+        if ( !$sOxId ) {
+            $sOxId = $this->getId();
         }
-        if ( !$sOXID ) {
+        if ( !$sOxId ) {
             return false;
         }
 
 
         $oDb = oxDb::getDb();
-        $sQ = "delete from oxobject2delivery where oxobject2delivery.oxdeliveryid = ".$oDb->quote($sOXID);
+        $sQ = "delete from `oxobject2delivery` where `oxobject2delivery`.`oxdeliveryid` = " . $oDb->quote( $sOxId );
         $oDb->execute( $sQ );
 
-        return parent::delete( $sOXID );
+        return parent::delete( $sOxId );
     }
 
     /**
@@ -390,7 +352,7 @@ class oxDelivery extends oxI18n
                 if ( $blHasArticles && (in_array( $sProductId, $aDeliveryArticles ) || ( $sParentId && in_array( $sParentId, $aDeliveryArticles ) ) ) ) {
                     $blUse = true;
                     $iArtAmount = $this->getDeliveryAmount( $oContent );
-                    if ( $this->oxdelivery__oxfixed->value > 0 ) {
+                    if ( $this->getCalculationRule() != self::CALCULATION_RULE_ONCE_PER_CART ) {
                         if ( $this->_isForArticle( $oContent, $iArtAmount ) ) {
                             $blForBasket = true;
                         }
@@ -420,7 +382,7 @@ class oxDelivery extends oxI18n
                         if ( $oProduct->inCategory( $sCatId ) ) {
                             $blUse = true;
                             $iArtAmount = $this->getDeliveryAmount( $oContent );
-                            if ( $this->oxdelivery__oxfixed->value > 0 ) {
+                            if ( $this->getCalculationRule() != self::CALCULATION_RULE_ONCE_PER_CART ) {
                                 if ( $this->_isForArticle( $oContent, $iArtAmount ) ) {
                                     $blForBasket = true;
                                 }
@@ -437,7 +399,7 @@ class oxDelivery extends oxI18n
             // regular amounts check
             foreach ( $oBasket->getContents() as $oContent ) {
                 $iArtAmount = $this->getDeliveryAmount( $oContent );
-                if ( $this->oxdelivery__oxfixed->value > 0 ) {
+                if ( $this->getCalculationRule() != self::CALCULATION_RULE_ONCE_PER_CART ) {
                     if ( $this->_isForArticle( $oContent, $iArtAmount ) ) {
                         $blForBasket = true;
                     }
@@ -448,10 +410,15 @@ class oxDelivery extends oxI18n
             }
         }
 
+       /* if ( $this->getConditionType() == self::CONDITION_TYPE_PRICE ) {
+            $iAmount = $oBasket->_getDiscountedProductsSum();
+        }*/
+
         //#M1130: Single article in Basket, checked as free shipping, is not buyable (step 3 no payments found)
         if ( !$blForBasket && $blUse && ( $this->_checkDeliveryAmount($iAmount) || $this->_blFreeShipping ) ) {
             $blForBasket = true;
         }
+
         return $blForBasket;
     }
 
@@ -465,12 +432,13 @@ class oxDelivery extends oxI18n
      */
     protected function _isForArticle( $oContent, $iArtAmount )
     {
+        $blResult = false;
         if ( !$this->_blFreeShipping && $this->_checkDeliveryAmount($iArtAmount) ) {
             $this->_iItemCnt += $oContent->getAmount();
             $this->_iProdCnt += 1;
-            return true;
+            $blResult = true;
         }
-        return false;
+        return $blResult;
     }
 
     /**
@@ -480,24 +448,20 @@ class oxDelivery extends oxI18n
      *
      * @return boolean
      */
-    protected function _checkDeliveryAmount($iAmount)
+    protected function _checkDeliveryAmount( $iAmount )
     {
-        switch ( $this->oxdelivery__oxdeltype->value ) {
-            case 'p': // price
+        $blResult = false;
+
+        if ( $this->getConditionType() == self::CONDITION_TYPE_PRICE ) {
                 $oCur = $this->getConfig()->getActShopCurrencyObject();
                 $iAmount /= $oCur->rate;
-                break;
-            case 'w': // weight
-            case 's': // size
-            case 'a': // amount
-                break;
         }
 
-        if ( $iAmount >= $this->oxdelivery__oxparam->value && $iAmount <= $this->oxdelivery__oxparamend->value ) {
-            return true;
+        if ( $iAmount >= $this->getConditionFrom() && $iAmount <= $this->getConditionTo() ) {
+            $blResult = true;
         }
 
-        return false;
+        return $blResult;
     }
 
     /**
@@ -524,18 +488,107 @@ class oxDelivery extends oxI18n
     public function getCountriesISO()
     {
         if ( $this->_aCountriesISO === null ) {
+
             $oDb = oxDb::getDb();
             $this->_aCountriesISO = array();
-            $sSelect = 'select oxcountry.oxisoalpha2 from oxcountry left join oxobject2delivery on oxobject2delivery.oxobjectid = oxcountry.oxid where oxobject2delivery.oxdeliveryid='.$oDb->quote( $this->getId() ).' and oxobject2delivery.oxtype = "oxcountry" ';
-            $rs = $oDb->select( $sSelect );
-            if ( $rs && $rs->recordCount()) {
-                while ( !$rs->EOF ) {
-                    $this->_aCountriesISO[] = $rs->fields[0];
-                    $rs->moveNext();
+
+            $sSelect = "
+                SELECT
+                    `oxcountry`.`oxisoalpha2`
+                FROM `oxcountry`
+                    LEFT JOIN `oxobject2delivery` ON `oxobject2delivery`.`oxobjectid` = `oxcountry`.`oxid`
+                WHERE `oxobject2delivery`.`oxdeliveryid` = " . $oDb->quote( $this->getId() ) . "
+                    AND `oxobject2delivery`.`oxtype` = 'oxcountry'";
+
+            $rs = $oDb->getCol( $sSelect );
+            $this->_aCountriesISO = $rs;
+
                 }
-            }
-        }
         return $this->_aCountriesISO;
+            }
+
+
+    /**
+     * Returns condition type (type >= from <= to) : a - amount, s - size, w -weight, p - price
+     *
+     * @return string
+     */
+    public function getConditionType()
+    {
+        return $this->oxdelivery__oxdeltype->value;
+        }
+
+    /**
+     * Returns condition from value (type >= from <= to)
+     *
+     * @return string
+     */
+    public function getConditionFrom()
+    {
+        return $this->oxdelivery__oxparam->value;
+    }
+
+    /**
+     * Returns condition to value (type >= from <= to)
+     *
+     * @return string
+     */
+    public function getConditionTo()
+    {
+        return $this->oxdelivery__oxparamend->value;
+    }
+
+    /**
+     * Returns calculation rule: 0 - Once per Cart; 1 - Once for each different product 2 - For each product
+     *
+     * @return int
+     */
+    public function getCalculationRule()
+    {
+        return $this->oxdelivery__oxfixed->value;
+    }
+
+    public function getAddSum()
+    {
+        return $this->oxdelivery__oxaddsum->value;
+    }
+
+    public function getAddSumType()
+    {
+        return $this->oxdelivery__oxaddsumtype->value;
+    }
+
+
+    /**
+     * Calculate multiplier for price calculation
+     *
+     * @return float|int
+     */
+    protected function _getMultiplier()
+    {
+        $dAmount = 0;
+
+        if ( $this->getCalculationRule() == self::CALCULATION_RULE_ONCE_PER_CART ) {
+            $dAmount = 1;
+        } elseif ( $this->getCalculationRule() == self::CALCULATION_RULE_FOR_EACH_DIFFERENT_PRODUCT ) {
+            $dAmount = $this->_iProdCnt;
+        } elseif ( $this->getCalculationRule() == self::CALCULATION_RULE_FOR_EACH_PRODUCT ) {
+            $dAmount = $this->_iItemCnt;
+        }
+
+        return $dAmount;
+    }
+
+    protected function _getCostSum()
+    {
+        if ( $this->getAddSumType() == 'abs' ) {
+            $oCur = $this->getConfig()->getActShopCurrencyObject();
+            $dPrice = $this->getAddSum() * $oCur->rate * $this->_getMultiplier();
+        }else{
+            $dPrice = $this->_dPrice / 100 * $this->getAddSum();
+        }
+
+        return $dPrice;
     }
 
 }

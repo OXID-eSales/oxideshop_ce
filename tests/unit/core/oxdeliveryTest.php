@@ -19,7 +19,6 @@
  * @package   tests
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -631,7 +630,7 @@ class Unit_Core_oxdeliveryTest extends OxidTestCase
         $this->assertEquals( 0, $oDelivery->getDeliveryAmount($this->_oBasketItem) );
         $this->assertTrue( $oDelivery->getblFreeShipping() );
 
-        // non free shiping
+        // non free shipping
         $this->_oBasketItem->getArticle()->oxarticles__oxfreeshipping = new oxField( false );
 
         $this->assertEquals( 512, $oDelivery->getDeliveryAmount($this->_oBasketItem) );
@@ -1074,7 +1073,7 @@ class Unit_Core_oxdeliveryTest extends OxidTestCase
     public function testGetCountriesISO()
     {
         $oD = new oxDelivery();
-        //standart delivery id for rest EU
+        //standard delivery id for rest EU
         $oD->load( '1b842e7352422a708.01472527' );
         $aCountries = $oD->getCountriesISO();
         $this->assertEquals(2, count( $aCountries ), "Failed getting countries code" );

@@ -70,17 +70,35 @@ class oxPrice
     /**
      * Class constructor. Gets price entering mode.
      *
-     * @param double $dInitPrice given price
+     * @param double $dPrice given price
      *
      * @return oxPrice
      */
-    public function __construct($dInitPrice = null)
+    public function __construct( $dPrice = null )
     {
-        $this->_blNetPriceMode = oxRegistry::getConfig()->getConfigParam( 'blEnterNetPrice' );
+        $this->setNettoMode( oxRegistry::getConfig()->getConfigParam( 'blEnterNetPrice' ) );
 
-        if ($dInitPrice) {
-            $this->setPrice($dInitPrice);
+        if ( !is_null( $dPrice ) ) {
+            $this->setPrice( $dPrice );
         }
+    }
+
+    /**
+     * Netto price mode setter
+     */
+    public function setNettoMode( $blNetto = true )
+    {
+        $this->_blNetPriceMode = $blNetto;
+    }
+
+    /**
+     * return true if mode is netto
+     *
+     * @return bool
+     */
+    public function isNettoMode()
+    {
+        return $this->_blNetPriceMode;
     }
 
     /**
@@ -90,7 +108,7 @@ class oxPrice
      */
     public function setNettoPriceMode()
     {
-        $this->_blNetPriceMode = true;
+        $this->setNettoMode();
     }
 
     /**
@@ -100,19 +118,19 @@ class oxPrice
      */
     public function setBruttoPriceMode()
     {
-        $this->_blNetPriceMode = false;
+        $this->setNettoMode( false );
     }
 
     /**
      * Sets new VAT percent, and recalculates price.
      *
-     * @param double $newVat vat percent
+     * @param double $dVat vat percent
      *
      * @return null
      */
-    public function setVat($newVat)
+    public function setVat( $dVat )
     {
-        $this->_dVat = (double) $newVat;
+        $this->_dVat = (double) $dVat;
     }
 
     /**
@@ -131,7 +149,7 @@ class oxPrice
      */
     public function setUserVat($newVat)
     {
-        if (!$this->_blNetPriceMode && $newVat != $this->_dVat) {
+        if (!$this->isNettoMode() && $newVat != $this->_dVat) {
             $this->_dBrutto = self::Netto2Brutto(self::Brutto2Netto($this->_dBrutto, $this->_dVat), (double) $newVat);
         }
         $this->_dVat = (double) $newVat;
@@ -156,13 +174,13 @@ class oxPrice
      *
      * @return null
      */
-    public function setPrice($dPrice, $dVat = null)
+    public function setPrice( $dPrice, $dVat = null )
     {
-        if (isset($dVat)) {
-            $this->_dVat = (double) $dVat;
+        if ( !is_null( $dVat ) ) {
+            $this->setVat( $dVat );
         }
 
-        if ($this->_blNetPriceMode) {
+        if ( $this->isNettoMode() ) {
             $this->_dNetto = $dPrice;
         } else {
             $this->_dBrutto = $dPrice;
@@ -176,7 +194,7 @@ class oxPrice
      */
     public function getPrice()
     {
-        if ( $this->_blNetPriceMode ) {
+        if ( $this->isNettoMode() ) {
             return $this->getNettoPrice();
         } else {
             return $this->getBruttoPrice();
@@ -190,10 +208,10 @@ class oxPrice
      */
     public function getBruttoPrice()
     {
-        if ( $this->_blNetPriceMode ) {
+        if ( $this->isNettoMode() ) {
             return $this->getNettoPrice() + $this->getVatValue();
         } else {
-            return oxRegistry::getUtils()->fRound($this->_dBrutto);
+            return oxRegistry::getUtils()->fRound( $this->_dBrutto );
         }
     }
 
@@ -204,8 +222,8 @@ class oxPrice
      */
     public function getNettoPrice()
     {
-        if ( $this->_blNetPriceMode ) {
-            return oxRegistry::getUtils()->fRound($this->_dNetto);
+        if ( $this->isNettoMode() ) {
+            return oxRegistry::getUtils()->fRound( $this->_dNetto );
         } else {
             return $this->getBruttoPrice() - $this->getVatValue();
         }
@@ -218,7 +236,7 @@ class oxPrice
      */
     public function getVatValue()
     {
-        if ( $this->_blNetPriceMode ) {
+        if ( $this->isNettoMode() ) {
             $dVatValue = $this->getNettoPrice() * $this->getVat() / 100 ;
         } else {
             $dVatValue = $this->getBruttoPrice() * $this->getVat() / ( 100 + $this->getVat());
@@ -238,7 +256,7 @@ class oxPrice
     public function subtractPercent( $dValue )
     {
         $dPrice = $this->getPrice();
-        $this->setPrice( $dPrice - self::percent( $dPrice, $dValue) );
+        $this->setPrice( $dPrice - self::percent( $dPrice, $dValue ) );
     }
 
     /**
@@ -251,7 +269,7 @@ class oxPrice
      */
     public function addPercent($dValue)
     {
-        $this->subtractPercent(-$dValue);
+        $this->subtractPercent( -$dValue );
     }
 
     /**
@@ -263,7 +281,7 @@ class oxPrice
      */
     public function addPrice( oxPrice $oPrice )
     {
-        if ($this->_blNetPriceMode) {
+        if ( $this->isNettoMode() ) {
             $this->add( $oPrice->getNettoPrice() );
         } else {
             $this->add( $oPrice->getBruttoPrice() );
@@ -278,7 +296,7 @@ class oxPrice
      *
      * @return null
      */
-    public function add($dValue)
+    public function add( $dValue )
     {
         $dPrice = $this->getPrice();
         $this->setPrice( $dPrice + $dValue );
@@ -417,7 +435,7 @@ class oxPrice
      */
     protected function _recalculate()
     {
-        if ( $this->_blNetPriceMode ) {
+        if ( $this->isNettoMode() ) {
             $this->_dBrutto = self::netto2Brutto($this->_dNetto, $this->_dVat);
             $this->_dNetto = oxRegistry::getUtils()->fRound($this->_dNetto);
         } else {

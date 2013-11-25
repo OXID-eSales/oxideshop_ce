@@ -19,7 +19,6 @@
  * @package   tests
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -49,10 +48,10 @@ class Unit_Core_oxpriceTest extends OxidTestCase
 
     public function testGetPriceInActCurrency()
     {
-        $oSessCurr = oxConfig::getInstance()->getActShopCurrencyObject();
+        $oCurrency = oxConfig::getInstance()->getActShopCurrencyObject();
         $dPrice = 99.66;
 
-        $this->assertEquals( $dPrice * $oSessCurr->rate, oxPrice::getPriceInActCurrency( $dPrice ) );
+        $this->assertEquals( $dPrice * $oCurrency->rate, oxPrice::getPriceInActCurrency( $dPrice ) );
     }
 
     public function testVatSetterAndGetter()
@@ -502,41 +501,6 @@ class Unit_Core_oxpriceTest extends OxidTestCase
     }
 
     /**
-     * Test netto price calculation then in brutto mode.
-     *
-     * @return null
-     */
-    /*public function testRecalculate_bruttomode()
-    {
-        $oPriceProxy = $this->getProxyClass('oxPrice');
-        $oPriceProxy->setNonPublicVar('_blNetPriceMode', false);
-        $oPriceProxy->setNonPublicVar('_dVat', 7);
-        $oPriceProxy->setNonPublicVar('_dBrutto', 41.5);
-
-        $oPriceProxy->UNITrecalculate();
-
-        $this->assertLessThanOrEqual(0.00001, abs($oPriceProxy->getNonPublicVar('_dNetto') - 38.785046728972));
-    }*/
-
-    /**
-     * Test brutto price calculation then in netto mode.
-     *
-     * @return null
-     */
-    /*public function testRecalculate_nettomode()
-    {
-        $oPriceProxy = $this->getProxyClass('oxPrice');
-        $oPriceProxy->setNonPublicVar('_blNetPriceMode', true);
-        $oPriceProxy->setNonPublicVar('_dVat', 7);
-        $oPriceProxy->setNonPublicVar('_dNetto', 38.785046728972);
-
-        $oPriceProxy->UNITrecalculate();
-
-        $this->assertLessThanOrEqual(0.00001, abs($oPriceProxy->getNonPublicVar('_dBrutto') - 41.5));
-    }*/
-
-
-    /**
      * Test getPrice
      *
      * @return null
@@ -623,6 +587,28 @@ class Unit_Core_oxpriceTest extends OxidTestCase
 
     }
 
+    public function testSetModeNetto_defaultParam_NettoMode()
+    {
+        $oPrice = new oxPrice();
 
+        $oPrice->setNettoMode();
+        $this->assertTrue($oPrice->isNettoMode());
+    }
+
+    public function testSetModeNetto_ParamTrue_NettoMode()
+    {
+        $oPrice = new oxPrice();
+
+        $oPrice->setNettoMode(true);
+        $this->assertTrue($oPrice->isNettoMode());
+    }
+
+    public function testSetModeNetto_ParamFalse_BruttoMode()
+    {
+        $oPrice = new oxPrice();
+
+        $oPrice->setNettoMode(false);
+        $this->assertFalse($oPrice->isNettoMode());
+    }
 
 }

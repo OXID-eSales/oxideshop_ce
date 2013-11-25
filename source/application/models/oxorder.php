@@ -446,8 +446,7 @@ class oxOrder extends oxBase
     }
 
     /**
-     * Returns order netto sum (total price, including delivery, payment etc - VAT)
-     * (A. this is very unprecise :())
+     * Returns order netto sum (total order price - VAT)
      *
      * @return double
      */

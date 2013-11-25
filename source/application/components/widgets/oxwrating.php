@@ -104,7 +104,7 @@ class oxwRating extends oxWidget
      */
     public function getRateUrl()
     {
-        return $dCount = $this->getViewParameter( "sRateUrl" );
+        return $this->getViewParameter( "sRateUrl" );
     }
 
     /**

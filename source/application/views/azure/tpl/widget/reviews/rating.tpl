@@ -30,6 +30,7 @@
          </li>
     [{/section}]
     <li class="ratingValue">
+        [{assign var="sRateUrl" value=$oView->getRateUrl()}]
         <a id="itemRatingText" class="rates" rel="nofollow" [{if $sRateUrl}]href="[{if !$oxcmp_user}][{oxgetseourl ident=$sRateUrl params=$sRateUrlParams}][{else}][{$sRateUrl}][{/if}]#review"[{/if}]>
             [{if $oView->getRatingCount()}]
                 ([{$oView->getRatingCount()}])

@@ -24,10 +24,9 @@
 require_once realpath( "." ).'/unit/OxidTestCase.php';
 require_once realpath( "." ).'/unit/test_config.inc.php';
 
-class Unit_Core_oxpriceTest extends OxidTestCase
+class Unit_Core_oxPriceTest extends OxidTestCase
 {
     protected $_oPrice;
-    protected $_oConfig;
 
     /**
      * Initialize the fixture.
@@ -37,18 +36,14 @@ class Unit_Core_oxpriceTest extends OxidTestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->_oConfig = oxConfig::getInstance();
-        //$this->_oConfig = oxConfig::getInstance();
+
         $this->_oPrice = new oxPrice();
         $this->_oPrice->setBruttoPriceMode();
-
-        //Default price calculation mode
-        $this->_oConfig->blEnterNetPrice = false;
     }
 
     public function testGetPriceInActCurrency()
     {
-        $oCurrency = oxConfig::getInstance()->getActShopCurrencyObject();
+        $oCurrency = $this->getConfig()->getActShopCurrencyObject();
         $dPrice = 99.66;
 
         $this->assertEquals( $dPrice * $oCurrency->rate, oxPrice::getPriceInActCurrency( $dPrice ) );

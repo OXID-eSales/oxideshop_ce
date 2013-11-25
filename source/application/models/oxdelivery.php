@@ -507,7 +507,6 @@ class oxDelivery extends oxI18n
         return $this->_aCountriesISO;
             }
 
-
     /**
      * Returns condition type (type >= from <= to) : a - amount, s - size, w -weight, p - price
      *
@@ -548,16 +547,25 @@ class oxDelivery extends oxI18n
         return $this->oxdelivery__oxfixed->value;
     }
 
+    /**
+     * Returns amount cost
+     *
+     * @return float
+     */
     public function getAddSum()
     {
         return $this->oxdelivery__oxaddsum->value;
     }
 
+    /**
+     * Returns type of cost: % - percentage; abs - absolute value
+     *
+     * @return string
+     */
     public function getAddSumType()
     {
         return $this->oxdelivery__oxaddsumtype->value;
     }
-
 
     /**
      * Calculate multiplier for price calculation
@@ -579,6 +587,11 @@ class oxDelivery extends oxI18n
         return $dAmount;
     }
 
+    /**
+     * Calculate cost sum
+     *
+     * @return float
+     */
     protected function _getCostSum()
     {
         if ( $this->getAddSumType() == 'abs' ) {

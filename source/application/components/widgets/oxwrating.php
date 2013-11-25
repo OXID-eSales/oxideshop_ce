@@ -98,6 +98,16 @@ class oxwRating extends oxWidget
     }
 
     /**
+     * Template variable getter. Returns rating url
+     *
+     * @return string
+     */
+    public function getRateUrl()
+    {
+        return $dCount = $this->getViewParameter( "sRateUrl" );
+    }
+
+    /**
      * Template variable getter. Returns rating count
      *
      * @return integer

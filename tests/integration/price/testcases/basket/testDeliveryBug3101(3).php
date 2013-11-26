@@ -12,6 +12,8 @@
  */
 $aData = array(
 
+    'skipped' => 1,
+
     'articles' => array (
         0 => array (
             'oxid'                     => 'vine1',

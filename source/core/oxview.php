@@ -51,12 +51,12 @@ class oxView extends oxSuperCfg
     /**
      * If this is a component we will have our parent view here.
      *
-     * @var oxview
+     * @var oxView
      */
     protected $_oParent = null;
 
     /**
-     * Flag if this objcet is a component or not
+     * Flag if this object is a component or not
      *
      * @var bool
      */
@@ -98,13 +98,13 @@ class oxView extends oxSuperCfg
     protected static $_blExecuted = false;
 
     /**
-     * Trunsted shop id
+     * Trusted shop id
      * @var string
      */
     protected $_sTrustedShopId = null;
 
     /**
-     * Trunsted shop id for excellence product
+     * Trusted shop id for excellence product
      * @var string
      */
     protected $_sTSExcellenceId = null;
@@ -174,7 +174,7 @@ class oxView extends oxSuperCfg
 
 
     /**
-     * Initiates all components stored, executes oxview::addGlobalParams.
+     * Initiates all components stored, executes oxView::addGlobalParams.
      *
      * @return null
      */
@@ -271,7 +271,7 @@ class oxView extends oxSuperCfg
      */
     public function addGlobalParams( $oShop = null)
     {
-        // by default we allways display newsletter bar
+        // by default we always display newsletter bar
         $this->_iNewsStatus = 1;
 
         // assigning shop to view config ..
@@ -320,7 +320,7 @@ class oxView extends oxSuperCfg
     /**
      * Returns view config object
      *
-     * @return oxviewconfig
+     * @return oxViewConfig
      */
     public function getViewConfig()
     {
@@ -511,7 +511,7 @@ class oxView extends oxSuperCfg
     }
 
     /**
-     * Get flag if this objcet is a component
+     * Get flag if this object is a component
      *
      * @return bool
      */
@@ -758,13 +758,13 @@ class oxView extends oxSuperCfg
      */
     public function isBetaVersion()
     {
-        $blbetaVersion = false;
+        $blBetaVersion = false;
 
         if ( stripos( $this->getConfig()->getVersion(), 'beta' ) !== false ) {
-            $blbetaVersion = true;
+            $blBetaVersion = true;
         }
 
-        return $blbetaVersion;
+        return $blBetaVersion;
     }
 
     /**
@@ -800,7 +800,7 @@ class oxView extends oxSuperCfg
     }
 
     /**
-     * Returns if current shop is demoshop
+     * Returns if current shop is demo shop
      *
      * @return string
      */
@@ -879,12 +879,12 @@ class oxView extends oxSuperCfg
     public function getActCategory()
     {
         // if active category is not set yet - trying to load it from request params
-        // this may be usefull when category component was unable to load active category
+        // this may be useful when category component was unable to load active category
         // and we still need some object to mount navigation info
         if ( $this->_oClickCat === null ) {
 
             $this->_oClickCat = false;
-            $oCategory = oxNew( 'oxcategory' );
+            $oCategory = oxNew( 'oxCategory' );
             if ( $oCategory->load( $this->getCategoryId() ) ) {
                 $this->_oClickCat = $oCategory;
             }

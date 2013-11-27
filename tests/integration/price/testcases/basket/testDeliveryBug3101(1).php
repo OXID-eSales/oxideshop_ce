@@ -12,7 +12,7 @@
  */
 $aData = array(
 
-    'skipped' => 1,
+    'skipped' => 1, // remove when #3101 will be fixed
 
     'articles' => array (
         0 => array (

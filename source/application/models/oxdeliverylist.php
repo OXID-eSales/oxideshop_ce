@@ -19,7 +19,6 @@
  * @package   core
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -49,7 +48,7 @@ class oxDeliveryList extends oxList
 
     /**
      * Deliveries list
-     * @var arrray
+     * @var array
      */
     protected $_aDeliveries = array();
 
@@ -75,7 +74,7 @@ class oxDeliveryList extends oxList
 
 
     /**
-     * Class constructor, sets callback so that Shopowner is able to
+     * Class constructor, sets callback so that Shop owner is able to
      * add any information to the article.
      *
      * @param string $sObjectsInListName Object in list
@@ -122,7 +121,7 @@ class oxDeliveryList extends oxList
      * Loads all active delivery in list. Additionally
      * checks if set has user customized parameters like
      * assigned users, countries or user groups. Performs
-     * additional filtering accordint to these parameters
+     * additional filtering according to these parameters
      *
      * @param oxUser $oUser      session user object
      * @param string $sCountryId user country id
@@ -142,7 +141,7 @@ class oxDeliveryList extends oxList
 
         $sUserId = $oUser ? $oUser->getId() : '';
 
-        // chooseing delivery country if it is not set yet
+        // choosing delivery country if it is not set yet
         if ( !$sCountryId ) {
             if ( $oUser ) {
                 $sCountryId = $oUser->getActiveCountry();
@@ -165,7 +164,7 @@ class oxDeliveryList extends oxList
     /**
      * Creates delivery list filter SQL to load current state delivery list
      *
-     * @param oxuser $oUser      session user object
+     * @param oxUser $oUser      session user object
      * @param string $sCountryId user country id
      * @param string $sDelSet    user chosen delivery set
      *
@@ -233,12 +232,12 @@ class oxDeliveryList extends oxList
      *
      *  - first checks if delivery loading is enabled in config -
      *    $myConfig->bl_perfLoadDelivery is TRUE;
-     *  - loads deliveryset list by calling this::GetDeliverySetList(...);
-     *  - checks if there is any active (eg. chosen delset in order
-     *    process etc) deliveryset defined and if its set - rearanges
+     *  - loads delivery set list by calling this::GetDeliverySetList(...);
+     *  - checks if there is any active (eg. chosen delivery set in order
+     *    process etc) delivery set defined and if its set - rearranges
      *    delivery set list by storing active set at the beginning in the
      *    list.
-     *  - goes through delsets and loads its deliveries, checks if any
+     *  - goes through delivery sets and loads its deliveries, checks if any
      *    delivery fits. By checking calculates and stores conditional
      *    amounts:
      *
@@ -251,7 +250,7 @@ class oxDeliveryList extends oxList
      *    $myConfig->aDeliveryList.
      *
      * @param object $oBasket     basket object
-     * @param oxuser $oUser       session user
+     * @param oxUser $oUser       session user
      * @param string $sDelCountry user country id
      * @param string $sDelSet     delivery set id
      *
@@ -259,7 +258,7 @@ class oxDeliveryList extends oxList
      */
     public function getDeliveryList( $oBasket, $oUser = null, $sDelCountry = null, $sDelSet = null )
     {
-        // ids of deliveries that doesnt fit for us to skip double check
+        // ids of deliveries that does not fit for us to skip double check
         $aSkipDeliveries = array();
         $aDelSetList = oxRegistry::get("oxDeliverySetList")->getDeliverySetList( $oUser, $sDelCountry, $sDelSet );
 
@@ -285,7 +284,7 @@ class oxDeliveryList extends oxList
                     $this->_aDeliveries[$sDeliveryId] = $aDeliveries[$sDeliveryId];
                     $blDelFound = true;
 
-                    // unsetting from unfitting list
+                    // removing from unfitting list
                     array_pop( $aSkipDeliveries );
 
                     // maybe checked "Stop processing after first match" ?
@@ -295,14 +294,14 @@ class oxDeliveryList extends oxList
                 }
             }
 
-            // found deliveryset and deliveries that fits
+            // found delivery set and deliveries that fits
             if ( $blDelFound ) {
                 if ( $this->_blCollectFittingDeliveriesSets ) {
                     // collect only deliveries sets that fits deliveries
                     $aFittingDelSets[$sDeliverySetId] = $oDeliverySet;
                 } else {
                     // return collected fitting deliveries
-                    oxSession::setVar( 'sShipSet', $sDeliverySetId );
+                    oxRegistry::getSession()->setVariable('sShipSet', $sDeliverySetId );
                     return $this->_aDeliveries;
                 }
             }
@@ -311,7 +310,7 @@ class oxDeliveryList extends oxList
         //return deliveries sets if found
         if ( $this->_blCollectFittingDeliveriesSets && count($aFittingDelSets) ) {
 
-            //reseting getting delivery sets list instead of delivieries before return
+            //resetting getting delivery sets list instead of deliveries before return
             $this->_blCollectFittingDeliveriesSets = false;
 
             //reset cache and list
@@ -392,9 +391,9 @@ class oxDeliveryList extends oxList
     }
 
     /**
-     * Load deliverylist for product
+     * Load oxDeliveryList for product
      *
-     * @param object $oProduct oxarticle object
+     * @param object $oProduct oxArticle object
      *
      * @return null
      */

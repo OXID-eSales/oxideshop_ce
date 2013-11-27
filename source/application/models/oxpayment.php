@@ -316,11 +316,7 @@ class oxPayment extends oxI18n
         if ( $dPrice ) {
             // calculating total price
             $oPrice = oxNew( 'oxPrice' );
-            if ( !$this->_blPaymentVatOnTop ) {
-                $oPrice->setBruttoPriceMode();
-            } else {
-                $oPrice->setNettoPriceMode();
-            }
+            $oPrice->setNettMode( $this->_blPaymentVatOnTop );
 
             $oPrice->setPrice( $dPrice );
             if ( $dPrice > 0 ) {
@@ -395,13 +391,8 @@ class oxPayment extends oxI18n
             $oDb = oxDb::getDb();
             $this->_aCountries = array();
             $sSelect = 'select oxobjectid from oxobject2payment where oxpaymentid='.$oDb->quote( $this->getId() ).' and oxtype = "oxcountry" ';
-            $rs = $oDb->select( $sSelect );
-            if ( $rs && $rs->recordCount()) {
-                while ( !$rs->EOF ) {
-                    $this->_aCountries[] = $rs->fields[0];
-                    $rs->moveNext();
-                }
-            }
+            $rs = $oDb->getCol( $sSelect );
+            $this->_aCountries = $rs;
         }
         return $this->_aCountries;
     }
@@ -409,19 +400,19 @@ class oxPayment extends oxI18n
     /**
      * Delete this object from the database, returns true on success.
      *
-     * @param string $sOXID Object ID(default null)
+     * @param string $sOxId Object ID(default null)
      *
      * @return bool
      */
-    public function delete( $sOXID = null )
+    public function delete( $sOxId = null )
     {
-        if ( parent::delete( $sOXID ) ) {
+        if ( parent::delete( $sOxId ) ) {
 
-            $sOXID = $sOXID?$sOXID:$this->getId();
+            $sOxId = $sOxId ? $sOxId : $this->getId();
             $oDb = oxDb::getDb();
 
             // deleting payment related data
-            $rs = $oDb->execute( "delete from oxobject2payment where oxpaymentid = ".$oDb->quote( $sOXID ) );
+            $rs = $oDb->execute( "delete from oxobject2payment where oxpaymentid = ".$oDb->quote( $sOxId ) );
             return $rs->EOF;
         }
 

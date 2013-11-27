@@ -22,7 +22,7 @@
  */
 
 /**
- * The wrapper of simpleXML functions.
+ * Wraps simpleXML functions.
  */
 class oxSimpleXml
 {

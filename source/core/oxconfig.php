@@ -586,7 +586,7 @@ class oxConfig extends oxSuperCfg
         }
 
         $sQ = "select oxvarname, oxvartype, ".$this->getDecodeValueQuery()." as oxvarvalue from oxconfig where oxshopid = '$sShopID' and " . $sModuleSql;
-        // dodger, allow loading from some vars only from baseshop
+        // allow loading from some vars only from baseshop
         if ( $aOnlyVars !== null ) {
             $blSep = false;
             $sIn  = '';

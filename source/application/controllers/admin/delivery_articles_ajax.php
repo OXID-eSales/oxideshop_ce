@@ -19,7 +19,6 @@
  * @package   admin
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -79,7 +78,7 @@ class delivery_articles_ajax extends ajaxListComponent
 
         // category selected or not ?
         if ( !$sDelId) {
-            // dodger performance
+            // performance
             $sQAdd  = " from $sArtTable where 1 ";
             $sQAdd .= $myConfig->getConfigParam( 'blVariantsSelection' )?'':"and $sArtTable.oxparentid = '' ";
         } else {

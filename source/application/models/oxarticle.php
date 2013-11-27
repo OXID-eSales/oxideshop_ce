@@ -2362,7 +2362,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             $iOnStock   = $rs->fields['oxstock'] - $dArtStockAmount;
             $iStockFlag = $rs->fields['oxstockflag'];
 
-            // dodger : fremdlager is also always considered as on stock
+            // foreign stock is also always considered as on stock
             if ( $iStockFlag == 1 || $iStockFlag == 4) {
                 return true;
             }

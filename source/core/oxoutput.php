@@ -19,7 +19,6 @@
  * @package   core
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -159,7 +158,7 @@ class oxOutput extends oxSuperCfg
     public function processEmail( & $oEmail)
     {
         // #669 PHP5 claims that you cant pas full this but should instead pass reference what is anyway a much better idea
-        // dodger: removed "return" as by reference you dont need any return
+        // removed "return" as by reference you dont need any return
 
     }
 

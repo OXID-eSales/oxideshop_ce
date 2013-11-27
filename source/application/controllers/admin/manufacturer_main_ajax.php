@@ -19,7 +19,6 @@
  * @package   admin
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -78,7 +77,7 @@ class manufacturer_main_ajax extends ajaxListComponent
 
         // Manufacturer selected or not ?
         if ( !$sManufacturerId ) {
-            // dodger performance
+            // performance
             $sQAdd  = ' from '.$sArtTable.' where '.$sArtTable.'.oxshopid="'.$myConfig->getShopId().'" and 1 ';
             $sQAdd .= $myConfig->getRequestParameter( 'blVariantsSelection' ) ?'':" and $sArtTable.oxparentid = '' and $sArtTable.oxmanufacturerid != ".$oDb->quote( $sSynchManufacturerId );
         } elseif ( $sSynchManufacturerId && $sSynchManufacturerId != $sManufacturerId ) {

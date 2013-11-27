@@ -370,7 +370,6 @@ class oxUtilsView extends oxSuperCfg
 
         $sSmartyDir = $this->getSmartyDir();
 
-        // $myConfig->blTemplateCaching; // DODGER #655 : permanently switched off as it doesnt work good enough
         $oSmarty->caching      = false;
         $oSmarty->compile_dir  = $sSmartyDir;
         $oSmarty->cache_dir    = $sSmartyDir;
@@ -392,7 +391,7 @@ class oxUtilsView extends oxSuperCfg
             $oSmarty->register_prefilter('smarty_prefilter_oxtpldebug');
         }
 
-        //demoshop security
+        //demo shop security
         if ( !$myConfig->isDemoShop() ) {
             $oSmarty->php_handling = (int) $myConfig->getConfigParam( 'iSmartyPhpHandling' );
             $oSmarty->security     = false;

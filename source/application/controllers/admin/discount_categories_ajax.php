@@ -19,7 +19,6 @@
  * @package   admin
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -70,7 +69,7 @@ class discount_categories_ajax extends ajaxListComponent
         }
 
         if ( $sSynchId && $sSynchId != $sId) {
-            // dodger performance
+            // performance
             $sSubSelect  = " select $sCategoryTable.oxid from oxobject2discount, $sCategoryTable where $sCategoryTable.oxid=oxobject2discount.oxobjectid ";
             $sSubSelect .= " and oxobject2discount.oxdiscountid = ".$oDb->quote( $sSynchId )." and oxobject2discount.oxtype = 'oxcategories' ";
             if ( stristr( $sQAdd, 'where' ) === false )

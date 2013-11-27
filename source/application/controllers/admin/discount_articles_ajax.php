@@ -19,7 +19,6 @@
  * @package   admin
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -95,7 +94,7 @@ class discount_articles_ajax extends ajaxListComponent
         }
 
         if ( $sSynchOxid && $sSynchOxid != $sOxid) {
-            // dodger performance
+            // performance
             $sSubSelect .= " select $sArticleTable.oxid from oxobject2discount, $sArticleTable where $sArticleTable.oxid=oxobject2discount.oxobjectid ";
             $sSubSelect .= " and oxobject2discount.oxdiscountid = ".$oDb->quote( $sSynchOxid )." and oxobject2discount.oxtype = 'oxarticles' ";
 

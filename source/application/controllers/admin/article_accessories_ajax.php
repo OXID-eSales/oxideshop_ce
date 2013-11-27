@@ -19,7 +19,6 @@
  * @package   admin
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -91,7 +90,7 @@ class article_accessories_ajax extends ajaxListComponent
         }
 
         if ( $sSynchSelId && $sSynchSelId != $sSelId ) {
-            // dodger performance
+            // performance
             $sSubSelect .= " select oxaccessoire2article.oxobjectid from oxaccessoire2article ";
             $sSubSelect .= " where oxaccessoire2article.oxarticlenid = " . $oDb->quote( $sSynchSelId ) . " ";
             $sQAdd .= " and $sArticleTable.oxid not in ( $sSubSelect ) ";

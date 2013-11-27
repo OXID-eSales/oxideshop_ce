@@ -89,7 +89,7 @@ class discount_item_ajax extends ajaxListComponent
         }
 
         if ( $sSynchOxid && $sSynchOxid != $sOxid) {
-            // dodger performance
+            // performance
             $sSubSelect .= " select $sArticleTable.oxid from $sDiscTable, $sArticleTable where $sArticleTable.oxid=$sDiscTable.oxitmartid ";
             $sSubSelect .= " and $sDiscTable.oxid = ".$oDb->quote( $sSynchOxid );
 

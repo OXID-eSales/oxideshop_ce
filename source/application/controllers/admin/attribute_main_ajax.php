@@ -19,7 +19,6 @@
  * @package   admin
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -78,7 +77,7 @@ class attribute_main_ajax extends ajaxListComponent
 
         // category selected or not ?
         if ( !$sDelId) {
-            // dodger performance
+            // performance
             $sQAdd  = " from $sArticleTable where 1 ";
             $sQAdd .= $myConfig->getConfigParam( 'blVariantsSelection' )?'':" and $sArticleTable.oxparentid = '' ";
         } elseif ( $sSynchDelId && $sDelId != $sSynchDelId ) {

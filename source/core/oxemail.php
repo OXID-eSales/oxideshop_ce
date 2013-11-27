@@ -1065,7 +1065,7 @@ class oxEmail extends PHPMailer
         // Process view data array through oxoutput processor
         $this->_processViewArray();
 
-        // dodger #1469 - we need to patch security here as we do not use standard template dir, so smarty stops working
+        // #1469 - we need to patch security here as we do not use standard template dir, so smarty stops working
         $aStore['INCLUDE_ANY'] = $oSmarty->security_settings['INCLUDE_ANY'];
         //V send email in order language
         $iOldTplLang = $oLang->getTplLanguage();
@@ -1128,7 +1128,7 @@ class oxEmail extends PHPMailer
         // Process view data array through oxoutput processor
         $this->_processViewArray();
 
-        // dodger #1469 - we need to patch security here as we do not use standard template dir, so smarty stops working
+        // #1469 - we need to patch security here as we do not use standard template dir, so smarty stops working
         $aStore['INCLUDE_ANY'] = $oSmarty->security_settings['INCLUDE_ANY'];
         //V send email in order language
         $iOldTplLang = $oLang->getTplLanguage();
@@ -1689,7 +1689,7 @@ class oxEmail extends PHPMailer
     {
         // preventing possible email spam over php mail() exploit (http://www.securephpwiki.com/index.php/Email_Injection)
         // this is simple but must work
-        // dodger Task #1532 field "From" in emails from shops
+        // Task #1532 field "From" in emails from shops
         $sFromAddress = substr($sFromAddress, 0, 150);
         $sFromName   = substr($sFromName, 0, 150);
 

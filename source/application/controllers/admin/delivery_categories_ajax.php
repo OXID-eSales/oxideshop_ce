@@ -19,7 +19,6 @@
  * @package   admin
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -69,7 +68,7 @@ class delivery_categories_ajax extends ajaxListComponent
         }
 
         if ( $sSynchDelId && $sSynchDelId != $sDelId) {
-            // dodger performance
+            // performance
             $sSubSelect  = " select $sCatTable.oxid from oxobject2delivery left join $sCatTable on $sCatTable.oxid=oxobject2delivery.oxobjectid ";
             $sSubSelect .= " where oxobject2delivery.oxdeliveryid = ".$oDb->quote( $sSynchDelId )." and oxobject2delivery.oxtype = 'oxcategories' ";
             if ( stristr( $sQAdd, 'where' ) === false )

@@ -22,11 +22,10 @@
  */
 
 /**
- * Simple XML handler
+ * The wrapper of simpleXML functions.
  */
-class oxSimpleXml {
-
-
+class oxSimpleXml
+{
     /**
      * Recursively adds $oInput object data to SimpleXMLElement structure
      *
@@ -47,13 +46,10 @@ class oxSimpleXml {
 
         foreach ($aObjectVars as $sKey => $oVar) {
             if (is_object( $oVar ) ) {
-
                 $oChildNode = $oXml->addChild($sKey);
                 $this->_addSimpleXmlElement($oChildNode, $oVar);
-
             } elseif (is_array( $oVar) ) {
                 foreach ($oVar as $oSubValue) {
-
                     //this check for complex type is probably redundant, but I give up to solve it over single recursion call
                     //use existing Unit tests for refactoring
                     if (is_array($oSubValue) || is_object($oSubValue)) {

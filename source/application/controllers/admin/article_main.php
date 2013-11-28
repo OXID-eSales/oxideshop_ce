@@ -38,41 +38,45 @@ class Article_Main extends oxAdminDetails
      */
     public function render()
     {
-        $myConfig = $this->getConfig();
         parent::render();
 
-        $this->_aViewData['edit'] = $oArticle = oxNew( 'oxarticle' );
+        $this->getConfig()->setConfigParam( 'bl_perfLoadPrice', true );
 
-        $soxId = $this->getEditObjectId();
-        $svoxId = oxConfig::getParameter( "voxid" );
-        $soxparentId = oxConfig::getParameter( "oxparentid" );
+        $oArticle = oxNew( 'oxArticle' );
+        $oArticle->enablePriceLoad();
+
+        $this->_aViewData['edit'] = $oArticle;
+
+        $sOxId = $this->getEditObjectId();
+        $sVoxId = $this->getConfig()->getRequestParameter( "voxid" );
+        $sOxParentId = $this->getConfig()->getRequestParameter( "oxparentid" );
 
         // new variant ?
-        if ( isset( $svoxId ) && $svoxId == "-1" && isset($soxparentId) && $soxparentId && $soxparentId != "-1") {
-            $oParentArticle = oxNew( "oxarticle");
-            $oParentArticle->load( $soxparentId);
+        if ( isset( $sVoxId ) && $sVoxId == "-1" && isset($sOxParentId) && $sOxParentId && $sOxParentId != "-1") {
+            $oParentArticle = oxNew( "oxArticle");
+            $oParentArticle->load( $sOxParentId);
             $this->_aViewData["parentarticle"] = $oParentArticle;
-            $this->_aViewData["oxparentid"] = $soxparentId;
+            $this->_aViewData["oxparentid"] = $sOxParentId;
 
-            $this->_aViewData["oxid"] =  $soxId = "-1";
+            $this->_aViewData["oxid"] =  $sOxId = "-1";
         }
 
-        if (  $soxId && $soxId != "-1") {
+        if (  $sOxId && $sOxId != "-1") {
 
             // load object
-            $oArticle->loadInLang( $this->_iEditLang, $soxId );
+            $oArticle->loadInLang( $this->_iEditLang, $sOxId );
 
 
             // load object in other languages
             $oOtherLang = $oArticle->getAvailableInLangs();
             if (!isset($oOtherLang[$this->_iEditLang])) {
                 // echo "language entry doesn't exist! using: ".key($oOtherLang);
-                $oArticle->loadInLang( key($oOtherLang), $soxId );
+                $oArticle->loadInLang( key($oOtherLang), $sOxId );
             }
 
             // variant handling
             if ( $oArticle->oxarticles__oxparentid->value) {
-                $oParentArticle = oxNew( "oxarticle");
+                $oParentArticle = oxNew( "oxArticle");
                 $oParentArticle->load( $oArticle->oxarticles__oxparentid->value);
                 $this->_aViewData["parentarticle"] = $oParentArticle;
                 $this->_aViewData["oxparentid"]    = $oArticle->oxarticles__oxparentid->value;
@@ -83,7 +87,7 @@ class Article_Main extends oxAdminDetails
             $this->_formJumpList($oArticle, $oParentArticle );
 
             //loading tags
-            $oArticleTagList = oxNew( "oxarticletaglist" );
+            $oArticleTagList = oxNew( "oxArticleTagList" );
             $oArticleTagList->loadInLang( $this->_iEditLang, $oArticle->getId() );
             $oArticle->tags = $oArticleTagList->get();
 
@@ -100,7 +104,7 @@ class Article_Main extends oxAdminDetails
         }
 
         $this->_aViewData["editor"] = $this->_generateTextEditor( "100%", 300, $oArticle, "oxarticles__oxlongdesc", "details.tpl.css");
-        $this->_aViewData["blUseTimeCheck"] = $myConfig->getConfigParam( 'blUseTimeCheck' );
+        $this->_aViewData["blUseTimeCheck"] = $this->getConfig()->getConfigParam( 'blUseTimeCheck' );
 
         return "article_main.tpl";
     }

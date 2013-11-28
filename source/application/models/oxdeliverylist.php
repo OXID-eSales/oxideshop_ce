@@ -30,6 +30,9 @@ class oxDeliveryList extends oxList
 {
     /**
      * oxDeliveryList instance
+     *
+     * @deprecated since v5.0 (2012-08-10); Use oxRegistry::get("oxDeliveryList") instead.
+     *
      * @var oxDeliveryList
      */
     private static $_instance = null;
@@ -327,8 +330,8 @@ class oxDeliveryList extends oxList
     /**
      * Checks if deliveries in list fits for current basket and delivery set
      *
-     * @param oxbasket $oBasket        shop basket
-     * @param oxuser   $oUser          session user
+     * @param oxBasket $oBasket        shop basket
+     * @param oxUser   $oUser          session user
      * @param string   $sDelCountry    delivery country
      * @param string   $sDeliverySetId delivery set id to check its relation to delivery list
      *
@@ -400,10 +403,12 @@ class oxDeliveryList extends oxList
     public function loadDeliveryListForProduct( $oProduct )
     {
         $oDb = oxDb::getDb();
-        $dPrice  = $oDb->quote($oProduct->getPrice()->getBruttoPrice());
-        $dSize   = $oDb->quote($oProduct->oxarticles__oxlength->value * $oProduct->oxarticles__oxwidth->value * $oProduct->oxarticles__oxheight->value);
-        $dWeight = $oProduct->oxarticles__oxweight->value;
+        $dPrice  = $oDb->quote( $oProduct->getPrice()->getBruttoPrice() );
+        $dSize   = $oDb->quote( $oProduct->getSize() );
+        $dWeight = $oDb->quote( $oProduct->getWeight() );
+
         $sTable  = getViewName( 'oxdelivery' );
+
         $sQ = "select $sTable.* from $sTable";
         $sQ .= " where ".$this->getBaseObject()->getSqlActiveSnippet();
         $sQ .= " and ($sTable.oxdeltype != 'a' || ( $sTable.oxparam <= 1 && $sTable.oxparamend >= 1))";

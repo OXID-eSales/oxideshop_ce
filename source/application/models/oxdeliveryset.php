@@ -19,12 +19,10 @@
  * @package   core
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
- * Order deliverysetset manager.
- * Currently calculates price/costs.
+ * Order delivery set manager.
  *
  * @package model
  */
@@ -65,10 +63,10 @@ class oxDeliverySet extends oxI18n
 
         $oDb = oxDb::getDb();
 
-        $sOxidQuoted = $oDb->quote($sOxId);
-        $oDb->execute( 'delete from oxobject2payment where oxobjectid = '.$sOxidQuoted );
-        $oDb->execute( 'delete from oxobject2delivery where oxdeliveryid = '.$sOxidQuoted);
-        $oDb->execute( 'delete from oxdel2delset where oxdelsetid = '.$sOxidQuoted);
+        $sOxIdQuoted = $oDb->quote( $sOxId );
+        $oDb->execute( 'delete from oxobject2payment where oxobjectid = '.$sOxIdQuoted );
+        $oDb->execute( 'delete from oxobject2delivery where oxdeliveryid = '.$sOxIdQuoted );
+        $oDb->execute( 'delete from oxdel2delset where oxdelsetid = '.$sOxIdQuoted );
 
         return parent::delete( $sOxId );
     }

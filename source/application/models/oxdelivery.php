@@ -29,10 +29,16 @@
  */
 class oxDelivery extends oxI18n
 {
+    /**
+     * Calculation rule
+     */
     const CALCULATION_RULE_ONCE_PER_CART              = 0;
     const CALCULATION_RULE_FOR_EACH_DIFFERENT_PRODUCT = 1;
     const CALCULATION_RULE_FOR_EACH_PRODUCT           = 2;
 
+    /**
+     * Condition type
+     */
     const CONDITION_TYPE_PRICE  = 'p';
     const CONDITION_TYPE_AMOUNT = 'a';
     const CONDITION_TYPE_SIZE   = 's';

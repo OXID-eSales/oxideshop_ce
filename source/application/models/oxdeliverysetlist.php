@@ -19,7 +19,6 @@
  * @package   core
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -31,6 +30,9 @@ class oxDeliverySetList extends oxList
 {
     /**
      * oxDeliverySetList instance
+     *
+     * @deprecated since v5.0 (2012-08-10); Use oxRegistry::get("oxDeliverySetList") instead.
+     *
      * @var oxDeliveryList
      */
     private static $_instance = null;
@@ -64,7 +66,7 @@ class oxDeliverySetList extends oxList
     protected $_sHomeCountry = null;
 
     /**
-     * Class constructor, sets callback so that Shopowner is able to
+     * Class constructor, sets callback so that Shop owner is able to
      * add any information to the article.
      *
      * @param string $sObjectsInListName Object in list
@@ -110,7 +112,7 @@ class oxDeliverySetList extends oxList
      * Loads all active delivery sets in list. Additionally
      * checks if set has user customized parameters like
      * assigned users, countries or user groups. Performs
-     * additional filtering accordint to these parameters
+     * additional filtering according to these parameters
      *
      * @param oxUser $oUser      user object
      * @param string $sCountryId user country id
@@ -131,7 +133,7 @@ class oxDeliverySetList extends oxList
 
         if ( $sUserId !== $this->_sUserId || $sCountryId !== $this->_sCountryId) {
 
-            // chooseing delivery country if it is not set yet
+            // choosing delivery country if it is not set yet
             if ( !$sCountryId ) {
 
                 if ( $oUser ) {
@@ -229,7 +231,7 @@ class oxDeliverySetList extends oxList
     {
         $this->_getList( $oUser, $sCountryId );
 
-        // if there is allready chosen delivery set we must start checking from it
+        // if there is already chosen delivery set we must start checking from it
         $aList = $this->_aArray;
         if ( $sDelSet && isset( $aList[$sDelSet] ) ) {
 
@@ -243,15 +245,15 @@ class oxDeliverySetList extends oxList
     }
 
     /**
-     * Loads deliveryset data, checks if it has payments assigned. If active delivery set id
+     * Loads delivery set data, checks if it has payments assigned. If active delivery set id
      * is passed - checks if it can be used, if not - takes first ship set id from list which
-     * fits. For active ship set collects payment list info. Retuns array containing:
+     * fits. For active ship set collects payment list info. Returns array containing:
      *   1. all ship sets that has payment (array)
      *   2. active ship set id (string)
      *   3. payment list for active ship set (array)
      *
      * @param string $sShipSet current ship set id (can be null if not set yet)
-     * @param oxuser $oUser    active user
+     * @param oxUser $oUser    active user
      * @param double $oBasket  basket object
      *
      * @return array
@@ -268,7 +270,7 @@ class oxDeliverySetList extends oxList
 
         $this->_getList( $oUser, $oUser->getActiveCountry() );
 
-        // if there are no shipsets we dont need to load payments
+        // if there are no shipping sets we don't need to load payments
         if ( $this->count() ) {
 
             // one selected ?

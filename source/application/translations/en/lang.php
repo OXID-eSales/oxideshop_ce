@@ -295,7 +295,6 @@ $aLang = array(
 'MESSAGE_COUPON_ACCUMULATION_SAME_SERIE'                      => 'A combination with another coupon of the same series is not permitted.',
 'MESSAGE_COUPON_EXPIRED'                                      => 'Coupon expired!',
 'MESSAGE_COUPON_NOT_APPLIED_FOR_ARTICLES'                     => 'No discounts assigned to these product items',
-'MESSAGE_DENIED_BY_SHOP_RULES'                                => 'Denied by shop rules.',
 'MESSAGE_EMAIL_ALREADY_IN_USE'                                => 'The e-mail address you specified is already in use.',
 'MESSAGE_ENTER_YOUR_ADDRESS_AND_MESSAGE'                      => 'Enter your address data and personal message.',
 'MESSAGE_FROM'                                                => 'Message from',

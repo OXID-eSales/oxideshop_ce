@@ -196,7 +196,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
      *
      * @return null
      */
-    public function testValidatePaymentInputDataDCAllInputIsFine()
+    public function testValidatePaymentInputData_BankNumberCorrectAccountNumberCorrect_valid()
     {
         $aDynvalue = array( 'lsbankname'   => 'Bank name',
                             'lsblz'        => '12345678',
@@ -214,7 +214,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
      *
      * @return null
      */
-    public function test4CharLsblz()
+    public function testValidatePaymentInputData_BankCodeTooShortAccountNumberCorrect_bankCodeError()
     {
         $iErr = -4;
         $aDynvalue = array( 'lsbankname'   => 'Bank name',
@@ -233,7 +233,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
      *
      * @return null
      */
-    public function test5CharLsblz()
+    public function testValidatePaymentInputData_BankCodeCorrectAccountNumberCorrect_valid()
     {
         $aDynvalue = array( 'lsbankname'   => 'Bank name',
                             'lsblz'        => '12345',
@@ -251,7 +251,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
      *
      * @return null
      */
-    public function test6CharLsblz()
+    public function testValidatePaymentInputData_6CharBankCode_true()
     {
         $aDynvalue = array( 'lsbankname'   => 'Bank name',
                             'lsblz'        => '123456',
@@ -269,7 +269,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
      *
      * @return null
      */
-    public function test8CharLsblz()
+    public function testValidatePaymentInputData_8CharBankCode_true()
     {
         $aDynvalue = array( 'lsbankname'   => 'Bank name',
                             'lsblz'        => '12345678',
@@ -287,7 +287,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
      *
      * @return null
      */
-    public function test9CharLsblz()
+    public function testValidatePaymentInputData_9CharBankCode_error()
     {
         $iErr = -4;
         $aDynvalue = array( 'lsbankname'   => 'Bank name',
@@ -810,5 +810,21 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
     public function testGetInstance()
     {
         $this->assertTrue( oxInputValidator::getInstance() instanceof oxInputValidator );
+    }
+
+
+
+    public function testValidatePaymentInputData( ){
+
+        $oSepaValidator = $this->getMock( 'oxSepaValidator', array( 'isValidBIC', 'isValidIBAN' ) );
+        $oSepaValidator->expects( $this->any() )->method( 'isValidBIC' )->will( $this->returnValue( true ) );
+        $oSepaValidator->expects( $this->any() )->method( 'isValidIBAN' )->will( $this->returnValue( true ) );
+
+        $oValidator = $this->getMock( 'oxinputvalidator', array( 'getSepaValidator' ) );
+        $oValidator->expects( $this->any() )->method( 'getSepaValidator' )->will( $this->returnValue( $oSepaValidator ) );
+
+        $oValidator->validatePaymentInputData( $oUser, array('oxuser__oxustid' => 1, 'oxuser__oxcountryid' => null) );
+
+
     }
 }

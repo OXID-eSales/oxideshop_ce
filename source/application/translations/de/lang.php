@@ -293,7 +293,6 @@ $aLang = array(
 'MESSAGE_COUPON_ACCUMULATION_SAME_SERIE'                      => 'Kombination mit Gutschein der gleichen Serie ist nicht erlaubt!',
 'MESSAGE_COUPON_EXPIRED'                                      => 'Gutschein abgelaufen!',
 'MESSAGE_COUPON_NOT_APPLIED_FOR_ARTICLES'                     => 'Diesen Artikeln ist kein Rabatt zugeordnet',
-'MESSAGE_DENIED_BY_SHOP_RULES'                                => 'Verweigert aufgrund von Shopregeln',
 'MESSAGE_EMAIL_ALREADY_IN_USE'                                => 'E-Mail-Adresse ist bereits vorhanden!',
 'MESSAGE_ENTER_YOUR_ADDRESS_AND_MESSAGE'                      => 'Geben Sie die Adressdaten und Ihre persönliche Nachricht ein.',
 'MESSAGE_FROM'                                                => 'Nachricht von',

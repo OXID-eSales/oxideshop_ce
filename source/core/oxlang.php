@@ -1124,20 +1124,15 @@ class oxLang extends oxSuperCfg
      */
     public function detectLanguageByBrowser()
     {
-        if (!array_key_exists('HTTP_ACCEPT_LANGUAGE', $_SERVER)) {
-            return;
-        }
-        $sBrowserLang = strtolower( substr( $_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2 ) );
+        $sBrowserLanguage = $this->_getBrowserLanguage();
 
-        if ( !$sBrowserLang ) {
-            return;
-        }
+        if ( !is_null( $sBrowserLanguage ) ) {
 
-        $aLangs = $this->getLanguageArray(null, true );
-
-        foreach ( $aLangs as $oLang ) {
-            if ( $oLang->abbr == $sBrowserLang ) {
-                return (int) $oLang->id;
+            $aLanguages = $this->getLanguageArray( null, true );
+            foreach ( $aLanguages as $oLang ) {
+                if ( $oLang->abbr == $sBrowserLanguage ) {
+                    return $oLang->id;
+                }
             }
         }
     }
@@ -1212,6 +1207,19 @@ class oxLang extends oxSuperCfg
             $this->_aDisabledModuleInfo = $oModuleList->getDisabledModuleInfo();
         }
         return $this->_aDisabledModuleInfo;
+    }
+
+    /**
+     * @return string
+     */
+    protected function _getBrowserLanguage()
+    {
+        $sBrowserLang = null;
+        if ( isset( $_SERVER['HTTP_ACCEPT_LANGUAGE'] ) && $_SERVER['HTTP_ACCEPT_LANGUAGE'] ) {
+            $sBrowserLang = strtolower( substr( $_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2 ) );
+        }
+
+        return $sBrowserLang;
     }
 
 }

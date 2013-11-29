@@ -281,7 +281,6 @@ $aLang = array(
 'LOGIN_WITH'                                                  => 'Anmelden mit',
 'LOGOUT'                                                      => 'Abmelden',
 'LOW_STOCK'                                                   => 'Wenige Exemplare auf Lager - schnell bestellen!',
-'MAKE_PAYMENT'                                                => 'Zahlung durchführen',
 'MANUFACTURER'                                                => 'Hersteller',
 'MANUFACTURER_S'                                              => '| Hersteller: %s',
 'MANY_GREETINGS'                                              => 'Viele Grüße,',

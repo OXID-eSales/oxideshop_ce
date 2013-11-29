@@ -316,7 +316,7 @@ class oxPayment extends oxI18n
         if ( $dPrice ) {
             // calculating total price
             $oPrice = oxNew( 'oxPrice' );
-            $oPrice->setNettMode( $this->_blPaymentVatOnTop );
+            $oPrice->setNettoMode( $this->_blPaymentVatOnTop );
 
             $oPrice->setPrice( $dPrice );
             if ( $dPrice > 0 ) {

@@ -28,6 +28,17 @@
  */
 class oxInputValidator extends oxSuperCfg
 {
+
+    /**
+     * Invalid account number error code for template.
+     */
+    const INVALID_ACCOUNT_NUMBER = -5;
+
+    /**
+     * Invalid bank number error code for template.
+     */
+    const INVALID_BANK_NUMBER = -4;
+
     /**
      * oxInputValidator instance
      *
@@ -184,35 +195,18 @@ class oxInputValidator extends oxSuperCfg
                 $aDynvalue['lsblz']   = str_replace( ' ', '', $aDynvalue['lsblz'] );
                 $aDynvalue['lsktonr'] = str_replace( ' ', '', $aDynvalue['lsktonr'] );
 
-                $oSepaValidator = oxNew( "oxSepaValidator" );
+                $oSepaValidator = $this->getSepaValidator();
+
+                    $mxValidationResult = true;
 
                 // Check BIC / IBAN
-                if ( $oSepaValidator->isValidBIC($aDynvalue['lsblz']) && $oSepaValidator->isValidIBAN($aDynvalue['lsktonr']) ) {
-                    $mxValidationResult = true;
-                }
-
-                // If can't meet BIC / IBAN formats check account number and bank code with old validation
-                if ( !$mxValidationResult ) {
-                    // If account number is shorter than 10, add zeros in front of number
-                    if ( $oStr->strlen( $aDynvalue['lsktonr'] ) < 10 ) {
-                        $sNewNum = str_repeat( '0', 10 - $oStr->strlen( $aDynvalue['lsktonr'] ) ).$aDynvalue['lsktonr'];
-                        $aDynvalue['lsktonr'] = $sNewNum;
-                    }
-
-                    if ( $oStr->preg_match( "/^\d{5,8}$/", $aDynvalue['lsblz'] ) ) {
-                        if ( !$oStr->preg_match( "/\d{10}/", $aDynvalue['lsktonr'] ) ) {
-                            // Account number is invalid
-                            $mxValidationResult = -5;
-                            break;
-                        } else {
-                            $mxValidationResult = true;
+                if ( $oSepaValidator->isValidBIC( $aDynvalue['lsblz'] ) ) {
+                    if ( !$oSepaValidator->isValidIBAN( $aDynvalue['lsktonr'] ) ) {
+                        $mxValidationResult = self::INVALID_ACCOUNT_NUMBER;
                         }
                     } else {
-                        // Bank code is invalid
-                        $mxValidationResult = -4;
+                    $mxValidationResult = $this->_validateOldDebitInfo( $aDynvalue );
                     }
-                }
-
 
                 break;
         }
@@ -519,5 +513,58 @@ class oxInputValidator extends oxSuperCfg
             $oErr = reset( $aErr );
         }
         return $oErr;
+    }
+
+    /**
+     * @param $aDebitInfo
+     * @return array
+     */
+    protected function _validateOldDebitInfo( $aDebitInfo )
+    {
+        $oStr       = getStr();
+        $aDebitInfo = $this->_fixAccountNumber( $aDebitInfo );
+
+        $mxValidationResult = true;
+        if ( !$oStr->preg_match( "/^\d{5,8}$/", $aDebitInfo['lsblz'] ) ) {
+            // Bank code is invalid
+            $mxValidationResult = self::INVALID_BANK_NUMBER;
+        }
+
+        if ( $mxValidationResult && !$oStr->preg_match( "/\d{10}/", $aDebitInfo['lsktonr'] ) ) {
+            // Account number is invalid
+            $mxValidationResult = self::INVALID_ACCOUNT_NUMBER;
+        }
+
+        return $mxValidationResult;
+    }
+
+    /**
+     * If account number is shorter than 10, add zeros in front of number.
+     * @param $aDebitInfo
+     * @return array
+     */
+    protected function _fixAccountNumber( $aDebitInfo )
+    {
+        $oStr = getStr();
+
+        if ( $oStr->strlen( $aDebitInfo['lsktonr'] ) < 10 ) {
+            $sNewNum = str_repeat(
+                           '0', 10 - $oStr->strlen( $aDebitInfo['lsktonr'] )
+                       ) . $aDebitInfo['lsktonr'];
+            $aDebitInfo['lsktonr'] = $sNewNum;
+        }
+
+        return $aDebitInfo;
+    }
+
+    /**
+     * Returns SEPA validator
+     * @return object
+     */
+    protected function getSepaValidator()
+    {
+        $oSepaValidator = oxNew( "oxSepaValidator" );
+
+        return $oSepaValidator;
     }
 }

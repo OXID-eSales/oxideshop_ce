@@ -813,18 +813,113 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
     }
 
 
+    /**
+     *
+     * @return array
+     */
+    public function validatePaymentInputDataDataset()
+    {
+        return array(
+            // old bank number correct, various account numbers
+            array( '12345678', '123456789', -5),        // account number too short
+            array( '12345678', '1234567890', true),     // account number ok
+            array( '12345678', '12345678901', -5),      // account number too long
+            array( '12345678', 'NO9386011117947', -5),  // sepa account correct
+            array( '12345678', 'NX9386011117947', -5),  // sepa account incorrect
 
-    public function testValidatePaymentInputData( ){
-
-        $oSepaValidator = $this->getMock( 'oxSepaValidator', array( 'isValidBIC', 'isValidIBAN' ) );
-        $oSepaValidator->expects( $this->any() )->method( 'isValidBIC' )->will( $this->returnValue( true ) );
-        $oSepaValidator->expects( $this->any() )->method( 'isValidIBAN' )->will( $this->returnValue( true ) );
-
-        $oValidator = $this->getMock( 'oxinputvalidator', array( 'getSepaValidator' ) );
-        $oValidator->expects( $this->any() )->method( 'getSepaValidator' )->will( $this->returnValue( $oSepaValidator ) );
-
-        $oValidator->validatePaymentInputData( $oUser, array('oxuser__oxustid' => 1, 'oxuser__oxcountryid' => null) );
-
-
+            // old bank number incorrect, various account numbers
+            array( '1234', '123456789', -4),        // account number too short
+            array( '123456789', '1234567890', -4),     // account number ok
+            array( '1234', '12345678901', -4),      // account number too long
+            array( '12345678', 'NO9386011117947', -4),  // sepa account correct
+            array( '1234', 'NX9386011117947', -4),  // sepa account incorrect
+        );
     }
+
+    /**
+     * Testing validatePaymentInputData - all test cases
+     *
+     * @dataProvider validatePaymentInputDataDataset
+     */
+    public function testValidatePaymentInputData_AllTestCases( $sBankCode, $sAccountNumber, $blExpectedResult )
+    {
+        $aDynvalue = array( 'lsbankname'   => 'Bank name',
+                            'lsblz'        => $sBankCode,
+                            'lsktonr'      => $sAccountNumber,
+                            'lsktoinhaber' => 'Hans Mustermann'
+        );
+
+        $oValidator = new oxInputValidator();
+        $this->assertEquals($blExpectedResult, $oValidator->validatePaymentInputData( "oxiddebitnote", $aDynvalue ) );
+    }
+
+
+    public function testValidatePaymentInputData_SepaBankNumberCorrectSepaAccountNumberCorrect_NoError()
+    {
+        //
+    }
+
+    // AccountNumberFalse:
+    // Too short
+    // Too long
+    // Wrong standard
+    public function testValidatePaymentInputData_BankNumberOldCorrectAccountNumberIncorrect_ErrorAccountNumberWrong()
+    {
+        //
+    }
+
+    public function testValidatePaymentInputData_BankNumberOldCorrectAccountNumberSepaCorrect_ErrorAccountNumberWrong()
+    {
+        //
+    }
+
+    // Old bank number too short
+    // Old bank number too long
+    // Old bank number wrong standard
+    // Sepa bank number too short
+    // Sepa bank number too long
+    // Sepa bank number wrong standard
+    //
+    // Old account number correct
+    // Old account number too short
+    // Old account number too long
+    // Old account number wrong standard
+    // Sepa account number correct
+    // Sepa account number correct
+    // Sepa account number too short
+    // Sepa account number too long
+    // Sepa account number wrong standard
+    public function testValidatePaymentInputData_BankNumberIncorrect_ErrorBankNumberWrong()
+    {
+        //
+    }
+
+    public function testValidatePaymentInputData_SepaBankCodeCorrect_AccountNumberOldCorrect_ErrorAccountNumber()
+    {
+        //
+    }
+    public function testValidatePaymentInputData_SepaBankCodeCorrect_AccountNumberOldIncorrect_ErrorAccountNumber()
+    {
+        //
+    }
+
+    public function testValidatePaymentInputData_SepaBankCodeCorrect_AccountNumberSepaIncorrect_ErrorAccountNumber()
+    {
+        //
+    }
+
+    // Old account number correct
+    // Old account number too short
+    // Old account number too long
+    // Old account number wrong standard
+    // Sepa account number correct
+    // Sepa account number correct
+    // Sepa account number too short
+    // Sepa account number too long
+    // Sepa account number wrong standard
+    public function testValidatePaymentInputData_SepaBankCodeCorrect_AccountNumberIncorrect_True()
+    {
+        //
+    }
+
 }

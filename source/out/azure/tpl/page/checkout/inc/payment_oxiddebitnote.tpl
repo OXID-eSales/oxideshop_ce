@@ -1,5 +1,4 @@
 [{ assign var="dynvalue" value=$oView->getDynValue()}]
-[{ assign var="iPayError" value=$oView->getPaymentError() }]
 <dl>
     <dt>
         <input id="payment_[{$sPaymentID}]" type="radio" name="paymentid" value="[{$sPaymentID}]" [{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]checked[{/if}]>
@@ -14,14 +13,14 @@
                     <span class="js-oxError_notEmpty">[{ oxmultilang ident="EXCEPTION_INPUT_NOTALLFIELDS" }]</span>
                 </p>
             </li>
-            <li [{if $iPayError == -4}]class="oxInValid"[{/if}]>
+            <li>
                 <label>[{ oxmultilang ident="PAGE_CHECKOUT_PAYMENT_ROUTINGNUMBER" }]</label>
                 <input type="text" class="js-oxValidate js-oxValidate_notEmpty" size="20" maxlength="64" name="dynvalue[lsblz]" value="[{ $dynvalue.lsblz }]">
                 <p class="oxValidateError">
                     <span class="js-oxError_notEmpty">[{ oxmultilang ident="EXCEPTION_INPUT_NOTALLFIELDS" }]</span>
                 </p>
             </li>
-            <li [{if $iPayError == -5}]class="oxInValid"[{/if}]>
+            <li>
                 <label>[{ oxmultilang ident="PAGE_CHECKOUT_PAYMENT_ACCOUNTNUMBER" }]</label>
                 <input type="text" class="js-oxValidate js-oxValidate_notEmpty" size="20" maxlength="64" name="dynvalue[lsktonr]" value="[{ $dynvalue.lsktonr }]">
                 <p class="oxValidateError">

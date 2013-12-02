@@ -53,7 +53,7 @@ class oxSepaValidator
      * An IBAN is validated by converting it into an integer and performing a basic mod-97 operation (as described in ISO 7064) on it.
      * If the IBAN is valid, the remainder equals 1.
      *
-     * @param string $sBIC code to check
+     * @param string $sIBAN code to check
      *
      * @return bool
      */
@@ -65,10 +65,10 @@ class oxSepaValidator
         $sIBAN = strtoupper( trim($sIBAN) );
         $aIBANRegistry = $this->getIBANRegistry();
 
-        // 1. Check that the total IBAN length is correct as per the country. If not, the IBAN is invalid.
+        // 1. Check that the total IBAN length is correct as per country. If not, the IBAN is invalid.
         $sLangAbbr = $oStr->substr($sIBAN, 0, 2);
         $iLength = $aIBANRegistry[$sLangAbbr];
-        if ( !is_null($iLength) && $oStr->strlen($sIBAN) != $iLength ) {
+        if ( is_null($iLength) || $oStr->strlen($sIBAN) != $iLength ) {
             $blValid = false;
         }
 

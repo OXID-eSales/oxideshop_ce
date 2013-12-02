@@ -37,7 +37,7 @@ class oxInputValidator extends oxSuperCfg
     /**
      * Invalid bank number error code for template.
      */
-    const INVALID_BANK_NUMBER = -4;
+    const INVALID_BANK_CODE = -4;
 
     /**
      * oxInputValidator instance
@@ -527,10 +527,10 @@ class oxInputValidator extends oxSuperCfg
         $mxValidationResult = true;
         if ( !$oStr->preg_match( "/^\d{5,8}$/", $aDebitInfo['lsblz'] ) ) {
             // Bank code is invalid
-            $mxValidationResult = self::INVALID_BANK_NUMBER;
+            $mxValidationResult = self::INVALID_BANK_CODE;
         }
 
-        if ( $mxValidationResult && !$oStr->preg_match( "/^\d{10}$/", $aDebitInfo['lsktonr'] ) ) {
+        if ( true === $mxValidationResult && !$oStr->preg_match( "/^\d{10}$/", $aDebitInfo['lsktonr'] ) ) {
             // Account number is invalid
             $mxValidationResult = self::INVALID_ACCOUNT_NUMBER;
         }

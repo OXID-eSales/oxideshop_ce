@@ -60,10 +60,6 @@
     <br><div class="errorbox">[{ oxmultilang ident="PAYMENT_NOSHIPPINGFOUND" }]</div>
   [{ elseif $iPayError == -3}]
     <br><div class="errorbox">[{ oxmultilang ident="PAYMENT_SELECTANOTHERPAYMENT" }]</div>
-  [{ elseif $iPayError == -4}]
-    <br><div class="errorbox">[{ oxmultilang ident="MESSAGE_PAYMENT_BANK_CODE_INVALID" }]</div>
-  [{ elseif $iPayError == -5}]
-    <br><div class="errorbox">[{ oxmultilang ident="MESSAGE_PAYMENT_ACCOUNT_NUMBER_INVALID" }]</div>
   [{/if}]
 
 

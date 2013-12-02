@@ -812,7 +812,10 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
         $this->assertTrue( oxInputValidator::getInstance() instanceof oxInputValidator );
     }
 
-
+    /**
+     * Testing validatePaymentInputData with SepaBankCodeCorrect and SepaAccountNumberCorrect
+     * expecting NoError
+     */
     public function testValidatePaymentInputData_SepaBankCodeCorrectSepaAccountNumberCorrect_NoError()
     {
         $sBankCode = $this->_getSepaBankCode();
@@ -828,7 +831,11 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
         $this->assertEquals(true, $oValidator->validatePaymentInputData( "oxiddebitnote", $aDynvalue ) );
     }
 
-
+    /**
+     * Data provider for testValidatePaymentInputData_BankCodeOldCorrectAccountNumberIncorrect_ErrorAccountNumberWrong
+     *
+     * @return array
+     */
     public function providerValidatePaymentInputData_BankCodeOldCorrectAccountNumberIncorrect_ErrorAccountNumberWrong()
     {
         $sOldAccountNumberTooLong = "123456789123456789";
@@ -840,6 +847,9 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
     }
 
     /**
+     * Testing validatePaymentInputData with BankCodeOldCorrect and AccountNumberIncorrect
+     * expecting ErrorAccountNumberWrong
+     *
      * @dataProvider providerValidatePaymentInputData_BankCodeOldCorrectAccountNumberIncorrect_ErrorAccountNumberWrong
      */
     public function testValidatePaymentInputData_BankCodeOldCorrectAccountNumberIncorrect_ErrorAccountNumberWrong( $sAccountNumber )
@@ -855,6 +865,10 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
         $this->assertSame($sErrorAccountNumberNo, $oValidationResult, 'Should validate as account number error.' );
     }
 
+    /**
+     * Testing validatePaymentInputData with BankCodeOldCorrect and AccountNumberSepaCorrect
+     * expecting ErrorAccountNumberWrong
+     */
     public function testValidatePaymentInputData_BankCodeOldCorrectAccountNumberSepaCorrect_ErrorAccountNumberWrong()
     {
         $sBankCode = $this->_getOldBankCode();
@@ -869,6 +883,10 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
         $this->assertSame($sErrorAccountNumberNo, $oValidationResult, 'Should validate as account number error.' );
     }
 
+    /**
+     * Data provider for testValidatePaymentInputData_BankCodeIncorrect_ErrorBankCodeWrong
+     * @return array
+     */
     public function providerValidatePaymentInputData_BankCodeIncorrect_ErrorBankCodeWrong()
     {
         $sOldBankCodeTooShort = '1234';
@@ -882,7 +900,6 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
 
         $sSepaAccountNumber = $this->_getSepaAccountNumber();
         $sSepaAccountNumberWrong = 'NX9386011117947';
-
 
         return array(
             array($sOldBankCodeTooShort, $sOldAccountNumber),
@@ -912,7 +929,11 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
     }
 
     /**
+     * Testing ValidatePaymentInputData with BankCodeIncorrect
+     * expecting ErrorBankCodeWrong
+     *
      * @dataProvider providerValidatePaymentInputData_BankCodeIncorrect_ErrorBankCodeWrong
+     *
      * @param $sBankCode
      * @param $sAccountNumber
      */
@@ -927,8 +948,10 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
         $this->assertSame($sErrorBankCodeNo, $oValidationResult, 'Should validate as bank code error.' );
     }
 
-
-
+    /**
+     * Data provider for testValidatePaymentInputData_SepaBankCodeCorrectAccountNumberIncorrect_ErrorAccountNumber
+     * @return array
+     */
     public function providerValidatePaymentInputData_SepaBankCodeCorrectAccountNumberIncorrect_ErrorAccountNumber()
     {
         $sOldBankCodeTooShort = '1234';
@@ -945,6 +968,11 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
     }
 
     /**
+     * Fixed for bug entry 0005543: BIC is shown as incorrect if IBAN is incorrect, although BIC is correct
+     *
+     * Testing validatePaymentInputData with SepaBankCodeCorrect and AccountNumberIncorrect
+     * expecting ErrorAccountNumber
+     *
      * @dataProvider providerValidatePaymentInputData_SepaBankCodeCorrectAccountNumberIncorrect_ErrorAccountNumber
      * @param $sAccountNumber
      */
@@ -960,6 +988,10 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
         $this->assertSame($sErrorAccountNumberNo, $oValidationResult, 'Should validate as account number error.' );
     }
 
+    /**
+     * Testing validatePaymentInputData with SepaBankCodeCorrect and OldAccountNumberCorrect
+     * expecting ErrorAccountNumber
+     */
     public function testValidatePaymentInputData_SepaBankCodeCorrectOldAccountNumberCorrect_ErrorAccountNumber()
     {
         $sBankCode = $this->_getSepaBankCode();

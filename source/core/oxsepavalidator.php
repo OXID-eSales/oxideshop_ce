@@ -210,7 +210,6 @@ class oxSepaValidator
         'PK' => 24,
         'PS' => 29,
         'PL' => 28,
-        'PL' => 28,
         'PT' => 25,
         'RO' => 24,
         'SM' => 27,

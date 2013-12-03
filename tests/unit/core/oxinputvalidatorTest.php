@@ -51,7 +51,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
     }
 
     /**
-     * Test case for oxinputvalidator::validateBasketAmount()
+     * Test case for oxInputValidator::validateBasketAmount()
      * tests rounding of validator
      *
      * @return null
@@ -68,7 +68,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
     }
 
     /**
-     * Test case for oxinputvalidator::validateBasketAmount()
+     * Test case for oxInputValidator::validateBasketAmount()
      * tests uneven amount
      *
      * @return null
@@ -80,7 +80,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
     }
 
     /**
-     * Test case for oxinputvalidator::validateBasketAmount()
+     * Test case for oxInputValidator::validateBasketAmount()
      * tests unallowed input
      *
      * @return null
@@ -113,7 +113,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
     }
 
     /**
-     * Test case for oxinputvalidator::validatePaymentInputData()
+     * Test case for oxInputValidator::validatePaymentInputData()
      * 1. unknown payment, which has no testing conditions
      *
      * @return null
@@ -121,12 +121,12 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
     public function testValidatePaymentInputDataUnknownPayment()
     {
         $aDynvalue = array();
-        $oValidator = new oxinputvalidator();
+        $oValidator = new oxInputValidator();
         $this->assertTrue( $oValidator->validatePaymentInputData( 'xxx', $aDynvalue ) );
     }
 
     /**
-     * Test case for oxinputvalidator::validatePaymentInputData()
+     * Test case for oxInputValidator::validatePaymentInputData()
      * 2. CC: missing input fields
      *
      * @return null
@@ -134,12 +134,12 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
     public function testValidatePaymentInputDataCCMissingFields()
     {
         $aDynvalue = array();
-        $oValidator = new oxinputvalidator();
+        $oValidator = new oxInputValidator();
         $this->assertFalse( $oValidator->validatePaymentInputData( 'oxidcreditcard', $aDynvalue ) );
     }
 
     /**
-     * Test case for oxinputvalidator::validatePaymentInputData()
+     * Test case for oxInputValidator::validatePaymentInputData()
      * 3. CC: wrong card type
      *
      * @return null
@@ -153,12 +153,12 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
                             'kkname'   => 'xxx',
                             'kkpruef'  => 'xxx'
                           );
-        $oValidator = new oxinputvalidator();
+        $oValidator = new oxInputValidator();
         $this->assertFalse( $oValidator->validatePaymentInputData( 'oxidcreditcard', $aDynvalue ) );
     }
 
     /**
-     * Test case for oxinputvalidator::validatePaymentInputData()
+     * Test case for oxInputValidator::validatePaymentInputData()
      * 4. CC: all input is fine
      *
      * @return null
@@ -173,12 +173,12 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
                             'kkpruef'  => '333'
                           );
 
-        $oValidator = new oxinputvalidator();
+        $oValidator = new oxInputValidator();
         $this->assertTrue( $oValidator->validatePaymentInputData( 'oxidcreditcard', $aDynvalue ) );
     }
 
     /**
-     * Test case for oxinputvalidator::validatePaymentInputData()
+     * Test case for oxInputValidator::validatePaymentInputData()
      * 5. DC: missing input fields
      *
      * @return null
@@ -186,17 +186,17 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
     public function testValidatePaymentInputDataDCMissingFields()
     {
         $aDynvalue = array();
-        $oValidator = new oxinputvalidator();
+        $oValidator = new oxInputValidator();
         $this->assertFalse( $oValidator->validatePaymentInputData( 'oxiddebitnote', $aDynvalue ) );
     }
 
     /**
-     * Test case for oxinputvalidator::validatePaymentInputData()
+     * Test case for oxInputValidator::validatePaymentInputData()
      * 6. DC: all input is fine
      *
      * @return null
      */
-    public function testValidatePaymentInputDataDCAllInputIsFine()
+    public function testValidatePaymentInputData_BankCodeCorrect8LengthAccountNumberCorrect_valid()
     {
         $aDynvalue = array( 'lsbankname'   => 'Bank name',
                             'lsblz'        => '12345678',
@@ -204,7 +204,25 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
                             'lsktoinhaber' => 'Hans Mustermann'
                           );
 
-        $oValidator = new oxinputvalidator();
+        $oValidator = new oxInputValidator();
+        $this->assertTrue( $oValidator->validatePaymentInputData( 'oxiddebitnote', $aDynvalue ) );
+    }
+
+    /**
+     * Test for bug #1150
+     *
+     * @return null
+     */
+    public function testValidatePaymentInputData_BankCodeCorrect5LengthAccountNumberCorrect_valid()
+    {
+        $aDynvalue = array( 'lsbankname'   => 'Bank name',
+            'lsblz'        => '12345',
+                            'lsktonr'      => '123456789',
+                            'lsktoinhaber' => 'Hans Mustermann'
+                          );
+
+
+        $oValidator = new oxInputValidator();
         $this->assertTrue( $oValidator->validatePaymentInputData( 'oxiddebitnote', $aDynvalue ) );
     }
 
@@ -214,14 +232,15 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
      *
      * @return null
      */
-    public function test4CharLsblz()
+    public function testValidatePaymentInputData_BankCodeTooShortAccountNumberCorrect_bankCodeError()
     {
         $iErr = -4;
         $aDynvalue = array( 'lsbankname'   => 'Bank name',
-                            'lsblz'        => '1234',
+            'lsblz'        => '1234',
                             'lsktonr'      => '123456789',
                             'lsktoinhaber' => 'Hans Mustermann'
                           );
+
 
         $oValidator = new oxInputValidator();
         $this->assertEquals( $iErr, $oValidator->validatePaymentInputData( 'oxiddebitnote', $aDynvalue ) );
@@ -232,25 +251,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
      *
      * @return null
      */
-    public function test5CharLsblz()
-    {
-        $aDynvalue = array( 'lsbankname'   => 'Bank name',
-                            'lsblz'        => '12345',
-                            'lsktonr'      => '123456789',
-                            'lsktoinhaber' => 'Hans Mustermann'
-                          );
-
-
-        $oValidator = new oxinputvalidator();
-        $this->assertTrue( $oValidator->validatePaymentInputData( 'oxiddebitnote', $aDynvalue ) );
-    }
-
-    /**
-     * Test for bug #1150
-     *
-     * @return null
-     */
-    public function test6CharLsblz()
+    public function testValidatePaymentInputData_6CharBankCode_true()
     {
         $aDynvalue = array( 'lsbankname'   => 'Bank name',
                             'lsblz'        => '123456',
@@ -259,7 +260,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
                           );
 
 
-        $oValidator = new oxinputvalidator();
+        $oValidator = new oxInputValidator();
         $this->assertTrue( $oValidator->validatePaymentInputData( 'oxiddebitnote', $aDynvalue ) );
     }
 
@@ -268,7 +269,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
      *
      * @return null
      */
-    public function test8CharLsblz()
+    public function testValidatePaymentInputData_8CharBankCode_true()
     {
         $aDynvalue = array( 'lsbankname'   => 'Bank name',
                             'lsblz'        => '12345678',
@@ -277,7 +278,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
                           );
 
 
-        $oValidator = new oxinputvalidator();
+        $oValidator = new oxInputValidator();
         $this->assertTrue( $oValidator->validatePaymentInputData( 'oxiddebitnote', $aDynvalue ) );
     }
 
@@ -286,7 +287,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
      *
      * @return null
      */
-    public function test9CharLsblz()
+    public function testValidatePaymentInputData_9CharBankCode_error()
     {
         $iErr = -4;
         $aDynvalue = array( 'lsbankname'   => 'Bank name',
@@ -300,15 +301,15 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
     }
 
     /**
-     * Test case for oxinputvalidator::_addValidationError()
-     *               oxinputvalidator::getFieldValidationErrors()
-     *               oxinputvalidator::getFirstValidationError()
+     * Test case for oxInputValidator::_addValidationError()
+     *               oxInputValidator::getFieldValidationErrors()
+     *               oxInputValidator::getFirstValidationError()
      *
      * @return null
      */
     public function testAddValidationError()
     {
-        $oValidator = new oxinputvalidator();
+        $oValidator = new oxInputValidator();
         $this->assertEquals( array(), $oValidator->getFieldValidationErrors() );
         $this->assertNull( $oValidator->getFirstValidationError() );
 
@@ -329,9 +330,9 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
      */
     public function testCheckVatIdWithoutVatIdOrCompanyName()
     {
-        $oUser = oxNew( "oxUser" );
+        $oUser = new oxUser;
 
-        $oValidator = $this->getMock('oxinputvalidator', array('_addValidationError'));
+        $oValidator = $this->getMock('oxInputValidator', array('_addValidationError'));
         $oValidator->expects($this->never())->method('_addValidationError');
 
         $oValidator->checkVatId( $oUser, array('oxuser__oxustid' => 1 ) );
@@ -347,9 +348,9 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
      */
     public function testCheckVatIdWithBadCountryId()
     {
-        $oUser = oxNew( "oxUser" );
+        $oUser = new oxUser;
 
-        $oValidator = $this->getMock('oxinputvalidator', array('_addValidationError'));
+        $oValidator = $this->getMock('oxInputValidator', array('_addValidationError'));
         $oValidator->expects($this->never())->method('_addValidationError');
 
         $oValidator->checkVatId( $oUser, array('oxuser__oxustid' => 1, 'oxuser__oxcountryid' => null) );
@@ -363,9 +364,9 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
      */
     public function testCheckVatIdWithHomeCountryId()
     {
-        $oUser = oxNew( "oxUser" );
+        $oUser = new oxUser;
 
-        $oValidator = $this->getMock('oxinputvalidator', array('_addValidationError'));
+        $oValidator = $this->getMock('oxInputValidator', array('_addValidationError'));
         $oValidator->expects($this->never())->method('_addValidationError');
 
         $aHome = oxConfig::getInstance()->getConfigParam( 'aHomeCountry' );
@@ -381,9 +382,9 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
      */
     public function testCheckVatIdWithForeignCountryWithDisabledVatChecking()
     {
-        $oUser = oxNew( "oxUser" );
+        $oUser = new oxUser;
 
-        $oValidator = $this->getMock('oxinputvalidator', array('_addValidationError'));
+        $oValidator = $this->getMock('oxInputValidator', array('_addValidationError'));
         $oValidator->expects($this->never())->method('_addValidationError');
 
         $sForeignCountryId = "a7c40f6321c6f6109.43859248"; //Switzerland
@@ -400,10 +401,10 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
     public function testCheckVatIdWithForeignCountryIdAndBadVatId()
     {
 
-        $oUser = oxNew( "oxUser" );
+        $oUser = new oxUser;
         $oUser->setId("testlalaa_");
 
-        $oValidator = $this->getMock('oxinputvalidator', array('_addValidationError'));
+        $oValidator = $this->getMock('oxInputValidator', array('_addValidationError'));
         $oValidator->expects($this->once())->method('_addValidationError')
                 ->with(
                         $this->equalTo('oxuser__oxustid'),
@@ -424,9 +425,9 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
     public function testCheckVatId()
     {
 
-        $oUser = oxNew( "oxUser" );
+        $oUser = new oxUser;
 
-        $oValidator = $this->getMock('oxinputvalidator', array('_addValidationError'));
+        $oValidator = $this->getMock('oxInputValidator', array('_addValidationError'));
         $oValidator->expects($this->never())->method('_addValidationError');
 
         $sForeignCountryId = "a7c40f6320aeb2ec2.72885259"; //Austria
@@ -436,30 +437,30 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
 
 
     /**
-     * Test case for oxinputvalidator::checkCountries()
+     * Test case for oxInputValidator::checkCountries()
      * @return null
      */
     public function testCheckCountriesWrongCountries()
     {
-        $oUser = oxNew( "oxUser" );
+        $oUser = new oxUser;
         $oUser->setId('testusr');
 
-        $oValidator = oxNew( "oxinputvalidator" );
+        $oValidator = new oxInputValidator;
         $oValidator->checkCountries( $oUser, array( "oxuser__oxcountryid" => "xxx" ), array( "oxaddress__oxcountryid" => "yyy" ) );
 
-        $this->assertTrue( $oValidator->getFirstValidationError() instanceof oxUserException, "error in oxinputvalidator::checkCountries()" );
+        $this->assertTrue( $oValidator->getFirstValidationError() instanceof oxUserException, "error in oxInputValidator::checkCountries()" );
     }
 
     /**
-     * Test case for oxinputvalidator::checkCountries()
+     * Test case for oxInputValidator::checkCountries()
      *
      * @return null
      */
     public function testCheckCountriesGoodCountries()
     {
-        $oUser = oxNew( "oxUser" );
+        $oUser = new oxUser;
         $oUser->setId('testx');
-        $oValidator = oxNew( "oxinputvalidator" );
+        $oValidator = new oxInputValidator;
         $oValidator->checkCountries( $oUser, array( "oxuser__oxcountryid" => "a7c40f631fc920687.20179984" ), array( "oxaddress__oxcountryid" => "a7c40f6320aeb2ec2.72885259" ) );
         $this->assertNull( $oValidator->getFirstValidationError() );
     }
@@ -471,10 +472,10 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
      */
     public function testCheckRequiredArrayFieldsEmptyField()
     {
-        $oUser = new oxuser();
+        $oUser = new oxUser();
         $oUser->setId("testlalaa_");
 
-        $oValidator = $this->getMock('oxinputvalidator', array('_addValidationError'));
+        $oValidator = $this->getMock('oxInputValidator', array('_addValidationError'));
         $oValidator->expects($this->once())->method('_addValidationError')
                 ->with(
                         $this->equalTo('xxx'),
@@ -494,7 +495,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
      */
     public function testCheckRequiredArrayFieldsFilledField()
     {
-        $oValidator = $this->getMock('oxinputvalidator', array('_addValidationError'));
+        $oValidator = $this->getMock('oxInputValidator', array('_addValidationError'));
         $oValidator->expects($this->never())->method('_addValidationError');
 
         $oValidator->checkRequiredArrayFields( new oxuser(), 'xxx', array( 'aaa' => 'xxx' ) );
@@ -524,10 +525,10 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
         $aInvAdress = array();
         $aDelAdress = array();
 
-        $oUser = new oxuser();
+        $oUser = new oxUser();
         $oUser->setId("testlalaa_");
 
-        $oValidator = $this->getMock('oxinputvalidator', array('_addValidationError'));
+        $oValidator = $this->getMock('oxInputValidator', array('_addValidationError'));
         $oValidator->expects($this->at(0))->method('_addValidationError')
                 ->with(
                         $this->equalTo('oxuser__oxfname'),
@@ -565,7 +566,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
         $aInvAdress = array( 'oxuser__oxfname' => 'xxx', 'oxuser__oxbirthdate' => array( 'year' => '123' ) );
         $aDelAdress = array( 'oxuser__oxlname' => 'yyy' );
 
-        $oValidator = $this->getMock('oxinputvalidator', array('_addValidationError'));
+        $oValidator = $this->getMock('oxInputValidator', array('_addValidationError'));
         $oValidator->expects($this->never())->method('_addValidationError');
 
         $oValidator->checkRequiredFields( new oxUser(), $aInvAdress, $aDelAdress);
@@ -579,10 +580,10 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
      */
     public function testCheckPasswordUserWithoutPasswordNothingMustHappen()
     {
-        $oValidator = $this->getMock('oxinputvalidator', array('_addValidationError'));
+        $oValidator = $this->getMock('oxInputValidator', array('_addValidationError'));
         $oValidator->expects($this->never())->method('_addValidationError');
 
-        $oValidator->checkPassword( new oxuser(), '', '' );
+        $oValidator->checkPassword( new oxUser(), '', '' );
     }
 
     /**
@@ -593,10 +594,10 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
      */
     public function testCheckPasswordUserWithoutPassword()
     {
-        $oUser = new oxuser();
+        $oUser = new oxUser();
         $oUser->setId("testlalaa_");
 
-        $oValidator = $this->getMock('oxinputvalidator', array('_addValidationError'));
+        $oValidator = $this->getMock('oxInputValidator', array('_addValidationError'));
         $oValidator->expects($this->once())->method('_addValidationError')
                 ->with(
                         $this->equalTo('oxuser__oxpassword'),
@@ -617,10 +618,10 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
      */
     public function testCheckPasswordPassTooShort()
     {
-        $oUser = new oxuser();
+        $oUser = new oxUser();
         $oUser->setId("testlalaa_");
 
-        $oValidator = $this->getMock('oxinputvalidator', array('_addValidationError'));
+        $oValidator = $this->getMock('oxInputValidator', array('_addValidationError'));
         $oValidator->expects($this->once())->method('_addValidationError')
                 ->with(
                         $this->equalTo('oxuser__oxpassword'),
@@ -641,10 +642,10 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
      */
     public function testCheckPasswordPassDoNotMatch()
     {
-        $oUser = new oxuser();
+        $oUser = new oxUser();
         $oUser->setId("testlalaa_");
 
-        $oValidator = $this->getMock('oxinputvalidator', array('_addValidationError'));
+        $oValidator = $this->getMock('oxInputValidator', array('_addValidationError'));
         $oValidator->expects($this->once())->method('_addValidationError')
                 ->with(
                         $this->equalTo('oxuser__oxpassword'),
@@ -665,10 +666,10 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
      */
     public function testCheckEmailNoEmail()
     {
-        $oUser = new oxuser();
+        $oUser = new oxUser();
         $oUser->setId("testlalaa_");
 
-        $oValidator = $this->getMock('oxinputvalidator', array('_addValidationError'));
+        $oValidator = $this->getMock('oxInputValidator', array('_addValidationError'));
         $oValidator->expects($this->once())->method('_addValidationError')
                 ->with(
                         $this->equalTo('oxuser__oxusername'),
@@ -691,10 +692,10 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
     {
         oxAddClassModule( 'Unit_oxInputValidatorTest_oxutils', 'oxUtils' );
 
-        $oUser = new oxuser();
+        $oUser = new oxUser();
         $oUser->setId("testlalaa_");
 
-        $oValidator = $this->getMock('oxinputvalidator', array('_addValidationError'));
+        $oValidator = $this->getMock('oxInputValidator', array('_addValidationError'));
         $oValidator->expects($this->once())->method('_addValidationError')
                 ->with(
                         $this->equalTo('oxuser__oxusername'),
@@ -727,7 +728,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
         $oLang = oxLang::getInstance();
         $sMsg = sprintf( $oLang->translateString( 'EXCEPTION_USER_USEREXISTS', $oLang->getTplLanguage() ), $aInvAdress['oxuser__oxusername'] );
 
-        $oValidator = $this->getMock('oxinputvalidator', array('_addValidationError'));
+        $oValidator = $this->getMock('oxInputValidator', array('_addValidationError'));
         $oValidator->expects($this->once())->method('_addValidationError')
                 ->with(
                         $this->equalTo('oxuser__oxusername'),
@@ -748,7 +749,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
      */
     public function testCheckLoginNewLoginNoPass()
     {
-        $oUser = new oxuser();
+        $oUser = new oxUser();
         $oUser->setId("testlalaa_");
 
         $oUser->oxuser__oxpassword = new oxField('b@b.b', oxField::T_RAW);
@@ -757,7 +758,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
         $aInvAdress['oxuser__oxusername'] = 'a@a.a';
         $aInvAdress['oxuser__oxpassword'] = '';
 
-        $oValidator = $this->getMock('oxinputvalidator', array('_addValidationError'));
+        $oValidator = $this->getMock('oxInputValidator', array('_addValidationError'));
         $oValidator->expects($this->once())->method('_addValidationError')
                 ->with(
                         $this->equalTo('oxuser__oxpassword'),
@@ -778,7 +779,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
      */
     public function testCheckLoginNewLoginWrongPass()
     {
-        $oUser = new oxuser();
+        $oUser = new oxUser();
         $oUser->setId("testlalaa_");
 
         $oUser->oxuser__oxpassword = new oxField('a@a.a', oxField::T_RAW);
@@ -787,7 +788,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
         $aInvAdress['oxuser__oxusername'] = 'a@a.a';
         $aInvAdress['oxuser__oxpassword'] = 'b@b.b';
 
-        $oValidator = $this->getMock('oxinputvalidator', array('_addValidationError'));
+        $oValidator = $this->getMock('oxInputValidator', array('_addValidationError'));
         $oValidator->expects($this->once())->method('_addValidationError')
                 ->with(
                         $this->equalTo('oxuser__oxpassword'),
@@ -808,5 +809,295 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
     public function testGetInstance()
     {
         $this->assertTrue( oxInputValidator::getInstance() instanceof oxInputValidator );
+    }
+
+    /**
+     * Testing validatePaymentInputData with SepaBankCodeCorrect and SepaAccountNumberCorrect
+     * expecting NoError
+     */
+    public function testValidatePaymentInputData_SepaBankCodeCorrectSepaAccountNumberCorrect_NoError()
+    {
+        $sBankCode = $this->_getSepaBankCode();
+        $sAccountNumber = $this->_getSepaAccountNumber();
+
+        $aDynValue = $this->_getBankData( $sBankCode, $sAccountNumber );
+
+        $oValidator = new oxInputValidator();
+        $this->assertTrue( $oValidator->validatePaymentInputData( "oxiddebitnote", $aDynValue ), 'Error should not appear.' );
+    }
+
+    /**
+     * Data provider for testValidatePaymentInputData_OldBankCodeCorrectOldAccountNumberCorrect_NoError
+     *
+     * @return array
+     */
+    public function providerValidatePaymentInputData_OldBankCodeCorrectOldAccountNumberCorrect_NoError()
+    {
+        $sOldAccountNumberTooShort = "12345678";
+        $sOldAccountNumber = $this->_getOldAccountNumber();
+        $sBankCode = $this->_getOldBankCode();
+        return array(
+            array( $sBankCode, $sOldAccountNumber ),
+            array( $sBankCode, $sOldAccountNumberTooShort ),
+        );
+    }
+
+    /**
+     * Testing validatePaymentInputData with OldBankCodeCorrect and OldAccountNumberCorrect
+     * expecting NoError
+     *
+     * @dataProvider providerValidatePaymentInputData_OldBankCodeCorrectOldAccountNumberCorrect_NoError
+     *
+     * @param $sBankCode
+     * @param $sAccountNumber
+     */
+    public function testValidatePaymentInputData_OldBankCodeCorrectOldAccountNumberCorrect_NoError( $sBankCode, $sAccountNumber )
+    {
+        $aDynValue = $this->_getBankData( $sBankCode, $sAccountNumber );
+
+        $oValidator = new oxInputValidator();
+        $this->assertTrue( $oValidator->validatePaymentInputData( "oxiddebitnote", $aDynValue ), 'Error should not appear.' );
+    }
+
+    /**
+     * Data provider for testValidatePaymentInputData_BankCodeOldCorrectAccountNumberIncorrect_ErrorAccountNumberWrong
+     *
+     * @return array
+     */
+    public function providerValidatePaymentInputData_BankCodeOldCorrectAccountNumberIncorrect_ErrorAccountNumberWrong()
+    {
+        $sOldAccountNumberTooLong = "1234567890123";
+        $sOldAccountIncorrectFormat = "ABC1234567";
+        return array(
+            array($sOldAccountNumberTooLong),
+            array($sOldAccountIncorrectFormat),
+        );
+    }
+
+    /**
+     * Testing validatePaymentInputData with BankCodeOldCorrect and AccountNumberIncorrect
+     * expecting ErrorAccountNumberWrong
+     *
+     * @dataProvider providerValidatePaymentInputData_BankCodeOldCorrectAccountNumberIncorrect_ErrorAccountNumberWrong
+     */
+    public function testValidatePaymentInputData_BankCodeOldCorrectAccountNumberIncorrect_ErrorAccountNumberWrong( $sAccountNumber )
+    {
+        $sBankCode = $this->_getOldBankCode();
+
+        $aDynValue = $this->_getBankData( $sBankCode, $sAccountNumber );
+
+        $oValidator = new oxInputValidator();
+        $oValidationResult = $oValidator->validatePaymentInputData( "oxiddebitnote", $aDynValue );
+
+        $sErrorAccountNumberNo = $this->_getAccountNumberErrorNo();
+        $this->assertSame($sErrorAccountNumberNo, $oValidationResult, 'Should validate as account number error.' );
+    }
+
+    /**
+     * Testing validatePaymentInputData with BankCodeOldCorrect and AccountNumberSepaCorrect
+     * expecting ErrorAccountNumberWrong
+     */
+    public function testValidatePaymentInputData_BankCodeOldCorrectAccountNumberSepaCorrect_ErrorAccountNumberWrong()
+    {
+        $sBankCode = $this->_getOldBankCode();
+        $sAccountNumber = $this->_getSepaAccountNumber();
+
+        $aDynValue = $this->_getBankData( $sBankCode, $sAccountNumber );
+
+        $oValidator = new oxInputValidator();
+        $oValidationResult = $oValidator->validatePaymentInputData( "oxiddebitnote", $aDynValue );
+
+        $sErrorAccountNumberNo = $this->_getAccountNumberErrorNo();
+        $this->assertSame($sErrorAccountNumberNo, $oValidationResult, 'Should validate as account number error.' );
+    }
+
+    /**
+     * Data provider for testValidatePaymentInputData_BankCodeIncorrect_ErrorBankCodeWrong
+     * @return array
+     */
+    public function providerValidatePaymentInputData_BankCodeIncorrect_ErrorBankCodeWrong()
+    {
+        $sOldBankCodeTooShort = '1234';
+        $sOldBankCodeTooLong = '123456789';
+        $sOldBankCodeWrongFormat = '123A5678';
+        $sSepaBankCodeWrong = '123ABCDE';
+
+        $sOldAccountNumber = $this->_getOldAccountNumber();
+        $sOldAccountNumberTooLong = "12345678901";
+        $sOldAccountIncorrectFormat = "ABC1234567";
+
+        $sSepaAccountNumber = $this->_getSepaAccountNumber();
+        $sSepaAccountNumberWrong = 'NX9386011117947';
+
+        return array(
+            array($sOldBankCodeTooShort, $sOldAccountNumber),
+            array($sOldBankCodeTooShort, $sOldAccountNumberTooLong),
+            array($sOldBankCodeTooShort, $sOldAccountIncorrectFormat),
+            array($sOldBankCodeTooShort, $sSepaAccountNumber),
+            array($sOldBankCodeTooShort, $sSepaAccountNumberWrong),
+
+            array($sOldBankCodeTooLong, $sOldAccountNumber),
+            array($sOldBankCodeTooLong, $sOldAccountNumberTooLong),
+            array($sOldBankCodeTooLong, $sOldAccountIncorrectFormat),
+            array($sOldBankCodeTooLong, $sSepaAccountNumber),
+            array($sOldBankCodeTooLong, $sSepaAccountNumberWrong),
+
+            array($sOldBankCodeWrongFormat, $sOldAccountNumber),
+            array($sOldBankCodeWrongFormat, $sOldAccountNumberTooLong),
+            array($sOldBankCodeWrongFormat, $sOldAccountIncorrectFormat),
+            array($sOldBankCodeWrongFormat, $sSepaAccountNumber),
+            array($sOldBankCodeWrongFormat, $sSepaAccountNumberWrong),
+
+            array($sSepaBankCodeWrong, $sOldAccountNumber),
+            array($sSepaBankCodeWrong, $sOldAccountNumberTooLong),
+            array($sSepaBankCodeWrong, $sOldAccountIncorrectFormat),
+            array($sSepaBankCodeWrong, $sSepaAccountNumber),
+            array($sSepaBankCodeWrong, $sSepaAccountNumberWrong),
+        );
+    }
+
+    /**
+     * Testing ValidatePaymentInputData with BankCodeIncorrect
+     * expecting ErrorBankCodeWrong
+     *
+     * @dataProvider providerValidatePaymentInputData_BankCodeIncorrect_ErrorBankCodeWrong
+     *
+     * @param $sBankCode
+     * @param $sAccountNumber
+     */
+    public function testValidatePaymentInputData_BankCodeIncorrect_ErrorBankCodeWrong( $sBankCode, $sAccountNumber )
+    {
+        $aDynValue = $this->_getBankData( $sBankCode, $sAccountNumber );
+
+        $oValidator = new oxInputValidator();
+        $oValidationResult = $oValidator->validatePaymentInputData( "oxiddebitnote", $aDynValue );
+
+        $sErrorBankCodeNo = $this->_getBankCodeErrorNo();
+        $this->assertSame($sErrorBankCodeNo, $oValidationResult, 'Should validate as bank code error.' );
+    }
+
+    /**
+     * Data provider for testValidatePaymentInputData_SepaBankCodeCorrectAccountNumberIncorrect_ErrorAccountNumber
+     * @return array
+     */
+    public function providerValidatePaymentInputData_SepaBankCodeCorrectAccountNumberIncorrect_ErrorAccountNumber()
+    {
+        $sOldBankCodeTooShort = '1234';
+        $sOldAccountNumberTooLong = "123456789123456789";
+        $sOldAccountIncorrectFormat = "ABC1234567";
+        $sSepaAccountNumberIncorrect = 'NX9386011117947';
+
+        return array (
+            array($sOldBankCodeTooShort),
+            array($sOldAccountNumberTooLong),
+            array($sOldAccountIncorrectFormat),
+            array($sSepaAccountNumberIncorrect),
+        );
+    }
+
+    /**
+     * Fixed for bug entry 0005543: BIC is shown as incorrect if IBAN is incorrect, although BIC is correct
+     *
+     * Testing validatePaymentInputData with SepaBankCodeCorrect and AccountNumberIncorrect
+     * expecting ErrorAccountNumber
+     *
+     * @dataProvider providerValidatePaymentInputData_SepaBankCodeCorrectAccountNumberIncorrect_ErrorAccountNumber
+     * @param $sAccountNumber
+     */
+    public function testValidatePaymentInputData_SepaBankCodeCorrectAccountNumberIncorrect_ErrorAccountNumber( $sAccountNumber )
+    {
+        $sBankCode = $this->_getSepaBankCode();
+        $aDynValue = $this->_getBankData( $sBankCode, $sAccountNumber );
+
+        $oValidator = new oxInputValidator();
+        $oValidationResult = $oValidator->validatePaymentInputData( "oxiddebitnote", $aDynValue );
+
+        $sErrorAccountNumberNo = $this->_getAccountNumberErrorNo();
+        $this->assertSame($sErrorAccountNumberNo, $oValidationResult, 'Should validate as account number error.' );
+    }
+
+    /**
+     * Testing validatePaymentInputData with SepaBankCodeCorrect and OldAccountNumberCorrect
+     * expecting ErrorAccountNumber
+     */
+    public function testValidatePaymentInputData_SepaBankCodeCorrectOldAccountNumberCorrect_ErrorAccountNumber()
+    {
+        $sBankCode = $this->_getSepaBankCode();
+        $sAccountNumber = $this->_getOldAccountNumber();
+        $aDynValue = $this->_getBankData( $sBankCode, $sAccountNumber );
+
+        $oValidator = new oxInputValidator();
+        $oValidationResult = $oValidator->validatePaymentInputData( "oxiddebitnote", $aDynValue );
+
+        $sErrorAccountNumberNo = $this->_getAccountNumberErrorNo();
+        $this->assertSame($sErrorAccountNumberNo, $oValidationResult, 'Should validate as account number error.' );
+    }
+
+    /**
+     * Returns valid SEPA bank code.
+     * @return string
+     */
+    private function _getSepaBankCode()
+    {
+        return "ASPKAT2L";
+    }
+
+    /**
+     * Returns valid SEPA account number.
+     * @return string
+     */
+    private function _getSepaAccountNumber()
+    {
+        return "MT84MALT011000012345MTLCAST001S";
+    }
+    /**
+     * Returns valid old bank code.
+     * @return string
+     */
+    private function _getOldBankCode()
+    {
+        return "12345678";
+    }
+
+    /**
+     * Returns valid old account number.
+     * @return string
+     */
+    private function _getOldAccountNumber()
+    {
+        return "123456789012";
+    }
+
+    /**
+     * @param $sBankCode
+     * @param $sAccountNumber
+     *
+     * @return array
+     */
+    private function _getBankData( $sBankCode, $sAccountNumber )
+    {
+        $aDynvalue = array('lsbankname'   => 'Bank name',
+            'lsblz'        => $sBankCode,
+            'lsktonr'      => $sAccountNumber,
+            'lsktoinhaber' => 'Hans Mustermann'
+        );
+
+        return $aDynvalue;
+    }
+
+    /**
+     * @return int
+     */
+    private function _getAccountNumberErrorNo()
+    {
+        return -5;
+    }
+
+    /**
+     * @return int
+     */
+    private function _getBankCodeErrorNo()
+    {
+        return -4;
     }
 }

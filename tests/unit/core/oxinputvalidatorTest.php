@@ -821,14 +821,43 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
         $sBankCode = $this->_getSepaBankCode();
         $sAccountNumber = $this->_getSepaAccountNumber();
 
-        $aDynvalue = array( 'lsbankname'   => 'Bank name',
-                            'lsblz'        => $sBankCode,
-                            'lsktonr'      => $sAccountNumber,
-                            'lsktoinhaber' => 'Hans Mustermann'
-        );
+        $aDynValue = $this->_getBankData( $sBankCode, $sAccountNumber );
 
         $oValidator = new oxInputValidator();
-        $this->assertEquals(true, $oValidator->validatePaymentInputData( "oxiddebitnote", $aDynvalue ) );
+        $this->assertTrue( $oValidator->validatePaymentInputData( "oxiddebitnote", $aDynValue ), 'Error should not appear.' );
+    }
+
+    /**
+     * Data provider for testValidatePaymentInputData_OldBankCodeCorrectOldAccountNumberCorrect_NoError
+     *
+     * @return array
+     */
+    public function providerValidatePaymentInputData_OldBankCodeCorrectOldAccountNumberCorrect_NoError()
+    {
+        $sOldAccountNumberTooShort = "12345678";
+        $sOldAccountNumber = $this->_getOldAccountNumber();
+        $sBankCode = $this->_getOldBankCode();
+        return array(
+            array( $sBankCode, $sOldAccountNumber ),
+            array( $sBankCode, $sOldAccountNumberTooShort ),
+        );
+    }
+
+    /**
+     * Testing validatePaymentInputData with OldBankCodeCorrect and OldAccountNumberCorrect
+     * expecting NoError
+     *
+     * @dataProvider providerValidatePaymentInputData_OldBankCodeCorrectOldAccountNumberCorrect_NoError
+     *
+     * @param $sBankCode
+     * @param $sAccountNumber
+     */
+    public function testValidatePaymentInputData_OldBankCodeCorrectOldAccountNumberCorrect_NoError( $sBankCode, $sAccountNumber )
+    {
+        $aDynValue = $this->_getBankData( $sBankCode, $sAccountNumber );
+
+        $oValidator = new oxInputValidator();
+        $this->assertTrue( $oValidator->validatePaymentInputData( "oxiddebitnote", $aDynValue ), 'Error should not appear.' );
     }
 
     /**
@@ -838,7 +867,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
      */
     public function providerValidatePaymentInputData_BankCodeOldCorrectAccountNumberIncorrect_ErrorAccountNumberWrong()
     {
-        $sOldAccountNumberTooLong = "123456789123456789";
+        $sOldAccountNumberTooLong = "1234567890123";
         $sOldAccountIncorrectFormat = "ABC1234567";
         return array(
             array($sOldAccountNumberTooLong),
@@ -1037,7 +1066,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
      */
     private function _getOldAccountNumber()
     {
-        return "1234567890";
+        return "123456789012";
     }
 
     /**

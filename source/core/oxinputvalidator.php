@@ -433,46 +433,36 @@ class oxInputValidator extends oxSuperCfg
      * Validates payment input data for credit card and debit note
      *
      * @param string $sPaymentId the payment id of current payment
-     * @param array  &$aDynvalue values of payment
+     * @param array  &$aDynValue values of payment
      *
      * @return bool
      */
-    public function validatePaymentInputData( $sPaymentId, & $aDynvalue )
+    public function validatePaymentInputData( $sPaymentId, & $aDynValue )
     {
         $mxValidationResult = true;
 
         switch( $sPaymentId ) {
             case 'oxidcreditcard':
-
                 $mxValidationResult = false;
 
-                foreach ( $this->_aRequiredCCFields as $sFieldName ) {
-                    if ( !isset( $aDynvalue[$sFieldName] ) || !trim( $aDynvalue[$sFieldName] ) ) {
-                        break 2;
-                    }
-                }
+                $blAllCreditCardInformationSet = $this->_isAllBankInformationSet( $this->_aRequiredCCFields, $aDynValue );
+                $blCreditCardTypeExist = in_array( $aDynValue['kktype'], $this->_aPossibleCCType );
 
-                if ( in_array( $aDynvalue['kktype'], $this->_aPossibleCCType ) ) {
-                    $sType = $aDynvalue['kktype'];
-                } else {
-                    $sType = null;
-                    break;
-                }
-
+                if ( $blAllCreditCardInformationSet && $blCreditCardTypeExist ) {
                 $oCardValidator = oxNew( "oxccvalidator" );
-                $blResult = $oCardValidator->isValidCard( $aDynvalue['kknumber'], $sType, $aDynvalue['kkmonth'].substr( $aDynvalue['kkyear'], 2, 2 ) );
-                if ( $blResult ) {
-                    $mxValidationResult = true;
+                    $mxValidationResult = $oCardValidator->isValidCard(
+                                                    $aDynValue['kknumber'],
+                                                    $aDynValue['kktype'],
+                                                    $aDynValue['kkmonth'].substr( $aDynValue['kkyear'], 2, 2 )
+                    );
                 }
-
                 break;
 
             case "oxiddebitnote":
-
                 $mxValidationResult = false;
 
-                if ( $this->_isAllDebitInformationSet( $aDynvalue ) ) {
-                    $mxValidationResult = $this->_validateDebitNote( $aDynvalue );
+                if ( $this->_isAllBankInformationSet( $this->_aRequiredDCFields, $aDynValue ) ) {
+                    $mxValidationResult = $this->_validateDebitNote( $aDynValue );
                 }
 
                 break;
@@ -563,16 +553,18 @@ class oxInputValidator extends oxSuperCfg
     }
 
     /**
-     * @param $aDebitInformation
+     * @param array $aRequiredFields fields must be set.
+     * @param array $aBankInformation actual information.
      *
-     * @return mixed
+     * @return bool
      */
-    protected function _isAllDebitInformationSet( $aDebitInformation )
+    protected function _isAllBankInformationSet( $aRequiredFields, $aBankInformation )
     {
         $blResult = true;
-        foreach ( $this->_aRequiredDCFields as $sFieldName ) {
-            if ( !isset( $aDebitInformation[$sFieldName] ) || !trim( $aDebitInformation[$sFieldName] ) ) {
+        foreach ( $aRequiredFields as $sFieldName ) {
+            if ( !isset( $aBankInformation[$sFieldName] ) || !trim( $aBankInformation[$sFieldName] ) ) {
                 $blResult = false;
+                break;
             }
         }
 

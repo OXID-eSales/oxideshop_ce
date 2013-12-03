@@ -141,6 +141,7 @@ class oxAdminDetails extends oxAdminView
                 // set contents
                 if ( $sEditObjectValue = $this->_getEditValue( $oObject, $sField ) ) {
                     $this->_oEditor->value = $sEditObjectValue;
+                    $this->_oEditor->encoding = $this->getConfig()->isUtf() ? 'UTF-8': 'ISO-8859-15';
                 }
 
                 // parse for styles and add them

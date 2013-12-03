@@ -71,6 +71,8 @@ class Unit_Core_oxSepaValidatorTest extends OxidTestCase
             array( true,  "MT84MALT011000012345MTLCAST001S" , $sValidMsg    ),
             array( true,  "NO9386011117947"                 , $sValidMsg    ),
             array( false, "NX9386011117947"                 , $sNotValidMsg ),
+            // Fix for bug entry 0005538: SEPA validator class IBAN validation issue
+            array( false, "1234567895"                      , $sNotValidMsg ),
         );
     }
 

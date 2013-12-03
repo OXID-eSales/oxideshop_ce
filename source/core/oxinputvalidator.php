@@ -525,7 +525,7 @@ class oxInputValidator extends oxSuperCfg
             $mxValidationResult = self::INVALID_BANK_CODE;
         }
 
-        if ( true === $mxValidationResult && !$oStr->preg_match( "/^\d{10}$/", $aDebitInfo['lsktonr'] ) ) {
+        if ( true === $mxValidationResult && !$oStr->preg_match( "/^\d{10,12}$/", $aDebitInfo['lsktonr'] ) ) {
             // Account number is invalid
             $mxValidationResult = self::INVALID_ACCOUNT_NUMBER;
         }

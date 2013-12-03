@@ -23,7 +23,7 @@
  */
 
 /**
- * Calls for validating input
+ * Class for validating input
  *
  */
 class oxInputValidator extends oxSuperCfg

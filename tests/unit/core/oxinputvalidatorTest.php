@@ -453,8 +453,8 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
     }
 
     /**
-     * Test case for oxinputvalidator::checkCountries()        )
-     *5
+     * Test case for oxinputvalidator::checkCountries()
+     *
      * @return null
      */
     public function testCheckCountriesGoodCountries()

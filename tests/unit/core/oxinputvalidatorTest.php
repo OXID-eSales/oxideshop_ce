@@ -19,7 +19,6 @@
  * @package   tests
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -197,7 +196,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
      *
      * @return null
      */
-    public function testValidatePaymentInputDataDCAllInputIsFine()
+    public function testValidatePaymentInputData_BankCodeCorrect8LengthAccountNumberCorrect_valid()
     {
         $aDynvalue = array( 'lsbankname'   => 'Bank name',
                             'lsblz'        => '12345678',
@@ -209,31 +208,12 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
         $this->assertTrue( $oValidator->validatePaymentInputData( 'oxiddebitnote', $aDynvalue ) );
     }
 
-
     /**
      * Test for bug #1150
      *
      * @return null
      */
-    public function test4CharLsblz()
-    {
-        $aDynvalue = array( 'lsbankname'   => 'Bank name',
-                            'lsblz'        => '1234',
-                            'lsktonr'      => '123456789',
-                            'lsktoinhaber' => 'Hans Mustermann'
-                          );
-
-
-        $oValidator = new oxinputvalidator();
-        $this->assertFalse( $oValidator->validatePaymentInputData( 'oxiddebitnote', $aDynvalue ) );
-    }
-
-    /**
-     * Test for bug #1150
-     *
-     * @return null
-     */
-    public function test5CharLsblz()
+    public function testValidatePaymentInputData_BankCodeCorrect5LengthAccountNumberCorrect_valid()
     {
         $aDynvalue = array( 'lsbankname'   => 'Bank name',
                             'lsblz'        => '12345',
@@ -251,7 +231,25 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
      *
      * @return null
      */
-    public function test6CharLsblz()
+    public function testValidatePaymentInputData_BankCodeTooShortAccountNumberCorrect_bankCodeError()
+    {
+        $iErr = -4;
+        $aDynvalue = array( 'lsbankname'   => 'Bank name',
+                            'lsblz'        => '1234',
+                            'lsktonr'      => '123456789',
+                            'lsktoinhaber' => 'Hans Mustermann'
+                          );
+
+        $oValidator = new oxInputValidator();
+        $this->assertEquals( $iErr, $oValidator->validatePaymentInputData( 'oxiddebitnote', $aDynvalue ) );
+    }
+
+    /**
+     * Test for bug #1150
+     *
+     * @return null
+     */
+    public function testValidatePaymentInputData_6CharBankCode_true()
     {
         $aDynvalue = array( 'lsbankname'   => 'Bank name',
                             'lsblz'        => '123456',
@@ -269,7 +267,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
      *
      * @return null
      */
-    public function test8CharLsblz()
+    public function testValidatePaymentInputData_8CharBankCode_true()
     {
         $aDynvalue = array( 'lsbankname'   => 'Bank name',
                             'lsblz'        => '12345678',
@@ -287,8 +285,9 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
      *
      * @return null
      */
-    public function test9CharLsblz()
+    public function testValidatePaymentInputData_9CharBankCode_error()
     {
+        $iErr = -4;
         $aDynvalue = array( 'lsbankname'   => 'Bank name',
                             'lsblz'        => '123456789',
                             'lsktonr'      => '123456789',
@@ -296,8 +295,8 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
                           );
 
 
-        $oValidator = new oxinputvalidator();
-        $this->assertFalse( $oValidator->validatePaymentInputData( 'oxiddebitnote', $aDynvalue ) );
+        $oValidator = new oxInputValidator();
+        $this->assertEquals( $iErr, $oValidator->validatePaymentInputData( 'oxiddebitnote', $aDynvalue ) );
     }
 
     /**
@@ -809,5 +808,295 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
     public function testGetInstance()
     {
         $this->assertTrue( oxInputValidator::getInstance() instanceof oxInputValidator );
+    }
+
+    /**
+     * Testing validatePaymentInputData with SepaBankCodeCorrect and SepaAccountNumberCorrect
+     * expecting NoError
+     */
+    public function testValidatePaymentInputData_SepaBankCodeCorrectSepaAccountNumberCorrect_NoError()
+    {
+        $sBankCode = $this->_getSepaBankCode();
+        $sAccountNumber = $this->_getSepaAccountNumber();
+
+        $aDynValue = $this->_getBankData( $sBankCode, $sAccountNumber );
+
+        $oValidator = new oxInputValidator();
+        $this->assertTrue( $oValidator->validatePaymentInputData( "oxiddebitnote", $aDynValue ), 'Error should not appear.' );
+    }
+
+    /**
+     * Data provider for testValidatePaymentInputData_OldBankCodeCorrectOldAccountNumberCorrect_NoError
+     *
+     * @return array
+     */
+    public function providerValidatePaymentInputData_OldBankCodeCorrectOldAccountNumberCorrect_NoError()
+    {
+        $sOldAccountNumberTooShort = "12345678";
+        $sOldAccountNumber = $this->_getOldAccountNumber();
+        $sBankCode = $this->_getOldBankCode();
+        return array(
+            array( $sBankCode, $sOldAccountNumber ),
+            array( $sBankCode, $sOldAccountNumberTooShort ),
+        );
+    }
+
+    /**
+     * Testing validatePaymentInputData with OldBankCodeCorrect and OldAccountNumberCorrect
+     * expecting NoError
+     *
+     * @dataProvider providerValidatePaymentInputData_OldBankCodeCorrectOldAccountNumberCorrect_NoError
+     *
+     * @param $sBankCode
+     * @param $sAccountNumber
+     */
+    public function testValidatePaymentInputData_OldBankCodeCorrectOldAccountNumberCorrect_NoError( $sBankCode, $sAccountNumber )
+    {
+        $aDynValue = $this->_getBankData( $sBankCode, $sAccountNumber );
+
+        $oValidator = new oxInputValidator();
+        $this->assertTrue( $oValidator->validatePaymentInputData( "oxiddebitnote", $aDynValue ), 'Error should not appear.' );
+    }
+
+    /**
+     * Data provider for testValidatePaymentInputData_BankCodeOldCorrectAccountNumberIncorrect_ErrorAccountNumberWrong
+     *
+     * @return array
+     */
+    public function providerValidatePaymentInputData_BankCodeOldCorrectAccountNumberIncorrect_ErrorAccountNumberWrong()
+    {
+        $sOldAccountNumberTooLong = "1234567890123";
+        $sOldAccountIncorrectFormat = "ABC1234567";
+        return array(
+            array($sOldAccountNumberTooLong),
+            array($sOldAccountIncorrectFormat),
+        );
+    }
+
+    /**
+     * Testing validatePaymentInputData with BankCodeOldCorrect and AccountNumberIncorrect
+     * expecting ErrorAccountNumberWrong
+     *
+     * @dataProvider providerValidatePaymentInputData_BankCodeOldCorrectAccountNumberIncorrect_ErrorAccountNumberWrong
+     */
+    public function testValidatePaymentInputData_BankCodeOldCorrectAccountNumberIncorrect_ErrorAccountNumberWrong( $sAccountNumber )
+    {
+        $sBankCode = $this->_getOldBankCode();
+
+        $aDynValue = $this->_getBankData( $sBankCode, $sAccountNumber );
+
+        $oValidator = new oxInputValidator();
+        $oValidationResult = $oValidator->validatePaymentInputData( "oxiddebitnote", $aDynValue );
+
+        $sErrorAccountNumberNo = $this->_getAccountNumberErrorNo();
+        $this->assertSame($sErrorAccountNumberNo, $oValidationResult, 'Should validate as account number error.' );
+    }
+
+    /**
+     * Testing validatePaymentInputData with BankCodeOldCorrect and AccountNumberSepaCorrect
+     * expecting ErrorAccountNumberWrong
+     */
+    public function testValidatePaymentInputData_BankCodeOldCorrectAccountNumberSepaCorrect_ErrorAccountNumberWrong()
+    {
+        $sBankCode = $this->_getOldBankCode();
+        $sAccountNumber = $this->_getSepaAccountNumber();
+
+        $aDynValue = $this->_getBankData( $sBankCode, $sAccountNumber );
+
+        $oValidator = new oxInputValidator();
+        $oValidationResult = $oValidator->validatePaymentInputData( "oxiddebitnote", $aDynValue );
+
+        $sErrorAccountNumberNo = $this->_getAccountNumberErrorNo();
+        $this->assertSame($sErrorAccountNumberNo, $oValidationResult, 'Should validate as account number error.' );
+    }
+
+    /**
+     * Data provider for testValidatePaymentInputData_BankCodeIncorrect_ErrorBankCodeWrong
+     * @return array
+     */
+    public function providerValidatePaymentInputData_BankCodeIncorrect_ErrorBankCodeWrong()
+    {
+        $sOldBankCodeTooShort = '1234';
+        $sOldBankCodeTooLong = '123456789';
+        $sOldBankCodeWrongFormat = '123A5678';
+        $sSepaBankCodeWrong = '123ABCDE';
+
+        $sOldAccountNumber = $this->_getOldAccountNumber();
+        $sOldAccountNumberTooLong = "12345678901";
+        $sOldAccountIncorrectFormat = "ABC1234567";
+
+        $sSepaAccountNumber = $this->_getSepaAccountNumber();
+        $sSepaAccountNumberWrong = 'NX9386011117947';
+
+        return array(
+            array($sOldBankCodeTooShort, $sOldAccountNumber),
+            array($sOldBankCodeTooShort, $sOldAccountNumberTooLong),
+            array($sOldBankCodeTooShort, $sOldAccountIncorrectFormat),
+            array($sOldBankCodeTooShort, $sSepaAccountNumber),
+            array($sOldBankCodeTooShort, $sSepaAccountNumberWrong),
+
+            array($sOldBankCodeTooLong, $sOldAccountNumber),
+            array($sOldBankCodeTooLong, $sOldAccountNumberTooLong),
+            array($sOldBankCodeTooLong, $sOldAccountIncorrectFormat),
+            array($sOldBankCodeTooLong, $sSepaAccountNumber),
+            array($sOldBankCodeTooLong, $sSepaAccountNumberWrong),
+
+            array($sOldBankCodeWrongFormat, $sOldAccountNumber),
+            array($sOldBankCodeWrongFormat, $sOldAccountNumberTooLong),
+            array($sOldBankCodeWrongFormat, $sOldAccountIncorrectFormat),
+            array($sOldBankCodeWrongFormat, $sSepaAccountNumber),
+            array($sOldBankCodeWrongFormat, $sSepaAccountNumberWrong),
+
+            array($sSepaBankCodeWrong, $sOldAccountNumber),
+            array($sSepaBankCodeWrong, $sOldAccountNumberTooLong),
+            array($sSepaBankCodeWrong, $sOldAccountIncorrectFormat),
+            array($sSepaBankCodeWrong, $sSepaAccountNumber),
+            array($sSepaBankCodeWrong, $sSepaAccountNumberWrong),
+        );
+    }
+
+    /**
+     * Testing ValidatePaymentInputData with BankCodeIncorrect
+     * expecting ErrorBankCodeWrong
+     *
+     * @dataProvider providerValidatePaymentInputData_BankCodeIncorrect_ErrorBankCodeWrong
+     *
+     * @param $sBankCode
+     * @param $sAccountNumber
+     */
+    public function testValidatePaymentInputData_BankCodeIncorrect_ErrorBankCodeWrong( $sBankCode, $sAccountNumber )
+    {
+        $aDynValue = $this->_getBankData( $sBankCode, $sAccountNumber );
+
+        $oValidator = new oxInputValidator();
+        $oValidationResult = $oValidator->validatePaymentInputData( "oxiddebitnote", $aDynValue );
+
+        $sErrorBankCodeNo = $this->_getBankCodeErrorNo();
+        $this->assertSame($sErrorBankCodeNo, $oValidationResult, 'Should validate as bank code error.' );
+    }
+
+    /**
+     * Data provider for testValidatePaymentInputData_SepaBankCodeCorrectAccountNumberIncorrect_ErrorAccountNumber
+     * @return array
+     */
+    public function providerValidatePaymentInputData_SepaBankCodeCorrectAccountNumberIncorrect_ErrorAccountNumber()
+    {
+        $sOldBankCodeTooShort = '1234';
+        $sOldAccountNumberTooLong = "123456789123456789";
+        $sOldAccountIncorrectFormat = "ABC1234567";
+        $sSepaAccountNumberIncorrect = 'NX9386011117947';
+
+        return array (
+            array($sOldBankCodeTooShort),
+            array($sOldAccountNumberTooLong),
+            array($sOldAccountIncorrectFormat),
+            array($sSepaAccountNumberIncorrect),
+        );
+    }
+
+    /**
+     * Fixed for bug entry 0005543: BIC is shown as incorrect if IBAN is incorrect, although BIC is correct
+     *
+     * Testing validatePaymentInputData with SepaBankCodeCorrect and AccountNumberIncorrect
+     * expecting ErrorAccountNumber
+     *
+     * @dataProvider providerValidatePaymentInputData_SepaBankCodeCorrectAccountNumberIncorrect_ErrorAccountNumber
+     * @param $sAccountNumber
+     */
+    public function testValidatePaymentInputData_SepaBankCodeCorrectAccountNumberIncorrect_ErrorAccountNumber( $sAccountNumber )
+    {
+        $sBankCode = $this->_getSepaBankCode();
+        $aDynValue = $this->_getBankData( $sBankCode, $sAccountNumber );
+
+        $oValidator = new oxInputValidator();
+        $oValidationResult = $oValidator->validatePaymentInputData( "oxiddebitnote", $aDynValue );
+
+        $sErrorAccountNumberNo = $this->_getAccountNumberErrorNo();
+        $this->assertSame($sErrorAccountNumberNo, $oValidationResult, 'Should validate as account number error.' );
+    }
+
+    /**
+     * Testing validatePaymentInputData with SepaBankCodeCorrect and OldAccountNumberCorrect
+     * expecting ErrorAccountNumber
+     */
+    public function testValidatePaymentInputData_SepaBankCodeCorrectOldAccountNumberCorrect_ErrorAccountNumber()
+    {
+        $sBankCode = $this->_getSepaBankCode();
+        $sAccountNumber = $this->_getOldAccountNumber();
+        $aDynValue = $this->_getBankData( $sBankCode, $sAccountNumber );
+
+        $oValidator = new oxInputValidator();
+        $oValidationResult = $oValidator->validatePaymentInputData( "oxiddebitnote", $aDynValue );
+
+        $sErrorAccountNumberNo = $this->_getAccountNumberErrorNo();
+        $this->assertSame($sErrorAccountNumberNo, $oValidationResult, 'Should validate as account number error.' );
+    }
+
+    /**
+     * Returns valid SEPA bank code.
+     * @return string
+     */
+    private function _getSepaBankCode()
+    {
+        return "ASPKAT2L";
+    }
+
+    /**
+     * Returns valid SEPA account number.
+     * @return string
+     */
+    private function _getSepaAccountNumber()
+    {
+        return "MT84MALT011000012345MTLCAST001S";
+    }
+    /**
+     * Returns valid old bank code.
+     * @return string
+     */
+    private function _getOldBankCode()
+    {
+        return "12345678";
+    }
+
+    /**
+     * Returns valid old account number.
+     * @return string
+     */
+    private function _getOldAccountNumber()
+    {
+        return "123456789012";
+    }
+
+    /**
+     * @param $sBankCode
+     * @param $sAccountNumber
+     *
+     * @return array
+     */
+    private function _getBankData( $sBankCode, $sAccountNumber )
+    {
+        $aDynvalue = array('lsbankname'   => 'Bank name',
+                           'lsblz'        => $sBankCode,
+                           'lsktonr'      => $sAccountNumber,
+                           'lsktoinhaber' => 'Hans Mustermann'
+        );
+
+        return $aDynvalue;
+    }
+
+    /**
+     * @return int
+     */
+    private function _getAccountNumberErrorNo()
+    {
+        return -5;
+    }
+
+    /**
+     * @return int
+     */
+    private function _getBankCodeErrorNo()
+    {
+        return -4;
     }
 }

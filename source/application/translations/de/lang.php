@@ -71,7 +71,7 @@ $aLang = array(
 'BANK_ACCOUNT_NUMBER_2'                                       => "Kto.Nr.:",
 'BANK_CODE'                                                   => "BLZ",
 'BANK_CODE_2'                                                 => "BLZ:",
-'BANK_CODE_3'                                                 => "BLZ:",
+'BANK_CODE_3'                                                 => "BLZ oder BIC:",
 'BARGAIN'                                                     => "Schnäppchen",
 'BARGAIN_PRODUCTS'                                            => "Die besten Schnäppchen des Shops",
 'BASKET'                                                      => "Warenkorb",
@@ -874,4 +874,7 @@ $aLang = array(
 'PAGE_TITLE_WISHLIST'                                         => 'Merkzettel',
 'PAGE_TITLE_CONTACT'                                          => 'Kontakt',
 'PAGE_TITLE_LINKS'                                            => 'Links',
+
+'MESSAGE_PAYMENT_BANK_CODE_INVALID'                           => 'Bitte geben Sie eine gültige Bankleitzahl an!',
+'MESSAGE_PAYMENT_ACCOUNT_NUMBER_INVALID'                      => 'Bitte geben Sie eine gültige Kontonummer an!',
 );

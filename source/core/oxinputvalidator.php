@@ -20,15 +20,25 @@
  * @package   core
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
- * Calss for validating input
+ * Calls for validating input
  *
  */
 class oxInputValidator extends oxSuperCfg
 {
+
+    /**
+     * Invalid account number error code for template.
+     */
+    const INVALID_ACCOUNT_NUMBER = -5;
+
+    /**
+     * Invalid bank number error code for template.
+     */
+    const INVALID_BANK_CODE = -4;
+
     /**
      * oxInputValidator instance
      *
@@ -131,88 +141,6 @@ class oxInputValidator extends oxSuperCfg
         //$dAmount = abs($dAmount);
 
         return $dAmount;
-    }
-
-    /**
-     * Validates payment input data for credit card and debit note
-     *
-     * @param string $sPaymentId the payment id of current payment
-     * @param array  &$aDynvalue values of payment
-     *
-     * @return bool
-     */
-    public function validatePaymentInputData( $sPaymentId, & $aDynvalue )
-    {
-        $blOK = true;
-
-        switch( $sPaymentId ) {
-            case 'oxidcreditcard':
-
-                $blOK = false;
-
-                foreach ( $this->_aRequiredCCFields as $sFieldName ) {
-                    if ( !isset( $aDynvalue[$sFieldName] ) || !trim( $aDynvalue[$sFieldName] ) ) {
-                        break 2;
-                    }
-                }
-
-                if ( in_array( $aDynvalue['kktype'], $this->_aPossibleCCType ) ) {
-                    $sType = $aDynvalue['kktype'];
-                } else {
-                    $sType = null;
-                    break;
-                }
-
-                $oCardValidator = oxNew( "oxccvalidator" );
-                $blResult = $oCardValidator->isValidCard( $aDynvalue['kknumber'], $sType, $aDynvalue['kkmonth'].substr( $aDynvalue['kkyear'], 2, 2 ) );
-                if ( $blResult ) {
-                    $blOK = true;
-                }
-
-                break;
-
-            case "oxiddebitnote":
-
-                $blOK = false;
-                $oStr = getStr();
-
-                foreach ( $this->_aRequiredDCFields as $sFieldName ) {
-                    if ( !isset( $aDynvalue[$sFieldName] ) || !trim( $aDynvalue[$sFieldName] ) ) {
-                        break 2;
-                    }
-                }
-
-                // cleaning up spaces
-                $aDynvalue['lsblz']   = str_replace( ' ', '', $aDynvalue['lsblz'] );
-                $aDynvalue['lsktonr'] = str_replace( ' ', '', $aDynvalue['lsktonr'] );
-
-                //if konto number is shorter than 10, add zeros in front of number
-                if ( $oStr->strlen( $aDynvalue['lsktonr'] ) < 10 ) {
-                    $sNewNum = str_repeat( '0', 10 - $oStr->strlen( $aDynvalue['lsktonr'] ) ).$aDynvalue['lsktonr'];
-                    $aDynvalue['lsktonr'] = $sNewNum;
-                }
-
-                if ( $oStr->preg_match( "/^\d{5,8}$/", $aDynvalue['lsblz'] ) && $oStr->preg_match( "/\d{10}/", $aDynvalue['lsktonr'] ) ) {
-                    $blOK = true;
-                }
-                break;
-        }
-
-        return $blOK;
-    }
-
-    /**
-     * Used to collect user validation errors. This method is called from all of
-     * the input checking functionality to report found error.
-     *
-     * @param string    $sFieldName field name
-     * @param exception $oErr       exception
-     *
-     * @return exception
-     */
-    protected function _addValidationError( $sFieldName, $oErr )
-    {
-        return $this->_aInputValidationErrors[$sFieldName][] = $oErr;
     }
 
     /**
@@ -500,5 +428,160 @@ class oxInputValidator extends oxSuperCfg
             $oErr = reset( $aErr );
         }
         return $oErr;
+    }
+
+    /**
+     * Validates payment input data for credit card and debit note
+     *
+     * @param string $sPaymentId the payment id of current payment
+     * @param array  &$aDynValue values of payment
+     *
+     * @return bool
+     */
+    public function validatePaymentInputData( $sPaymentId, & $aDynValue )
+    {
+        $mxValidationResult = true;
+
+        switch( $sPaymentId ) {
+            case 'oxidcreditcard':
+                $mxValidationResult = false;
+
+                $blAllCreditCardInformationSet = $this->_isAllBankInformationSet( $this->_aRequiredCCFields, $aDynValue );
+                $blCreditCardTypeExist = in_array( $aDynValue['kktype'], $this->_aPossibleCCType );
+
+                if ( $blAllCreditCardInformationSet && $blCreditCardTypeExist ) {
+                    $oCardValidator = oxNew( "oxccvalidator" );
+                    $mxValidationResult = $oCardValidator->isValidCard(
+                                                    $aDynValue['kknumber'],
+                                                    $aDynValue['kktype'],
+                                                    $aDynValue['kkmonth'].substr( $aDynValue['kkyear'], 2, 2 )
+                    );
+                }
+                break;
+
+            case "oxiddebitnote":
+                $mxValidationResult = false;
+
+                if ( $this->_isAllBankInformationSet( $this->_aRequiredDCFields, $aDynValue ) ) {
+                    $mxValidationResult = $this->_validateDebitNote( $aDynValue );
+                }
+
+                break;
+        }
+
+        return $mxValidationResult;
+    }
+
+    /**
+     * Used to collect user validation errors. This method is called from all of
+     * the input checking functionality to report found error.
+     *
+     * @param string    $sFieldName field name
+     * @param exception $oErr       exception
+     *
+     * @return exception
+     */
+    protected function _addValidationError( $sFieldName, $oErr )
+    {
+        return $this->_aInputValidationErrors[$sFieldName][] = $oErr;
+    }
+
+    /**
+     * @param $aDebitInformation
+     *
+     * @return bool|int
+     */
+    protected function _validateDebitNote( $aDebitInformation )
+    {
+        $aDebitInformation = $this->_cleanDebitInformation( $aDebitInformation );
+
+        $oSepaValidator = oxNew( "oxSepaValidator" );
+
+        $mxValidationResult = true;
+
+        // Check BIC / IBAN
+        if ( $oSepaValidator->isValidBIC( $aDebitInformation['lsblz'] ) ) {
+            if ( !$oSepaValidator->isValidIBAN( $aDebitInformation['lsktonr'] ) ) {
+                $mxValidationResult = self::INVALID_ACCOUNT_NUMBER;
+            }
+        } else {
+            $mxValidationResult = $this->_validateOldDebitInfo( $aDebitInformation );
+        }
+
+        return $mxValidationResult;
+    }
+
+    /**
+     * @param $aDebitInfo
+     * @return bool|int
+     */
+    protected function _validateOldDebitInfo( $aDebitInfo )
+    {
+        $oStr       = getStr();
+        $aDebitInfo = $this->_fixAccountNumber( $aDebitInfo );
+
+        $mxValidationResult = true;
+        if ( !$oStr->preg_match( "/^\d{5,8}$/", $aDebitInfo['lsblz'] ) ) {
+            // Bank code is invalid
+            $mxValidationResult = self::INVALID_BANK_CODE;
+        }
+
+        if ( true === $mxValidationResult && !$oStr->preg_match( "/^\d{10,12}$/", $aDebitInfo['lsktonr'] ) ) {
+            // Account number is invalid
+            $mxValidationResult = self::INVALID_ACCOUNT_NUMBER;
+        }
+
+        return $mxValidationResult;
+    }
+
+    /**
+     * If account number is shorter than 10, add zeros in front of number.
+     * @param $aDebitInfo
+     * @return array
+     */
+    protected function _fixAccountNumber( $aDebitInfo )
+    {
+        $oStr = getStr();
+
+        if ( $oStr->strlen( $aDebitInfo['lsktonr'] ) < 10 ) {
+            $sNewNum = str_repeat(
+                           '0', 10 - $oStr->strlen( $aDebitInfo['lsktonr'] )
+                       ) . $aDebitInfo['lsktonr'];
+            $aDebitInfo['lsktonr'] = $sNewNum;
+        }
+
+        return $aDebitInfo;
+    }
+
+    /**
+     * @param array $aRequiredFields fields must be set.
+     * @param array $aBankInformation actual information.
+     *
+     * @return bool
+     */
+    protected function _isAllBankInformationSet( $aRequiredFields, $aBankInformation )
+    {
+        $blResult = true;
+        foreach ( $aRequiredFields as $sFieldName ) {
+            if ( !isset( $aBankInformation[$sFieldName] ) || !trim( $aBankInformation[$sFieldName] ) ) {
+                $blResult = false;
+                break;
+            }
+        }
+
+        return $blResult;
+    }
+
+    /**
+     * Clean up spaces.
+     * @param $aDebitInformation
+     * @return mixed
+     */
+    protected function _cleanDebitInformation( $aDebitInformation )
+    {
+        $aDebitInformation['lsblz']   = str_replace( ' ', '', $aDebitInformation['lsblz'] );
+        $aDebitInformation['lsktonr'] = str_replace( ' ', '', $aDebitInformation['lsktonr'] );
+
+        return $aDebitInformation;
     }
 }

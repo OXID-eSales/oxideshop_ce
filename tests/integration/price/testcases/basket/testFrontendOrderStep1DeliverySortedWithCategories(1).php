@@ -25,7 +25,7 @@ $aData = array(
             'oxshopid'   => 1,
             'oxshopincl' => 1,
             'oxactive'   => 1,
-            'oxarticles' => array( 10012 )
+            'oxarticles' => array( '_test_10012' )
         ),
         1 =>  array (
             'oxid'       => 'testCategory2',
@@ -33,19 +33,19 @@ $aData = array(
             'oxshopid'   => 1,
             'oxshopincl' => 1,
             'oxactive'   => 1,
-            'oxarticles' => array( 1002 )
+            'oxarticles' => array( '_test_1002' )
         ),
     ),
 
     'articles' => array (
         0 => array (
-            'oxid'                     => 1002,
+            'oxid'                     => '_test_1002',
             'oxprice'                  => 20,
             'oxvat'                    => 20,
             'amount'                   => 6,
         ),
         1 => array (
-            'oxid'                     => 10012,
+            'oxid'                     => '_test_10012',
             'oxprice'                  => 10,
             'oxvat'                    => 10,
             'amount'                   => 1,
@@ -64,7 +64,7 @@ $aData = array(
                 'oxparamend' => 99999, //to
                 'oxsort' => 1,
                 'oxcategories' => array(
-                    'testCategory2' //uses article 1002
+                    'testCategory2' //uses article '_test_1002'
                 ),
             ),
             1 => array(
@@ -77,15 +77,15 @@ $aData = array(
                 'oxparamend' => 99999, //to
                 'oxsort' => 2,
                 'oxcategories' => array(
-                    'testCategory1' //uses article 10012
+                    'testCategory1' //uses article _test_10012
                 ),
             ),
         ),
     ),
     'expected' => array (
         'articles' => array (
-            10012 => array ( '10,00', '10,00' ),
-            1002 => array ( '20,00', '120,00' )
+            '_test_10012' => array ( '10,00', '10,00' ),
+            '_test_1002' => array ( '20,00', '120,00' )
         ),
         'totals' => array (
             'totalBrutto' => '130,00',

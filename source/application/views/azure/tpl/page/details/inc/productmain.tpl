@@ -129,7 +129,7 @@
                 </ul>
             [{/block}]
 
-            [{* artickle number *}]
+            [{* article number *}]
             [{block name="details_productmain_artnumber"}]
                 <span id="productArtnum" class="itemCode">[{oxmultilang ident="PRODUCT_NO" suffix="COLON" }] [{$oDetailsProduct->oxarticles__oxartnum->value}]</span>
             [{/block}]

@@ -357,7 +357,6 @@ $aLang = array(
 'DELIVERYTIME_MONTH'                                          => '%s Monat',
 'DELIVERYTIME_MONTHS'                                         => '%s Monate',
 'MORE'                                                        => 'Mehr',
-'WIDGET_TRUSTEDSHOPS_ITEM_ALTTEXT'                            => 'Mehr...',
 'MORE_INFO'                                                   => 'Mehr Info',
 'MOVE'                                                        => 'Produkt verschieben',
 'MR'                                                          => 'Herr',

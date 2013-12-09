@@ -239,7 +239,7 @@ class oxDb
         $_iDebug = self::_getConfigParam( '_iDebug' );
 
         global $ADODB_EXCEPTION;
-        $ADODB_EXCEPTION = 'oxAdoDbException';
+        $ADODB_EXCEPTION = 'oxAddoDbException';
             include_once getShopBasePath() . 'core/adodblite/adodb-exceptions.inc.php';
 
         $sModules = '';

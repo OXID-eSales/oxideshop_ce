@@ -26,7 +26,7 @@ RewriteRule oxseo\.php$ oxseo.php?mod_rewrite_module_is=on [L]
 RewriteCond %{REQUEST_URI} !(\/admin\/|\/core\/|\/application\/|\/export\/|\/modules\/|\/out\/|\/setup\/|\/tmp\/|\/views\/)
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule !(\.html|\/|\.jpg|\.css|\.pdf|\.doc|\.gif|\.png|\.js|\.htc)$ %{REQUEST_URI}/ [R=301,L]
+RewriteRule !(\.html|\/|\.jpg|\.css|\.pdf|\.doc|\.gif|\.png|\.js|\.htc|\.svg)$ %{REQUEST_URI}/ [R=301,L]
 
 RewriteCond %{REQUEST_URI} !(\/admin\/|\/core\/|\/application\/|\/export\/|\/modules\/|\/out\/|\/setup\/|\/tmp\/|\/views\/)
 RewriteCond %{REQUEST_FILENAME} !-f
@@ -37,7 +37,7 @@ RewriteRule (\.html|\/)$ oxseo.php
 RewriteCond %{REQUEST_URI} (\/out\/pictures\/)
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule (\.jpe?g|\.gif|\.png)$ getimg.php
+RewriteRule (\.jpe?g|\.gif|\.png|\.svg)$ getimg.php
 
 Redirect /config.inc.php /
 

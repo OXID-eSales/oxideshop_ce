@@ -22,8 +22,8 @@
  * @version   SVN: $Id
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath( "." ) . '/unit/OxidTestCase.php';
+require_once realpath( "." ) . '/unit/test_config.inc.php';
 
 /**
  * oxSepaValidator test class
@@ -35,6 +35,7 @@ require_once realpath( "." ).'/unit/test_config.inc.php';
  */
 class Unit_Core_oxSepaValidatorTest extends OxidTestCase
 {
+
     /**
      * IBAN Registry data provider
      *
@@ -46,60 +47,13 @@ class Unit_Core_oxSepaValidatorTest extends OxidTestCase
         $sValidMsg    = "IBAN registry must be valid";
 
         return array(
-            array( true , null,                      $sValidMsg    ),
-            array( false, array("AL", "GR", 33, 21), $sNotValidMsg ),
-            array( false, array("GER" => 22       ), $sNotValidMsg ),
-            array( false, array("DE" => "twotwo"  ), $sNotValidMsg ),
-            array( false, array("de" => "22"      ), $sNotValidMsg ),
-            array( false, array("EN" => "2.2"     ), $sNotValidMsg ),
-            array( true , array("DE" => "22"      ), $sValidMsg    ),
-        );
-    }
-
-    /**
-     * IBAN validation data provider
-     *
-     * @return array
-     */
-    public function _dpIBANValidation()
-    {
-        $sNotValidMsg = "IBAN must be not valid";
-        $sValidMsg    = "IBAN must be valid";
-
-        return array(
-            array( true,  "AL47212110090000000235698741"    , $sValidMsg    ),
-            array( true,  "MT84MALT011000012345MTLCAST001S" , $sValidMsg    ),
-            array( true,  "NO9386011117947"                 , $sValidMsg    ),
-            array( true,  "NO9386011117947 "                 , $sValidMsg    ),
-            array( true,  " NO9386011117947"                 , $sValidMsg    ),
-            array( false, "_NO9386011117947"                 , $sNotValidMsg),
-            array( false, "NX9386011117947"                 , $sNotValidMsg ),
-            // Fix for bug entry 0005538: SEPA validator class IBAN validation issue
-            array( false, "1234567895"                      , $sNotValidMsg ),
-        );
-    }
-
-    /**
-     * BIC validation data provider
-     *
-     * @return array
-     */
-    public function _dpBICValidation()
-    {
-        $sNotValidMsg = "IBAN must be not valid";
-        $sValidMsg    = "IBAN must be valid";
-
-        return array(
-            array( true,  "ASPKAT2L", $sValidMsg    ),
-            array( false, " ASPKAT2L", $sNotValidMsg ),
-            array( false, "ASPKAT2L ", $sNotValidMsg ),
-            array( false, "123 ASPKAT2L", $sNotValidMsg ),
-            array( false, "\tASPKAT2L", $sNotValidMsg ),
-            array( false, "_ASPKAT2L", $sNotValidMsg ),
-            array( false, "123ABCDE", $sNotValidMsg ),
-            // Fix for bug entry 0005564: oxSepaValidator::isValidBIC($sBIC) only verifies substring of BIC
-            array( true,  "COBADEHD055", $sValidMsg ),
-            array( false, "123COBADEHD055ABC", $sNotValidMsg ),
+            array( true, null, $sValidMsg ),
+            array( false, array( "AL", "GR", 33, 21 ), $sNotValidMsg ),
+            array( false, array( "GER" => 22 ), $sNotValidMsg ),
+            array( false, array( "DE" => "twotwo" ), $sNotValidMsg ),
+            array( false, array( "de" => "22" ), $sNotValidMsg ),
+            array( false, array( "EN" => "2.2" ), $sNotValidMsg ),
+            array( true, array( "DE" => "22" ), $sValidMsg ),
         );
     }
 
@@ -122,11 +76,11 @@ class Unit_Core_oxSepaValidatorTest extends OxidTestCase
     {
         $oSepaValidator = new oxSepaValidator();
 
-        $aIBANRegistry = array("DE" => 22);
+        $aIBANRegistry = array( "DE" => 22 );
 
-        $this->assertEquals( true,           $oSepaValidator->setIBANRegistry($aIBANRegistry), "IBAN registry must be set" );
+        $this->assertEquals( true, $oSepaValidator->setIBANRegistry( $aIBANRegistry ), "IBAN registry must be set" );
 
-        $this->assertEquals( $aIBANRegistry, $oSepaValidator->getIBANRegistry(),               "IBAN registry must be set" );
+        $this->assertEquals( $aIBANRegistry, $oSepaValidator->getIBANRegistry(), "IBAN registry must be set" );
     }
 
     /**
@@ -134,34 +88,154 @@ class Unit_Core_oxSepaValidatorTest extends OxidTestCase
      *
      * @dataProvider _dpIBANRegistry
      */
-    public function testValidateIBANRegistry($blExpected, $aIBANRegistry, $sMessage)
+    public function testValidateIBANRegistry( $blExpected, $aIBANRegistry, $sMessage )
     {
         $oSepaValidator = new oxSepaValidator();
 
-        $this->assertEquals( $blExpected, $oSepaValidator->isValidIBANRegistry($aIBANRegistry), $sMessage);
+        $this->assertEquals( $blExpected, $oSepaValidator->isValidIBANRegistry( $aIBANRegistry ), $sMessage );
+    }
+
+    /**
+     * IBAN validation data provider
+     *
+     * @return array
+     */
+    public function providerIsValidIBAN_validIBAN_true()
+    {
+        return array(
+            array( "AL47212110090000000235698741" ),
+            array( "MT84MALT011000012345MTLCAST001S" ),
+            array( "NO9386011117947" ),
+            array( "NO9386011117947 " ),
+            array( " NO9386011117947" ),
+        );
     }
 
     /**
      * Test case to check IBAN validation
      *
-     * @dataProvider _dpIBANValidation
+     * @dataProvider providerIsValidIBAN_validIBAN_true
      */
-    public function testIsValidIBAN($blExpected, $sIBAN, $sMessage)
+    public function testIsValidIBAN_validIBAN_true( $sIBAN )
     {
         $oSepaValidator = new oxSepaValidator();
 
-        $this->assertEquals( $blExpected, $oSepaValidator->isValidIBAN($sIBAN), $sMessage );
+        $this->assertTrue( $oSepaValidator->isValidIBAN( $sIBAN ), "IBAN must be valid" );
+    }
+
+    /**
+     * IBAN validation data provider
+     *
+     * @return array
+     */
+    public function providerIsValidIBAN_invalidIBAN_false()
+    {
+        return array(
+            array( "_NO9386011117947" ),
+            array( "NX9386011117947" ),
+            // Fix for bug entry 0005538: SEPA validator class IBAN validation issue
+            array( "1234567895" ),
+        );
+    }
+
+    /**
+     * Test case to check IBAN validation
+     *
+     * @dataProvider providerIsValidIBAN_invalidIBAN_false
+     */
+    public function testIsValidIBAN_invalidIBAN_false( $sIBAN )
+    {
+        $oSepaValidator = new oxSepaValidator();
+
+        $this->assertFalse( $oSepaValidator->isValidIBAN( $sIBAN ), "IBAN must be not valid" );
+    }
+
+
+    /**
+     * BIC validation data provider
+     *
+     * @return array
+     */
+    public function providerIsValidBIC_validBIC_true()
+    {
+        return array(
+            array( "ASPKAT2L" ),
+            array( "AAAACCXX" ),
+            array( "AAAACC22" ),
+            array( "AAAACCXXHHH" ),
+            array( "AAAACC33555" ),
+            array( "AAAACCXX555" ),
+            array( " AAAACCXX" ),
+            array( "AAAACCXX " ),
+            array( "\tAAAACCXX" ),
+            array( "AAAACCXX\n" ),
+            array( "AAAACCXX\n\r" ),
+            // Fix for bug entry 0005564: oxSepaValidator::isValidBIC($sBIC) only verifies substring of BIC
+            array( "COBADEHD055" ),
+        );
+    }
+
+
+    /**
+     * Test case to check BIC validation
+     *
+     * @dataProvider providerIsValidBIC_validBIC_true
+     */
+    public function testIsValidBIC_validBIC_true( $sBIC )
+    {
+        $oSepaValidator = new oxSepaValidator();
+
+        $this->assertTrue( $oSepaValidator->isValidBIC( $sBIC ), "BIC must be valid" );
+    }
+
+    /**
+     * BIC validation data provider
+     *
+     * @return array
+     */
+    public function providerIsValidBIC_invalidBIC_false()
+    {
+        return array(
+            array( "AAAACCX" ),
+            array( "AAAACCXXX" ),
+            array( "AAAACCXXXX" ),
+            array( "AAAACC2233" ),
+            array( "AAAACC2233*" ),
+            array( "AAAACC224444X" ),
+            array( "AAAACC224444XX" ),
+            array( "AAA1CC22" ),
+            array( "1AAAACXX" ),
+            array( "A1AAACXX" ),
+            array( "AA1AACXX" ),
+            array( "AAA1ACXX" ),
+            array( "AAAA1CXX" ),
+            array( "AAAAC1XX" ),
+            array( "AAAAC122" ),
+            array( "ASPK AT 2L" ),
+            array( "ASPK\tAT\t2L" ),
+            array( "123 ASPKAT2L" ),
+            array( "_ASPKAT2L" ),
+            array( "ASPKAT2" ),
+            array( "ASP_AT2L" ),
+            array( "ASPK*T2L" ),
+            array( "ASPKA-2L" ),
+            array( "AAAßCCXX" ),
+            array( "AAAACßXX" ),
+            array( "AAAACCXö" ),
+            // Fix for bug entry 0005564: oxSepaValidator::isValidBIC($sBIC) only verifies substring of BIC
+            array( "123COBADEHD055ABC" ),
+        );
     }
 
     /**
      * Test case to check BIC validation
      *
-     * @dataProvider _dpBICValidation
+     * @dataProvider providerIsValidBIC_invalidBIC_false
      */
-    public function testIsValidBIC($blExpected, $sBIC, $sMessage)
+    public function testIsValidBIC_invalidBIC_false( $sBIC )
     {
         $oSepaValidator = new oxSepaValidator();
 
-        $this->assertEquals( $blExpected, $oSepaValidator->isValidBIC($sBIC), $sMessage );
+        $this->assertFalse( $oSepaValidator->isValidBIC( $sBIC ), "BIC must be not valid" );
     }
 }

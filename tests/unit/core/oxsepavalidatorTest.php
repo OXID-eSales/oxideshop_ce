@@ -96,6 +96,62 @@ class Unit_Core_oxSepaValidatorTest extends OxidTestCase
     }
 
     /**
+     * Test case to check IBAN validation
+     *
+     */
+    public function testIsValidIBAN_validIBANFromNonexistentCountry_false( )
+    {
+        $oSepaValidator = new oxSepaValidator();
+
+        $aIBANRegistry = array( "DE" => 22 );
+        $oSepaValidator->setIBANRegistry( $aIBANRegistry );
+
+        $this->assertFalse( $oSepaValidator->isValidIBAN( "MT84MALT011000012345MTLCAST001S" ), "IBAN must be not valid" );
+    }
+
+    /**
+     * Test case to check IBAN validation
+     *
+     */
+    public function testIsValidIBAN_validIBANFromExistentCountryIBANTooLong_false( )
+    {
+        $oSepaValidator = new oxSepaValidator();
+
+        $aIBANRegistry = array( "MT" => 30 );
+        $oSepaValidator->setIBANRegistry( $aIBANRegistry );
+
+        $this->assertFalse( $oSepaValidator->isValidIBAN( "MT84MALT011000012345MTLCAST001S" ), "IBAN must be not valid" );
+    }
+
+    /**
+     * Test case to check IBAN validation
+     *
+     */
+    public function testIsValidIBAN_validIBANFromExistentCountryIBANTooShort_false( )
+    {
+        $oSepaValidator = new oxSepaValidator();
+
+        $aIBANRegistry = array( "MT" => 32 );
+        $oSepaValidator->setIBANRegistry( $aIBANRegistry );
+
+        $this->assertFalse( $oSepaValidator->isValidIBAN( "MT84MALT011000012345MTLCAST001S" ), "IBAN must be not valid" );
+    }
+
+    /**
+     * Test case to check IBAN validation
+     *
+     */
+    public function testIsValidIBAN_validIBANFromExistentCountry_true( )
+    {
+        $oSepaValidator = new oxSepaValidator();
+
+        $aIBANRegistry = array( "MT" => 31 );
+        $oSepaValidator->setIBANRegistry( $aIBANRegistry );
+
+        $this->assertTrue( $oSepaValidator->isValidIBAN( "MT84MALT011000012345MTLCAST001S" ), "IBAN must be valid" );
+    }
+
+    /**
      * IBAN validation data provider
      *
      * @return array

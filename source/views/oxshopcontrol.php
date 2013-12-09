@@ -541,7 +541,6 @@ class oxShopControl extends oxSuperCfg
      */
     protected function _handleCookieException( $oEx )
     {
-        $this->_handleCookieException( $oEx );
         // redirect to start page and display the error
         if ( $this->_isDebugMode() ) {
             oxUtilsView::getInstance()->addErrorToDisplay( $oEx );

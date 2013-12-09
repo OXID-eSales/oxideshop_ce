@@ -70,6 +70,9 @@ class Unit_Core_oxSepaValidatorTest extends OxidTestCase
             array( true,  "AL47212110090000000235698741"    , $sValidMsg    ),
             array( true,  "MT84MALT011000012345MTLCAST001S" , $sValidMsg    ),
             array( true,  "NO9386011117947"                 , $sValidMsg    ),
+            array( true,  "NO9386011117947 "                 , $sValidMsg    ),
+            array( true,  " NO9386011117947"                 , $sValidMsg    ),
+            array( false, "_NO9386011117947"                 , $sNotValidMsg),
             array( false, "NX9386011117947"                 , $sNotValidMsg ),
             // Fix for bug entry 0005538: SEPA validator class IBAN validation issue
             array( false, "1234567895"                      , $sNotValidMsg ),
@@ -88,7 +91,15 @@ class Unit_Core_oxSepaValidatorTest extends OxidTestCase
 
         return array(
             array( true,  "ASPKAT2L", $sValidMsg    ),
+            array( false, " ASPKAT2L", $sNotValidMsg ),
+            array( false, "ASPKAT2L ", $sNotValidMsg ),
+            array( false, "123 ASPKAT2L", $sNotValidMsg ),
+            array( false, "\tASPKAT2L", $sNotValidMsg ),
+            array( false, "_ASPKAT2L", $sNotValidMsg ),
             array( false, "123ABCDE", $sNotValidMsg ),
+            // Fix for bug entry 0005564: oxSepaValidator::isValidBIC($sBIC) only verifies substring of BIC
+            array( true,  "COBADEHD055", $sValidMsg ),
+            array( false, "123COBADEHD055ABC", $sNotValidMsg ),
         );
     }
 

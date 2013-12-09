@@ -174,10 +174,10 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
         $oMockEx->expects( $this->once() )->method( 'debugOut' )->will( $this->throwException( new oxException('log debug') ));
 
         $oControl = $this->getMock( "oxShopControl", array( "getConfig", "_runOnce", "_process", "_isDebugMode" ), array(), '', false, false, true );
-        $oControl->expects( $this->at(0) )->method( 'getConfig' );
-        $oControl->expects( $this->at(1) )->method( '_runOnce' );
+        $oControl->expects( $this->any() )->method( 'getConfig' );
+        $oControl->expects( $this->any() )->method( '_runOnce' );
         $oControl->expects( $this->once() )->method( '_process' )->with( $this->equalTo( "testClass" ), $this->equalTo( "testFnc" ) )->will( $this->throwException( $oMockEx ));
-        $oControl->expects( $this->at(3) )->method( '_isDebugMode' )->will( $this->returnValue( false ));
+        $oControl->expects( $this->any() )->method( '_isDebugMode' )->will( $this->returnValue( false ));
 
         $oControl->start();
     }
@@ -189,23 +189,20 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
      */
     public function testStartCookieExceptionHandled()
     {
-        modConfig::setParameter( 'cl', null );
-        modConfig::setParameter( 'fnc', "testFnc" );
         modSession::getInstance()->setVar( 'actshop', null );
-        oxTestModules::addFunction( 'oxUtilsView', 'addErrorToDisplay', '{}' );
-        oxTestModules::addFunction( 'oxUtils', 'redirect', '{ throw new Exception("oxCookieException"); }' );
+        oxTestModules::addFunction( 'oxUtilsView', 'addErrorToDisplay', '{ throw new Exception("oxCookieException"); }' );
 
-        $oConfig = $this->getMock( "oxConfig", array( "isMall", "getConfigParam", "getShopId", "getShopHomeUrl" ) );
-        $oConfig->expects( $this->at( 0 ) )->method( 'isMall' )->will( $this->returnValue( true ));
-        $oConfig->expects( $this->at( 1 ) )->method( 'getShopId' )->will( $this->returnValue( 999 ) );
-        $oConfig->expects( $this->at( 2 ) )->method( 'getShopHomeUrl' );
+        $oConfig = $this->getMock( "oxStdClass", array( "isMall", "getConfigParam", "getShopId", "getShopHomeUrl" ) );
+        $oConfig->expects( $this->any() )->method( 'isMall' )->will( $this->returnValue( true ));
+        $oConfig->expects( $this->any() )->method( 'getShopId' )->will( $this->returnValue( 999 ) );
+        $oConfig->expects( $this->any() )->method( 'getShopHomeUrl' );
 
         $oControl = $this->getMock( "oxShopControl", array( "getConfig", "_runOnce", "isAdmin", "_process", "_isDebugMode" ), array(), '', false );
-        $oControl->expects( $this->at(1) )->method( 'getConfig' )->will( $this->returnValue( $oConfig ));
-        $oControl->expects( $this->at(2) )->method( '_runOnce' );
-        $oControl->expects( $this->at(3) )->method( 'isAdmin' )->will( $this->returnValue( false ));
-        $oControl->expects( $this->at(4) )->method( '_process' )->with( $this->equalTo( "start" ), $this->equalTo( "testFnc" ) )->will( $this->throwException( new oxSystemComponentException ));
-        $oControl->expects( $this->at(5) )->method( '_isDebugMode' )->will( $this->returnValue( true ));
+        $oControl->expects( $this->any() )->method( 'getConfig' )->will( $this->returnValue( $oConfig ));
+        $oControl->expects( $this->any() )->method( '_runOnce' );
+        $oControl->expects( $this->any() )->method( 'isAdmin' )->will( $this->returnValue( false ));
+        $oControl->expects( $this->any() )->method( '_process' )->will( $this->throwException( new oxSystemComponentException ));
+        $oControl->expects( $this->any() )->method( '_isDebugMode' )->will( $this->returnValue( true ));
 
         try {
             $oControl->start();
@@ -251,21 +248,19 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
      */
     public function testStartCookieExceptionHandled_onlyInDebugMode()
     {
-        modConfig::setParameter( 'cl', null );
-        modConfig::setParameter( 'fnc', "testFnc" );
         oxTestModules::addFunction( 'oxUtilsView', 'addErrorToDisplay', '{ throw new Exception("oxAddErrorToDisplayException"); }' );
-        oxTestModules::addFunction( 'oxUtils', 'redirect', '{ throw new Exception("oxSystemComponentException"); }' );
+        oxTestModules::addFunction( 'oxUtils', 'redirect', '{ throw new Exception("oxRedirectException"); }' );
 
         $oControl = $this->getMock( "oxShopControl", array( "_runOnce", "isAdmin", "_process", "_isDebugMode" ), array(), '', false );
-        $oControl->expects( $this->once() )->method( '_runOnce' );
-        $oControl->expects( $this->once() )->method( 'isAdmin' )->will( $this->returnValue( false ));
-        $oControl->expects( $this->once() )->method( '_process' )->with( $this->equalTo( "start" ), $this->equalTo( "testFnc" ) )->will( $this->throwException( new oxCookieException ));
+        $oControl->expects( $this->any() )->method( '_runOnce' );
+        $oControl->expects( $this->any() )->method( 'isAdmin' )->will( $this->returnValue( false ));
+        $oControl->expects( $this->any() )->method( '_process' )->will( $this->throwException( new oxCookieException ));
         $oControl->expects( $this->any() )->method( '_isDebugMode' )->will( $this->returnValue( false ));
 
         try {
             $oControl->start();
         } catch ( Exception $oExcp ) {
-            $this->assertNotEquals( "oxAddErrorToDisplayException", $oExcp->getMessage() );
+            $this->assertEquals( "oxRedirectException", $oExcp->getMessage() );
             return;
         }
         $this->fail( "Error while executing testStartCookieExceptionThrown_onlyInDebugMode()" );

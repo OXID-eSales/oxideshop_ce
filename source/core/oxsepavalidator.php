@@ -44,7 +44,8 @@ class oxSepaValidator
      */
     public function isValidBIC($sBIC)
     {
-        return (bool)getStr()->preg_match("([a-zA-Z]{4}[a-zA-Z]{2}[a-zA-Z0-9]{2}([a-zA-Z0-9]{3})?)", $sBIC);
+        //return (bool)getStr()->preg_match("([a-zA-Z]{4}[a-zA-Z]{2}[a-zA-Z0-9]{2}([a-zA-Z0-9]{3})?)", $sBIC);
+        return (bool)getStr()->preg_match("(^[a-zA-Z]{4}[a-zA-Z]{2}[a-zA-Z0-9]{2}([a-zA-Z0-9]{3})?$)", $sBIC);
     }
 
     /**
@@ -209,7 +210,6 @@ class oxSepaValidator
         'NO' => 15,
         'PK' => 24,
         'PS' => 29,
-        'PL' => 28,
         'PL' => 28,
         'PT' => 25,
         'RO' => 24,

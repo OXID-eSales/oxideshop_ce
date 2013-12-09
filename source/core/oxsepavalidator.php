@@ -44,7 +44,8 @@ class oxSepaValidator
      */
     public function isValidBIC($sBIC)
     {
-        return (bool)getStr()->preg_match("(^[a-zA-Z]{4}[a-zA-Z]{2}[a-zA-Z0-9]{2}([a-zA-Z0-9]{3})?$)", $sBIC);
+        $sBIC = strtoupper( trim( $sBIC ) );
+        return (bool) getStr()->preg_match( "(^[A-Z]{4}[A-Z]{2}[A-Z0-9]{2}([A-Z0-9]{3})?$)", $sBIC );
     }
 
     /**

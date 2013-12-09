@@ -39,6 +39,8 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule (\.jpe?g|\.gif|\.png)$ getimg.php
 
+Redirect /config.inc.php /
+
 </IfModule>
 
 # disabling log file access from outside

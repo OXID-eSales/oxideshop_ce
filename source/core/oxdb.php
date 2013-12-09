@@ -19,7 +19,6 @@
  * @package   core
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 
@@ -98,9 +97,11 @@ class oxDb extends oxSuperCfg
     {
         //adding exception handler for SQL errors
         $myConfig = $this->getConfig();
-        if ( ( $iDebug = $myConfig->getConfigParam( 'iDebug' ) ) ) {
+        $iDebug = $myConfig->getConfigParam( 'iDebug' );
+
+        global $ADODB_EXCEPTION;
+        $ADODB_EXCEPTION = 'oxAddoDbException';
             include_once getShopBasePath() . 'core/adodblite/adodb-exceptions.inc.php';
-        }
 
         $sModules = '';
         if (  $iDebug == 2 || $iDebug == 3 || $iDebug == 4 || $iDebug == 7  ) {

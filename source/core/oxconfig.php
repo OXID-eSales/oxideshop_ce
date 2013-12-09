@@ -19,7 +19,6 @@
  * @package   core
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 define( 'MAX_64BIT_INTEGER', '18446744073709551615' );
@@ -474,36 +473,18 @@ class oxConfig extends oxSuperCfg
             //starting up the session
             $this->getSession()->start();
 
-        } catch ( oxConnectionException $oEx ) {
-
-            $oEx->debugOut();
-            if ( defined( 'OXID_PHP_UNIT' ) ) {
-                return false;
-            } elseif ( 0 != $this->iDebug ) {
-                oxUtils::getInstance()->showMessageAndExit( $oEx->getString() );
-            } else {
-                header( "HTTP/1.1 500 Internal Server Error");
-                header( "Location: offline.html");
-                header( "Connection: close");
-            }
-        } catch ( oxCookieException $oEx ) {
-
-            $this->_processSeoCall();
-
-            //starting up the session
-            $this->getSession()->start();
-
-            // redirect to start page and display the error
-            oxUtilsView::getInstance()->addErrorToDisplay( $oEx );
-            oxUtils::getInstance()->redirect( $this->getShopHomeURL() .'cl=start', true, 302 );
-        }
-
 
         $this->_loadVarsFromFile();
 
         //application initialization
         $this->_oStart = new oxStart();
         $this->_oStart->appInit();
+
+        } catch ( oxConnectionException $oEx ) {
+            return $this->_handleDbConnectionException( $oEx );
+        } catch ( oxCookieException $oEx ) {
+            return $this->_handleCookieException( $oEx );
+        }
     }
 
     /**
@@ -2083,4 +2064,40 @@ class oxConfig extends oxSuperCfg
         return $aModuleArray;
     }
 
+    /**
+     * Shows exception message if debug mode is enabled, redirects otherwise.
+     *
+     * @param oxException $oEx message to show on exit
+     * @return bool
+     */
+    protected function _handleDbConnectionException( $oEx )
+    {
+        $oEx->debugOut();
+
+        if ( defined( 'OXID_PHP_UNIT' ) ) {
+            return false;
+        } elseif ( 0 != $this->iDebug ) {
+            oxUtils::getInstance()->showMessageAndExit( $oEx->getString() );
+        } else {
+            header( "HTTP/1.1 500 Internal Server Error");
+            header( "Location: offline.html");
+            header( "Connection: close");
+        }
+    }
+
+    /**
+     * Redirect to start page and display the error
+     *
+     * @param oxException $oEx message to show on exit
+     * @return bool
+     */
+    protected function _handleCookieException( $oEx )
+    {
+        $this->_processSeoCall();
+
+        $this->getSession()->start();
+
+        oxUtilsView::getInstance()->addErrorToDisplay( $oEx );
+        oxUtils::getInstance()->redirect( $this->getShopHomeURL() .'cl=start', true, 302 );
+    }
 }

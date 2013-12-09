@@ -19,7 +19,6 @@
  * @package   tests
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -327,6 +326,18 @@ class Unit_Core_oxconfigTest extends OxidTestCase
     {
         $oConfig = $this->getMock( "oxconfig", array( "_loadVarsFromDb" ) );
         $oEx = oxNew( "oxConnectionException" );
+        $oConfig->expects( $this->once() )->method( '_loadVarsFromDb')->will( $this->throwException( $oEx ) );
+
+        $this->assertFalse( $oConfig->init() );
+    }
+
+    /**
+     * Testing config init - no connection to DB
+     */
+    public function testInit_FailedDbQueryHandled()
+    {
+        $oConfig = $this->getMock( "oxconfig", array( "_loadVarsFromDb" ) );
+        $oEx = oxNew( "oxAddoDbException", null, null, null, null, null, null, null, null );
         $oConfig->expects( $this->once() )->method( '_loadVarsFromDb')->will( $this->throwException( $oEx ) );
 
         $this->assertFalse( $oConfig->init() );

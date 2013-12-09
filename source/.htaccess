@@ -26,7 +26,7 @@ RewriteRule oxseo\.php$ oxseo.php?mod_rewrite_module_is=on [L]
 RewriteCond %{REQUEST_URI} !(\/admin\/|\/core\/|\/application\/|\/export\/|\/modules\/|\/out\/|\/setup\/|\/tmp\/|\/views\/)
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule !(\.html|\/|\.jpg|\.css|\.pdf|\.doc|\.gif|\.png|\.js|\.htc|\.svg)$ %{REQUEST_URI}/ [R=301,L]
+RewriteRule !(\.html|\/|\.jpg|\.css|\.pdf|\.doc|\.gif|\.png|\.js|\.htc)$ %{REQUEST_URI}/ [R=301,L]
 
 RewriteCond %{REQUEST_URI} !(\/admin\/|\/core\/|\/application\/|\/export\/|\/modules\/|\/out\/|\/setup\/|\/tmp\/|\/views\/)
 RewriteCond %{REQUEST_FILENAME} !-f
@@ -39,10 +39,12 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule (\.jpe?g|\.gif|\.png)$ getimg.php
 
+Redirect /config.inc.php /
+
 </IfModule>
 
 # disabling log file access from outside
-<FilesMatch "(EXCEPTION_LOG\.txt|\.log$|\.tpl$|pkg\.rev|\.ini)">
+<FilesMatch "(EXCEPTION_LOG\.txt|\.log$|\.tpl$|pkg\.rev|\.ini|pkg\.info|\.pem$)">
 order allow,deny
 deny from all
 </FilesMatch>

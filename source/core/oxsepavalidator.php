@@ -29,6 +29,7 @@
  */
 class oxSepaValidator
 {
+
     /**
      * Business identifier code validation
      *
@@ -42,9 +43,10 @@ class oxSepaValidator
      *
      * @return bool
      */
-    public function isValidBIC($sBIC)
+    public function isValidBIC( $sBIC )
     {
         $sBIC = strtoupper( trim( $sBIC ) );
+
         return (bool) getStr()->preg_match( "(^[A-Z]{4}[A-Z]{2}[A-Z0-9]{2}([A-Z0-9]{3})?$)", $sBIC );
     }
 
@@ -58,36 +60,36 @@ class oxSepaValidator
      *
      * @return bool
      */
-    public function isValidIBAN($sIBAN)
+    public function isValidIBAN( $sIBAN )
     {
         $blValid = true;
 
         $oStr = getStr();
-        $sIBAN = strtoupper( trim($sIBAN) );
+        $sIBAN         = strtoupper( trim( $sIBAN ) );
         $aIBANRegistry = $this->getIBANRegistry();
 
         // 1. Check that the total IBAN length is correct as per country. If not, the IBAN is invalid.
-        $sLangAbbr = $oStr->substr($sIBAN, 0, 2);
+        $sLangAbbr = $oStr->substr( $sIBAN, 0, 2 );
         $iLength = $aIBANRegistry[$sLangAbbr];
-        if ( is_null($iLength) || $oStr->strlen($sIBAN) != $iLength ) {
+        if ( is_null( $iLength ) || $oStr->strlen( $sIBAN ) != $iLength ) {
             $blValid = false;
         }
 
         // 2. Move the four initial characters to the end of the string.
-        $sInitialChars = $oStr->substr($sIBAN, 0, 4);
-        $sIBAN = substr_replace($sIBAN, '', 0, 4);
+        $sInitialChars = $oStr->substr( $sIBAN, 0, 4 );
+        $sIBAN         = substr_replace( $sIBAN, '', 0, 4 );
         $sIBAN = $sIBAN . $sInitialChars;
 
         // 3. Replace each letter in the string with two digits, thereby expanding the string, where A = 10, B = 11, ..., Z = 35.
-        $sIBAN= str_replace(
-            array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'),
-            array(10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35),
+        $sIBAN = str_replace(
+            array( 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' ),
+            array( 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35 ),
             $sIBAN
         );
 
         // 4. Interpret the string as a decimal integer and compute the remainder of that number on division by 97.
-        $sModulus = bcmod($sIBAN, 97);
-        if ( (int)$sModulus != 1 ) {
+        $sModulus = bcmod( $sIBAN, 97 );
+        if ( (int) $sModulus != 1 ) {
             $blValid = false;
         }
 
@@ -102,25 +104,25 @@ class oxSepaValidator
      *
      * @return bool
      */
-    public function isValidIBANRegistry($aIBANRegistry = null)
+    public function isValidIBANRegistry( $aIBANRegistry = null )
     {
         $blValid = true;
 
         // If not passed, validate default IBAN registry
-        if ( is_null($aIBANRegistry) ) {
+        if ( is_null( $aIBANRegistry ) ) {
             $aIBANRegistry = $this->getIBANRegistry();
         }
 
-        if ( !is_array($aIBANRegistry) || empty($aIBANRegistry) ) {
+        if ( !is_array( $aIBANRegistry ) || empty( $aIBANRegistry ) ) {
             $blValid = false;
         }
 
-        foreach ($aIBANRegistry as $sCountryAbbr => $iLength) {
-            if ( (int)preg_match("/^[A-Z]{2}$/", $sCountryAbbr) === 0 ) {
+        foreach ( $aIBANRegistry as $sCountryAbbr => $iLength ) {
+            if ( (int) preg_match( "/^[A-Z]{2}$/", $sCountryAbbr ) === 0 ) {
                 $blValid = false;
                 break;
             }
-            if ( !is_numeric($iLength) || (int)preg_match("/\./", $iLength) === 1 ) {
+            if ( !is_numeric( $iLength ) || (int) preg_match( "/\./", $iLength ) === 1 ) {
                 $blValid = false;
                 break;
             }
@@ -137,10 +139,11 @@ class oxSepaValidator
      *
      * @return bool
      */
-    public function setIBANRegistry($aIBANRegistry)
+    public function setIBANRegistry( $aIBANRegistry )
     {
-        if ( $this->isValidIBANRegistry($aIBANRegistry) ) {
+        if ( $this->isValidIBANRegistry( $aIBANRegistry ) ) {
             $this->_aIBANRegistry = $aIBANRegistry;
+
             return true;
         } else {
             return false;

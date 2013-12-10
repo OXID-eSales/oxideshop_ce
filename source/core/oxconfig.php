@@ -431,6 +431,30 @@ class oxConfig extends oxSuperCfg
             //starting up the session
             $this->getSession()->start();
 
+        } catch ( oxConnectionException $oEx ) {
+
+            $oEx->debugOut();
+            if ( defined( 'OXID_PHP_UNIT' ) ) {
+                return false;
+            } elseif ( 0 != $this->iDebug ) {
+                oxRegistry::getUtils()->showMessageAndExit( $oEx->getString() );
+            } else {
+                header( "HTTP/1.1 500 Internal Server Error");
+                header( "Location: offline.html");
+                header( "Connection: close");
+            }
+        } catch ( oxCookieException $oEx ) {
+
+            $this->_processSeoCall();
+
+            //starting up the session
+            $this->getSession()->start();
+
+            // redirect to start page and display the error
+            oxRegistry::get("oxUtilsView")->addErrorToDisplay( $oEx );
+            oxRegistry::getUtils()->redirect( $this->getShopHomeURL() .'cl=start', true, 302 );
+        }
+
 
         // Admin handling
         $this->setConfigParam( 'blAdmin', isAdmin() );
@@ -444,11 +468,6 @@ class oxConfig extends oxSuperCfg
         //application initialization
         $this->_oStart = new oxStart();
         $this->_oStart->appInit();
-        } catch ( oxConnectionException $oEx ) {
-            return $this->_handleDbConnectionException( $oEx );
-        } catch ( oxCookieException $oEx ) {
-            return $this->_handleCookieException( $oEx );
-        }    
     }
 
     /**
@@ -2153,9 +2172,21 @@ class oxConfig extends oxSuperCfg
     /**
      * Get parsed modules
      *
+     * @deprecated since v5.1.2 (2013-12-10); Naming changed use function getModulesWithExtendedClass().
+     *
      * @return array
      */
     public function getAllModules()
+    {
+        return $this->getModulesWithExtendedClass();
+    }
+
+    /**
+     * Get parsed modules
+     *
+     * @return array
+     */
+    public function getModulesWithExtendedClass()
     {
         return $this->parseModuleChains($this->getConfigParam('aModules'));
     }
@@ -2195,41 +2226,4 @@ class oxConfig extends oxSuperCfg
         return oxDb::getDb()->getCol( "SELECT `oxid` FROM `oxshops`" );
     }
 
-    /**
-     * Shows exception message if debug mode is enabled, redirects otherwise.
-     *
-     * @param oxException $oEx message to show on exit
-     * @return bool
-     */
-    protected function _handleDbConnectionException( $oEx )
-    {
-        $oEx->debugOut();
-        if ( defined( 'OXID_PHP_UNIT' ) ) {
-            return false;
-        } elseif ( 0 != $this->iDebug ) {
-            oxRegistry::getUtils()->showMessageAndExit( $oEx->getString() );
-        } else {
-            header( "HTTP/1.1 500 Internal Server Error");
-            header( "Location: offline.html");
-            header( "Connection: close");
-        }
-    }
-
-    /**
-     * Redirect to start page and display the error
-     *
-     * @param oxException $oEx message to show on exit
-     * @return bool
-     */
-    protected function _handleCookieException( $oEx )
-    {
-        $this->_processSeoCall();
-
-        //starting up the session
-        $this->getSession()->start();
-
-        // redirect to start page and display the error
-        oxRegistry::get("oxUtilsView")->addErrorToDisplay( $oEx );
-        oxRegistry::getUtils()->redirect( $this->getShopHomeURL() .'cl=start', true, 302 );
-    }
 }

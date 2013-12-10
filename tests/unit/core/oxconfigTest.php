@@ -322,6 +322,18 @@ class Unit_Core_oxconfigTest extends OxidTestCase
     }
 
     /**
+     * Testing config init - no connection to DB
+     */
+    public function testInit_FailedDbQueryHandled()
+    {
+        $oConfig = $this->getMock( "oxconfig", array( "_loadVarsFromDb" ) );
+        $oEx = oxNew( "oxAddoDbException", null, null, null, null, null, null, null, null );
+        $oConfig->expects( $this->once() )->method( '_loadVarsFromDb')->will( $this->throwException( $oEx ) );
+
+        $this->assertFalse( $oConfig->init() );
+    }
+
+    /**
      * Testing config init - loading config vars returns no result
      */
     public function testInit_noValuesFromConfig()

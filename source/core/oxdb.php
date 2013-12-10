@@ -236,9 +236,11 @@ class oxDb
     protected function _getModules()
     {
         //adding exception handler for SQL errors
-        if ( ( $_iDebug = self::_getConfigParam( '_iDebug' ) ) ) {
+        $_iDebug = self::_getConfigParam( '_iDebug' );
+
+        global $ADODB_EXCEPTION;
+        $ADODB_EXCEPTION = 'oxAddoDbException';
             include_once getShopBasePath() . 'core/adodblite/adodb-exceptions.inc.php';
-        }
 
         $sModules = '';
         if (  $_iDebug == 2 || $_iDebug == 3 || $_iDebug == 4 || $_iDebug == 7  ) {

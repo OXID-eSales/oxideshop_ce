@@ -309,7 +309,7 @@ class oxModule extends oxSuperCfg
         $blActive = false;
         $sId = $this->getId();
         if (isset($sId)) {
-            if ( is_array($this->_aModule['extend']) && !empty($this->_aModule['extend']) ) {
+            if ( $this->hasExtendClass() ) {
                 $aAddModules = $this->_aModule['extend'];
                 $aInstalledModules = $this->getAllModules();
                 $iClCount = count($aAddModules);
@@ -342,6 +342,9 @@ class oxModule extends oxSuperCfg
     /**
      * Check if extension das any extended classes
      *
+     * @deprecated since v5.1.2 (2013-12-10); Naming changed use function hasExtendClass().
+     * @deprecated use together with hasMetadata if needed.
+     *
      * @return bool
      */
     public function isExtended()
@@ -351,6 +354,16 @@ class oxModule extends oxSuperCfg
         }
 
         return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasExtendClass()
+    {
+        return isset( $this->_aModule['extend'] )
+            && is_array( $this->_aModule['extend'] )
+            && count( $this->_aModule['extend'] ) > 0;
     }
 
     /**

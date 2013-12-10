@@ -355,7 +355,6 @@ class oxShopControl extends oxSuperCfg
             $oOutput->output('errors', $this->_getFormattedErrors( $oViewObject->getClassName() ));
         }
 
-
        $oOutput->sendHeaders();
 
 
@@ -605,7 +604,7 @@ class oxShopControl extends oxSuperCfg
      *
      * @param $oEx
      */
-    protected function _handleSystemException( $oEx )
+    protected function _handleSystemException()
     {
         //possible reason: class does not exist etc. --> just redirect to start page
         if ( $this->_isDebugMode() ) {
@@ -614,15 +613,12 @@ class oxShopControl extends oxSuperCfg
         }
         $oEx->debugOut();
 
-        $myConfig = $this->getConfig();
         if ( !$myConfig->getConfigParam( 'iDebug' ) ) {
             oxRegistry::getUtils()->redirect( $myConfig->getShopHomeUrl() .'cl=start', true, 302 );
         }
     }
 
     /**
-     * Redirect to start page, in debug mode shows error message.
-     *
      * @param $oEx
      */
     protected function _handleCookieException( $oEx )
@@ -634,7 +630,7 @@ class oxShopControl extends oxSuperCfg
     }
 
     /**
-     * R&R handling -> redirect to error msg, also, can call _process again, specifying error handler view class.
+     * R&R handling -> redirect to error msg, also, can call _process again, specifying error handler view class
      *
      * @param $oEx
      */
@@ -709,7 +705,7 @@ class oxShopControl extends oxSuperCfg
                 $sClass = 'login';
             }
 
-            oxSession::setVar( 'cl', $sClass );
+            oxRegistry::getSession()->setVariable( 'cl', $sClass );
         }
     }
 }

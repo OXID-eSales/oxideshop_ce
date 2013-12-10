@@ -327,7 +327,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
     public function testInit_FailedDbQueryHandled()
     {
         $oConfig = $this->getMock( "oxconfig", array( "_loadVarsFromDb" ) );
-        $oEx = oxNew( "oxAdoDbException", null, null, null, null, null, null, null, null );
+        $oEx = oxNew( "oxAddoDbException", null, null, null, null, null, null, null, null );
         $oConfig->expects( $this->once() )->method( '_loadVarsFromDb')->will( $this->throwException( $oEx ) );
 
         $this->assertFalse( $oConfig->init() );

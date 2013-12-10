@@ -17,7 +17,7 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   core
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
 
@@ -2153,9 +2153,21 @@ class oxConfig extends oxSuperCfg
     /**
      * Get parsed modules
      *
+     * @deprecated since v5.1.2 (2013-12-10); Naming changed use function getModulesWithExtendedClass().
+     *
      * @return array
      */
     public function getAllModules()
+    {
+        return $this->getModulesWithExtendedClass();
+    }
+
+    /**
+     * Get parsed modules
+     *
+     * @return array
+     */
+    public function getModulesWithExtendedClass()
     {
         return $this->parseModuleChains($this->getConfigParam('aModules'));
     }

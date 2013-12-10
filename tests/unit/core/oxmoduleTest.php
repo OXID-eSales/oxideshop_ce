@@ -25,7 +25,7 @@
 require_once realpath( "." ).'/unit/OxidTestCase.php';
 require_once realpath( "." ).'/unit/test_config.inc.php';
 
-class Unit_Core_oxmoduleTest extends OxidTestCase
+class Unit_Core_oxModuleTest extends OxidTestCase
 {
     /**
      * test setup
@@ -506,6 +506,29 @@ class Unit_Core_oxmoduleTest extends OxidTestCase
 
         $this->assertTrue($oModule->activate());
         $this->assertEquals($aModulesAfter, modConfig::getInstance()->getConfigParam("aModules") );
+    }
+
+    /**
+     * 0005319: Modules which not extending anything is not active
+     *
+     * @return null
+     */
+    public function testActivate_moduleDoNotExtend_activateSuccess()
+    {
+        $oModule = $this->getProxyClass( 'oxmodule' );
+        $aModule = array(
+            'id'    => 'oxtest',
+            "files" => array(
+                "oxpsmyemptymodulemodule" => "oxps/myemptymodule/core/oxpsmyemptymodulemodule.php",
+            ),
+            'blocks'      => array(
+                array('template' => 'footer.tpl',             'block'=>'footer_main',         'file'=>'/application/views/blocks/myemptymodulefooter.tpl'),
+            ),
+        );
+        $oModule->setNonPublicVar( "_aModule", $aModule );
+
+        $this->assertTrue( $oModule->activate(), "Module should be active." );
+        $this->assertTrue( $oModule->isActive(), "Module should active after activating." );
     }
 
     /**

@@ -285,19 +285,19 @@ class Unit_Core_oxdbTest extends OxidTestCase
      */
     public function testGetModules_AddoDbExceptionHandlerSet()
     {
-        $oConfig = $this->getMock( "oxConfig", array( "getConfigParam", "isAdmin" ) );
-        $oConfig->expects( $this->once() )->method( 'getConfigParam' )->with( $this->equalTo( 'iDebug' ) )->will( $this->returnValue( 0 ) );
-        $oConfig->expects( $this->once() )->method( 'isAdmin' )->will( $this->returnValue( false ) );
+        $oConfigFile = new OxConfigFile( OX_BASE_PATH . "config.inc.php" );
+        $oConfigFile->iDebug = 0;
+        $oConfigFile->isAdmin = false;
 
-        $oDb = $this->getMock( "oxDb", array( "getConfig" ) );
-        $oDb->expects( $this->once() )->method( 'getConfig' )->will( $this->returnValue( $oConfig ) );
-        $oDb->UNITgetModules();
+        $oDb = $this->getMock( "modDb_oxDb", array( "getConfig" ) );
+        $oDb->setConfig( $oConfigFile );
+        $oDb->_getModules();
 
         $this->assertTrue( defined('ADODB_ERROR_HANDLER') );
         $this->assertEquals( "adodb_throw", ADODB_ERROR_HANDLER );
 
         global $ADODB_EXCEPTION;
-        $this->assertEquals( 'oxAddoDbException', $ADODB_EXCEPTION);
+        $this->assertEquals( 'oxAdoDbException', $ADODB_EXCEPTION);
     }
 
     /**

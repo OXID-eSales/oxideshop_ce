@@ -280,7 +280,7 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
         $oControl->expects( $this->once() )->method( '_runOnce' );
         $oControl->expects( $this->once() )->method( 'isAdmin' )->will( $this->returnValue( false ));
         $oControl->expects( $this->once() )->method( '_process' )->will( $this->throwException( new oxConnectionException() ));
-        $oControl->expects( $this->once() )->method( '_isDebugMode' )->will( $this->returnValue( true ));
+        $oControl->expects( $this->any() )->method( '_isDebugMode' )->will( $this->returnValue( true ));
 
         try {
             $oControl->start();

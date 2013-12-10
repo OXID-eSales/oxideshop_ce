@@ -137,7 +137,7 @@ class oxModule extends oxSuperCfg
             $this->_blRegistered  = true;
             $this->_blMetadata    = true;
             $this->_blFile        = false;
-            $this->_aModule['active'] = $this->isActive() || !$this->isExtended();
+            $this->_aModule['active'] = $this->isActive();
             return true;
         }
         return false;

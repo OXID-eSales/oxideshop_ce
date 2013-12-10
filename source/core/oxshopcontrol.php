@@ -710,5 +710,7 @@ class oxShopControl extends oxSuperCfg
 
             oxRegistry::getSession()->setVariable( 'cl', $sClass );
         }
+
+        return $sClass;
     }
 }

@@ -413,20 +413,21 @@ class oxModule extends oxSuperCfg
      */
     public function activate()
     {
-        if ( isset( $this->_aModule['extend'] ) && is_array( $this->_aModule['extend'] ) ) {
-
             $oConfig     = oxRegistry::getConfig();
-            $aAddModules = $this->_aModule['extend'];
+        $aDisabledModules  = $this->getDisabledModules();
             $sModuleId   = $this->getId();
 
-            $aInstalledModules = $this->getAllModules();
-            $aDisabledModules  = $this->getDisabledModules();
+        if ( $this->hasExtendClass() ) {
+            $aAddModules = $this->_aModule['extend'];
+
+            $aInstalledModules = $this->getModulesWithExtendedClass();
 
             $aModules = $this->mergeModuleArrays($aInstalledModules, $aAddModules);
             $aModules = $this->buildModuleChains($aModules);
 
             $oConfig->setConfigParam('aModules', $aModules);
             $oConfig->saveShopConfVar('aarr', 'aModules', $aModules);
+        }
 
             if ( isset($aDisabledModules) && is_array($aDisabledModules) ) {
                 $aDisabledModules = array_diff($aDisabledModules, array($sModuleId));
@@ -466,8 +467,6 @@ class oxModule extends oxSuperCfg
 
             return true;
         }
-        return false;
-    }
 
     /**
      * Deactivate extension by adding disable module class information to disabled module array

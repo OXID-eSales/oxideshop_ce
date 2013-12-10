@@ -100,7 +100,7 @@ class oxDb extends oxSuperCfg
         $iDebug = $myConfig->getConfigParam( 'iDebug' );
 
         global $ADODB_EXCEPTION;
-        $ADODB_EXCEPTION = 'oxAddoDbException';
+        $ADODB_EXCEPTION = 'oxAdoDbException';
             include_once getShopBasePath() . 'core/adodblite/adodb-exceptions.inc.php';
 
         $sModules = '';

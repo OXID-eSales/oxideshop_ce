@@ -35,7 +35,7 @@ class oxAdoDbException extends oxConnectionException
         $sUser = $oConnection->username;
         $iErrorNr = is_numeric($iErrorNr)? $iErrorNr : -1;
 
-        $sMessage = "$sDbDriver:$sFunction error: [$iErrorNr: $sErrorMsg] in $sFunction with parameters $sParam1, $sParam2 for user $sUser\n";
+        $sMessage = "$sDbDriver error: [$iErrorNr: $sErrorMsg] in $sFunction ($sParam1, $sParam2) with user $sUser\n";
 
         parent::__construct( $sMessage, $iErrorNr );
     }

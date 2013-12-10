@@ -609,7 +609,7 @@ class Unit_Core_oxdbTest extends OxidTestCase
         $this->assertEquals( "adodb_throw", ADODB_ERROR_HANDLER );
 
         global $ADODB_EXCEPTION;
-        $this->assertEquals( 'oxAddoDbException', $ADODB_EXCEPTION);
+        $this->assertEquals( 'oxAdoDbException', $ADODB_EXCEPTION);
     }
 
     /**

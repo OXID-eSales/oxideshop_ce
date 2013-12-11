@@ -173,8 +173,7 @@ $aLang = array(
 'ERROR_MESSAGE_INPUT_NOTALLFIELDS'                            => 'Bitte Wert angeben!',
 'ERROR_MESSAGE_INPUT_NOVALIDEMAIL'                            => 'Bitte geben Sie eine gültige E-Mail-Adresse ein',
 'ERROR_MESSAGE_INVITE_INCORRECTEMAILADDRESS'                  => 'Ungültige E-Mail-Adresse. Bitte überprüfen Sie die E-Mail-Adressen.',
-'ERROR_MESSAGE_MANDATES_EXCEEDED'                             => 'Die Anzahl der lizenzierten Mandanten ist überschritten. Tragen Sie bitte im Shop Admin einen gültigen Lizenzschlüssel ein oder kontaktieren Sie %s für mehr Informationen.',
-'ERROR_MESSAGE_MANDATES_EXCEEDED1'                            => 'Die Anzahl der lizenzierten Mandanten ist überschritten. Tragen Sie bitte im Shop Admin einen gültigen Lizenzschlüssel ein oder kontaktieren Sie',
+'ERROR_MESSAGE_MANDATES_EXCEEDED'                             => 'Die Anzahl der lizenzierten Mandanten ist überschritten. Tragen Sie bitte im Shop Admin einen gültigen Lizenzschlüssel ein oder kontaktieren Sie',
 'FOR_MORE_INFORMATION'                                        => 'für mehr Informationen.',
 'ERROR_MESSAGE_NOFILE'                                        => 'Keine Datei hochgeladen',
 'EXCEPTION_NOTALLOWEDTYPE'                                    => 'Verbotener Dateityp. Bitte config.inc.php anpassen, um diesen Dateityp zu erlauben.',
@@ -209,6 +208,8 @@ $aLang = array(
 'ERROR_MESSAGE_FILE_DOWNLOAD_FAILED'                          => 'Fehler beim Herunterladen der Datei.',
 'ERROR_MESSAGE_WRONG_DOWNLOAD_LINK'                           => 'Downloadlink ist nicht korrekt.',
 'ERROR_MESSAGE_INCORRECT_DATE'                                => 'Falsches Datum',
+'EXCEPTION_NOT_VALID_CURL_CONSTANT'                           => 'Ungültiger cURL Konstantenname: %s',
+'EXCEPTION_CURL_ERROR'                                        => 'cURL Fehler: %s',
 'EXPIRES_IN'                                                  => 'Läuft ab in',
 'FACEBOOK_COMMENTS'                                           => 'Facebook Kommentare',
 'FACEBOOK_FACEPILE'                                           => 'Facebook Facepile',
@@ -293,6 +294,7 @@ $aLang = array(
 'MESSAGE_COUPON_ACCUMULATION_SAME_SERIE'                      => 'Kombination mit Gutschein der gleichen Serie ist nicht erlaubt!',
 'MESSAGE_COUPON_EXPIRED'                                      => 'Gutschein abgelaufen!',
 'MESSAGE_COUPON_NOT_APPLIED_FOR_ARTICLES'                     => 'Diesen Artikeln ist kein Rabatt zugeordnet',
+'MESSAGE_DENIED_BY_SHOP_RULES'                                => 'Verweigert aufgrund von Shopregeln',
 'MESSAGE_EMAIL_ALREADY_IN_USE'                                => 'E-Mail-Adresse ist bereits vorhanden!',
 'MESSAGE_ENTER_YOUR_ADDRESS_AND_MESSAGE'                      => 'Geben Sie die Adressdaten und Ihre persönliche Nachricht ein.',
 'MESSAGE_FROM'                                                => 'Nachricht von',
@@ -770,7 +772,7 @@ $aLang = array(
 'WISHLIST_PRODUCTS'                                           => 'Diese Artikel hat sich %s gewünscht. Wenn Sie ihr/ihm eine Freude machen wollen, dann kaufen Sie einen oder mehrere von diesen Artikeln.',
 
 
-'BETA_NOTE'                                                   => 'Willkommen zur Beta ',
+'BETA_NOTE'                                                   => 'Willkommen zum Release-Kandidat ',
 'BETA_NOTE_MIDDLE'                                            => ' von OXID eShop ',
 'BETA_NOTE_FAQ'                                               => '. Häufig gestellte Fragen und Antworten sind in der %s gelistet.',
 

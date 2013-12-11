@@ -19,7 +19,6 @@
  * @package   views
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -34,12 +33,10 @@ class oxStart extends oxUBase
      */
     public function appInit()
     {
-        $myConfig = $this->getConfig();
         $this->pageStart();
 
         if ( 'oxstart' == oxConfig::getParameter( 'cl' )  || $this->isAdmin() )
             return;
-
 
     }
 

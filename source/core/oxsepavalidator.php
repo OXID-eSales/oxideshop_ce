@@ -29,15 +29,8 @@
  */
 class oxSepaValidator
 {
-
     /**
      * Business identifier code validation
-     *
-     * Structure
-     *  - 4 letters: Institution Code or bank code.
-     *  - 2 letters: ISO 3166-1 alpha-2 country code
-     *  - 2 letters or digits: location code
-     *  - 3 letters or digits: branch code, optional
      *
      * @param string $sBIC code to check
      *
@@ -45,16 +38,13 @@ class oxSepaValidator
      */
     public function isValidBIC( $sBIC )
     {
-        $sBIC = strtoupper( trim( $sBIC ) );
+        $oBICValidator = oxNew( 'oxSepaBICValidator' );
 
-        return (bool) getStr()->preg_match( "(^[A-Z]{4}[A-Z]{2}[A-Z0-9]{2}([A-Z0-9]{3})?$)", $sBIC );
+        return $oBICValidator->isValid( $sBIC );
     }
 
     /**
      * International bank account number validation
-     *
-     * An IBAN is validated by converting it into an integer and performing a basic mod-97 operation (as described in ISO 7064) on it.
-     * If the IBAN is valid, the remainder equals 1.
      *
      * @param string $sIBAN code to check
      *
@@ -62,93 +52,60 @@ class oxSepaValidator
      */
     public function isValidIBAN( $sIBAN )
     {
-        $blValid = true;
+        $oIBANValidator = oxNew( 'oxSepaIBANValidator' );
+        $oIBANValidator->setCodeLengths( $this->getIBANCodeLengths() );
 
-        $oStr = getStr();
-        $sIBAN         = strtoupper( trim( $sIBAN ) );
-        $aIBANRegistry = $this->getIBANRegistry();
-
-        // 1. Check that the total IBAN length is correct as per country. If not, the IBAN is invalid.
-        $sLangAbbr = $oStr->substr( $sIBAN, 0, 2 );
-        $iLength = $aIBANRegistry[$sLangAbbr];
-        if ( is_null( $iLength ) || $oStr->strlen( $sIBAN ) != $iLength ) {
-            $blValid = false;
-        }
-
-        // 2. Move the four initial characters to the end of the string.
-        $sInitialChars = $oStr->substr( $sIBAN, 0, 4 );
-        $sIBAN         = substr_replace( $sIBAN, '', 0, 4 );
-        $sIBAN = $sIBAN . $sInitialChars;
-
-        // 3. Replace each letter in the string with two digits, thereby expanding the string, where A = 10, B = 11, ..., Z = 35.
-        $sIBAN = str_replace(
-            array( 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' ),
-            array( 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35 ),
-            $sIBAN
-        );
-
-        // 4. Interpret the string as a decimal integer and compute the remainder of that number on division by 97.
-        $sModulus = bcmod( $sIBAN, 97 );
-        if ( (int) $sModulus != 1 ) {
-            $blValid = false;
-        }
-
-        // 5. Return validation result
-        return $blValid;
+        return $oIBANValidator->isValid( $sIBAN );
     }
 
     /**
      * Validation of IBAN registry
      *
      * @param array $aIBANRegistry
+    * @deprecated since v5.2.0 (2013-12-11); Use oxSepaIBANValidator::isCodeLengthsValid().
      *
      * @return bool
      */
     public function isValidIBANRegistry( $aIBANRegistry = null )
     {
-        $blValid = true;
+        $oIBANValidator = oxNew( 'oxSepaIBANValidator' );
 
-        // If not passed, validate default IBAN registry
         if ( is_null( $aIBANRegistry ) ) {
-            $aIBANRegistry = $this->getIBANRegistry();
-        }
-
-        if ( !is_array( $aIBANRegistry ) || empty( $aIBANRegistry ) ) {
-            $blValid = false;
-        }
-
-        foreach ( $aIBANRegistry as $sCountryAbbr => $iLength ) {
-            if ( (int) preg_match( "/^[A-Z]{2}$/", $sCountryAbbr ) === 0 ) {
-                $blValid = false;
-                break;
-            }
-            if ( !is_numeric( $iLength ) || (int) preg_match( "/\./", $iLength ) === 1 ) {
-                $blValid = false;
-                break;
+            $aIBANRegistry = $this->getIBANCodeLengths();
             }
 
+        return $oIBANValidator->isCodeLengthsValid( $aIBANRegistry );
         }
 
-        return $blValid;
-    }
 
     /**
      * Set IBAN Registry
      *
      * @param array $aIBANRegistry
+     * @deprecated since v5.2.0 (2013-12-11); Use oxSepaIBANValidator::setCodeLengths().
      *
      * @return bool
      */
     public function setIBANRegistry( $aIBANRegistry )
     {
         if ( $this->isValidIBANRegistry( $aIBANRegistry ) ) {
-            $this->_aIBANRegistry = $aIBANRegistry;
+            $this->_aIBANCodeLengths = $aIBANRegistry;
 
             return true;
         } else {
             return false;
         }
+    }
 
+    /**
+     * Get IBAN length by country data
+     * @deprecated since v5.2.0 (2013-12-11); Use oxSepaValidator::getIBANCodeLengths().
+     *
+     * @return array
+     */
+    public function getIBANRegistry()
+    {
+        return $this->_aIBANCodeLengths;
     }
 
     /**
@@ -156,15 +113,15 @@ class oxSepaValidator
      *
      * @return array
      */
-    public function getIBANRegistry()
+    public function getIBANCodeLengths()
     {
-        return $this->_aIBANRegistry;
+        return $this->_aIBANCodeLengths;
     }
 
     /**
-     * @var array IBAN Registry
+     * @var array IBAN Code Length array
      */
-    protected $_aIBANRegistry = array(
+    protected $_aIBANCodeLengths = array(
         'AL' => 28,
         'AD' => 24,
         'AT' => 20,

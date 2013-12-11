@@ -38,6 +38,7 @@ class oxStart extends oxUBase
         if ( 'oxstart' == oxConfig::getParameter( 'cl' )  || $this->isAdmin() )
             return;
 
+
     }
 
     /**
@@ -62,7 +63,7 @@ class oxStart extends oxUBase
         if ( $sTemplate ) {
             return $sTemplate;
         } else {
-            return 'start.tpl';
+            return 'message/err_unknown.tpl';
         }
     }
 

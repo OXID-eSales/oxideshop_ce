@@ -349,7 +349,7 @@ class oxModule extends oxSuperCfg
      */
     public function isExtended()
     {
-        if ( $this->hasMetadata() && !empty( $this->_aModule['extend'] ) ) {
+        if ( $this->hasMetadata() && $this->hasExtendClass() ) {
             return true;
         }
 

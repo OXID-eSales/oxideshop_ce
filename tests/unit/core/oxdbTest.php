@@ -19,7 +19,6 @@
  * @package   tests
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -279,6 +278,26 @@ class Unit_Core_oxdbTest extends OxidTestCase
         $oDb = $this->getMock( "modDb_oxDb", array( "getConfig" ) );
         $oDb->setConfig( $oConfigFile );
         $this->assertEquals( "", $oDb->_getModules() );
+    }
+
+    /**
+     * Tests whether addodb exceptions throwing is enabled
+     */
+    public function testGetModules_AddoDbExceptionHandlerSet()
+    {
+        $oConfigFile = new OxConfigFile( OX_BASE_PATH . "config.inc.php" );
+        $oConfigFile->iDebug = 0;
+        $oConfigFile->isAdmin = false;
+
+        $oDb = $this->getMock( "modDb_oxDb", array( "getConfig" ) );
+        $oDb->setConfig($oConfigFile);
+        $oDb->_getModules();
+
+        $this->assertTrue( defined('ADODB_ERROR_HANDLER') );
+        $this->assertEquals( "adodb_throw", ADODB_ERROR_HANDLER );
+
+        global $ADODB_EXCEPTION;
+        $this->assertEquals( 'oxAdoDbException', $ADODB_EXCEPTION);
     }
 
     /**

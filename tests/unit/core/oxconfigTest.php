@@ -19,7 +19,6 @@
  * @package   tests
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -314,33 +313,13 @@ class Unit_Core_oxconfigTest extends OxidTestCase
      */
     public function testInit_noConnection()
     {
+        $this->setExpectedException( 'oxConnectionException' );
+
         $oConfig = $this->getMock( "oxconfig", array( "_loadVarsFromDb" ) );
-        $oEx = oxNew( "oxConnectionException" );
+        $oEx = new oxConnectionException();
         $oConfig->expects( $this->once() )->method( '_loadVarsFromDb')->will( $this->throwException( $oEx ) );
 
-        $this->assertFalse( $oConfig->init() );
-    }
-
-    /**
-     * Testing config init - loading config vars returns no result
-     */
-    public function testInit_noValuesFromConfig()
-    {
-        $oConfig = $this->getMock( "oxconfig", array( "_loadVarsFromDb" ) );
-        $oConfig->expects( $this->once() )->method( '_loadVarsFromDb')->will( $this->returnValue( false ) );
-
-        $this->assertFalse( $oConfig->init() );
-    }
-
-    /**
-     * Testing config parameters getter
-     */
-    public function testInit_noShopId()
-    {
-        $oConfig = $this->getMock( "oxconfig", array( "getShopId" ) );
-        $oConfig->expects( $this->once() )->method( 'getShopId')->will( $this->returnValue( false ) );
-
-        $this->assertFalse( $oConfig->init() );
+        $oConfig->init();
     }
 
     /**
@@ -2589,7 +2568,6 @@ class Unit_Core_oxconfigTest extends OxidTestCase
             $this->assertEquals( $check['result'], oxRegistry::getConfig()->checkParamSpecialChars( $check['data'] ) );
         }
     }
-
 
 
 

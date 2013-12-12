@@ -797,6 +797,20 @@ class oxConfig extends oxSuperCfg
     }
 
     /**
+     * Active Shop id setter
+     *
+     * @param string $sShopId shop id
+     *
+     * @return null
+     */
+    public function setShopId( $sShopId )
+    {
+
+        $this->getSession()->setVariable( 'actshop', $sShopId );
+        $this->_iShopId = $sShopId;
+    }
+
+    /**
      * Returns active shop ID.
      *
      * @return int
@@ -807,26 +821,13 @@ class oxConfig extends oxSuperCfg
             return $this->_iShopId;
         }
 
-            $this->_iShopId = $this->getBaseShopId();
+            $this->setShopId( $this->getBaseShopId() );
 
 
         $this->getSession()->setVariable( 'actshop', $this->_iShopId );
         return $this->_iShopId;
     }
 
-
-    /**
-     * Active Shop id setter
-     *
-     * @param string $sShopId shop id
-     *
-     * @return null
-     */
-    public function setShopId( $sShopId )
-    {
-        $this->getSession()->setVariable( 'actshop', $sShopId );
-        $this->_iShopId = $sShopId;
-    }
 
 
 

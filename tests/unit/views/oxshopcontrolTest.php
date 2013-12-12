@@ -605,16 +605,5 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
         $oControl->UNITexecuteMaintenanceTasks();
     }
 
-    public function testRunOnce_ErrorReportingLevelNotChangedInTests()
-    {
-        $oControl = $this->getMock( "oxShopControl", array( "_process" ), array(), '', false );
 
-        $sOldErrorReportingLevel = error_reporting( E_DEPRECATED );
-
-        $oControl->start();
-
-        $this->assertEquals( error_reporting(), E_DEPRECATED );
-
-        error_reporting( $sOldErrorReportingLevel );
-    }
 }

@@ -88,7 +88,6 @@ class oxInputValidator extends oxSuperCfg
      * @var array
      */
     protected $_aRequiredDCFields = array( 'lsbankname',
-                                           'lsblz',
                                            'lsktonr',
                                            'lsktoinhaber'
                                          );
@@ -500,13 +499,28 @@ class oxInputValidator extends oxSuperCfg
         $mxValidationResult = true;
 
         // Check BIC / IBAN
+        /*
         if ( $oSepaValidator->isValidBIC( $aDebitInformation['lsblz'] ) ) {
             if ( !$oSepaValidator->isValidIBAN( $aDebitInformation['lsktonr'] ) ) {
                 $mxValidationResult = self::INVALID_ACCOUNT_NUMBER;
             }
         } else {
             $mxValidationResult = $this->_validateOldDebitInfo( $aDebitInformation );
+        }*/
+
+        // Check BIC / IBAN
+
+        if ( $oSepaValidator->isValidIBAN( $aDebitInformation['lsktonr'] ) ) {
+            if ( !empty( $aDebitInformation['lsblz']) &&
+                 !$oSepaValidator->isValidBIC( $aDebitInformation['lsblz'] ) ) {
+
+                $mxValidationResult = self::INVALID_BANK_CODE;
+            }
         }
+        else {
+            $mxValidationResult = $this->_validateOldDebitInfo( $aDebitInformation );
+        }
+
 
         return $mxValidationResult;
     }
@@ -521,6 +535,7 @@ class oxInputValidator extends oxSuperCfg
         $aDebitInfo = $this->_fixAccountNumber( $aDebitInfo );
 
         $mxValidationResult = true;
+
         if ( !$oStr->preg_match( "/^\d{5,8}$/", $aDebitInfo['lsblz'] ) ) {
             // Bank code is invalid
             $mxValidationResult = self::INVALID_BANK_CODE;
@@ -530,6 +545,7 @@ class oxInputValidator extends oxSuperCfg
             // Account number is invalid
             $mxValidationResult = self::INVALID_ACCOUNT_NUMBER;
         }
+
 
         return $mxValidationResult;
     }

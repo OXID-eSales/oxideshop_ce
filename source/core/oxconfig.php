@@ -105,7 +105,7 @@ class oxConfig extends oxSuperCfg
     protected $sCompileDir = null;
 
     /**
-     * Debug mode (default is 0):
+     * Debug mode (default is set depending on if it is productive mode or not):
      *  -1 = Logger Messages internal use only
      *   0 = off
      *   1 = smarty
@@ -118,7 +118,7 @@ class oxConfig extends oxSuperCfg
      *
      * @var int
      */
-    protected $iDebug = 0;
+    protected $iDebug = null;
 
     /**
      * Administrator email address, used to send critical notices
@@ -514,8 +514,8 @@ class oxConfig extends oxSuperCfg
             $this->setConfigParam( 'iDBCacheLifeTime', 3600 ); // 1 hour
         }
 
-        if ( is_null( $this->getConfigParam( 'iDebug' ) ) && !$this->isProductiveMode() ) {
-            $this->setConfigParam( 'iDebug', -1 );
+        if ( is_null( $this->getConfigParam( 'iDebug' ) ) ) {
+            $this->setConfigParam( 'iDebug', $this->isProductiveMode()? 0 : -1 );
         }
 
         $sCoreDir = $this->getConfigParam( 'sShopDir' );

@@ -413,7 +413,8 @@ class oxModule extends oxSuperCfg
      */
     public function activate()
     {
-            $oConfig     = oxRegistry::getConfig();
+        if ( $this->hasMetadata() || $this->hasExtendClass() ) {
+            $oConfig     = $this->getConfig();
         $aDisabledModules  = $this->getDisabledModules();
             $sModuleId   = $this->getId();
 
@@ -467,6 +468,8 @@ class oxModule extends oxSuperCfg
 
             return true;
         }
+        return false;
+    }
 
     /**
      * Deactivate extension by adding disable module class information to disabled module array

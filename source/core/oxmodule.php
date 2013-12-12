@@ -363,7 +363,7 @@ class oxModule extends oxSuperCfg
     {
         return isset( $this->_aModule['extend'] )
             && is_array( $this->_aModule['extend'] )
-            && count( $this->_aModule['extend'] ) > 0;
+            && !empty( $this->_aModule['extend'] );
     }
 
     /**

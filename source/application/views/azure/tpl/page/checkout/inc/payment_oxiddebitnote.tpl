@@ -16,7 +16,7 @@
             </li>
             <li [{if $iPayError == -4}]class="oxInValid"[{/if}]>
                 <label>[{ oxmultilang ident="BANK_CODE" suffix="COLON" }]</label>
-                <input type="text" class="js-oxValidate js-oxValidate_notEmpty" size="20" maxlength="64" name="dynvalue[lsblz]" autocomplete="off" value="[{ $dynvalue.lsblz }]">
+                <input type="text" class="js-oxValidate" size="20" maxlength="64" name="dynvalue[lsblz]" autocomplete="off" value="[{ $dynvalue.lsblz }]">
                 <p class="oxValidateError">
                     <span class="js-oxError_notEmpty">[{ oxmultilang ident="ERROR_MESSAGE_INPUT_NOTALLFIELDS" }]</span>
                 </p>

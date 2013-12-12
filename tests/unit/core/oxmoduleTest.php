@@ -516,19 +516,30 @@ class Unit_Core_oxModuleTest extends OxidTestCase
     public function testActivate_moduleDoNotExtend_activateSuccess()
     {
         $oModule = $this->getProxyClass( 'oxmodule' );
+        $sModuleId = 'oxtest';
         $aModule = array(
-            'id'    => 'oxtest',
-            "files" => array(
-                "oxpsmyemptymodulemodule" => "oxps/myemptymodule/core/oxpsmyemptymodulemodule.php",
+            'id'    => $sModuleId,
+            'files' => array(
+                'oxpsmyemptymodulemodule' => 'oxps/myemptymodule/core/oxpsmyemptymodulemodule.php',
             ),
             'blocks'      => array(
                 array('template' => 'footer.tpl',             'block'=>'footer_main',         'file'=>'/application/views/blocks/myemptymodulefooter.tpl'),
             ),
         );
-        $oModule->setNonPublicVar( "_aModule", $aModule );
+        $oModule->setNonPublicVar( '_aModule', $aModule );
+        $oModule->setNonPublicVar( '_blMetadata', true );
 
-        $this->assertTrue( $oModule->activate(), "Module should be active." );
-        $this->assertTrue( $oModule->isActive(), "Module should active after activating." );
+        $aDisabledModules = $this->getConfigParam( 'aDisabledModules' );
+        $aDisabledModules[] = $sModuleId;
+        $this->getConfig()->saveShopConfVar('arr', 'aDisabledModules', $aDisabledModules);
+
+        $this->assertFalse( $oModule->isActive(), 'Module should not be active before activating.' );
+        $this->assertTrue( $oModule->activate(), 'Module should activate successfully.' );
+
+        $aDisabledModules = $this->getConfigParam( 'aDisabledModules' );
+        $this->assertFalse( in_array( $sModuleId, $aDisabledModules ), 'Module should be removed from not active module list.' );
+
+        $this->assertTrue( $oModule->isActive(), 'Module should be active after activating.' );
     }
 
     /**

@@ -23,7 +23,7 @@
  */
 
 /**
- * Class for validating input
+ * Calls for validating input
  *
  */
 class oxInputValidator extends oxSuperCfg
@@ -88,7 +88,6 @@ class oxInputValidator extends oxSuperCfg
      * @var array
      */
     protected $_aRequiredDCFields = array( 'lsbankname',
-                                           'lsblz',
                                            'lsktonr',
                                            'lsktoinhaber'
                                          );
@@ -96,6 +95,7 @@ class oxInputValidator extends oxSuperCfg
    /**
      * Class constructor. The constructor is defined in order to be possible to call parent::__construct() in modules.
      *
+     * @return null;
      */
     public function __construct()
     {
@@ -104,25 +104,13 @@ class oxInputValidator extends oxSuperCfg
     /**
      * Returns oxInputValidator instance
      *
+     * @deprecated since v5.0 (2012-08-10); Use oxRegistry::get("oxInputValidator") instead
+     *
      * @return oxInputValidator
      */
     static function getInstance()
     {
-        if ( defined('OXID_PHP_UNIT')) {
-            if ( ($oClassMod = modInstances::getMod(__CLASS__))  && is_object($oClassMod) ) {
-                return $oClassMod;
-            } else {
-                 $inst = oxNew( 'oxInputValidator' );
-                 modInstances::addMod( __CLASS__, $inst );
-                 return $inst;
-            }
-        }
-
-        if ( !isset( self::$_instance ) ) {
-            // allow modules
-            self::$_instance = oxNew( 'oxInputValidator' );
-        }
-        return self::$_instance;
+        return oxRegistry::get("oxInputValidator");
     }
 
     /**
@@ -144,7 +132,7 @@ class oxInputValidator extends oxSuperCfg
             throw $oEx;
         }
 
-        if ( !oxConfig::getInstance()->getConfigParam( 'blAllowUnevenAmounts' ) ) {
+        if ( !oxRegistry::getConfig()->getConfigParam( 'blAllowUnevenAmounts' ) ) {
             $dAmount = round( ( string ) $dAmount );
         }
 
@@ -158,7 +146,7 @@ class oxInputValidator extends oxSuperCfg
      * Checks if user name does not break logics:
      *  - if user wants to UPDATE his login name, performing check if
      *    user entered correct password
-     *  - additionally checking for user name duplicates. This is usually
+     *  - additionally checking for user name dublicates. This is usually
      *    needed when creating new users.
      * On any error exception is thrown.
      *
@@ -198,7 +186,7 @@ class oxInputValidator extends oxSuperCfg
         if ( $oUser->checkIfEmailExists( $sLogin ) ) {
             //if exists then we do now allow to do that
             $oEx = oxNew( 'oxUserException' );
-            $oLang = oxLang::getInstance();
+            $oLang = oxRegistry::getLang();
             $oEx->setMessage( sprintf( $oLang->translateString( 'EXCEPTION_USER_USEREXISTS', $oLang->getTplLanguage() ), $sLogin ) );
 
             return $this->_addValidationError( "oxuser__oxusername", $oEx );
@@ -225,7 +213,7 @@ class oxInputValidator extends oxSuperCfg
         }
 
         // invalid email address ?
-        if ( !oxUtils::getInstance()->isValidEmail( $sEmail ) ) {
+        if ( !oxRegistry::getUtils()->isValidEmail( $sEmail ) ) {
             $oEx = oxNew( 'oxInputException' );
             $oEx->setMessage( 'EXCEPTION_INPUT_NOVALIDEMAIL' );
 
@@ -240,7 +228,7 @@ class oxInputValidator extends oxSuperCfg
      * @param oxuser $oUser         active user
      * @param string $sNewPass      new user password
      * @param string $sConfPass     retyped user password
-     * @param bool   $blCheckLenght option to check password length
+     * @param bool   $blCheckLenght option to check password lenght
      *
      * @return null
      */
@@ -314,7 +302,7 @@ class oxInputValidator extends oxSuperCfg
         // checking
         foreach ( $aMustFields as $sMustField ) {
 
-            // A. not nice, but we keep all fields info in one config array, and must support backwards compatibility.
+            // A. not nice, but we keep all fields info in one config array, and must support baskwards compat.
             if ( !$blCheckDel && strpos( $sMustField, 'oxaddress__' ) === 0 ) {
                 continue;
             }
@@ -511,13 +499,28 @@ class oxInputValidator extends oxSuperCfg
         $mxValidationResult = true;
 
         // Check BIC / IBAN
+        /*
         if ( $oSepaValidator->isValidBIC( $aDebitInformation['lsblz'] ) ) {
             if ( !$oSepaValidator->isValidIBAN( $aDebitInformation['lsktonr'] ) ) {
                 $mxValidationResult = self::INVALID_ACCOUNT_NUMBER;
             }
         } else {
             $mxValidationResult = $this->_validateOldDebitInfo( $aDebitInformation );
+        }*/
+
+        // Check BIC / IBAN
+
+        if ( $oSepaValidator->isValidIBAN( $aDebitInformation['lsktonr'] ) ) {
+            if ( !empty( $aDebitInformation['lsblz']) &&
+                 !$oSepaValidator->isValidBIC( $aDebitInformation['lsblz'] ) ) {
+
+                $mxValidationResult = self::INVALID_BANK_CODE;
+            }
         }
+        else {
+            $mxValidationResult = $this->_validateOldDebitInfo( $aDebitInformation );
+        }
+
 
         return $mxValidationResult;
     }
@@ -532,6 +535,7 @@ class oxInputValidator extends oxSuperCfg
         $aDebitInfo = $this->_fixAccountNumber( $aDebitInfo );
 
         $mxValidationResult = true;
+
         if ( !$oStr->preg_match( "/^\d{5,8}$/", $aDebitInfo['lsblz'] ) ) {
             // Bank code is invalid
             $mxValidationResult = self::INVALID_BANK_CODE;
@@ -541,6 +545,7 @@ class oxInputValidator extends oxSuperCfg
             // Account number is invalid
             $mxValidationResult = self::INVALID_ACCOUNT_NUMBER;
         }
+
 
         return $mxValidationResult;
     }

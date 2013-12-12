@@ -435,6 +435,39 @@ class Unit_Core_oxModuleTest extends OxidTestCase
         $this->assertFalse($oModule->isExtended());
     }
 
+    public function testHasExtendClass_hasExtendedClass_true()
+    {
+        $oModuleHandler = $this->getProxyClass( 'oxmodule') ;
+        $aModule  = array( 'id' => '__test', 'extend' => array( 'oxtest1' => 'test1/mytest1' ) );
+
+        $oModuleHandler->setNonPublicVar( "_aModule", $aModule );
+        $oModuleHandler->setNonPublicVar( "_blMetadata", false );
+
+        $this->assertTrue( $oModuleHandler->hasExtendClass(), 'Module has extended class, so methods should return true.' );
+    }
+
+    public function testHasExtendClass_hasNoExtendClassArray_false()
+    {
+        $oModuleHandler = $this->getProxyClass( 'oxmodule') ;
+        $aModule  = array( 'id' => '__test' );
+
+        $oModuleHandler->setNonPublicVar( "_aModule", $aModule );
+        $oModuleHandler->setNonPublicVar( "_blMetadata", false );
+
+        $this->assertFalse( $oModuleHandler->hasExtendClass(), 'Module has no extended class, so methods should return false.' );
+    }
+
+    public function testHasExtendClass_hasEmptyExtendedClassArray_false()
+    {
+        $oModuleHandler = $this->getProxyClass( 'oxmodule') ;
+        $aModule  = array( 'id' => '__test', 'extend' => array() );
+
+        $oModuleHandler->setNonPublicVar( "_aModule", $aModule );
+        $oModuleHandler->setNonPublicVar( "_blMetadata", false );
+
+        $this->assertFalse( $oModuleHandler->hasExtendClass(), 'Module has no extended class, so methods should return false.' );
+    }
+
     /**
      * oxmodule::activate() test case, empty array
      *

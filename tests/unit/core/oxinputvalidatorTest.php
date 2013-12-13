@@ -861,6 +861,26 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
     }
 
     /**
+     * Testing validatePaymentInputData with OldBankCodeCorrect and OldAccountNumberCorrect
+     * expecting NoError
+     *
+     * @dataProvider providerValidatePaymentInputData_OldBankCodeCorrectOldAccountNumberCorrect_NoError
+     * expecting ErrorBankAccount
+     *
+     * @param $sBankCode
+     * @param $sAccountNumber
+     */
+    public function testValidatePaymentInputData_OldBankCodeCorrectOldAccountNumberCorrectOldBankInfoNotAllowed_Error( $sBankCode, $sAccountNumber )
+    {
+        $this->setConfigParam( 'blDebitOldBankInfoNotAllowed', true );
+
+        $aDynValue = $this->_getBankData( $sBankCode, $sAccountNumber );
+
+        $oValidator = new oxInputValidator();
+        $this->assertSame( $this->_getAccountNumberErrorNo(), $oValidator->validatePaymentInputData( "oxiddebitnote", $aDynValue ), 'Error should appear as old bank information not allowed.' );
+    }
+
+    /**
      * Data provider for testValidatePaymentInputData_BankCodeOldCorrectAccountNumberIncorrect_ErrorAccountNumber
      *
      * @return array
@@ -1047,7 +1067,25 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
         $oValidationResult = $oValidator->validatePaymentInputData( "oxiddebitnote", $aDynValue );
 
         $sErrorBankCodeNo = $this->_getBankCodeErrorNo();
-        $this->assertSame($sErrorBankCodeNo, $oValidationResult, 'Should validate as bank code error.' );
+        $this->assertSame( $sErrorBankCodeNo, $oValidationResult, 'Should validate as bank code error.' );
+    }
+
+    /**
+     * Testing validatePaymentInputData with SepaBankCodeCorrect and OldAccountNumberCorrect when old bank info not allowed.
+     * expecting ErrorBankAccount
+     */
+    public function testValidatePaymentInputData_SepaBankCodeCorrectOldAccountNumberCorrectOldBankInfoNotAllowed_ErrorAccountNumber()
+    {
+        $this->setConfigParam( 'blDebitOldBankInfoNotAllowed', true );
+
+        $sBankCode = $this->_getSepaBankCode();
+        $sAccountNumber = $this->_getOldAccountNumber();
+        $aDynValue = $this->_getBankData( $sBankCode, $sAccountNumber );
+
+        $oValidator = new oxInputValidator();
+        $oValidationResult = $oValidator->validatePaymentInputData( "oxiddebitnote", $aDynValue );
+
+        $this->assertSame( $this->_getAccountNumberErrorNo(), $oValidationResult, 'Error should appear as old bank information not allowed.' );
     }
 
     /**

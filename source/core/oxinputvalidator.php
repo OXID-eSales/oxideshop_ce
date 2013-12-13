@@ -104,13 +104,25 @@ class oxInputValidator extends oxSuperCfg
     /**
      * Returns oxInputValidator instance
      *
-     * @deprecated since v5.0 (2012-08-10); Use oxRegistry::get("oxInputValidator") instead
-     *
      * @return oxInputValidator
      */
     static function getInstance()
     {
-        return oxRegistry::get("oxInputValidator");
+        if ( defined('OXID_PHP_UNIT')) {
+            if ( ($oClassMod = modInstances::getMod(__CLASS__))  && is_object($oClassMod) ) {
+                return $oClassMod;
+            } else {
+                 $inst = oxNew( 'oxInputValidator' );
+                 modInstances::addMod( __CLASS__, $inst );
+                 return $inst;
+            }
+        }
+
+        if ( !isset( self::$_instance ) ) {
+            // allow modules
+            self::$_instance = oxNew( 'oxInputValidator' );
+        }
+        return self::$_instance;
     }
 
     /**
@@ -135,7 +147,7 @@ class oxInputValidator extends oxSuperCfg
             throw $oEx;
         }
 
-        if ( !oxRegistry::getConfig()->getConfigParam( 'blAllowUnevenAmounts' ) ) {
+        if ( !oxConfig::getInstance()->getConfigParam( 'blAllowUnevenAmounts' ) ) {
             $dAmount = round( ( string ) $dAmount );
         }
 
@@ -189,7 +201,7 @@ class oxInputValidator extends oxSuperCfg
         if ( $oUser->checkIfEmailExists( $sLogin ) ) {
             //if exists then we do now allow to do that
             $oEx = oxNew( 'oxUserException' );
-            $oLang = oxRegistry::getLang();
+            $oLang = oxLang::getInstance();
             $oEx->setMessage( sprintf( $oLang->translateString( 'EXCEPTION_USER_USEREXISTS', $oLang->getTplLanguage() ), $sLogin ) );
 
             return $this->_addValidationError( "oxuser__oxusername", $oEx );
@@ -216,7 +228,7 @@ class oxInputValidator extends oxSuperCfg
         }
 
         // invalid email address ?
-        if ( !oxRegistry::getUtils()->isValidEmail( $sEmail ) ) {
+        if ( !oxUtils::getInstance()->isValidEmail( $sEmail ) ) {
             $oEx = oxNew( 'oxInputException' );
             $oEx->setMessage( 'EXCEPTION_INPUT_NOVALIDEMAIL' );
 

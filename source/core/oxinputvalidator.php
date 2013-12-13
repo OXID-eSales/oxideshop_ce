@@ -127,6 +127,9 @@ class oxInputValidator extends oxSuperCfg
         $dAmount = str_replace( ',', '.', $dAmount );
 
         if ( !is_numeric( $dAmount ) || $dAmount < 0) {
+            /**
+             * @var oxArticleInputException $oEx
+             */
             $oEx = oxNew( 'oxArticleInputException' );
             $oEx->setMessage('EXCEPTION_INPUT_INVALIDAMOUNT');
             throw $oEx;
@@ -143,14 +146,14 @@ class oxInputValidator extends oxSuperCfg
     }
 
     /**
-     * Checks if user name does not break logics:
+     * Checks if user name does not break logic:
      *  - if user wants to UPDATE his login name, performing check if
      *    user entered correct password
-     *  - additionally checking for user name dublicates. This is usually
+     *  - additionally checking for user name duplicates. This is usually
      *    needed when creating new users.
      * On any error exception is thrown.
      *
-     * @param oxuser $oUser       active user
+     * @param oxUser $oUser       active user
      * @param string $sLogin      user preferred login name
      * @param array  $aInvAddress user information
      *
@@ -197,7 +200,7 @@ class oxInputValidator extends oxSuperCfg
      * Checks if email (used as login) is not empty and is
      * valid.
      *
-     * @param oxuser $oUser  active user
+     * @param oxUser $oUser  active user
      * @param string $sEmail user email/login
      *
      * @return null
@@ -225,17 +228,17 @@ class oxInputValidator extends oxSuperCfg
      * Checking if user password is fine. In case of error
      * exception is thrown
      *
-     * @param oxuser $oUser         active user
+     * @param oxUser $oUser         active user
      * @param string $sNewPass      new user password
      * @param string $sConfPass     retyped user password
-     * @param bool   $blCheckLenght option to check password lenght
+     * @param bool   $blCheckLength option to check password length
      *
      * @return null
      */
-    public function checkPassword( $oUser, $sNewPass, $sConfPass, $blCheckLenght = false )
+    public function checkPassword( $oUser, $sNewPass, $sConfPass, $blCheckLength = false )
     {
         //  no password at all
-        if ( $blCheckLenght && getStr()->strlen( $sNewPass ) == 0 ) {
+        if ( $blCheckLength && getStr()->strlen( $sNewPass ) == 0 ) {
             $oEx = oxNew( 'oxInputException' );
             $oEx->setMessage('EXCEPTION_INPUT_EMPTYPASS');
 
@@ -243,7 +246,7 @@ class oxInputValidator extends oxSuperCfg
         }
 
         //  password is too short ?
-        if ( $blCheckLenght &&  getStr()->strlen( $sNewPass ) < 6 ) {
+        if ( $blCheckLength &&  getStr()->strlen( $sNewPass ) < 6 ) {
             $oEx = oxNew( 'oxInputException' );
             $oEx->setMessage('EXCEPTION_INPUT_PASSTOOSHORT');
 
@@ -263,7 +266,7 @@ class oxInputValidator extends oxSuperCfg
      * Checking if all required fields were filled. In case of error
      * exception is thrown
      *
-     * @param oxuser $oUser       active user
+     * @param oxUser $oUser       active user
      * @param array  $aInvAddress billing address
      * @param array  $aDelAddress delivery address
      *
@@ -302,7 +305,7 @@ class oxInputValidator extends oxSuperCfg
         // checking
         foreach ( $aMustFields as $sMustField ) {
 
-            // A. not nice, but we keep all fields info in one config array, and must support baskwards compat.
+            // A. not nice, but we keep all fields info in one config array, and must support backward compatibility.
             if ( !$blCheckDel && strpos( $sMustField, 'oxaddress__' ) === 0 ) {
                 continue;
             }
@@ -321,7 +324,7 @@ class oxInputValidator extends oxSuperCfg
     /**
      * Checks if all values are filled up
      *
-     * @param oxuser $oUser        active user
+     * @param oxUser $oUser        active user
      * @param string $sFieldName   checking field name
      * @param array  $aFieldValues field values
      *
@@ -342,7 +345,7 @@ class oxInputValidator extends oxSuperCfg
     /**
      * Checks if user defined countries (billing and delivery) are active
      *
-     * @param oxuser $oUser       active user
+     * @param oxUser $oUser       active user
      * @param array  $aInvAddress billing address info
      * @param array  $aDelAddress delivery address info
      *
@@ -377,7 +380,7 @@ class oxInputValidator extends oxSuperCfg
      * Checks if user passed VAT id is valid. Exception is thrown
      * if id is not valid
      *
-     * @param oxuser $oUser       active user
+     * @param oxUser $oUser       active user
      * @param array  $aInvAddress user input array
      *
      * @return null
@@ -499,17 +502,6 @@ class oxInputValidator extends oxSuperCfg
         $mxValidationResult = true;
 
         // Check BIC / IBAN
-        /*
-        if ( $oSepaValidator->isValidBIC( $aDebitInformation['lsblz'] ) ) {
-            if ( !$oSepaValidator->isValidIBAN( $aDebitInformation['lsktonr'] ) ) {
-                $mxValidationResult = self::INVALID_ACCOUNT_NUMBER;
-            }
-        } else {
-            $mxValidationResult = $this->_validateOldDebitInfo( $aDebitInformation );
-        }*/
-
-        // Check BIC / IBAN
-
         if ( $oSepaValidator->isValidIBAN( $aDebitInformation['lsktonr'] ) ) {
             if ( !empty( $aDebitInformation['lsblz']) &&
                  !$oSepaValidator->isValidBIC( $aDebitInformation['lsblz'] ) ) {

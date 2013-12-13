@@ -333,29 +333,6 @@ function _groupExp(el) {
                 <div class="spacer"></div>
             </dl>
 
-
-            <!--
-            <dl>
-                <dt>
-                    <input type=text class="txt" name=confstrs[iSessionTimeout] value="[{$confstrs.iSessionTimeout}]" [{ $readonly }]>
-                </dt>
-                <dd>
-                    [{ oxmultilang ident="SHOP_SYSTEM_SESSIONTIMEOUT" }]
-                </dd>
-                <div class="spacer"></div>
-            </dl>
-
-            <dl>
-                <dt>
-                    <input type=text class="txt" name=confstrs[iSessionTimeoutAdmin] value="[{$confstrs.iSessionTimeoutAdmin }]" [{ $readonly }]>
-                </dt>
-                <dd>
-                    [{ oxmultilang ident="SHOP_SYSTEM_SESSIONTIMEOUTADMIN" }]
-                </dd>
-                <div class="spacer"></div>
-            </dl>
-            -->
-
          </div>
     </div>
 [{/block}]

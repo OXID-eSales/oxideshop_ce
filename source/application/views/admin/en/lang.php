@@ -1251,6 +1251,7 @@ $aLang = array(
 'SHOP_CONFIG_DOWNLOADS'                                    => 'Enable downloadable products',
 'SHOP_CONFIG_DOWNLOADS_PATH'                               => 'Path to files for downloadable products',
 'SHOP_CONFIG_CONFIRMCOOKIE'                                => 'Customers have to confirm the usage of cookies',
+'SHOP_CONFIG_DEBIT_OLD_BANK_INFORMATION_NOT_ALLOWED'       => '[TR]Disable acceptance of non SEPA bank information',
 'SHOP_SYSTEM_ATTRIBUTESPERCENT'                            => 'Number of equal Attributes for similar Products (%)',
 'SHOP_SYSTEM_DEFAULTIMAGEQUALITY'                          => 'Picture Quality - from 0 (poor Quality, small File Size) to 100 (best Quality, large File Size)',
 'SHOP_SYSTEM_DENIEDDYNGROUPS'                              => 'Prohibited User Groups for dynamic User Group assignment using "dgr" URL param',
@@ -1869,6 +1870,7 @@ $aLang = array(
 'SHOP_OPTIONS_GROUP_INVITATIONS'                           => 'Invitations',
 'SHOP_OPTIONS_GROUP_FACEBOOK'                              => 'Facebook',
 'SHOP_OPTIONS_GROUP_SHOP_DOWNLOADABLEARTICLES'             => 'Downloadable products',
+'SHOP_OPTIONS_BANK_INFORMATION'                            => '[TR]Bank information',
 
 'PROMOTION_USERS_SETGROUPS'                                => 'Assigned User Groups',
 'PROMOTION_LIST_ALL'                                       => 'All',

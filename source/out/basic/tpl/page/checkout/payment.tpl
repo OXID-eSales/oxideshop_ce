@@ -60,6 +60,10 @@
     <br><div class="errorbox">[{ oxmultilang ident="PAYMENT_NOSHIPPINGFOUND" }]</div>
   [{ elseif $iPayError == -3}]
     <br><div class="errorbox">[{ oxmultilang ident="PAYMENT_SELECTANOTHERPAYMENT" }]</div>
+  [{elseif $iPayError == -4}]
+    <br><div class="errorbox">[{ oxmultilang ident="MESSAGE_PAYMENT_BANK_CODE_INVALID" }]</div>
+  [{elseif $iPayError == -5}]
+    <br><div class="errorbox">[{ oxmultilang ident="MESSAGE_PAYMENT_ACCOUNT_NUMBER_INVALID" }]</div>
   [{/if}]
 
 
@@ -118,7 +122,7 @@
                       <td></td>
                       <td><label>[{ oxmultilang ident="PAYMENT_NUMBER" }]</label></td>
                       <td>
-                        <input type="text" class="payment_text" size="20" maxlength="64" name="dynvalue[kknumber]" value="[{ $dynvalue.kknumber }]">
+                        <input type="text" class="payment_text" size="20" maxlength="64" name="dynvalue[kknumber]" autocomplete="off" value="[{ $dynvalue.kknumber }]">
                       </td>
                     </tr>
                     <tr onclick="oxid.form.select('paymentid',[{$inptcounter}]);">
@@ -159,7 +163,7 @@
                       <td></td>
                       <td valign="top"><label>[{ oxmultilang ident="PAYMENT_SECURITYCODE" }]</label></td>
                       <td>
-                        <input type="text" class="payment_text" size="20" maxlength="64" name="dynvalue[kkpruef]" value="[{ $dynvalue.kkpruef }]"><br>
+                        <input type="text" class="payment_text" size="20" maxlength="64" name="dynvalue[kkpruef]" autocomplete="off" value="[{ $dynvalue.kkpruef }]"><br>
                         <div class="fs10 def_color_1">[{ oxmultilang ident="PAYMENT_SECURITYCODEDESCRIPTION" }]</div>
                       </td>
                     </tr>
@@ -177,12 +181,12 @@
                     <tr onclick="oxid.form.select('paymentid',[{$inptcounter}]);">
                       <td></td>
                       <td><label>[{ oxmultilang ident="PAYMENT_ROUTINGNUMBER" }]</label></td>
-                      <td><input type="text" size="20" maxlength="64" name="dynvalue[lsblz]" value="[{ $dynvalue.lsblz }]"></td>
+                      <td><input type="text" size="20" maxlength="64" name="dynvalue[lsblz]" autocomplete="off" value="[{ $dynvalue.lsblz }]"></td>
                     </tr>
                     <tr onclick="oxid.form.select('paymentid',[{$inptcounter}]);">
                       <td></td>
                       <td><label>[{ oxmultilang ident="PAYMENT_ACCOUNTNUMBER" }]</label></td>
-                      <td><input type="text" size="20" maxlength="64" name="dynvalue[lsktonr]" value="[{ $dynvalue.lsktonr }]"></td>
+                      <td><input type="text" size="20" maxlength="64" name="dynvalue[lsktonr]" autocomplete="off" value="[{ $dynvalue.lsktonr }]"></td>
                     </tr>
                     <tr onclick="oxid.form.select('paymentid',[{$inptcounter}]);">
                       <td></td>

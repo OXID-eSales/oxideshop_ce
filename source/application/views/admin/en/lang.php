@@ -2124,7 +2124,6 @@ $aLang = array(
 'OLC_ERROR_RESPONSE_UNEXPECTED'                            => 'Service unavailable, try again later... If this persists, please check that your shop can make outgoing connections.',
 
 'OMVN_ERROR_REQUEST_FAILED'                                => 'Service unavailable, try again later... If this persists, please check that your shop can make outgoing connections.',
-
 'VERSION_UPDATE_LINK'                                         => 'http://www.oxid-esales.com/en/support-services/documentation-and-help/oxid-eshop/installation/oxid-eshop-update-installation/preparing-update.html',
 );
 

@@ -72,6 +72,10 @@
                 <div class="status error">[{ oxmultilang ident="PAGE_CHECKOUT_PAYMENT_NOSHIPPINGFOUND" }]</div>
             [{ elseif $iPayError == -3}]
                 <div class="status error">[{ oxmultilang ident="PAGE_CHECKOUT_PAYMENT_SELECTANOTHERPAYMENT" }]</div>
+            [{elseif $iPayError == -4}]
+                <div class="status error">[{ oxmultilang ident="MESSAGE_PAYMENT_BANK_CODE_INVALID" }]</div>
+            [{elseif $iPayError == -5}]
+                <div class="status error">[{ oxmultilang ident="MESSAGE_PAYMENT_ACCOUNT_NUMBER_INVALID" }]</div>
             [{/if}]
         [{/block}]
 

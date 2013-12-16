@@ -509,7 +509,7 @@ class oxInputValidator extends oxSuperCfg
             }
         } else {
             $mxValidationResult = self::INVALID_ACCOUNT_NUMBER;
-            if ( !oxRegistry::getConfig()->getConfigParam( 'blDebitOldBankInfoNotAllowed' ) ) {
+            if ( !oxRegistry::getConfig()->getConfigParam( 'blSkipDebitOldBankInfo' ) ) {
             $mxValidationResult = $this->_validateOldDebitInfo( $aDebitInformation );
         }
         }

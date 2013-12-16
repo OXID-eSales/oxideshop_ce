@@ -872,7 +872,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
      */
     public function testValidatePaymentInputData_OldBankCodeCorrectOldAccountNumberCorrectOldBankInfoNotAllowed_Error( $sBankCode, $sAccountNumber )
     {
-        $this->setConfigParam( 'blDebitOldBankInfoNotAllowed', true );
+        $this->setConfigParam( 'blSkipDebitOldBankInfo', true );
 
         $aDynValue = $this->_getBankData( $sBankCode, $sAccountNumber );
 
@@ -1076,7 +1076,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
      */
     public function testValidatePaymentInputData_SepaBankCodeCorrectOldAccountNumberCorrectOldBankInfoNotAllowed_ErrorAccountNumber()
     {
-        $this->setConfigParam( 'blDebitOldBankInfoNotAllowed', true );
+        $this->setConfigParam( 'blSkipDebitOldBankInfo', true );
 
         $sBankCode = $this->_getSepaBankCode();
         $sAccountNumber = $this->_getOldAccountNumber();

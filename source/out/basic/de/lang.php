@@ -19,7 +19,6 @@
  * @package   lang
  * @copyright (C) OXID eSales AG 2003-2013
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 
@@ -229,7 +228,7 @@ $aLang = array(
 'ORDER_VERIFYYOURINPUT'                                       => "Bitte überprüfen Sie Ihre Eingaben!",
 'ORDER_WRAPPINGTAX1'                                          => "zzgl. MwSt.",
 'ORDER_YOURMESSAGE'                                           => "Ihr Text:",
-'PAYMENT_ACCOUNTNUMBER'                                       => "Kontonummer:",
+'PAYMENT_ACCOUNTNUMBER'                                       => "Kontonummer oder IBAN:",
 'PAYMENT_COMLETEALLFIELDS'                                    => "Bitte alle Felder richtig ausfüllen!",
 'PAYMENT_EMPTY_TEXT'                                          => '<p>Derzeit ist keine Versandart für dieses Land definiert.</p> <p>Wir werden versuchen, Liefermöglichkeiten zu finden und Sie über die Versandkosten informieren.</p>',
 'PAYMENT_INCLUDEVAT'                                          => "inkl. MwSt.",

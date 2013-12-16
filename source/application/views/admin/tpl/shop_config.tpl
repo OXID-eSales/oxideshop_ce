@@ -1288,8 +1288,8 @@ function showInvitations()
             <a href="#" onclick="_groupExp(this);return false;" class="rc"><b>[{ oxmultilang ident="SHOP_OPTIONS_BANK_INFORMATION" }]</b></a>
             <dl>
                 <dt>
-                    <input type=hidden name=confbools[blDebitOldBankInfoNotAllowed] value=false>
-                    <input type=checkbox name=confbools[blDebitOldBankInfoNotAllowed] value=true  [{if ($confbools.blDebitOldBankInfoNotAllowed)}]checked[{/if}] [{ $readonly}]>
+                    <input type=hidden name=confbools[blSkipDebitOldBankInfo] value=false>
+                    <input type=checkbox name=confbools[blSkipDebitOldBankInfo] value=true  [{if ($confbools.blSkipDebitOldBankInfo)}]checked[{/if}] [{ $readonly}]>
                     [{ oxinputhelp ident="HELP_SHOP_CONFIG_AUTOSEARCHONCAT" }]
                 </dt>
                 <dd>

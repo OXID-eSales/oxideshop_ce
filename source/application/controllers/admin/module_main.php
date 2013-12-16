@@ -50,8 +50,10 @@ class Module_Main extends oxAdminDetails
 
         if ( $sModuleId ) {
             if ( $oModule->load( $sModuleId ) ) {
+                $iLang = oxRegistry::getLang()->getTplLanguage();
+
                 $this->_aViewData["oModule"]     =  $oModule;
-                $this->_aViewData["sModuleName"] = basename( $oModule->getInfo('title') );
+                $this->_aViewData["sModuleName"] = basename( $oModule->getInfo( "title", $iLang ) );
                 $this->_aViewData["sModuleId"]   = str_replace( "/", "_", $oModule->getModulePath() );
             } else {
                 oxRegistry::get("oxUtilsView")->addErrorToDisplay( new oxException('EXCEPTION_MODULE_NOT_LOADED') );

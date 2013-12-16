@@ -680,7 +680,7 @@ class oxModule extends oxSuperCfg
     /**
      * Get parsed modules
      *
-     * @deprecated since v5.1.2 (2013-12-10); Naming changed use function getModulesWithExtendedClass().
+     * @deprecated since v5.0.11 (2014-1-8); Naming changed use function getModulesWithExtendedClass().
      *
      * @return array
      */

@@ -15,14 +15,26 @@
                 </p>
             </li>
             <li [{if $iPayError == -4}]class="oxInValid"[{/if}]>
-                <label>[{ oxmultilang ident="BANK_CODE" suffix="COLON" }]</label>
+                <label>
+                [{if $oView->isOldDebitValidationEnabled()}]
+                    [{ oxmultilang ident="BANK_CODE" suffix="COLON" }]
+                [{else}]
+                    [{ oxmultilang ident="BIC" suffix="COLON" }]
+                [{/if}]
+                </label>
                 <input type="text" class="js-oxValidate" size="20" maxlength="64" name="dynvalue[lsblz]" autocomplete="off" value="[{ $dynvalue.lsblz }]">
                 <p class="oxValidateError">
                     <span class="js-oxError_notEmpty">[{ oxmultilang ident="ERROR_MESSAGE_INPUT_NOTALLFIELDS" }]</span>
                 </p>
             </li>
             <li [{if $iPayError == -5}]class="oxInValid"[{/if}]>
-                <label>[{ oxmultilang ident="BANK_ACCOUNT_NUMBER" suffix="COLON" }]</label>
+                <label>
+                [{if $oView->isOldDebitValidationEnabled()}]
+                    [{ oxmultilang ident="BANK_ACCOUNT_NUMBER" suffix="COLON" }]
+                [{else}]
+                    [{ oxmultilang ident="IBAN" suffix="COLON" }]
+                [{/if}]
+                </label>
                 <input type="text" class="js-oxValidate js-oxValidate_notEmpty" size="20" maxlength="64" name="dynvalue[lsktonr]" autocomplete="off" value="[{ $dynvalue.lsktonr }]">
                 <p class="oxValidateError">
                     <span class="js-oxError_notEmpty">[{ oxmultilang ident="ERROR_MESSAGE_INPUT_NOTALLFIELDS" }]</span>

@@ -469,6 +469,16 @@ class Payment extends oxUBase
     }
 
     /**
+     * Return if old style bank code is supported.
+     *
+     * @return bool
+     */
+    public function isOldDebitValidationEnabled()
+    {
+        return !$this->getConfig()->getConfigParam( 'blSkipDebitOldBankInfo' );
+    }
+
+    /**
      * Template variable getter. Returns dyn values
      *
      * @return array

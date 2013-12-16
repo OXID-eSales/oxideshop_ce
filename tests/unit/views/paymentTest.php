@@ -278,6 +278,26 @@ class Unit_Views_paymentTest extends OxidTestCase
         $this->assertEquals( 'test', $oPayment->getPaymentErrorText() );
     }
 
+    public function testIsOldDebitValidationEnabled_configSkipNotExist_enabled()
+    {
+        $oPayment = new Payment();
+        $this->assertTrue( $oPayment->isOldDebitValidationEnabled(), 'Old validation should be enabled as no config is set.' );
+    }
+
+    public function testIsOldDebitValidationEnabled_configSkipDisabled_enabled()
+    {
+        $this->getConfig()->setConfigParam( 'blSkipDebitOldBankInfo', false );
+        $oPayment = new Payment();
+        $this->assertTrue( $oPayment->isOldDebitValidationEnabled(), 'Old validation should be enabled as it is set in config.' );
+    }
+
+    public function testIsOldDebitValidationEnabled_configSkipEnabled_disabled()
+    {
+        $this->getConfig()->setConfigParam( 'blSkipDebitOldBankInfo', true );
+        $oPayment = new Payment();
+        $this->assertFalse( $oPayment->isOldDebitValidationEnabled(), 'Old validation should be disabled as it is set in config.' );
+    }
+
     public function testGetDynValueSetInSession()
     {
         $this->setSessionParam('dynvalue', 'test');

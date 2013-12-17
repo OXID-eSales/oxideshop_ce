@@ -1049,8 +1049,8 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
         $oValidator = new oxInputValidator();
         $oValidationResult = $oValidator->validatePaymentInputData( "oxiddebitnote", $aDynValue );
 
-        $sErrorAccountNumberNo = $this->_getBankCodeErrorNo();
-        $this->assertSame($sErrorAccountNumberNo, $oValidationResult, 'Should validate as account number error.' );
+        $sErrorNumber = $this->_getAccountNumberErrorNo();
+        $this->assertSame($sErrorNumber, $oValidationResult, 'Should validate as account number error.' );
     }
 
     /**
@@ -1066,8 +1066,8 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
         $oValidator = new oxInputValidator();
         $oValidationResult = $oValidator->validatePaymentInputData( "oxiddebitnote", $aDynValue );
 
-        $sErrorBankCodeNo = $this->_getBankCodeErrorNo();
-        $this->assertSame( $sErrorBankCodeNo, $oValidationResult, 'Should validate as bank code error.' );
+        $sErrorNumber = $this->_getAccountNumberErrorNo();
+        $this->assertSame( $sErrorNumber, $oValidationResult, 'Should validate as bank code error.' );
     }
 
     /**

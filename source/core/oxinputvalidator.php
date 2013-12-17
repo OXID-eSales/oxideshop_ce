@@ -508,23 +508,18 @@ class oxInputValidator extends oxSuperCfg
     protected function _validateDebitNote( $aDebitInformation )
     {
         $aDebitInformation = $this->_cleanDebitInformation( $aDebitInformation );
-
+        $sBankCode = $aDebitInformation['lsblz'];
+        $sAccountNumber = $aDebitInformation['lsktonr'];
         $oSepaValidator = oxNew( "oxSepaValidator" );
 
+        if ( empty( $sBankCode ) || $oSepaValidator->isValidBIC( $sBankCode ) ) {
         $mxValidationResult = true;
-
-        // Check BIC / IBAN
-        if ( $oSepaValidator->isValidIBAN( $aDebitInformation['lsktonr'] ) ) {
-            if ( !empty( $aDebitInformation['lsblz']) &&
-                 !$oSepaValidator->isValidBIC( $aDebitInformation['lsblz'] ) ) {
-
-                $mxValidationResult = self::INVALID_BANK_CODE;
-            }
+            if ( !$oSepaValidator->isValidIBAN( $sAccountNumber ) ) {
+                $mxValidationResult = self::INVALID_ACCOUNT_NUMBER;
         }
-        else {
+        } else {
             $mxValidationResult = $this->_validateOldDebitInfo( $aDebitInformation );
         }
-
 
         return $mxValidationResult;
     }

@@ -836,10 +836,10 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
     {
         $sOldAccountNumberTooShort = "12345678";
         $sOldAccountNumber = $this->_getOldAccountNumber();
-        $sBankCode = $this->_getOldBankCode();
+        $sOldBankCode = $this->_getOldBankCode();
         return array(
-            array( $sBankCode, $sOldAccountNumber ),
-            array( $sBankCode, $sOldAccountNumberTooShort ),
+            array( $sOldBankCode, $sOldAccountNumber ),
+            array( $sOldBankCode, $sOldAccountNumberTooShort ),
         );
     }
 
@@ -877,7 +877,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
         $aDynValue = $this->_getBankData( $sBankCode, $sAccountNumber );
 
         $oValidator = new oxInputValidator();
-        $this->assertSame( $this->_getAccountNumberErrorNo(), $oValidator->validatePaymentInputData( "oxiddebitnote", $aDynValue ), 'Error should appear as old bank information not allowed.' );
+        $this->assertSame( $this->_getBankCodeErrorNo(), $oValidator->validatePaymentInputData( "oxiddebitnote", $aDynValue ), 'Error should appear as old bank information not allowed.' );
     }
 
     /**
@@ -890,8 +890,8 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
         $sOldAccountNumberTooLong = "1234567890123";
         $sOldAccountIncorrectFormat = "ABC1234567";
         return array(
-            array($sOldAccountNumberTooLong),
-            array($sOldAccountIncorrectFormat),
+            array( $sOldAccountNumberTooLong ),
+            array( $sOldAccountIncorrectFormat ),
         );
     }
 
@@ -911,7 +911,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
         $oValidationResult = $oValidator->validatePaymentInputData( "oxiddebitnote", $aDynValue );
 
         $sErrorAccountNumberNo = $this->_getAccountNumberErrorNo();
-        $this->assertSame($sErrorAccountNumberNo, $oValidationResult, 'Should validate as account number error.' );
+        $this->assertSame( $sErrorAccountNumberNo, $oValidationResult, 'Should validate as account number error.' );
     }
 
     /**
@@ -928,8 +928,8 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
         $oValidator = new oxInputValidator();
         $oValidationResult = $oValidator->validatePaymentInputData( "oxiddebitnote", $aDynValue );
 
-        $sErrorBankCodeNo = $this->_getBankCodeErrorNo();
-        $this->assertSame($sErrorBankCodeNo, $oValidationResult, 'Should validate as bank code error.' );
+        $iErrorNumber = $this->_getAccountNumberErrorNo();
+        $this->assertSame( $iErrorNumber, $oValidationResult, 'Should validate as bank code error.' );
     }
 
     /**
@@ -967,29 +967,29 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
         $sSepaAccountNumberWrong = 'NX9386011117947';
 
         return array(
-            array($sOldBankCodeTooShort, $sOldAccountNumber),
-            array($sOldBankCodeTooShort, $sOldAccountNumberTooLong),
-            array($sOldBankCodeTooShort, $sOldAccountIncorrectFormat),
-            array($sOldBankCodeTooShort, $sSepaAccountNumber),
-            array($sOldBankCodeTooShort, $sSepaAccountNumberWrong),
+            array( $sOldBankCodeTooShort, $sOldAccountNumber ),
+            array( $sOldBankCodeTooShort, $sOldAccountNumberTooLong ),
+            array( $sOldBankCodeTooShort, $sOldAccountIncorrectFormat ),
+            array( $sOldBankCodeTooShort, $sSepaAccountNumber ),
+            array( $sOldBankCodeTooShort, $sSepaAccountNumberWrong ),
 
-            array($sOldBankCodeTooLong, $sOldAccountNumber),
-            array($sOldBankCodeTooLong, $sOldAccountNumberTooLong),
-            array($sOldBankCodeTooLong, $sOldAccountIncorrectFormat),
-            array($sOldBankCodeTooLong, $sSepaAccountNumber),
-            array($sOldBankCodeTooLong, $sSepaAccountNumberWrong),
+            array( $sOldBankCodeTooLong, $sOldAccountNumber ),
+            array( $sOldBankCodeTooLong, $sOldAccountNumberTooLong ),
+            array( $sOldBankCodeTooLong, $sOldAccountIncorrectFormat ),
+            array( $sOldBankCodeTooLong, $sSepaAccountNumber ),
+            array( $sOldBankCodeTooLong, $sSepaAccountNumberWrong ),
 
-            array($sOldBankCodeWrongFormat, $sOldAccountNumber),
-            array($sOldBankCodeWrongFormat, $sOldAccountNumberTooLong),
-            array($sOldBankCodeWrongFormat, $sOldAccountIncorrectFormat),
-            array($sOldBankCodeWrongFormat, $sSepaAccountNumber),
-            array($sOldBankCodeWrongFormat, $sSepaAccountNumberWrong),
+            array( $sOldBankCodeWrongFormat, $sOldAccountNumber ),
+            array( $sOldBankCodeWrongFormat, $sOldAccountNumberTooLong ),
+            array( $sOldBankCodeWrongFormat, $sOldAccountIncorrectFormat ),
+            array( $sOldBankCodeWrongFormat, $sSepaAccountNumber ),
+            array( $sOldBankCodeWrongFormat, $sSepaAccountNumberWrong ),
 
-            array($sSepaBankCodeWrong, $sOldAccountNumber),
-            array($sSepaBankCodeWrong, $sOldAccountNumberTooLong),
-            array($sSepaBankCodeWrong, $sOldAccountIncorrectFormat),
-            array($sSepaBankCodeWrong, $sSepaAccountNumber),
-            array($sSepaBankCodeWrong, $sSepaAccountNumberWrong),
+            array( $sSepaBankCodeWrong, $sOldAccountNumber ),
+            array( $sSepaBankCodeWrong, $sOldAccountNumberTooLong ),
+            array( $sSepaBankCodeWrong, $sOldAccountIncorrectFormat ),
+            array( $sSepaBankCodeWrong, $sSepaAccountNumber ),
+            array( $sSepaBankCodeWrong, $sSepaAccountNumberWrong ),
         );
     }
 
@@ -1010,7 +1010,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
         $oValidationResult = $oValidator->validatePaymentInputData( "oxiddebitnote", $aDynValue );
 
         $sErrorBankCodeNo = $this->_getBankCodeErrorNo();
-        $this->assertSame($sErrorBankCodeNo, $oValidationResult, 'Should validate as bank code error.' );
+        $this->assertSame( $sErrorBankCodeNo, $oValidationResult, 'Should validate as bank code error.' );
     }
 
     /**

@@ -1290,7 +1290,7 @@ function showInvitations()
                 <dt>
                     <input type=hidden name=confbools[blSkipDebitOldBankInfo] value=false>
                     <input type=checkbox name=confbools[blSkipDebitOldBankInfo] value=true  [{if ($confbools.blSkipDebitOldBankInfo)}]checked[{/if}] [{ $readonly}]>
-                    [{ oxinputhelp ident="HELP_SHOP_CONFIG_AUTOSEARCHONCAT" }]
+                    [{ oxinputhelp ident="HELP_SHOP_CONFIG_DEBIT_OLD_BANK_INFORMATION_NOT_ALLOWED" }]
                 </dt>
                 <dd>
                     [{ oxmultilang ident="SHOP_CONFIG_DEBIT_OLD_BANK_INFORMATION_NOT_ALLOWED" }]

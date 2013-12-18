@@ -17,7 +17,7 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   views
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
 
@@ -334,7 +334,12 @@ class oxShopControl extends oxSuperCfg
         $sOutput      = null;
         $blIsCached   = false;
 
+        // Initialize view object and it's components.
         $oViewObject = $this->_initializeViewObject($sClass, $sFunction, $aParams, $aViewsChain);
+
+        if ( !$this->_canExecuteFunction( $oViewObject, $oViewObject->getFncName() ) ) {
+            throw oxNew( 'oxAccessRightException', 'Non public method cannot be accessed' );
+        }
 
         // executing user defined function
         $oViewObject->executeFunction( $oViewObject->getFncName() );
@@ -400,6 +405,26 @@ class oxShopControl extends oxSuperCfg
         $oViewObject->init();
 
         return $oViewObject;
+    }
+
+    /**
+     * Check if method can be executed.
+     *
+     * @param object $oClass object to check if its method can be executed.
+     * @param string $sFunction method to check if it can be executed.
+     * @return bool
+     */
+    protected function _canExecuteFunction( $oClass, $sFunction )
+    {
+        $blCanExecute = true;
+
+        if ( method_exists( $oClass, $sFunction ) ) {
+            $oReflectionMethod = new ReflectionMethod( $oClass, $sFunction );
+            if ( !$oReflectionMethod->isPublic() ) {
+                $blCanExecute = false;
+            }
+        }
+        return $blCanExecute;
     }
 
 

@@ -17,7 +17,7 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   tests
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  * @version   SVN: $Id: wishlistTest.php 25505 2010-02-02 02:12:13Z alfonsas $
  */
@@ -615,5 +615,25 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
 
         $oControl = oxNew( "oxShopControl" );
         $oControl->UNITexecuteMaintenanceTasks();
+    }
+
+    /**
+     * 0005568: Execution of any private/protected Methods in any Controller by external requests to the shop possible
+     */
+    public function testCannotAccessProtectedMethod()
+    {
+        $sCL = 'Account';
+        $sFNC = '_getLoginTemplate';
+        $oProtectedMethodException = new oxAccessRightException( 'Non public method cannot be accessed' );
+
+        $oView = $this->getMock( $sCL, array( 'executeFunction', 'getFncName' ) );
+        $oView->expects( $this->never() )->method( 'executeFunction' );
+        $oView->expects( $this->once() )->method( 'getFncName' )->will( $this->returnValue( $sFNC ) );
+
+        $oControl = $this->getMock( 'oxShopControl', array( '_initializeViewObject', '_handleAccessRightsException' ) );
+        $oControl->expects( $this->once() )->method( '_initializeViewObject' )->with( $sCL, $sFNC, null, null )->will( $this->returnValue( $oView ) );
+        $oControl->expects( $this->once() )->method( '_handleAccessRightsException' )->with( $oProtectedMethodException )->will( $this->returnValue( true ) );
+
+        $oControl->start( $sCL, $sFNC );
     }
 }

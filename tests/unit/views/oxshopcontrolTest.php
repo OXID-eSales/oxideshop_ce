@@ -581,4 +581,26 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
         $oControl = oxNew( "oxShopControl" );
         $oControl->UNITexecuteMaintenanceTasks();
     }
+
+    /**
+     * 0005568: Execution of any private/protected Methods in any Controller by external requests to the shop possible
+     */
+    public function testCannotAccessProtectedMethod()
+    {
+        $sCL = 'Account';
+        $sFNC = '_getLoginTemplate';
+        $oProtectedMethodException = new oxSystemComponentException( 'Non public method cannot be accessed' );
+        modConfig::getInstance()->setParameter( 'cl', $sCL );
+        modConfig::getInstance()->setParameter( 'fnc', $sFNC );
+
+        $oView = $this->getMock( $sCL, array( 'executeFunction', 'getFncName' ) );
+        $oView->expects( $this->never() )->method( 'executeFunction' );
+        $oView->expects( $this->once() )->method( 'getFncName' )->will( $this->returnValue( $sFNC ) );
+
+        $oControl = $this->getMock( 'oxShopControl', array( '_initializeViewObject', '_handleSystemException' ) );
+        $oControl->expects( $this->once() )->method( '_initializeViewObject' )->with( $sCL, $sFNC )->will( $this->returnValue( $oView ) );
+        $oControl->expects( $this->once() )->method( '_handleSystemException' )->with( $oProtectedMethodException )->will( $this->returnValue( true ) );
+
+        $oControl->start();
+    }
 }

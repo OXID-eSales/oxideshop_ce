@@ -447,7 +447,7 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
         $sO2CTable = $this->_getO2CTable();
         $oArticle = new oxarticle();
 
-        $sExpt = "SELECT oxid FROM $sO2CTable as oc left join $sArticleTable
+        $sExpt = "SELECT oxid, oxv_oxarticles_1_de.oxtimestamp FROM $sO2CTable as oc left join $sArticleTable
                   ON $sArticleTable.oxid = oc.oxobjectid WHERE
                   ".$oArticle->getSqlActiveSnippet()." and $sArticleTable.oxparentid
                   = '' and oc.oxcatnid = 'testCat' ORDER BY  oc.oxpos,oc.oxobjectid";
@@ -479,7 +479,7 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
         $sO2CTable = $this->_getO2CTable();
         $oArticle = new oxarticle();
 
-        $sExpt = "SELECT oxid FROM $sO2CTable as oc left join $sArticleTable ON
+        $sExpt = "SELECT oxid, oxv_oxarticles_1_de.oxtimestamp FROM $sO2CTable as oc left join $sArticleTable ON
                   $sArticleTable.oxid = oc.oxobjectid WHERE
                   ".$oArticle->getSqlActiveSnippet()." and $sArticleTable.oxparentid = ''
                   and oc.oxcatnid = '$sCatId' and false ORDER BY  oc.oxpos,oc.oxobjectid";
@@ -506,7 +506,7 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
         $sO2CTable = $this->_getO2CTable();
         $oArticle = new oxarticle();
 
-        $sExpt = "SELECT oxid FROM $sO2CTable as oc left join $sArticleTable
+        $sExpt = "SELECT oxid, oxv_oxarticles_1_de.oxtimestamp FROM $sO2CTable as oc left join $sArticleTable
                   ON $sArticleTable.oxid = oc.oxobjectid WHERE
                   ".$oArticle->getSqlActiveSnippet()." and $sArticleTable.oxparentid
                   = '' and oc.oxcatnid = 'testCat' ORDER BY oxtitle desc, oc.oxpos,oc.oxobjectid";
@@ -772,7 +772,7 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
         $sArticleTable = $this->_getArticleTable();
         $oArticle = new oxarticle();
 
-        $sExpt  = "select $sArticleTable.oxid from $sArticleTable  where";
+        $sExpt  = "select $sArticleTable.oxid, oxv_oxarticles_1_de.oxtimestamp from $sArticleTable  where";
         $sExpt .= " ".$oArticle->getSqlActiveSnippet()." and $sArticleTable.oxparentid = ''";
         $sExpt .= " and $sArticleTable.oxissearch = 1  and ( ( $sArticleTable.oxtitle like";
         $sExpt .= " '%testSearch%'  or $sArticleTable.oxshortdesc like '%testSearch%'  or";
@@ -800,7 +800,7 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
         $sArticleTable = $this->_getArticleTable();
         $oArticle = new oxarticle();
 
-        $sExpt  = "select $sArticleTable.oxid from $sArticleTable  where";
+        $sExpt  = "select $sArticleTable.oxid, oxv_oxarticles_1_en.oxtimestamp from $sArticleTable  where";
         $sExpt .= " ".$oArticle->getSqlActiveSnippet()." and $sArticleTable.oxparentid = ''";
         $sExpt .= " and $sArticleTable.oxissearch = 1  and ( ( $sArticleTable.oxtitle like";
         $sExpt .= " '%testSearch%'  or $sArticleTable.oxshortdesc like '%testSearch%'  or";
@@ -858,7 +858,7 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
         $sArticleTable = $this->_getArticleTable();
         $oArticle = new oxarticle();
 
-        $sExpt = "select $sArticleTable.oxid from $sArticleTable  where";
+        $sExpt = "select $sArticleTable.oxid, oxv_oxarticles_1_de.oxtimestamp from $sArticleTable  where";
         $sExpt .= " ".$oArticle->getSqlActiveSnippet()." and $sArticleTable.oxparentid = ''";
         $sExpt .= " and $sArticleTable.oxissearch = 1  and $sArticleTable.oxvendorid = 'vendor1' ";
         $sExpt .= " and ( ( $sArticleTable.oxtitle like '%testSearch%'  or $sArticleTable.oxshortdesc";
@@ -885,7 +885,7 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
         $sArticleTable = $this->_getArticleTable();
         $oArticle = new oxarticle();
 
-        $sExpt = "select $sArticleTable.oxid from $sArticleTable  where";
+        $sExpt = "select $sArticleTable.oxid, oxv_oxarticles_1_de.oxtimestamp from $sArticleTable  where";
         $sExpt .= " ".$oArticle->getSqlActiveSnippet()." and $sArticleTable.oxparentid = ''";
         $sExpt .= " and $sArticleTable.oxissearch = 1  and $sArticleTable.oxmanufacturerid = 'manufacturer1' ";
         $sExpt .= " and ( ( $sArticleTable.oxtitle like '%testSearch%'  or $sArticleTable.oxshortdesc";
@@ -944,7 +944,7 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
 
         $sAEV = getViewName('oxartextends');
 
-        $sExpt  = "select $sArticleTable.oxid from $sArticleTable  LEFT JOIN $sAEV ON $sAEV.oxid=$sArticleTable.oxid  where";
+        $sExpt  = "select $sArticleTable.oxid, oxv_oxarticles_1_de.oxtimestamp from $sArticleTable  LEFT JOIN $sAEV ON $sAEV.oxid=$sArticleTable.oxid  where";
         $sExpt .= " ".$oArticle->getSqlActiveSnippet()." and $sArticleTable.oxparentid = ''";
         $sExpt .= " and $sArticleTable.oxissearch = 1  and ( ( $sAEV.oxtags like";
         $sExpt .= " '%testSearch%'  )  ) ";
@@ -971,7 +971,7 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
         $oArticle = new oxarticle();
 
         $sAEV = getViewName('oxartextends');
-        $sExpt  = "select $sArticleTable.oxid from $sArticleTable  LEFT JOIN $sAEV ON $sAEV.oxid=$sArticleTable.oxid  where";
+        $sExpt  = "select $sArticleTable.oxid, oxv_oxarticles_1_de.oxtimestamp from $sArticleTable  LEFT JOIN $sAEV ON $sAEV.oxid=$sArticleTable.oxid  where";
         $sExpt .= " ".$oArticle->getSqlActiveSnippet()." and $sArticleTable.oxparentid = ''";
         $sExpt .= " and $sArticleTable.oxissearch = 1  and ( ( $sAEV.oxlongdesc like";
         $sExpt .= " '%testSearch%'  )  ) ";

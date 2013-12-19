@@ -644,7 +644,7 @@ class Unit_Core_oxsearchTest extends OxidTestCase
         $sO2Cat = getViewName( 'oxobject2category' );
         $sCatView = getViewName( 'oxcategories' );
 
-        $sFix = "select `$sArticleTable`.`oxid`, oxv_oxarticles_1_de.oxtimestamp from {$sArticleTable} " .
+        $sFix = "select `$sArticleTable`.`oxid`, $sArticleTable.oxtimestamp from {$sArticleTable} " .
                 "where {$sArticleTable}.oxid in ( select {$sArticleTable}.oxid as id from {$sArticleTable}, " .
                 "{$sO2Cat} as oxobject2category, {$sCatView} as oxcategories " .
                 "where (oxobject2category.oxcatnid='_testcat' and oxobject2category.oxobjectid={$sArticleTable}.oxid) " .
@@ -679,7 +679,7 @@ class Unit_Core_oxsearchTest extends OxidTestCase
         $sArticleTable = $sTable = getViewName( 'oxarticles' );
         $sAETable = getViewName( 'oxartextends' );
 
-        $sQ = "select `$sArticleTable`.`oxid`, oxv_oxarticles_1_de.oxtimestamp from $sArticleTable left join $sAETable on $sArticleTable.oxid=$sAETable.oxid where (  ( $sArticleTable.oxactive = 1 or ( $sArticleTable.oxactivefrom < '$sSearchDate' and
+        $sQ = "select `$sArticleTable`.`oxid`, $sArticleTable.oxtimestamp from $sArticleTable left join $sAETable on $sArticleTable.oxid=$sAETable.oxid where (  ( $sArticleTable.oxactive = 1 or ( $sArticleTable.oxactivefrom < '$sSearchDate' and
                $sArticleTable.oxactiveto > '$sSearchDate' ) )  and ( $sArticleTable.oxstockflag != 2 or ( $sArticleTable.oxstock +
                $sArticleTable.oxvarstock ) > 0  )  ";
         if ( !modConfig::getInstance()->getConfigParam( 'blVariantParentBuyable' ) ) {
@@ -716,7 +716,7 @@ class Unit_Core_oxsearchTest extends OxidTestCase
         $sArticleTable = $sTable = getViewName( 'oxarticles' );
         $sAETable = getViewName( 'oxartextends' );
 
-        $sQ = "select `$sArticleTable`.`oxid`, oxv_oxarticles_1_de.oxtimestamp from $sArticleTable LEFT JOIN $sAETable ON $sArticleTable.oxid=$sAETable.oxid where (  ( $sArticleTable.oxactive = 1 or ( $sArticleTable.oxactivefrom < '$sSearchDate' and
+        $sQ = "select `$sArticleTable`.`oxid`, $sArticleTable.oxtimestamp from $sArticleTable LEFT JOIN $sAETable ON $sArticleTable.oxid=$sAETable.oxid where (  ( $sArticleTable.oxactive = 1 or ( $sArticleTable.oxactivefrom < '$sSearchDate' and
                $sArticleTable.oxactiveto > '$sSearchDate' ) )  and ( $sArticleTable.oxstockflag != 2 or ( $sArticleTable.oxstock +
                $sArticleTable.oxvarstock ) > 0  )  ";
         if ( !modConfig::getInstance()->getConfigParam( 'blVariantParentBuyable' ) ) {

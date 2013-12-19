@@ -78,7 +78,7 @@ class ClearCookies extends oxUBase
         $aPaths = array();
         $aPath = array();
 
-        $aPath['title'] = oxRegistry::getLang()->translateString( 'PAGE_INFO_CLEARCOOKIE_TITLE', oxRegistry::getLang()->getBaseLanguage(), false );
+        $aPath['title'] = oxRegistry::getLang()->translateString( 'INFO_ABOUT_COOKIES', oxRegistry::getLang()->getBaseLanguage(), false );
         $aPath['link']  = $this->getLink();
         $aPaths[] = $aPath;
 

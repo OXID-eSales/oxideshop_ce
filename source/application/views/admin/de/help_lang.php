@@ -36,7 +36,6 @@
  * <span class="warning_or_important_hint">...</span> for warning and important things
  * <ul> and <li> for lists
  */
-
 $aLang =  array(
 'charset'                                     => 'ISO-8859-15',
 

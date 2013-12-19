@@ -3742,6 +3742,17 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
                 return;
             }
 
+            //skip picture parent value assignment in case master image is set for variant
+            if ($this->_isFieldEmpty($sCopyFieldName) && $this->_isImageField($sFieldName) && $this->_hasMasterImage( 1 )) {
+                return;
+            }
+
+            //COPY THE VALUE
+            if ($this->_isFieldEmpty($sCopyFieldName) || in_array( $sCopyFieldName, $this->_aCopyParentField ) ) {
+                $this->$sCopyFieldName = clone $oParentArticle->$sCopyFieldName;
+            }
+
+            /*
             //COPY THE VALUE
             // assigning images from parent only if variant has no master image (#1807)
             if ( stristr($sCopyFieldName, '_oxthumb') || stristr($sCopyFieldName, '_oxicon') ) {
@@ -3757,8 +3768,21 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
                 }
             } elseif ($this->_isFieldEmpty($sCopyFieldName) || in_array( $sCopyFieldName, $this->_aCopyParentField ) ) {
                 $this->$sCopyFieldName = clone $oParentArticle->$sCopyFieldName;
+            }*/
             }
         }
+
+    /**
+     * Detects if field is an image field by field name
+     *
+     * @param string $sFieldName Field name
+     *
+     * @return bool.
+     */
+    protected function _isImageField($sFieldName)
+    {
+        $blIsImageField = ( stristr($sFieldName, '_oxthumb') || stristr($sFieldName, '_oxicon') || stristr($sFieldName, '_oxzoom') || stristr($sFieldName, '_oxpic') );
+        return $blIsImageField;
     }
 
     /**

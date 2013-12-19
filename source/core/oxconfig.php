@@ -347,7 +347,7 @@ class oxConfig extends oxSuperCfg
     }
 
     /**
-     * Stores config parameter value in config
+     * Sets config parameter value in config
      *
      * @param string $sName  config parameter name
      * @param string $sValue config parameter value
@@ -408,7 +408,7 @@ class oxConfig extends oxSuperCfg
 
             // loading shop config
             if ( empty($sShopID) || !$blConfigLoaded ) {
-                // if no config values where loaded (some problems with DB), throwing an exception
+                // if no config values were loaded (some problems with DB), throwing an exception
                 $oEx = oxNew( "oxConnectionException" );
                 $oEx->setMessage( "Unable to load shop config values from database" );
                 throw $oEx;
@@ -2172,21 +2172,9 @@ class oxConfig extends oxSuperCfg
     /**
      * Get parsed modules
      *
-     * @deprecated since v5.1.2 (2013-12-10); Naming changed use function getModulesWithExtendedClass().
-     *
      * @return array
      */
     public function getAllModules()
-    {
-        return $this->getModulesWithExtendedClass();
-    }
-
-    /**
-     * Get parsed modules
-     *
-     * @return array
-     */
-    public function getModulesWithExtendedClass()
     {
         return $this->parseModuleChains($this->getConfigParam('aModules'));
     }

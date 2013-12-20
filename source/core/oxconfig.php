@@ -105,7 +105,7 @@ class oxConfig extends oxSuperCfg
     protected $sCompileDir = null;
 
     /**
-     * Debug mode (default is 0):
+     * Debug mode (default is set depending on if it is productive mode or not):
      *  -1 = Logger Messages internal use only
      *   0 = off
      *   1 = smarty
@@ -118,7 +118,7 @@ class oxConfig extends oxSuperCfg
      *
      * @var int
      */
-    protected $iDebug = 0;
+    protected $iDebug = null;
 
     /**
      * Administrator email address, used to send critical notices
@@ -324,7 +324,6 @@ class oxConfig extends oxSuperCfg
      */
     public function getConfigParam( $sName )
     {
-
         if ( defined( 'OXID_PHP_UNIT' ) ) {
             if ( isset( modConfig::$unitMOD ) && is_object( modConfig::$unitMOD ) ) {
                 $sValue = modConfig::$unitMOD->getModConfigParam( $sName );
@@ -347,7 +346,7 @@ class oxConfig extends oxSuperCfg
     }
 
     /**
-     * Sets config parameter value in config
+     * Stores config parameter value in config
      *
      * @param string $sName  config parameter name
      * @param string $sValue config parameter value
@@ -399,20 +398,11 @@ class oxConfig extends oxSuperCfg
         global  $ADODB_SESS_LIFE;
         $ADODB_SESS_LIFE  = 1;
 
-        // some important defaults
         $this->_setDefaults();
 
-        try {
             $sShopID = $this->getShopId();
-            $blConfigLoaded = $this->_loadVarsFromDb( $sShopID );
 
-            // loading shop config
-            if ( empty($sShopID) || !$blConfigLoaded ) {
-                // if no config values were loaded (some problems with DB), throwing an exception
-                $oEx = oxNew( "oxConnectionException" );
-                $oEx->setMessage( "Unable to load shop config values from database" );
-                throw $oEx;
-            }
+        $this->_loadVarsFromDb( $sShopID );
 
             // loading theme config options
             $this->_loadVarsFromDb( $sShopID, null, oxConfig::OXMODULE_THEME_PREFIX . $this->getConfigParam('sTheme') );
@@ -431,30 +421,6 @@ class oxConfig extends oxSuperCfg
             //starting up the session
             $this->getSession()->start();
 
-        } catch ( oxConnectionException $oEx ) {
-
-            $oEx->debugOut();
-            if ( defined( 'OXID_PHP_UNIT' ) ) {
-                return false;
-            } elseif ( 0 != $this->iDebug ) {
-                oxRegistry::getUtils()->showMessageAndExit( $oEx->getString() );
-            } else {
-                header( "HTTP/1.1 500 Internal Server Error");
-                header( "Location: offline.html");
-                header( "Connection: close");
-            }
-        } catch ( oxCookieException $oEx ) {
-
-            $this->_processSeoCall();
-
-            //starting up the session
-            $this->getSession()->start();
-
-            // redirect to start page and display the error
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay( $oEx );
-            oxRegistry::getUtils()->redirect( $this->getShopHomeURL() .'cl=start', true, 302 );
-        }
-
 
         // Admin handling
         $this->setConfigParam( 'blAdmin', isAdmin() );
@@ -468,6 +434,7 @@ class oxConfig extends oxSuperCfg
         //application initialization
         $this->_oStart = new oxStart();
         $this->_oStart->appInit();
+
     }
 
     /**
@@ -511,43 +478,45 @@ class oxConfig extends oxSuperCfg
     protected function _setDefaults()
     {
 
-        // some important defaults
-        if( !$this->getConfigParam( 'sDefaultLang' ) )
-            $this->setConfigParam( 'sDefaultLang', 0 );
-
-
         $this->setConfigParam( 'sTheme', 'azure' );
 
+        if( is_null( $this->getConfigParam( 'sDefaultLang' ) ) ) {
+            $this->setConfigParam( 'sDefaultLang', 0 );
+        }
 
-        $blLogChangesInAdmin = $this->getConfigParam( 'blLogChangesInAdmin' );
-        if( !isset( $blLogChangesInAdmin ) )
+        if( is_null( $this->getConfigParam( 'blLogChangesInAdmin' ) ) ) {
             $this->setConfigParam( 'blLogChangesInAdmin', false );
+        }
 
-        $blCheckTemplates = $this->getConfigParam( 'blCheckTemplates' );
-        if( !isset( $blCheckTemplates ) )
+        if( is_null( $this->getConfigParam( 'blCheckTemplates' ) ) ) {
             $this->setConfigParam( 'blCheckTemplates', false );
+        }
 
-        $blAllowArticlesubclass = $this->getConfigParam( 'blAllowArticlesubclass' );
-        if( !isset( $blAllowArticlesubclass ) )
+        if( is_null( $this->getConfigParam( 'blAllowArticlesubclass' ) ) ) {
             $this->setConfigParam( 'blAllowArticlesubclass', false );
+        }
 
-        $iAdminListSize = $this->getConfigParam( 'iAdminListSize' );
-        if( !isset( $iAdminListSize ) )
+        if( is_null( $this->getConfigParam( 'iAdminListSize' ) ) ) {
             $this->setConfigParam( 'iAdminListSize', 9 );
+        }
 
         // #1173M  for EE - not all pic are deleted
-        $iPicCount = $this->getConfigParam( 'iPicCount' );
-        if ( !isset( $iPicCount ) )
+        if ( is_null( $this->getConfigParam( 'iPicCount' ) ) ) {
             $this->setConfigParam( 'iPicCount', 7 );
+        }
 
-        $iZoomPicCount = $this->getConfigParam( 'iZoomPicCount' );
-        if ( !isset( $iZoomPicCount ) )
+        if ( is_null( $this->getConfigParam( 'iZoomPicCount' ) ) ) {
             $this->setConfigParam( 'iZoomPicCount', 4 );
+        }
 
         // ADODB cache life time
-        $iDBCacheLifeTime = $this->getConfigParam( 'iDBCacheLifeTime' );
-        if ( !isset( $iDBCacheLifeTime ) )
+        if ( is_null( $this->getConfigParam( 'iDBCacheLifeTime' ) ) ) {
             $this->setConfigParam( 'iDBCacheLifeTime', 3600 ); // 1 hour
+        }
+
+        if ( is_null( $this->getConfigParam( 'iDebug' ) ) ) {
+            $this->setConfigParam( 'iDebug', $this->isProductiveMode()? 0 : -1 );
+        }
 
         $sCoreDir = $this->getConfigParam( 'sShopDir' );
         $this->setConfigParam( 'sCoreDir', $sCoreDir.'/core/' );
@@ -579,59 +548,52 @@ class oxConfig extends oxSuperCfg
     {
         $oDb = oxDb::getDb();
 
-        if ( !empty($sModule) ) {
-            $sModuleSql = " oxmodule LIKE " . $oDb->quote($sModule."%");
-        } else {
-            $sModuleSql = " oxmodule='' ";
-        }
+        $sModuleSql = $sModule? " oxmodule LIKE " . $oDb->quote( $sModule . "%" ) : " oxmodule='' ";
+        $sOnlyVarsSql = $this->_getConfigParamsSelectSnippet( $aOnlyVars );
 
-        $sQ = "select oxvarname, oxvartype, ".$this->getDecodeValueQuery()." as oxvarvalue from oxconfig where oxshopid = '$sShopID' and " . $sModuleSql;
-        // allow loading from some vars only from baseshop
-        if ( $aOnlyVars !== null ) {
-            $blSep = false;
-            $sIn  = '';
-            foreach ( $aOnlyVars as $sField ) {
-                if ( $blSep ) {
-                    $sIn .= ', ';
-                }
-                $sIn .= '"'.$sField.'"';
-                $blSep = true;
-            }
-            $sQ .= ' and oxvarname in ( '.$sIn.' ) ';
-        }
-        $oRs = $oDb->select( $sQ );
+        $sSelect = "select
+                        oxvarname, oxvartype, ".$this->getDecodeValueQuery()." as oxvarvalue
+                    from oxconfig
+                    where oxshopid = '$sShopID' and " . $sModuleSql . $sOnlyVarsSql;
 
-        if ( $oRs != false && $oRs->recordCount() > 0 ) {
-            while ( !$oRs->EOF ) {
-                $sVarName = $oRs->fields[0];
-                $sVarType = $oRs->fields[1];
-                $sVarVal  = $oRs->fields[2];
+        $aResult = $oDb->getAll( $sSelect );
 
-                //in sShopURL and sSSLShopURL cases we skip (for admin or when URL values are not set)
-                if ( ( $sVarName == 'sShopURL' || $sVarName == 'sSSLShopURL' ) &&
-                    ( !$sVarVal || $this->isAdmin() === true ) ) {
-                    $oRs->moveNext();
-                    continue;
-                }
+        foreach ( $aResult as $aValue ) {
+            $sVarName = $aValue[0];
+            $sVarType = $aValue[1];
+            $sVarVal  = $aValue[2];
 
                 $this->_setConfVarFromDb($sVarName, $sVarType, $sVarVal);
 
                 //setting theme options array
-                if ( $sModule != '' ) {
+            if ( $sModule ) {
                     $this->_aThemeConfigParams[$sVarName] = $sModule;
                 }
-
-                $oRs->moveNext();
+        }
         }
 
-            return true;
-        } else {
-            return false;
+    /**
+     * Allow loading from some vars only from baseshop
+     *
+     * @param array $aVars
+     * @return string
+     */
+    protected function _getConfigParamsSelectSnippet( $aVars )
+    {
+        $sSelect = '';
+        if ( is_array( $aVars ) && !empty( $aVars ) ) {
+            foreach ( $aVars as &$sField ) {
+                $sField = '"'.$sField.'"';
+            }
+            $sSelect = ' and oxvarname in ( '.implode( ', ',$aVars ).' ) ';
         }
+
+        return $sSelect;
     }
 
     /**
-     * set config variable to config object, first unserializing it by given type
+     * Sets config variable to config object, first unserializing it by given type.
+     * sShopURL and sSSLShopURL are skipped for admin or when URL values are not set
      *
      * @param string $sVarName variable name
      * @param string $sVarType variable type - arr, aarr, bool or str
@@ -641,6 +603,11 @@ class oxConfig extends oxSuperCfg
      */
     protected function _setConfVarFromDb($sVarName, $sVarType, $sVarVal)
     {
+        if ( ( $sVarName == 'sShopURL' || $sVarName == 'sSSLShopURL' ) &&
+            ( !$sVarVal || $this->isAdmin() === true ) ) {
+            return;
+        }
+
         switch ( $sVarType ) {
             case 'arr':
             case 'aarr':
@@ -830,24 +797,6 @@ class oxConfig extends oxSuperCfg
     }
 
     /**
-     * Returns active shop ID.
-     *
-     * @return int
-     */
-    public function getShopId()
-    {
-        if ( $this->_iShopId !== null )
-            return $this->_iShopId;
-
-            $this->_iShopId = $this->getBaseShopId();
-
-
-        $this->getSession()->setVariable( 'actshop', $this->_iShopId );
-        return $this->_iShopId;
-    }
-
-
-    /**
      * Active Shop id setter
      *
      * @param string $sShopId shop id
@@ -856,9 +805,29 @@ class oxConfig extends oxSuperCfg
      */
     public function setShopId( $sShopId )
     {
+
         $this->getSession()->setVariable( 'actshop', $sShopId );
         $this->_iShopId = $sShopId;
     }
+
+    /**
+     * Returns active shop ID.
+     *
+     * @return int
+     */
+    public function getShopId()
+    {
+        if ( $this->_iShopId !== null ) {
+            return $this->_iShopId;
+        }
+
+            $this->setShopId( $this->getBaseShopId() );
+
+
+        $this->getSession()->setVariable( 'actshop', $this->_iShopId );
+        return $this->_iShopId;
+    }
+
 
 
 
@@ -1993,8 +1962,6 @@ class oxConfig extends oxSuperCfg
      */
     public function isProductiveMode()
     {
-        $blProductive = false;
-
         $blProductive = $this->getConfigParam( 'blProductive' );
         if ( !isset( $blProductive ) ) {
             $sQ = 'select oxproductive from oxshops where oxid = "'.$this->getShopId().'"';
@@ -2172,9 +2139,21 @@ class oxConfig extends oxSuperCfg
     /**
      * Get parsed modules
      *
+     * @deprecated since v5.1.2 (2013-12-10); Naming changed use function getModulesWithExtendedClass().
+     *
      * @return array
      */
     public function getAllModules()
+    {
+        return $this->getModulesWithExtendedClass();
+    }
+
+    /**
+     * Get parsed modules
+     *
+     * @return array
+     */
+    public function getModulesWithExtendedClass()
     {
         return $this->parseModuleChains($this->getConfigParam('aModules'));
     }

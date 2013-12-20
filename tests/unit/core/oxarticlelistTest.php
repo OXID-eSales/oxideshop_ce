@@ -800,7 +800,7 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
         $sArticleTable = $this->_getArticleTable();
         $oArticle = new oxarticle();
 
-        $sExpt  = "select $sArticleTable.oxid, oxv_oxarticles_1_en.oxtimestamp from $sArticleTable  where";
+        $sExpt  = "select $sArticleTable.oxid, $sArticleTable.oxtimestamp from $sArticleTable  where";
         $sExpt .= " ".$oArticle->getSqlActiveSnippet()." and $sArticleTable.oxparentid = ''";
         $sExpt .= " and $sArticleTable.oxissearch = 1  and ( ( $sArticleTable.oxtitle like";
         $sExpt .= " '%testSearch%'  or $sArticleTable.oxshortdesc like '%testSearch%'  or";

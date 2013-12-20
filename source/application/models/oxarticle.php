@@ -3023,7 +3023,9 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         }
 
         $sSize = $this->getConfig()->getConfigParam( 'sIconsize' );
-        return oxRegistry::get("oxPictureHandler")->getProductPicUrl( $sDirname, $sImgName, $sSize, $iIndex );
+
+        $sIconUrl = oxRegistry::get("oxPictureHandler")->getProductPicUrl( $sDirname, $sImgName, $sSize, $iIndex );
+        return $sIconUrl;
     }
 
     /**
@@ -3743,7 +3745,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             }
 
             //skip picture parent value assignment in case master image is set for variant
-            if ($this->_isFieldEmpty($sCopyFieldName) && $this->_isImageField($sFieldName) && $this->_hasMasterImage( 1 )) {
+            if ($this->_isFieldEmpty($sCopyFieldName) && $this->_isImageField($sCopyFieldName) && $this->_hasMasterImage( 1 )) {
                 return;
             }
 
@@ -3773,19 +3775,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         }
 
     /**
-     * Detects if field is an image field by field name
-     *
-     * @param string $sFieldName Field name
-     *
-     * @return bool.
-     */
-    protected function _isImageField($sFieldName)
-    {
-        $blIsImageField = ( stristr($sFieldName, '_oxthumb') || stristr($sFieldName, '_oxicon') || stristr($sFieldName, '_oxzoom') || stristr($sFieldName, '_oxpic') );
-        return $blIsImageField;
-    }
-
-    /**
      * Get parent article
      *
      * @return oxArticle
@@ -3802,6 +3791,19 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             }
             return self::$_aLoadedParents[$sIndex];
         }
+    }
+
+    /**
+     * Detects if field is an image field by field name
+     *
+     * @param string $sFieldName Field name
+     *
+     * @return bool.
+     */
+    protected function _isImageField($sFieldName)
+    {
+        $blIsImageField = ( stristr($sFieldName, '_oxthumb') || stristr($sFieldName, '_oxicon') || stristr($sFieldName, '_oxzoom') || stristr($sFieldName, '_oxpic') );
+        return $blIsImageField;
     }
 
     /**

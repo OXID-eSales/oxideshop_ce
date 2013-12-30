@@ -338,7 +338,7 @@ class oxShopControl extends oxSuperCfg
         $oViewObject = $this->_initializeViewObject($sClass, $sFunction, $aParams, $aViewsChain);
 
         if ( !$this->_canExecuteFunction( $oViewObject, $oViewObject->getFncName() ) ) {
-            throw oxNew( 'oxAccessRightException', 'Non public method cannot be accessed' );
+            throw oxNew( 'oxSystemComponentException', 'Non public method cannot be accessed' );
         }
 
         // executing user defined function

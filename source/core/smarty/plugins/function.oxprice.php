@@ -17,7 +17,7 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   smarty_plugins
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
 
@@ -50,14 +50,12 @@ function smarty_function_oxprice( $params, &$smarty )
     $sPrice = ( $mPrice instanceof oxPrice ) ? $mPrice->getPrice() : $mPrice;
     $oCurrency = isset( $params['currency'] ) ? $params['currency'] : null;
 
-
-
     if ( !is_null( $oCurrency ) ) {
-        $sDecimalsSeparator = ( $oCurrency->dec ) ? $oCurrency->dec : $sDecimalsSeparator;
-        $sThousandSeparator = ( $oCurrency->thousand ) ? $oCurrency->thousand : $sThousandSeparator;
-        $sCurrencySign = ( $oCurrency->sign ) ? $oCurrency->sign : $sCurrencySign;
-        $sSide = ( $oCurrency->side ) ? $oCurrency->side : $sSide;
-        $iDecimals = ( $oCurrency->decimal ) ? (int) $oCurrency->decimal : $iDecimals;
+            $sDecimalsSeparator = isset( $oCurrency->dec ) ? $oCurrency->dec : $sDecimalsSeparator;
+            $sThousandSeparator = isset( $oCurrency->thousand ) ? $oCurrency->thousand : $sThousandSeparator;
+            $sCurrencySign = isset( $oCurrency->sign ) ? $oCurrency->sign : $sCurrencySign;
+            $sSide = isset( $oCurrency->side ) ? $oCurrency->side : $sSide;
+            $iDecimals = isset( $oCurrency->decimal ) ? (int) $oCurrency->decimal : $iDecimals;
     }
 
         if ( is_numeric( $sPrice ) ) {

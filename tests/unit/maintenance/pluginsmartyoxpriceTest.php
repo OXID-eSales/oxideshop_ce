@@ -17,7 +17,7 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   tests
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
 
@@ -73,13 +73,17 @@ class Unit_Maintenance_pluginSmartyOxPriceTest extends OxidTestCase
     {
         $oEURCurrency = $this->_getEurCurrency();
         $oUSDCurrency = $this->_getUsdCurrency();
+        $oEURCurrencyZero = $this->_getEurCurrencyZeroDecimal();
         $oEmptyCurrency = new stdClass();
 
         return array(
             array( 12.12, $oEURCurrency, '12,12 EUR' ),
+            array( 12.12, $oEURCurrencyZero, '12 EUR' ),
             array( 0.12, $oEURCurrency, '0,12 EUR' ),
+            array( 0.12, $oEURCurrencyZero, '0 EUR' ),
             array( 120012.1, $oUSDCurrency, 'USD 120,012.100' ),
             array( 1278, $oEURCurrency, '1.278,00 EUR' ),
+            array( 1278, $oEURCurrencyZero, '1.278 EUR' ),
             array( 1992.45, $oEmptyCurrency, '1.992,45' ),
             array( 1992.45, null, '1.992,45' ),
         );
@@ -111,12 +115,14 @@ class Unit_Maintenance_pluginSmartyOxPriceTest extends OxidTestCase
     {
         $oEURCurrency = $this->_getEurCurrency();
         $oUSDCurrency = $this->_getUsdCurrency();
+        $oEURCurrencyZero = $this->_getEurCurrencyZeroDecimal();
         $oEmptyCurrency = new stdClass();
 
         return array(
             array( '', $oEURCurrency, '' ),
             array( null, $oUSDCurrency, '' ),
             array( 0, $oEURCurrency, '0,00 EUR' ),
+            array( 0, $oEURCurrencyZero, '0 EUR' ),
             array( 0, $oUSDCurrency, 'USD 0.000' ),
             array( 0, $oEmptyCurrency, '' ),
             array( 0, null, '' ),
@@ -166,6 +172,20 @@ class Unit_Maintenance_pluginSmartyOxPriceTest extends OxidTestCase
         $oEURCurrency->thousand = '.';
         $oEURCurrency->sign = 'EUR';
         $oEURCurrency->decimal = 2;
+
+        return $oEURCurrency;
+    }
+
+    /**
+     * @return stdClass
+     */
+    protected function _getEurCurrencyZeroDecimal()
+    {
+        $oEURCurrency = new stdClass();
+        $oEURCurrency->dec = ',';
+        $oEURCurrency->thousand = '.';
+        $oEURCurrency->sign = 'EUR';
+        $oEURCurrency->decimal = 0;
 
         return $oEURCurrency;
     }

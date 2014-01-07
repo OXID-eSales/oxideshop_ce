@@ -1252,7 +1252,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
 
     public function testUpdateModuleIds()
     {
-        // prepearing test data
+        // preparing test data
         $aTestModulePaths     = array( "dir1/module1" => "dir1/module1", "dir2/module2" => "dir2/module2" );
         $aTestDisabledModules = array( "dir2/module2", "dir4/module4" );
 
@@ -1272,4 +1272,23 @@ class Unit_Core_oxModuleTest extends OxidTestCase
 
         $oModule->updateModuleIds( "dir2/module2", "dir2Module" );
     }
+
+    public function testDeactivation_ModuleWithBlocks_BlocksRemoved()
+    {
+        $sShopId = $this->getConfig()->getShopId();
+        $oDb = oxDb::getDb();
+
+        $sSql = "INSERT INTO `oxtplblocks` (`OXID`, `OXACTIVE`, `OXSHOPID`, `OXTEMPLATE`, `OXBLOCKNAME`, `OXPOS`, `OXFILE`, `OXMODULE`)
+                         VALUES ('testoxid', 1, '{$sShopId}', 'tpl', 'block', '1', 'file', 'testModule')";
+
+        $oDb->execute( $sSql );
+
+        $oModule = new oxModule();
+        $oModule->deactivate('testModule');
+        $blRes = $oDb->getOne( "SELECT 1 FROM `oxtplblocks` WHERE `oxmodule` = 'testModule' AND `oxshopid` = '$sShopId' LIMIT 1" );
+
+        $this->assertNotEquals( 1, $blRes );
+
+    }
+
 }

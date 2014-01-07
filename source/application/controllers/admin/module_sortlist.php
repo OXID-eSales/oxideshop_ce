@@ -17,40 +17,37 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   admin
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  * @version   SVN: $Id: deliveryset_main.php 25466 2010-02-01 14:12:07Z alfonsas $
  */
 
 /**
- * Extentions sorting list handler.
- * Admin Menu: Extentions -> Module -> Installed Shop Modules.
+ * Extensions sorting list handler.
+ * Admin Menu: Extensions -> Module -> Installed Shop Modules.
  * @package admin
  */
-class Module_Sortlist extends oxAdminDetails
+class Module_SortList extends oxAdminDetails
 {
 
     /**
-     * Executes parent method parent::render(), loads active and disabled extentions,
-     * checks if there are some delted and registered modules and returns name of template file "module_sortlist.tpl".
+     * Executes parent method parent::render(), loads active and disabled extensions,
+     * checks if there are some deleted and registered modules and returns name of template file "module_sortlist.tpl".
      *
      * @return string
      */
     public function render()
     {
-        $sOxId = $this->getEditObjectId();
-
         parent::render();
 
-        $oModulelist = oxNew( "oxModulelist" );
+        $oModuleList = oxNew( "oxModuleList" );
 
         $this->_aViewData["aExtClasses"] = $this->getConfig()->getAllModules();
-
-        $this->_aViewData["aDisabledModules"] = $oModulelist->getDisabledModuleClasses();
+        $this->_aViewData["aDisabledModules"] = $oModuleList->getDisabledModuleClasses();
 
         // checking if there are any deleted extensions
-        if ( oxSession::getVar( "blSkipDeletedExtCheking" ) == false ) {
-            $aDeletedExt = $oModulelist->getDeletedExtensions();
+        if ( oxRegistry::getSession()->getVariable( "blSkipDeletedExtChecking" ) == false ) {
+            $aDeletedExt = $oModuleList->getDeletedExtensions();
         }
 
         if ( !empty($aDeletedExt) ) {
@@ -67,7 +64,7 @@ class Module_Sortlist extends oxAdminDetails
      */
     public function save()
     {
-        $aModule = oxConfig::getParameter("aModules");
+        $aModule = oxRegistry::getConfig()->getRequestParameter( "aModules" );
 
         $aModules = json_decode( $aModule, true );
 
@@ -79,20 +76,20 @@ class Module_Sortlist extends oxAdminDetails
     }
 
     /**
-     * Removes extension metadata from eshop
+     * Removes extension metadata from eShop
      *
      * @return null
      */
     public function remove()
     {
         //if user selected not to update modules, skipping all updates
-        if ( oxConfig::getParameter( "noButton" )) {
-            oxRegistry::getSession()->setVar( "blSkipDeletedExtCheking", true );
+        if ( oxRegistry::getConfig()->getRequestParameter( "noButton" )) {
+            oxRegistry::getSession()->setVariable( "blSkipDeletedExtChecking", true );
             return;
         }
 
-        $oModulelist = oxNew( "oxModulelist" );
-        $oModulelist->cleanup();
+        $oModuleList = oxNew( "oxModuleList" );
+        $oModuleList->cleanup();
     }
 
 }

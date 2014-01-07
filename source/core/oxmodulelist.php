@@ -17,9 +17,8 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   core
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -43,15 +42,26 @@ class oxModuleList extends oxSuperCfg
      */
     protected $_aSkipFiles = array( 'functions.php', 'vendormetadata.php' );
 
+    /**
+     * Get parsed modules
+     *
+     * @deprecated since v5.1.2 (2013-12-10); Naming changed use function getModulesWithExtendedClass().
+     *
+     * @return array
+     */
+    public function getAllModules()
+    {
+        return $this->getModulesWithExtendedClass();
+    }
 
     /**
      * Get parsed modules
      *
      * @return array
      */
-    public function getAllModules()
+    public function getModulesWithExtendedClass()
     {
-        return $this->getConfig()->getAllModules();
+        return $this->getConfig()->getModulesWithExtendedClass();
     }
 
     /**
@@ -158,7 +168,7 @@ class oxModuleList extends oxSuperCfg
      */
     public function extractModulePaths()
     {
-        $aModules     = $this->getAllModules();
+        $aModules     = $this->getModulesWithExtendedClass();
         $aModulePaths = array();
 
         if (is_array($aModules) && count($aModules) > 0) {
@@ -203,7 +213,7 @@ class oxModuleList extends oxSuperCfg
     public function getDisabledModuleClasses()
     {
         $aDisabledModules = $this->getDisabledModules();
-        $aModules         = $this->getAllModules();
+        $aModules         = $this->getModulesWithExtendedClass();
         $aModulePaths     = $this->getModulePaths();
 
         $aDisabledModuleClasses = array();
@@ -300,7 +310,7 @@ class oxModuleList extends oxSuperCfg
      */
     public function getDeletedExtensions()
     {
-        $aModules = $this->getAllModules();
+        $aModules = $this->getModulesWithExtendedClass();
         $aDeletedExt = array();
 
         foreach ( $aModules as $sOxClass => $aModulesList ) {
@@ -381,7 +391,7 @@ class oxModuleList extends oxSuperCfg
      */
     protected function _removeFromModulesArray( $aDeletedExt )
     {
-        $aExt = $this->getAllModules();
+        $aExt = $this->getModulesWithExtendedClass();
         $aUpdatedExt = $this->diffModuleArrays( $aExt, $aDeletedExt );
         $aUpdatedExt = $this->buildModuleChains( $aUpdatedExt );
 

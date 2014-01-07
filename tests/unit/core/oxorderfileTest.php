@@ -17,7 +17,7 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   tests
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  * @version   SVN: $Id: oxorderfileTest.php 26841 2010-03-25 13:58:15Z arvydas $
  */
@@ -75,7 +75,7 @@ class Unit_Core_oxorderfileTest extends OxidTestCase
     }
 
     /**
-     * Test Orderfiles reset
+     * Test Orderfiles isValid
      *
      * @return null
      */
@@ -91,7 +91,7 @@ class Unit_Core_oxorderfileTest extends OxidTestCase
     }
 
     /**
-     * Test Orderfiles reset
+     * Test Orderfiles isNotValid
      *
      * @return null
      */

@@ -17,7 +17,7 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   main
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
 
@@ -187,3 +187,8 @@
      */
     $this->blUseCron = false;
 
+
+    /**
+     * Do not disable module if class from extension path does not exist.
+     */
+    $this->blDoNotDisableModuleOnError = false;

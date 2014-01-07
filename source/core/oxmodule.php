@@ -441,14 +441,7 @@ class oxModule extends oxSuperCfg
                 $oConfig->saveShopConfVar('arr', 'aDisabledModules', $aDisabledModules);
             }
 
-            // checking if module has tpl blocks and they are installed
-            if ( !$this->_hasInstalledTemplateBlocks($sModuleId) ) {
-                // installing module blocks
                 $this->_addTemplateBlocks( $this->getInfo("blocks") );
-            } else {
-                //activate oxblocks
-                $this->_changeBlockStatus( $sModuleId, "1" );
-            }
 
             // Register new module templates
             $this->_addModuleFiles($this->getInfo("files") );
@@ -510,6 +503,8 @@ class oxModule extends oxSuperCfg
             //resets cache
             $this->_resetCache();
 
+            $this->_deleteBlock( $sModuleId );
+
 
             return true;
         }
@@ -551,6 +546,22 @@ class oxModule extends oxSuperCfg
         $sShopId   = $this->getConfig()->getShopId();
         $oDb->execute( "UPDATE oxtplblocks SET oxactive = '".(int) $iStatus."' WHERE oxmodule =". $oDb->quote( $sModule )."AND oxshopid = '$sShopId'" );
     }
+
+    /**
+     * Deactivates or activates oxblocks of a module
+     *
+     * @param string  $sModule Module name
+     * @param integer $iStatus 0 or 1 to (de)activate blocks
+     *
+     * @return null
+     */
+    protected function _deleteBlock( $sModule )
+    {
+        $oDb = oxDb::getDb();
+        $sShopId = $this->getConfig()->getShopId();
+        $oDb->execute( "DELETE FROM `oxtplblocks` WHERE `oxmodule` =" . $oDb->quote( $sModule ) . " AND `oxshopid` = " . $oDb->quote( $sShopId ) );
+    }
+
 
     /**
      * Resets template, language and menu xml cache
@@ -701,7 +712,7 @@ class oxModule extends oxSuperCfg
      */
     public function getModulesWithExtendedClass()
     {
-        return $this->getConfig()->getModulesWithExtendedClass();
+        return $this->getConfigParam('aModules');
     }
 
     /**

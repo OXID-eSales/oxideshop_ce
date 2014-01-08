@@ -1321,9 +1321,10 @@ class Unit_Core_oxModuleTest extends OxidTestCase
         $oConfig = $this->getMock( 'oxConfig', array( 'saveShopConfVar' ) );
         $oConfig->expects( $this->at(0) )->method('saveShopConfVar')->with($this->equalTo("aarr"), $this->equalTo("aModules"), $this->equalTo($aSavedModule) );
 
-        $oModule = $this->getMock( 'oxModule', array('getConfig', 'getModulesWithExtendedClass', 'getModulePath'), array(), "", false );
+        $oModule = $this->getMock( 'oxModule', array('getConfig', 'getModulesWithExtendedClass', 'getModulePath', 'getId'), array(), "", false );
         $oModule->expects( $this->any() )->method('getConfig')->will( $this->returnValue( $oConfig ) );
         $oModule->expects( $this->any() )->method('getModulePath')->will( $this->returnValue( 'oe/invoicepdf/' ) );
+        $oModule->expects( $this->any() )->method('getId')->will( $this->returnValue( 'invoicepdf' ) );
         $oModule->expects( $this->any() )->method('getModulesWithExtendedClass')->will( $this->returnValue( $aModules ) );
         $oModule->setModuleData($aModule);
 

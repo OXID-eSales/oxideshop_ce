@@ -4,7 +4,7 @@
  * Price view mode: Brutto;
  * Product count: 4;
  * VAT info:  count of used vat =1(17%);
- * Currency rate: 0.68ï¿½ ;
+ * Currency rate: 0.68€ ;
  * Discounts: -;
  * Wrapping:  -;
  * Gift cart: -;

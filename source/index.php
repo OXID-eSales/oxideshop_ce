@@ -17,12 +17,12 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   main
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 require_once dirname(__FILE__) . "/bootstrap.php";
 
+//oxDb::getDb()->query( "delete from mysql_log;" );
 //Starts the shop
 Oxid::run();

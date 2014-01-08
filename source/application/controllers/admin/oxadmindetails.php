@@ -19,7 +19,6 @@
  * @package   admin
  * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**

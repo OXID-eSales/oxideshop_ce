@@ -422,9 +422,9 @@ class oxModule extends oxSuperCfg
 
         if ( $this->hasMetadata() || $this->hasExtendClass() ) {
 
-            $this->_removeFromDisabledList();
-
             $this->_addExtensions();
+
+            $this->_removeFromDisabledList();
 
             $this->_addTemplateBlocks( $this->getInfo("blocks") );
 

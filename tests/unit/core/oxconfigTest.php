@@ -17,7 +17,7 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   tests
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
 
@@ -162,11 +162,11 @@ class Unit_Core_oxconfigTest extends OxidTestCase
 
         $sDir = $this->getConfig()->getConfigParam( 'sShopDir' )."/out/2";
         if (is_dir(realpath($sDir))) {
-            oxUtilsFile::getInstance()->deleteDir($sDir);
+            oxRegistry::get("oxUtilsFile")->deleteDir($sDir);
         }
         $sDir = $this->getConfig()->getConfigParam( 'sShopDir' )."/out/en/tpl";
         if (is_dir(realpath($sDir))) {
-            oxUtilsFile::getInstance()->deleteDir($sDir);
+            oxRegistry::get("oxUtilsFile")->deleteDir($sDir);
         }
 
         $sCustConfigPath = getShopBasePath() . "/cust_config.inc.php";
@@ -1108,8 +1108,8 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $this->assertEquals( 'yyy', $oConfig->getActiveShop()->xxx );
 
         // checking if different language forces reload
-        $iCurrLang = oxLang::getInstance()->getBaseLanguage();
-        oxLang::getInstance()->resetBaseLanguage();
+        $iCurrLang = oxRegistry::getLang()->getBaseLanguage();
+        oxRegistry::getLang()->resetBaseLanguage();
         modConfig::setParameter( 'lang', $iCurrLang + 1 );
 
         $oShop = $oConfig->getActiveShop();
@@ -1158,7 +1158,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
     }
     public function testGetTemplateDirExpectsDefault()
     {
-        oxLang::getInstance()->setBaseLanguage( 999 );
+        oxRegistry::getLang()->setBaseLanguage( 999 );
         $oConfig = new oxConfig();
         $oConfig->init();
         $sDir = $this->_getViewsPath( $oConfig, 'admin' ).'tpl/';
@@ -1182,7 +1182,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
     public function testGetTemplateUrlExpectsDefault()
     {
         $oConfig = new oxConfig();
-        oxLang::getInstance()->setBaseLanguage( 999 );
+        oxRegistry::getLang()->setBaseLanguage( 999 );
         $oConfig->init();
         $sDir = $oConfig->getConfigParam( 'sShopURL' ).$this->_getViewsPath( $oConfig, 'admin', false ).'tpl/';
         $this->assertEquals( $sDir, $oConfig->getTemplateUrl( null, true ) );
@@ -1257,7 +1257,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
     }
     public function testGetAbsDynImageDirForSecondLang()
     {
-        oxLang::getInstance()->setBaseLanguage( 1 );
+        oxRegistry::getLang()->setBaseLanguage( 1 );
 
         $oConfig = new oxConfig();
         $oConfig->init();
@@ -1290,7 +1290,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
     {
         $oConfig = new oxConfig();
 
-        oxLang::getInstance()->setTplLanguage(4);
+        oxRegistry::getLang()->setTplLanguage(4);
 
         $oConfig->init();
         $sLangDir   = $this->_getOutPath( $oConfig ).'img/';
@@ -1303,7 +1303,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         } catch (Exception $e) {
         }
 
-        oxLang::getInstance()->setTplLanguage();
+        oxRegistry::getLang()->setTplLanguage();
         /*
         if (is_dir(realpath($sLangDir))) {
             rmdir($sLangDir);
@@ -1322,7 +1322,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
      */
     public function testGetAbsAdminGetImageDirDefault()
     {
-        oxLang::getInstance()->setBaseLanguage( 999 );
+        oxRegistry::getLang()->setBaseLanguage( 999 );
         $oConfig = new oxConfig();
         $oConfig->init();
         $sDir = $oConfig->getConfigParam( 'sShopDir' ).'out/admin/img/';
@@ -1493,7 +1493,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
     }
     public function testGetImageDirDefaultLanguage()
     {
-        oxLang::getInstance()->setBaseLanguage( 999 );
+        oxRegistry::getLang()->setBaseLanguage( 999 );
         $oConfig = $this->getMock( 'oxConfig', array( 'isAdmin' ) );
         $oConfig->expects( $this->any() )->method( 'isAdmin')->will( $this->returnValue( false ) );
         $oConfig->init();
@@ -1530,7 +1530,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
     public function testGetNoSslgetImageUrlDefaults()
     {
         $this->getConfig()->setConfigParam( 'aLanguages', array( 0 => 'DE', 1 => 'EN', 2 => 'LT') );
-        oxLang::getInstance()->setBaseLanguage( 2 );
+        oxRegistry::getLang()->setBaseLanguage( 2 );
 
         $oConfig = new oxConfig();
         $oConfig->init();
@@ -1547,7 +1547,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
     {
         $oConfig = new modForGetShopHomeUrl();
         $oConfig->init();
-        $sUrl = oxUtilsUrl::getInstance()->processUrl( 'http://www.example.com/index.php', false );
+        $sUrl = oxRegistry::get('oxUtilsUrl')->processUrl( 'http://www.example.com/index.php', false );
         $this->assertEquals( $sUrl, $oConfig->getShopHomeUrl() );
     }
 
@@ -1558,7 +1558,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
     {
         $oConfig = new modForGetShopHomeUrl();
         $oConfig->init();
-        $sUrl = oxUtilsUrl::getInstance()->processUrl( 'http://www.example.com/widget.php', false );
+        $sUrl = oxRegistry::get('oxUtilsUrl')->processUrl( 'http://www.example.com/widget.php', false );
         $this->assertEquals( $sUrl, $oConfig->getWidgetUrl() );
     }
 
@@ -1569,7 +1569,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
     {
         $oConfig = new modForGetShopHomeUrl();
         $oConfig->init();
-        $sUrl = oxUtilsUrl::getInstance()->processUrl( 'https://www.example.com/index.php', false );
+        $sUrl = oxRegistry::get('oxUtilsUrl')->processUrl( 'https://www.example.com/index.php', false );
         $this->assertEquals( $sUrl, $oConfig->getShopSecureHomeUrl() );
     }
 
@@ -1977,7 +1977,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
     public function testGetRevision_FileExists()
     {
         $oConfig = new oxConfig();
-        $sDir = oxConfig::getInstance()->getConfigParam('sShopDir').'/out/downloads/';
+        $sDir = oxRegistry::getConfig()->getConfigParam('sShopDir').'/out/downloads/';
         $sFileName = 'pkg.rev';
         $iRevisionNum = 12345;
         $sPkgFile = $sDir . $sFileName;
@@ -1990,7 +1990,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
     public function testGetRevision_NoFile()
     {
         $oConfig = new oxConfig();
-        $sDir = oxConfig::getInstance()->getConfigParam('sShopDir').'/out/downloads/';
+        $sDir = oxRegistry::getConfig()->getConfigParam('sShopDir').'/out/downloads/';
         $oConfig->setConfigParam( 'sShopDir', $sDir);
         $this->assertFalse($oConfig->getRevision());
     }
@@ -1998,7 +1998,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
     public function testGetPackageInfo_FileExists()
     {
         $oConfig = new oxConfig();
-        $sDir = oxConfig::getInstance()->getConfigParam('sShopDir').'/out/downloads/';
+        $sDir = oxRegistry::getConfig()->getConfigParam('sShopDir').'/out/downloads/';
         $sFileName = 'pkg.info';
         $sFileContent = 'Inserting test string';
         $oConfig->setConfigParam( 'sShopDir', $sDir);
@@ -2011,7 +2011,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
     public function testGetPackageInfo_NoFile()
     {
         $oConfig = new oxConfig();
-        $sDir = oxConfig::getInstance()->getConfigParam('sShopDir').'/out/downloads/';
+        $sDir = oxRegistry::getConfig()->getConfigParam('sShopDir').'/out/downloads/';
         $oConfig->setConfigParam( 'sShopDir', $sDir);
         $this->assertFalse( $oConfig->getPackageInfo() );
     }

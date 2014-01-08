@@ -109,7 +109,6 @@ class Unit_Core_oxutilsobjectTest extends OxidTestCase
 
     public function testOxNew()
     {
-        $myConfig = oxConfig::getInstance();
         // 20070808-AS - check known classnames
         $oArticle = oxNew( 'oxarticle' );
         $oArticle = oxNew( 'oxarticle', array( 'aaa' => 'bbb' ) );
@@ -400,6 +399,6 @@ class Unit_Core_oxutilsobjectTest extends OxidTestCase
      */
     private function getTestFilePath()
     {
-        return oxConfig::getInstance()->getConfigParam('sShopDir') . 'modules/oemodulenameoxorder.php';
+        return $this->getConfig()->getConfigParam('sShopDir') . 'modules/oemodulenameoxorder.php';
     }
 }

@@ -17,9 +17,8 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   views
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 /**
@@ -518,7 +517,7 @@ class order extends oxUBase
         $aPaths = array();
         $aPath  = array();
 
-        $aPath['title'] = oxRegistry::getLang()->translateString( 'COMPLETE_ORDER', oxRegistry::getLang()->getBaseLanguage(), false );
+        $aPath['title'] = oxRegistry::getLang()->translateString( 'ORDER_COMPLETED', oxRegistry::getLang()->getBaseLanguage(), false );
         $aPath['link']  = $this->getLink();
 
         $aPaths[] = $aPath;

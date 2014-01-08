@@ -17,7 +17,7 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   lang
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @return $aLang array
  * @version OXID eShop CE
  * @version   SVN: $Id: lang.php 28697 2010-06-29 11:09:58Z vilma $
@@ -399,7 +399,6 @@ $aLang = array(
 'OLD_PASSWORD'                                                => 'Previous password',
 'ONLY_IN_PACKING_UNITS_OF'                                    => 'Only in packaging units of ',
 'OPEN_ACCOUNT'                                                => 'Open account',
-'OPEN_PERSONAL_ACCOUNT'                                       => 'Open personal customer account',
 'OR'                                                          => 'or',
 'ORDERS'                                                      => 'Orders',
 'ORDER_COMPLETED'                                             => 'Order completed',

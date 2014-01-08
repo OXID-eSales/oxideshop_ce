@@ -28,7 +28,7 @@
 
         [{block name="checkout_options_reg"}]
             <div class="lineBox option" id="optionRegistration">
-                <h3>[{ oxmultilang ident="OPEN_PERSONAL_ACCOUNT" }]</h3>
+                <h3>[{ oxmultilang ident="OPEN_ACCOUNT" }]</h3>
                 [{block name="checkout_options_reg_text"}]
                     [{oxifcontent ident="oxregistrationdescription" object="oCont"}]
                         [{$oCont->oxcontents__oxcontent->value}]

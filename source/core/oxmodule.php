@@ -184,7 +184,7 @@ class oxModule extends oxSuperCfg
         }
 
         if ( file_exists( $sModulePath ) && is_readable( $sModulePath ) ) {
-            $aModules = $this->getAllModules();
+            $aModules = $this->getModulesWithExtendedClass();
 
             $this->_aModule = array();
             $this->_aModule['id'] = $sModuleId;
@@ -311,7 +311,7 @@ class oxModule extends oxSuperCfg
         if (isset($sId)) {
             if ( $this->hasExtendClass() ) {
                 $aAddModules = $this->_aModule['extend'];
-                $aInstalledModules = $this->getAllModules();
+                $aInstalledModules = $this->getModulesWithExtendedClass();
                 $iClCount = count($aAddModules);
                 $iActive  = 0;
 
@@ -707,7 +707,7 @@ class oxModule extends oxSuperCfg
      */
     public function getModulesWithExtendedClass()
     {
-        return $this->getConfigParam('aModules');
+        return $this->getConfig()->getModulesWithExtendedClass();
     }
 
     /**

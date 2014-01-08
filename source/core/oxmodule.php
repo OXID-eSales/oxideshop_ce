@@ -469,7 +469,7 @@ class oxModule extends oxSuperCfg
         }
         if ( isset( $sModuleId ) ) {
 
-            $this->_addToDisabledList();
+            $this->_addToDisabledList( $sModuleId );
 
             $this->_callEvent( 'onDeactivate', $sModuleId );
 
@@ -1101,10 +1101,9 @@ class oxModule extends oxSuperCfg
     /**
      * Add module to disable list
      */
-    protected function _addToDisabledList()
+    protected function _addToDisabledList( $sModuleId )
     {
         $oConfig = $this->getConfig();
-        $sModuleId = $this->getId();
         $aDisabledModules = $this->getDisabledModules();
 
         if ( !is_array( $aDisabledModules ) ) {

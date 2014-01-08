@@ -17,9 +17,8 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   tests
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -74,10 +73,9 @@ class Unit_Admin_ModuleSortListTest extends OxidTestCase
      */
     public function testRemove()
     {
-        modConfig::setParameter( "noButton", true );
+        $this->getConfig()->setParameter( "noButton", true );
         $oView = new Module_SortList();
         $oView->remove();
-        $this->assertTrue( modSession::getInstance()->getVar( "blSkipDeletedExtCheking") );
+        $this->assertTrue( $this->getSession()->getVariable( "blSkipDeletedExtChecking") );
     }
-
 }

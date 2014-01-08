@@ -308,7 +308,7 @@ class oxUser extends oxBase
     public function getUserStateTitle( $sStateId )
     {
         $oDb = oxDb::getDb();
-        $sQ = "select oxtitle from ".getViewName( "oxstates" )." where oxid = " . $oDb->quote( $sStateId );
+        $sQ = "select oxtitle from " . getViewName( "oxstates" ) . " where oxid = " . $oDb->quote( $sStateId );
         $sStateTitle = $oDb->getOne( $sQ );
 
         return $sStateTitle;

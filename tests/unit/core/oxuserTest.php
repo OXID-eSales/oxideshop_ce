@@ -3298,10 +3298,14 @@ class Unit_Core_oxuserTest extends OxidTestCase
     {
         $oUser = new oxUser();
         $sStateId = '19';
-        $this->assertEquals( "Kalifornien", $oUser->getUserStateTitle($sStateId) );
+        $this->assertEquals( "Kalifornien", $oUser->getUserStateTitle( $sStateId ) );
         $this->assertEquals(
-            $oUser->getUserStateTitle($sStateId),
-            oxDb::getDb()->getOne( 'select oxtitle'.oxLang::getInstance()->getLanguageTag( null ).' from oxstates where oxid = "'.$sStateId.'"' ),
+            $oUser->getUserStateTitle( $sStateId ),
+            oxDb::getDb()->getOne(
+                'select oxtitle' . oxLang::getInstance()->getLanguageTag(
+                    null
+                ) . ' from oxstates where oxid = "' . $sStateId . '"'
+            ),
             'User state title must be in correct language'
         );
     }

@@ -1,19 +1,19 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
+ *    This file is part of OXID eShop Community Edition.
  *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *    OXID eShop Community Edition is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
+ *    (at your option) any later version.
  *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *    OXID eShop Community Edition is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ *    You should have received a copy of the GNU General Public License
+ *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
  * @package   core
@@ -431,43 +431,24 @@ class oxConfig extends oxSuperCfg
             //starting up the session
             $this->getSession()->start();
 
-        } catch ( oxConnectionException $oEx ) {
 
-            $oEx->debugOut();
-            if ( defined( 'OXID_PHP_UNIT' ) ) {
-                return false;
-            } elseif ( 0 != $this->iDebug ) {
-                oxRegistry::getUtils()->showMessageAndExit( $oEx->getString() );
-            } else {
-                header( "HTTP/1.1 500 Internal Server Error");
-                header( "Location: offline.html");
-                header( "Connection: close");
+            // Admin handling
+            $this->setConfigParam( 'blAdmin', isAdmin() );
+
+            if ( defined('OX_ADMIN_DIR') ) {
+                $this->setConfigParam( 'sAdminDir', OX_ADMIN_DIR );
             }
+
+            $this->_loadVarsFromFile();
+
+            //application initialization
+            $this->_oStart = new oxStart();
+            $this->_oStart->appInit();
+        } catch ( oxConnectionException $oEx ) {
+            return $this->_handleDbConnectionException( $oEx );
         } catch ( oxCookieException $oEx ) {
-
-            $this->_processSeoCall();
-
-            //starting up the session
-            $this->getSession()->start();
-
-            // redirect to start page and display the error
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay( $oEx );
-            oxRegistry::getUtils()->redirect( $this->getShopHomeURL() .'cl=start', true, 302 );
+            return $this->_handleCookieException( $oEx );
         }
-
-
-        // Admin handling
-        $this->setConfigParam( 'blAdmin', isAdmin() );
-
-        if ( defined('OX_ADMIN_DIR') ) {
-            $this->setConfigParam( 'sAdminDir', OX_ADMIN_DIR );
-        }
-
-        $this->_loadVarsFromFile();
-
-        //application initialization
-        $this->_oStart = new oxStart();
-        $this->_oStart->appInit();
     }
 
     /**
@@ -2226,4 +2207,41 @@ class oxConfig extends oxSuperCfg
         return oxDb::getDb()->getCol( "SELECT `oxid` FROM `oxshops`" );
     }
 
+    /**
+     * Shows exception message if debug mode is enabled, redirects otherwise.
+     *
+     * @param oxException $oEx message to show on exit
+     * @return bool
+     */
+    protected function _handleDbConnectionException( $oEx )
+    {
+        $oEx->debugOut();
+        if ( defined( 'OXID_PHP_UNIT' ) ) {
+            return false;
+        } elseif ( 0 != $this->iDebug ) {
+            oxRegistry::getUtils()->showMessageAndExit( $oEx->getString() );
+        } else {
+            header( "HTTP/1.1 500 Internal Server Error");
+            header( "Location: offline.html");
+            header( "Connection: close");
+        }
+    }
+
+    /**
+     * Redirect to start page and display the error
+     *
+     * @param oxException $oEx message to show on exit
+     * @return bool
+     */
+    protected function _handleCookieException( $oEx )
+    {
+        $this->_processSeoCall();
+
+        //starting up the session
+        $this->getSession()->start();
+
+        // redirect to start page and display the error
+        oxRegistry::get("oxUtilsView")->addErrorToDisplay( $oEx );
+        oxRegistry::getUtils()->redirect( $this->getShopHomeURL() .'cl=start', true, 302 );
+    }
 }

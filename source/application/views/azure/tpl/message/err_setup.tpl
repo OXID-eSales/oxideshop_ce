@@ -3,7 +3,7 @@
 [{capture append="_error_content"}]
 <div>
   <div>[{ oxmultilang ident="ERROR_MESSAGE_OXID_SHOP_ERROR" }]</div>
-  <div>[{ oxmultilang ident="MESSAGE_PLEASE_DELETE_DIRECTORY_SET" args=$oViewConf->getBaseDir()}]</div>
+  <div>[{ oxmultilang ident="MESSAGE_PLEASE_DELETE_FOLLOWING_DIRECTORY" suffix="COLON"}] [{$oViewConf->getBaseDir()}]/setup !</div>
 </div>
 [{/capture}]
 [{include file="message/error.tpl" statusMessage=""|implode:$_error_content}]

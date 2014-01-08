@@ -315,9 +315,14 @@ class oxModule extends oxSuperCfg
                 $iClCount = count($aAddModules);
                 $iActive  = 0;
 
-                foreach ($aAddModules as $sClass => $sModule) {
-                    if ( (isset($aInstalledModules[$sClass]) && in_array($sModule, $aInstalledModules[$sClass])) ) {
-                        $iActive ++;
+                foreach ( $aAddModules as $sClass => $sModule ) {
+                    if ( is_array( $sModule ) ) {
+                        $aExtendedClasses = isset( $aInstalledModules[$sClass] ) ? $aInstalledModules[$sClass] : array();
+                        if ( count( array_diff( $aExtendedClasses, $sModule ) ) == 0 ) {
+                            $iActive++;
+                        }
+                    } elseif ( ( isset( $aInstalledModules[$sClass] ) && in_array( $sModule, $aInstalledModules[$sClass] ) ) ) {
+                        $iActive++;
                     }
                 }
                 $blActive = $iClCount > 0 && $iActive == $iClCount;

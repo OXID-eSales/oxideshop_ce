@@ -516,10 +516,9 @@ class oxModule extends oxSuperCfg
     }
 
     /**
-     * Deactivates or activates oxblocks of a module
+     * Deactivates or activates oxBlocks of a module
      *
      * @param string  $sModule Module name
-     * @param integer $iStatus 0 or 1 to (de)activate blocks
      *
      * @return null
      */

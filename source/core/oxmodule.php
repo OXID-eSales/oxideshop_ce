@@ -686,7 +686,7 @@ class oxModule extends oxSuperCfg
      */
     public function getModulesWithExtendedClass()
     {
-        return $this->getConfigParam('aModules');
+        return $this->getConfig()->getConfigParam('aModules');
     }
 
     /**

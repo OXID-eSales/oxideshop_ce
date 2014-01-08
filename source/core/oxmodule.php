@@ -492,9 +492,6 @@ class oxModule extends oxSuperCfg
             $oConfig->saveShopConfVar( 'arr', 'aDisabledModules', $aModules );
             $oConfig->setConfigParam( 'aDisabledModules', $aModules );
 
-            //deactivate oxblocks too
-            $this->_changeBlockStatus( $sModuleId );
-
             //resets cache
             $this->_resetCache();
 

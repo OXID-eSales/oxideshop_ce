@@ -17,7 +17,7 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   tests
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  * @version   SVN: $Id: oxuserTest.php 31889 2010-12-16 13:26:53Z rimvydas.paskevicius $
  */
@@ -3289,6 +3289,21 @@ class Unit_Core_oxuserTest extends OxidTestCase
     {
         $oUser = new oxuser();
         $this->assertEquals( "a7c40f631fc920687.20179984", $oUser->getUserCountryId('DE') );
+    }
+
+    /**
+     * Test case for getting user's state title
+     */
+    public function testGetUserStateTitle()
+    {
+        $oUser = new oxUser();
+        $sStateId = '19';
+        $this->assertEquals( "Kalifornien", $oUser->getUserStateTitle($sStateId) );
+        $this->assertEquals(
+            $oUser->getUserStateTitle($sStateId),
+            oxDb::getDb()->getOne( 'select oxtitle'.oxLang::getInstance()->getLanguageTag( null ).' from oxstates where oxid = "'.$sStateId.'"' ),
+            'User state title must be in correct language'
+        );
     }
 
     /**

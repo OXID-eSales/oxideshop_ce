@@ -17,7 +17,7 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   core
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
 
@@ -296,6 +296,22 @@ class oxUser extends oxBase
         $sCountryId = $oDb->getOne( $sQ );
 
         return $sCountryId;
+    }
+
+    /**
+     * Returns user state title according to passed id
+     *
+     * @param string $sStateId
+     *
+     * @return string
+     */
+    public function getUserStateTitle( $sStateId )
+    {
+        $oDb = oxDb::getDb();
+        $sQ = "select oxtitle from ".getViewName( "oxstates" )." where oxid = " . $oDb->quote( $sStateId );
+        $sStateTitle = $oDb->getOne( $sQ );
+
+        return $sStateTitle;
     }
 
     /**

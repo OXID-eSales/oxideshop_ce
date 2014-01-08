@@ -17,7 +17,7 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   tests
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
 
@@ -145,7 +145,7 @@ class modUtilsObject_oxarticle extends oxUtilsObject
 /**
  * Testing oxArticle class.
  */
-class oxArticleTest extends OxidTestCase
+class Unit_Core_oxArticleTest extends OxidTestCase
 {
     /**
      * Test case for #0003393: getSqlActiveSnippet(true) does not force core table usage

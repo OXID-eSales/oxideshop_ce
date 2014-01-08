@@ -1,4 +1,4 @@
-[{include file="headitem.tpl" title="SYSREQ_MAIN_TITLE"|oxmultilangassign box="list"}]
+[{include file="headitem.tpl" title="GENERAL_ADMIN_TITLE"|oxmultilangassign box="list"}]
 
 <script type="text/javascript">
     if (parent.parent)

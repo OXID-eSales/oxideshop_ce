@@ -376,6 +376,21 @@ class Unit_Core_oxModuleTest extends OxidTestCase
     }
 
     /**
+     * Test for bug #4424
+     * Checks if possible to extend one shop class with more than one module classes.
+     */
+    public function testIsActive_shopClassExtendedByMoreThanOneClass_moduleActive()
+    {
+        $oModuleHandler = $this->getProxyClass( 'oxmodule') ;
+        $aModule  = array( 'id' => '__test', 'extend' => array( 'oxtest1' => array( 'test1/mytest1', 'test1/mytest2' ) ) );
+
+        $oModuleHandler->setNonPublicVar( '_aModule', $aModule );
+        $oModuleHandler->setNonPublicVar( '_blMetadata', true );
+
+        $this->assertTrue( $oModuleHandler->isActive(), 'Module extends shop class, so methods should return true.' );
+    }
+
+    /**
      * oxmodule::isExtended() test case,
      *
      * @return null

@@ -308,28 +308,33 @@ class oxModule extends oxSuperCfg
     {
         $blActive = false;
         $sId = $this->getId();
-        if (isset($sId)) {
+        if ( isset( $sId ) ) {
             if ( $this->hasExtendClass() ) {
                 $aAddModules = $this->_aModule['extend'];
                 $aInstalledModules = $this->getModulesWithExtendedClass();
                 $iClCount = count($aAddModules);
                 $iActive  = 0;
 
-                foreach ($aAddModules as $sClass => $sModule) {
-                    if ( (isset($aInstalledModules[$sClass]) && in_array($sModule, $aInstalledModules[$sClass])) ) {
-                        $iActive ++;
+                foreach ( $aAddModules as $sClass => $sModule ) {
+                    if ( is_array( $sModule ) ) {
+                        $aExtendedClasses = isset( $aInstalledModules[$sClass] ) ? $aInstalledModules[$sClass] : array();
+                        if ( count( array_diff( $aExtendedClasses, $sModule ) ) == 0 ) {
+                            $iActive++;
+                        }
+                    } elseif ( ( isset( $aInstalledModules[$sClass] ) && in_array( $sModule, $aInstalledModules[$sClass] ) ) ) {
+                        $iActive++;
                     }
                 }
                 $blActive = $iClCount > 0 && $iActive == $iClCount;
 
                 $aDisabledModules = $this->getDisabledModules();
-                if ( $blActive && ( is_array($aDisabledModules) && in_array($sId, $aDisabledModules) ) ) {
+                if ( $blActive && ( is_array( $aDisabledModules ) && in_array( $sId, $aDisabledModules ) ) ) {
                     $blActive = false;
                 }
             } else {
                 //handling modules that does not extend any class
                 $aDisabledModules = $this->getDisabledModules();
-                if ( is_array($aDisabledModules) && !in_array($sId, $aDisabledModules) ) {
+                if ( is_array( $aDisabledModules ) && !in_array( $sId, $aDisabledModules ) ) {
                     $blActive = true;
                 }
             }

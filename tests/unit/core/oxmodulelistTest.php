@@ -17,7 +17,7 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   tests
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  * @version   SVN: $Id: oxcaptchaTest.php 26841 2010-03-25 13:58:15Z arvydas $
  */
@@ -164,11 +164,11 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
     }
 
     /**
-     * oxmodulelist::getAllModules() test case
+     * oxmodulelist::getModulesWithExtendedClass() test case
      *
      * @return null
      */
-    public function testGetAllModules()
+    public function testgetModulesWithExtendedClass()
     {
         $aModules = array(
             'oxorder'  => 'testExt1/module1&testExt2/module1',
@@ -183,7 +183,7 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
         $oModuleList = $this->getProxyClass('oxmodulelist');
         modConfig::getInstance()->setConfigParam( "aModules", $aModules );
 
-        $this->assertEquals( $aResult, $oModuleList->getAllModules() );
+        $this->assertEquals( $aResult, $oModuleList->getModulesWithExtendedClass() );
     }
 
     /**
@@ -452,9 +452,9 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
         $oConfig = $this->getMock( "oxConfig", array( "saveShopConfVar" ) );
         $oConfig->expects($this->once())->method('saveShopConfVar')->with( $this->equalTo( 'aarr' ), $this->equalTo( 'aModules' ), $this->equalTo( $aResult ) );
 
-        $oModuleList = $this->getMock( 'oxmodulelist', array('getConfig', 'getAllModules') );
+        $oModuleList = $this->getMock( 'oxmodulelist', array('getConfig', 'getModulesWithExtendedClass') );
         $oModuleList->expects($this->once())->method('getConfig')->will( $this->returnValue($oConfig) );
-        $oModuleList->expects($this->once())->method('getAllModules')->will( $this->returnValue($aModules) );
+        $oModuleList->expects($this->once())->method('getModulesWithExtendedClass')->will( $this->returnValue($aModules) );
 
 
         $oModuleList->_removeFromModulesArray( $aDeletedExt );

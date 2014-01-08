@@ -17,7 +17,7 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   core
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
 
@@ -462,12 +462,16 @@ class oxUtilsObject
                     }
 
                     // disable module if extended class is not found
-                    $this->_disableModule( $sModule );
-
-                    //to avoid problems with unitest and only throw a exception if class does not exists MAFI
-                    $oEx = oxNew( "oxSystemComponentException" );
-                    $oEx->setMessage('EXCEPTION_SYSTEMCOMPONENT_CLASSNOTFOUND');
-                    $oEx->setComponent($sModuleClass);
+                    $blDisableModuleOnError = !oxRegistry::get( "oxConfigFile" )->getVar( "blDoNotDisableModuleOnError" );
+                    if ( $blDisableModuleOnError ) {
+                        $this->_disableModule( $sModule );
+                    } else {
+                        //to avoid problems with unitest and only throw a exception if class does not exists MAFI
+                        $oEx = oxNew( "oxSystemComponentException" );
+                        $oEx->setMessage("EXCEPTION_SYSTEMCOMPONENT_CLASSNOTFOUND");
+                        $oEx->setComponent( $sModuleClass );
+                        throw $oEx;
+                    }
                     continue;
                 }
             }
@@ -531,9 +535,9 @@ class oxUtilsObject
     public function setModuleVar( $sModuleVarName, $aValues )
     {
         if ( is_null( $aValues) ) {
-            unset( self::$_aModuleVars );
+            self::$_aModuleVars = null;
         } else {
-            self::$_aModuleVars[$sModuleVarName] = $aValues ;
+            self::$_aModuleVars[$sModuleVarName] = $aValues;
         }
 
         $this->_setToCache($sModuleVarName, $aValues);

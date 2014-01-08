@@ -1,4 +1,4 @@
-[{include file="headitem.tpl" title="SYSREQ_MAIN_TITLE"|oxmultilangassign}]
+[{include file="headitem.tpl" title="GENERAL_ADMIN_TITLE"|oxmultilangassign}]
 
 [{ if $readonly}]
     [{assign var="readonly" value="readonly disabled"}]

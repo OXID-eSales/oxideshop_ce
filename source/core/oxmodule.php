@@ -322,7 +322,7 @@ class oxModule extends oxSuperCfg
                 }
                 $blActive = $iClCount > 0 && $iActive == $iClCount;
 
-            $aDisabledModules = $this->getDisabledModules();
+                $aDisabledModules = $this->getDisabledModules();
                 if ( $blActive && ( is_array($aDisabledModules) && in_array($sId, $aDisabledModules) ) ) {
                     $blActive = false;
                 }
@@ -413,30 +413,15 @@ class oxModule extends oxSuperCfg
      */
     public function activate()
     {
+        $blResult = false;
+
         if ( $this->hasMetadata() || $this->hasExtendClass() ) {
-            $oConfig     = $this->getConfig();
-        $aDisabledModules  = $this->getDisabledModules();
-            $sModuleId   = $this->getId();
 
-        if ( $this->hasExtendClass() ) {
-            $aAddModules = $this->_aModule['extend'];
+            $this->_removeFromDisabledList();
 
-            $aInstalledModules = $this->getModulesWithExtendedClass();
+            $this->_addExtensions();
 
-            $aModules = $this->mergeModuleArrays($aInstalledModules, $aAddModules);
-            $aModules = $this->buildModuleChains($aModules);
-
-            $oConfig->setConfigParam('aModules', $aModules);
-            $oConfig->saveShopConfVar('aarr', 'aModules', $aModules);
-        }
-
-            if ( isset($aDisabledModules) && is_array($aDisabledModules) ) {
-                $aDisabledModules = array_diff($aDisabledModules, array($sModuleId));
-                $oConfig->setConfigParam('aDisabledModules', $aDisabledModules);
-                $oConfig->saveShopConfVar('arr', 'aDisabledModules', $aDisabledModules);
-            }
-
-                $this->_addTemplateBlocks( $this->getInfo("blocks") );
+            $this->_addTemplateBlocks( $this->getInfo("blocks") );
 
             // Register new module templates
             $this->_addModuleFiles($this->getInfo("files") );
@@ -457,11 +442,11 @@ class oxModule extends oxSuperCfg
             $this->_resetCache();
 
 
-            $this->_callEvent('onActivate', $sModuleId);
+            $this->_callEvent('onActivate',  $this->getId() );
 
-            return true;
+            $blResult = true;
         }
-        return false;
+        return $blResult;
     }
 
     /**
@@ -473,24 +458,15 @@ class oxModule extends oxSuperCfg
      */
     public function deactivate( $sModuleId = null )
     {
-        $oConfig = $this->getConfig();
-        if (!isset($sModuleId)) {
+        $blResult = false;
+        if ( is_null( $sModuleId ) ) {
             $sModuleId = $this->getId();
         }
-        if (isset($sModuleId)) {
+        if ( isset( $sModuleId ) ) {
+
+            $this->_addToDisabledList();
 
             $this->_callEvent( 'onDeactivate', $sModuleId );
-
-            $aDisabledModules = $this->getDisabledModules();
-
-            if (!is_array($aDisabledModules)) {
-                $aDisabledModules = array();
-            }
-            $aModules = array_merge($aDisabledModules, array( $sModuleId ) );
-            $aModules = array_unique($aModules);
-
-            $oConfig->saveShopConfVar( 'arr', 'aDisabledModules', $aModules );
-            $oConfig->setConfigParam( 'aDisabledModules', $aModules );
 
             //resets cache
             $this->_resetCache();
@@ -498,9 +474,9 @@ class oxModule extends oxSuperCfg
             $this->_deleteBlock( $sModuleId );
 
 
-            return true;
+            $blResult = true;
         }
-        return false;
+        return $blResult;
     }
 
     /**
@@ -525,7 +501,7 @@ class oxModule extends oxSuperCfg
     }
 
     /**
-     * Deactivates or activates oxblocks of a module
+     * Deactivates or activates oxBlocks of a module
      *
      * @param string  $sModule Module name
      * @param integer $iStatus 0 or 1 to (de)activate blocks
@@ -659,6 +635,8 @@ class oxModule extends oxSuperCfg
         }
 
         $aModulePaths = $this->getModulePaths();
+
+
 
         $sModulePath = $aModulePaths[$sModuleId];
 
@@ -1079,5 +1057,84 @@ class oxModule extends oxSuperCfg
         if ( extension_loaded( 'apc' ) && ini_get( 'apc.enabled' ) ) {
             apc_clear_cache();
         }
+    }
+
+    /**
+     * Removes module from disabled module list
+     */
+    protected function _removeFromDisabledList()
+    {
+        $oConfig = $this->getConfig();
+        $aDisabledModules = $this->getDisabledModules();
+        $sModuleId = $this->getId();
+
+        if ( isset( $aDisabledModules ) && is_array( $aDisabledModules ) ) {
+            $aDisabledModules = array_diff( $aDisabledModules, array($sModuleId) );
+            $oConfig->setConfigParam( 'aDisabledModules', $aDisabledModules );
+            $oConfig->saveShopConfVar( 'arr', 'aDisabledModules', $aDisabledModules );
+        }
+    }
+
+    /**
+     * Add extension to module
+     */
+    protected function _addExtensions()
+    {
+        $oConfig = $this->getConfig();
+        $aInstalledModules = $this->_removeExtensions( $this->getModulesWithExtendedClass() );
+
+        if ( $this->hasExtendClass() ) {
+            $aAddModules  = $this->_aModule['extend'];
+
+            $aModules = $this->mergeModuleArrays( $aInstalledModules, $aAddModules );
+            $aModules = $this->buildModuleChains( $aModules );
+
+            $oConfig->setConfigParam( 'aModules', $aModules );
+            $oConfig->saveShopConfVar( 'aarr', 'aModules', $aModules );
+        }
+    }
+
+    /**
+     * Add module to disable list
+     */
+    protected function _addToDisabledList()
+    {
+        $oConfig = $this->getConfig();
+        $sModuleId = $this->getId();
+        $aDisabledModules = $this->getDisabledModules();
+
+        if ( !is_array( $aDisabledModules ) ) {
+            $aDisabledModules = array();
+        }
+        $aModules = array_merge( $aDisabledModules, array( $sModuleId ) );
+        $aModules = array_unique( $aModules );
+
+        $oConfig->saveShopConfVar( 'arr', 'aDisabledModules', $aModules );
+        $oConfig->setConfigParam( 'aDisabledModules', $aModules );
+    }
+
+    /**
+     * Removes module extensions from all extension list
+     *
+     * @param $aInstalledModules
+     *
+     * @return array
+     */
+    protected function _removeExtensions( $aInstalledModules )
+    {
+        $aClean = array();
+
+        $sPath  = $this->getModulePath( $this->getId() );
+
+        foreach ( $aInstalledModules as $sClass => $aInstalledClassPaths ) {
+            $aClean[$sClass] = array();
+            foreach ( $aInstalledClassPaths as $sInstalledClassPath ) {
+                if ( strpos( $sInstalledClassPath, $sPath ) === false ) {
+                    $aClean[$sClass][] = $sInstalledClassPath;
+                }
+            }
+        }
+
+        return array_filter( $aClean );
     }
 }

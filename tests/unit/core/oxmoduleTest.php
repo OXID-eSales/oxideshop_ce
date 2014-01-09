@@ -1298,7 +1298,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
             'article'    => array('test/testArticleOther/application/controllers/test_testModule_oxarticle', 'oe/invoicepdf/application/controllers/test_testModule_oxarticle' ),
             'oxother'    => array('test/testOther/application/controllers/test_testModule_oxarticle'),
             'basket'    => array('oe/invoicepdf/application/controllers/test_testModule_oxarticle'),
-            'category'    => array('oe/invoicepdf/application/controllers/test_testModule_oxarticle', 'oe/invoicepdf/application/controllers/test_testModule_oxarticle' ),
+            'category'    => array('oe/invoicepdf/application/controllers/test_testModule_oxcategory1', 'oe/invoicepdf/application/controllers/test_testModule_oxcategory2' ),
             'oxorder'    => array('oe/invoicepdf/application/controllers/test_testModule_oxorder'),
         );
 

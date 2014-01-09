@@ -3302,7 +3302,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
         $this->assertEquals(
             $oUser->getUserStateTitle( $sStateId ),
             oxDb::getDb()->getOne(
-                'select oxtitle' . oxLang::getInstance()->getLanguageTag(
+                'select oxtitle' . oxRegistry::getLang()->getLanguageTag(
                     null
                 ) . ' from oxstates where oxid = "' . $sStateId . '"'
             ),

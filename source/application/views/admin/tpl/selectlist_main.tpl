@@ -158,19 +158,19 @@ function onSelect_aField(){
                     <tr>
                         <td class="edittext" width="10">&nbsp;</td>
                         <td class="edittext" colspan="2" align="right">
-                         <input [{ $readonly }] type="submit" class="edittext" name="save" value="[{ oxmultilang ident="GENERAL_FIELDS_ADD" }]" onClick="Javascript:document.myedit.fnc.value='addfield'"" [{ $readonly }] style="width: 100px;">
+                         <input [{ $readonly }] type="submit" class="edittext" name="save" value="[{ oxmultilang ident="GENERAL_FIELDS_ADD" }]" onClick="Javascript:document.myedit.fnc.value='addfield'" [{ $readonly }] style="width: 100px;">
                         </td>
                     </tr>
                     <tr>
                         <td class="edittext" width="10">&nbsp;</td>
                         <td class="edittext" colspan="2" align="right">
-                         <input [{ $readonly }] type="submit" id="submit_modify" class="edittext" name="save" value="[{ oxmultilang ident="GENERAL_FIELDS_MODIFY" }]" onClick="Javascript:document.myedit.fnc.value='changefield'"" [{ $readonly }] style="width: 100px;" DISABLED>
+                         <input [{ $readonly }] type="submit" id="submit_modify" class="edittext" name="save" value="[{ oxmultilang ident="GENERAL_FIELDS_MODIFY" }]" onClick="Javascript:document.myedit.fnc.value='changefield'" [{ $readonly }] style="width: 100px;" DISABLED>
                         </td>
                     </tr>
                     <tr>
                         <td class="edittext" width="10">&nbsp;</td>
                         <td class="edittext" colspan="2" align="right">
-                         <br /><input [{ $readonly }] type="submit" id="submit_delete" class="edittext" name="save" value="[{ oxmultilang ident="GENERAL_FIELDS_DELETE" }]" onClick="Javascript:document.myedit.fnc.value='delfields'"" [{ $readonly }] style="width: 150px;" DISABLED>
+                         <br /><input [{ $readonly }] type="submit" id="submit_delete" class="edittext" name="save" value="[{ oxmultilang ident="GENERAL_FIELDS_DELETE" }]" onClick="Javascript:document.myedit.fnc.value='delfields'" [{ $readonly }] style="width: 150px;" DISABLED>
                         </td>
                     </tr>
                 </table>

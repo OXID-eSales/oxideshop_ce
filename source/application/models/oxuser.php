@@ -2228,6 +2228,14 @@ class oxUser extends oxBase
     }
 
     /**
+     * Get state title
+     */
+    public function getStateTitleById($sId)
+    {
+        return null;
+    }
+
+    /**
      * Checks if user accepted latest shopping terms and conditions version
      *
      * @return bool

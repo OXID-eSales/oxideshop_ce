@@ -130,6 +130,14 @@ class oxAddress extends oxBase
     }
 
     /**
+     * Get state title
+     */
+    public function getStateTitleById($sId)
+    {
+        return null;
+    }
+
+    /**
      * Returns merged address fields.
      *
      * @return string

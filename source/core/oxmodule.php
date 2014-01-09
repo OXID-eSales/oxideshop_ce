@@ -584,14 +584,14 @@ class oxModule extends oxSuperCfg
      */
     public function mergeModuleArrays($aAllModuleArray, $aAddModuleArray)
     {
-        if (is_array($aAllModuleArray) && is_array($aAddModuleArray)) {
-            foreach ($aAddModuleArray as $sClass => $aModuleChain) {
-                if (!is_array($aModuleChain)) {
-                    $aModuleChain = array($aModuleChain);
+        if ( is_array( $aAllModuleArray ) && is_array( $aAddModuleArray ) ) {
+            foreach ( $aAddModuleArray as $sClass => $aModuleChain ) {
+                if ( !is_array( $aModuleChain ) ) {
+                    $aModuleChain = array( $aModuleChain );
                 }
-                if (isset($aAllModuleArray[$sClass])) {
-                    foreach ($aModuleChain as $sModule) {
-                        if (!in_array($sModule, $aAllModuleArray[$sClass])) {
+                if ( isset( $aAllModuleArray[$sClass] ) ) {
+                    foreach ( $aModuleChain as $sModule ) {
+                        if ( !in_array( $sModule, $aAllModuleArray[$sClass] ) ) {
                             $aAllModuleArray[$sClass][] = $sModule;
                         }
                     }
@@ -612,7 +612,7 @@ class oxModule extends oxSuperCfg
      *
      * @return array
      */
-    public function filterModuleArray($aModules, $sModuleId)
+    public function filterModuleArray( $aModules, $sModuleId )
     {
         $aFilteredModules = array();
         foreach ($aModules as $sClass => $aExtend) {
@@ -639,9 +639,6 @@ class oxModule extends oxSuperCfg
         }
 
         $aModulePaths = $this->getModulePaths();
-
-
-
         $sModulePath = $aModulePaths[$sModuleId];
 
         // if still no module dir, try using module ID as dir name
@@ -1085,7 +1082,7 @@ class oxModule extends oxSuperCfg
     protected function _addExtensions()
     {
         $oConfig = $this->getConfig();
-        $aInstalledModules = $this->_removeExtensions( $this->getModulesWithExtendedClass() );
+        $aInstalledModules = $this->_removeNotUsedExtensions( $this->getModulesWithExtendedClass() );
 
         if ( $this->hasExtendClass() ) {
             $aAddModules  = $this->_aModule['extend'];
@@ -1123,21 +1120,84 @@ class oxModule extends oxSuperCfg
      *
      * @return array
      */
-    protected function _removeExtensions( $aInstalledModules )
+    protected function _removeNotUsedExtensions( $aInstalledModules )
     {
-        $aClean = array();
+        $aExtensionForInstallation = $this->_aModule['extend'];
+
+        $aInstalledExtensions = $this->_getInstalledExtensions( $aInstalledModules );
+
+        if ( count( $aInstalledExtensions ) ) {
+            $aExtensionForRemove = $this->_getExtensionForRemove( $aExtensionForInstallation, $aInstalledExtensions );
+
+            if ( count( $aExtensionForRemove ) ) {
+                $aInstalledModules = $this->_removeFromInstalledExtensions( $aInstalledModules, $aExtensionForRemove );
+            }
+        }
+
+        return $aInstalledModules;
+    }
+
+    /**
+     * Return array off installed module extensions
+     *
+     * @param $aInstalledModules
+     *
+     * @return array
+     */
+    protected function _getInstalledExtensions( $aInstalledModules )
+    {
+        $aInstalledExtensions = array();
 
         $sPath  = $this->getModulePath( $this->getId() );
 
         foreach ( $aInstalledModules as $sClass => $aInstalledClassPaths ) {
-            $aClean[$sClass] = array();
             foreach ( $aInstalledClassPaths as $sInstalledClassPath ) {
-                if ( strpos( $sInstalledClassPath, $sPath ) === false ) {
-                    $aClean[$sClass][] = $sInstalledClassPath;
+                if ( strpos( $sInstalledClassPath, $sPath ) !== false ) {
+                    $aInstalledExtensions[$sClass][] = $sInstalledClassPath;
                 }
             }
         }
 
-        return array_filter( $aClean );
+        return $aInstalledExtensions;
+    }
+
+    /**
+     * @param $aExtensionForInstallation
+     * @param $aInstalledExtensions
+     *
+     * @return array
+     */
+    protected function _getExtensionForRemove( $aExtensionForInstallation, $aInstalledExtensions )
+    {
+        foreach ( $aExtensionForInstallation as $sClass => $sPath ) {
+            if ( isset( $aInstalledExtensions[$sClass] ) ) {
+                unset( $aInstalledExtensions[$sClass][array_search( $sPath, $aInstalledExtensions[$sClass] )] );
+                if ( count( $aInstalledExtensions[$sClass] ) == 0 ) {
+                    unset( $aInstalledExtensions[$sClass] );
+                }
+            }
+        }
+        return $aInstalledExtensions;
+    }
+
+    /**
+     * @param $aInstalledModules
+     * @param $aExtensionForRemove
+     */
+    protected function _removeFromInstalledExtensions( $aInstalledModules, $aExtensionForRemove )
+    {
+        foreach ( $aExtensionForRemove as $sClass => $aClassPaths ) {
+
+            foreach ( $aClassPaths as $sClassPath ) {
+
+                unset( $aInstalledModules[$sClass][array_search( $sClassPath, $aInstalledModules[$sClass] )] );
+
+                if ( count( $aInstalledModules[$sClass] ) == 0 ) {
+                    unset( $aInstalledModules[$sClass] );
+                }
+            }
+        }
+
+        return $aInstalledModules;
     }
 }

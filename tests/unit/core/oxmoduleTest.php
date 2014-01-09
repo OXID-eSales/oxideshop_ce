@@ -1324,13 +1324,16 @@ class Unit_Core_oxModuleTest extends OxidTestCase
             'basket'    => array('oe/invoicepdf/application/controllers/test_testModule_oxarticle'),
             'category'    => array('oe/invoicepdf/application/controllers/test_testModule_oxcategory1', 'oe/invoicepdf/application/controllers/test_testModule_oxcategory2' ),
             'oxorder'    => array('oe/invoicepdf/application/controllers/test_testModule_oxorder'),
+            'oxnew' => array( 'oe/invoicepdf/file1', 'oe/invoicepdf/file2'),
+
         );
 
         $aModule = array();
         $aModule['id'] = 'invoicepdf';
         $aModule['extend'] = array(
             'oxarticle'    => 'oe/invoicepdf/application/controllers/test_testModule_oxarticle',
-            'oxorder'    => 'oe/invoicepdf/application/controllers/test_testModule_oxorder'
+            'oxorder'    => 'oe/invoicepdf/application/controllers/test_testModule_oxorder',
+            'oxnew' => array( 'oe/invoicepdf/file1', 'oe/invoicepdf/file2' ),
         );
 
 
@@ -1338,13 +1341,15 @@ class Unit_Core_oxModuleTest extends OxidTestCase
             'article' => 'test/testArticleOther/application/controllers/test_testModule_oxarticle',
             'oxother'    => 'test/testOther/application/controllers/test_testModule_oxarticle',
             'oxarticle'    => 'oe/invoicepdf/application/controllers/test_testModule_oxarticle',
-            'oxorder'    => 'oe/invoicepdf/application/controllers/test_testModule_oxorder'
+            'oxorder'    => 'oe/invoicepdf/application/controllers/test_testModule_oxorder',
+            'oxnew' => 'oe/invoicepdf/file1&oe/invoicepdf/file2',
         );
 
         $oConfig = $this->getMock( 'oxConfig', array( 'saveShopConfVar' ) );
         $oConfig->expects( $this->at(0) )->method('saveShopConfVar')->with($this->equalTo("aarr"), $this->equalTo("aModules"), $this->equalTo($aSavedModule) );
 
         $oModule = $this->getMock( 'oxModule', array('getConfig', 'getModulesWithExtendedClass', 'getModulePath', 'getId'), array(), "", false );
+
         $oModule->expects( $this->any() )->method('getConfig')->will( $this->returnValue( $oConfig ) );
         $oModule->expects( $this->any() )->method('getModulePath')->will( $this->returnValue( 'oe/invoicepdf/' ) );
         $oModule->expects( $this->any() )->method('getId')->will( $this->returnValue( 'invoicepdf' ) );
@@ -1352,6 +1357,42 @@ class Unit_Core_oxModuleTest extends OxidTestCase
         $oModule->setModuleData($aModule);
 
         $oModule->activate();
+    }
+
+    public function testActivation_ModuleWithoutExtensions_OldModuleExtendsGetRemoved()
+    {
+        //setting installed data
+        $aModules = array(
+            'article'   => array(
+                'test/testArticleOther/application/controllers/test_testModule_oxarticle',
+                'oe/invoicepdf/application/controllers/test_testModule_oxarticle'
+            ),
+            'oxother'   => array('test/testOther/application/controllers/test_testModule_oxarticle'),
+            'oxarticle' => array('oe/invoicepdf/application/controllers/test_testModule_oxarticle'),
+            'oxorder'   => array('oe/invoicepdf/application/controllers/test_testModule_oxorder'),
+        );
+
+        $aModule = array();
+        $aModule['id'] = 'invoicepdf';
+        $aModule['extend'] = array();
+
+        $aSavedModule = array(
+            'article'   => 'test/testArticleOther/application/controllers/test_testModule_oxarticle',
+            'oxother'   => 'test/testOther/application/controllers/test_testModule_oxarticle',
+        );
+
+        $oConfig = $this->getMock( 'oxConfig', array( 'saveShopConfVar' ) );
+        $oConfig->expects( $this->at(0) )->method('saveShopConfVar')->with($this->equalTo("aarr"), $this->equalTo("aModules"), $this->equalTo($aSavedModule) );
+
+        $oModule = $this->getMock( 'oxModule', array('getConfig', 'getModulesWithExtendedClass', 'getModulePath', 'getId', 'hasMetadata'), array(), "", false );
+        $oModule->expects( $this->any() )->method('getConfig')->will( $this->returnValue( $oConfig ) );
+        $oModule->expects( $this->any() )->method('getModulePath')->will( $this->returnValue( 'oe/invoicepdf/' ) );
+        $oModule->expects( $this->any() )->method('getId')->will( $this->returnValue( 'invoicepdf' ) );
+        $oModule->expects( $this->any() )->method('hasMetadata')->will( $this->returnValue( true ) );
+        $oModule->expects( $this->any() )->method('getModulesWithExtendedClass')->will( $this->returnValue( $aModules ) );
+        $oModule->setModuleData( $aModule );
+
+        $this->assertTrue( $oModule->activate() );
     }
 
 }

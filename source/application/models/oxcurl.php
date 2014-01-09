@@ -17,7 +17,7 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   core
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
 
@@ -98,7 +98,7 @@ class oxCurl
     protected function _setResource( $rCurl )
     {
         $this->_rCurl = $rCurl;
-        }
+    }
 
     /**
      * Returns curl resource
@@ -138,7 +138,7 @@ class oxCurl
             $this->_sUrl = $this->_sUrl . "?" . $this->getQuery();
         }
         return $this->_sUrl;
-        }
+    }
 
     /**
      * Set query like "param1=value1&param2=values2.."
@@ -190,7 +190,7 @@ class oxCurl
     public function getParameters()
     {
         return $this->_aParameters;
-        }
+    }
 
     /**
      * Sets host.

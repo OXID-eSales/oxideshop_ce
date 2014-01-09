@@ -327,7 +327,7 @@ class oxModule extends oxSuperCfg
                 }
                 $blActive = $iClCount > 0 && $iActive == $iClCount;
 
-            $aDisabledModules = $this->getDisabledModules();
+                $aDisabledModules = $this->getDisabledModules();
                 if ( $blActive && ( is_array($aDisabledModules) && in_array($sId, $aDisabledModules) ) ) {
                     $blActive = false;
                 }
@@ -426,7 +426,7 @@ class oxModule extends oxSuperCfg
 
             $this->_removeFromDisabledList();
 
-                $this->_addTemplateBlocks( $this->getInfo("blocks") );
+            $this->_addTemplateBlocks( $this->getInfo("blocks") );
 
             // Register new module templates
             $this->_addModuleFiles($this->getInfo("files") );

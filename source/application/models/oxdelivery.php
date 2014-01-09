@@ -17,7 +17,7 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   core
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
 
@@ -161,8 +161,8 @@ class oxDelivery extends oxI18n
     public function getArticles()
     {
         if ( is_null( $this->_aArtIds ) ) {
-        $oDb = oxDb::getDb();
-        $sQ = "select oxobjectid from oxobject2delivery where oxdeliveryid=".$oDb->quote($this->getId())." and oxtype = 'oxarticles'";
+            $oDb = oxDb::getDb();
+            $sQ = "select oxobjectid from oxobject2delivery where oxdeliveryid=".$oDb->quote($this->getId())." and oxtype = 'oxarticles'";
             $aArtIds = $oDb->getCol( $sQ );
             $this->_aArtIds= $aArtIds;
         }
@@ -177,8 +177,8 @@ class oxDelivery extends oxI18n
     public function getCategories()
     {
         if ( is_null( $this->_aCatIds ) ) {
-        $oDb = oxDb::getDb();
-        $sQ = "select oxobjectid from oxobject2delivery where oxdeliveryid=".$oDb->quote($this->getId())." and oxtype = 'oxcategories'";
+            $oDb = oxDb::getDb();
+            $sQ = "select oxobjectid from oxobject2delivery where oxdeliveryid=".$oDb->quote($this->getId())." and oxtype = 'oxcategories'";
             $aCatIds = $oDb->getCol( $sQ );
             $this->_aCatIds = $aCatIds;
         }
@@ -393,11 +393,11 @@ class oxDelivery extends oxI18n
                                     $blForBasket = true;
                                 }
                             }
-                    if (!$blForBasket) {
-                        $iAmount += $iArtAmount;
+                            if (!$blForBasket) {
+                                $iAmount += $iArtAmount;
+                            }
+                        }
                     }
-                }
-            }
 
                 }
             }
@@ -459,8 +459,8 @@ class oxDelivery extends oxI18n
         $blResult = false;
 
         if ( $this->getConditionType() == self::CONDITION_TYPE_PRICE ) {
-                $oCur = $this->getConfig()->getActShopCurrencyObject();
-                $iAmount /= $oCur->rate;
+            $oCur = $this->getConfig()->getActShopCurrencyObject();
+            $iAmount /= $oCur->rate;
         }
 
         if ( $iAmount >= $this->getConditionFrom() && $iAmount <= $this->getConditionTo() ) {
@@ -480,7 +480,7 @@ class oxDelivery extends oxI18n
     public function getIdByName( $sTitle )
     {
         $oDb = oxDb::getDb();
-        $sQ = "SELECT `oxid` FROM `" . getViewName( 'oxdelivery' ) . "` WHERE  `oxtitle` = " . $oDb->quote( $sTitle );
+        $sQ = "SELECT `oxid` FROM `" . getViewName( 'oxdelivery' ) . "` WHERE `oxtitle` = " . $oDb->quote( $sTitle );
         $sId = $oDb->getOne( $sQ );
 
         return $sId;
@@ -509,9 +509,9 @@ class oxDelivery extends oxI18n
             $rs = $oDb->getCol( $sSelect );
             $this->_aCountriesISO = $rs;
 
-                }
+        }
         return $this->_aCountriesISO;
-            }
+    }
 
     /**
      * Returns condition type (type >= from <= to) : a - amount, s - size, w -weight, p - price
@@ -521,7 +521,7 @@ class oxDelivery extends oxI18n
     public function getConditionType()
     {
         return $this->oxdelivery__oxdeltype->value;
-        }
+    }
 
     /**
      * Returns condition from value (type >= from <= to)

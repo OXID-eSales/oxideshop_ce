@@ -17,7 +17,7 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   views
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
 
@@ -220,8 +220,8 @@ class Details extends oxUBase
 
         if ( $aVarSelParams ) {
             foreach ( $aVarSelParams as $iKey => $sValue ) {
-            $aParams["varselid[$iKey]"] = $sValue;
-        }
+                $aParams["varselid[$iKey]"] = $sValue;
+            }
         }
 
         if ( $aSelectListParams ) {
@@ -1059,7 +1059,7 @@ class Details extends oxUBase
             $aPaths = $this->_getVendorBreadCrumb();
         } else {
             $aPaths = $this->_getCategoryBreadCrumb();
-            }
+        }
         return $aPaths;
     }
 

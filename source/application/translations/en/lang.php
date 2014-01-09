@@ -24,7 +24,7 @@
  */
 
 $sLangName  = "English";
- 
+
 // -------------------------------
 // RESOURCE IDENTIFIER = STRING
 // -------------------------------

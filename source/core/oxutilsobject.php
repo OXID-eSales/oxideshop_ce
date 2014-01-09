@@ -464,10 +464,10 @@ class oxUtilsObject
                     // disable module if extended class is not found
                     $blDisableModuleOnError = !oxRegistry::get( "oxConfigFile" )->getVar( "blDoNotDisableModuleOnError" );
                     if ( $blDisableModuleOnError ) {
-                    $this->_disableModule( $sModule );
+                        $this->_disableModule( $sModule );
                     } else {
-                    //to avoid problems with unitest and only throw a exception if class does not exists MAFI
-                    $oEx = oxNew( "oxSystemComponentException" );
+                        //to avoid problems with unitest and only throw a exception if class does not exists MAFI
+                        $oEx = oxNew( "oxSystemComponentException" );
                         $oEx->setMessage("EXCEPTION_SYSTEMCOMPONENT_CLASSNOTFOUND");
                         $oEx->setComponent( $sModuleClass );
                         throw $oEx;

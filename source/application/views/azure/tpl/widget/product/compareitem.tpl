@@ -4,7 +4,7 @@
 [{assign var="altproduct" value=$oView->getAltProduct()}]
 
 <div class="compareItem">
-        [{assign var='_productLink' value=$product->getLink()}]
+    [{assign var='_productLink' value=$product->getLink()}]
 
     <a href="[{ $_productLink }]" class="picture" [{if $oView->noIndex() }]rel="nofollow"[{/if}]>
       <img src="[{if $size=='big'}][{$product->getPictureUrl(1) }][{elseif $size=='thinest'}][{$product->getIconUrl() }][{else}][{ $product->getThumbnailUrl() }][{/if}]" alt="[{ $product->oxarticles__oxtitle->value|strip_tags }] [{ $product->oxarticles__oxvarselect->value|default:'' }]">
@@ -157,4 +157,5 @@
 
     </form>
 </div>
+
 [{oxscript widget=$oView->getClassName()}]

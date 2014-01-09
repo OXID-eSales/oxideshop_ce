@@ -141,7 +141,7 @@
         [{include file="widget/locator/listlocator.tpl" locator=$oView->getPageNavigationLimitedBottom() place="bottom"}]
     [{/if}]
     [{/block}]
-    
+
     [{insert name="oxid_tracker"}]
 [{/capture}]
 [{include file="layout/page.tpl" sidebar="Left" tree_path=$oView->getTreePath()}]

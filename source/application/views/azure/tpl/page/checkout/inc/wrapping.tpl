@@ -66,7 +66,7 @@
                                             [{/foreach}]
                                             [{oxscript add="$('#wrapp_`$smarty.foreach.wrappArt.iteration` img' ).click(function(){ $(this).parent().parent().find('input').click();});"}]
                                         </ul>
-                                        
+
                                     </td>
                                 </tr>
                                 [{assign var="icounter" value="`$icounter+1`"}]
@@ -103,7 +103,7 @@
                         [{/foreach}]
                         [{oxscript add="$('#wrappCard img').click(function(){ $(this).parent().find('input').click(); });"}]
                         </ul>
-                        
+
                     [{/block}]
                     [{block name="checkout_wrapping_comment"}]
                         <div class="wrappingComment">

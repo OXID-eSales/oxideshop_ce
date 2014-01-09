@@ -212,8 +212,8 @@
                             </div>
 
                             [{if $oViewConf->isFunctionalityEnabled("blShowTSInternationalFeesMessage")}]
-                            [{oxifcontent ident="oxtsinternationalfees" object="oTSIFContent"}]
-                                <div class="lineBox clear">
+                                [{oxifcontent ident="oxtsinternationalfees" object="oTSIFContent"}]
+                                    <div class="lineBox clear">
                                         <span class="title">[{$oTSIFContent->oxcontents__oxcontent->value}]</span>
                                     </div>
                                 [{/oxifcontent}]
@@ -223,8 +223,8 @@
                                 [{oxifcontent ident="oxtscodmessage" object="oTSCODContent"}]
                                     <div class="lineBox clear">
                                         <span class="title">[{$oTSCODContent->oxcontents__oxcontent->value}]</span>
-                                </div>
-                            [{/oxifcontent}]
+                                    </div>
+                                [{/oxifcontent}]
                             [{/if}]
 
                             <div class="lineBox clear">

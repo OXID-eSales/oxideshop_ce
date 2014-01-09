@@ -17,7 +17,7 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   core
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
 
@@ -695,7 +695,7 @@ class oxBase extends oxSuperCfg
     public function getFieldData( $sFieldName )
     {
         $sLongFieldName = $this->_getFieldLongName( $sFieldName );
-        return $this->$sLongFieldName->value;
+            return $this->$sLongFieldName->value;
     }
 
     /**

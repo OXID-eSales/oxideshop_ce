@@ -1,22 +1,22 @@
 /**
- * This file is part of OXID eShop Community Edition.
+ *    This file is part of OXID eShop Community Edition.
  *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *    OXID eShop Community Edition is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
+ *    (at your option) any later version.
  *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *    OXID eShop Community Edition is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ *    You should have received a copy of the GNU General Public License
+ *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
  * @package   out
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  * @version   SVN: $Id: oxarticlevariant.js 35529 2011-05-23 07:31:20Z vilma $
  */
@@ -67,9 +67,9 @@
             return false;
         },
 
-            /**
+        /**
          * Resets all variant selections
-             */
+         */
         resetVariantSelections: function() {
             resetVariantSelections();
         }
@@ -80,34 +80,34 @@
      * @returns {boolean}
      */
     function variantSelectActionHandler( e ) {
-                var obj = $( this );
-                // resetting
-                if ( obj.parents().hasClass("js-disabled") ) {
+        var obj = $( this );
+        // resetting
+        if ( obj.parents().hasClass("js-disabled") ) {
             resetVariantSelections();
-                } else {
-                    $( "form.js-oxProductForm input[name=anid]" ).attr( "value", $( "form.js-oxProductForm input[name=parentid]" ).attr( "value" ) );
-                }
+        } else {
+            $( "form.js-oxProductForm input[name=anid]" ).attr( "value", $( "form.js-oxProductForm input[name=parentid]" ).attr( "value" ) );
+        }
 
-                // setting new selection
+        // setting new selection
         if ( obj.parents('.js-fnSubmit').length > 0 ) {
             $('input:hidden', obj.parents('div.dropDown')).val( obj.data("selection-id") );
 
-                    var form = $("form.js-oxWidgetReload");
-                    $('input[name=fnc]', form).val("");
-                    form.submit();
-                }
+            var form = $("form.js-oxWidgetReload");
+            $('input[name=fnc]', form).val("");
+            form.submit();
+        }
         return false;
     }
 
-            /**
+    /**
      * Handles variant reset action
      * @returns {boolean}
-             */
+     */
     function variantResetActionHandler( e ) {
         resetVariantSelections();
-                var form = $("form.js-oxWidgetReload");
-                $('input[name=fnc]', form).val("");
-                form.submit();
+        var form = $("form.js-oxWidgetReload");
+        $('input[name=fnc]', form).val("");
+        form.submit();
         return false;
     }
 
@@ -129,23 +129,23 @@
      */
     function  formSubmit() {
         var aOptions = {}, target = $(this);
-                if (!$("input[name='fnc']", this).val()) {
-                    if (($( "input[name=aid]", this ).val() == $( "input[name=parentid]", this ).val() )) {
-                        var aSelectionInputs = $("input[name^=varselid]", $("form.js-oxProductForm"));
-                        if (aSelectionInputs.length) {
-                            var sHash = '';
+        if (!$("input[name='fnc']", this).val()) {
+            if (($( "input[name=aid]", this ).val() == $( "input[name=parentid]", this ).val() )) {
+                var aSelectionInputs = $("input[name^=varselid]", $("form.js-oxProductForm"));
+                if (aSelectionInputs.length) {
+                    var sHash = '';
                     aSelectionInputs.each(function(i) {
                         sHash = sHash+i+':'+$(this).val()+"|";
-                                aOptions[$(this).attr( "name" )] = $(this).val();
-                            });
+                        aOptions[$(this).attr( "name" )] = $(this).val();
+                    });
                     if ( jQuery.inArray( sHash, oxVariantSelections ) === -1 ) {
                         return oxArticleVariant.reload( $(target), $("#details_container"), $("#details_container")[0], aOptions);
-                            }
-                        }
                     }
-            return oxArticleVariant.reload( $(target),$("#details_container"),$("#details_container")[0], aOptions);
                 }
             }
+            return oxArticleVariant.reload( $(target),$("#details_container"),$("#details_container")[0], aOptions);
+        }
+    }
 
     /**
      * Runs defined scripts inside the method, before ajax is called

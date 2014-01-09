@@ -17,9 +17,8 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   utils
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 // #1428C - spam spider prevention

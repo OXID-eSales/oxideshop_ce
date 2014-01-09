@@ -17,7 +17,7 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   core
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
 
@@ -150,7 +150,7 @@ class oxContentList extends oxList
     protected function _load( $iType )
     {
 
-           $aData = $this->_loadFromDb( $iType );
+            $aData = $this->_loadFromDb( $iType );
 
         $this->assignArray( $aData );
     }
@@ -175,7 +175,7 @@ class oxContentList extends oxList
         $aExtractedContents = array();
         foreach ( $this as $oContent ) {
             $aExtractedContents[$oContent->getLoadId()] = $oContent;
-    }
+        }
 
         $this->_aArray = $aExtractedContents;
     }
@@ -195,7 +195,7 @@ class oxContentList extends oxList
 
         if ( $iType == self::TYPE_CATEGORY_MENU ) {
             $sSQLAdd = " AND `oxcatid` IS NOT NULL AND `oxsnippet` = '0'";
-            }
+        }
 
         if ( $iType == self::TYPE_SERVICE_LIST ) {
             $sIdents = implode( ", ", oxDb::getInstance()->quoteArray( $this->getServiceKeys() ) );

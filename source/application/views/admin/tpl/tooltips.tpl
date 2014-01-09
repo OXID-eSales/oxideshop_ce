@@ -23,11 +23,11 @@ function popUp(evt,currElem)
 
     var x = getOffset(obj).left + obj.offsetWidth + 5;
     var y = getOffset(obj).top;
-
+    
     popUpWin.style.top = Math.max(2,y)+'px';
     popUpWin.style.left= Math.max(2,x)+'px';
     popUpWin.style.visibility = "visible";
-        window.status = "";
+    window.status = "";
 
 }
 function popDown(currElem)

@@ -17,7 +17,7 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   tests
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
 
@@ -137,7 +137,7 @@ class Unit_Core_oxattributelistTest extends OxidTestCase
         $rs = oxDb::getDB()->execute($sSelect);
         $sSelect = "update oxattribute set oxdisplayinbasket = 1 where oxid = 'd8842e3b7c5e108c1.63072778' ";
         $rs = oxDb::getDB()->execute($sSelect);
-        
+
         $oAttrList = new oxAttributelist();
         $oAttrList->loadAttributesDisplayableInBasket('1672', '1351');
         $sAttribValue = $oAttrList['8a142c3f0c0baa3f4.54955953']->oxattribute__oxvalue->rawValue;

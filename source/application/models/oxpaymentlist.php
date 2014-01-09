@@ -17,7 +17,7 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   core
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
 /**
@@ -97,7 +97,7 @@ class oxPaymentList extends oxList
         $sQ  = "select {$sTable}.* from ( select distinct {$sTable}.* from {$sTable} ";
         $sQ .= "left join oxobject2group ON oxobject2group.oxobjectid = {$sTable}.oxid ";
 		$sQ .= "inner join oxobject2payment ON oxobject2payment.oxobjectid = ".$oDb->quote( $sShipSetId )." and oxobject2payment.oxpaymentid = {$sTable}.oxid ";
-        $sQ .= "where {$sTable}.oxactive='1' "; 
+        $sQ .= "where {$sTable}.oxactive='1' ";
         $sQ .= " and {$sTable}.oxfromboni <= ".$oDb->quote( $sBoni ) ." and {$sTable}.oxfromamount <= ".$oDb->quote( $dPrice ) ." and {$sTable}.oxtoamount >= ".$oDb->quote( $dPrice );
 
         // defining initial filter parameters

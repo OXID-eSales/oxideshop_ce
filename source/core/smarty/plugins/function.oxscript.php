@@ -17,7 +17,7 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   smarty_plugins
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
 
@@ -102,14 +102,14 @@ function smarty_function_oxscript($params, &$smarty)
         }
     } elseif ( !$sWidget || $blInWidget || $blAjaxRequest ) {
         if ( !$blAjaxRequest ) {
-        // Form output for includes.
-        $sOutput .= _oxscript_include( $aInclude, $sWidget );
-        $myConfig->setGlobalParameter( $sIncludes, null );
-        if ( $sWidget ) {
-            $aIncludeDyn = (array) $myConfig->getGlobalParameter( $sIncludes .'_dynamic' );
-            $sOutput .= _oxscript_include( $aIncludeDyn, $sWidget );
-            $myConfig->setGlobalParameter( $sIncludes .'_dynamic', null );
-        }
+            // Form output for includes.
+            $sOutput .= _oxscript_include( $aInclude, $sWidget );
+            $myConfig->setGlobalParameter( $sIncludes, null );
+            if ( $sWidget ) {
+                $aIncludeDyn = (array) $myConfig->getGlobalParameter( $sIncludes .'_dynamic' );
+                $sOutput .= _oxscript_include( $aIncludeDyn, $sWidget );
+                $myConfig->setGlobalParameter( $sIncludes .'_dynamic', null );
+            }
         }
 
         // Form output for adds.
@@ -173,8 +173,8 @@ function _oxscript_include( $aInclude, $sWidget )
 /**
  * Form output for adds.
  *
- * @param array  $aScript scripts to execute (from add).
- * @param string $sWidget widget name.
+ * @param array  $aScript     scripts to execute (from add).
+ * @param string $sWidget     widget name.
  * @param bool $blAjaxRequest is ajax request
  *
  * @return string
@@ -190,9 +190,9 @@ function _oxscript_execute( $aScript, $sWidget, $blAjaxRequest )
                 $sScriptTokenSanitized = str_replace( '"', '\"', $sScriptToken );
                 $sOutput .= 'WidgetsHandler.registerFunction( "'. $sScriptTokenSanitized . '", "'.$sWidget.'");'. PHP_EOL ;
             } else {
-            $sOutput .= $sScriptToken. PHP_EOL;
+                $sOutput .= $sScriptToken. PHP_EOL;
+            }
         }
-    }
     }
 
     return $sOutput;

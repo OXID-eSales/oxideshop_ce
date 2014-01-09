@@ -394,25 +394,25 @@
                         [{assign var="deliveryCost" value=$oxcmp_basket->getDeliveryCost()}]
                         [{if $deliveryCost && ($oxcmp_basket->getBasketUser() || $oViewConf->isFunctionalityEnabled('blCalculateDelCostIfNotLoggedIn') ) }]
                             [{if $oViewConf->isFunctionalityEnabled('blShowVATForDelivery') }]
-                            <tr>
-                                <th>[{ oxmultilang ident="SHIPPING_NET" suffix="COLON" }]</th>
-                                    <td id="basketDeliveryNetto">[{oxprice price=$deliveryCost->getNettoPrice() currency=$currency }]</td>
-                            </tr>
-                                [{if $deliveryCost->getVatValue()}]
                                 <tr>
-                                    [{if $oxcmp_basket->isProportionalCalculationOn() }]
-                                            <th>[{oxmultilang ident="BASKET_TOTAL_PLUS_PROPORTIONAL_VAT" suffix="COLON"}]</th>
-                                    [{else}]
-                                            <th>[{oxmultilang ident="VAT_PLUS_PERCENT_AMOUNT" suffix="COLON" args=$deliveryCost->getVat()}]
-                                    [{/if}]
-                                        <td id="basketDeliveryVat">[{oxprice price=$deliveryCost->getVatValue() currency=$currency}]</td>
+                                    <th>[{ oxmultilang ident="SHIPPING_NET" suffix="COLON" }]</th>
+                                    <td id="basketDeliveryNetto">[{oxprice price=$deliveryCost->getNettoPrice() currency=$currency }]</td>
                                 </tr>
+                                [{if $deliveryCost->getVatValue()}]
+                                    <tr>
+                                        [{if $oxcmp_basket->isProportionalCalculationOn() }]
+                                            <th>[{oxmultilang ident="BASKET_TOTAL_PLUS_PROPORTIONAL_VAT" suffix="COLON"}]</th>
+                                        [{else}]
+                                            <th>[{oxmultilang ident="VAT_PLUS_PERCENT_AMOUNT" suffix="COLON" args=$deliveryCost->getVat()}]
+                                        [{/if}]
+                                        <td id="basketDeliveryVat">[{oxprice price=$deliveryCost->getVatValue() currency=$currency}]</td>
+                                    </tr>
                                 [{/if}]
                             [{else}]
-                            <tr>
-                                <th>[{ oxmultilang ident="SHIPPING_COST" }]</th>
+                                <tr>
+                                    <th>[{ oxmultilang ident="SHIPPING_COST" }]</th>
                                     <td id="basketDeliveryGross">[{oxprice price=$deliveryCost->getBruttoPrice() currency=$currency}]</td>
-                            </tr>
+                                </tr>
                             [{/if}]
                         [{/if}]
                     [{/block}]
@@ -421,25 +421,25 @@
                         [{assign var="paymentCost" value=$oxcmp_basket->getPaymentCost()}]
                         [{if $paymentCost && $paymentCost->getPrice() }]
                             [{if $oViewConf->isFunctionalityEnabled('blShowVATForPayCharge') }]
-                            <tr>
+                                <tr>
                                     <th>[{if $paymentCost->getPrice() >= 0}][{ oxmultilang ident="SURCHARGE" }][{else}][{ oxmultilang ident="DEDUCTION" }][{/if}] [{ oxmultilang ident="PAYMENT_METHOD" }]</th>
                                     <td id="basketPaymentNetto">[{oxprice price=$paymentCost->getNettoPrice() currency=$currency }]</td>
-                            </tr>
-                                [{if $paymentCost->getVatValue()}]
-                                <tr>
-                                    [{if $oxcmp_basket->isProportionalCalculationOn() }]
-                                        <th>[{ oxmultilang ident="BASKET_TOTAL_PLUS_PROPORTIONAL_VAT" suffix="COLON" }]</th>
-                                    [{else}]
-                                        <th>[{ oxmultilang ident="SURCHARGE_PLUS_PERCENT_AMOUNT" suffix="COLON" args=$paymentCost->getVat() }]</th>
-                                    [{/if}]
-                                    <td id="basketPaymentVat">[{oxprice price=$paymentCost->getVatValue() currency=$currency }]</td>
                                 </tr>
+                                [{if $paymentCost->getVatValue()}]
+                                    <tr>
+                                        [{if $oxcmp_basket->isProportionalCalculationOn() }]
+                                            <th>[{ oxmultilang ident="BASKET_TOTAL_PLUS_PROPORTIONAL_VAT" suffix="COLON" }]</th>
+                                        [{else}]
+                                            <th>[{ oxmultilang ident="SURCHARGE_PLUS_PERCENT_AMOUNT" suffix="COLON" args=$paymentCost->getVat() }]</th>
+                                        [{/if}]
+                                        <td id="basketPaymentVat">[{oxprice price=$paymentCost->getVatValue() currency=$currency }]</td>
+                                    </tr>
                                 [{/if}]
                             [{else}]
-                            <tr>
+                                <tr>
                                     <th>[{if $paymentCost->getPrice() >= 0}][{ oxmultilang ident="SURCHARGE" }][{else}][{ oxmultilang ident="DEDUCTION" }][{/if}] [{ oxmultilang ident="PAYMENT_METHOD" }]</th>
                                     <td id="basketPaymentGross">[{oxprice price=$paymentCost->getBruttoPrice() currency=$currency }]</td>
-                            </tr>
+                                </tr>
                             [{/if}]
                         [{/if}]
                     [{/block}]
@@ -477,46 +477,46 @@
                             [{assign var="wrappingCost" value=$oxcmp_basket->getWrappingCost()}]
                             [{if $wrappingCost && $wrappingCost->getPrice() > 0 }]
                                 [{if $oViewConf->isFunctionalityEnabled('blShowVATForWrapping') }]
-                                <tr>
-                                    <th>[{ oxmultilang ident="BASKET_TOTAL_WRAPPING_COSTS_NET" suffix="COLON" }]</th>
+                                    <tr>
+                                        <th>[{ oxmultilang ident="BASKET_TOTAL_WRAPPING_COSTS_NET" suffix="COLON" }]</th>
                                         <td id="basketWrappingNetto">[{oxprice price=$wrappingCost->getNettoPrice() currency=$currency}]</td>
-                                </tr>
-                                [{if $oxcmp_basket->getWrappCostVat() }]
-                                <tr>
-                                    <th>[{ oxmultilang ident="PLUS_VAT" suffix="COLON" }]</th>
+                                    </tr>
+                                    [{if $oxcmp_basket->getWrappCostVat() }]
+                                    <tr>
+                                        <th>[{ oxmultilang ident="PLUS_VAT" suffix="COLON" }]</th>
                                         <td id="basketWrappingVat">[{oxprice price=$wrappingCost->getVatValue() currency=$currency}]</td>
-                                </tr>
-                                [{/if}]
+                                    </tr>
+                                    [{/if}]
                                 [{else}]
-                                <tr>
-                                    <th>[{ oxmultilang ident="GIFT_WRAPPING" suffix="COLON" }]</th>
+                                    <tr>
+                                        <th>[{ oxmultilang ident="GIFT_WRAPPING" suffix="COLON" }]</th>
                                         <td id="basketWrappingGross">[{oxprice price=$wrappingCost->getBruttoPrice() currency=$currency }]</td>
-                                </tr>
-                            [{/if}]
+                                    </tr>
+                                [{/if}]
                             [{/if}]
 
                             [{assign var="giftCardCost" value=$oxcmp_basket->getGiftCardCost()}]
                             [{if $giftCardCost && $giftCardCost->getPrice() > 0 }]
                                 [{if $oViewConf->isFunctionalityEnabled('blShowVATForWrapping') }]
-                                <tr>
-                                    <th>[{ oxmultilang ident="BASKET_TOTAL_GIFTCARD_COSTS_NET" suffix="COLON" }]</th>
+                                    <tr>
+                                        <th>[{ oxmultilang ident="BASKET_TOTAL_GIFTCARD_COSTS_NET" suffix="COLON" }]</th>
                                         <td id="basketGiftCardNetto">[{oxprice price=$giftCardCost->getNettoPrice() currency=$currency }]</td>
-                                </tr>
-                                <tr>
-                                    [{if $oxcmp_basket->isProportionalCalculationOn() }]
-                                        <th>[{ oxmultilang ident="BASKET_TOTAL_PLUS_PROPORTIONAL_VAT" suffix="COLON" }]</th>
-                                    [{else}]
+                                    </tr>
+                                    <tr>
+                                        [{if $oxcmp_basket->isProportionalCalculationOn() }]
+                                            <th>[{ oxmultilang ident="BASKET_TOTAL_PLUS_PROPORTIONAL_VAT" suffix="COLON" }]</th>
+                                        [{else}]
                                             <th>[{ oxmultilang ident="VAT_PLUS_PERCENT_AMOUNT" suffix="COLON" args=$giftCardCost->getVat() }] </th>
-                                    [{/if}]
+                                        [{/if}]
                                         <td id="basketGiftCardVat">[{oxprice price=$giftCardCost->getVatValue() currency=$currency}]</td>
-                                </tr>
+                                    </tr>
                                 [{else}]
-                                <tr>
-                                    <th>[{ oxmultilang ident="GREETING_CARD" suffix="COLON" }]</th>
+                                    <tr>
+                                        <th>[{ oxmultilang ident="GREETING_CARD" suffix="COLON" }]</th>
                                         <td id="basketGiftCardGross">[{oxprice price=$giftCardCost->getBruttoPrice() currency=$currency}]</td>
-                                </tr>
+                                    </tr>
+                                [{/if}]
                             [{/if}]
-                        [{/if}]
                         [{/if}]
                     [{/block}]
 

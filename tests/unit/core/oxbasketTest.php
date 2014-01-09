@@ -17,9 +17,8 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   tests
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
- * @version   SVN: $Id$
  */
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
@@ -4501,6 +4500,7 @@ class Unit_Core_oxbasketTest extends OxidTestCase
         $this->assertEquals( 20, $oBasket->getAdditionalServicesVatPercent() );
     }
 
+
     /**
      * testing the update of basket after adding two products with same selection list
      *
@@ -4538,6 +4538,5 @@ class Unit_Core_oxbasketTest extends OxidTestCase
         // checking amounts
         $this->assertEquals( 44, $oSummary->dArticleDiscountablePrice );
     }
-
 
 }

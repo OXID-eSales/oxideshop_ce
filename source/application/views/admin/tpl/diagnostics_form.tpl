@@ -66,7 +66,7 @@
 
             [{ if !empty($sErrorMessage) }]
                 <p><span style="color: red"><b>[{ oxmultilang ident="OXDIAG_ERRORMESSAGETEMPLATE" }]</b></span></p>
-    <span style="color: red">[{ $sErrorMessage }]</span>
+                <span style="color: red">[{ $sErrorMessage }]</span>
             [{elseif !$oView->getParam('runAnalysis')}]
 
             <form name="diagnosticsForm" id="diagnosticsForm" action="[{ $oViewConf->getSelfLink() }]" onsubmit="handleSubmit()" method="post">
@@ -111,10 +111,10 @@
                     </tr>
                 </table>
 
-        <br><br>
+                <br><br>
                 <input type="submit" class="edittext" id="submitButton" name="submitButton" value=" [{ oxmultilang ident="OXDIAG_FORM_START_CHECK" }] " >
 
-    </form>
+            </form>
             [{ /if}]
 
         </td>

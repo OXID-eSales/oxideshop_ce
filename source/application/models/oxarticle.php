@@ -1,23 +1,23 @@
 <?php
 /**
- * This file is part of OXID eShop Community Edition.
+ *    This file is part of OXID eShop Community Edition.
  *
- * OXID eShop Community Edition is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *    OXID eShop Community Edition is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
+ *    (at your option) any later version.
  *
- * OXID eShop Community Edition is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *    OXID eShop Community Edition is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ *    You should have received a copy of the GNU General Public License
+ *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
  * @package   core
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
 
@@ -1567,7 +1567,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         $aPriceCategoryIds = $this->_selectCategoryIds( $sSql, 'oxid' );
 
         return self::$_aArticleCats[$this->getId()] = array_unique( array_merge( $aCategoryIds, $aPriceCategoryIds ) );
-        }
+    }
 
     /**
      * Selects category IDs from given SQL statement and ID field name
@@ -1619,7 +1619,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
                     order by oxobject2category.oxtime";
 
         return $sSelect;
-        }
+    }
 
     /**
      * Returns active category select snippet
@@ -3771,8 +3771,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             } elseif ($this->_isFieldEmpty($sCopyFieldName) || in_array( $sCopyFieldName, $this->_aCopyParentField ) ) {
                 $this->$sCopyFieldName = clone $oParentArticle->$sCopyFieldName;
             }*/
-            }
         }
+    }
 
     /**
      * Get parent article
@@ -5003,21 +5003,21 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             if ( is_null( $dPrice ) ) {
                 $sPriceSuffix = $this->_getUserPriceSufix();
                 if ( $sPriceSuffix === '' ) {
-                $dPrice = $this->oxarticles__oxvarminprice->value;
-            } else {
-                $sSql = 'SELECT ';
-                if ( $this->getConfig()->getConfigParam( 'blOverrideZeroABCPrices' ) ) {
-                        $sSql .=  'MIN( IF(`oxprice'.$sPriceSuffix.'` = 0, `oxprice`, `oxprice'.$sPriceSuffix.'`) ) AS `varminprice` ';
+                    $dPrice = $this->oxarticles__oxvarminprice->value;
                 } else {
+                    $sSql = 'SELECT ';
+                    if ( $this->getConfig()->getConfigParam( 'blOverrideZeroABCPrices' ) ) {
+                        $sSql .=  'MIN( IF(`oxprice'.$sPriceSuffix.'` = 0, `oxprice`, `oxprice'.$sPriceSuffix.'`) ) AS `varminprice` ';
+                    } else {
                         $sSql .=  'MIN(`oxprice'.$sPriceSuffix.'`) AS `varminprice` ';
-                }
+                    }
 
-                $sSql .=  ' FROM ' . $this->getViewName(true) . '
+                    $sSql .=  ' FROM ' . $this->getViewName(true) . '
                     WHERE ' .$this->getSqlActiveSnippet(true) . '
                         AND ( `oxparentid` = ' . oxDb::getDb()->quote( $this->getId() ) . ' )';
 
-                $dPrice = oxDb::getDb()->getOne( $sSql );
-            }
+                    $dPrice = oxDb::getDb()->getOne( $sSql );
+                }
             }
 
             $this->_dVarMinPrice = $dPrice;
@@ -5067,21 +5067,21 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             if ( is_null( $dPrice ) ) {
                 $sPriceSuffix = $this->_getUserPriceSufix();
                 if ( $sPriceSuffix === '') {
-                $dPrice = $this->oxarticles__oxvarmaxprice->value;
-            } else {
-                $sSql = 'SELECT ';
-                if ( $this->getConfig()->getConfigParam( 'blOverrideZeroABCPrices' ) ) {
-                        $sSql .=  'MAX( IF(`oxprice'.$sPriceSuffix.'` = 0, `oxprice`, `oxprice'.$sPriceSuffix.'`) ) AS `varmaxprice` ';
+                    $dPrice = $this->oxarticles__oxvarmaxprice->value;
                 } else {
+                    $sSql = 'SELECT ';
+                    if ( $this->getConfig()->getConfigParam( 'blOverrideZeroABCPrices' ) ) {
+                        $sSql .=  'MAX( IF(`oxprice'.$sPriceSuffix.'` = 0, `oxprice`, `oxprice'.$sPriceSuffix.'`) ) AS `varmaxprice` ';
+                    } else {
                         $sSql .=  'MAX(`oxprice'.$sPriceSuffix.'`) AS `varmaxprice` ';
+                    }
+
+                    $sSql .=  ' FROM ' . $this->getViewName(true) . '
+                        WHERE ' .$this->getSqlActiveSnippet(true) . '
+                            AND ( `oxparentid` = ' . oxDb::getDb()->quote( $this->getId() ) . ' )';
+
+                    $dPrice = oxDb::getDb()->getOne( $sSql );
                 }
-
-                $sSql .=  ' FROM ' . $this->getViewName(true) . '
-                    WHERE ' .$this->getSqlActiveSnippet(true) . '
-                        AND ( `oxparentid` = ' . oxDb::getDb()->quote( $this->getId() ) . ' )';
-
-                $dPrice = oxDb::getDb()->getOne( $sSql );
-            }
             }
 
             $this->_dVarMaxPrice = $dPrice;

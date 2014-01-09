@@ -17,7 +17,7 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   tests
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  * @version   SVN: $Id: wishlistTest.php 25505 2010-02-02 02:12:13Z alfonsas $
  */
@@ -144,7 +144,7 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
             return;
         }
         $this->fail( "Error while executing testStartSystemComponentExceptionThrown()" );
-     }
+    }
 
     /**
      * Test unhandled exception with Debug ON
@@ -277,7 +277,7 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
             return;
         }
         $this->fail( "Error while executing testStartCookieExceptionThrown_onlyInDebugMode()" );
-     }
+    }
 
 
     /**

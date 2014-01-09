@@ -15,11 +15,11 @@
  *    You should have received a copy of the GNU General Public License
  *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @link      http://www.oxid-esales.com
- * @package   tests
- * @copyright (C) OXID eSales AG 2003-2013
+ * @link          http://www.oxid-esales.com
+ * @package       tests
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
- * @version   SVN: $Id
+ * @version       SVN: $Id
  */
 
 require_once realpath( "." ) . '/unit/OxidTestCase.php';

@@ -17,7 +17,7 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   lang
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
 
@@ -2016,7 +2016,7 @@ $aLang = array(
 
 'BUTTON_DOWNLOAD'                                          => 'Download',
 
-'oxdiag_menu'						                 => 'Diagnostics tool',
+'oxdiag_menu'                                        => 'Diagnostics tool',
 'OXDIAG_LIST_MENUITEM'                               => 'Service',
 'OXDIAG_LIST_MENUSUBITEM'                            => 'Diagnostics tool',
 
@@ -2064,60 +2064,60 @@ $aLang = array(
 'OXDIAG_VERSIONMISMATCHHINTS'                        => 'Apparently one or more updates went wrong. See details link for more information about more details for each file. A left over file which is not any longer included in OXID eShop could also be a <u>possible</u> reason for version mismatch. Find information about update in our <a href="http://www.oxid-esales.com/en/support-services/documentation-and-help/oxid-eshop/installation/oxid-eshop-update-installation" target=_blank>Documentation and help</a>.',
 
 
-'OXDIAG_HOME'						=>	'OXID Diagnostics',
-'OXDIAG_ABOUT'						=>	'This Diagnostics tool collects technical information about your shop and server. This information might be useful before updating, installing modules or on diagnostics.',
-'OXDIAG_DOWNLOADLOG'				=>	'Download report',
+'OXDIAG_HOME'                       =>    'OXID Diagnostics',
+'OXDIAG_ABOUT'                      =>    'This Diagnostics tool collects technical information about your shop and server. This information might be useful before updating, installing modules or on diagnostics.',
+'OXDIAG_DOWNLOADLOG'                =>    'Download report',
 
 //initial form
-'OXDIAG_COLLECT_MODULES'			=>	'Fetch modules',
-'OXDIAG_COLLECT_HEALTH'				=>	'Poll system health status',
-'OXDIAG_COLLECT_PHP'				=>	'Poll PHP configuration (selected parameters)',
-'OXDIAG_COLLECT_SERVER'				=>	'Poll system information (if possible)',
-'OXDIAG_COLLECT_CHKVERS'			=>	'Run <i>Version checker</i>',
-'OXDIAG_COLLECT_CHKVERS_DURATION'	=>	'This can engross the execution time of the module or execution might fail.',
-'OXDIAG_COLL_CHKV_NOTINST'			=>	'<i>Version checker</i> is not installed on this system. You may <a href="http://exchange.oxid-esales.com/OXID-oxid-oxid/Additional-OXID-Extensions/OXDIAG-3-1-0-Stable-CE-4-0-x-4-7-x.html">download the file from OXID eXchange</a> and install it in the root directory of the shop.',
-'OXDIAG_COLL_CHKV_FILE_GET'			=>	'The function <i>file_get_contents</i> is not available, <i>Version checker</i> cannot be accessed.',
-'OXDIAG_STORE_ANALYSIS'				=>	'Store results',
-'OXDIAG_COLLECT_START'				=>	'Start analysis!',
+'OXDIAG_COLLECT_MODULES'            =>    'Fetch modules',
+'OXDIAG_COLLECT_HEALTH'             =>    'Poll system health status',
+'OXDIAG_COLLECT_PHP'                =>    'Poll PHP configuration (selected parameters)',
+'OXDIAG_COLLECT_SERVER'             =>    'Poll system information (if possible)',
+'OXDIAG_COLLECT_CHKVERS'            =>    'Run <i>Version checker</i>',
+'OXDIAG_COLLECT_CHKVERS_DURATION'   =>    'This can engross the execution time of the module or execution might fail.',
+'OXDIAG_COLL_CHKV_NOTINST'          =>    '<i>Version checker</i> is not installed on this system. You may <a href="http://exchange.oxid-esales.com/OXID-oxid-oxid/Additional-OXID-Extensions/OXDIAG-3-1-0-Stable-CE-4-0-x-4-7-x.html">download the file from OXID eXchange</a> and install it in the root directory of the shop.',
+'OXDIAG_COLL_CHKV_FILE_GET'         =>    'The function <i>file_get_contents</i> is not available, <i>Version checker</i> cannot be accessed.',
+'OXDIAG_STORE_ANALYSIS'             =>    'Store results',
+'OXDIAG_COLLECT_START'              =>    'Start analysis!',
 
 //index
-'OXDIAG_GOTO'						=>	'Go to',
-'OXDIAG_BASICS'						=>	'Basics',
-'OXDIAG_MODULES'					=>	'Modules',
-'OXDIAG_HEALTH'						=>	'System health',
-'OXDIAG_PHPINFO'					=>	'PHP information',
-'OXDIAG_SERVERINFO'					=>	'Server information',
-'OXDIAG_RESTART'					=>	'Start new analysis',
+'OXDIAG_GOTO'                       =>    'Go to',
+'OXDIAG_BASICS'                     =>    'Basics',
+'OXDIAG_MODULES'                    =>    'Modules',
+'OXDIAG_HEALTH'                     =>    'System health',
+'OXDIAG_PHPINFO'                    =>    'PHP information',
+'OXDIAG_SERVERINFO'                 =>    'Server information',
+'OXDIAG_RESTART'                    =>    'Start new analysis',
 
-'OXDIAG_DISCL'						=>	'The analysis below the line has been stored in a report file.',
+'OXDIAG_DISCL'                      =>    'The analysis below the line has been stored in a report file.',
 'OXDIAG_HEALTH_OK'                  =>    'OK',
 'OXDIAG_HEALTH_MIN'                 =>    'MIN',
 'OXDIAG_HEALTH_FAIL'                =>    'FAIL',
 
 //modules
-'OXDIAG_MODULES_STATE'				=>	'Status',
-'OXDIAG_MODULES_NAME'				=>	'Name',
-'OXDIAG_MODULES_ID'					=>	'ID',
-'OXDIAG_MODULES_VERSION'			=>	'Version',
-'OXDIAG_MODULES_VENDOR'				=>	'Vendor',
+'OXDIAG_MODULES_STATE'              =>    'Status',
+'OXDIAG_MODULES_NAME'               =>    'Name',
+'OXDIAG_MODULES_ID'                 =>    'ID',
+'OXDIAG_MODULES_VERSION'            =>    'Version',
+'OXDIAG_MODULES_VENDOR'             =>    'Vendor',
 
 //php
-'OXDIAG_PHPINFO_EXTENSIONS'			=>	'PHP extensions',
-'OXDIAG_PHPINFO_PARAM'				=>	'Parameter',
-'OXDIAG_PHPINFO_VALUE'				=>	'Value',
-'OXDIAG_PHPINFO_ZENDEX'				=>	'Zend extension',
+'OXDIAG_PHPINFO_EXTENSIONS'         =>    'PHP extensions',
+'OXDIAG_PHPINFO_PARAM'              =>    'Parameter',
+'OXDIAG_PHPINFO_VALUE'              =>    'Value',
+'OXDIAG_PHPINFO_ZENDEX'             =>    'Zend extension',
 'OXDIAG_PHPINFO_OFF'                =>    'Off',
 
 //server
-'OXDIAG_SRVINF_NOTALL'				=>	'Cannot request all values, due to disabled <i>exec</i> command on server.',
+'OXDIAG_SRVINF_NOTALL'              =>    'Cannot request all values, due to disabled <i>exec</i> command on server.',
 'OXDIAG_SRVINF_NOTE'                =>    'Note: This information is gathered for the current runtime frontend server. Should you have more than one frontend server running, you may access those directly in order to gather their information.',
 'OXDIAG_SERVERINFO_NOT_DETECTED'    =>    'not detected',
-'OXDIAG_SERVERINFO_COMPONENT'		=>	'Component',
-'OXDIAG_CHKVERSION'					=>	'Output of Version check',
-'OXDIAG_CHKVERS_FULLREP'			=>	'Run Version check for full report',
+'OXDIAG_SERVERINFO_COMPONENT'       =>    'Component',
+'OXDIAG_CHKVERSION'                 =>    'Output of Version check',
+'OXDIAG_CHKVERS_FULLREP'            =>    'Run Version check for full report',
 
 //final note
-'OXDIAG_FINALNOTE'					=>	'End of analysis.',
+'OXDIAG_FINALNOTE'                  =>    'End of analysis.',
 
 'OLC_ERROR_SERIAL_NOT_VALID'                               => 'License key check failed. Try again or contact support if this occurs permanently.',
 'OLC_ERROR_RESPONSE_NOT_VALID'                             => 'Service unavailable, try again later... If this persists, please check that your shop can make outgoing connections.',

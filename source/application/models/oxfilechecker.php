@@ -17,7 +17,7 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   core
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
 
@@ -106,7 +106,7 @@ class oxFileChecker {
         }
     }
 
-   /**
+    /**
      * working directory getter
      *
      * @return string
@@ -172,7 +172,7 @@ class oxFileChecker {
         }
     }
 
-     /**
+    /**
      * Revision getter
      *
      * @return string
@@ -212,7 +212,7 @@ class oxFileChecker {
     public function hasError()
     {
         return $this->_blError;
-        }
+    }
 
     /**
      * Error status getter
@@ -254,7 +254,7 @@ class oxFileChecker {
         return $this->_isWebServiceOnline() && $this->_isShopVersionIsKnown();
     }
 
-     /**
+    /**
      * in case if a general error is thrown by webservice
      * @return string error
      */
@@ -363,7 +363,7 @@ class oxFileChecker {
                     $sMessage = 'SOURCE|SNAPSHOT';
                     $sColor = 'red';
                 } else {
-                        $sMessage = oxRegistry::getLang()->translateString( 'OXDIAG_OK' );
+                    $sMessage = oxRegistry::getLang()->translateString( 'OXDIAG_OK' );
                     $sColor = "green";
                 }
             } elseif ( $oXML->res == 'VERSIONMISMATCH' ) {
@@ -381,8 +381,8 @@ class oxFileChecker {
             } elseif ( $oXML->res == 'UNKNOWN' ) {
                 $sMessage = oxRegistry::getLang()->translateString( 'OXDIAG_UNKNOWN' );
                 $sColor = "green";
+            }
         }
-    }
 
         if ( $sMessage ) {
             $aResult = array(

@@ -17,7 +17,7 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   core
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
 
@@ -193,7 +193,7 @@ class oxContent extends oxI18n implements oxIUrl
     }
 
 
-     /**
+    /**
      * Returns unique object id.
      *
      * @return string
@@ -270,9 +270,9 @@ class oxContent extends oxI18n implements oxIUrl
     /**
      * Returns base dynamic url: shopurl/index.php?cl=details
      *
-     * @param int  $iLang   language id
+     * @param int $iLang language id
      * @param bool $blAddId add current object id to url or not
-     * @param bool $blFull  return full including domain name [optional]
+     * @param bool $blFull return full including domain name [optional]
      *
      * @return string
      */
@@ -318,8 +318,8 @@ class oxContent extends oxI18n implements oxIUrl
     /**
      * Returns standard URL to product.
      *
-     * @param integer $iLang   language
-     * @param array   $aParams additional params to use [optional]
+     * @param integer $iLang language
+     * @param array $aParams additional params to use [optional]
      *
      * @return string
      */
@@ -336,8 +336,8 @@ class oxContent extends oxI18n implements oxIUrl
      * Sets data field value.
      *
      * @param string $sFieldName index OR name (eg. 'oxarticles__oxtitle') of a data field to set
-     * @param string $sValue     value of data field
-     * @param int    $iDataType  field type
+     * @param string $sValue value of data field
+     * @param int $iDataType field type
      *
      * @return null
      */
@@ -379,7 +379,7 @@ class oxContent extends oxI18n implements oxIUrl
     {
         $blSaved = parent::save();
         if ( $blSaved && $this->oxcontents__oxloadid->value === 'oxagb' ) {
-            $sShopId  = $this->getConfig()->getShopId();
+            $sShopId = $this->getConfig()->getShopId();
             $sVersion = $this->oxcontents__oxtermversion->value;
 
             $oDb = oxDb::getDb();

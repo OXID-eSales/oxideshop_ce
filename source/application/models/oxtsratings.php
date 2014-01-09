@@ -17,7 +17,7 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   tests
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  * @version   SVN: $Id: oxTsRatings.php 56456 13.7.4 15.29Z tadas.rimkus $
  */
@@ -105,7 +105,7 @@ class oxTsRatings extends oxSuperCfg
         $sUrl = "https://www.trustedshops.com/bewertung/show_xml.php?tsid=" . $sTsId;
         $sOutput = $this->_executeCurl( $sUrl );
 
-            $this->_aChannel['empty'] = true;
+        $this->_aChannel['empty'] = true;
 
         try {
             $oDomFile = oxNew( "oxSimpleXml" );
@@ -114,11 +114,11 @@ class oxTsRatings extends oxSuperCfg
 
                 $this->_aChannel['empty'] = false;
                 $this->_aChannel['result'] = (float)$aResult[0];
-            $this->_aChannel['max'] = "5.00";
+                $this->_aChannel['max'] = "5.00";
                 $this->_aChannel['count'] = (int)$oXml->ratings["amount"];
                 $this->_aChannel['shopName'] = (string)$oXml->name;
-            oxRegistry::getUtils()->toFileCache( self::TS_RATINGS, $this->_aChannel, self::CACHE_TTL );
-        }
+                oxRegistry::getUtils()->toFileCache( self::TS_RATINGS, $this->_aChannel, self::CACHE_TTL );
+            }
         } catch ( Exception $oEx ) {
             $oEx = oxNew( "oxException" );
             $oEx->setMessage( $oEx->getMessage() );

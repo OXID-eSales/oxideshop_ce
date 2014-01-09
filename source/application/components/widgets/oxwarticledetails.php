@@ -17,7 +17,7 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   tests
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  * @version   SVN: $Id: oxwarticledetails.php 56456 13.7.12 11.20Z tadas.rimkus $
  */
@@ -944,7 +944,7 @@ class oxwArticleDetails extends oxWidget
      * Executes parent::render().
      * Returns name of template file to render.
      *
-     * @return  string  $this->_sThisTemplate   current template file name
+     * @return string $this->_sThisTemplate current template file name
      */
     public function render()
     {
@@ -966,14 +966,14 @@ class oxwArticleDetails extends oxWidget
 
         $this->setActiveCategory( $oCategory );
 
-                /**
-                 * @var $oLocator oxLocator
-                 */
+        /**
+         * @var $oLocator oxLocator
+         */
         $oLocator = oxNew( 'oxLocator', $this->getListType() );
-                $oLocator->setLocatorData( $oProduct, $this );
-                return $this->_sThisTemplate;
+        $oLocator->setLocatorData( $oProduct, $this );
+        return $this->_sThisTemplate;
 
-        }
+    }
 
     /**
      * Should we show MD variant selection? - Not for 1 dimension variants.
@@ -987,7 +987,7 @@ class oxwArticleDetails extends oxWidget
             if ( $this->getConfig()->getConfigParam( 'blUseMultidimensionVariants' ) ) {
                 $iMaxMdDepth = $this->getProduct()->getMdVariants()->getMaxDepth();
                 $this->_blMdView = ($iMaxMdDepth > 1);
-    }
+            }
         }
 
         return $this->_blMdView;

@@ -18,7 +18,7 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   core
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
 
@@ -451,7 +451,7 @@ class oxInputValidator extends oxSuperCfg
                 $blCreditCardTypeExist = in_array( $aDynValue['kktype'], $this->_aPossibleCCType );
 
                 if ( $blAllCreditCardInformationSet && $blCreditCardTypeExist ) {
-                $oCardValidator = oxNew( "oxccvalidator" );
+                    $oCardValidator = oxNew( "oxccvalidator" );
                     $mxValidationResult = $oCardValidator->isValidCard(
                                                     $aDynValue['kknumber'],
                                                     $aDynValue['kktype'],
@@ -500,15 +500,15 @@ class oxInputValidator extends oxSuperCfg
         $oSepaValidator = oxNew( "oxSepaValidator" );
 
         if ( empty( $sBankCode ) || $oSepaValidator->isValidBIC( $sBankCode ) ) {
-        $mxValidationResult = true;
+            $mxValidationResult = true;
             if ( !$oSepaValidator->isValidIBAN( $sAccountNumber ) ) {
                 $mxValidationResult = self::INVALID_ACCOUNT_NUMBER;
             }
         } else {
             $mxValidationResult = self::INVALID_BANK_CODE;
             if ( !oxRegistry::getConfig()->getConfigParam( 'blSkipDebitOldBankInfo' ) ) {
-            $mxValidationResult = $this->_validateOldDebitInfo( $aDebitInformation );
-        }
+                $mxValidationResult = $this->_validateOldDebitInfo( $aDebitInformation );
+            }
         }
 
         return $mxValidationResult;

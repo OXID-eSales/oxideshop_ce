@@ -170,7 +170,7 @@
                                         </td>
                                     </tr>
                                     [{/foreach}]
-                            [{/if}]
+                        [{/if}]
                                 </table>
                         [{/block}]
                     </td>
@@ -429,26 +429,26 @@
                                 </td>
                             </tr>
                                 [{if $oPaymentCost->getVatValue()}]
-                                <tr valign="top">
-                                    [{if $basket->isProportionalCalculationOn() }]
-                                        <td style="padding: 5px; border-bottom: 2px solid #ccc;">
+                                    <tr valign="top">
+                                        [{if $basket->isProportionalCalculationOn() }]
+                                            <td style="padding: 5px; border-bottom: 2px solid #ccc;">
+                                                <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
+                                                    [{oxmultilang ident="BASKET_TOTAL_PLUS_PROPORTIONAL_VAT" suffix="COLON" }]
+                                                </p>
+                                            </td>
+                                        [{else}]
+                                            <td style="padding: 5px; border-bottom: 2px solid #ccc;">
+                                                <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
+                                                [{oxmultilang ident="VAT_PLUS_PERCENT_AMOUNT" suffix="COLON" args=$oPaymentCost->getVat()}]
+                                                </p>
+                                            </td>
+                                        [{/if}]
+                                        <td style="padding: 5px; border-bottom: 2px solid #ccc;" align="right">
                                             <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                                [{oxmultilang ident="BASKET_TOTAL_PLUS_PROPORTIONAL_VAT" suffix="COLON" }]
+                                            [{oxprice price=$oPaymentCost->getVatValue() currency=$currency}]
                                             </p>
                                         </td>
-                                    [{else}]
-                                        <td style="padding: 5px; border-bottom: 2px solid #ccc;">
-                                            <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                            [{oxmultilang ident="VAT_PLUS_PERCENT_AMOUNT" suffix="COLON" args=$oPaymentCost->getVat()}]
-                                            </p>
-                                        </td>
-                                    [{/if}]
-                                    <td style="padding: 5px; border-bottom: 2px solid #ccc;" align="right">
-                                        <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                        [{oxprice price=$oPaymentCost->getVatValue() currency=$currency}]
-                                        </p>
-                                    </td>
-                                </tr>
+                                    </tr>
                                 [{/if}]
                         [{else}]
                             <tr valign="top">

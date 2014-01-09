@@ -17,7 +17,7 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   tests
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
 
@@ -76,7 +76,7 @@ class Unit_Core_oxcontentTest extends OxidTestCase
      */
     public function testSaveAgb()
     {
-        $sShopId  = oxConfig::getInstance()->getShopId();
+        $sShopId = oxConfig::getInstance()->getShopId();
 
         $oDb = oxDb::getDb();
         $oDb->execute( "insert into oxacceptedterms (`OXUSERID`, `OXSHOPID`, `OXTERMVERSION`) values ('testuser', '{$sShopId}', '0')" );
@@ -322,7 +322,7 @@ class Unit_Core_oxcontentTest extends OxidTestCase
         $oContent = new oxContent();
         $this->assertTrue( $oContent->loadByIdent( $sId ) );
         $this->assertEquals( $sId, $oContent->oxcontents__oxloadid->value );
-        $this->assertNotEquals( "", $oContent->oxcontents__oxcontent->value  );
+        $this->assertNotEquals( "", $oContent->oxcontents__oxcontent->value );
 
         // unknown "credits"
         $sId = "credits";

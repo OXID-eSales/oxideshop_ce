@@ -414,19 +414,19 @@
                                     [{if $basket->isProportionalCalculationOn() }]
                                         <td style="padding: 5px; border-bottom: 2px solid #ccc;">
                                             <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                            [{oxmultilang ident="BASKET_TOTAL_PLUS_PROPORTIONAL_VAT" suffix="COLON" }]
+                                                [{oxmultilang ident="BASKET_TOTAL_PLUS_PROPORTIONAL_VAT" suffix="COLON" }]
                                             </p>
                                         </td>
                                     [{else}]
                                         <td style="padding: 5px; border-bottom: 2px solid #ccc;">
                                             <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                            [{oxmultilang ident="VAT_PLUS_PERCENT_AMOUNT" suffix="COLON" args=$oDeliveryCost->getVat() }]
+                                                [{oxmultilang ident="VAT_PLUS_PERCENT_AMOUNT" suffix="COLON" args=$oDeliveryCost->getVat() }]
                                             </p>
                                         </td>
                                     [{/if}]
                                     <td style="padding: 5px; border-bottom: 2px solid #ddd;" align="right">
                                         <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                        [{oxprice price=$oDeliveryCost->getVatValue() currency=$currency}]
+                                            [{oxprice price=$oDeliveryCost->getVatValue() currency=$currency}]
                                         </p>
                                     </td>
                                 </tr>
@@ -470,19 +470,19 @@
                                     [{if $basket->isProportionalCalculationOn() }]
                                         <td style="padding: 5px; border-bottom: 2px solid #ccc;">
                                             <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                            [{oxmultilang ident="BASKET_TOTAL_PLUS_PROPORTIONAL_VAT" suffix="COLON" }]
+                                                [{oxmultilang ident="BASKET_TOTAL_PLUS_PROPORTIONAL_VAT" suffix="COLON" }]
                                             </p>
                                         </td>
                                     [{else}]
                                         <td style="padding: 5px; border-bottom: 2px solid #ccc;">
                                             <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                            [{oxmultilang ident="VAT_PLUS_PERCENT_AMOUNT" suffix="COLON" args=$oPaymentCost->getVat()}]
+                                                [{oxmultilang ident="VAT_PLUS_PERCENT_AMOUNT" suffix="COLON" args=$oPaymentCost->getVat()}]
                                             </p>
                                         </td>
                                     [{/if}]
                                     <td style="padding: 5px; border-bottom: 2px solid #ccc;" align="right">
                                         <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                        [{oxprice price=$oPaymentCost->getVatValue() currency=$currency}]
+                                            [{oxprice price=$oPaymentCost->getVatValue() currency=$currency}]
                                         </p>
                                     </td>
                                 </tr>
@@ -525,19 +525,19 @@
                                     [{if $basket->isProportionalCalculationOn() }]
                                         <td style="padding: 5px; border-bottom: 2px solid #ccc;">
                                             <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                            [{oxmultilang ident="BASKET_TOTAL_PLUS_PROPORTIONAL_VAT" suffix="COLON" }]
+                                                [{oxmultilang ident="BASKET_TOTAL_PLUS_PROPORTIONAL_VAT" suffix="COLON" }]
                                             </p>
                                         </td>
                                     [{else}]
                                         <td style="padding: 5px; border-bottom: 2px solid #ccc;">
                                             <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                            [{oxmultilang ident="VAT_PLUS_PERCENT_AMOUNT" suffix="COLON" args=$trustedShopProtectionCost->getVat()}]
+                                                [{oxmultilang ident="VAT_PLUS_PERCENT_AMOUNT" suffix="COLON" args=$trustedShopProtectionCost->getVat()}]
                                             </p>
                                         </td>
                                     [{/if}]
                                     <td style="padding: 5px; border-bottom: 2px solid #ccc;" align="right">
                                         <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
-                                        [{oxprice price=$trustedShopProtectionCost->getVatValue() currency=$currency}]
+                                            [{oxprice price=$trustedShopProtectionCost->getVatValue() currency=$currency}]
                                         </p>
                                     </td>
                                 </tr>
@@ -547,7 +547,7 @@
 
                     [{if $oViewConf->getShowGiftWrapping() }]
                         [{block name="email_html_order_cust_wrappingcosts"}]
-                            <!-- Gift wrapping -->
+                    <!-- Gift wrapping -->
                         [{assign var="wrappingCost" value=$basket->getWrappingCost()}]
                         [{if $wrappingCost && $wrappingCost->getPrice() > 0 }]
                             [{if $oViewConf->isFunctionalityEnabled('blShowVATForWrapping') }]
@@ -563,18 +563,18 @@
                                         </p>
                                     </td>
                                 </tr>
-                                    <tr valign="top">
-                                        <td style="padding: 5px; border-bottom: 2px solid #ccc;">
-                                            <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
+                                <tr valign="top">
+                                    <td style="padding: 5px; border-bottom: 2px solid #ccc;">
+                                        <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
                                             [{oxmultilang ident="PLUS_VAT" suffix="COLON" }]
-                                            </p>
-                                        </td>
-                                        <td style="padding: 5px; border-bottom: 2px solid #ccc;" align="right">
-                                            <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
+                                        </p>
+                                    </td>
+                                    <td style="padding: 5px; border-bottom: 2px solid #ccc;" align="right">
+                                        <p style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; margin: 0;">
                                             [{oxprice price=$wrappingCost->getVatValue() currency=$currency}]
-                                            </p>
-                                        </td>
-                                    </tr>
+                                        </p>
+                                    </td>
+                                </tr>
                             [{else}]
                                 <tr valign="top">
                                     <td style="padding: 5px; border-bottom: 2px solid #ccc;">
@@ -592,7 +592,7 @@
                         [{/if}]
                         [{/block}]
                         [{block name="email_html_order_cust_giftwrapping"}]
-                            <!-- Greeting card -->
+                    <!-- Greeting card -->
                         [{assign var="giftCardCost" value=$basket->getGiftCardCost()}]
                         [{if $giftCardCost && $giftCardCost->getPrice() > 0 }]
                             [{if $oViewConf->isFunctionalityEnabled('blShowVATForWrapping') }]

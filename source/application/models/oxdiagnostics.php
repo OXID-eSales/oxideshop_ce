@@ -17,7 +17,7 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   core
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
 
@@ -63,7 +63,7 @@ class oxDiagnostics
      *
      * @var array
      */
-    protected $_aFileCheckerPathList   = array(
+    protected $_aFileCheckerPathList = array(
                                         'bootstrap.php',
                                         'index.php',
                                         'oxid.php',
@@ -343,18 +343,18 @@ class oxDiagnostics
         }
 
         $aServerInfo = array(
-            'Server OS'		=>	@php_uname('s'),
-            'VM'			=>	$this->_getVirtualizationSystem(),
+            'Server OS'		=> @php_uname('s'),
+            'VM'			=> $this->_getVirtualizationSystem(),
             'PHP'			=> $this->_getPhpVersion(),
             'MySQL'			=> $this->_getMySqlServerInfo(),
             'Apache'		=> $this->_getApacheVersion(),
-            'Disk total'	=>	$this->_getDiskTotalSpace(),
+            'Disk total'	=> $this->_getDiskTotalSpace(),
             'Disk free'		=> $this->_getDiskFreeSpace(),
-            'Memory total'	=>	$iMemTotal,
-            'Memory free'	=>	$iMemFree,
-            'CPU Model'		=>	$sCpuModel,
-            'CPU frequency'	=>	$sCpuFreq,
-            'CPU cores'		=>	round( $iCpuCores,0),
+            'Memory total'	=> $iMemTotal,
+            'Memory free'	=> $iMemFree,
+            'CPU Model'		=> $sCpuModel,
+            'CPU frequency'	=> $sCpuFreq,
+            'CPU cores'		=> round( $iCpuCores,0),
         );
 
         return $aServerInfo;

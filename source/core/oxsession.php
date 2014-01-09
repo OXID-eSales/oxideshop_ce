@@ -17,7 +17,7 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   core
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
 
@@ -683,7 +683,7 @@ class oxSession extends oxSuperCfg
             //init oxbasketitem class first
             //#1746
             oxNew('oxbasketitem');
-            
+
             // init oxbasket through oxNew and not oxAutoload, Mantis-Bug #0004262
             $oEmptyBasket = oxNew('oxbasket');
             

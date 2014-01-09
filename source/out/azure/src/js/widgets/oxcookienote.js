@@ -36,18 +36,25 @@
          */
         _create: function() {
             var self = this;
+
+            $.cookie('cookies-enabled-check', 'yes');
+
+            if ($.cookie('cookies-enabled-check')) {
+                $.cookie('cookies-enabled-check', null, -1);
+
             if( !$.cookie("displayedCookiesNotification") ) {
                 $.cookie("displayedCookiesNotification", 1, { path: '/', expires: 30 });
-            } else {
-                self.element.remove();
-                return false;
-            }
+                    $('#cookieNote').show();
+
+                    // need to add this even only if we decide to show cookie note
             $(self.options.closeButton, self.element).click(
                 function(){
                     self.element.fadeOut('slow').remove();
                     return false;
                 }
             );
+        }
+            }
         }
     };
 

@@ -1,5 +1,4 @@
 [{if $oView->isEnabled()}]
-    [{oxscript add="$.cookie('testing', 'yes'); if(!$.cookie('testing')) $('#cookieNote').hide(); else{ $('#cookieNote').show(); $.cookie('testing', null, -1);}"}]
     [{oxscript include="js/libs/cookie/jquery.cookie.js"}]
     [{oxscript include="js/widgets/oxcookienote.js"}]
     <div id="cookieNote">

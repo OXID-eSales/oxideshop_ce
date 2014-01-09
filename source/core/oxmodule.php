@@ -1087,8 +1087,6 @@ class oxModule extends oxSuperCfg
         }
     }
 
-
-
     /**
      * Add extension to module
      */
@@ -1126,27 +1124,27 @@ class oxModule extends oxSuperCfg
     }
 
     /**
-     * Removes module extensions from all extension list
+     * Removes garbage ( module not used extensions ) from all installed extensions list
      *
-     * @param $aInstalledModules
+     * @param $aInstalledExtensions
      *
      * @return array
      */
-    protected function _removeNotUsedExtensions( $aInstalledModules )
+    protected function _removeNotUsedExtensions( $aInstalledExtensions )
     {
-        $aExtensionForInstallation = $this->getExtensions();
+        $aModuleExtensions = $this->getExtensions();
 
-        $aInstalledExtensions = $this->filterModuleArray( $aInstalledModules, $this->getId() );
+        $aInstalledModuleExtensions = $this->filterModuleArray( $aInstalledExtensions, $this->getId() );
 
-        if ( count( $aInstalledExtensions ) ) {
-            $aExtensionForRemove = $this->_getModuleExtensionsGarbage( $aExtensionForInstallation, $aInstalledExtensions );
+        if ( count( $aInstalledModuleExtensions ) ) {
+            $aGarbage = $this->_getModuleExtensionsGarbage( $aModuleExtensions, $aInstalledModuleExtensions );
 
-            if ( count( $aExtensionForRemove ) ) {
-                $aInstalledModules = $this->_removeGarbage( $aInstalledModules, $aExtensionForRemove );
+            if ( count( $aGarbage ) ) {
+                $aInstalledExtensions = $this->_removeGarbage( $aInstalledExtensions, $aGarbage );
             }
         }
 
-        return $aInstalledModules;
+        return $aInstalledExtensions;
     }
 
     /**

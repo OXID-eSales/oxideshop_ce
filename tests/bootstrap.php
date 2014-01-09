@@ -22,21 +22,57 @@
  * @version   SVN: $Id: $
  */
 
-chdir(dirname(__FILE__));
+error_reporting( (E_ALL ^ E_NOTICE) | E_STRICT );
+ini_set('display_errors', true);
 
-if (getenv('oxPATH')) {
-    define ('oxPATH', getenv('oxPATH'));
-} else {
+chdir( dirname(__FILE__) );
+
+require_once "test_config.php";
+
+if ( file_exists( "test_config.local.php" ) ) {
+    include_once "test_config.local.php";
 }
+
+define( 'oxPATH', getenv('oxPATH')? getenv('oxPATH') : $sShopPath );
+define ( 'OXID_VERSION', getenv('OXID_VERSION')? getenv('OXID_VERSION') : $sShopEdition );
+
+define ('OXID_TEST_UTF8', getenv('OXID_TEST_UTF8'));
+
+    switch ( OXID_VERSION ) {
+        case 'EE':
+            define('OXID_VERSION_EE', true );
+            define('OXID_VERSION_PE', false);
+            define('OXID_VERSION_PE_PE', false );
+            define('OXID_VERSION_PE_CE', false );
+            break;
+        case 'PE':
+            define('OXID_VERSION_EE',    false);
+            define('OXID_VERSION_PE',    true );
+            define('OXID_VERSION_PE_PE', true );
+            define('OXID_VERSION_PE_CE', false );
+            break;
+        case 'CE':
+            define('OXID_VERSION_EE',    false);
+            define('OXID_VERSION_PE',    true );
+            define('OXID_VERSION_PE_PE', false );
+            define('OXID_VERSION_PE_CE', true );
+            break;
+
+        default:
+            die('bad version--- : '."'".getenv('OXID_VERSION')."'");
+            break;
+    }
+
 
 if (!defined('oxPATH')) {
         die('oxPATH is not defined');
 }
 
-
-
-if (!defined('OXID_VERSION_SUFIX')) {
-    define('OXID_VERSION_SUFIX', '');
+define ('oxCCTempDir', oxPATH.'/oxCCTempDir/');
+if (!is_dir(oxCCTempDir)) {
+    mkdir(oxCCTempDir, 0777, 1);
+} else {
+    array_map('unlink', glob(oxCCTempDir."/*"));
 }
 
 require_once 'unit/test_config.inc.php';
@@ -47,10 +83,3 @@ if (getenv('oxADMIN_PASSWD')) {
 } else {
     define('oxADMIN_PASSWD', 'admin');
 }
-
-
-if (getenv('CODECOVERAGE')) {
-    // All configs moved to phpunit.xml
-}
-
-

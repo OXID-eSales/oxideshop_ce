@@ -51,7 +51,7 @@ class Unit_Core_oxAddressTest extends OxidTestCase
      *
      * @return null
      */
-    public function testToStirngNoName()
+    public function testToStringNoName()
     {
         $oSubj = new oxAddress();
         $oSubj->oxaddress__oxstreet = new oxField('Street');
@@ -67,7 +67,7 @@ class Unit_Core_oxAddressTest extends OxidTestCase
      *
      * @return null
      */
-    public function testToStirngNoFirstName()
+    public function testToStringNoFirstName()
     {
         $oSubj = new oxAddress();
         $oSubj->oxaddress__oxlname = new oxField('Lname');

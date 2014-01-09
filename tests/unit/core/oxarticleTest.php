@@ -145,7 +145,7 @@ class modUtilsObject_oxarticle extends oxUtilsObject
 /**
  * Testing oxArticle class.
  */
-class oxArticleTest extends OxidTestCase
+class Unit_Core_oxArticleTest extends OxidTestCase
 {
     /**
      * Test case for #0003393: getSqlActiveSnippet(true) does not force core table usage

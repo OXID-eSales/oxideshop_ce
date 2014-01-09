@@ -893,9 +893,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
     }
 
     /**
-     * oxmodule::getId() test case
-     *
-     * @return null
+     * oxModule::getId() test case
      */
     public function testGetId()
     {
@@ -903,10 +901,35 @@ class Unit_Core_oxModuleTest extends OxidTestCase
             'id'  => 'testModuleId'
         );
 
-        $oModule = $this->getProxyClass('oxmodule');
-        $oModule->setNonPublicVar( "_aModule", $aModule );
+        $oModule = new oxModule;
+        $oModule->setModuleData($aModule);
 
         $this->assertEquals( 'testModuleId', $oModule->getId() );
+    }
+
+    public function testGetExtensions_hasExtensions_array()
+    {
+        $aModule = array(
+            'id'  => 'testModuleId',
+            'extend' => array( 'class' => 'vendor/module/path/class' )
+        );
+
+        $oModule = new oxModule;
+        $oModule->setModuleData( $aModule );
+
+        $this->assertEquals( array( 'class' => 'vendor/module/path/class' ) , $oModule->getExtensions() );
+    }
+
+    public function testGetExtensions_hasNoExtensions_emptyArray()
+    {
+        $aModule = array(
+            'id'  => 'testModuleId'
+        );
+
+        $oModule = new oxModule;
+        $oModule->setModuleData( $aModule );
+
+        $this->assertEquals( array() , $oModule->getExtensions() );
     }
 
     /**

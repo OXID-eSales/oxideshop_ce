@@ -235,6 +235,16 @@ class oxModule extends oxSuperCfg
     }
 
     /**
+     * Returns array of module extensions
+     *
+     * @return array
+     */
+    public function getExtensions()
+    {
+        return isset( $this->_aModule['extend'] ) ? $this->_aModule['extend'] : array();
+    }
+
+    /**
      * Get module ID
      *
      * @param string $sModule extension full path
@@ -310,7 +320,7 @@ class oxModule extends oxSuperCfg
         $sId = $this->getId();
         if ( isset( $sId ) ) {
             if ( $this->hasExtendClass() ) {
-                $aAddModules = $this->_aModule['extend'];
+                $aAddModules = $this->getExtensions();
                 $aInstalledModules = $this->getModulesWithExtendedClass();
                 $iClCount = count($aAddModules);
                 $iActive  = 0;
@@ -366,9 +376,10 @@ class oxModule extends oxSuperCfg
      */
     public function hasExtendClass()
     {
-        return isset( $this->_aModule['extend'] )
-            && is_array( $this->_aModule['extend'] )
-            && !empty( $this->_aModule['extend'] );
+        $aExtensions = $this->getExtensions();
+        return isset( $aExtensions )
+            && is_array( $aExtensions )
+            && !empty( $aExtensions );
     }
 
     /**
@@ -1076,6 +1087,8 @@ class oxModule extends oxSuperCfg
         }
     }
 
+
+
     /**
      * Add extension to module
      */
@@ -1085,7 +1098,7 @@ class oxModule extends oxSuperCfg
         $aInstalledModules = $this->_removeNotUsedExtensions( $this->getModulesWithExtendedClass() );
 
         if ( $this->hasExtendClass() ) {
-            $aAddModules  = $this->_aModule['extend'];
+            $aAddModules  = $this->getExtensions();
 
             $aModules = $this->mergeModuleArrays( $aInstalledModules, $aAddModules );
             $aModules = $this->buildModuleChains( $aModules );
@@ -1122,7 +1135,7 @@ class oxModule extends oxSuperCfg
      */
     protected function _removeNotUsedExtensions( $aInstalledModules )
     {
-        $aExtensionForInstallation = $this->_aModule['extend'];
+        $aExtensionForInstallation = $this->getExtensions();
 
         $aInstalledExtensions = $this->_getInstalledExtensions( $aInstalledModules );
 

@@ -37,10 +37,10 @@
         _create: function() {
             var self = this;
 
-            $.cookie('cookies-enabled-check', 'yes');
+            $.cookie('cookiesEnabledCheck', 'yes');
 
-            if ($.cookie('cookies-enabled-check')) {
-                $.cookie('cookies-enabled-check', null, -1);
+            if ($.cookie('cookiesEnabledCheck')) {
+                $.cookie('cookiesEnabledCheck', null, -1);
 
             if( !$.cookie("displayedCookiesNotification") ) {
                 $.cookie("displayedCookiesNotification", 1, { path: '/', expires: 30 });

@@ -2232,7 +2232,7 @@ class oxUser extends oxBase
      */
     public function getStateTitleById($sId)
     {
-        return null;
+        return $sId;
     }
 
     /**

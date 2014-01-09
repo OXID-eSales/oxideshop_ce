@@ -134,7 +134,7 @@ class oxAddress extends oxBase
      */
     public function getStateTitleById($sId)
     {
-        return null;
+        return $sId;
     }
 
     /**

@@ -17,7 +17,7 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   core
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
 
@@ -160,12 +160,12 @@ class oxCategoryList extends oxList
         }
 
         $sFieldList = "$sTable.oxid as oxid, $sTable.oxactive as oxactive,"
-                    ." $sTable.oxhidden as oxhidden, $sTable.oxparentid as oxparentid,"
-                    ." $sTable.oxdefsort as oxdefsort, $sTable.oxdefsortmode as oxdefsortmode,"
-                    ." $sTable.oxleft as oxleft, $sTable.oxright as oxright,"
-                    ." $sTable.oxrootid as oxrootid, $sTable.oxsort as oxsort,"
-                    ." $sTable.oxtitle as oxtitle, $sTable.oxdesc as oxdesc,"
-                    ." $sTable.oxpricefrom as oxpricefrom, $sTable.oxpriceto as oxpriceto,"
+            ." $sTable.oxhidden as oxhidden, $sTable.oxparentid as oxparentid,"
+            ." $sTable.oxdefsort as oxdefsort, $sTable.oxdefsortmode as oxdefsortmode,"
+            ." $sTable.oxleft as oxleft, $sTable.oxright as oxright,"
+            ." $sTable.oxrootid as oxrootid, $sTable.oxsort as oxsort,"
+            ." $sTable.oxtitle as oxtitle, $sTable.oxdesc as oxdesc,"
+            ." $sTable.oxpricefrom as oxpricefrom, $sTable.oxpriceto as oxpriceto,"
             ." $sTable.oxicon as oxicon, $sTable.oxextlink as oxextlink,"
             ." $sTable.oxthumb as oxthumb, $sTable.oxpromoicon as oxpromoicon";
 

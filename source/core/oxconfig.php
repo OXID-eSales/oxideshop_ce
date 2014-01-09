@@ -432,18 +432,18 @@ class oxConfig extends oxSuperCfg
             $this->getSession()->start();
 
 
-        // Admin handling
-        $this->setConfigParam( 'blAdmin', isAdmin() );
+            // Admin handling
+            $this->setConfigParam( 'blAdmin', isAdmin() );
 
-        if ( defined('OX_ADMIN_DIR') ) {
-            $this->setConfigParam( 'sAdminDir', OX_ADMIN_DIR );
-        }
+            if ( defined('OX_ADMIN_DIR') ) {
+                $this->setConfigParam( 'sAdminDir', OX_ADMIN_DIR );
+            }
 
-        $this->_loadVarsFromFile();
+            $this->_loadVarsFromFile();
 
-        //application initialization
-        $this->_oStart = new oxStart();
-        $this->_oStart->appInit();
+            //application initialization
+            $this->_oStart = new oxStart();
+            $this->_oStart->appInit();
         } catch ( oxConnectionException $oEx ) {
             return $this->_handleDbConnectionException( $oEx );
         } catch ( oxCookieException $oEx ) {

@@ -231,9 +231,9 @@ class BasketConstruct
                     foreach ( $mxValue as $iId ) {
                         $aData = array(
                             'oxid' =>  $oDiscount->getId() . "_" . $iId,
-                                'oxdiscountid' => $oDiscount->getId(),
+                            'oxdiscountid' => $oDiscount->getId(),
                             'oxobjectid' => $iId,
-                                'oxtype' => $sKey
+                            'oxtype' => $sKey
                         );
                         $this->createObj2Obj( $aData, "oxobject2discount" );
                     }
@@ -478,7 +478,7 @@ class BasketConstruct
     {
         $this->_setDiscounts( $aDiscounts );
     }
-    
+
     /**
      * Create categories
      * @param array $aCategories of categories data

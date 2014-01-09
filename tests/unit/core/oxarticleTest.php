@@ -5543,7 +5543,7 @@ class Unit_Core_oxarticleTest extends OxidTestCase
         $oParentArticle = new oxArticle();
         $oParentArticle->oxarticles__oxid     = new oxField('parentArt', oxField::T_RAW);
         $oParentArticle->oxarticles__oxicon   = new oxField('parent_icon.jpg', oxField::T_RAW);
-        $oParentArticle->oxarticles__oxthumb = new oxField('parent_thumb.jpg', oxField::T_RAW);
+        $oParentArticle->oxarticles__oxthumb  = new oxField('parent_thumb.jpg', oxField::T_RAW);
         $oParentArticle->oxarticles__oxpic1   = new oxField('parent_pic1.jpg', oxField::T_RAW);
         $oParentArticle->oxarticles__oxpic2   = new oxField('parent_pic2.jpg', oxField::T_RAW);
         $oParentArticle->oxarticles__oxtitle  = new oxField('testArt', oxField::T_RAW);

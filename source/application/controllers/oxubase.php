@@ -17,7 +17,7 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   views
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
 
@@ -1523,7 +1523,7 @@ class oxUBase extends oxView
      *
      * @return array
      */
-    public function getSorting( $sSortIdent )
+    public function getSorting( $sSortIdent  )
     {
         $aSorting = null;
 

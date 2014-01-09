@@ -780,7 +780,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
         $this->assertEquals($aExtend, $oModule->filterModuleArray($aModules, 'test'));
     }
 
-     /**
+    /**
      * oxmodule::getLegacyModules() test case
      *
      * @return null
@@ -799,7 +799,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
         $this->assertEquals( $aLegacyModules, $oModule->getLegacyModules() );
     }
 
-     /**
+    /**
      * oxmodule::getDisabledModules() test case
      *
      * @return null
@@ -818,7 +818,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
         $this->assertEquals( $aDisabledModules, $oModule->getDisabledModules() );
     }
 
-     /**
+    /**
      * oxmodule::getDisabledModules() test case
      *
      * @return null
@@ -837,7 +837,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
         $this->assertEquals( $aModulePaths, $oModule->getModulePaths() );
     }
 
-     /**
+    /**
      * oxmodule::testGetModuleFullPaths() test case
      *
      * @return null
@@ -848,18 +848,18 @@ class Unit_Core_oxModuleTest extends OxidTestCase
 
         $oConfig = $this->getMock('oxconfig', array('getModulesDir'));
         $oConfig->expects( $this->any() )
-                ->method( 'getModulesDir' )
-                ->will($this->returnValue( "/var/path/to/modules/" ));
+            ->method( 'getModulesDir' )
+            ->will($this->returnValue( "/var/path/to/modules/" ));
 
         $oModule = $this->getMock('oxmodule', array('getModulePath', 'getConfig'));
         $oModule->expects( $this->any() )
-                ->method( 'getModulePath' )
-                ->with( $this->equalTo($sModId) )
-                ->will( $this->returnValue( "oe/module/" ) );
+            ->method( 'getModulePath' )
+            ->with( $this->equalTo($sModId) )
+            ->will( $this->returnValue( "oe/module/" ) );
 
         $oModule->expects( $this->any() )
-                ->method( 'getConfig' )
-                ->will( $this->returnValue( $oConfig ) );
+            ->method( 'getConfig' )
+            ->will( $this->returnValue( $oConfig ) );
 
         $this->assertEquals( "/var/path/to/modules/oe/module/", $oModule->getModuleFullPath( $sModId ) );
     }
@@ -891,7 +891,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
         $this->assertEquals( false, $oModule->getModuleFullPath( $sModId ) );
     }
 
-     /**
+    /**
      * oxmodule::getId() test case
      *
      * @return null
@@ -908,7 +908,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
         $this->assertEquals( 'testModuleId', $oModule->getId() );
     }
 
-     /**
+    /**
      * oxmodule::hasMetadata() test case
      *
      * @return null
@@ -923,7 +923,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
         $this->assertTrue( $oModule->hasMetadata() );
     }
 
-     /**
+    /**
      * oxmodule::isFile() test case
      *
      * @return null
@@ -938,7 +938,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
         $this->assertTrue( $oModule->isFile() );
     }
 
-     /**
+    /**
      * oxmodule::isLegacy() test case
      *
      * @return null
@@ -954,7 +954,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
     }
 
 
-     /**
+    /**
      * oxmodule::isRegistered() test case
      *
      * @return null
@@ -970,7 +970,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
     }
 
 
-     /**
+    /**
      * oxmodule::getTitle() test case
      *
      * @return null
@@ -984,7 +984,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
         $this->assertEquals( "testTitle", $oModule->getTitle() );
     }
 
-     /**
+    /**
      * oxmodule::getDescription() test case
      *
      * @return null
@@ -1069,7 +1069,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
         $oDb     = oxDb::getDb();
 
         $sSql = "INSERT INTO `oxtplblocks` (`OXID`, `OXACTIVE`, `OXSHOPID`, `OXTEMPLATE`, `OXBLOCKNAME`, `OXPOS`, `OXFILE`, `OXMODULE`) ".
-                "VALUES ('_testId', 1, '$sShopId', 'testTemplate.tpl', 'testBlockName', '1', 'testFile.tpl', 'testModuleId1')";
+            "VALUES ('_testId', 1, '$sShopId', 'testTemplate.tpl', 'testBlockName', '1', 'testFile.tpl', 'testModuleId1')";
 
         $oDb->execute( $sSql );
 
@@ -1149,8 +1149,8 @@ class Unit_Core_oxModuleTest extends OxidTestCase
 
     /**
      * oxmodule::_addModuleSettings() test case
-	 * 
-	 * related to @ticket 4255
+     *
+     * related to @ticket 4255
      *
      * @return null
      */
@@ -1237,8 +1237,8 @@ class Unit_Core_oxModuleTest extends OxidTestCase
 
         // result data
         $aLegacyModules = array( "dir1_module1" => array( "id" => "dir1_module1",
-                                                          "title" => "module1",
-                                                          "extend" => array("oxarticle" => "dir1/module1")) );
+            "title" => "module1",
+            "extend" => array("oxarticle" => "dir1/module1")) );
 
         $oConfig = $this->getMock( 'oxConfig', array('saveShopConfVar') );
         $oConfig->expects( $this->at(0) )->method('saveShopConfVar')->with($this->equalTo("aarr"), $this->equalTo("aLegacyModules"), $this->equalTo($aLegacyModules) );

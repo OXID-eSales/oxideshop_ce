@@ -94,11 +94,11 @@ class AllTestsUnit extends PHPUnit_Framework_TestCase
         }
 
         foreach ( $aTestSuites as $sTestSuiteDir => $aTestDirs ) {
-        foreach ($aTestDirs as $sTestDir ) {
+            foreach ($aTestDirs as $sTestDir ) {
 
-            if ($sTestDir == '_root_') {
-                $sTestDir = '';
-            }
+                if ($sTestDir == '_root_') {
+                    $sTestDir = '';
+                }
 
                 $sDir = rtrim($sTestSuiteDir.'/'.$sTestDir, '/');
 

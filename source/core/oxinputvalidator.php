@@ -18,7 +18,7 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   core
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
 
@@ -501,10 +501,10 @@ class oxInputValidator extends oxSuperCfg
         $oSepaValidator = oxNew( "oxSepaValidator" );
 
         if ( empty( $sBankCode ) || $oSepaValidator->isValidBIC( $sBankCode ) ) {
-        $mxValidationResult = true;
+            $mxValidationResult = true;
             if ( !$oSepaValidator->isValidIBAN( $sAccountNumber ) ) {
                 $mxValidationResult = self::INVALID_ACCOUNT_NUMBER;
-        }
+            }
         } else {
             $mxValidationResult = $this->_validateOldDebitInfo( $aDebitInformation );
         }

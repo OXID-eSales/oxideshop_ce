@@ -15,11 +15,11 @@
  *    You should have received a copy of the GNU General Public License
  *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @link      http://www.oxid-esales.com
- * @package   core
- * @copyright (C) OXID eSales AG 2003-2013
+ * @link          http://www.oxid-esales.com
+ * @package       core
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
- * @version   SVN: $Id
+ * @version       SVN: $Id
  */
 
 /**
@@ -129,13 +129,13 @@ class oxSepaValidator
     }
 
     /**
-     * Validation of IBAN registry
-     *
-     * @param array $aIBANRegistry
+    * Validation of IBAN registry
+    *
+    * @param array $aIBANRegistry
     * @deprecated since v5.2.0 (2013-12-11); Use oxSepaIBANValidator::isCodeLengthsValid().
-     *
-     * @return bool
-     */
+    *
+    * @return bool
+    */
     public function isValidIBANRegistry( $aIBANRegistry = null )
     {
         $oIBANValidator = oxNew( 'oxSepaIBANValidator' );
@@ -145,7 +145,7 @@ class oxSepaValidator
         }
 
         return $oIBANValidator->isCodeLengthsValid( $aIBANRegistry );
-        }
+    }
 
 
     /**

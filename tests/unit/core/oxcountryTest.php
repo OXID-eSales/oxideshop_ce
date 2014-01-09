@@ -17,7 +17,7 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   tests
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
 
@@ -100,12 +100,12 @@ class Unit_Core_oxCountryTest extends OxidTestCase
     public function testisInEU()
     {
         $oObj = new oxCountry();
-            $oObj->setId('test');
-            $oObj->oxcountry__oxvatstatus = new oxField(1, oxField::T_RAW);
-            $this->assertTrue($oObj->isInEU());
+        $oObj->setId('test');
+        $oObj->oxcountry__oxvatstatus = new oxField(1, oxField::T_RAW);
+        $this->assertTrue($oObj->isInEU());
 
-            $oObj->oxcountry__oxvatstatus = new oxField(0, oxField::T_RAW);
-            $this->assertFalse($oObj->isInEU());
+        $oObj->oxcountry__oxvatstatus = new oxField(0, oxField::T_RAW);
+        $this->assertFalse($oObj->isInEU());
     }
 
 

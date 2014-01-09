@@ -17,7 +17,7 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   core
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
 
@@ -240,7 +240,7 @@ class oxDb
 
         global $ADODB_EXCEPTION;
         $ADODB_EXCEPTION = 'oxAdoDbException';
-            include_once getShopBasePath() . 'core/adodblite/adodb-exceptions.inc.php';
+        include_once getShopBasePath() . 'core/adodblite/adodb-exceptions.inc.php';
 
         $sModules = '';
         if (  $_iDebug == 2 || $_iDebug == 3 || $_iDebug == 4 || $_iDebug == 7  ) {

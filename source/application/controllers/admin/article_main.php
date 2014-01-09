@@ -17,7 +17,7 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   admin
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
 
@@ -43,7 +43,7 @@ class Article_Main extends oxAdminDetails
         $this->getConfig()->setConfigParam( 'bl_perfLoadPrice', true );
 
         $oArticle = oxNew( 'oxArticle' );
-            $oArticle->enablePriceLoad();
+        $oArticle->enablePriceLoad();
 
         $this->_aViewData['edit'] = $oArticle;
 

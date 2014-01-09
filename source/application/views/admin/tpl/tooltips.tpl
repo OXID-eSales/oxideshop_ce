@@ -28,7 +28,7 @@ function popUp(evt,currElem)
     popUpWin.style.left= Math.max(2,x)+'px';
     popUpWin.style.visibility = "visible";
     window.status = "";
-    
+
 }
 function popDown(currElem)
 {

@@ -44,6 +44,23 @@ class oxAddress extends oxBase
     protected $_blSelected = false;
 
     /**
+     * @var oxState
+     */
+    protected $_oStateObject = null;
+
+    /**
+     * @return oxState
+     */
+    protected function _getStateObject()
+    {
+        if ( is_null( $this->_oStateObject ) ) {
+            $this->_oStateObject = oxNew( 'oxState' );
+        }
+
+        return $this->_oStateObject;
+    }
+
+    /**
      * Class constructor
      *
      * @return null
@@ -130,11 +147,13 @@ class oxAddress extends oxBase
     }
 
     /**
-     * Get state title
+     * Get state title by id
      */
-    public function getStateTitleById($sId)
+    public function getStateTitleById( $sId )
     {
-        return $sId;
+        $oState = $this->_getStateObject();
+
+        return $oState->getTitleById( $sId );
     }
 
     /**

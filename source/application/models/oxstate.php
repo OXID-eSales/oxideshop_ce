@@ -59,4 +59,16 @@ class oxState extends oxI18n
         return $oDb->getOne( "select oxid from oxstates where oxisoalpha2 = ".$oDb->quote( $sCode )." AND oxcountryid = ".$oDb->quote( $sCountryId ));
     }
 
+    /**
+     * Get state title by id
+     *
+     * @param $iStateId
+     *
+     * @return string
+     */
+    public function getTitleById($iStateId)
+    {
+        return (string) $iStateId;
+    }
+
 }

@@ -36,7 +36,9 @@ if ( file_exists( "test_config.local.php" ) ) {
 define( 'oxPATH', getenv('oxPATH')? getenv('oxPATH') : $sShopPath );
 define ( 'OXID_VERSION', getenv('OXID_VERSION')? getenv('OXID_VERSION') : $sShopEdition );
 
-define ('OXID_TEST_UTF8', getenv('OXID_TEST_UTF8'));
+define ('OXID_TEST_UTF8', getenv('OXID_TEST_UTF8')? getenv('OXID_TEST_UTF8') : $blUtf8);
+define ('PREG_FILTER', getenv('PREG_FILTER'));
+define ('TEST_DIRS', getenv('TEST_DIRS'));
 
     switch ( OXID_VERSION ) {
         case 'EE':

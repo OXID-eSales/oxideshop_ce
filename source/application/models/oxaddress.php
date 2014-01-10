@@ -115,13 +115,44 @@ class oxAddress extends oxBase
     }
 
     /**
-     * Returns string representation of address state
+     * Return address state id
+     *
+     * @deprecated since next major version (2014-01-10); Naming changed use function getStateId()
      *
      * @return string
      */
     public function getState()
     {
+        return $this->getStateId();
+    }
+
+    /**
+     * Get state id for current address
+     *
+     * @return mixed
+     */
+    public function getStateId()
+    {
         return $this->oxaddress__oxstateid->value;
+    }
+
+
+    /**
+     * Get state title
+     *
+     * @param string $sId state ID
+     *
+     * @return string
+     */
+    public function getStateTitle( $sId = null )
+    {
+        $oState = $this->_getStateObject();
+
+        if ( is_null( $sId ) ) {
+            $sId = $this->getStateId();
+        }
+
+        return $oState->getTitleById( $sId );
     }
 
     /**
@@ -142,20 +173,6 @@ class oxAddress extends oxBase
     public function setSelected()
     {
         $this->_blSelected = true;
-    }
-
-    /**
-     * Get state title by id
-     *
-     * @param string $sId state ID
-     *
-     * @return string
-     */
-    public function getStateTitleById( $sId )
-    {
-        $oState = $this->_getStateObject();
-
-        return $oState->getTitleById( $sId );
     }
 
     /**

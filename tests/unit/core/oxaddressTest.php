@@ -135,15 +135,13 @@ class Unit_Core_oxAddressTest extends OxidTestCase
     }
 
     /**
-     * Testing state getter
-     *
-     * @return null
+     * Testing state ID getter
      */
-    public function testGetState()
+    public function testGetStateId()
     {
         $oSubj = new oxAddress();
-        $oSubj->oxaddress__oxstateid = new oxField('TTT');
-        $this->assertEquals('TTT', $oSubj->getState());
+        $oSubj->oxaddress__oxstateid = new oxField( 'TTT' );
+        $this->assertEquals( 'TTT', $oSubj->getStateId() );
     }
 
     /**
@@ -152,9 +150,10 @@ class Unit_Core_oxAddressTest extends OxidTestCase
     public function testGetStateTitleById()
     {
         $iStateId = 19;
+        $iAlternateStateId = 15;
 
         /** @var oxState|PHPUnit_Framework_MockObject_MockObject $oStateMock */
-        $oStateMock = $this->getMock( 'oxState', array( 'getTitleById' ) );
+        $oStateMock = $this->getMock( 'oxState', array('getTitleById') );
 
         $oStateMock->expects( $this->at( 0 ) )
         ->method( 'getTitleById' )
@@ -163,22 +162,45 @@ class Unit_Core_oxAddressTest extends OxidTestCase
 
         $oStateMock->expects( $this->at( 1 ) )
         ->method( 'getTitleById' )
+        ->with( $iAlternateStateId )
+        ->will( $this->returnValue( 'Alaska' ) );
+
+        $oStateMock->expects( $this->at( 2 ) )
+        ->method( 'getTitleById' )
         ->with( $iStateId )
         ->will( $this->returnValue( 'California' ) );
 
-        /** @var oxAddress|PHPUnit_Framework_MockObject_MockObject $oAddressMock */
-        $oAddressMock = $this->getMock( 'oxAddress', array('_getStateObject') );
+        $oStateMock->expects( $this->at( 3 ) )
+        ->method( 'getTitleById' )
+        ->with( $iAlternateStateId )
+        ->will( $this->returnValue( 'Alaska' ) );
+
+        /** @var oxUser|PHPUnit_Framework_MockObject_MockObject $oUserMock */
+        $oAddressMock = $this->getMock( 'oxAddress', array('_getStateObject', 'getStateId') );
+
         $oAddressMock->expects( $this->any() )
         ->method( '_getStateObject' )
         ->will( $this->returnValue( $oStateMock ) );
 
+        $oAddressMock->expects( $this->any() )
+        ->method( 'getStateId' )
+        ->will( $this->returnValue( $iAlternateStateId ) );
+
         $sExpected = oxDb::getDb()->getOne( 'SELECT oxtitle FROM oxstates WHERE oxid = "' . $iStateId . '"' );
-        $this->assertSame( $sExpected, $oAddressMock->getStateTitleById( $iStateId ), "State title is correct" );
+        $this->assertSame( $sExpected, $oAddressMock->getStateTitle( $iStateId ), "State title is correct" );
+
+        $sExpected = oxDb::getDb()->getOne( 'SELECT oxtitle FROM oxstates WHERE oxid = "' . $iAlternateStateId . '"' );
+        $this->assertSame( $sExpected, $oAddressMock->getStateTitle(), "State title is correct when ID is not passed" );
 
         $this->setLanguage( 1 );
 
         $sExpected = oxDb::getDb()->getOne( 'SELECT oxtitle_1 FROM oxstates WHERE oxid = "' . $iStateId . '"' );
-        $this->assertSame( $sExpected, $oAddressMock->getStateTitleById( $iStateId ), "State title is correct" );
+        $this->assertSame( $sExpected, $oAddressMock->getStateTitle( $iStateId ), "State title is correct" );
+
+        $sExpected = oxDb::getDb()->getOne(
+            'SELECT oxtitle_1 FROM oxstates WHERE oxid = "' . $iAlternateStateId . '"'
+        );
+        $this->assertSame( $sExpected, $oAddressMock->getStateTitle(), "State title is correct when ID is not passed" );
     }
 
     /**

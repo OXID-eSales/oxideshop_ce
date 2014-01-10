@@ -129,7 +129,7 @@ class AllTestsUnit extends PHPUnit_Framework_TestCase
         $aDirectories = array();
 
         list( $sSuiteKey, $sSuiteTests ) = explode(':', $sTestSuiteParts);
-        if ( empty( $sSuiteTests ) ) {
+        if ( !empty( $sSuiteTests ) ) {
             foreach ( explode('%', $sSuiteTests) as $sSubDirectory ) {
                 $aDirectories[] = "$sSuiteKey/$sSubDirectory";
             }

@@ -17,7 +17,7 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   core
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  * @version   SVN: SVN: $Id$
  */
@@ -565,7 +565,7 @@ class oxArticleList extends oxList
         }
 
         // load the articles
-        $sSelect  =  "select $sArticleTable.oxid from $sArticleTable $sDescJoin where ";
+        $sSelect  =  "select $sArticleTable.oxid, $sArticleTable.oxtimestamp from $sArticleTable $sDescJoin where ";
 
         // must be additional conditions in select if searching in category
         if ( $sSearchCat ) {
@@ -1091,7 +1091,7 @@ class oxArticleList extends oxList
 
         $oDb = oxDb::getDb();
 
-        $sSelect = "SELECT $sFields FROM $sO2CView as oc left join $sArticleTable
+        $sSelect = "SELECT $sFields, $sArticleTable.oxtimestamp FROM $sO2CView as oc left join $sArticleTable
                     ON $sArticleTable.oxid = oc.oxobjectid
                     WHERE ".$this->getBaseObject()->getSqlActiveSnippet()." and $sArticleTable.oxparentid = ''
                     and oc.oxcatnid = ".$oDb->quote($sCatId)." $sFilterSql ORDER BY $sSorting oc.oxpos, oc.oxobjectid ";

@@ -17,7 +17,7 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   core
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  * @version   SVN: $Id$l
  */
@@ -198,7 +198,7 @@ class oxSearch extends oxSuperCfg
         }
 
         //select articles
-        $sSelect = "select {$sSelectFields} from {$sArticleTable} {$sDescJoin} where ";
+        $sSelect = "select {$sSelectFields}, {$sArticleTable}.oxtimestamp from {$sArticleTable} {$sDescJoin} where ";
 
         // must be additional conditions in select if searching in category
         if ( $sInitialSearchCat ) {
@@ -206,7 +206,7 @@ class oxSearch extends oxSuperCfg
             $sInitialSearchCatQuoted = $oDb->quote( $sInitialSearchCat );
             $sSelectCat  = "select oxid from {$sCatView} where oxid = $sInitialSearchCatQuoted and (oxpricefrom != '0' or oxpriceto != 0)";
             if ( $oDb->getOne($sSelectCat) ) {
-                $sSelect = "select {$sSelectFields} from {$sArticleTable} $sDescJoin " .
+                $sSelect = "select {$sSelectFields}, {$sArticleTable}.oxtimestamp from {$sArticleTable} $sDescJoin " .
                            "where {$sArticleTable}.oxid in ( select {$sArticleTable}.oxid as id from {$sArticleTable}, {$sO2CView} as oxobject2category, {$sCatView} as oxcategories " .
                            "where (oxobject2category.oxcatnid=$sInitialSearchCatQuoted and oxobject2category.oxobjectid={$sArticleTable}.oxid) or (oxcategories.oxid=$sInitialSearchCatQuoted and {$sArticleTable}.oxprice >= oxcategories.oxpricefrom and
                             {$sArticleTable}.oxprice <= oxcategories.oxpriceto )) and ";

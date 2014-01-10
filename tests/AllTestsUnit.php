@@ -45,7 +45,7 @@ class AllTestsUnit extends PHPUnit_Framework_TestCase
      */
     public static function getTestFileFilter()
     {
-        $sTestFileNameEnd = '*Test.php';
+        $sTestFileNameEnd = '*[^8]Test.php';
         if ( self::isUtf8() ) {
             $sTestFileNameEnd = '*utf8Test.php';
             }

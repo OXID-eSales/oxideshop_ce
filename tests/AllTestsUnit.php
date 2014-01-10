@@ -29,16 +29,6 @@ class AllTestsUnit extends PHPUnit_Framework_TestCase
     protected static $_aTestSuites = array( 'unit', 'integration' );
 
     /**
-     * Returns whether to run UTF8 tests
-     *
-     * @return bool
-     */
-    public static function isUtf8()
-    {
-        return getenv('OXID_TEST_UTF8')? true : false;
-                }
-
-    /**
      * Returns test files filter
      *
      * @return string
@@ -46,21 +36,11 @@ class AllTestsUnit extends PHPUnit_Framework_TestCase
     public static function getTestFileFilter()
     {
         $sTestFileNameEnd = '*[^8]Test.php';
-        if ( self::isUtf8() ) {
+        if ( OXID_TEST_UTF8 ) {
             $sTestFileNameEnd = '*utf8Test.php';
             }
 
         return $sTestFileNameEnd;
-        }
-
-    /**
-     * Returns test files regEx filter
-     *
-     * @return string
-     */
-    public static function getTestFileRegExFilter()
-    {
-        return getenv("PREG_FILTER");
         }
 
     /**
@@ -100,7 +80,7 @@ class AllTestsUnit extends PHPUnit_Framework_TestCase
     {
         foreach ( $aTestFiles as $sFilename ) {
 
-            $sFilter = self::getTestFileRegExFilter();
+            $sFilter = PREG_FILTER;
             if ( !$sFilter || preg_match("&$sFilter&i", $sFilename) ) {
 
                         include_once $sFilename;
@@ -126,16 +106,16 @@ class AllTestsUnit extends PHPUnit_Framework_TestCase
      */
     protected static function _getTestDirectories()
     {
-        $aTestSuites = self::$_aTestSuites;
+        $aTestDirectories = self::$_aTestSuites;
 
-        if ( getenv('TEST_DIRS') ) {
-            $aTestSuites = array();
-            foreach ( explode(',', getenv('TEST_DIRS')) as $sTestSuiteParts ) {
-                $aTestSuites = array_merge( $aTestSuites, self::_getSuiteDirectories( $sTestSuiteParts ) );
+        if ( TEST_DIRS ) {
+            $aTestDirectories = array();
+            foreach ( explode(',', TEST_DIRS ) as $sTestSuiteParts ) {
+                $aTestDirectories = array_merge( $aTestDirectories, self::_getSuiteDirectories( $sTestSuiteParts ) );
             }
     }
 
-        return self::_getDirectoryTree( $aTestSuites );
+        return  array_merge( $aTestDirectories, self::_getDirectoryTree( $aTestDirectories ) );
     }
 
     /**

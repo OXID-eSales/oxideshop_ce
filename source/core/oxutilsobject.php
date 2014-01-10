@@ -265,7 +265,7 @@ class oxUtilsObject
 
         $oActionObject = $this->oxNew( 'oxarticle' );
 
-        // adding object prioperties
+        // adding object properties
         foreach ( $aProperties as $sPropertyName => $sPropertyVal ) {
             $oActionObject->$sPropertyName = $sPropertyVal;
         }
@@ -277,7 +277,7 @@ class oxUtilsObject
     }
 
     /**
-     * Resests instance cache
+     * Resets instance cache
      *
      * @param string $sClassName class name in the cache
      *

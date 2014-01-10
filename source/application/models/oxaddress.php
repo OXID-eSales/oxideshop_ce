@@ -146,6 +146,10 @@ class oxAddress extends oxBase
 
     /**
      * Get state title by id
+     *
+     * @param string $sId state ID
+     *
+     * @return string
      */
     public function getStateTitleById( $sId )
     {

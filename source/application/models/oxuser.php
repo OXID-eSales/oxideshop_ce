@@ -161,6 +161,23 @@ class oxUser extends oxBase
     protected $_oUserCountryTitle = null;
 
     /**
+     * @var oxState
+     */
+    protected $_oStateObject = null;
+
+    /**
+     * @return oxState
+     */
+    protected function _getStateObject()
+    {
+        if ( is_null( $this->_oStateObject ) ) {
+            $this->_oStateObject = oxNew( 'oxState' );
+        }
+
+        return $this->_oStateObject;
+    }
+
+    /**
      * Class constructor, initiates parent constructor (parent::oxBase()).
      *
      * @return null
@@ -2202,21 +2219,43 @@ class oxUser extends oxBase
     }
 
     /**
-     * Returns string representation of user state
+     * Return user state id
+     *
+     * @deprecated since next major version (2014-01-10); Naming changed use function getStateId()
      *
      * @return string
      */
     public function getState()
     {
+        return $this->getStateId();
+    }
+
+    /**
+     * Get state id for current user
+     *
+     * @return mixed
+     */
+    public function getStateId()
+    {
         return $this->oxuser__oxstateid->value;
     }
 
     /**
-     * Get state title
+     * Get state title by id
+     *
+     * @param string $sId state ID
+     *
+     * @return string
      */
-    public function getStateTitleById($sId)
+    public function getStateTitle( $sId = null )
     {
-        return $sId;
+        $oState = $this->_getStateObject();
+
+        if ( is_null( $sId ) ) {
+            $sId = $this->getStateId();
+        }
+
+        return $oState->getTitleById( $sId );
     }
 
     /**
@@ -2379,5 +2418,4 @@ class oxUser extends oxBase
     {
         return (bool) $this->getConfig()->getConfigParam('blShowNetPrice');
     }
-
 }

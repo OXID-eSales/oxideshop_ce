@@ -831,14 +831,12 @@ class oxModule extends oxSuperCfg
             $sModuleId = $this->getId();
         }
 
-        $oConfig    = $this->getConfig();
         $aTemplates = $this->getModuleTemplates();
         if ( is_array($aModuleTemplates) ) {
             $aTemplates[$sModuleId] = $aModuleTemplates;
         }
 
-        $oConfig->setConfigParam('aModuleTemplates', $aTemplates);
-        $oConfig->saveShopConfVar('aarr', 'aModuleTemplates', $aTemplates);
+        $this->_saveToConfig( 'aModuleTemplates', $aTemplates );
     }
 
     /**
@@ -855,14 +853,12 @@ class oxModule extends oxSuperCfg
             $sModuleId = $this->getId();
         }
 
-        $oConfig = $this->getConfig();
         $aVersions  = $this->getModuleVersions();
         if ( is_array($aVersions) ) {
             $aVersions[$sModuleId] = $sModuleVersion;
         }
 
-        $oConfig->setConfigParam('aModuleVersions', $aVersions);
-        $oConfig->saveShopConfVar('aarr', 'aModuleVersions', $aVersions);
+        $this->_saveToConfig( 'aModuleVersions', $aVersions );
     }
 
     /**
@@ -879,14 +875,12 @@ class oxModule extends oxSuperCfg
             $sModuleId = $this->getId();
         }
 
-        $oConfig = $this->getConfig();
         $aEvents  = $this->getModuleEvents();
         if ( is_array($aEvents) ) {
             $aEvents[$sModuleId] = $aModuleEvents;
         }
 
-        $oConfig->setConfigParam('aModuleEvents', $aEvents);
-        $oConfig->saveShopConfVar('aarr', 'aModuleEvents', $aEvents);
+        $this->_saveToConfig( 'aModuleEvents', $aEvents );
     }
 
     /**
@@ -903,14 +897,28 @@ class oxModule extends oxSuperCfg
             $sModuleId = $this->getId();
         }
 
-        $oConfig = $this->getConfig();
         $aFiles  = $this->getModuleFiles();
         if ( is_array($aModuleFiles) ) {
             $aFiles[$sModuleId] = array_change_key_case($aModuleFiles, CASE_LOWER);
         }
 
-        $oConfig->setConfigParam('aModuleFiles', $aFiles);
-        $oConfig->saveShopConfVar('aarr', 'aModuleFiles', $aFiles);
+        $this->_saveToConfig( 'aModuleFiles', $aFiles );
+    }
+
+    /**
+     * Save module parameters to shop config
+     *
+     * @param string $sVariableName config name
+     * @param string $sVariableValue config value
+     * @param string $sVariableType config type
+     *
+     * @return null
+     */
+    protected function _saveToConfig( $sVariableName, $sVariableValue, $sVariableType = 'aarr' )
+    {
+        $oConfig = $this->getConfig();
+        $oConfig->setConfigParam( $sVariableName, $sVariableValue );
+        $oConfig->saveShopConfVar( $sVariableType, $sVariableName, $sVariableValue );
     }
 
     /**
@@ -1076,14 +1084,12 @@ class oxModule extends oxSuperCfg
      */
     protected function _removeFromDisabledList()
     {
-        $oConfig = $this->getConfig();
         $aDisabledModules = $this->getDisabledModules();
         $sModuleId = $this->getId();
 
         if ( isset( $aDisabledModules ) && is_array( $aDisabledModules ) ) {
             $aDisabledModules = array_diff( $aDisabledModules, array($sModuleId) );
-            $oConfig->setConfigParam( 'aDisabledModules', $aDisabledModules );
-            $oConfig->saveShopConfVar( 'arr', 'aDisabledModules', $aDisabledModules );
+            $this->_saveToConfig( 'aDisabledModules', $aDisabledModules, 'arr' );
         }
     }
 
@@ -1092,7 +1098,6 @@ class oxModule extends oxSuperCfg
      */
     protected function _addExtensions()
     {
-        $oConfig = $this->getConfig();
         $aModules = $this->_removeNotUsedExtensions( $this->getModulesWithExtendedClass() );
 
         if ( $this->hasExtendClass() ) {
@@ -1101,8 +1106,8 @@ class oxModule extends oxSuperCfg
         }
 
             $aModules = $this->buildModuleChains( $aModules );
-            $oConfig->setConfigParam( 'aModules', $aModules );
-            $oConfig->saveShopConfVar( 'aarr', 'aModules', $aModules );
+
+        $this->_saveToConfig( 'aModules', $aModules );
         }
 
     /**
@@ -1110,7 +1115,6 @@ class oxModule extends oxSuperCfg
      */
     protected function _addToDisabledList( $sModuleId )
     {
-        $oConfig = $this->getConfig();
         $aDisabledModules = $this->getDisabledModules();
 
         if ( !is_array( $aDisabledModules ) ) {
@@ -1119,8 +1123,7 @@ class oxModule extends oxSuperCfg
         $aModules = array_merge( $aDisabledModules, array( $sModuleId ) );
         $aModules = array_unique( $aModules );
 
-        $oConfig->saveShopConfVar( 'arr', 'aDisabledModules', $aModules );
-        $oConfig->setConfigParam( 'aDisabledModules', $aModules );
+        $this->_saveToConfig( 'aDisabledModules', $aModules, 'arr' );
     }
 
     /**

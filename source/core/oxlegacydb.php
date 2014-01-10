@@ -17,7 +17,7 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   core
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  * @version   SVN: $Id: oxlegacydb.php 43410 2012-03-30 14:54:00Z linas.kukulskis $
  */
@@ -62,7 +62,7 @@ class oxLegacyDb extends oxSuperCfg
 
     }
 
-     /**
+    /**
      * Return connection to db
      *
      * @param bool $blType - connection type
@@ -78,9 +78,9 @@ class oxLegacyDb extends oxSuperCfg
     /**
      * Get value
      *
-     * @param string $sSql    Query
+     * @param string     $sSql    Query
      * @param array|bool $aParams Array of parameters
-     * @param bool   $blType  connection type
+     * @param bool       $blType  connection type
      *
      * @return string
      */
@@ -92,9 +92,9 @@ class oxLegacyDb extends oxSuperCfg
     /**
      * Get value
      *
-     * @param string $sSql    Query
+     * @param string     $sSql    Query
      * @param array|bool $aParams Array of parameters
-     * @param bool   $blType  connection type
+     * @param bool       $blType  connection type
      *
      * @return array
      */
@@ -106,9 +106,9 @@ class oxLegacyDb extends oxSuperCfg
     /**
      * Get value
      *
-     * @param string $sSql    Query
+     * @param string     $sSql    Query
      * @param array|bool $aParams Array of parameters
-     * @param bool   $blType  connection type
+     * @param bool       $blType  connection type
      *
      * @return array
      */
@@ -120,9 +120,9 @@ class oxLegacyDb extends oxSuperCfg
     /**
      * Get value
      *
-     * @param string $sSql    Query
+     * @param string     $sSql    Query
      * @param array|bool $aParams Array of parameters
-     * @param bool   $blType  connection type
+     * @param bool       $blType  connection type
      *
      * @return array
      */
@@ -135,9 +135,9 @@ class oxLegacyDb extends oxSuperCfg
     /**
      * Get value
      *
-     * @param string $sSql    Query
+     * @param string     $sSql    Query
      * @param array|bool $aParams Array of parameters
-     * @param bool   $blType  connection type
+     * @param bool       $blType  connection type
      *
      * @return object
      */
@@ -149,9 +149,9 @@ class oxLegacyDb extends oxSuperCfg
     /**
      * Get value
      *
-     * @param string $sSql    Query
+     * @param string     $sSql    Query
      * @param array|bool $aParams Array of parameters
-     * @param bool   $blType  connection type
+     * @param bool       $blType  connection type
      *
      * @return array
      */
@@ -163,9 +163,9 @@ class oxLegacyDb extends oxSuperCfg
     /**
      * Get column value
      *
-     * @param string $sSql    Query
+     * @param string     $sSql    Query
      * @param array|bool $aParams Array of parameters
-     * @param bool   $blType  connection type
+     * @param bool       $blType  connection type
      *
      * @return object
      */
@@ -177,11 +177,11 @@ class oxLegacyDb extends oxSuperCfg
     /**
      * Get array
      *
-     * @param string $sSql    Query
-     * @param int    $iRows   Rows
-     * @param int    $iOffset Offset
+     * @param string     $sSql    Query
+     * @param int        $iRows   Rows
+     * @param int        $iOffset Offset
      * @param array|bool $aParams Array of parameters
-     * @param bool   $blType  connection type
+     * @param bool       $blType  connection type
      *
      * @return object
      */
@@ -193,7 +193,7 @@ class oxLegacyDb extends oxSuperCfg
     /**
      * Execute query
      *
-     * @param string $sSql    Query
+     * @param string     $sSql    Query
      * @param array|bool $aParams Array of parameters
      *
      * @return object
@@ -206,7 +206,7 @@ class oxLegacyDb extends oxSuperCfg
     /**
      * Execute query
      *
-     * @param string $sSql    Query
+     * @param string     $sSql    Query
      * @param array|bool $aParams Array of parameters
      *
      * @return object

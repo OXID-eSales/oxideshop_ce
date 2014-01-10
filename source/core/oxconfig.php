@@ -17,7 +17,7 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   core
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
 
@@ -474,11 +474,11 @@ class oxConfig extends oxSuperCfg
             $this->getSession()->start();
 
 
-        $this->_loadVarsFromFile();
+            $this->_loadVarsFromFile();
 
-        //application initialization
-        $this->_oStart = new oxStart();
-        $this->_oStart->appInit();
+            //application initialization
+            $this->_oStart = new oxStart();
+            $this->_oStart->appInit();
 
         } catch ( oxConnectionException $oEx ) {
             return $this->_handleDbConnectionException( $oEx );

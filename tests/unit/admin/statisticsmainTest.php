@@ -17,7 +17,7 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   tests
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  * @version   SVN: $Id: dynscreenlistTest.php 25334 2010-01-22 07:14:37Z tomas $
  */

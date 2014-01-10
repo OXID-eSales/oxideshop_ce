@@ -18,7 +18,7 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   core
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
 
@@ -466,9 +466,9 @@ class oxInputValidator extends oxSuperCfg
                 if ( $blAllCreditCardInformationSet && $blCreditCardTypeExist ) {
                     $oCardValidator = oxNew( "oxccvalidator" );
                     $mxValidationResult = $oCardValidator->isValidCard(
-                        $aDynValue['kknumber'],
-                        $aDynValue['kktype'],
-                        $aDynValue['kkmonth'].substr( $aDynValue['kkyear'], 2, 2 )
+                                                    $aDynValue['kknumber'],
+                                                    $aDynValue['kktype'],
+                                                    $aDynValue['kkmonth'].substr( $aDynValue['kkyear'], 2, 2 )
                     );
                 }
                 break;
@@ -513,10 +513,10 @@ class oxInputValidator extends oxSuperCfg
         $oSepaValidator = oxNew( "oxSepaValidator" );
 
         if ( empty( $sBankCode ) || $oSepaValidator->isValidBIC( $sBankCode ) ) {
-        $mxValidationResult = true;
+            $mxValidationResult = true;
             if ( !$oSepaValidator->isValidIBAN( $sAccountNumber ) ) {
                 $mxValidationResult = self::INVALID_ACCOUNT_NUMBER;
-        }
+            }
         } else {
             $mxValidationResult = $this->_validateOldDebitInfo( $aDebitInformation );
         }
@@ -560,8 +560,8 @@ class oxInputValidator extends oxSuperCfg
 
         if ( $oStr->strlen( $aDebitInfo['lsktonr'] ) < 10 ) {
             $sNewNum = str_repeat(
-                    '0', 10 - $oStr->strlen( $aDebitInfo['lsktonr'] )
-                ) . $aDebitInfo['lsktonr'];
+                           '0', 10 - $oStr->strlen( $aDebitInfo['lsktonr'] )
+                       ) . $aDebitInfo['lsktonr'];
             $aDebitInfo['lsktonr'] = $sNewNum;
         }
 

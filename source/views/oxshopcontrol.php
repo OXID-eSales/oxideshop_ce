@@ -17,7 +17,7 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   views
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
 
@@ -75,10 +75,10 @@ class oxShopControl extends oxSuperCfg
     public function start()
     {
         try {
-        //perform tasks once per session
-        $this->_runOnce();
+            //perform tasks once per session
+            $this->_runOnce();
 
-        $sFunction = oxConfig::getParameter( 'fnc' );
+            $sFunction = oxConfig::getParameter( 'fnc' );
             $sClass = $this->_getControllerToLoad();
 
             $this->_process( $sClass, $sFunction );
@@ -86,7 +86,7 @@ class oxShopControl extends oxSuperCfg
             $this->_handleSystemException( $oEx );
         } catch ( oxCookieException $oEx ) {
             $this->_handleCookieException( $oEx );
-            }
+        }
         catch ( oxConnectionException $oEx) {
             $this->_handleDbConnectionException( $oEx );
         }

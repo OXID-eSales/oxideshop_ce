@@ -17,7 +17,7 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   tests
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
 
@@ -147,12 +147,12 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
     public function testValidatePaymentInputDataCCWrongCardType()
     {
         $aDynvalue = array( 'kktype'   => 'xxx',
-                            'kknumber' => 'xxx',
-                            'kkmonth'  => 'xxx',
-                            'kkyear'   => 'xxx',
-                            'kkname'   => 'xxx',
-                            'kkpruef'  => 'xxx'
-                          );
+            'kknumber' => 'xxx',
+            'kkmonth'  => 'xxx',
+            'kkyear'   => 'xxx',
+            'kkname'   => 'xxx',
+            'kkpruef'  => 'xxx'
+        );
         $oValidator = new oxInputValidator();
         $this->assertFalse( $oValidator->validatePaymentInputData( 'oxidcreditcard', $aDynvalue ) );
     }
@@ -166,12 +166,12 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
     public function testValidatePaymentInputDataCCAllInputIsFine()
     {
         $aDynvalue = array( 'kktype'   => 'vis',
-                            'kknumber' => '4111111111111111',
-                            'kkmonth'  => '01',
-                            'kkyear'   => date( 'Y' ) + 1,
-                            'kkname'   => 'Hans Mustermann',
-                            'kkpruef'  => '333'
-                          );
+            'kknumber' => '4111111111111111',
+            'kkmonth'  => '01',
+            'kkyear'   => date( 'Y' ) + 1,
+            'kkname'   => 'Hans Mustermann',
+            'kkpruef'  => '333'
+        );
 
         $oValidator = new oxInputValidator();
         $this->assertTrue( $oValidator->validatePaymentInputData( 'oxidcreditcard', $aDynvalue ) );
@@ -199,10 +199,10 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
     public function testValidatePaymentInputData_BankCodeCorrect8LengthAccountNumberCorrect_valid()
     {
         $aDynvalue = array( 'lsbankname'   => 'Bank name',
-                            'lsblz'        => '12345678',
-                            'lsktonr'      => '123456789',
-                            'lsktoinhaber' => 'Hans Mustermann'
-                          );
+            'lsblz'        => '12345678',
+            'lsktonr'      => '123456789',
+            'lsktoinhaber' => 'Hans Mustermann'
+        );
 
         $oValidator = new oxInputValidator();
         $this->assertTrue( $oValidator->validatePaymentInputData( 'oxiddebitnote', $aDynvalue ) );
@@ -217,9 +217,9 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
     {
         $aDynvalue = array( 'lsbankname'   => 'Bank name',
             'lsblz'        => '12345',
-                            'lsktonr'      => '123456789',
-                            'lsktoinhaber' => 'Hans Mustermann'
-                          );
+            'lsktonr'      => '123456789',
+            'lsktoinhaber' => 'Hans Mustermann'
+        );
 
 
         $oValidator = new oxInputValidator();
@@ -237,9 +237,9 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
         $iErr = -4;
         $aDynvalue = array( 'lsbankname'   => 'Bank name',
             'lsblz'        => '1234',
-                            'lsktonr'      => '123456789',
-                            'lsktoinhaber' => 'Hans Mustermann'
-                          );
+            'lsktonr'      => '123456789',
+            'lsktoinhaber' => 'Hans Mustermann'
+        );
 
 
         $oValidator = new oxInputValidator();
@@ -254,10 +254,10 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
     public function testValidatePaymentInputData_6CharBankCode_true()
     {
         $aDynvalue = array( 'lsbankname'   => 'Bank name',
-                            'lsblz'        => '123456',
-                            'lsktonr'      => '123456789',
-                            'lsktoinhaber' => 'Hans Mustermann'
-                          );
+            'lsblz'        => '123456',
+            'lsktonr'      => '123456789',
+            'lsktoinhaber' => 'Hans Mustermann'
+        );
 
 
         $oValidator = new oxInputValidator();
@@ -272,10 +272,10 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
     public function testValidatePaymentInputData_8CharBankCode_true()
     {
         $aDynvalue = array( 'lsbankname'   => 'Bank name',
-                            'lsblz'        => '12345678',
-                            'lsktonr'      => '123456789',
-                            'lsktoinhaber' => 'Hans Mustermann'
-                          );
+            'lsblz'        => '12345678',
+            'lsktonr'      => '123456789',
+            'lsktoinhaber' => 'Hans Mustermann'
+        );
 
 
         $oValidator = new oxInputValidator();
@@ -291,10 +291,10 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
     {
         $iErr = -4;
         $aDynvalue = array( 'lsbankname'   => 'Bank name',
-                            'lsblz'        => '123456789',
-                            'lsktonr'      => '123456789',
-                            'lsktoinhaber' => 'Hans Mustermann'
-                          );
+            'lsblz'        => '123456789',
+            'lsktonr'      => '123456789',
+            'lsktoinhaber' => 'Hans Mustermann'
+        );
 
         $oValidator = new oxInputValidator();
         $this->assertEquals( $iErr, $oValidator->validatePaymentInputData( 'oxiddebitnote', $aDynvalue ) );
@@ -406,10 +406,10 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
 
         $oValidator = $this->getMock('oxInputValidator', array('_addValidationError'));
         $oValidator->expects($this->once())->method('_addValidationError')
-                ->with(
-                        $this->equalTo('oxuser__oxustid'),
-                        $this->attributeEqualTo('message','VAT_MESSAGE_ID_NOT_VALID')
-                );
+            ->with(
+                $this->equalTo('oxuser__oxustid'),
+                $this->attributeEqualTo('message','VAT_MESSAGE_ID_NOT_VALID')
+            );
 
         $sForeignCountryId = "a7c40f6320aeb2ec2.72885259"; //Austria
 
@@ -477,13 +477,13 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
 
         $oValidator = $this->getMock('oxInputValidator', array('_addValidationError'));
         $oValidator->expects($this->once())->method('_addValidationError')
-                ->with(
-                        $this->equalTo('xxx'),
-                        $this->logicalAnd(
-                            $this->isInstanceOf('oxInputException'),
-                            $this->attributeEqualTo('message','EXCEPTION_INPUT_NOTALLFIELDS')
-                        )
-                );
+            ->with(
+                $this->equalTo('xxx'),
+                $this->logicalAnd(
+                    $this->isInstanceOf('oxInputException'),
+                    $this->attributeEqualTo('message','EXCEPTION_INPUT_NOTALLFIELDS')
+                )
+            );
 
         $oValidator->checkRequiredArrayFields( $oUser, 'xxx', array( 'aaa' => ' ' ) );
     }
@@ -513,12 +513,12 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
     {
 
         $aMustFillFields = array( 'oxuser__oxfname', 'oxuser__oxlname', 'oxuser__oxstreet',
-                                  'oxuser__oxstreetnr', 'oxuser__oxzip', 'oxuser__oxcity',
-                                  'oxuser__oxcountryid',
-                                  'oxaddress__oxfname', 'oxaddress__oxlname', 'oxaddress__oxstreet',
-                                  'oxaddress__oxstreetnr', 'oxaddress__oxzip', 'oxaddress__oxcity',
-                                  'oxaddress__oxcountryid'
-                                  );
+            'oxuser__oxstreetnr', 'oxuser__oxzip', 'oxuser__oxcity',
+            'oxuser__oxcountryid',
+            'oxaddress__oxfname', 'oxaddress__oxlname', 'oxaddress__oxstreet',
+            'oxaddress__oxstreetnr', 'oxaddress__oxzip', 'oxaddress__oxcity',
+            'oxaddress__oxcountryid'
+        );
 
         modConfig::getInstance()->setConfigParam( 'aMustFillFields', $aMustFillFields );
 
@@ -530,21 +530,21 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
 
         $oValidator = $this->getMock('oxInputValidator', array('_addValidationError'));
         $oValidator->expects($this->at(0))->method('_addValidationError')
-                ->with(
-                        $this->equalTo('oxuser__oxfname'),
-                        $this->logicalAnd(
-                            $this->isInstanceOf('oxInputException'),
-                            $this->attributeEqualTo('message','EXCEPTION_INPUT_NOTALLFIELDS')
-                        )
-                );
+            ->with(
+                $this->equalTo('oxuser__oxfname'),
+                $this->logicalAnd(
+                    $this->isInstanceOf('oxInputException'),
+                    $this->attributeEqualTo('message','EXCEPTION_INPUT_NOTALLFIELDS')
+                )
+            );
         $oValidator->expects($this->at(1))->method('_addValidationError')
-                ->with(
-                        $this->equalTo('oxuser__oxlname'),
-                        $this->logicalAnd(
-                            $this->isInstanceOf('oxInputException'),
-                            $this->attributeEqualTo('message','EXCEPTION_INPUT_NOTALLFIELDS')
-                        )
-                );
+            ->with(
+                $this->equalTo('oxuser__oxlname'),
+                $this->logicalAnd(
+                    $this->isInstanceOf('oxInputException'),
+                    $this->attributeEqualTo('message','EXCEPTION_INPUT_NOTALLFIELDS')
+                )
+            );
 
         $oValidator->checkRequiredFields( $oUser, $aInvAdress, $aDelAdress);
     }
@@ -599,13 +599,13 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
 
         $oValidator = $this->getMock('oxInputValidator', array('_addValidationError'));
         $oValidator->expects($this->once())->method('_addValidationError')
-                ->with(
-                        $this->equalTo('oxuser__oxpassword'),
-                        $this->logicalAnd(
-                            $this->isInstanceOf('oxInputException'),
-                            $this->attributeEqualTo('message','EXCEPTION_INPUT_EMPTYPASS')
-                        )
-                );
+            ->with(
+                $this->equalTo('oxuser__oxpassword'),
+                $this->logicalAnd(
+                    $this->isInstanceOf('oxInputException'),
+                    $this->attributeEqualTo('message','EXCEPTION_INPUT_EMPTYPASS')
+                )
+            );
 
         $oValidator->checkPassword( $oUser, '', '', true );
     }
@@ -623,13 +623,13 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
 
         $oValidator = $this->getMock('oxInputValidator', array('_addValidationError'));
         $oValidator->expects($this->once())->method('_addValidationError')
-                ->with(
-                        $this->equalTo('oxuser__oxpassword'),
-                        $this->logicalAnd(
-                            $this->isInstanceOf('oxInputException'),
-                            $this->attributeEqualTo('message','EXCEPTION_INPUT_PASSTOOSHORT')
-                        )
-                );
+            ->with(
+                $this->equalTo('oxuser__oxpassword'),
+                $this->logicalAnd(
+                    $this->isInstanceOf('oxInputException'),
+                    $this->attributeEqualTo('message','EXCEPTION_INPUT_PASSTOOSHORT')
+                )
+            );
 
         $oValidator->checkPassword( $oUser, 'xxx', '', true );
     }
@@ -647,13 +647,13 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
 
         $oValidator = $this->getMock('oxInputValidator', array('_addValidationError'));
         $oValidator->expects($this->once())->method('_addValidationError')
-                ->with(
-                        $this->equalTo('oxuser__oxpassword'),
-                        $this->logicalAnd(
-                            $this->isInstanceOf('oxUserException'),
-                            $this->attributeEqualTo('message','EXCEPTION_USER_PWDDONTMATCH')
-                        )
-                );
+            ->with(
+                $this->equalTo('oxuser__oxpassword'),
+                $this->logicalAnd(
+                    $this->isInstanceOf('oxUserException'),
+                    $this->attributeEqualTo('message','EXCEPTION_USER_PWDDONTMATCH')
+                )
+            );
 
         $oValidator->checkPassword( $oUser, 'xxxxxx', 'yyyyyy', $blCheckLenght = false  );
     }
@@ -671,13 +671,13 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
 
         $oValidator = $this->getMock('oxInputValidator', array('_addValidationError'));
         $oValidator->expects($this->once())->method('_addValidationError')
-                ->with(
-                        $this->equalTo('oxuser__oxusername'),
-                        $this->logicalAnd(
-                            $this->isInstanceOf('oxInputException'),
-                            $this->attributeEqualTo('message','EXCEPTION_INPUT_NOTALLFIELDS')
-                        )
-                );
+            ->with(
+                $this->equalTo('oxuser__oxusername'),
+                $this->logicalAnd(
+                    $this->isInstanceOf('oxInputException'),
+                    $this->attributeEqualTo('message','EXCEPTION_INPUT_NOTALLFIELDS')
+                )
+            );
 
         $oValidator->checkEmail( $oUser, '', 1 );
     }
@@ -697,13 +697,13 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
 
         $oValidator = $this->getMock('oxInputValidator', array('_addValidationError'));
         $oValidator->expects($this->once())->method('_addValidationError')
-                ->with(
-                        $this->equalTo('oxuser__oxusername'),
-                        $this->logicalAnd(
-                            $this->isInstanceOf('oxInputException'),
-                            $this->attributeEqualTo('message','EXCEPTION_INPUT_NOVALIDEMAIL')
-                        )
-                );
+            ->with(
+                $this->equalTo('oxuser__oxusername'),
+                $this->logicalAnd(
+                    $this->isInstanceOf('oxInputException'),
+                    $this->attributeEqualTo('message','EXCEPTION_INPUT_NOVALIDEMAIL')
+                )
+            );
 
         $oValidator->checkEmail( $oUser, 'a@a.a', 1 );
     }
@@ -730,13 +730,13 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
 
         $oValidator = $this->getMock('oxInputValidator', array('_addValidationError'));
         $oValidator->expects($this->once())->method('_addValidationError')
-                ->with(
-                        $this->equalTo('oxuser__oxusername'),
-                        $this->logicalAnd(
-                            $this->isInstanceOf('oxUserException'),
-                            $this->attributeEqualTo('message', $sMsg)
-                        )
-                );
+            ->with(
+                $this->equalTo('oxuser__oxusername'),
+                $this->logicalAnd(
+                    $this->isInstanceOf('oxUserException'),
+                    $this->attributeEqualTo('message', $sMsg)
+                )
+            );
 
         $oValidator->checkLogin( $oUser, $oUser->oxuser__oxusername->value, $aInvAdress );
     }
@@ -760,13 +760,13 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
 
         $oValidator = $this->getMock('oxInputValidator', array('_addValidationError'));
         $oValidator->expects($this->once())->method('_addValidationError')
-                ->with(
-                        $this->equalTo('oxuser__oxpassword'),
-                        $this->logicalAnd(
-                            $this->isInstanceOf('oxInputException'),
-                            $this->attributeEqualTo('message', 'EXCEPTION_INPUT_NOTALLFIELDS')
-                        )
-                );
+            ->with(
+                $this->equalTo('oxuser__oxpassword'),
+                $this->logicalAnd(
+                    $this->isInstanceOf('oxInputException'),
+                    $this->attributeEqualTo('message', 'EXCEPTION_INPUT_NOTALLFIELDS')
+                )
+            );
 
         $oValidator->checkLogin( $oUser, "test", $aInvAdress );
     }
@@ -790,13 +790,13 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
 
         $oValidator = $this->getMock('oxInputValidator', array('_addValidationError'));
         $oValidator->expects($this->once())->method('_addValidationError')
-                ->with(
-                        $this->equalTo('oxuser__oxpassword'),
-                        $this->logicalAnd(
-                            $this->isInstanceOf('oxUserException'),
-                            $this->attributeEqualTo('message', 'EXCEPTION_USER_PWDDONTMATCH')
-                        )
-                );
+            ->with(
+                $this->equalTo('oxuser__oxpassword'),
+                $this->logicalAnd(
+                    $this->isInstanceOf('oxUserException'),
+                    $this->attributeEqualTo('message', 'EXCEPTION_USER_PWDDONTMATCH')
+                )
+            );
 
         $oValidator->checkLogin( $oUser, '', $aInvAdress );
     }

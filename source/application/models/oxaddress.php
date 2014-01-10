@@ -16,10 +16,10 @@
  *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @package   core
+ * @package   models
  * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
- * @version   SVN: $Id: oxaddress.php 17768 2009-04-02 10:52:12Z tomas $
+ * @version   SVN: $Id:
  */
 
 /**

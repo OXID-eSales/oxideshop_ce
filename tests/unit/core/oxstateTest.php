@@ -28,20 +28,61 @@ class Unit_Core_oxstateTest extends OxidTestCase
 {
     public function testInit()
     {
-        $oSubj = new oxstate();
-        $oSubj->load('1');
-        $this->assertEquals('Alberta', $oSubj->oxstates__oxtitle->value);
+        $oState = new oxState();
+        $oState->load('1');
+        $this->assertEquals('Alberta', $oState->oxstates__oxtitle->value);
     }
 
     /**
-     * Tests state getter
-     *
-     * @return null;
+     * Tests state ID getter by provided code
      */
     public function testGetIdByCode()
     {
-        $oSubj = new oxState();
-        $this->assertEquals( '3', $oSubj->getIdByCode( 'MB', '8f241f11095649d18.02676059' ) );
+        $oState = new oxState();
+        $this->assertEquals( '3', $oState->getIdByCode( 'MB', '8f241f11095649d18.02676059' ) );
+    }
+
+    /**
+     * Data provider for testGetTitleById
+     *
+     * @return array
+     */
+    public function providerStateIDs()
+    {
+        $sMsgCorrect = 'State title is correct';
+        $sMsgEmptyString = 'Empty string is returned';
+
+        $iStateId = 19;
+        $sStateId = '15';
+
+        $sStateTitle = 'Kalifornien';
+        $sAltStateTitle = 'Alaska';
+
+        $sWrongId1 = null;
+        $sWrongId2 = '';
+        $sWrongId3 = 's4';
+
+        $sEmptyString = '';
+
+        return array(
+            /*     ID          expected         message         */
+            array( $iStateId,  $sStateTitle,    $sMsgCorrect    ),
+            array( $sStateId,  $sAltStateTitle, $sMsgCorrect    ),
+            array( $sWrongId1, $sEmptyString,   $sMsgEmptyString),
+            array( $sWrongId2, $sEmptyString,   $sMsgEmptyString),
+            array( $sWrongId3, $sEmptyString,   $sMsgEmptyString)
+        );
+    }
+
+    /**
+     * Testing getTitleById with various IDs passed
+     *
+     * @dataProvider providerStateIDs
+     */
+    public function testGetTitleById( $sId, $sExpected, $sMsg )
+    {
+        $oState = new oxState();
+        $this->assertEquals( $sExpected, $oState->getTitleById( $sId ), $sMsg );
     }
 
 }

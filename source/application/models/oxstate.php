@@ -16,19 +16,18 @@
  *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @package   core
+ * @package   models
  * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
- * @version   SVN: $Id: oxstate.php 24618 2009-12-14 09:44:19Z tomas $
+ * @version   SVN: $Id:
  */
 
 /**
  * State handler
- *
- * @package model
  */
 class oxState extends oxI18n
 {
+
     /**
      * Current class name
      *
@@ -42,7 +41,7 @@ class oxState extends oxI18n
     public function __construct()
     {
         parent::__construct();
-        $this->init("oxstates");
+        $this->init( "oxstates" );
     }
 
     /**
@@ -56,19 +55,28 @@ class oxState extends oxI18n
     public function getIdByCode( $sCode, $sCountryId )
     {
         $oDb = oxDb::getDb();
-        return $oDb->getOne( "select oxid from oxstates where oxisoalpha2 = ".$oDb->quote( $sCode )." AND oxcountryid = ".$oDb->quote( $sCountryId ));
+
+        return $oDb->getOne(
+            "SELECT oxid FROM oxstates WHERE oxisoalpha2 = " . $oDb->quote(
+                $sCode
+            ) . " AND oxcountryid = " . $oDb->quote( $sCountryId )
+        );
     }
 
     /**
      * Get state title by id
      *
-     * @param $iStateId
+     * @param integer|string $iStateId
      *
      * @return string
      */
-    public function getTitleById($iStateId)
+    public function getTitleById( $iStateId )
     {
-        return (string) $iStateId;
+        $oDb = oxDb::getDb();
+        $sQ = "SELECT oxtitle FROM " . getViewName( "oxstates" ) . " WHERE oxid = " . $oDb->quote( $iStateId );
+        $sStateTitle = $oDb->getOne( $sQ );
+
+        return (string) $sStateTitle;
     }
 
 }

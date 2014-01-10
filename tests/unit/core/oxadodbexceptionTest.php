@@ -24,7 +24,7 @@
 require_once realpath( "." ).'/unit/OxidTestCase.php';
 require_once realpath( "." ).'/unit/test_config.inc.php';
 
-class Unit_Core_oxadobbexceptionTest extends OxidTestCase
+class Unit_Core_oxadodbexceptionTest extends OxidTestCase
 {
     public function testConstructingOfMessage()
     {

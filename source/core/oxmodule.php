@@ -439,7 +439,7 @@ class oxModule extends oxSuperCfg
 
             $this->_addTemplateBlocks( $this->getInfo("blocks") );
 
-            // Register new module templates
+            // Register new module files
             $this->_addModuleFiles($this->getInfo("files") );
 
             // Register new module templates

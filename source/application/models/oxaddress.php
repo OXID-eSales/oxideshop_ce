@@ -24,8 +24,6 @@
 
 /**
  * Address handler
- *
- * @package model
  */
 class oxAddress extends oxBase
 {

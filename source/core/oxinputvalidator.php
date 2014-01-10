@@ -18,7 +18,7 @@
  *
  * @link      http://www.oxid-esales.com
  * @package   core
- * @copyright (C) OXID eSales AG 2003-2013
+ * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
 
@@ -496,23 +496,21 @@ class oxInputValidator extends oxSuperCfg
     protected function _validateDebitNote( $aDebitInformation )
     {
         $aDebitInformation = $this->_cleanDebitInformation( $aDebitInformation );
-
+        $sBankCode = $aDebitInformation['lsblz'];
+        $sAccountNumber = $aDebitInformation['lsktonr'];
         $oSepaValidator = oxNew( "oxSepaValidator" );
 
-        $mxValidationResult = true;
-
-        // Check BIC / IBAN
-        if ( $oSepaValidator->isValidIBAN( $aDebitInformation['lsktonr'] ) ) {
-            if ( !empty( $aDebitInformation['lsblz']) &&
-                 !$oSepaValidator->isValidBIC( $aDebitInformation['lsblz'] ) ) {
-
-                $mxValidationResult = self::INVALID_BANK_CODE;
+        if ( empty( $sBankCode ) || $oSepaValidator->isValidBIC( $sBankCode ) ) {
+            $mxValidationResult = true;
+            if ( !$oSepaValidator->isValidIBAN( $sAccountNumber ) ) {
+                $mxValidationResult = self::INVALID_ACCOUNT_NUMBER;
+            }
+        } else {
+            $mxValidationResult = self::INVALID_BANK_CODE;
+            if ( !oxRegistry::getConfig()->getConfigParam( 'blSkipDebitOldBankInfo' ) ) {
+                $mxValidationResult = $this->_validateOldDebitInfo( $aDebitInformation );
             }
         }
-        else {
-            $mxValidationResult = $this->_validateOldDebitInfo( $aDebitInformation );
-        }
-
 
         return $mxValidationResult;
     }

@@ -118,7 +118,7 @@
             [{$edit->oxuser__oxfname->value }] [{$edit->oxuser__oxlname->value }]<br>
             [{$edit->oxuser__oxcompany->value }]<br>
             [{$edit->oxuser__oxstreet->value }] [{$edit->oxuser__oxstreetnr->value }]<br>
-            [{$edit->getState()}]
+            [{$edit->getStateId()}]
             [{$edit->oxuser__oxzip->value }] [{$edit->oxuser__oxcity->value }]<br>
             [{$edit->oxuser__oxaddinfo->value }]<br>
             [{$edit->oxuser__oxcountry->value }]<br>

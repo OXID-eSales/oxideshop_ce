@@ -375,19 +375,59 @@ class Unit_Core_oxModuleTest extends OxidTestCase
         $this->assertFalse($oModule->isActive());
     }
 
+    public function providerIsActive_shopClassExtendedByMoreThanOneClass()
+    {
+        return array(
+            // Module active
+            array(
+                array(
+                    'oxtest1' =>  array(
+                        'module1/module1mytest0',
+                        'test1/__testmytest1',
+                        'test1/__testmytest2'
+                    )
+                ), array(
+                'id' => '__test',
+                'extend' => array(
+                    'oxtest1' => array(
+                        'test1/__testmytest1', 'test1/__testmytest2'
+                    )
+                )
+            ),
+                true
+            ),
+            // Module inactive
+            array(
+                array(
+                    'oxtest1' =>  array(
+                        'module1/module1mytest0',
+                    )
+                ), array(
+                'id' => '__test',
+                'extend' => array(
+                    'oxtest1' => array(
+                        'test1/__testmytest1', 'test1/__testmytest2'
+                    )
+                )
+            ),
+                false
+            ),
+        );
+    }
+
     /**
      * Test for bug #4424
      * Checks if possible to extend one shop class with more than one module classes.
+     *
+     * @dataProvider providerIsActive_shopClassExtendedByMoreThanOneClass
      */
-    public function testIsActive_shopClassExtendedByMoreThanOneClass_moduleActive()
+    public function testIsActive_shopClassExtendedByMoreThanOneClass( $aAlreadyActivatedModule, $aModuleToActivate, $blResult )
     {
-        $oModuleHandler = $this->getProxyClass( 'oxmodule') ;
-        $aModule  = array( 'id' => '__test', 'extend' => array( 'oxtest1' => array( 'test1/mytest1', 'test1/mytest2' ) ) );
+        $oModuleHandler = $this->getMock( 'oxModule', array( 'getModulesWithExtendedClass' ) );
+        $oModuleHandler->expects( $this->once() )->method( 'getModulesWithExtendedClass')->will( $this->returnValue( $aAlreadyActivatedModule ) );
+        $oModuleHandler->setModuleData( $aModuleToActivate );
 
-        $oModuleHandler->setNonPublicVar( '_aModule', $aModule );
-        $oModuleHandler->setNonPublicVar( '_blMetadata', true );
-
-        $this->assertTrue( $oModuleHandler->isActive(), 'Module extends shop class, so methods should return true.' );
+        $this->assertSame( $blResult, $oModuleHandler->isActive(), 'Module extends shop class, so methods should return true.' );
     }
 
     /**

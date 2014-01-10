@@ -322,16 +322,18 @@ class oxModule extends oxSuperCfg
             if ( $this->hasExtendClass() ) {
                 $aAddModules = $this->getExtensions();
                 $aInstalledModules = $this->getModulesWithExtendedClass();
-                $iClCount = count($aAddModules);
+                $iClCount = count( $aAddModules );
                 $iActive  = 0;
 
-                foreach ( $aAddModules as $sClass => $sModule ) {
-                    if ( is_array( $sModule ) ) {
-                        $aExtendedClasses = isset( $aInstalledModules[$sClass] ) ? $aInstalledModules[$sClass] : array();
-                        if ( count( array_diff( $aExtendedClasses, $sModule ) ) == 0 ) {
+                foreach ( $aAddModules as $sClass => $mModule ) {
+                    if ( is_array( $mModule ) ) {
+                        foreach ( $mModule as $sModule ) {
+                            if ( ( isset( $aInstalledModules[$sClass] ) && in_array( $sModule, $aInstalledModules[$sClass] ) ) ) {
                             $iActive++;
+                                break;
                         }
-                    } elseif ( ( isset( $aInstalledModules[$sClass] ) && in_array( $sModule, $aInstalledModules[$sClass] ) ) ) {
+                        }
+                    } elseif ( ( isset( $aInstalledModules[$sClass] ) && in_array( $mModule, $aInstalledModules[$sClass] ) ) ) {
                         $iActive++;
                     }
                 }

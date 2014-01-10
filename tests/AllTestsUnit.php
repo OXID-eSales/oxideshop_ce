@@ -131,6 +131,9 @@ class AllTestsUnit extends PHPUnit_Framework_TestCase
         list( $sSuiteKey, $sSuiteTests ) = explode(':', $sTestSuiteParts);
         if ( !empty( $sSuiteTests ) ) {
             foreach ( explode('%', $sSuiteTests) as $sSubDirectory ) {
+                if ( $sSubDirectory == "_root_") {
+                    $sSubDirectory = '';
+                }
                 $aDirectories[] = "$sSuiteKey/$sSubDirectory";
             }
         } else {

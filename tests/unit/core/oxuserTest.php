@@ -3292,25 +3292,6 @@ class Unit_Core_oxuserTest extends OxidTestCase
     }
 
     /**
-     * Test case for getting user's state title
-     */
-    public function testGetUserStateTitle()
-    {
-        $oUser = new oxUser();
-        $sStateId = '19';
-        $this->assertEquals( "Kalifornien", $oUser->getUserStateTitle( $sStateId ) );
-        $this->assertEquals(
-            $oUser->getUserStateTitle( $sStateId ),
-            oxDb::getDb()->getOne(
-                'select oxtitle' . oxRegistry::getLang()->getLanguageTag(
-                    null
-                ) . ' from oxstates where oxid = "' . $sStateId . '"'
-            ),
-            'User state title must be in correct language'
-        );
-    }
-
-    /**
      * oxuser::getUserCountry()
      */
     public function testGetUserCountryWithId()

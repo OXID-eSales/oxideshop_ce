@@ -299,22 +299,6 @@ class oxUser extends oxBase
     }
 
     /**
-     * Returns user state title according to passed id
-     *
-     * @param string $sStateId
-     *
-     * @return string
-     */
-    public function getUserStateTitle( $sStateId )
-    {
-        $oDb = oxDb::getDb();
-        $sQ = "select oxtitle from " . getViewName( "oxstates" ) . " where oxid = " . $oDb->quote( $sStateId );
-        $sStateTitle = $oDb->getOne( $sQ );
-
-        return $sStateTitle;
-    }
-
-    /**
      * Returns assigned user groups list object
      *
      * @param string $sOXID object ID (default is null)

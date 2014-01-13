@@ -319,10 +319,14 @@ class oxModule extends oxSuperCfg
         $blActive = false;
         $sId = $this->getId();
         if ( !is_null( $sId ) ) {
-            if ( !$this->_isInDisabledList( $sId ) ) {
             if ( $this->hasExtendClass() ) {
                     $blActive = $this->_isExtensionsActive();
+                if ( $blActive && $this->_isInDisabledList( $sId ) ) {
+                    $blActive = false;
+                }
             } else {
+                $aDisabledModules = $this->getDisabledModules();
+                if ( is_array( $aDisabledModules ) && !in_array( $sId, $aDisabledModules ) ) {
                     $blActive = true;
                 }
             }

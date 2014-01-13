@@ -72,7 +72,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
             $oModule = $this->getProxyClass( 'oxmodule' );
             $this->assertTrue( $oModule->load( 'invoicepdf' ) );
 
-            $this->assertEquals( $oModule->getNonPublicVar( "_aModule" ), $aModule );
+            $this->assertEquals( $aModule, $oModule->getNonPublicVar( "_aModule" ) );
     }
 
     /**
@@ -137,7 +137,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
             $this->assertTrue( $oModule->isLegacy() );
             $this->assertTrue( $oModule->isRegistered() );
 
-            $this->assertEquals( $oModule->getNonPublicVar( "_aModule" ), $aModule );
+            $this->assertEquals( $aModule, $oModule->getNonPublicVar( "_aModule" ) );
     }
 
     /**
@@ -159,7 +159,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
             $this->assertTrue( $oModule->isLegacy() );
             $this->assertFalse( $oModule->isRegistered() );
 
-            $this->assertEquals( $oModule->getNonPublicVar( "_aModule" ), $aModule );
+            $this->assertEquals( $aModule, $oModule->getNonPublicVar( "_aModule" ) );
     }
 
     /**

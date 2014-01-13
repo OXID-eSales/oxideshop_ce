@@ -549,7 +549,6 @@ $aLang = array(
 'TRUSTED_SHOPS_CUSTOMER_RATINGS'                              => 'Trusted Shops Kundenbewertung',
 'TRUSTED_SHOPS_IMGTITLE'                                      => 'Klicken Sie auf das Gütesiegel, um die Gültigkeit zu prüfen!',
 'TRUSTED_SHOPS_LINK'                                          => 'http://www.trustedshops.de/shopbetreiber/?shopsw=OXID&et_cid=14&et_lid=84',
-'TRUSTED_SHOPS_PROFILE_LINK'                                  => 'http://www.trustedshops.de/profil/',
 'TRUSTED_SHOPS_RATINGS'                                       => 'Trusted Shops Kundenbewertungen',
 'TRUSTED_SHOP_BUYER_PROTECTION'                               => 'Trusted Shops Käuferschutz',
 'TRUSTED_SHOP_PROTECTION_FROM'                                => 'Käuferschutz von',

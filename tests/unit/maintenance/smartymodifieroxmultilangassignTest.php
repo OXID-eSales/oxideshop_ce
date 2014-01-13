@@ -62,8 +62,8 @@ class Unit_Maintenance_smartyModifieroxmultilangassignTest extends OxidTestCase
         return array(
             array( 'MANUFACTURER_S', 0, 'Opel', '| Hersteller: Opel' ),
             array( 'MANUFACTURER_S', 1, 'Opel', 'Manufacturer: Opel' ),
-            array( 'EMAIL_INVITE_HTML_INVITETOSHOP', 0, array( 'Admin', 'OXID Shop' ), 'Eine Einladung von Admin OXID Shop zu besuchen.' ),
-            array( 'EMAIL_INVITE_HTML_INVITETOSHOP', 1, array( 'Admin', 'OXID Shop' ), 'An invitation from Admin to visit OXID Shop' )
+            array( 'INVITE_TO_SHOP', 0, array( 'Admin', 'OXID Shop' ), 'Eine Einladung von Admin OXID Shop zu besuchen.' ),
+            array( 'INVITE_TO_SHOP', 1, array( 'Admin', 'OXID Shop' ), 'An invitation from Admin to visit OXID Shop' )
         );
     }
 

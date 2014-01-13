@@ -32,7 +32,7 @@ require_once realpath( "." ).'/unit/OxidTestCase.php';
  *
  * Class oxTsRatingsTest
  */
-class oxTsRatingsTest extends OxidTestCase
+class Unit_Views_oxTsRatingsTest extends OxidTestCase
 {
 
     public function idProvider()

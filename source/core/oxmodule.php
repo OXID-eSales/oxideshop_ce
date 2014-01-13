@@ -318,35 +318,11 @@ class oxModule extends oxSuperCfg
     {
         $blActive = false;
         $sId = $this->getId();
-        if ( isset( $sId ) ) {
+        if ( !is_null( $sId ) ) {
+            if ( !$this->_isInDisabledList( $sId ) ) {
             if ( $this->hasExtendClass() ) {
-                $aAddModules = $this->getExtensions();
-                $aInstalledModules = $this->getModulesWithExtendedClass();
-                $iClCount = count( $aAddModules );
-                $iActive  = 0;
-
-                foreach ( $aAddModules as $sClass => $mModule ) {
-                    if ( is_array( $mModule ) ) {
-                        foreach ( $mModule as $sModule ) {
-                            if ( ( isset( $aInstalledModules[$sClass] ) && in_array( $sModule, $aInstalledModules[$sClass] ) ) ) {
-                            $iActive++;
-                                break;
-                        }
-                        }
-                    } elseif ( ( isset( $aInstalledModules[$sClass] ) && in_array( $mModule, $aInstalledModules[$sClass] ) ) ) {
-                        $iActive++;
-                    }
-                }
-                $blActive = $iClCount > 0 && $iActive == $iClCount;
-
-                $aDisabledModules = $this->getDisabledModules();
-                if ( $blActive && ( is_array( $aDisabledModules ) && in_array( $sId, $aDisabledModules ) ) ) {
-                    $blActive = false;
-                }
+                    $blActive = $this->_isExtensionsActive();
             } else {
-                //handling modules that does not extend any class
-                $aDisabledModules = $this->getDisabledModules();
-                if ( is_array( $aDisabledModules ) && !in_array( $sId, $aDisabledModules ) ) {
                     $blActive = true;
                 }
             }
@@ -357,7 +333,7 @@ class oxModule extends oxSuperCfg
 
 
     /**
-     * Check if extension das any extended classes
+     * Check if extension has any extended classes
      *
      * @deprecated since v5.1.2 (2013-12-10); Naming changed use function hasExtendClass().
      * @deprecated use together with hasMetadata if needed.
@@ -1198,5 +1174,84 @@ class oxModule extends oxSuperCfg
         }
 
         return $aInstalledExtensions;
+    }
+
+    /**
+     * Counts activated module extensions.
+     *
+     * @param $aModuleExtensions
+     * @param $aInstalledExtensions
+     * @return int
+     */
+    protected function _countActivatedExtensions( $aModuleExtensions, $aInstalledExtensions )
+    {
+        $iActive = 0;
+        foreach ( $aModuleExtensions as $sClass => $mExtension ) {
+            if ( is_array( $mExtension ) ) {
+                foreach ( $mExtension as $sExtension ) {
+                    if ( ( isset( $aInstalledExtensions[$sClass] ) && in_array( $sExtension, $aInstalledExtensions[$sClass] ) ) ) {
+                        $iActive++;
+                    }
+                }
+            } elseif ( ( isset( $aInstalledExtensions[$sClass] ) && in_array( $mExtension, $aInstalledExtensions[$sClass] ) ) ) {
+                $iActive++;
+            }
+        }
+
+        return $iActive;
+    }
+
+    /**
+     * Counts module extensions.
+     *
+     * @param $aModuleExtensions
+     * @return int
+     */
+    protected function _countExtensions( $aModuleExtensions )
+    {
+        $iCount = 0;
+        foreach ( $aModuleExtensions as $mExtensions ) {
+            if ( is_array( $mExtensions ) ) {
+                $iCount += count( $mExtensions );
+            } else {
+                $iCount++;
+            }
+        }
+
+        return $iCount;
+    }
+
+    /**
+     * Checks if module extensions count is the same as in activated extensions list.
+     *
+     * @return bool
+     */
+    protected function _isExtensionsActive()
+    {
+        $aModuleExtensions = $this->getExtensions();
+        $aInstalledExtensions = $this->getModulesWithExtendedClass();
+        $iModuleExtensionsCount = $this->_countExtensions( $aModuleExtensions );
+        $iActivatedModuleExtensionsCount = $this->_countActivatedExtensions( $aModuleExtensions, $aInstalledExtensions );
+        $blActive = $iModuleExtensionsCount > 0 && $iActivatedModuleExtensionsCount == $iModuleExtensionsCount;
+
+        return $blActive;
+    }
+
+    /**
+     * Checks if module is in disabled list.
+     *
+     * @param $sId
+     * @return bool
+     */
+    protected function _isInDisabledList( $sId )
+    {
+        $blInDisabledList = false;
+
+        $aDisabledModules = $this->getDisabledModules();
+        if ( is_array( $aDisabledModules ) && in_array( $sId, $aDisabledModules ) ) {
+            $blInDisabledList = true;
+        }
+
+        return $blInDisabledList;
     }
 }

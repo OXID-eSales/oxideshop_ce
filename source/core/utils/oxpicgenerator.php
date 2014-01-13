@@ -165,7 +165,7 @@ if ( !function_exists( "resizeGif" ) ) {
         $aResult = checkSizeAndCopy( $sSrc, $sTarget, $iWidth, $iHeight, $iOriginalWidth, $iOriginalHeigth );
         if ( is_array( $aResult ) ) {
             list( $iNewWidth, $iNewHeight ) = $aResult;
-            $hDestinationImage = imagecreate( $iNewWidth, $iNewHeight );
+            $hDestinationImage = $iGdVer == 1 ? imagecreate( $iNewWidth, $iNewHeight ) : imagecreatetruecolor( $iNewWidth, $iNewHeight );
             $hSourceImage = imagecreatefromgif( $sSrc );
             $iTransparentColor = imagecolorresolve( $hSourceImage, 255, 255, 255 );
             $iFillColor = imagecolorresolve( $hDestinationImage, 255, 255, 255 );

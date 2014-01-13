@@ -548,7 +548,7 @@ $aLang = array(
 'TRUSTED_SHOPS'                                               => 'Trusted Shops',
 'TRUSTED_SHOPS_CUSTOMER_RATINGS'                              => 'Trusted Shops customer reviews',
 'TRUSTED_SHOPS_IMGTITLE'                                      => 'Click the seal to check the validity!',
-'TRUSTED_SHOPS_LINK'                                          => 'http://www.trustedshops.com/merchants/membership.html?shopsw=OXID&amp;et_cid=14&amp;et_lid=84',
+'TRUSTED_SHOPS_LINK'                                          => 'https://www.trustedshops.co.uk/merchants/?shopsw=OXID&et_cid=14&et_lid=84',
 'TRUSTED_SHOPS_PROFILE_LINK'                                  => 'http://www.trustedshops.com/profile/',
 'TRUSTED_SHOPS_RATINGS'                                       => 'Trusted Shops Customer Ratings',
 'TRUSTED_SHOP_BUYER_PROTECTION'                               => 'Trusted Shops Buyer Protection',

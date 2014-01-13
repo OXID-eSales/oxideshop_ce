@@ -129,14 +129,14 @@ if ( !function_exists( "checkSizeAndCopy" ) ) {
      * @param int    $iWidth      preferred width
      * @param int    $iHeight     preferred height
      * @param int    $iOrigWidth  original width
-     * @param int    $iOrigHeigth preferred height
+     * @param int    $iOrigHeight preferred height
      *
      * @return mixed
      */
-    function checkSizeAndCopy( $sSrc, $sTarget, $iWidth, $iHeight, $iOrigWidth, $iOrigHeigth )
+    function checkSizeAndCopy( $sSrc, $sTarget, $iWidth, $iHeight, $iOrigWidth, $iOrigHeight )
     {
-        list( $iNewWidth, $iNewHeight ) = calcImageSize( $iWidth, $iHeight, $iOrigWidth, $iOrigHeigth );
-        if ( $iNewWidth == $iOrigWidth && $iNewHeight == $iOrigHeigth ) {
+        list( $iNewWidth, $iNewHeight ) = calcImageSize( $iWidth, $iHeight, $iOrigWidth, $iOrigHeight );
+        if ( $iNewWidth == $iOrigWidth && $iNewHeight == $iOrigHeight ) {
             return copy( $sSrc, $sTarget );
         } else {
             return array( $iNewWidth, $iNewHeight );
@@ -148,33 +148,33 @@ if ( !function_exists( "checkSizeAndCopy" ) ) {
 if ( !function_exists( "resizeGif" ) ) {
     /**
      * Creates resized GIF image. Returns path of new file if creation
-     * succeded. On error returns FALSE
+     * succeed. On error returns FALSE
      *
      * @param string $sSrc            GIF source
      * @param string $sTarget         new image location
      * @param int    $iWidth          new width
      * @param int    $iHeight         new height
      * @param int    $iOriginalWidth  original width
-     * @param int    $iOriginalHeigth original heigth
+     * @param int    $iOriginalHeight original height
      * @param int    $iGDVer          GD library version
      *
      * @return string | false
      */
-    function resizeGif( $sSrc, $sTarget, $iWidth, $iHeight, $iOriginalWidth, $iOriginalHeigth, $iGDVer )
+    function resizeGif( $sSrc, $sTarget, $iWidth, $iHeight, $iOriginalWidth, $iOriginalHeight, $iGDVer )
     {
-        $aResult = checkSizeAndCopy( $sSrc, $sTarget, $iWidth, $iHeight, $iOriginalWidth, $iOriginalHeigth );
+        $aResult = checkSizeAndCopy( $sSrc, $sTarget, $iWidth, $iHeight, $iOriginalWidth, $iOriginalHeight );
         if ( is_array( $aResult ) ) {
             list( $iNewWidth, $iNewHeight ) = $aResult;
-            $hDestinationImage = $iGdVer == 1 ? imagecreate( $iNewWidth, $iNewHeight ) : imagecreatetruecolor( $iNewWidth, $iNewHeight );
+            $hDestinationImage = ($iGDVer == 1) ? imagecreate( $iNewWidth, $iNewHeight ) : imagecreatetruecolor( $iNewWidth, $iNewHeight );
             $hSourceImage = imagecreatefromgif( $sSrc );
             $iTransparentColor = imagecolorresolve( $hSourceImage, 255, 255, 255 );
             $iFillColor = imagecolorresolve( $hDestinationImage, 255, 255, 255 );
             imagefill( $hDestinationImage, 0, 0, $iFillColor );
             imagecolortransparent( $hSourceImage, $iTransparentColor );
             if ( $iGDVer == 1 ) {
-                imagecopyresized( $hDestinationImage, $hSourceImage, 0, 0, 0, 0, $iNewWidth, $iNewHeight, $iOriginalWidth, $iOriginalHeigth );
+                imagecopyresized( $hDestinationImage, $hSourceImage, 0, 0, 0, 0, $iNewWidth, $iNewHeight, $iOriginalWidth, $iOriginalHeight );
             } else {
-                imagecopyresampled( $hDestinationImage, $hSourceImage, 0, 0, 0, 0, $iNewWidth, $iNewHeight, $iOriginalWidth, $iOriginalHeigth );
+                imagecopyresampled( $hDestinationImage, $hSourceImage, 0, 0, 0, 0, $iNewWidth, $iNewHeight, $iOriginalWidth, $iOriginalHeight );
             }
             imagecolortransparent( $hDestinationImage, $iFillColor );
             imagegif( $hDestinationImage, $sTarget );
@@ -237,7 +237,7 @@ if ( !function_exists( "resizePng" ) ) {
 if ( !function_exists( "resizeJpeg" ) ) {
     /**
      * Creates resized JPG image. Returns path of new file if creation
-     * succeded. On error returns FALSE
+     * succeed. On error returns FALSE
      *
      * @param string   $sSrc              JPG source
      * @param string   $sTarget           new image location

@@ -386,7 +386,8 @@ class Unit_Core_oxModuleTest extends OxidTestCase
                         'test1/__testmytest1',
                         'test1/__testmytest2'
                     )
-                ), array(
+                ),
+                array(
                 'id' => '__test',
                 'extend' => array(
                     'oxtest1' => array(
@@ -396,13 +397,35 @@ class Unit_Core_oxModuleTest extends OxidTestCase
             ),
                 true
             ),
-            // Module inactive
+            // Module inactive, because one of extensions missing in activated extensions array
+            array(
+                array(
+                    'oxtest1' =>  array(
+                        'module1/module1mytest0',
+                        'test1/__testmytest1',
+                        'test1/__testmytest2'
+                    )
+                ),
+                array(
+                    'id' => '__test',
+                    'extend' => array(
+                        'oxtest1' => array(
+                            'test1/__testmytest1',
+                            'test1/__testmytest2',
+                            'test1/__testmytest3'
+                        )
+                    )
+                ),
+                false
+            ),
+            // Module inactive, because there is no extension in activated extensions array
             array(
                 array(
                     'oxtest1' =>  array(
                         'module1/module1mytest0',
                     )
-                ), array(
+                ),
+                array(
                 'id' => '__test',
                 'extend' => array(
                     'oxtest1' => array(

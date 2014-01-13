@@ -26,7 +26,7 @@ require_once realpath( "." ).'/unit/OxidTestCase.php';
 require_once realpath( "." ).'/unit/test_config.inc.php';
 require_once oxConfig::getInstance()->getConfigParam( 'sShopDir' ).'core/smarty/plugins/modifier.oxmultilangassign.php';
 
-class smartyModifieroxmultilangassignTest extends OxidTestCase
+class Unit_Maintenance_smartyModifieroxmultilangassignTest extends OxidTestCase
 {
     /**
      * Provides data to testSimpleAssignments

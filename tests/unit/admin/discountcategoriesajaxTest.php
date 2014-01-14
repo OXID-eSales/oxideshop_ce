@@ -23,7 +23,7 @@
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
 require_once realpath( "." ).'/unit/test_config.inc.php';
-require_once getShopBasePath().'/admin/oxajax.php';
+
 
 /**
  * Tests for Discount_Categories_Ajax class

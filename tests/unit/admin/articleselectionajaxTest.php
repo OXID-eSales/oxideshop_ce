@@ -24,7 +24,6 @@
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
 require_once realpath( "." ).'/unit/test_config.inc.php';
-require_once getShopBasePath().'/admin/oxajax.php';
 
 /**
  * Tests for Article_Rights_Visible_Ajax class

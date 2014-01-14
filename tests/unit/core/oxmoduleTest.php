@@ -446,8 +446,8 @@ class Unit_Core_oxModuleTest extends OxidTestCase
      */
     public function testIsActive_shopClassExtendedByMoreThanOneClass( $aAlreadyActivatedModule, $aModuleToActivate, $blResult )
     {
-        $oModuleHandler = $this->getMock( 'oxModule', array( 'getModulesWithExtendedClass' ) );
-        $oModuleHandler->expects( $this->once() )->method( 'getModulesWithExtendedClass')->will( $this->returnValue( $aAlreadyActivatedModule ) );
+        $oModuleHandler = $this->getMock( 'oxModule', array( 'getAllModules' ) );
+        $oModuleHandler->expects( $this->once() )->method( 'getAllModules')->will( $this->returnValue( $aAlreadyActivatedModule ) );
         $oModuleHandler->setModuleData( $aModuleToActivate );
 
         $this->assertSame( $blResult, $oModuleHandler->isActive(), 'Module extends shop class, so methods should return true.' );
@@ -1384,12 +1384,12 @@ class Unit_Core_oxModuleTest extends OxidTestCase
         $oConfig = $this->getMock( 'oxConfig', array( 'saveShopConfVar' ) );
         $oConfig->expects( $this->at(0) )->method('saveShopConfVar')->with($this->equalTo("aarr"), $this->equalTo("aModules"), $this->equalTo($aSavedModule) );
 
-        $oModule = $this->getMock( 'oxModule', array('getConfig', 'getModulesWithExtendedClass', 'getModulePath', 'getId'), array(), "", false );
+        $oModule = $this->getMock( 'oxModule', array('getConfig', 'getAllModules', 'getModulePath', 'getId'), array(), "", false );
 
         $oModule->expects( $this->any() )->method('getConfig')->will( $this->returnValue( $oConfig ) );
         $oModule->expects( $this->any() )->method('getModulePath')->will( $this->returnValue( 'oe/invoicepdf/' ) );
         $oModule->expects( $this->any() )->method('getId')->will( $this->returnValue( 'invoicepdf' ) );
-        $oModule->expects( $this->any() )->method('getModulesWithExtendedClass')->will( $this->returnValue( $aModules ) );
+        $oModule->expects( $this->any() )->method('getAllModules')->will( $this->returnValue( $aModules ) );
         $oModule->setModuleData($aModule);
 
         $oModule->activate();
@@ -1420,12 +1420,12 @@ class Unit_Core_oxModuleTest extends OxidTestCase
         $oConfig = $this->getMock( 'oxConfig', array( 'saveShopConfVar' ) );
         $oConfig->expects( $this->at(0) )->method('saveShopConfVar')->with($this->equalTo("aarr"), $this->equalTo("aModules"), $this->equalTo($aSavedModule) );
 
-        $oModule = $this->getMock( 'oxModule', array('getConfig', 'getModulesWithExtendedClass', 'getModulePath', 'getId', 'hasMetadata'), array(), "", false );
+        $oModule = $this->getMock( 'oxModule', array('getConfig', 'getAllModules', 'getModulePath', 'getId', 'hasMetadata'), array(), "", false );
         $oModule->expects( $this->any() )->method('getConfig')->will( $this->returnValue( $oConfig ) );
         $oModule->expects( $this->any() )->method('getModulePath')->will( $this->returnValue( 'oe/invoicepdf/' ) );
         $oModule->expects( $this->any() )->method('getId')->will( $this->returnValue( 'invoicepdf' ) );
         $oModule->expects( $this->any() )->method('hasMetadata')->will( $this->returnValue( true ) );
-        $oModule->expects( $this->any() )->method('getModulesWithExtendedClass')->will( $this->returnValue( $aModules ) );
+        $oModule->expects( $this->any() )->method('getAllModules')->will( $this->returnValue( $aModules ) );
         $oModule->setModuleData( $aModule );
 
         $this->assertTrue( $oModule->activate() );
@@ -1463,11 +1463,11 @@ class Unit_Core_oxModuleTest extends OxidTestCase
         $oConfig = $this->getMock( 'oxConfig', array( 'saveShopConfVar' ) );
         $oConfig->expects( $this->at(0) )->method('saveShopConfVar')->with($this->equalTo("aarr"), $this->equalTo("aModules"), $this->equalTo($aSavedModule) );
 
-        $oModule = $this->getMock( 'oxModule', array('getConfig', 'getModulesWithExtendedClass', 'getModulePath', 'getId'), array(), "", false );
+        $oModule = $this->getMock( 'oxModule', array('getConfig', 'getAllModules', 'getModulePath', 'getId'), array(), "", false );
         $oModule->expects( $this->any() )->method('getConfig')->will( $this->returnValue( $oConfig ) );
         $oModule->expects( $this->any() )->method('getModulePath')->will( $this->returnValue( 'oe/invoicepdf/' ) );
         $oModule->expects( $this->any() )->method('getId')->will( $this->returnValue( 'invoicepdf' ) );
-        $oModule->expects( $this->any() )->method('getModulesWithExtendedClass')->will( $this->returnValue( $aModules ) );
+        $oModule->expects( $this->any() )->method('getAllModules')->will( $this->returnValue( $aModules ) );
         $oModule->setModuleData($aModule);
 
         $this->assertTrue( $oModule->activate() );
@@ -1511,11 +1511,11 @@ class Unit_Core_oxModuleTest extends OxidTestCase
         $oConfig = $this->getMock( 'oxConfig', array( 'saveShopConfVar' ) );
         $oConfig->expects( $this->at(0) )->method('saveShopConfVar')->with($this->equalTo("aarr"), $this->equalTo("aModules"), $this->equalTo($aSavedModule) );
 
-        $oModule = $this->getMock( 'oxModule', array('getConfig', 'getModulesWithExtendedClass', 'getModulePath', 'getId'), array(), "", false );
+        $oModule = $this->getMock( 'oxModule', array('getConfig', 'getAllModules', 'getModulePath', 'getId'), array(), "", false );
         $oModule->expects( $this->any() )->method('getConfig')->will( $this->returnValue( $oConfig ) );
         $oModule->expects( $this->any() )->method('getModulePath')->will( $this->returnValue( 'oe/invoicepdf/' ) );
         $oModule->expects( $this->any() )->method('getId')->will( $this->returnValue( 'invoicepdf' ) );
-        $oModule->expects( $this->any() )->method('getModulesWithExtendedClass')->will( $this->returnValue( $aModules ) );
+        $oModule->expects( $this->any() )->method('getAllModules')->will( $this->returnValue( $aModules ) );
         $oModule->setModuleData($aModule);
 
         $this->assertTrue( $oModule->activate() );

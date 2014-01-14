@@ -184,7 +184,7 @@ class oxModule extends oxSuperCfg
         }
 
         if ( file_exists( $sModulePath ) && is_readable( $sModulePath ) ) {
-            $aModules = $this->getModulesWithExtendedClass();
+            $aModules = $this->getAllModules();
 
             $this->_aModule = array();
             $this->_aModule['id'] = $sModuleId;
@@ -660,23 +660,11 @@ class oxModule extends oxSuperCfg
     /**
      * Get parsed modules
      *
-     * @deprecated since v5.1.2 (2013-12-10); Naming changed use function getModulesWithExtendedClass().
-     *
      * @return array
      */
     public function getAllModules()
     {
-        return $this->getModulesWithExtendedClass();
-    }
-
-    /**
-     * Get parsed modules
-     *
-     * @return array
-     */
-    public function getModulesWithExtendedClass()
-    {
-        return $this->getConfig()->getModulesWithExtendedClass();
+        return $this->getConfig()->getAllModules();
     }
 
     /**
@@ -1075,7 +1063,7 @@ class oxModule extends oxSuperCfg
     protected function _addExtensions()
     {
         $oConfig = $this->getConfig();
-        $aModules = $this->_removeNotUsedExtensions( $this->getModulesWithExtendedClass() );
+        $aModules = $this->_removeNotUsedExtensions( $this->getAllModules() );
 
         if ( $this->hasExtendClass() ) {
             $aAddModules  = $this->getExtensions();
@@ -1230,7 +1218,7 @@ class oxModule extends oxSuperCfg
     protected function _isExtensionsActive()
     {
         $aModuleExtensions = $this->getExtensions();
-        $aInstalledExtensions = $this->getModulesWithExtendedClass();
+        $aInstalledExtensions = $this->getAllModules();
         $iModuleExtensionsCount = $this->_countExtensions( $aModuleExtensions );
         $iActivatedModuleExtensionsCount = $this->_countActivatedExtensions( $aModuleExtensions, $aInstalledExtensions );
         $blActive = $iModuleExtensionsCount > 0 && $iActivatedModuleExtensionsCount == $iModuleExtensionsCount;

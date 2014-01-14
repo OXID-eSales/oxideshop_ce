@@ -24,9 +24,6 @@
 require_once realpath( "." ).'/unit/OxidTestCase.php';
 require_once realpath( "." ).'/unit/test_config.inc.php';
 
-if ( !defined( 'OX_IS_ADMIN' ) ) {
-    define( 'OX_IS_ADMIN', false );
-}
 
 
 /**
@@ -191,6 +188,10 @@ class Unit_Core_oxArticleTest extends OxidTestCase
      */
     protected function setUp()
     {
+        if ( !defined( 'OX_IS_ADMIN' ) ) {
+            define( 'OX_IS_ADMIN', false );
+        }
+
         parent::setUp();
 
         $this->cleanUpTable( 'oxobject2category' );

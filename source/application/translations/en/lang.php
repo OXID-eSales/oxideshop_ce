@@ -575,6 +575,7 @@ $aLang = array(
 'VALID_UNTIL'                                                 => 'Valid until',
 'VAT'                                                         => 'VAT',
 'VAT_ID_NUMBER'                                               => 'VAT ID No.',
+'VAT_MESSAGE_ID_NOT_VALID'                                    => "VAT ID is invalid",
 'VENDOR'                                                      => 'Vendor',
 'VENDOR_S'                                                    => 'Vendor: %s',
 'VERIFICATION_CODE'                                           => 'Verification code',

@@ -164,11 +164,11 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
     }
 
     /**
-     * oxmodulelist::getModulesWithExtendedClass() test case
+     * oxModuleList::getAllModules() test case
      *
      * @return null
      */
-    public function testgetModulesWithExtendedClass()
+    public function testGetAllModules()
     {
         $aModules = array(
             'oxorder'  => 'testExt1/module1&testExt2/module1',
@@ -183,11 +183,11 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
         $oModuleList = $this->getProxyClass('oxmodulelist');
         modConfig::getInstance()->setConfigParam( "aModules", $aModules );
 
-        $this->assertEquals( $aResult, $oModuleList->getModulesWithExtendedClass() );
+        $this->assertEquals( $aResult, $oModuleList->getAllModules() );
     }
 
     /**
-     * oxmodulelist::extractModulePaths() test case
+     * oxModuleList::extractModulePaths() test case
      *
      * @return null
      */
@@ -452,9 +452,9 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
         $oConfig = $this->getMock( "oxConfig", array( "saveShopConfVar" ) );
         $oConfig->expects($this->once())->method('saveShopConfVar')->with( $this->equalTo( 'aarr' ), $this->equalTo( 'aModules' ), $this->equalTo( $aResult ) );
 
-        $oModuleList = $this->getMock( 'oxmodulelist', array('getConfig', 'getModulesWithExtendedClass') );
+        $oModuleList = $this->getMock( 'oxmodulelist', array('getConfig', 'getAllModules') );
         $oModuleList->expects($this->once())->method('getConfig')->will( $this->returnValue($oConfig) );
-        $oModuleList->expects($this->once())->method('getModulesWithExtendedClass')->will( $this->returnValue($aModules) );
+        $oModuleList->expects($this->once())->method('getAllModules')->will( $this->returnValue($aModules) );
 
 
         $oModuleList->_removeFromModulesArray( $aDeletedExt );

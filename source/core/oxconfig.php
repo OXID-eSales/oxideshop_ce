@@ -2153,21 +2153,9 @@ class oxConfig extends oxSuperCfg
     /**
      * Get parsed modules
      *
-     * @deprecated since v5.0.11 (2014-1-8); Naming changed use function getModulesWithExtendedClass().
-     *
      * @return array
      */
     public function getAllModules()
-    {
-        return $this->getModulesWithExtendedClass();
-    }
-
-    /**
-     * Get parsed modules
-     *
-     * @return array
-     */
-    public function getModulesWithExtendedClass()
     {
         return $this->parseModuleChains($this->getConfigParam('aModules'));
     }

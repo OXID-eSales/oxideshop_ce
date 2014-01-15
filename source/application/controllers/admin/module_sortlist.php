@@ -42,7 +42,7 @@ class Module_SortList extends oxAdminDetails
 
         $oModuleList = oxNew( "oxModuleList" );
 
-        $this->_aViewData["aExtClasses"] = $this->getConfig()->getModulesWithExtendedClass();
+        $this->_aViewData["aExtClasses"] = $this->getConfig()->getAllModules();
         $this->_aViewData["aDisabledModules"] = $oModuleList->getDisabledModuleClasses();
 
         // checking if there are any deleted extensions

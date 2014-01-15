@@ -80,6 +80,9 @@ class Unit_Core_oxutilsobjectTest extends OxidTestCase
     {
         oxRemClassModule('modOxUtilsObject_oxUtilsObject');
 
+        $oConfigFile = new OxConfigFile( OX_BASE_PATH . "config.inc.php" );
+        OxRegistry::set( "OxConfigFile", $oConfigFile );
+
 
         $oArticle = new oxarticle();
         $oArticle->delete( 'testArticle' );

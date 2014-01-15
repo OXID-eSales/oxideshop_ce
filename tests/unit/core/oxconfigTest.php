@@ -313,10 +313,10 @@ class Unit_Core_oxconfigTest extends OxidTestCase
      */
     public function testInit_noConnection()
     {
-        $this->setExpectedException( 'oxConnectionException' );
+        $this->setExpectedException( 'oxAdoDbException' );
 
         $oConfig = $this->getMock( "oxconfig", array( "_loadVarsFromDb" ) );
-        $oEx = new oxConnectionException();
+        $oEx = new oxAdoDbException("MySQL", "SELECT", 1, "", "", "", new StdClass() );
         $oConfig->expects( $this->once() )->method( '_loadVarsFromDb')->will( $this->throwException( $oEx ) );
 
         $oConfig->init();

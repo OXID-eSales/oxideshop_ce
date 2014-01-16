@@ -624,5 +624,5 @@ $aLang =  array(
 'HELP_REVERSE_PROXY_GET_FRONTEND'             => 'Überprüft, ob der Reverse Proxy für das Frontend verfügbar ist. Geprüft wird der Header der Startseite des Shops.',
 'HELP_REVERSE_PROXY_GET_BACKEND'              => 'Der Administrationsbereich wird ohne Reverse Proxy angezeigt. Varnish Header konnte nicht empfangen werden.',
 
-'HELP_SHOP_CONFIG_DEBIT_OLD_BANK_INFORMATION_NOT_ALLOWED' => '[TR]If checked allows only SEPA type of bank debit information during checkout.',
+'HELP_SHOP_CONFIG_DEBIT_OLD_BANK_INFORMATION_NOT_ALLOWED' => 'Im Bestellprozess können nur IBAN und BIC angegeben werden. Die Eingabe von Kontonummer und BLZ ist nur möglich, wenn das Kontrollkästchen nicht aktiviert ist.',
 );

@@ -1248,7 +1248,7 @@ $aLang = array(
 'SHOP_CONFIG_SHOWTAGS'                                     => 'Tags im eShop anzeigen',
 'SHOP_CONFIG_DOWNLOADS'                                    => 'Download-Artikel erlauben',
 'SHOP_CONFIG_DOWNLOADS_PATH'                               => 'Pfad zu den Dateien für Download-Artikel',
-'SHOP_CONFIG_DEBIT_OLD_BANK_INFORMATION_NOT_ALLOWED'       => '[TR]Disable acceptance of non SEPA bank information',
+'SHOP_CONFIG_DEBIT_OLD_BANK_INFORMATION_NOT_ALLOWED'       => 'Use IBAN/BIC only',
 'SHOP_SYSTEM_ATTRIBUTESPERCENT'                            => 'Prozentsatz gleicher Attribute, damit Artikel ?hnlich sind',
 'SHOP_SYSTEM_DEFAULTIMAGEQUALITY'                          => 'Bildqualität - von 0 (schlechteste Qualität, kleine Dateigröße) bis 100 (beste Qualität, große Dateigröße)',
 'SHOP_SYSTEM_DENIEDDYNGROUPS'                              => 'Benutzergruppen, die von dynamischer Benutzergruppen-Zuordnung via URL-Parameter "dgr" ausgeschlossen sind',
@@ -1868,7 +1868,7 @@ $aLang = array(
 'SHOP_OPTIONS_GROUP_INVITATIONS'                           => 'Einladungen',
 'SHOP_OPTIONS_GROUP_FACEBOOK'                              => 'Facebook',
 'SHOP_OPTIONS_GROUP_SHOP_DOWNLOADABLEARTICLES'             => 'Download-Artikel',
-'SHOP_OPTIONS_BANK_INFORMATION'                            => '[TR]Bank information',
+'SHOP_OPTIONS_BANK_INFORMATION'                            => 'Bankinformationen (SEPA)',
 
 
 

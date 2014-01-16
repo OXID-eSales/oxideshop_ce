@@ -41,6 +41,9 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
 
         $oArt = oxNew( 'oxarticle' );
         $oArt->delete('_testArtId2');
+
+        $myDB = oxDb::getDB();
+        $myDB->execute( 'delete from oxobject2selectlist' );
         parent::tearDown();
     }
 

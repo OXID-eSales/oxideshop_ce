@@ -68,7 +68,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     protected $_blCalcPrice    = true;
 
     /**
-     * Article oxprice object.
+     * Article oxPrice object.
      * @var oxPrice
      */
     protected $_oPrice      = null;
@@ -2152,6 +2152,13 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      */
     public function save()
     {
+        $sParent = $this->getParentArticle();
+        if( $sParent ) {
+            foreach( $this->_aCopyParentField as $sField ){
+                $this->$sField = new oxField ( $sParent->$sField->value );
+            }
+        }
+
         if ( ( $blRet = parent::save() ) ) {
             // saving long description
             $this->_saveArtLongDesc();
@@ -2313,6 +2320,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
         $sId = ( $sParentID ) ? $sParentID : $sOXID;
         $this->_setVarMinMaxPrice( $sId );
+
+        $this->_updateParentDependFields();
 
         // resetting articles count cache if stock has changed and some
         // articles goes offline (M:1448)
@@ -3747,7 +3756,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             }
 
             //COPY THE VALUE
-            if ($this->_isFieldEmpty($sCopyFieldName) || in_array( $sCopyFieldName, $this->_aCopyParentField ) ) {
+            if ($this->_isFieldEmpty($sCopyFieldName) /*|| in_array( $sCopyFieldName, $this->_aCopyParentField )*/ ) {
                 $this->$sCopyFieldName = clone $oParentArticle->$sCopyFieldName;
             }
         }
@@ -5130,4 +5139,18 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         return $this->oxarticles__oxweight->value;
     }
 
+    protected function _updateParentDependFields()
+    {
+        $oDb = oxDb::getDb();
+
+        foreach( $this->_aCopyParentField as $sField ) {
+            $sSqlSets[] = '`' . str_replace( 'oxarticles__', '', $sField )  . '` = ' . $this->$sField->value;
+        }
+
+        $sSql = "UPDATE `oxarticles` SET ";
+        $sSql .= implode(', ', $sSqlSets) . '';
+        $sSql .= " WHERE `oxparentid` = " . $oDb->quote( $this->getId() );
+
+        return $oDb->execute( $sSql );
+    }
 }

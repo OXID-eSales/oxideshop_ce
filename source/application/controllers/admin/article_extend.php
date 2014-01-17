@@ -77,8 +77,6 @@ class Article_Extend extends oxAdminDetails
             if ( $oArticle->oxarticles__oxparentid->value) {
                 $oParentArticle = oxNew( 'oxarticle' );
                 $oParentArticle->load( $oArticle->oxarticles__oxparentid->value);
-                $oArticle->oxarticles__oxnonmaterial = new oxField( $oParentArticle->oxarticles__oxnonmaterial->value );
-                $oArticle->oxarticles__oxfreeshipping = new oxField( $oParentArticle->oxarticles__oxfreeshipping->value );
                 $this->_aViewData["parentarticle"] = $oParentArticle;
                 $this->_aViewData["oxparentid"]    = $oArticle->oxarticles__oxparentid->value;
             }

@@ -270,7 +270,7 @@ class Unit_Admin_ArticleExtendTest extends OxidTestCase
      */
     public function testGetUnitsArray()
     {
-        $aArray = oxLang::getInstance()->getSimilarByKey( "_UNIT_", 0, false );
+        $aArray = oxRegistry::getLang()->getSimilarByKey( "_UNIT_", 0, false );
         $oView = new Article_Extend();
 
         $this->assertEquals( $aArray, $oView->getUnitsArray() );

@@ -38,8 +38,8 @@ class Article_Extend extends oxAdminDetails
     protected $_aUnitsArray = null;
 
     /**
-     * Collects available article axtended parameters, passes them to
-     * Smarty engine and returns tamplate file name "article_extend.tpl".
+     * Collects available article extended parameters, passes them to
+     * Smarty engine and returns template file name "article_extend.tpl".
      *
      * @return string
      */
@@ -82,8 +82,6 @@ class Article_Extend extends oxAdminDetails
                 $this->_aViewData["parentarticle"] = $oParentArticle;
                 $this->_aViewData["oxparentid"]    = $oArticle->oxarticles__oxparentid->value;
             }
-
-            $sO2CView = getViewName('oxobject2category');
         }
 
 
@@ -108,7 +106,7 @@ class Article_Extend extends oxAdminDetails
             $this->_aViewData['bundle_title'] = $sArtTitle;
 
 
-        $iAoc = oxConfig::getParameter("aoc");
+        $iAoc = $this->getConfig()->getRequestParameter("aoc");
         if ( $iAoc == 1 ) {
             $oArticleExtendAjax = oxNew( 'article_extend_ajax' );
             $this->_aViewData['oxajax'] = $oArticleExtendAjax->getColumns();
@@ -150,7 +148,7 @@ class Article_Extend extends oxAdminDetails
         }
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval");
+        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval" );
         // checkbox handling
         if ( !isset( $aParams['oxarticles__oxissearch'])) {
             $aParams['oxarticles__oxissearch'] = 0;
@@ -160,7 +158,7 @@ class Article_Extend extends oxAdminDetails
         }
 
         // new way of handling bundled articles
-        //#1517C - remove posibility to add Bundled Product
+        //#1517C - remove possibility to add Bundled Product
         //$this->setBundleId($aParams, $soxId);
 
         // default values
@@ -170,11 +168,9 @@ class Article_Extend extends oxAdminDetails
         $oArticle->loadInLang( $this->_iEditLang, $soxId);
 
         if ( $aParams['oxarticles__oxtprice'] != $oArticle->oxarticles__oxtprice->value &&  $aParams['oxarticles__oxtprice'] && $aParams['oxarticles__oxtprice'] <= $oArticle->oxarticles__oxprice->value) {
-            //$aParams['oxarticles__oxtprice'] = $oArticle->oxarticles__oxtprice->value;
             $this->_aViewData["errorsavingtprice"] = 1;
         }
 
-        //$aParams = $oArticle->ConvertNameArray2Idx( $aParams);
         $oArticle->setLanguage(0);
         $oArticle->assign( $aParams);
         $oArticle->setLanguage($this->_iEditLang);
@@ -182,8 +178,8 @@ class Article_Extend extends oxAdminDetails
         $oArticle->save();
 
         //saving media file
-        $sMediaUrl  = oxConfig::getParameter( "mediaUrl");
-        $sMediaDesc = oxConfig::getParameter( "mediaDesc");
+        $sMediaUrl  = $this->getConfig()->getRequestParameter( "mediaUrl" );
+        $sMediaDesc = $this->getConfig()->getRequestParameter( "mediaDesc");
 
         if ( ( $sMediaUrl && $sMediaUrl != 'http://' ) || $aMediaFile['name'] || $sMediaDesc ) {
 
@@ -228,7 +224,7 @@ class Article_Extend extends oxAdminDetails
     public function deletemedia()
     {
         $soxId = $this->getEditObjectId();
-        $sMediaId = oxConfig::getParameter( "mediaid");
+        $sMediaId = $this->getConfig()->getRequestParameter( "mediaid" );
         if ($sMediaId && $soxId) {
             $oMediaUrl = oxNew("oxMediaUrl");
             $oMediaUrl->load($sMediaId);
@@ -240,7 +236,7 @@ class Article_Extend extends oxAdminDetails
      * Adds default values for extended article parameters. Returns modified
      * parameters array.
      *
-     * @param array $aParams Article marameters array
+     * @param array $aParams Article parameters array
      *
      * @return array
      */
@@ -258,10 +254,10 @@ class Article_Extend extends oxAdminDetails
      */
     public function updateMedia()
     {
-        $aMediaUrls = oxConfig::getParameter( 'aMediaUrls' );
+        $aMediaUrls = $this->getConfig()->getRequestParameter( 'aMediaUrls' );
         if ( is_array( $aMediaUrls ) ) {
             foreach ( $aMediaUrls as $sMediaId => $aMediaParams ) {
-                $oMedia = oxNew("oxMediaUrl");
+                $oMedia = oxNew( "oxMediaUrl" );
                 if ( $oMedia->load( $sMediaId ) ) {
                     $oMedia->setLanguage(0);
                     $oMedia->assign( $aMediaParams );

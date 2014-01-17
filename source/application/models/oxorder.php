@@ -350,13 +350,13 @@ class oxOrder extends oxBase
     /**
      * Order article list setter
      *
-     * @param object $aOrderArticleList order article list
+     * @param oxOrderArticleList $oOrderArticleList
      *
      * @return null
      */
-    public function setOrderArticleList( $aOrderArticleList )
+    public function setOrderArticleList( $oOrderArticleList )
     {
-        $this->_oArticles = $aOrderArticleList;
+        $this->_oArticles = $oOrderArticleList;
     }
 
     /**

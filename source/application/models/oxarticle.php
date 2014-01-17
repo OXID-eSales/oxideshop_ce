@@ -68,7 +68,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     protected $_blCalcPrice    = true;
 
     /**
-     * Article oxprice object.
+     * Article oxPrice object.
      * @var oxPrice
      */
     protected $_oPrice      = null;
@@ -2138,6 +2138,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      */
     public function save()
     {
+        $this->_assignParentDependFields();
+
         if ( ( $blRet = parent::save() ) ) {
             // saving long description
             $this->_saveArtLongDesc();
@@ -2300,6 +2302,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         $sId = ( $sParentID ) ? $sParentID : $sOXID;
         $this->_setVarMinMaxPrice( $sId );
 
+        $this->_updateParentDependFields();
+
         // resetting articles count cache if stock has changed and some
         // articles goes offline (M:1448)
         if ( $sAction === ACTION_UPDATE_STOCK ) {
@@ -2348,7 +2352,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             $iOnStock   = $rs->fields['oxstock'] - $dArtStockAmount;
             $iStockFlag = $rs->fields['oxstockflag'];
 
-            // dodger : fremdlager is also always considered as on stock
+            // foreign stock is also always considered as on stock
             if ( $iStockFlag == 1 || $iStockFlag == 4) {
                 return true;
             }
@@ -3208,8 +3212,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      */
     protected function _getAmountPrice($dAmount = 1)
     {
-        $myConfig = $this->getConfig();
-
         startProfile( "_getAmountPrice" );
 
         $dPrice = $this->_getGroupPrice();
@@ -3266,7 +3268,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      */
     protected function _fillAmountPriceList($aAmPriceList)
     {
-        $myConfig = $this->getConfig();
         $oLang = oxRegistry::getLang();
 
         // trying to find lowest price value
@@ -5096,9 +5097,85 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         return $dPrice;
     }
 
+    /**
+     * Return unit quantity
+     *
+     * @return sting
+     */
     public function getUnitQuantity()
     {
         return $this->oxarticles__oxunitquantity->value;
+    }
+
+    /**
+     * Return Size of product: length*width*height
+     *
+     * @return double
+     */
+    public function getSize()
+    {
+        $dSize = $this->oxarticles__oxlength->value *
+            $this->oxarticles__oxwidth->value *
+            $this->oxarticles__oxheight->value;
+
+        return $dSize;
+    }
+
+    /**
+     * Return product weight
+     *
+     * @return double
+     */
+    public function getWeight()
+    {
+        return $this->oxarticles__oxweight->value;
+    }
+
+    /**
+     * Set parent field value to child - variants in DB
+     *
+     * @return bool
+     */
+    protected function _updateParentDependFields()
+    {
+        $oDb = oxDb::getDb();
+
+        foreach( $this->_getCopyParentFields() as $sField ) {
+            $sValue = isset( $this->$sField->value ) ? $this->$sField->value : 0;
+            $sSqlSets[] = '`' . str_replace( 'oxarticles__', '', $sField )  . '` = ' . $oDb->quote( $sValue );
+        }
+
+        $sSql = "UPDATE `oxarticles` SET ";
+        $sSql .= implode(', ', $sSqlSets) . '';
+        $sSql .= " WHERE `oxparentid` = " . $oDb->quote( $this->getId() );
+
+        return $oDb->execute( $sSql );
+    }
+
+
+    /**
+     * Returns array of fields which should not changed in variants
+     *
+     * @return array
+     */
+    protected function _getCopyParentFields()
+    {
+        return $this->_aCopyParentField;
+    }
+
+    /**
+     * Set parent field value to child - variants
+     *
+     * @return bool
+     */
+    protected function _assignParentDependFields()
+    {
+        $sParent = $this->getParentArticle();
+        if ( $sParent ) {
+            foreach ( $this->_getCopyParentFields() as $sField ) {
+                $this->$sField = new oxField ( $sParent->$sField->value );
+            }
+        }
     }
 
 }

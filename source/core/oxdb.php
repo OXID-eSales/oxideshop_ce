@@ -405,7 +405,9 @@ class oxDb
         $oDb = ADONewConnection( $sType, $this->_getModules() );
 
 
-            if ( !$oDb->connect( $sHost, $sUser, $sPwd, $sName ) ) {
+            try {
+                $oDb->connect( $sHost, $sUser, $sPwd, $sName );
+            } catch( oxAdoDbException $e ) {
                 $this->_onConnectionError( $oDb );
             }
 

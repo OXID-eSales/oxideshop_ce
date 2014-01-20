@@ -123,6 +123,11 @@ function oxRemClassModule($sModuleClass, $sClass = '')
     oxClassCacheKey(true);
 }
 
+/**
+ * Class oxTestModules
+ *
+ * @deprecated
+ */
 class oxTestModules
 {
     private static $_addedmods = array();
@@ -535,7 +540,11 @@ abstract class modOXID
 }
 
 //-----------------
-
+/**
+ * config class for test
+ *
+ * @deprecated
+ */
 class modConfig extends modOXID
 {
     // needed 4 modOXID
@@ -556,7 +565,7 @@ class modConfig extends modOXID
     }
 
     /**
-     * @return modconfig
+     * @return modConfig
      */
     static function getInstance()
     {
@@ -658,7 +667,11 @@ class modConfig extends modOXID
 }
 
 //-----------------
-
+/**
+ * Class modSession
+ *
+ * @deprecated
+ */
 class modSession extends modOXID
 {
     public static $unitMOD = null;
@@ -746,7 +759,11 @@ class modSession extends modOXID
 }
 
 //-----------------
-
+/**
+ * Class modDB
+ *
+ * @deprecated
+ */
 class modDB extends modOXID
 {
     // needed 4 modOXID
@@ -783,7 +800,7 @@ class modDB extends modOXID
 
 //-----------------
 
-// usefull for extending getDB()->Execute method
+// useful for extending getDB()->Execute method
 class modResource
 {
     public $recordCount = 0;
@@ -950,7 +967,7 @@ if (!function_exists('findphp')) {
         preparePathArray($aFileWhiteList, $baseDir);
 
 
-        //get directorys (do not go to blacklist)
+        //get directories (do not go to blacklist)
         while (list (, $dir) = each($dirs)) {
             foreach (glob($dir.DIRECTORY_SEPARATOR.'*', GLOB_ONLYDIR) as $sdir) {
                 if (array_search($sdir, $aDirBlackList) === false) {
@@ -959,7 +976,7 @@ if (!function_exists('findphp')) {
             }
         }
 
-        // get PHP files form directorys
+        // get PHP files form directories
         $aFiles = array();
         foreach ($dirs as $dir) {
             $aFiles = array_merge($aFiles, glob($dir.DIRECTORY_SEPARATOR."*.php", GLOB_NOSORT));
@@ -1020,7 +1037,7 @@ if (!function_exists('stripCodeLines')) {
             $aFile = preg_replace('#//.*#', '', $aFile);
             $aFile = preg_replace_callback('#/\*.*?\*/#sm', 'preg_stripper', $aFile);
 
-            // for viariables
+            // for variables
             $aFile = preg_replace('#(public|static|protected|private|var|\{|\}).*;#', '', $aFile);
             //for functions
             $aFile = preg_replace('#(public|static|protected|private|var|\{|\})#', '', $aFile);

@@ -477,6 +477,8 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      * @param string $superClassName
      * @param array|null $constructorParams parameters for contructor
      *
+     * @deprecated
+     *
      * @return object
      */
     public function getProxyClass($superClassName, array $params = null)

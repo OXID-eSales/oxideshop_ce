@@ -5144,7 +5144,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         $oDb = oxDb::getDb();
 
         foreach( $this->_aCopyParentField as $sField ) {
-            $sSqlSets[] = '`' . str_replace( 'oxarticles__', '', $sField )  . '` = ' . $this->$sField->value;
+            $sValue = isset( $this->$sField->value ) ? $this->$sField->value : 0;
+            $sSqlSets[] = '`' . str_replace( 'oxarticles__', '', $sField )  . '` = ' . $oDb->quote( $sValue );
         }
 
         $sSql = "UPDATE `oxarticles` SET ";

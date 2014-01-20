@@ -47,7 +47,7 @@ class Article_Extend extends oxAdminDetails
     {
         parent::render();
 
-        $this->_aViewData['edit'] = $oArticle = oxNew( 'oxarticle' );
+        $this->_aViewData['edit'] = $oArticle = oxNew( 'oxArticle' );
 
         $soxId = $this->getEditObjectId();
 
@@ -62,7 +62,6 @@ class Article_Extend extends oxAdminDetails
             // load object in other languages
             $oOtherLang = $oArticle->getAvailableInLangs();
             if (!isset($oOtherLang[$this->_iEditLang])) {
-                // echo "language entry doesn't exist! using: ".key($oOtherLang);
                 $oArticle->loadInLang( key($oOtherLang), $soxId );
             }
 
@@ -75,7 +74,7 @@ class Article_Extend extends oxAdminDetails
 
             // variant handling
             if ( $oArticle->oxarticles__oxparentid->value) {
-                $oParentArticle = oxNew( 'oxarticle' );
+                $oParentArticle = oxNew( 'oxArticle' );
                 $oParentArticle->load( $oArticle->oxarticles__oxparentid->value);
                 $this->_aViewData["parentarticle"] = $oParentArticle;
                 $this->_aViewData["oxparentid"]    = $oArticle->oxarticles__oxparentid->value;

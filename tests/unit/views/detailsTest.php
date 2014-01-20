@@ -195,6 +195,16 @@ class Unit_Views_detailsTest extends OxidTestCase
     }
 
     /**
+     * Tests tags with special chars
+     */
+    public function testGetTagSpecialChars()
+    {
+        $oDetails = new Details();
+        $this->setRequestParam( 'searchtag', 'sometag<">' );
+        $this->assertEquals( 'sometag&lt;&quot;&gt;', $oDetails->getTag() );
+    }
+
+    /**
      * Test get link type.
      *
      * @return null

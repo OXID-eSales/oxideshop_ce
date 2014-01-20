@@ -231,9 +231,9 @@ class Account_Recommlist extends Account
                 $this->_sThisTemplate = 'page/account/recommendationedit.tpl';
             }
 
-            $sTitle  = trim( ( string ) oxConfig::getParameter( 'recomm_title', 1 ) );
-            $sAuthor = trim( ( string ) oxConfig::getParameter( 'recomm_author', 1 ) );
-            $sText   = trim( ( string ) oxConfig::getParameter( 'recomm_desc', 1 ) );
+            $sTitle  = trim( ( string ) oxRegistry::getConfig()->getRequestParameter( 'recomm_title', true ) );
+            $sAuthor = trim( ( string ) oxRegistry::getConfig()->getRequestParameter( 'recomm_author', true ) );
+            $sText   = trim( ( string ) oxRegistry::getConfig()->getRequestParameter( 'recomm_desc', true ) );
 
             $oRecommList->oxrecommlists__oxtitle  = new oxField( $sTitle );
             $oRecommList->oxrecommlists__oxauthor = new oxField( $sAuthor );

@@ -35,6 +35,28 @@ class oxRegistry
     protected static $_aInstances = array();
 
     /**
+     * Magic getter to load a class from registry.
+     * For example, oxpsRegistry::getMyClass(); will return instance of MyClass if it is available in registry.
+     *
+     * @param string $sCallName
+     *
+     * @return mixed
+     */
+    public static function __callStatic( $sCallName, $mArguments = null )
+    {
+        $mObject = null;
+
+        $blIsGetCall = ( mb_strpos( $sCallName, 'get', 0, 'UTF-8' ) === 0 );
+        $sClassName  = str_replace( 'get', '', $sCallName );
+
+        if ( $blIsGetCall and class_exists( $sClassName ) ) {
+            $mObject = self::get( $sClassName );
+        }
+
+        return $mObject;
+    }
+
+    /**
      * Instance getter. Return existing instance or initializes the new one
      *
      * @param string $sClassName Class name

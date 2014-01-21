@@ -55,4 +55,5 @@ $sSeleniumServerIp = "127.0.0.1";
 // Browser name which will be used for testing.
 // Possible values: *iexplore, *iehta, *firefox, *chrome, *piiexplore, *pifirefox, *safari, *opera
 // make sure that path to browser executable is known for the system
-$sBrowserName = '*firefox';
+$sBrowserName = 'firefox';
+

@@ -112,7 +112,7 @@ class Tag extends aList
     {
         $sAddParams  = parent::getAddUrlParams();
         $sAddParams .= ($sAddParams?'&amp;':'') . "listtype={$this->_sListType}";
-        if ( $sParam = oxConfig::getParameter( 'searchtag', 1 ) ) {
+        if ( $sParam = oxConfig::getParameter( 'searchtag', true ) ) {
             $sAddParams .= "&amp;searchtag=" . rawurlencode( $sParam );
         }
         return $sAddParams;
@@ -249,7 +249,7 @@ class Tag extends aList
     public function getTag()
     {
         if ( $this->_sTag === null ) {
-            $this->_sTag = oxConfig::getParameter("searchtag", 1);
+            $this->_sTag = oxRegistry::getConfig()->getRequestParameter("searchtag", false);
         }
         return $this->_sTag;
     }

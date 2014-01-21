@@ -31,6 +31,31 @@ class unit_core_OxRegistryTest extends OxidTestCase
 {
 
     /**
+     * `__callStatic` should be defined and return null by default.
+     */
+    public function testCallStatic_methodExistAndReturnNullByDefault()
+    {
+        $this->assertNull( oxRegistry::DummyCall() );
+    }
+
+    /**
+     * `__callStatic` should return null if calling getter for non-existing class instance.
+     */
+    public function testCallStatic_gettingNonExistingInstance_returnNull()
+    {
+        $this->assertNull( oxRegistry::getSomeVeryUnlikelyClassName() );
+    }
+
+    /**
+     * `__callStatic` should return exactly the same instance as default oxRegistry get method
+     *  if calling it as a getter.
+     */
+    public function testCallStatic_gettingExistingInstance_returnTheInstance()
+    {
+        $this->assertSame( oxRegistry::get( 'oxCaptcha' ), oxRegistry::getOxCaptcha() );
+    }
+
+    /**
      * test for OxReg::get()
      */
     public function testGet()

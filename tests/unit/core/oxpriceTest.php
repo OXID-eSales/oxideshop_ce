@@ -622,6 +622,70 @@ class Unit_Core_oxpriceTest extends OxidTestCase
 
     }
 
+    /**
+     * `roundCents` should not perform any price changes if argument type is not integer.
+     */
+    public function testRoundCents_wrongArgumentType_priceRemainsUnchanged()
+    {
+        $aWrongArguments = array('', ' ', '5', 'two', true, false, null, 2.1, array(5), new oxStdClass(), function () {
+        });
 
+        foreach ( $aWrongArguments as $mRoundPrecision ) {
+            $this->SUT->roundCents( $mRoundPrecision );
+            $this->assertSame( 17.93, $this->SUT->getPrice() );
+        }
+    }
 
+    /**
+     * `roundCents` should not perform any price changes if argument type is one cent of zero or negative.
+     */
+    public function testRoundCents_argumentLessThanTwo_priceRemainsUnchanged()
+    {
+        $aWrongArguments = array(-10, -1, 0, 1);
+
+        foreach ( $aWrongArguments as $iRoundPrecision ) {
+            $this->SUT->roundCents( $iRoundPrecision );
+            $this->assertSame( 17.93, $this->SUT->getPrice() );
+        }
+    }
+
+    /**
+     * `roundCents` should not perform any price changes if argument is more that 100 cents.
+     */
+    public function testRoundCents_argumentMoreThanHundred_priceRemainsUnchanged()
+    {
+        $aWrongArguments = array(101, 1000);
+
+        foreach ( $aWrongArguments as $iRoundPrecision ) {
+            $this->SUT->roundCents( $iRoundPrecision );
+            $this->assertSame( 17.93, $this->SUT->getPrice() );
+        }
+    }
+
+    /**
+     * `roundCents` should round internal price value with given precision in cents, when argument is valid.
+     */
+    public function testRoundCents_validArgument_priceIsRounded()
+    {
+        $aValidArguments = array(
+            2   => 17.94,
+            3   => 17.93,
+            5   => 17.95,
+            6   => 17.96,
+            7   => 17.91,
+            8   => 17.96,
+            10  => 17.90,
+            12  => 17.96,
+            17  => 17.85,
+            20  => 18.00,
+            100 => 18.00,
+        );
+
+        foreach ( $aValidArguments as $iRoundPrecision => $dExpectedPriceValue ) {
+            $this->SUT->setPrice( 17.93 );
+            $this->SUT->roundCents( $iRoundPrecision );
+
+            $this->assertSame( $dExpectedPriceValue, $this->SUT->getPrice() );
+        }
+    }
 }

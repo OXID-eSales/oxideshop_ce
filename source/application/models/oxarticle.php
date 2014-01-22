@@ -2152,9 +2152,10 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      */
     public function save()
     {
+        //copy parent article field value to variant
         $sParent = $this->getParentArticle();
         if( $sParent ) {
-            foreach( $this->_aCopyParentField as $sField ){
+            foreach( $this->_getCopyParentFields() as $sField ){
                 $this->$sField = new oxField ( $sParent->$sField->value );
             }
         }
@@ -3756,7 +3757,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             }
 
             //COPY THE VALUE
-            if ($this->_isFieldEmpty($sCopyFieldName) /*|| in_array( $sCopyFieldName, $this->_aCopyParentField )*/ ) {
+            if ( $this->_isFieldEmpty($sCopyFieldName) ) {
                 $this->$sCopyFieldName = clone $oParentArticle->$sCopyFieldName;
             }
         }
@@ -5139,11 +5140,16 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         return $this->oxarticles__oxweight->value;
     }
 
+    /**
+     * Set parent field value to child - variants
+     *
+     * @return bool
+     */
     protected function _updateParentDependFields()
     {
         $oDb = oxDb::getDb();
 
-        foreach( $this->_aCopyParentField as $sField ) {
+        foreach( $this->_getCopyParentFields() as $sField ) {
             $sValue = isset( $this->$sField->value ) ? $this->$sField->value : 0;
             $sSqlSets[] = '`' . str_replace( 'oxarticles__', '', $sField )  . '` = ' . $oDb->quote( $sValue );
         }
@@ -5154,4 +5160,16 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
         return $oDb->execute( $sSql );
     }
+
+
+    /**
+     * Returns array of fields which should not changed in variants
+     *
+     * @return array
+     */
+    protected function _getCopyParentFields()
+    {
+        return $this->_aCopyParentField;
+    }
+
 }

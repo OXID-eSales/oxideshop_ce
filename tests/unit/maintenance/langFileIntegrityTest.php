@@ -108,23 +108,6 @@ class Unit_Maintenance_langFileIntegrityTest extends OxidTestCase
     }
 
     /**
-     * dataProvider with language and theme values with admin values
-     *
-     * @return array
-     */
-    public function providerLangThemeWithAdmin()
-    {
-        return array(
-            array('de', ''),
-            array('en', ''),
-            array('de', $this->getThemeName()),
-            array('en', $this->getThemeName()),
-            array('de', 'admin'),
-            array('en', 'admin')
-        );
-    }
-
-    /**
      * dataProvider with language, theme and filename values
      *
      * @return array
@@ -143,24 +126,47 @@ class Unit_Maintenance_langFileIntegrityTest extends OxidTestCase
         );
     }
 
+    /**
+     * dataProvider with language and theme values with admin values
+     *
+     * @return array
+     */
+    public function providerLangThemeWithAdmin()
+    {
+        $aDetectOrder = mb_detect_order();
+        array_unshift($aDetectOrder, 'ISO-8859-15');
+
+        $sThemeName = $this->getThemeName();
+
+        return array(
+            array('de',     '',          $aDetectOrder),
+            array('en',     '',          $aDetectOrder),
+            array('de',     $sThemeName, $aDetectOrder),
+            array('en',     $sThemeName, $aDetectOrder),
+            array('de',     'admin',     $aDetectOrder),
+            array('en',     'admin',     $aDetectOrder)
+        );
+    }
 
     /**
      * Test if generic language files encoding is correct.
      *
      * @dataProvider providerLangThemeWithAdmin
      */
-    public function testLanguageFileEncoding($sLanguage, $sTheme)
+    public function testLanguageFileEncoding($sLanguage, $sTheme, $aDetectOrder)
     {
         $aLang = $this->_getLanguage( $sTheme, $sLanguage );
-        $sLang = $this->_getLangFileContents($sTheme, $sLanguage, '*.php');
+        $sLang = $this->_getLangFileContents( $sTheme, $sLanguage, '*.php' );
 
-        $this->assertEquals( 'ISO-8859-15', mb_detect_encoding($sLang, "ISO-8859-15, UTF-8", true));
-        $this->assertEquals( 'ISO-8859-15', $aLang['charset'], 'Charset must be ISO-8859-15');
-        $this->assertEquals( utf8_decode($sLang), utf8_decode(utf8_decode($sLang)), 'No double utf8 encoding');
-        $this->assertEquals( str_replace("\t", "", $sLang), $sLang, 'No tab characters allowed');
-
+        $this->assertEquals(
+            $aLang['charset'], mb_detect_encoding($sLang, $aDetectOrder, true),
+            'File encoding is equals to charset specified inside the file.'
+        );
+        $this->assertEquals(
+            utf8_decode( $sLang ), utf8_decode( utf8_decode( $sLang ) ), 'There are no double UTF-8 encoding.'
+        );
+        $this->assertEquals( str_replace( "\t", "", $sLang ), $sLang, 'There are no tab characters.' );
     }
-
 
     /**
      * Test if map identifiers are the same.
@@ -691,6 +697,7 @@ class Unit_Maintenance_langFileIntegrityTest extends OxidTestCase
     {
         $sFileContent = '';
         $sMask = $sFile = $this->_getLanguageFilePath(  $sTheme, $sLang, $sFilePattern );
+        //var_dump("checking file: " . $sMask);
         foreach ( glob($sMask) as $sFile ) {
             if (is_readable($sFile)) {
                 include $sFile;

@@ -2152,13 +2152,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      */
     public function save()
     {
-        //copy parent article field value to variant
-        $sParent = $this->getParentArticle();
-        if( $sParent ) {
-            foreach( $this->_getCopyParentFields() as $sField ){
-                $this->$sField = new oxField ( $sParent->$sField->value );
-            }
-        }
+        $this->_assignParentDependFields();
 
         if ( ( $blRet = parent::save() ) ) {
             // saving long description
@@ -5141,7 +5135,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     }
 
     /**
-     * Set parent field value to child - variants
+     * Set parent field value to child - variants in DB
      *
      * @return bool
      */
@@ -5170,6 +5164,21 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     protected function _getCopyParentFields()
     {
         return $this->_aCopyParentField;
+    }
+
+    /**
+     * Set parent field value to child - variants
+     *
+     * @return bool
+     */
+    protected function _assignParentDependFields()
+    {
+        $sParent = $this->getParentArticle();
+        if ( $sParent ) {
+            foreach ( $this->_getCopyParentFields() as $sField ) {
+                $this->$sField = new oxField ( $sParent->$sField->value );
+            }
+        }
     }
 
 }

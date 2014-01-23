@@ -147,10 +147,8 @@ class oxCurl
     {
         if ( is_null($sQuery) ) {
             $sQuery = "";
-            if ($aParams = $this->getParameters()) {
-                $aParams = array_filter( $aParams );
-                $aParams = array_map(array($this, '_htmlDecode'), $aParams);
-
+            if ( $aParams = $this->getParameters() ) {
+                $aParams = $this->_prepareQueryParameters( $aParams );
                 $sQuery = http_build_query( $aParams, "", "&" );
             }
         }
@@ -402,17 +400,35 @@ class oxCurl
     }
 
     /**
-     * Decode (if needed) html entity
+     * Clears empty values from array and decodes html entities.
      *
-     * @param string $sString query
+     * @param $aParams
+     * @return array
+     */
+    protected function _prepareQueryParameters( $aParams )
+    {
+        $aParams = array_filter( $aParams );
+        $aParams = array_map( array( $this, '_htmlDecode' ), $aParams );
+
+        return $aParams;
+    }
+
+    /**
+     * Decode (if needed) html entity.
+     *
+     * @param mixed $mParam query
      *
      * @return string
      */
-    protected function _htmlDecode( $sString )
+    protected function _htmlDecode( $mParam )
     {
-        $sString = html_entity_decode( stripslashes( $sString ), ENT_QUOTES, $this->getConnectionCharset() );
+        if ( is_array( $mParam ) ) {
+            $mParam = $this->_prepareQueryParameters( $mParam );
+        } else {
+            $mParam = html_entity_decode( stripslashes( $mParam ), ENT_QUOTES, $this->getConnectionCharset() );
+        }
 
-        return $sString;
+        return $mParam;
     }
 
     /**

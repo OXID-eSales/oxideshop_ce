@@ -339,14 +339,25 @@ class Unit_Core_oxCurlTest extends OxidTestCase
     /**
      * Test oxCurl::getUrl()
      */
-    public function testGetUrl()
+    public function testGetUrl_WithMultiDimensionalArray()
     {
+        $aParams = array(
+            'emptyparam' => null,
+            'param1' => 'val1',
+            'param2' => array(
+                'subparam1' => 'subval1',
+                'subparam2' => array(
+                    'sub2param1' => 'subsubval1',
+                    'emptyparam' => null
+                ),
+            ),
+        );
+
         $oCurl = oxNew( "oxCurl" );
         $oCurl->setMethod( 'GET' );
         $oCurl->setUrl( "http://www.google.com" );
-        $oCurl->setParameters( array( "param1" => "val1", "param2" => "val2" ) );
-
-        $this->assertEquals( "http://www.google.com?param1=val1&param2=val2", $oCurl->getUrl() );
+        $oCurl->setParameters( $aParams );
+        $this->assertEquals( 'http://www.google.com?param1=val1&param2%5Bsubparam1%5D=subval1&param2%5Bsubparam2%5D%5Bsub2param1%5D=subsubval1', $oCurl->getUrl() );
     }
 
     public function testSimplePOSTCall()

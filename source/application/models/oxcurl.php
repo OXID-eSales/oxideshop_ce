@@ -90,28 +90,6 @@ class oxCurl
      */
     protected $_aOptions = array('CURLOPT_RETURNTRANSFER' => 1);
 
-    /**
-     * Sets resource
-     *
-     * @param resource $rCurl curl.
-     */
-    protected function _setResource( $rCurl )
-    {
-        $this->_rCurl = $rCurl;
-        }
-
-    /**
-     * Returns curl resource
-     *
-     * @return resource
-     */
-    protected function _getResource()
-    {
-        if ( is_null( $this->_rCurl ) ) {
-            $this->_setResource( curl_init() );
-        }
-        return $this->_rCurl;
-    }
 
     /**
      * Sets url to call
@@ -335,6 +313,49 @@ class oxCurl
     }
 
     /**
+     * Set connection charset
+     *
+     * @param string $sCharset charset
+     */
+    public function setConnectionCharset( $sCharset )
+    {
+        $this->_sConnectionCharset = $sCharset;
+    }
+
+    /**
+     * Return connection charset
+     *
+     * @return string
+     */
+    public function getConnectionCharset()
+    {
+        return $this->_sConnectionCharset;
+    }
+
+    /**
+     * Sets resource
+     *
+     * @param resource $rCurl curl.
+     */
+    protected function _setResource( $rCurl )
+    {
+        $this->_rCurl = $rCurl;
+    }
+
+    /**
+     * Returns curl resource
+     *
+     * @return resource
+     */
+    protected function _getResource()
+    {
+        if ( is_null( $this->_rCurl ) ) {
+            $this->_setResource( curl_init() );
+        }
+        return $this->_rCurl;
+    }
+
+    /**
      * Set Curl Options
      */
     protected function _setOptions()
@@ -429,26 +450,6 @@ class oxCurl
         }
 
         return $mParam;
-    }
-
-    /**
-     * Set connection charset
-     *
-     * @param string $sCharset charset
-     */
-    public function setConnectionCharset( $sCharset )
-    {
-        $this->_sConnectionCharset = $sCharset;
-    }
-
-    /**
-     * Return connection charset
-     *
-     * @return string
-     */
-    public function getConnectionCharset()
-    {
-        return $this->_sConnectionCharset;
     }
 
 }

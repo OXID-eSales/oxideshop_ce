@@ -471,6 +471,8 @@ class oxModule extends oxSuperCfg
 
             $this->_deleteBlock( $sModuleId );
 
+            $this->_deleteTemplateFiles( $sModuleId );
+
 
             $blResult = true;
         }
@@ -817,6 +819,25 @@ class oxModule extends oxSuperCfg
         if ( is_array($aModuleTemplates) ) {
             $aTemplates[$sModuleId] = $aModuleTemplates;
         }
+
+        $this->_saveToConfig( 'aModuleTemplates', $aTemplates );
+    }
+
+    /**
+     * Add module template files to config for smarty.
+     *
+     * @param string $sModuleId        Module id
+     *
+     * @return null
+     */
+    protected function _deleteTemplateFiles( $sModuleId = null )
+    {
+        if (is_null($sModuleId)) {
+            $sModuleId = $this->getId();
+        }
+
+        $aTemplates = $this->getModuleTemplates();
+        unset( $aTemplates[$sModuleId] );
 
         $this->_saveToConfig( 'aModuleTemplates', $aTemplates );
     }

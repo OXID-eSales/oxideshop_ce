@@ -71,7 +71,6 @@ class Integration_Modules_ModuleActivationFirstTest extends OxidTestCase
 
         $oModule = new oxModule();
         $oModule->load( $sModule );
-        $oModule->deactivate();
         $oModule->activate();
 
         $this->_runAsserts( $aResultToAsserts, $sModule );

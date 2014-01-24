@@ -45,13 +45,18 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
                 'with_everything',
                 array(
                     'blocks' => array(),
-                    'extend' => '',
+                    'extend' => array(
+                        'oxorder' => 'extending_1_class/myorder&with_everything/myorder1&with_everything/myorder2&with_everything/myorder3',
+                        'oxarticle' => 'with_everything/myarticle',
+                        'oxuser' => 'with_everything/myuser',
+                    ),
                     'files' => '',
                     'settings' => array(
                         array('group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true'),
                         array('group' => 'my_displayname',  'name' => 'sDisplayName',   'type' => 'str',  'value' => 'Some name'),
                     ),
                     'templates' => array(),
+                    'disabledModules' => array( 'with_everything' ),
                 )
             ),
         );
@@ -76,8 +81,9 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
 
     private function _runAsserts( $aAsserts, $sModule )
     {
-        $this->_assertTemplates( $aAsserts['templates'], $sModule );
-        $this->_assertBlocks(  $aAsserts['blocks'], $sModule );
+       // $this->_assertTemplates( $aAsserts['templates'], $sModule );
+        //$this->_assertBlocks(  $aAsserts['blocks'], $sModule );
+        $this->_assertExtensions(  $aAsserts, $sModule );
         /*$this->_assertBlocks();
         $this->_assertBlocks();*/
     }
@@ -98,9 +104,13 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
         $this->assertSame( $aBlocks, $aBlocksToCheck );
     }
 
-    private function _assertExtensions()
+    private function _assertExtensions( $aAsserts, $sModuleId )
     {
-        $aModules = $this->getConfig()->getConfigParam( 'aModules' );
+        $aExtensionsToCheck = $this->getConfig()->getConfigParam( 'aModules' );
+        $aDisabledModules = $this->getConfig()->getConfigParam( 'aDisabledModules' );
+
+        $this->assertSame( $aAsserts['extend'], $aExtensionsToCheck );
+        $this->assertEquals( $aAsserts['disabledModules'], $aDisabledModules );
     }
 
 

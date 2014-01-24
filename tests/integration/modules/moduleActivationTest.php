@@ -25,7 +25,7 @@
 require_once realpath(dirname(__FILE__).'/../../') . '/unit/OxidTestCase.php';
 require_once realpath( dirname(__FILE__) ) . '/environment.php';
 
-class Integration_Modules_ModuleActivationFirstTest extends OxidTestCase
+class Integration_Modules_ModuleActivationTest extends OxidTestCase
 {
     /**
      * Tear down the fixture.

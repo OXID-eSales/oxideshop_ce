@@ -67,68 +67,61 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
      *
      * @dataProvider providerModuleDeactivation
      */
-    public function testModuleDeactivation( $aInstallModules, $sModule, $aResultToAsserts )
+    public function testModuleDeactivation( $aInstallModules, $sModuleId, $aResultToAsserts )
     {
         $oModuleEnvironment = new Environment();
         $oModuleEnvironment->prepare( $aInstallModules );
-
         $oModule = new oxModule();
-        $oModule->load( $sModule );
+        $oModule->load( $sModuleId );
         $oModule->deactivate();
 
-        $this->_runAsserts( $aResultToAsserts, $sModule );
+        //$aSettings = $oModule->getInfo("settings");
+        $this->_runAsserts( $aResultToAsserts, $sModuleId );
     }
 
-    private function _runAsserts( $aAsserts, $sModule )
+    private function _runAsserts( $aExpectedResult, $sModuleId )
     {
-       // $this->_assertTemplates( $aAsserts['templates'], $sModule );
-        //$this->_assertBlocks(  $aAsserts['blocks'], $sModule );
-        $this->_assertExtensions(  $aAsserts, $sModule );
-        /*$this->_assertBlocks();
-        $this->_assertBlocks();*/
+        $this->_assertTemplates( $aExpectedResult, $sModuleId );
+        $this->_assertBlocks(  $aExpectedResult );
+        $this->_assertExtensions( $aExpectedResult );
+        //$this->_assertConfigs( $aExpectedResult, $sModuleId );
     }
 
-    private function _assertTemplates( $aTemplates, $sModule )
+    private function _assertTemplates( $aExpectedResult, $sModule )
     {
+        $aTemplates = $aExpectedResult['templates'];
         $aTemplatesToCheck = $this->getConfig()->getConfigParam( 'aModuleTemplates' );
-        $aModuleTemplates = is_null( $aTemplatesToCheck[$sModule] ) ? array() : $aTemplatesToCheck[$sModule];
+        $aTemplatesToCheck = is_null( $aTemplatesToCheck[$sModule] ) ? array() : $aTemplatesToCheck[$sModule];
 
-        $this->assertSame( $aTemplates, $aModuleTemplates );
+        $this->assertSame( $aTemplates, $aTemplatesToCheck );
     }
 
-    private function _assertBlocks( $aBlocks, $sModule )
+    private function _assertBlocks( $aExpectedResult )
     {
+        $aBlocks = $aExpectedResult['blocks'];
         $oDb = oxDb::getDb();
-        $aBlocksToCheck = $oDb->getAll( "select * from oxtplblocks where oxmodule = '$sModule'" );
+        $aBlocksToCheck = $oDb->getAll( "select * from oxtplblocks" );
 
         $this->assertSame( $aBlocks, $aBlocksToCheck );
     }
 
-    private function _assertExtensions( $aAsserts, $sModuleId )
+    private function _assertExtensions( $aExpectedResult )
     {
         $aExtensionsToCheck = $this->getConfig()->getConfigParam( 'aModules' );
         $aDisabledModules = $this->getConfig()->getConfigParam( 'aDisabledModules' );
 
-        $this->assertSame( $aAsserts['extend'], $aExtensionsToCheck );
-        $this->assertEquals( $aAsserts['disabledModules'], $aDisabledModules );
+        $this->assertSame( $aExpectedResult['extend'], $aExtensionsToCheck );
+        $this->assertEquals( $aExpectedResult['disabledModules'], $aDisabledModules );
     }
 
 
     private function _assertFiles()
     {
-        $aModuleFiles = $this->getConfig()->getConfigParam( 'aModuleFiles' );
-
     }
 
-    /**
-     * @param $aSettings
-     */
-    private function _assertConfigs( $aSettings )
+
+    private function _assertConfigs( $aExpectedResult, $sModuleId )
     {
-        $oConfig = oxConfig::getInstance();
-        foreach( $aSettings as $sKey => $sVal ) {
-            $this->assertSame( $sVal, $oConfig->getConfigParam( $sKey ) );
-        }
     }
 
 }

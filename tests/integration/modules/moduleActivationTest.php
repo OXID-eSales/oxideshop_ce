@@ -25,7 +25,7 @@
 require_once realpath(dirname(__FILE__).'/../../') . '/unit/OxidTestCase.php';
 require_once realpath( dirname(__FILE__) ) . '/environment.php';
 
-class moduleTest extends OxidTestCase
+class Integration_Modules_ModuleActivationTest extends OxidTestCase
 {
     /**
      * Tear down the fixture.
@@ -63,7 +63,7 @@ class moduleTest extends OxidTestCase
      *
      * @dataProvider providerModuleDeactivation
      */
-    public function testModuleDeactivation( $aInstallModules, $sModule, $aResultToAsserts )
+    public function testModuleActivation( $aInstallModules, $sModule, $aResultToAsserts )
     {
         $this->markTestSkipped( 'Development in progress...' );
         $oModuleEnvironment = new Environment();
@@ -71,7 +71,7 @@ class moduleTest extends OxidTestCase
 
         $oModule = new oxModule();
         $oModule->load( $sModule );
-        $oModule->deactivate();
+        $oModule->activate();
 
         $this->_runAsserts( $aResultToAsserts, $sModule );
     }

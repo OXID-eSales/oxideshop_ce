@@ -429,8 +429,10 @@ if (node.tagName == 'SELECT') {
     for (i = 0; i < l; i++) {
         if (node[i].value == "$valueEscaped") {
             node[i].selected = true;
+            node[i].setAttribute('selected', true);
         } else if (!$multipleJS) {
             node[i].selected = false;
+            node[i].setAttribute('selected', false);
         }
     }
     triggerEvent(node, 'change');

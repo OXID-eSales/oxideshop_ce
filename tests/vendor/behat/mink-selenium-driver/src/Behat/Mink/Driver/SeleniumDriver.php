@@ -233,6 +233,14 @@ class SeleniumDriver extends CoreDriver
     }
 
     /**
+     * @see Behat\Mink\Driver\DriverInterface::evaluateScript()
+     */
+    public function evaluateScript($script)
+    {
+        return $this->browser->getEval($script);
+    }
+
+    /**
      * @see Behat\Mink\Driver\DriverInterface::find()
      */
     public function find($xpath)

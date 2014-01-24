@@ -37,7 +37,6 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
         parent::tearDown();
     }
 
-
     public function providerModuleDeactivation()
     {
         return array(
@@ -45,14 +44,14 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
                 array( 'extending_1_class', 'with_2_templates', 'with_everything' ),
                 'with_everything',
                 array(
-                    'blocks' => '',
+                    'blocks' => array(),
                     'extend' => '',
                     'files' => '',
                     'settings' => array(
                         array('group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true'),
                         array('group' => 'my_displayname',  'name' => 'sDisplayName',   'type' => 'str',  'value' => 'Some name'),
                     ),
-                    'templates' => '',
+                    'templates' => array(),
                 )
             ),
         );
@@ -65,7 +64,6 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
      */
     public function testModuleDeactivation( $aInstallModules, $sModule, $aResultToAsserts )
     {
-        $this->markTestSkipped( 'Development in progress...' );
         $oModuleEnvironment = new Environment();
         $oModuleEnvironment->prepare( $aInstallModules );
 
@@ -78,9 +76,8 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
 
     private function _runAsserts( $aAsserts, $sModule )
     {
-        /*//There are no templates removing functionality, after implementation uncomment;
-        $this->_assertTemplates( $aAsserts['templates'], $sModule ); */
-        $this->_assertBlocks( $aAsserts['blocks'] );
+        $this->_assertTemplates( $aAsserts['templates'], $sModule );
+        $this->_assertBlocks(  $aAsserts['blocks'], $sModule );
         /*$this->_assertBlocks();
         $this->_assertBlocks();*/
     }
@@ -88,13 +85,17 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
     private function _assertTemplates( $aTemplates, $sModule )
     {
         $aTemplatesToCheck = $this->getConfig()->getConfigParam( 'aModuleTemplates' );
+        $aModuleTemplates = is_null( $aTemplatesToCheck[$sModule] ) ? array() : $aTemplatesToCheck[$sModule];
 
-        $this->assertSame( $aTemplates, $aTemplatesToCheck[$sModule] );
+        $this->assertSame( $aTemplates, $aModuleTemplates );
     }
 
-    private function _assertBlocks()
+    private function _assertBlocks( $aBlocks, $sModule )
     {
+        $oDb = oxDb::getDb();
+        $aBlocksToCheck = $oDb->getAll( "select * from oxtplblocks where oxmodule = '$sModule'" );
 
+        $this->assertSame( $aBlocks, $aBlocksToCheck );
     }
 
     private function _assertExtensions()

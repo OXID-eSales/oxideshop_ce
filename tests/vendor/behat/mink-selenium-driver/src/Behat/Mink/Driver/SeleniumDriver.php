@@ -432,6 +432,7 @@ if (node.tagName == 'SELECT') {
             node[i].setAttribute('selected', true);
         } else if (!$multipleJS) {
             node[i].selected = false;
+            node[i].removeAttribute('selected');
         }
     }
     triggerEvent(node, 'change');

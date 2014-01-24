@@ -31,15 +31,13 @@ $sMetadataVersion = '1.0';
  * Module information
  */
 $aModule = array(
-    'id'           => 'extending_3_shop_classes',
-    'title'        => 'Test extending 3 shop classes',
-    'description'  => 'Module testing extending 3 shop classes',
+    'id'           => 'extending_1_class',
+    'title'        => 'Test extending 1 shop class',
+    'description'  => 'Module testing extending 1 shop class',
     'thumbnail'    => 'picture.png',
     'version'      => '1.0',
     'author'       => 'OXID eSales AG',
     'extend'       => array(
-        'oxarticle' => 'extending_1_shop_class/myarticle',
-        'oxorder' => 'extending_1_shop_class/myorder',
-        'oxuser' => 'extending_1_shop_class/myuser'
+        'oxorder' => 'extending_1_class/myorder'
     )
 );

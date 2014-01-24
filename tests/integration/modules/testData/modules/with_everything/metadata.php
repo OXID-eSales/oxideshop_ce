@@ -59,5 +59,9 @@ $aModule = array(
         'myException'  => 'with_everything/core/exception/myexception.php',
         'myConnection' => 'with_everything/core/exception/myconnection.php',
     ),
+    'settings' => array(
+        array('group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true'),
+        array('group' => 'my_displayname',  'name' => 'sDisplayName',   'type' => 'str',  'value' => 'Some name'),
+    ),
 
 );

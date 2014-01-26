@@ -1280,6 +1280,17 @@ function showInvitations()
                 <div class="spacer"></div>
             </dl>
 
+            <dl>
+                <dt>
+                    <input type="text" class="txt" name="confstrs[sParcelService]" style="width: 300px;" value="[{$confstrs.sParcelService}]">
+                    [{ oxinputhelp ident="HELP_SHOP_CONFIG_PARCELSERVICE" }]
+                </dt>
+                <dd>
+                    [{ oxmultilang ident="SHOP_CONFIG_PARCELSERVICE" }]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+            
          </div>
     </div>
 

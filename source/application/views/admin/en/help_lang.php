@@ -229,6 +229,8 @@ $aLang =  array(
 'HELP_SHOP_CONFIG_LINK_EXPIRATION_TIME'       => 'Specify the time in hours, the download link is valid after order. This is the default setting for all products.'.
                                                  'You can change this value for every file of product in Administer Products -> Products -> Downloads.',
 
+'HELP_SHOP_CONFIG_PARCELSERVICE'   			  => 'Parcel service tracking URL. <i>##ID##</i> is a placeholder and will be replaced with tracking number.',
+
 'HELP_SHOP_CONFIG_DOWNLOAD_EXPIRATION_TIME'   => 'Specify the time in hours, the download link is valid after the first download. This is the default setting for all products.'.
                                                  'You can change this value for every file of product in Administer Products -> Products -> Downloads.',
 

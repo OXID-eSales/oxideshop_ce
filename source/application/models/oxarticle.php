@@ -857,7 +857,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
         // check for simple article.
         if ($this->_blSkipAssign) {
-            return;
+            return null;
         }
 
         $this->_assignParentFieldValues();
@@ -871,6 +871,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
 
         stopProfile('articleAssign');
+
+        return null;
     }
 
 
@@ -1037,7 +1039,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     /**
      * Loads and returns array with cross selling information.
      *
-     * @return array
+     * @return array|null
      */
     public function getCrossSelling()
     {
@@ -1046,6 +1048,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         if ( $oCrosslist->count() ) {
             return $oCrosslist;
         }
+
+        return null;
     }
 
     /**
@@ -1059,7 +1063,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
         // Performance
         if ( !$myConfig->getConfigParam( 'bl_perfLoadAccessoires' ) ) {
-            return;
+            return null;
         }
 
         $oAcclist = oxNew( "oxarticlelist");
@@ -1069,6 +1073,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         if ( $oAcclist->count()) {
             return $oAcclist;
         }
+
+        return null;
     }
 
     /**
@@ -1081,7 +1087,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         // Performance
         $myConfig = $this->getConfig();
         if ( !$myConfig->getConfigParam( 'bl_perfLoadSimilar' ) ) {
-            return;
+            return null;
         }
 
         $sArticleTable = $this->getViewName();
@@ -1107,6 +1113,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
             return $oSimilarlist;
         }
+
+        return null;
     }
 
     /**
@@ -1119,7 +1127,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         // Performance
         $myConfig = $this->getConfig();
         if ( !$myConfig->getConfigParam( 'bl_perfLoadCustomerWhoBoughtThis' ) ) {
-            return;
+            return null;
         }
 
         // selecting products that fits
@@ -1131,6 +1139,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         if ( $oArticles->count() ) {
             return $oArticles;
         }
+
+        return null;
     }
 
     /**
@@ -1435,6 +1445,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         if ( $this->oxarticles__oxvarcount->value) {
             return $this->getVariants();
         }
+
+        return null;
     }
 
     /**
@@ -1768,7 +1780,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     public function getTPrice()
     {
         if ( !$this->getConfig()->getConfigParam( 'bl_perfLoadPrice' ) || !$this->_blLoadPrice ) {
-            return;
+            return null;
         }
 
         // return cached result, since oPrice is created ONLY in this function [or function of EQUAL level]
@@ -1796,7 +1808,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
         if ( $oPrice->getPrice() <= $oPrice2->getPrice() ) {
             // if RRP price is less or equal to comparable price then return
-            return;
+            return null;
         }
 
         $this->_oTPrice = $oPrice;
@@ -1863,7 +1875,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         // Performance
         $myConfig = $this->getConfig();
         if( !$myConfig->getConfigParam( 'bl_perfLoadPrice' ) || !$this->_blLoadPrice )
-            return;
+            return null;
 
         // GroupPrice or DB price ajusted by AmountPrice
         $dPrice = $this->_getAmountPrice( $dAmount );
@@ -1884,7 +1896,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         $myConfig = $this->getConfig();
         // Performance
         if ( !$myConfig->getConfigParam( 'bl_perfLoadPrice' ) || !$this->_blLoadPrice ) {
-            return;
+            return null;
         }
 
         // return cached result, since oPrice is created ONLY in this function [or function of EQUAL level]
@@ -2077,7 +2089,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     public function updateSoldAmount( $dAmount = 0 )
     {
         if ( !$dAmount ) {
-            return;
+            return null;
         }
 
         // article is not variant - should be updated current amount
@@ -2299,6 +2311,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         if ( isset($this->oxarticles__oxvat->value) ) {
             return $this->oxarticles__oxvat->value;
         }
+
+        return null;
     }
 
     /**
@@ -2407,6 +2421,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         // setting current value
         $this->_oLongDesc = new oxField( $sDesc, oxField::T_RAW );
         $this->oxarticles__oxlongdesc = new oxField( $sDesc, oxField::T_RAW );
+
+        return null;
     }
 
     /**
@@ -2873,6 +2889,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             $this->oxarticles__oxremindamount->value <= $this->oxarticles__oxstock->value ) {
             $this->oxarticles__oxremindactive->value = 1;
         }
+
+        return null;
     }
 
     /**

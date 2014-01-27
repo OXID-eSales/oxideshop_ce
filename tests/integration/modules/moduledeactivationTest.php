@@ -108,7 +108,7 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
     }
 
     /**
-     * Tests if module was activated.
+     * Test check shop environment after module deactivation
      *
      * @dataProvider providerModuleDeactivation
      */

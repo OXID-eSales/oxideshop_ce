@@ -116,17 +116,16 @@ class EnvironmentValidator {
      * Asserts that module configs match expected configs
      *
      * @param $aExpectedConfigs
-     * @param $sModuleId
      * @return bool
      */
-    public function checkConfigs( $aExpectedConfigs, $sModuleId )
+    public function checkConfigs( $aExpectedConfigs )
     {
         $oDb = oxDb::getDb(  );
         $aConfigsToCheck = $oDb->getAll(
             "select c.oxvarname
             from  oxconfig c inner join oxconfigdisplay d
                 on c.oxvarname = d.oxcfgvarname  and c.oxmodule = d.oxcfgmodule
-            where oxmodule = 'module:{$sModuleId}'" );
+            where oxmodule like 'module:%'" );
 
         return ( count($aExpectedConfigs) == count($aConfigsToCheck) );
     }

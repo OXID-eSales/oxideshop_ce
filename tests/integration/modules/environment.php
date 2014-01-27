@@ -48,9 +48,9 @@ class Environment
     public function clean()
     {
         $oDb = oxDb::getDb();
-        $oDb->query( 'TRUNCATE oxconfig' );
-        $oDb->query( 'TRUNCATE oxconfigdisplay' );
-        $oDb->query( 'TRUNCATE oxtplblocks' );
+        $oDb->execute( "DELETE FROM `oxconfig` WHERE `oxmodule` LIKE 'module:%'" );
+        $oDb->execute( 'TRUNCATE `oxconfigdisplay`' );
+        $oDb->execute( 'TRUNCATE `oxtplblocks`' );
     }
 
     /**

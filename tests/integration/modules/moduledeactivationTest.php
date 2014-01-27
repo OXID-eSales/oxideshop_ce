@@ -50,7 +50,7 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
                         'oxarticle' => 'with_everything/myarticle',
                         'oxuser' => 'with_everything/myuser',
                     ),
-                    'files' => '',
+                    'files' =>  array(),
                     'settings' => array(
                         array('group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true'),
                         array('group' => 'my_displayname',  'name' => 'sDisplayName',   'type' => 'str',  'value' => 'Some name'),
@@ -75,53 +75,72 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
         $oModule->load( $sModuleId );
         $oModule->deactivate();
 
-        //$aSettings = $oModule->getInfo("settings");
         $this->_runAsserts( $aResultToAsserts, $sModuleId );
     }
 
     private function _runAsserts( $aExpectedResult, $sModuleId )
     {
-        $this->_assertTemplates( $aExpectedResult, $sModuleId );
-        $this->_assertBlocks(  $aExpectedResult );
         $this->_assertExtensions( $aExpectedResult );
-        //$this->_assertConfigs( $aExpectedResult, $sModuleId );
+        $this->_assertBlocks( $aExpectedResult );
+        $this->_assertTemplates( $aExpectedResult, $sModuleId );
+        $this->_assertFiles( $aExpectedResult, $sModuleId  );
+        $this->_assertConfigs( $aExpectedResult, $sModuleId );
     }
 
-    private function _assertTemplates( $aExpectedResult, $sModule )
+    private function _assertTemplates( $aExpectedResult, $sModuleId )
     {
-        $aTemplates = $aExpectedResult['templates'];
+        $aExpectedTemplates = $aExpectedResult['templates'];
         $aTemplatesToCheck = $this->getConfig()->getConfigParam( 'aModuleTemplates' );
-        $aTemplatesToCheck = is_null( $aTemplatesToCheck[$sModule] ) ? array() : $aTemplatesToCheck[$sModule];
+        $aTemplatesToCheck = is_null( $aTemplatesToCheck[$sModuleId] ) ? array() : $aTemplatesToCheck[$sModuleId];
 
-        $this->assertSame( $aTemplates, $aTemplatesToCheck );
+        $this->assertSame( $aExpectedTemplates, $aTemplatesToCheck, 'Module Templates were not cleared' );
     }
 
     private function _assertBlocks( $aExpectedResult )
     {
-        $aBlocks = $aExpectedResult['blocks'];
+        $aExpectedBlocks = $aExpectedResult['blocks'];
         $oDb = oxDb::getDb();
-        $aBlocksToCheck = $oDb->getAll( "select * from oxtplblocks" );
+        $aBlocksToCheck = $oDb->getAll( 'select * from oxtplblocks' );
 
-        $this->assertSame( $aBlocks, $aBlocksToCheck );
+        $this->assertSame( $aExpectedBlocks, $aBlocksToCheck, 'Module Blocks were not cleared' );
     }
 
     private function _assertExtensions( $aExpectedResult )
     {
+        $aExpectedExtensions = $aExpectedResult['extend'];
+        $aExpectedDisabledModules = $aExpectedResult['disabledModules'];
+
         $aExtensionsToCheck = $this->getConfig()->getConfigParam( 'aModules' );
         $aDisabledModules = $this->getConfig()->getConfigParam( 'aDisabledModules' );
 
-        $this->assertSame( $aExpectedResult['extend'], $aExtensionsToCheck );
-        $this->assertEquals( $aExpectedResult['disabledModules'], $aDisabledModules );
+        $this->assertSame( $aExpectedExtensions, $aExtensionsToCheck, 'Extensions were changed on deactivation' );
+        $this->assertEquals( $aExpectedDisabledModules, $aDisabledModules, 'Module does not appear among disabled modules' );
     }
 
 
-    private function _assertFiles()
+    private function _assertFiles( $aExpectedResult, $sModuleId )
     {
+        $aExpectedFiles = $aExpectedResult['files'];
+        $aModuleFilesToCheck = $this->getConfig()->getConfigParam( 'aModuleFiles' );
+        $aModuleFilesToCheck = is_null( $aModuleFilesToCheck[$sModuleId] ) ? array() : $aModuleFilesToCheck[$sModuleId];
+
+        $this->assertSame( $aExpectedFiles, $aModuleFilesToCheck, 'Module files were not cleared on deactivation' );
     }
 
 
     private function _assertConfigs( $aExpectedResult, $sModuleId )
     {
+        $aExpectedConfigs = $aExpectedResult['settings'];
+        $oDb = oxDb::getDb(  );
+        $aConfigsToCheck = $oDb->getAll(
+            "select c.oxvarname as `name`
+            from  oxconfig c inner join oxconfigdisplay d
+                on c.oxvarname = d.oxcfgvarname  and c.oxmodule = d.oxcfgmodule
+            where oxmodule = 'module:{$sModuleId}'" );
+
+        $this->assertEquals( count($aExpectedConfigs), count($aConfigsToCheck), 'Number of config settings changed on deactivation' );
     }
 
+
 }
+ 

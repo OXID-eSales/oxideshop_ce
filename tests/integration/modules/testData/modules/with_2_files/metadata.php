@@ -38,7 +38,7 @@ $aModule = array(
     'version'      => '1.0',
     'author'       => 'OXID eSales AG',
     'files' => array(
-        'myException'  => 'with_2_files/core/exception/myexception.php',
-        'myConnection' => 'with_2_files/core/exception/myconnection.php',
+        'myexception'  => 'with_2_files/core/exception/myexception.php',
+        'myconnection' => 'with_2_files/core/exception/myconnection.php',
     ),
 );

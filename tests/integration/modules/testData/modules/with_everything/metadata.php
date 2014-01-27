@@ -48,7 +48,6 @@ $aModule = array(
     ),
     'blocks' => array(
         array('template' => 'page/checkout/basket.tpl',  'block'=>'basket_btn_next_top',    'file'=>'/views/blocks/page/checkout/myexpresscheckout.tpl'),
-        array('template' => 'page/checkout/basket.tpl',  'block'=>'basket_btn_next_bottom', 'file'=>'/views/blocks/page/checkout/myexpresscheckout.tpl'),
         array('template' => 'page/checkout/payment.tpl', 'block'=>'select_payment',         'file'=>'/views/blocks/page/checkout/mypaymentselector.tpl'),
     ),
     'events'       => array(
@@ -60,8 +59,8 @@ $aModule = array(
         'user_connections.tpl'   => 'with_everything/views/tpl/user_connections.tpl',
     ),
     'files' => array(
-        'myException'  => 'with_everything/core/exception/myexception.php',
-        'myConnection' => 'with_everything/core/exception/myconnection.php',
+        'myexception'  => 'with_everything/core/exception/myexception.php',
+        'myconnection' => 'with_everything/core/exception/myconnection.php',
     ),
     'settings' => array(
         array('group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true'),

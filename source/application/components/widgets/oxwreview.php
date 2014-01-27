@@ -20,6 +20,7 @@
  * @package   views
  * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
+ * @version   SVN: $Id: oxwarticledetails.php 56456 13.7.12 11.20Z andrius.silgalis $
  */
 
 /**

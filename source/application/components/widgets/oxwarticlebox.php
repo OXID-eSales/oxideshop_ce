@@ -91,6 +91,8 @@ class oxwArticleBox extends oxWidget
      * Sets box product
      *
      * @param oxArticle $oArticle Box product
+     *
+     * @return null
      */
     public function setProduct( $oArticle )
     {
@@ -251,8 +253,8 @@ class oxwArticleBox extends oxWidget
     /**
      * Appends dyn params to url.
      *
-     * @param $sAddDynParams
-     * @param $oArticle oxArticle
+     * @param string    $sAddDynParams Dyn params
+     * @param oxArticle $oArticle      article object
      *
      * @return bool
      */
@@ -275,7 +277,7 @@ class oxwArticleBox extends oxWidget
     /**
      * Returns prepared article by id.
      *
-     * @param $sArticleId
+     * @param string $sArticleId article id
      *
      * @return oxArticle
      */

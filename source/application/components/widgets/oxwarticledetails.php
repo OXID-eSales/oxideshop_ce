@@ -22,6 +22,11 @@
  * @version   SVN: $Id: oxwarticledetails.php 56456 13.7.12 11.20Z tadas.rimkus $
  */
 
+/**
+ * Class oxwArticleDetails
+ *
+ * Article details widget is detailed and defined here
+ */
 class oxwArticleDetails extends oxWidget
 {
     /**
@@ -930,6 +935,8 @@ class oxwArticleDetails extends oxWidget
 
     /**
      * Set item sorting for widget based of retrieved parameters
+     *
+     * @return null
      */
     protected function _setSortingParameters()
     {
@@ -959,7 +966,7 @@ class oxwArticleDetails extends oxWidget
 
         if ( !$sCatId && $oProduct->getCategory() ) {
             $oCategory = $oProduct->getCategory();
-        }else {
+        } else {
             $oCategory->load( $sCatId );
         }
         $this->_setSortingParameters();
@@ -1007,8 +1014,8 @@ class oxwArticleDetails extends oxWidget
     /**
      * Runs additional checks for article.
      *
-     * @param $myUtils
-     * @param $myConfig
+     * @param object $myUtils  - my utilities
+     * @param object $myConfig - my config
      *
      * @return null
      */

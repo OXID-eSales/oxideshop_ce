@@ -81,6 +81,35 @@ class oxcmp_user extends oxView
                                         'oxwServiceMenu',
                                         );
     /**
+     * Active login value
+     *
+     * @var bool
+     */
+    protected $_blActiveLogin = false;
+
+    /**
+     * Sets active login value
+     *
+     * @param boolean $blActiveLogin active login value
+     *
+     * @return null
+     */
+    protected function _setActiveLogin( $blActiveLogin )
+    {
+        $this->_blActiveLogin = $blActiveLogin;
+    }
+
+    /**
+     * Returns active login value
+     *
+     * @return bool
+     */
+    protected function _getActiveLogin()
+    {
+        return $this->_blActiveLogin;
+    }
+
+    /**
      * Sets oxcmp_oxuser::blIsComponent = true, fetches user error
      * code and sets it to default - 0. Executes parent::init().
      *
@@ -443,6 +472,7 @@ class oxcmp_user extends oxView
     public function createUser()
     {
         $blActiveLogin = $this->getParent()->isEnabledPrivateSales();
+        $this->_setActiveLogin( $blActiveLogin );
 
         $myConfig = $this->getConfig();
         if ( $blActiveLogin && !oxConfig::getParameter( 'ord_agb' ) && $myConfig->getConfigParam( 'blConfirmAGB' ) ) {
@@ -522,30 +552,11 @@ class oxcmp_user extends oxView
             return false;
         }
 
-        if ( !$blActiveLogin ) {
-
-                oxSession::setVar( 'usr', $oUser->getId() );
-                $this->_afterLogin( $oUser );
-
-
-            // order remark
-            //V #427: order remark for new users
-            $sOrderRemark = oxConfig::getParameter( 'order_remark', true );
-            if ( $sOrderRemark ) {
-                oxSession::setVar( 'ordrem', $sOrderRemark );
-            }
-        }
+        $this->_setOrderRemark( $oUser );
 
         // send register eMail
         //TODO: move into user
-        if ( (int) oxConfig::getParameter( 'option' ) == 3 ) {
-            $oxEMail = oxNew( 'oxemail' );
-            if ( $blActiveLogin ) {
-                $oxEMail->sendRegisterConfirmEmail( $oUser );
-            } else {
-                $oxEMail->sendRegisterEmail( $oUser );
-            }
-        }
+        $this->_sendRegistrationEmail( $oUser );
 
         // new registered
         $this->_blIsNewUser = true;
@@ -752,6 +763,51 @@ class oxcmp_user extends oxView
         $sRe = oxSession::getVar( 're' );
         if ( !$sRe && ( $sReNew = oxConfig::getParameter( 're' ) ) ) {
             oxSession::setVar( 're', $sReNew );
+        }
+    }
+
+    /**
+     * Sets order remark session variable if active login is true
+     *
+     * @param object $oUser user object
+     *
+     * @return null
+     */
+    public function _setOrderRemark( $oUser )
+    {
+        $blActiveLogin = $this->_getActiveLogin();
+        if ( !$blActiveLogin ) {
+
+            oxRegistry::getSession()->setVariable( 'usr', $oUser->getId() );
+            $this->_afterLogin( $oUser );
+
+
+            // order remark
+            //V #427: order remark for new users
+            $sOrderRemark = oxRegistry::getConfig()->getRequestParameter( 'order_remark', true );
+            if ( $sOrderRemark ) {
+                oxRegistry::getSession()->setVariable( 'ordrem', $sOrderRemark );
+            }
+        }
+    }
+
+    /**
+     * Sends registration email if option parameter is set to 3
+     *
+     * @param object $oUser user object
+     *
+     * @return false
+     */
+    public function _sendRegistrationEmail( $oUser )
+    {
+        $blActiveLogin = $this->_getActiveLogin();
+        if ( (int) oxRegistry::getConfig()->getRequestParameter( 'option' ) == 3 ) {
+            $oxEMail = oxNew( 'oxemail' );
+            if ( $blActiveLogin ) {
+                $oxEMail->sendRegisterConfirmEmail( $oUser );
+            } else {
+                $oxEMail->sendRegisterEmail( $oUser );
+            }
         }
     }
 }

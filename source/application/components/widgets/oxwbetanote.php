@@ -56,7 +56,9 @@ class oxwBetaNote extends oxWidget
     /**
      * Sets beta note link
      *
-     * @param $sLink string link to set
+     * @param string $sLink Bet note link value
+     *
+     * @return null
      */
     public function setBetaNoteLink( $sLink )
     {

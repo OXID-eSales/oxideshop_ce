@@ -658,6 +658,8 @@ class Unit_Core_oxModuleTest extends OxidTestCase
      */
     public function testDeactivate()
     {
+        $this->markTestSkipped('after integration test implementation remove this test');
+
         $oConfig = $this->getMock( 'oxConfig', array('saveShopConfVar', 'setConfigParam') );
         $oConfig->expects( $this->once() )->method('saveShopConfVar')->with($this->equalTo("arr"), $this->equalTo("aDisabledModules"), $this->equalTo(array("testId1", "testId2")) );
         $oConfig->expects( $this->once() )->method('setConfigParam')->with($this->equalTo("aDisabledModules"), $this->equalTo(array("testId1", "testId2")) );
@@ -678,6 +680,8 @@ class Unit_Core_oxModuleTest extends OxidTestCase
      */
     public function testDeactivateDuplicate()
     {
+        $this->markTestSkipped('after integration test implementation remove this test');
+
         $oConfig = $this->getMock( 'oxConfig', array('saveShopConfVar', 'setConfigParam') );
         $oConfig->expects( $this->once() )->method('saveShopConfVar')->with($this->equalTo("arr"), $this->equalTo("aDisabledModules"), $this->equalTo(array("testId1")) );
         $oConfig->expects( $this->once() )->method('setConfigParam')->with($this->equalTo("aDisabledModules"), $this->equalTo(array("testId1")) );

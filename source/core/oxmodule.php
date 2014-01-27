@@ -469,9 +469,12 @@ class oxModule extends oxSuperCfg
             //resets cache
             $this->_resetCache();
 
+            //removing recoverable options
             $this->_deleteBlock( $sModuleId );
-
             $this->_deleteTemplateFiles( $sModuleId );
+            $this->_deleteModuleFiles( $sModuleId );
+            $this->_deleteModuleEvents( $sModuleId );
+            $this->_deleteModuleVersions( $sModuleId );
 
 
             $blResult = true;
@@ -830,12 +833,8 @@ class oxModule extends oxSuperCfg
      *
      * @return null
      */
-    protected function _deleteTemplateFiles( $sModuleId = null )
+    protected function _deleteTemplateFiles( $sModuleId )
     {
-        if (is_null($sModuleId)) {
-            $sModuleId = $this->getId();
-        }
-
         $aTemplates = $this->getModuleTemplates();
         unset( $aTemplates[$sModuleId] );
 
@@ -864,6 +863,22 @@ class oxModule extends oxSuperCfg
         $this->_saveToConfig( 'aModuleVersions', $aVersions );
     }
 
+
+    /**
+     * Removes module versions
+     *
+     * @param string $sModuleId Module id
+     *
+     * @return null
+     */
+    protected function _deleteModuleVersions( $sModuleId )
+    {
+        $aVersions = $this->getModuleVersions();
+        unset( $aVersions[$sModuleId] );
+
+        $this->_saveToConfig( 'aModuleVersions', $aVersions );
+    }
+
     /**
      * Add module events to config.
      *
@@ -887,6 +902,21 @@ class oxModule extends oxSuperCfg
     }
 
     /**
+     * Removes module events
+     *
+     * @param string $sModuleId Module id
+     *
+     * @return null
+     */
+    protected function _deleteModuleEvents( $sModuleId )
+    {
+        $aEvents = $this->getModuleEvents();
+        unset( $aEvents[$sModuleId] );
+
+        $this->_saveToConfig( 'aModuleEvents', $aEvents );
+    }
+
+    /**
      * Add module files to config for auto loader.
      *
      * @param array  $aModuleFiles Module files array
@@ -904,6 +934,21 @@ class oxModule extends oxSuperCfg
         if ( is_array($aModuleFiles) ) {
             $aFiles[$sModuleId] = array_change_key_case($aModuleFiles, CASE_LOWER);
         }
+
+        $this->_saveToConfig( 'aModuleFiles', $aFiles );
+    }
+
+    /**
+     * Add module files
+     *
+     * @param string $sModuleId Module id
+     *
+     * @return null
+     */
+    protected function _deleteModuleFiles( $sModuleId )
+    {
+        $aFiles = $this->getModuleFiles();
+        unset( $aFiles[$sModuleId] );
 
         $this->_saveToConfig( 'aModuleFiles', $aFiles );
     }

@@ -55,9 +55,10 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
                         array('group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true'),
                         array('group' => 'my_displayname',  'name' => 'sDisplayName',   'type' => 'str',  'value' => 'Some name'),
                     ),
-                    'templates' => array(),
                     'disabledModules' => array( 'with_everything' ),
+                    'templates' => array(),
                     'versions' => array(),
+                    'events' => array(),
                 )
             ),
         );
@@ -72,6 +73,7 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
     {
         $oModuleEnvironment = new Environment();
         $oModuleEnvironment->prepare( $aInstallModules );
+
         $oModule = new oxModule();
         $oModule->load( $sModuleId );
         $oModule->deactivate();
@@ -87,12 +89,13 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
      */
     private function _runAsserts( $aExpectedResult, $sModuleId )
     {
-        $this->_assertExtensions( $aExpectedResult );
         $this->_assertBlocks( $aExpectedResult );
-        $this->_assertTemplates( $aExpectedResult, $sModuleId );
+        $this->_assertExtensions( $aExpectedResult );
         $this->_assertFiles( $aExpectedResult, $sModuleId  );
+        $this->_assertEvents( $aExpectedResult, $sModuleId );
         $this->_assertConfigs( $aExpectedResult, $sModuleId );
         $this->_assertVersions( $aExpectedResult, $sModuleId );
+        $this->_assertTemplates( $aExpectedResult, $sModuleId );
     }
 
     /**
@@ -191,5 +194,20 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
         $this->assertSame( $aExpectedVersions, $aModuleVersionsToCheck, 'Module versions were not cleared on deactivation' );
     }
 
+
+    /**
+     * Asserts that module version match expected version
+     *
+     * @param $aExpectedResult
+     * @param $sModuleId
+     */
+    private function _assertEvents( $aExpectedResult, $sModuleId )
+    {
+        $aExpectedEvents = $aExpectedResult['events'];
+        $aModuleEventsToCheck = $this->getConfig()->getConfigParam( 'aModuleEvents' );
+      //  $aModuleEventsToCheck = is_null( $aModuleEventsToCheck[$sModuleId] ) ? array() : $aModuleEventsToCheck[$sModuleId];
+
+        $this->assertSame( $aExpectedEvents, $aModuleEventsToCheck, 'Module events were not cleared on deactivation' );
+    }
 }
  

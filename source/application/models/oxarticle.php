@@ -3749,27 +3749,9 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             }
 
             //COPY THE VALUE
-            if ($this->_isFieldEmpty($sCopyFieldName) || in_array( $sCopyFieldName, $this->_aCopyParentField ) ) {
+            if ( $this->_isFieldEmpty($sCopyFieldName) ) {
                 $this->$sCopyFieldName = clone $oParentArticle->$sCopyFieldName;
             }
-
-            /*
-            //COPY THE VALUE
-            // assigning images from parent only if variant has no master image (#1807)
-            if ( stristr($sCopyFieldName, '_oxthumb') || stristr($sCopyFieldName, '_oxicon') ) {
-                if ( $this->_isFieldEmpty( $sCopyFieldName ) && !$this->_hasMasterImage( 1 ) ) {
-                    $this->$sCopyFieldName = clone $oParentArticle->$sCopyFieldName;
-                }
-            } elseif ( stristr($sCopyFieldName, '_oxzoom') ) {
-                // for zoom images checking master image with specified index
-                // assign from parent only if no pictures to variant are added
-                $iIndex = (int) str_ireplace( "oxarticles__oxzoom", "", $sFieldName );
-                if ( $this->_isFieldEmpty( $sCopyFieldName ) && !$this->_hasMasterImage( $iIndex ) && !$this->_hasMasterImage( 1 ) ) {
-                    $this->$sCopyFieldName = clone $oParentArticle->$sCopyFieldName;
-                }
-            } elseif ($this->_isFieldEmpty($sCopyFieldName) || in_array( $sCopyFieldName, $this->_aCopyParentField ) ) {
-                $this->$sCopyFieldName = clone $oParentArticle->$sCopyFieldName;
-            }*/
         }
     }
 

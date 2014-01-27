@@ -57,6 +57,7 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
                     ),
                     'templates' => array(),
                     'disabledModules' => array( 'with_everything' ),
+                    'versions' => array(),
                 )
             ),
         );
@@ -78,6 +79,12 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
         $this->_runAsserts( $aResultToAsserts, $sModuleId );
     }
 
+    /**
+     * Runs all asserts
+     *
+     * @param $aExpectedResult
+     * @param $sModuleId
+     */
     private function _runAsserts( $aExpectedResult, $sModuleId )
     {
         $this->_assertExtensions( $aExpectedResult );
@@ -85,8 +92,15 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
         $this->_assertTemplates( $aExpectedResult, $sModuleId );
         $this->_assertFiles( $aExpectedResult, $sModuleId  );
         $this->_assertConfigs( $aExpectedResult, $sModuleId );
+        $this->_assertVersions( $aExpectedResult, $sModuleId );
     }
 
+    /**
+     * Asserts that module templates match expected templates
+     *
+     * @param $aExpectedResult
+     * @param $sModuleId
+     */
     private function _assertTemplates( $aExpectedResult, $sModuleId )
     {
         $aExpectedTemplates = $aExpectedResult['templates'];
@@ -96,6 +110,11 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
         $this->assertSame( $aExpectedTemplates, $aTemplatesToCheck, 'Module Templates were not cleared' );
     }
 
+    /**
+     * Asserts that module blocks match expected blocks
+     *
+     * @param $aExpectedResult
+     */
     private function _assertBlocks( $aExpectedResult )
     {
         $aExpectedBlocks = $aExpectedResult['blocks'];
@@ -105,6 +124,11 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
         $this->assertSame( $aExpectedBlocks, $aBlocksToCheck, 'Module Blocks were not cleared' );
     }
 
+    /**
+     * Asserts that module extensions match expected extensions
+     *
+     * @param $aExpectedResult
+     */
     private function _assertExtensions( $aExpectedResult )
     {
         $aExpectedExtensions = $aExpectedResult['extend'];
@@ -117,7 +141,12 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
         $this->assertEquals( $aExpectedDisabledModules, $aDisabledModules, 'Module does not appear among disabled modules' );
     }
 
-
+    /**
+     * Asserts that module files match expected files
+     *
+     * @param $aExpectedResult
+     * @param $sModuleId
+     */
     private function _assertFiles( $aExpectedResult, $sModuleId )
     {
         $aExpectedFiles = $aExpectedResult['files'];
@@ -128,6 +157,12 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
     }
 
 
+    /**
+     * Asserts that module configs match expected configs
+     *
+     * @param $aExpectedResult
+     * @param $sModuleId
+     */
     private function _assertConfigs( $aExpectedResult, $sModuleId )
     {
         $aExpectedConfigs = $aExpectedResult['settings'];
@@ -141,6 +176,20 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
         $this->assertEquals( count($aExpectedConfigs), count($aConfigsToCheck), 'Number of config settings changed on deactivation' );
     }
 
+    /**
+     * Asserts that module version match expected version
+     *
+     * @param $aExpectedResult
+     * @param $sModuleId
+     */
+    private function _assertVersions( $aExpectedResult, $sModuleId )
+    {
+        $aExpectedVersions = $aExpectedResult['versions'];
+        $aModuleVersionsToCheck = $this->getConfig()->getConfigParam( 'aModuleVersions' );
+        $aModuleVersionsToCheck = is_null( $aModuleVersionsToCheck[$sModuleId] ) ? array() : $aModuleVersionsToCheck[$sModuleId];
+
+        $this->assertSame( $aExpectedVersions, $aModuleVersionsToCheck, 'Module versions were not cleared on deactivation' );
+    }
 
 }
  

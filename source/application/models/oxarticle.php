@@ -508,7 +508,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     /**
      * Checks whether object is in list or not
      * It's needed for oxArticle so that it can pass this to widgets
-
+     *
      * @return bool
      */
     public function isInList()
@@ -1346,79 +1346,75 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     protected function _loadVariantList( $blSimple, $blRemoveNotOrderables = true, $blForceCoreTable = null )
     {
         $oVariants = array();
-        if ( ( $sId = $this->getId() ) ) {
-            //do not load me as a parent later
-            self::$_aLoadedParents[$sId . "_" . $this->getLanguage()] = $this;
+        $sId = $this->getId();
 
-            $myConfig = $this->getConfig();
+        if (!$sId) {
+            return $oVariants;
+        }
 
-            if ( !$this->_blLoadVariants ||
-                ( !$this->isAdmin() && !$myConfig->getConfigParam( 'blLoadVariants') ) ||
-                ( !$this->isAdmin() && !$this->oxarticles__oxvarcount->value ) ) {
-                return $oVariants;
+        //do not load me as a parent later
+        self::$_aLoadedParents[$sId . "_" . $this->getLanguage()] = $this;
+
+        $myConfig = $this->getConfig();
+
+        if ( !$this->_blLoadVariants ||
+            ( !$this->isAdmin() && !$myConfig->getConfigParam( 'blLoadVariants') ) ||
+            ( !$this->isAdmin() && !$this->oxarticles__oxvarcount->value ) ) {
+            return $oVariants;
+        }
+
+        // cache
+        $sCacheKey = $blSimple ? "simple" : "full";
+        if ( $blRemoveNotOrderables ) {
+            if ( isset( $this->_aVariants[$sCacheKey] ) ) {
+               return $this->_aVariants[$sCacheKey];
+            } else {
+                $this->_aVariants[$sCacheKey] = & $oVariants;
             }
-
-            // cache
-            $sCacheKey = $blSimple ? "simple" : "full";
-            if ( $blRemoveNotOrderables ) {
-                if ( isset( $this->_aVariants[$sCacheKey] ) ) {
-                   return $this->_aVariants[$sCacheKey];
-                } else {
-                    $this->_aVariants[$sCacheKey] = & $oVariants;
-                }
-            } elseif ( !$blRemoveNotOrderables ) {
-                if ( isset( $this->_aVariantsWithNotOrderables[$sCacheKey] ) ) {
-                    return $this->_aVariantsWithNotOrderables[$sCacheKey];
-                } else {
-                    $this->_aVariantsWithNotOrderables[$sCacheKey] = & $oVariants;
-                }
+        } elseif ( !$blRemoveNotOrderables ) {
+            if ( isset( $this->_aVariantsWithNotOrderables[$sCacheKey] ) ) {
+                return $this->_aVariantsWithNotOrderables[$sCacheKey];
+            } else {
+                $this->_aVariantsWithNotOrderables[$sCacheKey] = & $oVariants;
             }
+        }
 
-            if ( ( $this->_blHasVariants = $this->_hasAnyVariant( $blForceCoreTable ) ) ) {
+        if ( ( $this->_blHasVariants = $this->_hasAnyVariant( $blForceCoreTable ) ) ) {
 
-                //load simple variants for lists
-                if ( $blSimple ) {
-                    $oVariants = oxNew( 'oxsimplevariantlist' );
-                    $oVariants->setParent( $this );
-                } else {
-                    //loading variants
-                    $oVariants = oxNew( 'oxarticlelist' );
-                    $oVariants->getBaseObject()->modifyCacheKey( '_variants' );
-                }
+            $oVariants = $this->loadSimpleVariantsForLists( $blSimple );
 
-                startProfile("selectVariants");
-                $blUseCoreTable = (bool) $blForceCoreTable;
-                $oBaseObject = $oVariants->getBaseObject();
-                $oBaseObject->setLanguage( $this->getLanguage() );
+            startProfile("selectVariants");
+            $blUseCoreTable = (bool) $blForceCoreTable;
+            $oBaseObject = $oVariants->getBaseObject();
+            $oBaseObject->setLanguage( $this->getLanguage() );
 
 
-                $sArticleTable = $this->getViewName( $blUseCoreTable );
+            $sArticleTable = $this->getViewName( $blUseCoreTable );
 
-                $sSelect = "select ".$oBaseObject->getSelectFields( $blUseCoreTable )." from $sArticleTable where " .
-                           $this->getActiveCheckQuery( $blUseCoreTable ) .
-                           $this->getVariantsQuery( $blRemoveNotOrderables, $blUseCoreTable ) .
-                           " order by $sArticleTable.oxsort";
+            $sSelect = "select ".$oBaseObject->getSelectFields( $blUseCoreTable )." from $sArticleTable where " .
+                       $this->getActiveCheckQuery( $blUseCoreTable ) .
+                       $this->getVariantsQuery( $blRemoveNotOrderables, $blUseCoreTable ) .
+                       " order by $sArticleTable.oxsort";
 
 
-                $oVariants->selectString( $sSelect );
+            $oVariants->selectString( $sSelect );
 
-                //if this is multidimensional variants, make additional processing
-                if ( $myConfig->getConfigParam( 'blUseMultidimensionVariants' ) ) {
-                    $oMdVariants = oxNew( "oxVariantHandler" );
-                    $this->_blHasMdVariants = $oMdVariants->isMdVariant( $oVariants->current() );
-                }
-                stopProfile("selectVariants");
+            //if this is multidimensional variants, make additional processing
+            if ( $myConfig->getConfigParam( 'blUseMultidimensionVariants' ) ) {
+                $oMdVariants = oxNew( "oxVariantHandler" );
+                $this->_blHasMdVariants = $oMdVariants->isMdVariant( $oVariants->current() );
             }
+            stopProfile("selectVariants");
+        }
 
-            //if we have variants then depending on config option the parent may be non buyable
-            if ( !$myConfig->getConfigParam( 'blVariantParentBuyable' ) && $this->_blHasVariants ) {
-                $this->_blNotBuyableParent = true;
-            }
+        //if we have variants then depending on config option the parent may be non buyable
+        if ( !$myConfig->getConfigParam( 'blVariantParentBuyable' ) && $this->_blHasVariants ) {
+            $this->_blNotBuyableParent = true;
+        }
 
-            //if we have variants, but all variants are incative means article may be non buyable (depends on config option)
-            if ( !$myConfig->getConfigParam( 'blVariantParentBuyable' ) && count( $oVariants ) == 0 && $this->_blHasVariants ) {
-                $this->_blNotBuyable = true;
-            }
+        //if we have variants, but all variants are incative means article may be non buyable (depends on config option)
+        if ( !$myConfig->getConfigParam( 'blVariantParentBuyable' ) && count( $oVariants ) == 0 && $this->_blHasVariants ) {
+            $this->_blNotBuyable = true;
         }
 
         return $oVariants;
@@ -1597,8 +1593,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     /**
      * Returns ID's of categories where this article is assigned
      *
-     * @param string $sOXID   Article Id for which category list should be returned
-     * @param bool $blActCats select categories if all parents are active
+     * @param string $sOXID     Article Id for which category list should be returned
+     * @param bool   $blActCats select categories if all parents are active
      *
      * @return array
      */
@@ -5122,7 +5118,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     {
         $oDb = oxDb::getDb();
 
-        foreach( $this->_getCopyParentFields() as $sField ) {
+        foreach ( $this->_getCopyParentFields() as $sField ) {
             $sValue = isset( $this->$sField->value ) ? $this->$sField->value : 0;
             $sSqlSets[] = '`' . str_replace( 'oxarticles__', '', $sField )  . '` = ' . $oDb->quote( $sValue );
         }
@@ -5158,6 +5154,28 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
                 $this->$sField = new oxField ( $sParent->$sField->value );
             }
         }
+    }
+
+    /**
+     * Simple variant loader
+     *
+     * @param boolean $blSimple modifier for simple list
+     *
+     * @return object
+     */
+    protected function loadSimpleVariantsForLists( $blSimple )
+    {
+
+        if ( $blSimple ) {
+            $oVariants = oxNew( 'oxsimplevariantlist' );
+            $oVariants->setParent( $this );
+        } else {
+            //loading variants
+            $oVariants = oxNew( 'oxarticlelist' );
+            $oVariants->getBaseObject()->modifyCacheKey( '_variants' );
+        }
+
+        return $oVariants;
     }
 
 }

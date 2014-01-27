@@ -45,7 +45,7 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
 
                 // modules to be activated during test preparation
                 array(
-                    'extending_1_class', 'with_2_templates', 'with_2_files',
+                    'extending_1_class', 'with_2_templates', 'with_2_files', 'with_2_settings',
                     'extending_3_blocks','with_everything', 'with_events',
                 ),
 
@@ -71,6 +71,8 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
                         ),
                     ),
                     'settings' => array(
+                        array('group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true'),
+                        array('group' => 'my_displayname',  'name' => 'sDisplayName',   'type' => 'str',  'value' => 'Some name'),
                         array('group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true'),
                         array('group' => 'my_displayname',  'name' => 'sDisplayName',   'type' => 'str',  'value' => 'Some name'),
                     ),
@@ -134,31 +136,31 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
         $oValidator->setConfig( $this->getConfig() );
 
         if( isset( $aExpectedResult['blocks'] ) ){
-            $this->assertTrue( $oValidator->checkBlocks( $aExpectedResult['blocks']), 'Blocks do not match expectations' );
+            $this->assertTrue( $oValidator->checkBlocks( $aExpectedResult['blocks'] ), 'Blocks do not match expectations' );
         }
 
         if( isset( $aExpectedResult['extend'] ) ){
-            $this->assertTrue( $oValidator->checkExtensions( $aExpectedResult['extend']), 'Extensions do not match expectations' );
+            $this->assertTrue( $oValidator->checkExtensions( $aExpectedResult['extend'] ), 'Extensions do not match expectations' );
         }
 
         if( isset( $aExpectedResult['files'] ) ){
-            $this->assertTrue( $oValidator->checkFiles( $aExpectedResult['files']), 'Files do not match expectations' );
+            $this->assertTrue( $oValidator->checkFiles( $aExpectedResult['files'] ), 'Files do not match expectations' );
         }
 
         if( isset( $aExpectedResult['events'] ) ){
-            $this->assertTrue( $oValidator->checkEvents( $aExpectedResult['events']), 'Events do not match expectations' );
+            $this->assertTrue( $oValidator->checkEvents( $aExpectedResult['events'] ), 'Events do not match expectations' );
         }
 
         if( isset( $aExpectedResult['settings'] ) ){
-            $this->assertTrue( $oValidator->checkConfigs( $aExpectedResult['settings'], $sModuleId), 'Configs do not match expectations' );
+            $this->assertTrue( $oValidator->checkConfigs( $aExpectedResult['settings'] ), 'Configs do not match expectations' );
         }
 
         if( isset( $aExpectedResult['versions'] ) ){
-            $this->assertTrue( $oValidator->checkVersions( $aExpectedResult['versions']), 'Versions do not match expectations' );
+            $this->assertTrue( $oValidator->checkVersions( $aExpectedResult['versions'] ), 'Versions do not match expectations' );
         }
 
         if( isset( $aExpectedResult['templates'] ) ){
-            $this->assertTrue( $oValidator->checkTemplates( $aExpectedResult['templates']), 'Templates do not match expectations' );
+            $this->assertTrue( $oValidator->checkTemplates( $aExpectedResult['templates'] ), 'Templates do not match expectations' );
         }
     }
 

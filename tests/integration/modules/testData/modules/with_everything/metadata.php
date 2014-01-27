@@ -51,6 +51,10 @@ $aModule = array(
         array('template' => 'page/checkout/basket.tpl',  'block'=>'basket_btn_next_bottom', 'file'=>'/views/blocks/page/checkout/myexpresscheckout.tpl'),
         array('template' => 'page/checkout/payment.tpl', 'block'=>'select_payment',         'file'=>'/views/blocks/page/checkout/mypaymentselector.tpl'),
     ),
+    'events'       => array(
+        'onActivate'   => 'MyEvents::onActivate',
+        'onDeactivate' => 'MyEvents::onDeactivate'
+    ),
     'templates' => array(
         'order_special.tpl'      => 'with_everything/views/admin/tpl/order_special.tpl',
         'user_connections.tpl'   => 'with_everything/views/tpl/user_connections.tpl',

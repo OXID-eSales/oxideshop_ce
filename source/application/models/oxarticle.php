@@ -1383,28 +1383,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
             $oVariants = $this->loadSimpleVariantsForLists( $blSimple );
 
-            startProfile("selectVariants");
-            $blUseCoreTable = (bool) $blForceCoreTable;
-            $oBaseObject = $oVariants->getBaseObject();
-            $oBaseObject->setLanguage( $this->getLanguage() );
-
-
-            $sArticleTable = $this->getViewName( $blUseCoreTable );
-
-            $sSelect = "select ".$oBaseObject->getSelectFields( $blUseCoreTable )." from $sArticleTable where " .
-                       $this->getActiveCheckQuery( $blUseCoreTable ) .
-                       $this->getVariantsQuery( $blRemoveNotOrderables, $blUseCoreTable ) .
-                       " order by $sArticleTable.oxsort";
-
-
-            $oVariants->selectString( $sSelect );
-
-            //if this is multidimensional variants, make additional processing
-            if ( $myConfig->getConfigParam( 'blUseMultidimensionVariants' ) ) {
-                $oMdVariants = oxNew( "oxVariantHandler" );
-                $this->_blHasMdVariants = $oMdVariants->isMdVariant( $oVariants->current() );
-            }
-            stopProfile("selectVariants");
+            $oVariants = $this->_selectVariants( $blRemoveNotOrderables, $blForceCoreTable, $oVariants );
         }
 
         //if we have variants then depending on config option the parent may be non buyable
@@ -5165,15 +5144,54 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      */
     protected function loadSimpleVariantsForLists( $blSimple )
     {
-
         if ( $blSimple ) {
             $oVariants = oxNew( 'oxsimplevariantlist' );
             $oVariants->setParent( $this );
         } else {
-            //loading variants
             $oVariants = oxNew( 'oxarticlelist' );
             $oVariants->getBaseObject()->modifyCacheKey( '_variants' );
         }
+
+        return $oVariants;
+    }
+
+    /**
+     * Variant selection
+     *
+     * @param bool   $blRemoveNotOrderables option for removing variant which can't be ordered
+     * @param bool   $blForceCoreTable      option for forcing core table usage
+     * @param object $oVariants             variants
+     *
+     * @return object $oVariants
+     */
+    protected function _selectVariants( $blRemoveNotOrderables, $blForceCoreTable, $oVariants )
+    {
+        $myConfig = $this->getConfig();
+
+        startProfile( "selectVariants" );
+
+        $blUseCoreTable = (bool) $blForceCoreTable;
+        $oBaseObject    = $oVariants->getBaseObject();
+        $oBaseObject->setLanguage( $this->getLanguage() );
+
+
+        $sArticleTable = $this->getViewName( $blUseCoreTable );
+
+        $sSelect = "select " . $oBaseObject->getSelectFields( $blUseCoreTable ) . " from $sArticleTable where " .
+                   $this->getActiveCheckQuery( $blUseCoreTable ) .
+                   $this->getVariantsQuery( $blRemoveNotOrderables, $blUseCoreTable ) .
+                   " order by $sArticleTable.oxsort";
+
+
+        $oVariants->selectString( $sSelect );
+
+        //if this is multidimensional variants, make additional processing
+        if ( $myConfig->getConfigParam( 'blUseMultidimensionVariants' ) ) {
+            $oMdVariants            = oxNew( "oxVariantHandler" );
+            $this->_blHasMdVariants = $oMdVariants->isMdVariant( $oVariants->current() );
+        }
+
+        stopProfile( "selectVariants" );
 
         return $oVariants;
     }

@@ -95,11 +95,15 @@ class oxArticleList extends oxList
      */
     public function getHistoryArticles()
     {
-        if ($aArticlesIds = $this->getSession()->getVar('aHistoryArticles')) {
-            return $aArticlesIds;
+        $aResult = array();
+
+        if ($aArticlesIds = $this->getSession()->getVariable('aHistoryArticles')) {
+            $aResult = $aArticlesIds;
         } elseif ( $sArticlesIds = oxRegistry::get("oxUtilsServer")->getOxCookie('aHistoryArticles')) {
-            return explode('|', $sArticlesIds);
+            $aResult = explode('|', $sArticlesIds);
         }
+
+        return $aResult;
     }
 
     /**
@@ -112,7 +116,7 @@ class oxArticleList extends oxList
     public function setHistoryArticles($aArticlesIds)
     {
         if ($this->getSession()->getId()) {
-            oxSession::setVar('aHistoryArticles', $aArticlesIds);
+            $this->getSession()->setVariable('aHistoryArticles', $aArticlesIds);
             // clean cookie, if session started
             oxRegistry::get("oxUtilsServer")->setOxCookie('aHistoryArticles', '');
         } else {
@@ -555,7 +559,6 @@ class oxArticleList extends oxList
         $sArticleTable = getViewName('oxarticles');
 
         // longdesc field now is kept on different table
-        $sDescTable = '';
         $sDescJoin  = '';
         if ( is_array( $aSearchCols = $this->getConfig()->getConfigParam( 'aSearchCols' ) ) ) {
             if ( in_array( 'oxlongdesc', $aSearchCols ) || in_array( 'oxtags', $aSearchCols ) ) {
@@ -816,7 +819,7 @@ class oxArticleList extends oxList
             return;
         }
 
-        foreach ($aOrders as $iKey => $oOrder) {
+        foreach ($aOrders as $oOrder) {
             $aOrdersIds[] = $oOrder->getId();
         }
 
@@ -956,7 +959,7 @@ class oxArticleList extends oxList
             $oDb->commitTransaction();
 
             // recalculate oxvarminprice and oxvarmaxprice for parent
-            if( is_array($aUpdatedArticleIds) ) {
+            if ( is_array($aUpdatedArticleIds) ) {
                 foreach ($aUpdatedArticleIds as $sArticleId) {
                     $oArticle = oxNew('oxarticle');
                     $oArticle->load($sArticleId);
@@ -1147,7 +1150,7 @@ class oxArticleList extends oxList
 
         $oDb = oxDb::getDb();
         $myConfig = $this->getConfig();
-        $myUtils  = oxRegistry::getUtils();
+
         $sArticleTable = $this->getBaseObject()->getViewName();
 
         $aSearch = explode( ' ', $sSearchString);
@@ -1163,7 +1166,6 @@ class oxArticleList extends oxList
         }
 
         $aSearchCols = $myConfig->getConfigParam( 'aSearchCols' );
-        $oBaseObject = $this->getBaseObject();
         $myUtilsString = oxRegistry::get("oxUtilsString");
         foreach ( $aSearch as $sSearchString) {
 
@@ -1218,8 +1220,6 @@ class oxArticleList extends oxList
         $oBaseObject   = $this->getBaseObject();
         $sArticleTable = $oBaseObject->getViewName();
         $sSelectFields = $oBaseObject->getSelectFields();
-
-        $sSubSelect = "";
 
         $sSelect  = "select {$sSelectFields} from {$sArticleTable} where oxvarminprice >= 0 ";
         $sSelect .= $dPriceTo ? "and oxvarminprice <= " . (double)$dPriceTo . " " : " ";

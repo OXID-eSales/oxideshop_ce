@@ -23,6 +23,7 @@
  */
 
 require_once realpath(dirname(__FILE__).'/../../') . '/unit/OxidTestCase.php';
+require_once realpath( dirname(__FILE__) ) . '/environmentvalidator.php';
 require_once realpath( dirname(__FILE__) ) . '/environment.php';
 
 class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
@@ -41,26 +42,66 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
     {
         return array(
             array(
-                array( 'extending_1_class', 'with_2_templates', 'with_everything' ),
-                'with_everything',
+
+                // modules to be activated during test preparation
                 array(
-                    'blocks' => array(),
+                    'extending_1_class', 'with_2_templates', 'with_2_files',
+                    'extending_3_blocks','with_everything', 'with_events',
+                ),
+
+                // module that will be deactivated
+                'with_everything',
+
+                // environment asserts
+                array(
+                    'blocks' => array(
+                        array('template' => 'page/checkout/basket.tpl',  'block'=>'basket_btn_next_top',    'file'=>'/views/blocks/page/checkout/myexpresscheckout.tpl'),
+                        array('template' => 'page/checkout/basket.tpl',  'block'=>'basket_btn_next_bottom', 'file'=>'/views/blocks/page/checkout/myexpresscheckout.tpl'),
+                        array('template' => 'page/checkout/payment.tpl', 'block'=>'select_payment',         'file'=>'/views/blocks/page/checkout/mypaymentselector.tpl'),
+                    ),
                     'extend' => array(
                         'oxorder' => 'extending_1_class/myorder&with_everything/myorder1&with_everything/myorder2&with_everything/myorder3',
                         'oxarticle' => 'with_everything/myarticle',
                         'oxuser' => 'with_everything/myuser',
                     ),
-                    'files' =>  array(),
+                    'files' => array(
+                        'with_2_files' => array(
+                            'myexception'  => 'with_2_files/core/exception/myexception.php',
+                            'myconnection' => 'with_2_files/core/exception/myconnection.php',
+                        ),
+                    ),
                     'settings' => array(
                         array('group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true'),
                         array('group' => 'my_displayname',  'name' => 'sDisplayName',   'type' => 'str',  'value' => 'Some name'),
                     ),
-                    'disabledModules' => array( 'with_everything' ),
-                    'templates' => array(),
-                    'versions' => array(),
-                    'events' => array(),
+                    'disabledModules' => array(
+                        'with_everything'
+                    ),
+                    'templates' => array(
+                        'with_2_templates' => array(
+                            'order_special.tpl'      => 'with_2_templates/views/admin/tpl/order_special.tpl',
+                            'user_connections.tpl'   => 'with_2_templates/views/tpl/user_connections.tpl',
+                        ),
+                    ),
+                    'versions' => array(
+                        'extending_1_class' => '1.0',
+                        'with_2_templates' => '1.0',
+                        'with_2_files' => '1.0',
+                        'extending_3_blocks' => '1.0',
+                        'with_events' => '1.0',
+                        ),
+                    'events' => array(
+                        'extending_1_class' => null,
+                        'with_2_templates' => null,
+                        'with_2_files' => null,
+                        'extending_3_blocks' => null,
+                        'with_events' => array(
+                            'onActivate'   => 'MyEvents::onActivate',
+                            'onDeactivate' => 'MyEvents::onDeactivate'
+                        ),
+                    ),
                 )
-            ),
+            )
         );
     }
 
@@ -89,125 +130,38 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
      */
     private function _runAsserts( $aExpectedResult, $sModuleId )
     {
-        $this->_assertBlocks( $aExpectedResult );
-        $this->_assertExtensions( $aExpectedResult );
-        $this->_assertFiles( $aExpectedResult, $sModuleId  );
-        $this->_assertEvents( $aExpectedResult, $sModuleId );
-        $this->_assertConfigs( $aExpectedResult, $sModuleId );
-        $this->_assertVersions( $aExpectedResult, $sModuleId );
-        $this->_assertTemplates( $aExpectedResult, $sModuleId );
-    }
+        $oValidator = new EnvironmentValidator();
+        $oValidator->setConfig( $this->getConfig() );
 
-    /**
-     * Asserts that module templates match expected templates
-     *
-     * @param $aExpectedResult
-     * @param $sModuleId
-     */
-    private function _assertTemplates( $aExpectedResult, $sModuleId )
-    {
-        $aExpectedTemplates = $aExpectedResult['templates'];
-        $aTemplatesToCheck = $this->getConfig()->getConfigParam( 'aModuleTemplates' );
-        $aTemplatesToCheck = is_null( $aTemplatesToCheck[$sModuleId] ) ? array() : $aTemplatesToCheck[$sModuleId];
+        if( isset( $aExpectedResult['blocks'] ) ){
+            $this->assertTrue( $oValidator->checkBlocks( $aExpectedResult['blocks']), 'Blocks do not match expectations' );
+        }
 
-        $this->assertSame( $aExpectedTemplates, $aTemplatesToCheck, 'Module Templates were not cleared' );
-    }
+        if( isset( $aExpectedResult['extend'] ) ){
+            $this->assertTrue( $oValidator->checkExtensions( $aExpectedResult['extend']), 'Extensions do not match expectations' );
+        }
 
-    /**
-     * Asserts that module blocks match expected blocks
-     *
-     * @param $aExpectedResult
-     */
-    private function _assertBlocks( $aExpectedResult )
-    {
-        $aExpectedBlocks = $aExpectedResult['blocks'];
-        $oDb = oxDb::getDb();
-        $aBlocksToCheck = $oDb->getAll( 'select * from oxtplblocks' );
+        if( isset( $aExpectedResult['files'] ) ){
+            $this->assertTrue( $oValidator->checkFiles( $aExpectedResult['files']), 'Files do not match expectations' );
+        }
 
-        $this->assertSame( $aExpectedBlocks, $aBlocksToCheck, 'Module Blocks were not cleared' );
-    }
+        if( isset( $aExpectedResult['events'] ) ){
+            $this->assertTrue( $oValidator->checkEvents( $aExpectedResult['events']), 'Events do not match expectations' );
+        }
 
-    /**
-     * Asserts that module extensions match expected extensions
-     *
-     * @param $aExpectedResult
-     */
-    private function _assertExtensions( $aExpectedResult )
-    {
-        $aExpectedExtensions = $aExpectedResult['extend'];
-        $aExpectedDisabledModules = $aExpectedResult['disabledModules'];
+        if( isset( $aExpectedResult['settings'] ) ){
+            $this->assertTrue( $oValidator->checkConfigs( $aExpectedResult['settings'], $sModuleId), 'Configs do not match expectations' );
+        }
 
-        $aExtensionsToCheck = $this->getConfig()->getConfigParam( 'aModules' );
-        $aDisabledModules = $this->getConfig()->getConfigParam( 'aDisabledModules' );
+        if( isset( $aExpectedResult['versions'] ) ){
+            $this->assertTrue( $oValidator->checkVersions( $aExpectedResult['versions']), 'Versions do not match expectations' );
+        }
 
-        $this->assertSame( $aExpectedExtensions, $aExtensionsToCheck, 'Extensions were changed on deactivation' );
-        $this->assertEquals( $aExpectedDisabledModules, $aDisabledModules, 'Module does not appear among disabled modules' );
-    }
-
-    /**
-     * Asserts that module files match expected files
-     *
-     * @param $aExpectedResult
-     * @param $sModuleId
-     */
-    private function _assertFiles( $aExpectedResult, $sModuleId )
-    {
-        $aExpectedFiles = $aExpectedResult['files'];
-        $aModuleFilesToCheck = $this->getConfig()->getConfigParam( 'aModuleFiles' );
-        $aModuleFilesToCheck = is_null( $aModuleFilesToCheck[$sModuleId] ) ? array() : $aModuleFilesToCheck[$sModuleId];
-
-        $this->assertSame( $aExpectedFiles, $aModuleFilesToCheck, 'Module files were not cleared on deactivation' );
+        if( isset( $aExpectedResult['templates'] ) ){
+            $this->assertTrue( $oValidator->checkTemplates( $aExpectedResult['templates']), 'Templates do not match expectations' );
+        }
     }
 
 
-    /**
-     * Asserts that module configs match expected configs
-     *
-     * @param $aExpectedResult
-     * @param $sModuleId
-     */
-    private function _assertConfigs( $aExpectedResult, $sModuleId )
-    {
-        $aExpectedConfigs = $aExpectedResult['settings'];
-        $oDb = oxDb::getDb(  );
-        $aConfigsToCheck = $oDb->getAll(
-            "select c.oxvarname as `name`
-            from  oxconfig c inner join oxconfigdisplay d
-                on c.oxvarname = d.oxcfgvarname  and c.oxmodule = d.oxcfgmodule
-            where oxmodule = 'module:{$sModuleId}'" );
-
-        $this->assertEquals( count($aExpectedConfigs), count($aConfigsToCheck), 'Number of config settings changed on deactivation' );
-    }
-
-    /**
-     * Asserts that module version match expected version
-     *
-     * @param $aExpectedResult
-     * @param $sModuleId
-     */
-    private function _assertVersions( $aExpectedResult, $sModuleId )
-    {
-        $aExpectedVersions = $aExpectedResult['versions'];
-        $aModuleVersionsToCheck = $this->getConfig()->getConfigParam( 'aModuleVersions' );
-        $aModuleVersionsToCheck = is_null( $aModuleVersionsToCheck[$sModuleId] ) ? array() : $aModuleVersionsToCheck[$sModuleId];
-
-        $this->assertSame( $aExpectedVersions, $aModuleVersionsToCheck, 'Module versions were not cleared on deactivation' );
-    }
-
-
-    /**
-     * Asserts that module version match expected version
-     *
-     * @param $aExpectedResult
-     * @param $sModuleId
-     */
-    private function _assertEvents( $aExpectedResult, $sModuleId )
-    {
-        $aExpectedEvents = $aExpectedResult['events'];
-        $aModuleEventsToCheck = $this->getConfig()->getConfigParam( 'aModuleEvents' );
-      //  $aModuleEventsToCheck = is_null( $aModuleEventsToCheck[$sModuleId] ) ? array() : $aModuleEventsToCheck[$sModuleId];
-
-        $this->assertSame( $aExpectedEvents, $aModuleEventsToCheck, 'Module events were not cleared on deactivation' );
-    }
 }
  

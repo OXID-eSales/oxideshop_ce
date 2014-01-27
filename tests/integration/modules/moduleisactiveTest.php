@@ -38,7 +38,7 @@ class Integration_Modules_ModuleIsActiveTest extends OxidTestCase
     }
 
 
-    public function providerModuleDeactivation()
+    public function providerModuleIsActive()
     {
         return array(
             array(
@@ -57,13 +57,48 @@ class Integration_Modules_ModuleIsActiveTest extends OxidTestCase
                     'notActive' => array(),
                 )
             ),
+
+            array(
+                array( 'extending_1_class', 'extending_1_class_3_extensions', 'no_extending', 'with_2_templates', 'with_everything' ),
+                array( 'extending_1_class', 'extending_1_class_3_extensions', 'no_extending', 'with_2_templates', 'with_everything' ),
+                array(
+                    'active' => array(),
+                    'notActive' => array( 'extending_1_class', 'extending_1_class_3_extensions', 'no_extending', 'with_2_templates', 'with_everything' ),
+                )
+            ),
+
+            array(
+                array( 'extending_1_class', 'extending_1_class_3_extensions', 'no_extending', 'with_2_templates', 'with_everything' ),
+                array( 'extending_1_class', 'extending_1_class_3_extensions', 'no_extending', 'with_2_templates', 'with_everything' ),
+                array(
+                    'active' => array(),
+                    'notActive' => array( 'extending_1_class', 'extending_1_class_3_extensions', 'no_extending', 'with_2_templates', 'with_everything' ),
+                )
+            ),
+            array(
+                array( 'no_extending' ),
+                array(),
+                array(
+                    'active' => array( 'no_extending' ),
+                    'notActive' => array(),
+                )
+            ),
+            array(
+                array( 'no_extending' ),
+                array( 'no_extending' ),
+                array(
+                    'active' => array( ),
+                    'notActive' => array( 'no_extending' ),
+                )
+            ),
+
         );
     }
 
     /**
      * Tests if module was activated.
      *
-     * @dataProvider providerModuleDeactivation
+     * @dataProvider providerModuleIsActive
      */
     public function testIsActive( $aInstallModules, $aDeactivateModules, $aResultToAssert )
     {
@@ -88,6 +123,5 @@ class Integration_Modules_ModuleIsActiveTest extends OxidTestCase
             $this->assertFalse( $oModule->isActive());
         }
     }
-
-
 }
+ 

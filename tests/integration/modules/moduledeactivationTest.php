@@ -41,8 +41,9 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
     public function providerModuleDeactivation()
     {
         return array(
-            $this->with_everything_module_deactivated(),
-            $this->no_extending_module_deactivated(),
+            $this->caseSevenModulesPrepared_Deactivated_with_everything(),
+            $this->caseTwoModulesPrepared_Deactivated_with_everything(),
+            $this->caseEightModulesPrepared_Deactivated_no_extending(),
         );
     }
 
@@ -51,7 +52,7 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
      *
      * @return array
      */
-    private function with_everything_module_deactivated()
+    private function caseSevenModulesPrepared_Deactivated_with_everything()
     {
         return array(
 
@@ -119,11 +120,55 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
     }
 
     /**
+     * Data provider case with 2 modules installed and with_everything module deactivated
+     *
+     * @return array
+     */
+    private function caseTwoModulesPrepared_Deactivated_with_everything()
+    {
+        return array(
+
+            // modules to be activated during test preparation
+            array(
+                'with_everything', 'no_extending'
+            ),
+
+            // module that will be deactivated
+            'with_everything',
+
+            // environment asserts
+            array(
+                'blocks'          => array(),
+                'extend'          => array(
+                    'oxorder'   => 'with_everything/myorder1&with_everything/myorder2&with_everything/myorder3',
+                    'oxarticle' => 'with_everything/myarticle',
+                    'oxuser'    => 'with_everything/myuser',
+                ),
+                'files'           => array(),
+                'settings'        => array(
+                    array( 'group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true' ),
+                    array( 'group' => 'my_displayname', 'name' => 'sDisplayName', 'type' => 'str', 'value' => 'Some name' ),
+                ),
+                'disabledModules' => array(
+                    'with_everything'
+                ),
+                'templates'       => array(),
+                'versions'        => array(
+                    'no_extending'  => '1.0',
+                ),
+                'events'          => array(
+                    'no_extending'  => null,
+                ),
+            )
+        );
+    }
+
+    /**
      * Data provider case with 8 modules installed and no_extending module deactivated
      *
      * @return array
      */
-    private function no_extending_module_deactivated()
+    private function caseEightModulesPrepared_Deactivated_no_extending()
     {
         return array(
 
@@ -210,7 +255,7 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
      *
      * @dataProvider providerModuleDeactivation
      */
-    public function testModuleDeactivation( $aInstallModules, $sModuleId, $aResultToAsserts )
+    public function testModuleDeactivation( $aInstallModules, $sModuleId, $aResultToAssert )
     {
         $oModuleEnvironment = new Environment();
         $oModuleEnvironment->prepare( $aInstallModules );
@@ -219,16 +264,15 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
         $oModule->load( $sModuleId );
         $oModule->deactivate();
 
-        $this->_runAsserts( $aResultToAsserts, $sModuleId );
+        $this->_runAsserts( $aResultToAssert );
     }
 
     /**
      * Runs all asserts
      *
      * @param $aExpectedResult
-     * @param $sModuleId
      */
-    private function _runAsserts( $aExpectedResult, $sModuleId )
+    private function _runAsserts( $aExpectedResult )
     {
         $oValidator = new EnvironmentValidator();
         $oValidator->setConfig( $this->getConfig() );

@@ -41,68 +41,166 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
     public function providerModuleDeactivation()
     {
         return array(
+            $this->with_everything_module_deactivated(),
+            $this->no_extending_module_deactivated(),
+        );
+    }
+
+    /**
+     * Data provider case with 7 modules installed and with_everything module deactivated
+     *
+     * @return array
+     */
+    private function with_everything_module_deactivated()
+    {
+        return array(
+
+            // modules to be activated during test preparation
             array(
+                'extending_1_class', 'with_2_templates', 'with_2_files', 'with_2_settings',
+                'extending_3_blocks', 'with_everything', 'with_events'
+            ),
 
-                // modules to be activated during test preparation
-                array(
-                    'extending_1_class', 'with_2_templates', 'with_2_files', 'with_2_settings',
-                    'extending_3_blocks','with_everything', 'with_events',
+            // module that will be deactivated
+            'with_everything',
+
+            // environment asserts
+            array(
+                'blocks'          => array(
+                    array( 'template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl' ),
+                    array( 'template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_bottom', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl' ),
+                    array( 'template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl' ),
                 ),
+                'extend'          => array(
+                    'oxorder'   => 'extending_1_class/myorder&with_everything/myorder1&with_everything/myorder2&with_everything/myorder3',
+                    'oxarticle' => 'with_everything/myarticle',
+                    'oxuser'    => 'with_everything/myuser',
+                ),
+                'files'           => array(
+                    'with_2_files' => array(
+                        'myexception'  => 'with_2_files/core/exception/myexception.php',
+                        'myconnection' => 'with_2_files/core/exception/myconnection.php',
+                    ),
+                ),
+                'settings'        => array(
+                    array( 'group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true' ),
+                    array( 'group' => 'my_displayname', 'name' => 'sDisplayName', 'type' => 'str', 'value' => 'Some name' ),
+                    array( 'group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true' ),
+                    array( 'group' => 'my_displayname', 'name' => 'sDisplayName', 'type' => 'str', 'value' => 'Some name' ),
+                ),
+                'disabledModules' => array(
+                    'with_everything'
+                ),
+                'templates'       => array(
+                    'with_2_templates' => array(
+                        'order_special.tpl'    => 'with_2_templates/views/admin/tpl/order_special.tpl',
+                        'user_connections.tpl' => 'with_2_templates/views/tpl/user_connections.tpl',
+                    ),
+                ),
+                'versions'        => array(
+                    'extending_1_class'  => '1.0',
+                    'with_2_templates'   => '1.0',
+                    'with_2_files'       => '1.0',
+                    'extending_3_blocks' => '1.0',
+                    'with_events'        => '1.0',
+                ),
+                'events'          => array(
+                    'extending_1_class'  => null,
+                    'with_2_templates'   => null,
+                    'with_2_files'       => null,
+                    'extending_3_blocks' => null,
+                    'with_events'        => array(
+                        'onActivate'   => 'MyEvents::onActivate',
+                        'onDeactivate' => 'MyEvents::onDeactivate'
+                    ),
+                ),
+            )
+        );
+    }
 
-                // module that will be deactivated
-                'with_everything',
+    /**
+     * Data provider case with 7 modules installed and with_everything module deactivated
+     *
+     * @return array
+     */
+    private function no_extending_module_deactivated()
+    {
+        return array(
 
-                // environment asserts
-                array(
-                    'blocks' => array(
-                        array('template' => 'page/checkout/basket.tpl',  'block'=>'basket_btn_next_top',    'file'=>'/views/blocks/page/checkout/myexpresscheckout.tpl'),
-                        array('template' => 'page/checkout/basket.tpl',  'block'=>'basket_btn_next_bottom', 'file'=>'/views/blocks/page/checkout/myexpresscheckout.tpl'),
-                        array('template' => 'page/checkout/payment.tpl', 'block'=>'select_payment',         'file'=>'/views/blocks/page/checkout/mypaymentselector.tpl'),
+            // modules to be activated during test preparation
+            array(
+                'extending_1_class', 'with_2_templates', 'with_2_files', 'with_2_settings',
+                'extending_3_blocks', 'with_everything', 'with_events', 'no_extending'
+            ),
+
+            // module that will be deactivated
+            'no_extending',
+
+            // environment asserts
+            array(
+                'blocks'          => array(
+                    array( 'template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl' ),
+                    array( 'template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl' ),
+                    array( 'template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_bottom', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl' ),
+                    array( 'template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl' ),
+                    array( 'template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl' ),
+                ),
+                'extend'          => array(
+                    'oxorder'   => 'extending_1_class/myorder&with_everything/myorder1&with_everything/myorder2&with_everything/myorder3',
+                    'oxarticle' => 'with_everything/myarticle',
+                    'oxuser'    => 'with_everything/myuser',
+                ),
+                'files'           => array(
+                    'with_2_files' => array(
+                        'myexception'  => 'with_2_files/core/exception/myexception.php',
+                        'myconnection' => 'with_2_files/core/exception/myconnection.php',
                     ),
-                    'extend' => array(
-                        'oxorder' => 'extending_1_class/myorder&with_everything/myorder1&with_everything/myorder2&with_everything/myorder3',
-                        'oxarticle' => 'with_everything/myarticle',
-                        'oxuser' => 'with_everything/myuser',
+                    'with_everything' => array(
+                        'myexception'  => 'with_everything/core/exception/myexception.php',
+                        'myconnection' => 'with_everything/core/exception/myconnection.php',
                     ),
-                    'files' => array(
-                        'with_2_files' => array(
-                            'myexception'  => 'with_2_files/core/exception/myexception.php',
-                            'myconnection' => 'with_2_files/core/exception/myconnection.php',
-                        ),
+                ),
+                'settings'        => array(
+                    array( 'group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true' ),
+                    array( 'group' => 'my_displayname', 'name' => 'sDisplayName', 'type' => 'str', 'value' => 'Some name' ),
+                    array( 'group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true' ),
+                    array( 'group' => 'my_displayname', 'name' => 'sDisplayName', 'type' => 'str', 'value' => 'Some name' ),
+                ),
+                'disabledModules' => array(
+                    'no_extending'
+                ),
+                'templates'       => array(
+                    'with_2_templates' => array(
+                        'order_special.tpl'    => 'with_2_templates/views/admin/tpl/order_special.tpl',
+                        'user_connections.tpl' => 'with_2_templates/views/tpl/user_connections.tpl',
                     ),
-                    'settings' => array(
-                        array('group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true'),
-                        array('group' => 'my_displayname',  'name' => 'sDisplayName',   'type' => 'str',  'value' => 'Some name'),
-                        array('group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true'),
-                        array('group' => 'my_displayname',  'name' => 'sDisplayName',   'type' => 'str',  'value' => 'Some name'),
+                    'with_everything' => array(
+                        'order_special.tpl'    => 'with_everything/views/admin/tpl/order_special.tpl',
+                        'user_connections.tpl' => 'with_everything/views/tpl/user_connections.tpl',
                     ),
-                    'disabledModules' => array(
-                        'with_everything'
+                ),
+                'versions'        => array(
+                    'extending_1_class'  => '1.0',
+                    'with_2_templates'   => '1.0',
+                    'with_2_files'       => '1.0',
+                    'extending_3_blocks' => '1.0',
+                    'with_events'        => '1.0',
+                    'with_everything'    => '1.0',
+                ),
+                'events'          => array(
+                    'extending_1_class'  => null,
+                    'with_2_templates'   => null,
+                    'with_2_files'       => null,
+                    'extending_3_blocks' => null,
+                    'with_events'        => array(
+                        'onActivate'   => 'MyEvents::onActivate',
+                        'onDeactivate' => 'MyEvents::onDeactivate'
                     ),
-                    'templates' => array(
-                        'with_2_templates' => array(
-                            'order_special.tpl'      => 'with_2_templates/views/admin/tpl/order_special.tpl',
-                            'user_connections.tpl'   => 'with_2_templates/views/tpl/user_connections.tpl',
-                        ),
+                    'with_everything'        => array(
+                        'onActivate'   => 'MyEvents::onActivate',
+                        'onDeactivate' => 'MyEvents::onDeactivate'
                     ),
-                    'versions' => array(
-                        'extending_1_class' => '1.0',
-                        'with_2_templates' => '1.0',
-                        'with_2_files' => '1.0',
-                        'extending_3_blocks' => '1.0',
-                        'with_events' => '1.0',
-                        ),
-                    'events' => array(
-                        'extending_1_class' => null,
-                        'with_2_templates' => null,
-                        'with_2_files' => null,
-                        'extending_3_blocks' => null,
-                        'with_events' => array(
-                            'onActivate'   => 'MyEvents::onActivate',
-                            'onDeactivate' => 'MyEvents::onDeactivate'
-                        ),
-                    ),
-                )
+                ),
             )
         );
     }

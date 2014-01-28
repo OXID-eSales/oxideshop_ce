@@ -119,7 +119,7 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
     }
 
     /**
-     * Data provider case with 7 modules installed and with_everything module deactivated
+     * Data provider case with 8 modules installed and no_extending module deactivated
      *
      * @return array
      */

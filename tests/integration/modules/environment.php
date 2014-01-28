@@ -39,6 +39,8 @@ class Environment
             $aModules = $this->_getAllModules();
         }
 
+        $this->clean();
+
         $this->_activateModules( $aModules );
     }
 
@@ -47,6 +49,14 @@ class Environment
      */
     public function clean()
     {
+        $oConfig = oxRegistry::getConfig();
+        $oConfig->setConfigParam( 'aModules', null);
+        $oConfig->setConfigParam( 'aModuleTemplates', null);
+        $oConfig->setConfigParam( 'aDisabledModules', null);
+        $oConfig->setConfigParam( 'aModuleFiles', null);
+        $oConfig->setConfigParam( 'aModuleVersions', null);
+        $oConfig->setConfigParam( 'aModuleEvents', null);
+
         $oDb = oxDb::getDb();
         $oDb->execute( "DELETE FROM `oxconfig` WHERE `oxmodule` LIKE 'module:%'" );
         $oDb->execute( 'TRUNCATE `oxconfigdisplay`' );

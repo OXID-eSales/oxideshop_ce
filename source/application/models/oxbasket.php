@@ -392,7 +392,7 @@ class oxBasket extends oxSuperCfg
      * @param mixed  $aPersParam       product persistent parameters (default null)
      * @param bool   $blOverride       marker to accumulate passed amount or renew (default false)
      * @param bool   $blBundle         marker if product is bundle or not (default false)
-     * @param mixed $sOldBasketItemId id if old basket item if to change it
+     * @param mixed  $sOldBasketItemId id if old basket item if to change it
      *
      * @throws oxOutOfStockException oxArticleInputException, oxNoArticleException
      *
@@ -520,6 +520,8 @@ class oxBasket extends oxSuperCfg
             // deleting bundles, they are handled automatically
             $oOrderArticle->delete();
         }
+
+        return null;
     }
 
     /**
@@ -552,7 +554,7 @@ class oxBasket extends oxSuperCfg
      * @param array  $aSel             basket item selectlists
      * @param array  $aPersParam       basket item persistent parameters
      * @param bool   $blBundle         bundle marker
-     * @param var    $sAdditionalParam possible additional information
+     * @param string $sAdditionalParam possible additional information
      *
      * @return string
      */
@@ -902,7 +904,6 @@ class oxBasket extends oxSuperCfg
         // VAT for delivery will be calculated always (#3757)
         // blCalcVATForDelivery option is @deprecated since 2012-03-23 in version 4.6
         // the option blShowVATForDelivery will be used only for displaying
-        $fDelVATPercent = 0;
         $fDelVATPercent = $this->getAdditionalServicesVatPercent();
         $oDeliveryPrice->setVat( $fDelVATPercent );
 
@@ -958,19 +959,21 @@ class oxBasket extends oxSuperCfg
     /**
      * Get most used vat percent:
      *
-     * @return double
+     * @return double|null
      */
     public function getMostUsedVatPercent()
     {
         if ( $this->_oProductsPriceList ) {
             return $this->_oProductsPriceList->getMostUsedVatPercent();
         }
+
+        return null;
     }
 
     /**
      * Get most used vat percent:
      *
-     * @return double
+     * @return double|int
      */
     public function getAdditionalServicesVatPercent()
     {
@@ -981,6 +984,8 @@ class oxBasket extends oxSuperCfg
                 return $this->_oProductsPriceList->getMostUsedVatPercent();
             }
         }
+
+        return 0;
     }
 
     /**
@@ -1946,7 +1951,6 @@ class oxBasket extends oxSuperCfg
                     if ( is_array( $aSelList ) && ( $aSelectlist = $oProduct->getSelectLists( $sItemKey ) ) ) {
                         reset( $aSelList );
                         while ( list( $conkey, $iSel ) = each( $aSelList ) ) {
-                            $aSelectlist[$conkey][$iSel] = $aSelectlist[$conkey][$iSel];
                             $aSelectlist[$conkey][$iSel]->selected = 1;
                         }
                         $oProduct->setSelectlist( $aSelectlist );
@@ -2432,7 +2436,7 @@ class oxBasket extends oxSuperCfg
      *
      * @deprecated in v4.8/5.1 on 2013-10-14; for formatting use oxPrice smarty plugin
      *
-     * @return double | bool
+     * @return double|bool
      */
     public function getPaymentCosts()
     {
@@ -2584,6 +2588,11 @@ class oxBasket extends oxSuperCfg
         return false;
     }
 
+    /**
+     * Get wrapping cost
+     *
+     * @return array
+     */
     public function getWrappingCost()
     {
         return $this->getCosts( 'oxwrapping' );
@@ -2650,7 +2659,9 @@ class oxBasket extends oxSuperCfg
     }
 
     /**
-     * @return oxPrice
+     * Get giftcard cost
+     *
+     * @return array
      */
     public function getGiftCardCost()
     {

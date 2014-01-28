@@ -50,7 +50,7 @@ class oxAttributeList extends oxList
     public function loadAttributesByIds( $aIds )
     {
         if (!count($aIds)) {
-            return;
+            return null;
         }
 
         foreach ($aIds as $iKey => $sVal) {
@@ -131,11 +131,12 @@ class oxAttributeList extends oxList
     }
 
     /**
-     * Load displayable in baskte/order attributes by article Id
+     * Load displayable in basket/order attributes by article Id
      *
-     * @param string $sArtId article ids
+     * @param string $sArtId    article ids
+     * @param string $sParentId parent article id
      *
-     * @return null;
+     * @return null
      */
     public function loadAttributesDisplayableInBasket( $sArtId, $sParentId = null  )
     {
@@ -174,7 +175,7 @@ class oxAttributeList extends oxList
 
     public function getCategoryAttributes( $sCategoryId, $iLang )
     {
-        $aSessionFilter = oxSession::getVar( 'session_attrfilter' );
+        $aSessionFilter = oxRegistry::getSession()->getVariable( 'session_attrfilter' );
 
         $oArtList = oxNew( "oxarticlelist");
         $oArtList->loadCategoryIDs( $sCategoryId, $aSessionFilter );

@@ -43,6 +43,7 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
         return array(
             $this->caseSevenModulesPrepared_Deactivated_with_everything(),
             $this->caseTwoModulesPrepared_Deactivated_with_everything(),
+            $this->caseFourModulesPrepared_Deactivated_extending_3_classes_with_1_extension(),
             $this->caseEightModulesPrepared_Deactivated_no_extending(),
         );
     }
@@ -158,6 +159,52 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
                 ),
                 'events'          => array(
                     'no_extending'  => null,
+                ),
+            )
+        );
+    }
+
+    /**
+     * Data provider case with 4 modules installed and extending_3_classes_with_1_extension module deactivated
+     *
+     * @return array
+     */
+    private function caseFourModulesPrepared_Deactivated_extending_3_classes_with_1_extension()
+    {
+        return array(
+
+            // modules to be activated during test preparation
+            array(
+                'extending_1_class_3_extensions', 'extending_1_class',
+                'extending_3_classes_with_1_extension', 'extending_3_classes'
+            ),
+
+            // module that will be deactivated
+            'extending_1_class_3_extensions',
+
+            // environment asserts
+            array(
+                'blocks'          => array(),
+                'extend'          => array(
+                    'oxorder'   => 'extending_1_class_3_extensions/myorder1&extending_1_class_3_extensions/myorder2&extending_1_class_3_extensions/myorder3&extending_1_class/myorder&extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myorder',
+                    'oxarticle' => 'extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myarticle',
+                    'oxuser'    => 'extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myuser',
+                ),
+                'files'           => array(),
+                'settings'        => array(),
+                'disabledModules' => array(
+                    'extending_1_class_3_extensions'
+                ),
+                'templates'       => array(),
+                'versions'        => array(
+                    'extending_3_classes_with_1_extension'  => '1.0',
+                    'extending_1_class'  => '1.0',
+                    'extending_3_classes'  => '1.0',
+                ),
+                'events'          => array(
+                    'extending_3_classes_with_1_extension'  => null,
+                    'extending_1_class'  => null,
+                    'extending_3_classes'  => null,
                 ),
             )
         );

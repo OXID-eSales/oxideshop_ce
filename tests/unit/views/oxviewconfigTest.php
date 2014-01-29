@@ -72,6 +72,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
      */
     public function testGetTsRatings()
     {
+        $this->markTestSkippedUntil( '2014-02-03', 'Request to Trusted Shops times out with invalid ID.' );
         $oViewConf = $this->getMock( "oxViewConfig", array( "getTsId" ) );
         $oViewConf->expects( $this->any() )->method( "getTsId" )->will( $this->returnValue( 'xyz' ) );
 

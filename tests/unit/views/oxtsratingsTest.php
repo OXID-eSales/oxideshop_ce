@@ -95,6 +95,7 @@ class Unit_Views_oxTsRatingsTest extends OxidTestCase
      */
     public function testGetRatingsInvalidId()
     {
+        $this->markTestSkippedUntil( '2014-02-03', 'Request to Trusted Shops times out with invalid ID.' );
         $oTsRatings = new oxTsRatings();
         $oTsRatings->setTsId( 'xyz' );
         $aResultExpected = array ( 'empty' => true );

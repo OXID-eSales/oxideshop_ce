@@ -551,4 +551,21 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
         }
         return $aChecksum;
     }
+
+    /**
+     * Mark the test as skipped until given date.
+     * Wrapper function for PHPUnit_Framework_Assert::markTestSkipped.
+     *
+     * @param string $sDate    Date string in format 'Y-m-d'.
+     * @param string $sMessage Message.
+     *
+     * @throws PHPUnit_Framework_SkippedTestError
+     */
+    public function markTestSkippedUntil( $sDate, $sMessage = '' )
+    {
+        $oDate = DateTime::createFromFormat( 'Y-m-d', $sDate );
+        if ( time() < $oDate->getTimestamp() ) {
+            $this->markTestSkipped( $sMessage );
+        }
+    }
 }

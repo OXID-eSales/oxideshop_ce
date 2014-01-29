@@ -100,7 +100,6 @@ class oxAdminDetails extends oxAdminView
                 // create a new instance of the wysiwygPro class:
                 $this->_oEditor = new wysiwygPro();
 
-                // set language file name
                 $sEditorUrl = oxConfig::getInstance()->getConfigParam('sShopURL')."core/{$sEditorPath}/";
                 if ( $sAdminSSLURL = $myConfig->getConfigParam( 'sAdminSSLURL' ) ) {
                     $sEditorUrl = "{$sAdminSSLURL}/{$sEditorPath}/";

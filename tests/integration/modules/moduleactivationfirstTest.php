@@ -71,6 +71,8 @@ class Integration_Modules_ModuleActivationFirstTest extends OxidTestCase
 
 
     /**
+     * Data provider case with 5 modules prepared and with_everything module activated
+     *
      * @return array
      */
     protected function _caseFiveModulesPrepared_Activated_with_everything()

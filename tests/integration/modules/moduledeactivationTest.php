@@ -41,19 +41,39 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
     public function providerModuleDeactivation()
     {
         return array(
-            $this->caseSevenModulesPrepared_Deactivated_with_everything(),
-            $this->caseTwoModulesPrepared_Deactivated_with_everything(),
-            $this->caseFourModulesPrepared_Deactivated_extending_3_classes_with_1_extension(),
-            $this->caseEightModulesPrepared_Deactivated_no_extending(),
+            $this->_caseSevenModulesPrepared_Deactivated_with_everything(),
+            $this->_caseTwoModulesPrepared_Deactivated_with_everything(),
+            $this->_caseFourModulesPrepared_Deactivated_extending_3_classes_with_1_extension(),
+            $this->_caseEightModulesPrepared_Deactivated_no_extending(),
+            $this->_caseTwoModulesPrepared_Deactivated_with_2_files(),
+            $this->_caseTwoModulesPrepared_Deactivated_with_2_templates(),
+            $this->_caseTwoModulesPrepared_Deactivated_with_2_settings(),
         );
     }
 
     /**
-     * Data provider case with 7 modules installed and with_everything module deactivated
+     * Test check shop environment after module deactivation
+     *
+     * @dataProvider providerModuleDeactivation
+     */
+    public function testModuleDeactivation( $aInstallModules, $sModuleId, $aResultToAssert )
+    {
+        $oModuleEnvironment = new Environment();
+        $oModuleEnvironment->prepare( $aInstallModules );
+
+        $oModule = new oxModule();
+        $oModule->load( $sModuleId );
+        $oModule->deactivate();
+
+        $this->_runAsserts( $aResultToAssert );
+    }
+
+    /**
+     * Data provider case with 7 modules prepared and with_everything module deactivated
      *
      * @return array
      */
-    private function caseSevenModulesPrepared_Deactivated_with_everything()
+    private function _caseSevenModulesPrepared_Deactivated_with_everything()
     {
         return array(
 
@@ -102,6 +122,7 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
                 'versions'        => array(
                     'extending_1_class'  => '1.0',
                     'with_2_templates'   => '1.0',
+                    'with_2_settings'    => '1.0',
                     'with_2_files'       => '1.0',
                     'extending_3_blocks' => '1.0',
                     'with_events'        => '1.0',
@@ -109,6 +130,7 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
                 'events'          => array(
                     'extending_1_class'  => null,
                     'with_2_templates'   => null,
+                    'with_2_settings'    => null,
                     'with_2_files'       => null,
                     'extending_3_blocks' => null,
                     'with_events'        => array(
@@ -121,11 +143,11 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
     }
 
     /**
-     * Data provider case with 2 modules installed and with_everything module deactivated
+     * Data provider case with 2 modules prepared and with_everything module deactivated
      *
      * @return array
      */
-    private function caseTwoModulesPrepared_Deactivated_with_everything()
+    private function _caseTwoModulesPrepared_Deactivated_with_everything()
     {
         return array(
 
@@ -165,11 +187,11 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
     }
 
     /**
-     * Data provider case with 4 modules installed and extending_3_classes_with_1_extension module deactivated
+     * Data provider case with 4 modules prepared and extending_3_classes_with_1_extension module deactivated
      *
      * @return array
      */
-    private function caseFourModulesPrepared_Deactivated_extending_3_classes_with_1_extension()
+    private function _caseFourModulesPrepared_Deactivated_extending_3_classes_with_1_extension()
     {
         return array(
 
@@ -186,7 +208,9 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
             array(
                 'blocks'          => array(),
                 'extend'          => array(
-                    'oxorder'   => 'extending_1_class_3_extensions/myorder1&extending_1_class_3_extensions/myorder2&extending_1_class_3_extensions/myorder3&extending_1_class/myorder&extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myorder',
+                    'oxorder'   => 'extending_1_class_3_extensions/myorder1&extending_1_class_3_extensions/myorder2&'.
+                                   'extending_1_class_3_extensions/myorder3&extending_1_class/myorder&'.
+                                   'extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myorder',
                     'oxarticle' => 'extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myarticle',
                     'oxuser'    => 'extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myuser',
                 ),
@@ -211,11 +235,11 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
     }
 
     /**
-     * Data provider case with 8 modules installed and no_extending module deactivated
+     * Data provider case with 8 modules prepared and no_extending module deactivated
      *
      * @return array
      */
-    private function caseEightModulesPrepared_Deactivated_no_extending()
+    private function _caseEightModulesPrepared_Deactivated_no_extending()
     {
         return array(
 
@@ -274,6 +298,7 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
                 'versions'        => array(
                     'extending_1_class'  => '1.0',
                     'with_2_templates'   => '1.0',
+                    'with_2_settings'    => '1.0',
                     'with_2_files'       => '1.0',
                     'extending_3_blocks' => '1.0',
                     'with_events'        => '1.0',
@@ -282,6 +307,7 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
                 'events'          => array(
                     'extending_1_class'  => null,
                     'with_2_templates'   => null,
+                    'with_2_settings'    => null,
                     'with_2_files'       => null,
                     'extending_3_blocks' => null,
                     'with_events'        => array(
@@ -298,21 +324,119 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
     }
 
     /**
-     * Test check shop environment after module deactivation
+     * Data provider case with 2 modules prepared and with_2_files module deactivated
      *
-     * @dataProvider providerModuleDeactivation
+     * @return array
      */
-    public function testModuleDeactivation( $aInstallModules, $sModuleId, $aResultToAssert )
+    private function _caseTwoModulesPrepared_Deactivated_with_2_files()
     {
-        $oModuleEnvironment = new Environment();
-        $oModuleEnvironment->prepare( $aInstallModules );
+        return array(
 
-        $oModule = new oxModule();
-        $oModule->load( $sModuleId );
-        $oModule->deactivate();
+            // modules to be activated during test preparation
+            array(
+                'with_2_files', 'no_extending'
+            ),
 
-        $this->_runAsserts( $aResultToAssert );
+            // module that will be deactivated
+            'with_2_files',
+
+            // environment asserts
+            array(
+                'blocks'          => array(),
+                'extend'          => array(),
+                'files'           => array(),
+                'settings'        => array(),
+                'disabledModules' => array(
+                    'with_2_files'
+                ),
+                'templates'       => array(),
+                'versions'        => array(
+                    'no_extending'  => '1.0',
+                ),
+                'events'          => array(
+                    'no_extending'  => null,
+                ),
+            )
+        );
     }
+
+    /**
+     * Data provider case with 2 modules prepared and with_2_templates module deactivated
+     *
+     * @return array
+     */
+    private function _caseTwoModulesPrepared_Deactivated_with_2_templates()
+    {
+        return array(
+
+            // modules to be activated during test preparation
+            array(
+                'with_2_templates', 'no_extending'
+            ),
+
+            // module that will be deactivated
+            'with_2_templates',
+
+            // environment asserts
+            array(
+                'blocks'          => array(),
+                'extend'          => array(),
+                'files'           => array(),
+                'settings'        => array(),
+                'disabledModules' => array(
+                    'with_2_templates'
+                ),
+                'templates'       => array(),
+                'versions'        => array(
+                    'no_extending'  => '1.0',
+                ),
+                'events'          => array(
+                    'no_extending'  => null,
+                ),
+            )
+        );
+    }
+
+    /**
+     * Data provider case with 2 modules prepared and with_2_settings module deactivated
+     *
+     * @return array
+     */
+    private function _caseTwoModulesPrepared_Deactivated_with_2_settings()
+    {
+        return array(
+
+            // modules to be activated during test preparation
+            array(
+                'with_2_settings', 'no_extending'
+            ),
+
+            // module that will be deactivated
+            'with_2_settings',
+
+            // environment asserts
+            array(
+                'blocks'          => array(),
+                'extend'          => array(),
+                'files'           => array(),
+                'settings'        => array(
+                    array('group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true'),
+                    array('group' => 'my_displayname',  'name' => 'sDisplayName',   'type' => 'str',  'value' => 'Some name'),
+                ),
+                'disabledModules' => array(
+                    'with_2_settings'
+                ),
+                'templates'       => array(),
+                'versions'        => array(
+                    'no_extending'  => '1.0',
+                ),
+                'events'          => array(
+                    'no_extending'  => null,
+                ),
+            )
+        );
+    }
+
 
     /**
      * Runs all asserts

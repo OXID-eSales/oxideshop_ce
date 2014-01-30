@@ -475,6 +475,10 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
         if( isset( $aExpectedResult['templates'] ) ){
             $this->assertTrue( $oValidator->checkTemplates( $aExpectedResult['templates'] ), 'Templates do not match expectations' );
         }
+
+        if( isset( $aExpectedResult['disabledModules'] ) ){
+            $this->assertTrue( $oValidator->checkDisabledModules( $aExpectedResult['disabledModules'] ), 'Disabled modules do not match expectations' );
+        }
     }
 
 

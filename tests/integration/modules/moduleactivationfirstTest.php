@@ -191,9 +191,7 @@ class Integration_Modules_ModuleActivationFirstTest extends OxidTestCase
                     array( 'group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true' ),
                     array( 'group' => 'my_displayname', 'name' => 'sDisplayName', 'type' => 'str', 'value' => 'Some name' ),
                 ),
-                'disabledModules' => array(
-                    'with_everything'
-                ),
+                'disabledModules' => array(),
                 'templates'       => array(
                     'with_everything'  => array(
                         'order_special.tpl'    => 'with_everything/views/admin/tpl/order_special.tpl',
@@ -313,9 +311,7 @@ class Integration_Modules_ModuleActivationFirstTest extends OxidTestCase
                     array( 'group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true' ),
                     array( 'group' => 'my_displayname', 'name' => 'sDisplayName', 'type' => 'str', 'value' => 'Some name' ),
                 ),
-                'disabledModules' => array(
-                    ''
-                ),
+                'disabledModules' => array(),
                 'templates'       => array(
                     'with_2_templates' => array(
                         'order_special.tpl'    => 'with_2_templates/views/admin/tpl/order_special.tpl',
@@ -517,6 +513,10 @@ class Integration_Modules_ModuleActivationFirstTest extends OxidTestCase
 
         if( isset( $aExpectedResult['templates'] ) ){
             $this->assertTrue( $oValidator->checkTemplates( $aExpectedResult['templates']), 'Templates do not match expectations' );
+        }
+
+        if( isset( $aExpectedResult['disabledModules'] ) ){
+            $this->assertTrue( $oValidator->checkDisabledModules( $aExpectedResult['disabledModules'] ), 'Disabled modules do not match expectations' );
         }
     }
 

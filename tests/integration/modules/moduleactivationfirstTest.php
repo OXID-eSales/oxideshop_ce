@@ -43,7 +43,7 @@ class Integration_Modules_ModuleActivationFirstTest extends OxidTestCase
     {
         return array(
             $this->_caseFiveModulesPrepared_Activated_with_everything(),
-            $this->_caseOneModulesPrepared_Activated_with_everything(),
+            $this->_caseOneModulePrepared_Activated_with_everything(),
             $this->_caseThreeModulesPrepared_Activated_extending_3_classes_with_1_extension(),
             $this->_caseSevenModulesPrepared_Activated_no_extending(),
             $this->_caseOneModulePrepared_Activated_with_2_files(),
@@ -154,11 +154,11 @@ class Integration_Modules_ModuleActivationFirstTest extends OxidTestCase
     }
 
     /**
-     * Data provider case with 2 modules prepared and with_everything module activated
+     * Data provider case with 1 module prepared and with_everything module activated
      *
      * @return array
      */
-    private function _caseOneModulesPrepared_Activated_with_everything()
+    private function _caseOneModulePrepared_Activated_with_everything()
     {
         return array(
 

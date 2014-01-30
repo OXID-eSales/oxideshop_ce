@@ -31,7 +31,7 @@ $sMetadataVersion = '1.0';
  * Module information
  */
 $aModule = array(
-    'id'           => 'with_2_files',
+    'id'           => 'with_2_settings',
     'title'        => 'Test with 2 classes added',
     'description'  => 'Module testing with 2 classes added',
     'thumbnail'    => 'picture.png',

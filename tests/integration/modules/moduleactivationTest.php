@@ -234,8 +234,7 @@ class Integration_Modules_ModuleActivationTest extends BaseModuleTestCase
             array(
                 'blocks'          => array(),
                 'extend'          => array(
-                    'oxorder'   => ''.
-                                   'extending_1_class/myorder&extending_3_classes_with_1_extension/mybaseclass&'.
+                    'oxorder'   => 'extending_1_class/myorder&extending_3_classes_with_1_extension/mybaseclass&'.
                                    'extending_3_classes/myorder&extending_1_class_3_extensions/myorder1&'.
                                    'extending_1_class_3_extensions/myorder2&extending_1_class_3_extensions/myorder3',
                     'oxarticle' => 'extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myarticle',

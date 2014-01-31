@@ -24,6 +24,7 @@
 
 require_once realpath(dirname(__FILE__).'/../../') . '/unit/OxidTestCase.php';
 require_once realpath( dirname(__FILE__) ) . '/environment.php';
+require_once realpath( dirname(__FILE__) ) . '/environmentvalidator.php';
 
 class Integration_Modules_ModuleConfigsTest extends OxidTestCase
 {
@@ -37,62 +38,31 @@ class Integration_Modules_ModuleConfigsTest extends OxidTestCase
         parent::tearDown();
     }
 
-
     public function providerModuleIsActive()
     {
-        /*return array(
+        return array(
+            // modules to be activated during test preparation
             array(
-                array( 'extending_1_class', 'with_2_templates', 'with_everything' ),
-                array( 'extending_1_class', 'with_everything' ),
-                array(
-                    'active' => array('with_2_templates'),
-                    'notActive' => array('extending_1_class', 'with_everything'),
-                )
-            ),
-            array(
-                array( 'extending_1_class', 'with_2_templates', 'with_everything' ),
-                array(),
-                array(
-                    'active' => array('extending_1_class', 'with_2_templates', 'with_everything'),
-                    'notActive' => array(),
-                )
+                'with_everything', 'no_extending', 'with_2_settings'
             ),
 
+            // module that will be reactivated
+            'with_everything',
+
+            // Settings to be changed after first activation
             array(
-                array( 'extending_1_class', 'extending_1_class_3_extensions', 'no_extending', 'with_2_templates', 'with_everything' ),
-                array( 'extending_1_class', 'extending_1_class_3_extensions', 'no_extending', 'with_2_templates', 'with_everything' ),
-                array(
-                    'active' => array(),
-                    'notActive' => array( 'extending_1_class', 'extending_1_class_3_extensions', 'no_extending', 'with_2_templates', 'with_everything' ),
-                )
+                array( 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'false'),
+                array( 'name' => 'sDisplayName',   'type' => 'str',  'value' => 'Some different name'),
             ),
 
+            // environment asserts
             array(
-                array( 'extending_1_class', 'extending_1_class_3_extensions', 'no_extending', 'with_2_templates', 'with_everything' ),
-                array( 'extending_1_class', 'extending_1_class_3_extensions', 'no_extending', 'with_2_templates', 'with_everything' ),
-                array(
-                    'active' => array(),
-                    'notActive' => array( 'extending_1_class', 'extending_1_class_3_extensions', 'no_extending', 'with_2_templates', 'with_everything' ),
-                )
+                'settings'        => array(
+                    array( 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => false),
+                    array( 'name' => 'sDisplayName',   'type' => 'str',  'value' => 'Some different name'),
+                ),
             ),
-            array(
-                array( 'no_extending' ),
-                array(),
-                array(
-                    'active' => array( 'no_extending' ),
-                    'notActive' => array(),
-                )
-            ),
-            array(
-                array( 'no_extending' ),
-                array( 'no_extending' ),
-                array(
-                    'active' => array( ),
-                    'notActive' => array( 'no_extending' ),
-                )
-            ),
-
-        );*/
+        );
     }
 
     /**
@@ -100,29 +70,52 @@ class Integration_Modules_ModuleConfigsTest extends OxidTestCase
      *
      * @dataProvider providerModuleIsActive
      */
-    public function testIsActive( $aInstallModules, $aDeactivateModules, $aResultToAssert )
+    public function testModuleConfigs( $aInstallModules, $sModuleId, $aConfigsToChange, $aResultToAsserts )
     {
-        $this->markTestIncomplete('not implemented yet');
-
         $oModuleEnvironment = new Environment();
         $oModuleEnvironment->prepare( $aInstallModules );
 
-        //deactivation
-        /*$oModule = new oxModule();
-        foreach( $aDeactivateModules as $sModule){
-            $oModule->load( $sModule );
-            $oModule->deactivate();
-        }
+        $oModule = new oxModule();
+        $oModule->load( $sModuleId );
 
-        //assertion
-        foreach( $aResultToAssert['active'] as $sModule ){
-            $oModule->load( $sModule );
-            $this->assertTrue( $oModule->isActive());
-        }
+        $this->_changeConfiguration( $sModuleId, $aConfigsToChange );
 
-        foreach( $aResultToAssert['notActive'] as $sModule ){
-            $oModule->load( $sModule );
-            $this->assertFalse( $oModule->isActive());
-        }*/
+        $oModule->deactivate();
+        $oModule->activate();
+
+        $this->_runAsserts( $aResultToAsserts, $sModuleId );
+    }
+
+    /**
+     * @param $sModuleId
+     * @param $aConfigsToChange
+     */
+    private function _changeConfiguration( $sModuleId, $aConfigsToChange )
+    {
+        $oConfig = $this->getConfig();
+        foreach ( $aConfigsToChange as $aConfig ) {
+            $sConfigName = $aConfig[ 'name' ];
+            $sType       = $aConfig[ 'type' ];
+            $mValue      = $aConfig[ 'value' ];
+            $oConfig->saveShopConfVar( $sType, $sConfigName, $mValue, null, $sModuleId );
+        }
+    }
+
+    /**
+     * Runs all asserts
+     *
+     * @param $aExpectedResult
+     * @param $sModuleId
+     */
+    private function _runAsserts( $aExpectedResult, $sModuleId )
+    {
+        $oValidator = new EnvironmentValidator();
+        $oValidator->setConfig( $this->getConfig() );
+
+        if ( isset( $aExpectedResult['settings'] ) ) {
+            $this->assertTrue( $oValidator->checkConfigValues( $aExpectedResult['settings'], $sModuleId )
+                               , 'Config values does not match expectations' );
+        }
     }
 }
+ 

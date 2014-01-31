@@ -19,11 +19,11 @@
  * @package   tests
  * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
- * @version   SVN: $Id: $
  */
 
 require_once realpath(dirname(__FILE__).'/../../') . '/unit/OxidTestCase.php';
 require_once realpath( dirname(__FILE__) ) . '/environment.php';
+require_once realpath( dirname(__FILE__) ) . '/environmentvalidator.php';
 
 class Integration_Modules_ModuleActivationWithNewMetaDataTest extends OxidTestCase
 {
@@ -38,23 +38,13 @@ class Integration_Modules_ModuleActivationWithNewMetaDataTest extends OxidTestCa
     }
 
 
-    public function providerModuleDeactivation()
+    public function providerModuleNewMetaData()
     {
         return array(
-            array(
-                array( 'extending_1_class', 'with_2_templates', 'with_everything' ),
-                'with_everything',
-                array(
-                    'blocks' => '',
-                    'extend' => '',
-                    'files' => '',
-                    'settings' => array(
-                        array('group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true'),
-                        array('group' => 'my_displayname',  'name' => 'sDisplayName',   'type' => 'str',  'value' => 'Some name'),
-                    ),
-                    'templates' => '',
-                )
-            ),
+            $this->_caseReactivatedWithRemovedExtension(),
+            $this->_caseReactivatedWithAddExtension(),
+            $this->_caseReactivatedWithRemovedTemplateAndBlock(),
+            $this->_caseReactivatedWithRemovedAllExtendedInfo(),
         );
     }
 
@@ -62,64 +52,493 @@ class Integration_Modules_ModuleActivationWithNewMetaDataTest extends OxidTestCa
      * Tests when existing active module's meta data is changed and module activates and deactivates
      * development process
      *
-     * @dataProvider providerModuleDeactivation
+     * @dataProvider providerModuleNewMetaData
      */
-    public function testModuleActivationWithNewMetaData( $aInstallModules, $sModule, $aResultToAsserts )
+    public function testModuleActivationWithNewMetaData( $aInstallModules, $sModule, $aMetaData, $aResultToAsserts )
     {
-        $this->markTestSkipped( 'Development in progress...' );
         $oModuleEnvironment = new Environment();
         $oModuleEnvironment->prepare( $aInstallModules );
 
         $oModule = new oxModule();
-        $oModule->load( $sModule );
+        $oModule->load($sModule);
+        $oModule->activate();
+        $oModule->setModuleData( $aMetaData );
         $oModule->deactivate();
         $oModule->activate();
 
         $this->_runAsserts( $aResultToAsserts, $sModule );
     }
 
-    private function _runAsserts( $aAsserts, $sModule )
-    {
-        /*//There are no templates removing functionality, after implementation uncomment;
-        $this->_assertTemplates( $aAsserts['templates'], $sModule ); */
-        $this->_assertBlocks( $aAsserts['blocks'] );
-        /*$this->_assertBlocks();
-        $this->_assertBlocks();*/
-    }
-
-    private function _assertTemplates( $aTemplates, $sModule )
-    {
-        $aTemplatesToCheck = $this->getConfig()->getConfigParam( 'aModuleTemplates' );
-
-        $this->assertSame( $aTemplates, $aTemplatesToCheck[$sModule] );
-    }
-
-    private function _assertBlocks()
-    {
-
-    }
-
-    private function _assertExtensions()
-    {
-        $aModules = $this->getConfig()->getConfigParam( 'aModules' );
-    }
-
-
-    private function _assertFiles()
-    {
-        $aModuleFiles = $this->getConfig()->getConfigParam( 'aModuleFiles' );
-
-    }
-
     /**
-     * @param $aSettings
+     * Runs all asserts
+     *
+     * @param $aExpectedResult
+     * @param $sModuleId
      */
-    private function _assertConfigs( $aSettings )
+    private function _runAsserts( $aExpectedResult, $sModuleId )
     {
-        $oConfig = oxConfig::getInstance();
-        foreach( $aSettings as $sKey => $sVal ) {
-            $this->assertSame( $sVal, $oConfig->getConfigParam( $sKey ) );
+        $oValidator = new EnvironmentValidator();
+        $oValidator->setConfig( $this->getConfig() );
+
+        if( isset( $aExpectedResult['blocks'] ) ){
+            $this->assertTrue( $oValidator->checkBlocks( $aExpectedResult['blocks']), 'Blocks do not match expectations' );
+        }
+
+        if( isset( $aExpectedResult['extend'] ) ){
+            $this->assertTrue( $oValidator->checkExtensions( $aExpectedResult['extend']), 'Extensions do not match expectations' );
+        }
+
+        if( isset( $aExpectedResult['files'] ) ){
+            $this->assertTrue( $oValidator->checkFiles( $aExpectedResult['files']), 'Files do not match expectations' );
+        }
+
+        if( isset( $aExpectedResult['events'] ) ){
+            $this->assertTrue( $oValidator->checkEvents( $aExpectedResult['events']), 'Events do not match expectations' );
+        }
+
+        if( isset( $aExpectedResult['settings'] ) ){
+            $this->assertTrue( $oValidator->checkConfigs( $aExpectedResult['settings'], $sModuleId), 'Configs do not match expectations' );
+        }
+
+        if( isset( $aExpectedResult['versions'] ) ){
+            $this->assertTrue( $oValidator->checkVersions( $aExpectedResult['versions']), 'Versions do not match expectations' );
+        }
+
+        if( isset( $aExpectedResult['templates'] ) ){
+            $this->assertTrue( $oValidator->checkTemplates( $aExpectedResult['templates']), 'Templates do not match expectations' );
+        }
+
+        if( isset( $aExpectedResult['disabledModules'] ) ){
+            $this->assertTrue( $oValidator->checkDisabledModules( $aExpectedResult['disabledModules'] ), 'Disabled modules do not match expectations' );
         }
     }
 
+    /**
+     * Removed extension in metadata
+     *
+     * @return array
+     */
+    protected function _caseReactivatedWithRemovedExtension()
+    {
+        return array(
+
+            // modules to be activated during test preparation
+            array(
+                'extending_1_class', 'with_2_templates', 'with_2_files',
+                'with_everything', 'extending_3_blocks', 'with_events',
+            ),
+
+            // module that will be reactivated
+            'with_everything',
+
+            // new metadata
+            array(
+                'id'           => 'with_everything',
+                'title'        => 'Test extending 1 shop class',
+                'description'  => 'Module testing extending 1 shop class',
+                'thumbnail'    => 'picture.png',
+                'version'      => '1.0',
+                'author'       => 'OXID eSales AG',
+                'extend'       => array(
+                    'oxarticle' => 'with_everything/myarticle',
+                    'oxorder' => array(
+                        'with_everything/myorder1',
+                        'with_everything/myorder2',
+                    ),
+                    'oxuser' => 'with_everything/myuser',
+                ),
+                'blocks' => array(
+                    array('template' => 'page/checkout/basket.tpl',  'block'=>'basket_btn_next_top',    'file'=>'/views/blocks/page/checkout/myexpresscheckout.tpl'),
+                    array('template' => 'page/checkout/payment.tpl', 'block'=>'select_payment',         'file'=>'/views/blocks/page/checkout/mypaymentselector.tpl'),
+                ),
+                'events'       => array(
+                    'onActivate'   => 'MyEvents::onActivate',
+                    'onDeactivate' => 'MyEvents::onDeactivate'
+                ),
+                'templates' => array(
+                    'order_special.tpl'      => 'with_everything/views/admin/tpl/order_special.tpl',
+                    'user_connections.tpl'   => 'with_everything/views/tpl/user_connections.tpl',
+                ),
+                'files' => array(
+                    'myexception'  => 'with_everything/core/exception/myexception.php',
+                    'myconnection' => 'with_everything/core/exception/myconnection.php',
+                ),
+                'settings' => array(
+                    array('group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true'),
+                    array('group' => 'my_displayname',  'name' => 'sDisplayName',   'type' => 'str',  'value' => 'Some name'),
+                ),
+            ),
+
+            // environment asserts
+            array(
+                'blocks'          => array(
+                    array( 'template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl' ),
+                    array( 'template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_bottom', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl' ),
+                    array( 'template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl' ),
+                    array( 'template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl' ),
+                    array( 'template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl' ),
+                ),
+                'extend'          => array(
+                    'oxorder'   => 'extending_1_class/myorder&with_everything/myorder1&with_everything/myorder2',
+                    'oxarticle' => 'with_everything/myarticle',
+                    'oxuser'    => 'with_everything/myuser',
+                ),
+                'files'           => array(
+                    'with_2_files'    => array(
+                        'myexception'  => 'with_2_files/core/exception/myexception.php',
+                        'myconnection' => 'with_2_files/core/exception/myconnection.php',
+                    ),
+                    'with_everything' => array(
+                        'myexception'  => 'with_everything/core/exception/myexception.php',
+                        'myconnection' => 'with_everything/core/exception/myconnection.php',
+                    )
+                ),
+                'settings'        => array(
+                    array( 'group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true' ),
+                    array( 'group' => 'my_displayname', 'name' => 'sDisplayName', 'type' => 'str', 'value' => 'Some name' ),
+                ),
+                'disabledModules' => array(),
+                'templates'       => array(
+                    'with_2_templates' => array(
+                        'order_special.tpl'    => 'with_2_templates/views/admin/tpl/order_special.tpl',
+                        'user_connections.tpl' => 'with_2_templates/views/tpl/user_connections.tpl',
+                    ),
+                    'with_everything'  => array(
+                        'order_special.tpl'    => 'with_everything/views/admin/tpl/order_special.tpl',
+                        'user_connections.tpl' => 'with_everything/views/tpl/user_connections.tpl',
+                    ),
+                ),
+                'versions'        => array(
+                    'extending_1_class'  => '1.0',
+                    'with_2_templates'   => '1.0',
+                    'with_2_files'       => '1.0',
+                    'extending_3_blocks' => '1.0',
+                    'with_events'        => '1.0',
+                    'with_everything'    => '1.0',
+                ),
+                'events'          => array(
+                    'extending_1_class'  => null,
+                    'with_2_templates'   => null,
+                    'with_2_files'       => null,
+                    'extending_3_blocks' => null,
+                    'with_events'        => array(
+                        'onActivate'   => 'MyEvents::onActivate',
+                        'onDeactivate' => 'MyEvents::onDeactivate'
+                    ),
+                    'with_everything'    => array(
+                        'onActivate'   => 'MyEvents::onActivate',
+                        'onDeactivate' => 'MyEvents::onDeactivate'
+                    ),
+                ),
+            )
+        );
+    }
+
+    /**
+     * Add extension in metadata
+     *
+     * @return array
+     */
+    protected function _caseReactivatedWithAddExtension()
+    {
+        return array(
+
+            // modules to be activated during test preparation
+            array(
+                'extending_1_class', 'with_2_templates', 'with_2_files',
+                'with_everything', 'extending_3_blocks', 'with_events',
+            ),
+
+            // module that will be reactivated
+            'with_everything',
+
+            // new metadata
+            array(
+                'id'           => 'with_everything',
+                'title'        => 'Test extending 1 shop class',
+                'description'  => 'Module testing extending 1 shop class',
+                'thumbnail'    => 'picture.png',
+                'version'      => '1.0',
+                'author'       => 'OXID eSales AG',
+                'extend'       => array(
+                    'oxarticle' => 'with_everything/myarticle',
+                    'oxorder' => array(
+                        'with_everything/myorder1',
+                        'with_everything/myorder2',
+                    ),
+                    'oxuser' => 'with_everything/myuser',
+                    'oxprice' => 'with_everything/myprice',
+                ),
+                'blocks' => array(
+                    array('template' => 'page/checkout/basket.tpl',  'block'=>'basket_btn_next_top',    'file'=>'/views/blocks/page/checkout/myexpresscheckout.tpl'),
+                    array('template' => 'page/checkout/payment.tpl', 'block'=>'select_payment',         'file'=>'/views/blocks/page/checkout/mypaymentselector.tpl'),
+                ),
+                'events'       => array(
+                    'onActivate'   => 'MyEvents::onActivate',
+                    'onDeactivate' => 'MyEvents::onDeactivate'
+                ),
+                'templates' => array(
+                    'order_special.tpl'      => 'with_everything/views/admin/tpl/order_special.tpl',
+                    'user_connections.tpl'   => 'with_everything/views/tpl/user_connections.tpl',
+                ),
+                'files' => array(
+                    'myexception'  => 'with_everything/core/exception/myexception.php',
+                    'myconnection' => 'with_everything/core/exception/myconnection.php',
+                ),
+                'settings' => array(
+                    array('group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true'),
+                    array('group' => 'my_displayname',  'name' => 'sDisplayName',   'type' => 'str',  'value' => 'Some name'),
+                ),
+            ),
+
+            // environment asserts
+            array(
+                'blocks'          => array(
+                    array( 'template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl' ),
+                    array( 'template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_bottom', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl' ),
+                    array( 'template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl' ),
+                    array( 'template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl' ),
+                    array( 'template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl' ),
+                ),
+                'extend'          => array(
+                    'oxorder'   => 'extending_1_class/myorder&with_everything/myorder1&with_everything/myorder2',
+                    'oxarticle' => 'with_everything/myarticle',
+                    'oxuser'    => 'with_everything/myuser',
+                    'oxprice'    => 'with_everything/myprice',
+                ),
+                'files'           => array(
+                    'with_2_files'    => array(
+                        'myexception'  => 'with_2_files/core/exception/myexception.php',
+                        'myconnection' => 'with_2_files/core/exception/myconnection.php',
+                    ),
+                    'with_everything' => array(
+                        'myexception'  => 'with_everything/core/exception/myexception.php',
+                        'myconnection' => 'with_everything/core/exception/myconnection.php',
+                    )
+                ),
+                'settings'        => array(
+                    array( 'group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true' ),
+                    array( 'group' => 'my_displayname', 'name' => 'sDisplayName', 'type' => 'str', 'value' => 'Some name' ),
+                ),
+                'disabledModules' => array(),
+                'templates'       => array(
+                    'with_2_templates' => array(
+                        'order_special.tpl'    => 'with_2_templates/views/admin/tpl/order_special.tpl',
+                        'user_connections.tpl' => 'with_2_templates/views/tpl/user_connections.tpl',
+                    ),
+                    'with_everything'  => array(
+                        'order_special.tpl'    => 'with_everything/views/admin/tpl/order_special.tpl',
+                        'user_connections.tpl' => 'with_everything/views/tpl/user_connections.tpl',
+                    ),
+                ),
+                'versions'        => array(
+                    'extending_1_class'  => '1.0',
+                    'with_2_templates'   => '1.0',
+                    'with_2_files'       => '1.0',
+                    'extending_3_blocks' => '1.0',
+                    'with_events'        => '1.0',
+                    'with_everything'    => '1.0',
+                ),
+                'events'          => array(
+                    'extending_1_class'  => null,
+                    'with_2_templates'   => null,
+                    'with_2_files'       => null,
+                    'extending_3_blocks' => null,
+                    'with_events'        => array(
+                        'onActivate'   => 'MyEvents::onActivate',
+                        'onDeactivate' => 'MyEvents::onDeactivate'
+                    ),
+                    'with_everything'    => array(
+                        'onActivate'   => 'MyEvents::onActivate',
+                        'onDeactivate' => 'MyEvents::onDeactivate'
+                    ),
+                ),
+            )
+        );
+    }
+
+    /**
+     * Add extension in metadata
+     *
+     * @return array
+     */
+    protected function _caseReactivatedWithRemovedTemplateAndBlock()
+    {
+        return array(
+
+            // modules to be activated during test preparation
+            array(
+                'extending_1_class', 'with_2_templates', 'with_2_files',
+                'with_everything', 'extending_3_blocks', 'with_events',
+            ),
+
+            // module that will be reactivated
+            'with_everything',
+
+            // new metadata
+            array(
+                'id'           => 'with_everything',
+                'title'        => 'Test extending 1 shop class',
+                'description'  => 'Module testing extending 1 shop class',
+                'thumbnail'    => 'picture.png',
+                'version'      => '1.0',
+                'author'       => 'OXID eSales AG',
+                'extend'       => array(
+                    'oxarticle' => 'with_everything/myarticle',
+                    'oxorder' => array(
+                        'with_everything/myorder1',
+                        'with_everything/myorder2',
+                    ),
+                    'oxuser' => 'with_everything/myuser',
+                    'oxprice' => 'with_everything/myprice',
+                ),
+                'events'       => array(
+                    'onActivate'   => 'MyEvents::onActivate',
+                    'onDeactivate' => 'MyEvents::onDeactivate'
+                ),
+                'files' => array(
+                    'myexception'  => 'with_everything/core/exception/myexception.php',
+                    'myconnection' => 'with_everything/core/exception/myconnection.php',
+                ),
+                'settings' => array(
+                    array('group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true'),
+                    array('group' => 'my_displayname',  'name' => 'sDisplayName',   'type' => 'str',  'value' => 'Some name'),
+                ),
+            ),
+
+            // environment asserts
+            array(
+                'blocks'          => array(
+                    array( 'template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_bottom', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl' ),
+                    array( 'template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl' ),
+                    array( 'template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl' ),
+                ),
+                'extend'          => array(
+                    'oxorder'   => 'extending_1_class/myorder&with_everything/myorder1&with_everything/myorder2',
+                    'oxarticle' => 'with_everything/myarticle',
+                    'oxuser'    => 'with_everything/myuser',
+                    'oxprice'    => 'with_everything/myprice',
+                ),
+                'files'           => array(
+                    'with_2_files'    => array(
+                        'myexception'  => 'with_2_files/core/exception/myexception.php',
+                        'myconnection' => 'with_2_files/core/exception/myconnection.php',
+                    ),
+                    'with_everything' => array(
+                        'myexception'  => 'with_everything/core/exception/myexception.php',
+                        'myconnection' => 'with_everything/core/exception/myconnection.php',
+                    )
+                ),
+                'settings'        => array(
+                    array( 'group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true' ),
+                    array( 'group' => 'my_displayname', 'name' => 'sDisplayName', 'type' => 'str', 'value' => 'Some name' ),
+                ),
+                'disabledModules' => array(),
+                'templates'       => array(
+                    'with_2_templates' => array(
+                        'order_special.tpl'    => 'with_2_templates/views/admin/tpl/order_special.tpl',
+                        'user_connections.tpl' => 'with_2_templates/views/tpl/user_connections.tpl',
+                    ),
+                ),
+                'versions'        => array(
+                    'extending_1_class'  => '1.0',
+                    'with_2_templates'   => '1.0',
+                    'with_2_files'       => '1.0',
+                    'extending_3_blocks' => '1.0',
+                    'with_events'        => '1.0',
+                    'with_everything'    => '1.0',
+                ),
+                'events'          => array(
+                    'extending_1_class'  => null,
+                    'with_2_templates'   => null,
+                    'with_2_files'       => null,
+                    'extending_3_blocks' => null,
+                    'with_events'        => array(
+                        'onActivate'   => 'MyEvents::onActivate',
+                        'onDeactivate' => 'MyEvents::onDeactivate'
+                    ),
+                    'with_everything'    => array(
+                        'onActivate'   => 'MyEvents::onActivate',
+                        'onDeactivate' => 'MyEvents::onDeactivate'
+                    ),
+                ),
+            )
+        );
+    }
+
+
+    /**
+     * Add extension in metadata
+     *
+     * @return array
+     */
+    protected function _caseReactivatedWithRemovedAllExtendedInfo()
+    {
+        return array(
+
+            // modules to be activated during test preparation
+            array(
+                'extending_1_class', 'with_2_templates', 'with_2_files',
+                'with_everything', 'extending_3_blocks', 'with_events',
+            ),
+
+            // module that will be reactivated
+            'with_everything',
+
+            // new metadata
+            array(
+                'id'           => 'with_everything',
+                'title'        => 'Test extending 1 shop class',
+                'description'  => 'Module testing extending 1 shop class',
+                'thumbnail'    => 'picture.png',
+                'version'      => '1.0',
+                'author'       => 'OXID eSales AG',
+            ),
+
+            // environment asserts
+            array(
+                'blocks'          => array(
+                    array( 'template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_bottom', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl' ),
+                    array( 'template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl' ),
+                    array( 'template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl' ),
+                ),
+                'extend'          => array(
+                    'oxorder'   => 'extending_1_class/myorder',
+                ),
+                'files'           => array(
+                    'with_2_files'    => array(
+                        'myexception'  => 'with_2_files/core/exception/myexception.php',
+                        'myconnection' => 'with_2_files/core/exception/myconnection.php',
+                    ),
+                ),
+                'disabledModules' => array(),
+                'templates'       => array(
+                    'with_2_templates' => array(
+                        'order_special.tpl'    => 'with_2_templates/views/admin/tpl/order_special.tpl',
+                        'user_connections.tpl' => 'with_2_templates/views/tpl/user_connections.tpl',
+                    ),
+                ),
+                'versions'        => array(
+                    'extending_1_class'  => '1.0',
+                    'with_2_templates'   => '1.0',
+                    'with_2_files'       => '1.0',
+                    'extending_3_blocks' => '1.0',
+                    'with_events'        => '1.0',
+                    'with_everything'    => '1.0',
+                ),
+                'events'          => array(
+                    'extending_1_class'  => null,
+                    'with_2_templates'   => null,
+                    'with_2_files'       => null,
+                    'extending_3_blocks' => null,
+                    'with_events'        => array(
+                        'onActivate'   => 'MyEvents::onActivate',
+                        'onDeactivate' => 'MyEvents::onDeactivate'
+                    ),
+                    'with_everything' => null,
+                ),
+            )
+        );
+    }
 }
+ 

@@ -504,7 +504,7 @@ class Integration_Modules_ModuleActivationFirstTest extends OxidTestCase
         }
 
         if( isset( $aExpectedResult['settings'] ) ){
-            $this->assertTrue( $oValidator->checkConfigs( $aExpectedResult['settings'], $sModuleId), 'Configs do not match expectations' );
+            $this->assertTrue( $oValidator->checkConfigAmount( $aExpectedResult['settings'], $sModuleId), 'Configs do not match expectations' );
         }
 
         if( isset( $aExpectedResult['versions'] ) ){

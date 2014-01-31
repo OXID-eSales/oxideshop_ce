@@ -118,7 +118,7 @@ class EnvironmentValidator {
      * @param $aExpectedConfigs
      * @return bool
      */
-    public function checkConfigs( $aExpectedConfigs )
+    public function checkConfigAmount( $aExpectedConfigs )
     {
         $oDb = oxDb::getDb(  );
         $aConfigsToCheck = $oDb->getAll(

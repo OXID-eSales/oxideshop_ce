@@ -465,7 +465,7 @@ class Integration_Modules_ModuleDeactivationTest extends OxidTestCase
         }
 
         if( isset( $aExpectedResult['settings'] ) ){
-            $this->assertTrue( $oValidator->checkConfigs( $aExpectedResult['settings'] ), 'Configs do not match expectations' );
+            $this->assertTrue( $oValidator->checkConfigAmount( $aExpectedResult['settings'] ), 'Configs do not match expectations' );
         }
 
         if( isset( $aExpectedResult['versions'] ) ){

@@ -131,6 +131,23 @@ class EnvironmentValidator {
     }
 
     /**
+     * Asserts that module configs match expected values.
+     * @param array $aExpectedConfigs configs to check
+     * @return bool
+     */
+    public function checkConfigValues( $aExpectedConfigs )
+    {
+        $oConfig = $this->getConfig();
+        foreach ( $aExpectedConfigs as $aExpectedConfig ) {
+            $oConfigValueInShop = $oConfig->getConfigParam( $aExpectedConfig[ 'name' ] );
+            if ( $oConfigValueInShop != $aExpectedConfig[ 'value' ] ) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * Asserts that module version match expected version
      *
      * @param $aExpectedVersions

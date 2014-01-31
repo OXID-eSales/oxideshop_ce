@@ -22,11 +22,9 @@
  * @version   SVN: $Id: $
  */
 
-require_once realpath(dirname(__FILE__).'/../../') . '/unit/OxidTestCase.php';
-require_once realpath( dirname(__FILE__) ) . '/environmentvalidator.php';
-require_once realpath( dirname(__FILE__) ) . '/environment.php';
+require_once realpath(dirname(__FILE__)) . '/basemoduleTestCase.php';
 
-class Integration_Modules_ModuleActivationFirstTest extends OxidTestCase
+class Integration_Modules_ModuleActivationFirstTest extends BaseModuleTestCase
 {
     /**
      * Tear down the fixture.
@@ -475,49 +473,5 @@ class Integration_Modules_ModuleActivationFirstTest extends OxidTestCase
             )
         );
     }
-
-    /**
-     * Runs all asserts
-     *
-     * @param $aExpectedResult
-     * @param $sModuleId
-     */
-    private function _runAsserts( $aExpectedResult, $sModuleId )
-    {
-        $oValidator = new EnvironmentValidator();
-        $oValidator->setConfig( $this->getConfig() );
-
-        if( isset( $aExpectedResult['blocks'] ) ){
-            $this->assertTrue( $oValidator->checkBlocks( $aExpectedResult['blocks']), 'Blocks do not match expectations' );
-        }
-
-        if( isset( $aExpectedResult['extend'] ) ){
-            $this->assertTrue( $oValidator->checkExtensions( $aExpectedResult['extend']), 'Extensions do not match expectations' );
-        }
-
-        if( isset( $aExpectedResult['files'] ) ){
-            $this->assertTrue( $oValidator->checkFiles( $aExpectedResult['files']), 'Files do not match expectations' );
-        }
-
-        if( isset( $aExpectedResult['events'] ) ){
-            $this->assertTrue( $oValidator->checkEvents( $aExpectedResult['events']), 'Events do not match expectations' );
-        }
-
-        if( isset( $aExpectedResult['settings'] ) ){
-            $this->assertTrue( $oValidator->checkConfigAmount( $aExpectedResult['settings'], $sModuleId), 'Configs do not match expectations' );
-        }
-
-        if( isset( $aExpectedResult['versions'] ) ){
-            $this->assertTrue( $oValidator->checkVersions( $aExpectedResult['versions']), 'Versions do not match expectations' );
-        }
-
-        if( isset( $aExpectedResult['templates'] ) ){
-            $this->assertTrue( $oValidator->checkTemplates( $aExpectedResult['templates']), 'Templates do not match expectations' );
-        }
-
-        if( isset( $aExpectedResult['disabledModules'] ) ){
-            $this->assertTrue( $oValidator->checkDisabledModules( $aExpectedResult['disabledModules'] ), 'Disabled modules do not match expectations' );
-        }
-    }
-
 }
+ 

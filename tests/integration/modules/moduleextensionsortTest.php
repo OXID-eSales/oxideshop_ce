@@ -22,10 +22,9 @@
  * @version   SVN: $Id: $
  */
 
-require_once realpath(dirname(__FILE__).'/../../') . '/unit/OxidTestCase.php';
-require_once realpath( dirname(__FILE__) ) . '/environment.php';
+require_once realpath(dirname(__FILE__)) . '/basemoduleTestCase.php';
 
-class Integration_Modules_ModuleExtensionSortTest extends OxidTestCase
+class Integration_Modules_ModuleExtensionSortTest extends BaseModuleTestCase
 {
     /**
      * Tear down the fixture.

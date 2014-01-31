@@ -39,25 +39,27 @@ class Integration_Modules_ModuleConfigsTest extends BaseModuleTestCase
     public function providerModuleIsActive()
     {
         return array(
-            // modules to be activated during test preparation
             array(
-                'with_everything', 'no_extending', 'with_2_settings'
-            ),
+                // modules to be activated during test preparation
+                array(
+                    'with_everything', 'no_extending', 'with_2_settings'
+                ),
 
-            // module that will be reactivated
-            'with_everything',
+                // module that will be reactivated
+                'with_everything',
 
-            // Settings to be changed after first activation
-            array(
-                array( 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'false'),
-                array( 'name' => 'sDisplayName',   'type' => 'str',  'value' => 'Some different name'),
-            ),
-
-            // environment asserts
-            array(
-                'settings_values'        => array(
-                    array( 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => false),
+                // Settings to be changed after first activation
+                array(
+                    array( 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'false'),
                     array( 'name' => 'sDisplayName',   'type' => 'str',  'value' => 'Some different name'),
+                ),
+
+                // environment asserts
+                array(
+                    'settings_values'        => array(
+                        array( 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => false),
+                        array( 'name' => 'sDisplayName',   'type' => 'str',  'value' => 'Some different name'),
+                    ),
                 ),
             ),
         );

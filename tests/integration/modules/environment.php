@@ -40,8 +40,8 @@ class Environment
         }
 
         $this->clean();
-
         $this->_activateModules( $aModules );
+
     }
 
     /**
@@ -52,7 +52,7 @@ class Environment
         $oConfig = oxRegistry::getConfig();
         $oConfig->setConfigParam( 'aModules', null);
         $oConfig->setConfigParam( 'aModuleTemplates', null);
-        $oConfig->setConfigParam( 'aDisabledModules', null);
+        $oConfig->setConfigParam( 'aDisabledModules', array() );
         $oConfig->setConfigParam( 'aModuleFiles', null);
         $oConfig->setConfigParam( 'aModuleVersions', null);
         $oConfig->setConfigParam( 'aModuleEvents', null);

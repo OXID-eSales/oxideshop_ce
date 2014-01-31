@@ -36,92 +36,72 @@ class Integration_Modules_ModuleExtensionSortTest extends BaseModuleTestCase
         parent::tearDown();
     }
 
-
-    public function providerModuleIsActive()
+    public function providerModuleReorderExtensions()
     {
-        /*return array(
+        return array(
             array(
-                array( 'extending_1_class', 'with_2_templates', 'with_everything' ),
-                array( 'extending_1_class', 'with_everything' ),
+                // modules to be activated during test preparation
                 array(
-                    'active' => array('with_2_templates'),
-                    'notActive' => array('extending_1_class', 'with_everything'),
-                )
-            ),
-            array(
-                array( 'extending_1_class', 'with_2_templates', 'with_everything' ),
-                array(),
+                    'extending_1_class', 'extending_3_classes_with_1_extension',
+                    'extending_3_classes', 'extending_1_class_3_extensions',
+                ),
+
+                // module that will be reactivated
+                'extending_3_classes_with_1_extension',
+
+                // environment asserts
                 array(
-                    'active' => array('extending_1_class', 'with_2_templates', 'with_everything'),
-                    'notActive' => array(),
+                    'oxorder'   => 'extending_3_classes_with_1_extension/mybaseclass&extending_1_class/myorder&'.
+                                   'extending_1_class_3_extensions/myorder1&extending_3_classes/myorder&'.
+                                   'extending_1_class_3_extensions/myorder3&extending_1_class_3_extensions/myorder2',
+                    'oxarticle' => 'extending_3_classes/myarticle&extending_3_classes_with_1_extension/mybaseclass',
+                    'oxuser'    => 'extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myuser',
                 )
             ),
 
             array(
-                array( 'extending_1_class', 'extending_1_class_3_extensions', 'no_extending', 'with_2_templates', 'with_everything' ),
-                array( 'extending_1_class', 'extending_1_class_3_extensions', 'no_extending', 'with_2_templates', 'with_everything' ),
+                // modules to be activated during test preparation
                 array(
-                    'active' => array(),
-                    'notActive' => array( 'extending_1_class', 'extending_1_class_3_extensions', 'no_extending', 'with_2_templates', 'with_everything' ),
-                )
-            ),
+                    'extending_1_class_3_extensions',
+                ),
 
-            array(
-                array( 'extending_1_class', 'extending_1_class_3_extensions', 'no_extending', 'with_2_templates', 'with_everything' ),
-                array( 'extending_1_class', 'extending_1_class_3_extensions', 'no_extending', 'with_2_templates', 'with_everything' ),
-                array(
-                    'active' => array(),
-                    'notActive' => array( 'extending_1_class', 'extending_1_class_3_extensions', 'no_extending', 'with_2_templates', 'with_everything' ),
-                )
-            ),
-            array(
-                array( 'no_extending' ),
-                array(),
-                array(
-                    'active' => array( 'no_extending' ),
-                    'notActive' => array(),
-                )
-            ),
-            array(
-                array( 'no_extending' ),
-                array( 'no_extending' ),
-                array(
-                    'active' => array( ),
-                    'notActive' => array( 'no_extending' ),
-                )
-            ),
+                // module that will be reactivated
+                'extending_1_class_3_extensions',
 
-        );*/
+                // environment asserts
+                array(
+                    'oxorder'   => 'extending_1_class_3_extensions/myorder2&'.
+                                   'extending_1_class_3_extensions/myorder1&'.
+                                   'extending_1_class_3_extensions/myorder3',
+                )
+            )
+
+        );
     }
 
     /**
      * Tests check if changed extensions order stays the same after deactivation / activation
      *
-     * @dataProvider providerModuleIsActive
+     * @dataProvider providerModuleReorderExtensions
      */
-    public function testIsActive( $aInstallModules, $aDeactivateModules, $aResultToAssert )
+    public function testIsActive( $aInstallModules, $sModule, $aReorderedExtensions)
     {
-        $this->markTestIncomplete('not implemented yet');
-
         $oModuleEnvironment = new Environment();
         $oModuleEnvironment->prepare( $aInstallModules );
 
-        //deactivation
-        /*$oModule = new oxModule();
-        foreach( $aDeactivateModules as $sModule){
-            $oModule->load( $sModule );
-            $oModule->deactivate();
-        }
+        // load reordered extensions
+        $this->getConfig()->setConfigParam( 'aModules', $aReorderedExtensions );
 
-        //assertion
-        foreach( $aResultToAssert['active'] as $sModule ){
-            $oModule->load( $sModule );
-            $this->assertTrue( $oModule->isActive());
-        }
+        $oModule = new oxModule();
+        $oModule->load( $sModule );
 
-        foreach( $aResultToAssert['notActive'] as $sModule ){
-            $oModule->load( $sModule );
-            $this->assertFalse( $oModule->isActive());
-        }*/
+        $oModule->deactivate();
+        $oModule->activate();
+
+        $oValidator = new EnvironmentValidator();
+        $oValidator->setConfig( $this->getConfig() );
+
+        $this->assertTrue( $oValidator->checkExtensions( $aReorderedExtensions ), 'Extension order changed' );
     }
 }
+ 

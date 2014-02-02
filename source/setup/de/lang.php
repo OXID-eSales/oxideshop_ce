@@ -100,6 +100,8 @@ $aLang = array(
 'MOD_FILE_UPLOADS'                              => 'Hochladen von Dateien erlaubt (file_uploads)',
 'MOD_BUG53632'                                  => 'Mögliche Probleme mit Server durch PHP Bugs',
 'MOD_SESSION_AUTOSTART'                         => 'session.auto_start muss ausgeschaltet sein',
+'MOD_MEMORY_LIMIT'                              => 'PHP Memory limit (min. 14MB, 30MB empfohlen)',
+
 
 'STEP_0_ERROR_TEXT'                             => 'Ihr System erfüllt nicht alle nötigen Systemvoraussetzungen',
 'STEP_0_ERROR_URL'                              => 'http://www.oxid-esales.com/de/produkte/community-edition/systemvoraussetzungen',
@@ -207,5 +209,3 @@ $aLang = array(
 'BUTTON_START_INSTALL'                          => 'Setup erneut starten',
 
 );
-
-$aLang['MOD_MEMORY_LIMIT']                      = 'PHP Memory limit (min. 14MB, 30MB empfohlen)';

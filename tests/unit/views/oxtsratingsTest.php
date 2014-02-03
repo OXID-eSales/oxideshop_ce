@@ -35,6 +35,11 @@ require_once realpath( "." ).'/unit/OxidTestCase.php';
 class Unit_Views_oxTsRatingsTest extends OxidTestCase
 {
 
+    /**
+     * Returns id and expected id array
+     *
+     * @return array
+     */
     public function idProvider()
     {
         return array(
@@ -47,10 +52,12 @@ class Unit_Views_oxTsRatingsTest extends OxidTestCase
     /**
      * Trusted shops id getter test when value is set
      *
+     * @param string $sId       id
+     * @param string $sExpected expected value
+     *
      * @dataProvider idProvider
      *
-     * @param string $sId id
-     * @param string $sExpected expected value
+     * @return null
      */
     public function testGetTsId( $sId, $sExpected )
     {
@@ -63,6 +70,7 @@ class Unit_Views_oxTsRatingsTest extends OxidTestCase
     /**
      * Trusted shops id getter test when it's not set
      *
+     * @return null
      */
     public function testGetTsIdNotSet()
     {
@@ -95,8 +103,9 @@ class Unit_Views_oxTsRatingsTest extends OxidTestCase
      */
     public function testGetRatingsInvalidId()
     {
-        $this->markTestSkippedUntil( '2014-02-03', 'Request to Trusted Shops times out with invalid ID.' );
-        $oTsRatings = new oxTsRatings();
+        $sError = "error.";
+        $oTsRatings = $this->getMock( "oxTsRatings", array( "_executeCurl" ) );
+        $oTsRatings->expects( $this->any() )->method( "_executeCurl" )->will( $this->returnValue( $sError ) );
         $oTsRatings->setTsId( 'xyz' );
         $aResultExpected = array ( 'empty' => true );
         $this->assertEquals( $aResultExpected, $oTsRatings->getRatings() );

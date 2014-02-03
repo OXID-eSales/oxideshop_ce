@@ -247,7 +247,7 @@ class oxModule extends oxSuperCfg
                 }
             } else {
                 $aDisabledModules = (array) $this->getConfig()->getConfigParam('aDisabledModules');
-                if ( is_array( $aDisabledModules ) && !in_array( $sId, $aDisabledModules ) ) {
+                if ( !empty( $aDisabledModules ) && !in_array( $sId, $aDisabledModules ) ) {
                     $blActive = true;
                 }
             }

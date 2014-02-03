@@ -39,9 +39,7 @@ class Environment
             $aModules = $this->_getAllModules();
         }
 
-        $this->clean();
         $this->_activateModules( $aModules );
-
     }
 
     /**

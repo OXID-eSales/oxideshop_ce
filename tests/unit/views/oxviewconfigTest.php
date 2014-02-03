@@ -72,10 +72,13 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
      */
     public function testGetTsRatings()
     {
-        $this->markTestSkippedUntil( '2014-02-03', 'Request to Trusted Shops times out with invalid ID.' );
         $oViewConf = $this->getMock( "oxViewConfig", array( "getTsId" ) );
         $oViewConf->expects( $this->any() )->method( "getTsId" )->will( $this->returnValue( 'xyz' ) );
 
+        $sError = "error.";
+        $oTsRatings = $this->getMock( "oxTsRatings", array( "_executeCurl" ) );
+        $oTsRatings->expects( $this->any() )->method( "_executeCurl" )->will( $this->returnValue( $sError ) );
+        oxRegistry::set( 'oxTsRatings', $oTsRatings );
         $aTsRatings = $oViewConf->getTsRatings();
 
         $this->assertArrayHasKey( 'empty', $aTsRatings );

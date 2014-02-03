@@ -25,6 +25,33 @@
 class Environment
 {
     /**
+     * Shop Id in which will be prepared environment.
+     *
+     * @var int
+     */
+    private $_iShopId;
+
+    /**
+     * Sets shop Id.
+     *
+     * @param int $iShopId
+     */
+    public function setShopId( $iShopId )
+    {
+        $this->_iShopId = $iShopId;
+    }
+
+    /**
+     * Returns shop Id.
+     *
+     * @return int
+     */
+    public function getShopId()
+    {
+        return $this->_iShopId;
+    }
+
+    /**
      * Loads and activates modules by given IDs.
      *
      * @param null $aModules
@@ -33,6 +60,7 @@ class Environment
     public function prepare( $aModules = null )
     {
         $oConfig = oxRegistry::getConfig();
+        $oConfig->setShopId( $this->getShopId() );
         $oConfig->setConfigParam( 'sShopDir', $this->_getPathToTestDataDirectory() );
 
         if ( is_null( $aModules ) ) {

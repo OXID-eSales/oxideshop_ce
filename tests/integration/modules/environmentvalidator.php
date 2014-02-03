@@ -24,24 +24,45 @@
 
 require_once realpath(dirname(__FILE__).'/../../') . '/unit/OxidTestCase.php';
 
-class EnvironmentValidator {
-
-    protected $_oConfig;
+class EnvironmentValidator
+{
 
     /**
-     * @param mixed $oConfig
+     * @var
      */
-    public function setConfig( $oConfig )
+    private $_oConfig;
+
+    /**
+     * @var
+     */
+    private $_iShopId;
+
+    /**
+     * Sets oxConfig and Shop ID
+     *
+     * @param $_oConfig
+     * @param $_iShopId
+     */
+    function __construct( $_oConfig, $_iShopId )
     {
-        $this->_oConfig = $oConfig;
+        $this->_iShopId = $_iShopId;
+        $this->_oConfig = $_oConfig;
+    }
+
+    /**
+     * @return object
+     */
+    public function getConfig()
+    {
+        return $this->_oConfig;
     }
 
     /**
      * @return mixed
      */
-    public function getConfig()
+    public function getShopId()
     {
-        return $this->_oConfig;
+        return $this->_iShopId;
     }
 
     /**
@@ -67,7 +88,7 @@ class EnvironmentValidator {
     public function checkBlocks( $aExpectedBlocks )
     {
         $oDb = oxDb::getDb();
-        $aBlocksToCheck = $oDb->getAll( 'select * from oxtplblocks' );
+        $aBlocksToCheck = $oDb->getAll( "select * from oxtplblocks where oxshopid = {$this->getShopId()}" );
 
         return ( count( $aExpectedBlocks ) == count( $aBlocksToCheck ) );
     }
@@ -121,13 +142,13 @@ class EnvironmentValidator {
     public function checkConfigAmount( $aExpectedConfigs )
     {
         $oDb = oxDb::getDb(  );
-        $aConfigsToCheck = $oDb->getAll(
-            "select c.oxvarname
-            from  oxconfig c inner join oxconfigdisplay d
-                on c.oxvarname = d.oxcfgvarname  and c.oxmodule = d.oxcfgmodule
-            where oxmodule like 'module:%'" );
+        $sQuery = "select c.oxvarname
+                   from  oxconfig c inner join oxconfigdisplay d
+                   on c.oxvarname = d.oxcfgvarname  and c.oxmodule = d.oxcfgmodule
+                   where oxmodule like 'module:%' and c.oxshopid = {$this->getShopId()}";
+        $aConfigsToCheck = $oDb->getAll( $sQuery );
 
-        return ( count($aExpectedConfigs) == count($aConfigsToCheck) );
+        return ( count( $aExpectedConfigs ) == count( $aConfigsToCheck ) );
     }
 
     /**

@@ -26,15 +26,6 @@ require_once realpath(dirname(__FILE__)) . '/basemoduleTestCase.php';
 
 class Integration_Modules_ModuleDeactivationTest extends BaseModuleTestCase
 {
-    /**
-     * Tear down the fixture.
-     */
-    protected function tearDown()
-    {
-        $oModuleEnvironment = new Environment();
-        $oModuleEnvironment->clean();
-        parent::tearDown();
-    }
 
     public function providerModuleDeactivation()
     {
@@ -57,7 +48,6 @@ class Integration_Modules_ModuleDeactivationTest extends BaseModuleTestCase
     public function testModuleDeactivation( $aInstallModules, $sModuleId, $aResultToAssert )
     {
         $oModuleEnvironment = new Environment();
-        $oModuleEnvironment->clean();
         $oModuleEnvironment->prepare( $aInstallModules );
 
         $oModule = new oxModule();

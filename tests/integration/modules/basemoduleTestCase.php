@@ -42,11 +42,16 @@ class BaseModuleTestCase extends OxidTestCase
      *
      * @param $aExpectedResult
      * @param $sModuleId
+     * @param $iShopId
      */
-    protected function _runAsserts( $aExpectedResult, $sModuleId )
+    protected function _runAsserts( $aExpectedResult, $sModuleId, $iShopId = null )
     {
-        $oValidator = new EnvironmentValidator();
-        $oValidator->setConfig( $this->getConfig() );
+        $oConfig = $this->getConfig();
+        if ( is_null( $iShopId ) ) {
+            $iShopId = $oConfig->getShopId();
+        }
+
+        $oValidator = new EnvironmentValidator( $oConfig, $iShopId );
 
         if( isset( $aExpectedResult['blocks'] ) ){
             $this->assertTrue( $oValidator->checkBlocks( $aExpectedResult['blocks']), 'Blocks do not match expectations' );

@@ -26,15 +26,6 @@ require_once realpath(dirname(__FILE__)) . '/basemoduleTestCase.php';
 
 class Integration_Modules_ModuleExtensionSortTest extends BaseModuleTestCase
 {
-    /**
-     * Tear down the fixture.
-     */
-    protected function tearDown()
-    {
-        $oModuleEnvironment = new Environment();
-        $oModuleEnvironment->clean();
-        parent::tearDown();
-    }
 
     public function providerModuleReorderExtensions()
     {
@@ -98,8 +89,7 @@ class Integration_Modules_ModuleExtensionSortTest extends BaseModuleTestCase
         $oModule->deactivate();
         $oModule->activate();
 
-        $oValidator = new EnvironmentValidator();
-        $oValidator->setConfig( $this->getConfig() );
+        $oValidator = new EnvironmentValidator( $this->getConfig(), 1 );
 
         $this->assertTrue( $oValidator->checkExtensions( $aReorderedExtensions ), 'Extension order changed' );
     }

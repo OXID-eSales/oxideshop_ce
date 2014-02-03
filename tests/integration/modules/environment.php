@@ -48,7 +48,7 @@ class Environment
      */
     public function getShopId()
     {
-        return $this->_iShopId;
+        return is_null( $this->_iShopId ) ? 1 : $this->_iShopId;
     }
 
     /**
@@ -59,6 +59,7 @@ class Environment
      */
     public function prepare( $aModules = null )
     {
+        $this->clean();
         $oConfig = oxRegistry::getConfig();
         $oConfig->setShopId( $this->getShopId() );
         $oConfig->setConfigParam( 'sShopDir', $this->_getPathToTestDataDirectory() );
@@ -67,7 +68,7 @@ class Environment
             $aModules = $this->_getAllModules();
         }
 
-        $this->_activateModules( $aModules );
+        $this->activateModules( $aModules );
     }
 
     /**
@@ -87,6 +88,22 @@ class Environment
         $oDb->execute( "DELETE FROM `oxconfig` WHERE `oxmodule` LIKE 'module:%'" );
         $oDb->execute( 'TRUNCATE `oxconfigdisplay`' );
         $oDb->execute( 'TRUNCATE `oxtplblocks`' );
+    }
+
+    /**
+     * Activates given modules.
+     *
+     * @param $aModules
+     * @throws Exception
+     */
+    public function activateModules( $aModules )
+    {
+        $oModule = new oxModule();
+        foreach ( $aModules as $sModuleId ) {
+            if ( !$oModule->load( $sModuleId ) || !$oModule->activate() ) {
+                throw new Exception( "Module $sModuleId was not activated." );
+            }
+        }
     }
 
     /**
@@ -111,19 +128,4 @@ class Environment
         return $aModules;
     }
 
-    /**
-     * Activates given modules.
-     *
-     * @param $aModules
-     * @throws Exception
-     */
-    private function _activateModules( $aModules )
-    {
-        $oModule = new oxModule();
-        foreach ( $aModules as $sModuleId ) {
-            if ( !$oModule->load( $sModuleId ) || !$oModule->activate() ) {
-                throw new Exception( "Module $sModuleId was not activated." );
-            }
-        }
-    }
 }

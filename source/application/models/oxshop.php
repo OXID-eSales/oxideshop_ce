@@ -200,6 +200,8 @@ class oxShop extends oxI18n
     }
 
     /**
+     * Get current Shop language ids.
+     *
      * @return array
      */
     private function _getLanguageIds()
@@ -210,6 +212,8 @@ class oxShop extends oxI18n
     }
 
     /**
+     * Get languages from config table aLanguageParams.
+     *
      * @return array
      */
     private function _getLanguagesFromLanguageParams()
@@ -228,6 +232,8 @@ class oxShop extends oxI18n
     }
 
     /**
+     * Get languages from config table aLanguages.
+     *
      * @return array
      */
     private function _getLanguagesFromLanguages()
@@ -241,6 +247,13 @@ class oxShop extends oxI18n
         return $aLanguages;
     }
 
+    /**
+     * Select languages from config table.
+     *
+     * @param string $sConfigName config name which holds languages.
+     *
+     * @return mixed
+     */
     private function _selectLanguages( $sConfigName )
     {
         $oDb = oxDb::getDb();

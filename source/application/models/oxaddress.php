@@ -14,12 +14,6 @@
  *
  *    You should have received a copy of the GNU General Public License
  *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
- *
- * @link      http://www.oxid-esales.com
- * @package   models
- * @copyright (C) OXID eSales AG 2003-2014
- * @version OXID eShop CE
- * @version   SVN: $Id:
  */
 
 /**
@@ -27,6 +21,7 @@
  */
 class oxAddress extends oxBase
 {
+
     /**
      * Current class name
      *
@@ -47,12 +42,14 @@ class oxAddress extends oxBase
     protected $_oStateObject = null;
 
     /**
+     * Returns oxState object
+     *
      * @return oxState
      */
     protected function _getStateObject()
     {
-        if ( is_null( $this->_oStateObject ) ) {
-            $this->_oStateObject = oxNew( 'oxState' );
+        if (is_null($this->_oStateObject)) {
+            $this->_oStateObject = oxNew('oxState');
         }
 
         return $this->_oStateObject;
@@ -66,7 +63,7 @@ class oxAddress extends oxBase
     public function __construct()
     {
         parent::__construct();
-        $this->init( 'oxaddress' );
+        $this->init('oxaddress');
     }
 
     /**
@@ -87,15 +84,15 @@ class oxAddress extends oxBase
     public function toString()
     {
         $sFirstName = $this->oxaddress__oxfname->value;
-        $sLastName  = $this->oxaddress__oxlname->value;
-        $sStreet    = $this->oxaddress__oxstreet->value;
-        $sStreetNr  = $this->oxaddress__oxstreetnr->value;
-        $sCity      = $this->oxaddress__oxcity->value;
+        $sLastName = $this->oxaddress__oxlname->value;
+        $sStreet = $this->oxaddress__oxstreet->value;
+        $sStreetNr = $this->oxaddress__oxstreetnr->value;
+        $sCity = $this->oxaddress__oxcity->value;
 
         //format it
         $sAddress = "";
         if ($sFirstName || $sLastName) {
-            $sAddress = $sFirstName. ($sFirstName?" ":"") . "$sLastName, ";
+            $sAddress = $sFirstName . ($sFirstName ? " " : "") . "$sLastName, ";
         }
         $sAddress .= "$sStreet $sStreetNr $sCity";
 
@@ -144,15 +141,15 @@ class oxAddress extends oxBase
      *
      * @return string
      */
-    public function getStateTitle( $sId = null )
+    public function getStateTitle($sId = null)
     {
         $oState = $this->_getStateObject();
 
-        if ( is_null( $sId ) ) {
+        if (is_null($sId)) {
             $sId = $this->getStateId();
         }
 
-        return $oState->getTitleById( $sId );
+        return $oState->getTitleById($sId);
     }
 
     /**

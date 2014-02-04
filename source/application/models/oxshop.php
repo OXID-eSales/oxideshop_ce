@@ -18,11 +18,6 @@
  * @link      http://www.oxid-esales.com
  * @copyright (C) OXID eSales AG 2003-2014
  * @version   OXID eShop CE
- *
- * @link      http://www.oxid-esales.com
- * @package   core
- * @copyright (c) OXID eSales AG 2003-#OXID_VERSION_YEAR#
- * @version   SVN: $Id$
  */
 
 /**
@@ -211,62 +206,4 @@ class oxShop extends oxI18n
         return $aLanguages;
     }
 
-    /**
-     * Get languages from config table aLanguageParams.
-     *
-     * @return array
-     */
-    private function _getLanguagesFromLanguageParams()
-    {
-        $aLanguages = array();
-        $aLangParams = $this->_selectLanguages( 'aLanguageParams' );
-
-        if ( is_array( $aLangParams ) ) {
-            foreach ( $aLangParams as $sAbbr => $aValue ) {
-                $iBaseId = (int) $aValue[ 'baseId' ];
-                $aLanguages[ $iBaseId ] = $sAbbr;
-            }
-        }
-
-        return $aLanguages;
-    }
-
-    /**
-     * Get languages from config table aLanguages.
-     *
-     * @return array
-     */
-    private function _getLanguagesFromLanguages()
-    {
-        $aLangParams = $this->_selectLanguages( 'aLanguages' );
-
-        if ( is_array( $aLangParams ) ) {
-            $aLanguages = array_keys( $aLangParams );
-        }
-
-        return $aLanguages;
-    }
-
-    /**
-     * Select languages from config table.
-     *
-     * @param string $sConfigName config name which holds languages.
-     *
-     * @return mixed
-     */
-    private function _selectLanguages( $sConfigName )
-    {
-        $oDb = oxDb::getDb();
-        $oConfig = oxRegistry::getConfig();
-
-        $sQ = "
-                    select " . $oConfig->getDecodeValueQuery() . " as oxvarvalue
-                    from oxconfig
-                    where oxshopid = '" . (int)$this->getId() . "'
-                        and oxvarname = '$sConfigName'
-                        limit 1";
-        $oRs = $oDb->getOne( $sQ );
-        $aLangParams = unserialize( $oRs );
-        return $aLangParams;
-    }
 }

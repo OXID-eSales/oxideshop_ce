@@ -18,6 +18,11 @@
  * @link      http://www.oxid-esales.com
  * @copyright (C) OXID eSales AG 2003-2014
  * @version   OXID eShop CE
+ *
+ * @link      http://www.oxid-esales.com
+ * @package   core
+ * @copyright (c) OXID eSales AG 2003-#OXID_VERSION_YEAR#
+ * @version   SVN: $Id$
  */
 
 /**
@@ -109,7 +114,7 @@ class oxShop extends oxI18n
 
         $oViewsValidator = oxNew( 'oxShopViewValidator' );
 
-        $oViewsValidator->setShopId( $this->getConfig()->getShopId() );
+        $oViewsValidator->setShopId( $this->getId() );
         $oViewsValidator->setLanguages( $aLanguages );
         $oViewsValidator->setMultiLangTables( $aMultilangTables );
         $oViewsValidator->setMultiShopTables( $aMultishopTables );
@@ -192,5 +197,4 @@ class oxShop extends oxI18n
     {
         return $this->oxshops__oxdefcat->value;
     }
-
 }

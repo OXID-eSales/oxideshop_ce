@@ -15,8 +15,8 @@
  *    You should have received a copy of the GNU General Public License
  *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @link      http://www.oxid-esales.com
- * @package   views
+ * @link          http://www.oxid-esales.com
+ * @package       views
  * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
@@ -24,12 +24,15 @@
 /**
  * Translarent shop manager (executed automatically), sets
  * registration information and current shop object.
+ *
  * @subpackage oxcmp
  */
 class oxcmp_shop extends oxView
 {
+
     /**
      * Marking object as component
+     *
      * @var bool
      */
     protected $_blIsComponent = true;
@@ -47,10 +50,10 @@ class oxcmp_shop extends oxView
 
         // is shop active?
         $oShop = $myConfig->getActiveShop();
-        if ( !$oShop->oxshops__oxactive->value && 'oxstart' != $myConfig->getActiveView()->getClassName() && !$this->isAdmin() ) {
+        if (!$oShop->oxshops__oxactive->value && 'oxstart' != $myConfig->getActiveView()->getClassName() && !$this->isAdmin()) {
             // redirect to offline if there is no active shop
             $sShopUrl = oxRegistry::getConfig()->getSslShopUrl();
-            oxRegistry::getUtils()->redirect( $sShopUrl . 'offline.html', false );
+            oxRegistry::getUtils()->redirect($sShopUrl . 'offline.html', false);
         }
 
         return $oShop;

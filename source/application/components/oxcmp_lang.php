@@ -15,8 +15,8 @@
  *    You should have received a copy of the GNU General Public License
  *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @link      http://www.oxid-esales.com
- * @package   views
+ * @link          http://www.oxid-esales.com
+ * @package       views
  * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
@@ -24,12 +24,15 @@
 /**
  * Shop language manager.
  * Performs language manager function: changes template settings, modifies URL's.
+ *
  * @subpackage oxcmp
  */
 class oxcmp_lang extends oxView
 {
+
     /**
      * Marking object as component
+     *
      * @var bool
      */
     protected $_blIsComponent = true;
@@ -44,12 +47,13 @@ class oxcmp_lang extends oxView
         parent::render();
 
         // Performance
-        if ( $this->getConfig()->getConfigParam( 'bl_perfLoadLanguages' ) ) {
-            $aLanguages = oxRegistry::getLang()->getLanguageArray( null, true, true );
+        if ($this->getConfig()->getConfigParam('bl_perfLoadLanguages')) {
+            $aLanguages = oxRegistry::getLang()->getLanguageArray(null, true, true);
             reset($aLanguages);
-            while ( list( $sKey, $oVal ) = each( $aLanguages ) ) {
+            while (list($sKey, $oVal) = each($aLanguages)) {
                 $aLanguages[$sKey]->link = $this->getConfig()->getTopActiveView()->getLink($oVal->id);
             }
+
             return $aLanguages;
         }
     }

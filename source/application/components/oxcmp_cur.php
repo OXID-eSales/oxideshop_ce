@@ -15,32 +15,37 @@
  *    You should have received a copy of the GNU General Public License
  *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @link      http://www.oxid-esales.com
- * @package   views
+ * @link          http://www.oxid-esales.com
+ * @package       views
  * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
 
 /**
  * Currency manager class.
+ *
  * @subpackage oxcmp
  */
 class oxcmp_cur extends oxView
 {
+
     /**
      * Array of available currencies.
+     *
      * @var array
      */
-    public $aCurrencies    = null;
+    public $aCurrencies = null;
 
     /**
      * Active currency object.
+     *
      * @var object
      */
-    protected $_oActCur        = null;
+    protected $_oActCur = null;
 
     /**
      * Marking object as component
+     *
      * @var bool
      */
     protected $_blIsComponent = true;
@@ -60,22 +65,23 @@ class oxcmp_cur extends oxView
     {
         // Performance
         $myConfig = $this->getConfig();
-        if ( !$myConfig->getConfigParam( 'bl_perfLoadCurrency' ) ) {
+        if (!$myConfig->getConfigParam('bl_perfLoadCurrency')) {
             //#861C -  show first currency
             $aCurrencies = $myConfig->getCurrencyArray();
-            $this->_oActCur = current( $aCurrencies );
+            $this->_oActCur = current($aCurrencies);
+
             return;
         }
 
-        $iCur = oxConfig::getParameter( 'cur' );
-        if ( isset( $iCur ) ) {
+        $iCur = oxConfig::getParameter('cur');
+        if (isset($iCur)) {
             $aCurrencies = $myConfig->getCurrencyArray();
-            if (!isset( $aCurrencies[$iCur] ) ) {
+            if (!isset($aCurrencies[$iCur])) {
                 $iCur = 0;
             }
 
             // set new currency
-            $myConfig->setActShopCurrency( $iCur );
+            $myConfig->setActShopCurrency($iCur);
 
             // recalc basket
             $oBasket = $this->getSession()->getBasket();
@@ -83,15 +89,15 @@ class oxcmp_cur extends oxView
         }
 
         $iActCur = $myConfig->getShopCurrency();
-        $this->aCurrencies = $myConfig->getCurrencyArray( $iActCur );
+        $this->aCurrencies = $myConfig->getCurrencyArray($iActCur);
 
         $this->_oActCur = $this->aCurrencies[$iActCur];
 
         //setting basket currency (M:825)
-        if ( !isset( $oBasket ) ) {
+        if (!isset($oBasket)) {
             $oBasket = $this->getSession()->getBasket();
         }
-        $oBasket->setBasketCurrency( $this->_oActCur );
+        $oBasket->setBasketCurrency($this->_oActCur);
         parent::init();
     }
 
@@ -108,15 +114,15 @@ class oxcmp_cur extends oxView
     {
         parent::render();
         $oParentView = $this->getParent();
-        $oParentView->setActCurrency( $this->_oActCur );
+        $oParentView->setActCurrency($this->_oActCur);
 
         $oUrlUtils = oxRegistry::get("oxUtilsUrl");
-        $sUrl = $oUrlUtils->cleanUrl( $this->getConfig()->getTopActiveView()->getLink(), array( "cur" ) );
+        $sUrl = $oUrlUtils->cleanUrl($this->getConfig()->getTopActiveView()->getLink(), array("cur"));
 
-        if ( $this->getConfig()->getConfigParam( 'bl_perfLoadCurrency' ) ) {
-            reset( $this->aCurrencies );
-            while ( list( , $oItem ) = each( $this->aCurrencies ) ) {
-                $oItem->link = $oUrlUtils->processUrl( $sUrl, true, array( "cur" => $oItem->id ) );
+        if ($this->getConfig()->getConfigParam('bl_perfLoadCurrency')) {
+            reset($this->aCurrencies);
+            while (list(, $oItem) = each($this->aCurrencies)) {
+                $oItem->link = $oUrlUtils->processUrl($sUrl, true, array("cur" => $oItem->id));
             }
         }
 

@@ -15,8 +15,8 @@
  *    You should have received a copy of the GNU General Public License
  *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @link      http://www.oxid-esales.com
- * @package   views
+ * @link          http://www.oxid-esales.com
+ * @package       views
  * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
@@ -24,6 +24,7 @@
 /**
  * Main shopping basket manager. Arranges shopping basket
  * contents, updates amounts, prices, taxes etc.
+ *
  * @subpackage oxcmp
  */
 class oxcmp_basket extends oxView
@@ -31,12 +32,14 @@ class oxcmp_basket extends oxView
 
     /**
      * Marking object as component
+     *
      * @var bool
      */
     protected $_blIsComponent = true;
 
     /**
      * Last call function name
+     *
      * @var string
      */
     protected $_sLastCallFnc = null;
@@ -44,20 +47,21 @@ class oxcmp_basket extends oxView
     /**
      * Parameters which are kept when redirecting after user
      * puts something to basket
+     *
      * @var array
      */
-    public $aRedirectParams = array( 'cnid',        // category id
-                                     'mnid',        // manufacturer id
-                                     'anid',        // active article id
-                                     'tpl',         // spec. template
-                                     'listtype',    // list type
-                                     'searchcnid',  // search category
-                                     'searchvendor',// search vendor
-                                     'searchmanufacturer',// search manufacturer
-                                     'searchtag',   // search tag
-                                     'searchrecomm',// search recomendation
-                                     'recommid'     // recomm. list id
-                                    );
+    public $aRedirectParams = array('cnid', // category id
+                                    'mnid', // manufacturer id
+                                    'anid', // active article id
+                                    'tpl', // spec. template
+                                    'listtype', // list type
+                                    'searchcnid', // search category
+                                    'searchvendor', // search vendor
+                                    'searchmanufacturer', // search manufacturer
+                                    'searchtag', // search tag
+                                    'searchrecomm', // search recomendation
+                                    'recommid' // recomm. list id
+    );
 
     /**
      * Initiates component.
@@ -67,15 +71,15 @@ class oxcmp_basket extends oxView
     public function init()
     {
         $oConfig = $this->getConfig();
-        if ($oConfig->getConfigParam( 'blPsBasketReservationEnabled' )) {
+        if ($oConfig->getConfigParam('blPsBasketReservationEnabled')) {
             if ($oReservations = $this->getSession()->getBasketReservations()) {
                 if (!$oReservations->getTimeLeft()) {
                     $oBasket = $this->getSession()->getBasket();
-                    if ( $oBasket && $oBasket->getProductsCount() ) {
+                    if ($oBasket && $oBasket->getProductsCount()) {
                         $oBasket->deleteBasket();
                     }
                 }
-                $iLimit = (int) $oConfig->getConfigParam( 'iBasketReservationCleanPerRequest' );
+                $iLimit = (int) $oConfig->getConfigParam('iBasketReservationCleanPerRequest');
                 if (!$iLimit) {
                     $iLimit = 200;
                 }
@@ -86,9 +90,9 @@ class oxcmp_basket extends oxView
         parent::init();
 
         // Basket exclude
-        if ( $this->getConfig()->getConfigParam( 'blBasketExcludeEnabled' ) ) {
-            if ( $oBasket = $this->getSession()->getBasket() ) {
-                $this->getParent()->setRootCatChanged( $this->isRootCatChanged() && $oBasket->getContents() );
+        if ($this->getConfig()->getConfigParam('blBasketExcludeEnabled')) {
+            if ($oBasket = $this->getSession()->getBasket()) {
+                $this->getParent()->setRootCatChanged($this->isRootCatChanged() && $oBasket->getContents());
             }
         }
     }
@@ -102,8 +106,8 @@ class oxcmp_basket extends oxView
     public function render()
     {
         // recalculating
-        if ( $oBasket = $this->getSession()->getBasket() ) {
-            $oBasket->calculateBasket( false );
+        if ($oBasket = $this->getSession()->getBasket()) {
+            $oBasket->calculateBasket(false);
         }
 
         parent::render();
@@ -126,30 +130,30 @@ class oxcmp_basket extends oxView
      *
      * @return mixed
      */
-    public function tobasket( $sProductId = null, $dAmount = null, $aSel = null, $aPersParam = null, $blOverride = false )
+    public function tobasket($sProductId = null, $dAmount = null, $aSel = null, $aPersParam = null, $blOverride = false)
     {
         // adding to basket is not allowed ?
         $myConfig = $this->getConfig();
-        if ( oxRegistry::getUtils()->isSearchEngine() ) {
+        if (oxRegistry::getUtils()->isSearchEngine()) {
             return;
         }
 
         // adding articles
-        if ( $aProducts = $this->_getItems( $sProductId, $dAmount, $aSel, $aPersParam, $blOverride ) ) {
+        if ($aProducts = $this->_getItems($sProductId, $dAmount, $aSel, $aPersParam, $blOverride)) {
 
-            $this->_setLastCallFnc( 'tobasket' );
-            $oBasketItem = $this->_addItems( $aProducts );
+            $this->_setLastCallFnc('tobasket');
+            $oBasketItem = $this->_addItems($aProducts);
 
             // new basket item marker
-            if ( $oBasketItem && $myConfig->getConfigParam( 'iNewBasketItemMessage' ) != 0 ) {
+            if ($oBasketItem && $myConfig->getConfigParam('iNewBasketItemMessage') != 0) {
                 $oNewItem = new stdClass();
-                $oNewItem->sTitle  = $oBasketItem->getTitle();
-                $oNewItem->sId     = $oBasketItem->getProductId();
+                $oNewItem->sTitle = $oBasketItem->getTitle();
+                $oNewItem->sId = $oBasketItem->getProductId();
                 $oNewItem->dAmount = $oBasketItem->getAmount();
                 $oNewItem->dBundledAmount = $oBasketItem->getdBundledAmount();
 
                 // passing article
-                oxSession::setVar( '_newitem', $oNewItem );
+                oxSession::setVar('_newitem', $oNewItem);
             }
 
 
@@ -169,41 +173,41 @@ class oxcmp_basket extends oxView
      *
      * @return mixed
      */
-    public function changebasket( $sProductId = null, $dAmount = null, $aSel = null, $aPersParam = null, $blOverride = true )
+    public function changebasket($sProductId = null, $dAmount = null, $aSel = null, $aPersParam = null, $blOverride = true)
     {
         // adding to basket is not allowed ?
-        if ( oxRegistry::getUtils()->isSearchEngine() ) {
+        if (oxRegistry::getUtils()->isSearchEngine()) {
             return;
         }
 
         // fetching item ID
         if (!$sProductId) {
-            $sBasketItemId = oxConfig::getParameter( 'bindex' );
+            $sBasketItemId = oxConfig::getParameter('bindex');
 
-            if ( $sBasketItemId ) {
+            if ($sBasketItemId) {
                 $oBasket = $this->getSession()->getBasket();
                 //take params
                 $aBasketContents = $oBasket->getContents();
-                $sProductId = isset( $aBasketContents[$sBasketItemId] )?$aBasketContents[$sBasketItemId]->getProductId():null;
+                $sProductId = isset($aBasketContents[$sBasketItemId]) ? $aBasketContents[$sBasketItemId]->getProductId() : null;
             } else {
-                $sProductId = oxConfig::getParameter( 'aid' );
+                $sProductId = oxConfig::getParameter('aid');
             }
         }
 
         // fetching other needed info
-        $dAmount = isset( $dAmount )?$dAmount:oxConfig::getParameter( 'am' );
-        $aSel = isset( $aSel )?$aSel:oxConfig::getParameter( 'sel' );
-        $aPersParam = $aPersParam?$aPersParam:oxConfig::getParameter( 'persparam' );
+        $dAmount = isset($dAmount) ? $dAmount : oxConfig::getParameter('am');
+        $aSel = isset($aSel) ? $aSel : oxConfig::getParameter('sel');
+        $aPersParam = $aPersParam ? $aPersParam : oxConfig::getParameter('persparam');
 
         // adding articles
-        if ( $aProducts = $this->_getItems( $sProductId, $dAmount, $aSel, $aPersParam, $blOverride ) ) {
+        if ($aProducts = $this->_getItems($sProductId, $dAmount, $aSel, $aPersParam, $blOverride)) {
 
             // information that last call was changebasket
             $oBasket = $this->getSession()->getBasket();
             $oBasket->onUpdate();
 
-            $this->_setLastCallFnc( 'changebasket' );
-            $oBasketItem = $this->_addItems( $aProducts );
+            $this->_setLastCallFnc('changebasket');
+            $oBasketItem = $this->_addItems($aProducts);
         }
 
     }
@@ -218,36 +222,36 @@ class oxcmp_basket extends oxView
     {
 
         // active class
-        $sClass = oxConfig::getParameter( 'cl' );
-        $sClass = $sClass?$sClass.'?':'start?';
+        $sClass = oxConfig::getParameter('cl');
+        $sClass = $sClass ? $sClass . '?' : 'start?';
         $sPosition = '';
 
         // setting redirect parameters
-        foreach ( $this->aRedirectParams as $sParamName ) {
-            $sParamVal  = oxConfig::getParameter( $sParamName );
-            $sPosition .= $sParamVal?$sParamName.'='.$sParamVal.'&':'';
+        foreach ($this->aRedirectParams as $sParamName) {
+            $sParamVal = oxConfig::getParameter($sParamName);
+            $sPosition .= $sParamVal ? $sParamName . '=' . $sParamVal . '&' : '';
         }
 
         // special treatment
         // search param
-        $sParam     = rawurlencode( oxConfig::getParameter( 'searchparam', true ) );
-        $sPosition .= $sParam?'searchparam='.$sParam.'&':'';
+        $sParam = rawurlencode(oxConfig::getParameter('searchparam', true));
+        $sPosition .= $sParam ? 'searchparam=' . $sParam . '&' : '';
 
         // current page number
-        $iPageNr    = (int) oxConfig::getParameter( 'pgNr' );
-        $sPosition .= ( $iPageNr > 0 )?'pgNr='.$iPageNr.'&':'';
+        $iPageNr = (int) oxConfig::getParameter('pgNr');
+        $sPosition .= ($iPageNr > 0) ? 'pgNr=' . $iPageNr . '&' : '';
 
         // reload and backbutton blocker
-        if ( $this->getConfig()->getConfigParam( 'iNewBasketItemMessage' ) == 3 ) {
+        if ($this->getConfig()->getConfigParam('iNewBasketItemMessage') == 3) {
 
             // saving return to shop link to session
-            oxSession::setVar( '_backtoshop', $sClass.$sPosition );
+            oxSession::setVar('_backtoshop', $sClass . $sPosition);
 
             // redirecting to basket
             $sClass = 'basket?';
         }
 
-        return $sClass.$sPosition;
+        return $sClass . $sPosition;
     }
 
     /**
@@ -262,45 +266,45 @@ class oxcmp_basket extends oxView
      *
      * @return mixed
      */
-    protected function _getItems( $sProductId = null, $dAmount = null, $aSel = null, $aPersParam = null, $blOverride = false )
+    protected function _getItems($sProductId = null, $dAmount = null, $aSel = null, $aPersParam = null, $blOverride = false)
     {
         // collecting items to add
-        $aProducts = oxConfig::getParameter( 'aproducts' );
+        $aProducts = oxConfig::getParameter('aproducts');
 
         // collecting specified item
-        $sProductId = $sProductId?$sProductId:oxConfig::getParameter( 'aid' );
-        if ( $sProductId ) {
+        $sProductId = $sProductId ? $sProductId : oxConfig::getParameter('aid');
+        if ($sProductId) {
 
             // additionally fething current product info
-            $dAmount = isset( $dAmount ) ? $dAmount : oxConfig::getParameter( 'am' );
+            $dAmount = isset($dAmount) ? $dAmount : oxConfig::getParameter('am');
 
             // select lists
-            $aSel = isset( $aSel )?$aSel:oxConfig::getParameter( 'sel' );
+            $aSel = isset($aSel) ? $aSel : oxConfig::getParameter('sel');
 
             // persistent parameters
-            if ( empty($aPersParam) ) {
-                $aPersParam = oxConfig::getParameter( 'persparam' );
-                if ( !is_array($aPersParam) || empty($aPersParam['details']) ) {
+            if (empty($aPersParam)) {
+                $aPersParam = oxConfig::getParameter('persparam');
+                if (!is_array($aPersParam) || empty($aPersParam['details'])) {
                     $aPersParam = null;
                 }
             }
 
-            $sBasketItemId = oxConfig::getParameter( 'bindex' );
+            $sBasketItemId = oxConfig::getParameter('bindex');
 
-            $aProducts[$sProductId] = array( 'am' => $dAmount,
-                                             'sel' => $aSel,
-                                             'persparam' => $aPersParam,
-                                             'override'  => $blOverride,
-                                             'basketitemid' => $sBasketItemId
-                                           );
+            $aProducts[$sProductId] = array('am'           => $dAmount,
+                                            'sel'          => $aSel,
+                                            'persparam'    => $aPersParam,
+                                            'override'     => $blOverride,
+                                            'basketitemid' => $sBasketItemId
+            );
         }
 
-        if ( is_array( $aProducts ) && count( $aProducts ) ) {
+        if (is_array($aProducts) && count($aProducts)) {
 
-            if (oxConfig::getParameter( 'removeBtn' ) !== null) {
+            if (oxConfig::getParameter('removeBtn') !== null) {
                 //setting amount to 0 if removing article from basket
-                foreach ( $aProducts as $sProductId => $aProduct ) {
-                    if ( isset($aProduct['remove']) && $aProduct['remove']) {
+                foreach ($aProducts as $sProductId => $aProduct) {
+                    if (isset($aProduct['remove']) && $aProduct['remove']) {
                         $aProducts[$sProductId]['am'] = 0;
                     } else {
                         unset ($aProducts[$sProductId]);
@@ -322,57 +326,57 @@ class oxcmp_basket extends oxView
      *
      * @return  object  $oBasketItem    last added basket item
      */
-    protected function _addItems ( $aProducts )
+    protected function _addItems($aProducts)
     {
-        $oActView   = $this->getConfig()->getActiveView();
+        $oActView = $this->getConfig()->getActiveView();
         $sErrorDest = $oActView->getErrorDestination();
 
         $oBasket = $this->getSession()->getBasket();
         $oBasketInfo = $oBasket->getBasketSummary();
 
-        foreach ( $aProducts as $sAddProductId => $aProductInfo ) {
+        foreach ($aProducts as $sAddProductId => $aProductInfo) {
 
-            $sProductId = isset( $aProductInfo['aid'] ) ? $aProductInfo['aid'] : $sAddProductId;
+            $sProductId = isset($aProductInfo['aid']) ? $aProductInfo['aid'] : $sAddProductId;
 
             // collecting input
-            $aProducts[$sAddProductId]['oldam'] = isset( $oBasketInfo->aArticles[$sProductId] ) ? $oBasketInfo->aArticles[$sProductId] : 0;
+            $aProducts[$sAddProductId]['oldam'] = isset($oBasketInfo->aArticles[$sProductId]) ? $oBasketInfo->aArticles[$sProductId] : 0;
 
-            $dAmount = isset( $aProductInfo['am'] )?$aProductInfo['am']:0;
-            $aSelList = isset( $aProductInfo['sel'] )?$aProductInfo['sel']:null;
-            $aPersParam = ( isset( $aProductInfo['persparam'] ) && is_array( $aProductInfo['persparam'] ) && strlen( $aProductInfo['persparam']['details'] ) )?$aProductInfo['persparam']:null;
-            $blOverride = isset( $aProductInfo['override'] )?$aProductInfo['override']:null;
-            $blIsBundle = isset( $aProductInfo['bundle'] )?true:false;
-            $sOldBasketItemId = isset( $aProductInfo['basketitemid'] )?$aProductInfo['basketitemid']:null;
+            $dAmount = isset($aProductInfo['am']) ? $aProductInfo['am'] : 0;
+            $aSelList = isset($aProductInfo['sel']) ? $aProductInfo['sel'] : null;
+            $aPersParam = (isset($aProductInfo['persparam']) && is_array($aProductInfo['persparam']) && strlen($aProductInfo['persparam']['details'])) ? $aProductInfo['persparam'] : null;
+            $blOverride = isset($aProductInfo['override']) ? $aProductInfo['override'] : null;
+            $blIsBundle = isset($aProductInfo['bundle']) ? true : false;
+            $sOldBasketItemId = isset($aProductInfo['basketitemid']) ? $aProductInfo['basketitemid'] : null;
 
             try {
-                $oBasketItem = $oBasket->addToBasket( $sProductId, $dAmount, $aSelList, $aPersParam, $blOverride, $blIsBundle, $sOldBasketItemId );
-            } catch ( oxOutOfStockException $oEx ) {
-                $oEx->setDestination( $sErrorDest );
+                $oBasketItem = $oBasket->addToBasket($sProductId, $dAmount, $aSelList, $aPersParam, $blOverride, $blIsBundle, $sOldBasketItemId);
+            } catch (oxOutOfStockException $oEx) {
+                $oEx->setDestination($sErrorDest);
                 // #950 Change error destination to basket popup
-                if ( !$sErrorDest  && $this->getConfig()->getConfigParam( 'iNewBasketItemMessage') == 2) {
+                if (!$sErrorDest && $this->getConfig()->getConfigParam('iNewBasketItemMessage') == 2) {
                     $sErrorDest = 'popup';
                 }
-                oxRegistry::get("oxUtilsView")->addErrorToDisplay( $oEx, false, (bool) $sErrorDest, $sErrorDest );
-            } catch ( oxArticleInputException $oEx ) {
+                oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false, (bool) $sErrorDest, $sErrorDest);
+            } catch (oxArticleInputException $oEx) {
                 //add to display at specific position
-                $oEx->setDestination( $sErrorDest );
-                oxRegistry::get("oxUtilsView")->addErrorToDisplay( $oEx, false, (bool) $sErrorDest, $sErrorDest );
-            } catch ( oxNoArticleException $oEx ) {
+                $oEx->setDestination($sErrorDest);
+                oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false, (bool) $sErrorDest, $sErrorDest);
+            } catch (oxNoArticleException $oEx) {
                 //ignored, best solution F ?
             }
-            if ( !$oBasketItem ) {
+            if (!$oBasketItem) {
                 $oInfo = $oBasket->getBasketSummary();
-                $aProducts[$sAddProductId]['am'] = isset( $oInfo->aArticles[$sProductId] ) ? $oInfo->aArticles[$sProductId] : 0;
+                $aProducts[$sAddProductId]['am'] = isset($oInfo->aArticles[$sProductId]) ? $oInfo->aArticles[$sProductId] : 0;
             }
         }
 
         //if basket empty remove posible gift card
-        if ( $oBasket->getProductsCount() == 0 ) {
-            $oBasket->setCardId( null );
+        if ($oBasket->getProductsCount() == 0) {
+            $oBasket->setCardId(null);
         }
 
         // information that last call was tobasket
-        $this->_setLastCall( $this->_getLastCallFnc(), $aProducts, $oBasketInfo );
+        $this->_setLastCall($this->_getLastCallFnc(), $aProducts, $oBasketInfo);
 
         return $oBasketItem;
     }
@@ -386,9 +390,9 @@ class oxcmp_basket extends oxView
      *
      * @return null
      */
-    protected function _setLastCall( $sCallName, $aProductInfo, $aBasketInfo )
+    protected function _setLastCall($sCallName, $aProductInfo, $aBasketInfo)
     {
-        oxSession::setVar( 'aLastcall', array( $sCallName => $aProductInfo ) );
+        oxSession::setVar('aLastcall', array($sCallName => $aProductInfo));
     }
 
     /**
@@ -398,7 +402,7 @@ class oxcmp_basket extends oxView
      *
      * @return null
      */
-    protected function _setLastCallFnc( $sCallName )
+    protected function _setLastCallFnc($sCallName)
     {
         $this->_sLastCallFnc = $sCallName;
     }
@@ -422,18 +426,19 @@ class oxcmp_basket extends oxView
     {
         // in Basket
         $oBasket = $this->getSession()->getBasket();
-        if ( $oBasket->showCatChangeWarning() ) {
-            $oBasket->setCatChangeWarningState( false );
+        if ($oBasket->showCatChangeWarning()) {
+            $oBasket->setCatChangeWarningState(false);
+
             return true;
         }
 
         // in Category, only then category is empty ant not equal to default category
         $sDefCat = oxRegistry::getConfig()->getActiveShop()->oxshops__oxdefcat->value;
-        $sActCat = oxConfig::getParameter( 'cnid' );
+        $sActCat = oxConfig::getParameter('cnid');
         $oActCat = oxnew('oxcategory');
-        if ($sActCat && $sActCat!=$sDefCat && $oActCat->load($sActCat) ) {
+        if ($sActCat && $sActCat != $sDefCat && $oActCat->load($sActCat)) {
             $sActRoot = $oActCat->oxcategories__oxrootid->value;
-            if ( $oBasket->getBasketRootCatId() && $sActRoot != $oBasket->getBasketRootCatId() ) {
+            if ($oBasket->getBasketRootCatId() && $sActRoot != $oBasket->getBasketRootCatId()) {
                 return true;
             }
         }
@@ -453,12 +458,12 @@ class oxcmp_basket extends oxView
     {
 
         // redirect to basket
-        if ( oxConfig::getParameter( "tobasket" ) ) {
+        if (oxConfig::getParameter("tobasket")) {
             return "basket";
         } else {
             // clear basket
             $this->getSession()->getBasket()->deleteBasket();
-            $this->getParent()->setRootCatChanged( false );
+            $this->getParent()->setRootCatChanged(false);
         }
     }
 

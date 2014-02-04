@@ -15,8 +15,8 @@
  *    You should have received a copy of the GNU General Public License
  *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @link      http://www.oxid-esales.com
- * @package   views
+ * @link          http://www.oxid-esales.com
+ * @package       views
  * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
@@ -26,6 +26,7 @@
  */
 class oxLocator extends oxSuperCfg
 {
+
     /**
      * Locator type
      */
@@ -57,11 +58,11 @@ class oxLocator extends oxSuperCfg
      *
      * @param string $sType locator type
      */
-    public function __construct( $sType = null )
+    public function __construct($sType = null)
     {
         // setting locator type
-        if ( $sType ) {
-            $this->_sType = trim( $sType );
+        if ($sType) {
+            $this->_sType = trim($sType);
         }
     }
 
@@ -73,13 +74,13 @@ class oxLocator extends oxSuperCfg
      *
      * @return null
      */
-    public function setLocatorData( $oCurrArticle, $oLocatorTarget )
+    public function setLocatorData($oCurrArticle, $oLocatorTarget)
     {
         $sLocfnc = "_set{$this->_sType}LocatorData";
-        $this->$sLocfnc( $oLocatorTarget, $oCurrArticle );
+        $this->$sLocfnc($oLocatorTarget, $oCurrArticle);
 
         // passing list type to view
-        $oLocatorTarget->setListType( $this->_sType );
+        $oLocatorTarget->setListType($this->_sType);
     }
 
     /**
@@ -90,40 +91,40 @@ class oxLocator extends oxSuperCfg
      *
      * @return null
      */
-    protected function _setListLocatorData( $oLocatorTarget, $oCurrArticle )
+    protected function _setListLocatorData($oLocatorTarget, $oCurrArticle)
     {
         // if no active category is loaded - lets check for category passed by post/get
-        if ( ( $oCategory = $oLocatorTarget->getActiveCategory() ) ) {
+        if (($oCategory = $oLocatorTarget->getActiveCategory())) {
 
             $sOrderBy = null;
-            if ( $oLocatorTarget->showSorting() ) {
-                $sOrderBy = $oLocatorTarget->getSortingSql( $oLocatorTarget->getSortIdent() );
+            if ($oLocatorTarget->showSorting()) {
+                $sOrderBy = $oLocatorTarget->getSortingSql($oLocatorTarget->getSortIdent());
             }
 
-            $oIdList = $this->_loadIdsInList( $oCategory, $oCurrArticle, $sOrderBy );
+            $oIdList = $this->_loadIdsInList($oCategory, $oCurrArticle, $sOrderBy);
 
             //page number
-            $iPage = $this->_findActPageNumber( $oLocatorTarget->getActPage(), $oIdList, $oCurrArticle );
+            $iPage = $this->_findActPageNumber($oLocatorTarget->getActPage(), $oIdList, $oCurrArticle);
 
             // setting product position in list, amount of articles etc
-            $oCategory->iCntOfProd  = $oIdList->count();
-            $oCategory->iProductPos = $this->_getProductPos( $oCurrArticle, $oIdList, $oLocatorTarget );
+            $oCategory->iCntOfProd = $oIdList->count();
+            $oCategory->iProductPos = $this->_getProductPos($oCurrArticle, $oIdList, $oLocatorTarget);
 
-            if ( oxRegistry::getUtils()->seoIsActive() && $iPage ) {
-                $oCategory->toListLink = oxRegistry::get("oxSeoEncoderCategory")->getCategoryPageUrl( $oCategory, $iPage );
+            if (oxRegistry::getUtils()->seoIsActive() && $iPage) {
+                $oCategory->toListLink = oxRegistry::get("oxSeoEncoderCategory")->getCategoryPageUrl($oCategory, $iPage);
             } else {
-                $oCategory->toListLink  = $this->_makeLink( $oCategory->getLink(), $this->_getPageNumber( $iPage ) );
+                $oCategory->toListLink = $this->_makeLink($oCategory->getLink(), $this->_getPageNumber($iPage));
             }
 
-            $oCategory->nextProductLink = $this->_oNextProduct?$this->_makeLink( $this->_oNextProduct->getLink(), '' ):null;
-            $oCategory->prevProductLink = $this->_oBackProduct?$this->_makeLink( $this->_oBackProduct->getLink(), '' ):null;
+            $oCategory->nextProductLink = $this->_oNextProduct ? $this->_makeLink($this->_oNextProduct->getLink(), '') : null;
+            $oCategory->prevProductLink = $this->_oBackProduct ? $this->_makeLink($this->_oBackProduct->getLink(), '') : null;
 
             // active category
-            $oLocatorTarget->setActiveCategory( $oCategory );
+            $oLocatorTarget->setActiveCategory($oCategory);
 
             // category path
-            if ( ( $oCatTree = $oLocatorTarget->getCategoryTree() ) ) {
-                $oLocatorTarget->setCatTreePath( $oCatTree->getPath() );
+            if (($oCatTree = $oLocatorTarget->getCategoryTree())) {
+                $oLocatorTarget->setCatTreePath($oCatTree->getPath());
             }
         }
     }
@@ -136,41 +137,41 @@ class oxLocator extends oxSuperCfg
      *
      * @return null
      */
-    protected function _setVendorLocatorData( $oLocatorTarget, $oCurrArticle )
+    protected function _setVendorLocatorData($oLocatorTarget, $oCurrArticle)
     {
-        if ( ( $oVendor = $oLocatorTarget->getActVendor() ) ) {
+        if (($oVendor = $oLocatorTarget->getActVendor())) {
             $sVendorId = $oVendor->getId();
-            $myUtils   = oxRegistry::getUtils();
+            $myUtils = oxRegistry::getUtils();
 
             $blSeo = $myUtils->seoIsActive();
 
             // loading data for article navigation
-            $oIdList = oxNew( "oxArticleList" );
-            if ( $oLocatorTarget->showSorting() ) {
-                $oIdList->setCustomSorting( $oLocatorTarget->getSortingSql( $oLocatorTarget->getSortIdent() ) );
+            $oIdList = oxNew("oxArticleList");
+            if ($oLocatorTarget->showSorting()) {
+                $oIdList->setCustomSorting($oLocatorTarget->getSortingSql($oLocatorTarget->getSortIdent()));
             }
-            $oIdList->loadVendorIds( $sVendorId );
+            $oIdList->loadVendorIds($sVendorId);
 
             //page number
-            $iPage = $this->_findActPageNumber( $oLocatorTarget->getActPage(), $oIdList, $oCurrArticle );
+            $iPage = $this->_findActPageNumber($oLocatorTarget->getActPage(), $oIdList, $oCurrArticle);
 
             $sAdd = null;
-            if ( !$blSeo ) {
-                $sAdd = 'listtype=vendor&amp;cnid=v_'.$sVendorId;
+            if (!$blSeo) {
+                $sAdd = 'listtype=vendor&amp;cnid=v_' . $sVendorId;
             }
 
             // setting product position in list, amount of articles etc
-            $oVendor->iCntOfProd  = $oIdList->count();
-            $oVendor->iProductPos = $this->_getProductPos( $oCurrArticle, $oIdList, $oLocatorTarget );
+            $oVendor->iCntOfProd = $oIdList->count();
+            $oVendor->iProductPos = $this->_getProductPos($oCurrArticle, $oIdList, $oLocatorTarget);
 
-            if ( $blSeo && $iPage ) {
-                $oVendor->toListLink = oxRegistry::get("oxSeoEncoderVendor")->getVendorPageUrl( $oVendor, $iPage );
+            if ($blSeo && $iPage) {
+                $oVendor->toListLink = oxRegistry::get("oxSeoEncoderVendor")->getVendorPageUrl($oVendor, $iPage);
             } else {
-                $oVendor->toListLink  = $this->_makeLink( $oVendor->getLink(), $this->_getPageNumber( $iPage ) );
+                $oVendor->toListLink = $this->_makeLink($oVendor->getLink(), $this->_getPageNumber($iPage));
             }
 
-            $oVendor->nextProductLink = $this->_oNextProduct?$this->_makeLink( $this->_oNextProduct->getLink(), $sAdd ):null;
-            $oVendor->prevProductLink = $this->_oBackProduct?$this->_makeLink( $this->_oBackProduct->getLink(), $sAdd ):null;
+            $oVendor->nextProductLink = $this->_oNextProduct ? $this->_makeLink($this->_oNextProduct->getLink(), $sAdd) : null;
+            $oVendor->prevProductLink = $this->_oBackProduct ? $this->_makeLink($this->_oBackProduct->getLink(), $sAdd) : null;
         }
     }
 
@@ -182,48 +183,48 @@ class oxLocator extends oxSuperCfg
      *
      * @return null
      */
-    protected function _setManufacturerLocatorData( $oLocatorTarget, $oCurrArticle )
+    protected function _setManufacturerLocatorData($oLocatorTarget, $oCurrArticle)
     {
-        if ( ( $oManufacturer = $oLocatorTarget->getActManufacturer() ) ) {
+        if (($oManufacturer = $oLocatorTarget->getActManufacturer())) {
             $sManufacturerId = $oManufacturer->getId();
             $myUtils = oxRegistry::getUtils();
 
             $blSeo = $myUtils->seoIsActive();
 
             // loading data for article navigation
-            $oIdList = oxNew( "oxarticlelist" );
-            if ( $oLocatorTarget->showSorting() ) {
-                $oIdList->setCustomSorting( $oLocatorTarget->getSortingSql( $oLocatorTarget->getSortIdent() ) );
+            $oIdList = oxNew("oxarticlelist");
+            if ($oLocatorTarget->showSorting()) {
+                $oIdList->setCustomSorting($oLocatorTarget->getSortingSql($oLocatorTarget->getSortIdent()));
             }
-            $oIdList->loadManufacturerIds( $sManufacturerId );
+            $oIdList->loadManufacturerIds($sManufacturerId);
 
             //page number
-            $iPage = $this->_findActPageNumber( $oLocatorTarget->getActPage(), $oIdList, $oCurrArticle );
+            $iPage = $this->_findActPageNumber($oLocatorTarget->getActPage(), $oIdList, $oCurrArticle);
 
             $sAdd = null;
-            if ( !$blSeo ) {
-                $sAdd = 'listtype=manufacturer&amp;mnid='.$sManufacturerId;
+            if (!$blSeo) {
+                $sAdd = 'listtype=manufacturer&amp;mnid=' . $sManufacturerId;
             }
 
             // setting product position in list, amount of articles etc
-            $oManufacturer->iCntOfProd  = $oIdList->count();
-            $oManufacturer->iProductPos = $this->_getProductPos( $oCurrArticle, $oIdList, $oLocatorTarget );
+            $oManufacturer->iCntOfProd = $oIdList->count();
+            $oManufacturer->iProductPos = $this->_getProductPos($oCurrArticle, $oIdList, $oLocatorTarget);
 
-            if ( $blSeo && $iPage ) {
-                $oManufacturer->toListLink = oxRegistry::get("oxSeoEncoderManufacturer")->getManufacturerPageUrl( $oManufacturer, $iPage );
+            if ($blSeo && $iPage) {
+                $oManufacturer->toListLink = oxRegistry::get("oxSeoEncoderManufacturer")->getManufacturerPageUrl($oManufacturer, $iPage);
             } else {
-                $oManufacturer->toListLink  = $this->_makeLink( $oManufacturer->getLink(), $this->_getPageNumber( $iPage ) );
+                $oManufacturer->toListLink = $this->_makeLink($oManufacturer->getLink(), $this->_getPageNumber($iPage));
             }
 
-            $oManufacturer->nextProductLink = $this->_oNextProduct?$this->_makeLink( $this->_oNextProduct->getLink(), $sAdd ):null;
-            $oManufacturer->prevProductLink = $this->_oBackProduct?$this->_makeLink( $this->_oBackProduct->getLink(), $sAdd ):null;
+            $oManufacturer->nextProductLink = $this->_oNextProduct ? $this->_makeLink($this->_oNextProduct->getLink(), $sAdd) : null;
+            $oManufacturer->prevProductLink = $this->_oBackProduct ? $this->_makeLink($this->_oBackProduct->getLink(), $sAdd) : null;
 
             // active Manufacturer
-            $oLocatorTarget->setActiveCategory( $oManufacturer );
+            $oLocatorTarget->setActiveCategory($oManufacturer);
 
             // Manufacturer path
-            if ( ( $oManufacturerTree = $oLocatorTarget->getManufacturerTree() ) ) {
-                $oLocatorTarget->setCatTreePath( $oManufacturerTree->getPath() );
+            if (($oManufacturerTree = $oLocatorTarget->getManufacturerTree())) {
+                $oLocatorTarget->setCatTreePath($oManufacturerTree->getPath());
             }
         }
     }
@@ -236,61 +237,61 @@ class oxLocator extends oxSuperCfg
      *
      * @return null
      */
-    protected function _setSearchLocatorData( $oLocatorTarget, $oCurrArticle )
+    protected function _setSearchLocatorData($oLocatorTarget, $oCurrArticle)
     {
-        if ( ( $oSearchCat = $oLocatorTarget->getActSearch() ) ) {
+        if (($oSearchCat = $oLocatorTarget->getActSearch())) {
 
             // #1834/1184M - specialchar search
-            $sSearchParam = oxConfig::getParameter( 'searchparam', true );
-            $sSearchFormParam = oxConfig::getParameter( 'searchparam' );
-            $sSearchLinkParam = rawurlencode( $sSearchParam );
+            $sSearchParam = oxConfig::getParameter('searchparam', true);
+            $sSearchFormParam = oxConfig::getParameter('searchparam');
+            $sSearchLinkParam = rawurlencode($sSearchParam);
 
-            $sSearchCat = oxConfig::getParameter( 'searchcnid' );
-            $sSearchCat = $sSearchCat?rawurldecode( $sSearchCat ):$sSearchCat;
+            $sSearchCat = oxConfig::getParameter('searchcnid');
+            $sSearchCat = $sSearchCat ? rawurldecode($sSearchCat) : $sSearchCat;
 
-            $sSearchVendor = oxConfig::getParameter( 'searchvendor' );
-            $sSearchVendor = $sSearchVendor?rawurldecode( $sSearchVendor ):$sSearchVendor;
+            $sSearchVendor = oxConfig::getParameter('searchvendor');
+            $sSearchVendor = $sSearchVendor ? rawurldecode($sSearchVendor) : $sSearchVendor;
 
-            $sSearchManufacturer = oxConfig::getParameter( 'searchmanufacturer' );
-            $sSearchManufacturer = $sSearchManufacturer?rawurldecode( $sSearchManufacturer ):$sSearchManufacturer;
+            $sSearchManufacturer = oxConfig::getParameter('searchmanufacturer');
+            $sSearchManufacturer = $sSearchManufacturer ? rawurldecode($sSearchManufacturer) : $sSearchManufacturer;
 
             // loading data for article navigation
-            $oIdList = oxNew( 'oxarticlelist' );
-            if ( $oLocatorTarget->showSorting() ) {
-                $oIdList->setCustomSorting( $oLocatorTarget->getSortingSql( $oLocatorTarget->getSortIdent() ) );
+            $oIdList = oxNew('oxarticlelist');
+            if ($oLocatorTarget->showSorting()) {
+                $oIdList->setCustomSorting($oLocatorTarget->getSortingSql($oLocatorTarget->getSortIdent()));
             }
-            $oIdList->loadSearchIds( $sSearchParam, $sSearchCat, $sSearchVendor, $sSearchManufacturer );
+            $oIdList->loadSearchIds($sSearchParam, $sSearchCat, $sSearchVendor, $sSearchManufacturer);
 
             //page number
-            $iPage = $this->_findActPageNumber( $oLocatorTarget->getActPage(), $oIdList, $oCurrArticle );
+            $iPage = $this->_findActPageNumber($oLocatorTarget->getActPage(), $oIdList, $oCurrArticle);
 
             $sAddSearch = "searchparam={$sSearchLinkParam}";
             $sAddSearch .= '&amp;listtype=search';
 
-            if ( $sSearchCat !== null ) {
+            if ($sSearchCat !== null) {
                 $sAddSearch .= "&amp;searchcnid={$sSearchCat}";
             }
 
-            if ( $sSearchVendor !== null ) {
+            if ($sSearchVendor !== null) {
                 $sAddSearch .= "&amp;searchvendor={$sSearchVendor}";
             }
 
-            if ( $sSearchManufacturer !== null ) {
+            if ($sSearchManufacturer !== null) {
                 $sAddSearch .= "&amp;searchmanufacturer={$sSearchManufacturer}";
             }
 
             // setting product position in list, amount of articles etc
-            $oSearchCat->iCntOfProd  = $oIdList->count();
-            $oSearchCat->iProductPos = $this->_getProductPos( $oCurrArticle, $oIdList, $oLocatorTarget );
+            $oSearchCat->iCntOfProd = $oIdList->count();
+            $oSearchCat->iProductPos = $this->_getProductPos($oCurrArticle, $oIdList, $oLocatorTarget);
 
-            $sPageNr = $this->_getPageNumber( $iPage );
-            $oSearchCat->toListLink  = $this->_makeLink( $oSearchCat->link, $sPageNr.($sPageNr?'&amp;':'').$sAddSearch );
-            $oSearchCat->nextProductLink = $this->_oNextProduct?$this->_makeLink( $this->_oNextProduct->getLink(), $sAddSearch ):null;
-            $oSearchCat->prevProductLink = $this->_oBackProduct?$this->_makeLink( $this->_oBackProduct->getLink(), $sAddSearch ):null;
+            $sPageNr = $this->_getPageNumber($iPage);
+            $oSearchCat->toListLink = $this->_makeLink($oSearchCat->link, $sPageNr . ($sPageNr ? '&amp;' : '') . $sAddSearch);
+            $oSearchCat->nextProductLink = $this->_oNextProduct ? $this->_makeLink($this->_oNextProduct->getLink(), $sAddSearch) : null;
+            $oSearchCat->prevProductLink = $this->_oBackProduct ? $this->_makeLink($this->_oBackProduct->getLink(), $sAddSearch) : null;
 
-            $sFormat = oxRegistry::getLang()->translateString( 'SEARCH_RESULT' );
-            $oLocatorTarget->setSearchTitle( sprintf( $sFormat, $sSearchFormParam ) );
-            $oLocatorTarget->setActiveCategory( $oSearchCat );
+            $sFormat = oxRegistry::getLang()->translateString('SEARCH_RESULT');
+            $oLocatorTarget->setSearchTitle(sprintf($sFormat, $sSearchFormParam));
+            $oLocatorTarget->setActiveCategory($oSearchCat);
         }
     }
 
@@ -302,48 +303,48 @@ class oxLocator extends oxSuperCfg
      *
      * @return null
      */
-    protected function _setTagLocatorData( $oLocatorTarget, $oCurrArticle )
+    protected function _setTagLocatorData($oLocatorTarget, $oCurrArticle)
     {
-        if ( ( $oTag = $oLocatorTarget->getActTag() ) ) {
+        if (($oTag = $oLocatorTarget->getActTag())) {
 
             $myUtils = oxRegistry::getUtils();
 
             // loading data for article navigation
-            $oIdList = oxNew( 'oxarticlelist' );
+            $oIdList = oxNew('oxarticlelist');
             $oLang = oxRegistry::getLang();
 
-            if ( $oLocatorTarget->showSorting() ) {
-                $oIdList->setCustomSorting( $oLocatorTarget->getSortingSql( $oLocatorTarget->getSortIdent() ) );
+            if ($oLocatorTarget->showSorting()) {
+                $oIdList->setCustomSorting($oLocatorTarget->getSortingSql($oLocatorTarget->getSortIdent()));
             }
 
-            $oIdList->getTagArticleIds( $oTag->sTag, $oLang->getBaseLanguage() );
+            $oIdList->getTagArticleIds($oTag->sTag, $oLang->getBaseLanguage());
 
             //page number
-            $iPage = $this->_findActPageNumber( $oLocatorTarget->getActPage(), $oIdList, $oCurrArticle );
+            $iPage = $this->_findActPageNumber($oLocatorTarget->getActPage(), $oIdList, $oCurrArticle);
 
             // setting product position in list, amount of articles etc
-            $oTag->iCntOfProd  = $oIdList->count();
-            $oTag->iProductPos = $this->_getProductPos( $oCurrArticle, $oIdList, $oLocatorTarget );
+            $oTag->iCntOfProd = $oIdList->count();
+            $oTag->iProductPos = $this->_getProductPos($oCurrArticle, $oIdList, $oLocatorTarget);
 
-            if ( oxRegistry::getUtils()->seoIsActive() ) {
-                $oTag->toListLink  = oxRegistry::get("oxSeoEncoderTag")->getTagPageUrl( $oTag->sTag, $iPage );
+            if (oxRegistry::getUtils()->seoIsActive()) {
+                $oTag->toListLink = oxRegistry::get("oxSeoEncoderTag")->getTagPageUrl($oTag->sTag, $iPage);
             } else {
-                $sPageNr = $this->_getPageNumber( $iPage );
-                $oTag->toListLink  = $this->_makeLink( $oTag->link, $sPageNr );
+                $sPageNr = $this->_getPageNumber($iPage);
+                $oTag->toListLink = $this->_makeLink($oTag->link, $sPageNr);
             }
 
             $sAddSearch = '';
             // setting parameters when seo is Off
-            if ( !$myUtils->seoIsActive() ) {
-                $sAddSearch  = 'searchtag='.rawurlencode( oxConfig::getParameter( 'searchtag', 1 ) );
+            if (!$myUtils->seoIsActive()) {
+                $sAddSearch = 'searchtag=' . rawurlencode(oxConfig::getParameter('searchtag', 1));
                 $sAddSearch .= '&amp;listtype=tag';
             }
 
-            $oTag->nextProductLink = $this->_oNextProduct?$this->_makeLink( $this->_oNextProduct->getLink(), $sAddSearch ):null;
-            $oTag->prevProductLink = $this->_oBackProduct?$this->_makeLink( $this->_oBackProduct->getLink(), $sAddSearch ):null;
+            $oTag->nextProductLink = $this->_oNextProduct ? $this->_makeLink($this->_oNextProduct->getLink(), $sAddSearch) : null;
+            $oTag->prevProductLink = $this->_oBackProduct ? $this->_makeLink($this->_oBackProduct->getLink(), $sAddSearch) : null;
             $oStr = getStr();
-            $oLocatorTarget->setSearchTitle( $oLang->translateString('TAGS').' / '.$oStr->htmlspecialchars( $oStr->ucfirst( $oTag->sTag ) ) );
-            $oLocatorTarget->setActiveCategory( $oTag );
+            $oLocatorTarget->setSearchTitle($oLang->translateString('TAGS') . ' / ' . $oStr->htmlspecialchars($oStr->ucfirst($oTag->sTag)));
+            $oLocatorTarget->setActiveCategory($oTag);
         }
     }
 
@@ -358,52 +359,52 @@ class oxLocator extends oxSuperCfg
      *
      * @return null
      */
-    protected function _setRecommlistLocatorData( $oLocatorTarget, $oCurrArticle )
+    protected function _setRecommlistLocatorData($oLocatorTarget, $oCurrArticle)
     {
-        if ( ( $oRecommList = $oLocatorTarget->getActiveRecommList() ) ) {
+        if (($oRecommList = $oLocatorTarget->getActiveRecommList())) {
 
             // loading data for article navigation
-            $oIdList = oxNew( 'oxarticlelist' );
-            $oIdList->loadRecommArticleIds( $oRecommList->getId(), null );
+            $oIdList = oxNew('oxarticlelist');
+            $oIdList->loadRecommArticleIds($oRecommList->getId(), null);
 
             //page number
-            $iPage = $this->_findActPageNumber( $oLocatorTarget->getActPage(), $oIdList, $oCurrArticle );
+            $iPage = $this->_findActPageNumber($oLocatorTarget->getActPage(), $oIdList, $oCurrArticle);
 
-            $sSearchRecomm = oxConfig::getParameter( 'searchrecomm', true );
+            $sSearchRecomm = oxConfig::getParameter('searchrecomm', true);
 
-            if ( $sSearchRecomm !== null ) {
-                $sSearchFormRecomm = oxConfig::getParameter( 'searchrecomm' );
-                $sSearchLinkRecomm = rawurlencode( $sSearchRecomm );
-                $sAddSearch = 'searchrecomm='.$sSearchLinkRecomm;
+            if ($sSearchRecomm !== null) {
+                $sSearchFormRecomm = oxConfig::getParameter('searchrecomm');
+                $sSearchLinkRecomm = rawurlencode($sSearchRecomm);
+                $sAddSearch = 'searchrecomm=' . $sSearchLinkRecomm;
             }
 
             // setting product position in list, amount of articles etc
-            $oRecommList->iCntOfProd  = $oIdList->count();
-            $oRecommList->iProductPos = $this->_getProductPos( $oCurrArticle, $oIdList, $oLocatorTarget );
+            $oRecommList->iCntOfProd = $oIdList->count();
+            $oRecommList->iProductPos = $this->_getProductPos($oCurrArticle, $oIdList, $oLocatorTarget);
             $blSeo = oxRegistry::getUtils()->seoIsActive();
 
-            if ( $blSeo && $iPage ) {
-                $oRecommList->toListLink = oxRegistry::get("oxSeoEncoderRecomm")->getRecommPageUrl( $oRecommList, $iPage );
+            if ($blSeo && $iPage) {
+                $oRecommList->toListLink = oxRegistry::get("oxSeoEncoderRecomm")->getRecommPageUrl($oRecommList, $iPage);
             } else {
-                $oRecommList->toListLink  = $this->_makeLink( $oRecommList->getLink(), $this->_getPageNumber( $iPage ) );
+                $oRecommList->toListLink = $this->_makeLink($oRecommList->getLink(), $this->_getPageNumber($iPage));
             }
-            $oRecommList->toListLink  = $this->_makeLink( $oRecommList->toListLink, $sAddSearch );
+            $oRecommList->toListLink = $this->_makeLink($oRecommList->toListLink, $sAddSearch);
 
             $sAdd = '';
-            if ( !$blSeo ) {
-                $sAdd = 'recommid='.$oRecommList->getId().'&amp;listtype=recommlist'.($sAddSearch?'&amp;':'');
+            if (!$blSeo) {
+                $sAdd = 'recommid=' . $oRecommList->getId() . '&amp;listtype=recommlist' . ($sAddSearch ? '&amp;' : '');
             }
             $sAdd .= $sAddSearch;
-            $oRecommList->nextProductLink = $this->_oNextProduct?$this->_makeLink( $this->_oNextProduct->getLink(), $sAdd ):null;
-            $oRecommList->prevProductLink = $this->_oBackProduct?$this->_makeLink( $this->_oBackProduct->getLink(), $sAdd ):null;
+            $oRecommList->nextProductLink = $this->_oNextProduct ? $this->_makeLink($this->_oNextProduct->getLink(), $sAdd) : null;
+            $oRecommList->prevProductLink = $this->_oBackProduct ? $this->_makeLink($this->_oBackProduct->getLink(), $sAdd) : null;
 
-            $oLang  = oxRegistry::getLang();
+            $oLang = oxRegistry::getLang();
             $sTitle = $oLang->translateString('RECOMMLIST');
-            if ( $sSearchRecomm !== null ) {
-                $sTitle .= " / ".$oLang->translateString('RECOMMLIST_SEARCH').' "'.$sSearchFormRecomm.'"';
+            if ($sSearchRecomm !== null) {
+                $sTitle .= " / " . $oLang->translateString('RECOMMLIST_SEARCH') . ' "' . $sSearchFormRecomm . '"';
             }
-            $oLocatorTarget->setSearchTitle( $sTitle );
-            $oLocatorTarget->setActiveCategory( $oRecommList );
+            $oLocatorTarget->setSearchTitle($sTitle);
+            $oLocatorTarget->setActiveCategory($oRecommList);
         }
     }
 
@@ -416,20 +417,20 @@ class oxLocator extends oxSuperCfg
      *
      * @return object
      */
-    protected function _loadIdsInList( $oCategory, $oCurrArticle, $sOrderBy = null )
+    protected function _loadIdsInList($oCategory, $oCurrArticle, $sOrderBy = null)
     {
-        $oIdList = oxNew( 'oxarticlelist' );
-        $oIdList->setCustomSorting( $sOrderBy ) ;
+        $oIdList = oxNew('oxarticlelist');
+        $oIdList->setCustomSorting($sOrderBy);
 
         // additionally check if this category is loaded and is price category ?
-        if ( $oCategory->isPriceCategory() ) {
-            $oIdList->loadPriceIds( $oCategory->oxcategories__oxpricefrom->value, $oCategory->oxcategories__oxpriceto->value );
+        if ($oCategory->isPriceCategory()) {
+            $oIdList->loadPriceIds($oCategory->oxcategories__oxpricefrom->value, $oCategory->oxcategories__oxpriceto->value);
         } else {
             $sActCat = $oCategory->getId();
-            $oIdList->loadCategoryIDs( $sActCat, oxSession::getVar( 'session_attrfilter' ) );
+            $oIdList->loadCategoryIDs($sActCat, oxSession::getVar('session_attrfilter'));
             // if not found - reloading with empty filter
-            if ( !isset( $oIdList[$oCurrArticle->getId()] ) ) {
-                $oIdList->loadCategoryIDs( $sActCat, null );
+            if (!isset($oIdList[$oCurrArticle->getId()])) {
+                $oIdList->loadCategoryIDs($sActCat, null);
             }
         }
 
@@ -444,11 +445,12 @@ class oxLocator extends oxSuperCfg
      *
      * @return string
      */
-    protected function _makeLink( $sLink, $sParams )
+    protected function _makeLink($sLink, $sParams)
     {
-        if ( $sParams ) {
-            $sLink .= ( ( strpos( $sLink, '?' ) !== false ) ? '&amp;' : '?' ) . $sParams;
+        if ($sParams) {
+            $sLink .= ((strpos($sLink, '?') !== false) ? '&amp;' : '?') . $sParams;
         }
+
         return $sLink;
     }
 
@@ -462,19 +464,19 @@ class oxLocator extends oxSuperCfg
      *
      * @return int
      */
-    protected function _findActPageNumber( $iPageNr, $oIdList = null, $oArticle = null )
+    protected function _findActPageNumber($iPageNr, $oIdList = null, $oArticle = null)
     {
         //page number
         $iPageNr = (int) $iPageNr;
 
         // maybe there is no page number passed, but we still can find the position in id's list
-        if ( !$iPageNr && $oIdList && $oArticle ) {
-            $iNrofCatArticles = (int) $this->getConfig()->getConfigParam( 'iNrofCatArticles' );
-            $iNrofCatArticles = $iNrofCatArticles?$iNrofCatArticles:1;
+        if (!$iPageNr && $oIdList && $oArticle) {
+            $iNrofCatArticles = (int) $this->getConfig()->getConfigParam('iNrofCatArticles');
+            $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 1;
 
             $sArticleId = $oArticle->oxarticles__oxparentid->value ? $oArticle->oxarticles__oxparentid->value : $oArticle->getId();
-            $iPos = array_search( $sArticleId, $oIdList->arrayKeys() );
-            $iPageNr = floor( $iPos / $iNrofCatArticles );
+            $iPos = array_search($sArticleId, $oIdList->arrayKeys());
+            $iPageNr = floor($iPos / $iNrofCatArticles);
         }
 
         return $iPageNr;
@@ -487,11 +489,12 @@ class oxLocator extends oxSuperCfg
      *
      * @return string $sPageNum
      */
-    protected function _getPageNumber( $iPageNr )
+    protected function _getPageNumber($iPageNr)
     {
         //page number
         $iPageNr = (int) $iPageNr;
-        return ( ($iPageNr > 0 )?"pgNr=$iPageNr":'' );
+
+        return (($iPageNr > 0) ? "pgNr=$iPageNr" : '');
     }
 
     /**
@@ -503,39 +506,41 @@ class oxLocator extends oxSuperCfg
      *
      * @return integer
      */
-    protected function _getProductPos( $oArticle, $oIdList, $oLocatorTarget )
+    protected function _getProductPos($oArticle, $oIdList, $oLocatorTarget)
     {
         $iCnt = 1;
         $iPos = 0;
 
         // variant handling
-        $sOxid = $oArticle->oxarticles__oxparentid->value?$oArticle->oxarticles__oxparentid->value:$oArticle->getId();
-        if ( $oIdList->count() && isset( $oIdList[$sOxid] ) ) {
+        $sOxid = $oArticle->oxarticles__oxparentid->value ? $oArticle->oxarticles__oxparentid->value : $oArticle->getId();
+        if ($oIdList->count() && isset($oIdList[$sOxid])) {
 
             $aIds = $oIdList->arrayKeys();
-            $iPos = array_search( $sOxid, $aIds );
+            $iPos = array_search($sOxid, $aIds);
 
-            if ( array_key_exists( $iPos-1, $aIds ) ) {
-                $oBackProduct = oxNew( 'oxarticle' );
+            if (array_key_exists($iPos - 1, $aIds)) {
+                $oBackProduct = oxNew('oxarticle');
                 $oBackProduct->modifyCacheKey('_locator');
-                $oBackProduct->setNoVariantLoading( true );
-                if ( $oBackProduct->load( $aIds[$iPos-1] ) ) {
-                    $oBackProduct->setLinkType( $oLocatorTarget->getLinkType() );
+                $oBackProduct->setNoVariantLoading(true);
+                if ($oBackProduct->load($aIds[$iPos - 1])) {
+                    $oBackProduct->setLinkType($oLocatorTarget->getLinkType());
                     $this->_oBackProduct = $oBackProduct;
                 }
             }
 
-            if ( array_key_exists( $iPos+1, $aIds ) ) {
-                $oNextProduct = oxNew( 'oxarticle' );
+            if (array_key_exists($iPos + 1, $aIds)) {
+                $oNextProduct = oxNew('oxarticle');
                 $oNextProduct->modifyCacheKey('_locator');
-                $oNextProduct->setNoVariantLoading( true );
-                if ( $oNextProduct->load( $aIds[$iPos+1] ) ) {
-                    $oNextProduct->setLinkType( $oLocatorTarget->getLinkType() );
+                $oNextProduct->setNoVariantLoading(true);
+                if ($oNextProduct->load($aIds[$iPos + 1])) {
+                    $oNextProduct->setLinkType($oLocatorTarget->getLinkType());
                     $this->_oNextProduct = $oNextProduct;
                 }
             }
-            return $iPos+1;
+
+            return $iPos + 1;
         }
+
         return 0;
     }
 

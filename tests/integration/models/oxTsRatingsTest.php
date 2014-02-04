@@ -60,4 +60,20 @@ class Integration_Models_oxTsRatingsTest extends OxidTestCase
         $blKeyShopNameExists = array_key_exists( 'shopName', $aResult );
         $this->assertTrue( $blKeyCountExists && $blKeyEmptyExists && $blKeyMaxExists && $blKeyResultExists && $blKeyShopNameExists );
     }
+
+    /**
+     * oxViewConfig::getTsRatings test case
+     *
+     * @return null
+     */
+    public function testGetTsRatings()
+    {
+        $oViewConf = $this->getMock( "oxViewConfig", array( "getTsId" ) );
+        $oViewConf->expects( $this->any() )->method( "getTsId" )->will( $this->returnValue( 'xyz' ) );
+
+        $aTsRatings = $oViewConf->getTsRatings();
+
+        $this->assertArrayHasKey( 'empty', $aTsRatings );
+        $this->assertTrue( $aTsRatings['empty'] );
+    }
 }

@@ -66,26 +66,6 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     }
 
     /**
-     * oxViewConfig::getTsRatings test case
-     *
-     * @return null
-     */
-    public function testGetTsRatings()
-    {
-        $oViewConf = $this->getMock( "oxViewConfig", array( "getTsId" ) );
-        $oViewConf->expects( $this->any() )->method( "getTsId" )->will( $this->returnValue( 'xyz' ) );
-
-        $sError = "error.";
-        $oTsRatings = $this->getMock( "oxTsRatings", array( "_executeCurl" ) );
-        $oTsRatings->expects( $this->any() )->method( "_executeCurl" )->will( $this->returnValue( $sError ) );
-        oxRegistry::set( 'oxTsRatings', $oTsRatings );
-        $aTsRatings = $oViewConf->getTsRatings();
-
-        $this->assertArrayHasKey( 'empty', $aTsRatings );
-        $this->assertTrue( $aTsRatings['empty'] );
-    }
-
-    /**
      * oxViewconfig::showTs() test case
      *
      * @return null

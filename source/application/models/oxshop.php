@@ -88,7 +88,8 @@ class oxShop extends oxI18n
     public function generateViews( $blMultishopInheritCategories = false, $aMallInherit = null )
     {
         $oDb        = oxDb::getDb();
-        $aLanguages = oxRegistry::getLang()->getLanguageIds();
+
+        $aLanguages = $this->_getLanguageIds();
 
         $aTables = $aMultilangTables = oxRegistry::getLang()->getMultiLangTables();
 
@@ -196,5 +197,63 @@ class oxShop extends oxI18n
     public function getDefaultCategory()
     {
         return $this->oxshops__oxdefcat->value;
+    }
+
+    /**
+     * @return array
+     */
+    private function _getLanguageIds()
+    {
+            $aLanguages = oxRegistry::getLang()->getLanguageIds();
+
+        return $aLanguages;
+    }
+
+    /**
+     * @return array
+     */
+    private function _getLanguagesFromLanguageParams()
+    {
+        $aLanguages = array();
+        $aLangParams = $this->_selectLanguages( 'aLanguageParams' );
+
+        if ( is_array( $aLangParams ) ) {
+            foreach ( $aLangParams as $sAbbr => $aValue ) {
+                $iBaseId = (int) $aValue[ 'baseId' ];
+                $aLanguages[ $iBaseId ] = $sAbbr;
+            }
+        }
+
+        return $aLanguages;
+    }
+
+    /**
+     * @return array
+     */
+    private function _getLanguagesFromLanguages()
+    {
+        $aLangParams = $this->_selectLanguages( 'aLanguages' );
+
+        if ( is_array( $aLangParams ) ) {
+            $aLanguages = array_keys( $aLangParams );
+        }
+
+        return $aLanguages;
+    }
+
+    private function _selectLanguages( $sConfigName )
+    {
+        $oDb = oxDb::getDb();
+        $oConfig = oxRegistry::getConfig();
+
+        $sQ = "
+                    select " . $oConfig->getDecodeValueQuery() . " as oxvarvalue
+                    from oxconfig
+                    where oxshopid = '" . (int)$this->getId() . "'
+                        and oxvarname = '$sConfigName'
+                        limit 1";
+        $oRs = $oDb->getOne( $sQ );
+        $aLangParams = unserialize( $oRs );
+        return $aLangParams;
     }
 }

@@ -81,13 +81,36 @@ class Unit_Core_oxShopViewValidatorTest extends OxidTestCase
         $this->assertEquals( 100,  $oValidator->getShopId() );
     }
 
+    public function providerGetInvalidViews()
+    {
+        return array(
+            array( 'aLanguages', array( 'lt' => 'Lithuanian', 'de' => 'Deutsch' ) ),
+            array( 'aLanguageParams',
+                   array( 'de' => array ( 'baseId' => 0,
+                                          'active' => "1",
+                                          'sort' => "1",
+                                        ),
+                          'lt' => array ( 'baseId' => 0,
+                                          'active' => "1",
+                                          'sort' => "2",
+                                        ),
+                   ) ),
+        );
+    }
+
     /**
      * Tests getting list of invalid views
+     * @dataProvider providerGetInvalidViews
      */
-    public function testGetInvalidViews()
+    public function testGetInvalidViews( $sLanguageParamName, $aLanguageParamValue )
     {
         $oDb = oxDb::getDb();
         $oDb->execute( "DELETE FROM `oxshops` WHERE `oxid` > 1" );
+
+        $oConfig = new oxConfig();
+
+        $oConfig->setShopId( 10 );
+        $oConfig->saveShopConfVar( 'aarr', $sLanguageParamName, $aLanguageParamValue );
 
         $oShop = oxNew( "oxshop" );
         $oShop->setId( 19 );
@@ -103,11 +126,12 @@ class Unit_Core_oxShopViewValidatorTest extends OxidTestCase
             'oxv_oxarticles',
             'oxv_oxarticles_en',
             'oxv_oxarticles_de',
+            'oxv_oxarticles_lt',
             'oxv_oxarticles_ru'
         );
 
 
-        $oValidator = $this->getMock( 'oxShopViewValidator', array( '_getAllViews', ) );
+        $oValidator = $this->getMock( 'oxShopViewValidator', array( '_getAllViews' ) );
         $oValidator->expects( $this->once() )->method( '_getAllViews' )->will( $this->returnValue( $aAllViews ) );
 
         $aLanguageIds = array( 0 => 'de', 1 => 'en' );
@@ -122,7 +146,6 @@ class Unit_Core_oxShopViewValidatorTest extends OxidTestCase
 
             $this->assertEquals( 2, count($aResult) );
 
-        $this->assertContains( 'oxv_oxartextends_lt', $aResult );
         $this->assertContains( 'oxv_oxarticles_ru', $aResult );
     }
 }

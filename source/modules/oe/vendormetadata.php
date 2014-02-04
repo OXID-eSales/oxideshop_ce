@@ -16,9 +16,8 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @package   main
  * @copyright (C) OXID eSales AG 2003-2014
- * @version OXID eShop CE
+ * @version   OXID eShop CE
  */
 
 /**

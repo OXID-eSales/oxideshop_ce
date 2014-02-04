@@ -16,11 +16,11 @@
  *    You should have received a copy of the GNU General Public License
  *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @link      http://www.oxid-esales.com
- * @package   views
+ * @link          http://www.oxid-esales.com
+ * @package       views
  * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
- * @version   SVN: $Id: oxwminibasket.php 47624 2012-07-23 07:54:44Z vaidas.matulevicius $
+ * @version       SVN: $Id: oxwminibasket.php 47624 2012-07-23 07:54:44Z vaidas.matulevicius $
  */
 
 /**
@@ -31,6 +31,7 @@ class oxwCookieNote extends oxWidget
 
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'widget/header/cookienote.tpl';
@@ -44,6 +45,7 @@ class oxwCookieNote extends oxWidget
     public function render()
     {
         parent::render();
+
         return $this->_sThisTemplate;
     }
 
@@ -54,7 +56,7 @@ class oxwCookieNote extends oxWidget
      */
     function isEnabled()
     {
-        if ( $this->getConfig()->getConfigParam( 'blShowCookiesNotification' ) ) {
+        if ($this->getConfig()->getConfigParam('blShowCookiesNotification')) {
             return true;
         }
 

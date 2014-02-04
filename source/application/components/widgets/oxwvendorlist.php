@@ -16,8 +16,8 @@
  *    You should have received a copy of the GNU General Public License
  *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @link      http://www.oxid-esales.com
- * @package   views
+ * @link          http://www.oxid-esales.com
+ * @package       views
  * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
@@ -28,6 +28,7 @@
  */
 class oxwVendorList extends oxWidget
 {
+
     /**
      * Current class template name.
      *
@@ -42,11 +43,12 @@ class oxwVendorList extends oxWidget
      */
     public function getVendorlist()
     {
-        if ( $this->_aVendorlist === null ) {
-            $oVendorTree = oxNew( 'oxvendorlist' );
-            $oVendorTree->buildVendorTree( 'vendorlist', null, $this->getConfig()->getShopHomeURL() );
+        if ($this->_aVendorlist === null) {
+            $oVendorTree = oxNew('oxvendorlist');
+            $oVendorTree->buildVendorTree('vendorlist', null, $this->getConfig()->getShopHomeURL());
             $this->_aVendorlist = $oVendorTree;
         }
+
         return $this->_aVendorlist;
     }
 

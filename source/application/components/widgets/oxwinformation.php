@@ -16,8 +16,8 @@
  *    You should have received a copy of the GNU General Public License
  *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @link      http://www.oxid-esales.com
- * @package   views
+ * @link          http://www.oxid-esales.com
+ * @package       views
  * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
@@ -28,6 +28,7 @@
  */
 class oxwInformation extends oxWidget
 {
+
     /**
      * Current class template name
      *
@@ -48,6 +49,7 @@ class oxwInformation extends oxWidget
     public function getServicesKeys()
     {
         $oContentList = $this->_getContentList();
+
         return $oContentList->getServiceKeys();
     }
 
@@ -71,8 +73,8 @@ class oxwInformation extends oxWidget
      */
     protected function _getContentList()
     {
-        if ( !$this->_oContentList ) {
-            $this->_oContentList = oxNew( "oxContentList" );
+        if (!$this->_oContentList) {
+            $this->_oContentList = oxNew("oxContentList");
         }
 
         return $this->_oContentList;

@@ -16,8 +16,8 @@
  *    You should have received a copy of the GNU General Public License
  *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @link      http://www.oxid-esales.com
- * @package   views
+ * @link          http://www.oxid-esales.com
+ * @package       views
  * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
@@ -28,16 +28,19 @@
  */
 class oxwServiceMenu extends oxWidget
 {
+
     /**
      * Names of components (classes) that are initiated and executed
      * before any other regular operation.
      * User component used in template.
+     *
      * @var array
      */
-    protected $_aComponentNames = array( 'oxcmp_user' => 1 );
+    protected $_aComponentNames = array('oxcmp_user' => 1);
 
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'widget/header/servicemenu.tpl';
@@ -49,8 +52,9 @@ class oxwServiceMenu extends oxWidget
      */
     public function getCompareItemsCnt()
     {
-        $oCompare = oxNew( "compare" );
+        $oCompare = oxNew("compare");
         $iCompItemsCnt = $oCompare->getCompareItemsCnt();
+
         return $iCompItemsCnt;
     }
 
@@ -63,7 +67,7 @@ class oxwServiceMenu extends oxWidget
      */
     public function getCompareItems($blJson = false)
     {
-        $oCompare = oxNew( "compare" );
+        $oCompare = oxNew("compare");
         $aCompareItems = $oCompare->getCompareItems();
 
         if ($blJson) {

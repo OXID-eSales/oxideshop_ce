@@ -16,8 +16,8 @@
  *    You should have received a copy of the GNU General Public License
  *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @link      http://www.oxid-esales.com
- * @package   views
+ * @link          http://www.oxid-esales.com
+ * @package       views
  * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
@@ -27,16 +27,19 @@
  */
 class oxwReview extends oxWidget
 {
+
     /**
      * Names of components (classes) that are initiated and executed
      * before any other regular operation.
      * User component used in template.
+     *
      * @var array
      */
-    protected $_aComponentNames = array( 'oxcmp_user' => 1 );
+    protected $_aComponentNames = array('oxcmp_user' => 1);
 
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'widget/reviews/reviews.tpl';
@@ -51,6 +54,7 @@ class oxwReview extends oxWidget
     public function render()
     {
         parent::render();
+
         return $this->_sThisTemplate;
     }
 
@@ -61,7 +65,7 @@ class oxwReview extends oxWidget
      */
     public function getReviewType()
     {
-        return strtolower( $this->getViewParameter( 'type' ) );
+        return strtolower($this->getViewParameter('type'));
     }
 
     /**
@@ -71,7 +75,7 @@ class oxwReview extends oxWidget
      */
     public function getArticleId()
     {
-        return $this->getViewParameter( 'aid' );
+        return $this->getViewParameter('aid');
     }
 
     /**
@@ -81,7 +85,7 @@ class oxwReview extends oxWidget
      */
     public function getArticleNId()
     {
-        return $this->getViewParameter( 'anid' );
+        return $this->getViewParameter('anid');
     }
 
     /**
@@ -91,7 +95,7 @@ class oxwReview extends oxWidget
      */
     public function getRecommListId()
     {
-        return $this->getViewParameter( 'recommid' );
+        return $this->getViewParameter('recommid');
     }
 
     /**
@@ -101,7 +105,7 @@ class oxwReview extends oxWidget
      */
     public function canRate()
     {
-        return $this->getViewParameter( 'canrate' );
+        return $this->getViewParameter('canrate');
     }
 
     /**
@@ -111,7 +115,7 @@ class oxwReview extends oxWidget
      */
     public function getReviewUserHash()
     {
-        return $this->getViewParameter( 'reviewuserhash' );
+        return $this->getViewParameter('reviewuserhash');
     }
 
     /**
@@ -122,6 +126,7 @@ class oxwReview extends oxWidget
     public function getReviews()
     {
         $oReview = $this->getConfig()->getTopActiveView();
+
         return $oReview->getReviews();
     }
 }

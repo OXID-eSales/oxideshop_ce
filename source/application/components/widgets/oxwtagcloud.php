@@ -15,8 +15,8 @@
  *    You should have received a copy of the GNU General Public License
  *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @link      http://www.oxid-esales.com
- * @package   views
+ * @link          http://www.oxid-esales.com
+ * @package       views
  * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
@@ -27,8 +27,10 @@
  */
 class oxwTagCloud extends oxWidget
 {
+
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'widget/sidebar/tags.tpl';
@@ -40,7 +42,7 @@ class oxwTagCloud extends oxWidget
      */
     public function displayInBox()
     {
-        return (bool) $this->getViewParameter( "blShowBox" );
+        return (bool) $this->getViewParameter("blShowBox");
     }
 
     /**
@@ -50,9 +52,10 @@ class oxwTagCloud extends oxWidget
      */
     public function getTagCloudManager()
     {
-        $oTagList = oxNew( "oxtaglist" );
-        $oTagCloud = oxNew( "oxTagCloud" );
+        $oTagList = oxNew("oxtaglist");
+        $oTagCloud = oxNew("oxTagCloud");
         $oTagCloud->setTagList($oTagList);
+
         return $oTagCloud;
     }
 

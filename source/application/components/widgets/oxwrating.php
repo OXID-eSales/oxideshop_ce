@@ -16,8 +16,8 @@
  *    You should have received a copy of the GNU General Public License
  *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @link      http://www.oxid-esales.com
- * @package   views
+ * @link          http://www.oxid-esales.com
+ * @package       views
  * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
@@ -28,13 +28,15 @@
  */
 class oxwRating extends oxWidget
 {
+
     /**
      * Names of components (classes) that are initiated and executed
      * before any other regular operation.
      * User component used in template.
+     *
      * @var array
      */
-    protected $_aComponentNames = array( 'oxcmp_user' => 1 );
+    protected $_aComponentNames = array('oxcmp_user' => 1);
 
     /**
      * Current class template name.
@@ -67,6 +69,7 @@ class oxwRating extends oxWidget
     public function render()
     {
         parent::render();
+
         return $this->_sThisTemplate;
     }
 
@@ -77,13 +80,14 @@ class oxwRating extends oxWidget
      */
     public function getRatingValue()
     {
-        if ( $this->_dRatingValue === null ) {
-            $this->_dRatingValue = (double)0;
-            $dValue = $this->getViewParameter( "dRatingValue" );
-            if ( $dValue ) {
-                $this->_dRatingValue = round( $dValue, 1);
+        if ($this->_dRatingValue === null) {
+            $this->_dRatingValue = (double) 0;
+            $dValue = $this->getViewParameter("dRatingValue");
+            if ($dValue) {
+                $this->_dRatingValue = round($dValue, 1);
             }
         }
+
         return (double) $this->_dRatingValue;
     }
 
@@ -94,7 +98,7 @@ class oxwRating extends oxWidget
      */
     public function getRatingCount()
     {
-        return $dCount = $this->getViewParameter( "dRatingCount" );
+        return $dCount = $this->getViewParameter("dRatingCount");
     }
 
     /**
@@ -104,7 +108,7 @@ class oxwRating extends oxWidget
      */
     public function getRateUrl()
     {
-        return $this->getViewParameter( "sRateUrl" );
+        return $this->getViewParameter("sRateUrl");
     }
 
     /**
@@ -114,7 +118,7 @@ class oxwRating extends oxWidget
      */
     public function canRate()
     {
-        return $this->getViewParameter( "blCanRate" );
+        return $this->getViewParameter("blCanRate");
     }
 
     /**
@@ -124,6 +128,6 @@ class oxwRating extends oxWidget
      */
     public function getArticleNId()
     {
-        return $this->getViewParameter( 'anid' );
+        return $this->getViewParameter('anid');
     }
 }

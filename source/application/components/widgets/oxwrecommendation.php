@@ -16,8 +16,8 @@
  *    You should have received a copy of the GNU General Public License
  *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @link      http://www.oxid-esales.com
- * @package   views
+ * @link          http://www.oxid-esales.com
+ * @package       views
  * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
@@ -28,16 +28,19 @@
  */
 class oxwRecommendation extends oxWidget
 {
+
     /**
      * Names of components (classes) that are initiated and executed
      * before any other regular operation.
      * User component used in template.
+     *
      * @var array
      */
-    protected $_aComponentNames = array( 'oxcmp_cur' => 1 );
+    protected $_aComponentNames = array('oxcmp_cur' => 1);
 
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'widget/sidebar/recommendation.tpl';
@@ -49,10 +52,10 @@ class oxwRecommendation extends oxWidget
      */
     function getSimilarRecommLists()
     {
-        $aArticleIds = $this->getViewParameter( "aArticleIds" );
+        $aArticleIds = $this->getViewParameter("aArticleIds");
 
-        $oRecommList = oxNew( 'oxrecommlist' );
-        $aRecommList = $oRecommList->getRecommListsByIds( $aArticleIds );
+        $oRecommList = oxNew('oxrecommlist');
+        $aRecommList = $oRecommList->getRecommListsByIds($aArticleIds);
 
         return $aRecommList;
     }
@@ -64,7 +67,7 @@ class oxwRecommendation extends oxWidget
      */
     function getRecommList()
     {
-        $oRecommList = oxNew( 'recommlist' );
+        $oRecommList = oxNew('recommlist');
 
         return $oRecommList;
     }

@@ -15,8 +15,8 @@
  *    You should have received a copy of the GNU General Public License
  *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @link      http://www.oxid-esales.com
- * @package   views
+ * @link          http://www.oxid-esales.com
+ * @package       views
  * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
@@ -27,10 +27,12 @@
  */
 class oxWidget extends oxUBase
 {
+
     /**
      * Names of components (classes) that are initiated and executed
      * before any other regular operation.
      * Widget should rewrite and use only those which  it needs.
+     *
      * @var array
      */
     protected $_aComponentNames = array();
@@ -53,16 +55,16 @@ class oxWidget extends oxUBase
     {
         self::$_aCollectedComponentNames = null;
 
-        if ( !empty( $this->_aComponentNames ) ) {
-            foreach ( $this->_aComponentNames as $sComponentName => $sCompCache ) {
+        if (!empty($this->_aComponentNames)) {
+            foreach ($this->_aComponentNames as $sComponentName => $sCompCache) {
                 $oActTopView = $this->getConfig()->getTopActiveView();
-                if ( $oActTopView ) {
-                    $this->_oaComponents[$sComponentName] = $oActTopView->getComponent( $sComponentName );
-                    if ( !isset( $this->_oaComponents[$sComponentName] ) ) {
+                if ($oActTopView) {
+                    $this->_oaComponents[$sComponentName] = $oActTopView->getComponent($sComponentName);
+                    if (!isset($this->_oaComponents[$sComponentName])) {
                         $this->_blLoadComponents = true;
                         break;
                     } else {
-                        $this->_oaComponents[$sComponentName]->setParent( $this );
+                        $this->_oaComponents[$sComponentName]->setParent($this);
                     }
                 }
             }

@@ -16,8 +16,8 @@
  *    You should have received a copy of the GNU General Public License
  *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @link      http://www.oxid-esales.com
- * @package   views
+ * @link          http://www.oxid-esales.com
+ * @package       views
  * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
@@ -28,6 +28,7 @@
  */
 class oxwCategoryTree extends oxWidget
 {
+
     /**
      * Names of components (classes) that are initiated and executed
      * before any other regular operation.
@@ -35,7 +36,7 @@ class oxwCategoryTree extends oxWidget
      *
      * @var array
      */
-    protected $_aComponentNames = array( 'oxcmp_categories' => 1 );
+    protected $_aComponentNames = array('oxcmp_categories' => 1);
 
     /**
      * Current class template name.
@@ -53,12 +54,13 @@ class oxwCategoryTree extends oxWidget
     {
         parent::render();
 
-        if ($sTpl = $this->getViewParameter( "sWidgetType" ) ) {
+        if ($sTpl = $this->getViewParameter("sWidgetType")) {
             $sTemplateName = 'widget/' . basename($sTpl) . '/categorylist.tpl';
             if ($this->getConfig()->getTemplatePath($sTemplateName, $this->isAdmin())) {
                 $this->_sThisTemplate = $sTemplateName;
             }
         }
+
         return $this->_sThisTemplate;
     }
 
@@ -69,7 +71,7 @@ class oxwCategoryTree extends oxWidget
      */
     public function getDeepLevel()
     {
-        return $this->getViewParameter( "deepLevel" );
+        return $this->getViewParameter("deepLevel");
     }
 
 }

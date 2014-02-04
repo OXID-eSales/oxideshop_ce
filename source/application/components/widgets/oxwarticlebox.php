@@ -16,8 +16,8 @@
  *    You should have received a copy of the GNU General Public License
  *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @link      http://www.oxid-esales.com
- * @package   views
+ * @link          http://www.oxid-esales.com
+ * @package       views
  * @copyright (C) OXID eSales AG 2003-2014
  * @version OXID eShop CE
  */
@@ -27,16 +27,19 @@
  */
 class oxwArticleBox extends oxWidget
 {
+
     /**
      * Names of components (classes) that are initiated and executed
      * before any other regular operation.
      * User component used in template.
+     *
      * @var array
      */
-    protected $_aComponentNames = array( 'oxcmp_user' => 1, 'oxcmp_basket' => 1, 'oxcmp_cur' => 1 );
+    protected $_aComponentNames = array('oxcmp_user' => 1, 'oxcmp_basket' => 1, 'oxcmp_cur' => 1);
 
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sTemplate = 'widget/product/boxproduct.tpl';
@@ -44,6 +47,7 @@ class oxwArticleBox extends oxWidget
 
     /**
      * Current article
+     *
      * @var null
      */
     protected $_oArticle = null;
@@ -57,9 +61,10 @@ class oxwArticleBox extends oxWidget
     public function getActiveCategory()
     {
         $oCategory = $this->getConfig()->getTopActiveView()->getActiveCategory();
-        if ( $oCategory ) {
-            $this->setActiveCategory( $oCategory );
+        if ($oCategory) {
+            $this->setActiveCategory($oCategory);
         }
+
         return $this->_oActCategory;
     }
 
@@ -73,7 +78,7 @@ class oxwArticleBox extends oxWidget
         parent::render();
 
         $sWidgetType = $this->getViewParameter('sWidgetType');
-        $sListType   = $this->getViewParameter('sListType');
+        $sListType = $this->getViewParameter('sListType');
 
         if ($sWidgetType && $sListType) {
             $this->_sTemplate = "widget/" . $sWidgetType . "/" . $sListType . ".tpl";
@@ -92,7 +97,7 @@ class oxwArticleBox extends oxWidget
      *
      * @param oxArticle $oArticle Box product
      */
-    public function setProduct( $oArticle )
+    public function setProduct($oArticle)
     {
         $this->_oArticle = $oArticle;
     }
@@ -104,19 +109,19 @@ class oxwArticleBox extends oxWidget
      */
     public function getProduct()
     {
-        if ( is_null( $this->_oArticle ) ) {
+        if (is_null($this->_oArticle)) {
 
-            if ( $this->getViewParameter( '_object' ) ) {
-                $oArticle = $this->getViewParameter( '_object' );
+            if ($this->getViewParameter('_object')) {
+                $oArticle = $this->getViewParameter('_object');
             } else {
                 $sAddDynParams = $this->getConfig()->getTopActiveView()->getAddUrlParams();
 
 
-                $oArticle = $this->_getArticleById( $this->getViewParameter( 'anid' ) );
-                $this->_addDynParamsToLink( $sAddDynParams, $oArticle );
+                $oArticle = $this->_getArticleById($this->getViewParameter('anid'));
+                $this->_addDynParamsToLink($sAddDynParams, $oArticle);
             }
 
-            $this->setProduct( $oArticle );
+            $this->setProduct($oArticle);
         }
 
         return $this->_oArticle;
@@ -129,9 +134,9 @@ class oxwArticleBox extends oxWidget
      *
      * @return string
      */
-    public function getLink( $iLang = null )
+    public function getLink($iLang = null)
     {
-        return $this->getConfig()->getTopActiveView()->getLink( $iLang );
+        return $this->getConfig()->getTopActiveView()->getLink($iLang);
     }
 
     /**
@@ -141,7 +146,7 @@ class oxwArticleBox extends oxWidget
      */
     public function isVatIncluded()
     {
-        return (bool) $this->getViewParameter( "isVatIncluded" );
+        return (bool) $this->getViewParameter("isVatIncluded");
     }
 
     /**
@@ -222,9 +227,10 @@ class oxwArticleBox extends oxWidget
     public function getRSSLinks()
     {
         $aRSS = $this->getViewParameter('rsslinks');
-        if ( !is_array($aRSS) ) {
+        if (!is_array($aRSS)) {
             $aRSS = null;
         }
+
         return $aRSS;
     }
 
@@ -256,16 +262,16 @@ class oxwArticleBox extends oxWidget
      *
      * @return bool
      */
-    protected function _addDynParamsToLink( $sAddDynParams, $oArticle )
+    protected function _addDynParamsToLink($sAddDynParams, $oArticle)
     {
         $blAddedParams = false;
-        if ( $sAddDynParams ) {
+        if ($sAddDynParams) {
             $blSeo = oxRegistry::getUtils()->seoIsActive();
-            if ( !$blSeo ) {
+            if (!$blSeo) {
                 // only if seo is off..
-                $oArticle->appendStdLink( $sAddDynParams );
+                $oArticle->appendStdLink($sAddDynParams);
             }
-            $oArticle->appendLink( $sAddDynParams );
+            $oArticle->appendLink($sAddDynParams);
             $blAddedParams = true;
         }
 
@@ -279,21 +285,21 @@ class oxwArticleBox extends oxWidget
      *
      * @return oxArticle
      */
-    protected function _getArticleById( $sArticleId )
+    protected function _getArticleById($sArticleId)
     {
         /** @var oxArticle $oArticle */
-        $oArticle = oxNew( 'oxArticle' );
-        $oArticle->load( $sArticleId );
-        $iLinkType = $this->getViewParameter( 'iLinkType' );
+        $oArticle = oxNew('oxArticle');
+        $oArticle->load($sArticleId);
+        $iLinkType = $this->getViewParameter('iLinkType');
 
-        if ( $this->getViewParameter( 'inlist' ) ) {
+        if ($this->getViewParameter('inlist')) {
             $oArticle->setInList();
         }
-        if ( $iLinkType ) {
-            $oArticle->setLinkType( $iLinkType );
+        if ($iLinkType) {
+            $oArticle->setLinkType($iLinkType);
         }
-        if ( $oRecommList = $this->getActiveRecommList() ) {
-            $oArticle->text = $oRecommList->getArtDescription( $oArticle->getId() );
+        if ($oRecommList = $this->getActiveRecommList()) {
+            $oArticle->text = $oRecommList->getArtDescription($oArticle->getId());
         }
 
         return $oArticle;

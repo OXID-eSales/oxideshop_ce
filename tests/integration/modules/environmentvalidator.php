@@ -26,12 +26,16 @@ class EnvironmentValidator
 {
 
     /**
-     * @var
+     * Config object.
+     *
+     * @var object
      */
     private $_oConfig;
 
     /**
-     * @var
+     * Shop id.
+     *
+     * @var int
      */
     private $_iShopId;
 
@@ -48,7 +52,7 @@ class EnvironmentValidator
     }
 
     /**
-     * @return object
+     * @return oxConfig
      */
     public function getConfig()
     {
@@ -195,6 +199,8 @@ class EnvironmentValidator
     }
 
     /**
+     * Returns config values from table oxconfig by field- oxvarname.
+     *
      * @param $sVarName
      * @return array
      */

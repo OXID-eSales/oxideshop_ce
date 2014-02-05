@@ -29,42 +29,57 @@ class Integration_Modules_ModuleExtensionSortTest extends BaseModuleTestCase
     {
         return array(
             array(
-                // modules to be activated during test preparation
+                // Modules to be activated during test preparation
                 array(
                     'extending_1_class', 'extending_3_classes_with_1_extension',
                     'extending_3_classes', 'extending_1_class_3_extensions',
                 ),
 
-                // module that will be reactivated
+                // Module that will be reactivated
                 'extending_3_classes_with_1_extension',
 
-                // environment asserts
+                // Reordered extensions
                 array(
                     'oxorder'   => 'extending_3_classes_with_1_extension/mybaseclass&extending_1_class/myorder&'.
                                    'extending_1_class_3_extensions/myorder1&extending_3_classes/myorder&'.
                                    'extending_1_class_3_extensions/myorder3&extending_1_class_3_extensions/myorder2',
                     'oxarticle' => 'extending_3_classes/myarticle&extending_3_classes_with_1_extension/mybaseclass',
                     'oxuser'    => 'extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myuser',
+                ),
+
+                // Not reordered extensions
+                array(
+                    'oxarticle' => 'extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myarticle',
+                    'oxorder'   => 'extending_1_class/myorder&extending_3_classes_with_1_extension/mybaseclass&' .
+                        'extending_3_classes/myorder&extending_1_class_3_extensions/myorder1&' .
+                        'extending_1_class_3_extensions/myorder2&extending_1_class_3_extensions/myorder3',
+                    'oxuser'    => 'extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myuser',
                 )
             ),
 
             array(
-                // modules to be activated during test preparation
+                // Modules to be activated during test preparation
                 array(
                     'extending_1_class_3_extensions',
                 ),
 
-                // module that will be reactivated
+                // Module that will be reactivated
                 'extending_1_class_3_extensions',
 
-                // environment asserts
+                // Reordered extensions
                 array(
                     'oxorder'   => 'extending_1_class_3_extensions/myorder2&'.
                                    'extending_1_class_3_extensions/myorder1&'.
                                    'extending_1_class_3_extensions/myorder3',
+                ),
+
+                // Not reordered extensions
+                array(
+                    'oxorder'   => 'extending_1_class_3_extensions/myorder1&'.
+                                   'extending_1_class_3_extensions/myorder2&'.
+                                   'extending_1_class_3_extensions/myorder3',
                 )
             )
-
         );
     }
 
@@ -73,13 +88,13 @@ class Integration_Modules_ModuleExtensionSortTest extends BaseModuleTestCase
      *
      * @dataProvider providerModuleReorderExtensions
      */
-    public function testIsActive( $aInstallModules, $sModule, $aReorderedExtensions)
+    public function testIsActive( $aInstallModules, $sModule, $aReorderedExtensions )
     {
         $oModuleEnvironment = new Environment();
         $oModuleEnvironment->prepare( $aInstallModules );
 
         // load reordered extensions
-        $this->getConfig()->setConfigParam( 'aModules', $aReorderedExtensions );
+        $this->_getConfig()->setConfigParam( 'aModules', $aReorderedExtensions );
 
         $oModule = new oxModule();
         $oModule->load( $sModule );
@@ -87,9 +102,62 @@ class Integration_Modules_ModuleExtensionSortTest extends BaseModuleTestCase
         $oModule->deactivate();
         $oModule->activate();
 
-        $oValidator = new EnvironmentValidator( $this->getConfig(), 1 );
+        $oValidator = new EnvironmentValidator( $this->getConfig() );
 
         $this->assertTrue( $oValidator->checkExtensions( $aReorderedExtensions ), 'Extension order changed' );
+    }
+
+    /**
+     * Tests check if changed extensions order stays the same after deactivation / activation
+     *
+     * @dataProvider providerModuleReorderExtensions
+     */
+    public function testIfNotReorderedOnSubShop( $aInstallModules, $sModule, $aReorderedExtensions, $aNotReorderedExtensions )
+    {
+        $oConfig = $this->_getConfig();
+        $oModuleEnvironment = new Environment();
+        $oModuleEnvironment->prepare( $aInstallModules );
+        $oValidator = new EnvironmentValidator( $oConfig );
+        $oModule = new oxModule();
+
+        $this->_activateGivenModulesOnShop( $aInstallModules, $oModuleEnvironment, 2 );
+
+        // load reordered extensions for shop
+        $oConfig->setShopId( 1 );
+        $oConfig->setConfigParam( 'aModules', $aReorderedExtensions );
+
+        $oModule->load( $sModule );
+        $oModule->deactivate();
+        $oModule->activate();
+
+        $oConfig->setShopId( 2 );
+        $this->assertTrue( $oValidator->checkExtensions( $aNotReorderedExtensions ), 'Extension order changed' );
+    }
+
+    /**
+     * Activates modules on selected shop.
+     *
+     * @param $aInstallModules Array of modules to install
+     * @param $oModuleEnvironment Modules environment object
+     * @param $iShopId Shop id
+     */
+    private function _activateGivenModulesOnShop( $aInstallModules, $oModuleEnvironment, $iShopId )
+    {
+        $this->_getConfig()->setShopId( $iShopId );
+        $this->_getConfig()->setConfigParam( 'aModules', array() );
+        $oModuleEnvironment->activateModules( $aInstallModules );
+    }
+
+    /**
+     * Returns shop config object.
+     *
+     * @return OxConfig
+     */
+    private function _getConfig()
+    {
+        $oConfig = oxRegistry::getConfig();
+
+        return $oConfig;
     }
 }
  

@@ -106,48 +106,6 @@ class Integration_Modules_ModuleExtensionSortTest extends BaseModuleTestCase
 
         $this->assertTrue( $oValidator->checkExtensions( $aReorderedExtensions ), 'Extension order changed' );
     }
-
-    /**
-     * Tests check if changed extensions order stays the same after deactivation / activation
-     *
-     * @dataProvider providerModuleReorderExtensions
-     */
-    public function testIfNotReorderedOnSubShop( $aInstallModules, $sModule, $aReorderedExtensions, $aNotReorderedExtensions )
-    {
-        $oConfig = $this->_getConfig();
-        $oModuleEnvironment = new Environment();
-        $oModuleEnvironment->prepare( $aInstallModules );
-        $oValidator = new EnvironmentValidator( $oConfig );
-        $oModule = new oxModule();
-
-        $this->_activateGivenModulesOnShop( $aInstallModules, $oModuleEnvironment, 2 );
-
-        // load reordered extensions for shop
-        $oConfig->setShopId( 1 );
-        $oConfig->setConfigParam( 'aModules', $aReorderedExtensions );
-
-        $oModule->load( $sModule );
-        $oModule->deactivate();
-        $oModule->activate();
-
-        $oConfig->setShopId( 2 );
-        $this->assertTrue( $oValidator->checkExtensions( $aNotReorderedExtensions ), 'Extension order changed' );
-    }
-
-    /**
-     * Activates modules on selected shop.
-     *
-     * @param $aInstallModules Array of modules to install
-     * @param $oModuleEnvironment Modules environment object
-     * @param $iShopId Shop id
-     */
-    private function _activateGivenModulesOnShop( $aInstallModules, $oModuleEnvironment, $iShopId )
-    {
-        $this->_getConfig()->setShopId( $iShopId );
-        $this->_getConfig()->setConfigParam( 'aModules', array() );
-        $oModuleEnvironment->activateModules( $aInstallModules );
-    }
-
     /**
      * Returns shop config object.
      *

@@ -33,21 +33,12 @@ class EnvironmentValidator
     private $_oConfig;
 
     /**
-     * Shop id.
-     *
-     * @var int
-     */
-    private $_iShopId;
-
-    /**
      * Sets oxConfig and Shop ID
      *
      * @param $_oConfig
-     * @param $_iShopId
      */
-    function __construct( $_oConfig, $_iShopId )
+    function __construct( $_oConfig )
     {
-        $this->_iShopId = $_iShopId;
         $this->_oConfig = $_oConfig;
     }
 
@@ -59,16 +50,6 @@ class EnvironmentValidator
     public function getConfig()
     {
         return $this->_oConfig;
-    }
-
-    /**
-     * Returns shop id.
-     *
-     * @return int
-     */
-    public function getShopId()
-    {
-        return $this->_iShopId;
     }
 
     /**
@@ -94,7 +75,7 @@ class EnvironmentValidator
     public function checkBlocks( $aExpectedBlocks )
     {
         $oDb = oxDb::getDb();
-        $aBlocksToCheck = $oDb->getAll( "select * from oxtplblocks where oxshopid = {$this->getShopId()}" );
+        $aBlocksToCheck = $oDb->getAll( "select * from oxtplblocks where oxshopid = {$this->getConfig()->getShopId()}" );
 
         return ( count( $aExpectedBlocks ) == count( $aBlocksToCheck ) );
     }
@@ -151,7 +132,7 @@ class EnvironmentValidator
         $sQuery = "select c.oxvarname
                    from  oxconfig c inner join oxconfigdisplay d
                    on c.oxvarname = d.oxcfgvarname  and c.oxmodule = d.oxcfgmodule
-                   where oxmodule like 'module:%' and c.oxshopid = {$this->getShopId()}";
+                   where oxmodule like 'module:%' and c.oxshopid = {$this->getConfig()->getShopId()}";
         $aConfigsToCheck = $oDb->getAll( $sQuery );
 
         return ( count( $aExpectedConfigs ) == count( $aConfigsToCheck ) );

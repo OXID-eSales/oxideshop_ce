@@ -81,11 +81,16 @@ class Unit_Core_oxShopViewValidatorTest extends OxidTestCase
         $this->assertEquals( 100,  $oValidator->getShopId() );
     }
 
+    /**
+     * Data provider for testGetInvalidViews
+     *
+     * @return array
+     */
     public function providerGetInvalidViews()
     {
         return array(
-            array( 'aLanguages', array( 'lt' => 'Lithuanian', 'de' => 'Deutsch' ) ),
-            array( 'aLanguageParams',
+            array( 'aLanguageParams', 'aLanguages', array( 'lt' => 'Lithuanian', 'de' => 'Deutsch' ) ),
+            array( 'aLanguages', 'aLanguageParams',
                    array( 'de' => array ( 'baseId' => 0,
                                           'active' => "1",
                                           'sort' => "1",
@@ -100,23 +105,21 @@ class Unit_Core_oxShopViewValidatorTest extends OxidTestCase
 
     /**
      * Tests getting list of invalid views
+     *
+     * @param string $sLanguageParamNameDisabled - language config parameter that will be disabled
+     * @param string $sLanguageParamName   - language config parameter that will be used
+     * @param array $aLanguageParamValue  - language config parameter value
+     *
      * @dataProvider providerGetInvalidViews
      */
-    public function testGetInvalidViews( $sLanguageParamName, $aLanguageParamValue )
+    public function testGetInvalidViews( $sLanguageParamNameDisabled, $sLanguageParamName, $aLanguageParamValue )
     {
         $oDb = oxDb::getDb();
         $oDb->execute( "DELETE FROM `oxshops` WHERE `oxid` > 1" );
 
-        $oConfig = new oxConfig();
-
-        $oConfig->setShopId( 10 );
-        $oConfig->saveShopConfVar( 'aarr', $sLanguageParamName, $aLanguageParamValue );
-
-        $oShop = oxNew( "oxshop" );
-        $oShop->setId( 19 );
-        $oShop->oxshop__oxactive = new oxField( 1 );
-        $oShop->oxshop__oxname = new oxField( "Shop 19" );
-        $oShop->save();
+        // disable language config parameter because we are testing each language parameter separately
+        $oDb->execute( "update `oxconfig` set `oxvarname` = '{$sLanguageParamNameDisabled}_disabled'
+                        WHERE `oxvarname` = '{$sLanguageParamNameDisabled}' " );
 
         $aAllViews = array(
             'oxv_oxartextends',
@@ -143,9 +146,18 @@ class Unit_Core_oxShopViewValidatorTest extends OxidTestCase
 
         $aResult = $oValidator->getInvalidViews();
 
+        // restore disabled config parameters
+        $oDb->execute( "update `oxconfig` set `oxvarname` = '{$sLanguageParamNameDisabled}'
+                        WHERE `oxvarname` = '{$sLanguageParamNameDisabled}_disabled' " );
 
-            $this->assertEquals( 2, count($aResult) );
+
+
+            $this->assertEquals( 3, count($aResult) );
+            $this->assertContains( 'oxv_oxartextends_lt', $aResult );
+            $this->assertContains( 'oxv_oxarticles_lt', $aResult );
 
         $this->assertContains( 'oxv_oxarticles_ru', $aResult );
+
+
     }
 }

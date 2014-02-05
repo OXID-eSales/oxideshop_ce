@@ -71,7 +71,7 @@ class EnvironmentValidator
      */
     public function checkTemplates( $aExpectedTemplates )
     {
-        $aTemplatesToCheck = $this->getConfig()->getConfigParam( 'aModuleTemplates' );
+        $aTemplatesToCheck = $this->_getConfigValueFromDB( 'aModuleTemplates' );
         $aTemplatesToCheck = is_null( $aTemplatesToCheck ) ? array() : $aTemplatesToCheck;
 
         return ( $aExpectedTemplates == $aTemplatesToCheck );
@@ -99,7 +99,7 @@ class EnvironmentValidator
      */
     public function checkExtensions( $aExpectedExtensions )
     {
-        $aExtensionsToCheck = $this->getConfig()->getConfigParam( 'aModules' );
+        $aExtensionsToCheck = $this->_getConfigValueFromDB( 'aModules' );
 
         return ( $aExpectedExtensions == $aExtensionsToCheck );
     }
@@ -112,7 +112,7 @@ class EnvironmentValidator
      */
     public function checkDisabledModules( $aExpectedDisabledModules )
     {
-        $aDisabledModules = $this->getConfig()->getConfigParam( 'aDisabledModules' );
+        $aDisabledModules = $this->_getConfigValueFromDB( 'aDisabledModules' );
 
         return ( $aExpectedDisabledModules == $aDisabledModules );
     }
@@ -125,7 +125,7 @@ class EnvironmentValidator
      */
     public function checkFiles( $aExpectedFiles )
     {
-        $aModuleFilesToCheck = $this->getConfig()->getConfigParam( 'aModuleFiles' );
+        $aModuleFilesToCheck = $this->_getConfigValueFromDB( 'aModuleFiles' );
         $aModuleFilesToCheck = is_null( $aModuleFilesToCheck ) ? array() : $aModuleFilesToCheck;
 
         return ( $aExpectedFiles == $aModuleFilesToCheck );
@@ -174,12 +174,11 @@ class EnvironmentValidator
      */
     public function checkVersions( $aExpectedVersions )
     {
-        $aModuleVersionsToCheck = $this->getConfig()->getConfigParam( 'aModuleVersions' );
+        $aModuleVersionsToCheck = $this->_getConfigValueFromDB( 'aModuleVersions' );
         $aModuleVersionsToCheck = is_null( $aModuleVersionsToCheck ) ? array() : $aModuleVersionsToCheck;
 
         return ( $aExpectedVersions == $aModuleVersionsToCheck );
     }
-
 
     /**
      * Asserts that module version match expected version
@@ -189,10 +188,26 @@ class EnvironmentValidator
      */
     public function checkEvents( $aExpectedEvents )
     {
-        $aModuleEventsToCheck = $this->getConfig()->getConfigParam( 'aModuleEvents' );
+        $aModuleEventsToCheck = $this->_getConfigValueFromDB( 'aModuleEvents' );
         $aModuleEventsToCheck = is_null( $aModuleEventsToCheck) ? array() : $aModuleEventsToCheck;
 
         return ( $aExpectedEvents == $aModuleEventsToCheck );
+    }
+
+    /**
+     * @param $sVarName
+     * @return array
+     */
+    private function _getConfigValueFromDB( $sVarName )
+    {
+        $oDb = oxDb::getDb();
+        $sQuery = "SELECT " . $this->getConfig()->getDecodeValueQuery() . "
+                   FROM `oxconfig`
+                   WHERE `OXVARNAME` = '{$sVarName}'
+                   AND `OXSHOPID` = {$this->getConfig()->getShopId()}";
+
+        $aExtensionsToCheck = unserialize( $oDb->getOne( $sQuery ) );
+        return $aExtensionsToCheck;
     }
 
 }

@@ -83,7 +83,7 @@ class Environment
         $oConfig->setConfigParam( 'aModuleEvents', null);
 
         $oDb = oxDb::getDb();
-        $oDb->execute( "DELETE FROM `oxconfig` WHERE `oxmodule` LIKE 'module:%'" );
+        $oDb->execute( "DELETE FROM `oxconfig` WHERE `oxmodule` LIKE 'module:%' OR `oxvarname` LIKE '%Module%'" );
         $oDb->execute( 'TRUNCATE `oxconfigdisplay`' );
         $oDb->execute( 'TRUNCATE `oxtplblocks`' );
     }

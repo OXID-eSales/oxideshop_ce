@@ -392,26 +392,6 @@ class oxLang extends oxSuperCfg
     }
 
     /**
-     * Returns available language IDs (abbreviations)
-     *
-     * @return array
-     */
-    public function getLanguageIds()
-    {
-        $oConfig = $this->getConfig();
-
-        //if exists language parameters array, extract lang id's from there
-        $aLangParams = $oConfig->getConfigParam( 'aLanguageParams' );
-        if ( is_array( $aLangParams ) ) {
-            $aIds = $this->_getLanguageIdsFromLanguageParamsArray( $aLangParams );
-        } else {
-            $aIds = $this->_getLanguageIdsFromLanguagesArray( $oConfig->getConfigParam( 'aLanguages' ) );
-        }
-
-        return $aIds;
-    }
-
-    /**
      * Searches for translation string in file and on success returns translation,
      * otherwise returns initial string.
      *
@@ -1212,6 +1192,58 @@ class oxLang extends oxSuperCfg
      * @return array
      */
     public function getAllShopLanguageIds()
+    {
+        $aLanguages = $this->_getLanguageIdsFromDatabase();
+
+        return $aLanguages;
+    }
+
+    /**
+     * Get current Shop language ids.
+     *
+     * @param int $iShopId shop id
+     *
+     * @return array
+     */
+    public function getLanguageIds( $iShopId = null )
+    {
+        if ( empty( $iShopId ) || $iShopId == $this->getConfig()->getShopId() ) {
+            $aLanguages = $this->getActiveShopLanguageIds();
+        } else {
+            $aLanguages = $this->_getLanguageIdsFromDatabase( $iShopId );
+        }
+
+        return $aLanguages;
+    }
+
+    /**
+     * Returns available language IDs (abbreviations)
+     *
+     * @return array
+     */
+    public function getActiveShopLanguageIds()
+    {
+        $oConfig = $this->getConfig();
+
+        //if exists language parameters array, extract lang id's from there
+        $aLangParams = $oConfig->getConfigParam( 'aLanguageParams' );
+        if ( is_array( $aLangParams ) ) {
+            $aIds = $this->_getLanguageIdsFromLanguageParamsArray( $aLangParams );
+        } else {
+            $aIds = $this->_getLanguageIdsFromLanguagesArray( $oConfig->getConfigParam( 'aLanguages' ) );
+        }
+
+        return $aIds;
+    }
+
+    /**
+     * Gets language Ids for given shopId or for all subshops
+     *
+     * @param null $iShopId
+     *
+     * @return array
+     */
+    protected function _getLanguageIdsFromDatabase( $iShopId = null )
     {
             $aLanguages = $this->getLanguageIds();
 

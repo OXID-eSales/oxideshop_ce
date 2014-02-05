@@ -34,6 +34,8 @@ class oxShopViewValidator {
 
     protected $_aLanguages = array();
 
+    protected $_aAllShopLanguages = array();
+
     protected $_iShopId = null;
 
     protected $_aAllViews = array();
@@ -92,6 +94,23 @@ class oxShopViewValidator {
     public function getLanguages()
     {
         return $this->_aLanguages;
+    }
+
+    /**
+     * Returns list of active languages in shop
+     * @param array $aAllShopLanguages
+     */
+    public function setAllShopLanguages( $aAllShopLanguages )
+    {
+        $this->_aAllShopLanguages = $aAllShopLanguages;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAllShopLanguages()
+    {
+        return $this->_aAllShopLanguages;
     }
 
 
@@ -187,7 +206,7 @@ class oxShopViewValidator {
                 $this->_aValidShopViews[] = 'oxv_'.$sTable;;
 
                 if ( in_array( $sTable, $this->getMultiLangTables() ) ) {
-                    foreach ( $this->getLanguages() as $sLang ) {
+                    foreach ( $this->getAllShopLanguages() as $sLang ) {
                         $this->_aValidShopViews[] ='oxv_'.$sTable.'_'.$sLang;
                     }
                 }

@@ -52,6 +52,8 @@ class EnvironmentValidator
     }
 
     /**
+     * Returns config object.
+     *
      * @return oxConfig
      */
     public function getConfig()
@@ -60,7 +62,9 @@ class EnvironmentValidator
     }
 
     /**
-     * @return mixed
+     * Returns shop id.
+     *
+     * @return int
      */
     public function getShopId()
     {

@@ -46,15 +46,6 @@ class Integration_Modules_ModuleExtensionSortTest extends BaseModuleTestCase
                     'oxarticle' => 'extending_3_classes/myarticle&extending_3_classes_with_1_extension/mybaseclass',
                     'oxuser'    => 'extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myuser',
                 ),
-
-                // Not reordered extensions
-                array(
-                    'oxarticle' => 'extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myarticle',
-                    'oxorder'   => 'extending_1_class/myorder&extending_3_classes_with_1_extension/mybaseclass&' .
-                        'extending_3_classes/myorder&extending_1_class_3_extensions/myorder1&' .
-                        'extending_1_class_3_extensions/myorder2&extending_1_class_3_extensions/myorder3',
-                    'oxuser'    => 'extending_3_classes_with_1_extension/mybaseclass&extending_3_classes/myuser',
-                )
             ),
 
             array(
@@ -72,13 +63,6 @@ class Integration_Modules_ModuleExtensionSortTest extends BaseModuleTestCase
                                    'extending_1_class_3_extensions/myorder1&'.
                                    'extending_1_class_3_extensions/myorder3',
                 ),
-
-                // Not reordered extensions
-                array(
-                    'oxorder'   => 'extending_1_class_3_extensions/myorder1&'.
-                                   'extending_1_class_3_extensions/myorder2&'.
-                                   'extending_1_class_3_extensions/myorder3',
-                )
             )
         );
     }
@@ -94,7 +78,7 @@ class Integration_Modules_ModuleExtensionSortTest extends BaseModuleTestCase
         $oModuleEnvironment->prepare( $aInstallModules );
 
         // load reordered extensions
-        $this->_getConfig()->setConfigParam( 'aModules', $aReorderedExtensions );
+        oxRegistry::getConfig()->setConfigParam( 'aModules', $aReorderedExtensions );
 
         $oModule = new oxModule();
         $oModule->load( $sModule );
@@ -105,17 +89,6 @@ class Integration_Modules_ModuleExtensionSortTest extends BaseModuleTestCase
         $oValidator = new EnvironmentValidator( $this->getConfig() );
 
         $this->assertTrue( $oValidator->checkExtensions( $aReorderedExtensions ), 'Extension order changed' );
-    }
-    /**
-     * Returns shop config object.
-     *
-     * @return OxConfig
-     */
-    private function _getConfig()
-    {
-        $oConfig = oxRegistry::getConfig();
-
-        return $oConfig;
     }
 }
  

@@ -105,6 +105,19 @@ class Environment
     }
 
     /**
+     * Activates modules on selected shop.
+     *
+     * @param array $aActivateModules Array of modules to activate
+     * @param int $iShopId Shop id
+     */
+    public function activateModulesOnShop( $aActivateModules, $iShopId )
+    {
+        oxRegistry::getConfig()->setShopId( $iShopId );
+        oxRegistry::getConfig()->setConfigParam( 'aModules', array() );
+        $this->activateModules( $aActivateModules );
+    }
+
+    /**
      * Returns fixtures directory.
      *
      * @return string

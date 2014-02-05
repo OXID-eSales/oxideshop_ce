@@ -54,6 +54,8 @@ class Integration_Modules_ModuleActivationFirstTest extends BaseModuleTestCase
 
         $this->_runAsserts( $aResultToAsserts, $sModule );
     }
+
+
     /**
      * Data provider case with 5 modules prepared and with_everything module activated
      *

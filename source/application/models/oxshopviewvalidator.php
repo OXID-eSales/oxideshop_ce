@@ -230,7 +230,7 @@ class oxShopViewValidator {
      *
      * @return array
      */
-    protected function _getAllShopLanguageIds()
+    private function _getAllShopLanguageIds()
     {
             $aLanguages = oxRegistry::getLang()->getLanguageIds();
 
@@ -244,7 +244,7 @@ class oxShopViewValidator {
      *
      * @return array
      */
-    protected function _getAllLanguageParamValues( $sParamName )
+    private function _getAllLanguageParamValues( $sParamName )
     {
         $oDb = oxDb::getDb( oxDb::FETCH_MODE_ASSOC );
         $oConfig = oxRegistry::getConfig();
@@ -261,7 +261,7 @@ class oxShopViewValidator {
      *
      * @return array
      */
-    protected function _getConfigLanguageParamValues()
+    private function _getConfigLanguageParamValues()
     {
         $aConfigValues = $this->_getAllLanguageParamValues( 'aLanguageParams' );
         $aConfigDecodedValues = array();
@@ -284,7 +284,7 @@ class oxShopViewValidator {
      *
      * @return array
      */
-    protected function _processLanguageParamsArray( $aLanguageParams )
+    private function _processLanguageParamsArray( $aLanguageParams )
     {
         $aLanguages = array();
         foreach ( $aLanguageParams as $sAbbr => $aValue ) {
@@ -301,7 +301,7 @@ class oxShopViewValidator {
      *
      * @return array
      */
-    protected function _getConfigLanguageValues()
+    private function _getConfigLanguageValues()
     {
         $aConfigValues = $this->_getAllLanguageParamValues( 'aLanguages' );
         $aConfigDecodedValues = array();

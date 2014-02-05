@@ -1210,4 +1210,107 @@ class oxLang extends oxSuperCfg
         return $this->_aDisabledModuleInfo;
     }
 
+    /**
+     * Returns available language IDs (abbreviations) for all sub shops
+     *
+     * @return array
+     */
+    public function getAllShopLanguageIds()
+    {
+            $aLanguages = $this->getLanguageIds();
+
+        return $aLanguages;
+    }
+
+    /**
+     * Returns array of all config values of given paramName
+     *
+     * @param $sParamName
+     * @param $sShopId
+     *
+     * @return array
+     */
+    protected function _getLanguageParamValues( $sParamName, $sShopId = null )
+    {
+        $oDb = oxDb::getDb( oxDb::FETCH_MODE_ASSOC );
+        $oConfig = oxRegistry::getConfig();
+
+        $sQuery = "
+            select ".$oConfig->getDecodeValueQuery()." as oxvarvalue
+            from oxconfig
+            where oxvarname = '{$sParamName}' ";
+
+        if ( !empty( $sShopId ) ) {
+            $sQuery .= " and oxshopid = '{$sShopId}' limit 1";
+        }
+
+        return $oDb->getArray( $sQuery );
+    }
+
+    /**
+     * Returns list of all language codes taken from config values of given 'aLanguageParams'
+     *
+     * @param $sShopId
+     *
+     * @return array
+     */
+    protected function _getConfigLanguageParamValues( $sShopId = null )
+    {
+        $aConfigValues = $this->_getLanguageParamValues( 'aLanguageParams', $sShopId );
+        $aConfigDecodedValues = array();
+
+        foreach ( $aConfigValues as $sConfigValue )
+        {
+            $aConfigLanguageParams = unserialize( $sConfigValue['oxvarvalue'] );
+            $aLanguages = $this->_processLanguageParamsArray( $aConfigLanguageParams );
+
+            $aConfigDecodedValues = array_unique( array_merge( $aConfigDecodedValues, $aLanguages ) );
+        }
+
+        return $aConfigDecodedValues;
+    }
+
+    /**
+     * generates language code array from aLanguageParams array
+     *
+     * @param $aLanguageParams
+     *
+     * @return array
+     */
+    protected function _processLanguageParamsArray( $aLanguageParams )
+    {
+        $aLanguages = array();
+        foreach ( $aLanguageParams as $sAbbr => $aValue ) {
+            $iBaseId = (int) $aValue[ 'baseId' ];
+            $aLanguages[ $iBaseId ] = $sAbbr;
+        }
+
+        return $aLanguages;
+    }
+
+
+    /**
+     * Returns list of all language codes taken from config values of given 'aLanguages' (for all subshops)
+     *
+     * @param $sShopId
+     *
+     * @return array
+     */
+    protected function _getConfigLanguageValues( $sShopId = null )
+    {
+        $aConfigValues = $this->_getLanguageParamValues( 'aLanguages', $sShopId );
+        $aConfigDecodedValues = array();
+
+        foreach ( $aConfigValues as $sConfigValue )
+        {
+            $aConfigLanguages = unserialize( $sConfigValue['oxvarvalue'] );
+
+            $aLanguages = array_keys( $aConfigLanguages );
+
+            $aConfigDecodedValues = array_unique( array_merge( $aConfigDecodedValues, $aLanguages ) );
+        }
+
+        return $aConfigDecodedValues;
+    }
+
 }

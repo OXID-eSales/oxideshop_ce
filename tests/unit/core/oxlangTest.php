@@ -1556,4 +1556,72 @@ class Unit_Core_oxLangTest extends OxidTestCase
         $this->assertTrue($oUV->UNITgetActiveModuleInfo());
     }
 
+    /**
+     * Data provider for testGetInvalidViews
+     *
+     * @return array
+     */
+    public function providerGetAllShopLanguageIds()
+    {
+        return array(
+            array( 'aLanguageParams', 'aLanguages', array( 'lt' => 'Lithuanian', 'de' => 'Deutsch' ) ),
+            array( 'aLanguages', 'aLanguageParams',
+                   array( 'de' => array ( 'baseId' => 0,
+                                          'active' => "1",
+                                          'sort' => "1",
+                   ),
+                          'lt' => array ( 'baseId' => 0,
+                                          'active' => "1",
+                                          'sort' => "2",
+                          ),
+                   ) ),
+        );
+    }
+
+    /**
+     * Tests getting list of invalid views
+     *
+     * @param string $sLanguageParamNameDisabled - language config parameter that will be disabled
+     * @param string $sLanguageParamName   - language config parameter that will be used
+     * @param array $aLanguageParamValue  - language config parameter value
+     *
+     * @dataProvider providerGetAllShopLanguageIds
+     */
+    public function testGetAllShopLanguageIds( $sLanguageParamNameDisabled, $sLanguageParamName, $aLanguageParamValue )
+    {
+        $oDb = oxDb::getDb();
+
+        $aLanguages = array(
+            'de' => 'Deutch',
+            'en' => 'English',
+            'ru' => 'Russian'
+        );
+        $aLanguageParams = array(
+            'de' => array ( 'baseId' => 0, 'abbr' => 'de'),
+            'ru' => array ( 'baseId' => 1, 'abbr' => 'ru'),
+            'en' => array ( 'baseId' => 3, 'abbr' => 'en'),
+        );
+
+        $this->getConfig()->saveShopConfVar( 'aarr', 'aLanguages', $aLanguages );
+        $this->getConfig()->saveShopConfVar( 'aarr', 'aLanguageParams', $aLanguageParams );
+        $this->getConfig()->setConfigParam( 'aLanguages', $aLanguages );
+        $this->getConfig()->setConfigParam( 'aLanguageParams', $aLanguageParams );
+
+        // disable language config parameter because we are testing each language parameter separately
+        $oDb->execute( "update `oxconfig` set `oxvarname` = '{$sLanguageParamNameDisabled}_disabled'
+                        WHERE `oxvarname` = '{$sLanguageParamNameDisabled}' " );
+
+        $aAssertLanguageIds = array( 0 => 'de', 1 => 'ru', 3 => 'en');
+
+
+        $oLang = oxNew ( "oxLang" );
+        $aAllShopLanguageIds = $oLang->getAllShopLanguageIds();
+
+        // restore disabled config parameters
+        $oDb->execute( "update `oxconfig` set `oxvarname` = '{$sLanguageParamNameDisabled}'
+                        WHERE `oxvarname` = '{$sLanguageParamNameDisabled}_disabled' " );
+
+        $this->assertEquals( 0, count( array_diff( $aAssertLanguageIds, $aAllShopLanguageIds ) ), "All shop language array is not  as expected" );
+    }
+
 }

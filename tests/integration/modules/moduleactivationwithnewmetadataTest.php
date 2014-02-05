@@ -43,8 +43,8 @@ class Integration_Modules_ModuleActivationWithNewMetaDataTest extends BaseModule
      */
     public function testModuleActivationWithNewMetaData( $aInstallModules, $sModule, $aMetaData, $aResultToAsserts )
     {
-        $oModuleEnvironment = new Environment();
-        $oModuleEnvironment->prepare( $aInstallModules );
+        $oEnvironment = new Environment();
+        $oEnvironment->prepare( $aInstallModules );
 
         $oModule = new oxModule();
         $oModule->load($sModule);

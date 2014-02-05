@@ -24,7 +24,6 @@ require_once realpath(dirname(__FILE__).'/../../') . '/unit/OxidTestCase.php';
 
 class Validator
 {
-
     /**
      * Config object.
      *
@@ -60,7 +59,7 @@ class Validator
      */
     public function checkTemplates( $aExpectedTemplates )
     {
-        $aTemplatesToCheck = $this->_getConfigValueFromDB( 'aModuleTemplates' );
+        $aTemplatesToCheck = $this->getConfig()->getConfigParam( 'aModuleTemplates' );
         $aTemplatesToCheck = is_null( $aTemplatesToCheck ) ? array() : $aTemplatesToCheck;
 
         return ( $aExpectedTemplates == $aTemplatesToCheck );
@@ -89,7 +88,7 @@ class Validator
      */
     public function checkExtensions( $aExpectedExtensions )
     {
-        $aExtensionsToCheck = $this->_getConfigValueFromDB( 'aModules' );
+        $aExtensionsToCheck = $this->getConfig()->getConfigParam( 'aModules' );
 
         return ( $aExpectedExtensions == $aExtensionsToCheck );
     }
@@ -102,7 +101,7 @@ class Validator
      */
     public function checkDisabledModules( $aExpectedDisabledModules )
     {
-        $aDisabledModules = $this->_getConfigValueFromDB( 'aDisabledModules' );
+        $aDisabledModules = $this->getConfig()->getConfigParam( 'aDisabledModules' );
 
         return ( $aExpectedDisabledModules == $aDisabledModules );
     }
@@ -115,7 +114,7 @@ class Validator
      */
     public function checkFiles( $aExpectedFiles )
     {
-        $aModuleFilesToCheck = $this->_getConfigValueFromDB( 'aModuleFiles' );
+        $aModuleFilesToCheck = $this->getConfig()->getConfigParam( 'aModuleFiles' );
         $aModuleFilesToCheck = is_null( $aModuleFilesToCheck ) ? array() : $aModuleFilesToCheck;
 
         return ( $aExpectedFiles == $aModuleFilesToCheck );
@@ -164,7 +163,7 @@ class Validator
      */
     public function checkVersions( $aExpectedVersions )
     {
-        $aModuleVersionsToCheck = $this->_getConfigValueFromDB( 'aModuleVersions' );
+        $aModuleVersionsToCheck = $this->getConfig()->getConfigParam( 'aModuleVersions' );
         $aModuleVersionsToCheck = is_null( $aModuleVersionsToCheck ) ? array() : $aModuleVersionsToCheck;
 
         return ( $aExpectedVersions == $aModuleVersionsToCheck );
@@ -178,28 +177,9 @@ class Validator
      */
     public function checkEvents( $aExpectedEvents )
     {
-        $aModuleEventsToCheck = $this->_getConfigValueFromDB( 'aModuleEvents' );
+        $aModuleEventsToCheck = $this->getConfig()->getConfigParam( 'aModuleEvents' );
         $aModuleEventsToCheck = is_null( $aModuleEventsToCheck) ? array() : $aModuleEventsToCheck;
 
         return ( $aExpectedEvents == $aModuleEventsToCheck );
     }
-
-    /**
-     * Returns config values from table oxconfig by field- oxvarname.
-     *
-     * @param $sVarName
-     * @return array
-     */
-    private function _getConfigValueFromDB( $sVarName )
-    {
-        $oDb = oxDb::getDb();
-        $sQuery = "SELECT " . $this->getConfig()->getDecodeValueQuery() . "
-                   FROM `oxconfig`
-                   WHERE `OXVARNAME` = '{$sVarName}'
-                   AND `OXSHOPID` = {$this->getConfig()->getShopId()}";
-
-        $aExtensionsToCheck = unserialize( $oDb->getOne( $sQuery ) );
-        return $aExtensionsToCheck;
-    }
-
 }

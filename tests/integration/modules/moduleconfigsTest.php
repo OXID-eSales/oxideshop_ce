@@ -60,8 +60,8 @@ class Integration_Modules_ModuleConfigsTest extends BaseModuleTestCase
      */
     public function testModuleConfigs( $aInstallModules, $sModuleId, $aConfigsToChange, $aResultToAsserts )
     {
-        $oModuleEnvironment = new Environment();
-        $oModuleEnvironment->prepare( $aInstallModules );
+        $oEnvironment = new Environment();
+        $oEnvironment->prepare( $aInstallModules );
 
         $oModule = new oxModule();
         $oModule->load( $sModuleId );

@@ -31,8 +31,8 @@ class BaseModuleTestCase extends OxidTestCase
      */
     protected function tearDown()
     {
-        $oModuleEnvironment = new Environment();
-        $oModuleEnvironment->clean();
+        $oEnvironment = new Environment();
+        $oEnvironment->clean();
         parent::tearDown();
     }
 
@@ -44,7 +44,7 @@ class BaseModuleTestCase extends OxidTestCase
      */
     protected function _runAsserts( $aExpectedResult, $sModuleId )
     {
-        $oConfig = $this->getConfig();
+        $oConfig = oxRegistry::getConfig();
 
         $oValidator = new Validator( $oConfig );
 

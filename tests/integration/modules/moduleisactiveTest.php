@@ -89,8 +89,8 @@ class Integration_Modules_ModuleIsActiveTest extends BaseModuleTestCase
      */
     public function testIsActive( $aInstallModules, $aDeactivateModules, $aResultToAssert )
     {
-        $oModuleEnvironment = new Environment();
-        $oModuleEnvironment->prepare( $aInstallModules );
+        $oEnvironment = new Environment();
+        $oEnvironment->prepare( $aInstallModules );
 
         //deactivation
         $oModule = new oxModule();

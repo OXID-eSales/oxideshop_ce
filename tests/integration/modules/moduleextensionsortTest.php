@@ -74,8 +74,8 @@ class Integration_Modules_ModuleExtensionSortTest extends BaseModuleTestCase
      */
     public function testIsActive( $aInstallModules, $sModule, $aReorderedExtensions )
     {
-        $oModuleEnvironment = new Environment();
-        $oModuleEnvironment->prepare( $aInstallModules );
+        $oEnvironment = new Environment();
+        $oEnvironment->prepare( $aInstallModules );
 
         // load reordered extensions
         oxRegistry::getConfig()->setConfigParam( 'aModules', $aReorderedExtensions );

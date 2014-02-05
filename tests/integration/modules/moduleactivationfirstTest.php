@@ -45,8 +45,8 @@ class Integration_Modules_ModuleActivationFirstTest extends BaseModuleTestCase
      */
     public function testModuleActivation( $aInstallModules, $sModule, $aResultToAsserts )
     {
-        $oModuleEnvironment = new Environment();
-        $oModuleEnvironment->prepare( $aInstallModules );
+        $oEnvironment = new Environment();
+        $oEnvironment->prepare( $aInstallModules );
 
         $oModule = new oxModule();
         $oModule->load( $sModule );

@@ -30,7 +30,7 @@ class Environment
     private $_iShopId;
 
     /**
-     * Sets shop Id.
+     * Sets shop Id for modules environment.
      *
      * @param int $iShopId
      */
@@ -38,7 +38,7 @@ class Environment
     {
         $this->_iShopId = $iShopId;
         oxRegistry::getConfig()->setShopId( $iShopId );
-        oxRegistry::getConfig()->setConfigParam( 'aModules', array() );
+        $this->_loadShopParameters();
     }
 
     /**
@@ -128,4 +128,36 @@ class Environment
         return $aModules;
     }
 
+    /**
+     * Loads config parameters from DB and sets to config.
+     */
+    private function _loadShopParameters()
+    {
+        $aParameters = array(
+            'aModules', 'aModuleEvents', 'aModuleVersions', 'aModuleFiles', 'aDisabledModules', 'aModuleTemplates'
+        );
+        foreach ( $aParameters as $sParameter ) {
+            oxRegistry::getConfig()->setConfigParam( $sParameter, $this->_getConfigValueFromDB( $sParameter ) );
+        }
+    }
+
+    /**
+     * Returns config values from table oxconfig by field- oxvarname.
+     *
+     * @param $sVarName
+     * @return array
+     */
+    private function _getConfigValueFromDB( $sVarName )
+    {
+        $oDb = oxDb::getDb();
+        $sQuery = "SELECT " . oxRegistry::getConfig()->getDecodeValueQuery() . "
+                   FROM `oxconfig`
+                   WHERE `OXVARNAME` = '{$sVarName}'
+                   AND `OXSHOPID` = {$this->getShopId()}";
+
+        $sResult = $oDb->getOne( $sQuery );
+        $aExtensionsToCheck = $sResult ? unserialize( $sResult ) : array();
+
+        return $aExtensionsToCheck;
+    }
 }

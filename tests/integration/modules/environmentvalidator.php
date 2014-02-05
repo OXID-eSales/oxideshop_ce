@@ -75,7 +75,8 @@ class EnvironmentValidator
     public function checkBlocks( $aExpectedBlocks )
     {
         $oDb = oxDb::getDb();
-        $aBlocksToCheck = $oDb->getAll( "select * from oxtplblocks where oxshopid = {$this->getConfig()->getShopId()}" );
+        $sQuery = "select * from oxtplblocks where oxshopid = {$this->getConfig()->getShopId()}";
+        $aBlocksToCheck = $oDb->getAll( $sQuery );
 
         return ( count( $aExpectedBlocks ) == count( $aBlocksToCheck ) );
     }

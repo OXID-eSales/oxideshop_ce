@@ -37,6 +37,8 @@ class Environment
     public function setShopId( $iShopId )
     {
         $this->_iShopId = $iShopId;
+        oxRegistry::getConfig()->setShopId( $iShopId );
+        oxRegistry::getConfig()->setConfigParam( 'aModules', array() );
     }
 
     /**
@@ -102,19 +104,6 @@ class Environment
                 throw new Exception( "Module $sModuleId was not activated." );
             }
         }
-    }
-
-    /**
-     * Activates modules on selected shop.
-     *
-     * @param array $aActivateModules Array of modules to activate
-     * @param int $iShopId Shop id
-     */
-    public function activateModulesOnShop( $aActivateModules, $iShopId )
-    {
-        oxRegistry::getConfig()->setShopId( $iShopId );
-        oxRegistry::getConfig()->setConfigParam( 'aModules', array() );
-        $this->activateModules( $aActivateModules );
     }
 
     /**

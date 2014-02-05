@@ -73,6 +73,21 @@ class Unit_Core_oxShopViewValidatorTest extends OxidTestCase
     /**
      * Testing MultiLangTables getter and setter
      */
+    public function testSetGetAllShopLanguages()
+    {
+        $oValidator = oxNew( "oxShopViewValidator" );
+        $oValidator->setAllShopLanguages( array( "de", "xx" ) );
+
+        $aList = $oValidator->getAllShopLanguages();
+
+        $this->assertEquals( 2,  count( $aList ) );
+        $this->assertEquals( "de",  $aList[0] );
+        $this->assertEquals( "xx",  $aList[1] );
+    }
+
+    /**
+     * Testing MultiLangTables getter and setter
+     */
     public function testSetGetShopId()
     {
         $oValidator = oxNew( "oxShopViewValidator" );
@@ -89,12 +104,6 @@ class Unit_Core_oxShopViewValidatorTest extends OxidTestCase
         $oDb = oxDb::getDb();
         $oDb->execute( "DELETE FROM `oxshops` WHERE `oxid` > 1" );
 
-        $oShop = oxNew( "oxshop" );
-        $oShop->setId( 19 );
-        $oShop->oxshop__oxactive = new oxField( 1 );
-        $oShop->oxshop__oxname = new oxField( "Shop 19" );
-        $oShop->save();
-
         $aAllViews = array(
             'oxv_oxartextends',
             'oxv_oxartextends_en',
@@ -103,26 +112,29 @@ class Unit_Core_oxShopViewValidatorTest extends OxidTestCase
             'oxv_oxarticles',
             'oxv_oxarticles_en',
             'oxv_oxarticles_de',
+            'oxv_oxarticles_lt',
             'oxv_oxarticles_ru'
         );
+
+        $aAllShopLanguageIds = $aLanguageIds = array( 0 => 'de', 1 => 'en' );
 
 
         $oValidator = $this->getMock( 'oxShopViewValidator', array( '_getAllViews', ) );
         $oValidator->expects( $this->once() )->method( '_getAllViews' )->will( $this->returnValue( $aAllViews ) );
 
-        $aLanguageIds = array( 0 => 'de', 1 => 'en' );
-
         $oValidator->setShopId( 1 );
         $oValidator->setLanguages( $aLanguageIds );
+        $oValidator->setAllShopLanguages( $aAllShopLanguageIds );
         $oValidator->setMultiLangTables( array( 'oxartextends', 'oxarticles' ) );
         $oValidator->setMultiShopTables( array( 'oxarticles' ) );
 
         $aResult = $oValidator->getInvalidViews();
 
 
-            $this->assertEquals( 2, count($aResult) );
+            $this->assertEquals( 3, count($aResult) );
+            $this->assertContains( 'oxv_oxartextends_lt', $aResult );
+            $this->assertContains( 'oxv_oxarticles_lt', $aResult );
 
-        $this->assertContains( 'oxv_oxartextends_lt', $aResult );
         $this->assertContains( 'oxv_oxarticles_ru', $aResult );
     }
 }

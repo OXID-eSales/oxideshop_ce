@@ -54,30 +54,6 @@ class Integration_Modules_ModuleDeactivationTest extends BaseModuleTestCase
 
         $this->_runAsserts( $aResultToAssert, $sModuleId );
     }
-
-    /**
-     * Test check shop environment after module deactivation in subshop.
-     *
-     * @dataProvider providerModuleDeactivation
-     */
-    public function testModuleDeactivationInSubShop( $aInstallModules, $sModuleId, $aResultToAssert )
-    {
-        $oModuleEnvironment = new Environment();
-        $oModuleEnvironment->prepare( $aInstallModules );
-
-        $oConfig = oxRegistry::getConfig();
-        $oModule = new oxModule();
-
-        $oConfig->setShopId( 2 );
-        $oConfig->setConfigParam( 'aModules', array() );
-
-        $oModuleEnvironment->activateModules( $aInstallModules );
-        $oModule->load( $sModuleId );
-        $oModule->deactivate();
-
-        $this->_runAsserts( $aResultToAssert, $sModuleId );
-    }
-
     /**
      * Data provider case with 7 modules prepared and with_everything module deactivated
      *

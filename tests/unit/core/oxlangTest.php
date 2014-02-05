@@ -1205,7 +1205,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
         modConfig::getInstance()->setConfigParam( 'aLanguageParams', $aLangParams );
 
-        $oLang = oxNew ( "oxLang" );
+        $oLang = new oxLang();
         $aKeys = array( 0, 3, 1 );
 
         $this->assertEquals( $aKeys, array_keys($oLang->getLanguageArray()) );
@@ -1229,7 +1229,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
         modConfig::getInstance()->setConfigParam( 'aLanguageParams', $aLangParams );
 
-        $oLang = oxNew ( "oxLang" );
+        $oLang = new  oxLang();
         $aLangIds = array( 0 => 'de', 1 => 'ru', 3 => 'en');
 
         $this->assertEquals( $aLangIds, $oLang->getLanguageIds() );
@@ -1431,7 +1431,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
         oxTestModules::addFunction( "oxUtils", "getLangCache", "{}" );
         oxTestModules::addFunction( "oxUtils", "setLangCache", "{}" );
 
-        $oLang = oxNew ( "oxLang" );
+        $oLang = new oxLang();
         $aMapData = $oLang->UNITgetLanguageMap( 1 );
 
         $this->assertTrue(count($aMapData)>0);
@@ -1439,13 +1439,13 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
     public function testGetMultiLangTables()
     {
-        $oLang = oxNew ( "oxLang" );
+        $oLang = new oxLang();
         $aTable = $oLang->getMultiLangTables();
 
 
             $this->assertTrue(count($aTable) == 22);
 
-        modConfig::getInstance()->setConfigParam( 'aMultiLangTables', array( 'table1', 'table2' ) );
+       $this->getConfig()->setConfigParam( 'aMultiLangTables', array( 'table1', 'table2' ) );
 
         $aTable = $oLang->getMultiLangTables();
 
@@ -1591,21 +1591,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
     {
         $oDb = oxDb::getDb();
 
-        $aLanguages = array(
-            'de' => 'Deutch',
-            'en' => 'English',
-            'ru' => 'Russian'
-        );
-        $aLanguageParams = array(
-            'de' => array ( 'baseId' => 0, 'abbr' => 'de'),
-            'ru' => array ( 'baseId' => 1, 'abbr' => 'ru'),
-            'en' => array ( 'baseId' => 3, 'abbr' => 'en'),
-        );
-
-        $this->getConfig()->saveShopConfVar( 'aarr', 'aLanguages', $aLanguages );
-        $this->getConfig()->saveShopConfVar( 'aarr', 'aLanguageParams', $aLanguageParams );
-        $this->getConfig()->setConfigParam( 'aLanguages', $aLanguages );
-        $this->getConfig()->setConfigParam( 'aLanguageParams', $aLanguageParams );
+        $this->_setBaseShopLanguageParameters();
 
         // disable language config parameter because we are testing each language parameter separately
         $oDb->execute( "update `oxconfig` set `oxvarname` = '{$sLanguageParamNameDisabled}_disabled'
@@ -1614,14 +1600,38 @@ class Unit_Core_oxLangTest extends OxidTestCase
         $aAssertLanguageIds = array( 0 => 'de', 1 => 'ru', 3 => 'en');
 
 
-        $oLang = oxNew ( "oxLang" );
+        $oLang = new oxLang();
         $aAllShopLanguageIds = $oLang->getAllShopLanguageIds();
 
         // restore disabled config parameters
         $oDb->execute( "update `oxconfig` set `oxvarname` = '{$sLanguageParamNameDisabled}'
                         WHERE `oxvarname` = '{$sLanguageParamNameDisabled}_disabled' " );
 
-        $this->assertEquals( 0, count( array_diff( $aAssertLanguageIds, $aAllShopLanguageIds ) ), "All shop language array is not  as expected" );
+        $aMissingLanguages = array_diff( $aAssertLanguageIds, $aAllShopLanguageIds );
+
+        $this->assertEquals( 0, count( $aMissingLanguages ), "All shop language array is not  as expected" );
+    }
+
+    /**
+     *
+     */
+    private function _setBaseShopLanguageParameters()
+    {
+        $aLanguages      = array(
+            'de' => 'Deutch',
+            'en' => 'English',
+            'ru' => 'Russian'
+        );
+        $aLanguageParams = array(
+            'de' => array( 'baseId' => 0, 'abbr' => 'de' ),
+            'ru' => array( 'baseId' => 1, 'abbr' => 'ru' ),
+            'en' => array( 'baseId' => 3, 'abbr' => 'en' ),
+        );
+
+        $this->getConfig()->saveShopConfVar( 'aarr', 'aLanguages', $aLanguages );
+        $this->getConfig()->saveShopConfVar( 'aarr', 'aLanguageParams', $aLanguageParams );
+        $this->getConfig()->setConfigParam( 'aLanguages', $aLanguages );
+        $this->getConfig()->setConfigParam( 'aLanguageParams', $aLanguageParams );
     }
 
 }

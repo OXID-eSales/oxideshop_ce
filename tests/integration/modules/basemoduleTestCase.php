@@ -21,7 +21,7 @@
  */
 
 require_once realpath( dirname(__FILE__).'/../../' ) . '/unit/OxidTestCase.php';
-require_once realpath( dirname(__FILE__) ) . '/environmentvalidator.php';
+require_once realpath( dirname( __FILE__ ) ) . '/validator.php';
 require_once realpath( dirname(__FILE__) ) . '/environment.php';
 
 class BaseModuleTestCase extends OxidTestCase
@@ -46,7 +46,7 @@ class BaseModuleTestCase extends OxidTestCase
     {
         $oConfig = $this->getConfig();
 
-        $oValidator = new EnvironmentValidator( $oConfig );
+        $oValidator = new Validator( $oConfig );
 
         if( isset( $aExpectedResult['blocks'] ) ){
             $this->assertTrue( $oValidator->checkBlocks( $aExpectedResult['blocks']), 'Blocks do not match expectations' );

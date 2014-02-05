@@ -22,7 +22,7 @@
 
 require_once realpath(dirname(__FILE__).'/../../') . '/unit/OxidTestCase.php';
 
-class EnvironmentValidator
+class Validator
 {
 
     /**

@@ -86,7 +86,7 @@ class Integration_Modules_ModuleExtensionSortTest extends BaseModuleTestCase
         $oModule->deactivate();
         $oModule->activate();
 
-        $oValidator = new EnvironmentValidator( $this->getConfig() );
+        $oValidator = new Validator( $this->getConfig() );
 
         $this->assertTrue( $oValidator->checkExtensions( $aReorderedExtensions ), 'Extension order changed' );
     }

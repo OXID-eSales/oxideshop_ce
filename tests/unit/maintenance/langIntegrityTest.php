@@ -155,16 +155,19 @@ class Unit_Maintenance_langIntegrityTest extends OxidTestCase
     public function testLanguageFileEncoding($sLanguage, $sTheme, $aDetectOrder)
     {
         $aLang = $this->_getLanguage( $sTheme, $sLanguage );
-        $sLang = $this->_getLangFileContents( $sTheme, $sLanguage, '*.php' );
+        $aFileContent = $this->_getLangFileContents( $sTheme, $sLanguage, '*.php' );
+
+        list( $sFileName ) = array_keys( $aFileContent );
+        list( $sFileContent ) = array_values( $aFileContent );
 
         $this->assertEquals(
-            $aLang['charset'], mb_detect_encoding($sLang, $aDetectOrder, true),
-            'File encoding is equals to charset specified inside the file.'
+            $aLang['charset'], mb_detect_encoding($sFileContent, $aDetectOrder, true),
+            "File encoding is equals to charset specified inside the file $sFileName."
         );
         $this->assertEquals(
-            utf8_decode( $sLang ), utf8_decode( utf8_decode( $sLang ) ), 'There are no double UTF-8 encoding.'
+            utf8_decode( $sFileContent ), utf8_decode( utf8_decode( $sFileContent ) ), "There are no double UTF-8 encoding in file $sFileName."
         );
-        $this->assertEquals( str_replace( "\t", "", $sLang ), $sLang, 'There are no tab characters.' );
+        $this->assertEquals( str_replace( "\t", "", $sFileContent ), $sFileContent, "There are no tab characters in file $sFileName." );
     }
 
     /**
@@ -694,16 +697,15 @@ class Unit_Maintenance_langIntegrityTest extends OxidTestCase
      */
     private function _getLangFileContents( $sTheme,  $sLang, $sFilePattern = '*lang.php')
     {
-        $sFileContent = '';
+        $aFileContent = array();
         $sMask = $sFile = $this->_getLanguageFilePath(  $sTheme, $sLang, $sFilePattern );
-        //var_dump("checking file: " . $sMask);
         foreach ( glob($sMask) as $sFile ) {
             if (is_readable($sFile)) {
                 include $sFile;
-                $sFileContent .= file_get_contents($sFile).PHP_EOL.PHP_EOL;
+                $aFileContent[$sFile] .= file_get_contents($sFile).PHP_EOL.PHP_EOL;
             }
         }
-        return $sFileContent;
+        return $aFileContent;
     }
 
     /**
@@ -870,11 +872,14 @@ class Unit_Maintenance_langIntegrityTest extends OxidTestCase
      */
     public function testLanguageFilesForInvalidEncoding( $sLanguage, $sType, $sFilePattern )
     {
-        $sFileContent = $this->_getLangFileContents( $sType, $sLanguage, $sFilePattern );
+        $aFileContent = $this->_getLangFileContents( $sType, $sLanguage, $sFilePattern );
+
+        list( $sFileName ) = array_keys( $aFileContent );
+        list( $sFileContent ) = array_values( $aFileContent );
 
         foreach ( array( 0xEF, 0xBB, 0xBF, 0x9C ) as $sCharacter ) {
             if ( strpos( $sFileContent, $sCharacter ) !== false ) {
-                $this->fail( 'Character with invalid encoding found.' );
+                $this->fail( "Character with invalid encoding found in $sFileName file." );
             }
         }
     }

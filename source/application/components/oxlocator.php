@@ -231,6 +231,8 @@ class oxLocator extends oxSuperCfg
     /**
      * Sets details locator data for articles that came from search list.
      *
+     * @deprecated since v5.1.4 (2014-2-6); Remove as there is no usages.
+     *
      * @param oxubase   $oLocatorTarget oxubase object
      * @param oxarticle $oCurrArticle   current article
      *
@@ -352,6 +354,8 @@ class oxLocator extends oxSuperCfg
      *
      * Template variables:
      * <b>sSearchTitle</b>, <b>searchparamforhtml</b>
+     *
+     * @deprecated since v5.1.4 (2014-2-6); Remove as there is no usages.
      *
      * @param oxubase   $oLocatorTarget oxubase object
      * @param oxarticle $oCurrArticle   current article

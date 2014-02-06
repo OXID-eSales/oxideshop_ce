@@ -84,6 +84,8 @@ class oxLocator extends oxSuperCfg
     /**
      * Sets details locator data for articles that came from regular list.
      *
+     * @deprecated since v5.1.4 (2014-2-6); Remove as there is no usages.
+     *
      * @param oxUBase   $oLocatorTarget view object
      * @param oxArticle $oCurrArticle   current article
      *
@@ -130,6 +132,8 @@ class oxLocator extends oxSuperCfg
     /**
      * Sets details locator data for articles that came from vendor list.
      *
+     * @deprecated since v5.1.4 (2014-2-6); Remove as there is no usages.
+     *
      * @param oxUBase   $oLocatorTarget oxUBase object
      * @param oxArticle $oCurrArticle   current article
      *
@@ -175,6 +179,8 @@ class oxLocator extends oxSuperCfg
 
     /**
      * Sets details locator data for articles that came from Manufacturer list.
+     *
+     * @deprecated since v5.1.4 (2014-2-6); Remove as there is no usages.
      *
      * @param oxubase   $oLocatorTarget oxubase object
      * @param oxarticle $oCurrArticle   current article
@@ -298,6 +304,8 @@ class oxLocator extends oxSuperCfg
     /**
      * Sets details locator data for articles that came from tag list.
      *
+     * @deprecated since v5.1.4 (2014-2-6); Remove as there is no usages.
+     *
      * @param oxubase   $oLocatorTarget oxubase object
      * @param oxarticle $oCurrArticle   current article
      *
@@ -413,6 +421,8 @@ class oxLocator extends oxSuperCfg
     /**
      * Setting product position in list, amount of articles etc
      *
+     * @deprecated since v5.1.4 (2014-2-6); Remove as there is no usages.
+     *
      * @param oxcategory $oCategory    active category id
      * @param object     $oCurrArticle current article
      * @param string     $sOrderBy     order by fields
@@ -442,6 +452,8 @@ class oxLocator extends oxSuperCfg
     /**
      * Appends urs with currently passed parameters
      *
+     * @deprecated since v5.1.4 (2014-2-6); Remove as there is no usages.
+     *
      * @param string $sLink   url to add parameters
      * @param string $sParams parameters to add to url
      *
@@ -458,6 +470,8 @@ class oxLocator extends oxSuperCfg
     /**
      * If page number is not passed trying to fetch it from list of ids. To search
      * for position in list, article ids list and current article id must be passed
+     *
+     * @deprecated since v5.1.4 (2014-2-6); Remove as there is no usages.
      *
      * @param int       $iPageNr  current page number (user defined or passed by request)
      * @param oxlist    $oIdList  list of article ids (optional)
@@ -486,6 +500,8 @@ class oxLocator extends oxSuperCfg
     /**
      * Gets current page number.
      *
+     * @deprecated since v5.1.4 (2014-2-6); Remove as there is no usages.
+     *
      * @param int $iPageNr page number
      *
      * @return string $sPageNum
@@ -499,6 +515,8 @@ class oxLocator extends oxSuperCfg
 
     /**
      * Searches for current article in article list and sets previous/next product ids
+     *
+     * @deprecated since v5.1.4 (2014-2-6); Remove as there is no usages.
      *
      * @param oxarticle $oArticle       current Article
      * @param object    $oIdList        articles list containing only fake article objects !!!

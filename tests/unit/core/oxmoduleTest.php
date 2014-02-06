@@ -496,21 +496,6 @@ class Unit_Core_oxModuleTest extends OxidTestCase
         $this->assertFalse($oModule->isExtended());
     }
 
-    /**
-     * oxModule::isExtended() test case, no metadata
-     *
-     * @return null
-     */
-    public function testIsExtendedYesNoMetadata()
-    {
-        $oModule = $this->getProxyClass('oxmodule');
-        $aExtend  = array('extend' => array('oxtest1' => 'test1/mytest1',));
-        $oModule->setNonPublicVar( "_aModule", $aExtend );
-        $oModule->setNonPublicVar( "_blMetadata", false );
-
-        $this->assertFalse($oModule->isExtended());
-    }
-
     public function testHasExtendClass_hasExtendedClass_true()
     {
         $oModuleHandler = $this->getProxyClass( 'oxmodule') ;
@@ -826,23 +811,6 @@ class Unit_Core_oxModuleTest extends OxidTestCase
     }
 
     /**
-     * oxModule::getLegacyModules() test case
-     */
-    public function testGetLegacyModules()
-    {
-        $aLegacyModules["testModule"] = array(
-            'title'        => 'Test Module',
-            'extend'       => array ('oxnews' => 'testModule/testModuleClass')
-        );
-
-        $this->getConfig()->setConfigParam( "aLegacyModules", $aLegacyModules );
-
-        $oModule = new oxModule();
-
-        $this->assertEquals( $aLegacyModules, $oModule->getLegacyModules() );
-    }
-
-    /**
      * oxModule::getDisabledModules() test case
      */
     public function testGetDisabledModules()
@@ -984,37 +952,6 @@ class Unit_Core_oxModuleTest extends OxidTestCase
         $oModule->setNonPublicVar( "_blMetadata", true );
         $this->assertTrue( $oModule->hasMetadata() );
     }
-
-    /**
-     * oxModule::isFile() test case
-     *
-     * @return null
-     */
-    public function testIsFile()
-    {
-        $oModule = $this->getProxyClass('oxmodule');
-        $oModule->setNonPublicVar( "_blFile", false );
-        $this->assertFalse( $oModule->isFile() );
-
-        $oModule->setNonPublicVar( "_blFile", true );
-        $this->assertTrue( $oModule->isFile() );
-    }
-
-    /**
-     * oxModule::isLegacy() test case
-     *
-     * @return null
-     */
-    public function testIsLegacy()
-    {
-        $oModule = $this->getProxyClass('oxmodule');
-        $oModule->setNonPublicVar( "_blLegacy", false );
-        $this->assertFalse( $oModule->isLegacy() );
-
-        $oModule->setNonPublicVar( "_blLegacy", true );
-        $this->assertTrue( $oModule->isLegacy() );
-    }
-
 
     /**
      * oxModule::isRegistered() test case
@@ -1282,52 +1219,6 @@ class Unit_Core_oxModuleTest extends OxidTestCase
         $this->assertEquals( 'myorder', $oModule->getIdByPath( $sModule ) );
     }
 
-    public function testSaveLegacyModule()
-    {
-        // preparing test data
-        $aExtendedClasses = array("oxarticle => dir1/module1");
-        $moduleId         = "dir1_module1";
-        $moduleName       = "module1";
-        $this->getConfig()->setConfigParam( "aLegacyModules", null );
-
-        // result data
-        $aLegacyModules = array( "dir1_module1" => array( "id" => "dir1_module1",
-            "title" => "module1",
-            "extend" => array("oxarticle" => "dir1/module1")) );
-
-        $oConfig = $this->getMock( 'oxConfig', array('saveShopConfVar') );
-        $oConfig->expects( $this->at(0) )->method('saveShopConfVar')->with($this->equalTo("aarr"), $this->equalTo("aLegacyModules"), $this->equalTo($aLegacyModules) );
-
-        $oModule = $this->getMock( 'oxmodule', array('getConfig'), array(), "", false );
-        $oModule->expects( $this->any() )->method('getConfig')->will( $this->returnValue( $oConfig ) );
-
-        $sId = $oModule->saveLegacyModule($moduleId, $moduleName, $aExtendedClasses);
-        $this->assertEquals( 'dir1_module1', $sId );
-    }
-
-    public function testUpdateModuleIds()
-    {
-        // preparing test data
-        $aTestModulePaths     = array( "dir1/module1" => "dir1/module1", "dir2/module2" => "dir2/module2" );
-        $aTestDisabledModules = array( "dir2/module2", "dir4/module4" );
-
-        $this->getConfig()->setConfigParam( "aModulePaths", $aTestModulePaths );
-        $this->getConfig()->setConfigParam( "aDisabledModules", $aTestDisabledModules );
-
-        // result data
-        $aModulePaths     = array( "dir1/module1" => "dir1/module1", "dir2Module" => "dir2/module2" );
-        $aDisabledModules = array( "dir2Module", "dir4/module4" );
-
-        $oConfig = $this->getMock( 'oxConfig', array('saveShopConfVar') );
-        $oConfig->expects( $this->at(0) )->method('saveShopConfVar')->with($this->equalTo("aarr"), $this->equalTo("aModulePaths"), $this->equalTo($aModulePaths) );
-        $oConfig->expects( $this->at(1) )->method('saveShopConfVar')->with($this->equalTo("arr"), $this->equalTo("aDisabledModules"), $this->equalTo($aDisabledModules) );
-
-        $oModule = $this->getMock( 'oxmodule', array('getConfig'), array(), "", false );
-        $oModule->expects( $this->any() )->method('getConfig')->will( $this->returnValue( $oConfig ) );
-
-        $oModule->updateModuleIds( "dir2/module2", "dir2Module" );
-    }
-
     /**
      * @deprecated remove after integration test will be finished
      */
@@ -1348,7 +1239,6 @@ class Unit_Core_oxModuleTest extends OxidTestCase
         $this->assertNotEquals( 1, $blRes );
 
     }
-
 
     /**
      * @deprecated remove after integration test will be finished

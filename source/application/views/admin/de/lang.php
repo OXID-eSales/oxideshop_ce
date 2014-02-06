@@ -789,7 +789,6 @@ $aLang = array(
 'MODULE_ENTERMODULENAME'                                   => 'Name der Erweiterung',
 'MODULE_ENTERMODULEID'                                     => 'Modul-ID',
 'MODULE_ENTERMODULEEXTENDSCLASSES'                         => 'Klassen, die erweitert werden',
-'MODULE_STANDALONEFILE'                                    => 'Das Modul ist ein einzelne .php-Datei. Analog zu Erweiterungen sollte das Modul in einem Verzeichnis gespeichert sein!',
 'MODULE_EXTENSIONISDELETED'                                => 'Es gibt registrierte Erweiterungen im eShop, deren Verzeichnis nicht vorhanden ist.',
 'MODULE_DELETEEXTENSION'                                   => 'Möchten Sie alle Modulinformationen einschließlich Konfigurationseinstellungen und Blockinformationen für Templates löschen?',
 'LANGUAGE_ERRORGENERATEVIEWS'                              => "Bitte aktualisieren Sie die Datenbank-Views unter Service -> Tools",

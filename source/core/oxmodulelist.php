@@ -131,16 +131,6 @@ class oxModuleList extends oxSuperCfg
     }
 
     /**
-     * Get legacy modules list
-     *
-     * @return array
-     */
-    public function getLegacyModules()
-    {
-        return $this->getConfig()->getConfigParam('aLegacyModules');
-    }
-
-    /**
      * Get disabled module id's
      *
      * @return array
@@ -263,9 +253,6 @@ class oxModuleList extends oxSuperCfg
 
         // removing from aDisabledModules array
         $this->_removeFromDisabledModulesArray( $aDeletedExtIds );
-
-        // removing from aLegacyModules array
-        $this->_removeFromLegacyModulesArray( $aDeletedExtIds );
 
         // removing from aModulePaths array
         $this->_removeFromModulesPathsArray( $aDeletedExtIds );
@@ -423,26 +410,6 @@ class oxModuleList extends oxSuperCfg
     }
 
     /**
-     * Removes extension from legacy modules array
-     *
-     * @param array $aDeletedExtIds deleted extensions ID's
-     *
-     * @return null
-     */
-    protected function _removeFromLegacyModulesArray( $aDeletedExtIds )
-    {
-        $aLegacyExt = $this->getLegacyModules();
-
-        foreach ( $aDeletedExtIds as $sDeletedExtId ) {
-            if ( isset($aLegacyExt[$sDeletedExtId]) ) {
-                unset( $aLegacyExt[$sDeletedExtId] );
-            }
-        }
-
-        $this->getConfig()->saveShopConfVar( 'aarr', 'aLegacyModules', $aLegacyExt );
-    }
-
-    /**
      * Removes extension from modules paths array
      *
      * @param array $aDeletedModule deleted extensions ID's
@@ -523,7 +490,7 @@ class oxModuleList extends oxSuperCfg
     }
 
     /**
-     * Removes extension from legacy modules templates array
+     * Removes extension from modules templates array
      *
      * @param array $aDeletedModule deleted extensions ID's
      *

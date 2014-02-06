@@ -67,7 +67,7 @@ window.onload = function ()
     </td>
     <td valign="top" class="[{$zebra}]" height="15">
         <div class="listitemfloating">
-            <a href="Javascript:top.oxid.admin.editThis('[{ $listitem->getId() }]');" [{if $listitem->isFile() }]class="infoList"[{/if}]>[{ $listitem->getTitle() }]</a>
+            <a href="Javascript:top.oxid.admin.editThis('[{ $listitem->getId() }]');">[{ $listitem->getTitle() }]</a>
         </div>
     </td>
 </tr>

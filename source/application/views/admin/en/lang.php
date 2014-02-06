@@ -791,7 +791,6 @@ $aLang = array(
 'MODULE_ENTERMODULENAME'                                   => 'Module name',
 'MODULE_ENTERMODULEID'                                     => 'Module ID',
 'MODULE_ENTERMODULEEXTENDSCLASSES'                         => 'Extended classes',
-'MODULE_STANDALONEFILE'                                    => 'This module is a standalone php file. The module should be saved inside a directory!',
 'MODULE_EXTENSIONISDELETED'                                => 'There are modules which are registered in eShop, but module directory is missing.',
 'MODULE_DELETEEXTENSION'                                   => 'Do you want to remove all module information including config options and block information for templates?',
 'LANGUAGE_ERRORGENERATEVIEWS'                              => "Please don't forget to update the database views under Service->Tools",

@@ -48,20 +48,6 @@ class oxModule extends oxSuperCfg
     protected $_blRegistered = false;
 
     /**
-     * Defines if it is a single file legacy extension
-     *
-     * @var bool
-     */
-    protected $_blFile       = false;
-
-    /**
-     * Defines if it is a legacy extension
-     *
-     * @var bool
-     */
-    protected $_blLegacy     = false;
-
-    /**
      * Set passed module data
      *
      * @param array $aModule module data
@@ -82,12 +68,18 @@ class oxModule extends oxSuperCfg
      */
     public function load( $sModuleId )
     {
-        if ( $this->loadModule($sModuleId) ) return true;
+        $sModulePath = $this->getModuleFullPath( $sModuleId );
+        $sMetadataPath = $sModulePath . "/metadata.php";
 
-        if ( $this->loadLegacyModule($sModuleId) ) return true;
-
-        if ( $this->loadUnregisteredModule($sModuleId) ) return true;
-
+        if ( $sModulePath && file_exists( $sMetadataPath ) && is_readable( $sMetadataPath ) ) {
+            $aModule = array();
+            include $sMetadataPath;
+            $this->_aModule = $aModule;
+            $this->_blRegistered  = true;
+            $this->_blMetadata    = true;
+            $this->_aModule['active'] = $this->isActive();
+            return true;
+        }
         return false;
     }
 
@@ -120,82 +112,13 @@ class oxModule extends oxSuperCfg
      *
      * @param string $sModuleId Module ID
      *
+     * @deprecated since v5.2.0 (2014-02-06); Use oxModule::load().
+     *
      * @return bool
      */
     public function loadModule( $sModuleId )
     {
-        $sModulePath = $this->getModuleFullPath( $sModuleId );
-        $sMetadataPath = $sModulePath . "/metadata.php";
-
-        if ( $sModulePath && file_exists( $sMetadataPath ) && is_readable( $sMetadataPath ) ) {
-            $aModule = array();
-            include $sMetadataPath;
-            $this->_aModule = $aModule;
-            $this->_blLegacy      = false;
-            $this->_blRegistered  = true;
-            $this->_blMetadata    = true;
-            $this->_blFile        = false;
-            $this->_aModule['active'] = $this->isActive();
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Load Extension from legacy metadata
-     *
-     * @param string $sModuleId Module ID
-     *
-     * @return bool
-     */
-    public function loadLegacyModule( $sModuleId )
-    {
-        $aLegacyModules = $this->getLegacyModules();
-        $sModuleDir = $this->getModulePath( $sModuleId );
-
-        // registered legacy module
-        if ( isset( $aLegacyModules[$sModuleId] ) ) {
-            $this->_aModule = $aLegacyModules[$sModuleId];
-            $this->_blLegacy      = true;
-            $this->_blRegistered  = true;
-            $this->_blMetadata    = false;
-            $this->_blFile        = empty( $sModuleDir );
-            $this->_aModule['active'] = $this->isActive();
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Load extension without any metadata
-     *
-     * @param string $sModuleId Module ID
-     *
-     * @return bool
-     */
-    public function loadUnregisteredModule( $sModuleId )
-    {
-        $sModulePath = $this->getModuleFullPath( $sModuleId );
-
-        if ( !$sModulePath ) {
-            $sModulePath = $this->getConfig()->getModulesDir() . $sModuleId;
-        }
-
-        if ( file_exists( $sModulePath ) && is_readable( $sModulePath ) ) {
-            $aModules = $this->getModulesWithExtendedClass();
-
-            $this->_aModule = array();
-            $this->_aModule['id'] = $sModuleId;
-            $this->_aModule['title'] = $sModuleId;
-            $this->_aModule['extend'] = $this->buildModuleChains( $this->filterModuleArray( $aModules, $sModuleId ) );
-            $this->_blLegacy      = true;
-            $this->_blRegistered  = false;
-            $this->_blMetadata    = false;
-            $this->_blFile        = !is_dir($this->getConfig()->getModulesDir() . $sModuleId );
-            $this->_aModule['active'] = $this->isActive();
-            return true;
-        }
-        return false;
+        return $this->load( $sModuleId );
     }
 
     /**
@@ -363,16 +286,6 @@ class oxModule extends oxSuperCfg
     }
 
     /**
-     * Checks if module is defined as legacy module
-     *
-     * @return bool
-     */
-    public function isLegacy()
-    {
-        return $this->_blLegacy;
-    }
-
-    /**
      * Checks if module is registered in any way
      *
      * @return bool
@@ -390,16 +303,6 @@ class oxModule extends oxSuperCfg
     public function hasMetadata()
     {
         return $this->_blMetadata;
-    }
-
-    /**
-     * Checks if module is single file
-     *
-     * @return bool
-     */
-    public function isFile()
-    {
-        return $this->_blFile;
     }
 
     /**
@@ -680,16 +583,6 @@ class oxModule extends oxSuperCfg
     public function getModulesWithExtendedClass()
     {
         return $this->getConfig()->getModulesWithExtendedClass();
-    }
-
-    /**
-     * Get legacy modules list
-     *
-     * @return array
-     */
-    public function getLegacyModules()
-    {
-        return $this->getConfig()->getConfigParam('aLegacyModules');
     }
 
     /**
@@ -1039,80 +932,6 @@ class oxModule extends oxSuperCfg
         $aTemplates = oxDb::getDb()->getCol("SELECT oxtemplate FROM oxtplblocks WHERE oxmodule = '$sModuleId' AND oxshopid = '$sShopId'" );
 
         return $aTemplates;
-    }
-
-    /**
-     * Enables modules, that don't have metadata file activation/deactivation.
-     * Writes to "aLegacyModules" config variable classes, that current module
-     * extends.
-     *
-     * @param string $sModuleId   Module id
-     * @param string $sModuleName Module name
-     * @param string $aModuleInfo Extended classes
-     *
-     * @return string module id
-     */
-    public function saveLegacyModule($sModuleId, $sModuleName, $aModuleInfo = null)
-    {
-        $aLegacyModules = $this->getLegacyModules();
-
-        if ( !empty( $aModuleInfo ) && is_array($aModuleInfo)) {
-            $aLegacyModules[$sModuleId]["id"] = $sModuleId;
-            $aLegacyModules[$sModuleId]["title"] = ( $sModuleName ) ? $sModuleName : $sModuleId;
-            $aLegacyModules[$sModuleId]['extend'] = array();
-
-            foreach ( $aModuleInfo as $sKey => $sValue ) {
-                if ( strpos( $sValue, "=>" ) > 1 ) {
-                    $aClassInfo    = explode( "=>", $sValue );
-                    $sClassName    = trim( $aClassInfo[0] );
-                    $sExtendString = trim( $aClassInfo[1] );
-                    $aLegacyModules[$sModuleId]['extend'][$sClassName] = $sExtendString;
-                }
-            }
-        }
-
-        if ( !empty( $aLegacyModules[$sModuleId]['extend'] ) ) {
-            $this->getConfig()->saveShopConfVar( "aarr", "aLegacyModules", $aLegacyModules );
-        }
-        return $sModuleId;
-    }
-
-    /**
-     * Update module ID in modules config variables aModulePaths and aDisabledModules.
-     *
-     * @param string $sModuleLegacyId Old module ID
-     * @param string $sModuleId       New module ID
-     *
-     * @return null
-     */
-    public function updateModuleIds( $sModuleLegacyId, $sModuleId )
-    {
-        $oConfig = $this->getConfig();
-
-        // updating module ID in aModulePaths config var
-        $aModulePaths = $oConfig->getConfigParam( 'aModulePaths' );
-        $aModulePaths[$sModuleId] = $aModulePaths[$sModuleLegacyId];
-        unset( $aModulePaths[$sModuleLegacyId] );
-
-        $oConfig->saveShopConfVar( 'aarr', 'aModulePaths', $aModulePaths );
-
-        if ( isset($aModulePaths[$sModuleLegacyId]) ) {
-            $aModulePaths[$sModuleId] = $aModulePaths[$sModuleLegacyId];
-            unset( $aModulePaths[$sModuleLegacyId] );
-            $oConfig->saveShopConfVar( 'aarr', 'aModulePaths', $aModulePaths );
-        }
-
-        // updating module ID in aDisabledModules config var
-        $aDisabledModules = $oConfig->getConfigParam( 'aDisabledModules' );
-
-        if ( is_array($aDisabledModules) ) {
-            $iOldKey = array_search( $sModuleLegacyId, $aDisabledModules );
-            if ( $iOldKey !== false ) {
-                unset( $aDisabledModules[$iOldKey] );
-                $aDisabledModules[$iOldKey] = $sModuleId;
-                $oConfig->saveShopConfVar( 'arr', 'aDisabledModules', $aDisabledModules );
-            }
-        }
     }
 
     /**

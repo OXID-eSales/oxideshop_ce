@@ -108,27 +108,4 @@ class Module_Main extends oxAdminDetails
             $oEx->debugOut();
         }
     }
-
-    /**
-     * Enables modules that dont have metadata file activation/deactivation by
-     * writing to "aLegacyModules" config variable classes that current module
-     * extedens
-     *
-     * @return bool
-     */
-    public function saveLegacyModule()
-    {
-        $aModuleInfo = explode( "\n", trim( oxConfig::getParameter("aExtendedClasses") ) );
-        $sModuleLegacyId = trim( $this->getEditObjectId() );
-        $sModuleId = trim( oxConfig::getParameter("moduleId") );
-        $sModuleName = trim( oxConfig::getParameter("moduleName") );
-
-        $oModule = oxNew('oxModule');
-        $sModuleId = $oModule->saveLegacyModule($sModuleId, $sModuleName, $aModuleInfo);
-
-        if ( $sModuleLegacyId != $sModuleId ) {
-            $oModule->updateModuleIds( $sModuleLegacyId, $sModuleId );
-            $this->setEditObjectId($sModuleId);
-        }
-    }
 }

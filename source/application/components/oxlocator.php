@@ -22,6 +22,8 @@
 
 /**
  * Locator controller for: category, vendor, manufacturers and search lists.
+ *
+ * @deprecated since v5.1.4 (2014-2-6); Remove as there is no usages.
  */
 class oxLocator extends oxSuperCfg
 {

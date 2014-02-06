@@ -83,34 +83,37 @@ class oxShop extends oxI18n
     public function generateViews( $blMultishopInheritCategories = false, $aMallInherit = null )
     {
         $oDb        = oxDb::getDb();
-        $aLanguages = oxRegistry::getLang()->getLanguageIds();
+        $oLang      = oxRegistry::getLang();
+        $aLanguages = $oLang->getLanguageIds( $this->getId() );
+        $aAllShopLanguages = $oLang->getAllShopLanguageIds();
 
         $aTables = $aMultilangTables = oxRegistry::getLang()->getMultiLangTables();
 
-        $aQ = array();
+        $aQueries = array();
 
         // Generate multitable views
         foreach ( $aTables as $sTable ) {
-            $aQ[] = 'CREATE OR REPLACE SQL SECURITY INVOKER VIEW oxv_'.$sTable.' AS SELECT * FROM '.$sTable.' '.$this->_getViewJoinAll($sTable);
+            $aQueries[] = 'CREATE OR REPLACE SQL SECURITY INVOKER VIEW oxv_'.$sTable.' AS SELECT * FROM '.$sTable.' '.$this->_getViewJoinAll($sTable);
 
             if (in_array($sTable, $aMultilangTables)) {
                 foreach ($aLanguages as $iLang => $sLang) {
-                    $aQ[] = 'CREATE OR REPLACE SQL SECURITY INVOKER VIEW oxv_'.$sTable.'_'.$sLang.' AS SELECT '.$this->_getViewSelect($sTable, $iLang).' FROM '.$sTable.' '.$this->_getViewJoinLang($sTable, $iLang);
+                    $aQueries[] = 'CREATE OR REPLACE SQL SECURITY INVOKER VIEW oxv_'.$sTable.'_'.$sLang.' AS SELECT '.$this->_getViewSelect($sTable, $iLang).' FROM '.$sTable.' '.$this->_getViewJoinLang($sTable, $iLang);
                 }
             }
         }
 
         $bSuccess = true;
-        foreach ($aQ as $sQ) {
-            if ( !$oDb->execute( $sQ ) ) {
+        foreach ($aQueries as $sQuery) {
+            if ( !$oDb->execute( $sQuery ) ) {
                 $bSuccess = false;
             }
         }
 
         $oViewsValidator = oxNew( 'oxShopViewValidator' );
 
-        $oViewsValidator->setShopId( $this->getConfig()->getShopId() );
+        $oViewsValidator->setShopId( $this->getId() );
         $oViewsValidator->setLanguages( $aLanguages );
+        $oViewsValidator->setAllShopLanguages( $aAllShopLanguages );
         $oViewsValidator->setMultiLangTables( $aMultilangTables );
         $oViewsValidator->setMultiShopTables( $aMultishopTables );
 

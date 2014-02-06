@@ -107,23 +107,6 @@ class Unit_Maintenance_langIntegrityTest extends OxidTestCase
     }
 
     /**
-     * dataProvider with language and theme values with admin values
-     *
-     * @return array
-     */
-    public function providerLangThemeWithAdmin()
-    {
-        return array(
-            array('de', ''),
-            array('en', ''),
-            array('de', $this->getThemeName()),
-            array('en', $this->getThemeName()),
-            array('de', 'admin'),
-            array('en', 'admin')
-        );
-    }
-
-    /**
      * dataProvider with language, theme and filename values
      *
      * @return array
@@ -142,24 +125,50 @@ class Unit_Maintenance_langIntegrityTest extends OxidTestCase
         );
     }
 
+    /**
+     * dataProvider with language and theme values with admin values
+     *
+     * @return array
+     */
+    public function providerLangThemeWithAdmin()
+    {
+        $aDetectOrder = mb_detect_order();
+        array_unshift($aDetectOrder, 'ISO-8859-15');
+
+        $sThemeName = $this->getThemeName();
+
+        return array(
+            array('de',     '',          $aDetectOrder),
+            array('en',     '',          $aDetectOrder),
+            array('de',     $sThemeName, $aDetectOrder),
+            array('en',     $sThemeName, $aDetectOrder),
+            array('de',     'admin',     $aDetectOrder),
+            array('en',     'admin',     $aDetectOrder)
+        );
+    }
 
     /**
      * Test if generic language files encoding is correct.
      *
      * @dataProvider providerLangThemeWithAdmin
      */
-    public function testLanguageFileEncoding($sLanguage, $sTheme)
+    public function testLanguageFileEncoding($sLanguage, $sTheme, $aDetectOrder)
     {
         $aLang = $this->_getLanguage( $sTheme, $sLanguage );
-        $sLang = $this->_getLangFileContents($sTheme, $sLanguage, '*.php');
+        $aFileContent = $this->_getLangFileContents($sTheme, $sLanguage, '*.php');
 
-        $this->assertEquals( 'ISO-8859-15', mb_detect_encoding($sLang, "ISO-8859-15, UTF-8", true));
-        $this->assertEquals( 'ISO-8859-15', $aLang['charset'], 'Charset must be ISO-8859-15');
-        $this->assertEquals( utf8_decode($sLang), utf8_decode(utf8_decode($sLang)), 'No double utf8 encoding');
-        $this->assertEquals( str_replace("\t", "", $sLang), $sLang, 'No tab characters allowed');
+        list( $sFileName ) = array_keys( $aFileContent );
+        list( $sFileContent ) = array_values( $aFileContent );
 
+        $this->assertEquals(
+            $aLang['charset'], mb_detect_encoding($sFileContent, $aDetectOrder, true),
+            "File encoding is equals to charset specified inside the file $sFileName."
+        );
+        $this->assertEquals(
+            utf8_decode( $sFileContent ), utf8_decode( utf8_decode( $sFileContent ) ), "There are no double UTF-8 encoding in file $sFileName."
+        );
+        $this->assertEquals( str_replace( "\t", "", $sFileContent ), $sFileContent, "There are no tab characters in file $sFileName." );
     }
-
 
     /**
      * Test if map identifiers are the same.
@@ -688,15 +697,15 @@ class Unit_Maintenance_langIntegrityTest extends OxidTestCase
      */
     private function _getLangFileContents( $sTheme,  $sLang, $sFilePattern = '*lang.php')
     {
-        $sFileContent = '';
+        $aFileContent = array();
         $sMask = $sFile = $this->_getLanguageFilePath(  $sTheme, $sLang, $sFilePattern );
         foreach ( glob($sMask) as $sFile ) {
             if (is_readable($sFile)) {
                 include $sFile;
-                $sFileContent .= file_get_contents($sFile).PHP_EOL.PHP_EOL;
+                $aFileContent[$sFile] .= file_get_contents($sFile).PHP_EOL.PHP_EOL;
             }
         }
-        return $sFileContent;
+        return $aFileContent;
     }
 
     /**
@@ -863,11 +872,14 @@ class Unit_Maintenance_langIntegrityTest extends OxidTestCase
      */
     public function testLanguageFilesForInvalidEncoding( $sLanguage, $sType, $sFilePattern )
     {
-        $sFileContent = $this->_getLangFileContents( $sType, $sLanguage, $sFilePattern );
+        $aFileContent = $this->_getLangFileContents( $sType, $sLanguage, $sFilePattern );
+
+        list( $sFileName ) = array_keys( $aFileContent );
+        list( $sFileContent ) = array_values( $aFileContent );
 
         foreach ( array( 0xEF, 0xBB, 0xBF, 0x9C ) as $sCharacter ) {
             if ( strpos( $sFileContent, $sCharacter ) !== false ) {
-                $this->fail( 'Character with invalid encoding found.' );
+                $this->fail( "Character with invalid encoding found in $sFileName file." );
             }
         }
     }

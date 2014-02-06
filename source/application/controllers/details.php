@@ -1336,7 +1336,7 @@ class Details extends oxUBase
      */
     public function getTag()
     {
-        return oxRegistry::getConfig()->getRequestParameter("searchtag", false);
+        return oxConfig::getParameter("searchtag");
     }
 
     /**

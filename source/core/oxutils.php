@@ -1063,8 +1063,8 @@ class oxUtils extends oxSuperCfg
      * redirects browser to given url, nothing else done just header send
      * may be used for redirection in case of an exception or similar things
      *
-     * @param string $sUrl        code to add to the header(e.g. "HTTP/1.1 301 Moved Permanently", or "HTTP/1.1 500 Internal Server Error"
-     * @param string $sHeaderCode the URL to redirect to
+     * @param string $sUrl        the URL to redirect to
+     * @param string $sHeaderCode code to add to the header(e.g. "HTTP/1.1 301 Moved Permanently", or "HTTP/1.1 500 Internal Server Error"
      *
      * @return null
      */

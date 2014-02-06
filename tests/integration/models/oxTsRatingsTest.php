@@ -35,7 +35,7 @@ class Integration_Models_oxTsRatingsTest extends OxidTestCase
      */
     public function testInvalidCallToTrustedShops()
     {
-        $this->markTestSkippedUntil( '2014-02-06', 'Temporary skip test.' );
+        $this->markTestSkippedUntil( '2014-02-07', 'Temporary skip test.' );
         $oTsRatings = new oxTsRatings();
         $oTsRatings->setTsId( 'xyz' );
         $aResultExpected = array ( 'empty' => true );
@@ -49,7 +49,7 @@ class Integration_Models_oxTsRatingsTest extends OxidTestCase
      */
     public function testValidCallToTrustedShops()
     {
-        $this->markTestSkippedUntil( '2014-02-06', 'Temporary skip test.' );
+        $this->markTestSkippedUntil( '2014-02-07', 'Temporary skip test.' );
         $oTsRatings = new oxTsRatings();
         $oTsRatings->setTsId( 'X2131CD55C9A453334E61CB2C593AC5AC' );
 
@@ -69,7 +69,7 @@ class Integration_Models_oxTsRatingsTest extends OxidTestCase
      */
     public function testGetTsRatings()
     {
-        $this->markTestSkippedUntil( '2014-02-06', 'Temporary skip test.' );
+        $this->markTestSkippedUntil( '2014-02-07', 'Temporary skip test.' );
         $oViewConf = $this->getMock( "oxViewConfig", array( "getTsId" ) );
         $oViewConf->expects( $this->any() )->method( "getTsId" )->will( $this->returnValue( 'xyz' ) );
 

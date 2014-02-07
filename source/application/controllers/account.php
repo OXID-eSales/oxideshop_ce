@@ -31,50 +31,59 @@
 
 class Account extends oxUBase
 {
+
     /**
      * Number of user's orders.
+     *
      * @var integer
      */
     protected $_iOrderCnt = null;
 
     /**
      * Current article id.
+     *
      * @var string
      */
     protected $_sArticleId = null;
 
     /**
      * Search parameter for Html
+     *
      * @var string
      */
     protected $_sSearchParamForHtml = null;
 
     /**
      * Search parameter
+     *
      * @var string
      */
     protected $_sSearchParam = null;
 
     /**
      * List type
+     *
      * @var string
      */
     protected $_sListType = null;
 
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'page/account/dashboard.tpl';
 
     /**
      * Current class login template name.
+     *
      * @var string
      */
     protected $_sThisLoginTemplate = 'page/account/login.tpl';
 
     /**
      * Alternative login template name.
+     *
      * @var string
      */
     protected $_sThisAltLoginTemplate = 'page/privatesales/login.tpl';
@@ -102,12 +111,14 @@ class Account extends oxUBase
 
     /**
      * Sign if to load and show bargain action
+     *
      * @var bool
      */
     protected $_blBargainAction = true;
 
     /**
      * Show tags cloud
+     *
      * @var bool
      */
     protected $_blShowTagCloud = false;
@@ -128,8 +139,9 @@ class Account extends oxUBase
 
         // is logged in ?
         $oUser = $this->getUser();
-        if ( !$oUser || ( $oUser && !$oUser->oxuser__oxpassword->value ) ||
-             ( $this->isEnabledPrivateSales() && $oUser && ( !$oUser->isTermsAccepted() || $this->confirmTerms() ) ) ) {
+        if (!$oUser || ($oUser && !$oUser->oxuser__oxpassword->value) ||
+            ($this->isEnabledPrivateSales() && $oUser && (!$oUser->isTermsAccepted() || $this->confirmTerms()))
+        ) {
             $this->_sThisTemplate = $this->_getLoginTemplate();
         }
 
@@ -155,10 +167,10 @@ class Account extends oxUBase
      */
     public function confirmTerms()
     {
-        $blConfirm = oxConfig::getParameter( "term" );
-        if ( !$blConfirm && $this->isEnabledPrivateSales() ) {
+        $blConfirm = oxConfig::getParameter("term");
+        if (!$blConfirm && $this->isEnabledPrivateSales()) {
             $oUser = $this->getUser();
-            if ( $oUser && !$oUser->isTermsAccepted() ) {
+            if ($oUser && !$oUser->isTermsAccepted()) {
                 $blConfirm = true;
             }
         }
@@ -179,11 +191,11 @@ class Account extends oxUBase
         $aParams = parent::getNavigationParams();
 
         // source class name
-        if ( $sSource = oxConfig::getParameter( "sourcecl" ) ) {
+        if ($sSource = oxConfig::getParameter("sourcecl")) {
             $aParams['sourcecl'] = $sSource;
         }
 
-        if ( $sSource = oxConfig::getParameter( "anid" ) ) {
+        if ($sSource = oxConfig::getParameter("anid")) {
             $aParams['anid'] = $sSource;
         }
 
@@ -204,18 +216,20 @@ class Account extends oxUBase
     public function redirectAfterLogin()
     {
         // in case source class is provided - redirecting back to it with all default parameters
-        if ( ( $sSource = oxConfig::getParameter( "sourcecl" ) ) &&
-            $this->_oaComponents['oxcmp_user']->getLoginStatus() === USER_LOGIN_SUCCESS ) {
+        if (($sSource = oxConfig::getParameter("sourcecl")) &&
+            $this->_oaComponents['oxcmp_user']->getLoginStatus() === USER_LOGIN_SUCCESS
+        ) {
 
-            $sRedirectUrl = $this->getConfig()->getShopUrl().'index.php?cl='.rawurlencode( $sSource );
+            $sRedirectUrl = $this->getConfig()->getShopUrl() . 'index.php?cl=' . rawurlencode($sSource);
             // building redirect link
 
-            foreach ( $this->getNavigationParams() as $sName => $sValue ) {
-                if ( $sValue && $sName != "sourcecl" ) {
-                    $sRedirectUrl .= '&'.rawurlencode( $sName ) . "=" . rawurlencode( $sValue );
+            foreach ($this->getNavigationParams() as $sName => $sValue) {
+                if ($sValue && $sName != "sourcecl") {
+                    $sRedirectUrl .= '&' . rawurlencode($sName) . "=" . rawurlencode($sValue);
                 }
             }
-            return oxRegistry::getUtils()->redirect( oxRegistry::get("oxUtilsUrl")->processUrl( $sRedirectUrl ), true, 302 );
+
+            return oxRegistry::getUtils()->redirect(oxRegistry::get("oxUtilsUrl")->processUrl($sRedirectUrl), true, 302);
         }
     }
 
@@ -226,12 +240,13 @@ class Account extends oxUBase
      */
     public function getOrderCnt()
     {
-        if ( $this->_iOrderCnt === null ) {
+        if ($this->_iOrderCnt === null) {
             $this->_iOrderCnt = 0;
-            if ( $oUser = $this->getUser() ) {
+            if ($oUser = $this->getUser()) {
                 $this->_iOrderCnt = $oUser->getOrderCount();
             }
         }
+
         return $this->_iOrderCnt;
     }
 
@@ -242,12 +257,13 @@ class Account extends oxUBase
      */
     public function getArticleId()
     {
-        if ( $this->_sArticleId === null) {
+        if ($this->_sArticleId === null) {
             // passing wishlist information
-            if ( $sArticleId = oxConfig::getParameter('aid') ) {
+            if ($sArticleId = oxConfig::getParameter('aid')) {
                 $this->_sArticleId = $sArticleId;
             }
         }
+
         return $this->_sArticleId;
     }
 
@@ -258,12 +274,13 @@ class Account extends oxUBase
      */
     public function getSearchParamForHtml()
     {
-        if ( $this->_sSearchParamForHtml === null ) {
+        if ($this->_sSearchParamForHtml === null) {
             $this->_sSearchParamForHtml = false;
-            if ( $this->getArticleId() ) {
-                $this->_sSearchParamForHtml = oxConfig::getParameter( 'searchparam' );
+            if ($this->getArticleId()) {
+                $this->_sSearchParamForHtml = oxConfig::getParameter('searchparam');
             }
         }
+
         return $this->_sSearchParamForHtml;
     }
 
@@ -274,12 +291,13 @@ class Account extends oxUBase
      */
     public function getSearchParam()
     {
-        if ( $this->_sSearchParam === null ) {
+        if ($this->_sSearchParam === null) {
             $this->_sSearchParam = false;
-            if ( $this->getArticleId() ) {
-                $this->_sSearchParam = rawurlencode( oxConfig::getParameter( 'searchparam', true ) );
+            if ($this->getArticleId()) {
+                $this->_sSearchParam = rawurlencode(oxConfig::getParameter('searchparam', true));
             }
         }
+
         return $this->_sSearchParam;
     }
 
@@ -290,13 +308,14 @@ class Account extends oxUBase
      */
     public function getListType()
     {
-        if ( $this->_sListType === null ) {
+        if ($this->_sListType === null) {
             $this->_sListType = false;
-            if ( $this->getArticleId() ) {
+            if ($this->getArticleId()) {
                 // searching in vendor #671
-                $this->_sListType = oxConfig::getParameter( 'listtype' );
+                $this->_sListType = oxConfig::getParameter('listtype');
             }
         }
+
         return $this->_sListType;
     }
 
@@ -309,13 +328,14 @@ class Account extends oxUBase
     {
         $aPaths = array();
         $aPath  = array();
-        if ( $oUser = $this->getUser() ) {
-            $aPath['title'] = oxRegistry::getLang()->translateString( 'MY_ACCOUNT', oxRegistry::getLang()->getBaseLanguage(), false ) . " - " . $oUser->oxuser__oxusername->value;
+        if ($oUser = $this->getUser()) {
+            $aPath['title'] = oxRegistry::getLang()->translateString('MY_ACCOUNT', oxRegistry::getLang()->getBaseLanguage(), false) . " - " . $oUser->oxuser__oxusername->value;
         } else {
-            $aPath['title'] = oxRegistry::getLang()->translateString( 'LOGIN', oxRegistry::getLang()->getBaseLanguage(), false );
+            $aPath['title'] = oxRegistry::getLang()->translateString('LOGIN', oxRegistry::getLang()->getBaseLanguage(), false);
         }
         $aPath['link'] = $this->getLink();
-        $aPaths[] = $aPath;
+        $aPaths[]      = $aPath;
+
         return $aPaths;
     }
 
@@ -326,8 +346,9 @@ class Account extends oxUBase
      */
     public function getCompareItemsCnt()
     {
-        $oCompare = oxNew( "compare" );
+        $oCompare      = oxNew("compare");
         $iCompItemsCnt = $oCompare->getCompareItemsCnt();
+
         return $iCompItemsCnt;
     }
 }

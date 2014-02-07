@@ -40,9 +40,8 @@ class BaseModuleTestCase extends OxidTestCase
      * Runs all asserts
      *
      * @param $aExpectedResult
-     * @param $sModuleId
      */
-    protected function _runAsserts( $aExpectedResult, $sModuleId )
+    protected function _runAsserts( $aExpectedResult )
     {
         $oConfig = oxRegistry::getConfig();
 
@@ -65,7 +64,7 @@ class BaseModuleTestCase extends OxidTestCase
         }
 
         if( isset( $aExpectedResult['settings'] ) ){
-            $this->assertTrue( $oValidator->checkConfigAmount( $aExpectedResult['settings'], $sModuleId), 'Configs do not match expectations' );
+            $this->assertTrue( $oValidator->checkConfigAmount( $aExpectedResult['settings'] ), 'Configs do not match expectations' );
         }
 
         if( isset( $aExpectedResult['versions'] ) ){
@@ -81,7 +80,7 @@ class BaseModuleTestCase extends OxidTestCase
         }
 
         if ( isset( $aExpectedResult['settings_values'] ) ) {
-            $this->assertTrue( $oValidator->checkConfigValues( $aExpectedResult['settings_values'], $sModuleId )
+            $this->assertTrue( $oValidator->checkConfigValues( $aExpectedResult['settings_values'] )
                 , 'Config values does not match expectations' );
         }
     }

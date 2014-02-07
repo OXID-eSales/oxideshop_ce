@@ -249,11 +249,12 @@ class oxShopViewValidator {
         $oDb = oxDb::getDb( oxDb::FETCH_MODE_ASSOC );
         $oConfig = oxRegistry::getConfig();
 
-        $sQ = "
+        $sQuery = "
             select ".$oConfig->getDecodeValueQuery()." as oxvarvalue
             from oxconfig
             where oxvarname = '{$sParamName}' ";
-        return $oDb->getArray( $sQ );
+
+        return $oDb->getArray( $sQuery );
     }
 
     /**

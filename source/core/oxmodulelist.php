@@ -328,6 +328,8 @@ class oxModuleList extends oxSuperCfg
      * @param array $aAllModuleArray All Module array (nested format)
      * @param array $aRemModuleArray Remove Module array (nested format)
      *
+     * @deprecated since v5.2.0 (2014-02-06).
+     *
      * @return array
      */
     public function diffModuleArrays($aAllModuleArray, $aRemModuleArray)
@@ -383,6 +385,8 @@ class oxModuleList extends oxSuperCfg
      *
      * @param array $aDeletedExt Deleted extension array
      *
+     * @deprecated since v5.2.0 (2014-02-06).
+     *
      * @return null
      */
     protected function _removeFromModulesArray( $aDeletedExt )
@@ -399,6 +403,8 @@ class oxModuleList extends oxSuperCfg
      *
      * @param array $aDeletedExtIds Deleted extension id's of array
      *
+     * @deprecated since v5.2.0 (2014-02-06).
+     *
      * @return null
      */
     protected function _removeFromDisabledModulesArray( $aDeletedExtIds )
@@ -413,6 +419,8 @@ class oxModuleList extends oxSuperCfg
      * Removes extension from modules paths array
      *
      * @param array $aDeletedModule deleted extensions ID's
+     *
+     * @deprecated since v5.2.0 (2014-02-06).
      *
      * @return null
      */
@@ -434,6 +442,8 @@ class oxModuleList extends oxSuperCfg
      *
      * @param array $aDeletedModule deleted extensions ID's
      *
+     * @deprecated since v5.2.0 (2014-02-06).
+     *
      * @return null
      */
     protected function _removeFromModulesVersionsArray( $aDeletedModule )
@@ -453,6 +463,8 @@ class oxModuleList extends oxSuperCfg
      * Removes extension from modules events array
      *
      * @param array $aDeletedModule deleted extensions ID's
+     *
+     * @deprecated since v5.2.0 (2014-02-06).
      *
      * @return null
      */
@@ -474,6 +486,8 @@ class oxModuleList extends oxSuperCfg
      *
      * @param array $aDeletedModule deleted extensions ID's
      *
+     * @deprecated since v5.2.0 (2014-02-06).
+     *
      * @return null
      */
     protected function _removeFromModulesFilesArray( $aDeletedModule )
@@ -494,6 +508,8 @@ class oxModuleList extends oxSuperCfg
      *
      * @param array $aDeletedModule deleted extensions ID's
      *
+     * @deprecated since v5.2.0 (2014-02-06).
+     *
      * @return null
      */
     protected function _removeFromModulesTemplatesArray( $aDeletedModule )
@@ -513,6 +529,8 @@ class oxModuleList extends oxSuperCfg
      * Removes extension from database - oxConfig, oxConfigDisplay and oxTplBlocks tables
      *
      * @param array $aDeletedExtIds deleted extensions ID's
+     *
+     * @deprecated since v5.2.0 (2014-02-06).
      *
      * @return null
      */

@@ -308,44 +308,16 @@ class oxModule extends oxSuperCfg
     /**
      * Activate extension by merging module class inheritance information with shop module array
      *
+     * @deprecated since v5.2.0 (2014-02-06); Use oxModuleInstaller::activate().
+     *
      * @return bool
      */
     public function activate()
     {
-        $blResult = false;
+        $oModuleCache = oxNew( 'oxModuleCache', $this );
+        $oModuleInstaller = oxNew( 'oxModuleInstaller', $this, $oModuleCache );
 
-        if ( $this->hasMetadata() || $this->hasExtendClass() ) {
-
-            $this->_addExtensions();
-
-            $this->_removeFromDisabledList();
-
-            $this->_addTemplateBlocks( $this->getInfo("blocks") );
-
-            // Register new module files
-            $this->_addModuleFiles($this->getInfo("files") );
-
-            // Register new module templates
-            $this->_addTemplateFiles( $this->getInfo("templates") );
-
-            // Add module settings
-            $this->_addModuleSettings($this->getInfo("settings"));
-
-            // Add module version
-            $this->_addModuleVersion($this->getInfo("version"));
-
-            // Add module events
-            $this->_addModuleEvents($this->getInfo("events"));
-
-            //resets cache
-            $this->_resetCache();
-
-
-            $this->_callEvent('onActivate',  $this->getId() );
-
-            $blResult = true;
-        }
-        return $blResult;
+        return $oModuleInstaller->activate();
     }
 
     /**
@@ -353,34 +325,22 @@ class oxModule extends oxSuperCfg
      *
      * @param string $sModuleId Module Id
      *
+     * @deprecated since v5.2.0 (2014-02-06); Use oxModuleInstaller::deactivate().
+     *
      * @return bool
      */
     public function deactivate( $sModuleId = null )
     {
-        $blResult = false;
-        if ( is_null( $sModuleId ) ) {
-            $sModuleId = $this->getId();
+        if ( !is_null( $sModuleId ) ) {
+            $oModule = oxNew( 'oxModule' );
+            $oModule->load( $sModuleId );
+        } else {
+            $oModule = $this;
         }
-        if ( isset( $sModuleId ) ) {
+        $oModuleCache = oxNew( 'oxModuleCache', $oModule );
+        $oModuleInstaller = oxNew( 'oxModuleInstaller', $oModule, $oModuleCache );
 
-            $this->_addToDisabledList( $sModuleId );
-
-            $this->_callEvent( 'onDeactivate', $sModuleId );
-
-            //resets cache
-            $this->_resetCache();
-
-            //removing recoverable options
-            $this->_deleteBlock( $sModuleId );
-            $this->_deleteTemplateFiles( $sModuleId );
-            $this->_deleteModuleFiles( $sModuleId );
-            $this->_deleteModuleEvents( $sModuleId );
-            $this->_deleteModuleVersions( $sModuleId );
-
-
-            $blResult = true;
-        }
-        return $blResult;
+        return $oModuleInstaller->deactivate();
     }
 
     /**
@@ -388,6 +348,8 @@ class oxModule extends oxSuperCfg
      *
      * @param string $sEvent    Event name
      * @param string $sModuleId Module Id
+     *
+     * @deprecated since v5.2.0 (2014-02-06).
      *
      * @return null
      */
@@ -410,6 +372,8 @@ class oxModule extends oxSuperCfg
      * @param string  $sModule Module name
      * @param integer $iStatus 0 or 1 to (de)activate blocks
      *
+     * @deprecated since v5.2.0 (2014-02-06); Not used method.
+     *
      * @return null
      */
     protected function _changeBlockStatus( $sModule, $iStatus = 0 )
@@ -424,6 +388,8 @@ class oxModule extends oxSuperCfg
      *
      * @param string  $sModule Module name
      *
+     * @deprecated since v5.2.0 (2014-02-06).
+     *
      * @return null
      */
     protected function _deleteBlock( $sModule )
@@ -436,6 +402,8 @@ class oxModule extends oxSuperCfg
 
     /**
      * Resets template, language and menu xml cache
+     *
+     * @deprecated since v5.2.0 (2014-02-06).
      *
      * @return null
      */
@@ -458,6 +426,8 @@ class oxModule extends oxSuperCfg
      * Build module chains from nested array
      *
      * @param array $aModuleArray Module array (nested format)
+     *
+     * @deprecated since v5.2.0 (2014-02-06).
      *
      * @return array
      */
@@ -508,6 +478,8 @@ class oxModule extends oxSuperCfg
      *
      * @param array  $aModules  Module array (nested format)
      * @param string $sModuleId Module id/folder name
+     *
+     * @deprecated since v5.2.0 (2014-02-06);
      *
      * @return array
      */
@@ -566,27 +538,19 @@ class oxModule extends oxSuperCfg
     /**
      * Get parsed modules
      *
-     * @deprecated since v5.1.2 (2013-12-10); Naming changed use function getModulesWithExtendedClass().
+     * @deprecated since v5.1.2 (2013-12-10);
      *
      * @return array
      */
     public function getAllModules()
-    {
-        return $this->getModulesWithExtendedClass();
-    }
-
-    /**
-     * Get parsed modules
-     *
-     * @return array
-     */
-    public function getModulesWithExtendedClass()
     {
         return $this->getConfig()->getModulesWithExtendedClass();
     }
 
     /**
      * Get disabled module id's
+     *
+     * @deprecated since v5.1.2 (2013-12-10);
      *
      * @return array
      */
@@ -608,6 +572,8 @@ class oxModule extends oxSuperCfg
     /**
      * Get module template files
      *
+     * @deprecated since v5.2.0 (2014-02-06);
+     *
      * @return array
      */
     public function getModuleTemplates()
@@ -617,6 +583,8 @@ class oxModule extends oxSuperCfg
 
     /**
      * Get module files
+     *
+     * @deprecated since v5.2.0 (2014-02-06);
      *
      * @return array
      */
@@ -628,6 +596,8 @@ class oxModule extends oxSuperCfg
     /**
      * Get module versions
      *
+     * @deprecated since v5.2.0 (2014-02-06);
+     *
      * @return array
      */
     public function getModuleVersions()
@@ -637,6 +607,8 @@ class oxModule extends oxSuperCfg
 
     /**
      * Get module events
+     *
+     * @deprecated since v5.2.0 (2014-02-06);
      *
      * @return array
      */
@@ -665,6 +637,8 @@ class oxModule extends oxSuperCfg
      *
      * @param array  $aModuleBlocks Module blocks array
      * @param string $sModuleId     Module id
+     *
+     * @deprecated since v5.2.0 (2014-02-06).
      *
      * @return null
      */
@@ -701,6 +675,8 @@ class oxModule extends oxSuperCfg
      * @param array  $aModuleTemplates Module templates array
      * @param string $sModuleId        Module id
      *
+     * @deprecated since v5.2.0 (2014-02-06).
+     *
      * @return null
      */
     protected function _addTemplateFiles( $aModuleTemplates , $sModuleId = null)
@@ -722,6 +698,8 @@ class oxModule extends oxSuperCfg
      *
      * @param string $sModuleId        Module id
      *
+     * @deprecated since v5.2.0 (2014-02-06).
+     *
      * @return null
      */
     protected function _deleteTemplateFiles( $sModuleId )
@@ -737,6 +715,8 @@ class oxModule extends oxSuperCfg
      *
      * @param string $sModuleVersion Module version
      * @param string $sModuleId      Module id
+     *
+     * @deprecated since v5.2.0 (2014-02-06).
      *
      * @return null
      */
@@ -760,6 +740,8 @@ class oxModule extends oxSuperCfg
      *
      * @param string $sModuleId Module id
      *
+     * @deprecated since v5.2.0 (2014-02-06).
+     *
      * @return null
      */
     protected function _deleteModuleVersions( $sModuleId )
@@ -775,6 +757,8 @@ class oxModule extends oxSuperCfg
      *
      * @param array  $aModuleEvents Module events
      * @param string $sModuleId     Module id
+     *
+     * @deprecated since v5.2.0 (2014-02-06).
      *
      * @return null
      */
@@ -797,6 +781,8 @@ class oxModule extends oxSuperCfg
      *
      * @param string $sModuleId Module id
      *
+     * @deprecated since v5.2.0 (2014-02-06).
+     *
      * @return null
      */
     protected function _deleteModuleEvents( $sModuleId )
@@ -812,6 +798,8 @@ class oxModule extends oxSuperCfg
      *
      * @param array  $aModuleFiles Module files array
      * @param string $sModuleId    Module id
+     *
+     * @deprecated since v5.2.0 (2014-02-06).
      *
      * @return null
      */
@@ -834,6 +822,8 @@ class oxModule extends oxSuperCfg
      *
      * @param string $sModuleId Module id
      *
+     * @deprecated since v5.2.0 (2014-02-06).
+     *
      * @return null
      */
     protected function _deleteModuleFiles( $sModuleId )
@@ -851,6 +841,8 @@ class oxModule extends oxSuperCfg
      * @param string $sVariableValue config value
      * @param string $sVariableType config type
      *
+     * @deprecated since v5.2.0 (2014-02-06).
+     *
      * @return null
      */
     protected function _saveToConfig( $sVariableName, $sVariableValue, $sVariableType = 'aarr' )
@@ -865,6 +857,8 @@ class oxModule extends oxSuperCfg
      *
      * @param array  $aModuleSettings Module settings array
      * @param string $sModuleId       Module id
+     *
+     * @deprecated since v5.2.0 (2014-02-06).
      *
      * @return null
      */
@@ -936,6 +930,8 @@ class oxModule extends oxSuperCfg
 
     /**
      * Cleans PHP APC cache
+     *
+     * @deprecated since v5.2.0 (2014-02-06).
      */
     protected function _clearApcCache()
     {
@@ -946,6 +942,8 @@ class oxModule extends oxSuperCfg
 
     /**
      * Removes module from disabled module list
+     *
+     * @deprecated since v5.2.0 (2014-02-06).
      */
     protected function _removeFromDisabledList()
     {
@@ -960,10 +958,12 @@ class oxModule extends oxSuperCfg
 
     /**
      * Add extension to module
+     *
+     * @deprecated since v5.2.0 (2014-02-06).
      */
     protected function _addExtensions()
     {
-        $aModules = $this->_removeNotUsedExtensions( $this->getModulesWithExtendedClass() );
+        $aModules = $this->_removeNotUsedExtensions( $this->getAllModules() );
 
         if ( $this->hasExtendClass() ) {
             $aAddModules  = $this->getExtensions();
@@ -977,6 +977,8 @@ class oxModule extends oxSuperCfg
 
     /**
      * Add module to disable list
+     *
+     * @deprecated since v5.2.0 (2014-02-06).
      */
     protected function _addToDisabledList( $sModuleId )
     {
@@ -995,6 +997,8 @@ class oxModule extends oxSuperCfg
      * Removes garbage ( module not used extensions ) from all installed extensions list
      *
      * @param $aInstalledExtensions
+     *
+     * @deprecated since v5.2.0 (2014-02-06).
      *
      * @return array
      */
@@ -1021,6 +1025,8 @@ class oxModule extends oxSuperCfg
      * @param $aModuleMetaDataExtensions - extensions defined in metadata.
      * @param $aModuleInstalledExtensions - extensions which are installed
      *
+     * @deprecated since v5.2.0 (2014-02-06).
+     *
      * @return array
      */
     protected function _getModuleExtensionsGarbage( $aModuleMetaDataExtensions, $aModuleInstalledExtensions )
@@ -1044,6 +1050,8 @@ class oxModule extends oxSuperCfg
      *
      * @param $aInstalledExtensions - all installed extensions ( from all modules )
      * @param $aGarbage - extension which are not used and should be removed
+     *
+     * @deprecated since v5.2.0 (2014-02-06).
      *
      * @return array
      */
@@ -1116,7 +1124,7 @@ class oxModule extends oxSuperCfg
     protected function _isExtensionsActive()
     {
         $aModuleExtensions = $this->getExtensions();
-        $aInstalledExtensions = $this->getModulesWithExtendedClass();
+        $aInstalledExtensions = $this->getAllModules();
         $iModuleExtensionsCount = $this->_countExtensions( $aModuleExtensions );
         $iActivatedModuleExtensionsCount = $this->_countActivatedExtensions( $aModuleExtensions, $aInstalledExtensions );
         $blActive = $iModuleExtensionsCount > 0 && $iActivatedModuleExtensionsCount == $iModuleExtensionsCount;

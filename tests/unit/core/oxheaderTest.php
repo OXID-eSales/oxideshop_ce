@@ -66,6 +66,9 @@ class Unit_Core_oxHeaderTest extends OxidTestCase
         $this->assertEquals( array("Cache-Control: no-cache;"."\r\n"), $oHeader->getHeader(), 'Cache header was NOT formated correctly.' );
     }
 
+    /**
+     * @return array
+     */
     public function providerSetGetHeader_withNewLine_newLineRemoved()
     {
         return array(
@@ -78,9 +81,11 @@ class Unit_Core_oxHeaderTest extends OxidTestCase
 
     /**
      * oxHeader::setHeader() oxHeader::getHeader() test case.
-     * test if returns set value.
+     * test if strips new lines.
      *
      * @dataProvider providerSetGetHeader_withNewLine_newLineRemoved
+     *
+     * @param $sNewLine
      *
      * @return null
      */

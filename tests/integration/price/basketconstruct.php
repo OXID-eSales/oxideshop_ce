@@ -576,9 +576,15 @@ class BasketConstruct
                 $sField = "oxshops__" . $sKey;
                 $aParams[$sField] = $sValue;
             }
+
             $oShop = oxNew( "oxshop" );
             $oShop->assign( $aParams );
             $oShop->save();
+
+            $oConfig = new oxConfig();
+            $oConfig->setShopId( $oShop->getId() );
+            $oConfig->saveShopConfVar( 'aarr', 'aLanguages', array( 'de' => 'Deutch', 'en' => 'English' ) );
+
             $oShop->generateViews();
             if ( $aData[$i]['activeshop'] ) {
                 $iActiveShopId = $oShop->getId();

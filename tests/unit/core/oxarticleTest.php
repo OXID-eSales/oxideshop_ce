@@ -2097,6 +2097,24 @@ class Unit_Core_oxArticleTest extends OxidTestCase
     }
 
     /**
+     * Test if works correctly when skipping discounts.
+     *
+     * Fix for bug entry 0005641: Fatal Error after activating oxskipdiscounts
+     *
+     * @return null
+     */
+    public function testLoadAmountPriceInfo_skipDiscounts_noErrorThrown()
+    {
+        _oxArticle::resetAmountPrice();
+        $oArticle = $this->getMock( 'oxArticle', array( 'skipDiscounts' ) );
+        $oArticle->expects( $this->any() )->method( 'skipDiscounts')->will( $this->returnValue( true ) );
+        $oArticle->load('1651');
+        $oAmPriceList = $oArticle->loadAmountPriceInfo();
+
+        $this->assertEquals( 0, count( $oAmPriceList ) );
+    }
+
+    /**
      * Test load amount price info don't calc price.
      *
      * @return null

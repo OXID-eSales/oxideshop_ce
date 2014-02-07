@@ -3577,11 +3577,10 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     protected function _getAmountPriceList()
     {
         if ( $this->_oAmountPriceList === null ) {
-            $this->_oAmountPriceList = array();
-            if ( !$this->skipDiscounts() ) {
+            $oAmPriceList = oxNew( 'oxAmountPricelist' );
 
+            if ( !$this->skipDiscounts() ) {
                 //collecting assigned to article amount-price list
-                $oAmPriceList = oxNew( 'oxAmountPricelist' );
                 $oAmPriceList->load( $this );
 
                 // prepare abs prices if currently having percentages
@@ -3592,8 +3591,9 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
                     }
                 }
 
-                $this->_oAmountPriceList = $oAmPriceList;
             }
+
+            $this->_oAmountPriceList = $oAmPriceList;
         }
 
         return $this->_oAmountPriceList;

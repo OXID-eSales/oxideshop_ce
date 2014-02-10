@@ -80,7 +80,7 @@ class Integration_Modules_ModuleConfigsTest extends BaseModuleTestCase
      */
     private function _changeConfiguration( $sModuleId, $aConfigsToChange )
     {
-        $oConfig = $this->getConfig();
+        $oConfig = oxRegistry::getConfig();
         foreach ( $aConfigsToChange as $aConfig ) {
             $sConfigName = $aConfig[ 'name' ];
             $sType       = $aConfig[ 'type' ];

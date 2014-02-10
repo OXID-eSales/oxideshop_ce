@@ -77,7 +77,9 @@ class Validator
         $sQuery = "select * from oxtplblocks where oxshopid = {$this->getConfig()->getShopId()}";
         $aBlocksToCheck = $oDb->getAll( $sQuery );
 
-        return ( count( $aExpectedBlocks ) == count( $aBlocksToCheck ) );
+        $blParamsCountMatch = count( $aExpectedBlocks ) == count( $aBlocksToCheck );
+
+        return $blParamsCountMatch && $this->_checkBlockValues( $aExpectedBlocks, $aBlocksToCheck);
     }
 
     /**
@@ -90,7 +92,7 @@ class Validator
     {
         $aExtensionsToCheck = $this->getConfig()->getConfigParam( 'aModules' );
 
-        return ( $aExpectedExtensions == $aExtensionsToCheck );
+        return ( $aExpectedExtensions === $aExtensionsToCheck );
     }
 
     /**
@@ -181,5 +183,23 @@ class Validator
         $aModuleEventsToCheck = is_null( $aModuleEventsToCheck) ? array() : $aModuleEventsToCheck;
 
         return ( $aExpectedEvents == $aModuleEventsToCheck );
+    }
+
+    /**
+     * @param $aExpectedBlocks
+     * @param $aBlocksToCheck
+     * @return bool
+     */
+    protected function _checkBlockValues( $aExpectedBlocks, $aBlocksToCheck )
+    {
+        foreach ($aExpectedBlocks as $iKey => $aValues ) {
+            foreach ( $aValues as $sValue ) {
+                if ( !in_array( $sValue, $aBlocksToCheck[$iKey] ) ) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 }

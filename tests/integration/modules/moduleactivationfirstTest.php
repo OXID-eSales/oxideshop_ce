@@ -163,8 +163,8 @@ class Integration_Modules_ModuleActivationFirstTest extends BaseModuleTestCase
                     array('template' => 'page/checkout/payment.tpl', 'block'=>'select_payment',         'file'=>'/views/blocks/page/checkout/mypaymentselector.tpl'),
                 ),
                 'extend'          => array(
-                    'oxorder'   => 'with_everything/myorder1&with_everything/myorder2&with_everything/myorder3',
                     'oxarticle' => 'with_everything/myarticle',
+                    'oxorder'   => 'with_everything/myorder1&with_everything/myorder2&with_everything/myorder3',
                     'oxuser'    => 'with_everything/myuser',
                 ),
                 'files'           => array(
@@ -271,9 +271,9 @@ class Integration_Modules_ModuleActivationFirstTest extends BaseModuleTestCase
             array(
                 'blocks'          => array(
                     array( 'template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl' ),
-                    array( 'template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl' ),
                     array( 'template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_bottom', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl' ),
                     array( 'template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl' ),
+                    array( 'template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl' ),
                     array( 'template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl' ),
                 ),
                 'extend'          => array(

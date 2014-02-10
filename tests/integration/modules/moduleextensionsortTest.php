@@ -79,14 +79,14 @@ class Integration_Modules_ModuleExtensionSortTest extends BaseModuleTestCase
 
         // load reordered extensions
         oxRegistry::getConfig()->setConfigParam( 'aModules', $aReorderedExtensions );
-
+//
         $oModule = new oxModule();
         $oModule->load( $sModule );
 
         $oModule->deactivate();
         $oModule->activate();
 
-        $oValidator = new Validator( $this->getConfig() );
+        $oValidator = new Validator( oxRegistry::getConfig() );
 
         $this->assertTrue( $oValidator->checkExtensions( $aReorderedExtensions ), 'Extension order changed' );
     }

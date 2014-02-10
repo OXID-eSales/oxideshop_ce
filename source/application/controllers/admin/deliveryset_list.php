@@ -25,7 +25,6 @@
  * Collects deliveryset base information (description), there is ability to
  * filter them by description, title or delete them.
  * Admin Menu: Shop Settings -> Shipping & Handling Sets.
- * @package admin
  */
 class DeliverySet_List extends oxAdminList
 {

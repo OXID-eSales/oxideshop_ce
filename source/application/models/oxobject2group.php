@@ -21,7 +21,6 @@
  */
 
 /**
- * @package core
  */
 class oxObject2Group extends oxBase
 {

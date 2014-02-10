@@ -24,7 +24,6 @@
  * Order delivery manager.
  * Currently calculates price/costs.
  *
- * @package model
  */
 class oxDelivery extends oxI18n
 {

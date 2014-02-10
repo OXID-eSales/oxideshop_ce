@@ -25,7 +25,6 @@
  * Collects and previews such article information as article creation date,
  * last modification date, sales rating and etc.
  * Admin Menu: Manage Products -> Articles -> Overview.
- * @package admin
  */
 class Article_Overview extends oxAdminDetails
 {

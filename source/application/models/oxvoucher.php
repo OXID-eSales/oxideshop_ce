@@ -25,7 +25,6 @@
  * Performs deletion, generating, assigning to group and other voucher
  * managing functions.
  *
- * @package model
  */
 class oxVoucher extends oxBase
 {

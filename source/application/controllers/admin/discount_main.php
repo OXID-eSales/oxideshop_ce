@@ -24,7 +24,6 @@
  * Admin article main discount manager.
  * Performs collection and updatind (on user submit) main item information.
  * Admin Menu: Shop Settings -> Discounts -> Main.
- * @package admin
  */
 class Discount_Main extends oxAdminDetails
 {

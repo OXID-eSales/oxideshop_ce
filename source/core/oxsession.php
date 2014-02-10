@@ -26,7 +26,6 @@ DEFINE('_DB_SESSION_HANDLER', getShopBasePath() . 'core/adodblite/session/adodb-
  * Session manager.
  * Performs session managing function, such as variables deletion,
  * initialisation and other session functions.
- * @package core
  */
 class oxSession extends oxSuperCfg
 {

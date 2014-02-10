@@ -24,7 +24,6 @@
  * Admin shop config manager.
  * Collects shop config information, updates it on user submit, etc.
  * Admin Menu: Main Menu -> Core Settings -> General.
- * @package admin
  */
 class Shop_Config extends oxAdminDetails
 {

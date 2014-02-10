@@ -30,7 +30,6 @@
  * T_RAW and T_TEXT types represent not the assignment logic, but rather a
  * returned value escaping status.
  *
- * @package core
  */
 class oxField // extends oxSuperCfg
 {

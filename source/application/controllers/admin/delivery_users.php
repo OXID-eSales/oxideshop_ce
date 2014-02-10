@@ -25,7 +25,6 @@
  * There is possibility to change delivery name, article, user
  * and etc.
  * Admin Menu: Shop settings -> Shipping & Handling -> Main.
- * @package admin
  */
 class Delivery_Users extends oxAdminDetails
 {

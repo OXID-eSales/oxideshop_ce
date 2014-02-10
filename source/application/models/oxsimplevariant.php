@@ -23,7 +23,6 @@
 /**
  * Lightweight variant handler. Implemnets only absolutely needed oxArticle methods.
  *
- * @package model
  */
 class oxSimpleVariant extends oxI18n implements oxIUrl
 {

@@ -22,7 +22,6 @@
 
 /**
  * Exception handler, deals with all high level exceptions (caught in oxShopControl)
- * @package core
  */
 class oxExceptionHandler
 {

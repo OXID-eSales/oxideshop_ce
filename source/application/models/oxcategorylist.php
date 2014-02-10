@@ -26,7 +26,6 @@
  * Collects available categories, performs some SQL queries to create category
  * list structure.
  *
- * @package model
  */
 class oxCategoryList extends oxList
 {

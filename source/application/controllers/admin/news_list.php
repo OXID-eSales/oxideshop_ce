@@ -24,7 +24,6 @@
  * Admin news list manager.
  * Performs collection and managing (such as filtering or deleting) function.
  * Admin Menu: Customer News -> News.
- * @package admin
  */
 class News_List extends oxAdminList
 {

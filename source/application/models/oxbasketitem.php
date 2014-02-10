@@ -23,7 +23,6 @@
 /**
  * UserBasketItem class, responsible for storing most important fields
  *
- * @package model
  */
 class oxBasketItem extends oxSuperCfg
 {

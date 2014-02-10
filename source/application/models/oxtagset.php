@@ -25,7 +25,6 @@
      * Class dedicated to article tags handling.
      * Is responsible for saving, returning and adding tags for given article.
      *
-     * @package model
      */
 class oxTagSet extends oxSuperCfg implements Iterator
 {

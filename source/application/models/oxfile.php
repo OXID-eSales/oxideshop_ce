@@ -23,7 +23,6 @@
 /**
  * Article files manager.
  *
- * @package model
  */
 class oxFile extends oxBase
 {

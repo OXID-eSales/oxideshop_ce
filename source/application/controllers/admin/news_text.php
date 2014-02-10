@@ -22,7 +22,6 @@
 
 /**
  * Admin Menu: Customer News -> News -> Text.
- * @package admin
  */
 class News_Text extends oxAdminDetails
 {

@@ -25,7 +25,6 @@
  * Collects delivery base information (description), there is ability to
  * filter them by description, title or delete them.
  * Admin Menu: Shop Settings -> Discounts.
- * @package admin
  */
 class Discount_List extends oxAdminList
 {

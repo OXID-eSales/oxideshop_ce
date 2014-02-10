@@ -22,7 +22,6 @@
 
 /**
  * General export class.
- * @package admin
  */
 class VoucherSerie_Export extends VoucherSerie_Main
 {

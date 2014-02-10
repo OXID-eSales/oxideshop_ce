@@ -24,7 +24,6 @@
  * Admin article variants manager.
  * Collects and updates article variants data.
  * Admin Menu: Manage Products -> Articles -> Variants.
- * @package admin
  */
 class Article_Variant extends oxAdminDetails
 {

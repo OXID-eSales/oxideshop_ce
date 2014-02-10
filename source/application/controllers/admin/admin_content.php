@@ -24,7 +24,6 @@
  * Sets template, that arranges two other templates ("content_list.tpl"
  * and "content_main.tpl") to frame.
  * Admin Menu: Customerinformations -> Content.
- * @package admin
  */
 class Admin_Content extends oxAdminView
 {

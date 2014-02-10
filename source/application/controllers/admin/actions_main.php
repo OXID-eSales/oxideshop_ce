@@ -25,7 +25,6 @@
  * There is possibility to change actions description, assign articles to
  * this actions, etc.
  * Admin Menu: Manage Products -> actions -> Main.
- * @package admin
  */
 class Actions_Main extends oxAdminDetails
 {

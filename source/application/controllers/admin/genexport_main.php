@@ -22,7 +22,6 @@
 
 /**
  * Admin general export manager.
- * @package admin
  */
 class GenExport_Main extends DynExportBase
 {

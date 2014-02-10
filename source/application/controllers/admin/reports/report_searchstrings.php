@@ -23,7 +23,6 @@
 if ( !class_exists( "report_searchstrings")) {
 /**
  * Search strings reports class
- * @package admin
  */
 class Report_searchstrings extends report_base
 {

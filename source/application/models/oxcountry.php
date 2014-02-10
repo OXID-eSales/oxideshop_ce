@@ -24,7 +24,6 @@
 /**
  * Country manager
  *
- * @package model
  */
 class oxCountry extends oxI18n
 {

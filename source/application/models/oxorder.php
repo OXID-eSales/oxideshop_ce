@@ -24,7 +24,6 @@
  * Order manager.
  * Performs creation assigning, updating, deleting and other order functions.
  *
- * @package model
  */
 class oxOrder extends oxBase
 {

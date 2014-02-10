@@ -23,7 +23,6 @@
 /**
  * Payment manager.
  * Customer payment manager class. Performs payment validation function, etc.
- * @package main
  */
 class Payment extends oxUBase
 {

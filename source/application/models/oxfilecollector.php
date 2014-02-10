@@ -24,7 +24,6 @@
  * Directory reader.
  * Performs reading of file list of one shop directory
  *
- * @package model
  */
 
 class oxFileCollector

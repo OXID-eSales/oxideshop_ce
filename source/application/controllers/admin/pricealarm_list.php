@@ -24,7 +24,6 @@
  * Admin pricealarm list manager.
  * Performs collection and managing (such as filtering or deleting) function.
  * Admin Menu: Customer News -> pricealarm.
- * @package admin
  */
 class PriceAlarm_List extends oxAdminList
 {

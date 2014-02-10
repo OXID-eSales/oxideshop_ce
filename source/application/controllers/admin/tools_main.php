@@ -24,7 +24,6 @@
  * CVS export manager.
  * Performs export function according to user chosen categories.
  * Admin Menu: Maine Menu -> Im/Export -> Export.
- * @package admin
  */
 class Tools_Main extends oxAdminDetails
 {

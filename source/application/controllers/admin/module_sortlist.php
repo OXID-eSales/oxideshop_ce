@@ -23,7 +23,6 @@
 /**
  * Extensions sorting list handler.
  * Admin Menu: Extensions -> Module -> Installed Shop Modules.
- * @package admin
  */
 class Module_SortList extends oxAdminDetails
 {

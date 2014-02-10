@@ -23,7 +23,6 @@
 /**
  * Select list manager
  *
- * @package model
  */
 class oxSelectlist extends oxI18n implements oxISelectList
 {

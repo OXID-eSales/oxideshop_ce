@@ -25,7 +25,6 @@
  * Collects such information about article as stock quantity, delivery status,
  * stock message, etc; Updates information (on user submit).
  * Admin Menu: Manage Products -> Articles -> Inventory.
- * @package admin
  */
 class Article_Stock extends oxAdminDetails
 {

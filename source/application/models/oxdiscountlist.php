@@ -24,7 +24,6 @@
  * Discount list manager.
  * Organizes list of discount objects.
  *
- * @package model
  */
 class oxDiscountList extends oxList
 {

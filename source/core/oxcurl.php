@@ -24,7 +24,6 @@
  * CURL request handler.
  * Handles CURL calls
  *
- * @package model
  */
 
 class oxCurl

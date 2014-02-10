@@ -23,7 +23,6 @@
 /**
  * oxTagCloud set interface
  *
- * @package core
  */
 interface oxITagList
 {

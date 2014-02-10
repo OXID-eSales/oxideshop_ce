@@ -24,7 +24,6 @@
  * Admin user payment settings manager.
  * Collects user payment settings, updates it on user submit, etc.
  * Admin Menu: User Administration -> Users -> Payment.
- * @package admin
  */
 class User_Payment extends oxAdminDetails
 {

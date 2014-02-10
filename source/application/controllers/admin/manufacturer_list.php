@@ -22,7 +22,6 @@
 
 /**
  * Admin Manufacturer list manager.
- * @package admin
  */
 class Manufacturer_List extends oxAdminList
 {

@@ -25,7 +25,6 @@
  * Collects available attributes/selections lists for chosen article, may add
  * or remove any of them to article, etc.
  * Admin Menu: Manage Products -> Articles -> Selection.
- * @package admin
  */
 class Article_Attribute extends oxAdminDetails
 {

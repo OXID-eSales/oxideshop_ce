@@ -24,7 +24,6 @@
  * Shop file checker
  * Performs version check of shop file
  *
- * @package model
  */
 
 class oxFileChecker {

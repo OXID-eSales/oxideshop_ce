@@ -24,7 +24,6 @@
  * Admin eFire list manager.
  * Arranges controll tabs and sets title.
  *
- * @package admin
  */
 class EFire_List extends Efire
 {

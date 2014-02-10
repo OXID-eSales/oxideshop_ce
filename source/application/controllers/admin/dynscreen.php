@@ -24,7 +24,6 @@
  * Admin dynscreen manager.
  * Returns template, that arranges two other templates ("dynscreen_list.tpl"
  * and "dyn_affiliates_about.tpl") to frame.
- * @package admin
  * @subpackage dyn
  */
 class Dynscreen extends oxAdminList

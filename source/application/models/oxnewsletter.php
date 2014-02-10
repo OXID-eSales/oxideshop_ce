@@ -25,7 +25,6 @@
  * Performs creation of newsletter text, assign newsletter to user groups,
  * deletes and etc.
  *
- * @package model
  */
 class oxNewsletter extends oxBase
 {

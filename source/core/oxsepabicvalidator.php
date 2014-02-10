@@ -23,7 +23,6 @@
 /**
  * SEPA (Single Euro Payments Area) BIC validation class
  *
- * @package core
  */
 class oxSepaBICValidator
 {

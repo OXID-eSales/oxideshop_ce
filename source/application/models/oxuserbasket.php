@@ -27,7 +27,6 @@
  * Collects shopping basket information, updates it (DB level), removes or adds
  * articles to it.
  *
- * @package model
  */
 class oxUserBasket extends oxBase
 {

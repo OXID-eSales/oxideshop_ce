@@ -23,7 +23,6 @@
 /**
  * Basket manager
  *
- * @package model
  */
 class oxBasket extends oxSuperCfg
 {

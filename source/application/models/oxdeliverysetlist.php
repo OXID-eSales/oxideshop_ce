@@ -23,7 +23,6 @@
 /**
  * DeliverySet list manager.
  *
- * @package model
  */
 class oxDeliverySetList extends oxList
 {

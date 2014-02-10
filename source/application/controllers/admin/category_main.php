@@ -25,7 +25,6 @@
  * There is possibility to change categories description, sorting, range of price
  * and etc.
  * Admin Menu: Manage Products -> Categories -> Main.
- * @package admin
  */
 class Category_Main extends oxAdminDetails
 {

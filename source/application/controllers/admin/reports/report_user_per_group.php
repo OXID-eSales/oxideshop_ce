@@ -23,7 +23,6 @@
 if ( !class_exists( "report_user_per_group")) {
 /**
  * User per group reports class
- * @package admin
  */
 class Report_user_per_group extends report_base
 {

@@ -24,7 +24,6 @@
  * Admin shop list manager.
  * Performs collection and managing (such as filtering or deleting) function.
  * Admin Menu: Main Menu -> Core Settings.
- * @package admin
  */
 class Shop_List extends oxAdminList
 {

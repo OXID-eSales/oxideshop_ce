@@ -23,7 +23,6 @@
 /**
  * Article file link manager.
  *
- * @package model
  */
 class oxOrderFileList extends oxList
 {

@@ -24,7 +24,6 @@
  * Admin order article manager.
  * Collects order articles information, updates it on user submit, etc.
  * Admin Menu: Orders -> Display Orders -> Articles.
- * @package admin
  */
 class Order_Article extends oxAdminDetails
 {

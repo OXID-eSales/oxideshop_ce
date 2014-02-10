@@ -22,7 +22,6 @@
 /**
  * Payment list manager.
  *
- * @package model
  */
 class oxPaymentList extends oxList
 {

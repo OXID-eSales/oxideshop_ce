@@ -25,7 +25,6 @@
  * Performs user managing function, as assigning to groups, updating
  * information, deletion and other.
  *
- * @package model
  */
 class oxUser extends oxBase
 {

@@ -24,7 +24,6 @@
  * Returns template, that arranges two other templates ("attribute_list.tpl"
  * and "attribute_main.tpl") to frame.
  * Admin Menu: Manage Products -> Attributes.
- * @package admin
  */
 class Attribute extends oxAdminView
 {

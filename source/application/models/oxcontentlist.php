@@ -24,7 +24,6 @@
  * Content list manager.
  * Collects list of content
  *
- * @package model
  */
 class oxContentList extends oxList
 {

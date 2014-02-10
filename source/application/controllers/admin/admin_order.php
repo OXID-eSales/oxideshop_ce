@@ -25,7 +25,6 @@
  * Returns template, that arranges two other templates ("order_list.tpl"
  * and "order_overview.tpl") to frame.
  * Admin Menu: Orders -> Display Orders.
- * @package admin
  */
 class Admin_Order extends oxAdminView
 {

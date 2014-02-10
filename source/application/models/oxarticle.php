@@ -33,7 +33,6 @@ define( 'OXARTICLE_LINKTYPE_RECOMM', 5 );
  * Creates fully detailed article object, with such information as VAT,
  * discounts, etc.
  *
- * @package model
  */
 class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 {

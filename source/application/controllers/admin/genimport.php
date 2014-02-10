@@ -22,7 +22,6 @@
 
 /**
  * Admin dyn General import manager.
- * @package admin
  */
 class GenImport extends GenImport_Main
 {

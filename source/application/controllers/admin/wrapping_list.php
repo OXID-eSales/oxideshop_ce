@@ -24,7 +24,6 @@
  * Admin wrapping list manager.
  * Performs collection and managing (such as filtering or deleting) function.
  * Admin Menu: User Administration -> Users.
- * @package admin
  */
 class Wrapping_List extends oxAdminList
 {

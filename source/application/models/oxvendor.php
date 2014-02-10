@@ -23,7 +23,6 @@
 /**
  * Vendor manager
  *
- * @package model
  */
 class oxVendor extends oxI18n implements oxIUrl
 {

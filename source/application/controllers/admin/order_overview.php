@@ -24,7 +24,6 @@
  * Admin order overview manager.
  * Collects order overview information, updates it on user submit, etc.
  * Admin Menu: Orders -> Display Orders -> Overview.
- * @package admin
  */
 class Order_Overview extends oxAdminDetails
 {

@@ -26,7 +26,6 @@ define('MAX_64BIT_INTEGER', '18446744073709551615');
 /**
  * Main shop configuration class.
  *
- * @package core
  */
 class oxConfig extends oxSuperCfg
 {

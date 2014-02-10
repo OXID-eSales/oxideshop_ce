@@ -24,7 +24,6 @@
  * Admin shop system setting manager.
  * Collects shop system settings, updates it on user submit, etc.
  * Admin Menu: Main Menu -> Core Settings -> System.
- * @package admin
  */
 class Dynscreen_Local extends oxAdminView
 {

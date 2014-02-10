@@ -23,7 +23,6 @@
 /**
  * TRusted shops protection product manager.
  *
- * @package model
  */
 class oxTsProtection extends oxSuperCfg
 {

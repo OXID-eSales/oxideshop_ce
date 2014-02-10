@@ -24,7 +24,6 @@
 /**
  * HTTP headers formator.
  * Collects HTTP headers and form HTTP header.
- * @package core
  */
 class oxHeader
 {

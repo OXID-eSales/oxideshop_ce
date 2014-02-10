@@ -24,7 +24,6 @@
  * Article attributes manager.
  * Collects and keeps attributes of chosen article.
  *
- * @package model
  */
 class oxAttribute extends oxI18n
 {

@@ -24,7 +24,6 @@
  * Admin order package manager.
  * Collects order package information, updates it on user submit, etc.
  * Admin Menu: Orders -> Display Orders.
- * @package admin
  */
 class Order_Package extends oxAdminDetails
 {

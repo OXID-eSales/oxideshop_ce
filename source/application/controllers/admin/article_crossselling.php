@@ -25,7 +25,6 @@
  * Creates list of available articles, there is ability to assign or remove
  * assigning of article to crosselling/accesories with other products.
  * Admin Menu: Manage Products -> Articles -> Crosssell.
- * @package admin
  */
 class Article_Crossselling extends oxAdminDetails
 {

@@ -27,7 +27,6 @@ DEFINE("ERR_POSOUTOFBOUNDS", -2);
 /**
  * Admin article main selectlist manager.
  * Performs collection and updatind (on user submit) main item information.
- * @package admin
  */
 class SelectList_Main extends oxAdminDetails
 {

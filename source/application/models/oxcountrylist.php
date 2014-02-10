@@ -24,7 +24,6 @@
  * Country list manager class.
  * Collects a list of countries according to collection rules (active).
  *
- * @package model
  */
 class oxCountryList extends oxList
 {

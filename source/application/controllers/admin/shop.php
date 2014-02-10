@@ -25,7 +25,6 @@
  * Returns template, that arranges two other templates ("shop_list.tpl"
  * and "shop_main.tpl") to frame.
  * Admin Menu: Main Menu -> Core Settings.
- * @package admin
  */
 class Shop extends oxAdminView
 {

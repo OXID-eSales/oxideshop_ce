@@ -24,7 +24,6 @@
  * Rss feed manager
  * loads needed rss data
  *
- * @package model
  */
 class oxRssFeed extends oxSuperCfg
 {

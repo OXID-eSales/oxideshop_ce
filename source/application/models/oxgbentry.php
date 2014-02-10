@@ -24,7 +24,6 @@
  * Guestbook entry object manager.
  * Loads available guestbook entries, performs some SQL queries.
  *
- * @package model
  */
 class oxGbEntry extends oxBase
 {

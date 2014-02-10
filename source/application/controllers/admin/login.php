@@ -23,7 +23,6 @@
 /**
  * Administrator login form.
  * Performs administrator login form data collection.
- * @package admin
  */
 class Login extends oxAdminView
 {

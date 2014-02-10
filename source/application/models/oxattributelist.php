@@ -23,7 +23,6 @@
 /**
  * Attribute list manager.
  *
- * @package model
  */
 class oxAttributeList extends oxList
 {

@@ -24,7 +24,6 @@
  * Admin selectlist manager.
  * Returns template, that arranges two other templates ("selectlist_list.tpl"
  * and "selectlist_main.tpl") to frame.
- * @package admin
  */
 class SelectList extends oxAdminView
 {

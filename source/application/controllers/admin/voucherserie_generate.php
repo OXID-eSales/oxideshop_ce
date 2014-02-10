@@ -23,7 +23,6 @@
 /**
  * Voucher Serie generator class
  *
- * @package admin
  */
 class VoucherSerie_Generate extends VoucherSerie_Main
 {

@@ -24,7 +24,6 @@
  * Admin article files parameters manager.
  * Collects and updates (on user submit) files.
  * Admin Menu: Manage Products -> Articles -> Files.
- * @package admin
  */
 class Article_Files extends oxAdminDetails
 {

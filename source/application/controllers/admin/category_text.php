@@ -24,7 +24,6 @@
  * Admin article categories text manager.
  * Category text/description manager, enables editing of text.
  * Admin Menu: Manage Products -> Categories -> Text.
- * @package admin
  */
 class Category_Text extends oxAdminDetails
 {

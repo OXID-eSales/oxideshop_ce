@@ -23,7 +23,6 @@
 /**
  * Variant selection lists manager class
  *
- * @package model
  */
 class oxVariantSelectList implements oxISelectList
 {

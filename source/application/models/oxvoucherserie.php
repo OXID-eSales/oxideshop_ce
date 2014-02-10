@@ -24,7 +24,6 @@
  * Voucher serie manager.
  * Manages list of available Vouchers (fetches, deletes, etc.).
  *
- * @package model
  */
 class oxVoucherSerie extends oxBase
 {

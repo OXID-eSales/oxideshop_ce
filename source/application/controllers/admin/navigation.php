@@ -21,7 +21,6 @@
  */
  /**
  * Administrator GUI navigation manager class.
- * @package admin
  */
 class Navigation extends oxAdminView
 {

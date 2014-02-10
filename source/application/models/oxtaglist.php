@@ -29,7 +29,6 @@ if (!defined('OXTAGCLOUD_MINFONT')) {
  * Class dedicated to article tags handling.
  * Is responsible for saving, returning and adding tags for given article.
  *
- * @package model
  */
 class oxTagList extends oxI18n implements oxITagList
 {

@@ -24,7 +24,6 @@
  * News list manager.
  * Creates news objects, fetches its data.
  *
- * @package model
  */
 class oxNewslist extends oxList
 {

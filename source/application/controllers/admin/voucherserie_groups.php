@@ -25,7 +25,6 @@
  * Collects and manages information about user groups, added to one or another
  * serie of vouchers.
  * Admin Menu: Shop Settings -> Vouchers -> Groups.
- * @package admin
  */
 class VoucherSerie_Groups extends oxAdminDetails
 {

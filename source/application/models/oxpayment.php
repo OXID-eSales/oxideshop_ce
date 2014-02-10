@@ -24,7 +24,6 @@
  * Payment manager.
  * Performs payment methods, such as assigning to someone, returning value etc.
  *
- * @package model
  */
 class oxPayment extends oxI18n
 {

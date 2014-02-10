@@ -23,7 +23,6 @@
 if ( !class_exists( "report_top_viewed_products")) {
 /**
  * Top viewed products reports class
- * @package admin
  */
 class Report_top_viewed_products extends report_base
 {

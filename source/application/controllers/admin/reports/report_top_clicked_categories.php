@@ -24,7 +24,6 @@ if ( !class_exists( "report_top_clicked_categories" ) ) {
 /**
  * Top clicked categories reports class
  *
- * @package admin
  */
 class Report_top_clicked_categories extends report_base
 {

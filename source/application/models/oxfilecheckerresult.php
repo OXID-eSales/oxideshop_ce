@@ -24,7 +24,6 @@
  * File checker result class
  * Structures and keeps the result of shop file check diagnostics
  *
- * @package model
  */
 
 class oxFileCheckerResult {

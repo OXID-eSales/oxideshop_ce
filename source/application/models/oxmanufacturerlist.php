@@ -24,7 +24,6 @@
  * Manufacturer list manager.
  * Collects list of manufacturers according to collection rules (activ, etc.).
  *
- * @package model
  */
 class oxManufacturerList extends oxList
 {

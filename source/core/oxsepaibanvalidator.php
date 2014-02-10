@@ -23,7 +23,6 @@
 /**
  * SEPA (Single Euro Payments Area) validation class
  *
- * @package core
  */
 class oxSepaIBANValidator
 {

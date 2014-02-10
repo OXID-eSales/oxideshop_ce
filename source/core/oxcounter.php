@@ -23,7 +23,6 @@
 /**
  * Counter class
  *
- * @package core
  */
 class oxCounter
 {

@@ -24,7 +24,6 @@
  * Admin user list manager.
  * Performs collection and managing (such as filtering or deleting) function.
  * Admin Menu: User Administration -> Users.
- * @package admin
  */
 class User_List extends oxAdminList
 {

@@ -23,7 +23,6 @@
 /**
  * Seo encoder base
  *
- * @package core
  */
 class oxSeoEncoder extends oxSuperCfg
 {

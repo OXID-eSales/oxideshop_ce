@@ -24,7 +24,6 @@
  * Admin user articles setting manager.
  * Collects user articles settings, updates it on user submit, etc.
  * Admin Menu: User Administration -> Users -> Articles.
- * @package admin
  */
 class User_Article extends oxAdminDetails
 {

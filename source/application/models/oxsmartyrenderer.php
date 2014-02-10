@@ -24,7 +24,6 @@
  * Smarty renderer class
  * Renders smarty template with given parameters and returns rendered body.
  *
- * @package model
  */
 class oxSmartyRenderer {
 

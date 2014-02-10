@@ -29,7 +29,6 @@ require oxRegistry::getConfig()->getConfigParam( 'sCoreDir' ) . "/phpmailer/clas
  * Mailing manager.
  * Collects mailing configuration, other parameters, performs mailing functions
  * (newsletters, ordering, registration emails, etc.).
- * @package core
  */
 class oxEmail extends PHPMailer
 {

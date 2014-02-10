@@ -24,7 +24,6 @@
  * Shop list manager.
  * Organizes list of shop objects.
  *
- * @package model
  */
 class oxShopList extends oxList
 {

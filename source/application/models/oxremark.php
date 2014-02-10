@@ -23,7 +23,6 @@
 /**
  * Remark manager.
  *
- * @package model
  */
 class oxRemark extends oxBase
 {

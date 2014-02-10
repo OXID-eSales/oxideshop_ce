@@ -22,7 +22,6 @@
 
 /**
  * user list "view" class.
- * @package admin
  */
 class List_Review extends Article_List
 {

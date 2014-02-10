@@ -24,7 +24,6 @@
  * Admin user address setting manager.
  * Collects user address settings, updates it on user submit, etc.
  * Admin Menu: User Administration -> Users -> Addresses.
- * @package admin
  */
 class User_Address extends oxAdminDetails
 {

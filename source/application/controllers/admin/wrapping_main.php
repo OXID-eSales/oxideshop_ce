@@ -24,7 +24,6 @@
  * Admin wrapping main manager.
  * Performs collection and updatind (on user submit) main item information.
  * Admin Menu: System Administration -> Wrapping -> Main.
- * @package admin
  */
 class Wrapping_Main extends oxAdminDetails
 {

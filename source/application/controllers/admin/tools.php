@@ -24,7 +24,6 @@
  * Admin systeminfo manager.
  * Returns template, that arranges two other templates ("delivery_list.tpl"
  * and "delivery_main.tpl") to frame.
- * @package admin
  */
 class Tools extends oxAdminView
 {

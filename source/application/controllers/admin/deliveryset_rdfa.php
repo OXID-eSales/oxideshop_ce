@@ -24,7 +24,6 @@
  * Admin article RDFa deliveryset manager.
  * Performs collection and updatind (on user submit) main item information.
  * Admin Menu: Shop Settings -> Shipping & Handling -> RDFa.
- * @package admin
  */
 class deliveryset_rdfa extends payment_rdfa
 {

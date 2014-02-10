@@ -23,7 +23,6 @@
 /**
  * Media URL handler
  *
- * @package model
  */
 class oxMediaUrl extends oxI18n
 {

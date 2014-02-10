@@ -24,7 +24,6 @@
  * Admin statistic list manager.
  * Performs collection and managing (such as filtering or deleting) function.
  * Admin Menu: Statistics -> Show.
- * @package admin
  */
 class Statistic_List extends oxAdminList
 {

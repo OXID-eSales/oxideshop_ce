@@ -22,7 +22,6 @@
 
 /**
  * user list "view" class.
- * @package admin
  */
 class List_User extends User_List
 {

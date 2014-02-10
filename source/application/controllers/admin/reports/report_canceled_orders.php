@@ -23,7 +23,6 @@
 if ( !class_exists( 'report_canceled_orders' ) ) {
 /**
  * Canceled orders reports class
- * @package admin
  */
 class Report_canceled_orders extends report_base
 {

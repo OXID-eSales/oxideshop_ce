@@ -24,7 +24,6 @@
  * Admin article main payment manager.
  * Performs collection and updatind (on user submit) main item information.
  * Admin Menu: Shop Settings -> Payment Methods -> Main.
- * @package admin
  */
 class Payment_Main extends oxAdminDetails
 {

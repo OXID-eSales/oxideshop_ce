@@ -23,7 +23,6 @@
 /**
  * Article amount price list
  *
- * @package model
  */
 class oxAmountPriceList extends oxList
 {

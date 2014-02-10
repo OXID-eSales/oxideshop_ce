@@ -24,7 +24,6 @@
  * Pricealarm manager.
  * Performs Pricealarm data/objects loading, deleting.
  *
- * @package model
  */
 class oxPricealarm extends oxBase
 {

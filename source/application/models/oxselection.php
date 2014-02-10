@@ -23,7 +23,6 @@
 /**
  * Variant selection container class
  *
- * @package model
  */
 class oxSelection
 {

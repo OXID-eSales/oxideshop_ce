@@ -24,7 +24,6 @@
  * Wrapping manager.
  * Performs Wrapping data/objects loading, deleting.
  *
- * @package model
  */
 class oxWrapping extends oxI18n
 {

@@ -24,7 +24,6 @@
  * Admin user extended settings manager.
  * Collects user extended settings, updates it on user submit, etc.
  * Admin Menu: User Administration -> Users -> Extended.
- * @package admin
  */
 class User_Extend extends oxAdminDetails
 {

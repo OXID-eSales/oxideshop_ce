@@ -24,7 +24,6 @@
  * Admin article main newsletter manager.
  * Performs collection and updatind (on user submit) main item information.
  * Admin Menu: Customer News -> Newsletter -> Main.
- * @package admin
  */
 class Newsletter_Main extends oxAdminDetails
 {

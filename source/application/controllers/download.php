@@ -23,7 +23,6 @@
 /**
  * Article file download page.
  *
- * @package main
  */
 class Download extends oxUBase
 {

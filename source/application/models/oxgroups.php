@@ -24,7 +24,6 @@
  * Group manager.
  * Base class for user groups. Does nothing special yet.
  *
- * @package model
  */
 class oxGroups extends oxI18n
 {

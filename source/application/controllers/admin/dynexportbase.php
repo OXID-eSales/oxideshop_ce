@@ -30,7 +30,6 @@ DEFINE("ERR_FILEIO", 1);
 /**
  * DynExportBase framework class encapsulating a method for defining implementation class.
  * Performs export function according to user chosen categories.
- * @package admin
  * @subpackage dyn
  */
 class DynExportBase extends oxAdminDetails

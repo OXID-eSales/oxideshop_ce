@@ -22,7 +22,6 @@
 
 /**
  * Admin vendor list manager.
- * @package admin
  */
 class Vendor_List extends oxAdminList
 {

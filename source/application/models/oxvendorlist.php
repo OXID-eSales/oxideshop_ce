@@ -24,7 +24,6 @@
  * Vendor list manager.
  * Collects list of vendors according to collection rules (activ, etc.).
  *
- * @package model
  */
 class oxVendorList extends oxList
 {

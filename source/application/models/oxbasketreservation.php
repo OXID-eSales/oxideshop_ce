@@ -23,7 +23,6 @@
 /**
  * Basket reservations handler class
  *
- * @package model
  */
 class oxBasketReservation extends oxSuperCfg
 {

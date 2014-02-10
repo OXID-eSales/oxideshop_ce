@@ -26,7 +26,6 @@
  * weight, dimensions, purchase Price and etc.). There is ability to assign article
  * to any chosen article group.
  * Admin Menu: Manage Products -> Articles -> Extended.
- * @package admin
  */
 class Article_Extend extends oxAdminDetails
 {

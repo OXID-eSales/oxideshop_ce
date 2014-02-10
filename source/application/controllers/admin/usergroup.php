@@ -25,7 +25,6 @@
  * Returns template, that arranges two other templates ("usergroup_list.tpl"
  * and "usergroup_main.tpl") to frame.
  * Admin Menu: User Administration -> User Groups.
- * @package admin
  */
 class UserGroup extends oxAdminView
 {

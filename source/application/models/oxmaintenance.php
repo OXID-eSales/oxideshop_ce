@@ -24,7 +24,6 @@
  * Maintenance task handler. Maintenance tasks are called periodically, by crontab
  * or by random visitor.
  *
- * @package model
  */
 class oxMaintenance
 {

@@ -23,7 +23,6 @@
 /**
  * Shop meta data manager.
  *
- * @package core
  */
 class oxShopMetaData extends oxSuperCfg
 {

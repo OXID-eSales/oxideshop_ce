@@ -22,7 +22,6 @@
 
 /**
  * user list "view" class.
- * @package admin
  */
 class List_Order extends Order_List
 {

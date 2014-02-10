@@ -25,7 +25,6 @@
  * There is possibility to change voucherserie name, description, valid terms
  * and etc.
  * Admin Menu: Shop Settings -> Vouchers -> Main.
- * @package admin
  */
 class VoucherSerie_Main extends DynExportBase
 {

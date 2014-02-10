@@ -22,7 +22,6 @@
 
 /**
  * Class handeling csv import
- * @package core
  */
 class oxErpCsv extends oxERPBase
 {

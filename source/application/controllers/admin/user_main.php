@@ -24,7 +24,6 @@
  * Admin article main user manager.
  * Performs collection and updatind (on user submit) main item information.
  * Admin Menu: User Administration -> Users -> Main.
- * @package admin
  */
 class User_Main extends oxAdminDetails
 {

@@ -24,7 +24,6 @@
  * Article rate manager.
  * Performs loading, updating, inserting of article rates.
  *
- * @package model
  */
 class oxRating extends oxBase
 {

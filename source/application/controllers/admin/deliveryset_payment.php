@@ -25,7 +25,6 @@
  * There is possibility to assign set to payment method
  * and etc.
  * Admin Menu: Shop settings -> Shipping & Handling Set -> Payment
- * @package admin
  */
 class DeliverySet_Payment extends oxAdminDetails
 {

@@ -23,7 +23,6 @@
 /**
  * Admin article main selectlist manager.
  * Performs collection and updatind (on user submit) main item information.
- * @package admin
  */
 class Country_Main extends oxAdminDetails
 {

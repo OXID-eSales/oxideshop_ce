@@ -22,7 +22,6 @@
 
 /**
  * Class for extending
- * @package admin
  */
 class User_Overview extends oxAdminDetails
 {

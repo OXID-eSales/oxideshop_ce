@@ -23,7 +23,6 @@
 
 /**
  * Admin dyn trusted manager.
- * @package admin
  * @subpackage dyn
  */
 class dyn_trusted extends Shop_Config

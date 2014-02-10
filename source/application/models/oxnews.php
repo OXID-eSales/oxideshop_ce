@@ -25,7 +25,6 @@
  * Performs news text collection. News may be sorted by user categories (only
  * these user may read news), etc.
  *
- * @package model
  */
 class oxNews extends oxI18n
 {

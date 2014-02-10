@@ -25,7 +25,6 @@
  * Returns template, that arranges two other templates ("apricealarm_list.tpl"
  * and "pricealarm_main.tpl") to frame.
  * Admin Menu: Customer News -> admin_pricealarm.
- * @package admin
  */
 class Admin_Pricealarm extends oxAdminView
 {

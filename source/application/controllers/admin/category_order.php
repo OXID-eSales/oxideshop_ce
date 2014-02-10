@@ -24,7 +24,6 @@
  * Admin article categories order manager.
  * There is possibility to change category sorting.
  * Admin Menu: Manage Products -> Categories -> Order.
- * @package admin
  */
 class Category_Order extends oxAdminDetails
 {

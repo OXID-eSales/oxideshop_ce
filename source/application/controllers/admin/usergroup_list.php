@@ -24,7 +24,6 @@
  * Admin usergroup list manager.
  * Performs collection and managing (such as filtering or deleting) function.
  * Admin Menu: User Administration -> User Groups.
- * @package admin
  */
 class UserGroup_List extends oxAdminList
 {

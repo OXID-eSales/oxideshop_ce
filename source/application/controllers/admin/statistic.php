@@ -25,7 +25,6 @@
  * Returns template, that arranges two other templates ("statistic_list.tpl"
  * and "statistic_main.tpl") to frame.
  * Admin Menu: Statistics -> Show.
- * @package admin
  */
 class Statistic extends oxAdminView
 {

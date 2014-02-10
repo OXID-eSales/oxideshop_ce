@@ -22,7 +22,6 @@
 
 /**
  * Admin general export manager.
- * @package admin
  */
 class GenImport_Main extends oxAdminDetails
 {

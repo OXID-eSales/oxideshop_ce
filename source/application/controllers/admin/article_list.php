@@ -25,7 +25,6 @@
  * Collects base article information (according to filtering rules), performs sorting,
  * deletion of articles, etc.
  * Admin Menu: Manage Products -> Articles.
- * @package admin
  */
 class Article_List extends oxAdminList
 {

@@ -23,7 +23,6 @@
 /**
  * Defines an element of multidimentional variant name tree structure. Contains article id, variant name, URL, price, price text, and a subset of MD variants.
  *
- * @package model
  */
 class oxMdVariant extends oxSuperCfg
 {

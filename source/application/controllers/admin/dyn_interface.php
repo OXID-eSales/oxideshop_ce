@@ -22,7 +22,6 @@
 
 /**
  * Admin dyn manager.
- * @package admin
  * @subpackage dyn
  */
 class dyn_interface extends oxAdminDetails

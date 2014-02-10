@@ -8,7 +8,6 @@
  * civil and criminal law.
  *
  * @link http://www.oxid-esales.com
- * @package ModuleCertification
  * @copyright (c) OXID eSales AG 2003-#OXID_VERSION_YEAR#
  */
 

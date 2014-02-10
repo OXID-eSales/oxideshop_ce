@@ -24,7 +24,6 @@
  * Main "view" class.
  * Organizes multilanguage, parameters fetching, DB managing, file checking
  * and processing, etc.
- * @package admin
  */
 class oxAdminView extends oxView
 {

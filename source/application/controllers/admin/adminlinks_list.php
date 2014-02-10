@@ -25,7 +25,6 @@
  * Collects list of admin links. Links may be viewed by language, sorted by date,
  * url or any keyword.
  * Admin Menu: Customer News -> Links.
- * @package admin
  */
 class Adminlinks_List extends oxAdminList
 {

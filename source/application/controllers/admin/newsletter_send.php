@@ -23,7 +23,6 @@
 /**
  * Newsletter sending manager.
  * Performs sending of newsletter to selected user groups.
- * @package admin
  */
 class Newsletter_Send extends Newsletter_Selection
 {

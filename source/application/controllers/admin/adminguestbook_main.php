@@ -24,7 +24,6 @@
  * Guestbook record manager.
  * Returns template, that arranges guestbook record information.
  * Admin Menu: User information -> Guestbook -> Main.
- * @package admin
  */
 class Adminguestbook_Main extends oxAdminDetails
 {

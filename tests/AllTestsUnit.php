@@ -6,7 +6,6 @@
  * phpunit <Test dir>_AllTests
  *
  * @link      http://www.oxid-esales.com
- * @package   tests
  * @copyright (c) OXID eSales AG 2003-#OXID_VERSION_YEAR#
  * @version   SVN: $Id: $
  */

@@ -25,7 +25,6 @@
  * There is possibility to change attribute description, assign articles to
  * this attribute, etc.
  * Admin Menu: Manage Products -> Attributes -> Main.
- * @package admin
  */
 class Attribute_Main extends oxAdminDetails
 {

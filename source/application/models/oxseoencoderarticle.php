@@ -23,7 +23,6 @@
 /**
  * Seo encoder for articles
  *
- * @package model
  */
 class oxSeoEncoderArticle extends oxSeoEncoder
 {

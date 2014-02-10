@@ -22,7 +22,6 @@
 
 /**
  * Class reserved for extending (for customization - you can add you own fields, etc.).
- * @package admin
  */
 class Article_Userdef extends oxAdminDetails
 {

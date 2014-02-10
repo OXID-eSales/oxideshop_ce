@@ -23,7 +23,6 @@
 /**
  * Class, responsible for retrieving correct vat for users and articles
  *
- * @package model
  */
 class oxVatSelector extends oxSuperCfg
 {

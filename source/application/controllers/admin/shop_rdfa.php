@@ -25,7 +25,6 @@
  * Collects shop system settings, updates it on user submit, etc.
  * Admin Menu: Main Menu -> Core Settings -> RDFa.
  *
- * @package admin
  */
 class shop_rdfa extends Shop_Config
 {

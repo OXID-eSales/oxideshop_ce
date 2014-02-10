@@ -24,7 +24,6 @@
  * Shopping basket item manager.
  * Manager class for shopping basket item (class may be overriden).
  *
- * @package model
  */
 class oxUserBasketItem extends oxBase
 {

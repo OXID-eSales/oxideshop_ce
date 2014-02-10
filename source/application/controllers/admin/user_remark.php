@@ -24,7 +24,6 @@
  * Admin user history settings manager.
  * Collects user history settings, updates it on user submit, etc.
  * Admin Menu: User Administration -> Users -> History.
- * @package admin
  */
 class User_Remark extends oxAdminDetails
 {

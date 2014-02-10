@@ -23,7 +23,6 @@
 if ( !class_exists( "report_visitor_absolute") ) {
 /**
  * Shop visitor reports class
- * @package admin
  */
 class Report_visitor_absolute extends report_base
 {

@@ -24,7 +24,6 @@
  * Shop manager.
  * Performs configuration and object loading or deletion.
  *
- * @package model
  */
 class oxShop extends oxI18n
 {

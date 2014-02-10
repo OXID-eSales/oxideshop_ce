@@ -23,7 +23,6 @@
 /**
  * Manufacturer manager
  *
- * @package model
  */
 class oxManufacturer extends oxI18n implements oxIUrl
 {

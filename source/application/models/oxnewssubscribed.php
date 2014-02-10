@@ -25,7 +25,6 @@
  * Performs user managing function
  * information, deletion and other.
  *
- * @package model
  */
 class oxNewsSubscribed extends oxBase
 {

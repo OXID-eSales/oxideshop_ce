@@ -48,7 +48,6 @@ require_once "$sIncPath/core/jpgraph/jpgraph_pie3d.php";
 if ( !class_exists( 'report_base' ) ) {
 /**
  * Base reports class
- * @package admin
  */
 class Report_base extends oxAdminView
 {

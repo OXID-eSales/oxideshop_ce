@@ -23,7 +23,6 @@
 /**
  * Recommendation list manager class.
  *
- * @package model
  */
 class oxRecommList extends oxBase implements oxIUrl
 {

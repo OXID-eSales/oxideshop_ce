@@ -23,7 +23,6 @@
 /**
  * Admin dynscreen list manager.
  * Arranges controll tabs and sets title.
- * @package admin
  * @subpackage dyn
  */
 class Dynscreen_List extends Dynscreen

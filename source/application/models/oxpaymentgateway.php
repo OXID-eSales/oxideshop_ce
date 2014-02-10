@@ -24,7 +24,6 @@
  * Payment gateway manager.
  * Checks and sets payment method data, executes payment.
  *
- * @package model
  */
 
 class oxPaymentGateway extends oxSuperCfg

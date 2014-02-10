@@ -24,7 +24,6 @@
  * Admin article main order manager.
  * Performs collection and updatind (on user submit) main item information.
  * Admin Menu: Orders -> Display Orders -> Main.
- * @package admin
  */
 class Order_Main extends oxAdminDetails
 {

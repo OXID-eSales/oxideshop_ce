@@ -23,7 +23,6 @@
 /**
  * Article interface
  *
- * @package core
  */
 interface oxIArticle
 {

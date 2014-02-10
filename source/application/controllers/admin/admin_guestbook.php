@@ -25,7 +25,6 @@
  * Sets template, that arranges two other templates ("adminguestbook_list.tpl"
  * and "adminguestbook_main.tpl") to frame.
  * Admin Menu: User information -> Guestbook.
- * @package admin
  */
 class Admin_Guestbook extends oxAdminView
 {

@@ -23,7 +23,6 @@
 /**
  * Debug information formatter
  *
- * @package core
  */
 class oxDebugInfo
 {

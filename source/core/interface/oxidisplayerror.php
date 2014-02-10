@@ -23,7 +23,6 @@
 /**
  * DisplayError interface
  *
- * @package core
  */
 interface oxIDisplayError
 {

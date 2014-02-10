@@ -25,7 +25,6 @@
  * Collects customer review about article data. There ir possibility to update
  * review text or delete it.
  * Admin Menu: Manage Products -> Articles -> Review.
- * @package admin
  */
 class Article_Review extends oxAdminDetails
 {

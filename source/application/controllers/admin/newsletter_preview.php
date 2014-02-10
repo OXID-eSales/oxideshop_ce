@@ -24,7 +24,6 @@
  * Newsletter preview manager.
  * Creates plaintext and HTML format newsletter preview.
  * Admin Menu: Customer News -> Newsletter -> Preview.
- * @package admin
  */
 class Newsletter_Preview extends oxAdminDetails
 {

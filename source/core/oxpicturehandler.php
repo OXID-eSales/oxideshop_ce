@@ -22,7 +22,6 @@
 
 /**
  * class for pictures processing
- * @package core
  */
 class oxPictureHandler extends oxSuperCfg
 {

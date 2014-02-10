@@ -25,7 +25,6 @@
  * There is possibility to change deliveryset name, article, user
  * and etc.
  * Admin Menu: Shop settings -> Shipping & Handling -> Main Sets.
- * @package admin
  */
 class Theme_Main extends oxAdminDetails
 {

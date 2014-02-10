@@ -24,7 +24,6 @@
  * Admin article RDFa payment manager.
  * Performs collection and updatind (on user submit) main item information.
  * Admin Menu: Shop Settings -> Payment Methods -> RDFa.
- * @package admin
  */
 class payment_rdfa extends oxAdminDetails
 {

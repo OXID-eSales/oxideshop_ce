@@ -25,7 +25,6 @@
  * Returns template, that arranges two other templates ("theme_list.tpl"
  * and "theme_main.tpl") to frame.
  * Admin Menu: Main Menu -> Theme.
- * @package admin
  */
 class Module extends oxAdminView
 {

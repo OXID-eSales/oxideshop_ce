@@ -24,7 +24,6 @@
  * Admin links details manager.
  * Creates form for submitting new admin links or modifying old ones.
  * Admin Menu: Customer News -> Links.
- * @package admin
  */
 class Adminlinks_Main extends oxAdminDetails
 {

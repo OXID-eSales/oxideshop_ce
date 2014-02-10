@@ -23,7 +23,6 @@
 /**
  * Admin vendor main screen.
  * Performs collection and updating (on user submit) main item information.
- * @package admin
  */
 class Vendor_Main extends oxAdminDetails
 {

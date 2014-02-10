@@ -24,7 +24,6 @@
  * Admin statistics service setting manager.
  * Collects statistics service settings, updates it on user submit, etc.
  * Admin Menu: Statistics -> Show -> Clear Log.
- * @package admin
  */
 class Statistic_Service extends oxAdminDetails
 {

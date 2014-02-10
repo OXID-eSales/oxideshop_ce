@@ -23,7 +23,6 @@
 /**
  * Checks Version of System files.
  * Admin Menu: Service -> Version Checker.
- * @package admin
  */
 class Diagnostics_List extends oxAdminList
 {

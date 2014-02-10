@@ -25,7 +25,6 @@
  * Returns template, that arranges two other templates ("payment_list.tpl"
  * and "payment_main.tpl") to frame.
  * Admin Menu: Shop Settings -> Payment Methods.
- * @package admin
  */
 class Admin_Payment extends oxAdminView
 {

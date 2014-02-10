@@ -25,7 +25,6 @@
  * Collects detailed article information, possible variants, such information
  * as crosselling, similarlist, picture gallery list, etc.
  * OXID eShop -> (Any chosen product).
- * @package main
  */
 class Details extends oxUBase
 {

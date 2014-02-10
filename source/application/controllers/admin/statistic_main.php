@@ -24,7 +24,6 @@
  * Admin article main statistic manager.
  * Performs collection and updatind (on user submit) main item information.
  * Admin Menu: Statistics -> Show -> Main.
- * @package admin
  */
 class Statistic_Main extends oxAdminDetails
 {

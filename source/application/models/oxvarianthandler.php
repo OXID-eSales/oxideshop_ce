@@ -23,7 +23,6 @@
 /**
  * oxVariantHandler encapsulates methods dealing with multidimensional variant and variant names.
  *
- * @package model
  */
 class oxVariantHandler extends oxSuperCfg
 {

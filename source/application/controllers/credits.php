@@ -22,7 +22,6 @@
 
 /**
  * Special page for Credits
- * @package main
  */
 class Credits extends Content
 {

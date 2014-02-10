@@ -25,7 +25,6 @@
  * Collects information about article's used pictures, there is posibility to
  * upload any other picture, etc.
  * Admin Menu: Manage Products -> Articles -> Pictures.
- * @package admin
  */
 class Article_Pictures extends oxAdminDetails
 {

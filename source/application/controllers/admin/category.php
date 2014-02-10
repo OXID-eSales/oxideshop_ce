@@ -25,7 +25,6 @@
  * Returns template, that arranges two other templates ("category_list.tpl"
  * and "category_main.tpl") to frame.
  * Admin Menu: Manage Products -> Categories.
- * @package admin
  */
 class Category extends oxAdminView
 {

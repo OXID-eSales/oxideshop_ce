@@ -23,7 +23,6 @@
 /**
  * Implements search
  *
- * @package model
  */
 class oxSearch extends oxSuperCfg
 {

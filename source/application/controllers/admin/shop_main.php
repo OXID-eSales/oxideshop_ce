@@ -25,7 +25,6 @@
  * Admin article main shop manager.
  * Performs collection and updatind (on user submit) main item information.
  * Admin Menu: Main Menu -> Core Settings -> Main.
- * @package admin
  */
 class Shop_Main extends oxAdminDetails
 {

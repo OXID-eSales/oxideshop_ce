@@ -28,7 +28,6 @@
  * Admin article main news manager.
  * Performs collection and updatind (on user submit) main item information.
  * Admin Menu: Customer News -> News -> Main.
- * @package admin
  */
 class News_Main extends oxAdminDetails
 {

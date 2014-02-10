@@ -24,7 +24,6 @@
  * Admin article categories thumbnail manager.
  * Category thumbnail manager (Previews assigned pictures).
  * Admin Menu: Manage Products -> Categories -> Thumbnail.
- * @package admin
  */
 class Category_Pictures extends oxAdminDetails
 {

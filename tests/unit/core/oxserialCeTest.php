@@ -25,7 +25,6 @@ require_once realpath( "." ).'/unit/test_config.inc.php';
 
 /**
  * License key managing class.
- * @package core
  */
 class Unit_Core_oxSerialCeTest extends OxidTestCase
 {

@@ -22,7 +22,6 @@
 
 /**
  * Class for updating category tree structure in DB.
- * @package admin
  */
 class Category_Update extends oxAdminView
 {

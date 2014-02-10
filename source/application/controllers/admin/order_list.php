@@ -24,7 +24,6 @@
  * Admin order list manager.
  * Performs collection and managing (such as filtering or deleting) function.
  * Admin Menu: Orders -> Display Orders.
- * @package admin
  */
 class Order_List extends oxAdminList
 {

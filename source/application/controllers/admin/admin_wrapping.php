@@ -25,7 +25,6 @@
  * Returns template, that arranges two other templates ("user_list.tpl"
  * and "user_main.tpl") to frame.
  * Admin Menu: User Administration -> Users.
- * @package admin
  */
 class Admin_Wrapping extends oxAdminView
 {

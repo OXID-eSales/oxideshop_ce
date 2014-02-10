@@ -23,7 +23,6 @@
 /**
  * class for output processing
  *
- * @package core
  */
 class oxOutput extends oxSuperCfg
 {

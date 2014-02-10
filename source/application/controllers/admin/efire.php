@@ -24,7 +24,6 @@
  * Sets template, that arranges two other templates ("efire_list.tpl"
  * and "efire_main.tpl") to frame.
  * Admin Menu: Efire -> Connector.
- * @package admin
  */
 class Efire extends oxAdminView
 {

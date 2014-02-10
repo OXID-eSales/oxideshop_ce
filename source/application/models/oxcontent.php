@@ -24,7 +24,6 @@
  * Content manager.
  * Base object for content pages
  *
- * @package model
  */
 class oxContent extends oxI18n implements oxIUrl
 {

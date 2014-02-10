@@ -23,7 +23,6 @@
 /**
  * Links manager.
  * Collects stored in DB links data (URL, description).
- * @package model
  */
 class oxLinks extends oxI18n
 {

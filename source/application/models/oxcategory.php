@@ -25,7 +25,6 @@
  * Collects category information (articles, etc.), performs insertion/deletion
  * of categories nodes. By recursion methods are set structure of category.
  *
- * @package model
  */
 class oxCategory extends oxI18n implements oxIUrl
 {

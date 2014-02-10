@@ -22,7 +22,6 @@
 
 /**
  * System requirements class.
- * @package core
  */
 class oxSysRequirements
 {

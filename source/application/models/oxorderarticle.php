@@ -24,7 +24,6 @@
  * Order article manager.
  * Performs copying of article.
  *
- * @package model
  */
 class oxOrderArticle extends oxBase implements oxIArticle
 {

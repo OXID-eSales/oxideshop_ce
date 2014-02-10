@@ -25,7 +25,6 @@
  * There is possibility to change attribute description, assign categories to
  * this attribute, etc.
  * Admin Menu: Manage Products -> Attributes -> Gruppen.
- * @package admin
  */
 class Attribute_Category extends oxAdminDetails
 {

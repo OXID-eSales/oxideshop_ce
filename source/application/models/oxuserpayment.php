@@ -25,7 +25,6 @@
  * Performs assigning, loading, inserting and updating functions for
  * user payment.
  *
- * @package model
  */
 class oxUserPayment extends oxBase
 {

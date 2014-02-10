@@ -23,7 +23,6 @@
 /**
  * List manager.
  * Collects list data (eg. from DB), performs list changes updating (to DB), etc.
- * @package core
  */
 class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
 {

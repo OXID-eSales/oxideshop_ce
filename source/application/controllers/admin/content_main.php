@@ -24,7 +24,6 @@
  * Admin content manager.
  * There is possibility to change content description, enter page text etc.
  * Admin Menu: Customerinformations -> Content.
- * @package admin
  */
 class Content_Main extends oxAdminDetails
 {

@@ -23,7 +23,6 @@
 if ( !class_exists( "report_conversion_rate")) {
 /**
  * Conversion rate reports class
- * @package admin
  */
 class Report_conversion_rate extends report_base
 {

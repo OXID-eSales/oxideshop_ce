@@ -23,7 +23,6 @@
 /**
  * Promotion List manager.
  *
- * @package model
  */
 class oxActionList extends oxList
 {

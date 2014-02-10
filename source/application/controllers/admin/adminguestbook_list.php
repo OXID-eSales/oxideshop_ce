@@ -24,7 +24,6 @@
  * Guestbook records list manager.
  * Returns template, that arranges guestbook records list.
  * Admin Menu: User information -> Guestbook.
- * @package admin
  */
 class AdminGuestbook_List extends oxAdminList
 {

@@ -205,7 +205,6 @@ require_once $sTcPdfPath . "tcpdf.php";
 
 /**
  * TCPDF class wrapper, set/overrides oxid specific functionality
- * @package core
  */
 class oxPDF extends TCPDF
 {

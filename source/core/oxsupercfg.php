@@ -22,7 +22,6 @@
 
 /**
  * Super config class
- * @package core
  */
 class oxSuperCfg
 {

@@ -25,7 +25,6 @@
  * Returns template, that arranges two other templates ("voucherserie_list.tpl"
  * and "voucherserie_main.tpl") to frame.
  * Admin Menu: Shop Settings -> Vouchers.
- * @package admin
  */
 class VoucherSerie extends oxAdminView
 {

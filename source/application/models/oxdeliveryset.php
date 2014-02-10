@@ -23,7 +23,6 @@
 /**
  * Order delivery set manager.
  *
- * @package model
  */
 class oxDeliverySet extends oxI18n
 {

@@ -24,7 +24,6 @@
  * Admin payment list manager.
  * Performs collection and managing (such as filtering or deleting) function.
  * Admin Menu: Shop Settings -> Payment Methods.
- * @package admin
  */
 class Payment_List extends oxAdminList
 {

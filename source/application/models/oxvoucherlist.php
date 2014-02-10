@@ -23,7 +23,6 @@
 /**
  * Voucher list manager.
  *
- * @package model
  */
 class oxVoucherList extends oxList
 {

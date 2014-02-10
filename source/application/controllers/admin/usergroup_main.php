@@ -24,7 +24,6 @@
  * Admin article main usergroup manager.
  * Performs collection and updatind (on user submit) main item information.
  * Admin Menu: User Administration -> User Groups -> Main.
- * @package admin
  */
 class UserGroup_Main extends oxAdminDetails
 {

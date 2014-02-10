@@ -32,7 +32,6 @@ DEFINE('ACTION_UPDATE_STOCK', 4);
 /**
  * Base class associated with database record
  *
- * @package core
  */
 class oxBase extends oxSuperCfg
 {

@@ -23,7 +23,6 @@
 /**
  * Credit card validation class
  *
- * @package core
  */
 class oxCcValidator
 {

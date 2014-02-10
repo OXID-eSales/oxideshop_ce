@@ -27,7 +27,6 @@ DEFINE('EFIRE_WSDL_URL', 'https://soap.oxid-efire.com/');
 /**
  * Efire SOAP client responsible for getting retrieving a connector over SOAP.
  *
- * @package core
  */
 class oxEfiDownloader extends oxSuperCfg
 {

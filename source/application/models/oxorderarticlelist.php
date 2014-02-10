@@ -23,7 +23,6 @@
 /**
  * Order article list manager.
  *
- * @package model
  */
 class oxOrderArticleList extends oxList
 {

@@ -26,7 +26,6 @@ if (!defined('OXTAGCLOUD_MINTAGLENGTH')) {
 /**
  * Class dedicated to tags handling
  *
- * @package model
  */
 class oxTag extends oxSuperCfg
 {

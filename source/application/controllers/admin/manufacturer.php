@@ -24,7 +24,6 @@
  * Returns template, that arranges two other templates ("manufacturer_list.tpl"
  * and "manufacturer_main.tpl") to frame.
  * Admin Menu: Settings -> Manufacturers
- * @package admin
  */
 class Manufacturer extends oxAdminView
 {

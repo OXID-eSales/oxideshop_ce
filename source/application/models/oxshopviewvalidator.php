@@ -24,7 +24,6 @@
  * Shop view validator.
  * checks which views are valid / invalid
  *
- * @package model
  */
 class oxShopViewValidator {
 

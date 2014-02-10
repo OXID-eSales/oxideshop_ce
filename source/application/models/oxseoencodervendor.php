@@ -23,7 +23,6 @@
 /**
  * Seo encoder base
  *
- * @package model
  */
 class oxSeoEncoderVendor extends oxSeoEncoder
 {

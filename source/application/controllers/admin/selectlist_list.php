@@ -22,7 +22,6 @@
 
 /**
  * Admin selectlist list manager.
- * @package admin
  */
 class SelectList_List extends oxAdminList
 {

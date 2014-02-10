@@ -22,7 +22,6 @@
 
 /**
  * Statistics manager.
- * @package model
  */
 class oxStatistic extends oxBase
 {

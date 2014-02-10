@@ -25,7 +25,6 @@
  * Collects and updates (on user submit) article base parameters data ( such as
  * title, article No., short Description and etc.).
  * Admin Menu: Manage Products -> Articles -> Main.
- * @package admin
  */
 class Article_Main extends oxAdminDetails
 {

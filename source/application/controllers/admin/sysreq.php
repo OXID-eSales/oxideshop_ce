@@ -23,7 +23,6 @@
 /**
  * Collects System information.
  * Admin Menu: Service -> System Requirements.
- * @package admin
  */
 class sysreq extends oxAdminView
 {

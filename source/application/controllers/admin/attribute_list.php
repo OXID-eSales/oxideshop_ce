@@ -25,7 +25,6 @@
  * Collects attributes base information (Description), there is ability to filter
  * them by Description or delete them.
  * Admin Menu: Manage Products -> Attributes.
- * @package admin
  */
 class Attribute_List extends oxAdminList
 {

@@ -25,7 +25,6 @@
  * There is possibility to add User, groups
  * and etc.
  * Admin Menu: Shop settings -> Shipping & Handling Sets -> Users.
- * @package admin
  */
 class DeliverySet_Users extends oxAdminDetails
 {

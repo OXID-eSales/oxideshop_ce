@@ -25,7 +25,6 @@
  * Returns template, that consists with title-admin-page.
  * Starting admin menu window.
  * Admin Menu.
- * @package admin
  */
 class Admin_Start extends oxAdminView
 {

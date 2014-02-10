@@ -22,7 +22,6 @@
 
 /**
  * Price calculation class. Responsible for simple price calculations. Basically contains Brutto, Netto prices and VAT values.
- * @package core
  */
 class oxPrice
 {

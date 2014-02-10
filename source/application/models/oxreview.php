@@ -24,7 +24,6 @@
  * Article review manager.
  * Performs loading, updating, inserting of article review.
  *
- * @package model
  */
 class oxReview extends oxBase
 {

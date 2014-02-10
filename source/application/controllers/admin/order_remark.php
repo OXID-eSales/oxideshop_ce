@@ -24,7 +24,6 @@
  * Admin order remark manager.
  * Collects order remark information, updates it on user submit, etc.
  * Admin Menu: Orders -> Display Orders -> History.
- * @package admin
  */
 class Order_Remark extends oxAdminDetails
 {

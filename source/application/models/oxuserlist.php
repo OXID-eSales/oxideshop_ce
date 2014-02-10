@@ -23,7 +23,6 @@
 /**
  * User list manager.
  *
- * @package model
  */
 class oxUserList extends oxList
 {

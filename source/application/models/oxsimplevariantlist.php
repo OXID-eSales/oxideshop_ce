@@ -23,7 +23,6 @@
 /**
  * Simple variant list.
  *
- * @package model
  */
 class oxSimpleVariantList extends oxList
 {

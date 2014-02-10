@@ -23,7 +23,6 @@
 /**
  * Interface for selection list based objects
  *
- * @package core
  */
 interface oxISelectList
 {

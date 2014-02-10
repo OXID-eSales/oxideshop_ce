@@ -24,7 +24,6 @@
  * Admin shop license setting manager.
  * Collects shop license settings, updates it on user submit, etc.
  * Admin Menu: Main Menu -> Core Settings -> License.
- * @package admin
  */
 class Shop_License extends Shop_Config
 {

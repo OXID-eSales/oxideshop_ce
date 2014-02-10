@@ -23,7 +23,6 @@
 /**
  * Interface for object URLs getters
  *
- * @package core
  */
 interface oxIUrl
 {

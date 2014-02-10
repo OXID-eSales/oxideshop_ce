@@ -31,7 +31,6 @@ if (!defined('OXTAGCLOUD_MINFONT')) {
 /**
  * Class dedicateg to tag cloud handling
  *
- * @package model
  */
 class oxTagCloud extends oxSuperCfg
 {

@@ -25,7 +25,6 @@
  * Returns template, that arranges two other templates ("deliveryset_list.tpl"
  * and "deliveryset_main.tpl") to frame.
  * Admin Menu: Shop settings -> Shipping & Handling Sets.
- * @package admin
  */
 class DeliverySet extends oxAdminView
 {

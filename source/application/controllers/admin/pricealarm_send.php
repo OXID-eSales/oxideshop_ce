@@ -23,7 +23,6 @@
 /**
  * pricealarm sending manager.
  * Performs sending of pricealarm to selected iAllCnt groups.
- * @package admin
  */
 class PriceAlarm_Send extends oxAdminList
 {

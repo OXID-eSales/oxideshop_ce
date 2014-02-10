@@ -22,7 +22,6 @@
 
 /**
  * Navigation tree control class
- * @package admin
  */
 class OxNavigationTree extends oxSuperCfg
 {

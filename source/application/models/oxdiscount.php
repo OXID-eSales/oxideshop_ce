@@ -23,7 +23,6 @@
 /**
  * Discounts manager.
  *
- * @package model
  */
 class oxDiscount extends oxI18n
 {

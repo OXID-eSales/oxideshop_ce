@@ -32,7 +32,6 @@ try {
 /**
  * Facebook API
  *
- * @package core
  */
 class oxFb extends Facebook
 {

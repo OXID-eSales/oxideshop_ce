@@ -24,7 +24,6 @@
  * Article list manager.
  * Collects list of article according to collection rules (categories, etc.).
  *
- * @package model
  */
 class oxArticleList extends oxList
 {

@@ -24,7 +24,6 @@
  * Newsletter plain manager.
  * Performs newsletter creation (plain text format, collects neccessary information).
  * Admin Menu: Customer News -> Newsletter -> Text.
- * @package admin
  */
 class Newsletter_Plain extends oxAdminDetails
 {

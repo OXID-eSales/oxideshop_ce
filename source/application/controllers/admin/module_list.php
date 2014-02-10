@@ -25,7 +25,6 @@
  * Sets list template, list object class ('oxactions') and default sorting
  * field ('oxactions.oxtitle').
  * Admin Menu: Manage Products -> Actions.
- * @package admin
  */
 class Module_List extends oxAdminList
 {

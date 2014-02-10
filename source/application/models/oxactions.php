@@ -23,7 +23,6 @@
 /**
  * Article actions manager. Collects and keeps actions of chosen article.
  *
- * @package model
  */
 class oxActions extends oxI18n
 {

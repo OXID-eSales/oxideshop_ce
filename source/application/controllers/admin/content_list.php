@@ -25,7 +25,6 @@
  * Collects Content base information (Description), there is ability to filter
  * them by Description or delete them.
  * Admin Menu: Customerinformations -> Content.
- * @package admin
  */
 class Content_List extends oxAdminList
 {

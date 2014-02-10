@@ -23,7 +23,6 @@
 /**
  * Including DTAUS builder class
  *
- *  @package model
  */
 require_once getShopBasePath() . "core/phpdtaus/classes/dtausbuilder.class.php";
 

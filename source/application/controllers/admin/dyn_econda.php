@@ -26,7 +26,6 @@
 
 /**
  * Admin Econda manager.
- * @package admin
  * @subpackage dyn
  */
 class dyn_econda extends Shop_Config

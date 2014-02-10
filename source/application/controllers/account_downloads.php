@@ -23,7 +23,6 @@
 /**
  * Account article file download page.
  *
- * @package main
  */
 class Account_Downloads extends Account
 {

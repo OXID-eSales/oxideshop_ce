@@ -23,7 +23,6 @@
 /**
  * lexware manager
  *
- * @package model
  */
 class oxImex extends oxBase
 {

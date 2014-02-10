@@ -51,6 +51,7 @@ class Integration_Modules_ModuleRemoveTest extends BaseModuleTestCase
         $this->_runAsserts( $aResultToAssert );
     }
 
+
     private function _caseSevenModulesPrepared_RemovedOneExtension_with_everything()
     {
         return array(

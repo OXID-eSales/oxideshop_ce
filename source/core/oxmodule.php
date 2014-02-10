@@ -315,9 +315,9 @@ class oxModule extends oxSuperCfg
     public function activate()
     {
         $oModuleCache = oxNew( 'oxModuleCache', $this );
-        $oModuleInstaller = oxNew( 'oxModuleInstaller', $this, $oModuleCache );
+        $oModuleInstaller = oxNew( 'oxModuleInstaller', $oModuleCache );
 
-        return $oModuleInstaller->activate();
+        return $oModuleInstaller->activate( $this );
     }
 
     /**
@@ -338,9 +338,9 @@ class oxModule extends oxSuperCfg
             $oModule = $this;
         }
         $oModuleCache = oxNew( 'oxModuleCache', $oModule );
-        $oModuleInstaller = oxNew( 'oxModuleInstaller', $oModule, $oModuleCache );
+        $oModuleInstaller = oxNew( 'oxModuleInstaller', $oModuleCache );
 
-        return $oModuleInstaller->deactivate();
+        return $oModuleInstaller->deactivate( $oModule );
     }
 
     /**

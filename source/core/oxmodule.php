@@ -343,84 +343,6 @@ class oxModule extends oxSuperCfg
         return $oModuleInstaller->deactivate( $oModule );
     }
 
-    /**
-     * Call module event.
-     *
-     * @param string $sEvent    Event name
-     * @param string $sModuleId Module Id
-     *
-     * @deprecated since v5.2.0 (2014-02-06).
-     *
-     * @return null
-     */
-    protected function _callEvent( $sEvent, $sModuleId )
-    {
-        $aModuleEvents = $this->getModuleEvents();
-
-        if ( isset( $aModuleEvents[$sModuleId], $aModuleEvents[$sModuleId][$sEvent] ) ) {
-            $mEvent = $aModuleEvents[$sModuleId][$sEvent];
-
-            if ( is_callable( $mEvent ) ) {
-                call_user_func($mEvent);
-            }
-        }
-    }
-
-    /**
-     * Deactivates or activates oxBlocks of a module
-     *
-     * @param string  $sModule Module name
-     * @param integer $iStatus 0 or 1 to (de)activate blocks
-     *
-     * @deprecated since v5.2.0 (2014-02-06); Not used method.
-     *
-     * @return null
-     */
-    protected function _changeBlockStatus( $sModule, $iStatus = 0 )
-    {
-        $oDb = oxDb::getDb();
-        $sShopId   = $this->getConfig()->getShopId();
-        $oDb->execute( "UPDATE oxtplblocks SET oxactive = '".(int) $iStatus."' WHERE oxmodule =". $oDb->quote( $sModule )."AND oxshopid = '$sShopId'" );
-    }
-
-    /**
-     * Deactivates or activates oxBlocks of a module
-     *
-     * @param string  $sModule Module name
-     *
-     * @deprecated since v5.2.0 (2014-02-06).
-     *
-     * @return null
-     */
-    protected function _deleteBlock( $sModule )
-    {
-        $oDb = oxDb::getDb();
-        $sShopId = $this->getConfig()->getShopId();
-        $oDb->execute( "DELETE FROM `oxtplblocks` WHERE `oxmodule` =" . $oDb->quote( $sModule ) . " AND `oxshopid` = " . $oDb->quote( $sShopId ) );
-    }
-
-
-    /**
-     * Resets template, language and menu xml cache
-     *
-     * @deprecated since v5.2.0 (2014-02-06).
-     *
-     * @return null
-     */
-    protected function _resetCache()
-    {
-        $aTemplates = $this->getTemplates();
-        $oUtils = oxRegistry::getUtils();
-        $oUtils->resetTemplateCache($aTemplates);
-        $oUtils->resetLanguageCache();
-        $oUtils->resetMenuCache();
-
-        $oUtilsObject = oxUtilsObject::getInstance();
-        $oUtilsObject->resetModuleVars();
-
-        $this->_clearApcCache();
-    }
-
 
     /**
      * Build module chains from nested array
@@ -615,6 +537,109 @@ class oxModule extends oxSuperCfg
     public function getModuleEvents()
     {
         return (array) $this->getConfig()->getConfigParam('aModuleEvents');
+    }
+
+    /**
+     * Return templates affected by template blocks for given module id.
+     *
+     * @param string $sModuleId Module id
+     *
+     * @return array
+     */
+    public function getTemplates( $sModuleId = null )
+    {
+        if (is_null($sModuleId)) {
+            $sModuleId = $this->getId();
+        }
+
+        if (!$sModuleId) {
+            return array();
+        }
+
+        $sShopId   = $this->getConfig()->getShopId();
+
+        $aTemplates = oxDb::getDb()->getCol("SELECT oxtemplate FROM oxtplblocks WHERE oxmodule = '$sModuleId' AND oxshopid = '$sShopId'" );
+
+        return $aTemplates;
+    }
+
+
+    /**
+     * Call module event.
+     *
+     * @param string $sEvent    Event name
+     * @param string $sModuleId Module Id
+     *
+     * @deprecated since v5.2.0 (2014-02-06).
+     *
+     * @return null
+     */
+    protected function _callEvent( $sEvent, $sModuleId )
+    {
+        $aModuleEvents = $this->getModuleEvents();
+
+        if ( isset( $aModuleEvents[$sModuleId], $aModuleEvents[$sModuleId][$sEvent] ) ) {
+            $mEvent = $aModuleEvents[$sModuleId][$sEvent];
+
+            if ( is_callable( $mEvent ) ) {
+                call_user_func($mEvent);
+            }
+        }
+    }
+
+    /**
+     * Deactivates or activates oxBlocks of a module
+     *
+     * @param string  $sModule Module name
+     * @param integer $iStatus 0 or 1 to (de)activate blocks
+     *
+     * @deprecated since v5.2.0 (2014-02-06); Not used method.
+     *
+     * @return null
+     */
+    protected function _changeBlockStatus( $sModule, $iStatus = 0 )
+    {
+        $oDb = oxDb::getDb();
+        $sShopId   = $this->getConfig()->getShopId();
+        $oDb->execute( "UPDATE oxtplblocks SET oxactive = '".(int) $iStatus."' WHERE oxmodule =". $oDb->quote( $sModule )."AND oxshopid = '$sShopId'" );
+    }
+
+    /**
+     * Deactivates or activates oxBlocks of a module
+     *
+     * @param string  $sModule Module name
+     *
+     * @deprecated since v5.2.0 (2014-02-06).
+     *
+     * @return null
+     */
+    protected function _deleteBlock( $sModule )
+    {
+        $oDb = oxDb::getDb();
+        $sShopId = $this->getConfig()->getShopId();
+        $oDb->execute( "DELETE FROM `oxtplblocks` WHERE `oxmodule` =" . $oDb->quote( $sModule ) . " AND `oxshopid` = " . $oDb->quote( $sShopId ) );
+    }
+
+
+    /**
+     * Resets template, language and menu xml cache
+     *
+     * @deprecated since v5.2.0 (2014-02-06).
+     *
+     * @return null
+     */
+    protected function _resetCache()
+    {
+        $aTemplates = $this->getTemplates();
+        $oUtils = oxRegistry::getUtils();
+        $oUtils->resetTemplateCache($aTemplates);
+        $oUtils->resetLanguageCache();
+        $oUtils->resetMenuCache();
+
+        $oUtilsObject = oxUtilsObject::getInstance();
+        $oUtilsObject->resetModuleVars();
+
+        $this->_clearApcCache();
     }
 
     /**
@@ -902,30 +927,6 @@ class oxModule extends oxSuperCfg
                 $oDb->execute( $sInsertSql );
             }
         }
-    }
-
-    /**
-     * Return templates affected by template blocks for given module id.
-     *
-     * @param string $sModuleId Module id
-     *
-     * @return array
-     */
-    public function getTemplates( $sModuleId = null )
-    {
-        if (is_null($sModuleId)) {
-            $sModuleId = $this->getId();
-        }
-
-        if (!$sModuleId) {
-            return array();
-        }
-
-        $sShopId   = $this->getConfig()->getShopId();
-
-        $aTemplates = oxDb::getDb()->getCol("SELECT oxtemplate FROM oxtplblocks WHERE oxmodule = '$sModuleId' AND oxshopid = '$sShopId'" );
-
-        return $aTemplates;
     }
 
     /**

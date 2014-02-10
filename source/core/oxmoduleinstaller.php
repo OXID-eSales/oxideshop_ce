@@ -71,29 +71,20 @@ class oxModuleInstaller extends oxSuperCfg
             $sModuleId = $oModule->getId();
 
             $this->_addExtensions( $oModule );
-
             $this->_removeFromDisabledList( $sModuleId );
 
             $this->_addTemplateBlocks( $oModule->getInfo("blocks"), $sModuleId );
-
-            // Register new module files
             $this->_addModuleFiles($oModule->getInfo("files"), $sModuleId );
-
-            // Register new module templates
             $this->_addTemplateFiles( $oModule->getInfo("templates"), $sModuleId );
-
-            // Add module settings
             $this->_addModuleSettings( $oModule->getInfo("settings"), $sModuleId );
-
-            // Add module version
             $this->_addModuleVersion( $oModule->getInfo("version"), $sModuleId );
-
-            // Add module events
             $this->_addModuleEvents( $oModule->getInfo("events"), $sModuleId );
 
             //resets cache
-            $this->getModuleCache()->resetCache();
+            if ( $this->getModuleCache() ) {
+                $this->getModuleCache()->resetCache();
 
+            }
 
             $this->_callEvent('onActivate',  $oModule->getId() );
 
@@ -117,9 +108,6 @@ class oxModuleInstaller extends oxSuperCfg
 
         $this->_callEvent( 'onDeactivate', $sModuleId );
 
-        //resets cache
-        $this->getModuleCache()->resetCache();
-
         //removing recoverable options
         $this->_deleteBlock( $sModuleId );
         $this->_deleteTemplateFiles( $sModuleId );
@@ -127,31 +115,12 @@ class oxModuleInstaller extends oxSuperCfg
         $this->_deleteModuleEvents( $sModuleId );
         $this->_deleteModuleVersions( $sModuleId );
 
+        //resets cache
+        if ( $this->getModuleCache() ) {
+            $this->getModuleCache()->resetCache();
+        }
 
         return true;
-    }
-
-    /**
-     * Removes extension metadata from shop.
-     *
-     * @param oxModule $oModule
-     * @param array $aDeletedExt extensions to remove. All will be removed if not passed
-     *
-     * @return null
-     */
-    public function remove( oxModule $oModule, $aDeletedExt = null )
-    {
-        $sModuleId = $oModule->getId();
-
-        $this->_removeFromModulesArray( $aDeletedExt );
-        $this->_removeFromModulesPathsArray( $sModuleId );
-
-        $this->_deleteDisabledModules( $sModuleId );
-        $this->_deleteModuleEvents( $sModuleId );
-        $this->_deleteModuleVersions( $sModuleId );
-        $this->_deleteModuleFiles( $sModuleId );
-        $this->_deleteTemplateFiles( $sModuleId );
-        $this->_removeFromDatabase( $sModuleId );
     }
 
     /**
@@ -180,27 +149,6 @@ class oxModuleInstaller extends oxSuperCfg
             }
         }
         return $aModules;
-    }
-
-    /**
-     * Filter module array using module id
-     *
-     * @param array  $aModules  Module array (nested format)
-     * @param string $sModuleId Module id/folder name
-     *
-     * @return array
-     */
-    public function filterModuleArray( $aModules, $sModuleId )
-    {
-        $aFilteredModules = array();
-        foreach ($aModules as $sClass => $aExtend) {
-            foreach ($aExtend as $sExtendPath) {
-                if (strstr($sExtendPath, $sModuleId.'/')) {
-                    $aFilteredModules[$sClass][] = $sExtendPath;
-                }
-            }
-        }
-        return $aFilteredModules;
     }
 
     /**
@@ -243,90 +191,6 @@ class oxModuleInstaller extends oxSuperCfg
     }
 
     /**
-     * Removes extension from modules array
-     *
-     * @param array $aDeletedExt Deleted extension array
-     *
-     * @return null
-     */
-    protected function _removeFromModulesArray( $aDeletedExt )
-    {
-        $aExt = $this->getModulesWithExtendedClass();
-        $aUpdatedExt = $this->diffModuleArrays( $aExt, $aDeletedExt );
-        $aUpdatedExt = $this->buildModuleChains( $aUpdatedExt );
-
-        $this->getConfig()->saveShopConfVar( 'aarr', 'aModules', $aUpdatedExt );
-    }
-
-    /**
-     * Removes extension from disabled modules array
-     *
-     * @param array $aDeletedExtIds Deleted extension id's of array
-     *
-     * @return null
-     */
-    protected function _deleteDisabledModules( $sModuleId )
-    {
-        $oConfig = $this->getConfig();
-        $aDisabledExtensionIds = (array) $this->getConfig()->getConfigParam('aDisabledModules');;
-        $aDisabledExtensionIds = array_diff($aDisabledExtensionIds, $sModuleId );
-        $oConfig->saveShopConfVar( 'arr', 'aDisabledModules', $aDisabledExtensionIds );
-    }
-
-    /**
-     * Removes extension from modules paths array
-     *
-     * @param array $aDeletedModule deleted extensions ID's
-     *
-     * @return null
-     */
-    protected function _removeFromModulesPathsArray( $aDeletedModule )
-    {
-        $aModulePaths = (array) $this->getConfig()->getConfigParam('aModulePaths');
-
-        foreach ( $aDeletedModule as $sDeletedModuleId ) {
-            if ( isset($aModulePaths[$sDeletedModuleId]) ) {
-                unset( $aModulePaths[$sDeletedModuleId] );
-            }
-        }
-
-        $this->getConfig()->saveShopConfVar( 'aarr', 'aModulePaths', $aModulePaths );
-    }
-
-    /**
-     * Removes extension from database - oxConfig, oxConfigDisplay and oxTplBlocks tables
-     *
-     * @param array $aDeletedExtIds deleted extensions ID's
-     *
-     * @return null
-     */
-    protected function _removeFromDatabase( $aDeletedExtIds )
-    {
-        if ( !is_array($aDeletedExtIds) || !count($aDeletedExtIds) ) {
-            return;
-        }
-
-        $oDb = oxDb::getDb();
-
-        $aConfigIds = $sDelExtIds = array();
-        foreach ( $aDeletedExtIds as $sDeletedExtId ) {
-            $aConfigIds[] = $oDb->quote('module:'.$sDeletedExtId);
-            $sDelExtIds[] = $oDb->quote($sDeletedExtId);
-        }
-
-        $sConfigIds = implode( ', ', $aConfigIds );
-        $sDelExtIds = implode( ', ', $sDelExtIds );
-
-        $aSql[] = "DELETE FROM oxconfig where oxmodule IN ($sConfigIds)";
-        $aSql[] = "DELETE FROM oxconfigdisplay where oxcfgmodule IN ($sConfigIds)";
-        $aSql[] = "DELETE FROM oxtplblocks where oxmodule IN ($sDelExtIds)";
-
-        foreach ( $aSql as $sQuery ) {
-            $oDb->execute( $sQuery );
-        }
-    }
-
-    /**
      * Add module to disable list
      */
     protected function _addToDisabledList( $sModuleId )
@@ -344,6 +208,8 @@ class oxModuleInstaller extends oxSuperCfg
 
     /**
      * Removes extension from modules array
+     *
+     * @param string  $sModuleId Module id
      *
      * @return null
      */
@@ -374,7 +240,7 @@ class oxModuleInstaller extends oxSuperCfg
     /**
      * Add module template files to config for smarty.
      *
-     * @param string $sModuleId        Module id
+     * @param string  $sModuleId Module id
      *
      * @return null
      */
@@ -483,6 +349,8 @@ class oxModuleInstaller extends oxSuperCfg
 
     /**
      * Removes module from disabled module list
+     *
+     * @param string  $sModuleId Module id
      */
     protected function _removeFromDisabledList( $sModuleId )
     {
@@ -679,7 +547,7 @@ class oxModuleInstaller extends oxSuperCfg
     {
         $aModuleExtensions = $oModule->getExtensions();
 
-        $aInstalledModuleExtensions = $this->filterModuleArray( $aInstalledExtensions, $oModule->getId() );
+        $aInstalledModuleExtensions = $this->_filterModuleArray( $aInstalledExtensions, $oModule->getId() );
 
         if ( count( $aInstalledModuleExtensions ) ) {
             $aGarbage = $this->_getModuleExtensionsGarbage( $aModuleExtensions, $aInstalledModuleExtensions );
@@ -738,6 +606,27 @@ class oxModuleInstaller extends oxSuperCfg
         }
 
         return $aInstalledExtensions;
+    }
+
+    /**
+     * Filter module array using module id
+     *
+     * @param array  $aModules  Module array (nested format)
+     * @param string $sModuleId Module id/folder name
+     *
+     * @return array
+     */
+    protected function _filterModuleArray( $aModules, $sModuleId )
+    {
+        $aFilteredModules = array();
+        foreach ($aModules as $sClass => $aExtend) {
+            foreach ($aExtend as $sExtendPath) {
+                if (strstr($sExtendPath, $sModuleId.'/')) {
+                    $aFilteredModules[$sClass][] = $sExtendPath;
+                }
+            }
+        }
+        return $aFilteredModules;
     }
 
     /**

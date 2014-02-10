@@ -349,19 +349,15 @@ class oxModule extends oxSuperCfg
      *
      * @param array $aModuleArray Module array (nested format)
      *
-     * @deprecated since v5.2.0 (2014-02-06).
+     * @deprecated since v5.2.0 (2014-02-06); use oxModuleInstaller::buildModuleChains().
      *
      * @return array
      */
     public function buildModuleChains($aModuleArray)
     {
-        $aModules = array();
-        if (is_array($aModuleArray)) {
-            foreach ($aModuleArray as $sClass => $aModuleChain) {
-                $aModules[$sClass] = implode('&', $aModuleChain);
-            }
-        }
-        return $aModules;
+        $oModuleInstaller = oxNew( 'oxModuleInstaller' );
+
+        return $oModuleInstaller->buildModuleChains( $aModuleArray );
     }
 
     /**

@@ -367,6 +367,8 @@ class oxModuleList extends oxSuperCfg
      *
      * @param array $aModuleArray Module array (nested format)
      *
+     * @deprecated since v5.2.0 (2014-02-06); use oxModuleInstaller::buildModuleChains().
+     *
      * @return array
      */
     public function buildModuleChains($aModuleArray)

@@ -23,6 +23,7 @@
 /**
  * Extensions sorting list handler.
  * Admin Menu: Extensions -> Module -> Installed Shop Modules.
+ * @package admin
  */
 class Module_SortList extends oxAdminDetails
 {
@@ -65,8 +66,8 @@ class Module_SortList extends oxAdminDetails
 
         $aModules = json_decode( $aModule, true );
 
-        $oModule = oxNew( "oxModule" );
-        $aModules = $oModule->buildModuleChains( $aModules );
+        $oModuleInstaller = oxNew( "oxModuleInstaller" );
+        $aModules = $oModuleInstaller->buildModuleChains( $aModules );
 
         $this->getConfig()->saveShopConfVar( "aarr", "aModules", $aModules );
 

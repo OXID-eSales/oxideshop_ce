@@ -483,5 +483,79 @@ class Integration_Modules_ModuleActivationWithNewMetaDataTest extends BaseModule
             )
         );
     }
+
+    /**
+     * Add extension in metadata
+     *
+     * @return array
+     */
+    protected function _caseReactivatedWithChangedConfigs()
+    {
+        return array(
+
+            // modules to be activated during test preparation
+            array(
+                'extending_1_class', 'with_2_templates', 'with_2_files',
+                'with_everything', 'extending_3_blocks', 'with_events',
+            ),
+
+            // module that will be reactivated
+            'with_everything',
+
+            // new metadata
+            array(
+                'id'           => 'with_everything',
+                'title'        => 'Test extending 1 shop class',
+                'description'  => 'Module testing extending 1 shop class',
+                'thumbnail'    => 'picture.png',
+                'version'      => '1.0',
+                'author'       => 'OXID eSales AG',
+            ),
+
+            // environment asserts
+            array(
+                'blocks'          => array(
+                    array( 'template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_bottom', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl' ),
+                    array( 'template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl' ),
+                    array( 'template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl' ),
+                ),
+                'extend'          => array(
+                    'oxorder'   => 'extending_1_class/myorder',
+                ),
+                'files'           => array(
+                    'with_2_files'    => array(
+                        'myexception'  => 'with_2_files/core/exception/myexception.php',
+                        'myconnection' => 'with_2_files/core/exception/myconnection.php',
+                    ),
+                ),
+                'disabledModules' => array(),
+                'templates'       => array(
+                    'with_2_templates' => array(
+                        'order_special.tpl'    => 'with_2_templates/views/admin/tpl/order_special.tpl',
+                        'user_connections.tpl' => 'with_2_templates/views/tpl/user_connections.tpl',
+                    ),
+                ),
+                'versions'        => array(
+                    'extending_1_class'  => '1.0',
+                    'with_2_templates'   => '1.0',
+                    'with_2_files'       => '1.0',
+                    'extending_3_blocks' => '1.0',
+                    'with_events'        => '1.0',
+                    'with_everything'    => '1.0',
+                ),
+                'events'          => array(
+                    'extending_1_class'  => null,
+                    'with_2_templates'   => null,
+                    'with_2_files'       => null,
+                    'extending_3_blocks' => null,
+                    'with_events'        => array(
+                        'onActivate'   => 'MyEvents::onActivate',
+                        'onDeactivate' => 'MyEvents::onDeactivate'
+                    ),
+                    'with_everything' => null,
+                ),
+            )
+        );
+    }
 }
  

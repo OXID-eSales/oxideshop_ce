@@ -181,7 +181,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
               $sPath . "translations/de/lang.php"
             , $sPath . "translations/de/translit_lang.php"
             , $sPath . "views/azure/de/lang.php"
-            , $sShopPath . "modules/test1/translations/lang/de/test_lang.php"
+            , $sShopPath . "modules/test1/translations/de/test_lang.php"
             , $sPath . "views/azure/de/cust_lang.php"
         );
 

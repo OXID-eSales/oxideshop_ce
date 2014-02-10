@@ -592,20 +592,21 @@ class oxModuleList extends oxSuperCfg
                 // loading module info
                 $oModule = oxNew( 'oxModule' );
                 $sModuleDirName = ( !empty($sVendorDir) ) ? $sVendorDir.'/'.$sModuleDirName : $sModuleDirName;
-                $oModule->loadByDir( $sModuleDirName );
-                $sModuleId = $oModule->getId();
-                $this->_aModules[$sModuleId] = $oModule;
+                if ( $oModule->loadByDir( $sModuleDirName ) ) {
+                    $sModuleId = $oModule->getId();
+                    $this->_aModules[$sModuleId] = $oModule;
 
-                $aModulePaths = $this->getModulePaths();
+                    $aModulePaths = $this->getModulePaths();
 
-                if ( !is_array($aModulePaths) || !array_key_exists( $sModuleId, $aModulePaths ) ) {
-                    // saving module path info
-                    $this->_saveModulePath( $sModuleId, $sModuleDirName );
+                    if ( !is_array($aModulePaths) || !array_key_exists( $sModuleId, $aModulePaths ) ) {
+                        // saving module path info
+                        $this->_saveModulePath( $sModuleId, $sModuleDirName );
 
-                    //checking if this is new module and if it extends any eshop class
-                    if ( !$this->_extendsClasses( $sModuleDirName ) ) {
-                        // if not - marking it as disabled by default
-                        $oModule->deactivate();
+                        //checking if this is new module and if it extends any eshop class
+                        if ( !$this->_extendsClasses( $sModuleDirName ) ) {
+                            // if not - marking it as disabled by default
+                            $oModule->deactivate();
+                        }
                     }
                 }
             }

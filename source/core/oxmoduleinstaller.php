@@ -197,9 +197,6 @@ class oxModuleInstaller extends oxSuperCfg
     {
         $aDisabledModules = (array) $this->getConfig()->getConfigParam('aDisabledModules');
 
-        if ( !is_array( $aDisabledModules ) ) {
-            $aDisabledModules = array();
-        }
         $aModules = array_merge( $aDisabledModules, array( $sModuleId ) );
         $aModules = array_unique( $aModules );
 

@@ -47,7 +47,7 @@ class oxDbMetaDataHandler extends oxSuperCfg
 
     /**
      *
-     * @var array Tables which shloud be skipped from reseting
+     * @var array Tables which should be skipped from resetting
      */
     protected $_aSkipTablesOnReset = array( "oxcountry" );
 
@@ -109,7 +109,7 @@ class oxDbMetaDataHandler extends oxSuperCfg
 
 
     /**
-     * Get all tables names from db. Views tables are not incuded in
+     * Get all tables names from db. Views tables are not included in
      * this list.
      *
      * @return array
@@ -149,7 +149,7 @@ class oxDbMetaDataHandler extends oxSuperCfg
     }
 
     /**
-     * Get sql for new multilanguage table set creation
+     * Get sql for new multi-language table set creation
      *
      * @param string $sTable core table name
      * @param string $iLang  language id
@@ -170,13 +170,13 @@ class oxDbMetaDataHandler extends oxSuperCfg
     }
 
     /**
-     * Get sql for new multilang field creation
+     * Get sql for new multi-language field creation
      *
      * @param string $sTable     core table name
      * @param string $sField     field name
      * @param string $sNewField  new field name
      * @param string $sPrevField previous field in table
-     * @param string $sTableSet  table to change (if not setted take core table)
+     * @param string $sTableSet  table to change (if not set take core table)
      *
      * @return string
      */
@@ -207,12 +207,12 @@ class oxDbMetaDataHandler extends oxSuperCfg
 
 
     /**
-     * Get sql for new multilang field index creation
+     * Get sql for new multi-language field index creation
      *
      * @param string $sTable    core table name
      * @param string $sField    field name
      * @param string $sNewField new field name
-     * @param string $sTableSet table to change (if not setted take core table)
+     * @param string $sTableSet table to change (if not set take core table)
      *
      * @return string
      */
@@ -295,7 +295,7 @@ class oxDbMetaDataHandler extends oxSuperCfg
     }
 
     /**
-     * Get table multilanguge fields
+     * Get table multi-language fields
      *
      * @param string $sTable table name
      *
@@ -319,7 +319,7 @@ class oxDbMetaDataHandler extends oxSuperCfg
      * Get single language fields
      *
      * @param string $sTable table name
-     * @param int    $iLang  languane id
+     * @param int    $iLang  language id
      *
      * @return array
      */
@@ -342,7 +342,7 @@ class oxDbMetaDataHandler extends oxSuperCfg
     }
 
     /**
-     * Add new multilanguages fields to table. Dublicates all multilanguage
+     * Add new multi-languages fields to table. Duplicates all multi-language
      * fields and fields indexes with next available language ID
      *
      * @param string $sTable table name
@@ -386,7 +386,7 @@ class oxDbMetaDataHandler extends oxSuperCfg
     }
 
     /**
-     * Reseting all multilanguage fields with specific language id
+     * Resetting all multi-language fields with specific language id
      * to default value in selected table
      *
      * @param int    $iLangId    Language id
@@ -410,7 +410,7 @@ class oxDbMetaDataHandler extends oxSuperCfg
                 $sFieldName = $sFieldName . "_" . $iLangId;
 
                 if ( $this->fieldExists( $sFieldName, $sTableName ) ) {
-                    //reseting field value to default
+                    //resetting field value to default
                     $aSql[] = "UPDATE {$sTableName} SET {$sFieldName} = DEFAULT;";
                 }
             }
@@ -423,7 +423,7 @@ class oxDbMetaDataHandler extends oxSuperCfg
 
     /**
      * Add new language to database. Scans all tables and adds new
-     * multilanguage fields
+     * multi-language fields
      *
      * @return null
      */
@@ -443,7 +443,7 @@ class oxDbMetaDataHandler extends oxSuperCfg
     }
 
     /**
-     * Reseting all multilanguage fields with specific language id
+     * Resetting all multi-language fields with specific language id
      * to default value in all tables. Only if language ID > 0.
      *
      * @param int $iLangId Language id
@@ -472,7 +472,7 @@ class oxDbMetaDataHandler extends oxSuperCfg
     }
 
     /**
-     * Executes arrary of sql strings
+     * Executes array of sql strings
      *
      * @param array $aSql SQL query array
      *

@@ -442,12 +442,43 @@ class oxModuleInstaller extends oxSuperCfg
 
         if ( $oModule->hasExtendClass() ) {
             $aAddModules  = $oModule->getExtensions();
-            $aModules = $oModule->mergeModuleArrays( $aModules, $aAddModules );
+            $aModules = $this->_mergeModuleArrays( $aModules, $aAddModules );
         }
 
         $aModules = $this->buildModuleChains( $aModules );
 
         $this->_saveToConfig( 'aModules', $aModules );
+    }
+
+    /**
+     * Merge two nested module arrays together so that the values of
+     * $aAddModuleArray are appended to the end of the $aAllModuleArray
+     *
+     * @param array $aAllModuleArray All Module array (nested format)
+     * @param array $aAddModuleArray Added Module array (nested format)
+     *
+     * @return array
+     */
+    protected function _mergeModuleArrays($aAllModuleArray, $aAddModuleArray)
+    {
+        if ( is_array( $aAllModuleArray ) && is_array( $aAddModuleArray ) ) {
+            foreach ( $aAddModuleArray as $sClass => $aModuleChain ) {
+                if ( !is_array( $aModuleChain ) ) {
+                    $aModuleChain = array( $aModuleChain );
+                }
+                if ( isset( $aAllModuleArray[$sClass] ) ) {
+                    foreach ( $aModuleChain as $sModule ) {
+                        if ( !in_array( $sModule, $aAllModuleArray[$sClass] ) ) {
+                            $aAllModuleArray[$sClass][] = $sModule;
+                        }
+                    }
+                } else {
+                    $aAllModuleArray[$sClass] = $aModuleChain;
+                }
+            }
+        }
+
+        return $aAllModuleArray;
     }
 
     /**

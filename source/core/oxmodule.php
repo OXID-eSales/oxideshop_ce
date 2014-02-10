@@ -246,7 +246,7 @@ class oxModule extends oxSuperCfg
                     $blActive = false;
                 }
             } else {
-                $aDisabledModules = $this->getDisabledModules();
+                $aDisabledModules = (array) $this->getConfig()->getConfigParam('aDisabledModules');
                 if ( is_array( $aDisabledModules ) && !in_array( $sId, $aDisabledModules ) ) {
                     $blActive = true;
                 }
@@ -371,6 +371,8 @@ class oxModule extends oxSuperCfg
      * @param array $aAllModuleArray All Module array (nested format)
      * @param array $aAddModuleArray Added Module array (nested format)
      *
+     * @deprecated since v5.2.0 (2014-02-06).
+     *
      * @return array
      */
     public function mergeModuleArrays($aAllModuleArray, $aAddModuleArray)
@@ -483,6 +485,8 @@ class oxModule extends oxSuperCfg
 
     /**
      * Get module id's with path
+     *
+     * @deprecated since v5.1.2 (2013-12-10);
      *
      * @return array
      */
@@ -646,6 +650,8 @@ class oxModule extends oxSuperCfg
      * Checks if module has installed template blocks
      *
      * @param string $sModuleId Module ID
+     *
+     * @deprecated since v5.2.0 (2014-02-06);
      *
      * @return bool
      */
@@ -1143,7 +1149,7 @@ class oxModule extends oxSuperCfg
     {
         $blInDisabledList = false;
 
-        $aDisabledModules = $this->getDisabledModules();
+        $aDisabledModules = (array) $this->getConfig()->getConfigParam('aDisabledModules');
         if ( is_array( $aDisabledModules ) && in_array( $sId, $aDisabledModules ) ) {
             $blInDisabledList = true;
         }

@@ -49,8 +49,9 @@ class Unit_Core_oxModuleInstallerTest extends OxidTestCase
         $aModulesBefore = array();
         $aModulesAfter = array( 'oxtest' => 'testdir/mytest' );
 
-        $oModule = $this->getMock( 'oxModule', array( 'getExtensions' ) );
+        $oModule = $this->getMock( 'oxModule', array( 'getId', 'getExtensions' ) );
         $aExtends = array( 'oxtest' => 'testdir/mytest' );
+        $oModule->expects( $this->any() )->method( 'getId' )->will( $this->returnValue( 'test1' ) );
         $oModule->expects( $this->any() )->method( 'getExtensions' )->will( $this->returnValue( $aExtends ) );
 
         $oModuleInstaller = new oxModuleInstaller();
@@ -103,7 +104,8 @@ class Unit_Core_oxModuleInstallerTest extends OxidTestCase
         $aModulesBefore = array('oxtest' => 'test/mytest');
         $aModulesAfter  = array('oxtest' => 'test/mytest&test1/mytest1');
 
-        $oModule = $this->getMock( 'oxModule', array( 'getExtensions' ) );
+        $oModule = $this->getMock( 'oxModule', array( 'getId', 'getExtensions' ) );
+        $oModule->expects( $this->any() )->method( 'getId' )->will( $this->returnValue( 'test1' ) );
         $oModule->expects( $this->any() )->method( 'getExtensions' )->will( $this->returnValue( array('oxtest' => 'test1/mytest1') ) );
 
         $oModuleInstaller = new oxModuleInstaller();

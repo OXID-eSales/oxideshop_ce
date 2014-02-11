@@ -66,9 +66,9 @@ class oxModuleInstaller extends oxSuperCfg
     {
         $blResult = false;
 
-        if ( $oModule->hasMetadata() || $oModule->hasExtendClass() ) {
+        $sModuleId = $oModule->getId();
 
-            $sModuleId = $oModule->getId();
+        if ( $sModuleId ) {
 
             $this->_addExtensions( $oModule );
             $this->_removeFromDisabledList( $sModuleId );
@@ -103,24 +103,32 @@ class oxModuleInstaller extends oxSuperCfg
      */
     public function deactivate( oxModule $oModule )
     {
+        $blResult = false;
+
         $sModuleId = $oModule->getId();
-        $this->_addToDisabledList( $sModuleId );
 
-        $this->_callEvent( 'onDeactivate', $sModuleId );
+        if ( $sModuleId ) {
+            $sModuleId = $oModule->getId();
+            $this->_addToDisabledList( $sModuleId );
 
-        //removing recoverable options
-        $this->_deleteBlock( $sModuleId );
-        $this->_deleteTemplateFiles( $sModuleId );
-        $this->_deleteModuleFiles( $sModuleId );
-        $this->_deleteModuleEvents( $sModuleId );
-        $this->_deleteModuleVersions( $sModuleId );
+            $this->_callEvent( 'onDeactivate', $sModuleId );
 
-        //resets cache
-        if ( $this->getModuleCache() ) {
-            $this->getModuleCache()->resetCache();
+            //removing recoverable options
+            $this->_deleteBlock( $sModuleId );
+            $this->_deleteTemplateFiles( $sModuleId );
+            $this->_deleteModuleFiles( $sModuleId );
+            $this->_deleteModuleEvents( $sModuleId );
+            $this->_deleteModuleVersions( $sModuleId );
+
+            //resets cache
+            if ( $this->getModuleCache() ) {
+                $this->getModuleCache()->resetCache();
+            }
+
+            $blResult = true;
         }
 
-        return true;
+        return $blResult;
     }
 
     /**

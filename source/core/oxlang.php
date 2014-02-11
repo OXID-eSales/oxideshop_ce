@@ -154,13 +154,15 @@ class oxLang extends oxSuperCfg
             }
 
             //or determining by domain
-            $aLanguageUrls = $myConfig->getConfigParam( 'aLanguageURLs' );
+            if ( is_null( $this->_iBaseLanguageId ) ) {
+                $aLanguageUrls = $myConfig->getConfigParam( 'aLanguageURLs' );
 
-            if ( !$blAdmin && is_array( $aLanguageUrls ) ) {
-                foreach ( $aLanguageUrls as $iId => $sUrl ) {
-                    if ( $sUrl && $myConfig->isCurrentUrl( $sUrl ) ) {
-                        $this->_iBaseLanguageId = $iId;
-                        break;
+                if ( !$blAdmin && is_array( $aLanguageUrls ) ) {
+                    foreach ( $aLanguageUrls as $iId => $sUrl ) {
+                        if ( $sUrl && $myConfig->isCurrentUrl( $sUrl ) ) {
+                            $this->_iBaseLanguageId = $iId;
+                            break;
+                        }
                     }
                 }
             }

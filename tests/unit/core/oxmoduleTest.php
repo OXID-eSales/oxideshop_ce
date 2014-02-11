@@ -94,7 +94,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
 
             $oModule = $this->getProxyClass( 'oxmodule' );
             $oModule->setNonPublicVar( "_aModule", $aModule );
-            $this->assertFalse( $oModule->isActive() );
+            $this->assertTrue( $oModule->isActive() );
             $this->assertFalse( $oModule->isExtended() );
     }
 

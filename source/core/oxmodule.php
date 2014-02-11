@@ -240,16 +240,9 @@ class oxModule extends oxSuperCfg
         $blActive = false;
         $sId = $this->getId();
         if ( !is_null( $sId ) ) {
-            if ( $this->hasExtendClass() ) {
+            $blActive = !$this->_isInDisabledList( $sId );
+            if ( $blActive && $this->hasExtendClass() ) {
                     $blActive = $this->_isExtensionsActive();
-                if ( $blActive && $this->_isInDisabledList( $sId ) ) {
-                    $blActive = false;
-                }
-            } else {
-                $aDisabledModules = (array) $this->getConfig()->getConfigParam('aDisabledModules');
-                if ( !empty( $aDisabledModules ) && !in_array( $sId, $aDisabledModules ) ) {
-                    $blActive = true;
-                }
             }
         }
 
@@ -1146,7 +1139,7 @@ class oxModule extends oxSuperCfg
         $blInDisabledList = false;
 
         $aDisabledModules = (array) $this->getConfig()->getConfigParam('aDisabledModules');
-        if ( is_array( $aDisabledModules ) && in_array( $sId, $aDisabledModules ) ) {
+        if ( in_array( $sId, $aDisabledModules ) ) {
             $blInDisabledList = true;
         }
 

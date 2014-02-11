@@ -398,12 +398,18 @@ class oxUtilsObject
      */
     protected function _disableModule( $sModule )
     {
-        /**
-         * @var oxModule $oModule
-         */
+        /** @var oxModule $oModule */
         $oModule = oxNew("oxModule");
-        $sModuleId = $oModule->getIdByPath($sModule);
-        $oModule->deactivate($sModuleId);
+        $sModuleId = $oModule->getIdByPath( $sModule );
+        $oModule->load( $sModuleId );
+
+        /** @var oxModuleCache $oModuleCache */
+        $oModuleCache = oxNew( 'oxModuleCache', $oModule );
+
+        /** @var oxModuleInstaller $oModuleInstaller */
+        $oModuleInstaller = oxNew("oxModuleInstaller", $oModuleCache);
+
+        $oModuleInstaller->deactivate( $oModule );
     }
 
     /**

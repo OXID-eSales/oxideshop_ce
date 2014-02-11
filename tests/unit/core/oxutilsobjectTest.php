@@ -258,40 +258,18 @@ class Unit_Core_oxutilsobjectTest extends OxidTestCase
 
     public function testDisableModule()
     {
-        $aDisabledModules = array('test1');
-        $aModulePaths     = array("invoicepdf2" => "oe/invoicepdf2", "invoicepdf" => "oe/invoicepdf");
-        //modConfig::getInstance()->setConfigParam( "aDisabledModules", $aDisabledModules );
-        //modConfig::getInstance()->setConfigParam( "aModulePaths", $aModulePaths );
+        $sModuleId = 'testId';
 
-        oxRegistry::getConfig()->setConfigParam("aDisabledModules", $aDisabledModules );
-        oxRegistry::getConfig()->setConfigParam("aModulePaths", $aModulePaths);
-        $sModule = "oe/invoicepdf2/myorder";
-        $aDisabledModulesResult = array('test1', 'invoicepdf2');
+        $oModule = new oxModule();
+        $oModule->load( $sModuleId );
 
-        $oUtilsObject = $this->getProxyClass( "oxUtilsObject" );
-        $oUtilsObject->UNITdisableModule( $sModule );
-        modConfig::getInstance()->getConfigParam( "aDisabledModules" );
-        $this->assertEquals( $aDisabledModulesResult, modConfig::getInstance()->getConfigParam( "aDisabledModules" ) );
-    }
+        $oModuleInstaller = $this->getMock( 'oxModuleInstaller', array( 'deactivate' ) );
+        $oModuleInstaller->expects( $this->once() )->method( 'deactivate' )->with( $oModule );
 
-    public function testDisableModuleUnknownPath()
-    {
-        $aDisabledModules = array('test1');
-        $aModulePaths     = array("invoicepdf2" => "oe/invoicepdf2");
-        //$this->setConfigParam( "aDisabledModules", $aDisabledModules );
-        //$this->setConfigParam( "aModulePaths", $aModulePaths );
-
-        oxRegistry::getConfig()->setConfigParam("aDisabledModules", $aDisabledModules );
-        oxRegistry::getConfig()->setConfigParam("aModulePaths", $aModulePaths );
-
-        $sModule = "invoicepdf/myorder";
-        $aDisabledModulesExpect = array('test1', 'invoicepdf');
+        oxTestModules::addModuleObject('oxModuleInstaller', $oModuleInstaller);
 
         $oUtilsObject = $this->getProxyClass( "oxUtilsObject" );
-        $oUtilsObject->UNITdisableModule( $sModule );
-
-        $aRes = oxRegistry::getConfig()->getConfigParam( "aDisabledModules" );
-        $this->assertEquals( $aDisabledModulesExpect, $aRes );
+        $oUtilsObject->UNITdisableModule( $sModuleId );
     }
 
     public function testSetGetCache()

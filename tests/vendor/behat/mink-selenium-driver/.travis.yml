@@ -1,0 +1,32 @@
+language: php
+
+php: [5.3, 5.4, 5.5]
+
+env:
+  - CRAWLER_VERSION='2.0.*'
+  - CRAWLER_VERSION='2.1.*'
+  - CRAWLER_VERSION='2.2.*'
+
+before_script:
+  - export WEB_FIXTURES_HOST=http://localhost
+  - export WEB_FIXTURES_BROWSER=firefox
+
+  - sh -e /etc/init.d/xvfb start
+  - export DISPLAY=:99.0
+  - sleep 4
+
+  - curl http://selenium.googlecode.com/files/selenium-server-standalone-2.30.0.jar > selenium.jar
+  - sudo ln -s /usr/lib/firefox/firefox /usr/lib/firefox/firefox-bin
+  - PATH=$PATH:/usr/lib/firefox java -jar selenium.jar > /dev/null &
+  - sleep 4
+
+  - curl http://getcomposer.org/installer | php
+  - php composer.phar require --no-update symfony/dom-crawler=$CRAWLER_VERSION
+  - php composer.phar install --dev --prefer-source
+
+  - sudo apt-get update > /dev/null
+  - sudo apt-get install -y --force-yes apache2 libapache2-mod-php5 > /dev/null
+  - sudo sed -i -e "s,/var/www,$(pwd)/vendor/behat/mink/tests/Behat/Mink/Driver/web-fixtures,g" /etc/apache2/sites-available/default
+  - sudo /etc/init.d/apache2 restart
+
+script: phpunit -v

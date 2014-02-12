@@ -1,24 +1,23 @@
 <?php
 /**
- *    This file is part of OXID eShop Community Edition.
+ * This file is part of OXID eShop Community Edition.
  *
- *    OXID eShop Community Edition is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
+ * OXID eShop Community Edition is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *    OXID eShop Community Edition is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
+ * OXID eShop Community Edition is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *    You should have received a copy of the GNU General Public License
- *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @package   core
  * @copyright (C) OXID eSales AG 2003-2014
- * @version OXID eShop CE
+ * @version   OXID eShop CE
  */
 
 /**
@@ -84,34 +83,37 @@ class oxShop extends oxI18n
     public function generateViews( $blMultishopInheritCategories = false, $aMallInherit = null )
     {
         $oDb        = oxDb::getDb();
-        $aLanguages = oxRegistry::getLang()->getLanguageIds();
+        $oLang      = oxRegistry::getLang();
+        $aLanguages = $oLang->getLanguageIds( $this->getId() );
+        $aAllShopLanguages = $oLang->getAllShopLanguageIds();
 
         $aTables = $aMultilangTables = oxRegistry::getLang()->getMultiLangTables();
 
-        $aQ = array();
+        $aQueries = array();
 
         // Generate multitable views
         foreach ( $aTables as $sTable ) {
-            $aQ[] = 'CREATE OR REPLACE SQL SECURITY INVOKER VIEW oxv_'.$sTable.' AS SELECT * FROM '.$sTable.' '.$this->_getViewJoinAll($sTable);
+            $aQueries[] = 'CREATE OR REPLACE SQL SECURITY INVOKER VIEW oxv_'.$sTable.' AS SELECT * FROM '.$sTable.' '.$this->_getViewJoinAll($sTable);
 
             if (in_array($sTable, $aMultilangTables)) {
                 foreach ($aLanguages as $iLang => $sLang) {
-                    $aQ[] = 'CREATE OR REPLACE SQL SECURITY INVOKER VIEW oxv_'.$sTable.'_'.$sLang.' AS SELECT '.$this->_getViewSelect($sTable, $iLang).' FROM '.$sTable.' '.$this->_getViewJoinLang($sTable, $iLang);
+                    $aQueries[] = 'CREATE OR REPLACE SQL SECURITY INVOKER VIEW oxv_'.$sTable.'_'.$sLang.' AS SELECT '.$this->_getViewSelect($sTable, $iLang).' FROM '.$sTable.' '.$this->_getViewJoinLang($sTable, $iLang);
                 }
             }
         }
 
         $bSuccess = true;
-        foreach ($aQ as $sQ) {
-            if ( !$oDb->execute( $sQ ) ) {
+        foreach ($aQueries as $sQuery) {
+            if ( !$oDb->execute( $sQuery ) ) {
                 $bSuccess = false;
             }
         }
 
         $oViewsValidator = oxNew( 'oxShopViewValidator' );
 
-        $oViewsValidator->setShopId( $this->getConfig()->getShopId() );
+        $oViewsValidator->setShopId( $this->getId() );
         $oViewsValidator->setLanguages( $aLanguages );
+        $oViewsValidator->setAllShopLanguages( $aAllShopLanguages );
         $oViewsValidator->setMultiLangTables( $aMultilangTables );
         $oViewsValidator->setMultiShopTables( $aMultishopTables );
 

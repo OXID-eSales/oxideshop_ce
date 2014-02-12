@@ -16,9 +16,8 @@
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @package   core
  * @copyright (C) OXID eSales AG 2003-2014
- * @version OXID eShop CE
+ * @version   OXID eShop CE
  */
 
 // defining supported link types
@@ -3629,11 +3628,10 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     protected function _getAmountPriceList()
     {
         if ( $this->_oAmountPriceList === null ) {
-            $this->_oAmountPriceList = array();
-            if ( !$this->skipDiscounts() ) {
+            $oAmPriceList = oxNew( 'oxAmountPricelist' );
 
+            if ( !$this->skipDiscounts() ) {
                 //collecting assigned to article amount-price list
-                $oAmPriceList = oxNew( 'oxAmountPricelist' );
                 $oAmPriceList->load( $this );
 
                 // prepare abs prices if currently having percentages
@@ -3644,8 +3642,9 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
                     }
                 }
 
-                $this->_oAmountPriceList = $oAmPriceList;
             }
+
+            $this->_oAmountPriceList = $oAmPriceList;
         }
 
         return $this->_oAmountPriceList;

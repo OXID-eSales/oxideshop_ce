@@ -1,24 +1,23 @@
 <?php
 /**
- *    This file is part of OXID eShop Community Edition.
+ * This file is part of OXID eShop Community Edition.
  *
- *    OXID eShop Community Edition is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
+ * OXID eShop Community Edition is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *    OXID eShop Community Edition is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
+ * OXID eShop Community Edition is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *    You should have received a copy of the GNU General Public License
- *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
  * @link      http://www.oxid-esales.com
- * @package   core
  * @copyright (C) OXID eSales AG 2003-2014
- * @version OXID eShop CE
+ * @version   OXID eShop CE
  */
 
 /**
@@ -390,30 +389,6 @@ class oxLang extends oxSuperCfg
             $aLanguages[$iId] = $aConfLanguages[$sValue];
         }
         return $aLanguages;
-    }
-
-    /**
-     * Returns available language IDs (abbreviations)
-     *
-     * @return array
-     */
-    public function getLanguageIds()
-    {
-        $myConfig = $this->getConfig();
-        $aIds = array();
-
-        //if exists language parameters array, extract lang id's from there
-        $aLangParams = $myConfig->getConfigParam( 'aLanguageParams' );
-        if ( is_array( $aLangParams ) ) {
-            foreach ( $aLangParams as $sAbbr => $aValue ) {
-                $iBaseId = (int) $aValue['baseId'];
-                $aIds[$iBaseId] = $sAbbr;
-            }
-        } else {
-            $aIds = array_keys( $myConfig->getConfigParam( 'aLanguages' ) );
-        }
-
-        return $aIds;
     }
 
     /**
@@ -1209,6 +1184,157 @@ class oxLang extends oxSuperCfg
             $this->_aDisabledModuleInfo = $oModuleList->getDisabledModuleInfo();
         }
         return $this->_aDisabledModuleInfo;
+    }
+
+    /**
+     * Returns available language IDs (abbreviations) for all sub shops
+     *
+     * @return array
+     */
+    public function getAllShopLanguageIds()
+    {
+        $aLanguages = $this->_getLanguageIdsFromDatabase();
+
+        return $aLanguages;
+    }
+
+    /**
+     * Get current Shop language ids.
+     *
+     * @param int $iShopId shop id
+     *
+     * @return array
+     */
+    public function getLanguageIds( $iShopId = null )
+    {
+        if ( empty( $iShopId ) || $iShopId == $this->getConfig()->getShopId() ) {
+            $aLanguages = $this->getActiveShopLanguageIds();
+        } else {
+            $aLanguages = $this->_getLanguageIdsFromDatabase( $iShopId );
+        }
+
+        return $aLanguages;
+    }
+
+    /**
+     * Returns available language IDs (abbreviations)
+     *
+     * @return array
+     */
+    public function getActiveShopLanguageIds()
+    {
+        $oConfig = $this->getConfig();
+
+        //if exists language parameters array, extract lang id's from there
+        $aLangParams = $oConfig->getConfigParam( 'aLanguageParams' );
+        if ( is_array( $aLangParams ) ) {
+            $aIds = $this->_getLanguageIdsFromLanguageParamsArray( $aLangParams );
+        } else {
+            $aIds = $this->_getLanguageIdsFromLanguagesArray( $oConfig->getConfigParam( 'aLanguages' ) );
+        }
+
+        return $aIds;
+    }
+
+    /**
+     * Gets language Ids for given shopId or for all subshops
+     *
+     * @param null $iShopId
+     *
+     * @return array
+     */
+    protected function _getLanguageIdsFromDatabase( $iShopId = null )
+    {
+            $aLanguages = $this->getLanguageIds();
+
+
+        return $aLanguages;
+    }
+
+    /**
+     * Returns list of all language codes taken from config values of given 'aLanguages' (for all subshops)
+     *
+     * @param string $sLanguageParameterName language config parameter name
+     * @param int $iShopId shop id
+     *
+     * @return array
+     */
+    protected function _getConfigLanguageValues( $sLanguageParameterName, $iShopId = null )
+    {
+        $aConfigDecodedValues = array();
+        $aConfigValues = $this->_selectLanguageParamValues( $sLanguageParameterName, $iShopId );
+
+        foreach ( $aConfigValues as $sConfigValue )
+        {
+            $aConfigLanguages = unserialize( $sConfigValue['oxvarvalue'] );
+
+            $aLanguages = array();
+            if ( $sLanguageParameterName == 'aLanguageParams' ) {
+                $aLanguages = $this->_getLanguageIdsFromLanguageParamsArray( $aConfigLanguages );
+            } elseif ( $sLanguageParameterName == 'aLanguages' ) {
+                $aLanguages = $this->_getLanguageIdsFromLanguagesArray( $aConfigLanguages );
+            }
+
+            $aConfigDecodedValues = array_unique( array_merge( $aConfigDecodedValues, $aLanguages ) );
+        }
+
+        return $aConfigDecodedValues;
+    }
+
+    /**
+     * Returns array of all config values of given paramName
+     *
+     * @param $sParamName
+     * @param $sShopId
+     *
+     * @return array
+     */
+    protected function _selectLanguageParamValues( $sParamName, $sShopId = null )
+    {
+        $oDb = oxDb::getDb( oxDb::FETCH_MODE_ASSOC );
+        $oConfig = oxRegistry::getConfig();
+
+        $sQuery = "
+            select ".$oConfig->getDecodeValueQuery()." as oxvarvalue
+            from oxconfig
+            where oxvarname = '{$sParamName}' ";
+
+        if ( !empty( $sShopId ) ) {
+            $sQuery .= " and oxshopid = '{$sShopId}' limit 1";
+        }
+
+        return $oDb->getArray( $sQuery );
+    }
+
+
+    /**
+     * gets language code array from aLanguageParams array
+     *
+     * @param $aLanguageParams
+     *
+     * @return array
+     */
+    protected function _getLanguageIdsFromLanguageParamsArray( $aLanguageParams )
+    {
+        $aLanguages = array();
+        foreach ( $aLanguageParams as $sAbbr => $aValue ) {
+            $iBaseId = (int) $aValue[ 'baseId' ];
+            $aLanguages[ $iBaseId ] = $sAbbr;
+        }
+
+        return $aLanguages;
+    }
+
+    /**
+     * gets language code array from aLanguages array
+     *
+     * @param $aLanguages
+     *
+     * @return array
+     */
+    protected function _getLanguageIdsFromLanguagesArray( $aLanguages )
+    {
+        return array_keys( $aLanguages );
     }
 
 }

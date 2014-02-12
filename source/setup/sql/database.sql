@@ -1390,6 +1390,7 @@ CREATE TABLE `oxnewssubscribed` (
   `OXUNSUBSCRIBED` datetime NOT NULL default '0000-00-00 00:00:00' COMMENT 'Unsubscription date',
   `OXTIMESTAMP` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP COMMENT 'Timestamp',
   `OXSHOPID` char(32) character set latin1 collate latin1_general_ci NOT NULL default '' COMMENT 'Shop id (oxshops)',
+  PRIMARY KEY (`OXID`),
   UNIQUE KEY `OXEMAIL` (`OXEMAIL`),
   KEY `OXUSERID` (`OXUSERID`)
 ) ENGINE=MyISAM COMMENT 'User subscriptions';

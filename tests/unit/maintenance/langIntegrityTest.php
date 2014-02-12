@@ -883,6 +883,35 @@ class Unit_Maintenance_langIntegrityTest extends OxidTestCase
             }
         }
     }
+
+    /**
+     * Data provider with sql files for invalid encoding detection.
+     *
+     * @return array
+     */
+    public function providerSqlFilesForInvalidEncoding()
+    {
+        return array(
+            array( getShopBasePath() . '/setup/sql' . OXID_VERSION_SUFIX . '/*.sql' ),
+        );
+    }
+
+    /**
+     * Test if sql files don't have invalid encoding.
+     *
+     * @dataProvider providerSqlFilesForInvalidEncoding
+     */
+    public function testSqlFilesForInvalidEncoding( $sFilePathPattern )
+    {
+        foreach ( glob( $sFilePathPattern ) as $sFilePath ) {
+            if ( is_readable( $sFilePath ) ) {
+                $sFileContent = file_get_contents( $sFilePath );
+                foreach ( array( 0xEF, 0xBB, 0xBF, 0x9C ) as $sCharacter ) {
+                    $this->assertFalse( strpos( $sFileContent, $sCharacter ), "Character with invalid encoding found in {$sFilePath} file." );
+                }
+            }
+        }
+    }
 }
 
 /**

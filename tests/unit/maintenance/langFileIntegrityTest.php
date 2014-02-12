@@ -60,6 +60,11 @@ class Unit_Maintenance_langFileIntegrityTest extends OxidTestCase
 
         $this->assertEquals( str_replace("\t", "", $sLangDE), $sLangDE, 'No tab characters allowed');
         $this->assertEquals( str_replace("\t", "", $sLangEN), $sLangEN, 'No tab characters allowed');
+
+        foreach ( array( 0xEF, 0xBB, 0xBF, 0x9C ) as $sCharacter ) {
+            $this->assertFalse( strpos( $sLangDE, $sCharacter ), "Character with invalid encoding found." );
+            $this->assertFalse( strpos( $sLangEN, $sCharacter ), "Character with invalid encoding found." );
+        }
     }
 
     /**
@@ -83,6 +88,11 @@ class Unit_Maintenance_langFileIntegrityTest extends OxidTestCase
 
         $this->assertEquals( str_replace("\t", "", $sLangDE), $sLangDE, 'No tab characters allowed');
         $this->assertEquals( str_replace("\t", "", $sLangEN), $sLangEN, 'No tab characters allowed');
+
+        foreach ( array( 0xEF, 0xBB, 0xBF, 0x9C ) as $sCharacter ) {
+            $this->assertFalse( strpos( $sLangDE, $sCharacter ), "Character with invalid encoding found." );
+            $this->assertFalse( strpos( $sLangEN, $sCharacter ), "Character with invalid encoding found." );
+        }
     }
 
     /**
@@ -106,6 +116,11 @@ class Unit_Maintenance_langFileIntegrityTest extends OxidTestCase
 
         $this->assertEquals( str_replace("\t", "", $sLangDE), $sLangDE, 'No tab characters allowed');
         $this->assertEquals( str_replace("\t", "", $sLangEN), $sLangEN, 'No tab characters allowed');
+
+        foreach ( array( 0xEF, 0xBB, 0xBF, 0x9C ) as $sCharacter ) {
+            $this->assertFalse( strpos( $sLangDE, $sCharacter ), "Character with invalid encoding found." );
+            $this->assertFalse( strpos( $sLangEN, $sCharacter ), "Character with invalid encoding found." );
+        }
     }
 
     /**

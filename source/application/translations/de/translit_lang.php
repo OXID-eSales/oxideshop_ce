@@ -25,13 +25,13 @@
  * @var array SEO replacement list
  */
 $aSeoReplaceChars = array(
-    '�' => 'ae',
-    '�' => 'oe',
-    '�' => 'ue',
-    '�' => 'Ae',
-    '�' => 'Oe',
-    '�' => 'Ue',
-    '�' => 'ss',
+    'ä' => 'ae',
+    'ö' => 'oe',
+    'ü' => 'ue',
+    'Ä' => 'Ae',
+    'Ö' => 'Oe',
+    'Ü' => 'Ue',
+    'ß' => 'ss',
 );
 
 $aLang = array(

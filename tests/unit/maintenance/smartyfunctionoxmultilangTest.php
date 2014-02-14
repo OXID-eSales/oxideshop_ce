@@ -100,10 +100,10 @@ class Unit_Maintenance_smartyFunctionoxmultilangTest extends OxidTestCase
                 'Vorname:', 0),
             array(
                 array( 'ident' => 'VAT_PLUS_PERCENT_AMOUNT', 'args' => '19'  ),
-                'plus VAT 19% Amount', 1),
+                'plus 19% tax, amount', 1),
             array(
                 array( 'ident' => 'VAT_PLUS_PERCENT_AMOUNT', 'args' => 0  ),
-                'plus VAT 0% Amount', 1)
+                'plus 0% tax, amount', 1)
         );
     }
 

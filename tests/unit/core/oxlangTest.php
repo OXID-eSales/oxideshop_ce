@@ -1137,7 +1137,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
         $oSubj = $this->getProxyClass("oxLang");
         $aTrArray = $oSubj->UNITgetLangTranslationArray(1);
         $this->assertTrue(isset($aTrArray["QUESTIONS_ABOUT_THIS_PRODUCT_2"]));
-        $this->assertEquals($aTrArray["QUESTIONS_ABOUT_THIS_PRODUCT_2"], "[?] Questions about this product?");
+        $this->assertEquals($aTrArray["QUESTIONS_ABOUT_THIS_PRODUCT_2"], "[?] Have questions about this product?");
     }
 
     public function testGetLangTranslationArrayIsSetInCache()
@@ -1146,7 +1146,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
         $oSubj->setNonPublicVar( '_aLangCache', array( 'langcache_0_1_'.oxConfig::getInstance()->getShopId().'_basic_default'=>array('1'=>array("ACCOUNT_LOGIN"=>"Login") ) ) );
         $aTrArray = $oSubj->UNITgetLangTranslationArray(1);
         $this->assertTrue(isset($aTrArray["QUESTIONS_ABOUT_THIS_PRODUCT_2"]));
-        $this->assertEquals($aTrArray["QUESTIONS_ABOUT_THIS_PRODUCT_2"], "[?] Questions about this product?");
+        $this->assertEquals($aTrArray["QUESTIONS_ABOUT_THIS_PRODUCT_2"], "[?] Have questions about this product?");
     }
 
     public function testGetLangTranslationArrayIfBaseLAngNotSet()

@@ -1124,7 +1124,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         $oEmail->expects( $this->any() )->method( '_getShop' )->will( $this->returnValue( $oShop ) );
         $oEmail->expects( $this->once() )->method( '_setMailParams' )->with( $this->equalTo( $oShop ) );
         $oEmail->expects( $this->once() )->method( 'setRecipient' )->with( $this->equalTo( $oShop->oxshops__oxorderemail->value ), $this->equalTo( $oShop->oxshops__oxname->value ) );
-        $oEmail->expects( $this->once() )->method( 'setSubject' )->with( $this->equalTo( "Price alert for article testArticle_EN" ) );
+        $oEmail->expects( $this->once() )->method( 'setSubject' )->with( $this->equalTo( "Price alert for product testArticle_EN" ) );
         $oEmail->expects( $this->once() )->method( 'setBody' );
         $oEmail->expects( $this->once() )->method( 'setFrom' )->with( $this->equalto( $aParams['email'] ), $this->equalto( '' ) );
         $oEmail->expects( $this->once() )->method( 'setReplyTo' )->with( $this->equalto( $aParams['email'] ), $this->equalto( '' ) );

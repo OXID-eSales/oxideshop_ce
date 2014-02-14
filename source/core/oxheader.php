@@ -38,6 +38,7 @@ class oxHeader
      */
     public function setHeader( $sHeader )
     {
+        $sHeader = str_replace( array( "\n", "\r" ), '', $sHeader );
         $this->_aHeader[] = (string) $sHeader."\r\n";
     }
 

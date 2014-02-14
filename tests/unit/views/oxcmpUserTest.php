@@ -317,6 +317,10 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
     {
         oxConfig::getInstance()->setConfigParam( 'blConfirmAGB', true );
 
+        $oUtilsView = $this->getMock( 'oxUtilsView', array( "addErrorToDisplay" ) );
+        $oUtilsView->expects( $this->once() )->method( 'addErrorToDisplay' )->with( $this->equalTo( 'READ_AND_CONFIRM_TERMS' ), $this->equalTo( false ), $this->equalTo( true ) );
+        oxRegistry::set( 'oxUtilsView', $oUtilsView );
+
         $oParent = $this->getMock( 'oxubase', array( "isEnabledPrivateSales" ) );
         $oParent->expects( $this->once() )->method( 'isEnabledPrivateSales' )->will( $this->returnValue( true ) );
 
@@ -324,9 +328,6 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
         $oUserView = $this->getMock( 'oxcmp_userPROXY', array( 'getParent' ) );
         $oUserView->expects( $this->any() )->method( 'getParent' )->will( $this->returnValue( $oParent ) );
         $this->assertNull( $oUserView->createUser() );
-        $aEx = oxSession::getVar( 'Errors' );
-        $oEr = unserialize($aEx['default'][0]);
-        $this->assertEquals( 'Bitte bestätigen Sie unsere Allg. Geschäftsbedingungen.', $oEr->getOxMessage() );
     }
 
     /**

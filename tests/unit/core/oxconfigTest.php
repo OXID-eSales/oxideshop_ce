@@ -2574,10 +2574,10 @@ class Unit_Core_oxconfigTest extends OxidTestCase
     public function providerCheckParamSpecialChars_newLineExist_newLineChanged()
     {
         return array(
-            array( "\r", '%0D' ),
-            array( "\n", '%0A' ),
-            array( "\r\n", '%0D%0A' ),
-            array( "\n\r", '%0A%0D' ),
+            array( "\r", '&#13;' ),
+            array( "\n", '&#10;' ),
+            array( "\r\n", '&#13;&#10;' ),
+            array( "\n\r", '&#10;&#13;' ),
         );
     }
 

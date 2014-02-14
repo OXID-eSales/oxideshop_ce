@@ -1070,9 +1070,11 @@ class oxUtils extends oxSuperCfg
      */
     protected function _simpleRedirect( $sUrl, $sHeaderCode )
     {
-        header( $sHeaderCode );
-        header( "Location: $sUrl" );
-        header( "Connection: close" );
+        $oHeader = oxNew( "oxHeader" );
+        $oHeader->setHeader( $sHeaderCode );
+        $oHeader->setHeader( "Location: $sUrl" );
+        $oHeader->setHeader( "Connection: close" );
+        $oHeader->sendHeader();
     }
 
     /**

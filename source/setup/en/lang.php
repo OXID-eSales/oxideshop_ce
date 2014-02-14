@@ -205,6 +205,4 @@ $aLang = array(
 'LOAD_DYN_CONTENT_NOTICE'                       => '<p>If checkbox is set, you will see an additional menu in the admin area of your OXID eShop.</p><p>In that menu you get further information about eCommerce services like Google product search.</p> <p>You can change these settings at any time.</p>',
 'ERROR_SETUP_CANCELLED'                         => 'Setup has been cancelled because you didn\'t accept the license conditions.',
 'BUTTON_START_INSTALL'                          => 'Restart setup',
-
-
 );

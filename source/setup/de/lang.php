@@ -101,7 +101,6 @@ $aLang = array(
 'MOD_SESSION_AUTOSTART'                         => 'session.auto_start muss ausgeschaltet sein',
 'MOD_MEMORY_LIMIT'                              => 'PHP Memory limit (min. 14MB, 30MB empfohlen)',
 
-
 'STEP_0_ERROR_TEXT'                             => 'Ihr System erfüllt nicht alle nötigen Systemvoraussetzungen',
 'STEP_0_ERROR_URL'                              => 'http://www.oxid-esales.com/de/produkte/community-edition/systemvoraussetzungen',
 'STEP_0_TEXT'                                   => '<ul class=\"req\">'.
@@ -206,5 +205,4 @@ $aLang = array(
 'LOAD_DYN_CONTENT_NOTICE'                       => '<p>Wenn diese Option gesetzt ist, sehen Sie ein zusätzliches Menü im Administrationsbereich Ihres OXID eShop.</p><p>Über dieses Menü erhalten Sie weitere Informationen über eCommerce Services, wie z.B. Google Produktsuche oder econda.</p> <p>Sie können diese Einstellung im Administrationsbereich jederzeit wieder ändern.</p>',
 'ERROR_SETUP_CANCELLED'                         => 'Das Setup wurde abgebrochen, weil Sie die Lizenzvereinbarungen nicht akzeptiert haben.',
 'BUTTON_START_INSTALL'                          => 'Setup erneut starten',
-
 );

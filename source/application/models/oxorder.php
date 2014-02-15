@@ -2293,10 +2293,10 @@ class oxOrder extends oxBase
      */
     public function getShipmentTrackingUrl()
     {
+        $myConfig = oxRegistry::getConfig();
         if ( $this->_sShipTrackUrl === null && $this->oxorder__oxtrackcode->value ) {
-            $this->_sShipTrackUrl = "http://www.dpd.de/cgi-bin/delistrack?typ=1&amp;lang=de&amp;pknr=".$this->oxorder__oxtrackcode->value;
+            $this->_sShipTrackUrl = str_replace("##ID##", $this->oxorder__oxtrackcode->value, $myConfig->getShopConfVar(  'sParcelService', $myConfig->getShopId() ));
         }
-
         return $this->_sShipTrackUrl;
     }
 

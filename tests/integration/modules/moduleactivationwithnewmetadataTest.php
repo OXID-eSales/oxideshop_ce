@@ -32,10 +32,8 @@ class Integration_Modules_ModuleActivationWithNewMetaDataTest extends BaseModule
             $this->_caseReactivatedWithAddExtension(),
             $this->_caseReactivatedWithRemovedTemplateAndBlock(),
             $this->_caseReactivatedWithRemovedAllExtendedInfo(),
-
-            //uncomment when bug #0005647 fixed
-            //$this->_caseReactivatedWithChangedConfigs(),
-            //$this->_caseReactivatedWithRemovedConfigs(),
+            $this->_caseReactivatedWithChangedConfigs(),
+            $this->_caseReactivatedWithRemovedConfigs(),
         );
     }
 
@@ -51,10 +49,9 @@ class Integration_Modules_ModuleActivationWithNewMetaDataTest extends BaseModule
         $oEnvironment->prepare( $aInstallModules );
 
         $oModule = new oxModule();
-        $oModule->load($sModule);
-        $oModule->activate();
-        $oModule->setModuleData( $aMetaData );
+        $oModule->load( $sModule );
         $oModule->deactivate();
+        $oModule->setModuleData( $aMetaData );
         $oModule->activate();
 
         $this->_runAsserts( $aResultToAsserts, $sModule );
@@ -241,11 +238,11 @@ class Integration_Modules_ModuleActivationWithNewMetaDataTest extends BaseModule
             // environment asserts
             array(
                 'blocks'          => array(
+                    array( 'template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl' ),
+                    array( 'template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl' ),
                     array( 'template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl' ),
                     array( 'template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_bottom', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl' ),
                     array( 'template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl' ),
-                    array( 'template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl' ),
-                    array( 'template' => 'page/checkout/basket.tpl', 'block' => 'basket_btn_next_top', 'file' => '/views/blocks/page/checkout/myexpresscheckout.tpl' ),
                 ),
                 'extend'          => array(
                     'oxorder'   => 'extending_1_class/myorder&with_everything/myorder1&with_everything/myorder2',
@@ -523,8 +520,8 @@ class Integration_Modules_ModuleActivationWithNewMetaDataTest extends BaseModule
                     'oxuser' => 'with_everything/myuser',
                 ),
                 'blocks' => array(
-                    array('template' => 'page/checkout/basket.tpl',  'block'=>'basket_btn_next_top',    'file'=>'/views/blocks/page/checkout/myexpresscheckout.tpl'),
                     array('template' => 'page/checkout/payment.tpl', 'block'=>'select_payment',         'file'=>'/views/blocks/page/checkout/mypaymentselector.tpl'),
+                    array('template' => 'page/checkout/basket.tpl',  'block'=>'basket_btn_next_top',    'file'=>'/views/blocks/page/checkout/myexpresscheckout.tpl'),
                 ),
                 'events'       => array(
                     'onActivate'   => 'MyEvents::onActivate',
@@ -541,7 +538,7 @@ class Integration_Modules_ModuleActivationWithNewMetaDataTest extends BaseModule
                 'settings' => array(
                     array('group' => 'my_checkconfirm_new', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true'),
                     array('group' => 'my_displayname',  'name' => 'sDisplayName',   'type' => 'str',  'value' => 'Some name'),
-                    array('group' => 'my_new', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true'),
+                    array('group' => 'my_new', 'name' => 'blCheck', 'type' => 'bool', 'value' => 'true'),
                 ),
             ),
 
@@ -572,7 +569,12 @@ class Integration_Modules_ModuleActivationWithNewMetaDataTest extends BaseModule
                 'settings'        => array(
                     array( 'group' => 'my_checkconfirm_new', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true' ),
                     array( 'group' => 'my_displayname', 'name' => 'sDisplayName', 'type' => 'str', 'value' => 'Some name' ),
-                    array( 'group' => 'my_new', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true' ),
+                    array( 'group' => 'my_new', 'name' => 'blCheck', 'type' => 'bool', 'value' => 'true' ),
+                ),
+                'settings_values' => array(
+                    array( 'group' => 'my_checkconfirm_new', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => true ),
+                    array( 'group' => 'my_displayname', 'name' => 'sDisplayName', 'type' => 'str', 'value' => 'Some name' ),
+                    array( 'group' => 'my_new', 'name' => 'blCheck', 'type' => 'bool', 'value' => true ),
                 ),
                 'disabledModules' => array(),
                 'templates'       => array(
@@ -646,8 +648,8 @@ class Integration_Modules_ModuleActivationWithNewMetaDataTest extends BaseModule
                     'oxuser' => 'with_everything/myuser',
                 ),
                 'blocks' => array(
-                    array('template' => 'page/checkout/basket.tpl',  'block'=>'basket_btn_next_top',    'file'=>'/views/blocks/page/checkout/myexpresscheckout.tpl'),
                     array('template' => 'page/checkout/payment.tpl', 'block'=>'select_payment',         'file'=>'/views/blocks/page/checkout/mypaymentselector.tpl'),
+                    array('template' => 'page/checkout/basket.tpl',  'block'=>'basket_btn_next_top',    'file'=>'/views/blocks/page/checkout/myexpresscheckout.tpl'),
                 ),
                 'events'       => array(
                     'onActivate'   => 'MyEvents::onActivate',

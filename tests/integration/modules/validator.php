@@ -192,14 +192,43 @@ class Validator
      */
     protected function _checkBlockValues( $aExpectedBlocks, $aBlocksToCheck )
     {
-        foreach ($aExpectedBlocks as $iKey => $aValues ) {
-            foreach ( $aValues as $sValue ) {
-                if ( !in_array( $sValue, $aBlocksToCheck[$iKey] ) ) {
-                    return false;
-                }
-            }
+        foreach ($aExpectedBlocks as $aValues ) {
+            if ( !$this->_matchingBlockExists( $aValues, $aBlocksToCheck ) ) {
+                return false;
+            };
         }
 
+        return true;
+    }
+
+    /**
+     * @param $aBlockValues
+     * @param $aBlocks
+     * @return bool
+     */
+    protected function _matchingBlockExists( $aBlockValues, $aBlocks )
+    {
+        foreach ( $aBlocks as $aBlock ) {
+            if ( !$this->_matchBlocks( $aBlockValues, $aBlock ) ) {
+                continue;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param $aBlockValues
+     * @param $aBlock
+     * @return bool
+     */
+    protected function _matchBlocks( $aBlockValues, $aBlock )
+    {
+        foreach ( $aBlockValues as $sValue ) {
+            if ( !in_array($sValue, $aBlock) ) {
+                return false;
+            }
+        }
         return true;
     }
 }

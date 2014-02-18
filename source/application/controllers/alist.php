@@ -141,7 +141,7 @@ class aList extends oxUBase
     public function getViewId()
     {
         if (!isset($this->_sViewId)) {
-            $sCatId           = oxRegistry::getConfig()->getParameter('cnid');
+            $sCatId           = oxRegistry::getConfig()->getRequestParameter('cnid');
             $iActPage         = $this->getActPage();
             $iArtPerPage      = oxRegistry::getSession()->getVariable('_artperpage');
             $sListDisplayType = $this->_getListDisplayType();

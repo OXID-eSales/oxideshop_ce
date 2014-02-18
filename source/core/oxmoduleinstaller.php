@@ -701,7 +701,7 @@ class oxModuleInstaller extends oxSuperCfg
         $aFilteredModules = array();
         foreach ($aModules as $sClass => $aExtend) {
             foreach ($aExtend as $sExtendPath) {
-                if (strstr($sExtendPath, $sModuleId.'/')) {
+                if ( strpos($sExtendPath, $sModuleId."/" ) === 0 ) {
                     $aFilteredModules[$sClass][] = $sExtendPath;
                 }
             }

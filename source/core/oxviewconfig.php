@@ -850,10 +850,10 @@ class oxViewConfig extends oxSuperCfg
         }
 
         if ('grid' === $sListType) {
-            return $this->getConfig()->getConfigParam('aNrofCatArticlesInGrid');
+            return oxRegistry::getConfig()->getConfigParam('aNrofCatArticlesInGrid');
         }
 
-        return $this->getConfig()->getConfigParam('aNrofCatArticles');
+        return oxRegistry::getConfig()->getConfigParam('aNrofCatArticles');
     }
 
     /**

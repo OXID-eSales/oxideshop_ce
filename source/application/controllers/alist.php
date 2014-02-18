@@ -140,15 +140,17 @@ class aList extends oxUBase
      */
     public function getViewId()
     {
-        if ( !isset( $this->_sViewId ) ) {
-            $sCatId   = oxConfig::getParameter( 'cnid' );
-            $iActPage = $this->getActPage();
-            $iArtPerPage = oxSession::getVar( '_artperpage' );
-            $sListDisplayType = oxSession::getVar( 'ldtype' );
-            $sParentViewId = parent::getViewId();
+        if (!isset($this->_sViewId)) {
+            $sCatId           = oxRegistry::getConfig()->getParameter('cnid');
+            $iActPage         = $this->getActPage();
+            $iArtPerPage      = oxRegistry::getSession()->getVariable('_artperpage');
+            $sListDisplayType = $this->_getListDisplayType();
+            $sParentViewId    = parent::getViewId();
 
             // shorten it
-                $this->_sViewId = md5( $sParentViewId.'|'.$sCatId.'|'.$iActPage.'|'.$iArtPerPage.'|'.$sListDisplayType );
+                $this->_sViewId = md5(
+                    $sParentViewId . '|' . $sCatId . '|' . $iActPage . '|' . $iArtPerPage . '|' . $sListDisplayType
+                );
 
         }
 
@@ -390,6 +392,22 @@ class aList extends oxUBase
     protected function _getRequestPageNr()
     {
         return parent::getActPage();
+    }
+
+    /**
+     * Get list display type
+     *
+     * @return null|string
+     */
+    protected function _getListDisplayType()
+    {
+        $sListDisplayType = oxRegistry::getSession()->getVariable('ldtype');
+
+        if (is_null($sListDisplayType)) {
+            $sListDisplayType = oxRegistry::getConfig()->getConfigParam('sDefaultListDisplayType');
+        }
+
+        return $sListDisplayType;
     }
 
     /**

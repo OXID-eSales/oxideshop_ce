@@ -616,6 +616,35 @@ class Unit_Views_alistTest extends OxidTestCase
 
 
     /**
+     * Test view id getter when list type is not in session
+     */
+    public function testGetViewId_ListTypeNotInSession_ReturnsViewIdWithDefaultListTypeIncluded()
+    {
+        $this->setRequestParam('cnid', 'xxx');
+        $this->setSessionParam('_artperpage', '100');
+        $this->setSessionParam('session_attrfilter', array('xxx' => array('0' => array('100'))));
+
+        if (OXID_VERSION_EE) {
+            $this->setSessionParam('session_attrfilter', array('xxx' => array('0' => array('100'))));
+        }
+
+        $oView     = new oxUBase();
+        $sListType = $this->getConfig()->getConfigParam('sDefaultListDisplayType');
+
+        if (OXID_VERSION_EE) {
+            $sViewId = $oView->getViewId() . '|xxx|' . md5(serialize(array('100'))) . '|999|100|' . $sListType;
+        }
+
+        if (OXID_VERSION_PE) {
+            $sViewId = md5($oView->getViewId() . '|xxx|999|100|' . $sListType);
+        }
+
+        $oListView = $this->getMock('alist', array('getActPage'));
+        $oListView->expects($this->any())->method('getActPage')->will($this->returnValue('999'));
+        $this->assertEquals($sViewId, $oListView->getViewId());
+    }
+
+    /**
      * Test get category path as string.
      *
      * @return null

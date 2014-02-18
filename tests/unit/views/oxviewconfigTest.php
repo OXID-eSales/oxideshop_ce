@@ -599,26 +599,29 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
      */
     public function testGetNrOfCatArticles()
     {
-        $aNrofCatArticlesInGrid = array(1,2,3);
-        $aNrofCatArticles = array(4,5,6);
+        $aNrofCatArticlesInGrid = array(1, 2, 3);
+        $aNrofCatArticles       = array(4, 5, 6);
 
         $myConfig = $this->getConfig();
-        $myConfig->setConfigParam( "aNrofCatArticlesInGrid", $aNrofCatArticlesInGrid );
-        $myConfig->setConfigParam( "aNrofCatArticles", $aNrofCatArticles );
+        $myConfig->setConfigParam("aNrofCatArticlesInGrid", $aNrofCatArticlesInGrid);
+        $myConfig->setConfigParam("aNrofCatArticles", $aNrofCatArticles);
 
-        $oViewCfg = $this->getMock( 'oxViewConfig', array( 'getConfig' ) );
-        $oViewCfg->expects( $this->any() )->method( 'getConfig')->will( $this->returnValue( $myConfig ) );
+        $oViewCfg = $this->getMock('oxViewConfig', array('getConfig'));
+        $oViewCfg->expects($this->any())->method('getConfig')->will($this->returnValue($myConfig));
 
         $oSession = $this->getSession();
 
-        $oSession->setVar( "ldtype", "grid" );
-        $this->assertEquals( $aNrofCatArticlesInGrid, $oViewCfg->getNrOfCatArticles() );
+        $myConfig->setConfigParam('sDefaultListDisplayType', 'grid');
+        $this->assertEquals($aNrofCatArticlesInGrid, $oViewCfg->getNrOfCatArticles());
 
-        $oSession->setVar( "ldtype", "line" );
-        $this->assertEquals( $aNrofCatArticles, $oViewCfg->getNrOfCatArticles() );
+        $oSession->setVar("ldtype", "grid");
+        $this->assertEquals($aNrofCatArticlesInGrid, $oViewCfg->getNrOfCatArticles());
 
-        $oSession->setVar( "ldtype", "infogrid" );
-        $this->assertEquals( $aNrofCatArticles, $oViewCfg->getNrOfCatArticles() );
+        $oSession->setVar("ldtype", "line");
+        $this->assertEquals($aNrofCatArticles, $oViewCfg->getNrOfCatArticles());
+
+        $oSession->setVar("ldtype", "infogrid");
+        $this->assertEquals($aNrofCatArticles, $oViewCfg->getNrOfCatArticles());
     }
 
     /**

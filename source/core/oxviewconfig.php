@@ -806,16 +806,17 @@ class oxViewConfig extends oxSuperCfg
      */
     public function getNrOfCatArticles()
     {
-        // checking if all needed data is set
-        switch (oxRegistry::getSession()->getVariable( 'ldtype' )) {
-            case 'grid':
-                return $this->getConfig()->getConfigParam( 'aNrofCatArticlesInGrid' );
-                break;
-            case 'line':
-            case 'infogrid':
-            default:
-                return $this->getConfig()->getConfigParam( 'aNrofCatArticles' );
+        $sListType = oxRegistry::getSession()->getVariable('ldtype');
+
+        if (is_null($sListType)) {
+            $sListType = oxRegistry::getConfig()->getConfigParam('sDefaultListDisplayType');
         }
+
+        if ('grid' === $sListType) {
+            return $this->getConfig()->getConfigParam('aNrofCatArticlesInGrid');
+        }
+
+        return $this->getConfig()->getConfigParam('aNrofCatArticles');
     }
 
     /**

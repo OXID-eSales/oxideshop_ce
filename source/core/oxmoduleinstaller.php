@@ -69,8 +69,6 @@ class oxModuleInstaller extends oxSuperCfg
         $sModuleId = $oModule->getId();
 
         if ( $sModuleId ) {
-
-
             $this->_addExtensions( $oModule );
             $this->_removeFromDisabledList( $sModuleId );
 
@@ -615,15 +613,48 @@ class oxModuleInstaller extends oxSuperCfg
         return $aInstalledExtensions;
     }
 
+    /**
+     * Removes configs which are removed from module metadata
+     *
+     * @param $aModuleSettings
+     * @param $sModuleId
+     */
     protected function _removeNotUsedSettings( $aModuleSettings, $sModuleId )
     {
-        $oDb = oxDb::getDb();
-        $oConfig = $this->getConfig();
-        $sQuotedShopId = $oDb->quote( $oConfig->getShopId() );
-        $sQuotedModuleId = $oDb->quote( 'module:' . $sModuleId );
-        $sModuleConfigsQuery = "SELECT oxvarname FROM oxconfig WHERE oxmodule = $sQuotedModuleId";
-        $aModuleConfigs = $oDb->getCol( $sModuleConfigsQuery );
+        $aModuleConfigs = $this->_getModuleConfigs( $sModuleId );
+        $aModuleSettings = $this->_parseModuleSettings( $aModuleSettings );
 
+        $aConfigsToRemove = array_diff( $aModuleConfigs, $aModuleSettings );
+        if ( !empty( $aConfigsToRemove ) ) {
+            $this->_removeModuleConfigs( $sModuleId, $aConfigsToRemove );
+        }
+    }
+
+    /**
+     * Returns module configuration from database
+     *
+     * @param $sModuleId
+     * @return array
+     */
+    protected function _getModuleConfigs( $sModuleId )
+    {
+        $oDb = oxDb::getDb();
+        $sQuotedShopId = $oDb->quote( $this->getConfig()->getShopId() );
+        $sQuotedModuleId = $oDb->quote( 'module:' . $sModuleId );
+
+        $sModuleConfigsQuery = "SELECT oxvarname FROM oxconfig WHERE oxmodule = $sQuotedModuleId AND oxshopid = $sQuotedShopId";
+
+        return $oDb->getCol( $sModuleConfigsQuery );
+    }
+
+    /**
+     * Parses module config variable names to array from module settings
+     *
+     * @param $aModuleSettings
+     * @return array
+     */
+    protected function _parseModuleSettings( $aModuleSettings )
+    {
         $aSettings = array();
 
         if ( is_array( $aModuleSettings ) ) {
@@ -632,12 +663,29 @@ class oxModuleInstaller extends oxSuperCfg
             }
         }
 
-        $aConfigsToRemove = array_diff( $aModuleConfigs, $aSettings );
-        if ( !empty( $aConfigsToRemove ) ) {
-            $aQuotedConfigsToRemove = array_map( array( $oDb, 'quote' ), $aConfigsToRemove );
-            $sDeleteSql = "DELETE FROM `oxconfig` WHERE oxmodule = $sQuotedModuleId AND oxshopid = $sQuotedShopId AND oxvarname IN (".implode(", ", $aQuotedConfigsToRemove ).")";
-            $oDb->execute( $sDeleteSql );
-        }
+        return $aSettings;
+    }
+
+    /**
+     * Removes module configs from database
+     *
+     * @param $sModuleId
+     * @param $aConfigsToRemove
+     */
+    protected function _removeModuleConfigs( $sModuleId, $aConfigsToRemove )
+    {
+        $oDb = oxDb::getDb();
+        $sQuotedShopId = $oDb->quote( $this->getConfig()->getShopId() );
+        $sQuotedModuleId = $oDb->quote( 'module:' . $sModuleId );
+
+        $aQuotedConfigsToRemove = array_map( array( $oDb, 'quote' ), $aConfigsToRemove );
+        $sDeleteSql = "DELETE
+                       FROM `oxconfig`
+                       WHERE oxmodule = $sQuotedModuleId AND
+                             oxshopid = $sQuotedShopId AND
+                             oxvarname IN (".implode(", ", $aQuotedConfigsToRemove ).")";
+
+        $oDb->execute( $sDeleteSql );
     }
 
     /**

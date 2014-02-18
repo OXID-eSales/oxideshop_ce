@@ -57,6 +57,7 @@ class Integration_Modules_ModuleActivationWithNewMetaDataTest extends BaseModule
         $this->_runAsserts( $aResultToAsserts, $sModule );
     }
 
+
     /**
      * Removed extension in metadata
      *
@@ -174,7 +175,7 @@ class Integration_Modules_ModuleActivationWithNewMetaDataTest extends BaseModule
                         'onDeactivate' => 'MyEvents::onDeactivate'
                     ),
                 ),
-            )
+            ),
         );
     }
 
@@ -297,7 +298,7 @@ class Integration_Modules_ModuleActivationWithNewMetaDataTest extends BaseModule
                         'onDeactivate' => 'MyEvents::onDeactivate'
                     ),
                 ),
-            )
+            ),
         );
     }
 
@@ -406,7 +407,7 @@ class Integration_Modules_ModuleActivationWithNewMetaDataTest extends BaseModule
                         'onDeactivate' => 'MyEvents::onDeactivate'
                     ),
                 ),
-            )
+            ),
         );
     }
 
@@ -481,7 +482,7 @@ class Integration_Modules_ModuleActivationWithNewMetaDataTest extends BaseModule
                     ),
                     'with_everything' => null,
                 ),
-            )
+            ),
         );
     }
 
@@ -609,7 +610,7 @@ class Integration_Modules_ModuleActivationWithNewMetaDataTest extends BaseModule
                         'onDeactivate' => 'MyEvents::onDeactivate'
                     ),
                 ),
-            )
+            ),
         );
     }
 
@@ -725,7 +726,7 @@ class Integration_Modules_ModuleActivationWithNewMetaDataTest extends BaseModule
                         'onDeactivate' => 'MyEvents::onDeactivate'
                     ),
                 ),
-            )
+            ),
         );
     }
 }

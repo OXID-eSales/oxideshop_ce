@@ -424,8 +424,8 @@ DROP TABLE IF EXISTS `oxconfig`;
 CREATE TABLE `oxconfig` (
   `OXID`            char(32) character set latin1 collate latin1_general_ci NOT NULL COMMENT 'Config id',
   `OXSHOPID`        char(32) character set latin1 collate latin1_general_ci NOT NULL default '' COMMENT 'Shop id (oxshops)',
-  `OXMODULE`        varchar(32) character set latin1 collate latin1_general_ci NOT NULL default '' COMMENT 'Module or theme specific config (theme:themename, module:modulename)',
-  `OXVARNAME`       char(32) character set latin1 collate latin1_general_ci NOT NULL default '' COMMENT 'Variable name',
+  `OXMODULE`        varchar(100) character set latin1 collate latin1_general_ci NOT NULL default '' COMMENT 'Module or theme specific config (theme:themename, module:modulename)',
+  `OXVARNAME`       char(100) character set latin1 collate latin1_general_ci NOT NULL default '' COMMENT 'Variable name',
   `OXVARTYPE`       varchar(16) character set latin1 collate latin1_general_ci NOT NULL default '' COMMENT 'Variable type',
   `OXVARVALUE`      blob NOT NULL COMMENT 'Variable value',
   `OXTIMESTAMP`     timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP COMMENT 'Timestamp',
@@ -605,8 +605,8 @@ DROP TABLE IF EXISTS `oxconfigdisplay`;
 
 CREATE TABLE `oxconfigdisplay` (
   `OXID`            char(32) character set latin1 collate latin1_general_ci NOT NULL COMMENT 'Config id (extends oxconfig record with this id)',
-  `OXCFGMODULE`     varchar(32) character set latin1 collate latin1_general_ci NOT NULL default '' COMMENT 'Module or theme specific config (theme:themename, module:modulename)',
-  `OXCFGVARNAME`    char(32) character set latin1 collate latin1_general_ci NOT NULL default '' COMMENT 'Variable name',
+  `OXCFGMODULE`     varchar(100) character set latin1 collate latin1_general_ci NOT NULL default '' COMMENT 'Module or theme specific config (theme:themename, module:modulename)',
+  `OXCFGVARNAME`    char(100) character set latin1 collate latin1_general_ci NOT NULL default '' COMMENT 'Variable name',
   `OXGROUPING`      varchar(255) NOT NULL default '' COMMENT 'Grouping (groups config fields to array with specified value as key)',
   `OXVARCONSTRAINT` varchar(255) NOT NULL default '' COMMENT 'Serialized constraints',
   `OXPOS`           int NOT NULL default 0 COMMENT 'Sorting',

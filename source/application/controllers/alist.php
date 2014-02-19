@@ -219,7 +219,11 @@ class aList extends oxUBase
         $oCat = $this->getActiveCategory();
         if ($oCat && $myConfig->getConfigParam('bl_rssCategories')) {
             $oRss = oxNew('oxrssfeed');
-            $this->addRssFeed($oRss->getCategoryArticlesTitle($oCat), $oRss->getCategoryArticlesUrl($oCat), 'activeCategory');
+            $this->addRssFeed(
+                $oRss->getCategoryArticlesTitle($oCat),
+                $oRss->getCategoryArticlesUrl($oCat),
+                'activeCategory'
+            );
         }
 
         //checking if actual pages count does not exceed real articles page count
@@ -627,7 +631,11 @@ class aList extends oxUBase
 
                 if ($oStr->strlen($sDesc) > $iMaxTextLength) {
                     $sMidText = $oStr->substr($sDesc, 0, $iMaxTextLength);
-                    $sDesc    = $oStr->substr($sMidText, 0, ($oStr->strlen($sMidText) - $oStr->strpos(strrev($sMidText), ' ')));
+                    $sDesc    = $oStr->substr(
+                        $sMidText,
+                        0,
+                        ($oStr->strlen($sMidText) - $oStr->strpos(strrev($sMidText), ' '))
+                    );
                 }
                 if ($sText) {
                     $sText .= ', ';
@@ -817,7 +825,7 @@ class aList extends oxUBase
     public function getArticleList()
     {
         if ($this->_aArticleList === null) {
-            if ( /*$this->_isActCategory() &&*/
+            if (/*$this->_isActCategory() &&*/
             ($oCategory = $this->getActiveCategory())
             ) {
                 $aArticleList = $this->_loadArticles($oCategory);
@@ -897,9 +905,13 @@ class aList extends oxUBase
     {
         $aPaths = array();
 
-        if ('oxmore' == oxConfig::getParameter('cnid')) {
+        if ('oxmore' == oxRegistry::getConfig()->getRequestParameter('cnid')) {
             $aPath          = array();
-            $aPath['title'] = oxRegistry::getLang()->translateString('CATEGORY_OVERVIEW', oxRegistry::getLang()->getBaseLanguage(), false);
+            $aPath['title'] = oxRegistry::getLang()->translateString(
+                'CATEGORY_OVERVIEW',
+                oxRegistry::getLang()->getBaseLanguage(),
+                false
+            );
             $aPath['link']  = $this->getLink();
 
             $aPaths[] = $aPath;
@@ -1036,9 +1048,13 @@ class aList extends oxUBase
         if (($oCategory = $this->getActiveCategory())) {
             $oUtils = oxRegistry::get("oxUtilsUrl");
             if (oxRegistry::getUtils()->seoIsActive()) {
-                $sUrl = $oUtils->prepareCanonicalUrl($oCategory->getBaseSeoLink($oCategory->getLanguage(), $this->getActPage()));
+                $sUrl = $oUtils->prepareCanonicalUrl(
+                    $oCategory->getBaseSeoLink($oCategory->getLanguage(), $this->getActPage())
+                );
             } else {
-                $sUrl = $oUtils->prepareCanonicalUrl($oCategory->getBaseStdLink($oCategory->getLanguage(), $this->getActPage()));
+                $sUrl = $oUtils->prepareCanonicalUrl(
+                    $oCategory->getBaseStdLink($oCategory->getLanguage(), $this->getActPage())
+                );
             }
 
             return $sUrl;

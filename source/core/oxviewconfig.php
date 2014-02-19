@@ -839,7 +839,7 @@ class oxViewConfig extends oxSuperCfg
     /**
      * Returns config param "aNrofCatArticles" value
      *
-     * @return string
+     * @return array
      */
     public function getNrOfCatArticles()
     {
@@ -850,10 +850,12 @@ class oxViewConfig extends oxSuperCfg
         }
 
         if ('grid' === $sListType) {
-            return oxRegistry::getConfig()->getConfigParam('aNrofCatArticlesInGrid');
+            $aNrOfCatArticles = oxRegistry::getConfig()->getConfigParam('aNrofCatArticlesInGrid');
+        } else {
+            $aNrOfCatArticles = oxRegistry::getConfig()->getConfigParam('aNrofCatArticles');
         }
 
-        return oxRegistry::getConfig()->getConfigParam('aNrofCatArticles');
+        return $aNrOfCatArticles;
     }
 
     /**

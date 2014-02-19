@@ -89,7 +89,7 @@ function smarty_function_oxmultilang( $params, &$smarty )
         }
 
     } elseif( $blShowError ) {
-        $sTranslation = 'ERROR : Translation for '.$sIdent.' not found!';
+        $sTranslation = 'ERROR: Translation for '.$sIdent.' not found!';
     }
 
     stopProfile("smarty_function_oxmultilang");

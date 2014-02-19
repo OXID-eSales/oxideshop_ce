@@ -62,7 +62,7 @@ function smarty_function_oxmultilang( $params, &$smarty )
     }
 
     if ($blAdmin && $sTranslation == $sIdent && (!isset( $params['noerror']) || !$params['noerror']) ) {
-        $sTranslation = '<b>ERROR : Translation for '.$sIdent.' not found!</b>';
+        $sTranslation = 'ERROR : Translation for '.$sIdent.' not found!';
     }
 
     if ( $sTranslation == $sIdent && isset( $params['alternative'] ) ) {

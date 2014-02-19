@@ -196,4 +196,14 @@ class oxShop extends oxI18n
         return $this->oxshops__oxdefcat->value;
     }
 
+    /**
+     * Returns true if shop in productive mode
+     *
+     * @return bool
+     */
+    public function isProductiveMode()
+    {
+        return (bool) $this->oxshops__oxproductive->value;
+    }
+
 }

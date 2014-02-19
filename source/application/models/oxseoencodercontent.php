@@ -29,6 +29,8 @@ class oxSeoEncoderContent extends oxSeoEncoder
 
     /**
      * Singleton instance.
+     *
+     * @deprecated since v5.0 (2012-08-10); Use oxRegistry::get("oxSeoEncoderContent") instead.
      */
     protected static $_instance = null;
 

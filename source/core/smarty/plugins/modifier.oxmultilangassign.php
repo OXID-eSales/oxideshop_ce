@@ -39,7 +39,14 @@ function smarty_modifier_oxmultilangassign( $sIdent, $args = null )
     }
 
     $oLang = oxRegistry::getLang();
+    $oConfig = oxRegistry::getConfig();
+    $oShop = $oConfig->getActiveShop();
     $iLang = $oLang->getTplLanguage();
+    $blShowError = true;
+
+    if( $oShop->isProductiveMode() ) {
+        $blShowError = false;
+    }
 
     if ( !isset( $iLang ) ) {
         $iLang = $oLang->getBaseLanguage();
@@ -50,19 +57,22 @@ function smarty_modifier_oxmultilangassign( $sIdent, $args = null )
 
     try {
         $sTranslation = $oLang->translateString( $sIdent, $iLang, $oLang->isAdmin() );
+        $blTranslationNotFound = ($sTranslation == $sIdent);
     } catch ( oxLanguageException $oEx ) {
         // is thrown in debug mode and has to be caught here, as smarty hangs otherwise!
     }
 
-    if ( $sTranslation == $sIdent ) {
-        $sTranslation = 'ERROR : Translation for '.$sIdent.' not found!';
-    }
-    if ( $args ) {
-        if ( is_array( $args ) ) {
-            $sTranslation = vsprintf( $sTranslation, $args );
-        } else {
-            $sTranslation = sprintf( $sTranslation, $args );
+    if(!$blTranslationNotFound){
+        if ( $args ) {
+            if ( is_array( $args ) ) {
+                $sTranslation = vsprintf( $sTranslation, $args );
+            } else {
+                $sTranslation = sprintf( $sTranslation, $args );
+            }
         }
+    } elseif ($blShowError) {
+        $sTranslation = 'ERROR: Translation for '.$sIdent.' not found!';
     }
+
     return $sTranslation;
 }

@@ -51,11 +51,11 @@ class Unit_Maintenance_smartyModifieroxmultilangassignTest extends OxidTestCase
     }
 
     /**
-     * Provides data to testArgumentedAssignments
+     * Provides data to testAssignmentsWithArguments
      *
      * @return array
      */
-    public function argumentedProvider()
+    public function withArgumentsProvider()
     {
         return array(
             array( 'MANUFACTURER_S', 0, 'Opel', '| Hersteller: Opel' ),
@@ -68,11 +68,77 @@ class Unit_Maintenance_smartyModifieroxmultilangassignTest extends OxidTestCase
     /**
      * Tests value assignments when translating strings containing %s
      *
-     * @dataProvider argumentedProvider
+     * @dataProvider withArgumentsProvider
      */
-    public function testArgumentedAssignments( $sIndent, $iLang, $aArgs, $sResult )
+    public function testAssignmentsWithArguments( $sIndent, $iLang, $aArgs, $sResult )
     {
         $this->setLanguage( $iLang );
         $this->assertEquals( $sResult, smarty_modifier_oxmultilangassign( $sIndent, $aArgs ) );
+    }
+
+    /**
+     * testTranslateFrontend_isMissingTranslation data provider
+     *
+     * @return array
+     */
+    public function missingTranslationProviderFrontend()
+    {
+        return array (
+            array(
+                true,
+                'MY_MISING_TRANSLATION',
+                'MY_MISING_TRANSLATION',
+            ),
+            array(
+                false,
+                'ident' => 'MY_MISING_TRANSLATION',
+                'ERROR: Translation for MY_MISING_TRANSLATION not found!',
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider missingTranslationProviderFrontend
+     */
+    public function testTranslateFrontend_isMissingTranslation( $isProductiveMode, $sIndent, $sTranslation)
+    {
+        $this->setAdminMode( false );
+        $oSmarty = new Smarty();
+
+        $this->setLanguage( 1 );
+
+        $oShop = $this->getConfig()->getActiveShop();
+        $oShop->oxshops__oxproductive = new oxField( $isProductiveMode );
+        $oShop->save();
+
+        $this->assertEquals( $sTranslation, smarty_modifier_oxmultilangassign( $sIndent, $oSmarty ) );
+    }
+
+    /**
+     * testTranslateAdmin_isMissingTranslation data provider
+     *
+     * @return array
+     */
+    public function missingTranslationProviderAdmin()
+    {
+        return array (
+            array(
+                'MY_MISING_TRANSLATION',
+                'ERROR: Translation for MY_MISING_TRANSLATION not found!',
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider missingTranslationProviderAdmin
+     */
+    public function testTranslateAdmin_isMissingTranslation( $sIdent, $sTranslation)
+    {
+        $oSmarty = new Smarty();
+
+        $this->setLanguage( 1 );
+        $this->setAdminMode( true );
+
+        $this->assertEquals( $sTranslation, smarty_modifier_oxmultilangassign( $sIdent, $oSmarty ) );
     }
 }

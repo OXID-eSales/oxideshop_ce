@@ -3204,8 +3204,9 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      */
     protected function _getGroupPrice()
     {
-        $sPriceSuffix = $this->_getUserPriceSufix();
-        $dPrice = $this->{oxarticles__oxprice . $sPriceSuffix}->value;
+        $sPriceSufix = $this->_getUserPriceSufix();
+        $sVarName = "oxarticles__oxprice{$sPriceSufix}";
+        $dPrice = $this->$sVarName->value;
 
         // #1437/1436C - added config option, and check for zero A,B,C price values
         if ( $this->getConfig()->getConfigParam( 'blOverrideZeroABCPrices' ) && (double) $dPrice == 0 ) {

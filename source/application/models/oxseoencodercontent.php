@@ -26,6 +26,7 @@
  */
 class oxSeoEncoderContent extends oxSeoEncoder
 {
+
     /**
      * Singleton instance.
      */
@@ -63,38 +64,40 @@ class oxSeoEncoderContent extends oxSeoEncoder
      *
      * @return string
      */
-    public function getContentUri( $oCont, $iLang = null, $blRegenerate = false )
+    public function getContentUri($oCont, $iLang = null, $blRegenerate = false)
     {
         if (!isset($iLang)) {
             $iLang = $oCont->getLanguage();
         }
         //load details link from DB
-        if ( $blRegenerate || !( $sSeoUrl = $this->_loadFromDb( 'oxcontent', $oCont->getId(), $iLang ) ) ) {
+        if ($blRegenerate || !($sSeoUrl = $this->_loadFromDb('oxcontent', $oCont->getId(), $iLang))) {
 
-            if ( $iLang != $oCont->getLanguage() ) {
-                $sId = $oCont->getId();
+            if ($iLang != $oCont->getLanguage()) {
+                $sId   = $oCont->getId();
                 $oCont = oxNew('oxcontent');
-                $oCont->loadInLang( $iLang, $sId );
+                $oCont->loadInLang($iLang, $sId);
             }
 
             $sSeoUrl = '';
-            if ( $oCont->oxcontents__oxcatid->value ) {
-                $oCat = oxNew( 'oxcategory' );
-                if ( $oCat->loadInLang( $iLang, $oCont->oxcontents__oxcatid->value ) ) {
-                    if ( $oCat->oxcategories__oxparentid->value && $oCat->oxcategories__oxparentid->value != 'oxrootid' ) {
-                        $oParentCat = oxNew( 'oxcategory' );
-                        if ( $oParentCat->loadInLang( $iLang, $oCat->oxcategories__oxparentid->value ) ) {
-                            $sSeoUrl .= oxRegistry::get("oxSeoEncoderCategory")->getCategoryUri( $oParentCat );
+            if ($oCont->oxcontents__oxcatid->value) {
+                $oCat = oxNew('oxcategory');
+                if ($oCat->loadInLang($iLang, $oCont->oxcontents__oxcatid->value)) {
+                    if ($oCat->oxcategories__oxparentid->value
+                        && $oCat->oxcategories__oxparentid->value != 'oxrootid') {
+                        $oParentCat = oxNew('oxcategory');
+                        if ($oParentCat->loadInLang($iLang, $oCat->oxcategories__oxparentid->value)) {
+                            $sSeoUrl .= oxRegistry::get("oxSeoEncoderCategory")->getCategoryUri($oParentCat);
                         }
                     }
                 }
             }
 
-            $sSeoUrl .= $this->_prepareTitle( $oCont->oxcontents__oxtitle->value, false, $oCont->getLanguage() ) . '/';
-            $sSeoUrl  = $this->_processSeoUrl( $sSeoUrl, $oCont->getId(), $iLang );
+            $sSeoUrl .= $this->_prepareTitle($oCont->oxcontents__oxtitle->value, false, $oCont->getLanguage()) . '/';
+            $sSeoUrl = $this->_processSeoUrl($sSeoUrl, $oCont->getId(), $iLang);
 
-            $this->_saveToDb( 'oxcontent', $oCont->getId(), $oCont->getBaseStdLink($iLang), $sSeoUrl, $iLang );
+            $this->_saveToDb('oxcontent', $oCont->getId(), $oCont->getBaseStdLink($iLang), $sSeoUrl, $iLang);
         }
+
         return $sSeoUrl;
     }
 
@@ -104,16 +107,15 @@ class oxSeoEncoderContent extends oxSeoEncoder
      * @param oxContent $oCont category object
      * @param int       $iLang language
      *
-     * @access public
-     *
-     * @return void
+     * @return string|bool
      */
-    public function getContentUrl( $oCont, $iLang = null)
+    public function getContentUrl($oCont, $iLang = null)
     {
         if (!isset($iLang)) {
             $iLang = $oCont->getLanguage();
         }
-        return $this->_getFullUrl( $this->getContentUri( $oCont, $iLang ), $iLang );
+
+        return $this->_getFullUrl($this->getContentUri($oCont, $iLang), $iLang);
     }
 
     /**
@@ -123,9 +125,9 @@ class oxSeoEncoderContent extends oxSeoEncoder
      *
      * @return null
      */
-    public function onDeleteContent( $sId )
+    public function onDeleteContent($sId)
     {
-        $oDb = oxDb::getDb();
+        $oDb       = oxDb::getDb();
         $sIdQuoted = $oDb->quote($sId);
         $oDb->execute("delete from oxseo where oxobjectid = $sIdQuoted and oxtype = 'oxcontent'");
         $oDb->execute("delete from oxobject2seodata where oxobjectid = $sIdQuoted");
@@ -139,13 +141,15 @@ class oxSeoEncoderContent extends oxSeoEncoder
      *
      * @return string
      */
-    protected function _getAltUri( $sObjectId, $iLang )
+    protected function _getAltUri($sObjectId, $iLang)
     {
         $sSeoUrl = null;
-        $oCont = oxNew( "oxcontent" );
-        if ( $oCont->loadInLang( $iLang, $sObjectId ) ) {
-            $sSeoUrl = $this->getContentUri( $oCont, $iLang, true );
+        /** @var oxContent $oCont */
+        $oCont   = oxNew("oxcontent");
+        if ($oCont->loadInLang($iLang, $sObjectId)) {
+            $sSeoUrl = $this->getContentUri($oCont, $iLang, true);
         }
+
         return $sSeoUrl;
     }
 }

@@ -16,6 +16,11 @@ Options +FollowSymLinks
 RewriteEngine On
 RewriteBase /
 
+Redirect /config.inc.php /
+
+RewriteCond %{QUERY_STRING}     ^fnc=(getShopVersion|getShopEdition|getRevision)  [NC]
+RewriteRule ^(.*)$              /$1?                                              [R=301,L]
+
 RewriteCond %{REQUEST_METHOD} ^(TRACE|TRACK)
 RewriteRule .* - [F]
 
@@ -38,8 +43,6 @@ RewriteCond %{REQUEST_URI} (\/out\/pictures\/)
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule (\.jpe?g|\.gif|\.png)$ getimg.php
-
-Redirect /config.inc.php /
 
 </IfModule>
 

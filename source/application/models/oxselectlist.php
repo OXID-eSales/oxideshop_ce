@@ -58,17 +58,14 @@ class oxSelectlist extends oxI18n implements oxISelectList
     protected $_oActiveSelection = null;
 
     /**
-     * Class constructor, sets callback so that Shopowner is able to
-     * add any information to the article.
-     *
-     * @param string $sObjectsInListName optional and having no effect
+     * Calls parent constructor and initializes selection list
      *
      * @return null
      */
-    public function __construct( $sObjectsInListName = 'oxselectlist')
+    public function __construct()
     {
         parent::__construct();
-        $this->init( 'oxselectlist' );
+        $this->init('oxselectlist');
     }
 
     /**

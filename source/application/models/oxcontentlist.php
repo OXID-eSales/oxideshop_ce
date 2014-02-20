@@ -85,11 +85,11 @@ class oxContentList extends oxList
     /**
      * Class constructor, initiates parent constructor (parent::oxList()).
      *
-     * @param string $sObjectsInListName optional and not used
+     * @return null
      */
-    public function __construct( $sObjectsInListName = 'oxcontent' )
+    public function __construct()
     {
-        parent::__construct( 'oxcontent' );
+        parent::__construct('oxcontent');
     }
 
     /**

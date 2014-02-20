@@ -41,12 +41,12 @@ class oxPaymentList extends oxList
     /**
      * Class Constructor
      *
-     * @param string $sObjectsInListName Associated list item object type
+     * @return null
      */
-    public function __construct( $sObjectsInListName = 'oxpayment' )
+    public function __construct()
     {
-        $this->setHomeCountry( $this->getConfig()->getConfigParam( 'aHomeCountry' ) );
-        parent::__construct( 'oxpayment');
+        $this->setHomeCountry($this->getConfig()->getConfigParam('aHomeCountry'));
+        parent::__construct('oxpayment');
     }
 
     /**

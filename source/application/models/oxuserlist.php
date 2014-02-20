@@ -29,13 +29,11 @@ class oxUserList extends oxList
     /**
      * Class constructor
      *
-     * @param string $sObjectsInListName Associated list item object type
-     *
      * @return null
      */
-    public function __construct( $sObjectsInListName = 'oxuser')
+    public function __construct()
     {
-        parent::__construct( 'oxuser');
+        parent::__construct('oxuser');
     }
 
 

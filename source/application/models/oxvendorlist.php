@@ -56,17 +56,14 @@ class oxVendorList extends oxList
     protected $_oClickedVendor = null;
 
     /**
-     * Class constructor, sets callback so that Shopowner is able to
-     * add any information to the article.
-     *
-     * @param string $sObjectsInListName optional parameter, not used
+     * Calls parent constructor and defines if Article vendor count is shown
      *
      * @return null
      */
-    public function __construct( $sObjectsInListName = 'oxvendor')
+    public function __construct()
     {
-        $this->setShowVendorArticleCnt( $this->getConfig()->getConfigParam( 'bl_perfShowActionCatArticleCnt' ) );
-        parent::__construct( 'oxvendor');
+        $this->setShowVendorArticleCnt($this->getConfig()->getConfigParam('bl_perfShowActionCatArticleCnt'));
+        parent::__construct('oxvendor');
     }
 
     /**

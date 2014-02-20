@@ -29,13 +29,11 @@ class oxAttributeList extends oxList
     /**
      * Class constructor
      *
-     * @param string $sObjectsInListName Associated list item object type
-     *
      * @return null
      */
-    public function __construct( $sObjectsInListName = 'oxattribute')
+    public function __construct()
     {
-        parent::__construct( 'oxattribute');
+        parent::__construct('oxattribute');
     }
 
     /**

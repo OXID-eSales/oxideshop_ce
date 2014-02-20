@@ -59,11 +59,11 @@ class oxDiscountList extends oxList
     /**
      * Class Constructor
      *
-     * @param string $sObjectsInListName Associated list item object type
+     * @return null
      */
-    public function __construct( $sObjectsInListName = 'oxdiscount' )
+    public function __construct()
     {
-        parent::__construct( 'oxdiscount' );
+        parent::__construct('oxdiscount');
     }
 
     /**

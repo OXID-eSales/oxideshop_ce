@@ -28,15 +28,13 @@
 class oxShopList extends oxList
 {
     /**
-     * Class constructor, sets callback so that Shopowner is able to add any information to the article.
-     *
-     * @param string $sObjectsInListName Object name (oxShop)
+     * Calls parent constructor
      *
      * @return null
      */
-    public function __construct( $sObjectsInListName = 'oxshop')
+    public function __construct()
     {
-        return parent::__construct( 'oxshop');
+        return parent::__construct('oxshop');
     }
 
     /**

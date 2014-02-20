@@ -30,13 +30,11 @@ class oxCountryList extends oxList
     /**
      * Call parent class constructor
      *
-     * @param string $sObjectsInListName Associated list item object type
-     *
      * @return null
      */
-    public function __construct( $sObjectsInListName = 'oxcountry' )
+    public function __construct()
     {
-        parent::__construct( 'oxcountry' );
+        parent::__construct('oxcountry');
     }
 
     /**

@@ -28,8 +28,7 @@ class oxVoucherList extends oxList
 {
 
     /**
-     * Class constructor, sets callback so that Shopowner is able to
-     * add any information to the article.
+     * Calls parent constructor
      *
      * @return null
      */

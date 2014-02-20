@@ -75,17 +75,16 @@ class oxDeliveryList extends oxList
 
 
     /**
-     * Class constructor, sets callback so that Shop owner is able to
-     * add any information to the article.
+     * Calls parent constructor and sets home country
      *
-     * @param string $sObjectsInListName Object in list
+     * @return null
      */
-    public function __construct( $sObjectsInListName = 'oxdelivery')
+    public function __construct()
     {
-        parent::__construct( 'oxdelivery' );
+        parent::__construct('oxdelivery');
 
         // load or not delivery list
-        $this->setHomeCountry( $this->getConfig()->getConfigParam( 'aHomeCountry' ) );
+        $this->setHomeCountry($this->getConfig()->getConfigParam('aHomeCountry'));
     }
 
     /**

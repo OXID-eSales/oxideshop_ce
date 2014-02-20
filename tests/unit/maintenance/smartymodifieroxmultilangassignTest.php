@@ -34,8 +34,8 @@ class Unit_Maintenance_smartyModifieroxmultilangassignTest extends OxidTestCase
     public function provider()
     {
         return array(
-            array( 'FIRST_NAME', 0, 'Vorname' ),
-            array( 'FIRST_NAME', 1, 'First name' )
+            array( 'FIRST_NAME', 0, 'Vorname:' ),
+            array( 'FIRST_NAME', 1, 'First name:' )
         );
     }
 
@@ -60,8 +60,8 @@ class Unit_Maintenance_smartyModifieroxmultilangassignTest extends OxidTestCase
         return array(
             array( 'MANUFACTURER_S', 0, 'Opel', '| Hersteller: Opel' ),
             array( 'MANUFACTURER_S', 1, 'Opel', 'Manufacturer: Opel' ),
-            array( 'INVITE_TO_SHOP', 0, array( 'Admin', 'OXID Shop' ), 'Eine Einladung von Admin OXID Shop zu besuchen.' ),
-            array( 'INVITE_TO_SHOP', 1, array( 'Admin', 'OXID Shop' ), 'An invitation from Admin to visit OXID Shop' )
+            array( 'HOME', 0, array( 'Admin', 'OXID Shop' ), 'Startseite' ),
+            array( 'GREETING_CARD', 1, array( 'Admin', 'OXID Shop' ), 'Greeting Card' )
         );
     }
 

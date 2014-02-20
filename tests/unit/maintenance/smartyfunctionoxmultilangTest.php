@@ -33,8 +33,8 @@ class Unit_Maintenance_smartyFunctionOxMultiLangTest extends OxidTestCase
      */
     public function provider() {
         return array (
-            array( 'FIRST_NAME', 'First name', 1, false),
-            array( 'FIRST_NAME', 'Vorname', 0, false),
+            array( 'FIRST_NAME', 'First name:', 1, false),
+            array( 'FIRST_NAME', 'Vorname:', 0, false),
             array( 'GENERAL_SAVE', 'Save', 1, true),
             array( 'GENERAL_SAVE', 'Speichern', 0, true),
         );

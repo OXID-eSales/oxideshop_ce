@@ -206,4 +206,14 @@ class oxShop extends oxI18n
         return $aLanguages;
     }
 
+
+    /**
+     * Returns true if shop in productive mode
+     *
+     * @return bool
+     */
+    public function isProductiveMode()
+    {
+        return (bool) $this->oxshops__oxproductive->value;
+    }
 }

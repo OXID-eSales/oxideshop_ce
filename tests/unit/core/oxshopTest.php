@@ -37,4 +37,34 @@ class Unit_Core_oxshopTest extends OxidTestCase
 
 
 
+    public function testIsProductiveMode_ProductiveMode()
+    {
+        $oShop = new oxShop();
+        $oShop->setId( 10 );
+        $oShop->oxshops__oxproductive = new oxField( true );
+        $oShop->oxshops__oxactive = new oxField(1);
+        $oShop->oxshops__oxname = new oxField('Test shop');
+        $oShop->save();
+
+        $oShop = new oxShop();
+        $oShop->load( 10 );
+
+        $this->assertTrue( $oShop->isProductiveMode() );
+    }
+
+    public function testIsProductiveMode_nonProductiveMode()
+    {
+        $oShop = new oxShop();
+        $oShop->setId( 12 );
+        $oShop->oxshops__oxproductive = new oxField( false );
+        $oShop->oxshops__oxactive = new oxField(1);
+        $oShop->oxshops__oxname = new oxField('Test shop');
+        $oShop->save();
+
+        $oShop = new oxShop();
+        $oShop->load( 12 );
+
+        $this->assertFalse( $oShop->isProductiveMode() );
+    }
+
 }

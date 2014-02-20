@@ -203,7 +203,7 @@ class oxNewsSubscribed extends oxBase
      */
     public function wasUnsubscribed()
     {
-        if ( '0000-00-00 00:00:00' != $this->oxnewssubscribed__oxunsubscribed ) {
+        if ('0000-00-00 00:00:00' != $this->oxnewssubscribed__oxunsubscribed->value) {
             return true;
         }
         return false;

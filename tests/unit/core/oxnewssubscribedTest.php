@@ -320,4 +320,21 @@ class Unit_Core_oxnewssubscribedTest extends OxidTestCase
         $oNewsSubscribed->load( '_testNewsSubscrId' );
         $this->assertEquals( $oNewsSubscribed->wasUnsubscribed(), true );
     }
+
+
+    /**
+     * Check if return value is valid after oxunsubscribed value is set to 0 and something else
+     */
+    public function testWasUnsubscribedBug5416()
+    {
+        $oNewsSubscribed = new oxNewsSubscribed();
+
+        //not subscribed
+        $oNewsSubscribed->oxnewssubscribed__oxunsubscribed = new oxField('0000-00-00 00:00:00', oxField::T_TEXT);
+        $this->assertEquals($oNewsSubscribed->wasUnsubscribed(), false);
+
+        //subscribed
+        $oNewsSubscribed->oxnewssubscribed__oxunsubscribed = new oxField('0000-00-00 00:00:01', oxField::T_TEXT);
+        $this->assertEquals($oNewsSubscribed->wasUnsubscribed(), true);
+    }
 }

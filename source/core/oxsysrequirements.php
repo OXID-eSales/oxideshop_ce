@@ -45,60 +45,61 @@ class oxSysRequirements
      *
      * @var array
      */
-    protected $_aException = array('OXDELIVERY'   => 'OXDELTYPE',
-                                   'OXSELECTLIST' => 'OXIDENT');
+    protected $_aException = array('OXDELIVERY' => 'OXDELTYPE', 'OXSELECTLIST' => 'OXIDENT');
 
     /**
      * Columns to check for collation
      *
      * @var array
      */
-    protected $_aColumns = array('OXID',
-                                 'OXOBJECTID',
-                                 'OXARTICLENID',
-                                 'OXACTIONID',
-                                 'OXARTID',
-                                 'OXUSERID',
-                                 'OXADDRESSUSERID',
-                                 'OXCOUNTRYID',
-                                 'OXSESSID',
-                                 'OXITMID',
-                                 'OXPARENTID',
-                                 'OXAMITEMID',
-                                 'OXAMTASKID',
-                                 'OXVENDORID',
-                                 'OXMANUFACTURERID',
-                                 'OXROOTID',
-                                 'OXATTRID',
-                                 'OXCATID',
-                                 'OXDELID',
-                                 'OXDELSETID',
-                                 'OXITMARTID',
-                                 'OXFIELDID',
-                                 'OXROLEID',
-                                 'OXCNID',
-                                 'OXANID',
-                                 'OXARTICLENID',
-                                 'OXCATNID',
-                                 'OXDELIVERYID',
-                                 'OXDISCOUNTID',
-                                 'OXGROUPSID',
-                                 'OXLISTID',
-                                 'OXPAYMENTID',
-                                 'OXDELTYPE',
-                                 'OXROLEID',
-                                 'OXSELNID',
-                                 'OXBILLCOUNTRYID',
-                                 'OXDELCOUNTRYID',
-                                 'OXPAYMENTID',
-                                 'OXCARDID',
-                                 'OXPAYID',
-                                 'OXIDENT',
-                                 'OXDEFCAT',
-                                 'OXBASKETID',
-                                 'OXPAYMENTSID',
-                                 'OXORDERID',
-                                 'OXVOUCHERSERIEID');
+    protected $_aColumns = array(
+        'OXID',
+        'OXOBJECTID',
+        'OXARTICLENID',
+        'OXACTIONID',
+        'OXARTID',
+        'OXUSERID',
+        'OXADDRESSUSERID',
+        'OXCOUNTRYID',
+        'OXSESSID',
+        'OXITMID',
+        'OXPARENTID',
+        'OXAMITEMID',
+        'OXAMTASKID',
+        'OXVENDORID',
+        'OXMANUFACTURERID',
+        'OXROOTID',
+        'OXATTRID',
+        'OXCATID',
+        'OXDELID',
+        'OXDELSETID',
+        'OXITMARTID',
+        'OXFIELDID',
+        'OXROLEID',
+        'OXCNID',
+        'OXANID',
+        'OXARTICLENID',
+        'OXCATNID',
+        'OXDELIVERYID',
+        'OXDISCOUNTID',
+        'OXGROUPSID',
+        'OXLISTID',
+        'OXPAYMENTID',
+        'OXDELTYPE',
+        'OXROLEID',
+        'OXSELNID',
+        'OXBILLCOUNTRYID',
+        'OXDELCOUNTRYID',
+        'OXPAYMENTID',
+        'OXCARDID',
+        'OXPAYID',
+        'OXIDENT',
+        'OXDEFCAT',
+        'OXBASKETID',
+        'OXPAYMENTSID',
+        'OXORDERID',
+        'OXVOUCHERSERIEID',
+    );
 
     /**
      * Installation info url
@@ -112,31 +113,32 @@ class oxSysRequirements
      *
      * @var array
      */
-    protected $_aInfoMap = array("php_version"        => "PHP_version_at_least_5.2.10",
-                                 "lib_xml2"           => "LIB_XML2",
-                                 "php_xml"            => "DOM",
-                                 "open_ssl"           => "OpenSSL",
-                                 "soap"               => "SOAP",
-                                 "j_son"              => "JSON",
-                                 "i_conv"             => "ICONV",
-                                 "tokenizer"          => "Tokenizer",
-                                 "mysql_connect"      => "MySQL_client_connector_for_MySQL_5",
-                                 "gd_info"            => "GDlib_v2_.5Bv1.5D_incl._JPEG_support",
-                                 "mb_string"          => "mbstring",
-                                 "bc_math"            => "BCMath",
-                                 "allow_url_fopen"    => "allow_url_fopen_or_fsockopen_to_port_80",
-                                 "php4_compat"        => "Zend_compatibility_mode_must_be_off",
-                                 "request_uri"        => "REQUEST_URI_set",
-                                 "ini_set"            => "ini_set_allowed",
-                                 "register_globals"   => "register_globals_must_be_off",
-                                 "memory_limit"       => "PHP_Memory_limit_.28min._14MB.2C_30MB_recommended.29",
-                                 "unicode_support"    => "UTF-8_support",
-                                 "file_uploads"       => "file_uploads_on",
-                                 "mod_rewrite"        => "apache_mod_rewrite_module",
-                                 "server_permissions" => "Files_.26_Folder_Permission_Setup",
-                                 "zend_optimizer"     => "Zend_Optimizer",
-                                 "bug53632"           => "Not_recommended_PHP_versions",
-                                 "session_autostart"  => "session.auto_start_must_be_off",
+    protected $_aInfoMap = array(
+        "php_version"        => "PHP_version_at_least_5.2.10",
+        "lib_xml2"           => "LIB_XML2",
+        "php_xml"            => "DOM",
+        "open_ssl"           => "OpenSSL",
+        "soap"               => "SOAP",
+        "j_son"              => "JSON",
+        "i_conv"             => "ICONV",
+        "tokenizer"          => "Tokenizer",
+        "mysql_connect"      => "MySQL_client_connector_for_MySQL_5",
+        "gd_info"            => "GDlib_v2_.5Bv1.5D_incl._JPEG_support",
+        "mb_string"          => "mbstring",
+        "bc_math"            => "BCMath",
+        "allow_url_fopen"    => "allow_url_fopen_or_fsockopen_to_port_80",
+        "php4_compat"        => "Zend_compatibility_mode_must_be_off",
+        "request_uri"        => "REQUEST_URI_set",
+        "ini_set"            => "ini_set_allowed",
+        "register_globals"   => "register_globals_must_be_off",
+        "memory_limit"       => "PHP_Memory_limit_.28min._14MB.2C_30MB_recommended.29",
+        "unicode_support"    => "UTF-8_support",
+        "file_uploads"       => "file_uploads_on",
+        "mod_rewrite"        => "apache_mod_rewrite_module",
+        "server_permissions" => "Files_.26_Folder_Permission_Setup",
+        "zend_optimizer"     => "Zend_Optimizer",
+        "bug53632"           => "Not_recommended_PHP_versions",
+        "session_autostart"  => "session.auto_start_must_be_off",
         // "zend_platform_or_server"
     );
 
@@ -166,7 +168,8 @@ class oxSysRequirements
      * @param string $sMethod Methods name
      * @param array  $aArgs   Argument array
      *
-     * @throws oxSystemComponentException Throws an exception if the called method does not exist or is not accessable in current class
+     * @throws oxSystemComponentException Throws an exception if the called method does not exist or is not accessible
+     * in current class
      *
      * @return string
      */
@@ -181,7 +184,9 @@ class oxSysRequirements
             }
         }
 
-        throw new oxSystemComponentException("Function '$sMethod' does not exist or is not accessible! (" . get_class($this) . ")" . PHP_EOL);
+        throw new oxSystemComponentException(
+            "Function '$sMethod' does not exist or is not accessible! (" . get_class($this) . ")" . PHP_EOL
+        );
     }
 
     /**
@@ -328,7 +333,7 @@ class oxSysRequirements
             return 0;
         }
 
-        $sTmp = "$sPath/tmp$sVerPrefix/";
+        $sTmp = "$sPath/tmp{$sVerPrefix}/";
         if (class_exists('oxConfig')) {
             $sCfgTmp = $this->getConfig()->getConfigParam('sCompileDir');
             if (strpos($sCfgTmp, '<sCompileDir_') === false) {
@@ -529,7 +534,8 @@ class oxSysRequirements
      */
     protected function _checkModRewrite($aHostInfo)
     {
-        if ($rFp = @fsockopen(($aHostInfo['ssl'] ? 'ssl://' : '') . $aHostInfo['host'], $aHostInfo['port'], $iErrNo, $sErrStr, 10)) {
+        $sHostname = ($aHostInfo['ssl'] ? 'ssl://' : '') . $aHostInfo['host'];
+        if ($rFp = @fsockopen($sHostname, $aHostInfo['port'], $iErrNo, $sErrStr, 10)) {
             $sReq = "POST {$aHostInfo['dir']}oxseo.php?mod_rewrite_module_is=off HTTP/1.1\r\n";
             $sReq .= "Host: {$aHostInfo['host']}\r\n";
             $sReq .= "User-Agent: OXID eShop setup\r\n";
@@ -602,9 +608,15 @@ class oxSysRequirements
      */
     public function checkPhpVersion()
     {
-        $iModStat = (version_compare(PHP_VERSION, '5.2', '<')) ? 0 : false;
-        $iModStat = ($iModStat !== false) ? $iModStat : ((version_compare(PHP_VERSION, '5.2.0', '>=') && version_compare(PHP_VERSION, '5.2.10', '<')) ? 1 : false);
-        $iModStat = ($iModStat !== false) ? $iModStat : (version_compare(PHP_VERSION, '5.2.10', '>=') ? 2 : 1);
+        if (version_compare(PHP_VERSION, '5.2', '<')) {
+            $iModStat = 0;
+        } elseif (version_compare(PHP_VERSION, '5.2.0', '>=') && version_compare(PHP_VERSION, '5.2.10', '<')) {
+            $iModStat = 1;
+        } elseif (version_compare(PHP_VERSION, '5.2.10', '>=')) {
+            $iModStat = 2;
+        } else {
+            $iModStat = 1;
+        }
 
         return $iModStat;
     }
@@ -717,10 +729,14 @@ class oxSysRequirements
                 if (version_compare($sClientVersion, '4', '<')) {
                     $iModStat = 0;
                 }
-            } elseif (version_compare($sClientVersion, '5.0.36', '>=') && version_compare($sClientVersion, '5.0.38', '<')) {
+            } elseif (version_compare($sClientVersion, '5.0.36', '>=') &&
+                      version_compare($sClientVersion, '5.0.38', '<')
+            ) {
                 // mantis#0001003: Problems with MySQL version 5.0.37
                 $iModStat = 0;
-            } elseif (version_compare($sClientVersion, '5.0.40', '>') && version_compare($sClientVersion, '5.0.42', '<')) {
+            } elseif (version_compare($sClientVersion, '5.0.40', '>') &&
+                      version_compare($sClientVersion, '5.0.42', '<')
+            ) {
                 // mantis#0001877: Exclude MySQL 5.0.41 from system requirements as not fitting
                 $iModStat = 0;
             }
@@ -849,7 +865,8 @@ class oxSysRequirements
                    'LEFT JOIN INFORMATION_SCHEMA.columns c ON t.TABLE_NAME = c.TABLE_NAME  ' .
                    'where t.TABLE_SCHEMA = "' . $myConfig->getConfigParam('dbName') . '" ' .
                    'and c.TABLE_SCHEMA = "' . $myConfig->getConfigParam('dbName') . '" ' .
-                   'and c.COLUMN_NAME in ("' . implode('", "', $this->_aColumns) . '") ' . $this->_getAdditionalCheck() .
+                   'and c.COLUMN_NAME in ("' . implode('", "', $this->_aColumns) . '") ' .
+                   $this->_getAdditionalCheck() .
                    ' ORDER BY (t.TABLE_NAME = "oxarticles") DESC';
         $aRez    = oxDb::getDb()->getAll($sSelect);
         foreach ($aRez as $aRetTable) {
@@ -1010,10 +1027,13 @@ class oxSysRequirements
         $sLast  = strtolower($sBytes[strlen($sBytes) - 1]);
         switch ($sLast) {
             // The 'G' modifier is available since PHP 5.1.0
+            // gigabytes
             case 'g':
                 $sBytes *= 1024;
+            // megabytes
             case 'm':
                 $sBytes *= 1024;
+            // kilobytes
             case 'k':
                 $sBytes *= 1024;
                 break;
@@ -1073,10 +1093,13 @@ class oxSysRequirements
         if ($rs != false && $rs->recordCount() > 0) {
             while (!$rs->EOF) {
                 $blStatus = false;
-                if (isset($aCache[$rs->fields['OXTEMPLATE']]) && isset($aCache[$rs->fields['OXTEMPLATE']][$rs->fields['OXBLOCKNAME']])) {
+                if (isset($aCache[$rs->fields['OXTEMPLATE']]) &&
+                    isset($aCache[$rs->fields['OXTEMPLATE']][$rs->fields['OXBLOCKNAME']])
+                ) {
                     $blStatus = $aCache[$rs->fields['OXTEMPLATE']][$rs->fields['OXBLOCKNAME']];
                 } else {
-                    $blStatus                                                      = $this->_checkTemplateBlock($rs->fields['OXTEMPLATE'], $rs->fields['OXBLOCKNAME']);
+                    $blStatus = $this->_checkTemplateBlock($rs->fields['OXTEMPLATE'], $rs->fields['OXBLOCKNAME']);
+
                     $aCache[$rs->fields['OXTEMPLATE']][$rs->fields['OXBLOCKNAME']] = $blStatus;
                 }
 

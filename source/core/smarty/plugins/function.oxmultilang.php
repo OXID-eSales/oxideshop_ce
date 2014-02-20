@@ -48,13 +48,7 @@ function smarty_function_oxmultilang( $params, &$smarty )
     $sSuffix = isset( $params['suffix'] ) ? $params['suffix'] : 'NO_SUFFIX';
     $blShowError = isset( $params['noerror']) ? !$params['noerror'] : true ;
 
-    $iLang = null;
-    if ( $blAdmin ) {
-        $iLang = $oLang->getTplLanguage();
-        if ( !isset( $iLang ) ) {
-            $iLang = 0;
-        }
-    }
+    $iLang = $oLang->getTplLanguage();
 
     if( !$blAdmin && $oShop->isProductiveMode() ) {
         $blShowError = false;

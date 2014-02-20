@@ -48,13 +48,6 @@ function smarty_modifier_oxmultilangassign( $sIdent, $args = null )
         $blShowError = false;
     }
 
-    if ( !isset( $iLang ) ) {
-        $iLang = $oLang->getBaseLanguage();
-        if ( !isset( $iLang ) ) {
-            $iLang = 0;
-        }
-    }
-
     try {
         $sTranslation = $oLang->translateString( $sIdent, $iLang, $oLang->isAdmin() );
         $blTranslationNotFound = ($sTranslation == $sIdent);

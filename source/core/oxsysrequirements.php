@@ -803,39 +803,6 @@ class oxSysRequirements
     }
 
     /**
-     * Checks if Zend Optimizer extension is loaded
-     *
-     * @return integer
-     */
-    public function checkZendOptimizer()
-    {
-        /**
-         * Just for displaying "green" light, because if ZEND Optimizer/Guard loader is not
-         * installed you will see some info screen instead of default setup.
-         */
-        return 2;
-    }
-
-    /**
-     * Checks if ZEND Platform Version 3.5 or Zend Server with Data Cache is installed
-     *
-     * @return integer
-     */
-    public function checkZendPlatformOrServer()
-    {
-        if (function_exists( 'output_cache_get' )) {
-            return 2;
-        }
-        if (function_exists( 'zend_disk_cache_fetch' )) {
-            return 2;
-        }
-        if (function_exists( 'zend_shm_cache_fetch' )) {
-            return 2;
-        }
-        return 1;
-    }
-
-    /**
      * Additional sql: do not check collation for oxsysrequirements::$_aException columns
      *
      * @return string

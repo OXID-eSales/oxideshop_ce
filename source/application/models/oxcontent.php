@@ -349,6 +349,18 @@ class oxContent extends oxI18n implements oxIUrl
     }
 
     /**
+     * Get field data
+     *
+     * @param string $sFieldName name of the field which value to get
+     *
+     * @return mixed
+     */
+    protected function _getFieldData($sFieldName)
+    {
+        return $this->{$sFieldName}->value;
+    }
+
+    /**
      * Delete this object from the database, returns true on success.
      *
      * @param string $sOXID Object ID(default null)
@@ -400,13 +412,46 @@ class oxContent extends oxI18n implements oxIUrl
     }
 
     /**
-     * Returns type of content.
+     * Set type of content.
+     *
+     * @param string $sValue type value
+     *
+     * @return null
+     */
+    public function setType($sValue)
+    {
+        $this->_setFieldData('oxcontents__oxtype', $sValue);
+    }
+
+    /**
+     * Return type of content
      *
      * @return integer
      */
     public function getType()
     {
-        return $this->oxcontents__oxtype->value;
+        return (int) $this->_getFieldData('oxcontents__oxtype');
     }
 
+    /**
+     * Set title of content
+     *
+     * @param string $sValue title value
+     *
+     * @return null
+     */
+    public function setTitle($sValue)
+    {
+        $this->_setFieldData('oxcontents__oxtitle', $sValue);
+    }
+
+    /**
+     * Return title of content
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return (string) $this->_getFieldData('oxcontents__oxtitle');
+    }
 }

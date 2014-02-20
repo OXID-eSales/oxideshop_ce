@@ -241,6 +241,28 @@ class Unit_Core_oxSeoEncoderContentTest extends OxidTestCase
         $this->assertEquals( 'content-title-new/', $oEncoder->getContentUri( $oContent, 0 ) );
     }
 
+    /**
+     * Test case for method getContentUri when switching oxContent type from category to snippet to return correct URL
+     */
+    public function testGetContentUriSwitchingTypeFromCategoryToSnippetUrlIsCorrect()
+    {
+        $oEncoder = new oxSeoEncoderContent();
+
+        $oContent = new oxContent();
+        $oContent->setId('testcontent_cat_to_snippet');
+        $oContent->setCategoryId('30e44ab85808a1f05.26160932');
+        $oContent->setType(2);
+        $oContent->setTitle('test_title');
+        $oContent->save();
+
+        $this->assertEquals('Wohnen/test-title/', $oEncoder->getContentUri($oContent, 0, true));
+
+        $oContent->setType(0);
+        $oContent->save();
+
+        $this->assertEquals('test-title/', $oEncoder->getContentUri($oContent, 0, true));
+    }
+
     public function testonDeleteContent()
     {
         $sShopId = oxConfig::getInstance()->getBaseShopId();

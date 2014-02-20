@@ -72,21 +72,21 @@ class oxSeoEncoderContent extends oxSeoEncoder
             $iLang = $oCont->getLanguage();
         }
         //load details link from DB
-        if ($blRegenerate || !($sSeoUrl = $this->_loadFromDb('oxcontent', $oCont->getId(), $iLang))) {
+        if ($blRegenerate || !($sSeoUrl = $this->_loadFromDb('oxContent', $oCont->getId(), $iLang))) {
 
             if ($iLang != $oCont->getLanguage()) {
                 $sId   = $oCont->getId();
-                $oCont = oxNew('oxcontent');
+                $oCont = oxNew('oxContent');
                 $oCont->loadInLang($iLang, $sId);
             }
 
             $sSeoUrl = '';
-            if ($oCont->oxcontents__oxcatid->value) {
-                $oCat = oxNew('oxcategory');
+            if ($oCont->getCategoryId() && $oCont->getType() === 2) {
+                $oCat = oxNew('oxCategory');
                 if ($oCat->loadInLang($iLang, $oCont->oxcontents__oxcatid->value)) {
-                    if ($oCat->oxcategories__oxparentid->value
-                        && $oCat->oxcategories__oxparentid->value != 'oxrootid') {
-                        $oParentCat = oxNew('oxcategory');
+                    $sParentId = $oCat->oxcategories__oxparentid->value;
+                    if ($sParentId && $sParentId != 'oxrootid') {
+                        $oParentCat = oxNew('oxCategory');
                         if ($oParentCat->loadInLang($iLang, $oCat->oxcategories__oxparentid->value)) {
                             $sSeoUrl .= oxRegistry::get("oxSeoEncoderCategory")->getCategoryUri($oParentCat);
                         }

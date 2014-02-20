@@ -2234,7 +2234,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
     // 3. if user tries to change login CORRECT password must be entered ...
     public function testCheckLoginNewLoginWrongPass()
     {
-        oxTestModules::addFunction( "oxInputValidator", "checkLogin", "{ throw new oxUserException('ERROR_MESSAGE_USER_PWDDONTMATCH'); }");
+        oxTestModules::addFunction( "oxInputValidator", "checkLogin", "{ throw new oxUserException('ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH'); }");
         //
         try {
             $oUser =  $this->getProxyClass("oxUser");
@@ -2246,7 +2246,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
 
             $oUser->UNITcheckLogin( '', $aInvAdress );
         } catch ( oxUserException $oEx){
-            $this->assertEquals( $oEx->getMessage(), 'ERROR_MESSAGE_USER_PWDDONTMATCH');
+            $this->assertEquals( $oEx->getMessage(), 'ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH');
             return;
         }
         $this->fail( 'failed test__checkLogin_userWithouPassDublicateLogin test ' );
@@ -2370,12 +2370,12 @@ class Unit_Core_oxuserTest extends OxidTestCase
     // 4. for user without password - no checks
     public function testCheckPasswordPassDoNotMatch()
     {
-        oxTestModules::addFunction( "oxInputValidator", "checkPassword", "{ throw new oxUserException('ERROR_MESSAGE_USER_PWDDONTMATCH'); }");
+        oxTestModules::addFunction( "oxInputValidator", "checkPassword", "{ throw new oxUserException('ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH'); }");
         try {
             $oUser = $this->getProxyClass("oxuser");
             $oUser->checkPassword( 'xxxxxx', 'yyyyyy', $blCheckLenght = false  );
         } catch ( oxUserException $oEx ) {
-            $this->assertEquals( $oEx->getMessage(), 'ERROR_MESSAGE_USER_PWDDONTMATCH');
+            $this->assertEquals( $oEx->getMessage(), 'ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH');
             return;
         }
         $this->fail( 'failed test__checkPassword_passDoNotMatch test ' );

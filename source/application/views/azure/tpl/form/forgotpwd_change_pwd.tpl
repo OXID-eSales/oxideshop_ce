@@ -15,7 +15,7 @@
                 <p class="oxValidateError">
                     <span class="js-oxError_notEmpty">[{ oxmultilang ident="ERROR_MESSAGE_INPUT_NOTALLFIELDS" }]</span>
                     <span class="js-oxError_length">[{ oxmultilang ident="ERROR_MESSAGE_PASSWORD_TOO_SHORT" }]</span>
-                    <span class="js-oxError_match">[{ oxmultilang ident="ERROR_MESSAGE_USER_PWDDONTMATCH" }]</span>
+                    <span class="js-oxError_match">[{ oxmultilang ident="ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH" }]</span>
                     [{include file="message/inputvalidation.tpl" aErrors=$aErrors.oxuser__oxpassword}]
                     </p>
             </li>
@@ -25,7 +25,7 @@
                 <p class="oxValidateError">
                     <span class="js-oxError_notEmpty">[{ oxmultilang ident="ERROR_MESSAGE_INPUT_NOTALLFIELDS" }]</span>
                     <span class="js-oxError_length">[{ oxmultilang ident="ERROR_MESSAGE_PASSWORD_TOO_SHORT" }]</span>
-                    <span class="js-oxError_match">[{ oxmultilang ident="ERROR_MESSAGE_USER_PWDDONTMATCH" }]</span>
+                    <span class="js-oxError_match">[{ oxmultilang ident="ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH" }]</span>
                     [{include file="message/inputvalidation.tpl" aErrors=$aErrors.oxuser__oxpassword}]
                 </p>
             </li>

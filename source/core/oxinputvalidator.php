@@ -177,7 +177,7 @@ class oxInputValidator extends oxSuperCfg
                 // 2. entered wrong password
                 if ( !$oUser->isSamePassword( $sNewPass ) ) {
                     $oEx = oxNew( 'oxUserException' );
-                    $oEx->setMessage('ERROR_MESSAGE_USER_PWDDONTMATCH');
+                    $oEx->setMessage('ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH');
 
                     return $this->_addValidationError( "oxuser__oxpassword", $oEx );
                 }
@@ -254,7 +254,7 @@ class oxInputValidator extends oxSuperCfg
         //  passwords do not match ?
         if ( $sNewPass != $sConfPass ) {
             $oEx = oxNew( 'oxUserException' );
-            $oEx->setMessage('ERROR_MESSAGE_USER_PWDDONTMATCH');
+            $oEx->setMessage('ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH');
 
             return $this->_addValidationError( "oxuser__oxpassword", $oEx );
         }

@@ -189,7 +189,6 @@ $aLang = array(
 'ERROR_MESSAGE_UNLICENSED1'                                   => 'There\'s something wrong with the license of this shop. Please enter a valid license key or contact',
 'ERROR_MESSAGE_USER_NOVALIDLOGIN'                             => 'Wrong e-mail address or password!',
 'ERROR_MESSAGE_USER_NOVALUES'                                 => 'E-mail address and password have to be entered!',
-'ERROR_MESSAGE_USER_PWDDONTMATCH'                             => 'Passwords don\'t match!',
 'ERROR_MESSAGE_USER_USERCREATIONFAILED'                       => 'Error creating the user!',
 'ERROR_MESSAGE_USER_USEREXISTS'                               => 'Not possible to register %s. Maybe you have already registered?',
 'ERROR_MESSAGE_VERSION_EXPIRED1'                              => 'Your version is expired. Please contact',

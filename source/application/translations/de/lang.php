@@ -189,7 +189,6 @@ $aLang = array(
 'ERROR_MESSAGE_UNLICENSED1'                                   => 'Ihr Shop ist nicht lizenziert. Tragen Sie bitte im Shop Admin einen gültigen Lizenzschlüssel ein oder kontaktieren Sie',
 'ERROR_MESSAGE_USER_NOVALIDLOGIN'                             => 'Falsche E-Mail-Adresse oder falsches Passwort!',
 'ERROR_MESSAGE_USER_NOVALUES'                                 => 'E-Mail und Passwort müssen ausgefüllt sein!',
-'ERROR_MESSAGE_USER_PWDDONTMATCH'                             => 'Passwörter stimmen nicht überein!',
 'ERROR_MESSAGE_USER_USERCREATIONFAILED'                       => 'Fehler beim Anlegen des Benutzers!',
 'ERROR_MESSAGE_USER_USEREXISTS'                               => '%s konnte nicht registriert werden. Haben Sie bereits ein Kundenkonto bei uns?',
 'ERROR_MESSAGE_VERSION_EXPIRED1'                              => 'Ihre Version ist leider abgelaufen. Bitte kontaktieren Sie',

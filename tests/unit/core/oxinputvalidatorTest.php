@@ -651,7 +651,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
                         $this->equalTo('oxuser__oxpassword'),
                         $this->logicalAnd(
                             $this->isInstanceOf('oxUserException'),
-                            $this->attributeEqualTo('message','ERROR_MESSAGE_USER_PWDDONTMATCH')
+                            $this->attributeEqualTo('message','ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH')
                         )
                 );
 
@@ -794,7 +794,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
                         $this->equalTo('oxuser__oxpassword'),
                         $this->logicalAnd(
                             $this->isInstanceOf('oxUserException'),
-                            $this->attributeEqualTo('message', 'ERROR_MESSAGE_USER_PWDDONTMATCH')
+                            $this->attributeEqualTo('message', 'ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH')
                         )
                 );
 

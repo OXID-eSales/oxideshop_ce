@@ -259,12 +259,12 @@ class Unit_Core_oxSeoEncoderContentTest extends OxidTestCase
 
         $oContent = new oxContent();
         $oContent->setId('testcontent_cat_to_snippet');
-        $oContent->setCategoryId('30e44ab85808a1f05.26160932');
+        $oContent->setCategoryId('943202124f58e02e84bb228a9a2a9f1e');
         $oContent->setType(2);
         $oContent->setTitle('test_title');
         $oContent->save();
 
-        $this->assertEquals('Wohnen/test-title/', $oEncoder->getContentUri($oContent, 0, true));
+        $this->assertEquals('Eco-Fashion/test-title/', $oEncoder->getContentUri($oContent, 0, true));
 
         $oContent->setType(0);
         $oContent->save();

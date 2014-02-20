@@ -154,7 +154,9 @@ class oxUtilsUrl extends oxSuperCfg
         if (!oxRegistry::getUtils()->seoIsActive()) {
             // non seo url has no language identifier..
             $iLang = oxRegistry::getLang()->getBaseLanguage();
-            if (!$oStr->preg_match('/[&?](amp;)?lang=[0-9]+/i', $sUrl) && $iLang != $oConfig->getConfigParam('sDefaultLang')) {
+            if (!$oStr->preg_match('/[&?](amp;)?lang=[0-9]+/i', $sUrl) &&
+                $iLang != $oConfig->getConfigParam('sDefaultLang')
+            ) {
                 $sUrl .= "{$sSep}lang=" . $iLang;
             }
         }
@@ -203,7 +205,11 @@ class oxUtilsUrl extends oxSuperCfg
         $oStr = getStr();
         if (is_array($aParams)) {
             foreach ($aParams as $sParam) {
-                $sUrl = $oStr->preg_replace('/(\?|&(amp;)?)' . preg_quote($sParam) . '=[a-z0-9\.]+&?(amp;)?/i', '\1', $sUrl);
+                $sUrl = $oStr->preg_replace(
+                    '/(\?|&(amp;)?)' . preg_quote($sParam) . '=[a-z0-9\.]+&?(amp;)?/i',
+                    '\1',
+                    $sUrl
+                );
             }
         } else {
             $sUrl = $oStr->preg_replace('/(\?|&(amp;)?).+/i', '\1', $sUrl);
@@ -268,8 +274,8 @@ class oxUtilsUrl extends oxSuperCfg
     /**
      * Remove duplicate GET parameters and clean &amp; and duplicate &
      *
-     * @param string $sUrl         url to process
-     * @param string $sConnector   GET elements connector
+     * @param string $sUrl       url to process
+     * @param string $sConnector GET elements connector
      *
      * @return string
      */
@@ -332,7 +338,7 @@ class oxUtilsUrl extends oxSuperCfg
      *
      * @return string
      */
-    function getCurrentUrl()
+    public function getCurrentUrl()
     {
         $oUtilsServer = oxRegistry::get("oxUtilsServer");
 
@@ -359,7 +365,7 @@ class oxUtilsUrl extends oxSuperCfg
      * Takes & and &amp; as delimiters
      * Returns associative array with parameters
      *
-     * @param $sValue string
+     * @param string $sValue String
      *
      * @return array
      */

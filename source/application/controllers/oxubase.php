@@ -2961,7 +2961,7 @@ class oxUBase extends oxView
     }
 
     /**
-     * Template variable getter. Returns user delivery address
+     * Template variable setter. Sets user delivery address
      *
      * @param array $aDeliveryAddress delivery address
      *

@@ -25,6 +25,7 @@
  */
 class oxUtilsUrl extends oxSuperCfg
 {
+
     /**
      * oxUtilsUrl class instance.
      *
@@ -70,14 +71,15 @@ class oxUtilsUrl extends oxSuperCfg
      */
     public function getAddUrlParams()
     {
-        if ( $this->_aAddUrlParams === null ) {
+        if ($this->_aAddUrlParams === null) {
             $this->_aAddUrlParams = $this->getBaseAddUrlParams();
 
             // appending currency
-            if ( ( $iCur = $this->getConfig()->getShopCurrency() ) ) {
+            if (($iCur = $this->getConfig()->getShopCurrency())) {
                 $this->_aAddUrlParams['cur'] = $iCur;
             }
         }
+
         return $this->_aAddUrlParams;
     }
 
@@ -90,20 +92,20 @@ class oxUtilsUrl extends oxSuperCfg
      * @access public
      * @return string
      */
-    public function prepareUrlForNoSession( $sUrl )
+    public function prepareUrlForNoSession($sUrl)
     {
         $oStr = getStr();
 
         // cleaning up session id..
         $sUrl = $oStr->preg_replace('/(\?|&(amp;)?)(force_)?(admin_)?sid=[a-z0-9\._]+&?(amp;)?/i', '\1', $sUrl);
-        $sUrl = $oStr->preg_replace( '/(&amp;|\?)$/', '', $sUrl );
+        $sUrl = $oStr->preg_replace('/(&amp;|\?)$/', '', $sUrl);
 
-        if ( oxRegistry::getUtils()->seoIsActive() ) {
+        if (oxRegistry::getUtils()->seoIsActive()) {
             return $sUrl;
         }
 
         if ($qpos = $oStr->strpos($sUrl, '?')) {
-            if ($qpos == $oStr->strlen($sUrl)-1) {
+            if ($qpos == $oStr->strlen($sUrl) - 1) {
                 $sSep = '';
             } else {
                 $sSep = '&amp;';
@@ -112,19 +114,20 @@ class oxUtilsUrl extends oxSuperCfg
             $sSep = '?';
         }
 
-        if ( !$oStr->preg_match('/[&?](amp;)?lang=[0-9]+/i', $sUrl)) {
-            $sUrl .= "{$sSep}lang=".oxRegistry::getLang()->getBaseLanguage();
+        if (!$oStr->preg_match('/[&?](amp;)?lang=[0-9]+/i', $sUrl)) {
+            $sUrl .= "{$sSep}lang=" . oxRegistry::getLang()->getBaseLanguage();
             $sSep = '&amp;';
         }
 
         $oConfig = $this->getConfig();
-        if ( !$oStr->preg_match('/[&?](amp;)?cur=[0-9]+/i', $sUrl)) {
+        if (!$oStr->preg_match('/[&?](amp;)?cur=[0-9]+/i', $sUrl)) {
             $iCur = (int) $oConfig->getShopCurrency();
-            if ( $iCur ) {
-                $sUrl .= "{$sSep}cur=".$iCur;
+            if ($iCur) {
+                $sUrl .= "{$sSep}cur=" . $iCur;
                 $sSep = '&amp;';
             }
         }
+
 
         return $sUrl;
     }
@@ -137,22 +140,22 @@ class oxUtilsUrl extends oxSuperCfg
      * @access public
      * @return string
      */
-    public function prepareCanonicalUrl( $sUrl )
+    public function prepareCanonicalUrl($sUrl)
     {
         $oConfig = $this->getConfig();
-        $oStr = getStr();
+        $oStr    = getStr();
 
         // cleaning up session id..
         $sUrl = $oStr->preg_replace('/(\?|&(amp;)?)(force_)?(admin_)?sid=[a-z0-9\._]+&?(amp;)?/i', '\1', $sUrl);
-        $sUrl = $oStr->preg_replace( '/(&amp;|\?)$/', '', $sUrl );
-        $sSep = ( $oStr->strpos( $sUrl, '?' ) === false ) ? '?' : '&amp;';
+        $sUrl = $oStr->preg_replace('/(&amp;|\?)$/', '', $sUrl);
+        $sSep = ($oStr->strpos($sUrl, '?') === false) ? '?' : '&amp;';
 
 
-        if ( !oxRegistry::getUtils()->seoIsActive() ) {
+        if (!oxRegistry::getUtils()->seoIsActive()) {
             // non seo url has no language identifier..
             $iLang = oxRegistry::getLang()->getBaseLanguage();
-            if ( !$oStr->preg_match( '/[&?](amp;)?lang=[0-9]+/i', $sUrl ) && $iLang != $oConfig->getConfigParam( 'sDefaultLang' ) ) {
-                $sUrl .= "{$sSep}lang=".$iLang;
+            if (!$oStr->preg_match('/[&?](amp;)?lang=[0-9]+/i', $sUrl) && $iLang != $oConfig->getConfigParam('sDefaultLang')) {
+                $sUrl .= "{$sSep}lang=" . $iLang;
             }
         }
 
@@ -167,23 +170,24 @@ class oxUtilsUrl extends oxSuperCfg
      *
      * @return string
      */
-    public function appendUrl( $sUrl, $aAddParams )
+    public function appendUrl($sUrl, $aAddParams)
     {
         $oStr = getStr();
         $sSep = '&amp;';
-        if ( $oStr->strpos( $sUrl, '?' ) === false ) {
+        if ($oStr->strpos($sUrl, '?') === false) {
             $sSep = '?';
         }
 
-        if ( count( $aAddParams ) ) {
-            foreach ( $aAddParams as $sName => $sValue ) {
-                if ( isset( $sValue ) && !$oStr->preg_match("/\?(.*&(amp;)?)?".preg_quote( $sName )."=/", $sUrl ) ) {
+        if (count($aAddParams)) {
+            foreach ($aAddParams as $sName => $sValue) {
+                if (isset($sValue) && !$oStr->preg_match("/\?(.*&(amp;)?)?" . preg_quote($sName) . "=/", $sUrl)) {
                     $sUrl .= $sSep . $sName . "=" . $sValue;
                     $sSep = '&amp;';
                 }
             }
         }
-        return $sUrl ? $sUrl.$sSep : '';
+
+        return $sUrl ? $sUrl . $sSep : '';
     }
 
     /**
@@ -194,18 +198,18 @@ class oxUtilsUrl extends oxSuperCfg
      *
      * @return string
      */
-    public function cleanUrl( $sUrl, $aParams = null )
+    public function cleanUrl($sUrl, $aParams = null)
     {
         $oStr = getStr();
-        if ( is_array( $aParams ) ) {
-            foreach ( $aParams as $sParam ) {
-                $sUrl = $oStr->preg_replace( '/(\?|&(amp;)?)'.preg_quote( $sParam ).'=[a-z0-9\.]+&?(amp;)?/i', '\1', $sUrl );
+        if (is_array($aParams)) {
+            foreach ($aParams as $sParam) {
+                $sUrl = $oStr->preg_replace('/(\?|&(amp;)?)' . preg_quote($sParam) . '=[a-z0-9\.]+&?(amp;)?/i', '\1', $sUrl);
             }
         } else {
-            $sUrl = $oStr->preg_replace( '/(\?|&(amp;)?).+/i', '\1', $sUrl );
+            $sUrl = $oStr->preg_replace('/(\?|&(amp;)?).+/i', '\1', $sUrl);
         }
 
-        return trim( $sUrl, "?" );
+        return trim($sUrl, "?");
     }
 
     /**
@@ -218,11 +222,11 @@ class oxUtilsUrl extends oxSuperCfg
      *
      * @return string
      */
-    public function processUrl( $sUrl, $blFinalUrl = true, $aParams = null, $iLang = null )
+    public function processUrl($sUrl, $blFinalUrl = true, $aParams = null, $iLang = null)
     {
         $aAddParams = $this->getAddUrlParams();
-        if ( is_array($aParams) && count( $aParams ) ) {
-            $aAddParams = array_merge( $aAddParams, $aParams );
+        if (is_array($aParams) && count($aParams)) {
+            $aAddParams = array_merge($aAddParams, $aParams);
         }
 
         $ret = oxRegistry::getSession()->processUrl(
@@ -238,6 +242,7 @@ class oxUtilsUrl extends oxSuperCfg
         if ($blFinalUrl) {
             $ret = getStr()->preg_replace('/(\?|&(amp;)?)$/', '', $ret);
         }
+
         return $ret;
     }
 
@@ -248,22 +253,23 @@ class oxUtilsUrl extends oxSuperCfg
      *
      * @return string
      */
-    public function processSeoUrl( $sUrl )
+    public function processSeoUrl($sUrl)
     {
 
-        if ( !$this->isAdmin() ) {
-            $sUrl = $this->getSession()->processUrl( $this->appendUrl( $sUrl, $this->getAddUrlParams() ) );
+        if (!$this->isAdmin()) {
+            $sUrl = $this->getSession()->processUrl($this->appendUrl($sUrl, $this->getAddUrlParams()));
         }
 
         $sUrl = $this->cleanUrlParams($sUrl);
-        return getStr()->preg_replace( '/(\?|&(amp;)?)$/', '', $sUrl );
+
+        return getStr()->preg_replace('/(\?|&(amp;)?)$/', '', $sUrl);
     }
 
     /**
      * Remove duplicate GET parameters and clean &amp; and duplicate &
      *
-     * @param string $sUrl 	     url to process
-     * @param string $sConnector GET elements connector
+     * @param string $sUrl         url to process
+     * @param string $sConnector   GET elements connector
      *
      * @return string
      */
@@ -272,14 +278,14 @@ class oxUtilsUrl extends oxSuperCfg
         $aUrlParts = explode('?', $sUrl);
 
         // check for params part
-        if ( !is_array($aUrlParts) || count($aUrlParts) != 2) {
+        if (!is_array($aUrlParts) || count($aUrlParts) != 2) {
             return $sUrl;
         }
 
-        $sUrl = $aUrlParts[0];
+        $sUrl       = $aUrlParts[0];
         $sUrlParams = $aUrlParts[1];
 
-        $oStrUtils = getStr();
+        $oStrUtils  = getStr();
         $sUrlParams = $oStrUtils->preg_replace(
             array('@(\&(amp;){1,})@ix', '@\&{1,}@', '@\?&@x'),
             array('&', '&', '?'),
@@ -288,7 +294,7 @@ class oxUtilsUrl extends oxSuperCfg
 
         // remove duplicate entries
         parse_str($sUrlParams, $aUrlParams);
-        $sUrl .= '?'.http_build_query($aUrlParams, '', $sConnector);
+        $sUrl .= '?' . http_build_query($aUrlParams, '', $sConnector);
 
         // replace brackets
         $sUrl = str_replace(
@@ -310,14 +316,15 @@ class oxUtilsUrl extends oxSuperCfg
     public function appendParamSeparator($sUrl)
     {
         $oStr = getStr();
-        if ( $oStr->preg_match('/(\?|&(amp;)?)$/i', $sUrl ) ) {
+        if ($oStr->preg_match('/(\?|&(amp;)?)$/i', $sUrl)) {
             // it is already ok
             return $sUrl;
         }
-        if ( $oStr->strpos($sUrl, '?') === false ) {
-            return $sUrl.'?';
+        if ($oStr->strpos($sUrl, '?') === false) {
+            return $sUrl . '?';
         }
-        return $sUrl.'&amp;';
+
+        return $sUrl . '&amp;';
     }
 
     /**
@@ -327,16 +334,16 @@ class oxUtilsUrl extends oxSuperCfg
      */
     function getCurrentUrl()
     {
-        $oUtilsServer = oxRegistry::get( "oxUtilsServer" );
+        $oUtilsServer = oxRegistry::get("oxUtilsServer");
 
-        $aServerParams["HTTPS"]       = $oUtilsServer->getServerVar( "HTTPS" );
-        $aServerParams["HTTP_X_FORWARDED_PROTO"] = $oUtilsServer->getServerVar( "HTTP_X_FORWARDED_PROTO" );
-        $aServerParams["HTTP_HOST"]   = $oUtilsServer->getServerVar( "HTTP_HOST" );
-        $aServerParams["REQUEST_URI"] = $oUtilsServer->getServerVar( "REQUEST_URI" );
+        $aServerParams["HTTPS"]                  = $oUtilsServer->getServerVar("HTTPS");
+        $aServerParams["HTTP_X_FORWARDED_PROTO"] = $oUtilsServer->getServerVar("HTTP_X_FORWARDED_PROTO");
+        $aServerParams["HTTP_HOST"]              = $oUtilsServer->getServerVar("HTTP_HOST");
+        $aServerParams["REQUEST_URI"]            = $oUtilsServer->getServerVar("REQUEST_URI");
 
         $sProtocol = "http://";
 
-        if ( isset($aServerParams['HTTPS']) && (($aServerParams['HTTPS'] == 'on' || $aServerParams['HTTPS'] == 1))
+        if (isset($aServerParams['HTTPS']) && (($aServerParams['HTTPS'] == 'on' || $aServerParams['HTTPS'] == 1))
             || (isset($aServerParams['HTTP_X_FORWARDED_PROTO']) && $aServerParams['HTTP_X_FORWARDED_PROTO'] == 'https')
         ) {
             $sProtocol = 'https://';
@@ -356,16 +363,16 @@ class oxUtilsUrl extends oxSuperCfg
      *
      * @return array
      */
-    public function stringToParamsArray( $sValue )
+    public function stringToParamsArray($sValue)
     {
         // url building
         // replace possible ampersands, explode, and filter out empty values
-        $sValue = str_replace( "&amp;", "&", $sValue );
-        $aNavParams = explode( "&", $sValue );
-        $aNavParams = array_filter( $aNavParams );
-        $aParams = array();
-        foreach ( $aNavParams as $sValue ) {
-            $exp = explode( "=", $sValue );
+        $sValue     = str_replace("&amp;", "&", $sValue);
+        $aNavParams = explode("&", $sValue);
+        $aNavParams = array_filter($aNavParams);
+        $aParams    = array();
+        foreach ($aNavParams as $sValue) {
+            $exp              = explode("=", $sValue);
             $aParams[$exp[0]] = $exp[1];
         }
 

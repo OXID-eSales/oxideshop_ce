@@ -33,44 +33,48 @@
  * @param Smarty &$smarty clever simulation of a method
  *
  * @return string
-*/
+ */
 function smarty_function_oxmultilang( $params, &$smarty )
 {
     startProfile("smarty_function_oxmultilang");
-    $oLang = oxRegistry::getLang();
-    $sIdent  = isset( $params['ident'] ) ? $params['ident'] : 'IDENT MISSING';
-    $aArgs = isset( $params['args'] ) ? $params['args'] : 0 ;
 
-    $iLang   = null;
+    $oLang = oxRegistry::getLang();
+    $oConfig = oxRegistry::getConfig();
+    $oShop = $oConfig->getActiveShop();
     $blAdmin = $oLang->isAdmin();
 
-    if ( $blAdmin ) {
-        $iLang = $oLang->getTplLanguage();
-        if ( !isset( $iLang ) ) {
-            $iLang = 0;
-        }
+    $sIdent  = isset( $params['ident'] ) ? $params['ident'] : 'IDENT MISSING';
+    $aArgs = isset( $params['args'] ) ? $params['args'] : false;
+    $blShowError = isset( $params['noerror']) ? !$params['noerror'] : true ;
+
+    $iLang = $oLang->getTplLanguage();
+
+    if( !$blAdmin && $oShop->isProductiveMode() ) {
+        $blShowError = false;
     }
 
     try {
         $sTranslation = $oLang->translateString( $sIdent, $iLang, $blAdmin );
+        $blTranslationNotFound = ($sTranslation == $sIdent);
     } catch ( oxLanguageException $oEx ) {
         // is thrown in debug mode and has to be caught here, as smarty hangs otherwise!
     }
 
-    if ($blAdmin && $sTranslation == $sIdent && (!isset( $params['noerror']) || !$params['noerror']) ) {
-        $sTranslation = '<b>ERROR : Translation for '.$sIdent.' not found!</b>';
-    }
-
-    if ( $sTranslation == $sIdent && isset( $params['alternative'] ) ) {
+    if( $blTranslationNotFound && isset( $params['alternative'] ) ) {
         $sTranslation = $params['alternative'];
+        $blTranslationNotFound = false;
     }
 
-    if ( $aArgs ) {
-        if ( is_array( $aArgs ) ) {
-            $sTranslation = vsprintf( $sTranslation, $aArgs );
-        } else {
-            $sTranslation = sprintf( $sTranslation, $aArgs );
+    if ( !$blTranslationNotFound ) {
+        if ( $aArgs !== false ) {
+            if ( is_array( $aArgs ) ) {
+                $sTranslation = vsprintf( $sTranslation, $aArgs );
+            } else {
+                $sTranslation = sprintf( $sTranslation, $aArgs );
+            }
         }
+    } elseif( $blShowError ) {
+        $sTranslation = 'ERROR: Translation for '.$sIdent.' not found!';
     }
 
     stopProfile("smarty_function_oxmultilang");

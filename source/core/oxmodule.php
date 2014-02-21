@@ -460,9 +460,9 @@ class oxModule extends oxSuperCfg
         }
         if ( isset( $sModuleId ) ) {
 
-            $this->_addToDisabledList( $sModuleId );
-
             $this->_callEvent( 'onDeactivate', $sModuleId );
+
+            $this->_addToDisabledList( $sModuleId );
 
             //resets cache
             $this->_resetCache();

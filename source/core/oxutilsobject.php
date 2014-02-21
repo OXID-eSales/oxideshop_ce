@@ -368,12 +368,9 @@ class oxUtilsObject
 
         if (is_array( $aDisabledModules ) && count($aDisabledModules) > 0) {
             foreach ($aDisabledModules as $sId) {
-                $sPath = $sId;
-                if (array_key_exists($sId, $aModulePaths)) {
-                    $sPath = $aModulePaths[$sId];
-                    if (!isset($sPath)) {
-                        $sPath = $sId;
-                    }
+                $sPath = $aModulePaths[$sId];
+                if (!isset($sPath)) {
+                    $sPath = $sId;
                 }
                 foreach ( $aClassChain as $sKey => $sModuleClass ) {
                     if ( strpos($sModuleClass, $sPath."/" ) === 0 ) {

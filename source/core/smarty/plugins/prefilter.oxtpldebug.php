@@ -33,7 +33,7 @@ function smarty_prefilter_oxtpldebug($sSource, &$oSmartyCompiler)
     $sTplName = $oSmartyCompiler->_current_file;
 
     $sOut = "<div style='position: absolute; z-index:9999;color:white;background: #789;
-                 padding:0 15 0 15'>" .
+                 padding:0 15px 0 15px'>" .
             $sTplName . "</div><!-- $sTplName template start -->"
             . $sSource .
             "<!-- $sTplName template end -->";

@@ -451,6 +451,20 @@ class Unit_Core_oxModuleTest extends OxidTestCase
     }
 
     /**
+     * Test for bug #5656
+     * Checks if call order of protected methods is correct
+     *
+     */
+    public function testDeactivate_eventCalledBeforeDeactivating()
+    {
+        $oModuleHandler = $this->getMock('oxModule', array('_addToDisabledList', '_callEvent'));
+        $oModuleHandler->expects($this->at(0))->method('_callEvent')->with();
+        $oModuleHandler->expects($this->at(1))->method('_addToDisabledList')->with();
+
+        $oModuleHandler->deactivate('test');
+    }
+
+    /**
      * oxModule::isExtended() test case,
      *
      * @return null

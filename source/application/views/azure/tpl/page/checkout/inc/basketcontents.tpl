@@ -192,7 +192,7 @@
                             [{if !$basketitem->isBundle() }]
                                 [{assign var=dRegUnitPrice value=$basketitem->getRegularUnitPrice()}]
                                 [{assign var=dUnitPrice value=$basketitem->getUnitPrice()}]
-                                [{if $dRegUnitPrice->getPrice() > $dUnitPrice->getPrice() }]
+                                [{if $dRegUnitPrice && $dUnitPrice && $dRegUnitPrice->getPrice() > $dUnitPrice->getPrice() }]
                                 <br><s>[{oxprice price=$basketitem->getRegularUnitPrice() currency=$currency }]</s>
                                 [{/if}]
                             [{/if}]

@@ -108,9 +108,9 @@ class oxModuleInstaller extends oxSuperCfg
 
         if ( $sModuleId ) {
             $sModuleId = $oModule->getId();
-            $this->_addToDisabledList( $sModuleId );
-
             $this->_callEvent( 'onDeactivate', $sModuleId );
+
+            $this->_addToDisabledList( $sModuleId );
 
             //removing recoverable options
             $this->_deleteBlock( $sModuleId );

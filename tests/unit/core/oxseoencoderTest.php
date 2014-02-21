@@ -1194,7 +1194,7 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
         $oEncoder->setSeparator();
         $sTitleOut = $oEncoder->p_prepareTitle( $sTitleIn );
 
-        $this->assertEquals( 'AA-keyword1-keyword2-ae-oe-ue-UE-AE-OE-ss'.str_repeat( '-a', 107 ), $sTitleOut );
+        $this->assertEquals( 'AA-keyword1-keyword2-ae-oe-ue-Ue-Ae-Oe-ss'.str_repeat( '-a', 107 ), $sTitleOut );
 
         $sTitleOut = $oEncoder->p_prepareTitle( '' );
         $this->assertEquals( 'oxid', $sTitleOut );

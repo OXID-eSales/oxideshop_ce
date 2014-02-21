@@ -21,6 +21,7 @@
  */
 
 require_once realpath(dirname(__FILE__).'/../../') . '/unit/OxidTestCase.php';
+require_once realpath(dirname(__FILE__).'/../../') . '/unit/oxunitcurl.php';
 
 
 class Integration_RestrictedAddress_RestrictedAddressTest extends OxidTestCase
@@ -67,7 +68,7 @@ class Integration_RestrictedAddress_RestrictedAddressTest extends OxidTestCase
      */
     private function callPage($sShopUrl)
     {
-        $oCurl = new oxCurl();
+        $oCurl = new oxUnitCurl();
         $oCurl->setOption('CURLOPT_HEADER', TRUE);
 
         $oCurl->setUrl($sShopUrl);

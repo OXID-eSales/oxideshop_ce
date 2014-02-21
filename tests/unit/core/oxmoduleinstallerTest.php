@@ -189,4 +189,21 @@ class Unit_Core_oxModuleInstallerTest extends OxidTestCase
         $this->assertEquals($aModules, $oModuleInstaller->buildModuleChains($aModulesArray));
     }
 
+    /**
+     * Test for bug #5656
+     * Checks if call order of protected methods is correct
+     *
+     */
+    public function testDeactivate_eventCalledBeforeDeactivating()
+    {
+        $oModule =  $this->getMock('oxModule', array('getId'));
+        $oModule->expects($this->any())->method('getId')->will($this->returnValue('test'));
+
+        $oModuleInstaller = $this->getMock('oxModuleInstaller', array('_addToDisabledList', '_callEvent'));
+        $oModuleInstaller->expects($this->at(0))->method('_callEvent')->with();
+        $oModuleInstaller->expects($this->at(1))->method('_addToDisabledList')->with();
+
+        $oModuleInstaller->deactivate($oModule);
+    }
+
 }

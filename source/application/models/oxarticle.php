@@ -630,8 +630,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      */
     public function getSqlActiveSnippet( $blForceCoreTable = null )
     {
-        $myConfig = $this->getConfig();
-
         // check if article is still active
         $sQ = $this->getActiveCheckQuery( $blForceCoreTable );
 

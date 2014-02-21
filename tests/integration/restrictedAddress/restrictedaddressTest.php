@@ -25,6 +25,10 @@ require_once realpath(dirname(__FILE__).'/../../') . '/unit/OxidTestCase.php';
 
 class Integration_RestrictedAddress_RestrictedAddressTest extends OxidTestCase
 {
+    /**
+     * DataProvider return shop URL list to call.
+     * @return array
+     */
     public function provider_RequestForbiddenMethod_RedirectedWithoutForbiddenRequest()
     {
         $oConfig = $this->getConfig();
@@ -41,7 +45,7 @@ class Integration_RestrictedAddress_RestrictedAddressTest extends OxidTestCase
      * Fix for bug entry 0005569: Oxid leaks internal information to the outside when calling certain urls
      * @dataProvider provider_RequestForbiddenMethod_RedirectedWithoutForbiddenRequest
      */
-    public function test_RequestForbiddenMethod_RedirectedWithoutForbiddenRequest( $sForbiddenUrl, $sRedirectUrl )
+    public function test_RequestForbiddenMethod_RedirectedWithoutForbiddenRequest($sForbiddenUrl, $sRedirectUrl)
     {
         $sResult = $this->callPage($sForbiddenUrl);
 
@@ -49,6 +53,9 @@ class Integration_RestrictedAddress_RestrictedAddressTest extends OxidTestCase
         $this->assertContains( $sLocation, $sResult, 'User should be redirected to same URL without forbidden parameter.' );
     }
 
+    /**
+     * Fix for bug 0005565: Accessing config.inc.php directly results in Fatal error
+     */
     public function test_configCalled_notAccessed()
     {
         $oConfig = $this->getConfig();
@@ -58,6 +65,10 @@ class Integration_RestrictedAddress_RestrictedAddressTest extends OxidTestCase
         $this->assertContains( $sLocation, $sResult, 'User should be redirected to same URL without forbidden parameter.' );
     }
 
+    /**
+     * @param string $sShopUrl shop url to call.
+     * @return string
+     */
     private function callPage($sShopUrl)
     {
         $oCurl = new oxCurl();

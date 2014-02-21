@@ -410,7 +410,7 @@
                                 [{/if}]
                             [{else}]
                                 <tr>
-                                    <th>[{ oxmultilang ident="SHIPPING_COST" }]</th>
+                                    <th>[{ oxmultilang ident="SHIPPING_COST" suffix="COLON" }]</th>
                                     <td id="basketDeliveryGross">[{oxprice price=$deliveryCost->getBruttoPrice() currency=$currency}]</td>
                                 </tr>
                             [{/if}]
@@ -422,7 +422,7 @@
                         [{if $paymentCost && $paymentCost->getPrice() }]
                             [{if $oViewConf->isFunctionalityEnabled('blShowVATForPayCharge') }]
                                 <tr>
-                                    <th>[{if $paymentCost->getPrice() >= 0}][{ oxmultilang ident="SURCHARGE" }][{else}][{ oxmultilang ident="DEDUCTION" }][{/if}] [{ oxmultilang ident="PAYMENT_METHOD" }]</th>
+                                    <th>[{if $paymentCost->getPrice() >= 0}][{ oxmultilang ident="SURCHARGE" }][{else}][{ oxmultilang ident="DEDUCTION" }][{/if}] [{ oxmultilang ident="PAYMENT_METHOD" suffix="COLON"}]</th>
                                     <td id="basketPaymentNetto">[{oxprice price=$paymentCost->getNettoPrice() currency=$currency }]</td>
                                 </tr>
                                 [{if $paymentCost->getVatValue()}]
@@ -437,7 +437,7 @@
                                 [{/if}]
                             [{else}]
                                 <tr>
-                                    <th>[{if $paymentCost->getPrice() >= 0}][{ oxmultilang ident="SURCHARGE" }][{else}][{ oxmultilang ident="DEDUCTION" }][{/if}] [{ oxmultilang ident="PAYMENT_METHOD" }]</th>
+                                    <th>[{if $paymentCost->getPrice() >= 0}][{ oxmultilang ident="SURCHARGE" }][{else}][{ oxmultilang ident="DEDUCTION" }][{/if}] [{ oxmultilang ident="PAYMENT_METHOD" suffix="COLON" }]</th>
                                     <td id="basketPaymentGross">[{oxprice price=$paymentCost->getBruttoPrice() currency=$currency }]</td>
                                 </tr>
                             [{/if}]

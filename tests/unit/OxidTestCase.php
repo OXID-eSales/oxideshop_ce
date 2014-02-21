@@ -175,6 +175,7 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      * Get parameter from session object.
 
      * @param string $sParam parameter name.
+     * @return mixed
      */
     public function getSessionParam( $sParam )
     {
@@ -194,8 +195,9 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
 
     /**
      * Get parameter from config request object.
-
+     *
      * @param string $sParam parameter name.
+     * @return mixed
      */
     public function getRequestParam( $sParam )
     {
@@ -215,8 +217,9 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
 
     /**
      * Get parameter from config object.
-
+     *
      * @param string $sParam parameter name.
+     * @return mixed
      */
     public function getConfigParam( $sParam )
     {
@@ -225,7 +228,7 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
 
     /**
      * Set parameter to config object.
-
+     *
      * @param string $sParam parameter name.
      * @param object $oVal   any parameter value, default null.
      */
@@ -371,6 +374,7 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      * @todo move to separate class instead of static
      *
      * @return array
+     * @throws Exception
      */
     protected static function _getInitialDbChecksum()
     {
@@ -420,6 +424,7 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      * Cleans up table
      *
      * @param string $sTable
+     * @param string $sColName
      */
     public function cleanUpTable($sTable, $sColName = null)
     {
@@ -474,7 +479,7 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      * Create proxy of given class. Proxy allows to test of protected class methods and to access non public members
      *
      * @param string $superClassName
-     * @param array|null $constructorParams parameters for contructor
+     * @param array|null $params parameters for contructor
      *
      * @deprecated
      *

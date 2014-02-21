@@ -36,6 +36,7 @@ class Integration_RestrictedAddress_RestrictedAddressTest extends OxidTestCase
     }
 
     /**
+     * Fix for bug entry 0005569: Oxid leaks internal information to the outside when calling certain urls
      * @dataProvider provider_RequestForbiddenMethod_RedirectedWithoutForbiddenRequest
      */
     public function test_RequestForbiddenMethod_RedirectedWithoutForbiddenRequest( $sForbiddenUrl, $sRedirectUrl )

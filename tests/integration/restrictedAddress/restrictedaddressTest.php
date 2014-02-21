@@ -27,11 +27,13 @@ class Integration_RestrictedAddress_RestrictedAddressTest extends OxidTestCase
 {
     public function provider_RequestForbiddenMethod_RedirectedWithoutForbiddenRequest()
     {
+        $oConfig = $this->getConfig();
+        $sShopUrl = $oConfig->getShopMainUrl();
         return array(
-            array( shopURL .'?fnc=getShopVersion', shopURL ),
-            array( shopURL .'?fnc=getShopEdition', shopURL ),
-            array( shopURL .'?fnc=getRevision', shopURL ),
-            array( shopURL .'someSeoURL/?fnc=getRevision', shopURL.'someSeoURL/' ),
+            array( $sShopUrl .'?fnc=getShopVersion', $sShopUrl ),
+            array( $sShopUrl .'?fnc=getShopEdition', $sShopUrl ),
+            array( $sShopUrl .'?fnc=getRevision', $sShopUrl ),
+            array( $sShopUrl .'someSeoURL/?fnc=getRevision', $sShopUrl.'someSeoURL/' ),
         );
     }
 
@@ -49,8 +51,10 @@ class Integration_RestrictedAddress_RestrictedAddressTest extends OxidTestCase
 
     public function test_configCalled_notAccessed()
     {
-        $sResult = $this->callPage(shopURL.'/config.inc.php');
-        $sLocation = "Location: ". shopURL ."\r\n";
+        $oConfig = $this->getConfig();
+        $sShopUrl = $oConfig->getShopMainUrl();
+        $sResult = $this->callPage($sShopUrl.'/config.inc.php');
+        $sLocation = "Location: ". $sShopUrl ."\r\n";
         $this->assertContains( $sLocation, $sResult, 'User should be redirected to same URL without forbidden parameter.' );
     }
 

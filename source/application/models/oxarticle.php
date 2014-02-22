@@ -2599,8 +2599,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             $sUrl = $this->getConfig()->getShopUrl( $iLang, false );
         }
 
-        $sUrl .= "index.php?cl=details" . ( $blAddId ? "&amp;anid=".$this->getId() : "" );
-        return $sUrl . ( isset( $this->_aStdAddParams[$iLang] ) ? "&amp;". $this->_aStdAddParams[$iLang] : "" );
+        $sUrl .= 'index.php?cl=details' . ( $blAddId ? '&amp;anid=' . urlencode($this->getId()) : '' );
+        return $sUrl . ( isset( $this->_aStdAddParams[$iLang] ) ? '&amp;' . $this->_aStdAddParams[$iLang] : '' );
     }
 
     /**

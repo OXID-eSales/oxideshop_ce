@@ -79,7 +79,7 @@
          */
         setCurrentRating: function( oElement, value )
         {
-            oElement.width( value );
+            oElement.css('width', value);
             return oElement;
         },
 

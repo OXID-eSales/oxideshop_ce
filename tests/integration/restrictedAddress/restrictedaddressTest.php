@@ -62,7 +62,7 @@ class Integration_RestrictedAddress_RestrictedAddressTest extends OxidTestCase
         $oConfig = $this->getConfig();
         $sShopUrl = $oConfig->getShopMainUrl();
         $sResult = $this->callPage($sShopUrl.'/config.inc.php');
-        $sLocation = "Location: ". $sShopUrl ."\r\n";
+        $sLocation = "Location: ". $sShopUrl ."index.php\r\n";
         $this->assertContains( $sLocation, $sResult, 'User should be redirected to same URL without forbidden parameter.' );
     }
 

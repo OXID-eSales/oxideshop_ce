@@ -6,10 +6,14 @@
 </head>
 
 <!-- frames -->
-<frameset [{if $oViewConf->blLoadDynContents && $oViewConf->sShopCountry}]rows="*,150"[{else}]rows="*"[{/if}] border="0">
+[{assign var="blLoadDynContents" value=0}]
+[{if $oViewConf->blLoadDynContents && $oViewConf->sShopCountry}]
+    [{assign var="blLoadDynContents" value=1}]
+[{/if}]
+<frameset [{if $blLoadDynContents}]rows="*,150"[{else}]rows="*"[{/if}] border="0">
     <frame src="[{$oViewConf->getSelfLink()}]&cl=navigation&item=navigation.tpl" name="adminnav" id="adminnav" frameborder="0" scrolling="auto" noresize marginwidth="0" marginheight="0">
 
-    [{if $oViewConf->blLoadDynContents && $oViewConf->sShopCountry }]
+    [{if $blLoadDynContents}]
     <frame src="[{ $oViewConf->getServiceUrl() }]banners/navigation.html"  name="adminfrm" id="adminfrm" frameborder="0" scrolling="auto" noresize marginwidth="0" marginheight="0">
     [{/if}]
 </frameset>

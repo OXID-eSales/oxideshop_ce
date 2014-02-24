@@ -82,8 +82,9 @@ class User_Payment extends oxAdminDetails
         $this->_aViewData["paymenttypes"] = $this->getPaymentTypes();
         $this->_aViewData["edituser"]     = $this->getUser();
         $this->_aViewData["userpayments"] = $this->getUserPayments();
+        $sOxId = $this->getEditObjectId();
 
-        if (!$this->_allowAdminEdit($soxId))
+        if (!$this->_allowAdminEdit($sOxId))
             $this->_aViewData['readonly'] = true;
 
 
@@ -142,7 +143,7 @@ class User_Payment extends oxAdminDetails
     /**
      * Returns selected user
      *
-     * @return object
+     * @return oxUser
      */
     public function getUser()
     {
@@ -169,10 +170,10 @@ class User_Payment extends oxAdminDetails
             $this->_sPaymentId = oxConfig::getParameter( "oxpaymentid");
             if ( !$this->_sPaymentId || $this->_blDelete ) {
                 if ( $oUser = $this->getUser() ) {
-                   $oUserPayments = $oUser->getUserPayments();
-                   if ( isset( $oUserPayments[0]) ) {
-                       $this->_sPaymentId = $oUserPayments[0]->oxuserpayments__oxid->value;
-                   }
+                    $oUserPayments = $oUser->getUserPayments();
+                    if ( isset( $oUserPayments[0]) ) {
+                        $this->_sPaymentId = $oUserPayments[0]->oxuserpayments__oxid->value;
+                    }
                 }
             }
             if ( !$this->_sPaymentId ) {

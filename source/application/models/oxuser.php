@@ -486,11 +486,6 @@ class oxUser extends oxBase
             $this->_oPayments->init( 'oxUserPayment' );
             $this->_oPayments->selectString( $sSelect );
 
-            $myUtils = oxRegistry::getUtils();
-            foreach ( $this->_oPayments as $oPayment ) {
-                // add custom fields to this class
-                $oPayment = $myUtils->assignValuesFromText( $val->oxuserpayments__oxvalue->value );
-            }
         }
 
         return $this->_oPayments;

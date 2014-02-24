@@ -23,7 +23,7 @@ window.onload = function ()
 [{include file="_formparams.tpl" cl="category_list" lstrt=$lstrt actedit=$actedit oxid=$oxid fnc="" language=$actlang editlanguage=$actlang}]
 <table cellspacing="0" cellpadding="0" border="0" width="100%">
     <colgroup>
-        [{block name="admin_country_list_colgroup"}]
+        [{block name="admin_category_list_colgroup"}]
             <col width="4%">
             <col width="10%">
             <col width="87%">
@@ -31,7 +31,7 @@ window.onload = function ()
         [{/block}]
     </colgroup>
     <tr class="listitem">
-        [{block name="admin_country_list_filter"}]
+        [{block name="admin_category_list_filter"}]
             <td valign="top" class="listfilter first" height="20">
                 <div class="r1"><div class="b1">&nbsp;</div></div>
             </td>
@@ -63,7 +63,7 @@ window.onload = function ()
         [{/block}]
     </tr>
     <tr>
-        [{block name="admin_country_list_sorting"}]
+        [{block name="admin_category_list_sorting"}]
             <td class="listheader first" height="15" align="center"><a href="Javascript:top.oxid.admin.setSorting( document.search, 'oxcategories', 'oxactive', 'asc');document.search.submit();" class="listheader">[{ oxmultilang ident="GENERAL_ACTIVTITLE" }]</a></td>
             <td class="listheader" height="15" align="center"><a href="Javascript:top.oxid.admin.setSorting( document.search, 'oxcategories', 'oxsort', 'asc');document.search.submit();" class="listheader">[{ oxmultilang ident="GENERAL_SORT" }]</a></td>
             <td class="listheader" height="15" colspan="2"><a href="Javascript:top.oxid.admin.setSorting( document.search, 'oxcategories', 'oxtitle', 'asc');document.search.submit();" class="listheader">[{ oxmultilang ident="GENERAL_TITLE" }]</a></td>
@@ -76,7 +76,7 @@ window.onload = function ()
     [{assign var="_cnt" value=$_cnt+1}]
     <tr id="row.[{$_cnt}]">
 
-        [{block name="admin_country_list_item"}]
+        [{block name="admin_category_list_item"}]
             [{ if $listitem->blacklist == 1}]
                 [{assign var="listclass" value=listitem3 }]
             [{ else}]

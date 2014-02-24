@@ -19,7 +19,7 @@ RewriteBase /
 Redirect /config.inc.php /
 
 RewriteCond %{QUERY_STRING}     ^fnc=(getShopVersion|getShopEdition|getRevision)  [NC]
-RewriteRule ^(.*)$              /$1?                                              [R=301,L]
+RewriteRule ^(.*)$              $1?                                              [R=301,L]
 
 RewriteCond %{REQUEST_METHOD} ^(TRACE|TRACK)
 RewriteRule .* - [F]

@@ -121,6 +121,20 @@ class Order_Overview extends oxAdminDetails
         }
     }
     /**
+     * Gets proper file name
+     *
+     * @param string $sFilename file name
+     *
+     * @return string
+     */
+    public function makeValidFileName($sFilename)
+    {
+        $sFilename = preg_replace('/[\s]+/', '_', $sFilename);
+        $sFilename = preg_replace('/[^a-zA-Z0-9_\.-]/', '', $sFilename);
+        return str_replace(' ', '_', $sFilename);
+    }
+
+    /**
      * Performs PDF export to user (outputs file to save).
      *
      * @return null
@@ -135,7 +149,7 @@ class Order_Overview extends oxAdminDetails
                 $oUtils = oxRegistry::getUtils();
                 $sTrimmedBillName = trim($oOrder->oxorder__oxbilllname->getRawValue());
                 $sFilename = $oOrder->oxorder__oxordernr->value . "_" . $sTrimmedBillName . ".pdf";
-                $sFilename = str_replace(" ", "_", $sFilename);
+                $sFilename = $this->makeValidFileName($sFilename);
                 ob_start();
                 $oOrder->genPDF( $sFilename, oxConfig::getParameter( "pdflanguage" ) );
                 $sPDF = ob_get_contents();

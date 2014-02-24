@@ -326,4 +326,40 @@ class Unit_Admin_OrderOverviewTest extends OxidTestCase
 
         $this->assertFalse($oView->canResetShippingDate());
     }
+
+
+    /**
+     * Provide name, and correct expected name for testMakeValidFileName
+     *
+     * @return array
+     */
+    public function nameProvider()
+    {
+        return array(
+        array('abc', 'abc'),
+        array('ab/c', 'abc'),
+        array('ab!@#$%^&*()c', 'abc'),
+        array('ab_!_@_c', 'ab___c'),
+        array('ab_!_@_c      s', 'ab___c_s'),
+        array('      s', '_s'),
+        array('!@#$%^&*()_+//////\\', '_'),
+        array(null, null),
+        );
+    }
+
+    /**
+     * Check if valid name is being generated
+     *
+     * @dataProvider nameProvider
+     *
+     * @param $sName
+     * @param $sExpectedValidaName
+     *
+     * @return null
+     */
+    public function testMakeValidFileName($sName, $sExpectedValidaName)
+    {
+        $oMyOrder = new Order_Overview();
+        $this->assertEquals($sExpectedValidaName, $oMyOrder->makeValidFileName($sName));
+    }
 }

@@ -100,9 +100,10 @@ class oxAdminDetails extends oxAdminView
                 // create a new instance of the wysiwygPro class:
                 $this->_oEditor = new wysiwygPro();
 
-                $sEditorUrl = oxConfig::getInstance()->getConfigParam('sShopURL')."core/{$sEditorPath}/";
-                if ( $sAdminSSLURL = $myConfig->getConfigParam( 'sAdminSSLURL' ) ) {
-                    $sEditorUrl = "{$sAdminSSLURL}/{$sEditorPath}/";
+                if (oxRegistry::getConfig()->isSsl() && oxRegistry::getConfig()->getSslShopUrl()) {
+                    $sEditorUrl = rtrim(oxRegistry::getConfig()->getSslShopUrl(), '/') . "/core/{$sEditorPath}/";
+                } else {
+                    $sEditorUrl = rtrim(oxRegistry::getConfig()->getShopUrl(), '/') . "/core/{$sEditorPath}/";
                 }
 
                 $this->_oEditor->editorURL = $sEditorUrl;

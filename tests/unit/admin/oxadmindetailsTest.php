@@ -239,14 +239,35 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
     }
 
     /**
+     * Provides url data for testGetTextEditor_httpsUrl
+     *
+     * @return array
+     */
+    public function urlProvider()
+    {
+        return array(
+            array('https://test_shop_url/', 'https://test_shop_url/core/wysiwigpro/'),
+            array('https://test_shop_url', 'https://test_shop_url/core/wysiwigpro/'),
+            array('https://test_shop_url/sub/', 'https://test_shop_url/sub/core/wysiwigpro/'),
+            array('https://test_shop_url/sub', 'https://test_shop_url/sub/core/wysiwigpro/'),
+        );
+    }
+
+    /**
      * Test get text editor - uses admin https url if defined.
+     *
+     * @param string $sShopUrl     shop url to be set
+     * @param string $sExpectedUrl expected url retrieved as editor url
+     *
+     * @dataProvider urlProvider
      *
      * @return null
      */
-    public function testGetTextEditor_httpsUrl()
+    public function testGetTextEditor_httpsUrl($sShopUrl, $sExpectedUrl)
     {
-        $oConfig = modConfig::getInstance();
-        $oConfig->setConfigParam( "sAdminSSLURL", "https://adminUrl" );
+        $this->getConfig()->setIsSsl(true);
+        $this->getConfig()->setConfigParam('sShopURL', $sShopUrl);
+        $this->getConfig()->setConfigParam('sSSLShopURL', $sShopUrl);
 
         $oAdminDetails = new oxadmindetails();
         $oEditor = $oAdminDetails->UNITgetTextEditor( 10, 10, new oxarticle, 'oxarticles__oxtitle', 'basket.tpl.css' );
@@ -262,6 +283,8 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
      */
     public function testGetTextEditor_httpUrl()
     {
+        $this->getConfig()->setIsSsl(false);
+        $this->getConfig()->setConfigParam('sShopURL', 'http://test_shop_url/');
 
         $oAdminDetails = new oxadmindetails();
         $oEditor = $oAdminDetails->UNITgetTextEditor( 10, 10, new oxarticle, 'oxarticles__oxtitle', 'basket.tpl.css' );
@@ -269,6 +292,7 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
             $this->assertFalse( $oEditor );
 
     }
+
     /**
      *  Test updating object folder parameters
      *

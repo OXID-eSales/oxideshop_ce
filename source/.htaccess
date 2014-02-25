@@ -40,7 +40,7 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule (\.html|\/)$ oxseo.php
 
 
-RewriteCond %{REQUEST_URI} (\/out\/pictures\/)
+RewriteCond %{REQUEST_URI} (\/out\/pictures\/generated\/)
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule (\.jpe?g|\.gif|\.png|\.svg)$ getimg.php

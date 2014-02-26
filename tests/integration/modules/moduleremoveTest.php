@@ -83,6 +83,9 @@ class Integration_Modules_ModuleRemoveTest extends BaseModuleTestCase
                         'myexception'  => 'with_2_files/core/exception/myexception.php',
                         'myconnection' => 'with_2_files/core/exception/myconnection.php',
                     ),
+                    'with_events' => array(
+                        'myevents'  => 'with_events/files/myevents.php',
+                    ),
                 ),
                 'settings'        => array(
                     array( 'group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true' ),
@@ -155,6 +158,9 @@ class Integration_Modules_ModuleRemoveTest extends BaseModuleTestCase
                     'with_2_files' => array(
                         'myexception'  => 'with_2_files/core/exception/myexception.php',
                         'myconnection' => 'with_2_files/core/exception/myconnection.php',
+                    ),
+                    'with_events' => array(
+                        'myevents'  => 'with_events/files/myevents.php',
                     ),
                 ),
                 'settings'        => array(

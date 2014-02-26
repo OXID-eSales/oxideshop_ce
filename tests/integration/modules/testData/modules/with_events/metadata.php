@@ -35,6 +35,9 @@ $aModule = array(
     'thumbnail'    => 'picture.png',
     'version'      => '1.0',
     'author'       => 'OXID eSales AG',
+    'files' => array(
+        'MyEvents'  => 'with_events/files/myevents.php',
+    ),
     'events'       => array(
         'onActivate'   => 'MyEvents::onActivate',
         'onDeactivate' => 'MyEvents::onDeactivate'

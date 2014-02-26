@@ -96,7 +96,10 @@ class Integration_Modules_ModuleActivationTest extends BaseModuleTestCase
                     'with_everything' => array(
                         'myexception'  => 'with_everything/core/exception/myexception.php',
                         'myconnection' => 'with_everything/core/exception/myconnection.php',
-                    )
+                    ),
+                    'with_events' => array(
+                        'myevents'  => 'with_events/files/myevents.php',
+                    ),
                 ),
                 'settings'        => array(
                     array( 'group' => 'my_checkconfirm', 'name' => 'blCheckConfirm', 'type' => 'bool', 'value' => 'true' ),
@@ -288,6 +291,9 @@ class Integration_Modules_ModuleActivationTest extends BaseModuleTestCase
                     'with_everything' => array(
                         'myexception'  => 'with_everything/core/exception/myexception.php',
                         'myconnection' => 'with_everything/core/exception/myconnection.php',
+                    ),
+                    'with_events' => array(
+                        'myevents'  => 'with_events/files/myevents.php',
                     ),
                 ),
                 'settings'        => array(

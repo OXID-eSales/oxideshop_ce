@@ -522,6 +522,65 @@ class Unit_Core_oxArticleTest extends OxidTestCase
     }
 
     /**
+     * Test get stock check query.
+     *
+     * @ticket #4822
+     *
+     */
+    public function testGetSqlActiveSnippetParentProductStockIsNegativeVariantsWithPositiveStockAreBuyable()
+    {
+        $sArticleId = '_testArticleId';
+        $sShopId    = $this->getConfig()->getShopId();
+
+        $oArticle = new oxArticle();
+
+        $sTable = $oArticle->getViewName();
+
+        $oDb = oxDb::getDb();
+
+        $this->getConfig()->setConfigParam("blVariantParentBuyable", false);
+
+        $oArticle = new oxArticle();
+        $oArticle->setId($sArticleId);
+        $oArticle->oxarticles__oxshopid    = new oxField($sShopId);
+        $oArticle->oxarticles__oxactive    = new oxField(1);
+        $oArticle->oxarticles__oxstockflag = new oxField(2);
+        $oArticle->save();
+
+        $oVar = new oxArticle();
+        $oVar->setId('_testVariant1');
+        $oVar->oxarticles__oxshopid    = new oxField($sShopId);
+        $oVar->oxarticles__oxactive    = new oxField(1);
+        $oVar->oxarticles__oxstockflag = new oxField(3);
+        $oVar->oxarticles__oxparentid  = new oxField($sArticleId);
+        $oVar->save();
+
+        $sQ = "SELECT * FROM {$sTable} WHERE oxid='{$sArticleId}' AND " . $oArticle->getSqlActiveSnippet();
+
+        $oArticle->oxarticles__oxstock = new oxField(-1);
+        $oArticle->save();
+        $oVar->oxarticles__oxstock = new oxField(1);
+        $oVar->save();
+        $this->assertEquals($sArticleId, $oDb->getOne($sQ), "Article must be buyable");
+
+        $oArticle->oxarticles__oxstock = new oxField(0);
+        $oArticle->save();
+        $this->assertEquals($sArticleId, $oDb->getOne($sQ), "Article must be buyable");
+
+        $oArticle->oxarticles__oxstock = new oxField(-1);
+        $oArticle->save();
+        $oVar->oxarticles__oxstock = new oxField(0);
+        $oVar->save();
+        $this->assertEquals($sArticleId, $oDb->getOne($sQ), "Article mustn't be buyable");
+
+        $oArticle->oxarticles__oxstock = new oxField(0);
+        $oArticle->save();
+        $oVar->oxarticles__oxstock = new oxField(0);
+        $oVar->save();
+        $this->assertEquals($sArticleId, $oDb->getOne($sQ), "Article mustn't be buyable");
+    }
+
+    /**
      * Test get variants query with disabled stock usage
      *
      * @return null

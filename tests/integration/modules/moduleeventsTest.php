@@ -27,34 +27,63 @@ class Integration_Modules_ModuleEventsTest extends BaseModuleTestCase
 {
 
     /**
-     * Test check shop module activation and deactivation several times
+     * Test check shop module activation first time
      */
-    public function testModuleRemoveInSubShop()
+    public function testModuleActivate()
     {
         $oConfig = oxRegistry::getConfig();
 
-        $sState = $oConfig->getShopConfVar('sTestEvents');
+        $sState = $oConfig->getConfigParam('sTestActivateEvent');
         $this->assertSame( null, $sState, 'No events should have been executed till now');
 
         $oEnvironment = new Environment();
         $oEnvironment->prepare(array('with_events'));
 
-        $sState = $oConfig->getShopConfVar('sTestEvents');
-        $this->assertEquals( "Activate", $sState, 'onActivate event first time was not called.');
+        $sState = $oConfig->getConfigParam('sTestActivateEvent');
+        $this->assertEquals( "Activate", $sState, 'onActivate event was not called.');
+    }
+
+    /**
+     * Test check shop module activation second time
+     */
+    public function testModuleActivateSecondTime()
+    {
+        $oConfig = oxRegistry::getConfig();
+
+        $oEnvironment = new Environment();
+        $oEnvironment->prepare(array('with_events'));
 
         $oModule = new oxModule();
         $oModule->load( 'with_events' );
 
         $oModule->deactivate();
-        $sState = $oConfig->getShopConfVar('sTestEvents');
-        $this->assertEquals( "Deactivate", $sState, 'onDeactivate event first time was not called.');
+        $oConfig->setConfigParam('sTestActivateEvent', '_removed_');
 
         $oModule->activate();
-        $sState = $oConfig->getShopConfVar('sTestEvents');
-        $this->assertEquals( "Activate", $sState, 'onActivate event second time was not called.');
+
+        $sState = $oConfig->getConfigParam('sTestActivateEvent');
+        $this->assertEquals( "Activate", $sState, 'onActivate event was not called on second activation.');
+    }
+
+    /**
+     * Test check shop module deactivation
+     */
+    public function testModuleDeactivate()
+    {
+        $oConfig = oxRegistry::getConfig();
+
+        $sState = $oConfig->getConfigParam('sTestDeactivateEvent');
+        $this->assertSame( null, $sState, 'No events should have been executed till now');
+
+        $oEnvironment = new Environment();
+        $oEnvironment->prepare(array('with_events'));
+
+        $oModule = new oxModule();
+        $oModule->load( 'with_events' );
 
         $oModule->deactivate();
-        $sState = $oConfig->getShopConfVar('sTestEvents');
-        $this->assertEquals( "Deactivate", $sState, 'onDeactivate event second time was not called.');
+
+        $sState = $oConfig->getConfigParam('sTestDeactivateEvent');
+        $this->assertEquals( "Deactivate", $sState, 'onDeactivate event was not called.');
     }
 }

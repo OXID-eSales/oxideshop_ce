@@ -25,12 +25,12 @@ class MyEvents {
     public static function onActivate()
     {
         $oConfig = oxRegistry::getConfig();
-        $oConfig->setConfigParam('sTestEvents', 'Activate');
+        $oConfig->setConfigParam('sTestActivateEvent', 'Activate');
     }
 
     public static function onDeactivate()
     {
         $oConfig = oxRegistry::getConfig();
-        $oConfig->setConfigParam('sTestEvents', 'Deactivate');
+        $oConfig->setConfigParam('sTestDeactivateEvent', 'Deactivate');
     }
 }

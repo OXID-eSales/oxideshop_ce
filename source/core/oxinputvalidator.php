@@ -394,7 +394,7 @@ class oxInputValidator extends oxSuperCfg
             $oCountry = oxNew('oxcountry');
             if ( $oCountry->load( $sCountryId ) && $oCountry->isForeignCountry() && $oCountry->isInEU() ) {
 
-                    if ( strncmp( $aInvAddress['oxuser__oxustid'], $oCountry->getVATIdentificationNumberPrefix(), 2 ) ) {
+                    if ( $this->_isVATIdentificationNumberInvalid( $aInvAddress, $oCountry ) ) {
                         $oEx = oxNew( 'oxInputException' );
                         $oEx->setMessage( 'VAT_MESSAGE_ID_NOT_VALID' );
 
@@ -587,5 +587,18 @@ class oxInputValidator extends oxSuperCfg
         $aDebitInformation['lsktonr'] = str_replace( ' ', '', $aDebitInformation['lsktonr'] );
 
         return $aDebitInformation;
+    }
+
+    /**
+     * Compares country VAT identification number with it's prefix.
+     *
+     * @param array $aInvAddress
+     * @param oxCountry $oCountry
+     *
+     * @return bool
+     */
+    private function _isVATIdentificationNumberInvalid( $aInvAddress, $oCountry )
+    {
+        return (bool) strncmp( $aInvAddress['oxuser__oxustid'], $oCountry->getVATIdentificationNumberPrefix(), 2 );
     }
 }

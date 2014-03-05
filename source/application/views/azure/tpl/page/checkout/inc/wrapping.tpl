@@ -114,7 +114,7 @@
                 [{/if}]
                 [{block name="checkout_wrapping_submit"}]
                     <div class="submitForm clear">
-                        <button type="submit" class="submitButton largeButton">[{oxmultilang ident="APPLAY"}]</button>
+                        <button type="submit" class="submitButton largeButton">[{oxmultilang ident="APPLY"}]</button>
                         <button class="textButton largeButton closePop">[{oxmultilang ident="CANCEL"}]</button>
                     </div>
                 [{/block}]

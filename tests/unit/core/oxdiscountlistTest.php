@@ -140,7 +140,7 @@ class Unit_Core_oxDiscountlistTest extends OxidTestCase
 
 
     /**
-     * testing applaying basket discounts
+     * testing applying basket discounts
      */
     public function testApplyBasketDiscounts()
     {
@@ -169,7 +169,7 @@ class Unit_Core_oxDiscountlistTest extends OxidTestCase
     }
 
     /**
-     * testing applaying basket discounts
+     * testing applying basket discounts
      */
     public function testApplyBasketDiscountsWithAmount()
     {
@@ -198,7 +198,7 @@ class Unit_Core_oxDiscountlistTest extends OxidTestCase
     }
 
     /**
-     * testing applaying basket discounts does not affects price parameter
+     * testing applying basket discounts does not affects price parameter
      */
     public function testApplyBasketDiscountsDoesNotAffectsPriceParam()
     {

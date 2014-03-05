@@ -223,7 +223,7 @@ class oxModuleList extends oxSuperCfg
                 if (!isset($sPath)) {
                     $sPath = $sId;
                 }
-                foreach ( $aModules as $sClass => $aModuleClasses ) {
+                foreach ( $aModules as $aModuleClasses ) {
                     foreach ( $aModuleClasses as $sModuleClass ) {
                         if (strpos($sModuleClass, $sPath."/") === 0 ) {
                             $aDisabledModuleClasses[] = $sModuleClass;
@@ -285,7 +285,7 @@ class oxModuleList extends oxSuperCfg
         $aDeletedExtIds = array();
         if ( !empty($aDeletedExt) ) {
             $oModule = oxNew('oxModule');
-            foreach ( $aDeletedExt as $sOxClass => $aDeletedModules ) {
+            foreach ( $aDeletedExt as $aDeletedModules ) {
                 foreach ( $aDeletedModules as $sModulePath ) {
                     $aDeletedExtIds[] = $oModule->getIdByPath($sModulePath);
                 }
@@ -328,8 +328,6 @@ class oxModuleList extends oxSuperCfg
      * @param array $aAllModuleArray All Module array (nested format)
      * @param array $aRemModuleArray Remove Module array (nested format)
      *
-     * @deprecated since v5.2.0 (2014-02-06).
-     *
      * @return array
      */
     public function diffModuleArrays($aAllModuleArray, $aRemModuleArray)
@@ -356,7 +354,6 @@ class oxModuleList extends oxSuperCfg
                     $aAllModuleArray[$sClass] = $aModuleChain;
                 }
             }
-
        }
 
         return $aAllModuleArray;
@@ -366,8 +363,6 @@ class oxModuleList extends oxSuperCfg
      * Build module chains from nested array
      *
      * @param array $aModuleArray Module array (nested format)
-     *
-     * @deprecated since v5.2.0 (2014-02-06); use oxModuleInstaller::buildModuleChains().
      *
      * @return array
      */
@@ -387,8 +382,6 @@ class oxModuleList extends oxSuperCfg
      *
      * @param array $aDeletedExt Deleted extension array
      *
-     * @deprecated since v5.2.0 (2014-02-06).
-     *
      * @return null
      */
     protected function _removeFromModulesArray( $aDeletedExt )
@@ -405,8 +398,6 @@ class oxModuleList extends oxSuperCfg
      *
      * @param array $aDeletedExtIds Deleted extension id's of array
      *
-     * @deprecated since v5.2.0 (2014-02-06).
-     *
      * @return null
      */
     protected function _removeFromDisabledModulesArray( $aDeletedExtIds )
@@ -421,8 +412,6 @@ class oxModuleList extends oxSuperCfg
      * Removes extension from modules paths array
      *
      * @param array $aDeletedModule deleted extensions ID's
-     *
-     * @deprecated since v5.2.0 (2014-02-06).
      *
      * @return null
      */
@@ -444,8 +433,6 @@ class oxModuleList extends oxSuperCfg
      *
      * @param array $aDeletedModule deleted extensions ID's
      *
-     * @deprecated since v5.2.0 (2014-02-06).
-     *
      * @return null
      */
     protected function _removeFromModulesVersionsArray( $aDeletedModule )
@@ -465,8 +452,6 @@ class oxModuleList extends oxSuperCfg
      * Removes extension from modules events array
      *
      * @param array $aDeletedModule deleted extensions ID's
-     *
-     * @deprecated since v5.2.0 (2014-02-06).
      *
      * @return null
      */
@@ -488,8 +473,6 @@ class oxModuleList extends oxSuperCfg
      *
      * @param array $aDeletedModule deleted extensions ID's
      *
-     * @deprecated since v5.2.0 (2014-02-06).
-     *
      * @return null
      */
     protected function _removeFromModulesFilesArray( $aDeletedModule )
@@ -510,8 +493,6 @@ class oxModuleList extends oxSuperCfg
      *
      * @param array $aDeletedModule deleted extensions ID's
      *
-     * @deprecated since v5.2.0 (2014-02-06).
-     *
      * @return null
      */
     protected function _removeFromModulesTemplatesArray( $aDeletedModule )
@@ -531,8 +512,6 @@ class oxModuleList extends oxSuperCfg
      * Removes extension from database - oxConfig, oxConfigDisplay and oxTplBlocks tables
      *
      * @param array $aDeletedExtIds deleted extensions ID's
-     *
-     * @deprecated since v5.2.0 (2014-02-06).
      *
      * @return null
      */

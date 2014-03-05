@@ -31,7 +31,8 @@
                 draggable    : true,
                 target       : '#popup',
                 openDialog   : false,
-                loadUrl      : false
+                loadUrl      : false,
+                closeButton  : "img.closePop, button.closePop"
             },
 
             _create: function() {
@@ -62,7 +63,7 @@
                     });
                 }
 
-                $("img.closePop, button.closePop", $( options.target ) ).click(function(){
+                $(self.options.closeButton, $( options.target ) ).click(function(){
                     $( options.target ).dialog("close");
                     return false;
                 });

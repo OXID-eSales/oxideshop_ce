@@ -39,8 +39,6 @@ function smarty_function_oxmultilang( $params, &$smarty )
     startProfile("smarty_function_oxmultilang");
 
     $oLang = oxRegistry::getLang();
-    $oConfig = oxRegistry::getConfig();
-    $oShop = $oConfig->getActiveShop();
     $blAdmin = $oLang->isAdmin();
 
     $sIdent  = isset( $params['ident'] ) ? $params['ident'] : 'IDENT MISSING';

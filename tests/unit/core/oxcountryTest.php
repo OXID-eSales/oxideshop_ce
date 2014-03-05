@@ -184,6 +184,6 @@ class Unit_Core_oxCountryTest extends OxidTestCase
         $oCountry = new oxCountry();
         $oCountry->load( $sCountryId );
 
-        $this->assertEquals( $sPrefix, $oCountry->getVatIdentificationNumberPrefix() );
+        $this->assertEquals( $sPrefix, $oCountry->getVATIdentificationNumberPrefix() );
     }
 }

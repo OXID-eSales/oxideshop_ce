@@ -172,6 +172,9 @@ function ThisDate( sID)
                             <td class="edittext">
                             <input type="text" class="editinput" size="25" maxlength="[{$edit->oxorder__oxtrackcode->fldmax_length}]" name="editval[oxorder__oxtrackcode]" value="[{$edit->oxorder__oxtrackcode->value }]" [{ $readonly }]>
                             [{ oxinputhelp ident="HELP_ORDER_MAIN_TRACKCODE" }]
+                            [{ if $edit->oxorder__oxtrackcode->value && $edit->getShipmentTrackingUrl() }]
+                                <a href="[{ $edit->getShipmentTrackingUrl() }]" target="_blank">[{ oxmultilang ident="ORDER_MAIN_TRACKCODE_LINK" }]</a>
+                            [{ /if }]
                             </td>
                         </tr>
                         <tr >

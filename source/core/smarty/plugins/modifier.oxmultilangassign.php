@@ -44,7 +44,7 @@ function smarty_modifier_oxmultilangassign( $sIdent, $args = null )
     $iLang = $oLang->getTplLanguage();
     $blShowError = true;
 
-    if( $oShop->isProductiveMode() ) {
+    if( !$oLang->isAdmin() ) {
         $blShowError = false;
     }
 

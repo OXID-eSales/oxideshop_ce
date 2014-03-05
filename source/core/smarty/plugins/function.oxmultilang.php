@@ -50,7 +50,7 @@ function smarty_function_oxmultilang( $params, &$smarty )
 
     $iLang = $oLang->getTplLanguage();
 
-    if( !$blAdmin && $oShop->isProductiveMode() ) {
+    if( !$blAdmin ) {
         $blShowError = false;
     }
 

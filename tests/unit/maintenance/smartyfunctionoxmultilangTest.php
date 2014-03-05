@@ -125,7 +125,7 @@ class Unit_Maintenance_smartyFunctionOxMultiLangTest extends OxidTestCase
             array(
                 false,
                 array( 'ident' => 'MY_MISING_TRANSLATION' ),
-                'ERROR: Translation for MY_MISING_TRANSLATION not found!',
+                'MY_MISING_TRANSLATION',
             ),
             array(
                 true,
@@ -140,7 +140,7 @@ class Unit_Maintenance_smartyFunctionOxMultiLangTest extends OxidTestCase
             array(
                 false,
                 array( 'ident' => 'MY_MISING_TRANSLATION', 'noerror' => false ),
-                'ERROR: Translation for MY_MISING_TRANSLATION not found!',
+                'MY_MISING_TRANSLATION',
             ),
         );
     }

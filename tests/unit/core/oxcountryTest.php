@@ -161,4 +161,29 @@ class Unit_Core_oxCountryTest extends OxidTestCase
         $oSubj = new oxCountry();
         $this->assertEquals('a7c40f631fc920687.20179984', $oSubj->getIdByCode('DE'));
     }
+
+    public function providerGetVatIdentificationNumberPrefix()
+    {
+        return array(
+            array('a7c40f631fc920687.20179984', 'DE' ),
+            // Exceptional country
+            array( 'a7c40f633114e8fc6.25257477', 'EL' ),
+        );
+    }
+
+    /**
+     * Checks if returned vat identification number was returned correctly.
+     *
+     * @param $sCountryId
+     * @param $sPrefix
+     *
+     * @dataProvider providerGetVatIdentificationNumberPrefix
+     */
+    public function testGetVatIdentificationNumberPrefix( $sCountryId, $sPrefix )
+    {
+        $oCountry = new oxCountry();
+        $oCountry->load( $sCountryId );
+
+        $this->assertEquals( $sPrefix, $oCountry->getVatIdentificationNumberPrefix() );
+    }
 }

@@ -92,7 +92,7 @@ class Unit_Maintenance_smartyModifieroxmultilangassignTest extends OxidTestCase
             array(
                 false,
                 'ident' => 'MY_MISING_TRANSLATION',
-                'ERROR: Translation for MY_MISING_TRANSLATION not found!',
+                'MY_MISING_TRANSLATION',
             ),
         );
     }

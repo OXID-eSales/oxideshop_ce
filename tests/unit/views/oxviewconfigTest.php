@@ -176,16 +176,23 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     }
 
     /**
-     * oxViewConfig::getHelpPageLink() test case
-     *
-     * @return null
+     * Check what happens when no help CMS content is found
      */
     public function testGetHelpPageLinkInactiveContents()
     {
-        $oViewConfig = $this->getMock("oxviewconfig", array("getHelpLink", '_getHelpContentIdents'));
+        $oViewConfig = $this->getMock("oxviewconfig", array('_getHelpContentIdents'));
         $oViewConfig->expects($this->once())->method("_getHelpContentIdents")->will($this->returnValue(array("none")));
-        $oViewConfig->expects($this->once())->method("getHelpLink");
-        $oViewConfig->getHelpPageLink();
+        $this->assertEquals("", $oViewConfig->getHelpPageLink());
+    }
+
+    /**
+     * Check if correct help link is retrieved by default in english language
+     */
+    public function testGetHelpPageLinkActiveContents_EN()
+    {
+        $oViewConfig = new oxViewConfig();
+        $this->getConfig()->setConfigParam("sDefaultLang", 1);
+        $this->assertEquals($this->getConfig()->getShopUrl() . 'en/Help-Main/', $oViewConfig->getHelpPageLink());
     }
 
     public function testGetHomeLinkEng()
@@ -1029,39 +1036,23 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     }
 
     /**
-     * oxViewconfig::getHelpLink() test case
-     *
-     * @return null
+     * Check if help link should be shown
      */
-
-    public function testGetHelpLinkWithTemplate()
+    public function testShowHelpLink()
     {
-        $sTemplate = "testTemplate";
-        $sClass    = "testClass";
-
-        $oViewConfig = $this->getMock("oxViewConfig", array("getActTplName", "getActiveClassName"));
-        $oViewConfig->expects($this->any())->method("getActTplName")->will($this->returnValue($sTemplate));
-        $oViewConfig->expects($this->any())->method("getActiveClassName")->will($this->returnValue($sClass));
-
-        $this->assertEquals($this->getConfig()->getShopCurrentURL() . "cl=help&amp;page=$sClass&amp;tpl=$sTemplate", $oViewConfig->getHelpLink());
+        $oViewConf = new oxViewConfig();
+        $this->assertTrue($oViewConf->showHelpLink());
     }
 
     /**
-     * oxViewconfig::getHelpLink() test case
-     *
-     * @return null
+     * Check if help link should be shown when no CMS valid page is received
      */
-
-    public function testGetHelpLinkWithoutTemplate()
+    public function testShowHelpLinkWithNoHelpCMSAvailable()
     {
-        $sTemplate = null;
-        $sClass    = "testClass";
 
-        $oViewConfig = $this->getMock("oxViewConfig", array("getActTplName", "getActiveClassName"));
-        $oViewConfig->expects($this->any())->method("getActTplName")->will($this->returnValue($sTemplate));
-        $oViewConfig->expects($this->any())->method("getActiveClassName")->will($this->returnValue($sClass));
-
-        $this->assertEquals($this->getConfig()->getShopCurrentURL() . "cl=help&amp;page=$sClass", $oViewConfig->getHelpLink());
+        $oViewConfig = $this->getMock("oxviewconfig", array('_getHelpContentIdents'));
+        $oViewConfig->expects($this->once())->method("_getHelpContentIdents")->will($this->returnValue(array("none")));
+        $this->assertFalse($oViewConfig->showHelpLink());
     }
 
     /**

@@ -205,6 +205,17 @@ class oxViewConfig extends oxSuperCfg
     }
 
     /**
+     * Should help link be shown in frontend
+     *
+     * @return boolean
+     */
+    public function showHelpLink()
+    {
+        $blShowHelpLink = (bool)$this->getHelpPageLink();
+        return $blShowHelpLink;
+    }
+
+    /**
      * Returns shop help link
      *
      * @return string
@@ -212,37 +223,18 @@ class oxViewConfig extends oxSuperCfg
     public function getHelpPageLink()
     {
         if ($this->_sHelpPageLink === null) {
-            $sLink = false;
-
+            $this->_sHelpPageLink = "";
             $aContentIdents = $this->_getHelpContentIdents();
             $oContent       = oxNew("oxContent");
             foreach ($aContentIdents as $sIdent) {
                 if ($oContent->loadByIdent($sIdent)) {
-                    $sLink = $oContent->getLink();
+                    $this->_sHelpPageLink = $oContent->getLink();
                     break;
                 }
             }
-
-            $this->_sHelpPageLink = $sLink ? $sLink : $this->getHelpLink();
         }
 
         return $this->_sHelpPageLink;
-    }
-
-    /**
-     * Returns dynamic shop help link
-     *
-     * @return string
-     */
-    public function getHelpLink()
-    {
-        $sTplName = $this->getActTplName();
-        $sClass   = $this->getActiveClassName();
-
-        $sHelpLink = $this->getConfig()->getShopCurrentURL();
-        $sHelpLink .= "cl=help&amp;page={$sClass}" . ($sTplName ? "&amp;tpl={$sTplName}" : '');
-
-        return $sHelpLink;
     }
 
     /**

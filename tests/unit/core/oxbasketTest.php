@@ -4538,4 +4538,13 @@ class Unit_Core_oxbasketTest extends OxidTestCase
         $this->assertEquals( 44, $oSummary->dArticleDiscountablePrice );
     }
 
+    public function testInsuredSumCalculationForTrustedShop()
+    {
+        $oBasket = new oxBasket();
+        $oBasket->setPrice( new oxPrice( 100.98 ) );
+        $oBasket->setCost( 'oxtsprotection', new oxPrice( 0.98 ) );
+
+        $this->assertEquals( 100, $oBasket->getTsInsuredSum() );
+    }
+
 }

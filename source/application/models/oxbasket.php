@@ -1005,56 +1005,48 @@ class oxBasket extends oxSuperCfg
     protected function _calcTotalPrice()
     {
         // 1. add products price
-        $dprice = $this->_dBruttoSum;//$this->_oProductsPriceList->getBruttoSum();
-        $this->_oPrice = oxNew( 'oxPrice' );
-        $this->_oPrice->setBruttoPriceMode();
-        $this->_oPrice->setPrice( $dprice );
+        $dPrice = $this->_dBruttoSum;
 
-        // 2. substract discounts
-        if ( $dprice && !$this->isCalculationModeNetto() ) {
+        $oTotalPrice = oxNew( 'oxPrice' );
+        $oTotalPrice->setBruttoPriceMode();
+        $oTotalPrice->setPrice( $dPrice );
 
-            // 2.1 applying basket item discounts
-            /*foreach ( $this->_aItemDiscounts as $oDiscount ) {
-
-                // skipping bundle discounts
-                if ( $oDiscount->sType == 'itm' ) {
-                    continue;
-                }
-                $this->_oPrice->subtract( $oDiscount->dDiscount );
-            }*/
+        // 2. subtract discounts
+        if ( $dPrice && !$this->isCalculationModeNetto() ) {
 
             // 2.2 applying basket discounts
-            $this->_oPrice->subtract( $this->_oTotalDiscount->getBruttoPrice() );
+            $oTotalPrice->subtract( $this->_oTotalDiscount->getBruttoPrice() );
 
             // 2.3 applying voucher discounts
             if ($oVoucherDisc = $this->getVoucherDiscount()) {
-                $this->_oPrice->subtract( $oVoucherDisc->getBruttoPrice() );
+                $oTotalPrice->subtract( $oVoucherDisc->getBruttoPrice() );
             }
         }
 
         // 2.3 add delivery cost
         if ( isset( $this->_aCosts['oxdelivery'] ) ) {
-            $this->_oPrice->add( $this->_aCosts['oxdelivery']->getBruttoPrice() );
+            $oTotalPrice->add( $this->_aCosts['oxdelivery']->getBruttoPrice() );
         }
 
         // 2.4 add wrapping price
         if ( isset( $this->_aCosts['oxwrapping'] ) ) {
-            $this->_oPrice->add( $this->_aCosts['oxwrapping']->getBruttoPrice() );
+            $oTotalPrice->add( $this->_aCosts['oxwrapping']->getBruttoPrice() );
         }
         if ( isset( $this->_aCosts['oxgiftcard'] ) ) {
-            $this->_oPrice->add( $this->_aCosts['oxgiftcard']->getBruttoPrice() );
+            $oTotalPrice->add( $this->_aCosts['oxgiftcard']->getBruttoPrice() );
         }
 
         // 2.5 add payment price
         if ( isset( $this->_aCosts['oxpayment'] ) ) {
-            $this->_oPrice->add( $this->_aCosts['oxpayment']->getBruttoPrice() );
+            $oTotalPrice->add( $this->_aCosts['oxpayment']->getBruttoPrice() );
         }
 
         // 2.6 add TS protection price
         if ( isset( $this->_aCosts['oxtsprotection'] ) ) {
-            $this->_oPrice->add( $this->_aCosts['oxtsprotection']->getBruttoPrice() );
+            $oTotalPrice->add( $this->_aCosts['oxtsprotection']->getBruttoPrice() );
         }
 
+        $this->setPrice( $oTotalPrice );
     }
 
     /**
@@ -1993,11 +1985,20 @@ class oxBasket extends oxSuperCfg
     public function getPrice()
     {
         if ( is_null($this->_oPrice) ) {
-            $this->_oPrice = oxNew( 'oxPrice' );
+            $this->setPrice( oxNew( 'oxPrice' ) );
         }
 
         return $this->_oPrice;
     }
+
+    /**
+     * Set basket total sum price object
+     */
+    public function setPrice( $oPrice )
+    {
+        $this->_oPrice = $oPrice;
+    }
+
 
     /**
      * Returns unique order ID assigned to current basket.
@@ -3156,4 +3157,13 @@ class oxBasket extends oxSuperCfg
         return oxPrice::getPriceInActCurrency( $this->getConfig()->getConfigParam( 'iMinOrderPrice' ) );
     }
 
+    /**
+     * Return sum of basket insured by trusted shops
+     *
+     * @return decimal
+     */
+    public function getTsInsuredSum()
+    {
+        return $this->getPrice()->getBruttoPrice() - $this->getCosts( 'oxtsprotection' )->getBruttoPrice();
+    }
 }

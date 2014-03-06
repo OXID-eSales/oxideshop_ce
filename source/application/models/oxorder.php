@@ -2179,7 +2179,7 @@ class oxOrder extends oxBase
     protected function _executeTsProtection( oxBasket $oBasket )
     {
         $aValues['tsProductId'] = $this->oxorder__oxtsprotectid->value;
-        $aValues['amount'] = $oBasket->getPrice()->getBruttoPrice();
+        $aValues['amount'] = $oBasket->getTsInsuredSum();
         $oCur = $this->getConfig()->getActShopCurrencyObject();
         $aValues['currency'] = $oCur->name;
         $aValues['buyerEmail'] = $this->oxorder__oxbillemail->value;

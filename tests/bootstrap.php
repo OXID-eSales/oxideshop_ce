@@ -18,68 +18,21 @@
  * @link      http://www.oxid-esales.com
  * @copyright (C) OXID eSales AG 2003-2014
  * @version   OXID eShop CE
+ *
+ * @link      http://www.oxid-esales.com
+ * @package   tests
+ * @copyright (c) OXID eSales AG 2003-#OXID_VERSION_YEAR#
+ * @version   SVN: $Id: $
  */
+chdir(dirname(__FILE__));
 
-error_reporting( (E_ALL ^ E_NOTICE) | E_STRICT );
-ini_set('display_errors', true);
+require_once "bootstrap_config.php";
 
-chdir( dirname(__FILE__) );
+// include bootstrap based on tests running
+$sTestType = getenv('TEST_TYPE') ? getenv('TEST_TYPE') : $sTestType;
 
-require_once "test_config.php";
-
-if ( file_exists( "test_config.local.php" ) ) {
-    include_once "test_config.local.php";
-}
-
-define( 'oxPATH', getenv('oxPATH')? getenv('oxPATH') : $sShopPath );
-define ( 'OXID_VERSION', getenv('OXID_VERSION')? getenv('OXID_VERSION') : $sShopEdition );
-
-define ('OXID_TEST_UTF8', getenv('OXID_TEST_UTF8')? getenv('OXID_TEST_UTF8') : $blUtf8);
-define ('PREG_FILTER', getenv('PREG_FILTER'));
-define ('TEST_DIRS', getenv('TEST_DIRS'));
-
-    switch ( OXID_VERSION ) {
-        case 'EE':
-            define('OXID_VERSION_EE', true );
-            define('OXID_VERSION_PE', false);
-            define('OXID_VERSION_PE_PE', false );
-            define('OXID_VERSION_PE_CE', false );
-            break;
-        case 'PE':
-            define('OXID_VERSION_EE',    false);
-            define('OXID_VERSION_PE',    true );
-            define('OXID_VERSION_PE_PE', true );
-            define('OXID_VERSION_PE_CE', false );
-            break;
-        case 'CE':
-            define('OXID_VERSION_EE',    false);
-            define('OXID_VERSION_PE',    true );
-            define('OXID_VERSION_PE_PE', false );
-            define('OXID_VERSION_PE_CE', true );
-            break;
-
-        default:
-            die('bad version--- : '."'".getenv('OXID_VERSION')."'");
-            break;
-    }
-
-
-if (!defined('oxPATH')) {
-        die('oxPATH is not defined');
-}
-
-define ('oxCCTempDir', oxPATH.'/oxCCTempDir/');
-if (!is_dir(oxCCTempDir)) {
-    mkdir(oxCCTempDir, 0777, 1);
+if (file_exists("bootstrap_$sTestType.php")) {
+    include_once "bootstrap_$sTestType.php";
 } else {
-    array_map('unlink', glob(oxCCTempDir."/*"));
-}
-
-require_once 'unit/test_config.inc.php';
-
-define('oxADMIN_LOGIN', oxDb::getDb()->getOne("select OXUSERNAME from oxuser where oxid='oxdefaultadmin'"));
-if (getenv('oxADMIN_PASSWD')) {
-    define('oxADMIN_PASSWD', getenv('oxADMIN_PASSWD'));
-} else {
-    define('oxADMIN_PASSWD', 'admin');
+    include_once "bootstrap_unit.php";
 }

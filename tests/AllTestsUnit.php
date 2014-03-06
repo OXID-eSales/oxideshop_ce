@@ -79,7 +79,7 @@ class AllTestsUnit extends PHPUnit_Framework_TestCase
     {
         foreach ( $aTestFiles as $sFilename ) {
 
-            $sFilter = PREG_FILTER;
+            $sFilter = getenv('PREG_FILTER');
             if ( !$sFilter || preg_match("&$sFilter&i", $sFilename) ) {
 
                         include_once $sFilename;
@@ -107,9 +107,10 @@ class AllTestsUnit extends PHPUnit_Framework_TestCase
     {
         $aTestDirectories = self::$_aTestSuites;
 
-        if ( TEST_DIRS ) {
+        $sTestDirs = getenv('TEST_DIRS');
+        if ( $sTestDirs ) {
             $aTestDirectories = array();
-            foreach ( explode(',', TEST_DIRS ) as $sTestSuiteParts ) {
+            foreach ( explode(',', $sTestDirs ) as $sTestSuiteParts ) {
                 $aTestDirectories = array_merge( $aTestDirectories, self::_getSuiteDirectories( $sTestSuiteParts ) );
             }
     }

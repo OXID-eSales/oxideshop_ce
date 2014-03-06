@@ -37,8 +37,8 @@ $aLang = array(
 'simpleDateFormat'                                         => 'Y-m-d',
 
 'GENERAL_ACTIVE'                                           => 'Active',
-'GENERAL_ALWAYS_ACTIVE'                                    => 'Always active',
-'GENERAL_ACTIVFROMTILL'                                    => 'Active by date',
+'GENERAL_ALWAYS_ACTIVE'                                    => '[TR]Always active',
+'GENERAL_ACTIVFROMTILL'                                    => '[TR]Active by date',
 'GENERAL_OR'                                               => 'Or',
 'GENERAL_ACTIVTITLE'                                       => 'A',
 'GENERAL_ADMIN_TITLE'                                      => '[OXID eShop Administration]',

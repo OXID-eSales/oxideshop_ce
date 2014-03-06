@@ -394,7 +394,7 @@ class oxInputValidator extends oxSuperCfg
             $oCountry = oxNew('oxcountry');
             if ( $oCountry->load( $sCountryId ) && $oCountry->isForeignCountry() && $oCountry->isInEU() ) {
 
-                    if ( strncmp( $aInvAddress['oxuser__oxustid'], $oCountry->oxcountry__oxisoalpha2->value, 2 ) ) {
+                    if ( strncmp( $aInvAddress['oxuser__oxustid'], $oCountry->getVatIdentificationNumberPrefix(), 2 ) ) {
                         $oEx = oxNew( 'oxInputException' );
                         $oEx->setMessage( 'VAT_MESSAGE_ID_NOT_VALID' );
 

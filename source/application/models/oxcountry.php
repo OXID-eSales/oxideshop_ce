@@ -103,4 +103,14 @@ class oxCountry extends oxI18n
         return $oDb->getOne( "select oxid from oxcountry where oxisoalpha2 = " . $oDb->quote( $sCode ) );
     }
 
+    /**
+     * Method returns VAT identification number prefix.
+     *
+     * @return string
+     */
+    public function getVatIdentificationNumberPrefix()
+    {
+        return $this->oxcountry__oxisoalpha2->value == 'GR' ? 'EL' : $this->oxcountry__oxisoalpha2->value;
+    }
+
 }

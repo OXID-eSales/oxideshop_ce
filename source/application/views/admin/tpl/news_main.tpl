@@ -30,7 +30,7 @@
         [{block name="admin_news_main_form"}]
             <tr>
                 <td class="edittext" width="90">
-                [{ oxmultilang ident="GENERAL_ACTIVE" }]
+                [{ oxmultilang ident="GENERAL_ALWAYS_ACTIVE" }]
                 </td>
                 <td class="edittext">
                 <input class="edittext" type="checkbox" name="editval[oxnews__oxactive]" value='1' [{if $edit->oxnews__oxactive->value == 1}]checked[{/if}] [{ $readonly }]>

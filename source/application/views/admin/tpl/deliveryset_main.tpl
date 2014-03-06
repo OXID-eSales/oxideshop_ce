@@ -42,7 +42,7 @@
             [{ if $oxid != "-1"}]
             <tr>
                 <td class="edittext">
-                [{ oxmultilang ident="GENERAL_ACTIVE" }]
+                [{ oxmultilang ident="GENERAL_ALWAYS_ACTIVE" }]
                 </td>
                 <td class="edittext">
                 <input class="edittext" type="checkbox" name="editval[oxdeliveryset__oxactive]" value='1' [{if $edit->oxdeliveryset__oxactive->value == 1}]checked[{/if}] [{ $readonly }]>

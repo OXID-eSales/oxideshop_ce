@@ -27,7 +27,7 @@
 // eShop directory
 $sShopPath = realpath( '../source/' ).'/';
 // eShop edition
-$sShopEdition = 'EE';
+$sShopEdition = 'CE';
 // Tests type - unit, integration, acceptance
 $sTestType = 'unit';
 // eShop encoding

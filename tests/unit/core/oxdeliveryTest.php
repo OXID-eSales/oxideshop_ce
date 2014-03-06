@@ -665,21 +665,6 @@ class Unit_Core_oxdeliveryTest extends OxidTestCase
     }
 
     /*
-     * Testing getDeliveryAmount() - non material delivery
-     */
-    public function testGetDeliveryAmountNonMaterial()
-    {
-        $this->_oBasketItem->getArticle()->oxarticles__oxnonmaterial = new oxField(true, oxField::T_RAW);
-
-        $oDelivery = oxNew( 'oxdelivery' );
-        $oDelivery->oxdelivery__oxdeltype = new oxField('p', oxField::T_RAW);
-
-        modConfig::getInstance()->setConfigParam( 'blExclNonMaterialFromDelivery', true );
-        $this->assertEquals( 512, $oDelivery->getDeliveryAmount($this->_oBasketItem) );
-        $this->assertTrue( $oDelivery->getblFreeShipping() );
-    }
-
-    /*
      * Testing getDeliveryAmount() - product price related
      */
     public function test_getDeliveryAmountCalcByPrice()

@@ -230,6 +230,13 @@ class oxOrder extends oxBase
     protected $_oOrderFiles = null;
 
     /**
+     * Shipment tracking url
+     *
+     * @var string
+     */
+    protected $_sShipTrackUrl = null;
+
+    /**
      * Class constructor, initiates parent constructor (parent::oxBase()).
      */
     public function __construct()
@@ -2287,15 +2294,29 @@ class oxOrder extends oxBase
     }
 
     /**
-     * Returns DPD shipment tracking url if oxorder__oxtrackcode is supplied
+     * Returns shipment tracking code
+     *
+     * @return string
+     */
+    public function getTrackCode()
+    {
+        return $this->oxorder__oxtrackcode->value;
+    }
+
+    /**
+     * Returns shipment tracking url if oxtrackcode and shipment tracking url are supplied
      *
      * @return string
      */
     public function getShipmentTrackingUrl()
     {
-        $myConfig = oxRegistry::getConfig();
-        if ( $this->_sShipTrackUrl === null && $this->oxorder__oxtrackcode->value ) {
-            $this->_sShipTrackUrl = str_replace("##ID##", $this->oxorder__oxtrackcode->value, $myConfig->getShopConfVar(  'sParcelService', $myConfig->getShopId() ));
+        $oConfig = oxRegistry::getConfig();
+        if ( $this->_sShipTrackUrl === null ) {
+            $sParcelService = $oConfig->getConfigParam( 'sParcelService' );
+            $sTrackingCode  = $this->getTrackCode();
+            if ( $sParcelService && $sTrackingCode ) {
+                $this->_sShipTrackUrl = str_replace("##ID##", $sTrackingCode, $sParcelService);
+            }
         }
         return $this->_sShipTrackUrl;
     }

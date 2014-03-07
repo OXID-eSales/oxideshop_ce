@@ -3569,15 +3569,51 @@ class Unit_Core_oxorderTest extends OxidTestCase
      */
     public function testGetShipmentTrackingUrl()
     {
-        $oOrder = new oxOrder();
-        $oOrder->oxorder__oxtrackcode = new oxField( false );
-        $this->assertNull( $oOrder->getShipmentTrackingUrl() );
-
         $sExpected = "http://www.dpd.de/cgi-bin/delistrack?typ=1&amp;lang=de&amp;pknr=123";
 
         $oOrder = new oxOrder();
         $oOrder->oxorder__oxtrackcode = new oxField( 123 );
         $this->assertEquals( $sExpected, $oOrder->getShipmentTrackingUrl() );
+    }
+
+    /**
+     * Testing oxORder::getShipmentTrackingUrl()
+     *
+     * @return null
+     */
+    public function testGetShipmentTrackingUrlCodeNotAdded()
+    {
+        $oOrder = new oxOrder();
+        $oOrder->oxorder__oxtrackcode = new oxField( false );
+        $this->assertNull( $oOrder->getShipmentTrackingUrl() );
+    }
+
+    /**
+     * Testing oxORder::getShipmentTrackingUrl()
+     *
+     * @return null
+     */
+    public function testGetShipmentTrackingUrlNotSet()
+    {
+        $this->setConfigParam( 'sParcelService', false );
+
+        $oOrder = new oxOrder();
+        $oOrder->oxorder__oxtrackcode = new oxField( 123 );
+        $this->assertNull( $oOrder->getShipmentTrackingUrl() );
+    }
+
+    /**
+     * Testing oxORder::getShipmentTrackingUrl()
+     *
+     * @return null
+     */
+    public function testGetShipmentTrackingUrlWrongPlaceHolder()
+    {
+        $this->setConfigParam( 'sParcelService', "http://www.dpd.de/cgi-bin/delistrack?typ=1&amp;lang=de&amp;pknr=ID" );
+
+        $oOrder = new oxOrder();
+        $oOrder->oxorder__oxtrackcode = new oxField( 123 );
+        $this->assertEquals( 'http://www.dpd.de/cgi-bin/delistrack?typ=1&amp;lang=de&amp;pknr=ID', $oOrder->getShipmentTrackingUrl() );
     }
 
     /**

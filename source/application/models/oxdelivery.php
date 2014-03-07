@@ -216,17 +216,16 @@ class oxDelivery extends oxI18n
         $dAmount  = 0;
         $oProduct = $oBasketItem->getArticle( false );
 
+        $blExclNonMaterial = $this->getConfig()->getConfigParam( 'blExclNonMaterialFromDelivery' );
+
         // mark free shipping products
-        if ( $oProduct->oxarticles__oxfreeshipping->value ) {
+        if ( $oProduct->oxarticles__oxfreeshipping->value || ($oProduct->oxarticles__oxnonmaterial->value && $blExclNonMaterial) ) {
             if ($this->_blFreeShipping !== false) {
                 $this->_blFreeShipping = true;
             }
         } else {
 
-            $blExclNonMaterial = $this->getConfig()->getConfigParam( 'blExclNonMaterialFromDelivery' );
-            if ( !( $oProduct->oxarticles__oxnonmaterial->value && $blExclNonMaterial ) ) {
-                $this->_blFreeShipping = false;
-            }
+            $this->_blFreeShipping = false;
 
             switch ( $this->oxdelivery__oxdeltype->value ) {
                 case 'p': // price

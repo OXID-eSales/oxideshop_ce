@@ -174,6 +174,58 @@ class Unit_Core_oxDiscountTest extends OxidTestCase
 
 
     /**
+     * When article base price is higher than discount priceTo - discount should not be valid
+     */
+    public function testIsForArticle_ArticleBasePriceTooLow()
+    {
+        $oDiscount = new oxDiscount();
+        $oDiscount->oxdiscount__oxpriceto = new oxField(10);
+        $oArticle = $this->getMock('oxArticle', array('getBasePrice'));
+        $oArticle->expects($this->any())->method('getBasePrice')->will($this->returnValue(50));
+
+        $this->assertFalse($oDiscount->isForArticle($oArticle));
+    }
+
+    /**
+     * When discount has no articles or categories assigned, it is considered global
+     */
+    public function testIsGlobalDiscount_True()
+    {
+        $oDiscount = new oxDiscount();
+        $oDiscount->setId('testIsGlobalDiscount');
+        $oDiscount->save();
+        $this->assertTrue($oDiscount->isGlobalDiscount());
+    }
+
+    /**
+     * When discount has any article assigned, it is considered not global
+     */
+    public function testIsGlobalDiscount_DiscountForArticle_False()
+    {
+        $oDiscount = new oxDiscount();
+        $oDiscount->setId('testGlobalDiscount');
+        $oDiscount->save();
+
+        oxDb::getDb()->Execute("insert into oxobject2discount (OXID, OXDISCOUNTID, OXOBJECTID, OXTYPE) VALUES( 'testIsGlobalDiscount', 'testGlobalDiscount','1000','oxarticles')");
+
+        $this->assertFalse($oDiscount->isGlobalDiscount());
+    }
+
+    /**
+     * When discount has any category assigned, it is considered not global
+     */
+    public function testIsGlobalDiscount_DiscountForCategory_False()
+    {
+        $oDiscount = new oxDiscount();
+        $oDiscount->setId('testGlobalDiscount');
+        $oDiscount->save();
+
+        oxDb::getDb()->Execute("insert into oxobject2discount (OXID, OXDISCOUNTID, OXOBJECTID, OXTYPE) VALUES( 'testIsGlobalDiscount', 'testGlobalDiscount','1000','oxcategories')");
+
+        $this->assertFalse($oDiscount->isGlobalDiscount());
+    }
+
+    /**
      * Testing "for article" check
      */
     // main article
@@ -210,8 +262,6 @@ class Unit_Core_oxDiscountTest extends OxidTestCase
         oxDb::getDb()->Execute("insert into oxobject2discount (OXID, OXDISCOUNTID, OXOBJECTID, OXTYPE) VALUES( 'testIsForArticle', '".$testDiscId."','".$testAid."','oxarticles')");
         $this->assertTrue( $oDiscount->isForArticle( $oArticle ) );
 
-
-
         //global discount for all articles
         $oDiscount = oxNew( 'oxDiscount' );
         $testDiscId = 'testdid';
@@ -237,7 +287,6 @@ class Unit_Core_oxDiscountTest extends OxidTestCase
         $this->assertFalse( $oDiscount->isForArticle( $oArticle ) );
     }
 
-
     //no article discount for fitting category
     public function testIsForArticleFittingOnlyCat()
     {
@@ -260,6 +309,7 @@ class Unit_Core_oxDiscountTest extends OxidTestCase
         $oArticle->setId( $testAid );
         $this->assertFalse( $oDiscount->isForArticle( $oArticle ) );
     }
+
     //no article discount
     public function testIsForArticleNoFittingDiscounts()
     {

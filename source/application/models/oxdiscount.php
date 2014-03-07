@@ -94,76 +94,61 @@ class oxDiscount extends oxI18n
     }
 
     /**
-     * Checks if discount is setup for article
+     * Check for global discount (no articles, no categories)
      *
-     * @param oxarticle $oArticle article object
+     * @return bool
+     */
+    public function isGlobalDiscount()
+    {
+        if (is_null($this->_blIsForArticleOrForCategory)) {
+            $oDb = oxDb::getDb();
+            $sDiscountIdQuoted = $oDb->quote($this->oxdiscount__oxid->value);
+
+            $sQuery = "select 1
+                        from oxobject2discount
+                        where oxdiscountid = $sDiscountIdQuoted and (oxtype = 'oxarticles' or oxtype = 'oxcategories')";
+
+            $this->_blIsForArticleOrForCategory = $oDb->getOne($sQuery) ? false : true;
+        }
+
+        return $this->_blIsForArticleOrForCategory;
+    }
+
+    /**
+     * Checks if discount applies for article
      *
+     * @param oxArticle $oArticle article object
      * @return bool
      */
     public function isForArticle( $oArticle )
     {
-
         // item discounts may only be applied for basket
-        if ( $this->oxdiscount__oxaddsumtype->value == 'itm' ) {
+        if ($this->oxdiscount__oxaddsumtype->value == 'itm') {
             return false;
         }
 
-        if ( $this->oxdiscount__oxamount->value || $this->oxdiscount__oxprice->value ) {
+        if ($this->oxdiscount__oxamount->value || $this->oxdiscount__oxprice->value) {
             return false;
         }
 
-        if ( $this->oxdiscount__oxpriceto->value && ($this->oxdiscount__oxpriceto->value < $oArticle->getBasePrice()) ) {
+        if ($this->oxdiscount__oxpriceto->value && ($this->oxdiscount__oxpriceto->value < $oArticle->getBasePrice())) {
             return false;
         }
 
-        $oDb = oxDb::getDb();
-
-        $sDiscountIdQuoted = $oDb->quote($this->oxdiscount__oxid->value);
-
-        //check for global discount (no articles, no categories)
-        if ( $this->_blIsForArticleOrForCategory ) {
+        if ($this->isGlobalDiscount()) {
             return true;
-        } elseif ( $this->_blIsForArticleOrForCategory === null ) {
-
-            $this->_blIsForArticleOrForCategory = false;
-            $sQ = "select 1 from oxobject2discount where oxdiscountid = $sDiscountIdQuoted and ( oxtype = 'oxarticles' or oxtype = 'oxcategories')";
-            if ( ! $oDb->getOne( $sQ ) ) {
-                $this->_blIsForArticleOrForCategory = true;
-                return true;
-            }
         }
 
         $sArticleId = $oArticle->getProductId();
 
-        if ( !$this->_blIsForArticleAndForCategory && !isset($this->_aHasArticleDiscounts[ $sArticleId ] ) ) {
+        if (!isset($this->_aHasArticleDiscounts[$sArticleId])) {
 
-            $this->_aHasArticleDiscounts[ $sArticleId ] = false ;
+            $blResult = $this->_isArticleAssigned($oArticle) || $this->_isCategoriesAssigned($oArticle->getCategoryIds());
 
-            // check if this article is assigned
-            $sQ  = "select 1 from oxobject2discount where oxdiscountid = {$sDiscountIdQuoted} and oxtype = 'oxarticles' ";
-            $sQ .= $this->_getProductCheckQuery( $oArticle );
-
-            if ( $oDb->getOne( $sQ ) ) {
-                $this->_aHasArticleDiscounts[ $sArticleId ] = true;
-                return true;
-            } else {
-                // check if article is in some assigned category
-                $aCatIds = $oArticle->getCategoryIds();
-                if (!$aCatIds || !count($aCatIds)) {
-                    // no categories are set for article, so no discounts from categories..
-                    return false;
-                }
-                $sCatIds = "(".implode(",", oxDb::getInstance()->quoteArray($aCatIds)).")";
-                // getOne appends limit 1, so this one should be fast enough
-                $sQ = "select 1 from oxobject2discount where oxdiscountid = {$sDiscountIdQuoted} and oxobjectid in $sCatIds and oxtype = 'oxcategories'";
-                if ( $oDb->getOne( $sQ ) ) {
-                    $this->_aHasArticleDiscounts[ $sArticleId ] = true;
-                    return true;
-                }
-            }
+            $this->_aHasArticleDiscounts[$sArticleId] = $blResult;
         }
 
-        return $this->_aHasArticleDiscounts[ $sArticleId ];
+        return $this->_aHasArticleDiscounts[$sArticleId];
     }
 
     /**
@@ -332,8 +317,8 @@ class oxDiscount extends oxI18n
     /**
      * Returns absolute discount value
      *
-     * @param float $dPrice  item price
-     * @param float $dAmount item amount, interpretted only when discount is absolute (default 1)
+     * @param float $dPrice item price
+     * @param float|int $dAmount item amount, interpretted only when discount is absolute (default 1)
      *
      * @return float
      */
@@ -350,8 +335,8 @@ class oxDiscount extends oxI18n
     /**
      * Applies discount for current price
      *
-     * @param oxprice $oPrice  basket item price object
-     * @param double  $dAmount basket item amount (default 1)
+     * @param oxPrice $oPrice basket item price object
+     * @param float|int $dAmount basket item amount (default 1)
      *
      * @deprecated since v5.0.1 (2012-11-08); use oxPrice class  discount calculation methods;
      *
@@ -387,8 +372,6 @@ class oxDiscount extends oxI18n
         }
     }
 
-
-
     /**
      * Return add sum in abs type discount with efected currency rate;
      * Return discount percent value in other way;
@@ -415,9 +398,6 @@ class oxDiscount extends oxI18n
         return $this->oxdiscount__oxaddsumtype->value;
     }
 
-
-
-
     /**
      * Returns amount of items to bundle
      *
@@ -436,6 +416,42 @@ class oxDiscount extends oxI18n
 
         return $dItemAmount;
     }
+
+    /**
+     * Returns compact discount object which is used in oxbasket
+     *
+     * @return stdClass
+     */
+    public function getSimpleDiscount()
+    {
+        $oDiscount = new stdClass();
+        $oDiscount->sOXID     = $this->getId();
+        $oDiscount->sDiscount = $this->oxdiscount__oxtitle->value;
+        $oDiscount->sType     = $this->oxdiscount__oxaddsumtype->value;
+
+        return $oDiscount;
+    }
+
+    /**
+     * Returns article ids assigned to discount
+     *
+     * @return array
+     */
+    public function getArticleIds()
+    {
+        return oxDb::getDb()->getCol("select `oxobjectid` from oxobject2discount where oxdiscountid = '".$this->getId()."' and oxtype = 'oxarticles'");
+    }
+
+    /**
+     * Returns category ids asigned to discount
+     *
+     * @return array
+     */
+    public function getCategoryIds()
+    {
+        return oxDb::getDb()->getCol("select `oxobjectid` from oxobject2discount where oxdiscountid = '".$this->getId()."' and oxtype = 'oxcategories'");
+    }
+
 
     /**
      * Checks if discount may be applied according amounts info
@@ -463,41 +479,6 @@ class oxDiscount extends oxI18n
     }
 
     /**
-     * Returns compact discount object which is used in oxbasket
-     *
-     * @return stdClass
-     */
-    public function getSimpleDiscount()
-    {
-        $oDiscount = new stdClass();
-        $oDiscount->sOXID     = $this->getId();
-        $oDiscount->sDiscount = $this->oxdiscount__oxtitle->value;
-        $oDiscount->sType     = $this->oxdiscount__oxaddsumtype->value;
-
-        return $oDiscount;
-    }
-
-    /**
-     * Returns article ids asigned to discount
-     *
-     * @return array
-     */
-    public function getArticleIds()
-    {
-        return oxDb::getDb()->getCol("select `oxobjectid` from oxobject2discount where oxdiscountid = '".$this->getId()."' and oxtype = 'oxarticles'");
-    }
-
-    /**
-     * Returns category ids asigned to discount
-     *
-     * @return array
-     */
-    public function getCategoryIds()
-    {
-        return oxDb::getDb()->getCol("select `oxobjectid` from oxobject2discount where oxdiscountid = '".$this->getId()."' and oxtype = 'oxcategories'");
-    }
-
-    /**
      * Returns part of query for discount check. If product is variant - query contains both id check e.g.
      * "and (oxobjectid = '...' or oxobjectid = '...')
      *
@@ -518,5 +499,46 @@ class oxDiscount extends oxI18n
         return $sArticleId;
     }
 
+    /**
+     * Checks whether this article is assigned to discount
+     *
+     * @param oxArticle $oArticle
+     * @return bool
+     */
+    protected function _isArticleAssigned($oArticle)
+    {
+        $oDb = oxDb::getDb();
+        $sDiscountIdQuoted = $oDb->quote($this->oxdiscount__oxid->value);
+
+        $sQ = "select 1
+                from oxobject2discount
+                where oxdiscountid = {$sDiscountIdQuoted} and oxtype = 'oxarticles' ";
+        $sQ .= $this->_getProductCheckQuery($oArticle);
+
+        return $oDb->getOne($sQ) ? true : false;
+    }
+
+    /**
+     * Checks whether categories are assigned to discount
+     *
+     * @param array $aCategoryIds
+     * @return bool
+     */
+    protected function _isCategoriesAssigned($aCategoryIds)
+    {
+        if (empty($aCategoryIds)) {
+            return false;
+        }
+
+        $oDb = oxDb::getDb();
+        $sDiscountIdQuoted = $oDb->quote($this->oxdiscount__oxid->value);
+
+        $sCategoryIds = "(" . implode(",", oxDb::getInstance()->quoteArray($aCategoryIds)) . ")";
+        $sQ = "select 1
+                from oxobject2discount
+                where oxdiscountid = {$sDiscountIdQuoted} and oxobjectid in {$sCategoryIds} and oxtype = 'oxcategories'";
+
+        return $oDb->getOne($sQ) ? true : false;
+    }
 
 }

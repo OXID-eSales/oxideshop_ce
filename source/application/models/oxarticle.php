@@ -1552,17 +1552,20 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      */
     public function getCategoryIds( $blActCats = false, $blSkipCache = false )
     {
-        if ( isset( self::$_aArticleCats[$this->getId()] ) && !$blSkipCache ) {
-            return self::$_aArticleCats[$this->getId()];
+        $sArticleId = $this->getId();
+
+        if (!isset(self::$_aArticleCats[$sArticleId]) || $blSkipCache) {
+
+            $sSql = $this->_getCategoryIdsSelect($blActCats);
+            $aCategoryIds = $this->_selectCategoryIds($sSql, 'oxcatnid');
+
+            $sSql = $this->getSqlForPriceCategories();
+            $aPriceCategoryIds = $this->_selectCategoryIds($sSql, 'oxid');
+
+            self::$_aArticleCats[$sArticleId] = array_unique(array_merge($aCategoryIds, $aPriceCategoryIds));
         }
 
-        $sSql = $this->_getCategoryIdsSelect( $blActCats );
-        $aCategoryIds = $this->_selectCategoryIds( $sSql, 'oxcatnid' );
-
-        $sSql = $this->getSqlForPriceCategories();
-        $aPriceCategoryIds = $this->_selectCategoryIds( $sSql, 'oxid' );
-
-        return self::$_aArticleCats[$this->getId()] = array_unique( array_merge( $aCategoryIds, $aPriceCategoryIds ) );
+        return self::$_aArticleCats[$sArticleId];
     }
 
     /**

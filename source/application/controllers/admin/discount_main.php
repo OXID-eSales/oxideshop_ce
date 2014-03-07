@@ -118,14 +118,14 @@ class Discount_Main extends oxAdminDetails
         parent::save();
 
         $sOxId = $this->getEditObjectId();
-        $aParams = oxConfig::getParameter( "editval");
+        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval");
 
-            // shopid
-            $sShopID = oxSession::getVar( "actshop");
+            $sShopID = oxRegistry::getSession()->getVariable( "actshop");
             $aParams['oxdiscount__oxshopid'] = $sShopID;
-        $oAttr = oxNew( "oxdiscount" );
+
+        $oDiscount = oxNew( "oxDiscount" );
         if ( $sOxId != "-1")
-            $oAttr->load( $sOxId );
+            $oDiscount->load( $sOxId );
         else
             $aParams['oxdiscount__oxid'] = null;
 
@@ -135,14 +135,14 @@ class Discount_Main extends oxAdminDetails
 
 
         //$aParams = $oAttr->ConvertNameArray2Idx( $aParams);
-        $oAttr->setLanguage(0);
-        $oAttr->assign( $aParams );
-        $oAttr->setLanguage($this->_iEditLang);
-        $oAttr = oxRegistry::get("oxUtilsFile")->processFiles( $oAttr );
-        $oAttr->save();
+        $oDiscount->setLanguage(0);
+        $oDiscount->assign( $aParams );
+        $oDiscount->setLanguage($this->_iEditLang);
+        $oDiscount = oxRegistry::get("oxUtilsFile")->processFiles( $oDiscount );
+        $oDiscount->save();
 
         // set oxid if inserted
-        $this->setEditObjectId( $oAttr->getId() );
+        $this->setEditObjectId( $oDiscount->getId() );
     }
 
     /**

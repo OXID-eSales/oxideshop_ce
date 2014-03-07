@@ -4,7 +4,7 @@
         <dd>
             <ul class="list services">
                 <li><a href="[{ oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=contact" }]">[{ oxmultilang ident="CONTACT" }]</a></li>
-                [{if $oViewConf->showHelpLink() }]
+                [{if $oViewConf->getHelpPageLink() }]
                     <li><a href="[{ $oViewConf->getHelpPageLink() }]">[{ oxmultilang ident="HELP" }]</a></li>
                 [{/if}]
                 <li><a href="[{ oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=links" }]">[{ oxmultilang ident="LINKS" }]</a></li>

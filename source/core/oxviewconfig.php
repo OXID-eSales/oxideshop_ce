@@ -205,17 +205,6 @@ class oxViewConfig extends oxSuperCfg
     }
 
     /**
-     * Should help link be shown in frontend
-     *
-     * @return boolean
-     */
-    public function showHelpLink()
-    {
-        $blShowHelpLink = (bool)$this->getHelpPageLink();
-        return $blShowHelpLink;
-    }
-
-    /**
      * Returns shop help link
      *
      * @return string

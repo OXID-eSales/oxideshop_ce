@@ -1036,26 +1036,6 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     }
 
     /**
-     * Check if help link should be shown
-     */
-    public function testShowHelpLink()
-    {
-        $oViewConf = new oxViewConfig();
-        $this->assertTrue($oViewConf->showHelpLink());
-    }
-
-    /**
-     * Check if help link should be shown when no CMS valid page is received
-     */
-    public function testShowHelpLinkWithNoHelpCMSAvailable()
-    {
-
-        $oViewConfig = $this->getMock("oxviewconfig", array('_getHelpContentIdents'));
-        $oViewConfig->expects($this->once())->method("_getHelpContentIdents")->will($this->returnValue(array("none")));
-        $this->assertFalse($oViewConfig->showHelpLink());
-    }
-
-    /**
      * oxViewconfig::getActCatId() test case
      *
      * @return null

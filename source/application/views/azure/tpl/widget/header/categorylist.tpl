@@ -56,7 +56,7 @@
     [{if $blShowMore }]
         <li>
             [{assign var="_catMoreUrl" value=$oView->getCatMoreUrl()}]
-            <a href="[{ oxgetseourl ident="`$_catMoreUrl`&amp;cl=alist" }]">[{ oxmultilang ident="MORE" }]</a>
+            <a href="[{oxgetseourl ident="`$_catMoreUrl`&amp;cl=alist" }]">[{oxmultilang ident="MORE" }]</a>
             <ul>
                 [{foreach from=$moreLinks item=link}]
                    [{$link}]

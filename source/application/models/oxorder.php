@@ -2311,10 +2311,10 @@ class oxOrder extends oxBase
     public function getShipmentTrackingUrl()
     {
         $oConfig = oxRegistry::getConfig();
-        if ( $this->_sShipTrackUrl === null ) {
-            $sParcelService = $oConfig->getConfigParam( 'sParcelService' );
+        if ($this->_sShipTrackUrl === null) {
+            $sParcelService = $oConfig->getConfigParam('sParcelService');
             $sTrackingCode  = $this->getTrackCode();
-            if ( $sParcelService && $sTrackingCode ) {
+            if ($sParcelService && $sTrackingCode) {
                 $this->_sShipTrackUrl = str_replace("##ID##", $sTrackingCode, $sParcelService);
             }
         }

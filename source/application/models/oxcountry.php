@@ -110,7 +110,7 @@ class oxCountry extends oxI18n
      */
     public function getVATIdentificationNumberPrefix()
     {
-        return $this->oxcountry__oxisoalpha2->value == 'GR' ? 'EL' : $this->oxcountry__oxisoalpha2->value;
+        return $this->oxcountry__oxvatinprefix->value;
     }
 
 }

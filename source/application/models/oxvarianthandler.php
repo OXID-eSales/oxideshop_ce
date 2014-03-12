@@ -331,7 +331,7 @@ class oxVariantHandler extends oxSuperCfg
             for ( $i = 0; $i < $iVarSelCnt; $i++ ) {
                 $sName = isset( $aNames[$i] ) ? trim($aNames[$i]) : false;
                 if ($sName) {
-                    $sHash = md5($sName );
+                    $sHash = md5( $oVariant->getId() . $sName );
 
                     // filling up filter
                     if ( $blActive ) {

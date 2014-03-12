@@ -256,4 +256,31 @@ class Unit_Views_tagTest extends OxidTestCase
         $this->assertEquals(2, count($oTag->getBreadCrumb()));
     }
 
+    /**
+     * Test get active tag.
+     *
+     * @return null
+     */
+    public function testGetTag()
+    {
+        $oTag = new Tag();
+
+        $this->setRequestParam( 'searchtag', null );
+        $this->assertNull( $oTag->getTag() );
+
+        $this->setRequestParam( 'searchtag', 'sometag' );
+        $this->assertEquals( 'sometag', $oTag->getTag() );
+    }
+
+    /**
+     * Tests tags with special chars
+     */
+    public function testGetTagSpecialChars()
+    {
+        $oTag = new Tag();
+
+        $this->setRequestParam( 'searchtag', 'sometag<">' );
+        $this->assertEquals( 'sometag&lt;&quot;&gt;', $oTag->getTag() );
+    }
+
 }

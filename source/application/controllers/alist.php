@@ -320,7 +320,7 @@ class aList extends oxUBase
     {
         $iLang = oxRegistry::getLang()->getBaseLanguage();
         // store this into session
-        $aFilter = oxConfig::getParameter( 'attrfilter', 1 );
+        $aFilter = oxConfig::getParameter( 'attrfilter', true );
         $sActCat = oxConfig::getParameter( 'cnid' );
 
         if ( !empty( $aFilter ) ) {

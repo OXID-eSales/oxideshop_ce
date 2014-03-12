@@ -3419,75 +3419,62 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
 
     /**
-     * gets attribs string
+     * Gets attributes string
      *
-     * @param string &$sAttribs Attribute selection snippet
+     * @param string &$sAttributeSql Attribute selection snippet
      * @param int    &$iCnt     The number of selected attributes
      *
      * @return null;
      */
-    protected function _getAttribsString(&$sAttribs, &$iCnt)
+    protected function _getAttribsString(&$sAttributeSql, &$iCnt)
     {
-        // we do not use lists here as we dont need this overhead right now
-        $oDb = oxDb::getDb( oxDb::FETCH_MODE_ASSOC );
+        // we do not use lists here as we don't need this overhead right now
+        $oDb = oxDb::getDb();
         $sSelect =  'select oxattrid from oxobject2attribute where oxobject2attribute.oxobjectid='.$oDb->quote( $this->getId() );
-        $sAttribs = '';
-        $blSep = false;
-        $rs = $oDb->select( $sSelect);
-        $iCnt = 0;
-        if ($rs != false && $rs->recordCount() > 0) {
-            while (!$rs->EOF) {
-                if ( $blSep) {
-                    $sAttribs .= ' or ';
-                }
-                $sAttribs .= 't1.oxattrid = '.$oDb->quote($rs->fields['oxattrid']).' ';
-                $blSep = true;
-                $iCnt++;
-                $rs->moveNext();
-            }
+        if ($this->getParentId()) {
+            $sSelect .= ' OR oxobject2attribute.oxobjectid=' . $oDb->quote( $this->getParentId() );
+        }
+        $sAttributeSql = '';
+        $aAttributeIds = $oDb->getCol( $sSelect );
+        if( is_array( $aAttributeIds ) && count($aAttributeIds) ){
+            $aAttributeIds = array_unique($aAttributeIds);
+            $iCnt = count($aAttributeIds );
+            $sAttributeSql .= 't1.oxattrid IN ( '. implode(',', $oDb->quoteArray($aAttributeIds)).') ';
         }
     }
 
     /**
      * Gets similar list.
      *
-     * @param string $sAttribs Attribute selection snippet
+     * @param string $sAttributeSql Attribute selection snippet
      * @param int    $iCnt     Similar list article count
      *
      * @return array
      */
-    protected function _getSimList($sAttribs, $iCnt)
+    protected function _getSimList($sAttributeSql, $iCnt)
     {
-        $myConfig = $this->getConfig();
-        $oDb      = oxDb::getDb( oxDb::FETCH_MODE_ASSOC );
-
         // #523A
-        $iAttrPercent = $myConfig->getConfigParam( 'iAttributesPercent' )/100;
+        $iAttrPercent = $this->getConfig()->getConfigParam( 'iAttributesPercent' )/100;
         // 70% same attributes
         if ( !$iAttrPercent || $iAttrPercent < 0 || $iAttrPercent > 1) {
             $iAttrPercent = 0.70;
         }
-        // #1137V iAttributesPercent = 100 doesnt work
+        // #1137V iAttributesPercent = 100 doesn't work
         $iHitMin = ceil( $iCnt * $iAttrPercent );
 
-        // we do not use lists here as we don't need this overhead right now
-        $aList= array();
-        $sSelect =  "select oxobjectid, count(*) as cnt from oxobject2attribute as t1 where
-                    ( $sAttribs )
-                    and t1.oxobjectid != ".$oDb->quote( $this->oxarticles__oxid->value )."
-                    group by t1.oxobjectid having count(*) >= $iHitMin ";
-
-        $rs = $oDb->selectLimit( $sSelect, 20, 0 );
-        if ($rs != false && $rs->recordCount() > 0) {
-            while (!$rs->EOF) {
-                $oTemp = new stdClass();    // #663
-                $oTemp->cnt = $rs->fields['cnt'];
-                $oTemp->id  = $rs->fields['oxobjectid'];
-                $aList[] = $oTemp;
-                $rs->moveNext();
-            }
+        $aExcludeIds = array();
+        $aExcludeIds[] = $this->getId();
+        if($this->getParentId()) {
+            $aExcludeIds[] = $this->getParentId();
         }
-        return $aList;
+
+        // we do not use lists here as we don't need this overhead right now
+        $sSelect =  "select oxobjectid from oxobject2attribute as t1 where
+                    ( $sAttributeSql )
+                    and t1.oxobjectid NOT IN (" . implode(', ', oxDb::getDb()->quoteArray($aExcludeIds) ) . ")
+                    group by t1.oxobjectid having count(*) >= $iHitMin LIMIT 0, 20";
+
+        return  oxDb::getDb()->getCol( $sSelect );
     }
 
     /**
@@ -3500,27 +3487,12 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      */
     protected function _generateSimListSearchStr($sArticleTable, $aList)
     {
-        $myConfig = $this->getConfig();
         $sFieldList = $this->getSelectFields();
-        $sSearch = "select $sFieldList from $sArticleTable where ".$this->getSqlActiveSnippet()."  and $sArticleTable.oxissearch = 1 and $sArticleTable.oxid in ( ";
-        $blSep = false;
-        $iCnt = 0;
-        $oDb = oxDb::getDb();
-        foreach ( $aList as $oTemp) {
-            if ( $blSep) {
-                $sSearch .= ',';
-            }
-            $sSearch .= $oDb->quote($oTemp->id);
-            $blSep = true;
-            if ( $iCnt >= $myConfig->getConfigParam( 'iNrofSimilarArticles' ) ) {
-                break;
-            }
-            $iCnt++;
-        }
+        $aList = array_slice( $aList, 0, $this->getConfig()->getConfigParam( 'iNrofSimilarArticles' ) );
 
-        //#1741T
-        //$sSearch .= ") and $sArticleTable.oxparentid = '' ";
-        $sSearch .= ') ';
+        $sSearch = "select $sFieldList from $sArticleTable where ".$this->getSqlActiveSnippet()."  and $sArticleTable.oxissearch = 1 and $sArticleTable.oxid in ( ";
+
+        $sSearch .=  implode(',', oxdb::getDb()->quoteArray($aList) ) . ')';
 
         // #524A -- randomizing articles in attribute list
         $sSearch .= ' order by rand() ';

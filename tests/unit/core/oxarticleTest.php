@@ -6358,6 +6358,33 @@ class Unit_Core_oxArticleTest extends OxidTestCase
     }
 
     /**
+     * Test get similar products.
+     *
+     * @return null
+     */
+    public function testGetSimilarProductsForVariant()
+    {
+        $oArticle = new oxArticle();
+        $oArticle->setId('2000_varant');
+        $oArticle->oxarticles__oxparentid = new oxField('2000');
+        $oArticle->oxarticles__oxprice = new oxField(12.2);
+        $oArticle->oxarticles__oxshopid = new oxField(oxConfig::getInstance()->getBaseShopId());
+        $oArticle->oxarticles__oxshopincl = new oxField(oxConfig::getInstance()->getBaseShopId());
+        $oArticle->oxarticles__oxtitle    = new oxField("test");
+        $oArticle->oxarticles__oxtitle_1  = new oxField("testEng");
+        $oArticle->save();
+
+        $oArticle = new oxArticle();
+        $oArticle->load('2000_varant');
+        $oList = $oArticle->getSimilarProducts();
+
+        $iCount = 4;
+            $iCount = 5;
+        $this->assertEquals( $iCount, count($oList) );
+        $oArticle->delete();
+    }
+
+    /**
      * Test get similar products if no attributes exists.
      *
      * @return null

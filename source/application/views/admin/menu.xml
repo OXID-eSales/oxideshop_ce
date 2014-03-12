@@ -16,6 +16,10 @@
                 <TAB id="tbclcountry_main" cl="country_main" />
                 <BTN id="country_new" />
             </SUBMENU>
+            <SUBMENU id="mxstates" cl="state" list="state_list">
+                <TAB id="tbclstate_main" cl="state_main" />
+                <BTN id="state_new" />
+            </SUBMENU>
             <SUBMENU id="mxvendor" cl="vendor" list="vendor_list">
                 <TAB id="tbclvendor_main" cl="vendor_main" />
                 <TAB id="tbclvendor_seo" cl="vendor_seo" />

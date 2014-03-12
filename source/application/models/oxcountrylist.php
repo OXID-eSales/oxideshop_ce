@@ -1,17 +1,14 @@
 <?php
 /**
  * This file is part of OXID eShop Community Edition.
- *
  * OXID eShop Community Edition is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
  * OXID eShop Community Edition is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
  * You should have received a copy of the GNU General Public License
  * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
@@ -50,4 +47,28 @@ class oxCountryList extends oxList
         $sSelect = "SELECT oxid, oxtitle, oxisoalpha2 FROM {$sViewName} WHERE oxactive = '1' ORDER BY oxorder, oxtitle ";
         $this->selectString( $sSelect );
     }
+
+    /**
+     * Loads simple country list
+     *
+     * @return null
+     */
+    public function loadList()
+    {
+        $oBaseObject = $this->getBaseObject();
+
+        $sFieldList = $oBaseObject->getSelectFields();
+        $sViewName  = $oBaseObject->getViewName();
+
+        $sWhere = '';
+        if (!$this->isAdmin()) {
+            $sWhere = $oBaseObject->getSqlActiveSnippet();
+            $sWhere = $sWhere ? " where $sWhere and " : ' where ';
+            $sWhere .= "{$sViewName}.oxtitle != '' ";
+        }
+
+        $sSelect = "select {$sFieldList} from {$sViewName} {$sWhere} order by {$sViewName}.oxtitle";
+        $this->selectString($sSelect);
+    }
+
 }

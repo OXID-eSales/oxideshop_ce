@@ -25,7 +25,7 @@
                 [{ if $edit->oxorder__oxbilladdinfo->value }][{$edit->oxorder__oxbilladdinfo->value }]<br>[{/if}]
                 [{$edit->oxorder__oxbillsal->value|oxmultilangsal}] [{$edit->oxorder__oxbillfname->value }] [{$edit->oxorder__oxbilllname->value }]<br>
                 [{$edit->oxorder__oxbillstreet->value }] [{$edit->oxorder__oxbillstreetnr->value }]<br>
-                [{$edit->oxorder__oxbillstateid->value}]
+                [{$edit->getBillStateTitle() }]
                 [{$edit->oxorder__oxbillzip->value }] [{$edit->oxorder__oxbillcity->value }]<br>
                 [{$edit->oxorder__oxbillcountry->value }]<br>
                 [{if $edit->oxorder__oxbillcompany->value && $edit->oxorder__oxbillustid->value }]
@@ -47,7 +47,7 @@
                     [{ if $edit->oxorder__oxdeladdinfo->value }][{$edit->oxorder__oxdeladdinfo->value }]<br>[{/if}]
                     [{$edit->oxorder__oxdelsal->value|oxmultilangsal }] [{$edit->oxorder__oxdelfname->value }] [{$edit->oxorder__oxdellname->value }]<br>
                     [{$edit->oxorder__oxdelstreet->value }] [{$edit->oxorder__oxdelstreetnr->value }]<br>
-                    [{$edit->oxorder__oxdelstateid->value }]
+                    [{$edit->getDelStateTitle() }]
                     [{$edit->oxorder__oxdelzip->value }] [{$edit->oxorder__oxdelcity->value }]<br>
                     [{$edit->oxorder__oxdelcountry->value }]<br>
                     <br>

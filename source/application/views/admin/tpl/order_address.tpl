@@ -196,7 +196,7 @@
             </select>
             [{ oxinputhelp ident="HELP_GENERAL_COUNTRY" }]
             [{if !$edit->oxorder__oxbillcountryid->value && $edit->oxorder__oxbillcountry->value}]
-               &nbsp;([{$edit->oxorder__oxbillcountry->value}])
+               &nbsp;([{$edit->getBillStateTitle()}])
             [{/if}]
             </td>
         </tr>

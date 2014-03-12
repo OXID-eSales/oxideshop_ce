@@ -19,13 +19,13 @@
               [{ $order->oxorder__oxdelcompany->value }]<br>
               [{ $order->oxorder__oxdelfname->value }] [{ $order->oxorder__oxdellname->value }]<br>
               [{ $order->oxorder__oxdelstreet->value }] [{ $order->oxorder__oxdelstreetnr->value }]<br>
-              [{ $order->oxorder__oxdelstateid->value }]
+              [{ $order->getDelStateTitle() }]
               [{ $order->oxorder__oxdelzip->value }] [{ $order->oxorder__oxdelcity->value }]
             [{else}]
               [{ $order->oxorder__oxbillcompany->value }]<br>
               [{ $order->oxorder__oxbillfname->value }] [{ $order->oxorder__oxbilllname->value }]<br>
               [{ $order->oxorder__oxbillstreet->value }] [{ $order->oxorder__oxbillstreetnr->value }]<br>
-              [{ $order->oxorder__oxbillstateid->value }]
+              [{ $order->getBillStateTitle() }]
               [{ $order->oxorder__oxbillzip->value }] [{ $order->oxorder__oxbillcity->value }]
             [{/if}]
         </p>

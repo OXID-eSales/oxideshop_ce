@@ -488,16 +488,13 @@ class oxDb
      *
      * @param array $aStrArray array of strings to quote
      *
+     * @deprecated since v5.2.0 (2014-03-12); use oxLegacyDb::quoteArray()
+     *
      * @return array
      */
     public function quoteArray( $aStrArray )
     {
-        $oDb = self::getDb();
-
-        foreach ( $aStrArray as $sKey => $sString ) {
-            $aStrArray[$sKey] = $oDb->quote( $sString );
-        }
-        return $aStrArray;
+        return self::getDb()->quoteArray( $aStrArray );
     }
 
     /**

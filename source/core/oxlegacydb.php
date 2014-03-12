@@ -269,11 +269,27 @@ class oxLegacyDb extends oxSuperCfg
     }
 
     /**
+     * Quotes an array.
+     *
+     * @param array $aStrArray array of strings to quote
+     *
+     * @return array
+     */
+    public function quoteArray( $aStrArray )
+    {
+        foreach ( $aStrArray as $sKey => $sString ) {
+            $aStrArray[$sKey] = $this->quote( $sString );
+        }
+
+        return $aStrArray;
+    }
+
+    /**
      * return meta data
      *
      * @param string $sTable Table name
      *
-     * @return array
+     * @return arraytai as
      */
     public function metaColumns( $sTable )
     {

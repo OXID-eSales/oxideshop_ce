@@ -35,7 +35,7 @@ class AllTestsUnit extends PHPUnit_Framework_TestCase
     public static function getTestFileFilter()
     {
         $sTestFileNameEnd = '*[^8]Test.php';
-        if ( OXID_TEST_UTF8 ) {
+        if ( getenv('OXID_TEST_UTF8') ) {
             $sTestFileNameEnd = '*utf8Test.php';
             }
 

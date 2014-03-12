@@ -2557,7 +2557,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $this->assertEquals( $oVar, $oConfig->checkParamSpecialChars( $oVar ) );
 
         // array items comes fixed
-        $this->assertEquals( array( '&amp;&#092;o&lt;x&gt;i&quot;&#039;d' ), $oConfig->checkParamSpecialChars( $aVar ) );
+        $this->assertEquals( array( "&amp;&#092;o&lt;x&gt;i&quot;&#039;d" ), $oConfig->checkParamSpecialChars( $aVar ) );
 
         // string comes fixed
         $this->assertEquals( '&amp;&#092;o&lt;x&gt;i&quot;&#039;d', $oConfig->checkParamSpecialChars( $sVar ) );
@@ -2598,6 +2598,40 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         foreach ( $test as $check ) {
             $this->assertEquals( $check['result'], oxRegistry::getConfig()->checkParamSpecialChars( $check['data'] ) );
         }
+    }
+
+    /**
+     * @return array
+     */
+    public function providerCheckParamSpecialChars_newLineExist_newLineChanged()
+    {
+        return array(
+            array( "\r", '&#13;' ),
+            array( "\n", '&#10;' ),
+            array( "\r\n", '&#13;&#10;' ),
+            array( "\n\r", '&#10;&#13;' ),
+        );
+    }
+
+    /**
+     * @dataProvider providerCheckParamSpecialChars_newLineExist_newLineChanged
+     */
+    public function testCheckParamSpecialChars_newLineExist_newLineChanged( $sNewLineCharacter, $sEscapedNewLineCharacter )
+    {
+        $oVar = new stdClass();
+        $oVar->xxx = "text". $sNewLineCharacter;
+        $aVar = array( "text". $sNewLineCharacter );
+        $sVar = "text". $sNewLineCharacter;
+
+        $oConfig = oxRegistry::getConfig();
+        // object must came back the same
+        $this->assertEquals( $oVar, $oConfig->checkParamSpecialChars( $oVar ) );
+
+        // array items comes fixed
+        $this->assertEquals( array( "text". $sEscapedNewLineCharacter ), $oConfig->checkParamSpecialChars( $aVar ) );
+
+        // string comes fixed
+        $this->assertEquals( "text". $sEscapedNewLineCharacter, $oConfig->checkParamSpecialChars( $sVar ) );
     }
 
 

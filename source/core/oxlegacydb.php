@@ -289,7 +289,7 @@ class oxLegacyDb extends oxSuperCfg
      *
      * @param string $sTable Table name
      *
-     * @return arraytai as
+     * @return array
      */
     public function metaColumns( $sTable )
     {

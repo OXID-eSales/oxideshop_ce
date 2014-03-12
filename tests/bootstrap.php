@@ -24,15 +24,28 @@
  * @copyright (c) OXID eSales AG 2003-#OXID_VERSION_YEAR#
  * @version   SVN: $Id: $
  */
-chdir(dirname(__FILE__));
+
+$sTestType = substr(getcwd(), strlen(__DIR__)+1);
+
+chdir(__DIR__);
+
+if ($sTestType && strpos($sTestType, '/')) {
+    $sTestType = substr($sTestType, 0, strpos($sTestType, '/'));
+}
+
+if (empty($sTestType)) {
+    $sTestType = strtolower(substr($_SERVER['argv'][4], 8));
+}
 
 require_once "bootstrap_config.php";
 
-// include bootstrap based on tests running
-$sTestType = getenv('TEST_TYPE') ? getenv('TEST_TYPE') : $sTestType;
-
-if (file_exists("bootstrap_$sTestType.php")) {
-    include_once "bootstrap_$sTestType.php";
-} else {
-    include_once "bootstrap_unit.php";
+switch($sTestType) {
+    case 'acceptance':
+    case 'acceptanceEfire':
+    case 'acceptanceInternational':
+        include_once "bootstrap_selenium.php";
+        break;
+    default:
+        include_once "bootstrap_unit.php";
+        break;
 }

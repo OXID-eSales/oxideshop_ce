@@ -28,8 +28,6 @@
 $sShopPath = realpath( '../source/' ).'/';
 // eShop edition
 $sShopEdition = 'CE';
-// Tests type - unit, integration, acceptance
-$sTestType = 'unit';
 // eShop encoding
 $blUtf8 = true;
 // Whether to run subshop tests

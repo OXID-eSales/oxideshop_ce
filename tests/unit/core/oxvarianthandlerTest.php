@@ -272,21 +272,18 @@ class Unit_Core_oxvarianthandlerTest extends OxidTestCase
         $oVariant3->setId( "test3" );
         $oVariant3->oxarticles__oxvarselect = new oxField( "a" );
 
-        $sHash1 = md5( $oVariant1->getId().'a' );
-        $sHash2 = md5( $oVariant1->getId().'b' );
+        $aArray[$oVariant1->getId()][] = array( 'name' => 'a', 'disabled' => null, 'active' => false, 'hash' => md5( 'a' ) );
+        $aArray[$oVariant1->getId()][] = array( 'name' => 'b', 'disabled' => null, 'active' => false, 'hash' => md5( 'b' ) );
 
-        $aArray[$oVariant1->getId()][] = array( 'name' => 'a', 'disabled' => null, 'active' => false, 'hash' => $sHash1 );
-        $aArray[$oVariant1->getId()][] = array( 'name' => 'b', 'disabled' => null, 'active' => false, 'hash' => $sHash2 );
+        $aArray[$oVariant2->getId()][] = array( 'name' => 'a', 'disabled' => null, 'active' => false, 'hash' => md5( 'a' ) );
+        $aArray[$oVariant2->getId()][] = array( 'name' => 'b', 'disabled' => null, 'active' => false, 'hash' => md5( 'b' ) );
 
-        $aArray[$oVariant2->getId()][] = array( 'name' => 'a', 'disabled' => null, 'active' => false, 'hash' => md5( $oVariant2->getId().'a' ) );
-        $aArray[$oVariant2->getId()][] = array( 'name' => 'b', 'disabled' => null, 'active' => false, 'hash' => md5( $oVariant2->getId().'b' ) );
-
-        $aArray[$oVariant3->getId()][] = array( 'name' => 'a', 'disabled' => null, 'active' => false, 'hash' => md5( $oVariant3->getId().'a' ) );
+        $aArray[$oVariant3->getId()][] = array( 'name' => 'a', 'disabled' => null, 'active' => false, 'hash' => md5( 'a' ) );
 
         // checking
         $oHandler = new oxVariantHandlerForOxvarianthandlerTest();
         $this->assertEquals( $aArray, $oHandler->fillVariantSelections( array( $oVariant1, $oVariant2, $oVariant3 ), 2, $aFilter, "test1" ) );
-        $this->assertEquals( array( $sHash1, $sHash2 ), $aFilter, "Filter must contain only hashes of selected variant" );
+        $this->assertEquals( array("0cc175b9c0f1b6a831c399e269772661", "92eb5ffee6ae2fec3ad71c777531578f"), $aFilter );
     }
 
 

@@ -548,12 +548,4 @@ class Unit_Core_oxvarianthandlerTest extends OxidTestCase
             $oHandler->buildVariantSelections( "testvarname", array('xdxvarid'=>'oVariant'), '$aFilter', '$sActVariantId', 2 )
         );
     }
-
-    public function testBuildVariantSelectionsSameVariantTitles()
-    {
-        $aVariantSelections = new oxVariantHandler();
-
-        $aVariantSelections->buildVariantSelections( "Farbe", $oVariants, null, null, 1 );
-
-    }
 }

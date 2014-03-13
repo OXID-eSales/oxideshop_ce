@@ -165,6 +165,7 @@ function ThisDate( sID)
                                 [{ oxmultilang ident="ORDER_MAIN_SHIPPING_INFORMATION" }]
                             </td>
                         </tr>
+                        [{block name="admin_order_main_form_tracking"}]
                         <tr>
                             <td class="edittext">
                             [{ oxmultilang ident="ORDER_MAIN_TRACKCODE" }]&nbsp;&nbsp;
@@ -177,6 +178,7 @@ function ThisDate( sID)
                             [{ /if }]
                             </td>
                         </tr>
+                        [{/block}]
                         <tr >
                             <td class="edittext">
                             [{ oxmultilang ident="GENERAL_DELIVERYCOST" }]

@@ -34,6 +34,7 @@
                                 <strong>[{ oxmultilang ident="ORDER_NUMBER" suffix="COLON" }]</strong>
                                 <span id="accOrderNo_[{$order->oxorder__oxordernr->value}]">[{ $order->oxorder__oxordernr->value }]</span>
                             </dd>
+                            [{block name="account_order_history_orderitem_tracking"}]
                             [{if $order->getShipmentTrackingUrl()}]
                                 <dd>
                                     <strong>[{ oxmultilang ident="TRACKING_ID" suffix="COLON" }]</strong>
@@ -42,6 +43,7 @@
                                     </span>
                                 </dd>
                             [{/if}]
+                            [{/block}]
                             <dd>
                                 <strong>[{ oxmultilang ident="SHIPMENT_TO" suffix="COLON" }]</strong>
                                 <span id="accOrderName_[{$order->oxorder__oxordernr->value}]">

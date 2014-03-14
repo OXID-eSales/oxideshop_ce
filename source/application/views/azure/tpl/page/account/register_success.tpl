@@ -1,11 +1,11 @@
 [{capture append="oxidBlock_content"}]
     [{assign var="template_title" value="MESSAGE_WELCOME_REGISTERED_USER"|oxmultilangassign }]
     <h1 id="openAccHeader" class="pageHead">[{ oxmultilang ident="MESSAGE_WELCOME_REGISTERED_USER" }]</h1>
-    <div class="box info">
+    <div class="info">
       [{if $oView->getRegistrationStatus() == 1}]
-        [{ oxmultilang ident="MESSAGE_CONFIRMING_REGISTRATION" }]<br><br>[{ oxmultilang ident="THANK_YOU" SUFFIC="." }]
+        [{ oxmultilang ident="MESSAGE_CONFIRMING_REGISTRATION" }]<br><br>[{ oxmultilang ident="THANK_YOU" suffix="." }]
       [{elseif $oView->getRegistrationStatus() == 2}]
-        [{ oxmultilang ident="MESSAGE_SENT_CONFIRMATION_EMAIL" }]<br><br>[{ oxmultilang ident="THANK_YOU" SUFFIC="." }]
+        [{ oxmultilang ident="MESSAGE_SENT_CONFIRMATION_EMAIL" }]<br><br>[{ oxmultilang ident="THANK_YOU" suffix="." }]
       [{/if}]
 
       [{if $oView->getRegistrationError() == 4}]

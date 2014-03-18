@@ -16,7 +16,7 @@
             [{/if}]
 
             [{ if $iError == -1}][{ oxmultilang ident="AUCTMASTER_DO_UNKNOWNERROR" }][{/if}]
-            [{ if $iError == 1 }][{ oxmultilang ident="AUCTMASTER_DO_EXPORTFILE1" }] ([{$sOutputFile}]) [{ oxmultilang ident="AUCTMASTER_DO_EXPORTFILE2" }][{/if}]
+            [{ if $iError == 1 }][{ assign var='oxOutputFile' value=$sOutputFile }][{ oxmultilang ident="AUCTMASTER_DO_EXPORTFILE1" args=$oxOutputFile}][{/if}]
         [{/if}]
     [{/if}]
 [{else}]

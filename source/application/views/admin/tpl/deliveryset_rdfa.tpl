@@ -25,7 +25,7 @@
 
 
 <strong>[{ oxmultilang ident="DELIVERY_RDFA_ASIGN_DELIVERY" }]</strong><br>
-[{ oxmultilang ident="DELIVERY_RDFA_ADVICE_START" }] <b>[{$edit->oxdeliveryset__oxtitle->value}]</b>  [{ oxmultilang ident="DELIVERY_RDFA_ADVICE_END" }].
+    [{ assign var='oxDeliverySet' value=$edit->oxpayments__oxdesc->value }][{ oxmultilang ident="DELIVERY_RDFA_ADVICE_START" args=$oxDeliverySet }].
 <table cellspacing="0" cellpadding="0" border="0" width="98%">
 <tr>
     <td valign="top" class="edittext">

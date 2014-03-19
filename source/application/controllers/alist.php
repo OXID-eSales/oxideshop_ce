@@ -344,8 +344,8 @@ class aList extends oxUBase
     {
         $iLang = oxRegistry::getLang()->getBaseLanguage();
         // store this into session
-        $aFilter = oxConfig::getParameter('attrfilter', 1);
-        $sActCat = oxConfig::getParameter('cnid');
+        $aFilter = oxRegistry::getConfig()->getRequestParameter('attrfilter', true);
+        $sActCat = oxRegistry::getConfig()->getRequestParameter('cnid');
 
         if (!empty($aFilter)) {
             $aSessionFilter = oxSession::getVar('session_attrfilter');

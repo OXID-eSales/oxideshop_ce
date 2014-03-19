@@ -347,7 +347,7 @@ class oxLocator extends oxSuperCfg
             $sAddSearch = '';
             // setting parameters when seo is Off
             if (!$myUtils->seoIsActive()) {
-                $sAddSearch = 'searchtag=' . rawurlencode(oxConfig::getParameter('searchtag', 1));
+                $sAddSearch  = 'searchtag=' . rawurlencode(oxRegistry::getConfig()->getRequestParameter('searchtag', true));
                 $sAddSearch .= '&amp;listtype=tag';
             }
 

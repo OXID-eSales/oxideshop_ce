@@ -1639,7 +1639,39 @@ class oxUBase extends oxView
     }
 
     /**
-     * get link of current view
+     * Get base link of current view
+     *
+     * @param int $iLang requested language
+     *
+     * @return string
+     */
+    public function getBaseLink( $iLang = null )
+    {
+        if ( !isset( $iLang ) ) {
+            $iLang = oxRegistry::getLang()->getBaseLanguage();
+        }
+
+        $oConfig = $this->getConfig();
+
+        if ( oxRegistry::getUtils()->seoIsActive() ) {
+            if ( $oDisplayObj = $this->_getSubject( $iLang ) ) {
+                $sUrl = $oDisplayObj->getLink( $iLang );
+            } else {
+                $oEncoder = oxRegistry::get("oxSeoEncoder");
+                $sUrl = $oEncoder->getStaticUrl( $oConfig->getShopHomeURL( $iLang ) . $this->_getSeoRequestParams(), $iLang );
+            }
+        }
+
+        if ( !$sUrl ) {
+            $sUrl = oxRegistry::get("oxUtilsUrl")->processUrl( $oConfig->getShopCurrentURL( $iLang ) . $this->_getRequestParams(), true, null, $iLang);
+        }
+
+        return $sUrl;
+    }
+
+
+    /**
+     * Get link of current view. In url its include also page number if it is list page
      *
      * @param int $iLang requested language
      *
@@ -1647,36 +1679,11 @@ class oxUBase extends oxView
      */
     public function getLink( $iLang = null )
     {
-        if ( !isset( $iLang ) ) {
-            $iLang = oxRegistry::getLang()->getBaseLanguage();
-        }
-
-        $oDisplayObj = null;
-        $blTrySeo = false;
-        if ( oxRegistry::getUtils()->seoIsActive() ) {
-            $blTrySeo = true;
-            $oDisplayObj = $this->_getSubject( $iLang );
-        }
-        $iActPageNr = $this->getActPage();
-
-        if ( $oDisplayObj ) {
-            return $this->_addPageNrParam( $oDisplayObj->getLink( $iLang ), $iActPageNr, $iLang );
-        }
-
-        $myConfig = $this->getConfig();
-
-        if ( $blTrySeo ) {
-            $oEncoder = oxRegistry::get("oxSeoEncoder");
-            if ( ( $sSeoUrl = $oEncoder->getStaticUrl( $myConfig->getShopHomeURL( $iLang ) . $this->_getSeoRequestParams(), $iLang ) ) ) {
-                return $this->_addPageNrParam( $sSeoUrl, $iActPageNr, $iLang );
-            }
-        }
-
-        $sUrl = oxRegistry::get("oxUtilsUrl")->processUrl( $myConfig->getShopCurrentURL( $iLang ) . $this->_getRequestParams(), true, null, $iLang);
-
-        // fallback to old non seo url
-        return $this->_addPageNrParam( $sUrl, $iActPageNr, $iLang );
+        return $this->_addPageNrParam( $this->getBaseLink( $iLang ), $this->getActPage() );
     }
+
+
+
 
     /**
      * Returns view object canonical url
@@ -2274,6 +2281,7 @@ class oxUBase extends oxView
             $this->_iActPage = ( int ) $this->getConfig()->getRequestParameter( 'pgNr' );
             $this->_iActPage = ( $this->_iActPage < 0 ) ? 0 : $this->_iActPage;
         }
+
         return $this->_iActPage;
     }
 

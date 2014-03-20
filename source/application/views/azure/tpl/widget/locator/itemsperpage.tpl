@@ -15,7 +15,7 @@
     </p>
     <ul class="drop FXgradGreyLight shadow">
         [{foreach from=$oViewConf->getNrOfCatArticles() item=iItemsPerPage}]
-            <li><a href="[{ $oView->getLink()|oxaddparams:"ldtype=$_listType&amp;_artperpage=$iItemsPerPage&amp;pgNr=0&amp;$_additionalParams"}]" rel="nofollow" [{if $oViewConf->getArtPerPageCount() == $iItemsPerPage }] class="selected"[{/if}]>[{$iItemsPerPage}]</a></li>
+            <li><a href="[{$oView->getBaseLink()|oxaddparams:"ldtype=$_listType&amp;_artperpage=$iItemsPerPage&amp;pgNr=0&amp;$_additionalParams"}]" rel="nofollow" [{if $oViewConf->getArtPerPageCount() == $iItemsPerPage }] class="selected"[{/if}]>[{$iItemsPerPage}]</a></li>
         [{/foreach}]
     </ul>
 </div>

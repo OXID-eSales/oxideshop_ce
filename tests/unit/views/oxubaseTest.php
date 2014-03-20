@@ -59,9 +59,9 @@ class testOxViewComponent extends oxUBase
 
 
 /**
- * Testing oxvendorlist class
+ * Testing oxUBase class
  */
-class Unit_Views_oxubaseTest extends OxidTestCase
+class Unit_Views_oxUBaseTest extends OxidTestCase
 {
     protected $_sRequestMethod = null;
     protected $_sRequestUri    = null;
@@ -75,13 +75,13 @@ class Unit_Views_oxubaseTest extends OxidTestCase
     {
         testOxViewComponent::resetComponentNames();
 
-        // adding article to recommendlist
+        // adding article to recommendList
         $sQ = 'replace into oxrecommlists ( oxid, oxuserid, oxtitle, oxdesc, oxshopid ) values ( "testlist", "oxdefaultadmin", "oxtest", "oxtest", "'.oxConfig::getInstance()->getShopId().'" ) ';
         oxDb::getDB()->Execute( $sQ );
 
         parent::setUp();
 
-        // backuping
+        // backup
         $this->_sRequestMethod = $_SERVER["REQUEST_METHOD"];
         $this->_sRequestUri    = $_SERVER['REQUEST_URI'];
     }
@@ -124,7 +124,7 @@ class Unit_Views_oxubaseTest extends OxidTestCase
         $this->setConfigParam( 'aUserComponentNames', array( $sCmpName => 1 ) );
 
         $aComponentNames = array(
-                                 'oxcmp_user'       => 1, // 0 means dont init if cached
+                                 'oxcmp_user'       => 1, // 0 means don't init if cached
                                  'oxcmp_lang'       => 0,
                                  'oxcmp_cur'        => 1,
                                  'oxcmp_shop'       => 1,
@@ -139,8 +139,7 @@ class Unit_Views_oxubaseTest extends OxidTestCase
     }
 
     /**
-     * oxUbase::isActive() test case
-     * @return
+     * oxUBase::isActive() test case
      */
     public function testIsActive()
     {
@@ -168,9 +167,9 @@ class Unit_Views_oxubaseTest extends OxidTestCase
 
     public function testSetGetManufacturerTree()
     {
-        $oUbase = new oxUBase();
-        $oUbase->setManufacturerTree( 'oManufacturerTree' );
-        $this->assertEquals( 'oManufacturerTree', $oUbase->getManufacturerTree() );
+        $oUBase = new oxUBase();
+        $oUBase->setManufacturerTree( 'oManufacturerTree' );
+        $this->assertEquals( 'oManufacturerTree', $oUBase->getManufacturerTree() );
     }
 
     public function testGetActSearch()
@@ -178,15 +177,15 @@ class Unit_Views_oxubaseTest extends OxidTestCase
         $oSearch = new stdClass();
         $oSearch->link = oxConfig::getInstance()->getShopHomeURL()."cl=search";
 
-        $oUbase = new oxUBase();
-        $this->assertEquals( $oSearch, $oUbase->getActSearch() );
+        $oUBase = new oxUBase();
+        $this->assertEquals( $oSearch, $oUBase->getActSearch() );
     }
 
     public function testSetGetActManufacturer()
     {
-        $oUbase = new oxUBase();
-        $oUbase->setActManufacturer( 'oActManufacturer' );
-        $this->assertEquals( 'oActManufacturer', $oUbase->getActManufacturer() );
+        $oUBase = new oxUBase();
+        $oUBase->setActManufacturer( 'oActManufacturer' );
+        $this->assertEquals( 'oActManufacturer', $oUBase->getActManufacturer() );
     }
 
     public function testGetActTagSeo()
@@ -201,8 +200,8 @@ class Unit_Views_oxubaseTest extends OxidTestCase
         $oTag->sTag = $sTag;
         $oTag->link = oxConfig::getInstance()->getShopUrl(). "tag/{$sTag}/";
 
-        $oUbase = new oxUBase();
-        $this->assertEquals( $oTag, $oUbase->getActTag() );
+        $oUBase = new oxUBase();
+        $this->assertEquals( $oTag, $oUBase->getActTag() );
     }
 
     public function testGetActTag()
@@ -214,32 +213,32 @@ class Unit_Views_oxubaseTest extends OxidTestCase
         $oTag->sTag = 'someTag';
         $oTag->link = oxConfig::getInstance()->getShopHomeURL(). "cl=tag&amp;searchtag=someTag";
 
-        $oUbase = new oxUBase();
-        $this->assertEquals( $oTag, $oUbase->getActTag() );
+        $oUBase = new oxUBase();
+        $this->assertEquals( $oTag, $oUBase->getActTag() );
     }
 
     public function testSetGetViewProduct()
     {
-        $oUbase = new oxUBase();
-        $oUbase->setViewProduct( 'oProduct' );
-        $this->assertNull( $oUbase->getViewProduct() );
+        $oUBase = new oxUBase();
+        $oUBase->setViewProduct( 'oProduct' );
+        $this->assertNull( $oUBase->getViewProduct() );
     }
 
     public function testGetViewProductList()
     {
-        $oUbase = $this->getProxyClass( 'oxUBase' );
-        $oUbase->setNonPublicVar( '_aArticleList', 'aArticleList' );
-        $this->assertEquals( 'aArticleList', $oUbase->getViewProductList() );
+        $oUBase = $this->getProxyClass( 'oxUBase' );
+        $oUBase->setNonPublicVar( '_aArticleList', 'aArticleList' );
+        $this->assertEquals( 'aArticleList', $oUBase->getViewProductList() );
     }
 
     public function testGetActManufacturerRoot()
     {
         $this->setRequestParam( 'mnid', 'root' );
 
-        $oUbase = new oxUBase();
+        $oUBase = new oxUBase();
         $oM = new oxManufacturer();
         $oM->load('root');
-        $this->assertEquals( $oM, $oUbase->getActManufacturer() );
+        $this->assertEquals( $oM, $oUBase->getActManufacturer() );
     }
 
     public function testGetActManufacturer()
@@ -247,8 +246,8 @@ class Unit_Views_oxubaseTest extends OxidTestCase
             $sId = 'fe07958b49de225bd1dbc7594fb9a6b0';
         $this->setRequestParam( 'mnid', $sId );
 
-        $oUbase = new oxUBase();
-        $oMan = $oUbase->getActManufacturer();
+        $oUBase = new oxUBase();
+        $oMan = $oUBase->getActManufacturer();
         $this->assertTrue( $oMan !== false );
         $this->assertEquals( $sId, $oMan->getId() );
     }
@@ -257,10 +256,10 @@ class Unit_Views_oxubaseTest extends OxidTestCase
     {
         $this->setRequestParam( 'cnid', 'v_root' );
 
-        $oUbase = new oxUBase();
+        $oUBase = new oxUBase();
         $oV = new oxVendor();
         $oV->load('root');
-        $this->assertEquals( $oV, $oUbase->getActVendor() );
+        $this->assertEquals( $oV, $oUBase->getActVendor() );
     }
 
     public function testGetActVendor__()
@@ -268,48 +267,48 @@ class Unit_Views_oxubaseTest extends OxidTestCase
             $sId = 'v_68342e2955d7401e6.18967838';
         $this->setRequestParam( 'cnid', $sId );
 
-        $oUbase = new oxUBase();
-        $oVnd = $oUbase->getActVendor();
+        $oUBase = new oxUBase();
+        $oVnd = $oUBase->getActVendor();
         $this->assertTrue( $oVnd !== false );
         $this->assertEquals( str_replace( 'v_', '', $sId ), $oVnd->getId() );
     }
 
     public function testSetGetActVendor()
     {
-        $oUbase = new oxUBase();
-        $oUbase->setActVendor( 'oActVendor' );
-        $this->assertEquals( 'oActVendor', $oUbase->getActVendor() );
+        $oUBase = new oxUBase();
+        $oUBase->setActVendor( 'oActVendor' );
+        $this->assertEquals( 'oActVendor', $oUBase->getActVendor() );
     }
 
     public function testSetGetCategoryTree()
     {
-        $oUbase = new oxUBase();
-        $oUbase->setCategoryTree( 'oCategoryTree' );
-        $this->assertEquals( 'oCategoryTree', $oUbase->getCategoryTree() );
+        $oUBase = new oxUBase();
+        $oUBase->setCategoryTree( 'oCategoryTree' );
+        $this->assertEquals( 'oCategoryTree', $oUBase->getCategoryTree() );
     }
 
     public function testGetCatTreePath()
     {
-        $oUbase = $this->getProxyClass( 'oxubase' );
-        $oUbase->setNonPublicVar( '_sCatTreePath', 'scattreepath' );
+        $oUBase = $this->getProxyClass( 'oxubase' );
+        $oUBase->setNonPublicVar( '_sCatTreePath', 'scattreepath' );
 
-        $this->assertEquals( 'scattreepath', $oUbase->getCatTreePath() );
+        $this->assertEquals( 'scattreepath', $oUBase->getCatTreePath() );
     }
 
     public function testGetManufacturerId()
     {
         // active manufacturer is not set
-        $oUbase = $this->getMock( 'oxubase', array( 'getActManufacturer' ) );
-        $oUbase->expects( $this->once() )->method( 'getActManufacturer')->will( $this->returnValue( null ) );
-        $this->assertFalse( $oUbase->getManufacturerId() );
+        $oUBase = $this->getMock( 'oxubase', array( 'getActManufacturer' ) );
+        $oUBase->expects( $this->once() )->method( 'getActManufacturer')->will( $this->returnValue( null ) );
+        $this->assertFalse( $oUBase->getManufacturerId() );
 
         // active manufacturer was set
         $oManufacturer = $this->getMock( 'oxmanufacturer', array( 'getId' ) );
         $oManufacturer->expects( $this->once() )->method( 'getId')->will( $this->returnValue( 'someid' ) );
 
-        $oUbase = $this->getMock( 'oxubase', array( 'getActManufacturer' ) );
-        $oUbase->expects( $this->once() )->method( 'getActManufacturer')->will( $this->returnValue( $oManufacturer ) );
-        $this->assertEquals( 'someid', $oUbase->getManufacturerId() );
+        $oUBase = $this->getMock( 'oxubase', array( 'getActManufacturer' ) );
+        $oUBase->expects( $this->once() )->method( 'getActManufacturer')->will( $this->returnValue( $oManufacturer ) );
+        $this->assertEquals( 'someid', $oUBase->getManufacturerId() );
     }
 
     public function testGetSetRootManufacturer()
@@ -404,8 +403,8 @@ class Unit_Views_oxubaseTest extends OxidTestCase
     }
 
     /*
-     * Checking if method does not removes dublicated words if meta keywords
-     * are loaded from oxcontent table by ident (M:844)
+     * Checking if method does not removes duplicated words if meta keywords
+     * are loaded from oxContent table by ident (M:844)
      */
     public function testGetMetaKeywordsDoesNotRemovesDublicatedWords()
     {
@@ -428,7 +427,6 @@ class Unit_Views_oxubaseTest extends OxidTestCase
      */
     public function testInitComponents()
     {
-        $myConfig = oxConfig::getInstance();
         $oView = $this->getProxyClass('oxubase');
         $oView->setNonPublicVar( '_aComponentNames', array( "oxcmp_lang" => false ) );
         $oView->init();
@@ -484,8 +482,6 @@ class Unit_Views_oxubaseTest extends OxidTestCase
      */
     public function testPrepareSortColumnsSettingViewAndSessionData()
     {
-        $myConfig  = oxConfig::getInstance();
-
         $this->setRequestParam( 'cnid', 'xxx' );
         $this->setConfigParam( 'aSortCols', array('oxid', 'oxprice') );
 
@@ -578,7 +574,7 @@ class Unit_Views_oxubaseTest extends OxidTestCase
     }
 
     /*
-     * Test _setNrOfArtPerPage() for calucating uses value setted in session
+     * Test _setNrOfArtPerPage() for calculating uses value set in session
      */
     public function testSetNrOfArtPerPageFromSession()
     {
@@ -725,7 +721,7 @@ class Unit_Views_oxubaseTest extends OxidTestCase
     }
 
     /*
-     * Test prepearing meta description - stripping tags
+     * Test preparing meta description - stripping tags
      */
     public function testPrepareMetaDescriptionStripTags()
     {
@@ -738,7 +734,7 @@ class Unit_Views_oxubaseTest extends OxidTestCase
     }
 
     /*
-     * Test prepearing meta description - truncating text
+     * Test preparing meta description - truncating text
      */
     public function testPrepareMetaDescriptionWithLength()
     {
@@ -751,7 +747,7 @@ class Unit_Views_oxubaseTest extends OxidTestCase
     }
 
     /*
-     * Test prepearing meta description - removing spec. chars
+     * Test preparing meta description - removing spec. chars
      */
     public function testPrepareMetaDescriptionRemovesSpecChars()
     {
@@ -764,7 +760,7 @@ class Unit_Views_oxubaseTest extends OxidTestCase
     }
 
     /*
-     * Test prepearing meta description - removing spec. chars skips dots and commas
+     * Test preparing meta description - removing spec. chars skips dots and commas
      * (M:844)
      */
     public function testPrepareMetaDescriptionDoesNotRemovesDotsAndCommas()
@@ -778,9 +774,9 @@ class Unit_Views_oxubaseTest extends OxidTestCase
     }
 
     /*
-     * Test prepearing meta description - removing dublicates
+     * Test preparing meta description - removing duplicates
      */
-    public function testPrepareMetaDescriptionRemovesDublicates()
+    public function testPrepareMetaDescriptionRemovesDuplicates()
     {
         $sDesc = "aa bb aa cc aa";
 
@@ -791,9 +787,9 @@ class Unit_Views_oxubaseTest extends OxidTestCase
     }
 
     /*
-     * Test prepearing meta description - not removing dublicates
+     * Test preparing meta description - not removing duplicates
      */
-    public function testPrepareMetaDescriptionNotRemovesDublicates()
+    public function testPrepareMetaDescriptionNotRemovesDuplicates()
     {
         $sDesc = "aa bb aa cc aa";
 
@@ -829,7 +825,7 @@ class Unit_Views_oxubaseTest extends OxidTestCase
     }
 
     /*
-     * Test prepare meta keywords - removing dublicated words
+     * Test prepare meta keywords - removing duplicated words
      */
     public function testPrepareMetaKeywordsRemovesDefinedStrings()
     {
@@ -845,7 +841,7 @@ class Unit_Views_oxubaseTest extends OxidTestCase
     }
 
     /*
-     * Test prepearing meta keywords - removing dublicated words and lowercase words
+     * Test preparing meta keywords - removing duplicated words and lowercase words
      * (M:844)
      */
     public function testPrepareMetaKeywordsRemovesDotsAndCommas()
@@ -858,8 +854,8 @@ class Unit_Views_oxubaseTest extends OxidTestCase
         $this->assertEquals( "lady, gaga, pokerface", $sResult);
     }
         /*
-     * Test prepearing meta keywords - removing spec. chars skips dots and commas
-     * and dublicated words
+     * Test preparing meta keywords - removing spec. chars skips dots and commas
+     * and duplicated words
      * (M:844)
      */
     public function testPrepareMetaKeywordsDoesNotRemovesDotsAndCommas()
@@ -873,7 +869,7 @@ class Unit_Views_oxubaseTest extends OxidTestCase
     }
 
     /*
-     * Test removing dublicated words from string
+     * Test removing duplicated words from string
      */
     public function testsRemoveDuplicatedWords()
     {
@@ -888,7 +884,7 @@ class Unit_Views_oxubaseTest extends OxidTestCase
     }
 
     /*
-     * Test removing dublicated words from array
+     * Test removing duplicated words from array
      */
     public function testsRemoveDuplicatedWordsFromArray()
     {
@@ -983,7 +979,7 @@ class Unit_Views_oxubaseTest extends OxidTestCase
         $this->assertEquals( 0, $oView->showSearch() );
     }
 
-    public function testgetTitleSuffix()
+    public function testGetTitleSuffix()
     {
         $oShop = new oxShop();
         $oShop->oxshops__oxtitlesuffix = $this->getMock( 'oxField', array( '__get' ) );
@@ -998,7 +994,7 @@ class Unit_Views_oxubaseTest extends OxidTestCase
     }
 
 
-    public function testgetTitlePrefix()
+    public function testGetTitlePrefix()
     {
         $oShop = new oxShop();
         $oShop->oxshops__oxtitleprefix = $this->getMock( 'oxField', array( '__get' ) );
@@ -1306,7 +1302,7 @@ class Unit_Views_oxubaseTest extends OxidTestCase
     }
 
     /*
-     * Testing active lang abbervation getter when lang loading disabled in config
+     * Testing active lang abbreviation getter when lang loading disabled in config
      */
     public function testGetActiveLangAbbrWhenDisabledInConfig()
     {
@@ -1454,12 +1450,12 @@ class Unit_Views_oxubaseTest extends OxidTestCase
 
         oxTestModules::addFunction( "oxUtils", "redirect", "{ \$aArgs = func_get_args(); throw new exception( \$aArgs[0] ); }" );
 
-        $oUbase = $this->getMock( 'oxubase', array( '_canRedirect', 'isAdmin' ) );
-        $oUbase->expects( $this->any() )->method( '_canRedirect' )->will( $this->returnValue( true ) );
-        $oUbase->expects( $this->any() )->method( 'isAdmin' )->will( $this->returnValue( false ) );
+        $oUBase = $this->getMock( 'oxubase', array( '_canRedirect', 'isAdmin' ) );
+        $oUBase->expects( $this->any() )->method( '_canRedirect' )->will( $this->returnValue( true ) );
+        $oUBase->expects( $this->any() )->method( 'isAdmin' )->will( $this->returnValue( false ) );
 
         try {
-            $oUbase->UNITprocessRequest();
+            $oUBase->UNITprocessRequest();
         } catch ( Exception $oEx ) {
             $this->assertEquals( oxConfig::getInstance()->getShopURL() . 'mein-wunschzettel/', $oEx->getMessage(), 'error executing "testProcessRequest" test' );
             return;
@@ -1482,15 +1478,15 @@ class Unit_Views_oxubaseTest extends OxidTestCase
 
         oxTestModules::addFunction( "oxUtils", "redirect", "{ \$aArgs = func_get_args(); throw new exception( \$aArgs[0] ); }" );
 
-        $oUbase = $this->getMock( 'oxubase', array( '_canRedirect', 'getLink', 'isAdmin', '_forceNoIndex' ) );
-        $oUbase->expects( $this->any() )->method( '_canRedirect' )->will( $this->returnValue( false ) );
-        $oUbase->expects( $this->any() )->method( 'isAdmin' )->will( $this->returnValue( false ) );
-        $oUbase->expects( $this->once() )->method( '_forceNoIndex' );
+        $oUBase = $this->getMock( 'oxubase', array( '_canRedirect', 'getLink', 'isAdmin', '_forceNoIndex' ) );
+        $oUBase->expects( $this->any() )->method( '_canRedirect' )->will( $this->returnValue( false ) );
+        $oUBase->expects( $this->any() )->method( 'isAdmin' )->will( $this->returnValue( false ) );
+        $oUBase->expects( $this->once() )->method( '_forceNoIndex' );
 
         $this->setConfigParam( 'blSeoLogging', 1 );
 
         try {
-            $oUbase->UNITprocessRequest();
+            $oUBase->UNITprocessRequest();
         } catch ( Exception $oEx ) {
             // redirect must not be executed
             $this->fail( 'error executing "testProcessRequestCantRedirect" test' );
@@ -1511,14 +1507,14 @@ class Unit_Views_oxubaseTest extends OxidTestCase
 
         oxTestModules::addFunction( "oxUtils", "redirect", "{ \$aArgs = func_get_args(); throw new exception( \$aArgs[0] ); }" );
 
-        $oUbase = $this->getMock( 'oxubase', array( '_canRedirect', 'getLink', 'isAdmin', '_forceNoIndex', 'noIndex' ) );
-        $oUbase->expects( $this->any() )->method( '_canRedirect' )->will( $this->returnValue( false ) );
-        $oUbase->expects( $this->any() )->method( 'isAdmin' )->will( $this->returnValue( false ) );
-        $oUbase->expects( $this->never() )->method( '_forceNoIndex' );
-        $oUbase->expects( $this->once() )->method( 'noIndex' )->will( $this->returnValue( VIEW_INDEXSTATE_NOINDEXFOLLOW ) );
+        $oUBase = $this->getMock( 'oxubase', array( '_canRedirect', 'getLink', 'isAdmin', '_forceNoIndex', 'noIndex' ) );
+        $oUBase->expects( $this->any() )->method( '_canRedirect' )->will( $this->returnValue( false ) );
+        $oUBase->expects( $this->any() )->method( 'isAdmin' )->will( $this->returnValue( false ) );
+        $oUBase->expects( $this->never() )->method( '_forceNoIndex' );
+        $oUBase->expects( $this->once() )->method( 'noIndex' )->will( $this->returnValue( VIEW_INDEXSTATE_NOINDEXFOLLOW ) );
 
         try {
-            $oUbase->UNITprocessRequest();
+            $oUBase->UNITprocessRequest();
         } catch ( Exception $oEx ) {
             // redirect must not be executed
             $this->fail( 'error executing "testProcessRequestCantRedirect" test' );
@@ -1575,14 +1571,14 @@ class Unit_Views_oxubaseTest extends OxidTestCase
         $oCfg->expects( $this->any() )->method( 'getShopId' )->will( $this->returnValue( 1 ) );
         $this->setConfigParam( 'blSeoLogging', 1 );
 
-        $oUbase = $this->getMock( 'oxubase', array( '_canRedirect', 'getLink', 'isAdmin', '_forceNoIndex', 'getConfig' ) );
-        $oUbase->expects( $this->any() )->method( '_canRedirect' )->will( $this->returnValue( false ) );
-        $oUbase->expects( $this->any() )->method( 'isAdmin' )->will( $this->returnValue( false ) );
-        $oUbase->expects( $this->once() )->method( '_forceNoIndex' );
-        $oUbase->expects( $this->any() )->method( 'getConfig' )->will( $this->returnValue( $oCfg ) );
+        $oUBase = $this->getMock( 'oxubase', array( '_canRedirect', 'getLink', 'isAdmin', '_forceNoIndex', 'getConfig' ) );
+        $oUBase->expects( $this->any() )->method( '_canRedirect' )->will( $this->returnValue( false ) );
+        $oUBase->expects( $this->any() )->method( 'isAdmin' )->will( $this->returnValue( false ) );
+        $oUBase->expects( $this->once() )->method( '_forceNoIndex' );
+        $oUBase->expects( $this->any() )->method( 'getConfig' )->will( $this->returnValue( $oCfg ) );
 
         try {
-            $oUbase->UNITprocessRequest();
+            $oUBase->UNITprocessRequest();
         } catch ( Exception $oEx ) {
             // redirect must not be executed
             $this->fail( 'error executing "testProcessRequestCantRedirect" test: '. $oEx->getMessage());
@@ -1694,7 +1690,7 @@ class Unit_Views_oxubaseTest extends OxidTestCase
 
     public function testSetGetRootVendor()
     {
-        $oView = $this->getProxyClass( 'oxubase' );
+        $oView = new oxUBase();
         $oView->setRootVendor('rootvendor');
 
         $this->assertEquals( 'rootvendor', $oView->getRootVendor() );
@@ -1702,14 +1698,14 @@ class Unit_Views_oxubaseTest extends OxidTestCase
 
     public function testGetVendorId()
     {
-        $oView = $this->getProxyClass( 'oxubase' );
+        $oView = new oxUBase();
         $this->setRequestParam( 'cnid', 'v_root' );
         $this->assertEquals( 'root', $oView->getVendorId() );
     }
 
     public function testGetSetSearchCatTree()
     {
-        $oView = $this->getProxyClass( 'oxubase' );
+        $oView = new oxUBase();
         $oView->setSearchCatTree( 'testcattree' );
         $this->assertEquals( 'testcattree', $oView->getSearchCatTree() );
     }
@@ -1904,7 +1900,7 @@ class Unit_Views_oxubaseTest extends OxidTestCase
     }
 
     /**
-     * oxUbase::isEnabledPrivateSales() test case
+     * oxUBase::isEnabledPrivateSales() test case
      *
      * @return null
      */
@@ -2020,7 +2016,7 @@ class Unit_Views_oxubaseTest extends OxidTestCase
     }
 
     /**
-     * oxUbase::showCategoryArticlesCount() test case
+     * oxUBase::showCategoryArticlesCount() test case
      *
      * @return null
      */
@@ -2038,7 +2034,7 @@ class Unit_Views_oxubaseTest extends OxidTestCase
     }
 
      /**
-     * oxUbase::getNewBasketItemMsgType() test case
+     * oxUBase::getNewBasketItemMsgType() test case
      *
      * @return null
      */
@@ -2062,7 +2058,7 @@ class Unit_Views_oxubaseTest extends OxidTestCase
     }
 
     /**
-     * oxUBase::isFbWidgetWisible()
+     * oxUBase::isFbWidgetVisible()
      *
      * @return null
      */
@@ -2080,7 +2076,7 @@ class Unit_Views_oxubaseTest extends OxidTestCase
     }
 
      /**
-     * oxUbase::isEnabledDownloadabaleFiles() test case
+     * oxUBase::isEnabledDownloadabaleFiles() test case
      *
      * @return null
      */
@@ -2102,7 +2098,7 @@ class Unit_Views_oxubaseTest extends OxidTestCase
     }
 
     /**
-     * oxUbase::isPriceCalculated() test case
+     * oxUBase::isPriceCalculated() test case
      *
      * @return null
      */
@@ -2111,7 +2107,7 @@ class Unit_Views_oxubaseTest extends OxidTestCase
         $oView = new oxUbase();
         $this->assertEquals( (bool) oxConfig::getInstance()->getConfigParam( "bl_perfLoadPrice" ), $oView->isPriceCalculated() );
     }
-    /* oxubase::getCatMoreUrl() test case
+    /* oxUBase::getCatMoreUrl() test case
      *
      * @return null
      */
@@ -2122,7 +2118,7 @@ class Unit_Views_oxubaseTest extends OxidTestCase
     }
 
     /*
-     * oxubase::isFieldRequired() test case
+     * oxUBase::isFieldRequired() test case
      *
      * @return null
      */
@@ -2130,138 +2126,138 @@ class Unit_Views_oxubaseTest extends OxidTestCase
     {
         $aArray = array( 'test' => 'isset' );
 
-        $oUbase = $this->getProxyClass( 'oxUBase' );
-        $oUbase->setNonPublicVar( '_aMustFillFields', $aArray );
+        $oUBase = $this->getProxyClass( 'oxUBase' );
+        $oUBase->setNonPublicVar( '_aMustFillFields', $aArray );
 
-        $this->assertTrue( $oUbase->isFieldRequired( 'test' ) );
-        $this->assertFalse( $oUbase->isFieldRequired( 'testFalse' ) );
-        $this->assertFalse( $oUbase->isFieldRequired( null ) );
+        $this->assertTrue( $oUBase->isFieldRequired( 'test' ) );
+        $this->assertFalse( $oUBase->isFieldRequired( 'testFalse' ) );
+        $this->assertFalse( $oUBase->isFieldRequired( null ) );
     }
 
     /*
-     * oxubase::getLastProducts() test case
+     * oxUBase::getLastProducts() test case
      *
      * @return null
      */
     public function testGetLastProducts()
     {
-        $oUbase = new oxubase();
-        $this->assertNull( $oUbase->getLastProducts() );
+        $oUBase = new oxubase();
+        $this->assertNull( $oUBase->getLastProducts() );
     }
 
     /*
-     * oxubase::getPageNavigationLimitedBottom() test case
+     * oxUBase::getPageNavigationLimitedBottom() test case
      *
      * @return null
      */
     public function testGetPageNavigationLimitedBottom()
     {
-        $oUbase = new oxubase();
+        $oUBase = new oxubase();
         $oRes = new stdClass();
         $oRes->NrOfPages = null;
         $oRes->actPage = 1;
-        $this->assertEquals( $oRes ,$oUbase->getPageNavigationLimitedBottom() );
+        $this->assertEquals( $oRes ,$oUBase->getPageNavigationLimitedBottom() );
     }
 
     /*
-     * oxubase::getPageNavigationLimitedTop() test case
+     * oxUBase::getPageNavigationLimitedTop() test case
      *
      * @return null
      */
     public function testGetPageNavigationLimitedTop()
     {
-        $oUbase = new oxubase();
+        $oUBase = new oxubase();
         $oRes = new stdClass();
         $oRes->NrOfPages = null;
         $oRes->actPage = 1;
-        $this->assertEquals( $oRes ,$oUbase->getPageNavigationLimitedTop() );
+        $this->assertEquals( $oRes ,$oUBase->getPageNavigationLimitedTop() );
     }
     /*
-     * oxubase::getPageNavigation() test case
+     * oxUBase::getPageNavigation() test case
      *
      * @return null
      */
     public function testGetPageNavigation()
     {
-        $oUbase = new oxubase();
-        $this->assertNull( $oUbase->getPageNavigation() );
+        $oUBase = new oxubase();
+        $this->assertNull( $oUBase->getPageNavigation() );
     }
 
     /*
-     * oxubase::getAlsoBoughtTheseProducts() test case
+     * oxUBase::getAlsoBoughtTheseProducts() test case
      *
      * @return null
      */
     public function testGetAlsoBoughtTheseProducts()
     {
-        $oUbase = new oxubase();
-        $this->assertNull( $oUbase->getAlsoBoughtTheseProducts() );
+        $oUBase = new oxubase();
+        $this->assertNull( $oUBase->getAlsoBoughtTheseProducts() );
     }
 
     /*
-     * oxubase::getArticleId() test case
+     * oxUBase::getArticleId() test case
      *
      * @return null
      */
     public function testGetArticleId()
     {
-        $oUbase = new oxubase();
-        $this->assertNull( $oUbase->getArticleId() );
+        $oUBase = new oxubase();
+        $this->assertNull( $oUBase->getArticleId() );
     }
 
     /*
-     * oxubase::getCrossSelling() test case
+     * oxUBase::getCrossSelling() test case
      *
      * @return null
      */
     public function testGetCrossSelling()
     {
-        $oUbase = new oxubase();
-        $this->assertNull( $oUbase->getCrossSelling() );
+        $oUBase = new oxubase();
+        $this->assertNull( $oUBase->getCrossSelling() );
     }
 
     /*
-     * oxubase::getSimilarProducts() test case
+     * oxUBase::getSimilarProducts() test case
      *
      * @return null
      */
     public function testGetSimilarProducts()
     {
-        $oUbase = new oxubase();
-        $this->assertNull( $oUbase->getSimilarProducts() );
+        $oUBase = new oxubase();
+        $this->assertNull( $oUBase->getSimilarProducts() );
     }
 
     /*
-     * oxubase::getAccessoires() test case
+     * oxUBase::getAccessoires() test case
      *
      * @return null
      */
     public function testGetAccessoires()
     {
-        $oUbase = new oxubase();
-        $this->assertNull( $oUbase->getAccessoires() );
+        $oUBase = new oxubase();
+        $this->assertNull( $oUBase->getAccessoires() );
     }
 
     /*
-     * oxubase::getPaymentList() test case
+     * oxUBase::getPaymentList() test case
      *
      * @return null
      */
     public function testGetPaymentList()
     {
-        $oUbase = new oxubase();
-        $this->assertNull( $oUbase->getPaymentList() );
+        $oUBase = new oxubase();
+        $this->assertNull( $oUBase->getPaymentList() );
     }
 
     /*
-     * oxubase::getEditTags() test case
+     * oxUBase::getEditTags() test case
      *
      * @return null
      */
     public function testGetEditTags()
     {
-        $oUbase = new oxubase();
-        $this->assertNull( $oUbase->getEditTags() );
+        $oUBase = new oxubase();
+        $this->assertNull( $oUBase->getEditTags() );
     }
 
     /**
@@ -2364,7 +2360,7 @@ class Unit_Views_oxubaseTest extends OxidTestCase
     }
 
     /**
-     * Testing oxUbase::getCompareItemCount()
+     * Testing oxUBase::getCompareItemCount()
      *
      * @return null
      */
@@ -2377,7 +2373,7 @@ class Unit_Views_oxubaseTest extends OxidTestCase
     }
 
     /**
-     * Testing oxUbase::isVatIncluded()
+     * Testing oxUBase::isVatIncluded()
      *
      * @return null
      */
@@ -2388,7 +2384,7 @@ class Unit_Views_oxubaseTest extends OxidTestCase
     }
 
     /**
-     * Testing oxUbase::isVatIncluded()
+     * Testing oxUBase::isVatIncluded()
      * if user buys in netto mode
      *
      * @return null
@@ -2404,12 +2400,12 @@ class Unit_Views_oxubaseTest extends OxidTestCase
     }
 
     /**
-     * Testing oxUbase::isVatIncluded()
+     * Testing oxUBase::isVatIncluded()
      * if shop is in netto mode
      *
      * @return null
      */
-    public function testIsVatIncludedNeetoShop()
+    public function testIsVatIncludedNettoShop()
     {
         $this->setConfigParam( "blShowNetPrice", true );
 
@@ -2418,7 +2414,7 @@ class Unit_Views_oxubaseTest extends OxidTestCase
     }
 
     /**
-     * Testing oxUbase::isVatIncluded()
+     * Testing oxUBase::isVatIncluded()
      * if vat will be calculated only in basket
      *
      * @return null
@@ -2472,13 +2468,13 @@ class Unit_Views_oxubaseTest extends OxidTestCase
         $this->setConfigParam( 'blSeoLogging', $blSeoLogging );
         $this->setConfigParam( 'blProductive', $blProductive );
 
-        $oUbase = $this->getMock( 'oxubase', array( '_canRedirect', 'getLink', 'isAdmin', '_forceNoIndex' ) );
-        $oUbase->expects( $this->any() )->method( '_canRedirect' )->will( $this->returnValue( false ) );
-        $oUbase->expects( $this->any() )->method( 'isAdmin' )->will( $this->returnValue( false ) );
-        $oUbase->expects( $this->once() )->method( '_forceNoIndex' );
+        $oUBase = $this->getMock( 'oxubase', array( '_canRedirect', 'getLink', 'isAdmin', '_forceNoIndex' ) );
+        $oUBase->expects( $this->any() )->method( '_canRedirect' )->will( $this->returnValue( false ) );
+        $oUBase->expects( $this->any() )->method( 'isAdmin' )->will( $this->returnValue( false ) );
+        $oUBase->expects( $this->once() )->method( '_forceNoIndex' );
 
         try {
-            $oUbase->UNITprocessRequest();
+            $oUBase->UNITprocessRequest();
         } catch ( Exception $oEx ) {
             // redirect must not be executed
             $this->fail( 'error executing "testProcessRequestCantRedirect" test: '. $oEx->getMessage());

@@ -194,27 +194,27 @@ div.sidebarRight #sidebar {
 
 /* bottom shadow */
 .box h3, .box h2, .pageHead, .sectionHead {
-    -moz-box-shadow: 0px 3px 5px -1.3px #555;
-    -webkit-box-shadow: 0px 3px 5px -1.3px #555;
-    box-shadow: 0px 3px 5px -2px #555;
+    -moz-box-shadow: 0 3px 5px -1.3px #555;
+    -webkit-box-shadow: 0 3px 5px -1.3px #555;
+    box-shadow: 0 3px 5px -2px #555;
 }
 
 .basketFlyout {
-    -moz-box-shadow: 0px 0px 3px 1px #555;
-    -webkit-box-shadow: 0px 0px 3px 1px #555;
-    box-shadow: 0px 0px 3px 1px #555;
+    -moz-box-shadow: 0 0 3px 1px #555;
+    -webkit-box-shadow: 0 0 3px 1px #555;
+    box-shadow: 0 0 3px 1px #555;
 }
 
 .scrollable ul {
-    -moz-box-shadow: inset 0px 5px 5px -1.3px #555;
-    -webkit-box-shadow: 0px 5px 5px -1.3px #555;
-    box-shadow: 0px 5px 5px -1.3px #555;
+    -moz-box-shadow: inset 0 5px 5px -1.3px #555;
+    -webkit-box-shadow: 0 5px 5px -1.3px #555;
+    box-shadow: 0 5px 5px -1.3px #555;
 }
 
 .basketItems {
-    -moz-box-shadow: inset 0px -4px 2px -2px #555;
-    -webkit-box-shadow: 0px -4px 3px -2px #555;
-    box-shadow: 0px -4px 5px -2px #555;
+    -moz-box-shadow: inset 0 -4px 2px -2px #555;
+    -webkit-box-shadow: 0 -4px 3px -2px #555;
+    box-shadow: 0 -4px 5px -2px #555;
 }
 
 .glowShadow, div.anythingSlider .arrow, .promoBox {
@@ -231,15 +231,15 @@ div.sidebarRight #sidebar {
 
 .rightShadow,
 .itemSlider .leftHolder {
-    -webkit-box-shadow: 4px 0px 4px -1.5px #555555;
-    -moz-box-shadow: 4px 0px 4px -1.5px #555555;
-    box-shadow: 4px 0px 4px -1.5px #555555;
+    -webkit-box-shadow: 4px 0 4px -1.5px #555555;
+    -moz-box-shadow: 4px 0 4px -1.5px #555555;
+    box-shadow: 4px 0 4px -1.5px #555555;
 }
 
 .itemSlider .nextItem {
-    -webkit-box-shadow: -4px 0px 4px -1.5px #555555;
-    -moz-box-shadow: -4px 0px 4px -1.5px #555555;
-    box-shadow: -4px 0px 4px -1.5px #555555;
+    -webkit-box-shadow: -4px 0 4px -1.5px #555555;
+    -moz-box-shadow: -4px 0 4px -1.5px #555555;
+    box-shadow: -4px 0 4px -1.5px #555555;
 }
 
 /******/
@@ -266,38 +266,38 @@ div.sidebarRight #sidebar {
 }
 
 .tabs li, .thumbNav, #navigation ul li:first-child, #currencies li:first-child a, #languages li:first-child a, .flyoutMenu li:first-child a, .dropDown li:first-child a {
-    -moz-border-radius: 3px 3px 0px 0px;
-    -webkit-border-radius: 3px 3px 0px 0px;
-    -khtml-border-radius: 3px 3px 0px 0px;
-    border-radius: 3px 3px 0px 0px;
+    -moz-border-radius: 3px 3px 0 0;
+    -webkit-border-radius: 3px 3px 0 0;
+    -khtml-border-radius: 3px 3px 0 0;
+    border-radius: 3px 3px 0 0;
 }
 
 #currencies li:last-child a, #languages li:last-child a, .dropDown li:last-child a, .flyoutMenu li:last-child a {
-    -moz-border-radius: 0px 0px 3px 3px;
-    -webkit-border-radius: 0px 0px 3px 3px;
-    -khtml-border-radius: 0px 0px 3px 3px;
-    border-radius: 0px 0px 3px 3px;
+    -moz-border-radius: 0 0 3px 3px;
+    -webkit-border-radius: 0 0 3px 3px;
+    -khtml-border-radius: 0 0 3px 3px;
+    border-radius: 0 0 3px 3px;
 }
 
 .bottomRound, #navigation ul li:last-child, .widgetBoxBottomRound {
-    -moz-border-radius: 0px 0px 3px 3px;
-    -webkit-border-radius: 0px 0px 3px 3px;
-    -khtml-border-radius: 0px 0px 3px 3px;
-    border-radius: 0px 0px 3px 3px;
+    -moz-border-radius: 0 0 3px 3px;
+    -webkit-border-radius: 0 0 3px 3px;
+    -khtml-border-radius: 0 0 3px 3px;
+    border-radius: 0 0 3px 3px;
 }
 
 .promoBox strong.promoPrice {
-    -moz-border-radius: 3px 0px 0px 3px;
-    -webkit-border-radius: 3px 0px 0px 3px;
-    -khtml-border-radius: 3px 0px 0px 3px;
-    border-radius: 3px 0px 0px 3px;
+    -moz-border-radius: 3px 0 0 3px;
+    -webkit-border-radius: 3px 0 0 3px;
+    -khtml-border-radius: 3px 0 0 3px;
+    border-radius: 3px 0 0 3px;
 }
 
 .promoBox strong.promoTitle {
-    -moz-border-radius: 0px 3px 3px 0px;
-    -webkit-border-radius: 0px 3px 3px 0px;
-    -khtml-border-radius: 0px 3px 3px 0px;
-    border-radius: 0px 3px 3px 0px;
+    -moz-border-radius: 0 3px 3px 0;
+    -webkit-border-radius: 0 3px 3px 0;
+    -khtml-border-radius: 0 3px 3px 0;
+    border-radius: 0 3px 3px 0;
 }
 
 /******/
@@ -590,7 +590,7 @@ a.viewAllHover,
 
 .summary table tr:last-child td, .summary table tr:last-child th {
     border-top-color: #c9d3d7;
-    border-bottom-width: 0px;
+    border-bottom-width: 0;
 }
 
 .summary table tr:first-child td, .summary table tr:first-child th {
@@ -742,7 +742,7 @@ a.viewAllHover,
     border-top: none;
     margin: 0;
     margin-top: -2px;
-    text-shadow: 0px 1px 1px #fff;
+    text-shadow: 0 1px 1px #fff;
 }
 
 .box li {
@@ -891,7 +891,7 @@ a.viewAllHover,
     white-space: nowrap;
     right: -198px;
     color: #fff;
-    padding: 5px 8px 0px 30px;
+    padding: 5px 8px 0 30px;
     height: 22px;
 }
 
@@ -945,7 +945,7 @@ a.viewAllHover,
     font-size: 14px;
     text-decoration: none;
     font-weight: 700;
-    text-shadow: 0px 1px 1px #fff;
+    text-shadow: 0 1px 1px #fff;
 }
 
 .specBoxTitles {
@@ -955,7 +955,7 @@ a.viewAllHover,
 
 .specBoxTitles a.title:hover {
     color: #fff;
-    text-shadow: 0px -1px 1px #652b00;
+    text-shadow: 0 -1px 1px #652b00;
 }
 
 .specBoxInfo {
@@ -986,7 +986,7 @@ a.viewAllHover,
 
 .specBoxInfo .priceValue, .specBoxInfo .priceValue a {
     color: #fff;
-    text-shadow: 0px -1px 1px #000;
+    text-shadow: 0 -1px 1px #000;
     text-decoration: none;
     font-size: 14px;
     font-weight: 700;
@@ -994,7 +994,7 @@ a.viewAllHover,
 
 .specBoxInfo .button{
     color:#fff;
-    text-shadow:0 -1px 0px #8c4600;
+    text-shadow:0 -1px 0 #8c4600;
     border:1px solid #fff;
     background:transparent;
     display: block;
@@ -1014,7 +1014,7 @@ a.viewAllHover,
 .specBoxInfo .priceOld{
     font-size: 11px;
     color:#fff;
-    text-shadow: 0px -1px 1px #000;
+    text-shadow: 0 -1px 1px #000;
 }
 
 .specBoxInfo .pricePerUnit{
@@ -1023,7 +1023,7 @@ a.viewAllHover,
     line-height: 9px;
     display:block;
     margin-top:-1px;
-    text-shadow: 0px -1px 1px #000;
+    text-shadow: 0 -1px 1px #000;
 }
 
 .specBoxInfo .price:hover .button{
@@ -1086,7 +1086,7 @@ a.viewAllHover,
     line-height: 19px;
     color: #fff;
     text-transform: uppercase;
-    text-shadow: 0px -1px 0px #397f90;
+    text-shadow: 0 -1px 0 #397f90;
     padding: 9px 10px 7px 10px;
     overflow: hidden;
     margin-bottom: 16px;
@@ -1104,7 +1104,7 @@ a.viewAllHover,
     position: relative;
     z-index: 2;
     margin: 0;
-    text-shadow: 0px -1px 1px #397f90;
+    text-shadow: 0 -1px 1px #397f90;
     line-height: 18px;
 }
 
@@ -1119,7 +1119,7 @@ a.viewAllHover,
 h2.sectionHead {
     font-size: 18px;
     padding: 13px 10px;
-    text-shadow: 0px -1px 0px #000;
+    text-shadow: 0 -1px 0 #000;
     position: relative;
 }
 
@@ -1164,8 +1164,8 @@ a.viewAllHover span {
     font-weight: 700;
     display: inline-block;
     line-height: 20px;
-    background: url(../../img/plus.png) no-repeat 0 0px;
-    text-shadow: 0px -1px 0px #ac5403;
+    background: url(../../img/plus.png) no-repeat 0 0;
+    text-shadow: 0 -1px 0 #ac5403;
 }
 
 /* --- underlined links in login page ---------------- */
@@ -1196,7 +1196,7 @@ a.rss span {
     font-size: 12px;
     top: -5px;
     color: #fff;
-    padding: 5px 30px 0px 8px;
+    padding: 5px 30px 0 8px;
     height: 21px;
     z-index: 5;
 }
@@ -1207,7 +1207,7 @@ a.rss:hover span {
 
 h3.lightHead {
     color: #1d7e96;
-    text-shadow: 0px 1px 1px #fff;
+    text-shadow: 0 1px 1px #fff;
 }
 
 .widgetBox, .widgetBoxBottomRound {
@@ -1300,7 +1300,6 @@ ul.tabs {
 
 ul.tabs li {
     float: left;
-    padding: 0;
     list-style: none;
     border: 1px solid #999;
     border-bottom: 1px solid #c9d3d7;
@@ -1312,7 +1311,7 @@ ul.tabs li {
     color: #515353;
     height: 15px;
     text-transform: uppercase;
-    text-shadow: 0px 1px 1px #fff;
+    text-shadow: 0 1px 1px #fff;
 }
 
 ul.tabs li.ui-state-active {
@@ -1341,7 +1340,7 @@ div.ui-tabs-hide {
 
 ul.tabs li.fbTab a {
     background: url(../../img/facebook_icon.png) no-repeat 0 1px;
-    padding: 0px 0px 0px 18px;
+    padding: 0 0 0 18px;
 }
 
 /* --- BUTTONS  ------------------- */
@@ -1358,7 +1357,7 @@ button {
 }
 
 .submitButton {
-    text-shadow: 0px -1px 0px #000;
+    text-shadow: 0 -1px 0 #000;
     padding: 0 10px 1px 10px;
     font-size: 11px;
     height: 19px;
@@ -1402,7 +1401,7 @@ div.lineBox span.title {
 .submitButton:hover {
     text-decoration: none;
     cursor:pointer;
-    text-shadow: 0px -1px 0px #aa6826;
+    text-shadow: 0 -1px 0 #aa6826;
 }
 
 button[disabled].submitButton, button[disabled].submitButton:hover  {
@@ -1423,7 +1422,7 @@ a.submitButton {
     color: #000;
     cursor: pointer;
     padding: 0;
-    text-shadow: 0px 1px 1px #fff;
+    text-shadow: 0 1px 1px #fff;
 }
 
 .textButton:hover {
@@ -1432,7 +1431,7 @@ a.submitButton {
 
 .removeButton {
     padding-left: 2px;
-    text-shadow: 0px -1px 0px #aa6826;
+    text-shadow: 0 -1px 0 #aa6826;
 }
 
 .removeButton span {
@@ -1507,8 +1506,6 @@ a.submitButton {
     margin-bottom: 4px;
 }
 
-.loginForm .submitButton{}
-
 .loginForm .checkbox,
 .loginForm p.checkFields label {
   float: left;
@@ -1558,7 +1555,7 @@ a.submitButton {
     color: #515353;
     display:block;
     margin-bottom:5px;
-    text-shadow: 0px 1px 1px #fff;
+    text-shadow: 0 1px 1px #fff;
 }
 
 .altLoginBox .fb_button {
@@ -1622,7 +1619,7 @@ a.submitButton {
     position:absolute;
     display:none;
     top: 3px;
-    left: 0px;
+    left: 0;
     z-index: 15;
 }
 
@@ -1783,7 +1780,7 @@ div.searchBox input.textbox:focus {
     display: block;
     color: #fff;
     font-size:11px;
-    padding:1px 5px 0px 5px;
+    padding:1px 5px 0 5px;
     line-height: 15px;
     position: absolute;
     z-index: 13;
@@ -1822,7 +1819,7 @@ div.searchBox input.textbox:focus {
 #footer dl {
  float:left;
  width: 233px;
- margin:10px 0px;
+ margin:10px 0;
  color:#465256;
  height: auto;
  border-right: 1px solid #3799b1;
@@ -1852,7 +1849,7 @@ div.searchBox input.textbox:focus {
     text-transform: uppercase;
 }
 
-#footer .list a  { line-height: 100%; display:block; padding:4px 20px; color: #29373c; text-shadow: 0px 1px 2px #fff;}
+#footer .list a  { line-height: 100%; display:block; padding:4px 20px; color: #29373c; text-shadow: 0 1px 2px #fff;}
 #footer .list a:hover  {
  text-decoration: none;
  color: #FFF;
@@ -1861,8 +1858,8 @@ div.searchBox input.textbox:focus {
 
 #footer .tree ul {margin: 0; margin-left:10px;}
 
-.newsletter {float: left; background: #E7EAEC; padding:0px 0px 0px 10px; font-size:10px; width: auto;}
-.newsletter .textbox {margin: 0px 10px 0px 10px; width: 140px;}
+.newsletter {float: left; background: #E7EAEC; padding:0 0 0 10px; font-size:10px; width: auto;}
+.newsletter .textbox {margin: 0 10px 0 10px; width: 140px;}
 
 .fbInfoPopup {
     width: 500px;
@@ -1888,7 +1885,7 @@ div.searchBox input.textbox:focus {
     float: left;
     line-height: 18px;
     background: url(../../img/facebook_icon.png) no-repeat 3px 3px;
-    padding: 0px 0px 0px 21px;
+    padding: 0 0 0 21px;
     font-size: 10px;
     text-transform: uppercase;
     color: #2c5e97;
@@ -2008,7 +2005,6 @@ a.compare.remove {display:none}
     overflow: hidden;
     float:left;
     position: relative;
-    list-style: none;
     padding: 0;
     list-style: none;
     margin:1px;
@@ -2037,7 +2033,7 @@ a.compare.remove {display:none}
 
 .gridView li:hover .titleBlock{
     color:#fff;
-    text-shadow: 0px -1px 0px #bf5001;
+    text-shadow: 0 -1px 0 #bf5001;
     background:transparent url(../bg/fx-grad-darkblue.png) bottom center no-repeat;
 }
 
@@ -2081,14 +2077,14 @@ a.compare.remove {display:none}
     height: 60px;
     padding-top:30px;
     color:#fff;
-    text-shadow: 0px -1px 1px #000;
+    text-shadow: 0 -1px 1px #000;
 
     background:transparent url(../bg/fx-grad-darkblue-spiked.png) top center no-repeat;
 }
 .gridView li:hover .priceBlock .button{
     visibility: visible;
     color:#fff;
-    text-shadow:0 -1px 0px #8c4600;
+    text-shadow:0 -1px 0 #8c4600;
     border:1px solid #fff;
     background:transparent;
 }
@@ -2225,7 +2221,7 @@ a.compare.remove {display:none}
 
 .infogridView .gridPicture {
     width: 187px;
-    padding:10px 0 10px 0px;
+    padding:10px 0 10px 0;
 }
 
 .infogridView .gridPicture img {
@@ -2304,7 +2300,7 @@ a.compare.remove {display:none}
 .infoBox {width: 558px; position: relative;}
 .lineView .info {width: 260px; height: 50px;   float: left;    padding: 10px 0 0 10px;}
 .lineView .description {width: 268px;    padding: 7px 0 0 20px;    font-size: 14px;    line-height: 18px;}
-.lineView .functions {padding: 0 0 0px 10px; position: absolute; bottom: 10px; clear: right; float:left; left: 190px; width:550px;}
+.lineView .functions {padding: 0 0 0 10px; position: absolute; bottom: 10px; clear: right; float:left; left: 190px; width:550px;}
 .lineView .functions label.price {
      margin: 10px;
 }
@@ -2532,7 +2528,7 @@ a.compare.remove {display:none}
 }
 
 #sidebar .tree ul {
-    padding-left:0px;
+    padding-left:0;
     margin: 0;
 }
 
@@ -2674,7 +2670,7 @@ a.compare.remove {display:none}
 }
 
 #sidebar .sidebarMenu .active {
-    text-shadow: 0px -1px 0px #aa6826;
+    text-shadow: 0 -1px 0 #aa6826;
 }
 
 /* --- Checkout - payment --------------------- */
@@ -2790,7 +2786,6 @@ a.compare.remove {display:none}
 .dropDown{
     position:relative;
     float:left;
-    cursor:pointer;
     padding-right: 10px;
     min-width: 120px;
     cursor: pointer;
@@ -2935,7 +2930,7 @@ a.next {
 
 .listFilter {
     background: #f2f4f5;
-    padding: 10px 10px 0px 10px;
+    padding: 10px 10px 0 10px;
     font-size: 11px;
     border-bottom: 1px solid #29373c;
 }
@@ -3111,11 +3106,11 @@ a.next {
 }
 
 .checkoutSteps li.activeLast {
-    background-position: 0px -29px;
+    background-position: 0 -29px;
     color: #fff;
 }
 .checkoutSteps li.defaultLast {
-    background-position: 0px 0px;
+    background-position: 0 0;
 }
 
 .checkoutSteps li.passed {
@@ -3228,7 +3223,7 @@ h3.section button {
     position: relative;
     z-index: 17;
     padding-right: 30px;
-    text-shadow: 0px 1px 1px #fff;
+    text-shadow: 0 1px 1px #fff;
 }
 
 /* --- Amount price select ---------- */
@@ -3333,7 +3328,7 @@ h3.section button {
     text-transform: none;
     padding: 3px 0 5px 0;
     font-weight: 700;
-    text-shadow: 0px 1px 1px #fff;
+    text-shadow: 0 1px 1px #fff;
 }
 
 .social a{
@@ -3343,7 +3338,7 @@ h3.section button {
 }
 
 .social .fbEnableButton a:first-child{
-    padding: 0px 0px 0px 21px;
+    padding: 0 0 0 21px;
 }
 
 .social span {
@@ -3352,7 +3347,7 @@ h3.section button {
 }
 
 .fb_share_count_hidden {
-    margin: 3px 7px 0 0px;
+    margin: 3px 7px 0 0;
     display:inline-block;
 }
 
@@ -3795,9 +3790,6 @@ dl.review .param {
     color: #757C83;
 }
 /* --- Account billing / shipping addresses ------ */
-.addressCollumns {
-
-}
 .addressCollumns .collumn {
     float: left;
     width: 50%;
@@ -3972,7 +3964,7 @@ dl.review .param {
 }
 
 .form select[data-fieldsize="normal"] {
-	width: 202px;
+  width: 202px;
 }
 
 .form input[data-fieldsize="xsmall"] {
@@ -4056,7 +4048,7 @@ span.verificationCode {
 }
 
 .form .underInput {
-    padding: 5px 0px;
+    padding: 5px 0;
     margin-left:140px;
 }
 
@@ -4238,7 +4230,7 @@ label.innerLabel.textArea{
 /* --- Recommendations ---------------------------- */
 .recommendations .title {
     font-size:12px;
-    padding:2px 0px 6px;
+    padding:2px 0 6px;
 }
 
 .recommendations .title a {
@@ -4259,7 +4251,7 @@ label.innerLabel.textArea{
 
 .recommendations .description {
     font-size:11px;
-    padding:0px 0px 8px;
+    padding:0 0 8px;
 }
 
 .recommendationsSearchForm {
@@ -4314,7 +4306,7 @@ label.innerLabel.textArea{
     filter: alpha(opacity =90);
     height: 150px;
     display: block;
-    text-shadow: 0px -1px 0px #486066;
+    text-shadow: 0 -1px 0 #486066;
 }
 .itemSlider .leftHolder {
     position:absolute;
@@ -4326,7 +4318,7 @@ label.innerLabel.textArea{
 }
 
 .itemSlider .slideNav:hover {
-    text-shadow: 0px -1px 0px #ac8a6b;
+    text-shadow: 0 -1px 0 #ac8a6b;
     opacity: 1;
     filter: alpha(opacity =100);
 
@@ -4341,7 +4333,7 @@ label.innerLabel.textArea{
 .itemSlider .titleBlock:hover {
     opacity: 0.9;
     filter: alpha(opacity=90);
-    text-shadow: 0px -1px 0px #486066;
+    text-shadow: 0 -1px 0 #486066;
 }
 
 .itemSlider .titleBlock strong {
@@ -4410,7 +4402,7 @@ label.innerLabel.textArea{
     padding-right: 5px;
     padding-top:25px;
     filter: alpha(opacity =100);
-    background:transparent url(../bg/fx-grad-orange-spiked.png) -30px 0px no-repeat;
+    background:transparent url(../bg/fx-grad-orange-spiked.png) -30px 0 no-repeat;
 }
 
 
@@ -4431,8 +4423,8 @@ a.sliderHover {
     height: 148px;
     display: none;
     position: absolute;
-    left: 0px;
-    top: 0px;
+    left: 0;
+    top: 0;
 }
 
 .itemSlider li:hover a.viewAllHover,
@@ -4559,7 +4551,7 @@ a.sliderHover {
     text-align:center;
     font-weight:bold;
     font-size:10px;
-    top:0px;
+    top:0;
 }
 
     /* This is the zoom window. */
@@ -4574,11 +4566,10 @@ a.sliderHover {
 .cloud-zoom-loading {
     color: #000;
     background: #fff;
-    padding: 0px;
+    padding: 0;
 }
 
 #zoomTrigger {
-    position: absolute;
     width: 18px;
     height: 18px;
     display: block;
@@ -4632,7 +4623,7 @@ a.sliderHover {
     font-weight: 700;
     font-size: 14px;
     text-decoration: none;
-    text-shadow: 0px 1px 1px #fff;
+    text-shadow: 0 1px 1px #fff;
 }
 
 #zoomModal .shadowLine {
@@ -4650,7 +4641,7 @@ a.sliderHover {
     height: 31px;
     left: 0;
     position: absolute;
-    top: 0px;
+    top: 0;
     width: 26px;
     z-index: 99;
 }
@@ -4766,7 +4757,7 @@ a.sliderHover {
 .wishlistUser {
     float: right;
     width: 360px;
-    padding: 40px 0 0 0px;}
+    padding: 40px 0 0 0;}
 
 
 /* --- Account Dashboard ----------------- */
@@ -4958,7 +4949,7 @@ td.alignTop{
 }
 
 /* --- Plain errors ------------------------ */
-.errorBox {width: auto; font-size:12px; font-weight:bold; color:#D81F01; margin: 20px; padding: 0; border: none; width: 500px;}
+.errorBox {font-size:12px; font-weight:bold; color:#D81F01; margin: 20px; padding: 0; border: none; width: 500px;}
 .errorBox a {color:#D81F01; text-decoration: underline;}
 .errorBox a:hover {color:#666;}
 .errorBox .errHead {background: #D81F01; color: #fff; padding: 5px 15px;}
@@ -4988,7 +4979,7 @@ li.articleImage{
 .selectorsBox {
     clear:both;
     background: none;
-    padding: 10px 10px 0px 0px;
+    padding: 10px 10px 0 0;
     font-size: 11px;
 }
 
@@ -5039,7 +5030,7 @@ div.information .selectorsBox {
 /* --- MD Variant Selects in infoGrid ----------------- */
 .listDetails .selectorsBox {
     background: none;
-    padding: 10px 10px 0px 5px;
+    padding: 10px 10px 0 5px;
     font-size: 11px;
 }
 
@@ -5064,7 +5055,7 @@ div.information .selectorsBox {
 /* --- MD Variant Selects for line -------------------- */
 .infoBox .selectorsBox {
     background: none;
-    padding: 10px 10px 0px 0px;
+    padding: 10px 10px 0 0;
     font-size: 11px;
 }
 
@@ -5109,7 +5100,7 @@ div.agbButton  {
 .agb p.errorMsg, .agbInner p.errorMsg  {
     color: #ff0000;
     display: none;
-    margin: 0px;
+    margin: 0;
 }
 
 /* ---- ajax loading icon -----------------------------*/
@@ -5215,11 +5206,10 @@ a.downloadableFile.pending {
 
 #cookieNote {
     position:fixed;
-    top:0px;
-    left:0px;
+    top:0;
+    left:0;
     width:100%;
     z-index:105;
-    text-align:left;
     font-weight:normal;
     font-size:16px;
     color: #fff;
@@ -5255,7 +5245,7 @@ a.downloadableFile.pending {
 }
 
 #cookieNote .notify{
-    padding: 0px 35px;
+    padding: 0 35px;
 }
 
 #basketVoucher {
@@ -5272,11 +5262,10 @@ a.downloadableFile.pending {
 
 #betaNote {
     position:fixed;
-    top:0px;
-    left:0px;
+    top:0;
+    left:0;
     width:100%;
     z-index:105;
-    text-align:left;
     font-weight:normal;
     font-size:16px;
     color: #fff;

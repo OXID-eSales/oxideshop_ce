@@ -1105,54 +1105,31 @@ class Unit_Views_oxubaseTest extends OxidTestCase
         $this->assertEquals('&amp;listtype=tag&amp;searchtag=testtag', $sGot);
     }
 
-    public function testGetLinkAfterMuchCodeWasTransferedFromOxViewToOxUbase()
+    public function testGetLinkWithDefinedPageNumber()
     {
-        oxTestModules::addFunction("oxutils", "seoIsActive", "{return false;}");
-        $oCfg = oxConfig::getInstance();
+        $oConfig = $this->getConfig();
+        $oConfig->setConfigParam('blSeoMode', false);
 
         $oV = $this->getMock( 'oxubase', array( '_getRequestParams' , 'getActPage' ) );
         $oV->expects( $this->any() )->method( '_getRequestParams' )->will( $this->returnValue( 'req' ) );
         $oV->expects( $this->once() )->method( 'getActPage' )->will( $this->returnValue( false ) );
 
-        $this->assertEquals( $oCfg->getShopCurrentURL( 0 ).'req', $oV->getLink() );
+        $this->assertEquals( $oConfig->getShopCurrentURL( 0 ).'req', $oV->getLink() );
 
         $oV = $this->getMock( 'oxubase', array( '_getRequestParams' , 'getActPage', '_addPageNrParam') );
         $oV->expects( $this->any() )->method( '_getRequestParams' )->will( $this->returnValue( 'req' ) );
         $oV->expects( $this->once() )->method( 'getActPage' )->will( $this->returnValue( 16 ) );
-        $oV->expects( $this->once() )->method( '_addPageNrParam' )->with($this->equalTo($oCfg->getShopCurrentURL( 0 ).'req&amp;lang=2', 16, 2))->will( $this->returnValue( 'linkas' ) );
+        $oV->expects( $this->once() )->method( '_addPageNrParam' )->with($this->equalTo($oConfig->getShopCurrentURL( 0 ).'req&amp;lang=2', 16, 2))->will( $this->returnValue( 'linkas' ) );
 
         $this->assertEquals('linkas', $oV->getLink(2));
     }
 
-    public function testGetLink()
+    public function testGetLink_SeoIsOnProductPageFromCategoryList()
     {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxConfig::getInstance()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
-
-        $oCfg = oxConfig::getInstance();
-
-        $oV = $this->getMock( 'oxubase', array( '_getRequestParams' ) );
-        $oV->expects( $this->any() )->method( '_getRequestParams' )->will( $this->returnValue( 'req' ) );
-
-        oxTestModules::addFunction("oxutils", "seoIsActive", "{return false;}");
-        $this->assertEquals($oCfg->getShopCurrentURL( 0 ).'req', $oV->getLink());
-        $this->assertEquals($oCfg->getShopCurrentURL( 0 ).'req', $oV->getLink(0));
-        $this->assertEquals($oCfg->getShopCurrentURL( 1 ).'req&amp;lang=1', $oV->getLink(1));
-
-        oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
-        $this->assertEquals($oCfg->getShopCurrentURL( 0 ).'req', $oV->getLink());
-        $this->assertEquals($oCfg->getShopCurrentURL( 0 ).'req', $oV->getLink(0));
-        $this->assertEquals($oCfg->getShopCurrentURL( 1 ).'req&amp;lang=1', $oV->getLink(1));
-
-        $oV = $this->getMock( 'oxubase', array( '_getRequestParams', '_getSeoRequestParams' ) );
-        $oV->expects( $this->any() )->method( '_getRequestParams' )->will( $this->returnValue( 'cl=contact' ) );
-        $oV->expects( $this->any() )->method( '_getSeoRequestParams' )->will( $this->returnValue( 'cl=contact' ) );
-
-        $this->assertEquals($oCfg->getShopURL( ).'kontakt/', $oV->getLink());
-        $this->assertEquals($oCfg->getShopURL( ).'kontakt/', $oV->getLink(0));
-        $this->assertEquals($oCfg->getShopURL( ).'en/contact/', $oV->getLink(1));
+        $oConfig = $this->getConfig();
+        $oConfig->setConfigParam('blSeoMode', true);
 
         $oV = $this->getMock( 'oxubase', array( '_getRequestParams', '_getSubject' ) );
-        $oV->expects( $this->any() )->method( '_getRequestParams' )->will( $this->returnValue( 'cl=contact' ) );
         $oArt = new oxArticle();
             $oArt->loadInLang( 1, '1126' );
             $sExp    = "Geschenke/Bar-Equipment/Bar-Set-ABSINTH.html";
@@ -1160,13 +1137,17 @@ class Unit_Views_oxubaseTest extends OxidTestCase
 
         $oV->expects( $this->any() )->method( '_getSubject' )->will( $this->returnValue( $oArt ) );
 
-        $this->assertEquals( $oCfg->getShopURL().$sExp, $oV->getLink());
-        $this->assertEquals( $oCfg->getShopURL().$sExp, $oV->getLink(0));
-        $this->assertEquals( $oCfg->getShopURL().$sExpEng, $oV->getLink(1));
+        $this->assertEquals( $oConfig->getShopURL().$sExp, $oV->getLink());
+        $this->assertEquals( $oConfig->getShopURL().$sExp, $oV->getLink(0));
+        $this->assertEquals( $oConfig->getShopURL().$sExpEng, $oV->getLink(1));
+    }
 
-        // set different link type, and check if it is preserved in both languages
+    public function testGetLink_SeoIsOnProductPageFromManufacturerList()
+    {
+        $oConfig = $this->getConfig();
+        $oConfig->setConfigParam('blSeoMode', true);
+
         $oV = $this->getMock( 'oxubase', array( '_getRequestParams', '_getSubject' ) );
-        $oV->expects( $this->any() )->method( '_getRequestParams' )->will( $this->returnValue( 'cl=contact' ) );
         $oArt = new oxArticle();
         $oArt->setLinkType(OXARTICLE_LINKTYPE_MANUFACTURER);
             $oArt->loadInLang( 1, '1964' );
@@ -1175,9 +1156,50 @@ class Unit_Views_oxubaseTest extends OxidTestCase
 
         $oV->expects( $this->any() )->method( '_getSubject' )->will( $this->returnValue( $oArt ) );
 
-        $this->assertEquals( $oCfg->getShopURL().$sVndExp, $oV->getLink());
-        $this->assertEquals( $oCfg->getShopURL().$sVndExp, $oV->getLink(0));
-        $this->assertEquals( $oCfg->getShopURL().$sVndExpEng, $oV->getLink(1));
+        $this->assertEquals( $oConfig->getShopURL().$sVndExp, $oV->getLink());
+        $this->assertEquals( $oConfig->getShopURL().$sVndExp, $oV->getLink(0));
+        $this->assertEquals( $oConfig->getShopURL().$sVndExpEng, $oV->getLink(1));
+    }
+
+    public function testGetLink_SeiIsOnPageWithoutSeoURL()
+    {
+        $oConfig = $this->getConfig();
+        $oConfig->setConfigParam('blSeoMode', true);
+
+        $oV = $this->getMock( 'oxubase', array( '_getRequestParams' ) );
+        $oV->expects( $this->any() )->method( '_getRequestParams' )->will( $this->returnValue( 'req' ) );
+
+        $this->assertEquals($oConfig->getShopCurrentURL( 0 ).'req', $oV->getLink());
+        $this->assertEquals($oConfig->getShopCurrentURL( 0 ).'req', $oV->getLink(0));
+        $this->assertEquals($oConfig->getShopCurrentURL( 1 ).'req&amp;lang=1', $oV->getLink(1));
+    }
+
+    public function testGetLink_SeoIsOnContactPage()
+    {
+        $oConfig = $this->getConfig();
+        $oConfig->setConfigParam('blSeoMode', true);
+
+        $oV = $this->getMock( 'oxubase', array( '_getRequestParams', '_getSeoRequestParams' ) );
+        $oV->expects( $this->any() )->method( '_getRequestParams' )->will( $this->returnValue( 'cl=contact' ) );
+        $oV->expects( $this->any() )->method( '_getSeoRequestParams' )->will( $this->returnValue( 'cl=contact' ) );
+
+        $this->assertEquals($oConfig->getShopURL( ).'kontakt/', $oV->getLink());
+        $this->assertEquals($oConfig->getShopURL( ).'kontakt/', $oV->getLink(0));
+        $this->assertEquals($oConfig->getShopURL( ).'en/contact/', $oV->getLink(1));
+    }
+
+
+    public function testGetLink_SeoIsOff()
+    {
+        $oConfig = $this->getConfig();
+        $oConfig->setConfigParam('blSeoMode', false);
+
+        $oV = $this->getMock( 'oxubase', array( '_getRequestParams' ) );
+        $oV->expects( $this->any() )->method( '_getRequestParams' )->will( $this->returnValue( 'req' ) );
+
+        $this->assertEquals($oConfig->getShopCurrentURL( 0 ).'req', $oV->getLink());
+        $this->assertEquals($oConfig->getShopCurrentURL( 0 ).'req', $oV->getLink(0));
+        $this->assertEquals($oConfig->getShopCurrentURL( 1 ).'req&amp;lang=1', $oV->getLink(1));
     }
 
     public function testLoadCurrency()

@@ -529,6 +529,8 @@ class Unit_Core_oxArticleTest extends OxidTestCase
      */
     public function testGetSqlActiveSnippetParentProductStockIsNegativeVariantsWithPositiveStockAreBuyable()
     {
+        $this->markTestSkipped("Skipped due to #4822 is not fixed yet");
+
         $sArticleId = '_testArticleId';
         $sShopId    = $this->getConfig()->getShopId();
 

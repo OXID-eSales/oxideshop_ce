@@ -1204,7 +1204,7 @@ class Unit_Views_oxubaseTest extends OxidTestCase
 
     public function testLoadCurrency()
     {
-        $oView = $this->getProxyClass( 'oxubase' );
+        $oView = new oxUbase();
         $this->setConfigParam( 'bl_perfLoadCurrency', true );
 
         $this->assertTrue( $oView->loadCurrency() );
@@ -1212,7 +1212,7 @@ class Unit_Views_oxubaseTest extends OxidTestCase
 
     public function testDontShowEmptyCategories()
     {
-        $oView = $this->getProxyClass( 'oxubase' );
+        $oView = new oxUbase();
         $this->setConfigParam( 'blDontShowEmptyCategories', true );
 
         $this->assertTrue( $oView->dontShowEmptyCategories() );
@@ -1220,7 +1220,7 @@ class Unit_Views_oxubaseTest extends OxidTestCase
 
     public function testIsLanguageLoaded()
     {
-        $oView = $this->getProxyClass( 'oxubase' );
+        $oView = new oxUbase();
         $this->setConfigParam( 'bl_perfLoadLanguages', true );
 
         $this->assertTrue( $oView->isLanguageLoaded() );
@@ -1228,7 +1228,7 @@ class Unit_Views_oxubaseTest extends OxidTestCase
 
     public function testGetRssLinks()
     {
-        $oView = $this->getProxyClass( 'oxubase' );
+        $oView = new oxUbase();
         $oView->addRssFeed('testTitle', 'testUrl', 'test');
         $aRssLinks['test'] = array('title'=>'testTitle', 'link' => 'testUrl');
         $this->assertEquals( $aRssLinks, $oView->getRssLinks() );
@@ -1236,21 +1236,21 @@ class Unit_Views_oxubaseTest extends OxidTestCase
 
     public function testIsSortingActive()
     {
-        $oView = $this->getProxyClass( 'oxubase' );
+        $oView = new oxUbase();
         $oView->prepareSortColumns();
         $this->assertNull( $oView->isSortingActive() );
     }
 
     public function testGetSortColumns()
     {
-        $oView = $this->getProxyClass( 'oxubase' );
+        $oView = new oxUbase();
         $oView->prepareSortColumns();
         $this->assertEquals( modConfig::getInstance()->getConfigParam( 'aSortCols' ), $oView->getSortColumns() );
     }
 
     public function testGetListOrderByAndListOrderDirection()
     {
-        $oView = $this->getProxyClass( 'oxubase' );
+        $oView = new oxUbase();
         $this->setRequestParam( 'cnid', 'xxx' );
         $this->setConfigParam( 'aSortCols', array('oxid', 'oxprice') );
 
@@ -1262,14 +1262,14 @@ class Unit_Views_oxubaseTest extends OxidTestCase
 
     public function testGetSetMenueList()
     {
-        $oView = $this->getProxyClass( 'oxubase' );
+        $oView = new oxUbase();
         $oView->setMenueList( 'testmenue' );
         $this->assertEquals( 'testmenue', $oView->getMenueList() );
     }
 
     public function testGetSetActiveCategory()
     {
-        $oView = $this->getProxyClass( 'oxubase' );
+        $oView = new oxUbase();
         $oView->setActiveCategory( 'testcat' );
         $this->assertEquals( 'testcat', $oView->getActiveCategory() );
     }
@@ -1311,7 +1311,7 @@ class Unit_Views_oxubaseTest extends OxidTestCase
     public function testGetActiveLangAbbrWhenDisabledInConfig()
     {
         $this->setConfigParam( 'bl_perfLoadLanguages', false );
-        $oView = $this->getProxyClass( 'oxubase' );
+        $oView = new oxUbase();
         $this->assertNull( $oView->getActiveLangAbbr() );
     }
 
@@ -1714,29 +1714,6 @@ class Unit_Views_oxubaseTest extends OxidTestCase
         $this->assertEquals( 'testcattree', $oView->getSearchCatTree() );
     }
 
-    /*
-    public function testSetGetNewsSubscribed()
-    {
-        $oView = $this->getProxyClass( 'oxubase' );
-        $oView->setNewsSubscribed( true );
-        $this->assertTrue( $oView->isNewsSubscribed() );
-    }
-
-    public function testSetGetShowShipAddress()
-    {
-        $oView = $this->getProxyClass( 'oxubase' );
-        $oView->setShowShipAddress( true );
-        $this->assertTrue( $oView->showShipAddress() );
-    }
-
-
-    public function testSetGetDelAddress()
-    {
-        $oView = $this->getProxyClass( 'oxubase' );
-        $oView->setDelAddress( "testaddress" );
-        $this->assertEquals( "testaddress", $oView->getDelAddress() );
-    }*/
-
 
 
 
@@ -1956,42 +1933,42 @@ class Unit_Views_oxubaseTest extends OxidTestCase
 
     public function testGetActPage()
     {
-        $oUbase = $this->getProxyClass( 'oxubase' );
+        $oUBase = new oxUbase();
         $this->setRequestParam( "pgNr", 2 );
 
-        $this->assertEquals( 2, $oUbase->getActPage() );
+        $this->assertEquals( 2, $oUBase->getActPage() );
     }
 
     public function testGetActPageIfBelowZero()
     {
-        $oUbase = $this->getProxyClass( 'oxubase' );
+        $oUBase = new oxUbase();
         $this->setRequestParam( "pgNr", -1 );
 
-        $this->assertEquals( 0, $oUbase->getActPage() );
+        $this->assertEquals( 0, $oUBase->getActPage() );
     }
 
     public function testSetGetRootCatChanged()
     {
-        $oUbase = $this->getProxyClass( 'oxubase' );
-        $oUbase->setRootCatChanged( true );
+        $oUBase = new oxUbase();
+        $oUBase->setRootCatChanged( true );
 
-        $this->assertTrue( $oUbase->isRootCatChanged() );
+        $this->assertTrue( $oUBase->isRootCatChanged() );
     }
 
     public function testGetInvoiceAddress()
     {
-        $oUbase = $this->getProxyClass( 'oxubase' );
+        $oUBase = new oxUbase();
         $this->setRequestParam( 'invadr', 'testAddress' );
 
-        $this->assertEquals( 'testAddress', $oUbase->getInvoiceAddress() );
+        $this->assertEquals( 'testAddress', $oUBase->getInvoiceAddress() );
     }
 
     public function testGetDeliveryAddress()
     {
-        $oUbase = $this->getProxyClass( 'oxubase' );
+        $oUBase = new oxUbase();
         $this->setRequestParam( 'deladr', 'testAddress' );
 
-        $this->assertEquals( 'testAddress', $oUbase->getDeliveryAddress() );
+        $this->assertEquals( 'testAddress', $oUBase->getDeliveryAddress() );
     }
 
     /**
@@ -1999,47 +1976,47 @@ class Unit_Views_oxubaseTest extends OxidTestCase
      */
     public function testSetDeliveryAddress()
     {
-        $oUbase = new oxubase();
+        $oUBase = new oxubase();
         $aDelAddress = array('address' => 'TestAddress');
-        $oUbase->setDeliveryAddress($aDelAddress);
+        $oUBase->setDeliveryAddress($aDelAddress);
 
-        $this->assertEquals( $aDelAddress, $oUbase->getDeliveryAddress() );
+        $this->assertEquals( $aDelAddress, $oUBase->getDeliveryAddress() );
     }
 
     public function testSetGetInvoiceAddress()
     {
-        $oUbase = $this->getProxyClass( 'oxubase' );
+        $oUBase = new oxUbase();
         $this->setRequestParam( 'invadr', 'testAddress' );
-        $oUbase->setInvoiceAddress('testAddress1');
+        $oUBase->setInvoiceAddress('testAddress1');
 
-        $this->assertEquals( 'testAddress1', $oUbase->getInvoiceAddress() );
+        $this->assertEquals( 'testAddress1', $oUBase->getInvoiceAddress() );
     }
 
     public function testGetActiveUsername()
     {
-        $oUbase = $this->getProxyClass( 'oxubase' );
+        $oUBase = new oxUbase();
         $this->setRequestParam( 'lgn_usr', 'testEmail' );
 
-        $this->assertEquals( 'testEmail', $oUbase->getActiveUsername() );
+        $this->assertEquals( 'testEmail', $oUBase->getActiveUsername() );
     }
 
     public function testGetActiveUsernameFromSession()
     {
         $oUser = new oxUser();
         $oUser->oxuser__oxusername = new oxField( 'testEmail' );
-        $oUbase = $this->getMock( "oxubase", array( "getUser" ) );
-        $oUbase->expects( $this->once() )->method( 'getUser' )->will($this->returnValue($oUser));
+        $oUBase = $this->getMock( "oxubase", array( "getUser" ) );
+        $oUBase->expects( $this->once() )->method( 'getUser' )->will($this->returnValue($oUser));
         $this->setRequestParam( 'lgn_usr', false );
 
-        $this->assertEquals( 'testEmail', $oUbase->getActiveUsername() );
+        $this->assertEquals( 'testEmail', $oUBase->getActiveUsername() );
     }
 
     public function testGetWishlistUserId()
     {
-        $oUbase = $this->getProxyClass( 'oxubase' );
+        $oUBase = new oxUbase();
         $this->setRequestParam( 'wishid', 'testId' );
 
-        $this->assertEquals( 'testId', $oUbase->getWishlistUserId() );
+        $this->assertEquals( 'testId', $oUBase->getWishlistUserId() );
     }
 
     /**

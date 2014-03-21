@@ -1,4 +1,5 @@
 [{capture append="oxidBlock_pageBody"}]
+    [{assign var="template_title" value=$oView->getTitle() }]
     [{if $oView->showRDFa()}]
         [{ include file="rdfa/rdfa.tpl" }]
     [{/if}]
@@ -36,13 +37,14 @@
             [{/if}]
             <div id="incVatMessage[{$tsBadge}]">
                 [{if $oView->isVatIncluded()}]
-                    * <span class="deliveryInfo">[{ oxmultilang ident="PLUS_SHIPPING" }]<a href="[{ $oCont->getLink() }]" rel="nofollow">[{ oxmultilang ident="PLUS_SHIPPING2" }]</a></span>
+                    * <span class="deliveryInfo">[{oxmultilang ident="PLUS_SHIPPING"}]<a href="[{$oCont->getLink()}]" rel="nofollow">[{oxmultilang ident="PLUS_SHIPPING2"}]</a></span>
                 [{else}]
-                    * <span class="deliveryInfo">[{ oxmultilang ident="PLUS" }]<a href="[{ $oCont->getLink() }]" rel="nofollow">[{ oxmultilang ident="PLUS_SHIPPING2" }]</a></span>
+                    * <span class="deliveryInfo">[{oxmultilang ident="PLUS"}]<a href="[{$oCont->getLink()}]" rel="nofollow">[{oxmultilang ident="PLUS_SHIPPING2"}]</a></span>
                 [{/if}]
             </div>
-        [{/oxifcontent }]
+        [{/oxifcontent}]
         [{/block}]
     [{/if}]
+    [{insert name="oxid_tracker" title=$template_title }]
 [{/capture}]
 [{include file="layout/base.tpl"}]

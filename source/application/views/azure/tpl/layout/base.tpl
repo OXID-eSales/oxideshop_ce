@@ -1,17 +1,7 @@
 [{* Important ! render page head and body to collect scripts and styles *}]
 [{capture append="oxidBlock_pageHead"}]
     <meta http-equiv="Content-Type" content="text/html; charset=[{$oView->getCharSet()}]">
-
-    [{assign var="_sMetaTitlePrefix" value=$oView->getTitlePrefix() }]
-    [{assign var="_sMetaTitleSuffix" value=$oView->getTitleSuffix() }]
-    [{assign var="_sMetaTitlePageSuffix" value=$oView->getTitlePageSuffix() }]
-    [{assign var="_sMetaTitle" value=$oView->getTitle() }]
-    [{if !$_sMetaTitle }]
-        [{assign var="_sMetaTitle" value=$template_title }]
-    [{/if}]
-
-    <title>[{ $_sMetaTitlePrefix }][{if $_sMetaTitlePrefix && $_sMetaTitle }] | [{/if}][{$_sMetaTitle|strip_tags}][{if $_sMetaTitleSuffix && ($_sMetaTitlePrefix || $_sMetaTitle) }] | [{/if}][{$_sMetaTitleSuffix}] [{if $_sMetaTitlePageSuffix }] | [{ $_sMetaTitlePageSuffix }] [{/if}]</title>
-
+    <title>[{$oView->getPageTitle()}]</title>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
 
     [{if $oView->noIndex() == 1 }]
@@ -41,12 +31,11 @@
         [{/if}]
     [{/if}]
 
-
     [{assign var="canonical_url" value=$oView->getCanonicalUrl()}]
     [{if $canonical_url }]
-        <link rel="canonical" href="[{ $canonical_url }]">
+        <link rel="canonical" href="[{$canonical_url}]">
     [{/if}]
-    <link rel="shortcut icon" href="[{ $oViewConf->getImageUrl('favicon.ico') }]">
+    <link rel="shortcut icon" href="[{$oViewConf->getImageUrl('favicon.ico')}]">
 
     [{block name="base_style"}]
         [{oxstyle include="css/reset.css"}]
@@ -101,17 +90,15 @@
         [{oxscript add="$( 'hr.debugBlocksStart' ).oxBlockDebug();"}]
     [{/if}]
 
-    [{ oxscript }]
-    [{ oxid_include_dynamic file="widget/dynscript.tpl" }]
+    [{oxscript}]
+    [{oxid_include_dynamic file="widget/dynscript.tpl"}]
 
     [{foreach from=$oxidBlock_pageScript item="_block"}]
         [{$_block}]
     [{/foreach}]
 
     <!--[if (gte IE 6)&(lte IE 8)]>
-        <script type="text/javascript" src="[{ $oViewConf->getResourceUrl('js/libs/IE9.js') }]"></script>
+        <script type="text/javascript" src="[{$oViewConf->getResourceUrl('js/libs/IE9.js')}]"></script>
     <![endif]-->
-
-
 </body>
 </html>

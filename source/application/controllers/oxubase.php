@@ -1583,6 +1583,18 @@ class oxUBase extends oxView
     }
 
 
+    public function getPageTitle()
+    {
+        $sTitle = '';
+
+        $sTitle .= $this->getTitlePrefix();
+        $sTitle .= ( $this->getTitle() ) ? ' | ' . $this->getTitle() : '';
+        $sTitle .= ($this->getTitlePrefix() ) ?  ' | ' . $this->getTitlePrefix(): '';
+        $sTitle .= ($this->getTitlePageSuffix() ) ? ' | ' . $this->getTitlePageSuffix(): '';
+
+        return $sTitle;
+    }
+
 
     /**
      * returns object, associated with current view.

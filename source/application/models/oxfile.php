@@ -245,7 +245,6 @@ class oxFile extends oxBase
      */
     protected function _uploadFile( $sSource, $sTarget )
     {
-        $blDone = false;
         $blDone = move_uploaded_file( $sSource, $sTarget );
 
         if ( $blDone ) {
@@ -275,17 +274,17 @@ class oxFile extends oxBase
     /**
      * Deletes oxFile record from DB, removes orphan files.
      *
-     * @param string $sOXID default null
+     * @param string $sOxId default null
      *
      * @return bool
      */
-    public function delete( $sOXID = null )
+    public function delete( $sOxId = null )
     {
-        $sOXID = $sOXID ? $sOXID : $this->getId();
+        $sOxId = $sOxId ? $sOxId : $this->getId();
 
-        $this->load($sOXID);
+        $this->load($sOxId);
         // if record cannot be delete, abort deletion
-        if ($blDeleted = parent::delete( $sOXID ) ) {
+        if ($blDeleted = parent::delete( $sOxId ) ) {
             $this->_deleteFile( );
         }
 
@@ -326,8 +325,6 @@ class oxFile extends oxBase
 
     /**
      * Supplies the downloadable file for client and exits
-     *
-     * @return null
      */
     public function download()
     {
@@ -335,22 +332,30 @@ class oxFile extends oxBase
         $sFileName = $this->_getFilenameForUrl();
         $sFileLocations = $this->getStoreLocation();
 
-        if (!file_exists($sFileLocations)) {
+        if (  !$this->exist() ) {
             throw new oxException( 'EXCEPTION_NOFILE' );
         }
-
-        $iFilesize = filesize($sFileLocations);
 
         $oUtils->setHeader("Pragma: public");
         $oUtils->setHeader("Expires: 0");
         $oUtils->setHeader("Cache-Control: must-revalidate, post-check=0, pre-check=0, private");
         $oUtils->setHeader('Content-Disposition: attachment;filename=' . $sFileName);
         $oUtils->setHeader("Content-Type: application/octet-stream");
-        if ($iFilesize) {
-            $oUtils->setHeader("Content-Length: " . $iFilesize);
+        if ( $iFileSize = $this->getSize() ) {
+            $oUtils->setHeader("Content-Length: " . $iFileSize);
         }
         readfile( $sFileLocations );
         $oUtils->showMessageAndExit( null );
+    }
+
+    /**
+     * Check if file exist
+     *
+     * @return bool
+     */
+    public function exist()
+    {
+        return file_exists( $this->getStoreLocation() );
     }
 
     /**
@@ -452,10 +457,9 @@ class oxFile extends oxBase
      */
     public function getSize()
     {
-        $iSize = null;
-        $sFilename = $this->getStoreLocation();
-        if ( file_exists( $sFilename ) ) {
-            $iSize = filesize( $sFilename );
+        $iSize = 0;
+        if ( $this->exist() ) {
+            $iSize = filesize( $this->getStoreLocation() );
         }
         return $iSize;
     }

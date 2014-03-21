@@ -257,4 +257,9 @@ class oxOrderFile extends oxBase
         return false;
     }
 
+    public function getFileId()
+    {
+        return $this->oxorderfiles__oxfileid->value;
+    }
+
 }

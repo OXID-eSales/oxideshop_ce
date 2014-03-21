@@ -201,4 +201,18 @@ class ForgotPwd extends oxUBase
 
         return $aPaths;
     }
+
+    public function getTitle()
+    {
+        $sTitle = 'FORGOT_PASSWORD';
+
+        if ( $this->showUpdateScreen() ){
+            $sTitle = 'NEW_PASSWORD';
+        } elseif ( $this->updateSuccess() ){
+            $sTitle = 'CHANGE_PASSWORD';
+        }
+
+        return oxRegistry::getLang()->translateString( $sTitle, oxRegistry::getLang()->getBaseLanguage(), false );
+    }
+
 }

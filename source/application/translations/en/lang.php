@@ -752,6 +752,12 @@ $aLang = array(
 'PAGE_TITLE_WISHLIST'                                         => 'Wishlist',
 'PAGE_TITLE_CONTACT'                                          => 'Contact',
 'PAGE_TITLE_LINKS'                                            => 'Links',
+'PAGE_TITLE_SEARCH'                                           => 'Search',
+'PAGE_TITLE_TAGS'                                             => 'Tags',
+'PAGE_TITLE_CLEARCOOKIES'                                     => 'Information about Cookies',
+'PAGE_TITLE_NEWS'                                             => 'News',
+'PAGE_TITLE_SUGGEST'                                          => 'Recommend product',
+
 'WISHLIST_PRODUCTS'                                           => 'These products are on the wish list of %s. If you want to please him/her, purchase one or multiple of these products.',
 
 

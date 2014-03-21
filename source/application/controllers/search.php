@@ -183,7 +183,7 @@ class Search extends oxUBase
     }
 
     /**
-     * Forms serach navigation URLs, executes parent::render() and
+     * Forms search navigation URLs, executes parent::render() and
      * returns name of template to render search::_sThisTemplate.
      *
      * @return  string  current template file name
@@ -210,7 +210,7 @@ class Search extends oxUBase
 
     /**
      * Iterates through list articles and performs list view specific tasks:
-     *  - sets type of link whicn needs to be generated (Manufacturer link)
+     *  - sets type of link which needs to be generated (Manufacturer link)
      *
      * @return null
      */
@@ -495,5 +495,20 @@ class Search extends oxUBase
     public function getArticleCount()
     {
         return $this->_iAllArtCnt;
+    }
+
+    /**
+     * Return page title
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        $sTitle = '';
+        $sTitle .= $this->getArticleCount();
+        $sTitle .= ' '. oxRegistry::getLang()->translateString( 'HITS_FOR', oxRegistry::getLang()->getBaseLanguage(), false ); ;
+        $sTitle .= ' '. $this->getSearchParamForHtml();
+
+        return $sTitle;
     }
 }

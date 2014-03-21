@@ -754,6 +754,12 @@ $aLang = array(
 'PAGE_TITLE_WISHLIST'                                         => 'Merkzettel',
 'PAGE_TITLE_CONTACT'                                          => 'Kontakt',
 'PAGE_TITLE_LINKS'                                            => 'Links',
+'PAGE_TITLE_SEARCH'                                           => 'Suche',
+'PAGE_TITLE_TAGS'                                             => 'Tags',
+'PAGE_TITLE_CLEARCOOKIES'                                     => 'Information über Cookies',
+'PAGE_TITLE_NEWS'                                             => 'News',
+'PAGE_TITLE_SUGGEST'                                          => 'Artikel weiterempfehlen',
+
 'YOUR_TEAM'                                                   => 'Ihr %s Team',
 'WISHLIST_PRODUCTS'                                           => 'Diese Artikel hat sich %s gewünscht. Wenn Sie ihr/ihm eine Freude machen wollen, dann kaufen Sie einen oder mehrere von diesen Artikeln.',
 

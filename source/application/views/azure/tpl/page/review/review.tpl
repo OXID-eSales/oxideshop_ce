@@ -1,5 +1,3 @@
-[{assign var="template_title" value="YOUR_REVIEW"|oxmultilangassign }]
-
 [{capture append="oxidBlock_content"}]
 
     [{if $oView->getProduct()}]

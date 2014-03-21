@@ -2496,15 +2496,15 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
     public function getPageTitleParts()
     {
         return array(
-                array( array( 'prefix' => 'Prefix', 'title' => 'Title', 'suffix' => 'Suffix', 'pageSuffix' => 'PageSuffix' ), 'Prefix | Title | Suffix | PageSuffix' ),
-                array( array( 'prefix' => 'Prefix', 'title' => 'Title', 'suffix' => 'Suffix', 'pageSuffix' => '' ), 'Prefix | Title | Suffix' ),
-                array( array( 'prefix' => 'Prefix', 'title' => '', 'suffix' => 'Suffix', 'pageSuffix' => '' ), 'Prefix | Suffix' ),
-                array( array( 'prefix' => '', 'title' => 'Title', 'suffix' => 'Suffix', 'pageSuffix' => '' ), 'Title | Suffix' ),
-                array( array( 'prefix' => 'Prefix', 'title' => 'Title', 'suffix' => '', 'pageSuffix' => '' ), 'Prefix | Title' ),
-                array( array( 'prefix' => '', 'title' => 'Title', 'suffix' => '', 'pageSuffix' => '' ), 'Title' ),
-                array( array( 'prefix' => '', 'title' => '', 'suffix' => '', 'pageSuffix' => ''), '' ),
-                array( array( 'prefix' => 'Prefix', 'title' => null, 'suffix' => '', 'pageSuffix' => '' ), 'Prefix' ),
-                array( array( 'prefix' => 'Prefix', 'title' => false, 'suffix' => '', 'pageSuffix' => '' ), 'Prefix' ),
+            array( array( 'prefix' => 'Prefix', 'title' => 'Title', 'suffix' => 'Suffix', 'pageSuffix' => 'PageSuffix' ), 'Prefix | Title | Suffix | PageSuffix' ),
+            array( array( 'prefix' => 'Prefix', 'title' => 'Title', 'suffix' => 'Suffix', 'pageSuffix' => '' ), 'Prefix | Title | Suffix' ),
+            array( array( 'prefix' => 'Prefix', 'title' => '', 'suffix' => 'Suffix', 'pageSuffix' => '' ), 'Prefix | Suffix' ),
+            array( array( 'prefix' => '', 'title' => 'Title', 'suffix' => 'Suffix', 'pageSuffix' => '' ), 'Title | Suffix' ),
+            array( array( 'prefix' => 'Prefix', 'title' => 'Title', 'suffix' => '', 'pageSuffix' => '' ), 'Prefix | Title' ),
+            array( array( 'prefix' => '', 'title' => 'Title', 'suffix' => '', 'pageSuffix' => '' ), 'Title' ),
+            array( array( 'prefix' => '', 'title' => '', 'suffix' => '', 'pageSuffix' => ''), '' ),
+            array( array( 'prefix' => 'Prefix', 'title' => null, 'suffix' => '', 'pageSuffix' => '' ), 'Prefix' ),
+            array( array( 'prefix' => 'Prefix', 'title' => false, 'suffix' => '', 'pageSuffix' => '' ), 'Prefix' ),
         );
     }
 

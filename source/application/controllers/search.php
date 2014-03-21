@@ -139,7 +139,7 @@ class Search extends oxUBase
 
         $myConfig = $this->getConfig();
 
-        // #1184M - specialchar search
+        // #1184M - special char search
         $sSearchParamForQuery = oxConfig::getParameter( 'searchparam', true );
 
         // searching in category ?
@@ -266,7 +266,7 @@ class Search extends oxUBase
      * @param string $sSortBy    sort field
      * @param string $sSortOrder sort order
      *
-     * @deprecated since v4.7.3/5.0.3 (2013-01-07); dublicated code
+     * @deprecated since v4.7.3/5.0.3 (2013-01-07); duplicated code
      *
      * @return null
      */
@@ -280,7 +280,7 @@ class Search extends oxUBase
      *
      * @param string $sCnid sortable item id
      *
-     * @deprecated since v4.7.3/5.0.3 (2013-01-07); dublicated code
+     * @deprecated since v4.7.3/5.0.3 (2013-01-07); duplicated code
      *
      * @return string
      */
@@ -468,7 +468,7 @@ class Search extends oxUBase
     }
 
     /**
-     * Returns cofig prameters blShowListDisplayType value
+     * Returns config parameters blShowListDisplayType value
      *
      * @return boolean
      */

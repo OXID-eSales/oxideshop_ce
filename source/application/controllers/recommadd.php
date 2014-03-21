@@ -68,5 +68,11 @@ class RecommAdd extends Details
         return $this->_aUserRecommList;
     }
 
+    public function getTitle()
+    {
+        $oProduct = $this->getProduct();
+        return $oProduct->oxarticles__oxtitle->value . ' ' . $oProduct->oxarticles__oxvarselect->value;
+    }
+
 
 }

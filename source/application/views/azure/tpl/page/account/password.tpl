@@ -1,5 +1,4 @@
 [{capture append="oxidBlock_content"}]
-[{assign var="template_title" value="CHANGE_PASSWORD"|oxmultilangassign }]
 [{if $oView->isPasswordChanged() }]
      <div class="status success corners">
       [{ oxmultilang ident="MESSAGE_PASSWORD_CHANGED" }]

@@ -4,11 +4,10 @@
     [{/if}]
 [{/capture}]
 [{capture append="oxidBlock_content"}]
-    [{assign var="template_title" value="OPEN_ACCOUNT"|oxmultilangassign }]
     [{if $oView->isActive('PsLogin') }]
         [{include file="message/errors.tpl" }]
     [{/if}]
-    <h1 id="openAccHeader" class="pageHead">[{ oxmultilang ident="OPEN_ACCOUNT" }]</h1>
+    <h1 id="openAccHeader" class="pageHead">[{oxmultilang ident="OPEN_ACCOUNT"}]</h1>
     [{include file="form/register.tpl"}]
 [{/capture}]
 [{if $oView->isActive('PsLogin') }]

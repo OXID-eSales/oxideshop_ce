@@ -1,9 +1,6 @@
 [{capture append="oxidBlock_content"}]
-[{assign var="template_title" value="ORDER_HISTORY"|oxmultilangassign}]
-<h1 class="pageHead">[{ oxmultilang ident="ORDER_HISTORY" }]</h1>
-
+<h1 class="pageHead">[{oxmultilang ident="ORDER_HISTORY"}]</h1>
 [{assign var=oOrders value=$oView->getOrderList()}]
-
 [{block name="account_order_history"}]
 [{if count($oOrders) > 0}]
 [{assign var=oArticleList value=$oView->getOrderArticleList()}]
@@ -14,7 +11,7 @@
                 <tr>
                     <td>
                         <dl>
-                            <dt title="[{ oxmultilang ident="ORDER_DATE" suffix="COLON" }]">
+                            <dt title="[{oxmultilang ident="ORDER_DATE" suffix="COLON"}]">
                                 <strong id="accOrderDate_[{$order->oxorder__oxordernr->value}]">[{ $order->oxorder__oxorderdate->value|date_format:"%d.%m.%Y" }]</strong>
                                 <span>[{ $order->oxorder__oxorderdate->value|date_format:"%H:%M:%S" }]</span>
                             </dt>
@@ -65,7 +62,7 @@
                                 <tr id="accOrderAmount_[{$order->oxorder__oxordernr->value}]_[{$smarty.foreach.testOrderItem.iteration}]">
                                   <td>
                                     [{if $oArticle->oxarticles__oxid->value && $oArticle->isVisible() }]
-                                        <a  id="accOrderLink_[{$order->oxorder__oxordernr->value}]_[{$smarty.foreach.testOrderItem.iteration}]" href="[{ $oArticle->getLink() }]">
+                                        <a  id="accOrderLink_[{$order->oxorder__oxordernr->value}]_[{$smarty.foreach.testOrderItem.iteration}]" href="[{$oArticle->getLink()}]">
                                     [{/if}]
                                         [{ $orderitem->oxorderarticles__oxtitle->value }] [{ $orderitem->oxorderarticles__oxselvariant->value }] <span class="amount"> - [{ $orderitem->oxorderarticles__oxamount->value }] [{oxmultilang ident="QNT"}]</span>
                                     [{if $oArticle->oxarticles__oxid->value && $oArticle->isVisible() }]</a>[{/if}]
@@ -100,10 +97,7 @@
   [{ oxmultilang ident="ORDER_EMPTY_HISTORY" }]
   [{/if}]
 [{/block}]
-[{insert name="oxid_tracker" title=$template_title }]
 [{/capture}]
-
-
 [{capture append="oxidBlock_sidebar"}]
     [{include file="page/account/inc/account_menu.tpl" active_link="orderhistory"}]
 [{/capture}]

@@ -57,5 +57,5 @@
         [{include file="page/details/inc/fullproductinfo.tpl"}]
     </div>
 </div>
-[{ insert name="oxid_tracker" title="PRODUCT_DETAILS"|oxmultilangassign product=$oDetailsProduct cpath=$oView->getCatTreePath() }]
+[{insert name="oxid_tracker" title="PRODUCT_DETAILS"|oxmultilangassign product=$oDetailsProduct cpath=$oView->getCatTreePath() }]
 [{oxscript widget=$oView->getClassName()}]

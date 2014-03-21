@@ -16,7 +16,6 @@
       <h1 class="pageHead">[{ oxmultilang ident="SUCCESS" }]</h1>
       [{ oxmultilang ident="MESSAGE_NEWSLETTER_SUBSCRIPTION_CANCELED" }]<br><br>
     [{/if}]
-    [{ insert name="oxid_tracker"}]
 [{/capture}]
 
 [{include file="layout/page.tpl"}]

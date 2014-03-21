@@ -31,7 +31,6 @@
     [{include file="widget/locator/listlocator.tpl" locator=$oView->getPageNavigationLimitedBottom() place="bottom"}]
   [{/if}]
   [{/block}]
-[{ insert name="oxid_tracker" title=$template_title }]
 [{/capture}]
 [{assign var="template_title" value="SEARCH"|oxmultilangassign}]
 

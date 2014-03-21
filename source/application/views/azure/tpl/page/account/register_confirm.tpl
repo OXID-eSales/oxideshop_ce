@@ -4,7 +4,6 @@
     <div class="box info">
       [{ oxmultilang ident="MESSAGE_ACCOUNT_REGISTRATION_CONFIRMED" }]
     </div>
-    [{insert name="oxid_tracker" title=$template_title}]
 [{/capture}]
 [{include file="layout/page.tpl" sidebar="Left"}]
 

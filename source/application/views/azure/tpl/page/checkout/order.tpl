@@ -239,7 +239,6 @@
             [{/if}]
         [{/block}]
     [{/block}]
-    [{insert name="oxid_tracker" title=$template_title}]
 [{/capture}]
 
 [{assign var="template_title" value="REVIEW_YOUR_ORDER"|oxmultilangassign}]

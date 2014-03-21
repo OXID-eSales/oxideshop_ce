@@ -25,7 +25,7 @@
                                 <ul class="content"></ul>
                             </div>
                         [{/foreach}]
-                    [{/if }]
+                    [{/if}]
                     [{if $iSubCategoriesCount%$_iCategoriesPerRow == 0}]
                     </li><li class="clear">
                     [{/if}]
@@ -34,7 +34,7 @@
                     <div class="box">
                         <h3>
                             <a id="moreSubCat_[{$smarty.foreach.MoreSubCat.iteration}]" href="[{ $category->getLink() }]">
-                                [{$category->oxcategories__oxtitle->value }][{ if $oView->showCategoryArticlesCount() && ($category->getNrOfArticles() > 0) }] ([{ $category->getNrOfArticles() }])[{/if}]
+                                [{$category->oxcategories__oxtitle->value }][{if $oView->showCategoryArticlesCount() && ($category->getNrOfArticles() > 0) }] ([{ $category->getNrOfArticles() }])[{/if}]
                             </a>
                         </h3>
                         [{* Top categories subcategories *}]
@@ -50,14 +50,14 @@
                                 [{foreach from=$category->getSubCats() item=subcategory}]
                                     [{if $subcategory->getIsVisible() }]
                                         [{* CMS subcategories  *}]
-                                        [{ foreach from=$subcategory->getContentCats() item=ocont name=MoreCms}]
+                                        [{foreach from=$subcategory->getContentCats() item=ocont name=MoreCms}]
                                             <li>
                                                 <a href="[{$ocont->getLink()}]"><strong>[{ $ocont->oxcontents__oxtitle->value }]</strong></a>
                                             </li>
-                                        [{/foreach }]
+                                        [{/foreach}]
                                         <li>
                                             <a href="[{ $subcategory->getLink() }]">
-                                                <strong>[{ $subcategory->oxcategories__oxtitle->value }]</strong>[{ if $oView->showCategoryArticlesCount() && ($subcategory->getNrOfArticles() > 0) }] ([{ $subcategory->getNrOfArticles() }])[{/if}]
+                                                <strong>[{ $subcategory->oxcategories__oxtitle->value }]</strong>[{if $oView->showCategoryArticlesCount() && ($subcategory->getNrOfArticles() > 0) }] ([{ $subcategory->getNrOfArticles() }])[{/if}]
                                             </a>
                                         </li>
                                     [{/if}]
@@ -84,10 +84,6 @@
         [{/foreach}]
         </li>
         </ul>
-
     [{/if}]
-    [{insert name="oxid_tracker"}]
 [{/capture}]
-
-
 [{include file="layout/page.tpl" sidebar="Left"}]

@@ -22,7 +22,6 @@
     [{else }]
         [{ oxmultilang ident="GIFT_REGISTRY_EMPTY" }]
     [{/if }]
-    [{ insert name="oxid_tracker" title=$template_title }]
 [{/capture}]
 [{capture append="oxidBlock_sidebar"}]
     [{include file="page/account/inc/account_menu.tpl" active_link="wishlist"}]

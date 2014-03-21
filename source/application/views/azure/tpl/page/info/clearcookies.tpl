@@ -6,7 +6,6 @@
             [{oxifcontent ident="oxcookiesexplanation" object="oCont"}]
                 [{$oCont->oxcontents__oxcontent->value}]
             [{/oxifcontent}]
-            [{ insert name="oxid_tracker" title=$template_title }]
         </p>
     </div>
 [{/capture}]

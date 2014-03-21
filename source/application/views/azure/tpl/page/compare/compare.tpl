@@ -113,7 +113,6 @@
   [{ oxmultilang ident="MESSAGE_SELECT_AT_LEAST_ONE_PRODUCT" }]
 [{/if}]
 </div>
-[{ insert name="oxid_tracker" title=$template_title }]
 [{/capture}]
 
 [{if !$oxcmp_user->oxuser__oxpassword->value}]

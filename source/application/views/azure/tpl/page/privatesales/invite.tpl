@@ -13,6 +13,5 @@
     [{else}]
         [{ oxmultilang ident="MESSAGE_INVITE_YOUR_FRIENDS_INVITATION_SENT" }]<br><br>
     [{/if}]
-    [{ insert name="oxid_tracker"}]
 [{/capture}]
 [{include file="layout/page.tpl" sidebar="Left"}]

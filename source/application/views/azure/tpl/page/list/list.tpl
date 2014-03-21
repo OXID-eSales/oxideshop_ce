@@ -46,7 +46,7 @@
             <ul class="subcatList clear">
                 <li>
                 [{foreach from=$oView->getSubCatList() item=category name=MoreSubCat}]
-                    [{ if $category->getContentCats() }]
+                    [{if $category->getContentCats() }]
                         [{foreach from=$category->getContentCats() item=ocont name=MoreCms}]
                             [{assign var="iSubCategoriesCount" value=$iSubCategoriesCount+1}]
                             <div class="box">
@@ -56,7 +56,7 @@
                             <ul class="content"></ul>
                             </div>
                         [{/foreach}]
-                    [{/if }]
+                    [{/if}]
                     [{if $iSubCategoriesCount%4 == 0}]
                     </li><li>
                     [{/if}]
@@ -66,7 +66,7 @@
                             <div class="box">
                                 <h3>
                                     <a id="moreSubCat_[{$smarty.foreach.MoreSubCat.iteration}]" href="[{ $category->getLink() }]">
-                                        [{$category->oxcategories__oxtitle->value }][{ if $oView->showCategoryArticlesCount() && ($category->getNrOfArticles() > 0) }] ([{ $category->getNrOfArticles() }])[{/if}]
+                                        [{$category->oxcategories__oxtitle->value }][{if $oView->showCategoryArticlesCount() && ($category->getNrOfArticles() > 0) }] ([{ $category->getNrOfArticles() }])[{/if}]
                                     </a>
                                 </h3>
                                 [{if $category->getHasVisibleSubCats()}]
@@ -74,20 +74,20 @@
                                         [{if $iconUrl}]
                                             <li class="subcatPic">
                                                 <a href="[{ $category->getLink() }]">
-                                                    <img src="[{$category->getIconUrl() }]" alt="[{ $category->oxcategories__oxtitle->value }]">
+                                                    <img src="[{$category->getIconUrl() }]" alt="[{$category->oxcategories__oxtitle->value}]">
                                                 </a>
                                             </li>
                                         [{/if}]
                                         [{foreach from=$category->getSubCats() item=subcategory}]
-                                            [{if $subcategory->getIsVisible() }]
-                                                [{ foreach from=$subcategory->getContentCats() item=ocont name=MoreCms}]
+                                            [{if $subcategory->getIsVisible()}]
+                                                [{foreach from=$subcategory->getContentCats() item=ocont name=MoreCms}]
                                                     <li>
                                                         <a href="[{$ocont->getLink()}]"><strong>[{ $ocont->oxcontents__oxtitle->value }]</strong></a>
                                                     </li>
-                                                [{/foreach }]
+                                                [{/foreach}]
                                                 <li>
                                                     <a href="[{ $subcategory->getLink() }]">
-                                                        <strong>[{ $subcategory->oxcategories__oxtitle->value }]</strong>[{ if $oView->showCategoryArticlesCount() && ($subcategory->getNrOfArticles() > 0) }] ([{ $subcategory->getNrOfArticles() }])[{/if}]
+                                                        <strong>[{ $subcategory->oxcategories__oxtitle->value }]</strong>[{if $oView->showCategoryArticlesCount() && ($subcategory->getNrOfArticles() > 0) }] ([{ $subcategory->getNrOfArticles() }])[{/if}]
                                                     </a>
                                                 </li>
                                              [{/if}]
@@ -120,9 +120,9 @@
     [{if $oView->getArticleList()|@count > 0}]
         <h1 class="pageHead">[{$oView->getTitle()}]
             [{assign var='rsslinks' value=$oView->getRssLinks() }]
-            [{ if $rsslinks.activeCategory}]
+            [{if $rsslinks.activeCategory}]
                 <a class="rss js-external" id="rssActiveCategory" href="[{$rsslinks.activeCategory.link}]" title="[{$rsslinks.activeCategory.title}]"><img src="[{$oViewConf->getImageUrl('rss.png')}]" alt="[{$rsslinks.activeCategory.title}]"><span class="FXgradOrange corners glowShadow">[{$rsslinks.activeCategory.title}]</span></a>
-            [{/if }]
+            [{/if}]
         </h1>
         <div class="listRefine clear bottomRound">
         [{* uncomment if want to use descriptions in locator
@@ -141,7 +141,5 @@
         [{include file="widget/locator/listlocator.tpl" locator=$oView->getPageNavigationLimitedBottom() place="bottom"}]
     [{/if}]
     [{/block}]
-
-    [{insert name="oxid_tracker"}]
 [{/capture}]
 [{include file="layout/page.tpl" sidebar="Left" tree_path=$oView->getTreePath()}]

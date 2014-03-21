@@ -19,7 +19,6 @@
         [{/if}]
     </ul>
     [{include file="form/contact.tpl"}]
-    [{ insert name="oxid_tracker" title=$template_title }]
 [{/capture}]
 
 [{include file="layout/page.tpl" sidebar="Left"}]

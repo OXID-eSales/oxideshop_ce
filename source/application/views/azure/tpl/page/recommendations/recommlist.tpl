@@ -56,6 +56,5 @@
         <h1 class="pageHead">[{$recommendation_head}]</h1>
         [{ include file="page/recommendations/inc/list.tpl"}]
     [{/if}]
-    [{ insert name="oxid_tracker"}]
 [{/capture}]
 [{include file="layout/page.tpl" sidebar="Left"}]

@@ -9,6 +9,5 @@
         <p>[{ oxmultilang ident="MESSAGE_READ_DETAILS" }] <a href="[{ $oCont->getLink() }]" rel="nofollow">[{ $oCont->oxcontents__oxtitle->value }]</a></p>
     [{/oxifcontent}]
     [{include file="form/suggest.tpl"}]
-    [{ insert name="oxid_tracker" title=$template_title }]
 [{/capture}]
 [{include file="layout/page.tpl" sidebar="Left"}]

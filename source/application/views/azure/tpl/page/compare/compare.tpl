@@ -1,13 +1,10 @@
 [{capture append="oxidBlock_content"}]
-[{assign var="template_title" value="PRODUCT_COMPARISON"|oxmultilangassign}]
-
 [{ $oView->setNoPaging() }]
-
 [{assign var="articleList" value=$oView->getCompArtList() }]
 [{assign var="atributeList" value=$oView->getAttributeList() }]
 [{assign var="currency" value=$oView->getActCurrency()}]
 
-<h1 id="productComparisonHeader" class="pageHead">[{$template_title}]</h1>
+<h1 id="productComparisonHeader" class="pageHead">[{$oView->getTitle()}]</h1>
 <div>
 [{if $oView->getCompareItemsCnt() > 0 }]
     [{oxscript include="js/libs/scrollpane/jscrollpane.min.js"}]
@@ -28,11 +25,11 @@
                             <td class="js-firstCol">&nbsp;</td>
                         </tr>
                         <tr>
-                            <td class="js-firstCol">[{ oxmultilang ident="PRODUCT_ATTRIBUTES" }]</td>
+                            <td class="js-firstCol">[{oxmultilang ident="PRODUCT_ATTRIBUTES" }]</td>
                         </tr>
                         [{foreach key=sAttrID from=$atributeList item=oAttrib name=CmpAttr}]
                         <tr>
-                            <td class="js-firstCol" id="cmpAttrTitle_[{$smarty.foreach.CmpAttr.iteration}]">[{ $oAttrib->title }]:</td>
+                            <td class="js-firstCol" id="cmpAttrTitle_[{$smarty.foreach.CmpAttr.iteration}]">[{$oAttrib->title}]:</td>
                         </tr>
                         [{/foreach}]
                     </table>
@@ -47,11 +44,11 @@
                                 [{if $oView->getCompareItemsCnt() > 1 }]
                                     <div class="lineBox clear">
                                     [{if !$product->hidePrev}]
-                                        <a id="compareLeft_[{ $product->oxarticles__oxid->value }]" rel="nofollow" href="[{ oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl="|cat:$oViewConf->getActiveClassName() params="fnc=moveleft&amp;aid=`$product->oxarticles__oxnid->value`&amp;pgNr="|cat:$oView->getActPage() }]" class="navigation movePrev">&laquo;</a>
+                                        <a id="compareLeft_[{ $product->oxarticles__oxid->value }]" rel="nofollow" href="[{oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl="|cat:$oViewConf->getActiveClassName() params="fnc=moveleft&amp;aid=`$product->oxarticles__oxnid->value`&amp;pgNr="|cat:$oView->getActPage() }]" class="navigation movePrev">&laquo;</a>
                                     [{/if}]
-                                    [{ oxmultilang ident="MOVE" }]
+                                    [{oxmultilang ident="MOVE" }]
                                     [{if !$product->hideNext}]
-                                        <a id="compareRight_[{ $product->oxarticles__oxid->value }]" rel="nofollow" href="[{ oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl="|cat:$oViewConf->getActiveClassName() params="fnc=moveright&amp;aid=`$product->oxarticles__oxnid->value`&amp;pgNr="|cat:$oView->getActPage() }]" class="navigation moveNext">&raquo;</a>
+                                        <a id="compareRight_[{ $product->oxarticles__oxid->value }]" rel="nofollow" href="[{oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl="|cat:$oViewConf->getActiveClassName() params="fnc=moveright&amp;aid=`$product->oxarticles__oxnid->value`&amp;pgNr="|cat:$oView->getActPage() }]" class="navigation moveNext">&raquo;</a>
                                     [{/if}]
                                     </div>
                                 [{/if}]
@@ -69,7 +66,7 @@
                                   <a id="towish_cmp_[{ $product->oxarticles__oxid->value }]_[{$smarty.foreach.testArt.iteration}]" href="[{ oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl="|cat:$oViewConf->getActiveClassName() params="aid=`$product->oxarticles__oxnid->value`&anid=`$product->oxarticles__oxnid->value`&amp;fnc=towishlist&amp;am=1"|cat:$oViewConf->getNavUrlParams() }]" rel="nofollow">[{ oxmultilang ident="GIFT_REGISTRY" }]</a>
                                   [{/if}]
                             [{/if *}]
-                                <form action="[{ $oViewConf->getSelfActionLink() }]" method="post">
+                                <form action="[{$oViewConf->getSelfActionLink() }]" method="post">
                                   <div>
                                       [{ $oViewConf->getHiddenSid() }]
                                       [{ $oViewConf->getNavFormParams() }]
@@ -81,7 +78,7 @@
                                       <input type="hidden" name="am" value="1">
                                       <input type="hidden" name="removecompare" value="1">
                                       [{oxhasrights ident="TOBASKET"}]
-                                          <button class="submitButton" id="remove_cmp_[{ $product->oxarticles__oxid->value }]" type="submit" title="[{ oxmultilang ident="REMOVE" }]" name="send">[{ oxmultilang ident="REMOVE" }]</button>
+                                          <button class="submitButton" id="remove_cmp_[{ $product->oxarticles__oxid->value }]" type="submit" title="[{oxmultilang ident="REMOVE" }]" name="send">[{ oxmultilang ident="REMOVE" }]</button>
                                       [{/oxhasrights}]
                                   </div>
                                 </form>

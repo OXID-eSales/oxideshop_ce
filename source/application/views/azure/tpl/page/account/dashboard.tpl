@@ -1,4 +1,3 @@
-[{assign var="template_title" value="MY_ACCOUNT"|oxmultilangassign }]
 [{capture append="oxidBlock_content"}]
     <div class="accountDashboardView">
         <h1 id="accountMain" class="pageHead">[{ oxmultilang ident="MY_ACCOUNT" }] - "[{ $oxcmp_user->oxuser__oxusername->value }]"</h1>
@@ -55,10 +54,7 @@
         </div>
         <div class="clear"></div>
     </div>
-        
-            <a href="[{ $oViewConf->getLogoutLink() }]" class="submitButton largeButton">[{ oxmultilang ident="LOGOUT" }]</a>
-        
-    [{insert name="oxid_tracker" title=$template_title }]
+    <a href="[{ $oViewConf->getLogoutLink() }]" class="submitButton largeButton">[{ oxmultilang ident="LOGOUT" }]</a>
 [{/capture}]
 
 

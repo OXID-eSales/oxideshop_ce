@@ -71,7 +71,7 @@ class Download extends oxUBase
             $oEx = new oxExceptionToDisplay();
             $oEx->setMessage( $sError );
             oxRegistry::get("oxUtilsView")->addErrorToDisplay( $oEx, false );
-            oxRegistry::getUtils()->redirect( oxRegistry::getConfig()->getShopUrl() . 'index.php?cl=start&showexceptionpage=1');
+            oxRegistry::getUtils()->redirect( oxRegistry::getConfig()->getShopUrl() . 'index.php?cl=account_downloads');
         }
     }
 }

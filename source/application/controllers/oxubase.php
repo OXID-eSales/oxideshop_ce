@@ -1575,7 +1575,6 @@ class oxUBase extends oxView
      * Returns title prefix used in template
      *
      * @return string
-     *
      */
     public function getTitlePrefix()
     {
@@ -1583,14 +1582,28 @@ class oxUBase extends oxView
     }
 
 
+
+    /**
+     * Returns full page title
+     *
+     * @return string
+     */
     public function getPageTitle()
     {
         $sTitle = '';
 
-        $sTitle .= $this->getTitlePrefix();
-        $sTitle .= ( $this->getTitle() ) ? ' | ' . $this->getTitle() : '';
-        $sTitle .= ($this->getTitlePrefix() ) ?  ' | ' . $this->getTitlePrefix(): '';
-        $sTitle .= ($this->getTitlePageSuffix() ) ? ' | ' . $this->getTitlePageSuffix(): '';
+        $aTitleParts = array();
+        $aTitleParts[] = $this->getTitlePrefix();
+        $aTitleParts[] = $this->getTitle();
+        $aTitleParts[] = $this->getTitleSuffix();
+        $aTitleParts[] = $this->getTitlePageSuffix();
+
+        $aTitleParts = array_filter($aTitleParts);
+
+        if (count($aTitleParts)){
+            $sTitle = implode(' | ', $aTitleParts);
+        }
+
 
         return $sTitle;
     }
@@ -1693,9 +1706,6 @@ class oxUBase extends oxView
     {
         return $this->_addPageNrParam( $this->getBaseLink( $iLang ), $this->getActPage() );
     }
-
-
-
 
     /**
      * Returns view object canonical url

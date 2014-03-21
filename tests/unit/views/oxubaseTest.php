@@ -2487,4 +2487,38 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
         // testing if request was written in seo log table
         $this->assertEquals($blExpected, (bool) oxDb::getDb()->getOne( "select 1 from oxseologs where oxident='$sIdent'" ), $sMsg );
     }
+
+    /**
+     * Data provider for testGetPageTitle
+     *
+     * @return array
+     */
+    public function getPageTitleParts()
+    {
+        return array(
+                array( array( 'prefix' => 'Prefix', 'title' => 'Title', 'suffix' => 'Suffix', 'pageSuffix' => 'PageSuffix' ), 'Prefix | Title | Suffix | PageSuffix' ),
+                array( array( 'prefix' => 'Prefix', 'title' => 'Title', 'suffix' => 'Suffix' ), 'Prefix | Title | Suffix' ),
+                array( array( 'prefix' => 'Prefix', 'suffix' => 'Suffix' ), 'Prefix | Suffix' ),
+                array( array( 'title' => 'Title', 'suffix' => 'Suffix' ), 'Title | Suffix' ),
+                array( array( 'prefix' => 'Prefix', 'title' => 'Title'), 'Prefix | Title' ),
+                array( array( 'title' => 'Title' ), 'Title' ),
+                array( array(), '' ),
+                array( array( 'prefix' => 'Prefix', 'title' => null), 'Prefix' ),
+                array( array( 'prefix' => 'Prefix', 'title' => false), 'Prefix' ),
+        );
+    }
+
+    /**
+     * @dataProvider getPageTitleParts
+     */
+    public function testGetPageTitle( $aParts, $sTitle )
+    {
+        $oUBase = $this->getMock( 'oxUBase', array( 'getTitlePrefix', 'getTitle', 'getTitleSuffix', 'getTitlePageSuffix' ) );
+        $oUBase->expects( $this->any() )->method( 'getTitlePrefix' )->will( $this->returnValue( $aParts['prefix'] ) );
+        $oUBase->expects( $this->any() )->method( 'getTitle' )->will( $this->returnValue( $aParts['title'] ) );
+        $oUBase->expects( $this->any() )->method( 'getTitleSuffix' )->will( $this->returnValue( $aParts['suffix'] ) );
+        $oUBase->expects( $this->any() )->method( 'getTitlePageSuffix' )->will( $this->returnValue( $aParts['pageSuffix'] ) );
+
+        $this->assertEquals( $sTitle, $oUBase->getPageTitle() );
+    }
 }

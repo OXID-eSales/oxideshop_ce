@@ -240,6 +240,4 @@
         [{/block}]
     [{/block}]
 [{/capture}]
-
-[{assign var="template_title" value="REVIEW_YOUR_ORDER"|oxmultilangassign}]
-[{include file="layout/page.tpl" title=$template_title location=$template_title}]
+[{include file="layout/page.tpl"}]

@@ -1,9 +1,6 @@
 [{capture append="oxidBlock_content"}]
-    [{assign var="template_title" value=""}]
-
     [{* ordering steps *}]
     [{include file="page/checkout/inc/steps.tpl" active=2 }]
-
     [{block name="checkout_user_main"}]
         [{if !$oxcmp_user && !$oView->getLoginOption() }]
             [{include file="page/checkout/inc/options.tpl"}]
@@ -28,5 +25,4 @@
         [{/block}]
     [{/block}]
 [{/capture}]
-
 [{include file="layout/page.tpl"}]

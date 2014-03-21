@@ -2324,7 +2324,7 @@ CREATE TABLE `oxuser` (
   `OXRIGHTS` char(32) character set latin1 collate latin1_general_ci NOT NULL default '' COMMENT 'User rights: user, malladmin',
   `OXSHOPID` char( 32 ) NOT NULL default '' COMMENT 'Shop id (oxshops)',
   `OXUSERNAME` varchar(255) NOT NULL default '' COMMENT 'Username',
-  `OXPASSWORD` varchar(128) character set latin1 collate latin1_general_ci NOT NULL default '' COMMENT 'Hashed password',
+  `OXPASSWORD` varchar(128) NOT NULL default '' COMMENT 'Hashed password',
   `OXPASSSALT` char(128) character set latin1 collate latin1_general_ci NOT NULL COMMENT 'Password salt',
   `OXCUSTNR` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Customer number',
   `OXUSTID` varchar(255) NOT NULL default '' COMMENT 'VAT ID No.',

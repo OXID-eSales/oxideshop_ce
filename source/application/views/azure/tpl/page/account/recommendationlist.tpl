@@ -1,7 +1,6 @@
 [{capture append="oxidBlock_content"}]
-    [{assign var="template_title" value="LISTMANIA"|oxmultilangassign }]
     [{assign var="_actvrecommlist" value=$oView->getActiveRecommList() }]
-    <h1 class="pageHead">[{ oxmultilang ident="LISTMANIA" }]</h1>
+    <h1 class="pageHead">[{oxmultilang ident="LISTMANIA"}]</h1>
     [{if  $oView->isSavedList()}]
         [{assign var="_statusMessage" value="LISTMANIA_LIST_SAVED"|oxmultilangassign}]
         [{include file="message/success.tpl" statusMessage=$_statusMessage}]

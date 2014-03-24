@@ -791,7 +791,7 @@ class oxSession extends oxSuperCfg
             // setting initial state
             $this->_blSidNeeded = false;
 
-            // no SIDs for seach engines
+            // no SIDs for search engines
             if ( !oxRegistry::getUtils()->isSearchEngine() ) {
                 // cookie found - SID is not needed
                 if ( oxRegistry::get("oxUtilsServer")->getOxCookie( $this->getName() ) ) {

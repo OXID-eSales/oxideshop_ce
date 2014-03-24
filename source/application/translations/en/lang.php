@@ -757,6 +757,7 @@ $aLang = array(
 'PAGE_TITLE_CLEARCOOKIES'                                     => 'Information about Cookies',
 'PAGE_TITLE_NEWS'                                             => 'News',
 'PAGE_TITLE_SUGGEST'                                          => 'Recommend product',
+'PAGE_TITLE_INVITE_YOUR_FRIENDS'                              => 'Invite your friends',
 
 'WISHLIST_PRODUCTS'                                           => 'These products are on the wish list of %s. If you want to please him/her, purchase one or multiple of these products.',
 

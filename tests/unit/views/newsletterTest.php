@@ -440,4 +440,48 @@ class Unit_Views_newsletterTest extends OxidTestCase
 
         $this->assertEquals($aResults, $oNewsLetter->getBreadCrumb());
     }
+
+    /**
+     * Test get title.
+     */
+    public function testGetTitle_KeepSubscribed()
+    {
+        $oView = $this->getMock("Newsletter", array('getNewsletterStatus'));
+        $oView->expects($this->any())->method('getNewsletterStatus')->will($this->returnValue( null ));
+
+        $this->assertEquals( oxRegistry::getLang()->translateString( 'STAY_INFORMED', oxRegistry::getLang()->getBaseLanguage(), false ), $oView->getTitle());
+    }
+
+    /**
+     * Test get title.
+     */
+    public function testGetTitle_NeedsConfirmation()
+    {
+        $oView = $this->getMock("Newsletter", array('getNewsletterStatus'));
+        $oView->expects($this->any())->method('getNewsletterStatus')->will($this->returnValue( 1 ));
+
+        $this->assertEquals( oxRegistry::getLang()->translateString( 'MESSAGE_THANKYOU_FOR_SUBSCRIBING_NEWSLETTERS', oxRegistry::getLang()->getBaseLanguage(), false ), $oView->getTitle());
+    }
+
+    /**
+     * Test get title, when password update screen is shown
+     */
+    public function testGetTitle_SuccessfulSubscription()
+    {
+        $oView = $this->getMock("Newsletter", array('getNewsletterStatus'));
+        $oView->expects($this->any())->method('getNewsletterStatus')->will($this->returnValue( 2 ));
+
+        $this->assertEquals( oxRegistry::getLang()->translateString( 'MESSAGE_NEWSLETTER_CONGRATULATIONS', oxRegistry::getLang()->getBaseLanguage(), false ), $oView->getTitle());
+    }
+
+    /**
+     * Test get title, after successful password update
+     */
+    public function testGetTitle_RemovedSubscription()
+    {
+        $oView = $this->getMock("Newsletter", array('getNewsletterStatus'));
+        $oView->expects($this->any())->method('getNewsletterStatus')->will($this->returnValue( 3 ));
+
+        $this->assertEquals( oxRegistry::getLang()->translateString( 'SUCCESS', oxRegistry::getLang()->getBaseLanguage(), false ), $oView->getTitle());
+    }
 }

@@ -456,4 +456,33 @@ class Unit_Views_recommlistTest extends OxidTestCase
 
         $this->assertEquals(1, count($oRecommList->getBreadCrumb()));
     }
+
+    /**
+     * Test get title.
+     */
+    public function testGetTitleWithActiveRecommList()
+    {
+        $oRecommlist = new oxrecommlist();
+        $oRecommlist->oxrecommlists__oxtitle = new oxField('title');
+        $oRecommlist->oxrecommlists__oxauthor = new oxField('author');
+
+        $oView = $this->getMock( "RecommList", array('getActiveRecommList' ) );
+        $oView->expects($this->any())->method('getActiveRecommList')->will($this->returnValue( $oRecommlist ));
+
+        $this->assertEquals( 'title (' . oxRegistry::getLang()->translateString( 'LIST_BY', oxRegistry::getLang()->getBaseLanguage(), false )  . ' author)', $oView->getTitle());
+    }
+
+    /**
+     * Test get title.
+     */
+    public function testGetTitleWithoutActiveRecommList()
+    {
+        $oView = $this->getMock( "RecommList", array('getActiveRecommList', 'getArticleCount', 'getSearchForHtml' ) );
+        $oView->expects($this->any())->method('getActiveRecommList')->will($this->returnValue( null ));
+        $oView->expects($this->any())->method('getArticleCount')->will($this->returnValue( 7 ));
+        $oView->expects($this->any())->method('getSearchForHtml')->will($this->returnValue( 'string' ));
+
+        $this->assertEquals( '7 ' . oxRegistry::getLang()->translateString( 'HITS_FOR', oxRegistry::getLang()->getBaseLanguage(), false ) . ' string', $oView->getTitle());
+    }
+
 }

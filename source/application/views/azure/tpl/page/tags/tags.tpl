@@ -1,6 +1,6 @@
 [{capture append="oxidBlock_content"}]
     [{if $oView->getTagCloudManager() }]
-        <h1 class="pageHead" id="tags">[{ oxmultilang ident="TAGS"}]</h1>
+        <h1 class="pageHead" id="tags">[{$oView->getTitle()}]</h1>
         <div >
             <p id="tagsCloud">
                 [{assign var="oCloudManager" value=$oView->getTagCloudManager() }]

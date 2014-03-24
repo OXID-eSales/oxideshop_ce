@@ -760,6 +760,7 @@ $aLang = array(
 'PAGE_TITLE_NEWS'                                             => 'News',
 'PAGE_TITLE_SUGGEST'                                          => 'Artikel weiterempfehlen',
 'PAGE_TITLE_INVITE_YOUR_FRIENDS'                              => 'Freunde einladen',
+'PAGE_TITLE_REVIEW'                                           => 'Bewerten',
 
 'YOUR_TEAM'                                                   => 'Ihr %s Team',
 'WISHLIST_PRODUCTS'                                           => 'Diese Artikel hat sich %s gewünscht. Wenn Sie ihr/ihm eine Freude machen wollen, dann kaufen Sie einen oder mehrere von diesen Artikeln.',

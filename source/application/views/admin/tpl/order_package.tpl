@@ -29,7 +29,7 @@ function printWindow()
         [{ $order->oxorder__oxbillcompany->value }]<br>
         [{ $order->oxorder__oxbillstreet->value }]  [{ $order->oxorder__oxbillstreetnr->value }]<br>
         [{ $order->oxorder__oxbillzip->value }]&nbsp;[{ $order->oxorder__oxbillcity->value }]<br>
-        [{ $order->oxorder__oxbillcountry->value }]<br>
+        [{ $order->getBillStateTitle() }]<br>
         [{ oxmultilang ident="GENERAL_USTID" }]: [{ $order->oxorder__oxbillustid->value}]<br>
         [{ $order->oxorder__oxbilladdinfo->value }]<br>
         [{ oxmultilang ident="ORDER_PACKAGE_FON" }]: [{ $order->oxorder__oxbillfon->value }]<br>
@@ -42,7 +42,7 @@ function printWindow()
         [{ if $order->oxorder__oxdelcompany->value }][{ $order->oxorder__oxdelcompany->value }][{else}][{ $order->oxorder__oxbillcompany->value }][{/if}]<br>
         [{ if $order->oxorder__oxdelstreet->value }][{ $order->oxorder__oxdelstreet->value }]&nbsp;[{ $order->oxorder__oxdelstreetnr->value }][{else}][{ $order->oxorder__oxbillstreet->value }]&nbsp;[{ $order->oxorder__oxbillstreetnr->value }][{/if}]<br>
         [{ if $order->oxorder__oxdelzip->value }][{ $order->oxorder__oxdelzip->value }][{else}][{ $order->oxorder__oxbillzip->value }][{/if}]&nbsp;[{ if $order->oxorder__oxdelcity->value }][{ $order->oxorder__oxdelcity->value }][{else}][{ $order->oxorder__oxbillcity->value }][{/if}]<br>
-        [{ if $order->oxorder__oxdelcountry->value }][{ $order->oxorder__oxdelcountry->value }][{else}][{ $order->oxorder__oxbillcountry->value }][{/if}]<br>
+        [{ if $order->oxorder__oxdelcountry->value }][{ $order->oxorder__oxdelcountry->value }][{else}][{ $order->getBillStateTitle() }][{/if}]<br>
         [{ if $order->oxorder__oxdeladdinfo->value }][{ $order->oxorder__oxdeladdinfo->value }][{else}][{ $order->oxorder__oxbilladdinfo->value }][{/if}]<br><br>
         [{ oxmultilang ident="ORDER_PACKAGE_FON" }]: [{ if $order->oxorder__oxdelfon->value }][{ $order->oxorder__oxdelfon->value }][{else}][{ $order->oxorder__oxbillfon->value }][{/if}]<br>
         [{ oxmultilang ident="ORDER_PACKAGE_FAX" }]: [{ if $order->oxorder__oxdelfax->value }][{ $order->oxorder__oxdelfax->value }][{else}][{ $order->oxorder__oxbillfax->value }][{/if}]<br>
@@ -60,9 +60,9 @@ function printWindow()
                             	[{if $aParam }]
                                     <br />
                                     [{if $smarty.foreach.persparams.first && $smarty.foreach.persparams.last}]
-                                        [{ oxmultilang ident="ORDER_PACKAGE_DETAILS" }] 
+                                        [{ oxmultilang ident="ORDER_PACKAGE_DETAILS" }]
                                     [{else}]
-                                        [{$sVar}] : 
+                                        [{$sVar}] :
                                     [{/if}]
                                     [{$aParam}]
                                 [{/if }]

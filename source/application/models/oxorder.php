@@ -2321,4 +2321,38 @@ class oxOrder extends oxBase
         return $this->_sShipTrackUrl;
     }
 
+    /**
+     * get title for delivery state
+     *
+     * @return mixed
+     */
+    public function getDelStateTitle()
+    {
+        if ($this->getFieldData('oxdelstateid')  != '') {
+            return $this->_getStateTitle( $this->getFieldData('oxdelstateid'));
+        }
+        else
+        {
+            return '';
+        }
+    }
+
+    /**
+     * Gets state title by state id.
+     *
+     * @param string $sStateId state ID
+     *
+     * @return string
+     */
+    protected function _getStateTitle( $sStateId )
+    {
+        $sTitle = null;
+        if ( $sStateId && $sStateId != '-1' ) {
+            /** @var oxstate $oState */
+            $oState= oxNew( 'oxstate' );
+            $oState->loadInLang( $this->getOrderLanguage(), $sStateId );
+            $sTitle = $oState->getFieldData('oxtitle');
+        }
+        return $sTitle;
+    }
 }

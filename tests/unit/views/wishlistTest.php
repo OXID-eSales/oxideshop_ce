@@ -189,4 +189,30 @@ class Unit_Views_wishlistTest extends OxidTestCase
         $this->assertEquals($aResults, $oWishList->getBreadCrumb());
     }
 
+    /**
+     * Test get title.
+     */
+    public function testGetTitleWithUser()
+    {
+        $oUser = new oxUser();
+        $oUser->oxuser__oxfname = new oxField('fName');
+        $oUser->oxuser__oxlname = new oxField('lName');
+
+        $oView = $this->getMock( "WishList", array('getWishUser' ) );
+        $oView->expects($this->any())->method('getWishUser')->will($this->returnValue( $oUser ));
+
+        $this->assertEquals( oxRegistry::getLang()->translateString( 'GIFT_REGISTRY_OF_3', oxRegistry::getLang()->getBaseLanguage(), false ). ' fName lName', $oView->getTitle());
+    }
+
+    /**
+     * Test get title.
+     */
+    public function testGetTitleWithoutUser()
+    {
+        $oView = $this->getMock( "WishList", array('getWishUser' ) );
+        $oView->expects($this->any())->method('getWishUser')->will($this->returnValue( null ));
+
+        $this->assertEquals( oxRegistry::getLang()->translateString( 'PUBLIC_GIFT_REGISTRIES', oxRegistry::getLang()->getBaseLanguage(), false ), $oView->getTitle());
+    }
+
 }

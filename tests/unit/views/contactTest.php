@@ -271,4 +271,20 @@ class Unit_Views_contactTest extends OxidTestCase
         $oContact->send();
     }
 
+    /**
+     * Test get title.
+     */
+    public function testGetTitle()
+    {
+        $oShop = new oxShop();
+        $oShop->oxshops__oxcompany = new oxField('shop');
+
+        $oConfig = $this->getMock("oxConfig", array('getActiveShop'));
+        $oConfig->expects($this->any())->method('getActiveShop')->will($this->returnValue( $oShop ));
+
+        $oView = $this->getMock("contact", array('getConfig'));
+        $oView->expects($this->any())->method('getConfig')->will($this->returnValue( $oConfig ));
+
+        $this->assertEquals( 'shop', $oView->getTitle());
+    }
 }

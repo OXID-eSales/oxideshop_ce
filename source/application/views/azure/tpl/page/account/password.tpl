@@ -11,7 +11,7 @@
     [{/foreach}]
 </div>
 [{/if}]
-<h1 id="personalSettingsHeader" class="pageHead">[{ oxmultilang ident="CHANGE_PASSWORD" }]</h1>
+<h1 id="personalSettingsHeader" class="pageHead">[{$oView->getTitle()}]</h1>
 [{include file="form/user_password.tpl"}]
 [{/capture}]
 [{capture append="oxidBlock_sidebar"}]

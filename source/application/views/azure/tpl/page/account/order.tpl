@@ -1,5 +1,5 @@
 [{capture append="oxidBlock_content"}]
-<h1 class="pageHead">[{oxmultilang ident="ORDER_HISTORY"}]</h1>
+<h1 class="pageHead">[{$oView->getTitle()}]</h1>
 [{assign var=oOrders value=$oView->getOrderList()}]
 [{block name="account_order_history"}]
 [{if count($oOrders) > 0}]

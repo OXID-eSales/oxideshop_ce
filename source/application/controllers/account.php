@@ -351,4 +351,23 @@ class Account extends oxUBase
 
         return $iCompItemsCnt;
     }
+
+    /**
+     * Page Title
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        $sTitle = parent::getTitle();
+
+        if ($this->getConfig()->getActiveView()->getClassName() == 'account'){
+            $sTitle = oxRegistry::getLang()->translateString( 'MY_ACCOUNT', oxRegistry::getLang()->getBaseLanguage(), false );
+            if ( $oUser = $this->getUser() ) {
+                $sTitle .= ' - ' . $oUser->oxuser__oxusername->value;
+            }
+        }
+
+        return $sTitle;
+    }
 }

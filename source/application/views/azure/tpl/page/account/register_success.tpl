@@ -1,5 +1,5 @@
 [{capture append="oxidBlock_content"}]
-    <h1 id="openAccHeader" class="pageHead">[{oxmultilang ident="MESSAGE_WELCOME_REGISTERED_USER"}]</h1>
+    <h1 id="openAccHeader" class="pageHead">[{$oView->getTitle()}]</h1>
     <div class="info">
       [{if $oView->getRegistrationStatus() == 1}]
         [{oxmultilang ident="MESSAGE_CONFIRMING_REGISTRATION"}]<br><br>[{oxmultilang ident="THANK_YOU" suffix="."}]

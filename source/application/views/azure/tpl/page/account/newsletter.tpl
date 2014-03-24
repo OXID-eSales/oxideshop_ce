@@ -6,7 +6,7 @@
           <div class="status success corners">[{oxmultilang ident="MESSAGE_NEWSLETTER_SUBSCRIPTION_CANCELED"}]</div>
         [{/if}]
     [{/if}]
-    <h1 id="newsletterSettingsHeader" class="pageHead">[{oxmultilang ident="NEWSLETTER_SETTINGS"}]</h1>
+    <h1 id="newsletterSettingsHeader" class="pageHead">[{$oView->getTitle()}]</h1>
     [{include file="form/account_newsletter.tpl"}]
 [{/capture}]
 [{capture append="oxidBlock_sidebar"}]

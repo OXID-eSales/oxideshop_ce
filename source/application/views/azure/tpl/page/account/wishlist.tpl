@@ -8,7 +8,7 @@
         [{assign var="_statusMessage" value="GIFT_REGISTRY_SENT_SUCCESSFULLY"|oxmultilangassign:$editval->rec_email}]
         [{include file="message/notice.tpl" statusMessage=$_statusMessage}]
     [{/if}]
-    <h1 class="pageHead">[{ oxmultilang ident="MY_GIFT_REGISTRY" }]</h1>
+    <h1 class="pageHead">[{$oView->getTitle()}]</h1>
     <div class="wishlistView clear">
         [{include file="form/wishlist_search.tpl" searchClass="account_wishlist"}]
         [{if $oView->getWishList() }]

@@ -1,5 +1,5 @@
 [{capture append="oxidBlock_content"}]
-    <h1 class="pageHead">[{oxmultilang ident="MY_DOWNLOADS"}]</h1>
+    <h1 class="pageHead">[{$oView->getTitle()}]</h1>
     [{if $oView->getOrderFilesList()|count }]
     <ul class="downloadList">
       [{foreach from=$oView->getOrderFilesList() item="oOrderArticle"}]

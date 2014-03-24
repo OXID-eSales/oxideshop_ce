@@ -1,9 +1,7 @@
 [{capture append="oxidBlock_content"}]
     [{if $oView->getActiveRecommList() }]
         [{assign var="_actvrecommlist" value=$oView->getActiveRecommList() }]
-        [{assign var="recommendation_head" value=$_actvrecommlist->oxrecommlists__oxtitle->value}]
-
-        <h1 class="pageHead">[{$recommendation_head}]</h1>
+        <h1 class="pageHead">[{$oView->getTitle()}]</h1>
         <div class="listmaniaView">
             [{include file="form/recommendation_edit.tpl" actvrecommlist=$_actvrecommlist}]
         </div>

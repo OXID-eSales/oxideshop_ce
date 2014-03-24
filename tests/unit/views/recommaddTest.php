@@ -60,4 +60,19 @@ class Unit_Views_recommaddTest extends OxidTestCase
         $this->assertEquals( 'testRecommList', $oRecomm->getRecommLists( 'test') );
     }
 
+    /**
+     * Test get title.
+     */
+    public function testGetTitle()
+    {
+        $oProduct = new oxArticle();
+        $oProduct->oxarticles__oxtitle = new oxField('title');
+        $oProduct->oxarticles__oxvarselect = new oxField('select');
+
+        $oView = $this->getMock( "RecommAdd", array('getProduct' ) );
+        $oView->expects($this->any())->method('getProduct')->will($this->returnValue( $oProduct ));
+
+        $this->assertEquals( 'title select', $oView->getTitle());
+    }
+
 }

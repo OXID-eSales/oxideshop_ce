@@ -199,4 +199,9 @@ class Contact extends oxUBase
 
         return $aPaths;
     }
+
+    public function getTitle()
+    {
+        return $this->getConfig()->getActiveShop()->oxshops__oxcompany->value;
+    }
 }

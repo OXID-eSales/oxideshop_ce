@@ -310,4 +310,25 @@ class Newsletter extends oxUBase
         $aPaths[] = $aPath;
         return $aPaths;
     }
+
+    /**
+     * Page title
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        if ($this->getNewsletterStatus() == 4 || !$this->getNewsletterStatus()) {
+            $sConstant = 'STAY_INFORMED';
+        } elseif ($this->getNewsletterStatus() == 1) {
+            $sConstant = 'MESSAGE_THANKYOU_FOR_SUBSCRIBING_NEWSLETTERS';
+        } elseif ($this->getNewsletterStatus() == 2) {
+            $sConstant = 'MESSAGE_NEWSLETTER_CONGRATULATIONS';
+        } elseif ($this->getNewsletterStatus() == 3) {
+            $sConstant = 'SUCCESS';
+        }
+
+        return oxRegistry::getLang()->translateString( $sConstant, oxRegistry::getLang()->getBaseLanguage(), false );
+    }
+
 }

@@ -1,5 +1,5 @@
 [{capture append="oxidBlock_content"}]
-    <h1 class="pageHead">[{oxmultilang ident="GUESTBOOK"}]</h1>
+    <h1 class="pageHead">[{$oView->getTitle()}]</h1>
     <div class="listRefine clear bottomRound">
         [{include file="widget/locator/listlocator.tpl" locator=$oView->getPageNavigation() sort=true}]
     </div>

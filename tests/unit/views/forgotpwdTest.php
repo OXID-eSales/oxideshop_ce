@@ -236,4 +236,39 @@ class Unit_Views_forgotpwdTest extends OxidTestCase
         $this->assertTrue( $oView->isExpiredLink() );
     }
 
+    /**
+     * Test get title.
+     */
+    public function testGetTitle()
+    {
+        $oView = $this->getMock("ForgotPwd", array('showUpdateScreen', 'updateSuccess'));
+        $oView->expects($this->any())->method('showUpdateScreen')->will($this->returnValue( false ));
+        $oView->expects($this->any())->method('updateSuccess')->will($this->returnValue( false ));
+
+        $this->assertEquals( oxRegistry::getLang()->translateString( 'FORGOT_PASSWORD', oxRegistry::getLang()->getBaseLanguage(), false ), $oView->getTitle());
+    }
+
+    /**
+     * Test get title, when password update screen is shown
+     */
+    public function testGetTitle_ShowUpdateScreen()
+    {
+        $oView = $this->getMock("ForgotPwd", array('showUpdateScreen', 'updateSuccess'));
+        $oView->expects($this->any())->method('showUpdateScreen')->will($this->returnValue( true ));
+        $oView->expects($this->any())->method('updateSuccess')->will($this->returnValue( true ));
+
+        $this->assertEquals( oxRegistry::getLang()->translateString( 'NEW_PASSWORD', oxRegistry::getLang()->getBaseLanguage(), false ), $oView->getTitle());
+    }
+
+    /**
+     * Test get title, after successful password update
+     */
+    public function testGetTitle_UpdateSuccess()
+    {
+        $oView = $this->getMock("ForgotPwd", array('showUpdateScreen', 'updateSuccess'));
+        $oView->expects($this->any())->method('showUpdateScreen')->will($this->returnValue( false ));
+        $oView->expects($this->any())->method('updateSuccess')->will($this->returnValue( true ));
+
+        $this->assertEquals( oxRegistry::getLang()->translateString( 'CHANGE_PASSWORD', oxRegistry::getLang()->getBaseLanguage(), false ), $oView->getTitle());
+    }
 }

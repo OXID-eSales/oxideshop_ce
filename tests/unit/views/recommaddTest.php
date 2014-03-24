@@ -23,17 +23,13 @@
 require_once realpath( "." ).'/unit/OxidTestCase.php';
 require_once realpath( "." ).'/unit/test_config.inc.php';
 
-class Unit_Views_recommaddTest extends OxidTestCase
+class Unit_Views_RecommAddTest extends OxidTestCase
 {
     /**
-     * In case product uses alternative template, adding to listmania is impossible (#0001444)
-     *
-     * @return null
+     * In case product uses alternative template, adding to list mania is impossible (#0001444)
      */
     public function testForUseCase()
     {
-        oxTestModules::addFunction('oxUtilsServer', 'getServerVar', '{ if ( $aA[0] == "HTTP_HOST") { return "shop.com/"; } else { return "test.php";} }');
-
         $oProduct = new oxArticle();
         $oProduct->load( "1126" );
         $oProduct->oxarticles__oxtemplate->value = 'details_persparam.tpl';
@@ -51,10 +47,10 @@ class Unit_Views_recommaddTest extends OxidTestCase
      */
     public function testGetRecommLists()
     {
-        $oUser = $this->getMock( 'oxuser', array( 'getUserRecommLists' ) );
+        $oUser = $this->getMock( 'oxUser', array( 'getUserRecommLists' ) );
         $oUser->expects( $this->once() )->method( 'getUserRecommLists')->will( $this->returnValue( 'testRecommList' ) );
 
-        $oRecomm = new recommadd();
+        $oRecomm = new RecommAdd();
         $oRecomm->setUser( $oUser );
         $this->assertEquals( 'testRecommList', $oRecomm->getRecommLists( 'test') );
     }
@@ -65,13 +61,12 @@ class Unit_Views_recommaddTest extends OxidTestCase
     public function testGetTitle()
     {
         $oProduct = new oxArticle();
-        $oProduct->oxarticles__oxtitle = new oxField('title');
-        $oProduct->oxarticles__oxvarselect = new oxField('select');
+        $oProduct->oxarticles__oxtitle = new oxField( 'title' );
+        $oProduct->oxarticles__oxvarselect = new oxField( 'select' );
 
         $oView = $this->getMock( "RecommAdd", array('getProduct' ) );
         $oView->expects($this->any())->method('getProduct')->will($this->returnValue( $oProduct ));
 
         $this->assertEquals( 'title select', $oView->getTitle());
     }
-
 }

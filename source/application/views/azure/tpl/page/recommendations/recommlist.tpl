@@ -2,14 +2,12 @@
 [{capture append="oxidBlock_content"}]
     [{if $oView->getActiveRecommList() }]
         [{assign var="_actvrecommlist" value=$oView->getActiveRecommList() }]
-        [{assign var="recommendation_head" value="LIST_BY"|oxmultilangassign}]
-        [{assign var="recommendation_head" value=$_actvrecommlist->oxrecommlists__oxtitle->value|cat:" <span>("|cat:$recommendation_head|cat:" "|cat:$_actvrecommlist->oxrecommlists__oxauthor->value|cat:")</span>"}]
         [{assign var="rsslinks" value=$oView->getRssLinks() }]
         [{if $oxcmp_user}]
             [{assign var="force_sid" value=$oView->getSidForWidget()}]
         [{/if}]
 
-        <h1 class="pageHead">[{$recommendation_head}]
+        <h1 class="pageHead">[{$oView->getTitle()}]
 
         [{assign var='rsslinks' value=$oView->getRssLinks() }]
 
@@ -18,7 +16,7 @@
                 <img src="[{$oViewConf->getImageUrl('rss.png')}]" alt="[{$rsslinks.recommlistarts.title}]">
                 <span class="FXgradOrange corners glowShadow">[{$rsslinks.recommlistarts.title}]</span>
             </a>
-        [{/if }]
+        [{/if}]
 
         </h1>
         <div class="listRefine clear bottomRound">
@@ -49,11 +47,7 @@
         </div>
         [{/if}]
     [{else}]
-
-        [{assign var="hitsfor" value="HITS_FOR"|oxmultilangassign }]
-        [{assign var="recommendation_head" value=$oView->getArticleCount()|cat:" "|cat:$hitsfor|cat:" &quot;"|cat:$oView->getSearchForHtml()|cat:"&quot;" }]
-
-        <h1 class="pageHead">[{$recommendation_head}]</h1>
+        <h1 class="pageHead">[{$oView->getTitle()}]</h1>
         [{ include file="page/recommendations/inc/list.tpl"}]
     [{/if}]
 [{/capture}]

@@ -64,7 +64,7 @@ class RecommList extends aList
     protected $_dRatingValue = null;
 
     /**
-     * Ratng count
+     * Rating count
      * @var integer
      */
     protected $_iRatingCnt = null;
@@ -408,9 +408,9 @@ class RecommList extends aList
         $aPath[0]->setLink( false );
         $aPath[0]->oxcategories__oxtitle = new oxField( $oLang->translateString('RECOMMLIST') );
 
-        if ( $sSearchparam = $this->getRecommSearch() ) {
-            $sUrl   = $this->getConfig()->getShopHomeURL()."cl=recommlist&amp;searchrecomm=".rawurlencode( $sSearchparam );
-            $sTitle = $oLang->translateString('RECOMMLIST_SEARCH').' "'.$sSearchparam.'"';
+        if ( $sSearchParam = $this->getRecommSearch() ) {
+            $sUrl   = $this->getConfig()->getShopHomeURL()."cl=recommlist&amp;searchrecomm=".rawurlencode( $sSearchParam );
+            $sTitle = $oLang->translateString('RECOMMLIST_SEARCH').' "'.$sSearchParam.'"';
 
             $aPath[1] = oxNew( "oxcategory" );
             $aPath[1]->setLink( $sUrl );
@@ -529,4 +529,21 @@ class RecommList extends aList
 
         return $aPaths;
     }
+
+    /**
+     * Page title
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        if ( $aActiveList = $this->getActiveRecommList() ){
+            $sTitle = $aActiveList->oxrecommlists__oxtitle->value .' (' . oxRegistry::getLang()->translateString( 'LIST_BY', oxRegistry::getLang()->getBaseLanguage(), false )  . ' ' . $aActiveList->oxrecommlists__oxauthor->value .' )';
+        } else {
+            $sTitle = $this->getArticleCount() . ' ' . oxRegistry::getLang()->translateString( 'HITS_FOR', oxRegistry::getLang()->getBaseLanguage(), false ) . ' ' . $this->getSearchForHtml();
+        }
+
+        return $sTitle;
+    }
+
 }

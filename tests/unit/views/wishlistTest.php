@@ -214,5 +214,4 @@ class Unit_Views_wishlistTest extends OxidTestCase
 
         $this->assertEquals( oxRegistry::getLang()->translateString( 'PUBLIC_GIFT_REGISTRIES', oxRegistry::getLang()->getBaseLanguage(), false ), $oView->getTitle());
     }
-
 }

@@ -56,7 +56,6 @@ class Unit_Views_recommaddTest extends OxidTestCase
 
         $oRecomm = new recommadd();
         $oRecomm->setUser( $oUser );
-        $aLists = $oRecomm->getRecommLists( 'test');
         $this->assertEquals( 'testRecommList', $oRecomm->getRecommLists( 'test') );
     }
 

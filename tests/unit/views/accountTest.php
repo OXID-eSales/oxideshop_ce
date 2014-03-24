@@ -329,4 +329,28 @@ class Unit_Views_accountTest extends OxidTestCase
         $oAcc = new account();
         $this->assertEquals( 2, $oAcc->getCompareItemsCnt() );
     }
+
+    /**
+     * Testing account::getCompareItemsCnt()
+     *
+     * @return null
+     */
+    public function testGetTitle()
+    {
+        $oUser = new oxUser();
+        $oUser->oxuser__oxusername = new oxField( 'Jon' );
+
+        $oActiveView = $this->getMock( "oxView", array( 'getClassName' ));
+        $oActiveView->expects( $this->any() )->method( 'getClassName' )->will( $this->returnValue( 'account' ) );
+
+        $oConfig = $this->getMock( "oxConfig", array( 'getActiveView' ), array(),'',false );
+        $oConfig->expects( $this->any() )->method( 'getActiveView' )->will( $this->returnValue( $oActiveView ) );
+
+
+        $oView = $this->getMock( "account", array( 'getUser', 'getConfig' ) );
+        $oView->expects( $this->once() )->method( 'getUser' )->will( $this->returnValue( $oUser ) );
+        $oView->expects( $this->any() )->method( 'getConfig' )->will( $this->returnValue( $oConfig ) );
+
+        $this->assertEquals( oxRegistry::getLang()->translateString( 'MY_ACCOUNT', oxRegistry::getLang()->getBaseLanguage(), false ) . ' - Jon', $oView->getTitle() );
+    }
 }

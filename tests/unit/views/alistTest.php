@@ -1030,6 +1030,19 @@ class Unit_Views_alistTest extends OxidTestCase
     }
 
     /**
+     * Test get list title.
+     */
+    public function testGetTitleForMoreCategory()
+    {
+        $sCatId = 'oxmore';
+
+        $oListView = $this->getMock("alist", array('getCategoryId'));
+        $oListView->expects($this->any())->method('getCategoryId')->will($this->returnValue($sCatId));
+
+        $this->assertEquals(oxRegistry::getLang()->translateString( 'CATEGORY_OVERVIEW', oxRegistry::getLang()->getBaseLanguage(), false ), $oListView->getTitle());
+    }
+
+    /**
      * Test get bargain article list.
      *
      * @return null

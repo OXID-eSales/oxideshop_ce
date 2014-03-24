@@ -109,11 +109,19 @@ class Unit_Views_newsTest extends OxidTestCase
      */
     public function testGetBreadCrumb()
     {
-        $oNews    = new News();
+        $oShop = new oxShop();
+        $oShop->oxshops__oxname = new oxField('shop');
+
+        $oConfig = $this->getMock("oxConfig", array('getActiveShop'));
+        $oConfig->expects($this->any())->method('getActiveShop')->will($this->returnValue( $oShop ));
+
+        $oNews = $this->getMock("news", array('getConfig'));
+        $oNews->expects($this->any())->method('getConfig')->will($this->returnValue( $oConfig ));
+
         $aResult  = array();
         $aResults = array();
 
-        $aResult["title"] = oxLang::getInstance()->translateString( 'LATEST_NEWS_AND_UPDATES_AT', oxLang::getInstance()->getBaseLanguage(), false );
+        $aResult["title"] = oxLang::getInstance()->translateString( 'LATEST_NEWS_AND_UPDATES_AT', oxLang::getInstance()->getBaseLanguage(), false ) . ' shop';
         $aResult["link"]  = $oNews->getLink();
 
         $aResults[] = $aResult;
@@ -131,6 +139,23 @@ class Unit_Views_newsTest extends OxidTestCase
         $oObj = $this->getMock( 'News', array( 'generatePageNavigation' ));
         $oObj->expects( $this->any() )->method( 'generatePageNavigation')->will($this->returnValue( "aaa" ) );
         $this->assertEquals( 'aaa', $oObj->getPageNavigation() );
+    }
+
+    /**
+     * Test get title.
+     */
+    public function testGetTitle()
+    {
+        $oShop = new oxShop();
+        $oShop->oxshops__oxname = new oxField('shop');
+
+        $oConfig = $this->getMock("oxConfig", array('getActiveShop'));
+        $oConfig->expects($this->any())->method('getActiveShop')->will($this->returnValue( $oShop ));
+
+        $oView = $this->getMock("news", array('getConfig'));
+        $oView->expects($this->any())->method('getConfig')->will($this->returnValue( $oConfig ));
+
+        $this->assertEquals( oxRegistry::getLang()->translateString( 'LATEST_NEWS_AND_UPDATES_AT', oxRegistry::getLang()->getBaseLanguage(), false ) . ' shop', $oView->getTitle());
     }
 
 }

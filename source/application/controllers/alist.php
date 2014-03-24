@@ -991,7 +991,9 @@ class aList extends oxUBase
     {
         if ($this->_sCatTitle === null) {
             $this->_sCatTitle = false;
-            if (($oCategory = $this->getActiveCategory())) {
+            if( $this->getCategoryId() == 'oxmore' ){
+                $this->_sCatTitle = oxRegistry::getLang()->translateString( 'CATEGORY_OVERVIEW', oxRegistry::getLang()->getBaseLanguage(), false );
+            } elseif (($oCategory = $this->getActiveCategory())) {
                 $this->_sCatTitle = $oCategory->oxcategories__oxtitle->value;
             }
         }

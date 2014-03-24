@@ -1,7 +1,7 @@
 [{capture append="oxidBlock_content"}]
     <div>
     [{assign var="oNews" value=$oView->getNews() }]
-    <h1 class="pageHead">[{oxmultilang ident="LATEST_NEWS_AND_UPDATES_AT" }] [{$oxcmp_shop->oxshops__oxname->value}]</h1>
+    <h1 class="pageHead">[{$oView->getTitle()}]</h1>
     <div class="listRefine clear bottomRound">
     </div>
         [{if !empty($oNews)}]

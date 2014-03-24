@@ -200,6 +200,11 @@ class Contact extends oxUBase
         return $aPaths;
     }
 
+    /**
+     * Page title
+     *
+     * @return string
+     */
     public function getTitle()
     {
         return $this->getConfig()->getActiveShop()->oxshops__oxcompany->value;

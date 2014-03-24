@@ -179,4 +179,20 @@ class Wishlist extends oxUBase
 
         return $aPaths;
     }
+
+    /**
+     * Page title
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        if ( $oUser = $this->getWishUser() ) {
+            $sTitle = oxRegistry::getLang()->translateString( 'GIFT_REGISTRY_OF_3', oxRegistry::getLang()->getBaseLanguage(), false ). ' ' . $oUser->oxuser__oxfname->value . ' ' . $oUser->oxuser__oxlname->value ;
+        } else {
+            $sTitle = oxRegistry::getLang()->translateString( 'PUBLIC_GIFT_REGISTRIES', oxRegistry::getLang()->getBaseLanguage(), false );
+        }
+
+        return $sTitle;
+    }
 }

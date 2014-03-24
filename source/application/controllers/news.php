@@ -126,5 +126,4 @@ class News extends oxUBase
     {
         return oxRegistry::getLang()->translateString( 'LATEST_NEWS_AND_UPDATES_AT', oxRegistry::getLang()->getBaseLanguage(), false ) . ' '. $this->getConfig()->getActiveShop()->oxshops__oxname->value;
     }
-
 }

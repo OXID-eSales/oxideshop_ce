@@ -24,7 +24,6 @@
  * Order manager.
  * Performs creation assigning, updating, deleting and other order functions.
  *
- * @package model
  */
 class oxOrder extends oxBase
 {
@@ -229,6 +228,13 @@ class oxOrder extends oxBase
      * @var object
      */
     protected $_oOrderFiles = null;
+
+    /**
+     * Shipment tracking url
+     *
+     * @var string
+     */
+    protected $_sShipTrackUrl = null;
 
     /**
      * Class constructor, initiates parent constructor (parent::oxBase()).
@@ -445,8 +451,7 @@ class oxOrder extends oxBase
     }
 
     /**
-     * Returns order netto sum (total price, including delivery, payment etc - VAT)
-     * (A. this is very unprecise :())
+     * Returns order netto sum (total order price - VAT)
      *
      * @return double
      */
@@ -2293,12 +2298,26 @@ class oxOrder extends oxBase
      *
      * @return string
      */
+    public function getTrackCode()
+    {
+        return $this->oxorder__oxtrackcode->value;
+    }
+
+    /**
+     * Returns shipment tracking url if oxtrackcode and shipment tracking url are supplied
+     *
+     * @return string
+     */
     public function getShipmentTrackingUrl()
     {
-        if ( $this->_sShipTrackUrl === null && $this->oxorder__oxtrackcode->value ) {
-            $this->_sShipTrackUrl = "http://www.dpd.de/cgi-bin/delistrack?typ=1&amp;lang=de&amp;pknr=".$this->oxorder__oxtrackcode->value;
+        $oConfig = oxRegistry::getConfig();
+        if ($this->_sShipTrackUrl === null) {
+            $sParcelService = $oConfig->getConfigParam('sParcelService');
+            $sTrackingCode  = $this->getTrackCode();
+            if ($sParcelService && $sTrackingCode) {
+                $this->_sShipTrackUrl = str_replace("##ID##", $sTrackingCode, $sParcelService);
+            }
         }
-
         return $this->_sShipTrackUrl;
     }
 
@@ -2350,7 +2369,6 @@ class oxOrder extends oxBase
         if($oState->isLoaded()) {
             return $oState->getFieldData('oxtitle');
         }
-
         return $sTitle;
     }
 }

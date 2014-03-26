@@ -100,8 +100,6 @@ class Order_Overview extends oxAdminDetails
 
     /**
      * Performs Lexware export to user (outputs file to save).
-     *
-     * @return void
      */
     public function exportlex()
     {
@@ -136,8 +134,6 @@ class Order_Overview extends oxAdminDetails
 
     /**
      * Performs DTAUS export to user (outputs file to save).
-     *
-     * @return void
      */
     public function exportDTAUS()
     {
@@ -194,8 +190,6 @@ class Order_Overview extends oxAdminDetails
 
     /**
      * Sends order.
-     *
-     * @return void
      */
     public function sendorder()
     {
@@ -223,8 +217,6 @@ class Order_Overview extends oxAdminDetails
 
     /**
      * Resets order shipping date.
-     *
-     * @return void
      */
     public function resetorder()
     {

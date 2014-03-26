@@ -24,7 +24,7 @@
 /**
  * PDF renderer helper class, used to store data, sizes etc..
  */
-class PdfBlock
+class InvoicepdfBlock
 {
     /**
      * array of data to render
@@ -39,12 +39,10 @@ class PdfBlock
     protected $_sFont = 'Arial';
 
     /**
-     * Stores cacheable parameters
+     * Stores cacheable parameters.
      *
      * @param string $sFunc   cacheable function name
      * @param array  $aParams cacheable parameters
-     *
-     * @return void
      */
     protected function _toCache( $sFunc, $aParams )
     {
@@ -55,11 +53,9 @@ class PdfBlock
     }
 
     /**
-     * Runs and evaluates cached code
+     * Runs and evaluates cached code.
      *
      * @param object $oPdf object which methods will be executed
-     *
-     * @return void
      */
     public function run( $oPdf )
     {
@@ -86,14 +82,12 @@ class PdfBlock
     }
 
     /**
-     * Caches Line call with parameters
+     * Caches Line call with parameters.
      *
      * @param int $iLPos    left position
      * @param int $iLHeight left height
      * @param int $iRPos    right position
      * @param int $iRHeight right height
-     *
-     * @return void
      */
     public function line( $iLPos, $iLHeight, $iRPos, $iRHeight )
     {
@@ -101,13 +95,11 @@ class PdfBlock
     }
 
     /**
-     * Caches Text call with parameters
+     * Caches Text call with parameters.
      *
      * @param int    $iLPos    left position
      * @param int    $iLHeight height
      * @param string $sString  string to write
-     *
-     * @return void
      */
     public function text( $iLPos, $iLHeight, $sString )
     {
@@ -115,7 +107,7 @@ class PdfBlock
     }
 
     /**
-     * Caches SetFont call with parameters
+     * Caches SetFont call with parameters.
      *
      * @param string $sType   font type (Arial, Tahoma ...)
      * @param string $sWeight font weight ('', 'B', 'U' ...)
@@ -129,11 +121,9 @@ class PdfBlock
     }
 
     /**
-     * Adjusts height after new page addition
+     * Adjusts height after new page addition.
      *
      * @param int $iDelta new height
-     *
-     * @return void
      */
     public function ajustHeight( $iDelta )
     {
@@ -151,7 +141,7 @@ class PdfBlock
     }
 
     /**
-     * Caches SetFont call with parameters
+     * Caches SetFont call with parameters.
      *
      * @return string
      */

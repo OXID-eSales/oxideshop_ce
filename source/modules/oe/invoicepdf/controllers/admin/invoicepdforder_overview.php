@@ -22,9 +22,9 @@
  */
 
 /**
- * Class Invoicepdf_order_overview extends order_overview.
+ * Class InvoicepdfOrder_Overview extends order_overview.
  */
-class Invoicepdf_order_overview extends Invoicepdf_order_overview_parent
+class InvoicepdfOrder_Overview extends InvoicepdfOrder_Overview_parent
 {
 /**
      * Add Languages to parameters.
@@ -43,8 +43,6 @@ class Invoicepdf_order_overview extends Invoicepdf_order_overview_parent
 
     /**
      * Performs PDF export to user (outputs file to save).
-     *
-     * @return void
      */
     public function createPDF()
     {

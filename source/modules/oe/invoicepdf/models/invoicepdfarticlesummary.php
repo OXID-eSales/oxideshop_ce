@@ -24,7 +24,7 @@
 /**
  * Order summary class
  */
-class PdfArticleSummary extends PdfBlock
+class InvoicepdfArticleSummary extends InvoicepdfBlock
 {
     /**
      * order object
@@ -43,8 +43,6 @@ class PdfArticleSummary extends PdfBlock
      *
      * @param object $oData order object
      * @param object $oPdf  pdf object
-     *
-     * @return void
      */
     public function __construct( $oData, $oPdf )
     {
@@ -53,11 +51,9 @@ class PdfArticleSummary extends PdfBlock
     }
 
     /**
-     * Sets total costs values using order without discount
+     * Sets total costs values using order without discount.
      *
      * @param int &$iStartPos text start position
-     *
-     * @return void
      */
     protected function _setTotalCostsWithoutDiscount( &$iStartPos )
     {
@@ -91,11 +87,9 @@ class PdfArticleSummary extends PdfBlock
     }
 
     /**
-     * Sets total costs values using order with discount
+     * Sets total costs values using order with discount.
      *
      * @param int &$iStartPos text start position
-     *
-     * @return void
      */
     protected function _setTotalCostsWithDiscount( &$iStartPos )
     {
@@ -182,11 +176,9 @@ class PdfArticleSummary extends PdfBlock
     }
 
     /**
-     * Sets voucher values to pdf
+     * Sets voucher values to pdf.
      *
      * @param int &$iStartPos text start position
-     *
-     * @return void
      */
     protected function _setVoucherInfo( &$iStartPos )
     {
@@ -206,11 +198,9 @@ class PdfArticleSummary extends PdfBlock
     }
 
     /**
-     * Sets delivery info to pdf
+     * Sets delivery info to pdf.
      *
      * @param int &$iStartPos text start position
-     *
-     * @return void
      */
     protected function _setDeliveryInfo( &$iStartPos )
     {
@@ -251,11 +241,9 @@ class PdfArticleSummary extends PdfBlock
     }
 
     /**
-     * Sets wrapping info to pdf
+     * Sets wrapping info to pdf.
      *
      * @param int &$iStartPos text start position
-     *
-     * @return void
      */
     protected function _setWrappingInfo( &$iStartPos )
     {
@@ -337,8 +325,7 @@ class PdfArticleSummary extends PdfBlock
      * Sets payment info to pdf
      *
      * @param int &$iStartPos text start position
-     *
-     * @return void
+
      */
     protected function _setPaymentInfo( &$iStartPos )
     {
@@ -388,11 +375,9 @@ class PdfArticleSummary extends PdfBlock
     }
 
     /**
-     * Sets payment info to pdf
+     * Sets payment info to pdf.
      *
      * @param int &$iStartPos text start position
-     *
-     * @return void
      */
     protected function _setTsProtection( &$iStartPos )
     {
@@ -426,11 +411,9 @@ class PdfArticleSummary extends PdfBlock
     }
 
     /**
-     * Sets grand total order price to pdf
+     * Sets grand total order price to pdf.
      *
      * @param int &$iStartPos text start position
-     *
-     * @return void
      */
     protected function _setGrandTotalPriceInfo( &$iStartPos )
     {
@@ -448,11 +431,10 @@ class PdfArticleSummary extends PdfBlock
     }
 
     /**
-     * Sets payment method info to pdf
+     * Sets payment method info to pdf.
      *
      * @param int &$iStartPos text start position
-     *
-     * @return void
+
      */
     protected function _setPaymentMethodInfo( &$iStartPos )
     {
@@ -466,11 +448,9 @@ class PdfArticleSummary extends PdfBlock
     }
 
     /**
-     * Sets pay until date to pdf
+     * Sets pay until date to pdf.
      *
      * @param int &$iStartPos text start position
-     *
-     * @return void
      */
     protected function _setPayUntilInfo( &$iStartPos )
     {
@@ -481,7 +461,7 @@ class PdfArticleSummary extends PdfBlock
     }
 
     /**
-     * Generates order info block (prices, VATs, etc )
+     * Generates order info block (prices, VATs, etc ).
      *
      * @param int $iStartPos text start position
      *

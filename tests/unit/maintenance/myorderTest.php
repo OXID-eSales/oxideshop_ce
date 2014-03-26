@@ -54,7 +54,7 @@ require_once getShopBasePath() . 'core/oxpdf.php';
 /**
  * myOrder parrent chain class.
  */
-class myOrder_PdfArticleSummary extends PdfArticleSummary
+class myOrder_PdfArticleSummary extends InvoicepdfArticleSummary
 {
     public function setTotalCostsWithDiscount( &$iStartPos ) {
         $this->_setTotalCostsWithDiscount( $iStartPos );

@@ -23,7 +23,7 @@
 /**
  * Order pdf generator class
  */
-class Invoicepdf_order extends Invoicepdf_order_parent
+class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
 {
     /**
      * PDF language
@@ -51,7 +51,7 @@ class Invoicepdf_order extends Invoicepdf_order_parent
 
 
     /**
-     * Set language for pdf generation
+     * Set language for pdf generation.
      *
      * @param $iLang
      */
@@ -61,7 +61,7 @@ class Invoicepdf_order extends Invoicepdf_order_parent
     }
 
     /**
-     * Returns active shop object
+     * Returns active shop object.
      *
      * @return oxshop $oUser
      */
@@ -78,7 +78,7 @@ class Invoicepdf_order extends Invoicepdf_order_parent
     }
 
     /**
-     * Returns translated string
+     * Returns translated string.
      *
      * @param string $sString string to translate
      *
@@ -90,11 +90,9 @@ class Invoicepdf_order extends Invoicepdf_order_parent
     }
 
     /**
-     * Formats pdf page footer
+     * Formats pdf page footer.
      *
      * @param object $oPdf pdf document object
-     *
-     * @return void
      */
     public function pdfFooter( $oPdf )
     {
@@ -103,7 +101,7 @@ class Invoicepdf_order extends Invoicepdf_order_parent
 
         $oPdf->line( 15, 272, 195, 272 );
 
-        $oPdfBlock = new PdfBlock();
+        $oPdfBlock = new InvoicepdfBlock();
         /* column 1 - company name, shop owner info, shop address */
         $oPdf->setFont( $oPdfBlock->getFont(), '', 7 );
         $oPdf->text( 15, 275, strip_tags( $oShop->oxshops__oxcompany->getRawValue() ) );
@@ -127,7 +125,7 @@ class Invoicepdf_order extends Invoicepdf_order_parent
     }
 
     /**
-     * Adds shop logo to page header. Returns position for next texts in pdf
+     * Adds shop logo to page header. Returns position for next texts in pdf.
      *
      * @param object $oPdf pdf document object
      *
@@ -139,7 +137,7 @@ class Invoicepdf_order extends Invoicepdf_order_parent
         // new page with shop logo
         $this->pdfHeader( $oPdf );
 
-        $oPdfBlock = new PdfBlock();
+        $oPdfBlock = new InvoicepdfBlock();
         // column names
         $oPdf->setFont( $oPdfBlock->getFont(), '', 8 );
         $oPdf->text( 15, 50, $this->translate( 'ORDER_OVERVIEW_PDF_AMOUNT' ) );
@@ -156,7 +154,7 @@ class Invoicepdf_order extends Invoicepdf_order_parent
     }
 
     /**
-     * Creating new page with shop logo. Returning position to continue data writing
+     * Creating new page with shop logo. Returning position to continue data writing.
      *
      * @param object $oPdf pdf document object
      *
@@ -180,12 +178,10 @@ class Invoicepdf_order extends Invoicepdf_order_parent
     }
 
     /**
-     * Generates order pdf report file
+     * Generates order pdf report file.
      *
      * @param string $sFilename name of report file
      * @param int    $iSelLang  active language
-     *
-     * @return void
      */
     public function genPdf( $sFilename, $iSelLang = 0 )
     {
@@ -234,11 +230,9 @@ class Invoicepdf_order extends Invoicepdf_order_parent
 
 
     /**
-     * Set billing address info to pdf
+     * Set billing address info to pdf.
      *
      * @param object $oPdf pdf document object
-     *
-     * @return void
      */
     protected function _setBillingAddressToPdf( $oPdf )
     {
@@ -248,7 +242,7 @@ class Invoicepdf_order extends Invoicepdf_order_parent
             $sSal = $oLang->translateString($this->oxorder__oxbillsal->value, $this->getSelectedLang());
         } catch (Exception $e) {
         }
-        $oPdfBlock = new PdfBlock();
+        $oPdfBlock = new InvoicepdfBlock();
         $oPdf->setFont( $oPdfBlock->getFont(), '', 10 );
         $oPdf->text( 15, 59, $sSal);
         $oPdf->text( 15, 63, $this->oxorder__oxbillfname->getRawValue().' '.$this->oxorder__oxbilllname->getRawValue() );
@@ -261,11 +255,9 @@ class Invoicepdf_order extends Invoicepdf_order_parent
     }
 
     /**
-     * Set delivery address info to pdf
+     * Set delivery address info to pdf.
      *
      * @param object $oPdf pdf document object
-     *
-     * @return void
      */
     protected function _setDeliveryAddressToPdf( $oPdf )
     {
@@ -275,7 +267,7 @@ class Invoicepdf_order extends Invoicepdf_order_parent
             $sSal = $oLang->translateString($this->oxorder__oxdelsal->value, $this->getSelectedLang());
         } catch (Exception $e) {
         }
-        $oPdfBlock = new PdfBlock();
+        $oPdfBlock = new InvoicepdfBlock();
         $oPdf->setFont( $oPdfBlock->getFont(), '', 6 );
         $oPdf->text( 15, 87, $this->translate( 'ORDER_OVERVIEW_PDF_DELIVERYADDRESS' ) );
         $oPdf->setFont( $oPdfBlock->getFont(), '', 10 );
@@ -290,13 +282,11 @@ class Invoicepdf_order extends Invoicepdf_order_parent
     }
 
     /**
-     * Set order articles info and articles VAT's to pdf
+     * Set order articles info and articles VAT's to pdf.
      *
      * @param object $oPdf        pdf document object
      * @param int    &$iStartPos  text start position from top
      * @param bool   $blShowPrice show articles prices / VAT info or not
-     *
-     * @return void
      */
     protected function _setOrderArticlesToPdf( $oPdf, &$iStartPos, $blShowPrice = true )
     {
@@ -305,7 +295,7 @@ class Invoicepdf_order extends Invoicepdf_order_parent
         }
 
         $oCurr = $this->getCurrency();
-        $oPdfBlock = new PdfBlock();
+        $oPdfBlock = new InvoicepdfBlock();
         // product list
         foreach ( $this->_oArticles as $key => $oOrderArt ) {
 
@@ -362,14 +352,12 @@ class Invoicepdf_order extends Invoicepdf_order_parent
      * Exporting standard invoice pdf
      *
      * @param object $oPdf pdf document object
-     *
-     * @return void
      */
     public function exportStandart( $oPdf )
     {
         // preparing order curency info
         $myConfig = $this->getConfig();
-        $oPdfBlock = new PdfBlock();
+        $oPdfBlock = new InvoicepdfBlock();
 
         $this->_oCur = $myConfig->getCurrencyObject( $this->oxorder__oxcurrency->value );
         if ( !$this->_oCur ) {
@@ -468,7 +456,7 @@ class Invoicepdf_order extends Invoicepdf_order_parent
         $this->_setOrderArticlesToPdf( $oPdf, $siteH, true );
 
         // generating pdf file
-        $oArtSumm = new PdfArticleSummary( $this, $oPdf );
+        $oArtSumm = new InvoicepdfArticleSummary( $this, $oPdf );
         $iHeight = $oArtSumm->generate( $siteH );
         if ( $siteH + $iHeight > 258 ) {
             $this->pdfFooter( $oPdf );
@@ -484,17 +472,15 @@ class Invoicepdf_order extends Invoicepdf_order_parent
     }
 
     /**
-     * Generating delivery note pdf
+     * Generating delivery note pdf.
      *
      * @param object $oPdf pdf document object
-     *
-     * @return void
      */
     public function exportDeliveryNote( $oPdf )
     {
         $myConfig = $this->getConfig();
         $oShop    = $this->_getActShop();
-        $oPdfBlock = new PdfBlock();
+        $oPdfBlock = new InvoicepdfBlock();
 
         $oLang = oxRegistry::getLang();
         $sSal = $this->oxorder__oxdelsal->value;
@@ -639,7 +625,7 @@ class Invoicepdf_order extends Invoicepdf_order_parent
     }
 
     /**
-     * Returns order articles VATS's
+     * Returns order articles VATS's.
      *
      * @return array
      */
@@ -650,7 +636,7 @@ class Invoicepdf_order extends Invoicepdf_order_parent
     }
 
     /**
-     * Returns order currency object
+     * Returns order currency object.
      *
      * @return object
      */
@@ -660,7 +646,7 @@ class Invoicepdf_order extends Invoicepdf_order_parent
     }
 
     /**
-     * Returns order currency object
+     * Returns order currency object.
      *
      * @return object
      */

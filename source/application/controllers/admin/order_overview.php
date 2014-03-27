@@ -69,7 +69,6 @@ class Order_Overview extends oxAdminDetails
         $this->_aViewData["ordertotalsum"] = $oLang->formatCurrency( $dSum, $oCur);
         $this->_aViewData["ordertotalcnt"] = $oOrder->getOrderCnt();
         $this->_aViewData["afolder"] = $myConfig->getConfigParam( 'aOrderfolder' );
-            $this->_aViewData["alangs"] = $oLang->getLanguageNames();
 
         $this->_aViewData["currency"] = $oCur;
 
@@ -101,8 +100,6 @@ class Order_Overview extends oxAdminDetails
 
     /**
      * Performs Lexware export to user (outputs file to save).
-     *
-     * @return null
      */
     public function exportlex()
     {
@@ -120,6 +117,7 @@ class Order_Overview extends oxAdminDetails
             $oUtils->showMessageAndExit( $sLexware );
         }
     }
+
     /**
      * Gets proper file name
      *
@@ -135,39 +133,7 @@ class Order_Overview extends oxAdminDetails
     }
 
     /**
-     * Performs PDF export to user (outputs file to save).
-     *
-     * @return null
-     */
-    public function createPDF()
-    {
-        $soxId = $this->getEditObjectId();
-        if ( $soxId != "-1" && isset( $soxId ) ) {
-            // load object
-            $oOrder = oxNew( "oxorder" );
-            if ( $oOrder->load( $soxId ) ) {
-                $oUtils = oxRegistry::getUtils();
-                $sTrimmedBillName = trim($oOrder->oxorder__oxbilllname->getRawValue());
-                $sFilename = $oOrder->oxorder__oxordernr->value . "_" . $sTrimmedBillName . ".pdf";
-                $sFilename = $this->makeValidFileName($sFilename);
-                ob_start();
-                $oOrder->genPDF( $sFilename, oxConfig::getParameter( "pdflanguage" ) );
-                $sPDF = ob_get_contents();
-                ob_end_clean();
-                $oUtils->setHeader( "Pragma: public" );
-                $oUtils->setHeader( "Cache-Control: must-revalidate, post-check=0, pre-check=0" );
-                $oUtils->setHeader( "Expires: 0" );
-                $oUtils->setHeader( "Content-type: application/pdf" );
-                $oUtils->setHeader( "Content-Disposition: attachment; filename=".$sFilename );
-                oxRegistry::getUtils()->showMessageAndExit( $sPDF );
-            }
-        }
-    }
-
-    /**
      * Performs DTAUS export to user (outputs file to save).
-     *
-     * @return null
      */
     public function exportDTAUS()
     {
@@ -224,8 +190,6 @@ class Order_Overview extends oxAdminDetails
 
     /**
      * Sends order.
-     *
-     * @return null
      */
     public function sendorder()
     {
@@ -253,8 +217,6 @@ class Order_Overview extends oxAdminDetails
 
     /**
      * Resets order shipping date.
-     *
-     * @return null
      */
     public function resetorder()
     {

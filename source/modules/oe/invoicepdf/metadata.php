@@ -36,6 +36,18 @@ $aModule = array(
     'version'      => '1.0',
     'author'       => 'OXID eSales AG',
     'extend'       => array(
-        'oxorder' => 'oe/invoicepdf/myorder'
-    )
+        'oxorder' => 'oe/invoicepdf/models/invoicepdfoxorder',
+        'order_overview' => 'oe/invoicepdf/controllers/admin/invoicepdforder_overview'
+    ),
+    'files' => array(
+        'InvoicepdfBlock' => 'oe/invoicepdf/models/invoicepdfblock.php',
+        'InvoicepdfArticleSummary' => 'oe/invoicepdf/models/invoicepdfarticlesummary.php'
+    ),
+    'blocks' => array(
+                    array(
+                        'template' => 'order_overview.tpl',
+                        'block'=>'admin_order_overview_export',
+                        'file'=>'views/admin/blocks/order_overview.tpl'
+                    ),
+    ),
 );

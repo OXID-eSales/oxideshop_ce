@@ -755,7 +755,7 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
         );
             $aModules = array(
                 'oxarticle' => 'mod/testModule&mod2/testModule2/',
-                'oxorder' => 'oe/invoicepdf/myorder'
+                'oxorder' => 'oe/invoicepdf/models/invoicepdfoxorder'
             );
         $aDeletedExt = array(
             'oxarticle' => array ('mod/testModule',

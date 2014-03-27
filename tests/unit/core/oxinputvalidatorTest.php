@@ -366,12 +366,12 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
     {
         $oUser = oxNew( "oxUser" );
 
-        $oValidator = $this->getMock('oxinputvalidator', array('_addValidationError'));
+        $oValidator = $this->getMock('oxInputValidator', array('_addValidationError', '_getVatIdValidator'));
         $oValidator->expects($this->never())->method('_addValidationError');
 
-        $aHome = oxConfig::getInstance()->getConfigParam( 'aHomeCountry' );
 
-        $oValidator->checkVatId( $oUser, array('oxuser__oxustid' => 1, 'oxuser__oxcountryid' => $aHome[0]) );
+        $aHome = $this->getConfig()->getConfigParam( 'aHomeCountry' );
+        $oValidator->checkVatId( $oUser, array('oxuser__oxustid' => 'DE123', 'oxuser__oxcountryid' => $aHome[0]) );
     }
 
     /**

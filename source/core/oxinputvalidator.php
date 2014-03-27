@@ -391,13 +391,13 @@ class oxInputValidator extends oxSuperCfg
                 // no country
                 return;
             }
-            $oCountry = oxNew('oxcountry');
-            if ( $oCountry->load( $sCountryId ) && $oCountry->isForeignCountry() && $oCountry->isInEU() ) {
+            $oCountry = oxNew('oxCountry');
+
+            if ( $oCountry->load( $sCountryId ) && $oCountry->isInEU() ) {
 
                     if ( $this->_isVATIdentificationNumberInvalid( $aInvAddress, $oCountry ) ) {
                         $oEx = oxNew( 'oxInputException' );
                         $oEx->setMessage( 'VAT_MESSAGE_ID_NOT_VALID' );
-
                         return $this->_addValidationError( "oxuser__oxustid", $oEx );
                     }
 
@@ -600,5 +600,15 @@ class oxInputValidator extends oxSuperCfg
     private function _isVATIdentificationNumberInvalid( $aInvAddress, $oCountry )
     {
         return (bool) strncmp( $aInvAddress['oxuser__oxustid'], $oCountry->getVATIdentificationNumberPrefix(), 2 );
+    }
+
+    /**
+     * @return oxOnlineVatIdCheck
+     */
+    protected function _getVatIdValidator()
+    {
+        $oVatCheck = oxNew( 'oxOnlineVatIdCheck' );
+
+        return $oVatCheck;
     }
 }

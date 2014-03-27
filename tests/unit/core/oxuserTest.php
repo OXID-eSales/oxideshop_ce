@@ -2431,7 +2431,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
         $aHome = oxConfig::getInstance()->getConfigParam( 'aHomeCountry' );
 
         try {
-            $oUser->UNITcheckVatId( array('oxuser__oxustid' => 1, 'oxuser__oxcountryid' => $aHome[0]) );
+            $oUser->UNITcheckVatId( array('oxuser__oxustid' => 'DE123', 'oxuser__oxcountryid' => $aHome[0]) );
         } catch ( Exception $oException ) {
             $this->fail( "while trying to check home country business user with vat id" );
         }

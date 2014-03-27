@@ -391,13 +391,13 @@ class oxInputValidator extends oxSuperCfg
                 // no country
                 return;
             }
-            $oCountry = oxNew('oxcountry');
-            if ( $oCountry->load( $sCountryId ) && $oCountry->isForeignCountry() && $oCountry->isInEU() ) {
+            $oCountry = oxNew('oxCountry');
+
+            if ( $oCountry->load( $sCountryId ) && $oCountry->isInEU() ) {
 
                     if ( strncmp( $aInvAddress['oxuser__oxustid'], $oCountry->getVATIdentificationNumberPrefix(), 2 ) ) {
                         $oEx = oxNew( 'oxInputException' );
                         $oEx->setMessage( 'VAT_MESSAGE_ID_NOT_VALID' );
-
                         return $this->_addValidationError( "oxuser__oxustid", $oEx );
                     }
 
@@ -587,5 +587,28 @@ class oxInputValidator extends oxSuperCfg
         $aDebitInformation['lsktonr'] = str_replace( ' ', '', $aDebitInformation['lsktonr'] );
 
         return $aDebitInformation;
+    }
+
+    /**
+     * Compares country VAT identification number with it's prefix.
+     *
+     * @param array $aInvAddress
+     * @param oxCountry $oCountry
+     *
+     * @return bool
+     */
+    private function _isVATIdentificationNumberInvalid( $aInvAddress, $oCountry )
+    {
+        return (bool) strncmp( $aInvAddress['oxuser__oxustid'], $oCountry->getVATIdentificationNumberPrefix(), 2 );
+    }
+
+    /**
+     * @return oxOnlineVatIdCheck
+     */
+    protected function _getVatIdValidator()
+    {
+        $oVatCheck = oxNew( 'oxOnlineVatIdCheck' );
+
+        return $oVatCheck;
     }
 }

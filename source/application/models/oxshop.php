@@ -43,6 +43,70 @@ class oxShop extends oxI18n
 
 
     /**
+     * @var $_aQueries array variable
+     */
+    protected $_aQueries = array();
+
+    /**
+     * @var $_aTables array variable
+     */
+    protected $_aTables = null;
+
+    /**
+     * $_aTables setter
+     *
+     * @param array $aTables
+     */
+    public function setTables($aTables)
+    {
+        $this->_aTables = $aTables;
+    }
+
+    /**
+     * $_aTables getter
+     *
+     * @return array
+     */
+    public function getTables()
+    {
+        if (is_null($this->_aTables)) {
+            $aMultilangTables = oxRegistry::getLang()->getMultiLangTables();
+            $aMultishopTables = $this->getMultiShopTables();
+            $this->setTables(array_unique(array_merge($aMultishopTables, $aMultilangTables)));
+        }
+        return $this->_aTables;
+    }
+
+    /**
+     * $_aQueries setter
+     *
+     * @param array $aQueries
+     */
+    public function setQueries($aQueries)
+    {
+        $this->_aQueries = $aQueries;
+    }
+
+    /**
+     * $_aQueries getter
+     *
+     * @return array
+     */
+    public function getQueries()
+    {
+        return $this->_aQueries;
+    }
+
+    /**
+     * Add a query to query array
+     *
+     * @param $sQuery
+     */
+    public function addQuery($sQuery)
+    {
+        $this->_aQueries[] = $sQuery;
+    }
+    /**
      * Class constructor, initiates parent constructor (parent::oxBase()).
      */
     public function __construct()
@@ -70,6 +134,20 @@ class oxShop extends oxI18n
         $this->_aMultiShopTables = $aMultiShopTables;
     }
 
+    /**
+     * Get multishop table array
+     *
+     * @return array
+     */
+    public function getMultiShopTables()
+    {
+        if (is_null($this->_aMultiShopTables)) {
+            $this->_aMultiShopTables = array();
+        }
+
+        return $this->_aMultiShopTables;
+    }
+
 
     /**
      * (Re)generates shop views
@@ -81,46 +159,10 @@ class oxShop extends oxI18n
      */
     public function generateViews( $blMultishopInheritCategories = false, $aMallInherit = null )
     {
-        $oDb        = oxDb::getDb();
-        $oLang      = oxRegistry::getLang();
-        $aLanguages = $oLang->getLanguageIds( $this->getId() );
-        $aAllShopLanguages = $oLang->getAllShopLanguageIds();
+        $this->_prepareViewsQueries($blMultishopInheritCategories, $aMallInherit);
+        $bSuccess = $this->_runQueries();
 
-        $aTables = $aMultilangTables = oxRegistry::getLang()->getMultiLangTables();
-
-        $aQueries = array();
-
-        // Generate multitable views
-        foreach ( $aTables as $sTable ) {
-            $aQueries[] = 'CREATE OR REPLACE SQL SECURITY INVOKER VIEW oxv_'.$sTable.' AS SELECT * FROM '.$sTable.' '.$this->_getViewJoinAll($sTable);
-
-            if (in_array($sTable, $aMultilangTables)) {
-                foreach ($aLanguages as $iLang => $sLang) {
-                    $aQueries[] = 'CREATE OR REPLACE SQL SECURITY INVOKER VIEW oxv_'.$sTable.'_'.$sLang.' AS SELECT '.$this->_getViewSelect($sTable, $iLang).' FROM '.$sTable.' '.$this->_getViewJoinLang($sTable, $iLang);
-                }
-            }
-        }
-
-        $bSuccess = true;
-        foreach ($aQueries as $sQuery) {
-            if ( !$oDb->execute( $sQuery ) ) {
-                $bSuccess = false;
-            }
-        }
-
-        $oViewsValidator = oxNew( 'oxShopViewValidator' );
-
-        $oViewsValidator->setShopId( $this->getId() );
-        $oViewsValidator->setLanguages( $aLanguages );
-        $oViewsValidator->setAllShopLanguages( $aAllShopLanguages );
-        $oViewsValidator->setMultiLangTables( $aMultilangTables );
-        $oViewsValidator->setMultiShopTables( $aMultishopTables );
-
-        $aViews = $oViewsValidator->getInvalidViews();
-
-        foreach ($aViews as $sView) {
-            $oDb->execute( 'DROP VIEW IF EXISTS '. $sView );
-        }
+        $this->_cleanInvalidViews();
 
         return $bSuccess;
     }
@@ -203,6 +245,91 @@ class oxShop extends oxI18n
     public function isProductiveMode()
     {
         return (bool) $this->oxshops__oxproductive->value;
+    }
+
+    /**
+     * Gets all invalid views and drops them from database
+     */
+    protected function _cleanInvalidViews()
+    {
+        $oDb = oxDb::getDb();
+        $oLang = oxRegistry::getLang();
+        $aLanguages = $oLang->getLanguageIds($this->getId());
+
+        $aMultilangTables = oxRegistry::getLang()->getMultiLangTables();
+        $aMultishopTables = $this->getMultiShopTables();
+
+        $oLang = oxRegistry::getLang();
+        $aAllShopLanguages = $oLang->getAllShopLanguageIds();
+
+        /** @var oxShopViewValidator $oViewsValidator */
+        $oViewsValidator = oxNew('oxShopViewValidator');
+
+        $oViewsValidator->setShopId($this->getId());
+        $oViewsValidator->setLanguages($aLanguages);
+        $oViewsValidator->setAllShopLanguages($aAllShopLanguages);
+        $oViewsValidator->setMultiLangTables($aMultilangTables);
+        $oViewsValidator->setMultiShopTables($aMultishopTables);
+
+        $aViews = $oViewsValidator->getInvalidViews();
+
+        foreach ($aViews as $sView) {
+            $oDb->execute('DROP VIEW IF EXISTS ' . $sView);
+        }
+    }
+
+    /**
+     * @param $blMultishopInheritCategories
+     * @param $aMallInherit
+     *
+     * @return array
+     */
+    protected function _prepareViewsQueries($blMultishopInheritCategories, $aMallInherit)
+    {
+        $oLang = oxRegistry::getLang();
+        $aLanguages = $oLang->getLanguageIds($this->getId());
+
+        // @todo move edition specific code to separate methods
+        $aMultilangTables = oxRegistry::getLang()->getMultiLangTables();
+        $aMultishopTables = $this->getMultiShopTables();
+        $aTables = $this->getTables();
+
+        foreach ($aTables as $sTable) {
+            $this->addQuery(
+            'CREATE OR REPLACE SQL SECURITY INVOKER VIEW oxv_' . $sTable
+            . ' AS SELECT * FROM ' . $sTable . ' ' . $this->_getViewJoinAll($sTable)
+            );
+
+            if (in_array($sTable, $aMultilangTables)) {
+                foreach ($aLanguages as $iLang => $sLang) {
+                    $this->addQuery(
+                    'CREATE OR REPLACE SQL SECURITY INVOKER VIEW oxv_' . $sTable . '_' . $sLang . ' AS SELECT ' . $this->_getViewSelect(
+                    $sTable, $iLang
+                    ) . ' FROM ' . $sTable . ' ' . $this->_getViewJoinLang($sTable, $iLang)
+                    );
+                }
+            }
+        }
+    }
+
+    /**
+     * Runs stored queries
+     * Returns false when any of the queries fail, otherwise return true
+     *
+     * @return bool
+     */
+    protected function _runQueries()
+    {
+        $oDb = oxDb::getDb();
+        $aQueries = $this->getQueries();
+        $bSuccess = true;
+        foreach ($aQueries as $sQuery) {
+            if (!$oDb->execute($sQuery)) {
+                $bSuccess = false;
+            }
+        }
+
+        return $bSuccess;
     }
 
 }

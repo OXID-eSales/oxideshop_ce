@@ -2238,14 +2238,14 @@ class Unit_Core_oxbasketTest extends OxidTestCase
     }
 
     /**
-     * Tests if formating discounts
+     * Tests if formatting discounts
      *
      * @return null
      */
     public function testFormatDiscount()
     {
-        modConfig::getInstance()->setConfigParam( 'blEnterNetPrice', true );
-        $aTestVals = array( 'aDiscounts' );
+        $this->getConfig()->setConfigParam( 'blEnterNetPrice', true );
+        $aTestValues = array( 'aDiscounts' );
 
         // deleting discounts to ignore bundle problems
         foreach ( $this->aDiscounts as $oDiscount ) {
@@ -2265,7 +2265,7 @@ class Unit_Core_oxbasketTest extends OxidTestCase
         $oBasket->addToBasket( $this->oVariant->getId(), 10 );
         $oBasket->calculateBasket( false );
 
-        foreach ( $aTestVals as $sName ) {
+        foreach ( $aTestValues as $sName ) {
             $this->assertTrue( isset( $oBasket->{$sName} ), " $sName is not set ");
         }
     }
@@ -2277,11 +2277,11 @@ class Unit_Core_oxbasketTest extends OxidTestCase
      */
     public function testSaveNoUser()
     {
-        $oBasket = $this->getMock( 'oxbasket', array( 'addToBasket' ) );
+        $oBasket = $this->getMock( 'oxBasket', array( 'addToBasket' ) );
         $oBasket->expects( $this->never() )->method( 'addToBasket' );
         $oBasket->setBasketUser( false );
 
-        modConfig::getInstance()->setConfigParam( 'blAllowUnevenAmounts', true );
+        $this->getConfig()->setConfigParam( 'blAllowUnevenAmounts', true );
         $oBasket->UNITsave();
     }
 
@@ -2307,7 +2307,7 @@ class Unit_Core_oxbasketTest extends OxidTestCase
         $oBasket->expects( $this->once() )->method( 'addToBasket' );
         $oBasket->setVar( 'aBasketContents', array( new oxbasketitem() ) );
 
-        modConfig::getInstance()->setConfigParam( 'blAllowUnevenAmounts', true );
+        $this->getConfig()->setConfigParam( 'blAllowUnevenAmounts', true );
         $oBasket->load();
     }
 
@@ -2318,15 +2318,15 @@ class Unit_Core_oxbasketTest extends OxidTestCase
      */
     public function testAddItemToSavedBasket()
     {
-        $oUserBasket = $this->getMock( 'oxuserbasket', array( 'addItemToBasket' ) );
+        $oUserBasket = $this->getMock( 'oxUserBasket', array( 'addItemToBasket' ) );
         $oUserBasket->expects( $this->once() )->method( 'addItemToBasket' );
 
-        $oUser = $this->getMock( 'oxuser', array( 'getBasket' ) );
+        $oUser = $this->getMock( 'oxUser', array( 'getBasket' ) );
         $oUser->expects( $this->once() )->method( 'getBasket' )->will( $this->returnValue( $oUserBasket ) );
 
-        $oBasket = $this->getMock( 'oxbasket', array( 'getBasketUser', '_canSaveBasket' ) );
+        $oBasket = $this->getMock( 'oxBasket', array( 'getBasketUser', 'isSaveToDataBaseEnabled' ) );
         $oBasket->expects( $this->once() )->method( 'getBasketUser' )->will( $this->returnValue( $oUser ) );
-        $oBasket->expects( $this->once() )->method( '_canSaveBasket')->will( $this->returnValue( true ));
+        $oBasket->expects( $this->once() )->method( 'isSaveToDataBaseEnabled')->will( $this->returnValue( true ));
 
         $oBasket->addToBasket('1127', 10, 'testSel', 'testPersParam');
 
@@ -2340,15 +2340,15 @@ class Unit_Core_oxbasketTest extends OxidTestCase
      */
     public function testDeleteSavedBasket()
     {
-        modConfig::getInstance()->setConfigParam( 'blPerfNoBasketSaving', false );
+        $this->getConfig()->setConfigParam( 'blPerfNoBasketSaving', false );
 
-        $oUserBasket = $this->getMock( 'oxuserbasket', array( 'delete' ) );
+        $oUserBasket = $this->getMock( 'oxUserBasket', array( 'delete' ) );
         $oUserBasket->expects( $this->once() )->method( 'delete' );
 
-        $oUser = $this->getMock( 'oxuser', array( 'getBasket' ) );
+        $oUser = $this->getMock( 'oxUser', array( 'getBasket' ) );
         $oUser->expects( $this->once() )->method( 'getBasket' )->will( $this->returnValue( $oUserBasket ) );
 
-        $oBasket = $this->getMock( 'oxbasket', array( 'getBasketUser' ) );
+        $oBasket = $this->getMock( 'oxBasket', array( 'getBasketUser' ) );
         $oBasket->expects( $this->once() )->method( 'getBasketUser' )->will( $this->returnValue( $oUser ) );
         $oBasket->UNITdeleteSavedBasket();
     }
@@ -2360,9 +2360,9 @@ class Unit_Core_oxbasketTest extends OxidTestCase
      */
     public function testFindDelivCountryNoUserAtAll()
     {
-        modConfig::getInstance()->setConfigParam( 'aHomeCountry', null );
+        $this->getConfig()->setConfigParam( 'aHomeCountry', null );
 
-        $oBasket = new oxbasket();
+        $oBasket = new oxBasket();
         $oBasket->setBasketUser( false );
         $this->assertNull( $oBasket->UNITfindDelivCountry() );
     }
@@ -2374,10 +2374,10 @@ class Unit_Core_oxbasketTest extends OxidTestCase
      */
     public function test_findDelivCountry_noUserIsHomeCountry()
     {
-        modConfig::getInstance()->setConfigParam( 'aHomeCountry', array('_xxx') );
-        modConfig::getInstance()->setConfigParam( 'blCalculateDelCostIfNotLoggedIn', true );
+        $this->getConfig()->setConfigParam( 'aHomeCountry', array('_xxx') );
+        $this->getConfig()->setConfigParam( 'blCalculateDelCostIfNotLoggedIn', true );
 
-        $oBasket = new oxbasket();
+        $oBasket = new oxBasket();
         $oBasket->setBasketUser( false );
         $this->assertEquals( '_xxx', $oBasket->UNITfindDelivCountry() );
     }
@@ -2389,10 +2389,10 @@ class Unit_Core_oxbasketTest extends OxidTestCase
      */
     public function testFindDelivCountryAdminUserCountryId()
     {
-        $oUser = new oxuser();
+        $oUser = new oxUser();
         $oUser->load( 'oxdefaultadmin' );
 
-        $oBasket = new oxbasket();
+        $oBasket = new oxBasket();
         $oBasket->setBasketUser( $oUser );
         $this->assertEquals( $oUser->oxuser__oxcountryid->value, $oBasket->UNITfindDelivCountry() );
     }
@@ -4545,6 +4545,34 @@ class Unit_Core_oxbasketTest extends OxidTestCase
         $oBasket->setCost( 'oxtsprotection', new oxPrice( 0.98 ) );
 
         $this->assertEquals( 100, $oBasket->getTsInsuredSum() );
+    }
+
+    public function testGetSaveBasketSetNotSave()
+    {
+        $oBasket = new oxBasket();
+        $oBasket->enableSaveToDataBase(false);
+        $this->assertFalse( $oBasket->isSaveToDataBaseEnabled() );
+    }
+
+    public function testGetSaveBasketSetNotSaveWithConfig()
+    {
+        $oBasket = new oxBasket();
+        $this->getConfig()->setConfigParam('blPerfNoBasketSaving', true);
+        $this->assertFalse( $oBasket->isSaveToDataBaseEnabled() );
+    }
+
+    public function testGetSaveBasketSetSaveWithConfig()
+    {
+        $oBasket = new oxBasket();
+        $this->getConfig()->setConfigParam('blPerfNoBasketSaving', false);
+        $this->assertTrue( $oBasket->isSaveToDataBaseEnabled() );
+    }
+
+    public function testGetSaveBasketSetSaveWithConfigNotDefined()
+    {
+        $oBasket = new oxBasket();
+        $this->getConfig()->setConfigParam('blPerfNoBasketSaving', null);
+        $this->assertTrue( $oBasket->isSaveToDataBaseEnabled() );
     }
 
 }

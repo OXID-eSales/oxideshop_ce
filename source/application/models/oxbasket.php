@@ -278,6 +278,38 @@ class oxBasket extends oxSuperCfg
 
 
     /**
+     * Save basket to data base if user is logged in
+     *
+     * @var bool
+     */
+    protected $_blSaveToDataBase = null;
+
+    /**
+     * Enables or disable saving to data base
+     *
+     * @param boolean $blSave
+     */
+    public function enableSaveToDataBase( $blSave = true )
+    {
+        $this->_blSaveToDataBase = $blSave;
+    }
+
+    /**
+     * Returns true if saving to data base enabled
+     *
+     * @return boolean
+     */
+    public function isSaveToDataBaseEnabled()
+    {
+        if( is_null($this->_blSaveToDataBase) ) {
+            $this->_blSaveToDataBase = (bool) !$this->getConfig()->getConfigParam( 'blPerfNoBasketSaving' );
+        }
+
+        return $this->_blSaveToDataBase;
+    }
+
+
+    /**
      * Return true if calculation mode is netto
      *
      * @return bool
@@ -1690,16 +1722,16 @@ class oxBasket extends oxSuperCfg
         }
     }
 
-
     /**
      * Checks whether basket can be saved
+     *
+     * @deprecated in v5.2.0 on 2013-04-28; use oxBasket::isSaveToDataBaseEnabled()
      *
      * @return bool
      */
     protected function _canSaveBasket()
     {
-        $blCanSave = !$this->getConfig()->getConfigParam( 'blPerfNoBasketSaving' );
-        return $blCanSave;
+        return $this->isSaveToDataBaseEnabled();
     }
 
     /**
@@ -1731,12 +1763,10 @@ class oxBasket extends oxSuperCfg
 
     /**
      * Saves existing basket to database
-     *
-     * @return null;
      */
     protected function _save()
     {
-        if ( $this->_canSaveBasket() ) {
+        if ( $this->isSaveToDataBaseEnabled() ) {
 
             if ( $oUser = $this->getBasketUser() ) {
                 //first delete all contents

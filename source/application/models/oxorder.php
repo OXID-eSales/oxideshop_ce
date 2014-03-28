@@ -1417,11 +1417,12 @@ class oxOrder extends oxBase
      *
      * @param bool $blStockCheck perform stock check or not (default true)
      *
-     * @return oxbasket
+     * @return oxBasket
      */
     protected function _getOrderBasket( $blStockCheck = true )
     {
-        $this->_oOrderBasket = oxNew( "oxbasket" );
+        $this->_oOrderBasket = oxNew( "oxBasket" );
+        $this->_oOrderBasket->enableSaveToDataBase( false );
 
         //setting recalculation mode
         $this->_oOrderBasket->setCalculationModeNetto( $this->isNettoMode() );

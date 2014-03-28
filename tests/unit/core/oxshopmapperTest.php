@@ -164,4 +164,30 @@ class Unit_Core_oxShopMapperTest extends OxidTestCase
 
         $this->assertTrue($oShopMapper->removeItemFromListOfShops($iItemId, $sItemType, $aShops));
     }
+
+    /**
+     * Tests add item group to shop.
+     */
+    public function testAddItemGroupToShop()
+    {
+        $sItemType = 'oxarticles';
+        $iShopId   = 456;
+
+        $oShopMapper = new oxShopMapper();
+
+        $this->assertTrue($oShopMapper->addItemGroupToShop($sItemType, $iShopId));
+    }
+
+    /**
+     * Tests remove item group from shop.
+     */
+    public function testRemoveItemGroupFromShop()
+    {
+        $sItemType = 'oxarticles';
+        $iShopId   = 456;
+
+        $oShopMapper = new oxShopMapper();
+
+        $this->assertTrue($oShopMapper->removeItemGroupFromShop($sItemType, $iShopId));
+    }
 }

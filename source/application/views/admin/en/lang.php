@@ -1973,8 +1973,7 @@ $aLang = array(
 'PAYMENT_RDFA_VISA'                                        => 'VISA',
 
 'DELIVERY_RDFA_ASIGN_DELIVERY'                             => 'Assign delivery method',
-'DELIVERY_RDFA_ADVICE_START'                               => '<b>Hint:</b> Please choose only those delivery methods, pre-defined in GoodRelations, that comply with your shipping method',
-'DELIVERY_RDFA_ADVICE_END'                                 => '',
+'DELIVERY_RDFA_ADVICE_START'                               => '<b>Hint:</b> Please choose only those delivery methods, pre-defined in GoodRelations, that comply with your shipping method %s',
 'DELIVERY_RDFA_GENERAL'                                    => 'General delivery methods',
 'DELIVERY_RDFA_DELIVERYMODEDIRECTDOWNLOAD'                 => 'Download',
 'DELIVERY_RDFA_DELIVERYMODEOWNFLEET'                       => 'Own fleet',

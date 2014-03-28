@@ -14,17 +14,20 @@
         </b></label>
     </dt>
     <dd class="[{if $oView->getCheckedPaymentId() == $paymentmethod->oxpayments__oxid->value}]activePayment[{/if}]">
-        <ul>
-        [{foreach from=$paymentmethod->getDynValues() item=value name=PaymentDynValues}]
-            <li>
-                <label>[{ $value->name}]</label>
-                <input id="[{$sPaymentID}]_[{$smarty.foreach.PaymentDynValues.iteration}]" type="text" class="textbox" size="20" maxlength="64" name="dynvalue[[{$value->name}]]" value="[{ $value->value}]">
-            </li>
-        [{/foreach}]
-        </ul>
+        [{assign var="aDynValues" value=$paymentmethod->getDynValues()}]
+        [{if $aDynValues}]
+            <ul>
+            [{foreach from=$aDynValues item=value name=PaymentDynValues}]
+                <li>
+                    <label>[{ $value->name}]</label>
+                    <input id="[{$sPaymentID}]_[{$smarty.foreach.PaymentDynValues.iteration}]" type="text" class="textbox" size="20" maxlength="64" name="dynvalue[[{$value->name}]]" value="[{ $value->value}]">
+                </li>
+            [{/foreach}]
+            </ul>
+        [{/if}]
 
         [{block name="checkout_payment_longdesc"}]
-            [{if $paymentmethod->oxpayments__oxlongdesc->value}]
+            [{if $paymentmethod->oxpayments__oxlongdesc->value|trim}]
                 <div class="desc">
                     [{ $paymentmethod->oxpayments__oxlongdesc->getRawValue()}]
                 </div>

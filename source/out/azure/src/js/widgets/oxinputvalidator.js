@@ -61,10 +61,10 @@
                     setTimeout(function(){
                         if ( $( oTrigger ).is(options.visible) ) {
                             var oFieldSet = self.getFieldSet( oTrigger );
-                            if ( oFieldSet.children( '.'+options.metodValidateDate ).length <= 0 ) {
+                            if ( oFieldSet.children( '.'+options.metodValidateDate ).length >= 0 ) {
                                 var blIsValid = self.isFieldSetValid( oFieldSet, true );
                                 self.hideErrorMessage( oFieldSet );
-                                if ( blIsValid != true ){
+                                if ( blIsValid != true ) {
                                     self.showErrorMessage( oFieldSet, blIsValid );
                                 }
                             }

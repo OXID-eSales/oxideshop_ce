@@ -42,7 +42,6 @@ $aData = array(
             // Discount 10% 
             'oxid'         => 'test',
             'oxshopid' => 1,
-            'oxshopincl' => 1,
             'oxaddsum'     => 10,
             'oxaddsumtype' => '%',
             'oxamount' => 0,

@@ -84,7 +84,6 @@ $aData = array(
                 'oxallowotherseries' => 1,
                 'oxallowuseanother' => 1,
 				'oxminimumvalue' =>75,
-                'oxshopincl' => 1,
                 // voucher of this voucherserie count
                 'voucher_count' => 1
             ),

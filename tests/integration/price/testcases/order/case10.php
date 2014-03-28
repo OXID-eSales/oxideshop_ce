@@ -97,7 +97,6 @@ $aData = array(
                 'oxallowsameseries' => 1,
                 'oxallowotherseries' => 1,
                 'oxallowuseanother' => 1,
-                'oxshopincl' => 1,
                 'voucher_count' => 1
             ),
         ),

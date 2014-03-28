@@ -26,7 +26,6 @@ $aData = array (
                         'oxid'       => "variantDiscountTestCategory",
                         'oxparentid' => 'oxrootid',
                         'oxshopid'   => 1,
-                        'oxshopincl' => 1,
                         'oxactive'   => 1,
                         'oxarticles' => array( 'variantDiscountTestChildArticle' )
                 ),

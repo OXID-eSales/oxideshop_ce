@@ -22,7 +22,6 @@ $aData = array(
             'oxid'       => 'books',
             'oxparentid' => 'oxrootid',
             'oxshopid'   => 1,
-            'oxshopincl' => 1,
             'oxactive'   => 1,
             'oxarticles' => array( 'book' )
         ),
@@ -30,7 +29,6 @@ $aData = array(
             'oxid'       => 'otherStuff',
             'oxparentid' => 'oxrootid',
             'oxshopid'   => 1,
-            'oxshopincl' => 1,
             'oxactive'   => 1,
             'oxarticles' => array( 'stuff' )
         ),

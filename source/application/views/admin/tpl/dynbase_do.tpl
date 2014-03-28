@@ -16,8 +16,9 @@
             [{/if}]
 
             [{ if $iError == -1}][{ oxmultilang ident="AUCTMASTER_DO_UNKNOWNERROR" }][{/if}]
-            [{ if $iError == 1 }][{ oxmultilang ident="AUCTMASTER_DO_EXPORTFILE1" }] ([{$sOutputFile}]) [{ oxmultilang ident="AUCTMASTER_DO_EXPORTFILE2" }][{/if}]
-        [{/if}]
+            [{ if $iError == 1 }][{ assign var='oxOutputFile' value=$sOutputFile }][{ oxmultilang ident="AUCTMASTER_DO_EXPORTFILE1" args=$oxOutputFile}][{/if}]
+
+[{/if}]
     [{/if}]
 [{else}]
   [{ oxmultilang ident="GENEXPORT_EXPRUNNING" }] [{ oxmultilang ident="GENEXPORT_EXPORTEDITEMS" }] [{$iExpItems|default:0}]

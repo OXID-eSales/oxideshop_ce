@@ -87,25 +87,6 @@ class Unit_Views_basketTest extends OxidTestCase
         $this->assertEquals('page/checkout/basket.tpl', $oBasket->render());
     }
 
-    /**
-     * test render
-     *
-     * @return null
-     */
-    public function testRenderSE()
-    {
-        oxUtils::getInstance()->setSearchEngine(true);
-
-        $oBasket = $this->getMock( "basket", array( "getBasketArticles", 'getBasketSimilarList', 'getSimilarRecommLists', 'showBackToShop' ) );
-        $oBasket->expects( $this->never() )->method( 'getBasketArticles')->will($this->returnValue( 'getBasketArticles' ) );
-        $oBasket->expects( $this->never() )->method( 'getBasketSimilarList')->will($this->returnValue( 'getBasketSimilarList' ) );
-        $oBasket->expects( $this->never() )->method( 'getSimilarRecommLists')->will($this->returnValue( 'getSimilarRecommLists' ) );
-        $oBasket->expects( $this->never() )->method( 'showBackToShop')->will($this->returnValue( 'showBackToShop' ) );
-
-        $this->assertEquals('content.tpl', $oBasket->render());
-    }
-
-
     public function testGetBasketArticles()
     {
         $oB = $this->getMock('oxBasket', array('getBasketArticles'));

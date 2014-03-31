@@ -65,7 +65,9 @@ class oxShopMapperDbGateway
      */
     public function addItemToShop($iItemId, $sItemType, $iShopId)
     {
-        $sSQL = "insert into {$this->getMappingTable($sItemType)} (OXMAPSHOPID, OXMAPOBJECTID) values (?, ?)";
+        $sMappingTable = $this->getMappingTable($sItemType);
+
+        $sSQL = "insert into $sMappingTable (OXMAPSHOPID, OXMAPOBJECTID) values (?, ?)";
 
         $blResult = (bool) $this->execute($sSQL, array($iShopId, $iItemId));
 
@@ -83,7 +85,9 @@ class oxShopMapperDbGateway
      */
     public function removeItemFromShop($iItemId, $sItemType, $iShopId)
     {
-        $sSQL = "delete from {$this->getMappingTable($sItemType)} where OXMAPSHOPID = ? and OXMAPOBJECTID = ?";
+        $sMappingTable = $this->getMappingTable($sItemType);
+
+        $sSQL = "delete from $sMappingTable where OXMAPSHOPID = ? and OXMAPOBJECTID = ?";
 
         $blResult = (bool) $this->execute($sSQL, array($iShopId, $iItemId));
 
@@ -114,8 +118,10 @@ class oxShopMapperDbGateway
      */
     public function inheritItemsFromShop($iParentShopId, $iSubShopId, $sItemType)
     {
-        $sSQL = "insert into {$this->getMappingTable($sItemType)} (OXMAPSHOPID, OXMAPOBJECTID) "
-                . "select ?, OXMAPOBJECTID from {$this->getMappingTable($sItemType)} where OXMAPSHOPID = ?";
+        $sMappingTable = $this->getMappingTable($sItemType);
+
+        $sSQL = "insert into $sMappingTable (OXMAPSHOPID, OXMAPOBJECTID) "
+                . "select ?, OXMAPOBJECTID from $sMappingTable where OXMAPSHOPID = ?";
 
         $blResult = (bool) $this->execute($sSQL, array($iSubShopId, $iParentShopId));
 
@@ -133,8 +139,10 @@ class oxShopMapperDbGateway
      */
     public function removeInheritedItemsFromShop($iParentShopId, $iSubShopId, $sItemType)
     {
-        $sSQL = "delete s from {$this->getMappingTable($sItemType)} as s "
-                . "left join {$this->getMappingTable($sItemType)} as p on (s.OXMAPOBJECTID = p.OXMAPOBJECTID)"
+        $sMappingTable = $this->getMappingTable($sItemType);
+
+        $sSQL = "delete s from $sMappingTable as s "
+                . "left join $sMappingTable as p on (s.OXMAPOBJECTID = p.OXMAPOBJECTID)"
                 . "where s.OXMAPSHOPID = ? "
                 . "and p.OXMAPSHOPID = ?";
 

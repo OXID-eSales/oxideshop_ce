@@ -430,6 +430,7 @@ class oxLang extends oxSuperCfg
      */
     public function translateString( $sStringToTranslate, $iLang = null, $blAdminMode = null )
     {
+        $this->setIsTranslated();
         // checking if in cache exist
         $aLang = $this->_getLangTranslationArray( $iLang, $blAdminMode );
         if ( isset( $aLang[$sStringToTranslate] ) ) {

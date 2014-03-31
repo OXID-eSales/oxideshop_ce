@@ -59,7 +59,7 @@ class oxShopMapper
      * Adds object to shop or list of shops.
      *
      * @param oxBase    $oItem  Object to add to shop
-     * @param int|array $mShops Shop id or list of shop ids.
+     * @param int|array $mShops Shop ID or list of shop IDs.
      *
      * @return bool
      */
@@ -72,7 +72,7 @@ class oxShopMapper
      * Removes object from shop or list of shops.
      *
      * @param oxBase    $oItem  Object to remove from shop
-     * @param int|array $mShops Shop id or list of shop ids.
+     * @param int|array $mShops Shop ID or list of shop IDs.
      *
      * @return bool
      */
@@ -86,7 +86,7 @@ class oxShopMapper
      *
      * @param int       $iItemId   Item ID
      * @param string    $sItemType Item type
-     * @param int|array $aShops    Shop id or list of shop ids.
+     * @param int|array $aShops    Shop ID or list of shop IDs.
      *
      * @return bool
      */
@@ -108,7 +108,7 @@ class oxShopMapper
      *
      * @param int       $iItemId   Item ID
      * @param string    $sItemType Item type
-     * @param int|array $aShops    Shop id or list of shop ids.
+     * @param int|array $aShops    Shop ID or list of shop IDs.
      *
      * @return bool
      */
@@ -129,7 +129,7 @@ class oxShopMapper
      * Adds item group to shop.
      *
      * @param string $sItemType Item type
-     * @param int    $iShopId   Shop id
+     * @param int    $iShopId   Shop ID
      *
      * @return bool
      */
@@ -142,7 +142,7 @@ class oxShopMapper
      * Removes item group from shop.
      *
      * @param string $sItemType Item type
-     * @param int    $iShopId   Shop id
+     * @param int    $iShopId   Shop ID
      *
      * @return bool
      */

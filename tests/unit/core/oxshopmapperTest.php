@@ -30,7 +30,7 @@ class Unit_Core_oxShopMapperTest extends OxidTestCase
 {
 
     /**
-     * Provides shop id or list of shops.
+     * Provides shop ID or list of shops.
      *
      * @return array
      */
@@ -63,7 +63,7 @@ class Unit_Core_oxShopMapperTest extends OxidTestCase
     /**
      * Tests add object to shop or list of shops.
      *
-     * @param int|array $aShops Shop id or list of shop ids.
+     * @param int|array $aShops Shop ID or list of shop IDs.
      *
      * @dataProvider _dpTestListOfShops
      */
@@ -87,7 +87,7 @@ class Unit_Core_oxShopMapperTest extends OxidTestCase
     /**
      * Tests remove object from shop or list of shops.
      *
-     * @param int|array $aShops Shop id or list of shop ids.
+     * @param int|array $aShops Shop ID or list of shop IDs.
      *
      * @dataProvider _dpTestListOfShops
      */
@@ -111,7 +111,7 @@ class Unit_Core_oxShopMapperTest extends OxidTestCase
     /**
      * Tests add item to shop or list of shops.
      *
-     * @param int|array $aShops            Shop id or list of shop ids.
+     * @param int|array $aShops            Shop ID or list of shop IDs.
      * @param int       $iExpectsToProcess Number of shops expected to be processed.
      *
      * @dataProvider _dpTestListOfShops
@@ -134,7 +134,7 @@ class Unit_Core_oxShopMapperTest extends OxidTestCase
     /**
      * Tests remove item from shop or list of shops.
      *
-     * @param int|array $aShops            Shop id or list of shop ids.
+     * @param int|array $aShops            Shop ID or list of shop IDs.
      * @param int       $iExpectsToProcess Number of shops expected to be processed.
      *
      * @dataProvider _dpTestListOfShops

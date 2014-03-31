@@ -37,7 +37,7 @@ class Unit_Views_newsletterTest extends OxidTestCase
     {
         parent::setUp();
 
-        modConfig::getInstance()->setConfigParam( 'blEnterNetPrice', false );
+        $this->setConfigParam( 'blEnterNetPrice', false );
 
         $oUser = oxNew( 'oxuser' );
         $oUser->setId('test');
@@ -102,7 +102,7 @@ class Unit_Views_newsletterTest extends OxidTestCase
     public function testGetHomeCountryId()
     {
         $oTestNews = oxNew( "NewsLetter" );
-        modConfig::getInstance()->setConfigParam( 'aHomeCountry', array('testcountry', 'testcountry1') );
+        $this->setConfigParam( 'aHomeCountry', array('testcountry', 'testcountry1') );
         $sCountryId = $oTestNews->getHomeCountryId();
 
         $this->assertEquals('testcountry', $sCountryId );
@@ -116,7 +116,7 @@ class Unit_Views_newsletterTest extends OxidTestCase
     public function testGetNewsletterStatusAfterRemoveme()
     {
         $oTestNews = oxNew( "NewsLetter" );
-        modConfig::setParameter( 'uid', 'test' );
+        $this->setRequestParam( 'uid', 'test' );
         $oTestNews->removeme();
         $iStatus = $oTestNews->getNewsletterStatus();
 
@@ -155,8 +155,8 @@ class Unit_Views_newsletterTest extends OxidTestCase
         $oUser->save();
 
         $oTestNews = oxNew( "NewsLetter" );
-        modConfig::setParameter( 'uid', 'testAddMe' );
-        modConfig::setParameter( 'confirm', md5( 'test@addme.comsalt' ) );
+        $this->setRequestParam( 'uid', 'testAddMe' );
+        $this->setRequestParam( 'confirm', md5( 'test@addme.comsalt' ) );
         $oTestNews->addme();
         $iStatus = $oTestNews->getNewsletterStatus();
 
@@ -181,8 +181,8 @@ class Unit_Views_newsletterTest extends OxidTestCase
         $aParams['oxuser__oxfname'] = 'test';
         $aParams['oxuser__oxlname'] = 'test';
         $aParams['oxuser__oxcountryid'] = 'test';
-        modConfig::setParameter( 'editval', $aParams );
-        modConfig::setParameter( 'subscribeStatus', 1 );
+        $this->setRequestParam( 'editval', $aParams );
+        $this->setRequestParam( 'subscribeStatus', 1 );
         $oTestNews->send();
         $iStatus = $oTestNews->getNewsletterStatus();
 
@@ -198,7 +198,7 @@ class Unit_Views_newsletterTest extends OxidTestCase
     {
         oxTestModules::addFunction( "oxemail", "send", "{return true;}" );
         oxTestModules::addFunction( "oxemail", "sendNewsletterDbOptInMail", "{return true;}" );
-        modConfig::getInstance()->setConfigParam( 'blOrderOptInEmail', 0 );
+        $this->setConfigParam( 'blOrderOptInEmail', 0 );
 
         $oTestNews = oxNew( "NewsLetter" );
         $aParams = array();
@@ -206,8 +206,8 @@ class Unit_Views_newsletterTest extends OxidTestCase
         $aParams['oxuser__oxfname'] = 'test';
         $aParams['oxuser__oxlname'] = 'test';
         $aParams['oxuser__oxcountryid'] = 'test';
-        modConfig::setParameter( 'editval', $aParams );
-        modConfig::setParameter( 'subscribeStatus', 1 );
+        $this->setRequestParam( 'editval', $aParams );
+        $this->setRequestParam( 'subscribeStatus', 1 );
         $oTestNews->send();
         $iStatus = $oTestNews->getNewsletterStatus();
 
@@ -230,8 +230,8 @@ class Unit_Views_newsletterTest extends OxidTestCase
         $aParams = array();
         $aParams['oxuser__oxusername'] = oxADMIN_LOGIN;
         $aParams['oxuser__oxfname'] = 'test';
-        modConfig::setParameter( 'editval', $aParams );
-        modConfig::setParameter( 'subscribeStatus', 1 );
+        $this->setRequestParam( 'editval', $aParams );
+        $this->setRequestParam( 'subscribeStatus', 1 );
         $oTestNews->send();
         $iStatus = $oTestNews->getNewsletterStatus();
 
@@ -254,8 +254,8 @@ class Unit_Views_newsletterTest extends OxidTestCase
         $aParams = array();
         $aParams['oxuser__oxusername'] = 'test@test.de';
         $aParams['oxuser__oxfname'] = 'test';
-        modConfig::setParameter( 'editval', $aParams );
-        modConfig::setParameter( 'subscribeStatus', 1 );
+        $this->setRequestParam( 'editval', $aParams );
+        $this->setRequestParam( 'subscribeStatus', 1 );
         $oTestNews->send();
 
         $sSql = "select oxusername from oxuser where oxusername='test@test.de'";
@@ -280,8 +280,8 @@ class Unit_Views_newsletterTest extends OxidTestCase
         $aParams['oxuser__oxusername'] = 'test@test.de';
         $aParams['oxuser__oxfname'] = 'test';
         $aParams['oxuser__oxlname'] = 'test';
-        modConfig::setParameter( 'editval', $aParams );
-        modConfig::setParameter( 'subscribeStatus', 1 );
+        $this->setRequestParam( 'editval', $aParams );
+        $this->setRequestParam( 'subscribeStatus', 1 );
         $oTestNews->send();
 
         $sSql = "select oxdboptin from oxnewssubscribed where oxfname = 'test' AND oxlname = 'test'";
@@ -309,8 +309,8 @@ class Unit_Views_newsletterTest extends OxidTestCase
         $aParams['oxuser__oxusername'] = 'test@test.de';
         $aParams['oxuser__oxfname'] = 'test';
         $aParams['oxuser__oxlname'] = 'test';
-        modConfig::setParameter( 'subscribeStatus', 1 );
-        modConfig::setParameter( 'editval', $aParams );
+        $this->setRequestParam( 'subscribeStatus', 1 );
+        $this->setRequestParam( 'editval', $aParams );
         $oTestNews->send();
 
         $sSql = "select oxdboptin from oxnewssubscribed where oxfname = 'test' AND oxlname = 'test'";
@@ -318,7 +318,7 @@ class Unit_Views_newsletterTest extends OxidTestCase
         $this->assertEquals( '2', $sStatus );
 
         //unsubscribing
-        modConfig::setParameter( 'subscribeStatus', null );
+        $this->setRequestParam( 'subscribeStatus', null );
         $oTestNews->send();
 
         $sSql = "select oxdboptin from oxnewssubscribed where oxfname = 'test' AND oxlname = 'test'";
@@ -339,7 +339,7 @@ class Unit_Views_newsletterTest extends OxidTestCase
         $aParams['oxuser__oxfname'] = 'test';
         $aParams['oxuser__oxlname'] = 'test';
         $aParams['oxuser__oxcountryid'] = 'test';
-        modConfig::setParameter( 'editval', $aParams );
+        $this->setRequestParam( 'editval', $aParams );
         $oTestNews->fill();
         $aRegParams = $oTestNews->getRegParams();
 
@@ -356,7 +356,7 @@ class Unit_Views_newsletterTest extends OxidTestCase
     public function testRemovemeForAdmin()
     {
         $oTestNews = oxNew( "NewsLetter" );
-        modConfig::setParameter( 'uid', 'oxdefaultadmin' );
+        $this->setRequestParam( 'uid', 'oxdefaultadmin' );
         $oTestNews->removeme();
         $iStatus = $oTestNews->getNewsletterStatus();
 
@@ -400,7 +400,7 @@ class Unit_Views_newsletterTest extends OxidTestCase
 
         // no email
         $aParams['oxuser__oxusername'] = '';
-        modConfig::setParameter( 'editval', $aParams );
+        $this->setRequestParam( 'editval', $aParams );
 
         $oTestNews->send();
         $aErrors = oxSession::getVar( 'Errors' );
@@ -412,7 +412,7 @@ class Unit_Views_newsletterTest extends OxidTestCase
 
         // wrong email
         $aParams['oxuser__oxusername'] = 'aaaaaa@';
-        modConfig::setParameter( 'editval', $aParams );
+        $this->setRequestParam( 'editval', $aParams );
         $oTestNews->send();
 
         $aErrors = oxSession::getVar( 'Errors' );
@@ -436,8 +436,8 @@ class Unit_Views_newsletterTest extends OxidTestCase
 
         $aParams['oxuser__oxusername'] = 'test@test.de';
         $aParams['oxuser__oxfname'] = 'test';
-        modConfig::setParameter( 'subscribeStatus', 1 );
-        modConfig::setParameter( 'editval', $aParams );
+        $this->setRequestParam( 'subscribeStatus', 1 );
+        $this->setRequestParam( 'editval', $aParams );
         $oTestNews->send();
 
         $aErrors = oxSession::getVar( 'Errors' );

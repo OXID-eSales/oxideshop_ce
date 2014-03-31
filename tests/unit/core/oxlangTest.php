@@ -158,7 +158,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
     public function testGetLangFilesPathForModules()
     {
-        $sFilePath = oxConfig::getInstance()->getConfigParam('sShopDir').'modules/test1/translations/de/';
+        $sFilePath = oxConfig::getInstance()->getConfigParam('sShopDir').'modules/oxlangTestModule/translations/de/';
 
         if( !is_dir($sFilePath) ){
             mkdir( $sFilePath, 0755, true);
@@ -173,7 +173,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
             , $sPath . "translations/de/translit_lang.php"
             , $sPath . "views/azure/de/lang.php"
             , $sPath . "views/azure/1/de/lang.php"
-            , $sShopPath . "modules/test1/translations/de/test_lang.php"
+            , $sShopPath . "modules/oxlangTestModule/translations/de/test_lang.php"
             , $sPath . "views/azure/de/cust_lang.php"
         );
 
@@ -181,28 +181,28 @@ class Unit_Core_oxLangTest extends OxidTestCase
               $sPath . "translations/de/lang.php"
             , $sPath . "translations/de/translit_lang.php"
             , $sPath . "views/azure/de/lang.php"
-            , $sShopPath . "modules/test1/translations/de/test_lang.php"
+            , $sShopPath . "modules/oxlangTestModule/translations/de/test_lang.php"
             , $sPath . "views/azure/de/cust_lang.php"
         );
 
-        $aInfo = array( 'test1' => 'test1' );
+        $aInfo = array( 'oxlangTestModule' => 'oxlangTestModule' );
 
         $oLang = $this->getMock( "oxLang", array( "_getActiveModuleInfo") );
         $oLang->expects( $this->any() )->method( '_getActiveModuleInfo' )->will( $this->returnValue( $aInfo ) );
 
         $this->assertEquals( $aPathArray, $oLang->UNITgetLangFilesPathArray( 0 ) );
 
-        unlink( $sShopPath . "modules/test1/translations/de/test_lang.php" );
-        rmdir( $sShopPath . "modules/test1/translations/de/" );
-        rmdir( $sShopPath . "modules/test1/translations/" );
-        rmdir( $sShopPath . "modules/test1/" );
+        unlink( $sShopPath . "modules/oxlangTestModule/translations/de/test_lang.php" );
+        rmdir( $sShopPath . "modules/oxlangTestModule/translations/de/" );
+        rmdir( $sShopPath . "modules/oxlangTestModule/translations/" );
+        rmdir( $sShopPath . "modules/oxlangTestModule/" );
 
     }
 
 
     public function testGetLangFilesPathForAdmin()
     {
-       $sFilePath = oxConfig::getInstance()->getConfigParam('sShopDir').'modules/test1/views/admin/de/';
+       $sFilePath = oxConfig::getInstance()->getConfigParam('sShopDir').'modules/oxlangTestModule/views/admin/de/';
 
        if( !is_dir($sFilePath) ){
             mkdir( $sFilePath, 0755, true);
@@ -218,23 +218,23 @@ class Unit_Core_oxLangTest extends OxidTestCase
             , $sPath . "translations/de/translit_lang.php"
             , $sPath . "views/admin/de/help_lang.php"
             , $sPath . "views/azure/de/theme_options.php"
-            , $sShopPath . "modules/test1/views/admin/de/test1_lang.php"
-            , $sShopPath . "modules/test1/views/admin/de/module_options.php"
+            , $sShopPath . "modules/oxlangTestModule/views/admin/de/test1_lang.php"
+            , $sShopPath . "modules/oxlangTestModule/views/admin/de/module_options.php"
             , $sPath . "views/admin/de/cust_lang.php"
         );
-        $aInfo = array( 'test1' => 'test1' );
+        $aInfo = array( 'oxlangTestModule' => 'oxlangTestModule' );
 
         $oLang = $this->getMock( "oxLang", array( "_getActiveModuleInfo") );
         $oLang->expects( $this->any() )->method( '_getActiveModuleInfo' )->will( $this->returnValue( $aInfo ) );
 
         $this->assertEquals( $aPathArray, $oLang->UNITgetAdminLangFilesPathArray( 0 ) );
 
-        unlink( $sShopPath . "modules/test1/views/admin/de/test1_lang.php" );
-        unlink( $sShopPath . "modules/test1/views/admin/de/module_options.php" );
-        rmdir( $sShopPath . "modules/test1/views/admin/de/" );
-        rmdir( $sShopPath . "modules/test1/views/admin/" );
-        rmdir( $sShopPath . "modules/test1/views/" );
-        rmdir( $sShopPath . "modules/test1/" );
+        unlink( $sShopPath . "modules/oxlangTestModule/views/admin/de/test1_lang.php" );
+        unlink( $sShopPath . "modules/oxlangTestModule/views/admin/de/module_options.php" );
+        rmdir( $sShopPath . "modules/oxlangTestModule/views/admin/de/" );
+        rmdir( $sShopPath . "modules/oxlangTestModule/views/admin/" );
+        rmdir( $sShopPath . "modules/oxlangTestModule/views/" );
+        rmdir( $sShopPath . "modules/oxlangTestModule/" );
     }
 
     public function testGetLangFileCacheName()

@@ -41,7 +41,9 @@ class Unit_Core_oxvendorTest extends OxidTestCase
     {
         // test require icon for vendors
         if ( $this->getName() == "testGetIconUrlNewPath"  || $this->getName() == "testGetIconUrl" ) {
-            $sTarget = oxConfig::getInstance()->getPicturePath( "" ) . "master";
+            $oConfig = $this->getConfig();
+            $oConfig->init();
+            $sTarget = $oConfig->getPicturePath( "" ) . "master";
             if ( file_exists( $sTarget . $this->_sManIcon ) ) {
                 copy( $sTarget . $this->_sManIcon, $sTarget . $this->_sVndIcon );
             }
@@ -49,6 +51,7 @@ class Unit_Core_oxvendorTest extends OxidTestCase
 
         return parent::setUp();
     }
+
     /**
      * Tear down the fixture.
      *

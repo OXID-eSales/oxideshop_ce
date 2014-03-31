@@ -336,6 +336,8 @@ class Unit_Core_oxCategoryTest extends OxidTestCase
 
     public function testAssignCountArtForPriceCat()
     {
+        self::cleanUpTable('oxarticles');
+
         modConfig::getInstance()->setConfigParam( 'bl_perfShowActionCatArticleCnt', true );
         oxUtilsCount::getInstance()->resetCatArticleCount($this->_oCategory->getId());
         $this->_oCategory->oxcategories__oxpricefrom = new oxField('10', oxField::T_RAW);

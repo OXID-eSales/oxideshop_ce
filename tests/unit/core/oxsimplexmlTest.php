@@ -58,7 +58,7 @@ class Unit_Core_oxSimpleXmlTest extends OxidTestCase
         $oTestObject->modules = new oxStdClass();
         $oTestObject->modules->module = array($oModule1, $oModule2);
 
-        $sTestResult = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<testXml><title>TestTitle</title><modules><module><id>$oModule1->id</id><active>$oModule1->active</active></module><module><id>$oModule2->id</id><active>$oModule2->active</active></module></modules></testXml>\n";
+        $sTestResult = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<testXml><title>TestTitle</title><modules><module><id>id1</id><active>1</active></module><module><id>id2</id><active></active></module></modules></testXml>\n";
 
         $this->assertEquals($sTestResult, $oXml->objectToXml( $oTestObject, "testXml" ));
     }

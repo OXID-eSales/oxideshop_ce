@@ -24,6 +24,38 @@ class oxShopMapper
 {
 
     /**
+     * Database gateway.
+     *
+     * @var oxShopMapperDbGateway
+     */
+    protected $_oDbGateway = null;
+
+    /**
+     * Sets database gateway.
+     *
+     * @param oxShopMapperDbGateway $oDb Database gateway.
+     */
+    public function setDbGateway($oDb)
+    {
+        $this->_oDbGateway = $oDb;
+    }
+
+    /**
+     * Gets database gateway.
+     *
+     * @return oxShopMapperDbGateway
+     */
+    public function getDbGateway()
+    {
+        if (is_null($this->_oDbGateway)) {
+            $oShopMapperDbGateway = oxNew('oxShopMapperDbGateway');
+            $this->setDbGateway($oShopMapperDbGateway);
+        }
+
+        return $this->_oDbGateway;
+    }
+
+    /**
      * Adds object to shop.
      *
      * @param oxBase $oItem   Object to add to shop

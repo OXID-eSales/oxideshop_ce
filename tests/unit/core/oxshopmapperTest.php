@@ -30,6 +30,22 @@ class Unit_Core_oxShopMapperTest extends OxidTestCase
 {
 
     /**
+     * Test set/get database gateway.
+     */
+    public function testSetGetDbGateway()
+    {
+        $oShopMapper = new oxShopMapper();
+
+        // assert default gateway
+        $this->isInstanceOf('oxShopMapperDbGateway', $oShopMapper->getDbGateway());
+
+        $oCustomDbGateway = new stdClass();
+
+        $oShopMapper->setDbGateway($oCustomDbGateway);
+        $this->assertSame($oCustomDbGateway, $oShopMapper->getDbGateway());
+    }
+
+    /**
      * Tests add object to shop.
      */
     public function testAddObjectToShop()

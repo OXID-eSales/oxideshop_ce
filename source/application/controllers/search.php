@@ -506,8 +506,8 @@ class Search extends oxUBase
     {
         $sTitle = '';
         $sTitle .= $this->getArticleCount();
-        $sTitle .= ' '. oxRegistry::getLang()->translateString( 'HITS_FOR', oxRegistry::getLang()->getBaseLanguage(), false ); ;
-        $sTitle .= ' '. $this->getSearchParamForHtml();
+        $sTitle .= ' '. oxRegistry::getLang()->translateString( 'HITS_FOR', oxRegistry::getLang()->getBaseLanguage(), false ) ;
+        $sTitle .= ' "'. $this->getSearchParamForHtml().'"';
 
         return $sTitle;
     }

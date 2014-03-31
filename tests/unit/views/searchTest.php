@@ -290,6 +290,6 @@ class Unit_Views_searchTest extends OxidTestCase
         $oView->expects($this->any())->method('getArticleCount')->will($this->returnValue( 6 ));
         $oView->expects($this->any())->method('getSearchParamForHtml')->will($this->returnValue( 'searchStr' ));
 
-        $this->assertEquals( '6 '. oxRegistry::getLang()->translateString( 'HITS_FOR', oxRegistry::getLang()->getBaseLanguage(), false ) . ' searchStr', $oView->getTitle());
+        $this->assertEquals( '6 '. oxRegistry::getLang()->translateString( 'HITS_FOR', oxRegistry::getLang()->getBaseLanguage(), false ) . ' "searchStr"', $oView->getTitle());
     }
 }

@@ -386,9 +386,9 @@ class Unit_Core_oxorderarticleTest extends OxidTestCase
 
     public function testMakeSelListArray()
     {
-        $myDB = oxDb::getDb();
+        $oDB = oxDb::getDb();
 
-        modConfig::getInstance()->setConfigParam( 'bl_perfLoadSelectLists', true );
+        $this->getConfig()->setConfigParam( 'bl_perfLoadSelectLists', true );
 
         $oSelList = oxNew( 'oxselectlist' );
         $oSelList->setId( '_testSelListId1' );
@@ -403,8 +403,8 @@ class Unit_Core_oxorderarticleTest extends OxidTestCase
 
         $sQ1 = 'insert into oxobject2selectlist (OXID,OXOBJECTID,OXSELNID,OXSORT) values ("_testO2SlId1", "1126", "_testSelListId1", 1); ';
         $sQ2 = 'insert into oxobject2selectlist (OXID,OXOBJECTID,OXSELNID,OXSORT) values ("_testO2SlId2", "1126", "_testSelListId2", 2); ';
-        $myDB->Execute( $sQ1 );
-        $myDB->Execute( $sQ2 );
+        $oDB->Execute( $sQ1 );
+        $oDB->Execute( $sQ2 );
 
         // test getting correct list and correct handling of letters case
         $sFields = "Color : BluE, size: small ";
@@ -422,9 +422,45 @@ class Unit_Core_oxorderarticleTest extends OxidTestCase
         $this->assertEquals( array(0=>0), $oOrderArticle->getOrderArticleSelectList('1126', $sFields) );
     }
 
-    public function testMakeSelListArrayWithIncorectFieldInOrderArticle()
+    public function testMakeSelListArrayPriceON()
     {
-        $myDB = oxDb::getDb();
+        $oDB = oxDb::getDb();
+
+        $this->getConfig()->setConfigParam( 'bl_perfLoadSelectLists', true );
+        $this->getConfig()->setConfigParam( 'bl_perfUseSelectlistPrice', true );
+        $this->getConfig()->setConfigParam( 'aCurrencies', array(0=> 'EUR@ 1.00@ ,@ .@ EUR@ 2') );
+        $this->getConfig()->setActShopCurrency(0);
+
+        $oSelList = oxNew( 'oxselectlist' );
+        $oSelList->setId( '_testSelListId1on' );
+        $oSelList->oxselectlist__oxtitle = new oxField('Color', oxField::T_RAW);
+        $oSelList->oxselectlist__oxvaldesc = new oxField('red!P!10__@@blue!P!10__@@green!P!10__@@', oxField::T_RAW);
+        $oSelList->save();
+
+        $oSelList->setId( '_testSelListId2on' );
+        $oSelList->oxselectlist__oxtitle = new oxField('Size', oxField::T_RAW);
+        $oSelList->oxselectlist__oxvaldesc = new oxField('big!P!10__@@middle!P!10__@@small!P!12,03__@@', oxField::T_RAW);
+        $oSelList->save();
+
+        $sQ1 = 'insert into oxobject2selectlist (OXID,OXOBJECTID,OXSELNID,OXSORT) values ("_testO2SlId5", "1127", "_testSelListId1on", 1); ';
+        $sQ2 = 'insert into oxobject2selectlist (OXID,OXOBJECTID,OXSELNID,OXSORT) values ("_testO2SlId6", "1127", "_testSelListId2on", 2); ';
+        $oDB->Execute( $sQ1 );
+        $oDB->Execute( $sQ2 );
+
+        // just one list must be returned
+        $sFields = "Size : middle +10,00 EUR";
+        $oOrderArticle = new oxOrderArticle();
+        $this->assertEquals( array(1=>1), $oOrderArticle->getOrderArticleSelectList('1127', $sFields), 'Size : middle +10,00 EUR' );
+
+        // just one list must be returned
+        $sFields = "Size : small +12,03 EUR";
+        $oOrderArticle = new oxOrderArticle();
+        $this->assertEquals( array(1=>2), $oOrderArticle->getOrderArticleSelectList('1127', $sFields), 'Size : small +12,03 EUR' );
+    }
+
+    public function testMakeSelListArrayWithIncorrectFieldInOrderArticle()
+    {
+        $oDB = oxDb::getDb();
 
         $oSelList = oxNew( 'oxselectlist' );
         $oSelList->setId( '_testSelListId3' );
@@ -439,8 +475,8 @@ class Unit_Core_oxorderarticleTest extends OxidTestCase
 
         $sQ1 = 'insert into oxobject2selectlist (OXID,OXOBJECTID,OXSELNID,OXSORT) values ("_testO2SlId3", "1126", "_testSelListId3", 1); ';
         $sQ2 = 'insert into oxobject2selectlist (OXID,OXOBJECTID,OXSELNID,OXSORT) values ("_testO2SlId4", "1126", "_testSelListId4", 2); ';
-        $myDB->Execute( $sQ1 );
-        $myDB->Execute( $sQ2 );
+        $oDB->Execute( $sQ1 );
+        $oDB->Execute( $sQ2 );
 
         $oOrderArticle = new oxOrderArticle();
         $sFields = "_______:::_______";

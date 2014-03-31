@@ -406,7 +406,6 @@ class oxOrderArticle extends oxBase implements oxIArticle
 
             $sOrderArtSelList = $sOrderArtSelList ? $sOrderArtSelList : $this->oxorderarticles__oxselvariant->value;
 
-            $aList = array();
             $aRet  = array();
 
             if ( $oArticle = $this->_getOrderArticle( $sArtId ) ) {
@@ -430,7 +429,7 @@ class oxOrderArticle extends oxBase implements oxIArticle
                                 foreach ( $aArticleSelList as $aSelect ) {
                                     //check if selects titles are equal
 
-                                    if ( $oStr->strtolower($aSelect['name']) == $sOrderArtListTitle ) {
+                                    if ( $oStr->strtolower($aSelect['name']) ==  $sOrderArtListTitle) {
                                         //try to find matching select items value
                                         $iSelValueNum = 0;
                                         foreach ( $aSelect as $oSel ) {

@@ -152,7 +152,7 @@ class oxShop extends oxI18n
     /**
      * (Re)generates shop views
      *
-     * @param bool  $blMultishopInheritCategories config option blMultishopInherit
+     * @param bool  $blMultishopInheritCategories config option blMultishopInherit_oxcategories
      * @param array $aMallInherit                 array of config options blMallInherit
      *
      * @return bool is all views generated successfully
@@ -299,7 +299,6 @@ class oxShop extends oxI18n
             'CREATE OR REPLACE SQL SECURITY INVOKER VIEW oxv_' . $sTable
             . ' AS SELECT * FROM ' . $sTable . ' ' . $this->_getViewJoinAll($sTable)
             );
-
             if (in_array($sTable, $aMultilangTables)) {
                 foreach ($aLanguages as $iLang => $sLang) {
                     $this->addQuery(

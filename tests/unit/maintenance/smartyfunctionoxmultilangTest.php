@@ -36,6 +36,7 @@ class Unit_Maintenance_smartyFunctionOxMultiLangTest extends OxidTestCase
             array( 'FIRST_NAME', 'First name', 1, false),
             array( 'FIRST_NAME', 'Vorname', 0, false),
             array( 'GENERAL_SAVE', 'Save', 1, true),
+            array( 'VAT', 'VAT', 1, false),
             array( 'GENERAL_SAVE', 'Speichern', 0, true),
         );
     }

@@ -50,7 +50,7 @@ function smarty_modifier_oxmultilangassign( $sIdent, $args = null )
 
     try {
         $sTranslation = $oLang->translateString( $sIdent, $iLang, $oLang->isAdmin() );
-        $blTranslationNotFound = ($sTranslation == $sIdent);
+        $blTranslationNotFound = !$oLang->isTranslated();
     } catch ( oxLanguageException $oEx ) {
         // is thrown in debug mode and has to be caught here, as smarty hangs otherwise!
     }

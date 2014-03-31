@@ -56,7 +56,7 @@ function smarty_function_oxmultilang( $params, &$smarty )
 
     try {
         $sTranslation = $oLang->translateString( $sIdent, $iLang, $blAdmin );
-        $blTranslationNotFound = ($sTranslation == $sIdent);
+        $blTranslationNotFound = !$oLang->isTranslated();
         if ( 'NO_SUFFIX' != $sSuffix ) {
             $sSuffixTranslation = $oLang->translateString( $sSuffix, $iLang, $blAdmin );
         }

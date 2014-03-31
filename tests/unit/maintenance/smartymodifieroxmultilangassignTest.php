@@ -35,7 +35,9 @@ class Unit_Maintenance_smartyModifieroxmultilangassignTest extends OxidTestCase
     {
         return array(
             array( 'FIRST_NAME', 0, 'Vorname' ),
-            array( 'FIRST_NAME', 1, 'First name' )
+            array( 'FIRST_NAME', 1, 'First name' ),
+            array( 'VAT', 1, 'VAT' )
+
         );
     }
 

@@ -351,6 +351,6 @@ class Unit_Views_accountTest extends OxidTestCase
         $oView->expects( $this->once() )->method( 'getUser' )->will( $this->returnValue( $oUser ) );
         $oView->expects( $this->any() )->method( 'getConfig' )->will( $this->returnValue( $oConfig ) );
 
-        $this->assertEquals( oxRegistry::getLang()->translateString( 'MY_ACCOUNT', oxRegistry::getLang()->getBaseLanguage(), false ) . ' - Jon', $oView->getTitle() );
+        $this->assertEquals( oxRegistry::getLang()->translateString( 'PAGE_TITLE_ACCOUNT', oxRegistry::getLang()->getBaseLanguage(), false ) . ' - "Jon"', $oView->getTitle() );
     }
 }

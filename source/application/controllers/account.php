@@ -364,7 +364,7 @@ class Account extends oxUBase
         if ( $this->getConfig()->getActiveView()->getClassName() == 'account' ) {
             $sTitle = oxRegistry::getLang()->translateString( 'PAGE_TITLE_ACCOUNT', oxRegistry::getLang()->getBaseLanguage(), false );
             if ( $oUser = $this->getUser() ) {
-                $sTitle .= ' - ' . $oUser->oxuser__oxusername->value;
+                $sTitle .= ' - "' . $oUser->oxuser__oxusername->value.'"';
             }
         }
 

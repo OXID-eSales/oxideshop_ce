@@ -37,10 +37,10 @@ class Unit_Core_oxShopMapperTest extends OxidTestCase
     public function _dpTestListOfShops()
     {
         return array(
-            array(45),
-            array(array()),
-            array(array(27)),
-            array(array(3, 46, 5)),
+            array(45, 1),
+            array(array(), 0),
+            array(array(27), 1),
+            array(array(3, 46, 5), 3),
         );
     }
 
@@ -63,11 +63,11 @@ class Unit_Core_oxShopMapperTest extends OxidTestCase
     /**
      * Tests add object to shop or list of shops.
      *
-     * @param int|array $mShops Shop id or list of shop ids.
+     * @param int|array $aShops Shop id or list of shop ids.
      *
      * @dataProvider _dpTestListOfShops
      */
-    public function testAddObjectToShops($mShops)
+    public function testAddObjectToShops($aShops)
     {
         $iItemId   = 123;
         $sItemType = 'oxarticles';
@@ -79,19 +79,19 @@ class Unit_Core_oxShopMapperTest extends OxidTestCase
         /** @var oxShopMapper|PHPUnit_Framework_MockObject_MockObject $oShopMapper */
         $oShopMapper = $this->getMock('oxShopMapper', array('addItemToShops'));
         $oShopMapper->expects($this->once())->method('addItemToShops')
-            ->with($iItemId, $sItemType, $mShops)->will($this->returnValue(true));
+            ->with($iItemId, $sItemType, $aShops)->will($this->returnValue(true));
 
-        $this->assertTrue($oShopMapper->addObjectToShops($oItem, $mShops));
+        $this->assertTrue($oShopMapper->addObjectToShops($oItem, $aShops));
     }
 
     /**
      * Tests remove object from shop or list of shops.
      *
-     * @param int|array $mShops Shop id or list of shop ids.
+     * @param int|array $aShops Shop id or list of shop ids.
      *
      * @dataProvider _dpTestListOfShops
      */
-    public function testRemoveObjectFromShops($mShops)
+    public function testRemoveObjectFromShops($aShops)
     {
         $iItemId   = 123;
         $sItemType = 'oxarticles';
@@ -103,43 +103,55 @@ class Unit_Core_oxShopMapperTest extends OxidTestCase
         /** @var oxShopMapper|PHPUnit_Framework_MockObject_MockObject $oShopMapper */
         $oShopMapper = $this->getMock('oxShopMapper', array('removeItemFromShops'));
         $oShopMapper->expects($this->once())->method('removeItemFromShops')
-            ->with($iItemId, $sItemType, $mShops)->will($this->returnValue(true));
+            ->with($iItemId, $sItemType, $aShops)->will($this->returnValue(true));
 
-        $this->assertTrue($oShopMapper->removeObjectFromShops($oItem, $mShops));
+        $this->assertTrue($oShopMapper->removeObjectFromShops($oItem, $aShops));
     }
 
     /**
      * Tests add item to shop or list of shops.
      *
-     * @param int|array $mShops Shop id or list of shop ids.
+     * @param int|array $aShops            Shop id or list of shop ids.
+     * @param int       $iExpectsToProcess Number of shops expected to be processed.
      *
      * @dataProvider _dpTestListOfShops
      */
-    public function testAddItemToShops($mShops)
+    public function testAddItemToShops($aShops, $iExpectsToProcess)
     {
         $iItemId   = 123;
         $sItemType = 'oxarticles';
 
-        $oShopMapper = new oxShopMapper();
+        /** @var oxShopMapperDbGateway|PHPUnit_Framework_MockObject_MockObject $oShopMapperDbGateway */
+        $oShopMapperDbGateway = $this->getMock('oxShopMapperDbGateway', array('addItemToShop'));
+        $oShopMapperDbGateway->expects($this->exactly($iExpectsToProcess))->method('addItemToShop')->will($this->returnValue(true));
 
-        $this->assertTrue($oShopMapper->addItemToShops($iItemId, $sItemType, $mShops));
+        $oShopMapper = new oxShopMapper();
+        $oShopMapper->setDbGateway($oShopMapperDbGateway);
+
+        $this->assertTrue($oShopMapper->addItemToShops($iItemId, $sItemType, $aShops));
     }
 
     /**
      * Tests remove item from shop or list of shops.
      *
-     * @param int|array $mShops Shop id or list of shop ids.
+     * @param int|array $aShops            Shop id or list of shop ids.
+     * @param int       $iExpectsToProcess Number of shops expected to be processed.
      *
      * @dataProvider _dpTestListOfShops
      */
-    public function testRemoveItemFromShops($mShops)
+    public function testRemoveItemFromShops($aShops, $iExpectsToProcess)
     {
         $iItemId   = 123;
         $sItemType = 'oxarticles';
 
-        $oShopMapper = new oxShopMapper();
+        /** @var oxShopMapperDbGateway|PHPUnit_Framework_MockObject_MockObject $oShopMapperDbGateway */
+        $oShopMapperDbGateway = $this->getMock('oxShopMapperDbGateway', array('removeItemFromShop'));
+        $oShopMapperDbGateway->expects($this->exactly($iExpectsToProcess))->method('removeItemFromShop')->will($this->returnValue(true));
 
-        $this->assertTrue($oShopMapper->removeItemFromShops($iItemId, $sItemType, $mShops));
+        $oShopMapper = new oxShopMapper();
+        $oShopMapper->setDbGateway($oShopMapperDbGateway);
+
+        $this->assertTrue($oShopMapper->removeItemFromShops($iItemId, $sItemType, $aShops));
     }
 
     /**

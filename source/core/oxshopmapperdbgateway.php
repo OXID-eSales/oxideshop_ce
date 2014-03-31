@@ -54,4 +54,31 @@ class oxShopMapperDbGateway
         return $this->_oDb;
     }
 
+    /**
+     * Adds item to shop.
+     *
+     * @param int    $iItemId   Item ID
+     * @param string $sItemType Item type
+     * @param int    $iShopId   Shop ID.
+     *
+     * @return bool
+     */
+    public function addItemToShop($iItemId, $sItemType, $iShopId)
+    {
+        return true;
+    }
+
+    /**
+     * Removes item from shop.
+     *
+     * @param int    $iItemId   Item ID
+     * @param string $sItemType Item type
+     * @param int    $iShopId   Shop ID.
+     *
+     * @return bool
+     */
+    public function removeItemFromShop($iItemId, $sItemType, $iShopId)
+    {
+        return true;
+    }
 }

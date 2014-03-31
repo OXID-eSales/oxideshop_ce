@@ -44,4 +44,32 @@ class Unit_Core_oxShopMapperDbGatewayTest extends OxidTestCase
         $oShopMapperDbGateway->setDbGateway($oCustomDb);
         $this->assertSame($oCustomDb, $oShopMapperDbGateway->getDbGateway());
     }
+
+    /**
+     * Tests add item to shop.
+     */
+    public function testAddItemToShops()
+    {
+        $iItemId   = 123;
+        $sItemType = 'oxarticles';
+        $iShopId   = 45;
+
+        $oShopMapperDbGateway = new oxShopMapperDbGateway();
+
+        $this->assertTrue($oShopMapperDbGateway->addItemToShop($iItemId, $sItemType, $iShopId));
+    }
+
+    /**
+     * Tests remove item from shop.
+     */
+    public function testRemoveItemFromShops()
+    {
+        $iItemId   = 123;
+        $sItemType = 'oxarticles';
+        $iShopId   = 45;
+
+        $oShopMapperDbGateway = new oxShopMapperDbGateway();
+
+        $this->assertTrue($oShopMapperDbGateway->removeItemFromShop($iItemId, $sItemType, $iShopId));
+    }
 }

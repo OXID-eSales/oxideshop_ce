@@ -114,11 +114,12 @@ class oxShopMapperDbGateway
      */
     public function inheritItemsFromShop($iParentShopId, $iSubShopId, $sItemType)
     {
-        $sSQL = "inherits items of type $sItemType to sub shop $iSubShopId from parent shop $iParentShopId";
+        $sSQL = "insert into {$this->getMappingTable($sItemType)} (OXMAPSHOPID, OXMAPOBJECTID) "
+                . "select ?, OXMAPOBJECTID from {$this->getMappingTable($sItemType)} where OXMAPSHOPID = ?";
 
-        $this->execute($sSQL);
+        $blResult = (bool) $this->execute($sSQL, array($iSubShopId, $iParentShopId));
 
-        return true;
+        return $blResult;
     }
 
     /**
@@ -132,11 +133,14 @@ class oxShopMapperDbGateway
      */
     public function removeInheritedItemsFromShop($iParentShopId, $iSubShopId, $sItemType)
     {
-        $sSQL = "remove inherited items of type $sItemType from sub shop $iSubShopId that were inherited from parent shop $iParentShopId";
+        $sSQL = "delete s from {$this->getMappingTable($sItemType)} as s "
+                . "left join {$this->getMappingTable($sItemType)} as p on (s.OXMAPOBJECTID = p.OXMAPOBJECTID)"
+                . "where s.OXMAPSHOPID = ? "
+                . "and p.OXMAPSHOPID = ?";
 
-        $this->execute($sSQL);
+        $blResult = (bool) $this->execute($sSQL, array($iSubShopId, $iParentShopId));
 
-        return true;
+        return $blResult;
     }
 
     /**

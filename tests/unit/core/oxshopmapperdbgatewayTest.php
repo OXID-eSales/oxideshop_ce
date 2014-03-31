@@ -125,10 +125,14 @@ class Unit_Core_oxShopMapperDbGatewayTest extends OxidTestCase
         $iSubShopId    = 123;
         $sItemType     = 'oxarticles';
 
+        $sSQL = "insert into oxarticles2shop (OXMAPSHOPID, OXMAPOBJECTID) "
+                . "select ?, OXMAPOBJECTID from oxarticles2shop where OXMAPSHOPID = ?";
+
+        $aSqlParams = array($iSubShopId, $iParentShopId);
+
         /** @var oxShopMapperDbGateway|PHPUnit_Framework_MockObject_MockObject $oShopMapperDbGateway */
         $oShopMapperDbGateway = $this->getMock('oxShopMapperDbGateway', array('execute'));
-        $oShopMapperDbGateway->expects($this->once())->method('execute')
-            ->with("inherits items of type $sItemType to sub shop $iSubShopId from parent shop $iParentShopId");
+        $oShopMapperDbGateway->expects($this->once())->method('execute')->with($sSQL, $aSqlParams);
 
         $oShopMapperDbGateway->inheritItemsFromShop($iParentShopId, $iSubShopId, $sItemType);
     }
@@ -142,10 +146,15 @@ class Unit_Core_oxShopMapperDbGatewayTest extends OxidTestCase
         $iSubShopId    = 123;
         $sItemType     = 'oxarticles';
 
+        $sSQL = "delete s from oxarticles2shop as s "
+                . "left join oxarticles2shop as p on (s.OXMAPOBJECTID = p.OXMAPOBJECTID)"
+                . "where s.OXMAPSHOPID = ? and p.OXMAPSHOPID = ?";
+
+        $aSqlParams = array($iSubShopId, $iParentShopId);
+
         /** @var oxShopMapperDbGateway|PHPUnit_Framework_MockObject_MockObject $oShopMapperDbGateway */
         $oShopMapperDbGateway = $this->getMock('oxShopMapperDbGateway', array('execute'));
-        $oShopMapperDbGateway->expects($this->once())->method('execute')
-            ->with("remove inherited items of type $sItemType from sub shop $iSubShopId that were inherited from parent shop $iParentShopId");
+        $oShopMapperDbGateway->expects($this->once())->method('execute')->with($sSQL, $aSqlParams);
 
         $oShopMapperDbGateway->removeInheritedItemsFromShop($iParentShopId, $iSubShopId, $sItemType);
     }

@@ -95,4 +95,38 @@ class Unit_Core_oxShopMapperDbGatewayTest extends OxidTestCase
 
         $oShopMapperDbGateway->execute($sSQL);
     }
+
+    /**
+     * Tests remove item from shop.
+     */
+    public function testInheritItemsFromShop()
+    {
+        $iParentShopId = 45;
+        $iSubShopId    = 123;
+        $sItemType     = 'oxarticles';
+
+        /** @var oxShopMapperDbGateway|PHPUnit_Framework_MockObject_MockObject $oShopMapperDbGateway */
+        $oShopMapperDbGateway = $this->getMock('oxShopMapperDbGateway', array('execute'));
+        $oShopMapperDbGateway->expects($this->once())->method('execute')
+            ->with("inherits items of type $sItemType to sub shop $iSubShopId from parent shop $iParentShopId");
+
+        $oShopMapperDbGateway->inheritItemsFromShop($iParentShopId, $iSubShopId, $sItemType);
+    }
+
+    /**
+     * Tests remove item from shop.
+     */
+    public function testRemoveInheritedItemsFromShop()
+    {
+        $iParentShopId = 45;
+        $iSubShopId    = 123;
+        $sItemType     = 'oxarticles';
+
+        /** @var oxShopMapperDbGateway|PHPUnit_Framework_MockObject_MockObject $oShopMapperDbGateway */
+        $oShopMapperDbGateway = $this->getMock('oxShopMapperDbGateway', array('execute'));
+        $oShopMapperDbGateway->expects($this->once())->method('execute')
+            ->with("remove inherited items of type $sItemType from sub shop $iSubShopId that were inherited from parent shop $iParentShopId");
+
+        $oShopMapperDbGateway->removeInheritedItemsFromShop($iParentShopId, $iSubShopId, $sItemType);
+    }
 }

@@ -31,8 +31,7 @@ class oxShopMapper
     protected $_oDbGateway = null;
 
     /**
-     * Sets database gateway.
-     *
+     * Sets database gateway.*
      * @param oxShopMapperDbGateway $oDb Database gateway.
      */
     public function setDbGateway($oDb)
@@ -126,28 +125,46 @@ class oxShopMapper
     }
 
     /**
-     * Adds item group to shop.
+     * Inherits items by type to sub shop(-s) from parent shop.
      *
-     * @param string $sItemType Item type
-     * @param int    $iShopId   Shop ID
+     * @param int    $iParentShopId Parent shop ID
+     * @param int    $aSubShops     Sub shop ID or list of IDs to inherit into
+     * @param string $sItemType     Item type
      *
      * @return bool
      */
-    public function addItemGroupToShop($sItemType, $iShopId)
+    public function inheritItemsFromShops($iParentShopId, $aSubShops, $sItemType)
     {
+        if (!is_array($aSubShops)) {
+            $aSubShops = array($aSubShops);
+        }
+
+        foreach ($aSubShops as $iSubShopId) {
+            $this->getDbGateway()->inheritItemsFromShop($iParentShopId, $iSubShopId, $sItemType);
+        }
+
         return true;
     }
 
     /**
-     * Removes item group from shop.
+     * Removes items by type from sub shop(-s) that were inherited from parent shop.
      *
-     * @param string $sItemType Item type
-     * @param int    $iShopId   Shop ID
+     * @param int    $iParentShopId Parent shop ID
+     * @param int    $aSubShops     Sub shop ID or list of IDs to remove inheritance
+     * @param string $sItemType     Item type
      *
      * @return bool
      */
-    public function removeItemGroupFromShop($sItemType, $iShopId)
+    public function removeInheritedItemsFromShops($iParentShopId, $aSubShops, $sItemType)
     {
+        if (!is_array($aSubShops)) {
+            $aSubShops = array($aSubShops);
+        }
+
+        foreach ($aSubShops as $iSubShopId) {
+            $this->getDbGateway()->removeInheritedItemsFromShop($iParentShopId, $iSubShopId, $sItemType);
+        }
+
         return true;
     }
 }

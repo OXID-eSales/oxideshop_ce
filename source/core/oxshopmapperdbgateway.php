@@ -101,4 +101,40 @@ class oxShopMapperDbGateway
     {
         return $this->getDbGateway()->execute($sSQL);
     }
+
+    /**
+     * Inherits items by type to sub shop from parent shop.
+     *
+     * @param int    $iParentShopId Parent shop ID
+     * @param int    $iSubShopId    Sub shop ID
+     * @param string $sItemType     Item type
+     *
+     * @return bool
+     */
+    public function inheritItemsFromShop($iParentShopId, $iSubShopId, $sItemType)
+    {
+        $sSQL = "inherits items of type $sItemType to sub shop $iSubShopId from parent shop $iParentShopId";
+
+        $this->execute($sSQL);
+
+        return true;
+    }
+
+    /**
+     * Removes items by type from sub shop that were inherited from parent shop.
+     *
+     * @param int    $iParentShopId Parent shop ID
+     * @param int    $iSubShopId    Sub shop ID
+     * @param string $sItemType     Item type
+     *
+     * @return bool
+     */
+    public function removeInheritedItemsFromShop($iParentShopId, $iSubShopId, $sItemType)
+    {
+        $sSQL = "remove inherited items of type $sItemType from sub shop $iSubShopId that were inherited from parent shop $iParentShopId";
+
+        $this->execute($sSQL);
+
+        return true;
+    }
 }

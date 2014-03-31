@@ -123,7 +123,8 @@ class Unit_Core_oxShopMapperTest extends OxidTestCase
 
         /** @var oxShopMapperDbGateway|PHPUnit_Framework_MockObject_MockObject $oShopMapperDbGateway */
         $oShopMapperDbGateway = $this->getMock('oxShopMapperDbGateway', array('addItemToShop'));
-        $oShopMapperDbGateway->expects($this->exactly($iExpectsToProcess))->method('addItemToShop')->will($this->returnValue(true));
+        $oShopMapperDbGateway->expects($this->exactly($iExpectsToProcess))->method('addItemToShop')
+            ->will($this->returnValue(true));
 
         $oShopMapper = new oxShopMapper();
         $oShopMapper->setDbGateway($oShopMapperDbGateway);
@@ -146,7 +147,8 @@ class Unit_Core_oxShopMapperTest extends OxidTestCase
 
         /** @var oxShopMapperDbGateway|PHPUnit_Framework_MockObject_MockObject $oShopMapperDbGateway */
         $oShopMapperDbGateway = $this->getMock('oxShopMapperDbGateway', array('removeItemFromShop'));
-        $oShopMapperDbGateway->expects($this->exactly($iExpectsToProcess))->method('removeItemFromShop')->will($this->returnValue(true));
+        $oShopMapperDbGateway->expects($this->exactly($iExpectsToProcess))->method('removeItemFromShop')
+            ->will($this->returnValue(true));
 
         $oShopMapper = new oxShopMapper();
         $oShopMapper->setDbGateway($oShopMapperDbGateway);
@@ -155,28 +157,50 @@ class Unit_Core_oxShopMapperTest extends OxidTestCase
     }
 
     /**
-     * Tests add item group to shop.
+     * Tests inherit items by type to sub shop(-s) from parent shop.
+     *
+     * @param int|array $aShops            Shop ID or list of shop IDs.
+     * @param int       $iExpectsToProcess Number of shops expected to be processed.
+     *
+     * @dataProvider _dpTestListOfShops
      */
-    public function testAddItemGroupToShop()
+    public function testInheritItemsFromShops($aShops, $iExpectsToProcess)
     {
-        $sItemType = 'oxarticles';
-        $iShopId   = 456;
+        $iParentShopId = 456;
+        $sItemType     = 'oxarticles';
+
+        /** @var oxShopMapperDbGateway|PHPUnit_Framework_MockObject_MockObject $oShopMapperDbGateway */
+        $oShopMapperDbGateway = $this->getMock('oxShopMapperDbGateway', array('inheritItemsFromShop'));
+        $oShopMapperDbGateway->expects($this->exactly($iExpectsToProcess))->method('inheritItemsFromShop')
+            ->will($this->returnValue(true));
 
         $oShopMapper = new oxShopMapper();
+        $oShopMapper->setDbGateway($oShopMapperDbGateway);
 
-        $this->assertTrue($oShopMapper->addItemGroupToShop($sItemType, $iShopId));
+        $this->assertTrue($oShopMapper->inheritItemsFromShops($iParentShopId, $aShops, $sItemType));
     }
 
     /**
-     * Tests remove item group from shop.
+     * Tests remove items by type from sub shop(-s) that were inherited from parent shop.
+     *
+     * @param int|array $aShops            Shop ID or list of shop IDs.
+     * @param int       $iExpectsToProcess Number of shops expected to be processed.
+     *
+     * @dataProvider _dpTestListOfShops
      */
-    public function testRemoveItemGroupFromShop()
+    public function testRemoveInheritedItemsFromShops($aShops, $iExpectsToProcess)
     {
-        $sItemType = 'oxarticles';
-        $iShopId   = 456;
+        $iParentShopId = 456;
+        $sItemType     = 'oxarticles';
+
+        /** @var oxShopMapperDbGateway|PHPUnit_Framework_MockObject_MockObject $oShopMapperDbGateway */
+        $oShopMapperDbGateway = $this->getMock('oxShopMapperDbGateway', array('removeInheritedItemsFromShop'));
+        $oShopMapperDbGateway->expects($this->exactly($iExpectsToProcess))->method('removeInheritedItemsFromShop')
+            ->will($this->returnValue(true));
 
         $oShopMapper = new oxShopMapper();
+        $oShopMapper->setDbGateway($oShopMapperDbGateway);
 
-        $this->assertTrue($oShopMapper->removeItemGroupFromShop($sItemType, $iShopId));
+        $this->assertTrue($oShopMapper->removeInheritedItemsFromShops($iParentShopId, $aShops, $sItemType));
     }
 }

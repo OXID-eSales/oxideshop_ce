@@ -46,139 +46,100 @@ class Unit_Core_oxShopMapperTest extends OxidTestCase
     }
 
     /**
-     * Tests add object to shop.
+     * Provides shop id or list of shops.
+     *
+     * @return array
      */
-    public function testAddObjectToShop()
+    public function _dpTestListOfShops()
+    {
+        return array(
+            array(45),
+            array(array()),
+            array(array(27)),
+            array(array(3, 46, 5)),
+        );
+    }
+
+    /**
+     * Tests add object to shop or list of shops.
+     *
+     * @param int|array $mShops Shop id or list of shop ids.
+     *
+     * @dataProvider _dpTestListOfShops
+     */
+    public function testAddObjectToShops($mShops)
     {
         $iItemId   = 123;
         $sItemType = 'oxarticles';
-        $sShopId   = 45;
 
         $oItem = new oxBase();
         $oItem->init($sItemType);
         $oItem->setId($iItemId);
 
         /** @var oxShopMapper|PHPUnit_Framework_MockObject_MockObject $oShopMapper */
-        $oShopMapper = $this->getMock('oxShopMapper', array('addItemToShop'));
-        $oShopMapper->expects($this->once())->method('addItemToShop')->with($iItemId, $sItemType, $sShopId)->will($this->returnValue(true));
+        $oShopMapper = $this->getMock('oxShopMapper', array('addItemToShops'));
+        $oShopMapper->expects($this->once())->method('addItemToShops')
+            ->with($iItemId, $sItemType, $mShops)->will($this->returnValue(true));
 
-        $this->assertTrue($oShopMapper->addObjectToShop($oItem, $sShopId));
+        $this->assertTrue($oShopMapper->addObjectToShops($oItem, $mShops));
     }
 
     /**
-     * Tests remove object from shop.
+     * Tests remove object from shop or list of shops.
+     *
+     * @param int|array $mShops Shop id or list of shop ids.
+     *
+     * @dataProvider _dpTestListOfShops
      */
-    public function testRemoveObjectFromShop()
+    public function testRemoveObjectFromShops($mShops)
     {
         $iItemId   = 123;
         $sItemType = 'oxarticles';
-        $sShopId   = 45;
 
         $oItem = new oxBase();
         $oItem->init($sItemType);
         $oItem->setId($iItemId);
 
         /** @var oxShopMapper|PHPUnit_Framework_MockObject_MockObject $oShopMapper */
-        $oShopMapper = $this->getMock('oxShopMapper', array('removeItemFromShop'));
-        $oShopMapper->expects($this->once())->method('removeItemFromShop')->with($iItemId, $sItemType, $sShopId)->will($this->returnValue(true));
+        $oShopMapper = $this->getMock('oxShopMapper', array('removeItemFromShops'));
+        $oShopMapper->expects($this->once())->method('removeItemFromShops')
+            ->with($iItemId, $sItemType, $mShops)->will($this->returnValue(true));
 
-        $this->assertTrue($oShopMapper->removeObjectFromShop($oItem, $sShopId));
+        $this->assertTrue($oShopMapper->removeObjectFromShops($oItem, $mShops));
     }
 
     /**
-     * Tests add item to shop.
+     * Tests add item to shop or list of shops.
+     *
+     * @param int|array $mShops Shop id or list of shop ids.
+     *
+     * @dataProvider _dpTestListOfShops
      */
-    public function testAddItemToShop()
+    public function testAddItemToShops($mShops)
     {
         $iItemId   = 123;
         $sItemType = 'oxarticles';
-        $sShopId   = 45;
 
         $oShopMapper = new oxShopMapper();
 
-        $this->assertTrue($oShopMapper->addItemToShop($iItemId, $sItemType, $sShopId));
+        $this->assertTrue($oShopMapper->addItemToShops($iItemId, $sItemType, $mShops));
     }
 
     /**
-     * Tests remove item from shop.
+     * Tests remove item from shop or list of shops.
+     *
+     * @param int|array $mShops Shop id or list of shop ids.
+     *
+     * @dataProvider _dpTestListOfShops
      */
-    public function testRemoveItemFromShop()
+    public function testRemoveItemFromShops($mShops)
     {
         $iItemId   = 123;
         $sItemType = 'oxarticles';
-        $sShopId   = 45;
 
         $oShopMapper = new oxShopMapper();
 
-        $this->assertTrue($oShopMapper->removeItemFromShop($iItemId, $sItemType, $sShopId));
-    }
-
-    /**
-     * Tests add object to list of shops.
-     */
-    public function testAddObjectToListOfShops()
-    {
-        $iItemId   = 123;
-        $sItemType = 'oxarticles';
-        $aShops    = array(4, 5, 6);
-
-        $oItem = new oxBase();
-        $oItem->init($sItemType);
-        $oItem->setId($iItemId);
-
-        /** @var oxShopMapper|PHPUnit_Framework_MockObject_MockObject $oShopMapper */
-        $oShopMapper = $this->getMock('oxShopMapper', array('addItemToListOfShops'));
-        $oShopMapper->expects($this->once())->method('addItemToListOfShops')->with($iItemId, $sItemType, $aShops)->will($this->returnValue(true));
-
-        $this->assertTrue($oShopMapper->addObjectToListOfShops($oItem, $aShops));
-    }
-
-    /**
-     * Tests remove object from list of shops.
-     */
-    public function testRemoveObjectFromListOfShops()
-    {
-        $iItemId   = 123;
-        $sItemType = 'oxarticles';
-        $aShops    = array(4, 5, 6);
-
-        $oItem = new oxBase();
-        $oItem->init($sItemType);
-        $oItem->setId($iItemId);
-
-        /** @var oxShopMapper|PHPUnit_Framework_MockObject_MockObject $oShopMapper */
-        $oShopMapper = $this->getMock('oxShopMapper', array('removeItemFromListOfShops'));
-        $oShopMapper->expects($this->once())->method('removeItemFromListOfShops')->with($iItemId, $sItemType, $aShops)->will($this->returnValue(true));
-
-        $this->assertTrue($oShopMapper->removeObjectFromListOfShops($oItem, $aShops));
-    }
-
-    /**
-     * Tests add item to list of shops.
-     */
-    public function testAddItemToListOfShops()
-    {
-        $iItemId   = 123;
-        $sItemType = 'oxarticles';
-        $aShops    = array(4, 5, 6);
-
-        $oShopMapper = new oxShopMapper();
-
-        $this->assertTrue($oShopMapper->addItemToListOfShops($iItemId, $sItemType, $aShops));
-    }
-
-    /**
-     * Tests remove item from list of shops.
-     */
-    public function testRemoveItemFromListOfShops()
-    {
-        $iItemId   = 123;
-        $sItemType = 'oxarticles';
-        $aShops    = array(4, 5, 6);
-
-        $oShopMapper = new oxShopMapper();
-
-        $this->assertTrue($oShopMapper->removeItemFromListOfShops($iItemId, $sItemType, $aShops));
+        $this->assertTrue($oShopMapper->removeItemFromShops($iItemId, $sItemType, $mShops));
     }
 
     /**

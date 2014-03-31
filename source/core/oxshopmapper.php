@@ -56,109 +56,55 @@ class oxShopMapper
     }
 
     /**
-     * Adds object to shop.
+     * Adds object to shop or list of shops.
      *
-     * @param oxBase $oItem   Object to add to shop
-     * @param int    $iShopId Shop id
+     * @param oxBase    $oItem  Object to add to shop
+     * @param int|array $mShops Shop id or list of shop ids.
      *
      * @return bool
      */
-    public function addObjectToShop(oxBase $oItem, $iShopId)
+    public function addObjectToShops(oxBase $oItem, $mShops)
     {
-        return $this->addItemToShop($oItem->getId(), $oItem->getCoreTableName(), $iShopId);
+        return $this->addItemToShops($oItem->getId(), $oItem->getCoreTableName(), $mShops);
     }
 
     /**
-     * Removes object from shop.
+     * Removes object from shop or list of shops.
      *
-     * @param oxBase $oItem   Object to remove from shop
-     * @param int    $iShopId Shop id
+     * @param oxBase    $oItem  Object to remove from shop
+     * @param int|array $mShops Shop id or list of shop ids.
      *
      * @return bool
      */
-    public function removeObjectFromShop(oxBase $oItem, $iShopId)
+    public function removeObjectFromShops(oxBase $oItem, $mShops)
     {
-        return $this->removeItemFromShop($oItem->getId(), $oItem->getCoreTableName(), $iShopId);
+        return $this->removeItemFromShops($oItem->getId(), $oItem->getCoreTableName(), $mShops);
     }
 
     /**
-     * Adds item to shop.
+     * Adds item to shop or list of shops.
      *
-     * @param int    $iItemId   Item ID
-     * @param string $sItemType Item type
-     * @param int    $iShopId   Shop id
-     *
-     * @return bool
-     */
-    public function addItemToShop($iItemId, $sItemType, $iShopId)
-    {
-        return true;
-    }
-
-    /**
-     * Removes item from shop.
-     *
-     * @param int    $iItemId   Item ID
-     * @param string $sItemType Item type
-     * @param int    $iShopId   Shop id
+     * @param int       $iItemId   Item ID
+     * @param string    $sItemType Item type
+     * @param int|array $mShops    Shop id or list of shop ids.
      *
      * @return bool
      */
-    public function removeItemFromShop($iItemId, $sItemType, $iShopId)
+    public function addItemToShops($iItemId, $sItemType, $mShops)
     {
         return true;
     }
 
     /**
-     * Adds object to list of shops.
+     * Removes item from shop or list of shops.
      *
-     * @param oxBase $oItem  Object to add to shops
-     * @param array  $aShops Shops
-     *
-     * @return bool
-     */
-    public function addObjectToListOfShops(oxBase $oItem, $aShops)
-    {
-        return $this->addItemToListOfShops($oItem->getId(), $oItem->getCoreTableName(), $aShops);
-    }
-
-    /**
-     * Removes object from list of shops.
-     *
-     * @param oxBase $oItem  Object to remove from shops
-     * @param array  $aShops Shops
+     * @param int       $iItemId   Item ID
+     * @param string    $sItemType Item type
+     * @param int|array $mShops    Shop id or list of shop ids.
      *
      * @return bool
      */
-    public function removeObjectFromListOfShops(oxBase $oItem, $aShops)
-    {
-        return $this->removeItemFromListOfShops($oItem->getId(), $oItem->getCoreTableName(), $aShops);
-    }
-
-    /**
-     * Adds item to list of shops.
-     *
-     * @param int    $iItemId   Item ID
-     * @param string $sItemType Item type
-     * @param array  $aShops    Shops
-     *
-     * @return bool
-     */
-    public function addItemToListOfShops($iItemId, $sItemType, $aShops)
-    {
-        return true;
-    }
-
-    /**
-     * Removes item from list of shops
-     *
-     * @param int    $iItemId   Item ID
-     * @param string $sItemType Item type
-     * @param array  $aShops    Shops
-     *
-     * @return bool
-     */
-    public function removeItemFromListOfShops($iItemId, $sItemType, $aShops)
+    public function removeItemFromShops($iItemId, $sItemType, $mShops)
     {
         return true;
     }

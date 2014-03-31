@@ -135,6 +135,12 @@ class oxcmp_user extends oxView
             $this->setRecipient();
         }
 
+        // dyn_group feature: if you specify a groupid in URL the user
+        // will automatically be added to this group later
+        if ( $sDynGoup = oxConfig::getParameter( 'dgr' ) ) {
+            oxSession::setVar( 'dgr', $sDynGoup );
+        }
+
         parent::init();
     }
 
@@ -153,12 +159,6 @@ class oxcmp_user extends oxView
         $this->_checkPsState();
 
         parent::render();
-
-        // dyn_group feature: if you specify a groupid in URL the user
-        // will automatically be added to this group later
-        if ( $sDynGoup = oxConfig::getParameter( 'dgr' ) ) {
-            oxSession::setVar( 'dgr', $sDynGoup );
-        }
 
         return $this->getUser();
     }

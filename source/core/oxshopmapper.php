@@ -31,7 +31,8 @@ class oxShopMapper
     protected $_oDbGateway = null;
 
     /**
-     * Sets database gateway.*
+     * Sets database gateway.
+     *
      * @param oxShopMapperDbGateway $oDb Database gateway.
      */
     public function setDbGateway($oDb)
@@ -85,17 +86,17 @@ class oxShopMapper
      *
      * @param int       $iItemId   Item ID
      * @param string    $sItemType Item type
-     * @param int|array $aShops    Shop ID or list of shop IDs.
+     * @param int|array $aShopIds  Shop ID or list of shop IDs.
      *
      * @return bool
      */
-    public function addItemToShops($iItemId, $sItemType, $aShops)
+    public function addItemToShops($iItemId, $sItemType, $aShopIds)
     {
-        if (!is_array($aShops)) {
-            $aShops = array($aShops);
+        if (!is_array($aShopIds)) {
+            $aShopIds = array($aShopIds);
         }
 
-        foreach ($aShops as $iShopId) {
+        foreach ($aShopIds as $iShopId) {
             $this->getDbGateway()->addItemToShop($iItemId, $sItemType, $iShopId);
         }
 
@@ -107,17 +108,17 @@ class oxShopMapper
      *
      * @param int       $iItemId   Item ID
      * @param string    $sItemType Item type
-     * @param int|array $aShops    Shop ID or list of shop IDs.
+     * @param int|array $aShopIds  Shop ID or list of shop IDs.
      *
      * @return bool
      */
-    public function removeItemFromShops($iItemId, $sItemType, $aShops)
+    public function removeItemFromShops($iItemId, $sItemType, $aShopIds)
     {
-        if (!is_array($aShops)) {
-            $aShops = array($aShops);
+        if (!is_array($aShopIds)) {
+            $aShopIds = array($aShopIds);
         }
 
-        foreach ($aShops as $iShopId) {
+        foreach ($aShopIds as $iShopId) {
             $this->getDbGateway()->removeItemFromShop($iItemId, $sItemType, $iShopId);
         }
 

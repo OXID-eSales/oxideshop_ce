@@ -63,11 +63,11 @@ class Unit_Core_oxShopMapperTest extends OxidTestCase
     /**
      * Tests add object to shop or list of shops.
      *
-     * @param int|array $aShops Shop ID or list of shop IDs.
+     * @param int|array $aShopIds Shop ID or list of shop IDs.
      *
      * @dataProvider _dpTestListOfShops
      */
-    public function testAddObjectToShops($aShops)
+    public function testAddObjectToShops($aShopIds)
     {
         $iItemId   = 123;
         $sItemType = 'oxarticles';
@@ -79,19 +79,19 @@ class Unit_Core_oxShopMapperTest extends OxidTestCase
         /** @var oxShopMapper|PHPUnit_Framework_MockObject_MockObject $oShopMapper */
         $oShopMapper = $this->getMock('oxShopMapper', array('addItemToShops'));
         $oShopMapper->expects($this->once())->method('addItemToShops')
-            ->with($iItemId, $sItemType, $aShops)->will($this->returnValue(true));
+            ->with($iItemId, $sItemType, $aShopIds)->will($this->returnValue(true));
 
-        $this->assertTrue($oShopMapper->addObjectToShops($oItem, $aShops));
+        $this->assertTrue($oShopMapper->addObjectToShops($oItem, $aShopIds));
     }
 
     /**
      * Tests remove object from shop or list of shops.
      *
-     * @param int|array $aShops Shop ID or list of shop IDs.
+     * @param int|array $aShopIds Shop ID or list of shop IDs.
      *
      * @dataProvider _dpTestListOfShops
      */
-    public function testRemoveObjectFromShops($aShops)
+    public function testRemoveObjectFromShops($aShopIds)
     {
         $iItemId   = 123;
         $sItemType = 'oxarticles';
@@ -103,20 +103,20 @@ class Unit_Core_oxShopMapperTest extends OxidTestCase
         /** @var oxShopMapper|PHPUnit_Framework_MockObject_MockObject $oShopMapper */
         $oShopMapper = $this->getMock('oxShopMapper', array('removeItemFromShops'));
         $oShopMapper->expects($this->once())->method('removeItemFromShops')
-            ->with($iItemId, $sItemType, $aShops)->will($this->returnValue(true));
+            ->with($iItemId, $sItemType, $aShopIds)->will($this->returnValue(true));
 
-        $this->assertTrue($oShopMapper->removeObjectFromShops($oItem, $aShops));
+        $this->assertTrue($oShopMapper->removeObjectFromShops($oItem, $aShopIds));
     }
 
     /**
      * Tests add item to shop or list of shops.
      *
-     * @param int|array $aShops            Shop ID or list of shop IDs.
+     * @param int|array $aShopIds          Shop ID or list of shop IDs.
      * @param int       $iExpectsToProcess Number of shops expected to be processed.
      *
      * @dataProvider _dpTestListOfShops
      */
-    public function testAddItemToShops($aShops, $iExpectsToProcess)
+    public function testAddItemToShops($aShopIds, $iExpectsToProcess)
     {
         $iItemId   = 123;
         $sItemType = 'oxarticles';
@@ -129,18 +129,18 @@ class Unit_Core_oxShopMapperTest extends OxidTestCase
         $oShopMapper = new oxShopMapper();
         $oShopMapper->setDbGateway($oShopMapperDbGateway);
 
-        $this->assertTrue($oShopMapper->addItemToShops($iItemId, $sItemType, $aShops));
+        $this->assertTrue($oShopMapper->addItemToShops($iItemId, $sItemType, $aShopIds));
     }
 
     /**
      * Tests remove item from shop or list of shops.
      *
-     * @param int|array $aShops            Shop ID or list of shop IDs.
+     * @param int|array $aShopIds          Shop ID or list of shop IDs.
      * @param int       $iExpectsToProcess Number of shops expected to be processed.
      *
      * @dataProvider _dpTestListOfShops
      */
-    public function testRemoveItemFromShops($aShops, $iExpectsToProcess)
+    public function testRemoveItemFromShops($aShopIds, $iExpectsToProcess)
     {
         $iItemId   = 123;
         $sItemType = 'oxarticles';
@@ -153,18 +153,18 @@ class Unit_Core_oxShopMapperTest extends OxidTestCase
         $oShopMapper = new oxShopMapper();
         $oShopMapper->setDbGateway($oShopMapperDbGateway);
 
-        $this->assertTrue($oShopMapper->removeItemFromShops($iItemId, $sItemType, $aShops));
+        $this->assertTrue($oShopMapper->removeItemFromShops($iItemId, $sItemType, $aShopIds));
     }
 
     /**
      * Tests inherit items by type to sub shop(-s) from parent shop.
      *
-     * @param int|array $aShops            Shop ID or list of shop IDs.
+     * @param int|array $aShopIds          Shop ID or list of shop IDs.
      * @param int       $iExpectsToProcess Number of shops expected to be processed.
      *
      * @dataProvider _dpTestListOfShops
      */
-    public function testInheritItemsFromShops($aShops, $iExpectsToProcess)
+    public function testInheritItemsFromShops($aShopIds, $iExpectsToProcess)
     {
         $iParentShopId = 456;
         $sItemType     = 'oxarticles';
@@ -177,18 +177,18 @@ class Unit_Core_oxShopMapperTest extends OxidTestCase
         $oShopMapper = new oxShopMapper();
         $oShopMapper->setDbGateway($oShopMapperDbGateway);
 
-        $this->assertTrue($oShopMapper->inheritItemsFromShops($iParentShopId, $aShops, $sItemType));
+        $this->assertTrue($oShopMapper->inheritItemsFromShops($iParentShopId, $aShopIds, $sItemType));
     }
 
     /**
      * Tests remove items by type from sub shop(-s) that were inherited from parent shop.
      *
-     * @param int|array $aShops            Shop ID or list of shop IDs.
+     * @param int|array $aShopIds          Shop ID or list of shop IDs.
      * @param int       $iExpectsToProcess Number of shops expected to be processed.
      *
      * @dataProvider _dpTestListOfShops
      */
-    public function testRemoveInheritedItemsFromShops($aShops, $iExpectsToProcess)
+    public function testRemoveInheritedItemsFromShops($aShopIds, $iExpectsToProcess)
     {
         $iParentShopId = 456;
         $sItemType     = 'oxarticles';
@@ -201,6 +201,6 @@ class Unit_Core_oxShopMapperTest extends OxidTestCase
         $oShopMapper = new oxShopMapper();
         $oShopMapper->setDbGateway($oShopMapperDbGateway);
 
-        $this->assertTrue($oShopMapper->removeInheritedItemsFromShops($iParentShopId, $aShops, $sItemType));
+        $this->assertTrue($oShopMapper->removeInheritedItemsFromShops($iParentShopId, $aShopIds, $sItemType));
     }
 }

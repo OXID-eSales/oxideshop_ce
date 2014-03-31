@@ -540,7 +540,7 @@ class RecommList extends aList
         if ( $aActiveList = $this->getActiveRecommList() ){
             $sTitle = $aActiveList->oxrecommlists__oxtitle->value .' (' . oxRegistry::getLang()->translateString( 'LIST_BY', oxRegistry::getLang()->getBaseLanguage(), false )  . ' ' . $aActiveList->oxrecommlists__oxauthor->value .')';
         } else {
-            $sTitle = $this->getArticleCount() . ' ' . oxRegistry::getLang()->translateString( 'HITS_FOR', oxRegistry::getLang()->getBaseLanguage(), false ) . ' ' . $this->getSearchForHtml();
+            $sTitle = $this->getArticleCount() . ' ' . oxRegistry::getLang()->translateString( 'HITS_FOR', oxRegistry::getLang()->getBaseLanguage(), false ) . ' "' . $this->getSearchForHtml().'"';
         }
 
         return $sTitle;

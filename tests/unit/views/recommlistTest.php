@@ -482,7 +482,7 @@ class Unit_Views_recommlistTest extends OxidTestCase
         $oView->expects($this->any())->method('getArticleCount')->will($this->returnValue( 7 ));
         $oView->expects($this->any())->method('getSearchForHtml')->will($this->returnValue( 'string' ));
 
-        $this->assertEquals( '7 ' . oxRegistry::getLang()->translateString( 'HITS_FOR', oxRegistry::getLang()->getBaseLanguage(), false ) . ' string', $oView->getTitle());
+        $this->assertEquals( '7 ' . oxRegistry::getLang()->translateString( 'HITS_FOR', oxRegistry::getLang()->getBaseLanguage(), false ) . ' "string"', $oView->getTitle());
     }
 
 }

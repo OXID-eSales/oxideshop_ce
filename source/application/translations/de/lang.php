@@ -759,7 +759,7 @@ $aLang = array(
 'PAGE_TITLE_CLEARCOOKIES'                                     => 'Information über Cookies',
 'PAGE_TITLE_NEWS'                                             => 'News',
 'PAGE_TITLE_SUGGEST'                                          => 'Artikel weiterempfehlen',
-'PAGE_TITLE_INVITE_YOUR_FRIENDS'                              => 'Freunde einladen',
+'PAGE_TITLE_INVITE'                                           => 'Freunde einladen',
 'PAGE_TITLE_REVIEW'                                           => 'Bewerten',
 
 'YOUR_TEAM'                                                   => 'Ihr %s Team',

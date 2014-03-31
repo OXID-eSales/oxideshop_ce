@@ -81,6 +81,19 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
     }
 
     /**
+     * Test setting of dgr parameter on init
+     */
+    public function testInitDynGroupAssignment()
+    {
+        modConfig::setParameter('dgr', 'testdgr');
+
+        $oView = new oxcmp_user();
+        $oView->init();
+
+        $this->assertEquals( 'testdgr', modSession::getInstance()->getVar( 'dgr' ) );
+    }
+
+    /**
      * Test view getInvitor().
      *
      * @return null
@@ -495,7 +508,6 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setParameter('dgr', 'testdgr');
         modConfig::setParameter('invadr', 'testadr');
         modConfig::setParameter('deladr', 'testdeladr');
         modConfig::setParameter('reloadaddress', false);
@@ -508,7 +520,6 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
         $oUserView->expects( $this->atLeastOnce() )->method( 'getParent' )->will( $this->returnValue( $oParent ) );
         $oUserView->expects( $this->atLeastOnce() )->method( 'getUser' )->will( $this->returnValue( "testUser" ) );
         $this->assertEquals( 'testUser', $oUserView->render() );
-        $this->assertEquals( 'testdgr', modSession::getInstance()->getVar( 'dgr' ) );
     }
 
     /**

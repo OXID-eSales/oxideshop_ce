@@ -97,21 +97,10 @@ class oxcmp_user extends oxView
      */
     public function init()
     {
-        // saving show/hide delivery address state
-        $blShow = oxConfig::getParameter('blshowshipaddress');
-        if (!isset($blShow)) {
-            $blShow = oxSession::getVar('blshowshipaddress');
-        }
-
-        oxSession::setVar('blshowshipaddress', $blShow);
-
-        // load session user
+        $this->_saveDeliveryAddressState();
         $this->_loadSessionUser();
-        if ($this->getConfig()->getConfigParam('blInvitationsEnabled')) {
-            // get invitor ID
-            $this->getInvitor();
-            $this->setRecipient();
-        }
+        $this->_saveInvitor();
+        $this->_assignDynGroup();
 
         parent::init();
     }
@@ -131,12 +120,6 @@ class oxcmp_user extends oxView
         $this->_checkPsState();
 
         parent::render();
-
-        // dyn_group feature: if you specify a groupid in URL the user
-        // will automatically be added to this group later
-        if ($sDynGoup = oxConfig::getParameter('dgr')) {
-            oxSession::setVar('dgr', $sDynGoup);
-        }
 
         return $this->getUser();
     }
@@ -453,25 +436,24 @@ class oxcmp_user extends oxView
     {
         $blActiveLogin = $this->getParent()->isEnabledPrivateSales();
 
-        $myConfig = $this->getConfig();
-        if ($blActiveLogin && !oxConfig::getParameter('ord_agb') && $myConfig->getConfigParam('blConfirmAGB')) {
+        $oConfig = $this->getConfig();
+
+        if ($blActiveLogin && !$oConfig->getRequestParameter('ord_agb') && $oConfig->getConfigParam('blConfirmAGB')) {
             oxRegistry::get("oxUtilsView")->addErrorToDisplay('READ_AND_CONFIRM_TERMS', false, true);
 
             return;
         }
 
-        $myUtils = oxRegistry::getUtils();
-
         // collecting values to check
-        $sUser = oxConfig::getParameter('lgn_usr');
+        $sUser = $oConfig->getRequestParameter('lgn_usr');
 
         // first pass
-        $sPassword = oxConfig::getParameter('lgn_pwd', true);
+        $sPassword = $oConfig->getRequestParameter('lgn_pwd', true);
 
         // second pass
-        $sPassword2 = oxConfig::getParameter('lgn_pwd2', true);
+        $sPassword2 = $oConfig->getRequestParameter('lgn_pwd2', true);
 
-        $aInvAdress = oxConfig::getParameter('invadr', true);
+        $aInvAdress = $oConfig->getRequestParameter('invadr', true);
         $aDelAdress = $this->_getDelAddressData();
 
         $oUser = oxNew('oxuser');
@@ -518,7 +500,7 @@ class oxcmp_user extends oxView
             }
 
             $oUser->addToGroup('oxidnotyetordered');
-            $oUser->addDynGroup(oxSession::getVar('dgr'), $myConfig->getConfigParam('aDeniedDynGroups'));
+            $oUser->addDynGroup(oxSession::getVar('dgr'), $oConfig->getConfigParam('aDeniedDynGroups'));
             $oUser->logout();
 
         } catch (oxUserException $oEx) {
@@ -583,6 +565,43 @@ class oxcmp_user extends oxView
         } else {
             // problems with registration ...
             $this->logout();
+        }
+    }
+
+    /**
+     * Saves invitor ID
+     */
+    protected function _saveInvitor()
+    {
+        if ($this->getConfig()->getConfigParam('blInvitationsEnabled')) {
+            $this->getInvitor();
+            $this->setRecipient();
+        }
+    }
+
+    /**
+     * Saving show/hide delivery address state
+     */
+    protected function _saveDeliveryAddressState()
+    {
+        $oSession = oxRegistry::getSession();
+
+        $blShow = oxRegistry::getConfig()->getRequestParameter('blshowshipaddress');
+        if (!isset($blShow)) {
+            $blShow = $oSession->getVariable('blshowshipaddress');
+        }
+
+        $oSession->setVariable('blshowshipaddress', $blShow);
+    }
+
+    /**
+     * dyn_group feature: if you specify a user group id in URL,
+     *  the user will automatically be added to this group on registration or login
+     */
+    protected function _assignDynGroup()
+    {
+        if ($sDynGoup = oxRegistry::getConfig()->getRequestParameter('dgr')) {
+            oxRegistry::getSession()->setVariable('dgr', $sDynGoup);
         }
     }
 
@@ -749,15 +768,16 @@ class oxcmp_user extends oxView
     }
 
     /**
-     * Gets from URL invitor id
+     * Sets invitor id to session from URL
      *
      * @return null
      */
     public function getInvitor()
     {
-        $sSu = oxSession::getVar('su');
-        if (!$sSu && ($sSuNew = oxConfig::getParameter('su'))) {
-            oxSession::setVar('su', $sSuNew);
+        $sSu = oxRegistry::getSession()->getVariable('su');
+
+        if (!$sSu && ($sSuNew = oxRegistry::getConfig()->getRequestParameter('su'))) {
+            oxRegistry::getSession()->setVariable('su', $sSuNew);
         }
     }
 
@@ -768,9 +788,9 @@ class oxcmp_user extends oxView
      */
     public function setRecipient()
     {
-        $sRe = oxSession::getVar('re');
-        if (!$sRe && ($sReNew = oxConfig::getParameter('re'))) {
-            oxSession::setVar('re', $sReNew);
+        $sRe = oxRegistry::getSession()->getVariable('re');
+        if (!$sRe && ($sReNew = oxRegistry::getConfig()->getRequestParameter('re'))) {
+            oxRegistry::getSession()->setVariable('re', $sReNew);
         }
     }
 }

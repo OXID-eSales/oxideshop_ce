@@ -362,7 +362,7 @@ class Account extends oxUBase
         $sTitle = parent::getTitle();
 
         if ( $this->getConfig()->getActiveView()->getClassName() == 'account' ) {
-            $sTitle = oxRegistry::getLang()->translateString( 'MY_ACCOUNT', oxRegistry::getLang()->getBaseLanguage(), false );
+            $sTitle = oxRegistry::getLang()->translateString( 'PAGE_TITLE_ACCOUNT', oxRegistry::getLang()->getBaseLanguage(), false );
             if ( $oUser = $this->getUser() ) {
                 $sTitle .= ' - ' . $oUser->oxuser__oxusername->value;
             }

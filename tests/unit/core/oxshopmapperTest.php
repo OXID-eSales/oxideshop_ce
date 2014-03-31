@@ -30,6 +30,21 @@ class Unit_Core_oxShopMapperTest extends OxidTestCase
 {
 
     /**
+     * Provides shop id or list of shops.
+     *
+     * @return array
+     */
+    public function _dpTestListOfShops()
+    {
+        return array(
+            array(45),
+            array(array()),
+            array(array(27)),
+            array(array(3, 46, 5)),
+        );
+    }
+
+    /**
      * Test set/get database gateway.
      */
     public function testSetGetDbGateway()
@@ -43,21 +58,6 @@ class Unit_Core_oxShopMapperTest extends OxidTestCase
 
         $oShopMapper->setDbGateway($oCustomDbGateway);
         $this->assertSame($oCustomDbGateway, $oShopMapper->getDbGateway());
-    }
-
-    /**
-     * Provides shop id or list of shops.
-     *
-     * @return array
-     */
-    public function _dpTestListOfShops()
-    {
-        return array(
-            array(45),
-            array(array()),
-            array(array(27)),
-            array(array(3, 46, 5)),
-        );
     }
 
     /**

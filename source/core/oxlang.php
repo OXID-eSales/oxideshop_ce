@@ -110,6 +110,31 @@ class oxLang extends oxSuperCfg
     protected $_aDisabledModuleInfo = null;
 
     /**
+     * State is string translated or not
+     *
+     * @var bool
+     */
+    protected $_blIsTranslated = true;
+
+    /**
+     * Set translation state
+     */
+    public function setIsTranslated( $blIsTranslated = true )
+    {
+        $this->_blIsTranslated = $blIsTranslated;
+    }
+
+    /**
+     * Set translation state
+     *
+     * @return bool
+     */
+    public function isTranslated()
+    {
+        return $this->_blIsTranslated;
+    }
+
+    /**
      * returns a single instance of this class
      *
      * @deprecated since v5.0 (2012-08-10); Use Registry getter instead - oxRegistry::getLang();
@@ -425,6 +450,7 @@ class oxLang extends oxSuperCfg
             }
         }
 
+        $this->setIsTranslated(false);
         return $sStringToTranslate;
     }
 

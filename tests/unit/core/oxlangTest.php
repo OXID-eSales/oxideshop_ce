@@ -1633,4 +1633,37 @@ class Unit_Core_oxLangTest extends OxidTestCase
         $this->getConfig()->setConfigParam( 'aLanguageParams', $aLanguageParams );
     }
 
+    public function testIsTranslatedDefaultValue()
+    {
+        $oLang = new oxLang();
+        $this->assertTrue($oLang->isTranslated());
+    }
+
+    public function testIsTranslatedSetTrue()
+    {
+        $oLang = new oxLang();
+        $oLang->setIsTranslated();
+        $this->assertTrue($oLang->isTranslated());
+    }
+
+    public function testIsTranslatedSetFalse()
+    {
+        $oLang = new oxLang();
+        $oLang->setIsTranslated( false );
+        $this->assertFalse($oLang->isTranslated());
+    }
+
+    public function testIsTranslatedInTranslationActionTranslationNotFound()
+    {
+        $oLang = new oxLang();
+        $oLang->translateString('NOT_EXISTING_KEY');
+        $this->assertFalse($oLang->isTranslated());
+    }
+
+    public function testIsTranslatedInTranslationActionTranslationFound()
+    {
+        $oLang = new oxLang();
+        $oLang->translateString('HOME');
+        $this->assertTrue($oLang->isTranslated());
+    }
 }

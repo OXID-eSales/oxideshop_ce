@@ -65,6 +65,10 @@ class oxShopMapperDbGateway
      */
     public function addItemToShop($iItemId, $sItemType, $iShopId)
     {
+        $sSQL = "add item id $iItemId of type $sItemType to shop id $iShopId";
+
+        $this->execute($sSQL);
+
         return true;
     }
 
@@ -79,6 +83,22 @@ class oxShopMapperDbGateway
      */
     public function removeItemFromShop($iItemId, $sItemType, $iShopId)
     {
+        $sSQL = "remove item id $iItemId of type $sItemType from shop id $iShopId";
+
+        $this->execute($sSQL);
+
         return true;
+    }
+
+    /**
+     * Executes database query.
+     *
+     * @param string $sSQL SQL query.
+     *
+     * @return object
+     */
+    public function execute($sSQL)
+    {
+        return $this->getDbGateway()->execute($sSQL);
     }
 }

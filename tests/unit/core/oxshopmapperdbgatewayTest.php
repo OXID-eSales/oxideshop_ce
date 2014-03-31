@@ -54,9 +54,12 @@ class Unit_Core_oxShopMapperDbGatewayTest extends OxidTestCase
         $sItemType = 'oxarticles';
         $iShopId   = 45;
 
-        $oShopMapperDbGateway = new oxShopMapperDbGateway();
+        /** @var oxShopMapperDbGateway|PHPUnit_Framework_MockObject_MockObject $oShopMapperDbGateway */
+        $oShopMapperDbGateway = $this->getMock('oxShopMapperDbGateway', array('execute'));
+        $oShopMapperDbGateway->expects($this->once())->method('execute')
+            ->with("add item id $iItemId of type $sItemType to shop id $iShopId");
 
-        $this->assertTrue($oShopMapperDbGateway->addItemToShop($iItemId, $sItemType, $iShopId));
+        $oShopMapperDbGateway->addItemToShop($iItemId, $sItemType, $iShopId);
     }
 
     /**
@@ -68,8 +71,28 @@ class Unit_Core_oxShopMapperDbGatewayTest extends OxidTestCase
         $sItemType = 'oxarticles';
         $iShopId   = 45;
 
-        $oShopMapperDbGateway = new oxShopMapperDbGateway();
+        /** @var oxShopMapperDbGateway|PHPUnit_Framework_MockObject_MockObject $oShopMapperDbGateway */
+        $oShopMapperDbGateway = $this->getMock('oxShopMapperDbGateway', array('execute'));
+        $oShopMapperDbGateway->expects($this->once())->method('execute')
+            ->with("remove item id $iItemId of type $sItemType from shop id $iShopId");
 
-        $this->assertTrue($oShopMapperDbGateway->removeItemFromShop($iItemId, $sItemType, $iShopId));
+        $oShopMapperDbGateway->removeItemFromShop($iItemId, $sItemType, $iShopId);
+    }
+
+    /**
+     * Tests execute database query.
+     */
+    public function testExecute()
+    {
+        $sSQL = 'test execute sql query';
+
+        /** @var oxLegacyDb|PHPUnit_Framework_MockObject_MockObject $oDb */
+        $oDb = $this->getMock('oxLegacyDb', array('execute'));
+        $oDb->expects($this->once())->method('execute')->with($sSQL);
+
+        $oShopMapperDbGateway = new oxShopMapperDbGateway();
+        $oShopMapperDbGateway->setDbGateway($oDb);
+
+        $oShopMapperDbGateway->execute($sSQL);
     }
 }

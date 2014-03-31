@@ -59,17 +59,17 @@ class oxShopMapperDbGateway
      *
      * @param int    $iItemId   Item ID
      * @param string $sItemType Item type
-     * @param int    $iShopId   Shop ID.
+     * @param int    $iShopId   Shop ID
      *
      * @return bool
      */
     public function addItemToShop($iItemId, $sItemType, $iShopId)
     {
-        $sSQL = "add item id $iItemId of type $sItemType to shop id $iShopId";
+        $sSQL = "insert into {$this->getMappingTable($sItemType)} (OXMAPSHOPID, OXMAPOBJECTID) values (?, ?)";
 
-        $this->execute($sSQL);
+        $blResult = (bool) $this->execute($sSQL, array($iShopId, $iItemId));
 
-        return true;
+        return $blResult;
     }
 
     /**
@@ -77,29 +77,30 @@ class oxShopMapperDbGateway
      *
      * @param int    $iItemId   Item ID
      * @param string $sItemType Item type
-     * @param int    $iShopId   Shop ID.
+     * @param int    $iShopId   Shop ID
      *
      * @return bool
      */
     public function removeItemFromShop($iItemId, $sItemType, $iShopId)
     {
-        $sSQL = "remove item id $iItemId of type $sItemType from shop id $iShopId";
+        $sSQL = "delete from {$this->getMappingTable($sItemType)} where OXMAPSHOPID = ? and OXMAPOBJECTID = ?";
 
-        $this->execute($sSQL);
+        $blResult = (bool) $this->execute($sSQL, array($iShopId, $iItemId));
 
-        return true;
+        return $blResult;
     }
 
     /**
      * Executes database query.
      *
-     * @param string $sSQL SQL query.
+     * @param string     $sSQL    SQL query.
+     * @param array|bool $aParams Array of parameters
      *
      * @return object
      */
-    public function execute($sSQL)
+    public function execute($sSQL, $aParams = false)
     {
-        return $this->getDbGateway()->execute($sSQL);
+        return $this->getDbGateway()->execute($sSQL, $aParams);
     }
 
     /**
@@ -136,5 +137,17 @@ class oxShopMapperDbGateway
         $this->execute($sSQL);
 
         return true;
+    }
+
+    /**
+     * Gets mapping table of item type.
+     *
+     * @param string $sItemType Item type.
+     *
+     * @return string
+     */
+    protected function getMappingTable($sItemType)
+    {
+        return $sItemType . '2shop';
     }
 }

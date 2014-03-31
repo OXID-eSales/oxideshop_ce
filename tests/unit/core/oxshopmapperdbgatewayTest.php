@@ -48,16 +48,17 @@ class Unit_Core_oxShopMapperDbGatewayTest extends OxidTestCase
     /**
      * Tests add item to shop.
      */
-    public function testAddItemToShops()
+    public function testAddItemToShop()
     {
         $iItemId   = 123;
         $sItemType = 'oxarticles';
         $iShopId   = 45;
 
+        $sSQL = "insert into oxarticles2shop (OXMAPSHOPID, OXMAPOBJECTID) values (?, ?)";
+
         /** @var oxShopMapperDbGateway|PHPUnit_Framework_MockObject_MockObject $oShopMapperDbGateway */
         $oShopMapperDbGateway = $this->getMock('oxShopMapperDbGateway', array('execute'));
-        $oShopMapperDbGateway->expects($this->once())->method('execute')
-            ->with("add item id $iItemId of type $sItemType to shop id $iShopId");
+        $oShopMapperDbGateway->expects($this->once())->method('execute')->with($sSQL, array($iShopId, $iItemId));
 
         $oShopMapperDbGateway->addItemToShop($iItemId, $sItemType, $iShopId);
     }
@@ -65,16 +66,17 @@ class Unit_Core_oxShopMapperDbGatewayTest extends OxidTestCase
     /**
      * Tests remove item from shop.
      */
-    public function testRemoveItemFromShops()
+    public function testRemoveItemFromShop()
     {
         $iItemId   = 123;
         $sItemType = 'oxarticles';
         $iShopId   = 45;
 
+        $sSQL = "delete from oxarticles2shop where OXMAPSHOPID = ? and OXMAPOBJECTID = ?";
+
         /** @var oxShopMapperDbGateway|PHPUnit_Framework_MockObject_MockObject $oShopMapperDbGateway */
         $oShopMapperDbGateway = $this->getMock('oxShopMapperDbGateway', array('execute'));
-        $oShopMapperDbGateway->expects($this->once())->method('execute')
-            ->with("remove item id $iItemId of type $sItemType from shop id $iShopId");
+        $oShopMapperDbGateway->expects($this->once())->method('execute')->with($sSQL, array($iShopId, $iItemId));
 
         $oShopMapperDbGateway->removeItemFromShop($iItemId, $sItemType, $iShopId);
     }
@@ -82,7 +84,7 @@ class Unit_Core_oxShopMapperDbGatewayTest extends OxidTestCase
     /**
      * Tests execute database query.
      */
-    public function testExecute()
+    public function testExecuteNoParams()
     {
         $sSQL = 'test execute sql query';
 
@@ -94,6 +96,24 @@ class Unit_Core_oxShopMapperDbGatewayTest extends OxidTestCase
         $oShopMapperDbGateway->setDbGateway($oDb);
 
         $oShopMapperDbGateway->execute($sSQL);
+    }
+
+    /**
+     * Tests execute database query with parameters.
+     */
+    public function testExecuteWithParams()
+    {
+        $sSQL    = 'test execute sql query';
+        $aParams = array('test', 'sql', 'parameters');
+
+        /** @var oxLegacyDb|PHPUnit_Framework_MockObject_MockObject $oDb */
+        $oDb = $this->getMock('oxLegacyDb', array('execute'));
+        $oDb->expects($this->once())->method('execute')->with($sSQL, $aParams);
+
+        $oShopMapperDbGateway = new oxShopMapperDbGateway();
+        $oShopMapperDbGateway->setDbGateway($oDb);
+
+        $oShopMapperDbGateway->execute($sSQL, $aParams);
     }
 
     /**

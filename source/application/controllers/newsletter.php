@@ -203,9 +203,7 @@ class Newsletter extends oxUBase
             $oUser->getNewsSubscription()->setOptInStatus( 0 );
 
             // removing from group ..
-            if ( !$this->getConfig()->getConfigParam( 'blOrderOptInEmail' ) ) {
-                $oUser->removeFromGroup( 'oxidnewsletter' );
-            }
+            $oUser->removeFromGroup( 'oxidnewsletter' );
 
             $this->_iNewsletterStatus = 3;
         }

@@ -123,6 +123,29 @@ class Unit_Views_newsletterTest extends OxidTestCase
         $this->assertEquals(3, $iStatus );
     }
 
+    public function testRemovemeGroupsRemoved()
+    {
+        $oUser = oxNew( 'oxuser' );
+        $oUser->setId('testAddMe');
+        $oUser->oxuser__oxusername = new oxField('test@addme.com', oxField::T_RAW);
+        $oUser->oxuser__oxpasssalt = new oxField('salt', oxField::T_RAW);
+        $oUser->save();
+
+        $oTestNews = oxNew( "NewsLetter" );
+        $this->setRequestParam('uid', 'testAddMe');
+        $this->setRequestParam('confirm', md5( 'test@addme.comsalt' ));
+
+        $oTestNews->addme();
+        $oUserGroups = $oUser->getUserGroups();
+        $this->assertTrue(isset($oUserGroups['oxidnewsletter']), 'user should be subscribed for newsletter group.');
+
+        $oTestNews->removeme();
+        $oUser2 = oxNew( 'oxuser' );
+        $oUser2->load('testAddMe');
+        $oUserGroups = $oUser2->getUserGroups();
+        $this->assertFalse(isset($oUserGroups['oxidnewsletter']), 'user should be unsubscribed from newsletter group.');
+    }
+
     public function testGetNewsletterStatusAfterAddme()
     {
         $oUser = oxNew( 'oxuser' );

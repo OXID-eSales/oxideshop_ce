@@ -58,27 +58,27 @@ class oxShopMapper
     /**
      * Adds object to shop or list of shops.
      *
-     * @param oxBase    $oItem  Object to add to shop
-     * @param int|array $mShops Shop ID or list of shop IDs.
+     * @param oxBase    $oItem    Object to add to shop
+     * @param int|array $aShopIds Shop ID or list of shop IDs.
      *
      * @return bool
      */
-    public function addObjectToShops(oxBase $oItem, $mShops)
+    public function addObjectToShops(oxBase $oItem, $aShopIds)
     {
-        return $this->addItemToShops($oItem->getId(), $oItem->getCoreTableName(), $mShops);
+        return $this->addItemToShops($oItem->getId(), $oItem->getCoreTableName(), $aShopIds);
     }
 
     /**
      * Removes object from shop or list of shops.
      *
-     * @param oxBase    $oItem  Object to remove from shop
-     * @param int|array $mShops Shop ID or list of shop IDs.
+     * @param oxBase    $oItem    Object to remove from shop
+     * @param int|array $aShopIds Shop ID or list of shop IDs.
      *
      * @return bool
      */
-    public function removeObjectFromShops(oxBase $oItem, $mShops)
+    public function removeObjectFromShops(oxBase $oItem, $aShopIds)
     {
-        return $this->removeItemFromShops($oItem->getId(), $oItem->getCoreTableName(), $mShops);
+        return $this->removeItemFromShops($oItem->getId(), $oItem->getCoreTableName(), $aShopIds);
     }
 
     /**

@@ -24,22 +24,22 @@
             options: {
                 classValid                 : "oxValid",
                 classInValid               : "oxInValid",
-                errorParagraf              : "p.oxValidateError",
+                errorParagraph              : "p.oxValidateError",
                 errorMessageNotEmpty       : "js-oxError_notEmpty",
                 errorMessageNotEmail       : "js-oxError_email",
                 errorMessageShort          : "js-oxError_length",
                 errorMessageNotEqual       : "js-oxError_match",
                 errorMessageIncorrectDate  : "js-oxError_incorrectDate",
-                metodValidate              : "js-oxValidate",
-                metodValidateEmail         : "js-oxValidate_email",
-                metodValidateNotEmpty      : "js-oxValidate_notEmpty",
-                metodValidateLength        : "js-oxValidate_length",
-                metodValidateMatch         : "js-oxValidate_match",
-                metodValidateDate          : "js-oxValidate_date",
+                methodValidate              : "js-oxValidate",
+                methodValidateEmail         : "js-oxValidate_email",
+                methodValidateNotEmpty      : "js-oxValidate_notEmpty",
+                methodValidateLength        : "js-oxValidate_length",
+                methodValidateMatch         : "js-oxValidate_match",
+                methodValidateDate          : "js-oxValidate_date",
                 idPasswordLength           : "#passwordLength",
                 listItem                   : "li",
                 list                       : "ul",
-                paragraf                   : "p",
+                paragraph                   : "p",
                 span                       : "span",
                 form                       : "form",
                 visible                    : ":visible"
@@ -51,7 +51,7 @@
                     options = self.options,
                     el      = self.element;
 
-                el.delegate("."+options.metodValidate, "blur", function() {
+                el.delegate("."+options.methodValidate, "blur", function() {
 
                     console.log('aa');
 
@@ -63,7 +63,7 @@
                     setTimeout(function(){
                         if ( $( oTrigger ).is(options.visible) ) {
                             var oFieldSet = self.getFieldSet( oTrigger );
-                            if ( oFieldSet.children( '.'+options.metodValidateDate ).length >= 0  ) {
+                            if ( oFieldSet.children( '.'+options.methodValidateDate ).length >= 0  ) {
                                 var blIsValid = self.isFieldSetValid( oFieldSet, true );
                                 self.hideErrorMessage( oFieldSet );
                                 if ( blIsValid != true ) {
@@ -90,13 +90,13 @@
                 var self = this;
                 var blValidInput = true;
 
-                    if ( $( oInput ).hasClass( oOptions.metodValidateNotEmpty ) && blValidInput ) {
+                    if ( $( oInput ).hasClass( oOptions.methodValidateNotEmpty ) && blValidInput ) {
                         if (! $.trim( $( oInput ).val()) ){
                             return oOptions.errorMessageNotEmpty;
                         }
                     }
 
-                    if ( $( oInput ).hasClass( oOptions.metodValidateEmail ) && blValidInput ) {
+                    if ( $( oInput ).hasClass( oOptions.methodValidateEmail ) && blValidInput ) {
 
                         if( $( oInput ).val()  ) {
 
@@ -105,7 +105,7 @@
                             }
                         }
                     }
-                    if ( $( oInput ).hasClass( oOptions.metodValidateLength ) && blValidInput ) {
+                    if ( $( oInput ).hasClass( oOptions.methodValidateLength ) && blValidInput ) {
 
                         var iLength = self.getLength( $( oInput ).closest(oOptions.form ));
                         if( $( oInput ).val() ) {
@@ -115,13 +115,13 @@
                         }
                     }
 
-                    if ( $( oInput ).hasClass( oOptions.metodValidateMatch ) && blValidInput ) {
+                    if ( $( oInput ).hasClass( oOptions.methodValidateMatch ) && blValidInput ) {
 
                         var inputs = new Array();
 
                         var oForm = $( oInput ).closest(oOptions.form);
 
-                        $( "." + oOptions.metodValidateMatch, oForm).each( function(index) {
+                        $( "." + oOptions.methodValidateMatch, oForm).each( function(index) {
                             inputs[index] = this;
                         });
 
@@ -133,7 +133,7 @@
                         }
                     }
 
-                    if ( $( oInput ).hasClass( oOptions.metodValidateDate ) ) {
+                    if ( $( oInput ).hasClass( oOptions.methodValidateDate ) ) {
                         oDay   = $( oInput ).parent().children( '.oxDay' );
                         oMonth = $( oInput ).parent().children( '.oxMonth' );
                         oYear  = $( oInput ).parent().children( '.oxYear' );
@@ -156,7 +156,7 @@
                         }
                     }
 
-                    if ( $( oInput ).hasClass( oOptions.metodValidate ) && blCanSetDefaultState) {
+                    if ( $( oInput ).hasClass( oOptions.methodValidate ) && blCanSetDefaultState) {
 
                         if( !$( oInput ).val()){
                             self.setDefaultState( oInput );
@@ -180,7 +180,7 @@
                 var self = this;
                 var oOptions = this.options;
 
-                $( "." + oOptions.metodValidate, oForm).each(    function(index) {
+                $( "." + oOptions.methodValidate, oForm).each(    function(index) {
 
                     if ( $( this ).is(oOptions.visible) ) {
 
@@ -209,7 +209,7 @@
                 var blIsValid = true;
                 var self = this;
                 var oOptions = this.options;
-                $("." + oOptions.metodValidate + ":not(:focus)", oFieldSet).each( function(index) {
+                $("." + oOptions.methodValidate + ":not(:focus)", oFieldSet).each( function(index) {
 
                     if ( $( this ).is(oOptions.visible) ) {
                         var tmpblIsValid = self.inputValidation( this, blCanSetDefaultState );
@@ -245,8 +245,8 @@
             {
                 oObject.removeClass(this.options.classValid);
                 oObject.addClass(this.options.classInValid);
-                oObject.children(this.options.errorParagraf).children( this.options.span + "." + messageType ).show();
-                oObject.children(this.options.errorParagraf).show();
+                oObject.children(this.options.errorParagraph).children( this.options.span + "." + messageType ).show();
+                oObject.children(this.options.errorParagraph).show();
 
                 return oObject;
             },
@@ -262,8 +262,8 @@
 
                 oObject.removeClass(this.options.classInValid);
                 oObject.addClass(this.options.classValid);
-                oObject.children(this.options.errorParagraf).children( this.options.span ).hide();
-                oObject.children(this.options.errorParagraf).hide();
+                oObject.children(this.options.errorParagraph).children( this.options.span ).hide();
+                oObject.children(this.options.errorParagraph).hide();
 
                 return oObject;
             },
@@ -305,12 +305,12 @@
 
                 oObject.removeClass(this.options.classInValid);
                 oObject.removeClass(this.options.classValid);
-                oObject.children(this.options.errorParagraf).hide();
+                oObject.children(this.options.errorParagraph).hide();
 
                 oOptions = this.options;
 
-                $( this.options.span, oObject.children( this.options.errorParagraf ) ).each( function(index) {
-                    oObject.children( oOptions.errorParagraf ).children( oOptions.span ).hide();
+                $( this.options.span, oObject.children( this.options.errorParagraph ) ).each( function(index) {
+                    oObject.children( oOptions.errorParagraph ).children( oOptions.span ).hide();
                 });
 
                 return oObject;

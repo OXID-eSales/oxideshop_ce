@@ -298,9 +298,7 @@ class oxShop extends oxI18n
         foreach ($aTables as $sTable) {
             $this->makeViewQuery($sTable);
             if (in_array($sTable, $aMultilangTables)) {
-                foreach ($aLanguages as $iLang => $sLang) {
-                    $this->makeViewQuery($sTable, $iLang);
-                }
+                $this->makeViewQuery($sTable, $aLanguages);
             }
         }
     }
@@ -309,35 +307,44 @@ class oxShop extends oxI18n
      * Makes view query and adds it to query array
      *
      * @param string $sTable      table name
-     * @param int    $iLang       language id
+     * @param array  $aLanguages  language array( id => abbreviation )
      * @param bool   $blMultiShop should view be generated for multishop
      * @param int    $iShopId     shop id for multishops
      * @param string $sWhere      where statement, if needed
      */
-    public function makeViewQuery($sTable, $iLang = null, $blMultiShop = false, $iShopId = null, $sWhere = '')
+    public function makeViewQuery($sTable, $aLanguages = null, $blMultiShop = false, $iShopId = null, $sWhere = '')
     {
-        $sLang = oxRegistry::getLang()->getLanguageAbbr($iLang);
-        $sLangAddition = $iLang === null ? '' : "_{$sLang}";
+        $sDefaultLangAddition = '';
         $sShopAddition = $iShopId === null ? '' : "_{$iShopId}";
         $sStart = 'CREATE OR REPLACE SQL SECURITY INVOKER VIEW ';
-        $sViewTable = "oxv_{$sTable}{$sShopAddition}{$sLangAddition}";
 
-        $sFields = "{$sTable}.*";
         $sMultishopJoin = "";
-
         if ($blMultiShop) {
             $sMultishopJoin = " INNER JOIN " . $sTable . "2shop as t2s ON t2s.oxmapobjectid=$sTable.oxmapid ";
         }
 
-        if ($iLang === null) {
-            $sJoin = $sMultishopJoin . $this->_getViewJoinAll($sTable); //simple
-        } else {
-            $sFields = $this->_getViewSelect($sTable, $iLang); // lang
-            $sJoin = $sMultishopJoin. $this->_getViewJoinLang($sTable, $iLang); //lang
+        if (!is_array($aLanguages)) {
+            $aLanguages = array(null => null);
         }
 
-        $sQuery = "{$sStart} {$sViewTable} AS SELECT {$sFields} FROM {$sTable}{$sJoin}{$sWhere}";
-        $this->addQuery($sQuery);
+        foreach ($aLanguages as $iLang => $sLang) {
+            $sLangAddition = $sLang === null ? $sDefaultLangAddition : "_{$sLang}";
+
+            $sViewTable = "oxv_{$sTable}{$sShopAddition}{$sLangAddition}";
+
+            $sFields = "{$sTable}.*";
+
+            if ($sLang === null) {
+                $sJoin = $sMultishopJoin . $this->_getViewJoinAll($sTable); //simple
+            } else {
+                $sFields = $this->_getViewSelect($sTable, $iLang); // lang
+                $sJoin = $sMultishopJoin. $this->_getViewJoinLang($sTable, $iLang); //lang
+            }
+
+            $sQuery = "{$sStart} {$sViewTable} AS SELECT {$sFields} FROM {$sTable}{$sJoin}{$sWhere}";
+            $this->addQuery($sQuery);
+        }
+
     }
 
     /**

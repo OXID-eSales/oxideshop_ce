@@ -203,7 +203,18 @@
 
     <li class="formNote">[{ oxmultilang ident="COMPLETE_MARKED_FIELDS" }]</li>
     [{if !$noFormSubmit}]
-    <li class="formSubmit">
-        <button id="accUserSaveTop" type="submit" name="save" class="submitButton">[{ oxmultilang ident="SAVE" }]</button>
-    </li>
+        <li class="formSubmit">
+            <button id="accUserSaveTop" type="submit" name="save" class="submitButton">[{ oxmultilang ident="SAVE" }]</button>
+        </li>
     [{/if}]
+
+[{oxscript add="
+    $( document ).ready(function() {
+        oForm = $('#addressForm');
+        $( '.js-oxValidate_notEmpty', oForm).each( function(index) {
+            if (this.name != 'user_password' && this.value == '') {
+                $('#userChangeAddress').click();
+            }
+        } );
+    });
+"}]

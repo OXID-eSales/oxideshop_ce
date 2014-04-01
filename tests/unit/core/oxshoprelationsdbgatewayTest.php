@@ -48,7 +48,7 @@ class Unit_Core_oxShopRelationsDbGatewayTest extends OxidTestCase
     /**
      * Tests add item to shop.
      */
-    public function testAddItemToShop()
+    public function testAddToShop()
     {
         $iItemId   = 123;
         $sItemType = 'oxarticles';
@@ -63,13 +63,13 @@ class Unit_Core_oxShopRelationsDbGatewayTest extends OxidTestCase
         $oShopRelationsDbGateway = new oxShopRelationsDbGateway();
         $oShopRelationsDbGateway->setDbGateway($oDb);
 
-        $oShopRelationsDbGateway->addItemToShop($iItemId, $sItemType, $iShopId);
+        $oShopRelationsDbGateway->addToShop($iItemId, $sItemType, $iShopId);
     }
 
     /**
      * Tests remove item from shop.
      */
-    public function testRemoveItemFromShop()
+    public function testRemoveFromShop()
     {
         $iItemId   = 123;
         $sItemType = 'oxarticles';
@@ -84,13 +84,13 @@ class Unit_Core_oxShopRelationsDbGatewayTest extends OxidTestCase
         $oShopRelationsDbGateway = new oxShopRelationsDbGateway();
         $oShopRelationsDbGateway->setDbGateway($oDb);
 
-        $oShopRelationsDbGateway->removeItemFromShop($iItemId, $sItemType, $iShopId);
+        $oShopRelationsDbGateway->removeFromShop($iItemId, $sItemType, $iShopId);
     }
 
     /**
      * Tests remove item from shop.
      */
-    public function testInheritItemsFromShop()
+    public function testInheritFromShop()
     {
         $iParentShopId = 45;
         $iSubShopId    = 123;
@@ -108,13 +108,13 @@ class Unit_Core_oxShopRelationsDbGatewayTest extends OxidTestCase
         $oShopRelationsDbGateway = new oxShopRelationsDbGateway();
         $oShopRelationsDbGateway->setDbGateway($oDb);
 
-        $oShopRelationsDbGateway->inheritItemsFromShop($iParentShopId, $iSubShopId, $sItemType);
+        $oShopRelationsDbGateway->inheritFromShop($iParentShopId, $iSubShopId, $sItemType);
     }
 
     /**
      * Tests remove item from shop.
      */
-    public function testRemoveInheritedItemsFromShop()
+    public function testRemoveInheritedFromShop()
     {
         $iParentShopId = 45;
         $iSubShopId    = 123;
@@ -133,6 +133,6 @@ class Unit_Core_oxShopRelationsDbGatewayTest extends OxidTestCase
         $oShopRelationsDbGateway = new oxShopRelationsDbGateway();
         $oShopRelationsDbGateway->setDbGateway($oDb);
 
-        $oShopRelationsDbGateway->removeInheritedItemsFromShop($iParentShopId, $iSubShopId, $sItemType);
+        $oShopRelationsDbGateway->removeInheritedFromShop($iParentShopId, $iSubShopId, $sItemType);
     }
 }

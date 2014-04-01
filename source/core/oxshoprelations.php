@@ -64,14 +64,14 @@ class oxShopRelations
      *
      * @return bool
      */
-    public function addItemToShops($iItemId, $sItemType, $aShopIds)
+    public function addToShops($iItemId, $sItemType, $aShopIds)
     {
         if (!is_array($aShopIds)) {
             $aShopIds = array($aShopIds);
         }
 
         foreach ($aShopIds as $iShopId) {
-            $this->getDbGateway()->addItemToShop($iItemId, $sItemType, $iShopId);
+            $this->getDbGateway()->addToShop($iItemId, $sItemType, $iShopId);
         }
 
         return true;
@@ -86,14 +86,14 @@ class oxShopRelations
      *
      * @return bool
      */
-    public function removeItemFromShops($iItemId, $sItemType, $aShopIds)
+    public function removeFromShops($iItemId, $sItemType, $aShopIds)
     {
         if (!is_array($aShopIds)) {
             $aShopIds = array($aShopIds);
         }
 
         foreach ($aShopIds as $iShopId) {
-            $this->getDbGateway()->removeItemFromShop($iItemId, $sItemType, $iShopId);
+            $this->getDbGateway()->removeFromShop($iItemId, $sItemType, $iShopId);
         }
 
         return true;
@@ -108,14 +108,14 @@ class oxShopRelations
      *
      * @return bool
      */
-    public function inheritItemsFromShops($iParentShopId, $aSubShops, $sItemType)
+    public function inheritFromShops($iParentShopId, $aSubShops, $sItemType)
     {
         if (!is_array($aSubShops)) {
             $aSubShops = array($aSubShops);
         }
 
         foreach ($aSubShops as $iSubShopId) {
-            $this->getDbGateway()->inheritItemsFromShop($iParentShopId, $iSubShopId, $sItemType);
+            $this->getDbGateway()->inheritFromShop($iParentShopId, $iSubShopId, $sItemType);
         }
 
         return true;
@@ -130,14 +130,14 @@ class oxShopRelations
      *
      * @return bool
      */
-    public function removeInheritedItemsFromShops($iParentShopId, $aSubShops, $sItemType)
+    public function removeInheritedFromShops($iParentShopId, $aSubShops, $sItemType)
     {
         if (!is_array($aSubShops)) {
             $aSubShops = array($aSubShops);
         }
 
         foreach ($aSubShops as $iSubShopId) {
-            $this->getDbGateway()->removeInheritedItemsFromShop($iParentShopId, $iSubShopId, $sItemType);
+            $this->getDbGateway()->removeInheritedFromShop($iParentShopId, $iSubShopId, $sItemType);
         }
 
         return true;

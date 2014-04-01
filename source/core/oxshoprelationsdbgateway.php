@@ -63,7 +63,7 @@ class oxShopRelationsDbGateway
      *
      * @return bool
      */
-    public function addItemToShop($iItemId, $sItemType, $iShopId)
+    public function addToShop($iItemId, $sItemType, $iShopId)
     {
         $sMappingTable = $this->getMappingTable($sItemType);
 
@@ -83,7 +83,7 @@ class oxShopRelationsDbGateway
      *
      * @return bool
      */
-    public function removeItemFromShop($iItemId, $sItemType, $iShopId)
+    public function removeFromShop($iItemId, $sItemType, $iShopId)
     {
         $sMappingTable = $this->getMappingTable($sItemType);
 
@@ -103,7 +103,7 @@ class oxShopRelationsDbGateway
      *
      * @return bool
      */
-    public function inheritItemsFromShop($iParentShopId, $iSubShopId, $sItemType)
+    public function inheritFromShop($iParentShopId, $iSubShopId, $sItemType)
     {
         $sMappingTable = $this->getMappingTable($sItemType);
 
@@ -124,7 +124,7 @@ class oxShopRelationsDbGateway
      *
      * @return bool
      */
-    public function removeInheritedItemsFromShop($iParentShopId, $iSubShopId, $sItemType)
+    public function removeInheritedFromShop($iParentShopId, $iSubShopId, $sItemType)
     {
         $sMappingTable = $this->getMappingTable($sItemType);
 

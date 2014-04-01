@@ -279,6 +279,8 @@ class oxShop extends oxI18n
     }
 
     /**
+     * Creates all view queries and adds them in query array
+     *
      * @param $blMultishopInheritCategories
      * @param $aMallInherit
      *
@@ -289,26 +291,53 @@ class oxShop extends oxI18n
         $oLang = oxRegistry::getLang();
         $aLanguages = $oLang->getLanguageIds($this->getId());
 
-        // @todo move edition specific code to separate methods
         $aMultilangTables = oxRegistry::getLang()->getMultiLangTables();
         $aMultishopTables = $this->getMultiShopTables();
         $aTables = $this->getTables();
-
+        $iShopId = $this->getId();
         foreach ($aTables as $sTable) {
-            $this->addQuery(
-            'CREATE OR REPLACE SQL SECURITY INVOKER VIEW oxv_' . $sTable
-            . ' AS SELECT * FROM ' . $sTable . ' ' . $this->_getViewJoinAll($sTable)
-            );
+            $this->makeViewQuery($sTable);
             if (in_array($sTable, $aMultilangTables)) {
                 foreach ($aLanguages as $iLang => $sLang) {
-                    $this->addQuery(
-                    'CREATE OR REPLACE SQL SECURITY INVOKER VIEW oxv_' . $sTable . '_' . $sLang . ' AS SELECT ' . $this->_getViewSelect(
-                    $sTable, $iLang
-                    ) . ' FROM ' . $sTable . ' ' . $this->_getViewJoinLang($sTable, $iLang)
-                    );
+                    $this->makeViewQuery($sTable, $iLang);
                 }
             }
         }
+    }
+
+    /**
+     * Makes view query and adds it to query array
+     *
+     * @param string $sTable      table name
+     * @param int    $iLang       language id
+     * @param bool   $blMultiShop should view be generated for multishop
+     * @param int    $iShopId     shop id for multishops
+     * @param string $sWhere      where statement, if needed
+     */
+    public function makeViewQuery($sTable, $iLang = null, $blMultiShop = false, $iShopId = null, $sWhere = '')
+    {
+        $sLang = oxRegistry::getLang()->getLanguageAbbr(1);
+        $sLangAddition = is_null($iLang) ? '' : "_{$sLang}";
+        $sShopAddition = is_null($iShopId) ? '' : "_{$iShopId}";
+        $sStart = 'CREATE OR REPLACE SQL SECURITY INVOKER VIEW ';
+        $sViewTable = "oxv_{$sTable}{$sShopAddition}{$sLangAddition}";
+
+        $sFields = "{$sTable}.*";
+        $sMultishopJoin = "";
+
+        if ($blMultiShop) {
+            $sMultishopJoin = " INNER JOIN " . $sTable . "2shop as t2s ON t2s.oxmapobjectid=$sTable.oxmapid ";
+        }
+
+        if (is_null($iLang)) {
+            $sJoin = $sMultishopJoin . $this->_getViewJoinAll($sTable); //simple
+        } else {
+            $sFields = $this->_getViewSelect($sTable, $iLang); // lang
+            $sJoin = $sMultishopJoin. $this->_getViewJoinLang($sTable, $iLang); //lang
+        }
+
+        $sQuery = "{$sStart} {$sViewTable} AS SELECT {$sFields} FROM {$sTable}{$sJoin}{$sWhere}";
+        $this->addQuery($sQuery);
     }
 
     /**

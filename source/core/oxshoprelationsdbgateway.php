@@ -69,7 +69,7 @@ class oxShopRelationsDbGateway
 
         $sSQL = "insert into $sMappingTable (OXMAPSHOPID, OXMAPOBJECTID) values (?, ?)";
 
-        $blResult = (bool) $this->execute($sSQL, array($iShopId, $iItemId));
+        $blResult = (bool) $this->getDbGateway()->execute($sSQL, array($iShopId, $iItemId));
 
         return $blResult;
     }
@@ -89,22 +89,9 @@ class oxShopRelationsDbGateway
 
         $sSQL = "delete from $sMappingTable where OXMAPSHOPID = ? and OXMAPOBJECTID = ?";
 
-        $blResult = (bool) $this->execute($sSQL, array($iShopId, $iItemId));
+        $blResult = (bool) $this->getDbGateway()->execute($sSQL, array($iShopId, $iItemId));
 
         return $blResult;
-    }
-
-    /**
-     * Executes database query.
-     *
-     * @param string     $sSQL    SQL query.
-     * @param array|bool $aParams Array of parameters
-     *
-     * @return object
-     */
-    public function execute($sSQL, $aParams = false)
-    {
-        return $this->getDbGateway()->execute($sSQL, $aParams);
     }
 
     /**
@@ -123,7 +110,7 @@ class oxShopRelationsDbGateway
         $sSQL = "insert into $sMappingTable (OXMAPSHOPID, OXMAPOBJECTID) "
                 . "select ?, OXMAPOBJECTID from $sMappingTable where OXMAPSHOPID = ?";
 
-        $blResult = (bool) $this->execute($sSQL, array($iSubShopId, $iParentShopId));
+        $blResult = (bool) $this->getDbGateway()->execute($sSQL, array($iSubShopId, $iParentShopId));
 
         return $blResult;
     }
@@ -146,7 +133,7 @@ class oxShopRelationsDbGateway
                 . "where s.OXMAPSHOPID = ? "
                 . "and p.OXMAPSHOPID = ?";
 
-        $blResult = (bool) $this->execute($sSQL, array($iSubShopId, $iParentShopId));
+        $blResult = (bool) $this->getDbGateway()->execute($sSQL, array($iSubShopId, $iParentShopId));
 
         return $blResult;
     }

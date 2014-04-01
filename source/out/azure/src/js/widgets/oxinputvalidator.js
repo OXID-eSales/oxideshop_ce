@@ -53,6 +53,8 @@
 
                 el.delegate("."+options.metodValidate, "blur", function() {
 
+                    console.log('aa');
+
                     var oTrigger = this; 
                     // the element who caused the event
                     // adding a timeout to delay the callback from modifying the form
@@ -61,7 +63,7 @@
                     setTimeout(function(){
                         if ( $( oTrigger ).is(options.visible) ) {
                             var oFieldSet = self.getFieldSet( oTrigger );
-                            if ( oFieldSet.children( '.'+options.metodValidateDate ).length > 0  ) {
+                            if ( oFieldSet.children( '.'+options.metodValidateDate ).length >= 0  ) {
                                 var blIsValid = self.isFieldSetValid( oFieldSet, true );
                                 self.hideErrorMessage( oFieldSet );
                                 if ( blIsValid != true ) {
@@ -103,8 +105,6 @@
                             }
                         }
                     }
-
-
                     if ( $( oInput ).hasClass( oOptions.metodValidateLength ) && blValidInput ) {
 
                         var iLength = self.getLength( $( oInput ).closest(oOptions.form ));

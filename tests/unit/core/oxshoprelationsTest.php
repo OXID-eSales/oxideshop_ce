@@ -49,15 +49,15 @@ class Unit_Core_oxShopRelationsTest extends OxidTestCase
      */
     public function testSetGetDbGateway()
     {
-        $oShopMapper = new oxShopRelations();
+        $oShopRelations = new oxShopRelations();
 
         // assert default gateway
-        $this->isInstanceOf('oxShopRelationsDbGateway', $oShopMapper->getDbGateway());
+        $this->isInstanceOf('oxShopRelationsDbGateway', $oShopRelations->getDbGateway());
 
         $oCustomDbGateway = new stdClass();
 
-        $oShopMapper->setDbGateway($oCustomDbGateway);
-        $this->assertSame($oCustomDbGateway, $oShopMapper->getDbGateway());
+        $oShopRelations->setDbGateway($oCustomDbGateway);
+        $this->assertSame($oCustomDbGateway, $oShopRelations->getDbGateway());
     }
 
     /**
@@ -76,12 +76,12 @@ class Unit_Core_oxShopRelationsTest extends OxidTestCase
         $oItem->init($sItemType);
         $oItem->setId($iItemId);
 
-        /** @var oxShopRelations|PHPUnit_Framework_MockObject_MockObject $oShopMapper */
-        $oShopMapper = $this->getMock('oxShopRelations', array('addItemToShops'));
-        $oShopMapper->expects($this->once())->method('addItemToShops')
+        /** @var oxShopRelations|PHPUnit_Framework_MockObject_MockObject $oShopRelations */
+        $oShopRelations = $this->getMock('oxShopRelations', array('addItemToShops'));
+        $oShopRelations->expects($this->once())->method('addItemToShops')
             ->with($iItemId, $sItemType, $aShopIds)->will($this->returnValue(true));
 
-        $this->assertTrue($oShopMapper->addObjectToShops($oItem, $aShopIds));
+        $this->assertTrue($oShopRelations->addObjectToShops($oItem, $aShopIds));
     }
 
     /**
@@ -100,12 +100,12 @@ class Unit_Core_oxShopRelationsTest extends OxidTestCase
         $oItem->init($sItemType);
         $oItem->setId($iItemId);
 
-        /** @var oxShopRelations|PHPUnit_Framework_MockObject_MockObject $oShopMapper */
-        $oShopMapper = $this->getMock('oxShopRelations', array('removeItemFromShops'));
-        $oShopMapper->expects($this->once())->method('removeItemFromShops')
+        /** @var oxShopRelations|PHPUnit_Framework_MockObject_MockObject $oShopRelations */
+        $oShopRelations = $this->getMock('oxShopRelations', array('removeItemFromShops'));
+        $oShopRelations->expects($this->once())->method('removeItemFromShops')
             ->with($iItemId, $sItemType, $aShopIds)->will($this->returnValue(true));
 
-        $this->assertTrue($oShopMapper->removeObjectFromShops($oItem, $aShopIds));
+        $this->assertTrue($oShopRelations->removeObjectFromShops($oItem, $aShopIds));
     }
 
     /**
@@ -121,15 +121,15 @@ class Unit_Core_oxShopRelationsTest extends OxidTestCase
         $iItemId   = 123;
         $sItemType = 'oxarticles';
 
-        /** @var oxShopRelationsDbGateway|PHPUnit_Framework_MockObject_MockObject $oShopMapperDbGateway */
-        $oShopMapperDbGateway = $this->getMock('oxShopRelationsDbGateway', array('addItemToShop'));
-        $oShopMapperDbGateway->expects($this->exactly($iExpectsToProcess))->method('addItemToShop')
+        /** @var oxShopRelationsDbGateway|PHPUnit_Framework_MockObject_MockObject $oShopRelationsDbGateway */
+        $oShopRelationsDbGateway = $this->getMock('oxShopRelationsDbGateway', array('addItemToShop'));
+        $oShopRelationsDbGateway->expects($this->exactly($iExpectsToProcess))->method('addItemToShop')
             ->will($this->returnValue(true));
 
-        $oShopMapper = new oxShopRelations();
-        $oShopMapper->setDbGateway($oShopMapperDbGateway);
+        $oShopRelations = new oxShopRelations();
+        $oShopRelations->setDbGateway($oShopRelationsDbGateway);
 
-        $this->assertTrue($oShopMapper->addItemToShops($iItemId, $sItemType, $aShopIds));
+        $this->assertTrue($oShopRelations->addItemToShops($iItemId, $sItemType, $aShopIds));
     }
 
     /**
@@ -145,15 +145,15 @@ class Unit_Core_oxShopRelationsTest extends OxidTestCase
         $iItemId   = 123;
         $sItemType = 'oxarticles';
 
-        /** @var oxShopRelationsDbGateway|PHPUnit_Framework_MockObject_MockObject $oShopMapperDbGateway */
-        $oShopMapperDbGateway = $this->getMock('oxShopRelationsDbGateway', array('removeItemFromShop'));
-        $oShopMapperDbGateway->expects($this->exactly($iExpectsToProcess))->method('removeItemFromShop')
+        /** @var oxShopRelationsDbGateway|PHPUnit_Framework_MockObject_MockObject $oShopRelationsDbGateway */
+        $oShopRelationsDbGateway = $this->getMock('oxShopRelationsDbGateway', array('removeItemFromShop'));
+        $oShopRelationsDbGateway->expects($this->exactly($iExpectsToProcess))->method('removeItemFromShop')
             ->will($this->returnValue(true));
 
-        $oShopMapper = new oxShopRelations();
-        $oShopMapper->setDbGateway($oShopMapperDbGateway);
+        $oShopRelations = new oxShopRelations();
+        $oShopRelations->setDbGateway($oShopRelationsDbGateway);
 
-        $this->assertTrue($oShopMapper->removeItemFromShops($iItemId, $sItemType, $aShopIds));
+        $this->assertTrue($oShopRelations->removeItemFromShops($iItemId, $sItemType, $aShopIds));
     }
 
     /**
@@ -169,15 +169,15 @@ class Unit_Core_oxShopRelationsTest extends OxidTestCase
         $iParentShopId = 456;
         $sItemType     = 'oxarticles';
 
-        /** @var oxShopRelationsDbGateway|PHPUnit_Framework_MockObject_MockObject $oShopMapperDbGateway */
-        $oShopMapperDbGateway = $this->getMock('oxShopRelationsDbGateway', array('inheritItemsFromShop'));
-        $oShopMapperDbGateway->expects($this->exactly($iExpectsToProcess))->method('inheritItemsFromShop')
+        /** @var oxShopRelationsDbGateway|PHPUnit_Framework_MockObject_MockObject $oShopRelationsDbGateway */
+        $oShopRelationsDbGateway = $this->getMock('oxShopRelationsDbGateway', array('inheritItemsFromShop'));
+        $oShopRelationsDbGateway->expects($this->exactly($iExpectsToProcess))->method('inheritItemsFromShop')
             ->will($this->returnValue(true));
 
-        $oShopMapper = new oxShopRelations();
-        $oShopMapper->setDbGateway($oShopMapperDbGateway);
+        $oShopRelations = new oxShopRelations();
+        $oShopRelations->setDbGateway($oShopRelationsDbGateway);
 
-        $this->assertTrue($oShopMapper->inheritItemsFromShops($iParentShopId, $aShopIds, $sItemType));
+        $this->assertTrue($oShopRelations->inheritItemsFromShops($iParentShopId, $aShopIds, $sItemType));
     }
 
     /**
@@ -193,14 +193,14 @@ class Unit_Core_oxShopRelationsTest extends OxidTestCase
         $iParentShopId = 456;
         $sItemType     = 'oxarticles';
 
-        /** @var oxShopRelationsDbGateway|PHPUnit_Framework_MockObject_MockObject $oShopMapperDbGateway */
-        $oShopMapperDbGateway = $this->getMock('oxShopRelationsDbGateway', array('removeInheritedItemsFromShop'));
-        $oShopMapperDbGateway->expects($this->exactly($iExpectsToProcess))->method('removeInheritedItemsFromShop')
+        /** @var oxShopRelationsDbGateway|PHPUnit_Framework_MockObject_MockObject $oShopRelationsDbGateway */
+        $oShopRelationsDbGateway = $this->getMock('oxShopRelationsDbGateway', array('removeInheritedItemsFromShop'));
+        $oShopRelationsDbGateway->expects($this->exactly($iExpectsToProcess))->method('removeInheritedItemsFromShop')
             ->will($this->returnValue(true));
 
-        $oShopMapper = new oxShopRelations();
-        $oShopMapper->setDbGateway($oShopMapperDbGateway);
+        $oShopRelations = new oxShopRelations();
+        $oShopRelations->setDbGateway($oShopRelationsDbGateway);
 
-        $this->assertTrue($oShopMapper->removeInheritedItemsFromShops($iParentShopId, $aShopIds, $sItemType));
+        $this->assertTrue($oShopRelations->removeInheritedItemsFromShops($iParentShopId, $aShopIds, $sItemType));
     }
 }

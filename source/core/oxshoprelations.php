@@ -48,8 +48,8 @@ class oxShopRelations
     public function getDbGateway()
     {
         if (is_null($this->_oDbGateway)) {
-            $oShopMapperDbGateway = oxNew('oxShopRelationsDbGateway');
-            $this->setDbGateway($oShopMapperDbGateway);
+            $oShopRelationsDbGateway = oxNew('oxShopRelationsDbGateway');
+            $this->setDbGateway($oShopRelationsDbGateway);
         }
 
         return $this->_oDbGateway;

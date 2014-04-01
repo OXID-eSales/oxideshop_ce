@@ -61,54 +61,6 @@ class Unit_Core_oxShopRelationsTest extends OxidTestCase
     }
 
     /**
-     * Tests add object to shop or list of shops.
-     *
-     * @param int|array $aShopIds Shop ID or list of shop IDs.
-     *
-     * @dataProvider _dpTestListOfShops
-     */
-    public function testAddObjectToShops($aShopIds)
-    {
-        $iItemId   = 123;
-        $sItemType = 'oxarticles';
-
-        $oItem = new oxBase();
-        $oItem->init($sItemType);
-        $oItem->setId($iItemId);
-
-        /** @var oxShopRelations|PHPUnit_Framework_MockObject_MockObject $oShopRelations */
-        $oShopRelations = $this->getMock('oxShopRelations', array('addItemToShops'));
-        $oShopRelations->expects($this->once())->method('addItemToShops')
-            ->with($iItemId, $sItemType, $aShopIds)->will($this->returnValue(true));
-
-        $this->assertTrue($oShopRelations->addObjectToShops($oItem, $aShopIds));
-    }
-
-    /**
-     * Tests remove object from shop or list of shops.
-     *
-     * @param int|array $aShopIds Shop ID or list of shop IDs.
-     *
-     * @dataProvider _dpTestListOfShops
-     */
-    public function testRemoveObjectFromShops($aShopIds)
-    {
-        $iItemId   = 123;
-        $sItemType = 'oxarticles';
-
-        $oItem = new oxBase();
-        $oItem->init($sItemType);
-        $oItem->setId($iItemId);
-
-        /** @var oxShopRelations|PHPUnit_Framework_MockObject_MockObject $oShopRelations */
-        $oShopRelations = $this->getMock('oxShopRelations', array('removeItemFromShops'));
-        $oShopRelations->expects($this->once())->method('removeItemFromShops')
-            ->with($iItemId, $sItemType, $aShopIds)->will($this->returnValue(true));
-
-        $this->assertTrue($oShopRelations->removeObjectFromShops($oItem, $aShopIds));
-    }
-
-    /**
      * Tests add item to shop or list of shops.
      *
      * @param int|array $aShopIds          Shop ID or list of shop IDs.

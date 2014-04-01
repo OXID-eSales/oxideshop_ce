@@ -320,7 +320,7 @@ class oxShop extends oxI18n
 
         $sMultishopJoin = "";
         if ($blMultiShop) {
-            $sMultishopJoin = " INNER JOIN " . $sTable . "2shop as t2s ON t2s.oxmapobjectid=$sTable.oxmapid ";
+            $sMultishopJoin = " INNER JOIN {$sTable}2shop as t2s ON t2s.oxmapobjectid={$sTable}.oxmapid ";
         }
 
         if (!is_array($aLanguages)) {

@@ -65,7 +65,7 @@ class oxShopRelationsDbGateway
      */
     public function addToShop($iItemId, $sItemType, $iShopId)
     {
-        $sMappingTable = $this->getMappingTable($sItemType);
+        $sMappingTable = $this->getRelationsTable($sItemType);
 
         $sSQL = "insert into $sMappingTable (OXMAPSHOPID, OXMAPOBJECTID) values (?, ?)";
 
@@ -85,7 +85,7 @@ class oxShopRelationsDbGateway
      */
     public function removeFromShop($iItemId, $sItemType, $iShopId)
     {
-        $sMappingTable = $this->getMappingTable($sItemType);
+        $sMappingTable = $this->getRelationsTable($sItemType);
 
         $sSQL = "delete from $sMappingTable where OXMAPSHOPID = ? and OXMAPOBJECTID = ?";
 
@@ -105,7 +105,7 @@ class oxShopRelationsDbGateway
      */
     public function inheritFromShop($iParentShopId, $iSubShopId, $sItemType)
     {
-        $sMappingTable = $this->getMappingTable($sItemType);
+        $sMappingTable = $this->getRelationsTable($sItemType);
 
         $sSQL = "insert into $sMappingTable (OXMAPSHOPID, OXMAPOBJECTID) "
                 . "select ?, OXMAPOBJECTID from $sMappingTable where OXMAPSHOPID = ?";
@@ -126,7 +126,7 @@ class oxShopRelationsDbGateway
      */
     public function removeInheritedFromShop($iParentShopId, $iSubShopId, $sItemType)
     {
-        $sMappingTable = $this->getMappingTable($sItemType);
+        $sMappingTable = $this->getRelationsTable($sItemType);
 
         $sSQL = "delete s from $sMappingTable as s "
                 . "left join $sMappingTable as p on (s.OXMAPOBJECTID = p.OXMAPOBJECTID)"
@@ -139,13 +139,13 @@ class oxShopRelationsDbGateway
     }
 
     /**
-     * Gets mapping table of item type.
+     * Gets relation table of item type.
      *
      * @param string $sItemType Item type.
      *
      * @return string
      */
-    protected function getMappingTable($sItemType)
+    protected function getRelationsTable($sItemType)
     {
         return $sItemType . '2shop';
     }

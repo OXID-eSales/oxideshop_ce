@@ -67,4 +67,49 @@ class Unit_Core_oxshopTest extends OxidTestCase
 
         $this->assertFalse( $oShop->isProductiveMode() );
     }
+    /**
+     * Provides parameters and expected results for testMakeViewQuery
+     */
+    public function makeViewQueryParamProvider()
+    {
+        $sFields = 'OXID, OXTITLE';
+        $aMockedFunctionReturns = array(
+            '_getViewSelect' => $sFields,
+            '_getViewJoinAll' => '',
+            '_getViewJoinLang' => '',
+        );
+        $sMockedJoinResult = " INNER JOIN oxarticles2shop as t2s ON t2s.oxmapobjectid=oxarticles.oxmapid ";;
+
+        return array(
+            array('oxarticles', null, false, null, '', $aMockedFunctionReturns,
+                  'CREATE OR REPLACE SQL SECURITY INVOKER VIEW  oxv_oxarticles AS SELECT oxarticles.* FROM oxarticles'), // default
+            array('oxarticles', 'de', false, null, '', $aMockedFunctionReturns,
+                  'CREATE OR REPLACE SQL SECURITY INVOKER VIEW  oxv_oxarticles_de AS SELECT OXID, OXTITLE FROM oxarticles'),
+            array('oxarticles', 'de', true, 15, '', $aMockedFunctionReturns,
+                  'CREATE OR REPLACE SQL SECURITY INVOKER VIEW  oxv_oxarticles_15_de AS SELECT '.
+                  $sFields . ' FROM oxarticles' . $sMockedJoinResult),
+            array('oxarticles', 'de', true, 15, ' WHERE 1', $aMockedFunctionReturns,
+                  'CREATE OR REPLACE SQL SECURITY INVOKER VIEW  oxv_oxarticles_15_de AS SELECT '.
+                  $sFields . ' FROM oxarticles' . $sMockedJoinResult . ' WHERE 1'),
+        );
+    }
+
+    /**
+     * Check all the variations of oxShop::makeViewQuery()
+     *
+     * @dataProvider makeViewQueryParamProvider
+     */
+    public function testMakeViewQuery($sTable, $sLang, $blMultishop, $iShopId, $sWhere, $aMockedFunctionReturns, $sQuery)
+    {
+        $oShop = new oxShop();
+        /** @var oxShop $oShop */
+        $oShop = $this->getMock('oxShop', array_keys($aMockedFunctionReturns));
+        foreach ($aMockedFunctionReturns as $sFunction => $sReturnValue) {
+            $oShop->expects($this->any())->method($sFunction)->will($this->returnValue($sReturnValue));
+        }
+        $oShop->makeViewQuery($sTable, array(0 => $sLang), $blMultishop, $iShopId, $sWhere);
+        $aQueries = $oShop->getQueries();
+        $this->assertEquals(rtrim($sQuery), rtrim($aQueries[0]));
+    }
+
 }

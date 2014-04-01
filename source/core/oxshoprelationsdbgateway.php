@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-class oxShopMapperDbGateway
+class oxShopRelationsDbGateway
 {
 
     /**

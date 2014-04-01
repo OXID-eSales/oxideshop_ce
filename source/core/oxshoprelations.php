@@ -20,20 +20,20 @@
  * @version   OXID eShop CE
  */
 
-class oxShopMapper
+class oxShopRelations
 {
 
     /**
      * Database gateway.
      *
-     * @var oxShopMapperDbGateway
+     * @var oxShopRelationsDbGateway
      */
     protected $_oDbGateway = null;
 
     /**
      * Sets database gateway.
      *
-     * @param oxShopMapperDbGateway $oDb Database gateway.
+     * @param oxShopRelationsDbGateway $oDb Database gateway.
      */
     public function setDbGateway($oDb)
     {
@@ -43,12 +43,12 @@ class oxShopMapper
     /**
      * Gets database gateway.
      *
-     * @return oxShopMapperDbGateway
+     * @return oxShopRelationsDbGateway
      */
     public function getDbGateway()
     {
         if (is_null($this->_oDbGateway)) {
-            $oShopMapperDbGateway = oxNew('oxShopMapperDbGateway');
+            $oShopMapperDbGateway = oxNew('oxShopRelationsDbGateway');
             $this->setDbGateway($oShopMapperDbGateway);
         }
 

@@ -316,9 +316,9 @@ class oxShop extends oxI18n
      */
     public function makeViewQuery($sTable, $iLang = null, $blMultiShop = false, $iShopId = null, $sWhere = '')
     {
-        $sLang = oxRegistry::getLang()->getLanguageAbbr(1);
-        $sLangAddition = is_null($iLang) ? '' : "_{$sLang}";
-        $sShopAddition = is_null($iShopId) ? '' : "_{$iShopId}";
+        $sLang = oxRegistry::getLang()->getLanguageAbbr($iLang);
+        $sLangAddition = $iLang === null ? '' : "_{$sLang}";
+        $sShopAddition = $iShopId === null ? '' : "_{$iShopId}";
         $sStart = 'CREATE OR REPLACE SQL SECURITY INVOKER VIEW ';
         $sViewTable = "oxv_{$sTable}{$sShopAddition}{$sLangAddition}";
 
@@ -329,7 +329,7 @@ class oxShop extends oxI18n
             $sMultishopJoin = " INNER JOIN " . $sTable . "2shop as t2s ON t2s.oxmapobjectid=$sTable.oxmapid ";
         }
 
-        if (is_null($iLang)) {
+        if ($iLang === null) {
             $sJoin = $sMultishopJoin . $this->_getViewJoinAll($sTable); //simple
         } else {
             $sFields = $this->_getViewSelect($sTable, $iLang); // lang

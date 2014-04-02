@@ -726,27 +726,27 @@ class oxBase extends oxSuperCfg
      *
      * @return bool
      */
-    public function delete( $sOXID = null)
+    public function delete($sOxId = null)
     {
-        if ( !$sOXID ) {
-            $sOXID = $this->getId();
+        if (!$sOxId) {
+            $sOxId = $this->getId();
 
             //do not allow derived deletion
-            if ( !$this->allowDerivedDelete() ) {
+            if (!$this->allowDerivedDelete()) {
                 return false;
             }
         }
 
-        if ( !$sOXID ) {
+        if (!$sOxId) {
             return false;
         }
 
 
-        $oDB = oxDb::getDb( oxDb::FETCH_MODE_ASSOC );
-        $sDelete = "delete from $this->_sCoreTable where oxid = " . $oDB->quote( $sOXID );
-        $oDB->execute( $sDelete );
-        if ( $blDelete = ( bool ) $oDB->affected_Rows() ) {
-            $this->onChange( ACTION_DELETE, $sOXID );
+        $oDB = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+        $sDelete = "delete from $this->_sCoreTable where oxid = " . $oDB->quote($sOxId);
+        $oDB->execute($sDelete);
+        if ($blDelete = (bool) $oDB->affected_Rows()) {
+            $this->onChange(ACTION_DELETE, $sOxId);
         }
 
         return $blDelete;

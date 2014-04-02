@@ -54,13 +54,13 @@ class Unit_Core_oxShopRelationsDbGatewayTest extends OxidTestCase
         $sItemType = 'oxarticles';
         $iShopId   = 45;
 
-        $sSQL = "insert into oxarticles2shop (OXMAPSHOPID, OXMAPOBJECTID) values (?, ?)";
+        $sSql = "insert into oxarticles2shop (OXMAPSHOPID, OXMAPOBJECTID) values (?, ?)";
 
         $aSqlParams = array($iShopId, $iItemId);
 
         /** @var oxShopRelationsDbGateway|PHPUnit_Framework_MockObject_MockObject $oShopRelationsDbGateway */
         $oShopRelationsDbGateway = $this->getMock('oxShopRelationsDbGateway', array('_addSql', 'flush'));
-        $oShopRelationsDbGateway->expects($this->once())->method('_addSql')->with($sSQL, $aSqlParams);
+        $oShopRelationsDbGateway->expects($this->once())->method('_addSql')->with($sSql, $aSqlParams);
         $oShopRelationsDbGateway->expects($this->once())->method('flush');
 
         $oShopRelationsDbGateway->addToShop($iItemId, $sItemType, $iShopId);
@@ -75,13 +75,13 @@ class Unit_Core_oxShopRelationsDbGatewayTest extends OxidTestCase
         $sItemType = 'oxarticles';
         $iShopId   = 45;
 
-        $sSQL = "delete from oxarticles2shop where OXMAPSHOPID = ? and OXMAPOBJECTID = ?";
+        $sSql = "delete from oxarticles2shop where OXMAPSHOPID = ? and OXMAPOBJECTID = ?";
 
         $aSqlParams = array($iShopId, $iItemId);
 
         /** @var oxShopRelationsDbGateway|PHPUnit_Framework_MockObject_MockObject $oShopRelationsDbGateway */
         $oShopRelationsDbGateway = $this->getMock('oxShopRelationsDbGateway', array('_addSql', 'flush'));
-        $oShopRelationsDbGateway->expects($this->once())->method('_addSql')->with($sSQL, $aSqlParams);
+        $oShopRelationsDbGateway->expects($this->once())->method('_addSql')->with($sSql, $aSqlParams);
         $oShopRelationsDbGateway->expects($this->once())->method('flush');
 
         $oShopRelationsDbGateway->removeFromShop($iItemId, $sItemType, $iShopId);
@@ -96,14 +96,14 @@ class Unit_Core_oxShopRelationsDbGatewayTest extends OxidTestCase
         $iSubShopId    = 123;
         $sItemType     = 'oxarticles';
 
-        $sSQL = "insert into oxarticles2shop (OXMAPSHOPID, OXMAPOBJECTID) "
+        $sSql = "insert into oxarticles2shop (OXMAPSHOPID, OXMAPOBJECTID) "
                 . "select ?, OXMAPOBJECTID from oxarticles2shop where OXMAPSHOPID = ?";
 
         $aSqlParams = array($iSubShopId, $iParentShopId);
 
         /** @var oxShopRelationsDbGateway|PHPUnit_Framework_MockObject_MockObject $oShopRelationsDbGateway */
         $oShopRelationsDbGateway = $this->getMock('oxShopRelationsDbGateway', array('_addSql', 'flush'));
-        $oShopRelationsDbGateway->expects($this->once())->method('_addSql')->with($sSQL, $aSqlParams);
+        $oShopRelationsDbGateway->expects($this->once())->method('_addSql')->with($sSql, $aSqlParams);
         $oShopRelationsDbGateway->expects($this->once())->method('flush');
 
         $oShopRelationsDbGateway->inheritFromShop($iParentShopId, $iSubShopId, $sItemType);
@@ -118,7 +118,7 @@ class Unit_Core_oxShopRelationsDbGatewayTest extends OxidTestCase
         $iSubShopId    = 123;
         $sItemType     = 'oxarticles';
 
-        $sSQL = "delete s from oxarticles2shop as s "
+        $sSql = "delete s from oxarticles2shop as s "
                 . "left join oxarticles2shop as p on (s.OXMAPOBJECTID = p.OXMAPOBJECTID)"
                 . "where s.OXMAPSHOPID = ? and p.OXMAPSHOPID = ?";
 
@@ -126,7 +126,7 @@ class Unit_Core_oxShopRelationsDbGatewayTest extends OxidTestCase
 
         /** @var oxShopRelationsDbGateway|PHPUnit_Framework_MockObject_MockObject $oShopRelationsDbGateway */
         $oShopRelationsDbGateway = $this->getMock('oxShopRelationsDbGateway', array('_addSql', 'flush'));
-        $oShopRelationsDbGateway->expects($this->once())->method('_addSql')->with($sSQL, $aSqlParams);
+        $oShopRelationsDbGateway->expects($this->once())->method('_addSql')->with($sSql, $aSqlParams);
         $oShopRelationsDbGateway->expects($this->once())->method('flush');
 
         $oShopRelationsDbGateway->removeInheritedFromShop($iParentShopId, $iSubShopId, $sItemType);

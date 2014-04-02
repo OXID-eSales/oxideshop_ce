@@ -96,9 +96,9 @@ class oxShopRelationsDbGateway
     {
         $sMappingTable = $this->getRelationsTable($sItemType);
 
-        $sSQL = "insert into $sMappingTable (OXMAPSHOPID, OXMAPOBJECTID) values (?, ?)";
+        $sSql = "insert into $sMappingTable (OXMAPSHOPID, OXMAPOBJECTID) values (?, ?)";
 
-        $this->_addSql($sSQL, array($iShopId, $iItemId));
+        $this->_addSql($sSql, array($iShopId, $iItemId));
 
         $this->flush();
     }
@@ -114,9 +114,9 @@ class oxShopRelationsDbGateway
     {
         $sMappingTable = $this->getRelationsTable($sItemType);
 
-        $sSQL = "delete from $sMappingTable where OXMAPSHOPID = ? and OXMAPOBJECTID = ?";
+        $sSql = "delete from $sMappingTable where OXMAPSHOPID = ? and OXMAPOBJECTID = ?";
 
-        $this->_addSql($sSQL, array($iShopId, $iItemId));
+        $this->_addSql($sSql, array($iShopId, $iItemId));
 
         $this->flush();
     }
@@ -132,10 +132,10 @@ class oxShopRelationsDbGateway
     {
         $sMappingTable = $this->getRelationsTable($sItemType);
 
-        $sSQL = "insert into $sMappingTable (OXMAPSHOPID, OXMAPOBJECTID) "
+        $sSql = "insert into $sMappingTable (OXMAPSHOPID, OXMAPOBJECTID) "
                 . "select ?, OXMAPOBJECTID from $sMappingTable where OXMAPSHOPID = ?";
 
-        $this->_addSql($sSQL, array($iSubShopId, $iParentShopId));
+        $this->_addSql($sSql, array($iSubShopId, $iParentShopId));
 
         $this->flush();
     }
@@ -151,12 +151,12 @@ class oxShopRelationsDbGateway
     {
         $sMappingTable = $this->getRelationsTable($sItemType);
 
-        $sSQL = "delete s from $sMappingTable as s "
+        $sSql = "delete s from $sMappingTable as s "
                 . "left join $sMappingTable as p on (s.OXMAPOBJECTID = p.OXMAPOBJECTID)"
                 . "where s.OXMAPSHOPID = ? "
                 . "and p.OXMAPSHOPID = ?";
 
-        $this->_addSql($sSQL, array($iSubShopId, $iParentShopId));
+        $this->_addSql($sSql, array($iSubShopId, $iParentShopId));
 
         $this->flush();
     }

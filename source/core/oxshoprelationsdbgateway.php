@@ -31,6 +31,37 @@ class oxShopRelationsDbGateway
     protected $_oDb = null;
 
     /**
+     * SQL query list with parameters.
+     *
+     * @var array
+     */
+    protected $_aSqls = array();
+
+    /**
+     * Adds SQL query to list.
+     *
+     * @param string $sSql    SQL query.
+     * @param array  $aParams SQL query parameters.
+     */
+    protected function _addSql($sSql, $aParams = array())
+    {
+        $this->_aSqls[] = array(
+            'sql'    => $sSql,
+            'params' => $aParams
+        );
+    }
+
+    /**
+     * Gets SQL query list.
+     *
+     * @return array
+     */
+    protected function _getSqlList()
+    {
+        return $this->_aSqls;
+    }
+
+    /**
      * Sets database class object.
      *
      * @param oxLegacyDb $oDb Database gateway.
@@ -60,8 +91,6 @@ class oxShopRelationsDbGateway
      * @param int    $iItemId   Item ID
      * @param string $sItemType Item type
      * @param int    $iShopId   Shop ID
-     *
-     * @return bool
      */
     public function addToShop($iItemId, $sItemType, $iShopId)
     {
@@ -69,9 +98,9 @@ class oxShopRelationsDbGateway
 
         $sSQL = "insert into $sMappingTable (OXMAPSHOPID, OXMAPOBJECTID) values (?, ?)";
 
-        $blResult = (bool) $this->getDbGateway()->execute($sSQL, array($iShopId, $iItemId));
+        $this->_addSql($sSQL, array($iShopId, $iItemId));
 
-        return $blResult;
+        $this->flush();
     }
 
     /**
@@ -80,8 +109,6 @@ class oxShopRelationsDbGateway
      * @param int    $iItemId   Item ID
      * @param string $sItemType Item type
      * @param int    $iShopId   Shop ID
-     *
-     * @return bool
      */
     public function removeFromShop($iItemId, $sItemType, $iShopId)
     {
@@ -89,9 +116,9 @@ class oxShopRelationsDbGateway
 
         $sSQL = "delete from $sMappingTable where OXMAPSHOPID = ? and OXMAPOBJECTID = ?";
 
-        $blResult = (bool) $this->getDbGateway()->execute($sSQL, array($iShopId, $iItemId));
+        $this->_addSql($sSQL, array($iShopId, $iItemId));
 
-        return $blResult;
+        $this->flush();
     }
 
     /**
@@ -100,8 +127,6 @@ class oxShopRelationsDbGateway
      * @param int    $iParentShopId Parent shop ID
      * @param int    $iSubShopId    Sub shop ID
      * @param string $sItemType     Item type
-     *
-     * @return bool
      */
     public function inheritFromShop($iParentShopId, $iSubShopId, $sItemType)
     {
@@ -110,9 +135,9 @@ class oxShopRelationsDbGateway
         $sSQL = "insert into $sMappingTable (OXMAPSHOPID, OXMAPOBJECTID) "
                 . "select ?, OXMAPOBJECTID from $sMappingTable where OXMAPSHOPID = ?";
 
-        $blResult = (bool) $this->getDbGateway()->execute($sSQL, array($iSubShopId, $iParentShopId));
+        $this->_addSql($sSQL, array($iSubShopId, $iParentShopId));
 
-        return $blResult;
+        $this->flush();
     }
 
     /**
@@ -121,8 +146,6 @@ class oxShopRelationsDbGateway
      * @param int    $iParentShopId Parent shop ID
      * @param int    $iSubShopId    Sub shop ID
      * @param string $sItemType     Item type
-     *
-     * @return bool
      */
     public function removeInheritedFromShop($iParentShopId, $iSubShopId, $sItemType)
     {
@@ -133,9 +156,19 @@ class oxShopRelationsDbGateway
                 . "where s.OXMAPSHOPID = ? "
                 . "and p.OXMAPSHOPID = ?";
 
-        $blResult = (bool) $this->getDbGateway()->execute($sSQL, array($iSubShopId, $iParentShopId));
+        $this->_addSql($sSQL, array($iSubShopId, $iParentShopId));
 
-        return $blResult;
+        $this->flush();
+    }
+
+    /**
+     * Executes all SQL queries from the list.
+     */
+    public function flush()
+    {
+        foreach ($this->_getSqlList() as $aSql) {
+            $this->getDbGateway()->execute($aSql['sql'], $aSql['params']);
+        }
     }
 
     /**

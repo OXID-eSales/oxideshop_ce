@@ -34,7 +34,7 @@ class Unit_Core_oxShopRelationsTest extends OxidTestCase
      *
      * @return array
      */
-    public function _dpTestListOfShops()
+    public function dpTestListOfShops()
     {
         return array(
             array(45, 1),
@@ -50,7 +50,7 @@ class Unit_Core_oxShopRelationsTest extends OxidTestCase
      * @param int|array $aShopIds          Shop ID or list of shop IDs.
      * @param int       $iExpectsToProcess Number of shops expected to be processed.
      *
-     * @dataProvider _dpTestListOfShops
+     * @dataProvider dpTestListOfShops
      */
     public function testConstructWithParamShopIdsProvided($aShopIds, $iExpectsToProcess)
     {
@@ -82,7 +82,7 @@ class Unit_Core_oxShopRelationsTest extends OxidTestCase
      * @param int|array $aShopIds          Shop ID or list of shop IDs.
      * @param int       $iExpectsToProcess Number of shops expected to be processed.
      *
-     * @dataProvider _dpTestListOfShops
+     * @dataProvider dpTestListOfShops
      */
     public function testSetGetShopIds($aShopIds, $iExpectsToProcess)
     {
@@ -100,7 +100,7 @@ class Unit_Core_oxShopRelationsTest extends OxidTestCase
      * @param int|array $aShopIds          Shop ID or list of shop IDs.
      * @param int       $iExpectsToProcess Number of shops expected to be processed.
      *
-     * @dataProvider _dpTestListOfShops
+     * @dataProvider dpTestListOfShops
      */
     public function testAddToShop($aShopIds, $iExpectsToProcess)
     {
@@ -124,7 +124,7 @@ class Unit_Core_oxShopRelationsTest extends OxidTestCase
      * @param int|array $aShopIds          Shop ID or list of shop IDs.
      * @param int       $iExpectsToProcess Number of shops expected to be processed.
      *
-     * @dataProvider _dpTestListOfShops
+     * @dataProvider dpTestListOfShops
      */
     public function testRemoveFromShop($aShopIds, $iExpectsToProcess)
     {
@@ -148,7 +148,7 @@ class Unit_Core_oxShopRelationsTest extends OxidTestCase
      * @param int|array $aShopIds          Shop ID or list of shop IDs.
      * @param int       $iExpectsToProcess Number of shops expected to be processed.
      *
-     * @dataProvider _dpTestListOfShops
+     * @dataProvider dpTestListOfShops
      */
     public function testInheritFromShop($aShopIds, $iExpectsToProcess)
     {
@@ -172,7 +172,7 @@ class Unit_Core_oxShopRelationsTest extends OxidTestCase
      * @param int|array $aShopIds          Shop ID or list of shop IDs.
      * @param int       $iExpectsToProcess Number of shops expected to be processed.
      *
-     * @dataProvider _dpTestListOfShops
+     * @dataProvider dpTestListOfShops
      */
     public function testRemoveInheritedFromShop($aShopIds, $iExpectsToProcess)
     {

@@ -89,19 +89,14 @@ class oxShopRelations
     /**
      * Adds item to shop or list of shops.
      *
-     * @param int       $iItemId   Item ID
-     * @param string    $sItemType Item type
-     * @param int|array $aShopIds  Shop ID or list of shop IDs.
+     * @param int    $iItemId   Item ID
+     * @param string $sItemType Item type
      *
      * @return bool
      */
-    public function addToShop($iItemId, $sItemType, $aShopIds)
+    public function addToShop($iItemId, $sItemType)
     {
-        if (!is_array($aShopIds)) {
-            $aShopIds = array($aShopIds);
-        }
-
-        foreach ($aShopIds as $iShopId) {
+        foreach ($this->getShopIds() as $iShopId) {
             $this->getDbGateway()->addToShop($iItemId, $sItemType, $iShopId);
         }
 
@@ -111,19 +106,14 @@ class oxShopRelations
     /**
      * Removes item from shop or list of shops.
      *
-     * @param int       $iItemId   Item ID
-     * @param string    $sItemType Item type
-     * @param int|array $aShopIds  Shop ID or list of shop IDs.
+     * @param int    $iItemId   Item ID
+     * @param string $sItemType Item type
      *
      * @return bool
      */
-    public function removeFromShop($iItemId, $sItemType, $aShopIds)
+    public function removeFromShop($iItemId, $sItemType)
     {
-        if (!is_array($aShopIds)) {
-            $aShopIds = array($aShopIds);
-        }
-
-        foreach ($aShopIds as $iShopId) {
+        foreach ($this->getShopIds() as $iShopId) {
             $this->getDbGateway()->removeFromShop($iItemId, $sItemType, $iShopId);
         }
 
@@ -134,18 +124,13 @@ class oxShopRelations
      * Inherits items by type to sub shop(-s) from parent shop.
      *
      * @param int    $iParentShopId Parent shop ID
-     * @param int    $aSubShops     Sub shop ID or list of IDs to inherit into
      * @param string $sItemType     Item type
      *
      * @return bool
      */
-    public function inheritFromShop($iParentShopId, $aSubShops, $sItemType)
+    public function inheritFromShop($iParentShopId, $sItemType)
     {
-        if (!is_array($aSubShops)) {
-            $aSubShops = array($aSubShops);
-        }
-
-        foreach ($aSubShops as $iSubShopId) {
+        foreach ($this->getShopIds() as $iSubShopId) {
             $this->getDbGateway()->inheritFromShop($iParentShopId, $iSubShopId, $sItemType);
         }
 
@@ -156,18 +141,13 @@ class oxShopRelations
      * Removes items by type from sub shop(-s) that were inherited from parent shop.
      *
      * @param int    $iParentShopId Parent shop ID
-     * @param int    $aSubShops     Sub shop ID or list of IDs to remove inheritance
      * @param string $sItemType     Item type
      *
      * @return bool
      */
-    public function removeInheritedFromShop($iParentShopId, $aSubShops, $sItemType)
+    public function removeInheritedFromShop($iParentShopId, $sItemType)
     {
-        if (!is_array($aSubShops)) {
-            $aSubShops = array($aSubShops);
-        }
-
-        foreach ($aSubShops as $iSubShopId) {
+        foreach ($this->getShopIds() as $iSubShopId) {
             $this->getDbGateway()->removeInheritedFromShop($iParentShopId, $iSubShopId, $sItemType);
         }
 

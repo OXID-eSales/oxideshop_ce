@@ -45,7 +45,7 @@ class Unit_Core_oxShopRelationsTest extends OxidTestCase
     }
 
     /**
-     * Test set/get database gateway.
+     * Tests set/get database gateway.
      */
     public function testSetGetDbGateway()
     {
@@ -58,6 +58,24 @@ class Unit_Core_oxShopRelationsTest extends OxidTestCase
 
         $oShopRelations->setDbGateway($oCustomDbGateway);
         $this->assertSame($oCustomDbGateway, $oShopRelations->getDbGateway());
+    }
+
+    /**
+     * Tests set/get shop ID or list of shop IDs
+     *
+     * @param int|array $aShopIds          Shop ID or list of shop IDs.
+     * @param int       $iExpectsToProcess Number of shops expected to be processed.
+     *
+     * @dataProvider _dpTestListOfShops
+     */
+    public function testSetGetShopIds($aShopIds, $iExpectsToProcess)
+    {
+        $oShopRelations = new oxShopRelations();
+
+        $oShopRelations->setShopIds($aShopIds);
+
+        $this->assertTrue(is_array($oShopRelations->getShopIds()));
+        $this->assertEquals($iExpectsToProcess, count($oShopRelations->getShopIds()));
     }
 
     /**

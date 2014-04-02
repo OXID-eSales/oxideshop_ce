@@ -31,6 +31,13 @@ class oxShopRelations
     protected $_oDbGateway = null;
 
     /**
+     * List of shop IDs
+     *
+     * @var array
+     */
+    protected $_aShopIds = array();
+
+    /**
      * Sets database gateway.
      *
      * @param oxShopRelationsDbGateway $oDb Database gateway.
@@ -53,6 +60,30 @@ class oxShopRelations
         }
 
         return $this->_oDbGateway;
+    }
+
+    /**
+     * Sets shop ID or list of shop IDs.
+     *
+     * @param int|array $aShopIds Shop ID or list of shop IDs.
+     */
+    public function setShopIds($aShopIds)
+    {
+        if (!is_array($aShopIds)) {
+            $aShopIds = array($aShopIds);
+        }
+
+        $this->_aShopIds = $aShopIds;
+    }
+
+    /**
+     * Gets shop ID or list of shop IDs.
+     *
+     * @return array
+     */
+    public function getShopIds()
+    {
+        return $this->_aShopIds;
     }
 
     /**

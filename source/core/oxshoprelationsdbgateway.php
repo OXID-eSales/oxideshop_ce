@@ -62,6 +62,18 @@ class oxShopRelationsDbGateway
     }
 
     /**
+     * Gets relation table of item type.
+     *
+     * @param string $sItemType Item type.
+     *
+     * @return string
+     */
+    protected function getRelationsTable($sItemType)
+    {
+        return $sItemType . '2shop';
+    }
+
+    /**
      * Sets database class object.
      *
      * @param oxLegacyDb $oDb Database gateway.
@@ -169,17 +181,5 @@ class oxShopRelationsDbGateway
         foreach ($this->_getSqlList() as $aSql) {
             $this->getDbGateway()->execute($aSql['sql'], $aSql['params']);
         }
-    }
-
-    /**
-     * Gets relation table of item type.
-     *
-     * @param string $sItemType Item type.
-     *
-     * @return string
-     */
-    protected function getRelationsTable($sItemType)
-    {
-        return $sItemType . '2shop';
     }
 }

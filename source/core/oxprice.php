@@ -501,32 +501,4 @@ class oxPrice
             $this->_flushDiscounts();
         }
     }
-
-    /**
-     * Rounds internal price with given cents precision.
-     *
-     * @param int $iPrecision Round precision in cents from 2 to 100.
-     */
-    public function roundCents( $iPrecision )
-    {
-        if ( is_int( $iPrecision ) and ( $iPrecision > 1 ) and ( $iPrecision <= 100 ) ) {
-            $dPrice = $this->getPrice();
-
-            // Split full and cent parts
-            $iFullPart = floor( $dPrice );
-            $dCentPart = $dPrice - $iFullPart;
-
-            // Round only cent part with given precision
-            // Result is like given precision is smallest available coin
-            $dRoundedCentPart = round( ( $dCentPart / $iPrecision ), 2 ) * $iPrecision;
-
-            // If rounded part is more that 1 full unit, make it equal exactly one
-            if ( $dRoundedCentPart > 1.0 ) {
-                $dRoundedCentPart = 1.0;
-            }
-
-            // Set price as sum of initial full part and rounded part
-            $this->setPrice( $iFullPart + $dRoundedCentPart );
-        }
-    }
 }

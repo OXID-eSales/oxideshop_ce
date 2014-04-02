@@ -45,11 +45,27 @@ class Unit_Core_oxShopRelationsTest extends OxidTestCase
     }
 
     /**
+     * Tests construct method with shop IDs parameter provided.
+     *
+     * @param int|array $aShopIds          Shop ID or list of shop IDs.
+     * @param int       $iExpectsToProcess Number of shops expected to be processed.
+     *
+     * @dataProvider _dpTestListOfShops
+     */
+    public function testConstructWithParamShopIdsProvided($aShopIds, $iExpectsToProcess)
+    {
+        $oShopRelations = new oxShopRelations($aShopIds);
+
+        $this->assertTrue(is_array($oShopRelations->getShopIds()));
+        $this->assertEquals($iExpectsToProcess, count($oShopRelations->getShopIds()));
+    }
+
+    /**
      * Tests set/get database gateway.
      */
     public function testSetGetDbGateway()
     {
-        $oShopRelations = new oxShopRelations();
+        $oShopRelations = new oxShopRelations(null);
 
         // assert default gateway
         $this->isInstanceOf('oxShopRelationsDbGateway', $oShopRelations->getDbGateway());
@@ -70,7 +86,7 @@ class Unit_Core_oxShopRelationsTest extends OxidTestCase
      */
     public function testSetGetShopIds($aShopIds, $iExpectsToProcess)
     {
-        $oShopRelations = new oxShopRelations();
+        $oShopRelations = new oxShopRelations(null);
 
         $oShopRelations->setShopIds($aShopIds);
 
@@ -96,8 +112,7 @@ class Unit_Core_oxShopRelationsTest extends OxidTestCase
         $oShopRelationsDbGateway->expects($this->exactly($iExpectsToProcess))->method('addToShop')
             ->will($this->returnValue(true));
 
-        $oShopRelations = new oxShopRelations();
-        $oShopRelations->setShopIds($aShopIds);
+        $oShopRelations = new oxShopRelations($aShopIds);
         $oShopRelations->setDbGateway($oShopRelationsDbGateway);
 
         $this->assertTrue($oShopRelations->addToShop($iItemId, $sItemType));
@@ -121,8 +136,7 @@ class Unit_Core_oxShopRelationsTest extends OxidTestCase
         $oShopRelationsDbGateway->expects($this->exactly($iExpectsToProcess))->method('removeFromShop')
             ->will($this->returnValue(true));
 
-        $oShopRelations = new oxShopRelations();
-        $oShopRelations->setShopIds($aShopIds);
+        $oShopRelations = new oxShopRelations($aShopIds);
         $oShopRelations->setDbGateway($oShopRelationsDbGateway);
 
         $this->assertTrue($oShopRelations->removeFromShop($iItemId, $sItemType));
@@ -146,8 +160,7 @@ class Unit_Core_oxShopRelationsTest extends OxidTestCase
         $oShopRelationsDbGateway->expects($this->exactly($iExpectsToProcess))->method('inheritFromShop')
             ->will($this->returnValue(true));
 
-        $oShopRelations = new oxShopRelations();
-        $oShopRelations->setShopIds($aShopIds);
+        $oShopRelations = new oxShopRelations($aShopIds);
         $oShopRelations->setDbGateway($oShopRelationsDbGateway);
 
         $this->assertTrue($oShopRelations->inheritFromShop($iParentShopId, $sItemType));
@@ -171,8 +184,7 @@ class Unit_Core_oxShopRelationsTest extends OxidTestCase
         $oShopRelationsDbGateway->expects($this->exactly($iExpectsToProcess))->method('removeInheritedFromShop')
             ->will($this->returnValue(true));
 
-        $oShopRelations = new oxShopRelations();
-        $oShopRelations->setShopIds($aShopIds);
+        $oShopRelations = new oxShopRelations($aShopIds);
         $oShopRelations->setDbGateway($oShopRelationsDbGateway);
 
         $this->assertTrue($oShopRelations->removeInheritedFromShop($iParentShopId, $sItemType));

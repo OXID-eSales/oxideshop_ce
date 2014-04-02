@@ -38,6 +38,16 @@ class oxShopRelations
     protected $_aShopIds = array();
 
     /**
+     * Sets shop IDs on initialisation.
+     *
+     * @param int|array $aShopIds Shop ID or list of shop IDs.
+     */
+    public function __construct($aShopIds)
+    {
+        $this->setShopIds($aShopIds);
+    }
+
+    /**
      * Sets database gateway.
      *
      * @param oxShopRelationsDbGateway $oDb Database gateway.

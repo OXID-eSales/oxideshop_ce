@@ -115,7 +115,7 @@ class Unit_Core_oxShopRelationsTest extends OxidTestCase
         $oShopRelations = new oxShopRelations($aShopIds);
         $oShopRelations->setDbGateway($oShopRelationsDbGateway);
 
-        $this->assertTrue($oShopRelations->addToShop($iItemId, $sItemType));
+        $oShopRelations->addToShop($iItemId, $sItemType);
     }
 
     /**
@@ -139,7 +139,7 @@ class Unit_Core_oxShopRelationsTest extends OxidTestCase
         $oShopRelations = new oxShopRelations($aShopIds);
         $oShopRelations->setDbGateway($oShopRelationsDbGateway);
 
-        $this->assertTrue($oShopRelations->removeFromShop($iItemId, $sItemType));
+        $oShopRelations->removeFromShop($iItemId, $sItemType);
     }
 
     /**
@@ -163,7 +163,7 @@ class Unit_Core_oxShopRelationsTest extends OxidTestCase
         $oShopRelations = new oxShopRelations($aShopIds);
         $oShopRelations->setDbGateway($oShopRelationsDbGateway);
 
-        $this->assertTrue($oShopRelations->inheritFromShop($iParentShopId, $sItemType));
+        $oShopRelations->inheritFromShop($iParentShopId, $sItemType);
     }
 
     /**
@@ -187,6 +187,6 @@ class Unit_Core_oxShopRelationsTest extends OxidTestCase
         $oShopRelations = new oxShopRelations($aShopIds);
         $oShopRelations->setDbGateway($oShopRelationsDbGateway);
 
-        $this->assertTrue($oShopRelations->removeInheritedFromShop($iParentShopId, $sItemType));
+        $oShopRelations->removeInheritedFromShop($iParentShopId, $sItemType);
     }
 }

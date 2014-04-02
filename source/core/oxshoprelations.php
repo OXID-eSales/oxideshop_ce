@@ -101,16 +101,12 @@ class oxShopRelations
      *
      * @param int    $iItemId   Item ID
      * @param string $sItemType Item type
-     *
-     * @return bool
      */
     public function addToShop($iItemId, $sItemType)
     {
         foreach ($this->getShopIds() as $iShopId) {
             $this->getDbGateway()->addToShop($iItemId, $sItemType, $iShopId);
         }
-
-        return true;
     }
 
     /**
@@ -118,16 +114,12 @@ class oxShopRelations
      *
      * @param int    $iItemId   Item ID
      * @param string $sItemType Item type
-     *
-     * @return bool
      */
     public function removeFromShop($iItemId, $sItemType)
     {
         foreach ($this->getShopIds() as $iShopId) {
             $this->getDbGateway()->removeFromShop($iItemId, $sItemType, $iShopId);
         }
-
-        return true;
     }
 
     /**
@@ -135,16 +127,12 @@ class oxShopRelations
      *
      * @param int    $iParentShopId Parent shop ID
      * @param string $sItemType     Item type
-     *
-     * @return bool
      */
     public function inheritFromShop($iParentShopId, $sItemType)
     {
         foreach ($this->getShopIds() as $iSubShopId) {
             $this->getDbGateway()->inheritFromShop($iParentShopId, $iSubShopId, $sItemType);
         }
-
-        return true;
     }
 
     /**
@@ -152,15 +140,11 @@ class oxShopRelations
      *
      * @param int    $iParentShopId Parent shop ID
      * @param string $sItemType     Item type
-     *
-     * @return bool
      */
     public function removeInheritedFromShop($iParentShopId, $sItemType)
     {
         foreach ($this->getShopIds() as $iSubShopId) {
             $this->getDbGateway()->removeInheritedFromShop($iParentShopId, $iSubShopId, $sItemType);
         }
-
-        return true;
     }
 }

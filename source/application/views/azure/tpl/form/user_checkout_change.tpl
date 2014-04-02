@@ -26,7 +26,6 @@
                             <button id="userChangeAddress" class="submitButton largeButton" name="changeBillAddress" type="submit">[{oxmultilang ident="CHANGE" }]</button>
                         </h3>
                         [{oxscript add="$('#userChangeAddress').click( function() { $('#addressForm').show();$('#addressText').hide();$('#userChangeAddress').hide();return false;});"}]
-                        [{oxscript add="$('#userChangeAddress').click( function() { $('#addressForm').show();$('#addressText').hide();$('#userChangeAddress').hide();return false;});"}]
                         [{if $aErrors}]
                             [{oxscript add="$(document).ready(function(){ $('#userChangeAddress').trigger('click');});"}]
                         [{/if}]

@@ -137,6 +137,33 @@ function changeFnc( fncName )
                 [{ oxinputhelp ident="HELP_VOUCHERSERIE_MAIN_CALCULATEONCE" }]
                 </td>
             </tr>
+            <tr>
+                <td class="edittext">[{oxmultilang ident="VOUCHERSERIE_MAIN_APPLYONBRUTTO"}]</td>
+                <td class="edittext">
+                    <input type="hidden" name="editval[oxvoucherseries__oxapplyonbrutto]" value="0" [{$readonly}]/>
+                    <input type="checkbox" name="editval[oxvoucherseries__oxapplyonbrutto]" value="1"
+                           [{if $edit->oxvoucherseries__oxapplyonbrutto->value}]checked[{/if}] [{$readonly}]/>
+                    [{oxinputhelp ident="HELP_VOUCHERSERIE_MAIN_APPLYONBRUTTO"}]
+                </td>
+            </tr>
+            <tr>
+                <td class="edittext">[{oxmultilang ident="VOUCHERSERIE_MAIN_USEBASKETPRICE"}]</td>
+                <td class="edittext">
+                    <input type="hidden" name="editval[oxvoucherseries__oxusebasketprice]" value="0" [{$readonly}]/>
+                    <input type="checkbox" name="editval[oxvoucherseries__oxusebasketprice]" value="1"
+                           [{if $edit->oxvoucherseries__oxusebasketprice->value}]checked[{/if}] [{$readonly}]/>
+                    [{oxinputhelp ident="HELP_VOUCHERSERIE_MAIN_USEBASKETPRICE"}]
+                </td>
+            </tr>
+            <tr>
+                <td class="edittext">[{oxmultilang ident="VOUCHERSERIE_MAIN_DONTREDUCEPRICE"}]</td>
+                <td class="edittext">
+                    <input type="hidden" name="editval[oxvoucherseries__oxdontreduceprice]" value="0" [{$readonly}]/>
+                    <input type="checkbox" name="editval[oxvoucherseries__oxdontreduceprice]" value="1"
+                           [{if $edit->oxvoucherseries__oxdontreduceprice->value}]checked[{/if}] [{$readonly}]/>
+                    [{oxinputhelp ident="HELP_VOUCHERSERIE_MAIN_DONTREDUCEPRICE"}]
+                </td>
+            </tr>
         [{/block}]
         <tr>
             <td class="edittext">

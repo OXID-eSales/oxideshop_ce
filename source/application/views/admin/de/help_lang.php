@@ -576,6 +576,12 @@ $aLang =  array(
 
 'HELP_VOUCHERSERIE_MAIN_CALCULATEONCE'        => 'Wenn sie produkt- oder kategoriebezogene Gutscheine benutzen, deaktivieren sie diese Option, damit der Gutschein für jedes Produkt einer Warenkorbposition berechnet wird. Aktivieren sie diese Option, wenn der Gutschein auf die gesamte Warenkorbposition angewendet werden soll.',
 
+'HELP_VOUCHERSERIE_MAIN_APPLYONBRUTTO'        => 'Wenn Sie diese Einstellung aktivieren, wird der Rabatt immer der gleiche Wert wie der Gutschein sein, sonst wird der Rabatt auf die Nettomenge berechnet (früher als MwSt.-Berechnung).',
+
+'HELP_VOUCHERSERIE_MAIN_USEBASKETPRICE'       => 'Wenn Sie diese Einstellung aktivieren, wird der Rabatt auf den Artikelpreis im Warenkorb berechnet (der Preis kann unterschiedlich als Artikel Basispreis sein), sonst der Gutschein für jedes Artikel Basispreis berechnet wird.',
+
+'HELP_VOUCHERSERIE_MAIN_DONTREDUCEPRICE'      => 'Falls der Benutzer mehrere Gutscheine in einen Warenkorb hat: Wenn Sie diese Einstellung aktivieren, nächste Gutschein wird den selben Warenkorbpreis verwenden, um der Rabatt zu berechnen.  Wenn nicht, nächste Gutschein wird verkleinerten Warenkorbpreis verwenden. z.B., wenn nicht aktiviert - 10% und noch 10% Gutscheine werden als 19% Gutschein behandelt; wenn aktiviert - als 20%.',
+
 'HELP_WRAPPING_MAIN_PICTURE'                  => 'Bei <span class="navipath_or_inputname">Bild</span> und <span class="navipath_or_inputname">Bild hochladen</span> können Sie ein Bild für die Geschenkverpackung hochladen. Wählen Sie bei <span class="navipath_or_inputname">Bild hochladen</span> das Bild aus, das Sie hochladen möchten. Wenn Sie auf Speichern klicken, wird das Bild hochgeladen. Nachdem das Bild hochgeladen ist, wird der Dateiname des Bildes in <span class="navipath_or_inputname">Bild</span> angezeigt.',
 
 

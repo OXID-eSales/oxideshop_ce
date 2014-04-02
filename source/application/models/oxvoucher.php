@@ -613,27 +613,33 @@ class oxVoucher extends oxBase
      *
      * @return array
      */
-    protected function _getSessionBasketItems($oDiscount = null)
+    protected function _getSessionBasketItems( $oDiscount = null )
     {
-        if (is_null($oDiscount)) {
+        if ( is_null( $oDiscount ) ) {
             $oDiscount = $this->_getSerieDiscount();
         }
 
         $oBasket = $this->getSession()->getBasket();
         $aItems  = array();
-        $iCount  = 0;
 
         foreach ( $oBasket->getContents() as $oBasketItem ) {
-            if ( !$oBasketItem->isDiscountArticle() && ( $oArticle = $oBasketItem->getArticle() ) && !$oArticle->skipDiscounts() && $oDiscount->isForBasketItem($oArticle) ) {
+            if ( !$oBasketItem->isDiscountArticle() && ( $oArticle = $oBasketItem->getArticle() ) &&
+                 !$oArticle->skipDiscounts() && $oDiscount->isForBasketItem( $oArticle )
+            ) {
+                if ( $this->useBasketPrice() ) {
+                    $dPrice = $oBasketItem->getUnitPrice()->getPrice();
+                } else {
+                    $dPrice = $oArticle->getBasketPrice(
+                        $oBasketItem->getAmount(), $oBasketItem->getSelList(), $oBasket
+                    )->getPrice();
+                }
 
-                $aItems[$iCount] = array(
+                $aItems[] = array(
                     'oxid'     => $oArticle->getId(),
-                    'price'    => $oArticle->getBasketPrice( $oBasketItem->getAmount(), $oBasketItem->getSelList(), $oBasket )->getPrice(),
-                    'discount' => $oDiscount->getAbsValue($oArticle->getBasketPrice( $oBasketItem->getAmount(), $oBasketItem->getSelList(), $oBasket )->getPrice()),
+                    'price'    => $dPrice,
+                    'discount' => $oDiscount->getAbsValue( $dPrice ),
                     'amount'   => $oBasketItem->getAmount(),
                 );
-
-                $iCount ++;
             }
         }
 
@@ -687,6 +693,54 @@ class oxVoucher extends oxBase
     {
         $oSeries = $this->getSerie();
         return $oSeries->oxvoucherseries__oxdiscounttype->value;
+    }
+
+    /**
+     * Tells if the voucher should apply on brutto amount (after VAT was added).
+     * It is important for absolute discount vouchers.
+     *
+     * If false - discount is done on net price. After adding VAT total price will change more than voucher amount is.
+     * If true  - discount is not affected by VAT amount and is always as voucher amount was.
+     *
+     * @return bool
+     */
+    public function applyOnBrutto()
+    {
+        $oSeries = $this->getSerie();
+
+        return !empty( $oSeries->oxvoucherseries__oxapplyonbrutto->value );
+    }
+
+    /**
+     * Tells if the voucher should apply on basket items prices.
+     * It is important in cases when basket items already have margins or discounts.
+     *
+     * If false - discount will be calculated using raw article price (user might not see it).
+     * If true  - discount will be calculated using basket items prices.
+     *
+     * @return bool
+     */
+    public function useBasketPrice()
+    {
+        $oSeries = $this->getSerie();
+
+        return !empty( $oSeries->oxvoucherseries__oxusebasketprice->value );
+    }
+
+    /**
+     * Tells if it should reduce base price to apply discount on after applying the voucher.
+     * It is important in case when there are many vouchers in one basket.
+     *
+     * If false - For example, 10% and 10% vouchers will act as 19% overall discount.
+     * if true  - For example, 10% and 10% vouchers will act as 20% overall discount.
+     *
+     * @return bool
+     */
+    public function noBasePriceReduction()
+    {
+        $oSeries = $this->getSerie();
+
+        return !empty( $oSeries->oxvoucherseries__oxdontreduceprice->value );
     }
 
 
@@ -816,18 +870,18 @@ class oxVoucher extends oxBase
         }
         return parent::__get($sName);
     }
-    
+
     /**
      * Returns a configured value for voucher timeouts or a default
      * of 3 hours if not configured
-     * 
+     *
      * @return integer Seconds a voucher can stay in status reserved
-     */ 
-    protected function _getVoucherTimeout() 
+     */
+    protected function _getVoucherTimeout()
     {
-        $iVoucherTimeout =  intval(oxRegistry::getConfig()->getConfigParam( 'iVoucherTimeout' )) ? 
-            intval(oxRegistry::getConfig()->getConfigParam( 'iVoucherTimeout' )) : 
+        $iVoucherTimeout =  intval(oxRegistry::getConfig()->getConfigParam( 'iVoucherTimeout' )) ?
+            intval(oxRegistry::getConfig()->getConfigParam( 'iVoucherTimeout' )) :
             3 *3600;
         return $iVoucherTimeout;
-    }    
+    }
 }

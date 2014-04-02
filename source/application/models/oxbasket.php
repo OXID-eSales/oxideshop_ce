@@ -1119,7 +1119,9 @@ class oxBasket extends oxSuperCfg
 
                             // apply discount to vat
                             foreach ( $this->_aDiscountedVats as $sKey => $dVat ) {
-                                $this->_aDiscountedVats[$sKey] = oxPrice::percent( $dVat, $dVatPart);
+                                if ( ( $oVoucher->getDiscountType() == 'percent' ) or !$oVoucher->applyOnBrutto() ) {
+                                    $this->_aDiscountedVats[$sKey] = oxPrice::percent( $dVat, $dVatPart );
+                                }
                             }
                         }
 
@@ -1131,7 +1133,9 @@ class oxBasket extends oxSuperCfg
                         $oStdVoucher->dVoucherdiscount = $dVoucherdiscount;
 
                         // subtracting voucher discount
-                        $dPrice = $dPrice - $dVoucherdiscount;
+                        if ( !$oVoucher->noBasePriceReduction() ) {
+                            $dPrice = $dPrice - $dVoucherdiscount;
+                        }
 
 
 

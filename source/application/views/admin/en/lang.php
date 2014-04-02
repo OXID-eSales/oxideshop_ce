@@ -1529,6 +1529,9 @@ $aLang = array(
 'VOUCHERSERIE_MAIN_USED'                                   => 'Used',
 'VOUCHERSERIE_MAIN_DISCOUNT'                               => 'Discount',
 'VOUCHERSERIE_MAIN_CALCULATEONCE'                          => 'Calculate only once (valid only for product or category vouchers)',
+'VOUCHERSERIE_MAIN_APPLYONBRUTTO'                          => 'Subtract absolute discount from gross amount',
+'VOUCHERSERIE_MAIN_USEBASKETPRICE'                         => 'Calculate discount for basket items prices',
+'VOUCHERSERIE_MAIN_DONTREDUCEPRICE'                        => 'Calculate discount from initial basket amount',
 
 'VOUCHERSERIE_MAIN_GENERATE'                               => 'Generate',
 'VOUCHERSERIE_MAIN_EXPORT'                                 => 'Export',

@@ -572,6 +572,12 @@ $aLang =  array(
 
 'HELP_VOUCHERSERIE_MAIN_CALCULATEONCE'        => 'If you assign products or categories to your coupon, deactivate this option to calculate this coupon to each product per cart position. Activate if the coupon shall be valid only once per cart position.',
 
+'HELP_VOUCHERSERIE_MAIN_APPLYONBRUTTO'        => 'If not checked, discount is applied on net amount (before VAT calculation). If checked, discount will always be of same value as voucher is.',
+
+'HELP_VOUCHERSERIE_MAIN_USEBASKETPRICE'       => 'If not checked, vouchers will use related articles base price for the discount. If checked, discount will apply on basket item price (which might differ from article base price).',
+
+'HELP_VOUCHERSERIE_MAIN_DONTREDUCEPRICE'      => 'In case, when user has several percent vouchers in one basket: If not checked, the voucher will pass reduced total for next voucher to apply discount on. If checked, next voucher will use same basket price to apply discount on. E.g. if not checked - 10% and one more 10% act as 19% discount; if checked: 10% and one more 10% act as 20% discount.',
+
 'HELP_WRAPPING_MAIN_PICTURE'                  => 'With <span class="navipath_or_inputname">Picture</span> and <span class="navipath_or_inputname">Upload Picture</span> you can upload a picture for the gift wrapping. In <span class="navipath_or_inputname">Upload Picture</span>, select the picture to upload. When clicking on <span class="navipath_or_inputname">Save</span>, the picture is uploaded. After uploading, the filename is shown in <span class="navipath_or_inputname">Picture</span>.',
 
 

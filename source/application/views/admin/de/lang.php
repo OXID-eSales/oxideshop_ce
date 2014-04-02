@@ -1527,6 +1527,9 @@ $aLang = array(
 'VOUCHERSERIE_MAIN_USED'                                   => 'Benutzt',
 'VOUCHERSERIE_MAIN_DISCOUNT'                               => 'Rabatt',
 'VOUCHERSERIE_MAIN_CALCULATEONCE'                          => 'Nur einmalig berechnen (gültig nur bei zugewiesenen Gutscheinen)',
+'VOUCHERSERIE_MAIN_APPLYONBRUTTO'                          => 'Subtrahieren absolute Rabatt von Bruttobetrag',
+'VOUCHERSERIE_MAIN_USEBASKETPRICE'                         => 'Den Rabatt für die Artikelpreise im Warenkorb berechnen',
+'VOUCHERSERIE_MAIN_DONTREDUCEPRICE'                        => 'Den Rabatt von Anfangs Warenkorb Menge berechnen',
 
 'VOUCHERSERIE_MAIN_GENERATE'                               => 'Generieren',
 'VOUCHERSERIE_MAIN_EXPORT'                                 => 'Export',

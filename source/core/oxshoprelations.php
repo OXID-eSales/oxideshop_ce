@@ -64,7 +64,7 @@ class oxShopRelations
      *
      * @return bool
      */
-    public function addToShops($iItemId, $sItemType, $aShopIds)
+    public function addToShop($iItemId, $sItemType, $aShopIds)
     {
         if (!is_array($aShopIds)) {
             $aShopIds = array($aShopIds);
@@ -86,7 +86,7 @@ class oxShopRelations
      *
      * @return bool
      */
-    public function removeFromShops($iItemId, $sItemType, $aShopIds)
+    public function removeFromShop($iItemId, $sItemType, $aShopIds)
     {
         if (!is_array($aShopIds)) {
             $aShopIds = array($aShopIds);
@@ -108,7 +108,7 @@ class oxShopRelations
      *
      * @return bool
      */
-    public function inheritFromShops($iParentShopId, $aSubShops, $sItemType)
+    public function inheritFromShop($iParentShopId, $aSubShops, $sItemType)
     {
         if (!is_array($aSubShops)) {
             $aSubShops = array($aSubShops);
@@ -130,7 +130,7 @@ class oxShopRelations
      *
      * @return bool
      */
-    public function removeInheritedFromShops($iParentShopId, $aSubShops, $sItemType)
+    public function removeInheritedFromShop($iParentShopId, $aSubShops, $sItemType)
     {
         if (!is_array($aSubShops)) {
             $aSubShops = array($aSubShops);

@@ -68,7 +68,7 @@ class Unit_Core_oxShopRelationsTest extends OxidTestCase
      *
      * @dataProvider _dpTestListOfShops
      */
-    public function testAddToShops($aShopIds, $iExpectsToProcess)
+    public function testAddToShop($aShopIds, $iExpectsToProcess)
     {
         $iItemId   = 123;
         $sItemType = 'oxarticles';
@@ -81,7 +81,7 @@ class Unit_Core_oxShopRelationsTest extends OxidTestCase
         $oShopRelations = new oxShopRelations();
         $oShopRelations->setDbGateway($oShopRelationsDbGateway);
 
-        $this->assertTrue($oShopRelations->addToShops($iItemId, $sItemType, $aShopIds));
+        $this->assertTrue($oShopRelations->addToShop($iItemId, $sItemType, $aShopIds));
     }
 
     /**
@@ -92,7 +92,7 @@ class Unit_Core_oxShopRelationsTest extends OxidTestCase
      *
      * @dataProvider _dpTestListOfShops
      */
-    public function testRemoveFromShops($aShopIds, $iExpectsToProcess)
+    public function testRemoveFromShop($aShopIds, $iExpectsToProcess)
     {
         $iItemId   = 123;
         $sItemType = 'oxarticles';
@@ -105,7 +105,7 @@ class Unit_Core_oxShopRelationsTest extends OxidTestCase
         $oShopRelations = new oxShopRelations();
         $oShopRelations->setDbGateway($oShopRelationsDbGateway);
 
-        $this->assertTrue($oShopRelations->removeFromShops($iItemId, $sItemType, $aShopIds));
+        $this->assertTrue($oShopRelations->removeFromShop($iItemId, $sItemType, $aShopIds));
     }
 
     /**
@@ -116,7 +116,7 @@ class Unit_Core_oxShopRelationsTest extends OxidTestCase
      *
      * @dataProvider _dpTestListOfShops
      */
-    public function testInheritFromShops($aShopIds, $iExpectsToProcess)
+    public function testInheritFromShop($aShopIds, $iExpectsToProcess)
     {
         $iParentShopId = 456;
         $sItemType     = 'oxarticles';
@@ -129,7 +129,7 @@ class Unit_Core_oxShopRelationsTest extends OxidTestCase
         $oShopRelations = new oxShopRelations();
         $oShopRelations->setDbGateway($oShopRelationsDbGateway);
 
-        $this->assertTrue($oShopRelations->inheritFromShops($iParentShopId, $aShopIds, $sItemType));
+        $this->assertTrue($oShopRelations->inheritFromShop($iParentShopId, $aShopIds, $sItemType));
     }
 
     /**
@@ -140,7 +140,7 @@ class Unit_Core_oxShopRelationsTest extends OxidTestCase
      *
      * @dataProvider _dpTestListOfShops
      */
-    public function testRemoveInheritedFromShops($aShopIds, $iExpectsToProcess)
+    public function testRemoveInheritedFromShop($aShopIds, $iExpectsToProcess)
     {
         $iParentShopId = 456;
         $sItemType     = 'oxarticles';
@@ -153,6 +153,6 @@ class Unit_Core_oxShopRelationsTest extends OxidTestCase
         $oShopRelations = new oxShopRelations();
         $oShopRelations->setDbGateway($oShopRelationsDbGateway);
 
-        $this->assertTrue($oShopRelations->removeInheritedFromShops($iParentShopId, $aShopIds, $sItemType));
+        $this->assertTrue($oShopRelations->removeInheritedFromShop($iParentShopId, $aShopIds, $sItemType));
     }
 }

@@ -215,11 +215,9 @@ class oxShopMetaData extends oxSuperCfg
     }
 
     /**
-     * Returns array of shop bits
+     * Adds shop field sets.
      *
      * @param int $iShopId current shop id
-     *
-     * @return bool
      */
     public function addShopFieldSets( $iShopId )
     {

@@ -1,3 +1,3 @@
 [{foreach from=$aErrors item=oError }]
-  <span class="js-oxError_postError">[{oxmultilang ident=$oError->getMessage()}]</span>
-[{/foreach }]
+  <span class="js-oxError_postError">[{$oError->getMessage()}]</span>
+[{/foreach}]

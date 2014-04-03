@@ -497,7 +497,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
                         $this->equalTo('xxx'),
                         $this->logicalAnd(
                             $this->isInstanceOf('oxInputException'),
-                            $this->attributeEqualTo('message','ERROR_MESSAGE_INPUT_NOTALLFIELDS')
+                            $this->attributeEqualTo('message', oxRegistry::getLang()->translateString('ERROR_MESSAGE_INPUT_NOTALLFIELDS'))
                         )
                 );
 
@@ -550,7 +550,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
                         $this->equalTo('oxuser__oxfname'),
                         $this->logicalAnd(
                             $this->isInstanceOf('oxInputException'),
-                            $this->attributeEqualTo('message','ERROR_MESSAGE_INPUT_NOTALLFIELDS')
+                            $this->attributeEqualTo('message',oxRegistry::getLang()->translateString('ERROR_MESSAGE_INPUT_NOTALLFIELDS'))
                         )
                 );
         $oValidator->expects($this->at(1))->method('_addValidationError')
@@ -558,7 +558,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
                         $this->equalTo('oxuser__oxlname'),
                         $this->logicalAnd(
                             $this->isInstanceOf('oxInputException'),
-                            $this->attributeEqualTo('message','ERROR_MESSAGE_INPUT_NOTALLFIELDS')
+                            $this->attributeEqualTo('message',oxRegistry::getLang()->translateString('ERROR_MESSAGE_INPUT_NOTALLFIELDS'))
                         )
                 );
 
@@ -619,7 +619,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
                         $this->equalTo('oxuser__oxpassword'),
                         $this->logicalAnd(
                             $this->isInstanceOf('oxInputException'),
-                            $this->attributeEqualTo('message','ERROR_MESSAGE_INPUT_EMPTYPASS')
+                            $this->attributeEqualTo('message',oxRegistry::getLang()->translateString('ERROR_MESSAGE_INPUT_EMPTYPASS'))
                         )
                 );
 
@@ -643,7 +643,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
                         $this->equalTo('oxuser__oxpassword'),
                         $this->logicalAnd(
                             $this->isInstanceOf('oxInputException'),
-                            $this->attributeEqualTo('message','ERROR_MESSAGE_PASSWORD_TOO_SHORT')
+                            $this->attributeEqualTo('message',oxRegistry::getLang()->translateString('ERROR_MESSAGE_PASSWORD_TOO_SHORT'))
                         )
                 );
 
@@ -667,7 +667,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
                         $this->equalTo('oxuser__oxpassword'),
                         $this->logicalAnd(
                             $this->isInstanceOf('oxUserException'),
-                            $this->attributeEqualTo('message','ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH')
+                            $this->attributeEqualTo('message',oxRegistry::getLang()->translateString('ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH'))
                         )
                 );
 
@@ -691,7 +691,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
                         $this->equalTo('oxuser__oxusername'),
                         $this->logicalAnd(
                             $this->isInstanceOf('oxInputException'),
-                            $this->attributeEqualTo('message','ERROR_MESSAGE_INPUT_NOTALLFIELDS')
+                            $this->attributeEqualTo('message',oxRegistry::getLang()->translateString('ERROR_MESSAGE_INPUT_NOTALLFIELDS'))
                         )
                 );
 
@@ -717,7 +717,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
                         $this->equalTo('oxuser__oxusername'),
                         $this->logicalAnd(
                             $this->isInstanceOf('oxInputException'),
-                            $this->attributeEqualTo('message','ERROR_MESSAGE_INPUT_NOVALIDEMAIL')
+                            $this->attributeEqualTo('message',oxRegistry::getLang()->translateString('ERROR_MESSAGE_INPUT_NOVALIDEMAIL'))
                         )
                 );
 
@@ -780,7 +780,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
                         $this->equalTo('oxuser__oxpassword'),
                         $this->logicalAnd(
                             $this->isInstanceOf('oxInputException'),
-                            $this->attributeEqualTo('message', 'ERROR_MESSAGE_INPUT_NOTALLFIELDS')
+                            $this->attributeEqualTo('message', oxRegistry::getLang()->translateString('ERROR_MESSAGE_INPUT_NOTALLFIELDS'))
                         )
                 );
 
@@ -810,7 +810,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
                         $this->equalTo('oxuser__oxpassword'),
                         $this->logicalAnd(
                             $this->isInstanceOf('oxUserException'),
-                            $this->attributeEqualTo('message', 'ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH')
+                            $this->attributeEqualTo('message', oxRegistry::getLang()->translateString('ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH'))
                         )
                 );
 

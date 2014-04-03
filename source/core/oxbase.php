@@ -722,7 +722,7 @@ class oxBase extends oxSuperCfg
     /**
      * Delete this object from the database, returns true on success.
      *
-     * @param string $sOXID Object ID(default null)
+     * @param string $sOxId Object ID(default null)
      *
      * @return bool
      */

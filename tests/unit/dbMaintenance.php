@@ -608,7 +608,7 @@ class dbMaintenance
             if (is_null($sEntry)) {
                 $sValues .= 'null,';
             } else {
-                $sEntry = oxDb::getDb()->quote($sEntry);
+                $sEntry = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->quote( $sEntry );
                 $sValues .= $sEntry . ',';
             }
         }

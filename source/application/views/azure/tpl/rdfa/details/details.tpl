@@ -21,7 +21,7 @@
 [{oxhasrights ident="SHOWLONGDESCRIPTION"}]
 [{assign var="oLongdesc" value=$oProduct->getLongDescription()}]
 [{if $oLongdesc->value}]
-    <div property="gr:description" content="[{oxeval var=$oLongdesc assign="sDesc"}][{$sDesc|strip_tags|strip}]" [{if $oView->getActiveLangAbbr()}] xml:lang="[{$oView->getActiveLangAbbr()}]"[{/if}]></div>
+    <div property="gr:description" content="[{oxeval var=$oLongdesc->value|strip_tags|strip }]" [{if $oView->getActiveLangAbbr()}] xml:lang="[{$oView->getActiveLangAbbr()}]"[{/if}]></div>
 [{/if}]
 [{if !$oProduct->oxarticles__oxbundleid->value}]
     <div property="gr:hasStockKeepingUnit" content="[{$oProduct->oxarticles__oxartnum->value}]" datatype="xsd:string"></div>

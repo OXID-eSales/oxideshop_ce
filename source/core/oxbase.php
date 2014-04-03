@@ -42,6 +42,12 @@ class oxBase extends oxSuperCfg
     protected $_sOXID = null;
 
     /**
+     * Integer object mapping id
+     * @var int
+     */
+    protected $_sMapId = null;
+
+    /**
      * ID of running shop session (default null).
      * @var int
      */
@@ -463,6 +469,36 @@ class oxBase extends oxSuperCfg
     public function getId()
     {
         return $this->_sOXID;
+    }
+
+    /**
+     * Sets object mapping id
+     *
+     * @param int $iMapId New mapping id
+     */
+    public function setMapId($iMapId)
+    {
+        $this->_iMapId = $iMapId;
+    }
+
+    /**
+     * Returns map id
+     *
+     * @return int | string
+     */
+    public function getMapId()
+    {
+        if (!is_null($this->_iMapId)) {
+            return $this->_iMapId;
+        }
+
+        $sMapId = $this->getFieldData("oxmapid");
+
+        if (($sMapId)) {
+            return $sMapId;
+        }
+
+        return $this->getId();
     }
 
     /**

@@ -828,6 +828,28 @@ class Unit_Core_oxbaseTest extends OxidTestCase
         $this->assertEquals("testId", $oBase->getId());
     }
 
+    /**
+     * Tests oxBase::getMapId()
+     */
+    public function testGetMapId()
+    {
+        $oBase = new oxBase();
+
+        $oBase->setId("testId");
+        $this->assertEquals("testId", $oBase->getMapId());
+        $oBase->setMapId(15);
+        $this->assertEquals(15, $oBase->getMapId());
+    }
+
+    public function testGetMapIdOnData()
+    {
+        $oBase = new oxBase();
+        $oBase->init("oxarticles");
+        $oBase->load("1126");
+
+        $this->assertEquals("25", $oBase->getMapId());
+    }
+
 
     /**
      * Test set shop id with numeric value.

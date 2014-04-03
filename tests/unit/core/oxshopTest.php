@@ -112,4 +112,18 @@ class Unit_Core_oxshopTest extends OxidTestCase
         $this->assertEquals(rtrim($sQuery), rtrim($aQueries[0]));
     }
 
+    /**
+     * Test inheritance getter
+     */
+    public function testIsTableInherited()
+    {
+        $oShop = new oxShop();
+        $this->getConfig()->setConfigParam('blMallInherit_oxarticles', true);
+        $this->getConfig()->setConfigParam('blMallInherit_oxattributes', false);
+
+        $this->assertTrue($oShop->isTableInherited('oxarticles'));
+        $this->assertFalse($oShop->isTableInherited('oxattributes'));
+        $this->assertFalse($oShop->isTableInherited('oxcategories'));
+    }
+
 }

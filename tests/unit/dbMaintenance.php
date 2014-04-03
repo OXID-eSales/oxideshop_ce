@@ -578,8 +578,12 @@ class dbMaintenance
 
             $oResult = $oDb->Query("Select * from " . $sTable);
             if ($oResult && $oResult->RecordCount() > 0) {
+                $iRow = 0;
                 while ($aRow = $oResult->fetchRow()) {
                     $sId = $aRow['OXID'];
+                    if (!$sId) {
+                        $sId = $iRow++;
+                    }
                     $aData[$sTable][$sId] = array();
                     $aData[$sTable][$sId]["_sql_"] = $this->getInsertString($aRow, $sTable);
                     foreach ($aRow as $sColumn => $sEntry) {

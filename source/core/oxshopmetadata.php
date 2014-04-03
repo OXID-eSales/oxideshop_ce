@@ -215,42 +215,6 @@ class oxShopMetaData extends oxSuperCfg
     }
 
     /**
-     * Adds shop field sets.
-     *
-     * @param int $iShopId current shop id
-     */
-    public function addShopFieldSets( $iShopId )
-    {
-        set_time_limit(0);
-        $aSql = array();
-        $aMultiShopTables = $this->getConfig()->getConfigParam( 'aMultiShopTables' );
-        $iFieldSet = $this->getShopFieldSet($iShopId);
-        $oDbMetadata = oxNew('oxDbMetaDataHandler');
-
-        foreach ( $aMultiShopTables as $sTable ) {
-            foreach ( array( "OXSHOPINCL", "OXSHOPEXCL" ) as $sField ) {
-                $sNewFieldName = $sField . $iFieldSet;
-                if ($iFieldSet > 1) {
-                    $iPrevLang = $iFieldSet-1;
-                    $sPrevField = $sField.$iPrevLang;
-                } else {
-                    $sPrevField = $sField;
-                }
-                if ( !$oDbMetadata->fieldExists( $sNewFieldName, $sTable ) ) {
-
-                    //getting add field sql
-                    $aSql[] = $oDbMetadata->getAddFieldSql( $sTable, $sField, $sNewFieldName, $sPrevField );
-
-
-                    //getting add index sql on added field
-                    $aSql = array_merge($aSql, (array) $oDbMetadata->getAddFieldIndexSql($sTable, $sField, $sNewFieldName));
-                }
-            }
-        }
-        $oDbMetadata->executeSql($aSql);
-    }
-
-    /**
      * Gets shop field setsuffix and optionally appends ti to given field name.
      *
      * @param int $iSet Shop field set index

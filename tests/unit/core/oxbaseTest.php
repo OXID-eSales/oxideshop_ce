@@ -841,6 +841,9 @@ class Unit_Core_oxbaseTest extends OxidTestCase
         $this->assertEquals(15, $oBase->getMapId());
     }
 
+    /**
+     * Tests oxBase::getMapId() using real data
+     */
     public function testGetMapIdOnData()
     {
         $oBase = new oxBase();

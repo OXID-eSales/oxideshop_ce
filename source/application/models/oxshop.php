@@ -152,6 +152,24 @@ class oxShop extends oxI18n
 
 
     /**
+     * Checks if table $sMallTableName is inherited from parent to current shop.
+     *
+     * @param string $sMallTableName Inheritable element table name
+     *
+     * @return bool
+     */
+    public function isTableInherited($sMallTableName)
+    {
+        $blIsInherited = false;
+        $blVarVal = oxRegistry::getConfig()->getShopConfVar('blMallInherit_' . strtolower( $sMallTableName ), $this->getId());
+        if (isset($blVarVal)) {
+            $blIsInherited = $blVarVal;
+        }
+
+        return $blIsInherited;
+    }
+
+    /**
      * (Re)generates shop views
      *
      * @param bool  $blMultishopInheritCategories config option blMultishopInherit_oxcategories
@@ -167,6 +185,35 @@ class oxShop extends oxI18n
         $this->_cleanInvalidViews();
 
         return $bSuccess;
+    }
+
+    /**
+     * Returns a list of subshops where certain type of inheritable elements (oxarticles, oxattributes, ...)
+     * are inherited in bulk via config option from the current shop.
+     * The items are considered inherited in case it is inherited directly to the subshop, recursive check is performed
+     * for subsequent subshops.
+     *
+     * @param        string $sInheritanceType Inheritable table type
+     * @param array[oxShop] $sInheritanceType The list of subshops
+     *
+     * @return oxShopList
+     */
+    public function getInheritedSubshopList($sInheritanceType, $sShopId = null, $aSubshops = array())
+    {
+        if (is_null($sShopId)) {
+            $sShopId = $this->getId();
+        }
+        $oShopList = oxNew("oxShopList");
+        $oShopList->loadByParentId($sShopId);
+        foreach ($oShopList as $key => $oShop) {
+            $sSubshopId = $oShop->getId();
+            $blIsInheritedBulk = oxRegistry::getConfig()->getShopConfVar( 'blMallInherit_' . $sInheritanceType, $sSubshopId );
+            if ($blIsInheritedBulk) {
+                $aSubshops[] = $sSubshopId;
+                $aSubshops = $this->getInheritedSubshopList($sInheritanceType, $sSubshopId, $aSubshops);
+            }
+        }
+        return $aSubshops;
     }
 
     /**

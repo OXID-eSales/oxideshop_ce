@@ -20,236 +20,539 @@
  * @version   OXID eShop CE
  */
 
- define('MAINTENANCE_SINGLEROWS', 1);
- define('MAINTENANCE_WHOLETABLES', 2);
+define('MAINTENANCE_SINGLEROWS', 1);
+define('MAINTENANCE_WHOLETABLES', 2);
 
- define('MAINTENANCE_MODE_ONLYRESET', 1);
- define('MAINTENANCE_MODE_ONLYOUTPUT', 2);
- define('MAINTENANCE_MODE_RESETANDOUTPUT', 3);
+define('MAINTENANCE_MODE_ONLYRESET', 1);
+define('MAINTENANCE_MODE_ONLYOUTPUT', 2);
+define('MAINTENANCE_MODE_RESETANDOUTPUT', 3);
 
 /**
  * Database maintenance class responsible complete for backuping and restoration of test database.
  */
 class dbMaintenance
 {
+    /**
+     * Restore database in single rows (updating, deleting or inserting single records)
+     */
+    const MAINTENANCE_SINGLEROWS = 1;
+
+    /**
+     * Restore database by dropping the whole table and inserting all records back
+     */
+    const MAINTENANCE_WHOLETABLES = 2;
+
+    /**
+     * Only reset the database, but do not create log file
+     */
+    const MAINTENANCE_MODE_ONLYRESET = 1;
+
+    /**
+     * Only create log files with changes, but do not restore database
+     */
+    const MAINTENANCE_MODE_ONLYOUTPUT = 2;
+
+    /**
+     * Create log file with changes and restore database
+     */
+    const MAINTENANCE_MODE_RESETANDOUTPUT = 3;
+
+    /**
+     * Temp directory, where to store database dump
+     * @var string
+     */
+    private $_sTmpDir = '/tmp/';
+
+    /**
+     * Dump file path
+     * @var string
+     */
+    private $_sTmpFilePath = null;
 
     /*
-     * dump of the original db
+     * Dump of the original db
+     *
+     * @var array
      */
-    private $_oDBDump = null;
+    private $_aDBDump = null;
+
+    /**
+     * Changes made for database with tests
+     *
+     * @var array
+     */
+    private $_aChanges = array();
+
+    /**
+     * All queries made when restoring the database
+     *
+     * @var array
+     */
+    private $_aQueries = array();
+
+    /**
+     * DB restoration mode
+     *
+     * @var int
+     */
+    private $_iResetMode = self::MAINTENANCE_SINGLEROWS;
+
+    /**
+     * Output mode
+     *
+     * @var int
+     */
+    private $_iOutputMode = self::MAINTENANCE_MODE_ONLYRESET;
+
+    /**
+     * Sets temp directory to xoCCTempDir if constant exists
+     */
+    public function __construct()
+    {
+        if (defined('oxCCTempDir')) {
+            $this->_sTmpDir = oxCCTempDir;
+        }
+    }
+
+    /**
+     * @param $iMode
+     */
+    public function setResetMode($iMode)
+    {
+        $this->_iResetMode = $iMode;
+    }
+
+    /**
+     * @return int
+     */
+    public function getResetMode()
+    {
+        return $this->_iResetMode;
+    }
+
+    /**
+     * @param $iMode
+     */
+    public function setOutputMode($iMode)
+    {
+        $this->_iOutputMode = $iMode;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOutputMode()
+    {
+        return $this->_iOutputMode;
+    }
+
+    /**
+     * Returns dump file path
+     *
+     * @return string
+     */
+    public function getDumpFilePath()
+    {
+        if (is_null($this->_sTmpFilePath)) {
+            $sDbName = oxConfig::getInstance()->getConfigParam('dbName');
+            $this->_sTmpFilePath = $this->_sTmpDir . '/tmp_db_dump_' . $sDbName;
+        }
+
+        return $this->_sTmpFilePath;
+    }
+
+    /**
+     * Returns database dump data
+     *
+     * @return array
+     */
+    public function getDumpData()
+    {
+        if (is_null($this->_aDBDump)) {
+            $this->_aDBDump = $this->_loadDumpData();
+        }
+
+        return $this->_aDBDump['data'];
+    }
+
+    /**
+     * Returns database dump columns
+     *
+     * @return array
+     */
+    public function getDumpColumns()
+    {
+        if (is_null($this->_aDBDump)) {
+            $this->_aDBDump = $this->_loadDumpData();
+        }
+
+        return $this->_aDBDump['columns'];
+    }
+
+    /**
+     * Returns database dump columns
+     *
+     * @return array
+     */
+    public function getDumpChecksum()
+    {
+        if (is_null($this->_aDBDump)) {
+            $this->_aDBDump = $this->_loadDumpData();
+        }
+
+        return $this->_aDBDump['checksum'];
+    }
 
     /**
      * Checks which tables of the db changed and then restores these tables.
-     *
      * Uses dump file '/tmp/tmp_db_dump' for comparison and restoring.
      *
-     * @param integer $iMode   Maintenance mode
+     * @param integer $iMode Maintenance mode
      * @param integer $iOutput Outout type
-     *
-     * @return integer changet
+     * @return array changes array
      */
-    public function restoreDB($iMode = MAINTENANCE_SINGLEROWS, $iOutput = MAINTENANCE_MODE_ONLYRESET)
+    public function restoreDB($iMode = self::MAINTENANCE_SINGLEROWS, $iOutput = self::MAINTENANCE_MODE_ONLYRESET)
     {
-        // php 523 error
+        $iTime = microtime(true);
+        $this->setResetMode($iMode);
+        $this->setOutputMode($iOutput);
+
+        $aDump = $this->getDumpData();
+        $aTables = $this->_getDbTables();
+
+        $aDumpChecksum = $this->getDumpChecksum();
+        $aChecksum = $this->_getTableChecksum($aTables);
+
+        foreach ($aTables as $sTable) {
+            if (!isset($aDump[$sTable])) {
+                $this->_dropTable($sTable);
+            } else if ($aChecksum[$sTable] !== $aDumpChecksum[$sTable]) {
+                $this->restoreTable($sTable, false);
+            }
+        }
+
+        $this->_outputChanges();
+
+        $iEndTime = microtime(true);
+        echo "restoring db: ".($iEndTime-$iTime);
+
+        return $this->_aChanges;
+    }
+
+    /**
+     * Restores table records
+     *
+     * @param string $sTable
+     * @param bool $blCheckChecksum
+     * @param bool $blRestoreColumns whether to check and restore table columns
+     */
+    public function restoreTable($sTable, $blCheckChecksum = true, $blRestoreColumns = false)
+    {
+        if ($blCheckChecksum) {
+            $aDumpChecksum = $this->getDumpChecksum();
+            $aChecksum = $this->_getTableChecksum($sTable);
+            if ($aChecksum[$sTable] === $aDumpChecksum[$sTable]) {
+                return;
+            }
+        }
+
+        if ($blRestoreColumns) {
+            $this->_restoreColumns($sTable);
+        }
+
+        $oDB = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+        $oRows = $oDB->query("Select * from " . $sTable);
+        $aDump = $this->getDumpData();
+
+        $aExistingIds = array();
+
+        if ($oRows && $oRows->recordCount() > 0) {
+            while ($aRow = $oRows->fetchRow()) {
+                if ($aRow['OXID']) {
+                    $blRestored = $this->restoreRecord($sTable, $aRow['OXID'], $aRow);
+                } else {
+                    $this->resetTable($sTable);
+                    return;
+                }
+
+                if ($this->getResetMode() == self::MAINTENANCE_WHOLETABLES && $blRestored) {
+                    return;
+                }
+
+                $aExistingIds[] = $aRow['OXID'];
+            }
+
+            $aOriginalIds = array_keys($aDump[$sTable]);
+            $aMissingRecords = array_diff($aOriginalIds, $aExistingIds);
+
+            $this->_insertMissingRecords($sTable, $aMissingRecords);
+        } else if (!empty($aDump[$sTable])) {
+            $this->resetTable($sTable);
+        }
+    }
+
+    /**
+     * Restores one record in a table. If no aData parameter is passed, record is selected form the database
+     *
+     * @param string $sTable table name
+     * @param string $sId record id to restore
+     * @param array $aData record data. Will be selected from database if not passed
+     * @return bool whether record was restored
+     */
+    public function restoreRecord($sTable, $sId, $aData = null)
+    {
+        $aDump = $this->getDumpData();
+        $blResult = false;
+
+        if (is_null($aData)) {
+            $oDB = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+            $aData = $oDB->getRow("SELECT * FROM `$sTable` WHERE oxid = '$sId'");
+        }
+
+        if (!empty($aData)) {
+            if (!isset($aDump[$sTable][$sId])) {
+                $this->_deleteRecord($sTable, $sId);
+                $blResult = true;
+            } else {
+                $blResult = $this->_updateRecord($sTable, $sId, $aData, $aDump[$sTable][$sId]);
+            }
+        } else {
+            $this->_insertMissingRecords($sTable, $sId);
+        }
+
+        return $blResult;
+    }
+
+    /**
+     * Drops all table records and adds them back from dump
+     *
+     * @param $sTable
+     * @return bool
+     */
+    public function resetTable($sTable)
+    {
+        $aDump = $this->getDumpData();
+
+        $this->_executeSQL("TRUNCATE TABLE `$sTable`", $sTable, "data was changed");
+
+        foreach ($aDump[$sTable] as $aVals) {
+            $this->_executeSQL($aVals["_sql_"], $sTable);
+        }
+
+        return true;
+    }
+
+    /**
+     * Returns database dump from file
+     *
+     * @return array
+     */
+    protected function _loadDumpData()
+    {
         modConfig::getInstance()->cleanup();
         modConfig::$unitMOD = null;
 
-        $time = microtime(true);
-        $myConfig = oxConfig::getInstance();
-        $sDbName = oxConfig::getInstance()->getConfigParam('dbName');
-        $this->_oDBDump = file_get_contents('/tmp/tmp_db_dump_'.$sDbName);
-        $this->_oDBDump = unserialize($this->_oDBDump);
+        $aDBDump = file_get_contents($this->getDumpFilePath());
+        $aDBDump = unserialize($aDBDump);
 
-        $myDB = oxDb::getDb();
-        $myDB->SetFetchMode(ADODB_FETCH_NUM);
-        $rs = $myDB->Query("SHOW TABLES");
-        $myDB->SetFetchMode(ADODB_FETCH_ASSOC);
-        $sChanges = "";
-        //current table
-        $sTable = "";
-        //list of sql commands to execute;
-        $aSQL=array();
-        $aInsert = array();
-        $aTableInsert = array();
-
-        while (!$rs->EOF) {
-            $sTable = $rs->fields[0];
-            $rs->moveNext();
-            if (strpos($sTable, "oxv_")===false) {
-                $aChangesCounter[$sTable]=0;
-
-                if (!isset($this->_oDBDump[$sTable])) {
-                    $sChanges.="Table ".$sTable." was added\n";
-                    $aChangesCounter[$sTable]++;
-                    //delete this table
-                    $aSQL[] = "DROP TABLE ".$sTable."";
-                    continue;
-                }
-
-
-                $rs2 = $myDB->Query("Select * from ".$sTable);
-
-                if ($rs2 && $rs2->RecordCount()>0) {
-                    $rowCount = 1;
-                    while ($aRow = $rs2->fetchRow()) {
-                    $oxid = $aRow['OXID'];
-                    $blNoOXID = false;
-                    if ($oxid == "") {
-                        // the tables without oxid,
-                        $oxid = $rowCount++;
-                        $blNoOXID = true;
-                    }
-                     if (!isset($this->_oDBDump[$sTable][$oxid])) {
-                        $aChangesCounter[$sTable]++;
-                        if ($iMode == MAINTENANCE_SINGLEROWS && !$blNoOXID) {
-                            $sChanges.="In table ".$sTable." a record was added\n";
-                            $aSQL[] = "DELETE FROM ".$sTable." WHERE OXID = '". $oxid ."'";
-                            $aInsert[$sTable][] = $oxid;
-                            //mark this row as existing
-                            $this->_oDBDump[$sTable][$oxid]['_EXISTS_'] = true;
-                            continue; //with next row
-                        } else if ($iMode == MAINTENANCE_WHOLETABLES || $blNoOXID) {
-                            //in single table mode tables without oxid are handeld like in whole table mode
-                            $sChanges.="In table ".$sTable." record(s)was(were) added\n";
-                            $aSQL[] = "DELETE FROM ".$sTable;
-                            $aTableInsert[] = $sTable;
-                            //mark this table as existing
-                            $this->_oDBDump[$sTable]['_EXISTS_'] = true;
-                            //skip rest of table
-                            continue 2;
-                        }
-                     } else {
-                        //check only if the record already existed
-                        foreach ($aRow as $sColumn => $sEntry) {
-                            if ($sColumn == "OXVARVALUE") {
-                                //special handeling of blob values of oxconfig
-                                $sEntry= oxUtils::getInstance()->strMan($sEntry, $myConfig->getConfigParam( 'sConfigKey' ) );
-                            }
-                            if (!isset($this->_oDBDump[$sTable][$oxid][$sColumn])) {
-                                //a new colum
-                                   $aChangesCounter[$sTable]++;
-                                   if ($iMode == MAINTENANCE_SINGLEROWS  && !$blNoOXID) {
-                                           $sChanges.="In table ".$sTable." and record oxid: ". $oxid ." column ". $sColumn ." was added\n";
-                                        $aSQL[] = "DELETE FROM ".$sTable." WHERE OXID = '". $oxid ."'";
-                                        $aInsert[$sTable][] = $oxid;
-                                        //mark this row as existing
-                                        $this->_oDBDump[$sTable][$oxid]['_EXISTS_'] = true;
-                                        //skip rest of row
-                                        continue 2;
-                                   } else if ($iMode == MAINTENANCE_WHOLETABLES  || $blNoOXID) {
-                                        $sChanges.="In table ".$sTable." column(s) {$sColumn} was(were) added\n";
-                                        $aSQL[] = "DELETE FROM ".$sTable;
-                                        $aTableInsert[] = $sTable;
-                                        //mark this table as existing
-                                        $this->_oDBDump[$sTable]['_EXISTS_'] = true;
-                                        //skip rest of table
-                                        continue 3;
-                                   }
-                            } elseif (strcmp ($this->_oDBDump[$sTable][$oxid][$sColumn], $sEntry)!= 0) {
-                                //changed value
-                                $aChangesCounter[$sTable]++;
-                                if ($iMode == MAINTENANCE_SINGLEROWS  && !$blNoOXID) {
-                                    $sChanges.="In table ".$sTable.", record oxid: ". $oxid ." and column ". $sColumn ." the value changed from: ". $this->_oDBDump[$sTable][$oxid][$sColumn]. " to: ".$sEntry ."\n";
-                                    $aSQL[] = "DELETE FROM ".$sTable." WHERE OXID = '". $oxid ."'";
-                                    $aInsert[$sTable][] = $oxid;
-                                    //mark this row as existing
-                                    $this->_oDBDump[$sTable][$oxid]['_EXISTS_'] = true;
-                                    //skip rest of row
-                                    continue 2;
-                                } elseif ($iMode == MAINTENANCE_WHOLETABLES || $blNoOXID) {
-                                       $sChanges.="In table ".$sTable.", record values changed\n";
-                                    $aSQL[] = "DELETE FROM ".$sTable;
-                                    $aTableInsert[] = $sTable;
-                                    //mark this table as existing
-                                    $this->_oDBDump[$sTable]['_EXISTS_'] = true;
-                                    //skip rest of table
-                                    continue 3;
-                                }
-                            }
-                        }
-                     }
-                        $this->_oDBDump[$sTable][$oxid]['_EXISTS_'] = true;
-                    }
-                }
-                //checking for removed rows
-                foreach ($this->_oDBDump[$sTable] as $oxid=>$aEntry) {
-                    if ($oxid == '_EXISTS_') {
-                        if ($iMode == MAINTENANCE_WHOLETABLES) {
-                            //everything is fine, whole table will be inserted
-                            continue;
-                        }
-                    } else {
-                        if (!isset($aEntry['_EXISTS_'])) {
-                           $sChanges.="In table ".$sTable.", record oxid ". $oxid ." was removed (". $aEntry .")\n";
-                            $aChangesCounter[$sTable]++;
-                            //add the record again, same for both modes
-                            $aInsert[$sTable][] = $oxid;
-                        }
-                    }
-                }
-            }
-        }
-            //add the restore sql scripts
-            foreach ($aInsert as $sTable => $aOxid) {
-                foreach ($aOxid as $k => $oxid) {
-                    $aSQL[] = $this->_oDBDump[$sTable][$oxid]["_sql_"];
-                }
-            }
-            //add the whole tables (for MAINTENANCE_WHOLETABLES mode)
-            foreach ($aTableInsert as $k => $sTable) {
-                foreach ($this->_oDBDump[$sTable] as $oxid => $aVals) {
-                    if ( $oxid == '_EXISTS_' )
-                        continue;
-                    $aSQL[] = $aVals["_sql_"];
-                }
-            }
-
-            if ($iOutput == MAINTENANCE_MODE_ONLYOUTPUT || $iOutput == MAINTENANCE_MODE_RESETANDOUTPUT) {
-                    $sChanges .="\n\n";
-                    $sChanges .="DB RESET EXECUTION. start time: ". date('Y-m-d H:i:s');
-                    $sChanges .="\n";
-                    $i=0;
-                    foreach ($aChangesCounter as $sTable => $iChanges) {
-                        if ($iChanges>0) {
-                            $sChanges.="In table ".$sTable." are ".$iChanges." changes!\n";
-                            $i+=$iChanges;
-                        }
-                    }
-                    $sChanges.="\nIn total there are ".$i." changes!!!\n\n\n\n";
-                    if ($i>0) {
-                        file_put_contents('dbchanges_log.txt', $sChanges . var_export($aSQL, 1) . var_export($this->_oDBDump, 1), FILE_APPEND);
-                    }
-            }
-            if ($iOutput == MAINTENANCE_MODE_ONLYRESET || $iOutput == MAINTENANCE_MODE_RESETANDOUTPUT) {
-                //now execute delete and drop statements and the insert statements (at the end)
-                foreach ($aSQL as $k => $v) {
-                    $myDB->Query($v);
-                }
-            }
-
-     $myDB->SetFetchMode(ADODB_FETCH_NUM);
-     //echo(" T:".(microtime(true)-$time));
-     return $aChangesCounter;
+        return $aDBDump;
     }
 
-    private $_aData = array();
+    /**
+     * Drops table
+     *
+     * @param $sTable
+     */
+    protected function _dropTable($sTable)
+    {
+        $sSQL = "DROP TABLE `$sTable`";
+        $this->_executeSQL($sSQL, $sTable, "was created");
+    }
+
+    /**
+     * Restores table columns (adds or removes columns)N
+     *
+     * @param $sTable
+     */
+    protected function _restoreColumns($sTable)
+    {
+        $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+
+        $aColumns = $oDb->getCol("SHOW COLUMNS FROM `$sTable`", 'Field');
+        $aDumpColumns = $this->getDumpColumns();
+        $aOriginalColumns = array_keys($aDumpColumns[$sTable]);
+
+        $aExcessColumns = array_diff($aColumns, $aOriginalColumns);
+
+        if (!empty($aExcessColumns)) {
+            $sSQL = "ALTER TABLE $sTable DROP COLUMN (".implode(', ', $aExcessColumns).");";
+            $this->_executeSQL($sSQL, $sTable, "has created columns (".implode(', ', $aExcessColumns).")");
+        }
+    }
+
+    /**
+     * Deletes record from database.
+     * In MAINTENANCE_WHOLETABLES mode resets all table records.
+     *
+     * @param string $sTable
+     * @param string $sId
+     */
+    protected function _deleteRecord($sTable, $sId)
+    {
+        if ($this->getResetMode() == self::MAINTENANCE_SINGLEROWS) {
+            $sSQL = "DELETE FROM " . $sTable . " WHERE OXID = '" . $sId . "'";
+            $this->_executeSQL($sSQL, $sTable, "record was added with id '$sId' ");
+        } else if ($this->getResetMode() == self::MAINTENANCE_WHOLETABLES) {
+            $this->resetTable($sTable);
+        }
+    }
+
+    /**
+     * Updates record values if changed.
+     *
+     * @param string $sTable
+     * @param string $sId
+     * @param array $aCurrentValues current record values
+     * @param array $aUpdatedValues what values should be set
+     * @return bool whether record was updated
+     */
+    protected function _updateRecord($sTable, $sId, $aCurrentValues, $aUpdatedValues)
+    {
+        $blResult = false;
+        $aColumns = $this->_getChangedColumns($aCurrentValues, $aUpdatedValues);
+        $oDb = oxDb::getDb();
+
+        if (!empty($aColumns)) {
+            if ($this->getResetMode() == self::MAINTENANCE_SINGLEROWS) {
+                $sSQL = "UPDATE `$sTable` SET ";
+                $aUpdates = array();
+                foreach ($aColumns as $sColumn) {
+                    $sValue = $oDb->quote($aUpdatedValues[$sColumn]);
+                    $aUpdates[] = " `$sColumn` = $sValue ";
+                }
+                $sSQL = $sSQL . implode(', ', $aUpdates) . " WHERE `oxid` = ".$oDb->quote($sId);
+
+                $this->_executeSQL($sSQL, $sTable, "record '$sId' columns '" . implode("', '", $aColumns) . "' was changed");
+            } else if ($this->getResetMode() == self::MAINTENANCE_WHOLETABLES) {
+                $this->resetTable($sTable);
+            }
+            $blResult = true;
+        }
+
+        return $blResult;
+    }
+
+    /**
+     * Returns columns whom values does not match
+     *
+     * @param array $aRow row values
+     * @param array $aExpectedRow expected row values
+     * @return array
+     */
+    protected function _getChangedColumns($aRow, $aExpectedRow)
+    {
+        $aChangedColumns = array();
+
+        foreach ($aRow as $sColumn => $sEntry) {
+
+            if (array_key_exists($sColumn, $aExpectedRow) && strcmp($aExpectedRow[$sColumn], $sEntry) != 0) {
+                $aChangedColumns[] = $sColumn;
+            }
+        }
+
+        return $aChangedColumns;
+    }
+
+    /**
+     * Inserts missing records
+     *
+     * @param string $sTable
+     * @param array|string $mRecords either array of ids or one id
+     */
+    protected function _insertMissingRecords($sTable, $mRecords)
+    {
+        $aDump = $this->getDumpData();
+        $aRecords = is_array($mRecords) ? $mRecords : array($mRecords);
+
+        foreach ($aRecords as $sId) {
+            $this->_executeSQL($aDump[$sTable][$sId]['_sql_'], $sTable, "record '$sId' was removed");
+        }
+    }
+
+    /**
+     * Depending on output mode executes given sql or just logs it
+     *
+     * @param string $sQuery
+     * @param string $sTable
+     * @param string $sMessage
+     */
+    protected function _executeSQL($sQuery, $sTable, $sMessage = '')
+    {
+        $iMode = $this->getOutputMode();
+
+        if ($iMode == self::MAINTENANCE_MODE_ONLYRESET || $iMode == self::MAINTENANCE_MODE_RESETANDOUTPUT) {
+            $oDB = oxDb::getDb();
+            $oDB->Query($sQuery);
+        }
+
+        if ($sMessage) {
+            $this->_aChanges[$sTable][] = "Table '$sTable', $sMessage";
+        }
+
+        $this->_aQueries[$sTable][] = $sQuery;
+    }
+
+    /**
+     * Writes changes to log file
+     */
+    protected function _outputChanges()
+    {
+        $iMode = $this->getOutputMode();
+
+        if ($iMode == self::MAINTENANCE_MODE_ONLYOUTPUT || $iMode == self::MAINTENANCE_MODE_RESETANDOUTPUT) {
+            $sChanges = "DB RESET EXECUTION. start time: " . date('Y-m-d H:i:s') . "\n\n";
+
+            $iTotalChanges = 0;
+            foreach ($this->_aChanges as $sTable => $aTableChanges) {
+                $iChanged = count($aTableChanges);
+                $sChanges .= "In table '$sTable' are $iChanged changes:\n";
+                $sChanges .= implode("\n", $aTableChanges);
+                $iTotalChanges += $iChanged;
+            }
+
+            $sChanges .= "\nIn total there are $iTotalChanges changes.\n\n\n";
+
+            $sChanges .= "Executed queries:\n\n";
+            foreach ($this->_aQueries as $sTable => $aQueries) {
+                $sChanges .= "Queries related to table '$sTable':\n";
+                $sChanges .= implode("\n", $aQueries);
+            }
+
+            $sChanges .= "\n\n\n\nOriginal database dump:\n\n";
+            $sChanges .= var_export($this->getDumpData(), 1);
+
+            if ($iTotalChanges > 0) {
+                file_put_contents('dbchanges_log.txt', $sChanges, FILE_APPEND);
+            }
+        }
+    }
 
     /**
      * Creates a dump of the current database, stored in the file '/tmp/tmp_db_dump'
      * the dump includes the data and sql insert statements
      *
+     * @throws Exception
      * @return null
      */
     public function dumpDB()
     {
-        $sDbName = oxConfig::getInstance()->getConfigParam('dbName');
+        $iStartTime = microtime(true);
 
-        $time = microtime (true);
-        $this->myDB = oxDb::getDb();
-        $myConfig = oxConfig::getInstance();
-        $this->myDB->SetFetchMode(ADODB_FETCH_NUM);
+        $aTables = $this->_getDbTables();
 
-        if (!($rs = $this->myDB->Query("SHOW TABLES"))) {
+        if (empty($aTables)) {
+            $sDbName = oxConfig::getInstance()->getConfigParam('dbName');
+
             throw new Exception("no tables on "
                 . oxConfig::getInstance()->getConfigParam('dbHost')
                 . ":$sDbName, using "
@@ -258,78 +561,103 @@ class dbMaintenance
                 . oxConfig::getInstance()->getConfigParam('dbPwd'));
         }
 
-        $this->myDB->SetFetchMode(ADODB_FETCH_ASSOC);
+        $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
 
+        $aData = array();
+        $aColumns = array();
+        $aChecksum = $this->_getTableChecksum($aTables);
 
-        $aTables = array();
-        while (!$rs->EOF) {
-            if (strpos($rs->fields[0], "oxv_")===false) {
-                $aTables[] = $rs->fields[0];
-            }
-            $rs->moveNext();
-        }
         foreach ($aTables as $sTable) {
-            $this->_aData[$sTable]=array();
+            $aData[$sTable] = array();
+            $aColumns[$sTable] = $oDb->getAssoc("SHOW COLUMNS FROM `$sTable`", 'Field');
 
-            $rs = $this->myDB->Query("Select * from ".$sTable);
-            if ($rs && $rs->RecordCount()>0) {
-                $rowNum = 1;
-                while ($aRow = $rs->fetchRow()) {
-                 $oxid = $aRow['OXID'];
-                 if ($oxid == "") {
-                     //the tables without oxid (oxsession, oxlogs, oxadminlogs)
-                    $oxid = $rowNum++;
-                 }
-                 $this->_aData[$sTable][$oxid]=array();
-                 $this->_aData[$sTable][$oxid]["_sql_"] = $this->getInsertString($aRow, $sTable);
+            $oResult = $oDb->Query("Select * from " . $sTable);
+            if ($oResult && $oResult->RecordCount() > 0) {
+                while ($aRow = $oResult->fetchRow()) {
+                    $sId = $aRow['OXID'];
+                    $aData[$sTable][$sId] = array();
+                    $aData[$sTable][$sId]["_sql_"] = $this->getInsertString($aRow, $sTable);
                     foreach ($aRow as $sColumn => $sEntry) {
-                        if ($sColumn == "OXVARVALUE") {
-                            $sEntry= oxUtils::getInstance()->strMan($sEntry, $myConfig->getConfigParam( 'sConfigKey' ) );
-                        }
-                        $this->_aData[$sTable][$oxid][$sColumn] = $sEntry;
+                        $aData[$sTable][$sId][$sColumn] = $sEntry;
                     }
                 }
             }
         }
-           $sResult = serialize ($this->_aData);
-           file_put_contents('/tmp/tmp_db_dump_'.$sDbName, $sResult);
 
-           echo("db Dumptime: ".(microtime (true)-$time)."\n");
+        $this->_aDBDump = array('columns' => $aColumns, 'data' => $aData, 'checksum' => $aChecksum);
+        file_put_contents($this->getDumpFilePath(), serialize($this->_aDBDump));
 
-        $this->myDB->SetFetchMode(ADODB_FETCH_NUM);
+        echo("db Dumptime: " . (microtime(true) - $iStartTime) . "\n");
     }
+
     /**
      * Creates a insert string to insert the given row into to given table
      *
-     * @param array  $aRow   a array of the current row in the db
+     * @param array $aRow a array of the current row in the db
      * @param string $sTable the name of the current table
      *
      * @return string a sql insert string for the given row
      */
-    private function getInsertString($aRow,$sTable)
+    private function getInsertString($aRow, $sTable)
     {
-        $sSQL= 'INSERT INTO '.$sTable.' ';
-        $sColumns='(';
-        $sValues='(';
+        $sSQL = 'INSERT INTO ' . $sTable . ' ';
+        $sColumns = '(';
+        $sValues = '(';
         foreach ($aRow as $sColumn => $sEntry) {
-            $sColumns.=$sColumn.',';
+            $sColumns .= $sColumn . ',';
             if (is_null($sEntry)) {
-                $sEntry = 'null';
-                $sValues.='null,';
+                $sValues .= 'null,';
             } else {
-                $sEntry = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->quote( $sEntry );
-                $sValues.= $sEntry.',';
+                $sEntry = oxDb::getDb()->quote($sEntry);
+                $sValues .= $sEntry . ',';
             }
-
         }
-        $sColumns = substr($sColumns, 0, strlen($sColumns)-1);
-        $sValues = substr($sValues, 0, strlen($sValues)-1);
-        $sColumns.=')';
-        $sValues.=')';
+        $sColumns = substr($sColumns, 0, strlen($sColumns) - 1);
+        $sValues = substr($sValues, 0, strlen($sValues) - 1);
+        $sColumns .= ')';
+        $sValues .= ')';
 
-        $sSQL .=$sColumns.' VALUES '.$sValues;
-
+        $sSQL .= $sColumns . ' VALUES ' . $sValues;
 
         return $sSQL;
+    }
+
+    /**
+     * Converts a string to UTF format.
+     *
+     * @param array|string $aTables
+     * @return array
+     */
+    protected function _getTableChecksum($aTables)
+    {
+        $aTables = is_array($aTables)? $aTables : array($aTables);
+        $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+        $sSelect = 'CHECKSUM TABLE ' . implode(", ", $aTables);
+        $aResults = $oDb->getArray($sSelect);
+
+        $sDbName = oxConfig::getInstance()->getConfigParam('dbName');
+        $aChecksum = array();
+        foreach ($aResults as $aResult) {
+            $sTable = str_replace($sDbName.'.', '', $aResult['Table']);
+            $aChecksum[$sTable] = $aResult['Checksum'];
+        }
+
+        return $aChecksum;
+    }
+
+    /**
+     * Returns database tables, excluding views
+     */
+    protected function _getDbTables()
+    {
+        $oDB = oxDb::getDb(oxDb::FETCH_MODE_NUM);
+        $aTables = $oDB->getCol("SHOW TABLES");
+
+        foreach ($aTables as $iKey => $sTable) {
+            if (strpos($sTable, 'oxv_') === 0) {
+                unset($aTables[$iKey]);
+            }
+        }
+        return $aTables;
     }
 }

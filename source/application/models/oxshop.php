@@ -141,10 +141,7 @@ class oxShop extends oxI18n
      */
     public function getMultiShopTables()
     {
-        if (is_null($this->_aMultiShopTables)) {
-            $this->_aMultiShopTables = array();
-        }
-
+        $this->_aMultiShopTables = array();
         return $this->_aMultiShopTables;
     }
 

@@ -213,8 +213,6 @@ class dbMaintenance
      */
     public function restoreDB($iMode = self::MAINTENANCE_SINGLEROWS, $iOutput = self::MAINTENANCE_MODE_ONLYRESET)
     {
-        $iStartTime = microtime(true);
-
         $this->setResetMode($iMode);
         $this->setOutputMode($iOutput);
 
@@ -239,8 +237,6 @@ class dbMaintenance
         }
 
         $this->_outputChanges();
-
-        echo "time: ".(microtime(true) - $iStartTime);
 
         return $this->_aChanges;
     }

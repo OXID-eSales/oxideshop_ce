@@ -112,4 +112,5 @@ class Unit_Core_oxshopTest extends OxidTestCase
         $this->assertEquals(rtrim($sQuery), rtrim($aQueries[0]));
     }
 
+
 }

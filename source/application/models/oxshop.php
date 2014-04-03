@@ -369,38 +369,4 @@ class oxShop extends oxI18n
         return $bSuccess;
     }
 
-    /**
-     * Gets shop relations object.
-     *
-     * @return oxShopRelations
-     */
-    protected function _getShopRelations()
-    {
-        if (is_null($this->_oShopRelations)) {
-            /** @var oxShopRelations $oShopRelations */
-            $this->_oShopRelations = oxNew('oxShopRelations', null);
-        }
-
-        return $this->_oShopRelations;
-    }
-
-    /**
-     * Updates inheritance information.
-     */
-    public function updateInheritance()
-    {
-        $myConfig = $this->getConfig();
-
-        $oShopRelations = $this->_getShopRelations();
-        $oShopRelations->setShopIds($this->getId());
-
-        foreach ($this->getMultiShopTables() as $sTable) {
-            if ($myConfig->getShopConfVar("blMallInherit_{$sTable}", $this->getId())) {
-                $oShopRelations->inheritFromShop($this->oxshops__oxparentid->value, $sTable);
-            } else {
-                $oShopRelations->removeInheritedFromShop($this->oxshops__oxparentid->value, $sTable);
-            }
-        }
-
-    }
 }

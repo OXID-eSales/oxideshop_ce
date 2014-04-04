@@ -101,13 +101,7 @@ class ForgotPwd extends oxUBase
 
         $oUser = oxNew( 'oxuser' );
         if ( ( $oExcp = $oUser->checkPassword( $sNewPass, $sConfPass, true ) ) ) {
-            switch ( $oExcp->getMessage() ) {
-                case 'ERROR_MESSAGE_INPUT_EMPTYPASS':
-                case 'ERROR_MESSAGE_PASSWORD_TOO_SHORT':
-                    return oxRegistry::get("oxUtilsView")->addErrorToDisplay('ERROR_MESSAGE_PASSWORD_TOO_SHORT', false, true);
-                default:
-                    return oxRegistry::get("oxUtilsView")->addErrorToDisplay('ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH', false, true);
-            }
+            return oxRegistry::get("oxUtilsView")->addErrorToDisplay( $oExcp->getMessage(), false, true );
         }
 
         // passwords are fine - updating and loggin user in

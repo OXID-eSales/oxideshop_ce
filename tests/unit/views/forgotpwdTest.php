@@ -115,7 +115,7 @@ class Unit_Views_forgotpwdTest extends OxidTestCase
             $blExcp = false;
             $oView->updatePassword();
         } catch ( Exception $oExcp ) {
-            $blExcp = $oExcp->getMessage() == 'ERROR_MESSAGE_PASSWORD_TOO_SHORT';
+            $blExcp = $oExcp->getMessage() == oxRegistry::getLang()->translateString('ERROR_MESSAGE_INPUT_EMPTYPASS');
         }
         $this->assertTrue( $blExcp );
 
@@ -126,7 +126,7 @@ class Unit_Views_forgotpwdTest extends OxidTestCase
             $blExcp = false;
             $oView->updatePassword();
         } catch ( Exception $oExcp ) {
-            $blExcp = $oExcp->getMessage() == 'ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH';
+            $blExcp = $oExcp->getMessage() == oxRegistry::getLang()->translateString('ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH');
         }
         $this->assertTrue( $blExcp );
 
@@ -137,7 +137,7 @@ class Unit_Views_forgotpwdTest extends OxidTestCase
             $blExcp = false;
             $oView->updatePassword();
         } catch ( Exception $oExcp ) {
-            $blExcp = $oExcp->getMessage() == 'ERROR_MESSAGE_PASSWORD_TOO_SHORT';
+            $blExcp = $oExcp->getMessage() == oxRegistry::getLang()->translateString('ERROR_MESSAGE_PASSWORD_TOO_SHORT');
         }
 
         $this->assertTrue( $blExcp );

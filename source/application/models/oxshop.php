@@ -193,8 +193,9 @@ class oxShop extends oxI18n
      * The items are considered inherited in case it is inherited directly to the subshop, recursive check is performed
      * for subsequent subshops.
      *
-     * @param        string $sInheritanceType Inheritable table type
-     * @param array[oxShop] $sInheritanceType The list of subshops
+     * @param string        $sInheritanceType Inheritable table type
+     * @param string        $sShopId          Shop ID
+     * @param array[oxShop] $aSubshops        The list of subshops
      *
      * @return oxShopList
      */

@@ -2954,6 +2954,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
      */
     public function testLogin_Logout_Admin()
     {
+        $this->markTestSkippedUntil('2014-04-07');
         oxAddClassModule( 'Unit_oxuserTest_oxUtilsServer', 'oxutilsserver' );
         modConfig::getInstance()->setConfigParam( 'blDemoShop', 1 );
 

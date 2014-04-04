@@ -24,7 +24,7 @@ require_once 'PHPUnit/Framework.php';
 require_once 'PHPUnit/Util/Filter.php';
 require_once 'PHPUnit/Util/Printer.php';
 require_once 'PHPUnit/Framework/TestSuite.php';
-require_once 'dbMaintenance.php';
+require_once 'dbRestore.php';
 
 class oxPrinter extends PHPUnit_TextUI_ResultPrinter
 {
@@ -35,7 +35,7 @@ class oxPrinter extends PHPUnit_TextUI_ResultPrinter
 
     private $_timeStats;
 
-    private $_oDBMaintenance;
+    private $_oDbRestore;
 
     public function __construct($_blDBResetPerTest = true, $_blDBResetPerSuit = true, $iDBChangeMode = MAINTENANCE_SINGLEROWS, $_iDBChangeOutput = MAINTENANCE_MODE_ONLYRESET, $blVerbose = false)
     {
@@ -44,7 +44,7 @@ class oxPrinter extends PHPUnit_TextUI_ResultPrinter
         $this->_iDBChangeOutput = $_iDBChangeOutput;
         $this->_blDBResetPerTest = $_blDBResetPerTest;
         $this->_blDBResetPerSuit = $_blDBResetPerSuit;
-        $this->_oDBMaintenance = new dbMaintenance ( );
+        $this->_oDbRestore = new DbRestore();
 
     }
 
@@ -55,7 +55,7 @@ class oxPrinter extends PHPUnit_TextUI_ResultPrinter
         }
         parent::addError ( $test, $e, $time );
         if ($this->_blDBResetPerTest && ! isset ( $test->blNoDbResetAfterTest )) {
-            $this->_oDBMaintenance->restoreDB ( $this->_iDBChangeMode, $this->_iDBChangeOutput );
+            $this->_oDbRestore->restoreDB ( $this->_iDBChangeMode, $this->_iDBChangeOutput );
             echo ("|");
         }
     }
@@ -67,7 +67,7 @@ class oxPrinter extends PHPUnit_TextUI_ResultPrinter
         }
         parent::addFailure ( $test, $e, $time );
         if ($this->_blDBResetPerTest && ! isset ( $test->blNoDbResetAfterTest )) {
-            $this->_oDBMaintenance->restoreDB ( $this->_iDBChangeMode, $this->_iDBChangeOutput );
+            $this->_oDbRestore->restoreDB ( $this->_iDBChangeMode, $this->_iDBChangeOutput );
             echo ("|");
         }
     }
@@ -87,7 +87,7 @@ class oxPrinter extends PHPUnit_TextUI_ResultPrinter
 
         parent::endTest ( $test, $time );
         if ($this->_blDBResetPerTest && ! isset ( $test->blNoDbResetAfterTest )) {
-            $this->_oDBMaintenance->restoreDB ( $this->_iDBChangeMode, $this->_iDBChangeOutput );
+            $this->_oDbRestore->restoreDB ( $this->_iDBChangeMode, $this->_iDBChangeOutput );
             echo ("|");
         }
     }
@@ -96,7 +96,7 @@ class oxPrinter extends PHPUnit_TextUI_ResultPrinter
     {
         parent::endTestSuite ( $suite );
         if ($this->_blDBResetPerSuit) {
-            $this->_oDBMaintenance->restoreDB ( $this->_iDBChangeMode, $this->_iDBChangeOutput );
+            $this->_oDbRestore->restoreDB ( $this->_iDBChangeMode, $this->_iDBChangeOutput );
             echo ("|");
         }
 

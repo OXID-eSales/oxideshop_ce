@@ -30,7 +30,7 @@ define('MAINTENANCE_MODE_RESETANDOUTPUT', 3);
 /**
  * Database maintenance class responsible complete for backuping and restoration of test database.
  */
-class dbMaintenance
+class DbRestore
 {
     /**
      * Restore database in single rows (updating, deleting or inserting single records)

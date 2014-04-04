@@ -194,24 +194,26 @@ class oxShop extends oxI18n
      * for subsequent subshops.
      *
      * @param string        $sInheritanceType Inheritable table type
+     * @param bool $blInherit        Whether inherits table or not.
      * @param string        $sShopId          Shop ID
      * @param array[oxShop] $aSubshops        The list of subshops
      *
-     * @return oxShopList
+     * @return array
      */
-    public function getInheritedSubshopList($sInheritanceType, $sShopId = null, $aSubshops = array())
+    public function getInheritedSubshopList($sInheritanceType, $blInherit, $sShopId = null, $aSubshops = array())
     {
         if (is_null($sShopId)) {
             $sShopId = $this->getId();
         }
         $oShopList = oxNew("oxShopList");
         $oShopList->loadSubshopsByParentId($sShopId);
+        /** @var oxShop $oSubShop */
         foreach ($oShopList as $key => $oSubShop) {
             $sSubshopId = $oSubShop->getId();
             $blIsInheritedBulk = $oSubShop->isTableInherited($sInheritanceType);
             if ($blIsInheritedBulk) {
                 $aSubshops[] = $sSubshopId;
-                $aSubshops = $this->getInheritedSubshopList($sInheritanceType, $sSubshopId, $aSubshops);
+                $aSubshops = $this->getInheritedSubshopList($sInheritanceType, $blInherit, $sSubshopId, $aSubshops);
             }
         }
         return $aSubshops;

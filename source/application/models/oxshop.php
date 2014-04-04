@@ -39,7 +39,7 @@ class oxShop extends oxI18n
      *
      * @var array
      */
-    protected $_aMultiShopTables = array();
+    protected $_aMultiShopTables = null;
 
 
     /**
@@ -146,7 +146,9 @@ class oxShop extends oxI18n
      */
     public function getMultiShopTables()
     {
-        $this->_aMultiShopTables = array();
+        if (is_null($this->_aMultiShopTables)) {
+            $this->_aMultiShopTables = array();
+        }
         return $this->_aMultiShopTables;
     }
 

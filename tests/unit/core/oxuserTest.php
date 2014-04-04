@@ -177,10 +177,9 @@ class Unit_Core_oxuserTest extends OxidTestCase
         oxSession::setVar( 'auth', null );
 
         // resetting globally admin mode
-        $oUser = new oxuser();
+        $oUser = new oxUser();
         $oUser->setAdminMode( null );
-        $this->getSession()->deleteVariable('deladrid');
-//        oxSession::deleteVar('deladrid');
+        oxSession::deleteVar('deladrid');
 
         // removing email wrapper module
         oxRemClassModule( 'oxuserTest_oxnewssubscribed' );
@@ -189,6 +188,21 @@ class Unit_Core_oxuserTest extends OxidTestCase
         oxRemClassModule( 'Unit_oxuserTest_oxUtilsServer' );
         oxRemClassModule( 'Unit_oxuserTest_oxUtilsServer2' );
         oxRemClassModule( 'oxuserTestEmail' );
+
+        $oGroup = new oxgroups();
+        $oGroup->delete( '_testGroup' );
+
+        $oGroup = new oxgroups();
+        $oGroup->delete( '_testGroup' );
+
+        $oUser = oxNew( 'oxuser' );
+
+        // removing users
+        foreach ( $this->_aUsers as $aShopUsers ) {
+            foreach ( $aShopUsers as $sUserId ) {
+                $oUser->delete( $sUserId );
+            }
+        }
 
         // restore database
         $oDbRestore = self::_getDbRestore();

@@ -121,13 +121,13 @@ function initDbDump()
     if ($done) {
         throw new Exception("init already done");
     }
-    if (file_exists('unit/dbMaintenance.php')) {
-        include_once 'unit/dbMaintenance.php';
+    if (file_exists('unit/dbRestore.php')) {
+        include_once 'unit/dbRestore.php';
     } else {
-        include_once 'dbMaintenance.php';
+        include_once 'dbRestore.php';
     }
-    $dbM = new dbMaintenance();
-    $dbM->dumpDB();
+    $oDbRestore = new DbRestore();
+    $oDbRestore->dumpDB();
     $done = true;
 }
 initDbDump();

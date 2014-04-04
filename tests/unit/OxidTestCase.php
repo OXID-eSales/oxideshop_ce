@@ -53,9 +53,9 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     protected $_aBackup = array();
 
     /**
-     * @var dbMaintenance
+     * @var DbRestore
      */
-    protected static $_oDbMaintenance = null;
+    protected static $_oDbRestore = null;
 
     /**
      * Calling parent constructor, to fix possible problems with dataprovider
@@ -358,8 +358,8 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
         self::getSession()->cleanup();
         self::getConfig()->cleanup();
 
-        $oDbMaintenance = self::_getDbMaintenance();
-        $oDbMaintenance->restoreDB();
+        $oDbRestore = self::_getDbRestore();
+        $oDbRestore->restoreDB();
 
         if (function_exists('memory_get_usage')) {
             echo "\n" . round(memory_get_usage(1) / 1024 / 1024) . 'M (' . round(memory_get_peak_usage(1) / 1024 / 1024) . 'M)' . "\n";
@@ -477,13 +477,13 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
         }
     }
 
-    protected static function _getDbMaintenance()
+    protected static function _getDbRestore()
     {
-        if (is_null(self::$_oDbMaintenance)) {
-            self::$_oDbMaintenance = new dbMaintenance();
+        if (is_null(self::$_oDbRestore)) {
+            self::$_oDbRestore = new DbRestore();
         }
 
-        return self::$_oDbMaintenance;
+        return self::$_oDbRestore;
     }
 
     /**

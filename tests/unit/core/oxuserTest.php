@@ -191,8 +191,8 @@ class Unit_Core_oxuserTest extends OxidTestCase
         oxRemClassModule( 'oxuserTestEmail' );
 
         // restore database
-        $oDbMaintenance = self::_getDbMaintenance();
-        $oDbMaintenance->restoreDB();
+        $oDbRestore = self::_getDbRestore();
+        $oDbRestore->restoreDB();
 
         parent::tearDown();
     }

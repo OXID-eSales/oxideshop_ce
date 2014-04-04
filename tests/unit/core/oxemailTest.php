@@ -553,16 +553,16 @@ class Unit_Core_oxemailTest extends OxidTestCase
         $oEmail = new oxEmail();
 
         $oEmail->setBody( 'testBody index.php?bonusid=111&sid=123456789 blabla', true );
-        $this->assertEquals( 'testBody index.php?bonusid=111&shp='.$sShopId.' blabla', $oEmail->getBody() );
+        $this->assertEquals( 'testBody index.php?bonusid=111&sid=x&amp;shp='.$sShopId.' blabla', $oEmail->getBody() );
 
         $oEmail->setBody( 'testBody index.php?bonusid=111&force_sid=123456789 blabla', true );
-        $this->assertEquals( 'testBody index.php?bonusid=111&shp='.$sShopId.' blabla', $oEmail->getBody() );
+        $this->assertEquals( 'testBody index.php?bonusid=111&force_sid=x&amp;shp='.$sShopId.' blabla', $oEmail->getBody() );
 
         $oEmail->setBody( 'testBody index.php?bonusid=111&admin_sid=123456789 blabla', true );
-        $this->assertEquals( 'testBody index.php?bonusid=111&shp='.$sShopId.' blabla', $oEmail->getBody() );
+        $this->assertEquals( 'testBody index.php?bonusid=111&admin_sid=x&amp;shp='.$sShopId.' blabla', $oEmail->getBody() );
 
         $oEmail->setBody( 'testBody index.php?bonusid=111&force_admin_sid=123456789 blabla', true );
-        $this->assertEquals( 'testBody index.php?bonusid=111&shp='.$sShopId.' blabla', $oEmail->getBody() );
+        $this->assertEquals( 'testBody index.php?bonusid=111&force_admin_sid=x&amp;shp='.$sShopId.' blabla', $oEmail->getBody() );
     }
 
     /*
@@ -583,17 +583,19 @@ class Unit_Core_oxemailTest extends OxidTestCase
     {
             $sShopId = 'oxbaseshop';
 
+
+
         $this->_oEmail->setAltBody( 'testAltBody index.php?bonusid=111&sid=123456789 blabla', true );
-        $this->assertEquals( 'testAltBody index.php?bonusid=111&shp='.$sShopId.' blabla', $this->_oEmail->getAltBody() );
+        $this->assertEquals( 'testAltBody index.php?bonusid=111&sid=x&shp='.$sShopId.' blabla', $this->_oEmail->getAltBody() );
 
         $this->_oEmail->setAltBody( 'testAltBody index.php?bonusid=111&force_sid=123456789 blabla', true );
-        $this->assertEquals( 'testAltBody index.php?bonusid=111&shp='.$sShopId.' blabla', $this->_oEmail->getAltBody() );
+        $this->assertEquals( 'testAltBody index.php?bonusid=111&force_sid=x&shp='.$sShopId.' blabla', $this->_oEmail->getAltBody() );
 
         $this->_oEmail->setAltBody( 'testAltBody index.php?bonusid=111&admin_sid=123456789 blabla', true );
-        $this->assertEquals( 'testAltBody index.php?bonusid=111&shp='.$sShopId.' blabla', $this->_oEmail->getAltBody() );
+        $this->assertEquals( 'testAltBody index.php?bonusid=111&admin_sid=x&shp='.$sShopId.' blabla', $this->_oEmail->getAltBody() );
 
         $this->_oEmail->setAltBody( 'testAltBody index.php?bonusid=111&force_admin_sid=123456789 blabla', true );
-        $this->assertEquals( 'testAltBody index.php?bonusid=111&shp='.$sShopId.' blabla', $this->_oEmail->getAltBody() );
+        $this->assertEquals( 'testAltBody index.php?bonusid=111&force_admin_sid=x&shp='.$sShopId.' blabla', $this->_oEmail->getAltBody() );
     }
 
     /*

@@ -185,7 +185,7 @@ class Unit_Core_oxattributelistTest extends OxidTestCase
     public function testLoadAttributesWithSort()
     {
         oxRegistry::getLang()->setBaseLanguage(0);
-        $sSelect = "insert into oxattribute (oxid, oxshopid, oxshopincl, oxshopexcl, oxtitle, oxpos ) values ('test3', '1', '1', '0', 'test3', '3'), ('test1', '1', '1', '0', 'test1', '1'), ('test2', '1', '1', '0', 'test2', '2')";
+        $sSelect = "insert into oxattribute (oxid, oxshopid, oxtitle, oxpos ) values ('test3', '1', 'test3', '3'), ('test1', '1', '1', '0', 'test1', '1'), ('test2', '1', '1', '0', 'test2', '2')";
             $sSelect = "insert into oxattribute (oxid, oxshopid, oxtitle, oxpos ) values ('test3', 'oxbaseshop', 'test3', '3'), ('test1', 'oxbaseshop', 'test1', '1'), ('test2', 'oxbaseshop', 'test2', '2')";
         $rs = oxDb::getDB()->execute($sSelect);
         $sArtId = 'testArt';

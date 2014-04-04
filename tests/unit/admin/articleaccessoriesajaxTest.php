@@ -197,7 +197,7 @@ class Unit_Admin_ArticleAccessoriesAjaxTest extends OxidTestCase
         modConfig::setRequestParameter( "oxid", '_testArticleAccessories' );
         
         $this->assertEquals( 2, oxDb::getDb()->getOne( "select count(oxid) from oxaccessoire2article where OXARTICLENID='_testArticleAccessories'" ) );
-        
+        /** @var article_accessories_ajax $oView */
         $oView = oxNew( 'article_accessories_ajax' );
         $oView->removearticleacc();
         $this->assertEquals( 0, oxDb::getDb()->getOne( "select count(oxid) from oxaccessoire2article where OXARTICLENID='_testArticleAccessories'" ) );

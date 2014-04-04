@@ -135,7 +135,6 @@ class Unit_Core_oxbasketitemTest extends OxidTestCase
         // making select list
         $this->oSelList = oxNew( 'oxselectlist' );
         $this->oSelList->oxselectlist__oxshopid = new oxField(oxRegistry::getConfig()->getShopId(), oxField::T_RAW);
-        $this->oSelList->oxselectlist__oxshopincl = new oxField(oxRegistry::getConfig()->getShopId(), oxField::T_RAW);
         $this->oSelList->oxselectlist__oxtitle = new oxField('Test title', oxField::T_RAW);
         $this->oSelList->oxselectlist__oxident = new oxField('Test ident', oxField::T_RAW);
         $this->oSelList->oxselectlist__oxvaldesc = new oxField('Test valdesc', oxField::T_RAW);

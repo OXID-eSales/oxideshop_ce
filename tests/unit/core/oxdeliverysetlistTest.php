@@ -216,7 +216,7 @@ class Unit_Core_oxDeliverysetListTest extends OxidTestCase
         $oDel1->setId( '_testdelivery1' );
         $oDel1->oxdelivery__oxactive = new oxField(1, oxField::T_RAW);
         $oDel1->oxdelivery__oxshopid = new oxField($iActShop, oxField::T_RAW);
-        $oDel1->oxdelivery__oxshopincl = new oxField($iActShop, oxField::T_RAW);
+//        $oDel1->oxdelivery__oxshopincl = new oxField($iActShop, oxField::T_RAW);
         $oDel1->oxdelivery__oxtitle = new oxField('Test delivery1', oxField::T_RAW);
         $oDel1->oxdelivery__oxaddsumtype = new oxField('abs', oxField::T_RAW);
         $oDel1->oxdelivery__oxaddsum = new oxField('100', oxField::T_RAW);
@@ -231,7 +231,7 @@ class Unit_Core_oxDeliverysetListTest extends OxidTestCase
         $oDel2->setId( '_testdelivery2' );
         $oDel2->oxdelivery__oxactive = new oxField(1, oxField::T_RAW);
         $oDel2->oxdelivery__oxshopid = new oxField($iActShop, oxField::T_RAW);
-        $oDel2->oxdelivery__oxshopincl = new oxField($iActShop, oxField::T_RAW);
+//        $oDel2->oxdelivery__oxshopincl = new oxField($iActShop, oxField::T_RAW);
         $oDel2->oxdelivery__oxtitle = new oxField('Test delivery2', oxField::T_RAW);
         $oDel2->oxdelivery__oxaddsumtype = new oxField('abs', oxField::T_RAW);
         $oDel2->oxdelivery__oxaddsum = new oxField('100', oxField::T_RAW);
@@ -246,7 +246,7 @@ class Unit_Core_oxDeliverysetListTest extends OxidTestCase
         $oDelSet1->setId( '_testdeliveryset1' );
         $oDelSet1->oxdeliveryset__oxactive = new oxField(1, oxField::T_RAW);
         $oDelSet1->oxdeliveryset__oxshopid = new oxField($iActShop, oxField::T_RAW);
-        $oDelSet1->oxdeliveryset__oxshopincl = new oxField($iActShop, oxField::T_RAW);
+//        $oDelSet1->oxdeliveryset__oxshopincl = new oxField($iActShop, oxField::T_RAW);
         $oDelSet1->oxdeliveryset__oxtitle = new oxField('Test deliveryset1', oxField::T_RAW);
         $oDelSet1->oxdeliveryset__oxpos = new oxField(2, oxField::T_RAW);
         $oDelSet1->save();
@@ -256,7 +256,7 @@ class Unit_Core_oxDeliverysetListTest extends OxidTestCase
         $oDelSet2->setId( '_testdeliveryset2' );
         $oDelSet2->oxdeliveryset__oxactive = new oxField(1, oxField::T_RAW);
         $oDelSet2->oxdeliveryset__oxshopid = new oxField($iActShop, oxField::T_RAW);
-        $oDelSet2->oxdeliveryset__oxshopincl = new oxField($iActShop, oxField::T_RAW);
+//        $oDelSet2->oxdeliveryset__oxshopincl = new oxField($iActShop, oxField::T_RAW);
         $oDelSet2->oxdeliveryset__oxtitle = new oxField('Test deliveryset2', oxField::T_RAW);
         $oDelSet2->oxdeliveryset__oxpos = new oxField(1, oxField::T_RAW);
         $oDelSet2->save();
@@ -770,7 +770,7 @@ class Unit_Core_oxDeliverysetListTest extends OxidTestCase
         $oDel1->setId( '_testdelivery1' );
         $oDel1->oxdelivery__oxactive = new oxField(1, oxField::T_RAW);
         $oDel1->oxdelivery__oxshopid = new oxField($iActShop, oxField::T_RAW);
-        $oDel1->oxdelivery__oxshopincl = new oxField($iActShop, oxField::T_RAW);
+//        $oDel1->oxdelivery__oxshopincl = new oxField($iActShop, oxField::T_RAW);
         $oDel1->save();
 
         // Deliveryset 1
@@ -778,7 +778,7 @@ class Unit_Core_oxDeliverysetListTest extends OxidTestCase
         $oDelSet1->setId( '_testdeliveryset1' );
         $oDelSet1->oxdeliveryset__oxactive = new oxField(1, oxField::T_RAW);
         $oDelSet1->oxdeliveryset__oxshopid = new oxField($iActShop, oxField::T_RAW);
-        $oDelSet1->oxdeliveryset__oxshopincl = new oxField($iActShop, oxField::T_RAW);
+//        $oDelSet1->oxdeliveryset__oxshopincl = new oxField($iActShop, oxField::T_RAW);
         $oDelSet1->save();
 
         // Article 1 => Deliverycost 1

@@ -1703,7 +1703,7 @@ class Unit_Core_oxbaseTest extends OxidTestCase
     public function  testUpdateWithOXID()
     {
         $myDB    = oxDb::getDb();
-        $sInsert = "Insert into oxarticles (`OXID`,`OXSHOPID`,`OXSHOPINCL`,`OXSHOPEXCL`,`OXTITLE`) values ('_test','1','1','0','test')";
+        $sInsert = "Insert into oxarticles (`OXID`,`OXSHOPID`,`OXTITLE`) values ('_test','1','test')";
             $sInsert = "Insert into oxarticles (`OXID`,`OXTITLE`) values ('_test','test')";
         $myDB->Execute($sInsert);
 

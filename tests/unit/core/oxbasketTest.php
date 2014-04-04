@@ -131,7 +131,6 @@ class Unit_Core_oxbasketTest extends OxidTestCase
         // making select list
         $this->oSelList = oxNew( 'oxselectlist' );
         $this->oSelList->oxselectlist__oxshopid = new oxField(oxRegistry::getConfig()->getShopId(), oxField::T_RAW);
-        $this->oSelList->oxselectlist__oxshopincl = new oxField(oxRegistry::getConfig()->getShopId(), oxField::T_RAW);
         $this->oSelList->oxselectlist__oxtitle = new oxField('Test title', oxField::T_RAW);
         $this->oSelList->oxselectlist__oxident = new oxField('Test ident', oxField::T_RAW);
         $this->oSelList->oxselectlist__oxvaldesc = new oxField('Test valdesc__@@', oxField::T_RAW);
@@ -150,7 +149,6 @@ class Unit_Core_oxbasketTest extends OxidTestCase
         $this->aDiscounts[0]->init( "oxdiscount" );
         $this->aDiscounts[0]->setId( 'testdiscount0' );
         $this->aDiscounts[0]->oxdiscount__oxshopid = new oxField(oxRegistry::getConfig()->getShopId(), oxField::T_RAW);
-        $this->aDiscounts[0]->oxdiscount__oxshopincl = new oxField(oxRegistry::getConfig()->getShopId(), oxField::T_RAW);
         $this->aDiscounts[0]->oxdiscount__oxactive = new oxField(1, oxField::T_RAW);
         $this->aDiscounts[0]->oxdiscount__oxtitle = new oxField('Test discount 0', oxField::T_RAW);
         $this->aDiscounts[0]->oxdiscount__oxamount = new oxField(1, oxField::T_RAW);
@@ -168,7 +166,6 @@ class Unit_Core_oxbasketTest extends OxidTestCase
         $this->aDiscounts[1]->init( "oxdiscount" );
         $this->aDiscounts[1]->setId( 'testdiscount1' );
         $this->aDiscounts[1]->oxdiscount__oxshopid = new oxField(oxRegistry::getConfig()->getShopId(), oxField::T_RAW);
-        $this->aDiscounts[1]->oxdiscount__oxshopincl = new oxField(oxRegistry::getConfig()->getShopId(), oxField::T_RAW);
         $this->aDiscounts[1]->oxdiscount__oxactive = new oxField(1, oxField::T_RAW);
         $this->aDiscounts[1]->oxdiscount__oxtitle = new oxField('Test discount 1', oxField::T_RAW);
         $this->aDiscounts[1]->oxdiscount__oxamount = new oxField(1, oxField::T_RAW);
@@ -186,7 +183,6 @@ class Unit_Core_oxbasketTest extends OxidTestCase
         $this->aDiscounts[2]->init( "oxdiscount" );
         $this->aDiscounts[2]->setId( 'testdiscount2' );
         $this->aDiscounts[2]->oxdiscount__oxshopid = new oxField(oxRegistry::getConfig()->getShopId(), oxField::T_RAW);
-        $this->aDiscounts[2]->oxdiscount__oxshopincl = new oxField(oxRegistry::getConfig()->getShopId(), oxField::T_RAW);
         $this->aDiscounts[2]->oxdiscount__oxactive = new oxField(1, oxField::T_RAW);
         $this->aDiscounts[2]->oxdiscount__oxtitle = new oxField('Test discount 2', oxField::T_RAW);
         $this->aDiscounts[2]->oxdiscount__oxamount = new oxField(1, oxField::T_RAW);

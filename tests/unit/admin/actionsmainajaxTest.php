@@ -283,6 +283,7 @@ class Unit_Admin_ActionsMainAjaxTest extends OxidTestCase
         
         $this->assertEquals( 2, oxDb::getDb()->getOne( "select count(oxid) from oxactions2article where oxactionid='_testActionAdd'" ) );
         
+        /** @var actions_main_ajax $oView */
         $oView = oxNew( 'actions_main_ajax' );
         $oView->removeartfromact();
         $this->assertEquals( 0, oxDb::getDb()->getOne( "select count(oxid) from oxactions2article where oxactionid='_testActionAdd'" ) );

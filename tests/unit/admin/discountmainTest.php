@@ -132,7 +132,7 @@ class Unit_Admin_DiscountMainTest extends OxidTestCase
         $oTestDiscount = new oxdiscount();
         $oTestDiscount->setId( "_testDiscountId" );
         $oTestDiscount->oxdiscount__oxshopid     = new oxField( oxRegistry::getConfig()->getBaseShopId() );
-        $oTestDiscount->oxdiscount__oxshopincl   = new oxField( oxRegistry::getConfig()->getBaseShopId() );
+//        $oTestDiscount->oxdiscount__oxshopincl   = new oxField( oxRegistry::getConfig()->getBaseShopId() );
         $oTestDiscount->oxdiscount__oxactive     = new oxField( 1 );
         $oTestDiscount->oxdiscount__oxtitle      = new oxField( "Test" );
         $oTestDiscount->oxdiscount__oxamount     = new oxField( 1 );

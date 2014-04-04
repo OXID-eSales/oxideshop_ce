@@ -244,7 +244,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $oArticle->setId($sId);
         $oArticle->oxarticles__oxprice = new oxField(15.5, oxField::T_RAW);
         $oArticle->oxarticles__oxshopid = new oxField(oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW);
-        $oArticle->oxarticles__oxshopincl = new oxField(oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW);
+//        $oArticle->oxarticles__oxshopincl = new oxField(oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW);
         $oArticle->oxarticles__oxtitle = new oxField("test", oxField::T_RAW);
         $oArticle->save();
 
@@ -268,7 +268,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $oVariant->setId($sId);
         $oVariant->oxarticles__oxprice = new oxField(12.2, oxField::T_RAW);
         $oVariant->oxarticles__oxshopid = new oxField(oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW);
-        $oVariant->oxarticles__oxshopincl = new oxField(oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW);
+//        $oVariant->oxarticles__oxshopincl = new oxField(oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW);
         $oVariant->oxarticles__oxparentid = new oxField($sParentId, oxField::T_RAW);
         $oVariant->oxarticles__oxtitle    = new oxField("test", oxField::T_RAW);
         $oVariant->oxarticles__oxtitle_1  = new oxField("testEng", oxField::T_RAW);
@@ -1655,7 +1655,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $oArticle = new oxarticle();
         $oArticle->setId( '_testArt2');
         $oArticle->oxarticles__oxshopid = new oxField(oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW);
-        $oArticle->oxarticles__oxshopincl = new oxField(oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW);
+//        $oArticle->oxarticles__oxshopincl = new oxField(oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW);
         $oArticle->UNITinsert();
         $sOxid = oxDb::getDb()->getOne( "Select oxid from oxarticles where oxid = '_testArt2'");
         $this->assertEquals( '_testArt2', $sOxid);
@@ -2113,7 +2113,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $oArticle2->modifyCacheKey(null, false);
         $oArticle2->setId('_testArt2');
         $oArticle2->oxarticles__oxshopid = new oxField(oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW);
-        $oArticle2->oxarticles__oxshopincl = new oxField(oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW);
+//        $oArticle2->oxarticles__oxshopincl = new oxField(oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW);
         $oArticle2->oxarticles__oxparentid = new oxField($oArticle->oxarticles__oxid->value, oxField::T_RAW);
         $oArticle2->save();
 
@@ -2912,7 +2912,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $oPriceCategory->oxcategories__oxpricefrom = new oxField(99, oxField::T_RAW);
         $oPriceCategory->oxcategories__oxpriceto = new oxField(101, oxField::T_RAW);
         $oPriceCategory->oxcategories__oxshopid = new oxField(oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW);
-        $oPriceCategory->oxcategories__oxshopincl = new oxField(oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW);
+//        $oPriceCategory->oxcategories__oxshopincl = new oxField(oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW);
         $oPriceCategory->save();
 
 
@@ -2922,7 +2922,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $oArticle->oxarticles__oxactive = new oxField(1, oxField::T_RAW);
         $oArticle->oxarticles__oxprice = new oxField(100, oxField::T_RAW);
         $oArticle->oxarticles__oxshopid = new oxField(oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW);
-        $oArticle->oxarticles__oxshopincl = new oxField(oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW);
+//        $oArticle->oxarticles__oxshopincl = new oxField(oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW);
         $oArticle->oxarticles__oxtitle = new oxField("test", oxField::T_RAW);
         $oArticle->save();
 
@@ -4475,7 +4475,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $oVariant->setId('_testVar2');
         $oVariant->oxarticles__oxprice = new oxField(12.2, oxField::T_RAW);
         $oVariant->oxarticles__oxshopid = new oxField(oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW);
-        $oVariant->oxarticles__oxshopincl = new oxField(oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW);
+//        $oVariant->oxarticles__oxshopincl = new oxField(oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW);
         $oVariant->oxarticles__oxparentid = new oxField($this->oArticle->oxarticles__oxid->value, oxField::T_RAW);
         $oVariant->oxarticles__oxtitle    = new oxField("test", oxField::T_RAW);
 
@@ -4547,7 +4547,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
     public function testGetAttributesWithSort()
     {
         $oArticle = $this->_createArticle('_testArt', '_testVar');
-        $sSelect = "insert into oxattribute (oxid, oxshopid, oxshopincl, oxshopexcl, oxtitle, oxpos ) values ('test3', '1', '1', '0', 'test3', '3'), ('test1', '1', '1', '0', 'test1', '1'), ('test2', '1', '1', '0', 'test2', '2')";
+        $sSelect = "insert into oxattribute (oxid, oxshopid, oxtitle, oxpos ) values ('test3', '1', 'test3', '3'), ('test1', '1', '1', '0', 'test1', '1'), ('test2', '1', '1', '0', 'test2', '2')";
             $sSelect = "insert into oxattribute (oxid, oxshopid, oxtitle, oxpos ) values ('test3', 'oxbaseshop', 'test3', '3'), ('test1', 'oxbaseshop', 'test1', '1'), ('test2', 'oxbaseshop', 'test2', '2')";
         oxDb::getDB()->execute($sSelect);
         $sArtId = $oArticle->getId();
@@ -6137,7 +6137,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $oArticle->oxarticles__oxparentid = new oxField('2000');
         $oArticle->oxarticles__oxprice = new oxField(12.2);
         $oArticle->oxarticles__oxshopid = new oxField(oxRegistry::getConfig()->getBaseShopId());
-        $oArticle->oxarticles__oxshopincl = new oxField(oxRegistry::getConfig()->getBaseShopId());
+//        $oArticle->oxarticles__oxshopincl = new oxField(oxRegistry::getConfig()->getBaseShopId());
         $oArticle->oxarticles__oxtitle    = new oxField("test");
         $oArticle->oxarticles__oxtitle_1  = new oxField("testEng");
         $oArticle->save();
@@ -6771,7 +6771,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $oSel->init( "oxselectlist" );
         $oSel->setId( "_testSel1" );
         $oSel->oxselectlist__oxshopid    = new oxField( 1 );
-        $oSel->oxselectlist__oxshopincl  = new oxField( 1 );
+//        $oSel->oxselectlist__oxshopincl  = new oxField( 1 );
         $oSel->oxselectlist__oxtitle     = new oxField( "selection list A" );
         $oSel->oxselectlist__oxtitle_1   = new oxField( "selection list A" );
         $oSel->oxselectlist__oxvaldesc   = new oxField( "L__@@M__@@S__@@" );
@@ -6782,7 +6782,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $oSel->init( "oxselectlist" );
         $oSel->setId( "_testSel2" );
         $oSel->oxselectlist__oxshopid    = new oxField( 1 );
-        $oSel->oxselectlist__oxshopincl  = new oxField( 1 );
+//        $oSel->oxselectlist__oxshopincl  = new oxField( 1 );
         $oSel->oxselectlist__oxtitle     = new oxField( "selection list B" );
         $oSel->oxselectlist__oxtitle_1   = new oxField( "selection list B" );
         $oSel->oxselectlist__oxvaldesc   = new oxField( "Blue__@@Green__@@Red__@@" );

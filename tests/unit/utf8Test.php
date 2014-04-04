@@ -1349,6 +1349,20 @@ class Unit_utf8Test extends OxidTestCase
         $this->assertTrue( $oUser->login( $sValue, $sValue ) );
     }
 
+    public function testOxUserCheckPassword()
+    {
+        oxTestModules::addFunction( "oxInputValidator", "checkPassword", "{ throw new oxInputException('ERROR_MESSAGE_INPUT_EMPTYPASS'); }");
+        $sValue = 'ūЛü';
+
+        $oUser = oxNew( 'oxuser' );
+        try {
+            $oUser->checkPassword( $sValue, $sValue, true );
+        } catch ( oxInputException $oExcp ) {
+            return;
+        }
+        $this->fail( 'Error in _checkPassword function' );
+    }
+
     public function testOxInputValidatorCheckPassword()
     {
         $sValue = 'ūЛü';
@@ -1822,7 +1836,7 @@ class Unit_utf8Test extends OxidTestCase
     public function testOxEmailSetBody()
     {
         $sBodyToSet = "agentūлитовfür <a href=\"someurl.php?cl=comecl&amp;sid=somesid&amp;something=something\" title=\"agentūлитовfür\">";
-        $sBodyWillGet = "agentūлитовfür <a href=\"someurl.php?cl=comecl&amp;shp=".oxRegistry::getConfig()->getBaseShopId()."&amp;something=something\" title=\"agentūлитовfür\">";
+        $sBodyWillGet = "agentūлитовfür <a href=\"someurl.php?cl=comecl&amp;sid=x&amp;shp=".oxRegistry::getConfig()->getBaseShopId()."&amp;something=something\" title=\"agentūлитовfür\">";
 
         $oEmail = new oxEmail();
         $oEmail->setBody( $sBodyToSet );
@@ -1832,7 +1846,7 @@ class Unit_utf8Test extends OxidTestCase
     public function testOxEmailSetAltBody()
     {
         $sBodyToSet = "agentūлитовfür <a href=\"someurl.php?cl=comecl&amp;sid=somesid&amp;something=something\" title=\"agentūлитовfür\">";
-        $sBodyWillGet = "agentūлитовfür <a href=\"someurl.php?cl=comecl&shp=".oxRegistry::getConfig()->getBaseShopId()."&something=something\" title=\"agentūлитовfür\">";
+        $sBodyWillGet = "agentūлитовfür <a href=\"someurl.php?cl=comecl&sid=x&shp=".oxRegistry::getConfig()->getBaseShopId()."&something=something\" title=\"agentūлитовfür\">";
 
         $oEmail = new oxEmail();
         $oEmail->setAltBody( $sBodyToSet );

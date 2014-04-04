@@ -126,4 +126,61 @@ class Unit_Core_oxshopTest extends OxidTestCase
         $this->assertFalse($oShop->isTableInherited('oxcategories'));
     }
 
+
+    /**
+     * Test call to getMultishopTables when it's not set anywhere
+     */
+    public function testGetMultishopTablesDefaultNotSet()
+    {
+        $oShop = new oxShop();
+        if (OXID_VERSION_EE) {
+            $this->getConfig()->setConfigParam('aMultiShopTables', array('table1', 'table2'));
+            $this->assertEquals(array('table1', 'table2'), $oShop->getMultiShopTables());
+        } else {
+            $this->assertEquals(array(), $oShop->getMultiShopTables());
+        }
+    }
+
+
+    /**
+     * Test call to getMultishopTables when it's set
+     */
+    public function testGetMultishopTablesWhenSet()
+    {
+        $oShop = new oxShop();
+        $oShop->setMultiShopTables(array('table1', 'table2'));
+        $this->assertEquals(array('table1', 'table2'), $oShop->getMultiShopTables());
+    }
+
+    /**
+     * Test addQuery method when adding 1 query, and than another 1
+     */
+    public function testAddQuery()
+    {
+        $oShop = new oxShop();
+        $oShop->addQuery('query');
+        $this->assertEquals(array('query'), $oShop->getQueries());
+
+        $oShop->addQuery('anotherquery');
+        $this->assertEquals(array('query', 'anotherquery'), $oShop->getQueries());
+    }
+
+    /**
+     * Test getQueries method when no query is added
+     */
+    public function testGetQueriesNoQueriesAdded()
+    {
+        $oShop = new oxShop();
+        $this->assertEquals(array(), $oShop->getQueries());
+    }
+
+    /**
+     * Test getQueries method when queries are added
+     */
+    public function testGetQueriesQueriesAdded()
+    {
+        $oShop = new oxShop();
+        $oShop->setQueries(array('query', 'query2'));
+        $this->assertEquals(array('query', 'query2'), $oShop->getQueries());
+    }
 }

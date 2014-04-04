@@ -38,7 +38,6 @@ $aData = array(
         0 => array (
             'oxid'         => 'testitmdiscount',
             'oxshopid' => 1,
-            'oxshopexcl' => 0,
             'oxaddsum'     => 0,
             'oxaddsumtype' => 'itm',
             'oxamount' => 1,

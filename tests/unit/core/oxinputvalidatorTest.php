@@ -408,7 +408,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
         $oValidator->expects($this->once())->method('_addValidationError')
                 ->with(
                         $this->equalTo('oxuser__oxustid'),
-                        $this->attributeEqualTo('message','VAT_MESSAGE_ID_NOT_VALID')
+                        $this->attributeEqualTo('message', oxRegistry::getLang()->translateString('VAT_MESSAGE_ID_NOT_VALID'))
                 );
 
         $sForeignCountryId = "a7c40f6320aeb2ec2.72885259"; //Austria

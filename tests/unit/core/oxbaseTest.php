@@ -2363,4 +2363,17 @@ class Unit_Core_oxbaseTest extends OxidTestCase
         $this->assertTrue( in_array( "oxtitle", $aFieldNames ) );
     }
 
+
+    public function testInsertCorrectMapId()
+    {
+        $oBase = new oxBase();
+        $oBase->init("oxarticles");
+        $oBase->oxarticles__oxtitle = new oxField("testProduct");
+        $oBase->save();
+        //assume demo data has more that 100 products
+        $this->assertGreaterThan(100, $oBase->getMapId());
+
+        //cleanup
+        $oBase->delete();
+    }
 }

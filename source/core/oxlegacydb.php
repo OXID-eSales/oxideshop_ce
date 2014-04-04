@@ -371,4 +371,14 @@ class oxLegacyDb extends oxSuperCfg
         $this->getDb( false )->UI( $iPollSecs );
     }
 
+    /**
+     * Returns last insert ID
+     *
+     * @return int
+     */
+    public function Insert_ID()
+    {
+        return $this->getDb( false )->Insert_ID();
+    }
+
 }

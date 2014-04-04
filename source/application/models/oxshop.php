@@ -204,10 +204,10 @@ class oxShop extends oxI18n
             $sShopId = $this->getId();
         }
         $oShopList = oxNew("oxShopList");
-        $oShopList->loadByParentId($sShopId);
-        foreach ($oShopList as $key => $oShop) {
-            $sSubshopId = $oShop->getId();
-            $blIsInheritedBulk = oxRegistry::getConfig()->getShopConfVar( 'blMallInherit_' . $sInheritanceType, $sSubshopId );
+        $oShopList->loadSubshopsByParentId($sShopId);
+        foreach ($oShopList as $key => $oSubShop) {
+            $sSubshopId = $oSubShop->getId();
+            $blIsInheritedBulk = $oSubShop->isTableInherited($sInheritanceType);
             if ($blIsInheritedBulk) {
                 $aSubshops[] = $sSubshopId;
                 $aSubshops = $this->getInheritedSubshopList($sInheritanceType, $sSubshopId, $aSubshops);

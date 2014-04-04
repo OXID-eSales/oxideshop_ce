@@ -207,17 +207,23 @@ class oxShop extends oxI18n
         if (is_null($sShopId)) {
             $sShopId = $this->getId();
         }
+        /** @var oxShopList $oShopList */
         $oShopList = oxNew("oxShopList");
         $oShopList->loadSubshopsByParentId($sShopId);
         /** @var oxShop $oSubShop */
         foreach ($oShopList as $key => $oSubShop) {
             $sSubshopId = $oSubShop->getId();
             $blIsInheritedBulk = $oSubShop->isTableInherited($sInheritanceType);
+
+            if ($blIsInheritedBulk == $blInherit) {
+                array_push($aSubshops, $sSubshopId);
+            }
+
             if ($blIsInheritedBulk) {
-                $aSubshops[] = $sSubshopId;
                 $aSubshops = $this->getInheritedSubshopList($sInheritanceType, $blInherit, $sSubshopId, $aSubshops);
             }
         }
+
         return $aSubshops;
     }
 

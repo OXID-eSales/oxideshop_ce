@@ -100,6 +100,7 @@ class Shop_Main extends oxAdminDetails
         $isubjlang = oxRegistry::getConfig()->getRequestParameter("subjlang");
         $iLang = ( $isubjlang && $isubjlang > 0 ) ? $isubjlang : 0;
 
+        /** @var oxShop $oShop */
         $oShop = oxNew( "oxshop" );
         if ( $soxId != "-1" ) {
             $oShop->loadInLang( $iLang, $soxId );

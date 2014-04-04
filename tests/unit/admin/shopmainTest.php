@@ -47,7 +47,7 @@ class Unit_Admin_ShopMainTest extends OxidTestCase
      *
      * @return null
      */
-    public function testSave()
+    public function testSaveSuccess()
     {
         // testing..
         oxTestModules::addFunction( 'oxshop', 'save', '{ throw new Exception( "save" ); }');

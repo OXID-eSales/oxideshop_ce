@@ -80,7 +80,7 @@ class Unit_Core_oxCountryListTest extends OxidTestCase
      */
     public function testSelectString()
     {
-        $oCountryList = oxNew("oxcountrylist");
+        $oCountryList = new oxCountryList();
         $sVN = $oCountryList->getBaseObject()->getViewName();
         $sSelect = "SELECT oxid, oxtitle, oxisoalpha2 FROM $sVN WHERE oxtitle like 'oxCountryListTest%' ORDER BY oxorder, oxtitle" ;
         $oCountryList->selectString( $sSelect );
@@ -100,7 +100,7 @@ class Unit_Core_oxCountryListTest extends OxidTestCase
         $oCountry->load( '_testCountryId4' );
         $oCountry->oxcountry__oxorder = new oxField('999', oxField::T_RAW);
         $oCountry->save();
-        $oCountryList = oxNew("oxcountrylist");
+        $oCountryList = new oxCountryList();
         $sSelect = "SELECT oxid, oxtitle as oxtitle FROM oxcountry WHERE oxtitle like 'oxCountryListTest%' ORDER BY oxorder, oxtitle";
         $oCountryList->selectString( $sSelect );
 
@@ -115,7 +115,7 @@ class Unit_Core_oxCountryListTest extends OxidTestCase
      */
     public function testLoadActiveCountries()
     {
-        $oCountryList = oxNew("oxcountrylist");
+        $oCountryList = new oxCountryList();
         $oCountryList->loadActiveCountries();
 
         $this->assertEquals( 5, $oCountryList->count() );
@@ -126,7 +126,7 @@ class Unit_Core_oxCountryListTest extends OxidTestCase
      */
     public function testLoadActiveCountriesInEN()
     {
-        $oCountryList = oxNew("oxcountrylist");
+        $oCountryList = new oxCountryList();
         $oCountryList->loadActiveCountries(1);
         $this->assertEquals( 'Germany', $oCountryList['a7c40f631fc920687.20179984']->oxcountry__oxtitle->value );
     }

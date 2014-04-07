@@ -755,7 +755,7 @@ class Unit_Core_oxi18ntest extends OxidTestCase
         $oObj->setId("test_insert");
         $oObj->oxstates__oxtitle = new oxField('test_x');
 
-        $oDb = $this->getMock('stdclass', array('select','execute', 'quote', 'getOne'));
+        $oDb = $this->getMock('stdclass', array('select','execute', 'quote', 'getOne', 'Insert_ID'));
         $oDb->expects($this->any())->method('select')->will($this->returnValue(false));
         $oDb->expects($this->any())->method('execute')->will($this->evalFunction('{Unit_Core_oxi18ntest::$aLoggedSqls[] = $args[0];return true;}'));
         $oDb->expects($this->any())->method('quote')->will($this->evalFunction('{return "\'".mysql_real_escape_string($args[0])."\'";}'));

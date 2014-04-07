@@ -60,10 +60,14 @@ class Unit_Admin_ArticleExtendAjaxTest extends OxidTestCase
             oxDb::getDb()->execute( "insert into oxobject2category set oxid='_testObject2CategoryRemoveAll2', oxcatnid='_testCategory2', oxobjectid = '_testObjectRemoveAll'" );
             oxDb::getDb()->execute( "insert into oxobject2category set oxid='_testObject2CategoryRemoveAll3', oxcatnid='_testCategory3', oxobjectid = '_testObjectRemoveAll'" );
         
-        
-        oxDb::getDb()->execute( "insert into oxobject2category set oxid='_testObject2CategoryUpdateDate', oxcatnid='_testCategory', oxobjectid = '_testObjectUpdateDate'" );
-        oxDb::getDb()->execute( "insert into oxobject2category set oxid='_testObject2CategoryDefault1', oxcatnid='_testCategory1', oxobjectid = '_testObjectDefault'" );
-        oxDb::getDb()->execute( "insert into oxobject2category set oxid='_testObject2CategoryDefault2', oxcatnid='_testCategory2', oxobjectid = '_testObjectDefault'" );
+        $oRelations = new oxShopRelations(1);
+
+        oxDb::getDb()->execute( "insert into oxobject2category set oxmapid='99997', oxid='_testObject2CategoryUpdateDate', oxcatnid='_testCategory', oxobjectid = '_testObjectUpdateDate'" );
+        oxDb::getDb()->execute( "insert into oxobject2category set oxmapid='99998', oxid='_testObject2CategoryDefault1', oxcatnid='_testCategory1', oxobjectid = '_testObjectDefault'" );
+        oxDb::getDb()->execute( "insert into oxobject2category set oxmapid='99999', oxid='_testObject2CategoryDefault2', oxcatnid='_testCategory2', oxobjectid = '_testObjectDefault'" );
+        $oRelations->addToShop(99997, 'oxobject2category');
+        $oRelations->addToShop(99998, 'oxobject2category');
+        $oRelations->addToShop(99999, 'oxobject2category');
     }
     
     /**

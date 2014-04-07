@@ -44,15 +44,14 @@ class Unit_Admin_ActionsMainAjaxTest extends OxidTestCase
             $this->setObject2CategoryViewTable( 'oxobject2category' );
             $this->setShopIdTest( 'oxbaseshop' );
             
-            oxDb::getDb()->execute( "insert into oxarticles set oxid='_testArticle1', oxshopid='".$this->getShopIdTest()."', oxtitle='_testArticle1'" );
-            oxDb::getDb()->execute( "insert into oxarticles set oxid='_testArticle2', oxshopid='".$this->getShopIdTest()."', oxtitle='_testArticle2'" );
-
+            oxDb::getDb()->execute( "replace into oxarticles set oxid='_testArticle1', oxshopid='".$this->getShopIdTest()."', oxtitle='_testArticle1'" );
+            oxDb::getDb()->execute( "replace into oxarticles set oxid='_testArticle2', oxshopid='".$this->getShopIdTest()."', oxtitle='_testArticle2'" );
         
         parent::setUp();
         
         
-        oxDb::getDb()->execute( "insert into oxactions2article set oxid='_testActionAdd1', oxactionid='_testActionAdd', oxshopid='".$this->getShopIdTest()."', oxartid='_testArticle1'" );
-        oxDb::getDb()->execute( "insert into oxactions2article set oxid='_testActionAdd2', oxactionid='_testActionAdd', oxshopid='".$this->getShopIdTest()."', oxartid='_testArticle2'" );
+        oxDb::getDb()->execute( "replace into oxactions2article set oxid='_testActionAdd1', oxactionid='_testActionAdd', oxshopid='".$this->getShopIdTest()."', oxartid='_testArticle1'" );
+        oxDb::getDb()->execute( "replace into oxactions2article set oxid='_testActionAdd2', oxactionid='_testActionAdd', oxshopid='".$this->getShopIdTest()."', oxartid='_testArticle2'" );
     }
     
     /**

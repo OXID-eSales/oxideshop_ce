@@ -46,16 +46,16 @@ class Unit_Admin_AttributeMainAjaxTest extends OxidTestCase
             $this->setArticleViewTable( 'oxv_oxarticles_de' );
             $this->setObject2AttributeViewTable( 'oxv_oxobject2attribute_de' );
             $this->setObject2CategoryViewTable( 'oxv_oxobject2category_de' );
-            oxDb::getDb()->execute( "insert into oxarticles set oxid='_testArticleRemoveAll', oxshopid='1', oxtitle='_testArticleRemoveAll'" );
-            oxDb::getDb()->execute( "insert into oxattribute set oxid='_testAttribute', oxtitle='_testAttribute'" );
-            oxDb::getDb()->execute( "insert into oxattribute set oxid='_testAttributeAddAll', oxtitle='_testAttributeAddAll'" );
+            oxDb::getDb()->execute( "replace into oxarticles set oxid='_testArticleRemoveAll', oxshopid='1', oxtitle='_testArticleRemoveAll'" );
+            oxDb::getDb()->execute( "replace into oxattribute set oxid='_testAttribute', oxtitle='_testAttribute'" );
+            oxDb::getDb()->execute( "replace into oxattribute set oxid='_testAttributeAddAll', oxtitle='_testAttributeAddAll'" );
         
         
-        oxDb::getDb()->execute( "insert into oxobject2attribute set oxid='_testOxid1', oxobjectid='_testObjectRemove', oxattrid='_testRemove'" );
-        oxDb::getDb()->execute( "insert into oxobject2attribute set oxid='_testOxid2', oxobjectid='_testObjectRemove', oxattrid='_testRemove'" );
+        oxDb::getDb()->execute( "replace into oxobject2attribute set oxid='_testOxid1', oxobjectid='_testObjectRemove', oxattrid='_testRemove'" );
+        oxDb::getDb()->execute( "replace into oxobject2attribute set oxid='_testOxid2', oxobjectid='_testObjectRemove', oxattrid='_testRemove'" );
         
-        oxDb::getDb()->execute( "insert into oxobject2attribute set oxid='_testOxid3', oxobjectid='_testArticleRemoveAll', oxattrid='_testRemoveAll'" );
-        oxDb::getDb()->execute( "insert into oxobject2attribute set oxid='_testOxid4', oxobjectid='_testArticleRemoveAll', oxattrid='_testRemoveAll'" );
+        oxDb::getDb()->execute( "replace into oxobject2attribute set oxid='_testOxid3', oxobjectid='_testArticleRemoveAll', oxattrid='_testRemoveAll'" );
+        oxDb::getDb()->execute( "replace into oxobject2attribute set oxid='_testOxid4', oxobjectid='_testArticleRemoveAll', oxattrid='_testRemoveAll'" );
     }
     
     /**

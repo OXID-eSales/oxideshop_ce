@@ -40,14 +40,14 @@ class Unit_Admin_ArticleSelectionAjaxTest extends OxidTestCase
         parent::setUp();
         
             $this->setSelectListViewTable( 'oxv_oxselectlist_de' );
-            oxDb::getDb()->execute( "insert into oxarticles set oxid='_testArticle', oxparentid='_testArticlePArent', oxshopid='1', oxtitle='_testArticle'" );
-            oxDb::getDb()->execute( "insert into oxselectlist set oxid='_testSelectList', oxshopid='1', oxtitle='_testSelectList'" );
+            oxDb::getDb()->execute( "replace into oxarticles set oxid='_testArticle', oxparentid='_testArticlePArent', oxshopid='1', oxtitle='_testArticle'" );
+            oxDb::getDb()->execute( "replace into oxselectlist set oxid='_testSelectList', oxshopid='1', oxtitle='_testSelectList'" );
         
         
-        oxDb::getDb()->execute( "insert into oxobject2article set oxid='_testOxid', oxobjectid='_testArtcle', oxarticlenid=''" );
+        oxDb::getDb()->execute( "replace into oxobject2article set oxid='_testOxid', oxobjectid='_testArtcle', oxarticlenid=''" );
         
-        oxDb::getDb()->execute( "insert into oxobject2selectlist set oxid='_testOxid1', oxobjectid='_testRemove', oxselnid='_testRemove'" );
-        oxDb::getDb()->execute( "insert into oxobject2selectlist set oxid='_testOxid2', oxobjectid='_testRemove', oxselnid='_testRemove'" );
+        oxDb::getDb()->execute( "replace into oxobject2selectlist set oxid='_testOxid1', oxobjectid='_testRemove', oxselnid='_testRemove'" );
+        oxDb::getDb()->execute( "replace into oxobject2selectlist set oxid='_testOxid2', oxobjectid='_testRemove', oxselnid='_testRemove'" );
     }
     
     /**

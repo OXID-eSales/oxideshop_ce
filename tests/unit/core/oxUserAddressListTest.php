@@ -27,6 +27,10 @@ class Unit_Core_oxUserAddressListTest extends OxidTestCase
 {
     public $aList = array();
 
+    const AUSTRIA_ID = 'a7c40f6320aeb2ec2.72885259';
+
+    private $_iAddressCounter = 0;
+
     /**
      * Initialize the fixture.
      *
@@ -35,18 +39,6 @@ class Unit_Core_oxUserAddressListTest extends OxidTestCase
     protected function setUp()
     {
         parent::setUp();
-
-        $oSubj = new oxAddress();
-        $oSubj->setId('__testAddress');
-        $oSubj->oxaddress__oxuserid = new oxField('oxdefaultadmin');
-        // Set country Austria as this country has different name in english and germany.
-        $oSubj->oxaddress__oxcountryid = new oxField('a7c40f6320aeb2ec2.72885259');
-        $oSubj->oxaddress__oxfname = new oxField('Fname');
-        $oSubj->oxaddress__oxlname = new oxField('Lname');
-        $oSubj->oxaddress__oxstreet = new oxField('Street');
-        $oSubj->oxaddress__oxstreetnr = new oxField('StreetNr');
-        $oSubj->oxaddress__oxcity = new oxField('Kaunas');
-        $oSubj->save();
     }
 
     /**
@@ -83,13 +75,35 @@ class Unit_Core_oxUserAddressListTest extends OxidTestCase
      */
     public function testLoadActiveAddress($iLanguageId, $sCountryNameExpected)
     {
-        oxRegistry::getLang()->setBaseLanguage( $iLanguageId );
+        oxRegistry::getLang()->setBaseLanguage( $iLanguageId, self::AUSTRIA_ID);
+
+        $sAddressId = $this->_createAddress('oxdefaultadmin', self::AUSTRIA_ID);
 
         $sUserId = 'oxdefaultadmin';
         $oAddressList = new oxUserAddressList;
         $oAddressList->load($sUserId);
 
         $this->assertSame(1, count($oAddressList), 'User has one address created in test setup.');
-        $this->assertSame($sCountryNameExpected, $oAddressList['__testAddress']->oxaddress__oxcountry->value, 'Country name is different in different language.');
+        $this->assertSame($sCountryNameExpected, $oAddressList[$sAddressId]->oxaddress__oxcountry->value, 'Country name is different in different language.');
+    }
+
+    private function _createAddress($sUserId, $sCountryId)
+    {
+        $sOXID = '__testAddress'. $this->_iAddressCounter;
+        $this->_iAddressCounter++;
+
+        $oSubj = new oxAddress();
+        $oSubj->setId($sOXID);
+        $oSubj->oxaddress__oxuserid = new oxField( $sUserId );
+        // Set country Austria as this country has different name in english and germany.
+        $oSubj->oxaddress__oxcountryid = new oxField( $sCountryId );
+        $oSubj->oxaddress__oxfname = new oxField( 'Fname' );
+        $oSubj->oxaddress__oxlname = new oxField( 'Lname' );
+        $oSubj->oxaddress__oxstreet = new oxField( 'Street' );
+        $oSubj->oxaddress__oxstreetnr = new oxField( 'StreetNr' );
+        $oSubj->oxaddress__oxcity = new oxField( 'Kaunas' );
+        $oSubj->save();
+
+        return $sOXID;
     }
 }

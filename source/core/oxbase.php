@@ -489,16 +489,12 @@ class oxBase extends oxSuperCfg
     public function getMapId()
     {
         if (!is_null($this->_iMapId)) {
-            return $this->_iMapId;
+            $sMapId = $this->_iMapId;
+        } elseif (!($sMapId = $this->getFieldData("oxmapid"))) {
+            $sMapId = $this->getId();
         }
 
-        $sMapId = $this->getFieldData("oxmapid");
-
-        if (($sMapId)) {
-            return $sMapId;
-        }
-
-        return $this->getId();
+        return $sMapId;
     }
 
     /**

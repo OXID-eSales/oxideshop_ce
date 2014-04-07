@@ -835,8 +835,11 @@ class Unit_Core_oxbaseTest extends OxidTestCase
     {
         $oBase = new oxBase();
 
+        $this->assertNull($oBase->getMapId());
+
         $oBase->setId("testId");
         $this->assertEquals("testId", $oBase->getMapId());
+
         $oBase->setMapId(15);
         $this->assertEquals(15, $oBase->getMapId());
     }

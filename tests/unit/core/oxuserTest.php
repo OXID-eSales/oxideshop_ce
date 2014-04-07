@@ -2950,43 +2950,33 @@ class Unit_Core_oxuserTest extends OxidTestCase
     }
 
     /**
-     * oxuser::login() and oxuser::logout() test
+     * oxUser::login() and oxUser::logout() test for demo shop
      */
-    public function testLogin_Logout_Admin()
+    public function testLogin_Logout_AdminDemoShop()
     {
-        $this->markTestSkippedUntil('2014-04-07');
         oxAddClassModule( 'Unit_oxuserTest_oxUtilsServer', 'oxutilsserver' );
-        modConfig::getInstance()->setConfigParam( 'blDemoShop', 1 );
+        $oConfig->setConfigParam( 'blDemoShop', 1 );
+        $oConfig->setAdminMode( true );
 
-        $myConfig = oxConfig::getInstance();
-        $myConfig->setAdminMode( true );
-
-        $oUser = $this->getMock( 'oxuser', array( 'isAdmin' ));
-        $oUser->expects( $this->any() )->method( 'isAdmin' )->will( $this->returnValue( true ) );
-
-        // note: due to demoshop mode, use admin/admin here
+        $oUser = new oxUser();
+        // demo shop login data: admin/admin here
         $oUser->login( "admin", "admin" );
 
-        $this->assertEquals( oxSession::getVar( 'auth' ), 'oxdefaultadmin' );
+        $this->assertNotNull( $this->getSessionParam('auth') );
 
-        // 'usr' var should not be set here
-        $this->assertNull( oxSession::getVar('usr') );
+        // 'usr' var should not be set here in admin
+        $this->assertNull( $this->getSessionParam('usr') );
 
         $oUser = $oUser->getUser();
 
+        $this->assertNotNull( $oUser );
+        $this->assertNotNull( $oUser->getId() );
 
-        if ( $oUser ) {
-            $this->assertNotNull( $oUser );
-            $this->assertEquals( 'oxdefaultadmin', $oUser->getId() );
+        $oUser->logout();
+        $this->assertNull( $this->getSessionParam('usr') );
+        $this->assertNull( $this->getSessionParam('auth') );
+        $this->assertFalse( $oUser->getUser() );
 
-            $oUser->logout();
-
-            $this->assertNull( oxSession::getVar( 'usr' ) );
-            $this->assertNull( oxSession::getVar( 'auth' ) );
-            $this->assertFalse( $oUser->getUser() );
-        } else {
-            $this->fail( 'User not loaded' );
-        }
     }
 
     /**

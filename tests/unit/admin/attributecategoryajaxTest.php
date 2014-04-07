@@ -42,16 +42,16 @@ class Unit_Admin_AttributeCategoryAjaxTest extends OxidTestCase
         
             $this->setShopIdTest( 'oxbaseshop' );
             $this->setCategoryViewTable( 'oxv_oxcategories_de' );
-            oxDb::getDb()->execute( "insert into oxcategories set oxid='_testCategory', oxtitle='_testCategory', oxshopid='".$this->getgetShopIdTest()."', oxactive=1" );
-            oxDb::getDb()->execute( "insert into oxattribute set oxid='_testAttribute', oxtitle='_testAttribute', oxshopid='".$this->getgetShopIdTest()."'" );
-            oxDb::getDb()->execute( "insert into oxattribute set oxid='_testAttributeAll', oxtitle='_testAttributeAll', oxshopid='".$this->getgetShopIdTest()."'" );
+            oxDb::getDb()->execute( "replace into oxcategories set oxid='_testCategory', oxtitle='_testCategory', oxshopid='".$this->getgetShopIdTest()."', oxactive=1" );
+            oxDb::getDb()->execute( "replace into oxattribute set oxid='_testAttribute', oxtitle='_testAttribute', oxshopid='".$this->getgetShopIdTest()."'" );
+            oxDb::getDb()->execute( "replace into oxattribute set oxid='_testAttributeAll', oxtitle='_testAttributeAll', oxshopid='".$this->getgetShopIdTest()."'" );
         
         
-        oxDb::getDb()->execute( "insert into oxcategory2attribute set oxid='_testOxid1', oxobjectid='_testRemove'" );
-        oxDb::getDb()->execute( "insert into oxcategory2attribute set oxid='_testOxid2', oxobjectid='_testRemove'" );
+        oxDb::getDb()->execute( "replace into oxcategory2attribute set oxid='_testOxid1', oxobjectid='_testRemove'" );
+        oxDb::getDb()->execute( "replace into oxcategory2attribute set oxid='_testOxid2', oxobjectid='_testRemove'" );
                 
-        oxDb::getDb()->execute( "insert into oxcategory2attribute set oxid='_testOxid3', oxobjectid='_testCategory', oxattrid='_testRemoveAll'" );
-        oxDb::getDb()->execute( "insert into oxcategory2attribute set oxid='_testOxid4', oxobjectid='_testCategory', oxattrid='_testRemoveAll'" );
+        oxDb::getDb()->execute( "replace into oxcategory2attribute set oxid='_testOxid3', oxobjectid='_testCategory', oxattrid='_testRemoveAll'" );
+        oxDb::getDb()->execute( "replace into oxcategory2attribute set oxid='_testOxid4', oxobjectid='_testCategory', oxattrid='_testRemoveAll'" );
     }
     
     /**

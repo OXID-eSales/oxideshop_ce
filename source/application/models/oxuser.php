@@ -56,28 +56,28 @@ class oxUser extends oxBase
     /**
      * User groups list
      *
-     * @var oxlist
+     * @var oxList
      */
     protected $_oGroups;
 
     /**
      * User address list array
      *
-     * @var oxlist
+     * @var oxUserAddressList
      */
     protected $_aAddresses = array();
 
     /**
      * User payment list
      *
-     * @var oxlist
+     * @var oxList
      */
     protected $_oPayments;
 
     /**
      * User recommendation list
      *
-     * @var oxlist
+     * @var oxList
      */
     protected $_oRecommList;
 
@@ -332,7 +332,7 @@ class oxUser extends oxBase
         }
 
         $sViewName = getViewName( "oxgroups" );
-        $this->_oGroups = oxNew( 'oxlist', 'oxgroups' );
+        $this->_oGroups = oxNew( 'oxList', 'oxgroups' );
         $sSelect  = "select {$sViewName}.* from {$sViewName} left join oxobject2group on oxobject2group.oxgroupsid = {$sViewName}.oxid
                      where oxobject2group.oxobjectid = " . oxDb::getDb()->quote( $sOXID );
         $this->_oGroups->selectString( $sSelect );
@@ -350,12 +350,9 @@ class oxUser extends oxBase
     {
         $sUserId = isset( $sUserId ) ? $sUserId : $this->getId();
         if ( !isset( $this->_aAddresses[$sUserId] ) ) {
-            $sSelect = "select * from oxaddress where oxaddress.oxuserid = " . oxDb::getDb()->quote( $sUserId );
-
-            //P
-            $this->_aAddresses[$sUserId] = oxNew( "oxlist" );
-            $this->_aAddresses[$sUserId]->init( "oxaddress" );
-            $this->_aAddresses[$sUserId]->selectString( $sSelect );
+            $oUserAddressList = oxNew('oxUserAddressList');
+            $oUserAddressList->load($sUserId);
+            $this->_aAddresses[$sUserId] = $oUserAddressList;
 
             // marking selected
             if ( $sAddressId = $this->getSelectedAddressId() ) {
@@ -470,7 +467,7 @@ class oxUser extends oxBase
      *
      * @param string $sOXID object ID (default is null)
      *
-     * @return object oxlist with oxuserpayments objects
+     * @return object oxList with oxuserpayments objects
      */
     public function getUserPayments( $sOXID = null )
     {
@@ -482,7 +479,7 @@ class oxUser extends oxBase
 
             $sSelect = 'select * from oxuserpayments where oxuserid = ' . oxDb::getDb()->quote( $sOXID ) . ' ';
 
-            $this->_oPayments = oxNew( 'oxlist' );
+            $this->_oPayments = oxNew( 'oxList' );
             $this->_oPayments->init( 'oxUserPayment' );
             $this->_oPayments->selectString( $sSelect );
 
@@ -694,7 +691,7 @@ class oxUser extends oxBase
      */
     public function getOrders( $iLimit = false, $iPage = 0 )
     {
-        $oOrders = oxNew( 'oxlist' );
+        $oOrders = oxNew( 'oxList' );
         $oOrders->init( 'oxorder' );
 
         if ( $iLimit !== false ) {
@@ -889,7 +886,7 @@ class oxUser extends oxBase
     public function removeFromGroup( $sGroupID = null )
     {
         if ( $sGroupID != null && $this->inGroup( $sGroupID ) ) {
-            $oGroups = oxNew( 'oxlist' );
+            $oGroups = oxNew( 'oxList' );
             $oGroups->init( 'oxobject2group' );
             $sSelect = 'select * from oxobject2group where oxobject2group.oxobjectid = "'.$this->getId().'" and oxobject2group.oxgroupsid = "'.$sGroupID.'" ';
             $oGroups->selectString( $sSelect );
@@ -1383,10 +1380,10 @@ class oxUser extends oxBase
             throw $oEx;
         }
 
-        $oConfig = $this->getConfig();
+        $myConfig = $this->getConfig();
         if ( $sPassword ) {
 
-            $sShopID = $oConfig->getShopId();
+            $sShopID = $myConfig->getShopId();
             $sSelect = $this->_getLoginQuery( $sUser, $sPassword, $sShopID, $this->isAdmin() );
 
             // load from DB
@@ -1403,22 +1400,22 @@ class oxUser extends oxBase
         }
 
 
-        //login successful?
+        //login successfull?
         if ( $this->oxuser__oxid->value ) {
             // yes, successful login
 
-            //resetting active user
+            //reseting active user
             $this->setUser( null );
 
             if ( $this->isAdmin() ) {
-                oxRegistry::getSession()->setVariable( 'auth', $this->oxuser__oxid->value );
+                oxSession::setVar( 'auth', $this->oxuser__oxid->value );
             } else {
-                oxRegistry::getSession()->setVariable( 'usr', $this->oxuser__oxid->value );
+                oxSession::setVar( 'usr', $this->oxuser__oxid->value );
             }
 
             // cookie must be set ?
-            if ( $blCookie && $oConfig->getConfigParam( 'blShowRememberMe' ) ) {
-                oxRegistry::get("oxUtilsServer")->setUserCookie( $this->oxuser__oxusername->value, $this->oxuser__oxpassword->value, $oConfig->getShopId(), 31536000, $this->oxuser__oxpasssalt->value );
+            if ( $blCookie && $myConfig->getConfigParam( 'blShowRememberMe' ) ) {
+                oxRegistry::get("oxUtilsServer")->setUserCookie( $this->oxuser__oxusername->value, $this->oxuser__oxpassword->value, $myConfig->getShopId(), 31536000, $this->oxuser__oxpasssalt->value );
             }
 
             return true;
@@ -1812,7 +1809,7 @@ class oxUser extends oxBase
      *
      * @param string $sOXID object ID (default is null)
      *
-     * @return object oxlist with oxrecommlist objects
+     * @return object oxList with oxrecommlist objects
      */
     public function getUserRecommLists( $sOXID = null )
     {
@@ -1828,7 +1825,7 @@ class oxUser extends oxBase
         $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 10;
 
 
-        $oRecommList = oxNew( 'oxlist' );
+        $oRecommList = oxNew( 'oxList' );
         $oRecommList->init( 'oxrecommlist' );
         $oRecommList->setSqlLimit( $iNrofCatArticles * $iActPage, $iNrofCatArticles );
         $iShopId = $this->getConfig()->getShopId();

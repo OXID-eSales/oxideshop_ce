@@ -52,13 +52,12 @@ class Unit_Core_oxUserAddressListTest extends OxidTestCase
     {
         $this->cleanUpTable('oxaddress');
 
-        /*
-        foreach ( $this->aList as $oCountry )
-            $oCountry->delete();
-        */
         parent::tearDown();
     }
 
+    /**
+     * @return array
+     */
     public function providerLoadActiveAddress()
     {
         return array(
@@ -68,7 +67,9 @@ class Unit_Core_oxUserAddressListTest extends OxidTestCase
     }
 
     /**
-     * Tests selectString and _localCompare
+     * Tests if country name selected in correct language.
+     *
+     * Fix for bug entry 4960: Address country title is saved into user session and doesn't get updated, when user switches languages
      *
      * @param int $iLanguageId
      * @param string $sCountryNameExpected
@@ -88,6 +89,9 @@ class Unit_Core_oxUserAddressListTest extends OxidTestCase
         $this->assertSame($sCountryNameExpected, $oAddressList[$sAddressId]->oxaddress__oxcountry->value, 'Country name is different in different language.');
     }
 
+    /**
+     * Check if address count match created.
+     */
     public function testLoadCheckSeveralAddress()
     {
         $sUserId = 'oxdefaultadmin';
@@ -100,6 +104,13 @@ class Unit_Core_oxUserAddressListTest extends OxidTestCase
         $this->assertSame(2, count($oAddressList), 'User has two addresses - Austria and Germany.');
     }
 
+    /**
+     * Create address for given user.
+     *
+     * @param $sUserId
+     * @param $sCountryId
+     * @return string
+     */
     private function _createAddress($sUserId, $sCountryId)
     {
         $sOXID = '__testAddress'. $this->_iAddressCounter;

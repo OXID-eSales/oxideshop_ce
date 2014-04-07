@@ -29,6 +29,8 @@ class Unit_Core_oxUserAddressListTest extends OxidTestCase
 
     const AUSTRIA_ID = 'a7c40f6320aeb2ec2.72885259';
 
+    const GERMANY_ID = 'a7c40f631fc920687.20179984';
+
     private $_iAddressCounter = 0;
 
     /**
@@ -73,18 +75,29 @@ class Unit_Core_oxUserAddressListTest extends OxidTestCase
      *
      * @dataProvider providerLoadActiveAddress
      */
-    public function testLoadActiveAddress($iLanguageId, $sCountryNameExpected)
+    public function testLoadCheckCountryNamePerLanguage($iLanguageId, $sCountryNameExpected)
     {
-        oxRegistry::getLang()->setBaseLanguage( $iLanguageId, self::AUSTRIA_ID);
-
-        $sAddressId = $this->_createAddress('oxdefaultadmin', self::AUSTRIA_ID);
-
         $sUserId = 'oxdefaultadmin';
+        oxRegistry::getLang()->setBaseLanguage( $iLanguageId, self::AUSTRIA_ID);
+        $sAddressId = $this->_createAddress($sUserId, self::AUSTRIA_ID);
+
         $oAddressList = new oxUserAddressList;
         $oAddressList->load($sUserId);
 
-        $this->assertSame(1, count($oAddressList), 'User has one address created in test setup.');
+        $this->assertSame(1, count($oAddressList), 'User has one address - Austria.');
         $this->assertSame($sCountryNameExpected, $oAddressList[$sAddressId]->oxaddress__oxcountry->value, 'Country name is different in different language.');
+    }
+
+    public function testLoadCheckSeveralAddress()
+    {
+        $sUserId = 'oxdefaultadmin';
+        $sAustriaAddressId = $this->_createAddress($sUserId, self::AUSTRIA_ID);
+        $sGermanyAddressId = $this->_createAddress($sUserId, self::GERMANY_ID);
+
+        $oAddressList = new oxUserAddressList;
+        $oAddressList->load($sUserId);
+
+        $this->assertSame(2, count($oAddressList), 'User has two addresses - Austria and Germany.');
     }
 
     private function _createAddress($sUserId, $sCountryId)

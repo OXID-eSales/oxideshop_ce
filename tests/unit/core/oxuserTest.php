@@ -2954,6 +2954,8 @@ class Unit_Core_oxuserTest extends OxidTestCase
      */
     public function testLogin_Logout_AdminDemoShop()
     {
+        $oConfig = $this->getConfig();
+
         oxAddClassModule( 'Unit_oxuserTest_oxUtilsServer', 'oxutilsserver' );
         $oConfig->setConfigParam( 'blDemoShop', 1 );
         $oConfig->setAdminMode( true );

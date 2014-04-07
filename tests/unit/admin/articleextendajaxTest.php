@@ -84,8 +84,7 @@ class Unit_Admin_ArticleExtendAjaxTest extends OxidTestCase
         
         oxDb::getDb()->execute( "delete from oxobject2category where oxobjectid='_testObjectDefault'" );
         
-        oxDb::getDb()->execute( "delete from oxcategories2shop where oxmapobjectid > 99990 and oxmapobjectid < 99995" );
-        oxDb::getDb()->execute( "delete from oxobject2category2shop where oxmapobjectid > 99990 and oxmapobjectid <= 99999" );
+
         parent::tearDown();
     }
     

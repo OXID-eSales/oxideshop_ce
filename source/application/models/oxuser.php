@@ -1372,10 +1372,10 @@ class oxUser extends oxBase
             throw $oEx;
         }
 
-        $myConfig = $this->getConfig();
+        $oConfig = $this->getConfig();
         if ( $sPassword ) {
 
-            $sShopID = $myConfig->getShopId();
+            $sShopID = $oConfig->getShopId();
             $sSelect = $this->_getLoginQuery( $sUser, $sPassword, $sShopID, $this->isAdmin() );
 
             // load from DB
@@ -1392,11 +1392,11 @@ class oxUser extends oxBase
         }
 
 
-        //login successfull?
+        //login successful?
         if ( $this->oxuser__oxid->value ) {
             // yes, successful login
 
-            //reseting active user
+            //resetting active user
             $this->setUser( null );
 
             if ( $this->isAdmin() ) {
@@ -1406,8 +1406,8 @@ class oxUser extends oxBase
             }
 
             // cookie must be set ?
-            if ( $blCookie && $myConfig->getConfigParam( 'blShowRememberMe' ) ) {
-                oxRegistry::get("oxUtilsServer")->setUserCookie( $this->oxuser__oxusername->value, $this->oxuser__oxpassword->value, $myConfig->getShopId(), 31536000, $this->oxuser__oxpasssalt->value );
+            if ( $blCookie && $oConfig->getConfigParam( 'blShowRememberMe' ) ) {
+                oxRegistry::get("oxUtilsServer")->setUserCookie( $this->oxuser__oxusername->value, $this->oxuser__oxpassword->value, $oConfig->getShopId(), 31536000, $this->oxuser__oxpasssalt->value );
             }
 
             return true;

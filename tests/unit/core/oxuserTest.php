@@ -168,8 +168,6 @@ class Unit_Core_oxuserTest extends OxidTestCase
      */
     protected function tearDown()
     {
-        $myDB = oxDb::getDB();
-
         $oActUser = new oxuser();
         if ( $oActUser->loadActiveUser() ) {
             $oActUser->logout();
@@ -178,15 +176,11 @@ class Unit_Core_oxuserTest extends OxidTestCase
         oxSession::setVar( 'usr', null );
         oxSession::setVar( 'auth', null );
 
-        $myDB->execute( 'delete from oxuser where oxusername="aaa@bbb.lt" ' );
-        $myDB->execute( 'delete from oxconfig where oxshopid != "'.oxConfig::getInstance()->getBaseShopId().'" ' );
-        $myDB->execute( 'delete from oxaddress where oxid like "test%" ' );
-        $myDB->execute( 'delete from oxacceptedterms' );
-        $myDB->execute( 'delete from oxinvitations' );
-
         // resetting globally admin mode
         $oUser = new oxuser();
         $oUser->setAdminMode( null );
+        $this->getSession()->deleteVariable('deladrid');
+//        oxSession::deleteVar('deladrid');
 
         // removing email wrapper module
         oxRemClassModule( 'oxuserTest_oxnewssubscribed' );
@@ -196,60 +190,9 @@ class Unit_Core_oxuserTest extends OxidTestCase
         oxRemClassModule( 'Unit_oxuserTest_oxUtilsServer2' );
         oxRemClassModule( 'oxuserTestEmail' );
 
-        $oUser = oxNew( 'oxuser' );
-
-        // removing users
-        foreach ( $this->_aUsers as $aShopUsers ) {
-            foreach ( $aShopUsers as $sUserId ) {
-
-                $oUser->delete( $sUserId );
-
-                $sOrderID = $myDB->getOne( 'select oxid from oxorder where oxuserid = "'.$sUserId.'" ' );
-
-                $sDelete = 'delete from oxorder where oxid = "'.$sOrderID.'" ';
-                $myDB->Execute( $sDelete );
-
-                $sDelete = 'delete from oxorderarticles where oxorderid = "'.$sOrderID.'" ';
-                $myDB->Execute( $sDelete );
-
-                $sDelete = 'delete from oxuserpayments where oxuserpayments.oxuserid = "'.$sUserId.'" or oxuserid like "test%@oxid-esales.com"';
-                $myDB->Execute( $sDelete );
-
-                $sDelete = 'delete from oxobject2group where oxid = "'.$sUserId.'" or oxobjectid="'.$sUserId.'"';
-                $myDB->execute( $sDelete );
-
-                $sDelete = 'delete from oxaddress where oxuserid = "'.$sUserId.'" ';
-                $myDB->execute( $sDelete );
-
-                $sDelete = 'delete from oxnewssubscribed where oxemail = "aaa@bbb.lt" ';
-                $myDB->execute( $sDelete );
-
-                $sDelete = 'delete from oxrecommlists where oxid = "test" ';
-                $myDB->execute( $sDelete );
-
-                $sDelete = 'delete from oxobject2list where oxid = "test" ';
-                $myDB->execute( $sDelete );
-
-                $sDelete = 'delete from oxremark where oxparentid = "'.$sUserId.'" ';
-                $myDB->execute( $sDelete );
-
-                $sDelete = 'delete from oxuserbaskets where oxid = "'.$sUserId.'" ';
-                $myDB->execute( $sDelete );
-
-                $sDelete = 'delete from oxuserbasketitems where oxbasketid = "'.$sUserId.'" ';
-                $myDB->execute( $sDelete );
-            }
-
-            $this->cleanUpTable( 'oxobject2group' );
-        }
-
-        oxSession::deleteVar('deladrid');
-
-        $oGroup = new oxgroups();
-        $oGroup->delete( '_testGroup' );
-
-        $oGroup = new oxgroups();
-        $oGroup->delete( '_testGroup' );
+        // restore database
+        $oDbMaintenance = self::_getDbMaintenance();
+        $oDbMaintenance->restoreDB();
 
         parent::tearDown();
     }
@@ -276,7 +219,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
         $aActives = array( '0', '1' );
         $aRights  = array( 'user', 'malladmin' );
         $sTable   = getViewName( 'oxuser' );
-        //$iLastCustNr = ( int ) $myDB->getOne( 'select max( oxcustnr ) from '.$sTable ) + 1;
+        $iLastCustNr = 0;//( int ) $myDB->getOne( 'select max( oxcustnr ) from '.$sTable ) + 1;
         $sCountryId  = $myDB->getOne( 'select oxid from oxcountry where oxactive = "1"' );
 
         for ( $iCnt = 0; $iCnt < 5; $iCnt++ ) {
@@ -364,8 +307,6 @@ class Unit_Core_oxuserTest extends OxidTestCase
         $oUser->load( $sUserId );
 
         $sShopID = $oUser->getShopId();
-
-        $sArticleID = $myDB->getOne( "select oxid from oxarticles where oxshopid='{$sShopID}' order by rand()" );
 
         // adding some more orders..
         for ( $i = 0; $i < 21; $i++ ) {

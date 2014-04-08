@@ -1372,12 +1372,6 @@ class oxBase extends oxSuperCfg
 
         $blRet = (bool) $oDb->execute( $sInsert );
 
-        //sets newly createde map id to object
-        $iInsertId = $oDb->Insert_ID();
-        if ($iInsertId) {
-            $this->setMapId($iInsertId);
-        }
-
 
         return $blRet;
     }

@@ -37,13 +37,8 @@ class Unit_Core_oxshoplistTest extends OxidTestCase
     {
         parent::setUp();
 
-        $oDb = oxDb::getDb();
-        $oDb->execute( "DELETE FROM `oxshops` WHERE `oxid` > 1" );
-
-        for ( $i = 2; $i < 5; $i++ ) {
-            $oDb->execute( "INSERT INTO `oxshops` (OXID, OXACTIVE, OXNAME, OXPARENTID) VALUES ($i, 1, 'Test Shop $i', 1)" );
-        }
     }
+
 
     /**
      * All shop list test
@@ -54,6 +49,5 @@ class Unit_Core_oxshoplistTest extends OxidTestCase
         $oShopList->getAll();
         $this->assertEquals( 4, $oShopList->count() );
     }
-
 
 }

@@ -47,15 +47,4 @@ class oxShopList extends oxList
         $this->selectString( 'SELECT `oxshops`.* FROM `oxshops`' );
     }
 
-    /**
-     * Loads the list of subshops for given parent
-     *
-     * @parent int $iParentId Parent id
-     */
-    public function loadSubshopsByParentId($iParentId)
-    {
-        $this->selectString( "SELECT `oxshops`.* FROM `oxshops` WHERE oxparentid = '$iParentId' " );
-        //TODO: check if the number of subshops loaded in the oxList is not limted
-    }
-
 }

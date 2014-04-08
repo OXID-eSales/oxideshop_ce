@@ -213,6 +213,8 @@ class dbMaintenance
      */
     public function restoreDB($iMode = self::MAINTENANCE_SINGLEROWS, $iOutput = self::MAINTENANCE_MODE_ONLYRESET)
     {
+        $iStartTime = microtime(true);
+
         $this->setResetMode($iMode);
         $this->setOutputMode($iOutput);
 
@@ -222,15 +224,23 @@ class dbMaintenance
         $aDumpChecksum = $this->getDumpChecksum();
         $aChecksum = $this->_getTableChecksum($aTables);
 
+        $blHasChanges = false;
         foreach ($aTables as $sTable) {
             if (!isset($aDump[$sTable])) {
                 $this->_dropTable($sTable);
             } else if ($aChecksum[$sTable] !== $aDumpChecksum[$sTable]) {
                 $this->restoreTable($sTable, false);
+                $blHasChanges = true;
             }
         }
 
+        if ($blHasChanges) {
+            $this->_aDBDump['checksum'] = $aChecksum;
+        }
+
         $this->_outputChanges();
+
+        echo "time: ".(microtime(true) - $iStartTime);
 
         return $this->_aChanges;
     }
@@ -450,6 +460,9 @@ class dbMaintenance
         $aChangedColumns = array();
 
         foreach ($aRow as $sColumn => $sEntry) {
+            if ($sColumn == 'OXTIMESTAMP') {
+                continue;
+            }
 
             if (array_key_exists($sColumn, $aExpectedRow) && strcmp($aExpectedRow[$sColumn], $sEntry) != 0) {
                 $aChangedColumns[] = $sColumn;

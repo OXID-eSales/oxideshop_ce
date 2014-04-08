@@ -370,7 +370,7 @@ class oxShop extends oxI18n
     {
         $sDefaultLangAddition = '';
         $sShopAddition = $iShopId === null ? '' : "_{$iShopId}";
-        $sStart = 'CREATE OR REPLACE SQL SECURITY INVOKER VIEW ';
+        $sStart = 'CREATE OR REPLACE SQL SECURITY INVOKER VIEW';
 
         $sMultishopJoin = "";
         if ($blMultiShop) {
@@ -395,7 +395,7 @@ class oxShop extends oxI18n
                 $sJoin = $sMultishopJoin. $this->_getViewJoinLang($sTable, $iLang); //lang
             }
 
-            $sQuery = "{$sStart} {$sViewTable} AS SELECT {$sFields} FROM {$sTable}{$sJoin}{$sWhere}";
+            $sQuery = "{$sStart} `{$sViewTable}` AS SELECT {$sFields} FROM {$sTable}{$sJoin}{$sWhere}";
             $this->addQuery($sQuery);
         }
 

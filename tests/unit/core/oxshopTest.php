@@ -82,14 +82,14 @@ class Unit_Core_oxshopTest extends OxidTestCase
 
         return array(
             array('oxarticles', null, false, null, '', $aMockedFunctionReturns,
-                  'CREATE OR REPLACE SQL SECURITY INVOKER VIEW  oxv_oxarticles AS SELECT oxarticles.* FROM oxarticles'), // default
+                  'CREATE OR REPLACE SQL SECURITY INVOKER VIEW `oxv_oxarticles` AS SELECT oxarticles.* FROM oxarticles'), // default
             array('oxarticles', 'de', false, null, '', $aMockedFunctionReturns,
-                  'CREATE OR REPLACE SQL SECURITY INVOKER VIEW  oxv_oxarticles_de AS SELECT OXID, OXTITLE FROM oxarticles'),
+                  'CREATE OR REPLACE SQL SECURITY INVOKER VIEW `oxv_oxarticles_de` AS SELECT OXID, OXTITLE FROM oxarticles'),
             array('oxarticles', 'de', true, 15, '', $aMockedFunctionReturns,
-                  'CREATE OR REPLACE SQL SECURITY INVOKER VIEW  oxv_oxarticles_15_de AS SELECT '.
+                  'CREATE OR REPLACE SQL SECURITY INVOKER VIEW `oxv_oxarticles_15_de` AS SELECT '.
                   $sFields . ' FROM oxarticles' . $sMockedJoinResult),
             array('oxarticles', 'de', true, 15, ' WHERE 1', $aMockedFunctionReturns,
-                  'CREATE OR REPLACE SQL SECURITY INVOKER VIEW  oxv_oxarticles_15_de AS SELECT '.
+                  'CREATE OR REPLACE SQL SECURITY INVOKER VIEW `oxv_oxarticles_15_de` AS SELECT '.
                   $sFields . ' FROM oxarticles' . $sMockedJoinResult . ' WHERE 1'),
         );
     }

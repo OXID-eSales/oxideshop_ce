@@ -471,31 +471,6 @@ class oxBase extends oxSuperCfg
         return $this->_sOXID;
     }
 
-    /**
-     * Sets object mapping id
-     *
-     * @param int $iMapId New mapping id
-     */
-    public function setMapId($iMapId)
-    {
-        $this->_iMapId = $iMapId;
-    }
-
-    /**
-     * Returns map id
-     *
-     * @return int | string
-     */
-    public function getMapId()
-    {
-        if (!is_null($this->_iMapId)) {
-            $sMapId = $this->_iMapId;
-        } elseif (!($sMapId = $this->getFieldData("oxmapid"))) {
-            $sMapId = $this->getId();
-        }
-
-        return $sMapId;
-    }
 
     /**
      * Sets unique object id

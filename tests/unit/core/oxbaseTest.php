@@ -828,34 +828,6 @@ class Unit_Core_oxbaseTest extends OxidTestCase
         $this->assertEquals("testId", $oBase->getId());
     }
 
-    /**
-     * Tests oxBase::getMapId()
-     */
-    public function testGetMapId()
-    {
-        $oBase = new oxBase();
-
-        $this->assertNull($oBase->getMapId());
-
-        $oBase->setId("testId");
-        $this->assertEquals("testId", $oBase->getMapId());
-
-        $oBase->setMapId(15);
-        $this->assertEquals(15, $oBase->getMapId());
-    }
-
-    /**
-     * Tests oxBase::getMapId() using real data
-     */
-    public function testGetMapIdOnData()
-    {
-        $oBase = new oxBase();
-        $oBase->init("oxarticles");
-        $oBase->load("1126");
-
-        $this->assertEquals("25", $oBase->getMapId());
-    }
-
 
     /**
      * Test set shop id with numeric value.
@@ -2366,17 +2338,4 @@ class Unit_Core_oxbaseTest extends OxidTestCase
         $this->assertTrue( in_array( "oxtitle", $aFieldNames ) );
     }
 
-
-    public function testInsertCorrectMapId()
-    {
-        $oBase = new oxBase();
-        $oBase->init("oxarticles");
-        $oBase->oxarticles__oxtitle = new oxField("testProduct");
-        $oBase->save();
-        //assume demo data has more that 100 products
-        $this->assertGreaterThan(100, $oBase->getMapId());
-
-        //cleanup
-        $oBase->delete();
-    }
 }

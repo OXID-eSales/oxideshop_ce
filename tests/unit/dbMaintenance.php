@@ -233,7 +233,7 @@ class dbMaintenance
         }
 
         if ($blHasChanges) {
-            $this->_aDBDump['checksum'] = $aChecksum;
+            $this->_aDBDump['checksum'] = $this->_getTableChecksum($aTables);
         }
 
         $this->_outputChanges();

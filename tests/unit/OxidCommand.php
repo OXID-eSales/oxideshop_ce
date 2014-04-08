@@ -50,8 +50,8 @@ class OxidCommand extends PHPUnit_TextUI_Command
     protected function dbResetHandler($value)
     {
        /* require_once 'unit/oxPrinter.php';
-        require_once 'unit/dbMaintenance.php';
-        $dbM = new dbMaintenance();
+        require_once 'unit/dbRestore.php';
+        $dbM = new DbRestore();
         $dbM->dumpDB();*/
     }
 

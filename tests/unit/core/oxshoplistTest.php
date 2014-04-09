@@ -37,8 +37,24 @@ class Unit_Core_oxshoplistTest extends OxidTestCase
     {
         parent::setUp();
 
+        $oDb = oxDb::getDb();
+
+        for ($i = 2; $i < 5; $i++) {
+                $oDb->execute("INSERT INTO `oxshops` (OXID, OXACTIVE, OXNAME) VALUES ($i, 1, 'Test Shop $i')");
+        }
     }
 
+    /**
+     * Executed after test is down
+     *
+     */
+    protected function tearDown()
+    {
+        $oDb = oxDb::getDb();
+        $oDb->execute("DELETE FROM `oxshops` WHERE `oxid` > 1");
+
+        parent::tearDown();
+    }
 
     /**
      * All shop list test

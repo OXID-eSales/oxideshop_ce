@@ -42,12 +42,6 @@ class oxBase extends oxSuperCfg
     protected $_sOXID = null;
 
     /**
-     * Integer object mapping id
-     * @var int
-     */
-    protected $_sMapId = null;
-
-    /**
      * ID of running shop session (default null).
      * @var int
      */

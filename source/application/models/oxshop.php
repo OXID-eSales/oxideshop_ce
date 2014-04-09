@@ -53,11 +53,6 @@ class oxShop extends oxI18n
     protected $_aTables = null;
 
     /**
-     * @var oxShopRelations
-     */
-    protected $_oShopRelations = null;
-
-    /**
      * $_aTables setter
      *
      * @param array $aTables

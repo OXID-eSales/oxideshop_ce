@@ -31,16 +31,10 @@ class Integration_Article_ArticleTest extends OxidTestCase
     /**
      * Test setup
      */
-    public function setup()
+    public function setUp()
     {
         $oDb = oxDb::getDb();
         $sId = $this->getShopId();
-        $oDb->execute("replace into oxarticles (oxid, oxmapid, oxshopid, oxtitle) values ('_testid', '99999', '{$sId}', '_testArticle')");
-        $oDb->execute("replace into oxarticles2shop set oxmapshopid='{$sId}', oxmapobjectid='99999'");
-        $oDb->execute("replace into oxarticles2shop set oxmapshopid='2', oxmapobjectid='99999'");
-        $oDb->execute("replace into oxarticles2shop set oxmapshopid='3', oxmapobjectid='99999'");
-        $oDb->execute("replace into oxarticles2shop set oxmapshopid='4', oxmapobjectid='99999'");
-        $oDb->execute("replace into oxarticles2shop set oxmapshopid='5', oxmapobjectid='99999'");
     }
 
     /**
@@ -50,7 +44,6 @@ class Integration_Article_ArticleTest extends OxidTestCase
     {
         $oDb = oxDb::getDb();
         $oDb->execute("delete from oxarticles where oxid = '_testid'");
-        $oDb->execute("delete from oxarticles2shop where oxmapobjectid = '99999'");
     }
 
     public function testArticleParentFieldsInChild_ParentUpdate_SetParentValueToChild()

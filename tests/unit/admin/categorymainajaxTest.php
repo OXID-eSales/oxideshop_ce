@@ -53,7 +53,6 @@ class Unit_Admin_CategoryMainAjaxTest extends OxidTestCase
             oxDb::getDb()->execute( "insert into oxarticles set oxid='_testObjectRemove2', oxtitle='_testArticle2', oxshopid='".$this->getShopIdTest()."'" );
             oxDb::getDb()->execute( "insert into oxarticles set oxid='_testObjectRemove3', oxtitle='_testArticle3', oxshopid='".$this->getShopIdTest()."'" );
 
-
         oxDb::getDb()->execute( "insert into oxobject2category set oxid='_testObject2CategoryRemove1', oxcatnid='_testCategory', oxobjectid = '_testObjectRemove1'" );
         oxDb::getDb()->execute( "insert into oxobject2category set oxid='_testObject2CategoryRemove2', oxcatnid='_testCategory', oxobjectid = '_testObjectRemove2'" );
         oxDb::getDb()->execute( "insert into oxobject2category set oxid='_testObject2CategoryRemove3', oxcatnid='_testCategory', oxobjectid = '_testObjectRemove3'" );

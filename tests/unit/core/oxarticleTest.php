@@ -3070,7 +3070,8 @@ class Unit_Core_oxArticleTest extends OxidTestCase
     public function testIsAssignedToCategoryIsAssigned()
     {
         $sCat = "8a142c3e4143562a5.46426637";
-        oxDb::getDB()->execute("insert into oxobject2category (oxid, oxobjectid, oxcatnid) values ('test', '_testArt', '$sCat' )");
+        $sSql = "insert into oxobject2category (oxid, oxobjectid, oxcatnid) values ('test', '_testArt', '$sCat' )";
+        oxDb::getDB()->execute($sSql);
         $this->assertTrue( $this->_createArticle('_testArt')->isAssignedToCategory( $sCat));
     }
 
@@ -3778,7 +3779,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $sVal = 'three!P!-5,99__threeValue@@two!P!-2__twoValue@@';
 
             $sQ = 'insert into oxselectlist (oxid, oxshopid, oxtitle, oxident, oxvaldesc) values ("_testoxsellist", "'.$sShopId.'", "_testoxsellist", "_testoxsellist", "'.$sVal.'")';
-        $oDb->Execute( $sQ );
+        $myDB->Execute( $sQ );
 
         $sQ = 'insert into oxobject2selectlist (oxid, oxobjectid, oxselnid, oxsort) values ("_testoxsellist", "1651", "_testoxsellist", 1) ';
         $oDb->Execute( $sQ );

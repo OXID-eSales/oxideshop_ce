@@ -166,3 +166,4 @@ class Integration_Article_ArticleTest extends OxidTestCase
         }
     }
 
+}

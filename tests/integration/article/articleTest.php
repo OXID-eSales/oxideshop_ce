@@ -33,8 +33,7 @@ class Integration_Article_ArticleTest extends OxidTestCase
      */
     public function setUp()
     {
-        $oDb = oxDb::getDb();
-        $sId = $this->getShopId();
+        parent::setUp();
     }
 
     /**
@@ -42,8 +41,7 @@ class Integration_Article_ArticleTest extends OxidTestCase
      */
     public function tearDown()
     {
-        $oDb = oxDb::getDb();
-        $oDb->execute("delete from oxarticles where oxid = '_testid'");
+        parent::tearDown();
     }
 
     public function testArticleParentFieldsInChild_ParentUpdate_SetParentValueToChild()

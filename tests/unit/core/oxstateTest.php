@@ -40,7 +40,7 @@ class Unit_Core_oxstateTest extends OxidTestCase
     public function testGetIdByCode()
     {
         $oSubj = new oxState();
-        $this->assertEquals( '3', $oSubj->getIdByCode( 'MB', '8f241f11095649d18.02676059' ) );
+        $this->assertEquals( 'MB', $oSubj->getIdByCode( 'MB', '8f241f11095649d18.02676059' ) );
     }
 
 }

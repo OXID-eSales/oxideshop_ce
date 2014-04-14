@@ -150,6 +150,8 @@ class Unit_Core_oxconfigTest extends OxidTestCase
      */
     protected function tearDown()
     {
+        oxRegistry::getLang()->setBaseLanguage(1);
+
         // cleaning up
         $sQ = 'delete from oxconfig where oxvarname = "xxx" ';
         oxDb::getDb()->execute( $sQ );

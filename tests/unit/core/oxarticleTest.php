@@ -3071,7 +3071,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
     {
         $sCat = "8a142c3e4143562a5.46426637";
         $sSql = "insert into oxobject2category (oxid, oxobjectid, oxcatnid) values ('test', '_testArt', '$sCat' )";
-        oxDb::getDB()->execute($sSql);
+        $this->addToDatabase($sSql, 'oxobject2category');
         $this->assertTrue( $this->_createArticle('_testArt')->isAssignedToCategory( $sCat));
     }
 
@@ -3085,7 +3085,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $oArticle = $this->_createArticle('_testArt');
         $oArticle->oxarticles__oxprice = new oxField(25, oxField::T_RAW);
         $oArticle->save();
-            oxDb::getDB()->execute("insert into oxcategories (oxid, oxparentid, oxtitle, oxactive, oxleft, oxright, oxrootid, oxpricefrom, oxpriceto, oxlongdesc, oxlongdesc_1, oxlongdesc_2, oxlongdesc_3) values ('_testCat', 'oxrootid', 'test', 1, '1', '2', '_testCat', '10', '50', '', '', '', '')");
+        $this->addToDatabase("insert into oxcategories (oxid, oxparentid, oxshopid, oxtitle, oxactive, oxleft, oxright, oxrootid, oxpricefrom, oxpriceto, oxlongdesc, oxlongdesc_1, oxlongdesc_2, oxlongdesc_3) values ('_testCat', 'oxrootid', '1', 'test', 1, '1', '2', '_testCat', '10', '50', '', '', '', '')", 'oxcategories');
         $this->assertTrue( $oArticle->isAssignedToCategory( '_testCat'));
     }
 
@@ -3127,7 +3127,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $oArticle->save();
         $oVariant->oxarticles__oxprice = new oxField(25, oxField::T_RAW);
         $oVariant->save();
-            oxDb::getDB()->execute("insert into oxcategories (oxid, oxparentid, oxtitle, oxactive, oxleft, oxright, oxrootid, oxpricefrom, oxpriceto, oxlongdesc, oxlongdesc_1, oxlongdesc_2, oxlongdesc_3) values ('_testCat', 'oxrootid', 'test', 1, '1', '2', '_testCat', '10', '50', '', '', '', '')");
+        $this->addToDatabase("insert into oxcategories (oxid, oxparentid, oxshopid, oxtitle, oxactive, oxleft, oxright, oxrootid, oxpricefrom, oxpriceto, oxlongdesc, oxlongdesc_1, oxlongdesc_2, oxlongdesc_3) values ('_testCat', 'oxrootid', '1', 'test', 1, '1', '2', '_testCat', '10', '50', '', '', '', '')", 'oxcategories');
         $this->assertTrue( $oVariant->isAssignedToCategory( '_testCat'));
     }
 
@@ -3778,11 +3778,11 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $sShopId = $myConfig->getBaseShopId();
         $sVal = 'three!P!-5,99__threeValue@@two!P!-2__twoValue@@';
 
-            $sQ = 'insert into oxselectlist (oxid, oxshopid, oxtitle, oxident, oxvaldesc) values ("_testoxsellist", "'.$sShopId.'", "_testoxsellist", "_testoxsellist", "'.$sVal.'")';
-        $myDB->Execute( $sQ );
+        $sQ = 'insert into oxselectlist (oxid, oxshopid, oxtitle, oxident, oxvaldesc) values ("_testoxsellist", "'.$sShopId.'", "_testoxsellist", "_testoxsellist", "'.$sVal.'")';
+        $this->addToDatabase($sQ, 'oxselectlist');
 
         $sQ = 'insert into oxobject2selectlist (oxid, oxobjectid, oxselnid, oxsort) values ("_testoxsellist", "1651", "_testoxsellist", 1) ';
-        $oDb->Execute( $sQ );
+        $this->addToDatabase($sQ, 'oxobject2selectlist');
 
         modConfig::getInstance()->setConfigParam( 'bl_perfLoadSelectLists', true );
         modConfig::getInstance()->setConfigParam( 'bl_perfUseSelectlistPrice', true );
@@ -4548,12 +4548,22 @@ class Unit_Core_oxArticleTest extends OxidTestCase
     public function testGetAttributesWithSort()
     {
         $oArticle = $this->_createArticle('_testArt', '_testVar');
-        $sSelect = "insert into oxattribute (oxid, oxshopid, oxtitle, oxpos ) values ('test3', '1', 'test3', '3'), ('test1', '1', '1', '0', 'test1', '1'), ('test2', '1', '1', '0', 'test2', '2')";
-            $sSelect = "insert into oxattribute (oxid, oxshopid, oxtitle, oxpos ) values ('test3', 'oxbaseshop', 'test3', '3'), ('test1', 'oxbaseshop', 'test1', '1'), ('test2', 'oxbaseshop', 'test2', '2')";
-        oxDb::getDB()->execute($sSelect);
+        $sShopId = "oxbaseshop";
+
+        $sSql = "insert into oxattribute (oxid, oxshopid, oxtitle, oxpos ) values ('test3', '{$sShopId}', 'test3', '3')";
+        $this->addToDatabase($sSql, 'oxattribute');
+        $sSql = "insert into oxattribute (oxid, oxshopid, oxtitle, oxpos ) values ('test1', '{$sShopId}', 'test1', '1')";
+        $this->addToDatabase($sSql, 'oxattribute');
+        $sSql = "insert into oxattribute (oxid, oxshopid, oxtitle, oxpos ) values ('test2', '{$sShopId}', 'test2', '2')";
+        $this->addToDatabase($sSql, 'oxattribute');
+
         $sArtId = $oArticle->getId();
-        $sSelect = "insert into oxobject2attribute (oxid, oxobjectid, oxattrid, oxvalue ) values ('test3', '$sArtId', 'test3', '3'), ('test1', '$sArtId', 'test1', '1'), ('test2', '$sArtId', 'test2', '2')";
-        oxDb::getDB()->execute($sSelect);
+        $sSql = "insert into oxobject2attribute (oxid, oxobjectid, oxattrid, oxvalue ) values ('test3', '$sArtId', 'test3', '3')";
+        $this->addToDatabase($sSql, 'oxobject2attribute');
+        $sSql = "insert into oxobject2attribute (oxid, oxobjectid, oxattrid, oxvalue ) values ('test1', '$sArtId', 'test1', '1')";
+        $this->addToDatabase($sSql, 'oxobject2attribute');
+        $sSql = "insert into oxobject2attribute (oxid, oxobjectid, oxattrid, oxvalue ) values ('test2', '$sArtId', 'test2', '2')";
+        $this->addToDatabase($sSql, 'oxobject2attribute');
 
         $aAttrList = $oArticle->getAttributes();
         $iCnt = 1;
@@ -5136,11 +5146,11 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $sShopId = $myConfig->getBaseShopId();
         $sVal = 'three!P!-5,99__threeValue@@';
 
-            $sQ = 'insert into oxselectlist (oxid, oxshopid, oxtitle, oxident, oxvaldesc) values ("_testoxsellist", "'.$sShopId.'", "_testoxsellist", "_testoxsellist", "'.$sVal.'")';
-        $oDb->Execute( $sQ );
+        $sQ = 'insert into oxselectlist (oxid, oxshopid, oxtitle, oxident, oxvaldesc) values ("_testoxsellist", "'.$sShopId.'", "_testoxsellist", "_testoxsellist", "'.$sVal.'")';
+        $this->addToDatabase($sQ, 'oxselectlist');
 
         $sQ = 'insert into oxobject2selectlist (oxid, oxobjectid, oxselnid, oxsort) values ("_testoxsellist", "1651", "_testoxsellist", 1) ';
-        $oDb->Execute( $sQ );
+        $this->addToDatabase($sQ, 'oxobject2selectlist');
 
         modConfig::getInstance()->setConfigParam( 'bl_perfLoadSelectLists', true );
         modConfig::getInstance()->setConfigParam( 'bl_perfUseSelectlistPrice', true );
@@ -6331,7 +6341,8 @@ class Unit_Core_oxArticleTest extends OxidTestCase
     public function testGetCategoryIds()
     {
         $sQ = "insert into oxobject2category set oxid = '_testArt2Cat', oxcatnid = '_testCat2', oxobjectid = '_testArt'";
-        oxDb::getDb()->execute($sQ);
+        $this->addToDatabase($sQ, 'oxobject2category');
+
         $oObj1 = oxNew( "oxCategory" );
         $oObj1->setId("_testCat1");
         $oObj1->oxcategories__oxparentid = new oxField("oxrootid", oxField::T_RAW);
@@ -6356,8 +6367,10 @@ class Unit_Core_oxArticleTest extends OxidTestCase
     public function testGetCategoryIds_adsPriceCategoriesToList()
     {
         $sQ = "insert into oxobject2category set oxid = '_testArt1Cat', oxcatnid = '_testCat1', oxobjectid = '_testArt'";
+        $this->addToDatabase($sQ, 'oxobject2category');
+        $this->addTableForCleanup('oxcategories');
 
-        oxDb::getDb()->execute($sQ);
+
         $oObj1 = oxNew( "oxCategory" );
         $oObj1->setId("_testCat1");
         $oObj1->oxcategories__oxparentid = new oxField("oxrootid", oxField::T_RAW);

@@ -106,27 +106,26 @@ class Unit_Admin_PriceAlarmMainTest extends OxidTestCase
         $myConfig = oxRegistry::getConfig();
         $oDb = oxDb::getDb( oxDB::FETCH_MODE_ASSOC );
 
-
         $sInsert = "insert into oxarticles (`OXID`,`OXSHOPID`,`OXTITLE`,`OXSTOCKFLAG`,`OXSTOCK`,`OXPRICE`)
                     values ('_testArticleId1','".$myConfig->getShopId()."','testArticleTitle','2','20','11')";
-
-        $oDb->execute( $sInsert );
-
+        $this->addToDatabase($sInsert, 'oxarticles');
 
         $sInsert = "insert into oxarticles (`OXID`,`OXSHOPID`,`OXTITLE`,`OXSTOCKFLAG`,`OXSTOCK`,`OXPRICE`)
                     values ('_testArticleId2','".$myConfig->getShopId()."','testArticleTitle','2','20','150')";
 
-        $oDb->execute( $sInsert );
+        $this->addToDatabase($sInsert, 'oxarticles');
+        $this->addTeardownSql("delete from oxarticles where oxid like '%_testArticle%'");
 
         $sInsert = "insert into oxpricealarm (`OXID`,`OXSHOPID`,`OXARTID`,`OXPRICE`)
                     values ('_testAlarmId1','".$myConfig->getShopId()."','_testArticleId1','12')";
 
-        $oDb->execute( $sInsert );
+        $this->addToDatabase($sInsert, 'oxpricealarm');
 
         $sInsert = "insert into oxpricealarm (`OXID`,`OXSHOPID`,`OXARTID`,`OXPRICE`)
                     values ('_testAlarmId2','".$myConfig->getShopId()."','_testArticleId2','151')";
 
-        $oDb->execute( $sInsert );
+        $this->addToDatabase($sInsert, 'oxpricealarm');
+        $this->addTeardownSql("delete from oxpricealarm where oxid like '%_testAlarm%'");
 
         // testing..
         $oView = new PriceAlarm_Main();

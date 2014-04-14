@@ -27,9 +27,9 @@ class Unit_Core_oxstateTest extends OxidTestCase
 {
     public function testInit()
     {
-        $oSubj = new oxstate();
-        $oSubj->load('1');
-        $this->assertEquals('Alberta', $oSubj->oxstates__oxtitle->value);
+        $oState = new oxState();
+        $oState->load('AB');
+        $this->assertEquals('Alberta', $oState->oxstates__oxtitle->value);
     }
 
     /**

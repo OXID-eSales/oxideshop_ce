@@ -27,14 +27,14 @@
 // eShop directory
 $sShopPath = realpath( '../source/' ).'/';
 // eShop edition
-$sShopEdition = 'CE';
+$sShopEdition = 'EE';
 // eShop encoding
-$blUtf8 = true;
+$blUtf8 = false;
 // Whether to run subshop tests
 $blIsSubShop = false;
 
 // If set to true, copies testData to eShop and resets the database.
-$blInstallShop = false;
+$blInstallShop = true;
 // Whether to skip addition of default demo data (used when testing modules)
 $blSkipShopSetup = false;
 // Whether to skip restoring of shop data after running tests. If this is set to true, shop will be left

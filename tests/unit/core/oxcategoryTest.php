@@ -134,10 +134,10 @@ class Unit_Core_oxCategoryTest extends OxidTestCase
      */
     private function saveParent()
     {
-        $myDB    = oxDb::getDb();
+        $sShopId = "oxbaseshop";
         $sInsert = "Insert into oxcategories (`OXID`,`OXROOTID`,`OXSHOPID`,`OXLEFT`,`OXRIGHT`,`OXTITLE`,`OXLONGDESC`,`OXLONGDESC_1`,`OXLONGDESC_2`,`OXLONGDESC_3`, `OXACTIVE`, `OXPRICEFROM`, `OXPRICETO`) " .
-                "values ('test','test','oxbaseshop','1','4','test','','','','','1','10','50')";
-        $myDB->Execute( $sInsert );
+                "values ('test','test','{$sShopId}','1','4','test','','','','','1','10','50')";
+        $this->addToDatabase($sInsert, 'oxcategories');
 
         $this->_oCategory = new oxcategory();
         $this->_oCategory->load('test');
@@ -147,10 +147,10 @@ class Unit_Core_oxCategoryTest extends OxidTestCase
      */
     private function saveChild()
     {
-        $myDB    = oxDb::getDb();
+        $sShopId = "oxbaseshop";
         $sInsert = "Insert into oxcategories (`OXID`,`OXROOTID`,`OXSHOPID`,`OXPARENTID`,`OXLEFT`,`OXRIGHT`,`OXTITLE`,`OXLONGDESC`,`OXLONGDESC_1`,`OXLONGDESC_2`,`OXLONGDESC_3`, `OXACTIVE`, `OXPRICEFROM`, `OXPRICETO`) " .
                 "values ('test2','test','oxbaseshop','test','2','3','test','','','','','1','10','50')";
-        $myDB->Execute( $sInsert );
+        $this->addToDatabase($sInsert, 'oxcategories');
 
         $this->_oCategoryB = new oxcategory();
         $this->_oCategoryB->load('test2');

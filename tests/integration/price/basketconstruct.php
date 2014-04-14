@@ -174,6 +174,9 @@ class BasketConstruct
             if ( $aArt['field2shop'] ) {
                 $this->_createField2Shop( $oArt, $aArt['field2shop'] );
             }
+            if ( $aArt['inheritToShops'] ) {
+                $this->_inheritToShops( $oArt, $aArt['inheritToShops'] );
+            }
             $aResult[$sOuterKey]['id'] = $aArt['oxid'];
             $aResult[$sOuterKey]['amount'] = $aArt['amount'];
         }
@@ -187,6 +190,22 @@ class BasketConstruct
     protected function _createScalePrices( $aScalePrices ) 
     {
         $this->createObj2Obj( $aScalePrices, "oxprice2article" );    
+    }
+
+    /**
+     * Adds object to mapping table with set shop ids
+     *
+     * @param object $oObject Object to inherit
+     * @param array  $aShops  Array of shop ids
+     */
+    protected function _inheritToShops( $oObject, $aShops )
+    {
+        $iMapId = $oObject->getMapId();
+        $sObjectTable = $oObject->getCoreTableName();
+
+        /** @var oxShopRelations $oShopRelations */
+        $oShopRelations = oxNew('oxShopRelations', $aShops);
+        $oShopRelations->addToShop($iMapId, $sObjectTable);
     }
 
     /**

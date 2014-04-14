@@ -630,6 +630,8 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     public function addToDatabase($sSql, $sTable, $iShopId = 1, $sMapId = null)
     {
         oxDb::getDb()->execute($sSql);
+        $this->addDirtyTable($sTable);
+
             return;
 
         if (!in_array($sTable, $this->getMultiShopTables())) {
@@ -645,9 +647,7 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
 
         $sSql = "REPLACE INTO {$sTable}2shop set `oxmapobjectid` = '{$sMapId}', `oxmapshopid` = {$iShopId}";
         oxDb::getDb()->execute($sSql);
-
-        $sSql = "DELETE FROM {$sTable} where `oxmapid` = '{$sMapId}'";
-        $this->addTeardownSql($sSql);
+        $this->addDirtyTable("{$sTable}2shop");
     }
 
     /**
@@ -662,6 +662,52 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
             foreach ($aSqls as $sSql) {
                 oxDb::getDb()->execute($sSql);
             }
+        }
+        if ($aDirtyTables = $this->getDirtyTables()) {
+            $oDbRestore = self::_getDbRestore();
+            if (!is_array($aDirtyTables)) {
+                $aDirtyTables = array($aDirtyTables);
+            }
+            foreach ($aDirtyTables as $sTable) {
+                $oDbRestore->restoreTable($sTable);
+            }
+        }
+    }
+
+    /**
+     * @var $_aDirtyTables array dirty tables
+     */
+    protected $_aDirtyTables = array();
+
+    /**
+     * Gets dirty tables for cleaning
+     *
+     * @param array $aDirtyTables
+     */
+    public function setDirtyTables($aDirtyTables)
+    {
+        $this->_aDirtyTables = $aDirtyTables;
+    }
+
+    /**
+     * Sets dirty tables for cleaning
+     *
+     * @return array
+     */
+    public function getDirtyTables()
+    {
+        return $this->_aDirtyTables;
+    }
+
+    /**
+     * Adds dirty table to array, which needs to be cleaned on teardown
+     *
+     * @param $sTable
+     */
+    public function addDirtyTable($sTable)
+    {
+        if (!in_array($sTable, $this->_aDirtyTables)) {
+            $this->_aDirtyTables[] = $sTable;
         }
     }
 }

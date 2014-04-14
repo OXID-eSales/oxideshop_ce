@@ -594,7 +594,9 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      */
     public function addTeardownSql($sSql)
     {
-        $this->_aTeardownSqls[] = $sSql;
+        if (!in_array($sSql, $this->_aTeardownSqls)) {
+            $this->_aTeardownSqls[] = $sSql;
+        }
     }
 
     /**

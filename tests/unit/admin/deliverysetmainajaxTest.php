@@ -40,38 +40,19 @@ class Unit_Admin_DeliverysetMainAjaxTest extends OxidTestCase
     {
         parent::setUp();
         
-        oxDb::getDb()->execute( "insert into oxdel2delset set oxid='_testDeliverysetMain1', oxdelsetid='_testObjectId'" );
-        oxDb::getDb()->execute( "insert into oxdel2delset set oxid='_testDeliverysetMain2', oxdelsetid='_testObjectId'" );
+        $this->addToDatabase("insert into oxdel2delset set oxid='_testDeliverysetMain1', oxdelsetid='_testObjectId'", 'oxdel2delset');
+        $this->addToDatabase("insert into oxdel2delset set oxid='_testDeliverysetMain2', oxdelsetid='_testObjectId'", 'oxdel2delset');
         //for delete all
-        oxDb::getDb()->execute( "insert into oxdel2delset set oxid='_testDeliverysetMainDelAll1', oxdelsetid='_testDeliverysetMainRemoveAll', oxdelid='_testMain1'" );
-        oxDb::getDb()->execute( "insert into oxdel2delset set oxid='_testDeliverysetMainDelAll2', oxdelsetid='_testDeliverysetMainRemoveAll', oxdelid='_testMain2'" );
+        $this->addToDatabase("insert into oxdel2delset set oxid='_testDeliverysetMainDelAll1', oxdelsetid='_testDeliverysetMainRemoveAll', oxdelid='_testMain1'", 'oxdel2delset');
+        $this->addToDatabase("insert into oxdel2delset set oxid='_testDeliverysetMainDelAll2', oxdelsetid='_testDeliverysetMainRemoveAll', oxdelid='_testMain2'", 'oxdel2delset');
         
+        $this->addToDatabase("insert into oxdelivery set oxid='_testMain1', oxtitle='_testMain1'", 'oxdelivery');
+        $this->addToDatabase("insert into oxdelivery set oxid='_testMain2', oxtitle='_testMain2'", 'oxdelivery');
+        
+        $this->addTeardownSql("delete from oxdel2delset where oxid like '%_testDelivery%'");
+        $this->addTeardownSql("delete from oxdelivery where oxid like '%_testMain%'");
         
             $this->setDeliveryViewTable( 'oxv_oxdelivery_de' );
-            oxDb::getDb()->execute( "insert into oxdelivery set oxid='_testMain1', oxtitle='_testMain1'" );
-            oxDb::getDb()->execute( "insert into oxdelivery set oxid='_testMain2', oxtitle='_testMain2'" );
-    }
-    
-    /**
-     * Tear down the fixture.
-     *
-     * @return null
-     */
-    protected function tearDown()
-    {
-        oxDb::getDb()->execute( "delete from oxdel2delset where oxid='_testDeliverysetMain1'" );
-        oxDb::getDb()->execute( "delete from oxdel2delset where oxid='_testDeliverysetMain2'" );
-        
-        oxDb::getDb()->execute( "delete from oxdel2delset where oxid='_testDeliverysetMainDelAll1'" );
-        oxDb::getDb()->execute( "delete from oxdel2delset where oxid='_testDeliverysetMainDelAll2'" );
-        
-        oxDb::getDb()->execute( "delete from oxdelivery where oxid='_testMain1'" );
-        oxDb::getDb()->execute( "delete from oxdelivery where oxid='_testMain2'" );
-        
-        oxDb::getDb()->execute( "delete from oxdel2delset where oxdelsetid='_testActionAddMain'" );
-        oxDb::getDb()->execute( "delete from oxdel2delset where oxdelsetid='_testActionAddMainAll'" );
-        
-        parent::tearDown();
     }
     
     public function setDeliveryViewTable( $sParam )

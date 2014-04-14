@@ -38,28 +38,16 @@ class Unit_Admin_DiscountArticlesAjaxTest extends OxidTestCase
     {
         parent::setUp();
 
-            oxDb::getDb()->execute( "insert into oxarticles set oxid='_testObjectRemove1', oxtitle='_testArticle1', oxshopid='oxbaseshop'" );
-            oxDb::getDb()->execute( "insert into oxarticles set oxid='_testObjectRemove2', oxtitle='_testArticle2', oxshopid='oxbaseshop'" );
-            oxDb::getDb()->execute( "insert into oxarticles set oxid='_testObjectRemove3', oxtitle='_testArticle3', oxshopid='oxbaseshop'" );
+        $this->addToDatabase("insert into oxarticles set oxid='_testObjectRemove1', oxtitle='_testArticle1', oxshopid='oxbaseshop'", 'oxarticles');
+        $this->addToDatabase("insert into oxarticles set oxid='_testObjectRemove2', oxtitle='_testArticle2', oxshopid='oxbaseshop'", 'oxarticles');
+        $this->addToDatabase("insert into oxarticles set oxid='_testObjectRemove3', oxtitle='_testArticle3', oxshopid='oxbaseshop'", 'oxarticles');
 
+        $this->addToDatabase("insert into oxobject2discount set oxid='_testO2DRemove1', oxdiscountid='_testDiscount', oxobjectid = '_testObjectRemove1', oxtype = 'oxarticles'", 'oxobject2discount');
+        $this->addToDatabase("insert into oxobject2discount set oxid='_testO2DRemove2', oxdiscountid='_testDiscount', oxobjectid = '_testObjectRemove2', oxtype = 'oxarticles'", 'oxobject2discount');
+        $this->addToDatabase("insert into oxobject2discount set oxid='_testO2DRemove3', oxdiscountid='_testDiscount', oxobjectid = '_testObjectRemove3', oxtype = 'oxarticles'", 'oxobject2discount');
 
-        oxDb::getDb()->execute( "insert into oxobject2discount set oxid='_testO2DRemove1', oxdiscountid='_testDiscount', oxobjectid = '_testObjectRemove1', oxtype = 'oxarticles'" );
-        oxDb::getDb()->execute( "insert into oxobject2discount set oxid='_testO2DRemove2', oxdiscountid='_testDiscount', oxobjectid = '_testObjectRemove2', oxtype = 'oxarticles'" );
-        oxDb::getDb()->execute( "insert into oxobject2discount set oxid='_testO2DRemove3', oxdiscountid='_testDiscount', oxobjectid = '_testObjectRemove3', oxtype = 'oxarticles'" );
-    }
-
-    /**
-     * Tear down the fixture.
-     *
-     * @return null
-     */
-    protected function tearDown()
-    {
-        oxDb::getDb()->execute( "delete from oxobject2discount where oxobjectid like '_test%'" );
-        oxDb::getDb()->execute( "delete from oxarticles where oxid like '_test%'" );
-
-
-        parent::tearDown();
+        $this->addTeardownSql("delete from oxobject2discount where oxobjectid like '_test%'");
+        $this->addTeardownSql("delete from oxarticles where oxid like '_test%'");
     }
 
     /**

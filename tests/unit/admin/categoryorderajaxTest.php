@@ -45,32 +45,22 @@ class Unit_Admin_CategoryOrderAjaxTest extends OxidTestCase
             $this->setObject2CategoryViewTable( 'oxobject2category' );
             $this->setShopIdTest( 'oxbaseshop' );
 
-            oxDb::getDb()->execute( "insert into oxcategories set oxid='_testCategory', oxtitle='_testCategory', oxshopid='".$this->getShopIdTest()."'" );
-            oxDb::getDb()->execute( "insert into oxobject2category set oxid='_testObject2Category1', oxcatnid='_testCategory', oxobjectid = '_testOxid1'" );
-            oxDb::getDb()->execute( "insert into oxobject2category set oxid='_testObject2Category2', oxcatnid='_testCategory', oxobjectid = '_testOxid2'" );
+        $this->addToDatabase("replace into oxcategories set oxid='_testCategory', oxtitle='_testCategory', oxshopid='".$this->getShopIdTest()."'", 'oxcategories');
+        $this->addToDatabase("replace into oxobject2category set oxid='_testObject2Category1', oxcatnid='_testCategory', oxobjectid = '_testOxid1'", 'oxobject2category');
+        $this->addToDatabase("replace into oxobject2category set oxid='_testObject2Category2', oxcatnid='_testCategory', oxobjectid = '_testOxid2'", 'oxobject2category');
 
-            oxDb::getDb()->execute( "insert into oxarticles set oxid='_testObjectRemove1', oxtitle='_testArticle1', oxshopid='".$this->getShopIdTest()."'" );
-            oxDb::getDb()->execute( "insert into oxarticles set oxid='_testObjectRemove2', oxtitle='_testArticle2', oxshopid='".$this->getShopIdTest()."'" );
-            oxDb::getDb()->execute( "insert into oxarticles set oxid='_testObjectRemove3', oxtitle='_testArticle3', oxshopid='".$this->getShopIdTest()."'" );
+        $this->addToDatabase("replace into oxarticles set oxid='_testObjectRemove1', oxtitle='_testArticle1', oxshopid='".$this->getShopIdTest()."'", 'oxarticles');
+        $this->addToDatabase("replace into oxarticles set oxid='_testObjectRemove2', oxtitle='_testArticle2', oxshopid='".$this->getShopIdTest()."'", 'oxarticles');
+        $this->addToDatabase("replace into oxarticles set oxid='_testObjectRemove3', oxtitle='_testArticle3', oxshopid='".$this->getShopIdTest()."'", 'oxarticles');
 
+        $this->addToDatabase("insert into oxobject2category set oxid='_testObject2CategoryRemove1', oxcatnid='_testCategory', oxobjectid = '_testObjectRemove1'", 'oxobject2category');
+        $this->addToDatabase("insert into oxobject2category set oxid='_testObject2CategoryRemove2', oxcatnid='_testCategory', oxobjectid = '_testObjectRemove2'", 'oxobject2category');
+        $this->addToDatabase("insert into oxobject2category set oxid='_testObject2CategoryRemove3', oxcatnid='_testCategory', oxobjectid = '_testObjectRemove3'", 'oxobject2category');
 
-        oxDb::getDb()->execute( "insert into oxobject2category set oxid='_testObject2CategoryRemove1', oxcatnid='_testCategory', oxobjectid = '_testObjectRemove1'" );
-        oxDb::getDb()->execute( "insert into oxobject2category set oxid='_testObject2CategoryRemove2', oxcatnid='_testCategory', oxobjectid = '_testObjectRemove2'" );
-        oxDb::getDb()->execute( "insert into oxobject2category set oxid='_testObject2CategoryRemove3', oxcatnid='_testCategory', oxobjectid = '_testObjectRemove3'" );
-    }
+        $this->addTeardownSql("delete from oxobject2category where oxobjectid like '_test%'");
+        $this->addTeardownSql("delete from oxarticles where oxid like '_test%'");
+        $this->addTeardownSql("delete from oxcategories where oxid like '_test%'");
 
-    /**
-     * Tear down the fixture.
-     *
-     * @return null
-     */
-    protected function tearDown()
-    {
-        oxDb::getDb()->execute( "delete from oxobject2category where oxobjectid like '_test%'" );
-        oxDb::getDb()->execute( "delete from oxarticles where oxid like '_test%'" );
-        oxDb::getDb()->execute( "delete from oxcategories where oxid like '_test%'" );
-
-        parent::tearDown();
     }
 
     public function setArticleViewTable( $sParam )

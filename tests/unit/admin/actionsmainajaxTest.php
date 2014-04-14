@@ -44,30 +44,16 @@ class Unit_Admin_ActionsMainAjaxTest extends OxidTestCase
             $this->setObject2CategoryViewTable( 'oxobject2category' );
             $this->setShopIdTest( 'oxbaseshop' );
             
-            oxDb::getDb()->execute( "replace into oxarticles set oxid='_testArticle1', oxshopid='".$this->getShopIdTest()."', oxtitle='_testArticle1'" );
-            oxDb::getDb()->execute( "replace into oxarticles set oxid='_testArticle2', oxshopid='".$this->getShopIdTest()."', oxtitle='_testArticle2'" );
+        $this->addToDatabase("replace into oxarticles set oxid='_testArticle1', oxshopid='".$this->getShopIdTest()."', oxtitle='_testArticle1'", 'oxarticles');
+        $this->addToDatabase("replace into oxarticles set oxid='_testArticle2', oxshopid='".$this->getShopIdTest()."', oxtitle='_testArticle2'", 'oxarticles');
         
         parent::setUp();
         
+        oxDb::getDb()->execute("replace into oxactions2article set oxid='_testActionAdd1', oxactionid='_testActionAdd', oxshopid='".$this->getShopIdTest()."', oxartid='_testArticle1'");
+        oxDb::getDb()->execute("replace into oxactions2article set oxid='_testActionAdd2', oxactionid='_testActionAdd', oxshopid='".$this->getShopIdTest()."', oxartid='_testArticle2'");
         
-        oxDb::getDb()->execute( "replace into oxactions2article set oxid='_testActionAdd1', oxactionid='_testActionAdd', oxshopid='".$this->getShopIdTest()."', oxartid='_testArticle1'" );
-        oxDb::getDb()->execute( "replace into oxactions2article set oxid='_testActionAdd2', oxactionid='_testActionAdd', oxshopid='".$this->getShopIdTest()."', oxartid='_testArticle2'" );
-    }
-    
-    /**
-     * Tear down the fixture.
-     *
-     * @return null
-     */
-    protected function tearDown()
-    {
-        oxDb::getDb()->execute( "delete from oxarticles where oxid='_testArticle1'" );
-        oxDb::getDb()->execute( "delete from oxarticles where oxid='_testArticle2'" );        
-        oxDb::getDB()->execute( "delete from oxactions2article where oxactionid='_testActionAdd'" );
-        oxDb::getDB()->execute( "delete from oxactions2article where oxactionid='_testActionAdd'" );
-        oxDb::getDB()->execute( "delete from oxactions2article where oxactionid='_testActionAddAct'" );
-        
-        parent::tearDown();
+        $this->addTeardownSql("delete from oxarticles where oxid like '%_testArt%'");
+        $this->addTeardownSql("delete from oxactions2article where oxactionid like '%_testActionAdd%'");
     }
     
     public function setArticleViewTable( $sParam )

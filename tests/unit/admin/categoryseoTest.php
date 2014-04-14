@@ -38,6 +38,7 @@ class Unit_Admin_CategorySeoTest extends OxidTestCase
         $sQ = "delete from oxcategories where oxid like '_test%'";
         oxDb::getDb()->execute( $sQ );
 
+        oxSeoEncoderCategory::getInstance()->cleanup();
         parent::tearDown();
     }
 
@@ -123,9 +124,9 @@ class Unit_Admin_CategorySeoTest extends OxidTestCase
         $sQ2 = "Insert into oxcategories (`OXID`,`OXROOTID`,`OXSHOPID`,`OXLEFT`,`OXRIGHT`,`OXTITLE`,`OXLONGDESC`,`OXLONGDESC_1`,`OXLONGDESC_2`,`OXLONGDESC_3`, `OXACTIVE`, `OXPRICEFROM`, `OXPRICETO`, oxshowsuffix) " .
                 "values ('_test2','test','oxbaseshop','1','4','test','','','','','1','10','50', '0')";
 
-
-        oxDb::getDb()->Execute( $sQ1 );
-        oxDb::getDb()->Execute( $sQ2 );
+        $this->addToDatabase($sQ1, 'oxcategories');
+        $this->addToDatabase($sQ2, 'oxcategories');
+        $this->addTeardownSql("delete from oxcategories where oxid like '%_test%'");
 
         $oView = $this->getMock( "Category_Seo", array( "getEditObjectId" ) );
         $oView->expects( $this->at( 0 ) )->method( 'getEditObjectId' )->will( $this->returnValue( "_test1" ) );
@@ -143,9 +144,8 @@ class Unit_Admin_CategorySeoTest extends OxidTestCase
     {
         $sQ1 = "Insert into oxcategories (`OXID`,`OXROOTID`,`OXSHOPID`,`OXLEFT`,`OXRIGHT`,`OXTITLE`,`OXLONGDESC`,`OXLONGDESC_1`,`OXLONGDESC_2`,`OXLONGDESC_3`, `OXACTIVE`, `OXPRICEFROM`, `OXPRICETO`, oxshowsuffix) " .
                 "values ('_test1','test','oxbaseshop','1','4','test','','','','','1','10','50', '1')";
-
-
-        oxDb::getDb()->Execute( $sQ1 );
+        $this->addToDatabase($sQ1, 'oxcategories');
+        $this->addTeardownSql("delete from oxcategories where oxid like '%_test%'");
 
         $oEncoder = $this->getMock( "oxSeoEncoderCategory", array( "getCategoryUri" ) );
         $oEncoder->expects( $this->once() )->method( 'getCategoryUri' )->will( $this->returnValue( "CategoryUri" ) );
@@ -165,9 +165,8 @@ class Unit_Admin_CategorySeoTest extends OxidTestCase
     {
         $sQ1 = "Insert into oxcategories (`OXID`,`OXROOTID`,`OXSHOPID`,`OXLEFT`,`OXRIGHT`,`OXTITLE`,`OXLONGDESC`,`OXLONGDESC_1`,`OXLONGDESC_2`,`OXLONGDESC_3`, `OXACTIVE`, `OXPRICEFROM`, `OXPRICETO`, oxshowsuffix) " .
                 "values ('_test1','test','oxbaseshop','1','4','test','','','','','1','10','50', '1')";
-
-
-        oxDb::getDb()->Execute( $sQ1 );
+        $this->addToDatabase($sQ1, 'oxcategories');
+        $this->addTeardownSql("delete from oxcategories where oxid like '%_test%'");
 
         $oCategory = new oxCategory();
         $oCategory->load( "_test1" );

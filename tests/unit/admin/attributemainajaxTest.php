@@ -46,33 +46,18 @@ class Unit_Admin_AttributeMainAjaxTest extends OxidTestCase
             $this->setArticleViewTable( 'oxv_oxarticles_de' );
             $this->setObject2AttributeViewTable( 'oxv_oxobject2attribute_de' );
             $this->setObject2CategoryViewTable( 'oxv_oxobject2category_de' );
-            oxDb::getDb()->execute( "replace into oxarticles set oxid='_testArticleRemoveAll', oxshopid='1', oxtitle='_testArticleRemoveAll'" );
-            oxDb::getDb()->execute( "replace into oxattribute set oxid='_testAttribute', oxtitle='_testAttribute'" );
-            oxDb::getDb()->execute( "replace into oxattribute set oxid='_testAttributeAddAll', oxtitle='_testAttributeAddAll'" );
-        
-        
-        oxDb::getDb()->execute( "replace into oxobject2attribute set oxid='_testOxid1', oxobjectid='_testObjectRemove', oxattrid='_testRemove'" );
-        oxDb::getDb()->execute( "replace into oxobject2attribute set oxid='_testOxid2', oxobjectid='_testObjectRemove', oxattrid='_testRemove'" );
-        
-        oxDb::getDb()->execute( "replace into oxobject2attribute set oxid='_testOxid3', oxobjectid='_testArticleRemoveAll', oxattrid='_testRemoveAll'" );
-        oxDb::getDb()->execute( "replace into oxobject2attribute set oxid='_testOxid4', oxobjectid='_testArticleRemoveAll', oxattrid='_testRemoveAll'" );
-    }
-    
-    /**
-     * Tear down the fixture.
-     *
-     * @return null
-     */
-    protected function tearDown()
-    {
-        oxDb::getDb()->execute( "delete from oxobject2attribute where oxobjectid='_testObjectRemove'" );
-        oxDb::getDb()->execute( "delete from oxobject2attribute where oxattrid='_testRemoveAll'" );
-        oxDb::getDb()->execute( "delete from oxarticles where oxid='_testArticleRemoveAll'" );
-        oxDb::getDb()->execute( "delete from oxattribute where oxid='_testAttribute'" );
-        oxDb::getDb()->execute( "delete from oxattribute where oxid='_testAttributeAddAll'" );
-        oxDb::getDb()->execute( "delete from oxobject2attribute where oxattrid='_testAttributeAddAll'" );
-        
-        parent::tearDown();
+        $this->addToDatabase("replace into oxarticles set oxid='_testArticleRemoveAll', oxshopid='1', oxtitle='_testArticleRemoveAll'", 'oxarticles');
+        $this->addToDatabase("replace into oxattribute set oxid='_testAttribute', oxtitle='_testAttribute'", 'oxattribute');
+        $this->addToDatabase("replace into oxattribute set oxid='_testAttributeAddAll', oxtitle='_testAttributeAddAll'", 'oxattribute');
+        $this->addTeardownSql("delete from oxarticles where oxid='_testArticleRemoveAll'");
+        $this->addTeardownSql("delete from oxattribute where oxid like '%_testAttribute%'");
+
+        $this->addToDatabase("replace into oxobject2attribute set oxid='_testOxid1', oxobjectid='_testObjectRemove', oxattrid='_testRemove'", 'oxobject2attribute');
+        $this->addToDatabase("replace into oxobject2attribute set oxid='_testOxid2', oxobjectid='_testObjectRemove', oxattrid='_testRemove'", 'oxobject2attribute');
+
+        $this->addToDatabase("replace into oxobject2attribute set oxid='_testOxid3', oxobjectid='_testArticleRemoveAll', oxattrid='_testRemoveAll'", 'oxobject2attribute');
+        $this->addToDatabase("replace into oxobject2attribute set oxid='_testOxid4', oxobjectid='_testArticleRemoveAll', oxattrid='_testRemoveAll'", 'oxobject2attribute');
+        $this->addTeardownSql("delete from oxobject2attribute where oxid  like '%_testOxid%'");
     }
     
     public function setArticleViewTable( $sParam )

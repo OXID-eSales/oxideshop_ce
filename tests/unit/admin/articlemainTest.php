@@ -96,9 +96,9 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
 
         $sO2CView = getViewName( 'oxobject2category' );
 
-        // creating few oxprice2article records
-            $oDb->execute("INSERT INTO `{$sO2CView}` (`OXID`, `OXOBJECTID`, `OXCATNID`, `OXPOS`, `OXTIME`) VALUES ('" . $oUtils->generateUId() . "', '_testArtId', '_testCatId', '0', '0');");
-            $oDb->execute("INSERT INTO `{$sO2CView}` (`OXID`, `OXOBJECTID`, `OXCATNID`, `OXPOS`, `OXTIME`) VALUES ('" . $oUtils->generateUId() . "', '_testArtId', '_testCatId2', '0', '0');");
+        $this->addToDatabase("INSERT INTO `{$sO2CView}` (`OXID`, `OXOBJECTID`, `OXCATNID`, `OXPOS`, `OXTIME`) VALUES ('" . $oUtils->generateUId() . "', '_testArtId', '_testCatId', '0', '0');", 'oxobject2category');
+        $this->addToDatabase("INSERT INTO `{$sO2CView}` (`OXID`, `OXOBJECTID`, `OXCATNID`, `OXPOS`, `OXTIME`) VALUES ('" . $oUtils->generateUId() . "', '_testArtId', '_testCatId', '0', '0');", 'oxobject2category');
+        $this->addTeardownSql("delete from `{$sO2CView}` where OXOBJECTID = '_testArtId'");
         $oView = new Article_Main();
         $oView->UNITcopyCategories( "_testArtId", "_testArtId2" );
 

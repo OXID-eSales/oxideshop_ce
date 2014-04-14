@@ -28,7 +28,7 @@ class Unit_Core_oxstateTest extends OxidTestCase
     public function testInit()
     {
         $oState = new oxState();
-        $oState->load('1');
+        $oState->load('AB');
         $this->assertEquals('Alberta', $oState->oxstates__oxtitle->value);
     }
 
@@ -38,7 +38,7 @@ class Unit_Core_oxstateTest extends OxidTestCase
     public function testGetIdByCode()
     {
         $oState = new oxState();
-        $this->assertEquals( '3', $oState->getIdByCode( 'MB', '8f241f11095649d18.02676059' ) );
+        $this->assertEquals( 'MB', $oState->getIdByCode( 'MB', '8f241f11095649d18.02676059' ) );
     }
 
     /**
@@ -51,8 +51,8 @@ class Unit_Core_oxstateTest extends OxidTestCase
         $sMsgCorrect = 'State title is correct';
         $sMsgEmptyString = 'Empty string is returned';
 
-        $iStateId = 19;
-        $sStateId = '15';
+        $iStateId = 'CA';
+        $sStateId = 'AK';
 
         $sStateTitle = 'Kalifornien';
         $sAltStateTitle = 'Alaska';

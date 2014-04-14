@@ -3720,8 +3720,8 @@ class Unit_Core_oxuserTest extends OxidTestCase
      */
     public function testGetStateTitleById()
     {
-        $iStateId = 19;
-        $iAlternateStateId = 15;
+        $iStateId = 'CA';
+        $iAlternateStateId = 'AK';
 
         /** @var oxState|PHPUnit_Framework_MockObject_MockObject $oStateMock */
         $oStateMock = $this->getMock( 'oxState', array('getTitleById') );

@@ -132,9 +132,9 @@ class Unit_Core_oxCountryTest extends OxidTestCase
         $oSubj->load('8f241f11096877ac0.98748826');
         $aStates = $oSubj->getStates();
         $aKeys = $aStates->arrayKeys();
-        $this->assertEquals('14', $aKeys[0]);
-        $this->assertEquals('73', $aKeys[6]);
-        $this->assertEquals('72', $aKeys[61]);
+        $this->assertEquals('AL', $aKeys[0]);
+        $this->assertEquals('AA', $aKeys[6]);
+        $this->assertEquals('WY', $aKeys[61]);
     }
 
 
@@ -148,7 +148,7 @@ class Unit_Core_oxCountryTest extends OxidTestCase
         $oSubj = new oxCountry();
         $oSubj->load('8f241f11095649d18.02676059');
         $aStates = $oSubj->getStates();
-        $this->assertEquals('Manitoba', $aStates['3']->oxstates__oxtitle->value);
+        $this->assertEquals('Manitoba', $aStates['MB']->oxstates__oxtitle->value);
     }
 
     /**

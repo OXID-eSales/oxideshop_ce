@@ -630,7 +630,7 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     public function addToDatabase($sSql, $sTable, $iShopId = 1, $sMapId = null)
     {
         oxDb::getDb()->execute($sSql);
-        $this->addDirtyTable($sTable);
+        $this->addTableForCleanup($sTable);
 
             return;
 
@@ -647,11 +647,12 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
 
         $sSql = "REPLACE INTO {$sTable}2shop set `oxmapobjectid` = '{$sMapId}', `oxmapshopid` = {$iShopId}";
         oxDb::getDb()->execute($sSql);
-        $this->addDirtyTable("{$sTable}2shop");
+        $this->addTableForCleanup("{$sTable}2shop");
     }
 
     /**
      * Calls all the queries stored in $_aTeardownSqls
+     * Cleans all the tables that were set
      */
     public function cleanUpDatabase()
     {
@@ -663,30 +664,30 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
                 oxDb::getDb()->execute($sSql);
             }
         }
-        if ($aDirtyTables = $this->getDirtyTables()) {
+        if ($aTablesForCleanup = $this->getTablesForCleanup()) {
             $oDbRestore = self::_getDbRestore();
-            if (!is_array($aDirtyTables)) {
-                $aDirtyTables = array($aDirtyTables);
+            if (!is_array($aTablesForCleanup)) {
+                $aTablesForCleanup = array($aTablesForCleanup);
             }
-            foreach ($aDirtyTables as $sTable) {
+            foreach ($aTablesForCleanup as $sTable) {
                 $oDbRestore->restoreTable($sTable);
             }
         }
     }
 
     /**
-     * @var $_aDirtyTables array dirty tables
+     * @var $_aTablesForCleanup array tables for cleaning
      */
-    protected $_aDirtyTables = array();
+    protected $_aTableForCleanups = array();
 
     /**
      * Gets dirty tables for cleaning
      *
-     * @param array $aDirtyTables
+     * @param array $aTablesForCleanup
      */
-    public function setDirtyTables($aDirtyTables)
+    public function setTablesForCleanup($aTablesForCleanup)
     {
-        $this->_aDirtyTables = $aDirtyTables;
+        $this->_aTableForCleanups = $aTablesForCleanup;
     }
 
     /**
@@ -694,20 +695,20 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      *
      * @return array
      */
-    public function getDirtyTables()
+    public function getTablesForCleanup()
     {
-        return $this->_aDirtyTables;
+        return $this->_aTableForCleanups;
     }
 
     /**
-     * Adds dirty table to array, which needs to be cleaned on teardown
+     * Adds table to be cleaned on teardown
      *
      * @param $sTable
      */
-    public function addDirtyTable($sTable)
+    public function addTableForCleanup($sTable)
     {
-        if (!in_array($sTable, $this->_aDirtyTables)) {
-            $this->_aDirtyTables[] = $sTable;
+        if (!in_array($sTable, $this->_aTableForCleanups)) {
+            $this->_aTableForCleanups[] = $sTable;
         }
     }
 }

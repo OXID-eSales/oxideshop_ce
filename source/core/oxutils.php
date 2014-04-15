@@ -1111,7 +1111,6 @@ class oxUtils extends oxSuperCfg
 
         $sUrl = str_ireplace( "&amp;", "&", $sUrl );
 
-        $sHeaderCode = '';
         switch ($iHeaderCode) {
             case 301:
                 $sHeaderCode = "HTTP/1.1 301 Moved Permanently";

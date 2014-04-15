@@ -187,17 +187,17 @@ class Unit_Core_oxattributelistTest extends OxidTestCase
         oxRegistry::getLang()->setBaseLanguage(0);
         $sSelect = "insert into oxattribute (oxid, oxshopid, oxtitle, oxpos ) values ('test3', '1', 'test3', '3'), ('test1', '1', 'test1', '1'), ('test2', '1', 'test2', '2')";
             $sSelect = "insert into oxattribute (oxid, oxshopid, oxtitle, oxpos ) values ('test3', 'oxbaseshop', 'test3', '3'), ('test1', 'oxbaseshop', 'test1', '1'), ('test2', 'oxbaseshop', 'test2', '2')";
-        $rs = oxDb::getDB()->execute($sSelect);
-        $sArtId = 'testArt';
+        oxDb::getDB()->execute($sSelect);
+        $sArtId  = 'testArt';
         $sSelect = "insert into oxobject2attribute (oxid, oxobjectid, oxattrid, oxvalue ) values ('test3', '$sArtId', 'test3', '3'), ('test1', '$sArtId', 'test1', '1'), ('test2', '$sArtId', 'test2', '2')";
-        $rs = oxDb::getDB()->execute($sSelect);
+        oxDb::getDB()->execute($sSelect);
 
         $oAttrList = new oxAttributelist();
         $oAttrList->loadAttributes($sArtId);
         $iCnt = 1;
-        foreach ( $oAttrList as $sId => $aAttr ) {
-            $this->assertEquals( 'test'.$iCnt, $sId);
-            $this->assertEquals( (string)$iCnt, $aAttr->oxattribute__oxvalue->value);
+        foreach ($oAttrList as $sId => $aAttr) {
+            $this->assertEquals('test' . $iCnt, $sId);
+            $this->assertEquals((string) $iCnt, $aAttr->oxattribute__oxvalue->value);
             $iCnt++;
         }
     }

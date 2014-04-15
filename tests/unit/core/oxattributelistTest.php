@@ -188,12 +188,12 @@ class Unit_Core_oxattributelistTest extends OxidTestCase
 
         $myDB = oxDb::getDB();
 
-            $sSelect = "insert into oxattribute (oxid, oxshopid, oxtitle, oxpos ) values ('test3', 'oxbaseshop', 'test3', '3'), ('test1', 'oxbaseshop', 'test1', '1'), ('test2', 'oxbaseshop', 'test2', '2')";
-            $myDB->execute($sSelect);
+            $sSql = "insert into oxattribute (oxid, oxshopid, oxtitle, oxpos ) values ('test3', 'oxbaseshop', 'test3', '3'), ('test1', 'oxbaseshop', 'test1', '1'), ('test2', 'oxbaseshop', 'test2', '2')";
+            $myDB->execute($sSql);
 
         $sArtId  = 'testArt';
-        $sSelect = "insert into oxobject2attribute (oxid, oxobjectid, oxattrid, oxvalue ) values ('test3', '$sArtId', 'test3', '3'), ('test1', '$sArtId', 'test1', '1'), ('test2', '$sArtId', 'test2', '2')";
-        $myDB->execute($sSelect);
+        $sSql = "insert into oxobject2attribute (oxid, oxobjectid, oxattrid, oxvalue ) values ('test3', '$sArtId', 'test3', '3'), ('test1', '$sArtId', 'test1', '1'), ('test2', '$sArtId', 'test2', '2')";
+        $myDB->execute($sSql);
 
         $oAttrList = new oxAttributelist();
         $oAttrList->loadAttributes($sArtId);

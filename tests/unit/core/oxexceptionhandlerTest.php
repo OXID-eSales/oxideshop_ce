@@ -125,13 +125,6 @@ class Unit_Core_oxexceptionhandlerTest extends OxidTestCase
         $this->fail('Test failed.');
     }
 
-    public function testSafeShopRedirectAndExit()
-    {
-        $oTestObject = oxNew('oxexceptionhandler');
-        //nothing should happen in unittests
-        $this->assertNull($oTestObject->UNITsafeShopRedirectAndExit('test.html'));
-    }
-
     public function testSetIDebug()
     {
         $oTestObject = $this->getProxyClass( "oxexceptionhandler" );

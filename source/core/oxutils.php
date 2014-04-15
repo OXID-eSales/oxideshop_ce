@@ -1078,6 +1078,17 @@ class oxUtils extends oxSuperCfg
     }
 
     /**
+     * Redirects to shop offline page
+     * @param int    $iHeaderCode        header code, default 302
+     *
+     */
+    public function redirectOffline($iHeaderCode = 302)
+    {
+        $sUrl = $this->getConfig()->getShopUrl() .'offline.html';
+        $this->redirect($sUrl, false, $iHeaderCode);
+    }
+
+    /**
      * redirect user to the specified URL
      *
      * @param string $sUrl               URL to be redirected

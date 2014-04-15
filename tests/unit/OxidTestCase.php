@@ -633,21 +633,6 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
         $this->addTableForCleanup($sTable);
 
             return;
-
-        if (!in_array($sTable, $this->getMultiShopTables())) {
-            return;
-        }
-
-        if (!is_null($sMapId)) {
-            $sSql = "UPDATE `{$sTable}` set `oxmapid` = '{$sMapId}'";
-            oxDb::getDb()->execute($sSql);
-        } else {
-            $sMapId = oxDb::getDb()->Insert_ID();
-        }
-
-        $sSql = "REPLACE INTO {$sTable}2shop set `oxmapobjectid` = '{$sMapId}', `oxmapshopid` = {$iShopId}";
-        oxDb::getDb()->execute($sSql);
-        $this->addTableForCleanup("{$sTable}2shop");
     }
 
     /**

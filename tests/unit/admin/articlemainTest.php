@@ -90,6 +90,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
      */
     public function testCopyCategories()
     {
+        $this->markTestSkippedUntil('2014-04-23', 'Shop relations with categories not implemented yet.');
         $oDb     = oxDb::getDb();
         $oUtils  = oxUtilsObject::getInstance();
         $iShopId = oxRegistry::getConfig()->getShopId();
@@ -431,6 +432,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
      */
     public function testCopyArticle()
     {
+        $this->markTestSkippedUntil('2014-04-23', 'Shop relations with categories not implemented yet.');
         modConfig::getInstance()->setConfigParam( 'blWarnOnSameArtNums', true );
         modConfig::setRequestParameter( 'fnc', 'copyArticle' );
         $oArtView = $this->getProxyClass("article_main");

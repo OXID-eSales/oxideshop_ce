@@ -416,6 +416,7 @@ class Unit_Core_oxCategoryTest extends OxidTestCase
 
     public function testUpdate()
     {
+        $this->markTestSkippedUntil('2014-04-23', 'Shop relations with categories not implemented yet.');
         $this->_oCategoryB->oxcategories__oxparentid = new oxField("oxrootid", oxField::T_RAW);
         $this->_oCategoryB->save(); // call update
         $this->reload();
@@ -703,6 +704,7 @@ class Unit_Core_oxCategoryTest extends OxidTestCase
     // #M291: unassigning categories
     public function  testUnassignWithSubCat()
     {
+        $this->markTestSkippedUntil('2014-04-23', 'Shop relations with categories not implemented yet.');
     }
 
     public function  testUnassignIdNotSet()

@@ -51,17 +51,28 @@ class Unit_Admin_CategoryMainAjaxTest extends OxidTestCase
         $this->addToDatabase("replace into oxarticles set oxid='_testObjectRemove1', oxtitle='_testArticle1', oxshopid='" . $this->getShopIdTest() . "'", 'oxarticles');
         $this->addToDatabase("replace into oxarticles set oxid='_testObjectRemove2', oxtitle='_testArticle2', oxshopid='" . $this->getShopIdTest() . "'", 'oxarticles');
         $this->addToDatabase("replace into oxarticles set oxid='_testObjectRemove3', oxtitle='_testArticle3', oxshopid='" . $this->getShopIdTest() . "'", 'oxarticles');
-        $this->addTeardownSql("delete from oxarticles where oxid like '_test%'");
 
 
         $this->addToDatabase("insert into oxobject2category set oxid='_testObject2CategoryRemove1', oxcatnid='_testCategory', oxobjectid = '_testObjectRemove1'", 'oxcategories');
         $this->addToDatabase("insert into oxobject2category set oxid='_testObject2CategoryRemove2', oxcatnid='_testCategory', oxobjectid = '_testObjectRemove2'", 'oxcategories');
         $this->addToDatabase("insert into oxobject2category set oxid='_testObject2CategoryRemove3', oxcatnid='_testCategory', oxobjectid = '_testObjectRemove3'", 'oxcategories');
-        $this->addTeardownSql("delete from oxobject2category where oxobjectid like '_test%'");
 
         //     oxDb::getDb()->execute( "insert into oxobject2category set oxid='_testObject2CategoryUpdateDate', oxcatnid='_testCategory', oxobjectid = '_testObjectUpdateDate'" );
         //    oxDb::getDb()->execute( "insert into oxobject2category set oxid='_testObject2CategoryDefault1', oxcatnid='_testCategory1', oxobjectid = '_testObjectDefault'" );
         //    oxDb::getDb()->execute( "insert into oxobject2category set oxid='_testObject2CategoryDefault2', oxcatnid='_testCategory2', oxobjectid = '_testObjectDefault'" );
+    }
+
+    /**
+     * Tear down the fixture.
+     *
+     * @return null
+     */
+    protected function tearDown()
+    {
+        $this->addTeardownSql("delete from oxarticles where oxid like '_test%'");
+        $this->addTeardownSql("delete from oxobject2category where oxobjectid like '_test%'");
+
+        parent::tearDown();
     }
 
     public function setArticleViewTable( $sParam )

@@ -1039,27 +1039,31 @@ class Unit_Core_oxutilsTest extends OxidTestCase
         $oUtils->redirect( 'url' );
     }
 
-    public function testRedirectCodes()
+    public function providerRedirectCodes()
     {
-        $oSession = $this->getMock( 'oxsession', array( 'freeze' ) );
-        $oSession->expects( $this->any() )->method( 'freeze');
+        return array(
+            array(301, 'HTTP/1.1 301 Moved Permanently'),
+            array(302, 'HTTP/1.1 302 Found'),
+            array(500, 'HTTP/1.1 500 Internal Server Error'),
+            array(423958, 'HTTP/1.1 302 Found'),
+        );
+    }
 
-        $oUtils = $this->getMock( 'oxutils', array( '_simpleRedirect', 'getSession' ) );
-        $oUtils->expects( $this->once() )->method( '_simpleRedirect')->with( $this->equalTo( 'url' ), $this->equalTo( 'HTTP/1.1 301 Moved Permanently' ) );
-        $oUtils->expects( $this->once() )->method( 'getSession')->will( $this->returnValue( $oSession ) );
-        $oUtils->redirect( 'url', false, 301 );
-
-        $oUtils = $this->getMock( 'oxutils', array( '_simpleRedirect', 'getSession' ) );
-        $oUtils->expects( $this->once() )->method( '_simpleRedirect')->with( $this->equalTo( 'url' ), $this->equalTo( 'HTTP/1.1 302 Found' ) );
-        $oUtils->expects( $this->once() )->method( 'getSession')->will( $this->returnValue( $oSession ) );
-        $oUtils->redirect( 'url', false, 302 );
+    /**
+     * @param int $iCode header code
+     * @param string $sHeader formed expected header string
+     * @dataProvider providerRedirectCodes
+     */
+    public function testRedirectCodes($iCode, $sHeader)
+    {
+        $oSession = $this->getMock('oxsession', array('freeze'));
+        $oSession->expects($this->any())->method('freeze');
 
         // test also any other to redirect only temporary
-        $oUtils = $this->getMock( 'oxutils', array( '_simpleRedirect', 'getSession' ) );
-        $oUtils->expects( $this->once() )->method( '_simpleRedirect')->with( $this->equalTo( 'url' ), $this->equalTo( 'HTTP/1.1 302 Found' ) );
-        $oUtils->expects( $this->once() )->method( 'getSession')->will( $this->returnValue( $oSession ) );
-        $oUtils->redirect( 'url', false, 302324 );
-
+        $oUtils = $this->getMock('oxutils', array('_simpleRedirect', 'getSession'));
+        $oUtils->expects($this->once())->method('_simpleRedirect')->with($this->equalTo('url'), $this->equalTo($sHeader));
+        $oUtils->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
+        $oUtils->redirect('url', false, $iCode);
     }
 
     public function testReRedirect()

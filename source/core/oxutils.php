@@ -1116,6 +1116,9 @@ class oxUtils extends oxSuperCfg
             case 301:
                 $sHeaderCode = "HTTP/1.1 301 Moved Permanently";
                 break;
+            case 500:
+                $sHeaderCode = "HTTP/1.1 500 Internal Server Error";
+                break;
             case 302:
             default:
                 $sHeaderCode = "HTTP/1.1 302 Found";

@@ -41,17 +41,17 @@ class Unit_Admin_ArticleExtendAjaxTest extends OxidTestCase
     {
         parent::setUp();
         
-            $this->setCategoriesViewTable( 'oxv_oxcategories_de' );
-            $this->setObject2CategoryViewTable( 'oxobject2category' );
-            $this->setShopIdTest( 'oxbaseshop' );
+            $this->setCategoriesViewTable('oxv_oxcategories_de');
+            $this->setObject2CategoryViewTable('oxobject2category');
+            $this->setShopIdTest('oxbaseshop');
             
-        $this->addToDatabase("insert into oxcategories set oxid='_testCategory', oxtitle='_testCategory', oxshopid='".$this->getShopIdTest()."'", 'oxcategories');
+        $this->addToDatabase("insert into oxcategories set oxid='_testCategory', oxtitle='_testCategory', oxshopid='" . $this->getShopIdTest() . "'", 'oxcategories');
         $this->addToDatabase("insert into oxobject2category set oxid='_testObject2Category', oxcatnid='_testCategory', oxobjectid = '_testObject'", 'oxobject2category');
             
             
-        $this->addToDatabase("insert into oxcategories set oxid='_testCategory1', oxtitle='_testCategory1', oxshopid='".$this->getShopIdTest()."'", 'oxcategories');
-        $this->addToDatabase("insert into oxcategories set oxid='_testCategory2', oxtitle='_testCategory2', oxshopid='".$this->getShopIdTest()."'", 'oxcategories');
-        $this->addToDatabase("insert into oxcategories set oxid='_testCategory3', oxtitle='_testCategory3', oxshopid='".$this->getShopIdTest()."'", 'oxcategories');
+        $this->addToDatabase("insert into oxcategories set oxid='_testCategory1', oxtitle='_testCategory1', oxshopid='" . $this->getShopIdTest() . "'", 'oxcategories');
+        $this->addToDatabase("insert into oxcategories set oxid='_testCategory2', oxtitle='_testCategory2', oxshopid='" . $this->getShopIdTest() . "'", 'oxcategories');
+        $this->addToDatabase("insert into oxcategories set oxid='_testCategory3', oxtitle='_testCategory3', oxshopid='" . $this->getShopIdTest() . "'", 'oxcategories');
             
         $this->addToDatabase("insert into oxobject2category set oxid='_testObject2CategoryRemove1', oxcatnid='_testCategory1', oxobjectid = '_testObjectRemove'", 'oxobject2category');
         $this->addToDatabase("insert into oxobject2category set oxid='_testObject2CategoryRemove2', oxcatnid='_testCategory2', oxobjectid = '_testObjectRemove'", 'oxobject2category');

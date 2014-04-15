@@ -404,14 +404,14 @@ class Unit_Core_oxSeoDecoderTest extends OxidTestCase
     {
         $oDb = oxDb::getDb();
 
-        $oDb->Execute( "insert into oxseo ( oxobjectid, oxident, oxshopid, oxlang, oxseourl, oxtype, oxparams ) values ( 'obid', '".md5( strtolower( "seourl1" ) )."', 'iShopId', '0', 'seourl1', 'oxarticle', 'asd' )" );
-        $oDb->Execute( "insert into oxseo ( oxobjectid, oxident, oxshopid, oxlang, oxseourl, oxtype, oxparams ) values ( 'obid', '".md5( strtolower( "seourl2" ) )."', 'iShopId', '0', 'seourl2', 'oxarticle', 'bsd' )" );
-        $oDb->Execute( "insert into oxseo ( oxobjectid, oxident, oxshopid, oxlang, oxseourl, oxtype, oxparams ) values ( 'obid', '".md5( strtolower( "seourl3" ) )."', 'iShopId', '0', 'seourl3', 'oxarticle', 'csd' )" );
+        $this->addToDatabase("insert into oxseo ( oxobjectid, oxident, oxshopid, oxlang, oxseourl, oxtype, oxparams ) values ( 'obid', '".md5( strtolower( "seourl1" ) )."', 'iShopId', '0', 'seourl1', 'oxarticle', 'asd' )", 'oxseo');
+        $this->addToDatabase("insert into oxseo ( oxobjectid, oxident, oxshopid, oxlang, oxseourl, oxtype, oxparams ) values ( 'obid', '".md5( strtolower( "seourl2" ) )."', 'iShopId', '0', 'seourl2', 'oxarticle', 'bsd' )", 'oxseo');
+        $this->addToDatabase("insert into oxseo ( oxobjectid, oxident, oxshopid, oxlang, oxseourl, oxtype, oxparams ) values ( 'obid', '".md5( strtolower( "seourl3" ) )."', 'iShopId', '0', 'seourl3', 'oxarticle', 'csd' )", 'oxseo');
 
 
-        $oDb->Execute( "insert into oxobject2category ( oxid, oxobjectid, oxcatnid, oxtime ) values ( '_x1', 'obid', 'cat1', 10 )" );
-        $oDb->Execute( "insert into oxobject2category ( oxid, oxobjectid, oxcatnid, oxtime ) values ( '_x2', 'obid', 'bsd', 5 )" );
-        $oDb->Execute( "insert into oxobject2category ( oxid, oxobjectid, oxcatnid, oxtime ) values ( '_x3', 'obid', 'cat3', 15 )" );
+        $this->addToDatabase("insert into oxobject2category ( oxid, oxobjectid, oxcatnid, oxtime ) values ( '_x1', 'obid', 'cat1', 10 )", 'oxobject2category');
+        $this->addToDatabase("insert into oxobject2category ( oxid, oxobjectid, oxcatnid, oxtime ) values ( '_x2', 'obid', 'bsd', 5 )", 'oxobject2category');
+        $this->addToDatabase("insert into oxobject2category ( oxid, oxobjectid, oxcatnid, oxtime ) values ( '_x3', 'obid', 'cat3', 15 )", 'oxobject2category');
         $oDec = new oxSeoDecoder();
         $this->assertEquals('seourl2', $oDec->UNITgetSeoUrl('obid', 0, 'iShopId'));
     }

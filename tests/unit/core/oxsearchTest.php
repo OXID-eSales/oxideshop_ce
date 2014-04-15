@@ -628,7 +628,7 @@ class Unit_Core_oxsearchTest extends OxidTestCase
                    "values ('_testCat','test','test','1','10','50')";
 
 
-        oxDb::getDb()->Execute( $sInsert );
+        $this->addToDatabase($sInsert, 'oxcategories');
 
         $iCurrTime = time();
         oxTestModules::addFunction( "oxUtilsDate", "getTime", "{ return $iCurrTime; }");
@@ -767,8 +767,7 @@ class Unit_Core_oxsearchTest extends OxidTestCase
     public function testSearchWithoutCorespondingOxartExtendRecord()
     {
             $sQ = "REPLACE INTO oxarticles (oxid, oxactive, oxissearch, oxtitle) VALUES ('_testArt1', 1, 1, 'searchTestVal')";
-        $myDB = oxDb::getDb();
-        $myDB->Execute( $sQ );
+        $this->addToDatabase($sQ, 'oxarticles');
         $aResults = $this->_oSearchHandler->getSearchArticles('searchTestVal');
         $this->assertEquals(1, count($aResults));
     }
@@ -782,10 +781,9 @@ class Unit_Core_oxsearchTest extends OxidTestCase
             $sQ2 = "REPLACE INTO oxcategories (oxid, oxactive) VALUES ('_testCatSearch', 1)";
             $sQ3 = "REPLACE INTO oxobject2category (oxid, oxobjectid, oxcatnid) VALUES ('_testOC', '_testArt1', '_testCatSearch')";
 
-        $myDB = oxDb::getDb();
-        $myDB->Execute( $sQ );
-        $myDB->Execute( $sQ2 );
-        $myDB->Execute( $sQ3 );
+        $this->addToDatabase($sQ, 'oxarticles');
+        $this->addToDatabase($sQ2, 'oxcategories');
+        $this->addToDatabase($sQ3, 'oxobject2category');
         $aResults = $this->_oSearchHandler->getSearchArticles('searchTestVal', '_testCatSearch');
         $this->assertEquals(1, count($aResults));
     }

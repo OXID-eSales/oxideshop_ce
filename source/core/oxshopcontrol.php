@@ -677,9 +677,7 @@ class oxShopControl extends oxSuperCfg
         if ( $this->_isDebugMode() ) {
             oxUtils::getInstance()->showMessageAndExit( $oEx->getString() );
         } else {
-            header( "HTTP/1.1 500 Internal Server Error");
-            header( "Location: offline.html");
-            header( "Connection: close");
+            oxRegistry::getUtils()->redirectOffline();
         }
     }
 

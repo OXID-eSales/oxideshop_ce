@@ -1004,6 +1004,30 @@ class Unit_Core_oxutilsTest extends OxidTestCase
         $this->assertEquals($sCode, "zloynnSbbFgevat!");
     }
 
+    public function testRedirectOffline_WithDefaultHeader()
+    {
+        $oConfig = $this->getMock('oxConfig', array('getShopUrl'));
+        $oConfig->expects($this->once())->method('getShopUrl')->will($this->returnValue('http://shopUrl/'));
+
+        $oUtils = $this->getMock('oxutils', array('redirect'));
+        $oUtils->expects($this->once())->method('redirect')->with($this->equalTo('http://shopUrl/offline.html'), $this->equalTo(false), $this->equalTo(302));
+        $oUtils->setConfig($oConfig);
+
+        $oUtils->redirectOffline();
+    }
+
+    public function testRedirectOffline_WithDifferentHeader()
+    {
+        $oConfig = $this->getMock('oxConfig', array('getShopUrl'));
+        $oConfig->expects($this->once())->method('getShopUrl')->will($this->returnValue('http://shopUrl/'));
+
+        $oUtils = $this->getMock('oxutils', array('redirect'));
+        $oUtils->expects($this->once())->method('redirect')->with($this->equalTo('http://shopUrl/offline.html'), $this->equalTo(false), $this->equalTo(500));
+        $oUtils->setConfig($oConfig);
+
+        $oUtils->redirectOffline(500);
+    }
+
     public function testRedirect()
     {
         $oSession = $this->getMock( 'oxsession', array( 'freeze' ) );

@@ -106,7 +106,6 @@ class oxExceptionHandler
 
     /**
      * Deal with uncaught oxException exceptions.
-     * IMPORTANT: uses _safeShopRedirectAndExit(), see description
      *
      * @param oxException $oEx Exception to handle
      *
@@ -125,17 +124,15 @@ class oxExceptionHandler
             oxRegistry::getUtils()->showMessageAndExit( $oEx->getString() );
         }
 
-        //simple safe redirect in productive mode
-        $sShopUrl = oxRegistry::getConfig()->getSslShopUrl();
-        $this->_safeShopRedirectAndExit( $sShopUrl . "offline.html" );
+        try {
+            oxRegistry::getUtils()->redirectOffline(500);
+        } catch (Exception $oException) {}
 
-        //should not be reached
-        return;
+        exit();
     }
 
     /**
      * No oxException, just write log file.
-     * IMPORTANT: uses _safeShopRedirectAndExit(), see description
      *
      * @param Exception $oEx exception object
      *
@@ -153,30 +150,10 @@ class oxExceptionHandler
             }
         }
 
-        $sShopUrl = oxRegistry::getConfig()->getSslShopUrl();
-        $this->_safeShopRedirectAndExit( $sShopUrl . "offline.html" );
-    }
+        try {
+            oxRegistry::getUtils()->redirectOffline(500);
+        } catch (Exception $oException) {}
 
-    /**
-     * Only redirect if not in unit testing.
-     * This function will not return as its redirects browser and dies.
-     * And in unit tests we just return in order not to stop other tests.
-     *
-     * @param string $sUrl redirect url
-     *
-     * @return null
-     */
-    protected function _safeShopRedirectAndExit($sUrl)
-    {
-        // No redirects in unit testing .. as redirection ends also unit testing script..
-        if ( defined('OXID_PHP_UNIT')) {
-            return ;
-        }
-
-        //make the redirect directly to be independent from other objects
-        header("HTTP/1.1 500 Internal Server Error");
-        header("Location: ".$sUrl);
-        header("Connection: close");
         exit();
     }
 

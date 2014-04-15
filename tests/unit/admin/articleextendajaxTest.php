@@ -60,9 +60,20 @@ class Unit_Admin_ArticleExtendAjaxTest extends OxidTestCase
         $this->addToDatabase("insert into oxobject2category set oxid='_testObject2CategoryRemoveAll2', oxcatnid='_testCategory2', oxobjectid = '_testObjectRemoveAll'", 'oxobject2category');
         $this->addToDatabase("insert into oxobject2category set oxid='_testObject2CategoryRemoveAll3', oxcatnid='_testCategory3', oxobjectid = '_testObjectRemoveAll'", 'oxobject2category');
         
+    }
+
+    /**
+     * Tear down the fixture.
+     *
+     * @return null
+     */
+    protected function tearDown()
+    {
         $this->addTeardownSql("delete from oxcategories where oxid like '%_testCategory%'");
         $this->addTeardownSql("delete from oxobject2category where oxid='_testObject2Category'");
         $this->addTeardownSql("delete from oxobject2category where oxobjectid like '%_testObject%'");
+
+        parent::tearDown();
     }
     
     public function setCategoriesViewTable( $sParam )

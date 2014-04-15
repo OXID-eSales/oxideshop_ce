@@ -402,8 +402,6 @@ class Unit_Core_oxSeoDecoderTest extends OxidTestCase
 
     public function testGetSeoUrlForArticleWithExistingCatCfg()
     {
-        $oDb = oxDb::getDb();
-
         $this->addToDatabase("insert into oxseo ( oxobjectid, oxident, oxshopid, oxlang, oxseourl, oxtype, oxparams ) values ( 'obid', '".md5( strtolower( "seourl1" ) )."', 'iShopId', '0', 'seourl1', 'oxarticle', 'asd' )", 'oxseo');
         $this->addToDatabase("insert into oxseo ( oxobjectid, oxident, oxshopid, oxlang, oxseourl, oxtype, oxparams ) values ( 'obid', '".md5( strtolower( "seourl2" ) )."', 'iShopId', '0', 'seourl2', 'oxarticle', 'bsd' )", 'oxseo');
         $this->addToDatabase("insert into oxseo ( oxobjectid, oxident, oxshopid, oxlang, oxseourl, oxtype, oxparams ) values ( 'obid', '".md5( strtolower( "seourl3" ) )."', 'iShopId', '0', 'seourl3', 'oxarticle', 'csd' )", 'oxseo');

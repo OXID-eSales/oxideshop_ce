@@ -157,30 +157,40 @@ class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
 
         */
 
-
             $sShopFields = "`OXSHOPID`";
             $sShopValues = "'oxbaseshop'";
             $sShopId     = "'oxbaseshop'";
 
-        $sInsertSeries = "
+        $sInsertSeriesPart = "
         INSERT INTO `oxvoucherseries`
         (`OXID`, {$sShopFields}, `OXSERIENR`, `OXSERIEDESCRIPTION`, `OXDISCOUNT`, `OXDISCOUNTTYPE`, `OXMINIMUMVALUE`, `OXCALCULATEONCE`)
-        VALUES
-        ('test_s0',$sShopValues,'s0','$$$ A','50','absolute','0',0),
+        VALUES ";
+        $sValuesPart = "('test_s0',$sShopValues,'s0','$$$ A','50','absolute','0',0);";
+        $this->addToDatabase($sInsertSeriesPart . $sValuesPart, 'oxvoucherseries');
+        $sValuesPart = "('test_x1',$sShopValues,'x1','$$$ A @@','1000','absolute','0',0);";
+        $this->addToDatabase($sInsertSeriesPart . $sValuesPart, 'oxvoucherseries');
+        $sValuesPart = "('test_x2',$sShopValues,'x2','$$$ C @@','1000','absolute','0',0);";
+        $this->addToDatabase($sInsertSeriesPart . $sValuesPart, 'oxvoucherseries');
+        $sValuesPart = "('test_x3',$sShopValues,'x3','$$$ A ##','1000','absolute','0',1);";
+        $this->addToDatabase($sInsertSeriesPart . $sValuesPart, 'oxvoucherseries');
 
-        ('test_x1',$sShopValues,'x1','$$$ A @@','1000','absolute','0',0),
-        ('test_x2',$sShopValues,'x2','$$$ C @@','1000','absolute','0',0),
-        ('test_x3',$sShopValues,'x3','$$$ A ##','1000','absolute','0',1),
+        $sValuesPart = "('test_s1',$sShopValues,'s1','$$$ A @@','10','absolute','0',0);";
+        $this->addToDatabase($sInsertSeriesPart . $sValuesPart, 'oxvoucherseries');
+        $sValuesPart = "('test_s2',$sShopValues,'s2','$$$ A ##','20','absolute','0',1);";
+        $this->addToDatabase($sInsertSeriesPart . $sValuesPart, 'oxvoucherseries');
+        $sValuesPart = "('test_s3',$sShopValues,'s3','$$$ C @@','30','absolute','0',0);";
+        $this->addToDatabase($sInsertSeriesPart . $sValuesPart, 'oxvoucherseries');
+        $sValuesPart = "('test_s4',$sShopValues,'s4','$$$ C @@','40','absolute','0',0);";
+        $this->addToDatabase($sInsertSeriesPart . $sValuesPart, 'oxvoucherseries');
 
-        ('test_s1',$sShopValues,'s1','$$$ A @@','10','absolute','0',0),
-        ('test_s2',$sShopValues,'s2','$$$ A ##','20','absolute','0',1),
-        ('test_s3',$sShopValues,'s3','$$$ C @@','30','absolute','0',0),
-        ('test_s4',$sShopValues,'s4','$$$ C @@','40','absolute','0',0),
-
-        ('test_s5',$sShopValues,'s5','%%% A @@','10','percent' ,'0',0),
-        ('test_s6',$sShopValues,'s6','%%% A ##','20','percent' ,'0',1),
-        ('test_s7',$sShopValues,'s7','%%% C @@','30','percent' ,'0',0),
-        ('test_s8',$sShopValues,'s8','%%% C @@','40','percent' ,'0',0);";
+        $sValuesPart = "('test_s5',$sShopValues,'s5','%%% A @@','10','percent' ,'0',0);";
+        $this->addToDatabase($sInsertSeriesPart . $sValuesPart, 'oxvoucherseries');
+        $sValuesPart = "('test_s6',$sShopValues,'s6','%%% A ##','20','percent' ,'0',1);";
+        $this->addToDatabase($sInsertSeriesPart . $sValuesPart, 'oxvoucherseries');
+        $sValuesPart = "('test_s7',$sShopValues,'s7','%%% C @@','30','percent' ,'0',0);";
+        $this->addToDatabase($sInsertSeriesPart . $sValuesPart, 'oxvoucherseries');
+        $sValuesPart = "('test_s8',$sShopValues,'s8','%%% C @@','40','percent' ,'0',0);";
+        $this->addToDatabase($sInsertSeriesPart . $sValuesPart, 'oxvoucherseries');
 
         $sInsertVouchers = "
         INSERT INTO `oxvouchers`
@@ -202,40 +212,57 @@ class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
         ('test_s7','test_777',NULL ,'','',0,'777',NULL),   ('test_s7','test_777777',NOW() ,'test_o7','oxdefaultadmin',0,'111111','30'),
         ('test_s8','test_888',NULL ,'','',0,'888',NULL),   ('test_s8','test_888888',NOW() ,'test_o8','oxdefaultadmin',0,'111111','40');";
 
-        $sInsertArticles = "
+        $sInsertArticlesPart = "
         INSERT INTO `oxarticles`
         (`OXID`, {$sShopFields}, `OXACTIVE`, `OXTITLE`, `OXPRICE`, `OXSTOCK`)
-        VALUES
-        ('test_a0',$sShopValues,'1','a0','1' ,100),
-        ('test_a1',$sShopValues,'1','a1','10',100),
-        ('test_a2',$sShopValues,'1','a2','20',100),
-        ('test_a3',$sShopValues,'1','a3','30',100),
-        ('test_a4',$sShopValues,'1','a4','40',100),
-        ('test_a5',$sShopValues,'1','a5','50',100);";
+        VALUES ";
+        $sValuesPart = "('test_a0',$sShopValues,'1','a0','1' ,100);";
+        $this->addToDatabase($sInsertArticlesPart . $sValuesPart, 'oxarticles');
+        $sValuesPart = "('test_a1',$sShopValues,'1','a1','10',100);";
+        $this->addToDatabase($sInsertArticlesPart . $sValuesPart, 'oxarticles');
+        $sValuesPart = "('test_a2',$sShopValues,'1','a2','20',100);";
+        $this->addToDatabase($sInsertArticlesPart . $sValuesPart, 'oxarticles');
+        $sValuesPart = "('test_a3',$sShopValues,'1','a3','30',100);";
+        $this->addToDatabase($sInsertArticlesPart . $sValuesPart, 'oxarticles');
+        $sValuesPart = "('test_a4',$sShopValues,'1','a4','40',100);";
+        $this->addToDatabase($sInsertArticlesPart . $sValuesPart, 'oxarticles');
+        $sValuesPart = "('test_a5',$sShopValues,'1','a5','50',100);";
+        $this->addToDatabase($sInsertArticlesPart . $sValuesPart, 'oxarticles');
 
-        $sInsertCategories = "
+        $sInsertCategoriesPart = "
         INSERT INTO `oxcategories`
         (`OXID`, {$sShopFields}, `OXACTIVE`, `OXTITLE`)
-        VALUES
-        ('test_c0',$sShopValues,'1','c0'),
-        ('test_c1',$sShopValues,'1','c1'),
-        ('test_c2',$sShopValues,'1','c2');";
+        VALUES ";
+        $sValuesPart = "('test_c0',$sShopValues,'1','c0');";
+        $this->addToDatabase($sInsertCategoriesPart . $sValuesPart, 'oxcategories');
+        $sValuesPart = "('test_c1',$sShopValues,'1','c1');";
+        $this->addToDatabase($sInsertCategoriesPart . $sValuesPart, 'oxcategories');
+        $sValuesPart = "('test_c2',$sShopValues,'1','c2');";
+        $this->addToDatabase($sInsertCategoriesPart . $sValuesPart, 'oxcategories');
 
-        $sInsertCategoryReleations = "
+        $sInsertCategoryRelationsPart = "
         INSERT INTO `oxobject2category`
         (`OXID`, `OXCATNID`, `OXOBJECTID`)
-        VALUES
+        VALUES ";
 
-        ('test_r00','test_c0','test_a0'),
-        ('test_r01','test_c0','test_a1'),
-        ('test_r02','test_c0','test_a2'),
-        ('test_r03','test_c0','test_a3'),
+        $sValuesPart = "('test_r00','test_c0','test_a0')";
+        $this->addToDatabase($sInsertCategoryRelationsPart . $sValuesPart, 'oxobject2category');
+        $sValuesPart = "('test_r01','test_c0','test_a1')";
+        $this->addToDatabase($sInsertCategoryRelationsPart . $sValuesPart, 'oxobject2category');
+        $sValuesPart = "('test_r02','test_c0','test_a2')";
+        $this->addToDatabase($sInsertCategoryRelationsPart . $sValuesPart, 'oxobject2category');
+        $sValuesPart = "('test_r03','test_c0','test_a3')";
+        $this->addToDatabase($sInsertCategoryRelationsPart . $sValuesPart, 'oxobject2category');
 
-        ('test_r11','test_c1','test_a3'),
-        ('test_r12','test_c1','test_a4'),
+        $sValuesPart = "('test_r11','test_c1','test_a3')";
+        $this->addToDatabase($sInsertCategoryRelationsPart . $sValuesPart, 'oxobject2category');
+        $sValuesPart = "('test_r12','test_c1','test_a4')";
+        $this->addToDatabase($sInsertCategoryRelationsPart . $sValuesPart, 'oxobject2category');
 
-        ('test_r21','test_c2','test_a4'),
-        ('test_r22','test_c2','test_a5');";
+        $sValuesPart = "('test_r21','test_c2','test_a4')";
+        $this->addToDatabase($sInsertCategoryRelationsPart . $sValuesPart, 'oxobject2category');
+        $sValuesPart = "('test_r22','test_c2','test_a5')";
+        $this->addToDatabase($sInsertCategoryRelationsPart . $sValuesPart, 'oxobject2category');
 
         $sInsertVoucherReleations = "
         INSERT INTO `oxobject2discount`
@@ -326,42 +353,12 @@ class Unit_Core_oxVoucherExcludeTest extends OxidTestCase
         ('test_i84','test_o8','test_a4','5','200','200','0','0','40','40','40',$sShopId);";
 
 
-        $this->tearDown();
 
-        oxDb::getDb()->execute($sInsertSeries);
-        oxDb::getDb()->execute($sInsertVouchers);
-        oxDb::getDb()->execute($sInsertArticles);
-        oxDb::getDb()->execute($sInsertCategories);
-        oxDb::getDb()->execute($sInsertCategoryReleations);
-        oxDb::getDb()->execute($sInsertVoucherReleations);
-        oxDb::getDb()->execute($sInsertOrder);
-        oxDb::getDb()->execute($sInsertOrderArticles);
-    }
+        $this->addToDatabase($sInsertVouchers, 'oxvouchers');
+        $this->addToDatabase($sInsertVoucherReleations, 'oxobject2discount');
+        $this->addToDatabase($sInsertOrder, 'oxorder');
+        $this->addToDatabase($sInsertOrderArticles, 'oxorderarticles');
 
-    /**
-     * Tear down the fixture.
-     *
-     * @return null
-     */
-    protected function tearDown()
-    {
-        $sDeleteSeries            = "DELETE FROM `oxvoucherseries`   WHERE `OXID` LIKE 'test_%';";
-        $sDeleteVouchers          = "DELETE FROM `oxvouchers`        WHERE `OXID` LIKE 'test_%';";
-        $sDeleteArticles          = "DELETE FROM `oxarticles`        WHERE `OXID` LIKE 'test_%';";
-        $sDeleteCategories        = "DELETE FROM `oxcategories`      WHERE `OXID` LIKE 'test_%';";
-        $sDeleteCategoryRelations = "DELETE FROM `oxobject2category` WHERE `OXID` LIKE 'test_%';";
-        $sDeleteVoucherRelations  = "DELETE FROM `oxobject2discount` WHERE `OXID` LIKE 'test_%';";
-        $sDeleteOrder             = "DELETE FROM `oxorder`           WHERE `OXID` LIKE 'test_%';";
-        $sDeleteOrderArticles     = "DELETE FROM `oxorderarticles`   WHERE `OXID` LIKE 'test_%';";
-
-        oxDb::getDb()->execute($sDeleteSeries);
-        oxDb::getDb()->execute($sDeleteVouchers);
-        oxDb::getDb()->execute($sDeleteArticles);
-        oxDb::getDb()->execute($sDeleteCategories);
-        oxDb::getDb()->execute($sDeleteCategoryRelations);
-        oxDb::getDb()->execute($sDeleteVoucherRelations);
-        oxDb::getDb()->execute($sDeleteOrder);
-        oxDb::getDb()->execute($sDeleteOrderArticles);
     }
 
     /**

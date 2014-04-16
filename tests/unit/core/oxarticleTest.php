@@ -6785,7 +6785,6 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $oSel->init( "oxselectlist" );
         $oSel->setId( "_testSel1" );
         $oSel->oxselectlist__oxshopid    = new oxField( 1 );
-//        $oSel->oxselectlist__oxshopincl  = new oxField( 1 );
         $oSel->oxselectlist__oxtitle     = new oxField( "selection list A" );
         $oSel->oxselectlist__oxtitle_1   = new oxField( "selection list A" );
         $oSel->oxselectlist__oxvaldesc   = new oxField( "L__@@M__@@S__@@" );
@@ -6796,7 +6795,6 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $oSel->init( "oxselectlist" );
         $oSel->setId( "_testSel2" );
         $oSel->oxselectlist__oxshopid    = new oxField( 1 );
-//        $oSel->oxselectlist__oxshopincl  = new oxField( 1 );
         $oSel->oxselectlist__oxtitle     = new oxField( "selection list B" );
         $oSel->oxselectlist__oxtitle_1   = new oxField( "selection list B" );
         $oSel->oxselectlist__oxvaldesc   = new oxField( "Blue__@@Green__@@Red__@@" );
@@ -6809,6 +6807,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $oO2S->setId( "_testo2s1" );
         $oO2S->oxobject2selectlist__oxobjectid  = new oxField( "1126" );
         $oO2S->oxobject2selectlist__oxselnid    = new oxField( "_testSel1" );
+        $oO2S->oxobject2selectlist__oxsort      = new oxField(1);
         $oO2S->save();
 
         $oO2S = new oxBase();
@@ -6816,6 +6815,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $oO2S->setId( "_testo2s2" );
         $oO2S->oxobject2selectlist__oxobjectid  = new oxField( "1126" );
         $oO2S->oxobject2selectlist__oxselnid    = new oxField( "_testSel2" );
+        $oO2S->oxobject2selectlist__oxsort      = new oxField(2);
         $oO2S->save();
 
         // loading product

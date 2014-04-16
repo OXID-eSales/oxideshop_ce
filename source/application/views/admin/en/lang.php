@@ -37,8 +37,8 @@ $aLang = array(
 'simpleDateFormat'                                         => 'Y-m-d',
 
 'GENERAL_ACTIVE'                                           => 'Active',
-'GENERAL_ALWAYS_ACTIVE'                                    => 'Always active',
-'GENERAL_ACTIVFROMTILL'                                    => 'Active for a period',
+'GENERAL_ALWAYS_ACTIVE'                                    => '[TR]Always active',
+'GENERAL_ACTIVFROMTILL'                                    => '[TR]Active by date',
 'GENERAL_OR'                                               => 'Or',
 'GENERAL_ACTIVTITLE'                                       => 'A',
 'GENERAL_ADMIN_TITLE'                                      => '[OXID eShop Administration]',
@@ -1101,7 +1101,7 @@ $aLang = array(
 'SHOP_MALL_MALLINHERIT_OXARTICLES'                         => 'Inherit all <b>products</b> from parent shop',
 'SHOP_MALL_MALLINHERIT_OXATTRIBUTES'                       => 'Inherit all <b>attributes</b> from parent shop',
 'SHOP_MALL_MALLINHERIT_OXDELIVERY'                         => 'Inherit <b>delivery information</b> from parent shop',
-'SHOP_MALL_MALLINHERIT_OXDISCOUNT'                         => 'Inherit all <b>discounts</b> from parent shop',
+'SHOP_MALL_MALLINHERIT_OXDISCOUNT'                         => 'Inherit all <b>discounts and VATs</b> from parent shop',
 'SHOP_MALL_MALLINHERIT_OXLINKS'                            => 'Inherit all <b>shop links</b> from parent shop',
 'SHOP_MALL_MALLINHERIT_OXVOUCHERSERIES'                    => 'Inherit all <b>coupon series</b> from parent shop',
 'SHOP_MALL_MALLINHERIT_OXNEWS'                             => 'Inherit <b>shop news</b> from parent shop',
@@ -1855,6 +1855,12 @@ $aLang = array(
 'nonstackable_serial_detected'                             => 'Can\'t add non stackable license key. Please insert stackable license key first.',
 'serial_added'                                             => 'License key has beend added',
 'serial_updated'                                           => 'License key has been updated',
+
+// Shop licensing problems
+'SHOP_LICENSE_ERROR_GRACE_EXPIRED'                         => 'The license key of your OXID eShop has been finally expired. Please enter the valid license key.',
+'SHOP_LICENSE_ERROR_shop_unlicensed'                       => 'A problem with the license key of your OXID eShop has been occurred. For this reason, a hidden countdown of 7 days has been started. After this period the OXID eShop will go offline. Please enter the valid license key.',
+'SHOP_LICENSE_ERROR_serial_expired'                        => 'The license key of your OXID eShop has been expired. For this reason, a hidden countdown of 7 days has been started. After this period the OXID eShop will go offline. Please enter a valid license key.',
+'SHOP_LICENSE_ERROR_incorrect_mandate_amount'              => 'The number of the licensed sub-shops has been exceeded. For this reason, a hidden countdown of 7 days has been started. After this period the OXID eShop will go offline. Please enter a valid license key.',
 
 'SHOP_OPTIONS_GROUP_GLOBAL'                                => 'Global',
 'SHOP_OPTIONS_GROUP_SEARCH'                                => 'Search',

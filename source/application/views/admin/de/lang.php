@@ -33,8 +33,8 @@ $aLang = array(
 'simpleDateFormat'                                         => 'd.m.Y',
 
 'GENERAL_ACTIVE'                                           => 'Aktiv',
-'GENERAL_ALWAYS_ACTIVE'                                    => 'Immer aktiv',
-'GENERAL_ACTIVFROMTILL'                                    => 'Aktiv für Zeitraum',
+'GENERAL_ALWAYS_ACTIVE'                                    => '[TR]Always active',
+'GENERAL_ACTIVFROMTILL'                                    => '[TR]Active by date',
 'GENERAL_OR'                                               => 'Oder',
 'GENERAL_ACTIVTITLE'                                       => 'A',
 'GENERAL_ADMIN_TITLE'                                      => '[OXID eShop Administrationsbereich]',
@@ -1099,7 +1099,7 @@ $aLang = array(
 'SHOP_MALL_MALLINHERIT_OXARTICLES'                         => 'Alle <b>Artikel</b> vom Elternshop erben',
 'SHOP_MALL_MALLINHERIT_OXATTRIBUTES'                       => 'Alle <b>Attribute</b> vom Elternshop erben',
 'SHOP_MALL_MALLINHERIT_OXDELIVERY'                         => 'Alle <b>Lieferinformationen</b> vom Elternshop erben',
-'SHOP_MALL_MALLINHERIT_OXDISCOUNT'                         => 'Alle <b>Rabatte</b> vom Elternshop erben',
+'SHOP_MALL_MALLINHERIT_OXDISCOUNT'                         => 'Alle <b>Rabatte und MwSt.-Sätze</b> vom Elternshop erben',
 'SHOP_MALL_MALLINHERIT_OXLINKS'                            => 'Alle <b>Links</b> vom Elternshop erben',
 'SHOP_MALL_MALLINHERIT_OXVOUCHERSERIES'                    => 'Alle <b>Gutscheinserien</b> vom Elternshop erben',
 'SHOP_MALL_MALLINHERIT_OXNEWS'                             => 'Alle <b>Nachrichten</b> vom Elternshop erben',
@@ -1854,6 +1854,12 @@ $aLang = array(
 'nonstackable_serial_detected'                             => 'Ein nicht erweiterbarer Lizenzschlüssel kann nicht hinzugefügt werden. Bitte fügen Sie diesen Schlüssel als ersten ein.',
 'serial_added'                                             => 'Neuer Lizenzschlüssel wurde aktiviert',
 'serial_updated'                                           => 'Lizenzschlüssel wurde aktualisiert',
+
+// Shop licensing problems
+'SHOP_LICENSE_ERROR_GRACE_EXPIRED'                         => 'Der Lizenzkey Ihres OXID eShop ist endgültig abgelaufen. Bitte geben Sie einen gültigen Lizenzkey.',
+'SHOP_LICENSE_ERROR_shop_unlicensed'                       => 'Es ist ein Problem mit dem Lizenzkey Ihres OXID eShop aufgetreten. Aus diesem Grund wurde ein stiller Countdown von 7 Tagen gestartet. Nach Ablauf der Frist wird der OXID eShop offline gehen. Bitte geben Sie den gültigen Lizenzkey.',
+'SHOP_LICENSE_ERROR_serial_expired'                        => 'Der Lizenzkey Ihres OXID eShop ist abgelaufen. Aus diesem Grund wurde ein stiller Countdown von 7 Tagen gestartet. Nach Ablauf der Frist wird der OXID eShop offline gehen. Bitte geben Sie einen gültigen Lizenzkey.',
+'SHOP_LICENSE_ERROR_incorrect_mandate_amount'              => 'Die Anzahl der lizensierten Subshops wurde überschritten. Aus diesem Grund wurde ein stiller Countdown von 7 Tagen gestartet. Nach Ablauf der Frist wird der OXID eShop offline gehen. Bitte geben Sie einen gültigen Lizenzkey.',
 
 'SHOP_OPTIONS_GROUP_GLOBAL'                                => 'Global',
 'SHOP_OPTIONS_GROUP_SEARCH'                                => 'Suche',

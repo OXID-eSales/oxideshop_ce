@@ -263,6 +263,97 @@ class Unit_Admin_loginTest extends OxidTestCase
     }
 
     /**
+     * When serial is correct, do nothing
+     */
+    public function testGetShopValidationMessage_SerialValid()
+    {
+        $oSerial = $this->getMock('oxSerial', array('isShopValid'));
+        $oSerial->expects($this->any())->method('isShopValid')->will($this->returnValue(true));
+
+        $oConfig = $this->getMock('oxConfig', array('getSerial'));
+        $oConfig->expects($this->any())->method('getSerial')->will($this->returnValue($oSerial));
+
+        $oView = new Login();
+        $oView->setConfig($oConfig);
+
+        $this->assertEquals('', $oView->getShopValidationMessage());
+    }
+
+    /**
+     * When serial is correct, do nothing
+     */
+    public function testGetShopValidationMessage_SerialValidShopNotStopped()
+    {
+        $oSerial = $this->getMock('oxSerial', array('isShopValid'));
+        $oSerial->expects($this->any())->method('isShopValid')->will($this->returnValue(true));
+
+        $oConfig = $this->getMock('oxConfig', array('getSerial'));
+        $oConfig->expects($this->any())->method('getSerial')->will($this->returnValue($oSerial));
+        $this->getConfig()->setConfigParam('blShopStopped', false);
+
+        $oView = new Login();
+        $oView->setConfig($oConfig);
+
+        $this->assertEquals('', $oView->getShopValidationMessage());
+    }
+
+    /**
+     * When serial is correct, do nothing
+     */
+    public function testGetShopValidationMessage_SerialValidShopStopped()
+    {
+        $oSerial = $this->getMock('oxSerial', array('isShopValid'));
+        $oSerial->expects($this->any())->method('isShopValid')->will($this->returnValue(true));
+
+        $oConfig = $this->getMock('oxConfig', array('getSerial'));
+        $oConfig->expects($this->any())->method('getSerial')->will($this->returnValue($oSerial));
+        $this->getConfig()->setConfigParam('blShopStopped', true);
+
+        $oView = new Login();
+        $oView->setConfig($oConfig);
+
+        $this->assertEquals('', $oView->getShopValidationMessage());
+    }
+
+    /**
+     * When serial is correct, do nothing
+     */
+    public function testGetShopValidationMessage_SerialInvalidShopNotStopped()
+    {
+        $oSerial = $this->getMock('oxSerial', array('isShopValid', 'getValidationMessage'));
+        $oSerial->expects($this->any())->method('isShopValid')->will($this->returnValue(false));
+        $oSerial->expects($this->any())->method('getValidationMessage')->will($this->returnValue('beta_incorrect'));
+
+        $oConfig = $this->getMock('oxConfig', array('getSerial'));
+        $oConfig->expects($this->any())->method('getSerial')->will($this->returnValue($oSerial));
+        $this->getConfig()->setConfigParam('blShopStopped', false);
+
+        $oView = new Login();
+        $oView->setConfig($oConfig);
+
+        $this->assertEquals('', $oView->getShopValidationMessage());
+    }
+
+    /**
+     * When serial is correct, do nothing
+     */
+    public function testGetShopValidationMessage_SerialInvalidShopStopped()
+    {
+        $oSerial = $this->getMock('oxSerial', array('isShopValid', 'getValidationMessage'));
+        $oSerial->expects($this->any())->method('isShopValid')->will($this->returnValue(false));
+        $oSerial->expects($this->any())->method('getValidationMessage')->will($this->returnValue('beta_incorrect'));
+
+        $oConfig = $this->getMock('oxConfig', array('getSerial'));
+        $oConfig->expects($this->any())->method('getSerial')->will($this->returnValue($oSerial));
+        $this->getConfig()->setConfigParam('blShopStopped', true);
+
+        $oView = new Login();
+        $oView->setConfig($oConfig);
+
+        $this->assertEquals('beta_incorrect', $oView->getShopValidationMessage());
+    }
+
+    /**
      * Testing login::checklogin()
      *
      * @return null

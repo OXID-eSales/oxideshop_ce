@@ -1340,37 +1340,55 @@ class oxBase extends oxSuperCfg
      * might be loaded through oxlist.
      *
      * @return bool
-    */
+     */
     protected function _insert()
     {
 
-        $oDb      = oxDb::getDb( oxDb::FETCH_MODE_ASSOC );
+        $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
         $myConfig = $this->getConfig();
-        $myUtils  = oxRegistry::getUtils();
+        $myUtils = oxRegistry::getUtils();
 
         // let's get a new ID
-        if ( !$this->getId()) {
+        if (!$this->getId()) {
             $this->setId();
         }
 
-        $sIDKey = $myUtils->getArrFldName( $this->getCoreTableName() . '.oxid' );
-        $this->$sIDKey = new oxField( $this->getId(), oxField::T_RAW );
+        $sIDKey = $myUtils->getArrFldName($this->getCoreTableName() . '.oxid');
+        $this->$sIDKey = new oxField($this->getId(), oxField::T_RAW);
         $sInsert = "Insert into {$this->getCoreTableName()} set ";
 
         //setting oxshopid
-        $sShopField = $myUtils->getArrFldName( $this->getCoreTableName() . '.oxshopid' );
+        $sShopField = $myUtils->getArrFldName($this->getCoreTableName() . '.oxshopid');
 
-        if ( isset( $this->$sShopField ) && !$this->$sShopField->value ) {
-            $this->$sShopField = new oxField( $myConfig->getShopId(), oxField::T_RAW );
+        if (isset($this->$sShopField) && !$this->$sShopField->value) {
+            $this->$sShopField = new oxField($myConfig->getShopId(), oxField::T_RAW);
         }
 
+        $sInsert .= $this->_getUpdateFields($this->getUseSkipSaveFields());
 
-        $sInsert .= $this->_getUpdateFields( $this->getUseSkipSaveFields() );
-
-        $blRet = (bool) $oDb->execute( $sInsert );
+        $blRet = (bool) $oDb->execute($sInsert);
 
 
         return $blRet;
+    }
+
+    /**
+     * Adds object to related map if it's a multishope inheritable table
+     */
+    protected function _addShopRelations()
+    {
+        $myConfig = $this->getConfig();
+
+        $oShop = $myConfig->getActiveShop();
+        //set record 2 subshop mapping relations for this shop and inherited subshops
+        if (in_array($this->getCoreTableName(), $oShop->getMultiShopTables())) {
+            //for this shop..
+            $aShopIds = array($oShop->getId());
+            //..and for inherited ones
+            $aShopIds = array_merge($aShopIds, $oShop->getInheritedSubshopList($this->getCoreTableName()));
+            $oShopRelations = oxNew("oxShopRelations", $aShopIds);
+            $oShopRelations->addToShop($this->getMapId(), $this->getCoreTableName());
+        }
     }
 
     /**

@@ -133,12 +133,7 @@ class Unit_Core_oxshopTest extends OxidTestCase
     public function testGetMultishopTablesDefaultNotSet()
     {
         $oShop = new oxShop();
-        if (OXID_VERSION_EE) {
-            $this->getConfig()->setConfigParam('aMultiShopTables', array('table1', 'table2'));
-            $this->assertEquals(array('table1', 'table2'), $oShop->getMultiShopTables());
-        } else {
             $this->assertEquals(array(), $oShop->getMultiShopTables());
-        }
     }
 
 

@@ -36,14 +36,6 @@ class Integration_Article_ArticleTest extends OxidTestCase
         parent::setUp();
     }
 
-    /**
-     * Test tear down
-     */
-    public function tearDown()
-    {
-        parent::tearDown();
-    }
-
     public function testArticleParentFieldsInChild_ParentUpdate_SetParentValueToChild()
     {
         $aParentFields = array('oxarticles__oxnonmaterial',

@@ -106,4 +106,15 @@ class oxStart extends oxUBase
         return oxConfig::getParameter( 'errornr' );
     }
 
+    /**
+     * Performance - run these checks only each 5 times statistically.
+     *
+     * @return bool
+     */
+    private function _needValidateShop()
+    {
+        $oConfig = $this->getConfig();
+        return !$oConfig->isProductiveMode() || !( ( oxRegistry::get( "oxUtilsDate" )->getTime() ) % 5 ) || $oConfig->getConfigParam( 'blShopStopped' );
+    }
+
 }

@@ -182,6 +182,8 @@ class Login extends oxAdminView
 
     /**
      * Returns message about shop validation
+     *
+     * @return string
      */
     public function getShopValidationMessage()
     {

@@ -262,9 +262,6 @@ class Unit_Admin_loginTest extends OxidTestCase
         $this->assertTrue( $oView->UNITauthorize() );
     }
 
-    /**
-     * When serial is correct, do nothing
-     */
     public function testGetShopValidationMessage_NoNoticeWhenGraceNotStartedAndSerialValid()
     {
         $oSerial = $this->getMock('oxSerial', array('isGracePeriodStarted', 'isShopValid'));
@@ -280,9 +277,6 @@ class Unit_Admin_loginTest extends OxidTestCase
         $this->assertEquals('', $oView->getShopValidationMessage());
     }
 
-    /**
-     * When serial is correct, do nothing
-     */
     public function testGetShopValidationMessage_NoNoticeWhenGraceStartedAndSerialValid()
     {
         $oSerial = $this->getMock('oxSerial', array('isGracePeriodStarted', 'isShopValid'));
@@ -298,15 +292,13 @@ class Unit_Admin_loginTest extends OxidTestCase
         $this->assertEquals('', $oView->getShopValidationMessage());
     }
 
-    /**
-     * When serial is correct, do nothing
-     */
     public function testGetShopValidationMessage_NoticeWhenGraceStartedSerialInvalid()
     {
-        $oSerial = $this->getMock('oxSerial', array('isGracePeriodStarted', 'isGracePeriodExpired', 'isShopValid'));
+        $oSerial = $this->getMock('oxSerial', array('isGracePeriodStarted', 'isGracePeriodExpired', 'isShopValid', 'getValidationMessage'));
         $oSerial->expects($this->any())->method('isGracePeriodStarted')->will($this->returnValue(true));
         $oSerial->expects($this->any())->method('isGracePeriodExpired')->will($this->returnValue(false));
         $oSerial->expects($this->any())->method('isShopValid')->will($this->returnValue(false));
+        $oSerial->expects($this->any())->method('getValidationMessage')->will($this->returnValue('validation_message'));
 
         $oConfig = $this->getMock('oxConfig', array('getSerial'));
         $oConfig->expects($this->any())->method('getSerial')->will($this->returnValue($oSerial));
@@ -315,27 +307,35 @@ class Unit_Admin_loginTest extends OxidTestCase
         $oView = new Login();
         $oView->setConfig($oConfig);
 
-        $this->assertEquals('Shop is in grace period', $oView->getShopValidationMessage());
+        $this->assertEquals('validation_message', $oView->getShopValidationMessage());
     }
 
-    /**
-     * When serial is correct, do nothing
-     */
-    public function testGetShopValidationMessage_NoticeWhenGraceExpiredSerialInvalid()
+    public function testIsGracePeriodExpired_NotExpired()
     {
-        $oSerial = $this->getMock('oxSerial', array('isGracePeriodStarted', 'isGracePeriodExpired', 'isShopValid'));
-        $oSerial->expects($this->any())->method('isGracePeriodStarted')->will($this->returnValue(true));
+        $oSerial = $this->getMock('oxSerial', array('isGracePeriodExpired'));
         $oSerial->expects($this->any())->method('isGracePeriodExpired')->will($this->returnValue(true));
-        $oSerial->expects($this->any())->method('isShopValid')->will($this->returnValue(false));
 
         $oConfig = $this->getMock('oxConfig', array('getSerial'));
         $oConfig->expects($this->any())->method('getSerial')->will($this->returnValue($oSerial));
-        $this->getConfig()->setConfigParam('blShopStopped', false);
 
         $oView = new Login();
         $oView->setConfig($oConfig);
 
-        $this->assertEquals('Grace period expired', $oView->getShopValidationMessage());
+        $this->assertEquals(true, $oView->isGracePeriodExpired());
+    }
+
+    public function testIsGracePeriodExpired_Expired()
+    {
+        $oSerial = $this->getMock('oxSerial', array('isGracePeriodExpired'));
+        $oSerial->expects($this->any())->method('isGracePeriodExpired')->will($this->returnValue(false));
+
+        $oConfig = $this->getMock('oxConfig', array('getSerial'));
+        $oConfig->expects($this->any())->method('getSerial')->will($this->returnValue($oSerial));
+
+        $oView = new Login();
+        $oView->setConfig($oConfig);
+
+        $this->assertEquals(false, $oView->isGracePeriodExpired());
     }
 
     /**

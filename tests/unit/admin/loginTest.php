@@ -265,9 +265,10 @@ class Unit_Admin_loginTest extends OxidTestCase
     /**
      * When serial is correct, do nothing
      */
-    public function testGetShopValidationMessage_SerialValid()
+    public function testGetShopValidationMessage_NoNoticeWhenGraceNotStartedAndSerialValid()
     {
-        $oSerial = $this->getMock('oxSerial', array('isShopValid'));
+        $oSerial = $this->getMock('oxSerial', array('isGracePeriodStarted', 'isShopValid'));
+        $oSerial->expects($this->any())->method('isGracePeriodStarted')->will($this->returnValue(false));
         $oSerial->expects($this->any())->method('isShopValid')->will($this->returnValue(true));
 
         $oConfig = $this->getMock('oxConfig', array('getSerial'));
@@ -282,10 +283,30 @@ class Unit_Admin_loginTest extends OxidTestCase
     /**
      * When serial is correct, do nothing
      */
-    public function testGetShopValidationMessage_SerialValidShopNotStopped()
+    public function testGetShopValidationMessage_NoNoticeWhenGraceStartedAndSerialValid()
     {
-        $oSerial = $this->getMock('oxSerial', array('isShopValid'));
+        $oSerial = $this->getMock('oxSerial', array('isGracePeriodStarted', 'isShopValid'));
+        $oSerial->expects($this->any())->method('isGracePeriodStarted')->will($this->returnValue(true));
         $oSerial->expects($this->any())->method('isShopValid')->will($this->returnValue(true));
+
+        $oConfig = $this->getMock('oxConfig', array('getSerial'));
+        $oConfig->expects($this->any())->method('getSerial')->will($this->returnValue($oSerial));
+
+        $oView = new Login();
+        $oView->setConfig($oConfig);
+
+        $this->assertEquals('', $oView->getShopValidationMessage());
+    }
+
+    /**
+     * When serial is correct, do nothing
+     */
+    public function testGetShopValidationMessage_NoticeWhenGraceStartedSerialInvalid()
+    {
+        $oSerial = $this->getMock('oxSerial', array('isGracePeriodStarted', 'isGracePeriodExpired', 'isShopValid'));
+        $oSerial->expects($this->any())->method('isGracePeriodStarted')->will($this->returnValue(true));
+        $oSerial->expects($this->any())->method('isGracePeriodExpired')->will($this->returnValue(false));
+        $oSerial->expects($this->any())->method('isShopValid')->will($this->returnValue(false));
 
         $oConfig = $this->getMock('oxConfig', array('getSerial'));
         $oConfig->expects($this->any())->method('getSerial')->will($this->returnValue($oSerial));
@@ -294,35 +315,18 @@ class Unit_Admin_loginTest extends OxidTestCase
         $oView = new Login();
         $oView->setConfig($oConfig);
 
-        $this->assertEquals('', $oView->getShopValidationMessage());
+        $this->assertEquals('Shop is in grace period', $oView->getShopValidationMessage());
     }
 
     /**
      * When serial is correct, do nothing
      */
-    public function testGetShopValidationMessage_SerialValidShopStopped()
+    public function testGetShopValidationMessage_NoticeWhenGraceExpiredSerialInvalid()
     {
-        $oSerial = $this->getMock('oxSerial', array('isShopValid'));
-        $oSerial->expects($this->any())->method('isShopValid')->will($this->returnValue(true));
-
-        $oConfig = $this->getMock('oxConfig', array('getSerial'));
-        $oConfig->expects($this->any())->method('getSerial')->will($this->returnValue($oSerial));
-        $this->getConfig()->setConfigParam('blShopStopped', true);
-
-        $oView = new Login();
-        $oView->setConfig($oConfig);
-
-        $this->assertEquals('', $oView->getShopValidationMessage());
-    }
-
-    /**
-     * When serial is correct, do nothing
-     */
-    public function testGetShopValidationMessage_SerialInvalidShopNotStopped()
-    {
-        $oSerial = $this->getMock('oxSerial', array('isShopValid', 'getValidationMessage'));
+        $oSerial = $this->getMock('oxSerial', array('isGracePeriodStarted', 'isGracePeriodExpired', 'isShopValid'));
+        $oSerial->expects($this->any())->method('isGracePeriodStarted')->will($this->returnValue(true));
+        $oSerial->expects($this->any())->method('isGracePeriodExpired')->will($this->returnValue(true));
         $oSerial->expects($this->any())->method('isShopValid')->will($this->returnValue(false));
-        $oSerial->expects($this->any())->method('getValidationMessage')->will($this->returnValue('beta_incorrect'));
 
         $oConfig = $this->getMock('oxConfig', array('getSerial'));
         $oConfig->expects($this->any())->method('getSerial')->will($this->returnValue($oSerial));
@@ -331,26 +335,55 @@ class Unit_Admin_loginTest extends OxidTestCase
         $oView = new Login();
         $oView->setConfig($oConfig);
 
-        $this->assertEquals('', $oView->getShopValidationMessage());
+        $this->assertEquals('Grace period expired', $oView->getShopValidationMessage());
     }
 
     /**
      * When serial is correct, do nothing
      */
-    public function testGetShopValidationMessage_SerialInvalidShopStopped()
+    public function testGetShopValidationMessage_GraceResetWhenGraceStartedAndShopValid()
     {
-        $oSerial = $this->getMock('oxSerial', array('isShopValid', 'getValidationMessage'));
-        $oSerial->expects($this->any())->method('isShopValid')->will($this->returnValue(false));
-        $oSerial->expects($this->any())->method('getValidationMessage')->will($this->returnValue('beta_incorrect'));
-
         $oConfig = $this->getMock('oxConfig', array('getSerial'));
+        $oConfig->init();
+        $oConfig->setConfigParam('sBackTag', time());
+
+        $oSerial = $this->getMock('oxSerial', array('isShopValid', 'getConfig'));
+        $oSerial->expects($this->any())->method('isShopValid')->will($this->returnValue(true));
+        $oSerial->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+
         $oConfig->expects($this->any())->method('getSerial')->will($this->returnValue($oSerial));
-        $this->getConfig()->setConfigParam('blShopStopped', true);
 
         $oView = new Login();
         $oView->setConfig($oConfig);
 
-        $this->assertEquals('beta_incorrect', $oView->getShopValidationMessage());
+        $oView->getShopValidationMessage();
+
+        $this->assertEquals('', $oConfig->getConfigParam('sBackTag'));
+    }
+
+    /**
+     * When serial is correct, do nothing
+     */
+    public function testGetShopValidationMessage_GraceNotChangedWhenGraceStartedAndShopNotValid()
+    {
+        $sTime = time();
+
+        $oConfig = $this->getMock('oxConfig', array('getSerial'));
+        $oConfig->init();
+        $oConfig->setConfigParam('sBackTag', $sTime);
+
+        $oSerial = $this->getMock('oxSerial', array('isShopValid', 'getConfig'));
+        $oSerial->expects($this->any())->method('isShopValid')->will($this->returnValue(false));
+        $oSerial->expects($this->any())->method('getConfig')->will($this->returnValue($oConfig));
+
+        $oConfig->expects($this->any())->method('getSerial')->will($this->returnValue($oSerial));
+
+        $oView = new Login();
+        $oView->setConfig($oConfig);
+
+        $oView->getShopValidationMessage();
+
+        $this->assertEquals($sTime, $oConfig->getConfigParam('sBackTag'));
     }
 
     /**

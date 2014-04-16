@@ -167,7 +167,6 @@ class Article_Variant extends oxAdminDetails
                 // #4406
                 $oArticle->oxarticles__oxisconfigurable = new oxField( $oParent->oxarticles__oxisconfigurable->value );
                 $oArticle->oxarticles__oxremindactive = new oxField( $oParent->oxarticles__oxremindactive->value );
-
             }
         }
 

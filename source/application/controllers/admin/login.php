@@ -43,7 +43,8 @@ class Login extends oxAdminView
      * @return string
      */
     public function render()
-    {   $myConfig = $this->getConfig();
+    {
+        $oConfig = $this->getConfig();
 
         //resets user once on this screen.
         $oUser = oxNew( "oxuser" );
@@ -54,18 +55,18 @@ class Login extends oxAdminView
         //if( $myConfig->blDemoMode)
         $oBaseShop = oxNew( "oxshop" );
 
-        $oBaseShop->load( $myConfig->getBaseShopId());
+        $oBaseShop->load( $oConfig->getBaseShopId());
             $sVersion = $oBaseShop->oxshops__oxversion->value;
 
         $this->getViewConfig()->setViewConfigParam( 'sShopVersion', $sVersion );
 
-        if ( $myConfig->isDemoShop() ) {
+        if ( $oConfig->isDemoShop() ) {
             // demo
             $this->addTplParam( "user", "admin");
             $this->addTplParam( "pwd", "admin");
         }
         //#533 user profile
-        $this->addTplParam( "profiles", oxRegistry::getUtils()->loadAdminProfile( $myConfig->getConfigParam( 'aInterfaceProfiles' ) ) );
+        $this->addTplParam( "profiles", oxRegistry::getUtils()->loadAdminProfile( $oConfig->getConfigParam( 'aInterfaceProfiles' ) ) );
 
         $aLanguages = $this->_getAvailableLanguages();
         $this->addTplParam( "aLanguages", $aLanguages );
@@ -177,6 +178,20 @@ class Login extends oxAdminView
     public function getViewId()
     {
         return strtolower( get_class( $this ) );
+    }
+
+    /**
+     * Returns message about shop validation
+     */
+    public function getShopValidationMessage()
+    {
+        $sError = '';
+        $oSerial = oxRegistry::getConfig()->getSerial();
+        if (!$oSerial->isShopValid()) {
+            $sError = "SHOP_LICENSE_ERROR_".$oSerial->getValidationMessage();
+        }
+
+        return $sError;
     }
 
     /**

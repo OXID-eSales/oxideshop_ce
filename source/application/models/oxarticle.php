@@ -2244,6 +2244,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             return;
         }
 
+
         //if (isset($sOXID) && !$myConfig->blVariantParentBuyable && $myConfig->blUseStock)
         if ( $myConfig->getConfigParam( 'blUseStock' ) ) {
             //if article has variants then updating oxvarstock field

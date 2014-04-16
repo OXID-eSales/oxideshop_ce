@@ -23,8 +23,6 @@
 </head>
 <body>
 
-[{assign var="sShopValidationMessage" value=$oView->getShopValidationMessage()}]
-[{if ( $sShopValidationMessage ) }]<div class="notify">[{ oxmultilang ident=$sShopValidationMessage }]</div>[{/if}]
 
 <div class="box">
 

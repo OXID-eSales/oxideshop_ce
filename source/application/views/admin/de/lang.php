@@ -1853,10 +1853,7 @@ $aLang = array(
 'serial_updated'                                           => 'Lizenzschlüssel wurde aktualisiert',
 
 // Shop licensing problems
-'SHOP_LICENSE_ERROR_invalid_beta'                          => 'Shop stopped working because beta key is invalid',
-'SHOP_LICENSE_ERROR_shop_unlicensed'                       => 'Shop stopped working because license key is incorrect',
-'SHOP_LICENSE_ERROR_serial_expired'                        => 'Shop stopped working because license key has expired',
-'SHOP_LICENSE_ERROR_incorrect_mandate_amount'              => 'Shop stopped working because license mandate amount and shop count is incorrect',
+'ERROR_MESSAGE_UNLICENSED'                                 => 'Ihr Shop ist nicht lizenziert. Tragen Sie bitte im Shop Admin einen gültigen Lizenzschlüssel ein oder kontaktieren Sie',
 
 'SHOP_OPTIONS_GROUP_GLOBAL'                                => 'Global',
 'SHOP_OPTIONS_GROUP_SEARCH'                                => 'Suche',

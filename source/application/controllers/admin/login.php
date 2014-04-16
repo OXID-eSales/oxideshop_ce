@@ -186,9 +186,9 @@ class Login extends oxAdminView
     public function getShopValidationMessage()
     {
         $sError = '';
-        $oSerial = oxRegistry::getConfig()->getSerial();
-        if (!$oSerial->isShopValid()) {
-            $sError = "SHOP_LICENSE_ERROR_".$oSerial->getValidationMessage();
+        $oSerial = $this->getConfig()->getSerial();
+        if ($this->getConfig()->getConfigParam('blShopStopped') && !$oSerial->isShopValid()) {
+            $sError = $oSerial->getValidationMessage();
         }
 
         return $sError;

@@ -1377,11 +1377,16 @@ class oxBase extends oxSuperCfg
      */
     protected function _addShopRelations()
     {
+        $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
         $myConfig = $this->getConfig();
 
         $oShop = $myConfig->getActiveShop();
         //set record 2 subshop mapping relations for this shop and inherited subshops
         if (in_array($this->getCoreTableName(), $oShop->getMultiShopTables())) {
+            if ($iInsertId = $oDb->Insert_ID()) {
+                $this->setMapId($iInsertId);
+            }
+
             //for this shop..
             $aShopIds = array($oShop->getId());
             //..and for inherited ones

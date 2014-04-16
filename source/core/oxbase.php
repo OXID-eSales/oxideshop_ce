@@ -481,7 +481,7 @@ class oxBase extends oxSuperCfg
             $this->_sOXID = oxUtilsObject::getInstance()->generateUID();
         }
 
-        $sIdVarName = $this->_sCoreTable . '__oxid';
+        $sIdVarName = $this->getCoreTableName() . '__oxid';
         $this->$sIdVarName = new oxField($this->_sOXID, oxField::T_RAW);
 
         return $this->_sOXID;
@@ -520,7 +520,7 @@ class oxBase extends oxSuperCfg
     {
         if (!$this->_sViewTable || ( $blForceCoreTableUsage !== null )) {
             if ( $blForceCoreTableUsage === true ) {
-                return $this->_sCoreTable;
+                return $this->getCoreTableName();
             }
 
 
@@ -530,7 +530,7 @@ class oxBase extends oxSuperCfg
                 $iShopId = oxRegistry::getConfig()->getShopId();
             }
 
-            $sViewName = getViewName( $this->_sCoreTable, $this->_blEmployMultilanguage == false ? -1 : $this->getLanguage(), $iShopId );
+            $sViewName = getViewName( $this->getCoreTableName(), $this->_blEmployMultilanguage == false ? -1 : $this->getLanguage(), $iShopId );
             if ( $blForceCoreTableUsage !== null ) {
                 return $sViewName;
             }
@@ -744,7 +744,8 @@ class oxBase extends oxSuperCfg
 
 
         $oDB = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
-        $sDelete = "delete from $this->_sCoreTable where oxid = " . $oDB->quote($sOxId);
+        $sCoreTable = $this->getCoreTableName();
+        $sDelete = "delete from {$sCoreTable} where oxid = " . $oDB->quote($sOxId);
         $oDB->execute($sDelete);
         if ($blDelete = (bool) $oDB->affected_Rows()) {
             $this->onChange(ACTION_DELETE, $sOxId);
@@ -987,10 +988,10 @@ class oxBase extends oxSuperCfg
      */
     protected function _getAllFields($blReturnSimple = false )
     {
-        if (!$this->_sCoreTable) {
+        if (!$this->getCoreTableName()) {
             return array();
         }
-        return $this->_getTableFields($this->_sCoreTable, $blReturnSimple);
+        return $this->_getTableFields($this->getCoreTableName(), $blReturnSimple);
     }
 
     /**
@@ -1007,7 +1008,7 @@ class oxBase extends oxSuperCfg
 
         //get field names from cache
         $aFieldNames = null;
-        $sFullCacheKey = 'fieldnames_' . $this->_sCoreTable . '_' . $this->_sCacheKey;
+        $sFullCacheKey = 'fieldnames_' . $this->getCoreTableName() . '_' . $this->_sCacheKey;
         if ($this->_sCacheKey && !$this->_isDisabledFieldCache()) {
             $aFieldNames = $myUtils->fromFileCache( $sFullCacheKey );
         }
@@ -1146,11 +1147,12 @@ class oxBase extends oxSuperCfg
     protected function _getFieldLongName( $sFieldName )
     {
         //trying to avoid strpos call as often as possible
-        if ( $sFieldName[2] == $this->_sCoreTable[2] && strpos( $sFieldName, $this->_sCoreTable . '__' ) === 0 ) {
+        $sCoreTableName = $this->getCoreTableName();
+        if ( $sFieldName[2] == $sCoreTableName[2] && strpos( $sFieldName, $sCoreTableName . '__' ) === 0 ) {
             return $sFieldName;
         }
 
-        return $this->_sCoreTable . '__' . strtolower( $sFieldName );
+        return $sCoreTableName . '__' . strtolower( $sFieldName );
     }
 
     /**
@@ -1315,13 +1317,14 @@ class oxBase extends oxSuperCfg
             $oEx->setObject($this);
             throw $oEx;
         }
+        $sCoreTableName = $this->getCoreTableName();
 
-        $sIDKey = oxRegistry::getUtils()->getArrFldName( $this->_sCoreTable . '.oxid' );
+        $sIDKey = oxRegistry::getUtils()->getArrFldName( $sCoreTableName . '.oxid' );
         $this->$sIDKey = new oxField($this->getId(), oxField::T_RAW);
         $oDb = oxDb::getDb();
 
-        $sUpdate= "update {$this->_sCoreTable} set " . $this->_getUpdateFields()
-                 ." where {$this->_sCoreTable}.oxid = " . $oDb->quote( $this->getId() );
+        $sUpdate= "update {$sCoreTableName} set " . $this->_getUpdateFields()
+                 ." where {$sCoreTableName}.oxid = " . $oDb->quote( $this->getId() );
 
         //trigger event
         $this->beforeUpdate();
@@ -1350,12 +1353,12 @@ class oxBase extends oxSuperCfg
             $this->setId();
         }
 
-        $sIDKey = $myUtils->getArrFldName( $this->_sCoreTable . '.oxid' );
+        $sIDKey = $myUtils->getArrFldName( $this->getCoreTableName() . '.oxid' );
         $this->$sIDKey = new oxField( $this->getId(), oxField::T_RAW );
-        $sInsert = "Insert into {$this->_sCoreTable} set ";
+        $sInsert = "Insert into {$this->getCoreTableName()} set ";
 
         //setting oxshopid
-        $sShopField = $myUtils->getArrFldName( $this->_sCoreTable . '.oxshopid' );
+        $sShopField = $myUtils->getArrFldName( $this->getCoreTableName() . '.oxshopid' );
 
         if ( isset( $this->$sShopField ) && !$this->$sShopField->value ) {
             $this->$sShopField = new oxField( $myConfig->getShopId(), oxField::T_RAW );

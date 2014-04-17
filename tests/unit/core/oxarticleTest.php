@@ -7221,4 +7221,10 @@ class Unit_Core_oxArticleTest extends OxidTestCase
 
         return $oProduct;
     }
+
+    public function testUpdateVariantInheritance()
+    {
+
+    }
+
 }

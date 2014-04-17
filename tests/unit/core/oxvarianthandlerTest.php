@@ -128,22 +128,22 @@ class Unit_Core_oxvarianthandlerTest extends OxidTestCase
 
     public function testGenVariantFromSell()
     {
-        oxRegistry::getConfig()->setConfigParam( 'blUseMultidimensionVariants', 1 );
+        oxRegistry::getConfig()->setConfigParam('blUseMultidimensionVariants', 1);
         $myDB     = oxDb::getDB();
         $sVal = 'red!P!10__@@blue!P!10__@@black!P!10__@@';
 
-            $sQ = 'insert into oxselectlist (oxid, oxshopid, oxtitle, oxident, oxvaldesc) values ("_testSell", "oxbaseshop", "oxsellisttest", "oxsellisttest", "'.$sVal.'")';
-        $myDB->Execute( $sQ );
+            $sQ = 'insert into oxselectlist (oxid, oxshopid, oxtitle, oxident, oxvaldesc) values ("_testSell", "oxbaseshop", "oxsellisttest", "oxsellisttest", "' . $sVal . '")';
+        $myDB->Execute($sQ);
         $oArticle = oxNew("oxarticle");
         $oArticle->load('2000');
         $oVariantHandler = oxNew("oxVariantHandler");
-        $oVariantHandler->genVariantFromSell(array('_testSell'), $oArticle );
-        $this->assertEquals( 3, $myDB->getOne( "select count(*) from oxarticles where oxparentid = '2000'" ));
+        $oVariantHandler->genVariantFromSell(array('_testSell'), $oArticle);
+        $this->assertEquals(3, $myDB->getOne("select count(*) from oxarticles where oxparentid = '2000'"));
         //twice
-        $oVariantHandler->genVariantFromSell(array('_testSell'), $oArticle );
-        $this->assertEquals( 9, $myDB->getOne( "select count(*) from oxarticles where oxparentid = '2000'" ));
-        $this->assertTrue( (bool) strpos($myDB->getOne( "select oxvarselect from oxarticles where oxparentid = '2000' limit 1" ), "|"));
-        $this->assertEquals( 18, $myDB->getOne( "select count(*) from oxobject2attribute where oxobjectid in ( select art.oxid from oxarticles as art where art.oxparentid = '2000')" ));
+        $oVariantHandler->genVariantFromSell(array('_testSell'), $oArticle);
+        $this->assertEquals(9, $myDB->getOne("select count(*) from oxarticles where oxparentid = '2000'"));
+        $this->assertTrue((bool) strpos($myDB->getOne("select oxvarselect from oxarticles where oxparentid = '2000' limit 1"), "|"));
+        $this->assertEquals(18, $myDB->getOne("select count(*) from oxobject2attribute where oxobjectid in ( select art.oxid from oxarticles as art where art.oxparentid = '2000')"));
     }
 
     /**
@@ -152,16 +152,16 @@ class Unit_Core_oxvarianthandlerTest extends OxidTestCase
      */
     public function testGenVariantFromSellOxVarCountUpdated()
     {
-        oxRegistry::getConfig()->setConfigParam( 'blUseMultidimensionVariants', 1 );
+        oxRegistry::getConfig()->setConfigParam('blUseMultidimensionVariants', 1);
         $myDB     = oxDb::getDB();
         $sVal = 'red!P!10__@@blue!P!10__@@black!P!10__@@';
 
-            $sQ = 'insert into oxselectlist (oxid, oxshopid, oxtitle, oxident, oxvaldesc) values ("_testSell", "oxbaseshop", "oxsellisttest", "oxsellisttest", "'.$sVal.'")';
-        $myDB->Execute( $sQ );
+            $sQ = 'insert into oxselectlist (oxid, oxshopid, oxtitle, oxident, oxvaldesc) values ("_testSell", "oxbaseshop", "oxsellisttest", "oxsellisttest", "' . $sVal . '")';
+        $myDB->Execute($sQ);
         $oArticle = oxNew("oxarticle");
         $oArticle->load('2000');
         $oVariantHandler = oxNew("oxVariantHandler");
-        $oVariantHandler->genVariantFromSell(array('_testSell'), $oArticle );
+        $oVariantHandler->genVariantFromSell(array('_testSell'), $oArticle);
 
         $oArticle2 = oxNew("oxarticle");
         $oArticle2->load('2000');
@@ -174,7 +174,7 @@ class Unit_Core_oxvarianthandlerTest extends OxidTestCase
         $this->assertEquals( 9, $myDB->getOne( "select count(*) from oxarticles where oxparentid = '2000'" ));
         $this->assertTrue( (bool) strpos($myDB->getOne( "select oxvarselect from oxarticles where oxparentid = '2000' limit 1" ), "|"));
         $this->assertEquals( 18, $myDB->getOne( "select count(*) from oxobject2attribute where oxobjectid in ( select art.oxid from oxarticles as art where art.oxparentid = '2000')" ));
-        */
+         */
     }
 
     public function testCreateNewVariant()

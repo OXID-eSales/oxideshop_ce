@@ -253,7 +253,7 @@ class oxVariantHandler extends oxSuperCfg
      *
      * @return null
      */
-    protected function _createNewVariant( $aParams = null, $sParentId = null)
+    protected function _createNewVariant($aParams = null, $sParentId = null)
     {
         // checkbox handling
         $aParams['oxarticles__oxactive'] = 0;
@@ -267,11 +267,12 @@ class oxVariantHandler extends oxSuperCfg
 
         $oArticle = oxNew("oxi18n");
         $oArticle->setEnableMultilang(false);
-        $oArticle->init( 'oxarticles' );
-        $oArticle->assign( $aParams);
+        $oArticle->init('oxarticles');
+        $oArticle->assign($aParams);
 
             //echo $aParams['oxarticles__oxartnum']."---";
             $oArticle->save();
+
 
         return $oArticle->getId();
     }

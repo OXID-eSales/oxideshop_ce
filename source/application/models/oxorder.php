@@ -2229,9 +2229,20 @@ class oxOrder extends oxBase
      *
      * @return string
      */
-    public function getFormattedeliveryCost()
+    public function getFormattedDeliveryCost()
     {
         return oxRegistry::getLang()->formatCurrency( $this->oxorder__oxdelcost->value, $this->getOrderCurrency() );
+    }
+
+    /**
+     * Get Delivery cost sum formatted
+     *
+     * @return string
+     * @deprecated typo, use getFormattedDeliveryCost()
+     */
+    public function getFormattedeliveryCost()
+    {
+        return $this->getFormattedDeliveryCost();
     }
 
     /**

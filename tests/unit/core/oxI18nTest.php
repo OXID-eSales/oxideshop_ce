@@ -472,24 +472,24 @@ class Unit_Core_oxi18ntest extends OxidTestCase
     public function testGetSqlActiveSnippet()
     {
         $iCurrTime = time();
-        oxTestModules::addFunction( "oxUtilsDate", "getTime", "{ return $iCurrTime; }");
+        oxTestModules::addFunction("oxUtilsDate", "getTime", "{ return $iCurrTime; }");
 
-        $oI18n = $this->getMock( 'oxI18n', array( 'getCoreTableName', 'getViewName', 'isMultilingualField', 'getLanguage' ) );
-        $oI18n->expects( $this->never() )->method( 'getCoreTableName');
-        $oI18n->expects( $this->once() )->method( 'getViewName')->will( $this->returnValue( 'oxi18n' ) );
-        $oI18n->expects( $this->never() )->method( 'getLanguage');
+        $oI18n = $this->getMock('oxI18n', array('getCoreTableName', 'getViewName', 'isMultilingualField', 'getLanguage'));
+        $oI18n->expects($this->never())->method('getCoreTableName');
+        $oI18n->expects($this->once())->method('getViewName')->will($this->returnValue('oxi18n'));
+        $oI18n->expects($this->never())->method('getLanguage');
 
-        $oI18n->UNITaddField( 'oxactive', 0 );
-        $oI18n->UNITaddField( 'oxactivefrom', 0 );
-        $oI18n->UNITaddField( 'oxactiveto', 0 );
+        $oI18n->UNITaddField('oxactive', 0);
+        $oI18n->UNITaddField('oxactivefrom', 0);
+        $oI18n->UNITaddField('oxactiveto', 0);
 
 
-        $sDate  = date( 'Y-m-d H:i:s', $iCurrTime );
-        $sTable = 'oxi18n';
+        $sDate     = date('Y-m-d H:i:s', $iCurrTime);
+        $sTable    = 'oxi18n';
         $sTemplate = " (   $sTable.oxactive = 1  or  ( $sTable.oxactivefrom < '$sDate' and $sTable.oxactiveto > '$sDate' ) ) ";
 
         $sQ = $oI18n->getSqlActiveSnippet();
-        $this->assertEquals( $sTemplate, $sQ );
+        $this->assertEquals($sTemplate, $sQ);
     }
 
     /*

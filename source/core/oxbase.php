@@ -1377,7 +1377,7 @@ class oxBase extends oxSuperCfg
      */
     protected function _addShopRelations()
     {
-        $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+        $oDb = oxDb::getDb();
         $myConfig = $this->getConfig();
 
         $oShop = $myConfig->getActiveShop();

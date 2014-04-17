@@ -41,17 +41,10 @@ class Unit_Core_oxvarianthandlerTest extends OxidTestCase
      */
     protected function tearDown()
     {
-        $myDB = oxDb::getDB();
-
-        $sSql = "delete from oxarticles2shop where oxmapobjectid in (select oxmapid from oxarticles where oxparentid = '2000')";
-        $myDB->execute($sSql);
-        $sSql = "delete from oxarticles where oxparentid = '2000'";
-        $myDB->execute($sSql);
-
-        $this->cleanUpTable('oxselectlist');
-        $this->cleanUpTable('oxattribute', 'oxtitle');
-        $this->cleanUpTable('oxobject2attribute', 'oxobjectid');
-        $this->cleanUpTable('oxarticles');
+        $this->addTableForCleanup('oxselectlist');
+        $this->addTableForCleanup('oxattribute');
+        $this->addTableForCleanup('oxobject2attribute');
+        $this->addTableForCleanup('oxarticles');
 
         parent::tearDown();
     }
@@ -133,8 +126,11 @@ class Unit_Core_oxvarianthandlerTest extends OxidTestCase
         $myDB     = oxDb::getDB();
         $sVal = 'red!P!10__@@blue!P!10__@@black!P!10__@@';
 
-            $sSql = "insert into oxselectlist (oxid, oxshopid, oxtitle, oxident, oxvaldesc) values ('_testSell', 'oxbaseshop', 'oxsellisttest', 'oxsellisttest', '$sVal')";
-            $myDB->execute($sSql);
+        $sShopId = 'oxbaseshop';
+
+        $sSql = "insert into oxselectlist (oxid, oxshopid, oxtitle, oxident, oxvaldesc) values ('_testSell', '$sShopId', 'oxsellisttest', 'oxsellisttest', '$sVal')";
+        $this->addToDatabase($sSql, 'oxselectlist');
+
         $oArticle = oxNew("oxarticle");
         $oArticle->load('2000');
         $oVariantHandler = oxNew("oxVariantHandler");
@@ -157,8 +153,11 @@ class Unit_Core_oxvarianthandlerTest extends OxidTestCase
         $myDB     = oxDb::getDB();
         $sVal = 'red!P!10__@@blue!P!10__@@black!P!10__@@';
 
-            $sSql = "insert into oxselectlist (oxid, oxshopid, oxtitle, oxident, oxvaldesc) values ('_testSell', 'oxbaseshop', 'oxsellisttest', 'oxsellisttest', '$sVal')";
-            $myDB->execute($sSql);
+        $sShopId = 'oxbaseshop';
+
+        $sSql = "insert into oxselectlist (oxid, oxshopid, oxtitle, oxident, oxvaldesc) values ('_testSell', '$sShopId', 'oxsellisttest', 'oxsellisttest', '$sVal')";
+        $this->addToDatabase($sSql, 'oxselectlist');
+
         $oArticle = oxNew("oxarticle");
         $oArticle->load('2000');
         $oVariantHandler = oxNew("oxVariantHandler");

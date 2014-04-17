@@ -7225,6 +7225,13 @@ class Unit_Core_oxArticleTest extends OxidTestCase
     public function testUpdateVariantInheritance()
     {
 
+        $oVariant = $this->getMock("oxArticle", array("updateInheritanceFromParent"));
+        $oVariant->expects($this->once())->method("updateInheritanceFromParent");
+
+        $oArticle = $this->getMock("oxArticle", array("getAdminVariants"));
+        $oArticle->expects($this->once())->method("getAdminVariants")->will($this->returnValue(array($oVariant)));
+
+        $oArticle->updateVariantInheritance();
     }
 
 }

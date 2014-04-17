@@ -696,5 +696,6 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
         if (!in_array($sTable, $this->_aTableForCleanups)) {
             $this->_aTableForCleanups[] = $sTable;
         }
+
     }
 }

@@ -95,7 +95,7 @@ class Unit_Core_oxshopTest extends OxidTestCase
     }
 
     /**
-     * Check all the variations of oxShop::makeViewQuery()
+     * Check all the variations of oxShop::createViewQuery()
      *
      * @dataProvider makeViewQueryParamProvider
      */
@@ -107,7 +107,7 @@ class Unit_Core_oxshopTest extends OxidTestCase
         foreach ($aMockedFunctionReturns as $sFunction => $sReturnValue) {
             $oShop->expects($this->any())->method($sFunction)->will($this->returnValue($sReturnValue));
         }
-        $oShop->makeViewQuery($sTable, array(0 => $sLang), $blMultishop, $iShopId, $sWhere);
+        $oShop->createViewQuery($sTable, array(0 => $sLang), $blMultishop, $iShopId, $sWhere);
         $aQueries = $oShop->getQueries();
         $this->assertEquals(rtrim($sQuery), rtrim($aQueries[0]));
     }

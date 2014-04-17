@@ -295,15 +295,15 @@ class oxShop extends oxI18n
         $aTables = $this->getTables();
         $iShopId = $this->getId();
         foreach ($aTables as $sTable) {
-            $this->makeViewQuery($sTable);
+            $this->createViewQuery($sTable);
             if (in_array($sTable, $aMultilangTables)) {
-                $this->makeViewQuery($sTable, $aLanguages);
+                $this->createViewQuery($sTable, $aLanguages);
             }
         }
     }
 
     /**
-     * Makes view query and adds it to query array
+     * Creates view query and adds it to query array
      *
      * @param string $sTable      table name
      * @param array  $aLanguages  language array( id => abbreviation )
@@ -311,7 +311,7 @@ class oxShop extends oxI18n
      * @param int    $iShopId     shop id for multishops
      * @param string $sWhere      where statement, if needed
      */
-    public function makeViewQuery($sTable, $aLanguages = null, $blMultiShop = false, $iShopId = null, $sWhere = '')
+    public function createViewQuery($sTable, $aLanguages = null, $blMultiShop = false, $iShopId = null, $sWhere = '')
     {
         $sDefaultLangAddition = '';
         $sShopAddition = $iShopId === null ? '' : "_{$iShopId}";

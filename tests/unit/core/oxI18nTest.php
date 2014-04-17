@@ -474,8 +474,11 @@ class Unit_Core_oxi18ntest extends OxidTestCase
         $iCurrTime = time();
         oxTestModules::addFunction("oxUtilsDate", "getTime", "{ return $iCurrTime; }");
 
+        $sTable = 'oxi18n';
+
+        /** @var oxI18n|PHPUnit_Framework_MockObject_MockObject $oI18n */
         $oI18n = $this->getMock('oxI18n', array('getCoreTableName', 'getViewName', 'isMultilingualField', 'getLanguage'));
-        $oI18n->expects($this->never())->method('getCoreTableName');
+        $oI18n->expects($this->any())->method('getCoreTableName')->will($this->returnValue($sTable));
         $oI18n->expects($this->once())->method('getViewName')->will($this->returnValue('oxi18n'));
         $oI18n->expects($this->never())->method('getLanguage');
 
@@ -485,7 +488,6 @@ class Unit_Core_oxi18ntest extends OxidTestCase
 
 
         $sDate     = date('Y-m-d H:i:s', $iCurrTime);
-        $sTable    = 'oxi18n';
         $sTemplate = " (   $sTable.oxactive = 1  or  ( $sTable.oxactivefrom < '$sDate' and $sTable.oxactiveto > '$sDate' ) ) ";
 
         $sQ = $oI18n->getSqlActiveSnippet();

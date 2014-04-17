@@ -1507,6 +1507,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
     /**
      * Collects and returns article variants.
+     * Note: Only active variants are returned by this method. If you need full variant list use oxArticle::getAdminVariants()
      *
      * @param bool $blRemoveNotOrderables if true, removes from list not orderable articles, which are out of stock
      * @param bool $blForceCoreTable      if true forces core table use, default is false [optional]

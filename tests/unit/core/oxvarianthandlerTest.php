@@ -132,8 +132,8 @@ class Unit_Core_oxvarianthandlerTest extends OxidTestCase
         $myDB     = oxDb::getDB();
         $sVal = 'red!P!10__@@blue!P!10__@@black!P!10__@@';
 
-            $sQ = 'insert into oxselectlist (oxid, oxshopid, oxtitle, oxident, oxvaldesc) values ("_testSell", "oxbaseshop", "oxsellisttest", "oxsellisttest", "' . $sVal . '")';
-        $myDB->Execute($sQ);
+            $sSql = "insert into oxselectlist (oxid, oxshopid, oxtitle, oxident, oxvaldesc) values ('_testSell', 'oxbaseshop', 'oxsellisttest', 'oxsellisttest', ?)";
+            $myDB->execute($sSql, array($sVal));
         $oArticle = oxNew("oxarticle");
         $oArticle->load('2000');
         $oVariantHandler = oxNew("oxVariantHandler");
@@ -156,8 +156,8 @@ class Unit_Core_oxvarianthandlerTest extends OxidTestCase
         $myDB     = oxDb::getDB();
         $sVal = 'red!P!10__@@blue!P!10__@@black!P!10__@@';
 
-            $sQ = 'insert into oxselectlist (oxid, oxshopid, oxtitle, oxident, oxvaldesc) values ("_testSell", "oxbaseshop", "oxsellisttest", "oxsellisttest", "' . $sVal . '")';
-        $myDB->Execute($sQ);
+            $sSql = "insert into oxselectlist (oxid, oxshopid, oxtitle, oxident, oxvaldesc) values ('_testSell', 'oxbaseshop', 'oxsellisttest', 'oxsellisttest', ?)";
+            $myDB->execute($sSql, array($sVal));
         $oArticle = oxNew("oxarticle");
         $oArticle->load('2000');
         $oVariantHandler = oxNew("oxVariantHandler");

@@ -92,24 +92,21 @@ class Unit_Views_oxstartTest extends OxidTestCase
         oxAddClassModule("oxUtilsRedirect", "oxutils");
         $this->setConfigParam( 'redirected', 1 );
 
-        $oSerial = $this->getMock( 'oxserial', array( 'isUnlicensedSerial' ) );
+        $oSerial = $this->getMock( 'oxserial', array( 'isUnlicensedSerial', 'isGracePeriodStarted', 'isGracePeriodExpired' ) );
         $oSerial->expects( $this->atLeastOnce() )->method( 'isUnlicensedSerial')->will( $this->returnValue( true ) );
+        $oSerial->expects( $this->any() )->method( 'isGracePeriodStarted')->will( $this->returnValue( true ) );
+        $oSerial->expects( $this->any() )->method( 'isGracePeriodExpired')->will( $this->returnValue( true ) );
 
         $oConfig = $this->getMock( 'oxconfig', array( 'isProductiveMode', 'getSerial', 'isAdmin' ) );
         $oConfig->expects( $this->any() )->method( 'isProductiveMode')->will( $this->returnValue( false ) );
         $oConfig->expects( $this->once() )->method( 'getSerial')->will( $this->returnValue( $oSerial ) );
         $oConfig->expects( $this->any() )->method( 'isAdmin')->will( $this->returnValue( false ) );
 
-        $oConfig->setConfigParam( 'blBackTag', 0 );
-        $oConfig->setConfigParam( 'sTagList', time() * 2 );
-        $oConfig->setConfigParam( 'blShopStopped', true );
-        $oConfig->setConfigParam( 'IMS', time() );
-        oxRegistry::set("oxconfig", $oConfig);
+        $oStart = new oxStart();
+        $oStart->setConfig($oConfig);
+        $oStart->appInit();
 
-        $sHomeUrl = $oConfig->getShopUrl();
-        $this->assertEquals(true, $oConfig->getShopConfVar('blShopStopped'));
-        $this->assertEquals(true, $oConfig->getShopConfVar('blBackTag'));
-        $this->assertEquals($sHomeUrl . 'offline.html', oxUtils::getInstance()->sRedirectUrl);
+        $this->assertEquals($oConfig->getShopUrl() . 'offline.html', oxUtils::getInstance()->sRedirectUrl);
     }
 
     public function testAppInitUnlicensedPE()
@@ -120,8 +117,10 @@ class Unit_Views_oxstartTest extends OxidTestCase
         $this->setConfigParam( 'redirected', 1 );
         $this->setConfigParam( 'cl', 'someClass' );
 
-        $oSerial = $this->getMock( 'oxserial', array( 'isUnlicensedSerial' ) );
+        $oSerial = $this->getMock( 'oxserial', array( 'isUnlicensedSerial', 'isGracePeriodStarted', 'isGracePeriodExpired' ) );
         $oSerial->expects( $this->atLeastOnce() )->method( 'isUnlicensedSerial')->will( $this->returnValue( true ) );
+        $oSerial->expects( $this->any() )->method( 'isGracePeriodStarted')->will( $this->returnValue( true ) );
+        $oSerial->expects( $this->any() )->method( 'isGracePeriodExpired')->will( $this->returnValue( true ) );
 
         $oConfig = $this->getMock( 'oxconfig', array( 'isProductiveMode', 'getSerial', 'isAdmin' ) );
         $oConfig->expects( $this->any() )->method( 'isProductiveMode' )->will( $this->onConsecutiveCalls( false ) );
@@ -129,13 +128,11 @@ class Unit_Views_oxstartTest extends OxidTestCase
         $oConfig->expects( $this->any() )->method( 'isAdmin')->will( $this->returnValue( false ) );
 
         try {
-            oxRegistry::set("oxconfig", $oConfig);
-            $oConfig->getShopUrl();
+            $oStart = new oxStart();
+            $oStart->setConfig($oConfig);
+            $oStart->appInit();
         } catch ( exception $oExcp ) {
-            $sHomeUrl = $oConfig->getShopUrl();
-            $this->assertEquals(true, $oConfig->getShopConfVar('blShopStopped'));
-            $this->assertEquals(true, $oConfig->getShopConfVar('blBackTag'));
-            $this->assertEquals($sHomeUrl.  'offline.html', $oExcp->getMessage());
+            $this->assertEquals($oConfig->getShopUrl().  'offline.html', $oExcp->getMessage());
             return;
         }
         $this->fail( 'error in testAppInitUnlicensedPE' );

@@ -140,7 +140,7 @@ class Shop_Main extends oxAdminDetails
      */
     protected function _getNonCopyConfigVars()
     {
-        $aNonCopyVars = array("aSerials", "IMS", "IMD", "IMA", "blBackTag", "sUtilModule", "aModulePaths", "aModuleFiles", "aModuleEvents", "aModuleVersions", "aModuleTemplates", "aModules", "aDisabledModules");
+        $aNonCopyVars = array("aSerials", "IMS", "IMD", "IMA", "sBackTag", "sUtilModule", "aModulePaths", "aModuleFiles", "aModuleEvents", "aModuleVersions", "aModuleTemplates", "aModules", "aDisabledModules");
         //adding non copable multishop field options
         $aMultiShopTables = $this->getConfig()->getConfigParam( 'aMultiShopTables' );
         foreach ( $aMultiShopTables as $sMultishopTable ) {

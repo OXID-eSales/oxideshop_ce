@@ -2216,7 +2216,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      * This function is triggered whenever article is saved or deleted or after the stock is changed.
      * Originally we need to update the oxstock for possible article parent in case parent is not buyable
      * Plus you may want to extend this function to update some extended information.
-     * Call oxArticle::onChange($sAction, $sOXID) with ID parameter as static method when changes are executed over SQL.
+     * Call oxArticle::onChange($sAction, $sOXID) with ID parameter when changes are executed over SQL.
      * (or use module class instead of oxArticle if such exists)
      *
      * @param string $sAction   Action constant
@@ -2243,6 +2243,9 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         if (!isset($sOXID)) {
             return;
         }
+
+        //notify my variants
+        $this->onChangeNotifyVariants($sAction, $sOXID, $sParentID);
 
         //if (isset($sOXID) && !$myConfig->blVariantParentBuyable && $myConfig->blUseStock)
         if ( $myConfig->getConfigParam( 'blUseStock' ) ) {
@@ -2276,6 +2279,25 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             $this->_onChangeStockResetCount( $sOXID );
         }
 
+    }
+
+    /**
+     * Notifies variants onChange
+     */
+    public function onChangeNotifyVariants($sAction, $sOXID, $sParentID)
+    {
+        $oDb = oxDb::getDb();
+        $sQ = "select oxid from oxarticles where oxparentid = '$sOXID'";
+
+        $rs = $oDb->select( $sSql );
+        if ($rs != false && $rs->recordCount() > 0) {
+            while (!$rs->EOF) {
+
+                //notify my variant
+                $this->onChange($sAction, $rs->fields["oxid"], $sOXID);
+                $rs->moveNext();
+            }
+        }
     }
 
     /**

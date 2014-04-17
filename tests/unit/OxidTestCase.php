@@ -386,15 +386,22 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     /**
      * Cleans up table
      *
-     * @param string $sTable
-     * @param string $sColName
+     * @param string $sTable   Table name
+     * @param string $sColName Column name
      */
     public function cleanUpTable($sTable, $sColName = null)
     {
         $sCol = (!empty($sColName)) ? $sColName : 'oxid';
 
+        if (in_array($sTable, $this->getMultiShopTables())) {
+            // deletes all records from shop relations table
+            $sSql = "delete from `{$sTable}2shop`
+                where oxmapobjectid in (select oxmapid from `$sTable` where `$sCol` like '\_%')";
+            $this->getDb()->Execute($sSql);
+        }
+
         //deletes allrecords where oxid or specified column name values starts with underscore(_)
-        $sQ = "delete from $sTable where $sCol like '\_%' ";
+        $sQ = "delete from `$sTable` where `$sCol` like '\_%' ";
         $this->getDb()->Execute($sQ);
     }
 

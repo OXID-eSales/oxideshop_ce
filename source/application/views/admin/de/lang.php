@@ -1853,9 +1853,6 @@ $aLang = array(
 'serial_updated'                                           => 'Lizenzschlüssel wurde aktualisiert',
 
 // Shop licensing problems
-'ERROR_MESSAGE_UNLICENSED'                                 => 'Ihr Shop ist nicht lizenziert. Tragen Sie bitte im Shop Admin einen gültigen Lizenzschlüssel ein oder kontaktieren Sie',
-
-// Shop licensing problems
 'SHOP_LICENSE_ERROR_GRACE_EXPIRED'                         => 'Der Lizenzkey Ihres OXID eShop ist endgültig abgelaufen. Bitte geben Sie einen gültigen Lizenzkey.',
 'SHOP_LICENSE_ERROR_shop_unlicensed'                       => 'Es ist ein Problem mit dem Lizenzkey Ihres OXID eShop aufgetreten. Aus diesem Grund wurde ein stiller Countdown von 7 Tagen gestartet. Nach Ablauf der Frist wird der OXID eShop offline gehen. Bitte geben Sie den gültigen Lizenzkey.',
 'SHOP_LICENSE_ERROR_serial_expired'                        => 'Der Lizenzkey Ihres OXID eShop ist abgelaufen. Aus diesem Grund wurde ein stiller Countdown von 7 Tagen gestartet. Nach Ablauf der Frist wird der OXID eShop offline gehen. Bitte geben Sie einen gültigen Lizenzkey.',

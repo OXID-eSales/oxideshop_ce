@@ -186,6 +186,7 @@ class Integration_Timestamp_TimestampTest extends OxidTestCase
      */
     public function testAllTablesHasOxTimestamp()
     {
+        $this->markTestSkippedUntil('2014-04-23', 'It is not clear what name will be of timestamp field in mapping tables');
         $oDb = oxDb::getDb();
         $sQ = "SHOW FULL tables WHERE Table_Type = 'BASE TABLE'";
         $aTableNames = $oDb->getArray( $sQ );

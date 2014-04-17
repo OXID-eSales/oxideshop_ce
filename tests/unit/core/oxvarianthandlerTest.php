@@ -42,14 +42,12 @@ class Unit_Core_oxvarianthandlerTest extends OxidTestCase
     {
         $myDB = oxDb::getDB();
 
-        $sQ = 'delete from oxselectlist where oxid = "_testSell" ';
-        $myDB->Execute( $sQ );
-        $sQ = 'delete from oxattribute where oxtitle = "_testAttr" ';
-        $myDB->Execute( $sQ );
-        $sQ = 'delete from oxarticles where oxparentid = "2000" ';
-        $myDB->Execute( $sQ );
-        $sQ = 'delete from oxobject2attribute where oxobjectid like "_testVar%" ';
-        $myDB->Execute( $sQ );
+        $sSql = "delete from oxarticles where oxparentid = '2000'";
+        $myDB->execute($sSql);
+
+        $this->cleanUpTable('oxselectlist');
+        $this->cleanUpTable('oxattribute', 'oxtitle');
+        $this->cleanUpTable('oxobject2attribute', 'oxobjectid');
         $this->cleanUpTable('oxarticles');
 
         parent::tearDown();

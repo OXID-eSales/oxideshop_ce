@@ -180,35 +180,6 @@ class Login extends oxAdminView
         return strtolower( get_class( $this ) );
     }
 
-    /**
-     * Returns message about shop validation
-     *
-     * @return string
-     */
-    public function getShopValidationMessage()
-    {
-        $sError = '';
-        $oSerial = $this->getConfig()->getSerial();
-        if ($oSerial->isGracePeriodStarted()) {
-            $oSerial->validateShop();
-            if (!$oSerial->isShopValid()) {
-                $sError = $oSerial->getValidationMessage();
-            }
-        }
-
-        return $sError;
-    }
-
-    /**
-     * Returns whether shop grace period expired
-     *
-     * @return bool
-     */
-    public function isGracePeriodExpired()
-    {
-        $oSerial = $this->getConfig()->getSerial();
-        return $oSerial->isGracePeriodExpired();
-    }
 
     /**
      * Get available admin interface languages

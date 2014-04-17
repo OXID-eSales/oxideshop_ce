@@ -71,7 +71,8 @@ class oxShop extends oxI18n
     {
         if (is_null($this->_aTables)) {
             $aMultilangTables = oxRegistry::getLang()->getMultiLangTables();
-                $this->setTables(array_unique($aMultilangTables));
+            $aTables = array_unique($aMultilangTables);
+            $this->setTables($aTables);
         }
         return $this->_aTables;
     }

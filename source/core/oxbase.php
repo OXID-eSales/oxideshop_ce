@@ -1372,30 +1372,6 @@ class oxBase extends oxSuperCfg
         return $blRet;
     }
 
-    /**
-     * Adds object to related map if it's a multishop inheritable table
-     */
-    protected function _addShopRelations()
-    {
-        $myConfig = $this->getConfig();
-        $oShop = $myConfig->getActiveShop();
-
-        //set record 2 subshop mapping relations for this shop and inherited subshops
-        if (in_array($this->getCoreTableName(), $oShop->getMultiShopTables())) {
-            $oDb = oxDb::getDb();
-
-            if ($iInsertId = $oDb->Insert_ID()) {
-                $this->setMapId($iInsertId);
-            }
-
-            //for this shop..
-            $aShopIds = array($oShop->getId());
-            //..and for inherited ones
-            $aShopIds = array_merge($aShopIds, $oShop->getInheritedSubshopList($this->getCoreTableName()));
-            $oShopRelations = oxNew("oxShopRelations", $aShopIds);
-            $oShopRelations->addToShop($this->getMapId(), $this->getCoreTableName());
-        }
-    }
 
     /**
      * Checks if current class disables field caching.

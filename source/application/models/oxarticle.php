@@ -2244,9 +2244,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             return;
         }
 
-        //notify my variants
-        $this->onChangeNotifyVariants($sAction, $sOXID, $sParentID);
-
         //if (isset($sOXID) && !$myConfig->blVariantParentBuyable && $myConfig->blUseStock)
         if ( $myConfig->getConfigParam( 'blUseStock' ) ) {
             //if article has variants then updating oxvarstock field
@@ -2279,25 +2276,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             $this->_onChangeStockResetCount( $sOXID );
         }
 
-    }
-
-    /**
-     * Notifies variants onChange
-     */
-    public function onChangeNotifyVariants($sAction, $sOXID, $sParentID)
-    {
-        $oDb = oxDb::getDb();
-        $sQ = "select oxid from oxarticles where oxparentid = '$sOXID'";
-
-        $rs = $oDb->select( $sSql );
-        if ($rs != false && $rs->recordCount() > 0) {
-            while (!$rs->EOF) {
-
-                //notify my variant
-                $this->onChange($sAction, $rs->fields["oxid"], $sOXID);
-                $rs->moveNext();
-            }
-        }
     }
 
     /**

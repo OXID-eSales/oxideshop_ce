@@ -235,12 +235,12 @@ class Unit_Core_oxCategoryTest extends OxidTestCase
 
     public function testGetSqlActiveSnippet()
     {
-        $oCategory = $this->getMock( 'oxCategory', array( 'isAdmin', 'getViewName', 'getCoreTableName' ) );
-        $oCategory->expects( $this->any() )->method( 'isAdmin' )->will( $this->returnValue( true ) );
-        $oCategory->expects( $this->any() )->method( 'getViewName' )->will( $this->returnValue( 'xxx' ) );
-        $oCategory->expects( $this->any() )->method( 'getCoreTableName' )->will( $this->returnValue( 'xxx' ) );
+        $oCategory = $this->getMock('oxCategory', array('isAdmin', 'getViewName', 'getCoreTableName'));
+        $oCategory->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
+        $oCategory->expects($this->any())->method('getViewName')->will($this->returnValue('xxx'));
+        $oCategory->expects($this->any())->method('getCoreTableName')->will($this->returnValue('xxx'));
 
-        $this->assertEquals( "(  xxx.oxactive = 1  and  xxx.oxhidden = '0'  ) ", $oCategory->getSqlActiveSnippet() );
+        $this->assertEquals("(  xxx.oxactive = 1  and  xxx.oxhidden = '0'  ) ", $oCategory->getSqlActiveSnippet());
     }
 
 

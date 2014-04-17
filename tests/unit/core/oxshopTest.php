@@ -100,10 +100,6 @@ class Unit_Core_oxshopTest extends OxidTestCase
         }
         $oShop->createViewQuery($sTable, array(0 => $sLang));
         $aQueries = $oShop->getQueries();
-        array_walk($aQueries, function(&$sValue) {
-            rtrim($sValue);
-        });
-        var_dump($aQueries);
         $this->assertEquals(rtrim($sQuery), rtrim($aQueries[0]));
     }
 
@@ -158,5 +154,14 @@ class Unit_Core_oxshopTest extends OxidTestCase
         $oShop = new oxShop();
         $oShop->setQueries(array('query', 'query2'));
         $this->assertEquals(array('query', 'query2'), $oShop->getQueries());
+    }
+
+    /**
+     * Test delete function when oxid is null
+     */
+    public function testDeleteWhenOxidIsNull()
+    {
+        $oShop = new oxShop();
+        $this->assertFalse($oShop->delete(null));
     }
 }

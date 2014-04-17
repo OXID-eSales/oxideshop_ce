@@ -364,11 +364,15 @@ class Unit_Core_oxbasketTest extends OxidTestCase
         }
 
         $this->cleanUpTable( 'oxdiscount' );
-        $this->cleanUpTable( 'oxarticles' );
         $this->cleanUpTable( 'oxartextends' );
         $this->cleanUpTable( 'oxseo', 'oxobjectid' );
         $this->cleanUpTable( 'oxprice2article' );
         $this->cleanUpTable( 'oxobject2discount' );
+
+        $this->addTableForCleanup('oxarticles');
+        $this->addTableForCleanup('oxseo');
+        $this->addTableForCleanup('oxobject2selectlist');
+        $this->addTableForCleanup('oxselectlist');
 
         modOxArticle_oxbasket::cleanSelList();
         oxRegistry::getConfig()->setConfigParam( 'bl_perfLoadSelectLists', $this->blPerfLoadSelectLists );
@@ -4099,12 +4103,12 @@ class Unit_Core_oxbasketTest extends OxidTestCase
         $oBasket = oxNew('oxbasket');
 
         // regular product
-        $this->assertTrue( $oBasket->UNITisProductInRootCategory( $sProductId, $sRootCatId ) );
-        $this->assertFalse( $oBasket->UNITisProductInRootCategory( $sProductId, "anycategory" ) );
+        $this->assertTrue( $oBasket->UNITisProductInRootCategory( $sProductId, $sRootCatId ), "first fail" );
+        $this->assertFalse( $oBasket->UNITisProductInRootCategory( $sProductId, "anycategory" ), "first fail" );
 
         // variant
-        $this->assertTrue( $oBasket->UNITisProductInRootCategory( $sVariantId, $sRootCatId ) );
-        $this->assertFalse( $oBasket->UNITisProductInRootCategory( $sVariantId, "anycategory" ) );
+        $this->assertTrue( $oBasket->UNITisProductInRootCategory( $sVariantId, $sRootCatId ), "first fail" );
+        $this->assertFalse( $oBasket->UNITisProductInRootCategory( $sVariantId, "anycategory" ), "first fail" );
     }
 
     /**

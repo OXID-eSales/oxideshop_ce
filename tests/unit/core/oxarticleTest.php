@@ -7224,7 +7224,6 @@ class Unit_Core_oxArticleTest extends OxidTestCase
 
     public function testUpdateVariantInheritance()
     {
-
         $oVariant = $this->getMock("oxArticle", array("updateInheritanceFromParent"));
         $oVariant->expects($this->once())->method("updateInheritanceFromParent");
 
@@ -7232,6 +7231,33 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $oArticle->expects($this->once())->method("getAdminVariants")->will($this->returnValue(array($oVariant)));
 
         $oArticle->updateVariantInheritance();
+    }
+
+    public function testUpdateInheritanceFromParent()
+    {
+        $oShopRelations = $this->getMock("oxShopRelations", array("removeFromAllShops", "copyInheritance"), array(null));
+        $oShopRelations->expects($this->once())->method("removeFromAllShops")->with("testMapId", "oxarticles");
+        $oShopRelations->expects($this->once())->method("copyInheritance")->with("testParentMapId", "testMapId", "oxarticles");
+
+        $oParent = $this->getMock("oxArticle", array("getMapId"));
+        $oParent->expects($this->once())->method("getMapId")->will($this->returnValue("testParentMapId"));
+
+        $oArticle = $this->getMock("oxArticle", array("isVariant", "_getShopRelations", "getMapId", "getParentArticle" ));
+        $oArticle->expects($this->once())->method("isVariant")->will($this->returnValue(true));
+        $oArticle->expects($this->once())->method("_getShopRelations")->will($this->returnValue($oShopRelations));
+        $oArticle->expects($this->any())->method("getMapId")->will($this->returnValue("testMapId"));
+        $oArticle->expects($this->once())->method("getParentArticle")->will($this->returnValue($oParent));
+
+        $oArticle->updateInheritanceFromParent();
+    }
+
+    public function testUpdateInheritanceFromParentNonVariant()
+    {
+        $oArticle = $this->getMock("oxArticle", array("isVariant", "_getShopRelations"));
+        $oArticle->expects($this->once())->method("isVariant")->will($this->returnValue(false));
+        $oArticle->expects($this->never())->method("_getShopRelations");
+
+        $oArticle->updateInheritanceFromParent();
     }
 
 }

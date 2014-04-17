@@ -265,14 +265,10 @@ class oxVariantHandler extends oxSuperCfg
         // varianthandling
         $aParams['oxarticles__oxparentid'] = $sParentId;
 
-        $oArticle = oxNew("oxi18n");
+        $oArticle = oxNew("oxArticle");
         $oArticle->setEnableMultilang(false);
-        $oArticle->init('oxarticles');
         $oArticle->assign($aParams);
-
-            //echo $aParams['oxarticles__oxartnum']."---";
-            $oArticle->save();
-
+        $oArticle->save();
 
         return $oArticle->getId();
     }

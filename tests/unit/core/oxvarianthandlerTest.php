@@ -166,7 +166,7 @@ class Unit_Core_oxvarianthandlerTest extends OxidTestCase
 
         $oArticle2 = oxNew("oxarticle");
         $oArticle2->load('2000');
-        $this->assertEquals(3, $oArticle->oxarticles__oxvarcount->value);
+        $this->assertEquals(3, $oArticle2->oxarticles__oxvarcount->value);
 
         /**
         $this->assertEquals( 3, $myDB->getOne( "select count(*) from oxarticles where oxparentid = '2000'" ));

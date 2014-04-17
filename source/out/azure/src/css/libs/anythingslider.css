@@ -138,7 +138,7 @@ div.anythingSlider .back a:hover {
 div.anythingSlider .anythingControls {
     outline: 0;
     position: absolute;
-    bottom: 0px;
+    bottom: 0;
     z-index: 3;
 }
 
@@ -162,11 +162,11 @@ div.anythingSlider .thumbNav a {
     text-align: center;
     outline: 0;
     font-weight: 700;
-    text-shadow: 0px 1px 1px #fff;
+    text-shadow: 0 1px 1px #fff;
 }
 
 div.anythingSlider .thumbNav a.cur, div.anythingSlider .thumbNav a:hover {
-    text-shadow: 0px -1px 0px #486066;
+    text-shadow: 0 -1px 0 #486066;
 }
 
 div.anythingSlider .thumbNav a:hover {
@@ -185,7 +185,7 @@ div.anythingSlider.rtl .thumbNav {
 /* div.anythingSlider.rtl .start-stop { float: right; } */ /* move start/stop button - in case you want to switch sides */
 /* Autoplay Start/Stop button */
 div.anythingSlider, div.anythingSlider .anythingWindow, div.anythingSlider .thumbNav a, div.anythingSlider .arrow a, div.anythingSlider .start-stop {
-    transition-duration: 0;
+    transition-duration: 0s;
     -o-transition-duration: 0;
     -moz-transition-duration: 0;
     -webkit-transition-duration: 0;
@@ -215,7 +215,7 @@ div.anythingSlider, div.anythingSlider .anythingWindow, div.anythingSlider .thum
     text-align: center;
     color: #fff;
     width: 80px;
-    text-shadow: 0px -1px 0px #486066;
+    text-shadow: 0 -1px 0 #486066;
 }
 
 .promoBox strong.promoPrice.wide {
@@ -224,7 +224,7 @@ div.anythingSlider, div.anythingSlider .anythingWindow, div.anythingSlider .thum
 
 .promoBox strong.promoTitle {
     width: 200px;
-    text-shadow: 0px 1px 1px #fff;
+    text-shadow: 0 1px 1px #fff;
 }
 
 .promoBox strong.promoTitle.wide {

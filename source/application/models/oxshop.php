@@ -71,8 +71,7 @@ class oxShop extends oxI18n
     {
         if (is_null($this->_aTables)) {
             $aMultilangTables = oxRegistry::getLang()->getMultiLangTables();
-            $aMultishopTables = $this->getMultiShopTables();
-            $this->setTables(array_unique(array_merge($aMultishopTables, $aMultilangTables)));
+                $this->setTables(array_unique($aMultilangTables));
         }
         return $this->_aTables;
     }
@@ -126,10 +125,8 @@ class oxShop extends oxI18n
      * Sets multi shop tables
      *
      * @param string $aMultiShopTables multi shop tables
-     *
-     * @return null
      */
-    public function setMultiShopTables( $aMultiShopTables )
+    public function setMultiShopTables($aMultiShopTables)
     {
         $this->_aMultiShopTables = $aMultiShopTables;
     }
@@ -156,14 +153,14 @@ class oxShop extends oxI18n
      *
      * @return bool is all views generated successfully
      */
-    public function generateViews( $blMultishopInheritCategories = false, $aMallInherit = null )
+    public function generateViews($blMultishopInheritCategories = false, $aMallInherit = null)
     {
-        $this->_prepareViewsQueries($blMultishopInheritCategories, $aMallInherit);
-        $bSuccess = $this->_runQueries();
+        $this->_prepareViewsQueries();
+        $blSuccess = $this->_runQueries();
 
         $this->_cleanInvalidViews();
 
-        return $bSuccess;
+        return $blSuccess;
     }
 
     /**
@@ -279,19 +276,13 @@ class oxShop extends oxI18n
 
     /**
      * Creates all view queries and adds them in query array
-     *
-     * @param $blMultishopInheritCategories
-     * @param $aMallInherit
-     *
-     * @return array
      */
-    protected function _prepareViewsQueries($blMultishopInheritCategories, $aMallInherit)
+    protected function _prepareViewsQueries()
     {
         $oLang = oxRegistry::getLang();
         $aLanguages = $oLang->getLanguageIds($this->getId());
 
         $aMultilangTables = oxRegistry::getLang()->getMultiLangTables();
-        $aMultishopTables = $this->getMultiShopTables();
         $aTables = $this->getTables();
         $iShopId = $this->getId();
         foreach ($aTables as $sTable) {
@@ -307,20 +298,12 @@ class oxShop extends oxI18n
      *
      * @param string $sTable      table name
      * @param array  $aLanguages  language array( id => abbreviation )
-     * @param bool   $blMultiShop should view be generated for multishop
-     * @param int    $iShopId     shop id for multishops
-     * @param string $sWhere      where statement, if needed
      */
-    public function createViewQuery($sTable, $aLanguages = null, $blMultiShop = false, $iShopId = null, $sWhere = '')
+    public function createViewQuery($sTable, $aLanguages = null)
     {
         $sDefaultLangAddition = '';
-        $sShopAddition = $iShopId === null ? '' : "_{$iShopId}";
+        $sShopAddition = '';
         $sStart = 'CREATE OR REPLACE SQL SECURITY INVOKER VIEW';
-
-        $sMultishopJoin = "";
-        if ($blMultiShop) {
-            $sMultishopJoin = " INNER JOIN {$sTable}2shop as t2s ON t2s.oxmapobjectid={$sTable}.oxmapid ";
-        }
 
         if (!is_array($aLanguages)) {
             $aLanguages = array(null => null);
@@ -329,19 +312,17 @@ class oxShop extends oxI18n
         foreach ($aLanguages as $iLang => $sLang) {
             $sLangAddition = $sLang === null ? $sDefaultLangAddition : "_{$sLang}";
 
-            $sViewTable = "oxv_{$sTable}{$sShopAddition}{$sLangAddition}";
-
+            $sViewTable = "oxv_{$sTable}{$sLangAddition}";
             $sFields = "{$sTable}.*";
-
             if ($sLang === null) {
-                $sJoin = $sMultishopJoin . $this->_getViewJoinAll($sTable); //simple
+                $sJoin = $this->_getViewJoinAll($sTable); //simple
             } else {
                 $sFields = $this->_getViewSelect($sTable, $iLang); // lang
-                $sJoin = $sMultishopJoin. $this->_getViewJoinLang($sTable, $iLang); //lang
+                $sJoin = $this->_getViewJoinLang($sTable, $iLang); //lang
             }
-
-            $sQuery = "{$sStart} `{$sViewTable}` AS SELECT {$sFields} FROM {$sTable}{$sJoin}{$sWhere}";
+            $sQuery = "{$sStart} `{$sViewTable}` AS SELECT {$sFields} FROM {$sTable}{$sJoin}";
             $this->addQuery($sQuery);
+
         }
 
     }

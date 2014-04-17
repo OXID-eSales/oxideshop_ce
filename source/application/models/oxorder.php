@@ -2237,8 +2237,9 @@ class oxOrder extends oxBase
     /**
      * Get Delivery cost sum formatted
      *
+     * @deprecated in v5.2.0 on 2014-04-12; Typo use oxOrder::getFormattedPayCost()
+     *
      * @return string
-     * @deprecated typo, use getFormattedDeliveryCost()
      */
     public function getFormattedeliveryCost()
     {

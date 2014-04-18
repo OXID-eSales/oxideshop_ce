@@ -1445,9 +1445,7 @@ class Details extends oxUBase
         $oCategory = $this->getActiveCategory();
 
         if ( $this->getListType() != 'search' &&  $oCategory && $oCategory instanceof oxCategory ) {
-            if ( $sDefaultSorting = $oCategory->getDefaultSorting() ) {
-                $sArticleTable = getViewName( 'oxarticles' );
-                $sSortBy  = $sArticleTable.'.'.$sDefaultSorting;
+            if ( $sSortBy = $oCategory->getDefaultSorting() ) {
                 $sSortDir = ( $oCategory->getDefaultSortingMode() ) ? "desc" : "asc";
                 $aSorting = array ( 'sortby' => $sSortBy, 'sortdir' => $sSortDir );
             }

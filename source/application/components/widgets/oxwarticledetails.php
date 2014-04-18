@@ -1046,14 +1046,10 @@ class oxwArticleDetails extends oxWidget
     public function getDefaultSorting()
     {
         $aSorting = parent::getDefaultSorting();
-
         $oCategory = $this->getActiveCategory();
 
-        if ( $this->getListType() != 'search' && $oCategory && $oCategory instanceof oxCategory ) {
-
-            if ( $sDefaultSorting = $oCategory->getDefaultSorting() ) {
-                $sArticleTable = getViewName( 'oxarticles' );
-                $sSortBy  = $sArticleTable.'.'.$sDefaultSorting;
+        if ( $this->getListType() != 'search' &&  $oCategory && $oCategory instanceof oxCategory ) {
+            if ( $sSortBy = $oCategory->getDefaultSorting() ) {
                 $sSortDir = ( $oCategory->getDefaultSortingMode() ) ? "desc" : "asc";
                 $aSorting = array ( 'sortby' => $sSortBy, 'sortdir' => $sSortDir );
             }

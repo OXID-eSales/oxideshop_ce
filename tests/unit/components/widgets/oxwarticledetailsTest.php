@@ -68,8 +68,7 @@ class Unit_Components_Widgets_oxwArticleDetailsTest extends OxidTestCase
         $oCategory->expects( $this->any() )->method( 'getDefaultSorting' )->will( $this->returnValue( 'testsort' ) );
         $oController->setActiveCategory( $oCategory );
 
-        $sArticleTable = getViewName( 'oxarticles' );
-        $this->assertEquals( array( 'sortby' => $sArticleTable.'.'.'testsort', 'sortdir' => "asc" ), $oController->getDefaultSorting() );
+        $this->assertEquals( array( 'sortby' => 'testsort', 'sortdir' => "asc" ), $oController->getDefaultSorting() );
     }
 
     /**
@@ -86,8 +85,7 @@ class Unit_Components_Widgets_oxwArticleDetailsTest extends OxidTestCase
         $oCategory->expects( $this->any() )->method( 'getDefaultSortingMode' )->will( $this->returnValue( null ) );
         $oController->setActiveCategory( $oCategory );
 
-        $sArticleTable = getViewName( 'oxarticles' );
-        $this->assertEquals( array( 'sortby' => $sArticleTable.'.'.'testsort', 'sortdir' => "asc" ), $oController->getDefaultSorting() );
+        $this->assertEquals( array( 'sortby' => 'testsort', 'sortdir' => "asc" ), $oController->getDefaultSorting() );
     }
 
     /**
@@ -106,8 +104,7 @@ class Unit_Components_Widgets_oxwArticleDetailsTest extends OxidTestCase
 
         $oController->setActiveCategory( $oCategory );
 
-        $sArticleTable = getViewName( 'oxarticles' );
-        $this->assertEquals( array( 'sortby' => $sArticleTable.'.'.'testsort', 'sortdir' => "asc" ), $oController->getDefaultSorting() );
+        $this->assertEquals( array( 'sortby' => 'testsort', 'sortdir' => "asc" ), $oController->getDefaultSorting() );
     }
     /**
      * Test getDefaultSorting when sorting mode is set to 'desc'
@@ -124,8 +121,7 @@ class Unit_Components_Widgets_oxwArticleDetailsTest extends OxidTestCase
 
         $oController->setActiveCategory( $oCategory );
 
-        $sArticleTable = getViewName( 'oxarticles' );
-        $this->assertEquals( array( 'sortby' => $sArticleTable.'.'.'testsort', 'sortdir' => "desc" ), $oController->getDefaultSorting() );
+        $this->assertEquals( array( 'sortby' => 'testsort', 'sortdir' => "desc" ), $oController->getDefaultSorting() );
     }
 
 

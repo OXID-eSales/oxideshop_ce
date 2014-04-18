@@ -2098,21 +2098,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     }
 
     /**
-     * Unassigns product from current (or particular) shop for multi shop objects
-     *
-     * @param string $sOXID   Object ID(default null)
-     * @param string $sShopID Shop ID(default - current active shop)
-     *
-     * @return bool
-     */
-    public function unassignFromShop($sOXID = null, $sShopID = null)
-    {
-        $blRet = parent::unassignFromShop();
-        $this->updateVariantInheritance();
-        return $blRet;
-    }
-
-    /**
      * (oxArticle::_saveArtLongDesc()) save the object using parent::save() method.
      *
      * @return bool

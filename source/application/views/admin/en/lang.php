@@ -1861,6 +1861,7 @@ $aLang = array(
 'SHOP_LICENSE_ERROR_shop_unlicensed'                       => 'A problem with the license key of your OXID eShop has been occurred. For this reason, a hidden countdown of 7 days has been started. After this period the OXID eShop will go offline. Please enter the valid license key.',
 'SHOP_LICENSE_ERROR_serial_expired'                        => 'The license key of your OXID eShop has been expired. For this reason, a hidden countdown of 7 days has been started. After this period the OXID eShop will go offline. Please enter a valid license key.',
 'SHOP_LICENSE_ERROR_incorrect_mandate_amount'              => 'The number of the licensed sub-shops has been exceeded. For this reason, a hidden countdown of 7 days has been started. After this period the OXID eShop will go offline. Please enter a valid license key.',
+'SHOP_LICENSE_ERROR_INFORMATION'                           => '[tr]OXID eShop license information.',
 
 'SHOP_OPTIONS_GROUP_GLOBAL'                                => 'Global',
 'SHOP_OPTIONS_GROUP_SEARCH'                                => 'Search',

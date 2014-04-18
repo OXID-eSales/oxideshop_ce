@@ -986,7 +986,7 @@ class oxwArticleDetails extends oxWidget
         $sSortingParameters = $this->getViewParameter('sorting');
         if ($sSortingParameters) {
             list($sSortBy, $sSortDir) = explode('|', $sSortingParameters);
-            $this->setItemSorting('alist', $sSortBy, $sSortDir);
+            $this->setItemSorting($this->getSortIdent(), $sSortBy, $sSortDir);
         }
     }
 
@@ -1097,12 +1097,9 @@ class oxwArticleDetails extends oxWidget
         $oCategory = $this->getActiveCategory();
 
         if ($this->getListType() != 'search' && $oCategory && $oCategory instanceof oxCategory) {
-
-            if ($sDefaultSorting = $oCategory->getDefaultSorting()) {
-                $sArticleTable = getViewName('oxarticles');
-                $sSortBy = $sArticleTable . '.' . $sDefaultSorting;
-                $sSortDir = ($oCategory->getDefaultSortingMode()) ? "desc" : "asc";
-                $aSorting = array('sortby' => $sSortBy, 'sortdir' => $sSortDir);
+            if ( $sSortBy = $oCategory->getDefaultSorting() ) {
+                $sSortDir = ( $oCategory->getDefaultSortingMode() ) ? "desc" : "asc";
+                $aSorting = array ( 'sortby' => $sSortBy, 'sortdir' => $sSortDir );
             }
         }
 

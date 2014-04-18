@@ -2098,6 +2098,21 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     }
 
     /**
+     * Unassigns product from current (or particular) shop for multi shop objects
+     *
+     * @param string $sOXID   Object ID(default null)
+     * @param string $sShopID Shop ID(default - current active shop)
+     *
+     * @return bool
+     */
+    public function unassignFromShop($sOXID = null, $sShopID = null)
+    {
+        $blRet = parent::unassignFromShop();
+        $this->updateVariantInheritance();
+        return $blRet;
+    }
+
+    /**
      * (oxArticle::_saveArtLongDesc()) save the object using parent::save() method.
      *
      * @return bool
@@ -3308,10 +3323,11 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
                 $sArticleTable = $this->getViewName( $blUseCoreTable );
 
-                $sSelect = "select ".$oBaseObject->getSelectFields( $blUseCoreTable )." from $sArticleTable where " .
+                $sSelect = "select " . $oBaseObject->getSelectFields( $blUseCoreTable ) . " from $sArticleTable where " .
                     $this->getActiveCheckQuery( $blUseCoreTable ) .
                     $this->getVariantsQuery( $blRemoveNotOrderables, $blUseCoreTable ) .
                     " order by $sArticleTable.oxsort";
+                $oVariants->selectString( $sSelect );
 
 
                 $oVariants->selectString( $sSelect );

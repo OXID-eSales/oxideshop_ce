@@ -130,7 +130,7 @@ class oxSepaValidator
      * Validation of IBAN registry
      *
      * @param array $aIBANRegistry
-    * @deprecated since v5.2.0 (2013-12-11); Use oxSepaIBANValidator::isCodeLengthsValid().
+    * @deprecated since v5.1.2 (2013-12-11); Use oxSepaIBANValidator::isCodeLengthsValid().
      *
      * @return bool
      */
@@ -150,7 +150,7 @@ class oxSepaValidator
      * Set IBAN Registry
      *
      * @param array $aIBANRegistry
-     * @deprecated since v5.2.0 (2013-12-11); Use oxSepaIBANValidator::setCodeLengths().
+     * @deprecated since v5.1.2 (2013-12-11); Use oxSepaIBANValidator::setCodeLengths().
      *
      * @return bool
      */
@@ -167,7 +167,7 @@ class oxSepaValidator
 
     /**
      * Get IBAN length by country data
-     * @deprecated since v5.2.0 (2013-12-11); Use oxSepaValidator::getIBANCodeLengths().
+     * @deprecated since v5.1.2 (2013-12-11); Use oxSepaValidator::getIBANCodeLengths().
      *
      * @return array
      */

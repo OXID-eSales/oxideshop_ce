@@ -622,6 +622,40 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     }
 
     /**
+     * Return unit quantity
+     *
+     * @return sting
+     */
+    public function getUnitQuantity()
+    {
+        return $this->oxarticles__oxunitquantity->value;
+    }
+
+    /**
+     * Return Size of product: length*width*height
+     *
+     * @return double
+     */
+    public function getSize()
+    {
+        $dSize = $this->oxarticles__oxlength->value *
+            $this->oxarticles__oxwidth->value *
+            $this->oxarticles__oxheight->value;
+
+        return $dSize;
+    }
+
+    /**
+     * Return product weight
+     *
+     * @return double
+     */
+    public function getWeight()
+    {
+        return $this->oxarticles__oxweight->value;
+    }
+
+    /**
      * Returns SQL select string with checks if items are available
      *
      * @param bool $blForceCoreTable forces core table usage (optional)
@@ -798,6 +832,174 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     }
 
     /**
+     * Returns formatted price per unit
+     *
+     * @deprecated since v5.1 (2013-09-25); use oxPrice smarty plugin for formatting in templates
+     * @return string
+     */
+    public function getFUnitPrice()
+    {
+        if ($this->_fPricePerUnit == null) {
+            if ( $oPrice = $this->getUnitPrice() ) {
+                if ( $dPrice = $this->_getPriceForView( $oPrice ) ) {
+                    $this->_fPricePerUnit = oxRegistry::getLang()->formatCurrency( $dPrice );
+                }
+            }
+        }
+
+        return $this->_fPricePerUnit;
+    }
+
+    /**
+     * Returns price per unit
+     *
+     * @return string
+     */
+    public function getUnitPrice()
+    {
+        // Performance
+        if ( !$this->getConfig()->getConfigParam( 'bl_perfLoadPrice' ) || !$this->_blLoadPrice ) {
+            return;
+        }
+
+        $oPrice = null;
+        if ( (double) $this->getUnitQuantity() && $this->oxarticles__oxunitname->value ) {
+            $oPrice = clone $this->getPrice();
+            $oPrice->divide( (double) $this->getUnitQuantity() );
+        }
+
+        return $oPrice;
+    }
+
+    /**
+     * Returns formatted article min price
+     *
+     * @deprecated since v5.1 (2013-10-04); use oxPrice smarty plugin for formatting in templates
+     *
+     * @return string
+     */
+    public function getFMinPrice()
+    {
+        $sPrice = '';
+        if ( $oPrice = $this->getMinPrice() ) {
+            $dPrice = $this->_getPriceForView( $oPrice );
+            $sPrice = oxRegistry::getLang()->formatCurrency( $dPrice );
+        }
+
+        return $sPrice;
+    }
+
+    /**
+     * Returns formatted min article variant price
+     *
+     * @deprecated since v5.1 (2013-10-04); use oxPrice smarty plugin for formatting in templates
+     *
+     * @return string
+     */
+    public function getFVarMinPrice()
+    {
+        $sPrice = '';
+        if ( $oPrice = $this->getVarMinPrice() ) {
+            $dPrice = $this->_getPriceForView( $oPrice );
+            $sPrice = oxRegistry::getLang()->formatCurrency( $dPrice );
+        }
+
+        return $sPrice;
+    }
+
+    /**
+     * Returns article min price of variants
+     *
+     * @return oxPrice
+     */
+    public function getVarMinPrice()
+    {
+        if ( !$this->getConfig()->getConfigParam( 'bl_perfLoadPrice' ) || !$this->_blLoadPrice ) {
+            return;
+        }
+
+        $oPrice = null;
+        $dPrice = $this->_getVarMinPrice();
+
+        $dPrice = $this->_preparePrice( $dPrice, $this->getArticleVat() );
+
+
+        $oPrice = $this->_getPriceObject();
+        $oPrice->setPrice( $dPrice );
+        $this->_calculatePrice( $oPrice );
+
+
+        return $oPrice;
+    }
+
+    /**
+     * Returns article min price in calculation included variants
+     *
+     * @return oxPrice
+     */
+    public function getMinPrice()
+    {
+        if ( !$this->getConfig()->getConfigParam( 'bl_perfLoadPrice' ) || !$this->_blLoadPrice ) {
+            return;
+        }
+
+        $oPrice = null;
+        $dPrice = $this->_getPrice();
+        if ( $this->_getVarMinPrice() !== null && $dPrice > $this->_getVarMinPrice() ) {
+            $dPrice = $this->_getVarMinPrice();
+        }
+
+        $dPrice = $this->_preparePrice( $dPrice, $this->getArticleVat() );
+
+
+        $oPrice = $this->_getPriceObject();
+        $oPrice->setPrice( $dPrice );
+        $this->_calculatePrice( $oPrice );
+
+        return $oPrice;
+    }
+
+    /**
+     * Returns true if article has variant with different price
+     *
+     * @return bool
+     */
+    public function isRangePrice()
+    {
+        if ( $this->_blIsRangePrice === null ) {
+
+            $this->setRangePrice( false );
+
+            if ( $this->_hasAnyVariant() ) {
+                $dPrice = $this->_getPrice();
+                $dMinPrice = $this->_getVarMinPrice();
+                $dMaxPrice = $this->_getVarMaxPrice();
+
+                if ( $dMinPrice != $dMaxPrice ) {
+                    $this->setRangePrice();
+                } elseif ( !$this->isParentNotBuyable() &&  $dMinPrice != $dPrice ) {
+                    $this->setRangePrice();
+                }
+            }
+        }
+
+        return $this->_blIsRangePrice;
+    }
+
+
+    /**
+     * Setter to set if article has range price
+     *
+     * @param bool $blIsRangePrice - true if range, else false
+     *
+     * @return null
+     */
+    public function setRangePrice( $blIsRangePrice = true )
+    {
+        return $this->_blIsRangePrice = $blIsRangePrice;
+    }
+
+    /**
      * Checks if article has visible status. Returns TRUE if its visible
      *
      * @return bool
@@ -843,7 +1045,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      */
     public function assign( $aRecord )
     {
-
         startProfile('articleAssign');
 
         // load object from database
@@ -869,22 +1070,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         stopProfile('articleAssign');
     }
 
-
-    /**
-     * Get data from db
-     *
-     * @param string $sOXID id
-     *
-     * @return array
-     */
-    protected function _loadFromDb( $sOXID )
-    {
-        $sSelect = $this->buildSelectString( array( $this->getViewName().".oxid" => $sOXID ));
-
-        $aData = oxDb::getDb( oxDb::FETCH_MODE_ASSOC )->getRow( $sSelect );
-
-        return $aData;
-    }
 
     /**
      * Loads object data from DB (object data ID must be passed to method).
@@ -1202,27 +1387,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     }
 
     /**
-     * Checks if parent has ANY variant assigned
-     *
-     * @param bool $blForceCoreTable force core table usage
-     *
-     * @return bool
-     */
-    protected function _hasAnyVariant( $blForceCoreTable = null )
-    {
-        $blHas = false;
-        if ( ( $sId = $this->getId() ) ) {
-            if ( $this->oxarticles__oxshopid->value == $this->getConfig()->getShopId() ) {
-                $blHas = (bool) $this->oxarticles__oxvarcount->value;
-            } else {
-                $sArticleTable = $this->getViewName( $blForceCoreTable );
-                $blHas = (bool) oxDb::getDb()->getOne( "select 1 from $sArticleTable where oxparentid='{$sId}'" );
-            }
-        }
-        return $blHas;
-    }
-
-    /**
      * Returns amount of variants article has
      *
      * @return mixed
@@ -1328,96 +1492,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         }
 
         return self::$_aSelections[$sId];
-    }
-
-    /**
-     * Loads and returns variants list.
-     *
-     * @param bool $blSimple              If parameter $blSimple - list will be filled with oxSimpleVariant objects, else - oxArticle
-     * @param bool $blRemoveNotOrderables if true, removes from list not orderable articles, which are out of stock [optional]
-     * @param bool $blForceCoreTable      if true forces core table use, default is false [optional]
-     *
-     * @return array | oxsimplevariantlist | oxarticlelist
-     */
-    protected function _loadVariantList( $blSimple, $blRemoveNotOrderables = true, $blForceCoreTable = null )
-    {
-        $oVariants = array();
-        if ( ( $sId = $this->getId() ) ) {
-            //do not load me as a parent later
-            self::$_aLoadedParents[$sId . "_" . $this->getLanguage()] = $this;
-
-            $myConfig = $this->getConfig();
-
-            if ( !$this->_blLoadVariants ||
-                ( !$this->isAdmin() && !$myConfig->getConfigParam( 'blLoadVariants') ) ||
-                ( !$this->isAdmin() && !$this->oxarticles__oxvarcount->value ) ) {
-                return $oVariants;
-            }
-
-            // cache
-            $sCacheKey = $blSimple ? "simple" : "full";
-            if ( $blRemoveNotOrderables ) {
-                if ( isset( $this->_aVariants[$sCacheKey] ) ) {
-                   return $this->_aVariants[$sCacheKey];
-                } else {
-                    $this->_aVariants[$sCacheKey] = & $oVariants;
-                }
-            } elseif ( !$blRemoveNotOrderables ) {
-                if ( isset( $this->_aVariantsWithNotOrderables[$sCacheKey] ) ) {
-                    return $this->_aVariantsWithNotOrderables[$sCacheKey];
-                } else {
-                    $this->_aVariantsWithNotOrderables[$sCacheKey] = & $oVariants;
-                }
-            }
-
-            if ( ( $this->_blHasVariants = $this->_hasAnyVariant( $blForceCoreTable ) ) ) {
-
-                //load simple variants for lists
-                if ( $blSimple ) {
-                    $oVariants = oxNew( 'oxsimplevariantlist' );
-                    $oVariants->setParent( $this );
-                } else {
-                    //loading variants
-                    $oVariants = oxNew( 'oxarticlelist' );
-                    $oVariants->getBaseObject()->modifyCacheKey( '_variants' );
-                }
-
-                startProfile("selectVariants");
-                $blUseCoreTable = (bool) $blForceCoreTable;
-                $oBaseObject = $oVariants->getBaseObject();
-                $oBaseObject->setLanguage( $this->getLanguage() );
-
-
-                $sArticleTable = $this->getViewName( $blUseCoreTable );
-
-                $sSelect = "select ".$oBaseObject->getSelectFields( $blUseCoreTable )." from $sArticleTable where " .
-                           $this->getActiveCheckQuery( $blUseCoreTable ) .
-                           $this->getVariantsQuery( $blRemoveNotOrderables, $blUseCoreTable ) .
-                           " order by $sArticleTable.oxsort";
-
-
-                $oVariants->selectString( $sSelect );
-
-                //if this is multidimensional variants, make additional processing
-                if ( $myConfig->getConfigParam( 'blUseMultidimensionVariants' ) ) {
-                    $oMdVariants = oxNew( "oxVariantHandler" );
-                    $this->_blHasMdVariants = $oMdVariants->isMdVariant( $oVariants->current() );
-                }
-                stopProfile("selectVariants");
-            }
-
-            //if we have variants then depending on config option the parent may be non buyable
-            if ( !$myConfig->getConfigParam( 'blVariantParentBuyable' ) && $this->_blHasVariants ) {
-                $this->_blNotBuyableParent = true;
-            }
-
-            //if we have variants, but all variants are incative means article may be non buyable (depends on config option)
-            if ( !$myConfig->getConfigParam( 'blVariantParentBuyable' ) && count( $oVariants ) == 0 && $this->_blHasVariants ) {
-                $this->_blNotBuyable = true;
-            }
-        }
-
-        return $oVariants;
     }
 
     /**
@@ -1566,94 +1640,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         }
 
         return self::$_aArticleCats[$sArticleId];
-    }
-
-    /**
-     * Selects category IDs from given SQL statement and ID field name
-     *
-     * @param string $sSql   sql statement
-     * @param string $sField category ID field name
-     * @return array
-     */
-    protected function _selectCategoryIds( $sSql, $sField )
-    {
-        $oDb = oxDb::getDb( oxDb::FETCH_MODE_ASSOC );
-        $aResult = $oDb->getAll( $sSql );
-        $aReturn = array();
-
-
-        foreach ( $aResult as $aValue ) {
-            $aValue = array_change_key_case( $aValue, CASE_LOWER );
-
-
-            $aReturn[] = $aValue[$sField];
-        }
-
-        return $aReturn;
-    }
-
-    /**
-     * Returns query for article categories select
-     *
-     * @param bool $blActCats select categories if all parents are active
-     *
-     * @return string
-     */
-    protected function _getCategoryIdsSelect( $blActCats = false )
-    {
-        $sO2CView = $this->_getObjectViewName('oxobject2category');
-        $sCatView = $this->_getObjectViewName('oxcategories');
-
-        $sArticleIdSql = 'oxobject2category.oxobjectid='.oxDb::getDb()->quote( $this->getId() );
-        if ( $this->getParentId() ) {
-            $sArticleIdSql = '('.$sArticleIdSql.' or oxobject2category.oxobjectid='.oxDb::getDb()->quote( $this->getParentId() ).')';
-        }
-        $sActiveCategorySql = $blActCats? $this->_getActiveCategorySelectSnippet() : '';
-
-        $sSelect =  "select
-                        oxobject2category.oxcatnid as oxcatnid
-                     from $sO2CView as oxobject2category
-                        left join $sCatView as oxcategories on oxcategories.oxid = oxobject2category.oxcatnid
-                    where $sArticleIdSql and oxcategories.oxid is not null and oxcategories.oxactive = 1 $sActiveCategorySql
-                    order by oxobject2category.oxtime";
-
-        return $sSelect;
-    }
-
-    /**
-     * Returns active category select snippet
-     *
-     * @return string
-     */
-    protected function _getActiveCategorySelectSnippet()
-    {
-        $sCatView = $this->_getObjectViewName('oxcategories');
-        $sActiveCategorySql = "and oxcategories.oxhidden = 0 and (select count(cats.oxid) from $sCatView as cats where cats.oxrootid = oxcategories.oxrootid and cats.oxleft < oxcategories.oxleft and cats.oxright > oxcategories.oxright and ( cats.oxhidden = 1 or cats.oxactive = 0 ) ) = 0 ";
-
-        return $sActiveCategorySql;
-    }
-
-    /**
-     * Returns query for article categories select
-     *
-     * @param string $sOXID     article id
-     * @param bool   $blActCats select categories if all parents are active
-     *
-     * @deprecated since v5.2 (2013-11-18); use oxArticle::_getCategoryIdsSelect instead
-     *
-     * @return string
-     */
-    protected function _getSelectCatIds( $sOXID, $blActCats = false )
-    {
-        $sO2CView = $this->_getObjectViewName('oxobject2category');
-        $sCatView = $this->_getObjectViewName('oxcategories');
-        $sSelect =  "select oxobject2category.oxcatnid as oxcatnid from $sO2CView as oxobject2category left join $sCatView as oxcategories on oxcategories.oxid = oxobject2category.oxcatnid ";
-        $sSelect .= 'where oxobject2category.oxobjectid='.oxDb::getDb()->quote($sOXID).' and oxcategories.oxid is not null and oxcategories.oxactive = 1 ';
-        if ( $blActCats ) {
-            $sSelect .= "and oxcategories.oxhidden = 0 and (select count(cats.oxid) from $sCatView as cats where cats.oxrootid = oxcategories.oxrootid and cats.oxleft < oxcategories.oxleft and cats.oxright > oxcategories.oxright and ( cats.oxhidden = 1 or cats.oxactive = 0 ) ) = 0 ";
-        }
-        $sSelect .= 'order by oxobject2category.oxtime ';
-        return $sSelect;
     }
 
     /**
@@ -1949,38 +1935,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             $this->_oPrice = $oPrice;
         }
         return $this->_oPrice;
-    }
-
-    /**
-     * Calculates price of article (adds taxes, currency and discounts).
-     *
-     * @param oxPrice $oPrice price object
-     * @param double  $dVat   vat value, optional, if passed, bypasses "bl_perfCalcVatOnlyForBasketOrder" config value
-     *
-     * @return oxPrice
-     */
-    protected function _calculatePrice( $oPrice, $dVat = null )
-    {
-        // apply VAT only if configuration requires it
-        if ( isset( $dVat ) || !$this->getConfig()->getConfigParam( 'bl_perfCalcVatOnlyForBasketOrder' ) ) {
-            $this->_applyVAT( $oPrice, isset( $dVat ) ? $dVat : $this->getArticleVat() );
-        }
-
-        // apply currency
-        $this->_applyCurrency( $oPrice );
-        // apply discounts
-        if ( !$this->skipDiscounts() ) {
-            $oDiscountList = oxRegistry::get("oxDiscountList");
-            $aDiscounts = $oDiscountList->getArticleDiscounts( $this, $this->getArticleUser() );
-
-            reset( $aDiscounts );
-            foreach ( $aDiscounts as $oDiscount ) {
-                $oPrice->setDiscount($oDiscount->getAddSum(), $oDiscount->getAddSumType());
-            }
-            $oPrice->calculateDiscount();
-        }
-
-        return $oPrice;
     }
 
     /**
@@ -2835,26 +2789,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     }
 
     /**
-     * Check if stock status has changed since loading the article
-     *
-     * @return bool
-     */
-    protected function _isStockStatusChanged()
-    {
-        return $this->_iStockStatus != $this->_iStockStatusOnLoad;
-    }
-
-    /**
-     * Check if visibility has changed since loading the article
-     *
-     * @return bool
-     */
-    protected function _isVisibilityChanged()
-    {
-        return $this->_isStockStatusChanged() && ($this->_iStockStatus == -1 || $this->_iStockStatusOnLoad == -1);
-    }
-
-    /**
      * Returns formatted delivery date. If the date is not set ('0000-00-00') returns false.
      *
      * @return string | bool
@@ -3100,6 +3034,597 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     }
 
     /**
+     * retrieve article VAT (cached)
+     *
+     * @return double
+     */
+    public function getArticleVat()
+    {
+        if (!isset($this->_dArticleVat)) {
+            $this->_dArticleVat = oxRegistry::get("oxVatSelector")->getArticleVat( $this );
+        }
+        return $this->_dArticleVat;
+    }
+
+    /**
+     * apply article and article use
+     *
+     * @param oxPrice $oPrice target price
+     *
+     * @return null
+     */
+    public function applyVats( oxPrice $oPrice )
+    {
+        $this->_applyVAT($oPrice, $this->getArticleVat() );
+    }
+
+    /**
+     * Applies discounts which should be applied in general case (for 0 amount)
+     *
+     * @param oxprice $oPrice Price object
+     *
+     * @return null
+     */
+    public function applyDiscountsForVariant( $oPrice )
+    {
+        // apply discounts
+        if ( !$this->skipDiscounts() ) {
+            $oDiscountList = oxRegistry::get("oxDiscountList");
+            $aDiscounts = $oDiscountList->getArticleDiscounts( $this, $this->getArticleUser() );
+
+            reset( $aDiscounts );
+            foreach ( $aDiscounts as $oDiscount ) {
+                $oPrice->setDiscount($oDiscount->getAddSum(), $oDiscount->getAddSumType());
+            }
+            $oPrice->calculateDiscount();
+        }
+    }
+
+    /**
+     * Get parent article
+     *
+     * @return oxArticle
+     */
+    public function getParentArticle()
+    {
+        if ( ( $sParentId = $this->oxarticles__oxparentid->value ) ) {
+            $sIndex = $sParentId . "_" . $this->getLanguage();
+            if ( !isset( self::$_aLoadedParents[$sIndex] ) ) {
+                self::$_aLoadedParents[$sIndex] = oxNew( 'oxarticle' );
+                self::$_aLoadedParents[$sIndex]->_blLoadPrice    = false;
+                self::$_aLoadedParents[$sIndex]->_blLoadVariants = false;
+                self::$_aLoadedParents[$sIndex]->loadInLang( $this->getLanguage(), $sParentId );
+            }
+            return self::$_aLoadedParents[$sIndex];
+        }
+    }
+
+    /**
+     * Updates article variants oxremindactive field, as variants inherit this setting from parent
+     *
+     * @return null
+     */
+    public function updateVariantsRemind()
+    {
+        // check if it is parent article
+        if ( !$this->isVariant() && $this->_hasAnyVariant()) {
+            $oDb = oxDb::getDb();
+            $sOxId = $oDb->quote($this->getId());
+            $sOxShopId = $oDb->quote($this->getShopId());
+            $iRemindActive = $oDb->quote($this->oxarticles__oxremindactive->value);
+            $sUpdate = "
+                update oxarticles
+                    set oxremindactive = $iRemindActive
+                    where oxparentid = $sOxId and
+                          oxshopid = $sOxShopId
+            ";
+            $oDb->execute( $sUpdate );
+        }
+    }
+
+    /**
+     * Returns product id (oxid)
+     * (required for interface oxIArticle)
+     *
+     * @return string
+     */
+    public function getProductId()
+    {
+        return $this->getId();
+    }
+
+    /**
+     * Returns product parent id (oxparentid)
+     *
+     * @deprecated since v4.7-5.0 (2012-10-08); use getParentId() method
+     *
+     * @return string
+     */
+    public function getProductParentId()
+    {
+        return $this->getParentId();
+    }
+
+    /**
+     * Returns product parent id (oxparentid)
+     *
+     * @return string
+     */
+    public function getParentId()
+    {
+        return $this->oxarticles__oxparentid->value;
+    }
+
+    /**
+     * Returns false if object is not derived from oxorderarticle class
+     *
+     * @return bool
+     */
+    public function isOrderArticle()
+    {
+        return false;
+    }
+
+    /**
+     * Returns TRUE if product is variant, and false if not
+     *
+     * @return bool
+     */
+    public function isVariant()
+    {
+        return (bool) ( isset( $this->oxarticles__oxparentid ) ? $this->oxarticles__oxparentid->value : false );
+    }
+
+    /**
+     * Returns TRUE if product is multidimensional variant, and false if not
+     *
+     * @return bool
+     */
+    public function isMdVariant()
+    {
+        $oMdVariant = oxNew( "oxVariantHandler" );
+
+        return $oMdVariant->isMdVariant($this);
+    }
+
+    /**
+     * get Sql for loading price categories which include this article
+     *
+     * @param string $sFields fields to load from oxCategories
+     *
+     * @return string
+     */
+    public function getSqlForPriceCategories($sFields = '')
+    {
+        if (!$sFields) {
+            $sFields = 'oxid';
+        }
+        $sSelectWhere = "select $sFields from ".$this->_getObjectViewName('oxcategories')." where";
+        $sQuotedPrice = oxDb::getDb()->quote( $this->oxarticles__oxprice->value );
+        return  "$sSelectWhere oxpricefrom != 0 and oxpriceto != 0 and oxpricefrom <= $sQuotedPrice and oxpriceto >= $sQuotedPrice"
+               ." union $sSelectWhere oxpricefrom != 0 and oxpriceto = 0 and oxpricefrom <= $sQuotedPrice"
+               ." union $sSelectWhere oxpricefrom = 0 and oxpriceto != 0 and oxpriceto >= $sQuotedPrice";
+    }
+
+    /**
+     * Checks if article is assigned to price category $sCatNID.
+     *
+     * @param string $sCatNid Price category ID
+     *
+     * @return bool
+     */
+    public function inPriceCategory( $sCatNid )
+    {
+        $oDb = oxDb::getDb();
+
+        $sQuotedPrice = $oDb->quote( $this->oxarticles__oxprice->value );
+        $sQuotedCnid = $oDb->quote( $sCatNid );
+        return (bool) $oDb->getOne(
+            "select 1 from ".$this->_getObjectViewName('oxcategories')." where oxid=$sQuotedCnid and"
+           ."(   (oxpricefrom != 0 and oxpriceto != 0 and oxpricefrom <= $sQuotedPrice and oxpriceto >= $sQuotedPrice)"
+           ." or (oxpricefrom != 0 and oxpriceto = 0 and oxpricefrom <= $sQuotedPrice)"
+           ." or (oxpricefrom = 0 and oxpriceto != 0 and oxpriceto >= $sQuotedPrice)"
+           .")"
+        );
+    }
+
+    /**
+     * Returns multidimensional variant structure
+     *
+     * @return OxMdVariants
+     */
+    public function getMdVariants()
+    {
+        if ( $this->_oMdVariants ) {
+            return $this->_oMdVariants;
+        }
+
+        $oParentArticle = $this->getParentArticle();
+        if ( $oParentArticle ) {
+            $oVariants = $oParentArticle->getVariants();
+        } else {
+            $oVariants = $this->getVariants();
+        }
+
+        $oVariantHandler = oxNew( "oxVariantHandler" );
+        $this->_oMdVariants = $oVariantHandler->buildMdVariants( $oVariants, $this->getId() );
+
+        return $this->_oMdVariants;
+    }
+
+    /**
+     * Returns first level variants from multidimensional variants list
+     *
+     * @return OxMdVariants
+     */
+    public function getMdSubvariants()
+    {
+        return $this->getMdVariants()->getMdSubvariants();
+    }
+
+    /**
+     * Return article picture file name
+     *
+     * @param string $sFieldName article picture field name
+     * @param int    $iIndex     article picture index
+     *
+     * @return string
+     */
+    public function getPictureFieldValue( $sFieldName, $iIndex = null )
+    {
+        if ( $sFieldName ) {
+            $sFieldName = "oxarticles__" . $sFieldName . $iIndex;
+            return $this->$sFieldName->value;
+        }
+    }
+
+    /**
+     * Get master zoom picture url
+     *
+     * @param int $iIndex picture index
+     *
+     * @return string
+     */
+    public function getMasterZoomPictureUrl( $iIndex )
+    {
+        $sPicUrl  = false;
+        $sPicName = basename( $this->{"oxarticles__oxpic" . $iIndex}->value );
+
+        if ( $sPicName && $sPicName != "nopic.jpg" ) {
+            $sPicUrl = $this->getConfig()->getPictureUrl( "master/product/" . $iIndex . "/" . $sPicName );
+            if ( !$sPicUrl || basename( $sPicUrl ) == "nopic.jpg" ) {
+                $sPicUrl = false;
+            }
+        }
+
+        return $sPicUrl;
+    }
+
+    /**
+     * Returns oxarticles__oxunitname value processed by oxLang::translateString()
+     *
+     * @return string
+     */
+    public function getUnitName()
+    {
+        if ( $this->oxarticles__oxunitname->value ) {
+            return oxRegistry::getLang()->translateString( $this->oxarticles__oxunitname->value );
+        }
+    }
+
+     /**
+     * Return article downloadable file list (oxlist of oxfile)
+     *
+     * @param bool $blAddFromParent - return with parent files if not buyable
+     *
+     * @return null|oxList of oxFile
+     */
+    public function getArticleFiles( $blAddFromParent=false )
+    {
+        if ( $this->_aArticleFiles === null) {
+
+            $this->_aArticleFiles = false;
+
+            $sQ = "SELECT * FROM `oxfiles` WHERE `oxartid` = '".$this->getId()."'";
+
+            if ( !$this->getConfig()->getConfigParam( 'blVariantParentBuyable' ) && $blAddFromParent ) {
+                $sQ .= " OR `oxartId` = '". $this->oxarticles__oxparentid->value . "'";
+            }
+
+            $oArticleFiles = oxNew("oxlist");
+            $oArticleFiles->init("oxfile");
+            $oArticleFiles->selectString( $sQ );
+            $this->_aArticleFiles  = $oArticleFiles;
+
+        }
+
+        return $this->_aArticleFiles;
+    }
+
+    /**
+     * Returns oxarticles__oxisdownloadable value
+     *
+     * @return bool
+     */
+    public function isDownloadable()
+    {
+        return $this->oxarticles__oxisdownloadable->value;
+    }
+
+     /**
+     * Checks if articles has amount price
+     *
+     * @return bool
+     */
+    public function hasAmountPrice()
+    {
+        if ( self::$_blHasAmountPrice === null ) {
+
+            self::$_blHasAmountPrice = false;
+
+            $oDb = oxDb::getDb();
+            $sQ = "SELECT 1 FROM `oxprice2article` LIMIT 1";
+
+            if ( $oDb->getOne( $sQ ) ) {
+                self::$_blHasAmountPrice = true;
+            }
+        }
+
+        return self::$_blHasAmountPrice;
+    }
+
+    /**
+     * Loads and returns variants list.
+     *
+     * @param bool $blSimple              If parameter $blSimple - list will be filled with oxSimpleVariant objects, else - oxArticle
+     * @param bool $blRemoveNotOrderables if true, removes from list not orderable articles, which are out of stock [optional]
+     * @param bool $blForceCoreTable      if true forces core table use, default is false [optional]
+     *
+     * @return array | oxsimplevariantlist | oxarticlelist
+     */
+    protected function _loadVariantList( $blSimple, $blRemoveNotOrderables = true, $blForceCoreTable = null )
+    {
+        $oVariants = array();
+        if ( ( $sId = $this->getId() ) ) {
+            //do not load me as a parent later
+            self::$_aLoadedParents[$sId . "_" . $this->getLanguage()] = $this;
+
+            $myConfig = $this->getConfig();
+
+            if ( !$this->_blLoadVariants ||
+                ( !$this->isAdmin() && !$myConfig->getConfigParam( 'blLoadVariants') ) ||
+                ( !$this->isAdmin() && !$this->oxarticles__oxvarcount->value ) ) {
+                return $oVariants;
+            }
+
+            // cache
+            $sCacheKey = $blSimple ? "simple" : "full";
+            if ( $blRemoveNotOrderables ) {
+                if ( isset( $this->_aVariants[$sCacheKey] ) ) {
+                    return $this->_aVariants[$sCacheKey];
+                } else {
+                    $this->_aVariants[$sCacheKey] = & $oVariants;
+                }
+            } elseif ( !$blRemoveNotOrderables ) {
+                if ( isset( $this->_aVariantsWithNotOrderables[$sCacheKey] ) ) {
+                    return $this->_aVariantsWithNotOrderables[$sCacheKey];
+                } else {
+                    $this->_aVariantsWithNotOrderables[$sCacheKey] = & $oVariants;
+                }
+            }
+
+            if ( ( $this->_blHasVariants = $this->_hasAnyVariant( $blForceCoreTable ) ) ) {
+
+                //load simple variants for lists
+                if ( $blSimple ) {
+                    $oVariants = oxNew( 'oxsimplevariantlist' );
+                    $oVariants->setParent( $this );
+                } else {
+                    //loading variants
+                    $oVariants = oxNew( 'oxarticlelist' );
+                    $oVariants->getBaseObject()->modifyCacheKey( '_variants' );
+                }
+
+                startProfile("selectVariants");
+                $blUseCoreTable = (bool) $blForceCoreTable;
+                $oBaseObject = $oVariants->getBaseObject();
+                $oBaseObject->setLanguage( $this->getLanguage() );
+
+
+                $sArticleTable = $this->getViewName( $blUseCoreTable );
+
+                $sSelect = "select ".$oBaseObject->getSelectFields( $blUseCoreTable )." from $sArticleTable where " .
+                    $this->getActiveCheckQuery( $blUseCoreTable ) .
+                    $this->getVariantsQuery( $blRemoveNotOrderables, $blUseCoreTable ) .
+                    " order by $sArticleTable.oxsort";
+
+
+                $oVariants->selectString( $sSelect );
+
+                //if this is multidimensional variants, make additional processing
+                if ( $myConfig->getConfigParam( 'blUseMultidimensionVariants' ) ) {
+                    $oMdVariants = oxNew( "oxVariantHandler" );
+                    $this->_blHasMdVariants = $oMdVariants->isMdVariant( $oVariants->current() );
+                }
+                stopProfile("selectVariants");
+            }
+
+            //if we have variants then depending on config option the parent may be non buyable
+            if ( !$myConfig->getConfigParam( 'blVariantParentBuyable' ) && $this->_blHasVariants ) {
+                $this->_blNotBuyableParent = true;
+            }
+
+            //if we have variants, but all variants are incative means article may be non buyable (depends on config option)
+            if ( !$myConfig->getConfigParam( 'blVariantParentBuyable' ) && count( $oVariants ) == 0 && $this->_blHasVariants ) {
+                $this->_blNotBuyable = true;
+            }
+        }
+
+        return $oVariants;
+    }
+
+    /**
+     * Selects category IDs from given SQL statement and ID field name
+     *
+     * @param string $sSql   sql statement
+     * @param string $sField category ID field name
+     * @return array
+     */
+    protected function _selectCategoryIds( $sSql, $sField )
+    {
+        $oDb = oxDb::getDb( oxDb::FETCH_MODE_ASSOC );
+        $aResult = $oDb->getAll( $sSql );
+        $aReturn = array();
+
+
+        foreach ( $aResult as $aValue ) {
+            $aValue = array_change_key_case( $aValue, CASE_LOWER );
+
+
+            $aReturn[] = $aValue[$sField];
+        }
+
+        return $aReturn;
+    }
+
+    /**
+     * Returns query for article categories select
+     *
+     * @param bool $blActCats select categories if all parents are active
+     *
+     * @return string
+     */
+    protected function _getCategoryIdsSelect( $blActCats = false )
+    {
+        $sO2CView = $this->_getObjectViewName('oxobject2category');
+        $sCatView = $this->_getObjectViewName('oxcategories');
+
+        $sArticleIdSql = 'oxobject2category.oxobjectid='.oxDb::getDb()->quote( $this->getId() );
+        if ( $this->getParentId() ) {
+            $sArticleIdSql = '('.$sArticleIdSql.' or oxobject2category.oxobjectid='.oxDb::getDb()->quote( $this->getParentId() ).')';
+        }
+        $sActiveCategorySql = $blActCats? $this->_getActiveCategorySelectSnippet() : '';
+
+        $sSelect =  "select
+                        oxobject2category.oxcatnid as oxcatnid
+                     from $sO2CView as oxobject2category
+                        left join $sCatView as oxcategories on oxcategories.oxid = oxobject2category.oxcatnid
+                    where $sArticleIdSql and oxcategories.oxid is not null and oxcategories.oxactive = 1 $sActiveCategorySql
+                    order by oxobject2category.oxtime";
+
+        return $sSelect;
+    }
+
+    /**
+     * Returns active category select snippet
+     *
+     * @return string
+     */
+    protected function _getActiveCategorySelectSnippet()
+    {
+        $sCatView = $this->_getObjectViewName('oxcategories');
+        $sActiveCategorySql = "and oxcategories.oxhidden = 0 and (select count(cats.oxid) from $sCatView as cats where cats.oxrootid = oxcategories.oxrootid and cats.oxleft < oxcategories.oxleft and cats.oxright > oxcategories.oxright and ( cats.oxhidden = 1 or cats.oxactive = 0 ) ) = 0 ";
+
+        return $sActiveCategorySql;
+    }
+
+    /**
+     * Returns query for article categories select
+     *
+     * @param string $sOXID     article id
+     * @param bool   $blActCats select categories if all parents are active
+     *
+     * @deprecated since v5.2 (2013-11-18); use oxArticle::_getCategoryIdsSelect instead
+     *
+     * @return string
+     */
+    protected function _getSelectCatIds( $sOXID, $blActCats = false )
+    {
+        $sO2CView = $this->_getObjectViewName('oxobject2category');
+        $sCatView = $this->_getObjectViewName('oxcategories');
+        $sSelect =  "select oxobject2category.oxcatnid as oxcatnid from $sO2CView as oxobject2category left join $sCatView as oxcategories on oxcategories.oxid = oxobject2category.oxcatnid ";
+        $sSelect .= 'where oxobject2category.oxobjectid='.oxDb::getDb()->quote($sOXID).' and oxcategories.oxid is not null and oxcategories.oxactive = 1 ';
+        if ( $blActCats ) {
+            $sSelect .= "and oxcategories.oxhidden = 0 and (select count(cats.oxid) from $sCatView as cats where cats.oxrootid = oxcategories.oxrootid and cats.oxleft < oxcategories.oxleft and cats.oxright > oxcategories.oxright and ( cats.oxhidden = 1 or cats.oxactive = 0 ) ) = 0 ";
+        }
+        $sSelect .= 'order by oxobject2category.oxtime ';
+        return $sSelect;
+    }
+
+    /**
+     * Calculates price of article (adds taxes, currency and discounts).
+     *
+     * @param oxPrice $oPrice price object
+     * @param double  $dVat   vat value, optional, if passed, bypasses "bl_perfCalcVatOnlyForBasketOrder" config value
+     *
+     * @return oxPrice
+     */
+    protected function _calculatePrice( $oPrice, $dVat = null )
+    {
+        // apply VAT only if configuration requires it
+        if ( isset( $dVat ) || !$this->getConfig()->getConfigParam( 'bl_perfCalcVatOnlyForBasketOrder' ) ) {
+            $this->_applyVAT( $oPrice, isset( $dVat ) ? $dVat : $this->getArticleVat() );
+        }
+
+        // apply currency
+        $this->_applyCurrency( $oPrice );
+        // apply discounts
+        if ( !$this->skipDiscounts() ) {
+            $oDiscountList = oxRegistry::get("oxDiscountList");
+            $aDiscounts = $oDiscountList->getArticleDiscounts( $this, $this->getArticleUser() );
+
+            reset( $aDiscounts );
+            foreach ( $aDiscounts as $oDiscount ) {
+                $oPrice->setDiscount($oDiscount->getAddSum(), $oDiscount->getAddSumType());
+            }
+            $oPrice->calculateDiscount();
+        }
+
+        return $oPrice;
+    }
+
+    /**
+     * Checks if parent has ANY variant assigned
+     *
+     * @param bool $blForceCoreTable force core table usage
+     *
+     * @return bool
+     */
+    protected function _hasAnyVariant( $blForceCoreTable = null )
+    {
+        $blHas = false;
+        if ( ( $sId = $this->getId() ) ) {
+            if ( $this->oxarticles__oxshopid->value == $this->getConfig()->getShopId() ) {
+                $blHas = (bool) $this->oxarticles__oxvarcount->value;
+            } else {
+                $sArticleTable = $this->getViewName( $blForceCoreTable );
+                $blHas = (bool) oxDb::getDb()->getOne( "select 1 from $sArticleTable where oxparentid='{$sId}'" );
+            }
+        }
+        return $blHas;
+    }
+
+    /**
+     * Check if stock status has changed since loading the article
+     *
+     * @return bool
+     */
+    protected function _isStockStatusChanged()
+    {
+        return $this->_iStockStatus != $this->_iStockStatusOnLoad;
+    }
+
+    /**
+     * Check if visibility has changed since loading the article
+     *
+     * @return bool
+     */
+    protected function _isVisibilityChanged()
+    {
+        return $this->_isStockStatusChanged() && ($this->_iStockStatus == -1 || $this->_iStockStatusOnLoad == -1);
+    }
+
+    /**
      * inserts article long description to artextends table
      *
      * @return null
@@ -3167,7 +3692,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         $this->_aSkipSaveFields = array();
 
         $this->_aSkipSaveFields[] = 'oxtimestamp';
-       // $this->_aSkipSaveFields[] = 'oxlongdesc';
+        // $this->_aSkipSaveFields[] = 'oxlongdesc';
         $this->_aSkipSaveFields[] = 'oxinsert';
 
         if ( !$this->_blAllowEmptyParentId && (!isset( $this->oxarticles__oxparentid->value) || $this->oxarticles__oxparentid->value == '') ) {
@@ -3233,8 +3758,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         $oAmtPrices = $this->_getAmountPriceList();
         foreach ($oAmtPrices as $oAmPrice) {
             if ($oAmPrice->oxprice2article__oxamount->value <= $dAmount
-                    && $dAmount <= $oAmPrice->oxprice2article__oxamountto->value
-                    && $dPrice > $oAmPrice->oxprice2article__oxaddabs->value ) {
+                && $dAmount <= $oAmPrice->oxprice2article__oxamountto->value
+                && $dPrice > $oAmPrice->oxprice2article__oxaddabs->value ) {
                 $dPrice = $oAmPrice->oxprice2article__oxaddabs->value;
             }
         }
@@ -3273,8 +3798,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         return $dPrice;
     }
 
-
-     /**
+    /**
      * Fills amount price list object and sets amount price for article object
      *
      * @param array $aAmPriceList Amount price list
@@ -3323,7 +3847,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         if ( ( $sId = $this->getId() ) ) {
             $oDb = oxDb::getDb( oxDb::FETCH_MODE_ASSOC );
             $sQ = "select oxid from " . $this->getViewName( true ) . " where oxparentid = ".$oDb->quote( $sId )." and " .
-                   $this->getSqlActiveSnippet( true ) . " order by oxsort";
+                $this->getSqlActiveSnippet( true ) . " order by oxsort";
             $oRs = $oDb->select( $sQ );
             if ( $oRs != false && $oRs->recordCount() > 0 ) {
                 while (!$oRs->EOF) {
@@ -3333,19 +3857,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             }
         }
         return $aSelect;
-    }
-
-    /**
-     * retrieve article VAT (cached)
-     *
-     * @return double
-     */
-    public function getArticleVat()
-    {
-        if (!isset($this->_dArticleVat)) {
-            $this->_dArticleVat = oxRegistry::get("oxVatSelector")->getArticleVat( $this );
-        }
-        return $this->_dArticleVat;
     }
 
     /**
@@ -3367,40 +3878,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     }
 
     /**
-     * apply article and article use
-     *
-     * @param oxPrice $oPrice target price
-     *
-     * @return null
-     */
-    public function applyVats( oxPrice $oPrice )
-    {
-        $this->_applyVAT($oPrice, $this->getArticleVat() );
-    }
-
-    /**
-     * Applies discounts which should be applied in general case (for 0 amount)
-     *
-     * @param oxprice $oPrice Price object
-     *
-     * @return null
-     */
-    public function applyDiscountsForVariant( $oPrice )
-    {
-        // apply discounts
-        if ( !$this->skipDiscounts() ) {
-            $oDiscountList = oxRegistry::get("oxDiscountList");
-            $aDiscounts = $oDiscountList->getArticleDiscounts( $this, $this->getArticleUser() );
-
-            reset( $aDiscounts );
-            foreach ( $aDiscounts as $oDiscount ) {
-                $oPrice->setDiscount($oDiscount->getAddSum(), $oDiscount->getAddSumType());
-            }
-            $oPrice->calculateDiscount();
-        }
-    }
-
-    /**
      * Applies currency factor
      *
      * @param oxPrice $oPrice Price object
@@ -3416,7 +3893,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
         $oPrice->multiply($oCur->rate);
     }
-
 
     /**
      * Gets attributes string
@@ -3730,25 +4206,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     }
 
     /**
-     * Get parent article
-     *
-     * @return oxArticle
-     */
-    public function getParentArticle()
-    {
-        if ( ( $sParentId = $this->oxarticles__oxparentid->value ) ) {
-            $sIndex = $sParentId . "_" . $this->getLanguage();
-            if ( !isset( self::$_aLoadedParents[$sIndex] ) ) {
-                self::$_aLoadedParents[$sIndex] = oxNew( 'oxarticle' );
-                self::$_aLoadedParents[$sIndex]->_blLoadPrice    = false;
-                self::$_aLoadedParents[$sIndex]->_blLoadVariants = false;
-                self::$_aLoadedParents[$sIndex]->loadInLang( $this->getLanguage(), $sParentId );
-            }
-            return self::$_aLoadedParents[$sIndex];
-        }
-    }
-
-    /**
      * Detects if field is an image field by field name
      *
      * @param string $sFieldName Field name
@@ -3788,7 +4245,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     protected function _assignNotBuyableParent()
     {
         if ( !$this->getConfig()->getConfigParam( 'blVariantParentBuyable' ) &&
-             ($this->_blHasVariants || $this->oxarticles__oxvarstock->value || $this->oxarticles__oxvarcount->value )) {
+            ($this->_blHasVariants || $this->oxarticles__oxvarstock->value || $this->oxarticles__oxvarcount->value )) {
             $this->_blNotBuyableParent = true;
 
         }
@@ -3933,7 +4390,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         }
     }
 
-
     /**
      * Sets article creation date
      * (oxarticle::oxarticles__oxinsert). Then executes parent method
@@ -3970,29 +4426,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
 
         return $blRes;
-    }
-
-    /**
-     * Updates article variants oxremindactive field, as variants inherit this setting from parent
-     *
-     * @return null
-     */
-    public function updateVariantsRemind()
-    {
-        // check if it is parent article
-        if ( !$this->isVariant() && $this->_hasAnyVariant()) {
-            $oDb = oxDb::getDb();
-            $sOxId = $oDb->quote($this->getId());
-            $sOxShopId = $oDb->quote($this->getShopId());
-            $iRemindActive = $oDb->quote($this->oxarticles__oxremindactive->value);
-            $sUpdate = "
-                update oxarticles
-                    set oxremindactive = $iRemindActive
-                    where oxparentid = $sOxId and
-                          oxshopid = $sOxShopId
-            ";
-            $oDb->execute( $sUpdate );
-        }
     }
 
     /**
@@ -4192,9 +4625,9 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         $myConfig = $this->getConfig();
 
         if ( $myConfig->getConfigParam( 'blUseStock' ) && $this->oxarticles__oxstockflag->value == 2 &&
-           ( $this->oxarticles__oxstock->value + $this->oxarticles__oxvarstock->value ) <= 0 ) {
+            ( $this->oxarticles__oxstock->value + $this->oxarticles__oxvarstock->value ) <= 0 ) {
 
-               $this->_onChangeResetCounts( $sOxid, $this->oxarticles__oxvendorid->value, $this->oxarticles__oxmanufacturerid->value );
+            $this->_onChangeResetCounts( $sOxid, $this->oxarticles__oxvendorid->value, $this->oxarticles__oxmanufacturerid->value );
         }
     }
 
@@ -4248,7 +4681,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
                     WHERE
                         `oxid` = ' . $oDb->quote( $sParentId );
             } else {
-                 $sQ = '
+                $sQ = '
                     UPDATE `oxarticles`
                     SET
                         `oxvarminprice` = `oxprice`,
@@ -4259,7 +4692,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             $oDb->execute( $sQ );
         }
     }
-
 
     /**
      * Updates variant min price. This method is supposed to be called on article change triger.
@@ -4297,7 +4729,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             }
         }
     }
-
 
     /**
      * Returns minimum brut price from all (already loaded) variants and if applicable parent article
@@ -4360,146 +4791,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     }
 
     /**
-     * Returns product id (oxid)
-     * (required for interface oxIArticle)
-     *
-     * @return string
-     */
-    public function getProductId()
-    {
-        return $this->getId();
-    }
-
-    /**
-     * Returns product parent id (oxparentid)
-     *
-     * @deprecated since v4.7-5.0 (2012-10-08); use getParentId() method
-     *
-     * @return string
-     */
-    public function getProductParentId()
-    {
-        return $this->getParentId();
-    }
-
-    /**
-     * Returns product parent id (oxparentid)
-     *
-     * @return string
-     */
-    public function getParentId()
-    {
-        return $this->oxarticles__oxparentid->value;
-    }
-
-    /**
-     * Returns false if object is not derived from oxorderarticle class
-     *
-     * @return bool
-     */
-    public function isOrderArticle()
-    {
-        return false;
-    }
-
-    /**
-     * Returns TRUE if product is variant, and false if not
-     *
-     * @return bool
-     */
-    public function isVariant()
-    {
-        return (bool) ( isset( $this->oxarticles__oxparentid ) ? $this->oxarticles__oxparentid->value : false );
-    }
-
-    /**
-     * Returns TRUE if product is multidimensional variant, and false if not
-     *
-     * @return bool
-     */
-    public function isMdVariant()
-    {
-        $oMdVariant = oxNew( "oxVariantHandler" );
-
-        return $oMdVariant->isMdVariant($this);
-    }
-
-    /**
-     * get Sql for loading price categories which include this article
-     *
-     * @param string $sFields fields to load from oxCategories
-     *
-     * @return string
-     */
-    public function getSqlForPriceCategories($sFields = '')
-    {
-        if (!$sFields) {
-            $sFields = 'oxid';
-        }
-        $sSelectWhere = "select $sFields from ".$this->_getObjectViewName('oxcategories')." where";
-        $sQuotedPrice = oxDb::getDb()->quote( $this->oxarticles__oxprice->value );
-        return  "$sSelectWhere oxpricefrom != 0 and oxpriceto != 0 and oxpricefrom <= $sQuotedPrice and oxpriceto >= $sQuotedPrice"
-               ." union $sSelectWhere oxpricefrom != 0 and oxpriceto = 0 and oxpricefrom <= $sQuotedPrice"
-               ." union $sSelectWhere oxpricefrom = 0 and oxpriceto != 0 and oxpriceto >= $sQuotedPrice";
-    }
-
-    /**
-     * Checks if article is assigned to price category $sCatNID.
-     *
-     * @param string $sCatNid Price category ID
-     *
-     * @return bool
-     */
-    public function inPriceCategory( $sCatNid )
-    {
-        $oDb = oxDb::getDb();
-
-        $sQuotedPrice = $oDb->quote( $this->oxarticles__oxprice->value );
-        $sQuotedCnid = $oDb->quote( $sCatNid );
-        return (bool) $oDb->getOne(
-            "select 1 from ".$this->_getObjectViewName('oxcategories')." where oxid=$sQuotedCnid and"
-           ."(   (oxpricefrom != 0 and oxpriceto != 0 and oxpricefrom <= $sQuotedPrice and oxpriceto >= $sQuotedPrice)"
-           ." or (oxpricefrom != 0 and oxpriceto = 0 and oxpricefrom <= $sQuotedPrice)"
-           ." or (oxpricefrom = 0 and oxpriceto != 0 and oxpriceto >= $sQuotedPrice)"
-           .")"
-        );
-    }
-
-    /**
-     * Returns multidimensional variant structure
-     *
-     * @return OxMdVariants
-     */
-    public function getMdVariants()
-    {
-        if ( $this->_oMdVariants ) {
-            return $this->_oMdVariants;
-        }
-
-        $oParentArticle = $this->getParentArticle();
-        if ( $oParentArticle ) {
-            $oVariants = $oParentArticle->getVariants();
-        } else {
-            $oVariants = $this->getVariants();
-        }
-
-        $oVariantHandler = oxNew( "oxVariantHandler" );
-        $this->_oMdVariants = $oVariantHandler->buildMdVariants( $oVariants, $this->getId() );
-
-        return $this->_oMdVariants;
-    }
-
-    /**
-     * Returns first level variants from multidimensional variants list
-     *
-     * @return OxMdVariants
-     */
-    public function getMdSubvariants()
-    {
-        return $this->getMdVariants()->getMdSubvariants();
-    }
-
-    /**
      * Checks if article has uploaded master image for selected picture
      *
      * @param int $iIndex master picture index
@@ -4525,118 +4816,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
         return false;
     }
-
-    /**
-     * Return article picture file name
-     *
-     * @param string $sFieldName article picture field name
-     * @param int    $iIndex     article picture index
-     *
-     * @return string
-     */
-    public function getPictureFieldValue( $sFieldName, $iIndex = null )
-    {
-        if ( $sFieldName ) {
-            $sFieldName = "oxarticles__" . $sFieldName . $iIndex;
-            return $this->$sFieldName->value;
-        }
-    }
-
-    /**
-     * Get master zoom picture url
-     *
-     * @param int $iIndex picture index
-     *
-     * @return string
-     */
-    public function getMasterZoomPictureUrl( $iIndex )
-    {
-        $sPicUrl  = false;
-        $sPicName = basename( $this->{"oxarticles__oxpic" . $iIndex}->value );
-
-        if ( $sPicName && $sPicName != "nopic.jpg" ) {
-            $sPicUrl = $this->getConfig()->getPictureUrl( "master/product/" . $iIndex . "/" . $sPicName );
-            if ( !$sPicUrl || basename( $sPicUrl ) == "nopic.jpg" ) {
-                $sPicUrl = false;
-            }
-        }
-
-        return $sPicUrl;
-    }
-
-    /**
-     * Returns oxarticles__oxunitname value processed by oxLang::translateString()
-     *
-     * @return string
-     */
-    public function getUnitName()
-    {
-        if ( $this->oxarticles__oxunitname->value ) {
-            return oxRegistry::getLang()->translateString( $this->oxarticles__oxunitname->value );
-        }
-    }
-
-     /**
-     * Return article downloadable file list (oxlist of oxfile)
-     *
-     * @param bool $blAddFromParent - return with parent files if not buyable
-     *
-     * @return null|oxList of oxFile
-     */
-    public function getArticleFiles( $blAddFromParent=false )
-    {
-        if ( $this->_aArticleFiles === null) {
-
-            $this->_aArticleFiles = false;
-
-            $sQ = "SELECT * FROM `oxfiles` WHERE `oxartid` = '".$this->getId()."'";
-
-            if ( !$this->getConfig()->getConfigParam( 'blVariantParentBuyable' ) && $blAddFromParent ) {
-                $sQ .= " OR `oxartId` = '". $this->oxarticles__oxparentid->value . "'";
-            }
-
-            $oArticleFiles = oxNew("oxlist");
-            $oArticleFiles->init("oxfile");
-            $oArticleFiles->selectString( $sQ );
-            $this->_aArticleFiles  = $oArticleFiles;
-
-        }
-
-        return $this->_aArticleFiles;
-    }
-
-    /**
-     * Returns oxarticles__oxisdownloadable value
-     *
-     * @return bool
-     */
-    public function isDownloadable()
-    {
-        return $this->oxarticles__oxisdownloadable->value;
-    }
-
-     /**
-     * Checks if articles has amount price
-     *
-     * @return bool
-     */
-    public function hasAmountPrice()
-    {
-        if ( self::$_blHasAmountPrice === null ) {
-
-            self::$_blHasAmountPrice = false;
-
-            $oDb = oxDb::getDb();
-            $sQ = "SELECT 1 FROM `oxprice2article` LIMIT 1";
-
-            if ( $oDb->getOne( $sQ ) ) {
-                self::$_blHasAmountPrice = true;
-            }
-        }
-
-        return self::$_blHasAmountPrice;
-    }
-
 
     /**
      * Checks and return true if price view mode is netto
@@ -4724,179 +4903,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         }
 
         return $dPrice;
-    }
-
-
-    /**
-     * Returns formatted price per unit
-     *
-     * @deprecated since v5.1 (2013-09-25); use oxPrice smarty plugin for formatting in templates
-     * @return string
-     */
-    public function getFUnitPrice()
-    {
-        if ($this->_fPricePerUnit == null) {
-            if ( $oPrice = $this->getUnitPrice() ) {
-                if ( $dPrice = $this->_getPriceForView( $oPrice ) ) {
-                    $this->_fPricePerUnit = oxRegistry::getLang()->formatCurrency( $dPrice );
-                }
-            }
-        }
-
-        return $this->_fPricePerUnit;
-    }
-
-
-    /**
-     * Returns price per unit
-     *
-     * @return string
-     */
-    public function getUnitPrice()
-    {
-        // Performance
-        if ( !$this->getConfig()->getConfigParam( 'bl_perfLoadPrice' ) || !$this->_blLoadPrice ) {
-            return;
-        }
-
-        $oPrice = null;
-        if ( (double) $this->getUnitQuantity() && $this->oxarticles__oxunitname->value ) {
-            $oPrice = clone $this->getPrice();
-            $oPrice->divide( (double) $this->getUnitQuantity() );
-        }
-
-        return $oPrice;
-    }
-
-
-    /**
-     * Returns formatted article min price
-     *
-     * @deprecated since v5.1 (2013-10-04); use oxPrice smarty plugin for formatting in templates
-     *
-     * @return string
-     */
-    public function getFMinPrice()
-    {
-        $sPrice = '';
-        if ( $oPrice = $this->getMinPrice() ) {
-            $dPrice = $this->_getPriceForView( $oPrice );
-            $sPrice = oxRegistry::getLang()->formatCurrency( $dPrice );
-        }
-
-        return $sPrice;
-    }
-
-     /**
-     * Returns formatted min article variant price
-     *
-     * @deprecated since v5.1 (2013-10-04); use oxPrice smarty plugin for formatting in templates
-     *
-     * @return string
-     */
-    public function getFVarMinPrice()
-    {
-        $sPrice = '';
-        if ( $oPrice = $this->getVarMinPrice() ) {
-            $dPrice = $this->_getPriceForView( $oPrice );
-            $sPrice = oxRegistry::getLang()->formatCurrency( $dPrice );
-        }
-
-        return $sPrice;
-    }
-
-     /**
-     * Returns article min price of variants
-     *
-     * @return oxPrice
-     */
-    public function getVarMinPrice()
-    {
-        if ( !$this->getConfig()->getConfigParam( 'bl_perfLoadPrice' ) || !$this->_blLoadPrice ) {
-            return;
-        }
-
-        $oPrice = null;
-        $dPrice = $this->_getVarMinPrice();
-
-        $dPrice = $this->_preparePrice( $dPrice, $this->getArticleVat() );
-
-
-        $oPrice = $this->_getPriceObject();
-        $oPrice->setPrice( $dPrice );
-        $this->_calculatePrice( $oPrice );
-
-
-        return $oPrice;
-    }
-
-
-    /**
-     * Returns article min price in calculation included variants
-     *
-     * @return oxPrice
-     */
-    public function getMinPrice()
-    {
-        if ( !$this->getConfig()->getConfigParam( 'bl_perfLoadPrice' ) || !$this->_blLoadPrice ) {
-            return;
-        }
-
-        $oPrice = null;
-        $dPrice = $this->_getPrice();
-        if ( $this->_getVarMinPrice() !== null && $dPrice > $this->_getVarMinPrice() ) {
-            $dPrice = $this->_getVarMinPrice();
-        }
-
-        $dPrice = $this->_preparePrice( $dPrice, $this->getArticleVat() );
-
-
-        $oPrice = $this->_getPriceObject();
-        $oPrice->setPrice( $dPrice );
-        $this->_calculatePrice( $oPrice );
-
-        return $oPrice;
-    }
-
-
-    /**
-     * Returns true if article has variant with different price
-     *
-     * @return bool
-     */
-    public function isRangePrice()
-    {
-        if ( $this->_blIsRangePrice === null ) {
-
-            $this->setRangePrice( false );
-
-            if ( $this->_hasAnyVariant() ) {
-                $dPrice = $this->_getPrice();
-                $dMinPrice = $this->_getVarMinPrice();
-                $dMaxPrice = $this->_getVarMaxPrice();
-
-                if ( $dMinPrice != $dMaxPrice ) {
-                    $this->setRangePrice();
-                } elseif ( !$this->isParentNotBuyable() &&  $dMinPrice != $dPrice ) {
-                    $this->setRangePrice();
-                }
-            }
-        }
-
-        return $this->_blIsRangePrice;
-    }
-
-
-    /**
-     * Setter to set if article has range price
-     *
-     * @param bool $blIsRangePrice - true if range, else false
-     *
-     * @return null
-     */
-    public function setRangePrice( $blIsRangePrice = true )
-    {
-        return $this->_blIsRangePrice = $blIsRangePrice;
     }
 
     /**
@@ -5073,37 +5079,31 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     }
 
     /**
-     * Return unit quantity
+     * Get data from db
      *
-     * @return sting
+     * @param string $sOXID id
+     *
+     * @return array
      */
-    public function getUnitQuantity()
+    protected function _loadFromDb( $sOXID )
     {
-        return $this->oxarticles__oxunitquantity->value;
+
+        $sSelect = $this->buildSelectString( array( $this->getViewName().".oxid" => $sOXID ));
+
+
+        $aData = oxDb::getDb( oxDb::FETCH_MODE_ASSOC )->getRow( $sSelect );
+
+        return $aData;
     }
 
     /**
-     * Return Size of product: length*width*height
-     *
-     * @return double
+     * Sets forcing of core table usage for creating table view name when shared basket is enabled.
      */
-    public function getSize()
+    private function _forceCoreTableUsageForSharedBasket()
     {
-        $dSize = $this->oxarticles__oxlength->value *
-            $this->oxarticles__oxwidth->value *
-            $this->oxarticles__oxheight->value;
-
-        return $dSize;
-    }
-
-    /**
-     * Return product weight
-     *
-     * @return double
-     */
-    public function getWeight()
-    {
-        return $this->oxarticles__oxweight->value;
+        if ($this->getConfig()->getConfigParam('blMallSharedBasket')) {
+            $this->setForceCoreTableUsage(true);
+        }
     }
 
     /**
@@ -5152,5 +5152,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             }
         }
     }
+
 
 }

@@ -603,14 +603,14 @@ class Details extends oxUBase
      */
     public function getProduct()
     {
-        $myConfig = $this->getConfig();
-        $myUtils = oxRegistry::getUtils();
+        $oConfig = $this->getConfig();
+        $oUtils = oxRegistry::getUtils();
 
         if ( $this->_oProduct === null ) {
 
             //this option is only for lists and we must reset value
             //as blLoadVariants = false affect "ab price" functionality
-            $myConfig->setConfigParam( 'blLoadVariants', true );
+            $oConfig->setConfigParam( 'blLoadVariants', true );
 
             $sOxid = $this->getConfig()->getRequestParameter( 'anid' );
 
@@ -618,8 +618,8 @@ class Details extends oxUBase
             $this->_oProduct = oxNew( 'oxarticle' );
 
             if ( !$this->_oProduct->load( $sOxid ) ) {
-                $myUtils->redirect( $myConfig->getShopHomeURL() );
-                $myUtils->showMessageAndExit( '' );
+                $oUtils->redirect( $oConfig->getShopHomeURL() );
+                $oUtils->showMessageAndExit( '' );
             }
 
             $aVariantSelections = $this->_oProduct->getVariantSelections( $this->getConfig()->getRequestParameter( "varselid" ) );
@@ -630,27 +630,39 @@ class Details extends oxUBase
 
         // additional checks
         if ( !$this->_blIsInitialized ) {
-
-            $blContinue = true;
-            if ( !$this->_oProduct->isVisible() ) {
-                $blContinue = false;
-            } elseif ( $this->_oProduct->oxarticles__oxparentid->value ) {
-                $oParent = $this->_getParentProduct( $this->_oProduct->oxarticles__oxparentid->value );
-                if ( !$oParent || !$oParent->isVisible() ) {
-                    $blContinue = false;
-                }
-            }
-
-            if ( !$blContinue ) {
-                $myUtils->redirect( $myConfig->getShopHomeURL() );
-                $myUtils->showMessageAndExit( '' );
-            }
-
-            $this->_processProduct( $this->_oProduct );
-            $this->_blIsInitialized = true;
+            $this->_additionalChecksForArticle();
         }
 
         return $this->_oProduct;
+    }
+
+    /**
+     * Runs additional checks for article.
+     *
+     * @return null
+     */
+    protected function _additionalChecksForArticle()
+    {
+        $oConfig = $this->getConfig();
+        $oUtils = oxRegistry::getUtils();
+
+        $blContinue = true;
+        if (!$this->_oProduct->isVisible()) {
+            $blContinue = false;
+        } elseif ($this->_oProduct->oxarticles__oxparentid->value) {
+            $oParent = $this->_getParentProduct($this->_oProduct->oxarticles__oxparentid->value);
+            if (!$oParent || !$oParent->isVisible()) {
+                $blContinue = false;
+            }
+        }
+
+        if (!$blContinue) {
+            $oUtils->redirect($oConfig->getShopHomeURL());
+            $oUtils->showMessageAndExit('');
+        }
+
+        $this->_processProduct($this->_oProduct);
+        $this->_blIsInitialized = true;
     }
 
     /**

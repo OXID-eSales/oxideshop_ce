@@ -115,7 +115,7 @@ function oxAutoload( $sClass )
         $myUtilsObject = oxUtilsObject::getInstance();
         foreach ( $aModules as $sParentName => $sModuleName ) {
             // looking for module parent class
-            if (  preg_match('/\b'.$sClass.'($|\&)/i', $sModuleName )  ) {
+             if ( stripos($sModuleName, $sClass) !== false) {
                 $myUtilsObject->getClassName( $sParentName );
                 break;
             }

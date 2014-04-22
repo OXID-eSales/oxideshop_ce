@@ -341,7 +341,7 @@ class oxUtils extends oxSuperCfg
     {
         $blValid = true;
         if ( $sEmail != 'admin' ) {
-            $sEmailTpl = "/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/i";
+            $sEmailTpl = "/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,64})$/i";
             $blValid = ( getStr()->preg_match( $sEmailTpl, $sEmail ) != 0 );
         }
 

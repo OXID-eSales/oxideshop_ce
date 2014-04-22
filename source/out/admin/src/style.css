@@ -22,7 +22,7 @@ body    {
         font-size: 10px;
         color: #000000;
         background-color: #B8BBBE;
-        cursor:hand;
+        cursor:pointer;
         font-weight: bold;
 }
 
@@ -31,7 +31,7 @@ body    {
         font-size: 9px;
         color: #000000;
         background-color: #B8BBBE;
-        cursor:hand;
+        cursor:pointer;
 }
 
 .mainnavi_placeholder {
@@ -39,7 +39,7 @@ body    {
         font-size: 10px;
         color: #000000;
         background-color: #B8BBBE;
-        cursor:hand;
+        cursor:pointer;
         font-weight: normal;
         padding-left: 19px;
         padding-top: 5px;
@@ -245,7 +245,7 @@ body    {
 
 
     #liste {
-        position: absolut;
+        position: absolute;
         top: 6px;
         left: 10px;
     }
@@ -323,8 +323,8 @@ body    {
 
 .separator{
     border-bottom:solid silver 1px;
-    height:5;
-    font-size:1
+    height:5px;
+    font-size:100%;
 }
 
 .conftext {
@@ -376,7 +376,7 @@ body    {
 
 .pageheadgraphic {
     font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
-    border: 0px;
+    border: 0;
     border-style: solid solid solid solid;
     padding-left: 10px;
 }
@@ -458,7 +458,7 @@ body    {
         line-height: 12pt;
 }
 form {
-    padding: 0px;
+    padding: 0;
     margin: 0;
 }
 .systeminfo_table {
@@ -520,7 +520,7 @@ form {
     background-color: #E7EAED;
     border-color: #000000;
     border-style: solid;
-    border-width: 1px 1px 0px 1px;
+    border-width: 1px 1px 0 1px;
     padding: 2px 15px;
 }
 
@@ -532,7 +532,7 @@ form {
     background-color: #C8C7C7;
     border-color: #FFFFFF #FFFFFF #000000 #AAAAAA;
     border-style: solid;
-    border-width: 2px 0px 1px 0px;
+    border-width: 2px 0 1px 0;
     padding: 1px 15px;
     background-position: right;
     background-repeat: repeat-y;
@@ -546,7 +546,7 @@ form {
     background-color: #C8C7C7;
     border-color: #FFFFFF #FFFFFF #000000 #AAAAAA;
     border-style: solid;
-    border-width: 2px 0px 1px 0px;
+    border-width: 2px 0 1px 0;
     padding: 1px 15px;
     background-position: right;
     background-repeat: repeat-y;
@@ -661,7 +661,7 @@ table.fixedTable td {
     margin: 0;
 }
 .tableCellHeader {
-   padding: 2px 0px 2px 3px;
+   padding: 2px 0 2px 3px;
    text-align: left;
    font-size: 11px;
    border: 1px solid #b8b8b8;

@@ -293,10 +293,10 @@ $aLang =  array(
 
 
 'HELP_SHOP_MAIN_PRODUCTIVE'                   => 'Für Installation, Konfiguration, Anpassung der Templates und Modul-Debugging sollte der Shop nicht im Produktivmodus sein. Sobald der Produktivmodus aktiviert ist, wird das Cache Handling und das Error Reporting für den Livebetrieb des Shops optimiert.<br>' .
-                                                 '<span class="warning_or_important_hint">Aktivieren Sie diese Einstellung, bevor ihr eShop öffentlich zugänglich gemacht wird.</span><br>' .
+                                                 '<span class="warning_or_important_hint">Aktivieren Sie diese Einstellung, bevor Ihr eShop öffentlich zugänglich gemacht wird.</span><br>' .
                                                  'Weitere wichtige Hinweise für den Livegang des OXID eShop finden Sie in unserer <a href="http://wiki.oxidforge.org/Tutorials/Check_vor_dem_Livegang" target="_blank">OXIDforge</a>.',
 
-'HELP_SHOP_MAIN_ACTIVE'                       => 'Mit <span class="navipath_or_inputname">Aktiv</span> können Sie ihren kompletten eShop ein- und ausschalten. Wenn ihr eShop ausgeschaltet ist, wird Ihren Kunden eine Meldung angezeigt, dass der eShop vorübergehend offline ist. Das kann für Wartungsarbeiten am eShop nützlich sein.',
+'HELP_SHOP_MAIN_ACTIVE'                       => 'Mit <span class="navipath_or_inputname">Aktiv</span> können Sie ihren kompletten eShop ein- und ausschalten. Wenn Ihr eShop ausgeschaltet ist, wird Ihren Kunden eine Meldung angezeigt, dass der eShop vorübergehend offline ist. Das kann für Wartungsarbeiten am eShop nützlich sein.',
 
 'HELP_SHOP_MAIN_INFOEMAIL'                    => 'An diese E-Mail Adresse werden E-Mails gesendet, wenn die Benutzer E-Mails über das Kontaktformular senden.',
 
@@ -574,7 +574,7 @@ $aLang =  array(
 
 'HELP_VOUCHERSERIE_MAIN_VOUCHERNUM'           => 'Hier können Sie eine Gutscheinnummer eingeben. Diese wird verwendet wenn, Sie neue Gutscheine anlegen. Wenn Sie mehrere Gutscheine anlegen, erhalten alle Gutscheine die gleiche Nummer.',
 
-'HELP_VOUCHERSERIE_MAIN_CALCULATEONCE'        => 'Wenn sie produkt- oder kategoriebezogene Gutscheine benutzen, deaktivieren sie diese Option, damit der Gutschein für jedes Produkt einer Warenkorbposition berechnet wird. Aktivieren sie diese Option, wenn der Gutschein auf die gesamte Warenkorbposition angewendet werden soll.',
+'HELP_VOUCHERSERIE_MAIN_CALCULATEONCE'        => 'Wenn Sie produkt- oder kategoriebezogene Gutscheine benutzen, deaktivieren Sie diese Option, damit der Gutschein für jedes Produkt einer Warenkorbposition berechnet wird. Aktivieren Sie diese Option, wenn der Gutschein auf die gesamte Warenkorbposition angewendet werden soll.',
 
 'HELP_WRAPPING_MAIN_PICTURE'                  => 'Bei <span class="navipath_or_inputname">Bild</span> und <span class="navipath_or_inputname">Bild hochladen</span> können Sie ein Bild für die Geschenkverpackung hochladen. Wählen Sie bei <span class="navipath_or_inputname">Bild hochladen</span> das Bild aus, das Sie hochladen möchten. Wenn Sie auf Speichern klicken, wird das Bild hochgeladen. Nachdem das Bild hochgeladen ist, wird der Dateiname des Bildes in <span class="navipath_or_inputname">Bild</span> angezeigt.',
 

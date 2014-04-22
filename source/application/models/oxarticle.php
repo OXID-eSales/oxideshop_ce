@@ -884,12 +884,15 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      */
     protected function _loadFromDb( $sOXID )
     {
+
         $sSelect = $this->buildSelectString( array( $this->getViewName().".oxid" => $sOXID ));
+
 
         $aData = oxDb::getDb( oxDb::FETCH_MODE_ASSOC )->getRow( $sSelect );
 
         return $aData;
     }
+
 
     /**
      * Loads object data from DB (object data ID must be passed to method).

@@ -613,16 +613,12 @@ class oxBase extends oxSuperCfg
      */
     public function load( $sOXID )
     {
-        $blExistingOldForceCoreTable = $this->_blForceCoreTableUsage;
-
-        $this->_blForceCoreTableUsage = true;
 
         //getting at least one field before lazy loading the object
         $this->_addField( 'oxid', 0 );
         $sSelect = $this->buildSelectString( array( $this->getViewName() . '.oxid' => $sOXID) );
         $this->_isLoaded = $this->assignRecord( $sSelect );
 
-        $this->_blForceCoreTableUsage = $blExistingOldForceCoreTable;
 
         return $this->_isLoaded;
     }

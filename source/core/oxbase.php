@@ -612,20 +612,16 @@ class oxBase extends oxSuperCfg
      */
     public function load( $sOXID )
     {
-        $blExistingOldForceCoreTable = $this->getForceCoreTableUsage();
-        if ($this->getConfig()->getConfigParam('blMallSharedBasket')) {
-            $this->setForceCoreTableUsage(true);
-        }
 
         //getting at least one field before lazy loading the object
         $this->_addField( 'oxid', 0 );
         $sSelect = $this->buildSelectString( array( $this->getViewName() . '.oxid' => $sOXID) );
         $this->_isLoaded = $this->assignRecord( $sSelect );
 
-        $this->setForceCoreTableUsage($blExistingOldForceCoreTable);
 
         return $this->_isLoaded;
     }
+
 
     /**
      * Returns object "loaded" state

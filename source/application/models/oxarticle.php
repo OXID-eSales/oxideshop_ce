@@ -5097,16 +5097,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     }
 
     /**
-     * Sets forcing of core table usage for creating table view name when shared basket is enabled.
-     */
-    private function _forceCoreTableUsageForSharedBasket()
-    {
-        if ($this->getConfig()->getConfigParam('blMallSharedBasket')) {
-            $this->setForceCoreTableUsage(true);
-        }
-    }
-
-    /**
      * Set parent field value to child - variants in DB
      *
      * @return bool

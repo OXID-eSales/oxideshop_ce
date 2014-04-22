@@ -127,44 +127,6 @@ class oxShopMetaData extends oxSuperCfg
     }
 
     /**
-     * Return true if specified table record is included in gives shop
-     *
-     * @param int    $iShopId shop id
-     * @param string $sTable  mall table name
-     * @param string $sOXID   record id
-     *
-     * @return bool
-     */
-    public function isIncludedInShop($iShopId, $sTable, $sOXID)
-    {
-        $oDb      = oxDb::getDb();
-        $sField   = $this->getShopFieldName('oxshopincl', $iShopId);
-        $iShopBit = $this->getShopBit($iShopId);
-        $sSelect  = "select ({$iShopBit} & {$sField}) as isIncluded from {$sTable} where oxid = ".$oDb->quote( $sOXID );
-
-        return (bool)  $oDb->getOne( $sSelect );
-    }
-
-    /**
-     * Return true if specified table record is excluded from gives shop
-     *
-     * @param int    $iShopId shop id
-     * @param string $sTable  mall table name
-     * @param string $sOXID   record id
-     *
-     * @return bool
-     */
-    public function isExcludedFromShop($iShopId, $sTable, $sOXID)
-    {
-        $oDb      = oxDb::getDb();
-        $sField   = $this->getShopFieldName('oxshopexcl', $iShopId);
-        $iShopBit = $this->getShopBit($iShopId);
-        $sSelect  = "select ({$iShopBit} & {$sField}) as isExcluded from {$sTable} where oxid = ".$oDb->quote( $sOXID );
-
-        return (bool)  $oDb->getOne( $sSelect );
-    }
-
-    /**
      * Returns shop field offset
      *
      * @param int $iShopId Shop ID

@@ -124,7 +124,7 @@ function _groupExp(el) {
                         <option value="14" [{if ($confstrs.iRDFaPriceValidity == 14)}]selected[{/if}]>[{ oxmultilang ident="SHOP_RDFA_14_DAYS" }]</option>
                         <option value="30" [{if ($confstrs.iRDFaPriceValidity == 30)}]selected[{/if}]>[{ oxmultilang ident="SHOP_RDFA_30_DAYS" }]</option>
                         <option value="178" [{if ($confstrs.iRDFaPriceValidity == 178)}]selected[{/if}]>[{ oxmultilang ident="SHOP_RDFA_178_DAYS" }]</option>
-                        <option value="356" [{if ($confstrs.iRDFaPriceValidity == 356)}]selected[{/if}]>[{ oxmultilang ident="SHOP_RDFA_356_DAYS" }]</option>
+                        <option value="365" [{if ($confstrs.iRDFaPriceValidity == 365)}]selected[{/if}]>[{ oxmultilang ident="SHOP_RDFA_365_DAYS" }]</option>
                     </select>
                     [{ oxinputhelp ident="HELP_SHOP_RDFA_DURATION_PRICES" }]
                 </dt>

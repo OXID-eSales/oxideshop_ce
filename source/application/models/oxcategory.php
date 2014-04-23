@@ -1112,4 +1112,20 @@ class oxCategory extends oxI18n implements oxIUrl
     {
         return $this->oxcategories__oxtitle->value;
     }
+
+    /**
+     * Gets one field from all of subcategories.
+     * Default is set to 'OXID'
+     *
+     * @param string $sField field to be retrieved from each subcategory
+     */
+    public function getFieldFromSubCategories($sField = 'OXID')
+    {
+        $sTable = $this->getViewName();
+        $sRootId = $this->getId();
+        $sFields = "`{$sTable}`.`{$sField}`";
+        $sSql = "SELECT {$sFields} FROM {$sTable} WHERE `OXROOTID` = '{$sRootId}'";
+        $result = oxDb::getDb()->getCol($sSql);
+        return $result;
+    }
 }

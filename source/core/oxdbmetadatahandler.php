@@ -64,7 +64,7 @@ class oxDbMetaDataHandler extends oxSuperCfg
         $aRawFields = oxDb::getDb()->MetaColumns( $sTableName );
         if (is_array($aRawFields)) {
             foreach ( $aRawFields as $oField ) {
-                $aFields[] = $oField->name;
+                $aFields[$oField->name] = "{$sTableName}.{$oField->name}";
             }
         }
         return $aFields;
@@ -328,13 +328,13 @@ class oxDbMetaDataHandler extends oxSuperCfg
         $aFields = array_merge($this->getFields( $sTable ), $this->getFields(getLangTableName($sTable, $iLang) ));
         $aSingleLangFields = array();
 
-        foreach ( $aFields as $sField ) {
+        foreach ( $aFields as $sFieldName => $sField ) {
             if ( preg_match("/(.+)_([0-9]+)$/", $sField, $aMatches) ) {
                 if ($aMatches[2] == $iLang) {
-                    $aSingleLangFields[$aMatches[1]] = $sField;
+                    $aSingleLangFields[$sFieldName] = $sField;
                 }
             } else {
-                $aSingleLangFields[$sField] = $sField;
+                $aSingleLangFields[$sFieldName] = $sField;
             }
         }
 

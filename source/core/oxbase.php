@@ -1368,6 +1368,10 @@ class oxBase extends oxSuperCfg
 
         $blRet = (bool) $oDb->execute($sInsert);
 
+        if ($blRet) {
+            $this->setMapId($oDb->Insert_ID());
+        }
+
 
         return $blRet;
     }

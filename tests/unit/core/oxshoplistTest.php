@@ -66,5 +66,4 @@ class Unit_Core_oxshoplistTest extends OxidTestCase
         $oShopList->getAll();
         $this->assertEquals(4, $oShopList->count());
     }
-
 }

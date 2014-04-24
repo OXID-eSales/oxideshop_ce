@@ -174,10 +174,13 @@ class oxShop extends oxI18n
      */
     protected function _getViewSelect($sTable,$iLang)
     {
+        /** @var oxDbMetaDataHandler $oMetaData */
         $oMetaData = oxNew('oxDbMetaDataHandler');
         $aFields = $oMetaData->getSinglelangFields($sTable, $iLang);
         foreach ($aFields as $sCoreField => $sField) {
-            $aFields[$sCoreField] = "`{$sTable}`.`{$sField}` AS `$sCoreField`";
+            if ($sCoreField !== $sField) {
+                $aFields[$sCoreField] = $sField.' AS '.$sCoreField;
+            }
         }
 
         return implode(',', $aFields);

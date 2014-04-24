@@ -127,11 +127,11 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      * Set parameter to config object.
      *
      * @param string $sParam parameter name.
-     * @param mixed $mxVal any parameter value, default null.
+     * @param object $oVal any parameter value, default null.
      */
-    public function setConfigParam($sParam, $mxVal = null)
+    public function setConfigParam($sParam, $oVal = null)
     {
-        $this->getConfig()->setConfigParam($sParam, $mxVal);
+        $this->getConfig()->setConfigParam($sParam, $oVal);
     }
 
     /**
@@ -322,6 +322,12 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     protected function tearDown()
     {
         modDb::getInstance()->modAttach(modDb::getInstance()->getRealInstance());
+        $this->cleanUpDatabase();
+        oxTestsStaticCleaner::clean('oxSeoEncoder', '_instance');
+        oxTestsStaticCleaner::clean('oxSeoEncoderArticle', '_instance');
+        oxTestsStaticCleaner::clean('oxSeoEncoderCategory', '_instance');
+        oxTestsStaticCleaner::clean('oxVatSelector', '_instance');
+        oxTestsStaticCleaner::clean('oxDiscountList', '_instance');
         oxTestsStaticCleaner::clean('oxUtilsObject', '_aInstanceCache');
         oxTestsStaticCleaner::clean('oxArticle', '_aLoadedParents');
 
@@ -380,15 +386,16 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     /**
      * Cleans up table
      *
-     * @param string $sTable
-     * @param string $sColName
+     * @param string $sTable   Table name
+     * @param string $sColName Column name
      */
     public function cleanUpTable($sTable, $sColName = null)
     {
         $sCol = (!empty($sColName)) ? $sColName : 'oxid';
 
+
         //deletes allrecords where oxid or specified column name values starts with underscore(_)
-        $sQ = "delete from $sTable where $sCol like '\_%' ";
+        $sQ = "delete from `$sTable` where `$sCol` like '\_%' ";
         $this->getDb()->Execute($sQ);
     }
 
@@ -473,24 +480,6 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
         }
     }
 
-    /**
-     * Change to virtual file with vfstream when available.
-     *
-     * @usage Create file from file name and file content to oxCCTempDir.
-     *
-     * @param $sFileName
-     * @param $sFileContent
-     * @return string path to file
-     */
-    public function createFile($sFileName, $sFileContent)
-    {
-        $sPathToFile = oxCCTempDir .'/'. $sFileName;
-
-        file_put_contents($sPathToFile, $sFileContent);
-
-        return $sPathToFile;
-    }
-
     protected static function _getDbRestore()
     {
         if (is_null(self::$_oDbRestore)) {
@@ -568,4 +557,145 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
         return iconv("ISO-8859-1", "UTF-8", $sVal);
     }
 
+    /**
+     * @var $_aMultiShopTables array multishop tables used in shop
+     */
+    protected $_aMultiShopTables= array('oxarticles', 'oxcategories', 'oxattribute',  'oxobject2category', 'oxdelivery',
+                                        'oxdeliveryset', 'oxdiscount', 'oxmanufacturers', 'oxselectlist', 'oxvendor', 'oxvoucherseries', 'oxwrapping' );
+
+    /**
+     * @var $_aTeardownSqls array variable
+     */
+    protected $_aTeardownSqls = array();
+
+    /**
+     * Set sqls to be executed on tearDown
+     *
+     * @param array $aTeardownSqls
+     */
+    public function setTeardownSqls($aRevertSqls)
+    {
+        $this->_aTeardownSqls = $aRevertSqls;
+    }
+
+    /**
+     * Get teardown sqls containing delete information
+     *
+     * @return array
+     */
+    public function getTeardownSqls()
+    {
+        return $this->_aTeardownSqls;
+    }
+
+    /**
+     * Add single teardown sql
+     *
+     * @param string $sSql teardown sql
+     */
+    public function addTeardownSql($sSql)
+    {
+        if (!in_array($sSql, $this->_aTeardownSqls)) {
+            $this->_aTeardownSqls[] = $sSql;
+        }
+    }
+
+    /**
+     * Set multishop tables array, in case some custom tables need to be used
+     *
+     * @param array $aMultiShopTables
+     */
+    public function setMultiShopTables($aMultiShopTables)
+    {
+        $this->_aMultiShopTables = $aMultiShopTables;
+    }
+
+    /**
+     * Get multishop tables array
+     *
+     * @return array
+     */
+    public function getMultiShopTables()
+    {
+        return $this->_aMultiShopTables;
+    }
+
+    /**
+     * Adds sql to database and adds to map for EE tables
+     *
+     * @param string $sSql     Sql to be executed
+     * @param string $sTable   table name
+     * @param array  $aShopIds shop id
+     * @param null   $sMapId   map id
+     */
+    public function addToDatabase($sSql, $sTable, $aShopIds = array(1), $sMapId = null)
+    {
+        oxDb::getDb()->execute($sSql);
+        $this->addTableForCleanup($sTable);
+
+            return;
+    }
+
+    /**
+     * Calls all the queries stored in $_aTeardownSqls
+     * Cleans all the tables that were set
+     */
+    public function cleanUpDatabase()
+    {
+        if ($aSqls = $this->getTeardownSqls()) {
+            if (!is_array($aSqls)) {
+                $aSqls = array($aSqls);
+            }
+            foreach ($aSqls as $sSql) {
+                oxDb::getDb()->execute($sSql);
+            }
+        }
+        if ($aTablesForCleanup = $this->getTablesForCleanup()) {
+            $oDbRestore = self::_getDbRestore();
+            if (!is_array($aTablesForCleanup)) {
+                $aTablesForCleanup = array($aTablesForCleanup);
+            }
+            foreach ($aTablesForCleanup as $sTable) {
+                $oDbRestore->restoreTable($sTable);
+            }
+        }
+    }
+
+    /**
+     * @var $_aTablesForCleanup array tables for cleaning
+     */
+    protected $_aTableForCleanups = array();
+
+    /**
+     * Gets dirty tables for cleaning
+     *
+     * @param array $aTablesForCleanup
+     */
+    public function setTablesForCleanup($aTablesForCleanup)
+    {
+        $this->_aTableForCleanups = $aTablesForCleanup;
+    }
+
+    /**
+     * Sets dirty tables for cleaning
+     *
+     * @return array
+     */
+    public function getTablesForCleanup()
+    {
+        return $this->_aTableForCleanups;
+    }
+
+    /**
+     * Adds table to be cleaned on teardown
+     *
+     * @param $sTable
+     */
+    public function addTableForCleanup($sTable)
+    {
+        if (!in_array($sTable, $this->_aTableForCleanups)) {
+            $this->_aTableForCleanups[] = $sTable;
+        }
+
+    }
 }

@@ -177,9 +177,7 @@ class oxShop extends oxI18n
         $oMetaData = oxNew('oxDbMetaDataHandler');
         $aFields = $oMetaData->getSinglelangFields($sTable, $iLang);
         foreach ($aFields as $sCoreField => $sField) {
-            if ($sCoreField !== $sField) {
-                $aFields[$sCoreField] = $sField.' AS '.$sCoreField;
-            }
+            $aFields[$sCoreField] = "`{$sTable}`.`{$sField}` AS `$sCoreField`";
         }
 
         return implode(',', $aFields);

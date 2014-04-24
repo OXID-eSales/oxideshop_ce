@@ -401,7 +401,7 @@ $aLang =  array(
 
 'HELP_ATTRIBUTE_MAIN_DISPLAYINBASKET'         => 'If checked, this attribute\'s value will be shown in cart and order overview below the product title.',
 
-'HELP_CATEGORY_MAIN_HIDDEN'                   => 'With <span class="navipath_or_inputname">Hidden</span> <ou can define if this category is shown to users. If a category is hidden it is not shown to the users, even if it is active.',
+'HELP_CATEGORY_MAIN_HIDDEN'                   => 'With <span class="navipath_or_inputname">Hidden</span> You can define if this category is shown to users. If a category is hidden it is not shown to the users, even if it is active.',
 
 'HELP_CATEGORY_MAIN_PARENTID'                 => 'In <span class="navipath_or_inputname">Subcategory Of</span> you specify the point at which the category is to appear:<br>' .
                                                  '<ul><li>If the category is not to be a subcategory of any other category, then select <span class="userinput_or_code">--</span> Off.</li>' .

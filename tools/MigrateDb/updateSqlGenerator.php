@@ -15,11 +15,10 @@
 
 $NUMBER_OF_SUBSHOPS = 1;
 
-$fOut = fopen("2-migrate.sql", "w");
+$fOut   = fopen("2-migrate.sql", "w");
 $sSqlIn = file_get_contents("updateSingleShop.tpl.sql");
 
-for($i = 1; $i <= $NUMBER_OF_SUBSHOPS; $i++)
-{
+for ($i = 1; $i <= $NUMBER_OF_SUBSHOPS; $i++) {
     $sSql = str_replace("<shop_id>", $i, $sSqlIn);
     fputs($fOut, $sSql);
 }

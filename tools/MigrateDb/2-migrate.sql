@@ -14,5 +14,7 @@ INSERT INTO `oxwrapping2shop` (`OXSHOPID`, `OXMAPOBJECTID`) SELECT '1', OXMAPID 
 INSERT INTO `oxdeliveryset2shop` (`OXSHOPID`, `OXMAPOBJECTID`) SELECT '1', OXMAPID FROM `oxv_oxdeliveryset_1`;
 INSERT INTO `oxdelivery2shop` (`OXSHOPID`, `OXMAPOBJECTID`) SELECT '1', OXMAPID FROM `oxv_oxdelivery_1`;
 INSERT INTO `oxvendor2shop` (`OXSHOPID`, `OXMAPOBJECTID`) SELECT '1', OXMAPID FROM `oxv_oxvendor_1`;
-INSERT INTO `oxobject2category2shop` (`OXSHOPID`, `OXMAPOBJECTID`) SELECT '1', OXMAPID FROM `oxv_oxobject2category_1`;
 INSERT INTO `oxarticles2shop` (`OXSHOPID`, `OXMAPOBJECTID`) SELECT '1', OXMAPID FROM `oxv_oxarticles_1`;
+
+# Duplicate records for each shop
+INSERT INTO `oxobject2category` (`OXID`, `OXSHOPID`, `OXOBJECTID`, `OXCATNID`, `OXPOS`, `OXTIME`, `OXTIMESTAMP`) SELECT `OXID`, '1', `OXOBJECTID`, `OXCATNID`, `OXPOS`, `OXTIME`, `OXTIMESTAMP` FROM `oxv_oxobject2category_<shop_id>` WHERE `OXSHOPID` <> '1';

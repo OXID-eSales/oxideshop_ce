@@ -217,7 +217,6 @@ class Unit_Admin_ArticleExtendAjaxTest extends OxidTestCase
      */    
     public function testRemoveCat()
     {
-        $this->markTestSkippedUntil('2014-04-23', 'Shop relations with categories not implemented yet.');
         $sOxid = '_testObjectRemove';
         modConfig::setRequestParameter( "oxid", $sOxid );
         $oView = $this->getMock( "article_extend_ajax", array( "_getActionIds" ) );
@@ -235,7 +234,6 @@ class Unit_Admin_ArticleExtendAjaxTest extends OxidTestCase
      */    
     public function testRemoveCatAll()
     {
-        $this->markTestSkippedUntil('2014-04-23', 'Shop relations with categories not implemented yet.');
         $sOxid = '_testObjectRemoveAll';
         modConfig::setRequestParameter( "oxid", $sOxid );
         modConfig::setRequestParameter( "all", true );
@@ -254,7 +252,6 @@ class Unit_Admin_ArticleExtendAjaxTest extends OxidTestCase
      */    
     public function testAddCat()
     {
-        $this->markTestSkippedUntil('2014-04-23', 'Shop relations with categories not implemented yet.');
         $sSynchoxid = '_testObjectAdd';
         modConfig::setRequestParameter( "synchoxid", $sSynchoxid );
         $oView = $this->getMock( "article_extend_ajax", array( "_getActionIds" ) );
@@ -272,7 +269,6 @@ class Unit_Admin_ArticleExtendAjaxTest extends OxidTestCase
      */    
     public function testAddCatAll()
     {
-        $this->markTestSkippedUntil('2014-04-23', 'Shop relations with categories not implemented yet.');
         $sSynchoxid = '_testObjectAdd';
         modConfig::setRequestParameter( "synchoxid", $sSynchoxid );
         modConfig::setRequestParameter( "all", true );
@@ -317,7 +313,6 @@ class Unit_Admin_ArticleExtendAjaxTest extends OxidTestCase
      */
     public function testSetAsDefault()
     {
-        $this->markTestSkippedUntil('2014-04-23', 'Shop relations with categories not implemented yet.');
         $sOxid = '_testObjectDefault';
         $sDefCat = '_testCategory1';
         modConfig::setRequestParameter( "oxid", $sOxid );

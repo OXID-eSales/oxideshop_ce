@@ -159,7 +159,6 @@ class Unit_Admin_CategoryMainAjaxTest extends OxidTestCase
      */
     public function testRemoveArticle()
     {
-        $this->markTestSkippedUntil('2014-04-23', 'Shop relations with categories not implemented yet.');
         $sOxid = '_testCategory';
         $this->setRequestParam( "oxid", $sOxid );
         $oView = $this->getMock( "category_main_ajax", array( "_getActionIds" ) );
@@ -177,7 +176,6 @@ class Unit_Admin_CategoryMainAjaxTest extends OxidTestCase
      */
     public function testRemoveArticleAll()
     {
-        $this->markTestSkippedUntil('2014-04-23', 'Shop relations with categories not implemented yet.');
         $sOxid = '_testCategory';
         $this->setRequestParam( "oxid", $sOxid );
         $this->setRequestParam( "all", true );
@@ -196,7 +194,6 @@ class Unit_Admin_CategoryMainAjaxTest extends OxidTestCase
      */
     public function testAddArticle()
     {
-        $this->markTestSkippedUntil('2014-04-23', 'Shop relations with categories not implemented yet.');
         $sSynchoxid = '_testCategory';
         $this->setRequestParam( "synchoxid", $sSynchoxid );
         $oView = $this->getMock( "category_main_ajax", array( "_getActionIds" ) );
@@ -214,7 +211,6 @@ class Unit_Admin_CategoryMainAjaxTest extends OxidTestCase
      */
     public function testAddArticleAll()
     {
-        $this->markTestSkippedUntil('2014-04-23', 'Shop relations with categories not implemented yet.');
         $sSynchoxid = '_testCategoryNew';
         $this->setRequestParam( "synchoxid", $sSynchoxid );
         $this->setRequestParam( "all", true );
@@ -236,7 +232,6 @@ class Unit_Admin_CategoryMainAjaxTest extends OxidTestCase
      */
     public function testUpdateOxTime()
     {
-        $this->markTestSkippedUntil('2014-04-23', 'Shop relations with categories not implemented yet.');
         $oDb = oxDb::getDb();
         $sOxid = '_testObjectRemove1';
 

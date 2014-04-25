@@ -633,7 +633,6 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
         oxDb::getDb()->execute($sSql);
         $this->addTableForCleanup($sTable);
 
-            return;
     }
 
     /**

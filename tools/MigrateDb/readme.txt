@@ -14,7 +14,7 @@ Basically this dir includes:
 How to update your db:
 
 1. Execute 1-updateDb.sql SQL.
-   This file adds 14 mapping tables (oxarticle2shop, oxcategories2shop,...), but skips indices yet for large tables.
+   This file adds 14 mapping tables (oxarticle2shop, oxcategories2shop,...), but skips indices.
    Also OXMAPID fields are added to original tables (oxarticles, ...)
 
 2. Regenerate the shop views from subshop admin area

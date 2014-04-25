@@ -621,12 +621,13 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Adds sql to database and adds to map for EE tables
+     * Executes SQL and adds table to clean up after test.
+     * For EE version elements are added to map table for specified shops.
      *
-     * @param string $sSql     Sql to be executed
-     * @param string $sTable   table name
-     * @param array  $aShopIds shop id
-     * @param null   $sMapId   map id
+     * @param string $sSql     Sql to be executed.
+     * @param string $sTable   Table name.
+     * @param array  $aShopIds List of shop IDs.
+     * @param null   $sMapId   Map ID.
      */
     public function addToDatabase($sSql, $sTable, $aShopIds = null, $sMapId = null)
     {

@@ -1,4 +1,3 @@
-
 #
 # Add MAPID fields
 #
@@ -17,7 +16,6 @@ ALTER TABLE `oxvendor` ADD `OXMAPID` int(11) NOT NULL AUTO_INCREMENT COMMENT 'In
 ALTER TABLE `oxobject2category` ADD `OXMAPID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Integer Mapping identifier' AFTER `OXID`, ADD INDEX (OXMAPID);
 ALTER TABLE `oxarticles` ADD `OXMAPID` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'Integer Mapping identifier' AFTER `OXID`, ADD INDEX (OXMAPID);
 
-
 #
 # Add mapping tables (no index fields)
 #
@@ -29,14 +27,12 @@ CREATE TABLE IF NOT EXISTS `oxarticles2shop` (
   `OXTIMESTAMP` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Timestamp'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 collate latin1_general_ci COMMENT='Mapping table for element subshop assignments';
 
-
 DROP TABLE IF EXISTS `oxcategories2shop`;
 CREATE TABLE IF NOT EXISTS `oxcategories2shop` (
   `OXSHOPID` int(11) NOT NULL COMMENT 'Mapped shop id',
   `OXMAPOBJECTID` int(11) NOT NULL COMMENT 'Mapped object id',
   `OXTIMESTAMP` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Timestamp'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 collate latin1_general_ci COMMENT='Mapping table for element subshop assignments';
-
 
 DROP TABLE IF EXISTS `oxobject2category2shop`;
 CREATE TABLE IF NOT EXISTS `oxobject2category2shop` (
@@ -52,14 +48,12 @@ CREATE TABLE IF NOT EXISTS `oxmanufacturers2shop` (
   `OXTIMESTAMP` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Timestamp'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 collate latin1_general_ci COMMENT='Mapping table for element subshop assignments';
 
-
 DROP TABLE IF EXISTS `oxvendor2shop`;
 CREATE TABLE IF NOT EXISTS `oxvendor2shop` (
   `OXSHOPID` int(11) NOT NULL COMMENT 'Mapped shop id',
   `OXMAPOBJECTID` int(11) NOT NULL COMMENT 'Mapped object id',
   `OXTIMESTAMP` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Timestamp'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 collate latin1_general_ci COMMENT='Mapping table for element subshop assignments';
-
 
 DROP TABLE IF EXISTS `oxdiscount2shop`;
 CREATE TABLE IF NOT EXISTS `oxdiscount2shop` (
@@ -68,14 +62,12 @@ CREATE TABLE IF NOT EXISTS `oxdiscount2shop` (
   `OXTIMESTAMP` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Timestamp'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 collate latin1_general_ci COMMENT='Mapping table for element subshop assignments';
 
-
 DROP TABLE IF EXISTS `oxattribute2shop`;
 CREATE TABLE IF NOT EXISTS `oxattribute2shop` (
   `OXSHOPID` int(11) NOT NULL COMMENT 'Mapped shop id',
   `OXMAPOBJECTID` int(11) NOT NULL COMMENT 'Mapped object id',
   `OXTIMESTAMP` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Timestamp'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 collate latin1_general_ci COMMENT='Mapping table for element subshop assignments';
-
 
 DROP TABLE IF EXISTS `oxlinks2shop`;
 CREATE TABLE IF NOT EXISTS `oxlinks2shop` (
@@ -84,14 +76,12 @@ CREATE TABLE IF NOT EXISTS `oxlinks2shop` (
   `OXTIMESTAMP` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Timestamp'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 collate latin1_general_ci COMMENT='Mapping table for element subshop assignments';
 
-
 DROP TABLE IF EXISTS `oxvoucherseries2shop`;
 CREATE TABLE IF NOT EXISTS `oxvoucherseries2shop` (
   `OXSHOPID` int(11) NOT NULL COMMENT 'Mapped shop id',
   `OXMAPOBJECTID` int(11) NOT NULL COMMENT 'Mapped object id',
   `OXTIMESTAMP` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Timestamp'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 collate latin1_general_ci COMMENT='Mapping table for element subshop assignments';
-
 
 DROP TABLE IF EXISTS `oxnews2shop`;
 CREATE TABLE IF NOT EXISTS `oxnews2shop` (
@@ -100,14 +90,12 @@ CREATE TABLE IF NOT EXISTS `oxnews2shop` (
   `OXTIMESTAMP` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Timestamp'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 collate latin1_general_ci COMMENT='Mapping table for element subshop assignments';
 
-
 DROP TABLE IF EXISTS `oxselectlist2shop`;
 CREATE TABLE IF NOT EXISTS `oxselectlist2shop` (
   `OXSHOPID` int(11) NOT NULL COMMENT 'Mapped shop id',
   `OXMAPOBJECTID` int(11) NOT NULL COMMENT 'Mapped object id',
   `OXTIMESTAMP` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Timestamp'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 collate latin1_general_ci COMMENT='Mapping table for element subshop assignments';
-
 
 DROP TABLE IF EXISTS `oxwrapping2shop`;
 CREATE TABLE IF NOT EXISTS `oxwrapping2shop` (
@@ -116,7 +104,6 @@ CREATE TABLE IF NOT EXISTS `oxwrapping2shop` (
   `OXTIMESTAMP` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Timestamp'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 collate latin1_general_ci COMMENT='Mapping table for element subshop assignments';
 
-
 DROP TABLE IF EXISTS `oxdeliveryset2shop`;
 CREATE TABLE IF NOT EXISTS `oxdeliveryset2shop` (
   `OXSHOPID` int(11) NOT NULL COMMENT 'Mapped shop id',
@@ -124,12 +111,9 @@ CREATE TABLE IF NOT EXISTS `oxdeliveryset2shop` (
   `OXTIMESTAMP` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Timestamp'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 collate latin1_general_ci COMMENT='Mapping table for element subshop assignments';
 
-
 DROP TABLE IF EXISTS `oxdelivery2shop`;
 CREATE TABLE IF NOT EXISTS `oxdelivery2shop` (
   `OXSHOPID` int(11) NOT NULL COMMENT 'Mapped shop id',
   `OXMAPOBJECTID` int(11) NOT NULL COMMENT 'Mapped object id',
   `OXTIMESTAMP` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Timestamp'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 collate latin1_general_ci COMMENT='Mapping table for element subshop assignments';
-
-

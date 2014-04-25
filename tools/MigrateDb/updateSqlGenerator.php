@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This script is intended to generate the SQL file for migrating oxincl based multishop data to the mapping table.
  * It takes updateSingleShop.tpl.sql template file as a input, iterates through the subshops and generates
@@ -15,10 +14,6 @@
  */
 
 $NUMBER_OF_SUBSHOPS = 1;
-
-
-
-
 
 $fOut = fopen("2-migrate.sql", "w");
 $sSqlIn = file_get_contents("updateSingleShop.tpl.sql");

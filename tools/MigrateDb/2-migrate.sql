@@ -1,5 +1,6 @@
-
-#Migrating shop 1
+#
+# Migrating shop 1
+#
 
 INSERT INTO `oxdiscount2shop` (`OXSHOPID`, `OXMAPOBJECTID`) SELECT '1', OXMAPID FROM `oxv_oxdiscount_1`;
 INSERT INTO `oxcategories2shop` (`OXSHOPID`, `OXMAPOBJECTID`) SELECT '1', OXMAPID FROM `oxv_oxcategories_1`;

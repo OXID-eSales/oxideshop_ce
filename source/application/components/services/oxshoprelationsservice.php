@@ -44,17 +44,17 @@ class oxShopRelationsService
     {
         $aAllSubShopList   = $this->_getSubShops();
 
-            /** @var oxShop $oSubShop */
-            foreach ($aAllSubShopList as $oSubShop) {
-                $this->_handleRelations($oSubShop);
-            }
+        /** @var oxShop $oSubShop */
+        foreach ($aAllSubShopList as $oSubShop) {
+            $this->_handleRelations($oSubShop);
+        }
     }
 
     /**
      * Handle shop relations for inheritable objects.
      * Assigns or unassigns object in given subshop
      *
-     * @param object $oSubShop loaded shop object
+     * @param oxShop $oSubShop loaded shop object
      */
     protected function _handleRelations($oSubShop)
     {
@@ -104,7 +104,7 @@ class oxShopRelationsService
     /**
      * Loads selected item using oxBase
      *
-     * @return object
+     * @return oxBase
      */
     protected function _getSelectedItem()
     {
@@ -179,7 +179,10 @@ class oxShopRelationsService
             $sShopID = $myConfig->getShopID();
         }
 
-        $oShopList = $this->_getSubShopTree( $sShopID );
+        /** @var oxShop $oShop */
+        $oActShop = oxNew('oxShop');
+        $oActShop->load($sShopID);
+        $oShopList = $oActShop->getSubShopList();
 
         //marking included shops
         foreach ( $oShopList as $key => $oShop ) {

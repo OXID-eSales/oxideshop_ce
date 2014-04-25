@@ -137,6 +137,7 @@ function getClassDirs($sBasePath)
 {
     $aClassDirs = array( $sBasePath . 'core/',
                          $sBasePath . 'application/components/widgets/',
+                         $sBasePath . 'application/components/services/',
                          $sBasePath . 'application/components/',
                          $sBasePath . 'application/models/',
                          $sBasePath . 'application/controllers/',
@@ -195,6 +196,35 @@ function setPhpIniParams()
     ini_set('session.use_cookies', 0);
     ini_set('session.use_trans_sid', 0);
     ini_set('url_rewriter.tags', '');
+    ini_set('magic_quotes_runtime', 0);
+}
+
+/**
+ * Strips magic quotes
+ *
+ * @return null
+ */
+function stripGpcMagicQuotes()
+{
+    if (!get_magic_quotes_gpc()) {
+        return;
+    }
+    $_REQUEST = _stripMagicQuotes($_REQUEST);
+    $_POST = _stripMagicQuotes($_POST);
+    $_GET = _stripMagicQuotes($_GET);
+    $_COOKIE = _stripMagicQuotes($_COOKIE);
+}
+
+/**
+ * Recursively removes slashes from arrays
+ *
+ * @param mixed $mInput the input from which the slashes should be removed
+ *
+ * @return mixed
+ */
+function _stripMagicQuotes($mInput)
+{
+    return is_array($mInput) ? array_map( '_stripMagicQuotes', $mInput ) : stripslashes( $mInput );
 }
 
 if ( !function_exists( 'error_404_handler' ) ) {

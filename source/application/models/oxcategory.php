@@ -137,6 +137,7 @@ class oxCategory extends oxI18n implements oxIUrl
      */
     protected $_oParent = null;
 
+
     /**
      * Class constructor, initiates parent constructor (parent::oxI18n()).
      */
@@ -1118,14 +1119,24 @@ class oxCategory extends oxI18n implements oxIUrl
      * Default is set to 'OXID'
      *
      * @param string $sField field to be retrieved from each subcategory
+     * @param string $sOXID  Cetegory ID
+     *
+     * @return array
      */
-    public function getFieldFromSubCategories($sField = 'OXID')
+    public function getFieldFromSubCategories($sField = 'OXID', $sOXID = null)
     {
-        $sTable = $this->getViewName();
-        $sRootId = $this->getId();
-        $sFields = "`{$sTable}`.`{$sField}`";
-        $sSql = "SELECT {$sFields} FROM {$sTable} WHERE `OXROOTID` = '{$sRootId}'";
-        $result = oxDb::getDb()->getCol($sSql);
-        return $result;
+        if (!$sOXID) {
+            $sOXID = $this->getId();
+        }
+        if (!$sOXID) {
+            return false;
+        }
+
+        $sTable  = $this->getViewName();
+        $sField  = "`{$sTable}`.`{$sField}`";
+        $sSql    = "SELECT $sField FROM `{$sTable}` WHERE `OXROOTID` = ?";
+        $aResult = oxDb::getDb()->getCol($sSql, array($sOXID));
+
+        return $aResult;
     }
 }

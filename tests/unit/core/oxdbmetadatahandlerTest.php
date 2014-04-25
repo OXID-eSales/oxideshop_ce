@@ -76,18 +76,19 @@ class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
      */
     public function testGetFields()
     {
-        $aTestFields = oxDb::getDb( oxDB::FETCH_MODE_ASSOC )->getAll( "show columns from oxreviews" );
-        $aFileds = array();
+        $sTable = 'oxreviews';
+        $aTestFields = oxDb::getDb(oxDB::FETCH_MODE_ASSOC)->getAll("show columns from {$sTable}");
+        $aFields = array();
 
-        foreach ( $aTestFields as $aField) {
-            $aFileds[] = $aField["Field"];
+        foreach ($aTestFields as $aField) {
+            $aFields[$aField['Field']] = "{$sTable}.{$aField['Field']}";
         }
 
-        $oDbMeta = oxNew( "oxDbMetaDataHandler" );
-        $aTableFields = $oDbMeta->getFields( "oxreviews" );
+        $oDbMeta = oxNew("oxDbMetaDataHandler");
+        $aTableFields = $oDbMeta->getFields("oxreviews");
 
-        $this->assertTrue( count($aTableFields) > 0 );
-        $this->assertEquals( $aFileds, $aTableFields );
+        $this->assertTrue(count($aTableFields) > 0);
+        $this->assertEquals($aFields, $aTableFields);
     }
 
     /*
@@ -103,15 +104,15 @@ class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
 
     }
 
-    /*
+    /**
      * Test if field name (camelCase) exists in given table
      */
     public function testFieldExistsCamelCase()
     {
         $oDbMeta = $this->getMock('oxDbMetaDataHandler', array('getFields'));
-        $oDbMeta->expects($this->once())->method('getFields')->with('oxreviews')->will($this->returnValue(array('field1', 'field2Name', 'FIELD')));
+        $oDbMeta->expects($this->once())->method('getFields')->with('oxreviews')->will($this->returnValue(array("oxreviews.field1", 'oxreviews.field2Name', 'oxreviews.FIELD')));
 
-        $this->assertTrue( $oDbMeta->fieldExists("field2Name", "oxreviews") );
+        $this->assertTrue($oDbMeta->fieldExists("field2Name", "oxreviews"));
     }
 
     /*

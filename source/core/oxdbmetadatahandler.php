@@ -95,11 +95,11 @@ class oxDbMetaDataHandler extends oxSuperCfg
     public function fieldExists( $sFieldName, $sTableName )
     {
         $aTableFields = $this->getFields( $sTableName );
-
+        $sTableName = strtoupper($sTableName);
         if ( is_array($aTableFields) ) {
             $sFieldName = strtoupper( $sFieldName );
             $aTableFields = array_map('strtoupper', $aTableFields);
-            if ( in_array( $sFieldName, $aTableFields ) ) {
+            if ( in_array( "{$sTableName}.{$sFieldName}", $aTableFields ) ) {
                 return true;
             }
         }
@@ -307,8 +307,8 @@ class oxDbMetaDataHandler extends oxSuperCfg
         $aMultiLangFields = array();
 
         foreach ( $aFields as $sField ) {
-            if ( preg_match("/(.+)_1$/", $sField, $aMatches) ) {
-                $aMultiLangFields[] = $aMatches[1];
+            if ( preg_match("/({$sTable}\.)*(?<table>.+)_1$/", $sField, $aMatches) ) {
+                $aMultiLangFields[] = $aMatches['table'];
             }
         }
 

@@ -628,7 +628,7 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      * @param array  $aShopIds shop id
      * @param null   $sMapId   map id
      */
-    public function addToDatabase($sSql, $sTable, $aShopIds = array(1), $sMapId = null)
+    public function addToDatabase($sSql, $sTable, $aShopIds = null, $sMapId = null)
     {
         oxDb::getDb()->execute($sSql);
         $this->addTableForCleanup($sTable);

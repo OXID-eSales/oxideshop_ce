@@ -202,7 +202,7 @@ class oxShopRelationsService
             }
 
             //marking items from inherited shops
-            $iCurrent = $oShop->oxshops__oxid->value;
+            $iCurrent = $oShop->getId();
             //$blIsInherited = $oShopList[$iCurrent]->oxshops__oxisinherited->value;
             //determining inherited property by config option
 
@@ -235,6 +235,7 @@ class oxShopRelationsService
      */
     protected function _isTableInherited( $oShop )
     {
+        $blIsInherited = false;
         if ( ( $sMallTable = $this->_getMallTable() ) ) {
             $blVarVal = $this->getConfig()->getShopConfVar('blMallInherit_' . strtolower( $sMallTable ), $oShop->oxshops__oxid->value);
             if ( isset( $blVarVal ) ) {

@@ -37,7 +37,16 @@ define ('oxCCTempDir', oxPATH . '/oxCCTempDir/');
 if (!is_dir(oxCCTempDir)) {
     mkdir(oxCCTempDir, 0777, 1);
 } else {
-    array_map('unlink', glob(oxCCTempDir . "/*"));
+    function delTree( $dir, $rmBaseDir = false ) {
+        $files = array_diff( scandir( $dir ), array('.', '..') );
+        foreach ($files as $file) {
+            ( is_dir( "$dir/$file" ) ) ? delTree( "$dir/$file", true ) : @unlink( "$dir/$file" );
+        }
+        if ( $rmBaseDir ) {
+            @rmdir( $dir );
+        }
+    }
+    delTree(oxCCTempDir);
 }
 
 

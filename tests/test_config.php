@@ -30,6 +30,8 @@ $sShopPath = realpath( '../source/' ).'/';
 $sShopEdition = 'EE';
 // eShop encoding
 $blUtf8 = false;
+// Run tests with varnish on
+$blVarnish = false;
 // Whether to run subshop tests
 $blIsSubShop = false;
 

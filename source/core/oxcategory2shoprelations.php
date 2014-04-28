@@ -119,4 +119,13 @@ class oxCategory2ShopRelations implements oxIShopRelations
         // TODO: Implement execute() method.
     }
 
+    /**
+     * Sets shop ID or list of shop IDs.
+     *
+     * @param int|array $aShopIds Shop ID or list of shop IDs.
+     */
+    public function setShopIds($aShopIds)
+    {
+        // TODO: Implement setShopIds() method.
+    }
 }

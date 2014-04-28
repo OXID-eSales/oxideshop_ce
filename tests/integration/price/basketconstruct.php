@@ -200,12 +200,12 @@ class BasketConstruct
      */
     protected function _inheritToShops( $oObject, $aShops )
     {
-        $iMapId = $oObject->getMapId();
+        $iOxId = $oObject->getId();
         $sObjectTable = $oObject->getCoreTableName();
 
         /** @var oxShopRelations $oShopRelations */
         $oShopRelations = oxNew('oxShopRelations', $aShops);
-        $oShopRelations->addToShop($iMapId, $sObjectTable);
+        $oShopRelations->addToShop($iOxId, $sObjectTable);
     }
 
     /**

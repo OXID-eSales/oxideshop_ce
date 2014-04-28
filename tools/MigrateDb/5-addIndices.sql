@@ -53,3 +53,14 @@ ALTER TABLE `oxdeliveryset2shop` ADD KEY `OXSHOPID` (`OXSHOPID`);
 ALTER TABLE `oxdelivery2shop` ADD UNIQUE KEY `OXMAPIDX` (`OXSHOPID`, `OXMAPOBJECTID`);
 ALTER TABLE `oxdelivery2shop` ADD KEY `OXMAPOBJECTID` (`OXMAPOBJECTID`);
 ALTER TABLE `oxdelivery2shop` ADD KEY `OXSHOPID` (`OXSHOPID`);
+
+#
+# Add indexes to oxobject2category
+#
+
+ALTER TABLE `oxobject2category` ADD PRIMARY KEY (`OXID`);
+ALTER TABLE `oxobject2category` ADD KEY `OXOBJECTID` (`OXOBJECTID`);
+ALTER TABLE `oxobject2category` ADD KEY `OXPOS` (`OXPOS`);
+ALTER TABLE `oxobject2category` ADD KEY `OXMAINIDX` (`OXCATNID`, `OXOBJECTID`);
+ALTER TABLE `oxobject2category` ADD KEY `OXSHOPID` (`OXSHOPID`);
+ALTER TABLE `oxobject2category` ADD KEY `OXTIME` (`OXTIME`);

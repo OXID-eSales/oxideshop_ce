@@ -51,16 +51,19 @@ class oxShopRelationsService
         $oItem = $this->_getSelectedItem();
         $aAvailableSubShops = $oItem->getAvailableShopIds();
 
+        $aCurrentShop = array($this->_getItemShopId());
+        $aAvailableSubShops = array_diff($aAvailableSubShops, $aCurrentShop);
         $aShopIds = array_merge($aSelectedSubShops, $aAvailableSubShops);
-        //naturally inherited(+), but not select from form input(-)
+        $aShopIds = array_unique($aShopIds);
         foreach ($aShopIds as $iShopId) {
+            //naturally inherited(+), but not select from form input(-)
             if (in_array($iShopId, $aAvailableSubShops) && !in_array($iShopId, $aSelectedSubShops)) {
-                $oItem->unassignFromShop();
+                $oItem->unassignFromShop(null, $iShopId);
             }
 
             //naturally not inherited(-) and selected (+)
             if (!in_array($iShopId, $aAvailableSubShops) && in_array($iShopId, $aSelectedSubShops)) {
-                $oItem->assignToShop();
+                $oItem->assignToShop(null, $iShopId);
             }
         }
     }

@@ -152,7 +152,7 @@ class oxConfig extends oxSuperCfg
     protected $aMultiShopTables = array('oxarticles', 'oxdiscount', 'oxcategories', 'oxattribute',
                                          'oxlinks', 'oxvoucherseries', 'oxmanufacturers',
                                          'oxnews', 'oxselectlist', 'oxwrapping',
-                                         'oxdeliveryset', 'oxdelivery', 'oxvendor');
+                                         'oxdeliveryset', 'oxdelivery', 'oxvendor', 'oxobject2category');
 
     /**
      * Application starter instance

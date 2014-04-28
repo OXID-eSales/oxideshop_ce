@@ -560,7 +560,7 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     /**
      * @var $_aMultiShopTables array multishop tables used in shop
      */
-    protected $_aMultiShopTables= array('oxarticles', 'oxcategories', 'oxattribute',  'oxobject2category', 'oxdelivery',
+    protected $_aMultiShopTables= array('oxarticles', 'oxcategories', 'oxattribute', 'oxdelivery',
                                         'oxdeliveryset', 'oxdiscount', 'oxmanufacturers', 'oxselectlist', 'oxvendor', 'oxvoucherseries', 'oxwrapping' );
 
     /**

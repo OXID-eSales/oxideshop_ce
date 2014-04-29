@@ -200,7 +200,7 @@ class oxShop extends oxI18n
         $aTables = $oMetaData->getAllMultiTables($sTable);
         if (count($aTables)) {
             foreach ($aTables as $sTableKey => $sTableName) {
-                $sJoin .= "LEFT JOIN {$sTableName} USING (OXID) ";
+                $sJoin .= "LEFT JOIN `{$sTableName}` USING (OXID) ";
             }
         }
         return $sJoin;
@@ -219,7 +219,7 @@ class oxShop extends oxI18n
         $sJoin = ' ';
         $sLangTable = getLangTableName($sTable, $iLang);
         if ($sLangTable && $sLangTable !== $sTable) {
-            $sJoin .= "LEFT JOIN {$sLangTable} USING (OXID) ";
+            $sJoin .= "LEFT JOIN `{$sLangTable}` USING (OXID) ";
         }
         return $sJoin;
     }
@@ -315,14 +315,14 @@ class oxShop extends oxI18n
             $sLangAddition = $sLang === null ? $sDefaultLangAddition : "_{$sLang}";
 
             $sViewTable = "oxv_{$sTable}{$sLangAddition}";
-            $sFields = "{$sTable}.*";
+            $sFields = "`{$sTable}`.*";
             if ($sLang === null) {
                 $sJoin = $this->_getViewJoinAll($sTable); //simple
             } else {
                 $sFields = $this->_getViewSelect($sTable, $iLang); // lang
                 $sJoin = $this->_getViewJoinLang($sTable, $iLang); //lang
             }
-            $sQuery = "{$sStart} `{$sViewTable}` AS SELECT {$sFields} FROM {$sTable}{$sJoin}";
+            $sQuery = "{$sStart} `{$sViewTable}` AS SELECT {$sFields} FROM `{$sTable}`{$sJoin}";
             $this->addQuery($sQuery);
 
         }

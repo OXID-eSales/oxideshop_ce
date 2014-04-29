@@ -315,20 +315,20 @@ class Unit_Admin_ArticleExtendAjaxTest extends OxidTestCase
     {
         $sOxid = '_testObjectDefault';
         $sDefCat = '_testCategory1';
-        modConfig::setRequestParameter( "oxid", $sOxid );
-        modConfig::setRequestParameter( "defcat", $sDefCat );
+        modConfig::setRequestParameter("oxid", $sOxid);
+        modConfig::setRequestParameter("defcat", $sDefCat);
         
-        $oView = oxNew( 'article_extend_ajax' );
+        $oView = oxNew('article_extend_ajax');
         
         $sShopCheck = "";
         
         $oDb = oxDb::getDb();
-        $oDb->execute( "update oxobject2category set oxtime = 1 where oxobjectid = '$sOxid' " );
+        $oDb->execute("update oxobject2category set oxtime = 1 where oxobjectid = '$sOxid' ");
         
         $oView->setAsDefault();
         
-        $this->assertEquals( 11, $oDb->getOne( "select oxtime from oxobject2category where oxobjectid='$sOxid' and oxcatnid!='$sDefCat'" ) );
-        $this->assertEquals( 0, $oDb->getOne( "select oxtime from oxobject2category where oxobjectid='$sOxid' and oxcatnid='$sDefCat' $sShopCheck" ) );
+        $this->assertEquals(11, $oDb->getOne("select oxtime from oxobject2category where oxobjectid='$sOxid' and oxcatnid!='$sDefCat'"));
+        $this->assertEquals(0, $oDb->getOne("select oxtime from oxobject2category where oxobjectid='$sOxid' and oxcatnid='$sDefCat' $sShopCheck"));
     }
     
 }

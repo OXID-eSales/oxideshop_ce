@@ -140,8 +140,6 @@ class article_extend_ajax extends ajaxListComponent
             $sQ = "delete from oxobject2category where oxobject2category.oxobjectid= " . oxDb::getDb()->quote( $soxId ) . " and ";
             $sQ .= " oxcatnid in (" . implode( ', ', oxDb::getInstance()->quoteArray( $aRemoveCat ) ) . ')';
             $oDb->Execute( $sQ );
-            //echo "\n$sQ\n___________________";
-
 
             // updating oxtime values
             $this->_updateOxTime( $soxId );
@@ -225,8 +223,6 @@ class article_extend_ajax extends ajaxListComponent
 
     /**
      * Sets selected category as a default
-     *
-     * @return null
      */
     public function setAsDefault()
     {

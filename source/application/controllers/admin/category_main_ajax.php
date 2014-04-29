@@ -236,7 +236,6 @@ class category_main_ajax extends ajaxListComponent
             $sQ = $sDelete.$sWhere." and oxobjectid in ( {$sProdIds} )";
             $oDb->execute( $sQ );
 
-
             // updating oxtime values
             $this->_updateOxTime( $sProdIds );
         }

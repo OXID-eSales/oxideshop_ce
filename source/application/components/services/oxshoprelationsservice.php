@@ -69,29 +69,6 @@ class oxShopRelationsService
     }
 
     /**
-     * Sets shop relations object
-     *
-     * @param oxShopRelations $oShopRelations Shop relations object
-     */
-    public function setShopRelations($oShopRelations)
-    {
-        $this->_oShopRelations = $oShopRelations;
-    }
-
-    /**
-     * Returns shop relations object. Creates shop relations object for base shop
-     *
-     * @return oxShopRelations
-     */
-    public function getShopRelations()
-    {
-        if (is_null($this->_oShopRelations)) {
-            $this->_oShopRelations = new oxShopRelations(1);
-        }
-        return $this->_oShopRelations;
-    }
-
-    /**
      * Loads selected item using oxBase
      *
      * @return oxBase

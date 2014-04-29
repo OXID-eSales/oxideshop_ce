@@ -192,7 +192,6 @@ class article_extend_ajax extends ajaxListComponent
                 $oNew->oxobject2category__oxcatnid   = new oxField( $sAdd );
                 $oNew->oxobject2category__oxtime     = new oxField( time() );
 
-
                 $oNew->save();
             }
 

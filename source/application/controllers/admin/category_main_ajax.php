@@ -145,7 +145,6 @@ class category_main_ajax extends ajaxListComponent
 
         if ( is_array($aArticles)) {
 
-
             $sO2CView = $this->_getViewName('oxobject2category');
 
             $oNew = oxNew( 'oxbase' );

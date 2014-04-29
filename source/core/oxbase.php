@@ -465,7 +465,6 @@ class oxBase extends oxSuperCfg
         return $this->_sOXID;
     }
 
-
     /**
      * Sets unique object id
      *

@@ -138,6 +138,13 @@ class oxCategory extends oxI18n implements oxIUrl
     protected $_oParent = null;
 
     /**
+     * @var oxShopRelations
+     */
+    protected $_oShopRelations = null;
+
+    /* endif; */
+
+    /**
      * Class constructor, initiates parent constructor (parent::oxI18n()).
      */
     public function __construct()

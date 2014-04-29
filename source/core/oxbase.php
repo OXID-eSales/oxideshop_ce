@@ -744,8 +744,8 @@ class oxBase extends oxSuperCfg
 
         $oDB = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
         $sCoreTable = $this->getCoreTableName();
-        $sDelete = "delete from `{$sCoreTable}` where oxid = ?";
-        $oDB->execute($sDelete, array($sOxId));
+        $sDelete = "delete from {$sCoreTable} where oxid = " . $oDB->quote($sOxId);
+        $oDB->execute($sDelete);
         if ($blDelete = (bool) $oDB->affected_Rows()) {
             $this->onChange(ACTION_DELETE, $sOxId);
         }
@@ -1322,13 +1322,13 @@ class oxBase extends oxSuperCfg
         $this->$sIDKey = new oxField($this->getId(), oxField::T_RAW);
         $oDb = oxDb::getDb();
 
-        $sUpdate = "update `{$sCoreTableName}` set " . $this->_getUpdateFields()
-                   . " where `{$sCoreTableName}`.oxid = ?";
+        $sUpdate= "update {$sCoreTableName} set " . $this->_getUpdateFields()
+                 ." where {$sCoreTableName}.oxid = " . $oDb->quote( $this->getId() );
 
         //trigger event
         $this->beforeUpdate();
 
-        $blRet = (bool) $oDb->execute($sUpdate, array($this->getId()));
+        $blRet = (bool) $oDb->execute( $sUpdate );
 
         return $blRet;
     }
@@ -1354,7 +1354,7 @@ class oxBase extends oxSuperCfg
 
         $sIDKey = $myUtils->getArrFldName($this->getCoreTableName() . '.oxid');
         $this->$sIDKey = new oxField($this->getId(), oxField::T_RAW);
-        $sInsert = "insert into `{$this->getCoreTableName()}` set ";
+        $sInsert = "Insert into {$this->getCoreTableName()} set ";
 
         //setting oxshopid
         $sShopField = $myUtils->getArrFldName($this->getCoreTableName() . '.oxshopid');

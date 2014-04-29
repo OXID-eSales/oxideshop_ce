@@ -8,7 +8,7 @@
             [{include file="form/privatesales/accept_terms.tpl"}]
         [{else}]
             [{include file="widget/header/languages.tpl"}]
-            <p>[{oxmultilang ident="LOGIN_ALREADY_CUSTOMER" suffix="COLON"}]</p>
+            <p>[{oxmultilang ident="LOGIN_ALREADY_CUSTOMER"}]</p>
             [{include file="form/login_account.tpl"}]
         [{/if}]
     </div>

@@ -125,60 +125,58 @@ class category_main_ajax extends ajaxListComponent
     /**
      * Adds article to category
      * Creates new list
-     *
-     * @return null
      */
     public function addArticle()
     {
         $myConfig = $this->getConfig();
 
-        $aArticles  = $this->_getActionIds( 'oxarticles.oxid' );
-        $sCategoryID = oxRegistry::getConfig()->getRequestParameter( 'synchoxid');
-        $sShopID     = $myConfig->getShopId();
-        $oDb         = oxDb::getDb();
-        $sArticleTable = $this->_getViewName( 'oxarticles' );
+        $aArticles = $this->_getActionIds('oxarticles.oxid');
+        $sCategoryID = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $sShopID = $myConfig->getShopId();
+        $oDb = oxDb::getDb();
+        $sArticleTable = $this->_getViewName('oxarticles');
 
         // adding
-        if ( oxRegistry::getConfig()->getRequestParameter( 'all' ) ) {
-            $aArticles = $this->_getAll( $this->_addFilter( "select $sArticleTable.oxid ".$this->_getQuery() ) );
+        if (oxRegistry::getConfig()->getRequestParameter('all')) {
+            $aArticles = $this->_getAll($this->_addFilter("select $sArticleTable.oxid " . $this->_getQuery()));
         }
 
-        if ( is_array($aArticles)) {
+        if (is_array($aArticles)) {
 
             $sO2CView = $this->_getViewName('oxobject2category');
 
-            $oNew = oxNew( 'oxbase' );
-            $oNew->init( 'oxobject2category' );
+            $oNew = oxNew('oxbase');
+            $oNew->init('oxobject2category');
             $myUtilsObject = oxUtilsObject::getInstance();
             $oActShop = $myConfig->getActiveShop();
 
             $sProdIds = "";
-            foreach ( $aArticles as $sAdd) {
+            foreach ($aArticles as $sAdd) {
 
                 // check, if it's already in, then don't add it again
-                $sSelect = "select 1 from $sO2CView as oxobject2category where oxobject2category.oxcatnid= " . $oDb->quote( $sCategoryID ) . " and oxobject2category.oxobjectid = " . $oDb->quote( $sAdd ) . "";
-                if ( $oDb->getOne( $sSelect, false, false ) )
+                $sSelect = "select 1 from $sO2CView as oxobject2category where oxobject2category.oxcatnid= " . $oDb->quote($sCategoryID) . " and oxobject2category.oxobjectid = " . $oDb->quote($sAdd) . "";
+                if ($oDb->getOne($sSelect, false, false)) {
                     continue;
+                }
 
-                $oNew->oxobject2category__oxid       = new oxField( $oNew->setId( $myUtilsObject->generateUID() ) );
-                $oNew->oxobject2category__oxobjectid = new oxField( $sAdd );
-                $oNew->oxobject2category__oxcatnid   = new oxField( $sCategoryID );
-                $oNew->oxobject2category__oxtime     = new oxField( time() );
+                $oNew->oxobject2category__oxid = new oxField($oNew->setId($myUtilsObject->generateUID()));
+                $oNew->oxobject2category__oxobjectid = new oxField($sAdd);
+                $oNew->oxobject2category__oxcatnid = new oxField($sCategoryID);
+                $oNew->oxobject2category__oxtime = new oxField(time());
 
                 $oNew->save();
 
-                if ( $sProdIds ) {
+                if ($sProdIds) {
                     $sProdIds .= ",";
                 }
-                $sProdIds .= $oDb->quote( $sAdd ) ;
+                $sProdIds .= $oDb->quote($sAdd);
             }
 
             // updating oxtime values
-            $this->_updateOxTime( $sProdIds );
+            $this->_updateOxTime($sProdIds);
 
-            $this->resetArtSeoUrl( $aArticles );
-            $this->resetCounter( "catArticle", $sCategoryID );
-
+            $this->resetArtSeoUrl($aArticles);
+            $this->resetCounter("catArticle", $sCategoryID);
 
         }
     }

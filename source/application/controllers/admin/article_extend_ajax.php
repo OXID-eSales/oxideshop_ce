@@ -154,52 +154,49 @@ class article_extend_ajax extends ajaxListComponent
 
     /**
      * Adds article to chosen category
-     *
-     * @return null
      */
     public function addCat()
     {
         $myConfig = $this->getConfig();
-        $oDb      = oxDb::getDb();
-        $aAddCat  = $this->_getActionIds( 'oxcategories.oxid' );
-        $soxId    = oxRegistry::getConfig()->getRequestParameter( 'synchoxid' );
-        $sShopID  = $myConfig->getShopId();
+        $oDb = oxDb::getDb();
+        $aAddCat = $this->_getActionIds('oxcategories.oxid');
+        $soxId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $sShopID = $myConfig->getShopId();
         $sO2CView = $this->_getViewName('oxobject2category');
 
         // adding
-        if ( oxRegistry::getConfig()->getRequestParameter( 'all' ) ) {
-            $sCategoriesTable = $this->_getViewName( 'oxcategories' );
-            $aAddCat = $this->_getAll( $this->_addFilter( "select $sCategoriesTable.oxid ".$this->_getQuery() ) );
+        if (oxRegistry::getConfig()->getRequestParameter('all')) {
+            $sCategoriesTable = $this->_getViewName('oxcategories');
+            $aAddCat = $this->_getAll($this->_addFilter("select $sCategoriesTable.oxid " . $this->_getQuery()));
         }
 
-        if ( isset( $aAddCat) && is_array($aAddCat)) {
+        if (isset($aAddCat) && is_array($aAddCat)) {
 
             $oDb = oxDb::getDb();
 
-            $oNew = oxNew( 'oxbase' );
-            $oNew->init( 'oxobject2category' );
+            $oNew = oxNew('oxbase');
+            $oNew->init('oxobject2category');
             $myUtilsObj = oxUtilsObject::getInstance();
 
-            foreach ( $aAddCat as $sAdd ) {
-
+            foreach ($aAddCat as $sAdd) {
                 // check, if it's already in, then don't add it again
-                $sSelect = "select 1 from " . $sO2CView . " as oxobject2category where oxobject2category.oxcatnid= " . $oDb->quote( $sAdd ) . " and oxobject2category.oxobjectid = " . $oDb->quote( $soxId ) . " ";
-                if ( $oDb->getOne( $sSelect, false, false ) )
+                $sSelect = "select 1 from " . $sO2CView . " as oxobject2category where oxobject2category.oxcatnid= " . $oDb->quote($sAdd) . " and oxobject2category.oxobjectid = " . $oDb->quote($soxId) . " ";
+                if ($oDb->getOne($sSelect, false, false)) {
                     continue;
+                }
 
-                $oNew->setId( $myUtilsObj->generateUID() );
-                $oNew->oxobject2category__oxobjectid = new oxField( $soxId );
-                $oNew->oxobject2category__oxcatnid   = new oxField( $sAdd );
-                $oNew->oxobject2category__oxtime     = new oxField( time() );
+                $oNew->setId($myUtilsObj->generateUID());
+                $oNew->oxobject2category__oxobjectid = new oxField($soxId);
+                $oNew->oxobject2category__oxcatnid = new oxField($sAdd);
+                $oNew->oxobject2category__oxtime = new oxField(time());
 
                 $oNew->save();
             }
 
-            $this->_updateOxTime( $soxId );
+            $this->_updateOxTime($soxId);
 
-            $this->resetArtSeoUrl( $soxId );
+            $this->resetArtSeoUrl($soxId);
             $this->resetContentCache();
-
 
         }
     }

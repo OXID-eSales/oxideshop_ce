@@ -25,6 +25,7 @@
  */
 class category_main_ajax extends ajaxListComponent
 {
+
     /**
      * If true extended column selection will be build
      *
@@ -37,25 +38,25 @@ class category_main_ajax extends ajaxListComponent
      *
      * @var array
      */
-    protected $_aColumns = array( 'container1' => array(    // field , table,         visible, multilanguage, ident
-                                        array( 'oxartnum', 'oxarticles', 1, 0, 0 ),
-                                        array( 'oxtitle',  'oxarticles', 1, 1, 0 ),
-                                        array( 'oxean',    'oxarticles', 1, 0, 0 ),
-                                        array( 'oxmpn',    'oxarticles', 0, 0, 0 ),
-                                        array( 'oxprice',  'oxarticles', 0, 0, 0 ),
-                                        array( 'oxstock',  'oxarticles', 0, 0, 0 ),
-                                        array( 'oxid',     'oxarticles', 0, 0, 1 )
-                                        ),
-                                'container2' => array(
-                                        array( 'oxartnum', 'oxarticles', 1, 0, 0 ),
-                                        array( 'oxtitle',  'oxarticles', 1, 1, 0 ),
-                                        array( 'oxean',    'oxarticles', 1, 0, 0 ),
-                                        array( 'oxmpn',    'oxarticles', 0, 0, 0 ),
-                                        array( 'oxprice',  'oxarticles', 0, 0, 0 ),
-                                        array( 'oxstock',  'oxarticles', 0, 0, 0 ),
-                                        array( 'oxid',     'oxarticles', 0, 0, 1 )
-                                        )
-                                );
+    protected $_aColumns = array('container1' => array( // field , table,         visible, multilanguage, ident
+                                                        array('oxartnum', 'oxarticles', 1, 0, 0),
+                                                        array('oxtitle', 'oxarticles', 1, 1, 0),
+                                                        array('oxean', 'oxarticles', 1, 0, 0),
+                                                        array('oxmpn', 'oxarticles', 0, 0, 0),
+                                                        array('oxprice', 'oxarticles', 0, 0, 0),
+                                                        array('oxstock', 'oxarticles', 0, 0, 0),
+                                                        array('oxid', 'oxarticles', 0, 0, 1)
+    ),
+                                 'container2' => array(
+                                 array('oxartnum', 'oxarticles', 1, 0, 0),
+                                 array('oxtitle', 'oxarticles', 1, 1, 0),
+                                 array('oxean', 'oxarticles', 1, 0, 0),
+                                 array('oxmpn', 'oxarticles', 0, 0, 0),
+                                 array('oxprice', 'oxarticles', 0, 0, 0),
+                                 array('oxstock', 'oxarticles', 0, 0, 0),
+                                 array('oxid', 'oxarticles', 0, 0, 1)
+                                 )
+    );
 
     /**
      * Returns SQL query for data to fetc
@@ -67,35 +68,35 @@ class category_main_ajax extends ajaxListComponent
         $myConfig = $this->getConfig();
 
         $sArticleTable = $this->_getViewName('oxarticles');
-        $sO2CView      = $this->_getViewName('oxobject2category');
+        $sO2CView = $this->_getViewName('oxobject2category');
 
-        $sOxid      = oxRegistry::getConfig()->getRequestParameter( 'oxid' );
-        $sSynchOxid = oxRegistry::getConfig()->getRequestParameter( 'synchoxid' );
-        $oDb        = oxDb::getDb();
+        $sOxid = oxRegistry::getConfig()->getRequestParameter('oxid');
+        $sSynchOxid = oxRegistry::getConfig()->getRequestParameter('synchoxid');
+        $oDb = oxDb::getDb();
 
-        $sShopID    = $myConfig->getShopId();
+        $sShopID = $myConfig->getShopId();
 
         // category selected or not ?
-        if ( !$sOxid && $sSynchOxid ) {
+        if (!$sOxid && $sSynchOxid) {
 
-            // performance
-            $sQAdd  = ' from '.$sArticleTable.' where 1 ';
+            // dodger performance
+            $sQAdd = ' from ' . $sArticleTable . ' where 1 ';
         } else {
 
             // copied from oxadminview
             $sJoin = " {$sArticleTable}.oxid={$sO2CView}.oxobjectid ";
 
             $sSubSelect = '';
-            if ( $sSynchOxid && $sOxid != $sSynchOxid ) {
+            if ($sSynchOxid && $sOxid != $sSynchOxid) {
 
-                $sSubSelect  = ' and '.$sArticleTable.'.oxid not in ( ';
+                $sSubSelect = ' and ' . $sArticleTable . '.oxid not in ( ';
                 $sSubSelect .= "select $sArticleTable.oxid from $sO2CView left join $sArticleTable ";
-                $sSubSelect .= "on $sJoin where $sO2CView.oxcatnid =  " . $oDb->quote( $sSynchOxid ) . " ";
-                $sSubSelect .= 'and '.$sArticleTable.'.oxid is not null ) ';
+                $sSubSelect .= "on $sJoin where $sO2CView.oxcatnid =  " . $oDb->quote($sSynchOxid) . " ";
+                $sSubSelect .= 'and ' . $sArticleTable . '.oxid is not null ) ';
             }
 
-            $sQAdd  = " from $sO2CView join $sArticleTable ";
-            $sQAdd .= " on $sJoin where $sO2CView.oxcatnid = " . $oDb->quote( $sOxid );
+            $sQAdd = " from $sO2CView join $sArticleTable ";
+            $sQAdd .= " on $sJoin where $sO2CView.oxcatnid = " . $oDb->quote($sOxid);
             $sQAdd .= " and $sArticleTable.oxid is not null $sSubSelect ";
         }
 
@@ -109,14 +110,14 @@ class category_main_ajax extends ajaxListComponent
      *
      * @return string
      */
-    protected function _addFilter( $sQ )
+    protected function _addFilter($sQ)
     {
         $sArtTable = $this->_getViewName('oxarticles');
-        $sQ = parent::_addFilter( $sQ );
+        $sQ = parent::_addFilter($sQ);
 
         // display variants or not ?
-        if ( !$this->getConfig()->getConfigParam( 'blVariantsSelection' ) ) {
-            $sQ .=  " and {$sArtTable}.oxparentid = '' ";
+        if (!$this->getConfig()->getConfigParam('blVariantsSelection')) {
+            $sQ .= " and {$sArtTable}.oxparentid = '' ";
         }
 
         return $sQ;
@@ -154,7 +155,8 @@ class category_main_ajax extends ajaxListComponent
             foreach ($aArticles as $sAdd) {
 
                 // check, if it's already in, then don't add it again
-                $sSelect = "select 1 from $sO2CView as oxobject2category where oxobject2category.oxcatnid= " . $oDb->quote($sCategoryID) . " and oxobject2category.oxobjectid = " . $oDb->quote($sAdd) . "";
+                $sSelect = "select 1 from $sO2CView as oxobject2category where oxobject2category.oxcatnid= "
+                       . $oDb->quote($sCategoryID) . " and oxobject2category.oxobjectid = " . $oDb->quote($sAdd) . "";
                 if ($oDb->getOne($sSelect, false, false)) {
                     continue;
                 }
@@ -185,63 +187,62 @@ class category_main_ajax extends ajaxListComponent
      * Updates oxtime value for products
      *
      * @param string $sProdIds product ids: "id1", "id2", "id3"
-     *
-     * @return null
      */
-    protected function _updateOxTime( $sProdIds )
+    protected function _updateOxTime($sProdIds)
     {
-        if ( $sProdIds ) {
+        if ($sProdIds) {
             $sO2CView = $this->_getViewName('oxobject2category');
             $sQ = "update oxobject2category set oxtime = 0 where oxid in (
                       select _tmp.oxid from (
                           select oxobject2category.oxid from (
-                              select min(oxtime) as oxtime, oxobjectid from {$sO2CView} where oxobjectid in ( {$sProdIds} ) group by oxobjectid
+                              select min(oxtime) as oxtime, oxobjectid from {$sO2CView}
+                              where oxobjectid in ( {$sProdIds} ) group by oxobjectid
                           ) as _subtmp
-                          left join oxobject2category on oxobject2category.oxtime = _subtmp.oxtime and oxobject2category.oxobjectid = _subtmp.oxobjectid
+                          left join oxobject2category on oxobject2category.oxtime = _subtmp.oxtime
+                           and oxobject2category.oxobjectid = _subtmp.oxobjectid
                       ) as _tmp
                    )";
 
-            oxDb::getDb()->execute( $sQ );
+            oxDb::getDb()->execute($sQ);
         }
     }
 
     /**
      * Removes article from category
-     *
-     * @return null
      */
     public function removeArticle()
     {
-        $aArticles = $this->_getActionIds( 'oxarticles.oxid' );
-        $sCategoryID = oxRegistry::getConfig()->getRequestParameter( 'oxid');
-        $sShopID     = $this->getConfig()->getShopId();
+        $aArticles = $this->_getActionIds('oxarticles.oxid');
+        $sCategoryID = oxRegistry::getConfig()->getRequestParameter('oxid');
+        $sShopID = $this->getConfig()->getShopId();
         $oDb = oxDb::getDb();
 
         // adding
-        if ( oxRegistry::getConfig()->getRequestParameter( 'all' ) ) {
-            $sArticleTable = $this->_getViewName( 'oxarticles' );
-            $aArticles = $this->_getAll( $this->_addFilter( "select $sArticleTable.oxid ".$this->_getQuery() ) );
+        if (oxRegistry::getConfig()->getRequestParameter('all')) {
+            $sArticleTable = $this->_getViewName('oxarticles');
+            $aArticles = $this->_getAll($this->_addFilter("select $sArticleTable.oxid " . $this->_getQuery()));
         }
 
         // adding
-        if ( is_array( $aArticles ) && count( $aArticles ) ) {
-            $sProdIds = implode( ", ", oxDb::getInstance()->quoteArray( $aArticles ) );
+        if (is_array($aArticles) && count($aArticles)) {
+            $sProdIds = implode(", ", oxDb::getInstance()->quoteArray($aArticles));
 
             $sDelete = "delete from oxobject2category where";
-            $sWhere = " oxcatnid=".$oDb->quote( $sCategoryID );
-            if ( !$this->getConfig()->getConfigParam( 'blVariantsSelection' ) ) {
-                $sQ = $sDelete.$sWhere." and oxobjectid in ( select oxid from oxarticles where oxparentid in ( {$sProdIds} ) )";
-                $oDb->execute( $sQ );
+            $sWhere = " oxcatnid=" . $oDb->quote($sCategoryID);
+            if (!$this->getConfig()->getConfigParam('blVariantsSelection')) {
+                $sQ = $sDelete . $sWhere . " and oxobjectid in
+                    ( select oxid from oxarticles where oxparentid in ( {$sProdIds} ) )";
+                $oDb->execute($sQ);
             }
-            $sQ = $sDelete.$sWhere." and oxobjectid in ( {$sProdIds} )";
-            $oDb->execute( $sQ );
+            $sQ = $sDelete . $sWhere . " and oxobjectid in ( {$sProdIds} )";
+            $oDb->execute($sQ);
 
             // updating oxtime values
-            $this->_updateOxTime( $sProdIds );
+            $this->_updateOxTime($sProdIds);
         }
 
-        $this->resetArtSeoUrl( $aArticles, $sCategoryID );
-        $this->resetCounter( "catArticle", $sCategoryID );
+        $this->resetArtSeoUrl($aArticles, $sCategoryID);
+        $this->resetCounter("catArticle", $sCategoryID);
 
     }
 }

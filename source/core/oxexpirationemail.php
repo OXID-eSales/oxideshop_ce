@@ -39,6 +39,12 @@ class oxExpirationEmail
      */
     private $_sBody;
 
+    private $_sSubject;
+
+    private $_sRecipient;
+
+    private $_sFrom;
+
     /**
      * If object was given in parameter it sets it and if not it creates oxEmail object and sets it.
      *
@@ -95,7 +101,7 @@ class oxExpirationEmail
         $oEmail = $this->getEmail();
         $oEmail->setFrom($this->_getInfoEmailAddress());
         $oEmail->setRecipient($this->_getInfoEmailAddress());
-        $oEmail->setSubject(oxRegistry::getLang()->translateString('SHOP_LICENSE_ERROR_INFORMATION', null, true));
+        $oEmail->setSubject($this->getSubject());
         $oEmail->setBody($this->getBody());
         $oEmail->send();
     }
@@ -110,5 +116,13 @@ class oxExpirationEmail
         $oShop = oxRegistry::getConfig()->getActiveShop();
 
         return $oShop->oxshops__oxinfoemail->value;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSubject()
+    {
+        return oxRegistry::getLang()->translateString('SHOP_LICENSE_ERROR_INFORMATION', null, true);
     }
 }

@@ -88,6 +88,12 @@ class oxCurl
      */
     protected $_aOptions = array('CURLOPT_RETURNTRANSFER' => 1);
 
+    /**
+     * Request HTTP status call code.
+     *
+     * @var int | null
+     */
+    protected $_sStatusCode = null;
 
     /**
      * Sets url to call
@@ -293,6 +299,8 @@ class oxCurl
         $this->_setOptions();
 
         $sResponse = $this->_execute();
+        $this->_saveStatusCode();
+
         $iCurlErrorNumber = $this->_getErrorNumber();
 
         $this->_close();
@@ -328,6 +336,16 @@ class oxCurl
     public function getConnectionCharset()
     {
         return $this->_sConnectionCharset;
+    }
+
+    /**
+     * Return HTTP status code.
+     *
+     * @return int HTTP status code.
+     */
+    public function getStatusCode()
+    {
+        return $this->_sStatusCode;
     }
 
     /**
@@ -419,7 +437,15 @@ class oxCurl
     }
 
     /**
-     * Clears empty values from array and decodes html entities.
+     * Sets current request HTTP status code.
+     */
+    protected function _saveStatusCode()
+    {
+        $this->_sStatusCode = curl_getinfo($this->_getResource(), CURLINFO_HTTP_CODE);
+    }
+
+    /**
+     * Decodes html entities.
      *
      * @param $aParams
      * @return array

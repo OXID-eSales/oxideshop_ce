@@ -325,6 +325,20 @@ class Unit_Core_oxCurlTest extends OxidTestCase
     }
 
     /**
+     * Test oxCurl::getStatusCode()
+     */
+    public function testGetStatusCode()
+    {
+        $oCurl = $this->getMock( 'oxCurl', array( "_execute" ) );
+
+        $this->assertSame(null, $oCurl->getStatusCode());
+
+        $oCurl->execute();
+
+        $this->assertSame(0, $oCurl->getStatusCode());
+    }
+
+    /**
      * Test oxCurl::getUrl()
      */
     public function testGetWithoutParameters()

@@ -49,10 +49,10 @@ class oxShopRelationsService
     {
         $aSelectedSubShops = $this->getSelectedSubShops();
         $oItem = $this->_getSelectedItem();
-        $aAvailableSubShops = $oItem->getAvailableShopIds();
+        $aItemShopIds = $oItem->getItemShopIds();
 
         $aCurrentShop = array($this->_getItemShopId());
-        $aAvailableSubShops = array_diff($aAvailableSubShops, $aCurrentShop);
+        $aAvailableSubShops = array_diff($aItemShopIds, $aCurrentShop);
         $aShopIds = array_merge($aSelectedSubShops, $aAvailableSubShops);
         $aShopIds = array_unique($aShopIds);
         foreach ($aShopIds as $iShopId) {

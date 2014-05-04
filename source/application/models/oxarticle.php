@@ -3711,28 +3711,61 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         return $aAmPriceList;
     }
 
-
     /**
-     * Collects and returns article variants ids.
+     * Collects and returns active/all variant ids of article.
+     *
+     * @param bool $blActiveVariants Parameter to load only active variants.
      *
      * @return array
      */
-    protected function _getVariantsIds()
+    public function getVariantIds($blActiveVariants = true)
     {
         $aSelect = array();
-        if ( ( $sId = $this->getId() ) ) {
-            $oDb = oxDb::getDb( oxDb::FETCH_MODE_ASSOC );
-            $sQ = "select oxid from " . $this->getViewName( true ) . " where oxparentid = ".$oDb->quote( $sId )." and " .
-                $this->getSqlActiveSnippet( true ) . " order by oxsort";
-            $oRs = $oDb->select( $sQ );
-            if ( $oRs != false && $oRs->recordCount() > 0 ) {
+        $sId = $this->getId();
+        if ($sId) {
+            $sActiveSqlSnippet = "";
+            if ($blActiveVariants) {
+                $sActiveSqlSnippet = " and " . $this->getSqlActiveSnippet(true);
+            }
+            $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+            $sQ = "select oxid from " . $this->getViewName(true) . " where oxparentid = ".$oDb->quote($sId).
+                $sActiveSqlSnippet . " order by oxsort";
+            $oRs = $oDb->select($sQ);
+            if ($oRs != false && $oRs->recordCount() > 0) {
                 while (!$oRs->EOF) {
-                    $aSelect[] = reset( $oRs->fields );
+                    $aSelect[] = reset($oRs->fields);
                     $oRs->moveNext();
                 }
             }
         }
         return $aSelect;
+    }
+
+    /**
+     * Collects and returns active/all variant ids of article.
+     *
+     * @deprecated since v5.2.0 (2014-04-30); Naming was changed and the method was made to public. Now use function getVariantIds().
+     *
+     * @param bool $blActiveVariants Parameter to load only active variants.
+     *
+     * @return array
+     */
+    protected function _getVariantsIds($blActiveVariants = true)
+    {
+        return $this->getVariantIds($blActiveVariants);
+    }
+
+    /**
+     * retrieve article VAT (cached)
+     *
+     * @return double
+     */
+    public function getArticleVat()
+    {
+        if (!isset($this->_dArticleVat)) {
+            $this->_dArticleVat = oxRegistry::get("oxVatSelector")->getArticleVat( $this );
+        }
+        return $this->_dArticleVat;
     }
 
     /**

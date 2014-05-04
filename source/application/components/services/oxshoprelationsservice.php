@@ -9,12 +9,6 @@
 
 class oxShopRelationsService
 {
-
-    /**
-     * @var oxShopRelations $_oShopRelations Shop relations object
-     */
-    protected $_oShopRelations = null;
-
     /**
      * DB table having oxshopincl and oxshopexlc field we are going to deal with
      */

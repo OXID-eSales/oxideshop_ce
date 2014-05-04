@@ -4293,10 +4293,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             $this->oxarticles__oxsubclass = new oxField('oxarticle');
         }
 
-        $blReturn = parent::_insert();
-
-
-        return $blReturn;
+        return parent::_insert();
     }
 
     /**

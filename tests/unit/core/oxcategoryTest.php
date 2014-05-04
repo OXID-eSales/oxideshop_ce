@@ -149,7 +149,7 @@ class Unit_Core_oxCategoryTest extends OxidTestCase
     {
         $sShopId = "oxbaseshop";
         $sInsert = "Insert into oxcategories (`OXID`,`OXROOTID`,`OXSHOPID`,`OXPARENTID`,`OXLEFT`,`OXRIGHT`,`OXTITLE`,`OXLONGDESC`,`OXLONGDESC_1`,`OXLONGDESC_2`,`OXLONGDESC_3`, `OXACTIVE`, `OXPRICEFROM`, `OXPRICETO`) " .
-                "values ('test2','test','oxbaseshop','test','2','3','test','','','','','1','10','50')";
+                "values ('test2','test','".$sShopId."','test','2','3','test','','','','','1','10','50')";
         $this->addToDatabase($sInsert, 'oxcategories');
 
         $this->_oCategoryB = new oxcategory();
@@ -235,10 +235,9 @@ class Unit_Core_oxCategoryTest extends OxidTestCase
 
     public function testGetSqlActiveSnippet()
     {
-        $oCategory = $this->getMock('oxCategory', array('isAdmin', 'getViewName', 'getCoreTableName'));
+        $oCategory = $this->getMock('oxCategory', array('isAdmin', 'getViewName'));
         $oCategory->expects($this->any())->method('isAdmin')->will($this->returnValue(true));
         $oCategory->expects($this->any())->method('getViewName')->will($this->returnValue('xxx'));
-        $oCategory->expects($this->any())->method('getCoreTableName')->will($this->returnValue('xxx'));
 
         $this->assertEquals("(  xxx.oxactive = 1  and  xxx.oxhidden = '0'  ) ", $oCategory->getSqlActiveSnippet());
     }

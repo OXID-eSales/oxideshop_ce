@@ -52,12 +52,12 @@ class oxShopRelationsService
         foreach ($aShopIds as $iShopId) {
             //naturally inherited(+), but not select from form input(-)
             if (in_array($iShopId, $aAvailableSubShops) && !in_array($iShopId, $aSelectedSubShops)) {
-                $oItem->unassignFromShop(null, $iShopId);
+                $oItem->unassignFromShop($iShopId);
             }
 
             //naturally not inherited(-) and selected (+)
             if (!in_array($iShopId, $aAvailableSubShops) && in_array($iShopId, $aSelectedSubShops)) {
-                $oItem->assignToShop(null, $iShopId);
+                $oItem->assignToShop($iShopId);
             }
         }
     }

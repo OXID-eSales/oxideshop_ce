@@ -1130,7 +1130,7 @@ class oxCategory extends oxI18n implements oxIUrl
 
         $sTable  = $this->getViewName();
         $sField  = "`{$sTable}`.`{$sField}`";
-        $sSql    = "SELECT $sField FROM `{$sTable}` WHERE `OXROOTID` = ? AND `OXPARENTID` = 'oxrootid'";
+        $sSql    = "SELECT $sField FROM `{$sTable}` WHERE `OXROOTID` = ? AND `OXPARENTID` != 'oxrootid'";
         $aResult = oxDb::getDb()->getCol($sSql, array($sOXID));
 
         return $aResult;

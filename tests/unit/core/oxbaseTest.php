@@ -1502,7 +1502,6 @@ class Unit_Core_oxbaseTest extends OxidTestCase
 
 
 
-
     /**
      * Test save if exists.
      *

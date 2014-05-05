@@ -6340,9 +6340,6 @@ class Unit_Core_oxArticleTest extends OxidTestCase
      */
     public function testGetCategoryIds()
     {
-        $sQ = "insert into oxobject2category set oxid = '_testArt2Cat', oxcatnid = '_testCat2', oxobjectid = '_testArt'";
-        $this->addToDatabase($sQ, 'oxobject2category');
-
         $oObj1 = oxNew( "oxCategory" );
         $oObj1->setId("_testCat1");
         $oObj1->oxcategories__oxparentid = new oxField("oxrootid", oxField::T_RAW);
@@ -6353,6 +6350,10 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $oObj2->oxcategories__oxparentid = new oxField($oObj1->getId(), oxField::T_RAW);
         $oObj2->oxcategories__oxactive = new oxField("1", oxField::T_RAW);
         $oObj2->save();
+
+        $sQ = "insert into oxobject2category set oxid = '_testArt2Cat', oxcatnid = '_testCat2', oxobjectid = '_testArt'";
+        $this->addToDatabase($sQ, 'oxobject2category');
+
         $oArticle = $this->_createArticle('_testArt');
         $this->assertEquals(array("_testCat2"), $oArticle->getCategoryIds(false, true));
         // #1306: Selecting active categories will not be checked if parent categories are active
@@ -6366,10 +6367,6 @@ class Unit_Core_oxArticleTest extends OxidTestCase
      */
     public function testGetCategoryIds_adsPriceCategoriesToList()
     {
-        $sQ = "insert into oxobject2category set oxid = '_testArt1Cat', oxcatnid = '_testCat1', oxobjectid = '_testArt'";
-        $this->addToDatabase($sQ, 'oxobject2category');
-        $this->addTableForCleanup('oxcategories');
-
 
         $oObj1 = oxNew( "oxCategory" );
         $oObj1->setId("_testCat1");
@@ -6384,6 +6381,10 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $oObj2->oxcategories__oxpricefrom = new oxField( 100 );
         $oObj2->oxcategories__oxpriceto = new oxField( 200 );
         $oObj2->save();
+
+        $sQ = "insert into oxobject2category set oxid = '_testArt1Cat', oxcatnid = '_testCat1', oxobjectid = '_testArt'";
+        $this->addToDatabase($sQ, 'oxobject2category');
+        $this->addTableForCleanup('oxcategories');
 
         $oArticle = $this->_createArticle('_testArt');
         $oArticle->oxarticles__oxprice = new oxField( 99 );

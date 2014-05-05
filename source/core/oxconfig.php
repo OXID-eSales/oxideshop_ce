@@ -1920,7 +1920,7 @@ class oxConfig extends oxSuperCfg
             $sShopId = $this->getShopId();
         }
 
-        if ($sShopId === $this->getShopId() && (!$sModule || $sModule == oxConfig::OXMODULE_THEME_PREFIX . $this->getConfigParam('sTheme'))) {
+        if ($sShopId == $this->getShopId() && (!$sModule || $sModule == oxConfig::OXMODULE_THEME_PREFIX . $this->getConfigParam('sTheme'))) {
             $sVarValue = $this->getConfigParam($sVarName);
             if ($sVarValue !== null) {
                 return $sVarValue;

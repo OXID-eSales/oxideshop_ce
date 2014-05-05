@@ -43,23 +43,37 @@ class oxShopRelationsService
     {
         $aSelectedSubShops = $this->getSelectedSubShops();
         $oItem = $this->_getSelectedItem();
-        $aItemShopIds = $oItem->getItemShopIds();
+        $aItemShopIds = $oItem->getItemAssignedShopIds();
+        $aAllSubShops = $this->getSubShopList($this->_getItemShopId());
 
-        $aCurrentShop = array($this->_getItemShopId());
-        $aAvailableSubShops = array_diff($aItemShopIds, $aCurrentShop);
-        $aShopIds = array_merge($aSelectedSubShops, $aAvailableSubShops);
-        $aShopIds = array_unique($aShopIds);
-        foreach ($aShopIds as $iShopId) {
+        foreach ($aAllSubShops as $oSubShop) {
+            $iShopId = $oSubShop->getId();
             //naturally inherited(+), but not select from form input(-)
-            if (in_array($iShopId, $aAvailableSubShops) && !in_array($iShopId, $aSelectedSubShops)) {
+            if (in_array($iShopId, $aItemShopIds) && !in_array($iShopId, $aSelectedSubShops)) {
                 $oItem->unassignFromShop($iShopId);
             }
 
             //naturally not inherited(-) and selected (+)
-            if (!in_array($iShopId, $aAvailableSubShops) && in_array($iShopId, $aSelectedSubShops)) {
+            if (!in_array($iShopId, $aItemShopIds) && in_array($iShopId, $aSelectedSubShops)) {
                 $oItem->assignToShop($iShopId);
             }
         }
+    }
+
+    /**
+     * Returns subshop tree.
+     *
+     * @param string $sShopId shop id
+     *
+     * @return null
+     */
+    public function getSubShopList($sShopId)
+    {
+        /** @var oxShop $oShop */
+        $oActShop = oxNew('oxShop');
+        $oActShop->load($sShopId);
+        $oShopList = $oActShop->getSubShopList();
+        return $oShopList;
     }
 
     /**

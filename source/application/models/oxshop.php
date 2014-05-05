@@ -53,6 +53,11 @@ class oxShop extends oxI18n
     protected $_aTables = null;
 
     /**
+     * @var $_blMultiShopInheritCategories defines if multishop inherits categories
+     */
+    protected $_blMultiShopInheritCategories = false;
+
+    /**
      * $_aTables setter
      *
      * @param array $aTables

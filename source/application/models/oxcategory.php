@@ -1121,11 +1121,18 @@ class oxCategory extends oxI18n implements oxIUrl
      */
     public function getFieldFromSubCategories($sField = 'OXID')
     {
-        $sTable = $this->getViewName();
-        $sRootId = $this->getId();
-        $sFields = "`{$sTable}`.`{$sField}`";
-        $sSql = "SELECT {$sFields} FROM {$sTable} WHERE `OXROOTID` = '{$sRootId}'";
-        $result = oxDb::getDb()->getCol($sSql);
-        return $result;
+        if (!$sOXID) {
+            $sOXID = $this->getId();
+        }
+        if (!$sOXID) {
+            return false;
+        }
+
+        $sTable  = $this->getViewName();
+        $sField  = "`{$sTable}`.`{$sField}`";
+        $sSql    = "SELECT $sField FROM `{$sTable}` WHERE `OXROOTID` = ? AND `OXPARENTID` = 'oxrootid'";
+        $aResult = oxDb::getDb()->getCol($sSql, array($sOXID));
+
+        return $aResult;
     }
 }

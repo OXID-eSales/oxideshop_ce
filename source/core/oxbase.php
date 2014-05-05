@@ -208,6 +208,8 @@ class oxBase extends oxSuperCfg
         $myConfig = $this->getConfig();
         $this->_sCacheKey = $this->getViewName();
 
+        $this->_addSkippedSaveFieldsForMapping();
+        $this->_disableLazyLoadingForCaching();
 
         if ( $this->_blUseLazyLoading ) {
             $this->_sCacheKey .= $myConfig->getActiveView()->getClassName();
@@ -1396,6 +1398,19 @@ class oxBase extends oxSuperCfg
         return false;
     }
 
+    /**
+     * Add additional fields to skipped save fields
+     */
+    protected function _addSkippedSaveFieldsForMapping()
+    {
+    }
+
+    /**
+     * Disable lazy loading if cache is enabled
+     */
+    protected function _disableLazyLoadingForCaching()
+    {
+    }
     /**
      * Checks if object ID's first two chars are 'o' and 'x'. Returns true or false
      *

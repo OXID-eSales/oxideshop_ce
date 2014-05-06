@@ -744,12 +744,13 @@ class oxBase extends oxSuperCfg
         }
 
 
+        $this->_removeShopRelations();
+
         $oDB = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
         $sCoreTable = $this->getCoreTableName();
         $sDelete = "delete from {$sCoreTable} where oxid = " . $oDB->quote($sOxId);
         $oDB->execute($sDelete);
         if ($blDelete = (bool) $oDB->affected_Rows()) {
-            $this->_removeShopRelations();
             $this->onChange(ACTION_DELETE, $sOxId);
         }
 

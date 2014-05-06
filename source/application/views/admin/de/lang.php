@@ -1854,6 +1854,7 @@ $aLang = array(
 
 // Shop licensing problems
 'SHOP_LICENSE_ERROR_GRACE_EXPIRED'                         => 'Der Lizenzkey Ihres OXID eShop ist endgültig abgelaufen. Bitte kontaktieren Sie den Technischen Support.',
+'SHOP_LICENSE_ERROR_GRACE_WILL_EXPIRE'                     => '[tr]The license key of your OXID eShop has been expired. OXID eShop will go offline less in a day. Please enter a valid license key or contact the Technical Support!',
 'SHOP_LICENSE_ERROR_shop_unlicensed'                       => 'Es ist ein Problem mit dem Lizenzkey Ihres OXID eShop aufgetreten. Aus diesem Grund wurde ein stiller Countdown von 7 Tagen gestartet. Nach Ablauf der Frist wird der OXID eShop offline gehen. Bitte geben Sie den gültigen Lizenzkey erneut ein oder kontaktieren Sie den Technischen Support!',
 'SHOP_LICENSE_ERROR_serial_expired'                        => 'Der Lizenzkey Ihres OXID eShop ist abgelaufen. Aus diesem Grund wurde ein stiller Countdown von 7 Tagen gestartet. Nach Ablauf der Frist wird der OXID eShop offline gehen. Bitte geben Sie einen gültigen Lizenzkey ein oder kontaktieren Sie den Technischen Support!',
 'SHOP_LICENSE_ERROR_incorrect_mandate_amount'              => 'Die Anzahl der lizensierten Subshops wurde überschritten. Aus diesem Grund wurde ein stiller Countdown von 7 Tagen gestartet. Nach Ablauf der Frist wird der OXID eShop offline gehen. Bitte geben Sie einen gültigen Lizenzkey ein oder kontaktieren Sie den Technischen Support!',

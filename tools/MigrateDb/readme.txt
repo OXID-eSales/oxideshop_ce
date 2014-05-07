@@ -27,14 +27,14 @@ How to update your db:
    After successful script execution 2-migrate.sql migration SQL is generated for all shops.
 
 5. Run 2-pre-migration.sql
-   This scripts drops indexes from oxobject2category and creates "temporary" table for migration.
+   This script drops indexes from oxobject2category and creates "temporary" table for migration.
 
 6. Run 3-migrate.sql
-   This scripts creates and inserts all mapping data to the newly created mapping tables and updates required data in
+   This script creates and inserts all mapping data to the newly created mapping tables and updates required data in
    table oxobject2category.
 
 7. Run 4-post-migration.sql
-   This scripts drops "temporary" table oxobject2category_tmp.
+   This script drops "temporary" table oxobject2category_tmp.
 
 8. Run 5-addIndices.sql
    This script add missing indices after required data has been inserted.

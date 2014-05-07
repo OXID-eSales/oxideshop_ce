@@ -39,6 +39,9 @@ How to update your db:
 8. Run 5-addIndices.sql
    This script add missing indices after required data has been inserted.
 
+9. (OPTIONAL) Run 6-drop_columns.sql
+   This script drops OXSHOPINCL and OXSHOPEXCL columns from multi-shop tables.
+   IMPORTANT! All old "mapping" data will be lost, do not run it if you want to keep an old "mapping" data.
 
 After the steps are complete you have full mapping tables with included mapping data.
 Next you can update the source code, clean tmp dirs, regenerated the db views etc.

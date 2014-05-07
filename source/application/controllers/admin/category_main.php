@@ -97,7 +97,7 @@ class Category_Main extends oxAdminDetails
      */
     public function getSortableFields()
     {
-        $aSkipFields = array( "OXID", "OXSHOPID", "OXSHOPINCL", "OXSHOPEXCL", "OXPARENTID", "OXACTIVE", "OXACTIVEFROM"
+        $aSkipFields = array( "OXID", "OXSHOPID", "OXMAPID", "OXPARENTID", "OXACTIVE", "OXACTIVEFROM"
             , "OXACTIVETO", "OXSHORTDESC"
             , "OXUNITNAME", "OXUNITQUANTITY", "OXEXTURL", "OXURLDESC", "OXURLIMG", "OXVAT"
             , "OXTHUMB", "OXPIC1", "OXPIC2", "OXPIC3", "OXPIC4", "OXPIC5"
@@ -109,7 +109,6 @@ class Category_Main extends oxAdminDetails
             , "OXUPDATEPRICE", "OXUPDATEPRICEA", "OXUPDATEPRICEB", "OXUPDATEPRICEC", "OXUPDATEPRICETIME", "OXISDOWNLOADABLE"
             , "OXVARMAXPRICE", "OXSHOWCUSTOMAGREEMENT"
         );
-        $aSkipFields = array_merge($aSkipFields, oxRegistry::get("oxShopMetaData")->getShopFields());
 
         $oDbHandler = oxNew( "oxDbMetaDataHandler" );
         $aFields = array_merge( $oDbHandler->getMultilangFields( 'oxarticles' ), $oDbHandler->getSinglelangFields( 'oxarticles', 0 ) );

@@ -109,9 +109,9 @@ class Category_Main extends oxAdminDetails
             , "OXUPDATEPRICE", "OXUPDATEPRICEA", "OXUPDATEPRICEB", "OXUPDATEPRICEC", "OXUPDATEPRICETIME", "OXISDOWNLOADABLE"
             , "OXVARMAXPRICE", "OXSHOWCUSTOMAGREEMENT"
         );
-
+        /** @var oxDbMetaDataHandler $oDbHandler */
         $oDbHandler = oxNew( "oxDbMetaDataHandler" );
-        $aFields = array_merge( $oDbHandler->getMultilangFields( 'oxarticles' ), $oDbHandler->getSinglelangFields( 'oxarticles', 0 ) );
+        $aFields = array_merge( $oDbHandler->getMultilangFields( 'oxarticles' ), array_keys($oDbHandler->getSinglelangFields( 'oxarticles', 0 )) );
         $aFields = array_diff( $aFields, $aSkipFields );
         $aFields = array_unique( $aFields );
 

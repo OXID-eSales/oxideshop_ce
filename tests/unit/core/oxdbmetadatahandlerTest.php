@@ -222,6 +222,32 @@ class Unit_Core_oxDbMetaDataHandlerTest extends OxidTestCase
         $this->assertEquals( $aRes, $oDbMeta->getMultilangFields("oxuser") );
     }
 
+    /**
+     * Checks wether getSingleLangField returns fields in associative array
+     */
+    public function testGetSingleLangFields()
+    {
+        $oDbMeta = new oxDbMetaDataHandler;
+        $aFields = array (
+            'OXID' => "OXID",
+            'OXSHOPID_1' => "oxarticles.OXSHOPID_1",
+            'OXPARENTID' => "oxarticles.OXPARENTID",
+            'OXACTIVE' => "oxarticles.OXACTIVE",
+        );
+
+        $aExpectedFields = array(
+            'OXID',
+            'OXSHOPID',
+            'OXPARENTID',
+            'OXACTIVE',
+        );
+
+        /** @var oxDbMetaDataHandler $oDbMeta */
+        $oDbMeta = $this->getMock('oxDbMetaDataHandler', array('getFields'));
+        $oDbMeta->expects($this->any())->method('getFields')->will($this->returnValue($aFields));
+        $this->assertEquals($aExpectedFields, array_keys($oDbMeta->getSinglelangFields('oxarticles', 1)));
+    }
+
     /*
      * Test if method collects sql for creating table new multilang fields
      */

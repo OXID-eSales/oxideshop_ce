@@ -399,7 +399,7 @@ class ajaxListComponent extends oxSuperCfg
             foreach ( $aFilter as $sCol => $sValue ) {
 
                 // skipping empty filters
-                if ( $sValue === '' ) {
+                if ( $sValue == '' && $sValue !== 0 && $sValue !== '0' ) {
                     continue;
                 }
 

@@ -2,7 +2,6 @@
 # Drop indexes from oxobject2category
 #
 
-DROP INDEX `PRIMARY` ON `oxobject2category`;
 DROP INDEX `OXOBJECTID` ON `oxobject2category`;
 DROP INDEX `OXPOS` ON `oxobject2category`;
 DROP INDEX `OXMAINIDX` ON `oxobject2category`;

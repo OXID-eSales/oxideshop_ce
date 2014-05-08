@@ -24,7 +24,7 @@ How to update your db:
 
 4. Run updateSqlGenerator.php from command line:
    >php updateSqlGenerator.php
-   After successful script execution 2-migrate.sql migration SQL is generated for all shops.
+   After successful script execution 3-migrate.sql migration SQL is generated for all shops.
 
 5. Run 2-pre-migration.sql
    This script drops indexes from oxobject2category and creates "temporary" table for migration.

@@ -36,12 +36,12 @@ How to update your db:
 7. Run 4-post-migration.sql
    This script drops "temporary" table oxobject2category_tmp.
 
-8. Run 5-addIndices.sql
-   This script add missing indices after required data has been inserted.
-
-9. (OPTIONAL) Run 6-drop_columns.sql
+8. (OPTIONAL) Run 4_2-OPTIONAL-drop-columns.sql
    This script drops OXSHOPINCL and OXSHOPEXCL columns from multi-shop tables.
    IMPORTANT! All old "mapping" data will be lost, do not run it if you want to keep an old "mapping" data.
+
+9. Run 5-addIndices.sql
+   This script add missing indices after required data has been inserted.
 
 After the steps are complete you have full mapping tables with included mapping data.
 Next you can update the source code, clean tmp dirs, regenerated the db views etc.

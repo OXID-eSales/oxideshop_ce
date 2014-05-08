@@ -26,21 +26,24 @@ How to update your db:
    >php updateSqlGenerator.php
    After successful script execution 2-migrate.sql migration SQL is generated for all shops.
 
-5. Run 2-pre-migration.sql
+5. Run 2-migrate.sql
+   This script creates and inserts all mapping data to the newly created mapping tables.
+
+6. Run 2-pre-migration.sql
    This script drops indexes from oxobject2category and creates "temporary" table for migration.
 
-6. Run 3-migrate.sql
+7. Run 3-migrate.sql
    This script creates and inserts all mapping data to the newly created mapping tables and updates required data in
    table oxobject2category.
 
-7. Run 4-post-migration.sql
+8. Run 4-post-migration.sql
    This script drops "temporary" table oxobject2category_tmp.
 
-8. (OPTIONAL) Run 4_2-OPTIONAL-drop-columns.sql
+9. (OPTIONAL) Run 4_2-OPTIONAL-drop-columns.sql
    This script drops OXSHOPINCL and OXSHOPEXCL columns from multi-shop tables.
    IMPORTANT! All old "mapping" data will be lost, do not run it if you want to keep an old "mapping" data.
 
-9. Run 5-addIndices.sql
+10. Run 5-addIndices.sql
    This script add missing indices after required data has been inserted.
 
 After the steps are complete you have full mapping tables with included mapping data.

@@ -187,7 +187,7 @@ class article_extend_ajax extends ajaxListComponent
                     continue;
                 }
 
-                $oNew->setId($myUtilsObj->generateUID());
+                $oNew->setId(md5($sAdd . $sAdd . $sShopID));
                 $oNew->oxobject2category__oxobjectid = new oxField($soxId);
                 $oNew->oxobject2category__oxcatnid = new oxField($sAdd);
                 $oNew->oxobject2category__oxtime = new oxField(time());

@@ -161,7 +161,7 @@ class category_main_ajax extends ajaxListComponent
                     continue;
                 }
 
-                $oNew->oxobject2category__oxid = new oxField($oNew->setId($myUtilsObject->generateUID()));
+                $oNew->oxobject2category__oxid = new oxField($oNew->setId(md5($sAdd . $sCategoryID . $sShopID)));
                 $oNew->oxobject2category__oxobjectid = new oxField($sAdd);
                 $oNew->oxobject2category__oxcatnid = new oxField($sCategoryID);
                 $oNew->oxobject2category__oxtime = new oxField(time());

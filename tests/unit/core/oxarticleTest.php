@@ -6419,8 +6419,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $oArticle->oxarticles__oxparentid = new oxField($testParentid, oxField::T_RAW);
 
         // assigning articles to category
-        $oA2C = new oxbase();
-        $oA2C->init( 'oxobject2category' );
+        $oA2C = new oxobject2category();
         $oA2C->oxobject2category__oxobjectid = new oxField( $testAid );
         $oA2C->oxobject2category__oxcatnid = new oxField( $testCatId );
         $oA2C->setId( $testAid );

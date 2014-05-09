@@ -175,8 +175,7 @@ class article_extend_ajax extends ajaxListComponent
 
             $oDb = oxDb::getDb();
 
-            $oNew = oxNew('oxbase');
-            $oNew->init('oxobject2category');
+            $oNew = oxNew('oxobject2category');
             $myUtilsObj = oxUtilsObject::getInstance();
 
             foreach ($aAddCat as $sAdd) {
@@ -187,7 +186,7 @@ class article_extend_ajax extends ajaxListComponent
                     continue;
                 }
 
-                $oNew->setId(md5($sAdd . $sAdd . $sShopID));
+                $oNew->setId(md5($soxId . $sAdd . $sShopID));
                 $oNew->oxobject2category__oxobjectid = new oxField($soxId);
                 $oNew->oxobject2category__oxcatnid = new oxField($sAdd);
                 $oNew->oxobject2category__oxtime = new oxField(time());

@@ -146,8 +146,7 @@ class category_main_ajax extends ajaxListComponent
 
             $sO2CView = $this->_getViewName('oxobject2category');
 
-            $oNew = oxNew('oxbase');
-            $oNew->init('oxobject2category');
+            $oNew = oxNew('oxobject2category');
             $myUtilsObject = oxUtilsObject::getInstance();
             $oActShop = $myConfig->getActiveShop();
 

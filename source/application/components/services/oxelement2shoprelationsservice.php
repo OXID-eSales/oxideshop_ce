@@ -7,7 +7,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
-class oxShopRelationsService
+class oxElement2ShopRelationsService
 {
     /**
      * DB table having oxshopincl and oxshopexlc field we are going to deal with

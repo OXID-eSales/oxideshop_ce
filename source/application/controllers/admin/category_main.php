@@ -91,6 +91,7 @@ class Category_Main extends oxAdminDetails
         $this->_aViewData["sortableFields"] = $this->getSortableFields();
 
         if (oxRegistry::getConfig()->getRequestParameter("aoc")) {
+            /** @var category_main_ajax $oCategoryMainAjax */
             $oCategoryMainAjax          = oxNew('category_main_ajax');
             $this->_aViewData['oxajax'] = $oCategoryMainAjax->getColumns();
 
@@ -157,6 +158,7 @@ class Category_Main extends oxAdminDetails
             // shopId
             $aParams['oxcategories__oxshopid'] = oxRegistry::getSession()->getVariable("actshop");
 
+        /** @var oxCategory $oCategory */
         $oCategory = oxNew("oxcategory");
 
         if ($soxId != "-1") {
@@ -247,6 +249,7 @@ class Category_Main extends oxAdminDetails
             return;
         }
 
+        /** @var oxCategory $oItem */
         $oItem = oxNew('oxCategory');
         $oItem->load($sOxId);
         $this->_deleteCatPicture($oItem, $sField);

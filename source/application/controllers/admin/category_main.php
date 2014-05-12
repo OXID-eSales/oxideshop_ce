@@ -166,7 +166,9 @@ class Category_Main extends oxAdminDetails
             $oCategory->load($soxId);
             $oCategory->loadInLang($this->_iEditLang, $soxId);
 
+            /** @var oxUtilsPic $myUtilsPic */
             $myUtilsPic = oxRegistry::get("oxUtilsPic");
+
             // #1173M - not all pic are deleted, after article is removed
             $myUtilsPic->overwritePic($oCategory, 'oxcategories', 'oxthumb', 'TC', '0', $aParams, $myConfig->getPictureDir(false));
             $myUtilsPic->overwritePic($oCategory, 'oxcategories', 'oxicon', 'CICO', 'icon', $aParams, $myConfig->getPictureDir(false));
@@ -196,7 +198,10 @@ class Category_Main extends oxAdminDetails
         $oCategory->assign($aParams);
         $oCategory->setLanguage($this->_iEditLang);
 
-        $oCategory = oxRegistry::get("oxUtilsFile")->processFiles($oCategory);
+        /** @var oxUtilsFile $oUtilsFile */
+        $oUtilsFile = oxRegistry::get("oxUtilsFile");
+
+        $oCategory = $oUtilsFile->processFiles($oCategory);
         $oCategory->save();
 
         $this->setEditObjectId($oCategory->getId());
@@ -238,7 +243,11 @@ class Category_Main extends oxAdminDetails
             // disabling uploading pictures if this is demo shop
             $oEx = new oxExceptionToDisplay();
             $oEx->setMessage('CATEGORY_PICTURES_UPLOADISDISABLED');
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false);
+
+            /** @var oxUtilsView $oUtilsView */
+            $oUtilsView = oxRegistry::get("oxUtilsView");
+
+            $oUtilsView->addErrorToDisplay($oEx, false);
 
             return;
         }
@@ -287,9 +296,13 @@ class Category_Main extends oxAdminDetails
         }
 
         if ($sImgType !== false) {
+            /** @var oxUtilsPic $myUtilsPic */
             $myUtilsPic = oxRegistry::get("oxUtilsPic");
-            $sDir       = $myConfig->getPictureDir(false);
-            $myUtilsPic->safePictureDelete($oItem->$sItemKey->value, $sDir . oxRegistry::get("oxUtilsFile")->getImageDirByType($sImgType), 'oxcategories', $sField);
+            /** @var oxUtilsFile $oUtilsFile */
+            $oUtilsFile = oxRegistry::get("oxUtilsFile");
+
+            $sDir = $myConfig->getPictureDir(false);
+            $myUtilsPic->safePictureDelete($oItem->$sItemKey->value, $sDir . $oUtilsFile->getImageDirByType($sImgType), 'oxcategories', $sField);
 
             $oItem->$sItemKey = new oxField();
             $oItem->save();

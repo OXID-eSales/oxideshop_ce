@@ -240,8 +240,7 @@ class Unit_utf8Test extends OxidTestCase
         $oTestArticle1->save();
 
         // assigning articles to category
-        $oA2C = new oxbase();
-        $oA2C->init( 'oxobject2category' );
+        $oA2C = new oxobject2category();
         $oA2C->oxobject2category__oxobjectid = new oxField( '_testArticle1' );
         $oA2C->oxobject2category__oxcatnid = new oxField( $sCatId );
         $oA2C->setId( '_testArticle1' );
@@ -472,8 +471,7 @@ class Unit_utf8Test extends OxidTestCase
         $oTestArticle1->save();
 
         // assigning articles to category
-        $oA2C = new oxbase();
-        $oA2C->init( 'oxobject2category' );
+        $oA2C = new oxobject2category();
         $oA2C->oxobject2category__oxobjectid = new oxField( '_testArticle1' );
         $oA2C->oxobject2category__oxcatnid = new oxField( $sCatId );
         $oA2C->setId( '_testArticle1' );

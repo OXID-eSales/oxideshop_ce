@@ -122,8 +122,7 @@ class Unit_Core_oxbasketTest extends OxidTestCase
         $this->oCategory->save();
 
         // assigning article to category
-        $oArt2Cat = oxNew( "oxbase" );
-        $oArt2Cat->init( "oxobject2category" );
+        $oArt2Cat = oxNew( "oxobject2category" );
         $oArt2Cat->oxobject2category__oxobjectid = new oxField($sNewId, oxField::T_RAW);
         $oArt2Cat->oxobject2category__oxcatnid = new oxField($sCatId, oxField::T_RAW);
         $oArt2Cat->save();
@@ -1367,8 +1366,7 @@ class Unit_Core_oxbasketTest extends OxidTestCase
         $oArticle->save();
 
         // assigning article to category
-        $oArt2Cat = oxNew( "oxbase" );
-        $oArt2Cat->init( "oxobject2category" );
+        $oArt2Cat = oxNew( "oxobject2category" );
         $oArt2Cat->oxobject2category__oxobjectid = new oxField('_testArticle', oxField::T_RAW);
         $oArt2Cat->oxobject2category__oxcatnid = new oxField($this->oCategory->getId(), oxField::T_RAW);
         $oArt2Cat->save();

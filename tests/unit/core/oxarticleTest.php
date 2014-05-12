@@ -3188,9 +3188,8 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $this->assertTrue( oxRegistry::get("oxDiscountList")->hasSkipDiscountCategories() );
 
         // assigning article to category
-        $oArt2Cat = oxNew( "oxbase" );
-        $oArt2Cat->init( "oxobject2category" );
-        $oArt2Cat->oxobject2category__oxobjectid = new oxField($oArticle->oxarticles__oxid->value, oxField::T_RAW);
+        $oArt2Cat = oxNew( "oxobject2category" );
+        $oArt2Cat->oxobject2category__oxobjectid = new oxField($this->oArticle->oxarticles__oxid->value, oxField::T_RAW);
         $oArt2Cat->oxobject2category__oxcatnid = new oxField('_testCat', oxField::T_RAW);
         $oArt2Cat->save();
 
@@ -3235,9 +3234,8 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $this->assertTrue( oxRegistry::get("oxDiscountList")->hasSkipDiscountCategories(), 'we have skip dicounts' );
 
         // assigning article to category
-        $oArt2Cat = oxNew( "oxbase" );
-        $oArt2Cat->init( "oxobject2category" );
-        $oArt2Cat->oxobject2category__oxobjectid = new oxField($oArticle->oxarticles__oxid->value, oxField::T_RAW);
+        $oArt2Cat = oxNew( "oxobject2category" );
+        $oArt2Cat->oxobject2category__oxobjectid = new oxField($this->oArticle->oxarticles__oxid->value, oxField::T_RAW);
         $oArt2Cat->oxobject2category__oxcatnid = new oxField('_testCat', oxField::T_RAW);
         $oArt2Cat->save();
 
@@ -6961,12 +6959,12 @@ class Unit_Core_oxArticleTest extends OxidTestCase
     }
 
 
-     /**
+    /**
      * Test case for getArticlefiles
      *
      * @return null
      */
-     public function testGetArticleFiles()
+    public function testGetArticleFiles()
     {
         $this->_createArticle('_testArt', '_testVar');
         $oDb = oxDb::getDb();
@@ -7020,7 +7018,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $this->assertTrue( $oArticle->isDownloadable() );
     }
 
-/**
+    /**
      * Test has amount price
      *
      * @return null

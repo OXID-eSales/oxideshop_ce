@@ -338,8 +338,7 @@ class Unit_Core_oxSeoEncoderCategoryTest extends OxidTestCase
             $sSubCat = '8a142c3e44ea4e714.31136811';
         $sArt    = 'testArt';
 
-        $o2c = new oxbase();
-        $o2c->init('oxobject2category');
+        $o2c = new oxobject2category();
         $o2c->oxobject2category__oxobjectid = new oxField($sArt);
         $o2c->oxobject2category__oxcatnid = new oxField($sCat);
         $o2c->save();

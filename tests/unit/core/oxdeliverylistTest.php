@@ -175,8 +175,7 @@ class Unit_Core_oxdeliverylistTest extends OxidTestCase
             $this->_aTestProducts[] = $oArticle;
 
             // 2.1 assigning products to category
-            $oO2Cat =  oxNew( 'oxbase' );
-            $oO2Cat->init( 'oxobject2category' );
+            $oO2Cat =  oxNew( 'oxobject2category' );
             $oO2Cat->setId('_testO2CatId'.$i);
             $oO2Cat->oxobject2category__oxobjectid = new oxField($oArticle->getId(), oxField::T_RAW);
             $oO2Cat->oxobject2category__oxshopid = new oxField(oxRegistry::getConfig()->getShopId(), oxField::T_RAW);

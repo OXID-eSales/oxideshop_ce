@@ -140,27 +140,11 @@ class Category_Main extends oxAdminDetails
 
         $myConfig = $this->getConfig();
 
-        $soxId   = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $soxId = $this->getEditObjectId();
 
-        // checkbox handling
-        if (!isset($aParams['oxcategories__oxactive'])) {
-            $aParams['oxcategories__oxactive'] = 0;
-        }
-        if (!isset($aParams['oxcategories__oxhidden'])) {
-            $aParams['oxcategories__oxhidden'] = 0;
-        }
-        if (!isset($aParams['oxcategories__oxdefsortmode'])) {
-            $aParams['oxcategories__oxdefsortmode'] = 0;
-        }
-
-        // null values
-        if ($aParams['oxcategories__oxvat'] === '') {
-            $aParams['oxcategories__oxvat'] = null;
-        }
-
-            // shopId
-            $aParams['oxcategories__oxshopid'] = oxRegistry::getSession()->getVariable("actshop");
+        $aParams = $this->_parseRequestParametersForSave(
+            $myConfig->getRequestParameter("editval")
+        );
 
         /** @var oxCategory $oCategory */
         $oCategory = oxNew("oxcategory");
@@ -177,19 +161,10 @@ class Category_Main extends oxAdminDetails
             $myUtilsPic->overwritePic($oCategory, 'oxcategories', 'oxthumb', 'TC', '0', $aParams, $myConfig->getPictureDir(false));
             $myUtilsPic->overwritePic($oCategory, 'oxcategories', 'oxicon', 'CICO', 'icon', $aParams, $myConfig->getPictureDir(false));
             $myUtilsPic->overwritePic($oCategory, 'oxcategories', 'oxpromoicon', 'PICO', 'icon', $aParams, $myConfig->getPictureDir(false));
-
-        } else {
-            //#550A - if new category is made then is must be default activ
-            //#4051: Impossible to create inactive category
-            //$aParams['oxcategories__oxactive'] = 1;
-            $aParams['oxcategories__oxid'] = null;
         }
 
 
         $oCategory->setLanguage(0);
-        if (isset($aParams["oxcategories__oxlongdesc"])) {
-            $aParams["oxcategories__oxlongdesc"] = $this->_processLongDesc($aParams["oxcategories__oxlongdesc"]);
-        }
 
 
         if (empty($aParams['oxcategories__oxpricefrom'])) {
@@ -311,5 +286,47 @@ class Category_Main extends oxAdminDetails
             $oItem->$sItemKey = new oxField();
             $oItem->save();
         }
+    }
+
+    /**
+     * Parse parameters prior to saving category.
+     *
+     * @param array $aReqParams Request parameters.
+     *
+     * @return array
+     */
+    protected function _parseRequestParametersForSave($aReqParams)
+    {
+        // checkbox handling
+        if (!isset($aReqParams['oxcategories__oxactive'])) {
+            $aReqParams['oxcategories__oxactive'] = 0;
+        }
+        if (!isset($aReqParams['oxcategories__oxhidden'])) {
+            $aReqParams['oxcategories__oxhidden'] = 0;
+        }
+        if (!isset($aReqParams['oxcategories__oxdefsortmode'])) {
+            $aReqParams['oxcategories__oxdefsortmode'] = 0;
+        }
+
+        // null values
+        if ($aReqParams['oxcategories__oxvat'] === '') {
+            $aReqParams['oxcategories__oxvat'] = null;
+        }
+
+            // shopId
+            $aReqParams['oxcategories__oxshopid'] = oxRegistry::getSession()->getVariable("actshop");
+
+        if ($this->getEditObjectId() == "-1") {
+            //#550A - if new category is made then is must be default activ
+            //#4051: Impossible to create inactive category
+            //$aParams['oxcategories__oxactive'] = 1;
+            $aParams['oxcategories__oxid'] = null;
+        }
+
+        if (isset($aReqParams["oxcategories__oxlongdesc"])) {
+            $aReqParams["oxcategories__oxlongdesc"] = $this->_processLongDesc($aReqParams["oxcategories__oxlongdesc"]);
+        }
+
+        return $aReqParams;
     }
 }

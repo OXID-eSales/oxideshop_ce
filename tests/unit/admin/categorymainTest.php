@@ -20,8 +20,8 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath( "." ).'/unit/OxidTestCase.php';
-require_once realpath( "." ).'/unit/test_config.inc.php';
+require_once realpath(".") . '/unit/OxidTestCase.php';
+require_once realpath(".") . '/unit/test_config.inc.php';
 
 /**
  * Tests for Category_Main class
@@ -51,8 +51,8 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
      */
     protected function tearDown()
     {
-        $this->cleanUpTable( 'oxcategories' );
-        oxDb::getDb()->execute( "DELETE FROM oxcategories WHERE OXTITLE = 'Test category title for unit' " );
+        $this->cleanUpTable('oxcategories');
+        oxDb::getDb()->execute("DELETE FROM oxcategories WHERE OXTITLE = 'Test category title for unit' ");
 
         parent::tearDown();
     }
@@ -64,15 +64,15 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setRequestParameter( "oxid", "testId" );
-        oxTestModules::addFunction( "oxcategory", "isDerived", "{return true;}" );
+        modConfig::setRequestParameter("oxid", "testId");
+        oxTestModules::addFunction("oxcategory", "isDerived", "{return true;}");
 
         // testing..
         $oView = new Category_Main();
-        $this->assertEquals( 'category_main.tpl', $oView->render() );
+        $this->assertEquals('category_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue( isset( $aViewData['edit'] ) );
-        $this->assertTrue( $aViewData['edit'] instanceof oxcategory );
+        $this->assertTrue(isset($aViewData['edit']));
+        $this->assertTrue($aViewData['edit'] instanceof oxcategory);
     }
 
     /**
@@ -82,14 +82,14 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
      */
     public function testRenderNoRealObjectId()
     {
-        modConfig::setRequestParameter( "oxid", "-1" );
+        modConfig::setRequestParameter("oxid", "-1");
 
         // testing..
         $oView = new Category_Main();
-        $this->assertEquals( 'category_main.tpl', $oView->render() );
+        $this->assertEquals('category_main.tpl', $oView->render());
         $aViewData = $oView->getViewData();
-        $this->assertTrue( isset( $aViewData['oxid'] ) );
-        $this->assertEquals( "-1", $aViewData['oxid'] );
+        $this->assertTrue(isset($aViewData['oxid']));
+        $this->assertEquals("-1", $aViewData['oxid']);
     }
     
     /**
@@ -99,18 +99,18 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
      */
     public function testSaveActiveSet0()
     {
-        $aParams = array( "oxcategories__oxactive" => 0, 
-                          "oxcategories__oxparentid" => "oxrootid",
-                          "oxcategories__oxtitle" => "Test category title for unit" );
+        $aParams = array("oxcategories__oxactive"   => 0,
+            "oxcategories__oxparentid" => "oxrootid",
+            "oxcategories__oxtitle"    => "Test category title for unit");
         
-        modConfig::setRequestParameter( "oxid", -1 );
-        modConfig::setRequestParameter( "editval", $aParams );
+        modConfig::setRequestParameter("oxid", -1);
+        modConfig::setRequestParameter("editval", $aParams);
         
         $oView = new Category_Main();
         $oView->save();
         
         $sActive = oxDb::getDb()->getOne("SELECT OXACTIVE FROM oxcategories WHERE OXTITLE='Test category title for unit'");
-        $this->assertEquals( 0, $sActive );
+        $this->assertEquals(0, $sActive);
     }
 
     /**
@@ -120,14 +120,14 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
      */
     public function testSave()
     {
-        oxTestModules::addFunction( 'oxcategory', 'save', '{ return true; }');
-        modConfig::setRequestParameter( "oxid", "testId" );
+        oxTestModules::addFunction('oxcategory', 'save', '{ return true; }');
+        modConfig::setRequestParameter("oxid", "testId");
 
         // testing..
         $oView = new Category_Main();
         $oView->save();
                       
-        $this->assertEquals( "1", $oView->getViewDataElement( "updatelist" ) );
+        $this->assertEquals("1", $oView->getViewDataElement("updatelist"));
     }
 
 
@@ -138,14 +138,14 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
      */
     public function testSaveDefaultOxid()
     {
-        oxTestModules::addFunction( 'oxcategory', 'save', '{ $this->oxcategories__oxid = new oxField( "testId" ); return true; }');
-        modConfig::setRequestParameter( "oxid", "-1" );
+        oxTestModules::addFunction('oxcategory', 'save', '{ $this->oxcategories__oxid = new oxField( "testId" ); return true; }');
+        modConfig::setRequestParameter("oxid", "-1");
 
         // testing..
         $oView = new Category_Main();
         $oView->save();
 
-        $this->assertEquals( "1", $oView->getViewDataElement( "updatelist" ) );
+        $this->assertEquals("1", $oView->getViewDataElement("updatelist"));
     }
 
     /**
@@ -155,14 +155,14 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
      */
     public function testSaveinnlang()
     {
-        modConfig::setRequestParameter( "oxid", "testId" );
-        oxTestModules::addFunction( 'oxcategory', 'save', '{ return true; }');
+        modConfig::setRequestParameter("oxid", "testId");
+        oxTestModules::addFunction('oxcategory', 'save', '{ return true; }');
 
         // testing..
         $oView = new Category_Main();
         $oView->saveinnlang();
 
-        $this->assertEquals( "1", $oView->getViewDataElement( "updatelist" ) );
+        $this->assertEquals("1", $oView->getViewDataElement("updatelist"));
     }
 
 
@@ -173,14 +173,14 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
      */
     public function testSaveinnlangDefaultOxid()
     {
-        modConfig::setRequestParameter( "oxid", "-1" );
-        oxTestModules::addFunction( 'oxcategory', 'save', '{ $this->oxcategories__oxid = new oxField( "testId" ); return true; }');
+        modConfig::setRequestParameter("oxid", "-1");
+        oxTestModules::addFunction('oxcategory', 'save', '{ $this->oxcategories__oxid = new oxField( "testId" ); return true; }');
 
         // testing..
         $oView = new Category_Main();
         $oView->saveinnlang();
 
-        $this->assertEquals( "1", $oView->getViewDataElement( "updatelist" ) );
+        $this->assertEquals("1", $oView->getViewDataElement("updatelist"));
     }
 
     /**
@@ -193,8 +193,8 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
         $oCatMain = new Category_Main();
 
         $aFields = $oCatMain->getSortableFields();
-        $this->assertTrue(in_array( 'OXTITLE', $aFields));
-        $this->assertFalse(in_array( 'OXAMITEMID', $aFields));
+        $this->assertTrue(in_array('OXTITLE', $aFields));
+        $this->assertFalse(in_array('OXAMITEMID', $aFields));
     }
 
     /**
@@ -204,15 +204,15 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
      */
     public function testDeletePicture_deletingInvalidField()
     {
-        $oDb = oxDb::getDb( oxDB::FETCH_MODE_ASSOC );
+        $oDb = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
 
         $this->_oCategory->oxcategories__oxtitle = new oxField('Test_title');
         $this->_oCategory->save();
-        $this->assertEquals( 'Test_title', $oDb->getOne( "select oxtitle from oxcategories where oxid='_testCatId' " ), 'Category save operation failed' );
+        $this->assertEquals('Test_title', $oDb->getOne("select oxtitle from oxcategories where oxid='_testCatId' "), 'Category save operation failed');
 
         $oView = $this->getProxyClass('Category_Main');
         $oView->UNITdeleteCatPicture($this->_oCategory, 'oxtitle');
-        $this->assertEquals( 'Test_title', $oDb->getOne( "select oxtitle from oxcategories where oxid='_testCatId' " ) );
+        $this->assertEquals('Test_title', $oDb->getOne("select oxtitle from oxcategories where oxid='_testCatId' "));
     }
 
     /**
@@ -222,15 +222,15 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
      */
     public function testDeletePicture_deletingPromoIcon()
     {
-        $oDb = oxDb::getDb( oxDB::FETCH_MODE_ASSOC );
+        $oDb = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
 
         $this->_oCategory->oxcategories__oxpromoicon = new oxField('testIcon.jpg');
         $this->_oCategory->save();
-        $this->assertEquals( 'testIcon.jpg', $oDb->getOne( "select oxpromoicon from oxcategories where oxid='_testCatId' " ), 'Category save operation failed' );
+        $this->assertEquals('testIcon.jpg', $oDb->getOne("select oxpromoicon from oxcategories where oxid='_testCatId' "), 'Category save operation failed');
 
         $oView = $this->getProxyClass('Category_Main');
         $oView->UNITdeleteCatPicture($this->_oCategory, 'oxpromoicon');
-        $this->assertEquals( '', $oDb->getOne( "select oxpromoicon from oxcategories where oxid='_testCatId' " ) );
+        $this->assertEquals('', $oDb->getOne("select oxpromoicon from oxcategories where oxid='_testCatId' "));
     }
 
     /**
@@ -240,15 +240,15 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
      */
     public function testDeletePicture_deletingThumb()
     {
-        $oDb = oxDb::getDb( oxDB::FETCH_MODE_ASSOC );
+        $oDb = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
 
         $this->_oCategory->oxcategories__oxthumb = new oxField('testIcon.jpg');
         $this->_oCategory->save();
-        $this->assertEquals( 'testIcon.jpg', $oDb->getOne( "select oxthumb from oxcategories where oxid='_testCatId' " ), 'Category save operation failed' );
+        $this->assertEquals('testIcon.jpg', $oDb->getOne("select oxthumb from oxcategories where oxid='_testCatId' "), 'Category save operation failed');
 
         $oView = $this->getProxyClass('Category_Main');
         $oView->UNITdeleteCatPicture($this->_oCategory, 'oxthumb');
-        $this->assertEquals( '', $oDb->getOne( "select oxthumb from oxcategories where oxid='_testCatId' " ) );
+        $this->assertEquals('', $oDb->getOne("select oxthumb from oxcategories where oxid='_testCatId' "));
     }
 
     /**
@@ -258,15 +258,15 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
      */
     public function testDeletePicture_deletingIcon()
     {
-        $oDb = oxDb::getDb( oxDB::FETCH_MODE_ASSOC );
+        $oDb = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
 
         $this->_oCategory->oxcategories__oxicon = new oxField('testIcon.jpg');
         $this->_oCategory->save();
-        $this->assertEquals( 'testIcon.jpg', $oDb->getOne( "select oxicon from oxcategories where oxid='_testCatId' " ), 'Category save operation failed' );
+        $this->assertEquals('testIcon.jpg', $oDb->getOne("select oxicon from oxcategories where oxid='_testCatId' "), 'Category save operation failed');
 
         $oView = $this->getProxyClass('Category_Main');
         $oView->UNITdeleteCatPicture($this->_oCategory, 'oxicon');
-        $this->assertEquals( '', $oDb->getOne( "select oxicon from oxcategories where oxid='_testCatId' " ) );
+        $this->assertEquals('', $oDb->getOne("select oxicon from oxcategories where oxid='_testCatId' "));
     }
 
     /**
@@ -278,15 +278,15 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
     {
             return;
 
-        $oItem = $this->getMock( "oxCategory", array( "canUpdateField", 'canUpdate', 'isDerived' ) );
+        $oItem = $this->getMock("oxCategory", array("canUpdateField", 'canUpdate', 'isDerived'));
         $oItem->expects($this->once())->method('canUpdateField')->with($this->equalTo('oxthumb'))->will($this->returnValue(true));
         $oItem->expects($this->once())->method('canUpdate')->will($this->returnValue(false));
         $oItem->expects($this->never())->method('isDerived')->will($this->returnValue(false));
 
         $oItem->oxcategories__oxthumb = new oxField('testThumb.jpg');
 
-        $oPicHandler = $this->getMock( "oxUtilsPic", array('safePictureDelete') );
-        $oPicHandler->expects( $this->never() )->method('safePictureDelete');
+        $oPicHandler = $this->getMock("oxUtilsPic", array('safePictureDelete'));
+        $oPicHandler->expects($this->never())->method('safePictureDelete');
         modInstances::addMod('oxUtilsPic', $oPicHandler);
 
         $oView = $this->getProxyClass('Category_Main');
@@ -303,15 +303,15 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
     {
             return;
 
-        $oItem = $this->getMock( "oxCategory", array( "canUpdateField", 'canUpdate', 'isDerived' ) );
+        $oItem = $this->getMock("oxCategory", array("canUpdateField", 'canUpdate', 'isDerived'));
         $oItem->expects($this->once())->method('canUpdateField')->with($this->equalTo('oxthumb'))->will($this->returnValue(true));
         $oItem->expects($this->once())->method('canUpdate')->will($this->returnValue(true));
         $oItem->expects($this->once())->method('isDerived')->will($this->returnValue(true));
 
         $oItem->oxcategories__oxthumb = new oxField('testThumb.jpg');
 
-        $oPicHandler = $this->getMock( "oxUtilsPic", array('safePictureDelete') );
-        $oPicHandler->expects( $this->never() )->method('safePictureDelete');
+        $oPicHandler = $this->getMock("oxUtilsPic", array('safePictureDelete'));
+        $oPicHandler->expects($this->never())->method('safePictureDelete');
         modInstances::addMod('oxUtilsPic', $oPicHandler);
 
         $oView = $this->getProxyClass('Category_Main');
@@ -326,20 +326,20 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
      */
     public function testDeletePicture_demoShopMode()
     {
-        $oConfig = $this->getMock( "oxConfig", array( "isDemoShop" ) );
-        $oConfig->expects( $this->once() )->method( 'isDemoShop' )->will( $this->returnValue( true ) );
+        $oConfig = $this->getMock("oxConfig", array("isDemoShop"));
+        $oConfig->expects($this->once())->method('isDemoShop')->will($this->returnValue(true));
 
-        oxRegistry::getSession()->deleteVariable( "Errors" );
+        oxRegistry::getSession()->deleteVariable("Errors");
 
-        $oView = $this->getProxyClass( "Category_Main" );
-        $oView->setConfig( $oConfig );
+        $oView = $this->getProxyClass("Category_Main");
+        $oView->setConfig($oConfig);
         $oView->deletePicture();
 
-        $aEx = oxRegistry::getSession()->getVariable( "Errors" );
-        $oEx = unserialize( $aEx["default"][0] );
+        $aEx     = oxRegistry::getSession()->getVariable("Errors");
+        $oEx     = unserialize($aEx["default"][0]);
         $sExpMsg = oxRegistry::getLang()->translateString('CATEGORY_PICTURES_UPLOADISDISABLED');
 
         $this->assertFalse(empty($sExpMsg), 'no translation for CATEGORY_PICTURES_UPLOADISDISABLED');
-        $this->assertEquals( $sExpMsg, $oEx->getOxMessage() );
+        $this->assertEquals($sExpMsg, $oEx->getOxMessage());
     }
 }

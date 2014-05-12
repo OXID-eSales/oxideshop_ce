@@ -25,8 +25,6 @@
  * There is possibility to change categories description, sorting, range of price
  * and etc.
  * Admin Menu: Manage Products -> Categories -> Main.
- *
- * @package admin
  */
 class Category_Main extends oxAdminDetails
 {
@@ -43,8 +41,14 @@ class Category_Main extends oxAdminDetails
 
         parent::render();
 
-        $this->_aViewData["edit"] = $oCategory = oxNew("oxcategory");;
-        $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
+        /** @var oxcategory $oCategory */
+        $oCategory = oxNew("oxcategory");
+
+        $soxId = $this->getEditObjectId();
+
+        $this->_aViewData["edit"] = $oCategory;
+        $this->_aViewData["oxid"] = $soxId;
+
         if ($soxId != "-1" && isset($soxId)) {
 
             // generating category tree for select list

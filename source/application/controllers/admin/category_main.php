@@ -144,16 +144,20 @@ class Category_Main extends oxAdminDetails
         $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
         // checkbox handling
-        if (!isset($aParams['oxcategories__oxactive']))
+        if (!isset($aParams['oxcategories__oxactive'])) {
             $aParams['oxcategories__oxactive'] = 0;
-        if (!isset($aParams['oxcategories__oxhidden']))
+        }
+        if (!isset($aParams['oxcategories__oxhidden'])) {
             $aParams['oxcategories__oxhidden'] = 0;
-        if (!isset($aParams['oxcategories__oxdefsortmode']))
+        }
+        if (!isset($aParams['oxcategories__oxdefsortmode'])) {
             $aParams['oxcategories__oxdefsortmode'] = 0;
+        }
 
         // null values
-        if ($aParams['oxcategories__oxvat'] === '')
+        if ($aParams['oxcategories__oxvat'] === '') {
             $aParams['oxcategories__oxvat'] = null;
+        }
 
             // shopId
             $aParams['oxcategories__oxshopid'] = oxRegistry::getSession()->getVariable("actshop");

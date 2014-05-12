@@ -167,13 +167,6 @@ class Category_Main extends oxAdminDetails
         $oCategory->setLanguage(0);
 
 
-        if (empty($aParams['oxcategories__oxpricefrom'])) {
-            $aParams['oxcategories__oxpricefrom'] = 0;
-        }
-        if (empty($aParams['oxcategories__oxpriceto'])) {
-            $aParams['oxcategories__oxpriceto'] = 0;
-        }
-
         $oCategory->assign($aParams);
         $oCategory->setLanguage($this->_iEditLang);
 
@@ -325,6 +318,13 @@ class Category_Main extends oxAdminDetails
 
         if (isset($aReqParams["oxcategories__oxlongdesc"])) {
             $aReqParams["oxcategories__oxlongdesc"] = $this->_processLongDesc($aReqParams["oxcategories__oxlongdesc"]);
+        }
+
+        if (empty($aParams['oxcategories__oxpricefrom'])) {
+            $aParams['oxcategories__oxpricefrom'] = 0;
+        }
+        if (empty($aParams['oxcategories__oxpriceto'])) {
+            $aParams['oxcategories__oxpriceto'] = 0;
         }
 
         return $aReqParams;

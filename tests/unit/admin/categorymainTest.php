@@ -30,6 +30,11 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
 {
 
     /**
+     * @var oxCategory
+     */
+    private $_oCategory = null;
+
+    /**
      * Initialize the fixture.
      *
      * @return null
@@ -38,10 +43,13 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
     {
         parent::setUp();
 
-        $this->_oCategory = oxNew('oxCategory');
-        $this->_oCategory->setId('_testCatId');
-        $this->_oCategory->oxcategories__oxparentid = new oxField('oxrootid');
-        $this->_oCategory->save();
+        /** @var oxCategory $oCategory */
+        $oCategory = oxNew('oxCategory');
+        $oCategory->setId('_testCatId');
+        $oCategory->oxcategories__oxparentid = new oxField('oxrootid');
+        $oCategory->save();
+
+        $this->_oCategory = $oCategory;
     }
 
     /**

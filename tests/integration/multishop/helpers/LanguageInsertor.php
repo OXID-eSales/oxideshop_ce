@@ -4,12 +4,10 @@
  * After this script you need to update views.
  */
 
-require 'bootstrap.php';
-
 /**
  * Class LanguageInsertor
  */
-class LanguageInsertor
+class LanguageInsertor extends MultishopTestCase
 {
 
     /**

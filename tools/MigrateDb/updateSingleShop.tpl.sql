@@ -17,5 +17,5 @@ INSERT INTO `oxvendor2shop` (`OXSHOPID`, `OXMAPOBJECTID`) SELECT '<shop_id>', `o
 INSERT INTO `oxarticles2shop` (`OXSHOPID`, `OXMAPOBJECTID`) SELECT '<shop_id>', `oxarticles`.`OXMAPID` FROM `oxv_oxarticles_<shop_id>` INNER JOIN `oxarticles` ON `oxv_oxarticles_<shop_id>`.`OXID` = `oxarticles`.`OXID`;
 
 # Copy records from oxobject2category for each shop into "temporary" table
-INSERT IGNORE INTO `oxobject2category_tmp` (`OXID`, `OXSHOPID`, `OXOBJECTID`, `OXCATNID`, `OXPOS`, `OXTIME`, `OXTIMESTAMP`) SELECT MD5(CONCAT(`OXOBJECTID`, `OXCATNID`, '<shop_id>')), '<shop_id>', `OXOBJECTID`, `OXCATNID`, `OXPOS`, `OXTIME`, `OXTIMESTAMP` FROM `oxv_oxobject2category_<shop_id>` WHERE `OXSHOPID` <> '<shop_id>';
+INSERT INTO `oxobject2category_tmp` (`OXID`, `OXSHOPID`, `OXOBJECTID`, `OXCATNID`, `OXPOS`, `OXTIME`, `OXTIMESTAMP`) SELECT MD5(CONCAT(`OXOBJECTID`, `OXCATNID`, '<shop_id>')), '<shop_id>', `OXOBJECTID`, `OXCATNID`, `OXPOS`, `OXTIME`, `OXTIMESTAMP` FROM `oxv_oxobject2category_<shop_id>` WHERE `OXSHOPID` <> '<shop_id>';
 

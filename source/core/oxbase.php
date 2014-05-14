@@ -789,6 +789,7 @@ class oxBase extends oxSuperCfg
                 }
             }
         }
+
         if ( $this->exists() ) {
             //do not allow derived update
             if ( !$this->allowDerivedUpdate() ) {
@@ -801,14 +802,14 @@ class oxBase extends oxSuperCfg
             $blRet = $this->_insert();
             $sAction = ACTION_INSERT;
         }
-
+/*
         $this->onChange($sAction);
 
         if ( $blRet ) {
             return $this->getId();
         } else {
             return false;
-        }
+        }*/
     }
 
     /**

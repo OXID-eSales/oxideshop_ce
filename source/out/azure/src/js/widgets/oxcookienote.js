@@ -51,6 +51,9 @@
                     return false;
                 }
             );
+                } else {
+                    self.element.remove();
+                    return false;
         }
             }
         }

@@ -3139,9 +3139,9 @@ class oxBasket extends oxSuperCfg
     public function hasDownloadableProducts()
     {
         $this->_blDownloadableProducts = false;
-        /** @var oxOrderArticle $oOrderArticle */
-        foreach ( $this->_aBasketContents as $oOrderArticle ) {
-            if ( $oOrderArticle->getArticle() && $oOrderArticle->getArticle()->isDownloadable() ) {
+        /** @var oxBasketItem $oBasketItem */
+        foreach ( $this->_aBasketContents as $oBasketItem ) {
+            if ( $oBasketItem->getArticle(false) && $oBasketItem->getArticle(false)->isDownloadable() ) {
                 $this->_blDownloadableProducts = true;
                 break;
             }
@@ -3159,9 +3159,9 @@ class oxBasket extends oxSuperCfg
     {
         $blHasArticlesWithIntangibleAgreement = false;
 
-        /** @var oxOrderArticle $oOrderArticle */
-        foreach ($this->_aBasketContents as $oOrderArticle) {
-            if ($oOrderArticle->getArticle() && $oOrderArticle->getArticle()->hasIntangibleAgreement()) {
+        /** @var oxBasketItem $oBasketItem */
+        foreach ($this->_aBasketContents as $oBasketItem) {
+            if ($oBasketItem->getArticle(false) && $oBasketItem->getArticle(false)->hasIntangibleAgreement()) {
                 $blHasArticlesWithIntangibleAgreement = true;
                 break;
             }
@@ -3179,9 +3179,9 @@ class oxBasket extends oxSuperCfg
     {
         $blHasArticlesWithIntangibleAgreement = false;
 
-        /** @var oxOrderArticle $oOrderArticle */
-        foreach ($this->_aBasketContents as $oOrderArticle) {
-            if ($oOrderArticle->getArticle() && $oOrderArticle->getArticle()->hasDownloadableAgreement()) {
+        /** @var oxBasketItem $oBasketItem */
+        foreach ($this->_aBasketContents as $oBasketItem) {
+            if ($oBasketItem->getArticle(false) && $oBasketItem->getArticle(false)->hasDownloadableAgreement()) {
                 $blHasArticlesWithIntangibleAgreement = true;
                 break;
             }

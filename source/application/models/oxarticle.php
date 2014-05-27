@@ -1259,6 +1259,26 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     }
 
     /**
+     * Returns if article has service agreement with which customer will have to agree.
+     *
+     * @return bool
+     */
+    public function hasServiceAgreement()
+    {
+        return $this->oxarticles__oxshowcustomagreement->value && $this->oxarticles__oxnonmaterial->value;
+    }
+
+    /**
+     * Returns if article has downloadable agreement with which customer will have to agree.
+     *
+     * @return bool
+     */
+    public function hasDownloadableAgreement()
+    {
+        return $this->oxarticles__oxshowcustomagreement->value && $this->oxarticles__oxisdownloadable->value;
+    }
+
+    /**
      * Returns variants selections lists array
      *
      * @param array  $aFilterIds    ids of active selections [optional]

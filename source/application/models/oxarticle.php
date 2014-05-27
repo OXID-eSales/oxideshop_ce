@@ -1259,11 +1259,11 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     }
 
     /**
-     * Returns if article has service agreement with which customer will have to agree.
+     * Returns if article has intangible agreement with which customer will have to agree.
      *
      * @return bool
      */
-    public function hasServiceAgreement()
+    public function hasIntangibleAgreement()
     {
         return $this->oxarticles__oxshowcustomagreement->value && $this->oxarticles__oxnonmaterial->value;
     }

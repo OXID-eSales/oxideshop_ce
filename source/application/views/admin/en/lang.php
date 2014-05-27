@@ -385,6 +385,7 @@ $aLang = array(
 'ARTICLE_EXTEND_QUESTIONEMAIL'                             => 'Alt. Contact',
 'ARTICLE_EXTEND_ISSEARCH'                                  => 'Searchable',
 'ARTICLE_EXTEND_ISCONFIGURABLE'                            => 'Product can be customized',
+'ARTICLE_EXTEND_SHOWCUSTOMAGREEMENT'                       => '[TR]Confirm Terms and Conditions',
 'ARTICLE_EXTEND_NONMATERIAL'                               => 'Intangible Product',
 'ARTICLE_EXTEND_FREESHIPPING'                              => 'Free Shipping',
 'ARTICLE_EXTEND_BLFIXEDPRICE'                              => 'Deactivate Price Alert',

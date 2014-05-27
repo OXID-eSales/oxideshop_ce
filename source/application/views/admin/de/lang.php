@@ -381,6 +381,7 @@ $aLang = array(
 'ARTICLE_EXTEND_QUESTIONEMAIL'                             => 'Alt. Anspr.partn.',
 'ARTICLE_EXTEND_ISSEARCH'                                  => 'Kann gesucht werden',
 'ARTICLE_EXTEND_ISCONFIGURABLE'                            => 'Artikel ist individualisierbar',
+'ARTICLE_EXTEND_SHOWCUSTOMAGREEMENT'                       => '[TR]Confirm Terms and Conditions',
 'ARTICLE_EXTEND_NONMATERIAL'                               => 'Immaterieller Artikel',
 'ARTICLE_EXTEND_FREESHIPPING'                              => 'Versandkostenfrei',
 'ARTICLE_EXTEND_BLFIXEDPRICE'                              => 'Preisalarm deaktivieren',

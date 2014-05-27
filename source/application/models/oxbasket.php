@@ -3167,14 +3167,55 @@ class oxBasket extends oxSuperCfg
     public function hasDownloadableProducts()
     {
         $this->_blDownloadableProducts = false;
-        foreach ( $this->_aBasketContents as $sItemKey => $oOrderArticle ) {
-            if ( $oOrderArticle->getArticle( false ) && $oOrderArticle->getArticle( false )->isDownloadable() ) {
+        /** @var oxOrderArticle $oOrderArticle */
+        foreach ( $this->_aBasketContents as $oOrderArticle ) {
+            if ( $oOrderArticle->getArticle() && $oOrderArticle->getArticle()->isDownloadable() ) {
                 $this->_blDownloadableProducts = true;
                 break;
             }
         }
 
         return $this->_blDownloadableProducts;
+    }
+
+    /**
+     * Returns whether there are any articles in basket with intangible products agreement enabled.
+     *
+     * @return bool
+     */
+    public function hasArticlesWithIntangibleAgreement()
+    {
+        $blHasArticlesWithIntangibleAgreement = false;
+
+        /** @var oxOrderArticle $oOrderArticle */
+        foreach ($this->_aBasketContents as $oOrderArticle) {
+            if ($oOrderArticle->getArticle() && $oOrderArticle->getArticle()->hasIntangibleAgreement()) {
+                $blHasArticlesWithIntangibleAgreement = true;
+                break;
+            }
+        }
+
+        return $blHasArticlesWithIntangibleAgreement;
+    }
+
+    /**
+     * Returns whether there are any articles in basket with downloadable products agreement enabled.
+     *
+     * @return bool
+     */
+    public function hasArticlesWithDownloadableAgreement()
+    {
+        $blHasArticlesWithIntangibleAgreement = false;
+
+        /** @var oxOrderArticle $oOrderArticle */
+        foreach ($this->_aBasketContents as $oOrderArticle) {
+            if ($oOrderArticle->getArticle() && $oOrderArticle->getArticle()->hasDownloadableAgreement()) {
+                $blHasArticlesWithIntangibleAgreement = true;
+                break;
+            }
+        }
+
+        return $blHasArticlesWithIntangibleAgreement;
     }
 
     /**

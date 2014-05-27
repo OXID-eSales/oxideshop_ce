@@ -205,15 +205,15 @@ class order extends oxUBase
             return;
         }
 
-        $myConfig = $this->getConfig();
+        $oConfig = $this->getConfig();
 
-        if ( !oxConfig::getParameter( 'ord_agb' ) && $myConfig->getConfigParam( 'blConfirmAGB' ) ) {
+        if ( !$oConfig->getRequestParameter( 'ord_agb' ) && $oConfig->getConfigParam( 'blConfirmAGB' ) ) {
             $this->_blConfirmAGBError = 1;
             return;
         }
 
         // for compatibility reasons for a while. will be removed in future
-        if ( oxConfig::getParameter( 'ord_custinfo' ) !== null && !oxConfig::getParameter( 'ord_custinfo' ) && $this->isConfirmCustInfoActive() ) {
+        if ( $oConfig->getRequestParameter( 'ord_custinfo' ) !== null && !$oConfig->getRequestParameter( 'ord_custinfo' ) && $this->isConfirmCustInfoActive() ) {
             $this->_blConfirmCustInfoError =  1;
             return;
         }

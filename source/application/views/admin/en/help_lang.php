@@ -340,6 +340,8 @@ $aLang =  array(
 
 'HELP_ARTICLE_EXTEND_UPDATEPRICE'             => 'Prices can be changed on a defined time. Given fields update standard prices. If you leave price values "0", prices will not be updated.',
 
+'HELP_ARTICLE_EXTEND_SHOWCUSTOMAGREEMENT'     => '[TR]Users have to Confirm Intangible and Downloadable </br> products Terms and Conditions during Check-Out ',
+
 'HELP_ARTICLE_FILES_MAX_DOWNLOADS_COUNT'      => 'Here you can define how many times user can download from the same link after order. For this file you can overwrite the default setting, which was defined in Master Settings -> Core Setting -> Settings -> Downloads for all products.',
 
 'HELP_ARTICLE_FILES_LINK_EXPIRATION_TIME_UNREGISTERED' => 'Here you can define how many times user can download from the same link, if user ordered without registration. For this file you can overwrite the default setting, which was defined in Master Settings -> Core Setting -> Settings -> Downloads for all products.',

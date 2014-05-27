@@ -21,9 +21,9 @@
  */
 
 /**
- * Class oxBasketContentExplanationMarks which forms explanation marks.
+ * Class oxBasketContentMarkGenerator which forms explanation marks.
  */
-class oxBasketContentExplanationMarks
+class oxBasketContentMarkGenerator
 {
     /**
      * Default value for explanation mark.

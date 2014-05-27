@@ -1159,6 +1159,7 @@ $aLang = array(
 'SHOP_CONFIG_ALLOWUNEVENAMOUNTS'                           => 'Nicht ganzzahlige Eingaben bei Artikelmengen erlauben (z.B. 1,5)',
 'SHOP_CONFIG_BIDIRECTCROSS'                                => 'Bidirektionales Crossselling aktivieren',
 'SHOP_CONFIG_CONFIRMAGB'                                   => 'Kunden müssen die AGB bestätigen, um bestellen zu können',
+'SHOP_CONFIG_ENABLE_INTANGIBLE_PRODUCTS_AGREEMENT'         => '[TR] Users have to Confirm Downloadable and Service products conditions during Check-Out',
 'SHOP_CONFIG_SHOWORDERBUTTONONTHETOP'                      => 'Im 4. Bestellschritt einen zusätzlichen "Zahlungspflichtig bestellen" Button oben anzeigen (wenn die Einstellung nicht aktiv ist, wird nur der "Zahlungspflichtig bestellen" Button weiter unten angezeigt).',
 'SHOP_CONFIG_CALCULATEVATFORDELIVERY'                      => 'Im Warenkorb und in der Rechnung die Versandkosten als Nettobetrag und Mehrwertsteuer anstatt als Bruttobetrag anzeigen',
 'SHOP_CONFIG_CALCDELVATONTOP'                              => 'Versandkosten als Nettopreise eingeben (zuzüglich MwSt.)',

@@ -1198,6 +1198,7 @@ $aLang = array(
 'SHOP_CONFIG_ALLOWUNEVENAMOUNTS'                           => 'Allow fraction Quantities (e.g. 1.5)',
 'SHOP_CONFIG_BIDIRECTCROSS'                                => 'Enable bidirectional Crosselling',
 'SHOP_CONFIG_CONFIRMAGB'                                   => 'Users have to Confirm General Terms and Conditions during Check-Out',
+'SHOP_CONFIG_ENABLE_INTANGIBLE_PRODUCTS_AGREEMENT'         => '[TR] Users have to Confirm Downloadable and Service products conditions during Check-Out',
 'SHOP_CONFIG_SHOWORDERBUTTONONTHETOP'                      => 'Show an additional "Order now" button at the top in 4th order step (by default "Order now" button is shown only on the bottom of the page).',
 'SHOP_CONFIG_CALCULATEVATFORDELIVERY'                      => 'Display shipping costs as net price and VAT (instead of gross) in shopping cart and invoice',
 'SHOP_CONFIG_CALCDELVATONTOP'                              => 'Enter Shipping Costs as net Price (plus VAT)',

@@ -384,6 +384,18 @@ function showInvitations()
 
             <dl>
                 <dt>
+                    <input type=hidden name=confbools[blEnableIntangibleProdAgreement] value=false>
+                    <input type=checkbox name=confbools[blEnableIntangibleProdAgreement] value=true  [{if ($confbools.blEnableIntangibleProdAgreement)}]checked[{/if}] [{ $readonly}]>
+                    [{oxinputhelp ident="HELP_SHOP_CONFIG_ENABLE_INTANGIBLE_PRODUCTS_AGREEMENT" }]
+                </dt>
+                <dd>
+                    [{oxmultilang ident="SHOP_CONFIG_ENABLE_INTANGIBLE_PRODUCTS_AGREEMENT" }]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
+
+            <dl>
+                <dt>
                     <input type=hidden name=confbools[blStoreCreditCardInfo] value=false>
                     <input type=checkbox name=confbools[blStoreCreditCardInfo] value=true  [{if ($confbools.blStoreCreditCardInfo)}]checked[{/if}] [{ $readonly}]>
                     [{ oxinputhelp ident="HELP_SHOP_CONFIG_STORECREDITCARDINFO" }]

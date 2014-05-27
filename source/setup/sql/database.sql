@@ -529,6 +529,7 @@ INSERT INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`, `OXVARNAME`, `OXVARTYPE`
 ('6da42abf915b5f290.70877375', 'oxbaseshop', '', 'sCntOfNewsLoaded', 'str', 0x07),
 ('89e42b02704ce5589.91950338', 'oxbaseshop', '', 'iNewestArticlesMode', 'str', 0x07),
 ('e1142ca231becd5c4.00590616', 'oxbaseshop', '', 'blConfirmAGB', 'bool', ''),
+('a1544b76735df7bd7.33980003', 'oxbaseshop', '', 'blEnableIntangibleProdAgreement', 'bool', 0x07),
 ('2e4452b5763e03c74.88240349', 'oxbaseshop', '', 'blDisableDublArtOnCopy', 'bool', 0x07),
 ('fde4559837789b3c7.26965372', 'oxbaseshop', '', 'aCMSfolder', 'aarr', 0x4dbace29724a5131411d93d207fd82ee70b3e465e8c18e1b60a35eb597a1f3bad1e50ee52570c9ca486b4755b08cea9d0a17892b1e7628a152af0ab842c7c310547016f7c53a9ad0d62060ca7fc75f2bf6892a6f9987d014c0418d2b1e7a6defd8e0d2f5b189c89b886c5d130a72f1dcb7b55c4455b720ce73743f3ed559cda8621a523aa1021ed09f9a1f0177fc9e7ab5920621aa55a368bfeb28ae782c3456362aee),
 ('6f8453f77d174e0a0.31854175', 'oxbaseshop', '', 'blOtherCountryOrder', 'bool', 0x07),

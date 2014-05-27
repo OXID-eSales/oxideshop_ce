@@ -33,7 +33,7 @@
         [{/if}]
 
         [{if $oViewConf->isFunctionalityEnabled('blEnableIntangibleProdAgreement') }]
-            [{assign var="oExplanationMarks" value=$oView->getBasketContentExplanationMarks() }]
+            [{assign var="oExplanationMarks" value=$oView->getBasketContentMarkGenerator() }]
             [{if $oxcmp_basket->hasArticlesWithDownloadableAgreement() }]
                 [{oxifcontent ident="oxdownloadableproductsagreement" object="oContent"}]
                     <p id="noteForDownloadableArticles" class="agbConfirmation">

@@ -67,7 +67,23 @@
                                             [{/oxifcontent}]
                                         [{/if}]
                                     [{/if}]
-                                </div>
+                                [{/if}]
+
+                                [{if $oView->isEnabledIntangibleProductAgreement() }]
+                            <br>
+                                    [{oxifcontent ident="oxdownloadableproductsagreement" object="oContent"}]
+                                        <input type="hidden" name="ord_agb" value="0">
+                                        <input id="oxdownloadableproductsagreement" class="checkbox" type="checkbox" name="oxdownloadableproductsagreement" value="1">
+                                        [{$oContent->oxcontents__oxcontent->value}]
+                                    [{/oxifcontent}]
+                            <br>
+                                    [{oxifcontent ident="oxserviceproductsagreement" object="oContent"}]
+                                        <input type="hidden" name="ord_agb" value="0">
+                                        <input id="oxserviceproductsagreement" class="checkbox" type="checkbox" name="oxserviceproductsagreement" value="1">
+                                    [{$oContent->oxcontents__oxcontent->value}]
+                                    [{/oxifcontent}]
+                                [{/if}]
+                            </div>
 
                                 [{oxscript add="$('#checkAgbTop').click(function(){ $('input[name=ord_agb]').val(parseInt($('input[name=ord_agb]').val())^1);});"}]
 

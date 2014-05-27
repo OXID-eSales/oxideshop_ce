@@ -7432,18 +7432,18 @@ class Unit_Core_oxArticleTest extends OxidTestCase
     }
 
     /**
-     * @param $iIsService
+     * @param $iIsIntangible
      * @param $iShowCustomAgreement
      * @param $blResult
      *
      * @dataProvider providerHasAgreement
      */
-    public function testHasServiceAgreement($iIsService, $iShowCustomAgreement, $blResult)
+    public function testHasIntangibleAgreement($iIsIntangible, $iShowCustomAgreement, $blResult)
     {
         $oProduct = $this->_getArticleWithCustomisedAgreement($iShowCustomAgreement);
-        $oProduct->oxarticles__oxnonmaterial = new oxField($iIsService);
+        $oProduct->oxarticles__oxnonmaterial = new oxField($iIsIntangible);
 
-        $this->assertSame($blResult, $oProduct->hasServiceAgreement());
+        $this->assertSame($blResult, $oProduct->hasIntangibleAgreement());
     }
 
     /**

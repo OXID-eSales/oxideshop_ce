@@ -7276,4 +7276,62 @@ class Unit_Core_oxarticleTest extends OxidTestCase
     }
 
 
+    /**
+     * @return array
+     */
+    public function providerHasAgreement()
+    {
+        return array(
+            array(1, 1, true),
+            array(0, 1, false),
+            array(1, 0, false),
+            array(0, 0, false)
+        );
+    }
+
+    /**
+     * @param $iIsService
+     * @param $iShowCustomAgreement
+     * @param $blResult
+     *
+     * @dataProvider providerHasAgreement
+     */
+    public function testHasServiceAgreement($iIsService, $iShowCustomAgreement, $blResult)
+    {
+        $oProduct = $this->_getArticleWithCustomisedAgreement($iShowCustomAgreement);
+        $oProduct->oxarticles__oxnonmaterial = new oxField($iIsService);
+
+        $this->assertSame($blResult, $oProduct->hasServiceAgreement());
+    }
+
+    /**
+     * @param $iIsDownloadable
+     * @param $iShowCustomAgreement
+     * @param $blResult
+     *
+     * @dataProvider providerHasAgreement
+     */
+    public function testHasDownloadableAgreement($iIsDownloadable, $iShowCustomAgreement, $blResult)
+    {
+        $oProduct = $this->_getArticleWithCustomisedAgreement($iShowCustomAgreement);
+        $oProduct->oxarticles__oxisdownloadable = new oxField($iIsDownloadable);
+
+        $this->assertSame($blResult, $oProduct->hasDownloadableAgreement());
+    }
+
+    /**
+     * Returns article with set custom agreement field.
+     *
+     * @param $iShowCustomAgreement
+     *
+     * @return oxArticle
+     */
+    private function _getArticleWithCustomisedAgreement($iShowCustomAgreement)
+    {
+        $oProduct = new oxArticle();
+        $oProduct->setId('_testArticle');
+        $oProduct->oxarticles__oxshowcustomagreement = new oxField($iShowCustomAgreement);
+
+        return $oProduct;
+    }
 }

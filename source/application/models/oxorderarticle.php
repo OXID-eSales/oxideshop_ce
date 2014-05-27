@@ -800,7 +800,7 @@ class oxOrderArticle extends oxBase implements oxIArticle
     /**
      * Get article
      *
-     * @return object
+     * @return oxArticle
      */
     public function getArticle()
     {

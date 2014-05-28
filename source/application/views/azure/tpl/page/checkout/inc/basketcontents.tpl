@@ -37,6 +37,9 @@
         [{* basket items *}]
         <tbody>
         [{assign var="basketitemlist" value=$oView->getBasketArticles() }]
+        [{if $oViewConf->getActiveClassName() == 'order' }]
+            [{assign var="oExplanationMarks" value=$oView->getBasketContentExplanationMarks() }]
+        [{/if}]
         [{foreach key=basketindex from=$oxcmp_basket->getContents() item=basketitem name=basketContents}]
             [{block name="checkout_basketcontents_basketitem"}]
                 [{assign var="basketproduct" value=$basketitemlist.$basketindex }]
@@ -66,7 +69,13 @@
                         [{* product title & number *}]
                         <td>
                             <div>
-                                <a rel="nofllow" href="[{$basketitem->getLink()}]"><b>[{$basketitem->getTitle()}]</b></a>[{if $basketitem->isSkipDiscount() }] <sup><a rel="nofollow" href="#SkipDiscounts_link" >**</a></sup>[{/if}]
+                                <a rel="nofollow" href="[{$basketitem->getLink()}]"><b>[{$basketitem->getTitle()}]</b></a>
+
+                                [{if $basketitem->isSkipDiscount() }] <sup><a rel="nofollow" href="#noteWithSkippedDiscount" >[{$oExplanationMarks->getForArticlesWithSkippedDiscount()}]</a></sup>[{/if}]
+                                [{if $oViewConf->getActiveClassName() == 'order' && $oViewConf->isFunctionalityEnabled('blEnableIntangibleProdAgreement')}]
+                                    [{if $oArticle->hasDownloadableAgreement() }] <sup><a rel="nofollow" href="#noteForDownloadableArticles" >[{$oExplanationMarks->getForDownloadableArticles()}]</a></sup>[{/if}]
+                                    [{if $oArticle->hasIntangibleAgreement() }] <sup><a rel="nofollow" href="#noteForIntangibleArticles" >[{$oExplanationMarks->getForIntangibleArticles()}]</a></sup>[{/if}]
+                                [{/if}]
                             </div>
                             <div class="smallFont">
                                 [{ oxmultilang ident="PAGE_CHECKOUT_BASKETCONTENTS_ARTNOMBER" }] [{ $basketproduct->oxarticles__oxartnum->value }]
@@ -516,9 +525,23 @@
 
                     [{if $oxcmp_basket->hasSkipedDiscount() }]
                         <tr>
-                            <th><span class="note">**</span> [{ oxmultilang ident="PAGE_CHECKOUT_BASKETCONTENTS_DISCOUNTS_NOT_APPLIED_FOR_ARTICLES" }]</span></th>
+                            <th><span class="note">**</span> [{ oxmultilang ident="MESSAGE_COUPON_NOT_APPLIED_FOR_ARTICLES" }]</span></th>
                             <td></td>
                         </tr>
+                    [{/if}]
+                    [{if $oViewConf->getActiveClassName() == 'order' && $oViewConf->isFunctionalityEnabled('blEnableIntangibleProdAgreement')}]
+                        [{if $oArticle->hasDownloadableAgreement() }]
+                            <tr>
+                                <th><span id="noteForDownloadableArticles" class="note">[{$oExplanationMarks->getForDownloadableArticles()}]</span> [{ oxmultilang ident="MESSAGE_FOR_DOWNLOADABLE_ARTICLES" }]</span></th>
+                                <td></td>
+                            </tr>
+                        [{/if}]
+                        [{if $oArticle->hasIntangibleAgreement() }]
+                            <tr>
+                                <th><span id="noteForIntangibleArticles" class="note">[{$oExplanationMarks->getForIntangibleArticles()}]</span> [{ oxmultilang ident="MESSAGE_FOR_INTANGIBLE_ARTICLES" }]</span></th>
+                                <td></td>
+                            </tr>
+                        [{/if}]
                     [{/if}]
                 </table>
             </div>

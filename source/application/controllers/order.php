@@ -444,16 +444,6 @@ class order extends oxUBase
     }
 
     /**
-     * Template variable getter. Returns if option "blConfirmAGB" is on
-     *
-     * @return bool
-     */
-    public function isEnabledIntangibleProductAgreement()
-    {
-        return $this->getConfig()->getConfigParam( 'blEnableIntangibleProdAgreement' );
-    }
-
-    /**
      * Template variable getter. Returns if option "blConfirmCustInfo" is on.
      * For compatibility reasons for a while. will be removed in future
      *

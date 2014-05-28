@@ -212,6 +212,18 @@ class order extends oxUBase
             return;
         }
 
+        $oBasket = $this->getBasket();
+
+        if ( $oBasket->hasArticlesWithDownloadableAgreement() && !$oConfig->getRequestParameter( 'oxdownloadableproductsagreement' ) ) {
+            $this->_blConfirmAGBError = 1;
+            return;
+        }
+
+        if ( $oBasket->hasArticlesWithIntangibleAgreement() && !$oConfig->getRequestParameter( 'oxserviceproductsagreement' ) ) {
+            $this->_blConfirmAGBError = 1;
+            return;
+        }
+
         // for compatibility reasons for a while. will be removed in future
         if ( $oConfig->getRequestParameter( 'ord_custinfo' ) !== null && !$oConfig->getRequestParameter( 'ord_custinfo' ) && $this->isConfirmCustInfoActive() ) {
             $this->_blConfirmCustInfoError =  1;
@@ -328,7 +340,7 @@ class order extends oxUBase
     /**
      * Template variable getter. Returns active basket
      *
-     * @return object
+     * @return oxBasket
      */
     public function getBasket()
     {

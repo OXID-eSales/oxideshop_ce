@@ -530,13 +530,13 @@
                         </tr>
                     [{/if}]
                     [{if $oViewConf->getActiveClassName() == 'order' && $oViewConf->isFunctionalityEnabled('blEnableIntangibleProdAgreement')}]
-                        [{if $oArticle->hasDownloadableAgreement() }]
+                        [{if $oxcmp_basket->hasArticlesWithDownloadableAgreement() }]
                             <tr>
                                 <th><span id="noteForDownloadableArticles" class="note">[{$oExplanationMarks->getForDownloadableArticles()}]</span> [{ oxmultilang ident="MESSAGE_FOR_DOWNLOADABLE_ARTICLES" }]</span></th>
                                 <td></td>
                             </tr>
                         [{/if}]
-                        [{if $oArticle->hasIntangibleAgreement() }]
+                        [{if $oxcmp_basket->hasArticlesWithIntangibleAgreement() }]
                             <tr>
                                 <th><span id="noteForIntangibleArticles" class="note">[{$oExplanationMarks->getForIntangibleArticles()}]</span> [{ oxmultilang ident="MESSAGE_FOR_INTANGIBLE_ARTICLES" }]</span></th>
                                 <td></td>

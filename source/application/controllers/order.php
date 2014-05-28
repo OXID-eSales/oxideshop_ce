@@ -34,7 +34,7 @@ class order extends oxUBase
 
     /**
      * Active basket
-     * @var object
+     * @var oxBasket
      */
     protected $_oBasket = null;
 
@@ -566,5 +566,18 @@ class order extends oxUBase
         }
 
         return $sDelAddress;
+    }
+
+    /**
+     * Method returns object with explanation marks for articles in basket.
+     *
+     * @return oxBasketContentExplanationMarks
+     */
+    public function getBasketContentExplanationMarks()
+    {
+        /** @var oxBasketContentExplanationMarks $oBasketContentExplanationMarks */
+        $oBasketContentExplanationMarks = oxNew('oxBasketContentExplanationMarks', $this->getBasket());
+
+        return $oBasketContentExplanationMarks;
     }
 }

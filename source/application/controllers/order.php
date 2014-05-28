@@ -130,10 +130,10 @@ class order extends oxUBase
     public function init()
     {
         // disabling performance control variable
-        $this->getConfig()->setConfigParam( 'bl_perfCalcVatOnlyForBasketOrder', false );
+        $this->getConfig()->setConfigParam('bl_perfCalcVatOnlyForBasketOrder', false);
 
         // recalc basket cause of payment stuff
-        if ( $oBasket = $this->getBasket() ) {
+        if ($oBasket = $this->getBasket()) {
             $oBasket->onUpdate();
         }
 
@@ -152,37 +152,37 @@ class order extends oxUBase
      */
     public function render()
     {
-        if ( $this->getIsOrderStep() ) {
+        if ($this->getIsOrderStep()) {
             $oBasket = $this->getBasket();
             $myConfig = $this->getConfig();
 
-            if ( $myConfig->getConfigParam( 'blPsBasketReservationEnabled' )) {
+            if ($myConfig->getConfigParam('blPsBasketReservationEnabled')) {
                 $this->getSession()->getBasketReservations()->renewExpiration();
-                if ( !$oBasket || ( $oBasket && !$oBasket->getProductsCount() )) {
-                    oxRegistry::getUtils()->redirect( $myConfig->getShopHomeURL() .'cl=basket', true, 302 );
+                if (!$oBasket || ($oBasket && !$oBasket->getProductsCount())) {
+                    oxRegistry::getUtils()->redirect($myConfig->getShopHomeURL() . 'cl=basket', true, 302);
                 }
             }
 
             // can we proceed with ordering ?
             $oUser = $this->getUser();
             if (!$oUser && ($oBasket && $oBasket->getProductsCount() > 0)) {
-                oxRegistry::getUtils()->redirect( $myConfig->getShopHomeURL().'cl=basket', false, 302 );
-            } elseif ( !$oBasket || !$oUser || ( $oBasket && !$oBasket->getProductsCount() ) ) {
-                oxRegistry::getUtils()->redirect( $myConfig->getShopHomeURL(), false, 302 );
+                oxRegistry::getUtils()->redirect($myConfig->getShopHomeURL() . 'cl=basket', false, 302);
+            } elseif (!$oBasket || !$oUser || ($oBasket && !$oBasket->getProductsCount())) {
+                oxRegistry::getUtils()->redirect($myConfig->getShopHomeURL(), false, 302);
             }
 
             // payment is set ?
-            if ( !$this->getPayment() ) {
+            if (!$this->getPayment()) {
                 // redirecting to payment step on error ..
-                oxRegistry::getUtils()->redirect( $myConfig->getShopCurrentURL().'&cl=payment', true, 302 );
+                oxRegistry::getUtils()->redirect($myConfig->getShopCurrentURL() . '&cl=payment', true, 302);
             }
         }
 
         parent::render();
 
         // reload blocker
-        if ( !oxSession::getVar( 'sess_challenge' ) ) {
-            oxSession::setVar( 'sess_challenge', oxUtilsObject::getInstance()->generateUID() );
+        if (!oxSession::getVar('sess_challenge')) {
+            oxSession::setVar('sess_challenge', oxUtilsObject::getInstance()->generateUID());
         }
 
         return $this->_sThisTemplate;
@@ -205,125 +205,47 @@ class order extends oxUBase
             return;
         }
 
-        $oConfig = $this->getConfig();
-
         if (!$this->validateTermsAndConditions()) {
             $this->_blConfirmAGBError = 1;
             return;
         }
 
         /* @deprecated since v5.1.6 (2014-05-28); Not used anymore */
-        if ( $oConfig->getRequestParameter( 'ord_custinfo' ) !== null && !$oConfig->getRequestParameter( 'ord_custinfo' ) && $this->isConfirmCustInfoActive() ) {
-            $this->_blConfirmCustInfoError =  1;
+        $oConfig = $this->getConfig();
+        if ($oConfig->getRequestParameter('ord_custinfo') !== null && !$oConfig->getRequestParameter('ord_custinfo') && $this->isConfirmCustInfoActive()) {
+            $this->_blConfirmCustInfoError = 1;
             return;
         }
 
         // additional check if we really really have a user now
         $oUser = $this->getUser();
-        if ( !$oUser ) {
+        if (!$oUser) {
             return 'user';
         }
 
         // get basket contents
-        $oBasket  = $this->getSession()->getBasket();
-        if ( $oBasket->getProductsCount() ) {
+        $oBasket = $this->getSession()->getBasket();
+        if ($oBasket->getProductsCount()) {
 
             try {
-                $oOrder = oxNew( 'oxorder' );
+                $oOrder = oxNew('oxorder');
 
                 // finalizing ordering process (validating, storing order into DB, executing payment, setting status ...)
-                $iSuccess = $oOrder->finalizeOrder( $oBasket, $oUser );
+                $iSuccess = $oOrder->finalizeOrder($oBasket, $oUser);
 
                 // performing special actions after user finishes order (assignment to special user groups)
-                $oUser->onOrderExecute( $oBasket, $iSuccess );
+                $oUser->onOrderExecute($oBasket, $iSuccess);
 
                 // proceeding to next view
-                return $this->_getNextStep( $iSuccess );
-            } catch ( oxOutOfStockException $oEx ) {
-                oxRegistry::get("oxUtilsView")->addErrorToDisplay( $oEx, false, true, 'basket' );
-            } catch ( oxNoArticleException $oEx ) {
-                oxRegistry::get("oxUtilsView")->addErrorToDisplay( $oEx );
-            } catch ( oxArticleInputException $oEx ) {
-                oxRegistry::get("oxUtilsView")->addErrorToDisplay( $oEx );
+                return $this->_getNextStep($iSuccess);
+            } catch (oxOutOfStockException $oEx) {
+                oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx, false, true, 'basket');
+            } catch (oxNoArticleException $oEx) {
+                oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
+            } catch (oxArticleInputException $oEx) {
+                oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
             }
         }
-    }
-
-    /**
-     * Validates whether necessary terms and conditions checkboxes were checked.
-     *
-     * @return bool
-     */
-    protected function validateTermsAndConditions()
-    {
-        $blValid = true;
-        $oConfig = $this->getConfig();
-
-        if ( $oConfig->getConfigParam( 'blConfirmAGB' ) && !$oConfig->getRequestParameter( 'ord_agb' ) ) {
-            $blValid = false;
-        }
-
-        if ($oConfig->getConfigParam( 'blEnableIntangibleProdAgreement' )) {
-            $oBasket = $this->getBasket();
-
-            if ( $blValid && $oBasket->hasArticlesWithDownloadableAgreement() && !$oConfig->getRequestParameter( 'oxdownloadableproductsagreement' ) ) {
-                $blValid = false;
-            }
-
-            if ( $blValid && $oBasket->hasArticlesWithIntangibleAgreement() && !$oConfig->getRequestParameter( 'oxserviceproductsagreement' ) ) {
-                $blValid = false;
-            }
-        }
-
-        return $blValid;
-    }
-
-    /**
-     * Returns next order step. If ordering was sucessfull - returns string "thankyou" (possible
-     * additional parameters), otherwise - returns string "payment" with additional
-     * error parameters.
-     *
-     * @param integer $iSuccess status code
-     *
-     * @return  string  $sNextStep  partial parameter url for next step
-     */
-    protected function _getNextStep( $iSuccess )
-    {
-        $sNextStep = 'thankyou';
-
-        //little trick with switch for multiple cases
-        switch ( true ) {
-            case ( $iSuccess === oxOrder::ORDER_STATE_MAILINGERROR ):
-                $sNextStep = 'thankyou?mailerror=1';
-                break;
-            case ( $iSuccess === oxOrder::ORDER_STATE_INVALIDDElADDRESSCHANGED ):
-                $sNextStep = 'order?iAddressError=1';
-                break;
-            case ( $iSuccess === oxOrder::ORDER_STATE_BELOWMINPRICE ):
-                $sNextStep = 'order';
-                break;
-            case ( $iSuccess === oxOrder::ORDER_STATE_PAYMENTERROR ):
-                // no authentication, kick back to payment methods
-                oxSession::setVar( 'payerror', 2 );
-                $sNextStep = 'payment?payerror=2';
-                break;
-            case ( $iSuccess === oxOrder::ORDER_STATE_ORDEREXISTS ):
-                break;  // reload blocker activ
-            case ( is_numeric( $iSuccess ) && $iSuccess > 3 ):
-                oxSession::setVar( 'payerror', $iSuccess );
-                $sNextStep = 'payment?payerror='.$iSuccess;
-                break;
-            case ( !is_numeric( $iSuccess ) && $iSuccess ):
-                //instead of error code getting error text and setting payerror to -1
-                oxSession::setVar( 'payerror', -1 );
-                $iSuccess = urlencode( $iSuccess );
-                $sNextStep = 'payment?payerror=-1&payerrortext='.$iSuccess;
-                break;
-            default:
-                break;
-        }
-
-        return $sNextStep;
     }
 
     /**
@@ -333,7 +255,7 @@ class order extends oxUBase
      */
     public function getPayment()
     {
-        if ( $this->_oPayment === null ) {
+        if ($this->_oPayment === null) {
             $this->_oPayment = false;
 
             $oBasket = $this->getBasket();
@@ -341,14 +263,15 @@ class order extends oxUBase
 
             // payment is set ?
             $sPaymentid = $oBasket->getPaymentId();
-            $oPayment   = oxNew( 'oxpayment' );
+            $oPayment = oxNew('oxpayment');
 
-            if ( $sPaymentid && $oPayment->load( $sPaymentid ) &&
-                $oPayment->isValidPayment( oxSession::getVar( 'dynvalue' ),
-                                           $this->getConfig()->getShopId(),
-                                           $oUser,
-                                           $oBasket->getPriceForPayment(),
-                                           oxSession::getVar( 'sShipSet' ) ) ) {
+            if ($sPaymentid && $oPayment->load($sPaymentid) &&
+                $oPayment->isValidPayment(oxSession::getVar('dynvalue'),
+                    $this->getConfig()->getShopId(),
+                    $oUser,
+                    $oBasket->getPriceForPayment(),
+                    oxSession::getVar('sShipSet'))
+            ) {
                 $this->_oPayment = $oPayment;
             }
         }
@@ -362,9 +285,9 @@ class order extends oxUBase
      */
     public function getBasket()
     {
-        if ( $this->_oBasket === null ) {
+        if ($this->_oBasket === null) {
             $this->_oBasket = false;
-            if ( $oBasket = $this->getSession()->getBasket() ) {
+            if ($oBasket = $this->getSession()->getBasket()) {
                 $this->_oBasket = $oBasket;
             }
         }
@@ -388,10 +311,10 @@ class order extends oxUBase
      */
     public function getOrderRemark()
     {
-        if ( $this->_sOrderRemark === null ) {
+        if ($this->_sOrderRemark === null) {
             $this->_sOrderRemark = false;
-            if ( $sRemark = oxSession::getVar( 'ordrem' ) ) {
-                $this->_sOrderRemark = oxRegistry::getConfig()->checkParamSpecialChars( $sRemark );
+            if ($sRemark = oxSession::getVar('ordrem')) {
+                $this->_sOrderRemark = oxRegistry::getConfig()->checkParamSpecialChars($sRemark);
             }
         }
         return $this->_sOrderRemark;
@@ -404,9 +327,9 @@ class order extends oxUBase
      */
     public function getBasketArticles()
     {
-        if ( $this->_oBasketArtList === null ) {
+        if ($this->_oBasketArtList === null) {
             $this->_oBasketArtList = false;
-            if ( $oBasket = $this->getBasket() ) {
+            if ($oBasket = $this->getBasket()) {
                 $this->_oBasketArtList = $oBasket->getBasketArticles();
             }
         }
@@ -420,9 +343,9 @@ class order extends oxUBase
      */
     public function getDelAddress()
     {
-        if ( $this->_oDelAddress === null ) {
+        if ($this->_oDelAddress === null) {
             $this->_oDelAddress = false;
-            $oOrder = oxNew( 'oxorder' );
+            $oOrder = oxNew('oxorder');
             $this->_oDelAddress = $oOrder->getDelAddressInfo();
         }
         return $this->_oDelAddress;
@@ -435,11 +358,11 @@ class order extends oxUBase
      */
     public function getShipSet()
     {
-        if ( $this->_oShipSet === null ) {
+        if ($this->_oShipSet === null) {
             $this->_oShipSet = false;
-            if ( $oBasket = $this->getBasket() ) {
-                $oShipSet = oxNew( 'oxdeliveryset' );
-                if ( $oShipSet->load( $oBasket->getShippingId() )) {
+            if ($oBasket = $this->getBasket()) {
+                $oShipSet = oxNew('oxdeliveryset');
+                if ($oShipSet->load($oBasket->getShippingId())) {
                     $this->_oShipSet = $oShipSet;
                 }
             }
@@ -454,9 +377,9 @@ class order extends oxUBase
      */
     public function isConfirmAGBActive()
     {
-        if ( $this->_blConfirmAGB === null ) {
+        if ($this->_blConfirmAGB === null) {
             $this->_blConfirmAGB = false;
-            $this->_blConfirmAGB = $this->getConfig()->getConfigParam( 'blConfirmAGB' );
+            $this->_blConfirmAGB = $this->getConfig()->getConfigParam('blConfirmAGB');
         }
         return $this->_blConfirmAGB;
     }
@@ -469,11 +392,11 @@ class order extends oxUBase
      */
     public function isConfirmCustInfoActive()
     {
-        if ( $this->_blConfirmCustInfo === null ) {
+        if ($this->_blConfirmCustInfo === null) {
             $this->_blConfirmCustInfo = false;
-            $sConf = $this->getConfig()->getConfigParam( 'blConfirmCustInfo' );
-            if ( $sConf != null ) {
-                $this->_blConfirmCustInfo = $this->getConfig()->getConfigParam( 'blConfirmCustInfo' );
+            $sConf = $this->getConfig()->getConfigParam('blConfirmCustInfo');
+            if ($sConf != null) {
+                $this->_blConfirmCustInfo = $this->getConfig()->getConfigParam('blConfirmCustInfo');
             }
         }
         return $this->_blConfirmCustInfo;
@@ -507,9 +430,9 @@ class order extends oxUBase
      */
     public function showOrderButtonOnTop()
     {
-        if ( $this->_blShowOrderButtonOnTop === null ) {
+        if ($this->_blShowOrderButtonOnTop === null) {
             $this->_blShowOrderButtonOnTop = false;
-            $this->_blShowOrderButtonOnTop = $this->getConfig()->getConfigParam( 'blShowOrderButtonOnTop' );
+            $this->_blShowOrderButtonOnTop = $this->getConfig()->getConfigParam('blShowOrderButtonOnTop');
         }
         return $this->_blShowOrderButtonOnTop;
     }
@@ -521,19 +444,19 @@ class order extends oxUBase
      */
     public function isWrapping()
     {
-        if (!$this->getViewConfig()->getShowGiftWrapping() ) {
+        if (!$this->getViewConfig()->getShowGiftWrapping()) {
             return false;
         }
 
-        if ( $this->_iWrapCnt === null ) {
+        if ($this->_iWrapCnt === null) {
             $this->_iWrapCnt = 0;
 
-            $oWrap = oxNew( 'oxwrapping' );
-            $this->_iWrapCnt += $oWrap->getWrappingCount( 'WRAP' );
-            $this->_iWrapCnt += $oWrap->getWrappingCount( 'CARD' );
+            $oWrap = oxNew('oxwrapping');
+            $this->_iWrapCnt += $oWrap->getWrappingCount('WRAP');
+            $this->_iWrapCnt += $oWrap->getWrappingCount('CARD');
         }
 
-        return (bool) $this->_iWrapCnt;
+        return (bool)$this->_iWrapCnt;
     }
 
     /**
@@ -544,7 +467,7 @@ class order extends oxUBase
     public function getBreadCrumb()
     {
         $aPaths = array();
-        $aPath  = array();
+        $aPath = array();
 
         $aPath['title'] = oxRegistry::getLang()->translateString( 'PAGE_CHECKOUT_ORDER', oxRegistry::getLang()->getBaseLanguage(), false );
         $aPath['link']  = $this->getLink();
@@ -561,7 +484,7 @@ class order extends oxUBase
      */
     public function getAddressError()
     {
-        return oxConfig::getParameter( 'iAddressError' );
+        return oxConfig::getParameter('iAddressError');
     }
 
     /**
@@ -576,9 +499,9 @@ class order extends oxUBase
         $sDelAddress = $oUser->getEncodedDeliveryAddress();
 
         // delivery address
-        if ( oxSession::getVar( 'deladrid' )  ) {
-            $oDelAdress = oxNew( 'oxaddress' );
-            $oDelAdress->load( oxSession::getVar( 'deladrid' ) );
+        if (oxSession::getVar('deladrid')) {
+            $oDelAdress = oxNew('oxaddress');
+            $oDelAdress->load(oxSession::getVar('deladrid'));
 
             $sDelAddress .= $oDelAdress->getEncodedDeliveryAddress();
         }
@@ -597,5 +520,82 @@ class order extends oxUBase
         $oBasketContentExplanationMarks = oxNew('oxBasketContentExplanationMarks', $this->getBasket());
 
         return $oBasketContentExplanationMarks;
+    }
+
+    /**
+     * Returns next order step. If ordering was sucessfull - returns string "thankyou" (possible
+     * additional parameters), otherwise - returns string "payment" with additional
+     * error parameters.
+     *
+     * @param integer $iSuccess status code
+     *
+     * @return  string  $sNextStep  partial parameter url for next step
+     */
+    protected function _getNextStep($iSuccess)
+    {
+        $sNextStep = 'thankyou';
+
+        //little trick with switch for multiple cases
+        switch (true) {
+            case ($iSuccess === oxOrder::ORDER_STATE_MAILINGERROR):
+                $sNextStep = 'thankyou?mailerror=1';
+                break;
+            case ($iSuccess === oxOrder::ORDER_STATE_INVALIDDElADDRESSCHANGED):
+                $sNextStep = 'order?iAddressError=1';
+                break;
+            case ($iSuccess === oxOrder::ORDER_STATE_BELOWMINPRICE):
+                $sNextStep = 'order';
+                break;
+            case ($iSuccess === oxOrder::ORDER_STATE_PAYMENTERROR):
+                // no authentication, kick back to payment methods
+                oxSession::setVar('payerror', 2);
+                $sNextStep = 'payment?payerror=2';
+                break;
+            case ($iSuccess === oxOrder::ORDER_STATE_ORDEREXISTS):
+                break; // reload blocker activ
+            case (is_numeric($iSuccess) && $iSuccess > 3):
+                oxSession::setVar('payerror', $iSuccess);
+                $sNextStep = 'payment?payerror=' . $iSuccess;
+                break;
+            case (!is_numeric($iSuccess) && $iSuccess):
+                //instead of error code getting error text and setting payerror to -1
+                oxSession::setVar('payerror', -1);
+                $iSuccess = urlencode($iSuccess);
+                $sNextStep = 'payment?payerror=-1&payerrortext=' . $iSuccess;
+                break;
+            default:
+                break;
+        }
+
+        return $sNextStep;
+    }
+
+    /**
+     * Validates whether necessary terms and conditions checkboxes were checked.
+     *
+     * @return bool
+     */
+    protected function validateTermsAndConditions()
+    {
+        $blValid = true;
+        $oConfig = $this->getConfig();
+
+        if ($oConfig->getConfigParam('blConfirmAGB') && !$oConfig->getRequestParameter('ord_agb')) {
+            $blValid = false;
+        }
+
+        if ($oConfig->getConfigParam('blEnableIntangibleProdAgreement')) {
+            $oBasket = $this->getBasket();
+
+            if ($blValid && $oBasket->hasArticlesWithDownloadableAgreement() && !$oConfig->getRequestParameter('oxdownloadableproductsagreement')) {
+                $blValid = false;
+            }
+
+            if ($blValid && $oBasket->hasArticlesWithIntangibleAgreement() && !$oConfig->getRequestParameter('oxserviceproductsagreement')) {
+                $blValid = false;
+            }
+        }
+
+        return $blValid;
     }
 }

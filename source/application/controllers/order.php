@@ -205,7 +205,7 @@ class order extends oxUBase
             return;
         }
 
-        if (!$this->validateTermsAndConditions()) {
+        if (!$this->_validateTermsAndConditions()) {
             $this->_blConfirmAGBError = 1;
             return;
         }
@@ -575,7 +575,7 @@ class order extends oxUBase
      *
      * @return bool
      */
-    protected function validateTermsAndConditions()
+    protected function _validateTermsAndConditions()
     {
         $blValid = true;
         $oConfig = $this->getConfig();

@@ -29,33 +29,40 @@ class Unit_Core_oxbasketcontentexplanationmarksTest extends OxidTestCase
     public function providerGetExplanationMarks()
     {
         $aResultDownloadable = array(
-            'getForArticlesWithSkippedDiscount' => null,
-            'getForDownloadableArticles' => '**',
-            'getForIntangibleArticles' => null,
+            'skippedDiscount' => null,
+            'downloadable' => '**',
+            'intangible' => null
         );
 
         $aResultIntangible = array(
-            'getForArticlesWithSkippedDiscount' => null,
-            'getForDownloadableArticles' => null,
-            'getForIntangibleArticles' => '**',
+            'skippedDiscount' => null,
+            'downloadable' => null,
+            'intangible' => '**',
         );
 
         $aResultSkippedDiscount = array(
-            'getForArticlesWithSkippedDiscount' => '**',
-            'getForDownloadableArticles' => null,
-            'getForIntangibleArticles' => null,
+            'skippedDiscount' => '**',
+            'downloadable' => null,
+            'intangible' => null,
         );
 
         $aResultDownloadableAndIntangible = array(
-            'getForArticlesWithSkippedDiscount' => null,
-            'getForDownloadableArticles' => '**',
-            'getForIntangibleArticles' => '***'
+            'skippedDiscount' => null,
+            'downloadable' => '**',
+            'intangible' => '***'
         );
 
         $aResultDownloadableIntangibleAndSkippedDiscount = array(
-            'getForArticlesWithSkippedDiscount' => '**',
-            'getForDownloadableArticles' => '***',
-            'getForIntangibleArticles' => '****'
+            'skippedDiscount' => '**',
+            'downloadable' => '***',
+            'intangible' => '****'
+        );
+
+        $ResultEmptyArray = array(
+            'skippedDiscount' => null,
+            'downloadable' => null,
+            'intangible' => null,
+            'thisDoesNotExists' => null
         );
 
         return array(
@@ -64,7 +71,7 @@ class Unit_Core_oxbasketcontentexplanationmarksTest extends OxidTestCase
             array(false, false, true, $aResultSkippedDiscount),
             array(true, true, false, $aResultDownloadableAndIntangible),
             array(true, true, true, $aResultDownloadableIntangibleAndSkippedDiscount),
-            array(false, false, false, array()),
+            array(false, false, false, $ResultEmptyArray),
         );
     }
 
@@ -76,7 +83,7 @@ class Unit_Core_oxbasketcontentexplanationmarksTest extends OxidTestCase
      *
      * @dataProvider providerGetExplanationMarks
      */
-    public function testGetForArticlesWithSkippedDiscount($blIsIntangible, $blIsDownloadable, $blHasSkippedDiscounts, $aResult)
+    public function testGetExplanationMarks($blIsIntangible, $blIsDownloadable, $blHasSkippedDiscounts, $aResult)
     {
         /** @var oxBasket $oBasket */
         $oBasket = $this->getMock('oxBasket', array('hasArticlesWithIntangibleAgreement', 'hasArticlesWithDownloadableAgreement', 'hasSkipedDiscount'));
@@ -84,11 +91,10 @@ class Unit_Core_oxbasketcontentexplanationmarksTest extends OxidTestCase
         $oBasket->expects($this->any())->method('hasArticlesWithDownloadableAgreement')->will($this->returnValue($blIsDownloadable));
         $oBasket->expects($this->any())->method('hasSkipedDiscount')->will($this->returnValue($blHasSkippedDiscounts));
 
-        /** @var oxBasketContentExplanationMarks $oExplanationMarks */
         $oExplanationMarks = new oxBasketContentExplanationMarks($oBasket);
 
-        $this->assertSame($aResult['getForArticlesWithSkippedDiscount'], $oExplanationMarks->getForArticlesWithSkippedDiscount());
-        $this->assertSame($aResult['getForDownloadableArticles'], $oExplanationMarks->getForDownloadableArticles());
-        $this->assertSame($aResult['getForIntangibleArticles'], $oExplanationMarks->getForIntangibleArticles());
+        foreach($aResult as $sMarkName => $sMark) {
+            $this->assertSame($sMark, $oExplanationMarks->getMark($sMarkName));
+        }
     }
 }

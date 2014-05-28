@@ -55,47 +55,13 @@ class oxBasketContentExplanationMarks
     }
 
     /**
-     * Returns explanation mark for articles with skipped discount.
+     * Returns explanation mark by given mark identification (skippedDiscount, downloadable, intangible).
+     *
+     * @param $sMarkIdentification
      *
      * @return string
      */
-    public function getForArticlesWithSkippedDiscount()
-    {
-        $aMarks = $this->_getMarks();
-
-        return $aMarks['skippedDiscount'];
-    }
-
-    /**
-     * Returns explanation mark for downloadable articles.
-     *
-     * @return string
-     */
-    public function getForDownloadableArticles()
-    {
-        $aMarks = $this->_getMarks();
-
-        return $aMarks['downloadable'];
-    }
-
-    /**
-     * Returns explanation mark for intangible articles.
-     *
-     * @return string
-     */
-    public function getForIntangibleArticles()
-    {
-        $aMarks = $this->_getMarks();
-
-        return $aMarks['intangible'];
-    }
-
-    /**
-     * Returns array with marks.
-     *
-     * @return array
-     */
-    private function _getMarks()
+    public function getMark($sMarkIdentification)
     {
         if (is_null($this->_aMarks)) {
             $sCurrentMark = self::DEFAULT_EXPLANATION_MARK;
@@ -103,7 +69,7 @@ class oxBasketContentExplanationMarks
             $this->_aMarks = $aMarks;
         }
 
-        return $this->_aMarks;
+        return $this->_aMarks[$sMarkIdentification];
     }
 
     /**

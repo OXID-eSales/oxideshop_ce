@@ -69,7 +69,7 @@
                                     [{/if}]
                                 [{/if}]
 
-                                [{if $oView->isEnabledIntangibleProductAgreement() }]
+                                [{if $oViewConf->isFunctionalityEnabled('blEnableIntangibleProdAgreement') }]
                                     <br>
                                     [{if $oxcmp_basket->hasArticlesWithDownloadableAgreement() }]
                                         [{oxifcontent ident="oxdownloadableproductsagreement" object="oContent"}]

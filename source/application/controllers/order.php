@@ -88,14 +88,14 @@ class order extends oxUBase
 
     /**
      * Config option "blConfirmCustInfo". Will be removed later
-     * For compatibility reasons for a while. will be removed in future
+     * @deprecated since v5.1.6 (2014-05-28); Not used anymore
      * @var bool
      */
     protected $_blConfirmCustInfo = null;
 
     /**
      * Boolean of option "blConfirmCustInfo" error
-     * For compatibility reasons for a while. will be removed in future
+     * @deprecated since v5.1.6 (2014-05-28); Not used anymore
      * @var bool
      */
     protected $_blConfirmCustInfoError = null;
@@ -207,31 +207,20 @@ class order extends oxUBase
 
         $oConfig = $this->getConfig();
 
-        if ( !$oConfig->getRequestParameter( 'ord_agb' ) && $oConfig->getConfigParam( 'blConfirmAGB' ) ) {
+        if (!$this->validateTermsAndConditions()) {
             $this->_blConfirmAGBError = 1;
             return;
         }
 
-        $oBasket = $this->getBasket();
-
-        if ( $oBasket->hasArticlesWithDownloadableAgreement() && !$oConfig->getRequestParameter( 'oxdownloadableproductsagreement' ) ) {
-            $this->_blConfirmAGBError = 1;
-            return;
-        }
-
-        if ( $oBasket->hasArticlesWithIntangibleAgreement() && !$oConfig->getRequestParameter( 'oxserviceproductsagreement' ) ) {
-            $this->_blConfirmAGBError = 1;
-            return;
-        }
-
-        // for compatibility reasons for a while. will be removed in future
+        /* @deprecated since v5.1.6 (2014-05-28); Not used anymore */
         if ( $oConfig->getRequestParameter( 'ord_custinfo' ) !== null && !$oConfig->getRequestParameter( 'ord_custinfo' ) && $this->isConfirmCustInfoActive() ) {
             $this->_blConfirmCustInfoError =  1;
             return;
         }
 
         // additional check if we really really have a user now
-        if ( !$oUser= $this->getUser() ) {
+        $oUser = $this->getUser();
+        if ( !$oUser ) {
             return 'user';
         }
 
@@ -258,6 +247,35 @@ class order extends oxUBase
                 oxRegistry::get("oxUtilsView")->addErrorToDisplay( $oEx );
             }
         }
+    }
+
+    /**
+     * Validates whether necessary terms and conditions checkboxes were checked.
+     *
+     * @return bool
+     */
+    protected function validateTermsAndConditions()
+    {
+        $blValid = true;
+        $oConfig = $this->getConfig();
+
+        if ( $oConfig->getConfigParam( 'blConfirmAGB' ) && !$oConfig->getRequestParameter( 'ord_agb' ) ) {
+            $blValid = false;
+        }
+
+        if ($oConfig->getConfigParam( 'blEnableIntangibleProdAgreement' )) {
+            $oBasket = $this->getBasket();
+
+            if ( $blValid && $oBasket->hasArticlesWithDownloadableAgreement() && !$oConfig->getRequestParameter( 'oxdownloadableproductsagreement' ) ) {
+                $blValid = false;
+            }
+
+            if ( $blValid && $oBasket->hasArticlesWithIntangibleAgreement() && !$oConfig->getRequestParameter( 'oxserviceproductsagreement' ) ) {
+                $blValid = false;
+            }
+        }
+
+        return $blValid;
     }
 
     /**
@@ -445,7 +463,7 @@ class order extends oxUBase
 
     /**
      * Template variable getter. Returns if option "blConfirmCustInfo" is on.
-     * For compatibility reasons for a while. will be removed in future
+     * @deprecated since v5.1.6 (2014-05-28); Not used anymore
      *
      * @return bool
      */
@@ -473,7 +491,7 @@ class order extends oxUBase
 
     /**
      * Template variable getter. Returns if option "blConfirmCustInfo" was not set.
-     * For compatibility reasons for a while. will be removed in future.
+     * @deprecated since v5.1.6 (2014-05-28); Not used anymore
      *
      * @return bool
      */

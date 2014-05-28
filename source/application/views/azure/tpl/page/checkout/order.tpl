@@ -1,7 +1,7 @@
 [{capture append="oxidBlock_content"}]
 
     [{block name="checkout_order_errors"}]
-        [{ if $oView->isConfirmAGBActive() && $oView->isConfirmAGBError() == 1 }]
+        [{ if $oView->isConfirmAGBError() == 1 }]
             [{include file="message/error.tpl" statusMessage="PAGE_CHECKOUT_ORDER_READANDCONFIRMTERMS"|oxmultilangassign }]
         [{/if}]
         [{assign var="iError" value=$oView->getAddressError() }]

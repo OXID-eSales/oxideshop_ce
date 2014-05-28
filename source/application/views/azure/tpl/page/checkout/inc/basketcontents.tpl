@@ -71,10 +71,10 @@
                             <div>
                                 <a rel="nofollow" href="[{$basketitem->getLink()}]"><b>[{$basketitem->getTitle()}]</b></a>
 
-                                [{if $basketitem->isSkipDiscount() }] <sup><a rel="nofollow" href="#noteWithSkippedDiscount" >[{$oExplanationMarks->getForArticlesWithSkippedDiscount()}]</a></sup>[{/if}]
+                                [{if $basketitem->isSkipDiscount() }] <sup><a rel="nofollow" href="#noteWithSkippedDiscount" >[{$oExplanationMarks->getMark('skippedDiscount')}]</a></sup>[{/if}]
                                 [{if $oViewConf->getActiveClassName() == 'order' && $oViewConf->isFunctionalityEnabled('blEnableIntangibleProdAgreement')}]
-                                    [{if $oArticle->hasDownloadableAgreement() }] <sup><a rel="nofollow" href="#noteForDownloadableArticles" >[{$oExplanationMarks->getForDownloadableArticles()}]</a></sup>[{/if}]
-                                    [{if $oArticle->hasIntangibleAgreement() }] <sup><a rel="nofollow" href="#noteForIntangibleArticles" >[{$oExplanationMarks->getForIntangibleArticles()}]</a></sup>[{/if}]
+                                    [{if $oArticle->hasDownloadableAgreement() }] <sup><a rel="nofollow" href="#noteForDownloadableArticles" >[{$oExplanationMarks->getMark('downloadable')}]</a></sup>[{/if}]
+                                    [{if $oArticle->hasIntangibleAgreement() }] <sup><a rel="nofollow" href="#noteForIntangibleArticles" >[{$oExplanationMarks->getMark('intangible')}]</a></sup>[{/if}]
                                 [{/if}]
                             </div>
                             <div class="smallFont">
@@ -525,20 +525,20 @@
 
                     [{if $oxcmp_basket->hasSkipedDiscount() }]
                         <tr>
-                            <th><span class="note">**</span> [{ oxmultilang ident="MESSAGE_COUPON_NOT_APPLIED_FOR_ARTICLES" }]</span></th>
+                            <th><span id="noteWithSkippedDiscount" class="note">[{$oExplanationMarks->getMark('skippedDiscount')}]</span> [{ oxmultilang ident="MESSAGE_COUPON_NOT_APPLIED_FOR_ARTICLES" }]</span></th>
                             <td></td>
                         </tr>
                     [{/if}]
                     [{if $oViewConf->getActiveClassName() == 'order' && $oViewConf->isFunctionalityEnabled('blEnableIntangibleProdAgreement')}]
                         [{if $oxcmp_basket->hasArticlesWithDownloadableAgreement() }]
                             <tr>
-                                <th><span id="noteForDownloadableArticles" class="note">[{$oExplanationMarks->getForDownloadableArticles()}]</span> [{ oxmultilang ident="MESSAGE_FOR_DOWNLOADABLE_ARTICLES" }]</span></th>
+                                <th><span id="noteForDownloadableArticles" class="note">[{$oExplanationMarks->getMark('downloadable')}]</span> [{ oxmultilang ident="MESSAGE_FOR_DOWNLOADABLE_ARTICLES" }]</span></th>
                                 <td></td>
                             </tr>
                         [{/if}]
                         [{if $oxcmp_basket->hasArticlesWithIntangibleAgreement() }]
                             <tr>
-                                <th><span id="noteForIntangibleArticles" class="note">[{$oExplanationMarks->getForIntangibleArticles()}]</span> [{ oxmultilang ident="MESSAGE_FOR_INTANGIBLE_ARTICLES" }]</span></th>
+                                <th><span id="noteForIntangibleArticles" class="note">[{$oExplanationMarks->getMark('intangible')}]</span> [{ oxmultilang ident="MESSAGE_FOR_INTANGIBLE_ARTICLES" }]</span></th>
                                 <td></td>
                             </tr>
                         [{/if}]

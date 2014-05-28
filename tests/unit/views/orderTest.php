@@ -479,7 +479,7 @@ class Unit_Views_orderTest extends OxidTestCase
         $oS = $this->getMock( 'oxSession', array( 'checkSessionChallenge' ) );
         $oS->expects( $this->once() )->method( 'checkSessionChallenge' )->will( $this->returnValue( true ) );
         $oOrder = $this->getMock('order', array('getSession'));
-        $oOrder->expects( $this->once() )->method( 'getSession' )->will( $this->returnValue( $oS ) );
+        $oOrder->expects( $this->any() )->method( 'getSession' )->will( $this->returnValue( $oS ) );
 
         $this->assertEquals( 'user', $oOrder->execute() );
         // test former tpl. If ord_custinfo is not confirmed

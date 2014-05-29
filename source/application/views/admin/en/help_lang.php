@@ -340,7 +340,7 @@ $aLang =  array(
 
 'HELP_ARTICLE_EXTEND_UPDATEPRICE'             => 'Prices can be changed on a defined time. Given fields update standard prices. If you leave price values "0", prices will not be updated.',
 
-'HELP_ARTICLE_EXTEND_SHOWCUSTOMAGREEMENT'     => '[TR]Users have to Confirm Intangible and Downloadable </br> products Terms and Conditions during Check-Out ',
+'HELP_ARTICLE_EXTEND_SHOWCUSTOMAGREEMENT'     => 'If this option is activated, users have to confirm terms and conditions in the fourth step of the check-out process for this specific item. Please make sure the general option is activated as well and the product item is intangible or downloadable.',
 
 'HELP_ARTICLE_FILES_MAX_DOWNLOADS_COUNT'      => 'Here you can define how many times user can download from the same link after order. For this file you can overwrite the default setting, which was defined in Master Settings -> Core Setting -> Settings -> Downloads for all products.',
 
@@ -624,6 +624,6 @@ $aLang =  array(
 'HELP_REVERSE_PROXY_GET_BACKEND'              => 'Admin area is displayed without Reverse Proxy. Varnish header could not be received.',
 
 'HELP_SHOP_CONFIG_DEBIT_OLD_BANK_INFORMATION_NOT_ALLOWED' => 'Only IBAN and BIC can be entered during the checkout. Bank account number and the bank code can only be entered if this check box is not activated.',
-'HELP_SHOP_CONFIG_ENABLE_INTANGIBLE_PRODUCTS_AGREEMENT'   => '[TR] Users have to Confirm Downloadable and Service products conditions during Check-Out',
+'HELP_SHOP_CONFIG_ENABLE_INTANGIBLE_PRODUCTS_AGREEMENT'   => 'If this option is activated, users have to confirm terms and conditions for intangible or downloadable products in the fourth step of the check-out process. Please make sure this option is enabled for the specific item as well!',
 
 );

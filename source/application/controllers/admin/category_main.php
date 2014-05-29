@@ -109,7 +109,7 @@ class Category_Main extends oxAdminDetails
             , "OXREMINDACTIVE", "OXREMINDAMOUNT", "OXVENDORID", "OXMANUFACTURERID", "OXSKIPDISCOUNTS"
             , "OXBLFIXEDPRICE", "OXICON", "OXVARSELECT", "OXAMITEMID", "OXAMTASKID", "OXPIXIEXPORT", "OXPIXIEXPORTED", "OXSORT"
             , "OXUPDATEPRICE", "OXUPDATEPRICEA", "OXUPDATEPRICEB", "OXUPDATEPRICEC", "OXUPDATEPRICETIME", "OXISDOWNLOADABLE"
-            , "OXVARMAXPRICE"
+            , "OXVARMAXPRICE", "OXSHOWCUSTOMAGREEMENT"
         );
         $aSkipFields = array_merge($aSkipFields, oxRegistry::get("oxShopMetaData")->getShopFields());
 

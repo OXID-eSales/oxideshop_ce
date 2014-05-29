@@ -5282,4 +5282,15 @@ a.downloadableFile.pending {
 
 #betaNote+#page {
     padding-top: 35px;
+}#orderConfirmAgbBottom hr {
+    border: none;
+    background-color: #ECEFF0;
+    height: 5px;
+    margin: 10px 0;
+}
+.agbConfirmation {
+    margin-bottom: 5px;
+}
+.agbConfirmation .checkbox{
+    vertical-align: text-bottom;
 }

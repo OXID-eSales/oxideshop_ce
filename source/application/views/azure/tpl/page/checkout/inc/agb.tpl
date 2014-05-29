@@ -36,7 +36,7 @@
             [{assign var="oExplanationMarks" value=$oView->getBasketContentExplanationMarks() }]
             [{if $oxcmp_basket->hasArticlesWithDownloadableAgreement() }]
                 [{oxifcontent ident="oxdownloadableproductsagreement" object="oContent"}]
-                    <p class="agbConfirmation">
+                    <p id="noteForDownloadableArticles" class="agbConfirmation">
                         <input id="oxdownloadableproductsagreement" class="checkbox" type="checkbox" name="oxdownloadableproductsagreement" value="1">
                         <label for="oxdownloadableproductsagreement">[{$oExplanationMarks->getMark('downloadable')}] [{$oContent->oxcontents__oxcontent->value}]</label>
                     </p>
@@ -44,7 +44,7 @@
             [{/if}]
             [{if $oxcmp_basket->hasArticlesWithIntangibleAgreement() }]
                 [{oxifcontent ident="oxserviceproductsagreement" object="oContent"}]
-                    <p class="agbConfirmation">
+                    <p id="noteForIntangibleArticles" class="agbConfirmation">
                         <input id="oxserviceproductsagreement" class="checkbox" type="checkbox" name="oxserviceproductsagreement" value="1">
                         <label for="oxserviceproductsagreement">[{$oExplanationMarks->getMark('intangible')}] [{$oContent->oxcontents__oxcontent->value}]</label>
                     </p>
@@ -53,3 +53,6 @@
         [{/if}]
     [{/if}]
 </div>
+[{oxscript add="$('#checkAgbTop').click(function(){ $('input[name=ord_agb]').val(parseInt($('input[name=ord_agb]').val())^1);});"}]
+[{oxscript add="$('#oxdownloadableproductsagreement').click(function(){ $('input[name=oxdownloadableproductsagreement]').val(parseInt($('input[name=oxdownloadableproductsagreement]').val())^1);});"}]
+[{oxscript add="$('#oxserviceproductsagreement').click(function(){ $('input[name=oxserviceproductsagreement]').val(parseInt($('input[name=oxserviceproductsagreement]').val())^1);});"}]

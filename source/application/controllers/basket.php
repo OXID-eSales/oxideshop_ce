@@ -359,6 +359,19 @@ class Basket extends oxUBase
     }
 
     /**
+     * Method returns object with explanation marks for articles in basket.
+     *
+     * @return oxBasketContentExplanationMarks
+     */
+    public function getBasketContentExplanationMarks()
+    {
+        /** @var oxBasketContentExplanationMarks $oBasketContentExplanationMarks */
+        $oBasketContentExplanationMarks = oxNew('oxBasketContentExplanationMarks', $this->getSession()->getBasket());
+
+        return $oBasketContentExplanationMarks;
+    }
+
+    /**
      * Sets basket wrapping
      *
      * @param oxBasket $oBasket

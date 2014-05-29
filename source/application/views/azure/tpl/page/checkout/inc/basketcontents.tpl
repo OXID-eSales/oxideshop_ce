@@ -37,9 +37,7 @@
         [{* basket items *}]
         <tbody>
         [{assign var="basketitemlist" value=$oView->getBasketArticles() }]
-        [{if $oViewConf->getActiveClassName() == 'order' }]
-            [{assign var="oExplanationMarks" value=$oView->getBasketContentExplanationMarks() }]
-        [{/if}]
+        [{assign var="oExplanationMarks" value=$oView->getBasketContentExplanationMarks() }]
         [{foreach key=basketindex from=$oxcmp_basket->getContents() item=basketitem name=basketContents}]
             [{block name="checkout_basketcontents_basketitem"}]
                 [{assign var="basketproduct" value=$basketitemlist.$basketindex }]

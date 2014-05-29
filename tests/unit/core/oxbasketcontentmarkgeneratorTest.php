@@ -24,7 +24,7 @@ require_once realpath( "." ).'/unit/OxidTestCase.php';
 require_once realpath( "." ).'/unit/test_config.inc.php';
 
 
-class Unit_Core_oxbasketcontentexplanationmarksTest extends OxidTestCase
+class Unit_Core_oxbasketcontentmarkgeneratorTest extends OxidTestCase
 {
     public function providerGetExplanationMarks()
     {
@@ -91,7 +91,7 @@ class Unit_Core_oxbasketcontentexplanationmarksTest extends OxidTestCase
         $oBasket->expects($this->any())->method('hasArticlesWithDownloadableAgreement')->will($this->returnValue($blIsDownloadable));
         $oBasket->expects($this->any())->method('hasSkipedDiscount')->will($this->returnValue($blHasSkippedDiscounts));
 
-        $oExplanationMarks = new oxBasketContentExplanationMarks($oBasket);
+        $oExplanationMarks = new oxBasketContentMarkGenerator($oBasket);
 
         foreach($aResult as $sMarkName => $sMark) {
             $this->assertSame($sMark, $oExplanationMarks->getMark($sMarkName));

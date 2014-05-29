@@ -512,14 +512,14 @@ class order extends oxUBase
     /**
      * Method returns object with explanation marks for articles in basket.
      *
-     * @return oxBasketContentExplanationMarks
+     * @return oxBasketContentMarkGenerator
      */
-    public function getBasketContentExplanationMarks()
+    public function getBasketContentMarkGenerator()
     {
-        /** @var oxBasketContentExplanationMarks $oBasketContentExplanationMarks */
-        $oBasketContentExplanationMarks = oxNew('oxBasketContentExplanationMarks', $this->getBasket());
+        /** @var oxBasketContentMarkGenerator $oBasketContentMarkGenerator */
+        $oBasketContentMarkGenerator = oxNew('oxBasketContentMarkGenerator', $this->getBasket());
 
-        return $oBasketContentExplanationMarks;
+        return $oBasketContentMarkGenerator;
     }
 
     /**

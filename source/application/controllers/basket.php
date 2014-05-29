@@ -376,4 +376,17 @@ class Basket extends oxUBase
 
         return $aPaths;
     }
+
+    /**
+     * Method returns object with explanation marks for articles in basket.
+     *
+     * @return oxBasketContentExplanationMarks
+     */
+    public function getBasketContentExplanationMarks()
+    {
+        /** @var oxBasketContentExplanationMarks $oBasketContentExplanationMarks */
+        $oBasketContentExplanationMarks = oxNew('oxBasketContentExplanationMarks', $this->getSession()->getBasket());
+
+        return $oBasketContentExplanationMarks;
+    }
 }

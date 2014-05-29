@@ -7305,6 +7305,17 @@ class Unit_Core_oxarticleTest extends OxidTestCase
     }
 
     /**
+     */
+    public function testHasIntangibleAgreementWithBothIntagibleAndDownloadableArticle()
+    {
+        $oProduct = $this->_getArticleWithCustomisedAgreement(true);
+        $oProduct->oxarticles__oxnonmaterial = new oxField(true);
+        $oProduct->oxarticles__oxisdownloadable = new oxField(true);
+
+        $this->assertSame(false, $oProduct->hasIntangibleAgreement());
+    }
+
+    /**
      * @param $iIsDownloadable
      * @param $iShowCustomAgreement
      * @param $blResult
@@ -7317,6 +7328,17 @@ class Unit_Core_oxarticleTest extends OxidTestCase
         $oProduct->oxarticles__oxisdownloadable = new oxField($iIsDownloadable);
 
         $this->assertSame($blResult, $oProduct->hasDownloadableAgreement());
+    }
+
+    /**
+     */
+    public function testHasDownloadableAgreementWithBothIntagibleAndDownloadableArticle()
+    {
+        $oProduct = $this->_getArticleWithCustomisedAgreement(true);
+        $oProduct->oxarticles__oxnonmaterial = new oxField(true);
+        $oProduct->oxarticles__oxisdownloadable = new oxField(true);
+
+        $this->assertSame(true, $oProduct->hasDownloadableAgreement());
     }
 
     /**

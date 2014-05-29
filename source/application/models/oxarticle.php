@@ -1220,7 +1220,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      */
     public function hasIntangibleAgreement()
     {
-        return $this->oxarticles__oxshowcustomagreement->value && $this->oxarticles__oxnonmaterial->value;
+        return $this->oxarticles__oxshowcustomagreement->value && $this->oxarticles__oxnonmaterial->value && !$this->hasDownloadableAgreement();
     }
 
     /**

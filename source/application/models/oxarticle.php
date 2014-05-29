@@ -396,8 +396,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      */
     protected $_aCopyParentField = array('oxarticles__oxnonmaterial',
                                          'oxarticles__oxfreeshipping',
-                                         //'oxarticles__oxremindactive',
-                                         'oxarticles__oxisdownloadable');
+                                         'oxarticles__oxisdownloadable',
+                                         'oxarticles__oxshowcustomagreement');
 
     /**
      * Multidimensional variant tree structure

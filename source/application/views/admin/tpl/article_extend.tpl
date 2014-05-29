@@ -258,7 +258,7 @@ function processUnitInput( oSelect, sInputId )
                   </td>
                   <td class="edittext">
                       <input type="hidden" name="editval[oxarticles__oxshowcustomagreement]" value='0'>
-                      <input class="edittext" type="checkbox" name="editval[oxarticles__oxshowcustomagreement]" value='1' [{if $edit->oxarticles__oxshowcustomagreement->value == 1}]checked[{/if}]>
+                      <input class="edittext" type="checkbox" name="editval[oxarticles__oxshowcustomagreement]" value='1' [{if $edit->oxarticles__oxshowcustomagreement->value == 1}]checked[{/if}] [{if $oxparentid }]disabled[{/if}]>
                       [{ oxinputhelp ident="HELP_ARTICLE_EXTEND_SHOWCUSTOMAGREEMENT" }]
                   </td>
               </tr>

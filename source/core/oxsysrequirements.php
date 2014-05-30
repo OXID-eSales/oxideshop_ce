@@ -856,6 +856,7 @@ class oxSysRequirements
      */
     public function checkCollation()
     {
+        return false;
         $myConfig = $this->getConfig();
 
         $aCollations = array();

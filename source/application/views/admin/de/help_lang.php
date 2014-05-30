@@ -335,7 +335,7 @@ $aLang =  array(
 
 'HELP_ARTICLE_EXTEND_UPDATEPRICE'             => 'Preise können zu einem festgelegten Zeitpunkt geändert werden. Die eingetragenen Preise aktualisieren die Standardpreise. Hat ein Preis den Wert "0", wird er nicht aktualisiert.',
 
-'HELP_ARTICLE_EXTEND_SHOWCUSTOMAGREEMENT'     => '[TR]Users have to Confirm Intangible and Downloadable products Terms and Conditions during Check-Out ',
+'HELP_ARTICLE_EXTEND_SHOWCUSTOMAGREEMENT'     => 'Ist diese Option aktiviert, müssen Benutzer die AGB für diesen Artikel im vierten Bestellschritt bestätigen. Bitte stellen Sie sicher, dass diese Option auch in den Grundeinstellungen aktiviert ist und dass es sich um einen immateriellen oder Downloadartikel handelt.',
 
 'HELP_ARTICLE_FILES_MAX_DOWNLOADS_COUNT'      => 'Geben Sie hier an, wie oft Benutzer nach einer Bestellung den Link zum Download verwenden können. Hier können Sie für diese Datei die Standardeinstellung überschreiben, die in Stammdaten -> Grundeinstellung -> Einstell. -> Downloads für alle Artikel gesetzt wurde.',
 
@@ -628,5 +628,5 @@ $aLang =  array(
 'HELP_REVERSE_PROXY_GET_BACKEND'              => 'Der Administrationsbereich wird ohne Reverse Proxy angezeigt. Varnish Header konnte nicht empfangen werden.',
 
 'HELP_SHOP_CONFIG_DEBIT_OLD_BANK_INFORMATION_NOT_ALLOWED' => 'Im Bestellprozess können nur IBAN und BIC angegeben werden. Die Eingabe von Kontonummer und BLZ ist nur möglich, wenn das Kontrollkästchen nicht aktiviert ist.',
-'HELP_SHOP_CONFIG_ENABLE_INTANGIBLE_PRODUCTS_AGREEMENT'   => '[TR] Users have to Confirm Downloadable and Service products conditions during Check-Out',
+'HELP_SHOP_CONFIG_ENABLE_INTANGIBLE_PRODUCTS_AGREEMENT'   => 'Ist diese Option aktiviert, müssen Benutzer die AGB für immaterielle oder Downloadartikel im vierten Bestellschritt bestätigen. Bitte aktivieren Sie diese Option auch für die spezifischen Produkte!',
 );

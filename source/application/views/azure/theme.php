@@ -28,7 +28,7 @@ $aTheme = array(
     'title'        => 'Azure',
     'description'  => 'Azure theme by OXID eSales AG',
     'thumbnail'    => 'theme.jpg',
-    'version'      => '1.3',
+    'version'      => '1.3.1',
     'author'       => 'OXID',
     //Define the following variables for the custom child themes:
     //'parentTheme'    => 'azure',

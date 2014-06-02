@@ -564,6 +564,10 @@ class oxERPType
             }
 
 
+        if (isset($aData['OXSHOPID'])) {
+            $aData['OXSHOPID'] = oxRegistry::getConfig()->getShopId();
+        }
+
         if (!isset($aData['OXID'])) {
             $aData['OXID'] = $this->getOxidFromKeyFields($aData);
         }

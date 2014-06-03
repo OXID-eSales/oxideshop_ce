@@ -37,7 +37,7 @@ class oxERPType
     /**
      * If true a export will be restricted vias th oxshopid column of the table
      *
-     * @var unknown_type
+     * @var bool
      */
     protected $_blRestrictedByShopId = false;
 
@@ -80,8 +80,6 @@ class oxERPType
 
     /**
      * class constructor
-     *
-     * @return null
      */
     public function __construct()
     {
@@ -113,7 +111,7 @@ class oxERPType
     }
 
     /**
-     * Returns table or Viewname
+     * Returns table or View name
      *
      * @param int $iShopID   shop id - default is the current shop id
      * @param int $iLanguage language id

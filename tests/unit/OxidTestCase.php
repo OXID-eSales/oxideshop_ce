@@ -319,6 +319,7 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
+        modDb::getInstance()->modAttach(modDb::getInstance()->getRealInstance());
         oxTestsStaticCleaner::clean('oxSeoEncoder', '_instance');
         oxTestsStaticCleaner::clean('oxSeoEncoderArticle', '_instance');
         oxTestsStaticCleaner::clean('oxSeoEncoderCategory', '_instance');

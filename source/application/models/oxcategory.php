@@ -221,7 +221,7 @@ class oxCategory extends oxI18n implements oxIUrl
      */
     protected function _loadFromDb( $sOXID )
     {
-        $sSelect = $this->buildSelectString( array( $this->getViewName().".oxid" => $sOXID ));
+        $sSelect = $this->buildSelectString( array( "`{$this->getViewName()}`.`oxid`" => $sOXID ));
         $aData = oxDb::getDb( oxDb::FETCH_MODE_ASSOC )->getRow( $sSelect );
         return $aData;
     }

@@ -256,8 +256,8 @@ class oxSysRequirements
                 $aRequiredServerConfigs[] = 'mysql_version';
             }
             $this->_aRequiredModules = array_fill_keys($aRequiredPHPExtensions, 'php_extennsions') +
-                                       array_fill_keys($aRequiredPHPConfigs, 'php_config') +
-                                       array_fill_keys($aRequiredServerConfigs, 'server_config');
+                array_fill_keys($aRequiredPHPConfigs, 'php_config') +
+                array_fill_keys($aRequiredServerConfigs, 'server_config');
         }
 
         return $this->_aRequiredModules;
@@ -730,12 +730,12 @@ class oxSysRequirements
                     $iModStat = 0;
                 }
             } elseif (version_compare($sClientVersion, '5.0.36', '>=') &&
-                      version_compare($sClientVersion, '5.0.38', '<')
+                version_compare($sClientVersion, '5.0.38', '<')
             ) {
                 // mantis#0001003: Problems with MySQL version 5.0.37
                 $iModStat = 0;
             } elseif (version_compare($sClientVersion, '5.0.40', '>') &&
-                      version_compare($sClientVersion, '5.0.42', '<')
+                version_compare($sClientVersion, '5.0.42', '<')
             ) {
                 // mantis#0001877: Exclude MySQL 5.0.41 from system requirements as not fitting
                 $iModStat = 0;
@@ -842,8 +842,8 @@ class oxSysRequirements
     protected function _getAdditionalCheck()
     {
         $sSelect = '';
-        foreach ($this->_aException as $sTable => $sColumn) {
-            $sSelect .= 'and ( t.TABLE_NAME != "' . $sTable . '" and c.COLUMN_NAME != "' . $sColumn . '" ) ';
+        foreach ( $this->_aException as $sTable => $sColumn ) {
+            $sSelect .= 'and ( TABLE_NAME != "'.$sTable.'" and COLUMN_NAME != "'.$sColumn.'" ) ';
         }
 
         return $sSelect;
@@ -856,20 +856,15 @@ class oxSysRequirements
      */
     public function checkCollation()
     {
-        return false;
         $myConfig = $this->getConfig();
 
         $aCollations = array();
-        $sCollation  = '';
-
-        $sSelect = 'select t.TABLE_NAME, c.COLUMN_NAME, c.COLLATION_NAME from INFORMATION_SCHEMA.tables t ' .
-                   'LEFT JOIN INFORMATION_SCHEMA.columns c ON t.TABLE_NAME = c.TABLE_NAME  ' .
-                   'where t.TABLE_SCHEMA = "' . $myConfig->getConfigParam('dbName') . '" ' .
-                   'and c.TABLE_SCHEMA = "' . $myConfig->getConfigParam('dbName') . '" ' .
-                   'and c.COLUMN_NAME in ("' . implode('", "', $this->_aColumns) . '") ' .
-                   $this->_getAdditionalCheck() .
-                   ' ORDER BY (t.TABLE_NAME = "oxarticles") DESC';
-        $aRez    = oxDb::getDb()->getAll($sSelect);
+        $sCollation = '';
+        $sSelect = 'select TABLE_NAME, COLUMN_NAME, COLLATION_NAME from INFORMATION_SCHEMA.columns
+                    where TABLE_NAME not like "oxv\_%" and table_schema = "'.$myConfig->getConfigParam( 'dbName' ).'"
+                    and COLUMN_NAME in ("'.implode('", "', $this->_aColumns).'") ' . $this->_getAdditionalCheck() .
+            'ORDER BY TABLE_NAME, COLUMN_NAME DESC;';
+        $aRez = oxDb::getDb()->getAll($sSelect);
         foreach ($aRez as $aRetTable) {
             if (!$sCollation) {
                 $sCollation = $aRetTable[2];

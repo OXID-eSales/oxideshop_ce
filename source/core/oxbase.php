@@ -474,12 +474,19 @@ class oxBase extends oxSuperCfg
      *
      * @return string
      */
-    public function setId( $sOXID = null )
+    public function setId($sOXID = null)
     {
-        if ( $sOXID ) {
+        if ($sOXID) {
             $this->_sOXID = $sOXID;
         } else {
-            $this->_sOXID = oxUtilsObject::getInstance()->generateUID();
+            if ($this->getCoreTableName() == 'oxobject2category') {
+                $sObjectId = $this->oxobject2category__oxobjectid;
+                $sCatId = $this->oxobject2category__oxcatnid;
+                $sShopID = $this->oxobject2category__oxshopid;
+                $this->_sOXID = md5($sObjectId . $sCatId . $sShopID);
+            } else {
+                $this->_sOXID = oxUtilsObject::getInstance()->generateUID();
+            }
         }
 
         $sIdVarName = $this->getCoreTableName() . '__oxid';

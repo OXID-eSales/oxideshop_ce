@@ -29,6 +29,15 @@ require_once realpath( "." ).'/unit/test_config.inc.php';
 class Unit_Admin_ArticleMainTest extends OxidTestCase
 {
     /**
+     * Setup fixture
+     */
+    public function setUp()
+    {
+        $this->addToDatabase("replace into oxcategories set oxid='_testCategory1', oxshopid='1', oxtitle='_testCategory1'", 'oxcategories');
+        $this->addToDatabase("replace into oxarticles set oxid='_testArticle1', oxshopid='".$this->getShopId()."', oxtitle='_testArticle1'", 'oxarticles');
+    }
+
+    /**
      * Tear down the fixture.
      *
      * @return null
@@ -612,5 +621,42 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
         $this->assertTrue($oArt->load('_testArtId2'));
         $this->assertEquals(0, $oArt->oxarticles__oxrating->value);
         $this->assertEquals(0, $oArt->oxarticles__oxratingcnt->value);
+    }
+
+    /**
+     * Tests that addToCategory method generates only one entry in shop database
+     */
+    public function testAddToCategoryGenerateOneEntry()
+    {
+
+        $iCount = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getOne("select count(*) from oxobject2category where OXCATNID = '_testCategory1' AND OXOBJECTID = '_testArticle1'");
+        $this->assertEquals(0, $iCount, "expected no entries oxobject2category, but got {$iCount}.");
+
+        $oV = new Article_Main();
+        $oV->addToCategory('_testCategory1', '_testArticle1');
+
+        $iCount = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getOne("select count(*) from oxobject2category where OXCATNID = '_testCategory1' AND OXOBJECTID = '_testArticle1'");
+        $this->assertEquals(1, $iCount, "expected only one entry in oxobject2category, but got {$iCount}.");
+    }
+
+    /**
+     * Tests that when category is assigned to different shop, it gets proper oxobject2category relations
+     */
+    public function testAddToCategoryAndAssignToOtherShopGenerateOneEntry()
+    {
+        $oV = new Article_Main();
+        $oV->addToCategory('_testCategory1', '_testArticle1');
+
+        $oArticle = new oxArticle();
+        $oArticle->load('_testArticle1');
+        $oArticle->assignToShop(2);
+
+
+        $oCategory = new oxCategory();
+        $oCategory->load('_testCategory1');
+        $oCategory->assignToShop(2);
+
+        $iCount = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getOne("select count(*) from oxobject2category where OXCATNID = '_testCategory1' AND OXOBJECTID = '_testArticle1' and OXSHOPID = 2");
+        $this->assertEquals(1, $iCount);
     }
 }

@@ -3372,6 +3372,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     /**
      * Applies discounts which should be applied in general case (for 0 amount)
      *
+     * @see self::applyDiscountsForPrice
      * @param oxprice $oPrice Price object
      *
      * @return null

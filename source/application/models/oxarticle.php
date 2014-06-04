@@ -1964,17 +1964,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
         // apply currency
         $this->_applyCurrency( $oPrice );
-        // apply discounts
-        if ( !$this->skipDiscounts() ) {
-            $oDiscountList = oxRegistry::get("oxDiscountList");
-            $aDiscounts = $oDiscountList->getArticleDiscounts( $this, $this->getArticleUser() );
 
-            reset( $aDiscounts );
-            foreach ( $aDiscounts as $oDiscount ) {
-                $oPrice->setDiscount($oDiscount->getAddSum(), $oDiscount->getAddSumType());
-            }
-            $oPrice->calculateDiscount();
-        }
+        $this->applyDiscountsForPrice( $oPrice );
 
         return $oPrice;
     }
@@ -3386,6 +3377,18 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      * @return null
      */
     public function applyDiscountsForVariant( $oPrice )
+    {
+        $this->applyDiscountsForPrice( $oPrice );
+    }
+
+    /**
+     * Applies discounts which should be applied in general case (for 0 amount)
+     *
+     * @param oxprice $oPrice Price object
+     *
+     * @return null
+     */
+    public function applyDiscountsForPrice( $oPrice )
     {
         // apply discounts
         if ( !$this->skipDiscounts() ) {

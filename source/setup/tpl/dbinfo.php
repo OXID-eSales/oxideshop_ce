@@ -27,7 +27,7 @@ $blMbStringOn = $this->getViewParam( "blMbStringOn" );
 $blUnicodeSupport = $this->getViewParam( "blUnicodeSupport" );
 
 $sChecked = '';
-if ( ( isset( $aDB['iUtfMode'] ) && $aDB['iUtfMode'] == 1 ) && $blMbStringOn > 1 && $blUnicodeSupport > 1 ) {
+if ( ( !isset( $aDB['iUtfMode'] ) || $aDB['iUtfMode'] == 1 ) && $blMbStringOn > 1 && $blUnicodeSupport > 1 ) {
     $sChecked = 'checked';
 }
 $sDisabled = ( $blMbStringOn > 1 && $blUnicodeSupport > 1 ) ? '' : 'disabled';

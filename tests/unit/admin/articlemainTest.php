@@ -640,24 +640,4 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
         $this->assertEquals(1, $iCount, "expected only one entry in oxobject2category, but got {$iCount}.");
     }
 
-    /**
-     * Tests that when category is assigned to different shop, it gets proper oxobject2category relations
-     */
-    public function testAddToCategoryAndAssignToOtherShopGenerateOneEntry()
-    {
-        $oV = new Article_Main();
-        $oV->addToCategory('_testCategory1', '_testArticle1');
-
-        $oArticle = new oxArticle();
-        $oArticle->load('_testArticle1');
-        $oArticle->assignToShop(2);
-
-
-        $oCategory = new oxCategory();
-        $oCategory->load('_testCategory1');
-        $oCategory->assignToShop(2);
-
-        $iCount = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getOne("select count(*) from oxobject2category where OXCATNID = '_testCategory1' AND OXOBJECTID = '_testArticle1' and OXSHOPID = 2");
-        $this->assertEquals(1, $iCount);
-    }
 }

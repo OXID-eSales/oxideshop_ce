@@ -52,6 +52,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
 
         $myDB = oxDb::getDB();
         $myDB->execute( 'delete from oxobject2selectlist' );
+        $this->addTableForCleanup('oxobject2category');
         parent::tearDown();
     }
 

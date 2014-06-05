@@ -1184,21 +1184,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         }
 
         if ( !isset( self::$_aSelList[$sKey] ) ) {
-            $oDb = oxDb::getDb();
-            $sSLViewName = getViewName( 'oxselectlist' );
-
-            $sQ = "select {$sSLViewName}.* from oxobject2selectlist join {$sSLViewName} on $sSLViewName.oxid=oxobject2selectlist.oxselnid
-                   where oxobject2selectlist.oxobjectid=%s order by oxobject2selectlist.oxsort";
-
-            // all selectlists this article has
-            $oLists = oxNew( 'oxlist' );
-            $oLists->init( 'oxselectlist' );
-            $oLists->selectString( sprintf( $sQ, $oDb->quote( $this->getId() ) ) );
-
-            //#1104S if this is variant ant it has no selectlists, trying with parent
-            if ( $oLists->count() == 0 && $this->oxarticles__oxparentid->value ) {
-                $oLists->selectString( sprintf( $sQ, $oDb->quote( $this->oxarticles__oxparentid->value ) ) );
-            }
+            $oLists = $this->_getSelectListByWithParentFallback();
 
             // We do not need to calculate price here as there are method to get current article vat
             /*if ( $this->getPrice() != null ) {
@@ -1215,6 +1201,43 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             }
         }
         return self::$_aSelList[$sKey];
+    }
+
+    /**
+     * Select a select list form DB
+     *
+     * @param integer $iLimit
+     * @param douple $dBaseVat
+     *
+     * @return oxlist
+     */
+    protected function _getSelectListByWithParentFallback( $iLimit = null, $dBaseVat = null)
+    {
+        $oDb = oxDb::getDb();
+        $sSLViewName = getViewName( 'oxselectlist' );
+
+        $sQ = "select {$sSLViewName}.* from oxobject2selectlist join {$sSLViewName} on $sSLViewName.oxid=oxobject2selectlist.oxselnid
+               where oxobject2selectlist.oxobjectid=%s order by oxobject2selectlist.oxsort";
+
+        if ( ( $iLimit = (int) $iLimit ) ) {
+            $sQ .= " limit $iLimit ";
+        }
+
+        // all selectlists this article has
+        $oLists = oxNew( 'oxlist' );
+        $oLists->init( 'oxselectlist' );
+        if ( $dBaseVat !== null ) {
+            $oList->getBaseObject()->setVat( $dVat );
+        }
+
+        $oLists->selectString( sprintf( $sQ, $oDb->quote( $this->getId() ) ) );
+
+        //#1104S if this is variant ant it has no selectlists, trying with parent
+        if ( $oLists->count() == 0 && $this->oxarticles__oxparentid->value ) {
+            $oLists->selectString( sprintf( $sQ, $oDb->quote( $this->oxarticles__oxparentid->value ) ) );
+        }
+
+        return $oLists;
     }
 
     /**
@@ -1319,32 +1342,13 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         $sId = $this->getId() . ( (int) $iLimit );
         if ( !array_key_exists( $sId, self::$_aSelections ) ) {
 
-            $oDb = oxDb::getDb();
-            $sSLViewName = getViewName( 'oxselectlist' );
-
-            $sQ = "select {$sSLViewName}.* from oxobject2selectlist join {$sSLViewName} on $sSLViewName.oxid=oxobject2selectlist.oxselnid
-                   where oxobject2selectlist.oxobjectid=%s order by oxobject2selectlist.oxsort";
-
-            if ( ( $iLimit = (int) $iLimit ) ) {
-                $sQ .= " limit $iLimit ";
-            }
-
             // vat value for price
             $dVat = 0;
             if ( ( $oPrice = $this->getPrice() ) != null ) {
                 $dVat = $oPrice->getVat();
             }
 
-            // all selectlists this article has
-            $oList = oxNew( 'oxlist' );
-            $oList->init( 'oxselectlist' );
-            $oList->getBaseObject()->setVat( $dVat );
-            $oList->selectString( sprintf( $sQ, $oDb->quote( $this->getId() ) ) );
-
-            //#1104S if this is variant and it has no selectlists, trying with parent
-            if ( $oList->count() == 0 && $this->oxarticles__oxparentid->value ) {
-                $oList->selectString( sprintf( $sQ, $oDb->quote( $this->oxarticles__oxparentid->value ) ) );
-            }
+            $oList = $this->_getSelectListByWithParentFallback( $iLimit, $dVat);
 
             self::$_aSelections[$sId] = $oList->count() ? $oList : false;
         }

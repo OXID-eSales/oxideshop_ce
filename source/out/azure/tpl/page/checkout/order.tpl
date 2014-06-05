@@ -4,7 +4,7 @@
 [{capture append="oxidBlock_content"}]
 
     [{block name="checkout_order_errors"}]
-        [{ if $oView->isConfirmAGBActive() && $oView->isConfirmAGBError() == 1 }]
+        [{if $oView->isConfirmAGBError() == 1 }]
             [{include file="message/error.tpl" statusMessage="PAGE_CHECKOUT_ORDER_READANDCONFIRMTERMS"|oxmultilangassign }]
         [{/if}]
         [{assign var="iError" value=$oView->getAddressError() }]
@@ -50,31 +50,7 @@
                         <input type="hidden" name="fnc" value="[{$oView->getExecuteFnc()}]">
                         <input type="hidden" name="challenge" value="[{$challenge}]">
                         <input type="hidden" name="sDeliveryAddressMD5" value="[{$oView->getDeliveryAddressMD5()}]">
-                        <div class="agb">
-                            [{if $oView->isActive('PsLogin') }]
-                                <input type="hidden" name="ord_agb" value="1">
-                            [{else}]
-                                [{if $oView->isConfirmAGBActive()}]
-                                    [{oxifcontent ident="oxrighttocancellegend" object="oContent"}]
-                                        <h3 class="section">
-                                            <strong>[{ $oContent->oxcontents__oxtitle->value }]</strong>
-                                        </h3>
-                                        <input type="hidden" name="ord_agb" value="0">
-                                        <input id="checkAgbTop" class="checkbox" type="checkbox" name="ord_agb" value="1">
-                                        [{ $oContent->oxcontents__oxcontent->value }]
-                                    [{/oxifcontent}]
-                                    <p class="errorMsg" name="agbError">[{ oxmultilang ident="PAGE_CHECKOUT_ORDER_READANDCONFIRMTERMS" }]</p>
-                                [{else}]
-                                    [{oxifcontent ident="oxrighttocancellegend2" object="oContent"}]
-                                        <h3 class="section">
-                                            <strong>[{ $oContent->oxcontents__oxtitle->value }]</strong>
-                                        </h3>
-                                        <input type="hidden" name="ord_agb" value="1">
-                                        [{ $oContent->oxcontents__oxcontent->value }]
-                                    [{/oxifcontent}]
-                                [{/if}]
-                            [{/if}]
-                        </div>
+                        [{include file="page/checkout/inc/agb.tpl"}]
                         <div class="lineBox clear">
                             <a href="[{ oxgetseourl ident=$oViewConf->getPaymentLink() }]" class="prevStep submitButton largeButton">[{ oxmultilang ident="PAGE_CHECKOUT_ORDER_BACKSTEP" }]</a>
                             <button type="submit" class="submitButton nextStep largeButton">[{ oxmultilang ident="PAGE_CHECKOUT_ORDER_SUBMITORDER" }]</button>
@@ -184,31 +160,7 @@
                             <input type="hidden" name="fnc" value="[{$oView->getExecuteFnc()}]">
                             <input type="hidden" name="challenge" value="[{$challenge}]">
                             <input type="hidden" name="sDeliveryAddressMD5" value="[{$oView->getDeliveryAddressMD5()}]">
-                            <div class="agb">
-                                [{if $oView->isActive('PsLogin') }]
-                                    <input type="hidden" name="ord_agb" value="1">
-                                [{else}]
-                                    [{if $oView->isConfirmAGBActive()}]
-                                        [{oxifcontent ident="oxrighttocancellegend" object="oContent"}]
-                                            <h3 class="section">
-                                                <strong>[{ $oContent->oxcontents__oxtitle->value }]</strong>
-                                            </h3>
-                                            <input type="hidden" name="ord_agb" value="0">
-                                            <input id="checkAgbBottom" class="checkbox" type="checkbox" name="ord_agb" value="1">
-                                            [{ $oContent->oxcontents__oxcontent->value }]
-                                        [{/oxifcontent}]
-                                        <p class="errorMsg" name="agbError">[{ oxmultilang ident="PAGE_CHECKOUT_ORDER_READANDCONFIRMTERMS" }]</p>
-                                    [{else}]
-                                        [{oxifcontent ident="oxrighttocancellegend2" object="oContent"}]
-                                            <h3 class="section">
-                                                <strong>[{ $oContent->oxcontents__oxtitle->value }]</strong>
-                                            </h3>
-                                            <input type="hidden" name="ord_agb" value="1">
-                                            [{ $oContent->oxcontents__oxcontent->value }]
-                                        [{/oxifcontent}]
-                                    [{/if}]
-                                [{/if}]
-                            </div>
+                            [{include file="page/checkout/inc/agb.tpl"}]
                             <div class="lineBox clear">
                                 <a href="[{ oxgetseourl ident=$oViewConf->getPaymentLink() }]" class="prevStep submitButton largeButton">[{ oxmultilang ident="PAGE_CHECKOUT_ORDER_BACKSTEP" }]</a>
                                 <button type="submit" class="submitButton nextStep largeButton">[{ oxmultilang ident="PAGE_CHECKOUT_ORDER_SUBMITORDER" }]</button>

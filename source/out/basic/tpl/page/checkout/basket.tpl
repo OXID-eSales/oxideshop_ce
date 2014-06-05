@@ -89,7 +89,12 @@
 
       <!-- product title & number -->
       <td>
-        <div class="art_title"><a id="test_basketTitle_[{$basketitem->getProductId()}]_[{$smarty.foreach.test_Contents.iteration}]" rel="nofollow" href="[{$basketitem->getLink()}]">[{$basketitem->getTitle()}]</a>[{if $basketitem->isSkipDiscount() }] <sup><a rel="nofollow" href="#SkipDiscounts_link" class="note">**</a></sup>[{/if}]</div>
+        <div class="art_title">
+            <a id="test_basketTitle_[{$basketitem->getProductId()}]_[{$smarty.foreach.test_Contents.iteration}]" rel="nofollow" href="[{$basketitem->getLink()}]">[{$basketitem->getTitle()}]</a>
+            [{if $basketitem->isSkipDiscount() }]
+                <sup><a rel="nofollow" href="#SkipDiscounts_link" class="note">**</a></sup>
+            [{/if}]
+        </div>
         <div class="art_num" id="test_basketNo_[{$basketitem->getProductId()}]_[{$smarty.foreach.test_Contents.iteration}]">[{ oxmultilang ident="BASKET_ARTNOMBER" }] [{ $basketproduct->oxarticles__oxartnum->value }]</div>
         [{if !$basketitem->isBundle() || !$basketitem->isDiscountArticle()}]
 

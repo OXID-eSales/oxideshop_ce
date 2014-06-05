@@ -37,8 +37,10 @@
         [{* basket items *}]
         <tbody>
         [{assign var="basketitemlist" value=$oView->getBasketArticles() }]
+        [{assign var="oMarkGenerator" value=$oView->getBasketContentMarkGenerator() }]
         [{foreach key=basketindex from=$oxcmp_basket->getContents() item=basketitem name=basketContents}]
             [{block name="checkout_basketcontents_basketitem"}]
+                [{assign var="oArticle" value=$basketitem->getArticle()}]
                 [{assign var="basketproduct" value=$basketitemlist.$basketindex }]
                 <tr id="cartItem_[{$smarty.foreach.basketContents.iteration}]">
 
@@ -63,7 +65,11 @@
                         [{* product title & number *}]
                         <td>
                             <div>
-                                <a rel="nofollow" href="[{$basketitem->getLink()}]">[{$basketitem->getTitle()}]</a>[{if $basketitem->isSkipDiscount() }] <sup><a rel="nofollow" href="#SkipDiscounts_link" >**</a></sup>[{/if}]
+                                <a rel="nofollow" href="[{$basketitem->getLink()}]">[{$basketitem->getTitle()}]</a>[{if $basketitem->isSkipDiscount() }] <sup><a rel="nofollow" href="#SkipDiscounts_link" >[{$oMarkGenerator->getMark('skippedDiscount')}]</a></sup>[{/if}]
+                                [{if $oViewConf->getActiveClassName() == 'order' && $oViewConf->isFunctionalityEnabled('blEnableIntangibleProdAgreement')}]
+                                    [{if $oArticle->hasDownloadableAgreement() }] <sup><a rel="nofollow" href="#noteForDownloadableArticles" >[{$oMarkGenerator->getMark('downloadable')}]</a></sup>[{/if}]
+                                    [{if $oArticle->hasIntangibleAgreement() }] <sup><a rel="nofollow" href="#noteForIntangibleArticles" >[{$oMarkGenerator->getMark('intangible')}]</a></sup>[{/if}]
+                                [{/if}]
                             </div>
                             <div>
                                 [{ oxmultilang ident="PAGE_CHECKOUT_BASKETCONTENTS_ARTNOMBER" }] [{ $basketproduct->oxarticles__oxartnum->value }]
@@ -415,7 +421,7 @@
 
                     [{if $oxcmp_basket->hasSkipedDiscount() }]
                         <tr>
-                            <th><span class="note">**</span> [{ oxmultilang ident="PAGE_CHECKOUT_BASKETCONTENTS_DISCOUNTS_NOT_APPLIED_FOR_ARTICLES" }]</span></th>
+                            <th><span class="note">[{$oMarkGenerator->getMark('skippedDiscount')}]</span> [{ oxmultilang ident="PAGE_CHECKOUT_BASKETCONTENTS_DISCOUNTS_NOT_APPLIED_FOR_ARTICLES" }]</span></th>
                             <td></td>
                         </tr>
                     [{/if}]

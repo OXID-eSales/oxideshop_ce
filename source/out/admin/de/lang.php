@@ -1,24 +1,28 @@
 <?php
 /**
- *    This file is part of OXID eShop Community Edition.
+ * This file is part of OXID eShop Community Edition.
  *
- *    OXID eShop Community Edition is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
+ * OXID eShop Community Edition is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *    OXID eShop Community Edition is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
+ * OXID eShop Community Edition is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *    You should have received a copy of the GNU General Public License
- *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @link      http://www.oxid-esales.com
+ * @copyright (C) OXID eSales AG 2003-2014
+ * @version   OXID eShop CE
  *
  * @link      http://www.oxid-esales.com
  * @package   lang
- * @copyright (C) OXID eSales AG 2003-2014
- * @version OXID eShop CE
+ * @copyright (c) OXID eSales AG 2003-#OXID_VERSION_YEAR#
+ * @version   SVN: $Id$
  */
 
 $sLangName  = 'Deutsch';
@@ -2104,7 +2108,8 @@ $aLang = array(
 'INFO_MODULES_MOVED_TO_EXTENSIONS'                         => 'Die Einstellungen für Themes und Module finden Sie im neuen Menü "Erweiterungen"',
 'EXCEPTION_THEME_SHOULD_BE_ONLY_IN_DATABASE'               => 'Theme darf nicht in config.inc.php definiert sein',
 'PACKAGE_FILE_NAME'                                        => 'pkg.info',
-
+'ARTICLE_EXTEND_SHOWCUSTOMAGREEMENT' => 'AGB bestätigen',
+'SHOP_CONFIG_ENABLE_INTANGIBLE_PRODUCTS_AGREEMENT' => 'Benutzer müssen die AGB für immaterielle und Downloadartikel im Check-out bestätigen'
 );
 
 /*

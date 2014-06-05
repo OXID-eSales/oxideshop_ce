@@ -8,7 +8,7 @@
     <b class="fs10 def_color_1">[{ oxmultilang ident="ORDER_VERIFYYOURINPUT" }]</b>
   </div>
 
-[{ if $oView->isConfirmAGBActive() && $oView->isConfirmAGBError() == 1 }]
+[{if $oView->isConfirmAGBError() == 1 }]
     <div class="errorbox">[{ oxmultilang ident="ORDER_READANDCONFIRMTERMS" }]</div>
 [{/if}]
 [{assign var="iError" value=$oView->getAddressError() }]
@@ -58,6 +58,31 @@
                     </div>
                   [{/if}]
               [{/if}]
+              [{if $oViewConf->isFunctionalityEnabled('blEnableIntangibleProdAgreement') }]
+                  <table class="termsconfirm">
+                      [{assign var="oExplanationMarks" value=$oView->getBasketContentMarkGenerator() }]
+                      [{if $oxcmp_basket->hasArticlesWithDownloadableAgreement() }]
+                      [{oxifcontent ident="oxdownloadableproductsagreement" object="oContent"}]
+                      <tr>
+                          <td id="noteForDownloadableArticles">
+                              <input id="oxdownloadableproductsagreement" class="checkbox" type="checkbox" name="oxdownloadableproductsagreement" value="1">
+                              <label for="oxdownloadableproductsagreement">[{$oExplanationMarks->getMark('downloadable')}] [{$oContent->oxcontents__oxcontent->value}]</label>
+                          </td>
+                      </tr>
+                      [{/oxifcontent}]
+                      [{/if}]
+                      [{if $oxcmp_basket->hasArticlesWithIntangibleAgreement() }]
+                      [{oxifcontent ident="oxserviceproductsagreement" object="oContent"}]
+                      <tr>
+                          <td id="noteForIntangibleArticles">
+                              <input id="oxserviceproductsagreement" class="checkbox" type="checkbox" name="oxserviceproductsagreement" value="1">
+                              <label for="oxserviceproductsagreement">[{$oExplanationMarks->getMark('intangible')}] [{$oContent->oxcontents__oxcontent->value}]</label>
+                          </td>
+                      </tr>
+                      [{/oxifcontent}]
+                      [{/if}]
+                  </table>
+              [{/if}]
           </div>
         </form>
       </div>
@@ -99,6 +124,7 @@
       [{assign var="basketitemlist" value=$oView->getBasketArticles() }]
       [{foreach key=basketindex from=$oxcmp_basket->getContents() item=basketitem name=testArt}]
       [{assign var="basketproduct" value=$basketitemlist.$basketindex }]
+      [{assign var="oArticle" value=$basketitem->getArticle()}]
         <tr>
           <!-- product image -->
           <td class="brd"></td>
@@ -111,7 +137,19 @@
           <!-- product title & number -->
           <td>
 
-            <div class="art_title"><a id="test_orderUrl_[{$basketitem->getProductId()}]_[{$smarty.foreach.testArt.iteration}]" rel="nofollow" href="[{$basketitem->getLink()}]">[{$basketitem->getTitle()}]</a>[{if $basketitem->isSkipDiscount() }] <sup><a rel="nofollow" href="#SkipDiscounts_link" class="note">**</a></sup>[{/if}]</div>
+            <div class="art_title">
+                <a id="test_orderUrl_[{$basketitem->getProductId()}]_[{$smarty.foreach.testArt.iteration}]" rel="nofollow" href="[{$basketitem->getLink()}]">
+                    [{$basketitem->getTitle()}]
+                </a>
+                [{if $basketitem->isSkipDiscount() }]
+                    <sup><a rel="nofollow" href="#SkipDiscounts_link" class="note">**</a></sup>
+                [{/if}]
+                [{if $oViewConf->getActiveClassName() == 'order' && $oViewConf->isFunctionalityEnabled('blEnableIntangibleProdAgreement')}]
+                    [{assign var="oMarkGenerator" value=$oView->getBasketContentMarkGenerator() }]
+                    [{if $oArticle->hasDownloadableAgreement() }] <sup><a rel="nofollow" href="#noteForDownloadableArticles" >[{$oMarkGenerator->getMark('downloadable')}]</a></sup>[{/if}]
+                    [{if $oArticle->hasIntangibleAgreement() }] <sup><a rel="nofollow" href="#noteForIntangibleArticles" >[{$oMarkGenerator->getMark('intangible')}]</a></sup>[{/if}]
+                [{/if}]
+            </div>
             <div class="art_num" id="test_orderArtNo_[{$basketitem->getProductId()}]_[{$smarty.foreach.testArt.iteration}]">[{ oxmultilang ident="ORDER_ARTICLENOMBER" }] [{ $basketproduct->oxarticles__oxartnum->value }]</div>
 
             [{if $basketitem->isBundle() }]
@@ -569,7 +607,31 @@
                     </div>
                     [{/if}]
                   [{/if}]
-
+                  [{if $oViewConf->isFunctionalityEnabled('blEnableIntangibleProdAgreement') }]
+                      <table class="termsconfirm">
+                          [{assign var="oExplanationMarks" value=$oView->getBasketContentMarkGenerator() }]
+                          [{if $oxcmp_basket->hasArticlesWithDownloadableAgreement() }]
+                              [{oxifcontent ident="oxdownloadableproductsagreement" object="oContent"}]
+                                  <tr>
+                                      <td id="noteForDownloadableArticles">
+                                          <input id="oxdownloadableproductsagreement" class="checkbox" type="checkbox" name="oxdownloadableproductsagreement" value="1">
+                                          <label for="oxdownloadableproductsagreement">[{$oExplanationMarks->getMark('downloadable')}] [{$oContent->oxcontents__oxcontent->value}]</label>
+                                      </td>
+                                  </tr>
+                              [{/oxifcontent}]
+                          [{/if}]
+                          [{if $oxcmp_basket->hasArticlesWithIntangibleAgreement() }]
+                              [{oxifcontent ident="oxserviceproductsagreement" object="oContent"}]
+                                  <tr>
+                                      <td id="noteForIntangibleArticles">
+                                          <input id="oxserviceproductsagreement" class="checkbox" type="checkbox" name="oxserviceproductsagreement" value="1">
+                                          <label for="oxserviceproductsagreement">[{$oExplanationMarks->getMark('intangible')}] [{$oContent->oxcontents__oxcontent->value}]</label>
+                                      </td>
+                                  </tr>
+                              [{/oxifcontent}]
+                          [{/if}]
+                      </table>
+                  [{/if}]
               </div>
             </form>
           </div>

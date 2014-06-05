@@ -369,7 +369,7 @@
         <br><b>[{ oxmultilang ident="MY_DOWNLOADS_DESC" }]</b>
         [{foreach from=$oOrderFileList item="oOrderFile"}]
           [{if $order->oxorder__oxpaid->value || !$oOrderFile->oxorderfiles__oxpurchasedonly->value}]
-            <br><a href="[{ oxgetseourl ident=$oConf->getSelfLink()|cat:"cl=download" params="sorderfileid="|cat:$oOrderFile->getId() }]" rel="nofollow">[{$oOrderFile->oxorderfiles__oxfilename->value}]</a> [{$oOrderFile->getFileSize()|oxfilesize}]
+            <br><a href="[{ oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=download" params="sorderfileid="|cat:$oOrderFile->getId() }]" rel="nofollow">[{$oOrderFile->oxorderfiles__oxfilename->value}]</a> [{$oOrderFile->getFileSize()|oxfilesize}]
           [{else}]
             <br>[{$oOrderFile->oxorderfiles__oxfilename->value}] <b>[{ oxmultilang ident="DOWNLOADS_PAYMENT_PENDING" }]</b>
           [{/if}]

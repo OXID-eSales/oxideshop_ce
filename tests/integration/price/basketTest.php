@@ -38,6 +38,7 @@ class Integration_Price_BasketTest extends OxidTestCase
      */
     protected function tearDown()
     {
+        $this->addTableForCleanup('oxobject2category');
         parent::tearDown();
     }
     

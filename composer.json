@@ -7,7 +7,7 @@
     ],
     "homepage": "https://www.oxid-esales.com/",
     "require": {
-        "php": ">=5.3.3",
+        "php": ">=5.3.3"
     },
     "require-dev" : {
         "phpmd/phpmd" : "1.4.*",

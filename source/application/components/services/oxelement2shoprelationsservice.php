@@ -98,6 +98,7 @@ class oxElement2ShopRelationsService
     {
         $sObjectClassName = $this->_getObjectClassName();
         $oItem = oxNew($sObjectClassName);
+        $oItem->init($this->_getMallTable());
         $oItem->load($this->getEditObjectId());
         return $oItem;
     }

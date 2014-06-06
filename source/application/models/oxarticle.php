@@ -1227,7 +1227,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         $oLists = oxNew( 'oxlist' );
         $oLists->init( 'oxselectlist' );
         if ( $dBaseVat !== null ) {
-            $oList->getBaseObject()->setVat( $dVat );
+            $oLists->getBaseObject()->setVat( $dBaseVat );
         }
 
         $oLists->selectString( sprintf( $sQ, $oDb->quote( $this->getId() ) ) );

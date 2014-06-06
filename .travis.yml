@@ -7,12 +7,14 @@ php:
   - 5.6
   - hhvm
 
+
 before_script:
   - composer self-update
   - composer install --dev --prefer-source;
+  - mysql -e "create database IF NOT EXISTS oxid_test;" -u root
 
 script:
-  - ./vendor/bin/phpunit --bootstrap=tests/bootstrap.php
+  - ./vendor/bin/phpunit --bootstrap ./tests/bootstrap-travis.php ./tests/AllTestsUnit.php
 
 notifications:
   email: false

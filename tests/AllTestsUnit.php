@@ -35,12 +35,12 @@ class AllTestsUnit extends PHPUnit_Framework_TestCase
      */
     public static function getTestFileFilter()
     {
-        $sTestFileNameEnd = '*[^8]Test.php';
-        if ( OXID_TEST_UTF8 ) {
-            $sTestFileNameEnd = '*utf8Test.php';
+        $sTestFileNameEnd = '.*[^8]Test.php';
+        if ( defined('OXID_TEST_UTF8') && OXID_TEST_UTF8 ) {
+            $sTestFileNameEnd = '.*utf8Test.php';
             }
 
-        return $sTestFileNameEnd;
+        return "#$sTestFileNameEnd#";
         }
 
     /**
@@ -53,15 +53,19 @@ class AllTestsUnit extends PHPUnit_Framework_TestCase
         $aTestDirectories = self::_getTestDirectories();
 
         $oSuite = new PHPUnit_Framework_TestSuite( 'PHPUnit' );
+
+        $pattern = self::getTestFileFilter();
         foreach ( $aTestDirectories as $sDirectory ) {
-            $sFilesSelector = "$sDirectory/".self::getTestFileFilter();
-            $aTestFiles = glob( $sFilesSelector );
+            $aTestFiles = self::rsearch(__DIR__ . "/$sDirectory", $pattern);
 
             if ( empty( $aTestFiles ) ) {
                 continue;
             }
 
-            echo "Adding unit tests from $sFilesSelector\n";
+            printf("Adding %s unit tests from %s filtert by (%s)\n",
+                   count($aTestFiles),
+                   $sDirectory,
+                   $pattern);
 
             $oSuite = self::_addFilesToSuite( $oSuite, $aTestFiles );
                 }
@@ -80,11 +84,13 @@ class AllTestsUnit extends PHPUnit_Framework_TestCase
     {
         foreach ( $aTestFiles as $sFilename ) {
 
-            $sFilter = PREG_FILTER;
+            $sFilter = defined('PREG_FILTER') ? PREG_FILTER : false;
             if ( !$sFilter || preg_match("&$sFilter&i", $sFilename) ) {
 
                         include_once $sFilename;
-                        $sClassName = str_replace( array( "/", ".php" ), array( "_", "" ), $sFilename );
+
+                        $sClassName = str_replace( __DIR__ . "/", "", $sFilename );
+                        $sClassName = str_replace( array( "/", ".php" ), array( "_", "" ), $sClassName );
 
                         if ( class_exists( $sClassName ) ) {
                             $oSuite->addTestSuite( $sClassName );
@@ -108,7 +114,7 @@ class AllTestsUnit extends PHPUnit_Framework_TestCase
     {
         $aTestDirectories = self::$_aTestSuites;
 
-        if ( TEST_DIRS ) {
+        if ( defined('TEST_DIRS') && TEST_DIRS ) {
             $aTestDirectories = array();
             foreach ( explode(',', TEST_DIRS ) as $sTestSuiteParts ) {
                 $aTestDirectories = array_merge( $aTestDirectories, self::_getSuiteDirectories( $sTestSuiteParts ) );
@@ -160,4 +166,17 @@ class AllTestsUnit extends PHPUnit_Framework_TestCase
         return $aTree;
     }
 
+    /**
+     * found on http://thephpeffect.com/recursive-glob-vs-recursive-directory-iterator/
+     */
+    protected static function rsearch($folder, $pattern) {
+        $dir = new RecursiveDirectoryIterator($folder);
+        $ite = new RecursiveIteratorIterator($dir);
+        $files = new RegexIterator($ite, $pattern, RegexIterator::GET_MATCH);
+        $fileList = array();
+        foreach($files as $file) {
+            $fileList = array_merge($fileList, $file);
+        }
+        return $fileList;
+    }
 }

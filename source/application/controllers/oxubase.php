@@ -51,7 +51,7 @@ class oxUBase extends oxView
     /**
      * Array of component objects.
      *
-     * @var object
+     * @var array of object
      */
     protected $_oaComponents = array();
 

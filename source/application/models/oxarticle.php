@@ -3570,6 +3570,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         $this->_aSkipSaveFields[] = 'oxtimestamp';
         // $this->_aSkipSaveFields[] = 'oxlongdesc';
         $this->_aSkipSaveFields[] = 'oxinsert';
+        $this->_aSkipSaveFields[] = 'oxmapid';
 
         if ( !$this->_blAllowEmptyParentId && (!isset( $this->oxarticles__oxparentid->value) || $this->oxarticles__oxparentid->value == '') ) {
             $this->_aSkipSaveFields[] = 'oxparentid';

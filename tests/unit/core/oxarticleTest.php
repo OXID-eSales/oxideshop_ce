@@ -1547,7 +1547,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $oArticle = $this->getProxyClass( "oxArticle" );
         $oArticle->load('_testArt');
         $oArticle->oxarticles__oxshopid = new oxField('2', oxField::T_RAW);
-        $aSkipFields = array( 'oxtimestamp', 'oxinsert', 'oxparentid', 'oxprice', 'oxpricea', 'oxpriceb', 'oxpricec', 'oxshortdesc', 'oxshortdesc_1' );
+        $aSkipFields = array( 'oxtimestamp', 'oxinsert', 'oxmapid', 'oxparentid', 'oxprice', 'oxpricea', 'oxpriceb', 'oxpricec', 'oxshortdesc', 'oxshortdesc_1' );
             $aSkipFields = array( 'oxtimestamp', 'oxinsert', 'oxparentid' );
         $oArticle->UNITskipSaveFields();
 
@@ -1561,10 +1561,10 @@ class Unit_Core_oxArticleTest extends OxidTestCase
      */
     public function testSkipSaveFieldsForVariant()
     {
-        $aSkipFields = array( 'oxtimestamp', 'oxinsert' );
-        $oVariant = $this->_createVariant();
-        $oVariant->UNITskipSaveFields();
-        $this->assertEquals( $aSkipFields, $oVariant->getNonPublicVar('_aSkipSaveFields'));
+        $aSkipFields = array( 'oxtimestamp', 'oxinsert', 'oxmapid' );
+            $aSkipFields = array( 'oxtimestamp', 'oxinsert' );
+        $this->oArticle2->UNITskipSaveFields();
+        $this->assertEquals( $aSkipFields, $this->oArticle2->getNonPublicVar('_aSkipSaveFields'));
     }
 
     /**

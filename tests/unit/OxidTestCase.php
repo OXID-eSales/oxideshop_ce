@@ -51,6 +51,7 @@ class OxidMockStubFunc implements PHPUnit_Framework_MockObject_Stub
 class OxidTestCase extends PHPUnit_Framework_TestCase
 {
     protected $_aBackup = array();
+    private static $_aRegistryCache = null;
 
     /**
      * @var DbRestore
@@ -66,6 +67,7 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      */
     public function __construct($name = NULL, array $data = array(), $dataName = '')
     {
+        $this->_createRegistryCache();
         parent::__construct($name, $data, $dataName);
     }
 
@@ -342,7 +344,6 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
         $_SESSION = $this->_aBackup['_SESSION'];
         $_COOKIE = $this->_aBackup['_COOKIE'];
 
-
         $this->_resetRegistry();
 
         oxUtilsObject::resetClassInstances();
@@ -356,9 +357,6 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      */
     public static function tearDownAfterClass()
     {
-        self::getSession()->cleanup();
-        self::getConfig()->cleanup();
-
         $oDbRestore = self::_getDbRestore();
         $oDbRestore->restoreDB();
 
@@ -489,6 +487,21 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
         return self::$_oDbRestore;
     }
 
+
+    /**
+     * Creates registry clone
+     */
+    private function _createRegistryCache()
+    {
+        if (is_null(self::$_aRegistryCache)) {
+            self::$_aRegistryCache = array();
+            foreach (oxRegistry::getKeys() as $class) {
+                $instance = oxRegistry::get($class);
+                self::$_aRegistryCache[$class] = clone $instance;
+            }
+        }
+    }
+
     /**
      * Cleans up the registry
      *
@@ -502,7 +515,17 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
 
         foreach ($aRegKeys as $sKey) {
             if (!in_array($sKey, $aSkippedClasses)) {
-                oxRegistry::set($sKey, null);
+                $oInstance = null;
+                if (!isset(self::$_aRegistryCache[$sKey])) {
+                    try {
+                        var_dump($sKey);
+                        self::$_aRegistryCache[$sKey] = oxNew($sKey);
+                    } catch(oxSystemComponentException $oException) {
+                        continue;
+                    }
+                }
+                $oInstance = clone self::$_aRegistryCache[$sKey];
+                oxRegistry::set($sKey, $oInstance);
             }
         }
     }

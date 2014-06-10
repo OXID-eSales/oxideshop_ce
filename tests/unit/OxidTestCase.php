@@ -521,6 +521,7 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
                         $oNewInstance = oxNew($sKey);
                         self::$_aRegistryCache[$sKey] = $oNewInstance;
                     } catch(oxSystemComponentException $oException) {
+                        oxRegistry::set($sKey, null);
                         continue;
                     }
                 }

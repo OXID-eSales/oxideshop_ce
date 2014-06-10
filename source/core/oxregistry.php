@@ -39,7 +39,7 @@ class oxRegistry
      *
      * @static
      *
-     * @return Object
+     * @return object
      */
     public static function get( $sClassName )
     {
@@ -75,11 +75,11 @@ class oxRegistry
     }
 
     /**
-     * Returns OxConfig instance
+     * Returns oxConfig instance
      *
      * @static
      *
-     * @return OxConfig
+     * @return oxConfig
      */
     public static function getConfig()
     {
@@ -87,11 +87,11 @@ class oxRegistry
     }
 
     /**
-     * Returns OxSession instance
+     * Returns oxSession instance
      *
      * @static
      *
-     * @return OxSession
+     * @return oxSession
      */
     public static function getSession()
     {

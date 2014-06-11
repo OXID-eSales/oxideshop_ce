@@ -6,6 +6,10 @@
         <div class="searchBox">
             [{ $oViewConf->getHiddenSid() }]
             <input type="hidden" name="cl" value="search">
+            [{assign var="currency" value=$oView->getActCurrency()}]
+            [{if $currency->id}]
+                <input type="hidden" name="cur" value="[{$currency->id}]">
+            [{/if}]
             [{block name="header_search_field"}]
                 <label for="searchParam" class="innerLabel">[{oxmultilang ident="SEARCH" }]</label>
                 <input class="textbox" type="text" id="searchParam" name="searchparam" value="[{$oView->getSearchParamForHtml()}]">

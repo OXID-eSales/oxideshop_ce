@@ -70,8 +70,7 @@ $testDataFileNames = array(
     getShopBasePath() . '/setup/sql/database.sql',
     __DIR__ . '/testsql/testdata.sql'
 );
-foreach ($testDataFileNames as $fileName) {
-    $filePath = getShopBasePath() . "/$fileName";
+foreach ($testDataFileNames as $filePath) {
     $queryList = preg_split($queryEndRegExp, file_get_contents($filePath));
 
     echo "install database by $filePath\n\n";

@@ -66,19 +66,22 @@ $oxDb->setConfig( $oConfigFile );
 $oLegacyDb = $oxDb->getDb();
 
 $queryEndRegExp = "#;(\n|\r\n)#";
+$testDataFileNames = array(
+    getShopBasePath() . '/setup/sql/database.sql',
+    __DIR__ . '/testsql/testdata.sql'
+);
+foreach ($testDataFileNames as $fileName) {
+    $filePath = getShopBasePath() . "/$fileName";
+    $queryList = preg_split($queryEndRegExp, file_get_contents($filePath));
 
-foreach (array('database.sql', 'demodata.sql') as $fileName) {
-  $filePath = getShopBasePath() . "/setup/sql/$fileName";
-  $queryList = preg_split($queryEndRegExp, file_get_contents($filePath));
+    echo "install database by $filePath\n\n";
+    foreach ($queryList as $query) {
+        if ($query == '' || preg_match('#^(\s+|\r\n)$#', $query)) {
+            continue;
+        }
 
-  echo "install database by $filePath\n\n";
-  foreach ($queryList as $query) {
-      if ($query == '' || preg_match('#^(\s+|\r\n)$#', $query)) {
-          continue;
-      }
-
-      $oLegacyDb->execute($query);
-  }
+        $oLegacyDb->execute($query);
+    }
 }
 
 unset($oxDb, $oLegacyDb, $queryList, $query);

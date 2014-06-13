@@ -156,7 +156,7 @@ if ( !function_exists( 'getDefaultConfigFileMode' ) ) {
 }
 
 
-if ( !class_exists( "Config" ) ) {
+if ( !class_exists( "Config", false ) ) {
 /**
  * Config file loader class
  */
@@ -174,7 +174,7 @@ class Config
 }
 }
 
-if ( !class_exists( "Conf" ) ) {
+if ( !class_exists( "Conf", false ) ) {
 /**
  * Config key loader class
  */

@@ -39,6 +39,18 @@ class Integration_RestrictedAddress_RestrictedAddressTest extends OxidTestCase
             array( $sShopUrl .'?fnc=getShopEdition', $sShopUrl ),
             array( $sShopUrl .'?fnc=getRevision', $sShopUrl ),
             array( $sShopUrl .'someSeoURL/?fnc=getRevision', $sShopUrl.'someSeoURL/' ),
+            array( $sShopUrl .'?fnc=getShopVersion&n2=v2', $sShopUrl ),
+            array( $sShopUrl .'?fnc=getShopEdition&n2=v2', $sShopUrl ),
+            array( $sShopUrl .'?fnc=getRevision&n2=v2', $sShopUrl ),
+            array( $sShopUrl .'someSeoURL/?fnc=getRevision&n2=v2', $sShopUrl.'someSeoURL/' ),
+            array( $sShopUrl .'?name=value&fnc=getShopVersion', $sShopUrl ),
+            array( $sShopUrl .'?name=value&fnc=getShopEdition', $sShopUrl ),
+            array( $sShopUrl .'?name=value&fnc=getRevision', $sShopUrl ),
+            array( $sShopUrl .'someSeoURL/?name=value&fnc=getRevision', $sShopUrl.'someSeoURL/' ),
+            array( $sShopUrl .'?name=value&fnc=getShopVersion&n2=v2', $sShopUrl ),
+            array( $sShopUrl .'?name=value&fnc=getShopEdition&n2=v2', $sShopUrl ),
+            array( $sShopUrl .'?name=value&fnc=getRevision&n2=v2', $sShopUrl ),
+            array( $sShopUrl .'someSeoURL/?name=value&fnc=getRevision&n2=v2', $sShopUrl.'someSeoURL/' ),
         );
     }
 

@@ -307,8 +307,8 @@ class oxDbMetaDataHandler extends oxSuperCfg
         $aMultiLangFields = array();
 
         foreach ( $aFields as $sField ) {
-            if ( preg_match("/({$sTable}\.)*(?<table>.+)_1$/", $sField, $aMatches) ) {
-                $aMultiLangFields[] = $aMatches['table'];
+            if ( preg_match("/({$sTable}\.)?(?<field>.+)_1$/", $sField, $aMatches) ) {
+                $aMultiLangFields[] = $aMatches['field'];
             }
         }
 
@@ -329,7 +329,7 @@ class oxDbMetaDataHandler extends oxSuperCfg
         $aSingleLangFields = array();
 
         foreach ( $aFields as $sFieldName => $sField ) {
-            if ( preg_match("/({$sTable}\.)*(?<field>.+)_(?<lang>[0-9]+)$/", $sField, $aMatches) ) {
+            if ( preg_match("/({$sTable}\.)?(?<field>.+)_(?<lang>[0-9]+)$/", $sField, $aMatches) ) {
                 if ($aMatches['lang'] == $iLang) {
                     $aSingleLangFields[$aMatches['field']] = $sField;
                 }

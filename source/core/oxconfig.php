@@ -1083,7 +1083,9 @@ class oxConfig extends oxSuperCfg
      */
     public function getWidgetUrl($iLang = null, $blAdmin = null)
     {
-        return oxRegistry::get("oxUtilsUrl")->processUrl($this->getShopUrl($iLang, $blAdmin) . 'widget.php', false);
+        $sUrl = $this->isSsl() ? $this->getSslShopUrl($iLang) : $this->getShopUrl($iLang, $blAdmin);
+
+        return oxRegistry::get('oxUtilsUrl')->processUrl($sUrl.'widget.php', false);
     }
 
     /**

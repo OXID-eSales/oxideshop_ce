@@ -1582,14 +1582,25 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $this->assertEquals( $sUrl, $oConfig->getShopHomeUrl() );
     }
 
+    public function providerGetWidgetUrl()
+    {
+        return array(
+            array( 'http://www.example.com/widget.php', false ),
+            array( 'https://www.example.com/widget.php', true ),
+        );
+    }
+
     /**
      * Testing getShopHomeUrl getter
+     *
+     * @dataProvider providerGetWidgetUrl
      */
-    public function testGetWidgetUrl()
+    public function testGetWidgetUrl($sUrl, $blIsSsl)
     {
         $oConfig = new modForGetShopHomeUrl();
+        $oConfig->setIsSsl($blIsSsl);
         $oConfig->init();
-        $sUrl = oxUtilsUrl::getInstance()->processUrl( 'http://www.example.com/widget.php', false );
+        $sUrl = oxUtilsUrl::getInstance()->processUrl( $sUrl, false );
         $this->assertEquals( $sUrl, $oConfig->getWidgetUrl() );
     }
 

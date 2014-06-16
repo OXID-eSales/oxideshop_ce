@@ -1960,8 +1960,7 @@ $aLang = array(
 'SHOP_RDFA_SHOW_PRODUCTSTOCK'                              => 'Den tatsächlichen Lagerbestand der Artikel anzeigen',
 
 'PAYMENT_RDFA_ASIGN_PAYMENT'                               => 'Zahlungsart zuordnen',
-'PAYMENT_RDFA_ADVICE_START'                                => '<b>Hinweis:</b> Bitte wählen Sie nur die in GoodRelations vordefinierten Zahlungsarten aus, die Ihrer Zahlungsart ',
-'PAYMENT_RDFA_ADVICE_END'                                  => 'entsprechen',
+'PAYMENT_RDFA_ADVICE'                                      => '<b>Hinweis:</b> Bitte wählen Sie nur die in GoodRelations vordefinierten Zahlungsarten aus, die Ihrer Zahlungsart <b>%s</b> entsprechen.',
 'PAYMENT_RDFA_GENERAL'                                     => 'Allgemeine Zahlungsarten',
 'PAYMENT_RDFA_CASH'                                        => 'Barzahlung',
 'PAYMENT_RDFA_GOOGLECHECKOUT'                              => 'Google Checkout',

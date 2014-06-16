@@ -11,7 +11,7 @@
         [{ if $iError}]
             [{ if $iError == -2}]
                 [{ oxmultilang ident="AUCTMASTER_DO_EXPORTEND" }]
-            <b>[{ assign var='oxDownloadFile' value=$sDownloadFile }][{ oxmultilang ident="DYNBASE_DO_SUCCESS" args=$oxDownloadFile }]</b><br>
+                <b>[{ oxmultilang ident="DYNBASE_DO_SUCCESS" }] <a href="[{$sDownloadFile}]" target="_blank">[{ oxmultilang ident="DYNBASE_DO_HERE" }]</a> [{ oxmultilang ident="DYNBASE_DO_DOWNLOAD" }]</b><br>
                 [{ oxmultilang ident="DYNBASE_DO_LINK" }]<em>[{$sDownloadFile}]</em>
             [{/if}]
 

@@ -325,11 +325,13 @@ class oxDbMetaDataHandler extends oxSuperCfg
      */
     public function getSinglelangFields( $sTable, $iLang )
     {
-        $aFields = array_merge($this->getFields( $sTable ), $this->getFields(getLangTableName($sTable, $iLang) ));
+        $sLangTable = getLangTableName($sTable, $iLang);
+
+        $aFields = array_merge($this->getFields($sTable), $this->getFields($sLangTable));
         $aSingleLangFields = array();
 
         foreach ( $aFields as $sFieldName => $sField ) {
-            if ( preg_match("/({$sTable}\.)?(?<field>.+)_(?<lang>[0-9]+)$/", $sField, $aMatches) ) {
+            if (preg_match("/(({$sTable}|{$sLangTable})\.)?(?<field>.+)_(?<lang>[0-9]+)$/", $sField, $aMatches)) {
                 if ($aMatches['lang'] == $iLang) {
                     $aSingleLangFields[$aMatches['field']] = $sField;
                 }

@@ -1984,8 +1984,7 @@ $aLang = array(
 'PAYMENT_RDFA_VISA'                                        => 'VISA',
 
 'DELIVERY_RDFA_ASIGN_DELIVERY'                             => 'Versandarten zuordnen',
-'DELIVERY_RDFA_ADVICE_START'                               => '<b>Hinweis:</b> Bitte wählen Sie nur die in GoodRelations vordefinierten Versandarten aus, die Ihrer Versandart ',
-'DELIVERY_RDFA_ADVICE_END'                                 => 'entsprechen',
+'DELIVERY_RDFA_ADVICE'                                     => '<b>Hinweis:</b> Bitte wählen Sie nur die in GoodRelations vordefinierten Versandarten aus, die Ihrer Versandart %s entsprechen',
 'DELIVERY_RDFA_GENERAL'                                    => 'Allgemeine Versandarten',
 'DELIVERY_RDFA_DELIVERYMODEDIRECTDOWNLOAD'                 => 'Download',
 'DELIVERY_RDFA_DELIVERYMODEOWNFLEET'                       => 'Eigener Fuhrpark',

@@ -25,7 +25,7 @@
 
 
 <strong>[{ oxmultilang ident="PAYMENT_RDFA_ASIGN_PAYMENT" }]</strong><br>
-[{ oxmultilang ident="PAYMENT_RDFA_ADVICE_START" }] <b>[{$edit->oxpayments__oxdesc->value}]</b>  [{ oxmultilang ident="PAYMENT_RDFA_ADVICE_END" }].
+    [{ assign var='oxDesc' value=$edit->oxpayments__oxdesc->value }][{ oxmultilang ident="PAYMENT_RDFA_ADVICE" args=$oxDesc }].
 <table cellspacing="0" cellpadding="0" border="0" width="98%">
 <tr>
     <td valign="top" class="edittext">

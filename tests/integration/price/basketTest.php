@@ -59,6 +59,7 @@ class Integration_Price_BasketTest extends OxidTestCase
         $oDb->query( "TRUNCATE oxvouchers" );
         $oDb->query( "TRUNCATE oxvoucherseries" );
         $oDb->query( "TRUNCATE oxobject2delivery" );
+        $oDb->query( "TRUNCATE oxobject2category" );
         $oDb->query( "TRUNCATE oxdeliveryset" );
         $oDb->query( "TRUNCATE oxuser" );
         $oDb->query( "TRUNCATE oxprice2article" );

@@ -4451,7 +4451,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
         //also reseting category counts
         $oDb = oxDb::getDb();
-        $sQ = "select oxcatnid from oxobject2category where oxobjectid = ".$oDb->quote($sOxid);
+        $sQ = "select distinct oxcatnid from oxobject2category where oxobjectid = ".$oDb->quote($sOxid);
         $oRs = $oDb->select( $sQ, false, false );
         if ( $oRs !== false && $oRs->recordCount() > 0) {
             while ( !$oRs->EOF ) {

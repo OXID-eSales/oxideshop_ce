@@ -1477,9 +1477,9 @@ CREATE TABLE `oxobject2category` (
   `OXTIME` INT( 11 ) DEFAULT 0 NOT NULL COMMENT 'Creation time',
   `OXTIMESTAMP` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP COMMENT 'Timestamp',
   PRIMARY KEY  (`OXID`),
+  UNIQUE KEY `OXMAINIDX` (`OXCATNID`,`OXOBJECTID`),
   KEY ( `OXOBJECTID` ),
   KEY (`OXPOS`),
-  KEY `OXMAINIDX` (`OXCATNID`,`OXOBJECTID`),
   KEY `OXTIME` (`OXTIME`)
 ) ENGINE=MyISAM COMMENT 'Shows many-to-many relationship between articles and categories';
 

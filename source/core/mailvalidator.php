@@ -70,7 +70,7 @@ class MailValidator
     {
         $blValid = true;
         if ( $sEmail != 'admin' ) {
-            $sEmailRule = $this->_sMailValidationRule;
+            $sEmailRule = $this->getMailValidationRule();
             $blValid = ( getStr()->preg_match( $sEmailRule, $sEmail ) != 0 );
         }
 

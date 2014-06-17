@@ -30,6 +30,7 @@ class Unit_Core_mailValidatorTest extends OxidTestCase
         return array(
             array('mathias.krieck@oxid-esales.com'),
             array('mytest@com.org'),
+            array('my+test@com.org'),
             array('mytest@oxid-esales.museum'),
         );
     }

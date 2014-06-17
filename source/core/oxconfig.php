@@ -939,17 +939,17 @@ class oxConfig extends oxSuperCfg
     public function getShopUrl($iLang = null, $blAdmin = null)
     {
         $sUrl = null;
-        $blAdmin = isset( $blAdmin ) ? $blAdmin : $this->isAdmin();
+        $blAdmin = isset($blAdmin) ? $blAdmin : $this->isAdmin();
 
         if (!$blAdmin) {
-            $sUrl = $this->_getShopUrlByLanguage($iLang);
+            $sUrl = $this->getShopUrlByLanguage($iLang);
             if (!$sUrl) {
-                $sUrl = $this->_getShopUrlByMallShop();
+                $sUrl = $this->getMallShopUrl();
             }
         }
 
         if (!$sUrl) {
-            $sUrl = $this->getConfigParam( 'sShopURL' );
+            $sUrl = $this->getConfigParam('sShopURL');
         }
 
         return $sUrl;
@@ -966,25 +966,25 @@ class oxConfig extends oxSuperCfg
     {
         $sUrl = null;
 
-        if( !$sUrl ) {
-            $sUrl = $this->_getShopUrlByLanguage($iLang, true);
+        if(!$sUrl) {
+            $sUrl = $this->getShopUrlByLanguage($iLang, true);
         }
 
-        if( !$sUrl ) {
-            $sUrl = $this->_getShopUrlByMallShop(true);
+        if(!$sUrl) {
+            $sUrl = $this->getMallShopUrl(true);
         }
 
-        if( !$sUrl ) {
-            $sUrl = $this->_getShopUrlByMallShop();
+        if(!$sUrl) {
+            $sUrl = $this->getMallShopUrl();
         }
 
         //normal section
-        if ( !$sUrl ) {
-            $sUrl = $this->getConfigParam( 'sSSLShopURL' );
+        if (!$sUrl) {
+            $sUrl = $this->getConfigParam('sSSLShopURL');
         }
 
-        if ( !$sUrl ) {
-            $sUrl = $this->getShopUrl( $iLang );
+        if (!$sUrl) {
+            $sUrl = $this->getShopUrl($iLang);
         }
 
         return $sUrl;
@@ -2215,7 +2215,7 @@ class oxConfig extends oxSuperCfg
      *
      * @return null|string
      */
-    private function _getShopUrlByLanguage($iLang, $blSSL = false)
+    public function getShopUrlByLanguage($iLang, $blSSL = false)
     {
         $sLanguageUrl = null;
         $sConfigParameter = $blSSL ? 'aLanguageSSLURLs' : 'aLanguageURLs';
@@ -2230,13 +2230,13 @@ class oxConfig extends oxSuperCfg
     }
 
     /**
-     * Function returns shop url by mall.
+     * Function returns mall shop url.
      *
      * @param bool $blSSL
      *
      * @return null|string
      */
-    private function _getShopUrlByMallShop($blSSL = false)
+    public function getMallShopUrl($blSSL = false)
     {
         $sUrl = null;
         $sConfigParameter = $blSSL ? 'sMallSSLShopURL' : 'sMallShopURL';

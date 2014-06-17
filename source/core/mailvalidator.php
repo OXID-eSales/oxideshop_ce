@@ -23,6 +23,23 @@
 class MailValidator
 {
     /**
+     * @var string
+     */
+    private $_sMailValidationRule = "/^([\w+\-.])+\@([\w\-.])+\.([A-Za-z]{2,64})$/i";
+
+    /**
+     * Set mail validation rule from config.
+     */
+    public function __construct()
+    {
+        $oConfig = oxRegistry::getConfig();
+        $sEmailValidationRule = $oConfig->getConfigParam('sEmailValidationRule');
+        if (!empty($sEmailValidationRule)) {
+            $this->_sMailValidationRule = $sEmailValidationRule;
+        }
+    }
+
+    /**
      * User email validation function. Returns true if email is OK otherwise - false;
      * Syntax validation is performed only.
      *
@@ -34,8 +51,8 @@ class MailValidator
     {
         $blValid = true;
         if ( $sEmail != 'admin' ) {
-            $sEmailTpl = "/^([\w+\-.])+\@([\w\-.])+\.([A-Za-z]{2,64})$/i";
-            $blValid = ( getStr()->preg_match( $sEmailTpl, $sEmail ) != 0 );
+            $sEmailRule = $this->_sMailValidationRule;
+            $blValid = ( getStr()->preg_match( $sEmailRule, $sEmail ) != 0 );
         }
 
         return $blValid;

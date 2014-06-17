@@ -55,6 +55,7 @@ class Unit_Core_mailValidatorTest extends OxidTestCase
             array('mytest@com'),
         );
     }
+
     /**
      * @param $sEmail email to validate.
      * @dataProvider providerValidateEmailWithNotValidEmail
@@ -63,5 +64,13 @@ class Unit_Core_mailValidatorTest extends OxidTestCase
     {
         $oMailValidator = oxNew('MailValidator');
         $this->assertFalse($oMailValidator->isValidEmail($sEmail), 'Mail '. $sEmail .' was valid. Should not be valid.');
+    }
+
+    public function testValidateEmailWithDifferentRule()
+    {
+        $sEmail = 'wrongemail';
+        $this->setConfigParam('sEmailValidationRule', '/.*/');
+        $oMailValidator = oxNew('MailValidator');
+        $this->assertTrue($oMailValidator->isValidEmail($sEmail), 'Mail '. $sEmail .' was not valid. Should be valid with new rule.');
     }
 }

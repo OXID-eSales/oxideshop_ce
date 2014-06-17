@@ -97,9 +97,9 @@
 
                         if( $( oInput ).val()  ) {
 
-//                            if ( !self.isEmail( $( oInput ).val() ) ){
-//                                return oOptions.errorMessageNotEmail;
-//                            }
+                            if ( !self.isEmail( $( oInput ).val() ) ){
+                                return oOptions.errorMessageNotEmail;
+                            }
                         }
                     }
                     if ( $( oInput ).hasClass( oOptions.methodValidateLength ) && blValidInput ) {

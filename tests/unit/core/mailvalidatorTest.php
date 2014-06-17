@@ -40,7 +40,7 @@ class Unit_Core_mailValidatorTest extends OxidTestCase
     public function testValidateEmailWithValidEmail($sEmail)
     {
         $oMailValidator = oxNew('MailValidator');
-        $this->assertTrue( $oMailValidator->isValidEmail($sEmail), 'Mail '. $sEmail .' validation failed.'  );
+        $this->assertTrue( $oMailValidator->isValidEmail($sEmail), 'Mail '. $sEmail .' validation failed. This mail is valid so should validate.'  );
     }
 
     public function providerValidateEmailWithNotValidEmail()
@@ -60,6 +60,6 @@ class Unit_Core_mailValidatorTest extends OxidTestCase
     public function testValidateEmailWithNotValidEmail($sEmail)
     {
         $oMailValidator = oxNew('MailValidator');
-        $this->assertFalse($oMailValidator->isValidEmail($sEmail));
+        $this->assertFalse($oMailValidator->isValidEmail($sEmail), 'Mail '. $sEmail .' was valid. Should not be valid.');
     }
 }

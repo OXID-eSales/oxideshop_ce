@@ -20,12 +20,12 @@
  * @version   OXID eShop CE
  */
 
-class MailValidator
+class oxMailValidator
 {
     /**
      * @var string
      */
-    private $_sMailValidationRule = "/^([\w+\-.])+\@([\w\-.])+\.([A-Za-z]{2,64})$/i";
+    private $_sMailValidationRule = null;
 
     /**
      * Get mail validation rule.
@@ -33,6 +33,9 @@ class MailValidator
      */
     public function getMailValidationRule()
     {
+        if (is_null($this->_sMailValidationRule)) {
+            $this->_sMailValidationRule = "/^([\w+\-.])+\@([\w\-.])+\.([A-Za-z]{2,64})$/i";
+        }
         return $this->_sMailValidationRule;
     }
 

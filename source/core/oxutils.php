@@ -341,7 +341,7 @@ class oxUtils extends oxSuperCfg
      */
     public function isValidEmail( $sEmail )
     {
-        $oMailValidator = oxNew('MailValidator');
+        $oMailValidator = oxNew('oxMailValidator');
         return $oMailValidator->isValidEmail( $sEmail );
     }
 

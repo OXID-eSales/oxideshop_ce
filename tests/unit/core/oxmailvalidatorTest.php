@@ -23,7 +23,7 @@
 require_once realpath( "." ).'/unit/OxidTestCase.php';
 require_once realpath( "." ).'/unit/test_config.inc.php';
 
-class Unit_Core_mailValidatorTest extends OxidTestCase
+class Unit_Core_oxMailValidatorTest extends OxidTestCase
 {
     public function providerValidateEmailWithValidEmail()
     {
@@ -41,14 +41,14 @@ class Unit_Core_mailValidatorTest extends OxidTestCase
      */
     public function testValidateEmailWithValidEmail($sEmail)
     {
-        $oMailValidator = oxNew('MailValidator');
+        $oMailValidator = new oxMailValidator();
         $this->assertTrue( $oMailValidator->isValidEmail($sEmail), 'Mail '. $sEmail .' validation failed. This mail is valid so should validate.'  );
     }
 
     public function providerValidateEmailWithNotValidEmail()
     {
         return array(
-            array('�mathias.krieck@oxid-esales.com'),
+            array('?mathias.krieck@oxid-esales.com'),
             array('my/test@com.org'),
             array('@com.org'),
             array('mytestcom.org'),
@@ -62,7 +62,7 @@ class Unit_Core_mailValidatorTest extends OxidTestCase
      */
     public function testValidateEmailWithNotValidEmail($sEmail)
     {
-        $oMailValidator = oxNew('MailValidator');
+        $oMailValidator = new oxMailValidator();
         $this->assertFalse($oMailValidator->isValidEmail($sEmail), 'Mail '. $sEmail .' was valid. Should not be valid.');
     }
 
@@ -70,21 +70,21 @@ class Unit_Core_mailValidatorTest extends OxidTestCase
     {
         $sEmail = 'wrongemail';
         $this->setConfigParam('sEmailValidationRule', '/.*/');
-        $oMailValidator = oxNew('MailValidator');
+        $oMailValidator = new oxMailValidator();
         $this->assertTrue($oMailValidator->isValidEmail($sEmail), 'Mail '. $sEmail .' was not valid. Should be valid with new rule.');
     }
 
     public function testValidateEmailWithDifferentRuleSetWithSetter()
     {
         $sEmail = 'wrongemail';
-        $oMailValidator = oxNew('MailValidator');
+        $oMailValidator = new oxMailValidator();
         $oMailValidator->setMailValidationRule('/.*/');
         $this->assertTrue($oMailValidator->isValidEmail($sEmail), 'Mail '. $sEmail .' was not valid. Should be valid with new rule.');
     }
 
     public function testSetGetEmailValidationRule()
     {
-        $oMailValidator = new MailValidator();
+        $oMailValidator = new oxMailValidator();
         $this->assertSame("/^([\w+\-.])+\@([\w\-.])+\.([A-Za-z]{2,64})$/i", $oMailValidator->getMailValidationRule(), 'Default mail validation rule is not as expected.');
         $sNewMailValidationRule = '/.*/';
         $oMailValidator->setMailValidationRule($sNewMailValidationRule);

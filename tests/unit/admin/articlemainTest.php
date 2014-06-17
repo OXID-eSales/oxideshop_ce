@@ -98,7 +98,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
 
         // creating few oxprice2article records
         $oDb->execute( "INSERT INTO `{$sO2CView}` (`OXID`, `OXOBJECTID`, `OXCATNID`, `OXPOS`, `OXTIME`) VALUES ('".$oUtils->generateUId()."', '_testArtId', '_testCatId', '0', '0');" );
-        $oDb->execute( "INSERT INTO `{$sO2CView}` (`OXID`, `OXOBJECTID`, `OXCATNID`, `OXPOS`, `OXTIME`) VALUES ('".$oUtils->generateUId()."', '_testArtId', '_testCatId', '0', '0');" );
+        $oDb->execute( "INSERT INTO `{$sO2CView}` (`OXID`, `OXOBJECTID`, `OXCATNID`, `OXPOS`, `OXTIME`) VALUES ('".$oUtils->generateUId()."', '_testArtId', '_testCatId2', '0', '0');" );
 
         $oView = new Article_Main();
         $oView->UNITcopyCategories( "_testArtId", "_testArtId2" );
@@ -507,8 +507,10 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
         modConfig::setParameter( "oxid", -1 );
         modConfig::setParameter( "oxparentid", "132" );
         modConfig::setParameter( "editval", array( 'tags' => 'test tags', "oxarticles__oxparentid" => "-1", "oxarticles__oxartnum" => "123", "oxarticles__oxprice" => "123", "oxarticles__oxactive" => 1 ) );
+        modConfig::setParameter( "art_category", -1 );
 
         $oArtView = new article_main();
+        $oArtView->setCategoryId('_testCategoryId');
 
         try {
             $oArtView->save();

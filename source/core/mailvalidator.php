@@ -28,7 +28,26 @@ class MailValidator
     private $_sMailValidationRule = "/^([\w+\-.])+\@([\w\-.])+\.([A-Za-z]{2,64})$/i";
 
     /**
+     * Get mail validation rule.
+     * @return string
+     */
+    public function getMailValidationRule()
+    {
+        return $this->_sMailValidationRule;
+    }
+
+    /**
+     * Override mail validation rule.
+     * @param string $sMailValidationRule
+     */
+    public function setMailValidationRule($sMailValidationRule)
+    {
+        $this->_sMailValidationRule = $sMailValidationRule;
+    }
+
+    /**
      * Set mail validation rule from config.
+     * Would use default rule if not defined in config.
      */
     public function __construct()
     {

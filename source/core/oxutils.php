@@ -333,19 +333,16 @@ class oxUtils extends oxSuperCfg
      * User email validation function. Returns true if email is OK otherwise - false;
      * Syntax validation is performed only.
      *
+     * @deprecated since v4.9.0/v5.2.0 (2014-06-17); Use MailValidator::isValidEmail().
+     *
      * @param string $sEmail user email
      *
      * @return bool
      */
     public function isValidEmail( $sEmail )
     {
-        $blValid = true;
-        if ( $sEmail != 'admin' ) {
-            $sEmailTpl = "/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/i";
-            $blValid = ( getStr()->preg_match( $sEmailTpl, $sEmail ) != 0 );
-        }
-
-        return $blValid;
+        $oMailValidator = oxNew('MailValidator');
+        return $oMailValidator->isValidEmail( $sEmail );
     }
 
     /**

@@ -228,7 +228,7 @@ class Unit_Views_newsletterTest extends OxidTestCase
 
         $oTestNews = oxNew( "NewsLetter" );
         $aParams = array();
-        $aParams['oxuser__oxusername'] = oxADMIN_LOGIN;
+        $aParams['oxuser__oxusername'] = 'test@oxid-esales.com';
         $aParams['oxuser__oxfname'] = 'test';
         $this->setRequestParam( 'editval', $aParams );
         $this->setRequestParam( 'subscribeStatus', 1 );

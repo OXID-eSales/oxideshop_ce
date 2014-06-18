@@ -53,6 +53,7 @@ class Integration_Price_OrderTest extends OxidTestCase
         $oDb->query( "TRUNCATE oxdelivery" );
         $oDb->query( "TRUNCATE oxdel2delset" );
         $oDb->query( "TRUNCATE oxobject2payment" );
+        $oDb->query( "TRUNCATE oxobject2category" );
         $oDb->query( "TRUNCATE oxvouchers" );
         $oDb->query( "TRUNCATE oxvoucherseries" );
         $oDb->query( "TRUNCATE oxuser" );

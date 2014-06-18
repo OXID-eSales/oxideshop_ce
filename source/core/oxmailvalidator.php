@@ -71,11 +71,8 @@ class oxMailValidator
      */
     public function isValidEmail( $sEmail )
     {
-        $blValid = true;
-        if ( $sEmail != 'admin' ) {
-            $sEmailRule = $this->getMailValidationRule();
-            $blValid = ( getStr()->preg_match( $sEmailRule, $sEmail ) != 0 );
-        }
+        $sEmailRule = $this->getMailValidationRule();
+        $blValid = ( getStr()->preg_match( $sEmailRule, $sEmail ) != 0 );
 
         return $blValid;
     }

@@ -122,7 +122,7 @@ class Unit_Core_oxvoucherTest extends OxidTestCase
         $oSerie = oxNew( 'oxvoucherserie' );
         $oSerie->load( $sOXID );
 
-        // creating 100 test vouchers
+        // creating test vouchers
         for ($i = 0; $i < MAX_LOOP_AMOUNT; $i++) {
             $oNewVoucher = oxNew( 'oxvoucher' );
             $oNewVoucher->oxvouchers__oxvoucherserieid = new oxField($sOXID, oxField::T_RAW);
@@ -862,12 +862,6 @@ class Unit_Core_oxvoucherTest extends OxidTestCase
             $this->fail( 'can not load voucher' );
             return;
         }
-
-        $oSerie = oxNew( 'oxvoucherserie' );
-        $oSerie->load($this->_aSerieOxid[0]);
-        $oSerie->oxvoucherseries__oxbegindate = new oxField( '0000-00-00 00:00:00', oxField::T_RAW );
-        $oSerie->oxvoucherseries__oxenddate = new oxField( time() + 360, oxField::T_RAW );
-        $oSerie->save();
 
         $oSerie = oxNew( 'oxvoucherserie' );
         $oSerie->load($this->_aSerieOxid[1]);

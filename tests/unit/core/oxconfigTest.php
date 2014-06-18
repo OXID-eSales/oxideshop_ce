@@ -312,13 +312,11 @@ class Unit_Core_oxconfigTest extends OxidTestCase
      */
     public function testInit_noConnection()
     {
-        $this->setExpectedException( 'oxAdoDbException' );
-
         $oConfig = $this->getMock( "oxconfig", array( "_loadVarsFromDb" ) );
-        $oEx = new oxAdoDbException("MySQL", "SELECT", 1, "", "", "", new StdClass() );
+        $oEx = oxNew( "oxConnectionException" );
         $oConfig->expects( $this->once() )->method( '_loadVarsFromDb')->will( $this->throwException( $oEx ) );
 
-        $oConfig->init();
+        $this->assertFalse( $oConfig->init() );
     }
 
     /**
@@ -638,6 +636,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
     {
         $oStart = $this->getMock( 'oxStart', array( 'pageClose' ) );
         $oStart->expects( $this->once() )->method( 'pageClose');
+
         $oConfig = new oxConfig();
         $oConfig->init();
         $oConfig->setConfigParam( "_oStart", $oStart );
@@ -1550,25 +1549,14 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $this->assertEquals( $sUrl, $oConfig->getShopHomeUrl() );
     }
 
-    public function providerGetWidgetUrl()
-    {
-        return array(
-            array( 'http://www.example.com/widget.php', false ),
-            array( 'https://www.example.com/widget.php', true ),
-        );
-    }
-
     /**
      * Testing getShopHomeUrl getter
-     *
-     * @dataProvider providerGetWidgetUrl
      */
-    public function testGetWidgetUrl($sUrl, $blIsSsl)
+    public function testGetWidgetUrl()
     {
         $oConfig = new modForGetShopHomeUrl();
-        $oConfig->setIsSsl($blIsSsl);
         $oConfig->init();
-        $sUrl = oxRegistry::get('oxUtilsUrl')->processUrl( $sUrl, false );
+        $sUrl = oxRegistry::get('oxUtilsUrl')->processUrl( 'http://www.example.com/widget.php', false );
         $this->assertEquals( $sUrl, $oConfig->getWidgetUrl() );
     }
 
@@ -1584,6 +1572,17 @@ class Unit_Core_oxconfigTest extends OxidTestCase
     }
 
 
+    /**
+     * Testing getSslShopUrl getter
+     */
+    public function testGetSslShopUrlLanguageUrl()
+    {
+        $oConfig = new oxConfig();
+        $oConfig->init();
+        $aLanguageSslUrls = array( 5 => 'https://www.example.com/' );
+        $oConfig->setConfigParam( 'aLanguageSSLURLs', $aLanguageSslUrls );
+        $this->assertEquals( $aLanguageSslUrls[5], $oConfig->getSslShopUrl( 5 ) );
+    }
     public function testGetSslShopUrlByLanguageArrayAddsEndingSlash()
     {
         $oConfig = $this->getMock( 'oxConfig', array( 'isAdmin' ) ) ;
@@ -1608,6 +1607,15 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $oConfig->setConfigParam( 'aLanguageSSLURLs', null );
         $oConfig->setConfigParam( 'sMallSSLShopURL', 'https://www.example2.com' );
         $this->assertEquals( 'https://www.example2.com/', $oConfig->getSslShopUrl() );
+    }
+    public function testGetSslShopUrlMallUrl()
+    {
+        $oConfig = new oxConfig();
+        $oConfig->init();
+        $oConfig->setConfigParam( 'aLanguageSSLURLs', null );
+        $oConfig->setConfigParam( 'sMallSSLShopURL', null );
+        $oConfig->setConfigParam( 'sMallShopURL', 'https://www.example3.com/' );
+        $this->assertEquals( 'https://www.example3.com/', $oConfig->getSslShopUrl() );
     }
     public function testGetSslShopUrlSslUrl()
     {
@@ -1635,60 +1643,6 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $oConfig->init();
         $oConfig->setConfigParam( 'sSSLShopURL', 'https://www.example4.com' );
         $this->assertEquals( 'https://www.example4.com', $oConfig->getSslShopUrl() );
-    }
-
-    public function providerGetShopUrlByLanguage()
-    {
-        return array(
-            array('http://www.example.com/', 5, array(5 => 'http://www.example.com/'), false),
-            array('https://www.example.com/', 5, array(5 => 'https://www.example.com/'), true),
-            array('https://www.example.com/', 5, array(5 => 'https://www.example.com'), true),
-            array(null, 5, array(1 => 'http://www.example.com/'), false),
-            array(null, null, array(5 => 'http://www.example.com/'), false),
-        );
-    }
-
-    /**
-     * @param $sResultUrl
-     * @param $iLang
-     * @param $aLanguageUrls
-     * @param $blSSL
-     *
-     * @dataProvider providerGetShopUrlByLanguage
-     */
-    public function testGetShopUrlByLanguage($sResultUrl, $iLang, $aLanguageUrls, $blSSL)
-    {
-        $oConfig = new oxConfig();
-        $oConfig->init();
-        $sConfigParameterName = $blSSL ? 'aLanguageSSLURLs' : 'aLanguageURLs';
-        $oConfig->setConfigParam($sConfigParameterName, $aLanguageUrls);
-        $this->assertEquals($sResultUrl, $oConfig->getShopUrlByLanguage($iLang, $blSSL));
-    }
-
-    public function providerGetMallShopUrl()
-    {
-        return array(
-            array('http://www.example.com/', 'http://www.example.com/', false),
-            array('https://www.example.com/', 'https://www.example.com/', true),
-            array('https://www.example.com/', 'https://www.example.com', true),
-            array(null, null, false),
-        );
-    }
-
-    /**
-     * @param $sResultUrl
-     * @param $sUrl
-     * @param $blSSL
-     *
-     * @dataProvider providerGetMallShopUrl
-     */
-    public function testGetMallShopUrl($sResultUrl, $sUrl, $blSSL)
-    {
-        $oConfig = new oxConfig();
-        $oConfig->init();
-        $sConfigParameterName = $blSSL ? 'sMallSSLShopURL' : 'sMallShopURL';
-        $oConfig->setConfigParam($sConfigParameterName, $sUrl);
-        $this->assertEquals($sResultUrl, $oConfig->getMallShopUrl($blSSL));
     }
 
     /**
@@ -1761,6 +1715,22 @@ class Unit_Core_oxconfigTest extends OxidTestCase
 
         $oConfig->init();
         $this->assertEquals( $oConfig->getConfigParam( 'sShopURL' ), $oConfig->getShopUrl() );
+    }
+    public function testGetShopUrlByLanguageArray()
+    {
+        $oConfig = $this->getMock( 'oxConfig', array( 'isAdmin' ) ) ;
+        $oConfig->expects( $this->any() )->method( 'isAdmin')->will( $this->returnValue( false ) );
+        $oConfig->init();
+        $oConfig->setConfigParam( 'aLanguageURLs', array( 5 => 'http://www.example.com/' ) );
+        $this->assertEquals( 'http://www.example.com/', $oConfig->getShopUrl( 5 ) );
+    }
+    public function testGetShopUrlByLanguageArrayAddsEndingSlash()
+    {
+        $oConfig = $this->getMock( 'oxConfig', array( 'isAdmin' ) ) ;
+        $oConfig->expects( $this->any() )->method( 'isAdmin')->will( $this->returnValue( false ) );
+        $oConfig->init();
+        $oConfig->setConfigParam( 'aLanguageURLs', array( 5 => 'http://www.example.com' ) );
+        $this->assertEquals( 'http://www.example.com/', $oConfig->getShopUrl( 5 ) );
     }
     public function testGetShopUrlByMallUrl()
     {
@@ -2631,6 +2601,28 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $this->assertEquals( "text". $sEscapedNewLineCharacter, $oConfig->checkParamSpecialChars( $sVar ) );
     }
 
+
+    /**
+     * Testing config init - loading config vars returns no result
+     */
+    public function testInit_noValuesFromConfig()
+    {
+        $oConfig = $this->getMock( "oxconfig", array( "_loadVarsFromDb" ) );
+        $oConfig->expects( $this->once() )->method( '_loadVarsFromDb')->will( $this->returnValue( false ) );
+
+        $this->assertFalse( $oConfig->init() );
+    }
+
+    /**
+     * Testing config parameters getter
+     */
+    public function testInit_noShopId()
+    {
+        $oConfig = $this->getMock( "oxconfig", array( "getShopId" ) );
+        $oConfig->expects( $this->once() )->method( 'getShopId')->will( $this->returnValue( false ) );
+
+        $this->assertFalse( $oConfig->init() );
+    }
 
 
 }

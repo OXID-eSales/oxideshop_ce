@@ -399,40 +399,54 @@ class oxConfig extends oxSuperCfg
 
         $this->_setDefaults();
 
-        $sShopID = $this->getShopId();
+        try {
+            $sShopID = $this->getShopId();
 
-        $this->_loadVarsFromDb($sShopID);
 
-        // loading theme config options
-        $this->_loadVarsFromDb($sShopID, null, oxConfig::OXMODULE_THEME_PREFIX . $this->getConfigParam('sTheme'));
+            $blConfigLoaded = $this->_loadVarsFromDb( $sShopID );
+            // loading shop config
+           if ( empty($sShopID) || !$blConfigLoaded ) {
+                // if no config values where loaded (some problems with DB), throwing an exception
+                $oEx = new oxConnectionException();
+                $oEx->setMessage( "Unable to load shop config values from database" );
+                throw $oEx;
+           }
 
-        // checking if custom theme (which has defined parent theme) config options should be loaded over parent theme (#3362)
-        if ($this->getConfigParam('sCustomTheme')) {
-            $this->_loadVarsFromDb($sShopID, null, oxConfig::OXMODULE_THEME_PREFIX . $this->getConfigParam('sCustomTheme'));
+            // loading theme config options
+            $this->_loadVarsFromDb($sShopID, null, oxConfig::OXMODULE_THEME_PREFIX . $this->getConfigParam('sTheme'));
+
+            // checking if custom theme (which has defined parent theme) config options should be loaded over parent theme (#3362)
+            if ($this->getConfigParam('sCustomTheme')) {
+                $this->_loadVarsFromDb($sShopID, null, oxConfig::OXMODULE_THEME_PREFIX . $this->getConfigParam('sCustomTheme'));
+            }
+
+            // loading modules config
+            $this->_loadVarsFromDb($sShopID, null, oxConfig::OXMODULE_MODULE_PREFIX);
+
+
+            $this->_processSeoCall();
+
+            //starting up the session
+            $this->getSession()->start();
+
+
+            // Admin handling
+            $this->setConfigParam('blAdmin', isAdmin());
+
+            if (defined('OX_ADMIN_DIR')) {
+                $this->setConfigParam('sAdminDir', OX_ADMIN_DIR);
+            }
+
+            $this->_loadVarsFromFile();
+
+            //application initialization
+            $this->_oStart = new oxStart();
+            $this->_oStart->appInit();
+        } catch ( oxConnectionException $oEx ) {
+            return $this->_handleDbConnectionException( $oEx );
+        } catch ( oxCookieException $oEx ) {
+            return $this->_handleCookieException( $oEx );
         }
-
-        // loading modules config
-        $this->_loadVarsFromDb($sShopID, null, oxConfig::OXMODULE_MODULE_PREFIX);
-
-
-        $this->_processSeoCall();
-
-        //starting up the session
-        $this->getSession()->start();
-
-
-        // Admin handling
-        $this->setConfigParam('blAdmin', isAdmin());
-
-        if (defined('OX_ADMIN_DIR')) {
-            $this->setConfigParam('sAdminDir', OX_ADMIN_DIR);
-        }
-
-        $this->_loadVarsFromFile();
-
-        //application initialization
-        $this->_oStart = new oxStart();
-        $this->_oStart->appInit();
 
     }
 
@@ -569,6 +583,8 @@ class oxConfig extends oxSuperCfg
                 $this->_aThemeConfigParams[$sVarName] = $sModule;
             }
         }
+
+        return (bool) count($aResult);
     }
 
     /**
@@ -2247,5 +2263,43 @@ class oxConfig extends oxSuperCfg
         }
 
         return $sUrl;
+    }
+
+    /**
+     * Shows exception message if debug mode is enabled, redirects otherwise.
+     *
+     * @param oxException $oEx message to show on exit
+     * @return bool
+     */
+    protected function _handleDbConnectionException( $oEx )
+    {
+        $oEx->debugOut();
+        if ( defined( 'OXID_PHP_UNIT' ) ) {
+            return false;
+        } elseif ( 0 != $this->iDebug ) {
+            oxRegistry::getUtils()->showMessageAndExit( $oEx->getString() );
+        } else {
+            header( "HTTP/1.1 500 Internal Server Error");
+            header( "Location: offline.html");
+            header( "Connection: close");
+        }
+    }
+
+    /**
+     * Redirect to start page and display the error
+     *
+     * @param oxException $oEx message to show on exit
+     * @return bool
+     */
+    protected function _handleCookieException( $oEx )
+    {
+        $this->_processSeoCall();
+
+        //starting up the session
+        $this->getSession()->start();
+
+        // redirect to start page and display the error
+        oxRegistry::get("oxUtilsView")->addErrorToDisplay( $oEx );
+        oxRegistry::getUtils()->redirect( $this->getShopHomeURL() .'cl=start', true, 302 );
     }
 }

@@ -66,37 +66,4 @@ class Unit_Core_oxshoplistTest extends OxidTestCase
         $oShopList->getAll();
         $this->assertEquals(4, $oShopList->count());
     }
-
-    /**
-     * Check that raw array retrieval has required fields
-     */
-    public function testGetRawList()
-    {
-        $oShopList = new oxShopList();
-
-        $aList = $oShopList->getRawList('SELECT `oxshops`.* FROM `oxshops`');
-
-        $this->assertEquals(4, count($aList));
-        $this->assertEquals('1', $aList[0]->oxshops__oxid->value);
-        $this->assertEquals('OXID eShop 5', $aList[0]->oxshops__oxname->value);
-        $this->assertEquals(array('oxshops__oxid', 'oxshops__oxname'), array_keys(get_object_vars($aList[2])));
-        $this->assertEquals('3', $aList[2]->oxshops__oxid->value);
-        $this->assertEquals('Test Shop 3', $aList[2]->oxshops__oxname->value);
-    }
-
-    /**
-     * Check that raw array retrieval has required fields
-     */
-    public function testDefaultGetRawList()
-    {
-        $oShopList = new oxShopList();
-
-        $aList = $oShopList->getRawList();
-        $this->assertEquals(4, count($aList));
-
-        oxDb::getDb()->execute("update oxshops set oxactive = 0 where oxid in (2,4)");
-
-        $aList = $oShopList->getRawList();
-        $this->assertEquals(2, count($aList));
-    }
 }

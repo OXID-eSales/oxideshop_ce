@@ -122,7 +122,7 @@ class Unit_Core_oxvoucherTest extends OxidTestCase
         $oSerie = oxNew( 'oxvoucherserie' );
         $oSerie->load( $sOXID );
 
-        // creating 100 test vouchers
+        // creating test vouchers
         for ($i = 0; $i < MAX_LOOP_AMOUNT; $i++) {
             $oNewVoucher = oxNew( 'oxvoucher' );
             $oNewVoucher->oxvouchers__oxvoucherserieid = new oxField($sOXID, oxField::T_RAW);
@@ -856,18 +856,18 @@ class Unit_Core_oxvoucherTest extends OxidTestCase
     }
     public function testIsValidDate4()
     {
+        $oSerie = oxNew( 'oxvoucherserie' );
+        $oSerie->load($this->_aSerieOxid[1]);
+        $oSerie->oxvoucherseries__oxbegindate = new oxField( '0000-00-00 00:00:00', oxField::T_RAW );
+        $oSerie->oxvoucherseries__oxenddate = new oxField( date( 'Y-m-d H:i:s', time() + 3700 ), oxField::T_RAW );
+        $oSerie->save();
+
         $sOXID = $this->_aVoucherOxid[$this->_aSerieOxid[1]][getRandLTAmnt()];
         $oNewVoucher = oxNew( 'oxvoucher' );
         if ( !$oNewVoucher->Load( $sOXID ) ) {
             $this->fail( 'can not load voucher' );
             return;
         }
-
-        $oSerie = oxNew( 'oxvoucherserie' );
-        $oSerie->load($this->_aSerieOxid[1]);
-        $oSerie->oxvoucherseries__oxbegindate = new oxField( '0000-00-00 00:00:00', oxField::T_RAW );
-        $oSerie->oxvoucherseries__oxenddate = new oxField( time() + 360, oxField::T_RAW );
-        $oSerie->save();
 
         $this->assertEquals( true, $oNewVoucher->UNITisValidDate() );
     }
@@ -882,7 +882,7 @@ class Unit_Core_oxvoucherTest extends OxidTestCase
 
         $oSerie = oxNew( 'oxvoucherserie' );
         $oSerie->load($this->_aSerieOxid[1]);
-        $oSerie->oxvoucherseries__oxbegindate = new oxField( time() - 360, oxField::T_RAW );
+        $oSerie->oxvoucherseries__oxbegindate = new oxField( date( 'Y-m-d H:i:s', time() - 3700 ), oxField::T_RAW );
         $oSerie->oxvoucherseries__oxenddate = new oxField( '0000-00-00 00:00:00', oxField::T_RAW );
         $oSerie->save();
 
@@ -890,18 +890,18 @@ class Unit_Core_oxvoucherTest extends OxidTestCase
     }
     public function testIsValidDate5()
     {
+        $oSerie = oxNew( 'oxvoucherserie' );
+        $oSerie->load($this->_aSerieOxid[1]);
+        $oSerie->oxvoucherseries__oxbegindate = new oxField( date( 'Y-m-d H:i:s', time() - 3700 ), oxField::T_RAW );
+        $oSerie->oxvoucherseries__oxenddate = new oxField( date( 'Y-m-d H:i:s', time() + 3700 ), oxField::T_RAW );
+        $oSerie->save();
+
         $sOXID = $this->_aVoucherOxid[$this->_aSerieOxid[1]][getRandLTAmnt()];
         $oNewVoucher = oxNew( 'oxvoucher' );
         if ( !$oNewVoucher->Load( $sOXID ) ) {
             $this->fail( 'can not load voucher' );
             return;
         }
-
-        $oSerie = oxNew( 'oxvoucherserie' );
-        $oSerie->load($this->_aSerieOxid[1]);
-        $oSerie->oxvoucherseries__oxbegindate = new oxField( time() - 360, oxField::T_RAW );
-        $oSerie->oxvoucherseries__oxenddate = new oxField( time() + 360, oxField::T_RAW );
-        $oSerie->save();
 
         $this->assertEquals( true, $oNewVoucher->UNITisValidDate() );
     }

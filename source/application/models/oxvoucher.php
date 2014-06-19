@@ -352,7 +352,7 @@ class oxVoucher extends oxBase
         $oEx = oxNew( 'oxVoucherException' );
         $oEx->setMessage('MESSAGE_COUPON_EXPIRED');
         if ( $iFrom > time() && $iTo > time() ) {
-            $oEx->setMessage('ERROR_MESSAGE_VOUCHER_NOVOUCHER');
+            $oEx->setMessage('ERROR_MESSAGE_VOUCHER_NOVOUCHER Time from:'. $iFrom .' Time to:'. $iTo .' Time: '. time() );
         }
         $oEx->setVoucherNr( $this->oxvouchers__oxvouchernr->value );
         throw $oEx;

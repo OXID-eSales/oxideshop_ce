@@ -50,28 +50,29 @@ class Shop_Main extends oxAdminDetails
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
 
 
-        if ( $soxId != "-1" && isset( $soxId)) {
+        if ($soxId != "-1" && isset($soxId)) {
             // load object
-            $oShop = oxNew( "oxshop" );
+            $oShop = oxNew("oxshop");
             $isubjlang = oxRegistry::getConfig()->getRequestParameter("subjlang");
-            if ( !isset($isubjlang))
+            if (!isset($isubjlang)) {
                 $isubjlang = $this->_iEditLang;
-
-            if ($isubjlang && $isubjlang > 0) {
-                $this->_aViewData["subjlang"] =  $isubjlang;
             }
 
-            $oShop->loadInLang( $isubjlang, $soxId );
+            if ($isubjlang && $isubjlang > 0) {
+                $this->_aViewData["subjlang"] = $isubjlang;
+            }
 
-            $this->_aViewData["edit"] =  $oShop;
-            //oxRegistry::getSession()->setVariable( "actshop", $soxId);//echo "<h2>$soxId</h2>";
-            oxRegistry::getSession()->setVariable( "shp", $soxId);
+            $oShop->loadInLang($isubjlang, $soxId);
+
+            $this->_aViewData["edit"] = $oShop;
+            //oxSession::setVar( "actshop", $soxId);//echo "<h2>$soxId</h2>";
+            oxRegistry::getSession()->setVariable("shp", $soxId);
         }
 
 
         $this->_aViewData['IsOXDemoShop'] = $myConfig->isDemoShop();
-        if ( !isset( $this->_aViewData['updatenav'] ) ) {
-            $this->_aViewData['updatenav']    = oxRegistry::getConfig()->getRequestParameter( 'updatenav' );
+        if (!isset($this->_aViewData['updatenav'])) {
+            $this->_aViewData['updatenav'] = oxRegistry::getConfig()->getRequestParameter('updatenav');
         }
 
         return "shop_main.tpl";

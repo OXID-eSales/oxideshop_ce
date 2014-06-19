@@ -43,12 +43,12 @@ class Navigation extends oxAdminView
         $myUtilsServer = oxRegistry::get("oxUtilsServer");
 
         $sItem = oxRegistry::getConfig()->getRequestParameter("item");
-        $sItem = $sItem ? basename( $sItem ) : false;
-        if ( !$sItem ) {
+        $sItem = $sItem ? basename($sItem) : false;
+        if (!$sItem) {
             $sItem = "nav_frame.tpl";
-            $aFavorites = oxRegistry::getConfig()->getRequestParameter( "favorites" );
-            if ( is_array( $aFavorites ) ) {
-                $myUtilsServer->setOxCookie('oxidadminfavorites', implode( '|', $aFavorites ) );
+            $aFavorites = oxRegistry::getConfig()->getRequestParameter("favorites");
+            if (is_array($aFavorites)) {
+                $myUtilsServer->setOxCookie('oxidadminfavorites', implode('|', $aFavorites));
             }
         } else {
             $oNavTree = $this->getNavigation();
@@ -57,11 +57,11 @@ class Navigation extends oxAdminView
             $this->_aViewData["menustructure"] = $oNavTree->getDomXml()->documentElement->childNodes;
 
             // version patch strin
-            $sVersion = str_replace( array ("EE.", "PE."), "", $this->_sShopVersion);
+            $sVersion = str_replace(array("EE.", "PE."), "", $this->_sShopVersion);
             $this->_aViewData["sVersion"] = trim($sVersion);
 
             //checking requirements if this is not nav frame reload
-            if ( !oxRegistry::getConfig()->getRequestParameter( "navReload" ) ) {
+            if (!oxRegistry::getConfig()->getRequestParameter("navReload")) {
                 // #661 execute stuff we run each time when we start admin once
                 if ('home.tpl' == $sItem) {
                     $this->_aViewData['aMessage'] = $this->_doStartUpChecks();
@@ -72,35 +72,33 @@ class Navigation extends oxAdminView
             }
 
             // favorite navigation
-            $aFavorites = explode( '|', $myUtilsServer->getOxCookie( 'oxidadminfavorites' ) );
+            $aFavorites = explode('|', $myUtilsServer->getOxCookie('oxidadminfavorites'));
 
-            if ( is_array( $aFavorites ) && count( $aFavorites ) ) {
-                $this->_aViewData["menufavorites"] = $oNavTree->getListNodes( $aFavorites );
-                $this->_aViewData["aFavorites"]    = $aFavorites;
+            if (is_array($aFavorites) && count($aFavorites)) {
+                $this->_aViewData["menufavorites"] = $oNavTree->getListNodes($aFavorites);
+                $this->_aViewData["aFavorites"] = $aFavorites;
             }
 
             // history navigation
-            $aHistory = explode( '|', $myUtilsServer->getOxCookie( 'oxidadminhistory' ) );
-            if ( is_array( $aHistory ) && count( $aHistory ) ) {
-                $this->_aViewData["menuhistory"] = $oNavTree->getListNodes( $aHistory );
+            $aHistory = explode('|', $myUtilsServer->getOxCookie('oxidadminhistory'));
+            if (is_array($aHistory) && count($aHistory)) {
+                $this->_aViewData["menuhistory"] = $oNavTree->getListNodes($aHistory);
             }
 
             // open history node ?
-            $this->_aViewData["blOpenHistory"] = oxRegistry::getConfig()->getRequestParameter( 'openHistory' );
+            $this->_aViewData["blOpenHistory"] = oxRegistry::getConfig()->getRequestParameter('openHistory');
         }
-        /** @var oxshoplist $oShoplist */
-        $oShoplist = oxNew( 'oxshoplist' );
-        $oBaseShop = $oShoplist->getBaseObject();
+        /** @var oxSimpleShopList $oShoplist */
+        $oShoplist = oxNew('oxSimpleShopList');
 
         $sWhere = '';
-        $blisMallAdmin = oxRegistry::getSession()->getVariable( 'malladmin' );
+        $blisMallAdmin = oxRegistry::getSession()->getVariable('malladmin');
         if (!$blisMallAdmin) {
             // we only allow to see our shop
             $sShopID = oxRegistry::getSession()->getVariable("actshop");
             $sWhere = "where ".$oBaseShop->getViewName().".oxid = '$sShopID'";
         }
-
-        $aShopList = $oShoplist->getRawList("select ".$oBaseShop->getSelectFields()." from ".$oBaseShop->getViewName()." $sWhere");
+        $aShopList = $oShoplist->getRawList($sWhere);
         $this->_aViewData['shoplist'] = $aShopList;
 
         return $sItem;

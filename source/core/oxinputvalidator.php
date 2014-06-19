@@ -309,6 +309,7 @@ class oxInputValidator extends oxSuperCfg
      */
     private function _setFields($oObject, $aFields)
     {
+        $aFields = is_array($aFields)? $aFields : array();
         foreach ($aFields as $sKey => $sValue) {
             $oObject->$sKey = oxNew('oxField', $sValue);
         }

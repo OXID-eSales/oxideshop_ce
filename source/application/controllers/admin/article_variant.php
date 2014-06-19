@@ -120,11 +120,6 @@ class Article_Variant extends oxAdminDetails
             $aParams = oxRegistry::getConfig()->getRequestParameter( "editval" );
         }
 
-        // checkbox handling
-        if ( !isset( $aParams['oxarticles__oxactive'] ) ) {
-            $aParams['oxarticles__oxactive'] = 0;
-        }
-
             // shopid
             $aParams['oxarticles__oxshopid'] = oxRegistry::getSession()->getVariable( "actshop" );
 
@@ -135,7 +130,7 @@ class Article_Variant extends oxAdminDetails
         } else {
             unset( $aParams['oxarticles__oxparentid'] );
         }
-
+        /** @var oxArticle $oArticle */
         $oArticle = oxNew( "oxarticle");
 
         /*
@@ -151,6 +146,15 @@ class Article_Variant extends oxAdminDetails
 
         if ( $sOXID != "-1" ) {
             $oArticle->loadInLang( $this->_iEditLang, $sOXID );
+        }
+
+        if (!$this->_isAnythingChanged($oArticle, $aParams)) {
+            return;
+        }
+
+        // checkbox handling
+        if ( !isset( $aParams['oxarticles__oxactive'] ) ) {
+            $aParams['oxarticles__oxactive'] = 0;
         }
 
         $oArticle->setLanguage( 0 );
@@ -171,6 +175,27 @@ class Article_Variant extends oxAdminDetails
         }
 
         $oArticle->save();
+    }
+
+    /**
+     * Checks if anything is changed in given data compared with existing product values.
+     *
+     * @param object $oProduct Product to be checked.
+     * @param array  $aData    Data provided for check.
+     *
+     * @return bool
+     */
+    protected function _isAnythingChanged($oProduct, $aData)
+    {
+        if (!is_array($aData)) {
+            return true;
+        }
+        foreach ($aData as $sKey => $sValue) {
+            if ($oProduct->$sKey->value != $aData[$sKey]) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

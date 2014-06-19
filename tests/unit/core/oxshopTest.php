@@ -73,16 +73,19 @@ class Unit_Core_oxshopTest extends OxidTestCase
      */
     public function makeViewQueryParamProvider()
     {
-        $sFields = 'OXID, OXTITLE';
+        $sFieldsMultilang = 'OXID, OXTITLE, OXTITLE_1';
+        $sFields          = 'OXID, OXTITLE';
+
         $aMockedFunctionReturns = array(
-            '_getViewSelect' => $sFields,
+            '_getViewSelectMultilang' => $sFieldsMultilang,
+            '_getViewSelect'          => $sFields,
         );
 
         return array(
             array('oxarticles', null, $aMockedFunctionReturns,
-                  'CREATE OR REPLACE SQL SECURITY INVOKER VIEW `oxv_oxarticles` AS SELECT oxarticles.* FROM oxarticles'), // default
+                  'CREATE OR REPLACE SQL SECURITY INVOKER VIEW `oxv_oxarticles` AS SELECT ' . $sFieldsMultilang . ' FROM oxarticles'), // default
             array('oxarticles', 'de', $aMockedFunctionReturns,
-                  'CREATE OR REPLACE SQL SECURITY INVOKER VIEW `oxv_oxarticles_de` AS SELECT OXID, OXTITLE FROM oxarticles'),
+                  'CREATE OR REPLACE SQL SECURITY INVOKER VIEW `oxv_oxarticles_de` AS SELECT ' . $sFields . ' FROM oxarticles'),
         );
     }
 

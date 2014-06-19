@@ -175,7 +175,7 @@ class oxShop extends oxI18n
      * @param string $sTable table name
      * @param array  $iLang  language id
      *
-     * @return string $sSQL
+     * @return string
      */
     protected function _getViewSelect($sTable,$iLang)
     {
@@ -185,6 +185,32 @@ class oxShop extends oxI18n
         foreach ($aFields as $sCoreField => $sField) {
             if ($sCoreField !== $sField) {
                 $aFields[$sCoreField] = $sField.' AS '.$sCoreField;
+            }
+        }
+
+        return implode(',', $aFields);
+    }
+
+    /**
+     * Returns table fields sql section for multiple language views
+     *
+     * @param string $sTable table name
+     *
+     * @return string
+     */
+    protected function _getViewSelectMultilang($sTable)
+    {
+        $aFields = array();
+
+        /** @var oxDbMetaDataHandler $oMetaData */
+        $oMetaData = oxNew('oxDbMetaDataHandler');
+        $aTables   = array_merge(array($sTable), $oMetaData->getAllMultiTables($sTable));
+        foreach ($aTables as $sTableKey => $sTableName) {
+            $aTableFields = $oMetaData->getFields($sTableName);
+            foreach ($aTableFields as $sCoreField => $sField) {
+                if (!isset($aFields[$sCoreField])) {
+                    $aFields[$sCoreField] = $sField;
+                }
             }
         }
 
@@ -320,13 +346,15 @@ class oxShop extends oxI18n
             $sLangAddition = $sLang === null ? $sDefaultLangAddition : "_{$sLang}";
 
             $sViewTable = "oxv_{$sTable}{$sLangAddition}";
-            $sFields = "{$sTable}.*";
+
             if ($sLang === null) {
-                $sJoin = $this->_getViewJoinAll($sTable); //simple
+                $sFields = $this->_getViewSelectMultilang($sTable);
+                $sJoin   = $this->_getViewJoinAll($sTable);
             } else {
-                $sFields = $this->_getViewSelect($sTable, $iLang); // lang
-                $sJoin = $this->_getViewJoinLang($sTable, $iLang); //lang
+                $sFields = $this->_getViewSelect($sTable, $iLang);
+                $sJoin   = $this->_getViewJoinLang($sTable, $iLang);
             }
+
             $sQuery = "{$sStart} `{$sViewTable}` AS SELECT {$sFields} FROM {$sTable}{$sJoin}";
             $this->addQuery($sQuery);
 

@@ -30,48 +30,33 @@ class Unit_Core_oxsimpleshoplistTest extends OxidTestCase
 {
 
     /**
+     * @var int expected shop count
+     */
+    protected $_iShopCount = 1;
+
+    /**
+     * @var string expected base shop id
+     */
+    protected $_sBaseShopId = 'oxbaseshop';
+
+    /**
      * Initialize the fixture.
      */
     protected function setUp()
     {
         parent::setUp();
 
-        $oDb = oxDb::getDb();
-
-        for ($i = 2; $i < 5; $i++) {
-                $this->addToDatabase("INSERT INTO `oxshops` (OXID, OXACTIVE, OXNAME) VALUES ($i, 1, 'Test Shop $i')", 'oxshops');
-        }
     }
 
     /**
      * Check that raw array retrieval has required fields
      */
-    public function testGetRawList()
+    public function testGetRawListCount()
     {
         $oShopList = new oxSimpleShopList();
 
         $aList = $oShopList->getRawList();
-        $this->assertEquals(4, count($aList));
-        $this->assertEquals('1', $aList[1]->oxshops__oxid->value);
-        $this->assertEquals('OXID eShop 5', $aList[1]->oxshops__oxname->value);
-        $this->assertEquals(array('oxshops__oxid', 'oxshops__oxname'), array_keys(get_object_vars($aList[2])));
-        $this->assertEquals('3', $aList[3]->oxshops__oxid->value);
-        $this->assertEquals('Test Shop 3', $aList[3]->oxshops__oxname->value);
+        $this->assertEquals($this->_iShopCount, count($aList));
     }
 
-    /**
-     * Check that raw array retrieval has required fields
-     */
-    public function testRawListWithWhere()
-    {
-        $oShopList = new oxSimpleShopList();
-
-        $aList = $oShopList->getRawList();
-        $this->assertEquals(4, count($aList));
-
-        oxDb::getDb()->execute("update oxshops set oxactive = 0 where oxid in (2,4)");
-
-        $aList = $oShopList->getRawList('where oxactive = 1');
-        $this->assertEquals(2, count($aList));
-    }
 }

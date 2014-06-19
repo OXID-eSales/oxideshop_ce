@@ -493,7 +493,6 @@ class Unit_Core_oxvoucherTest extends OxidTestCase
         try{
             $aErrors = $oNewVoucher->checkVoucherAvailability( $aVouchers, $dInitPrice );
         }catch (oxVoucherException $e) {
-            $this->markTestSkippedUntil('2014-06-20', 'Fixing units on Jenkins. Error message temporally changed.');
             $this->assertEquals('ERROR_MESSAGE_VOUCHER_NOVOUCHER', $e->getMessage());
             return ;
         }
@@ -860,7 +859,7 @@ class Unit_Core_oxvoucherTest extends OxidTestCase
         $oSerie = oxNew( 'oxvoucherserie' );
         $oSerie->load($this->_aSerieOxid[1]);
         $oSerie->oxvoucherseries__oxbegindate = new oxField( '0000-00-00 00:00:00', oxField::T_RAW );
-        $oSerie->oxvoucherseries__oxenddate = new oxField( time() + 3700, oxField::T_RAW );
+        $oSerie->oxvoucherseries__oxenddate = new oxField( date( 'Y-m-d H:i:s', time() + 3700 ), oxField::T_RAW );
         $oSerie->save();
 
         $sOXID = $this->_aVoucherOxid[$this->_aSerieOxid[1]][getRandLTAmnt()];
@@ -883,7 +882,7 @@ class Unit_Core_oxvoucherTest extends OxidTestCase
 
         $oSerie = oxNew( 'oxvoucherserie' );
         $oSerie->load($this->_aSerieOxid[1]);
-        $oSerie->oxvoucherseries__oxbegindate = new oxField( time() - 3700, oxField::T_RAW );
+        $oSerie->oxvoucherseries__oxbegindate = new oxField( date( 'Y-m-d H:i:s', time() - 3700 ), oxField::T_RAW );
         $oSerie->oxvoucherseries__oxenddate = new oxField( '0000-00-00 00:00:00', oxField::T_RAW );
         $oSerie->save();
 
@@ -893,8 +892,8 @@ class Unit_Core_oxvoucherTest extends OxidTestCase
     {
         $oSerie = oxNew( 'oxvoucherserie' );
         $oSerie->load($this->_aSerieOxid[1]);
-        $oSerie->oxvoucherseries__oxbegindate = new oxField( time() - 3700, oxField::T_RAW );
-        $oSerie->oxvoucherseries__oxenddate = new oxField( time() + 3700, oxField::T_RAW );
+        $oSerie->oxvoucherseries__oxbegindate = new oxField( date( 'Y-m-d H:i:s', time() - 3700 ), oxField::T_RAW );
+        $oSerie->oxvoucherseries__oxenddate = new oxField( date( 'Y-m-d H:i:s', time() + 3700 ), oxField::T_RAW );
         $oSerie->save();
 
         $sOXID = $this->_aVoucherOxid[$this->_aSerieOxid[1]][getRandLTAmnt()];

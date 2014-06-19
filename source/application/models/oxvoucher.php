@@ -332,6 +332,7 @@ class oxVoucher extends oxBase
     protected function _isValidDate()
     {
         $oSeries = $this->getSerie();
+        $iTime = time();
 
         // If date is not set will add day before and day after to check if voucher valid today.
         $iTomorrow = mktime( 0, 0, 0, date( "m" ), date( "d" )+1, date( "Y" ) );
@@ -345,14 +346,14 @@ class oxVoucher extends oxBase
         $iTo = ( (int)$oSeries->oxvoucherseries__oxenddate->value ) ?
                    strtotime( $oSeries->oxvoucherseries__oxenddate->value ) : $iTomorrow;
 
-        if ( $iFrom < time() && $iTo > time() ) {
+        if ( $iFrom < $iTime && $iTo > $iTime ) {
             return true;
         }
 
         $oEx = oxNew( 'oxVoucherException' );
         $oEx->setMessage('MESSAGE_COUPON_EXPIRED');
-        if ( $iFrom > time() && $iTo > time() ) {
-            $oEx->setMessage('ERROR_MESSAGE_VOUCHER_NOVOUCHER Time from:'. $iFrom .' Time to:'. $iTo .' Time: '. time() );
+        if ( $iFrom > $iTime && $iTo > $iTime ) {
+            $oEx->setMessage('ERROR_MESSAGE_VOUCHER_NOVOUCHER' );
         }
         $oEx->setVoucherNr( $this->oxvouchers__oxvouchernr->value );
         throw $oEx;

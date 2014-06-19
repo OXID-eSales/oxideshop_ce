@@ -859,7 +859,7 @@ class Unit_Core_oxvoucherTest extends OxidTestCase
         $oSerie = oxNew( 'oxvoucherserie' );
         $oSerie->load($this->_aSerieOxid[1]);
         $oSerie->oxvoucherseries__oxbegindate = new oxField( '0000-00-00 00:00:00', oxField::T_RAW );
-        $oSerie->oxvoucherseries__oxenddate = new oxField( time() + 360, oxField::T_RAW );
+        $oSerie->oxvoucherseries__oxenddate = new oxField( time() + 3700, oxField::T_RAW );
         $oSerie->save();
 
         $sOXID = $this->_aVoucherOxid[$this->_aSerieOxid[1]][getRandLTAmnt()];
@@ -882,7 +882,7 @@ class Unit_Core_oxvoucherTest extends OxidTestCase
 
         $oSerie = oxNew( 'oxvoucherserie' );
         $oSerie->load($this->_aSerieOxid[1]);
-        $oSerie->oxvoucherseries__oxbegindate = new oxField( time() - 360, oxField::T_RAW );
+        $oSerie->oxvoucherseries__oxbegindate = new oxField( time() - 3700, oxField::T_RAW );
         $oSerie->oxvoucherseries__oxenddate = new oxField( '0000-00-00 00:00:00', oxField::T_RAW );
         $oSerie->save();
 
@@ -892,8 +892,8 @@ class Unit_Core_oxvoucherTest extends OxidTestCase
     {
         $oSerie = oxNew( 'oxvoucherserie' );
         $oSerie->load($this->_aSerieOxid[1]);
-        $oSerie->oxvoucherseries__oxbegindate = new oxField( time() - 360, oxField::T_RAW );
-        $oSerie->oxvoucherseries__oxenddate = new oxField( time() + 360, oxField::T_RAW );
+        $oSerie->oxvoucherseries__oxbegindate = new oxField( time() - 3700, oxField::T_RAW );
+        $oSerie->oxvoucherseries__oxenddate = new oxField( time() + 3700, oxField::T_RAW );
         $oSerie->save();
 
         $sOXID = $this->_aVoucherOxid[$this->_aSerieOxid[1]][getRandLTAmnt()];

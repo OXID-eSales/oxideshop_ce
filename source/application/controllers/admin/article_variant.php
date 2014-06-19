@@ -169,8 +169,8 @@ class Article_Variant extends oxAdminDetails
     /**
      * Checks if anything is changed in given data compared with existing product values.
      *
-     * @param object $oProduct Product to be checked.
-     * @param array  $aData    Data provided for check.
+     * @param oxArticle $oProduct Product to be checked.
+     * @param array     $aData    Data provided for check.
      *
      * @return bool
      */
@@ -180,7 +180,7 @@ class Article_Variant extends oxAdminDetails
             return true;
         }
         foreach ($aData as $sKey => $sValue) {
-            if ($oProduct->$sKey->value != $aData[$sKey]) {
+            if (isset($oProduct->$sKey) && $oProduct->$sKey->value != $aData[$sKey]) {
                 return true;
             }
         }

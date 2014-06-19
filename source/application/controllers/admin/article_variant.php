@@ -115,37 +115,26 @@ class Article_Variant extends oxAdminDetails
      */
     public function savevariant($sOXID = null, $aParams = null)
     {
-        if ( !isset( $sOXID ) && !isset( $aParams ) ) {
-            $sOXID   = oxRegistry::getConfig()->getRequestParameter( "voxid" );
-            $aParams = oxRegistry::getConfig()->getRequestParameter( "editval" );
+        if (!isset($sOXID) && !isset($aParams)) {
+            $sOXID = oxRegistry::getConfig()->getRequestParameter("voxid");
+            $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
         }
 
             // shopid
-            $aParams['oxarticles__oxshopid'] = oxRegistry::getSession()->getVariable( "actshop" );
+            $aParams['oxarticles__oxshopid'] = oxRegistry::getSession()->getVariable("actshop");
 
         // varianthandling
         $soxparentId = $this->getEditObjectId();
-        if ( isset( $soxparentId) && $soxparentId && $soxparentId != "-1" ) {
+        if (isset($soxparentId) && $soxparentId && $soxparentId != "-1") {
             $aParams['oxarticles__oxparentid'] = $soxparentId;
         } else {
-            unset( $aParams['oxarticles__oxparentid'] );
+            unset($aParams['oxarticles__oxparentid']);
         }
         /** @var oxArticle $oArticle */
-        $oArticle = oxNew( "oxarticle");
+        $oArticle = oxNew("oxarticle");
 
-        /*
-        //TODO: solve this from lazy loading point of view
-        //acessing main fields for lazy loading mechnism to iniatialise them
-        $oArticle->oxarticles__oxvarselect->value;
-        $oArticle->oxarticles__oxartnum->value;
-        $oArticle->oxarticles__oxprice->value;
-        $oArticle->oxarticles__oxstock->value;
-        $oArticle->oxarticles__oxshopid->value;
-        $oArticle->oxarticles__oxshopincl->value;
-        $oArticle->oxarticles__oxshopexcl->value;*/
-
-        if ( $sOXID != "-1" ) {
-            $oArticle->loadInLang( $this->_iEditLang, $sOXID );
+        if ($sOXID != "-1") {
+            $oArticle->loadInLang($this->_iEditLang, $sOXID);
         }
 
         if (!$this->_isAnythingChanged($oArticle, $aParams)) {
@@ -153,24 +142,24 @@ class Article_Variant extends oxAdminDetails
         }
 
         // checkbox handling
-        if ( !isset( $aParams['oxarticles__oxactive'] ) ) {
+        if (!isset($aParams['oxarticles__oxactive'])) {
             $aParams['oxarticles__oxactive'] = 0;
         }
 
-        $oArticle->setLanguage( 0 );
-        $oArticle->assign( $aParams );
-        $oArticle->setLanguage( $this->_iEditLang );
+        $oArticle->setLanguage(0);
+        $oArticle->assign($aParams);
+        $oArticle->setLanguage($this->_iEditLang);
 
         // #0004473
         $oArticle->resetRemindStatus();
 
-        if ( $sOXID == "-1" ) {
-            if ( $oParent = $this->_getProductParent( $oArticle->oxarticles__oxparentid->value ) ) {
+        if ($sOXID == "-1") {
+            if ($oParent = $this->_getProductParent($oArticle->oxarticles__oxparentid->value)) {
 
                 // assign field from parent for new variant
                 // #4406
-                $oArticle->oxarticles__oxisconfigurable = new oxField( $oParent->oxarticles__oxisconfigurable->value );
-                $oArticle->oxarticles__oxremindactive = new oxField( $oParent->oxarticles__oxremindactive->value );
+                $oArticle->oxarticles__oxisconfigurable = new oxField($oParent->oxarticles__oxisconfigurable->value);
+                $oArticle->oxarticles__oxremindactive = new oxField($oParent->oxarticles__oxremindactive->value);
             }
         }
 

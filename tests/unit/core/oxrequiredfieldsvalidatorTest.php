@@ -44,7 +44,7 @@ class Unit_Core_oxRequiredFieldsValidatorTest extends OxidTestCase
      *
      * @return array
      */
-    public function providerValidateAddress()
+    public function providerValidateFields()
     {
         return array(
             array(array('field1' => 'value1', 'field2' => 'value2'), array(), true),
@@ -62,45 +62,60 @@ class Unit_Core_oxRequiredFieldsValidatorTest extends OxidTestCase
     }
 
     /**
-     * @param $aAddressFields
+     * @param $aFields
      * @param $aInvalidFields
-     * @dataProvider providerValidateAddress
+     * @dataProvider providerValidateFields
      */
-    public function testValidateAddressWhenRequiredFieldsExists($aAddressFields, $aInvalidFields, $blResult)
+    public function testValidateFieldsWhenRequiredFieldsExists($aFields, $aInvalidFields, $blResult)
     {
         $aRequiredFields = array('field1', 'field2');
 
         $oAddressValidator = new oxRequiredFieldsValidator();
         $oAddressValidator->setRequiredFields($aRequiredFields);
 
-        $this->assertSame($blResult, $oAddressValidator->validateFields($aAddressFields));
+        $this->assertSame($blResult, $oAddressValidator->validateFields($this->_createObject($aFields)));
     }
 
     /**
-     * @param $aAddressFields
-     * @dataProvider providerValidateAddress
+     * @param $aFields
+     * @dataProvider providerValidateFields
      */
-    public function testValidateAddressWithNoRequiredFields($aAddressFields)
+    public function testValidateFieldsWithNoRequiredFields($aFields)
     {
         $oAddressValidator = new oxRequiredFieldsValidator();
         $oAddressValidator->setRequiredFields(array());
 
-        $this->assertTrue($oAddressValidator->validateFields($aAddressFields));
+        $this->assertTrue($oAddressValidator->validateFields($this->_createObject($aFields)));
     }
 
     /**
-     * @param array $aAddressFields
+     * @param array $aFields
      * @param array $aInvalidFields
-     * @dataProvider providerValidateAddress
+     * @dataProvider providerValidateFields
      */
-    public function testGetInvalidFields($aAddressFields, $aInvalidFields)
+    public function testGetInvalidFields($aFields, $aInvalidFields)
     {
         $aRequiredFields = array('field1', 'field2');
 
         $oAddressValidator = new oxRequiredFieldsValidator();
         $oAddressValidator->setRequiredFields($aRequiredFields);
-        $oAddressValidator->validateFields($aAddressFields);
+        $oAddressValidator->validateFields($this->_createObject($aFields));
 
         $this->assertEquals($aInvalidFields, $oAddressValidator->getInvalidFields());
+    }
+
+    /**
+     * @param $aData
+     * @return oxBase
+     */
+    private function _createObject($aData)
+    {
+        $oObject = new oxBase();
+        foreach ($aData as $sKey => $sValue) {
+            $sKey = "__".$sKey;
+            $oObject->$sKey = new oxField($sValue);
+        }
+
+        return $oObject;
     }
 }

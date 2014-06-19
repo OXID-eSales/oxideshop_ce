@@ -1244,6 +1244,7 @@ class oxOrder extends oxBase
             $dArtStockAmount = $oBasket->getArtStockInBasket( $oProd->getId(), $key );
             $iOnStock = $oProd->checkForStock( $oContent->getAmount(), $dArtStockAmount );
             if ( $iOnStock !== true ) {
+                /** @var oxOutOfStockException $oEx */
                 $oEx = oxNew( 'oxOutOfStockException' );
                 $oEx->setMessage( 'ERROR_MESSAGE_OUTOFSTOCK_OUTOFSTOCK' );
                 $oEx->setArticleNr( $oProd->oxarticles__oxartnum->value );
@@ -1372,6 +1373,8 @@ class oxOrder extends oxBase
      * If no errors, finishing transaction.
      *
      * @param array $aNewArticles article list of new order
+     *
+     * @throws Exception
      *
      * @return null
      */
@@ -2055,12 +2058,12 @@ class oxOrder extends oxBase
         }
 
         if ( !$iValidState ) {
-            //0003110 validating delivewry address, it is not be changed during checkout process
+            //0003110 validating delivery address, it is not be changed during checkout process
             $iValidState = $this->validateDeliveryAddress( $oUser );
         }
 
         if ( !$iValidState ) {
-            // validatign minimum price
+            // validating minimum price
             $iValidState = $this->validateBasket( $oBasket );
         }
         return $iValidState;
@@ -2084,24 +2087,37 @@ class oxOrder extends oxBase
      *
      * @param oxUser $oUser user object
      *
-     * @return null
+     * @return int
      */
-    public function validateDeliveryAddress( $oUser )
+    public function validateDeliveryAddress($oUser)
     {
-        $sDelAddressMD5 =  oxConfig::getParameter( 'sDeliveryAddressMD5' );
+        $sDelAddressMD5 = $this->getConfig()->getRequestParameter('sDeliveryAddressMD5');
 
-        $sDelAddress = $oUser->getEncodedDeliveryAddress();
+        $sDeliveryAddress = $oUser->getEncodedDeliveryAddress();
 
-        // if delivery address is set, add it to delivery address check
-        if ( ( $oDelAdress = $this->getDelAddressInfo() ) ) {
-            $sDelAddress .= $oDelAdress->getEncodedDeliveryAddress();
+        /** @var oxRequiredAddressFields $oRequiredAddressFields */
+        $oRequiredAddressFields = oxNew('oxRequiredAddressFields');
+
+        /** @var oxRequiredFieldsValidator $oFieldsValidator */
+        $oFieldsValidator = oxNew('oxRequiredFieldsValidator');
+        $oFieldsValidator->setRequiredFields($oRequiredAddressFields->getBillingFields());
+        $blFieldsValid = $oFieldsValidator->validateFields($oUser);
+
+        /** @var oxAddress $oDeliveryAddress */
+        $oDeliveryAddress = $this->getDelAddressInfo();
+        if ($blFieldsValid && $oDeliveryAddress) {
+            $sDeliveryAddress .= $oDeliveryAddress->getEncodedDeliveryAddress();
+
+            $oFieldsValidator->setRequiredFields($oRequiredAddressFields->getDeliveryFields());
+            $blFieldsValid = $oFieldsValidator->validateFields($oDeliveryAddress);
         }
 
-        if ( $sDelAddressMD5 != $sDelAddress ) {
-            return self::ORDER_STATE_INVALIDDElADDRESSCHANGED;
+        $iState = 0;
+        if ($sDelAddressMD5 != $sDeliveryAddress || !$blFieldsValid) {
+            $iState = self::ORDER_STATE_INVALIDDElADDRESSCHANGED;
         }
 
-        return;
+        return $iState;
     }
 
 

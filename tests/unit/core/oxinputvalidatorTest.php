@@ -574,13 +574,12 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
      */
     public function testCheckRequiredFieldsAllFieldsAreFine()
     {
-
-        $aMustFillFields = array( 'oxuser__oxfname', 'oxuser__oxlname', 'oxuser__oxbirthdate' );
+        $aMustFillFields = array( 'oxuser__oxfname', 'oxuser__oxbirthdate', 'oxaddress__oxlname' );
 
         modConfig::getInstance()->setConfigParam( 'aMustFillFields', $aMustFillFields );
 
         $aInvAdress = array( 'oxuser__oxfname' => 'xxx', 'oxuser__oxbirthdate' => array( 'year' => '123' ) );
-        $aDelAdress = array( 'oxuser__oxlname' => 'yyy' );
+        $aDelAdress = array( 'oxaddress__oxlname' => 'yyy' );
 
         $oValidator = $this->getMock('oxinputvalidator', array('_addValidationError'));
         $oValidator->expects($this->never())->method('_addValidationError');

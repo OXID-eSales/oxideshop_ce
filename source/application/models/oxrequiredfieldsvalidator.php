@@ -109,28 +109,24 @@ class oxRequiredFieldsValidator
      * Checks if all required fields are filled.
      * Returns array of invalid fields or empty array if all fields are fine.
      *
-     * @param array $aFields Address fields with values.
+     * @param oxBase $oObject Address fields with values.
      *
      * @return bool If any invalid field exist.
      */
-    public function validateFields($aFields)
+    public function validateFields($oObject)
     {
-        $blResult = true;
-        $aFields = is_array($aFields) ? $aFields : array();
-
         $aRequiredFields = $this->getRequiredFields();
         $oFieldValidator = $this->getFieldValidator();
 
         $aInvalidFields = array();
         foreach ($aRequiredFields as $sFieldName) {
-            if (!isset($aFields[$sFieldName]) || !$oFieldValidator->validateFieldValue($aFields[$sFieldName])) {
+            if (!$oFieldValidator->validateFieldValue($oObject->getFieldData($sFieldName))) {
                 $aInvalidFields[] = $sFieldName;
-                $blResult = false;
             }
         }
         $this->_setInvalidFields($aInvalidFields);
 
-        return $blResult;
+        return empty($aInvalidFields);
     }
 
     /**

@@ -264,58 +264,55 @@ class oxInputValidator extends oxSuperCfg
      * exception is thrown
      *
      * @param oxUser $oUser       active user
-     * @param array  $aInvAddress billing address
-     * @param array  $aDelAddress delivery address
+     * @param array  $aBillingAddress billing address
+     * @param array  $aDeliveryAddress delivery address
      *
      * @return null
      */
-    public function checkRequiredFields( $oUser, $aInvAddress, $aDelAddress )
+    public function checkRequiredFields( $oUser, $aBillingAddress, $aDeliveryAddress )
     {
-        // collecting info about required fields
-        $aMustFields = array( 'oxuser__oxfname',
-                              'oxuser__oxlname',
-                              'oxuser__oxstreetnr',
-                              'oxuser__oxstreet',
-                              'oxuser__oxzip',
-                              'oxuser__oxcity' );
+        /** @var oxRequiredAddressFields $oRequiredAddressFields */
+        $oRequiredAddressFields = oxNew('oxRequiredAddressFields');
 
-        // config should override default fields
-        $aMustFillFields = $this->getConfig()->getConfigParam( 'aMustFillFields' );
-        if ( is_array( $aMustFillFields ) ) {
-            $aMustFields = $aMustFillFields;
+        /** @var oxRequiredFieldsValidator $oFieldsValidator */
+        $oFieldsValidator = oxNew('oxRequiredFieldsValidator');
+
+        /** @var oxUser $oUser */
+        $oUser = oxNew('oxUser');
+        $oBillingAddress = $this->_setFields($oUser, $aBillingAddress);
+        $oFieldsValidator->setRequiredFields($oRequiredAddressFields->getBillingFields());
+        $oFieldsValidator->validateFields($oBillingAddress);
+        $aInvalidFields = $oFieldsValidator->getInvalidFields();
+
+        if (!empty($aDeliveryAddress)) {
+            /** @var oxAddress $oDeliveryAddress */
+            $oDeliveryAddress = $this->_setFields(oxNew('oxAddress'), $aDeliveryAddress);
+            $oFieldsValidator->setRequiredFields($oRequiredAddressFields->getDeliveryFields());
+            $oFieldsValidator->validateFields($oDeliveryAddress);
+            $aInvalidFields = array_merge($aInvalidFields, $oFieldsValidator->getInvalidFields());
         }
 
-        // assuring data to check
-        $aInvAddress = is_array( $aInvAddress )?$aInvAddress:array();
-        $aDelAddress = is_array( $aDelAddress )?$aDelAddress:array();
+        foreach ( $aInvalidFields as $sField ) {
+           $oEx = oxNew( 'oxInputException' );
+           $oEx->setMessage(oxRegistry::getLang()->translateString('ERROR_MESSAGE_INPUT_NOTALLFIELDS'));
 
-        // collecting fields
-        $aFields = array_merge( $aInvAddress, $aDelAddress );
-
-
-        // check delivery address ?
-        $blCheckDel = false;
-        if ( count( $aDelAddress ) ) {
-            $blCheckDel = true;
+           $this->_addValidationError( $sField, $oEx );
         }
+    }
 
-        // checking
-        foreach ( $aMustFields as $sMustField ) {
-
-            // A. not nice, but we keep all fields info in one config array, and must support backward compatibility.
-            if ( !$blCheckDel && strpos( $sMustField, 'oxaddress__' ) === 0 ) {
-                continue;
-            }
-
-            if ( isset( $aFields[$sMustField] ) && is_array( $aFields[$sMustField] ) ) {
-                $this->checkRequiredArrayFields( $oUser, $sMustField, $aFields[$sMustField] );
-            } elseif ( !isset( $aFields[$sMustField] ) || !trim( $aFields[$sMustField] ) ) {
-                   $oEx = oxNew( 'oxInputException' );
-                   $oEx->setMessage(oxRegistry::getLang()->translateString('ERROR_MESSAGE_INPUT_NOTALLFIELDS'));
-
-                   $this->_addValidationError( $sMustField, $oEx );
-            }
+    /**
+     * Creates oxAddress object from given array.
+     *
+     * @param oxUser|oxAddress $oObject
+     * @param array $aFields
+     * @return oxUser|oxAddress
+     */
+    private function _setFields($oObject, $aFields)
+    {
+        foreach ($aFields as $sKey => $sValue) {
+            $oObject->$sKey = oxNew('oxField', $sValue);
         }
+        return $oObject;
     }
 
     /**
@@ -324,6 +321,8 @@ class oxInputValidator extends oxSuperCfg
      * @param oxUser $oUser        active user
      * @param string $sFieldName   checking field name
      * @param array  $aFieldValues field values
+     *
+     * @deprecated since v5.2 (2014-06-19); This logic was moved to oxRequiredFieldValidator and checkRequiredFields() method.
      *
      * @return null
      */

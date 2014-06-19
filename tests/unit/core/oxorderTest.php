@@ -309,7 +309,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
         $oOrder = $this->getMock( "oxorder", array( "getDelAddressInfo" ) );
         $oOrder->expects( $this->any() )->method( 'getDelAddressInfo')->will( $this->returnValue( $oDelAddress ) );
 
-        $this->assertNull( $oOrder->ValidateDeliveryAddress( $oUser ) );
+        $this->assertSame( 0, $oOrder->ValidateDeliveryAddress( $oUser ) );
     }
 
     public function testValidateDelivery()

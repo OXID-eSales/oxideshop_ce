@@ -88,7 +88,7 @@ class Navigation extends oxAdminView
             // open history node ?
             $this->_aViewData["blOpenHistory"] = oxRegistry::getConfig()->getRequestParameter( 'openHistory' );
         }
-
+        /** @var oxshoplist $oShoplist */
         $oShoplist = oxNew( 'oxshoplist' );
         $oBaseShop = $oShoplist->getBaseObject();
 
@@ -100,8 +100,8 @@ class Navigation extends oxAdminView
             $sWhere = "where ".$oBaseShop->getViewName().".oxid = '$sShopID'";
         }
 
-        $oShoplist->selectString("select ".$oBaseShop->getSelectFields()." from ".$oBaseShop->getViewName()." $sWhere");
-        $this->_aViewData['shoplist'] = $oShoplist;
+        $aShopList = $oShoplist->getRawList("select ".$oBaseShop->getSelectFields()." from ".$oBaseShop->getViewName()." $sWhere");
+        $this->_aViewData['shoplist'] = $aShopList;
 
         return $sItem;
     }

@@ -493,9 +493,9 @@ class oxDbMetaDataHandler extends oxSuperCfg
     }
 
     /**
-     * Updates shop views
+     * Updates all views
      *
-     * @param array $aTables If you need to update specific tables, just pass its names as array [optional]
+     * @param array $aTables array of DB table name that can store different data per shop like oxArticle
      *
      * @return bool
      */

@@ -140,7 +140,7 @@ class oxElement2ShopRelationsService
      *
      * @return null
      */
-    public function setObjectClassName( $sObjectClassName )
+    public function setObjectClassName($sObjectClassName)
     {
         $this->_sObjectClassName = $sObjectClassName;
     }
@@ -182,7 +182,7 @@ class oxElement2ShopRelationsService
      *
      * @return string
      */
-    public function setEditObjectId( $sEditObjectId )
+    public function setEditObjectId($sEditObjectId)
     {
         $this->_sEditObjectId = $sEditObjectId;
     }
@@ -202,7 +202,7 @@ class oxElement2ShopRelationsService
      *
      * @param string $sShopId item shop id
      */
-    public function setItemShopId( $sShopId )
+    public function setItemShopId($sShopId)
     {
         $this->_sItemShopId = $sShopId;
     }

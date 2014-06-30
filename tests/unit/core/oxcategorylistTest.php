@@ -825,42 +825,6 @@ class Unit_Core_oxCategoryListTest extends OxidTestCase
         }
     }
 
-
-    /**
-     * Test build list.
-     *
-     * @return null
-     */
-    public function testBuildList()
-    {
-        $this->_oList->setVar('sShopID', null);
-        $this->_oList->setVar('sActCat', null);
-        $this->_oList->setVar('blHideEmpty', false);
-        $this->_oList->setVar('blForceFull', true);
-        $this->_oList->setVar('iForceLevel', 0);
-
-        $this->_oList->buildList(true);
-
-        //Check depth info
-        $iDepth = 1;
-        foreach ($this->_aActPath as $sId) {
-            $sPrefixExp = ($iDepth>1)?str_repeat('*', $iDepth-1).' ':'';
-            $iPrefixCur = substr($this->_oList[$sId]->oxcategories__oxtitle->value, 0, strlen($sPrefixStr));
-            $this->assertEquals($sPrefixStr, $iPrefixCur);
-            $iDepth ++;
-        }
-    }
-
-    /**
-     * Test build list without category.
-     *
-     * @return null
-     */
-    public function testBuildListDoNotLoadCat()
-    {
-        $this->assertNull( $this->_oList->buildList(false) );
-    }
-
     /**
      * Test set shop id.
      *

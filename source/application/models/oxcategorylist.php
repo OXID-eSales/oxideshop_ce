@@ -377,25 +377,6 @@ class oxCategoryList extends oxList
         stopProfile('buildCategoryList');
     }
 
-
-    /**
-     * Fetches raw categories and does postprocessing for adding depth information
-     *
-     * @param bool $blLoad usually used with config option bl_perfLoadCatTree
-     *
-     * @deprecated since v4.7.5/5.0.5 (2013-03-27); use oxUBase::LoadList()
-     *
-     * @return null
-     */
-    public function buildList( $blLoad )
-    {
-        if (!$blLoad) {
-            return;
-        }
-
-        $this->loadList();
-    }
-
     /**
      * setter for shopID
      *

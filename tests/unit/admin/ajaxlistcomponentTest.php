@@ -319,7 +319,12 @@ class Unit_Admin_AjaxListComponentTest extends OxidTestCase
      */
     public function testGetFilter()
     {
-        modConfig::setParameter( 'aFilter', array( "_0" => "a", "_1" => "b", "_2" => "" ) );
+        modConfig::setParameter('aFilter', array(
+            "_0" => "a",
+            "_1" => "b",
+            "_2" => "",
+            "_3" => "0"
+        ));
 
         $aColNames = array(         // field , table,         visible, multilanguage, ident
                             array( 'oxartnum', 'oxarticles', 1, 0, 0 ),
@@ -331,7 +336,7 @@ class Unit_Admin_AjaxListComponentTest extends OxidTestCase
                             array( 'oxid',     'oxarticles', 0, 0, 1 )
                     );
         $sTableName = getViewName( "oxarticles" );
-        $sQ = "$sTableName.oxartnum like 'a%'  and $sTableName.oxtitle like 'b%' ";
+        $sQ = "$sTableName.oxartnum like 'a%'  and $sTableName.oxtitle like 'b%'  and $sTableName.oxmpn like '0%' ";
 
         $oConfig = $this->getMock( "oxConfig", array( "isUtf" ) );
         $oConfig->expects( $this->any() )->method( 'isUtf' )->will( $this->returnValue( false ) );

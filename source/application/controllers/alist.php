@@ -722,22 +722,6 @@ class aList extends oxUBase
     }
 
     /**
-     * Returns SQL sorting string with additional checking if category has its own sorting configuration
-     *
-     * @param string $sCnid sortable item id
-     *
-     * @deprecated since v4.7.3/5.0.3 (2013-01-07); duplicated code
-     *
-     * @return string
-     */
-    public function getSorting($sCnid)
-    {
-        $aSorting = parent::getSorting($sCnid);
-
-        return $aSorting;
-    }
-
-    /**
      * Returns default category sorting for selected category
      *
      * @return array

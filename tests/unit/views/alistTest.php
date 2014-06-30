@@ -524,50 +524,6 @@ class Unit_Views_alistTest extends OxidTestCase
     }
 
     /**
-     * Test get list sorting descending
-     *
-     * @return null
-     */
-//    public function testGetSortingDesc()
-//    {
-//        /*$oCat = new oxcategory();
-//        $oCat->oxcategories__oxdefsort = $this->getMock( 'oxfield', array( '__get' ) );
-//        $oCat->oxcategories__oxdefsort->expects( $this->exactly( 2 ) )->method( '__get')->will( $this->returnValue( 'testsort' ) );
-//        $oCat->oxcategories__oxdefsortmode = $this->getMock( 'oxfield', "" );
-//        $oCat->oxcategories__oxdefsortmode->expects( $this->once() )->method( '__get')->will( $this->returnValue( true ) );
-//
-//        $oListView = $this->getMock( 'alist', array( 'getActiveCategory' ) );
-//        $oListView->expects( $this->once() )->method( 'getActiveCategory')->will( $this->returnValue( $oCat ) );
-//        $sArticleTable = getViewName( 'oxarticles' );
-//        $this->assertEquals( array( 'sortby' => $sArticleTable.'.'.'testsort', 'sortdir' => "desc" ), $oListView->getSorting( '999' ) );*/
-//
-//
-//
-//
-//
-//
-//
-//    }
-
-    /**
-     * Test get list sorting ascending
-     *
-     * @return null
-     */
-//    public function testGetSortingAsc()
-//    {
-//        $oCat = new oxcategory();
-//        $oCat->oxcategories__oxdefsort = $this->getMock( 'oxfield', array( '__get' ) );
-//        $oCat->oxcategories__oxdefsort->expects( $this->exactly( 2 ) )->method( '__get')->will( $this->returnValue( 'testsort' ) );
-//        $oCat->oxcategories__oxdefsortmode = $this->getMock( 'oxfield', array( '__get' ) );
-//        $oCat->oxcategories__oxdefsortmode->expects( $this->once() )->method( '__get')->will( $this->returnValue( 0 ) );
-//
-//        $oListView = $this->getMock( 'alist', array( 'getActiveCategory' ) );
-//        $oListView->expects( $this->once() )->method( 'getActiveCategory')->will( $this->returnValue( $oCat ) );
-//        $sArticleTable = getViewName( 'oxarticles' );
-//        $this->assertEquals( array( 'sortby' => $sArticleTable.'.testsort', 'sortdir' => "asc" ), $oListView->getSorting( '999' ) );
-//    }
-    /**
      * Test list page navigation and seo url generation.
      *
      * @return null
@@ -670,7 +626,7 @@ class Unit_Views_alistTest extends OxidTestCase
     }
 
     /**
-     * Test prapare list meta description info.
+     * Test prepare list meta description info.
      *
      * @return null
      */
@@ -727,7 +683,7 @@ class Unit_Views_alistTest extends OxidTestCase
     }
 
     /**
-     * Test prapare list meta keyword info longer then 60 symbols.
+     * Test prepare list meta keyword info longer then 60 symbols.
      *
      * @return null
      */

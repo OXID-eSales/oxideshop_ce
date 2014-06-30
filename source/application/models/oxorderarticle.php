@@ -299,6 +299,11 @@ class oxOrderArticle extends oxBase implements oxIArticle
         return $this->oxarticles__oxparentid->value;
     }
 
+    public function getParentId()
+    {
+        return $this->getProductParentId();
+    }
+
     /**
      * Sets article parameters to current object, so this object can be used for basket calculation
      *

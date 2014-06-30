@@ -274,14 +274,6 @@ class oxUBase extends oxView
     protected $_sViewResetID = null;
 
     /**
-     * Display sorting in templates
-     * @var bool
-     *
-     * @deprecated in v4.7/5.0 on 2013-01-04; use _blShowSorting property
-     */
-    protected $_blActiveSorting = null;
-
-    /**
      * Menu list
      * @var array
      */
@@ -1216,18 +1208,6 @@ class oxUBase extends oxView
             }
         }
         return $this->_iViewIndexState;
-    }
-
-    /**
-     * Returns if sorting is active and can be displayed
-     *
-     * @return bool
-     *
-     * @deprecated in v4.7/5.0 on 2013-01-04; use oxUBase::showSorting()
-     */
-    public function isSortingActive()
-    {
-        return $this->_blActiveSorting;
     }
 
     /**

@@ -70,11 +70,53 @@ class Integration_RestrictedAddress_RestrictedAddressTest extends OxidTestCase
      */
     public function test_configCalled_notAccessed()
     {
-        $oConfig = $this->getConfig();
-        $sShopUrl = $oConfig->getShopMainUrl();
-        $sResult = $this->callPage($sShopUrl.'/config.inc.php');
+        $sShopUrl = $this->getConfig()->getShopMainUrl();
+        $sResult = $this->_getPageResult('/config.inc.php');
         $sLocation = "Location: ". $sShopUrl ."index.php\r\n";
         $this->assertContains( $sLocation, $sResult, 'User should be redirected to same URL without forbidden parameter.' );
+    }
+
+    public function providerForbiddenFilesAccessibility()
+    {
+        return array(
+            array('/log/EXCEPTION_LOG.txt'),
+            array('/log/anything'),
+            array('/application/views/azure/tpl/widget/rss.tpl'),
+            array('/pkg.info'),
+            array('/op.ini'),
+        );
+    }
+
+    /**
+     * @param string $sFilePath Path to forbidden file.
+     *
+     * @dataProvider providerForbiddenFilesAccessibility
+     */
+    public function testCheckForbiddenFilesAccessibility($sFilePath)
+    {
+        $sResultPage = $this->_getPageResult($sFilePath);
+
+        $this->assertContains('Forbidden', $sResultPage, 'User should see forbidden page message.' );
+    }
+
+    public function providerCheckAllowedFilesAccessibility()
+    {
+        return array(
+            array('/op.ini.php'),
+            array('/application/views/azure/tpl/widget/rss.tpl.whatever'),
+        );
+    }
+
+    /**
+     * @param string $sFilePath Path to allowable file.
+     *
+     * @dataProvider providerCheckAllowedFilesAccessibility
+     */
+    public function testCheckAllowedFilesAccessibility($sFilePath)
+    {
+        $sResultPage = $this->_getPageResult($sFilePath);
+
+        $this->assertNotContains('Forbidden', $sResultPage, "User shouldn't see forbidden page message." );
     }
 
     /**
@@ -85,9 +127,20 @@ class Integration_RestrictedAddress_RestrictedAddressTest extends OxidTestCase
     {
         $oCurl = new oxCurl();
         $oCurl->setOption('CURLOPT_HEADER', TRUE);
-
         $oCurl->setUrl($sShopUrl);
 
         return $oCurl->execute();
+    }
+
+    /**
+     * @param $sFilePath
+     * @return string
+     */
+    private function _getPageResult($sFilePath)
+    {
+        $sShopUrl = $this->getConfig()->getShopMainUrl();
+        $sResultPage = $this->callPage($sShopUrl . $sFilePath);
+
+        return $sResultPage;
     }
 }

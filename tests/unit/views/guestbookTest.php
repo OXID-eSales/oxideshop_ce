@@ -30,8 +30,6 @@ class Unit_Views_GuestbookTest extends OxidTestCase
 {
     private $_oObj = null;
 
-    private $_sObjTime = null;
-
     /**
      * Initialize the fixture.
      *
@@ -41,12 +39,12 @@ class Unit_Views_GuestbookTest extends OxidTestCase
     {
         parent::setUp();
 
-        $myConfig = modConfig::getInstance();
+        $oConfig = $this->getConfig();
         $this->_oObj = new oxGBEntry();
         $this->_oObj->oxgbentries__oxuserid = new oxField('oxdefaultadmin', oxField::T_RAW);
         $this->_oObj->oxgbentries__oxcontent = new oxField("test content\ntest content", oxField::T_RAW);
         $this->_oObj->oxgbentries__oxcreate = new oxField(null, oxField::T_RAW);
-        $this->_oObj->oxgbentries__oxshopid = new oxField($myConfig->getShopId(), oxField::T_RAW);
+        $this->_oObj->oxgbentries__oxshopid = new oxField($oConfig->getShopId(), oxField::T_RAW);
         $this->_oObj->save();
     }
 
@@ -80,28 +78,28 @@ class Unit_Views_GuestbookTest extends OxidTestCase
     }
 
     /**
-     * Test flood protection when allowed ammount is not exceded.
+     * Test flood protection when allowed amount is not exceeded.
      *
      * @return null
      */
     public function testFloodProtectionIfAllow()
     {
         $oObj = new GuestBook();
-        modConfig::getInstance()->setConfigParam( 'iMaxGBEntriesPerDay', 10 );
-        modSession::getInstance()->setVar( 'usr', 'oxdefaultadmin' );
+        $this->getConfig()->setConfigParam( 'iMaxGBEntriesPerDay', 10 );
+        $this->getSession()->setVar( 'usr', 'oxdefaultadmin' );
         $this->assertFalse( $oObj->floodProtection());
     }
 
     /**
-     * Test flood protection when allowed ammount is exceded.
+     * Test flood protection when allowed amount is exceeded.
      *
      * @return null
      */
     public function testFloodProtectionMaxReached()
     {
         $oObj = new GuestBook();
-        modConfig::getInstance()->setConfigParam( 'iMaxGBEntriesPerDay', 1 );
-        modSession::getInstance()->setVar( 'usr', 'oxdefaultadmin' );
+        $this->getConfig()->setConfigParam( 'iMaxGBEntriesPerDay', 1 );
+        $this->getSession()->setVar( 'usr', 'oxdefaultadmin' );
         $this->assertTrue( $oObj->floodProtection() );
     }
 
@@ -113,12 +111,12 @@ class Unit_Views_GuestbookTest extends OxidTestCase
     public function testFloodProtectionIfUserNotSet()
     {
         $oObj = new GuestBook();
-        modSession::getInstance()->setVar( 'usr', null );
+        $this->getSession()->setVar( 'usr', null );
         $this->assertTrue( $oObj->floodProtection() );
     }
 
     /**
-     * Test get guestbook entries.
+     * Test get guest book entries.
      *
      * @return null
      */
@@ -130,73 +128,6 @@ class Unit_Views_GuestbookTest extends OxidTestCase
         $this->assertEquals( "test content\ntest content", $oEntries->oxgbentries__oxcontent->value );
         $this->assertTrue( isset( $oEntries->oxuser__oxfname ) );
         $this->assertEquals( "John", $oEntries->oxuser__oxfname->value );
-    }
-
-    /**
-     * Test show sorting.
-     *
-     * @return null
-     */
-    public function testShowSorting()
-    {
-        $oObj = new GuestBook();
-        $oObj->prepareSortColumns();
-        $this->assertTrue( $oObj->showSorting() );
-    }
-
-    /**
-     * Test get sorting columns.
-     *
-     * @return null
-     */
-    public function testGetSortColumns()
-    {
-        $oObj = new GuestBook();
-        $oObj->prepareSortColumns();
-        $this->assertEquals( array( 'author', 'date' ), $oObj->getSortColumns() );
-    }
-
-    /**
-     * Test get sort column.
-     *
-     * @return null
-     */
-    public function testGetGbSortBy()
-    {
-        $oObj = new GuestBook();
-        $oObj->prepareSortColumns();
-        $this->assertEquals( 'date', $oObj->getGbSortBy() );
-    }
-
-    /**
-     * Test get sort direction.
-     *
-     * @return null
-     */
-    public function testGetGbSortDir()
-    {
-        $oObj = new GuestBook();
-        $oObj->prepareSortColumns();
-        $this->assertEquals( 'desc', $oObj->getGbSortDir() );
-    }
-
-    /**
-     * GuestBook::prepareSortColumns() test case
-     *
-     * @return null
-     */
-    public function testPrepareSortColumns()
-    {
-        modConfig::setParameter( 'gborderby', null );
-        modConfig::setParameter( 'gborder', null );
-
-        $aSorting = array( "sortby" => "by", "sortdir" => "dir" );
-
-        $oView = $this->getMock( "GuestBook", array( "setItemSorting", "getSorting" ) );
-        $oView->expects( $this->once() )->method( 'setItemSorting' )->with( $this->equalTo( "oxgb" ), $this->equalTo( "by" ), $this->equalTo( "dir" ) );
-        $oView->expects( $this->once() )->method( 'getSorting' )->will( $this->returnValue( $aSorting ) );
-        $oView->prepareSortColumns();
-
     }
 
     /**
@@ -224,11 +155,11 @@ class Unit_Views_GuestbookTest extends OxidTestCase
     }
 
     /**
-     * Guestbook::render() test case - login screen.
+     * GuestBook::render() test case - login screen.
      *
      * @return null
      */
-    public function testRender_loginscreen()
+    public function testRender_loginScreen()
     {
         $oView = $this->getMock( $this->getProxyClassName( 'Guestbook' ), array( 'getEntries' ) );
         $oView->expects( $this->never() )->method( 'getEntries' );
@@ -239,8 +170,8 @@ class Unit_Views_GuestbookTest extends OxidTestCase
 
     public function testSaveEntry_nouser()
     {
-        modSession::getInstance()->setVar( 'usr', null );
-        modConfig::setParameter( 'rvw_txt', '' );
+        $this->getSession()->setVar( 'usr', null );
+        $this->getConfig()->setParameter( 'rvw_txt', '' );
 
         $oConfig = $this->getMock( 'oxConfig', array( 'getShopId' ) );
         $oConfig->expects( $this->atLeastOnce() )->method( 'getShopId' )->will( $this->returnValue( '1' ) );
@@ -258,8 +189,8 @@ class Unit_Views_GuestbookTest extends OxidTestCase
 
     public function testSaveEntry_noshop()
     {
-        modSession::getInstance()->setVar( 'usr', 'some_userid' );
-        modConfig::setParameter( 'rvw_txt', '' );
+        $this->getSession()->setVar( 'usr', 'some_userid' );
+        $this->getConfig()->setParameter( 'rvw_txt', '' );
 
         $oConfig = $this->getMock( 'oxConfig', array( 'getShopId' ) );
         $oConfig->expects( $this->atLeastOnce() )->method( 'getShopId' )->will( $this->returnValue( null ) );
@@ -275,10 +206,10 @@ class Unit_Views_GuestbookTest extends OxidTestCase
         $this->assertSame( 'guestbookentry', $oView->saveEntry() );
     }
 
-    public function testSaveEntry_noreview()
+    public function testSaveEntry_noReview()
     {
-        modSession::getInstance()->setVar( 'usr', 'some_userid' );
-        modConfig::setParameter( 'rvw_txt', '' );
+        $this->getSession()->setVar( 'usr', 'some_userid' );
+        $this->getConfig()->setParameter( 'rvw_txt', '' );
 
         $oConfig = $this->getMock( 'oxConfig', array( 'getShopId' ) );
         $oConfig->expects( $this->atLeastOnce() )->method( 'getShopId' )->will( $this->returnValue( '1' ) );
@@ -294,10 +225,10 @@ class Unit_Views_GuestbookTest extends OxidTestCase
         $this->assertSame( 'guestbook', $oView->saveEntry() );
     }
 
-    public function testSaveEntry_floodfailed()
+    public function testSaveEntry_floodFailed()
     {
-        modSession::getInstance()->setVar( 'usr', 'some_userid' );
-        modConfig::setParameter( 'rvw_txt', 'some review' );
+        $this->getSession()->setVar( 'usr', 'some_userid' );
+        $this->getConfig()->setParameter( 'rvw_txt', 'some review' );
 
         $oConfig = $this->getMock( 'oxConfig', array( 'getShopId' ) );
         $oConfig->expects( $this->atLeastOnce() )->method( 'getShopId' )->will( $this->returnValue( '1' ) );
@@ -313,10 +244,10 @@ class Unit_Views_GuestbookTest extends OxidTestCase
         $this->assertSame( 'guestbookentry', $oView->saveEntry() );
     }
 
-    public function testSaveEntry_savecall()
+    public function testSaveEntry_saveCall()
     {
-        modSession::getInstance()->setVar( 'usr', 'some_userid' );
-        modConfig::setParameter( 'rvw_txt', 'some review' );
+        $this->getSession()->setVar( 'usr', 'some_userid' );
+        $this->getConfig()->setParameter( 'rvw_txt', 'some review' );
 
         $oConfig = $this->getMock( 'oxConfig', array( 'getShopId' ) );
         $oConfig->expects( $this->atLeastOnce() )->method( 'getShopId' )->will( $this->returnValue( '1' ) );
@@ -334,8 +265,8 @@ class Unit_Views_GuestbookTest extends OxidTestCase
 
     public function testSaveEntry_nosavecall()
     {
-        modSession::getInstance()->setVar( 'usr', 'some_userid' );
-        modConfig::setParameter( 'rvw_txt', 'some review' );
+        $this->getSession()->setVar( 'usr', 'some_userid' );
+        $this->getConfig()->setParameter( 'rvw_txt', 'some review' );
 
         $oConfig = $this->getMock( 'oxConfig', array( 'getShopId' ) );
         $oConfig->expects( $this->atLeastOnce() )->method( 'getShopId' )->will( $this->returnValue( '1' ) );

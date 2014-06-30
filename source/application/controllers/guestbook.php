@@ -238,52 +238,6 @@ class GuestBook extends oxUBase
     }
 
     /**
-     * Retrieves from session or gets new sorting parameters for
-     * guestbook entries. Sets new sorting parameters
-     * (reverse or new column sort) to session.
-     *
-     * Template variables:
-     * <b>gborderby</b>, <b>gborder</b>, <b>allsortcolumns</b>
-     *
-     * Session variables:
-     * <b>gborderby</b>, <b>gborder</b>
-     *
-     * @deprecated since v4.7.3/5.0.3 (2013-01-07); use getSorting();
-     *
-     * @return  void
-     */
-    public function prepareSortColumns()
-    {
-        $oUtils = oxRegistry::getUtils();
-
-        $this->_aSortColumns  = array( 'author', 'date' );
-
-        $sSortBy  = oxConfig::getParameter( $this->getSortOrderByParameterName() );
-        $sSortDir = oxConfig::getParameter( $this->getSortOrderParameterName() );
-
-        if ( !$sSortBy && $aSorting = $this->getSorting( 'oxgb' ) ) {
-            $sSortBy  = $aSorting['sortby'];
-            $sSortDir = $aSorting['sortdir'];
-        }
-
-        // finally setting defaults
-        if ( !$sSortBy ) {
-            $sSortBy  = 'date';
-            $sSortDir = 'desc';
-        }
-
-        if ( $sSortBy && oxDb::getInstance()->isValidFieldName( $sSortBy ) &&
-             $sSortDir && oxRegistry::getUtils()->isValidAlpha( $sSortDir ) ) {
-
-            $this->_sListOrderBy  = $sSortBy;
-            $this->_sListOrderDir = $sSortDir;
-
-            // caching sorting config
-            $this->setItemSorting( 'oxgb', $sSortBy, $sSortDir );
-        }
-    }
-
-    /**
      * Template variable getter. Returns page navigation
      *
      * @return object

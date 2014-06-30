@@ -212,21 +212,6 @@ class Unit_utf8Test extends OxidTestCase
         $this->assertEquals( $sResult, $oArticle->getLongDesc() );
     }
 
-    public function testOxArticleSetAndGetTags()
-    {
-        $sValue  = 'nekilnojamojo turto agentūrų verslo sėkme Литовские европарламентарии, срок полномочий которых в 2009 году подходит к концу Der Umstieg war für uns ein voller erfolg. OXID eShop ist flexibel und benutzerfreundlich';
-        $sResult = 'nekilnojamojo turto agentūrų verslo sėkme литовские европарл,срок полномочий которых в 2009 году подходит к концу der ums,sėkme литовские für';
-
-        $oArticle = new oxarticle();
-        $oArticle->setId( '_testArticle' );
-        $oArticle->setArticleLongDesc( $sValue );
-        $oArticle->save();
-
-        $oArticle->saveTags( $sValue );
-        $oArticle->addTag( 'sėkme Литовские für' );
-        //$this->assertEquals( $sResult, $oArticle->getTags() );
-    }
-
     public function testOxArticleGetPersParam()
     {
         $aPersParam = array ( '_testArticle' => 'sėkme Литовские für' );
@@ -404,63 +389,9 @@ class Unit_utf8Test extends OxidTestCase
         $this->assertEquals( array( '_testArticle2', '_testArticle1', '_testArticle3' ), $aKeys );
     }
 
-    public function testOxArticleListLoadTagArticles()
-    {
-        $oArticle = new oxarticle();
-        $oArticle->setId( '_testArticle1' );
-        $oArticle->save();
-        $oArticle->saveTags( 'Литовские европарламентарии, срок полномочий которых в 2009 году подходит к концу' );
 
-        $oArticle = new oxarticle();
-        $oArticle->setId( '_testArticle2' );
-        $oArticle->save();
-        $oArticle->saveTags( 'nekilnojamojo turto agentūrų verslo sėkme' );
 
-        $oArticle = new oxarticle();
-        $oArticle->setId( '_testArticle3' );
-        $oArticle->save();
-        $oArticle->saveTags( 'Der Umstieg war fürrrrr uns ein voller Erfolg. OXID eShop ist flexibel und benutzerfreundlich' );
 
-        $oArtList = new oxArticleList();
-
-        $this->assertEquals( 1, $oArtList->loadTagArticles( 'agentūrų', $oArticle->getLanguage() ) );
-        $this->assertTrue( in_array( '_testArticle2', $oArtList->arrayKeys() ) );
-
-        $this->assertEquals( 1, $oArtList->loadTagArticles( 'Литовские', $oArticle->getLanguage() ) );
-        $this->assertTrue( in_array( '_testArticle1', $oArtList->arrayKeys() ) );
-
-        $this->assertEquals( 1, $oArtList->loadTagArticles( 'fürrrrr', $oArticle->getLanguage() ) );
-        $this->assertTrue( in_array( '_testArticle3', $oArtList->arrayKeys() ) );
-    }
-
-    public function testOxArticleListGetTagArticleIds()
-    {
-        $oArticle = new oxarticle();
-        $oArticle->setId( '_testArticle1' );
-        $oArticle->save();
-        $oArticle->saveTags( 'Литовские европарламентарии, срок полномочий которых в 2009 году подходит к концу' );
-
-        $oArticle = new oxarticle();
-        $oArticle->setId( '_testArticle2' );
-        $oArticle->save();
-        $oArticle->saveTags( 'nekilnojamojo turto agentūrų verslo sėkme' );
-
-        $oArticle = new oxarticle();
-        $oArticle->setId( '_testArticle3' );
-        $oArticle->save();
-        $oArticle->saveTags( 'Der Umstieg war fürrrrr uns ein voller Erfolg. OXID eShop ist flexibel und benutzerfreundlich' );
-
-        $oArtList = new oxArticleList();
-
-        $oArtList->getTagArticleIds( 'agentūrų', $oArticle->getLanguage() );
-        $this->assertTrue( in_array( '_testArticle2', $oArtList->arrayKeys() ) );
-
-        $oArtList->getTagArticleIds( 'Литовские', $oArticle->getLanguage() );
-        $this->assertTrue( in_array( '_testArticle1', $oArtList->arrayKeys() ) );
-
-        $oArtList->getTagArticleIds( 'fürrrrr', $oArticle->getLanguage() );
-        $this->assertTrue( in_array( '_testArticle3', $oArtList->arrayKeys() ) );
-    }
 
     public function testOxAttributeSaveAndLoad()
     {
@@ -1382,44 +1313,6 @@ class Unit_utf8Test extends OxidTestCase
         }
     }
 
-    public function testOxTagCloudPrepareTags()
-    {
-        $sTagsToProcess = "ag,en,tū,Ли,то,вfür";
-        $sTagsToReturn = "ag__,en__,tū__,ли__,то__,вfür";
-
-        $oTagCloud = new oxTagCloud();
-        $this->assertEquals( $sTagsToReturn, $oTagCloud->prepareTags( $sTagsToProcess ) );
-    }
-
-    public function testOxTagCloudTrimTags()
-    {
-        $sTagsToProcess = "ag__,en__,tū__,ли__,то__,вfür";
-        $sTagsToReturn = "ag,en,tū,ли,то,вfür";
-
-        $oTagCloud = new oxTagCloud();
-        $this->assertEquals( $sTagsToReturn, $oTagCloud->trimTags( $sTagsToProcess ) );
-    }
-
-    public function testOxArticleTagListGet()
-    {
-        $oTestArticle = new oxarticle();
-        $oTestArticle->setId( '_testArticle' );
-        $oTestArticle->oxarticles__oxactive = new oxField( 1 );
-        $oTestArticle->save();
-        $oTestArticle->saveTags('ändern,andern,ondern');
-        $oArticleTagList = new oxArticleTagList();
-        $oArticleTagList->load('_testArticle');
-        $oTagSet = $oArticleTagList->get();
-        $aTags = $oTagSet->get();
-
-        $aTestTags = array(
-            'andern' => new oxTag('andern'),
-            'ändern' => new oxTag('ändern'),
-            'ondern' => new oxTag('ondern'),
-        );
-        $this->assertEquals( 3, count( $aTags ) );
-        $this->assertEquals( $aTestTags, $aTags);
-    }
 
     public function testOxUserSaveAndLoad()
     {
@@ -1867,25 +1760,8 @@ class Unit_utf8Test extends OxidTestCase
         $this->assertEquals( 'agentūлитовfür, test, best, nest, fest', $oView->getMetaKeywords() );
     }
 
-    public function testDetailsAddTags()
-    {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxConfig::getInstance()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
-        $sValue = 'agentūЛитовfür';
-
-        modConfig::getInstance()->setParameter('newTags', '' );
-        modConfig::getInstance()->setParameter('highTags', $sValue );
-        $oArt = new oxArticle();
-        $oArt->setId("_testArt");
-        $oArt->save();
-
-        $oView = $this->getMock( 'details', array( 'getProduct' ) );
-        $oView->expects( $this->any() )->method( 'getProduct' )->will( $this->returnValue( $oArt ) );
-        $oView->addTags();
-        $this->assertEquals( array('agentūлитовfür' => new oxTag('agentūлитовfür') ), $oView->getTagCloudManager()->getCloudArray("_testArt") );
-    }
-
     /*
-     * Test prepearing meta description - removing spec. chars
+     * Test preparing meta description - removing spec. chars
      */
     public function testuBasePrepareMetaDescriptionRemovesSpecChars()
     {

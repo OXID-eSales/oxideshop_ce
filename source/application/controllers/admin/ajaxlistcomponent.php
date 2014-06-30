@@ -388,7 +388,6 @@ class ajaxListComponent extends oxSuperCfg
         $aFilter = $oConfig->getRequestParameter( 'aFilter' );
         if ( is_array( $aFilter ) && count( $aFilter ) ) {
             $aCols = $this->_getVisibleColNames();
-            $blSep = false;
             $oDb = oxDb::getDb();
             $oLang = oxRegistry::getLang();
             $oStr = getStr();

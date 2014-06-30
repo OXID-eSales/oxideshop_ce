@@ -1016,50 +1016,6 @@ class oxUBase extends oxView
     }
 
     /**
-     * Retrieves from session or gets new sorting parameters for
-     * search and category lists. Sets new sorting parameters
-     * (reverse or new column sort) to session.
-     *
-     * Session variables:
-     * <b>listorderby</b>, <b>listorder</b>
-     *
-     * @deprecated since v4.7.3/5.0.3 (2013-01-07); use getSorting();
-     *
-     * @return null
-     */
-    public function prepareSortColumns()
-    {
-        $aSortColumns = $this->getConfig()->getConfigParam( 'aSortCols' );
-        $aSortDir = array( 'desc', 'asc' );
-        if ( count( $aSortColumns ) > 0 ) {
-
-            $this->_aSortColumns = $aSortColumns;
-
-            $sCnId = oxRegistry::getConfig()->getRequestParameter( 'cnid' );
-
-
-            $sSortBy  = oxRegistry::getConfig()->getRequestParameter( $this->getSortOrderByParameterName() );
-            $sSortDir = oxRegistry::getConfig()->getRequestParameter( $this->getSortOrderParameterName() );
-
-            $oStr = getStr();
-            if ( (!$sSortBy || !in_array( $oStr->strtolower($sSortBy), $aSortColumns) || !in_array( $oStr->strtolower($sSortDir), $aSortDir) ) && $aSorting = $this->getSorting( $sCnId ) ) {
-                $sSortBy  = $aSorting['sortby'];
-                $sSortDir = $aSorting['sortdir'];
-            }
-
-            if ( $sSortBy && oxDb::getInstance()->isValidFieldName( $sSortBy ) &&
-                 $sSortDir && oxRegistry::getUtils()->isValidAlpha( $sSortDir ) ) {
-
-                $this->_sListOrderBy  = $sSortBy;
-                $this->_sListOrderDir = $sSortDir;
-
-                // caching sorting config
-                $this->setItemSorting( $sCnId, $sSortBy, $sSortDir );
-            }
-        }
-    }
-
-    /**
      * Template variable getter. Returns string after the list is ordered by
      *
      * @return array

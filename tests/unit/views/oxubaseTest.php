@@ -478,23 +478,6 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
     }
 
     /*
-     * Test how prepareSortColumns() sets session and view data
-     */
-    public function testPrepareSortColumnsSettingViewAndSessionData()
-    {
-        $this->setRequestParam( 'cnid', 'xxx' );
-        $this->setConfigParam( 'aSortCols', array('oxid', 'oxprice') );
-
-        $oView = new  oxubase();
-        $oView->setItemSorting( 'xxx', 'oxid', 'asc' );
-        $oView->prepareSortColumns();
-
-        //checking view data
-        $this->assertEquals( array('oxid', 'oxprice'), $oView->getSortColumns() );
-        $this->assertEquals( 'oxid asc', $oView->getSortingSql( 'xxx' ) );
-    }
-
-    /*
      * Test _setNrOfArtPerPage()
      */
     public function testSetNrOfArtPerPage()
@@ -1228,32 +1211,6 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
         $oView->addRssFeed('testTitle', 'testUrl', 'test');
         $aRssLinks['test'] = array('title'=>'testTitle', 'link' => 'testUrl');
         $this->assertEquals( $aRssLinks, $oView->getRssLinks() );
-    }
-
-    public function testIsSortingActive()
-    {
-        $oView = new oxUbase();
-        $oView->prepareSortColumns();
-        $this->assertNull( $oView->isSortingActive() );
-    }
-
-    public function testGetSortColumns()
-    {
-        $oView = new oxUbase();
-        $oView->prepareSortColumns();
-        $this->assertEquals( modConfig::getInstance()->getConfigParam( 'aSortCols' ), $oView->getSortColumns() );
-    }
-
-    public function testGetListOrderByAndListOrderDirection()
-    {
-        $oView = new oxUbase();
-        $this->setRequestParam( 'cnid', 'xxx' );
-        $this->setConfigParam( 'aSortCols', array('oxid', 'oxprice') );
-
-        $oView->setItemSorting( 'xxx', 'oxid', 'asc' );
-        $oView->prepareSortColumns();
-        $this->assertEquals( 'oxid', $oView->getListOrderBy() );
-        $this->assertEquals( 'asc', $oView->getListOrderDirection() );
     }
 
     public function testGetSetMenueList()

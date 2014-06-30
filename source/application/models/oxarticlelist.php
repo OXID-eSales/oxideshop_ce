@@ -322,23 +322,6 @@ class oxArticleList extends oxList
         $this->selectString( $sSelect );
     }
 
-
-    /**
-     * Loads shop AktionArticles.
-     *
-     * @param string $sActionID Action id
-     * @param int    $iLimit    Select limit
-     *
-     * @deprecated since v5.0.1 (2012-11-15); use oxArticleList::loadActionArticles()
-     *
-     * @return null
-     */
-    public function loadAktionArticles( $sActionID, $iLimit = null )
-    {
-        $this->loadActionArticles( $sActionID, $iLimit = null );
-
-    }
-
     /**
      * Loads article cross selling
      *

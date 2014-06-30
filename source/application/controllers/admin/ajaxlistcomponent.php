@@ -384,7 +384,8 @@ class ajaxListComponent extends oxSuperCfg
     protected function _getFilter()
     {
         $sQ = '';
-        $aFilter = oxConfig::getParameter( 'aFilter' );
+        $oConfig = $this->getConfig();
+        $aFilter = $oConfig->getRequestParameter( 'aFilter' );
         if ( is_array( $aFilter ) && count( $aFilter ) ) {
             $aCols = $this->_getVisibleColNames();
             $blSep = false;
@@ -392,7 +393,7 @@ class ajaxListComponent extends oxSuperCfg
             $oLang = oxRegistry::getLang();
             $oStr = getStr();
 
-            $blIsUtf  = $this->getConfig()->isUtf();
+            $blIsUtf  = $oConfig->isUtf();
             $sCharset = $oLang->translateString( "charset" );
 
             foreach ( $aFilter as $sCol => $sValue ) {

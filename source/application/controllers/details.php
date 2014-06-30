@@ -1420,7 +1420,7 @@ class Details extends oxUBase
     {
         $oManager = oxNew( "oxTagCloud" );
         $oManager->setExtendedMode( true );
-        $oManager->setProductId( $this->getProduct()->getId() );
+        //$oManager->setProductId( $this->getProduct()->getId() );
         return $oManager;
     }
 

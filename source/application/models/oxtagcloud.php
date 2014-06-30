@@ -29,7 +29,7 @@ if (!defined('OXTAGCLOUD_MINFONT')) {
 }
 
 /**
- * Class dedicateg to tag cloud handling
+ * Class dedicated to tag cloud handling
  *
  */
 class oxTagCloud extends oxSuperCfg
@@ -155,7 +155,7 @@ class oxTagCloud extends oxSuperCfg
      */
     public function formCloudArray( oxITagList $oTagList )
     {
-        // checking if current data is allready loaded
+        // checking if current data is already loaded
         if ( $oTagList->getCacheId() ) {
             $sCacheIdent = $this->_formCacheKey( $oTagList->getCacheId() );
             $myUtils = oxRegistry::getUtils();

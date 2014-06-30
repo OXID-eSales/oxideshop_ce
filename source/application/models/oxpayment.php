@@ -289,21 +289,6 @@ class oxPayment extends oxI18n
      *
      * @param oxUserBasket $oBasket session basket
      *
-     * @deprecated since v5.0.0 (2011-09-27); use calculatePrice() method
-     *
-     * @return oxPrice
-     */
-    public function getPaymentPrice( $oBasket )
-    {
-        $this->calculate( $oBasket );
-    }
-
-
-    /**
-     * Returns price object for current payment applied on basket
-     *
-     * @param oxUserBasket $oBasket session basket
-     *
      * @return null
      */
     public function calculate( $oBasket )

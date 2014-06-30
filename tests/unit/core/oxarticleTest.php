@@ -3454,30 +3454,6 @@ class Unit_Core_oxArticleTest extends OxidTestCase
     }
 
     /**
-     * Test apply discounts.
-     *
-     * @return null
-     */
-    public function testApplyDiscounts()
-    {
-        //$oDiscount = $this->getMock( 'oxdiscount', array( 'getAbsValue') );
-        //$oDiscount->expects( $this->any() )->method( 'getAbsValue')->will( $this->returnValue( 13 ) );
-
-        $oDiscount = new oxdiscount();
-        $oDiscount->oxdiscount__oxaddsumtype = new oxField('abs', oxField::T_RAW);
-        $oDiscount->oxdiscount__oxaddsum = new oxField(13, oxField::T_RAW);
-
-        $aDiscounts = array($oDiscount);
-        $oPrice = oxNew( 'oxPrice' );
-        $oPrice->setPrice(123);
-
-        $oDiscountList = new oxDiscountList();
-        $oDiscountList->applyDiscounts( $oPrice, $aDiscounts );
-
-        $this->assertEquals( 110, $oPrice->getBruttoPrice());
-    }
-
-    /**
      * Test apply discounts for variant.
      *
      * @return null

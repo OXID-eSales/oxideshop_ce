@@ -1660,13 +1660,6 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
         $this->assertEquals( 'root', $oView->getVendorId() );
     }
 
-    public function testGetSetSearchCatTree()
-    {
-        $oView = new oxUBase();
-        $oView->setSearchCatTree( 'testcattree' );
-        $this->assertEquals( 'testcattree', $oView->getSearchCatTree() );
-    }
-
 
 
 

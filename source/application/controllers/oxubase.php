@@ -401,15 +401,6 @@ class oxUBase extends oxView
     protected $_sManufacturerId = null;
 
     /**
-     * Category tree for search
-     *
-     * @deprecated in v4.7.5/5.0,5 on 2013-03-27; not used in code, not needed
-     *
-     * @var array
-     */
-    protected $_aSearchCatTree = null;
-
-    /**
      * Has user news subscribed
      * @var bool
      */
@@ -2623,32 +2614,6 @@ class oxUBase extends oxView
             }
         }
         return $this->_sManufacturerId;
-    }
-
-    /**
-     * Template variable getter. Returns category tree for search
-     *
-     *  @deprecated in v4.7.5/5.0,5 on 2013-03-27; not used in code, not needed
-     *
-     * @return array
-     */
-    public function getSearchCatTree()
-    {
-        return $this->_aSearchCatTree;
-    }
-
-    /**
-     * Sets category tree for search
-     *
-     * @param array $aTree category tree
-     *
-     * @deprecated in v4.7.5/5.0,5 on 2013-03-27; not used in code, not needed
-     *
-     * @return null
-     */
-    public function setSearchCatTree( $aTree )
-    {
-        $this->_aSearchCatTree = $aTree;
     }
 
     /**

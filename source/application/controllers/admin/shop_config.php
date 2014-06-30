@@ -180,25 +180,6 @@ class Shop_Config extends oxAdminDetails
      * @param string $sShopId Shop id
      * @param string $sModule module to load (empty string is for base values)
      *
-     * @deprecated since v5.0.0 (2012-10-19); Use public loadConfVars().
-     *
-     * @return array
-     */
-    public function _loadConfVars($sShopId, $sModule)
-    {
-        return $this->loadConfVars($sShopId, $sModule);
-    }
-
-    /**
-     * Load and parse config vars from db.
-     * Return value is a map:
-     *      'vars'        => config variable values as array[type][name] = value
-     *      'constraints' => constraints list as array[name] = constraint
-     *      'grouping'    => grouping info as array[name] = grouping
-     *
-     * @param string $sShopId Shop id
-     * @param string $sModule module to load (empty string is for base values)
-     *
      * @return array
      */
     public function loadConfVars($sShopId, $sModule)

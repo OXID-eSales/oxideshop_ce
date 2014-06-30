@@ -54,7 +54,7 @@ class Tags extends oxUBase
      */
     public function getTagCloudManager()
     {
-        $oTagList = oxNew( "oxtaglist" );
+        $oTagList = oxNew( "oxTagList" );
         $oTagCloud = oxNew( "oxTagCloud" );
         $oTagCloud->setTagList($oTagList);
         $oTagCloud->setExtendedMode( true );

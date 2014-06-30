@@ -51,7 +51,7 @@ class oxwTagCloud extends oxWidget
      */
     public function getTagCloudManager()
     {
-        $oTagList = oxNew("oxtaglist");
+        $oTagList = oxNew("oxTagList");
         $oTagCloud = oxNew("oxTagCloud");
         $oTagCloud->setTagList($oTagList);
 

@@ -170,14 +170,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     protected $_blLoadPrice = true;
 
     /**
-     * If $_blSkipAbPrice is set to true, then "From price" is not calculated for this object.
-     *
-     * @deprecated since v4.7.0-5.0.0 (2012-10-08); use getFVarMinPrice or getFMinPrice methods
-     *
-     */
-    protected $_blSkipAbPrice = false;
-
-    /**
      * $_fPricePerUnit holds price per unit value in active shop currency.
      * $_fPricePerUnit is calculated from oxArticle::oxarticles__oxunitquantity->value
      * and from oxArticle::oxarticles__oxuniname->value. If either one of these values is empty then $_fPricePerUnit is not calculated.
@@ -796,20 +788,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     public function setLoadParentData($blLoadParentData)
     {
         $this->_blLoadParentData = $blLoadParentData;
-    }
-
-    /**
-     * Set _blSkipAbPrice value. If is set to true, then "From price" is not calculated for this object.
-     *
-     * @param bool $blSkipAbPrice Whether to skip "From" price loading
-     *
-     * @deprecated since v4.7.0-5.0.0 (2012-10-08); use getFVarMinPrice or getFMinPrice methods
-     *
-     * @return null
-     */
-    public function setSkipAbPrice( $blSkipAbPrice = null )
-    {
-        $this->_blSkipAbPrice = $blSkipAbPrice;
     }
 
 
@@ -2882,18 +2860,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     }
 
     /**
-     * Returns formatted price per unit
-     *
-     * @deprecated since v5.0 (2012-01-4); use getFUnitPrice();
-     *
-     * @return string
-     */
-    public function getPricePerUnit()
-    {
-        return $this->getFUnitPrice();
-    }
-
-    /**
      * Returns true if parent is not buyable
      *
      * @return bool
@@ -3025,35 +2991,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     }
 
     /**
-     * Returns article file url
-     *
-     * @deprecated since v5.0.1 (2012-11-15) as article file is duplicate of media. Use getMediaUrls() instead for file media.
-     *
-     * @return string
-     */
-    public function getFileUrl()
-    {
-        return $this->getConfig()->getPictureUrl( 'media/' );
-    }
-
-    /**
-     * Returns string prefix (like "from") if needed or empty string.
-     *
-     * @deprecated since v4.7.0-5.0.0 (2012-10-08); use getFVarMinPrice or getFMinPrice methods
-     *
-     * @return string
-     */
-    public function getPriceFromPrefix()
-    {
-        $sPricePrefix = '';
-        if ( $this->_blIsRangePrice) {
-            $sPricePrefix = oxLang::getInstance()->translateString('PRICE_FROM').' ';
-        }
-
-        return $sPricePrefix;
-    }
-
-    /**
      * retrieve article VAT (cached)
      *
      * @return double
@@ -3151,18 +3088,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     public function getProductId()
     {
         return $this->getId();
-    }
-
-    /**
-     * Returns product parent id (oxparentid)
-     *
-     * @deprecated since v4.7-5.0 (2012-10-08); use getParentId() method
-     *
-     * @return string
-     */
-    public function getProductParentId()
-    {
-        return $this->getParentId();
     }
 
     /**
@@ -4343,28 +4268,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     }
 
     /**
-     * Assigns prices to article
-     *
-     * @deprecated since v4.7.0-5.0.0 (2012-10-08); use getFVarMinPrice or getFMinPrice methods
-     *
-     * @return null
-     */
-    protected function _assignPrices()
-    {
-        $myConfig = $this->getConfig();
-
-        // Performance
-        if ( !$myConfig->getConfigParam( 'bl_perfLoadPrice' ) || !$this->_blLoadPrice ) {
-            return;
-        }
-
-        //getting min and max prices of variants
-        if ( $this->_hasAnyVariant() ) {
-            $this->_applyRangePrice();
-        }
-    }
-
-    /**
      * assigns persistent param to article
      *
      * @return null;
@@ -4710,103 +4613,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
                         `oxid` = ' . $oDb->quote( $sParentId );
             }
             $oDb->execute( $sQ );
-        }
-    }
-
-    /**
-     * Updates variant min price. This method is supposed to be called on article change triger.
-     *
-     * @param string $sParentID Parent ID
-     *
-     * @deprecated since v4.7.0-5.0.0 (2012-10-08); use _setVarMinMaxPrice() method
-     *
-     * @return null
-     */
-    protected function _onChangeUpdateMinVarPrice( $sParentID )
-    {
-        if ( $sParentID ) {
-            $oDb = oxDb::getDb();
-            $sParentIdQuoted = $oDb->quote($sParentID);
-            //#M0000883 (Sarunas)
-            $sQ = 'select min(oxprice) as varminprice from '.$this->getViewName(true).' where '.$this->getSqlActiveSnippet(true).' and (oxparentid = '.$sParentIdQuoted.')';
-            $dVarMinPrice = $oDb->getOne( $sQ, false, false );
-
-            $dParentPrice = $oDb->getOne( "select oxprice from oxarticles where oxid = $sParentIdQuoted ", false, false );
-
-            $blParentBuyable =  $this->getConfig()->getConfigParam( 'blVariantParentBuyable' );
-
-            if ($dVarMinPrice) {
-                if ($blParentBuyable) {
-                    $dVarMinPrice = min($dVarMinPrice, $dParentPrice);
-                }
-            } else {
-                $dVarMinPrice = $dParentPrice;
-            }
-
-            if ( $dVarMinPrice ) {
-                $sQ = 'update oxarticles set oxvarminprice = '.$dVarMinPrice.' where oxid = '.$sParentIdQuoted;
-                $oDb->execute($sQ);
-            }
-        }
-    }
-
-    /**
-     * Returns minimum brut price from all (already loaded) variants and if applicable parent article
-     *
-     * @deprecated since v4.7.0-5.0.0 (2012-10-08); use getFVarMinPrice or getFMinPrice methods
-     *
-     * @return null;
-     */
-    protected function _applyRangePrice()
-    {
-        //#buglist_413 if bl_perfLoadPriceForAddList variant price shouldn't be loaded too
-        if ( !$this->getConfig()->getConfigParam( 'bl_perfLoadPrice' ) || !$this->_blLoadPrice ) {
-            return;
-        }
-
-        $this->_blIsRangePrice = false;
-
-        // if parent is buyable - do not apply range price calculations
-        if ($this->_blSkipFromPrice || !$this->_blNotBuyableParent) {
-            return;
-        }
-
-        if ( $this->isParentNotBuyable() && !$this->getConfig()->getConfigParam( 'blLoadVariants' )) {
-
-            $dPrice = $this->_preparePrice( $this->oxarticles__oxvarminprice->value, $this->getArticleVat() );
-            $this->getPrice()->setPrice($dPrice);
-            $this->_blIsRangePrice = true;
-            $this->_calculatePrice( $this->getPrice() );
-            return;
-
-        }
-
-        $aPrices = array();
-
-        if (!$this->_blNotBuyableParent) {
-            $aPrices[] = $this->getPrice()->getPrice();
-        }
-
-        $aVariants = $this->getVariants(false);
-
-        if (count($aVariants)) {
-            foreach ($aVariants as $sKey => $oVariant) {
-                $aPrices[] = $oVariant->getPrice()->getPrice();
-            }
-        }
-
-        if ( count( $aPrices ) ) {
-            $dMinPrice = min( $aPrices );
-            $dMaxPrice = max( $aPrices );
-        }
-
-        if ($this->_blNotBuyableParent && isset($dMinPrice) && $dMinPrice == $dMaxPrice) {
-            $this->getPrice()->setPrice($dMinPrice);
-        }
-
-        if (isset($dMinPrice) && $dMinPrice != $dMaxPrice) {
-            $this->getPrice()->setPrice($dMinPrice);
-            $this->_blIsRangePrice = true;
         }
     }
 

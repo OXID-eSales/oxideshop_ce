@@ -97,13 +97,6 @@ interface oxIArticle
     public function getBasePrice( $dAmount = 1 );
 
     /**
-     * Returns product parent id (oxparentid)
-     *
-     * @return string
-     */
-    public function getProductParentId();
-
-    /**
      * Returns true if object is derived from oxorderarticle class
      *
      * @return bool

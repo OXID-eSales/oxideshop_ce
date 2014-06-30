@@ -158,18 +158,6 @@ class Thankyou extends oxUBase
     }
 
     /**
-     * Template variable getter. Returns if to show final (5th) step
-     *
-     * @deprecated since v5.0.1 (2012-11-19). Option blShowFinalStep is removed
-     *
-     * @return string
-     */
-    public function showFinalStep()
-    {
-        return true;
-    }
-
-    /**
      * Template variable getter. Returns list of customer also bought thies products
      *
      * @return object

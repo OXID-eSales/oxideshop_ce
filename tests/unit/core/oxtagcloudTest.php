@@ -140,6 +140,8 @@ class Unit_Core_oxTagCloudTest extends OxidTestCase
         $oTagList->expects( $this->any() )->method( 'loadList' )->will( $this->returnValue( true ) );
         $oTagList->expects( $this->any() )->method( 'get' )->will( $this->returnValue( $oTagSet ) );
 
+        $oTagCloud->setTagList($oTagList);
+
         // should be taken from db
         $this->assertEquals( $oTagCloud->GetMaxAmount(), count( $oTagCloud->getCloudArray() ) );
 
@@ -212,7 +214,7 @@ class Unit_Core_oxTagCloudTest extends OxidTestCase
         $oTagSet = new oxTagSet();
         $oTagSet->add('tag1,tag2');
 
-        $oTagList = $this->getMock('oxtaglist', array('getCacheId', 'loadList', 'get'));
+        $oTagList = $this->getMock('oxTagList', array('getCacheId', 'loadList', 'get'));
         $oTagList->expects( $this->any() )->method( 'getCacheId' )->will( $this->returnValue( null ) );
         $oTagList->expects( $this->any() )->method( 'get' )->will( $this->returnValue( $oTagSet ) );
         // Load list should be called all times, cache should not be used

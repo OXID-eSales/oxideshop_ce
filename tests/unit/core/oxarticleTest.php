@@ -815,22 +815,6 @@ class Unit_Core_oxArticleTest extends OxidTestCase
     }
 
     /**
-     * Test get standard tag link.
-     *
-     * @return null
-     */
-    public function testGetStdTagLink()
-    {
-        $oArticle = new oxArticle();
-        $oArticle->setId( "testArticle" );
-
-        $sStdTagLink  = oxConfig::getInstance()->getShopHomeURL( $oArticle->getLanguage(), false );
-        $sStdTagLink .= "cl=details&amp;anid=".$oArticle->getId()."&amp;listtype=tag&amp;searchtag=".rawurlencode( "testTag" );
-
-        $this->assertEquals( $sStdTagLink, $oArticle->getStdTagLink( "testTag" ) );
-    }
-
-    /**
      * Test if Is variant.
      *
      * @return null

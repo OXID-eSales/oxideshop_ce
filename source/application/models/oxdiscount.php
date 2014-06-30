@@ -333,30 +333,6 @@ class oxDiscount extends oxI18n
     }
 
     /**
-     * Applies discount for current price
-     *
-     * @param oxPrice $oPrice basket item price object
-     * @param float|int $dAmount basket item amount (default 1)
-     *
-     * @deprecated since v5.0.1 (2012-11-08); use oxPrice class  discount calculation methods;
-     *
-     * @return null
-     */
-    public function applyDiscount( $oPrice, $dAmount = 1 )
-    {
-        if ( $this->oxdiscount__oxaddsumtype->value == 'abs' ) {
-            $oCur = $this->getConfig()->getActShopCurrencyObject();
-            $oPrice->subtract( $this->oxdiscount__oxaddsum->value * $oCur->rate );
-        } else {
-            $oPrice->multiply( (100 - $this->oxdiscount__oxaddsum->value) / 100 );
-        }
-
-        if ( $oPrice->getBruttoPrice() < 0 || $oPrice->getNettoPrice() < 0 ) {
-            $oPrice->setPrice(0);
-        }
-    }
-
-    /**
      * Return discount percent
      *
      * @param decimal $dPrice - price from which calculates discount
@@ -490,7 +466,7 @@ class oxDiscount extends oxI18n
     {
         $oDb = oxDb::getDb();
         // check if this article is assigned
-        if ( ( $sParentId = $oProduct->getProductParentId() ) ) {
+        if ( ( $sParentId = $oProduct->getParentId() ) ) {
             $sArticleId = " and ( oxobjectid = ".$oDb->quote( $oProduct->getProductId() )." or oxobjectid = ".$oDb->quote( $sParentId ) . " )";
         } else {
             $sArticleId = " and oxobjectid = ".$oDb->quote( $oProduct->getProductId() );

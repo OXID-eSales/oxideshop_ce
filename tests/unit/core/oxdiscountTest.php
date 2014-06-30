@@ -967,59 +967,6 @@ class Unit_Core_oxDiscountTest extends OxidTestCase
         $oDiscount->isForBasketAmount( $oBasket );
     }
 
-    public function testApplyDiscount()
-    {
-        $oDiscount  = new oxDiscount();
-        $testDiscId = 'testIsForBasketItem';
-        $oDiscount->setId( $testDiscId );
-
-        $oPrice  = new oxPrice();
-        $oPrice->setPrice(100);
-
-        //an discount with amount or price should return false
-        $oDiscount->oxdiscount__oxaddsumtype = new oxField('abs', oxField::T_RAW);
-        $oDiscount->oxdiscount__oxaddsum = new oxField(10, oxField::T_RAW);
-        $oDiscount->oxdiscount__oxamount = new oxField(1, oxField::T_RAW);
-        $oDiscount->applyDiscount( $oPrice, 1 );
-        $this->assertEquals( 90, $oPrice->getBruttoPrice() );
-
-    }
-
-    public function testApplyDiscountBigerThenPrice()
-    {
-        $oDiscount  = new oxDiscount();
-        $testDiscId = 'testIsForItem';
-        $oDiscount->setId( $testDiscId );
-
-        $oPrice  = new oxPrice();
-        $oPrice->setPrice(100);
-
-        //an discount with amount or price should return false
-        $oDiscount->oxdiscount__oxaddsumtype = new oxField('abs', oxField::T_RAW);
-        $oDiscount->oxdiscount__oxaddsum = new oxField(200, oxField::T_RAW);
-        $oDiscount->oxdiscount__oxamount = new oxField(0, oxField::T_RAW);
-        $oDiscount->applyDiscount( $oPrice, 1 );
-        $this->assertEquals( 0, $oPrice->getBruttoPrice() );
-
-    }
-
-    public function testApplyDiscountInPercent()
-    {
-        $oDiscount  = new oxDiscount();
-        $testDiscId = 'testIsForBasketItem';
-        $oDiscount->setId( $testDiscId );
-
-        $oPrice  = new oxPrice();
-        $oPrice->setPrice(100);
-
-        //an discount with amount or price should return false
-        $oDiscount->oxdiscount__oxaddsumtype = new oxField('%', oxField::T_RAW);
-        $oDiscount->oxdiscount__oxaddsum = new oxField(20, oxField::T_RAW);
-        $oDiscount->oxdiscount__oxamount = new oxField(1, oxField::T_RAW);
-        $oDiscount->applyDiscount( $oPrice, 1 );
-        $this->assertEquals( 80, $oPrice->getBruttoPrice() );
-    }
-
     /**
      * Testing oxDiscount::_getProductCheckQuery()
      *
@@ -1027,12 +974,12 @@ class Unit_Core_oxDiscountTest extends OxidTestCase
      */
     public function testGetProductCheckQuery()
     {
-        $oProduct1 = $this->getMock( "oxArticle", array( "getProductParentId", "getProductId" ) );
-        $oProduct1->expects( $this->once() )->method( 'getProductParentId' )->will( $this->returnValue( "ProductParentId" ) );
+        $oProduct1 = $this->getMock( "oxArticle", array( "getParentId", "getProductId" ) );
+        $oProduct1->expects( $this->once() )->method( 'getParentId' )->will( $this->returnValue( "ProductParentId" ) );
         $oProduct1->expects( $this->once() )->method( 'getProductId' )->will( $this->returnValue( "ProductId" ) );
 
-        $oProduct2 = $this->getMock( "oxArticle", array( "getProductParentId", "getProductId" ) );
-        $oProduct2->expects( $this->once() )->method( 'getProductParentId' )->will( $this->returnValue( false ) );
+        $oProduct2 = $this->getMock( "oxArticle", array( "getParentId", "getProductId" ) );
+        $oProduct2->expects( $this->once() )->method( 'getParentId' )->will( $this->returnValue( false ) );
         $oProduct2->expects( $this->once() )->method( 'getProductId' )->will( $this->returnValue( "ProductId" ) );
 
         $sQ1 = " and ( oxobjectid = 'ProductId' or oxobjectid = 'ProductParentId' )";
@@ -1076,16 +1023,16 @@ class Unit_Core_oxDiscountTest extends OxidTestCase
                ( '_test".uniqid( rand(), true ).".', '{$sDiscountId}', 'product3', 'oxarticles' ) ";
         oxDb::getDb()->Execute( $sQ );
 
-        $oParentProduct = $this->getMock( "oxArticle", array( "getProductParentId", "getProductId" ) );
-        $oParentProduct->expects( $this->once() )->method( 'getProductParentId' )->will( $this->returnValue( false ) );
+        $oParentProduct = $this->getMock( "oxArticle", array( "getParentId", "getProductId" ) );
+        $oParentProduct->expects( $this->once() )->method( 'getParentId' )->will( $this->returnValue( false ) );
         $oParentProduct->expects( $this->once() )->method( 'getProductId' )->will( $this->returnValue( "product1" ) );
 
-        $oProduct = $this->getMock( "oxArticle", array( "getProductParentId", "getProductId" ) );
-        $oProduct->expects( $this->once() )->method( 'getProductParentId' )->will( $this->returnValue( "product1" ) );
+        $oProduct = $this->getMock( "oxArticle", array( "getParentId", "getProductId" ) );
+        $oProduct->expects( $this->once() )->method( 'getParentId' )->will( $this->returnValue( "product1" ) );
         $oProduct->expects( $this->once() )->method( 'getProductId' )->will( $this->returnValue( "product4" ) );
 
-        $oUnrelatedProduct = $this->getMock( "oxArticle", array( "getProductParentId", "getProductId" ) );
-        $oUnrelatedProduct->expects( $this->once() )->method( 'getProductParentId' )->will( $this->returnValue( false ) );
+        $oUnrelatedProduct = $this->getMock( "oxArticle", array( "getParentId", "getProductId" ) );
+        $oUnrelatedProduct->expects( $this->once() )->method( 'getParentId' )->will( $this->returnValue( false ) );
         $oUnrelatedProduct->expects( $this->once() )->method( 'getProductId' )->will( $this->returnValue( "UnrelatedProductId" ) );
 
         // testing

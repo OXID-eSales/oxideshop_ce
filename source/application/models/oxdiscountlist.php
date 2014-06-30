@@ -302,60 +302,6 @@ class oxDiscountList extends oxList
     }
 
     /**
-     * Applies discounts which should be applied in general case (for 0 amount)
-     *
-     * @param oxprice $oPrice     Price object
-     * @param array   $aDiscounts Discount list
-     *
-     * @deprecated since v5.0 (2012-09-14); use oxPrice class  discount calculation methods;
-     *
-     * @return null
-     */
-    public function applyDiscounts( $oPrice, $aDiscounts )
-    {
-        reset( $aDiscounts );
-        while ( list( , $oDiscount ) = each( $aDiscounts ) ) {
-            $oDiscount->applyDiscount( $oPrice );
-        }
-    }
-
-    /**
-     * Applies discounts which are supposed to be applied on amounts greater than zero.
-     * Returns applied discounts.
-     *
-     * @param oxPrice $oPrice     Old article price
-     * @param array   $aDiscounts Discount array
-     * @param amount  $dAmount    Amount in basket
-     *
-     * @deprecated since v5.0 (2012-09-14); use oxPrice class  discount calculation methods;
-     *
-     * @return array
-     */
-    public function applyBasketDiscounts( oxPrice $oPrice, $aDiscounts, $dAmount = 1 )
-    {
-        $aDiscLog = array();
-        reset( $aDiscounts );
-
-        // price object to correctly perform calculations
-        $dOldPrice = $oPrice->getPrice();
-
-        while (list( , $oDiscount ) = each( $aDiscounts ) ) {
-            $oDiscount->applyDiscount( $oPrice );
-            $dNewPrice = $oPrice->getPrice();
-
-            if ( !isset( $aDiscLog[$oDiscount->getId()] ) ) {
-                $aDiscLog[$oDiscount->getId()] = $oDiscount->getSimpleDiscount();
-            }
-
-            $aDiscLog[$oDiscount->getId()]->dDiscount += $dOldPrice - $dNewPrice;
-            $aDiscLog[$oDiscount->getId()]->dDiscount *= $dAmount;
-            $dOldPrice = $dNewPrice;
-        }
-        return $aDiscLog;
-    }
-
-
-    /**
      * Checks if any category has "skip discounts" status
      *
      * @return bool

@@ -1601,7 +1601,7 @@ class oxBasket extends oxSuperCfg
                 }
 
                 // variant handling
-                if ( ($sParentId = $oArticle->getProductParentId()) && $myConfig->getConfigParam( 'blVariantParentBuyable' ) ) {
+                if ( ($sParentId = $oArticle->getParentId()) && $myConfig->getConfigParam( 'blVariantParentBuyable' ) ) {
                     if ( !isset( $this->_aBasketSummary->aArticles[$sParentId] ) ) {
                         $this->_aBasketSummary->aArticles[$sParentId] = 0;
                     }

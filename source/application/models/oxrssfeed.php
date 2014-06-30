@@ -189,7 +189,8 @@ class oxRssFeed extends oxSuperCfg
             $oActCur = $this->getConfig()->getActShopCurrencyObject();
             $sPrice = '';
             if ( $oPrice = $oArticle->getPrice() ) {
-                $sPrice =  " " . $oArticle->getPriceFromPrefix().$oLang->formatCurrency( $oPrice->getBruttoPrice(), $oActCur ) . " ". $oActCur->sign;
+                $sFrom =  ($oArticle->isRangePrice()) ? oxRegistry::getLang()->translateString('PRICE_FROM') : '';
+                $sPrice .= ' ' . $sFrom . $oLang->formatCurrency( $oPrice->getBruttoPrice(), $oActCur ) . " ". $oActCur->sign;
             }
             $oItem->title                   = strip_tags($oArticle->oxarticles__oxtitle->value . $sPrice);
             $oItem->guid                    = $oItem->link = $myUtilsUrl->prepareUrlForNoSession($oArticle->getLink());

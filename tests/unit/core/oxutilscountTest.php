@@ -100,35 +100,6 @@ class Unit_Core_oxUtilsCountTest extends OxidTestCase
             $this->assertEquals( 5, $oUtilsCount->setPriceCatArticleCount( array(), 'xxx', 'xxx', 0, 1 ) );
     }
 
-    public function testGetTagArticleCount()
-    {
-        $sTag = "wanduhr";
-        $iCnt = 3;
-
-        // adding test articles
-        $iCnt++;
-
-        // searchable
-        $oArticle = new oxarticle();
-        $oArticle->setId( 'testarticle1' );
-        $oArticle->oxarticles__oxactive   = new oxField( 1 );
-        $oArticle->oxarticles__oxissearch = new oxField( 1 );
-        $oArticle->save();
-
-        $oArticle->saveTags( "wanduhr" );
-
-        // non searchable
-        $oArticle = new oxarticle();
-        $oArticle->setId( 'testarticle2' );
-        $oArticle->oxarticles__oxactive   = new oxField( 1 );
-        $oArticle->oxarticles__oxissearch = new oxField( 0 );
-        $oArticle->save();
-
-        $oArticle->saveTags( "wanduhr" );
-
-        $this->assertEquals( $iCnt, oxUtilsCount::getInstance()->getTagArticleCount( $sTag, 0 ));
-    }
-
     public function testGetCatArticleCount()
     {
         $this->assertEquals('0', oxUtilsCount::getInstance()->GetCatArticleCount('', true));

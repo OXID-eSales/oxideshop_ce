@@ -168,7 +168,12 @@ class oxSeoEncoderArticle extends oxSeoEncoder
         $sSeoUri = null;
         if ( $sTag = $this->_getTag( $oArticle, $iLang ) ) {
             $iShopId = $this->getConfig()->getShopId();
-            $sStdUrl = $oArticle->getStdTagLink( $sTag );
+
+            $oArticleTags = oxNew('oxArticleTagList');
+            $oArticleTags->setArticleId( $oArticle->getId() );
+            $oArticleTags->getStdTagLink($sTag);
+
+            $sStdUrl = $oArticleTags->getStdTagLink($sTag);
             if ( $blRegenerate || !( $sSeoUri = $this->_loadFromDb( 'dynamic', $this->getDynamicObjectId( $iShopId, $sStdUrl ), $iLang ) ) ) {
                 // generating new if not found
                 if ( $sSeoUri = oxRegistry::get("oxSeoEncoderTag")->getTagUri( $sTag, $iLang, $oArticle->getId() ) ) {

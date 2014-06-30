@@ -281,11 +281,23 @@ class oxOrderArticle extends oxBase implements oxIArticle
     }
 
     /**
-     * Returns product parent id (oxparentid)
+     * Returns product parent id
+     *
+     * @deprecated since v5.2.0/4.9.0 (2014-06-30); use getParentId
      *
      * @return string
      */
     public function getProductParentId()
+    {
+        return $this->getParentId();
+    }
+
+    /**
+     * Returns product parent id
+     *
+     * @return string
+     */
+    public function getParentId()
     {
         // when this field will be introduced there will be no need to load from real article
         if ( isset( $this->oxorderarticles__oxartparentid ) && $this->oxorderarticles__oxartparentid->value !== false ) {
@@ -297,11 +309,6 @@ class oxOrderArticle extends oxBase implements oxIArticle
         $sQ = "select oxparentid from " . $oArticle->getViewName() . " where oxid=" . $oDb->quote( $this->getProductId() );
         $this->oxarticles__oxparentid = new oxField( $oDb->getOne( $sQ ) );
         return $this->oxarticles__oxparentid->value;
-    }
-
-    public function getParentId()
-    {
-        return $this->getProductParentId();
     }
 
     /**

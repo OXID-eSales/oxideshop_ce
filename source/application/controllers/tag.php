@@ -161,36 +161,6 @@ class Tag extends aList
     }
 
     /**
-     * Returns search sorting config
-     *
-     * @param string $sCnid sortable item id
-     *
-     * @deprecated since v4.7.3/5.0.3 (2013-01-07); dublicated code
-     *
-     * @return string
-     */
-    public function getSorting( $sCnid )
-    {
-        return parent::getSorting( $sCnid );
-    }
-
-    /**
-     * Sets search sorting config
-     *
-     * @param string $sCnid      sortable item id
-     * @param string $sSortBy    sort field
-     * @param string $sSortOrder sort order
-     *
-     * @deprecated since v4.7.3/5.0.3 (2013-01-07); dublicated code
-     *
-     * @return null
-     */
-    public function setItemSorting( $sCnid, $sSortBy, $sSortOrder  = null )
-    {
-        parent::setItemSorting( $sCnid, $sSortBy, $sSortOrder );
-    }
-
-    /**
      * Generates Url for page navigation
      *
      * @return string

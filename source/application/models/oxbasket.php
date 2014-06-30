@@ -929,10 +929,6 @@ class oxBasket extends oxSuperCfg
             return $oDeliveryPrice;
         }
 
-        // VAT for delivery will be calculated always (#3757)
-        // blCalcVATForDelivery option is @deprecated since 2012-03-23 in version 4.6
-        // the option blShowVATForDelivery will be used only for displaying
-        $fDelVATPercent = 0;
         $fDelVATPercent = $this->getAdditionalServicesVatPercent();
         $oDeliveryPrice->setVat( $fDelVATPercent );
 

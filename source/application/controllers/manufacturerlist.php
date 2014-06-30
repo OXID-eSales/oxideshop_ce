@@ -129,39 +129,9 @@ class ManufacturerList extends aList
     }
 
     /**
-     * Sets Manufacturer item sorting config
-     *
-     * @param string $sCnid    sortable Manufacturer id
-     * @param string $sSortBy  sort field
-     * @param string $sSortDir sort direction (optional)
-     *
-     * @deprecated since v4.7.3/5.0.3 (2013-01-07); dublicated code
-     *
-     * @return null
-     */
-    public function setItemSorting( $sCnid, $sSortBy, $sSortDir = null )
-    {
-        parent::setItemSorting( $sCnid, $sSortBy, $sSortDir );
-    }
-
-    /**
-     * Returns Manufacturer sorting config
-     *
-     * @param string $sCnid sortable item id
-     *
-     * @deprecated since v4.7.3/5.0.3 (2013-01-07); dublicated code
-     *
-     * @return string
-     */
-    public function getSorting( $sCnid )
-    {
-        return parent::getSorting( $sCnid );
-    }
-
-    /**
      * Loads and returns article list of active Manufacturer.
      *
-     * @param oxmanufacturer $oManufacturer Manufacturer object
+     * @param oxManufacturer $oManufacturer Manufacturer object
      *
      * @return array
      */

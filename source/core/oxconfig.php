@@ -767,22 +767,6 @@ class oxConfig extends oxSuperCfg
      * @param mixed &$sValue value to process escaping
      * @param array $aRaw    keys of unescaped values
      *
-     * @deprecated since v5.0.0 (2012-08-27); Use public checkParamSpecialChars().
-     *
-     * @return mixed
-     */
-    public static function checkSpecialChars(& $sValue, $aRaw = null)
-    {
-        return oxRegistry::getConfig()->checkParamSpecialChars($sValue, $aRaw);
-    }
-
-    /**
-     * Checks if passed parameter has special chars and replaces them.
-     * Returns checked value.
-     *
-     * @param mixed &$sValue value to process escaping
-     * @param array $aRaw    keys of unescaped values
-     *
      * @return mixed
      */
     public function checkParamSpecialChars(& $sValue, $aRaw = null)

@@ -1860,39 +1860,6 @@ class Unit_Core_oxconfigTest extends OxidTestCase
 
 
 
-    /**
-     * Testing input processor
-     */
-    // checking 3 cases - passing object, array, string
-    public function testCheckSpecialChars()
-    {
-        $oVar = new stdClass();
-        $oVar->xxx = 'yyy';
-        $aVar = array( '&\\o<x>i"\'d'.chr(0) );
-        $sVar = '&\\o<x>i"\'d'.chr(0);
-
-        // object must came back the same
-        $this->assertEquals( $oVar, oxConfig::checkSpecialChars( $oVar ) );
-
-        // array items comes fixed
-        $this->assertEquals( array( '&amp;&#092;o&lt;x&gt;i&quot;&#039;d' ), oxConfig::checkSpecialChars( $aVar ) );
-
-        // string comes fixed
-        $this->assertEquals( '&amp;&#092;o&lt;x&gt;i&quot;&#039;d', oxConfig::checkSpecialChars( $sVar ) );
-    }
-
-    // checking array, if few values must not be checked
-    public function testCheckSpecialCharsForArray()
-    {
-        $aValues = array( 'first' => 'first char &', 'second' => 'second char &', 'third' => 'third char &' );
-        $aRaw = array('first', 'third');
-        // object must came back the same
-        $aRet = oxConfig::checkSpecialChars( $aValues, $aRaw );
-        $this->assertEquals($aValues['first'], $aRet['first']);
-        $this->assertEquals('second char &amp;', $aRet['second']);
-        $this->assertEquals($aValues['third'], $aRet['third']);
-    }
-
     public function testGetUploadedFile()
     {
         $aBack = $_FILES;
@@ -1944,24 +1911,6 @@ class Unit_Core_oxconfigTest extends OxidTestCase
 
         if ($e instanceof Exception) {
             throw $e;
-        }
-    }
-
-    public function testCheckSpecialCharsAlsoFixesArrayKeys()
-    {
-        $test = array(
-            array (
-                'data'   => array('asd&' => 'a%&'),
-                'result' => array('asd&amp;' => 'a%&amp;'),
-            ),
-            array (
-                'data'   => 'asd&',
-                'result' => 'asd&amp;',
-            )
-        );
-
-        foreach ($test as $check) {
-            $this->assertEquals($check['result'], oxConfig::checkSpecialChars($check['data']));
         }
     }
 

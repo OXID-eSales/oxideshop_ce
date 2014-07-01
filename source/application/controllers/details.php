@@ -1418,10 +1418,13 @@ class Details extends oxUBase
      */
     public function getTagCloudManager()
     {
-        $oTagList = oxNew("oxTagList");
+        $oTagList = oxNew("oxArticleTagList");
+        $oTagList->load($this->getProduct()->getId());
         $oManager = oxNew("oxTagCloud");
         $oManager->setTagList($oTagList);
         $oManager->setExtendedMode(true);
+
+
 
         return $oManager;
     }

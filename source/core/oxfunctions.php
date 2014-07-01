@@ -385,20 +385,6 @@ function oxNew( $sClassName )
 }
 
 /**
- * Creates, loads returns oxarticle object
- *
- * @param string $sArtId product id
- *
- * @deprecated since v4.7.5-5.0.5 (2013-03-29); use oxNew
- *
- * @return oxarticle
- */
-function oxNewArticle( $sArtId )
-{
-    return oxUtilsObject::getInstance()->oxNewArticle( $sArtId );
-}
-
-/**
  * Returns current DB handler
  *
  * @param bool $blAssoc data fetch mode

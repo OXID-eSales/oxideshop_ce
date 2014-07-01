@@ -156,30 +156,6 @@ class Unit_Core_oxutilsobjectTest extends OxidTestCase
         }
     }
 
-    /**
-     * oxnew test
-     */
-    public function testOxNewArticle()
-    {
-        $oUtilsObj = new oxutilsobject();
-
-        $oArticle    = $oUtilsObj->oxNewArticle( '2177', array( 'aaa' => 'bbb' ) );
-        $oNewArticle = $oUtilsObj->oxNewArticle( '2177' );
-
-        $this->assertEquals( $oArticle, $oNewArticle );
-    }
-    public function testOxNewArticleAndLoad()
-    {
-        $oUtilsObj = new oxutilsobject();
-
-        $oArticle = $oUtilsObj->oxnew( 'oxarticle' );
-        $oArticle->load( '2177' );
-
-        $oNewArticle = $oUtilsObj->oxNewArticle( '2177' );
-
-        $this->assertEquals( $oArticle->getId(), $oNewArticle->getId() );
-    }
-
     public function testGenerateUid()
     {
       //no real test possible, but at least generated ids should be different

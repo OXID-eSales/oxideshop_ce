@@ -247,35 +247,6 @@ class oxUtilsObject
     }
 
     /**
-     * Creates and returns oxArticle (or subclass) object.
-     *
-     * @param string $sOxID       ID to load subclass type from database
-     * @param array  $aProperties array of properties to assign
-     *
-     * @deprecated since v4.7.5-5.0.5 (2013-03-29); use oxNew
-     *
-     * @return object
-     */
-    public function oxNewArticle( $sOxID, $aProperties = array())
-    {
-        if ( $sOxID && isset( self::$_aLoadedArticles[$sOxID] ) ) {
-            return self::$_aLoadedArticles[$sOxID];
-        }
-
-        $oActionObject = $this->oxNew( 'oxarticle' );
-
-        // adding object properties
-        foreach ( $aProperties as $sPropertyName => $sPropertyVal ) {
-            $oActionObject->$sPropertyName = $sPropertyVal;
-        }
-
-        $oActionObject->load( $sOxID );
-
-        self::$_aLoadedArticles[$sOxID] = $oActionObject;
-        return $oActionObject;
-    }
-
-    /**
      * Resets instance cache
      *
      * @param string $sClassName class name in the cache

@@ -37,14 +37,14 @@ class oxTagSet extends oxSuperCfg implements Iterator
     protected $_sSeparator = ',';
 
     /**
-     * oxtag objects array
+     * oxTag objects array
      *
      * @var array
      */
     protected $_aTags = array();
 
     /**
-     * Stores invald tags
+     * Stores invalid tags
      *
      * @var array
      */
@@ -287,7 +287,7 @@ class oxTagSet extends oxSuperCfg implements Iterator
     }
 
     /**
-     * Compares two tags by hitcount
+     * Compares two tags by hit count
      *
      * @param oxTag $oTag1 tag to compare
      * @param oxTag $oTag2 tag to compare

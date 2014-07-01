@@ -60,9 +60,6 @@ class Tags extends oxUBase
         $oTagCloud->setTagList($oTagList);
         $oTagCloud->setExtendedMode( true );
 
-
-
-
         return $oTagCloud;
     }
 

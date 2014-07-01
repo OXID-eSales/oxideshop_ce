@@ -1420,13 +1420,11 @@ class Details extends oxUBase
     {
         $oTagList = oxNew("oxArticleTagList");
         $oTagList->load($this->getProduct()->getId());
-        $oManager = oxNew("oxTagCloud");
-        $oManager->setTagList($oTagList);
-        $oManager->setExtendedMode(true);
+        $oTagCloud = oxNew("oxTagCloud");
+        $oTagCloud->setTagList($oTagList);
+        $oTagCloud->setExtendedMode(true);
 
-
-
-        return $oManager;
+        return $oTagCloud;
     }
 
     /**

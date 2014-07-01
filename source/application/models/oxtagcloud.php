@@ -62,11 +62,30 @@ class oxTagCloud extends oxSuperCfg
      */
     protected $_blExtended = false;
 
+
+    /**
+     * Maximum tag's length
+     * Maximum size of one tag in admin area and limits tag input field in front end
+     *
+     * @var int
+     */
+    protected $_iTagMaxLength = 60;
+
     /**
      * Object constructor. Initializes separator.
      */
     public function __construct()
     {
+    }
+
+    /**
+     * Returns current maximum tag length
+     *
+     * @return int
+     */
+    public function getTagMaxLength()
+    {
+        return $this->_iTagMaxLength;
     }
 
     /**
@@ -129,13 +148,9 @@ class oxTagCloud extends oxSuperCfg
     /**
      * Returns extended tag cloud array
      *
-     * @param string $sProductId product id [optional]
-     * @param bool   $blExtended extended cloud array mode [optional]
-     * @param int    $iLang      language id [optional]
-     *
      * @return array
      */
-    public function getCloudArray( $sProductId = null, $blExtended = null, $iLang = null )
+    public function getCloudArray()
     {
         $sCacheIdent = $this->_formCacheKey();
         if ( !isset( $this->_aCloudArray[ $sCacheIdent ] ) ) {
@@ -289,7 +304,7 @@ class oxTagCloud extends oxSuperCfg
     }
 
     /**
-     * Returns font size value for current occurence depending on max occurence.
+     * Returns font size value for current occurrence depending on max occurrence.
      *
      * @param int $iHit    hit count
      * @param int $iMaxHit max hits count

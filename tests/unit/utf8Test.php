@@ -537,15 +537,7 @@ class Unit_utf8Test extends OxidTestCase
         $this->assertEquals(implode(',', $aExpSubOrder), implode(',', $aCurSubOrder));
     }
 
-    public function testOxConfigCheckSpecialChars()
-    {
-        $sIn  = "a&g<e>n\"t'ūrų Л".chr(0)."итовские fü\\r";
-        $sOut = "a&amp;g&lt;e&gt;n&quot;t&#039;ūrų Литовские fü&#092;r";
-
-        $this->assertEquals( $sOut, oxConfig::checkSpecialChars( $sIn ) );
-    }
-	
-	/**
+    /**
 	 * Test special chars in oxconfig
 	 *
 	 * @return null

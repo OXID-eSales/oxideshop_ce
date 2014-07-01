@@ -148,12 +148,6 @@ class Unit_Core_oxfunctionsTest extends OxidTestCase
         $this->fail('error testing oxnew()');
     }
 
-    public function testOxNewArticle()
-    {
-        $oNew = oxNewArticle( 'oxarticle' );
-        $this->assertTrue( $oNew instanceof oxarticle );
-    }
-
     public function testOx_get_template()
     {
         $fake = new stdClass;

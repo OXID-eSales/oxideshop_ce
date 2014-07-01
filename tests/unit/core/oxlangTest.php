@@ -228,7 +228,11 @@ class Unit_Core_oxLangTest extends OxidTestCase
         $oLang = $this->getMock( "oxLang", array( "_getActiveModuleInfo") );
         $oLang->expects( $this->any() )->method( '_getActiveModuleInfo' )->will( $this->returnValue( $aInfo ) );
 
-        $this->assertEquals( $aPathArray, $oLang->UNITgetAdminLangFilesPathArray( 0 ) );
+        $aResult = $oLang->UNITgetAdminLangFilesPathArray( 0 );
+
+        foreach ($aPathArray as $sPath) {
+            $this->assertTrue(array_search($sPath, $aResult) !== false, "Language file '$sPath' was not found as registered");
+        }
 
         unlink( $sShopPath . "modules/test1/out/admin/de/test1_lang.php" );
         unlink( $sShopPath . "modules/test1/out/admin/de/module_options.php" );

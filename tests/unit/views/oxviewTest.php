@@ -664,14 +664,6 @@ class Unit_Views_oxviewTest extends OxidTestCase
 
     }
 
-
-    public function testSetGetActCategory()
-    {
-        $oView = new oxView();
-        $oView->setActCategory( 'oClickCat' );
-        $this->assertEquals( 'oClickCat', $oView->getActCategory() );
-    }
-
     /**
      * Testing special getters setters
      */

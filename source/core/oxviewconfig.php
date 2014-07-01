@@ -1174,66 +1174,6 @@ class oxViewConfig extends oxSuperCfg
     }
 
     /**
-     * Returns Trusted Shops Widget image url
-     *
-     * @deprecated since v4.7.6/5.0.6 (2013-07-09); new Trusted Shops badge added
-     *
-     * @return string
-     */
-    public function getTsWidgetUrl()
-    {
-        $sUrl  = false;
-        $sTsId = $this->getTsId();
-        if ($sTsId) {
-            $sTsUrl = $this->getTsDomain();
-
-            $aTsConfig    = $this->getConfig()->getConfigParam("aTsConfig");
-            $sTsWidgetUri = isset($aTsConfig["sTsWidgetUri"]) ? current($aTsConfig["sTsWidgetUri"]) : false;
-
-            if ($sTsUrl && $sTsWidgetUri) {
-                //$sLocal = $this->getConfig()->getImageDir()."{$sTsId}.gif";
-                $sUrl = sprintf("{$sTsUrl}/{$sTsWidgetUri}", $sTsId);
-                //if ( $sImgName = oxRegistry::getUtils()->getRemoteCachePath( $sUrl, $sLocal ) ) {
-                //    $sUrl = $this->getImageUrl().basename( $sImgName );
-                //}
-            }
-        }
-
-        return $sUrl;
-    }
-
-    /**
-     * Trusted Shops widget info url
-     *
-     * @deprecated since v4.7.6/5.0.6 (2013-07-09); new Trusted Shops badge added
-     *
-     * @return string | bool
-     */
-    public function getTsInfoUrl()
-    {
-        $sUrl  = false;
-        $sTsId = $this->getTsId();
-        if ($sTsId) {
-            $sTsUrl = $this->getTsDomain();
-
-            $sLangId   = oxRegistry::getLang()->getLanguageAbbr();
-            $aTsConfig = $this->getConfig()->getConfigParam("aTsConfig");
-
-            if (isset($aTsConfig["sTsInfoUri"]) && isset($aTsConfig["sTsInfoUri"][$sLangId])) {
-                $sTsInfoUri = $aTsConfig["sTsInfoUri"][$sLangId];
-            } else {
-                $sTsInfoUri = false;
-            }
-
-            if ($sTsUrl && $sTsInfoUri) {
-                $sUrl = sprintf("{$sTsUrl}/{$sTsInfoUri}", $sTsId);
-            }
-        }
-
-        return $sUrl;
-    }
-
-    /**
      * Gets Trusted shops ratings from Trusted shops
      *
      * @return array

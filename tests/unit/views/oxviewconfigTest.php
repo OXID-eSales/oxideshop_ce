@@ -111,36 +111,6 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     }
 
     /**
-     * oxViewconfig::getTsInfoUrl() test case
-     *
-     * @return null
-     */
-    public function testGetTsInfoUrl()
-    {
-        $this->getConfig()->setConfigParam("aTsConfig", $this->_aTsConfig);
-        $sLangId    = oxLang::getInstance()->getLanguageAbbr();
-        $sTsInfoUri = (isset($this->_aTsConfig["sTsInfoUri"]) && isset($this->_aTsConfig["sTsInfoUri"][$sLangId])) ? $this->_aTsConfig["sTsInfoUri"][$sLangId] : false;
-
-        $oViewConf = $this->getMock("oxViewConfig", array("getTsId"));
-        $oViewConf->expects($this->once())->method("getTsId")->will($this->returnValue("xyz"));
-        $this->assertEquals("https://www.trustedshops.com/" . sprintf($sTsInfoUri, "xyz"), $oViewConf->getTsInfoUrl());
-    }
-
-    /**
-     * oxViewconfig::getTsWidgetUrl() test case
-     *
-     * @return null
-     */
-    public function testGetTsWidgetUrl()
-    {
-        $this->getConfig()->setConfigParam("aTsConfig", $this->_aTsConfig);
-
-        $oViewConf = $this->getMock("oxViewConfig", array("getTsId"));
-        $oViewConf->expects($this->once())->method("getTsId")->will($this->returnValue("xyz"));
-        $this->assertEquals("https://www.trustedshops.com/bewertung/widget/widgets/xyz.gif", $oViewConf->getTsWidgetUrl());
-    }
-
-    /**
      * oxViewconfig::etTsDomain() test case
      *
      * @return null

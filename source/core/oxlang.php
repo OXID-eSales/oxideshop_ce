@@ -826,9 +826,6 @@ class oxLang extends oxSuperCfg
                 $sFullPath  = $oConfig->getModulesDir() . $sPath;
                 $sFullPath .= ($blForAdmin) ? '/views/admin/' : '/translations/';
                 $sFullPath .= $sLang;
-                //@deprecated since v4.7.1/5.0.1 (2012-11-20); for < 4.6 modules, since 4.7/5.0 translation files should be in modules/modulepath/views/admin/ dir
-
-                // END deprecated
                 $aLangFiles = $this->_appendLangFile( $aLangFiles, $sFullPath );
                 //load admin modules options lang files
                 if ( $blForAdmin ) {

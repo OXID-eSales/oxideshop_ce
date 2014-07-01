@@ -214,20 +214,24 @@ class Unit_Core_oxLangTest extends OxidTestCase
         $sPath = oxConfig::getInstance()->getAppDir( );
         $sShopPath = oxConfig::getInstance()->getConfigParam('sShopDir');
         $aPathArray = array(
-              $sPath . "views/admin/de/lang.php"
-            , $sPath . "translations/de/translit_lang.php"
-            , $sPath . "views/admin/de/help_lang.php"
-            , $sPath . "views/azure/de/theme_options.php"
-            , $sShopPath . "modules/oxlangTestModule/views/admin/de/test1_lang.php"
-            , $sShopPath . "modules/oxlangTestModule/views/admin/de/module_options.php"
-            , $sPath . "views/admin/de/cust_lang.php"
+            $sPath . "views/admin/de/lang.php",
+            $sPath . "translations/de/translit_lang.php",
+            $sPath . "views/admin/de/help_lang.php",
+            $sPath . "views/azure/de/theme_options.php",
+            $sShopPath . "modules/oxlangTestModule/views/admin/de/test1_lang.php",
+            $sShopPath . "modules/oxlangTestModule/views/admin/de/module_options.php",
+            $sPath . "views/admin/de/cust_lang.php"
         );
         $aInfo = array( 'oxlangTestModule' => 'oxlangTestModule' );
 
         $oLang = $this->getMock( "oxLang", array( "_getActiveModuleInfo") );
         $oLang->expects( $this->any() )->method( '_getActiveModuleInfo' )->will( $this->returnValue( $aInfo ) );
 
-        $this->assertEquals( $aPathArray, $oLang->UNITgetAdminLangFilesPathArray( 0 ) );
+        $aResult = $oLang->UNITgetAdminLangFilesPathArray( 0 );
+
+        foreach ($aPathArray as $sPath) {
+            $this->assertTrue(array_search($sPath, $aResult) !== false, "Language file '$sPath' was not found as registered");
+        }
 
         unlink( $sShopPath . "modules/oxlangTestModule/views/admin/de/test1_lang.php" );
         unlink( $sShopPath . "modules/oxlangTestModule/views/admin/de/module_options.php" );

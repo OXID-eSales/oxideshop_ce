@@ -141,8 +141,6 @@ class oxPrice
      *
      * @param double $newVat vat percent
      *
-     * @deprecated since v5.0 (2012-09-14); use setVat();
-     *
      * @return null
      */
     public function setUserVat($newVat)
@@ -417,29 +415,6 @@ class oxPrice
     public static function netto2Brutto($dNetto, $dVat)
     {
         return (double) $dNetto + self::percent($dNetto, $dVat);
-    }
-
-    /**
-     * Calculates price depending on price entering mode.
-     * Round only displayed price to the user, other leave as accurate as possible:
-     *    in Brutto mode: round Brutto price before calculations;
-     *    in Netto mode: round Brutto price after calculations;
-     *
-     * @access protected
-     *
-     * @deprecated since v5.0 (2012-09-14); not needed any more;
-     *
-     * @return null
-     */
-    protected function _recalculate()
-    {
-        if ( $this->isNettoMode() ) {
-            $this->_dBrutto = self::netto2Brutto($this->_dNetto, $this->_dVat);
-            $this->_dNetto = oxRegistry::getUtils()->fRound($this->_dNetto);
-        } else {
-            $this->_dNetto  = self::brutto2Netto($this->_dBrutto, $this->_dVat);
-            $this->_dBrutto = oxRegistry::getUtils()->fRound($this->_dBrutto);
-        }
     }
 
     /**

@@ -235,7 +235,14 @@ class oxPayment extends oxI18n
 
         // products brutto price
         if ( !$iRules || ( $iRules & self::PAYMENT_ADDSUMRULE_ALLGOODS ) ) {
-            $dBasketPrice += $oBasket->getProductsPrice()->getSum( $oBasket->isCalculationModeNetto() );
+            $oPrice = $oBasket->getProductsPrice();
+            
+            // ignore articles where skip discounts is configured for negative payment cost
+            if ($this->oxpayments__oxaddsum->value < 0) {
+                $oPrice = $oBasket->getDiscountProductsPrice();
+            }
+            
+            $dBasketPrice += $oPrice->getSum( $oBasket->isCalculationModeNetto() );
         }
 
         // discounts

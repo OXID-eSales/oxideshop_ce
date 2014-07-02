@@ -200,9 +200,6 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         $sExpectedBody = str_replace("> <", "><", $sExpectedBody);
         $sBody = str_replace("> <", "><", $sBody);
 
-        // removing version tags
-        $sBody = preg_replace("/\_pe|\_ee|\_ce/", "", $sBody);
-
         $sExpectedShopUrl = "http://eshop/";
         $sShopUrl = oxConfig::getInstance()->getConfigParam( 'sShopURL' );
 
@@ -737,7 +734,8 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         $oParams->send_email   = 'orderemail@orderemail.nl';
         $oParams->send_name    = 'testShopName';
 
-        $oProduct = oxNewArticle( '_testArticleId' );
+        $oProduct = new oxArticle();
+        $oProduct->load('_testArticleId');
 
         $oEmail = $this->getMock( 'oxEmail', array( "_sendMail", "_getShop", "_getUseInlineImages" ) );
         $oEmail->expects( $this->once() )->method( '_sendMail')->will( $this->returnValue( true ));

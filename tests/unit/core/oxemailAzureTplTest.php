@@ -200,9 +200,6 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         $sExpectedBody = str_replace("> <", "><", $sExpectedBody);
         $sBody = str_replace("> <", "><", $sBody);
 
-        // removing version tags
-        $sBody = preg_replace("/\_pe|\_ee|\_ce/", "", $sBody);
-
         $sExpectedShopUrl = "http://eshop/";
         $sShopUrl = oxConfig::getInstance()->getConfigParam( 'sShopURL' );
 
@@ -215,7 +212,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         }
 
 
-        $this->assertEquals( strtolower(trim($sExpectedBody)), strtolower(trim($sBody)), "Incorect mail body: $sShopUrl" );
+        $this->assertEquals( strtolower(trim($sExpectedBody)), strtolower(trim($sBody)), "Incorect mail body" );
 
         return true;
     }

@@ -55,7 +55,7 @@ class Unit_Admin_ArticleSeoTest extends OxidTestCase
         $sQ = "delete from oxseo where oxobjectid='objectid'";
         oxDb::getDb()->execute( $sQ );
 
-        oxSeoEncoderArticle::getInstance()->cleanup();
+        oxRegistry::get("oxSeoEncoderArticle")->cleanup();
         parent::tearDown();
     }
 

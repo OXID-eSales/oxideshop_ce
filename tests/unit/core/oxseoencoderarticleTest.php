@@ -1122,7 +1122,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
             $oArticle->loadInLang( 0, '1127' );
             $sExp = "Blinkende-Eiswuerfel-FLASH";
 
-        $oEncoder = oxSeoEncoderArticle::getInstance();
+        $oEncoder = oxRegistry::get("oxSeoEncoderArticle");
         $oEncoder->setSeparator();
         $this->assertEquals( $sExp, $oEncoder->UNITprepareTitle( $oArticle->oxarticles__oxtitle->value ) );
     }

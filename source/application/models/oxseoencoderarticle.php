@@ -27,30 +27,11 @@
 class oxSeoEncoderArticle extends oxSeoEncoder
 {
     /**
-     * Singleton instance.
-     *
-     * @var oxSeoEncoderArticle
-     */
-    protected static $_instance = null;
-
-    /**
      * Product parent title cache
      *
      * @var array
      */
     protected static $_aTitleCache = array();
-
-    /**
-     * Singleton method
-     *
-     * @deprecated since v5.0 (2012-08-10); Use oxRegistry::get("oxSeoEncoderArticle") instead.
-     *
-     * @return oxSeoEncoderArticle
-     */
-    public static function getInstance()
-    {
-        return oxRegistry::get("oxSeoEncoderArticle");
-    }
 
     /**
      * Returns target "extension" (.html)

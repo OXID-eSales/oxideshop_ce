@@ -3576,13 +3576,13 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         oxTestModules::addFunction('oxSeoEncoderArticle', 'onDeleteArticle', '{$this->onDeleteArticleCnt++;}');
         oxTestModules::addFunction('oxSeoEncoderArticle', 'resetInst', '{self::$_instance = $this;}');
         oxNew('oxSeoEncoderArticle')->resetInst();
-        oxSeoEncoderArticle::getInstance()->onDeleteArticleCnt = 0;
+        oxRegistry::get("oxSeoEncoderArticle")->onDeleteArticleCnt = 0;
 
         $oVariant->delete();
 
         $oArticle = new oxarticle();
         $this->assertFalse( $oArticle->load('_testVar'));
-        $this->assertEquals(1, oxSeoEncoderArticle::getInstance()->onDeleteArticleCnt);
+        $this->assertEquals(1, oxRegistry::get("oxSeoEncoderArticle")->onDeleteArticleCnt);
     }
 
     /**

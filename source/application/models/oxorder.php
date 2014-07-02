@@ -998,7 +998,7 @@ class oxOrder extends oxBase
     {
         // copying payment info fields
         $aDynvalue = oxSession::getVar( 'dynvalue' );
-        $aDynvalue = $aDynvalue ? $aDynvalue : oxConfig::getParameter( 'dynvalue' );
+        $aDynvalue = $aDynvalue ? $aDynvalue : oxRegistry::getConfig()->getRequestParameter( 'dynvalue' );
 
         // loading payment object
         $oPayment = oxNew( 'oxpayment' );
@@ -1200,7 +1200,7 @@ class oxOrder extends oxBase
     public function getDelAddressInfo()
     {
         $oDelAdress = null;
-        if (! ($soxAddressId = oxConfig::getParameter( 'deladrid' ) ) ) {
+        if (! ($soxAddressId = oxRegistry::getConfig()->getRequestParameter( 'deladrid' ) ) ) {
             $soxAddressId = oxSession::getVar( 'deladrid' );
         }
         if ( $soxAddressId ) {

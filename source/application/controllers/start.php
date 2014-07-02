@@ -125,7 +125,7 @@ class Start extends oxUBase
     public function render()
     {
 
-        if ( oxConfig::getParameter( 'showexceptionpage' ) == '1' ) {
+        if ( oxRegistry::getConfig()->getRequestParameter( 'showexceptionpage' ) == '1' ) {
             return 'message/exception.tpl';
         }
 

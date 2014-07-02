@@ -72,7 +72,7 @@ class User_Extend extends oxAdminDetails
         if ( !$this->_allowAdminEdit( $soxId ) )
             return false;
 
-        $aParams       = oxConfig::getParameter( "editval" );
+        $aParams       = oxRegistry::getConfig()->getRequestParameter( "editval" );
 
         $oUser = oxNew( "oxuser" );
         if ( $soxId != "-1" ) {
@@ -84,11 +84,11 @@ class User_Extend extends oxAdminDetails
         // checkbox handling
         $aParams['oxuser__oxactive'] = $oUser->oxuser__oxactive->value;
 
-        $blNewsParams  = oxConfig::getParameter( "editnews" );
+        $blNewsParams  = oxRegistry::getConfig()->getRequestParameter( "editnews" );
         if ( isset( $blNewsParams ) ) {
             $oNewsSubscription = $oUser->getNewsSubscription();
             $oNewsSubscription->setOptInStatus( (int) $blNewsParams );
-            $oNewsSubscription->setOptInEmailStatus( (int) oxConfig::getParameter( "emailfailed" ) );
+            $oNewsSubscription->setOptInEmailStatus( (int) oxRegistry::getConfig()->getRequestParameter( "emailfailed" ) );
         }
 
         $oUser->assign( $aParams );

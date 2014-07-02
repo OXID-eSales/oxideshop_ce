@@ -484,7 +484,7 @@ class order extends oxUBase
      */
     public function getAddressError()
     {
-        return oxConfig::getParameter('iAddressError');
+        return oxRegistry::getConfig()->getRequestParameter('iAddressError');
     }
 
     /**

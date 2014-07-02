@@ -103,7 +103,7 @@ class Unit_Admin_DeliverysetMainAjaxTest extends OxidTestCase
     public function testGetQuerySynchoxid()
     {
         $sSynchoxid = '_testAction';
-        $this->getConfig()->setParameter( "synchoxid", $sSynchoxid );
+        $this->getConfig()->setRequestParameter( "synchoxid", $sSynchoxid );
         
         $oView = oxNew( 'deliveryset_main_ajax' );
         $this->assertEquals( "from ".$this->getDeliveryViewTable()." where 1 and ".$this->getDeliveryViewTable().".oxid not in ( select ".$this->getDeliveryViewTable().".oxid from ".$this->getDeliveryViewTable()." left join oxdel2delset on oxdel2delset.oxdelid=".$this->getDeliveryViewTable().".oxid where oxdel2delset.oxdelsetid = '".$sSynchoxid."' )", trim( $oView->UNITgetQuery() ) );
@@ -117,7 +117,7 @@ class Unit_Admin_DeliverysetMainAjaxTest extends OxidTestCase
     public function testGetQueryOxid()
     {
         $sOxid = '_testAction';
-        $this->getConfig()->setParameter( "oxid", $sOxid );
+        $this->getConfig()->setRequestParameter( "oxid", $sOxid );
         
         $oView = oxNew( 'deliveryset_main_ajax' );
         $this->assertEquals( "from ".$this->getDeliveryViewTable()." left join oxdel2delset on oxdel2delset.oxdelid=".$this->getDeliveryViewTable().".oxid where oxdel2delset.oxdelsetid = '".$sOxid."'", trim( $oView->UNITgetQuery() ) );
@@ -132,8 +132,8 @@ class Unit_Admin_DeliverysetMainAjaxTest extends OxidTestCase
     {
         $sOxid = '_testAction';
         $sSynchoxid = '_testActionSynch';
-        $this->getConfig()->setParameter( "oxid", $sOxid );
-        $this->getConfig()->setParameter( "synchoxid", $sSynchoxid );
+        $this->getConfig()->setRequestParameter( "oxid", $sOxid );
+        $this->getConfig()->setRequestParameter( "synchoxid", $sSynchoxid );
         
         $oView = oxNew( 'deliveryset_main_ajax' );
         $this->assertEquals( "from ".$this->getDeliveryViewTable()." left join oxdel2delset on oxdel2delset.oxdelid=".$this->getDeliveryViewTable().".oxid where oxdel2delset.oxdelsetid = '".$sOxid."'and ".$this->getDeliveryViewTable().".oxid not in ( select ".$this->getDeliveryViewTable().".oxid from ".$this->getDeliveryViewTable()." left join oxdel2delset on oxdel2delset.oxdelid=".$this->getDeliveryViewTable().".oxid where oxdel2delset.oxdelsetid = '".$sSynchoxid."' )", trim( $oView->UNITgetQuery() ) );
@@ -163,8 +163,8 @@ class Unit_Admin_DeliverysetMainAjaxTest extends OxidTestCase
     public function testRemoveFromSetAll()
     {
         $sOxid = '_testDeliverysetMainRemoveAll';
-        $this->getConfig()->setParameter( "oxid", $sOxid );
-        $this->getConfig()->setParameter( "all", true );
+        $this->getConfig()->setRequestParameter( "oxid", $sOxid );
+        $this->getConfig()->setRequestParameter( "all", true );
         
         $sSql = "select count(oxdel2delset.oxid) from ".$this->getDeliveryViewTable()." left join oxdel2delset on oxdel2delset.oxdelid=".$this->getDeliveryViewTable().".oxid where oxdel2delset.oxdelsetid = '".$sOxid."'";
         
@@ -182,7 +182,7 @@ class Unit_Admin_DeliverysetMainAjaxTest extends OxidTestCase
     public function testAddToset()
     {
         $sSynchoxid = '_testActionAddMain';
-        $this->getConfig()->setParameter( "synchoxid", $sSynchoxid );
+        $this->getConfig()->setRequestParameter( "synchoxid", $sSynchoxid );
         
         $sSql = "select count(oxid) from oxdel2delset where oxdelsetid='$sSynchoxid'";
         $this->assertEquals( 0, oxDb::getDb()->getOne( $sSql ) );
@@ -202,8 +202,8 @@ class Unit_Admin_DeliverysetMainAjaxTest extends OxidTestCase
     public function testAddToSetAll()
     {
         $sSynchoxid = '_testActionAddMainAll';
-        $this->getConfig()->setParameter( "synchoxid", $sSynchoxid );
-        $this->getConfig()->setParameter( "all", true );
+        $this->getConfig()->setRequestParameter( "synchoxid", $sSynchoxid );
+        $this->getConfig()->setRequestParameter( "all", true );
         
         //count how much articles gets filtered
         $iCount = oxDb::getDb()->getOne( "select count(".$this->getDeliveryViewTable().".oxid) from ".$this->getDeliveryViewTable()." where 1 and ".$this->getDeliveryViewTable().".oxid not in ( select ".$this->getDeliveryViewTable().".oxid from ".$this->getDeliveryViewTable()." left join oxdel2delset on oxdel2delset.oxdelid=".$this->getDeliveryViewTable().".oxid where oxdel2delset.oxdelsetid = '".$sSynchoxid."' )" );

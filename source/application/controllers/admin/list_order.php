@@ -39,7 +39,7 @@ class List_Order extends Order_List
      */
     public function getListSorting()
     {
-        $aSort = oxConfig::getParameter( 'sort' );
+        $aSort = oxRegistry::getConfig()->getRequestParameter( 'sort' );
         if ( $this->_aCurrSorting === null && isset( $aSort[0]['oxorderdate'] ) ) {
             $this->_aCurrSorting[]["max(oxorder.oxorderdate)"] = "desc";
             return $this->_aCurrSorting;

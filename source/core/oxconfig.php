@@ -656,23 +656,6 @@ class oxConfig extends oxSuperCfg
 
     /**
      * Returns value of parameter stored in POST,GET.
-     * For security reasons performed checkParamSpecialChars().
-     * use $blRaw very carefully if you want to get unescaped
-     * parameter.
-     *
-     * @param string $sName Name of parameter
-     * @param bool   $blRaw Get unescaped parameter
-     *
-     * @deprecated since v5.0.0 (2012-08-27); Use public getRequestParameter()
-     * @return mixed
-     */
-    public static function getParameter($sName, $blRaw = false)
-    {
-        return oxRegistry::getConfig()->getRequestParameter($sName, $blRaw);
-    }
-
-    /**
-     * Returns value of parameter stored in POST,GET.
      * For security reasons performed oxconfig->checkParamSpecialChars().
      * use $blRaw very carefully if you want to get unescaped
      * parameter.
@@ -687,7 +670,7 @@ class oxConfig extends oxSuperCfg
         if (defined('OXID_PHP_UNIT')) {
             if (isset(modConfig::$unitMOD) && is_object(modConfig::$unitMOD)) {
                 try {
-                    $sValue = modConfig::getParameter($sName, $blRaw);
+                    $sValue = modConfig::getRequestParameter($sName, $blRaw);
 
                     // TODO: remove this after special chars concept implementation
                     $blIsAdmin = modConfig::getInstance()->isAdmin() || modSession::getInstance()->getVariable("blIsAdmin");

@@ -61,7 +61,7 @@ class Newsletter_Main extends oxAdminDetails
     {   $myConfig  = $this->getConfig();
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxConfig::getParameter( "editval");
+        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval");
 
         // shopid
         $sShopID = oxSession::getVar( "actshop");

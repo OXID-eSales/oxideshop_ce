@@ -48,7 +48,7 @@ class Unit_Admin_DeliverySetRDFaTest extends OxidTestCase
     public function testSave_deleteOldRecords()
     {
         $sTestID = '_test_recid';
-        modConfig::setParameter( 'oxid', $sTestID );
+        modConfig::setRequestParameter( 'oxid', $sTestID );
 
         $oMapping = oxNew('oxbase');
         $oMapping->init('oxobject2delivery');
@@ -84,9 +84,9 @@ class Unit_Admin_DeliverySetRDFaTest extends OxidTestCase
     {
         $sTestID = '_test_recid';
         $aObjIDs = array('_test_obj1', '_test_obj2');
-        modConfig::setParameter( 'oxid', $sTestID );
-        modConfig::setParameter( 'ardfadeliveries', $aObjIDs );
-        modConfig::setParameter(
+        modConfig::setRequestParameter( 'oxid', $sTestID );
+        modConfig::setRequestParameter( 'ardfadeliveries', $aObjIDs );
+        modConfig::setRequestParameter(
             'editval',
             array(
                 'oxobject2delivery__oxdeliveryid' => $sTestID,
@@ -151,7 +151,7 @@ class Unit_Admin_DeliverySetRDFaTest extends OxidTestCase
     {
         $sTestID = '_test_recid';
         $aObjIDs = array('_test_obj1', '_test_obj2');
-        modConfig::setParameter( 'oxid', $sTestID );
+        modConfig::setRequestParameter( 'oxid', $sTestID );
         $oView = oxNew('DeliverySet_RDFa');
 
         $oDB = oxDb::getDb();

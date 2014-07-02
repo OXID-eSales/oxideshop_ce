@@ -78,7 +78,7 @@ class Wrapping_Main extends oxAdminDetails
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxConfig::getParameter( "editval");
+        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval");
 
         // checkbox handling
         if ( !isset( $aParams['oxwrapping__oxactive']))
@@ -117,7 +117,7 @@ class Wrapping_Main extends oxAdminDetails
     public function saveinnlang()
     {
         $soxId = $this->getEditObjectId();
-        $aParams = oxConfig::getParameter( "editval");
+        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval");
 
         // checkbox handling
         if ( !isset( $aParams['oxwrapping__oxactive']))

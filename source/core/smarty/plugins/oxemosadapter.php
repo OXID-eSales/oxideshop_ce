@@ -294,9 +294,9 @@ class oxEmosAdapter extends oxSuperCfg
         $sPageId = $this->getConfig()->getShopId() .
                    $this->_getEmosCl() .
                    $sTplName .
-                   oxConfig::getParameter( 'cnid' ) .
-                   oxConfig::getParameter( 'anid' ) .
-                   oxConfig::getParameter( 'option' );
+                   oxRegistry::getConfig()->getRequestParameter( 'cnid' ) .
+                   oxRegistry::getConfig()->getRequestParameter( 'anid' ) .
+                   oxRegistry::getConfig()->getRequestParameter( 'option' );
 
         return md5( $sPageId );
     }
@@ -308,7 +308,7 @@ class oxEmosAdapter extends oxSuperCfg
      */
     protected function _getTplName()
     {
-        if ( !( $sCurrTpl = basename( ( string ) oxConfig::getParameter( 'tpl' ) ) ) ) {
+        if ( !( $sCurrTpl = basename( ( string ) oxRegistry::getConfig()->getRequestParameter( 'tpl' ) ) ) ) {
             // in case template was not defined in request
             $sCurrTpl = $this->getConfig()->getActiveView()->getTemplateName();
         }
@@ -364,7 +364,7 @@ class oxEmosAdapter extends oxSuperCfg
                 break;
             case 'user':
                 //ECONDA FIX track the OXID 3.x order process with the 3 different options plus default
-                $sOption = oxConfig::getParameter( 'option' );
+                $sOption = oxRegistry::getConfig()->getRequestParameter( 'option' );
                 $sOption = ( isset( $sOption ) ) ? $sOption : oxSession::getVar( 'option' );
                 switch ( $sOption ) {
                     case '1':
@@ -434,13 +434,13 @@ class oxEmosAdapter extends oxSuperCfg
                 break;
             case 'search':
                 $oEmos->addContent( 'Shop/Suche' );
-                $iPage = oxConfig::getParameter( 'pgNr' );
+                $iPage = oxRegistry::getConfig()->getRequestParameter( 'pgNr' );
                 if ( !$iPage ) {
                     //ECONDA FIX only track first search page, not the following pages
                     // #1184M - specialchar search
-                    //$sSearchParamForLink = rawurlencode( oxConfig::getParameter( 'searchparam', true ) );
+                    //$sSearchParamForLink = rawurlencode( oxRegistry::getConfig()->getRequestParameter( 'searchparam', true ) );
                     // #4018: The emospro.search string is URL-encoded forwarded to econda instead of URL-escaped
-                    $sSearchParamForLink =  oxConfig::getParameter( 'searchparam', true );
+                    $sSearchParamForLink =  oxRegistry::getConfig()->getRequestParameter( 'searchparam', true );
                     //$sOutput .= $oEmos->addSearch( $sSearchParamForLink, $oSmarty->_tpl_vars['d']->iArtCnt );
                     $iSearchCount = 0;
                     if (($oSmarty->_tpl_vars['oView']) && $oSmarty->_tpl_vars['oView']->getArticleCount()) {
@@ -553,8 +553,8 @@ class oxEmosAdapter extends oxSuperCfg
 
                 $oEmos->addContent( 'Service/Register' );
 
-                $iError   = oxConfig::getParameter( 'newslettererror' );
-                $iSuccess = oxConfig::getParameter( 'success' );
+                $iError   = oxRegistry::getConfig()->getRequestParameter( 'newslettererror' );
+                $iSuccess = oxRegistry::getConfig()->getRequestParameter( 'success' );
 
                 if ( $iError && $iError < 0 ) {
                     $oEmos->addRegister( $oUser ? $oUser->getId() : 'NULL', abs( $iError ) );
@@ -613,7 +613,7 @@ class oxEmosAdapter extends oxSuperCfg
 
         // track logins
         if ( 'login_noredirect' == $sFnc ) {
-            $oEmos->addLogin( oxConfig::getParameter( 'lgn_usr' ), $oUser ? '0' : '1' );
+            $oEmos->addLogin( oxRegistry::getConfig()->getRequestParameter( 'lgn_usr' ), $oUser ? '0' : '1' );
         }
 
         return "\n".$oEmos->toString();

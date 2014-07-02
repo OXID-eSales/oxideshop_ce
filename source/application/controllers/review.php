@@ -128,7 +128,7 @@ class Review extends Details
      */
     public function init()
     {
-        if ( oxConfig::getParameter( 'recommid' ) && !$this->getActiveRecommList() ) {
+        if ( oxRegistry::getConfig()->getRequestParameter( 'recommid' ) && !$this->getActiveRecommList() ) {
             oxRegistry::getUtils()->redirect( $this->getConfig()->getShopHomeURL(), true, 302 );
         }
 
@@ -184,8 +184,8 @@ class Review extends Details
 
             if ( ( $oActObject = $this->_getActiveObject() ) && ( $sType = $this->_getActiveType() ) ) {
 
-                if ( ( $dRating = oxConfig::getParameter( 'rating' ) ) === null ) {
-                    $dRating = oxConfig::getParameter( 'artrating' );
+                if ( ( $dRating = oxRegistry::getConfig()->getRequestParameter( 'rating' ) ) === null ) {
+                    $dRating = oxRegistry::getConfig()->getRequestParameter( 'artrating' );
                 }
 
                 if ( $dRating !== null ) {
@@ -208,7 +208,7 @@ class Review extends Details
                     }
                 }
 
-                if ( ( $sReviewText = trim( ( string ) oxConfig::getParameter( 'rvw_txt', true ) ) ) ) {
+                if ( ( $sReviewText = trim( ( string ) oxRegistry::getConfig()->getRequestParameter( 'rvw_txt', true ) ) ) ) {
                     $oReview = oxNew( 'oxreview' );
                     $oReview->oxreviews__oxobjectid = new oxField( $oActObject->getId() );
                     $oReview->oxreviews__oxtype     = new oxField( $sType );
@@ -256,7 +256,7 @@ class Review extends Details
      */
     public function getReviewUserHash()
     {
-        return oxConfig::getParameter( 'reviewuserhash' );
+        return oxRegistry::getConfig()->getRequestParameter( 'reviewuserhash' );
     }
 
     /**
@@ -308,7 +308,7 @@ class Review extends Details
         if ( $this->_oActiveRecommList === null ) {
             $this->_oActiveRecommList = false;
 
-            if ( $sRecommId = oxConfig::getParameter( 'recommid' ) ) {
+            if ( $sRecommId = oxRegistry::getConfig()->getRequestParameter( 'recommid' ) ) {
                 $oActiveRecommList = oxNew('oxrecommlist');
                 if ( $oActiveRecommList->load( $sRecommId ) ) {
                     $this->_oActiveRecommList = $oActiveRecommList;
@@ -379,7 +379,7 @@ class Review extends Details
             $this->_oActiveRecommItems = false;
             if ( $oActiveRecommList = $this->getActiveRecommList()) {
                 // sets active page
-                $iActPage = (int) oxConfig::getParameter( 'pgNr' );
+                $iActPage = (int) oxRegistry::getConfig()->getRequestParameter( 'pgNr' );
                 $iActPage = ($iActPage < 0) ? 0 : $iActPage;
 
                 // load only lists which we show on screen
@@ -448,16 +448,16 @@ class Review extends Details
     {
         $sParams = parent::getDynUrlParams();
 
-        if ( $sCnId = oxConfig::getParameter( 'cnid' ) ) {
+        if ( $sCnId = oxRegistry::getConfig()->getRequestParameter( 'cnid' ) ) {
             $sParams .= "&amp;cnid={$sCnId}";
         }
-        if ( $sAnId = oxConfig::getParameter( 'anid' ) ) {
+        if ( $sAnId = oxRegistry::getConfig()->getRequestParameter( 'anid' ) ) {
             $sParams .= "&amp;anid={$sAnId}";
         }
-        if ( $sListType = oxConfig::getParameter( 'listtype' ) ) {
+        if ( $sListType = oxRegistry::getConfig()->getRequestParameter( 'listtype' ) ) {
             $sParams .= "&amp;listtype={$sListType}";
         }
-        if ( $sRecommId = oxConfig::getParameter( 'recommid' ) ) {
+        if ( $sRecommId = oxRegistry::getConfig()->getRequestParameter( 'recommid' ) ) {
             $sParams .= "&amp;recommid={$sRecommId}";
         }
 

@@ -36,7 +36,7 @@ class Unit_Admin_ArticleCrosssellingTest extends OxidTestCase
     public function testRender()
     {
         oxTestModules::addFunction('oxarticle', 'isDerived', '{ return true; }');
-        modConfig::setParameter( "oxid", "1126" );
+        modConfig::setRequestParameter( "oxid", "1126" );
 
         // testing..
         $oView = new Article_Crossselling();

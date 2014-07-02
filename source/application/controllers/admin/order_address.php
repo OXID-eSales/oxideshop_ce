@@ -111,7 +111,7 @@ class Order_Address extends oxAdminDetails
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams = (array) oxConfig::getParameter( "editval");
+        $aParams = (array) oxRegistry::getConfig()->getRequestParameter( "editval");
 
             //TODO check if shop id is realy necessary at this place.
             $sShopID = oxSession::getVar( "actshop" );

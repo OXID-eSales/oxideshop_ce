@@ -57,12 +57,12 @@ class deliveryset_rdfa extends payment_rdfa
      */
     public function save()
     {
-        $aParams = oxConfig::getParameter("editval");
-        $aRDFaDeliveries = (array) oxConfig::getParameter("ardfadeliveries");
+        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aRDFaDeliveries = (array) oxRegistry::getConfig()->getRequestParameter("ardfadeliveries");
 
         // Delete old mappings
         $oDb = oxDb::getDb();
-        $oDb->execute("DELETE FROM oxobject2delivery WHERE oxdeliveryid = '".oxConfig::getParameter("oxid")."' AND OXTYPE = 'rdfadeliveryset'");
+        $oDb->execute("DELETE FROM oxobject2delivery WHERE oxdeliveryid = '".oxRegistry::getConfig()->getRequestParameter("oxid")."' AND OXTYPE = 'rdfadeliveryset'");
 
         // Save new mappings
         foreach ( $aRDFaDeliveries as $sDelivery ) {
@@ -102,7 +102,7 @@ class deliveryset_rdfa extends payment_rdfa
     {
         $oDb = oxDb::getDb();
         $aRDFaDeliveries = array();
-        $sSelect = 'select oxobjectid from oxobject2delivery where oxdeliveryid='.$oDb->quote( oxConfig::getParameter("oxid") ).' and oxtype = "rdfadeliveryset" ';
+        $sSelect = 'select oxobjectid from oxobject2delivery where oxdeliveryid='.$oDb->quote( oxRegistry::getConfig()->getRequestParameter("oxid") ).' and oxtype = "rdfadeliveryset" ';
         $rs = $oDb->execute( $sSelect );
         if ( $rs && $rs->recordCount()) {
             while ( !$rs->EOF ) {

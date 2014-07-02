@@ -91,7 +91,7 @@ class Attribute_Main extends oxAdminDetails
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxConfig::getParameter( "editval");
+        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval");
 
             // shopid
             $aParams['oxattribute__oxshopid'] = oxSession::getVar( "actshop" );
@@ -123,7 +123,7 @@ class Attribute_Main extends oxAdminDetails
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxConfig::getParameter( "editval");
+        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval");
 
             // shopid
             $aParams['oxattribute__oxshopid'] = oxSession::getVar( "actshop");
@@ -140,7 +140,7 @@ class Attribute_Main extends oxAdminDetails
         $oAttr->assign( $aParams);
 
         // apply new language
-        $oAttr->setLanguage( oxConfig::getParameter( "new_lang" ) );
+        $oAttr->setLanguage( oxRegistry::getConfig()->getRequestParameter( "new_lang" ) );
         $oAttr->save();
 
         // set oxid if inserted

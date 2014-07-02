@@ -53,7 +53,7 @@ class Shop_Main extends oxAdminDetails
         if ( $soxId != "-1" && isset( $soxId)) {
             // load object
             $oShop = oxNew( "oxshop" );
-            $isubjlang = oxConfig::getParameter("subjlang");
+            $isubjlang = oxRegistry::getConfig()->getRequestParameter("subjlang");
             if ( !isset($isubjlang))
                 $isubjlang = $this->_iEditLang;
 
@@ -71,7 +71,7 @@ class Shop_Main extends oxAdminDetails
 
         $this->_aViewData['IsOXDemoShop'] = $myConfig->isDemoShop();
         if ( !isset( $this->_aViewData['updatenav'] ) ) {
-            $this->_aViewData['updatenav']    = oxConfig::getParameter( 'updatenav' );
+            $this->_aViewData['updatenav']    = oxRegistry::getConfig()->getRequestParameter( 'updatenav' );
         }
 
         return "shop_main.tpl";
@@ -89,7 +89,7 @@ class Shop_Main extends oxAdminDetails
         $myConfig = $this->getConfig();
         $soxId = $this->getEditObjectId();
 
-        $aParams  = oxConfig::getParameter( "editval");
+        $aParams  = oxRegistry::getConfig()->getRequestParameter( "editval");
 
 
         //  #918 S
@@ -97,7 +97,7 @@ class Shop_Main extends oxAdminDetails
         $aParams['oxshops__oxactive'] = ( isset( $aParams['oxshops__oxactive'] ) && $aParams['oxshops__oxactive'] == true )? 1 : 0;
         $aParams['oxshops__oxproductive'] = ( isset( $aParams['oxshops__oxproductive']) && $aParams['oxshops__oxproductive'] == true) ? 1 : 0;
 
-        $isubjlang = oxConfig::getParameter("subjlang");
+        $isubjlang = oxRegistry::getConfig()->getRequestParameter("subjlang");
         $iLang = ( $isubjlang && $isubjlang > 0 ) ? $isubjlang : 0;
 
         $oShop = oxNew( "oxshop" );
@@ -115,7 +115,7 @@ class Shop_Main extends oxAdminDetails
         $oShop->assign( $aParams );
         $oShop->setLanguage($iLang );
 
-        if ( ( $sNewSMPTPass = oxConfig::getParameter( "oxsmtppwd" ) ) ) {
+        if ( ( $sNewSMPTPass = oxRegistry::getConfig()->getRequestParameter( "oxsmtppwd" ) ) ) {
             $oShop->oxshops__oxsmtppwd->setValue( $sNewSMPTPass == '-' ? "" : $sNewSMPTPass );
         }
 

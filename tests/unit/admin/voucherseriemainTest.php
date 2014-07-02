@@ -49,7 +49,7 @@ class Unit_Admin_VoucherSerieMainTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setParameter( "oxid", "testId" );
+        modConfig::setRequestParameter( "oxid", "testId" );
 
         // testing..
         $oView = new VoucherSerie_Main();
@@ -67,7 +67,7 @@ class Unit_Admin_VoucherSerieMainTest extends OxidTestCase
      */
     public function testRenderNoRealObjectId()
     {
-        modConfig::setParameter( "oxid", "-1" );
+        modConfig::setRequestParameter( "oxid", "-1" );
 
         // testing..
         $oView = new VoucherSerie_Main();
@@ -138,10 +138,10 @@ class Unit_Admin_VoucherSerieMainTest extends OxidTestCase
      */
     public function testStart()
     {
-        modConfig::setParameter( "voucherid", "testvoucherid" );
-        modConfig::setParameter( "voucherAmount", "testvoucherAmount" );
-        modConfig::setParameter( "randomVoucherNr", "testrandomVoucherNr" );
-        modConfig::setParameter( "voucherNr", "testvoucherNr" );
+        modConfig::setRequestParameter( "voucherid", "testvoucherid" );
+        modConfig::setRequestParameter( "voucherAmount", "testvoucherAmount" );
+        modConfig::setRequestParameter( "randomVoucherNr", "testrandomVoucherNr" );
+        modConfig::setRequestParameter( "voucherNr", "testvoucherNr" );
 
         $oView = new VoucherSerie_Main();
         $oView->start();

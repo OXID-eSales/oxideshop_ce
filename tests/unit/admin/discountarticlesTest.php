@@ -36,7 +36,7 @@ class Unit_Admin_DiscountArticlesTest extends OxidTestCase
     public function testRender()
     {
         oxTestModules::addFunction( "oxdiscount", "isDerived", "{return true;}" );
-        modConfig::setParameter( "oxid", "testId" );
+        modConfig::setRequestParameter( "oxid", "testId" );
 
         // testing..
         $oView = new Discount_Articles();

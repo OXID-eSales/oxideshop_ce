@@ -37,7 +37,7 @@ class Unit_Admin_ArticleVariantTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setParameter( "oxid", oxDb::getDb()->getOne( "select oxparentid from oxarticles where oxparentid != ''" ) );
+        modConfig::setRequestParameter( "oxid", oxDb::getDb()->getOne( "select oxparentid from oxarticles where oxparentid != ''" ) );
         oxTestModules::addFunction('oxarticle', 'isDerived', '{ return true; }');
 
         // testing..
@@ -56,7 +56,7 @@ class Unit_Admin_ArticleVariantTest extends OxidTestCase
      */
     public function testRenderVariant()
     {
-        modConfig::setParameter( "oxid", oxDb::getDb()->getOne( "select oxid from oxarticles where oxparentid != ''" ) );
+        modConfig::setRequestParameter( "oxid", oxDb::getDb()->getOne( "select oxid from oxarticles where oxparentid != ''" ) );
         oxTestModules::addFunction('oxarticle', 'isDerived', '{ return true; }');
 
         // testing..
@@ -80,8 +80,8 @@ class Unit_Admin_ArticleVariantTest extends OxidTestCase
     public function testSavevariant()
     {
         oxTestModules::addFunction( 'oxarticle', 'save', '{ throw new Exception( "save" ); }');
-        modConfig::setParameter( "voxid", "testid" );
-        modConfig::setParameter( "oxid", "testid" );
+        modConfig::setRequestParameter( "voxid", "testid" );
+        modConfig::setRequestParameter( "oxid", "testid" );
 
         try {
             $oView = new Article_Variant();
@@ -101,7 +101,7 @@ class Unit_Admin_ArticleVariantTest extends OxidTestCase
     public function testSavevariantDefaultId()
     {
         oxTestModules::addFunction( 'oxarticle', 'save', '{ throw new Exception( "save" ); }');
-        modConfig::setParameter( "voxid", "-1" );
+        modConfig::setRequestParameter( "voxid", "-1" );
 
         try {
             $oView = new Article_Variant();
@@ -120,7 +120,7 @@ class Unit_Admin_ArticleVariantTest extends OxidTestCase
      */
     public function testSavevariants()
     {
-        modConfig::setParameter( "editval", array( "oxid1" => "param1", "oxid2" => "param2" ) );
+        modConfig::setRequestParameter( "editval", array( "oxid1" => "param1", "oxid2" => "param2" ) );
 
         $aMethods[] = "savevariant";
 
@@ -139,7 +139,7 @@ class Unit_Admin_ArticleVariantTest extends OxidTestCase
     public function testDeleteVariant()
     {
         oxTestModules::addFunction( 'oxarticle', 'delete', '{ throw new Exception( "delete" ); }');
-        modConfig::setParameter( "oxid", "testid" );
+        modConfig::setRequestParameter( "oxid", "testid" );
 
         try {
             $oView = new Article_Variant();
@@ -159,7 +159,7 @@ class Unit_Admin_ArticleVariantTest extends OxidTestCase
     public function testChangename()
     {
         oxTestModules::addFunction( 'oxarticle', 'save', '{ throw new Exception( "save" ); }');
-        modConfig::setParameter( "oxid", "testid" );
+        modConfig::setRequestParameter( "oxid", "testid" );
 
         try {
             $oView = new Article_Variant();
@@ -182,7 +182,7 @@ class Unit_Admin_ArticleVariantTest extends OxidTestCase
         oxTestModules::addFunction('oxarticle', 'load', '{ return true; }');
         oxTestModules::addFunction( 'oxVariantHandler', 'genVariantFromSell', '{ throw new Exception( "genVariantFromSell" ); }');
 
-        modConfig::setParameter( "allsel", "testsel" );
+        modConfig::setRequestParameter( "allsel", "testsel" );
 
         try {
             $oView = new Article_Variant();

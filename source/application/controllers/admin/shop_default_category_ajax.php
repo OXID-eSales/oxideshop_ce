@@ -46,7 +46,7 @@ class shop_default_category_ajax extends ajaxListComponent
     protected function _getQuery()
     {
         $oCat = oxNew('oxcategory');
-        $oCat->setLanguage( oxConfig::getParameter('editlanguage') );
+        $oCat->setLanguage( oxRegistry::getConfig()->getRequestParameter('editlanguage') );
 
         $sCategoriesTable = $oCat->getViewName();
         return " from $sCategoriesTable where ".$oCat->getSqlActiveSnippet();
@@ -59,7 +59,7 @@ class shop_default_category_ajax extends ajaxListComponent
      */
     public function unassignCat()
     {
-        $sShopId = oxConfig::getParameter( 'oxid');
+        $sShopId = oxRegistry::getConfig()->getRequestParameter( 'oxid');
         $oShop = oxNew('oxshop');
         if ($oShop->load($sShopId)) {
             $oShop->oxshops__oxdefcat = new oxField('');
@@ -74,8 +74,8 @@ class shop_default_category_ajax extends ajaxListComponent
      */
     public function assignCat()
     {
-        $sChosenCat = oxConfig::getParameter( 'oxcatid' );
-        $sShopId    = oxConfig::getParameter( 'oxid');
+        $sChosenCat = oxRegistry::getConfig()->getRequestParameter( 'oxcatid' );
+        $sShopId    = oxRegistry::getConfig()->getRequestParameter( 'oxid');
         $oShop = oxNew('oxshop');
         if ($oShop->load($sShopId)) {
             $oShop->oxshops__oxdefcat = new oxField($sChosenCat);

@@ -35,7 +35,7 @@ class Unit_Admin_VoucherSerieGroupsTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setParameter( "oxid", "testId" );
+        modConfig::setRequestParameter( "oxid", "testId" );
         oxTestModules::addFunction('oxvoucherserie', 'isDerived', '{ return true; }');
 
         // testing..

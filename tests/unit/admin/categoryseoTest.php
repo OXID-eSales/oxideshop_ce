@@ -87,7 +87,7 @@ class Unit_Admin_CategorySeoTest extends OxidTestCase
         oxTestModules::addFunction( 'oxcategory', 'load', '{ return true; }');
         oxTestModules::addFunction( 'oxcategory', 'save', '{ return true; }');
         oxTestModules::addFunction( 'oxSeoEncoderCategory', 'markRelatedAsExpired', '{ throw new Exception( "markRelatedAsExpired" ); }');
-        modConfig::setParameter( "oxid", "testId" );
+        modConfig::setRequestParameter( "oxid", "testId" );
 
         // testing..
         try {

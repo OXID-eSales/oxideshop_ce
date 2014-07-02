@@ -59,7 +59,7 @@ class Tools_List extends oxAdminList
         $oAuthUser->loadAdminUser();
         if ( $oAuthUser->oxuser__oxrights->value === "malladmin" ) {
 
-            $sUpdateSQL = oxConfig::getParameter("updatesql");
+            $sUpdateSQL = oxRegistry::getConfig()->getRequestParameter("updatesql");
             $sUpdateSQLFile = $this->_processFiles();
 
             if ( $sUpdateSQLFile && strlen( $sUpdateSQLFile ) > 0 ) {

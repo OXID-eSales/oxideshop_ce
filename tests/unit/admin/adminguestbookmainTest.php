@@ -35,7 +35,7 @@ class Unit_Admin_AdminguestbookMainTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setParameter( "oxid", "xxx" );
+        modConfig::setRequestParameter( "oxid", "xxx" );
         oxTestModules::addFunction('oxgbentry', 'save', '{ return true; }');
 
         // testing..
@@ -58,8 +58,8 @@ class Unit_Admin_AdminguestbookMainTest extends OxidTestCase
      */
     public function testRenderDefaultOxid()
     {
-        modConfig::setParameter( "oxid", "-1" );
-        modConfig::setParameter( "saved_oxid", "-1" );
+        modConfig::setRequestParameter( "oxid", "-1" );
+        modConfig::setRequestParameter( "saved_oxid", "-1" );
 
         // testing..
         $oView = new Adminguestbook_Main();
@@ -85,8 +85,8 @@ class Unit_Admin_AdminguestbookMainTest extends OxidTestCase
         oxTestModules::addFunction('oxgbentry', 'load', '{ return true; }');
         oxTestModules::addFunction('oxgbentry', 'save', '{ return true; }');
 
-        modConfig::setParameter( "oxid", "xxx" );
-        modConfig::setParameter( "editval", array( "xxx" ) );
+        modConfig::setRequestParameter( "oxid", "xxx" );
+        modConfig::setRequestParameter( "editval", array( "xxx" ) );
 
         $oView = new Adminguestbook_Main();
         $oView->save();
@@ -105,8 +105,8 @@ class Unit_Admin_AdminguestbookMainTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxgbentry', 'save', '{ $this->oxgbentries__oxid = new oxField( "testId" ); return true; }');
 
-        modConfig::setParameter( "oxid", "-1" );
-        modConfig::setParameter( "editval", array( "xxx" ) );
+        modConfig::setRequestParameter( "oxid", "-1" );
+        modConfig::setRequestParameter( "editval", array( "xxx" ) );
 
         $oView = new Adminguestbook_Main();
         $oView->save();

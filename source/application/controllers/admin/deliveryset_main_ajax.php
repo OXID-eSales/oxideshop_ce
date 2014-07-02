@@ -100,7 +100,7 @@ class deliveryset_main_ajax extends ajaxListComponent
     public function addToSet()
     {
         $aChosenSets = $this->_getActionIds( 'oxdelivery.oxid' );
-        $soxId       = oxConfig::getParameter( 'synchoxid');
+        $soxId       = oxRegistry::getConfig()->getRequestParameter( 'synchoxid');
 
         // adding
         if ( $this->getConfig()->getRequestParameter( 'all' ) ) {

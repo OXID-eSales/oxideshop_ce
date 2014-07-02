@@ -36,7 +36,7 @@ class Unit_Admin_UserMainTest extends OxidTestCase
     public function testRender()
     {
         oxTestModules::addFunction( 'oxuser', 'loadAdminUser', '{ $this->oxuser__oxrights = new oxField( "malladmin" ); return; }' );
-        modConfig::setParameter( "oxid", "oxdefaultadmin" );
+        modConfig::setRequestParameter( "oxid", "oxdefaultadmin" );
 
         // testing..
         $oView = new User_Main();
@@ -57,7 +57,7 @@ class Unit_Admin_UserMainTest extends OxidTestCase
     public function testRenderNoRealObjectId()
     {
         oxTestModules::addFunction( 'oxuser', 'loadAdminUser', '{ $this->oxuser__oxrights = new oxField( "malladmin" ); return; }' );
-        modConfig::setParameter( "oxid", "-1" );
+        modConfig::setRequestParameter( "oxid", "-1" );
 
         // testing..
         $oView = new User_Main();
@@ -75,7 +75,7 @@ class Unit_Admin_UserMainTest extends OxidTestCase
      */
     public function testSave()
     {
-        modConfig::setParameter( "oxid", "-1" );
+        modConfig::setRequestParameter( "oxid", "-1" );
 
         oxTestModules::addFunction( 'oxuser', 'load', '{ return true; }' );
         oxTestModules::addFunction( 'oxuser', 'save', '{ return true; }' );
@@ -100,7 +100,7 @@ class Unit_Admin_UserMainTest extends OxidTestCase
      */
     public function testSaveExceptionDuringSave()
     {
-        modConfig::setParameter( "oxid", "-1" );
+        modConfig::setRequestParameter( "oxid", "-1" );
 
         oxTestModules::addFunction( 'oxuser', 'load', '{ return true; }' );
         oxTestModules::addFunction( 'oxuser', 'save', '{ throw new Exception("save"); }' );
@@ -150,7 +150,7 @@ class Unit_Admin_UserMainTest extends OxidTestCase
     public function testSave_passwordSpecChars()
     {
         $sPass = '&quot;&#34;"o?p[]XfdKvA=#3K8tQ%';
-        modConfig::setParameter( 'newPassword', $sPass );
+        modConfig::setRequestParameter( 'newPassword', $sPass );
 
         $oUser = $this->getMock( 'oxuser', array( 'setPassword', 'checkIfEmailExists', 'load' ) );
         $oUser->expects( $this->once() )->method( 'setPassword' )->with( $this->equalTo( $sPass ) );

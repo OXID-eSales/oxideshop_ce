@@ -35,7 +35,7 @@ class Unit_Admin_AttributeCategoryTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setParameter( "oxid", "testId" );
+        modConfig::setRequestParameter( "oxid", "testId" );
 
         // testing..
         $oView = new Attribute_Category();

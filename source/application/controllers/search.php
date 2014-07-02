@@ -140,16 +140,16 @@ class Search extends oxUBase
         $myConfig = $this->getConfig();
 
         // #1184M - special char search
-        $sSearchParamForQuery = oxConfig::getParameter( 'searchparam', true );
+        $sSearchParamForQuery = oxRegistry::getConfig()->getRequestParameter( 'searchparam', true );
 
         // searching in category ?
-        $sInitialSearchCat = $this->_sSearchCatId = rawurldecode( oxConfig::getParameter( 'searchcnid' ) );
+        $sInitialSearchCat = $this->_sSearchCatId = rawurldecode( oxRegistry::getConfig()->getRequestParameter( 'searchcnid' ) );
 
         // searching in vendor #671
-        $sInitialSearchVendor = rawurldecode( oxConfig::getParameter( 'searchvendor' ) );
+        $sInitialSearchVendor = rawurldecode( oxRegistry::getConfig()->getRequestParameter( 'searchvendor' ) );
 
         // searching in Manufacturer #671
-        $sInitialSearchManufacturer = $this->_sSearchManufacturer = rawurldecode( oxConfig::getParameter( 'searchmanufacturer' ) );
+        $sInitialSearchManufacturer = $this->_sSearchManufacturer = rawurldecode( oxRegistry::getConfig()->getRequestParameter( 'searchmanufacturer' ) );
 
         $this->_blEmptySearch = false;
         if ( !$sSearchParamForQuery && !$sInitialSearchCat && !$sInitialSearchVendor && !$sInitialSearchManufacturer ) {

@@ -48,8 +48,8 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
      */
     public function testStart()
     {
-        modConfig::setParameter( 'cl', null );
-        modConfig::setParameter( 'fnc', "testFnc" );
+        modConfig::setRequestParameter( 'cl', null );
+        modConfig::setRequestParameter( 'fnc', "testFnc" );
         modSession::getInstance()->setVar( 'actshop', null );
         oxTestModules::addFunction( 'oxUtils', 'redirect', '{ throw new Exception("Error in testStart()"); }' );
         modDB::getInstance()->addClassFunction( 'getOne', create_function('$x', 'return 2;' ) );
@@ -78,8 +78,8 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
      */
     public function testStartIsAdmin()
     {
-        modConfig::setParameter( 'cl', null );
-        modConfig::setParameter( 'fnc', "testFnc" );
+        modConfig::setRequestParameter( 'cl', null );
+        modConfig::setRequestParameter( 'fnc', "testFnc" );
         modSession::getInstance()->setVar( 'actshop', null );
         oxTestModules::addFunction( 'oxUtils', 'redirect', '{ throw new Exception("Error in testStart()"); }' );
         modDB::getInstance()->addClassFunction( 'getOne', create_function('$x', 'return 2;' ) );
@@ -153,8 +153,8 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
     {
         $this->setExpectedException('oxException', 'log debug');
 
-        modConfig::getInstance()->setParameter( 'cl', 'testClass' );
-        modConfig::setParameter( 'fnc', 'testFnc' );
+        modConfig::getInstance()->setRequestParameter( 'cl', 'testClass' );
+        modConfig::setRequestParameter( 'fnc', 'testFnc' );
 
         $oUtilsView = $this->getMock('oxUtilsView', array('addErrorToDisplay'), array(), '', false);
         $oUtilsView->expects( $this->any() )->method( 'addErrorToDisplay' );
@@ -180,8 +180,8 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
     {
         $this->setExpectedException('oxException', 'log debug');
 
-        modConfig::getInstance()->setParameter( 'cl', 'testClass' );
-        modConfig::setParameter( 'fnc', 'testFnc' );
+        modConfig::getInstance()->setRequestParameter( 'cl', 'testClass' );
+        modConfig::setRequestParameter( 'fnc', 'testFnc' );
 
         $oMockEx = $this->getMock('oxException', array('debugOut'));
         $oMockEx->expects( $this->once() )->method( 'debugOut' )->will( $this->throwException( new oxException('log debug') ));
@@ -386,7 +386,7 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
         oxTestModules::addFunction( 'oxUtils', 'isSearchEngine', '{ return false; }' );
         oxTestModules::addFunction( 'oxUtils', 'setHeader', '{}' );
 
-        modConfig::setParameter('renderPartial', 'asd');
+        modConfig::setRequestParameter('renderPartial', 'asd');
 
         $sTplPath  = modConfig::getInstance()->getConfigParam( 'sShopDir' )."/application/views/";
         $sTplPath .= modConfig::getInstance()->getConfigParam( 'sTheme' )."/tpl/page/checkout/basket.tpl";
@@ -428,7 +428,7 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
         oxTestModules::addFunction( 'oxUtils', 'isSearchEngine', '{ return false; }' );
         oxTestModules::addFunction( 'oxUtils', 'setHeader', '{}' );
 
-        modConfig::setParameter('renderPartial', 'asd');
+        modConfig::setRequestParameter('renderPartial', 'asd');
 
         $sTplPath  = modConfig::getInstance()->getConfigParam( 'sShopDir' )."/application/views/";
         $sTplPath .= modConfig::getInstance()->getConfigParam( 'sTheme' )."/tpl/page/checkout/basket.tpl";

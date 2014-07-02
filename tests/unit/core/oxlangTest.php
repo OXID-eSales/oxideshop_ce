@@ -497,15 +497,15 @@ class Unit_Core_oxLangTest extends OxidTestCase
     }
     public function testResetBaseLanguage()
     {
-        modConfig::setParameter( 'lang', '1' );
+        modConfig::setRequestParameter( 'lang', '1' );
         $oLang = new oxLang();
 
         $this->assertEquals( 1, $oLang->getBaseLanguage() );
-        modConfig::setParameter( 'lang', '0' );
+        modConfig::setRequestParameter( 'lang', '0' );
         $this->assertEquals( 1, $oLang->getBaseLanguage() );
         $oLang->resetBaseLanguage();
         $this->assertEquals( 0, $oLang->getBaseLanguage() );
-        modConfig::setParameter( 'lang', '1' );
+        modConfig::setRequestParameter( 'lang', '1' );
         $this->assertEquals( 0, $oLang->getBaseLanguage() );
         $oLang->resetBaseLanguage();
         $this->assertEquals( 1, $oLang->getBaseLanguage() );
@@ -516,31 +516,31 @@ class Unit_Core_oxLangTest extends OxidTestCase
      */
     public function testGetBaseLanguageTestingRequest()
     {
-        modConfig::setParameter( 'changelang', 1 );
+        modConfig::setRequestParameter( 'changelang', 1 );
 
         $oLang = $this->getMock( 'oxLang', array( 'isAdmin' ) );
         $oLang->expects( $this->any() )->method( 'isAdmin')->will( $this->returnValue( true ) );
 
         $this->assertEquals( 1, $oLang->getBaseLanguage() );
 
-        modConfig::setParameter( 'changelang', null );
-        modConfig::setParameter( 'lang', 1 );
+        modConfig::setRequestParameter( 'changelang', null );
+        modConfig::setRequestParameter( 'lang', 1 );
         $oLang = new oxLang();
 
         $this->assertEquals( 1, $oLang->getBaseLanguage() );
 
-        modConfig::setParameter( 'changelang', null );
-        modConfig::setParameter( 'lang', null );
-        modConfig::setParameter( 'tpllanguage', null );
-        modConfig::setParameter( 'language', 1 );
+        modConfig::setRequestParameter( 'changelang', null );
+        modConfig::setRequestParameter( 'lang', null );
+        modConfig::setRequestParameter( 'tpllanguage', null );
+        modConfig::setRequestParameter( 'language', 1 );
         $oLang = new oxLang();
 
         $this->assertEquals( 1, $oLang->getBaseLanguage() );
 
-        modConfig::setParameter( 'changelang', null );
-        modConfig::setParameter( 'lang', null );
-        modConfig::setParameter( 'tpllanguage', null );
-        modConfig::setParameter( 'language', null );
+        modConfig::setRequestParameter( 'changelang', null );
+        modConfig::setRequestParameter( 'lang', null );
+        modConfig::setRequestParameter( 'tpllanguage', null );
+        modConfig::setRequestParameter( 'language', null );
         $oLang = new oxLang();
 
         modConfig::getInstance()->setConfigParam( 'sDefaultLang', 1 );
@@ -553,7 +553,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
      */
     public function testGetBaseLanguagePassingNotExistingShouldBeFixed()
     {
-        modConfig::setParameter( 'changelang', 'xxx' );
+        modConfig::setRequestParameter( 'changelang', 'xxx' );
         $oLang = new oxLang();
 
         $this->assertEquals( 0, $oLang->getBaseLanguage() );
@@ -564,14 +564,14 @@ class Unit_Core_oxLangTest extends OxidTestCase
      */
     public function testGetBaseLanguageIgnoresSettedTemplateLanguageParam()
     {
-        modConfig::setParameter( 'changelang', 1 );
+        modConfig::setRequestParameter( 'changelang', 1 );
 
         $oLang = $this->getMock( 'oxLang', array( 'isAdmin' ) );
         $oLang->expects( $this->any() )->method( 'isAdmin')->will( $this->returnValue( false ) );
 
-        modConfig::setParameter( 'changelang', null );
-        modConfig::setParameter( 'lang', null );
-        modConfig::setParameter( 'tpllanguage', 1 );
+        modConfig::setRequestParameter( 'changelang', null );
+        modConfig::setRequestParameter( 'lang', null );
+        modConfig::setRequestParameter( 'tpllanguage', 1 );
 
         $oLang = new oxLang();
 
@@ -583,14 +583,14 @@ class Unit_Core_oxLangTest extends OxidTestCase
      */
     public function testGetBaseLanguageCaching()
     {
-        modConfig::setParameter( 'language', 1 );
+        modConfig::setRequestParameter( 'language', 1 );
 
         $oLang = $this->getMock( 'oxLang', array( 'isAdmin' ) );
         $oLang->expects( $this->any() )->method( 'isAdmin')->will( $this->returnValue( false ) );
 
         $this->assertEquals( 1, $oLang->getBaseLanguage() );
 
-        modConfig::setParameter( 'language', 0 );
+        modConfig::setRequestParameter( 'language', 0 );
         $this->assertEquals( 1, $oLang->getTplLanguage() );
     }
 
@@ -599,11 +599,11 @@ class Unit_Core_oxLangTest extends OxidTestCase
      */
     public function testGetBaseLanguage_detectingByBrowser()
     {
-        modConfig::setParameter( 'changelang', null );
-        modConfig::setParameter( 'lang', null );
-        modConfig::setParameter( 'tpllanguage', null );
-        modConfig::setParameter( 'language', null );
-        modConfig::setParameter( 'aLanguageURLs', null );
+        modConfig::setRequestParameter( 'changelang', null );
+        modConfig::setRequestParameter( 'lang', null );
+        modConfig::setRequestParameter( 'tpllanguage', null );
+        modConfig::setRequestParameter( 'language', null );
+        modConfig::setRequestParameter( 'aLanguageURLs', null );
 
         $oLang = $this->getMock( 'oxlang', array( 'detectLanguageByBrowser', 'validateLanguage' ) );
         $oLang->expects( $this->any() )->method( 'validateLanguage')->with( $this->equalTo( 1 ) )->will( $this->returnValue( 1 ) );
@@ -618,11 +618,11 @@ class Unit_Core_oxLangTest extends OxidTestCase
      */
     public function testGetBaseLanguage_detectingByBrowser_searchEngineDetected()
     {
-        modConfig::setParameter( 'changelang', null );
-        modConfig::setParameter( 'lang', null );
-        modConfig::setParameter( 'tpllanguage', null );
-        modConfig::setParameter( 'language', null );
-        modConfig::setParameter( 'aLanguageURLs', null );
+        modConfig::setRequestParameter( 'changelang', null );
+        modConfig::setRequestParameter( 'lang', null );
+        modConfig::setRequestParameter( 'tpllanguage', null );
+        modConfig::setRequestParameter( 'language', null );
+        modConfig::setRequestParameter( 'aLanguageURLs', null );
 
         $oUtils = $this->getMock( 'oxUtils', array( 'isSearchEngine' ) );
         $oUtils->expects( $this->any() )->method( 'isSearchEngine')->will( $this->returnValue( true ) );
@@ -642,11 +642,11 @@ class Unit_Core_oxLangTest extends OxidTestCase
      */
     public function testGetBaseLanguage_detectingByBrowser_adminMode()
     {
-        modConfig::setParameter( 'changelang', null );
-        modConfig::setParameter( 'lang', null );
-        modConfig::setParameter( 'tpllanguage', null );
-        modConfig::setParameter( 'language', null );
-        modConfig::setParameter( 'aLanguageURLs', null );
+        modConfig::setRequestParameter( 'changelang', null );
+        modConfig::setRequestParameter( 'lang', null );
+        modConfig::setRequestParameter( 'tpllanguage', null );
+        modConfig::setRequestParameter( 'language', null );
+        modConfig::setRequestParameter( 'aLanguageURLs', null );
 
         $oLang = $this->getMock( 'oxlang', array( 'detectLanguageByBrowser', 'isAdmin', 'validateLanguage' ) );
         $oLang->expects( $this->any() )->method( 'isAdmin')->will( $this->returnValue( true ) );
@@ -661,7 +661,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
      */
     public function testGetTplLanguageInNonAdminMode()
     {
-        modConfig::setParameter( 'tpllanguage', 1 );
+        modConfig::setRequestParameter( 'tpllanguage', 1 );
 
         $oLang = $this->getMock( 'oxLang', array( 'isAdmin', 'getBaseLanguage' ) );
         $oLang->expects( $this->any() )->method( 'isAdmin')->will( $this->returnValue( false ) );
@@ -675,7 +675,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
      */
     public function testGetTplLanguageInAdminMode()
     {
-        //modConfig::setParameter( 'tpllanguage', 1 );
+        //modConfig::setRequestParameter( 'tpllanguage', 1 );
         modSession::getInstance()->setVar( 'tpllanguage', 1 );
 
         $oLang = $this->getMock( 'oxLang', array( 'isAdmin', 'getBaseLanguage' ) );
@@ -720,7 +720,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
      */
     public function testGetTplLanguageCaching()
     {
-        //modConfig::setParameter( 'tpllanguage', 1 );
+        //modConfig::setRequestParameter( 'tpllanguage', 1 );
         modSession::getInstance()->setVar( 'tpllanguage', 1 );
 
         $oLang = $this->getMock( 'oxLang', array( 'isAdmin', 'getBaseLanguage' ) );
@@ -729,7 +729,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
         $this->assertEquals( 1, $oLang->getTplLanguage() );
 
-        modConfig::setParameter( 'tpllanguage', 0 );
+        modConfig::setRequestParameter( 'tpllanguage', 0 );
         $this->assertEquals( 1, $oLang->getTplLanguage() );
     }
 
@@ -738,7 +738,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
      */
     public function testGetTplLanguagePassingNotExistingShouldBeFixed()
     {
-        modConfig::setParameter( 'tpllanguage', 'xxx' );
+        modConfig::setRequestParameter( 'tpllanguage', 'xxx' );
 
         $oLang = $this->getMock( 'oxLang', array( 'isAdmin', 'getBaseLanguage' ) );
         $oLang->expects( $this->any() )->method( 'isAdmin')->will( $this->returnValue( true ) );
@@ -751,7 +751,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
      */
     public function testGetEditLanguageInAdminMode()
     {
-        modConfig::setParameter( 'editlanguage', 1 );
+        modConfig::setRequestParameter( 'editlanguage', 1 );
 
         $oLang = $this->getMock( 'oxLang', array( 'isAdmin', 'getBaseLanguage' ) );
         $oLang->expects( $this->any() )->method( 'isAdmin')->will( $this->returnValue( true ) );
@@ -765,7 +765,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
      */
     public function testGetEditLanguageinNonAdminMode()
     {
-        modConfig::setParameter( 'editlanguage', 1 );
+        modConfig::setRequestParameter( 'editlanguage', 1 );
 
         $oLang = $this->getMock( 'oxLang', array( 'isAdmin', 'getBaseLanguage' ) );
         $oLang->expects( $this->any() )->method( 'isAdmin')->will( $this->returnValue( false ) );
@@ -779,7 +779,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
      */
     public function testGetEditLanguageWithoutEditLangParam()
     {
-        modConfig::setParameter( 'editlanguage', null );
+        modConfig::setRequestParameter( 'editlanguage', null );
 
         $oLang = $this->getMock( 'oxLang', array( 'isAdmin', 'getBaseLanguage' ) );
         $oLang->expects( $this->any() )->method( 'isAdmin')->will( $this->returnValue( true ) );
@@ -794,8 +794,8 @@ class Unit_Core_oxLangTest extends OxidTestCase
      */
     public function testGetEditLanguageNewLangParamOveridesEditLangParam()
     {
-        modConfig::setParameter( 'editlanguage', 0 );
-        modConfig::setParameter( 'new_lang', 1 );
+        modConfig::setRequestParameter( 'editlanguage', 0 );
+        modConfig::setRequestParameter( 'new_lang', 1 );
 
         $oView = new oxView();
         $oView->setFncName( 'saveinnlang' );
@@ -817,7 +817,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
      */
     public function testGetEditLanguageCaching()
     {
-        modConfig::setParameter( 'editlanguage', 1 );
+        modConfig::setRequestParameter( 'editlanguage', 1 );
 
         $oLang = $this->getMock( 'oxLang', array( 'isAdmin', 'getBaseLanguage' ) );
         $oLang->expects( $this->any() )->method( 'isAdmin')->will( $this->returnValue( true ) );
@@ -825,7 +825,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
         $this->assertEquals( 1, $oLang->getEditLanguage() );
 
-        modConfig::setParameter( 'editlanguage', 0 );
+        modConfig::setRequestParameter( 'editlanguage', 0 );
         $this->assertEquals( 1, $oLang->getEditLanguage() );
     }
 
@@ -834,7 +834,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
      */
     public function testGetEditLanguagePassingNotExistingShouldBeFixed()
     {
-        modConfig::setParameter( 'editlanguage', 'xxx' );
+        modConfig::setRequestParameter( 'editlanguage', 'xxx' );
 
         $oLang = $this->getMock( 'oxLang', array( 'isAdmin', 'getBaseLanguage' ) );
         $oLang->expects( $this->any() )->method( 'isAdmin')->will( $this->returnValue( true ) );
@@ -847,7 +847,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
      */
     public function testGetBaseLanguageLanguageURLs()
     {
-        modConfig::setParameter( 'changelang', 1 );
+        modConfig::setRequestParameter( 'changelang', 1 );
         $oConfig = $this->getMock( 'oxConfig', array( 'isCurrentUrl' ) );
         $oConfig->expects( $this->any() )->method( 'isCurrentUrl')->will( $this->returnValue( true ) );
         $oConfig->init();
@@ -1324,11 +1324,11 @@ class Unit_Core_oxLangTest extends OxidTestCase
      */
     public function testBaseLanguage_getsFromCookie()
     {
-        modConfig::setParameter( 'changelang', null );
-        modConfig::setParameter( 'lang', null );
-        modConfig::setParameter( 'tpllanguage', null );
-        modConfig::setParameter( 'language', null );
-        modConfig::setParameter( 'aLanguageURLs', null );
+        modConfig::setRequestParameter( 'changelang', null );
+        modConfig::setRequestParameter( 'lang', null );
+        modConfig::setRequestParameter( 'tpllanguage', null );
+        modConfig::setRequestParameter( 'language', null );
+        modConfig::setRequestParameter( 'aLanguageURLs', null );
 
         $oUtilsServer = $this->getMock( 'oxUtilsServer', array( 'getOxCookie' ) );
         $oUtilsServer->expects( $this->exactly( 2 ) )->method( 'getOxCookie')->with( $this->equalTo( 'language' ) )->will( $this->returnValue( 1 ) );
@@ -1348,11 +1348,11 @@ class Unit_Core_oxLangTest extends OxidTestCase
      */
     public function testBaseLanguage_setsToCookie()
     {
-        modConfig::setParameter( 'changelang', null );
-        modConfig::setParameter( 'lang', 1 );
-        modConfig::setParameter( 'tpllanguage', null );
-        modConfig::setParameter( 'language', null );
-        modConfig::setParameter( 'aLanguageURLs', null );
+        modConfig::setRequestParameter( 'changelang', null );
+        modConfig::setRequestParameter( 'lang', 1 );
+        modConfig::setRequestParameter( 'tpllanguage', null );
+        modConfig::setRequestParameter( 'language', null );
+        modConfig::setRequestParameter( 'aLanguageURLs', null );
 
         $oUtilsServer = $this->getMock( 'oxUtilsServer', array( 'setOxCookie' ) );
         $oUtilsServer->expects( $this->once() )->method( 'setOxCookie')->with( $this->equalTo( 'language' ), $this->equalTo( 1 ) );

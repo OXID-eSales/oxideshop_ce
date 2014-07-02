@@ -35,7 +35,7 @@ class Unit_Admin_NewsMainTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setParameter( "oxid", "testId" );
+        modConfig::setRequestParameter( "oxid", "testId" );
 
         // testing..
         $oView = new News_Main();
@@ -52,7 +52,7 @@ class Unit_Admin_NewsMainTest extends OxidTestCase
      */
     public function testRenderNoRealObjectId()
     {
-        modConfig::setParameter( "oxid", "-1" );
+        modConfig::setRequestParameter( "oxid", "-1" );
 
         // testing..
         $oView = new News_Main();

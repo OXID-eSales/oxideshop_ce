@@ -50,7 +50,7 @@ class Article_Attribute extends oxAdminDetails
             }
         }
 
-        $iAoc = oxConfig::getParameter("aoc");
+        $iAoc = oxRegistry::getConfig()->getRequestParameter("aoc");
         if ( $iAoc == 1 ) {
             $oArticleAttributeAjax = oxNew( 'article_attribute_ajax' );
             $this->_aViewData['oxajax'] = $oArticleAttributeAjax->getColumns();

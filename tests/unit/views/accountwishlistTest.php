@@ -62,12 +62,12 @@ class Unit_Views_accountWishlistTest extends OxidTestCase
      */
     public function testShowSuggest()
     {
-        modConfig::setParameter( "blshowsuggest", 0 );
+        modConfig::setRequestParameter( "blshowsuggest", 0 );
 
         $oView = new Account_Wishlist();
         $this->assertFalse( $oView->showSuggest() );
 
-        modConfig::setParameter( "blshowsuggest", 1 );
+        modConfig::setRequestParameter( "blshowsuggest", 1 );
 
         $oView = new Account_Wishlist();
         $this->assertTrue( $oView->showSuggest() );
@@ -185,7 +185,7 @@ class Unit_Views_accountWishlistTest extends OxidTestCase
     {
         $aParams = array( "someVar1" => "someVal1", "someVar2" => "someVal2" );
 
-        modConfig::setParameter( "editval", $aParams );
+        modConfig::setRequestParameter( "editval", $aParams );
         oxTestModules::addFunction( 'oxUtilsView', 'addErrorToDisplay', '{ return "addErrorToDisplay"; }' );
 
         $oView = new Account_Wishlist();
@@ -206,7 +206,7 @@ class Unit_Views_accountWishlistTest extends OxidTestCase
         //$oObj->send_name  = "testFName testLName";
         //$oObj->send_id    = "testId";
 
-        modConfig::setParameter( "editval", $aParams );
+        modConfig::setRequestParameter( "editval", $aParams );
         oxTestModules::addFunction( 'oxUtilsView', 'addErrorToDisplay', '{ return "addErrorToDisplay"; }' );
         oxTestModules::addFunction( 'oxemail', 'sendWishlistMail', '{ return false; }' );
 
@@ -230,7 +230,7 @@ class Unit_Views_accountWishlistTest extends OxidTestCase
      */
     public function testTogglePublic()
     {
-        modConfig::setParameter( "blpublic", 1 );
+        modConfig::setRequestParameter( "blpublic", 1 );
 
         $oBasket = $this->getMock( "oxBasket", array( "save" ) );
         $oBasket->expects( $this->once() )->method( 'save');
@@ -250,7 +250,7 @@ class Unit_Views_accountWishlistTest extends OxidTestCase
      */
     public function testSearchForWishList()
     {
-        modConfig::setParameter( 'search', "searchParam" );
+        modConfig::setRequestParameter( 'search', "searchParam" );
         oxTestModules::addFunction( 'oxuserlist', 'loadWishlistUsers', '{ $this->_aArray[0] = 1; }' );
 
         $oView = new Account_Wishlist();

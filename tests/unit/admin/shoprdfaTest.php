@@ -35,7 +35,7 @@ class Unit_Admin_ShopRDFaTest extends OxidTestCase
      */
     public function testGetContentList()
     {
-        modConfig::setParameter( "oxid", oxConfig::getInstance()->getShopId() );
+        modConfig::setRequestParameter( "oxid", oxConfig::getInstance()->getShopId() );
 
         $oView = oxNew("Shop_RDFA");
         $this->assertEquals( 4, $oView->getContentList()->count() );
@@ -83,7 +83,7 @@ class Unit_Admin_ShopRDFaTest extends OxidTestCase
      */
     public function testSubmitUrl()
     {
-        modConfig::setParameter('aSubmitUrl', array( "url" => "http://www.myshop.com", "email" => "test@email"));
+        modConfig::setRequestParameter('aSubmitUrl', array( "url" => "http://www.myshop.com", "email" => "test@email"));
         $aHeaders = array(2 => "Return: True", 3 => "Return message: Success");
         $oView = $this->getMock( 'Shop_RDFa', array( "getHttpResponseCode" ) );
         $oView->expects( $this->any() )->method( 'getHttpResponseCode' )->will( $this->returnValue( $aHeaders ) );
@@ -99,7 +99,7 @@ class Unit_Admin_ShopRDFaTest extends OxidTestCase
      */
     public function testSubmitUrlNoEntry()
     {
-        modConfig::setParameter('aSubmitUrl', null);
+        modConfig::setRequestParameter('aSubmitUrl', null);
         $oView = $this->getProxyClass('Shop_RDFA');
         $oView->submitUrl();
         $aErr = oxSession::getVar( 'Errors' );
@@ -114,7 +114,7 @@ class Unit_Admin_ShopRDFaTest extends OxidTestCase
      */
     public function testSubmitUrlReturnFalse()
     {
-        modConfig::setParameter('aSubmitUrl', array( "url" => "http://www.myshop.com"));
+        modConfig::setRequestParameter('aSubmitUrl', array( "url" => "http://www.myshop.com"));
         $aHeaders = array(2 => "Return: False", 3 => "Return message: To many times submited");
         $oView = $this->getMock( 'Shop_RDFa', array( "getHttpResponseCode" ) );
         $oView->expects( $this->any() )->method( 'getHttpResponseCode' )->will( $this->returnValue( $aHeaders ) );

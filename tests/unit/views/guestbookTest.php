@@ -171,7 +171,7 @@ class Unit_Views_GuestbookTest extends OxidTestCase
     public function testSaveEntry_nouser()
     {
         $this->getSession()->setVar( 'usr', null );
-        $this->getConfig()->setParameter( 'rvw_txt', '' );
+        $this->getConfig()->setRequestParameter( 'rvw_txt', '' );
 
         $oConfig = $this->getMock( 'oxConfig', array( 'getShopId' ) );
         $oConfig->expects( $this->atLeastOnce() )->method( 'getShopId' )->will( $this->returnValue( '1' ) );
@@ -190,7 +190,7 @@ class Unit_Views_GuestbookTest extends OxidTestCase
     public function testSaveEntry_noshop()
     {
         $this->getSession()->setVar( 'usr', 'some_userid' );
-        $this->getConfig()->setParameter( 'rvw_txt', '' );
+        $this->getConfig()->setRequestParameter( 'rvw_txt', '' );
 
         $oConfig = $this->getMock( 'oxConfig', array( 'getShopId' ) );
         $oConfig->expects( $this->atLeastOnce() )->method( 'getShopId' )->will( $this->returnValue( null ) );
@@ -209,7 +209,7 @@ class Unit_Views_GuestbookTest extends OxidTestCase
     public function testSaveEntry_noReview()
     {
         $this->getSession()->setVar( 'usr', 'some_userid' );
-        $this->getConfig()->setParameter( 'rvw_txt', '' );
+        $this->getConfig()->setRequestParameter( 'rvw_txt', '' );
 
         $oConfig = $this->getMock( 'oxConfig', array( 'getShopId' ) );
         $oConfig->expects( $this->atLeastOnce() )->method( 'getShopId' )->will( $this->returnValue( '1' ) );
@@ -228,7 +228,7 @@ class Unit_Views_GuestbookTest extends OxidTestCase
     public function testSaveEntry_floodFailed()
     {
         $this->getSession()->setVar( 'usr', 'some_userid' );
-        $this->getConfig()->setParameter( 'rvw_txt', 'some review' );
+        $this->getConfig()->setRequestParameter( 'rvw_txt', 'some review' );
 
         $oConfig = $this->getMock( 'oxConfig', array( 'getShopId' ) );
         $oConfig->expects( $this->atLeastOnce() )->method( 'getShopId' )->will( $this->returnValue( '1' ) );
@@ -247,7 +247,7 @@ class Unit_Views_GuestbookTest extends OxidTestCase
     public function testSaveEntry_saveCall()
     {
         $this->getSession()->setVar( 'usr', 'some_userid' );
-        $this->getConfig()->setParameter( 'rvw_txt', 'some review' );
+        $this->getConfig()->setRequestParameter( 'rvw_txt', 'some review' );
 
         $oConfig = $this->getMock( 'oxConfig', array( 'getShopId' ) );
         $oConfig->expects( $this->atLeastOnce() )->method( 'getShopId' )->will( $this->returnValue( '1' ) );
@@ -266,7 +266,7 @@ class Unit_Views_GuestbookTest extends OxidTestCase
     public function testSaveEntry_nosavecall()
     {
         $this->getSession()->setVar( 'usr', 'some_userid' );
-        $this->getConfig()->setParameter( 'rvw_txt', 'some review' );
+        $this->getConfig()->setRequestParameter( 'rvw_txt', 'some review' );
 
         $oConfig = $this->getMock( 'oxConfig', array( 'getShopId' ) );
         $oConfig->expects( $this->atLeastOnce() )->method( 'getShopId' )->will( $this->returnValue( '1' ) );

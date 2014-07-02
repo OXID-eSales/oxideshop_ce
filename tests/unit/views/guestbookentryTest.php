@@ -108,7 +108,7 @@ class Unit_Views_GuestbookEntryTest extends OxidTestCase
     public function testSaveEntryNoReviewText()
     {
         modSession::getInstance()->setVar( 'usr', 'xxx' );
-        modConfig::setParameter( 'rvw_txt', null );
+        modConfig::setRequestParameter( 'rvw_txt', null );
 
         $oView = new GuestbookEntry();
         $this->assertEquals( 'guestbookentry', $oView->saveEntry() );
@@ -131,7 +131,7 @@ class Unit_Views_GuestbookEntryTest extends OxidTestCase
         oxTestModules::addFunction("oxgbentry", "floodProtection", "{return true;}");
 
         modSession::getInstance()->setVar( 'usr', 'xxx' );
-        modConfig::setParameter( 'rvw_txt', 'xxx' );
+        modConfig::setRequestParameter( 'rvw_txt', 'xxx' );
 
         $oView = new GuestbookEntry();
         $this->assertEquals( 'guestbookentry', $oView->saveEntry() );
@@ -154,8 +154,8 @@ class Unit_Views_GuestbookEntryTest extends OxidTestCase
         modSession::getInstance()->setVar( 'usr', 'xxx' );
         modSession::getInstance()->setVar( 'gbSessionFormId', 'xxx' );
 
-        modConfig::setParameter( 'rvw_txt', 'xxx' );
-        modConfig::setParameter( 'gbFormId', 'yyy' );
+        modConfig::setRequestParameter( 'rvw_txt', 'xxx' );
+        modConfig::setRequestParameter( 'gbFormId', 'yyy' );
 
         $oView = new GuestbookEntry();
         $this->assertEquals( 'guestbook', $oView->saveEntry() );
@@ -173,8 +173,8 @@ class Unit_Views_GuestbookEntryTest extends OxidTestCase
         modSession::getInstance()->setVar( 'usr', 'xxx' );
         modSession::getInstance()->setVar( 'gbSessionFormId', 'xxx' );
 
-        modConfig::setParameter( 'rvw_txt', 'xxx' );
-        modConfig::setParameter( 'gbFormId', 'xxx' );
+        modConfig::setRequestParameter( 'rvw_txt', 'xxx' );
+        modConfig::setRequestParameter( 'gbFormId', 'xxx' );
 
         $oView = $this->getMock( "guestbookEntry", array( "canAcceptFormData" ) );
         $oView->expects( $this->any() )->method( 'canAcceptFormData')->will( $this->returnValue( true ) );

@@ -85,7 +85,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
      */
     public function testInitDynGroupAssignment()
     {
-        modConfig::setParameter('dgr', 'testdgr');
+        modConfig::setRequestParameter('dgr', 'testdgr');
 
         $oView = new oxcmp_user();
         $oView->init();
@@ -101,7 +101,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
     public function testGetInvitor()
     {
         // testing..
-        modConfig::setParameter( 'su', 'testid' );
+        modConfig::setRequestParameter( 'su', 'testid' );
         $oView = new oxcmp_user();
         $oView->getInvitor();
         $this->assertEquals( 'testid', modSession::getInstance()->getVar('su') );
@@ -145,7 +145,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
     public function testRenderRegistration()
     {
         oxTestModules::addFunction( 'oxUtils', 'redirect', '{ throw new Exception($aA[0]); }');
-        modConfig::setParameter( 'cl', 'register' );
+        modConfig::setRequestParameter( 'cl', 'register' );
 
         $oConfig = $this->getMock( "oxConfig", array( "getShopHomeURL") );
         $oConfig->expects( $this->any() )->method( 'getShopHomeURL' )->will( $this->returnValue( "testUrl" ) );
@@ -236,7 +236,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
     public function testLoginNoredirectAlt()
     {
         oxConfig::getInstance()->setConfigParam( 'blConfirmAGB', true );
-        modConfig::setParameter( 'ord_agb', true );
+        modConfig::setRequestParameter( 'ord_agb', true );
 
         $oUser = $this->getMock( "oxUser", array( "acceptTerms" ) );
         $oUser->expects( $this->once() )->method( 'acceptTerms' );
@@ -259,11 +259,11 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
     public function testCreateUserForLoginFeature()
     {
         oxTestModules::addFunction( "oxemail", "sendRegisterEmail", "{ return true;}" );
-        modConfig::setParameter('lgn_usr', 'test@oxid-esales.com');
-        modConfig::setParameter('lgn_pwd', 'Test@oxid-esales.com');
-        modConfig::setParameter('lgn_pwd2', 'Test@oxid-esales.com');
-        modConfig::setParameter( 'ord_agb', true );
-        modConfig::setParameter( 'option', 3 );
+        modConfig::setRequestParameter('lgn_usr', 'test@oxid-esales.com');
+        modConfig::setRequestParameter('lgn_pwd', 'Test@oxid-esales.com');
+        modConfig::setRequestParameter('lgn_pwd2', 'Test@oxid-esales.com');
+        modConfig::setRequestParameter( 'ord_agb', true );
+        modConfig::setRequestParameter( 'option', 3 );
         $aRawVal = array('oxuser__oxfname' => 'fname',
                          'oxuser__oxlname' => 'lname',
                          'oxuser__oxstreetnr' => 'nr',
@@ -271,7 +271,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
                          'oxuser__oxzip' => 'zip',
                          'oxuser__oxcity' => 'city',
                          'oxuser__oxcountryid' => 'a7c40f631fc920687.20179984');
-        modConfig::setParameter('invadr', $aRawVal);
+        modConfig::setRequestParameter('invadr', $aRawVal);
 
         modConfig::getInstance()->setConfigParam( "blInvitationsEnabled", false );
 
@@ -353,9 +353,9 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
         modSession::getInstance()->setVar( 'dgr', 'oxidpricea' );
         $this->assertNotNull( oxSession::getVar( 'dgr' ) );
 
-        modConfig::setParameter( 'lgn_usr',  "test@oxideshop.com" );
-        modConfig::setParameter( 'lgn_pwd',  "testpass" );
-        modConfig::setParameter( 'lgn_pwd2', "testpass" );
+        modConfig::setRequestParameter( 'lgn_usr',  "test@oxideshop.com" );
+        modConfig::setRequestParameter( 'lgn_pwd',  "testpass" );
+        modConfig::setRequestParameter( 'lgn_pwd2', "testpass" );
 
         $aInvAdr["oxuser__oxsal"]       = "MR";
         $aInvAdr["oxuser__oxfname"]     = "testfname";
@@ -366,8 +366,8 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
         $aInvAdr["oxuser__oxzip"]       = "testzip";
         $aInvAdr["oxuser__oxcity"]      = "testcity";
 
-        modConfig::setParameter( 'invadr', $aInvAdr );
-        modConfig::setParameter( 'deladr', null );
+        modConfig::setRequestParameter( 'invadr', $aInvAdr );
+        modConfig::setRequestParameter( 'deladr', null );
         modConfig::getInstance()->setConfigParam( "blInvitationsEnabled", true );
 
         $oParent = $this->getMock( 'oxubase', array( "isEnabledPrivateSales" ) );
@@ -407,13 +407,13 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
         $oView = $this->getMock( 'modcmp_user', array( 'getConfig' ) );
         $oView->expects( $this->any() )->method( 'getConfig' )->will( $this->returnValue( $oConfig ) );
 
-        modConfig::setParameter('cl', 'testclass');
-        modConfig::setParameter('cnid', 'catid');
-        modConfig::setParameter('mnid', 'manId');
-        modConfig::setParameter('anid', 'artid');
-        modConfig::setParameter('tpl', 'test');
-        modConfig::setParameter('oxloadid', 'test');
-        modConfig::setParameter('recommid', 'recommid');
+        modConfig::setRequestParameter('cl', 'testclass');
+        modConfig::setRequestParameter('cnid', 'catid');
+        modConfig::setRequestParameter('mnid', 'manId');
+        modConfig::setRequestParameter('anid', 'artid');
+        modConfig::setRequestParameter('tpl', 'test');
+        modConfig::setRequestParameter('oxloadid', 'test');
+        modConfig::setRequestParameter('recommid', 'recommid');
         $sLink = $oView->getLogoutLink();
         $sExpLink = "shopurl/?cl=testclass&amp;searchparam=a&amp;anid=artid&amp;cnid=catid&amp;mnid=manId" .
                     "&amp;tpl=test&amp;oxloadid=test&amp;recommid=recommid&amp;fnc=logout";
@@ -429,11 +429,11 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
 
         $oView = $this->getMock( 'modcmp_user', array( 'getConfig') );
         $oView->expects( $this->any() )->method( 'getConfig' )->will( $this->returnValue( $oConfig ) );
-        modConfig::setParameter('cl', 'testclass');
-        modConfig::setParameter('cnid', 'catid');
-        modConfig::setParameter('mnid', 'manId');
-        modConfig::setParameter('anid', 'artid');
-        modConfig::setParameter('tpl', 'test');
+        modConfig::setRequestParameter('cl', 'testclass');
+        modConfig::setRequestParameter('cnid', 'catid');
+        modConfig::setRequestParameter('mnid', 'manId');
+        modConfig::setRequestParameter('anid', 'artid');
+        modConfig::setRequestParameter('tpl', 'test');
         $sLink = $oView->getLogoutLink();
         $sExpLink = "sslshopurl/?cl=testclass&amp;searchparam=a&amp;anid=artid&amp;cnid=catid&amp;mnid=manId" .
                     "&amp;tpl=test&amp;fnc=logout";
@@ -508,10 +508,10 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setParameter('invadr', 'testadr');
-        modConfig::setParameter('deladr', 'testdeladr');
-        modConfig::setParameter('reloadaddress', false);
-        modConfig::setParameter('lgn_usr', 'testuser');
+        modConfig::setRequestParameter('invadr', 'testadr');
+        modConfig::setRequestParameter('deladr', 'testdeladr');
+        modConfig::setRequestParameter('reloadaddress', false);
+        modConfig::setRequestParameter('lgn_usr', 'testuser');
         modConfig::getInstance()->setConfigParam( "blPsLoginEnabled", false );
 
         $oParent = new oxUbase();
@@ -529,7 +529,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
      */
     public function testLoadSessionUser()
     {
-        modConfig::setParameter('blPerfNoBasketSaving', false);
+        modConfig::setRequestParameter('blPerfNoBasketSaving', false);
         $oBasket = $this->getMock( 'oxBasket', array( 'onUpdate' ) );
         $oBasket->expects( $this->once() )->method( 'onUpdate');
         $oSession = $this->getMock( 'oxSession', array( 'getBasket' ) );
@@ -564,8 +564,8 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
     public function testLogin()
     {
         oxTestModules::addFunction( "oxUser", "login", "{ return true;}" );
-        modConfig::setParameter('lgn_usr', 'test@oxid-esales.com');
-        modConfig::setParameter('lgn_pwd', crc32( 'Test@oxid-esales.com' ));
+        modConfig::setRequestParameter('lgn_usr', 'test@oxid-esales.com');
+        modConfig::setRequestParameter('lgn_pwd', crc32( 'Test@oxid-esales.com' ));
 
         $oUserView = $this->getMock( 'oxcmp_user', array( '_afterLogin' ) );
         $oUserView->expects( $this->atLeastOnce() )->method( '_afterLogin' )->will( $this->returnValue( "nextStep" ) );
@@ -605,7 +605,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
      */
     public function testAfterLogin()
     {
-        modConfig::setParameter('blPerfNoBasketSaving', true);
+        modConfig::setRequestParameter('blPerfNoBasketSaving', true);
         $oBasket = $this->getMock( 'oxBasket', array( 'onUpdate' ) );
         $oBasket->expects( $this->once() )->method( 'onUpdate');
 
@@ -695,7 +695,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
     {
         oxTestModules::addFunction( "oxUtils", "redirect", "{ return true;}" );
         oxTestModules::addFunction( "oxUser", "logout", "{ return true;}" );
-        modConfig::setParameter('redirect', true);
+        modConfig::setRequestParameter('redirect', true);
         $blParam = oxConfig::getInstance()->getConfigParam('sSSLShopURL');
         oxConfig::getInstance()->setConfigParam('sSSLShopURL', true);
 
@@ -771,11 +771,11 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
     public function testCreateUser()
     {
         oxTestModules::addFunction( "oxemail", "sendRegisterEmail", "{ return true;}" );
-        modConfig::setParameter('lgn_usr', 'test@oxid-esales.com');
-        modConfig::setParameter('lgn_pwd', 'Test@oxid-esales.com');
-        modConfig::setParameter('lgn_pwd2', 'Test@oxid-esales.com');
-        modConfig::setParameter( 'order_remark', 'TestRemark' );
-        modConfig::setParameter( 'option', 3 );
+        modConfig::setRequestParameter('lgn_usr', 'test@oxid-esales.com');
+        modConfig::setRequestParameter('lgn_pwd', 'Test@oxid-esales.com');
+        modConfig::setRequestParameter('lgn_pwd2', 'Test@oxid-esales.com');
+        modConfig::setRequestParameter( 'order_remark', 'TestRemark' );
+        modConfig::setRequestParameter( 'option', 3 );
         $aRawVal = array('oxuser__oxfname' => 'fname',
                          'oxuser__oxlname' => 'lname',
                          'oxuser__oxstreetnr' => 'nr',
@@ -783,7 +783,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
                          'oxuser__oxzip' => 'zip',
                          'oxuser__oxcity' => 'city',
                          'oxuser__oxcountryid' => 'a7c40f631fc920687.20179984');
-        modConfig::setParameter('invadr', $aRawVal);
+        modConfig::setRequestParameter('invadr', $aRawVal);
 
         modConfig::getInstance()->setConfigParam( "blPsLoginEnabled", false );
 
@@ -805,7 +805,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
      */
     public function testCreateUserWithoutPassword()
     {
-        modConfig::setParameter('lgn_usr', 'test@oxid-esales.com');
+        modConfig::setRequestParameter('lgn_usr', 'test@oxid-esales.com');
         $aRawVal = array('oxuser__oxfname' => 'fname',
                          'oxuser__oxlname' => 'lname',
                          'oxuser__oxstreetnr' => 'nr',
@@ -813,7 +813,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
                          'oxuser__oxzip' => 'zip',
                          'oxuser__oxcity' => 'city',
                          'oxuser__oxcountryid' => 'a7c40f631fc920687.20179984');
-        modConfig::setParameter('invadr', $aRawVal);
+        modConfig::setRequestParameter('invadr', $aRawVal);
         modConfig::getInstance()->setConfigParam( "blPsLoginEnabled", false );
 
         $oParent = $this->getMock( 'oxubase', array( "isEnabledPrivateSales" ) );
@@ -933,8 +933,8 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
      */
     public function testChangeUserNoRedirect()
     {
-        modConfig::setParameter( 'order_remark', 'TestRemark' );
-        modConfig::setParameter( 'blnewssubscribed', null );
+        modConfig::setRequestParameter( 'order_remark', 'TestRemark' );
+        modConfig::setRequestParameter( 'blnewssubscribed', null );
         $aRawVal = array('oxuser__oxfname' => 'fname',
                          'oxuser__oxlname' => 'lname',
                          'oxuser__oxstreetnr' => 'nr',
@@ -942,7 +942,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
                          'oxuser__oxzip' => 'zip',
                          'oxuser__oxcity' => 'city',
                          'oxuser__oxcountryid' => 'a7c40f631fc920687.20179984');
-        modConfig::setParameter('invadr', $aRawVal);
+        modConfig::setRequestParameter('invadr', $aRawVal);
 
         $this->getProxyClass("oxcmp_user");
         $oUser = $this->getMock( 'oxUser', array( 'changeUserData', 'getNewsSubscription', 'setNewsSubscription' ) );
@@ -1153,8 +1153,8 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
                  'oxaddress__oxsal' => 'MSR',
                  'oxaddress__oxcountryid' => 'a7c40f631fc920687.20179984');
 
-        modConfig::setParameter( 'deladr', $aRawVal );
-        modConfig::setParameter( 'blshowshipaddress', true );
+        modConfig::setRequestParameter( 'deladr', $aRawVal );
+        modConfig::setRequestParameter( 'blshowshipaddress', true );
         $oUserView = $this->getProxyClass( "oxcmp_user" );
         $this->assertEquals( $aRawVal, $oUserView->UNITgetDelAddressData() );
     }
@@ -1167,7 +1167,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
     public function testGetDelAddressDataIfDataNotSet()
     {
         $aRawVal = array('oxaddress__oxsal' => 'MSR');
-        modConfig::setParameter('deladr', $aRawVal);
+        modConfig::setRequestParameter('deladr', $aRawVal);
         $oUserView = $this->getProxyClass("oxcmp_user");
         $this->assertEquals( array(), $oUserView->UNITgetDelAddressData() );
     }
@@ -1222,10 +1222,10 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
         $this->setExpectedException( 'oxException', 'Create user test' );
 
         $sPass = '&quot;&#34;"o?p[]XfdKvA=#3K8tQ%';
-        modConfig::setParameter( 'lgn_usr', 'test_username' );
-        modConfig::setParameter( 'lgn_pwd', $sPass );
-        modConfig::setParameter( 'lgn_pwd2', $sPass );
-        modConfig::setParameter( 'invadr', null );
+        modConfig::setRequestParameter( 'lgn_usr', 'test_username' );
+        modConfig::setRequestParameter( 'lgn_pwd', $sPass );
+        modConfig::setRequestParameter( 'lgn_pwd2', $sPass );
+        modConfig::setRequestParameter( 'invadr', null );
 
         $oUser = $this->getMock( 'oxUser', array( 'checkValues' ) );
         $oUser->expects( $this->once() )
@@ -1252,7 +1252,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
         $this->setExpectedException( 'oxException', 'Change user test' );
 
         $sPass = '&quot;&#34;"o?p[]XfdKvA=#3K8tQ%';
-        modConfig::setParameter( 'invadr', null );
+        modConfig::setRequestParameter( 'invadr', null );
 
         $oSession = $this->getMock( 'oxSession', array( 'checkSessionChallenge' ) );
         $oSession->expects( $this->once() )->method( 'checkSessionChallenge' )->will( $this->returnValue( true ) );
@@ -1282,9 +1282,9 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
         $this->setExpectedException( 'oxException', 'Login user test' );
 
         $sPass = '&quot;&#34;"o?p[]XfdKvA=#3K8tQ%';
-        modConfig::setParameter( 'lgn_usr', 'test_username' );
-        modConfig::setParameter( 'lgn_pwd', $sPass );
-        modConfig::setParameter( 'lgn_cook', null );
+        modConfig::setRequestParameter( 'lgn_usr', 'test_username' );
+        modConfig::setRequestParameter( 'lgn_pwd', $sPass );
+        modConfig::setRequestParameter( 'lgn_cook', null );
 
         $oUser = $this->getMock( 'oxUser', array( 'login' ) );
         $oUser->expects( $this->once() )

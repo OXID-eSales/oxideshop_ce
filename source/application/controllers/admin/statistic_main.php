@@ -54,7 +54,7 @@ class Statistic_Main extends oxAdminDetails
 
         // setting all reports data: check for reports and load them
         $sPath     = getShopBasePath(). "application/controllers/admin/reports";
-        $iLanguage = (int) oxConfig::getParameter("editlanguage");
+        $iLanguage = (int) oxRegistry::getConfig()->getRequestParameter("editlanguage");
         $aAllreports = array();
 
         $aReportFiles = glob( $sPath."/*.php" );
@@ -86,7 +86,7 @@ class Statistic_Main extends oxAdminDetails
             $this->_aViewData['ireports'] = count($aReports);
         }
 
-        if ( oxConfig::getParameter("aoc") ) {
+        if ( oxRegistry::getConfig()->getRequestParameter("aoc") ) {
             $oStatisticMainAjax = oxNew( 'statistic_main_ajax' );
             $this->_aViewData['oxajax'] = $oStatisticMainAjax->getColumns();
 
@@ -104,7 +104,7 @@ class Statistic_Main extends oxAdminDetails
     public function save()
     {
         $soxId = $this->getEditObjectId();
-        $aParams = oxConfig::getParameter( "editval");
+        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval");
 
         // shopid
         $sShopID = oxSession::getVar( "actshop");
@@ -143,15 +143,15 @@ class Statistic_Main extends oxAdminDetails
         $oShop->load( $myConfig->getShopId());
         $oShop = $this->addGlobalParams( $oShop );
 
-        $sTimeFrom = oxConfig::getParameter( "time_from" );
-        $sTimeTo   = oxConfig::getParameter( "time_to" );
+        $sTimeFrom = oxRegistry::getConfig()->getRequestParameter( "time_from" );
+        $sTimeTo   = oxRegistry::getConfig()->getRequestParameter( "time_to" );
         if ( $sTimeFrom && $sTimeTo ) {
             $sTimeFrom = oxRegistry::get("oxUtilsDate")->formatDBDate( $sTimeFrom, true );
             $sTimeFrom = date( "Y-m-d", strtotime( $sTimeFrom ) );
             $sTimeTo = oxRegistry::get("oxUtilsDate")->formatDBDate( $sTimeTo, true );
             $sTimeTo = date( "Y-m-d", strtotime( $sTimeTo ) );
         } else {
-            $dDays = oxConfig::getParameter( "timeframe" );
+            $dDays = oxRegistry::getConfig()->getRequestParameter( "timeframe" );
             $dNow  = time();
             $sTimeFrom = date( "Y-m-d", mktime( 0, 0, 0, date( "m", $dNow ), date( "d", $dNow ) - $dDays, date( "Y", $dNow ) ) );
             $sTimeTo   = date( "Y-m-d", time() );

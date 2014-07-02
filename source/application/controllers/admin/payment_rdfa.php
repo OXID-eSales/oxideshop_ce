@@ -63,12 +63,12 @@ class payment_rdfa extends oxAdminDetails
      */
     public function save()
     {
-        $aParams = oxConfig::getParameter("editval");
-        $aRDFaPayments = (array) oxConfig::getParameter("ardfapayments");
+        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aRDFaPayments = (array) oxRegistry::getConfig()->getRequestParameter("ardfapayments");
 
         // Delete old mappings
         $oDb = oxDb::getDb();
-        $oDb->execute("DELETE FROM oxobject2payment WHERE oxpaymentid = '".oxConfig::getParameter("oxid")."' AND OXTYPE = 'rdfapayment'");
+        $oDb->execute("DELETE FROM oxobject2payment WHERE oxpaymentid = '".oxRegistry::getConfig()->getRequestParameter("oxid")."' AND OXTYPE = 'rdfapayment'");
 
         // Save new mappings
         foreach ( $aRDFaPayments as $sPayment ) {
@@ -108,7 +108,7 @@ class payment_rdfa extends oxAdminDetails
     {
         $oDb = oxDb::getDb();
         $aRDFaPayments = array();
-        $sSelect = 'select oxobjectid from oxobject2payment where oxpaymentid='.$oDb->quote( oxConfig::getParameter("oxid") ).' and oxtype = "rdfapayment" ';
+        $sSelect = 'select oxobjectid from oxobject2payment where oxpaymentid='.$oDb->quote( oxRegistry::getConfig()->getRequestParameter("oxid") ).' and oxtype = "rdfapayment" ';
         $rs = $oDb->execute( $sSelect );
         if ( $rs && $rs->recordCount()) {
             while ( !$rs->EOF ) {

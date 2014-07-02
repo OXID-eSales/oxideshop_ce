@@ -129,7 +129,7 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
 
         $this->assertEquals('asd_'.oxConfig::getInstance()->getShopId().'_4_0', $oRss->p_getCacheId('asd'));
 
-        modConfig::setParameter('currency', 1);
+        modConfig::setRequestParameter('currency', 1);
         $this->assertEquals('asd_'.oxConfig::getInstance()->getShopId().'_4_1', $oRss->p_getCacheId('asd'));
     }
     public function testLoadFromCache()

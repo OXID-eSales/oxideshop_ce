@@ -39,7 +39,7 @@ class Order_Remark extends oxAdminDetails
         parent::render();
 
         $soxId = $this->getEditObjectId();
-        $sRemoxId = oxConfig::getParameter( "rem_oxid");
+        $sRemoxId = oxRegistry::getConfig()->getRequestParameter( "rem_oxid");
         if ( $soxId != "-1" && isset( $soxId)) {
             $oOrder = oxNew( "oxorder" );
             $oOrder->load( $soxId);
@@ -82,10 +82,10 @@ class Order_Remark extends oxAdminDetails
         $oOrder = oxNew( "oxorder" );
         if ( $oOrder->load( $this->getEditObjectId() ) ) {
             $oRemark = oxNew( "oxremark" );
-            $oRemark->load( oxConfig::getParameter( "rem_oxid" ) );
+            $oRemark->load( oxRegistry::getConfig()->getRequestParameter( "rem_oxid" ) );
 
-            $oRemark->oxremark__oxtext     = new oxField( oxConfig::getParameter( "remarktext" ) );
-            $oRemark->oxremark__oxheader   = new oxField( oxConfig::getParameter( "remarkheader" ) );
+            $oRemark->oxremark__oxtext     = new oxField( oxRegistry::getConfig()->getRequestParameter( "remarktext" ) );
+            $oRemark->oxremark__oxheader   = new oxField( oxRegistry::getConfig()->getRequestParameter( "remarkheader" ) );
             $oRemark->oxremark__oxtype     = new oxField( "r" );
             $oRemark->oxremark__oxparentid = new oxField( $oOrder->oxorder__oxuserid->value );
             $oRemark->save();
@@ -100,6 +100,6 @@ class Order_Remark extends oxAdminDetails
     public function delete()
     {
         $oRemark = oxNew( "oxRemark" );
-        $oRemark->delete( oxConfig::getParameter( "rem_oxid" ) );
+        $oRemark->delete( oxRegistry::getConfig()->getRequestParameter( "rem_oxid" ) );
     }
 }

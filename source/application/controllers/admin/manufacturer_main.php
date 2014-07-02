@@ -70,7 +70,7 @@ class Manufacturer_Main extends oxAdminDetails
             }
         }
 
-        if ( oxConfig::getParameter("aoc") ) {
+        if ( oxRegistry::getConfig()->getRequestParameter("aoc") ) {
             $oManufacturerMainAjax = oxNew( 'manufacturer_main_ajax' );
             $this->_aViewData['oxajax'] = $oManufacturerMainAjax->getColumns();
 
@@ -89,7 +89,7 @@ class Manufacturer_Main extends oxAdminDetails
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxConfig::getParameter( "editval");
+        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval");
 
         if ( !isset( $aParams['oxmanufacturers__oxactive']))
             $aParams['oxmanufacturers__oxactive'] = 0;
@@ -126,7 +126,7 @@ class Manufacturer_Main extends oxAdminDetails
     public function saveinnlang()
     {
         $soxId = $this->getEditObjectId();
-        $aParams    = oxConfig::getParameter( "editval");
+        $aParams    = oxRegistry::getConfig()->getRequestParameter( "editval");
 
         if ( !isset( $aParams['oxmanufacturers__oxactive']))
             $aParams['oxmanufacturers__oxactive'] = 0;

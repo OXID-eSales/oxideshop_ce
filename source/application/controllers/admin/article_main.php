@@ -431,7 +431,7 @@ class Article_Main extends oxAdminDetails
 
                 //article number handling, warns for artnum dublicates
                 if ( $myConfig->getConfigParam( 'blWarnOnSameArtNums' ) &&
-                     $oArticle->oxarticles__oxartnum->value && oxConfig::getParameter( 'fnc' ) == 'copyArticle' ) {
+                     $oArticle->oxarticles__oxartnum->value && oxRegistry::getConfig()->getRequestParameter( 'fnc' ) == 'copyArticle' ) {
                     $sSelect = "select oxid from ".$oArticle->getCoreTableName()."
                                 where oxartnum = ".$oDb->quote( $oArticle->oxarticles__oxartnum->value )." and oxid != ".$oDb->quote( $sNewId );
 
@@ -692,12 +692,12 @@ class Article_Main extends oxAdminDetails
         //fetching parent article variants
         if ( isset( $oParentArticle ) ) {
             $aJumpList[] = array( $oParentArticle->oxarticles__oxid->value, $this->_getTitle( $oParentArticle ) );
-            $oParentVariants = $oParentArticle->getAdminVariants( oxConfig::getParameter( "editlanguage" ) );
+            $oParentVariants = $oParentArticle->getAdminVariants( oxRegistry::getConfig()->getRequestParameter( "editlanguage" ) );
             if ( $oParentVariants->count()) {
                 foreach ( $oParentVariants as $oVar) {
                     $aJumpList[] = array( $oVar->oxarticles__oxid->value, " - ".$this->_getTitle( $oVar ) );
                     if ( $oVar->oxarticles__oxid->value == $oArticle->oxarticles__oxid->value ) {
-                        $oVariants = $oArticle->getAdminVariants(oxConfig::getParameter( "editlanguage"));
+                        $oVariants = $oArticle->getAdminVariants(oxRegistry::getConfig()->getRequestParameter( "editlanguage"));
                         if ( $oVariants->count() ) {
                             foreach ( $oVariants as $oVVar) {
                                 $aJumpList[] = array( $oVVar->oxarticles__oxid->value, " -- ".$this->_getTitle( $oVVar));
@@ -709,7 +709,7 @@ class Article_Main extends oxAdminDetails
         } else {
             $aJumpList[] = array( $oArticle->oxarticles__oxid->value, $this->_getTitle( $oArticle));
             //fetching this article variants data
-            $oVariants = $oArticle->getAdminVariants(oxConfig::getParameter( "editlanguage"));
+            $oVariants = $oArticle->getAdminVariants(oxRegistry::getConfig()->getRequestParameter( "editlanguage"));
             if ( $oVariants && $oVariants->count())
                 foreach ($oVariants as $oVar) {
                     $aJumpList[] = array( $oVar->oxarticles__oxid->value, " - ".$this->_getTitle( $oVar));

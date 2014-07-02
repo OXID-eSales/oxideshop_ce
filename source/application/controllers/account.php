@@ -167,7 +167,7 @@ class Account extends oxUBase
      */
     public function confirmTerms()
     {
-        $blConfirm = oxConfig::getParameter("term");
+        $blConfirm = oxRegistry::getConfig()->getRequestParameter("term");
         if (!$blConfirm && $this->isEnabledPrivateSales()) {
             $oUser = $this->getUser();
             if ($oUser && !$oUser->isTermsAccepted()) {
@@ -191,11 +191,11 @@ class Account extends oxUBase
         $aParams = parent::getNavigationParams();
 
         // source class name
-        if ($sSource = oxConfig::getParameter("sourcecl")) {
+        if ($sSource = oxRegistry::getConfig()->getRequestParameter("sourcecl")) {
             $aParams['sourcecl'] = $sSource;
         }
 
-        if ($sSource = oxConfig::getParameter("anid")) {
+        if ($sSource = oxRegistry::getConfig()->getRequestParameter("anid")) {
             $aParams['anid'] = $sSource;
         }
 
@@ -216,7 +216,7 @@ class Account extends oxUBase
     public function redirectAfterLogin()
     {
         // in case source class is provided - redirecting back to it with all default parameters
-        if (($sSource = oxConfig::getParameter("sourcecl")) &&
+        if (($sSource = oxRegistry::getConfig()->getRequestParameter("sourcecl")) &&
             $this->_oaComponents['oxcmp_user']->getLoginStatus() === USER_LOGIN_SUCCESS
         ) {
 
@@ -259,7 +259,7 @@ class Account extends oxUBase
     {
         if ($this->_sArticleId === null) {
             // passing wishlist information
-            if ($sArticleId = oxConfig::getParameter('aid')) {
+            if ($sArticleId = oxRegistry::getConfig()->getRequestParameter('aid')) {
                 $this->_sArticleId = $sArticleId;
             }
         }
@@ -277,7 +277,7 @@ class Account extends oxUBase
         if ($this->_sSearchParamForHtml === null) {
             $this->_sSearchParamForHtml = false;
             if ($this->getArticleId()) {
-                $this->_sSearchParamForHtml = oxConfig::getParameter('searchparam');
+                $this->_sSearchParamForHtml = oxRegistry::getConfig()->getRequestParameter('searchparam');
             }
         }
 
@@ -294,7 +294,7 @@ class Account extends oxUBase
         if ($this->_sSearchParam === null) {
             $this->_sSearchParam = false;
             if ($this->getArticleId()) {
-                $this->_sSearchParam = rawurlencode(oxConfig::getParameter('searchparam', true));
+                $this->_sSearchParam = rawurlencode(oxRegistry::getConfig()->getRequestParameter('searchparam', true));
             }
         }
 
@@ -312,7 +312,7 @@ class Account extends oxUBase
             $this->_sListType = false;
             if ($this->getArticleId()) {
                 // searching in vendor #671
-                $this->_sListType = oxConfig::getParameter('listtype');
+                $this->_sListType = oxRegistry::getConfig()->getRequestParameter('listtype');
             }
         }
 

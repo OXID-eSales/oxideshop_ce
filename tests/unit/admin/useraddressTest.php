@@ -35,8 +35,8 @@ class Unit_Admin_UserAddressTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setParameter( "oxid", "oxdefaultadmin" );
-        modConfig::setParameter( "oxaddressid", "testaddressid" );
+        modConfig::setRequestParameter( "oxid", "oxdefaultadmin" );
+        modConfig::setRequestParameter( "oxaddressid", "testaddressid" );
 
         // testing..
         $oView = $this->getMock( "User_Address", array( "_allowAdminEdit" ) );
@@ -64,8 +64,8 @@ class Unit_Admin_UserAddressTest extends OxidTestCase
         oxTestModules::addFunction( 'oxaddress', 'assign', '{ return true; }');
         oxTestModules::addFunction( 'oxaddress', 'save', '{ throw new Exception( "save" ); }');
 
-        modConfig::setParameter( "oxid", "testId" );
-        modConfig::setParameter( "editval", array( "oxaddress__oxid" => "testOxId" ) );
+        modConfig::setRequestParameter( "oxid", "testId" );
+        modConfig::setRequestParameter( "editval", array( "oxaddress__oxid" => "testOxId" ) );
 
         // testing..
         try {
@@ -88,8 +88,8 @@ class Unit_Admin_UserAddressTest extends OxidTestCase
     {
         oxTestModules::addFunction( 'oxaddress', 'delete', '{ return true; }');
 
-        modConfig::setParameter( "oxid", "testId" );
-        modConfig::setParameter( "editval", array( "oxaddress__oxid" => "testOxId" ) );
+        modConfig::setRequestParameter( "oxid", "testId" );
+        modConfig::setRequestParameter( "editval", array( "oxaddress__oxid" => "testOxId" ) );
 
         // testing..
         $oView = $this->getMock( "User_Address", array( "_allowAdminEdit") );

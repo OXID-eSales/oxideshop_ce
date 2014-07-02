@@ -103,7 +103,7 @@ class oxContent extends oxI18n implements oxIUrl
     public function getExpanded()
     {
         if ( !isset( $this->_blExpanded ) ) {
-            $this->_blExpanded = ( $this->getId() == oxConfig::getParameter( 'oxcid' ) );
+            $this->_blExpanded = ( $this->getId() == oxRegistry::getConfig()->getRequestParameter( 'oxcid' ) );
         }
         return $this->_blExpanded;
     }

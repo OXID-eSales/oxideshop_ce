@@ -118,7 +118,7 @@ class Unit_Admin_ArticleAccessoriesAjaxTest extends OxidTestCase
     public function testGetQueryOxid()
     {
         $sOxid = '_testArticleAccessoriesOxid';
-        modConfig::setParameter( "oxid", $sOxid );
+        modConfig::setRequestParameter( "oxid", $sOxid );
         
         $oView = oxNew( 'article_accessories_ajax' );
         $this->assertEquals( "from oxaccessoire2article left join ".$this->getArticleViewTable()." on oxaccessoire2article.oxobjectid=".$this->getArticleViewTable().".oxid  where oxaccessoire2article.oxarticlenid = '$sOxid'  and ".$this->getArticleViewTable().".oxid != '$sOxid'", trim( $oView->UNITgetQuery() ) );
@@ -132,7 +132,7 @@ class Unit_Admin_ArticleAccessoriesAjaxTest extends OxidTestCase
     public function testGetQuerySynchoxid()
     {
         $sSynchoxid = '_testArticleAccessoriesSynchoxid';
-        modConfig::setParameter( "synchoxid", $sSynchoxid );
+        modConfig::setRequestParameter( "synchoxid", $sSynchoxid );
         
         $oView = oxNew( 'article_accessories_ajax' );
         $this->assertEquals( "from ".$this->getArticleViewTable()." where 1  and ".$this->getArticleViewTable().".oxparentid = ''  and ".$this->getArticleViewTable().".oxid not in (  select oxaccessoire2article.oxobjectid from oxaccessoire2article  where oxaccessoire2article.oxarticlenid = '$sSynchoxid'  )  and ".$this->getArticleViewTable().".oxid != '$sSynchoxid'", trim( $oView->UNITgetQuery() ) );
@@ -147,8 +147,8 @@ class Unit_Admin_ArticleAccessoriesAjaxTest extends OxidTestCase
     {
         $sOxid = '_testArticleAccessoriesOxid';
         $sSynchoxid = '_testArticleAccessoriesSynchoxid';
-        modConfig::setParameter( "oxid", $sOxid );
-        modConfig::setParameter( "synchoxid", $sSynchoxid );
+        modConfig::setRequestParameter( "oxid", $sOxid );
+        modConfig::setRequestParameter( "synchoxid", $sSynchoxid );
         
         $oView = oxNew( 'article_accessories_ajax' );
         $this->assertEquals( "from ".$this->getObject2CategoryViewTable()." left join ".$this->getArticleViewTable()." on  ".$this->getArticleViewTable().".oxid=".$this->getObject2CategoryViewTable().".oxobjectid  where ".$this->getObject2CategoryViewTable().".oxcatnid = '$sOxid'  and ".$this->getArticleViewTable().".oxid not in (  select oxaccessoire2article.oxobjectid from oxaccessoire2article  where oxaccessoire2article.oxarticlenid = '$sSynchoxid'  )  and ".$this->getArticleViewTable().".oxid != '$sSynchoxid'", trim( $oView->UNITgetQuery() ) );
@@ -163,8 +163,8 @@ class Unit_Admin_ArticleAccessoriesAjaxTest extends OxidTestCase
     {
         $sOxid = '_testArticleAccessoriesOxid';
         $sSynchoxid = '_testArticleAccessoriesSynchoxid';
-        modConfig::setParameter( "oxid", $sOxid );
-        modConfig::setParameter( "synchoxid", $sSynchoxid );
+        modConfig::setRequestParameter( "oxid", $sOxid );
+        modConfig::setRequestParameter( "synchoxid", $sSynchoxid );
         modconfig::getInstance()->setConfigParam( "blVariantsSelection", true );
         
         $oView = oxNew( 'article_accessories_ajax' );
@@ -193,8 +193,8 @@ class Unit_Admin_ArticleAccessoriesAjaxTest extends OxidTestCase
      */
     public function testRemoveArticleAccAll()
     {
-        modConfig::setParameter( "all", true );
-        modConfig::setParameter( "oxid", '_testArticleAccessories' );
+        modConfig::setRequestParameter( "all", true );
+        modConfig::setRequestParameter( "oxid", '_testArticleAccessories' );
         
         $this->assertEquals( 2, oxDb::getDb()->getOne( "select count(oxid) from oxaccessoire2article where OXARTICLENID='_testArticleAccessories'" ) );
         
@@ -211,7 +211,7 @@ class Unit_Admin_ArticleAccessoriesAjaxTest extends OxidTestCase
     public function testAddArticleAcc()
     {
         $oView = $this->getMock( "article_accessories_ajax", array( "_getActionIds" ) );
-        modConfig::setParameter( "synchoxid", '_testArticle1' );
+        modConfig::setRequestParameter( "synchoxid", '_testArticle1' );
         
         $oView->expects( $this->any() )->method( '_getActionIds')->will( $this->returnValue( array( '_testGroupAdd1', '_testGroupAdd2' ) ) );
         
@@ -229,8 +229,8 @@ class Unit_Admin_ArticleAccessoriesAjaxTest extends OxidTestCase
     {
         $oView = $this->getMock( "article_accessories_ajax", array( "_getActionIds" ) );
         $sSynchoxid = '_testArticle1';
-        modConfig::setParameter( "synchoxid", $sSynchoxid );
-        modConfig::setParameter( "all", true );
+        modConfig::setRequestParameter( "synchoxid", $sSynchoxid );
+        modConfig::setRequestParameter( "all", true );
         
         //count how much articles gets filtered
         $iCount = oxDb::getDb()->getOne( "select count(oxid) from ".$this->getArticleViewTable()." where 1  and ".$this->getArticleViewTable().".oxparentid = ''  and ".$this->getArticleViewTable().".oxid not in (  select oxaccessoire2article.oxobjectid from oxaccessoire2article  where oxaccessoire2article.oxarticlenid = '$sSynchoxid'  )  and ".$this->getArticleViewTable().".oxid != '$sSynchoxid'" );

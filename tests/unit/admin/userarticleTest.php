@@ -35,7 +35,7 @@ class Unit_Admin_UserArticleTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setParameter( "oxid", "oxdefaultadmin" );
+        modConfig::setRequestParameter( "oxid", "oxdefaultadmin" );
 
         // testing..
         $oView = new User_Article();

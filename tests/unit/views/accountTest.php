@@ -68,7 +68,7 @@ class Unit_Views_accountTest extends OxidTestCase
     public function testConfirmTerms()
     {
         $oView = oxNew('account');
-        modConfig::setParameter('term', '2');
+        modConfig::setRequestParameter('term', '2');
         $this->assertEquals( '2', $oView->confirmTerms());
     }
 
@@ -79,7 +79,7 @@ class Unit_Views_accountTest extends OxidTestCase
      */
     public function testConfirmTermsForPrivateSales()
     {
-        modConfig::setParameter('term', false);
+        modConfig::setRequestParameter('term', false);
 
         $oView = $this->getMock( "account", array( "isEnabledPrivateSales", "getUser" ) );
         $oUser = $this->getMock( "oxuser", array( "isTermsAccepted" ) );
@@ -98,7 +98,7 @@ class Unit_Views_accountTest extends OxidTestCase
      */
     public function testGetListType()
     {
-        modConfig::setParameter( 'listtype', 'testListType' );
+        modConfig::setRequestParameter( 'listtype', 'testListType' );
 
         $oView = $this->getMock( "account", array( "getArticleId" ) );
         $oView->expects( $this->once() )->method( "getArticleId" )->will( $this->returnValue( false ) );
@@ -116,7 +116,7 @@ class Unit_Views_accountTest extends OxidTestCase
      */
     public function testGetSearchParam()
     {
-        modConfig::setParameter( 'searchparam', 'testparam' );
+        modConfig::setRequestParameter( 'searchparam', 'testparam' );
 
         $oView = $this->getMock( "account", array( "getArticleId" ) );
         $oView->expects( $this->exactly(2) )->method( "getArticleId" )->will( $this->returnValue( false ) );
@@ -136,12 +136,12 @@ class Unit_Views_accountTest extends OxidTestCase
      */
     public function testGetArticleId()
     {
-        modConfig::setParameter( 'aid', null );
+        modConfig::setRequestParameter( 'aid', null );
 
         $oView = new account();
         $this->assertNull( $oView->getArticleId() );
 
-        modConfig::setParameter( 'aid', 'testaid' );
+        modConfig::setRequestParameter( 'aid', 'testaid' );
 
         $oView = new account();
         $this->assertEquals( 'testaid', $oView->getArticleId() );
@@ -173,7 +173,7 @@ class Unit_Views_accountTest extends OxidTestCase
      */
     public function testRedirectAfterLoginSouldNotRedirect()
     {
-        modConfig::setParameter( 'sourcecl', null );
+        modConfig::setRequestParameter( 'sourcecl', null );
 
         $oCmp = $this->getMock( "oxcmp_user", array( "getLoginStatus" ) );
         $oCmp->expects( $this->never() )->method( "getLoginStatus" )->will( $this->returnValue( 1 ) );
@@ -192,8 +192,8 @@ class Unit_Views_accountTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxUtils', 'redirect', '{ return$aA[0];}');
 
-        modConfig::setParameter( 'sourcecl', 'testsource' );
-        modConfig::setParameter( 'anid', 'testanid' );
+        modConfig::setRequestParameter( 'sourcecl', 'testsource' );
+        modConfig::setRequestParameter( 'anid', 'testanid' );
 
         $oCmp = $this->getMock( "oxcmp_user", array( "getLoginStatus" ) );
         $oCmp->expects( $this->once() )->method( "getLoginStatus" )->will( $this->returnValue( 1 ) );
@@ -219,8 +219,8 @@ class Unit_Views_accountTest extends OxidTestCase
      */
     public function testGetNavigationParams()
     {
-        modConfig::setParameter( 'sourcecl', 'testsource' );
-        modConfig::setParameter( 'anid', 'testanid' );
+        modConfig::setRequestParameter( 'sourcecl', 'testsource' );
+        modConfig::setRequestParameter( 'anid', 'testanid' );
 
         $oView = new Account();
         $aNavParams = $oView->getNavigationParams();
@@ -236,7 +236,7 @@ class Unit_Views_accountTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setParameter( 'aid', 'testanid' );
+        modConfig::setRequestParameter( 'aid', 'testanid' );
 
         $oUser = new oxuser();
         $oUser->oxuser__oxpassword = new oxField( 1 );
@@ -258,7 +258,7 @@ class Unit_Views_accountTest extends OxidTestCase
      */
     public function testRenderNoUser()
     {
-        modConfig::setParameter( 'aid', 'testanid' );
+        modConfig::setRequestParameter( 'aid', 'testanid' );
         modConfig::getInstance()->setConfigParam( "blPsLoginEnabled", true );
 
         $oUser = new oxuser();

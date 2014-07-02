@@ -39,7 +39,7 @@ class Discount_Users extends oxAdminDetails
         parent::render();
 
         $soxId = $this->getEditObjectId();
-        $sSelGroup = oxConfig::getParameter( "selgroup");
+        $sSelGroup = oxRegistry::getConfig()->getRequestParameter( "selgroup");
 
         // all usergroups
         $oGroups = oxNew( 'oxlist' );
@@ -69,7 +69,7 @@ class Discount_Users extends oxAdminDetails
                 $this->_aViewData["readonly"] =  true;
         }
 
-        $iAoc = oxConfig::getParameter("aoc");
+        $iAoc = oxRegistry::getConfig()->getRequestParameter("aoc");
         if ( $iAoc == 1 ) {
             $oDiscountGroupsAjax = oxNew( 'discount_groups_ajax' );
             $this->_aViewData['oxajax'] = $oDiscountGroupsAjax->getColumns();

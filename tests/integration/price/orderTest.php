@@ -245,7 +245,7 @@ class Integration_Price_OrderTest extends OxidTestCase
             $oOrderArticle->oxorderarticles__oxartid  = new oxField( $oProduct->getId() );
             $oOrderArticle->oxorderarticles__oxartnum = new oxField( $oProduct->oxarticles__oxartnum->value );
             $oOrderArticle->oxorderarticles__oxamount = new oxField( $dAmount );
-            $oOrderArticle->oxorderarticles__oxselvariant = new oxField( oxConfig::getParameter( 'sel' ) );
+            $oOrderArticle->oxorderarticles__oxselvariant = new oxField( oxRegistry::getConfig()->getRequestParameter( 'sel' ) );
             $oOrder->recalculateOrder( array( $oOrderArticle ) );
         }
     }

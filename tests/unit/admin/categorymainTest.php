@@ -64,7 +64,7 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setParameter( "oxid", "testId" );
+        modConfig::setRequestParameter( "oxid", "testId" );
         oxTestModules::addFunction( "oxcategory", "isDerived", "{return true;}" );
 
         // testing..
@@ -82,7 +82,7 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
      */
     public function testRenderNoRealObjectId()
     {
-        modConfig::setParameter( "oxid", "-1" );
+        modConfig::setRequestParameter( "oxid", "-1" );
 
         // testing..
         $oView = new Category_Main();
@@ -103,8 +103,8 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
                           "oxcategories__oxparentid" => "oxrootid",
                           "oxcategories__oxtitle" => "Test category title for unit" );
         
-        modConfig::setParameter( "oxid", -1 );
-        modConfig::setParameter( "editval", $aParams );
+        modConfig::setRequestParameter( "oxid", -1 );
+        modConfig::setRequestParameter( "editval", $aParams );
         
         $oView = new Category_Main();
         $oView->save();
@@ -121,7 +121,7 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
     public function testSave()
     {
         oxTestModules::addFunction( 'oxcategory', 'save', '{ return true; }');
-        modConfig::setParameter( "oxid", "testId" );
+        modConfig::setRequestParameter( "oxid", "testId" );
 
         // testing..
         $oView = new Category_Main();
@@ -139,7 +139,7 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
     public function testSaveDefaultOxid()
     {
         oxTestModules::addFunction( 'oxcategory', 'save', '{ $this->oxcategories__oxid = new oxField( "testId" ); return true; }');
-        modConfig::setParameter( "oxid", "-1" );
+        modConfig::setRequestParameter( "oxid", "-1" );
 
         // testing..
         $oView = new Category_Main();
@@ -155,7 +155,7 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
      */
     public function testSaveinnlang()
     {
-        modConfig::setParameter( "oxid", "testId" );
+        modConfig::setRequestParameter( "oxid", "testId" );
         oxTestModules::addFunction( 'oxcategory', 'save', '{ return true; }');
 
         // testing..
@@ -173,7 +173,7 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
      */
     public function testSaveinnlangDefaultOxid()
     {
-        modConfig::setParameter( "oxid", "-1" );
+        modConfig::setRequestParameter( "oxid", "-1" );
         oxTestModules::addFunction( 'oxcategory', 'save', '{ $this->oxcategories__oxid = new oxField( "testId" ); return true; }');
 
         // testing..

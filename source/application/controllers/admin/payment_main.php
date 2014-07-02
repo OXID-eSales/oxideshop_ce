@@ -80,7 +80,7 @@ class Payment_Main extends oxAdminDetails
             $this->_aViewData['aFieldNames'] = oxRegistry::getUtils()->assignValuesFromText( $oPayment->oxpayments__oxvaldesc->value );
         }
 
-        if ( oxConfig::getParameter("aoc") ) {
+        if ( oxRegistry::getConfig()->getRequestParameter("aoc") ) {
             $oPaymentMainAjax = oxNew( 'payment_main_ajax' );
             $this->_aViewData['oxajax'] = $oPaymentMainAjax->getColumns();
 
@@ -103,7 +103,7 @@ class Payment_Main extends oxAdminDetails
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams    = oxConfig::getParameter( "editval");
+        $aParams    = oxRegistry::getConfig()->getRequestParameter( "editval");
         // checkbox handling
         if ( !isset( $aParams['oxpayments__oxactive']))
             $aParams['oxpayments__oxactive'] = 0;
@@ -122,7 +122,7 @@ class Payment_Main extends oxAdminDetails
         $oPayment->assign( $aParams);
 
         // setting add sum calculation rules
-        $aRules = (array) oxConfig::getParameter( "oxpayments__oxaddsumrules" );
+        $aRules = (array) oxRegistry::getConfig()->getRequestParameter( "oxpayments__oxaddsumrules" );
         // if sum eqals 0, show notice, that default value will be used.
         if ( empty($aRules) ) {
             $this->_aViewData["noticeoxaddsumrules"] = 1;
@@ -155,7 +155,7 @@ class Payment_Main extends oxAdminDetails
     {
 
         $soxId = $this->getEditObjectId();
-        $aParams    = oxConfig::getParameter( "editval");
+        $aParams    = oxRegistry::getConfig()->getRequestParameter( "editval");
 
             // shopid
             $sShopID = oxSession::getVar( "actshop");
@@ -172,7 +172,7 @@ class Payment_Main extends oxAdminDetails
         $oObj->assign( $aParams);
 
         // apply new language
-        $oObj->setLanguage( oxConfig::getParameter( "new_lang" ) );
+        $oObj->setLanguage( oxRegistry::getConfig()->getRequestParameter( "new_lang" ) );
         $oObj->save();
 
         // set oxid if inserted
@@ -190,7 +190,7 @@ class Payment_Main extends oxAdminDetails
         $oPayment = oxNew( "oxpayment" );
         if ( $oPayment->loadInLang( $this->_iEditLang, $this->getEditObjectId() ) ) {
 
-            $aDelFields = oxConfig::getParameter( "aFields" );
+            $aDelFields = oxRegistry::getConfig()->getRequestParameter( "aFields" );
             $this->_aFieldArray = oxRegistry::getUtils()->assignValuesFromText( $oPayment->oxpayments__oxvaldesc->value );
 
             if ( is_array( $aDelFields ) && count( $aDelFields ) ) {
@@ -221,7 +221,7 @@ class Payment_Main extends oxAdminDetails
             $this->_aFieldArray = oxRegistry::getUtils()->assignValuesFromText( $oPayment->oxpayments__oxvaldesc->value );
 
             $oField = new stdClass();
-            $oField->name = oxConfig::getParameter( "sAddField" );
+            $oField->name = oxRegistry::getConfig()->getRequestParameter( "sAddField" );
 
             $this->_aFieldArray[] = $oField;
 

@@ -881,30 +881,30 @@ class Unit_Core_oxutilsTest extends OxidTestCase
             modDB::getInstance()->addClassFunction('getOne', create_function('$sql', 'return 1;'));
             $mySession->setVar( "auth", "blafooUser");
             $this->assertEquals(true, oxUtils::getInstance()->checkAccessRights());
-            modConfig::setParameter('fnc', 'chshp');
+            modConfig::setRequestParameter('fnc', 'chshp');
             $this->assertEquals(false, oxUtils::getInstance()->checkAccessRights());
-            modConfig::setParameter('fnc', null);
+            modConfig::setRequestParameter('fnc', null);
             $this->assertEquals(true, oxUtils::getInstance()->checkAccessRights());
 
-            modConfig::setParameter('actshop', 1);
+            modConfig::setRequestParameter('actshop', 1);
             $this->assertEquals(true, oxUtils::getInstance()->checkAccessRights());
-            modConfig::setParameter('actshop', 2);
+            modConfig::setRequestParameter('actshop', 2);
             $this->assertEquals(false, oxUtils::getInstance()->checkAccessRights());
-            modConfig::setParameter('actshop', null);
+            modConfig::setRequestParameter('actshop', null);
             $this->assertEquals(true, oxUtils::getInstance()->checkAccessRights());
 
-            modConfig::setParameter('shp', 1);
+            modConfig::setRequestParameter('shp', 1);
             $this->assertEquals(true, oxUtils::getInstance()->checkAccessRights());
-            modConfig::setParameter('shp', 2);
+            modConfig::setRequestParameter('shp', 2);
             $this->assertEquals(false, oxUtils::getInstance()->checkAccessRights());
-            modConfig::setParameter('shp', null);
+            modConfig::setRequestParameter('shp', null);
             $this->assertEquals(true, oxUtils::getInstance()->checkAccessRights());
 
-            modConfig::setParameter('currentadminshop', 1);
+            modConfig::setRequestParameter('currentadminshop', 1);
             $this->assertEquals(true, oxUtils::getInstance()->checkAccessRights());
-            modConfig::setParameter('currentadminshop', 2);
+            modConfig::setRequestParameter('currentadminshop', 2);
             $this->assertEquals(false, oxUtils::getInstance()->checkAccessRights());
-            modConfig::setParameter('currentadminshop', null);
+            modConfig::setRequestParameter('currentadminshop', null);
             $this->assertEquals(true, oxUtils::getInstance()->checkAccessRights());
         } catch (Exception  $e) {
 
@@ -1068,7 +1068,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
 
     public function testReRedirect()
     {
-        modConfig::setParameter( 'redirected', '1' );
+        modConfig::setRequestParameter( 'redirected', '1' );
 
         $oUtils = $this->getMock( 'oxutils', array( '_simpleRedirect', '_addUrlParameters', 'getSession' ) );
         $oUtils->expects( $this->never() )->method( '_simpleRedirect');
@@ -1174,11 +1174,11 @@ class Unit_Core_oxutilsTest extends OxidTestCase
      */
     public function testCanPreview()
     {
-        modConfig::setParameter( "preview", null );
+        modConfig::setRequestParameter( "preview", null );
         $oUtils = new oxUtils();
         $this->assertNull( $oUtils->canPreview() );
 
-        modConfig::setParameter( "preview", "132" );
+        modConfig::setRequestParameter( "preview", "132" );
         oxTestModules::addFunction( 'oxUtilsServer', 'getOxCookie', '{ return "123"; }');
         $this->assertFalse( $oUtils->canPreview() );
 
@@ -1188,7 +1188,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
         $oUtils = $this->getMock( "oxUtils", array( "getUser" ) );
         $oUtils->expects( $this->any() )->method("getUser")->will( $this->returnValue( $oUser ) );
 
-        modConfig::setParameter( "preview", $oUtils->getPreviewId() );
+        modConfig::setRequestParameter( "preview", $oUtils->getPreviewId() );
         oxTestModules::addFunction( 'oxUtilsServer', 'getOxCookie', '{ return "123"; }');
 
         $this->assertTrue( $oUtils->canPreview() );

@@ -104,8 +104,8 @@ class Order_Overview extends oxAdminDetails
      */
     public function exportlex()
     {
-        $sOrderNr   = oxConfig::getParameter( "ordernr");
-        $sToOrderNr = oxConfig::getParameter( "toordernr");
+        $sOrderNr   = oxRegistry::getConfig()->getRequestParameter( "ordernr");
+        $sToOrderNr = oxRegistry::getConfig()->getRequestParameter( "toordernr");
         $oImex = oxNew( "oximex" );
         if ( ( $sLexware = $oImex->exportLexwareOrders( $sOrderNr, $sToOrderNr ) ) ) {
             $oUtils = oxRegistry::getUtils();
@@ -152,7 +152,7 @@ class Order_Overview extends oxAdminDetails
                 $sFilename = $oOrder->oxorder__oxordernr->value . "_" . $sTrimmedBillName . ".pdf";
                 $sFilename = $this->makeValidFileName($sFilename);
                 ob_start();
-                $oOrder->genPDF( $sFilename, oxConfig::getParameter( "pdflanguage" ) );
+                $oOrder->genPDF( $sFilename, oxRegistry::getConfig()->getRequestParameter( "pdflanguage" ) );
                 $sPDF = ob_get_contents();
                 ob_end_clean();
                 $oUtils->setHeader( "Pragma: public" );
@@ -174,7 +174,7 @@ class Order_Overview extends oxAdminDetails
         $oOrderList->init( "oxOrder" );
         $sSelect =  "select * from oxorder where oxpaymenttype = 'oxiddebitnote'";
 
-        if ( ( $iFromOrderNr = oxConfig::getParameter( "ordernr") ) ) {
+        if ( ( $iFromOrderNr = oxRegistry::getConfig()->getRequestParameter( "ordernr") ) ) {
             $sSelect .= " and oxordernr >= $iFromOrderNr";
         }
 
@@ -240,7 +240,7 @@ class Order_Overview extends oxAdminDetails
                 }
             }
 
-            if ( ( $blMail = oxConfig::getParameter( "sendmail" ) ) ) {
+            if ( ( $blMail = oxRegistry::getConfig()->getRequestParameter( "sendmail" ) ) ) {
                 // send eMail
                 $oEmail = oxNew( "oxemail" );
                 $oEmail->sendSendedNowMail( $oOrder );

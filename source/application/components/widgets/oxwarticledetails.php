@@ -393,7 +393,7 @@ class oxwArticleDetails extends oxWidget
     public function getLinkType()
     {
         if ($this->_iLinkType === null) {
-            $sListType = oxConfig::getParameter('listtype');
+            $sListType = oxRegistry::getConfig()->getRequestParameter('listtype');
             if ('vendor' == $sListType) {
                 $this->_iLinkType = OXARTICLE_LINKTYPE_VENDOR;
             } elseif ('manufacturer' == $sListType) {
@@ -898,7 +898,7 @@ class oxwArticleDetails extends oxWidget
         if ($this->_sBidPrice === null) {
             $this->_sBidPrice = false;
 
-            $aParams = oxConfig::getParameter('pa');
+            $aParams = oxRegistry::getConfig()->getRequestParameter('pa');
             $oCur = $this->getConfig()->getActShopCurrencyObject();
             $iPrice = oxRegistry::getUtils()->currency2Float($aParams['price']);
             $this->_sBidPrice = oxRegistry::getLang()->formatCurrency($iPrice, $oCur);
@@ -917,10 +917,10 @@ class oxwArticleDetails extends oxWidget
         // finding parent
         $oProduct = $this->getProduct();
         if (($oParent = $this->_getParentProduct($oProduct->oxarticles__oxparentid->value))) {
-            return $oParent->getVariantSelections(oxConfig::getParameter("varselid"), $oProduct->getId());
+            return $oParent->getVariantSelections(oxRegistry::getConfig()->getRequestParameter("varselid"), $oProduct->getId());
         }
 
-        return $oProduct->getVariantSelections(oxConfig::getParameter("varselid"));
+        return $oProduct->getVariantSelections(oxRegistry::getConfig()->getRequestParameter("varselid"));
     }
 
     /**
@@ -957,7 +957,7 @@ class oxwArticleDetails extends oxWidget
                 //as blLoadVariants = false affect "ab price" functionality
                 $myConfig->setConfigParam('blLoadVariants', true);
 
-                $sOxid = oxConfig::getParameter('anid');
+                $sOxid = oxRegistry::getConfig()->getRequestParameter('anid');
 
                 // object is not yet loaded
                 $this->_oProduct = oxNew('oxarticle');
@@ -967,7 +967,7 @@ class oxwArticleDetails extends oxWidget
                     $myUtils->showMessageAndExit('');
                 }
 
-                $aVariantSelections = $this->_oProduct->getVariantSelections(oxConfig::getParameter("varselid"));
+                $aVariantSelections = $this->_oProduct->getVariantSelections(oxRegistry::getConfig()->getRequestParameter("varselid"));
                 if ($aVariantSelections && $aVariantSelections['oActiveVariant'] && $aVariantSelections['blPerfectFit']) {
                     $this->_oProduct = $aVariantSelections['oActiveVariant'];
                 }

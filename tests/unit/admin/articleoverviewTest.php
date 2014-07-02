@@ -49,7 +49,7 @@ class Unit_Admin_ArticleOverviewTest extends OxidTestCase
     public function testRender()
     {
         oxTestModules::addFunction('oxarticle', 'isDerived', '{ return true; }');
-        modConfig::setParameter( "oxid", "1126" );
+        modConfig::setRequestParameter( "oxid", "1126" );
 
         $oBase = new oxbase();
         $oBase->init( "oxorderarticles" );
@@ -81,7 +81,7 @@ class Unit_Admin_ArticleOverviewTest extends OxidTestCase
     public function testRenderPArentBuyable()
     {
         oxTestModules::addFunction('oxarticle', 'isDerived', '{ return true; }');
-        modConfig::setParameter( "oxid", "1126" );
+        modConfig::setRequestParameter( "oxid", "1126" );
         modConfig::getInstance()->setConfigParam( "blVariantParentBuyable", true );
 
         // testing..

@@ -121,8 +121,8 @@ class Report_searchstrings extends report_base
         $aDataX = array();
         $aDataY = array();
 
-        $sTimeFrom = $oDb->quote( date( "Y-m-d H:i:s", strtotime( oxConfig::getParameter( "time_from"))) );
-        $sTimeTo   = $oDb->quote( date( "Y-m-d H:i:s", strtotime( oxConfig::getParameter( "time_to"))) );
+        $sTimeFrom = $oDb->quote( date( "Y-m-d H:i:s", strtotime( oxRegistry::getConfig()->getRequestParameter( "time_from"))) );
+        $sTimeTo   = $oDb->quote( date( "Y-m-d H:i:s", strtotime( oxRegistry::getConfig()->getRequestParameter( "time_to"))) );
 
         $sSQL = "select count(*) as nrof, oxparameter from oxlogs where oxclass = 'search' and oxtime >= $sTimeFrom and oxtime <= $sTimeTo group by oxparameter order by nrof desc";
         $rs = $oDb->execute( $sSQL);

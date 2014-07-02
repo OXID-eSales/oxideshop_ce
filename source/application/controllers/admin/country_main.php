@@ -90,7 +90,7 @@ class Country_Main extends oxAdminDetails
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxConfig::getParameter( "editval" );
+        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval" );
 
         if ( !isset( $aParams['oxcountry__oxactive']))
             $aParams['oxcountry__oxactive'] = 0;
@@ -125,7 +125,7 @@ class Country_Main extends oxAdminDetails
 
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxConfig::getParameter( "editval");
+        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval");
 
         if ( !isset( $aParams['oxcountry__oxactive']))
             $aParams['oxcountry__oxactive'] = 0;

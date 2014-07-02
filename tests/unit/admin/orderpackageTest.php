@@ -36,7 +36,7 @@ class Unit_Admin_OrderPackageTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setParameter( "oxid", "testId" );
+        modConfig::setRequestParameter( "oxid", "testId" );
 
         $oView = new Order_Package();
         $this->assertEquals( "order_package.tpl", $oView->render() );

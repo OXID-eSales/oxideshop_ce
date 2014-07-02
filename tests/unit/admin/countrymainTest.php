@@ -36,7 +36,7 @@ class Unit_Admin_CountryMainTest extends OxidTestCase
     public function testRender()
     {
         oxTestModules::addFunction( "oxdelivery", "isForeignCountry", "{return true;}" );
-        modConfig::setParameter( "oxid", "testId" );
+        modConfig::setRequestParameter( "oxid", "testId" );
 
         // testing..
         $oView = new Country_Main();
@@ -53,7 +53,7 @@ class Unit_Admin_CountryMainTest extends OxidTestCase
      */
     public function testRenderNoRealObjectId()
     {
-        modConfig::setParameter( "oxid", "-1" );
+        modConfig::setRequestParameter( "oxid", "-1" );
 
         // testing..
         $oView = new Country_Main();

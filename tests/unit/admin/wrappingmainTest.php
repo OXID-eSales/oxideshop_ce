@@ -35,7 +35,7 @@ class Unit_Admin_WrappingMainTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setParameter( "oxid", oxDb::getDb()->getOne( "select oxid from oxwrapping" ) );
+        modConfig::setRequestParameter( "oxid", oxDb::getDb()->getOne( "select oxid from oxwrapping" ) );
         oxTestModules::addFunction('oxarticle', 'isDerived', '{ return true; }');
 
         // testing..
@@ -54,7 +54,7 @@ class Unit_Admin_WrappingMainTest extends OxidTestCase
      */
     public function testRenderNoRealObjectId()
     {
-        modConfig::setParameter( "oxid", "-1" );
+        modConfig::setRequestParameter( "oxid", "-1" );
 
         // testing..
         $oView = new Wrapping_Main();

@@ -53,7 +53,7 @@ class Discount_Articles extends oxAdminDetails
             $this->_createCategoryTree( "artcattree" );
         }
 
-        $iAoc = oxConfig::getParameter("aoc");
+        $iAoc = oxRegistry::getConfig()->getRequestParameter("aoc");
         if ( $iAoc == 1 ) {
             $oDiscountArticlesAjax = oxNew( 'discount_articles_ajax' );
             $this->_aViewData['oxajax'] = $oDiscountArticlesAjax->getColumns();

@@ -205,8 +205,8 @@ class Unit_Admin_DynExportBaseTest extends OxidTestCase
      */
     public function testRun()
     {
-        modConfig::setParameter("iStart", 0);
-        modConfig::setParameter("aExportResultset", array("aaaaa"));
+        modConfig::setRequestParameter("iStart", 0);
+        modConfig::setRequestParameter("aExportResultset", array("aaaaa"));
 
         // testing..
         $oView = $this->getMock( "_DynExportBase", array( "nextTick" ) );
@@ -226,8 +226,8 @@ class Unit_Admin_DynExportBaseTest extends OxidTestCase
      */
     public function testRunWithDefaultConfigPerTickCount()
     {
-        modConfig::setParameter("iStart", 0);
-        modConfig::setParameter("aExportResultset", array("aaaaa"));
+        modConfig::setRequestParameter("iStart", 0);
+        modConfig::setRequestParameter("aExportResultset", array("aaaaa"));
         modConfig::getInstance()->setConfigParam( "iExportNrofLines", 10 );
 
         // testing..
@@ -382,7 +382,7 @@ class Unit_Admin_DynExportBaseTest extends OxidTestCase
      */
     public function testPrepareExport()
     {
-        modConfig::setParameter( "acat", "testCatId" );
+        modConfig::setRequestParameter( "acat", "testCatId" );
         oxTestModules::addFunction( 'oxUtils', 'showMessageAndExit', '{}');
 
         $oView = $this->getMock( "DynExportBase", array( "_getHeapTableName", "_generateTableCharSet",
@@ -511,8 +511,8 @@ class Unit_Admin_DynExportBaseTest extends OxidTestCase
     {
         modConfig::getInstance()->setConfigParam( "blExportVars", false );
         modConfig::getInstance()->setConfigParam( "blUseStock", false );
-        modConfig::setParameter( "search", false );
-        modConfig::setParameter( "sExportMinStock", false );
+        modConfig::setRequestParameter( "search", false );
+        modConfig::setRequestParameter( "sExportMinStock", false );
 
         $sHeapTable = "testdynexportbasetable";
         $sCatAdd = '';
@@ -541,8 +541,8 @@ class Unit_Admin_DynExportBaseTest extends OxidTestCase
     {
         modConfig::getInstance()->setConfigParam( "blExportVars", true );
         modConfig::getInstance()->setConfigParam( "blUseStock", true );
-        modConfig::setParameter( "search", "bar" );
-        modConfig::setParameter( "sExportMinStock", 1 );
+        modConfig::setRequestParameter( "search", "bar" );
+        modConfig::setRequestParameter( "sExportMinStock", 1 );
 
         $oDb = oxDb::getDb();
         $sO2CView = getViewName('oxobject2category');
@@ -601,12 +601,12 @@ class Unit_Admin_DynExportBaseTest extends OxidTestCase
      */
     public function testSetSessionParams()
     {
-        modConfig::setParameter( "sExportDelCost", "123;" );
-        modConfig::setParameter( "sExportMinPrice", "123;" );
-        modConfig::setParameter( "sExportCampaign", "123;" );
-        modConfig::setParameter( "blAppendCatToCampaign", "123" );
+        modConfig::setRequestParameter( "sExportDelCost", "123;" );
+        modConfig::setRequestParameter( "sExportMinPrice", "123;" );
+        modConfig::setRequestParameter( "sExportCampaign", "123;" );
+        modConfig::setRequestParameter( "blAppendCatToCampaign", "123" );
         //#3611
-        modConfig::setParameter( "sExportCustomHeader", "testHeader" );
+        modConfig::setRequestParameter( "sExportCustomHeader", "testHeader" );
 
         $oView = new DynExportBase();
         $oView->UNITsetSessionParams();
@@ -714,7 +714,7 @@ class Unit_Admin_DynExportBaseTest extends OxidTestCase
     public function testInitArticle()
     {
         $blContinue = true;
-        modConfig::setParameter( "sExportMinPrice", "1" );
+        modConfig::setRequestParameter( "sExportMinPrice", "1" );
         $sProdId   = '8a142c4113f3b7aa3.13470399';
         $sParentId = '2077';
         $sTitle    = 'violett';
@@ -743,8 +743,8 @@ class Unit_Admin_DynExportBaseTest extends OxidTestCase
     public function testSetCampaignDetailLink()
     {
         // defining parameters
-        modConfig::setParameter( "sExportCampaign", "testCampaign" );
-        modConfig::setParameter( "blAppendCatToCampaign", 1 );
+        modConfig::setRequestParameter( "sExportCampaign", "testCampaign" );
+        modConfig::setRequestParameter( "blAppendCatToCampaign", 1 );
 
         $oArticle = $this->getMock( "oxarticle", array( "appendLink" ) );
         $oArticle->expects( $this->at( 0 ) )->method( 'appendLink' )->with( $this->equalTo( "campaign=testCampaign" ) );

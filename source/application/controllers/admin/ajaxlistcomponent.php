@@ -114,7 +114,7 @@ class ajaxListComponent extends oxSuperCfg
         $aColumns = $this->_getColNames();
         foreach ( $aColumns as $iPos => $aCol ) {
             if ( isset($aCol[4]) && $aCol[4] == 1 && $sId == $aCol[1].'.'.$aCol[0] ) {
-                return oxConfig::getParameter( '_'.$iPos );
+                return oxRegistry::getConfig()->getRequestParameter( '_'.$iPos );
             }
         }
     }
@@ -197,7 +197,7 @@ class ajaxListComponent extends oxSuperCfg
     protected function _getSortCol()
     {
         $aVisibleNames = $this->_getVisibleColNames();
-        $iCol = oxConfig::getParameter( 'sort' );
+        $iCol = oxRegistry::getConfig()->getRequestParameter( 'sort' );
         $iCol = $iCol?( ( int ) str_replace( '_', '', $iCol )):0;
         $iCol = ( !isset( $aVisibleNames[$iCol] ) )?0:$iCol;
 
@@ -216,7 +216,7 @@ class ajaxListComponent extends oxSuperCfg
     protected function _getColNames( $sId = null )
     {
         if ( $sId === null ) {
-            $sId = oxConfig::getParameter( 'cmpid' );
+            $sId = oxRegistry::getConfig()->getRequestParameter( 'cmpid' );
         }
 
         if ( $sId && isset( $this->_aColumns[$sId] ) ) {
@@ -251,7 +251,7 @@ class ajaxListComponent extends oxSuperCfg
     protected function _getVisibleColNames()
     {
         $aColNames = $this->_getColNames();
-        $aUserCols = oxConfig::getParameter( 'aCols' );
+        $aUserCols = oxRegistry::getConfig()->getRequestParameter( 'aCols' );
         $aVisibleCols = array();
 
         // user defined some cols to load ?
@@ -370,7 +370,7 @@ class ajaxListComponent extends oxSuperCfg
      */
     protected function _getLimit( $iStart )
     {
-        $iLimit = (int) oxConfig::getParameter("results");
+        $iLimit = (int) oxRegistry::getConfig()->getRequestParameter("results");
         $iLimit = $iLimit?$iLimit:$this->_iSqlLimit;
 
         return " limit $iStart, $iLimit ";
@@ -468,7 +468,7 @@ class ajaxListComponent extends oxSuperCfg
      */
     protected function _getSortDir()
     {
-        $sDir = oxConfig::getParameter( 'dir' );
+        $sDir = oxRegistry::getConfig()->getRequestParameter( 'dir' );
         if ( !in_array( $sDir, $this->_aPosDir ) ) {
             $sDir = $this->_aPosDir[0];
         }
@@ -483,7 +483,7 @@ class ajaxListComponent extends oxSuperCfg
      */
     protected function _getStartIndex()
     {
-        return (int) oxConfig::getParameter( 'startIndex' );
+        return (int) oxRegistry::getConfig()->getRequestParameter( 'startIndex' );
     }
 
     /**
@@ -563,7 +563,7 @@ class ajaxListComponent extends oxSuperCfg
      */
     protected function _getViewName( $sTable )
     {
-        return getViewName( $sTable, oxConfig::getParameter('editlanguage'));
+        return getViewName( $sTable, oxRegistry::getConfig()->getRequestParameter('editlanguage'));
     }
 
     /**

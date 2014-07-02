@@ -36,7 +36,7 @@ class Unit_Admin_ArticleAttributeTest extends OxidTestCase
     public function testRender()
     {
         oxTestModules::addFunction('oxarticle', 'isDerived', '{ return true; }');
-        modConfig::setParameter( "oxid", oxDb::getDb()->getOne( "select oxid from oxattribute" ) );
+        modConfig::setRequestParameter( "oxid", oxDb::getDb()->getOne( "select oxid from oxattribute" ) );
 
         // testing..
         $oView = new Article_Attribute();

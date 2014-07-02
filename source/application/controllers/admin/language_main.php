@@ -98,7 +98,7 @@ class Language_Main extends oxAdminDetails
         parent::save();
 
         $sOxId = $this->getEditObjectId();
-        $aParams = oxConfig::getParameter( "editval" );
+        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval" );
 
         if ( !isset( $aParams['active'])) {
             $aParams['active'] = 0;
@@ -477,7 +477,7 @@ class Language_Main extends oxAdminDetails
         $blResult = true;
 
         $sOxId = $this->getEditObjectId();
-        $aParams = oxConfig::getParameter( "editval" );
+        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval" );
 
         // if creating new language, checking if language already exists with
         // entered language abbervation

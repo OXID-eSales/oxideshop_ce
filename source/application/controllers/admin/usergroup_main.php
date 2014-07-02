@@ -65,7 +65,7 @@ class UserGroup_Main extends oxAdminDetails
                 $this->_aViewData["otherlang"][$id] = clone $oLang;
             }
         }
-        if ( oxConfig::getParameter("aoc") ) {
+        if ( oxRegistry::getConfig()->getRequestParameter("aoc") ) {
             $oUsergroupMainAjax = oxNew( 'usergroup_main_ajax' );
             $this->_aViewData['oxajax'] = $oUsergroupMainAjax->getColumns();
 
@@ -85,7 +85,7 @@ class UserGroup_Main extends oxAdminDetails
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams    = oxConfig::getParameter( "editval");
+        $aParams    = oxRegistry::getConfig()->getRequestParameter( "editval");
         // checkbox handling
         if ( !isset( $aParams['oxgroups__oxactive'] ) ) {
             $aParams['oxgroups__oxactive'] = 0;

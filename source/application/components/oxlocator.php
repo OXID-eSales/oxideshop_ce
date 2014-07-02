@@ -241,17 +241,17 @@ class oxLocator extends oxSuperCfg
         if (($oSearchCat = $oLocatorTarget->getActSearch())) {
 
             // #1834/1184M - specialchar search
-            $sSearchParam = oxConfig::getParameter('searchparam', true);
-            $sSearchFormParam = oxConfig::getParameter('searchparam');
+            $sSearchParam = oxRegistry::getConfig()->getRequestParameter('searchparam', true);
+            $sSearchFormParam = oxRegistry::getConfig()->getRequestParameter('searchparam');
             $sSearchLinkParam = rawurlencode($sSearchParam);
 
-            $sSearchCat = oxConfig::getParameter('searchcnid');
+            $sSearchCat = oxRegistry::getConfig()->getRequestParameter('searchcnid');
             $sSearchCat = $sSearchCat ? rawurldecode($sSearchCat) : $sSearchCat;
 
-            $sSearchVendor = oxConfig::getParameter('searchvendor');
+            $sSearchVendor = oxRegistry::getConfig()->getRequestParameter('searchvendor');
             $sSearchVendor = $sSearchVendor ? rawurldecode($sSearchVendor) : $sSearchVendor;
 
-            $sSearchManufacturer = oxConfig::getParameter('searchmanufacturer');
+            $sSearchManufacturer = oxRegistry::getConfig()->getRequestParameter('searchmanufacturer');
             $sSearchManufacturer = $sSearchManufacturer ? rawurldecode($sSearchManufacturer) : $sSearchManufacturer;
 
             // loading data for article navigation
@@ -369,10 +369,10 @@ class oxLocator extends oxSuperCfg
             //page number
             $iPage = $this->_findActPageNumber($oLocatorTarget->getActPage(), $oIdList, $oCurrArticle);
 
-            $sSearchRecomm = oxConfig::getParameter('searchrecomm', true);
+            $sSearchRecomm = oxRegistry::getConfig()->getRequestParameter('searchrecomm', true);
 
             if ($sSearchRecomm !== null) {
-                $sSearchFormRecomm = oxConfig::getParameter('searchrecomm');
+                $sSearchFormRecomm = oxRegistry::getConfig()->getRequestParameter('searchrecomm');
                 $sSearchLinkRecomm = rawurlencode($sSearchRecomm);
                 $sAddSearch = 'searchrecomm=' . $sSearchLinkRecomm;
             }

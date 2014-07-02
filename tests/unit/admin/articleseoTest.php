@@ -420,13 +420,13 @@ class Unit_Admin_ArticleSeoTest extends OxidTestCase
      */
     public function testGetActCatType()
     {
-        modConfig::setParameter( "aSeoData", null );
+        modConfig::setRequestParameter( "aSeoData", null );
 
         $oView = $this->getMock( "Article_Seo", array( "getSelectionList" ) );
         $oView->expects( $this->once() )->method( "getSelectionList" )->will( $this->returnValue( array( "type" => array( 999 => "value" ) ) ) );
         $this->assertEquals( "type", $oView->getActCatType() );
 
-        modConfig::setParameter( "aSeoData", array( "oxparams" => "type#value#999" ) );
+        modConfig::setRequestParameter( "aSeoData", array( "oxparams" => "type#value#999" ) );
         $oView->expects( $this->never() )->method( "getSelectionList" );
         $this->assertEquals( "type", $oView->getActCatType() );
     }
@@ -438,13 +438,13 @@ class Unit_Admin_ArticleSeoTest extends OxidTestCase
      */
     public function testGetActCatLang()
     {
-        modConfig::setParameter( "aSeoData", null );
+        modConfig::setRequestParameter( "aSeoData", null );
 
         $oView = $this->getMock( "Article_Seo", array( "getSelectionList" ) );
         $oView->expects( $this->once() )->method( "getSelectionList" )->will( $this->returnValue( array( "type" => array( 999 => "value" ) ) ) );
         $this->assertEquals( 999, $oView->getActCatLang() );
 
-        modConfig::setParameter( "aSeoData", array( "oxparams" => "type#value#999" ) );
+        modConfig::setRequestParameter( "aSeoData", array( "oxparams" => "type#value#999" ) );
         $oView->expects( $this->never() )->method( "getSelectionList" );
         $this->assertEquals( 999, $oView->getActCatLang() );
     }
@@ -456,7 +456,7 @@ class Unit_Admin_ArticleSeoTest extends OxidTestCase
      */
     public function testGetActCatId()
     {
-        modConfig::setParameter( "aSeoData", null );
+        modConfig::setRequestParameter( "aSeoData", null );
 
         $oItem = $this->getMock( "oxManufacturer", array( "getId" ) );
         $oItem->expects( $this->once() )->method( "getId" )->will( $this->returnValue( "value" ) );
@@ -467,7 +467,7 @@ class Unit_Admin_ArticleSeoTest extends OxidTestCase
         $oView->expects( $this->once() )->method( "getActCatLang" )->will( $this->returnValue( 999 ) );
         $this->assertEquals( "value", $oView->getActCatId() );
 
-        modConfig::setParameter( "aSeoData", array( "oxparams" => "type#value#999" ) );
+        modConfig::setRequestParameter( "aSeoData", array( "oxparams" => "type#value#999" ) );
         $oView->expects( $this->never() )->method( "getSelectionList" );
         $this->assertEquals( "value", $oView->getActCatId() );
     }

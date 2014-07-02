@@ -56,8 +56,8 @@ class statistic_main_ajax extends ajaxListComponent
 
         // all possible reports
         $aReports = oxSession::getVar( "allstat_reports" );
-        $sSynchId = oxConfig::getParameter( "synchoxid" );
-        $sOxId    = oxConfig::getParameter( "oxid" );
+        $sSynchId = oxRegistry::getConfig()->getRequestParameter( "synchoxid" );
+        $sOxId    = oxRegistry::getConfig()->getRequestParameter( "oxid" );
 
         $sStatId = $sSynchId?$sSynchId:$sOxId;
         $oStat = oxNew( 'oxstatistic' );
@@ -69,7 +69,7 @@ class statistic_main_ajax extends ajaxListComponent
         $oStr = getStr();
 
         // filter data
-        $aFilter = oxConfig::getParameter( "aFilter" );
+        $aFilter = oxRegistry::getConfig()->getRequestParameter( "aFilter" );
         $sFilter = (is_array( $aFilter ) && isset( $aFilter['_0'] ) )? $oStr->preg_replace( '/^\*/', '%', $aFilter['_0'] ) : null;
 
         foreach ( $aReports as $oReport ) {
@@ -93,8 +93,8 @@ class statistic_main_ajax extends ajaxListComponent
         }
 
         // ordering ...
-        if ( oxConfig::getParameter( "dir" ) ) {
-            if ( 'asc' == oxConfig::getParameter( "dir" ) )
+        if ( oxRegistry::getConfig()->getRequestParameter( "dir" ) ) {
+            if ( 'asc' == oxRegistry::getConfig()->getRequestParameter( "dir" ) )
                 usort( $aData, array( $this, "sortAsc" ) );
             else
                 usort( $aData, array( $this, "sortDesc" ) );
@@ -152,10 +152,10 @@ class statistic_main_ajax extends ajaxListComponent
     public function removeReportFromList()
     {
         $aReports = oxSession::getVar( "allstat_reports" );
-        $soxId    = oxConfig::getParameter( 'oxid');
+        $soxId    = oxRegistry::getConfig()->getRequestParameter( 'oxid');
 
         // assigning all items
-        if ( oxConfig::getParameter( 'all' ) ) {
+        if ( oxRegistry::getConfig()->getRequestParameter( 'all' ) ) {
             $aStats = array();
             foreach ( $aReports as $oRep ) {
                 $aStats[] = $oRep->filename;
@@ -187,10 +187,10 @@ class statistic_main_ajax extends ajaxListComponent
     public function addReportToList()
     {
         $aReports = oxSession::getVar( "allstat_reports" );
-        $soxId    = oxConfig::getParameter( 'synchoxid' );
+        $soxId    = oxRegistry::getConfig()->getRequestParameter( 'synchoxid' );
 
         // assigning all items
-        if ( oxConfig::getParameter( 'all' ) ) {
+        if ( oxRegistry::getConfig()->getRequestParameter( 'all' ) ) {
             $aStats = array();
             foreach ( $aReports as $oRep ) {
                 $aStats[] = $oRep->filename;

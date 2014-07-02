@@ -390,8 +390,8 @@ class oxUser extends oxBase
             return $this->_sSelAddressId;
         }
 
-        $sAddressId = oxConfig::getParameter( "oxaddressid");
-        if ( !$sAddressId && !oxConfig::getParameter( 'reloadaddress' ) ) {
+        $sAddressId = oxRegistry::getConfig()->getRequestParameter( "oxaddressid");
+        if ( !$sAddressId && !oxRegistry::getConfig()->getRequestParameter( 'reloadaddress' ) ) {
             $sAddressId = oxSession::getVar( "deladrid" );
         }
         return $sAddressId;
@@ -1096,7 +1096,7 @@ class oxUser extends oxBase
         $this->_checkEmail( $sLogin );
 
         // 3. password
-        $this->checkPassword( $sPassword, $sPassword2, ((int) oxConfig::getParameter( 'option' ) == 3) );
+        $this->checkPassword( $sPassword, $sPassword2, ((int) oxRegistry::getConfig()->getRequestParameter( 'option' ) == 3) );
 
         // 4. required fields
         $this->_checkRequiredFields( $aInvAddress, $aDelAddress );
@@ -1380,10 +1380,10 @@ class oxUser extends oxBase
             throw $oEx;
         }
 
-        $myConfig = $this->getConfig();
+        $oConfig = $this->getConfig();
         if ( $sPassword ) {
 
-            $sShopID = $myConfig->getShopId();
+            $sShopID = $oConfig->getShopId();
             $sSelect = $this->_getLoginQuery( $sUser, $sPassword, $sShopID, $this->isAdmin() );
 
             // load from DB
@@ -1400,22 +1400,22 @@ class oxUser extends oxBase
         }
 
 
-        //login successfull?
+        //login successful?
         if ( $this->oxuser__oxid->value ) {
             // yes, successful login
 
-            //reseting active user
+            //resetting active user
             $this->setUser( null );
 
             if ( $this->isAdmin() ) {
-                oxSession::setVar( 'auth', $this->oxuser__oxid->value );
+                oxRegistry::getSession()->setVariable( 'auth', $this->oxuser__oxid->value );
             } else {
-                oxSession::setVar( 'usr', $this->oxuser__oxid->value );
+                oxRegistry::getSession()->setVariable( 'usr', $this->oxuser__oxid->value );
             }
 
             // cookie must be set ?
-            if ( $blCookie && $myConfig->getConfigParam( 'blShowRememberMe' ) ) {
-                oxRegistry::get("oxUtilsServer")->setUserCookie( $this->oxuser__oxusername->value, $this->oxuser__oxpassword->value, $myConfig->getShopId(), 31536000, $this->oxuser__oxpasssalt->value );
+            if ( $blCookie && $oConfig->getConfigParam( 'blShowRememberMe' ) ) {
+                oxRegistry::get("oxUtilsServer")->setUserCookie( $this->oxuser__oxusername->value, $this->oxuser__oxpassword->value, $oConfig->getShopId(), 31536000, $this->oxuser__oxpasssalt->value );
             }
 
             return true;
@@ -1817,7 +1817,7 @@ class oxUser extends oxBase
             $sOXID = $this->getId();
 
         // sets active page
-        $iActPage = (int) oxConfig::getParameter( 'pgNr' );
+        $iActPage = (int) oxRegistry::getConfig()->getRequestParameter( 'pgNr' );
         $iActPage = ($iActPage < 0) ? 0 : $iActPage;
 
         // load only lists which we show on screen

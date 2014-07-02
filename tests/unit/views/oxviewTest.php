@@ -672,11 +672,11 @@ class Unit_Views_oxviewTest extends OxidTestCase
         $oView = new oxView();
         $this->assertNull( $oView->getCategoryId() );
 
-        $this->getConfig()->setParameter( 'cnid', 'xxx' );
+        $this->getConfig()->setRequestParameter( 'cnid', 'xxx' );
         $this->assertEquals( 'xxx', $oView->getCategoryId() );
 
         // additionally checking cache
-        $this->getConfig()->setParameter( 'cnid', null );
+        $this->getConfig()->setRequestParameter( 'cnid', null );
         $this->assertEquals( 'xxx', $oView->getCategoryId() );
 
         $oView->setCategoryId( 'yyy' );
@@ -755,7 +755,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
     public function testShowFbConnectToAccountMsg_FbConnectIsOff()
     {
         $myConfig = $this->getConfig();
-        $myConfig->setParameter( "fblogin", false );
+        $myConfig->setRequestParameter( "fblogin", false );
 
         $oView = new oxView();
         $this->assertFalse( $oView->showFbConnectToAccountMsg() );
@@ -771,7 +771,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
     public function testShowFbConnectToAccountMsg_FbOn_NoAccount()
     {
         $myConfig = $this->getConfig();
-        $myConfig->setParameter( "fblogin", true );
+        $myConfig->setRequestParameter( "fblogin", true );
 
         $oView = $this->getMock( 'oxview', array( 'getUser' ) );
         $oView->expects( $this->any() )->method( 'getUser')->will( $this->returnValue( null ) );
@@ -789,7 +789,7 @@ class Unit_Views_oxviewTest extends OxidTestCase
     public function testShowFbConnectToAccountMsg_FbOn_AccountOn()
     {
         $myConfig = $this->getConfig();
-        $myConfig->setParameter( "fblogin", true );
+        $myConfig->setRequestParameter( "fblogin", true );
         $oUser = new oxUser();
 
         $oView = $this->getMock( 'oxview', array( 'getUser' ) );

@@ -101,7 +101,7 @@ class Delivery_Main extends oxAdminDetails
 
         $this->_aViewData["deltypes"] = $aDelTypes;
 
-        if ( oxConfig::getParameter("aoc") ) {
+        if ( oxRegistry::getConfig()->getRequestParameter("aoc") ) {
             $oDeliveryMainAjax = oxNew( 'delivery_main_ajax' );
             $this->_aViewData['oxajax'] = $oDeliveryMainAjax->getColumns();
 
@@ -120,7 +120,7 @@ class Delivery_Main extends oxAdminDetails
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxConfig::getParameter( "editval");
+        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval");
 
             // shopid
             $sShopID = oxSession::getVar( "actshop");
@@ -163,7 +163,7 @@ class Delivery_Main extends oxAdminDetails
     public function saveinnlang()
     {
         $soxId = $this->getEditObjectId();
-        $aParams = oxConfig::getParameter( "editval");
+        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval");
 
             // shopid
             $sShopID = oxSession::getVar( "actshop");

@@ -47,7 +47,7 @@ class Unit_Admin_ArticleExtendTest extends OxidTestCase
     public function testRender()
     {
         oxTestModules::addFunction('oxarticle', 'isDerived', '{ return true; }');
-        $this->getConfig()->setParameter( "oxid", oxDb::getDb()->getOne( "select oxid from oxarticles where oxparentid !='' " ) );
+        $this->getConfig()->setRequestParameter( "oxid", oxDb::getDb()->getOne( "select oxid from oxarticles where oxparentid !='' " ) );
 
         // testing..
         $oView = new Article_Extend();
@@ -71,7 +71,7 @@ class Unit_Admin_ArticleExtendTest extends OxidTestCase
     {
         // testing..
         oxTestModules::addFunction( 'oxarticle', 'save', '{ throw new Exception( "save" ); }');
-        $this->getConfig()->setParameter( "editval", array( "oxarticles__oxtprice" => -1 ) );
+        $this->getConfig()->setRequestParameter( "editval", array( "oxarticles__oxtprice" => -1 ) );
 
         // testing..
         try {
@@ -94,8 +94,8 @@ class Unit_Admin_ArticleExtendTest extends OxidTestCase
         // testing..
         oxTestModules::addFunction( 'oxarticle', 'save', '{}');
         oxTestModules::addFunction( 'oxUtilsView', 'addErrorToDisplay', '{return "EXCEPTION_NODESCRIPTIONADDED";}');
-        $this->getConfig()->setParameter( "mediaUrl", "testUrl" );
-        $this->getConfig()->setParameter( "mediaDesc", null );
+        $this->getConfig()->setRequestParameter( "mediaUrl", "testUrl" );
+        $this->getConfig()->setRequestParameter( "mediaDesc", null );
 
         // testing..
         $oView = new Article_Extend();
@@ -114,8 +114,8 @@ class Unit_Admin_ArticleExtendTest extends OxidTestCase
         oxTestModules::addFunction( 'oxUtilsView', 'addErrorToDisplay', '{return "EXCEPTION_NOMEDIAADDED";}');
         oxTestModules::addFunction( 'oxConfig', 'getUploadedFile', '{return array( "name" => false );}');
 
-        $this->getConfig()->setParameter( "mediaUrl", null );
-        $this->getConfig()->setParameter( "mediaDesc", "testDesc" );
+        $this->getConfig()->setRequestParameter( "mediaUrl", null );
+        $this->getConfig()->setRequestParameter( "mediaDesc", "testDesc" );
 
         // testing..
         $oView = new Article_Extend();
@@ -134,8 +134,8 @@ class Unit_Admin_ArticleExtendTest extends OxidTestCase
         oxTestModules::addFunction( 'oxUtilsView', 'addErrorToDisplay', '{ return $aA[0]; }');
         oxTestModules::addFunction( 'oxUtilsFile', 'processFile', '{ throw new Exception("handleUploadedFile"); }');
 
-        $this->getConfig()->setParameter( "mediaUrl", "testUrl" );
-        $this->getConfig()->setParameter( "mediaDesc", "testDesc" );
+        $this->getConfig()->setRequestParameter( "mediaUrl", "testUrl" );
+        $this->getConfig()->setRequestParameter( "mediaDesc", "testDesc" );
 
         $oConfig = $this->getMock( "oxConfig", array( "getUploadedFile" ,"isDemoShop" ) );
         $oConfig->expects( $this->exactly(2) )->method( 'getUploadedFile' )->will( $this->returnValue( array( "name" => "testName" ) ) );
@@ -160,8 +160,8 @@ class Unit_Admin_ArticleExtendTest extends OxidTestCase
         oxTestModules::addFunction( 'oxmediaurl', 'save', '{ throw new Exception( "oxmediaurl.save" ); }');
         oxTestModules::addFunction( 'oxUtilsFile', 'processFile', '{}');
 
-        $this->getConfig()->setParameter( "mediaUrl", "testUrl" );
-        $this->getConfig()->setParameter( "mediaDesc", "testDesc" );
+        $this->getConfig()->setRequestParameter( "mediaUrl", "testUrl" );
+        $this->getConfig()->setRequestParameter( "mediaDesc", "testDesc" );
 
         $oConfig = $this->getMock( "oxConfig", array( "getUploadedFile", "isDemoShop" ) );
         $oConfig->expects( $this->exactly(2) )->method( 'getUploadedFile' )->will( $this->returnValue( array( "name" => "testName" ) ) );
@@ -218,8 +218,8 @@ class Unit_Admin_ArticleExtendTest extends OxidTestCase
 
         $this->assertTrue( (bool) oxDb::getDb()->getOne( "select 1 from oxmediaurls where oxid = 'testMediaId'" ) );
 
-        $this->getConfig()->setParameter( "oxid", "testId" );
-        $this->getConfig()->setParameter( "mediaid", "testMediaId" );
+        $this->getConfig()->setRequestParameter( "oxid", "testId" );
+        $this->getConfig()->setRequestParameter( "mediaid", "testMediaId" );
 
         // testing..
         $oView = new Article_Extend();
@@ -254,7 +254,7 @@ class Unit_Admin_ArticleExtendTest extends OxidTestCase
         $oMediaUrl->save();
 
         $aValue = array( "testMediaId" => array( "oxmediaurls__oxurl" => "testUrl", "oxmediaurls__oxdesc" => "testDesc" ) );
-        $this->getConfig()->setParameter( "aMediaUrls", $aValue );
+        $this->getConfig()->setRequestParameter( "aMediaUrls", $aValue );
 
         $oView = new Article_Extend();
         $oView->updateMedia();

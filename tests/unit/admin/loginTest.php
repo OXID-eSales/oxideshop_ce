@@ -71,8 +71,8 @@ class Unit_Admin_loginTest extends OxidTestCase
         oxTestModules::addFunction( 'oxUtilsServer', 'getOxCookie', '{ return array(\'test\'); }' );
 
         $_SERVER['REQUEST_METHOD'] = "POST";
-        modConfig::setParameter( "user", "&\"\'\\<>adminname" );
-        modConfig::setParameter( "pwd", "&\"\'\\<>adminpsw" );
+        modConfig::setRequestParameter( "user", "&\"\'\\<>adminname" );
+        modConfig::setRequestParameter( "pwd", "&\"\'\\<>adminpsw" );
 
 
         $oLogin = $this->getProxyClass( 'login' );
@@ -104,8 +104,8 @@ class Unit_Admin_loginTest extends OxidTestCase
         oxTestModules::addFunction( 'oxUtilsServer', 'getOxCookie', '{ return array(\'test\'); }' );
 
         $_SERVER['REQUEST_METHOD'] = "POST";
-        modConfig::setParameter( "user", "&\"\'\\<>adminname" );
-        modConfig::setParameter( "pwd", "&\"\'\\<>adminpsw" );
+        modConfig::setRequestParameter( "user", "&\"\'\\<>adminname" );
+        modConfig::setRequestParameter( "pwd", "&\"\'\\<>adminpsw" );
 
         $oLogin = $this->getProxyClass( 'login' );
         $this->assertEquals( "admin_start", $oLogin->checklogin() );
@@ -273,7 +273,7 @@ class Unit_Admin_loginTest extends OxidTestCase
         oxTestModules::addFunction( 'oxuser', 'login', '{ throw new oxConnectionException(); }');
         oxTestModules::addFunction( 'oxUtils', 'logger', '{ return true; }');
 
-        modConfig::setParameter( 'profile', "testProfile" );
+        modConfig::setRequestParameter( 'profile', "testProfile" );
         modSession::getInstance()->setVar( "aAdminProfiles", array( "testProfile" => array( "testValue" ) ) );
 
         $oView = new Login();
@@ -290,9 +290,9 @@ class Unit_Admin_loginTest extends OxidTestCase
     {
         oxTestModules::addFunction( 'oxuser', 'login', '{ throw new oxUserException(); }');
 
-        modConfig::setParameter('user', '\'"<^%&*aaa>');
-        modConfig::setParameter('pwd', '<^%&*aaa>\'"');
-        modConfig::setParameter('profile', '<^%&*aaa>\'"');
+        modConfig::setRequestParameter('user', '\'"<^%&*aaa>');
+        modConfig::setRequestParameter('pwd', '<^%&*aaa>\'"');
+        modConfig::setRequestParameter('profile', '<^%&*aaa>\'"');
         modConfig::getInstance()->setAdminMode( true );
         modSession::getInstance()->setVar("blIsAdmin", true);
         $oView = $this->getMock( "Login", array( "addTplParam" ) );
@@ -311,9 +311,9 @@ class Unit_Admin_loginTest extends OxidTestCase
     {
         oxTestModules::addFunction( 'oxuser', 'login', '{ throw new oxCookieException(); }');
 
-        modConfig::setParameter('user', '\'"<^%&*aaa>');
-        modConfig::setParameter('pwd', '<^%&*aaa>\'"');
-        modConfig::setParameter('profile', '<^%&*aaa>\'"');
+        modConfig::setRequestParameter('user', '\'"<^%&*aaa>');
+        modConfig::setRequestParameter('pwd', '<^%&*aaa>\'"');
+        modConfig::setRequestParameter('profile', '<^%&*aaa>\'"');
         modConfig::getInstance()->setAdminMode( true );
         modSession::getInstance()->setVar("blIsAdmin", true);
         $oView = $this->getMock( "Login", array( "addTplParam" ) );

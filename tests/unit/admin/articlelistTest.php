@@ -38,7 +38,7 @@ class Unit_Admin_ArticleListTest extends OxidTestCase
     {
         $sObjects = 'oxArticle';
 
-        modConfig::setParameter( 'folder', $sObjects.'TestFolderName' );
+        modConfig::setRequestParameter( 'folder', $sObjects.'TestFolderName' );
 
         $oAdminList = $this->getMock( 'article_list', array( "getItemList" ) );
         $oAdminList->expects( $this->once() )->method( 'getItemList' )->will( $this->returnValue( null ) );
@@ -53,10 +53,10 @@ class Unit_Admin_ArticleListTest extends OxidTestCase
      */
     public function testRenderSelectingProductCategory()
     {
-        modConfig::getInstance()->setParameter( "where", array( "oxarticles" => array( "oxtitle" => "testValue" ) ) );
+        modConfig::getInstance()->setRequestParameter( "where", array( "oxarticles" => array( "oxtitle" => "testValue" ) ) );
 
         $sCatId = oxDb::getDb()->getOne( "select oxid from oxcategories" );
-        modConfig::setParameter( "art_category", "cat@@".$sCatId );
+        modConfig::setRequestParameter( "art_category", "cat@@".$sCatId );
         // testing..
         $oView = new Article_List();
         $this->assertEquals( 'article_list.tpl', $oView->render() );
@@ -80,7 +80,7 @@ class Unit_Admin_ArticleListTest extends OxidTestCase
     public function testRenderSelectingProductManufacturer()
     {
         $sManId = oxDb::getDb()->getOne( "select oxid from oxmanufacturers" );
-        modConfig::setParameter( "art_category", "mnf@@".$sManId );
+        modConfig::setRequestParameter( "art_category", "mnf@@".$sManId );
 
         // testing..
         $oView = $this->getMock( "Article_List", array( "getItemList" ) );
@@ -104,7 +104,7 @@ class Unit_Admin_ArticleListTest extends OxidTestCase
     public function testRenderSelectingProductVendor()
     {
         $sVndId = oxDb::getDb()->getOne( "select oxid from oxvendor" );
-        modConfig::setParameter( "art_category", "vnd@@".$sVndId );
+        modConfig::setRequestParameter( "art_category", "vnd@@".$sVndId );
         modConfig::getInstance()->setConfigParam( "blSkipFormatConversion", false );
 
         $oArticle1 = new oxArticle();
@@ -147,7 +147,7 @@ class Unit_Admin_ArticleListTest extends OxidTestCase
     {
         $sTable   = getViewName( "oxarticles" );
         $sO2CView = getViewName( "oxobject2category" );
-        modConfig::setParameter( "art_category", "cat@@testCategory" );
+        modConfig::setRequestParameter( "art_category", "cat@@testCategory" );
 
         $oProduct = new oxArticle();
         $sQ = $oProduct->buildSelectString( null );
@@ -165,7 +165,7 @@ class Unit_Admin_ArticleListTest extends OxidTestCase
     public function testBuildSelectStringManufacturer()
     {
         $sTable   = getViewName( "oxarticles" );
-        modConfig::setParameter( "art_category", "mnf@@testManufacturer" );
+        modConfig::setRequestParameter( "art_category", "mnf@@testManufacturer" );
 
         $oProduct = new oxArticle();
         $sQ = $oProduct->buildSelectString( null );
@@ -182,7 +182,7 @@ class Unit_Admin_ArticleListTest extends OxidTestCase
     public function testBuildSelectStringVendor()
     {
         $sTable   = getViewName( "oxarticles" );
-        modConfig::setParameter( "art_category", "vnd@@testVendor" );
+        modConfig::setRequestParameter( "art_category", "vnd@@testVendor" );
 
         $oProduct = new oxArticle();
         $sQ = $oProduct->buildSelectString( null );
@@ -198,7 +198,7 @@ class Unit_Admin_ArticleListTest extends OxidTestCase
      */
     public function testBuildWhere()
     {
-        modConfig::setParameter( "folder", "testFolder" );
+        modConfig::setRequestParameter( "folder", "testFolder" );
         $sViewName = getViewName( 'oxarticles' );
 
         $oView = new Article_List();
@@ -231,7 +231,7 @@ class Unit_Admin_ArticleListTest extends OxidTestCase
         oxTestModules::addFunction( 'oxarticle', 'load', '{ return true; }' );
         oxTestModules::addFunction( 'oxarticle', 'delete', '{ return true; }' );
 
-        modConfig::setParameter( "oxid", "testId" );
+        modConfig::setRequestParameter( "oxid", "testId" );
 
         $oSess = $this->getMock('oxsession', array('checkSessionChallenge'));
         $oSess->expects( $this->any() )->method('checkSessionChallenge')->will($this->returnValue(true));

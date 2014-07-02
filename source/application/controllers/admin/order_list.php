@@ -59,7 +59,7 @@ class Order_List extends oxAdminList
         parent::render();
 
         $aFolders = $this->getConfig()->getConfigParam( 'aOrderfolder' );
-        $sFolder  = oxConfig::getParameter( "folder" );
+        $sFolder  = oxRegistry::getConfig()->getRequestParameter( "folder" );
         // first display new orders
         if ( !$sFolder && is_array( $aFolders )) {
             $aNames = array_keys( $aFolders );
@@ -67,8 +67,8 @@ class Order_List extends oxAdminList
         }
 
         $aSearch    = array( 'oxorderarticles' => 'ARTID', 'oxpayments' => 'PAYMENT');
-        $sSearch    = oxConfig::getParameter( "addsearch" );
-        $sSearchfld = oxConfig::getParameter( "addsearchfld" );
+        $sSearch    = oxRegistry::getConfig()->getRequestParameter( "addsearch" );
+        $sSearchfld = oxRegistry::getConfig()->getRequestParameter( "addsearchfld" );
 
         $this->_aViewData["folder"]       = $sFolder ? $sFolder : -1;
         $this->_aViewData["addsearchfld"] = $sSearchfld ? $sSearchfld : -1;
@@ -93,7 +93,7 @@ class Order_List extends oxAdminList
         $sQ = parent::_prepareWhereQuery( $aWhere, $sqlFull );
         $myConfig = $this->getConfig();
         $aFolders = $myConfig->getConfigParam( 'aOrderfolder' );
-        $sFolder = oxConfig::getParameter( 'folder' );
+        $sFolder = oxRegistry::getConfig()->getRequestParameter( 'folder' );
         //searchong for empty oxfolder fields
         if ( $sFolder && $sFolder != '-1' ) {
             $sQ .= " and ( oxorder.oxfolder = ".$oDb->quote( $sFolder )." )";
@@ -117,9 +117,9 @@ class Order_List extends oxAdminList
         $sSql = parent::_buildSelectString( $oListObject );
         $oDb = oxDb::getDb();
 
-        $sSearch      = oxConfig::getParameter( 'addsearch' );
+        $sSearch      = oxRegistry::getConfig()->getRequestParameter( 'addsearch' );
         $sSearch      = trim( $sSearch );
-        $sSearchField = oxConfig::getParameter( 'addsearchfld' );
+        $sSearchField = oxRegistry::getConfig()->getRequestParameter( 'addsearchfld' );
 
         if ( $sSearch ) {
             switch ( $sSearchField ) {

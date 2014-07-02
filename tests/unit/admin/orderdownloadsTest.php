@@ -90,12 +90,12 @@ class Unit_Admin_OrderDownloadsTest extends OxidTestCase
      */
     public function testGetEditObject()
     {
-        modConfig::setParameter( "oxid", null );
+        modConfig::setRequestParameter( "oxid", null );
 
         $oView = new Order_Downloads();
         $this->assertNull( $oView->getEditObject() );
 
-        modConfig::setParameter( "oxid", "_testOrderId1" );
+        modConfig::setRequestParameter( "oxid", "_testOrderId1" );
 
         $oView = new Order_Downloads();
         $oOrderFiles = $oView->getEditObject();
@@ -109,7 +109,7 @@ class Unit_Admin_OrderDownloadsTest extends OxidTestCase
      */
     public function testGetProductList()
     {
-        modConfig::setParameter( "oxorderfileid", "_testOrderFile" );
+        modConfig::setRequestParameter( "oxorderfileid", "_testOrderFile" );
         oxDb::getDB()->execute( 'insert into oxorderfiles set oxid="_testOrderFile", oxfileid="fileId", oxmaxdownloadcount="10", oxlinkexpirationtime="24",
                          oxdownloadexpirationtime="12", oxvaliduntil="2011-10-20 12:12:00", oxdownloadcount="2", oxfirstdownload="2011-10-10", oxlastdownload="2011-10-20"' );
 

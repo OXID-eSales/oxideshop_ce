@@ -173,7 +173,7 @@ class Module_Config extends Shop_Config
         $sModuleId = $this->_getModuleForConfigVars();
 
         foreach ($this->_aConfParams as $sType => $sParam) {
-            $aConfVars = oxConfig::getParameter($sParam);
+            $aConfVars = oxRegistry::getConfig()->getRequestParameter($sParam);
             if (is_array($aConfVars)) {
                 foreach ( $aConfVars as $sName => $sValue ) {
                     $myConfig->saveShopConfVar(

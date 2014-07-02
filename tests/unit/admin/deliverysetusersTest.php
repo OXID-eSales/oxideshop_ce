@@ -36,7 +36,7 @@ class Unit_Admin_DeliverySetUsersTest extends OxidTestCase
     public function testRender()
     {
         oxTestModules::addFunction( "oxdeliveryset", "isDerived", "{return true;}" );
-        modConfig::setParameter( "oxid", "testId" );
+        modConfig::setRequestParameter( "oxid", "testId" );
 
         // testing..
         $oView = new DeliverySet_Users();

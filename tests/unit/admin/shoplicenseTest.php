@@ -80,7 +80,7 @@ class Unit_Admin_ShopLicenseTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setParameter( "oxid", oxDb::getDb()->getOne( "select oxid from oxshops" ) );
+        modConfig::setRequestParameter( "oxid", oxDb::getDb()->getOne( "select oxid from oxshops" ) );
 
         // testing..
         $oView = new Shop_License();
@@ -98,7 +98,7 @@ class Unit_Admin_ShopLicenseTest extends OxidTestCase
      */
     public function testRenderNoRealObjectId()
     {
-        modConfig::setParameter( "oxid", "-1" );
+        modConfig::setRequestParameter( "oxid", "-1" );
 
         // testing..
         $oView = new Shop_License();

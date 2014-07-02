@@ -48,8 +48,8 @@ class PriceAlarm_Send extends oxAdminList
 
         ini_set("session.gc_maxlifetime", 36000);
 
-        $iStart     = oxConfig::getParameter( "iStart");
-        $iAllCnt    = oxConfig::getParameter( "iAllCnt");
+        $iStart     = oxRegistry::getConfig()->getRequestParameter( "iStart");
+        $iAllCnt    = oxRegistry::getConfig()->getRequestParameter( "iAllCnt");
             // #1140 R
             $sSelect = "select oxpricealarm.oxid, oxpricealarm.oxemail, oxpricealarm.oxartid, oxpricealarm.oxprice from oxpricealarm, oxarticles where oxarticles.oxid = oxpricealarm.oxartid and oxpricealarm.oxsended = '0000-00-00 00:00:00'";
             if (isset($iStart)) {

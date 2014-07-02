@@ -103,7 +103,7 @@ class Unit_Views_accountPasswordTest extends OxidTestCase
      */
     public function testChangePasswordMissingOldPass()
     {
-        modConfig::setParameter( 'password_old', null );
+        modConfig::setRequestParameter( 'password_old', null );
         oxTestModules::addFunction( 'oxUtilsView', 'addErrorToDisplay', '{ return "ACCOUNT_PASSWORD_ERRINCORRECTCURRENTPASSW"; }' );
 
         $oUser = $this->getMock( "oxUser", array( "checkPassword", "isSamePassword" ) );
@@ -123,9 +123,9 @@ class Unit_Views_accountPasswordTest extends OxidTestCase
      */
     public function testChangePassword()
     {
-        modConfig::setParameter( 'password_old', "oldpassword" );
-        modConfig::setParameter( 'password_new', "newpassword" );
-        modConfig::setParameter( 'password_new_confirm', "newpassword" );
+        modConfig::setRequestParameter( 'password_old', "oldpassword" );
+        modConfig::setRequestParameter( 'password_new', "newpassword" );
+        modConfig::setRequestParameter( 'password_new_confirm', "newpassword" );
 
         $oUser = $this->getMock( "oxUser", array( "checkPassword", "isSamePassword", "setPassword", "save" ) );
         $oUser->expects( $this->any() )->method( 'checkPassword');
@@ -204,9 +204,9 @@ class Unit_Views_accountPasswordTest extends OxidTestCase
 
         $sOldPass = '&quot;&#34;"o?p[]XfdKvA=#3K8tQ%_old';
         $sPass = '&quot;&#34;"o?p[]XfdKvA=#3K8tQ%';
-        modConfig::setParameter( 'password_old', $sOldPass );
-        modConfig::setParameter( 'password_new', $sPass );
-        modConfig::setParameter( 'password_new_confirm', $sPass );
+        modConfig::setRequestParameter( 'password_old', $sOldPass );
+        modConfig::setRequestParameter( 'password_new', $sPass );
+        modConfig::setRequestParameter( 'password_new_confirm', $sPass );
 
         $oUser = $this->getMock( 'oxUser', array( 'checkPassword', 'isSamePassword' ) );
         $oUser->expects( $this->once() )

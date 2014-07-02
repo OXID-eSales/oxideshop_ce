@@ -89,7 +89,7 @@ class Register extends User
      */
     public function getRegistrationError()
     {
-        return oxConfig::getParameter( 'newslettererror' );
+        return oxRegistry::getConfig()->getRequestParameter( 'newslettererror' );
     }
 
     /**
@@ -99,7 +99,7 @@ class Register extends User
      */
     public function getRegistrationStatus()
     {
-        return oxConfig::getParameter( 'success' );
+        return oxRegistry::getConfig()->getRequestParameter( 'success' );
     }
 
     /**
@@ -160,7 +160,7 @@ class Register extends User
      */
     public function getUpdateId()
     {
-        return oxConfig::getParameter( 'uid' );
+        return oxRegistry::getConfig()->getRequestParameter( 'uid' );
     }
 
     /**
@@ -170,7 +170,7 @@ class Register extends User
      */
     public function isConfirmed()
     {
-         return (bool) oxConfig::getParameter( "confirmstate" );
+         return (bool) oxRegistry::getConfig()->getRequestParameter( "confirmstate" );
     }
 
     /**

@@ -256,7 +256,7 @@ class Thankyou extends oxUBase
     {
         if ( $this->_sMailError === null ) {
             $this->_sMailError = false;
-            $this->_sMailError = oxConfig::getParameter( 'mailerror' );
+            $this->_sMailError = oxRegistry::getConfig()->getRequestParameter( 'mailerror' );
         }
         return $this->_sMailError;
     }

@@ -293,7 +293,7 @@ class oxAdminView extends oxView
             $myAdminNavig = $this->getNavigation();
 
             // active tab
-            $iActTab = oxConfig::getParameter( 'actedit' );
+            $iActTab = oxRegistry::getConfig()->getRequestParameter( 'actedit' );
             $iActTab = $iActTab?$iActTab:$this->_iDefEdit;
 
             $sActTab = $iActTab?"&actedit=$iActTab":'';
@@ -347,7 +347,7 @@ class oxAdminView extends oxView
         $oLang = oxRegistry::getLang();
 
         // sets up navigation data
-        $this->_setupNavigation( oxConfig::getParameter( 'cl' ) );
+        $this->_setupNavigation( oxRegistry::getConfig()->getRequestParameter( 'cl' ) );
 
         // active object id
         $sOxId = $this->getEditObjectId();
@@ -375,7 +375,7 @@ class oxAdminView extends oxView
 
         // "save-on-tab"
         if ( !isset( $this->_aViewData['updatelist'] ) ) {
-            $this->_aViewData['updatelist'] = oxConfig::getParameter( 'updatelist' );
+            $this->_aViewData['updatelist'] = oxRegistry::getConfig()->getRequestParameter( 'updatelist' );
         }
 
         return $sReturn;
@@ -576,7 +576,7 @@ class oxAdminView extends oxView
      */
     public function chshp()
     {
-        $sActShop = oxConfig::getParameter( 'shp' );
+        $sActShop = oxRegistry::getConfig()->getRequestParameter( 'shp' );
         oxSession::setVar( "shp", $sActShop );
         oxSession::setVar( 'currentadminshop', $sActShop );
     }
@@ -619,7 +619,7 @@ class oxAdminView extends oxView
     public function getEditObjectId()
     {
         if ( null === ( $sId = $this->_sEditObjectId ) ) {
-            if ( null === ( $sId = oxConfig::getParameter( "oxid" ) ) ) {
+            if ( null === ( $sId = oxRegistry::getConfig()->getRequestParameter( "oxid" ) ) ) {
                 $sId = oxSession::getVar( "saved_oxid" );
             }
         }

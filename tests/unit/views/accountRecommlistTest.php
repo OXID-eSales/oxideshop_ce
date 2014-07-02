@@ -69,7 +69,7 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
      */
     public function testRemoveArticleNoArticleIdSet()
     {
-        modConfig::setParameter( 'aid', null );
+        modConfig::setRequestParameter( 'aid', null );
 
         $oRecomm = $this->getMock( "account_recommlist", array( "getActiveRecommList" ) );
         $oRecomm->expects( $this->never() )->method( 'getActiveRecommList');
@@ -83,7 +83,7 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
      */
     public function testRemoveArticle()
     {
-        modConfig::setParameter( 'aid', "1" );
+        modConfig::setRequestParameter( 'aid', "1" );
         $oRecommList = $this->getMock( "oxRecommList", array( "removeArticle" ) );
         $oRecommList->expects( $this->once() )->method( 'removeArticle');
 
@@ -99,7 +99,7 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
      */
     public function testEditListNoAction()
     {
-        modConfig::setParameter( 'deleteList', null );
+        modConfig::setRequestParameter( 'deleteList', null );
 
         $oRecomm = $this->getMock( "account_recommlist", array( "getActiveRecommList", "setActiveRecommList" ) );
         $oRecomm->expects( $this->never() )->method( 'getActiveRecommList');
@@ -114,7 +114,7 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
      */
     public function testEditList()
     {
-        modConfig::setParameter( 'deleteList', "1" );
+        modConfig::setRequestParameter( 'deleteList', "1" );
         $oRecommList = $this->getMock( "oxRecommList", array( "delete" ) );
         $oRecommList->expects( $this->once() )->method( 'delete');
 
@@ -145,7 +145,7 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
      */
     public function testSaveRecommListTryingToSaveForDifferentUser()
     {
-        modConfig::setParameter(  'recommid', 'testlist' );
+        modConfig::setRequestParameter(  'recommid', 'testlist' );
 
         $oRecomm = $this->getMock( "account_recommlist", array( "getUser", "getActiveRecommList" ) );
         $oRecomm->expects( $this->once() )->method( 'getUser')->will( $this->returnValue( false ) );
@@ -165,9 +165,9 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
         $oUser = new oxuser();
         $oUser->load( "oxdefaultadmin" );
 
-        modConfig::setParameter( 'recomm_title', 'testtitle' );
-        modConfig::setParameter( 'recomm_author', 'testauthor' );
-        modConfig::setParameter( 'recomm_desc', 'testdesc' );
+        modConfig::setRequestParameter( 'recomm_title', 'testtitle' );
+        modConfig::setRequestParameter( 'recomm_author', 'testauthor' );
+        modConfig::setRequestParameter( 'recomm_desc', 'testdesc' );
 
         $oRecomm = $this->getMock( "account_recommlist", array( "getUser", "getActiveRecommList" ) );
         $oRecomm->expects( $this->once() )->method( 'getUser')->will( $this->returnValue( $oUser ) );
@@ -194,9 +194,9 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
         $oRecommList->oxrecommlists__oxtitle = new oxField( "xxx" );
         $oRecommList->save();
 
-        modConfig::setParameter( 'recomm_title', 'testtitle' );
-        modConfig::setParameter( 'recomm_author', 'testauthor' );
-        modConfig::setParameter( 'recomm_desc', 'testdesc' );
+        modConfig::setRequestParameter( 'recomm_title', 'testtitle' );
+        modConfig::setRequestParameter( 'recomm_author', 'testauthor' );
+        modConfig::setRequestParameter( 'recomm_desc', 'testdesc' );
 
         $oRecomm = $this->getMock( "account_recommlist", array( "getUser", "getActiveRecommList" ) );
         $oRecomm->expects( $this->once() )->method( 'getUser')->will( $this->returnValue( $oUser ) );
@@ -219,9 +219,9 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
         $oRecommList->oxrecommlists__oxtitle = new oxField( 'xxxx');
         $oRecommList->save();
 
-        modConfig::setParameter( 'recomm_title', '"<script>alert(\'xss\');</script>' );
-        modConfig::setParameter( 'recomm_author', 'testauthor' );
-        modConfig::setParameter( 'recomm_desc', 'testdesc' );
+        modConfig::setRequestParameter( 'recomm_title', '"<script>alert(\'xss\');</script>' );
+        modConfig::setRequestParameter( 'recomm_author', 'testauthor' );
+        modConfig::setRequestParameter( 'recomm_desc', 'testdesc' );
 
         $oRecomm = $this->getMock( "account_recommlist", array( "getUser", "getActiveRecommList" ) );
         $oRecomm->expects( $this->once() )->method( 'getUser')->will( $this->returnValue( $oUser ) );
@@ -242,9 +242,9 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
         $oUser = new oxuser();
         $oUser->load( "oxdefaultadmin" );
 
-        modConfig::setParameter( 'recomm_title', 'testtitle' );
-        modConfig::setParameter( 'recomm_author', 'testauthor' );
-        modConfig::setParameter( 'recomm_desc', 'testdesc' );
+        modConfig::setRequestParameter( 'recomm_title', 'testtitle' );
+        modConfig::setRequestParameter( 'recomm_author', 'testauthor' );
+        modConfig::setRequestParameter( 'recomm_desc', 'testdesc' );
 
         oxTestModules::addFunction('oxrecommlist', 'save', '{throw new oxObjectException("lalala");}');
         oxTestModules::addFunction('oxUtilsView', 'addErrorToDisplay', '{throw new Exception($aA[0]->getMessage().(int)$aA[1].(int)$aA[2].$aA[3]);}');
@@ -285,7 +285,7 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
      */
     public function testGetArticleList()
     {
-        modConfig::setParameter( 'recommid', 'testlist' );
+        modConfig::setRequestParameter( 'recommid', 'testlist' );
         $oRecomm = $this->getProxyClass( "account_recommlist" );
         $oRecommtList = new oxRecommList();
         $oRecommtList->load('testlist');
@@ -300,7 +300,7 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
      */
     public function testGetActiveRecommList()
     {
-        modConfig::setParameter( 'recommid', 'testlist' );
+        modConfig::setRequestParameter( 'recommid', 'testlist' );
 
         $oUser = new oxuser();
         $oUser->load( "oxdefaultadmin" );
@@ -368,7 +368,7 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
         $oRecomm->expects( $this->once() )->method( 'getViewConfig')->will($this->returnValue( $oCfg ) );
         $oRecomm->expects( $this->never() )->method( 'getActiveRecommList');
 
-        modConfig::setParameter('deleteList', 'asd');
+        modConfig::setRequestParameter('deleteList', 'asd');
 
         $this->assertSame(null, $oRecomm->editList());
     }
@@ -387,7 +387,7 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
         $oRecomm->expects( $this->once() )->method( 'getViewConfig')->will($this->returnValue( $oCfg ) );
         $oRecomm->expects( $this->never() )->method( 'getActiveRecommList');
 
-        modConfig::setParameter('aid', 'asd');
+        modConfig::setRequestParameter('aid', 'asd');
 
         $this->assertSame(null, $oRecomm->removeArticle());
     }

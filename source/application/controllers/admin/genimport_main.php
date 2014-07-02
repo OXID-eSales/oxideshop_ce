@@ -89,7 +89,7 @@ class GenImport_Main extends oxAdminDetails
         $oErpImport = new oxErpGenImport();
         $this->_sCsvFilePath = null;
 
-        $sNavStep = $oConfig->getParameter( 'sNavStep' );
+        $sNavStep = $oConfig->getRequestParameter( 'sNavStep' );
 
         if ( !$sNavStep ) {
             $sNavStep = 1;
@@ -107,17 +107,17 @@ class GenImport_Main extends oxAdminDetails
 
         if ( $sNavStep == 2 ) {
             //saving csv field terminator and encloser to config
-            if ( $sTerminator = $oConfig->getParameter( 'sGiCsvFieldTerminator' ) ) {
+            if ( $sTerminator = $oConfig->getRequestParameter( 'sGiCsvFieldTerminator' ) ) {
                 $this->_sStringTerminator = $sTerminator;
                 $oConfig->saveShopConfVar( 'str', 'sGiCsvFieldTerminator', $sTerminator );
             }
 
-            if ( $sEncloser = $oConfig->getParameter( 'sGiCsvFieldEncloser' ) ) {
+            if ( $sEncloser = $oConfig->getRequestParameter( 'sGiCsvFieldEncloser' ) ) {
                 $this->_sStringEncloser = $sEncloser;
                 $oConfig->saveShopConfVar( 'str', 'sGiCsvFieldEncloser', $sEncloser );
             }
 
-            $sType = $oConfig->getParameter( 'sType' );
+            $sType = $oConfig->getRequestParameter( 'sType' );
             $oType = $oErpImport->getImportObject( $sType );
             $this->_aViewData['sType'] = $sType;
             $this->_aViewData['sImportTable'] =  $oType->getBaseTableName();
@@ -126,8 +126,8 @@ class GenImport_Main extends oxAdminDetails
         }
 
         if ( $sNavStep == 3 ) {
-            $aCsvFields = $oConfig->getParameter( 'aCsvFields' );
-            $sType = $oConfig->getParameter( 'sType' );
+            $aCsvFields = $oConfig->getRequestParameter( 'aCsvFields' );
+            $sType = $oConfig->getRequestParameter( 'sType' );
 
             $oErpImport = new oxErpGenImport();
             $oErpImport->setImportTypePrefix( $sType );
@@ -144,7 +144,7 @@ class GenImport_Main extends oxAdminDetails
             $this->_deleteCsvFile();
 
             //check if repeating import - then forsing first step
-            if ( $oConfig->getParameter( 'iRepeatImport' ) ) {
+            if ( $oConfig->getRequestParameter( 'iRepeatImport' ) ) {
                 $this->_aViewData['iRepeatImport'] = 1;
                 $sNavStep = 1;
             }
@@ -183,7 +183,7 @@ class GenImport_Main extends oxAdminDetails
      */
     protected function _getCsvFieldsNames()
     {
-        $blCsvContainsHeader = $this->getConfig()->getParameter( 'blContainsHeader' );
+        $blCsvContainsHeader = $this->getConfig()->getRequestParameter( 'blContainsHeader' );
         oxSession::setVar( 'blCsvContainsHeader', $blCsvContainsHeader );
         $sCsvPath = $this->_getUploadedCsvFilePath();
 
@@ -257,7 +257,7 @@ class GenImport_Main extends oxAdminDetails
 
         if ( $iNavStep == 3 ) {
             $blIsEmpty = true;
-            $aCsvFields = $this->getConfig()->getParameter( 'aCsvFields' );
+            $aCsvFields = $this->getConfig()->getRequestParameter( 'aCsvFields' );
             foreach ( $aCsvFields as $sValue ) {
                 if ( $sValue ) {
                    $blIsEmpty = false;

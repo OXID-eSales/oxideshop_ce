@@ -284,7 +284,7 @@ class Unit_Core_oxsearchTest extends OxidTestCase
 
     public function testSearchWithParamInSecondPage()
     {
-        modConfig::setParameter( "pgNr", 1 );
+        modConfig::setRequestParameter( "pgNr", 1 );
 
         $oSearch     = new oxsearch();
         modConfig::getInstance()->setConfigParam( 'aSearchCols', array( 'oxtitle', 'oxshortdesc', 'oxsearchkeys', 'oxartnum' ) );

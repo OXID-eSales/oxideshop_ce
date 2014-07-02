@@ -52,7 +52,7 @@ class User_Address extends oxAdminDetails
             $oUser->load( $soxId);
 
             // load adress
-            $soxAddressId = isset($this->sSavedOxid)?$this->sSavedOxid:oxConfig::getParameter( "oxaddressid");
+            $soxAddressId = isset($this->sSavedOxid)?$this->sSavedOxid:oxRegistry::getConfig()->getRequestParameter( "oxaddressid");
             if ( $soxAddressId != "-1" && isset( $soxAddressId ) ) {
                 $oAdress = oxNew( "oxaddress" );
                 $oAdress->load( $soxAddressId );
@@ -94,7 +94,7 @@ class User_Address extends oxAdminDetails
         parent::save();
 
         if ( $this->_allowAdminEdit( $this->getEditObjectId() ) ) {
-            $aParams = oxConfig::getParameter( "editval" );
+            $aParams = oxRegistry::getConfig()->getRequestParameter( "editval" );
             $oAdress = oxNew( "oxaddress" );
             if ( isset( $aParams['oxaddress__oxid'] ) && $aParams['oxaddress__oxid'] == "-1" ) {
                 $aParams['oxaddress__oxid'] = null;
@@ -118,7 +118,7 @@ class User_Address extends oxAdminDetails
     {
         $this->_blDelete = false;
         if ( $this->_allowAdminEdit( $this->getEditObjectId() ) ) {
-            $aParams = oxConfig::getParameter( "editval" );
+            $aParams = oxRegistry::getConfig()->getRequestParameter( "editval" );
             if ( isset( $aParams['oxaddress__oxid'] ) && $aParams['oxaddress__oxid'] != "-1" ) {
                 $oAdress = oxNew( "oxaddress" );
                 $this->_blDelete = $oAdress->delete( $aParams['oxaddress__oxid'] );

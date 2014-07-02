@@ -113,7 +113,7 @@ class Unit_Views_contentTest extends OxidTestCase
     public function testGetContentIdIfAgb()
     {
         $sContentId = oxDb::getDb( oxDB::FETCH_MODE_ASSOC )->getOne( "SELECT oxid FROM oxcontents WHERE oxloadid = 'oxagb' " );
-        modConfig::setParameter( 'oxcid', $sContentId );
+        modConfig::setRequestParameter( 'oxcid', $sContentId );
         modConfig::getInstance()->setConfigParam( "blPsLoginEnabled", true );
 
         $oView = new content();
@@ -127,7 +127,7 @@ class Unit_Views_contentTest extends OxidTestCase
      */
     public function testGetSeoObjectId()
     {
-        modConfig::setParameter( 'oxcid', 'testseoobjectid' );
+        modConfig::setRequestParameter( 'oxcid', 'testseoobjectid' );
 
         $oContentView = new content();
         $this->assertEquals( 'testseoobjectid', $oContentView->UNITgetSeoObjectId() );
@@ -140,7 +140,7 @@ class Unit_Views_contentTest extends OxidTestCase
      */
     public function testGetViewId()
     {
-        modConfig::setParameter( 'oxcid', 'testparam' );
+        modConfig::setRequestParameter( 'oxcid', 'testparam' );
 
         $oView = new oxubase();
         $oContentView = new content();
@@ -174,7 +174,7 @@ class Unit_Views_contentTest extends OxidTestCase
     {
         oxTestModules::addFunction( 'oxUtils', 'redirect', '{ throw new Exception("redirect"); }');
 
-        modConfig::setParameter( 'oxcid', $this->_oObj->getId() );
+        modConfig::setRequestParameter( 'oxcid', $this->_oObj->getId() );
         modConfig::getInstance()->setConfigParam( "blPsLoginEnabled", true );
 
         try {
@@ -262,11 +262,11 @@ class Unit_Views_contentTest extends OxidTestCase
     public function testShowPlainTemplate()
     {
         modConfig::getInstance()->setConfigParam( "blPsLoginEnabled", false );
-        modConfig::setParameter( 'plain', 0 );
+        modConfig::setRequestParameter( 'plain', 0 );
         $oView = new content();
         $this->assertFalse( $oView->showPlainTemplate() );
 
-        modConfig::setParameter( 'plain', 1 );
+        modConfig::setRequestParameter( 'plain', 1 );
         $oView = new content();
         $this->assertTrue( $oView->showPlainTemplate() );
     }
@@ -279,21 +279,21 @@ class Unit_Views_contentTest extends OxidTestCase
     public function testShowPlainTemplatePsOn()
     {
         modConfig::getInstance()->setConfigParam( "blPsLoginEnabled", true );
-        modConfig::setParameter( 'plain', 0 );
+        modConfig::setRequestParameter( 'plain', 0 );
         $oView = new content();
         $this->assertTrue( $oView->showPlainTemplate() );
 
-        modConfig::setParameter( 'plain', 1 );
+        modConfig::setRequestParameter( 'plain', 1 );
         $oView = new content();
         $this->assertTrue( $oView->showPlainTemplate() );
 
-        modConfig::setParameter( 'plain', 0 );
+        modConfig::setRequestParameter( 'plain', 0 );
 
         $oView = $this->getMock( 'content', array( 'getUser' ) );
         $oView->expects( $this->any() )->method( 'getUser')->will( $this->returnValue( false ) );
         $this->assertTrue( $oView->showPlainTemplate() );
 
-        modConfig::setParameter( 'plain', 0 );
+        modConfig::setRequestParameter( 'plain', 0 );
 
         $oUser = $this->getMock( 'oxuser', array( 'isTermsAccepted' ) );
         $oUser->expects( $this->any() )->method( 'isTermsAccepted')->will( $this->returnValue( true ) );
@@ -311,7 +311,7 @@ class Unit_Views_contentTest extends OxidTestCase
      */
     public function testGetContentIdWithOxcidParam()
     {
-        modConfig::setParameter( 'oxcid', $this->_oObj->getId() );
+        modConfig::setRequestParameter( 'oxcid', $this->_oObj->getId() );
         modConfig::getInstance()->setConfigParam( "blPsLoginEnabled", false );
 
         oxTestModules::addFunction( 'oxUtils', 'redirect', '{ throw new Exception($aA[0]); }');
@@ -333,7 +333,7 @@ class Unit_Views_contentTest extends OxidTestCase
         $oContent->setId('_testContent');
         $oContent->oxcontents__oxactive = new oxField('0');
         $oContent->save();
-        modConfig::setParameter( 'oxcid', $oContent->getId() );
+        modConfig::setRequestParameter( 'oxcid', $oContent->getId() );
 
         $oContentView = new Content() ;
 
@@ -364,7 +364,7 @@ class Unit_Views_contentTest extends OxidTestCase
      */
     public function testGetContent()
     {
-        modConfig::setParameter( 'oxcid', $this->_oObj->getId() );
+        modConfig::setRequestParameter( 'oxcid', $this->_oObj->getId() );
         modConfig::getInstance()->setConfigParam( "blPsLoginEnabled", false );
         oxTestModules::addFunction( 'oxUtils', 'redirect', '{ throw new Exception($aA[0]); }');
 
@@ -381,7 +381,7 @@ class Unit_Views_contentTest extends OxidTestCase
      */
     public function testGetTplName()
     {
-       modConfig::setParameter( 'tpl', 'test.tpl' );
+       modConfig::setRequestParameter( 'tpl', 'test.tpl' );
        $oObj = $this->getProxyClass("content");
        $this->assertEquals( 'message/test.tpl', $oObj->UNITgetTplName() );
     }
@@ -410,15 +410,15 @@ class Unit_Views_contentTest extends OxidTestCase
      */
     public function testGetTplNameWhenTplParamIsContentId()
     {
-       modConfig::setParameter( 'tpl', '2eb46767947d21851.22681675' );
+       modConfig::setRequestParameter( 'tpl', '2eb46767947d21851.22681675' );
        $oObj = $this->getProxyClass("content");
        $this->assertNull( $oObj->UNITgetTplName() );
     }
 
     public function testContentNotFound()
     {
-       modConfig::setParameter( 'oxcid', null );
-       modConfig::setParameter( 'oxloadid', null );
+       modConfig::setRequestParameter( 'oxcid', null );
+       modConfig::setRequestParameter( 'oxloadid', null );
        $oView = $this->getMock( 'content', array( '_getTplName', 'getContentId' ) );
        $oView->expects( $this->once() )->method( '_getTplName')->will( $this->returnValue( '' ) );
        $oView->expects( $this->any() )->method( 'getContentId')->will( $this->returnValue( false ) );
@@ -455,7 +455,7 @@ class Unit_Views_contentTest extends OxidTestCase
      */
     public function testGetTitle()
     {
-        modConfig::setParameter( 'oxcid', $this->_oObj->getId() );
+        modConfig::setRequestParameter( 'oxcid', $this->_oObj->getId() );
         $oContent = new content();
         $this->assertEquals( 'test', $oContent->getTitle() );
     }
@@ -681,7 +681,7 @@ class Unit_Views_contentTest extends OxidTestCase
     {
         $this->_oObj->oxcontents__oxcontent = new oxField("[{ 'A'|cat:'B' }]SSSSSSSS", oxField::T_RAW);
         $this->_oObj->save();
-        modConfig::setParameter( 'oxcid', $this->_oObj->getId() );
+        modConfig::setRequestParameter( 'oxcid', $this->_oObj->getId() );
         $oContent = new content();
 
         $this->assertEquals( 'ABSSSSSSSS', $oContent->getParsedContent(), 'Result from smarty not same as in content page.' );
@@ -698,7 +698,7 @@ class Unit_Views_contentTest extends OxidTestCase
         $oSecond->oxcontents__oxactive = new oxField('1', oxField::T_RAW);
         $oSecond->oxcontents__oxactive_1 = new oxField('1', oxField::T_RAW);
         $oSecond->save();
-        modConfig::setParameter( 'oxcid', $oSecond->getId() );
+        modConfig::setRequestParameter( 'oxcid', $oSecond->getId() );
         $oContent = new content();
 
         $this->assertEquals( 'ADSSSSSSSS', $oContent->getParsedContent(), 'Content not as in second page. If result ABSSSSSSSS than it is ame as in first page, so used wrong smarty cache file.' );

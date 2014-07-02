@@ -204,8 +204,8 @@ class Report_visitor_absolute extends report_base
         $aDataX = array();
         $aDataY = array();
 
-        $sTimeTo   = $oDb->quote( date( "Y-m-d H:i:s", strtotime( oxConfig::getParameter( "time_to" ) ) ) );
-        $sTimeFrom = $oDb->quote( date( "Y-m-d H:i:s", strtotime( oxConfig::getParameter( "time_from" ) ) ) );
+        $sTimeTo   = $oDb->quote( date( "Y-m-d H:i:s", strtotime( oxRegistry::getConfig()->getRequestParameter( "time_to" ) ) ) );
+        $sTimeFrom = $oDb->quote( date( "Y-m-d H:i:s", strtotime( oxRegistry::getConfig()->getRequestParameter( "time_from" ) ) ) );
 
         $sSQL = "select oxtime, count(*) as nrof from oxlogs where oxtime >= $sTimeFrom and oxtime <= $sTimeTo group by oxsessid order by oxtime";
         $aTemp = array();

@@ -43,7 +43,7 @@ class Unit_Views_tagTest extends OxidTestCase
 
     public function testRender()
     {
-        modConfig::setParameter( "searchtag", "kuyichi" );
+        modConfig::setRequestParameter( "searchtag", "kuyichi" );
         $oView = new tag();
 
         $this->assertEquals( "page/list/list.tpl", $oView->render() );
@@ -54,8 +54,8 @@ class Unit_Views_tagTest extends OxidTestCase
      */
     public function testRender_noArticlesForTag()
     {
-        modConfig::setParameter( "pgNr", 999 );
-        modConfig::setParameter( "searchtag", "notexistingtag" );
+        modConfig::setRequestParameter( "pgNr", 999 );
+        modConfig::setRequestParameter( "searchtag", "notexistingtag" );
 
         $oView = new tag();
         $this->assertEquals( "page/list/list.tpl", $oView->render() );
@@ -63,7 +63,7 @@ class Unit_Views_tagTest extends OxidTestCase
 
     public function testGetAddUrlParams()
     {
-        modConfig::setParameter( "searchtag", "testSearchTag" );
+        modConfig::setRequestParameter( "searchtag", "testSearchTag" );
 
         $oListView = new aList();
         $sListViewParams  = $oListView->getAddUrlParams();

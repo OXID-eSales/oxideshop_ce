@@ -148,7 +148,7 @@ class Rss extends oxUBase
     {
         if ($this->getConfig()->getConfigParam( 'bl_rssCategories' )) {
             $oCat = oxNew('oxCategory');
-            if ($oCat->load(oxConfig::getParameter('cat'))) {
+            if ($oCat->load(oxRegistry::getConfig()->getRequestParameter('cat'))) {
                 $this->_getRssFeed()->loadCategoryArticles($oCat);
             }
         } else {
@@ -165,7 +165,7 @@ class Rss extends oxUBase
     public function searcharts()
     {
         if ($this->getConfig()->getConfigParam( 'bl_rssSearch' )) {
-            $this->_getRssFeed()->loadSearchArticles( oxConfig::getParameter('searchparam', true), oxConfig::getParameter('searchcnid'), oxConfig::getParameter('searchvendor'), oxConfig::getParameter('searchmanufacturer'));
+            $this->_getRssFeed()->loadSearchArticles( oxRegistry::getConfig()->getRequestParameter('searchparam', true), oxRegistry::getConfig()->getRequestParameter('searchcnid'), oxRegistry::getConfig()->getRequestParameter('searchvendor'), oxRegistry::getConfig()->getRequestParameter('searchmanufacturer'));
         } else {
             error_404_handler();
         }
@@ -181,7 +181,7 @@ class Rss extends oxUBase
     {
         if ($this->getViewConfig()->getShowListmania() && $this->getConfig()->getConfigParam( 'bl_rssRecommLists' )) {
             $oArticle = oxNew('oxarticle');
-            if ($oArticle->load(oxConfig::getParameter('anid'))) {
+            if ($oArticle->load(oxRegistry::getConfig()->getRequestParameter('anid'))) {
                 $this->_getRssFeed()->loadRecommLists($oArticle);
                 return;
             }
@@ -199,7 +199,7 @@ class Rss extends oxUBase
     {
         if ($this->getConfig()->getConfigParam( 'bl_rssRecommListArts' )) {
             $oRecommList = oxNew('oxrecommlist');
-            if ($oRecommList->load(oxConfig::getParameter('recommid'))) {
+            if ($oRecommList->load(oxRegistry::getConfig()->getRequestParameter('recommid'))) {
                 $this->_getRssFeed()->loadRecommListArticles($oRecommList);
                 return;
             }

@@ -75,11 +75,11 @@ class EFire_Downloader extends Efire
     {
         $oConfig = $this->getConfig();
 
-        $sEtUsername = $this->getConfig()->getParameter("etUsername");
-        $sEtPassword = $this->getConfig()->getParameter("etPassword");
+        $sEtUsername = $oConfig->getRequestParameter("etUsername");
+        $sEtPassword = $oConfig->getRequestParameter("etPassword");
 
-        $sShopVersion = $this->getConfig()->getEdition() . " " . $this->getConfig()->getVersion();
-        $blSaveCredentials = $this->getConfig()->getParameter('blSaveCredentials');
+        $sShopVersion = $oConfig->getEdition() . " " . $this->getConfig()->getVersion();
+        $blSaveCredentials = $oConfig->getRequestParameter('blSaveCredentials');
 
         try {
             $oConnector = oxNew("oxefidownloader");

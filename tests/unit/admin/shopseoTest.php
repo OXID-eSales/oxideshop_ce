@@ -80,7 +80,7 @@ class Unit_Admin_ShopSeoTest extends OxidTestCase
         $sSeoUrl   = $aData[0]['oxseourl'];
         $iLangId   = $aData[0]['oxlang'];
 
-        modConfig::setParameter( 'aStaticUrl', array( "oxseo__oxobjectid" => $sObjectId ) );
+        modConfig::setRequestParameter( 'aStaticUrl', array( "oxseo__oxobjectid" => $sObjectId ) );
 
         // testing..
         $oView = $this->getProxyClass( "Shop_Seo" );
@@ -118,7 +118,7 @@ class Unit_Admin_ShopSeoTest extends OxidTestCase
         oxTestModules::addFunction( 'oxshop', 'setLanguage', '{ return true; }');
         oxTestModules::addFunction( 'oxshop', 'save', '{ return true; }');
 
-        modConfig::setParameter( 'aStaticUrl', array( "staticUrl" ) );
+        modConfig::setRequestParameter( 'aStaticUrl', array( "staticUrl" ) );
 
         $aTasks = array( "saveConfVars");
 
@@ -193,8 +193,8 @@ class Unit_Admin_ShopSeoTest extends OxidTestCase
      */
     public function testDeleteStaticUrl()
     {
-        modConfig::setParameter( 'aStaticUrl', array( "oxseo__oxobjectid" => "testObjectId" ) );
-        modConfig::setParameter( 'oxid', "1" );
+        modConfig::setRequestParameter( 'aStaticUrl', array( "oxseo__oxobjectid" => "testObjectId" ) );
+        modConfig::setRequestParameter( 'oxid', "1" );
 
         $oDb = oxDb::getDb();
 

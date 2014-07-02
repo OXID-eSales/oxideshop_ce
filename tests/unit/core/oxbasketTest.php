@@ -2523,7 +2523,7 @@ class Unit_Core_oxbasketTest extends OxidTestCase
 
     public function testGetShippingIdWhenPaymentIdIsOxEmpty()
     {
-        modConfig::getInstance()->setParameter( "sShipSet", null );
+        modConfig::getInstance()->setRequestParameter( "sShipSet", null );
 
         $oBasket = $this->getMock( "oxbasket", array( "getPaymentId" ) );
         $oBasket->expects( $this->once() )->method( 'getPaymentId' )->will( $this->returnValue( "oxempty" ) );
@@ -4168,7 +4168,7 @@ class Unit_Core_oxbasketTest extends OxidTestCase
     {
         modConfig::getInstance()->setConfigParam( "blBasketExcludeEnabled", true );
 
-        modConfig::setParameter( 'cnid', null );
+        modConfig::setRequestParameter( 'cnid', null );
 
         $oBasket = oxNew('oxbasket');
         $this->assertTrue( $oBasket->canAddProductToBasket( "1126" ) );
@@ -4217,7 +4217,7 @@ class Unit_Core_oxbasketTest extends OxidTestCase
     {
         modConfig::getInstance()->setConfigParam( "blBasketExcludeEnabled", true );
 
-        modConfig::setParameter( 'cnid', oxDb::getDb()->getOne( "select oxcatnid from oxobject2category where oxobjectid != '1126'" ) );
+        modConfig::setRequestParameter( 'cnid', oxDb::getDb()->getOne( "select oxcatnid from oxobject2category where oxobjectid != '1126'" ) );
 
         $oBasket = oxNew('oxbasket');
         $this->assertTrue( $oBasket->canAddProductToBasket( "1126" ) );
@@ -4236,7 +4236,7 @@ class Unit_Core_oxbasketTest extends OxidTestCase
 
         $sCatId     = $oDb->getOne( "select oxcatnid, count(oxcatnid) as _cnt from oxobject2category group by oxcatnid having _cnt > 1" );
         $sRootCatId = $oDb->getOne( "select oxrootid from oxcategories where oxid = '{$sCatId}'" );
-        modConfig::setParameter( 'cnid', $sCatId );
+        modConfig::setRequestParameter( 'cnid', $sCatId );
 
         $sProductId1 = $oDb->getOne( "select oxobjectid from oxobject2category where oxcatnid = '{$sCatId}'" );
         $sProductId2 = $oDb->getOne( "select oxobjectid from oxobject2category where oxcatnid = '{$sCatId}' and oxobjectid != '{$sProductId1}'" );

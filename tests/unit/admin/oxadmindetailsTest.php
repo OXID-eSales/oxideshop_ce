@@ -305,9 +305,9 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
         $oListItem->oxcontents__oxloadid = new oxField( "_testLoadId" );
         $oListItem->save();
 
-        modConfig::setParameter( 'oxid', '_testId' );
-        modConfig::setParameter( 'setfolder', 'neu' );
-        modConfig::setParameter( 'folderclass', 'oxcontent' );
+        modConfig::setRequestParameter( 'oxid', '_testId' );
+        modConfig::setRequestParameter( 'setfolder', 'neu' );
+        modConfig::setRequestParameter( 'folderclass', 'oxcontent' );
 
         $oAdminDetails = $this->getProxyClass( 'oxadmindetails' );
         $oAdminDetails->setNonPublicVar( '_oList', $oListItem );
@@ -330,9 +330,9 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
         $oListItem->oxcontents__oxfolder = new oxField('neu', oxField::T_RAW);
         $oListItem->save();
 
-        modConfig::setParameter( 'oxid', '_testId' );
-        modConfig::setParameter( 'setfolder', 'CMSFOLDER_NONE' );
-        modConfig::setParameter( 'folderclass', 'oxcontent' );
+        modConfig::setRequestParameter( 'oxid', '_testId' );
+        modConfig::setRequestParameter( 'setfolder', 'CMSFOLDER_NONE' );
+        modConfig::setRequestParameter( 'folderclass', 'oxcontent' );
 
         $oAdminDetails = $this->getProxyClass( 'oxadmindetails' );
 

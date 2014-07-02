@@ -909,7 +909,7 @@ class oxUtils extends oxSuperCfg
     public function canPreview()
     {
         $blCan = null;
-        if ( ( $sPrevId = oxConfig::getParameter( 'preview' ) ) &&
+        if ( ( $sPrevId = oxRegistry::getConfig()->getRequestParameter( 'preview' ) ) &&
              ( $sAdminSid = oxRegistry::get("oxUtilsServer")->getOxCookie( 'admin_sid' ) ) ) {
 
             $sTable = getViewName( 'oxuser' );
@@ -986,7 +986,7 @@ class oxUtils extends oxSuperCfg
                         oxSession::setVar( "shp", $sRights);
 
                         // check if this subshop admin is evil.
-                        if ('chshp' == oxConfig::getParameter( 'fnc' )) {
+                        if ('chshp' == oxRegistry::getConfig()->getRequestParameter( 'fnc' )) {
                             // dont allow this call
                             $blIsAuth = false;
                         } else {
@@ -994,7 +994,7 @@ class oxUtils extends oxSuperCfg
 
                             $aShopIdVars = array('actshop', 'shp', 'currentadminshop');
                             foreach ($aShopIdVars as $sShopIdVar) {
-                                if ($sGotShop = oxConfig::getParameter( $sShopIdVar )) {
+                                if ($sGotShop = oxRegistry::getConfig()->getRequestParameter( $sShopIdVar )) {
                                     if ($sGotShop != $sRights) {
                                         $blIsAuth = false;
                                         break;
@@ -1098,7 +1098,7 @@ class oxUtils extends oxSuperCfg
     {
         //preventing possible cyclic redirection
         //#M341 and check only if redirect parameter must be added
-        if ( $blAddRedirectParam && oxConfig::getParameter( 'redirected' ) ) {
+        if ( $blAddRedirectParam && oxRegistry::getConfig()->getRequestParameter( 'redirected' ) ) {
             return;
         }
 

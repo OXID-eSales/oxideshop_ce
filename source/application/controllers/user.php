@@ -131,7 +131,7 @@ class User extends oxUBase
     {
         if ( $this->_iOption === null ) {
             // passing user chosen option value to display correct content
-            $iOption = oxConfig::getParameter( 'option' );
+            $iOption = oxRegistry::getConfig()->getRequestParameter( 'option' );
             // if user chosen "Option 2"" - we should show user details only if he is authorized
             if ( $iOption == 2 && !$this->getUser() ) {
                 $iOption = 0;
@@ -155,7 +155,7 @@ class User extends oxUBase
                 $sOrderRemark = oxSession::getVar( 'ordrem' );
             } else {
                 // not connected so nowhere to save, we're gonna use what we get from post
-                $sOrderRemark = oxConfig::getParameter( 'order_remark', true );
+                $sOrderRemark = oxRegistry::getConfig()->getRequestParameter( 'order_remark', true );
             }
 
             $this->_sOrderRemark = $sOrderRemark ? oxRegistry::getConfig()->checkParamSpecialChars( $sOrderRemark ) : false;
@@ -172,7 +172,7 @@ class User extends oxUBase
     {
         if ( $this->_blNewsSubscribed === null ) {
             $blNews = false;
-            if ( ( $blNews = oxConfig::getParameter( 'blnewssubscribed' ) ) === null ) {
+            if ( ( $blNews = oxRegistry::getConfig()->getRequestParameter( 'blnewssubscribed' ) ) === null ) {
                 $blNews = false;
             }
             if ( ( $oUser = $this->getUser() ) ) {
@@ -235,7 +235,7 @@ class User extends oxUBase
      */
     public function modifyBillAddress()
     {
-        return oxConfig::getParameter( 'blnewssubscribed' );
+        return oxRegistry::getConfig()->getRequestParameter( 'blnewssubscribed' );
     }
 
     /**

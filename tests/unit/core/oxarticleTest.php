@@ -3471,7 +3471,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
      */
     public function testApplyCurrency()
     {
-        modConfig::setParameter( 'currency', 2 );
+        modConfig::setRequestParameter( 'currency', 2 );
 
         $oPrice = oxNew( 'oxPrice' );
         $oPrice->setPrice(100 );
@@ -4030,7 +4030,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $this->assertEquals($sActPic, $aPicGallery['ActPic']);
         $aPicGallery = $oArticle->getPictureGallery();
 
-        modConfig::setParameter('actpicid', 2);
+        modConfig::setRequestParameter('actpicid', 2);
         $aPicGallery = $oArticle->getPictureGallery();
         $this->assertEquals(2, $aPicGallery['ActPicID']);
     }
@@ -4176,7 +4176,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         oxTestModules::addFunction( "oxUtilsServer", "getOxCookie", "{return 'testadmin_sid';}" );
         $oArticle->oxarticles__oxactive = new oxField( 0 );
 
-        modConfig::setParameter( 'preview', md5( 'testadmin_sid' . 'oxdefaultadmin' . oxDb::getDb()->getOne('select oxpassword from oxuser where oxid = "oxdefaultadmin" ') . 'malladmin' ) );
+        modConfig::setRequestParameter( 'preview', md5( 'testadmin_sid' . 'oxdefaultadmin' . oxDb::getDb()->getOne('select oxpassword from oxuser where oxid = "oxdefaultadmin" ') . 'malladmin' ) );
         $this->assertTrue($oArticle->isVisible());
     }
 
@@ -4995,10 +4995,10 @@ class Unit_Core_oxArticleTest extends OxidTestCase
     {
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return false;}");
 
-        modConfig::setParameter( 'pgNr', 10 );
-        modConfig::setParameter( 'cnid', 'yyy' );
-        modConfig::setParameter( 'mnid', 'mmm' );
-        modConfig::setParameter( 'listtype', 'search' );
+        modConfig::setRequestParameter( 'pgNr', 10 );
+        modConfig::setRequestParameter( 'cnid', 'yyy' );
+        modConfig::setRequestParameter( 'mnid', 'mmm' );
+        modConfig::setRequestParameter( 'listtype', 'search' );
 
         $sUrl = oxConfig::getInstance()->getShopHomeURL().'cl=details&amp;anid=xxx&amp;cnid=yyy&amp;pgNr=10&amp;mnid=mmm&amp;listtype=search';
 
@@ -5016,8 +5016,8 @@ class Unit_Core_oxArticleTest extends OxidTestCase
      */
     public function testGetLink()
     {
-        modConfig::setParameter( 'pgNr', 10 );
-        modConfig::setParameter( 'cnid', 'yyy' );
+        modConfig::setRequestParameter( 'pgNr', 10 );
+        modConfig::setRequestParameter( 'cnid', 'yyy' );
 
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return false;}");
 
@@ -5459,8 +5459,8 @@ class Unit_Core_oxArticleTest extends OxidTestCase
      */
     public function testGetLinkWithLanguage()
     {
-        modConfig::setParameter( 'pgNr', 10 );
-        modConfig::setParameter( 'cnid', 'yyy' );
+        modConfig::setRequestParameter( 'pgNr', 10 );
+        modConfig::setRequestParameter( 'cnid', 'yyy' );
 
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return false;}");
 
@@ -5503,10 +5503,10 @@ class Unit_Core_oxArticleTest extends OxidTestCase
     {
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return false;}");
 
-        modConfig::setParameter( 'pgNr', 10 );
-        modConfig::setParameter( 'cnid', 'yyy' );
-        modConfig::setParameter( 'mnid', 'mmm' );
-        modConfig::setParameter( 'listtype', 'search' );
+        modConfig::setRequestParameter( 'pgNr', 10 );
+        modConfig::setRequestParameter( 'cnid', 'yyy' );
+        modConfig::setRequestParameter( 'mnid', 'mmm' );
+        modConfig::setRequestParameter( 'listtype', 'search' );
 
         $sUrl1 = oxConfig::getInstance()->getShopHomeURL().'cl=details&amp;anid=xxx&amp;cnid=yyy&amp;pgNr=10&amp;mnid=mmm&amp;listtype=search&amp;lang=1';
         $sUrl2 = oxConfig::getInstance()->getShopHomeURL().'cl=details&amp;anid=xxx&amp;cnid=yyy&amp;pgNr=10&amp;mnid=mmm&amp;listtype=search';
@@ -5579,7 +5579,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxUtilsUrl', 'processUrl($url, $blFinalUrl = true, $aParams = NULL, $iLang = NULL)', '{return "PROC".$url.(int)$final."CORP";}');
 
-        modConfig::setParameter( 'cnid', 'yyy' );
+        modConfig::setRequestParameter( 'cnid', 'yyy' );
         $oArticle = $this->getMock( "oxarticle", array( 'getId' ) );
         $oArticle->expects( $this->once() )->method( 'getId' )->will($this->returnValue( 'xxx' ) );
 
@@ -5605,9 +5605,9 @@ class Unit_Core_oxArticleTest extends OxidTestCase
      */
     public function testGetToBasketLinkTestingIfAllRequestParamsAreSet()
     {
-        modConfig::setParameter( 'cnid', 'yyy' );
-        modConfig::setParameter( 'cl', 'thankyou' );
-        modConfig::setParameter( 'tpl', '/my/tpl/file.tpl' );
+        modConfig::setRequestParameter( 'cnid', 'yyy' );
+        modConfig::setRequestParameter( 'cl', 'thankyou' );
+        modConfig::setRequestParameter( 'tpl', '/my/tpl/file.tpl' );
 
         oxTestModules::addFunction('oxUtilsUrl', 'processUrl($url, $blFinalUrl = true, $aParams = NULL, $iLang = NULL)', '{return "PROC".$url.(int)$final."CORP";}');
 

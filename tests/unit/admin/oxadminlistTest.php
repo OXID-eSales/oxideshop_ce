@@ -94,7 +94,7 @@ class Unit_Admin_oxAdminListTest extends OxidTestCase
         $oAdminList = new oxadminlist();
         $this->assertEquals( 50, $oAdminList->UNITgetUserDefListSize() );
 
-        modConfig::setParameter( 'viewListSize', 999 );
+        modConfig::setRequestParameter( 'viewListSize', 999 );
         $oAdminList = new oxadminlist();
         $this->assertEquals( 999, $oAdminList->UNITgetUserDefListSize() );
     }
@@ -171,7 +171,7 @@ class Unit_Admin_oxAdminListTest extends OxidTestCase
         $oLink->save();
 
         $_POST['oxid'] = '_testId';
-        modConfig::setParameter( 'oxid', '_testId' );
+        modConfig::setRequestParameter( 'oxid', '_testId' );
 
         $oAdminList = $this->getProxyClass( 'oxAdminListForoxAdminListTest' );
         $oAdminList->setNonPublicVar( '_sListClass', 'oxlinks' );
@@ -207,7 +207,7 @@ class Unit_Admin_oxAdminListTest extends OxidTestCase
     public function testSetCurrentListPosition()
     {
         modConfig::getInstance()->setConfigParam( 'iAdminListSize', '10' );
-        modConfig::setParameter( 'lstrt', 10 );
+        modConfig::setRequestParameter( 'lstrt', 10 );
 
         $oAdminList = $this->getProxyClass( 'oxadminlist' );
         $oAdminList->setNonPublicVar( '_iListSize', 110 );
@@ -538,7 +538,7 @@ class Unit_Admin_oxAdminListTest extends OxidTestCase
     public function testPrepareWhereQueryWithOrderWhenFolderNotSpecified()
     {
         modConfig::getInstance()->setConfigParam( 'aOrderfolder', array( 'Neu'=> 1, 'Old' => 2 ) );
-        modConfig::setParameter( 'folder', '' );
+        modConfig::setRequestParameter( 'folder', '' );
 
         $aWhere['oxtitle'] = '';
         $oAdminList = $this->getProxyClass( 'order_list' );
@@ -572,7 +572,7 @@ class Unit_Admin_oxAdminListTest extends OxidTestCase
 
         $aResultWhere["{$sTable}.oxurldesc"] = '%oxurldesc%';
 
-        modConfig::setParameter( 'where', $aWhere );
+        modConfig::setRequestParameter( 'where', $aWhere );
         oxLang::getInstance()->setBaseLanguage( 1 );
 
         $oLinks = oxNew( 'oxList' );
@@ -591,7 +591,7 @@ class Unit_Admin_oxAdminListTest extends OxidTestCase
      */
     public function testBuildWhereWhenFolderParamSpecifiesNoUsageOfFolderName()
     {
-        modConfig::setParameter( 'folder', 'CMSFOLDER_NONE' );
+        modConfig::setRequestParameter( 'folder', 'CMSFOLDER_NONE' );
 
         $oListItem = oxNew( 'oxList' );
         $oListItem->init( 'oxContent' );
@@ -639,7 +639,7 @@ class Unit_Admin_oxAdminListTest extends OxidTestCase
         $aWhere['oxlinks']['oxurl']     = 'testurl';
         $aWhere['oxlinks']['oxurldesc'] = 'oxurldesc';
 
-        modConfig::setParameter( 'where', $aWhere );
+        modConfig::setRequestParameter( 'where', $aWhere );
 
         $sViewName = getViewName( 'oxlinks' );
         $aResultWhere[$sViewName.'.oxshopid']  = '%1%';
@@ -665,7 +665,7 @@ class Unit_Admin_oxAdminListTest extends OxidTestCase
         $aWhere['oxlinks']['oxshopid']  = '1';
         $aWhere['oxactions']['oxtitle'] = 'testtitle';
 
-        modConfig::setParameter( 'where', $aWhere );
+        modConfig::setRequestParameter( 'where', $aWhere );
 
         $aResultWhere[getViewName( 'oxlinks' ).'.oxshopid']  = '%1%';
         $aResultWhere[getViewName( 'oxactions' ).'.oxtitle']  = '%testtitle%';
@@ -693,7 +693,7 @@ class Unit_Admin_oxAdminListTest extends OxidTestCase
         $aWhere['oxlinks']['oxurldesc'] = 'oxurldesc';
         $aWhere['oxlinks']['oxinsert']  = '08/09/2008';
 
-        modConfig::setParameter( 'where', $aWhere );
+        modConfig::setRequestParameter( 'where', $aWhere );
 
         $sTable = getViewName( 'oxlinks' );
         $aResultWhere[$sTable.'.oxshopid']  = '%1%';
@@ -782,12 +782,12 @@ class Unit_Admin_oxAdminListTest extends OxidTestCase
         $oAdminList->expects( $this->any() )->method( 'getNavigation' )->will( $this->returnValue( $oNavigation ) );
 
         //setting active tab 1
-        modConfig::setParameter( 'actedit', 1 );
+        modConfig::setRequestParameter( 'actedit', 1 );
         $oAdminList->UNITsetupNavigation( 'xxx' );
         $this->assertEquals( '1', $oAdminList->getViewDataElement( 'actedit' ) );
 
         //creating new item (oxid = -1)
-        modConfig::setParameter( 'oxid', -1 );
+        modConfig::setRequestParameter( 'oxid', -1 );
         $oAdminList->UNITsetupNavigation( 'xxx' );
         $this->assertEquals( '0', $oAdminList->getViewDataElement( 'actedit' ) );
     }
@@ -805,7 +805,7 @@ class Unit_Admin_oxAdminListTest extends OxidTestCase
         $sTable = getViewName( 'oxlinks' );
 
         $aSearchFields = array('oxlinks.oxid' => '1', 'oxshopid' => '2', 'oxarticles.oxtitle' => '3');
-        modConfig::setParameter( 'where', $aSearchFields );
+        modConfig::setRequestParameter( 'where', $aSearchFields );
 
         $oAdminList = $this->getProxyClass( 'oxadminlist' );
         $oAdminList->render();

@@ -69,7 +69,7 @@ class Unit_Admin_GenImportMainTest extends OxidTestCase
      */
     public function testGetCsvFieldsNamesContainsNoHeader()
     {
-        modConfig::getInstance()->setParameter( 'blContainsHeader', false );
+        modConfig::getInstance()->setRequestParameter( 'blContainsHeader', false );
 
         $oView = $this->getMock( "GenImport_Main", array( "_getUploadedCsvFilePath", "_getCsvFirstRow" ) );
         $oView->expects( $this->once() )->method( '_getUploadedCsvFilePath' )->will( $this->returnValue( false ) );
@@ -84,7 +84,7 @@ class Unit_Admin_GenImportMainTest extends OxidTestCase
      */
     public function testGetCsvFieldsNamesContainsHeader()
     {
-        modConfig::getInstance()->setParameter( 'blContainsHeader', true );
+        modConfig::getInstance()->setRequestParameter( 'blContainsHeader', true );
 
         $oView = $this->getMock( "GenImport_Main", array( "_getUploadedCsvFilePath", "_getCsvFirstRow" ) );
         $oView->expects( $this->once() )->method( '_getUploadedCsvFilePath' )->will( $this->returnValue( false ) );
@@ -156,7 +156,7 @@ class Unit_Admin_GenImportMainTest extends OxidTestCase
      */
     public function testCheckErrorsStep3EmptyCsvFields()
     {
-        modConfig::getInstance()->setParameter( 'aCsvFields', array() );
+        modConfig::getInstance()->setRequestParameter( 'aCsvFields', array() );
 
         // defining parameters
         $iNavStep = 3;
@@ -173,7 +173,7 @@ class Unit_Admin_GenImportMainTest extends OxidTestCase
     public function testCheckErrorsStep3()
     {
         oxTestModules::addFunction( 'oxUtilsView', 'addErrorToDisplay', '{}');
-        modConfig::getInstance()->setParameter( 'aCsvFields', array( "sTestField" ) );
+        modConfig::getInstance()->setRequestParameter( 'aCsvFields', array( "sTestField" ) );
 
         // defining parameters
         $iNavStep = 3;

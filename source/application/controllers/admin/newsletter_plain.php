@@ -57,7 +57,7 @@ class Newsletter_Plain extends oxAdminDetails
     public function save()
     {
         $soxId = $this->getEditObjectId();
-        $aParams    = oxConfig::getParameter( "editval");
+        $aParams    = oxRegistry::getConfig()->getRequestParameter( "editval");
 
         // shopid
         $sShopID = oxSession::getVar( "actshop");

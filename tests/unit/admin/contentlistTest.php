@@ -35,7 +35,7 @@ class Unit_Admin_ContentListTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setParameter( "folder", "sTestFolder" );
+        modConfig::setRequestParameter( "folder", "sTestFolder" );
 
         // testing..
         $oView = new Content_List();
@@ -54,7 +54,7 @@ class Unit_Admin_ContentListTest extends OxidTestCase
      */
     public function testPrepareWhereQueryUserDefinedFolder()
     {
-        modConfig::setParameter( "folder", "testFolder" );
+        modConfig::setRequestParameter( "folder", "testFolder" );
         $sViewName = getviewName( "oxcontents" );
 
         // defining parameters

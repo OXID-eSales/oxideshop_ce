@@ -326,7 +326,7 @@ class oxRecommList extends oxBase implements oxIUrl
     {
         if ( $sSearchStr ) {
             // sets active page
-            $iActPage = (int) oxConfig::getParameter( 'pgNr' );
+            $iActPage = (int) oxRegistry::getConfig()->getRequestParameter( 'pgNr' );
             $iActPage = ($iActPage < 0) ? 0 : $iActPage;
 
             // load only lists which we show on screen

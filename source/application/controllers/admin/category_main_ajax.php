@@ -69,8 +69,8 @@ class category_main_ajax extends ajaxListComponent
         $sArticleTable = $this->_getViewName('oxarticles');
         $sO2CView      = $this->_getViewName('oxobject2category');
 
-        $sOxid      = oxConfig::getParameter( 'oxid' );
-        $sSynchOxid = oxConfig::getParameter( 'synchoxid' );
+        $sOxid      = oxRegistry::getConfig()->getRequestParameter( 'oxid' );
+        $sSynchOxid = oxRegistry::getConfig()->getRequestParameter( 'synchoxid' );
         $oDb        = oxDb::getDb();
 
         $sShopID    = $myConfig->getShopId();
@@ -133,13 +133,13 @@ class category_main_ajax extends ajaxListComponent
         $myConfig = $this->getConfig();
 
         $aArticles  = $this->_getActionIds( 'oxarticles.oxid' );
-        $sCategoryID = oxConfig::getParameter( 'synchoxid');
+        $sCategoryID = oxRegistry::getConfig()->getRequestParameter( 'synchoxid');
         $sShopID     = $myConfig->getShopId();
         $oDb         = oxDb::getDb();
         $sArticleTable = $this->_getViewName( 'oxarticles' );
 
         // adding
-        if ( oxConfig::getParameter( 'all' ) ) {
+        if ( oxRegistry::getConfig()->getRequestParameter( 'all' ) ) {
             $aArticles = $this->_getAll( $this->_addFilter( "select $sArticleTable.oxid ".$this->_getQuery() ) );
         }
 
@@ -216,12 +216,12 @@ class category_main_ajax extends ajaxListComponent
     public function removeArticle()
     {
         $aArticles = $this->_getActionIds( 'oxarticles.oxid' );
-        $sCategoryID = oxConfig::getParameter( 'oxid');
+        $sCategoryID = oxRegistry::getConfig()->getRequestParameter( 'oxid');
         $sShopID     = $this->getConfig()->getShopId();
         $oDb = oxDb::getDb();
 
         // adding
-        if ( oxConfig::getParameter( 'all' ) ) {
+        if ( oxRegistry::getConfig()->getRequestParameter( 'all' ) ) {
             $sArticleTable = $this->_getViewName( 'oxarticles' );
             $aArticles = $this->_getAll( $this->_addFilter( "select $sArticleTable.oxid ".$this->_getQuery() ) );
         }

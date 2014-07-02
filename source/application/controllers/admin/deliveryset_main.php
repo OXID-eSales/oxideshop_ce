@@ -68,7 +68,7 @@ class DeliverySet_Main extends oxAdminDetails
             }
         }
 
-        if ( oxConfig::getParameter("aoc") ) {
+        if ( oxRegistry::getConfig()->getRequestParameter("aoc") ) {
             $oDeliverysetMainAjax = oxNew( 'deliveryset_main_ajax' );
             $this->_aViewData['oxajax'] = $oDeliverysetMainAjax->getColumns();
 
@@ -88,7 +88,7 @@ class DeliverySet_Main extends oxAdminDetails
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxConfig::getParameter( "editval");
+        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval");
 
             // shopid
             $sShopID = oxSession::getVar( "actshop");
@@ -123,7 +123,7 @@ class DeliverySet_Main extends oxAdminDetails
     public function saveinnlang()
     {
         $soxId = $this->getEditObjectId();
-        $aParams = oxConfig::getParameter( "editval");
+        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval");
         // checkbox handling
         if( !isset( $aParams['oxdeliveryset__oxactive']))
             $aParams['oxdeliveryset__oxactive'] = 0;
@@ -144,7 +144,7 @@ class DeliverySet_Main extends oxAdminDetails
 
 
         // apply new language
-        $oDelSet->setLanguage( oxConfig::getParameter( "new_lang" ) );
+        $oDelSet->setLanguage( oxRegistry::getConfig()->getRequestParameter( "new_lang" ) );
         $oDelSet->save();
 
         // set oxid if inserted

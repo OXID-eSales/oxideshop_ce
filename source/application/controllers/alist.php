@@ -297,7 +297,7 @@ class aList extends oxUBase
     {
         $sParams = parent::getAddUrlParams();
         if (!oxRegistry::getUtils()->seoIsActive()) {
-            $iPgNr = (int) oxConfig::getParameter('pgNr');
+            $iPgNr = (int) oxRegistry::getConfig()->getRequestParameter('pgNr');
             if ($iPgNr > 0) {
                 $sParams .= ($sParams ? '&amp;' : '') . "pgNr={$iPgNr}";
             }
@@ -384,7 +384,7 @@ class aList extends oxUBase
         } else {
             $aSessionFilter = oxSession::getVar('session_attrfilter');
 
-            $sActCat           = oxConfig::getParameter('cnid');
+            $sActCat           = oxRegistry::getConfig()->getRequestParameter('cnid');
             $this->_iAllArtCnt = $oArtList->loadCategoryArticles($sActCat, $aSessionFilter);
         }
 
@@ -665,7 +665,7 @@ class aList extends oxUBase
     public function getTemplateName()
     {
         // assign template name
-        if (($sTplName = basename(oxConfig::getParameter('tpl')))) {
+        if (($sTplName = basename(oxRegistry::getConfig()->getRequestParameter('tpl')))) {
             $this->_sThisTemplate = 'custom/' . $sTplName;
         } elseif (($oCategory = $this->getActiveCategory()) && $oCategory->oxcategories__oxtemplate->value) {
             $this->_sThisTemplate = $oCategory->oxcategories__oxtemplate->value;

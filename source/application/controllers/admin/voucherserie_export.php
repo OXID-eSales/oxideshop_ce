@@ -148,7 +148,7 @@ class VoucherSerie_Export extends VoucherSerie_Main
             $this->stop( ERR_FILEIO);
         } else {
             // file is open
-            $iStart = oxConfig::getParameter("iStart");
+            $iStart = oxRegistry::getConfig()->getRequestParameter("iStart");
             if (!$iStart) {
                 ftruncate($this->fpFile, 0);
             }

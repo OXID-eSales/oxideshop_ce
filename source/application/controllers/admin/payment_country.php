@@ -68,7 +68,7 @@ class Payment_Country extends oxAdminDetails
             }
         }
 
-        if ( oxConfig::getParameter("aoc") ) {
+        if ( oxRegistry::getConfig()->getRequestParameter("aoc") ) {
             $oPaymentCountryAjax = oxNew( 'payment_country_ajax' );
             $this->_aViewData['oxajax'] = $oPaymentCountryAjax->getColumns();
 
@@ -85,7 +85,7 @@ class Payment_Country extends oxAdminDetails
     public function addcountry()
     {
         $sOxId = $this->getEditObjectId();
-        $aChosenCntr = oxConfig::getParameter( "allcountries" );
+        $aChosenCntr = oxRegistry::getConfig()->getRequestParameter( "allcountries" );
         if ( isset( $sOxId ) && $sOxId != "-1" && is_array( $aChosenCntr ) ) {
             foreach ( $aChosenCntr as $sChosenCntr ) {
                 $oObject2Payment = oxNew( 'oxbase' );
@@ -106,7 +106,7 @@ class Payment_Country extends oxAdminDetails
     public function removecountry()
     {
         $sOxId = $this->getEditObjectId();
-        $aChosenCntr = oxConfig::getParameter( "countries" );
+        $aChosenCntr = oxRegistry::getConfig()->getRequestParameter( "countries" );
         if ( isset( $sOxId ) && $sOxId != "-1" && is_array( $aChosenCntr ) ) {
             foreach ( $aChosenCntr as $sChosenCntr ) {
                 $oObject2Payment = oxNew( 'oxbase' );

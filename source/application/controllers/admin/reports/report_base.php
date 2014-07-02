@@ -99,8 +99,8 @@ class Report_base extends oxAdminView
         $myConfig = $this->getConfig();
 
         // initializing one week before current..
-        $iFrom = oxRegistry::get("oxUtilsDate")->getWeekNumber($myConfig->getConfigParam( 'iFirstWeekDay' ), strtotime( oxConfig::getParameter( "time_from") ) );
-        $iTo   = oxRegistry::get("oxUtilsDate")->getWeekNumber($myConfig->getConfigParam( 'iFirstWeekDay' ), strtotime( oxConfig::getParameter( "time_to") ) );
+        $iFrom = oxRegistry::get("oxUtilsDate")->getWeekNumber($myConfig->getConfigParam( 'iFirstWeekDay' ), strtotime( oxRegistry::getConfig()->getRequestParameter( "time_from") ) );
+        $iTo   = oxRegistry::get("oxUtilsDate")->getWeekNumber($myConfig->getConfigParam( 'iFirstWeekDay' ), strtotime( oxRegistry::getConfig()->getRequestParameter( "time_to") ) );
 
         return array( $iFrom - 1, $iTo + 1 );
     }

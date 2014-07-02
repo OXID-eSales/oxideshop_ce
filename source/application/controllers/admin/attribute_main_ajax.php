@@ -71,8 +71,8 @@ class attribute_main_ajax extends ajaxListComponent
         $sO2CategoryView  = $this->_getViewName('oxobject2category');
         $sO2AttributeView = $this->_getViewName('oxobject2attribute');
 
-        $sDelId      = oxConfig::getParameter( 'oxid' );
-        $sSynchDelId = oxConfig::getParameter( 'synchoxid' );
+        $sDelId      = oxRegistry::getConfig()->getRequestParameter( 'oxid' );
+        $sSynchDelId = oxRegistry::getConfig()->getRequestParameter( 'synchoxid' );
 
         // category selected or not ?
         if ( !$sDelId) {
@@ -129,7 +129,7 @@ class attribute_main_ajax extends ajaxListComponent
         $aChosenCat = $this->_getActionIds( 'oxobject2attribute.oxid' );
 
 
-        if ( oxConfig::getParameter( 'all' ) ) {
+        if ( oxRegistry::getConfig()->getRequestParameter( 'all' ) ) {
             $sO2AttributeView = $this->_getViewName('oxobject2attribute');
 
             $sQ = parent::_addFilter( "delete $sO2AttributeView.* ".$this->_getQuery() );
@@ -148,10 +148,10 @@ class attribute_main_ajax extends ajaxListComponent
     public function addAttrArticle()
     {
         $aAddArticle = $this->_getActionIds( 'oxarticles.oxid' );
-        $soxId       = oxConfig::getParameter( 'synchoxid' );
+        $soxId       = oxRegistry::getConfig()->getRequestParameter( 'synchoxid' );
 
         // adding
-        if ( oxConfig::getParameter( 'all' ) ) {
+        if ( oxRegistry::getConfig()->getRequestParameter( 'all' ) ) {
             $sArticleTable = $this->_getViewName( 'oxarticles' );
             $aAddArticle = $this->_getAll( $this->_addFilter( "select $sArticleTable.oxid ".$this->_getQuery() ) );
         }

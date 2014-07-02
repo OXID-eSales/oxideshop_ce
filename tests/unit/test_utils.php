@@ -638,8 +638,39 @@ class modConfig extends modOXID
         self::getInstance()->_aConfigparams[$paramName] = $paramValue;
     }
 
-    // needed 4 oxConfig
+    /**
+     * @param $paramName
+     * @param bool $blRaw
+     *
+     * @deprecated since v5.2.0 (2014-07-02); Use static getRequestParameter()
+     *
+     * @return string
+     */
     static function getParameter(  $paramName, $blRaw = false)
+    {
+        return self::getRequestParameter($paramName, $blRaw);
+    }
+
+    /**
+     * @param $paramName
+     * @param $paramValue
+     *
+     * @deprecated since v5.2.0 (2014-07-02); Use static setRequestParameter()
+     */
+    static function setParameter( $paramName, $paramValue )
+    {
+        self::setRequestParameter($paramName, $paramValue);
+    }
+
+    /**
+     * Returns value of parameter stored in POST,GET for tests.
+     *
+     * @param $paramName
+     * @param bool $blRaw
+     *
+     * @return string
+     */
+    public static function getRequestParameter(  $paramName, $blRaw = false)
     {
         // should throw exception if original functionality is needed.
         if ( array_key_exists( $paramName, self::getInstance()->_params ) ) {
@@ -649,7 +680,13 @@ class modConfig extends modOXID
         }
     }
 
-    static function setParameter( $paramName, $paramValue )
+    /**
+     * Sets request parameter for test.
+     *
+     * @param $paramName
+     * @param $paramValue
+     */
+    public static function setRequestParameter( $paramName, $paramValue )
     {
         // should throw exception if original functionality is needed.
         self::getInstance()->_params[$paramName] = $paramValue;

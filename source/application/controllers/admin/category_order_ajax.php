@@ -64,7 +64,7 @@ class category_order_ajax extends ajaxListComponent
         $oDb = oxDb::getDb();
 
         // category selected or not ?
-        if ( $sSynchOxid  = oxConfig::getParameter( 'synchoxid' ) ) {
+        if ( $sSynchOxid  = oxRegistry::getConfig()->getRequestParameter( 'synchoxid' ) ) {
             $sQAdd  = " from $sArtTable left join $sO2CView on $sArtTable.oxid=$sO2CView.oxobjectid where $sO2CView.oxcatnid = ".$oDb->quote( $sSynchOxid );
             if ( $aSkipArt = oxSession::getVar( 'neworder_sess' ) ) {
                 $sQAdd .= " and $sArtTable.oxid not in ( ".implode( ", ", oxDb::getInstance()->quoteArray( $aSkipArt ) )." ) ";
@@ -90,7 +90,7 @@ class category_order_ajax extends ajaxListComponent
     protected function _getSorting()
     {
         $sOrder = '';
-        if ( oxConfig::getParameter( 'synchoxid' ) ) {
+        if ( oxRegistry::getConfig()->getRequestParameter( 'synchoxid' ) ) {
             $sOrder = parent::_getSorting();
         } elseif ( ( $aSkipArt = oxSession::getVar( 'neworder_sess' ) ) ) {
             $sOrderBy  = '';
@@ -114,7 +114,7 @@ class category_order_ajax extends ajaxListComponent
     public function removeCatOrderArticle()
     {
         $aRemoveArt = $this->_getActionIds( 'oxarticles.oxid' );
-        $soxId      = oxConfig::getParameter( 'oxid' );
+        $soxId      = oxRegistry::getConfig()->getRequestParameter( 'oxid' );
         $aSkipArt   = oxSession::getVar( 'neworder_sess' );
 
         if ( is_array( $aRemoveArt ) && is_array( $aSkipArt  ) ) {
@@ -146,7 +146,7 @@ class category_order_ajax extends ajaxListComponent
     public function addCatOrderArticle()
     {
         $aAddArticle = $this->_getActionIds( 'oxarticles.oxid' );
-        $soxId       = oxConfig::getParameter( 'synchoxid' );
+        $soxId       = oxRegistry::getConfig()->getRequestParameter( 'synchoxid' );
 
         $aOrdArt = oxSession::getVar( 'neworder_sess' );
         if ( !is_array( $aOrdArt ) )
@@ -183,7 +183,7 @@ class category_order_ajax extends ajaxListComponent
     public function saveNewOrder()
     {
         $oCategory = oxNew( "oxcategory" );
-        $sId = oxConfig::getParameter( "oxid" );
+        $sId = oxRegistry::getConfig()->getRequestParameter( "oxid" );
         if ( $oCategory->load( $sId ) ) {
 
 
@@ -218,7 +218,7 @@ class category_order_ajax extends ajaxListComponent
     public function remNewOrder()
     {
         $oCategory = oxNew( "oxcategory" );
-        $sId = oxConfig::getParameter( "oxid" );
+        $sId = oxRegistry::getConfig()->getRequestParameter( "oxid" );
         if ( $oCategory->load( $sId ) ) {
 
 

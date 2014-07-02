@@ -113,7 +113,7 @@ class Unit_Views_thankyouTest extends OxidTestCase
 
     public function testGetMailError()
     {
-        modConfig::setParameter( 'mailerror', 'testShop' );
+        modConfig::setRequestParameter( 'mailerror', 'testShop' );
         $oThankyou = $this->getProxyClass( 'thankyou' );
         $this->assertEquals( 'testShop', $oThankyou->getMailError());
     }

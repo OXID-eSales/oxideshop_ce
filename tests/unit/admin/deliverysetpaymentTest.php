@@ -36,7 +36,7 @@ class Unit_Admin_DeliverySetPaymentTest extends OxidTestCase
     public function testRender()
     {
         oxTestModules::addFunction( "oxdeliveryset", "isDerived", "{return true;}" );
-        modConfig::setParameter( "oxid", "testId" );
+        modConfig::setRequestParameter( "oxid", "testId" );
 
         // testing..
         $oView = new DeliverySet_Payment();
@@ -54,7 +54,7 @@ class Unit_Admin_DeliverySetPaymentTest extends OxidTestCase
      */
     public function testRenderNoRealObjectId()
     {
-        modConfig::setParameter( "oxid", "-1" );
+        modConfig::setRequestParameter( "oxid", "-1" );
 
         // testing..
         $oView = new DeliverySet_Payment();

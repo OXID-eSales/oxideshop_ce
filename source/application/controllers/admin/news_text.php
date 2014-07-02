@@ -40,7 +40,7 @@ class News_Text extends oxAdminDetails
         if ( $soxId != "-1" && isset( $soxId)) {
             // load object
             $oNews = oxNew( "oxnews" );
-            $iNewsLang = oxConfig::getParameter("newslang");
+            $iNewsLang = oxRegistry::getConfig()->getRequestParameter("newslang");
 
             if (!isset($iNewsLang))
                 $iNewsLang = $this->_iEditLang;
@@ -77,11 +77,11 @@ class News_Text extends oxAdminDetails
         $myConfig  = $this->getConfig();
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxConfig::getParameter( "editval");
+        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval");
 
         $oNews = oxNew( "oxnews" );
 
-        $iNewsLang = oxConfig::getParameter("newslang");
+        $iNewsLang = oxRegistry::getConfig()->getRequestParameter("newslang");
 
         if (!isset($iNewsLang))
             $iNewsLang = $this->_iEditLang;

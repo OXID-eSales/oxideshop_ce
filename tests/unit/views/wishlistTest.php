@@ -61,7 +61,7 @@ class Unit_Views_wishlistTest extends OxidTestCase
      */
     public function testGetWishUser()
     {
-        modConfig::setParameter( 'wishid', '_testId' );
+        modConfig::setRequestParameter( 'wishid', '_testId' );
         $oWishList = oxNew( "Wishlist" );
 
         $oWishUser = $oWishList->getWishUser();
@@ -75,7 +75,7 @@ class Unit_Views_wishlistTest extends OxidTestCase
      */
     public function testGetWishList()
     {
-        modConfig::setParameter( 'wishid', '_testId' );
+        modConfig::setRequestParameter( 'wishid', '_testId' );
         $oWishList = oxNew( "Wishlist" );
         $myDB      = oxDb::getDB();
 
@@ -98,7 +98,7 @@ class Unit_Views_wishlistTest extends OxidTestCase
      */
     public function testGetWishListIactive()
     {
-        modConfig::setParameter( 'wishid', '_testId' );
+        modConfig::setRequestParameter( 'wishid', '_testId' );
         $oWishList = oxNew( "Wishlist" );
         $myDB      = oxDb::getDB();
 
@@ -119,7 +119,7 @@ class Unit_Views_wishlistTest extends OxidTestCase
     public function testSearchForWishList()
     {
 
-        modConfig::setParameter( 'search', 'testUserName' );
+        modConfig::setRequestParameter( 'search', 'testUserName' );
 
         $oWishList = $this->getProxyClass("Wishlist");
         $myDB      = oxDb::getDB( oxDB::FETCH_MODE_ASSOC );

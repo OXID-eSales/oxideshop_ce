@@ -36,7 +36,7 @@ class EFire_List extends Efire
     public function render()
     {
         parent::render();
-        $this->_aViewData['menu'] = basename( oxConfig::getParameter( "menu" ) );
+        $this->_aViewData['menu'] = basename( oxRegistry::getConfig()->getRequestParameter( "menu" ) );
 
         return "efire_list.tpl";
     }

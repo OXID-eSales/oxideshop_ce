@@ -78,7 +78,7 @@ class Wishlist extends oxUBase
         if ( $this->_oWishUser === null) {
             $this->_oWishUser = false;
 
-            $sUserId = oxConfig::getParameter( 'wishid') ? oxConfig::getParameter( 'wishid' ): oxSession::getVar( 'wishid');
+            $sUserId = oxRegistry::getConfig()->getRequestParameter( 'wishid') ? oxRegistry::getConfig()->getRequestParameter( 'wishid' ): oxSession::getVar( 'wishid');
             if ( $sUserId ) {
                 $oUser = oxNew( 'oxuser' );
                 if ( $oUser->load( $sUserId ) ) {
@@ -130,7 +130,7 @@ class Wishlist extends oxUBase
      */
     public function searchForWishList()
     {
-        if ( $sSearch = oxConfig::getParameter( 'search' ) ) {
+        if ( $sSearch = oxRegistry::getConfig()->getRequestParameter( 'search' ) ) {
 
             // search for baskets
             $oUserList = oxNew( 'oxuserlist' );

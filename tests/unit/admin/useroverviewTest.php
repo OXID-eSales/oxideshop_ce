@@ -35,7 +35,7 @@ class Unit_Admin_UserOverviewTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setParameter( "oxid", "testId" );
+        modConfig::setRequestParameter( "oxid", "testId" );
 
         // testing..
         $oView = new User_Overview();

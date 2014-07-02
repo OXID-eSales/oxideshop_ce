@@ -110,14 +110,14 @@ class Unit_Admin_ListOrderTest extends OxidTestCase
      */
     public function testPrepareOrderByQuery()
     {
-        modConfig::setParameter( "sort", array( 0 => array( "oxorderamount" => "asc" ) ) );
+        modConfig::setRequestParameter( "sort", array( 0 => array( "oxorderamount" => "asc" ) ) );
         $sSql = "select * from oxorder, oxorderarticles";
 
         $oView = new List_Order();
         $sResultSql = "select * from oxorder, oxorderarticles order by oxorderamount";
         $this->assertEquals( $sResultSql, trim($oView->UNITprepareOrderByQuery( $sSql )) );
 
-        modConfig::setParameter( "sort", array( 0 => array( "oxorderdate" => "asc" ) ) );
+        modConfig::setRequestParameter( "sort", array( 0 => array( "oxorderdate" => "asc" ) ) );
 
         $oView = new List_Order();
         $sResultSql = "select * from oxorder, oxorderarticles group by oxorderarticles.oxartnum order by max(oxorder.oxorderdate) desc";

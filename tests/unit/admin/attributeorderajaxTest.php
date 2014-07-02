@@ -66,7 +66,7 @@ class Unit_Admin_AttributeOrderAjaxTest extends OxidTestCase
     public function testGetQuery()
     {
         $sOxid = '_testOxid';        
-        modConfig::setParameter( "oxid", $sOxid );
+        modConfig::setRequestParameter( "oxid", $sOxid );
         
         $oView = oxNew( 'attribute_order_ajax' );
         
@@ -112,9 +112,9 @@ class Unit_Admin_AttributeOrderAjaxTest extends OxidTestCase
     public function testSetSortingOxid()
     {
         $sOxid = '_testObject';
-        modConfig::setParameter( "oxid", $sOxid );
+        modConfig::setRequestParameter( "oxid", $sOxid );
         modconfig::getInstance()->setConfigParam( "iDebug", 1 );
-        modConfig::setParameter( "sortoxid", 0 );
+        modConfig::setRequestParameter( "sortoxid", 0 );
         
         
             $sViewTable = "oxv_oxattribute_de";

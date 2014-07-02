@@ -83,7 +83,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
 
         oxUtils::getInstance()->seoIsActive( true );
 
-        modConfig::setParameter( "listtype", null );
+        modConfig::setRequestParameter( "listtype", null );
     }
 
     /**
@@ -460,10 +460,10 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $oLocatorTarget->expects( $this->once() )->method( 'showSorting' )->will( $this->returnValue( true ) );
         $oLocatorTarget->expects( $this->any() )->method( 'getLinkType' )->will( $this->returnValue( OXARTICLE_LINKTYPE_CATEGORY ) );
 
-        modConfig::setParameter( "searchparam", 'Bier' );
+        modConfig::setRequestParameter( "searchparam", 'Bier' );
         $oLocator = new testOxLocator();
         $oLocator->UNITsetSearchLocatorData( $oLocatorTarget, $oCurrArticle );
-        modConfig::setParameter( "searchparam", null );
+        modConfig::setRequestParameter( "searchparam", null );
 
         $oSearch = $oLocatorTarget->getActSearch();
 
@@ -507,12 +507,12 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
 
         $sSearchVendor = 'd2e44d9b31fcce448.08890330';
             $sSearchVendor = '68342e2955d7401e6.18967838';
-        modConfig::setParameter( "searchparam", 'a' );
-        modConfig::setParameter( "searchvendor", $sSearchVendor );
+        modConfig::setRequestParameter( "searchparam", 'a' );
+        modConfig::setRequestParameter( "searchvendor", $sSearchVendor );
         $oLocator = new testOxLocator();
         $oLocator->UNITsetSearchLocatorData( $oLocatorTarget, $oCurrArticle );
-        modConfig::setParameter( "searchparam", null );
-        modConfig::setParameter( "searchvendor", null );
+        modConfig::setRequestParameter( "searchparam", null );
+        modConfig::setRequestParameter( "searchvendor", null );
 
         $oSearch = $oLocatorTarget->getActSearch();
 
@@ -550,12 +550,12 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
             $sSearchCat = '8a142c3e4143562a5.46426637';
             $sNextLink = '';
 
-        modConfig::setParameter( "searchparam", 'Bier' );
-        modConfig::setParameter( "searchcnid", $sSearchCat );
+        modConfig::setRequestParameter( "searchparam", 'Bier' );
+        modConfig::setRequestParameter( "searchcnid", $sSearchCat );
         $oLocator = new testOxLocator();
         $oLocator->UNITsetSearchLocatorData( $oLocatorTarget, $oCurrArticle );
-        modConfig::setParameter( "searchparam", null );
-        modConfig::setParameter( "searchcnid", null );
+        modConfig::setRequestParameter( "searchparam", null );
+        modConfig::setRequestParameter( "searchcnid", null );
 
         $oSearch = $oLocatorTarget->getActSearch();
 
@@ -587,7 +587,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $oLocatorTarget->expects( $this->once() )->method( 'showSorting' )->will( $this->returnValue( true ) );
         $oLocatorTarget->expects( $this->any() )->method( 'getLinkType' )->will( $this->returnValue( OXARTICLE_LINKTYPE_TAG ) );
 
-        modConfig::setParameter( "searchtag", 'wanduhr' );
+        modConfig::setRequestParameter( "searchtag", 'wanduhr' );
         $oLocator = new testOxLocator();
         $oLocator->UNITsetTagLocatorData( $oLocatorTarget, $oCurrArticle );
 
@@ -636,7 +636,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $oLocatorTarget->expects( $this->any() )->method( 'getActiveRecommList')->will( $this->returnValue( $oRecomm ) );
         $oLocatorTarget->expects( $this->any() )->method( 'getLinkType' )->will( $this->returnValue( OXARTICLE_LINKTYPE_TAG ) );
 
-        modConfig::setParameter( "searchrecomm", 'test' );
+        modConfig::setRequestParameter( "searchrecomm", 'test' );
         $oLocator = new testOxLocator();
         $oLocator->UNITsetRecommListLocatorData( $oLocatorTarget, $oCurrArticle );
 
@@ -682,7 +682,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $oLocatorTarget->expects( $this->any() )->method( 'getActiveRecommList')->will( $this->returnValue( $oRecomm ) );
         $oLocatorTarget->expects( $this->any() )->method( 'getLinkType' )->will( $this->returnValue( OXARTICLE_LINKTYPE_CATEGORY ) );
 
-        modConfig::setParameter( "searchrecomm", null );
+        modConfig::setRequestParameter( "searchrecomm", null );
         $oLocator = new testOxLocator();
         $oLocator->UNITsetRecommListLocatorData( $oLocatorTarget, $oCurrArticle );
 

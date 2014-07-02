@@ -286,7 +286,7 @@ class Report_canceled_orders extends report_base
         $myConfig = $this->getConfig();
         $oDb = oxDb::getDb();
 
-        $dTimeTo = strtotime( oxConfig::getParameter( "time_to" ) );
+        $dTimeTo = strtotime( oxRegistry::getConfig()->getRequestParameter( "time_to" ) );
         $sTimeTo = $oDb->quote( date( "Y-m-d H:i:s", $dTimeTo ) );
         $dTimeFrom = mktime( 23, 59, 59, date( "m", $dTimeTo )-12, date( "d", $dTimeTo ), date( "Y", $dTimeTo ) );
         $sTimeFrom = $oDb->quote( date( "Y-m-d H:i:s", $dTimeFrom ) );
@@ -397,8 +397,8 @@ class Report_canceled_orders extends report_base
         $aDataX6 = array();
         $aDataY  = array();
 
-        $sTimeTo   = $oDb->quote( date( "Y-m-d H:i:s", strtotime( oxConfig::getParameter( "time_to" ) ) ) );
-        $sTimeFrom = $oDb->quote( date( "Y-m-d H:i:s", strtotime( oxConfig::getParameter( "time_from")) ) );
+        $sTimeTo   = $oDb->quote( date( "Y-m-d H:i:s", strtotime( oxRegistry::getConfig()->getRequestParameter( "time_to" ) ) ) );
+        $sTimeFrom = $oDb->quote( date( "Y-m-d H:i:s", strtotime( oxRegistry::getConfig()->getRequestParameter( "time_from")) ) );
 
         $sSQL = "select oxtime, count(*) as nrof from oxlogs where oxtime >= $sTimeFrom and oxtime <= $sTimeTo group by oxsessid order by oxtime";
 

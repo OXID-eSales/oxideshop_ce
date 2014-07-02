@@ -131,8 +131,8 @@ class Unit_Views_detailsTest extends OxidTestCase
      */
     public function testGetNavigationParams( $aVariants, $aSelectionVariants, $aExpected )
     {
-        $this->getConfig()->setParameter( 'varselid', $aVariants );
-        $this->getConfig()->setParameter( 'sel', $aSelectionVariants );
+        $this->getConfig()->setRequestParameter( 'varselid', $aVariants );
+        $this->getConfig()->setRequestParameter( 'sel', $aSelectionVariants );
 
         $oDetails = new Details();
         $oDetails->setParent( new oxUBase() );
@@ -1899,7 +1899,7 @@ class Unit_Views_detailsTest extends OxidTestCase
      */
     public function testDefaultSorting_SortingDefinedCameFromSearch_doNotSort()
     {
-        $this->getConfig()->setParameter('listtype','search');
+        $this->getConfig()->setRequestParameter('listtype','search');
         $oController = new Details();
 
         $oCategory = $this->getMock('oxCategory', array( 'getDefaultSorting', 'getDefaultSortingMode' ));

@@ -97,9 +97,9 @@ class Unit_Views_wrappingTest extends OxidTestCase
      */
     public function testChangeWrapping()
     {
-        modConfig::setParameter( "wrapping", array( 1 => 2 ) );
-        modConfig::setParameter( "giftmessage", "testCardMessage" );
-        modConfig::setParameter( "chosencard", "testCardId" );
+        modConfig::setRequestParameter( "wrapping", array( 1 => 2 ) );
+        modConfig::setRequestParameter( "giftmessage", "testCardMessage" );
+        modConfig::setRequestParameter( "chosencard", "testCardId" );
 
         $oBasketItem1 = $this->getMock( "oxBasketItem", array( "setWrapping" ));
         $oBasketItem1->expects( $this->once() )->method( 'setWrapping' )->with( $this->equalTo( 2 ) );

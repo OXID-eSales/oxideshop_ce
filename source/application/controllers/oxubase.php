@@ -512,7 +512,7 @@ class oxUBase extends oxView
                 self::$_aCollectedComponentNames = array_merge( self::$_aCollectedComponentNames, $aUserCmps );
             }
 
-            if ( oxConfig::getParameter( '_force_no_basket_cmp' ) ) {
+            if ( oxRegistry::getConfig()->getRequestParameter( '_force_no_basket_cmp' ) ) {
                 unset( self::$_aCollectedComponentNames['oxcmp_basket'] );
             }
         }
@@ -1257,7 +1257,7 @@ class oxUBase extends oxView
 
         $oViewConf = $this->getViewConfig();
         //value from user input
-        if ( ( $iNrofArticles = (int) oxConfig::getParameter( '_artperpage' ) ) ) {
+        if ( ( $iNrofArticles = (int) oxRegistry::getConfig()->getRequestParameter( '_artperpage' ) ) ) {
             // M45 Possibility to push any "Show articles per page" number parameter
             $iNrofCatArticles = ( in_array( $iNrofArticles, $aNrofCatArticles ) ) ? $iNrofArticles : $iNrofCatArticles;
             $oViewConf->setViewConfigParam( 'iartPerPage', $iNrofCatArticles );
@@ -1685,29 +1685,29 @@ class oxUBase extends oxView
         if ( $sFnc ) {
             $sURL .= "&amp;fnc={$sFnc}";
         }
-        if ( $sVal = oxConfig::getParameter( 'cnid' ) ) {
+        if ( $sVal = oxRegistry::getConfig()->getRequestParameter( 'cnid' ) ) {
             $sURL .= "&amp;cnid={$sVal}";
         }
-        if ( $sVal = oxConfig::getParameter( 'mnid' ) ) {
+        if ( $sVal = oxRegistry::getConfig()->getRequestParameter( 'mnid' ) ) {
             $sURL .= "&amp;mnid={$sVal}";
         }
-        if ( $sVal= oxConfig::getParameter( 'anid' ) ) {
+        if ( $sVal= oxRegistry::getConfig()->getRequestParameter( 'anid' ) ) {
             $sURL .= "&amp;anid={$sVal}";
         }
 
-        if ( $sVal = basename( oxConfig::getParameter( 'page' ) ) ) {
+        if ( $sVal = basename( oxRegistry::getConfig()->getRequestParameter( 'page' ) ) ) {
             $sURL .= "&amp;page={$sVal}";
         }
 
-        if ( $sVal = basename( oxConfig::getParameter( 'tpl' ) ) ) {
+        if ( $sVal = basename( oxRegistry::getConfig()->getRequestParameter( 'tpl' ) ) ) {
             $sURL .= "&amp;tpl={$sVal}";
         }
 
-        if ( $sVal = oxConfig::getParameter( 'oxloadid' ) ) {
+        if ( $sVal = oxRegistry::getConfig()->getRequestParameter( 'oxloadid' ) ) {
             $sURL .= "&amp;oxloadid={$sVal}";
         }
 
-        $iPgNr = (int) oxConfig::getParameter( 'pgNr' );
+        $iPgNr = (int) oxRegistry::getConfig()->getRequestParameter( 'pgNr' );
         // don't include page number for navigation
         // it will be done in oxubase::generatePageNavigation
         if ( $blAddPageNr && $iPgNr > 0 ) {
@@ -1715,31 +1715,31 @@ class oxUBase extends oxView
         }
 
         // #1184M - specialchar search
-        if ( $sVal = rawurlencode( oxConfig::getParameter( 'searchparam', true ) ) ) {
+        if ( $sVal = rawurlencode( oxRegistry::getConfig()->getRequestParameter( 'searchparam', true ) ) ) {
             $sURL .= "&amp;searchparam={$sVal}";
         }
 
-        if ( $sVal = oxConfig::getParameter( 'searchcnid' ) ) {
+        if ( $sVal = oxRegistry::getConfig()->getRequestParameter( 'searchcnid' ) ) {
             $sURL .= "&amp;searchcnid={$sVal}";
         }
 
-        if ( $sVal = oxConfig::getParameter( 'searchvendor' ) ) {
+        if ( $sVal = oxRegistry::getConfig()->getRequestParameter( 'searchvendor' ) ) {
             $sURL .= "&amp;searchvendor={$sVal}";
         }
 
-        if ( $sVal = oxConfig::getParameter( 'searchmanufacturer' ) ) {
+        if ( $sVal = oxRegistry::getConfig()->getRequestParameter( 'searchmanufacturer' ) ) {
             $sURL .= "&amp;searchmanufacturer={$sVal}";
         }
 
-        if ( $sVal = oxConfig::getParameter( 'searchrecomm' ) ) {
+        if ( $sVal = oxRegistry::getConfig()->getRequestParameter( 'searchrecomm' ) ) {
             $sURL .= "&amp;searchrecomm={$sVal}";
         }
 
-        if ( $sVal = oxConfig::getParameter( 'searchtag' ) ) {
+        if ( $sVal = oxRegistry::getConfig()->getRequestParameter( 'searchtag' ) ) {
             $sURL .= "&amp;searchtag={$sVal}";
         }
 
-        if ( $sVal = oxConfig::getParameter( 'recommid' ) ) {
+        if ( $sVal = oxRegistry::getConfig()->getRequestParameter( 'recommid' ) ) {
             $sURL .= "&amp;recommid={$sVal}";
         }
 
@@ -1767,19 +1767,19 @@ class oxUBase extends oxView
         if ( $sFnc ) {
             $sURL .= "&amp;fnc={$sFnc}";
         }
-        if ( $sVal = basename( oxConfig::getParameter( 'page' ) ) ) {
+        if ( $sVal = basename( oxRegistry::getConfig()->getRequestParameter( 'page' ) ) ) {
             $sURL .= "&amp;page={$sVal}";
         }
 
-        if ( $sVal = basename( oxConfig::getParameter( 'tpl' ) ) ) {
+        if ( $sVal = basename( oxRegistry::getConfig()->getRequestParameter( 'tpl' ) ) ) {
             $sURL .= "&amp;tpl={$sVal}";
         }
 
-        if ( $sVal = oxConfig::getParameter( 'oxloadid' ) ) {
+        if ( $sVal = oxRegistry::getConfig()->getRequestParameter( 'oxloadid' ) ) {
             $sURL .= "&amp;oxloadid={$sVal}";
         }
 
-        $iPgNr = (int) oxConfig::getParameter( 'pgNr' );
+        $iPgNr = (int) oxRegistry::getConfig()->getRequestParameter( 'pgNr' );
         if ( $iPgNr > 0 ) {
             $sURL .= "&amp;pgNr={$iPgNr}";
         }
@@ -1992,26 +1992,26 @@ class oxUBase extends oxView
             $this->_sAdditionalParams .= 'cl='.$this->getConfig()->getTopActiveView()->getClassName();
 
             // #1834M - specialchar search
-            $sSearchParamForLink = rawurlencode( oxConfig::getParameter( 'searchparam', true ) );
+            $sSearchParamForLink = rawurlencode( oxRegistry::getConfig()->getRequestParameter( 'searchparam', true ) );
             if ( isset( $sSearchParamForLink ) ) {
                 $this->_sAdditionalParams .= "&amp;searchparam={$sSearchParamForLink}";
             }
-            if ( ( $sVar = oxConfig::getParameter( 'searchtag' ) ) ) {
+            if ( ( $sVar = oxRegistry::getConfig()->getRequestParameter( 'searchtag' ) ) ) {
                 $this->_sAdditionalParams .= '&amp;searchtag='.rawurlencode( rawurldecode( $sVar ) );
             }
-            if ( ( $sVar = oxConfig::getParameter( 'searchcnid' ) ) ) {
+            if ( ( $sVar = oxRegistry::getConfig()->getRequestParameter( 'searchcnid' ) ) ) {
                 $this->_sAdditionalParams .= '&amp;searchcnid='.rawurlencode( rawurldecode( $sVar ) );
             }
-            if ( ( $sVar = oxConfig::getParameter( 'searchvendor' ) ) ) {
+            if ( ( $sVar = oxRegistry::getConfig()->getRequestParameter( 'searchvendor' ) ) ) {
                 $this->_sAdditionalParams .= '&amp;searchvendor='.rawurlencode( rawurldecode( $sVar ) );
             }
-            if ( ( $sVar = oxConfig::getParameter( 'searchmanufacturer' ) ) ) {
+            if ( ( $sVar = oxRegistry::getConfig()->getRequestParameter( 'searchmanufacturer' ) ) ) {
                 $this->_sAdditionalParams .= '&amp;searchmanufacturer='.rawurlencode( rawurldecode( $sVar ) );
             }
-            if ( ( $sVar = oxConfig::getParameter( 'cnid' ) ) ) {
+            if ( ( $sVar = oxRegistry::getConfig()->getRequestParameter( 'cnid' ) ) ) {
                 $this->_sAdditionalParams .= '&amp;cnid='.rawurlencode( rawurldecode( $sVar ) );
             }
-            if ( ( $sVar = oxConfig::getParameter( 'mnid' ) ) ) {
+            if ( ( $sVar = oxRegistry::getConfig()->getRequestParameter( 'mnid' ) ) ) {
                 $this->_sAdditionalParams .= '&amp;mnid='.rawurlencode( rawurldecode( $sVar ) );
             }
         }

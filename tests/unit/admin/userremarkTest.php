@@ -36,8 +36,8 @@ class Unit_Admin_UserRemarkTest extends OxidTestCase
     public function testRender()
     {
         oxTestModules::addFunction('oxRemark', 'load($sId)', '{$this->oxremark__oxtext = new oxField("text-$sId");$this->oxremark__oxheader = new oxField("header-$sId");}');
-        modConfig::setParameter( "oxid", "testId" );
-        modConfig::setParameter( "rem_oxid", "testId" );
+        modConfig::setRequestParameter( "oxid", "testId" );
+        modConfig::setRequestParameter( "rem_oxid", "testId" );
 
         $oView = new user_remark();
         $this->assertEquals( "user_remark.tpl", $oView->render() );
@@ -59,9 +59,9 @@ class Unit_Admin_UserRemarkTest extends OxidTestCase
         oxTestModules::addFunction( 'oxremark', 'load', '{ return true; }' );
         oxTestModules::addFunction( 'oxremark', 'save', '{ throw new Exception( "save" ); }' );
 
-        modConfig::setParameter( 'oxid', 'oxdefaultadmin' );
-        modConfig::setParameter( 'remarktext', 'test text' );
-        modConfig::setParameter( 'remarkheader', 'test header' );
+        modConfig::setRequestParameter( 'oxid', 'oxdefaultadmin' );
+        modConfig::setRequestParameter( 'remarktext', 'test text' );
+        modConfig::setRequestParameter( 'remarkheader', 'test header' );
 
         try {
             $oView = new user_remark();

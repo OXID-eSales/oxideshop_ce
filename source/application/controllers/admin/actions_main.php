@@ -67,7 +67,7 @@ class Actions_Main extends oxAdminDetails
             }
         }
 
-        if ( oxConfig::getParameter("aoc") ) {
+        if ( oxRegistry::getConfig()->getRequestParameter("aoc") ) {
             // generating category tree for select list
             $this->_createCategoryTree( "artcattree", $soxId);
 
@@ -80,7 +80,7 @@ class Actions_Main extends oxAdminDetails
 
         if ( ( $oPromotion = $this->getViewDataElement( "edit" ) ) ) {
             if ( ($oPromotion->oxactions__oxtype->value == 2) || ($oPromotion->oxactions__oxtype->value == 3) ) {
-                if ( $iAoc = oxConfig::getParameter( "oxpromotionaoc" ) ) {
+                if ( $iAoc = oxRegistry::getConfig()->getRequestParameter( "oxpromotionaoc" ) ) {
                     $sPopup = false;
                     switch( $iAoc ) {
                         case 'article':
@@ -130,7 +130,7 @@ class Actions_Main extends oxAdminDetails
         parent::save();
 
         $soxId   = $this->getEditObjectId();
-        $aParams = oxConfig::getParameter( "editval");
+        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval");
 
         $oPromotion = oxNew( "oxactions" );
         if ( $soxId != "-1" ) {

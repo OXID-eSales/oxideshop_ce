@@ -86,7 +86,7 @@ class Unit_Admin_ManufacturerSeoTest extends OxidTestCase
     {
         oxTestModules::addFunction( 'oxbase', 'load', '{ return true; }');
         oxTestModules::addFunction( 'oxbase', 'save', '{ return true; }');
-        modConfig::setParameter( "oxid", "testId" );
+        modConfig::setRequestParameter( "oxid", "testId" );
 
         // testing..
         $oView = $this->getMock( "Manufacturer_Seo", array( "getEditObjectId" ) );

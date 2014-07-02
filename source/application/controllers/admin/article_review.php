@@ -43,7 +43,7 @@ class Article_Review extends oxAdminDetails
         $this->_aViewData["edit"] = $oArticle = oxNew( "oxarticle" );
 
         $soxId    = $this->getEditObjectId();
-        $sRevoxId = oxConfig::getParameter( 'rev_oxid' );
+        $sRevoxId = oxRegistry::getConfig()->getRequestParameter( 'rev_oxid' );
         if ( $soxId != "-1" && isset( $soxId)) {
 
             // load object
@@ -124,14 +124,14 @@ class Article_Review extends oxAdminDetails
     {
         parent::save();
 
-        $aParams = oxConfig::getParameter( "editval");
+        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval");
         // checkbox handling
         if ( $this->getConfig()->getConfigParam( 'blGBModerate' ) && !isset( $aParams['oxreviews__oxactive'] ) ) {
             $aParams['oxreviews__oxactive'] = 0;
         }
 
         $oReview = oxNew( "oxreview" );
-        $oReview->load( oxConfig::getParameter( "rev_oxid" ) );
+        $oReview->load( oxRegistry::getConfig()->getRequestParameter( "rev_oxid" ) );
         $oReview->assign( $aParams );
         $oReview->save();
     }
@@ -144,7 +144,7 @@ class Article_Review extends oxAdminDetails
     public function delete()
     {
 
-        $sRevoxId = oxConfig::getParameter( "rev_oxid" );
+        $sRevoxId = oxRegistry::getConfig()->getRequestParameter( "rev_oxid" );
         $oReview  = oxNew( "oxreview" );
         $oReview->load( $sRevoxId );
         $oReview->delete();

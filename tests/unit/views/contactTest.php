@@ -52,7 +52,7 @@ class Unit_Views_contactTest extends OxidTestCase
         oxSession::deleteVar( 'Errors' );
 
         $aParams['oxuser__oxusername'] = 'invalidEmail';
-        modConfig::setParameter( 'editval', $aParams );
+        modConfig::setRequestParameter( 'editval', $aParams );
         $oContact = oxNew( 'Contact' );
 
         $this->assertFalse( $oContact->send() );
@@ -76,7 +76,7 @@ class Unit_Views_contactTest extends OxidTestCase
         oxSession::deleteVar( 'Errors' );
 
         $aParams['oxuser__oxusername'] = 'aaaa@aaa.com';
-        modConfig::setParameter( 'editval', $aParams );
+        modConfig::setRequestParameter( 'editval', $aParams );
         $oContact = oxNew( 'Contact' );
 
         $this->assertFalse( $oContact->send() );
@@ -101,7 +101,7 @@ class Unit_Views_contactTest extends OxidTestCase
         oxTestModules::addFunction('oxCaptcha', 'pass', '{return true;}');
 
         $aParams['oxuser__oxusername'] = 'aaaa@aaa.com';
-        modConfig::setParameter( 'editval', $aParams );
+        modConfig::setRequestParameter( 'editval', $aParams );
         $oContact = oxNew( 'Contact' );
 
         $this->assertFalse( $oContact->send() );
@@ -127,8 +127,8 @@ class Unit_Views_contactTest extends OxidTestCase
         $aParams['oxuser__oxusername'] = 'aaaa@aaa.com';
         $aParams['oxuser__oxfname'] = 'first name';
         $aParams['oxuser__oxlname'] = 'last name';
-        modConfig::setParameter( 'editval', $aParams );
-        modConfig::setParameter( 'c_subject', "testSubject" );
+        modConfig::setRequestParameter( 'editval', $aParams );
+        modConfig::setRequestParameter( 'c_subject', "testSubject" );
         $oObj = $this->getProxyClass("Contact");
         $oObj->send();
 
@@ -142,7 +142,7 @@ class Unit_Views_contactTest extends OxidTestCase
      */
     public function testGetUserData()
     {
-       modConfig::setParameter( 'editval', 'testval' );
+       modConfig::setRequestParameter( 'editval', 'testval' );
        $oObj = $this->getProxyClass("Contact");
        $this->assertEquals( 'testval', $oObj->getUserData() );
     }
@@ -154,7 +154,7 @@ class Unit_Views_contactTest extends OxidTestCase
      */
     public function testGetContactSubject()
     {
-       modConfig::setParameter( 'c_subject', 'testsubject' );
+       modConfig::setRequestParameter( 'c_subject', 'testsubject' );
        $oObj = $this->getProxyClass("Contact");
        $this->assertEquals( 'testsubject', $oObj->getContactSubject() );
     }
@@ -166,7 +166,7 @@ class Unit_Views_contactTest extends OxidTestCase
      */
     public function testGetContactMessage()
     {
-       modConfig::setParameter( 'c_message', 'testmessage' );
+       modConfig::setRequestParameter( 'c_message', 'testmessage' );
        $oObj = $this->getProxyClass("Contact");
        $this->assertEquals( 'testmessage', $oObj->getContactMessage() );
     }
@@ -218,9 +218,9 @@ class Unit_Views_contactTest extends OxidTestCase
                           "oxuser__oxlname"    => "admin",
                           "oxuser__oxsal"      => "MR" );
 
-        modConfig::setParameter( "editval", $aParams );
-        modConfig::setParameter( "c_message", "message" );
-        modConfig::setParameter( "c_subject", "subject" );
+        modConfig::setRequestParameter( "editval", $aParams );
+        modConfig::setRequestParameter( "c_message", "message" );
+        modConfig::setRequestParameter( "c_subject", "subject" );
 
         $oLang = oxLang::getInstance();
         $sMessage = $oLang->translateString( 'MESSAGE_FROM' ) . " " . $oLang->translateString( 'MR' ) ." admin admin(info@oxid-esales.com)<br /><br />message";
@@ -254,9 +254,9 @@ class Unit_Views_contactTest extends OxidTestCase
                           "oxuser__oxlname"    => "admin",
                           "oxuser__oxsal"      => "MR" );
 
-        modConfig::setParameter( "editval", $aParams );
-        modConfig::setParameter( "c_message", "message" );
-        modConfig::setParameter( "c_subject", "subject" );
+        modConfig::setRequestParameter( "editval", $aParams );
+        modConfig::setRequestParameter( "c_message", "message" );
+        modConfig::setRequestParameter( "c_subject", "subject" );
 
         $oEmail = $this->getMock( "oxemail", array( "sendContactMail" ) );
         $oEmail->expects( $this->once() )->method( 'sendContactMail')->will( $this->returnValue( false ) );

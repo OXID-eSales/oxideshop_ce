@@ -76,7 +76,7 @@ class Shop_Seo extends Shop_Config
         $sActObject = null;
         if ( $this->_sActSeoObject ) {
             $sActObject = $this->_sActSeoObject;
-        } elseif ( is_array( $aStatUrl = oxConfig::getParameter( 'aStaticUrl' ) ) ) {
+        } elseif ( is_array( $aStatUrl = oxRegistry::getConfig()->getRequestParameter( 'aStaticUrl' ) ) ) {
             $sActObject = $aStatUrl['oxseo__oxobjectid'];
         }
 
@@ -113,12 +113,12 @@ class Shop_Seo extends Shop_Config
 
             //assigning values
             $oShop->setLanguage( 0 );
-            $oShop->assign( oxConfig::getParameter( 'editval' ) );
+            $oShop->assign( oxRegistry::getConfig()->getRequestParameter( 'editval' ) );
             $oShop->setLanguage( $this->_iEditLang );
             $oShop->save();
 
             // saving static url changes
-            if ( is_array( $aStaticUrl = oxConfig::getParameter( 'aStaticUrl' ) ) ) {
+            if ( is_array( $aStaticUrl = oxRegistry::getConfig()->getRequestParameter( 'aStaticUrl' ) ) ) {
                 $this->_sActSeoObject = oxRegistry::get("oxSeoEncoder")->encodeStaticUrls( $this->_processUrls( $aStaticUrl ), $oShop->getId(), $this->_iEditLang );
             }
         }
@@ -182,7 +182,7 @@ class Shop_Seo extends Shop_Config
      */
     public function deleteStaticUrl()
     {
-        if ( is_array( $aStaticUrl = oxConfig::getParameter( 'aStaticUrl' ) ) ) {
+        if ( is_array( $aStaticUrl = oxRegistry::getConfig()->getRequestParameter( 'aStaticUrl' ) ) ) {
             if ( ( $sObjectid = $aStaticUrl['oxseo__oxobjectid'] ) && $sObjectid != '-1' ) {
                 // active shop id
                 $soxId = $this->getEditObjectId();

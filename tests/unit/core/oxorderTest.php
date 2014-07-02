@@ -304,7 +304,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
 
         $sUserAddress = $oUser->getEncodedDeliveryAddress();
         $sDelAddress = $oDelAddress->getEncodedDeliveryAddress();
-        modConfig::setParameter( 'sDeliveryAddressMD5', $sUserAddress.$sDelAddress );
+        modConfig::setRequestParameter( 'sDeliveryAddressMD5', $sUserAddress.$sDelAddress );
 
         $oOrder = $this->getMock( "oxorder", array( "getDelAddressInfo" ) );
         $oOrder->expects( $this->any() )->method( 'getDelAddressInfo')->will( $this->returnValue( $oDelAddress ) );
@@ -2588,7 +2588,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
 
     public function testGetDelAddressInfo()
     {
-        modConfig::setParameter( 'deladrid', '_testDelAddrId' );
+        modConfig::setRequestParameter( 'deladrid', '_testDelAddrId' );
 
         $oDelAdress = oxNew( 'oxbase' );
         $oDelAdress->init( 'oxaddress' );
@@ -2608,7 +2608,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
 
     public function testGetDelAddressInfoWithoutDeliveryAddressId()
     {
-        modConfig::setParameter( 'deladrid', null );
+        modConfig::setRequestParameter( 'deladrid', null );
 
         $oOrder = oxNew( 'oxOrder' );
 
@@ -3432,8 +3432,8 @@ class Unit_Core_oxorderTest extends OxidTestCase
         $oOrderArticle->oxorderarticles__oxordershopid  = new oxField( 23.403361344538 );
         $oOrderArticle->save();
 
-        modConfig::setParameter( 'oxid', "_testOrderId" );
-        modConfig::setParameter( 'aOrderArticles', array( "_testOrderArticleId" ) );
+        modConfig::setRequestParameter( 'oxid', "_testOrderId" );
+        modConfig::setRequestParameter( 'aOrderArticles', array( "_testOrderArticleId" ) );
 
         $oView = new order_article();
         $oView->updateOrder();

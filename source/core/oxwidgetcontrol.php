@@ -65,10 +65,10 @@ class oxWidgetControl extends oxShopControl
      */
     public function start( $sClass = null, $sFunction = null, $aParams = null, $aViewsChain = null )
     {
-        //$aParams = ( isset($aParams) ) ? $aParams : oxConfig::getParameter( 'oxwparams' );
+        //$aParams = ( isset($aParams) ) ? $aParams : oxRegistry::getConfig()->getRequestParameter( 'oxwparams' );
 
-        if ( !isset($aViewsChain) && oxConfig::getParameter( 'oxwparent' ) ) {
-            $aViewsChain =  explode( "|", oxConfig::getParameter( 'oxwparent' ) );
+        if ( !isset($aViewsChain) && oxRegistry::getConfig()->getRequestParameter( 'oxwparent' ) ) {
+            $aViewsChain =  explode( "|", oxRegistry::getConfig()->getRequestParameter( 'oxwparent' ) );
         }
 
         parent::start( $sClass, $sFunction, $aParams, $aViewsChain );

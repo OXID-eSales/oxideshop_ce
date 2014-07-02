@@ -68,7 +68,7 @@ class Discount_Main extends oxAdminDetails
             }
         }
 
-        if ( ( $iAoc = oxConfig::getParameter("aoc") ) ) {
+        if ( ( $iAoc = oxRegistry::getConfig()->getRequestParameter("aoc") ) ) {
             if ( $iAoc == "1" ) {
                 $oDiscountMainAjax = oxNew( 'discount_main_ajax' );
                 $this->_aViewData['oxajax'] = $oDiscountMainAjax->getColumns();
@@ -157,7 +157,7 @@ class Discount_Main extends oxAdminDetails
         parent::save();
 
         $sOxId = $this->getEditObjectId();
-        $aParams = oxConfig::getParameter( "editval");
+        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval");
 
             // shopid
             $sShopID = oxSession::getVar( "actshop");

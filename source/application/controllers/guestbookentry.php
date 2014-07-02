@@ -47,7 +47,7 @@ class GuestbookEntry extends GuestBook
      */
     public function saveEntry()
     {
-        $sReviewText = trim( ( string ) oxConfig::getParameter( 'rvw_txt', true ) );
+        $sReviewText = trim( ( string ) oxRegistry::getConfig()->getRequestParameter( 'rvw_txt', true ) );
         $sShopId     = $this->getConfig()->getShopId();
         $sUserId     = oxSession::getVar( 'usr' );
 

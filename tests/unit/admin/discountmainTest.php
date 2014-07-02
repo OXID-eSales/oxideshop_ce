@@ -47,7 +47,7 @@ class Unit_Admin_DiscountMainTest extends OxidTestCase
     public function testRender()
     {
         oxTestModules::addFunction( "oxdiscount", "isDerived", "{return true;}" );
-        modConfig::setParameter( "oxid", "testId" );
+        modConfig::setRequestParameter( "oxid", "testId" );
 
         // testing..
         $oView = new Discount_Main();
@@ -64,7 +64,7 @@ class Unit_Admin_DiscountMainTest extends OxidTestCase
      */
     public function testRenderNoRealObjectId()
     {
-        modConfig::setParameter( "oxid", "-1" );
+        modConfig::setRequestParameter( "oxid", "-1" );
 
         // testing..
         $oView = new Discount_Main();
@@ -146,15 +146,15 @@ class Unit_Admin_DiscountMainTest extends OxidTestCase
         $oView = $this->getProxyClass( "Discount_Main" );
 
         $oView->setNonPublicVar( "_iEditLang", 0 );
-        modConfig::setParameter( "oxid", '-1' );
+        modConfig::setRequestParameter( "oxid", '-1' );
         $this->assertEquals( " -- ", $oView->getItemDiscountProductTitle() );
 
         $oView->setNonPublicVar( "_iEditLang", 0 );
-        modConfig::setParameter( "oxid", "_testDiscountId" );
+        modConfig::setRequestParameter( "oxid", "_testDiscountId" );
         $this->assertEquals( "$sId $sTitleDe", $oView->getItemDiscountProductTitle() );
 
         $oView->setNonPublicVar( "_iEditLang", 1 );
-        modConfig::setParameter( "oxid", "_testDiscountId" );
+        modConfig::setRequestParameter( "oxid", "_testDiscountId" );
         $this->assertEquals( "$sId $sTitleEn", $oView->getItemDiscountProductTitle() );
     }
 

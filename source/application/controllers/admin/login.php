@@ -91,9 +91,9 @@ class Login extends oxAdminView
         $myUtilsServer = oxRegistry::get("oxUtilsServer");
         $myUtilsView   = oxRegistry::get("oxUtilsView");
 
-        $sUser    = oxConfig::getParameter( 'user', true );
-        $sPass    = oxConfig::getParameter( 'pwd', true );
-        $sProfile = oxConfig::getParameter( 'profile' );
+        $sUser    = oxRegistry::getConfig()->getRequestParameter( 'user', true );
+        $sPass    = oxRegistry::getConfig()->getRequestParameter( 'pwd', true );
+        $sProfile = oxRegistry::getConfig()->getRequestParameter( 'profile' );
 
         try { // trying to login
             $oUser = oxNew( "oxuser" );
@@ -143,7 +143,7 @@ class Login extends oxAdminView
         }
 
         // languages
-        $iLang = oxConfig::getParameter( "chlanguage" );
+        $iLang = oxRegistry::getConfig()->getRequestParameter( "chlanguage" );
         $aLanguages = oxRegistry::getLang()->getAdminTplLanguageArray();
         if ( !isset( $aLanguages[$iLang] ) ) {
             $iLang = key( $aLanguages );

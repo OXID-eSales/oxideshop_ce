@@ -79,9 +79,9 @@ class Account_Password extends Account
             return;
         }
 
-        $sOldPass  = oxConfig::getParameter( 'password_old', true );
-        $sNewPass  = oxConfig::getParameter( 'password_new', true );
-        $sConfPass = oxConfig::getParameter( 'password_new_confirm', true );
+        $sOldPass  = oxRegistry::getConfig()->getRequestParameter( 'password_old', true );
+        $sNewPass  = oxRegistry::getConfig()->getRequestParameter( 'password_new', true );
+        $sConfPass = oxRegistry::getConfig()->getRequestParameter( 'password_new_confirm', true );
 
         if ( ( $oExcp = $oUser->checkPassword( $sNewPass, $sConfPass, true ) ) ) {
             switch ( $oExcp->getMessage() ) {

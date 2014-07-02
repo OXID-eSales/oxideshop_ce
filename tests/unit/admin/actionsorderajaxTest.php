@@ -56,7 +56,7 @@ class Unit_Admin_ActionsOrderAjaxTest extends OxidTestCase
     public function testGetQuery()
     {
         $sOxid = '_testOrder';
-        modConfig::setParameter( "oxid", $sOxid );
+        modConfig::setRequestParameter( "oxid", $sOxid );
         $oView = oxNew( 'actions_order_ajax' );
         
         
@@ -101,7 +101,7 @@ class Unit_Admin_ActionsOrderAjaxTest extends OxidTestCase
     public function testSetSortingOxid()
     {
         $sOxid = '_testOrder';
-        modConfig::setParameter( "oxid", $sOxid );
+        modConfig::setRequestParameter( "oxid", $sOxid );
         modconfig::getInstance()->setConfigParam( "iDebug", 1 );
         
         

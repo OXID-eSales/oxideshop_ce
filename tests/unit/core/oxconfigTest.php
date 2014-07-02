@@ -1108,7 +1108,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         // checking if different language forces reload
         $iCurrLang = oxRegistry::getLang()->getBaseLanguage();
         oxRegistry::getLang()->resetBaseLanguage();
-        modConfig::setParameter( 'lang', $iCurrLang + 1 );
+        modConfig::setRequestParameter( 'lang', $iCurrLang + 1 );
 
         $oShop = $oConfig->getActiveShop();
         $this->assertFalse( isset( $oShop->xxx ) );
@@ -1660,7 +1660,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $oGbp->decimal = '2';
         $oGbp->selected = 0;
 
-        modConfig::setParameter( 'cur', 1 );
+        modConfig::setRequestParameter( 'cur', 1 );
         $oConfig = new oxConfig();
         $oConfig->init();
         $this->assertEquals( $oGbp, $oConfig->getActShopCurrencyObject() );
@@ -1679,7 +1679,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $oEur->decimal = '2';
         $oEur->selected = 0;
 
-        modConfig::setParameter( 'cur', 999 );
+        modConfig::setRequestParameter( 'cur', 999 );
         $oConfig = new oxConfig();
         $oConfig->init();
         $this->assertEquals( $oEur, $oConfig->getActShopCurrencyObject() );
@@ -1769,38 +1769,38 @@ class Unit_Core_oxconfigTest extends OxidTestCase
     /* P
     public function testGetShopLanguageTestingRequest()
     {
-        modConfig::setParameter( 'changelang', 1 );
+        modConfig::setRequestParameter( 'changelang', 1 );
         $oConfig = $this->getMock( 'oxConfig', array( 'isAdmin' ) );
         $oConfig->expects( $this->any() )->method( 'isAdmin')->will( $this->returnValue( false ) );
         $oConfig->init();
         //$oConfig->setNonPublicVar( '_iLanguageId', null );
         $this->assertEquals( 1, $oConfig->getShopLanguage() );
 
-        modConfig::setParameter( 'changelang', null );
-        modConfig::setParameter( 'lang', 1 );
+        modConfig::setRequestParameter( 'changelang', null );
+        modConfig::setRequestParameter( 'lang', 1 );
         $oConfig = new oxConfig();
         $oConfig->init();
         $this->assertEquals( 1, $oConfig->getShopLanguage() );
 
-        modConfig::setParameter( 'changelang', null );
-        modConfig::setParameter( 'lang',       null );
-        modConfig::setParameter( 'tpllanguage', 1 );
+        modConfig::setRequestParameter( 'changelang', null );
+        modConfig::setRequestParameter( 'lang',       null );
+        modConfig::setRequestParameter( 'tpllanguage', 1 );
         $oConfig = new oxConfig();
         $oConfig->init();
         $this->assertEquals( 1, $oConfig->getShopLanguage() );
 
-        modConfig::setParameter( 'changelang',  null );
-        modConfig::setParameter( 'lang',        null );
-        modConfig::setParameter( 'tpllanguage', null );
-        modConfig::setParameter( 'language', 1 );
+        modConfig::setRequestParameter( 'changelang',  null );
+        modConfig::setRequestParameter( 'lang',        null );
+        modConfig::setRequestParameter( 'tpllanguage', null );
+        modConfig::setRequestParameter( 'language', 1 );
         $oConfig = new oxConfig();
         $oConfig->init();
         $this->assertEquals( 1, $oConfig->getShopLanguage() );
 
-        modConfig::setParameter( 'changelang',  null );
-        modConfig::setParameter( 'lang',        null );
-        modConfig::setParameter( 'tpllanguage', null );
-        modConfig::setParameter( 'language',    null );
+        modConfig::setRequestParameter( 'changelang',  null );
+        modConfig::setRequestParameter( 'lang',        null );
+        modConfig::setRequestParameter( 'tpllanguage', null );
+        modConfig::setRequestParameter( 'language',    null );
         $oConfig = new oxConfig();
         $oConfig->init();
         $oConfig->setConfigParam( 'sDefaultLang', 1 );
@@ -1809,7 +1809,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
     // testing if bad language id is fixed
     public function testGetShopLanguagePassingNotExistingShouldBeFixed()
     {
-        modConfig::setParameter( 'changelang', 'xxx' );
+        modConfig::setRequestParameter( 'changelang', 'xxx' );
         $oConfig = new oxConfig();
         $oConfig->init();
         $this->assertEquals( 0, $oConfig->getShopLanguage() );
@@ -1870,48 +1870,12 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $_FILES = $aBack;
     }
 
-    public function testGetRequestParameterInNonAdminModeDoesNotGetAdminRights()
+    public function testGetRequestParameter()
     {
         $oConfig = $this->getConfig();
-        $oldBlIsAdmin = $this->getSession()->getVariable("blIsAdmin");
-        $oldIsAdmin = $oConfig->isAdmin();
-        $sReqMethod = $_SERVER['REQUEST_METHOD'];
+        $oConfig->setRequestParameter('testval', '_testval');
 
-        $e = null;
-        try {
-            $this->getConfig()->cleanup();
-            $_SERVER['REQUEST_METHOD'] = 'GET';
-            $_GET['testval'] = 'testval&\'"';
-
-            // normal way of shop
-            $this->getSession()->setVariable( "blIsAdmin", false );
-            $oConfig->setAdminMode( false );
-            $this->assertEquals( 'testval&amp;&#039;&quot;', $oConfig->getRequestParameter( 'testval' ) );
-
-            // this admin mode can be faked
-            $oConfig->setAdminMode( true );
-            $this->assertEquals( 'testval&amp;&#039;&quot;', $oConfig->getRequestParameter( 'testval' ) );
-
-            // full admin mode
-            $this->getSession()->setVariable( "blIsAdmin", true );
-            $this->assertEquals( 'testval&\'"', $oConfig->getRequestParameter( 'testval' ) );
-
-            // wrong admin mode.
-            $oConfig->setAdminMode( false );
-            $this->assertEquals( 'testval&amp;&#039;&quot;', $oConfig->getRequestParameter( 'testval' ) );
-        } catch (Exception $e) {
-        }
-
-        $this->getSession()->setVariable( "blIsAdmin", $oldBlIsAdmin );
-        $oConfig->setAdminMode( $oldIsAdmin );
-        $_GET['testval'] = null;
-        unset($_GET['testval']);
-        $_SERVER['REQUEST_METHOD'] = $sReqMethod;
-
-
-        if ($e instanceof Exception) {
-            throw $e;
-        }
+        $this->assertEquals( '_testval', $oConfig->getRequestParameter( 'testval' ) );
     }
 
     public function testGetEdition()

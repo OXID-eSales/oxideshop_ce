@@ -135,7 +135,7 @@ class Unit_Core_oxselectlistTest extends OxidTestCase
      */
     public function testGetFieldListStripsTagsFromCurrency()
     {
-        modConfig::getInstance()->setParameter( 'cur', 2 );
+        modConfig::getInstance()->setRequestParameter( 'cur', 2 );
         modConfig::getInstance()->setConfigParam( 'bl_perfLoadSelectLists', 1 );
         modConfig::getInstance()->setConfigParam( 'bl_perfUseSelectlistPrice', 1 );
 
@@ -199,7 +199,7 @@ class Unit_Core_oxselectlistTest extends OxidTestCase
         $oSelectList = new oxselectlist();
         $this->assertNull( $oSelectList->getSelections() );
 
-        modConfig::getInstance()->setParameter( 'cur', 2 );
+        modConfig::getInstance()->setRequestParameter( 'cur', 2 );
         $aSelections = array( new oxSelection( "test1, 10", 0, false, true ),
                               new oxSelection( "test2, 10", 1, false, false ),
                               new oxSelection( "test3', 10", 2, false, false ),

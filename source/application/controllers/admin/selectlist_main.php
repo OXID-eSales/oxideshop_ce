@@ -99,7 +99,7 @@ class SelectList_Main extends oxAdminDetails
             oxSession::setVar("iErrorCode", ERR_SUCCESS);
 
         }
-        if ( oxConfig::getParameter("aoc") ) {
+        if ( oxRegistry::getConfig()->getRequestParameter("aoc") ) {
             $oSelectlistMainAjax = oxNew( 'selectlist_main_ajax' );
             $this->_aViewData['oxajax'] = $oSelectlistMainAjax->getColumns();
 
@@ -118,7 +118,7 @@ class SelectList_Main extends oxAdminDetails
         parent::save();
 
         $sOxId = $this->getEditObjectId();
-        $aParams    = oxConfig::getParameter( "editval");
+        $aParams    = oxRegistry::getConfig()->getRequestParameter( "editval");
 
             // shopid
             $sShopID = oxSession::getVar( "actshop");
@@ -167,7 +167,7 @@ class SelectList_Main extends oxAdminDetails
     public function saveinnlang()
     {
         $sOxId = $this->getEditObjectId();
-        $aParams    = oxConfig::getParameter( "editval");
+        $aParams    = oxRegistry::getConfig()->getRequestParameter( "editval");
 
             // shopid
             $sShopID = oxSession::getVar( "actshop");
@@ -187,7 +187,7 @@ class SelectList_Main extends oxAdminDetails
         $oObj->assign( $aParams);
 
         // apply new language
-        $oObj->setLanguage( oxConfig::getParameter( "new_lang" ) );
+        $oObj->setLanguage( oxRegistry::getConfig()->getRequestParameter( "new_lang" ) );
         $oObj->save();
 
         // set oxid if inserted
@@ -204,7 +204,7 @@ class SelectList_Main extends oxAdminDetails
         $oSelectlist = oxNew( "oxselectlist" );
         if ( $oSelectlist->loadInLang( $this->_iEditLang, $this->getEditObjectId() ) ) {
 
-            $aDelFields = oxConfig::getParameter( "aFields" );
+            $aDelFields = oxRegistry::getConfig()->getRequestParameter( "aFields" );
             $this->aFieldArray = oxRegistry::getUtils()->assignValuesFromText( $oSelectlist->oxselectlist__oxvaldesc->getRawValue() );
 
             if ( is_array( $aDelFields ) && count( $aDelFields ) ) {
@@ -233,7 +233,7 @@ class SelectList_Main extends oxAdminDetails
         if ( $oSelectlist->loadInLang( $this->_iEditLang, $this->getEditObjectId() ) ) {
 
 
-            $sAddField = oxConfig::getParameter("sAddField");
+            $sAddField = oxRegistry::getConfig()->getRequestParameter("sAddField");
             if ( empty( $sAddField ) ) {
                 oxSession::setVar( "iErrorCode", ERR_REQUIREDMISSING );
                 return;
@@ -243,11 +243,11 @@ class SelectList_Main extends oxAdminDetails
 
             $oField = new stdClass();
             $oField->name      = $sAddField;
-            $oField->price     = oxConfig::getParameter( "sAddFieldPriceMod" );
-            $oField->priceUnit = oxConfig::getParameter( "sAddFieldPriceModUnit" );
+            $oField->price     = oxRegistry::getConfig()->getRequestParameter( "sAddFieldPriceMod" );
+            $oField->priceUnit = oxRegistry::getConfig()->getRequestParameter( "sAddFieldPriceModUnit" );
 
             $this->aFieldArray[] = $oField;
-            if ( $iPos = oxConfig::getParameter( "sAddFieldPos" ) ) {
+            if ( $iPos = oxRegistry::getConfig()->getRequestParameter( "sAddFieldPos" ) ) {
                 if ( $this->_rearrangeFields( $oField, $iPos-1 ) ) {
                     return;
                 }
@@ -264,13 +264,13 @@ class SelectList_Main extends oxAdminDetails
     */
     public function changeField()
     {
-        $sAddField = oxConfig::getParameter( "sAddField" );
+        $sAddField = oxRegistry::getConfig()->getRequestParameter( "sAddField" );
         if ( empty( $sAddField ) ) {
             oxSession::setVar("iErrorCode", ERR_REQUIREDMISSING );
             return;
         }
 
-        $aChangeFields = oxConfig::getParameter( "aFields" );
+        $aChangeFields = oxRegistry::getConfig()->getRequestParameter( "aFields" );
         if ( is_array( $aChangeFields ) && count( $aChangeFields ) ) {
 
             $oSelectlist = oxNew( "oxselectlist" );
@@ -282,9 +282,9 @@ class SelectList_Main extends oxAdminDetails
                 foreach ( $this->aFieldArray as $sKey => $oField ) {
                     if ( $oField->name == $sChangeFieldName ) {
                         $this->aFieldArray[$sKey]->name      = $sAddField;
-                        $this->aFieldArray[$sKey]->price     = oxConfig::getParameter( "sAddFieldPriceMod" );
-                        $this->aFieldArray[$sKey]->priceUnit = oxConfig::getParameter( "sAddFieldPriceModUnit" );
-                        if ( $iPos = oxConfig::getParameter( "sAddFieldPos" ) ) {
+                        $this->aFieldArray[$sKey]->price     = oxRegistry::getConfig()->getRequestParameter( "sAddFieldPriceMod" );
+                        $this->aFieldArray[$sKey]->priceUnit = oxRegistry::getConfig()->getRequestParameter( "sAddFieldPriceModUnit" );
+                        if ( $iPos = oxRegistry::getConfig()->getRequestParameter( "sAddFieldPos" ) ) {
                             if ( $this->_rearrangeFields( $this->aFieldArray[$sKey], $iPos-1 ) ) {
                                 return;
                             }

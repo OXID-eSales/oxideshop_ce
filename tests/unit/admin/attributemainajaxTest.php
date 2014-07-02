@@ -147,7 +147,7 @@ class Unit_Admin_AttributeMainAjaxTest extends OxidTestCase
     public function testGetQueryOxid()
     {
         $sOxid = '_testOxid';
-        modConfig::setParameter( "oxid", $sOxid );
+        modConfig::setRequestParameter( "oxid", $sOxid );
         
         $oView = oxNew( 'attribute_main_ajax' );
         $this->assertEquals( "from ".$this->getObject2AttributeViewTable()." left join ".$this->getArticleViewTable()." on ".$this->getArticleViewTable().".oxid=".$this->getObject2AttributeViewTable().".oxobjectid  where ".$this->getObject2AttributeViewTable().".oxattrid = '$sOxid' and ".$this->getArticleViewTable().".oxid is not null", trim( $oView->UNITgetQuery() ) );
@@ -161,7 +161,7 @@ class Unit_Admin_AttributeMainAjaxTest extends OxidTestCase
     public function testGetQuerySynchoxid()
     {
         $sSynchoxid = '_testSynchoxid';
-        modConfig::setParameter( "synchoxid", $sSynchoxid );
+        modConfig::setRequestParameter( "synchoxid", $sSynchoxid );
         
         $oView = oxNew( 'attribute_main_ajax' );
         $this->assertEquals( "from ".$this->getArticleViewTable()." where 1  and ".$this->getArticleViewTable().".oxparentid = ''  and ".$this->getArticleViewTable().".oxid not in ( select ".$this->getObject2AttributeViewTable().".oxobjectid from ".$this->getObject2AttributeViewTable()." where ".$this->getObject2AttributeViewTable().".oxattrid = '$sSynchoxid' )", trim( $oView->UNITgetQuery() ) );
@@ -175,7 +175,7 @@ class Unit_Admin_AttributeMainAjaxTest extends OxidTestCase
     public function testGetQuerySynchoxidVariantsSelectionTrue()
     {
         $sSynchoxid = '_testSynchoxid';
-        modConfig::setParameter( "synchoxid", $sSynchoxid );
+        modConfig::setRequestParameter( "synchoxid", $sSynchoxid );
         modconfig::getInstance()->setConfigParam( "blVariantsSelection", true );
         
         $oView = oxNew( 'attribute_main_ajax' );
@@ -241,8 +241,8 @@ class Unit_Admin_AttributeMainAjaxTest extends OxidTestCase
     public function testRemoveAttrArticleAll()
     {
         $sOxid = '_testRemoveAll';        
-        modConfig::setParameter( "oxid", $sOxid );
-        modConfig::setParameter( "all", true );
+        modConfig::setRequestParameter( "oxid", $sOxid );
+        modConfig::setRequestParameter( "all", true );
         $this->assertEquals( 2, oxDb::getDb()->getOne( "select count(oxid) from oxobject2attribute where oxattrid='_testRemoveAll'" ) );
         
         $oView = oxNew( 'attribute_main_ajax' );
@@ -258,7 +258,7 @@ class Unit_Admin_AttributeMainAjaxTest extends OxidTestCase
     public function testAddAttrArticle()
     {
         $sSynchoxid = '_testAttribute';        
-        modConfig::setParameter( "synchoxid", $sSynchoxid );
+        modConfig::setRequestParameter( "synchoxid", $sSynchoxid );
         
         $oView = $this->getMock( "attribute_main_ajax", array( "_getActionIds" ) );
         $oView->expects( $this->any() )->method( '_getActionIds')->will( $this->returnValue( array( '_testOxidAdd1', '_testOxidAdd2' ) ) );
@@ -277,8 +277,8 @@ class Unit_Admin_AttributeMainAjaxTest extends OxidTestCase
     public function testAddAttrArticleAll()
     {
         $sSynchoxid = '_testAttributeAddAll';        
-        modConfig::setParameter( "synchoxid", $sSynchoxid );
-        modConfig::setParameter( "all", true );
+        modConfig::setRequestParameter( "synchoxid", $sSynchoxid );
+        modConfig::setRequestParameter( "all", true );
         
         $iCount = oxDb::getDb()->getOne( "select count(oxid) from ".$this->getArticleViewTable()." where 1  and ".$this->getArticleViewTable().".oxparentid = ''  and ".$this->getArticleViewTable().".oxid not in (  select oxaccessoire2article.oxobjectid from oxaccessoire2article  where oxaccessoire2article.oxarticlenid = '$sSynchoxid'  )" );
         $this->assertGreaterThan( 0, $iCount );        

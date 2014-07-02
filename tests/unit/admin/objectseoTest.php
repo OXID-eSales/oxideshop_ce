@@ -190,7 +190,7 @@ class Unit_Admin_ObjectSeoTest extends OxidTestCase
      */
     public function testSave()
     {
-        modConfig::setParameter( "aSeoData", array( "oxseourl" => "testSeoUrl", "oxkeywords" => " testKeywords ", "oxdescription" => " testDescription ", "oxparams" => "testParams", "oxfixed" => 0 ) );
+        modConfig::setRequestParameter( "aSeoData", array( "oxseourl" => "testSeoUrl", "oxkeywords" => " testKeywords ", "oxdescription" => " testDescription ", "oxparams" => "testParams", "oxfixed" => 0 ) );
 
         $oEncoder = $this->getMock( "oxSeoEncoder", array( "addSeoEntry" ) );
         $oEncoder->expects( $this->once() )->method( "addSeoEntry" )->with( $this->equalTo( "objectId" ),

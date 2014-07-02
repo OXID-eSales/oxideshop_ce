@@ -36,7 +36,7 @@ class Unit_Admin_LanguageListTest extends OxidTestCase
     public function testDeleteEntry()
     {
         modConfig::getInstance()->setConfigParam( "blAllowSharedEdit", true );
-        modConfig::setParameter( 'oxid', 1 );
+        modConfig::setRequestParameter( 'oxid', 1 );
 
         $iCnt = 0;
 

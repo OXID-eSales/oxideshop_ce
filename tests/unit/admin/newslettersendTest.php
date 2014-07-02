@@ -53,7 +53,7 @@ class Unit_Admin_NewsletterSendTest extends OxidTestCase
         oxTestModules::addFunction( 'oxNewsLetter', 'send', '{ return true; }');
         oxTestModules::addFunction( 'oxNewsLetter', 'prepare', '{ return true; }');
 
-        modConfig::setParameter( "id", "testId" );
+        modConfig::setRequestParameter( "id", "testId" );
         modConfig::getInstance()->setConfigParam( 'iCntofMails', 3 );
 
         $oNewsSubscribed = new oxbase();
@@ -104,7 +104,7 @@ class Unit_Admin_NewsletterSendTest extends OxidTestCase
         oxTestModules::addFunction( 'oxNewsLetter', 'send', '{ return false; }');
         oxTestModules::addFunction( 'oxNewsLetter', 'prepare', '{ return true; }');
 
-        modConfig::setParameter( "id", "testId" );
+        modConfig::setRequestParameter( "id", "testId" );
         modConfig::getInstance()->setConfigParam( 'iCntofMails', 3 );
 
         // test data
@@ -133,8 +133,8 @@ class Unit_Admin_NewsletterSendTest extends OxidTestCase
         $this->assertEquals( 2, $aViewData['iStart'] );
         $this->assertEquals( 2, $aViewData['iSend'] );
 
-        modConfig::setParameter( "iStart", $aViewData['iStart'] );
-        modConfig::setParameter( "iSend", $aViewData['iSend'] );
+        modConfig::setRequestParameter( "iStart", $aViewData['iStart'] );
+        modConfig::setRequestParameter( "iSend", $aViewData['iSend'] );
 
         $this->assertEquals( 'newsletter_done.tpl', $oView->render() );
 

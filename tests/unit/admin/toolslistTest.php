@@ -37,7 +37,7 @@ class Unit_Admin_ToolsListTest extends OxidTestCase
     {
         // testing..
         oxSession::setVar( 'auth', "oxdefaultadmin" );
-        modConfig::setParameter("updatesql", 'select * from oxvoucher');
+        modConfig::setRequestParameter("updatesql", 'select * from oxvoucher');
 
         $oView = new Tools_List();
         $oView->performsql();

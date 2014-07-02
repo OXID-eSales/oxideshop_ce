@@ -35,7 +35,7 @@ class Unit_Admin_VendorMainTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setParameter( "oxid", "testId" );
+        modConfig::setRequestParameter( "oxid", "testId" );
 
         // testing..
         $oView = $this->getMock( "Vendor_Main", array( "_createCategoryTree" ) );
@@ -53,7 +53,7 @@ class Unit_Admin_VendorMainTest extends OxidTestCase
      */
     public function testRenderNoRealObjectId()
     {
-        modConfig::setParameter( "oxid", "-1" );
+        modConfig::setRequestParameter( "oxid", "-1" );
 
         // testing..
         $oView = new Vendor_Main();

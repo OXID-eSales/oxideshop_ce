@@ -48,7 +48,7 @@ class Attribute_Category extends oxAdminDetails
             $this->_aViewData["edit"] =  $oAttr;
         }
 
-        if ( oxConfig::getParameter("aoc") ) {
+        if ( oxRegistry::getConfig()->getRequestParameter("aoc") ) {
             $oAttributeCategoryAjax = oxNew( 'attribute_category_ajax' );
             $this->_aViewData['oxajax'] = $oAttributeCategoryAjax->getColumns();
 

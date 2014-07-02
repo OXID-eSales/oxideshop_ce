@@ -164,7 +164,7 @@ class oxInputValidator extends oxSuperCfg
         if ( $oUser->oxuser__oxpassword->value && $sLogin != $oUser->oxuser__oxusername->value ) {
 
             // on this case password must be taken directly from request
-            $sNewPass = (isset( $aInvAddress['oxuser__oxpassword']) && $aInvAddress['oxuser__oxpassword'] )?$aInvAddress['oxuser__oxpassword']:oxConfig::getParameter( 'user_password' );
+            $sNewPass = (isset( $aInvAddress['oxuser__oxpassword']) && $aInvAddress['oxuser__oxpassword'] )?$aInvAddress['oxuser__oxpassword']:oxRegistry::getConfig()->getRequestParameter( 'user_password' );
             if ( !$sNewPass ) {
 
                 // 1. user forgot to enter password

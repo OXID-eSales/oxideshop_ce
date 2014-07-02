@@ -51,8 +51,8 @@ class Unit_Admin_ArticleFilesTest extends OxidTestCase
         // testing..
         oxTestModules::addFunction( 'oxarticle', 'save', '{ return true; }');
         oxTestModules::addFunction( 'oxFile', 'save', '{ throw new Exception( "save" ); }');
-        modConfig::setParameter( "editval", array( "oxarticles__oxisdownloadable" => 1 ) );
-        modConfig::setParameter( "article_files", array( "_testId" => "_testFile" ) );
+        modConfig::setRequestParameter( "editval", array( "oxarticles__oxisdownloadable" => 1 ) );
+        modConfig::setRequestParameter( "article_files", array( "_testId" => "_testFile" ) );
 
         // testing..
         try {
@@ -72,7 +72,7 @@ class Unit_Admin_ArticleFilesTest extends OxidTestCase
      */
     public function testGetArticle()
     {
-        modConfig::setParameter( "oxid", 2000 );
+        modConfig::setRequestParameter( "oxid", 2000 );
 
         $oView = new Article_Files();
         $this->assertEquals( 2000, $oView->getArticle()->getId());
@@ -85,7 +85,7 @@ class Unit_Admin_ArticleFilesTest extends OxidTestCase
      */
     public function testGetArticleAlreadySet()
     {
-        modConfig::setParameter( "oxid", 2000 );
+        modConfig::setRequestParameter( "oxid", 2000 );
         $oView = $this->getProxyClass( "Article_Files" );
         $oView->setNonPublicVar( "_oArticle", "_testArt" );
         $this->assertEquals( "_testArt", $oView->getArticle() );
@@ -101,8 +101,8 @@ class Unit_Admin_ArticleFilesTest extends OxidTestCase
         oxTestModules::addFunction( 'oxfile', '_deleteFile', '{ return true; }');
         $oDb = oxDb::getDb();
         $oDb->execute( "insert into oxfiles set oxid='_testFileId', oxartid='2000'" );
-        modConfig::setParameter( "oxid", 2000 );
-        modConfig::setParameter( "fileid", "_testFileId" );
+        modConfig::setRequestParameter( "oxid", 2000 );
+        modConfig::setRequestParameter( "fileid", "_testFileId" );
         $oView = $this->getProxyClass( "Article_Files" );
         $oView->deletefile();
         $this->assertFalse( $oDb->getOne( "select oxid from oxfiles where oxid='_testFileId'" ) );
@@ -118,8 +118,8 @@ class Unit_Admin_ArticleFilesTest extends OxidTestCase
         oxTestModules::addFunction( 'oxfile', '_deleteFile', '{ return true; }');
         $oDb = oxDb::getDb();
         $oDb->execute( "insert into oxfiles set oxid='_testFileId', oxartid='2000'" );
-        modConfig::setParameter( "oxid", 2000 );
-        modConfig::setParameter( "fileid", "_testFileId" );
+        modConfig::setRequestParameter( "oxid", 2000 );
+        modConfig::setRequestParameter( "fileid", "_testFileId" );
 
         $oConfig = $this->getMock( "oxConfig", array( "isDemoShop" ) );
         $oConfig->expects( $this->once() )->method( 'isDemoShop' )->will( $this->returnValue( true ) );
@@ -142,8 +142,8 @@ class Unit_Admin_ArticleFilesTest extends OxidTestCase
     {
         $oDb = oxDb::getDb();
         $oDb->execute( "insert into oxfiles set oxid='_testFileId', oxartid='2000'" );
-        modConfig::setParameter( "oxid", 1000 );
-        modConfig::setParameter( "fileid", "_testFileId" );
+        modConfig::setRequestParameter( "oxid", 1000 );
+        modConfig::setRequestParameter( "fileid", "_testFileId" );
         $oView = $this->getProxyClass( "Article_Files" );
         $oView->deletefile();
         $this->assertEquals( '_testFileId', $oDb->getOne( "select oxid from oxfiles where oxid='_testFileId'" ) );
@@ -173,8 +173,8 @@ class Unit_Admin_ArticleFilesTest extends OxidTestCase
 
 
         $oDb->execute( "insert into oxfiles set oxid='_testFileId', oxartid='2000'" );
-        modConfig::setParameter( "oxid", 2000 );
-        modConfig::setParameter( "fileid", "_testFileId" );
+        modConfig::setRequestParameter( "oxid", 2000 );
+        modConfig::setRequestParameter( "fileid", "_testFileId" );
         $oView = $this->getProxyClass( "Article_Files" );
         $oView->deletefile();
         $this->assertEquals( '_testFileId', $oDb->getOne( "select oxid from oxfiles where oxid='_testFileId'" ) );
@@ -189,8 +189,8 @@ class Unit_Admin_ArticleFilesTest extends OxidTestCase
     {
         oxTestModules::addFunction( 'oxfile', 'processFile', '{ return true; }');
         $oDb = oxDb::getDb();
-        modConfig::setParameter( "oxid", '2000' );
-        modConfig::setParameter( "newfile", array("oxfiles__oxid" => "_testFileId", "oxfiles__oxpurchasedonly" => 1) );
+        modConfig::setRequestParameter( "oxid", '2000' );
+        modConfig::setRequestParameter( "newfile", array("oxfiles__oxid" => "_testFileId", "oxfiles__oxpurchasedonly" => 1) );
 
         $oConfig = $this->getMock( "oxConfig", array( "getUploadedFile", "isDemoShop" ) );
         $oConfig->expects( $this->once() )->method( 'getUploadedFile' )->will( $this->returnValue( array( "name" => "testName" ) ) );
@@ -234,8 +234,8 @@ class Unit_Admin_ArticleFilesTest extends OxidTestCase
     public function testUploadNoFile()
     {
         $oDb = oxDb::getDb();
-        modConfig::setParameter( "oxid", '2000' );
-        modConfig::setParameter( "newfile", array("oxfiles__oxid" => "_testFileId", "oxfiles__oxpurchasedonly" => 1) );
+        modConfig::setRequestParameter( "oxid", '2000' );
+        modConfig::setRequestParameter( "newfile", array("oxfiles__oxid" => "_testFileId", "oxfiles__oxpurchasedonly" => 1) );
         $oView = $this->getProxyClass( "Article_Files" );
         $oView->upload();
         $aErr = oxSession::getVar( 'Errors' );
@@ -252,8 +252,8 @@ class Unit_Admin_ArticleFilesTest extends OxidTestCase
     public function testUploadNotProcessedFile()
     {
         $oDb = oxDb::getDb();
-        modConfig::setParameter( "oxid", '2000' );
-        modConfig::setParameter( "newfile", array("oxfiles__oxid" => "_testFileId", "oxfiles__oxpurchasedonly" => 1) );
+        modConfig::setRequestParameter( "oxid", '2000' );
+        modConfig::setRequestParameter( "newfile", array("oxfiles__oxid" => "_testFileId", "oxfiles__oxpurchasedonly" => 1) );
 
         $oConfig = $this->getMock( "oxConfig", array( "getUploadedFile", "isDemoShop" ) );
         $oConfig->expects( $this->once() )->method( 'getUploadedFile' )->will( $this->returnValue( array( "name" => "testName" ) ) );

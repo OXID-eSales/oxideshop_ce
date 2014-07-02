@@ -52,7 +52,7 @@ class Unit_Admin_StatisticServiceTest extends OxidTestCase
     {
         // testing..
         $iTimeFrame = "62";
-        modConfig::setParameter( "timeframe", $iTimeFrame );
+        modConfig::setRequestParameter( "timeframe", $iTimeFrame );
         $dNow = time();
         $sInsertFrom = date( "Y-m-d H:i:s", mktime( date( "H", $dNow), date( "i", $dNow), date( "s", $dNow), date( "m", $dNow), date( "d", $dNow) - 186, date( "Y", $dNow)));
         $sDeleteFrom = date( "Y-m-d H:i:s", mktime( date( "H", $dNow), date( "i", $dNow), date( "s", $dNow), date( "m", $dNow), date( "d", $dNow) - $iTimeFrame, date( "Y", $dNow)));

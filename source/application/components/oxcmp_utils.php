@@ -60,7 +60,7 @@ class oxcmp_utils extends oxView
         $sOutput = 'OXID__Problem : no valid oxid !';
         $oProduct = null;
 
-        if (($sId = oxConfig::getParameter('oxid'))) {
+        if (($sId = oxRegistry::getConfig()->getRequestParameter('oxid'))) {
             $oProduct = oxNew('oxArticle');
             $oProduct->load($sId);
         } elseif ($myConfig->getConfigParam('bl_perfLoadAktion')) {
@@ -122,9 +122,9 @@ class oxcmp_utils extends oxView
 
 
             // #657 special treatment if we want to put on comparelist
-            $blAddCompare = oxConfig::getParameter('addcompare');
-            $blRemoveCompare = oxConfig::getParameter('removecompare');
-            $sProductId = $sProductId ? $sProductId : oxConfig::getParameter('aid');
+            $blAddCompare = oxRegistry::getConfig()->getRequestParameter('addcompare');
+            $blRemoveCompare = oxRegistry::getConfig()->getRequestParameter('removecompare');
+            $sProductId = $sProductId ? $sProductId : oxRegistry::getConfig()->getRequestParameter('aid');
             if (($blAddCompare || $blRemoveCompare) && $sProductId) {
 
                 // toggle state in session array
@@ -211,10 +211,10 @@ class oxcmp_utils extends oxView
         // only if user is logged in
         if ($oUser = $this->getUser()) {
 
-            $sProductId = ($sProductId) ? $sProductId : oxConfig::getParameter('itmid');
-            $sProductId = ($sProductId) ? $sProductId : oxConfig::getParameter('aid');
-            $dAmount = isset($dAmount) ? $dAmount : oxConfig::getParameter('am');
-            $aSel = $aSel ? $aSel : oxConfig::getParameter('sel');
+            $sProductId = ($sProductId) ? $sProductId : oxRegistry::getConfig()->getRequestParameter('itmid');
+            $sProductId = ($sProductId) ? $sProductId : oxRegistry::getConfig()->getRequestParameter('aid');
+            $dAmount = isset($dAmount) ? $dAmount : oxRegistry::getConfig()->getRequestParameter('am');
+            $aSel = $aSel ? $aSel : oxRegistry::getConfig()->getRequestParameter('sel');
 
             // processing amounts
             $dAmount = str_replace(',', '.', $dAmount);

@@ -131,7 +131,7 @@ class oxAdminList extends oxAdminView
     public function getListSorting()
     {
         if ( $this->_aCurrSorting === null ) {
-            $this->_aCurrSorting = oxConfig::getParameter( 'sort' );
+            $this->_aCurrSorting = oxRegistry::getConfig()->getRequestParameter( 'sort' );
 
             if ( !$this->_aCurrSorting && $this->_sDefSortField && ( $oBaseObject = $this->getItemListBaseObject() ) ) {
                 $this->_aCurrSorting[$oBaseObject->getCoreTableName()] = array( $this->_sDefSortField => "asc" );
@@ -149,7 +149,7 @@ class oxAdminList extends oxAdminView
     public function getListFilter()
     {
         if ( $this->_aListFilter === null ) {
-            $this->_aListFilter = oxConfig::getParameter( "where" );
+            $this->_aListFilter = oxRegistry::getConfig()->getRequestParameter( "where" );
         }
 
         return $this->_aListFilter;
@@ -198,7 +198,7 @@ class oxAdminList extends oxAdminView
     protected function _getUserDefListSize()
     {
         if ( !$this->_iViewListSize ) {
-            if ( ! ($iViewListSize = (int) oxConfig::getParameter( 'viewListSize' ) ) ) {
+            if ( ! ($iViewListSize = (int) oxRegistry::getConfig()->getRequestParameter( 'viewListSize' ) ) ) {
                 $iViewListSize = $this->_iDefViewListSize;
             }
             $this->_iViewListSize = $iViewListSize;
@@ -281,7 +281,7 @@ class oxAdminList extends oxAdminView
     {
         $iAdminListSize = $this->_getViewListSize();
 
-        $iJumpTo = $sPage?( (int) $sPage):( (int) ( (int) oxConfig::getParameter( 'lstrt' ) ) / $iAdminListSize );
+        $iJumpTo = $sPage?( (int) $sPage):( (int) ( (int) oxRegistry::getConfig()->getRequestParameter( 'lstrt' ) ) / $iAdminListSize );
         $iJumpTo = ( $sPage && $iJumpTo )?( $iJumpTo - 1 ):$iJumpTo;
 
         $iJumpTo = $iJumpTo * $iAdminListSize;
@@ -315,7 +315,7 @@ class oxAdminList extends oxAdminView
             $oListItem = $this->getItemListBaseObject();
             $iLangId = $oListItem->isMultilang() ? $oListItem->getLanguage() : oxRegistry::getLang()->getBaseLanguage();
 
-            $blSortDesc = oxConfig::getParameter( 'adminorder' );
+            $blSortDesc = oxRegistry::getConfig()->getRequestParameter( 'adminorder' );
             $blSortDesc = $blSortDesc !== null ? (bool) $blSortDesc : $this->_blDesc;
 
             foreach ( $aSortFields as $sTable => $aFieldData ) {
@@ -701,7 +701,7 @@ class oxAdminList extends oxAdminView
                 $iPos = $this->_iOverPos;
                 $this->_iOverPos = null;
             } else {
-                $iPos = oxConfig::getParameter( 'lstrt' );
+                $iPos = oxRegistry::getConfig()->getRequestParameter( 'lstrt' );
             }
 
             if ( !$iPos ) {
@@ -747,7 +747,7 @@ class oxAdminList extends oxAdminView
                 $iActTab = $this->_iDefEdit;
             } else {
                 // active tab
-                $iActTab = oxConfig::getParameter( 'actedit' );
+                $iActTab = oxRegistry::getConfig()->getRequestParameter( 'actedit' );
                 $iActTab = $iActTab ? $iActTab : $this->_iDefEdit;
             }
 
@@ -804,7 +804,7 @@ class oxAdminList extends oxAdminView
             $this->_calcListItemsCount( $sSql );
 
             // setting current list position (page)
-            $this->_setCurrentListPosition( oxConfig::getParameter( 'jumppage' ) );
+            $this->_setCurrentListPosition( oxRegistry::getConfig()->getRequestParameter( 'jumppage' ) );
 
             // setting addition params for list: current list size
             $this->_oList->setSqlLimit( $this->_iCurrListPos, $this->_getViewListSize() );

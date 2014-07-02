@@ -35,7 +35,7 @@ class Manufacturer_Seo extends Object_Seo
         $oManufacturer = oxNew( 'oxbase' );
         $oManufacturer->init( 'oxmanufacturers' );
         if ( $oManufacturer->load( $this->getEditObjectId() ) ) {
-            $oManufacturer->oxmanufacturers__oxshowsuffix = new oxField( (int) oxConfig::getParameter( 'blShowSuffix' ) );
+            $oManufacturer->oxmanufacturers__oxshowsuffix = new oxField( (int) oxRegistry::getConfig()->getRequestParameter( 'blShowSuffix' ) );
             $oManufacturer->save();
         }
 

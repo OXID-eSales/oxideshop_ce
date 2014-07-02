@@ -67,7 +67,7 @@ class Unit_Admin_PriceAlarmListTest extends OxidTestCase
      */
     public function testBuildWhere()
     {
-        modConfig::setParameter( 'where', array( "oxpricealarm" => array( "oxprice" => 15 ), "oxarticles" => array( "oxprice" => 15 ) ) );
+        modConfig::setRequestParameter( 'where', array( "oxpricealarm" => array( "oxprice" => 15 ), "oxarticles" => array( "oxprice" => 15 ) ) );
 
         $sViewName = getViewName( "oxpricealarm" );
         $sArtViewName = getViewName( "oxarticles" );

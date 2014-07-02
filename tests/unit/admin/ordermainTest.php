@@ -36,7 +36,7 @@ class Unit_Admin_OrderMainTest extends OxidTestCase
     public function testRender()
     {
         oxTestModules::addFunction( 'oxorder', 'load', '{ $this->oxorder__oxdeltype = new oxField("test"); $this->oxorder__oxtotalbrutsum = new oxField(10); $this->oxorder__oxcurrate = new oxField(10); }');
-        modConfig::setParameter( "oxid", "testId" );
+        modConfig::setRequestParameter( "oxid", "testId" );
 
         // testing..
         $oView = new Order_Main();
@@ -53,7 +53,7 @@ class Unit_Admin_OrderMainTest extends OxidTestCase
      */
     public function testRenderNoRealObjectId()
     {
-        modConfig::setParameter( "oxid", "-1" );
+        modConfig::setRequestParameter( "oxid", "-1" );
 
         // testing..
         $oView = new Order_Main();
@@ -101,8 +101,8 @@ class Unit_Admin_OrderMainTest extends OxidTestCase
         oxTestModules::addFunction( 'oxorder', 'getOrderArticles', '{ return array(); }');
         oxTestModules::addFunction( 'oxemail', 'sendSendedNowMail', '{ throw new Exception( "sendSendedNowMail" ); }');
 
-        modConfig::setParameter( "sendmail", 1 );
-        modConfig::setParameter( "oxid", "testId" );
+        modConfig::setRequestParameter( "sendmail", 1 );
+        modConfig::setRequestParameter( "oxid", "testId" );
 
         // testing..
         try {
@@ -126,7 +126,7 @@ class Unit_Admin_OrderMainTest extends OxidTestCase
         oxTestModules::addFunction( 'oxorder', 'load', '{ return true; }');
         oxTestModules::addFunction( 'oxemail', 'sendDownloadLinksMail', '{ throw new Exception( "sendDownloadLinksMail" ); }');
 
-        modConfig::setParameter( "oxid", "testId" );
+        modConfig::setRequestParameter( "oxid", "testId" );
 
         // testing..
         try {

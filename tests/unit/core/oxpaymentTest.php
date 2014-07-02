@@ -478,7 +478,7 @@ class Unit_Core_oxpaymentTest extends OxidTestCase
         $mySession = oxSession::getInstance();
 
         $myConfig->setConfigParam( 'iPayment_blLogPaymentActions', true );
-        modConfig::setParameter('paymentid', '_testPaymentId');
+        modConfig::setRequestParameter('paymentid', '_testPaymentId');
         $mySession->setVar('_ipaysessid', '_testIPaymentSessId');
 
         $oPayment = new oxPayment();

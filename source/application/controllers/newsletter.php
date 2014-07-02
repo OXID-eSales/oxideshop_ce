@@ -82,7 +82,7 @@ class Newsletter extends oxUBase
     public function fill()
     {
         // loads submited values
-        $this->_aRegParams = oxConfig::getParameter( "editval" );
+        $this->_aRegParams = oxRegistry::getConfig()->getRequestParameter( "editval" );
     }
 
     /**
@@ -97,7 +97,7 @@ class Newsletter extends oxUBase
      */
     public function send()
     {
-        $aParams  = oxConfig::getParameter("editval");
+        $aParams  = oxRegistry::getConfig()->getRequestParameter("editval");
 
         // loads submited values
         $this->_aRegParams = $aParams;
@@ -111,7 +111,7 @@ class Newsletter extends oxUBase
             return;
         }
 
-        $blSubscribe = oxConfig::getParameter("subscribeStatus");
+        $blSubscribe = oxRegistry::getConfig()->getRequestParameter("subscribeStatus");
 
         $oUser = oxNew( 'oxuser' );
         $oUser->oxuser__oxusername = new oxField($aParams['oxuser__oxusername'], oxField::T_RAW);
@@ -199,7 +199,7 @@ class Newsletter extends oxUBase
     {
         // existing user ?
         $oUser = oxNew( 'oxuser' );
-        if ( $oUser->load( oxConfig::getParameter( 'uid' ) ) ) {
+        if ( $oUser->load( oxRegistry::getConfig()->getRequestParameter( 'uid' ) ) ) {
             $oUser->getNewsSubscription()->setOptInStatus( 0 );
 
             // removing from group ..

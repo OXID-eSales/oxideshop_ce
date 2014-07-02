@@ -87,7 +87,7 @@ class Order_Main extends oxAdminDetails
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams    = oxConfig::getParameter( "editval" );
+        $aParams    = oxRegistry::getConfig()->getRequestParameter( "editval" );
 
             // shopid
             $sShopID = oxSession::getVar( "actshop" );
@@ -101,14 +101,14 @@ class Order_Main extends oxAdminDetails
         }
 
         //change payment
-        $sPayId = oxConfig::getParameter( "setPayment");
+        $sPayId = oxRegistry::getConfig()->getRequestParameter( "setPayment");
         if ($sPayId != $oOrder->oxorder__oxpaymenttype->value) {
             $aParams['oxorder__oxpaymenttype'] = $sPayId;
         }
 
         $oOrder->assign( $aParams);
 
-        $aDynvalues = oxConfig::getParameter( "dynvalue" );
+        $aDynvalues = oxRegistry::getConfig()->getRequestParameter( "dynvalue" );
         if ( isset( $aDynvalues ) ) {
             $oPayment = oxNew( "oxuserpayment" );
             $oPayment->load( $oOrder->oxorder__oxpaymentid->value);
@@ -116,7 +116,7 @@ class Order_Main extends oxAdminDetails
             $oPayment->save();
         }
         //change delivery set
-        $sDelSetId = oxConfig::getParameter( "setDelSet");
+        $sDelSetId = oxRegistry::getConfig()->getRequestParameter( "setDelSet");
         if ($sDelSetId != $oOrder->oxorder__oxdeltype->value) {
             $oOrder->oxorder__oxpaymenttype->setValue( "oxempty" );
             $oOrder->setDelivery( $sDelSetId );
@@ -153,7 +153,7 @@ class Order_Main extends oxAdminDetails
 
             // #1071C
             $oOrderArticles = $oOrder->getOrderArticles( true );
-            if ( oxConfig::getParameter( "sendmail" ) ) {
+            if ( oxRegistry::getConfig()->getRequestParameter( "sendmail" ) ) {
                 // send eMail
                 $oEmail = oxNew( "oxemail" );
                 $oEmail->sendSendedNowMail( $oOrder );

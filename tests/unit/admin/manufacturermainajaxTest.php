@@ -126,7 +126,7 @@ class Unit_Admin_ManufacturerMainAjaxTest extends OxidTestCase
      */
     public function testGetQueryVariantsSelectionTrue()
     {
-        $this->getConfig()->setParameter( "blVariantsSelection", true );
+        $this->getConfig()->setRequestParameter( "blVariantsSelection", true );
         $oView = oxNew( 'manufacturer_main_ajax' );
         $this->assertEquals( "from ".$this->getArticleViewTable()." where ".$this->getArticleViewTable().".oxshopid=\"".$this->getShopIdTest()."\" and 1", trim( $oView->UNITgetQuery() ) );
     }
@@ -139,7 +139,7 @@ class Unit_Admin_ManufacturerMainAjaxTest extends OxidTestCase
     public function testGetQuerySynchoxid()
     {
         $sSynchoxid = '_testAction';
-        $this->getConfig()->setParameter( "synchoxid", $sSynchoxid );
+        $this->getConfig()->setRequestParameter( "synchoxid", $sSynchoxid );
         $oView = oxNew( 'manufacturer_main_ajax' );
         $this->assertEquals( "from ".$this->getArticleViewTable()." where ".$this->getArticleViewTable().".oxshopid=\"".$this->getShopIdTest()."\" and 1  and ".$this->getArticleViewTable().".oxparentid = '' and ".$this->getArticleViewTable().".oxmanufacturerid != '".$sSynchoxid."'", trim( $oView->UNITgetQuery() ) );
     }
@@ -152,8 +152,8 @@ class Unit_Admin_ManufacturerMainAjaxTest extends OxidTestCase
     public function testGetQuerySynchoxidVariantsSelectionTrue()
     {
         $sSynchoxid = '_testAction';
-        $this->getConfig()->setParameter( "synchoxid", $sSynchoxid );
-        $this->getConfig()->setParameter( "blVariantsSelection", true );
+        $this->getConfig()->setRequestParameter( "synchoxid", $sSynchoxid );
+        $this->getConfig()->setRequestParameter( "blVariantsSelection", true );
         $oView = oxNew( 'manufacturer_main_ajax' );
         $this->assertEquals( "from ".$this->getArticleViewTable()." where ".$this->getArticleViewTable().".oxshopid=\"".$this->getShopIdTest()."\" and 1", trim( $oView->UNITgetQuery() ) );
     }
@@ -166,7 +166,7 @@ class Unit_Admin_ManufacturerMainAjaxTest extends OxidTestCase
     public function testGetQueryOxid()
     {
         $sOxid = '_testAction';
-        $this->getConfig()->setParameter( "oxid", $sOxid );
+        $this->getConfig()->setRequestParameter( "oxid", $sOxid );
         $oView = oxNew( 'manufacturer_main_ajax' );
         $this->assertEquals( "from ".$this->getArticleViewTable()." where ".$this->getArticleViewTable().".oxmanufacturerid = '".$sOxid."' and ".$this->getArticleViewTable().".oxparentid = ''", trim( $oView->UNITgetQuery() ) );
     }
@@ -180,8 +180,8 @@ class Unit_Admin_ManufacturerMainAjaxTest extends OxidTestCase
     {
         $sOxid = '_testAction';
         $sSynchoxid = '_testActionSynch';
-        $this->getConfig()->setParameter( "oxid", $sOxid );
-        $this->getConfig()->setParameter( "synchoxid", $sSynchoxid );
+        $this->getConfig()->setRequestParameter( "oxid", $sOxid );
+        $this->getConfig()->setRequestParameter( "synchoxid", $sSynchoxid );
         
         $oView = oxNew( 'manufacturer_main_ajax' );
         $this->assertEquals( "from ".$this->getObject2CategoryViewTable()." left join ".$this->getArticleViewTable()." on  ".$this->getArticleViewTable().".oxid = ".$this->getObject2CategoryViewTable().".oxobjectid where ".$this->getArticleViewTable().".oxshopid=\"".$this->getShopIdTest()."\" and ".$this->getObject2CategoryViewTable().".oxcatnid = '".$sOxid."' and ".$this->getArticleViewTable().".oxmanufacturerid != '".$sSynchoxid."' and ".$this->getArticleViewTable().".oxparentid = ''", trim( $oView->UNITgetQuery() ) );
@@ -196,9 +196,9 @@ class Unit_Admin_ManufacturerMainAjaxTest extends OxidTestCase
     {
         $sOxid = '_testAction';
         $sSynchoxid = '_testActionSynch';
-        $this->getConfig()->setParameter( "oxid", $sOxid );
-        $this->getConfig()->setParameter( "synchoxid", $sSynchoxid );
-        $this->getConfig()->setParameter( "blVariantsSelection", true );
+        $this->getConfig()->setRequestParameter( "oxid", $sOxid );
+        $this->getConfig()->setRequestParameter( "synchoxid", $sSynchoxid );
+        $this->getConfig()->setRequestParameter( "blVariantsSelection", true );
         
         $oView = oxNew( 'manufacturer_main_ajax' );
         $this->assertEquals( "from ".$this->getObject2CategoryViewTable()." left join ".$this->getArticleViewTable()." on  ( ".$this->getArticleViewTable().".oxid = ".$this->getObject2CategoryViewTable().".oxobjectid or ".$this->getArticleViewTable().".oxparentid = ".$this->getObject2CategoryViewTable().".oxobjectid )where ".$this->getArticleViewTable().".oxshopid=\"".$this->getShopIdTest()."\" and ".$this->getObject2CategoryViewTable().".oxcatnid = '".$sOxid."' and ".$this->getArticleViewTable().".oxmanufacturerid != '".$sSynchoxid."'", trim( $oView->UNITgetQuery() ) );
@@ -222,7 +222,7 @@ class Unit_Admin_ManufacturerMainAjaxTest extends OxidTestCase
      */
     public function testAddFilterVariantsSelection()
     {   
-        $this->getConfig()->setParameter( "blVariantsSelection", true );
+        $this->getConfig()->setRequestParameter( "blVariantsSelection", true );
         $oView = oxNew( 'manufacturer_main_ajax' );
         $this->assertEquals( "group by ".$this->getArticleViewTable().".oxid", trim( $oView->UNITaddFilter( '' ) ) );
     }
@@ -234,7 +234,7 @@ class Unit_Admin_ManufacturerMainAjaxTest extends OxidTestCase
      */
     public function testAddFilterVariantsSelection2()
     {   
-        $this->getConfig()->setParameter( "blVariantsSelection", true );
+        $this->getConfig()->setRequestParameter( "blVariantsSelection", true );
         $oView = oxNew( 'manufacturer_main_ajax' );
         $this->assertEquals( "select count( * ) group by ".$this->getArticleViewTable().".oxid", trim( $oView->UNITaddFilter( 'select count( * )' ) ) );
     }
@@ -262,8 +262,8 @@ class Unit_Admin_ManufacturerMainAjaxTest extends OxidTestCase
     public function testRemoveManufacturerAll()
     {
         $sOxid = '_testRemoveAll';
-        $this->getConfig()->setParameter( "oxid", $sOxid );
-        $this->getConfig()->setParameter( "all", true );
+        $this->getConfig()->setRequestParameter( "oxid", $sOxid );
+        $this->getConfig()->setRequestParameter( "all", true );
         
         $this->assertEquals( 3, oxDb::getDb()->getOne( "select count(oxid) from ".$this->getArticleViewTable()." where oxmanufacturerid = '_testRemoveAll'" ) );
         
@@ -281,7 +281,7 @@ class Unit_Admin_ManufacturerMainAjaxTest extends OxidTestCase
     public function testAddManufacturer()
     {
         $sSynchoxid = '_testAddManufacturer';
-        $this->getConfig()->setParameter( "synchoxid", $sSynchoxid );
+        $this->getConfig()->setRequestParameter( "synchoxid", $sSynchoxid );
         
         $oView = $this->getMock( "manufacturer_main_ajax", array( "_getActionIds", "resetCounter" ) );
         $oView->expects( $this->any() )->method( '_getActionIds')->will( $this->returnValue( array( '_testArticle1', '_testArticle2' ) ) );
@@ -300,8 +300,8 @@ class Unit_Admin_ManufacturerMainAjaxTest extends OxidTestCase
     public function testAddManufacturerAll()
     {
         $sSynchoxid = '_testAddManufacturerAll';
-        $this->getConfig()->setParameter( "synchoxid", $sSynchoxid );
-        $this->getConfig()->setParameter( "all", true );
+        $this->getConfig()->setRequestParameter( "synchoxid", $sSynchoxid );
+        $this->getConfig()->setRequestParameter( "all", true );
         
         $iCount = oxDb::getDb()->getOne( " select count(oxid) from ".$this->getArticleViewTable()." where ".$this->getArticleViewTable().".oxshopid='".$this->getShopIdTest()."' and 1  and ".$this->getArticleViewTable().".oxparentid = '' and ".$this->getArticleViewTable().".oxmanufacturerid != '".$sSynchoxid."'" );
         $this->assertEquals( 0, oxDb::getDb()->getOne( "select count(oxid) from ".$this->getArticleViewTable()." where oxmanufacturerid = '".$sSynchoxid."'" ) );

@@ -193,10 +193,10 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
             )->will($this->returnValue(null));
         $o->expects($this->once())->method('getSession')->will($this->returnValue($oSession));
 
-        modConfig::setParameter( 'bindex', 'b:bindex');
-        modConfig::setParameter( 'am', 'b:am');
-        modConfig::setParameter( 'sel', 'b:sel');
-        modConfig::setParameter( 'persparam', 'b:persparam');
+        modConfig::setRequestParameter( 'bindex', 'b:bindex');
+        modConfig::setRequestParameter( 'am', 'b:am');
+        modConfig::setRequestParameter( 'sel', 'b:sel');
+        modConfig::setRequestParameter( 'persparam', 'b:persparam');
         $this->assertSame(null, $o->changebasket());
     }
 
@@ -213,10 +213,10 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
             )->will($this->returnValue(null));
         $o->expects($this->never())->method('getSession')->will($this->returnValue($oSession));
 
-        modConfig::setParameter( 'aid', 'b:artid');
-        modConfig::setParameter( 'am', 'b:am');
-        modConfig::setParameter( 'sel', 'b:sel');
-        modConfig::setParameter( 'persparam', 'b:persparam');
+        modConfig::setRequestParameter( 'aid', 'b:artid');
+        modConfig::setRequestParameter( 'am', 'b:am');
+        modConfig::setRequestParameter( 'sel', 'b:sel');
+        modConfig::setRequestParameter( 'persparam', 'b:persparam');
         $this->assertSame(null, $o->changebasket());
     }
 
@@ -235,12 +235,12 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
                                  'searchrecomm',// search recomendation
                                  'recommid'     // recomm. list id
             ) as $key) {
-            modConfig::setParameter($key, 'value:'.$key.":v");
+            modConfig::setRequestParameter($key, 'value:'.$key.":v");
         }
 
-        modConfig::setParameter('cl', 'cla');
-        modConfig::setParameter('searchparam', 'search&&a');
-        modConfig::setParameter('pgNr', 123);
+        modConfig::setRequestParameter('cl', 'cla');
+        modConfig::setRequestParameter('searchparam', 'search&&a');
+        modConfig::setRequestParameter('pgNr', 123);
 
 
         $oCfg = $this->getMock('stdclass', array('getConfigParam'));
@@ -253,13 +253,13 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
 
         $this->assertEquals('cla?cnid=value:cnid:v&mnid=value:mnid:v&anid=value:anid:v&tpl=value:tpl:v&listtype=value:listtype:v&searchcnid=value:searchcnid:v&searchvendor=value:searchvendor:v&searchmanufacturer=value:searchmanufacturer:v&searchtag=value:searchtag:v&searchrecomm=value:searchrecomm:v&recommid=value:recommid:v&searchparam=search%26%26a&pgNr=123&', $o->UNITgetRedirectUrl());
 
-        modConfig::setParameter('cl', null);
-        modConfig::setParameter('pgNr', 'a123');
+        modConfig::setRequestParameter('cl', null);
+        modConfig::setRequestParameter('pgNr', 'a123');
         $this->assertEquals('start?cnid=value:cnid:v&mnid=value:mnid:v&anid=value:anid:v&tpl=value:tpl:v&listtype=value:listtype:v&searchcnid=value:searchcnid:v&searchvendor=value:searchvendor:v&searchmanufacturer=value:searchmanufacturer:v&searchtag=value:searchtag:v&searchrecomm=value:searchrecomm:v&recommid=value:recommid:v&searchparam=search%26%26a&', $o->UNITgetRedirectUrl());
 
         $this->assertEquals(null, oxSession::getVar('_backtoshop'));
 
-        modConfig::setParameter('pgNr', '0');
+        modConfig::setRequestParameter('pgNr', '0');
         $this->assertEquals('basket?cnid=value:cnid:v&mnid=value:mnid:v&anid=value:anid:v&tpl=value:tpl:v&listtype=value:listtype:v&searchcnid=value:searchcnid:v&searchvendor=value:searchvendor:v&searchmanufacturer=value:searchmanufacturer:v&searchtag=value:searchtag:v&searchrecomm=value:searchrecomm:v&recommid=value:recommid:v&searchparam=search%26%26a&', $o->UNITgetRedirectUrl());
         $this->assertEquals('start?cnid=value:cnid:v&mnid=value:mnid:v&anid=value:anid:v&tpl=value:tpl:v&listtype=value:listtype:v&searchcnid=value:searchcnid:v&searchvendor=value:searchvendor:v&searchmanufacturer=value:searchmanufacturer:v&searchtag=value:searchtag:v&searchrecomm=value:searchrecomm:v&recommid=value:recommid:v&searchparam=search%26%26a&', oxSession::getVar('_backtoshop'));
     }
@@ -290,7 +290,7 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
 
     public function testGetItemsFromArgsRm()
     {
-        modConfig::setParameter( 'aproducts', array(
+        modConfig::setRequestParameter( 'aproducts', array(
                                                 'abc' => array
                                                 (
                                                     'am' => 10,
@@ -302,7 +302,7 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
                                                 )
                                              )
                                 );
-        modConfig::setParameter( 'removeBtn', 1);
+        modConfig::setRequestParameter( 'removeBtn', 1);
         $o =new oxcmp_basket();
         $this->assertEquals(array(
                                                 'abc' => array
@@ -320,12 +320,12 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
 
     public function testGetItemsFromRequest()
     {
-        modConfig::setParameter( 'aid', 'b:artid');
-        modConfig::setParameter( 'anid', 'b:artidn');
-        modConfig::setParameter( 'am', 'b:am');
-        modConfig::setParameter( 'sel', 'b:sel');
-        modConfig::setParameter( 'persparam', array('details' => 'b:persparam'));
-        modConfig::setParameter( 'bindex', 'bindex');
+        modConfig::setRequestParameter( 'aid', 'b:artid');
+        modConfig::setRequestParameter( 'anid', 'b:artidn');
+        modConfig::setRequestParameter( 'am', 'b:am');
+        modConfig::setRequestParameter( 'sel', 'b:sel');
+        modConfig::setRequestParameter( 'persparam', array('details' => 'b:persparam'));
+        modConfig::setRequestParameter( 'bindex', 'bindex');
 
         $o =new oxcmp_basket();
         $this->assertEquals(array
@@ -342,7 +342,7 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
             ),
             $o->UNITgetItems());
 
-        modConfig::setParameter( 'persparam', 'b:persparam');
+        modConfig::setRequestParameter( 'persparam', 'b:persparam');
         $this->assertSame(array
             (
                 'b:artid' => array
@@ -361,13 +361,13 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
 
     public function testGetItemsFromRequestRemoveBtn()
     {
-        modConfig::setParameter( 'removeBtn', '1');
-        modConfig::setParameter( 'aid', 'b:artid');
-        modConfig::setParameter( 'anid', 'b:artidn');
-        modConfig::setParameter( 'am', 'b:am');
-        modConfig::setParameter( 'sel', 'b:sel');
-        modConfig::setParameter( 'persparam', 'b:persparam');
-        modConfig::setParameter( 'bindex', 'bindex');
+        modConfig::setRequestParameter( 'removeBtn', '1');
+        modConfig::setRequestParameter( 'aid', 'b:artid');
+        modConfig::setRequestParameter( 'anid', 'b:artidn');
+        modConfig::setRequestParameter( 'am', 'b:am');
+        modConfig::setRequestParameter( 'sel', 'b:sel');
+        modConfig::setRequestParameter( 'persparam', 'b:persparam');
+        modConfig::setRequestParameter( 'bindex', 'bindex');
 
         $o =new oxcmp_basket();
         $this->assertEquals(array

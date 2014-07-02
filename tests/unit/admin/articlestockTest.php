@@ -47,7 +47,7 @@ class Unit_Admin_ArticleStockTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setParameter( "oxid", oxDb::getDb()->getOne( 'select oxid from oxarticles where oxparentid != "" ' ) );
+        modConfig::setRequestParameter( "oxid", oxDb::getDb()->getOne( 'select oxid from oxarticles where oxparentid != "" ' ) );
 
         // testing..
         $oView = new Article_Stock();
@@ -71,7 +71,7 @@ class Unit_Admin_ArticleStockTest extends OxidTestCase
         oxTestModules::addFunction( 'oxarticle', 'setLanguage', '{ return true; }');
         oxTestModules::addFunction( 'oxarticle', 'assign', '{ return true; }');
 
-        modConfig::setParameter( "editval", array( "oxarticles__oxremindactive" => 1, "oxarticles__oxremindamount" => 1, "oxarticles__oxstock" => 2 ) );
+        modConfig::setRequestParameter( "editval", array( "oxarticles__oxremindactive" => 1, "oxarticles__oxremindamount" => 1, "oxarticles__oxstock" => 2 ) );
 
         // testing..
         try {
@@ -92,7 +92,7 @@ class Unit_Admin_ArticleStockTest extends OxidTestCase
     public function testAddPrice()
     {
         oxTestModules::addFunction( 'oxbase', 'save', '{ throw new Exception( "save" ); }');
-        modConfig::setParameter( "editval", array( "oxprice2article__oxamountto" => 9,
+        modConfig::setRequestParameter( "editval", array( "oxprice2article__oxamountto" => 9,
                                                    "pricetype" => "oxaddabs",
                                                    "price" => 9 ) );
 
@@ -116,7 +116,7 @@ class Unit_Admin_ArticleStockTest extends OxidTestCase
     {
         oxTestModules::addFunction( 'oxbase', 'save', '{ throw new Exception( "save" ); }');
         //set default params witch will be overriden
-        modConfig::setParameter( "editval", array( "oxprice2article__oxamountto" => 9,
+        modConfig::setRequestParameter( "editval", array( "oxprice2article__oxamountto" => 9,
                                                    "pricetype" => "oxaddabs",
                                                    "price" => 9 ) );
         //set params passed to func
@@ -141,7 +141,7 @@ class Unit_Admin_ArticleStockTest extends OxidTestCase
     public function testAddPriceSaveDb()
     {
         //set default params witch will be overriden
-        modConfig::setParameter( "editval", array( "oxprice2article__oxamountto" => 9,
+        modConfig::setRequestParameter( "editval", array( "oxprice2article__oxamountto" => 9,
                                                    "pricetype" => "oxaddabs",
                                                    "price" => 9 ) );
         //set params passed to func
@@ -176,7 +176,7 @@ class Unit_Admin_ArticleStockTest extends OxidTestCase
     public function testUpdatePrices()
     {
         //set default params witch will be overwritten
-        modConfig::setParameter( "updateval", array( "_testId" => array( "oxprice2article__oxamountto" => 50,
+        modConfig::setRequestParameter( "updateval", array( "_testId" => array( "oxprice2article__oxamountto" => 50,
                                                    "pricetype" => "oxaddabs",
                                                    "price" => 20 ) )
                                 );
@@ -187,7 +187,7 @@ class Unit_Admin_ArticleStockTest extends OxidTestCase
         $oView->updateprices();
         $this->assertFalse(  $oDb->getOne("select 1 from oxprice2article where oxid='_testId'" ) );
       
-        modConfig::setParameter( "editval", array( "oxprice2article__oxamountto" => 9,
+        modConfig::setRequestParameter( "editval", array( "oxprice2article__oxamountto" => 9,
                                                    "pricetype" => "oxaddabs",
                                                    "price" => 9 ) );
         $oView->updateprices();
@@ -207,17 +207,17 @@ class Unit_Admin_ArticleStockTest extends OxidTestCase
             $oView = new Article_Stock();
 
 
-        modConfig::setParameter('oxid', '_testArtId');
+        modConfig::setRequestParameter('oxid', '_testArtId');
         $oView->deleteprice();
         $this->assertEquals( "1", $oDb->getOne("select 1 from oxprice2article where oxid='_testId'" ) );
         
-        modConfig::setParameter('oxid', '');
-        modConfig::setParameter('priceid', '_testId');
+        modConfig::setRequestParameter('oxid', '');
+        modConfig::setRequestParameter('priceid', '_testId');
         $oView->deleteprice();
         $this->assertEquals( "1", $oDb->getOne("select 1 from oxprice2article where oxid='_testId'" ) );
         
-        modConfig::setParameter('oxid', '_testArtId');
-        modConfig::setParameter('priceid', '_testId');
+        modConfig::setRequestParameter('oxid', '_testArtId');
+        modConfig::setRequestParameter('priceid', '_testId');
         $oView->deleteprice();
         $this->assertFalse( $oDb->getOne("select 1 from oxprice2article where oxid='_testId'" ) );
     }
@@ -230,7 +230,7 @@ class Unit_Admin_ArticleStockTest extends OxidTestCase
     public function testAddPriceShopMall()
     {
         //set default params for first save
-        modConfig::setParameter( "editval", array( "oxprice2article__oxamountto" => 123,
+        modConfig::setRequestParameter( "editval", array( "oxprice2article__oxamountto" => 123,
             "pricetype" => "oxaddabs", "price" => 9 ) );
         //set oxid
         $sOXID = "_testId";

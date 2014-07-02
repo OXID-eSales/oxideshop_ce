@@ -271,7 +271,7 @@ class Unit_Core_oxcontentTest extends OxidTestCase
 
     public function testExpandedStatusGetter()
     {
-        modConfig::setParameter( 'oxcid', 'xxx' );
+        modConfig::setRequestParameter( 'oxcid', 'xxx' );
 
         $oContent = new oxContent();
         $oContent->setId( 'xxx' );
@@ -279,8 +279,8 @@ class Unit_Core_oxcontentTest extends OxidTestCase
         $this->assertTrue( $oContent->expanded );
 
         // testing cache
-        modConfig::setParameter( 'oxcid', null );
-        modConfig::setParameter( 'oxloadid', 'xxx' );
+        modConfig::setRequestParameter( 'oxcid', null );
+        modConfig::setRequestParameter( 'oxloadid', 'xxx' );
         $oContent = new oxContent();
         $oContent->load( 'xxx' );
         $this->assertTrue( $oContent->getExpanded() );

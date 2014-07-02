@@ -36,7 +36,7 @@ class Unit_Admin_OrderListTest extends OxidTestCase
     public function testRender()
     {
         oxTestModules::addFunction( 'oxorder', 'load', '{ $this->oxorder__oxdeltype = new oxField("test"); $this->oxorder__oxtotalbrutsum = new oxField(10); $this->oxorder__oxcurrate = new oxField(10); }');
-        modConfig::setParameter( "oxid", "testId" );
+        modConfig::setRequestParameter( "oxid", "testId" );
 
         // testing..
         $oView = new order_list();
@@ -71,16 +71,16 @@ class Unit_Admin_OrderListTest extends OxidTestCase
         $oDb = oxDb::getDb();
         $oListObject = new oxOrder();
 
-        modConfig::setParameter( "addsearch", "oxorderarticles" );
+        modConfig::setRequestParameter( "addsearch", "oxorderarticles" );
         $oView = new order_list();
         $sQ = $oView->UNITbuildSelectString( $oListObject );
         $this->assertTrue( strpos( $sQ, "oxorder where oxorder.oxpaid like ".$oDb->quote( "%oxorderarticles%" )." and " ) !== false );
 
-        modConfig::setParameter( "addsearchfld", "oxorderarticles" );
+        modConfig::setRequestParameter( "addsearchfld", "oxorderarticles" );
         $sQ = $oView->UNITbuildSelectString( $oListObject );
         $this->assertTrue( strpos( $sQ, "oxorder left join oxorderarticles on oxorderarticles.oxorderid=oxorder.oxid where ( oxorderarticles.oxartnum like ".$oDb->quote( "%oxorderarticles%" ) ." or oxorderarticles.oxtitle like ".$oDb->quote( "%oxorderarticles%" )." ) and " ) !== false );
 
-        modConfig::setParameter( "addsearchfld", "oxpayments" );
+        modConfig::setRequestParameter( "addsearchfld", "oxpayments" );
         $sQ = $oView->UNITbuildSelectString( $oListObject );
         $this->assertTrue( strpos( $sQ, "oxorder left join oxpayments on oxpayments.oxid=oxorder.oxpaymenttype where oxpayments.oxdesc like ".$oDb->quote( "%oxorderarticles%" ) ." and " ) !== false );
     }
@@ -107,7 +107,7 @@ class Unit_Admin_OrderListTest extends OxidTestCase
     public function testPrepareWhereQueryIfFolderSelected()
     {
         oxTestModules::addFunction( "oxlang", "isAdmin", "{return 1;}" );
-        modConfig::setParameter( 'folder', 'ORDERFOLDER_FINISHED' );
+        modConfig::setRequestParameter( 'folder', 'ORDERFOLDER_FINISHED' );
         $sExpQ = " and ( oxorder.oxfolder = 'ORDERFOLDER_FINISHED' )";
         $oOrderList = new order_list();
         $sQ = $oOrderList->UNITprepareWhereQuery(array(), "");

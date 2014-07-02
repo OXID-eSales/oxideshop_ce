@@ -36,7 +36,7 @@ class Unit_Admin_NewsletterPreviewTest extends OxidTestCase
     public function testRender()
     {
         oxTestModules::addFunction( 'oxnewsletter', 'prepare', '{}');
-        modConfig::setParameter( "oxid", "testId" );
+        modConfig::setRequestParameter( "oxid", "testId" );
 
         // testing..
         $oView = new Newsletter_Preview();

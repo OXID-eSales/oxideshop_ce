@@ -508,7 +508,7 @@ class Unit_Views_paymentTest extends OxidTestCase
                           "kkpruef" => $sTProof
                             );
 
-        modConfig::getInstance()->setParameter("dynvalue", $aDynData);
+        modConfig::getInstance()->setRequestParameter("dynvalue", $aDynData);
 
 
         $_REQUEST["dynvalue"]["testKey"] = $sTVal;
@@ -534,7 +534,7 @@ class Unit_Views_paymentTest extends OxidTestCase
 
         $oSubj->UNITfilterDynData();
 
-        $aDynData = modConfig::getInstance()->getParameter("dynvalue");
+        $aDynData = modConfig::getInstance()->getRequestParameter("dynvalue");
 
         $this->assertEquals( $aDynData["kknumber"], $sTNumber);
         $this->assertEquals( $_REQUEST["dynvalue"]["kknumber"], $sTNumber);
@@ -562,7 +562,7 @@ class Unit_Views_paymentTest extends OxidTestCase
                           "kkpruef" => $sTProof
                             );
 
-        modConfig::getInstance()->setParameter("dynvalue", $aDynData);
+        modConfig::getInstance()->setRequestParameter("dynvalue", $aDynData);
 
         $_REQUEST["dynvalue"]["testKey"] = $sTVal;
         $_REQUEST["dynvalue"]["kknumber"] = $sTNumber;
@@ -587,7 +587,7 @@ class Unit_Views_paymentTest extends OxidTestCase
 
         $oSubj->UNITfilterDynData();
 
-        $aDynData = modConfig::getInstance()->getParameter("dynvalue");
+        $aDynData = modConfig::getInstance()->getRequestParameter("dynvalue");
 
         //$this->assertEquals($aDynData["testKey"], $sTVal);
         //$this->assertNull($aDynData["kknumber"]);

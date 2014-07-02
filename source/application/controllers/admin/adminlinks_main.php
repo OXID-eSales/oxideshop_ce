@@ -77,7 +77,7 @@ class Adminlinks_Main extends oxAdminDetails
     public function save()
     {
         $soxId = $this->getEditObjectId();
-        $aParams = oxConfig::getParameter( "editval");
+        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval");
         // checkbox handling
         if ( !isset( $aParams['oxlinks__oxactive']))
             $aParams['oxlinks__oxactive'] = 0;
@@ -97,7 +97,7 @@ class Adminlinks_Main extends oxAdminDetails
                 $aParams['oxlinks__oxinsert'] = $sDate;
         }
 
-        $iEditLanguage = oxConfig::getParameter("editlanguage");
+        $iEditLanguage = oxRegistry::getConfig()->getRequestParameter("editlanguage");
         $oLinks = oxNew( "oxlinks", getViewName( 'oxlinks'));
 
         if ( $soxId != "-1") {
@@ -129,7 +129,7 @@ class Adminlinks_Main extends oxAdminDetails
     public function saveinnlang()
     {
         $soxId = $this->getEditObjectId();
-        $aParams = oxConfig::getParameter( "editval");
+        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval");
         // checkbox handling
         if ( !isset( $aParams['oxlinks__oxactive']))
             $aParams['oxlinks__oxactive'] = 0;
@@ -138,7 +138,7 @@ class Adminlinks_Main extends oxAdminDetails
             $sShopID = oxSession::getVar( "actshop");
             $aParams['oxlinks__oxshopid'] = $sShopID;
         $oLinks = oxNew( "oxlinks", getViewName( 'oxlinks'));
-        $iEditLanguage = oxConfig::getParameter("editlanguage");
+        $iEditLanguage = oxRegistry::getConfig()->getRequestParameter("editlanguage");
 
         if( $soxId != "-1")
             $oLinks->loadInLang( $iEditLanguage, $soxId );
@@ -152,7 +152,7 @@ class Adminlinks_Main extends oxAdminDetails
         $oLinks->assign( $aParams);
 
         // apply new language
-        $oLinks->setLanguage( oxConfig::getParameter( "new_lang" ) );
+        $oLinks->setLanguage( oxRegistry::getConfig()->getRequestParameter( "new_lang" ) );
         $oLinks->save();
 
         // set oxid if inserted

@@ -56,7 +56,7 @@ class InvoicepdfOrder_Overview extends InvoicepdfOrder_Overview_parent
                 $sFilename = $oOrder->oxorder__oxordernr->value . "_" . $sTrimmedBillName . ".pdf";
                 $sFilename = $this->makeValidFileName($sFilename);
                 ob_start();
-                $oOrder->genPDF( $sFilename, oxConfig::getParameter( "pdflanguage" ) );
+                $oOrder->genPDF( $sFilename, oxRegistry::getConfig()->getRequestParameter( "pdflanguage" ) );
                 $sPDF = ob_get_contents();
                 ob_end_clean();
                 $oUtils->setHeader( "Pragma: public" );

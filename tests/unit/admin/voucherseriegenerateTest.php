@@ -82,7 +82,7 @@ class Unit_Admin_VoucherSerieGenerateTest extends OxidTestCase
      */
     public function testRun()
     {
-        modConfig::setParameter("iStart", 0 );
+        modConfig::setRequestParameter("iStart", 0 );
 
         // first generation call
         $oView = $this->getMock( "VoucherSerie_Generate", array( "nextTick", "stop" ) );

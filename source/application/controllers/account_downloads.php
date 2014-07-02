@@ -116,7 +116,7 @@ class Account_Downloads extends Account
      */
     public function getDownloadError()
     {
-        return $this->getConfig()->getParameter( 'download_error' );
+        return $this->getConfig()->getRequestParameter( 'download_error' );
     }
 
 }

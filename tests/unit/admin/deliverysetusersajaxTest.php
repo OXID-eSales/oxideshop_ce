@@ -115,7 +115,7 @@ class Unit_Admin_DeliverysetUsersAjaxTest extends OxidTestCase
     public function testGetQuerySynchoxid()
     {
         $sSynchoxid = '_testAction';
-        $this->getConfig()->setParameter( "synchoxid", $sSynchoxid );
+        $this->getConfig()->setRequestParameter( "synchoxid", $sSynchoxid );
         
         $oView = oxNew( 'deliveryset_users_ajax' );
         $this->assertEquals( "from oxuser where 1 and oxuser.oxshopid = '".$this->getShopIdTest()."' and oxuser.oxid not in ( select oxuser.oxid from oxobject2delivery, oxuser where oxobject2delivery.oxdeliveryid = '".$sSynchoxid."'and oxobject2delivery.oxobjectid = oxuser.oxid and oxobject2delivery.oxtype = 'oxdelsetu' )", trim( $oView->UNITgetQuery() ) );
@@ -130,7 +130,7 @@ class Unit_Admin_DeliverysetUsersAjaxTest extends OxidTestCase
     {
         $this->getConfig()->setConfigParam( "blMallUsers", true );
         $sSynchoxid = '_testAction';
-        $this->getConfig()->setParameter( "synchoxid", $sSynchoxid );
+        $this->getConfig()->setRequestParameter( "synchoxid", $sSynchoxid );
         
         $oView = oxNew( 'deliveryset_users_ajax' );
         $this->assertEquals( "from oxuser where 1 and oxuser.oxid not in ( select oxuser.oxid from oxobject2delivery, oxuser where oxobject2delivery.oxdeliveryid = '".$sSynchoxid."'and oxobject2delivery.oxobjectid = oxuser.oxid and oxobject2delivery.oxtype = 'oxdelsetu' )", trim( $oView->UNITgetQuery() ) );
@@ -144,7 +144,7 @@ class Unit_Admin_DeliverysetUsersAjaxTest extends OxidTestCase
     public function testGetQueryOxid()
     {
         $sOxid = '_testAction';
-        $this->getConfig()->setParameter( "oxid", $sOxid );
+        $this->getConfig()->setRequestParameter( "oxid", $sOxid );
         
         $oView = oxNew( 'deliveryset_users_ajax' );
         $this->assertEquals( "from oxobject2delivery, oxuser where oxobject2delivery.oxdeliveryid = '".$sOxid."'and oxobject2delivery.oxobjectid = oxuser.oxid and oxobject2delivery.oxtype = 'oxdelsetu'", trim( $oView->UNITgetQuery() ) );
@@ -159,8 +159,8 @@ class Unit_Admin_DeliverysetUsersAjaxTest extends OxidTestCase
     {
         $sOxid = '_testAction';
         $sSynchoxid = '_testActionSynch';
-        $this->getConfig()->setParameter( "oxid", $sOxid );
-        $this->getConfig()->setParameter( "synchoxid", $sSynchoxid );
+        $this->getConfig()->setRequestParameter( "oxid", $sOxid );
+        $this->getConfig()->setRequestParameter( "synchoxid", $sSynchoxid );
         
         $oView = oxNew( 'deliveryset_users_ajax' );
         $this->assertEquals( "from oxobject2group left join oxuser on oxuser.oxid = oxobject2group.oxobjectid  where oxobject2group.oxgroupsid = '".$sOxid."'and oxuser.oxshopid = '".$this->getShopIdTest()."' and oxuser.oxid not in ( select oxuser.oxid from oxobject2delivery, oxuser where oxobject2delivery.oxdeliveryid = '".$sSynchoxid."'and oxobject2delivery.oxobjectid = oxuser.oxid and oxobject2delivery.oxtype = 'oxdelsetu' )", trim( $oView->UNITgetQuery() ) );
@@ -176,8 +176,8 @@ class Unit_Admin_DeliverysetUsersAjaxTest extends OxidTestCase
         $this->getConfig()->setConfigParam( "blMallUsers", true );
         $sOxid = '_testAction';
         $sSynchoxid = '_testActionSynch';
-        $this->getConfig()->setParameter( "oxid", $sOxid );
-        $this->getConfig()->setParameter( "synchoxid", $sSynchoxid );
+        $this->getConfig()->setRequestParameter( "oxid", $sOxid );
+        $this->getConfig()->setRequestParameter( "synchoxid", $sSynchoxid );
         
         $oView = oxNew( 'deliveryset_users_ajax' );
         $this->assertEquals( "from oxobject2group left join oxuser on oxuser.oxid = oxobject2group.oxobjectid  where oxobject2group.oxgroupsid = '".$sOxid."'and oxuser.oxid not in ( select oxuser.oxid from oxobject2delivery, oxuser where oxobject2delivery.oxdeliveryid = '".$sSynchoxid."'and oxobject2delivery.oxobjectid = oxuser.oxid and oxobject2delivery.oxtype = 'oxdelsetu' )", trim( $oView->UNITgetQuery() ) );
@@ -207,8 +207,8 @@ class Unit_Admin_DeliverysetUsersAjaxTest extends OxidTestCase
     public function testRemoveUserFromSetAll()
     {
         $sOxid = '_testDeliveryUserRemoveAll';
-        $this->getConfig()->setParameter( "oxid", $sOxid );
-        $this->getConfig()->setParameter( "all", true );
+        $this->getConfig()->setRequestParameter( "oxid", $sOxid );
+        $this->getConfig()->setRequestParameter( "all", true );
         
         $sSql = "select count(oxobject2delivery.oxid) from oxobject2delivery, oxuser where oxobject2delivery.oxdeliveryid = '".$sOxid."'and oxobject2delivery.oxobjectid = oxuser.oxid and oxobject2delivery.oxtype = 'oxdelsetu'";
         $oView = oxNew( 'deliveryset_users_ajax' );
@@ -225,7 +225,7 @@ class Unit_Admin_DeliverysetUsersAjaxTest extends OxidTestCase
     public function testAddUserToSet()
     {
         $sSynchoxid = '_testActionAddUser';
-        $this->getConfig()->setParameter( "synchoxid", $sSynchoxid );
+        $this->getConfig()->setRequestParameter( "synchoxid", $sSynchoxid );
         
         $sSql = "select count(oxid) from oxobject2delivery where oxdeliveryid='$sSynchoxid'";
         $this->assertEquals( 0, oxDb::getDb()->getOne( $sSql ) );
@@ -245,8 +245,8 @@ class Unit_Admin_DeliverysetUsersAjaxTest extends OxidTestCase
     public function testAddUserToSetAll()
     {
         $sSynchoxid = '_testActionAddUserAll';
-        $this->getConfig()->setParameter( "synchoxid", $sSynchoxid );
-        $this->getConfig()->setParameter( "all", true );
+        $this->getConfig()->setRequestParameter( "synchoxid", $sSynchoxid );
+        $this->getConfig()->setRequestParameter( "all", true );
         
         //count how much articles gets filtered
         $iCount = oxDb::getDb()->getOne( "select count(oxuser.oxid) from oxuser where 1 and oxuser.oxshopid = '".$this->getShopIdTest()."' and oxuser.oxid not in ( select oxuser.oxid from oxobject2delivery, oxuser where oxobject2delivery.oxdeliveryid = '".$sSynchoxid."'and oxobject2delivery.oxobjectid = oxuser.oxid and oxobject2delivery.oxtype = 'oxdelsetu' )" );

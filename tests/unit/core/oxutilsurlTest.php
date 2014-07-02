@@ -88,7 +88,7 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
 
     public function testGetAddUrlParams()
     {
-        modConfig::setParameter( "currency", 1 );
+        modConfig::setRequestParameter( "currency", 1 );
         $aBaseUrlParams = array( "param1" => "value1", "param2" => "value2" );
 
         $oUtils = $this->getMock( "oxUtilsUrl", array( "getBaseAddUrlParams" ) );
@@ -143,7 +143,7 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
         $this->assertEquals('sdf?a=1&bonusid=111&amp;lang=3'.$sShopId, oxUtilsUrl::getInstance()->prepareUrlForNoSession('sdf?a=1&bonusid=111'));
         $this->assertEquals('sdf?a=1&amp;bonusid=111&amp;lang=3'.$sShopId, oxUtilsUrl::getInstance()->prepareUrlForNoSession('sdf?a=1&amp;bonusid=111&amp;force_admin_sid=111'));
 
-        modConfig::getInstance()->setParameter('currency', 2);
+        modConfig::getInstance()->setRequestParameter('currency', 2);
         $this->assertEquals('sdf?lang=3&amp;cur=2'.$sShopId, oxUtilsUrl::getInstance()->prepareUrlForNoSession('sdf'));
 
         oxTestModules::addFunction('oxUtils', 'seoIsActive', '{return true;}');

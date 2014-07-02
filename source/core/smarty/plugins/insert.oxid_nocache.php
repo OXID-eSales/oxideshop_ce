@@ -43,14 +43,14 @@ function smarty_insert_oxid_nocache($params, &$smarty)
         $smarty->assign_by_ref( "product", $smarty->oxobject->oProduct);*/
 
     // #1184M - specialchar search
-    $sSearchParamForHTML = oxConfig::getParameter("searchparam");
-    $sSearchParamForLink = rawurlencode( oxConfig::getParameter( "searchparam", true ) );
+    $sSearchParamForHTML = oxRegistry::getConfig()->getRequestParameter("searchparam");
+    $sSearchParamForLink = rawurlencode( oxRegistry::getConfig()->getRequestParameter( "searchparam", true ) );
     if ( $sSearchParamForHTML ) {
         $smarty->assign_by_ref( "searchparamforhtml", $sSearchParamForHTML );
         $smarty->assign_by_ref( "searchparam", $sSearchParamForLink );
     }
 
-    $sSearchCat = oxConfig::getParameter("searchcnid");
+    $sSearchCat = oxRegistry::getConfig()->getRequestParameter("searchcnid");
     if( $sSearchCat )
         $smarty->assign_by_ref( "searchcnid", rawurldecode( $sSearchCat ) );
 

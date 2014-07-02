@@ -51,7 +51,7 @@ class Unit_Admin_ModuleSortListTest extends OxidTestCase
     public function testSave()
     {
         $json = json_encode(array( "oxarticle" => array("dir1/module1","dir2/module2") ));
-        $this->getConfig()->setParameter( "aModules", $json );
+        $this->getConfig()->setRequestParameter( "aModules", $json );
         $this->getConfig()->setAdminMode( true );
         // result data
         $aModules = array( "oxarticle" => "dir1/module1&dir2/module2" );
@@ -72,7 +72,7 @@ class Unit_Admin_ModuleSortListTest extends OxidTestCase
      */
     public function testRemove()
     {
-        $this->getConfig()->setParameter( "noButton", true );
+        $this->getConfig()->setRequestParameter( "noButton", true );
         $oView = new Module_SortList();
         $oView->remove();
         $this->assertTrue( $this->getSession()->getVariable( "blSkipDeletedExtChecking") );

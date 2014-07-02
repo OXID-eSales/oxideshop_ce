@@ -80,18 +80,18 @@ class Suggest extends oxUBase
      */
     public function send()
     {
-        $aParams = oxConfig::getParameter( 'editval', true );
+        $aParams = oxRegistry::getConfig()->getRequestParameter( 'editval', true );
         if ( !is_array( $aParams ) ) {
             return;
         }
 
         // storing used written values
         $oParams = (object) $aParams;
-        $this->setSuggestData( (object) oxConfig::getParameter( 'editval' ) );
+        $this->setSuggestData( (object) oxRegistry::getConfig()->getRequestParameter( 'editval' ) );
 
         // spam spider prevension
-        $sMac     = oxConfig::getParameter( 'c_mac' );
-        $sMacHash = oxConfig::getParameter( 'c_mach' );
+        $sMac     = oxRegistry::getConfig()->getRequestParameter( 'c_mac' );
+        $sMacHash = oxRegistry::getConfig()->getRequestParameter( 'c_mach' );
         $oCaptcha = $this->getCaptcha();
         $oUtilsView = oxRegistry::get("oxUtilsView");
 
@@ -117,26 +117,26 @@ class Suggest extends oxUBase
 
         $sReturn = "";
         // #1834M - specialchar search
-        $sSearchParamForLink = rawurlencode( oxConfig::getParameter( 'searchparam', true ) );
+        $sSearchParamForLink = rawurlencode( oxRegistry::getConfig()->getRequestParameter( 'searchparam', true ) );
         if ( $sSearchParamForLink ) {
             $sReturn .= "&searchparam=$sSearchParamForLink";
         }
 
-        $sSearchCatId = oxConfig::getParameter( 'searchcnid' );
+        $sSearchCatId = oxRegistry::getConfig()->getRequestParameter( 'searchcnid' );
         if ( $sSearchCatId ) {
             $sReturn .= "&searchcnid=$sSearchCatId";
         }
 
-        $sSearchVendor = oxConfig::getParameter( 'searchvendor' );
+        $sSearchVendor = oxRegistry::getConfig()->getRequestParameter( 'searchvendor' );
         if ( $sSearchVendor ) {
             $sReturn .= "&searchvendor=$sSearchVendor";
         }
 
-        if ( ( $sSearchManufacturer = oxConfig::getParameter( 'searchmanufacturer' ) ) ) {
+        if ( ( $sSearchManufacturer = oxRegistry::getConfig()->getRequestParameter( 'searchmanufacturer' ) ) ) {
             $sReturn .= "&searchmanufacturer=$sSearchManufacturer";
         }
 
-        $sListType = oxConfig::getParameter( 'listtype' );
+        $sListType = oxRegistry::getConfig()->getRequestParameter( 'listtype' );
         if ( $sListType ) {
             $sReturn .= "&listtype=$sListType";
         }
@@ -257,12 +257,12 @@ class Suggest extends oxUBase
         $sLink = parent::getLink( $iLang );
 
         // active category
-        if ( $sVal = oxConfig::getParameter( 'cnid' ) ) {
+        if ( $sVal = oxRegistry::getConfig()->getRequestParameter( 'cnid' ) ) {
             $sLink .= ( ( strpos( $sLink, '?' ) === false ) ? '?' : '&amp;' ) . "cnid={$sVal}";
         }
 
         // active article
-        if ( $sVal= oxConfig::getParameter( 'anid' ) ) {
+        if ( $sVal= oxRegistry::getConfig()->getRequestParameter( 'anid' ) ) {
             $sLink .= ( ( strpos( $sLink, '?' ) === false ) ? '?' : '&amp;' ) . "anid={$sVal}";
         }
 

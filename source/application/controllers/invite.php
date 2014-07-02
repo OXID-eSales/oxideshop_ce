@@ -114,7 +114,7 @@ class Invite extends oxUBase
             oxRegistry::getUtils()->redirect( $oConfig->getShopHomeURL() );
         }
 
-        $aParams = oxConfig::getParameter( 'editval', true );
+        $aParams = oxRegistry::getConfig()->getRequestParameter( 'editval', true );
         $oUser = $this->getUser();
         if ( !is_array( $aParams ) || !$oUser ) {
             return;
@@ -122,11 +122,11 @@ class Invite extends oxUBase
 
         // storing used written values
         $oParams = (object) $aParams;
-        $this->setInviteData( (object) oxConfig::getParameter( 'editval' ) );
+        $this->setInviteData( (object) oxRegistry::getConfig()->getRequestParameter( 'editval' ) );
 
         // spam spider prevension
-        $sMac     = oxConfig::getParameter( 'c_mac' );
-        $sMacHash = oxConfig::getParameter( 'c_mach' );
+        $sMac     = oxRegistry::getConfig()->getRequestParameter( 'c_mac' );
+        $sMacHash = oxRegistry::getConfig()->getRequestParameter( 'c_mach' );
         $oCaptcha = $this->getCaptcha();
 
         if ( !$oCaptcha->pass( $sMac, $sMacHash ) ) {

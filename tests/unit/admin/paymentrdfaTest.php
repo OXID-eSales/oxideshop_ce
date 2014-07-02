@@ -48,7 +48,7 @@ class Unit_Admin_PaymentRDFaTest extends OxidTestCase
     public function testSave_deleteOldRecords()
     {
         $sTestID = '_test_recid';
-        modConfig::setParameter( 'oxid', $sTestID );
+        modConfig::setRequestParameter( 'oxid', $sTestID );
 
         $oMapping = oxNew('oxbase');
         $oMapping->init('oxobject2payment');
@@ -84,9 +84,9 @@ class Unit_Admin_PaymentRDFaTest extends OxidTestCase
     {
         $sTestID = '_test_recid';
         $aObjIDs = array('_test_obj1', '_test_obj2');
-        modConfig::setParameter( 'oxid', $sTestID );
-        modConfig::setParameter( 'ardfapayments', $aObjIDs );
-        modConfig::setParameter(
+        modConfig::setRequestParameter( 'oxid', $sTestID );
+        modConfig::setRequestParameter( 'ardfapayments', $aObjIDs );
+        modConfig::setRequestParameter(
             'editval',
             array(
                 'oxobject2payment__oxpaymentid' => $sTestID,
@@ -151,7 +151,7 @@ class Unit_Admin_PaymentRDFaTest extends OxidTestCase
     {
         $sTestID = '_test_recid';
         $aObjIDs = array('_test_obj1', '_test_obj2');
-        modConfig::setParameter( 'oxid', $sTestID );
+        modConfig::setRequestParameter( 'oxid', $sTestID );
         $oView = oxNew('Payment_RDFa');
 
         $oDB = oxDb::getDb();

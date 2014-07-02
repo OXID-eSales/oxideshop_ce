@@ -73,7 +73,7 @@ class Shop_Config extends oxAdminDetails
                 $this->_aViewData["updateViews"] = 1;
             }
 
-            $iAoc = oxConfig::getParameter("aoc");
+            $iAoc = oxRegistry::getConfig()->getRequestParameter("aoc");
             if ( $iAoc == 1 ) {
                 $oShopDefaultCategoryAjax = oxNew( 'shop_default_category_ajax' );
                 $this->_aViewData['oxajax'] = $oShopDefaultCategoryAjax->getColumns();
@@ -134,7 +134,7 @@ class Shop_Config extends oxAdminDetails
         $sShopId = $this->getEditObjectId();
         $sModule = $this->_getModuleForConfigVars();
         foreach ($this->_aConfParams as $sType => $sParam) {
-            $aConfVars = oxConfig::getParameter($sParam);
+            $aConfVars = oxRegistry::getConfig()->getRequestParameter($sParam);
             if (is_array($aConfVars)) {
                 foreach ( $aConfVars as $sName => $sValue ) {
                     $oldValue = $myConfig->getConfigParam( $sName );
@@ -165,7 +165,7 @@ class Shop_Config extends oxAdminDetails
         //saving additional fields ("oxshops__oxdefcat"") that goes directly to shop (not config)
         $oShop = oxNew( "oxshop" );
         if ( $oShop->load( $this->getEditObjectId() ) ) {
-            $oShop->assign( oxConfig::getParameter( "editval" ) );
+            $oShop->assign( oxRegistry::getConfig()->getRequestParameter( "editval" ) );
             $oShop->save();
         }
     }

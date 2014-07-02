@@ -77,7 +77,7 @@ class Unit_Views_registerTest extends OxidTestCase
      */
     public function testGetUpdateId()
     {
-        modConfig::setParameter( 'uid', "testUid" );
+        modConfig::setRequestParameter( 'uid', "testUid" );
 
         $oView = new register();
         $this->assertEquals( "testUid", $oView->getUpdateId() );
@@ -92,17 +92,17 @@ class Unit_Views_registerTest extends OxidTestCase
     {
         $oView = new register();
 
-        modConfig::setParameter( "confirmstate", 0 );
+        modConfig::setRequestParameter( "confirmstate", 0 );
         $this->assertFalse( $oView->isConfirmed() );
 
-        modConfig::setParameter( "confirmstate", 1 );
+        modConfig::setRequestParameter( "confirmstate", 1 );
         $this->assertTrue( $oView->isConfirmed() );
     }
 
     public function testGetRegistrationError()
     {
         $oRegister = $this->getProxyClass( 'register' );
-        modConfig::setParameter( 'newslettererror', 'testError' );
+        modConfig::setRequestParameter( 'newslettererror', 'testError' );
 
         $this->assertEquals( 'testError', $oRegister->getRegistrationError() );
     }
@@ -110,7 +110,7 @@ class Unit_Views_registerTest extends OxidTestCase
     public function testGetRegistrationStatus()
     {
         $oRegister = $this->getProxyClass( 'register' );
-        modConfig::setParameter( 'success', 'success' );
+        modConfig::setRequestParameter( 'success', 'success' );
 
         $this->assertEquals( 'success', $oRegister->getRegistrationStatus() );
     }

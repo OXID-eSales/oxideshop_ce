@@ -47,7 +47,7 @@ class Unit_Admin_dyntrustedTest extends OxidTestCase
      */
     public function testSaveNothingToSave()
     {
-        modConfig::setParameter( "aShopID_TrustedShops", array( "testValue" ) );
+        modConfig::setRequestParameter( "aShopID_TrustedShops", array( "testValue" ) );
 
         $oView = $this->getMock( "dyn_trusted", array( "_checkTsId", "getConfig" ), array(), '', false );
         $oView->expects( $this->once() )->method( '_checkTsId' );
@@ -68,11 +68,11 @@ class Unit_Admin_dyntrustedTest extends OxidTestCase
         $oResults = new stdClass();
         $oResults->stateEnum = 'TEST';
         $oResults->typeEnum = 'EXCELLENCE';
-        modConfig::setParameter( "aShopID_TrustedShops", array("test") );
-        modConfig::setParameter( "aTsUser", 'testUser' );
-        modConfig::setParameter( "aTsPassword", 'testPsw' );
-        modConfig::setParameter( "tsSealActive", true );
-        modConfig::setParameter( "tsTestMode", false );
+        modConfig::setRequestParameter( "aShopID_TrustedShops", array("test") );
+        modConfig::setRequestParameter( "aTsUser", 'testUser' );
+        modConfig::setRequestParameter( "aTsPassword", 'testPsw' );
+        modConfig::setRequestParameter( "tsSealActive", true );
+        modConfig::setRequestParameter( "tsTestMode", false );
 
         $oConfig = $this->getMock( "oxConfig", array( "getShopId", "saveShopConfVar" ) );
         $oConfig->expects( $this->at(0) )->method( 'getShopId' )->will( $this->returnValue( "shopid" ) );

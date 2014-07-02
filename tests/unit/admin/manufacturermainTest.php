@@ -35,7 +35,7 @@ class Unit_Admin_ManufacturerMainTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setParameter( "oxid", "testId" );
+        modConfig::setRequestParameter( "oxid", "testId" );
         oxTestModules::addFunction( 'oxmanufacturer', 'isDerived', '{ return true; }');
 
         // testing..
@@ -54,7 +54,7 @@ class Unit_Admin_ManufacturerMainTest extends OxidTestCase
      */
     public function testRenderNoRealObjectId()
     {
-        modConfig::setParameter( "oxid", "-1" );
+        modConfig::setRequestParameter( "oxid", "-1" );
 
         // testing..
         $oView = new Manufacturer_Main();

@@ -35,7 +35,7 @@ class Unit_Admin_PaymentMainTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setParameter( "oxid", "testId" );
+        modConfig::setRequestParameter( "oxid", "testId" );
 
         // testing..
         $oView = new Payment_Main();
@@ -52,7 +52,7 @@ class Unit_Admin_PaymentMainTest extends OxidTestCase
      */
     public function testRenderNoRealObjectId()
     {
-        modConfig::setParameter( "oxid", "-1" );
+        modConfig::setRequestParameter( "oxid", "-1" );
 
         // testing..
         $oView = new payment_main();
@@ -116,7 +116,7 @@ class Unit_Admin_PaymentMainTest extends OxidTestCase
         oxTestModules::addFunction( 'oxpayment', 'loadInLang', '{ return true; }');
         oxTestModules::addFunction( 'oxUtils', 'assignValuesFromText', '{ return array( "testField1", "testField2"); }');
         modConfig::getInstance()->setConfigParam( "blAllowSharedEdit", true );
-        modConfig::setParameter( "aFields", array( "testField2" ) );
+        modConfig::setRequestParameter( "aFields", array( "testField2" ) );
 
         // testing..
         $oView = $this->getMock( "Payment_Main", array( "save" ) );
@@ -134,7 +134,7 @@ class Unit_Admin_PaymentMainTest extends OxidTestCase
         oxTestModules::addFunction( 'oxpayment', 'loadInLang', '{ return true; }');
         oxTestModules::addFunction( 'oxUtils', 'assignValuesFromText', '{ return array( "testField1", "testField2"); }');
         modConfig::getInstance()->setConfigParam( "blAllowSharedEdit", true );
-        modConfig::setParameter( "aFields", array( "testField2" ) );
+        modConfig::setRequestParameter( "aFields", array( "testField2" ) );
 
         // testing..
         $oView = $this->getMock( "Payment_Main", array( "save" ) );

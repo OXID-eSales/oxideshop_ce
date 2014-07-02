@@ -413,8 +413,8 @@ class oxAdminDetails extends oxAdminView
      */
     public function changeFolder()
     {
-        $sFolder = oxConfig::getParameter( 'setfolder' );
-        $sFolderClass = oxConfig::getParameter( 'folderclass' );
+        $sFolder = oxRegistry::getConfig()->getRequestParameter( 'setfolder' );
+        $sFolderClass = oxRegistry::getConfig()->getRequestParameter( 'folderclass' );
 
         if ( $sFolderClass == 'oxcontent' && $sFolder == 'CMSFOLDER_NONE' ) {
             $sFolder = '';

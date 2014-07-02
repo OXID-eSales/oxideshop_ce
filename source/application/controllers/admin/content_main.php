@@ -105,7 +105,7 @@ class Content_Main extends oxAdminDetails
         $myConfig = $this->getConfig();
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxConfig::getParameter( "editval");
+        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval");
 
         if ( isset( $aParams['oxcontents__oxloadid'] ) ) {
             $aParams['oxcontents__oxloadid'] = $this->_prepareIdent( $aParams['oxcontents__oxloadid'] );
@@ -173,7 +173,7 @@ class Content_Main extends oxAdminDetails
         $myConfig  = $this->getConfig();
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxConfig::getParameter( "editval");
+        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval");
 
         if ( isset( $aParams['oxcontents__oxloadid'] ) ) {
             $aParams['oxcontents__oxloadid'] = $this->_prepareIdent( $aParams['oxcontents__oxloadid'] );
@@ -198,7 +198,7 @@ class Content_Main extends oxAdminDetails
         $oContent->assign( $aParams);
 
         // apply new language
-        $oContent->setLanguage( oxConfig::getParameter( "new_lang" ) );
+        $oContent->setLanguage( oxRegistry::getConfig()->getRequestParameter( "new_lang" ) );
         $oContent->save();
 
         // set oxid if inserted

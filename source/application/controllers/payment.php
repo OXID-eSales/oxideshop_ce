@@ -153,7 +153,7 @@ class Payment extends oxUBase
         //then forcing to HTTPS
 
         //but first checking maybe there were redirection already to prevent infinite redirections due to possible buggy ssl detection on server
-        $blAlreadyRedirected = oxConfig::getParameter( 'sslredirect' ) == 'forced';
+        $blAlreadyRedirected = oxRegistry::getConfig()->getRequestParameter( 'sslredirect' ) == 'forced';
 
         if ( $this->getIsOrderStep() ) {
 
@@ -172,9 +172,9 @@ class Payment extends oxUBase
             }
         }
 
-        if ( $myConfig->getCurrentShopURL() != $myConfig->getSSLShopURL() && !$blAlreadyRedirected && !oxConfig::getParameter('fnc') ) {
-            $sPayError = oxConfig::getParameter( 'payerror' )?'payerror='.oxConfig::getParameter( 'payerror' ):'';
-            $sPayErrorText = oxConfig::getParameter('payerrortext')?'payerrortext='.oxConfig::getParameter( 'payerrortext' ):'';
+        if ( $myConfig->getCurrentShopURL() != $myConfig->getSSLShopURL() && !$blAlreadyRedirected && !oxRegistry::getConfig()->getRequestParameter('fnc') ) {
+            $sPayError = oxRegistry::getConfig()->getRequestParameter( 'payerror' )?'payerror='.oxRegistry::getConfig()->getRequestParameter( 'payerror' ):'';
+            $sPayErrorText = oxRegistry::getConfig()->getRequestParameter('payerrortext')?'payerrortext='.oxRegistry::getConfig()->getRequestParameter( 'payerrortext' ):'';
             $sRedirectURL = $myConfig->getShopSecureHomeURL().'sslredirect=forced&cl=payment&'.$sPayError."&".$sPayErrorText;
             oxRegistry::getUtils()->redirect( $sRedirectURL, true, 302 );
         }
@@ -220,8 +220,8 @@ class Payment extends oxUBase
      */
     protected function _unsetPaymentErrors()
     {
-        $iPayError     = oxConfig::getParameter( 'payerror' );
-        $sPayErrorText = oxConfig::getParameter( 'payerrortext' );
+        $iPayError     = oxRegistry::getConfig()->getRequestParameter( 'payerror' );
+        $sPayErrorText = oxRegistry::getConfig()->getRequestParameter( 'payerrortext' );
 
         if (!($iPayError || $sPayErrorText)) {
             $iPayError     = oxSession::getVar( 'payerror' );
@@ -278,13 +278,13 @@ class Payment extends oxUBase
             return;
         }
 
-        if (! ($sShipSetId = oxConfig::getParameter( 'sShipSet' ))) {
+        if (! ($sShipSetId = oxRegistry::getConfig()->getRequestParameter( 'sShipSet' ))) {
             $sShipSetId = $oSession->getVariable('sShipSet');
         }
-        if (! ($sPaymentId = oxConfig::getParameter( 'paymentid' ))) {
+        if (! ($sPaymentId = oxRegistry::getConfig()->getRequestParameter( 'paymentid' ))) {
             $sPaymentId = $oSession->getVariable('paymentid');
         }
-        if (! ($aDynvalue = oxConfig::getParameter( 'dynvalue' ))) {
+        if (! ($aDynvalue = oxRegistry::getConfig()->getRequestParameter( 'dynvalue' ))) {
             $aDynvalue = $oSession->getVariable('dynvalue');
         }
 
@@ -317,8 +317,8 @@ class Payment extends oxUBase
         if ( $blOK ) {
             $oSession->setVariable( 'paymentid', $sPaymentId );
             $oSession->setVariable( 'dynvalue', $aDynvalue );
-            if ( oxConfig::getParameter( 'bltsprotection' ) ) {
-                $sTsProductId = oxConfig::getParameter( 'stsprotection' );
+            if ( oxRegistry::getConfig()->getRequestParameter( 'bltsprotection' ) ) {
+                $sTsProductId = oxRegistry::getConfig()->getRequestParameter( 'stsprotection' );
                 $oBasket->setTsProductId($sTsProductId);
                 $oSession->setVariable( 'stsprotection', $sTsProductId );
             } else {
@@ -350,7 +350,7 @@ class Payment extends oxUBase
         if ( $this->_oPaymentList === null ) {
             $this->_oPaymentList = false;
 
-            $sActShipSet = oxConfig::getParameter( 'sShipSet' );
+            $sActShipSet = oxRegistry::getConfig()->getRequestParameter( 'sShipSet' );
             if ( !$sActShipSet ) {
                  $sActShipSet = oxSession::getVar( 'sShipSet' );
             }
@@ -490,7 +490,7 @@ class Payment extends oxUBase
             if ( ( $aDynValue = oxSession::getVar( 'dynvalue' ) ) ) {
                 $this->_aDynValue  = $aDynValue;
             } else {
-                $this->_aDynValue  = oxConfig::getParameter( "dynvalue");
+                $this->_aDynValue  = oxRegistry::getConfig()->getRequestParameter( "dynvalue");
             }
 
             // #701A
@@ -536,7 +536,7 @@ class Payment extends oxUBase
     public function getCheckedPaymentId()
     {
         if ( $this->_sCheckedPaymentId === null ) {
-            if (! ($sPaymentID = oxConfig::getParameter( 'paymentid' ))) {
+            if (! ($sPaymentID = oxRegistry::getConfig()->getRequestParameter( 'paymentid' ))) {
                 $sPaymentID = oxSession::getVar('paymentid');
             }
             if ( $sPaymentID ) {
@@ -719,7 +719,7 @@ class Payment extends oxUBase
     {
         if ( $this->_sCheckedProductId === null ) {
             $this->_sCheckedProductId = false;
-            if ( $sId = oxConfig::getParameter( 'stsprotection' ) ) {
+            if ( $sId = oxRegistry::getConfig()->getRequestParameter( 'stsprotection' ) ) {
                 $this->_sCheckedProductId = $sId;
             }
         }

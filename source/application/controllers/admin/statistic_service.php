@@ -48,7 +48,7 @@ class Statistic_Service extends oxAdminDetails
      */
     public function cleanup()
     {
-        $iTimeFrame = oxConfig::getParameter( "timeframe");
+        $iTimeFrame = oxRegistry::getConfig()->getRequestParameter( "timeframe");
         $dNow = time();
         $sDeleteFrom = date( "Y-m-d H:i:s", mktime( date( "H", $dNow), date( "i", $dNow), date( "s", $dNow), date( "m", $dNow), date( "d", $dNow) - $iTimeFrame, date( "Y", $dNow)));
 

@@ -95,14 +95,14 @@ class Unit_Views_userTest extends OxidTestCase
 
     public function testGetLoginOption()
     {
-         modConfig::setParameter( 'option', 1 );
+         modConfig::setRequestParameter( 'option', 1 );
          $oUserView = new user();
          $this->assertEquals( 1, $oUserView->getLoginOption() );
     }
 
     public function testGetLoginOptionIfNotLogedIn()
     {
-         modConfig::setParameter( 'option', 2 );
+         modConfig::setRequestParameter( 'option', 2 );
          $oUserView = new user();
          $this->assertEquals( 0, $oUserView->getLoginOption() );
     }
@@ -125,7 +125,7 @@ class Unit_Views_userTest extends OxidTestCase
     public function testGetOrderRemarkFromPost()
     {
         // gettin order remark from post (when not logged in)
-        modConfig::setParameter( 'order_remark', 'test' );
+        modConfig::setRequestParameter( 'order_remark', 'test' );
 
         // get user returns false (not logged in)
         $oUserView = $this->getMock( 'user', array( 'getUser' ) );
@@ -146,7 +146,7 @@ class Unit_Views_userTest extends OxidTestCase
 
     public function testIsNewsSubscribed()
     {
-         modConfig::setParameter( 'blnewssubscribed', null );
+         modConfig::setRequestParameter( 'blnewssubscribed', null );
          $oUserView = new user();
          $this->assertFalse( $oUserView->isNewsSubscribed() );
     }
@@ -226,7 +226,7 @@ class Unit_Views_userTest extends OxidTestCase
         modInstances::addMod('oxutils', oxNew('oxutils'));
 
         modConfig::getInstance()->setConfigParam('blPsBasketReservationEnabled', true);
-        modConfig::setParameter( 'sslredirect', 'forced' );
+        modConfig::setRequestParameter( 'sslredirect', 'forced' );
 
         $oR = $this->getMock('stdclass', array('renewExpiration'));
         $oR->expects($this->once())->method('renewExpiration')->will($this->returnValue(null));
@@ -419,6 +419,6 @@ class Unit_Views_userTest extends OxidTestCase
         $this->setConfigParam('blnewssubscribed', true);
 
         $oUser = new User();
-        $this->assertEquals( oxConfig::getInstance()->getParameter('blnewssubscribed'), $oUser->modifyBillAddress() );
+        $this->assertEquals( oxConfig::getInstance()->getRequestParameter('blnewssubscribed'), $oUser->modifyBillAddress() );
     }
 }

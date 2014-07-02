@@ -53,7 +53,7 @@ class Category_Order extends oxAdminDetails
                 $this->_aViewData['readonly'] = true;
             }
         }
-        if ( oxConfig::getParameter("aoc") ) {
+        if ( oxRegistry::getConfig()->getRequestParameter("aoc") ) {
             $oCategoryOrderAjax = oxNew( 'category_order_ajax' );
             $this->_aViewData['oxajax'] = $oCategoryOrderAjax->getColumns();
 

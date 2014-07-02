@@ -3041,7 +3041,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
         $aDelAddress['oxaddress__oxlname'] = 'xxx';
         $aDelAddress['oxaddress__oxcountryid'] = 'a7c40f631fc920687.20179984';
 
-        $this->getConfig()->setParameter( 'oxaddressid', 'xxx' );
+        $this->getConfig()->setRequestParameter( 'oxaddressid', 'xxx' );
 
         $oUser->UNITassignAddress( $aDelAddress );
         $myDB = oxDb::getDB();
@@ -3067,7 +3067,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
         $aDelAddress['oxaddress__oxcountryid'] = 'a7c40f631fc920687.20179984';
         $aDelAddress['oxaddress__oxcompany'] = 'xxx & CO.';
 
-        modConfig::setParameter( 'oxaddressid', 'xxx' );
+        modConfig::setRequestParameter( 'oxaddressid', 'xxx' );
 
         $oUser->UNITassignAddress( $aDelAddress );
         $myDB = oxDb::getDB();
@@ -3089,8 +3089,8 @@ class Unit_Core_oxuserTest extends OxidTestCase
         $oUser = new oxuser();
         $oUser->load( $sUserId );
 
-        modConfig::setParameter( 'deladrid', null );
-        modConfig::setParameter( 'oxaddressid', 'test_user1' );
+        modConfig::setRequestParameter( 'deladrid', null );
+        modConfig::setRequestParameter( 'oxaddressid', 'test_user1' );
 
         $oAddress = $oUser->getSelectedAddress();
         $this->assertEquals( 'test_user1', $oAddress->getId() );
@@ -3111,8 +3111,8 @@ class Unit_Core_oxuserTest extends OxidTestCase
         $aDelAddress['oxaddress__oxfname'] = 'xxx';
         $aDelAddress['oxaddress__oxlname'] = 'xxx';
 
-        modConfig::setParameter( 'deladrid', null );
-        modConfig::setParameter( 'oxaddressid', 'xxx' );
+        modConfig::setRequestParameter( 'deladrid', null );
+        modConfig::setRequestParameter( 'oxaddressid', 'xxx' );
 
         $oUser->UNITassignAddress( $aDelAddress );
 

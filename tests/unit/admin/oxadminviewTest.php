@@ -397,19 +397,19 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
      */
     public function testSetEditObjectIdGetEditObjectId()
     {
-        modConfig::setParameter( "oxid", null );
+        modConfig::setRequestParameter( "oxid", null );
         modSession::getInstance()->setVar( "saved_oxid", "testSessId" );
 
         $oView = new oxAdminView();
         $this->assertEquals( "testSessId", $oView->getEditObjectId() );
 
-        modConfig::setParameter( "oxid", "testRequestId" );
+        modConfig::setRequestParameter( "oxid", "testRequestId" );
         modSession::getInstance()->setVar( "saved_oxid", "testSessId" );
 
         $oView = new oxAdminView();
         $this->assertEquals( "testRequestId", $oView->getEditObjectId() );
 
-        modConfig::setParameter( "oxid", "testRequestId" );
+        modConfig::setRequestParameter( "oxid", "testRequestId" );
         modSession::getInstance()->setVar( "saved_oxid", "testSessId" );
 
         $oView = new oxAdminView();

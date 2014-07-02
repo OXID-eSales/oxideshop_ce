@@ -768,7 +768,7 @@ class Unit_Modules_Oe_Invoicepdf_Models_InvoicePdfOxOrderTest extends OxidTestCa
         $oInvoicepdfOxOrder->expects( $this->once() )->method( 'pdfFooter');
 
         $oInvoicepdfOxOrder->load('_testOrderId');
-        modConfig::setParameter( 'pdftype', 'dnote' );
+        modConfig::setRequestParameter( 'pdftype', 'dnote' );
         $oInvoicepdfOxOrder->genPdf( 'testfilename', 1 );
     }
 

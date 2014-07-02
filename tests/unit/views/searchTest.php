@@ -92,7 +92,7 @@ class Unit_Views_searchTest extends OxidTestCase
         oxTestModules::addFunction('oxUtilsServer', 'getServerVar', '{ if ( $aA[0] == "HTTP_HOST") { return "shop.com/"; } else { return "test.php";} }');
 
         $oSearch = $this->getProxyClass( 'search' );
-        modConfig::setParameter( 'searchparam', 'bar' );
+        modConfig::setRequestParameter( 'searchparam', 'bar' );
         $oSearch->init();
 
             $this->assertEquals( 8, $oSearch->getArticleList()->count() );
@@ -115,7 +115,7 @@ class Unit_Views_searchTest extends OxidTestCase
     {
         $oSearch = $this->getProxyClass( 'search' );
         $oSearch->setNonPublicVar( "_blSearchClass", true );
-        modConfig::setParameter( 'searchparam', 'ü  a' );
+        modConfig::setRequestParameter( 'searchparam', 'ü  a' );
 
         $this->assertEquals( 'ü  a', $oSearch->getSearchParamForHtml() );
     }
@@ -124,7 +124,7 @@ class Unit_Views_searchTest extends OxidTestCase
     {
         $oSearch = $this->getProxyClass( 'search' );
         $oSearch->setNonPublicVar( "_blSearchClass", true );
-        modConfig::setParameter( 'searchparam', 'ü  a' );
+        modConfig::setRequestParameter( 'searchparam', 'ü  a' );
 
         $this->assertEquals( '%FC%20%20a', $oSearch->getSearchParam() );
     }
@@ -133,7 +133,7 @@ class Unit_Views_searchTest extends OxidTestCase
     {
         $oSearch = $this->getProxyClass( 'search' );
         $oSearch->setNonPublicVar( "_blSearchClass", true );
-        modConfig::setParameter( 'searchcnid', 'test' );
+        modConfig::setRequestParameter( 'searchcnid', 'test' );
 
         $this->assertEquals( 'test', $oSearch->getSearchCatId() );
     }
@@ -142,7 +142,7 @@ class Unit_Views_searchTest extends OxidTestCase
     {
         $oSearch = $this->getProxyClass( 'search' );
         $oSearch->setNonPublicVar( "_blSearchClass", true );
-        modConfig::setParameter( 'searchvendor', 'test' );
+        modConfig::setRequestParameter( 'searchvendor', 'test' );
 
         $this->assertEquals( 'test', $oSearch->getSearchVendor() );
     }
@@ -193,10 +193,10 @@ class Unit_Views_searchTest extends OxidTestCase
         oxTestModules::addModuleObject('oxrssfeed', $oRss);
 
         modConfig::getInstance()->setConfigParam('bl_rssSearch', 1);
-        modConfig::setParameter('searchparam', 'ysearchparam');
-        modConfig::setParameter('searchcnid', 'ysearchcnid');
-        modConfig::setParameter('searchvendor', 'ysearchvendor');
-        modConfig::setParameter('searchmanufacturer', 'ysearchmanufacturer');
+        modConfig::setRequestParameter('searchparam', 'ysearchparam');
+        modConfig::setRequestParameter('searchcnid', 'ysearchcnid');
+        modConfig::setRequestParameter('searchvendor', 'ysearchvendor');
+        modConfig::setRequestParameter('searchmanufacturer', 'ysearchmanufacturer');
 
         $n = $this->getMock('search', array(
             '_processListArticles',
@@ -211,18 +211,18 @@ class Unit_Views_searchTest extends OxidTestCase
 
     public function testGetAddUrlParams()
     {
-        modConfig::setParameter('searchparam', 'ysearchparam');
-        modConfig::setParameter('searchcnid', 'ysearchcnid');
-        modConfig::setParameter('searchvendor', 'ysearchvendor');
-        modConfig::setParameter('searchmanufacturer', 'ysearchmanufacturer');
+        modConfig::setRequestParameter('searchparam', 'ysearchparam');
+        modConfig::setRequestParameter('searchcnid', 'ysearchcnid');
+        modConfig::setRequestParameter('searchvendor', 'ysearchvendor');
+        modConfig::setRequestParameter('searchmanufacturer', 'ysearchmanufacturer');
         $this->assertEquals('listtype=search&amp;searchparam=ysearchparam&amp;searchcnid=ysearchcnid&amp;searchvendor=ysearchvendor&amp;searchmanufacturer=ysearchmanufacturer', oxNew('search')->getAddUrlParams());
     }
 
     public function testIsSearchClass()
     {
-        modConfig::setParameter('cl', 'ysearchcnid');
+        modConfig::setRequestParameter('cl', 'ysearchcnid');
         $this->assertEquals(false, oxNew('search')->UNITisSearchClass());
-        modConfig::setParameter('cl', 'search');
+        modConfig::setRequestParameter('cl', 'search');
         $this->assertEquals(true, oxNew('search')->UNITisSearchClass());
 
     }
@@ -231,7 +231,7 @@ class Unit_Views_searchTest extends OxidTestCase
     {
         $oSearch = $this->getMock( "search", array( "_isSearchClass" ) );
         $oSearch->expects( $this->once() )->method( '_isSearchClass')->will($this->returnValue( true ) );
-        modConfig::setParameter('searchmanufacturer', 'gsearchmanufacturer&');
+        modConfig::setRequestParameter('searchmanufacturer', 'gsearchmanufacturer&');
         $this->assertSame('gsearchmanufacturer&amp;', $oSearch->getSearchManufacturer());
     }
 
@@ -239,7 +239,7 @@ class Unit_Views_searchTest extends OxidTestCase
     {
         $oSearch = $this->getMock( "search", array( "_isSearchClass" ) );
         $oSearch->expects( $this->once() )->method( '_isSearchClass')->will($this->returnValue( false ) );
-        modConfig::setParameter('searchmanufacturer', 'gsearchmanufacturer&');
+        modConfig::setRequestParameter('searchmanufacturer', 'gsearchmanufacturer&');
         $this->assertSame(false, $oSearch->getSearchManufacturer());
     }
 

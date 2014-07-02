@@ -101,7 +101,7 @@ class Unit_Views_ManufacturerlistTest extends OxidTestCase
      */
     public function testRenderExistingManufacturerRequestedPageNumerExceedsPossible()
     {
-        modConfig::setParameter( "pgNr", 999 );
+        modConfig::setRequestParameter( "pgNr", 999 );
         oxTestModules::addFunction( "oxUtils", "redirect", "{ throw new Exception('OK'); }" );
 
             $sActManufacturer = "9434afb379a46d6c141de9c9e5b94fcf";
@@ -134,7 +134,7 @@ class Unit_Views_ManufacturerlistTest extends OxidTestCase
      */
     public function testRenderManufacturerHasNoProductsAssigned()
     {
-        modConfig::setParameter( "pgNr", 999 );
+        modConfig::setRequestParameter( "pgNr", 999 );
         oxTestModules::addFunction( "oxUtils", "handlePageNotFoundError", "{ throw new Exception('OK'); }" );
 
             $sActManufacturer = "9434afb379a46d6c141de9c9e5b94fcf";
@@ -164,7 +164,7 @@ class Unit_Views_ManufacturerlistTest extends OxidTestCase
      */
     public function testSetItemSortingGetSorting()
     {
-        modConfig::setParameter( 'mnid', "testMnId" );
+        modConfig::setRequestParameter( 'mnid', "testMnId" );
 
         $oView = new manufacturerlist();
         $oView->setItemSorting( "testCnid", "testBy", "testDir" );
@@ -303,7 +303,7 @@ class Unit_Views_ManufacturerlistTest extends OxidTestCase
      */
     public function testGetSubCatList()
     {
-        modConfig::setParameter( 'mnid', 'root' );
+        modConfig::setRequestParameter( 'mnid', 'root' );
         $oManufacturerTree = new oxManufacturerlist();
         $oManufacturerTree->buildManufacturerTree( 'manufacturerlist', 'root', oxConfig::getInstance()->getShopHomeURL() );
 
@@ -321,7 +321,7 @@ class Unit_Views_ManufacturerlistTest extends OxidTestCase
      */
     public function testHasVisibleSubCats()
     {
-        modConfig::setParameter( 'mnid', 'root' );
+        modConfig::setRequestParameter( 'mnid', 'root' );
         $oManufacturerTree = new oxManufacturerlist();
         $oManufacturerTree->buildManufacturerTree( 'manufacturerlist', 'root', oxConfig::getInstance()->getShopHomeURL() );
 
@@ -342,7 +342,7 @@ class Unit_Views_ManufacturerlistTest extends OxidTestCase
             $sManufacturerId = 'fe07958b49de225bd1dbc7594fb9a6b0';
 
 
-        modConfig::setParameter( 'cnid', $sManufacturerId );
+        modConfig::setRequestParameter( 'cnid', $sManufacturerId );
         modConfig::getInstance()->setConfigParam( 'iNrofCatArticles', 20 );
         $oManufacturerTree = new oxManufacturerlist();
         $oManufacturerTree->buildManufacturerTree( 'Manufacturerlist', $sManufacturerId, oxConfig::getInstance()->getShopHomeURL() );
@@ -417,7 +417,7 @@ class Unit_Views_ManufacturerlistTest extends OxidTestCase
      */
     public function testgetCatTreePath()
     {
-        modConfig::setParameter( 'cnid', 'v_root' );
+        modConfig::setRequestParameter( 'cnid', 'v_root' );
         $oManufacturerTree = new oxManufacturerlist();
         $oManufacturerTree->buildManufacturerTree( 'Manufacturerlist', 'v_root', oxConfig::getInstance()->getShopHomeURL() );
 

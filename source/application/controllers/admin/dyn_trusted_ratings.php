@@ -61,9 +61,9 @@ class dyn_trusted_ratings extends Shop_Config
         $sOxId = $this->getEditObjectId();
 
         // base parameters
-        $aConfStrs  = oxConfig::getParameter( "confstrs" );
-        $aConfAArs  = oxConfig::getParameter( "confaarrs" );
-        $aConfBools = oxConfig::getParameter( "confbools" );
+        $aConfStrs  = oxRegistry::getConfig()->getRequestParameter( "confstrs" );
+        $aConfAArs  = oxRegistry::getConfig()->getRequestParameter( "confaarrs" );
+        $aConfBools = oxRegistry::getConfig()->getRequestParameter( "confbools" );
 
         // validating language Ids
         if ( is_array( $aConfAArs['aTsLangIds'] ) ) {

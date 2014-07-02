@@ -116,8 +116,8 @@ class Article_Variant extends oxAdminDetails
     public function savevariant($sOXID = null, $aParams = null)
     {
         if ( !isset( $sOXID ) && !isset( $aParams ) ) {
-            $sOXID   = oxConfig::getParameter( "voxid" );
-            $aParams = oxConfig::getParameter( "editval" );
+            $sOXID   = oxRegistry::getConfig()->getRequestParameter( "voxid" );
+            $aParams = oxRegistry::getConfig()->getRequestParameter( "editval" );
         }
 
         // checkbox handling
@@ -202,7 +202,7 @@ class Article_Variant extends oxAdminDetails
     public function savevariants()
     {
 
-        $aParams = oxConfig::getParameter( "editval" );
+        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval" );
         if ( is_array( $aParams ) ) {
             foreach ( $aParams as $soxId => $aVarParams ) {
                 $this->savevariant( $soxId, $aVarParams );
@@ -220,7 +220,7 @@ class Article_Variant extends oxAdminDetails
     {
 
 
-        $soxId = oxConfig::getParameter( "voxid" );
+        $soxId = oxRegistry::getConfig()->getRequestParameter( "voxid" );
         $oDelete = oxNew( "oxarticle" );
         $oDelete->delete( $soxId );
     }
@@ -233,7 +233,7 @@ class Article_Variant extends oxAdminDetails
     public function changename()
     {
         $soxId = $this->getEditObjectId();
-        $aParams = oxConfig::getParameter( "editval");
+        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval");
 
 
             // shopid
@@ -265,7 +265,7 @@ class Article_Variant extends oxAdminDetails
 
 
 
-            if ( $aSels = oxConfig::getParameter( "allsel" ) ) {
+            if ( $aSels = oxRegistry::getConfig()->getRequestParameter( "allsel" ) ) {
                 $oVariantHandler = oxNew( "oxVariantHandler" );
                 $oVariantHandler->genVariantFromSell( $aSels, $oArticle );
             }

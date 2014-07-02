@@ -1023,7 +1023,7 @@ class Unit_Components_Widgets_oxwArticleDetailsTest extends OxidTestCase
      */
     public function testDefaultSorting_SortingDefinedCameFromSearch_doNotSort()
     {
-        $this->getConfig()->setParameter('listtype','search');
+        $this->getConfig()->setRequestParameter('listtype','search');
         $oController = new oxwArticleDetails();
 
         $oCategory = $this->getMock('oxCategory', array( 'getDefaultSorting', 'getDefaultSortingMode' ));

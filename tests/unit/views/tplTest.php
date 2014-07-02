@@ -32,7 +32,7 @@ class Unit_Views_tplTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setParameter( "tpl", 'fulder/subfolder/test.tpl' );
+        modConfig::setRequestParameter( "tpl", 'fulder/subfolder/test.tpl' );
 
         $oView = new Tpl();
         $this->assertEquals( 'custom/test.tpl', $oView->render() );

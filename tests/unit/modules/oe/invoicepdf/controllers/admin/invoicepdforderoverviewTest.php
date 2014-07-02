@@ -82,7 +82,7 @@ class Unit_Modules_Oe_Invoicepdf_Controllers_Admin_InvoicepdfOrderOverviewTest e
         $oOrder->oxorder__oxdeltype       = new oxField( "oxidstandard" );
         $oOrder->oxorder__oxordernr       = new oxField( 1 );
         $oOrder->save();
-        modConfig::setParameter( "oxid", $soxId );
+        modConfig::setRequestParameter( "oxid", $soxId );
         oxTestModules::addFunction( 'oxUtils', 'setHeader', '{ if ( !isset( $this->_aHeaderData ) ) { $this->_aHeaderData = array();} $this->_aHeaderData[] = $aA[0]; }');
         oxTestModules::addFunction( 'oxUtils', 'getHeaders', '{ return $this->_aHeaderData; }');
         oxTestModules::addFunction( 'oxUtils', 'showMessageAndExit', '{ $this->_aHeaderData[] = "testExportData"; }');

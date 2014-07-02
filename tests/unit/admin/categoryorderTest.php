@@ -36,7 +36,7 @@ class Unit_Admin_CategoryOrderTest extends OxidTestCase
     public function testRender()
     {
         oxTestModules::addFunction( "oxcategory", "isDerived", "{return true;}" );
-        modConfig::setParameter( "oxid", "testId" );
+        modConfig::setRequestParameter( "oxid", "testId" );
 
         // testing..
         $oView = new Category_Order();

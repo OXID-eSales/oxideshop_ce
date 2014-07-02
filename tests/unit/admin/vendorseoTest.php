@@ -84,7 +84,7 @@ class Unit_Admin_VendorSeoTest extends OxidTestCase
      */
     public function testSave()
     {
-        modConfig::setParameter( 'oxid', "testId" );
+        modConfig::setRequestParameter( 'oxid', "testId" );
 
         oxTestModules::addFunction( 'oxbase', 'save', '{ throw new Exception("save"); }' );
         oxTestModules::addFunction( 'oxbase', 'load', '{ return true; }' );

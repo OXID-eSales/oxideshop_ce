@@ -80,7 +80,7 @@ class Contact extends oxUBase
      */
     public function send()
     {
-        $aParams = oxConfig::getParameter( 'editval' );
+        $aParams = oxRegistry::getConfig()->getRequestParameter( 'editval' );
 
         // checking email address
         if ( !oxRegistry::getUtils()->isValidEmail( $aParams['oxuser__oxusername'] ) ) {
@@ -89,8 +89,8 @@ class Contact extends oxUBase
         }
 
         // spam spider prevension
-        $sMac     = oxConfig::getParameter( 'c_mac' );
-        $sMacHash = oxConfig::getParameter( 'c_mach' );
+        $sMac     = oxRegistry::getConfig()->getRequestParameter( 'c_mac' );
+        $sMacHash = oxRegistry::getConfig()->getRequestParameter( 'c_mach' );
         $oCaptcha = $this->getCaptcha();
 
         if ( !$oCaptcha->pass( $sMac, $sMacHash ) ) {
@@ -99,7 +99,7 @@ class Contact extends oxUBase
             return false;
         }
 
-        $sSubject = oxConfig::getParameter( 'c_subject' );
+        $sSubject = oxRegistry::getConfig()->getRequestParameter( 'c_subject' );
         if ( !$aParams['oxuser__oxfname'] || !$aParams['oxuser__oxlname'] || !$aParams['oxuser__oxusername'] || !$sSubject ) {
             // even if there is no exception, use this as a default display method
             oxRegistry::get("oxUtilsView")->addErrorToDisplay( 'ERROR_MESSAGE_INPUT_NOTALLFIELDS' );
@@ -111,7 +111,7 @@ class Contact extends oxUBase
                      $oLang->translateString( $aParams['oxuser__oxsal'] ) ." " .
                      $aParams['oxuser__oxfname'] . " " .
                      $aParams['oxuser__oxlname'] . "(" .$aParams['oxuser__oxusername'] . ")<br /><br />" .
-                     nl2br( oxConfig::getParameter( 'c_message' ) );
+                     nl2br( oxRegistry::getConfig()->getRequestParameter( 'c_message' ) );
 
         $oEmail = oxNew( 'oxemail' );
         if ( $oEmail->sendContactMail( $aParams['oxuser__oxusername'], $sSubject, $sMessage ) ) {
@@ -129,7 +129,7 @@ class Contact extends oxUBase
     public function getUserData()
     {
         if ( $this->_oUserData === null ) {
-            $this->_oUserData = oxConfig::getParameter( 'editval' );
+            $this->_oUserData = oxRegistry::getConfig()->getRequestParameter( 'editval' );
         }
         return $this->_oUserData;
     }
@@ -142,7 +142,7 @@ class Contact extends oxUBase
     public function getContactSubject()
     {
         if ( $this->_sContactSubject === null ) {
-            $this->_sContactSubject = oxConfig::getParameter( 'c_subject' );
+            $this->_sContactSubject = oxRegistry::getConfig()->getRequestParameter( 'c_subject' );
         }
         return $this->_sContactSubject;
     }
@@ -155,7 +155,7 @@ class Contact extends oxUBase
     public function getContactMessage()
     {
         if ( $this->_sContactMessage === null ) {
-            $this->_sContactMessage = oxConfig::getParameter( 'c_message' );
+            $this->_sContactMessage = oxRegistry::getConfig()->getRequestParameter( 'c_message' );
         }
         return $this->_sContactMessage;
     }

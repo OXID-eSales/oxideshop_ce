@@ -100,7 +100,7 @@ class Unit_Admin_DeliveryGroupsAjaxTest extends OxidTestCase
     public function testGetQuerySynchoxid()
     {
         $sSynchoxid = '_testAction';
-        $this->getConfig()->setParameter( "synchoxid", $sSynchoxid );
+        $this->getConfig()->setRequestParameter( "synchoxid", $sSynchoxid );
         
         $oView = oxNew( 'delivery_groups_ajax' );
         $this->assertEquals( "from ".$this->getGroupsViewTable()." where 1  and ".$this->getGroupsViewTable().".oxid not in ( select ".$this->getGroupsViewTable().".oxid from oxobject2delivery left join ".$this->getGroupsViewTable()." on ".$this->getGroupsViewTable().".oxid=oxobject2delivery.oxobjectid  where oxobject2delivery.oxdeliveryid = '".$sSynchoxid."' and oxobject2delivery.oxtype = 'oxgroups' )", trim( $oView->UNITgetQuery() ) );
@@ -114,7 +114,7 @@ class Unit_Admin_DeliveryGroupsAjaxTest extends OxidTestCase
     public function testGetQueryOxid()
     {
         $sOxid = '_testAction';
-        $this->getConfig()->setParameter( "oxid", $sOxid );
+        $this->getConfig()->setRequestParameter( "oxid", $sOxid );
         
         $oView = oxNew( 'delivery_groups_ajax' );
         $this->assertEquals( "from oxobject2delivery left join ".$this->getGroupsViewTable()." on ".$this->getGroupsViewTable().".oxid=oxobject2delivery.oxobjectid  where oxobject2delivery.oxdeliveryid = '".$sOxid."' and oxobject2delivery.oxtype = 'oxgroups'", trim( $oView->UNITgetQuery() ) );
@@ -129,8 +129,8 @@ class Unit_Admin_DeliveryGroupsAjaxTest extends OxidTestCase
     {
         $sOxid = '_testAction';
         $sSynchoxid = '_testActionSynch';
-        $this->getConfig()->setParameter( "oxid", $sOxid );
-        $this->getConfig()->setParameter( "synchoxid", $sSynchoxid );
+        $this->getConfig()->setRequestParameter( "oxid", $sOxid );
+        $this->getConfig()->setRequestParameter( "synchoxid", $sSynchoxid );
         
         $oView = oxNew( 'delivery_groups_ajax' );
         $this->assertEquals( "from oxobject2delivery left join ".$this->getGroupsViewTable()." on ".$this->getGroupsViewTable().".oxid=oxobject2delivery.oxobjectid  where oxobject2delivery.oxdeliveryid = '".$sOxid."' and oxobject2delivery.oxtype = 'oxgroups'  and ".$this->getGroupsViewTable().".oxid not in ( select ".$this->getGroupsViewTable().".oxid from oxobject2delivery left join ".$this->getGroupsViewTable()." on ".$this->getGroupsViewTable().".oxid=oxobject2delivery.oxobjectid  where oxobject2delivery.oxdeliveryid = '".$sSynchoxid."' and oxobject2delivery.oxtype = 'oxgroups' )", trim( $oView->UNITgetQuery() ) );
@@ -160,8 +160,8 @@ class Unit_Admin_DeliveryGroupsAjaxTest extends OxidTestCase
     public function testRemoveGroupFromDelAll()
     {
         $sOxid = '_testDeliveryGroupRemoveAll';
-        $this->getConfig()->setParameter( "oxid", $sOxid );
-        $this->getConfig()->setParameter( "all", true );
+        $this->getConfig()->setRequestParameter( "oxid", $sOxid );
+        $this->getConfig()->setRequestParameter( "all", true );
         
         $sSql = "select count(oxobject2delivery.oxid) from oxobject2delivery left join ".$this->getGroupsViewTable()." on ".$this->getGroupsViewTable().".oxid=oxobject2delivery.oxobjectid  where oxobject2delivery.oxdeliveryid = '".$sOxid."' and oxobject2delivery.oxtype = 'oxgroups'";
         $oView = oxNew( 'delivery_groups_ajax' );
@@ -178,7 +178,7 @@ class Unit_Admin_DeliveryGroupsAjaxTest extends OxidTestCase
     public function testAddGroupToDel()
     {
         $sSynchoxid = '_testActionAddGroup';
-        $this->getConfig()->setParameter( "synchoxid", $sSynchoxid );
+        $this->getConfig()->setRequestParameter( "synchoxid", $sSynchoxid );
         
         $sSql = "select count(oxid) from oxobject2delivery where oxdeliveryid='$sSynchoxid'";
         $this->assertEquals( 0, oxDb::getDb()->getOne( $sSql ) );
@@ -198,8 +198,8 @@ class Unit_Admin_DeliveryGroupsAjaxTest extends OxidTestCase
     public function testAddCatToDelAll()
     {
         $sSynchoxid = '_testActionAddGroupAll';
-        $this->getConfig()->setParameter( "synchoxid", $sSynchoxid );
-        $this->getConfig()->setParameter( "all", true );
+        $this->getConfig()->setRequestParameter( "synchoxid", $sSynchoxid );
+        $this->getConfig()->setRequestParameter( "all", true );
         
         //count how much articles gets filtered
         $iCount = oxDb::getDb()->getOne( "select count(".$this->getGroupsViewTable().".oxid) from ".$this->getGroupsViewTable()."  where  ".$this->getGroupsViewTable().".oxid not in (  select ".$this->getGroupsViewTable().".oxid from oxobject2delivery left join ".$this->getGroupsViewTable()." on ".$this->getGroupsViewTable().".oxid=oxobject2delivery.oxobjectid  where oxobject2delivery.oxdeliveryid = '".$sSynchoxid."' and oxobject2delivery.oxtype = 'oxgroups'  )" );

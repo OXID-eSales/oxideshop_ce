@@ -131,9 +131,9 @@ class Unit_Admin_OrderArticleTest extends OxidTestCase
     public function testAddThisArticle()
     {
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxConfig::getInstance()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
-        modConfig::setParameter( "aid", '_testArticle' );
-        modConfig::setParameter( "am", 4 );
-        modConfig::setParameter( "oxid", '_testOrder');
+        modConfig::setRequestParameter( "aid", '_testArticle' );
+        modConfig::setRequestParameter( "am", 4 );
+        modConfig::setRequestParameter( "oxid", '_testOrder');
 
         $oObj = new order_article();
         $oObj->addThisArticle();
@@ -158,9 +158,9 @@ class Unit_Admin_OrderArticleTest extends OxidTestCase
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxConfig::getInstance()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
         oxAddClassModule( 'modOxOrder_orderArticle', 'oxorder' );
 
-        modConfig::setParameter( 'aid', '2000' );
-        modConfig::setParameter( 'am', 1 );
-        modConfig::setParameter( 'oxid', '_testOrderId1' );
+        modConfig::setRequestParameter( 'aid', '2000' );
+        modConfig::setRequestParameter( 'am', 1 );
+        modConfig::setRequestParameter( 'oxid', '_testOrderId1' );
 
         $oOrderArticle = new order_article();
         $oOrderArticle->addThisArticle();
@@ -178,9 +178,9 @@ class Unit_Admin_OrderArticleTest extends OxidTestCase
     public function testDeleteThisArticle()
     {
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxConfig::getInstance()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
-        modConfig::setParameter( "aid", '_testArticle' );
-        modConfig::setParameter( "am", 4 );
-        modConfig::setParameter( "oxid", '_testOrder');
+        modConfig::setRequestParameter( "aid", '_testArticle' );
+        modConfig::setRequestParameter( "am", 4 );
+        modConfig::setRequestParameter( "oxid", '_testOrder');
 
         $oObj = new order_article();
         $oObj->addThisArticle();
@@ -194,7 +194,7 @@ class Unit_Admin_OrderArticleTest extends OxidTestCase
         $this->assertEquals( '_testArticle', $oOrderArticles->current()->oxorderarticles__oxartnum->value );
         $this->assertEquals( 4, $oOrderArticles->current()->oxorderarticles__oxamount->value );
 
-        modConfig::setParameter( "sArtID", $oOrderArticles->current()->getId() );
+        modConfig::setRequestParameter( "sArtID", $oOrderArticles->current()->getId() );
 
         $oObj->deleteThisArticle();
 
@@ -214,9 +214,9 @@ class Unit_Admin_OrderArticleTest extends OxidTestCase
     public function testStorno()
     {
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxConfig::getInstance()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
-        modConfig::setParameter( "aid", '_testArticle' );
-        modConfig::setParameter( "am", 4 );
-        modConfig::setParameter( "oxid", '_testOrder');
+        modConfig::setRequestParameter( "aid", '_testArticle' );
+        modConfig::setRequestParameter( "am", 4 );
+        modConfig::setRequestParameter( "oxid", '_testOrder');
 
         $oObj = new order_article();
         $oObj->addThisArticle();
@@ -230,7 +230,7 @@ class Unit_Admin_OrderArticleTest extends OxidTestCase
         $this->assertEquals( 4, $oOrderArticles->current()->oxorderarticles__oxamount->value );
         $this->assertEquals( 0, $oOrderArticles->current()->oxorderarticles__oxstorno->value );
 
-        modConfig::setParameter( "sArtID", $oOrderArticles->current()->getId() );
+        modConfig::setRequestParameter( "sArtID", $oOrderArticles->current()->getId() );
 
         // canceling
         $oObj->storno();
@@ -241,7 +241,7 @@ class Unit_Admin_OrderArticleTest extends OxidTestCase
         $this->assertEquals( 1, $oOrderArticles->count() );
         $this->assertEquals( 1, $oOrderArticles->current()->oxorderarticles__oxstorno->value );
 
-        modConfig::setParameter( "sArtID", $oOrderArticles->current()->getId() );
+        modConfig::setRequestParameter( "sArtID", $oOrderArticles->current()->getId() );
 
         // "un"-canceling
         $oObj->storno();
@@ -261,12 +261,12 @@ class Unit_Admin_OrderArticleTest extends OxidTestCase
      */
     public function testGetEditObject()
     {
-        modConfig::setParameter( "oxid", null );
+        modConfig::setRequestParameter( "oxid", null );
 
         $oView = new Order_Article();
         $this->assertNull( $oView->getEditObject() );
 
-        modConfig::setParameter( "oxid", "_testOrderId1" );
+        modConfig::setRequestParameter( "oxid", "_testOrderId1" );
 
         $oView = new Order_Article();
         $oOrder = $oView->getEditObject();
@@ -280,11 +280,11 @@ class Unit_Admin_OrderArticleTest extends OxidTestCase
      */
     public function testGetSearchProductArtNr()
     {
-        modConfig::setParameter( "sSearchArtNum", null );
+        modConfig::setRequestParameter( "sSearchArtNum", null );
         $oView = new Order_Article();
         $this->assertNull( $oView->getSearchProductArtNr() );
 
-        modConfig::setParameter( "sSearchArtNum", 123 );
+        modConfig::setRequestParameter( "sSearchArtNum", 123 );
         $oView = new Order_Article();
         $this->assertEquals( 123, $oView->getSearchProductArtNr() );
     }
@@ -315,19 +315,19 @@ class Unit_Admin_OrderArticleTest extends OxidTestCase
     public function testGetMainProduct()
     {
         // product number not set
-        modConfig::setParameter( "sSearchArtNum", null );
+        modConfig::setRequestParameter( "sSearchArtNum", null );
 
         $oView = new Order_Article();
         $this->assertNull( $oView->getMainProduct() );
 
         // not existing product number
-        modConfig::setParameter( "sSearchArtNum", "xxx" );
+        modConfig::setRequestParameter( "sSearchArtNum", "xxx" );
 
         $oView = new Order_Article();
         $this->assertFalse( $oView->getMainProduct() );
 
         // existing product
-        modConfig::setParameter( "sSearchArtNum", "1126" );
+        modConfig::setRequestParameter( "sSearchArtNum", "1126" );
 
         $oView = new Order_Article();
         $oProduct = $oView->getMainProduct();
@@ -342,14 +342,14 @@ class Unit_Admin_OrderArticleTest extends OxidTestCase
     public function testGetProductList()
     {
         // empty list
-        modConfig::setParameter( "sSearchArtNum", null );
+        modConfig::setRequestParameter( "sSearchArtNum", null );
 
         $oView = new Order_Article();
         $oList = $oView->getProductList();
         $this->assertEquals( 0, $oList->count() );
 
         // existing product
-            modConfig::setParameter( "sSearchArtNum", "2077" );
+            modConfig::setRequestParameter( "sSearchArtNum", "2077" );
             $iCnt = 4;
 
         $oView = new Order_Article();
@@ -366,9 +366,9 @@ class Unit_Admin_OrderArticleTest extends OxidTestCase
     {
         oxAddClassModule( 'modOxOrder_orderArticle', 'oxorder' );
 
-        modConfig::setParameter( 'sArtNum', 'sdasda' );
-        modConfig::setParameter( 'am', 1 );
-        modConfig::setParameter( 'oxid', '_testOrderId1' );
+        modConfig::setRequestParameter( 'sArtNum', 'sdasda' );
+        modConfig::setRequestParameter( 'am', 1 );
+        modConfig::setRequestParameter( 'oxid', '_testOrderId1' );
 
         $oOrderArticle = new order_article();
         $oOrderArticle->addThisArticle();
@@ -387,9 +387,9 @@ class Unit_Admin_OrderArticleTest extends OxidTestCase
     {
         oxAddClassModule( 'modOxOrder_orderArticle', 'oxorder' );
 
-        modConfig::setParameter( 'sArtNum', '2000' );
-        modConfig::setParameter( 'am', 'test' );
-        modConfig::setParameter( 'oxid', '_testOrderId1' );
+        modConfig::setRequestParameter( 'sArtNum', '2000' );
+        modConfig::setRequestParameter( 'am', 'test' );
+        modConfig::setRequestParameter( 'oxid', '_testOrderId1' );
 
         $oOrderArticle = new order_article();
         $oOrderArticle->addThisArticle();

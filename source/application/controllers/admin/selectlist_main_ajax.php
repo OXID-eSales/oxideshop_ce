@@ -79,8 +79,8 @@ class selectlist_main_ajax extends ajaxListComponent
         $sCatTable = $this->_getViewName('oxcategories');
         $sO2CView  = $this->_getViewName('oxobject2category');
         $oDb = oxDb::getDb();
-        $sSelId      = oxConfig::getParameter( 'oxid' );
-        $sSynchSelId = oxConfig::getParameter( 'synchoxid' );
+        $sSelId      = oxRegistry::getConfig()->getRequestParameter( 'oxid' );
+        $sSynchSelId = oxRegistry::getConfig()->getRequestParameter( 'synchoxid' );
 
         // category selected or not ?
         if ( !$sSelId) {
@@ -120,7 +120,7 @@ class selectlist_main_ajax extends ajaxListComponent
 
 
 
-        if ( oxConfig::getParameter( 'all' ) ) {
+        if ( oxRegistry::getConfig()->getRequestParameter( 'all' ) ) {
 
             $sQ = parent::_addFilter( "delete oxobject2selectlist.* ".$this->_getQuery() );
             oxDb::getDb()->Execute( $sQ );
@@ -139,9 +139,9 @@ class selectlist_main_ajax extends ajaxListComponent
     public function addArtToSel()
     {
         $aAddArticle = $this->_getActionIds( 'oxarticles.oxid' );
-        $soxId       = oxConfig::getParameter( 'synchoxid');
+        $soxId       = oxRegistry::getConfig()->getRequestParameter( 'synchoxid');
 
-        if ( oxConfig::getParameter( 'all' ) ) {
+        if ( oxRegistry::getConfig()->getRequestParameter( 'all' ) ) {
             $sArtTable = $this->_getViewName('oxarticles');
             $aAddArticle = $this->_getAll( parent::_addFilter( "select $sArtTable.oxid ".$this->_getQuery() ) );
         }

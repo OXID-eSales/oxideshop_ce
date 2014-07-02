@@ -198,10 +198,10 @@ class oxcmp_user extends oxView
      */
     public function login()
     {
-        $sUser = oxConfig::getParameter('lgn_usr');
-        $sPassword = oxConfig::getParameter('lgn_pwd', true);
-        $sCookie = oxConfig::getParameter('lgn_cook');
-        //$blFbLogin = oxConfig::getParameter( 'fblogin' );
+        $sUser = oxRegistry::getConfig()->getRequestParameter('lgn_usr');
+        $sPassword = oxRegistry::getConfig()->getRequestParameter('lgn_pwd', true);
+        $sCookie = oxRegistry::getConfig()->getRequestParameter('lgn_cook');
+        //$blFbLogin = oxRegistry::getConfig()->getRequestParameter( 'fblogin' );
 
         $this->setLoginStatus(USER_LOGIN_FAIL);
 
@@ -278,7 +278,7 @@ class oxcmp_user extends oxView
      */
     public function login_noredirect()
     {
-        $blAgb = oxConfig::getParameter('ord_agb');
+        $blAgb = oxRegistry::getConfig()->getRequestParameter('ord_agb');
         $oConfig = $this->getConfig();
         if ($this->getParent()->isEnabledPrivateSales() && $blAgb !== null && ($oUser = $this->getUser())) {
             if ($blAgb) {
@@ -368,7 +368,7 @@ class oxcmp_user extends oxView
             }
 
             // redirecting if user logs out in SSL mode
-            if (oxConfig::getParameter('redirect') && $myConfig->getConfigParam('sSSLShopURL')) {
+            if (oxRegistry::getConfig()->getRequestParameter('redirect') && $myConfig->getConfigParam('sSSLShopURL')) {
                 oxRegistry::getUtils()->redirect($this->_getLogoutLink());
             }
         }
@@ -525,7 +525,7 @@ class oxcmp_user extends oxView
 
             // order remark
             //V #427: order remark for new users
-            $sOrderRemark = oxConfig::getParameter('order_remark', true);
+            $sOrderRemark = oxRegistry::getConfig()->getRequestParameter('order_remark', true);
             if ($sOrderRemark) {
                 oxSession::setVar('ordrem', $sOrderRemark);
             }
@@ -533,7 +533,7 @@ class oxcmp_user extends oxView
 
         // send register eMail
         //TODO: move into user
-        if ((int) oxConfig::getParameter('option') == 3) {
+        if ((int) oxRegistry::getConfig()->getRequestParameter('option') == 3) {
             $oxEMail = oxNew('oxemail');
             if ($blActiveLogin) {
                 $oxEMail->sendRegisterConfirmEmail($oUser);
@@ -634,7 +634,7 @@ class oxcmp_user extends oxView
         $aDelAdress = $this->_getDelAddressData();
 
         // if user company name, user name and additional info has special chars
-        $aInvAdress = oxConfig::getParameter('invadr', true);
+        $aInvAdress = oxRegistry::getConfig()->getRequestParameter('invadr', true);
 
         $sUserName = $oUser->oxuser__oxusername->value;
         $sPassword = $sPassword2 = $oUser->oxuser__oxpassword->value;
@@ -642,7 +642,7 @@ class oxcmp_user extends oxView
         try { // testing user input
             $oUser->changeUserData($sUserName, $sPassword, $sPassword2, $aInvAdress, $aDelAdress);
             // assigning to newsletter
-            if (($blOptin = oxConfig::getParameter('blnewssubscribed')) === null) {
+            if (($blOptin = oxRegistry::getConfig()->getRequestParameter('blnewssubscribed')) === null) {
                 $blOptin = $oUser->getNewsSubscription()->getOptInStatus();
             }
             // check if email address changed, if so, force check news subscription settings.
@@ -669,7 +669,7 @@ class oxcmp_user extends oxView
 
 
         // order remark
-        $sOrderRemark = oxConfig::getParameter('order_remark', true);
+        $sOrderRemark = oxRegistry::getConfig()->getRequestParameter('order_remark', true);
 
         if ($sOrderRemark) {
             oxSession::setVar('ordrem', $sOrderRemark);
@@ -693,7 +693,7 @@ class oxcmp_user extends oxView
     protected function _getDelAddressData()
     {
         // if user company name, user name and additional info has special chars
-        $aDelAdress = $aDeladr = (oxConfig::getParameter('blshowshipaddress') || oxSession::getVar('blshowshipaddress')) ? oxConfig::getParameter('deladr', true) : array();
+        $aDelAdress = $aDeladr = (oxRegistry::getConfig()->getRequestParameter('blshowshipaddress') || oxSession::getVar('blshowshipaddress')) ? oxRegistry::getConfig()->getRequestParameter('deladr', true) : array();
 
         if (is_array($aDeladr)) {
             // checking if data is filled

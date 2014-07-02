@@ -446,10 +446,10 @@ class Unit_Views_orderTest extends OxidTestCase
         $oConfig  = oxConfig::getInstance();
 
         $oConfig->setConfigParam( 'blConfirmAGB', 1 );
-        modConfig::setParameter( 'ord_agb', null );
+        modConfig::setRequestParameter( 'ord_agb', null );
 
         $oConfig->setConfigParam( 'blConfirmCustInfo', 1 );
-        modConfig::setParameter( 'ord_custinfo', 1 );
+        modConfig::setRequestParameter( 'ord_custinfo', 1 );
 
         $oS = $this->getMock( 'oxSession', array( 'checkSessionChallenge' ) );
         $oS->expects( $this->once() )->method( 'checkSessionChallenge' )->will( $this->returnValue( true ) );
@@ -471,11 +471,11 @@ class Unit_Views_orderTest extends OxidTestCase
         $oConfig  = oxConfig::getInstance();
 
         $oConfig->setConfigParam( 'blConfirmAGB', 1 );
-        modConfig::setParameter( 'ord_agb', 1 );
+        modConfig::setRequestParameter( 'ord_agb', 1 );
 
         $oConfig->setConfigParam( 'blConfirmCustInfo', 1 );
         // test new tpl, when option (ord_custinfo) was removed
-        modConfig::setParameter( 'ord_custinfo', null );
+        modConfig::setRequestParameter( 'ord_custinfo', null );
         $oS = $this->getMock( 'oxSession', array( 'checkSessionChallenge' ) );
         $oS->expects( $this->once() )->method( 'checkSessionChallenge' )->will( $this->returnValue( true ) );
         $oOrder = $this->getMock('order', array('getSession'));
@@ -483,7 +483,7 @@ class Unit_Views_orderTest extends OxidTestCase
 
         $this->assertEquals( 'user', $oOrder->execute() );
         // test former tpl. If ord_custinfo is not confirmed
-        modConfig::setParameter( 'ord_custinfo', 0 );
+        modConfig::setRequestParameter( 'ord_custinfo', 0 );
 
         $oS = $this->getMock( 'oxSession', array( 'checkSessionChallenge' ) );
         $oS->expects( $this->once() )->method( 'checkSessionChallenge' )->will( $this->returnValue( true ) );
@@ -817,7 +817,7 @@ class Unit_Views_orderTest extends OxidTestCase
      */
     public function testGetDelAddress()
     {
-        modConfig::setParameter( 'deladrid', '_testDelAddrId' );
+        modConfig::setRequestParameter( 'deladrid', '_testDelAddrId' );
 
         $oDelAdress = oxNew( 'oxbase' );
         $oDelAdress->init( 'oxaddress' );
@@ -897,10 +897,10 @@ class Unit_Views_orderTest extends OxidTestCase
         $oConfig  = oxConfig::getInstance();
 
         $oConfig->setConfigParam( 'blConfirmAGB', 1 );
-        modConfig::setParameter( 'ord_agb', null );
+        modConfig::setRequestParameter( 'ord_agb', null );
 
         $oConfig->setConfigParam( 'blConfirmCustInfo', 1 );
-        modConfig::setParameter( 'ord_custinfo', 1 );
+        modConfig::setRequestParameter( 'ord_custinfo', 1 );
         $oOrder->execute();
         $this->assertEquals( 1, $oOrder->isConfirmAGBError() );
     }
@@ -926,7 +926,7 @@ class Unit_Views_orderTest extends OxidTestCase
 
         $oConfig->setConfigParam( 'blConfirmAGB', 0 );
         $oConfig->setConfigParam( 'blEnableIntangibleProdAgreement', 1 );
-        modConfig::setParameter( 'oxdownloadableproductsagreement', null );
+        modConfig::setRequestParameter( 'oxdownloadableproductsagreement', null );
 
         $oOrder->execute();
         $this->assertEquals( 1, $oOrder->isConfirmAGBError() );
@@ -953,7 +953,7 @@ class Unit_Views_orderTest extends OxidTestCase
 
         $oConfig->setConfigParam( 'blConfirmAGB', 0 );
         $oConfig->setConfigParam( 'blEnableIntangibleProdAgreement', 1 );
-        modConfig::setParameter( 'oxdownloadableproductsagreement', null );
+        modConfig::setRequestParameter( 'oxdownloadableproductsagreement', null );
 
         $oOrder->execute();
         $this->assertEquals( 1, $oOrder->isConfirmAGBError() );
@@ -1057,7 +1057,7 @@ class Unit_Views_orderTest extends OxidTestCase
      */
     public function testGetAddressError()
     {
-        modConfig::setParameter( 'iAddressError', 1 );
+        modConfig::setRequestParameter( 'iAddressError', 1 );
         $oOrder = new Order();
         $this->assertEquals( 1, $oOrder->getAddressError());
     }

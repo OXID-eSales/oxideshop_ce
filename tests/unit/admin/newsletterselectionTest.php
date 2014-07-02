@@ -83,7 +83,7 @@ class Unit_Admin_NewsletterSelectionTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setParameter( "oxid", 'newstest');
+        modConfig::setRequestParameter( "oxid", 'newstest');
         $oNewsletter = $this->getProxyClass( "Newsletter_selection" );
         $this->assertEquals( 'newsletter_selection.tpl', $oNewsletter->render() );
         $aViewData = $oNewsletter->getNonPublicVar( '_aViewData' );
@@ -99,16 +99,16 @@ class Unit_Admin_NewsletterSelectionTest extends OxidTestCase
      */
     public function testGetUserCount()
     {
-        modConfig::setParameter( "iStart", 0);
-        modConfig::setParameter( "oxid", 'newstest');
+        modConfig::setRequestParameter( "iStart", 0);
+        modConfig::setRequestParameter( "oxid", 'newstest');
         $oNewsletter = new Newsletter_selection();
         $this->assertEquals( 1, $oNewsletter->getUserCount() );
 
         $oDB = oxDb::getDb();
         $sDelete = "delete from oxobject2group where oxobjectid='_testUserId'";
         $oDB->Execute( $sDelete);
-        modConfig::setParameter( "iStart", 0);
-        modConfig::setParameter( "oxid", 'newstest');
+        modConfig::setRequestParameter( "iStart", 0);
+        modConfig::setRequestParameter( "oxid", 'newstest');
         $oNewsletter = new Newsletter_selection();
         $this->assertEquals( 0, $oNewsletter->getUserCount() );
     }

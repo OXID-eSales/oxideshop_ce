@@ -83,8 +83,8 @@ class Unit_Admin_ActionsGroupsAjaxTest extends OxidTestCase
      */
     public function testRemovePromotionGroupAll()
     {
-        modConfig::setParameter( "all", true );
-        modConfig::setParameter( "oxid", '_testGroupDeleteAll' );
+        modConfig::setRequestParameter( "all", true );
+        modConfig::setRequestParameter( "oxid", '_testGroupDeleteAll' );
         
         $this->assertEquals( 3, oxDb::getDb()->getOne( "select count(oxid) from oxobject2action where oxactionid='_testGroupDeleteAll'" ) );
         
@@ -101,7 +101,7 @@ class Unit_Admin_ActionsGroupsAjaxTest extends OxidTestCase
     public function testAddPromotionGroup()
     {
         $oView = $this->getMock( "actions_groups_ajax", array( "_getActionIds" ) );
-        modConfig::setParameter( "synchoxid", '_testActionAdd' );
+        modConfig::setRequestParameter( "synchoxid", '_testActionAdd' );
         
         $oView->expects( $this->any() )->method( '_getActionIds')->will( $this->returnValue( array( '_testGroupAdd1', '_testGroupAdd2' ) ) );
         
@@ -118,8 +118,8 @@ class Unit_Admin_ActionsGroupsAjaxTest extends OxidTestCase
     public function testAddPromotionGroupAll()
     {
         $oView = $this->getMock( "actions_groups_ajax", array( "_getActionIds" ) );
-        modConfig::setParameter( "synchoxid", '_testActionAdd' );
-        modConfig::setParameter( "all", true );
+        modConfig::setRequestParameter( "synchoxid", '_testActionAdd' );
+        modConfig::setRequestParameter( "all", true );
         
         $oView->expects( $this->any() )->method( '_getActionIds')->will( $this->returnValue( array( '_testGroupAdd1', '_testGroupAdd2' ) ) );
         
@@ -149,7 +149,7 @@ class Unit_Admin_ActionsGroupsAjaxTest extends OxidTestCase
     public function testGetQuerySynchoxid()
     {
         $sSynchoxid = '_testGroupGetQuerySynchoxid';
-        modConfig::setParameter( "synchoxid", $sSynchoxid );
+        modConfig::setRequestParameter( "synchoxid", $sSynchoxid );
         
         $oView = oxNew( 'actions_groups_ajax' );
         $this->assertEquals( "from oxv_oxgroups_de where 1  and oxv_oxgroups_de.oxid not in ( select oxv_oxgroups_de.oxid from oxobject2action, oxv_oxgroups_de where oxv_oxgroups_de.oxid=oxobject2action.oxobjectid  and oxobject2action.oxactionid = '$sSynchoxid' and oxobject2action.oxclass = 'oxgroups' )", trim( $oView->UNITgetQuery() ) );
@@ -163,7 +163,7 @@ class Unit_Admin_ActionsGroupsAjaxTest extends OxidTestCase
     public function testGetQueryOxid()
     {
         $sOxid = '_testGroupGetQuery';
-        modConfig::setParameter( "oxid", $sOxid );
+        modConfig::setRequestParameter( "oxid", $sOxid );
         
         $oView = oxNew( 'actions_groups_ajax' );
         $this->assertEquals( "from oxobject2action, oxv_oxgroups_de where oxv_oxgroups_de.oxid=oxobject2action.oxobjectid  and oxobject2action.oxactionid = '$sOxid' and oxobject2action.oxclass = 'oxgroups'", trim( $oView->UNITgetQuery() ) );
@@ -178,8 +178,8 @@ class Unit_Admin_ActionsGroupsAjaxTest extends OxidTestCase
     {
         $sOxid = '_testGroupGetQuery';
         $sSynchoxid = '_testGroupGetQuerySynchoxid';
-        modConfig::setParameter( "oxid", $sOxid );
-        modConfig::setParameter( "synchoxid", $sSynchoxid );
+        modConfig::setRequestParameter( "oxid", $sOxid );
+        modConfig::setRequestParameter( "synchoxid", $sSynchoxid );
         
         $oView = oxNew( 'actions_groups_ajax' );
         $this->assertEquals( "from oxobject2action, oxv_oxgroups_de where oxv_oxgroups_de.oxid=oxobject2action.oxobjectid  and oxobject2action.oxactionid = '$sOxid' and oxobject2action.oxclass = 'oxgroups'  and oxv_oxgroups_de.oxid not in ( select oxv_oxgroups_de.oxid from oxobject2action, oxv_oxgroups_de where oxv_oxgroups_de.oxid=oxobject2action.oxobjectid  and oxobject2action.oxactionid = '$sSynchoxid' and oxobject2action.oxclass = 'oxgroups' )", trim( $oView->UNITgetQuery() ) );

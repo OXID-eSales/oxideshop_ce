@@ -36,7 +36,7 @@ class Unit_Admin_CategoryTextTest extends OxidTestCase
     public function testRender()
     {
         oxTestModules::addFunction( "oxcategory", "isDerived", "{return true;}" );
-        modConfig::setParameter( "oxid", "testId" );
+        modConfig::setRequestParameter( "oxid", "testId" );
 
         // testing..
         $oView = new Category_Text();
@@ -55,7 +55,7 @@ class Unit_Admin_CategoryTextTest extends OxidTestCase
      */
     public function testRenderNoRealObjectId()
     {
-        modConfig::setParameter( "oxid", "-1" );
+        modConfig::setRequestParameter( "oxid", "-1" );
 
         // testing..
         $oView = new Category_Text();

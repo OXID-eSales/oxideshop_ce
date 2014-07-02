@@ -99,7 +99,7 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      */
     public function getRequestParam($sParam)
     {
-        return $this->getConfig()->getParameter($sParam);
+        return $this->getConfig()->getRequestParameter($sParam);
     }
 
     /**
@@ -109,7 +109,7 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      */
     public function setRequestParam($sParam, $oVal = null)
     {
-        $this->getConfig()->setParameter($sParam, $oVal);
+        $this->getConfig()->setRequestParameter($sParam, $oVal);
     }
 
     /**

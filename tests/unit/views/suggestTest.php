@@ -44,7 +44,7 @@ class Unit_Views_suggestTest extends OxidTestCase
 
     public function testGetProduct()
     {
-        modConfig::setParameter( 'anid', '2000' );
+        modConfig::setRequestParameter( 'anid', '2000' );
         $oSuggest = $this->getProxyClass( "suggest" );
 
         $this->assertEquals( '2000', $oSuggest->getProduct()->getId() );
@@ -101,7 +101,7 @@ class Unit_Views_suggestTest extends OxidTestCase
     public function testGetSuggestData()
     {
         oxTestModules::addFunction('oxCaptcha', 'pass', '{return true;}');
-        modConfig::setParameter( 'editval', array( 'name'=>'test', 'value'=>'testvalue' ) );
+        modConfig::setRequestParameter( 'editval', array( 'name'=>'test', 'value'=>'testvalue' ) );
         $oSuggest = $this->getProxyClass( "suggest" );
         $oSuggest->send();
         $oParam = $oSuggest->getSuggestData();
@@ -112,7 +112,7 @@ class Unit_Views_suggestTest extends OxidTestCase
 
     public function testSendSuggestWithoutCaptcha()
     {
-        modConfig::setParameter( 'editval', array( 'name'=>'test', 'value'=>'testvalue' ) );
+        modConfig::setRequestParameter( 'editval', array( 'name'=>'test', 'value'=>'testvalue' ) );
         $oSuggest = $this->getProxyClass( "suggest" );
         $this->assertFalse( $oSuggest->send() );
     }
@@ -126,8 +126,8 @@ class Unit_Views_suggestTest extends OxidTestCase
         $oV->expects( $this->any() )->method( '_getSeoRequestParams' )->will( $this->returnValue( 'cl=suggest' ) );
 
             $sCnid = '8a142c3e60a535f16.78077188';
-        modConfig::setParameter( 'anid', '2000' );
-        modConfig::setParameter( 'cnid', $sCnid );
+        modConfig::setRequestParameter( 'anid', '2000' );
+        modConfig::setRequestParameter( 'cnid', $sCnid );
         $this->assertEquals($oCfg->getShopURL( ).'empfehlen/?cnid='.$sCnid.'&amp;anid=2000', $oV->getLink());
         $this->assertEquals($oCfg->getShopURL( ).'empfehlen/?cnid='.$sCnid.'&amp;anid=2000', $oV->getLink(0));
         $this->assertEquals($oCfg->getShopURL( ).'en/recommend/?cnid='.$sCnid.'&amp;anid=2000', $oV->getLink(1));
@@ -165,13 +165,13 @@ class Unit_Views_suggestTest extends OxidTestCase
 
     public function testSendNoEditval()
     {
-        modConfig::setParameter('editval', null);
+        modConfig::setRequestParameter('editval', null);
         $this->assertSame(null, oxnew('suggest')->send());
     }
 
     public function testSendPass()
     {
-        modConfig::setParameter( 'editval',
+        modConfig::setRequestParameter( 'editval',
                 array(
                     'name'=>'test',
                     'value'=>'testvalue',
@@ -202,11 +202,11 @@ class Unit_Views_suggestTest extends OxidTestCase
         $oSuggest->expects( $this->once() )->method( 'getProduct')->will($this->returnValue( $oProduct ) );
         $oSuggest->expects( $this->once() )->method( 'getCaptcha')->will($this->returnValue( $oCaptcha ) );
 
-        modConfig::setParameter( 'searchparam', "searchparam&&A" );
-        modConfig::setParameter( 'searchcnid', "searchcnid&&A" );
-        modConfig::setParameter( 'searchvendor', "searchvendor&&A" );
-        modConfig::setParameter( 'searchmanufacturer', "searchmanufacturer&&A" );
-        modConfig::setParameter( 'listtype', "listtype&&A" );
+        modConfig::setRequestParameter( 'searchparam', "searchparam&&A" );
+        modConfig::setRequestParameter( 'searchcnid', "searchcnid&&A" );
+        modConfig::setRequestParameter( 'searchvendor', "searchvendor&&A" );
+        modConfig::setRequestParameter( 'searchmanufacturer', "searchmanufacturer&&A" );
+        modConfig::setRequestParameter( 'listtype', "listtype&&A" );
 
         $sExpected = 'details?anid=XProduct&searchparam=searchparam%26%26A&searchcnid=searchcnid&amp;&amp;A&searchvendor=searchvendor&amp;&amp;A&searchmanufacturer=searchmanufacturer&amp;&amp;A&listtype=listtype&amp;&amp;A';
         $this->assertEquals( $sExpected ,$oSuggest->send() );
@@ -214,7 +214,7 @@ class Unit_Views_suggestTest extends OxidTestCase
 
     public function testSendPassInvalidMail()
     {
-        modConfig::setParameter( 'editval',
+        modConfig::setRequestParameter( 'editval',
                 array(
                     'name'=>'test',
                     'value'=>'testvalue',

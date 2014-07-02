@@ -57,7 +57,7 @@ class shop_rdfa extends Shop_Config
         $sTable = getViewName("oxcontents", $this->_iEditLang);
         $oContentList->selectString("SELECT * FROM {$sTable} WHERE OXACTIVE = 1 AND OXTYPE = 0
                                         AND OXLOADID IN ('oxagb', 'oxdeliveryinfo', 'oximpressum', 'oxrightofwithdrawal')
-                                        AND OXSHOPID = '".oxConfig::getParameter("oxid")."'");				// $this->getEditObjectId()
+                                        AND OXSHOPID = '".oxRegistry::getConfig()->getRequestParameter("oxid")."'");				// $this->getEditObjectId()
         return $oContentList;
     }
 
@@ -86,7 +86,7 @@ class shop_rdfa extends Shop_Config
      */
     public function submitUrl()
     {
-        $aParams = oxConfig::getParameter( "aSubmitUrl" );
+        $aParams = oxRegistry::getConfig()->getRequestParameter( "aSubmitUrl" );
         if ($aParams['url']) {
             $sNotificationUrl = "http://gr-notify.appspot.com/submit?uri=".urlencode($aParams['url'])."&agent=oxid";
             if ( $aParams['email'] ) {

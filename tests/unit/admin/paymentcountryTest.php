@@ -35,7 +35,7 @@ class Unit_Admin_PaymentCountryTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setParameter( "oxid", "testId" );
+        modConfig::setRequestParameter( "oxid", "testId" );
 
         // testing..
         $oView = new Payment_Country();
@@ -52,7 +52,7 @@ class Unit_Admin_PaymentCountryTest extends OxidTestCase
      */
     public function testRenderNoRealObjectId()
     {
-        modConfig::setParameter( "oxid", "-1" );
+        modConfig::setRequestParameter( "oxid", "-1" );
 
         // testing..
         $oView = new Payment_Country();
@@ -69,8 +69,8 @@ class Unit_Admin_PaymentCountryTest extends OxidTestCase
      */
     public function testAddcountry()
     {
-        modConfig::setParameter( "oxid", "testId" );
-        modConfig::setParameter( "allcountries", array( "testCountryId" ) );
+        modConfig::setRequestParameter( "oxid", "testId" );
+        modConfig::setRequestParameter( "allcountries", array( "testCountryId" ) );
         oxTestModules::addFunction( 'oxbase', 'save', '{ throw new Exception( "save" ); }');
 
         // testing..
@@ -91,8 +91,8 @@ class Unit_Admin_PaymentCountryTest extends OxidTestCase
      */
     public function testRemovecountry()
     {
-        modConfig::setParameter( "oxid", "testId" );
-        modConfig::setParameter( "countries", array( "testCountryId" ) );
+        modConfig::setRequestParameter( "oxid", "testId" );
+        modConfig::setRequestParameter( "countries", array( "testCountryId" ) );
         oxTestModules::addFunction( 'oxbase', 'delete', '{ throw new Exception( "delete" ); }');
 
         // testing..

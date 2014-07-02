@@ -89,7 +89,7 @@ class Unit_Admin_NewsMainAjaxTest extends OxidTestCase
     public function testGetQuerySynchoxid()
     {
         $sSynchoxid = '_testAction';
-        $this->getConfig()->setParameter( "synchoxid", $sSynchoxid );
+        $this->getConfig()->setRequestParameter( "synchoxid", $sSynchoxid );
         
         $oView = oxNew( 'news_main_ajax' );
         $this->assertEquals( "from oxv_oxgroups_de where 1  and oxv_oxgroups_de.oxid not in ( select oxv_oxgroups_de.oxid from oxobject2group left join oxv_oxgroups_de on oxobject2group.oxgroupsid=oxv_oxgroups_de.oxid  where oxobject2group.oxobjectid = '".$sSynchoxid."' )", trim( $oView->UNITgetQuery() ) );
@@ -103,7 +103,7 @@ class Unit_Admin_NewsMainAjaxTest extends OxidTestCase
     public function testGetQueryOxid()
     {
         $sOxid = '_testAction';
-        $this->getConfig()->setParameter( "oxid", $sOxid );
+        $this->getConfig()->setRequestParameter( "oxid", $sOxid );
         
         $oView = oxNew( 'news_main_ajax' );
         $this->assertEquals( "from oxobject2group left join oxv_oxgroups_de on oxobject2group.oxgroupsid=oxv_oxgroups_de.oxid  where oxobject2group.oxobjectid = '".$sOxid."'", trim( $oView->UNITgetQuery() ) );
@@ -118,8 +118,8 @@ class Unit_Admin_NewsMainAjaxTest extends OxidTestCase
     {
         $sOxid = '_testAction';
         $sSynchoxid = '_testActionSynch';
-        $this->getConfig()->setParameter( "oxid", $sOxid );
-        $this->getConfig()->setParameter( "synchoxid", $sSynchoxid );
+        $this->getConfig()->setRequestParameter( "oxid", $sOxid );
+        $this->getConfig()->setRequestParameter( "synchoxid", $sSynchoxid );
         
         $oView = oxNew( 'news_main_ajax' );
         $this->assertEquals( "from oxobject2group left join oxv_oxgroups_de on oxobject2group.oxgroupsid=oxv_oxgroups_de.oxid  where oxobject2group.oxobjectid = '".$sOxid."' and oxv_oxgroups_de.oxid not in ( select oxv_oxgroups_de.oxid from oxobject2group left join oxv_oxgroups_de on oxobject2group.oxgroupsid=oxv_oxgroups_de.oxid  where oxobject2group.oxobjectid = '".$sSynchoxid."' )", trim( $oView->UNITgetQuery() ) );
@@ -149,8 +149,8 @@ class Unit_Admin_NewsMainAjaxTest extends OxidTestCase
     public function testRemoveGroupFromNewsAll()
     {
         $sOxid = '_testGroupRemoveAll';
-        $this->getConfig()->setParameter( "oxid", $sOxid );
-        $this->getConfig()->setParameter( "all", true );
+        $this->getConfig()->setRequestParameter( "oxid", $sOxid );
+        $this->getConfig()->setRequestParameter( "all", true );
         
         $sSql = "select count(oxid) from oxobject2group where oxobjectid = '".$sOxid."'";
         $oView = oxNew( 'news_main_ajax' );
@@ -167,7 +167,7 @@ class Unit_Admin_NewsMainAjaxTest extends OxidTestCase
     public function testAddGroupToNews()
     {
         $sSynchoxid = '_testGroupAdd';
-        $this->getConfig()->setParameter( "synchoxid", $sSynchoxid );
+        $this->getConfig()->setRequestParameter( "synchoxid", $sSynchoxid );
         
         $sSql = "select count(oxid) from oxobject2group where oxobjectid='$sSynchoxid'";
         $this->assertEquals( 0, oxDb::getDb()->getOne( $sSql ) );
@@ -187,8 +187,8 @@ class Unit_Admin_NewsMainAjaxTest extends OxidTestCase
     public function testAddGroupToNewsAll()
     {
         $sSynchoxid = '_testGroupAddAll';
-        $this->getConfig()->setParameter( "synchoxid", $sSynchoxid );
-        $this->getConfig()->setParameter( "all", true );
+        $this->getConfig()->setRequestParameter( "synchoxid", $sSynchoxid );
+        $this->getConfig()->setRequestParameter( "all", true );
         
         //count how much articles gets filtered
         $iCount = oxDb::getDb()->getOne( "select count(oxv_oxgroups_de.oxid) from oxv_oxgroups_de where 1  and oxv_oxgroups_de.oxid not in ( select oxv_oxgroups_de.oxid from oxobject2group left join oxv_oxgroups_de on oxobject2group.oxgroupsid=oxv_oxgroups_de.oxid  where oxobject2group.oxobjectid = '".$sSynchoxid."' )" );

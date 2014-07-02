@@ -36,8 +36,8 @@ class Unit_Admin_DynscreenTest extends OxidTestCase
     public function testSetupNavigation()
     {
         $sNode = "testNode";
-        modConfig::setParameter( "menu", $sNode );
-        modConfig::setParameter( 'actedit', 1 );
+        modConfig::setRequestParameter( "menu", $sNode );
+        modConfig::setRequestParameter( 'actedit', 1 );
 
         $oNavigation = $this->getMock( "oxnavigationtree", array( "getListUrl", "getEditUrl", "getTabs", "getActiveTab", "getBtn" ) );
         $oNavigation->expects( $this->any() )->method( 'getActiveTab' )->will( $this->returnValue( "testEdit" ) );

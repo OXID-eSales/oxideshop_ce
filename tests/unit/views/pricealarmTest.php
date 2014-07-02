@@ -43,7 +43,7 @@ class Unit_Views_pricealarmTest extends OxidTestCase
     {
         $oPriceAlarm = $this->getProxyClass( 'pricealarm' );
         $pa['aid']='2000';
-        modConfig::setParameter( 'pa', $pa );
+        modConfig::setRequestParameter( 'pa', $pa );
 
         $this->assertEquals( '2000', $oPriceAlarm->getProduct()->getId() );
     }
@@ -52,7 +52,7 @@ class Unit_Views_pricealarmTest extends OxidTestCase
     {
         $oPriceAlarm = $this->getProxyClass( 'pricealarm' );
         $pa['price']='10';
-        modConfig::setParameter( 'pa', $pa );
+        modConfig::setRequestParameter( 'pa', $pa );
 
         $this->assertEquals( '10,00', $oPriceAlarm->getBidPrice() );
     }
@@ -70,8 +70,8 @@ class Unit_Views_pricealarmTest extends OxidTestCase
         $oDb = oxDb::getDb();
 
         $oPriceAlarm = $this->getProxyClass( 'pricealarm' );
-        modConfig::setParameter( "c_mac", "aa" );
-        modConfig::setParameter( "c_mach", "bb" );
+        modConfig::setRequestParameter( "c_mac", "aa" );
+        modConfig::setRequestParameter( "c_mach", "bb" );
 
         $oPriceAlarm->addme();
 
@@ -88,7 +88,7 @@ class Unit_Views_pricealarmTest extends OxidTestCase
         $oPriceAlarm = $this->getProxyClass( 'pricealarm' );
         oxTestModules::addFunction('oxCaptcha', 'pass', '{return true;}');
 
-        modConfig::setParameter( "pa", array( "email" => "ladyGaga" ) );
+        modConfig::setRequestParameter( "pa", array( "email" => "ladyGaga" ) );
         $oPriceAlarm->addme();
 
         $this->assertEquals( 0, $oPriceAlarm->getNonPublicVar( "_iPriceAlarmStatus" ) );
@@ -110,7 +110,7 @@ class Unit_Views_pricealarmTest extends OxidTestCase
 
         $aParams["mano"] = "101";
 
-        modConfig::setParameter( "pa", $aParams );
+        modConfig::setRequestParameter( "pa", $aParams );
         $oPriceAlarm->addme();
 
         $this->assertEquals( 999, $oPriceAlarm->getNonPublicVar( "_iPriceAlarmStatus" ) );
@@ -140,7 +140,7 @@ class Unit_Views_pricealarmTest extends OxidTestCase
         $aParams["email"] = "goodemail@ladyGagaFans.lt";
 
         oxLang::getInstance()->setBaseLanguage( 1 );
-        modConfig::setParameter( "pa", $aParams );
+        modConfig::setRequestParameter( "pa", $aParams );
 
         $oPriceAlarm->addme();
 

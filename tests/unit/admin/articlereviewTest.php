@@ -64,8 +64,8 @@ class Unit_Admin_ArticleReviewTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setParameter( "oxid", $this->sTestId );
-        modConfig::setParameter( "rev_oxid", "_test_i1" );
+        modConfig::setRequestParameter( "oxid", $this->sTestId );
+        modConfig::setRequestParameter( "rev_oxid", "_test_i1" );
         oxTestModules::addFunction('oxarticle', 'isDerived', '{ return true; }');
 
         // testing..
@@ -97,8 +97,8 @@ class Unit_Admin_ArticleReviewTest extends OxidTestCase
 
         $this->assertTrue( (bool) $oDb->getOne( "select 1 from oxreviews where oxid = '_testReviewId'" ));
 
-        modConfig::setParameter( "rev_oxid", "_testReviewId" );
-        modConfig::setParameter( "editval", array( 'oxreviews__oxtext' => 6, 'oxreviews__oxrating' => 6 ) );
+        modConfig::setRequestParameter( "rev_oxid", "_testReviewId" );
+        modConfig::setRequestParameter( "editval", array( 'oxreviews__oxtext' => 6, 'oxreviews__oxrating' => 6 ) );
         modConfig::getInstance()->setConfigParam( "blGBModerate", "_testReviewId" );
 
         $oView = new Article_Review();
@@ -124,7 +124,7 @@ class Unit_Admin_ArticleReviewTest extends OxidTestCase
         $oDb = oxDb::getDb();
 
         $this->assertTrue( (bool) $oDb->getOne( "select 1 from oxreviews where oxid = 'testReviewId'" ));
-        modConfig::setParameter( "rev_oxid", "testReviewId" );
+        modConfig::setRequestParameter( "rev_oxid", "testReviewId" );
 
         $oView = new Article_Review();
 

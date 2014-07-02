@@ -187,7 +187,7 @@ class Account_Recommlist extends Account
             $this->_oActRecommList = false;
 
             if ( ( $oUser = $this->getUser() ) &&
-                 ( $sRecommId = oxConfig::getParameter( 'recommid' ) )) {
+                 ( $sRecommId = oxRegistry::getConfig()->getRequestParameter( 'recommid' ) )) {
 
                 $oRecommList = oxNew( 'oxrecommlist' );
                 if ( ( $oRecommList->load( $sRecommId ) ) && $oUser->getId() === $oRecommList->oxrecommlists__oxuserid->value ) {
@@ -272,7 +272,7 @@ class Account_Recommlist extends Account
         }
 
         // deleting on demand
-        if ( ( $sAction = oxConfig::getParameter( 'deleteList' ) ) &&
+        if ( ( $sAction = oxRegistry::getConfig()->getRequestParameter( 'deleteList' ) ) &&
              ( $oRecommList = $this->getActiveRecommList() ) ) {
             $oRecommList->delete();
             $this->setActiveRecommList( false );
@@ -292,7 +292,7 @@ class Account_Recommlist extends Account
             return;
         }
 
-        if ( ( $sArtId = oxConfig::getParameter( 'aid' ) ) &&
+        if ( ( $sArtId = oxRegistry::getConfig()->getRequestParameter( 'aid' ) ) &&
              ( $oRecommList = $this->getActiveRecommList() ) ) {
             $oRecommList->removeArticle( $sArtId );
         }

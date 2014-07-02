@@ -80,7 +80,7 @@ class Category_Main extends oxAdminDetails
 
         $this->_aViewData["sortableFields"] = $this->getSortableFields();
 
-        if ( oxConfig::getParameter("aoc") ) {
+        if ( oxRegistry::getConfig()->getRequestParameter("aoc") ) {
             $oCategoryMainAjax = oxNew( 'category_main_ajax' );
             $this->_aViewData['oxajax'] = $oCategoryMainAjax->getColumns();
 
@@ -131,7 +131,7 @@ class Category_Main extends oxAdminDetails
         $myConfig  = $this->getConfig();
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxConfig::getParameter( "editval");
+        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval");
 
         // checkbox handling
         if ( !isset( $aParams['oxcategories__oxactive']))
@@ -233,7 +233,7 @@ class Category_Main extends oxAdminDetails
         }
 
         $sOxId = $this->getEditObjectId();
-        $sField = oxConfig::getParameter('masterPicField');
+        $sField = oxRegistry::getConfig()->getRequestParameter('masterPicField');
         if (empty($sField)) {
             return;
         }

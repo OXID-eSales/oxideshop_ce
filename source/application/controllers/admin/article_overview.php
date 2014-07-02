@@ -46,7 +46,7 @@ class Article_Overview extends oxAdminDetails
         if ( $soxId != "-1" && isset( $soxId ) ) {
 
             // load object
-            $oArticle->loadInLang( oxConfig::getParameter( "editlanguage" ), $soxId );
+            $oArticle->loadInLang( oxRegistry::getConfig()->getRequestParameter( "editlanguage" ), $soxId );
 
 
             $oDB = oxDb::getDb();

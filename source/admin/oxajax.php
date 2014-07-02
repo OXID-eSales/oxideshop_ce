@@ -53,7 +53,7 @@ if ( $blAjaxCall ) {
         oxRegistry::getUtils()->showMessageAndExit( "" );
     }
 
-    if ( $sContainer = oxConfig::getParameter( 'container' ) ) {
+    if ( $sContainer = oxRegistry::getConfig()->getRequestParameter( 'container' ) ) {
 
         $sContainer = trim(strtolower( basename( $sContainer ) ));
 
@@ -77,7 +77,7 @@ if ( $blAjaxCall ) {
         }
 
         $oAjaxComponent->setName( $sContainer );
-        $oAjaxComponent->processRequest( oxConfig::getParameter( 'fnc' ) );
+        $oAjaxComponent->processRequest( oxRegistry::getConfig()->getRequestParameter( 'fnc' ) );
 
     } else {
 

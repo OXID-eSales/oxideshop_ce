@@ -277,9 +277,9 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
         oxTestModules::addFunction( 'oxarticle', 'assign', '{ return true; }');
         oxTestModules::addFunction( 'oxarticle', 'save', '{ throw new Exception( "save" ); }');
 
-        modConfig::setParameter( "oxid", "123" );
-        modConfig::setParameter( "oxparentid", "testPArentId" );
-        modConfig::setParameter( "editval", array( 'oxarticles__oxvat' => '', 'oxarticles__oxprice' => 999 ) );
+        modConfig::setRequestParameter( "oxid", "123" );
+        modConfig::setRequestParameter( "oxparentid", "testPArentId" );
+        modConfig::setRequestParameter( "editval", array( 'oxarticles__oxvat' => '', 'oxarticles__oxprice' => 999 ) );
 
         // testing..
         try {
@@ -312,9 +312,9 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxarticle', 'isDerived', '{ return true; }');
         $sOxid = oxDb::getDb()->getOne( "select oxid from oxarticles where oxparentid !='' " );
-        modConfig::setParameter( "oxid", $sOxid );
-        //modConfig::setParameter( "voxid", "-1" );
-        //modConfig::setParameter( "oxparentid", oxDb::getDb()->getOne( "select oxparentid from oxarticles where oxid ='{$sOxid}' " ) );
+        modConfig::setRequestParameter( "oxid", $sOxid );
+        //modConfig::setRequestParameter( "voxid", "-1" );
+        //modConfig::setRequestParameter( "oxparentid", oxDb::getDb()->getOne( "select oxparentid from oxarticles where oxid ='{$sOxid}' " ) );
 
         $oView = $this->getProxyClass( "Article_Main" );
         $oView->setNonPublicVar( "_sSavedId", $sOxid );
@@ -335,8 +335,8 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
         oxTestModules::addFunction('oxarticle', 'isDerived', '{ return true; }');
         $sOxid = $oDb->getOne( "select oxid from oxarticles where oxparentid !='' " );
         $sParentOxid = $oDb->getOne( "select oxparentid from oxarticles where oxid ='{$sOxid}' " );
-        modConfig::setParameter( "voxid", "-1" );
-        modConfig::setParameter( "oxparentid", $sParentOxid );
+        modConfig::setRequestParameter( "voxid", "-1" );
+        modConfig::setRequestParameter( "oxparentid", $sParentOxid );
 
         $oView = new Article_Main();
         $this->assertEquals( "article_main.tpl", $oView->render() );
@@ -433,7 +433,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
     public function testCopyArticle()
     {
         modConfig::getInstance()->setConfigParam( 'blWarnOnSameArtNums', true );
-        modConfig::setParameter( 'fnc', 'copyArticle' );
+        modConfig::setRequestParameter( 'fnc', 'copyArticle' );
         $oArtView = $this->getProxyClass("article_main");
         $oArtView->copyArticle( '2000', '_testArtId' );
         $aViewData = $oArtView->getNonPublicVar( '_aViewData' );
@@ -448,7 +448,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
     public function testSaveTrimsArticleTitle()
     {
         $oConfig = oxConfig::getInstance();
-        modConfig::setParameter( 'oxid', '_testArtId' );
+        modConfig::setRequestParameter( 'oxid', '_testArtId' );
         $aParams['oxid'] = '_testArtId';
         $aParams['oxarticles__oxtitle'] = ' _testArticleTitle   ';
 
@@ -457,7 +457,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
         $oArticle->oxarticles__oxtitle = new oxField( $aParams['oxarticles__oxtitle'] );
         $oArticle->save();
 
-        modConfig::setParameter( "editval", $aParams );
+        modConfig::setRequestParameter( "editval", $aParams );
 
         $oArtView = $this->getProxyClass( "article_main" );
         $oArtView->save();
@@ -478,9 +478,9 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
         oxTestModules::addFunction( 'oxarticle', 'assignRecord', '{ return true; }');
         oxTestModules::addFunction( 'oxarticletaglist', 'save', '{ throw new Exception( "saveTags" ); }');
 
-        modConfig::setParameter( "oxid", -1 );
-        modConfig::setParameter( "oxparentid", "-1" );
-        modConfig::setParameter( "editval", array( 'tags' => 'test tags', "oxarticles__oxparentid" => "-1", "oxarticles__oxartnum" => "123", "oxarticles__oxprice" => "123", "oxarticles__oxactive" => 1 ) );
+        modConfig::setRequestParameter( "oxid", -1 );
+        modConfig::setRequestParameter( "oxparentid", "-1" );
+        modConfig::setRequestParameter( "editval", array( 'tags' => 'test tags', "oxarticles__oxparentid" => "-1", "oxarticles__oxartnum" => "123", "oxarticles__oxprice" => "123", "oxarticles__oxactive" => 1 ) );
 
         $oArtView = new article_main();
 
@@ -504,10 +504,10 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
         oxTestModules::addFunction( 'oxarticle', 'assignRecord', '{ return true; }');
         oxTestModules::addFunction( 'oxarticletaglist', 'save', '{ throw new Exception( "saveTags" ); }');
 
-        modConfig::setParameter( "oxid", -1 );
-        modConfig::setParameter( "oxparentid", "132" );
-        modConfig::setParameter( "editval", array( 'tags' => 'test tags', "oxarticles__oxparentid" => "-1", "oxarticles__oxartnum" => "123", "oxarticles__oxprice" => "123", "oxarticles__oxactive" => 1 ) );
-        modConfig::setParameter( "art_category", -1 );
+        modConfig::setRequestParameter( "oxid", -1 );
+        modConfig::setRequestParameter( "oxparentid", "132" );
+        modConfig::setRequestParameter( "editval", array( 'tags' => 'test tags', "oxarticles__oxparentid" => "-1", "oxarticles__oxartnum" => "123", "oxarticles__oxprice" => "123", "oxarticles__oxactive" => 1 ) );
+        modConfig::setRequestParameter( "art_category", -1 );
 
         $oArtView = new article_main();
         $oArtView->setCategoryId('_testCategoryId');

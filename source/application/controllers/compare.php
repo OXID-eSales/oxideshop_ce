@@ -114,7 +114,7 @@ class Compare extends oxUBase
      */
     public function moveLeft() //#777C
     {
-        $sArticleId = oxConfig::getParameter( 'aid' );
+        $sArticleId = oxRegistry::getConfig()->getRequestParameter( 'aid' );
         if ( $sArticleId && ( $aItems = $this->getCompareItems() ) ) {
             $sPrevArticleId = null;
 
@@ -153,7 +153,7 @@ class Compare extends oxUBase
      */
     public function moveRight()  //#777C
     {
-        $sArticleId = oxConfig::getParameter( 'aid' );
+        $sArticleId = oxRegistry::getConfig()->getRequestParameter( 'aid' );
         if ( $sArticleId && ( $aItems = $this->getCompareItems() ) ) {
             $sNextArticleId = 0;
 

@@ -35,7 +35,7 @@ class Unit_Admin_ArticleUserdefTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setParameter( "oxid", "testId" );
+        modConfig::setRequestParameter( "oxid", "testId" );
         oxTestModules::addFunction('oxarticle', 'isDerived', '{ return true; }');
 
         // testing..

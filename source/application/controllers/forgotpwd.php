@@ -72,7 +72,7 @@ class ForgotPwd extends oxUBase
      */
     public function forgotPassword()
     {
-        $sEmail = oxConfig::getParameter( 'lgn_usr' );
+        $sEmail = oxRegistry::getConfig()->getRequestParameter( 'lgn_usr' );
         $this->_sForgotEmail = $sEmail;
         $oEmail = oxNew( 'oxemail' );
 
@@ -96,8 +96,8 @@ class ForgotPwd extends oxUBase
      */
     public function updatePassword()
     {
-        $sNewPass  = oxConfig::getParameter( 'password_new', true );
-        $sConfPass = oxConfig::getParameter( 'password_new_confirm', true );
+        $sNewPass  = oxRegistry::getConfig()->getRequestParameter( 'password_new', true );
+        $sConfPass = oxRegistry::getConfig()->getRequestParameter( 'password_new_confirm', true );
 
         $oUser = oxNew( 'oxuser' );
         if ( ( $oExcp = $oUser->checkPassword( $sNewPass, $sConfPass, true ) ) ) {
@@ -132,7 +132,7 @@ class ForgotPwd extends oxUBase
      */
     public function updateSuccess()
     {
-        return (bool) oxConfig::getParameter( 'success' );
+        return (bool) oxRegistry::getConfig()->getRequestParameter( 'success' );
     }
 
     /**
@@ -152,7 +152,7 @@ class ForgotPwd extends oxUBase
      */
     public function getUpdateId()
     {
-        return oxConfig::getParameter( 'uid' );
+        return oxRegistry::getConfig()->getRequestParameter( 'uid' );
     }
 
     /**

@@ -74,7 +74,7 @@ class Order_Downloads extends oxAdminDetails
      */
     public function resetDownloadLink()
     {
-        $sOrderFileId = oxConfig::getParameter( 'oxorderfileid' );
+        $sOrderFileId = oxRegistry::getConfig()->getRequestParameter( 'oxorderfileid' );
         $oOrderFile = oxNew("oxorderfile");
         if ( $oOrderFile->load($sOrderFileId) ) {
             $oOrderFile->reset();

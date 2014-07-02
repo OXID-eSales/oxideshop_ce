@@ -69,7 +69,7 @@ class Adminguestbook_Main extends oxAdminDetails
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxConfig::getParameter( "editval" );
+        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval" );
 
         // checkbox handling
         if ( !isset( $aParams['oxgbentries__oxactive'] ) ) {

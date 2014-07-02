@@ -82,7 +82,7 @@ class Article_Pictures extends oxAdminDetails
 
         $oArticle = oxNew( "oxarticle");
         if ( $oArticle->load( $this->getEditObjectId() ) ) {
-            $oArticle->assign( oxConfig::getParameter( "editval") );
+            $oArticle->assign( oxRegistry::getConfig()->getRequestParameter( "editval") );
             oxRegistry::get("oxUtilsFile")->processFiles( $oArticle );
 
             // Show that no new image added
@@ -117,7 +117,7 @@ class Article_Pictures extends oxAdminDetails
         }
 
         $sOxId = $this->getEditObjectId();
-        $iIndex = oxConfig::getParameter( "masterPicIndex" );
+        $iIndex = oxRegistry::getConfig()->getRequestParameter( "masterPicIndex" );
 
         $oArticle = oxNew( "oxarticle" );
         $oArticle->load( $sOxId );

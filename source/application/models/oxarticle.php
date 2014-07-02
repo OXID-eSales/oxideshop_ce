@@ -1477,7 +1477,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
         if ( self::$_aSelections[$sId] ) {
             // marking active from filter
-            $aFilter = ( $aFilter === null ) ? oxConfig::getParameter( "sel" ) : $aFilter;
+            $aFilter = ( $aFilter === null ) ? oxRegistry::getConfig()->getRequestParameter( "sel" ) : $aFilter;
             if ( $aFilter ) {
                 $iSelIdx = 0;
                 foreach ( self::$_aSelections[$sId] as $oSelection ) {
@@ -2149,8 +2149,8 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         $iActPicId = 1;
         $sActPic = $this->getPictureUrl( $iActPicId );
 
-        if ( oxConfig::getParameter( 'actpicid' ) ) {
-            $iActPicId = oxConfig::getParameter('actpicid');
+        if ( oxRegistry::getConfig()->getRequestParameter( 'actpicid' ) ) {
+            $iActPicId = oxRegistry::getConfig()->getRequestParameter('actpicid');
         }
 
         $oStr = getStr();
@@ -2656,7 +2656,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             $this->_sMoreDetailLink = $this->getConfig()->getShopHomeURL() . 'cl=moredetails';
 
             // not always it is okey, as not all the time active category is the same as primary article cat.
-            if ( $sActCat = oxConfig::getParameter( 'cnid' ) ) {
+            if ( $sActCat = oxRegistry::getConfig()->getRequestParameter( 'cnid' ) ) {
                 $this->_sMoreDetailLink .= '&amp;cnid='.$sActCat;
             }
             $this->_sMoreDetailLink .= '&amp;anid='.$this->getId();
@@ -2683,20 +2683,20 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
                 $this->_sToBasketLink = $myConfig->getShopHomeURL();
 
                 // override some classes as these should never showup
-                $sActClass = oxConfig::getParameter( 'cl' );
+                $sActClass = oxRegistry::getConfig()->getRequestParameter( 'cl' );
                 if ( $sActClass == 'thankyou') {
                     $sActClass = 'basket';
                 }
                 $this->_sToBasketLink .= 'cl='.$sActClass;
 
                 // this is not very correct
-                if ( $sActCat = oxConfig::getParameter( 'cnid' ) ) {
+                if ( $sActCat = oxRegistry::getConfig()->getRequestParameter( 'cnid' ) ) {
                     $this->_sToBasketLink .= '&amp;cnid='.$sActCat;
                 }
 
                 $this->_sToBasketLink .= '&amp;fnc=tobasket&amp;aid='.$this->getId().'&amp;anid='.$this->getId();
 
-                if ( $sTpl = basename( oxConfig::getParameter( 'tpl' ) ) ) {
+                if ( $sTpl = basename( oxRegistry::getConfig()->getRequestParameter( 'tpl' ) ) ) {
                     $this->_sToBasketLink .= '&amp;tpl='.$sTpl;
                 }
             }

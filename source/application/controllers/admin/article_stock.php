@@ -100,7 +100,7 @@ class Article_Stock extends oxAdminDetails
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxConfig::getParameter( "editval");
+        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval");
 
             // shopid
             $sShopID = oxSession::getVar( "actshop");
@@ -146,7 +146,7 @@ class Article_Stock extends oxAdminDetails
 
 
 
-        $aParams = oxConfig::getParameter( "editval" );
+        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval" );
 
         if ( !is_array($aParams) ) {
             return;
@@ -219,7 +219,7 @@ class Article_Stock extends oxAdminDetails
     public function updateprices()
     {
 
-        $aParams = oxConfig::getParameter( "updateval" );
+        $aParams = oxRegistry::getConfig()->getRequestParameter( "updateval" );
         if ( is_array( $aParams ) ) {
             foreach ( $aParams as $soxId => $aStockParams ) {
                 $this->addprice( $soxId, $aStockParams );
@@ -238,7 +238,7 @@ class Article_Stock extends oxAdminDetails
     {
 
         $oDb = oxDb::getDb();
-        $sPriceId = $oDb->quote( oxConfig::getParameter("priceid" ) );
+        $sPriceId = $oDb->quote( oxRegistry::getConfig()->getRequestParameter("priceid" ) );
         $sId = $oDb->quote( $this->getEditObjectId() );
         $oDb->execute( "delete from oxprice2article where oxid = {$sPriceId} and oxartid = {$sId}" );
     }

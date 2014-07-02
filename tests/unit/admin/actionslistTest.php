@@ -52,7 +52,7 @@ class Unit_Admin_ActionsListTest extends OxidTestCase
      */
     public function testPromotionsRender()
     {
-        modConfig::setParameter( "displaytype", "testType" );
+        modConfig::setRequestParameter( "displaytype", "testType" );
 
         // testing..
         $oView = $this->getProxyClass( "Actions_List" );
@@ -82,15 +82,15 @@ class Unit_Admin_ActionsListTest extends OxidTestCase
         $oView = new Actions_List();
 
         $sQ = " and $sTable.oxactivefrom < '$sNow' and $sTable.oxactiveto > '$sNow' $sAddQ";
-        modConfig::setParameter( 'displaytype', 1 );
+        modConfig::setRequestParameter( 'displaytype', 1 );
         $this->assertEquals( $sQ, $oView->UNITprepareWhereQuery( array(), "" ) );
 
         $sQ = " and $sTable.oxactivefrom > '$sNow' $sAddQ";
-        modConfig::setParameter( 'displaytype', 2 );
+        modConfig::setRequestParameter( 'displaytype', 2 );
         $this->assertEquals( $sQ, $oView->UNITprepareWhereQuery( array(), "" ) );
 
         $sQ = " and $sTable.oxactiveto < '$sNow' and $sTable.oxactiveto != '0000-00-00 00:00:00' $sAddQ";
-        modConfig::setParameter( 'displaytype', 3 );
+        modConfig::setRequestParameter( 'displaytype', 3 );
         $this->assertEquals( $sQ, $oView->UNITprepareWhereQuery( array(), "" ) );
     }
 }

@@ -90,7 +90,7 @@ class dyn_trusted extends Shop_Config
     {
         $this->_saveTsPaymentId();
 
-        $aConfStr = oxConfig::getParameter( "aShopID_TrustedShops" );
+        $aConfStr = oxRegistry::getConfig()->getRequestParameter( "aShopID_TrustedShops" );
         $blSave = true;
         $blNotEmpty = false;
         foreach ( $aConfStr as $sKey => $sConfStrs ) {
@@ -121,10 +121,10 @@ class dyn_trusted extends Shop_Config
             $myConfig = $this->getConfig();
             $sShopId = $myConfig->getShopId();
             $myConfig->saveShopConfVar( "aarr", 'iShopID_TrustedShops', $aConfStr, $sShopId );
-            $myConfig->saveShopConfVar( "aarr", 'aTsUser', oxConfig::getParameter( "aTsUser" ), $sShopId );
-            $myConfig->saveShopConfVar( "aarr", 'aTsPassword', oxConfig::getParameter( "aTsPassword" ), $sShopId );
-            $myConfig->saveShopConfVar( "bool", 'tsTestMode', oxConfig::getParameter( "tsTestMode" ), $sShopId );
-            $myConfig->saveShopConfVar( "bool", 'tsSealActive', oxConfig::getParameter( "tsSealActive" ), $sShopId );
+            $myConfig->saveShopConfVar( "aarr", 'aTsUser', oxRegistry::getConfig()->getRequestParameter( "aTsUser" ), $sShopId );
+            $myConfig->saveShopConfVar( "aarr", 'aTsPassword', oxRegistry::getConfig()->getRequestParameter( "aTsPassword" ), $sShopId );
+            $myConfig->saveShopConfVar( "bool", 'tsTestMode', oxRegistry::getConfig()->getRequestParameter( "tsTestMode" ), $sShopId );
+            $myConfig->saveShopConfVar( "bool", 'tsSealActive', oxRegistry::getConfig()->getRequestParameter( "tsSealActive" ), $sShopId );
             $myConfig->saveShopConfVar( "aarr", 'tsSealType', $sTsType, $sShopId );
         } else {
             // displaying error..
@@ -176,7 +176,7 @@ class dyn_trusted extends Shop_Config
             $blSave = false;
         }
         $oTsProtection = oxNew("oxtsprotection");
-        $oResults = $oTsProtection->checkCertificate( $sConfStrs, oxConfig::getParameter( "tsTestMode" ) );
+        $oResults = $oTsProtection->checkCertificate( $sConfStrs, oxRegistry::getConfig()->getRequestParameter( "tsTestMode" ) );
         return $oResults;
     }
 
@@ -187,7 +187,7 @@ class dyn_trusted extends Shop_Config
      */
     protected function _saveTsPaymentId()
     {
-        $aPaymentIds = oxConfig::getParameter( "paymentids" );
+        $aPaymentIds = oxRegistry::getConfig()->getRequestParameter( "paymentids" );
         
         if ( $aPaymentIds ) {
             foreach ( $aPaymentIds as $sShopPayId => $sTsPayId ) {

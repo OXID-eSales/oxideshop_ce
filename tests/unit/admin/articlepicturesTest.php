@@ -81,7 +81,7 @@ class Unit_Admin_ArticlePicturesTest extends OxidTestCase
     public function testRender()
     {
         oxTestModules::addFunction('oxarticle', 'isDerived', '{ return true; }');
-        modConfig::setParameter( "oxid", oxDb::getDb()->getOne( "select oxid from oxarticles where oxparentid != ''" ) );
+        modConfig::setRequestParameter( "oxid", oxDb::getDb()->getOne( "select oxid from oxarticles where oxparentid != ''" ) );
 
         // testing..
         $oView = new Article_Pictures();
@@ -180,8 +180,8 @@ class Unit_Admin_ArticlePicturesTest extends OxidTestCase
      */
     public function testDeletePicture_deletingIcon()
     {
-        modConfig::setParameter( "oxid", "_testArtId" );
-        modConfig::setParameter( "masterPicIndex", "ICO" );
+        modConfig::setRequestParameter( "oxid", "_testArtId" );
+        modConfig::setRequestParameter( "masterPicIndex", "ICO" );
 
         $oDb = oxDb::getDb( oxDB::FETCH_MODE_ASSOC );
 
@@ -204,8 +204,8 @@ class Unit_Admin_ArticlePicturesTest extends OxidTestCase
      */
     public function testDeletePicture_deletingThumbnail()
     {
-        modConfig::setParameter( "oxid", "_testArtId" );
-        modConfig::setParameter( "masterPicIndex", "TH" );
+        modConfig::setRequestParameter( "oxid", "_testArtId" );
+        modConfig::setRequestParameter( "masterPicIndex", "TH" );
         $oDb = oxDb::getDb( oxDB::FETCH_MODE_ASSOC );
 
         $oArtPic = $this->getMock( "Article_Pictures", array( "_deleteMainIcon", "_deleteMasterPicture" ) );
@@ -227,8 +227,8 @@ class Unit_Admin_ArticlePicturesTest extends OxidTestCase
      */
     public function testDeletePicture_deletingMasterPic()
     {
-        modConfig::setParameter( "oxid", "_testArtId" );
-        modConfig::setParameter( "masterPicIndex", "2" );
+        modConfig::setRequestParameter( "oxid", "_testArtId" );
+        modConfig::setRequestParameter( "masterPicIndex", "2" );
         $oDb = oxDb::getDb( oxDB::FETCH_MODE_ASSOC );
 
         $oArtPic = $this->getMock( "Article_Pictures", array( "_deleteMainIcon", "_deleteThumbnail" ) );
@@ -250,8 +250,8 @@ class Unit_Admin_ArticlePicturesTest extends OxidTestCase
      */
     public function testDeletePicture_generatedPicsCounterReset()
     {
-        modConfig::setParameter( "oxid", "_testArtId" );
-        modConfig::setParameter( "masterPicIndex", "2" );
+        modConfig::setRequestParameter( "oxid", "_testArtId" );
+        modConfig::setRequestParameter( "masterPicIndex", "2" );
 
         $oArtPic = $this->getMock( "Article_Pictures", array( "_resetMasterPicture" ) );
         $oArtPic->expects( $this->once() )->method( '_resetMasterPicture' );
@@ -583,8 +583,8 @@ class Unit_Admin_ArticlePicturesTest extends OxidTestCase
 
         oxTestModules::addModuleObject('oxarticle', $oArticle);
 
-        modConfig::setParameter('oxid', 'asdasdasd');
-        modConfig::setParameter('editval', array('s'=>'test'));
+        modConfig::setRequestParameter('oxid', 'asdasdasd');
+        modConfig::setRequestParameter('editval', array('s'=>'test'));
         $oArtPic = $this->getProxyClass( "Article_Pictures" );
         $oArtPic->save();
     }

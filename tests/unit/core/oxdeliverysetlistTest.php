@@ -808,7 +808,7 @@ class Unit_Core_oxDeliverysetListTest extends OxidTestCase
 
         $oUser = new oxuser();
         $oUser->load( 'oxdefaultadmin' );
-        modConfig::setParameter( 'deladrid', null );
+        modConfig::setRequestParameter( 'deladrid', null );
 
         $oBasket = $this->getMock( 'oxBasket', array( 'getPriceForPayment' ) );
         $oBasket->expects( $this->once() )->method( 'getPriceForPayment')->will( $this->returnValue( 100 ) );

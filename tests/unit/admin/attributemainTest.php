@@ -36,7 +36,7 @@ class Unit_Admin_AttributeMainTest extends OxidTestCase
     public function testRender()
     {
         oxTestModules::addFunction( "oxattribute", "isDerived", "{return true;}" );
-        modConfig::setParameter( "oxid", "testId" );
+        modConfig::setRequestParameter( "oxid", "testId" );
 
         // testing..
         $oView = new Attribute_Main();
@@ -53,7 +53,7 @@ class Unit_Admin_AttributeMainTest extends OxidTestCase
      */
     public function testRenderNoRealObjectId()
     {
-        modConfig::setParameter( "oxid", "-1" );
+        modConfig::setRequestParameter( "oxid", "-1" );
 
         // testing..
         $oView = new Attribute_Main();
@@ -91,7 +91,7 @@ class Unit_Admin_AttributeMainTest extends OxidTestCase
     public function testSaveDefaultOxid()
     {
         oxTestModules::addFunction( 'oxattribute', 'save', '{ $this->oxattribute__oxid = new oxField("testId"); return true; }');
-        modConfig::setParameter( "oxid", "-1" );
+        modConfig::setRequestParameter( "oxid", "-1" );
 
         // testing..
         $oView = new Attribute_Main();
@@ -128,14 +128,14 @@ class Unit_Admin_AttributeMainTest extends OxidTestCase
     public function testSaveinnlangDefaultOxid()
     {
         oxTestModules::addFunction( 'oxattribute', 'save', '{ $this->oxattribute__oxid = new oxField("testId"); return true; }');
-        modConfig::setParameter( "oxid", "-1" );
-        modConfig::setParameter( "new_lang", "999" );
+        modConfig::setRequestParameter( "oxid", "-1" );
+        modConfig::setRequestParameter( "new_lang", "999" );
 
         // testing..
         $oView = new Attribute_Main();
         $oView->saveinnlang();
 
         $this->assertEquals( "1", $oView->getViewDataElement( "updatelist" ) );
-        $this->assertEquals( 999, oxConfig::getParameter( "new_lang" ) );
+        $this->assertEquals( 999, oxRegistry::getConfig()->getRequestParameter( "new_lang" ) );
     }
 }

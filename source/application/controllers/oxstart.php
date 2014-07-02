@@ -34,7 +34,7 @@ class oxStart extends oxUBase
     {
         $this->pageStart();
 
-        if ( 'oxstart' == oxConfig::getParameter( 'cl' )  || $this->isAdmin() )
+        if ( 'oxstart' == oxRegistry::getConfig()->getRequestParameter( 'cl' )  || $this->isAdmin() )
             return;
 
     }
@@ -48,7 +48,7 @@ class oxStart extends oxUBase
     {
         parent::render();
 
-        $sErrorNo = oxConfig::getParameter( 'execerror' );
+        $sErrorNo = oxRegistry::getConfig()->getRequestParameter( 'execerror' );
 
         $sTemplate = '';
 
@@ -103,7 +103,7 @@ class oxStart extends oxUBase
      */
     public function getErrorNumber()
     {
-        return oxConfig::getParameter( 'errornr' );
+        return oxRegistry::getConfig()->getRequestParameter( 'errornr' );
     }
 
     /**

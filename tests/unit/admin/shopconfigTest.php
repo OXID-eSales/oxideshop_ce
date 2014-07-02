@@ -54,12 +54,12 @@ class Unit_Admin_ShopConfigTest extends OxidTestCase
     public function testSaveConfVars()
     {
         modConfig::getInstance()->setAdminMode( true );
-        modConfig::setParameter( "oxid", "testId" );
-        modConfig::setParameter( "confbools",   array( "varnamebool" => true ) );
-        modConfig::setParameter( "confstrs",    array( "varnamestr"  => "string" ) );
-        modConfig::setParameter( "confarrs",    array( "varnamearr"  => "a\nb\nc" ) );
-        modConfig::setParameter( "confaarrs",   array( "varnameaarr" => "a => b\nc => d" ) );
-        modConfig::setParameter( "confselects", array( "varnamesel"  => "a" ) );
+        modConfig::setRequestParameter( "oxid", "testId" );
+        modConfig::setRequestParameter( "confbools",   array( "varnamebool" => true ) );
+        modConfig::setRequestParameter( "confstrs",    array( "varnamestr"  => "string" ) );
+        modConfig::setRequestParameter( "confarrs",    array( "varnamearr"  => "a\nb\nc" ) );
+        modConfig::setRequestParameter( "confaarrs",   array( "varnameaarr" => "a => b\nc => d" ) );
+        modConfig::setRequestParameter( "confselects", array( "varnamesel"  => "a" ) );
 
         $aTasks[] = "getConfig";
         $aTasks[] = "_getModuleForConfigVars";

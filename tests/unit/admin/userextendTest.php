@@ -35,7 +35,7 @@ class Unit_Admin_UserExtendTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setParameter( "oxid", "oxdefaultadmin" );
+        modConfig::setRequestParameter( "oxid", "oxdefaultadmin" );
 
         // testing..
         $oView = $this->getMock( "User_Extend", array( "_allowAdminEdit" ) );
@@ -64,9 +64,9 @@ class Unit_Admin_UserExtendTest extends OxidTestCase
         oxTestModules::addFunction( 'oxnewssubscribed', 'setOptInStatus', '{ return true; }');
         oxTestModules::addFunction( 'oxnewssubscribed', 'setOptInEmailStatus', '{ return true; }');
 
-        modConfig::setParameter( "oxid", "testId" );
-        modConfig::setParameter( "editnews", "1" );
-        modConfig::setParameter( "editval", array( "oxaddress__oxid" => "testOxId" ) );
+        modConfig::setRequestParameter( "oxid", "testId" );
+        modConfig::setRequestParameter( "editnews", "1" );
+        modConfig::setRequestParameter( "editval", array( "oxaddress__oxid" => "testOxId" ) );
 
         // testing..
         try {

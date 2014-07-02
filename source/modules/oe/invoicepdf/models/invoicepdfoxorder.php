@@ -213,7 +213,7 @@ class InvoicepdfOxOrder extends InvoicepdfOxOrder_parent
         $this->pdfHeader( $oPdf );
 
         // adding info data
-        switch ( oxConfig::getParameter( 'pdftype' ) ) {
+        switch ( oxRegistry::getConfig()->getRequestParameter( 'pdftype' ) ) {
             case 'dnote':
                 $this->exportDeliveryNote( $oPdf );
                 break;

@@ -36,9 +36,9 @@ class Unit_Admin_NavigationTest extends OxidTestCase
     public function testChshpPE()
     {
 
-        modConfig::setParameter( "listview", "testlistview" );
-        modConfig::setParameter( "editview", "testeditview" );
-        modConfig::setParameter( "actedit", "testactedit" );
+        modConfig::setRequestParameter( "listview", "testlistview" );
+        modConfig::setRequestParameter( "editview", "testeditview" );
+        modConfig::setRequestParameter( "actedit", "testactedit" );
 
         $oView = new Navigation();
         $oView->chshp();
@@ -58,7 +58,7 @@ class Unit_Admin_NavigationTest extends OxidTestCase
     public function testRender()
     {
         oxTestModules::addFunction( 'oxUtilsServer', 'setOxCookie', '{}');
-        modConfig::setParameter( "favorites", array( 0, 1, 2 ) );
+        modConfig::setRequestParameter( "favorites", array( 0, 1, 2 ) );
 
         // testing..
         $oView = new Navigation();
@@ -74,10 +74,10 @@ class Unit_Admin_NavigationTest extends OxidTestCase
     {
         oxTestModules::addFunction( 'oxUtilsServer', 'setOxCookie', '{}');
         oxTestModules::addFunction( 'oxUtilsServer', 'getOxCookie', '{return "a|b";}');
-        modConfig::setParameter( "item", "home.tpl" );
-        modConfig::setParameter( "favorites", array( 0, 1, 2 ) );
-        modConfig::setParameter( "navReload", false );
-        modConfig::setParameter( "openHistory", true );
+        modConfig::setRequestParameter( "item", "home.tpl" );
+        modConfig::setRequestParameter( "favorites", array( 0, 1, 2 ) );
+        modConfig::setRequestParameter( "navReload", false );
+        modConfig::setRequestParameter( "openHistory", true );
 
         $oDom = new stdClass();
         $oDom->documentElement = new stdClass();
@@ -113,10 +113,10 @@ class Unit_Admin_NavigationTest extends OxidTestCase
     {
         oxTestModules::addFunction( 'oxUtilsServer', 'setOxCookie', '{}');
         oxTestModules::addFunction( 'oxUtilsServer', 'getOxCookie', '{return "a|b";}');
-        modConfig::setParameter( "item", "home.tpl" );
-        modConfig::setParameter( "favorites", array( 0, 1, 2 ) );
-        modConfig::setParameter( "navReload", true );
-        modConfig::setParameter( "openHistory", true );
+        modConfig::setRequestParameter( "item", "home.tpl" );
+        modConfig::setRequestParameter( "favorites", array( 0, 1, 2 ) );
+        modConfig::setRequestParameter( "navReload", true );
+        modConfig::setRequestParameter( "openHistory", true );
         modSession::getInstance()->setVar( "navReload", "true" );
 
         $oDom = new stdClass();
@@ -191,7 +191,7 @@ class Unit_Admin_NavigationTest extends OxidTestCase
     public function testExturl()
     {
         oxTestModules::addFunction( 'oxUtils', 'showMessageAndExit', '{ throw new Exception("showMessageAndExit"); }');
-        modConfig::setParameter( "url", null );
+        modConfig::setRequestParameter( "url", null );
 
         try {
             // testing..
@@ -222,7 +222,7 @@ class Unit_Admin_NavigationTest extends OxidTestCase
         oxTestModules::addFunction( 'oxUtils', 'redirect', '{ return true; }');
         oxTestModules::addFunction( 'oxUtils', 'showMessageAndExit', '{ throw new Exception($aA[0]); }');
 
-        modConfig::setParameter( "url", $sUrl );
+        modConfig::setRequestParameter( "url", $sUrl );
 
         $oConfig = $this->getMock( "oxConfig", array( "getConfigParam", "getVersion", "getFullEdition" ) );
         $oConfig->expects( $this->at( 0 ) )->method( 'getConfigParam' )->with( $this->equalTo( "blLoadDynContents" ) )->will( $this->returnValue( true ));
@@ -251,7 +251,7 @@ class Unit_Admin_NavigationTest extends OxidTestCase
     public function testExturlUrlDefinedByParamBlLoadDynContentsFalse()
     {
         oxTestModules::addFunction( 'oxUtils', 'redirect', '{ throw new Exception($aA[0]); }');
-        modConfig::setParameter( "url", "testUrl" );
+        modConfig::setRequestParameter( "url", "testUrl" );
 
         $oConfig = $this->getMock( "oxConfig", array( "getConfigParam" ) );
         $oConfig->expects( $this->once() )->method( 'getConfigParam' )->with( $this->equalTo( "blLoadDynContents" ) )->will( $this->returnValue( false ) );

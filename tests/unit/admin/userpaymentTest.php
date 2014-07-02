@@ -73,9 +73,9 @@ class Unit_Admin_userPaymentTest extends OxidTestCase
         oxTestModules::addFunction( 'oxUtils', 'assignValuesToText', '{}' );
         oxTestModules::addFunction( 'oxuserpayment', 'save', '{ throw new Exception( "save" ); }' );
 
-        modConfig::setParameter( "oxid", "testId" );
-        modConfig::setParameter( "editval", array( "oxuserpayments__oxid" => "-1"));
-        modConfig::setParameter( "dynvalue", "testId" );
+        modConfig::setRequestParameter( "oxid", "testId" );
+        modConfig::setRequestParameter( "editval", array( "oxuserpayments__oxid" => "-1"));
+        modConfig::setRequestParameter( "dynvalue", "testId" );
 
         try {
             $oView = $this->getMock( "user_payment", array( "_allowAdminEdit") );
@@ -99,8 +99,8 @@ class Unit_Admin_userPaymentTest extends OxidTestCase
         oxTestModules::addFunction( 'oxuserpayment', 'load', '{ return true; }' );
         oxTestModules::addFunction( 'oxuserpayment', 'delete', '{ throw new Exception( "delete" ); }' );
 
-        modConfig::setParameter( "oxid", "testId" );
-        modConfig::setParameter( "editval", array( "oxuserpayments__oxid" => "testId"));
+        modConfig::setRequestParameter( "oxid", "testId" );
+        modConfig::setRequestParameter( "editval", array( "oxuserpayments__oxid" => "testId"));
 
         try {
             $oView = $this->getMock( "user_payment", array( "_allowAdminEdit") );
@@ -121,7 +121,7 @@ class Unit_Admin_userPaymentTest extends OxidTestCase
      */
     public function testGetUser()
     {
-        modConfig::setParameter( 'oxid', 'oxdefaultadmin' );
+        modConfig::setRequestParameter( 'oxid', 'oxdefaultadmin' );
         $oUserView = oxNew("user_payment");
         $oUser = $oUserView->getUser();
         $this->assertEquals( 'oxdefaultadmin', $oUser->getId() );
@@ -134,7 +134,7 @@ class Unit_Admin_userPaymentTest extends OxidTestCase
      */
     public function testGetPaymentId()
     {
-        modConfig::setParameter( 'oxpaymentid', 'oxidinvoice' );
+        modConfig::setRequestParameter( 'oxpaymentid', 'oxidinvoice' );
         $oUserView = oxNew("user_payment");
         $this->assertEquals( 'oxidinvoice', $oUserView->getPaymentId() );
     }
@@ -146,7 +146,7 @@ class Unit_Admin_userPaymentTest extends OxidTestCase
      */
     public function testGetPaymentIdNotSelected()
     {
-        modConfig::setParameter( 'oxpaymentid', null );
+        modConfig::setRequestParameter( 'oxpaymentid', null );
         $oUserView = oxNew("user_payment");
         $this->assertEquals( -1, $oUserView->getPaymentId() );
     }
@@ -158,7 +158,7 @@ class Unit_Admin_userPaymentTest extends OxidTestCase
      */
     public function testGetPaymentIdFromUserPayment()
     {
-        modConfig::setParameter( 'oxpaymentid', null );
+        modConfig::setRequestParameter( 'oxpaymentid', null );
         $oUserPayment  = new oxUserPayment();
         $oUserPayment->oxuserpayments__oxid = new oxField('oxidinvoice');
         $oUser = $this->getMock( 'oxuser', array( 'getUserPayments' ) );
@@ -239,7 +239,7 @@ class Unit_Admin_userPaymentTest extends OxidTestCase
         $oUpay->oxuserpayments__oxvalue = new oxField('_testValue', oxField::T_RAW);
         $oUpay->oxuserpayments__oxpaymentsid = new oxField('oxidinvoice', oxField::T_RAW);
         $oUpay->save();
-        modConfig::setParameter( 'oxid', 'oxdefaultadmin' );
+        modConfig::setRequestParameter( 'oxid', 'oxdefaultadmin' );
         $oUserView = $this->getProxyClass( 'user_payment' );
         $oUserView->setNonPublicVar( "_sPaymentId", '_testOxId' );
         $oPaymentList = $oUserView->getUserPayments();
@@ -267,7 +267,7 @@ class Unit_Admin_userPaymentTest extends OxidTestCase
         $oUpay->oxuserpayments__oxvalue = new oxField('_testValue', oxField::T_RAW);
         $oUpay->oxuserpayments__oxpaymentsid = new oxField('oxidinvoice', oxField::T_RAW);
         $oUpay->save();
-        modConfig::setParameter( 'oxid', 'oxdefaultadmin' );
+        modConfig::setRequestParameter( 'oxid', 'oxdefaultadmin' );
         oxTestModules::addFunction( "oxLang", "getTplLanguage", "{ return 1; }" );
         $oUserView = $this->getProxyClass( 'user_payment' );
         $oUserView->setNonPublicVar( "_sPaymentId", '_testOxId' );

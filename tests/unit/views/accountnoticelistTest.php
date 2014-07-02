@@ -150,7 +150,7 @@ class Unit_Views_accountNoticelistTest extends OxidTestCase
     {
         $oAccNoticeList = new Account_Noticelist();
 
-        $this->getConfig()->setParameter('anid', 'testId');
+        $this->getConfig()->setRequestParameter('anid', 'testId');
 
         $aParams = $oAccNoticeList->getNavigationParams();
 

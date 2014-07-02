@@ -47,7 +47,7 @@ class Unit_Admin_OrderOverviewTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::setParameter( "oxid", "testId" );
+        modConfig::setRequestParameter( "oxid", "testId" );
 
         // testing..
         $oView = new Order_Overview();
@@ -142,7 +142,7 @@ class Unit_Admin_OrderOverviewTest extends OxidTestCase
         $oOrder->oxorder__oxdeltype       = new oxField( "oxidstandard" );
         $oOrder->oxorder__oxordernr       = new oxField( 1 );
         $oOrder->save();
-        modConfig::setParameter( "ordernr", 1 );
+        modConfig::setRequestParameter( "ordernr", 1 );
         oxTestModules::addFunction( 'oxUtils', 'setHeader', '{ if ( !isset( $this->_aHeaderData ) ) { $this->_aHeaderData = array();} $this->_aHeaderData[] = $aA[0]; }');
         oxTestModules::addFunction( 'oxUtils', 'getHeaders', '{ return $this->_aHeaderData; }');
         oxTestModules::addFunction( 'oxUtils', 'showMessageAndExit', '{ $this->_aHeaderData[] = "testExportData"; }');
@@ -164,7 +164,7 @@ class Unit_Admin_OrderOverviewTest extends OxidTestCase
      */
     public function testSendorder()
     {
-        modConfig::setParameter( "sendmail", true );
+        modConfig::setRequestParameter( "sendmail", true );
         oxTestModules::addFunction( 'oxemail', 'sendSendedNowMail', '{ throw new Exception( "sendSendedNowMail" ); }');
         oxTestModules::addFunction( 'oxorder', 'load', '{ return true; }');
         oxTestModules::addFunction( 'oxorder', 'save', '{ return true; }');
@@ -252,7 +252,7 @@ class Unit_Admin_OrderOverviewTest extends OxidTestCase
 
         $oView = new Order_Overview();
 
-        modConfig::setParameter( "oxid", $soxId );
+        modConfig::setRequestParameter( "oxid", $soxId );
         $this->assertFalse($oView->canResetShippingDate());
 
         $oOrder->oxorder__oxsenddate      = new oxField( date( "Y-m-d H:i:s", oxUtilsDate::getInstance()->getTime()));

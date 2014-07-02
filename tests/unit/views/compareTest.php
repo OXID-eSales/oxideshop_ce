@@ -70,7 +70,7 @@ class Unit_Views_compareTest extends OxidTestCase
      */
     public function testMoveLeft()
     {
-        modConfig::setParameter( 'aid', "testId2" );
+        modConfig::setRequestParameter( 'aid', "testId2" );
         $aItems  = array( "testId1" => "testVal1", "testId2" => "testVal2", "testId3" => "testVal3" );
         $aResult = array( "testId1" => true, "testId2" => true, "testId3" => true );
 
@@ -85,7 +85,7 @@ class Unit_Views_compareTest extends OxidTestCase
      */
     public function testMoveLeftSkipsIfNoAnid()
     {
-        modConfig::setParameter( 'aid', "" );
+        modConfig::setRequestParameter( 'aid', "" );
 
         $oView = $this->getMock( "compare", array( "getCompareItems", "setCompareItems" ) );
         $oView->expects( $this->never() )->method( 'getCompareItems');
@@ -100,7 +100,7 @@ class Unit_Views_compareTest extends OxidTestCase
      */
     public function testMoveRight()
     {
-        modConfig::setParameter( 'aid', "testId2" );
+        modConfig::setRequestParameter( 'aid', "testId2" );
         $aItems  = array( "testId1" => "testVal1", "testId2" => "testVal2", "testId3" => "testVal3" );
         $aResult = array( "testId1" => true, "testId2" => true, "testId3" => true );
 
@@ -115,7 +115,7 @@ class Unit_Views_compareTest extends OxidTestCase
      */
     public function testMoveRightSkipsIfNoAnid()
     {
-        modConfig::setParameter( 'aid', "" );
+        modConfig::setRequestParameter( 'aid', "" );
 
         $oView = $this->getMock( "compare", array( "getCompareItems", "setCompareItems" ) );
         $oView->expects( $this->never() )->method( 'getCompareItems');

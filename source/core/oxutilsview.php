@@ -156,9 +156,9 @@ class oxUtilsView extends oxSuperCfg
      */
     public function addErrorToDisplay( $oEr, $blFull = false, $blCustomDestination = false, $sCustomDestination = "", $sActiveController = "" )
     {
-        if ( $blCustomDestination && ( oxConfig::getParameter( 'CustomError' ) || $sCustomDestination!= '' ) ) {
+        if ( $blCustomDestination && ( oxRegistry::getConfig()->getRequestParameter( 'CustomError' ) || $sCustomDestination!= '' ) ) {
             // check if the current request wants do display exceptions on its own
-            $sDestination = oxConfig::getParameter( 'CustomError' );
+            $sDestination = oxRegistry::getConfig()->getRequestParameter( 'CustomError' );
             if ( $sCustomDestination != '' ) {
                 $sDestination = $sCustomDestination;
             }

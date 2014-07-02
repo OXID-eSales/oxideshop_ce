@@ -47,7 +47,7 @@ class Unit_Views_moredetailsTest extends OxidTestCase
     public function testGetProductId()
     {
         $oMoreDetails = $this->getProxyClass( 'moredetails' );
-        modConfig::setParameter( 'anid', '2000' );
+        modConfig::setRequestParameter( 'anid', '2000' );
         $oMoreDetails->init();
 
         $this->assertEquals( '2000', $oMoreDetails->getProductId() );
@@ -61,7 +61,7 @@ class Unit_Views_moredetailsTest extends OxidTestCase
     public function testGetProduct()
     {
         $oMoreDetails = $this->getProxyClass( 'moredetails' );
-        modConfig::setParameter( 'anid', '2000' );
+        modConfig::setRequestParameter( 'anid', '2000' );
         $oMoreDetails->init();
 
         $this->assertEquals( '2000', $oMoreDetails->getProduct()->getId() );
@@ -75,7 +75,7 @@ class Unit_Views_moredetailsTest extends OxidTestCase
     public function testGetActPictureId()
     {
         $oMoreDetails = $this->getProxyClass( 'moredetails' );
-        modConfig::setParameter( 'anid', '096a1b0849d5ffa4dd48cd388902420b' );
+        modConfig::setRequestParameter( 'anid', '096a1b0849d5ffa4dd48cd388902420b' );
         $oMoreDetails->init();
 
         $this->assertEquals( '1', $oMoreDetails->getActPictureId() );
@@ -89,7 +89,7 @@ class Unit_Views_moredetailsTest extends OxidTestCase
     public function testGetArtZoomPics()
     {
         $oMoreDetails = $this->getProxyClass( 'moredetails' );
-        modConfig::setParameter( 'anid', '096a1b0849d5ffa4dd48cd388902420b' );
+        modConfig::setRequestParameter( 'anid', '096a1b0849d5ffa4dd48cd388902420b' );
         $oMoreDetails->init();
         $aZoom = $oMoreDetails->getArtZoomPics();
 

@@ -75,7 +75,7 @@ class Unit_Views_reviewTest extends OxidTestCase
      */
     public function testGetReviewUserHash()
     {
-        modConfig::setParameter( 'reviewuserhash', 'testHash' );
+        modConfig::setRequestParameter( 'reviewuserhash', 'testHash' );
 
         $oView = new review();
         $this->assertEquals( 'testHash', $oView->getReviewUserHash() );
@@ -220,8 +220,8 @@ class Unit_Views_reviewTest extends OxidTestCase
     public function testInit()
     {
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxConfig::getInstance()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
-        modConfig::setParameter( 'recommid', 'testRecommId' );
-        modConfig::setParameter( 'anid', '1126' );
+        modConfig::setRequestParameter( 'recommid', 'testRecommId' );
+        modConfig::setRequestParameter( 'anid', '1126' );
 
         $oRecommList = new oxRecommList();
         $oRecommList->setId( 'testRecommId' );
@@ -235,7 +235,7 @@ class Unit_Views_reviewTest extends OxidTestCase
 
     public function testInitNoRecommList()
     {
-        modConfig::setParameter( 'recommid', 'testRecommId' );
+        modConfig::setRequestParameter( 'recommid', 'testRecommId' );
         oxTestModules::addFunction( "oxUtils", "redirect", "{ throw new Exception( 'testInitNoRecommListException' ); }" );
 
         $oReview = $this->getMock( "review", array( "getActiveRecommList" ) );
@@ -252,9 +252,9 @@ class Unit_Views_reviewTest extends OxidTestCase
 
     public function testSaveReview()
     {
-        modConfig::setParameter( 'rvw_txt', 'review test' );
-        modConfig::setParameter( 'artrating', '4' );
-        modConfig::setParameter( 'anid', 'test' );
+        modConfig::setRequestParameter( 'rvw_txt', 'review test' );
+        modConfig::setRequestParameter( 'artrating', '4' );
+        modConfig::setRequestParameter( 'anid', 'test' );
 
         $oProduct = $this->getMock( 'oxarticle', array( 'getId', 'addToRatingAverage' ) );
         $oProduct->expects( $this->any() )->method( 'getId')->will( $this->returnValue( 'test' ) );
@@ -289,9 +289,9 @@ class Unit_Views_reviewTest extends OxidTestCase
 
     public function testSaveReviewIfOnlyReviewIsSet()
     {
-        modConfig::setParameter( 'rvw_txt', 'review test' );
-        modConfig::setParameter( 'artrating', null );
-        modConfig::setParameter( 'anid', 'test' );
+        modConfig::setRequestParameter( 'rvw_txt', 'review test' );
+        modConfig::setRequestParameter( 'artrating', null );
+        modConfig::setRequestParameter( 'anid', 'test' );
 
         $oUser = new oxUser();
         $oUser->load( "oxdefaultadmin" );
@@ -313,9 +313,9 @@ class Unit_Views_reviewTest extends OxidTestCase
 
     public function testSaveReviewIfWrongRating()
     {
-        modConfig::setParameter( 'rvw_txt', 'review test' );
-        modConfig::setParameter( 'artrating', 6 );
-        modConfig::setParameter( 'anid', 'test' );
+        modConfig::setRequestParameter( 'rvw_txt', 'review test' );
+        modConfig::setRequestParameter( 'artrating', 6 );
+        modConfig::setRequestParameter( 'anid', 'test' );
 
         $oUser = new oxUser();
         $oUser->load( "oxdefaultadmin" );
@@ -337,9 +337,9 @@ class Unit_Views_reviewTest extends OxidTestCase
 
     public function testSaveReviewIfOnlyRatingIsSet()
     {
-        modConfig::setParameter( 'rvw_txt', null );
-        modConfig::setParameter( 'artrating', '4' );
-        modConfig::setParameter( 'anid', 'test' );
+        modConfig::setRequestParameter( 'rvw_txt', null );
+        modConfig::setRequestParameter( 'artrating', '4' );
+        modConfig::setRequestParameter( 'anid', 'test' );
 
         $oUser = new oxUser();
         $oUser->load( "oxdefaultadmin" );
@@ -361,10 +361,10 @@ class Unit_Views_reviewTest extends OxidTestCase
 
     public function testGetDynUrlParams()
     {
-        modConfig::setParameter( 'cnid', 'testcnid' );
-        modConfig::setParameter( 'anid', 'testanid' );
-        modConfig::setParameter( 'listtype', 'testlisttype' );
-        modConfig::setParameter( 'recommid', 'testrecommid' );
+        modConfig::setRequestParameter( 'cnid', 'testcnid' );
+        modConfig::setRequestParameter( 'anid', 'testanid' );
+        modConfig::setRequestParameter( 'listtype', 'testlisttype' );
+        modConfig::setRequestParameter( 'recommid', 'testrecommid' );
 
         $oUbase = new oxUBase();
         $sDynParams  = $oUbase->getDynUrlParams();
@@ -434,7 +434,7 @@ class Unit_Views_reviewTest extends OxidTestCase
 
     public function testGetProduct()
     {
-        modConfig::setParameter( 'anid', '2000' );
+        modConfig::setRequestParameter( 'anid', '2000' );
         $oReview = new review();
 
         $this->assertEquals( '2000', $oReview->getProduct()->getId() );
@@ -488,7 +488,7 @@ class Unit_Views_reviewTest extends OxidTestCase
 
     public function testGetRecommList()
     {
-        modConfig::setParameter( 'recommid', 'testlist' );
+        modConfig::setRequestParameter( 'recommid', 'testlist' );
         $oRevew = $this->getProxyClass( "review" );
         $oArticle = oxNew("oxarticle");
         $oArticle->load('2000');
@@ -501,9 +501,9 @@ class Unit_Views_reviewTest extends OxidTestCase
 
     public function testGetAdditionalParams()
     {
-        modConfig::setParameter( 'searchparam', 'testsearchparam' );
-        modConfig::setParameter( 'recommid', 'testlist' );
-        modConfig::setParameter( 'reviewuserid', 'oxdefaultadmin' );
+        modConfig::setRequestParameter( 'searchparam', 'testsearchparam' );
+        modConfig::setRequestParameter( 'recommid', 'testlist' );
+        modConfig::setRequestParameter( 'reviewuserid', 'oxdefaultadmin' );
 
         $oUbase = new oxUBase();
         $sParams = $oUbase->getAdditionalParams();
@@ -518,8 +518,8 @@ class Unit_Views_reviewTest extends OxidTestCase
 
     public function testGetPageNavigation()
     {
-        modConfig::setParameter( 'recommid', 'testlist' );
-        modConfig::setParameter( 'reviewuserid', 'oxdefaultadmin' );
+        modConfig::setRequestParameter( 'recommid', 'testlist' );
+        modConfig::setRequestParameter( 'reviewuserid', 'oxdefaultadmin' );
         $oReview = $this->getMock( 'review', array( 'generatePageNavigation' ));
         $oReview->expects( $this->any() )->method( 'generatePageNavigation')->will($this->returnValue( "aaa" ) );
         $oReview->getActiveRecommList();

@@ -71,8 +71,8 @@ class actions_main_ajax extends ajaxListComponent
         $sArtTable = $this->_getViewName('oxarticles');
         $sO2CView  = $this->_getViewName('oxobject2category');
 
-        $sSelId      = oxConfig::getParameter( 'oxid' );
-        $sSynchSelId = oxConfig::getParameter( 'synchoxid' );
+        $sSelId      = oxRegistry::getConfig()->getRequestParameter( 'oxid' );
+        $sSynchSelId = oxRegistry::getConfig()->getRequestParameter( 'synchoxid' );
 
         // category selected or not ?
         if ( !$sSelId ) {
@@ -131,7 +131,7 @@ class actions_main_ajax extends ajaxListComponent
      */
     protected function _getSorting()
     {
-        if ( oxConfig::getParameter( 'oxid' ) && !oxConfig::getParameter( 'synchoxid' ) )
+        if ( oxRegistry::getConfig()->getRequestParameter( 'oxid' ) && !oxRegistry::getConfig()->getRequestParameter( 'synchoxid' ) )
             return 'order by oxactions2article.oxsort ';
         return parent::_getSorting();
     }
@@ -144,8 +144,8 @@ class actions_main_ajax extends ajaxListComponent
     public function removeArtFromAct()
     {
         $aChosenArt = $this->_getActionIds( 'oxactions2article.oxid' );
-        $sOxid = oxConfig::getParameter( 'oxid' );
-        if ( oxConfig::getParameter( 'all' ) ) {
+        $sOxid = oxRegistry::getConfig()->getRequestParameter( 'oxid' );
+        if ( oxRegistry::getConfig()->getRequestParameter( 'all' ) ) {
             $sQ = parent::_addFilter( "delete oxactions2article.* ".$this->_getQuery() );
             oxDb::getDb()->Execute( $sQ );
         } elseif ( is_array( $aChosenArt ) ) {
@@ -163,9 +163,9 @@ class actions_main_ajax extends ajaxListComponent
     {
         $myConfig  = $this->getConfig();
         $aArticles = $this->_getActionIds( 'oxarticles.oxid' );
-        $soxId     = oxConfig::getParameter( 'synchoxid' );
+        $soxId     = oxRegistry::getConfig()->getRequestParameter( 'synchoxid' );
 
-        if ( oxConfig::getParameter( 'all' ) ) {
+        if ( oxRegistry::getConfig()->getRequestParameter( 'all' ) ) {
             $sArtTable = $this->_getViewName('oxarticles');
             $aArticles = $this->_getAll( $this->_addFilter( "select $sArtTable.oxid ".$this->_getQuery() ) );
         }
@@ -200,7 +200,7 @@ class actions_main_ajax extends ajaxListComponent
     {
         $myConfig  = $this->getConfig();
         $sArtTable = $this->_getViewName('oxarticles');
-        $sSelId  = oxConfig::getParameter( 'oxid' );
+        $sSelId  = oxRegistry::getConfig()->getRequestParameter( 'oxid' );
         $sSelect  = "select * from $sArtTable left join oxactions2article on $sArtTable.oxid=oxactions2article.oxartid ";
         $sSelect .= "where oxactions2article.oxactionid = " . oxDb::getDb()->quote( $sSelId ) . " and oxactions2article.oxshopid = '".$myConfig->getShopID()."' ".$this->_getSorting();
 
@@ -223,8 +223,8 @@ class actions_main_ajax extends ajaxListComponent
         }
 
         //
-        if ( ( $iKey = array_search( oxConfig::getParameter( 'sortoxid' ), $aIdx2Id ) ) !== false ) {
-            $iDir = (oxConfig::getParameter( 'direction' ) == 'up')?($iKey-1):($iKey+1);
+        if ( ( $iKey = array_search( oxRegistry::getConfig()->getRequestParameter( 'sortoxid' ), $aIdx2Id ) ) !== false ) {
+            $iDir = (oxRegistry::getConfig()->getRequestParameter( 'direction' ) == 'up')?($iKey-1):($iKey+1);
             if ( isset( $aIdx2Id[$iDir] ) ) {
 
                 // exchanging indexes

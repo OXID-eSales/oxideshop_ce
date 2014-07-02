@@ -56,7 +56,7 @@ class Delivery_Articles extends oxAdminDetails
                $this->_aViewData['readonly'] = true;
         }
 
-        $iAoc = oxConfig::getParameter("aoc");
+        $iAoc = oxRegistry::getConfig()->getRequestParameter("aoc");
         if ( $iAoc == 1 ) {
             $oDeliveryArticlesAjax = oxNew( 'delivery_articles_ajax' );
             $this->_aViewData['oxajax'] = $oDeliveryArticlesAjax->getColumns();

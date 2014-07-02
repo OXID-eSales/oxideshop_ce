@@ -85,7 +85,7 @@ class Unit_Admin_ActionsArticleAjaxTest extends OxidTestCase
      */
     public function testRemoveActionArticle()
     {
-        modConfig::setParameter( "oxid", '_testActionDelete' );
+        modConfig::setRequestParameter( "oxid", '_testActionDelete' );
         
         $this->assertTrue( (bool) oxDb::getDb()->getOne( "select oxid from oxobject2action where oxactionid='_testActionDelete' limit 1" ) );
         $oView = oxNew( 'actions_article_ajax' );
@@ -100,8 +100,8 @@ class Unit_Admin_ActionsArticleAjaxTest extends OxidTestCase
      */
     public function testSetActionArticle()
     {
-        modConfig::setParameter( "oxid", '_testActionSet' );
-        modConfig::setParameter( "oxarticleid", '_testObject' );
+        modConfig::setRequestParameter( "oxid", '_testActionSet' );
+        modConfig::setRequestParameter( "oxarticleid", '_testObject' );
         
         $oView = oxNew( 'actions_article_ajax' );
         $oView->setactionarticle();
@@ -138,8 +138,8 @@ class Unit_Admin_ActionsArticleAjaxTest extends OxidTestCase
      */
     public function testGetQuerySynchoxidTrue()
     {
-        modConfig::setParameter( "oxid", 'oxid' );
-        modConfig::setParameter( "synchoxid", true );
+        modConfig::setRequestParameter( "oxid", 'oxid' );
+        modConfig::setRequestParameter( "synchoxid", true );
         $oView = oxNew( 'actions_article_ajax' );
         $this->assertEquals( "from ".$this->getObject2CategoryViewTable()." as oxobject2category left join ".$this->getArticleViewTable()." on  ".$this->getArticleViewTable().".oxid=oxobject2category.oxobjectid  where oxobject2category.oxcatnid = 'oxid'  and ".$this->getArticleViewTable().".oxid IS NOT NULL  and ".$this->getArticleViewTable().".oxid != '1'", trim( $oView->UNITgetQuery() ) );
     }

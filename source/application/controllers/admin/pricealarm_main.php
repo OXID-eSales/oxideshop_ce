@@ -82,7 +82,7 @@ class PriceAlarm_Main extends oxAdminDetails
             $this->_aViewData["edit_lang"] = $aLanguages[$iLang];
             // rendering mail message text
             $oLetter = new stdClass();
-            $aParams = oxConfig::getParameter( "editval");
+            $aParams = oxRegistry::getConfig()->getRequestParameter( "editval");
             if ( isset( $aParams['oxpricealarm__oxlongdesc'] ) && $aParams['oxpricealarm__oxlongdesc'] ) {
                 $oLetter->oxpricealarm__oxlongdesc = new oxField( stripslashes( $aParams['oxpricealarm__oxlongdesc'] ), oxField::T_RAW );
             } else {
@@ -129,7 +129,7 @@ class PriceAlarm_Main extends oxAdminDetails
             $oPricealarm = oxNew( "oxpricealarm" );
             $oPricealarm->load( $sOxid );
 
-            $aParams = oxConfig::getParameter( "editval" );
+            $aParams = oxRegistry::getConfig()->getRequestParameter( "editval" );
             $sMailBody = isset( $aParams['oxpricealarm__oxlongdesc'] ) ? stripslashes( $aParams['oxpricealarm__oxlongdesc'] ) : '';
             if ( $sMailBody ) {
                 $sMailBody = oxRegistry::get("oxUtilsView")->parseThroughSmarty( $sMailBody, $oPricealarm->getId() );

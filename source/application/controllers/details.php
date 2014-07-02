@@ -286,7 +286,7 @@ class Details extends oxUBase
             $this->_sThisTemplate = $oProduct->oxarticles__oxtemplate->value;
         }
 
-        if ( ( $sTplName = oxConfig::getParameter( 'tpl' ) ) ) {
+        if ( ( $sTplName = oxRegistry::getConfig()->getRequestParameter( 'tpl' ) ) ) {
             $this->_sThisTemplate = 'custom/'.basename ( $sTplName );
         }
 
@@ -554,7 +554,7 @@ class Details extends oxUBase
         $this->_blEditTags = false;
 
         // for ajax call
-        if ( oxConfig::getParameter( 'blAjax', true ) ) {
+        if ( oxRegistry::getConfig()->getRequestParameter( 'blAjax', true ) ) {
             oxRegistry::getUtils()->setHeader( "Content-Type: text/html; charset=".oxRegistry::getLang()->translateString( 'charset' ) );
             $oActView = oxNew( 'oxubase' );
             $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
@@ -1027,7 +1027,7 @@ class Details extends oxUBase
      */
     public function getTag()
     {
-        return oxConfig::getParameter("searchtag");
+        return oxRegistry::getConfig()->getRequestParameter("searchtag");
     }
 
     /**

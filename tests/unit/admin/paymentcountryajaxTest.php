@@ -89,7 +89,7 @@ class Unit_Admin_PaymentCountryAjaxTest extends OxidTestCase
     public function testGetQuerySynchoxid()
     {
         $sSynchoxid = '_testAction';
-        $this->getConfig()->setParameter( "synchoxid", $sSynchoxid );
+        $this->getConfig()->setRequestParameter( "synchoxid", $sSynchoxid );
         
         $oView = oxNew( 'payment_country_ajax' );
         $this->assertEquals( "from oxv_oxcountry_de where oxv_oxcountry_de.oxactive = '1' and oxv_oxcountry_de.oxid not in ( select oxv_oxcountry_de.oxid from oxobject2payment left join oxv_oxcountry_de on oxv_oxcountry_de.oxid=oxobject2payment.oxobjectid where oxobject2payment.oxpaymentid = '".$sSynchoxid."' and oxobject2payment.oxtype = 'oxcountry' )", trim( $oView->UNITgetQuery() ) );
@@ -103,7 +103,7 @@ class Unit_Admin_PaymentCountryAjaxTest extends OxidTestCase
     public function testGetQueryOxid()
     {
         $sOxid = '_testAction';
-        $this->getConfig()->setParameter( "oxid", $sOxid );
+        $this->getConfig()->setRequestParameter( "oxid", $sOxid );
         
         $oView = oxNew( 'payment_country_ajax' );
         $this->assertEquals( "from oxobject2payment left join oxv_oxcountry_de on oxv_oxcountry_de.oxid=oxobject2payment.oxobjectid where oxv_oxcountry_de.oxactive = '1' and oxobject2payment.oxpaymentid = '".$sOxid."' and oxobject2payment.oxtype = 'oxcountry'", trim( $oView->UNITgetQuery() ) );
@@ -118,8 +118,8 @@ class Unit_Admin_PaymentCountryAjaxTest extends OxidTestCase
     {
         $sOxid = '_testAction';
         $sSynchoxid = '_testActionSynch';
-        $this->getConfig()->setParameter( "oxid", $sOxid );
-        $this->getConfig()->setParameter( "synchoxid", $sSynchoxid );
+        $this->getConfig()->setRequestParameter( "oxid", $sOxid );
+        $this->getConfig()->setRequestParameter( "synchoxid", $sSynchoxid );
         
         $oView = oxNew( 'payment_country_ajax' );
         $this->assertEquals( "from oxobject2payment left join oxv_oxcountry_de on oxv_oxcountry_de.oxid=oxobject2payment.oxobjectid where oxv_oxcountry_de.oxactive = '1' and oxobject2payment.oxpaymentid = '".$sOxid."' and oxobject2payment.oxtype = 'oxcountry' and oxv_oxcountry_de.oxid not in ( select oxv_oxcountry_de.oxid from oxobject2payment left join oxv_oxcountry_de on oxv_oxcountry_de.oxid=oxobject2payment.oxobjectid where oxobject2payment.oxpaymentid = '".$sSynchoxid."' and oxobject2payment.oxtype = 'oxcountry' )", trim( $oView->UNITgetQuery() ) );
@@ -149,8 +149,8 @@ class Unit_Admin_PaymentCountryAjaxTest extends OxidTestCase
     public function testRemovePayFromCountryAll()
     {
         $sOxid = '_testPayRemoveAll';
-        $this->getConfig()->setParameter( "oxid", $sOxid );
-        $this->getConfig()->setParameter( "all", true );
+        $this->getConfig()->setRequestParameter( "oxid", $sOxid );
+        $this->getConfig()->setRequestParameter( "all", true );
         
         $sSql = "select count(oxid) from oxobject2payment where oxpaymentid = '".$sOxid."'";
         $oView = oxNew( 'payment_country_ajax' );
@@ -167,7 +167,7 @@ class Unit_Admin_PaymentCountryAjaxTest extends OxidTestCase
     public function testAddPayToCountry()
     {
         $sSynchoxid = '_testPayAdd';
-        $this->getConfig()->setParameter( "synchoxid", $sSynchoxid );
+        $this->getConfig()->setRequestParameter( "synchoxid", $sSynchoxid );
         
         $sSql = "select count(oxid) from oxobject2payment where oxpaymentid='$sSynchoxid'";
         $this->assertEquals( 0, oxDb::getDb()->getOne( $sSql ) );
@@ -187,8 +187,8 @@ class Unit_Admin_PaymentCountryAjaxTest extends OxidTestCase
     public function testAddPayToCountryAll()
     {
         $sSynchoxid = '_testPayAddAll';
-        $this->getConfig()->setParameter( "synchoxid", $sSynchoxid );
-        $this->getConfig()->setParameter( "all", true );
+        $this->getConfig()->setRequestParameter( "synchoxid", $sSynchoxid );
+        $this->getConfig()->setRequestParameter( "all", true );
         
         //count how much articles gets filtered
         $iCount = oxDb::getDb()->getOne( "select count(oxv_oxcountry_de.oxid) from oxv_oxcountry_de where oxv_oxcountry_de.oxactive = '1' and oxv_oxcountry_de.oxid not in ( select oxv_oxcountry_de.oxid from oxobject2payment left join oxv_oxcountry_de on oxv_oxcountry_de.oxid=oxobject2payment.oxobjectid where oxobject2payment.oxpaymentid = '".$sSynchoxid."' and oxobject2payment.oxtype = 'oxcountry')" );

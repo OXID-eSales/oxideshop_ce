@@ -84,16 +84,6 @@ class Unit_Core_oxSeoEncoderContentTest extends OxidTestCase
     }
 
     /**
-     * oxSeoEncoderContent::getInstance() test case
-     *
-     * @return null
-     */
-    public function testGetInstance()
-    {
-        $this->assertTrue(oxSeoEncoderContent::getInstance() instanceof oxSeoEncoderContent);
-    }
-
-    /**
      * Content url getter tests
      */
     public function testGetContentUrlExisting()

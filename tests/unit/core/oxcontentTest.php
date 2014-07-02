@@ -299,14 +299,14 @@ class Unit_Core_oxcontentTest extends OxidTestCase
         oxTestModules::addFunction( 'oxSeoEncoderContent', 'onDeleteContent', '{$this->onDelete[] = $aA[0];}' );
         oxTestModules::addFunction( 'oxSeoEncoderContent', 'resetInst', '{self::$_instance = $this;}' );
         oxNew( 'oxSeoEncoderContent' )->resetInst();
-        oxSeoEncoderContent::getInstance()->onDelete = array();
+        oxRegistry::get("oxSeoEncoderContent")->onDelete = array();
 
         // parent is not deletable
         $sId = $this->_oContent->getId();
         $this->assertEquals( true, $this->_oContent->delete() );
         $this->assertEquals( false, $this->_oContent->exists() );
-        $this->assertEquals( 1, count( oxSeoEncoderContent::getInstance()->onDelete ) );
-        $this->assertSame( $sId, oxSeoEncoderContent::getInstance()->onDelete[0] );
+        $this->assertEquals( 1, count( oxRegistry::get("oxSeoEncoderContent")->onDelete ) );
+        $this->assertSame( $sId, oxRegistry::get("oxSeoEncoderContent")->onDelete[0] );
     }
 
     /**

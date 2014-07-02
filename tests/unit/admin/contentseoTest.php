@@ -49,7 +49,7 @@ class Unit_Admin_ContentSeoTest extends OxidTestCase
         $sQ = "delete from oxcontents where oxid like '_test%'";
         oxDb::getDb()->execute( $sQ );
 
-        oxSeoEncoderContent::getInstance()->cleanup();
+        oxRegistry::get("oxSeoEncoderContent")->cleanup();
         parent::tearDown();
     }
 

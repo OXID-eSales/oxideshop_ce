@@ -27,15 +27,6 @@
 class oxDeliverySetList extends oxList
 {
     /**
-     * oxDeliverySetList instance
-     *
-     * @deprecated since v5.0 (2012-08-10); Use oxRegistry::get("oxDeliverySetList") instead.
-     *
-     * @var oxDeliveryList
-     */
-    private static $_instance = null;
-
-    /**
      * Session user Id
      *
      * @var string
@@ -89,19 +80,6 @@ class oxDeliverySetList extends oxList
             $this->_sHomeCountry = $sHomeCountry;
         }
     }
-
-    /**
-     * Returns oxDeliverySetList instance
-     *
-     * @deprecated since v5.0 (2012-08-10); Use oxRegistry::get("oxDeliverySetList") instead.
-     *
-     * @return oxDeliverySetList
-     */
-    static function getInstance()
-    {
-        return oxRegistry::get("oxDeliverySetList");
-    }
-
 
     /**
      * Returns active delivery set list

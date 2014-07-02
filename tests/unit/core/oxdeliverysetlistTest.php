@@ -671,10 +671,10 @@ class Unit_Core_oxDeliverysetListTest extends OxidTestCase
               ->will($this->returnValue( '_testUserId' )
               );
 
-        $sQ = oxDeliverysetList::getInstance()->UNITgetFilterSelect( $oUser, '_testCoutntryId' );
+        $sQ = oxRegistry::get("oxDeliverySetList")->UNITgetFilterSelect( $oUser, '_testCoutntryId' );
 
         $sTable  = getViewName( 'oxdeliveryset' );
-        $sTestSQ = "select $sTable.* from $sTable where ".oxDeliverysetList::getInstance()->getBaseObject()->getSqlActiveSnippet()." and (
+        $sTestSQ = "select $sTable.* from $sTable where ".oxRegistry::get("oxDeliverySetList")->getBaseObject()->getSqlActiveSnippet()." and (
                 select
                 if(EXISTS(select 1 from oxobject2delivery, $sCountryTable where $sCountryTable.oxid=oxobject2delivery.oxobjectid and oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxdelset' LIMIT 1),
                     EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxdelset' and oxobject2delivery.OXOBJECTID='_testCoutntryId'),

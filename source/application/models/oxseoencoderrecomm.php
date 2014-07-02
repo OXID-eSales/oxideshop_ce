@@ -27,23 +27,6 @@
 class oxSeoEncoderRecomm extends oxSeoEncoder
 {
     /**
-     * Singleton instance.
-     */
-    protected static $_instance = null;
-
-    /**
-     * Singleton method
-     *
-     * @deprecated since v5.0 (2012-08-10); Use oxRegistry::get("oxSeoEncoderRecomm") instead.
-     *
-     * @return oxSeoEncoderRecomm
-     */
-    public static function getInstance()
-    {
-        return oxRegistry::get("oxSeoEncoderRecomm");
-    }
-
-    /**
      * Returns SEO uri for tag.
      *
      * @param oxrecommlist $oRecomm recomm list object

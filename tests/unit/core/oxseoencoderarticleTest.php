@@ -517,7 +517,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
         $oRecomm->oxrecommlists__oxtitle  = new oxField( "testrecommtitle" );
         $oRecomm->save();
 
-        $sRecommSeoUrl = oxSeoEncoderRecomm::getInstance()->getRecommUri( $oRecomm, $iLang );
+        $sRecommSeoUrl = oxRegistry::get("oxSeoEncoderRecomm")->getRecommUri( $oRecomm, $iLang );
 
         $oEncoder = $this->getMock( "oxSeoEncoderArticle", array( "_getRecomm",
                                                                   "_loadFromDb",

@@ -55,12 +55,6 @@ class Unit_Core_oxSeoEncoderRecommTest extends OxidTestCase
         parent::tearDown();
     }
 
-    public function testGetInstance()
-    {
-        $oInst = oxSeoEncoderRecomm::getInstance();
-        $this->assertTrue( $oInst instanceof oxSeoEncoderRecomm );
-    }
-
     public function testGetRecommUriCallCheckCantBeLoaded()
     {
         $iLang = 0;

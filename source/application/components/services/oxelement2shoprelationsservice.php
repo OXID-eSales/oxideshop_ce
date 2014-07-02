@@ -32,6 +32,7 @@ class oxElement2ShopRelationsService
      */
     protected $_sItemShopId = null;
 
+
     /**
      * @var array Selected subshops
      */

@@ -27,30 +27,11 @@
 class oxSeoEncoderManufacturer extends oxSeoEncoder
 {
     /**
-     * Singleton instance.
-     *
-     * @var oxmanufacturer
-     */
-    protected static $_instance = null;
-
-    /**
      * Root manufacturer uri cache
      *
      * @var array
      */
     protected $_aRootManufacturerUri = null;
-
-    /**
-     * Singleton method
-     *
-     * @deprecated since v5.0 (2012-08-10); Use oxRegistry::get("oxSeoEncoderManufacturer") instead.
-     *
-     * @return oxSeoEncoderManufacturer
-     */
-    public static function getInstance()
-    {
-        return oxRegistry::get("oxSeoEncoderManufacturer");
-    }
 
     /**
      * Returns target "extension" (/)

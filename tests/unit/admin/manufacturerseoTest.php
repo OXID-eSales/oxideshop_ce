@@ -49,7 +49,7 @@ class Unit_Admin_ManufacturerSeoTest extends OxidTestCase
         $sQ = "delete from oxmanufacturers where oxid like '_test%'";
         oxDb::getDb()->execute( $sQ );
 
-        oxSeoEncoderManufacturer::getInstance()->cleanup();
+        oxRegistry::get("oxSeoEncoderManufacturer")->cleanup();
         parent::tearDown();
     }
 

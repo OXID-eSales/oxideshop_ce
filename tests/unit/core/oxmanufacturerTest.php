@@ -353,18 +353,18 @@ class Unit_Core_oxmanufacturerTest extends OxidTestCase
         oxTestModules::addFunction('oxSeoEncoderManufacturer', 'onDeleteManufacturer', '{$this->onDelete[] = $aA[0];}');
         oxTestModules::addFunction('oxSeoEncoderManufacturer', 'resetInst', '{self::$_instance = $this;}');
         oxNew('oxSeoEncoderManufacturer')->resetInst();
-        oxSeoEncoderManufacturer::getInstance()->onDelete = array();
+        oxRegistry::get("oxSeoEncoderManufacturer")->onDelete = array();
 
         $obj = new oxmanufacturer();
         $this->assertEquals(false, $obj->delete());
-        $this->assertEquals(0, count(oxSeoEncoderManufacturer::getInstance()->onDelete));
+        $this->assertEquals(0, count(oxRegistry::get("oxSeoEncoderManufacturer")->onDelete));
         $this->assertEquals(false, $obj->exists());
 
         $obj->save();
         $this->assertEquals(true, $obj->delete());
         $this->assertEquals(false, $obj->exists());
-        $this->assertEquals(1, count(oxSeoEncoderManufacturer::getInstance()->onDelete));
-        $this->assertSame($obj, oxSeoEncoderManufacturer::getInstance()->onDelete[0]);
+        $this->assertEquals(1, count(oxRegistry::get("oxSeoEncoderManufacturer")->onDelete));
+        $this->assertSame($obj, oxRegistry::get("oxSeoEncoderManufacturer")->onDelete[0]);
     }
 
     public function testGetStdLinkWithParams()

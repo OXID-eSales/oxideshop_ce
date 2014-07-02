@@ -90,11 +90,6 @@ class Unit_Core_oxSeoEncoderManufacturerTest extends OxidTestCase
         $this->assertEquals( "manufacturerUri", $oEncoder->UNITgetAltUri( '1126', 0 ) );
     }
 
-    public function testGetInstance()
-    {
-        $this->assertTrue( oxSeoEncoderManufacturer::getInstance() instanceof oxSeoEncoderManufacturer );
-    }
-
     public function testGetManufacturerUrlExistingManufacturer()
     {
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxConfig::getInstance()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");

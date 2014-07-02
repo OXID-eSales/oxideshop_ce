@@ -26,12 +26,6 @@
 class oxPaymentList extends oxList
 {
     /**
-     * oxPaymentList instance
-     * @var oxPaymentList
-     */
-    protected static $_instance = null;
-
-    /**
      * Home country id
      *
      * @var string
@@ -63,18 +57,6 @@ class oxPaymentList extends oxList
         } else {
             $this->_sHomeCountry = $sHomeCountry;
         }
-    }
-
-    /**
-     * Returns oxPaymentList instance
-     *
-     * @deprecated since v5.0 (2012-08-10); Use oxRegistry::get("oxPaymentList") instead.
-     *
-     * @return oxpaymentList
-     */
-    public static function getInstance()
-    {
-        return oxRegistry::get("oxPaymentList");
     }
 
     /**

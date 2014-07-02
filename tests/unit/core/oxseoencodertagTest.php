@@ -42,12 +42,6 @@ class Unit_Core_oxSeoEncoderTagTest extends OxidTestCase
         parent::tearDown();
     }
 
-    public function testGetInstance()
-    {
-        $oInst = oxSeoEncoderTag::getInstance();
-        $this->assertTrue( $oInst instanceof oxSeoEncoderTag );
-    }
-
     public function testGetTagUri()
     {
         $oEncoder = $this->getMock( 'oxSeoEncoderTag', array( '_getDynamicTagUri', 'getStdTagUri' ) );

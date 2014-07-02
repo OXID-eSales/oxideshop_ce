@@ -133,7 +133,7 @@ class Unit_Views_tagTest extends OxidTestCase
         $oTagView->expects( $this->once() )->method( 'getActPage')->will( $this->returnValue( 0 ) );
         $oTagView->expects( $this->once() )->method( 'getTag')->will( $this->returnValue( 'testTag' ) );
 
-        $this->assertEquals( oxSeoEncoderTag::getInstance()->getTagUrl( 'testTag' ), $oTagView->getCanonicalUrl() );
+        $this->assertEquals( oxRegistry::get("oxSeoEncoderTag")->getTagUrl( 'testTag' ), $oTagView->getCanonicalUrl() );
     }
 
     public function testGeneratePageNavigationUrlSeo()

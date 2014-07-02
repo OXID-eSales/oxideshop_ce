@@ -27,28 +27,11 @@
 class oxSeoEncoderTag extends oxSeoEncoder
 {
     /**
-     * Singleton instance.
-     */
-    protected static $_instance = null;
-
-    /**
      * Tag preparation util object
      *
      * @var oxtagcloud
      */
     protected $_oTagPrepareUtil = null;
-
-    /**
-     * Singleton method
-     *
-     * @deprecated since v5.0 (2012-08-10); Use oxRegistry::get("oxSeoEncoderTag") instead.
-     *
-     * @return oxSeoEncoderTag
-     */
-    public static function getInstance()
-    {
-        return oxRegistry::get("oxSeoEncoderTag");
-    }
 
     /**
      * Returns SEO uri for tag.

@@ -27,15 +27,6 @@
 class oxDeliveryList extends oxList
 {
     /**
-     * oxDeliveryList instance
-     *
-     * @deprecated since v5.0 (2012-08-10); Use oxRegistry::get("oxDeliveryList") instead.
-     *
-     * @var oxDeliveryList
-     */
-    private static $_instance = null;
-
-    /**
      * Session user Id
      * @var string
      */
@@ -85,18 +76,6 @@ class oxDeliveryList extends oxList
 
         // load or not delivery list
         $this->setHomeCountry($this->getConfig()->getConfigParam('aHomeCountry'));
-    }
-
-    /**
-     * Returns oxDeliveryList instance
-     *
-     * @deprecated since v5.0 (2012-08-10); Use oxRegistry::get("oxDeliveryList") instead.
-     *
-     * @return oxDeliveryList
-     */
-    static function getInstance()
-    {
-        return oxRegistry::get("oxDeliveryList");
     }
 
     /**

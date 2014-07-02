@@ -27,29 +27,12 @@
 class oxSeoEncoderCategory extends oxSeoEncoder
 {
     /**
-     * Singleton instance.
-     */
-    protected static $_instance = null;
-
-    /**
      * _aCatCache cache for categories
      *
      * @var array
      * @access protected
      */
     protected $_aCatCache = array();
-
-    /**
-     * Singleton method
-     *
-     * @deprecated since v5.0 (2012-08-10); Use oxRegistry::get("oxSeoEncoderCategory") instead.
-     *
-     * @return oxseoencodercategory
-     */
-    public static function getInstance()
-    {
-        return oxRegistry::get("oxSeoEncoderCategory");
-    }
 
     /**
      * Returns target "extension" (/)

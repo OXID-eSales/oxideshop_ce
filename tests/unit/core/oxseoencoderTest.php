@@ -1647,7 +1647,7 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
         $oCategory->save();
 
         // now fetching parent category page nr 2 and comparing to subcategory - they should not match
-        $sParentUrl = oxSeoEncoderCategory::getInstance()->getCategoryPageUrl( $oParentCategory, 1, $oParentCategory->getLanguage() );
+        $sParentUrl = oxRegistry::get("oxSeoEncoderCategory")->getCategoryPageUrl( $oParentCategory, 1, $oParentCategory->getLanguage() );
         $this->assertNotEquals( $oCategory->getLink(), $sParentUrl );
     }
 

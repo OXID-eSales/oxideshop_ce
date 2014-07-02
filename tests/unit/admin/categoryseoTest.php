@@ -49,7 +49,7 @@ class Unit_Admin_CategorySeoTest extends OxidTestCase
         $sQ = "delete from oxcategories where oxid like '_test%'";
         oxDb::getDb()->execute( $sQ );
 
-        oxSeoEncoderCategory::getInstance()->cleanup();
+        oxRegistry::get("oxSeoEncoderCategory")->cleanup();
         parent::tearDown();
     }
 

@@ -353,18 +353,18 @@ class Unit_Core_oxCategoryTest extends OxidTestCase
         oxTestModules::addFunction('oxSeoEncoderCategory', 'onDeleteCategory', '{$this->onDelete[] = $aA[0];}');
         oxTestModules::addFunction('oxSeoEncoderCategory', 'resetInst', '{self::$_instance = $this;}');
         oxNew('oxSeoEncoderCategory')->resetInst();
-        oxSeoEncoderCategory::getInstance()->onDelete = array();
+        oxRegistry::get("oxSeoEncoderCategory")->onDelete = array();
 
         // parent is not deletable
         $this->assertEquals(false, $this->_oCategory->delete());
         $this->assertEquals(true, $this->_oCategory->exists());
-        $this->assertEquals(0, count(oxSeoEncoderCategory::getInstance()->onDelete));
+        $this->assertEquals(0, count(oxRegistry::get("oxSeoEncoderCategory")->onDelete));
 
         // so delete child
         $oCategory = new oxcategory();
         $this->assertEquals( true, $oCategory->delete( $this->_oCategoryB->getId() ) );
-        $this->assertEquals(1, count(oxSeoEncoderCategory::getInstance()->onDelete));
-        $this->assertSame($oCategory, oxSeoEncoderCategory::getInstance()->onDelete[0]);
+        $this->assertEquals(1, count(oxRegistry::get("oxSeoEncoderCategory")->onDelete));
+        $this->assertSame($oCategory, oxRegistry::get("oxSeoEncoderCategory")->onDelete[0]);
 
         $this->reload();
         // now parent is deletable [not a parent anymore]

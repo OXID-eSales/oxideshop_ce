@@ -55,7 +55,7 @@ class Unit_Core_oxsimpleshoplistTest extends OxidTestCase
     {
         $oShopList = new oxSimpleShopList();
 
-        $aList = $oShopList->getRawList();
+        $aList = $oShopList->getList();
         $this->assertEquals($this->_iShopCount, count($aList));
     }
 

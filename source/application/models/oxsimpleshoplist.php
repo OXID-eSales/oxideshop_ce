@@ -32,21 +32,21 @@ class oxSimpleShopList
      *
      * @var string
      */
-    protected $_sBaseQuery = 'SELECT * FROM `oxshops`';
+    protected $_sBaseQuery = 'SELECT `OXID`, `OXNAME` FROM `oxshops`';
 
     /**
      * Loads only necesarry list data into a simple object.
      * Takes only OXID and OXNAME from retrieved table data.
      *
-     * @param string $sWhere WHERE statement for the shop selection query. Ex.: 'WHERE oxactive = 1'.
+     * @param string $sWhere WHERE statement for the shop selection query. Ex.: 'oxactive = 1'.
      *
      * @return array
      */
-    public function getRawList($sWhere = null)
+    public function getList($sWhere = null)
     {
-        $sSql = $this->_getBaseSelectQuery();
+        $sSql = $this->_sBaseQuery;
         if (!is_null($sWhere)) {
-            $sSql .= " $sWhere";
+            $sSql .= " WHERE $sWhere";
         }
 
         $aShopList = array();
@@ -58,15 +58,5 @@ class oxSimpleShopList
             $aShopList[$iShopId]->oxshops__oxname = new oxField($aRow['OXNAME']);
         }
         return $aShopList;
-    }
-
-    /**
-     * Gets default selection query for getting shop list.
-     *
-     * @return string
-     */
-    protected function _getBaseSelectQuery()
-    {
-        return $this->_sBaseQuery;
     }
 }

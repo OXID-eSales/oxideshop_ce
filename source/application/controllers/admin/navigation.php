@@ -96,9 +96,9 @@ class Navigation extends oxAdminView
         if (!$blisMallAdmin) {
             // we only allow to see our shop
             $sShopID = oxRegistry::getSession()->getVariable("actshop");
-            $sWhere = "where ".$oBaseShop->getViewName().".oxid = '$sShopID'";
+            $sWhere = "oxid = '$sShopID'";
         }
-        $aShopList = $oShoplist->getRawList($sWhere);
+        $aShopList = $oShoplist->getList($sWhere);
         $this->_aViewData['shoplist'] = $aShopList;
 
         return $sItem;

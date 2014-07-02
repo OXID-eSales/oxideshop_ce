@@ -215,7 +215,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         }
 
 
-        $this->assertEquals( strtolower(trim($sExpectedBody)), strtolower(trim($sBody)), 'Incorect mail body' );
+        $this->assertEquals( strtolower(trim($sExpectedBody)), strtolower(trim($sBody)), "Incorect mail body: $sShopUrl" );
 
         return true;
     }

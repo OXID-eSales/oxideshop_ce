@@ -87,7 +87,7 @@ class Unit_Views_paymentTest extends OxidTestCase
     public function testGetPaymentList()
     {
         oxTestModules::addFunction('oxarticle', 'getLink( $iLang = null, $blMain = false  )', '{return "htpp://link_for_article/".$this->getId();}');
-        $mySession = oxSession::getInstance();
+        $mySession = oxRegistry::getSession();
         $this->setRequestParam( 'sShipSet', 'oxidstandard' );
         $this->setConfigParam( "blVariantParentBuyable", 1 );
         /**
@@ -123,7 +123,7 @@ class Unit_Views_paymentTest extends OxidTestCase
         oxTestModules::addFunction('oxarticle', 'getLink( $iLang = null, $blMain = false  )', '{return "htpp://link_for_article/".$this->getId();}');
         $this->setRequestParam( 'sShipSet', 'oxidstandard' );
         $this->setConfigParam( "blVariantParentBuyable", 1 );
-        $mySession = oxSession::getInstance();
+        $mySession = oxRegistry::getSession();
         /**
          * Preparing input
          */
@@ -155,7 +155,7 @@ class Unit_Views_paymentTest extends OxidTestCase
         oxTestModules::addFunction('oxarticle', 'getLink( $iLang = null, $blMain = false  )', '{return "htpp://link_for_article/".$this->getId();}');
         $this->setRequestParam( 'sShipSet', 'oxidstandard' );
         $this->setConfigParam( "blVariantParentBuyable", 1 );
-        $mySession = oxSession::getInstance();
+        $mySession = oxRegistry::getSession();
 
         $oUser = new oxuser();
         $oUser->load( 'oxdefaultadmin' );
@@ -185,7 +185,7 @@ class Unit_Views_paymentTest extends OxidTestCase
         oxTestModules::addFunction('oxarticle', 'getLink( $iLang = null, $blMain = false  )', '{return "htpp://link_for_article/".$this->getId();}');
         $this->setRequestParam( 'sShipSet', 'oxidstandard' );
         $this->setConfigParam( "blVariantParentBuyable", 1 );
-        $mySession = oxSession::getInstance();
+        $mySession = oxRegistry::getSession();
 
         $oUser = new oxuser();
         $oUser->load( 'oxdefaultadmin' );

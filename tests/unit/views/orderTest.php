@@ -222,7 +222,7 @@ class Unit_Views_orderTest extends OxidTestCase
     public function testInitForcesBasketRecalculation()
     {
         $oConfig  = oxRegistry::getConfig();
-        $mySession = oxSession::getInstance();
+        $mySession = oxRegistry::getSession();
 
         $oBasket = $this->getMock('oxBasket', array('onUpdate'));
         $oBasket->expects($this->once())
@@ -248,7 +248,7 @@ class Unit_Views_orderTest extends OxidTestCase
     public function testRenderWhenNoBasketExist()
     {
         $oConfig  = oxRegistry::getConfig();
-        $mySession = oxSession::getInstance();;
+        $mySession = oxRegistry::getSession();
 
         //basket name in session will be "basket"
         $oConfig->setConfigParam( 'blMallSharedBasket', 1 );
@@ -328,7 +328,7 @@ class Unit_Views_orderTest extends OxidTestCase
     public function testRenderWhenBasketIsEmpty()
     {
         $oConfig  = oxRegistry::getConfig();
-        $mySession = oxSession::getInstance();;
+        $mySession = oxRegistry::getSession();
 
         //basket name in session will be "basket"
         $oConfig->setConfigParam( 'blMallSharedBasket', 1 );
@@ -356,7 +356,7 @@ class Unit_Views_orderTest extends OxidTestCase
     public function testRenderWhenPaymentIsEmpty()
     {
         $oConfig  = oxRegistry::getConfig();
-        $mySession = oxSession::getInstance();
+        $mySession = oxRegistry::getSession();
 
         //basket name in session will be "basket"
         $oConfig->setConfigParam( 'blMallSharedBasket', 1 );
@@ -388,7 +388,7 @@ class Unit_Views_orderTest extends OxidTestCase
         oxAddClassModule( 'modOxPayment_order', 'oxpayment' );
 
         $oConfig  = oxRegistry::getConfig();
-        $mySession = oxSession::getInstance();
+        $mySession = oxRegistry::getSession();
 
         //basket name in session will be "basket"
         $oConfig->setConfigParam( 'blMallSharedBasket', 1 );
@@ -700,7 +700,7 @@ class Unit_Views_orderTest extends OxidTestCase
      */
     public function testGetBasket()
     {
-        $mySession = oxSession::getInstance();;
+        $mySession = oxRegistry::getSession();
 
         $oBasket = oxNew ('oxBasket');
         oxRegistry::getConfig()->setConfigParam( 'blMallSharedBasket', 1 );
@@ -717,7 +717,7 @@ class Unit_Views_orderTest extends OxidTestCase
      */
     public function testGetPayment()
     {
-        $mySession = oxSession::getInstance();;
+        $mySession = oxRegistry::getSession();
         oxTestModules::addFunction('oxpayment', 'isValidPayment', '{return true;}');
 
         //basket name in session will be "basket"
@@ -802,7 +802,7 @@ class Unit_Views_orderTest extends OxidTestCase
         oxRegistry::getConfig()->setConfigParam( 'blMallSharedBasket', 1 );
         //setting order info to session
         //oxSession::setVar( 'basket', $oBasket );
-        $mySession = oxSession::getInstance();;
+        $mySession = oxRegistry::getSession();
         $mySession->setBasket( $oBasket );
 
         $oOrder = $this->getProxyClass("order");
@@ -846,7 +846,7 @@ class Unit_Views_orderTest extends OxidTestCase
         $oBasket = oxNew ('oxBasket');
         $oBasket->setPayment( 'oxidcashondel' );
 
-        $mySession = oxSession::getInstance();;
+        $mySession = oxRegistry::getSession();
         $mySession->setBasket( $oBasket );
 
         //oxSession::setVar( 'basket', $oBasket );

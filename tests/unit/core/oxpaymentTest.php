@@ -475,7 +475,7 @@ class Unit_Core_oxpaymentTest extends OxidTestCase
             return; // EE only
 
         $myConfig = oxRegistry::getConfig();
-        $mySession = oxSession::getInstance();
+        $mySession = oxRegistry::getSession()->getId();
 
         $myConfig->setConfigParam( 'iPayment_blLogPaymentActions', true );
         modConfig::setRequestParameter('paymentid', '_testPaymentId');

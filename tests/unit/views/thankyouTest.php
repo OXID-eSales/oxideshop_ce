@@ -44,7 +44,8 @@ class Unit_Views_thankyouTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxUtilsServer', 'getServerVar', '{ if ( $aA[0] == "HTTP_HOST") { return "shop.com/"; } else { return "test.php";} }');
 
-        $mySession = oxSession::getInstance();
+        /** @var oxSession $mySession */
+        $mySession = oxRegistry::getSession();
         $oBasket = oxNew ('oxBasket');
         //oxSession::setVar( 'basket', $oBasket );
         $mySession->setBasket( $oBasket );

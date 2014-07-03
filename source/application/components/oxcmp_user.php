@@ -456,6 +456,7 @@ class oxcmp_user extends oxView
         $aInvAdress = $oConfig->getRequestParameter('invadr', true);
         $aDelAdress = $this->_getDelAddressData();
 
+        /** @var oxUser $oUser */
         $oUser = oxNew('oxuser');
 
         try {
@@ -545,7 +546,12 @@ class oxcmp_user extends oxView
         // new registered
         $this->_blIsNewUser = true;
 
-        return 'payment';
+        $sAction = 'payment?new_user=1&success=1';
+        if ($this->_blNewsSubscriptionStatus !== null && !$this->_blNewsSubscriptionStatus) {
+            $sAction = 'payment?new_user=1&success=1&newslettererror=4';
+        }
+
+        return $sAction;
     }
 
     /**

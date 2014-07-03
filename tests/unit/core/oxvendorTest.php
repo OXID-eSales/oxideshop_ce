@@ -355,18 +355,18 @@ class Unit_Core_oxvendorTest extends OxidTestCase
         oxTestModules::addFunction('oxSeoEncoderVendor', 'onDeleteVendor', '{$this->onDelete[] = $aA[0];}');
         oxTestModules::addFunction('oxSeoEncoderVendor', 'resetInst', '{self::$_instance = $this;}');
         oxNew('oxSeoEncoderVendor')->resetInst();
-        oxSeoEncoderVendor::getInstance()->onDelete = array();
+        oxRegistry::get("oxSeoEncoderVendor")->onDelete = array();
 
         $obj = new oxvendor();
         $this->assertEquals(false, $obj->delete());
-        $this->assertEquals(0, count(oxSeoEncoderVendor::getInstance()->onDelete));
+        $this->assertEquals(0, count(oxRegistry::get("oxSeoEncoderVendor")->onDelete));
         $this->assertEquals(false, $obj->exists());
 
         $obj->save();
         $this->assertEquals(true, $obj->delete());
         $this->assertEquals(false, $obj->exists());
-        $this->assertEquals(1, count(oxSeoEncoderVendor::getInstance()->onDelete));
-        $this->assertSame($obj, oxSeoEncoderVendor::getInstance()->onDelete[0]);
+        $this->assertEquals(1, count(oxRegistry::get("oxSeoEncoderVendor")->onDelete));
+        $this->assertSame($obj, oxRegistry::get("oxSeoEncoderVendor")->onDelete[0]);
     }
     public function testGetStdLinkWithParams()
     {

@@ -27,30 +27,11 @@
 class oxSeoEncoderVendor extends oxSeoEncoder
 {
     /**
-     * Singleton instance.
-     *
-     * @var oxvendor
-     */
-    protected static $_instance = null;
-
-    /**
      * Root vendor uri cache
      *
      * @var string
      */
     protected $_aRootVendorUri = null;
-
-    /**
-     * Singleton method
-     *
-     * @deprecated since v5.0 (2012-08-10); Use oxRegistry::get("oxSeoEncoderVendor") instead.
-     *
-     * @return oxSeoEncoderVendor
-     */
-    public static function getInstance()
-    {
-        return oxRegistry::get("oxSeoEncoderVendor");
-    }
 
     /**
      * Returns target "extension" (/)

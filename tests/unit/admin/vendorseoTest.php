@@ -49,7 +49,7 @@ class Unit_Admin_VendorSeoTest extends OxidTestCase
         $sQ = "delete from oxvendor where oxid like '_test%'";
         oxDb::getDb()->execute( $sQ );
 
-        oxSeoEncoderVendor::getInstance()->cleanup();
+        oxRegistry::get("oxSeoEncoderVendor")->cleanup();
         parent::tearDown();
     }
 

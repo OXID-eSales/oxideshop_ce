@@ -468,15 +468,15 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
     {
         $smarty = oxUtilsView::getInstance()->getSmarty();
         $smarty->compile_check = false;
-        $lang = oxLang::getInstance()->getTplLanguage( );
+        $lang = oxRegistry::getLang()->getTplLanguage( );
 
-        oxLang::getInstance()->setTplLanguage( 0 );
+        oxRegistry::getLang()->setTplLanguage( 0 );
         $text1 = oxUtilsView::getInstance()->parseThroughSmarty('aaa', 'aaa');
-        oxLang::getInstance()->setTplLanguage( 1 );
+        oxRegistry::getLang()->setTplLanguage( 1 );
         $text2 = oxUtilsView::getInstance()->parseThroughSmarty('bbb', 'aaa');
 
         $smarty->compile_check = true;
-        oxLang::getInstance()->setTplLanguage( $lang );
+        oxRegistry::getLang()->setTplLanguage( $lang );
 
         $this->assertEquals('aaa', $text1);
         $this->assertEquals('bbb', $text2);

@@ -270,7 +270,7 @@ class Unit_Core_oxmanufacturerTest extends OxidTestCase
 
         $oV = new oxManufacturer();
         $oV->load('root');
-        $this->assertEquals(oxLang::getInstance()->getBaseLanguage(), $oV->getLanguage());
+        $this->assertEquals(oxRegistry::getLang()->getBaseLanguage(), $oV->getLanguage());
     }
 
     public function testGetNrOfArticles()

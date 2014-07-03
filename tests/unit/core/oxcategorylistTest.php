@@ -370,7 +370,7 @@ class Unit_Core_oxCategoryListTest extends OxidTestCase
      */
     public function test_getSqlSelectFieldsForTree_lang1()
     {
-        oxLang::getInstance()->setBaseLanguage(1);
+        oxRegistry::getLang()->setBaseLanguage(1);
         $sExpect = 'tablex.oxid as oxid,'
                            .' tablex.oxactive as oxactive,'
                            .' tablex.oxhidden as oxhidden,'
@@ -443,7 +443,7 @@ class Unit_Core_oxCategoryListTest extends OxidTestCase
         $this->_oList->setVar('blHideEmpty', false);
         $this->_oList->setVar('blForceFull', 1);
         $this->_oList->setVar('iForceLevel', 0);
-        oxLang::getInstance()->setBaseLanguage(1);
+        oxRegistry::getLang()->setBaseLanguage(1);
 
         $sCurSql = $this->_oList->UNITgetSelectString();
         $sExpSql = "where 1  order";

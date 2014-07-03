@@ -47,7 +47,7 @@ class Unit_Admin_dyntrustedratingsTest extends OxidTestCase
      */
     public function testSave()
     {
-        $sLangAbbr = oxLang::getInstance()->getLanguageAbbr();
+        $sLangAbbr = oxRegistry::getLang()->getLanguageAbbr();
 
         $this->setRequestParam( "confaarrs", array( "aTsLangIds" => array( $sLangAbbr => "testId" ) ) );
         $this->setRequestParam( "confbools", array( "blTsWidget" => "true" ) );

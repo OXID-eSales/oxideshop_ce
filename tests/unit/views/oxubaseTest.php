@@ -339,7 +339,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
             $this->assertEquals( "ox|0|0|0|0", $oView->getViewId() );
 
             // and caching
-            oxLang::getInstance()->setBaseLanguage( 1 );
+            oxRegistry::getLang()->setBaseLanguage( 1 );
             $this->assertEquals( "ox|0|0|0|0", $oView->getViewId() );
     }
 
@@ -351,7 +351,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
     {
         $myConfig = oxRegistry::getConfig();
 
-        oxLang::getInstance()->setBaseLanguage( 1 );
+        oxRegistry::getLang()->setBaseLanguage( 1 );
         $this->setRequestParam( 'currency', '1' );
         $this->setRequestParam( 'cl', 'details' );
         $this->setRequestParam( 'fnc', 'dsd' );
@@ -933,7 +933,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
         $oView->getAdditionalParams();
 
         $sAdditionalParams = '';
-        if ( ( $sLang = oxLang::getInstance()->getUrlLang() ) ) {
+        if ( ( $sLang = oxRegistry::getLang()->getUrlLang() ) ) {
             $sAdditionalParams = $sLang."&amp;";
         }
         $sAdditionalParams .= "cl=testClass&amp;searchparam=aa&amp;searchtag=testtag&amp;searchcnid=testcat&amp;searchvendor=testvendor&amp;searchmanufacturer=testmanufact&amp;cnid=testCnId&amp;mnid=testid";
@@ -1246,12 +1246,12 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
      */
     public function testGetActiveLangAbbr()
     {
-        oxLang::getInstance()->setBaseLanguage( 0 );
+        oxRegistry::getLang()->setBaseLanguage( 0 );
 
         $oView = new oxubase();
         $this->assertEquals( "de", $oView->getActiveLangAbbr() );
 
-        oxLang::getInstance()->setBaseLanguage(1);
+        oxRegistry::getLang()->setBaseLanguage(1);
 
         $oView = new oxubase();
         $this->assertEquals( "en", $oView->getActiveLangAbbr() );
@@ -1450,7 +1450,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
         }
 
         $sShopId = oxRegistry::getConfig()->getShopId();
-        $sLangId = oxLang::getInstance()->getBaseLanguage();
+        $sLangId = oxRegistry::getLang()->getBaseLanguage();
         $sIdent  = md5( strtolower( str_replace( '&', '&amp;', $sUri ) ) . $sShopId . $sLangId );
 
         // testing if request was written in seo log table
@@ -1478,7 +1478,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
         }
 
         $sShopId = oxRegistry::getConfig()->getShopId();
-        $sLangId = oxLang::getInstance()->getBaseLanguage();
+        $sLangId = oxRegistry::getLang()->getBaseLanguage();
         $sIdent  = md5( strtolower( str_replace( '&', '&amp;', $sUri ) ) . $sShopId . $sLangId );
 
         // testing if request was written in seo log table
@@ -1509,7 +1509,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
             $this->fail( 'error executing "testProcessRequestCantRedirect" test: '. $oEx->getMessage());
         }
 
-        $sLangId = oxLang::getInstance()->getBaseLanguage();
+        $sLangId = oxRegistry::getLang()->getBaseLanguage();
         $sIdent  = md5( strtolower( str_replace( '&', '&amp;', $sUri ) ) . '1' . $sLangId );
 
         // testing if request was written in seo log table
@@ -1541,7 +1541,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
             $this->fail( 'error executing "testProcessRequestCantRedirect" test: '. $oEx->getMessage());
         }
 
-        $sLangId = oxLang::getInstance()->getBaseLanguage();
+        $sLangId = oxRegistry::getLang()->getBaseLanguage();
         $sIdent  = md5( strtolower( str_replace( '&', '&amp;', $sUri ) ) . '1' . $sLangId );
 
         // testing if request was written in seo log table
@@ -1566,7 +1566,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
         $this->setConfigParam( "iMinOrderPrice", 40 );
         $oCur = oxRegistry::getConfig()->getActShopCurrencyObject();
 
-        $sMinOrderPrice = oxLang::getInstance()->formatCurrency( 40 * $oCur->rate );
+        $sMinOrderPrice = oxRegistry::getLang()->formatCurrency( 40 * $oCur->rate );
 
         $oUBase = $this->getMock( "oxUBase", array( "isLowOrderPrice" ) );
         $oUBase->expects( $this->once() )->method('isLowOrderPrice')->will( $this->returnValue( true ) );
@@ -2431,7 +2431,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
         }
 
         $sShopId = oxRegistry::getConfig()->getShopId();
-        $sLangId = oxLang::getInstance()->getBaseLanguage();
+        $sLangId = oxRegistry::getLang()->getBaseLanguage();
         $sIdent  = md5( strtolower( str_replace( '&', '&amp;', $sUri ) ) . $sShopId . $sLangId );
 
         // testing if request was written in seo log table

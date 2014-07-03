@@ -91,7 +91,7 @@ class Unit_Core_oxvendorlistTest extends OxidTestCase
 
         //modConfig::addClassVar("_iLanguageId","1"); //$oVendorlist->sLanguage = '1';
         //$myConfig->addClassFunction("getShopLanguage",create_function("","return 1;"));
-        oxLang::getInstance()->setBaseLanguage( 1 );
+        oxRegistry::getLang()->setBaseLanguage( 1 );
 
         $oVendorlist = oxNew( 'oxvendorlist' );
 

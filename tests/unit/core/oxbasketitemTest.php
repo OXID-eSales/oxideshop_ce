@@ -681,7 +681,7 @@ class Unit_Core_oxbasketitemTest extends OxidTestCase
         $this->oArticle->save();
 
         $oBasketItem->setLanguageId(2);
-        oxLang::getInstance()->setBaseLanguage(1);
+        oxRegistry::getLang()->setBaseLanguage(1);
 
         $oBasketItem = $this->getMock( 'oxbasketitem', array( 'getArticle' ) );
         $oBasketItem->expects( $this->any() )->method( 'getArticle' )->will( $this->returnValue( $this->oArticle ) );
@@ -1100,7 +1100,7 @@ class Unit_Core_oxbasketitemTest extends OxidTestCase
         $this->oArticle->save();
 
         $oBasketItem->setLanguageId(2);
-        oxLang::getInstance()->setBaseLanguage(1);
+        oxRegistry::getLang()->setBaseLanguage(1);
 
         $oBasketItem = $this->getMock( 'oxbasketitem', array( 'getArticle' ) );
         $oBasketItem->expects( $this->any() )->method( 'getArticle' )->will( $this->returnValue( $this->oArticle ) );

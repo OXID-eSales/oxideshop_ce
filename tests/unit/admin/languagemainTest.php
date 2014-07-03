@@ -314,7 +314,7 @@ class Unit_Admin_LanguageMainTest extends OxidTestCase
         $aLangData['params']['en'] = array("baseId" => 1, "active" => 1, "sort" => 10, "default" => false);
 
         $oConfig = $this->getMock( "oxConfig", array( "getTranslationsDir" ) );
-        $oConfig->expects( $this->once() )->method( "getTranslationsDir" )->with( $this->equalTo( 'lang.php' ), oxLang::getInstance()->getLanguageAbbr( 1 ) )->will( $this->returnValue( "dir/to/langfile" ) );
+        $oConfig->expects( $this->once() )->method( "getTranslationsDir" )->with( $this->equalTo( 'lang.php' ), oxRegistry::getLang()->getLanguageAbbr( 1 ) )->will( $this->returnValue( "dir/to/langfile" ) );
 
         $oView = $this->getMock( "modLanguageMain", array( "getConfig" ), array(), '', false );
         $oView->expects( $this->any() )->method( 'getConfig' )->will( $this->returnValue( $oConfig ) );
@@ -339,7 +339,7 @@ class Unit_Admin_LanguageMainTest extends OxidTestCase
 
         $oConfig = $this->getMock( "oxConfig", array( "getTranslationsDir" ) );
        
-        $oConfig->expects( $this->once() )->method( "getTranslationsDir" )->with( $this->equalTo( 'lang.php' ), oxLang::getInstance()->getLanguageAbbr( 1 ) )->will( $this->returnValue( "" ) );
+        $oConfig->expects( $this->once() )->method( "getTranslationsDir" )->with( $this->equalTo( 'lang.php' ), oxRegistry::getLang()->getLanguageAbbr( 1 ) )->will( $this->returnValue( "" ) );
 
         $oView = $this->getMock( "modLanguageMain", array( "getConfig" ), array(), '', false );
         $oView->expects( $this->any() )->method( 'getConfig' )->will( $this->returnValue( $oConfig ) );
@@ -349,7 +349,7 @@ class Unit_Admin_LanguageMainTest extends OxidTestCase
 
         $aEx = oxSession::getVar( "Errors" );
         $oEx = unserialize( $aEx["default"][0] );
-        $sErrMsg = oxLang::getInstance()->translateString( "LANGUAGE_NOTRANSLATIONS_WARNING" );
+        $sErrMsg = oxRegistry::getLang()->translateString( "LANGUAGE_NOTRANSLATIONS_WARNING" );
 
         $this->assertEquals( $sErrMsg, $oEx->getOxMessage() );
     }
@@ -408,7 +408,7 @@ class Unit_Admin_LanguageMainTest extends OxidTestCase
 
         $aEx = oxSession::getVar( "Errors" );
         $oEx = unserialize( $aEx["default"][0] );
-        $sErrMsg = oxLang::getInstance()->translateString( "LANGUAGE_ERROR_ADDING_MULTILANG_FIELDS" );
+        $sErrMsg = oxRegistry::getLang()->translateString( "LANGUAGE_ERROR_ADDING_MULTILANG_FIELDS" );
 
         $this->assertEquals( $sErrMsg, $oEx->getOxMessage() );
     }
@@ -464,7 +464,7 @@ class Unit_Admin_LanguageMainTest extends OxidTestCase
 
         $aEx = oxSession::getVar("Errors");
         $oEx = unserialize( $aEx["default"][0] );
-        $sErrMsg = oxLang::getInstance()->translateString( "LANGUAGE_ALREADYEXISTS_ERROR" );
+        $sErrMsg = oxRegistry::getLang()->translateString( "LANGUAGE_ALREADYEXISTS_ERROR" );
 
         $this->assertEquals( $sErrMsg, $oEx->getOxMessage() );
     }
@@ -486,7 +486,7 @@ class Unit_Admin_LanguageMainTest extends OxidTestCase
 
         $aEx = oxSession::getVar("Errors");
         $oEx = unserialize( $aEx["default"][0] );
-        $sErrMsg = oxLang::getInstance()->translateString( "LANGUAGE_EMPTYLANGUAGENAME_ERROR" );
+        $sErrMsg = oxRegistry::getLang()->translateString( "LANGUAGE_EMPTYLANGUAGENAME_ERROR" );
 
         $this->assertEquals( $sErrMsg, $oEx->getOxMessage() );
     }

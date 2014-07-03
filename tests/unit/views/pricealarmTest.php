@@ -139,7 +139,7 @@ class Unit_Views_pricealarmTest extends OxidTestCase
         modSession::getInstance()->setVar( 'usr', "testUserId" );
         $aParams["email"] = "goodemail@ladyGagaFans.lt";
 
-        oxLang::getInstance()->setBaseLanguage( 1 );
+        oxRegistry::getLang()->setBaseLanguage( 1 );
         modConfig::setRequestParameter( "pa", $aParams );
 
         $oPriceAlarm->addme();

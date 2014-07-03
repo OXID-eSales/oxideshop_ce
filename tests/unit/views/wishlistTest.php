@@ -181,7 +181,7 @@ class Unit_Views_wishlistTest extends OxidTestCase
         $aResults  = array();
         $aResult   = array();
 
-        $aResult["title"] = oxLang::getInstance()->translateString( 'PUBLIC_GIFT_REGISTRIES', oxLang::getInstance()->getBaseLanguage(), false );
+        $aResult["title"] = oxRegistry::getLang()->translateString( 'PUBLIC_GIFT_REGISTRIES', oxRegistry::getLang()->getBaseLanguage(), false );
         $aResult["link"]  = $oWishList->getLink();
 
         $aResults[] = $aResult;

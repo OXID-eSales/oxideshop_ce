@@ -59,7 +59,7 @@ class Unit_Core_oxSeoEncoderTagTest extends OxidTestCase
 
     public function testGetTagUrl()
     {
-        $iLang = oxLang::getInstance()->getBaseLanguage();
+        $iLang = oxRegistry::getLang()->getBaseLanguage();
         $sTag  = 'sTag';
 
         $oEncoder = $this->getMock( 'oxSeoEncoderTag', array( '_getFullUrl', 'getTagUri' ) );
@@ -72,7 +72,7 @@ class Unit_Core_oxSeoEncoderTagTest extends OxidTestCase
     public function testGetTagPageUrl()
     {
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxRegistry::getConfig()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
-        $sUrl = oxRegistry::getConfig()->getShopUrl( oxLang::getInstance()->getBaseLanguage() );
+        $sUrl = oxRegistry::getConfig()->getShopUrl( oxRegistry::getLang()->getBaseLanguage() );
 
             $sTag = "erste";
             $sAltTag = "authentisches";

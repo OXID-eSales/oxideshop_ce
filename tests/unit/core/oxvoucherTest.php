@@ -1214,7 +1214,7 @@ class Unit_Core_oxvoucherTest extends OxidTestCase
         $oSimpleVoucher = new stdClass();
         $oSimpleVoucher->sVoucherId = $oVoucher->getId();
         $oSimpleVoucher->sVoucherNr = $oVoucher->oxvouchers__oxvouchernr->value;
-        //$oSimpleVoucher->fVoucherdiscount = oxLang::getInstance()->formatCurrency( $oVoucher->oxvouchers__oxdiscount->value );
+        //$oSimpleVoucher->fVoucherdiscount = oxRegistry::getLang()->formatCurrency( $oVoucher->oxvouchers__oxdiscount->value );
 
         $this->assertEquals( $oSimpleVoucher, $oVoucher->getSimpleVoucher() );
     }

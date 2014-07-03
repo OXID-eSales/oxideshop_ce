@@ -337,7 +337,7 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
 
         $aEx = oxSession::getVar( "Errors" );
         $oEx = unserialize( $aEx["default"][0] );
-        $sExpMsg = oxLang::getInstance()->translateString('CATEGORY_PICTURES_UPLOADISDISABLED');
+        $sExpMsg = oxRegistry::getLang()->translateString('CATEGORY_PICTURES_UPLOADISDISABLED');
 
         $this->assertFalse(empty($sExpMsg), 'no translation for CATEGORY_PICTURES_UPLOADISDISABLED');
         $this->assertEquals( $sExpMsg, $oEx->getOxMessage() );

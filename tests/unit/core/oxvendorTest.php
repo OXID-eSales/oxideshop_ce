@@ -286,7 +286,7 @@ class Unit_Core_oxvendorTest extends OxidTestCase
 
         $oV = new oxVendor();
         $oV->load('root');
-        $this->assertEquals(oxLang::getInstance()->getBaseLanguage(), $oV->getLanguage());
+        $this->assertEquals(oxRegistry::getLang()->getBaseLanguage(), $oV->getLanguage());
     }
 
     public function testGetNrOfArticles()

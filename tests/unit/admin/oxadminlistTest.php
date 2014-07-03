@@ -472,7 +472,7 @@ class Unit_Admin_oxAdminListTest extends OxidTestCase
         $aWhere['oxtitle'] = 'das %testvalueäö% asd';
         $aWhere['oxid']    = 'testid';
 
-        oxLang::getInstance()->setBaseLanguage( 1 );
+        oxRegistry::getLang()->setBaseLanguage( 1 );
 
         $oAdminList = $this->getProxyClass( 'oxadminlist' );
         $sResultSql = $oAdminList->UNITprepareWhereQuery( $aWhere, '' );
@@ -573,7 +573,7 @@ class Unit_Admin_oxAdminListTest extends OxidTestCase
         $aResultWhere["{$sTable}.oxurldesc"] = '%oxurldesc%';
 
         modConfig::setRequestParameter( 'where', $aWhere );
-        oxLang::getInstance()->setBaseLanguage( 1 );
+        oxRegistry::getLang()->setBaseLanguage( 1 );
 
         $oLinks = oxNew( 'oxList' );
         $oLinks->init( 'oxLinks' );

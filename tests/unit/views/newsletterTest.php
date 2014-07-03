@@ -394,7 +394,7 @@ class Unit_Views_newsletterTest extends OxidTestCase
      */
     public function testSubscribingWithWrongInputs()
     {
-        oxLang::getInstance()->setBaseLanguage(1);
+        oxRegistry::getLang()->setBaseLanguage(1);
         $oTestNews = oxNew( "NewsLetter" );
         $aParams = array();
 
@@ -405,7 +405,7 @@ class Unit_Views_newsletterTest extends OxidTestCase
         $oTestNews->send();
         $aErrors = oxSession::getVar( 'Errors' );
         $oErr = unserialize( $aErrors['default'][0] );
-        $this->assertEquals( oxLang::getInstance()->translateString('ERROR_MESSAGE_COMPLETE_FIELDS_CORRECTLY'), $oErr->getOxMessage() ) ;
+        $this->assertEquals( oxRegistry::getLang()->translateString('ERROR_MESSAGE_COMPLETE_FIELDS_CORRECTLY'), $oErr->getOxMessage() ) ;
 
         //reseting errors
         oxSession::setVar( 'Errors', null );
@@ -417,7 +417,7 @@ class Unit_Views_newsletterTest extends OxidTestCase
 
         $aErrors = oxSession::getVar( 'Errors' );
         $oErr = unserialize( $aErrors['default'][0] );
-        $this->assertEquals( oxLang::getInstance()->translateString('MESSAGE_INVALID_EMAIL'), $oErr->getOxMessage() ) ;
+        $this->assertEquals( oxRegistry::getLang()->translateString('MESSAGE_INVALID_EMAIL'), $oErr->getOxMessage() ) ;
     }
 
     /**
@@ -430,7 +430,7 @@ class Unit_Views_newsletterTest extends OxidTestCase
         oxTestModules::addFunction( "oxemail", "send", "{return false;}" );
         oxTestModules::addFunction( "oxemail", "sendNewsletterDbOptInMail", "{return false;}" );
 
-        oxLang::getInstance()->setBaseLanguage(1);
+        oxRegistry::getLang()->setBaseLanguage(1);
         $oTestNews = oxNew( "NewsLetter" );
         $aParams = array();
 
@@ -442,7 +442,7 @@ class Unit_Views_newsletterTest extends OxidTestCase
 
         $aErrors = oxSession::getVar( 'Errors' );
         $oErr = unserialize( $aErrors['default'][0] );
-        $this->assertEquals( oxLang::getInstance()->translateString('MESSAGE_NOT_ABLE_TO_SEND_EMAIL'), $oErr->getOxMessage() ) ;
+        $this->assertEquals( oxRegistry::getLang()->translateString('MESSAGE_NOT_ABLE_TO_SEND_EMAIL'), $oErr->getOxMessage() ) ;
     }
     
     /**

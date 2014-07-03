@@ -223,8 +223,8 @@ class Unit_Core_oxwrappingTest extends OxidTestCase
         $oCardPrice = $oCard->getWrappingPrice();
 
         $this->assertEquals(2.5, $oCardPrice->getBruttoPrice());
-        $this->assertEquals('2,10', oxLang::getInstance()->formatCurrency( $oCardPrice->getNettoPrice()));
-        $this->assertEquals('0,40', oxLang::getInstance()->formatCurrency($oCardPrice->getVATValue()));
+        $this->assertEquals('2,10', oxRegistry::getLang()->formatCurrency( $oCardPrice->getNettoPrice()));
+        $this->assertEquals('0,40', oxRegistry::getLang()->formatCurrency($oCardPrice->getVATValue()));
     }
 
     public function testGetWrapPrice()
@@ -240,8 +240,8 @@ class Unit_Core_oxwrappingTest extends OxidTestCase
         $oWrapPrice = $oWrap->getWrappingPrice( 2 );
 
         $this->assertEquals( 5.9, $oWrapPrice->getBruttoPrice());
-        $this->assertEquals( '4,96', oxLang::getInstance()->formatCurrency( $oWrapPrice->getNettoPrice()));
-        $this->assertEquals( '0,94', oxLang::getInstance()->formatCurrency($oWrapPrice->getVATValue()));
+        $this->assertEquals( '4,96', oxRegistry::getLang()->formatCurrency( $oWrapPrice->getNettoPrice()));
+        $this->assertEquals( '0,94', oxRegistry::getLang()->formatCurrency($oWrapPrice->getVATValue()));
     }
 
     public function testGetWrapPriceVatOnTop()
@@ -258,9 +258,9 @@ class Unit_Core_oxwrappingTest extends OxidTestCase
         $dVat = 1+oxRegistry::getConfig()->getConfigParam( 'dDefaultVAT' )/100;
         $this->assertEquals( 5.9 * $dVat, $oWrapPrice->getBruttoPrice(), '', 2 );
         $this->assertEquals( 5.9, $oWrapPrice->getNettoPrice() );
-        $this->assertEquals('7,02', oxLang::getInstance()->formatCurrency( $oWrapPrice->getBruttoPrice() ) );
-        $this->assertEquals('5,90', oxLang::getInstance()->formatCurrency( $oWrapPrice->getNettoPrice() ) );
-        $this->assertEquals('1,12', oxLang::getInstance()->formatCurrency( $oWrapPrice->getVATValue() ) );
+        $this->assertEquals('7,02', oxRegistry::getLang()->formatCurrency( $oWrapPrice->getBruttoPrice() ) );
+        $this->assertEquals('5,90', oxRegistry::getLang()->formatCurrency( $oWrapPrice->getNettoPrice() ) );
+        $this->assertEquals('1,12', oxRegistry::getLang()->formatCurrency( $oWrapPrice->getVATValue() ) );
     }
 
     /**
@@ -297,7 +297,7 @@ class Unit_Core_oxwrappingTest extends OxidTestCase
 
         // validating
         $oWrapping->setWrappingVat( $this->_dDefaultVAT );
-        $this->assertEquals('2,95', oxLang::getInstance()->formatCurrency($oWrapping->getWrappingPrice()->getBruttoPrice()) );
+        $this->assertEquals('2,95', oxRegistry::getLang()->formatCurrency($oWrapping->getWrappingPrice()->getBruttoPrice()) );
     }
 
     public function testCalcFPriceInGBP()
@@ -310,7 +310,7 @@ class Unit_Core_oxwrappingTest extends OxidTestCase
         $oWrapping = oxNew( 'oxwrapping' );
         $oWrapping->Load( $this->_sWrapOxid );
         $oWrapping->setWrappingVat( $this->_dDefaultVAT );
-        $sPrice = oxLang::getInstance()->formatCurrency($oWrapping->getWrappingPrice()->getBruttoPrice() );
+        $sPrice = oxRegistry::getLang()->formatCurrency($oWrapping->getWrappingPrice()->getBruttoPrice() );
 
         // validating
         $this->assertEquals('2.53', $sPrice );
@@ -332,7 +332,7 @@ class Unit_Core_oxwrappingTest extends OxidTestCase
         }
 
         $oWrapping->setWrappingVat( $this->_dDefaultVAT );
-        $sPrice = oxLang::getInstance()->formatCurrency($oWrapping->getWrappingPrice()->getBruttoPrice() );
+        $sPrice = oxRegistry::getLang()->formatCurrency($oWrapping->getWrappingPrice()->getBruttoPrice() );
 
         // validating
         $this->assertEquals('4,23', $sPrice );

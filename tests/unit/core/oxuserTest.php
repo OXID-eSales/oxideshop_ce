@@ -1790,7 +1790,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
             $oUser->setMallUsersStatus( true );
             $oUser->createUser();
         } catch ( Exception $oExcp ) {
-            $oLang = oxLang::getInstance();
+            $oLang = oxRegistry::getLang();
             $this->assertEquals( sprintf( $oLang->translateString( 'ERROR_MESSAGE_USER_USEREXISTS', $oLang->getTplLanguage() ), $oUser->oxuser__oxusername->value ), $oExcp->getMessage() );
             return;
         }
@@ -2152,7 +2152,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
 
         $aInvAdress['oxuser__oxusername'] = $oUser->oxuser__oxusername->value;
 
-        $oLang = oxLang::getInstance();
+        $oLang = oxRegistry::getLang();
         $sMsg = sprintf( $oLang->translateString( 'EXCEPTION_USER_USEREXISTS', $oLang->getTplLanguage() ), $aInvAdress['oxuser__oxusername'] );
         oxTestModules::addFunction( "oxInputValidator", "checkLogin", "{ throw new oxUserException('{$sMsg}'); }");
 
@@ -3256,7 +3256,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
         $oUser->load('oxdefaultadmin');
         $this->assertEquals( "Deutschland", $oUser->getUserCountry()->value );
         $this->assertEquals( "Deutschland", $oUser->getNonPublicVar("_oUserCountryTitle")->value );
-        $this->assertEquals( $oUser->getUserCountry()->value, oxDb::getDb()->getOne( 'select oxtitle'.oxLang::getInstance()->getLanguageTag( null ).' from oxcountry where oxid = "'.$oUser->oxuser__oxcountryid->value.'"' ) );
+        $this->assertEquals( $oUser->getUserCountry()->value, oxDb::getDb()->getOne( 'select oxtitle'.oxRegistry::getLang()->getLanguageTag( null ).' from oxcountry where oxid = "'.$oUser->oxuser__oxcountryid->value.'"' ) );
     }
 
     public function testGetReviewUserHash()

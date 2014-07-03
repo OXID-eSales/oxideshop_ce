@@ -218,7 +218,7 @@ class Unit_Views_recommlistTest extends OxidTestCase
     {
         $sSearchparam = "testSearchParam";
 
-        $oLang = oxLang::getInstance();
+        $oLang = oxRegistry::getLang();
 
         $aPath[0] = oxNew( "oxcategory" );
         $aPath[0]->setLink( false );

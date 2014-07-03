@@ -299,12 +299,12 @@ class Unit_Views_compareTest extends OxidTestCase
         $aCatPath = array();
         $aResult  = array();
 
-        $aCatPath['title'] = oxLang::getInstance()->translateString( 'MY_ACCOUNT', 0, false );
+        $aCatPath['title'] = oxRegistry::getLang()->translateString( 'MY_ACCOUNT', 0, false );
         $aCatPath['link']  = oxSeoEncoder::getInstance()->getStaticUrl( $oCompare->getViewConfig()->getSelfLink() . 'cl=account' );
 
         $aResult[] = $aCatPath;
 
-        $aCatPath['title'] = oxLang::getInstance()->translateString( 'PRODUCT_COMPARISON', 0, false );
+        $aCatPath['title'] = oxRegistry::getLang()->translateString( 'PRODUCT_COMPARISON', 0, false );
         $aCatPath['link']  = $oCompare->getLink();
 
         $aResult[] = $aCatPath;

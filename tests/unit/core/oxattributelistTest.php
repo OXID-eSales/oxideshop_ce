@@ -70,7 +70,7 @@ class Unit_Core_oxattributelistTest extends OxidTestCase
      */
     public function testLoadAttributesByIdsInOtherLang()
     {
-        oxLang::getInstance()->setBaseLanguage(1);
+        oxRegistry::getLang()->setBaseLanguage(1);
         $oAttrList = new oxAttributelist();
         $aAttributes = $oAttrList->loadAttributesByIds( array('1672'));
 
@@ -166,7 +166,7 @@ class Unit_Core_oxattributelistTest extends OxidTestCase
      */
     public function testLoadAttributesInOtherLang()
     {
-        oxLang::getInstance()->setBaseLanguage(1);
+        oxRegistry::getLang()->setBaseLanguage(1);
         $oAttrList = new oxAttributelist();
         $oAttrList->loadAttributes('1672');
         $sSelect = "select oxattrid from oxobject2attribute where oxobjectid = '$sArtID'";
@@ -184,7 +184,7 @@ class Unit_Core_oxattributelistTest extends OxidTestCase
      */
     public function testLoadAttributesWithSort()
     {
-        oxLang::getInstance()->setBaseLanguage(0);
+        oxRegistry::getLang()->setBaseLanguage(0);
         $sSelect = "insert into oxattribute (oxid, oxshopid, oxshopincl, oxshopexcl, oxtitle, oxpos ) values ('test3', '1', '1', '0', 'test3', '3'), ('test1', '1', '1', '0', 'test1', '1'), ('test2', '1', '1', '0', 'test2', '2')";
             $sSelect = "insert into oxattribute (oxid, oxshopid, oxtitle, oxpos ) values ('test3', 'oxbaseshop', 'test3', '3'), ('test1', 'oxbaseshop', 'test1', '1'), ('test2', 'oxbaseshop', 'test2', '2')";
         $rs = oxDb::getDB()->execute($sSelect);

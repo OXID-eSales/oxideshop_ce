@@ -65,7 +65,7 @@ class Unit_Core_oxfieldTest extends OxidTestCase
 
         $sRawValue = '05.05.2008 10:02:02';
         $sValue = '05.05.2008 10:02:02';
-        if ( oxLang::getInstance()->getBaseLanguage() == 1 ) {
+        if ( oxRegistry::getLang()->getBaseLanguage() == 1 ) {
             $sRawValue = '2008-05-05 10:02:02';
             $sValue = '2008-05-05 10:02:02';
         }

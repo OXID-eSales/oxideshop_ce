@@ -226,7 +226,7 @@ class Unit_Core_oxi18ntest extends OxidTestCase
     public function testLazyLoadInLang0()
     {
         $this->cleanTmpDir();
-        oxLang::getInstance()->setBaseLanguage( 0 );
+        oxRegistry::getLang()->setBaseLanguage( 0 );
 
         $oBase = new _oxI18n();
         $oBase->enableLazyLoading();
@@ -238,7 +238,7 @@ class Unit_Core_oxi18ntest extends OxidTestCase
     public function testLazyLoadInLang1()
     {
         $this->cleanTmpDir();
-        oxLang::getInstance()->setBaseLanguage( 1 );
+        oxRegistry::getLang()->setBaseLanguage( 1 );
 
         $oBase = new _oxI18n();
         $oBase->enableLazyLoading();
@@ -249,7 +249,7 @@ class Unit_Core_oxi18ntest extends OxidTestCase
 
     public function testLoad()
     {
-        oxLang::getInstance()->setBaseLanguage( 1 );
+        oxRegistry::getLang()->setBaseLanguage( 1 );
 
         $oObj = new _oxI18n();
         $oObj->init("oxarticles");

@@ -91,7 +91,7 @@ class Unit_Core_oxManufacturerlistTest extends OxidTestCase
 
         //modConfig::addClassVar("_iLanguageId","1"); //$oManufacturerlist->sLanguage = '1';
         //$myConfig->addClassFunction("getShopLanguage",create_function("","return 1;"));
-        oxLang::getInstance()->setBaseLanguage( 1 );
+        oxRegistry::getLang()->setBaseLanguage( 1 );
 
         $oManufacturerlist = oxNew( 'oxManufacturerlist' );
 

@@ -94,7 +94,7 @@ class Unit_Core_oxreviewTest extends OxidTestCase
         $this->assertEquals( 'deValue', $oReview->oxreviews__oxtext->value );
 
          $sCreate = date( 'd.m.Y H:i:s', $this->_iReviewTime );
-        if ( oxLang::getInstance()->getBaseLanguage() == 1 ) {
+        if ( oxRegistry::getLang()->getBaseLanguage() == 1 ) {
             $sCreate = date( 'Y-m-d H:i:s', $this->_iReviewTime );
         }
 
@@ -112,7 +112,7 @@ class Unit_Core_oxreviewTest extends OxidTestCase
         $oReview->load( '_testId' );
 
         $sCreate = date( 'd.m.Y H:i:s', $iCurrTime );
-        if ( oxLang::getInstance()->getBaseLanguage() == 1 ) {
+        if ( oxRegistry::getLang()->getBaseLanguage() == 1 ) {
             $sCreate = date( 'Y-m-d H:i:s', $iCurrTime );
         }
 
@@ -133,7 +133,7 @@ class Unit_Core_oxreviewTest extends OxidTestCase
         $oReview->load( '_testId2' );
 
         $sCreate = date( 'd.m.Y H:i:s', $iCurrTime );
-        if ( oxLang::getInstance()->getBaseLanguage() == 1 ) {
+        if ( oxRegistry::getLang()->getBaseLanguage() == 1 ) {
             $sCreate = date( 'Y-m-d H:i:s', $iCurrTime );
         }
 

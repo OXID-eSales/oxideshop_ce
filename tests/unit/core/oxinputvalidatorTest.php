@@ -740,7 +740,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
 
         $aInvAdress['oxuser__oxusername'] = $oUser->oxuser__oxusername->value;
 
-        $oLang = oxLang::getInstance();
+        $oLang = oxRegistry::getLang();
         $sMsg = sprintf( $oLang->translateString( 'ERROR_MESSAGE_USER_USEREXISTS', $oLang->getTplLanguage() ), $aInvAdress['oxuser__oxusername'] );
 
         $oValidator = $this->getMock('oxinputvalidator', array('_addValidationError'));

@@ -56,7 +56,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
      */
     public function testGetTsId()
     {
-        $sLangId = oxLang::getInstance()->getLanguageAbbr();
+        $sLangId = oxRegistry::getLang()->getLanguageAbbr();
 
         $this->getConfig()->setConfigParam("aTsLangIds", array($sLangId => 123));
         $this->getConfig()->setConfigParam("aTsActiveLangIds", array($sLangId => 123));
@@ -102,7 +102,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
     public function testGetTsRatingUrl()
     {
         $this->getConfig()->setConfigParam("aTsConfig", $this->_aTsConfig);
-        $sLangId    = oxLang::getInstance()->getLanguageAbbr();
+        $sLangId    = oxRegistry::getLang()->getLanguageAbbr();
         $sTsInfoUri = (isset($this->_aTsConfig["sTsRatingUri"]) && isset($this->_aTsConfig["sTsRatingUri"][$sLangId])) ? $this->_aTsConfig["sTsRatingUri"][$sLangId] : false;
 
         $oViewConf = $this->getMock("oxViewConfig", array("getTsId"));
@@ -205,7 +205,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
         $myConfig->setActiveView(null);
         $aParams        = array();
         $aParams['sid'] = $this->getSession()->getId();
-        $sLang          = oxLang::getInstance()->getFormLang();
+        $sLang          = oxRegistry::getLang()->getFormLang();
         //$aParams['hiddensid']    = $this->getSession()->hiddenSid().( ( $sLang ) ? "\n{$sLang}" : "" );
         //$aParams['selflink']     = $myConfig->getShopHomeURL();
         //$aParams['sslselflink']  = $myConfig->getShopSecureHomeURL();
@@ -238,7 +238,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
         $aParams['cnid'] = $aParams['actcatid'] = null;
         $aParams['cl']   = $this->getConfig()->getActiveView()->getClassName();
         $aParams['tpl']  = null;
-        $aParams['lang'] = oxLang::getInstance()->getBaseLanguage();
+        $aParams['lang'] = oxRegistry::getLang()->getBaseLanguage();
         $aParams['helplink']   = $myConfig->getShopCurrentURL()."cl=help&amp;page=";
         $aParams['logoutlink'] = $myConfig->getShopHomeURL()."cl=".$this->getConfig()->getActiveView()->getClassName()."&amp;fnc=logout&amp;redirect=1";
         $aParams['iartPerPage']   = '';

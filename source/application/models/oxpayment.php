@@ -331,7 +331,7 @@ class oxPayment extends oxI18n
     public function getFNettoPrice()
     {
         if ( $this->getPrice() ) {
-            return oxLang::getInstance()->formatCurrency( $this->getPrice()->getNettoPrice() );
+            return oxRegistry::getLang()->formatCurrency( $this->getPrice()->getNettoPrice() );
         }
     }
 
@@ -345,7 +345,7 @@ class oxPayment extends oxI18n
     public function getFBruttoPrice()
     {
         if ( $this->getPrice() ) {
-            return oxLang::getInstance()->formatCurrency( $this->getPrice()->getBruttoPrice() );
+            return oxRegistry::getLang()->formatCurrency( $this->getPrice()->getBruttoPrice() );
         }
     }
 
@@ -359,7 +359,7 @@ class oxPayment extends oxI18n
     public function getFPriceVat()
     {
         if ( $this->getPrice() ) {
-            return oxLang::getInstance()->formatCurrency( $this->getPrice()->getVatValue() );
+            return oxRegistry::getLang()->formatCurrency( $this->getPrice()->getVatValue() );
         }
     }
 

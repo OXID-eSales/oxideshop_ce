@@ -393,7 +393,7 @@ class Unit_Core_oxCategoryTest extends OxidTestCase
     public function testGetCatInLang()
     {
         //modConfig::getInstance()->addClassFunction( 'getShopLanguage', create_function( '', 'return 1;' ) );
-        oxLang::getInstance()->setBaseLanguage( 1 );
+        oxRegistry::getLang()->setBaseLanguage( 1 );
         $oCat = oxNew( "oxcategory");
         $oCat->loadInLang(0, $this->_sCategory);
         $oObj = oxNew( "oxcategory");
@@ -406,7 +406,7 @@ class Unit_Core_oxCategoryTest extends OxidTestCase
     public function testGetCatInLangForPriceCat()
     {
         //modConfig::getInstance()->addClassFunction( 'getShopLanguage', create_function( '', 'return 1;' ) );
-        oxLang::getInstance()->setBaseLanguage( 1 );
+        oxRegistry::getLang()->setBaseLanguage( 1 );
         $this->_oCategory->oxcategories__oxpricefrom = new oxField('10', oxField::T_RAW);
         $this->_oCategory->oxcategories__oxpriceto = new oxField('50', oxField::T_RAW);
         $this->_oCategory->save();
@@ -875,12 +875,12 @@ class Unit_Core_oxCategoryTest extends OxidTestCase
 
             $sId = '8a142c3e44ea4e714.31136811';
 
-        oxLang::getInstance()->setBaseLanguage( 0 );
+        oxRegistry::getLang()->setBaseLanguage( 0 );
         $oCategory = new oxcategory();
         $oCategory->load( $sId );
         $this->assertEquals( 'Wohnen', $oCategory->oxcategories__oxtitle->value );
 
-        oxLang::getInstance()->setBaseLanguage( 1 );
+        oxRegistry::getLang()->setBaseLanguage( 1 );
         $oCategory = new oxcategory();
         $oCategory->load( $sId );
         $this->assertEquals( 'Living', $oCategory->oxcategories__oxtitle->value );

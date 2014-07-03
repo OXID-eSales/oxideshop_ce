@@ -58,7 +58,7 @@ class Unit_Views_contactTest extends OxidTestCase
         $this->assertFalse( $oContact->send() );
 
         //checking if warning was added to errors list
-        $sErr = oxLang::getInstance()->translateString( 'ERROR_MESSAGE_INPUT_NOVALIDEMAIL' );
+        $sErr = oxRegistry::getLang()->translateString( 'ERROR_MESSAGE_INPUT_NOVALIDEMAIL' );
         $aEx = oxSession::getVar( 'Errors' );
         $oErr = unserialize( $aEx['default'][0] );
 
@@ -82,7 +82,7 @@ class Unit_Views_contactTest extends OxidTestCase
         $this->assertFalse( $oContact->send() );
 
         //checking if warning was added to errors list
-        $sErr = oxLang::getInstance()->translateString( 'MESSAGE_WRONG_VERIFICATION_CODE' );
+        $sErr = oxRegistry::getLang()->translateString( 'MESSAGE_WRONG_VERIFICATION_CODE' );
         $aEx = oxSession::getVar( 'Errors' );
         $oErr = unserialize( $aEx['default'][0] );
 
@@ -107,7 +107,7 @@ class Unit_Views_contactTest extends OxidTestCase
         $this->assertFalse( $oContact->send() );
 
         //checking if warning was added to errors list
-        $sErr = oxLang::getInstance()->translateString( 'ERROR_MESSAGE_INPUT_NOTALLFIELDS' );
+        $sErr = oxRegistry::getLang()->translateString( 'ERROR_MESSAGE_INPUT_NOTALLFIELDS' );
         $aEx = oxSession::getVar( 'Errors' );
         $oErr = unserialize( $aEx['default'][0] );
 
@@ -222,7 +222,7 @@ class Unit_Views_contactTest extends OxidTestCase
         modConfig::setRequestParameter( "c_message", "message" );
         modConfig::setRequestParameter( "c_subject", "subject" );
 
-        $oLang = oxLang::getInstance();
+        $oLang = oxRegistry::getLang();
         $sMessage = $oLang->translateString( 'MESSAGE_FROM' ) . " " . $oLang->translateString( 'MR' ) ." admin admin(info@oxid-esales.com)<br /><br />message";
 
         $oEmail = $this->getMock( "oxemail", array( "sendContactMail" ) );

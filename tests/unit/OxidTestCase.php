@@ -242,7 +242,7 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      */
     public function setLanguage($iLangId)
     {
-        oxLang::getInstance()->setBaseLanguage($iLangId);
+        oxRegistry::getLang()->setBaseLanguage($iLangId);
     }
 
     /**
@@ -252,7 +252,7 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      */
     public function getLanguage()
     {
-        return oxLang::getInstance()->getBaseLanguage();
+        return oxRegistry::getLang()->getBaseLanguage();
     }
 
     /**
@@ -263,7 +263,7 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      */
     public function setTplLanguage($iLangId)
     {
-        oxLang::getInstance()->setTplLanguage($iLangId);
+        oxRegistry::getLang()->setTplLanguage($iLangId);
     }
 
     /**
@@ -273,7 +273,7 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      */
     public function getTplLanguage()
     {
-        return oxLang::getInstance()->getTplLanguage();
+        return oxRegistry::getLang()->getTplLanguage();
     }
 
     /**

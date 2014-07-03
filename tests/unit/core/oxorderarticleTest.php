@@ -259,7 +259,7 @@ class Unit_Core_oxorderarticleTest extends OxidTestCase
     public function getLanguage()
     {
         $oOrderArticle = new oxOrderArticle();
-        $this->assertEquals( oxLang::getInstance()->getBaseLanguage(), $oOrderArticle->getLanguage() );
+        $this->assertEquals( oxRegistry::getLang()->getBaseLanguage(), $oOrderArticle->getLanguage() );
     }
 
    public function testGetPrice()

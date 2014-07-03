@@ -568,7 +568,7 @@ class Unit_Core_oxUtilsCountTest extends OxidTestCase
         $myConfig = oxRegistry::getConfig();
         $myUtilsTest = new oxutilscount();
 
-        $sExpected = md5($myConfig->GetShopID().oxLang::getInstance()->getLanguageTag().serialize(null).'0');
+        $sExpected = md5($myConfig->GetShopID().oxRegistry::getLang()->getLanguageTag().serialize(null).'0');
         $this->assertEquals($sExpected, $myUtilsTest->UNITgetUserViewId());
     }
 

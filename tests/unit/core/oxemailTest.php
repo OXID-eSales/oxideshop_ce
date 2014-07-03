@@ -103,7 +103,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
     {
             $oActShop = oxRegistry::getConfig()->getActiveShop();
             $oActShop->setLanguage(0);
-            oxLang::getInstance()->setBaseLanguage(0);
+            oxRegistry::getLang()->setBaseLanguage(0);
             $this->cleanUpTable('oxuser');
             $this->cleanUpTable('oxorderarticles');
             $this->cleanUpTable('oxarticles');
@@ -688,7 +688,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
     public function testSetDefaultCharSet()
     {
         $this->_oEmail->setCharSet();
-        $this->assertEquals( oxLang::getInstance()->translateString("charset"), $this->_oEmail->getCharSet() );
+        $this->assertEquals( oxRegistry::getLang()->translateString("charset"), $this->_oEmail->getCharSet() );
     }
 
     /*
@@ -947,7 +947,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
 
         $oShop = $this->_oEmail->UNITgetShop(null, $iShopId);
         $this->assertEquals( $iShopId, $oShop->getShopId() );
-        $this->assertEquals( oxLang::getInstance()->getBaseLanguage(), $oShop->getLanguage() );
+        $this->assertEquals( oxRegistry::getLang()->getBaseLanguage(), $oShop->getLanguage() );
     }
 
     /*

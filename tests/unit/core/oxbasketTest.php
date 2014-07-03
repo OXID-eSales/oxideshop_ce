@@ -2802,8 +2802,8 @@ class Unit_Core_oxbasketTest extends OxidTestCase
         $oBasket->addToBasket( $this->oVariant->getId(), 10 );
         $oBasket->calculateBasket( false );
 
-        $aTestVats = array( 19 => oxLang::getInstance()->formatCurrency( ( 10*19 - 10*19/1.19 ) ),
-                             9 => oxLang::getInstance()->formatCurrency( ( 10*19 - 10*19/1.09 ) )
+        $aTestVats = array( 19 => oxRegistry::getLang()->formatCurrency( ( 10*19 - 10*19/1.19 ) ),
+                             9 => oxRegistry::getLang()->formatCurrency( ( 10*19 - 10*19/1.09 ) )
                           );
 
         $this->assertEquals( $aTestVats, $oBasket->getProductVats());

@@ -55,7 +55,7 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxUtils', 'seoIsActive', '{return false;}');
         modConfig::getInstance()->setConfigParam( "sDefaultLang", 9 );
-        $iLang = oxLang::getInstance()->getBaseLanguage();
+        $iLang = oxRegistry::getLang()->getBaseLanguage();
 
         $sExpUrl = "shop.com/index.php?param1=value1&amp;bonusid=111";
 

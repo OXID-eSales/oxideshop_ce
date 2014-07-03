@@ -114,7 +114,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
 
             $oActShop = oxRegistry::getConfig()->getActiveShop();
             $oActShop->setLanguage(0);
-            oxLang::getInstance()->setBaseLanguage(0);
+            oxRegistry::getLang()->setBaseLanguage(0);
             $this->cleanUpTable('oxuser');
             $this->cleanUpTable('oxorderarticles');
             $this->cleanUpTable('oxarticles');
@@ -479,8 +479,8 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
     public function testSendOrderEMailToOwnerWhenShopLangIsDifferentFromAdminLang()
     {
         $myConfig = oxRegistry::getConfig();
-        oxLang::getInstance()->setTplLanguage( 1 );
-        oxLang::getInstance()->setBaseLanguage( 1 );
+        oxRegistry::getLang()->setTplLanguage( 1 );
+        oxRegistry::getLang()->setBaseLanguage( 1 );
 
         $oPayment = new oxPayment();
         $oPayment->oxpayments__oxdesc = new oxField( "testPaymentDesc" );
@@ -950,7 +950,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         // check mail fields
         $aFields['sRecipient']     = 'shopOwner@shopOwnerEmail.nl';
         $aFields['sRecipientName'] = 'testShopName';
-        $aFields['sSubject']       = oxLang::getInstance()->translateString('STOCK_LOW', 0 );
+        $aFields['sSubject']       = oxRegistry::getLang()->translateString('STOCK_LOW', 0 );
         $aFields['sFrom']          = 'shopOwner@shopOwnerEmail.nl';
         $aFields['sFromName']      = 'testShopName';
 
@@ -1035,7 +1035,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
             // check mail fields
             $aFields['sRecipient']     = 'orderemail@orderemail.nl';
             $aFields['sRecipientName'] = 'testShopName';
-            $aFields['sSubject']       = oxLang::getInstance()->translateString('PRICE_ALERT_FOR_PRODUCT', 0 ) . " testArticle";
+            $aFields['sSubject']       = oxRegistry::getLang()->translateString('PRICE_ALERT_FOR_PRODUCT', 0 ) . " testArticle";
             $aFields['sFrom']          = 'username@useremail.nl';
             $aFields['sReplyTo']       = 'username@useremail.nl';
 

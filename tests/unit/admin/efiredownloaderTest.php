@@ -69,7 +69,7 @@ class Unit_Admin_EFireDownloaderTest extends OxidTestCase
 
         $oView = new EFire_Downloader();
         $oView->getConnector();
-        $this->assertEquals( oxLang::getInstance()->translateString('EFIRE_DOWNLOADER_SUCCESS' ), $oView->getViewDataElement( "message" ) );
+        $this->assertEquals( oxRegistry::getLang()->translateString('EFIRE_DOWNLOADER_SUCCESS' ), $oView->getViewDataElement( "message" ) );
     }
 
     /**

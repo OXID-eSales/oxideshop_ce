@@ -26,13 +26,6 @@
 class oxLang extends oxSuperCfg
 {
     /**
-     * oxLang instance.
-     *
-     * @var oxLang
-     */
-    private static $_instance = null;
-
-    /**
      * Language parameter name
      *
      * @var string
@@ -132,18 +125,6 @@ class oxLang extends oxSuperCfg
     public function isTranslated()
     {
         return $this->_blIsTranslated;
-    }
-
-    /**
-     * returns a single instance of this class
-     *
-     * @deprecated since v5.0 (2012-08-10); Use Registry getter instead - oxRegistry::getLang();
-     *
-     * @return oxLang
-     */
-    public static function getInstance()
-    {
-        return oxRegistry::getLang();
     }
 
     /**

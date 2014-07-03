@@ -65,7 +65,7 @@ class Unit_Core_oxremarkTest extends OxidTestCase
         $oRemark->load( $this->_oRemark->oxremark__oxid->value );
 
         $sSendDate = 'd.m.Y H:i:s';
-        if ( oxLang::getInstance()->getBaseLanguage() == 1 ) {
+        if ( oxRegistry::getLang()->getBaseLanguage() == 1 ) {
             $sSendDate = 'Y-m-d H:i:s';
         }
 

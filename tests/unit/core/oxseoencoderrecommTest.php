@@ -120,7 +120,7 @@ class Unit_Core_oxSeoEncoderRecommTest extends OxidTestCase
     public function testGetRecommUrl()
     {
         $oRecomm = new oxRecommList();
-        $iLang = oxLang::getInstance()->getBaseLanguage();
+        $iLang = oxRegistry::getLang()->getBaseLanguage();
 
         $oEncoder = $this->getMock( "oxSeoEncoderRecomm", array( "_getFullUrl", "getRecommUri" ) );
         $oEncoder->expects( $this->any() )->method( 'getRecommUri' )->with( $this->equalTo( $oRecomm ), $this->equalTo( $iLang ) )->will( $this->returnValue( "testRecommUri" ) );
@@ -131,7 +131,7 @@ class Unit_Core_oxSeoEncoderRecommTest extends OxidTestCase
 
     public function testGetRecommPageUrl()
     {
-        $iLang = oxLang::getInstance()->getBaseLanguage();
+        $iLang = oxRegistry::getLang()->getBaseLanguage();
 
         $oRecomm = $this->getMock( "oxRecommList", array( "getId", "getBaseStdLink" ) );
         $oRecomm->expects( $this->any() )->method( 'getId' )->will( $this->returnValue( "testRecommId" ) );

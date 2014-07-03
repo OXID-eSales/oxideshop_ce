@@ -522,7 +522,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
     {
         // for empty order - session language is set
         $oOrder = new oxorder();
-        $this->assertEquals( oxLang::getInstance()->getBaseLanguage(), $oOrder->getOrderLanguage() );
+        $this->assertEquals( oxRegistry::getLang()->getBaseLanguage(), $oOrder->getOrderLanguage() );
 
         // testing how language is validated
         $oOrder = new oxorder();
@@ -1381,7 +1381,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
 
         $sOrderDate = '01.01.2008 01:01:01';
         $sSendDate = '02.02.2009 02:02:02';
-        if ( oxLang::getInstance()->getBaseLanguage() == 1 ) {
+        if ( oxRegistry::getLang()->getBaseLanguage() == 1 ) {
             $sOrderDate = '2008-01-01 01:01:01';
             $sSendDate = '2009-02-02 02:02:02';
         }
@@ -1403,7 +1403,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
 
         $sOrderDate = '01.01.2008 01:01:01';
         $sSendDate = '02.02.2009 02:02:02';
-        if ( oxLang::getInstance()->getBaseLanguage() == 1 ) {
+        if ( oxRegistry::getLang()->getBaseLanguage() == 1 ) {
             $sOrderDate = '2008-01-01 01:01:01';
             $sSendDate = '2009-02-02 02:02:02';
         }
@@ -1472,7 +1472,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
     public function testGetCountryTitleInOtherLang()
     {
         $oOrder = $this->getProxyClass("oxOrder");
-        oxLang::getInstance()->setBaseLanguage(1);
+        oxRegistry::getLang()->setBaseLanguage(1);
         $sCountry = $oOrder->UNITgetCountryTitle("a7c40f631fc920687.20179984");
         $this->assertEquals( "Germany", $sCountry );
     }
@@ -1873,7 +1873,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
         $this->assertEquals($oCur->rate, $oOrder->oxorder__oxcurrate->value);
 
         $this->assertEquals("119", $oOrder->oxorder__oxvoucherdiscount->value);
-        $this->assertEquals(oxLang::getInstance()->getBaseLanguage(), $oOrder->oxorder__oxlang->value);
+        $this->assertEquals(oxRegistry::getLang()->getBaseLanguage(), $oOrder->oxorder__oxlang->value);
         $this->assertEquals("5", $oOrder->oxorder__oxdiscount->value);
         $this->assertEquals("ERROR", $oOrder->oxorder__oxtransstatus->value);
         $this->assertEquals(119, $oOrder->oxorder__oxwrapcost->value);

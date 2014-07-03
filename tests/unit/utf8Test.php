@@ -754,7 +754,7 @@ class Unit_utf8Test extends OxidTestCase
 
     public function testOxLangTest()
     {
-        $oLang = oxLang::getInstance();
+        $oLang = oxRegistry::getLang();
 
         // testing some constants ..
         $this->assertEquals( 'Ihr Passwort wurde geändert.', $oLang->translateString( "MESSAGE_PASSWORD_CHANGED", 0, false ) );
@@ -1673,7 +1673,7 @@ class Unit_utf8Test extends OxidTestCase
     public function testaListPrepareMetaDescription()
     {
         $sValue = "agentūЛитовfür\n\r\t\xc2\x95\xc2\xa0";
-        $sDescription = oxLang::getInstance()->translateString( 'INC_HEADER_YOUAREHERE' );
+        $sDescription = oxRegistry::getLang()->translateString( 'INC_HEADER_YOUAREHERE' );
         $oActCat = new oxcategory();
         $oActCat->oxcategories__oxtitle = $this->getMock( 'oxField', array( '__get' ) );
         $oActCat->oxcategories__oxtitle->expects( $this->once() )->method( '__get')->will( $this->returnValue( $sValue ) );

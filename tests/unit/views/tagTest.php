@@ -83,7 +83,7 @@ class Unit_Views_tagTest extends OxidTestCase
         $oView = $this->getMock( "tag", array( "getActPage" ) );
         $oView->expects( $this->once() )->method( 'getActPage')->will( $this->returnValue( 1 ) );
 
-        $this->assertEquals( oxLang::getInstance()->translateString( 'PAGE' )." ". 2, $oView->getTitlePageSuffix() );
+        $this->assertEquals( oxRegistry::getLang()->translateString( 'PAGE' )." ". 2, $oView->getTitlePageSuffix() );
     }
 
     public function testGetTreePath()
@@ -94,7 +94,7 @@ class Unit_Views_tagTest extends OxidTestCase
 
         $aPath[0] = oxNew( "oxcategory" );
         $aPath[0]->setLink( false );
-        $aPath[0]->oxcategories__oxtitle = new oxField( oxLang::getInstance()->translateString('TAGS') );
+        $aPath[0]->oxcategories__oxtitle = new oxField( oxRegistry::getLang()->translateString('TAGS') );
 
         $aPath[1] = oxNew( "oxcategory" );
         $aPath[1]->setLink( false );

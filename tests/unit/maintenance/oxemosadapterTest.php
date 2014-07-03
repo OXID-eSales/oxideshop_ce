@@ -61,7 +61,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         $oProduct->oxarticles__oxvarselect = new oxField( 'oxüvarselect' );
 
         $sContent = "SHOP/oxütitle";
-        $sCharset = oxLang::getInstance()->translateString( 'charset' );
+        $sCharset = oxRegistry::getLang()->translateString( 'charset' );
         $sResult = iconv( $sCharset, 'UTF-8', $sContent );
 
         $oConfig = $this->getMock( 'oxConfig', array( 'isUtf', 'getActShopCurrencyObject' ) );
@@ -83,7 +83,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         $oProduct->oxarticles__oxvarselect = new oxField( 'oxüvarselect' );
 
         $sContent = "oxütitle oxüvarselect";
-        $sCharset = oxLang::getInstance()->translateString( 'charset' );
+        $sCharset = oxRegistry::getLang()->translateString( 'charset' );
         $sConverted = iconv( $sCharset, 'UTF-8', $sContent );
 
         $oConfig = $this->getMock( 'oxConfig', array( 'isUtf' ) );
@@ -108,7 +108,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         $oEmosAdapter->expects( $this->any() )->method( 'getConfig' )->will( $this->returnValue( $oConfig ) );
 
         $sContent = "Zurück zum Shop";
-        $sCharset = oxLang::getInstance()->translateString( 'charset' );
+        $sCharset = oxRegistry::getLang()->translateString( 'charset' );
 
         $sConverted = iconv( $sCharset, 'UTF-8', $sContent );
         $sResult = $oEmosAdapter->UNITconvertToUtf( $sContent );
@@ -188,7 +188,7 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         $oEmosCode->expects( $this->any() )->method( 'getConfig')->will( $this->returnValue( $oConfig ) );
 
         $sContent = "1ü/2ü/3ü";
-        $sCharset = oxLang::getInstance()->translateString( 'charset' );
+        $sCharset = oxRegistry::getLang()->translateString( 'charset' );
 
         $sConverted = iconv( $sCharset, 'UTF-8', $sContent );
 

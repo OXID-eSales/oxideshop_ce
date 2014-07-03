@@ -2622,7 +2622,7 @@ class oxBasket extends oxSuperCfg
             $oPrice = $this->getCosts( 'oxgiftcard' );
 
             if ( $oPrice && $oPrice->getVatValue() > 0 ) {
-                return oxLang::getInstance()->formatCurrency( $oPrice->getVatValue(), $this->getBasketCurrency() );
+                return oxRegistry::getLang()->formatCurrency( $oPrice->getVatValue(), $this->getBasketCurrency() );
             }
         }
 
@@ -2644,7 +2644,7 @@ class oxBasket extends oxSuperCfg
             $oPrice = $this->getCosts( 'oxgiftcard' );
 
             if ( $oPrice && $oPrice->getNettoPrice() > 0 ) {
-                return  oxLang::getInstance()->formatCurrency( $oPrice->getNettoPrice(), $this->getBasketCurrency() );
+                return  oxRegistry::getLang()->formatCurrency( $oPrice->getNettoPrice(), $this->getBasketCurrency() );
             }
         }
 
@@ -2663,7 +2663,7 @@ class oxBasket extends oxSuperCfg
         $oPrice = $this->getCosts( 'oxgiftcard' );
 
         if ( $oPrice && $oPrice->getBruttoPrice() ) {
-            return oxLang::getInstance()->formatCurrency( $oPrice->getBruttoPrice(), $this->getBasketCurrency() );
+            return oxRegistry::getLang()->formatCurrency( $oPrice->getBruttoPrice(), $this->getBasketCurrency() );
         }
         return false;
     }

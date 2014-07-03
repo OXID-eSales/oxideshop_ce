@@ -87,7 +87,7 @@ class Unit_Views_alistTest extends OxidTestCase
         $oView = $this->getMock("alist", array("getActPage"));
         $oView->expects($this->once())->method('getActPage')->will($this->returnValue(1));
 
-        $this->assertEquals(oxLang::getInstance()->translateString('PAGE') . " " . 2, $oView->getTitlePageSuffix());
+        $this->assertEquals(oxRegistry::getLang()->translateString('PAGE') . " " . 2, $oView->getTitlePageSuffix());
     }
 
     /**
@@ -107,7 +107,7 @@ class Unit_Views_alistTest extends OxidTestCase
         $oView->expects($this->once())->method('getActPage')->will($this->returnValue(1));
         $oView->expects($this->any())->method('getActiveCategory')->will($this->returnValue($oCategory));
 
-        $this->assertEquals($sPrefix . ", " . oxLang::getInstance()->translateString('PAGE') . " " . 2, $oView->getMetaDescription());
+        $this->assertEquals($sPrefix . ", " . oxRegistry::getLang()->translateString('PAGE') . " " . 2, $oView->getMetaDescription());
     }
 
     /**
@@ -384,7 +384,7 @@ class Unit_Views_alistTest extends OxidTestCase
         $oListView = $this->getMock('alist', array('getActiveCategory'));
         $oListView->expects($this->once())->method('getActiveCategory')->will($this->returnValue('getActiveCategory'));
 
-        $this->assertEquals('getActiveCategory', $oListView->UNITgetSubject(oxLang::getInstance()->getBaseLanguage()));
+        $this->assertEquals('getActiveCategory', $oListView->UNITgetSubject(oxRegistry::getLang()->getBaseLanguage()));
     }
 
     /**

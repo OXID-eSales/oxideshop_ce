@@ -832,7 +832,7 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
         $shop = '';
             $shop = 'oxbaseshop';
         $oEncoder = $this->getMock( 'oxSeoEncoder', array( '_getStaticUri', '_getFullUrl' ) );
-        $oEncoder->expects( $this->once() )->method('_getStaticUri')->with( $this->equalTo( 'xxx' ), $this->equalTo( $shop ), $this->equalTo( oxLang::getInstance()->getEditLanguage() ) )->will( $this->returnValue( 'seourl' ) );
+        $oEncoder->expects( $this->once() )->method('_getStaticUri')->with( $this->equalTo( 'xxx' ), $this->equalTo( $shop ), $this->equalTo( oxRegistry::getLang()->getEditLanguage() ) )->will( $this->returnValue( 'seourl' ) );
         $oEncoder->expects( $this->once() )->method('_getFullUrl')->with( $this->equalTo( 'seourl' ) )->will( $this->returnValue( 'fullseourl' ) );
         $this->assertEquals( 'fullseourl', $oEncoder->getStaticUrl( 'xxx' ) );
     }

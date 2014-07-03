@@ -121,7 +121,7 @@ class Unit_Views_newsTest extends OxidTestCase
         $aResult  = array();
         $aResults = array();
 
-        $aResult["title"] = oxLang::getInstance()->translateString( 'LATEST_NEWS_AND_UPDATES_AT', oxLang::getInstance()->getBaseLanguage(), false ) . ' shop';
+        $aResult["title"] = oxRegistry::getLang()->translateString( 'LATEST_NEWS_AND_UPDATES_AT', oxRegistry::getLang()->getBaseLanguage(), false ) . ' shop';
         $aResult["link"]  = $oNews->getLink();
 
         $aResults[] = $aResult;

@@ -408,7 +408,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
         $oCur->dec      = '.';
         $oCur->thousand = '';
 
-        $oLang = oxLang::getInstance();
+        $oLang = oxRegistry::getLang();
         $this->assertEquals( '18', $oLang->formatVat( 18.00 ) );
         $this->assertEquals( '21,5', $oLang->formatVat( 21.50 ) );
         $this->assertEquals( '1,5', $oLang->formatVat( 1.50 ) );
@@ -1112,7 +1112,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
     public function testGetLanguageNames()
     {
-        $this->assertEquals(array(0=>'Deutsch',1=>'English'), oxLang::getInstance()->getLanguageNames());
+        $this->assertEquals(array(0=>'Deutsch',1=>'English'), oxRegistry::getLang()->getLanguageNames());
     }
 
     //#1290: impossible to switch languages in admin, if third language is created as default and only one active

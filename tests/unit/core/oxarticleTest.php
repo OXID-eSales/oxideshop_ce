@@ -1174,15 +1174,15 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $oAmPriceList = $oArticle->UNITfillAmountPriceList( $oAmPriceList );
 
         $oP2A = reset( $oAmPriceList );
-        //$this->assertEquals( oxLang::getInstance()->formatCurrency( 5 ), $oP2A->oxprice2article__oxaddabs->value );
-        //$this->assertEquals( oxLang::getInstance()->formatCurrency( 5 / ( 1 + 19 / 100 ) ), $oP2A->fnetprice );
-        $this->assertEquals( oxLang::getInstance()->formatCurrency( 6 ), $oP2A->fbrutprice );
+        //$this->assertEquals( oxRegistry::getLang()->formatCurrency( 5 ), $oP2A->oxprice2article__oxaddabs->value );
+        //$this->assertEquals( oxRegistry::getLang()->formatCurrency( 5 / ( 1 + 19 / 100 ) ), $oP2A->fnetprice );
+        $this->assertEquals( oxRegistry::getLang()->formatCurrency( 6 ), $oP2A->fbrutprice );
 
         $oP2A = next( $oAmPriceList );
         $dPrice = oxUtils::getInstance()->fRound($dArticlePrice - $dArticlePrice / 100 * 7 );
-        //$this->assertEquals( oxLang::getInstance()->formatCurrency( $dPrice), $oP2A->oxprice2article__oxaddabs->value );
-        //$this->assertEquals( oxLang::getInstance()->formatCurrency( $dPrice / ( 1 + 19 / 100 ) ), $oP2A->fnetprice );
-        $this->assertEquals( oxLang::getInstance()->formatCurrency( $dPrice ), $oP2A->fbrutprice );
+        //$this->assertEquals( oxRegistry::getLang()->formatCurrency( $dPrice), $oP2A->oxprice2article__oxaddabs->value );
+        //$this->assertEquals( oxRegistry::getLang()->formatCurrency( $dPrice / ( 1 + 19 / 100 ) ), $oP2A->fnetprice );
+        $this->assertEquals( oxRegistry::getLang()->formatCurrency( $dPrice ), $oP2A->fbrutprice );
     }
 
     /**
@@ -1248,14 +1248,14 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $oAmPriceList = $oArticle->UNITfillAmountPriceList( $oAmPriceList );
 
         $oP2A = reset( $oAmPriceList );
-        //$this->assertEquals( oxLang::getInstance()->formatCurrency( 5 ), $oP2A->oxprice2article__oxaddabs->value );
-        //$this->assertEquals( oxLang::getInstance()->formatCurrency( 5 ), $oP2A->fnetprice );
-        $this->assertEquals( oxLang::getInstance()->formatCurrency( 5 ), $oP2A->fbrutprice );
+        //$this->assertEquals( oxRegistry::getLang()->formatCurrency( 5 ), $oP2A->oxprice2article__oxaddabs->value );
+        //$this->assertEquals( oxRegistry::getLang()->formatCurrency( 5 ), $oP2A->fnetprice );
+        $this->assertEquals( oxRegistry::getLang()->formatCurrency( 5 ), $oP2A->fbrutprice );
 
         $oP2A = next( $oAmPriceList );
-        //$this->assertEquals( oxLang::getInstance()->formatCurrency( $dArticlePrice - $dArticlePrice / 100 * 5 ), $oP2A->oxprice2article__oxaddabs->value );
-        //$this->assertEquals( oxLang::getInstance()->formatCurrency( $dArticlePrice - $dArticlePrice / 100 * 5 ), $oP2A->fnetprice );
-        $this->assertEquals( oxLang::getInstance()->formatCurrency( $dArticlePrice - $dArticlePrice / 100 * 5 ), $oP2A->fbrutprice );
+        //$this->assertEquals( oxRegistry::getLang()->formatCurrency( $dArticlePrice - $dArticlePrice / 100 * 5 ), $oP2A->oxprice2article__oxaddabs->value );
+        //$this->assertEquals( oxRegistry::getLang()->formatCurrency( $dArticlePrice - $dArticlePrice / 100 * 5 ), $oP2A->fnetprice );
+        $this->assertEquals( oxRegistry::getLang()->formatCurrency( $dArticlePrice - $dArticlePrice / 100 * 5 ), $oP2A->fbrutprice );
     }
 
     /**
@@ -1296,15 +1296,15 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $oAmPriceList = $oArticle->UNITfillAmountPriceList( $oAmPriceList );
 
         $oP2A = reset( $oAmPriceList );
-        //$this->assertEquals( oxLang::getInstance()->formatCurrency( $dArticlePrice - $dArticlePrice / 100 * 10 ), $oP2A->oxprice2article__oxaddabs->value );
-        //$this->assertEquals( oxLang::getInstance()->formatCurrency( $dArticlePrice - $dArticlePrice / 100 * 10 ), $oP2A->fnetprice );
-        $this->assertEquals( oxLang::getInstance()->formatCurrency( $dArticlePrice - $dArticlePrice / 100 * 10 ), $oP2A->fbrutprice );
+        //$this->assertEquals( oxRegistry::getLang()->formatCurrency( $dArticlePrice - $dArticlePrice / 100 * 10 ), $oP2A->oxprice2article__oxaddabs->value );
+        //$this->assertEquals( oxRegistry::getLang()->formatCurrency( $dArticlePrice - $dArticlePrice / 100 * 10 ), $oP2A->fnetprice );
+        $this->assertEquals( oxRegistry::getLang()->formatCurrency( $dArticlePrice - $dArticlePrice / 100 * 10 ), $oP2A->fbrutprice );
 
 
         $oP2A = next( $oAmPriceList );
-        //$this->assertEquals( oxLang::getInstance()->formatCurrency( $dArticlePrice - $dArticlePrice / 100 * 5 ), $oP2A->oxprice2article__oxaddabs->value );
-        //$this->assertEquals( oxLang::getInstance()->formatCurrency( $dArticlePrice - $dArticlePrice / 100 * 5 ), $oP2A->fnetprice );
-        $this->assertEquals( oxLang::getInstance()->formatCurrency( $dArticlePrice - $dArticlePrice / 100 * 5 ), $oP2A->fbrutprice );
+        //$this->assertEquals( oxRegistry::getLang()->formatCurrency( $dArticlePrice - $dArticlePrice / 100 * 5 ), $oP2A->oxprice2article__oxaddabs->value );
+        //$this->assertEquals( oxRegistry::getLang()->formatCurrency( $dArticlePrice - $dArticlePrice / 100 * 5 ), $oP2A->fnetprice );
+        $this->assertEquals( oxRegistry::getLang()->formatCurrency( $dArticlePrice - $dArticlePrice / 100 * 5 ), $oP2A->fbrutprice );
     }
 
     /**
@@ -1345,14 +1345,14 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $oAmPriceList = $oArticle->UNITfillAmountPriceList( $oAmPriceList );
 
         $oP2A = reset( $oAmPriceList );
-        //$this->assertEquals( oxLang::getInstance()->formatCurrency( $dArticlePrice - $dArticlePrice / 100 * 5 ), $oP2A->oxprice2article__oxaddabs->value );
-        //$this->assertEquals( oxLang::getInstance()->formatCurrency( $dArticlePrice - $dArticlePrice / 100 * 5 ), $oP2A->fnetprice );
-        $this->assertEquals( oxLang::getInstance()->formatCurrency( $dArticlePrice - $dArticlePrice / 100 * 5 ), $oP2A->fbrutprice );
+        //$this->assertEquals( oxRegistry::getLang()->formatCurrency( $dArticlePrice - $dArticlePrice / 100 * 5 ), $oP2A->oxprice2article__oxaddabs->value );
+        //$this->assertEquals( oxRegistry::getLang()->formatCurrency( $dArticlePrice - $dArticlePrice / 100 * 5 ), $oP2A->fnetprice );
+        $this->assertEquals( oxRegistry::getLang()->formatCurrency( $dArticlePrice - $dArticlePrice / 100 * 5 ), $oP2A->fbrutprice );
 
         $oP2A = next( $oAmPriceList );
-        //$this->assertEquals( oxLang::getInstance()->formatCurrency( $dArticlePrice - $dArticlePrice / 100 * 10 ), $oP2A->oxprice2article__oxaddabs->value );
-        //$this->assertEquals( oxLang::getInstance()->formatCurrency( $dArticlePrice - $dArticlePrice / 100 * 10 ), $oP2A->fnetprice );
-        $this->assertEquals( oxLang::getInstance()->formatCurrency( $dArticlePrice - $dArticlePrice / 100 * 10 ), $oP2A->fbrutprice );
+        //$this->assertEquals( oxRegistry::getLang()->formatCurrency( $dArticlePrice - $dArticlePrice / 100 * 10 ), $oP2A->oxprice2article__oxaddabs->value );
+        //$this->assertEquals( oxRegistry::getLang()->formatCurrency( $dArticlePrice - $dArticlePrice / 100 * 10 ), $oP2A->fnetprice );
+        $this->assertEquals( oxRegistry::getLang()->formatCurrency( $dArticlePrice - $dArticlePrice / 100 * 10 ), $oP2A->fbrutprice );
     }
 
 
@@ -6945,7 +6945,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
 
         // unit name is set..
         $oProduct->oxarticles__oxunitname = new oxField( $sConstName );
-        $this->assertEquals( oxLang::getInstance()->translateString( $sConstName ), $oProduct->getUnitName() );
+        $this->assertEquals( oxRegistry::getLang()->translateString( $sConstName ), $oProduct->getUnitName() );
     }
 
 

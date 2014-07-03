@@ -1338,27 +1338,6 @@ class oxUser extends oxBase
 
         return $sShopSelect;
     }
-    /**
-     * Load saved user basket from the database after he logs in
-     *
-     * @deprecated v5.0.1 move this functionality in MAJOR version to function which calls login method (e.g. component or so)
-     *
-     * @return null
-     */
-    protected function _loadSavedUserBasketAfterLogin()
-    {
-        if ( !$this->isAdmin() && !$this->getConfig()->getConfigParam( 'blPerfNoBasketSaving' )) {
-            //load basket from the database
-            try {
-                if ( $oBasket = $this->getSession()->getBasket() ) {
-                    $oBasket->load();
-                }
-            } catch ( Exception $oE ) {
-                //just ignore it
-            }
-        }
-    }
-
 
     /**
      * Performs user login by username and password. Fetches user data from DB.

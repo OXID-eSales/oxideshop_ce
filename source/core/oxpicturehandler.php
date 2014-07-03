@@ -26,25 +26,6 @@
 class oxPictureHandler extends oxSuperCfg
 {
     /**
-     * oxUtils class instance.
-     *
-     * @var oxutils
-     */
-    private static $_instance = null;
-
-    /**
-     * Returns object instance
-     *
-     * @deprecated since v5.0 (2012-08-10); Use Registry getter instead - oxRegistry::get("oxPictureHandler");
-     *
-     * @return oxPictureHandler
-     */
-    public static function getInstance()
-    {
-        return oxRegistry::get("oxPictureHandler");
-    }
-
-    /**
      * Deletes master picture and all images generated from it.
      * If third parameter is false, skips master image delete, only
      * all generated images will be deleted.

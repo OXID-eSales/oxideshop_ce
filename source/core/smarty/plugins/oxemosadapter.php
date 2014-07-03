@@ -149,27 +149,6 @@ class oxEmosAdapter extends oxSuperCfg
     }
 
     /**
-     * Returns path to econda script files
-     *
-     * @return string
-     */
-    protected function _getScriptPath()
-    {
-        $sShopUrl = $this->getConfig()->getCurrentShopUrl();
-        return "{$sShopUrl}modules/econda/out/";
-    }
-
-    /**
-     * Returns emos item object
-     *
-     * @return EMOS_Item
-     */
-    protected function _getNewEmosItem()
-    {
-        return new EMOS_Item();
-    }
-
-    /**
      * Returns new emos controller object
      *
      * @return emos
@@ -194,6 +173,46 @@ class oxEmosAdapter extends oxSuperCfg
         }
 
         return $this->_oEmos;
+    }
+
+    /**
+     * Builds JS code for current view tracking functionality
+     *
+     * @param array $aParams plugin parameters
+     * @param smarty $oSmarty template engine object
+     *
+     * @return string
+     */
+    public function getCode($aParams, $oSmarty)
+    {
+        $oEmos = $this->getEmos();
+
+        $this->_setControllerInfo($oEmos, $aParams, $oSmarty);
+
+        $this->_setBasketActionsInfo($oEmos);
+
+        return "\n" . $oEmos->toString();
+    }
+
+    /**
+     * Returns path to econda script files
+     *
+     * @return string
+     */
+    protected function _getScriptPath()
+    {
+        $sShopUrl = $this->getConfig()->getCurrentShopUrl();
+        return "{$sShopUrl}modules/econda/out/";
+    }
+
+    /**
+     * Returns emos item object
+     *
+     * @return EMOS_Item
+     */
+    protected function _getNewEmosItem()
+    {
+        return new EMOS_Item();
     }
 
     /**
@@ -376,25 +395,6 @@ class oxEmosAdapter extends oxSuperCfg
             $sCurrTpl = $this->getConfig()->getActiveView()->getTemplateName();
         }
         return $sCurrTpl;
-    }
-
-    /**
-     * Builds JS code for current view tracking functionality
-     *
-     * @param array $aParams plugin parameters
-     * @param smarty $oSmarty template engine object
-     *
-     * @return string
-     */
-    public function getCode($aParams, $oSmarty)
-    {
-        $oEmos = $this->getEmos();
-
-        $this->_setControllerInfo($oEmos, $aParams, $oSmarty);
-
-        $this->_setBasketActionsInfo($oEmos);
-
-        return "\n" . $oEmos->toString();
     }
 
     /**

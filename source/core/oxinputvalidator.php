@@ -39,13 +39,6 @@ class oxInputValidator extends oxSuperCfg
     const INVALID_BANK_CODE = -4;
 
     /**
-     * oxInputValidator instance
-     *
-     * @var oxDeliveryList
-     */
-    private static $_instance = null;
-
-    /**
      * Required fields for credit card payment
      *
      * @var array
@@ -97,18 +90,6 @@ class oxInputValidator extends oxSuperCfg
      */
     public function __construct()
     {
-    }
-
-    /**
-     * Returns oxInputValidator instance
-     *
-     * @deprecated since v5.0 (2012-08-10); Use oxRegistry::get("oxInputValidator") instead
-     *
-     * @return oxInputValidator
-     */
-    static function getInstance()
-    {
-        return oxRegistry::get("oxInputValidator");
     }
 
     /**

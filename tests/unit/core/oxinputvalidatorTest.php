@@ -817,16 +817,6 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
     }
 
     /**
-     * Test case for oxInputValidator::getInstance()
-     *
-     * @return null
-     */
-    public function testGetInstance()
-    {
-        $this->assertTrue( oxInputValidator::getInstance() instanceof oxInputValidator );
-    }
-
-    /**
      * Testing validatePaymentInputData with SepaBankCodeCorrect and SepaAccountNumberCorrect
      * expecting NoError
      */

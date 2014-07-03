@@ -77,10 +77,8 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
     protected function setUp()
     {
         parent::setUp();
-        oxSeoEncoder::getInstance()->setPrefix('oxid');
-        oxSeoEncoder::getInstance()->setSeparator();
-        oxTestModules::addFunction("oxseoencodercategory", "resetInst", '{oxSeoEncoderCategory::$_instance = null;}');
-        oxNew('oxseoencodercategory')->resetInst();
+        oxRegistry::get("oxSeoEncoder")->setPrefix('oxid');
+        oxRegistry::get("oxSeoEncoder")->setSeparator();
         oxTestModules::cleanUp();
 
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
@@ -973,7 +971,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
         $oArticle->oxarticles__oxartnum    = new oxField( '123' );
         $oArticle->oxarticles__oxprice     = new oxField( 100 );
 
-        $sUrl = oxSeoEncoder::getInstance()->UNITprepareTitle($oCategory->oxcategories__oxtitle->value ).'/Messerblock-VOODOO-test-var-select.html';
+        $sUrl = oxRegistry::get("oxSeoEncoder")->UNITprepareTitle($oCategory->oxcategories__oxtitle->value ).'/Messerblock-VOODOO-test-var-select.html';
         $oEncoder = $this->getMock( "oxSeoEncoderArticle", array( "_getCategory" ) );
         $oEncoder->expects( $this->once() )->method( '_getCategory' )->will( $this->returnValue( $oCategory ) );
         $this->assertEquals( $sUrl, $oEncoder->getArticleUri( $oArticle, 0 ) );
@@ -996,7 +994,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
         $oEncoder->expects( $this->once() )->method( '_getCategory' )->will( $this->returnValue( $oCategory ) );
         $oEncoder->expects( $this->once() )->method( '_loadFromDb' )->will( $this->returnValue( false ) );
 
-        $this->assertEquals( oxSeoEncoder::getInstance()->UNITprepareTitle($oCategory->oxcategories__oxtitle->value)."/123.html", $oEncoder->getArticleUri( $oArticle, 0 ) );
+        $this->assertEquals( oxRegistry::get("oxSeoEncoder")->UNITprepareTitle($oCategory->oxcategories__oxtitle->value)."/123.html", $oEncoder->getArticleUri( $oArticle, 0 ) );
     }
 
     public function testGetArticleUriWithoutTitleInEnglish()
@@ -1016,7 +1014,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
         $oEncoder->expects( $this->once() )->method( '_getCategory' )->will( $this->returnValue( $oCategory ) );
         $oEncoder->expects( $this->once() )->method( '_loadFromDb' )->will( $this->returnValue( false ) );
 
-        $this->assertEquals( "en/".oxSeoEncoder::getInstance()->UNITprepareTitle($oCategory->oxcategories__oxtitle->value)."/123.html", $oEncoder->getArticleUri( $oArticle, 1 ) );
+        $this->assertEquals( "en/".oxRegistry::get("oxSeoEncoder")->UNITprepareTitle($oCategory->oxcategories__oxtitle->value)."/123.html", $oEncoder->getArticleUri( $oArticle, 1 ) );
     }
 
     public function testGetArticleUriVariantWithCategory()
@@ -1028,7 +1026,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
         $oArticle = $this->getMock( "oxarticle", array( "inCategory" ) );
         $oArticle->expects( $this->once() )->method( 'inCategory' )->will( $this->returnValue( true ) );
             $oArticle->load( '8a142c410f55ed579.98106125' );
-            $sUrl = oxSeoEncoder::getInstance()->UNITprepareTitle($oCategory->oxcategories__oxtitle->value).'/Tischlampe-SPHERE-rot.html';
+            $sUrl = oxRegistry::get("oxSeoEncoder")->UNITprepareTitle($oCategory->oxcategories__oxtitle->value).'/Tischlampe-SPHERE-rot.html';
 
         $oEncoder = $this->getMock( 'oxSeoEncoderArticle', array( '_loadFromDb', "_getCategory" ) );
         $oEncoder->expects( $this->once() )->method( '_getCategory' )->will( $this->returnValue( $oCategory ) );
@@ -1040,7 +1038,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
 
     public function testEncodeArtUrlvariantWithCategoryInEnglish()
     {
-        oxSeoEncoder::getInstance()->setSeparator( '+' );
+        oxRegistry::get("oxSeoEncoder")->setSeparator( '+' );
 
         $oCategory = $this->getMock( "oxCategory", array( "isPriceCategory" ) );
         $oCategory->expects( $this->any() )->method( 'isPriceCategory' )->will( $this->returnValue( false ) );
@@ -1050,15 +1048,13 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
         $oArticle->expects( $this->once() )->method( 'inCategory' )->will( $this->returnValue( true ) );
 
             $oArticle->loadInLang(1, '8a142c410f55ed579.98106125');
-            $sUrl = "en/".oxSeoEncoder::getInstance()->UNITprepareTitle($oCategory->oxcategories__oxtitle->value)."/Table+Lamp+SPHERE+red.html";
+            $sUrl = "en/".oxRegistry::get("oxSeoEncoder")->UNITprepareTitle($oCategory->oxcategories__oxtitle->value)."/Table+Lamp+SPHERE+red.html";
 
         $oEncoder = $this->getMock('modSeoEncoderArticle', array('_loadFromDb', "_getCategory" ));
         $oEncoder->expects( $this->once() )->method( '_getCategory' )->will( $this->returnValue( $oCategory ) );
         $oEncoder->expects($this->any())->method( '_loadFromDb' )->will( $this->returnvalue(false) );
         $oEncoder->setSeparator( '+' );
 
-        oxTestModules::addFunction("oxSeoEncoderCategory", "resetInst", '{oxSeoEncoderCategory::$_instance = null;}');
-        oxNew('oxSeoEncoderCategory')->resetInst();
         oxDb::getDb()->execute( 'delete from oxseo where oxtype != "static"' );
         oxDb::getDb()->execute( 'delete from oxseohistory' );
 
@@ -1074,7 +1070,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
         $oArticle = $this->getMock( "oxarticle", array( "inCategory" ) );
         $oArticle->expects( $this->once() )->method( 'inCategory' )->will( $this->returnValue( true ) );
             $oArticle->loadInLang(1, '8a142c410f55ed579.98106125' );
-            $sUrl = oxSeoEncoder::getInstance()->UNITprepareTitle($oCategory->oxcategories__oxtitle->value).'/Tischlampe-SPHERE-rot.html';
+            $sUrl = oxRegistry::get("oxSeoEncoder")->UNITprepareTitle($oCategory->oxcategories__oxtitle->value).'/Tischlampe-SPHERE-rot.html';
 
         $oEncoder = $this->getMock( 'oxSeoEncoderArticle', array( '_loadFromDb', "_getCategory" ) );
         $oEncoder->expects( $this->once() )->method( '_getCategory' )->will( $this->returnValue( $oCategory ) );
@@ -1085,7 +1081,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
 
     public function testEncodeArtUrlvariantWithCategoryInEnglishWithLangParam()
     {
-        oxSeoEncoder::getInstance()->setSeparator( '+' );
+        oxRegistry::get("oxSeoEncoder")->setSeparator( '+' );
         $oCategory = $this->getMock( "oxCategory", array( "isPriceCategory" ) );
         $oCategory->expects( $this->any() )->method( 'isPriceCategory' )->will( $this->returnValue( false ) );
         $oCategory->loadInLang( 1, oxDb::getDb()->getOne( "select oxid from oxcategories where oxparentid = 'oxrootid'" ) );
@@ -1093,15 +1089,13 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
         $oArticle = $this->getMock( "oxarticle", array( "inCategory" ) );
         $oArticle->expects( $this->once() )->method( 'inCategory' )->will( $this->returnValue( true ) );
             $oArticle->loadInLang(0, '8a142c410f55ed579.98106125');
-            $sUrl = "en/".oxSeoEncoder::getInstance()->UNITprepareTitle($oCategory->oxcategories__oxtitle->value)."/Table+Lamp+SPHERE+red.html";
+            $sUrl = "en/".oxRegistry::get("oxSeoEncoder")->UNITprepareTitle($oCategory->oxcategories__oxtitle->value)."/Table+Lamp+SPHERE+red.html";
 
         $oEncoder = $this->getMock('modSeoEncoderArticle', array('_loadFromDb', "_getCategory" ));
         $oEncoder->expects( $this->once() )->method( '_getCategory' )->will( $this->returnValue( $oCategory ) );
         $oEncoder->expects($this->any())->method( '_loadFromDb' )->will( $this->returnvalue(false) );
         $oEncoder->setSeparator( '+' );
 
-        oxTestModules::addFunction("oxSeoEncoderCategory", "resetInst", '{oxSeoEncoderCategory::$_instance = null;}');
-        oxNew('oxSeoEncoderCategory')->resetInst();
         oxDb::getDb()->execute( 'delete from oxseo where oxtype != "static"' );
         oxDb::getDb()->execute( 'delete from oxseohistory' );
 

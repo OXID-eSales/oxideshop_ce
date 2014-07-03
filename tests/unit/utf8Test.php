@@ -1813,7 +1813,7 @@ class Unit_utf8Test extends OxidTestCase
         $oView->setNonPublicVar( "_sTag", $sValue );
 
         $aPath = array(
-            array('title'=>'Tags', 'link' => oxSeoEncoder::getInstance()->getStaticUrl( $oView->getViewConfig()->getSelfLink() . 'cl=tags' )),
+            array('title'=>'Tags', 'link' => oxRegistry::get("oxSeoEncoder")->getStaticUrl( $oView->getViewConfig()->getSelfLink() . 'cl=tags' )),
             array('title'=>$sResult, 'link' => $oView->getCanonicalUrl())
         );
 

@@ -191,10 +191,7 @@ class Unit_Core_oxcontentTest extends OxidTestCase
     public function testGetLinkSeo()
     {
         oxTestModules::addFunction( "oxutils", "seoIsActive", "{return true;}" );
-        oxTestModules::addFunction( "oxseoencodercontent", "unsetInstance", "{oxSeoEncoderContent::\$_instance = null;}" );
         oxTestModules::addFunction( "oxseoencodercontent", "getContentUrl", '{$o = $aA[0]; return "seolink".$o->oxcontents__oxtitle->value;}' );
-        $oE = oxNew( 'oxseoencodercontent' );
-        $oE->unsetInstance();
 
         try {
             $o = new oxcontent();
@@ -205,7 +202,6 @@ class Unit_Core_oxcontentTest extends OxidTestCase
             $this->assertEquals( "seolinkaaFaa", $o->getLink() );
         } catch ( Ecxeption $e ) {
         }
-        $oE->unsetInstance();
         if ( $e ) throw $e;
     }
 
@@ -250,10 +246,7 @@ class Unit_Core_oxcontentTest extends OxidTestCase
     public function testGetLinkSeoWithLangParam()
     {
         oxTestModules::addFunction( "oxutils", "seoIsActive", "{return true;}" );
-        oxTestModules::addFunction( "oxseoencodercontent", "unsetInstance", "{oxSeoEncoderContent::\$_instance = null;}" );
         oxTestModules::addFunction( "oxseoencodercontent", "getContentUrl", '{$o = $aA[0]; return "seolink".$o->oxcontents__oxtitle->value.$aA[1];}' );
-        $oE = oxNew( 'oxseoencodercontent' );
-        $oE->unsetInstance();
 
         try {
             $o = new oxcontent();
@@ -264,7 +257,6 @@ class Unit_Core_oxcontentTest extends OxidTestCase
             $this->assertEquals( "seolinkaaFaa1", $o->getLink( 1 ) );
         } catch ( Ecxeption $e ) {
         }
-        $oE->unsetInstance();
         if ( $e ) throw $e;
     }
 
@@ -297,8 +289,6 @@ class Unit_Core_oxcontentTest extends OxidTestCase
     public function testDelete()
     {
         oxTestModules::addFunction( 'oxSeoEncoderContent', 'onDeleteContent', '{$this->onDelete[] = $aA[0];}' );
-        oxTestModules::addFunction( 'oxSeoEncoderContent', 'resetInst', '{self::$_instance = $this;}' );
-        oxNew( 'oxSeoEncoderContent' )->resetInst();
         oxRegistry::get("oxSeoEncoderContent")->onDelete = array();
 
         // parent is not deletable

@@ -29,24 +29,12 @@ require_once realpath( "." ).'/unit/test_config.inc.php';
 class Unit_Admin_ShopSeoTest extends OxidTestCase
 {
     /**
-     * Initialize the fixture.
-     *
-     * @return null
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-        oxTestModules::addFunction( 'oxSeoEncoder', 'cleanup', '{ self::$_instance = null; }');
-    }
-
-    /**
      * Tear down the fixture.
      *
      * @return null
      */
     protected function tearDown()
     {
-        oxSeoEncoder::getInstance()->cleanup();
         oxDb::getDb()->getOne( "delete from oxseo where oxobjectid = 'testObjectId' and oxshopid = '1'" );
         parent::tearDown();
     }

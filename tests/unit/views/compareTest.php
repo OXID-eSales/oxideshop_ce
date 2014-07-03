@@ -300,7 +300,7 @@ class Unit_Views_compareTest extends OxidTestCase
         $aResult  = array();
 
         $aCatPath['title'] = oxRegistry::getLang()->translateString( 'MY_ACCOUNT', 0, false );
-        $aCatPath['link']  = oxSeoEncoder::getInstance()->getStaticUrl( $oCompare->getViewConfig()->getSelfLink() . 'cl=account' );
+        $aCatPath['link']  = oxRegistry::get("oxSeoEncoder")->getStaticUrl( $oCompare->getViewConfig()->getSelfLink() . 'cl=account' );
 
         $aResult[] = $aCatPath;
 

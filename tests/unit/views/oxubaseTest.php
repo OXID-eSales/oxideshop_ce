@@ -672,11 +672,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
     public function testSetMetaDescriptionWhenSeoIsOn()
     {
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
-        oxTestModules::addFunction("oxseoencoder", "unsetInstance", "{oxSeoEncoder::\$_instance = null;}");
         oxTestModules::addFunction("oxseoencoder", "getMetaData", '{return "xxx";}');
-
-        $oE = oxNew('oxseoencoder');
-        $oE->unsetInstance();
 
         $oView = $this->getMock( 'oxubase', array( '_prepareMetaDescription', '_getSeoObjectId' ) );
         $oView->expects( $this->never() )->method( '_prepareMetaDescription' );
@@ -689,11 +685,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
     public function testSetMetaKeywordsWhenSeoIsOn()
     {
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
-        oxTestModules::addFunction("oxseoencoder", "unsetInstance", "{oxSeoEncoder::\$_instance = null;}");
         oxTestModules::addFunction("oxseoencoder", "getMetaData", '{return "xxx";}');
-
-        $oE = oxNew('oxseoencoder');
-        $oE->unsetInstance();
 
         $oView = $this->getMock( 'oxubase', array( '_prepareMetaDescription', '_getSeoObjectId' ) );
         $oView->expects( $this->never() )->method( '_prepareMetaDescription' );

@@ -351,8 +351,6 @@ class Unit_Core_oxmanufacturerTest extends OxidTestCase
     public function testDelete()
     {
         oxTestModules::addFunction('oxSeoEncoderManufacturer', 'onDeleteManufacturer', '{$this->onDelete[] = $aA[0];}');
-        oxTestModules::addFunction('oxSeoEncoderManufacturer', 'resetInst', '{self::$_instance = $this;}');
-        oxNew('oxSeoEncoderManufacturer')->resetInst();
         oxRegistry::get("oxSeoEncoderManufacturer")->onDelete = array();
 
         $obj = new oxmanufacturer();

@@ -87,8 +87,8 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
 
         parent::setUp();
 
-        oxSeoEncoder::getInstance()->setPrefix('oxid');
-        oxSeoEncoder::getInstance()->setSeparator();
+        oxRegistry::get("oxSeoEncoder")->setPrefix('oxid');
+        oxRegistry::get("oxSeoEncoder")->setSeparator();
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
         //echo $this->getName()."\n";
     }
@@ -126,9 +126,6 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
         $oEncoder->setPrefix( $myConfig->getConfigParam( 'sSEOuprefix' ) );
         $oEncoder->setReservedWords( $myConfig->getConfigParam( 'aSEOReservedWords' ) );
         $oEncoder->clean_aReservedEntryKeys();
-
-        oxTestModules::addFunction("oxseoencoder", "resetInst", '{self::$_instance = null;self::$_aReservedWords = array();}');
-        oxNew('oxseoencoder')->resetInst();
 
         parent::tearDown();
     }
@@ -230,7 +227,7 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
     public function testGetContentLink0001664()
     {
         $iLang = 0;
-        oxSeoEncoder::getInstance()->setPrefix( "_" );
+        oxRegistry::get("oxSeoEncoder")->setPrefix( "_" );
 
         $oContent = new oxContent();
         $oContent->setId( "_testContent" );
@@ -277,7 +274,7 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
 
         $oArticle->getLink();
 
-        $oEncoder = oxSeoEncoder::getInstance();
+        $oEncoder = oxRegistry::get("oxSeoEncoder");
 
         // 1. Categorie "Geschenke" SEO URL "blafusel/" and Fixed URL = On
         $oEncoder->markAsExpired( $sOxid, $iShopId, 1, $iLang );
@@ -329,7 +326,7 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
 
         $oCategory->getLink();
 
-        $oEncoder = oxSeoEncoder::getInstance();
+        $oEncoder = oxRegistry::get("oxSeoEncoder");
 
         // 1. Categorie "Geschenke" SEO URL "blafusel/" and Fixed URL = On
         $oEncoder->markAsExpired( $sOxid, $iShopId, 1, $iLang );
@@ -637,7 +634,7 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
         $oArticle->save();
 
         // saving its meta data
-        $oEncoder = oxSeoEncoder::getInstance();
+        $oEncoder = oxRegistry::get("oxSeoEncoder");
         $oEncoder->addSeoEntry( $oArticle->getId(), $oArticle->getShopId(), $oArticle->getLanguage(), 'http://stdlink',
                                 $oArticle->getLink(), 'oxarticle', 0, 'oxseo oxkeywords', 'oxseo oxdescription', '' );
 

@@ -25,28 +25,6 @@ require_once realpath( "." ).'/unit/test_config.inc.php';
 
 class Unit_Core_oxrssfeedTest extends OxidTestCase
 {
-
-    public function setUp()
-    {
-        parent::setUp();
-        oxTestModules::addFunction('oxSeoEncoder', 'clrInstance', '{ oxSeoEncoder::$_instance = null ; }');
-        $oSeo = oxNew('oxSeoEncoder');
-        $oSeo->clrInstance();
-    }
-
-    /**
-     * Tear down the fixture.
-     *
-     * @return null
-     */
-    public function tearDown()
-    {
-        oxTestModules::addFunction('oxSeoEncoder', 'clrInstance', '{ oxSeoEncoder::$_instance = null ; }');
-        $oSeo = oxNew('oxSeoEncoder');
-        $oSeo->clrInstance();
-        parent::tearDown();
-    }
-
     public function testGetChannel()
     {
         oxTestModules::addFunction('oxrssfeed', 'setChannel', '{$this->_aChannel = $aA[0];}');
@@ -457,7 +435,7 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
         $oRss = $this->getMock( 'oxrssfeed', array( 'getConfig' ) );
         $oRss->expects( $this->any())->method( 'getConfig')->will( $this->returnValue( $oCfg ) );
 
-        oxSeoEncoder::getInstance()->setConfig($oCfg);
+        oxRegistry::get("oxSeoEncoder")->setConfig($oCfg);
 
         $this->assertEquals('http://homeurl/?cl=rss&amp;fnc=topshop&amp;lang=1 - SEO - rss/asd/extra', $oRss->UNITprepareUrl( 'cl=rss&amp;fnc=topshop', 'asd' ) );
     }

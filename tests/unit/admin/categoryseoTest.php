@@ -29,17 +29,6 @@ require_once realpath( "." ).'/unit/test_config.inc.php';
 class Unit_Admin_CategorySeoTest extends OxidTestCase
 {
     /**
-     * Sets up test
-     *
-     * @return null
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-        oxTestModules::addFunction( 'oxSeoEncoderCategory', 'cleanup', '{ self::$_instance = null; }');
-    }
-
-    /**
      * Tear down the fixture.
      *
      * @return null
@@ -49,7 +38,6 @@ class Unit_Admin_CategorySeoTest extends OxidTestCase
         $sQ = "delete from oxcategories where oxid like '_test%'";
         oxDb::getDb()->execute( $sQ );
 
-        oxRegistry::get("oxSeoEncoderCategory")->cleanup();
         parent::tearDown();
     }
 

@@ -70,13 +70,6 @@ class oxSeoEncoder extends oxSuperCfg
     protected $_sAddParams = null;
 
     /**
-     * Singleton instance.
-     *
-     * @var oxseoencoder
-     */
-    protected static $_instance = null;
-
-    /**
      * Url fixed state cache
      *
      * @return array
@@ -100,18 +93,6 @@ class oxSeoEncoder extends oxSuperCfg
      * @var int
      */
     protected $_iMaxUrlLength = null;
-
-    /**
-     * Singleton method
-     *
-     * @deprecated since v5.0 (2012-08-10); Use oxRegistry::get("oxSeoEncoder") instead
-     *
-     * @return oxseoencoder
-     */
-    public static function getInstance()
-    {
-        return oxRegistry::get("oxSeoEncoder");
-    }
 
     /**
      * Returns part of url defining active language

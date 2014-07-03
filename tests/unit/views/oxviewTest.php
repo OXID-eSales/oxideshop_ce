@@ -80,9 +80,6 @@ class Unit_Views_oxviewTest extends OxidTestCase
 
         oxUtils::getInstance()->seoIsActive( true );
 
-        oxTestModules::addFunction("oxseoencoder", "unsetInstance", "{oxSeoEncoder::\$_instance = null;}");
-        $oE = oxNew('oxseoencoder');
-        $oE->unsetInstance();
         oxTestModules::cleanUp();
 
         parent::tearDown();

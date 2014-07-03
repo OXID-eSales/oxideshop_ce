@@ -351,8 +351,6 @@ class Unit_Core_oxCategoryTest extends OxidTestCase
     public function testDelete()
     {
         oxTestModules::addFunction('oxSeoEncoderCategory', 'onDeleteCategory', '{$this->onDelete[] = $aA[0];}');
-        oxTestModules::addFunction('oxSeoEncoderCategory', 'resetInst', '{self::$_instance = $this;}');
-        oxNew('oxSeoEncoderCategory')->resetInst();
         oxRegistry::get("oxSeoEncoderCategory")->onDelete = array();
 
         // parent is not deletable

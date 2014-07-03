@@ -353,8 +353,6 @@ class Unit_Core_oxvendorTest extends OxidTestCase
     public function testDelete()
     {
         oxTestModules::addFunction('oxSeoEncoderVendor', 'onDeleteVendor', '{$this->onDelete[] = $aA[0];}');
-        oxTestModules::addFunction('oxSeoEncoderVendor', 'resetInst', '{self::$_instance = $this;}');
-        oxNew('oxSeoEncoderVendor')->resetInst();
         oxRegistry::get("oxSeoEncoderVendor")->onDelete = array();
 
         $obj = new oxvendor();

@@ -29,17 +29,6 @@ require_once realpath( "." ).'/unit/test_config.inc.php';
 class Unit_Admin_ObjectSeoTest extends OxidTestCase
 {
     /**
-     * Sets up test
-     *
-     * @return null
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-        oxTestModules::addFunction( 'oxSeoEncoder', 'cleanup', '{ self::$_instance = null; }');
-    }
-
-    /**
      * Tear down the fixture.
      *
      * @return null
@@ -49,7 +38,6 @@ class Unit_Admin_ObjectSeoTest extends OxidTestCase
         $sQ = "delete from oxseo where oxobjectid='objectid'";
         oxDb::getDb()->execute( $sQ );
 
-        oxSeoEncoder::getInstance()->cleanup();
         parent::tearDown();
     }
 

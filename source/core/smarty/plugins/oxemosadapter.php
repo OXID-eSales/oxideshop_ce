@@ -41,7 +41,7 @@
 /**
  * Includes emos script formatter class
  */
-require_once oxRegistry::getConfig()->getConfigParam( 'sCoreDir' ) . 'smarty/plugins/emos.php';
+require_once oxRegistry::getConfig()->getConfigParam('sCoreDir') . 'smarty/plugins/emos.php';
 
 /**
  * This class is a reference implementation of a PHP Function to include
@@ -113,21 +113,21 @@ class oxEmosAdapter extends oxSuperCfg
      */
     public function getEmos()
     {
-        if ( $this->_oEmos === null ) {
-            $this->_oEmos = new EMOS( $this->_getScriptPath() );
+        if ($this->_oEmos === null) {
+            $this->_oEmos = new EMOS($this->_getScriptPath());
 
             // make output more readable
             $this->_oEmos->prettyPrint();
             //$this->_oEmos->setSid( $this->getSession()->getId() );
 
             // set page id
-            $this->_oEmos->addPageId( $this->_getEmosPageId( $this->_getTplName() ) );
+            $this->_oEmos->addPageId($this->_getEmosPageId($this->_getTplName()));
 
             // language id
-            $this->_oEmos->addLangId( oxRegistry::getLang()->getBaseLanguage() );
+            $this->_oEmos->addLangId(oxRegistry::getLang()->getBaseLanguage());
 
             // set site ID
-            $this->_oEmos->addSiteId( $this->getConfig()->getShopId() );
+            $this->_oEmos->addSiteId($this->getConfig()->getShopId());
         }
 
         return $this->_oEmos;
@@ -140,11 +140,11 @@ class oxEmosAdapter extends oxSuperCfg
      * 
      * @return string 
      */
-    protected function _convertToUtf( $sContent ) 
+    protected function _convertToUtf($sContent)
     {
-        $myConfig  = $this->getConfig();
-        if ( !$myConfig->isUtf() ) {
-            $sContent = iconv( oxLang::getInstance()->translateString( 'charset' ), 'UTF-8' , $sContent );
+        $myConfig = $this->getConfig();
+        if (!$myConfig->isUtf()) {
+            $sContent = iconv(oxLang::getInstance()->translateString('charset'), 'UTF-8', $sContent);
         }
         return $sContent;
     }
@@ -157,13 +157,13 @@ class oxEmosAdapter extends oxSuperCfg
      *
      * @return string
      */
-    protected function _prepareProductTitle( $oProduct )
+    protected function _prepareProductTitle($oProduct)
     {
         $sTitle = $oProduct->oxarticles__oxtitle->value;
-        if ( $oProduct->oxarticles__oxvarselect->value ) {
-            $sTitle .= " ".$oProduct->oxarticles__oxvarselect->value;
+        if ($oProduct->oxarticles__oxvarselect->value) {
+            $sTitle .= " " . $oProduct->oxarticles__oxvarselect->value;
         }
-        $sTitle = $this->_convertToUtf( $sTitle );
+        $sTitle = $this->_convertToUtf($sTitle);
         return $sTitle;
     }
 
@@ -171,28 +171,28 @@ class oxEmosAdapter extends oxSuperCfg
      * Converts a oxarticle object to an EMOS_Item
      *
      * @param oxarticle $oProduct article to convert
-     * @param string    $sCatPath category path
-     * @param int       $iQty     buyable amount
+     * @param string $sCatPath category path
+     * @param int $iQty buyable amount
      *
      * @return EMOS_Item
      */
-    protected function _convProd2EmosItem( $oProduct, $sCatPath = "NULL", $iQty = 1 )
+    protected function _convProd2EmosItem($oProduct, $sCatPath = "NULL", $iQty = 1)
     {
         $oItem = $this->_getNewEmosItem();
 
-        $sProductId = ( isset( $oProduct->oxarticles__oxartnum->value ) && $oProduct->oxarticles__oxartnum->value ) ? $oProduct->oxarticles__oxartnum->value : $oProduct->getId();
-        $oItem->productId   = $this->_convertToUtf( $sProductId );
-        $oItem->productName = $this->_prepareProductTitle( $oProduct );
+        $sProductId = (isset($oProduct->oxarticles__oxartnum->value) && $oProduct->oxarticles__oxartnum->value) ? $oProduct->oxarticles__oxartnum->value : $oProduct->getId();
+        $oItem->productId = $this->_convertToUtf($sProductId);
+        $oItem->productName = $this->_prepareProductTitle($oProduct);
 
         // #810A
         $oCur = $this->getConfig()->getActShopCurrencyObject();
-        $oItem->price        = $oProduct->getPrice()->getBruttoPrice() * ( 1/$oCur->rate );
-        $oItem->productGroup = "{$sCatPath}/{$this->_convertToUtf( $oProduct->oxarticles__oxtitle->value )}";
-        $oItem->quantity     = $iQty;
+        $oItem->price = $oProduct->getPrice()->getBruttoPrice() * (1 / $oCur->rate);
+        $oItem->productGroup = "{$sCatPath}/{$this->_convertToUtf($oProduct->oxarticles__oxtitle->value)}";
+        $oItem->quantity = $iQty;
         // #3452: Add brands to econda tracking
-        $oItem->variant1     = $oProduct->getVendor() ? $this->_convertToUtf( $oProduct->getVendor()->getTitle() ) : "NULL";
-        $oItem->variant2     = $oProduct->getManufacturer() ? $this->_convertToUtf( $oProduct->getManufacturer()->getTitle() ) : "NULL";
-        $oItem->variant3     = $oProduct->getId();
+        $oItem->variant1 = $oProduct->getVendor() ? $this->_convertToUtf($oProduct->getVendor()->getTitle()) : "NULL";
+        $oItem->variant2 = $oProduct->getManufacturer() ? $this->_convertToUtf($oProduct->getManufacturer()->getTitle()) : "NULL";
+        $oItem->variant3 = $oProduct->getId();
 
         return $oItem;
     }
@@ -204,9 +204,9 @@ class oxEmosAdapter extends oxSuperCfg
      *
      * @return string
      */
-    protected function _getEmosPageTitle( $aParams )
+    protected function _getEmosPageTitle($aParams)
     {
-        return isset( $aParams['title'] ) ? $this->_convertToUtf( $aParams['title'] ) : null;
+        return isset($aParams['title']) ? $this->_convertToUtf($aParams['title']) : null;
     }
 
     /**
@@ -218,12 +218,12 @@ class oxEmosAdapter extends oxSuperCfg
     {
         $oActView = $this->getConfig()->getActiveView();
         // showLogin function is deprecated, but just in case if it is called
-        if ( strcasecmp( 'showLogin', (string) $oActView->getFncName() ) == 0 ) {
+        if (strcasecmp('showLogin', (string)$oActView->getFncName()) == 0) {
             $sCl = 'account';
         } else {
             $sCl = $oActView->getClassName();
         }
-        return $sCl ? strtolower( $sCl ) : 'start';
+        return $sCl ? strtolower($sCl) : 'start';
     }
 
     /**
@@ -236,13 +236,13 @@ class oxEmosAdapter extends oxSuperCfg
         // #4016: econda: json function returns null if title has an umlaut
         if ($this->_sEmosCatPath === null) {
             $aCatTitle = array();
-                if ( $aCatPath = $this->getConfig()->getActiveView()->getBreadCrumb() ) {
-                    foreach ($aCatPath as $aCatPathParts) {
-                        $aCatTitle[] = $aCatPathParts['title'];
-                    }
+            if ($aCatPath = $this->getConfig()->getActiveView()->getBreadCrumb()) {
+                foreach ($aCatPath as $aCatPathParts) {
+                    $aCatTitle[] = $aCatPathParts['title'];
                 }
-            $this->_sEmosCatPath = ( count($aCatTitle) ? strip_tags(implode('/', $aCatTitle)) : 'NULL' );
-            $this->_sEmosCatPath = $this->_convertToUtf( $this->_sEmosCatPath );
+            }
+            $this->_sEmosCatPath = (count($aCatTitle) ? strip_tags(implode('/', $aCatTitle)) : 'NULL');
+            $this->_sEmosCatPath = $this->_convertToUtf($this->_sEmosCatPath);
         }
         return $this->_sEmosCatPath;
     }
@@ -254,30 +254,30 @@ class oxEmosAdapter extends oxSuperCfg
      *
      * @return string
      */
-    protected function _getBasketProductCatPath( $oArticle )
+    protected function _getBasketProductCatPath($oArticle)
     {
         $sCatPath = '';
-        if ( $oCategory = $oArticle->getCategory() ) {
+        if ($oCategory = $oArticle->getCategory()) {
             $sTable = $oCategory->getViewName();
-            $oDb = oxDb::getDb( oxDb::FETCH_MODE_ASSOC );
+            $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
             $sQ = "select {$sTable}.oxtitle as oxtitle from {$sTable}
-                       where {$sTable}.oxleft <= ".$oDb->quote( $oCategory->oxcategories__oxleft->value )." and
-                             {$sTable}.oxright >= ".$oDb->quote( $oCategory->oxcategories__oxright->value )." and
-                             {$sTable}.oxrootid = ".$oDb->quote( $oCategory->oxcategories__oxrootid->value )."
+                       where {$sTable}.oxleft <= " . $oDb->quote($oCategory->oxcategories__oxleft->value) . " and
+                             {$sTable}.oxright >= " . $oDb->quote($oCategory->oxcategories__oxright->value) . " and
+                             {$sTable}.oxrootid = " . $oDb->quote($oCategory->oxcategories__oxrootid->value) . "
                        order by {$sTable}.oxleft";
 
-            $oRs = $oDb->execute( $sQ );
-            if ( $oRs != false && $oRs->recordCount() > 0 ) {
-                while ( !$oRs->EOF ) {
-                    if ( $sCatPath ) {
+            $oRs = $oDb->execute($sQ);
+            if ($oRs != false && $oRs->recordCount() > 0) {
+                while (!$oRs->EOF) {
+                    if ($sCatPath) {
                         $sCatPath .= '/';
                     }
-                    $sCatPath .= strip_tags( $oRs->fields['oxtitle'] );
+                    $sCatPath .= strip_tags($oRs->fields['oxtitle']);
                     $oRs->moveNext();
                 }
             }
         }
-        $sCatPath = $this->_convertToUtf( $sCatPath );
+        $sCatPath = $this->_convertToUtf($sCatPath);
         
         return $sCatPath;
     }
@@ -289,16 +289,16 @@ class oxEmosAdapter extends oxSuperCfg
      *
      * @return string
      */
-    protected function _getEmosPageId( $sTplName )
+    protected function _getEmosPageId($sTplName)
     {
         $sPageId = $this->getConfig()->getShopId() .
-                   $this->_getEmosCl() .
-                   $sTplName .
-                   oxRegistry::getConfig()->getRequestParameter( 'cnid' ) .
-                   oxRegistry::getConfig()->getRequestParameter( 'anid' ) .
-                   oxRegistry::getConfig()->getRequestParameter( 'option' );
+            $this->_getEmosCl() .
+            $sTplName .
+            oxRegistry::getConfig()->getRequestParameter('cnid') .
+            oxRegistry::getConfig()->getRequestParameter('anid') .
+            oxRegistry::getConfig()->getRequestParameter('option');
 
-        return md5( $sPageId );
+        return md5($sPageId);
     }
 
     /**
@@ -308,7 +308,7 @@ class oxEmosAdapter extends oxSuperCfg
      */
     protected function _getTplName()
     {
-        if ( !( $sCurrTpl = basename( ( string ) oxRegistry::getConfig()->getRequestParameter( 'tpl' ) ) ) ) {
+        if (!($sCurrTpl = basename(( string )oxRegistry::getConfig()->getRequestParameter('tpl')))) {
             // in case template was not defined in request
             $sCurrTpl = $this->getConfig()->getActiveView()->getTemplateName();
         }
@@ -318,14 +318,14 @@ class oxEmosAdapter extends oxSuperCfg
     /**
      * Builds JS code for current view tracking functionality
      *
-     * @param array  $aParams plugin parameters
+     * @param array $aParams plugin parameters
      * @param smarty $oSmarty template engine object
      *
      * @return string
      */
-    public function getCode( $aParams, $oSmarty )
+    public function getCode($aParams, $oSmarty)
     {
-        $myConfig  = $this->getConfig();
+        $myConfig = $this->getConfig();
         $mySession = $this->getSession();
 
         // current view object
@@ -335,11 +335,11 @@ class oxEmosAdapter extends oxSuperCfg
         $sFnc = $oCurrView->getFncName();
 
         // current product (if available)
-        $oProduct = ( isset( $aParams['product'] ) && $aParams['product'] ) ? $aParams['product'] : null;
+        $oProduct = (isset($aParams['product']) && $aParams['product']) ? $aParams['product'] : null;
 
         // session user
-        $oUser = oxNew( 'oxuser' );
-        if ( !$oUser->loadActiveUser() ) {
+        $oUser = oxNew('oxuser');
+        if (!$oUser->loadActiveUser()) {
             $oUser = false;
         }
 
@@ -354,257 +354,256 @@ class oxEmosAdapter extends oxSuperCfg
         $oStr = getStr();
 
         // treat the different PageTypes
-        switch ( $this->_getEmosCl() ) {
+        switch ($this->_getEmosCl()) {
             case 'start':
-                $oEmos->addContent( 'Start' );
+                $oEmos->addContent('Start');
                 break;
             case 'basket':
-                $oEmos->addContent( 'Shop/Kaufprozess/Warenkorb' );
-                $oEmos->addOrderProcess( '1_Warenkorb' );
+                $oEmos->addContent('Shop/Kaufprozess/Warenkorb');
+                $oEmos->addOrderProcess('1_Warenkorb');
                 break;
             case 'user':
                 //ECONDA FIX track the OXID 3.x order process with the 3 different options plus default
-                $sOption = oxRegistry::getConfig()->getRequestParameter( 'option' );
-                $sOption = ( isset( $sOption ) ) ? $sOption : oxSession::getVar( 'option' );
-                switch ( $sOption ) {
+                $sOption = oxRegistry::getConfig()->getRequestParameter('option');
+                $sOption = (isset($sOption)) ? $sOption : oxSession::getVar('option');
+                switch ($sOption) {
                     case '1':
-                        $oEmos->addContent( 'Shop/Kaufprozess/Kundendaten/OhneReg' );
-                        $oEmos->addOrderProcess( '2_Kundendaten/OhneReg' );
+                        $oEmos->addContent('Shop/Kaufprozess/Kundendaten/OhneReg');
+                        $oEmos->addOrderProcess('2_Kundendaten/OhneReg');
                         break;
                     case '2':
-                        $oEmos->addContent( 'Shop/Kaufprozess/Kundendaten/BereitsKunde' );
-                        $oEmos->addOrderProcess( '2_Kundendaten/BereitsKunde' );
+                        $oEmos->addContent('Shop/Kaufprozess/Kundendaten/BereitsKunde');
+                        $oEmos->addOrderProcess('2_Kundendaten/BereitsKunde');
                         break;
                     case '3':
-                        $oEmos->addContent( 'Shop/Kaufprozess/Kundendaten/NeuesKonto' );
-                        $oEmos->addOrderProcess( '2_Kundendaten/NeuesKonto' );
+                        $oEmos->addContent('Shop/Kaufprozess/Kundendaten/NeuesKonto');
+                        $oEmos->addOrderProcess('2_Kundendaten/NeuesKonto');
                         break;
                     default:
-                        $oEmos->addContent( 'Shop/Kaufprozess/Kundendaten' );
-                        $oEmos->addOrderProcess( '2_Kundendaten' );
+                        $oEmos->addContent('Shop/Kaufprozess/Kundendaten');
+                        $oEmos->addOrderProcess('2_Kundendaten');
                         break;
                 }
                 break;
             case 'payment':
-                $oEmos->addContent( 'Shop/Kaufprozess/Zahlungsoptionen' );
-                $oEmos->addOrderProcess( '3_Zahlungsoptionen' );
+                $oEmos->addContent('Shop/Kaufprozess/Zahlungsoptionen');
+                $oEmos->addOrderProcess('3_Zahlungsoptionen');
                 break;
             case 'order':
-                $oEmos->addContent( 'Shop/Kaufprozess/Bestelluebersicht' );
-                $oEmos->addOrderProcess( '4_Bestelluebersicht' );
+                $oEmos->addContent('Shop/Kaufprozess/Bestelluebersicht');
+                $oEmos->addOrderProcess('4_Bestelluebersicht');
                 break;
             case 'thankyou':
-                $oEmos->addContent( 'Shop/Kaufprozess/Bestaetigung' );
-                $oEmos->addOrderProcess( '5_Bestaetigung' );
+                $oEmos->addContent('Shop/Kaufprozess/Bestaetigung');
+                $oEmos->addOrderProcess('5_Bestaetigung');
 
                 // get order Page Array
                 //ECONDA FIX use username (email address) instead of customer number
-                $oOrder  = $oCurrView->getOrder();
+                $oOrder = $oCurrView->getOrder();
                 $oBasket = $oCurrView->getBasket();
-                $oEmos->addEmosBillingPageArray( $this->_convertToUtf($oOrder->oxorder__oxordernr->value),
-                                                 $this->_convertToUtf($oUser->oxuser__oxusername->value),
-                                                 $oBasket->getPrice()->getBruttoPrice() * ( 1 / $oCur->rate ),
-                                                 $this->_convertToUtf($oOrder->oxorder__oxbillcountry->value),
-                                                 $this->_convertToUtf($oOrder->oxorder__oxbillzip->value),
-                                                 $this->_convertToUtf($oOrder->oxorder__oxbillcity->value) );
+                $oEmos->addEmosBillingPageArray($this->_convertToUtf($oOrder->oxorder__oxordernr->value),
+                    $this->_convertToUtf($oUser->oxuser__oxusername->value),
+                    $oBasket->getPrice()->getBruttoPrice() * (1 / $oCur->rate),
+                    $this->_convertToUtf($oOrder->oxorder__oxbillcountry->value),
+                    $this->_convertToUtf($oOrder->oxorder__oxbillzip->value),
+                    $this->_convertToUtf($oOrder->oxorder__oxbillcity->value));
 
                 // get Basket Page Array
                 $aBasket = array();
                 $aBasketProducts = $oBasket->getContents();
-                foreach ( $aBasketProducts as $oContent ) {
+                foreach ($aBasketProducts as $oContent) {
                     $sId = $oContent->getProductId();
                     $oProduct = oxNew('oxarticle');
                     $oProduct->load($sId);
                     //$sPath = $this->_getDeepestCategoryPath( $oProduct );
-                    $sPath = $this->_getBasketProductCatPath( $oProduct );
-                    $aBasket[] = $this->_convProd2EmosItem( $oProduct, $sPath, $oContent->getAmount() );
+                    $sPath = $this->_getBasketProductCatPath($oProduct);
+                    $aBasket[] = $this->_convProd2EmosItem($oProduct, $sPath, $oContent->getAmount());
                 }
-                $oEmos->addEmosBasketPageArray( $aBasket );
+                $oEmos->addEmosBasketPageArray($aBasket);
                 break;
             case 'oxwarticledetails':
-                if ( $oProduct ) {
+                if ($oProduct) {
                     //$oEmos->addContent( 'Shop/'.$this->_getEmosCatPath().'/'.strip_tags( $oProduct->oxarticles__oxtitle->value ) );
                     //$sPath = $this->_getDeepestCategoryPath( $oProduct );
                     // #1939: econda category broken after search
-                    $sPath = $this->_getBasketProductCatPath( $oProduct );
-                    $sTitle = $this->_prepareProductTitle( $oProduct );
-                    $oEmos->addContent( "Shop/{$sPath}/".strip_tags( $sTitle ) );
-                    $oEmos->addDetailView( $this->_convProd2EmosItem( $oProduct, $sPath, 1 ) );
+                    $sPath = $this->_getBasketProductCatPath($oProduct);
+                    $sTitle = $this->_prepareProductTitle($oProduct);
+                    $oEmos->addContent("Shop/{$sPath}/" . strip_tags($sTitle));
+                    $oEmos->addDetailView($this->_convProd2EmosItem($oProduct, $sPath, 1));
                 }
                 break;
             case 'search':
-                $oEmos->addContent( 'Shop/Suche' );
-                $iPage = oxRegistry::getConfig()->getRequestParameter( 'pgNr' );
-                if ( !$iPage ) {
+                $oEmos->addContent('Shop/Suche');
+                $iPage = oxRegistry::getConfig()->getRequestParameter('pgNr');
+                if (!$iPage) {
                     //ECONDA FIX only track first search page, not the following pages
                     // #1184M - specialchar search
                     //$sSearchParamForLink = rawurlencode( oxRegistry::getConfig()->getRequestParameter( 'searchparam', true ) );
                     // #4018: The emospro.search string is URL-encoded forwarded to econda instead of URL-escaped
-                    $sSearchParamForLink =  oxRegistry::getConfig()->getRequestParameter( 'searchparam', true );
+                    $sSearchParamForLink = oxRegistry::getConfig()->getRequestParameter('searchparam', true);
                     //$sOutput .= $oEmos->addSearch( $sSearchParamForLink, $oSmarty->_tpl_vars['d']->iArtCnt );
                     $iSearchCount = 0;
                     if (($oSmarty->_tpl_vars['oView']) && $oSmarty->_tpl_vars['oView']->getArticleCount()) {
                         $iSearchCount = $oSmarty->_tpl_vars['oView']->getArticleCount();
                     }
-                    $sOutput .= $oEmos->addSearch( $sSearchParamForLink, $iSearchCount);
+                    $sOutput .= $oEmos->addSearch($sSearchParamForLink, $iSearchCount);
                 }
                 break;
             case 'alist':
-                $oEmos->addContent( 'Shop/'.$this->_getEmosCatPath() );
+                $oEmos->addContent('Shop/' . $this->_getEmosCatPath());
                 break;
             case 'account_wishlist':
-                $oEmos->addContent( 'Service/Wunschzettel' );
+                $oEmos->addContent('Service/Wunschzettel');
                 break;
             case 'contact':
                 // #4042: Contact page is erroneously tracked as contact event
-                if ( $oCurrView->getContactSendStatus() ) {
-                    $oEmos->addContent( 'Service/Kontakt/Success' );
-                    $oEmos->addContact( 'Kontakt' );                    
-                }
-                else {
-                    $oEmos->addContent( 'Service/Kontakt/Form' );
+                if ($oCurrView->getContactSendStatus()) {
+                    $oEmos->addContent('Service/Kontakt/Success');
+                    $oEmos->addContact('Kontakt');
+                } else {
+                    $oEmos->addContent('Service/Kontakt/Form');
                 }
                 break;
             case 'help':
-                $oEmos->addContent( 'Service/Hilfe' );
+                $oEmos->addContent('Service/Hilfe');
                 break;
             case 'newsletter':
-                $oEmos->addContent( $oCurrView->getNewsletterStatus() ? 'Service/Newsletter/Success' : 'Service/Newsletter/Form' );
+                $oEmos->addContent($oCurrView->getNewsletterStatus() ? 'Service/Newsletter/Success' : 'Service/Newsletter/Form');
                 break;
             case 'guestbook':
-                $oEmos->addContent( 'Service/Gaestebuch' );
+                $oEmos->addContent('Service/Gaestebuch');
                 break;
             case 'links':
-                $oEmos->addContent( 'Service/Links' );
+                $oEmos->addContent('Service/Links');
                 break;
             case 'info':
-                switch ( $sTplName ) {
+                switch ($sTplName) {
                     case 'impressum.tpl':
-                        $oEmos->addContent( 'Info/Impressum' );
+                        $oEmos->addContent('Info/Impressum');
                         break;
                     case 'agb.tpl':
-                        $oEmos->addContent( 'Info/AGB' );
+                        $oEmos->addContent('Info/AGB');
                         break;
                     case 'order_info.tpl':
-                        $oEmos->addContent( 'Info/Bestellinfo' );
+                        $oEmos->addContent('Info/Bestellinfo');
                         break;
                     case 'delivery_info.tpl':
-                        $oEmos->addContent( 'Info/Versandinfo' );
+                        $oEmos->addContent('Info/Versandinfo');
                         break;
                     case 'security_info.tpl':
-                        $oEmos->addContent( 'Info/Sicherheit' );
+                        $oEmos->addContent('Info/Sicherheit');
                         break;
                     default:
-                        $oEmos->addContent( 'Content/'.$oStr->preg_replace( '/\.tpl$/', '', $sTplName ) );
+                        $oEmos->addContent('Content/' . $oStr->preg_replace('/\.tpl$/', '', $sTplName));
                         break;
                 }
                 break;
             case 'account':
-                if ( $sFnc ) {
-                    $oEmos->addContent( ( $sFnc != 'logout' ) ? 'Login/Uebersicht' : 'Login/Formular/Logout' );
+                if ($sFnc) {
+                    $oEmos->addContent(($sFnc != 'logout') ? 'Login/Uebersicht' : 'Login/Formular/Logout');
                 } else {
-                    $oEmos->addContent( 'Login/Formular/Login' );
+                    $oEmos->addContent('Login/Formular/Login');
                 }
                 break;
             case 'account_user':
-                $oEmos->addContent( 'Login/Kundendaten' );
+                $oEmos->addContent('Login/Kundendaten');
                 break;
             case 'account_order':
-                $oEmos->addContent( 'Login/Bestellungen' );
+                $oEmos->addContent('Login/Bestellungen');
                 break;
             case 'account_noticelist':
-                $oEmos->addContent( 'Login/Merkzettel' );
+                $oEmos->addContent('Login/Merkzettel');
                 break;
             case 'account_newsletter':
-                $oEmos->addContent( 'Login/Newsletter' );
+                $oEmos->addContent('Login/Newsletter');
                 break;
             case 'account_whishlist':
-                $oEmos->addContent( 'Login/Wunschzettel' );
+                $oEmos->addContent('Login/Wunschzettel');
                 break;
             case 'forgotpassword':
-                $oEmos->addContent( 'Login/PW vergessen' );
+                $oEmos->addContent('Login/PW vergessen');
                 break;
             case 'content':
                 // backwards compatibility
-                $oContent = ( $oCurrView instanceof content ) ? $oCurrView->getContent() : null;
+                $oContent = ($oCurrView instanceof content) ? $oCurrView->getContent() : null;
                 $sContentId = $oContent ? $oContent->oxcontents__oxloadid->value : null;
-                switch ( $sContentId ) {
+                switch ($sContentId) {
                     case 'oximpressum':
-                        $oEmos->addContent( 'Info/Impressum' );
+                        $oEmos->addContent('Info/Impressum');
                         break;
                     case 'oxagb':
-                        $oEmos->addContent( 'Info/AGB' );
+                        $oEmos->addContent('Info/AGB');
                         break;
                     case 'oxorderinfo':
-                        $oEmos->addContent( 'Info/Bestellinfo' );
+                        $oEmos->addContent('Info/Bestellinfo');
                         break;
                     case 'oxdeliveryinfo':
-                        $oEmos->addContent( 'Info/Versandinfo' );
+                        $oEmos->addContent('Info/Versandinfo');
                         break;
                     case 'oxsecurityinfo':
-                        $oEmos->addContent( 'Info/Sicherheit' );
+                        $oEmos->addContent('Info/Sicherheit');
                         break;
                     default:
-                        $oEmos->addContent( 'Content/'.$this->_getEmosPageTitle( $aParams ) );
+                        $oEmos->addContent('Content/' . $this->_getEmosPageTitle($aParams));
                         break;
                 }
                 break;
             case 'register':
 
-                $oEmos->addContent( 'Service/Register' );
+                $oEmos->addContent('Service/Register');
 
-                $iError   = oxRegistry::getConfig()->getRequestParameter( 'newslettererror' );
-                $iSuccess = oxRegistry::getConfig()->getRequestParameter( 'success' );
+                $iError = oxRegistry::getConfig()->getRequestParameter('newslettererror');
+                $iSuccess = oxRegistry::getConfig()->getRequestParameter('success');
 
-                if ( $iError && $iError < 0 ) {
-                    $oEmos->addRegister( $oUser ? $oUser->getId() : 'NULL', abs( $iError ) );
+                if ($iError && $iError < 0) {
+                    $oEmos->addRegister($oUser ? $oUser->getId() : 'NULL', abs($iError));
                 }
 
-                if ( $iSuccess && $iSuccess > 0 && $oUser ) {
-                    $oEmos->addRegister( $oUser->getId(), 0 );
+                if ($iSuccess && $iSuccess > 0 && $oUser) {
+                    $oEmos->addRegister($oUser->getId(), 0);
                 }
 
                 break;
             default:
-                $oEmos->addContent( 'Content/'.$oStr->preg_replace( '/\.tpl$/', '', $sTplName ) );
+                $oEmos->addContent('Content/' . $oStr->preg_replace('/\.tpl$/', '', $sTplName));
                 break;
         }
 
         // get the last Call for special handling function "tobasket", "changebasket"
-        if ( ( $aLastCall = oxSession::getVar( 'aLastcall' ) ) ) {
-            oxSession::deleteVar( 'aLastcall' );
+        if (($aLastCall = oxSession::getVar('aLastcall'))) {
+            oxSession::deleteVar('aLastcall');
         }
 
         // ADD To Basket and Remove from Basket
-        if ( is_array( $aLastCall ) && count( $aLastCall ) ) {
-            $sCallAction = key( $aLastCall );
-            $aCallData   = current( $aLastCall );
+        if (is_array($aLastCall) && count($aLastCall)) {
+            $sCallAction = key($aLastCall);
+            $aCallData = current($aLastCall);
 
-            switch ( $sCallAction ) {
+            switch ($sCallAction) {
                 case 'changebasket':
-                    foreach ( $aCallData as $sItemId => $aItemData ) {
-                        $oProduct = oxNew( 'oxarticle' );
-                        if ( $aItemData['oldam'] > $aItemData['am'] && $oProduct->load( $aItemData['aid'] ) ) {
+                    foreach ($aCallData as $sItemId => $aItemData) {
+                        $oProduct = oxNew('oxarticle');
+                        if ($aItemData['oldam'] > $aItemData['am'] && $oProduct->load($aItemData['aid'])) {
                             //ECONDA FIX always use the main category
                             //$sPath = $this->_getDeepestCategoryPath( $oProduct );
-                            $sPath = $this->_getBasketProductCatPath( $oProduct );
-                            $oEmos->removeFromBasket( $this->_convProd2EmosItem( $oProduct, $sPath, ( $aItemData['oldam'] - $aItemData['am'] ) ) );
+                            $sPath = $this->_getBasketProductCatPath($oProduct);
+                            $oEmos->removeFromBasket($this->_convProd2EmosItem($oProduct, $sPath, ($aItemData['oldam'] - $aItemData['am'])));
                             //$oEmos->appendPreScript($aItemData['oldam'].'->'.$aItemData['am'].':'.$oProduct->load( $aItemData['aid']));
-                        } elseif ( $aItemData['oldam'] < $aItemData['am'] && $oProduct->load( $aItemData['aid'] )) {
-                            $sPath = $this->_getBasketProductCatPath( $oProduct );
-                            $oEmos->addToBasket( $this->_convProd2EmosItem( $oProduct, $sPath, $aItemData['am'] -  $aItemData['oldam']) );
+                        } elseif ($aItemData['oldam'] < $aItemData['am'] && $oProduct->load($aItemData['aid'])) {
+                            $sPath = $this->_getBasketProductCatPath($oProduct);
+                            $oEmos->addToBasket($this->_convProd2EmosItem($oProduct, $sPath, $aItemData['am'] - $aItemData['oldam']));
                         }
                     }
                     break;
                 case 'tobasket':
-                    foreach ( $aCallData as $sItemId => $aItemData ) {
+                    foreach ($aCallData as $sItemId => $aItemData) {
                         // ECONDA FIX if there is a "add to basket" in the artcle list view, we do not have a product ID here
-                        $oProduct = oxNew( 'oxarticle' );
-                        if ( $oProduct->load( $sItemId ) ) {
+                        $oProduct = oxNew('oxarticle');
+                        if ($oProduct->load($sItemId)) {
                             //ECONDA FIX always use the main category
                             //$sPath = $this->_getDeepestCategoryPath( $oProduct );
-                            $sPath = $this->_getBasketProductCatPath( $oProduct );
-                            $oEmos->addToBasket( $this->_convProd2EmosItem( $oProduct, $sPath, $aItemData['am'] ) );
+                            $sPath = $this->_getBasketProductCatPath($oProduct);
+                            $oEmos->addToBasket($this->_convProd2EmosItem($oProduct, $sPath, $aItemData['am']));
                         }
                     }
                     break;
@@ -612,10 +611,10 @@ class oxEmosAdapter extends oxSuperCfg
         }
 
         // track logins
-        if ( 'login_noredirect' == $sFnc ) {
-            $oEmos->addLogin( oxRegistry::getConfig()->getRequestParameter( 'lgn_usr' ), $oUser ? '0' : '1' );
+        if ('login_noredirect' == $sFnc) {
+            $oEmos->addLogin(oxRegistry::getConfig()->getRequestParameter('lgn_usr'), $oUser ? '0' : '1');
         }
 
-        return "\n".$oEmos->toString();
+        return "\n" . $oEmos->toString();
     }
 }

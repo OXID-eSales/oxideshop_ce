@@ -456,6 +456,11 @@ class oxEmosAdapter extends oxSuperCfg
                     $aOrderSteps['user'] = $aOrderSteps['user_' . $sOption];
                 }
                 break;
+            case 'payment':
+                if ($this->getConfig()->getRequestParameter('new_user')) {
+                    $this->_setUserRegistration($oEmos, $oUser);
+                }
+                break;
             case 'thankyou':
                 /** @var ThankYou $oCurrentView */
                 $this->_setBasketInformation($oEmos, $oUser, $oCurrentView->getOrder(), $oCurrentView->getBasket());

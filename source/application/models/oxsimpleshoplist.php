@@ -45,7 +45,7 @@ class oxSimpleShopList
     public function getList($sWhere = null)
     {
         $sSql = $this->_sBaseQuery;
-        if (!is_null($sWhere)) {
+        if (!empty($sWhere)) {
             $sSql .= " WHERE $sWhere";
         }
 

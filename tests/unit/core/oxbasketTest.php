@@ -2454,7 +2454,7 @@ class Unit_Core_oxbasketTest extends OxidTestCase
         $oBasket->deleteBasket();
 
         // now loading and testing if its the same
-        $oBasket = oxSession::getInstance()->getBasket();
+        $oBasket = oxRegistry::getSession()->getBasket();
         $this->assertNull( $oBasket->getOrderId() );
 
         $this->assertSame(array(), $oBasket->getContents());
@@ -2479,7 +2479,7 @@ class Unit_Core_oxbasketTest extends OxidTestCase
         $oBasket->deleteBasket();
 
         // now loading and testing if its the same
-        $oBasket = oxSession::getInstance()->getBasket();
+        $oBasket = oxRegistry::getSession()->getBasket();
         $this->assertNull( $oBasket->getOrderId() );
     }
 

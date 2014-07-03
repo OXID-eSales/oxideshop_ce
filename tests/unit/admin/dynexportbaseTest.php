@@ -270,7 +270,7 @@ class Unit_Admin_DynExportBaseTest extends OxidTestCase
      */
     public function testRemoveSid()
     {
-        $sSid = oxSession::getInstance()->getId();
+        $sSid = oxRegistry::getSession()->getId();
 
         // defining parameters
         $sInput = "testStartsid={$sSid}/sid/{$sSid}/sid={$sSid}&amp;sid={$sSid}&sid={$sSid}TestEnd";
@@ -454,7 +454,7 @@ class Unit_Admin_DynExportBaseTest extends OxidTestCase
     {
         // testing..
         $oView = new DynExportBase();
-        $this->assertEquals( "tmp_".str_replace( "0", "", md5( oxSession::getInstance()->getId() ) ), $oView->UNITgetHeapTableName() );
+        $this->assertEquals( "tmp_".str_replace( "0", "", md5( oxRegistry::getSession()->getId() ) ), $oView->UNITgetHeapTableName() );
     }
 
     /**

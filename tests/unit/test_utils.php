@@ -725,7 +725,7 @@ class modSession extends modOXID
     function modAttach($oObj = null)
     {
         parent::modAttach($oObj);
-        $this->_oRealInstance = oxSession::getInstance();
+        $this->_oRealInstance = oxRegistry::getSession();
         if (!$oObj) {
             $oObj = $this;
         }

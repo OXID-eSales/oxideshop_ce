@@ -134,7 +134,7 @@ class Unit_Core_oxfbTest extends OxidTestCase
      */
     public function testSetPersistentData()
     {
-        $oSess = oxSession::getInstance();
+        $oSess = oxRegistry::getSession();
         $oFb = $this->getProxyClass('_oxFb');
 
         $sSessKey = $oFb->UNITconstructSessionVariableName('access_token');
@@ -150,7 +150,7 @@ class Unit_Core_oxfbTest extends OxidTestCase
      */
     public function testGetPersistentData()
     {
-        $oSess = oxSession::getInstance();
+        $oSess = oxRegistry::getSession();
         $oFb = $this->getProxyClass('_oxFb');
 
         $sSessKey = $oFb->UNITconstructSessionVariableName('access_token');
@@ -166,7 +166,7 @@ class Unit_Core_oxfbTest extends OxidTestCase
      */
     public function testClearPersistentData()
     {
-        $oSess = oxSession::getInstance();
+        $oSess = oxRegistry::getSession();
         $oFb = $this->getProxyClass('_oxFb');
 
         $sSessKey = $oFb->constructSessionVariableName('access_token');

@@ -540,11 +540,6 @@ class Unit_Core_oxutilsTest extends OxidTestCase
 
     public function testLoadAdminProfile()
     {
-
-        $mySession = oxSession::getInstance();
-        $myConfig = oxRegistry::getConfig();
-
-
         $aProfiles = oxUtils::getInstance()->loadAdminProfile(array('640x480', '14'));
         $this->assertContains('640x480', $aProfiles[0]);
 
@@ -847,7 +842,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
     public function testCheckAccessRights()
     {
 
-        $mySession = oxSession::getInstance();
+        $mySession = oxRegistry::getSession();
         $backUpAuth = $mySession->getVar( "auth");
 
         $mySession->setVar( "auth", "oxdefaultadmin");
@@ -873,7 +868,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
     public function testCheckAccessRightsChecksSubshopAdminShop()
     {
 
-        $mySession = oxSession::getInstance();
+        $mySession = oxRegistry::getSession();
         $backUpAuth = $mySession->getVar( "auth");
 
         $e = null;

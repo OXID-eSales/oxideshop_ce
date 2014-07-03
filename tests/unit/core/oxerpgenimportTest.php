@@ -212,7 +212,7 @@ class Unit_Core_oxErpGenImportTest extends OxidTestCase
         $oUser->loadAdminUser();
 
         $this->assertTrue( $oImport->init( null, null ) );
-        $this->assertEquals( oxSession::getInstance()->getId(), $oImport->getNonPublicVar('_sSID') );
+        $this->assertEquals( oxRegistry::getSession()->getId(), $oImport->getNonPublicVar('_sSID') );
         $this->assertTrue( $oImport->getNonPublicVar('_blInit') );
         $this->assertEquals( oxRegistry::getLang()->getBaseLanguage(), $oImport->getNonPublicVar('_iLanguage') );
         $this->assertEquals( $oUser->getId(), $oImport->getNonPublicVar('_sUserID') );

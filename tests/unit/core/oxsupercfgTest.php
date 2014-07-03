@@ -47,7 +47,7 @@ class Unit_Core_oxsupercfgTest extends OxidTestCase
     {
         $oOxSuperCfg = new oxsupercfg();
         $oOxSuperCfg->setSession( null);
-        $oSession = oxSession::getInstance();
+        $oSession = oxRegistry::getSession();
         $this->assertEquals( $oSession, $oOxSuperCfg->getSession() );
 
         $oSession = $this->getMock( 'oxConfig', array( 'getId' ) );

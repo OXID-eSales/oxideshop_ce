@@ -1564,9 +1564,9 @@ class Unit_Core_oxsessionTest extends OxidTestCase
 
     public function testGetBasketReservations()
     {
-        $this->assertTrue(oxSession::getInstance()->getBasketReservations() instanceof oxBasketReservation);
+        $this->assertTrue(oxRegistry::getSession()->getBasketReservations() instanceof oxBasketReservation);
         // test cache
-        $this->assertSame(oxSession::getInstance()->getBasketReservations(), oxSession::getInstance()->getBasketReservations());
+        $this->assertSame(oxRegistry::getSession()->getBasketReservations(), oxRegistry::getSession()->getBasketReservations());
     }
 
     public function testSetForceNewSession()

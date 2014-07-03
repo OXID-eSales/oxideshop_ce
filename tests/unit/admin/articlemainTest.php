@@ -92,7 +92,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
     {
         $oDb     = oxDb::getDb();
         $oUtils  = oxUtilsObject::getInstance();
-        $iShopId = oxConfig::getInstance()->getShopId();
+        $iShopId = oxRegistry::getConfig()->getShopId();
 
         $sO2CView = getViewName( 'oxobject2category' );
 
@@ -115,7 +115,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
     {
         $oDb     = oxDb::getDb();
         $oUtils  = oxUtilsObject::getInstance();
-        $iShopId = oxConfig::getInstance()->getShopId();
+        $iShopId = oxRegistry::getConfig()->getShopId();
 
         // creating few oxprice2article records
         $oDb->execute( "INSERT INTO `oxobject2attribute` (OXID,OXOBJECTID,OXATTRID,OXVALUE,OXPOS,OXVALUE_1,OXVALUE_2,OXVALUE_3) VALUES ('".$oUtils->generateUId()."', '_testArtId', '_testObjId', '0', '0', '0', '0', '0' );" );
@@ -136,7 +136,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
     {
         $oDb     = oxDb::getDb();
         $oUtils  = oxUtilsObject::getInstance();
-        $iShopId = oxConfig::getInstance()->getShopId();
+        $iShopId = oxRegistry::getConfig()->getShopId();
 
         // creating few oxprice2article records
         $oDb->execute( "INSERT INTO `oxobject2selectlist` (OXID,OXOBJECTID,OXSELNID,OXSORT) VALUES ('".$oUtils->generateUId()."', '_testArtId', '_testObjId', 0);" );
@@ -157,7 +157,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
     {
         $oDb     = oxDb::getDb();
         $oUtils  = oxUtilsObject::getInstance();
-        $iShopId = oxConfig::getInstance()->getShopId();
+        $iShopId = oxRegistry::getConfig()->getShopId();
 
         // creating few files records
         $oDb->execute( "INSERT INTO `oxfiles` (`OXID`, `OXARTID`, `OXFILENAME`) VALUES ('".$oUtils->generateUId()."', '_testArtId', '_testObjId');" );
@@ -178,7 +178,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
     {
         $oDb     = oxDb::getDb();
         $oUtils  = oxUtilsObject::getInstance();
-        $iShopId = oxConfig::getInstance()->getShopId();
+        $iShopId = oxRegistry::getConfig()->getShopId();
 
         // creating few oxprice2article records
         $oDb->execute( "INSERT INTO `oxobject2article` (OXID,OXOBJECTID,OXARTICLENID,OXSORT) VALUES ('".$oUtils->generateUId()."', '_testObjId', '_testArtId', 0);" );
@@ -199,7 +199,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
     {
         $oDb     = oxDb::getDb();
         $oUtils  = oxUtilsObject::getInstance();
-        $iShopId = oxConfig::getInstance()->getShopId();
+        $iShopId = oxRegistry::getConfig()->getShopId();
 
         // creating few oxprice2article records
         $oDb->execute( "INSERT INTO `oxaccessoire2article` (OXID,OXOBJECTID,OXARTICLENID,OXSORT) VALUES ('".$oUtils->generateUId()."', '_testObjId', '_testArtId', 0);" );
@@ -221,7 +221,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
     {
         $oDb     = oxDb::getDb();
         $oUtils  = oxUtilsObject::getInstance();
-        $iShopId = oxConfig::getInstance()->getShopId();
+        $iShopId = oxRegistry::getConfig()->getShopId();
 
         // creating few oxprice2article records
         $oDb->execute( "INSERT INTO `oxprice2article` (OXID,OXSHOPID,OXARTID,OXADDABS,OXADDPERC,OXAMOUNT,OXAMOUNTTO) VALUES ('".$oUtils->generateUId()."', '{$iShopId}', '_testArtId', 1, 0, 2, 3);" );
@@ -447,7 +447,7 @@ class Unit_Admin_ArticleMainTest extends OxidTestCase
      */
     public function testSaveTrimsArticleTitle()
     {
-        $oConfig = oxConfig::getInstance();
+        $oConfig = oxRegistry::getConfig();
         modConfig::setRequestParameter( 'oxid', '_testArtId' );
         $aParams['oxid'] = '_testArtId';
         $aParams['oxarticles__oxtitle'] = ' _testArticleTitle   ';

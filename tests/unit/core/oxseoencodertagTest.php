@@ -71,8 +71,8 @@ class Unit_Core_oxSeoEncoderTagTest extends OxidTestCase
 
     public function testGetTagPageUrl()
     {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxConfig::getInstance()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
-        $sUrl = oxConfig::getInstance()->getShopUrl( oxLang::getInstance()->getBaseLanguage() );
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxRegistry::getConfig()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        $sUrl = oxRegistry::getConfig()->getShopUrl( oxLang::getInstance()->getBaseLanguage() );
 
             $sTag = "erste";
             $sAltTag = "authentisches";
@@ -93,7 +93,7 @@ class Unit_Core_oxSeoEncoderTagTest extends OxidTestCase
     {
         $oEncoder = $this->getMock( "oxSeoEncoderTag", array( "_trimUrl", "getDynamicObjectId", "_prepareUri", "_loadFromDb", "_copyToHistory", "_processSeoUrl", "_saveToDb" ) );
         $oEncoder->expects( $this->once() )->method( '_trimUrl' )->with( $this->equalTo( "testStdUrl" ) )->will( $this->returnValue( "testStdUrl" ) );
-        $oEncoder->expects( $this->once() )->method( 'getDynamicObjectId' )->with( $this->equalTo( oxConfig::getInstance()->getShopId() ), $this->equalTo( "testStdUrl" ) )->will( $this->returnValue( "testId" ) );
+        $oEncoder->expects( $this->once() )->method( 'getDynamicObjectId' )->with( $this->equalTo( oxRegistry::getConfig()->getShopId() ), $this->equalTo( "testStdUrl" ) )->will( $this->returnValue( "testId" ) );
         $oEncoder->expects( $this->once() )->method( '_prepareUri' )->with( $this->equalTo( "testSeoUrl" ) )->will( $this->returnValue( "testSeoUrl" ) );
         $oEncoder->expects( $this->once() )->method( '_loadFromDb' )->with( $this->equalTo( 'dynamic' ), $this->equalTo( "testId" ), $this->equalTo( 0 ) )->will( $this->returnValue( "testSeoUrl" ) );
         $oEncoder->expects( $this->never() )->method( '_copyToHistory' );
@@ -111,12 +111,12 @@ class Unit_Core_oxSeoEncoderTagTest extends OxidTestCase
 
         $oEncoder = $this->getMock( "oxSeoEncoderTag", array( "_trimUrl", "getDynamicObjectId", "_prepareUri", "_loadFromDb", "_copyToHistory", "_processSeoUrl", "_saveToDb" ) );
         $oEncoder->expects( $this->once() )->method( '_trimUrl' )->with( $this->equalTo( "testStdUrl" ) )->will( $this->returnValue( "testStdUrl" ) );
-        $oEncoder->expects( $this->once() )->method( 'getDynamicObjectId' )->with( $this->equalTo( oxConfig::getInstance()->getShopId() ), $this->equalTo( "testStdUrl" ) )->will( $this->returnValue( $sOxid ) );
+        $oEncoder->expects( $this->once() )->method( 'getDynamicObjectId' )->with( $this->equalTo( oxRegistry::getConfig()->getShopId() ), $this->equalTo( "testStdUrl" ) )->will( $this->returnValue( $sOxid ) );
         $oEncoder->expects( $this->once() )->method( '_prepareUri' )->with( $this->equalTo( "testSeoUrl" ) )->will( $this->returnValue( "testSeoUrl" ) );
         $oEncoder->expects( $this->once() )->method( '_loadFromDb' )->with( $this->equalTo( 'dynamic' ), $this->equalTo( $sOxid ), $this->equalTo( 0 ) )->will( $this->returnValue( "testSeoUrl1" ) );
-        $oEncoder->expects( $this->once() )->method( '_copyToHistory' )->with( $this->equalTo( $sOxid ), $this->equalTo( oxConfig::getInstance()->getShopId() ), $this->equalTo( 0 ), $this->equalTo( 'dynamic' ) );
+        $oEncoder->expects( $this->once() )->method( '_copyToHistory' )->with( $this->equalTo( $sOxid ), $this->equalTo( oxRegistry::getConfig()->getShopId() ), $this->equalTo( 0 ), $this->equalTo( 'dynamic' ) );
         $oEncoder->expects( $this->once() )->method( '_processSeoUrl' )->with( $this->equalTo( "testSeoUrl" ), $this->equalTo( $sOxid ), $this->equalTo( 0 ) )->will( $this->returnValue( "testSeoUrl" ) );
-        $oEncoder->expects( $this->once() )->method( '_saveToDb' )->with( $this->equalTo( "dynamic" ), $this->equalTo( $sOxid ), $this->equalTo( "testStdUrl" ), $this->equalTo( 'testSeoUrl' ), $this->equalTo( 0 ), $this->equalTo( oxConfig::getInstance()->getShopId() ) );
+        $oEncoder->expects( $this->once() )->method( '_saveToDb' )->with( $this->equalTo( "dynamic" ), $this->equalTo( $sOxid ), $this->equalTo( "testStdUrl" ), $this->equalTo( 'testSeoUrl' ), $this->equalTo( 0 ), $this->equalTo( oxRegistry::getConfig()->getShopId() ) );
 
         $this->assertEquals( "testSeoUrl", $oEncoder->UNITgetDynamicTagUri( $sTag, "testStdUrl", "testSeoUrl", 0, $sOxid ) );
     }
@@ -127,12 +127,12 @@ class Unit_Core_oxSeoEncoderTagTest extends OxidTestCase
 
         $oEncoder = $this->getMock( "oxSeoEncoderTag", array( "_trimUrl", "getDynamicObjectId", "_prepareUri", "_loadFromDb", "_copyToHistory", "_processSeoUrl", "_saveToDb" ) );
         $oEncoder->expects( $this->once() )->method( '_trimUrl' )->with( $this->equalTo( "testStdUrl" ) )->will( $this->returnValue( "testStdUrl" ) );
-        $oEncoder->expects( $this->once() )->method( 'getDynamicObjectId' )->with( $this->equalTo( oxConfig::getInstance()->getShopId() ), $this->equalTo( "testStdUrl" ) )->will( $this->returnValue( $sOxid ) );
+        $oEncoder->expects( $this->once() )->method( 'getDynamicObjectId' )->with( $this->equalTo( oxRegistry::getConfig()->getShopId() ), $this->equalTo( "testStdUrl" ) )->will( $this->returnValue( $sOxid ) );
         $oEncoder->expects( $this->once() )->method( '_prepareUri' )->with( $this->equalTo( "testSeoUrl" ) )->will( $this->returnValue( "testSeoUrl" ) );
         $oEncoder->expects( $this->once() )->method( '_loadFromDb' )->with( $this->equalTo( 'dynamic' ), $this->equalTo( $sOxid ), $this->equalTo( 0 ) )->will( $this->returnValue( "testSeoUrl1" ) );
-        $oEncoder->expects( $this->once() )->method( '_copyToHistory' )->with( $this->equalTo( $sOxid ), $this->equalTo( oxConfig::getInstance()->getShopId() ), $this->equalTo( 0 ), $this->equalTo( 'dynamic' ) );
+        $oEncoder->expects( $this->once() )->method( '_copyToHistory' )->with( $this->equalTo( $sOxid ), $this->equalTo( oxRegistry::getConfig()->getShopId() ), $this->equalTo( 0 ), $this->equalTo( 'dynamic' ) );
         $oEncoder->expects( $this->once() )->method( '_processSeoUrl' )->with( $this->equalTo( "testSeoUrl" ), $this->equalTo( $sOxid ), $this->equalTo( 0 ) )->will( $this->returnValue( "testSeoUrl" ) );
-        $oEncoder->expects( $this->once() )->method( '_saveToDb' )->with( $this->equalTo( "dynamic" ), $this->equalTo( $sOxid ), $this->equalTo( "testStdUrl" ), $this->equalTo( 'testSeoUrl' ), $this->equalTo( 0 ), $this->equalTo( oxConfig::getInstance()->getShopId() ) );
+        $oEncoder->expects( $this->once() )->method( '_saveToDb' )->with( $this->equalTo( "dynamic" ), $this->equalTo( $sOxid ), $this->equalTo( "testStdUrl" ), $this->equalTo( 'testSeoUrl' ), $this->equalTo( 0 ), $this->equalTo( oxRegistry::getConfig()->getShopId() ) );
 
         $this->assertEquals( "testSeoUrl", $oEncoder->UNITgetDynamicTagUri( "testTag", "testStdUrl", "testSeoUrl", 0, $sOxid ) );
     }

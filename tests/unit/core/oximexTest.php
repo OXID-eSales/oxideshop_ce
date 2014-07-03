@@ -39,7 +39,7 @@ class Unit_Core_oxImexTest extends OxidTestCase
 
     public function test_exportLexwareArticles()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         //$sFile = $myConfig->sShopDir.'/tmp/test.xpr';
         $sFile = oxregistry::get( "oxConfigFile" )->getVar( "sCompileDir" ) .'/test.xpr';
         @unlink($sFile);
@@ -107,7 +107,7 @@ class Unit_Core_oxImexTest extends OxidTestCase
     }
     public function testExportLexwareOrders()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $oOrder = new oxOrder();
         $oOrder->setId( '_testOrder' );
@@ -162,7 +162,7 @@ class Unit_Core_oxImexTest extends OxidTestCase
         $oOrderArt->oxorderarticles__oxbrutprice  = new oxField( 34 );
         $oOrderArt->save();
 
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $oImex = new oxImex();
         $sResult = str_replace( array( "\r", "   " ), '', $oImex->exportLexwareOrders( 9991, 9991 ) );
@@ -179,7 +179,7 @@ class Unit_Core_oxImexTest extends OxidTestCase
 
     public function testExportLexwareOrdersDiffCurrency()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $oOrder = new oxOrder();
         $oOrder->setId( '_testOrder' );
@@ -236,7 +236,7 @@ class Unit_Core_oxImexTest extends OxidTestCase
         $oOrderArt->oxorderarticles__oxbrutprice  = new oxField( 34 );
         $oOrderArt->save();
 
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $oImex = new oxImex();
         $sResult = str_replace( array( "\r", "   " ), '', $oImex->exportLexwareOrders( 9991, 9991 ) );
@@ -253,7 +253,7 @@ class Unit_Core_oxImexTest extends OxidTestCase
 
     public function testExportLexwareOrders_setsCorrectCharset()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $oOrder = new oxOrder();
         $oOrder->setId( '_testOrder' );
@@ -276,7 +276,7 @@ class Unit_Core_oxImexTest extends OxidTestCase
      */
     public function testExportLexwareOrders_convertsAttributesSpecChars()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $oOrder = new oxOrder();
         $oOrder->setId( '_testOrder' );

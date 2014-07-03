@@ -55,7 +55,7 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
      */
     public function testExecSql()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         $rConnection = mysql_connect( $myConfig->getConfigParam( 'dbHost' ), $myConfig->getConfigParam( 'dbUser' ), $myConfig->getConfigParam( 'dbPwd' ) );
 
         // bad connection
@@ -124,7 +124,7 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
         $aVersionInfo = oxDb::getDb( oxDB::FETCH_MODE_ASSOC )->getAll( "SHOW VARIABLES LIKE 'version'" );
         $sVersion = $aVersionInfo[0]["Value"];
 
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         $rConnection = mysql_connect( $myConfig->getConfigParam( 'dbHost' ), $myConfig->getConfigParam( 'dbUser' ), $myConfig->getConfigParam( 'dbPwd' ) );
 
         $oDb = $this->getMock( "OxSetupDb", array( "getConnection" ) );
@@ -151,7 +151,7 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
      */
     public function testOpenDatabaseConnectionImpossible()
     {
-        $aParams['dbHost'] = oxConfig::getInstance()->getConfigParam( 'dbHost' );
+        $aParams['dbHost'] = oxRegistry::getConfig()->getConfigParam( 'dbHost' );
         $aParams['dbUser'] = $aParams['dbPwd']  = time();
 
         try {
@@ -170,7 +170,7 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
      */
     public function testOpenDatabaseImpossibleToSelectGivenDatabase()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         $aParams['dbHost'] = $myConfig->getConfigParam( 'dbHost' );
         $aParams['dbUser'] = $myConfig->getConfigParam( 'dbUser' );
         $aParams['dbPwd']  = $myConfig->getConfigParam( 'dbPwd' );
@@ -192,7 +192,7 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
      */
     public function testOpenDatabaseWrongDbVersion()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         $aParams['dbHost'] = $myConfig->getConfigParam( 'dbHost' );
         $aParams['dbUser'] = $myConfig->getConfigParam( 'dbUser' );
         $aParams['dbPwd']  = $myConfig->getConfigParam( 'dbPwd' );
@@ -215,7 +215,7 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
      */
     public function testOpenDatabase()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         $aParams['dbHost'] = $myConfig->getConfigParam( 'dbHost' );
         $aParams['dbUser'] = $myConfig->getConfigParam( 'dbUser' );
         $aParams['dbPwd']  = $myConfig->getConfigParam( 'dbPwd' );
@@ -377,7 +377,7 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
     public function testConvertConfigTableToUtf()
     {
         $oConfk = new Conf();
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         $rConnection = mysql_connect( $myConfig->getConfigParam( 'dbHost' ), $myConfig->getConfigParam( 'dbUser' ), $myConfig->getConfigParam( 'dbPwd' ) );
         mysql_select_db( $myConfig->getConfigParam( 'dbName' ) ) ;
         $rResult = mysql_query( "SELECT oxvarname, oxvartype, DECODE( oxvarvalue, '".$oConfk->sConfigKey."') AS oxvarvalue FROM oxconfig WHERE oxvartype IN ('str', 'arr', 'aarr')" );

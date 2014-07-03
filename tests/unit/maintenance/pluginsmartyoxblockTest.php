@@ -22,7 +22,7 @@
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
 require_once realpath( "." ).'/unit/test_config.inc.php';
-require_once oxConfig::getInstance()->getConfigParam( 'sShopDir' ).'core/smarty/plugins/prefilter.oxblock.php';
+require_once oxRegistry::getConfig()->getConfigParam( 'sShopDir' ).'core/smarty/plugins/prefilter.oxblock.php';
 
 class Unit_Maintenance_pluginSmartyOxBlockTest extends OxidTestCase
 {
@@ -75,7 +75,7 @@ class Unit_Maintenance_pluginSmartyOxBlockTest extends OxidTestCase
                 ->with(
                         $this->equalTo('block tags mismatch (or there are more than 500 blocks in one file).'),
                         $this->equalTo(E_USER_ERROR),
-                        $this->equalTo(realpath(oxConfig::getInstance()->getConfigParam( 'sShopDir' ).'core/smarty/plugins/prefilter.oxblock.php')),
+                        $this->equalTo(realpath(oxRegistry::getConfig()->getConfigParam( 'sShopDir' ).'core/smarty/plugins/prefilter.oxblock.php')),
                         $this->greaterThan(75)
                 )
                 ->will($this->throwException(new oxException('ok')));

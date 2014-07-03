@@ -39,7 +39,7 @@ class Unit_Views_oxcmpCurTest extends OxidTestCase
         $this->assertEquals( 2, $oCur->decimal );
 
         // changing decimal percision from 2 => 1
-        oxConfig::getInstance()->setConfigParam( "modaCurrencies", array("EUR@ 1.00@ ,@ .@ ¤@ 1") );
+        oxRegistry::getConfig()->setConfigParam( "modaCurrencies", array("EUR@ 1.00@ ,@ .@ ¤@ 1") );
         $oCurView->init();
 
         $oCur = $oCurView->getSession()->getBasket()->getBasketCurrency();

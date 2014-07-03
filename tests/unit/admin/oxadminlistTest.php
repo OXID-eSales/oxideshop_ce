@@ -79,7 +79,7 @@ class Unit_Admin_oxAdminListTest extends OxidTestCase
         modSession::getInstance()->cleanup();
 
         //
-        oxConfig::getInstance()->setGlobalParameter( 'ListCoreTable', null );
+        oxRegistry::getConfig()->setGlobalParameter( 'ListCoreTable', null );
 
         parent::tearDown();
     }
@@ -686,7 +686,7 @@ class Unit_Admin_oxAdminListTest extends OxidTestCase
      */
     public function testBuildWhereWithDate()
     {
-        oxConfig::getInstance()->setConfigParam( 'sLocalDateFormat', 'USA' );
+        oxRegistry::getConfig()->setConfigParam( 'sLocalDateFormat', 'USA' );
 
         $aWhere['oxlinks']['oxshopid']  = '1';
         $aWhere['oxlinks']['oxurl']     = 'testurl';

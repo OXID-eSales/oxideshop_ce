@@ -287,7 +287,7 @@ class Unit_Core_oxUtilsDateTest extends OxidTestCase
      */
     protected function _ConvertDBTimestampTest( $sInput = "", $sExpected = "", $blToTimeStamp = false, $blSkip = false )
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $oConvObject = new oxField();
         if ( !empty( $sInput ) ) {

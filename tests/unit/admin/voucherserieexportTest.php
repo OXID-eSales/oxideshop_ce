@@ -91,7 +91,7 @@ class Unit_Admin_VoucherSerieExportTest extends OxidTestCase
         $oView = $this->getMock( "VoucherSerie_Export", array( "_getExportFileName") );
         $oView->expects( $this->once() )->method( '_getExportFileName' )->will( $this->returnValue( "testName" ) );
 
-        $this->assertEquals( oxConfig::getInstance()->getConfigParam( 'sShopDir' ) . "/export/". "testName", $oView->UNITgetExportFilePath() );
+        $this->assertEquals( oxRegistry::getConfig()->getConfigParam( 'sShopDir' ) . "/export/". "testName", $oView->UNITgetExportFilePath() );
     }
 
     /**

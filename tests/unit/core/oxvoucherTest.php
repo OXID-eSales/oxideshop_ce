@@ -40,7 +40,7 @@ class Unit_Core_oxvoucherTest extends OxidTestCase
     protected function setUp()
     {
         parent::setUp();
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         $oSerie = oxNew( 'oxvoucherserie' );
         $oSerie->oxvoucherseries__oxserienr = new oxField('Test Mod Voucher Serie', oxField::T_RAW);
         $oSerie->oxvoucherseries__oxdiscount = new oxField(0.99, oxField::T_RAW);
@@ -1125,7 +1125,7 @@ class Unit_Core_oxvoucherTest extends OxidTestCase
     public function testIsValidUserGroupNotValidGroup()
     {
         $myDB    = oxDb::getDb();
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $oUser = oxNew( 'oxuser' );
         $oUser->oxuser__oxshopid = new oxField($myConfig->getBaseShopId(), oxField::T_RAW);
@@ -1297,7 +1297,7 @@ class Unit_Core_oxvoucherTest extends OxidTestCase
         $oBasketItem1['amount'] = 100;
 
         $oDiscount = new oxDiscount();
-        $oDiscount->oxdiscount__oxshopid      = new oxField( oxConfig::getInstance()->getShopId() );
+        $oDiscount->oxdiscount__oxshopid      = new oxField( oxRegistry::getConfig()->getShopId() );
         $oDiscount->oxdiscount__oxactive      = new oxField( 1 );
         $oDiscount->oxdiscount__oxactivefrom  = new oxField( "0000-00-00 00:00:00" );
         $oDiscount->oxdiscount__oxactiveto    = new oxField( "0000-00-00 00:00:00" );

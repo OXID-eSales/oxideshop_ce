@@ -21,7 +21,7 @@
  */
 require_once realpath( "." ).'/unit/OxidTestCase.php';
 require_once realpath( "." ).'/unit/test_config.inc.php';
-require_once oxConfig::getInstance()->getConfigParam( 'sShopDir' ).'core/smarty/plugins/function.oxmultilang.php';
+require_once oxRegistry::getConfig()->getConfigParam( 'sShopDir' ).'core/smarty/plugins/function.oxmultilang.php';
 
 class Unit_Maintenance_smartyFunctionOxMultiLangTest extends OxidTestCase
 {

@@ -108,7 +108,7 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
      */
     public function testGetTemplateDirs()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         $aDirs = array();
         $aDirs[] = $myConfig->getTemplateDir( false );
         $sDir = $myConfig->getOutDir( true ) . $myConfig->getConfigParam( 'sTheme' ) . "/tpl/";
@@ -134,7 +134,7 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
      */
     public function testSetTemplateDir()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         $aDirs[] = "testDir1";
         $aDirs[] = "testDir2";
         $aDirs[] = $myConfig->getTemplateDir( false );
@@ -217,7 +217,7 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
 
     public function testAddErrorToDisplayCustomDestinationFromPost()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         $this->setRequestParam('CustomError', 'myDest');
         $this->setRequestParam( 'actcontrol', 'oxwminibasket' );
 
@@ -332,7 +332,7 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
         modConfig::getInstance()->setConfigParam( 'iDebug', 1 );
         modConfig::getInstance()->setConfigParam( 'blDemoShop', 1 );
 
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $sTplDir = $myConfig->getTemplateDir( $myConfig->isAdmin() );
 
@@ -423,7 +423,7 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
         modConfig::getInstance()->setConfigParam( 'iDebug', 1 );
         modConfig::getInstance()->setConfigParam( 'blDemoShop', 0 );
 
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $sTplDir = $myConfig->getTemplateDir( $myConfig->isAdmin() );
 

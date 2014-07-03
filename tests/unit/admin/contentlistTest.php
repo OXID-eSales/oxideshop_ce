@@ -41,7 +41,7 @@ class Unit_Admin_ContentListTest extends OxidTestCase
         $oView = new Content_List();
         $sTplName = $oView->render();
         $aViewData = $oView->getViewData();
-        $this->assertEquals( oxConfig::getInstance()->getConfigParam( 'afolder' ), $aViewData["CMSFOLDER_EMAILS"] );
+        $this->assertEquals( oxRegistry::getConfig()->getConfigParam( 'afolder' ), $aViewData["CMSFOLDER_EMAILS"] );
         $this->assertEquals( "sTestFolder", $aViewData["folder"] );
 
         $this->assertEquals( 'content_list.tpl', $sTplName );

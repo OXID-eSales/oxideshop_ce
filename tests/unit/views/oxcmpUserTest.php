@@ -235,7 +235,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
      */
     public function testLoginNoredirectAlt()
     {
-        oxConfig::getInstance()->setConfigParam( 'blConfirmAGB', true );
+        oxRegistry::getConfig()->setConfigParam( 'blConfirmAGB', true );
         modConfig::setRequestParameter( 'ord_agb', true );
 
         $oUser = $this->getMock( "oxUser", array( "acceptTerms" ) );
@@ -328,7 +328,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
      */
     public function testCreateUserNotConfirmedAGB()
     {
-        oxConfig::getInstance()->setConfigParam( 'blConfirmAGB', true );
+        oxRegistry::getConfig()->setConfigParam( 'blConfirmAGB', true );
 
         $oUtilsView = $this->getMock( 'oxUtilsView', array( "addErrorToDisplay" ) );
         $oUtilsView->expects( $this->once() )->method( 'addErrorToDisplay' )->with( $this->equalTo( 'READ_AND_CONFIRM_TERMS' ), $this->equalTo( false ), $this->equalTo( true ) );
@@ -696,8 +696,8 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
         oxTestModules::addFunction( "oxUtils", "redirect", "{ return true;}" );
         oxTestModules::addFunction( "oxUser", "logout", "{ return true;}" );
         modConfig::setRequestParameter('redirect', true);
-        $blParam = oxConfig::getInstance()->getConfigParam('sSSLShopURL');
-        oxConfig::getInstance()->setConfigParam('sSSLShopURL', true);
+        $blParam = oxRegistry::getConfig()->getConfigParam('sSSLShopURL');
+        oxRegistry::getConfig()->setConfigParam('sSSLShopURL', true);
 
         $oParent = $this->getMock( 'oxubase', array( "isEnabledPrivateSales" ) );
         $oParent->expects( $this->once() )->method( 'isEnabledPrivateSales' )->will( $this->returnValue( false ) );
@@ -712,7 +712,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
 
         $oUserView->logout();
         $this->assertEquals( 3, $oUserView->getLoginStatus() );
-        oxConfig::getInstance()->setConfigParam('sSSLShopURL', $blParam);
+        oxRegistry::getConfig()->setConfigParam('sSSLShopURL', $blParam);
     }
 
     /**

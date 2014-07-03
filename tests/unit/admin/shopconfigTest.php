@@ -259,7 +259,7 @@ class Unit_Admin_ShopConfigTest extends OxidTestCase
     public function testLoadConfVars()
     {
         $oTest = new Shop_Config();
-        $aDbConfig = $oTest->loadConfVars(oxConfig::getInstance()->getShopId(), '');
+        $aDbConfig = $oTest->loadConfVars(oxRegistry::getConfig()->getShopId(), '');
 
         $this->assertEquals(
             array('vars', 'constraints', 'grouping'),

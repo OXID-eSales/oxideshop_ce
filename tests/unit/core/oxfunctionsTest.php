@@ -102,7 +102,7 @@ class Unit_Core_oxfunctionsTest extends OxidTestCase
 
     public function test_dumpVar()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         @unlink( $myConfig->getConfigParam('sCompileDir')."/vardump.txt" );
         dumpVar( "bobo", true );
         $file = file_get_contents( $myConfig->getConfigParam('sCompileDir')."/vardump.txt" );
@@ -155,7 +155,7 @@ class Unit_Core_oxfunctionsTest extends OxidTestCase
         $sRes = 'aa';
         $this->assertEquals( true, ox_get_template('blah', $sRes, $fake));
         $this->assertEquals( 'test', $sRes);
-        if (oxConfig::getInstance()->isDemoShop())
+        if (oxRegistry::getConfig()->isDemoShop())
            $this->assertEquals($fake->security, true);
     }
 

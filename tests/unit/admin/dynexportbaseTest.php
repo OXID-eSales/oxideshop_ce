@@ -90,7 +90,7 @@ class Unit_Admin_DynExportBaseTest extends OxidTestCase
      */
     public function testConstruct()
     {
-        $sFilePath = oxConfig::getInstance()->getConfigParam( 'sShopDir' ) . "/export/dynexport.txt";
+        $sFilePath = oxRegistry::getConfig()->getConfigParam( 'sShopDir' ) . "/export/dynexport.txt";
 
         $oView = $this->getProxyClass( "DynExportBase" );
         $this->assertEquals( $sFilePath, $oView->getNonPublicVar( "_sFilePath" ) );

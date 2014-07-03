@@ -68,7 +68,7 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
         $oControl->expects( $this->once() )->method( '_process' )->with( $this->equalTo( "mallstart" ), $this->equalTo( "testFnc" ) );
         $oControl->start();
 
-        //$this->assertEquals( oxConfig::getInstance()->getBaseShopId(), modSession::getInstance()->getVar( "actshop" ) );
+        //$this->assertEquals( oxRegistry::getConfig()->getBaseShopId(), modSession::getInstance()->getVar( "actshop" ) );
      }
 
     /**
@@ -95,7 +95,7 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
         $oControl->expects( $this->once() )->method( '_process' )->with( $this->equalTo( "login" ), $this->equalTo( "testFnc" ) );
         $oControl->start();
 
-        //$this->assertEquals( oxConfig::getInstance()->getBaseShopId(), modSession::getInstance()->getVar( "actshop" ) );
+        //$this->assertEquals( oxRegistry::getConfig()->getBaseShopId(), modSession::getInstance()->getVar( "actshop" ) );
      }
 
     /**

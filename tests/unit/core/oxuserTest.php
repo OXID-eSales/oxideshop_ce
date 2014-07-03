@@ -217,7 +217,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
     protected function setupUsers( $sShopID )
     {
         $myUtils  = oxUtils::getInstance();
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         $myDB     = oxDb::getDB();
 
         // loading user groups
@@ -396,7 +396,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
      */
     public function testIsTermsAccepted()
     {
-        $sShopId = oxConfig::getInstance()->getShopId();
+        $sShopId = oxRegistry::getConfig()->getShopId();
         oxDb::getDb()->execute( "insert into oxacceptedterms (`OXUSERID`, `OXSHOPID`, `OXTERMVERSION`) values ( 'testUserId', '{$sShopId}', '0' )" );
 
         $oUser = $this->getMock( "oxuser", array( "getId" ) );
@@ -441,7 +441,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
         $oUser = new oxUser();
         $oUser->setId( "testID" );
         $oUser->oxuser__oxusername = new oxField( "aaa@bbb.lt", oxField::T_RAW );
-        $oUser->oxuser__oxshopid   = new oxField( oxConfig::getInstance()->getBaseShopId(), oxField::T_RAW );
+        $oUser->oxuser__oxshopid   = new oxField( oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW );
         $oUser->save();
 
         $oUser = new oxUser();
@@ -453,7 +453,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
         $oUser = new oxUser();
         $oUser->setId( "testID" );
         $oUser->oxuser__oxusername = new oxField( "aaa@bbb.lt", oxField::T_RAW );
-        $oUser->oxuser__oxshopid   = new oxField( oxConfig::getInstance()->getBaseShopId(), oxField::T_RAW );
+        $oUser->oxuser__oxshopid   = new oxField( oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW );
         $oUser->save();
 
         $oUser = new oxUser();
@@ -693,7 +693,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
         $oUser->load( $sUserId );
         $oUser->oxuser__oxupdatekey = new oxfield( 'xxx' );
         $oUser->oxuser__oxupdateexp = new oxfield( time() + 3600 );
-        $oUser->oxuser__oxshopid    = new oxfield( oxConfig::getInstance()->getShopId() );
+        $oUser->oxuser__oxshopid    = new oxfield( oxRegistry::getConfig()->getShopId() );
         $oUser->save();
 
         $sUid = md5( $oUser->getId() . $oUser->oxuser__oxshopid->value . $oUser->oxuser__oxupdatekey->value );
@@ -715,7 +715,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
         $oUser = new oxUser();
         $oUser->setId( $sId );
         $oUser->oxuser__oxusername = new oxField( "aaa@bbb.lt", oxField::T_RAW );
-        $oUser->oxuser__oxshopid   = new oxField( oxConfig::getInstance()->getBaseShopId(), oxField::T_RAW );
+        $oUser->oxuser__oxshopid   = new oxField( oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW );
         $oUser->UNITinsert();
 
         $this->assertEquals( '1000', oxDB::getDb()->getOne( "select oxboni from oxuser where oxid = '$sId' " ) );
@@ -805,7 +805,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
         $oUser = new oxuser();
         $oUser->setId( $sUserId );
         $oUser->oxuser__oxactive = new oxField(1, oxField::T_RAW);
-        $oUser->oxuser__oxshopid = new oxField(oxConfig::getInstance()->getBaseShopId(), oxField::T_RAW);
+        $oUser->oxuser__oxshopid = new oxField(oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW);
         $oUser->oxuser__oxusername = new oxField('aaa@bbb.lt', oxField::T_RAW);
         $oUser->oxuser__oxfname = new oxField('a', oxField::T_RAW);
         $oUser->oxuser__oxlname = new oxField('b', oxField::T_RAW);
@@ -851,7 +851,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
         $oUser = new oxuser();
         $oUser->setId( $sUserId );
         $oUser->oxuser__oxactive = new oxField(1, oxField::T_RAW);
-        $oUser->oxuser__oxshopid = new oxField(oxConfig::getInstance()->getBaseShopId(), oxField::T_RAW);
+        $oUser->oxuser__oxshopid = new oxField(oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW);
         $oUser->oxuser__oxusername = new oxField('aaa@bbb.lt', oxField::T_RAW);
         $oUser->oxuser__oxfname = new oxField('a', oxField::T_RAW);
         $oUser->oxuser__oxlname = new oxField('b', oxField::T_RAW);
@@ -892,7 +892,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
         $oUser = new oxuser();
         $oUser->load( $sUserId );
         $oUser->oxuser__oxactive = new oxField(1, oxField::T_RAW);
-        $oUser->oxuser__oxshopid = new oxField(oxConfig::getInstance()->getBaseShopId(), oxField::T_RAW);
+        $oUser->oxuser__oxshopid = new oxField(oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW);
         $oUser->oxuser__oxusername = new oxField('aaa@bbb.lt', oxField::T_RAW);
         $oUser->oxuser__oxfname = new oxField('a', oxField::T_RAW);
         $oUser->oxuser__oxlname = new oxField('b', oxField::T_RAW);
@@ -930,12 +930,12 @@ class Unit_Core_oxuserTest extends OxidTestCase
      */
     public function testUpdateUserCheckValuesOldWithNewWithPass()
     {
-        $sUserId = $this->_aUsers[oxConfig::getInstance()->getBaseShopId()][0];
+        $sUserId = $this->_aUsers[oxRegistry::getConfig()->getBaseShopId()][0];
         $oUser = new oxuser();
         $oUser->load( $sUserId );
 
         $oUser->oxuser__oxactive = new oxField(1, oxField::T_RAW);
-        $oUser->oxuser__oxshopid = new oxField(oxConfig::getInstance()->getBaseShopId(), oxField::T_RAW);
+        $oUser->oxuser__oxshopid = new oxField(oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW);
         $oUser->oxuser__oxusername = new oxField('aaa@bbb.lt', oxField::T_RAW);
         $oUser->oxuser__oxfname = new oxField('a', oxField::T_RAW);
         $oUser->oxuser__oxlname = new oxField('b', oxField::T_RAW);
@@ -997,7 +997,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
      */
     public function testGet()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         $myUtils  = oxUtils::getInstance();
         $sUserID = $this->_aUsers[ $this->_aShops[ rand(0, count( $this->_aShops ) - 1 ) ] ][ rand( 0, count( $this->_aUsers[ 0 ] ) - 1 ) ];
 
@@ -1049,7 +1049,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
     { // tests with correct data
         $myUtils  = oxUtils::getInstance();
         $myDB     = oxDb::getDB();
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $sUserID = $this->_aUsers[ $this->_aShops[ rand(0, count( $this->_aShops ) - 1 ) ] ][ rand( 0, count( $this->_aUsers[ 0 ] ) - 1 ) ];
         $oUser   = oxNew( 'oxuser' );
@@ -1064,7 +1064,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
     public function testGetUserGroupsWrongInput()
     { // tests with not existing user id
         $myUtils  = oxUtils::getInstance();
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $oUser   = oxNew( 'oxuser' );
         $oUser->setId('xxx');
@@ -1083,7 +1083,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
     { // testing with existing data
         $myUtils  = oxUtils::getInstance();
         $myDB     = oxDb::getDB();
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $sUserID  = $this->_aUsers[ $this->_aShops[ rand(0, count( $this->_aShops ) - 1 ) ] ][ rand( 0, count( $this->_aUsers[ 0 ] ) - 1 ) ];
         $oUser    = new oxuser();
@@ -1100,7 +1100,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
     public function testGetUserAddressesWrongInput()
     { // testing with not existing data
         $myUtils  = oxUtils::getInstance();
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $oUser    = oxNew( 'oxuser' );
         $oAddress = $oUser->getUserAddresses( 'xxx' );
@@ -1116,7 +1116,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
     public function testGetUserPaymentsCorrectInput()
     { // testing with existing data
         $myUtils  = oxUtils::getInstance();
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $sUserID   = $this->_aUsers[ $this->_aShops[ rand(0, count( $this->_aShops ) - 1 ) ] ][ rand( 0, count( $this->_aUsers[ 0 ] ) - 1 ) ];
         $oUser     = $this->getProxyClass("oxuser");//oxNew( 'oxuser', 'core' );
@@ -1137,7 +1137,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
     public function testGetUserPaymentsWrongInput()
     { // testing with not existing data
         $myUtils  = oxUtils::getInstance();
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $oUser     = $this->getProxyClass("oxuser"); //oxNew( 'oxuser', 'core' );
         $oPayments = $oUser->getUserPayments( 'xxx' );
@@ -1201,7 +1201,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
     {
         $myUtils  = oxUtils::getInstance();
         $myDB     = oxDb::getDB();
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $sUserID = $this->_aUsers[ $this->_aShops[ rand(0, count( $this->_aShops ) - 1 ) ] ][ rand( 0, count( $this->_aUsers[ 0 ] ) - 1 ) ];
         $oUser   = oxNew( 'oxuser' );
@@ -1235,7 +1235,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
     {
         $myUtils  = oxUtils::getInstance();
         $myDB     = oxDb::getDB();
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $sUserID = $this->_aUsers[ $this->_aShops[ rand(0, count( $this->_aShops ) - 1 ) ] ][ rand( 0, count( $this->_aUsers[ 0 ] ) - 1 ) ];
         $oUser   = oxNew( 'oxuser' );
@@ -1257,7 +1257,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
     {
         $myUtils  = oxUtils::getInstance();
         $myDB     = oxDb::getDb();
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $sUserID = $this->_aUsers[ $this->_aShops[ rand(0, count( $this->_aShops ) - 1 ) ] ][ rand( 0, count( $this->_aUsers[ 0 ] ) - 1 ) ];
         $oUser   = oxNew( 'oxuser' );
@@ -1315,14 +1315,14 @@ class Unit_Core_oxuserTest extends OxidTestCase
         $oUser = oxNew( 'oxbase' );
         $oUser->init( 'oxuser' );
         $oUser->Load( $sUserID );
-        $oUser->oxuser__oxrights = new oxField(oxConfig::getInstance()->GetShopId(), oxField::T_RAW);
+        $oUser->oxuser__oxrights = new oxField(oxRegistry::getConfig()->GetShopId(), oxField::T_RAW);
         $oUser->save();
 
         modSession::getInstance()->setVar("usr", $oUser->oxuser__oxid->value);
 
         $oUser = $this->getProxyClass("oxUser");
-        $oUser->oxuser__oxrights = new oxField(oxConfig::getInstance()->GetShopId(), oxField::T_RAW);
-        $this->assertEquals( oxConfig::getInstance()->GetShopId(), $oUser->UNITgetUserRights() );
+        $oUser->oxuser__oxrights = new oxField(oxRegistry::getConfig()->GetShopId(), oxField::T_RAW);
+        $this->assertEquals( oxRegistry::getConfig()->GetShopId(), $oUser->UNITgetUserRights() );
 
         // check for denial
         $oUser = $this->getProxyClass("oxUser");
@@ -1342,7 +1342,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
     { // non existing group
         $myUtils  = oxUtils::getInstance();
         $myDB     = oxDb::getDB();
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $sUserID = $this->_aUsers[ $this->_aShops[ rand(0, count( $this->_aShops ) - 1 ) ] ][ rand( 0, count( $this->_aUsers[ 0 ] ) - 1 ) ];
         $oUser = oxNew( 'oxuser' );
@@ -1355,7 +1355,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
     { // existing group
         $myUtils  = oxUtils::getInstance();
         $myDB     = oxDb::getDB();
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $sUserID = $this->_aUsers[ $this->_aShops[ rand(0, count( $this->_aShops ) - 1 ) ] ][ rand( 0, count( $this->_aUsers[ 0 ] ) - 1 ) ];
         $oUser = oxNew( 'oxuser' );
@@ -1495,7 +1495,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
     { // mostly to check if create date value is formatted
         $myUtils  = oxUtils::getInstance();
         $myDB     = oxDb::getDB();
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $sUserID = $this->_aUsers[ $this->_aShops[ rand(0, count( $this->_aShops ) - 1 ) ] ][ rand( 0, count( $this->_aUsers[ 0 ] ) - 1 ) ];
         $oUser   = oxNew( 'oxuser' );
@@ -1513,7 +1513,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
     {
         $myUtils  = oxUtils::getInstance();
         $myDB     = oxDb::getDB();
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $sUserID = $this->_aUsers[ $this->_aShops[ rand(0, count( $this->_aShops ) - 1 ) ] ][ rand( 0, count( $this->_aUsers[ 0 ] ) - 1 ) ];
         $oUser   = $this->getProxyClass("oxUser");
@@ -1577,7 +1577,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
     }
     public function testExistsMallUsers()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         // copying
         $blMall = $myConfig->blMallUsers;
@@ -1761,7 +1761,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
     {
         $myUtils  = oxUtils::getInstance();
         $myDB     = oxDb::getDB();
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $sUserID = $this->_aUsers[ $this->_aShops[ 0 ] ][ rand( 0, count( $this->_aUsers[ 0 ] ) - 1 ) ];
         $oUser   = oxNew( 'oxuser' );
@@ -1871,7 +1871,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
     {
         $myUtils  = oxUtils::getInstance();
         $myDB     = oxDb::getDB();
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $sUserID = $this->_aUsers[ $this->_aShops[ rand(0, count( $this->_aShops ) - 1 ) ] ][ rand( 0, count( $this->_aUsers[ 0 ] ) - 1 ) ];
 
@@ -1916,7 +1916,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
 
         $myUtils = oxUtils::getInstance();
         $myDB    = oxDb::getDB();
-        $myConfig= oxConfig::getInstance();
+        $myConfig= oxRegistry::getConfig();
 
         $sShopid = $this->_aShops[ rand(0, count( $this->_aShops ) - 1 ) ];
         $sUserID = $this->_aUsers[ $sShopid ][ rand( 0, count( $this->_aUsers[ 0 ] ) - 1 ) ];
@@ -1953,7 +1953,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
 
         $myUtils = oxUtils::getInstance();
         $myDB    = oxDb::getDB();
-        $myConfig= oxConfig::getInstance();
+        $myConfig= oxRegistry::getConfig();
 
         $sShopid = $this->_aShops[ rand(0, count( $this->_aShops ) - 1 ) ];
         $sUserID = $this->_aUsers[ $sShopid ][ rand( 0, count( $this->_aUsers[ 0 ] ) - 1 ) ];
@@ -1989,7 +1989,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
 
         $myUtils = oxUtils::getInstance();
         $myDB    = oxDb::getDB();
-        $myConfig= oxConfig::getInstance();
+        $myConfig= oxRegistry::getConfig();
 
         $sShopid = $this->_aShops[ rand(0, count( $this->_aShops ) - 1 ) ];
         $sUserID = $this->_aUsers[ $sShopid ][ rand( 0, count( $this->_aUsers[ 0 ] ) - 1 ) ];
@@ -2428,7 +2428,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
     public function testCheckVatIdWithHomeCountryId()
     {
         $oUser = $this->getProxyClass("oxUser");
-        $aHome = oxConfig::getInstance()->getConfigParam( 'aHomeCountry' );
+        $aHome = oxRegistry::getConfig()->getConfigParam( 'aHomeCountry' );
 
         try {
             $oUser->UNITcheckVatId( array('oxuser__oxustid' => 'DE123', 'oxuser__oxcountryid' => $aHome[0]) );
@@ -2745,7 +2745,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
     public function testGetUserNotAdmin()
     {
         oxAddClassModule( 'Unit_oxuserTest_oxUtilsServer2', 'oxutilsserver' );
-        $sShopId = oxConfig::getInstance()->getShopId();
+        $sShopId = oxRegistry::getConfig()->getShopId();
 
         //not logged in
         $oActUser = new oxuser();
@@ -3660,7 +3660,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
         $oUser = new oxUser();
         $oUser->setId( "_testId_1" );
         $oUser->oxuser__oxusername = new oxField( "aaa@bbb.lt", oxField::T_RAW );
-        $oUser->oxuser__oxshopid   = new oxField( oxConfig::getInstance()->getBaseShopId(), oxField::T_RAW );
+        $oUser->oxuser__oxshopid   = new oxField( oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW );
         $oUser->save();
 
         $oUser = new oxUser();

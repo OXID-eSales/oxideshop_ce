@@ -57,7 +57,7 @@ class Unit_Modules_Oe_Invoicepdf_Controllers_Admin_InvoicepdfOrderOverviewTest e
         // writing test order
         $oOrder = oxNew( "oxorder" );
         $oOrder->setId( $soxId );
-        $oOrder->oxorder__oxshopid        = new oxField( oxConfig::getInstance()->getBaseShopId() );
+        $oOrder->oxorder__oxshopid        = new oxField( oxRegistry::getConfig()->getBaseShopId() );
         $oOrder->oxorder__oxuserid        = new oxField( "oxdefaultadmin" );
         $oOrder->oxorder__oxbillcompany   = new oxField( "Ihr Firmenname" );
         $oOrder->oxorder__oxbillemail     = new oxField( oxADMIN_LOGIN );

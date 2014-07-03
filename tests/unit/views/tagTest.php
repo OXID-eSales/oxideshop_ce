@@ -149,13 +149,13 @@ class Unit_Views_tagTest extends OxidTestCase
 
     public function testGeneratePageNavigationUrl()
     {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxConfig::getInstance()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxRegistry::getConfig()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
         oxTestModules::addFunction( "oxUtils", "seoIsActive", "{ return false; }" );
 
         $oTag = $this->getMock( 'tag', array( 'getTag' ) );
         $oTag->expects( $this->never() )->method( 'getTag');
 
-        $sUrl = oxConfig::getInstance()->getShopHomeURL().$oTag->UNITgetRequestParams( false );
+        $sUrl = oxRegistry::getConfig()->getShopHomeURL().$oTag->UNITgetRequestParams( false );
         $this->assertEquals( $sUrl, $oTag->generatePageNavigationUrl() );
     }
 

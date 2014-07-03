@@ -38,7 +38,7 @@ class Unit_Admin_ShopMainTest extends OxidTestCase
         // testing..
         $oView = new Shop_Main();
 
-        modConfig::setRequestParameter( "oxid", oxConfig::getInstance()->getBaseShopId() );
+        modConfig::setRequestParameter( "oxid", oxRegistry::getConfig()->getBaseShopId() );
         $this->assertEquals( 'shop_main.tpl', $oView->render() );
     }
 

@@ -61,12 +61,12 @@ class Unit_Core_oxexceptionTest extends OxidTestCase
             $oTestObject->debugOut(1);  // actuall test
         } catch (Exception $e) {
             // Lets try to delete an eventual left over file
-            unlink(oxConfig::getInstance()->getConfigParam( 'sShopDir' ).'log/'.$sFileName);
+            unlink(oxRegistry::getConfig()->getConfigParam( 'sShopDir' ).'log/'.$sFileName);
             $this->fail();
             return;
         }
-        $sFile = file_get_contents(oxConfig::getInstance()->getConfigParam( 'sShopDir' ).'log/'.$sFileName);
-        unlink(oxConfig::getInstance()->getConfigParam( 'sShopDir' ).'log/'.$sFileName);
+        $sFile = file_get_contents(oxRegistry::getConfig()->getConfigParam( 'sShopDir' ).'log/'.$sFileName);
+        unlink(oxRegistry::getConfig()->getConfigParam( 'sShopDir' ).'log/'.$sFileName);
         // we check on class name and message - rest is not checked yet
         $this->assertContains($sMsg, $sFile);
         $this->assertContains('oxException', $sFile);
@@ -88,12 +88,12 @@ class Unit_Core_oxexceptionTest extends OxidTestCase
             $oTestObject->debugOut(0);  // actuall test
         } catch (Exception $e) {
             // Lets try to delete an eventual left over file
-            unlink(oxConfig::getInstance()->getConfigParam( 'sShopDir' ).'log/'.$sFileName);
+            unlink(oxRegistry::getConfig()->getConfigParam( 'sShopDir' ).'log/'.$sFileName);
             $this->fail();
             return;
         }
-        $sFile = file_get_contents(oxConfig::getInstance()->getConfigParam( 'sShopDir' ).'log/'.$sFileName);
-        unlink(oxConfig::getInstance()->getConfigParam( 'sShopDir' ).'log/'.$sFileName);
+        $sFile = file_get_contents(oxRegistry::getConfig()->getConfigParam( 'sShopDir' ).'log/'.$sFileName);
+        unlink(oxRegistry::getConfig()->getConfigParam( 'sShopDir' ).'log/'.$sFileName);
         // we check on class name and message - rest is not checked yet
         $this->assertContains($sMsg, $sFile);
         $this->assertContains('oxException', $sFile);

@@ -233,7 +233,7 @@ class Unit_Core_oxnewsletterTest extends OxidTestCase
 
     public function test_setParams()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         // preparing input
         $oUser = new oxuser();
@@ -343,7 +343,7 @@ class Unit_Core_oxnewsletterTest extends OxidTestCase
      */
     public function testAssignProducts()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $oView = oxNew( 'oxubase' );
 

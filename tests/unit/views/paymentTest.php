@@ -105,7 +105,7 @@ class Unit_Views_paymentTest extends OxidTestCase
         $oBasket->calculateBasket();
 
         //basket name in session will be "basket"
-        oxConfig::getInstance()->setConfigParam( 'blMallSharedBasket', 1 );
+        oxRegistry::getConfig()->setConfigParam( 'blMallSharedBasket', 1 );
         $mySession->setBasket( $oBasket );
         //oxSession::setVar( 'basket', $oBasket );
 
@@ -139,7 +139,7 @@ class Unit_Views_paymentTest extends OxidTestCase
         $oBasket->calculateBasket();
 
         //basket name in session will be "basket"
-        oxConfig::getInstance()->setConfigParam( 'blMallSharedBasket', 1 );
+        oxRegistry::getConfig()->setConfigParam( 'blMallSharedBasket', 1 );
         //oxSession::setVar( 'basket', $oBasket );
         $mySession->setBasket( $oBasket );
 
@@ -168,7 +168,7 @@ class Unit_Views_paymentTest extends OxidTestCase
         $oBasket->calculateBasket();
 
         //basket name in session will be "basket"
-        oxConfig::getInstance()->setConfigParam( 'blMallSharedBasket', 1 );
+        oxRegistry::getConfig()->setConfigParam( 'blMallSharedBasket', 1 );
         //oxSession::setVar( 'basket', $oBasket );
         $mySession->setBasket( $oBasket );
 
@@ -198,7 +198,7 @@ class Unit_Views_paymentTest extends OxidTestCase
         $oBasket->calculateBasket();
 
         //basket name in session will be "basket"
-        oxConfig::getInstance()->setConfigParam( 'blMallSharedBasket', 1 );
+        oxRegistry::getConfig()->setConfigParam( 'blMallSharedBasket', 1 );
         //oxSession::setVar( 'basket', $oBasket );
         $mySession->setBasket( $oBasket );
 
@@ -212,7 +212,7 @@ class Unit_Views_paymentTest extends OxidTestCase
     public function testGetEmptyPayment()
     {
         //basket name in session will be "basket"
-        oxConfig::getInstance()->setConfigParam( 'blOtherCountryOrder', true );
+        oxRegistry::getConfig()->setConfigParam( 'blOtherCountryOrder', true );
 
         $oPayment = new Payment();
         $oPayment->UNITsetDefaultEmptyPayment();
@@ -326,7 +326,7 @@ class Unit_Views_paymentTest extends OxidTestCase
                VALUES
                    (?, ?, ?, ?, ?, '', 'info@oxid-esales.com', 'Marc', 'Muster', 'Hauptstr.', '13', '', '', 'Freiburg', 'a7c40f631fc920687.20179984', 'BW', '79098', '', '', 'MR', '', '', '', '', '', '', '', '', '', '', '', '', '', ?, 'oxiddebitnote', 1639.15, 2108.39, 1950.59, 19, 311.44, 0, 0, 0, 19, 0, 0, 0, 0, '', '', 157.8, 0, '', '', '0000-00-00 00:00:00', 'Hier k�nnen Sie uns noch etwas mitteilen.', 0, 'EUR', 1, 'ORDERFOLDER_NEW', '', '', '', '0000-00-00 00:00:00', 0, '', 'OK', 0, 0, 'oxidstandard')";
 
-        $sShopId = oxConfig::getInstance()->GetBaseShopId();
+        $sShopId = oxRegistry::getConfig()->GetBaseShopId();
         foreach ( $aUserPaymentId as $iCnt => $sUserPaymentId ) {
 
             $sOrderId = "_test" . ( time() + $iCnt );
@@ -700,7 +700,7 @@ class Unit_Views_paymentTest extends OxidTestCase
         try {
             $oO->render();
         } catch (Exception $e) {
-            $this->assertEquals(oxConfig::getInstance()->getShopHomeURL().'cl=basket', $e->getMessage());
+            $this->assertEquals(oxRegistry::getConfig()->getShopHomeURL().'cl=basket', $e->getMessage());
             return;
         }
         $this->fail("no Exception thrown in redirect");
@@ -708,7 +708,7 @@ class Unit_Views_paymentTest extends OxidTestCase
 
     public function testRenderNoUserWithBasket()
     {
-        $sRedirUrl = oxConfig::getInstance()->getShopHomeURL().'cl=basket';
+        $sRedirUrl = oxRegistry::getConfig()->getShopHomeURL().'cl=basket';
         $this->setExpectedException('oxException', $sRedirUrl);
 
         oxTestModules::addFunction('oxUtils', 'redirect($url, $blAddRedirectParam = true, $iHeaderCode = 301)', '{throw new oxException($url);}');
@@ -730,7 +730,7 @@ class Unit_Views_paymentTest extends OxidTestCase
 
     public function testRenderNoUserEmptyBasket()
     {
-        $sRedirUrl = oxConfig::getInstance()->getShopHomeURL().'cl=start';
+        $sRedirUrl = oxRegistry::getConfig()->getShopHomeURL().'cl=start';
         $this->setExpectedException('oxException', $sRedirUrl);
 
         oxTestModules::addFunction('oxUtils', 'redirect($url, $blAddRedirectParam = true, $iHeaderCode = 301)', '{throw new oxException($url);}');

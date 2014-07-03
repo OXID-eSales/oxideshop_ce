@@ -103,7 +103,7 @@ class Unit_Admin_PriceAlarmMainTest extends OxidTestCase
      */
     public function testRender_countinPriceAlarmArticles()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         $oDb = oxDb::getDb( oxDB::FETCH_MODE_ASSOC );
 
 
@@ -232,7 +232,7 @@ class Unit_Admin_PriceAlarmMainTest extends OxidTestCase
     public function testSend_parseThroughSmarty()
     {
         $oDb = oxDb::getDb( oxDB::FETCH_MODE_ASSOC );
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $sInsert = "insert into oxarticles (`OXID`,`OXSHOPID`,`OXTITLE`,`OXSTOCKFLAG`,`OXSTOCK`,`OXPRICE`)
                     values ('_testArticleId1','".$myConfig->getShopId()."','testArticleTitle','2','20','11')";

@@ -209,7 +209,7 @@ class Unit_Admin_oxAdminDetailsTest extends OxidTestCase
      */
     public function testGetTextEditor_cssInclude()
     {
-        $oConfig = oxConfig::getInstance();
+        $oConfig = oxRegistry::getConfig();
         $oAdminDetails = new oxadmindetails();
         $oEditor = $oAdminDetails->UNITgetTextEditor( 10, 10, new oxarticle, 'oxarticles__oxtitle', 'oxid_ie6.css' );
 

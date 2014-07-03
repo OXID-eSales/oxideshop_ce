@@ -449,7 +449,7 @@ class Unit_Core_oxDiscountlistTest extends OxidTestCase
         $oCategory->oxcategories__oxparentid = new oxField('oxrootid', oxField::T_RAW);
         $oCategory->oxcategories__oxrootid = new oxField('_testCat', oxField::T_RAW);
         $oCategory->oxcategories__oxactive = new oxField(1, oxField::T_RAW);
-        $oCategory->oxcategories__oxshopid = new oxField(oxConfig::getInstance()->getShopId(), oxField::T_RAW);
+        $oCategory->oxcategories__oxshopid = new oxField(oxRegistry::getConfig()->getShopId(), oxField::T_RAW);
         $oCategory->oxcategories__oxtitle = new oxField('Test category 1', oxField::T_RAW);
         $oCategory->oxcategories__oxskipdiscounts = new oxField('1', oxField::T_RAW);
         $oCategory->save();

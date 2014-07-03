@@ -60,7 +60,7 @@ class Unit_Views_startTest extends OxidTestCase
         oxTestModules::addFunction( "oxutils", "seoIsActive", "{return true;}" );
 
         $oView = new start();
-        $this->assertEquals( oxConfig::getInstance()->getConfigParam( "sShopURL" ), $oView->getCanonicalUrl() );
+        $this->assertEquals( oxRegistry::getConfig()->getConfigParam( "sShopURL" ), $oView->getCanonicalUrl() );
     }
 
     public function testGetArticleList()

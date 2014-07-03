@@ -134,8 +134,8 @@ class Unit_Core_oxbasketitemTest extends OxidTestCase
 
         // making select list
         $this->oSelList = oxNew( 'oxselectlist' );
-        $this->oSelList->oxselectlist__oxshopid = new oxField(oxCOnfig::getInstance()->getShopId(), oxField::T_RAW);
-        $this->oSelList->oxselectlist__oxshopincl = new oxField(oxCOnfig::getInstance()->getShopId(), oxField::T_RAW);
+        $this->oSelList->oxselectlist__oxshopid = new oxField(oxRegistry::getConfig()->getShopId(), oxField::T_RAW);
+        $this->oSelList->oxselectlist__oxshopincl = new oxField(oxRegistry::getConfig()->getShopId(), oxField::T_RAW);
         $this->oSelList->oxselectlist__oxtitle = new oxField('Test title', oxField::T_RAW);
         $this->oSelList->oxselectlist__oxident = new oxField('Test ident', oxField::T_RAW);
         $this->oSelList->oxselectlist__oxvaldesc = new oxField('Test valdesc', oxField::T_RAW);
@@ -206,7 +206,7 @@ class Unit_Core_oxbasketitemTest extends OxidTestCase
      */
     public function testSetAmountStockIsCritical()
     {
-        oxConfig::getInstance()->setConfigParam( 'blUseStock', true );
+        oxRegistry::getConfig()->setConfigParam( 'blUseStock', true );
         $oBasketItem = new oxbasketitem();
         $this->oArticle->oxarticles__oxstock = new oxField( 1, oxField::T_RAW );
         $this->oArticle->save();
@@ -263,7 +263,7 @@ class Unit_Core_oxbasketitemTest extends OxidTestCase
         $this->assertEquals( $oOrderArticle, $oBasketItem->getNonPublicVar( "_oArticle" ) );
         $this->assertEquals( "sProductId", $oBasketItem->getNonPublicVar( "_sProductId" ) );
         $this->assertEquals( "oxarticles__oxtitle", $oBasketItem->getNonPublicVar( "_sTitle" ) );
-        $this->assertEquals( oxConfig::getInstance()->getShopId(), $oBasketItem->getNonPublicVar( "_sShopId" ) );
+        $this->assertEquals( oxRegistry::getConfig()->getShopId(), $oBasketItem->getNonPublicVar( "_sShopId" ) );
         $this->assertEquals( "sNativeShopId", $oBasketItem->getNonPublicVar( "_sNativeShopId" ) );
     }
 
@@ -417,7 +417,7 @@ class Unit_Core_oxbasketitemTest extends OxidTestCase
      */
     public function testSetAmountStockIsMoreThanZero()
     {
-        oxConfig::getInstance()->setConfigParam( 'blUseStock', true );
+        oxRegistry::getConfig()->setConfigParam( 'blUseStock', true );
         $oBasketItem = new oxbasketitem();
         $oBasketItem->init( $this->oArticle->getId(), 1 );
         try {
@@ -698,7 +698,7 @@ class Unit_Core_oxbasketitemTest extends OxidTestCase
     {
         $sPrefix = '';
 
-        $sIconUrl = oxConfig::getInstance()->getConfigParam( "sShopURL" )."out/pictures{$sPrefix}/generated/product/1/87_87_75/nopic.jpg";
+        $sIconUrl = oxRegistry::getConfig()->getConfigParam( "sShopURL" )."out/pictures{$sPrefix}/generated/product/1/87_87_75/nopic.jpg";
 
         $oArticle = new oxarticle();
         $oArticle->oxarticles__oxpic1 = new oxField( 'testicon.jpg' );
@@ -718,7 +718,7 @@ class Unit_Core_oxbasketitemTest extends OxidTestCase
     {
         $sPrefix = '';
 
-        $sIconUrl = oxConfig::getInstance()->getConfigParam( "sShopURL" )."out/pictures{$sPrefix}/master/product/icon/nopic_ico.jpg";
+        $sIconUrl = oxRegistry::getConfig()->getConfigParam( "sShopURL" )."out/pictures{$sPrefix}/master/product/icon/nopic_ico.jpg";
 
         $oArticle = $this->getMock( 'oxarticle', array( 'getIconUrl', 'getLink' ) );
         $oArticle->oxarticles__oxpic1 = new oxField( 'testicon.jpg' );
@@ -762,7 +762,7 @@ class Unit_Core_oxbasketitemTest extends OxidTestCase
     {
         $oBasketItem = new oxbasketitem();
         $oBasketItem->init( $this->oArticle->getId(), 6 );
-        $this->assertEquals( oxConfig::getInstance()->getBaseShopId(), $oBasketItem->getShopId() );
+        $this->assertEquals( oxRegistry::getConfig()->getBaseShopId(), $oBasketItem->getShopId() );
     }
 
     /**
@@ -772,7 +772,7 @@ class Unit_Core_oxbasketitemTest extends OxidTestCase
      */
     public function testGetSelList()
     {
-        oxConfig::getInstance()->setConfigParam( 'bl_perfLoadSelectLists', true );
+        oxRegistry::getConfig()->setConfigParam( 'bl_perfLoadSelectLists', true );
 
         $oBasketItem = new oxbasketitem();
         $oBasketItem->init( $this->oArticle->getId(), 6 );
@@ -786,7 +786,7 @@ class Unit_Core_oxbasketitemTest extends OxidTestCase
      */
     public function testGetChosenSelList()
     {
-        oxConfig::getInstance()->setConfigParam( 'bl_perfLoadSelectLists', true );
+        oxRegistry::getConfig()->setConfigParam( 'bl_perfLoadSelectLists', true );
 
         $oBasketItem = new oxbasketitem();
         $oBasketItem->init( $this->oArticle->getId(), 6 );
@@ -877,8 +877,8 @@ class Unit_Core_oxbasketitemTest extends OxidTestCase
         $this->assertEquals( "2077_p1_ico.jpg", $oBasketItem->sIcon );
 
         $this->assertEquals( $this->oArticle->getLink(), $oBasketItem->sLink );
-        $this->assertEquals( oxConfig::getInstance()->getBaseShopId(), $oBasketItem->sShopId );
-        $this->assertEquals( oxConfig::getInstance()->getBaseShopId(), $oBasketItem->sNativeShopId );
+        $this->assertEquals( oxRegistry::getConfig()->getBaseShopId(), $oBasketItem->sShopId );
+        $this->assertEquals( oxRegistry::getConfig()->getBaseShopId(), $oBasketItem->sNativeShopId );
         $this->assertEquals( $this->oArticle->nossl_dimagedir, $oBasketItem->sDimageDirNoSsl );
         $this->assertEquals( $this->oArticle->ssl_dimagedir, $oBasketItem->sDimageDirSsl );
     }
@@ -890,7 +890,7 @@ class Unit_Core_oxbasketitemTest extends OxidTestCase
      */
     public function testSetSelectList()
     {
-        oxConfig::getInstance()->setConfigParam( 'bl_perfLoadSelectLists', true );
+        oxRegistry::getConfig()->setConfigParam( 'bl_perfLoadSelectLists', true );
         $oBasketItem = new modFortestSetAsDiscountArticle();
         $oBasketItem->init( $this->oArticle->getId(), 6 );
         $this->assertEquals( array( 0 ), $oBasketItem->getSelList() );
@@ -903,7 +903,7 @@ class Unit_Core_oxbasketitemTest extends OxidTestCase
      */
     public function testSetSelectListWithEmptyArrayAsParam()
     {
-        oxConfig::getInstance()->setConfigParam( 'bl_perfLoadSelectLists', true );
+        oxRegistry::getConfig()->setConfigParam( 'bl_perfLoadSelectLists', true );
         $oBasketItem = new modFortestSetAsDiscountArticle();
         $oBasketItem->init( $this->oArticle->getId(), 6 );
         $this->assertEquals( array( 0 ), $oBasketItem->getSelList( array() ) );
@@ -1046,7 +1046,7 @@ class Unit_Core_oxbasketitemTest extends OxidTestCase
         $this->assertEquals( "var1", $oBasketItem->getVarSelect() );
         $this->assertEquals( $this->oArticle->getId(), $oBasketItem->getProductId() );
         $this->assertEquals( $this->oArticle->getLink(), $oBasketItem->getLink() );
-        $this->assertEquals( oxConfig::getInstance()->getShopId(), $oBasketItem->getShopId() );
+        $this->assertEquals( oxRegistry::getConfig()->getShopId(), $oBasketItem->getShopId() );
     }
 
     /**

@@ -81,7 +81,7 @@ class Unit_Views_ManufacturerlistTest extends OxidTestCase
             $sActManufacturer = "9434afb379a46d6c141de9c9e5b94fcf";
 
         $oManufacturerTree = oxNew( 'oxmanufacturerlist' );
-        $oManufacturerTree->buildManufacturerTree( 'manufacturerlist', $sActManufacturer, oxConfig::getInstance()->getShopHomeURL() );
+        $oManufacturerTree->buildManufacturerTree( 'manufacturerlist', $sActManufacturer, oxRegistry::getConfig()->getShopHomeURL() );
 
         $oManufacturer = oxNew( 'oxmanufacturer' );
         $oManufacturer->load( $sActManufacturer );
@@ -107,7 +107,7 @@ class Unit_Views_ManufacturerlistTest extends OxidTestCase
             $sActManufacturer = "9434afb379a46d6c141de9c9e5b94fcf";
 
         $oManufacturerTree = oxNew( 'oxmanufacturerlist' );
-        $oManufacturerTree->buildManufacturerTree( 'manufacturerlist', $sActManufacturer, oxConfig::getInstance()->getShopHomeURL() );
+        $oManufacturerTree->buildManufacturerTree( 'manufacturerlist', $sActManufacturer, oxRegistry::getConfig()->getShopHomeURL() );
 
         $oManufacturer = oxNew( 'oxmanufacturer' );
         $oManufacturer->load( $sActManufacturer );
@@ -140,7 +140,7 @@ class Unit_Views_ManufacturerlistTest extends OxidTestCase
             $sActManufacturer = "9434afb379a46d6c141de9c9e5b94fcf";
 
         $oManufacturerTree = oxNew( 'oxmanufacturerlist' );
-        $oManufacturerTree->buildManufacturerTree( 'manufacturerlist', $sActManufacturer, oxConfig::getInstance()->getShopHomeURL() );
+        $oManufacturerTree->buildManufacturerTree( 'manufacturerlist', $sActManufacturer, oxRegistry::getConfig()->getShopHomeURL() );
 
         $oManufacturer = oxNew( 'oxmanufacturer' );
         $oManufacturer->setId( "123" );
@@ -305,7 +305,7 @@ class Unit_Views_ManufacturerlistTest extends OxidTestCase
     {
         modConfig::setRequestParameter( 'mnid', 'root' );
         $oManufacturerTree = new oxManufacturerlist();
-        $oManufacturerTree->buildManufacturerTree( 'manufacturerlist', 'root', oxConfig::getInstance()->getShopHomeURL() );
+        $oManufacturerTree->buildManufacturerTree( 'manufacturerlist', 'root', oxRegistry::getConfig()->getShopHomeURL() );
 
         $oManufacturer = new Manufacturerlist();
         $oManufacturer->setManufacturerTree( $oManufacturerTree );
@@ -323,7 +323,7 @@ class Unit_Views_ManufacturerlistTest extends OxidTestCase
     {
         modConfig::setRequestParameter( 'mnid', 'root' );
         $oManufacturerTree = new oxManufacturerlist();
-        $oManufacturerTree->buildManufacturerTree( 'manufacturerlist', 'root', oxConfig::getInstance()->getShopHomeURL() );
+        $oManufacturerTree->buildManufacturerTree( 'manufacturerlist', 'root', oxRegistry::getConfig()->getShopHomeURL() );
 
         $oManufacturer = new Manufacturerlist();
         $oManufacturer->setManufacturerTree( $oManufacturerTree );
@@ -345,7 +345,7 @@ class Unit_Views_ManufacturerlistTest extends OxidTestCase
         modConfig::setRequestParameter( 'cnid', $sManufacturerId );
         modConfig::getInstance()->setConfigParam( 'iNrofCatArticles', 20 );
         $oManufacturerTree = new oxManufacturerlist();
-        $oManufacturerTree->buildManufacturerTree( 'Manufacturerlist', $sManufacturerId, oxConfig::getInstance()->getShopHomeURL() );
+        $oManufacturerTree->buildManufacturerTree( 'Manufacturerlist', $sManufacturerId, oxRegistry::getConfig()->getShopHomeURL() );
 
         $oManufacturer = new oxManufacturer();
         $oManufacturer->load($sManufacturerId);
@@ -419,7 +419,7 @@ class Unit_Views_ManufacturerlistTest extends OxidTestCase
     {
         modConfig::setRequestParameter( 'cnid', 'v_root' );
         $oManufacturerTree = new oxManufacturerlist();
-        $oManufacturerTree->buildManufacturerTree( 'Manufacturerlist', 'v_root', oxConfig::getInstance()->getShopHomeURL() );
+        $oManufacturerTree->buildManufacturerTree( 'Manufacturerlist', 'v_root', oxRegistry::getConfig()->getShopHomeURL() );
 
         $oManufacturer = $this->getProxyClass( "Manufacturerlist" );
         $oManufacturer->setManufacturerTree( $oManufacturerTree );

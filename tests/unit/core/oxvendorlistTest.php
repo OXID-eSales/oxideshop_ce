@@ -55,7 +55,7 @@ class Unit_Core_oxvendorlistTest extends OxidTestCase
      */
 /*    public function test_loadVendorList() {
         $myUtils = oxUtils::getInstance();
-        $myConfig= oxConfig::getInstance();
+        $myConfig= oxRegistry::getConfig();
         $myDB    = oxDb::getDB();
 
         $oVendorlist = oxNew( 'oxvendorlist' );
@@ -138,7 +138,7 @@ class Unit_Core_oxvendorlistTest extends OxidTestCase
      */
     public function test_BuildVendorTree()
     {
-        $myConfig= oxConfig::getInstance();
+        $myConfig= oxRegistry::getConfig();
         $myDB    = oxDb::getDB();
 
         $oVendorlist = $this->getProxyClass("oxvendorList"); //oxNew('oxvendorlist', 'core');
@@ -176,7 +176,7 @@ class Unit_Core_oxvendorlistTest extends OxidTestCase
     public function test_addCategoryFields()
     {
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return false;}");
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $oVendorlist = new oxvendorlist();
         $oVendorlist->loadVendorList();

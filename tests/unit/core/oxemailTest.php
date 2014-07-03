@@ -60,7 +60,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
 
         // set shop params for testing
         $this->_oShop = oxNew( "oxshop" );
-        $this->_oShop->load( oxConfig::getInstance()->getShopId() );
+        $this->_oShop->load( oxRegistry::getConfig()->getShopId() );
         $this->_oShop->oxshops__oxorderemail = new oxField('orderemail@orderemail.nl', oxField::T_RAW);
         $this->_oShop->oxshops__oxordersubject = new oxField('testOrderSubject', oxField::T_RAW);
         $this->_oShop->oxshops__oxsendednowsubject = new oxField('testSendedNowSubject', oxField::T_RAW);
@@ -80,7 +80,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
         $this->_oArticle->oxarticles__oxtitle = new oxField('testArticle', oxField::T_RAW);
         $this->_oArticle->oxarticles__oxtitle_1 = new oxField('testArticle_EN', oxField::T_RAW);
         $this->_oArticle->oxarticles__oxartnum = new oxField('123456789', oxField::T_RAW);
-        $this->_oArticle->oxarticles__oxshopid = new oxField(oxConfig::getInstance()->getShopId(), oxField::T_RAW);
+        $this->_oArticle->oxarticles__oxshopid = new oxField(oxRegistry::getConfig()->getShopId(), oxField::T_RAW);
         $this->_oArticle->oxarticles__oxshortdesc = new oxField('testArticleDescription', oxField::T_RAW);
         $this->_oArticle->oxarticles__oxprice = new oxField('256', oxField::T_RAW);
         $this->_oArticle->oxarticles__oxremindactive = new oxField('1', oxField::T_RAW);
@@ -101,7 +101,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
     */
     protected function tearDown()
     {
-            $oActShop = oxConfig::getInstance()->getActiveShop();
+            $oActShop = oxRegistry::getConfig()->getActiveShop();
             $oActShop->setLanguage(0);
             oxLang::getInstance()->setBaseLanguage(0);
             $this->cleanUpTable('oxuser');
@@ -140,7 +140,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
     public function testIncludeImagesErrorTestCase()
     {
         oxTestModules::addFunction( "oxUtilsObject", "generateUId", "{ return 'xxx'; }");
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $oArticle = new oxarticle();
         $oArticle->load( '1351' );
@@ -263,7 +263,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testSendOrderEMailToOwnerAddsHistoryRecord()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         $myDb = oxDb::getDb();
 
         $oPayment = new oxPayment();
@@ -302,7 +302,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testSendForgotPwdEmailToNotExistingUser()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $oEmail = $this->getMock( 'oxEmail', array( "_sendMail", "_getShop" ) );
         $oEmail->expects( $this->never() )->method( '_sendMail');
@@ -317,7 +317,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testSendForgotPwdEmailSendingFailed()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $oEmail = $this->getMock( 'oxEmail', array( "send", "_getShop" ) );
         $oEmail->expects( $this->any() )->method( 'send')->will( $this->returnValue( false ));
@@ -333,7 +333,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testSendBackupMailWithAttachment()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $aAttFiles[]  = basename(__FILE__);
         $sAttPath     = getTestsBasePath()."/unit/core/";
@@ -356,7 +356,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testSendBackupMailWithAttachmentStatusCode()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $aAttFiles[]  = basename(__FILE__);
         $sAttPath     = getTestsBasePath()."/unit/core/";
@@ -382,7 +382,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testSendBackupMailWithWrongAttachmentGeneratesErrorCodes()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $aAttFiles[]  = basename(__FILE__);
         $sAttPath     = 'nosuchdir';
@@ -508,7 +508,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testIncludeImages()
     {
-        $myConfig  = oxConfig::getInstance();
+        $myConfig  = oxRegistry::getConfig();
         $sImageDir = $myConfig->getImageDir();
 
         $oEmail = new oxEmail();
@@ -760,7 +760,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testAddAttachment()
     {
-        $myConfig  = oxConfig::getInstance();
+        $myConfig  = oxRegistry::getConfig();
         $sImageDir = $myConfig->getImageDir() . '/';
 
         $this->_oEmail->AddAttachment( $sImageDir, 'barrcode.gif' );
@@ -774,7 +774,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testClearAttachments()
     {
-        $myConfig  = oxConfig::getInstance();
+        $myConfig  = oxRegistry::getConfig();
         $sImageDir = $myConfig->getImageDir() . '/';
 
         $this->_oEmail->AddAttachment( $sImageDir, 'barrcode.gif' );
@@ -935,7 +935,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
      */
     public function testGetShopWhenShopIsNotSet()
     {
-        $this->assertEquals( oxConfig::getInstance()->getActiveShop(), $this->_oEmail->UNITgetShop() );
+        $this->assertEquals( oxRegistry::getConfig()->getActiveShop(), $this->_oEmail->UNITgetShop() );
     }
 
     /*
@@ -957,7 +957,7 @@ class Unit_Core_oxemailTest extends OxidTestCase
     {
         $oShop = $this->_oEmail->UNITgetShop(1);
         $this->assertEquals( 1, $oShop->getLanguage() );
-        $this->assertEquals( oxConfig::getInstance()->getShopId(), $oShop->getShopId() );
+        $this->assertEquals( oxRegistry::getConfig()->getShopId(), $oShop->getShopId() );
     }
 
      /*
@@ -1043,18 +1043,18 @@ class Unit_Core_oxemailTest extends OxidTestCase
 
     public function testGetNewsSubsLink()
     {
-        $sUrl = oxConfig::getInstance()->getShopHomeURL().'cl=newsletter&amp;fnc=addme&amp;uid=XXXX&amp;lang=0';
+        $sUrl = oxRegistry::getConfig()->getShopHomeURL().'cl=newsletter&amp;fnc=addme&amp;uid=XXXX&amp;lang=0';
         $this->assertEquals($sUrl, $this->_oEmail->UNITgetNewsSubsLink('XXXX'));
-        $oActShop = oxConfig::getInstance()->getActiveShop();
+        $oActShop = oxRegistry::getConfig()->getActiveShop();
         $oActShop->setLanguage(1);
         $this->assertEquals($sUrl, $this->_oEmail->UNITgetNewsSubsLink('XXXX'));
     }
 
     public function testGetNewsSubsLinkWithConfirm()
     {
-        $sUrl = oxConfig::getInstance()->getShopHomeURL().'cl=newsletter&amp;fnc=addme&amp;uid=XXXX&amp;lang=0&amp;confirm=AAAA';
+        $sUrl = oxRegistry::getConfig()->getShopHomeURL().'cl=newsletter&amp;fnc=addme&amp;uid=XXXX&amp;lang=0&amp;confirm=AAAA';
         $this->assertEquals($sUrl, $this->_oEmail->UNITgetNewsSubsLink('XXXX', 'AAAA'));
-        $oActShop = oxConfig::getInstance()->getActiveShop();
+        $oActShop = oxRegistry::getConfig()->getActiveShop();
         $oActShop->setLanguage(1);
         $this->assertEquals($sUrl, $this->_oEmail->UNITgetNewsSubsLink('XXXX', 'AAAA'));
     }

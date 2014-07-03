@@ -36,7 +36,7 @@ class Unit_Views_recommlistTest extends OxidTestCase
     {
         parent::setUp();
         $myDB = oxDb::getDB();
-        $sShopId = oxConfig::getInstance()->getShopId();
+        $sShopId = oxRegistry::getConfig()->getShopId();
         // adding article to recommendlist
         $sQ = 'insert into oxrecommlists ( oxid, oxuserid, oxtitle, oxdesc, oxshopid ) values ( "testlist", "oxdefaultadmin", "oxtest", "oxtest", "'.$sShopId.'" ) ';
         $myDB->Execute( $sQ );
@@ -46,7 +46,7 @@ class Unit_Views_recommlistTest extends OxidTestCase
         $sQ = 'insert into oxobject2list ( oxid, oxobjectid, oxlistid, oxdesc ) values ( "testlist", "'.$this->sArticleID.'", "testlist", "test" ) ';
         $myDB->Execute( $sQ );
 
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxConfig::getInstance()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxRegistry::getConfig()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
 
     }
 
@@ -224,7 +224,7 @@ class Unit_Views_recommlistTest extends OxidTestCase
         $aPath[0]->setLink( false );
         $aPath[0]->oxcategories__oxtitle = new oxField( $oLang->translateString('RECOMMLIST') );
 
-        $sUrl   = oxConfig::getInstance()->getShopHomeURL()."cl=recommlist&amp;searchrecomm=".rawurlencode( $sSearchparam );
+        $sUrl   = oxRegistry::getConfig()->getShopHomeURL()."cl=recommlist&amp;searchrecomm=".rawurlencode( $sSearchparam );
         $sTitle = $oLang->translateString('RECOMMLIST_SEARCH').' "'.$sSearchparam.'"';
 
         $aPath[1] = oxNew( "oxcategory" );

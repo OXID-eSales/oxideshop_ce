@@ -208,7 +208,7 @@ class Unit_Views_accountTest extends OxidTestCase
                 $sParams .= '&'.rawurlencode( $sName ) . "=" . rawurlencode( $sValue );
             }
         }
-        $sUrl = oxConfig::getInstance()->getShopUrl().'index.php?cl=testsource'.$sParams;
+        $sUrl = oxRegistry::getConfig()->getShopUrl().'index.php?cl=testsource'.$sParams;
         $this->assertEquals( $sUrl, $oView->redirectAfterLogin() );
     }
 

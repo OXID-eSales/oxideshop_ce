@@ -417,8 +417,8 @@ class Unit_Core_oxbaseTest extends OxidTestCase
 
         $oBase = new oxBase();
 
-        $this->assertEquals(oxConfig::getInstance()->getShopId(), $oBase->getShopId());
-        $this->assertNotEquals(0, oxConfig::getInstance()->getShopID());
+        $this->assertEquals(oxRegistry::getConfig()->getShopId(), $oBase->getShopId());
+        $this->assertNotEquals(0, oxRegistry::getConfig()->getShopID());
     }
 
     /**
@@ -1617,7 +1617,7 @@ class Unit_Core_oxbaseTest extends OxidTestCase
      */
     public function  testSaveIfNewInAdminDateTime()
     {
-        //oxConfig::getInstance()->blAdmin = true;
+        //oxRegistry::getConfig()->blAdmin = true;
         $oBase = new _oxBase();
         $oBase->init('oxdiscount');
         $oBase->setId('_test');
@@ -1639,14 +1639,14 @@ class Unit_Core_oxbaseTest extends OxidTestCase
     public function  testSaveIfNewInAdminDate()
     {
         $myDB    = oxDb::getDb( oxDB::FETCH_MODE_ASSOC );
-        //oxConfig::getInstance()->blAdmin = true;
+        //oxRegistry::getConfig()->blAdmin = true;
         $oBase = new _oxBase();
         $oBase->init('oxnews');
         $oBase->setId('_test');
         $oBase->oxnews__oxshortdesc = new oxField("oxbasetest", oxField::T_RAW);
         $oBase->oxnews__oxdate = new oxField("2007.07.07", oxField::T_RAW);
         $sResult = $oBase->save();
-        //oxConfig::getInstance()->blAdmin = false;
+        //oxRegistry::getConfig()->blAdmin = false;
         $this->assertNotNull( $sResult );
         $myDB    = oxDb::getDb( oxDB::FETCH_MODE_ASSOC );
         $res = $myDB->Execute("select oxdate from oxnews where oxshortdesc='oxbasetest'");
@@ -1738,7 +1738,7 @@ class Unit_Core_oxbaseTest extends OxidTestCase
         }
 
         //TODO: fix this iDebug
-        if (oxConfig::getInstance()->getConfigParam('iDebug')) {
+        if (oxRegistry::getConfig()->getConfigParam('iDebug')) {
             $this->fail('Update exception not caught');
         }
     }

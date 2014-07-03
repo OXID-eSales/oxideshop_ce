@@ -216,7 +216,7 @@ class Unit_Components_Widgets_oxwArticleDetailsTest extends OxidTestCase
     public function testGetTagCloudManagerAfterAddTags()
     {
         oxTestModules::addFunction('oxSeoEncoderTag', '_saveToDb', '{return null;}');
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxConfig::getInstance()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxRegistry::getConfig()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
         oxTestModules::addFunction( "oxutils", "seoIsActive", "{return true;}" );
         $this->setRequestParam( 'newTags', "newTag" );
         $oArt = new oxarticle();
@@ -510,7 +510,7 @@ class Unit_Components_Widgets_oxwArticleDetailsTest extends OxidTestCase
 
         $oArticle = new oxarticle();
         $oArticle->load($sArtID);
-        $sActPic =  oxConfig::getInstance()->getPictureUrl(null)."generated/product/1/380_340_75/".basename( $oArticle->oxarticles__oxpic1->value );
+        $sActPic =  oxRegistry::getConfig()->getPictureUrl(null)."generated/product/1/380_340_75/".basename( $oArticle->oxarticles__oxpic1->value );
 
         $oDetails = $this->getMock( 'oxwArticleDetails', array( "getPicturesProduct" ) );
         $oDetails->expects( $this->once() )->method( 'getPicturesProduct')->will( $this->returnValue( $oArticle ) );
@@ -969,7 +969,7 @@ class Unit_Components_Widgets_oxwArticleDetailsTest extends OxidTestCase
             $oDetailsView->setNonPublicVar( '_oProduct', $oProduct );
             $oDetailsView->getProduct();
         } catch ( Exception $oExcp ) {
-            $this->assertEquals( oxConfig::getInstance()->getShopHomeURL(), $oExcp->getMessage(), 'result does not match' );
+            $this->assertEquals( oxRegistry::getConfig()->getShopHomeURL(), $oExcp->getMessage(), 'result does not match' );
             return;
         }
         $this->fail( 'product should not be returned' );

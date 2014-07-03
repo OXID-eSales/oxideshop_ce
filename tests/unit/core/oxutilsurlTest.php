@@ -187,8 +187,8 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
      */
     public function testCleanUrlParams()
     {
-        $sTestUrl = oxConfig::getInstance()->getConfigParam('sShopURL') . 'index.php?&&&p1=v1&p2=v2&aTest[]=test1&aTest[]=test2&assoc[test]=t1&assoc[test]=t2&amp;amp;amp;&&p1=test1 space&p2=';
-        $sExpUrl  = oxConfig::getInstance()->getConfigParam('sShopURL') . 'index.php?p1=test1+space&amp;p2=&amp;aTest[0]=test1&amp;aTest[1]=test2&amp;assoc[test]=t2';
+        $sTestUrl = oxRegistry::getConfig()->getConfigParam('sShopURL') . 'index.php?&&&p1=v1&p2=v2&aTest[]=test1&aTest[]=test2&assoc[test]=t1&assoc[test]=t2&amp;amp;amp;&&p1=test1 space&p2=';
+        $sExpUrl  = oxRegistry::getConfig()->getConfigParam('sShopURL') . 'index.php?p1=test1+space&amp;p2=&amp;aTest[0]=test1&amp;aTest[1]=test2&amp;assoc[test]=t2';
 
         $oUtils = oxUtilsUrl::getInstance();
         $this->assertSame( $sExpUrl, $oUtils->cleanUrlParams( $sTestUrl ) );
@@ -203,7 +203,7 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
     // - current SHOP host url
     public function testProcessSeoUrlAdminCurrentShopHostUrl()
     {
-        $sUrl = oxConfig::getInstance()->getConfigParam( "sShopURL" ) . "index.php?param1=value1";
+        $sUrl = oxRegistry::getConfig()->getConfigParam( "sShopURL" ) . "index.php?param1=value1";
 
         $oUtils = $this->getMock( "oxUtilsUrl", array( "isAdmin" ) );
         $oUtils->expects( $this->any() )->method( 'isAdmin' )->will( $this->returnValue( true ) );
@@ -216,9 +216,9 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
     public function testProcessSeoUrlNonAdmin()
     {
         // base shop
-        $iShopId = oxConfig::getInstance()->getBaseShopId();
+        $iShopId = oxRegistry::getConfig()->getBaseShopId();
         modConfig::getInstance()->setShopId( $iShopId );
-        $sUrl = oxConfig::getInstance()->getConfigParam( "sShopURL" );
+        $sUrl = oxRegistry::getConfig()->getConfigParam( "sShopURL" );
 
         $oUtils = $this->getMock( "oxUtilsUrl", array( "isAdmin" ) );
         $oUtils->expects( $this->any() )->method( 'isAdmin' )->will( $this->returnValue( false ) );

@@ -92,9 +92,9 @@ class Unit_Core_oxSeoEncoderVendorTest extends OxidTestCase
 
     public function testGetVendorUrlExistingVendor()
     {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxConfig::getInstance()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxRegistry::getConfig()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
             $sVndId = '77442e37fdf34ccd3.94620745';
-            $sUrl   = oxConfig::getInstance()->getShopUrl().'Nach-Lieferant/Bush/';
+            $sUrl   = oxRegistry::getConfig()->getShopUrl().'Nach-Lieferant/Bush/';
 
         $oVendor = new oxVendor();
         $oVendor->load( $sVndId );
@@ -104,13 +104,13 @@ class Unit_Core_oxSeoEncoderVendorTest extends OxidTestCase
     }
     public function testGetVendorUrlExistingVendorEng()
     {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxConfig::getInstance()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxRegistry::getConfig()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
         oxTestModules::addFunction('oxVendor', 'resetRootVendor', '{ self::$_aRootVendor = array() ; }');
         $oVendor = oxNew( 'oxVendor' );
         $oVendor->resetRootVendor();
 
             $sVndId = '77442e37fdf34ccd3.94620745';
-            $sUrl   = oxConfig::getInstance()->getShopUrl().'en/By-Distributor/Bush/';
+            $sUrl   = oxRegistry::getConfig()->getShopUrl().'en/By-Distributor/Bush/';
 
         $oVendor = new oxVendor();
         $oVendor->loadInLang( 1, $sVndId );
@@ -120,9 +120,9 @@ class Unit_Core_oxSeoEncoderVendorTest extends OxidTestCase
     }
     public function testGetVendorUrlExistingVendorWithLangParam()
     {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxConfig::getInstance()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxRegistry::getConfig()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
             $sVndId = '77442e37fdf34ccd3.94620745';
-            $sUrl   = oxConfig::getInstance()->getShopUrl().'Nach-Lieferant/Bush/';
+            $sUrl   = oxRegistry::getConfig()->getShopUrl().'Nach-Lieferant/Bush/';
 
         $oVendor = new oxVendor();
         $oVendor->loadInLang( 1, $sVndId );
@@ -132,13 +132,13 @@ class Unit_Core_oxSeoEncoderVendorTest extends OxidTestCase
     }
     public function testGetVendorUrlExistingVendorEngWithLangParam()
     {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxConfig::getInstance()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxRegistry::getConfig()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
         oxTestModules::addFunction('oxVendor', 'resetRootVendor', '{ self::$_aRootVendor = array() ; }');
         $oVendor = oxNew( 'oxVendor' );
         $oVendor->resetRootVendor();
 
             $sVndId = '77442e37fdf34ccd3.94620745';
-            $sUrl   = oxConfig::getInstance()->getShopUrl().'en/By-Distributor/Bush/';
+            $sUrl   = oxRegistry::getConfig()->getShopUrl().'en/By-Distributor/Bush/';
 
         $oVendor = new oxVendor();
         $oVendor->loadInLang( 0, $sVndId );
@@ -215,8 +215,8 @@ class Unit_Core_oxSeoEncoderVendorTest extends OxidTestCase
      */
     public function testGetVendorPageUrl()
     {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxConfig::getInstance()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
-            $sUrl = oxConfig::getInstance()->getShopUrl() . 'en/By-Distributor/Bush/101/';
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxRegistry::getConfig()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+            $sUrl = oxRegistry::getConfig()->getShopUrl() . 'en/By-Distributor/Bush/101/';
             $sVndId = '77442e37fdf34ccd3.94620745';
 
         $oVendor = new oxVendor();
@@ -227,8 +227,8 @@ class Unit_Core_oxSeoEncoderVendorTest extends OxidTestCase
     }
     public function testGetVendorPageUrlWithLangParam()
     {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxConfig::getInstance()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
-            $sUrl = oxConfig::getInstance()->getShopUrl() . 'en/By-Distributor/Bush/101/';
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxRegistry::getConfig()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+            $sUrl = oxRegistry::getConfig()->getShopUrl() . 'en/By-Distributor/Bush/101/';
             $sVndId = '77442e37fdf34ccd3.94620745';
 
         $oVendor = new oxVendor();
@@ -281,7 +281,7 @@ class Unit_Core_oxSeoEncoderVendorTest extends OxidTestCase
 
     public function testonDeleteVendor()
     {
-        $sShopId = oxConfig::getInstance()->getBaseShopId();
+        $sShopId = oxRegistry::getConfig()->getBaseShopId();
         $oDb = oxDb::getDb();
         $sQ = "insert into oxseo
                    ( oxobjectid, oxident, oxshopid, oxlang, oxstdurl, oxseourl, oxtype, oxfixed, oxexpired, oxparams )

@@ -720,7 +720,7 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
      */
     public function testGetModulesFromDir()
     {
-            $sModulesDir = oxConfig::getInstance()->getModulesDir();
+            $sModulesDir = oxRegistry::getConfig()->getModulesDir();
 
             $oModuleList = new oxModuleList;
             $aModules = $oModuleList->getModulesFromDir( $sModulesDir );
@@ -736,7 +736,7 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
      */
     public function testIsVendorDir()
     {
-            $sModulesDir = oxConfig::getInstance()->getModulesDir();
+            $sModulesDir = oxRegistry::getConfig()->getModulesDir();
 
             $oModuleList = new oxModuleList;
 

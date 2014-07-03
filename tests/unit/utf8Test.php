@@ -84,7 +84,7 @@ class Unit_utf8Test extends OxidTestCase
 
             $this->cleanUpTable( 'oxstatistics' );
 
-        oxConfig::getInstance()->setActiveView( null );
+        oxRegistry::getConfig()->setActiveView( null );
         parent::tearDown();
     }
 
@@ -131,7 +131,7 @@ class Unit_utf8Test extends OxidTestCase
     public function testOxArticleGetSelectList()
     {
         $myDB     = oxDb::getDB();
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         $oCurrency = $myConfig->getActShopCurrencyObject();
 
         $sShopId = $myConfig->getBaseShopId();
@@ -200,7 +200,7 @@ class Unit_utf8Test extends OxidTestCase
         modConfig::getInstance()->setConfigParam( 'bl_perfParseLongDescinSmarty', 1 );
 
         $sValue  = '[{ $oViewConf->getImageUrl() }] Nekilnojamojo turto agentūrų verslo sėkme Литовские европарламентарии, срок полномочий которых в 2009 году подходит к концу Der Umstieg war für uns ein voller Erfolg. OXID eShop ist flexibel und benutzerfreundlich';
-        $sResult = oxConfig::getInstance()->getImageUrl( false ).' Nekilnojamojo turto agentūrų verslo sėkme Литовские европарламентарии, срок полномочий которых в 2009 году подходит к концу Der Umstieg war für uns ein voller Erfolg. OXID eShop ist flexibel und benutzerfreundlich';
+        $sResult = oxRegistry::getConfig()->getImageUrl( false ).' Nekilnojamojo turto agentūrų verslo sėkme Литовские европарламентарии, срок полномочий которых в 2009 году подходит к концу Der Umstieg war für uns ein voller Erfolg. OXID eShop ist flexibel und benutzerfreundlich';
 
         $oArticle = new oxarticle();
         $oArticle->setId( '_testArticle' );
@@ -448,7 +448,7 @@ class Unit_utf8Test extends OxidTestCase
         modConfig::getInstance()->setConfigParam( 'bl_perfParseLongDescinSmarty', 1 );
 
         $sValue  = '[{ $oViewConf->getImageUrl() }] Nekilnojamojo turto agentūrų verslo sėkme Литовские европарламентарии, срок полномочий которых в 2009 году подходит к концу Der Umstieg war für uns ein voller Erfolg. OXID eShop ist flexibel und benutzerfreundlich';
-        $sResult = oxConfig::getInstance()->getImageUrl( false ).' Nekilnojamojo turto agentūrų verslo sėkme Литовские европарламентарии, срок полномочий которых в 2009 году подходит к концу Der Umstieg war für uns ein voller Erfolg. OXID eShop ist flexibel und benutzerfreundlich';
+        $sResult = oxRegistry::getConfig()->getImageUrl( false ).' Nekilnojamojo turto agentūrų verslo sėkme Литовские европарламентарии, срок полномочий которых в 2009 году подходит к концу Der Umstieg war für uns ein voller Erfolg. OXID eShop ist flexibel und benutzerfreundlich';
 
         $oCat = new oxbase();
         $oCat->init( 'oxcategories' );
@@ -594,7 +594,7 @@ class Unit_utf8Test extends OxidTestCase
 
         $aCurrArray = array( $oCurr1, $oCurr2, $oCurr3, $oCurr4 );
 
-        $this->assertEquals( $aCurrArray, oxConfig::getInstance()->getCurrencyArray() );
+        $this->assertEquals( $aCurrArray, oxRegistry::getConfig()->getCurrencyArray() );
     }
 
     public function testOxContentSetAndGet()
@@ -824,10 +824,10 @@ class Unit_utf8Test extends OxidTestCase
 
         $oActView = oxNew( 'oxubase' );
         $oActView->addGlobalParams();
-        oxConfig::getInstance()->setActiveView( $oActView );
+        oxRegistry::getConfig()->setActiveView( $oActView );
 
         $sValue  = '[{ $oViewConf->getImageUrl() }] Nekilnojamojo turto agentūrų verslo sėkme Литовские европарламентарии, срок полномочий которых в 2009 году подходит к концу Der Umstieg war für uns ein voller Erfolg. OXID eShop ist flexibel und benutzerfreundlich';
-        $sResult = oxConfig::getInstance()->getImageUrl( false ).' Nekilnojamojo turto agentūrų verslo sėkme Литовские европарламентарии, срок полномочий которых в 2009 году подходит к концу Der Umstieg war für uns ein voller Erfolg. OXID eShop ist flexibel und benutzerfreundlich';
+        $sResult = oxRegistry::getConfig()->getImageUrl( false ).' Nekilnojamojo turto agentūrų verslo sėkme Литовские европарламентарии, срок полномочий которых в 2009 году подходит к концу Der Umstieg war für uns ein voller Erfolg. OXID eShop ist flexibel und benutzerfreundlich';
 
         $oNewsletter = new oxnewsletter();
         $oNewsletter->oxnewsletter__oxtemplate = new oxField( $sValue, oxField::T_RAW );
@@ -973,7 +973,7 @@ class Unit_utf8Test extends OxidTestCase
     public function testOxOutputProcessWithEuroSign()
     {
         $oOutput = oxNew( 'oxOutput' );
-        oxConfig::getInstance()->setConfigParam( 'blSkipEuroReplace', false );
+        oxRegistry::getConfig()->setConfigParam( 'blSkipEuroReplace', false );
         $this->assertEquals( '€someting', $oOutput->process( '€someting', 'something' ) );
     }
 
@@ -1681,7 +1681,7 @@ class Unit_utf8Test extends OxidTestCase
         $oListView = $this->getMock( 'alist', array( 'getActiveCategory' ) );
         $oListView->expects( $this->any() )->method( 'getActiveCategory')->will( $this->returnValue( $oActCat ) );
 
-        $sDescription = "agentūЛитовfür     . " . oxConfig::getInstance()->getActiveShop()->oxshops__oxtitleprefix->value;
+        $sDescription = "agentūЛитовfür     . " . oxRegistry::getConfig()->getActiveShop()->oxshops__oxtitleprefix->value;
 
         $oView = new oxubase();
         $this->assertEquals( $sDescription, $oListView->UNITprepareMetaDescription( false ) );
@@ -1830,13 +1830,13 @@ class Unit_utf8Test extends OxidTestCase
         $oEmail = $this->getMock( 'oxemail', array( 'getBody', 'setBody' ) );
         $oEmail->expects( $this->once() )->method( 'getBody' )->will( $this->returnValue( $sBodyToReturn ) );
         $oEmail->expects( $this->once() )->method( 'setBody' )->with( $this->equalTo( $sBodyToSet ) );
-        $oEmail->UNITincludeImages( "__imagedir__", null, null, oxConfig::getInstance()->getImageDir() );
+        $oEmail->UNITincludeImages( "__imagedir__", null, null, oxRegistry::getConfig()->getImageDir() );
     }
 
     public function testOxEmailSetBody()
     {
         $sBodyToSet = "agentūлитовfür <a href=\"someurl.php?cl=comecl&amp;sid=somesid&amp;something=something\" title=\"agentūлитовfür\">";
-        $sBodyWillGet = "agentūлитовfür <a href=\"someurl.php?cl=comecl&amp;sid=x&amp;shp=".oxConfig::getInstance()->getBaseShopId()."&amp;something=something\" title=\"agentūлитовfür\">";
+        $sBodyWillGet = "agentūлитовfür <a href=\"someurl.php?cl=comecl&amp;sid=x&amp;shp=".oxRegistry::getConfig()->getBaseShopId()."&amp;something=something\" title=\"agentūлитовfür\">";
 
         $oEmail = new oxEmail();
         $oEmail->setBody( $sBodyToSet );
@@ -1846,7 +1846,7 @@ class Unit_utf8Test extends OxidTestCase
     public function testOxEmailSetAltBody()
     {
         $sBodyToSet = "agentūлитовfür <a href=\"someurl.php?cl=comecl&amp;sid=somesid&amp;something=something\" title=\"agentūлитовfür\">";
-        $sBodyWillGet = "agentūлитовfür <a href=\"someurl.php?cl=comecl&sid=x&shp=".oxConfig::getInstance()->getBaseShopId()."&something=something\" title=\"agentūлитовfür\">";
+        $sBodyWillGet = "agentūлитовfür <a href=\"someurl.php?cl=comecl&sid=x&shp=".oxRegistry::getConfig()->getBaseShopId()."&something=something\" title=\"agentūлитовfür\">";
 
         $oEmail = new oxEmail();
         $oEmail->setAltBody( $sBodyToSet );

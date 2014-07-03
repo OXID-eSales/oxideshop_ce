@@ -108,7 +108,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
         oxDb::getDb()->execute( 'delete from oxarticles where oxid = "testart"' );
         oxDb::getDb()->execute( 'delete from oxobject2category where oxobjectid = "testart"' );
 
-        //oxConfig::getInstance()->setActiveView( null );
+        //oxRegistry::getConfig()->setActiveView( null );
 
         parent::tearDown();
     }
@@ -201,7 +201,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
         $oArticle->setId( "testArticleId" );
         $oArticle->oxarticles__oxtitle = new oxField( "'DIN lang 1/3 A4 / A6' ? 'EIN Fach' ? '1/3 A4 Prospektständer BIO'", oxField::T_RAW );
 
-        $sUrl = oxConfig::getInstance()->getConfigParam( "sShopURL" )."DIN-lang-1-3-A4-A6-EIN-Fach-1-3-A4-Prospektstaender-BIO.html";
+        $sUrl = oxRegistry::getConfig()->getConfigParam( "sShopURL" )."DIN-lang-1-3-A4-A6-EIN-Fach-1-3-A4-Prospektstaender-BIO.html";
         $this->assertEquals( $sUrl, $oArticle->getLink() );
     }
 
@@ -233,7 +233,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
         $oView = $this->getMock( "oxUBase", array( "getActiveRecommList" ) );
         $oView->expects( $this->once() )->method( 'getActiveRecommList' )->will( $this->returnValue( "testRecommList" ) );
 
-        oxConfig::getInstance()->setActiveView( $oView );
+        oxRegistry::getConfig()->setActiveView( $oView );
 
         $oEncoder = new oxSeoEncoderArticle();
         $this->assertEquals( "testRecommList", $oEncoder->UNITgetRecomm( new oxarticle, 0 ) );
@@ -249,7 +249,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
         $oView = $this->getMock( "oxUBase", array( "getTag" ) );
         $oView->expects( $this->once() )->method( 'getTag' )->will( $this->returnValue( "testTag" ) );
 
-        oxConfig::getInstance()->setActiveView( $oView );
+        oxRegistry::getConfig()->setActiveView( $oView );
 
         $oEncoder = new oxSeoEncoderArticle();
         $this->assertEquals( "testTag", $oEncoder->UNITgetTag( new oxarticle, 0 ) );
@@ -278,7 +278,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
         $oArticle = new oxArticle();
         $oArticle->oxarticles__oxvendorid = new oxField( $sVendorId );
 
-        oxConfig::getInstance()->setActiveView( new oxUbase );
+        oxRegistry::getConfig()->setActiveView( new oxUbase );
 
         $oEncoder = new oxSeoEncoderArticle();
         $oVendor = $oEncoder->UNITgetVendor( $oArticle, 0 );
@@ -318,7 +318,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
         $oView = $this->getMock( "oxUBase", array( "getActVendor" ) );
         $oView->expects( $this->once() )->method( 'getActVendor' )->will( $this->returnValue( $oVendor ) );
 
-        oxConfig::getInstance()->setActiveView( $oView );
+        oxRegistry::getConfig()->setActiveView( $oView );
 
         $oEncoder = new oxSeoEncoderArticle();
         $oManufacturer = $oEncoder->UNITgetVendor( $oArticle, 0 );
@@ -344,7 +344,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
         $oView = $this->getMock( "oxUBase", array( "getActVendor" ) );
         $oView->expects( $this->once() )->method( 'getActVendor' )->will( $this->returnValue( $oVendor ) );
 
-        oxConfig::getInstance()->setActiveView( $oView );
+        oxRegistry::getConfig()->setActiveView( $oView );
 
         $oEncoder = new oxSeoEncoderArticle();
         $oVendor = $oEncoder->UNITgetVendor( $oArticle, 1 );
@@ -371,7 +371,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
         $oView = $this->getMock( "oxUBase", array( "getActVendor" ) );
         $oView->expects( $this->once() )->method( 'getActVendor' )->will( $this->returnValue( $oVendor ) );
 
-        oxConfig::getInstance()->setActiveView( $oView );
+        oxRegistry::getConfig()->setActiveView( $oView );
 
         $oEncoder = new oxSeoEncoderArticle();
         $oVendor = $oEncoder->UNITgetVendor( $oArticle, 0 );
@@ -402,7 +402,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
         $oArticle = new oxArticle();
         $oArticle->oxarticles__oxmanufacturerid = new oxField( $sManufacturerId );
 
-        oxConfig::getInstance()->setActiveView( new oxUbase );
+        oxRegistry::getConfig()->setActiveView( new oxUbase );
 
         $oEncoder = new oxSeoEncoderArticle();
         $oManufacturer = $oEncoder->UNITgetManufacturer( $oArticle, 0 );
@@ -442,7 +442,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
         $oView = $this->getMock( "oxUBase", array( "getActManufacturer" ) );
         $oView->expects( $this->once() )->method( 'getActManufacturer' )->will( $this->returnValue( $oManufacturer ) );
 
-        oxConfig::getInstance()->setActiveView( $oView );
+        oxRegistry::getConfig()->setActiveView( $oView );
 
         $oEncoder = new oxSeoEncoderArticle();
         $oManufacturer = $oEncoder->UNITgetManufacturer( $oArticle, 0 );
@@ -468,7 +468,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
         $oView = $this->getMock( "oxUBase", array( "getActManufacturer" ) );
         $oView->expects( $this->once() )->method( 'getActManufacturer' )->will( $this->returnValue( $oManufacturer ) );
 
-        oxConfig::getInstance()->setActiveView( $oView );
+        oxRegistry::getConfig()->setActiveView( $oView );
 
         $oEncoder = new oxSeoEncoderArticle();
         $oManufacturer = $oEncoder->UNITgetManufacturer( $oArticle, 1 );
@@ -495,7 +495,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
         $oView = $this->getMock( "oxUBase", array( "getActManufacturer" ) );
         $oView->expects( $this->once() )->method( 'getActManufacturer' )->will( $this->returnValue( $oManufacturer ) );
 
-        oxConfig::getInstance()->setActiveView( $oView );
+        oxRegistry::getConfig()->setActiveView( $oView );
 
         $oEncoder = new oxSeoEncoderArticle();
         $oManufacturer = $oEncoder->UNITgetManufacturer( $oArticle, 0 );
@@ -513,7 +513,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
         // creating test recomm list
         $oRecomm = new oxRecommList();
         $oRecomm->setId( "_testRecomm" );
-        $oRecomm->oxrecommlists__oxshopid = new oxField( oxConfig::getInstance()->getBaseShopId() );
+        $oRecomm->oxrecommlists__oxshopid = new oxField( oxRegistry::getConfig()->getBaseShopId() );
         $oRecomm->oxrecommlists__oxtitle  = new oxField( "testrecommtitle" );
         $oRecomm->save();
 
@@ -669,7 +669,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
         $oArticle->setId( '_testArtId' );
         $oArticle->oxarticles__oxtitle = new oxField( 'äöüÄÖÜß' );
 
-        $this->assertEquals( oxConfig::getInstance()->getConfigParam("sShopURL")."oxid.html", $oArticle->getLink() );
+        $this->assertEquals( oxRegistry::getConfig()->getConfigParam("sShopURL")."oxid.html", $oArticle->getLink() );
     }
 
     public function testGetArticleVendorUriArticleHasNoVendorAssigned()
@@ -1180,7 +1180,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
 
     public function testonDeleteArticle()
     {
-        $sShopId = oxConfig::getInstance()->getBaseShopId();
+        $sShopId = oxRegistry::getConfig()->getBaseShopId();
         $oDb = oxDb::getDb();
         $sQ = "insert into oxseo
                    ( oxobjectid, oxident, oxshopid, oxlang, oxstdurl, oxseourl, oxtype, oxfixed, oxexpired, oxparams )
@@ -1281,7 +1281,7 @@ class Unit_Core_oxSeoEncoderArticleTest extends OxidTestCase
 
         $oCategory = new oxCategory();
         $oCategory->load( $sCatId );
-        $sBaseUri = str_replace( oxConfig::getInstance()->getConfigParam( "sShopURL" ), "", $oCategory->getLink() );
+        $sBaseUri = str_replace( oxRegistry::getConfig()->getConfigParam( "sShopURL" ), "", $oCategory->getLink() );
 
         $oEncoder = $this->getMock( 'oxSeoEncoderArticle', array('_getCategory', '_getMainCategory', '_loadFromDb' ) );
         $oEncoder->expects( $this->once( ))->method( '_getCategory' )->will( $this->returnValue( false ) );

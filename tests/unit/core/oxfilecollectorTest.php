@@ -34,7 +34,7 @@ class Unit_Core_oxFileCollectorTest extends OxidTestCase
         //TODO check adding directories recursively
 
         $oDirReader = oxNew( "oxFileCollector" );
-        $oDirReader->setBaseDirectory( oxConfig::getInstance()->getConfigParam( "sShopDir") );
+        $oDirReader->setBaseDirectory( oxRegistry::getConfig()->getConfigParam( "sShopDir") );
 
         $oDirReader->addDirectoryFiles( 'bin/', array( 'php', 'tpl' ) );
         $aResultExistingPHP = $oDirReader->getFiles();
@@ -49,7 +49,7 @@ class Unit_Core_oxFileCollectorTest extends OxidTestCase
     public function testAddDirectoryFilesWithoutExtensions()
     {
         $oDirReader = oxNew( "oxFileCollector" );
-        $oDirReader->setBaseDirectory( oxConfig::getInstance()->getConfigParam( "sShopDir") );
+        $oDirReader->setBaseDirectory( oxRegistry::getConfig()->getConfigParam( "sShopDir") );
 
         $oDirReader->addDirectoryFiles( 'bin/' );
         $aResultExistingAll = $oDirReader->getFiles();
@@ -67,7 +67,7 @@ class Unit_Core_oxFileCollectorTest extends OxidTestCase
     public function testAddFile()
     {
         $oDirReader = oxNew( "oxFileCollector" );
-        $oDirReader->setBaseDirectory( oxConfig::getInstance()->getConfigParam( "sShopDir") );
+        $oDirReader->setBaseDirectory( oxRegistry::getConfig()->getConfigParam( "sShopDir") );
 
         $oDirReader->addFile( 'index.php' );
         $oDirReader->addFile( 'bin/nofile.php' );

@@ -214,7 +214,7 @@ class Unit_Admin_NavigationTest extends OxidTestCase
         $sUrl = "http://admin.oxid-esales.com";
 
         // creating test file
-        $rFile = fopen( oxConfig::getInstance()->getConfigParam('sCompileDir') . "/" . md5( $sUrl ) . '.html', "w+" );
+        $rFile = fopen( oxRegistry::getConfig()->getConfigParam('sCompileDir') . "/" . md5( $sUrl ) . '.html', "w+" );
         fwrite( $rFile, "</head>" );
         fclose( $rFile );
 
@@ -226,7 +226,7 @@ class Unit_Admin_NavigationTest extends OxidTestCase
 
         $oConfig = $this->getMock( "oxConfig", array( "getConfigParam", "getVersion", "getFullEdition" ) );
         $oConfig->expects( $this->at( 0 ) )->method( 'getConfigParam' )->with( $this->equalTo( "blLoadDynContents" ) )->will( $this->returnValue( true ));
-        $oConfig->expects( $this->at( 1 ) )->method( 'getConfigParam' )->with( $this->equalTo( "sCompileDir" ) )->will( $this->returnValue( oxConfig::getInstance()->getConfigParam('sCompileDir') ) );
+        $oConfig->expects( $this->at( 1 ) )->method( 'getConfigParam' )->with( $this->equalTo( "sCompileDir" ) )->will( $this->returnValue( oxRegistry::getConfig()->getConfigParam('sCompileDir') ) );
         $oConfig->expects( $this->once() )->method( 'getVersion' )->will( $this->returnValue( "getVersion" ));
         $oConfig->expects( $this->once() )->method( 'getFullEdition' )->will( $this->returnValue( "getFullEdition" ));
 

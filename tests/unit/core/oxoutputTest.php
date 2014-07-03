@@ -90,7 +90,7 @@ class Unit_Core_oxoutputTest extends OxidTestCase
     public function testProcessWithEuroSign()
     {
         $oOutput = oxNew( 'oxOutput' );
-        oxConfig::getInstance()->setConfigParam( 'blSkipEuroReplace', false );
+        oxRegistry::getConfig()->setConfigParam( 'blSkipEuroReplace', false );
         modConfig::getInstance()->setConfigParam( 'iUtfMode', 0 );
         $this->assertEquals( '&euro;someting', $oOutput->process( '山ometing', 'something' ) );
     }
@@ -101,7 +101,7 @@ class Unit_Core_oxoutputTest extends OxidTestCase
     public function testProcessWithEuroSignInUtfMode()
     {
         $oOutput = oxNew( 'oxOutput' );
-        oxConfig::getInstance()->setConfigParam( 'blSkipEuroReplace', false );
+        oxRegistry::getConfig()->setConfigParam( 'blSkipEuroReplace', false );
         modConfig::getInstance()->setConfigParam( 'iUtfMode', 1 );
         $this->assertEquals( '山ometing', $oOutput->process( '山ometing', 'something' ) );
     }
@@ -112,15 +112,15 @@ class Unit_Core_oxoutputTest extends OxidTestCase
     public function testProcessWithEuroSignWithDisabledReplace()
     {
         $oOutput = oxNew( 'oxOutput' );
-        oxConfig::getInstance()->setConfigParam( 'blSkipEuroReplace', true );
-        oxConfig::getInstance()->setConfigParam( 'iUtfMode', 0 );
+        oxRegistry::getConfig()->setConfigParam( 'blSkipEuroReplace', true );
+        oxRegistry::getConfig()->setConfigParam( 'iUtfMode', 0 );
 
         $this->assertEquals( '山ometing', $oOutput->process( '山ometing', 'something' ) );
     }
 
     public function testAddVersionTags()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         $sVersion = $myConfig->getActiveShop()->oxshops__oxversion->value;
         $sVersion = $myConfig->getActiveShop()->oxshops__oxversion = new oxField("9.9", oxField::T_RAW);
         $sCurYear = date("Y");
@@ -146,7 +146,7 @@ class Unit_Core_oxoutputTest extends OxidTestCase
      */
     public function testAddVersionTagsUpperCase()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         $sVersion = $myConfig->getActiveShop()->oxshops__oxversion->value;
         $sVersion = $myConfig->getActiveShop()->oxshops__oxversion = new oxField("9.9", oxField::T_RAW);
         $sCurYear = date("Y");

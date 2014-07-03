@@ -77,7 +77,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
      */
     public function testProcessUrl()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $iDefL = $myConfig->getConfigParam( 'sDefaultLang' );
         $oLang = new oxLang();
@@ -135,7 +135,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
     public function testGetLangFilesPathArrayCustom()
     {
-        $sPath = oxConfig::getInstance()->getAppDir();
+        $sPath = oxRegistry::getConfig()->getAppDir();
 
         $aPathArray = array(
               $sPath . "translations/de/lang.php"
@@ -158,7 +158,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
     public function testGetLangFilesPathForModules()
     {
-        $sFilePath = oxConfig::getInstance()->getConfigParam('sShopDir').'modules/oxlangTestModule/translations/de/';
+        $sFilePath = oxRegistry::getConfig()->getConfigParam('sShopDir').'modules/oxlangTestModule/translations/de/';
 
         if( !is_dir($sFilePath) ){
             mkdir( $sFilePath, 0755, true);
@@ -166,8 +166,8 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
         file_put_contents( $sFilePath."/test_lang.php", 'langfile' );
 
-        $sPath = oxConfig::getInstance()->getAppDir( );
-        $sShopPath = oxConfig::getInstance()->getConfigParam('sShopDir');
+        $sPath = oxRegistry::getConfig()->getAppDir( );
+        $sShopPath = oxRegistry::getConfig()->getConfigParam('sShopDir');
         $aPathArray = array(
               $sPath . "translations/de/lang.php"
             , $sPath . "translations/de/translit_lang.php"
@@ -202,7 +202,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
     public function testGetLangFilesPathForAdmin()
     {
-       $sFilePath = oxConfig::getInstance()->getConfigParam('sShopDir').'modules/oxlangTestModule/views/admin/de/';
+       $sFilePath = oxRegistry::getConfig()->getConfigParam('sShopDir').'modules/oxlangTestModule/views/admin/de/';
 
        if( !is_dir($sFilePath) ){
             mkdir( $sFilePath, 0755, true);
@@ -211,8 +211,8 @@ class Unit_Core_oxLangTest extends OxidTestCase
         file_put_contents( $sFilePath."/test1_lang.php", 'langfile' );
         file_put_contents( $sFilePath."/module_options.php", 'langfile' );
 
-        $sPath = oxConfig::getInstance()->getAppDir( );
-        $sShopPath = oxConfig::getInstance()->getConfigParam('sShopDir');
+        $sPath = oxRegistry::getConfig()->getAppDir( );
+        $sShopPath = oxRegistry::getConfig()->getConfigParam('sShopDir');
         $aPathArray = array(
             $sPath . "views/admin/de/lang.php",
             $sPath . "translations/de/translit_lang.php",
@@ -243,7 +243,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
     public function testGetLangFileCacheName()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         $sCacheName = "langcache_1_1_".$myConfig->getShopId()."_".$myConfig->getConfigParam( 'sTheme' ).'_default';
 
         $oLang = new oxLang();
@@ -262,7 +262,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
         $sFilePrefix = md5( uniqid( rand(), true ) );
 
         //writing a test lang file
-        $sFilePath = oxConfig::getInstance()->getConfigParam( 'sCompileDir' );
+        $sFilePath = oxRegistry::getConfig()->getConfigParam( 'sCompileDir' );
         file_put_contents( $sFilePath . "/baselang$sFilePrefix.txt", '<?php $aSeoReplaceChars = array("t1" => "r1", "t2" => "r2", "t3" => "r3"); $aLang = array( "charset" => "baseCharset", "TESTKEY" => "baseVal");' );
         file_put_contents( $sFilePath . "/testlang$sFilePrefix.txt", '<?php $aSeoReplaceChars = array("t1" => "overide1"); $aLang = array( "charset" => "testCharset", "TESTKEY" => "testVal");' );
 
@@ -286,7 +286,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
         $sFilePrefix = md5( uniqid( rand(), true ) );
 
         //writing a test lang file
-        $sFilePath = oxConfig::getInstance()->getConfigParam( 'sCompileDir' );
+        $sFilePath = oxRegistry::getConfig()->getConfigParam( 'sCompileDir' );
         file_put_contents( $sFilePath . "/baselang$sFilePrefix.txt", '<?php $aSeoReplaceChars = array("t1" => "overide1"); $aLang = array( "charset" => "baseCharset", "TESTKEY" => "baseVal");' );
         file_put_contents( $sFilePath . "/testlang$sFilePrefix.txt", '<?php $aLang = array( "charset" => "testCharset", "TESTKEY" => "testVal");' );
 
@@ -317,7 +317,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
         $sFilePrefix = md5( uniqid( rand(), true ) );
 
         //writing a test lang file
-        $sFilePath = oxConfig::getInstance()->getConfigParam( 'sCompileDir' );
+        $sFilePath = oxRegistry::getConfig()->getConfigParam( 'sCompileDir' );
 
 
         file_put_contents( $sFilePath . "/baselang$sFilePrefix.txt", '<?php
@@ -387,11 +387,11 @@ class Unit_Core_oxLangTest extends OxidTestCase
             $sVersionPrefix = 'pe';
 
         $sVal = iconv( 'ISO-8859-15', 'UTF-8', "Zurück zum Shop" );
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         $sCacheName = "langcache_1_1_".$myConfig->getShopId()."_".$myConfig->getConfigParam( 'sTheme' ).'_default';
 
         //writing a test file
-        $sFileName = oxConfig::getInstance()->getConfigParam( 'sCompileDir' ) . "/ox{$sVersionPrefix}c_{$sCacheName}.txt";
+        $sFileName = oxRegistry::getConfig()->getConfigParam( 'sCompileDir' ) . "/ox{$sVersionPrefix}c_{$sCacheName}.txt";
         $sFileContents = '<?php $aLangCache = array( "ACCOUNT_MAIN_BACKTOSHOP" => "'.$sVal.'");';
         file_put_contents( $sFileName, $sFileContents );
 
@@ -455,7 +455,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
         $this->assertEquals( $sFormatted, '10.322,32' );
 
         // using default curr by passing it
-        $oActCur = oxConfig::getInstance()->getActShopCurrencyObject();
+        $oActCur = oxRegistry::getConfig()->getActShopCurrencyObject();
         $sFormatted = $oLang->formatCurrency( 10322.324, $oActCur );
         $this->assertEquals( $sFormatted, '10.322,32' );
 
@@ -1147,7 +1147,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
     public function testGetLangTranslationArrayIsSetInCache()
     {
         $oSubj = $this->getProxyClass("oxLang");
-        $oSubj->setNonPublicVar( '_aLangCache', array( 'langcache_0_1_'.oxConfig::getInstance()->getShopId().'_basic_default'=>array('1'=>array("ACCOUNT_LOGIN"=>"Login") ) ) );
+        $oSubj->setNonPublicVar( '_aLangCache', array( 'langcache_0_1_'.oxRegistry::getConfig()->getShopId().'_basic_default'=>array('1'=>array("ACCOUNT_LOGIN"=>"Login") ) ) );
         $aTrArray = $oSubj->UNITgetLangTranslationArray(1);
         $this->assertTrue(isset($aTrArray["QUESTIONS_ABOUT_THIS_PRODUCT_2"]));
         $this->assertEquals($aTrArray["QUESTIONS_ABOUT_THIS_PRODUCT_2"], "[?] Have questions about this product?");

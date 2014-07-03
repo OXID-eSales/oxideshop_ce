@@ -22,7 +22,7 @@
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
 require_once realpath( "." ).'/unit/test_config.inc.php';
-require_once oxConfig::getInstance()->getConfigParam( 'sShopDir' ).'core/smarty/plugins/function.oxid_include_widget.php';
+require_once oxRegistry::getConfig()->getConfigParam( 'sShopDir' ).'core/smarty/plugins/function.oxid_include_widget.php';
 
 class Unit_Maintenance_pluginSmartyoxIncludeWidgetTest extends OxidTestCase
 {

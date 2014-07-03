@@ -48,8 +48,8 @@ class Unit_Core_oxuserbasketitemTest extends OxidTestCase
         parent::setUp();
         $oArticle = new oxarticle();
         $oArticle->setId( 'xxx' );
-        $oArticle->oxarticles__oxshopid = new oxField(oxConfig::getInstance()->getBaseShopId(), oxField::T_RAW);
-        $oArticle->oxarticles__oxshopincl = new oxField(oxConfig::getInstance()->getBaseShopId(), oxField::T_RAW);
+        $oArticle->oxarticles__oxshopid = new oxField(oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW);
+        $oArticle->oxarticles__oxshopincl = new oxField(oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW);
         $oArticle->oxarticles__oxparentid = new oxField('2000', oxField::T_RAW);
         $oArticle->oxarticles__oxvarselect = new oxField('yyy', oxField::T_RAW);
         $oArticle->oxarticles__oxtitle = new oxField('xxx', oxField::T_RAW);

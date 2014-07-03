@@ -34,7 +34,7 @@ class Unit_Core_oxsupercfgTest extends OxidTestCase
     {
         $oOxSuperCfg = new oxsupercfg();
         $oOxSuperCfg->setConfig( null);
-        $oConfig = oxConfig::getInstance();
+        $oConfig = oxRegistry::getConfig();
         $this->assertEquals( $oConfig, $oOxSuperCfg->getConfig() );
 
         $myConfig = $this->getMock( 'oxConfig', array( 'getConfigParam' ) );

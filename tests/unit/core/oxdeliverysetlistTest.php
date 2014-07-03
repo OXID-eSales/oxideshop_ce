@@ -112,7 +112,7 @@ class Unit_Core_oxDeliverysetListTest extends OxidTestCase
      */
     public function testForBugEntry0001615()
     {
-        oxConfig::getInstance()->setActShopCurrency( 2 );
+        oxRegistry::getConfig()->setActShopCurrency( 2 );
         $this->cleanUpTable( 'oxaddress' );
 
         $sShipSet   = "oxidstandard";
@@ -204,7 +204,7 @@ class Unit_Core_oxDeliverysetListTest extends OxidTestCase
      */
     public function testGetDeliverySetListForTestCase()
     {
-        $iActShop = oxConfig::getInstance()->getBaseShopId();
+        $iActShop = oxRegistry::getConfig()->getBaseShopId();
         modConfig::getInstance()->setConfigParam( "blVariantParentBuyable", 1 );
 
         /**
@@ -763,7 +763,7 @@ class Unit_Core_oxDeliverysetListTest extends OxidTestCase
      */
     public function testGetDeliverySetData_usesBasketPriceWithoutPayment()
     {
-        $iActShop = oxConfig::getInstance()->getBaseShopId();
+        $iActShop = oxRegistry::getConfig()->getBaseShopId();
 
         // Deliverycost 1
         $oDel1 = new oxDelivery();

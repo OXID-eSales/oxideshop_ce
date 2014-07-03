@@ -47,7 +47,7 @@ class Unit_Admin_ListReviewTest extends OxidTestCase
         modSession::getInstance()->cleanup();
 
         //
-        oxConfig::getInstance()->setGlobalParameter( 'ListCoreTable', null );
+        oxRegistry::getConfig()->setGlobalParameter( 'ListCoreTable', null );
 
         parent::tearDown();
     }

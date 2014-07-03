@@ -76,7 +76,7 @@ $oDb->setConfig( $oConfigFile );
 $oLegacyDb = $oDb->getDb();
 OxRegistry::set( 'OxDb', $oLegacyDb );
 
-oxConfig::getInstance();
+oxRegistry::getConfig();
 
 /**
  * Useful for defining custom time

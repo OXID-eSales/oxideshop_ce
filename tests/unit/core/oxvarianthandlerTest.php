@@ -70,8 +70,8 @@ class Unit_Core_oxvarianthandlerTest extends OxidTestCase
 
     public function testGetValuePrice()
     {
-        oxConfig::getInstance()->setConfigParam( 'bl_perfUseSelectlistPrice', 1 );
-        oxConfig::getInstance()->setConfigParam( 'bl_perfLoadSelectLists', 1 );
+        oxRegistry::getConfig()->setConfigParam( 'bl_perfUseSelectlistPrice', 1 );
+        oxRegistry::getConfig()->setConfigParam( 'bl_perfLoadSelectLists', 1 );
         $oValue = new stdClass();
         $oValue->price = '10';
         $oValue->fprice = '10,00';
@@ -128,7 +128,7 @@ class Unit_Core_oxvarianthandlerTest extends OxidTestCase
 
     public function testGenVariantFromSell()
     {
-        oxConfig::getInstance()->setConfigParam( 'blUseMultidimensionVariants', 1 );
+        oxRegistry::getConfig()->setConfigParam( 'blUseMultidimensionVariants', 1 );
         $myDB     = oxDb::getDB();
         $sVal = 'red!P!10__@@blue!P!10__@@black!P!10__@@';
 
@@ -152,7 +152,7 @@ class Unit_Core_oxvarianthandlerTest extends OxidTestCase
      */
     public function testGenVariantFromSellOxVarCountUpdated()
     {
-        oxConfig::getInstance()->setConfigParam( 'blUseMultidimensionVariants', 1 );
+        oxRegistry::getConfig()->setConfigParam( 'blUseMultidimensionVariants', 1 );
         $myDB     = oxDb::getDB();
         $sVal = 'red!P!10__@@blue!P!10__@@black!P!10__@@';
 

@@ -38,7 +38,7 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
         parent::setUp();
         $myDB = oxDb::getDB();
 
-        $sShopId = oxConfig::getInstance()->getShopId();
+        $sShopId = oxRegistry::getConfig()->getShopId();
         // adding article to recommendlist
         $sQ = 'insert into oxrecommlists ( oxid, oxuserid, oxtitle, oxdesc, oxshopid ) values ( "testlist", "oxdefaultadmin", "oxtest", "oxtest", "'.$sShopId.'" ) ';
         $myDB->Execute( $sQ );
@@ -190,7 +190,7 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
 
         $oRecommList = oxNew( 'oxrecommlist' );
         $oRecommList->oxrecommlists__oxuserid = new oxField( $oUser->getId() );
-        $oRecommList->oxrecommlists__oxshopid = new oxField( oxConfig::getInstance()->getShopId() );
+        $oRecommList->oxrecommlists__oxshopid = new oxField( oxRegistry::getConfig()->getShopId() );
         $oRecommList->oxrecommlists__oxtitle = new oxField( "xxx" );
         $oRecommList->save();
 
@@ -215,7 +215,7 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
 
         $oRecommList = oxNew( 'oxrecommlist' );
         $oRecommList->oxrecommlists__oxuserid = new oxField( $oUser->getId() );
-        $oRecommList->oxrecommlists__oxshopid = new oxField( oxConfig::getInstance()->getShopId() );
+        $oRecommList->oxrecommlists__oxshopid = new oxField( oxRegistry::getConfig()->getShopId() );
         $oRecommList->oxrecommlists__oxtitle = new oxField( 'xxxx');
         $oRecommList->save();
 
@@ -308,7 +308,7 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
         $oRecList = new oxRecommList();
         $oRecList->setId( 'testlist' );
         $oRecList->oxrecommlists__oxuserid = new oxField( $oUser->getId() );
-        $oRecList->oxrecommlists__oxshopid = new oxField( oxConfig::getInstance()->getShopId() );
+        $oRecList->oxrecommlists__oxshopid = new oxField( oxRegistry::getConfig()->getShopId() );
         $oRecList->oxrecommlists__oxtitle = new oxField( "xxx" );
         $oRecList->save();
 

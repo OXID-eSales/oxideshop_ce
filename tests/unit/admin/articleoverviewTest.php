@@ -57,7 +57,7 @@ class Unit_Admin_ArticleOverviewTest extends OxidTestCase
         $oBase->oxorderarticles__oxorderid = new oxField( "testOrderId" );
         $oBase->oxorderarticles__oxamount  = new oxField( 1 );
         $oBase->oxorderarticles__oxartid   = new oxField( "1126" );
-        $oBase->oxorderarticles__oxordershopid = new oxField( oxConfig::getInstance()->getShopId() );
+        $oBase->oxorderarticles__oxordershopid = new oxField( oxRegistry::getConfig()->getShopId() );
         $oBase->save();
 
         // testing..

@@ -338,12 +338,12 @@ class Unit_Core_oxsimpleVariantTest extends OxidTestCase
         $oSubj = $this->getProxyClass("oxSimpleVariant");
         $oCur = new StdClass;
         $oCur->rate = 2;
-        oxConfig::getInstance()->setActShopCurrency(2);
+        oxRegistry::getConfig()->setActShopCurrency(2);
         $oPrice = oxNew( 'oxPrice' );
         $oPrice->setPrice(100 );
         $oSubj->UNITapplyCurrency( $oPrice );
         $this->assertEquals( 143.26, $oPrice->getBruttoPrice());
-        oxConfig::getInstance()->setActShopCurrency(0);
+        oxRegistry::getConfig()->setActShopCurrency(0);
     }
 
     public function testApplyCurrencyIfObjSet()
@@ -397,7 +397,7 @@ class Unit_Core_oxsimpleVariantTest extends OxidTestCase
         $oSubj = $this->getProxyClass("oxSimpleVariant");
         $oSubj->setId( "1126" );
 
-        $this->assertEquals( oxConfig::getInstance()->getShopHomeURL()."cl=details&amp;anid=1126", $oSubj->getStdLink() );
+        $this->assertEquals( oxRegistry::getConfig()->getShopHomeURL()."cl=details&amp;anid=1126", $oSubj->getStdLink() );
     }
 
     public function testGetLinkType_withoutParent()
@@ -413,7 +413,7 @@ class Unit_Core_oxsimpleVariantTest extends OxidTestCase
         $oSubj = $this->getProxyClass("oxSimpleVariant");
         $oSubj->setId( "1126" );
 
-        $sLink = oxConfig::getInstance()->getShopUrl()."Geschenke/Bar-Equipment/Bar-Set-ABSINTH.html";
+        $sLink = oxRegistry::getConfig()->getShopUrl()."Geschenke/Bar-Equipment/Bar-Set-ABSINTH.html";
 
 
         $this->assertEquals( $sLink, $oSubj->getLink() );
@@ -424,7 +424,7 @@ class Unit_Core_oxsimpleVariantTest extends OxidTestCase
         $oSubj = $this->getProxyClass("oxSimpleVariant");
         $oSubj->setId( "1126" );
 
-        $sLink = oxConfig::getInstance()->getShopUrl()."en/Gifts/Bar-Equipment/Bar-Set-ABSINTH.html";
+        $sLink = oxRegistry::getConfig()->getShopUrl()."en/Gifts/Bar-Equipment/Bar-Set-ABSINTH.html";
 
 
         $this->assertEquals( $sLink, $oSubj->getLink(1) );
@@ -438,7 +438,7 @@ class Unit_Core_oxsimpleVariantTest extends OxidTestCase
      */
     function testGetPriceNoPriceCalculate()
     {
-        oxConfig::getInstance()->setConfigParam( 'bl_perfLoadPrice', false );
+        oxRegistry::getConfig()->setConfigParam( 'bl_perfLoadPrice', false );
 
         $oSubj = new oxSimpleVariant();
         $oSubj->setPrice( 10 );

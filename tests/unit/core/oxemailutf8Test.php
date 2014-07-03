@@ -125,7 +125,7 @@ class Unit_core_oxemailUtf8Test extends OxidTestCase
         $oOrder->oxorder__oxdeltype = new oxField( "oxidstandard" );
 
         $oShop = oxNew( "oxshop" );
-        $oShop->load( oxConfig::getInstance()->getShopId() );
+        $oShop->load( oxRegistry::getConfig()->getShopId() );
 
         $oEmail = $this->getMock( 'oxEmail', array( "_sendMail", "_getShop" ) );
         $oEmail->expects( $this->once() )->method( '_sendMail')->will( $this->returnValue( true ));

@@ -116,7 +116,7 @@ class Unit_Core_oxSeoDecoderTest extends OxidTestCase
         $oShop = new oxshop();
         $oShop->load($iShop);
 
-        $aMultiShopTables = oxConfig::getInstance()->getConfigParam( 'aMultiShopTables' );
+        $aMultiShopTables = oxRegistry::getConfig()->getConfigParam( 'aMultiShopTables' );
         $oShop->setMultiShopTables($aMultiShopTables);
         $oShop->generateViews();
     }
@@ -277,8 +277,8 @@ class Unit_Core_oxSeoDecoderTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxSeoDecoder', 'parseStdUrl', create_function('$u', 'return array();'));
         $oD = oxNew('oxSeoDecoder');
-        $this->assertSame(false, $oD->decodeUrl( oxConfig::getInstance()->getShopURL().'Uragarana/'));
-        $iShopId = oxConfig::getInstance()->getBaseShopId();
+        $this->assertSame(false, $oD->decodeUrl( oxRegistry::getConfig()->getShopURL().'Uragarana/'));
+        $iShopId = oxRegistry::getConfig()->getBaseShopId();
 
         try {
             $oDb = oxDb::getDb();
@@ -299,7 +299,7 @@ class Unit_Core_oxSeoDecoderTest extends OxidTestCase
         $sOldSeoUrl = 'old_seo_category1/old_seo_category2/old_seo_article1.html';
         $sObjectId = 'xxx';
 
-        $iShopId = oxConfig::getInstance()->getBaseShopId();
+        $iShopId = oxRegistry::getConfig()->getBaseShopId();
         $oDb = oxDb::getDb();
 
         // inserting seo data
@@ -307,7 +307,7 @@ class Unit_Core_oxSeoDecoderTest extends OxidTestCase
         $oDb->Execute( "insert into oxseohistory ( oxobjectid, oxident, oxshopid, oxlang  ) values ( '{$sObjectId}', '".md5( strtolower( "$sOldSeoUrl" ) )."', '{$iShopId}', '0' )" );
 
         $oDecoder = new oxSeoDecoder();
-        $this->assertEquals( $sNewSeoUrl, $oDecoder->UNITdecodeOldUrl( oxConfig::getInstance()->getShopURL()."$sOldSeoUrl" ) );
+        $this->assertEquals( $sNewSeoUrl, $oDecoder->UNITdecodeOldUrl( oxRegistry::getConfig()->getShopURL()."$sOldSeoUrl" ) );
 
         // checking if oxhits value was incremented
         $this->assertEquals( 1, $oDb->getOne( "select oxhits from oxseohistory where oxobjectid = '{$sObjectId}'" ) );

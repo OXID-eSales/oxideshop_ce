@@ -151,7 +151,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
         // writing test order
         $oOrder = new oxorder ;
         $oOrder->setId( $soxId );
-        $oOrder->oxorder__oxshopid        = new oxField( oxConfig::getInstance()->getBaseShopId() );
+        $oOrder->oxorder__oxshopid        = new oxField( oxRegistry::getConfig()->getBaseShopId() );
         $oOrder->oxorder__oxuserid        = new oxField( "oxdefaultadmin" );
         $oOrder->oxorder__oxbillcompany   = new oxField( "Ihr Firmenname" );
         $oOrder->oxorder__oxbillemail     = new oxField( oxADMIN_LOGIN );
@@ -190,7 +190,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
         $oOrderArticle->oxorderarticles__oxprice       = new oxField( 89.9 );
         $oOrderArticle->oxorderarticles__oxnprice      = new oxField( 75.5462184874 );
         $oOrderArticle->oxorderarticles__oxstock       = new oxField( 6 );
-        $oOrderArticle->oxorderarticles__oxordershopid = new oxField( oxConfig::getInstance()->getBaseShopId() );
+        $oOrderArticle->oxorderarticles__oxordershopid = new oxField( oxRegistry::getConfig()->getBaseShopId() );
         $oOrderArticle->save();
 
         // updating delivery costs
@@ -413,7 +413,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
     {
         modconfig::getInstance()->setConfigParam( "blUseStock", true );
 
-        $sShopId = oxConfig::getInstance()->getShopId();
+        $sShopId = oxRegistry::getConfig()->getShopId();
 
         // test products for stock check
         $oProd = new oxArticle();
@@ -541,7 +541,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
         $oOrder = new oxbase();
         $oOrder->init( 'oxorder' );
         $oOrder->setId( '_testOrderId' );
-        $oOrder->oxorder__oxshopid = new oxField( oxConfig::getInstance()->getShopid() );
+        $oOrder->oxorder__oxshopid = new oxField( oxRegistry::getConfig()->getShopid() );
         $oOrder->oxorder__oxuserid = new oxField( 'oxdefaultadmin' );
         $oOrder->oxorder__oxorderdate = new oxField( '2008-11-04 17:44:39' );
         $oOrder->oxorder__oxordernr = new oxField( time() );
@@ -633,7 +633,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
 
     private function _insertTestOrder($sId = '_testOrderId')
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         //set order
         $this->_oOrder = oxNew( "oxOrder" );
@@ -668,7 +668,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
     private function _insertTestArticle()
     {
         $oDB = oxDb::getDb();
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         // insert test article
         $sInsert = "insert into oxarticles (`OXID`,`OXSHOPID`,`OXTITLE`,`OXSTOCKFLAG`,`OXSTOCK`,`OXPRICE`)
@@ -939,7 +939,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
     public function testRecalculateAddingArticles()
     {
         $oDB = oxDb::getDb();
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $this->_insertTestOrder();
         $this->_insertTestArticle();
@@ -1067,7 +1067,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
         $oOrder = new oxbase();
         $oOrder->init( 'oxorder' );
         $oOrder->setId( '_testOrderId2' );
-        $oOrder->oxorder__oxshopid = new oxField( oxConfig::getInstance()->getShopid() );
+        $oOrder->oxorder__oxshopid = new oxField( oxRegistry::getConfig()->getShopid() );
         $oOrder->oxorder__oxuserid = new oxField( 'oxdefaultadmin' );
         $oOrder->oxorder__oxorderdate = new oxField( '2008-11-04 17:44:39' );
         $oOrder->oxorder__oxordernr = new oxField( time() );
@@ -1131,7 +1131,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
         $oOrder = new oxbase();
         $oOrder->init( 'oxorder' );
         $oOrder->setId( '_testOrderId2' );
-        $oOrder->oxorder__oxshopid = new oxField( oxConfig::getInstance()->getShopid() );
+        $oOrder->oxorder__oxshopid = new oxField( oxRegistry::getConfig()->getShopid() );
         $oOrder->oxorder__oxuserid = new oxField( 'oxdefaultadmin' );
         $oOrder->oxorder__oxorderdate = new oxField( '2008-11-04 17:44:39' );
         $oOrder->oxorder__oxordernr = new oxField( time() );
@@ -1185,7 +1185,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
         $oOrder = new oxbase();
         $oOrder->init( 'oxorder' );
         $oOrder->setId( '_testOrderId2' );
-        $oOrder->oxorder__oxshopid = new oxField( oxConfig::getInstance()->getShopid() );
+        $oOrder->oxorder__oxshopid = new oxField( oxRegistry::getConfig()->getShopid() );
         $oOrder->oxorder__oxuserid = new oxField( 'oxdefaultadmin' );
         $oOrder->oxorder__oxorderdate = new oxField( '2008-11-04 17:44:39' );
         $oOrder->oxorder__oxordernr = new oxField( time() );
@@ -1274,7 +1274,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
         $oOrder = new oxbase();
         $oOrder->init( 'oxorder' );
         $oOrder->setId( '_testOrderId2' );
-        $oOrder->oxorder__oxshopid = new oxField( oxConfig::getInstance()->getShopid() );
+        $oOrder->oxorder__oxshopid = new oxField( oxRegistry::getConfig()->getShopid() );
         $oOrder->oxorder__oxuserid = new oxField( 'oxdefaultadmin' );
         $oOrder->oxorder__oxorderdate = new oxField( '2008-11-04 17:44:39' );
         $oOrder->oxorder__oxordernr = new oxField( time() );
@@ -1486,7 +1486,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
 
     public function testGetOrderArticles()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         $oDB = oxDb::getDb();
 
         // insert order article
@@ -1811,7 +1811,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
     {
         modConfig::getInstance()->setConfigParam( "blStoreIPs", true );
 
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         // simulating basket
         $oPrice = oxNew( 'oxPrice' );
@@ -2283,7 +2283,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
 
     public function testSetFolder()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         $oOrder = $this->getProxyClass( "oxOrder" );
 
         $oOrder->UNITsetFolder();
@@ -3049,7 +3049,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
 
     public function testGetOrderSumForDifferentShops()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $oDB = oxDb::getDb();
         $sSql = "insert into oxorder (oxid, oxshopid, oxtotalordersum) values('_testOrderId1', '123', '100') ";
@@ -3068,7 +3068,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
 
     public function testGetOrderSumOnlyCurrentDay()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $oDB = oxDb::getDb();
 
@@ -3131,7 +3131,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
 
     public function testGetOrderCntOnlyCurrentDay()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $oDB = oxDb::getDb();
 
@@ -3291,7 +3291,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
 
     public function testGetLastUserPaymentType()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $oDB = oxDb::getDb();
 
@@ -3356,7 +3356,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
      */
     public function testForBugEntry2255()
     {
-        $sShopId = oxConfig::getInstance()->getBaseShopId();
+        $sShopId = oxRegistry::getConfig()->getBaseShopId();
 
         // bundle type discount
         $oDiscount = new oxDiscount();
@@ -3640,7 +3640,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
     public function testOrderIpAddress()
     {
         $sId = '_testOrderId';
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $ipv6 = '2001:cdba:0000:0000:0000:0000:3257:9652';
         //set order

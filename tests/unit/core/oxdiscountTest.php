@@ -414,7 +414,7 @@ class Unit_Core_oxDiscountTest extends OxidTestCase
 
         // inserting test discount
             $sQ = "insert into oxdiscount ( oxid, oxshopid, oxactive, oxtitle, oxamount, oxamountto, oxpriceto, oxaddsumtype, oxaddsum )
-                   values ( '{$sDiscountId}', '".oxConfig::getInstance()->getBaseShopId()."', '1', 'Test', '5', '10', '0', 'abs', '10' )";
+                   values ( '{$sDiscountId}', '".oxRegistry::getConfig()->getBaseShopId()."', '1', 'Test', '5', '10', '0', 'abs', '10' )";
 
         oxDb::getDb()->Execute( $sQ );
 
@@ -459,7 +459,7 @@ class Unit_Core_oxDiscountTest extends OxidTestCase
 
         // inserting test discount
             $sQ = "insert into oxdiscount ( oxid, oxshopid, oxactive, oxtitle, oxamount, oxamountto, oxpriceto, oxprice, oxaddsumtype, oxaddsum )
-                   values ( '{$sDiscountId}', '".oxConfig::getInstance()->getBaseShopId()."', '1', 'Test', '0', '0', '1000', '500', 'abs', '10' )";
+                   values ( '{$sDiscountId}', '".oxRegistry::getConfig()->getBaseShopId()."', '1', 'Test', '0', '0', '1000', '500', 'abs', '10' )";
 
         oxDb::getDb()->Execute( $sQ );
 
@@ -824,7 +824,7 @@ class Unit_Core_oxDiscountTest extends OxidTestCase
      */
     public function testGetSimpleDiscount()
     {
-        $sShopId = oxConfig::getInstance()->getBaseShopId();
+        $sShopId = oxRegistry::getConfig()->getBaseShopId();
         $myDB    = oxDb::getDb();
         $sQ  = 'insert into oxdiscount ';
         $sQ .= '(oxid, oxshopid, oxactive, oxtitle, oxamount, oxamountto, oxprice, oxpriceto, oxaddsumtype, oxaddsum) values ';
@@ -1011,7 +1011,7 @@ class Unit_Core_oxDiscountTest extends OxidTestCase
 
         // inserting test discount
             $sQ = "insert into oxdiscount ( oxid, oxshopid, oxactive, oxtitle, oxamount, oxamountto, oxpriceto, oxaddsumtype, oxaddsum )
-                   values ( '{$sDiscountId}', '".oxConfig::getInstance()->getBaseShopId()."', '1', 'Test', '5', '10', '0', 'itm', '10' )";
+                   values ( '{$sDiscountId}', '".oxRegistry::getConfig()->getBaseShopId()."', '1', 'Test', '5', '10', '0', 'itm', '10' )";
 
         oxDb::getDb()->Execute( $sQ );
 

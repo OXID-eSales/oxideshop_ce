@@ -39,7 +39,7 @@ class Unit_Core_oxvoucherserieTest extends OxidTestCase
     protected function setUp()
     {
         parent::setUp();
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         $this->_aIds = array();
 
         // percental

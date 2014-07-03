@@ -57,7 +57,7 @@ class Unit_Core_oxmediaurlTest extends OxidTestCase
     protected function tearDown()
     {
         $this->cleanUpTable('oxmediaurls');
-        $sFilePath = oxConfig::getInstance()->getConfigParam('sShopDir').'/out/media/test.jpg';
+        $sFilePath = oxRegistry::getConfig()->getConfigParam('sShopDir').'/out/media/test.jpg';
         if (file_exists($sFilePath)) {
             unlink($sFilePath);
         }
@@ -193,7 +193,7 @@ class Unit_Core_oxmediaurlTest extends OxidTestCase
 
     public function testGetLink()
     {
-        $sFilePath = oxConfig::getInstance()->getConfigParam('sShopDir').'/out/media/test.jpg';
+        $sFilePath = oxRegistry::getConfig()->getConfigParam('sShopDir').'/out/media/test.jpg';
         file_put_contents($sFilePath, 'test jpg file');
         $oCfg = $this->getMock('oxConfig', array( 'isSsl', 'getShopUrl', 'getSslShopUrl'  ));
         $oCfg->expects( $this->any() )->method( 'isSsl' )->will( $this->returnValue( 0 ) );
@@ -273,7 +273,7 @@ class Unit_Core_oxmediaurlTest extends OxidTestCase
 
     public function testDeleteNonUploaded( $sOXID = null )
     {
-        $sFilePath = oxConfig::getInstance()->getConfigParam('sShopDir').'/out/media/test.jpg';
+        $sFilePath = oxRegistry::getConfig()->getConfigParam('sShopDir').'/out/media/test.jpg';
         file_put_contents($sFilePath, 'test jpg file');
         $oMediaUrl = new oxMediaUrl();
         $oMediaUrl->load('_test3');
@@ -286,7 +286,7 @@ class Unit_Core_oxmediaurlTest extends OxidTestCase
 
     public function testDeleteUploaded( $sOXID = null )
     {
-        $sFilePath = oxConfig::getInstance()->getConfigParam('sShopDir').'/out/media/test.jpg';
+        $sFilePath = oxRegistry::getConfig()->getConfigParam('sShopDir').'/out/media/test.jpg';
         file_put_contents($sFilePath, 'test jpg file');
         $oMediaUrl = new oxMediaUrl();
         $oMediaUrl->load('_test3');
@@ -298,7 +298,7 @@ class Unit_Core_oxmediaurlTest extends OxidTestCase
 
     public function testDeleteUploadedIfFullPathAdded( $sOXID = null )
     {
-        $sFilePath = oxConfig::getInstance()->getConfigParam('sShopDir').'/out/media/test.jpg';
+        $sFilePath = oxRegistry::getConfig()->getConfigParam('sShopDir').'/out/media/test.jpg';
         file_put_contents($sFilePath, 'test jpg file');
         $oMediaUrl = new oxMediaUrl();
         $oMediaUrl->load('_test3');

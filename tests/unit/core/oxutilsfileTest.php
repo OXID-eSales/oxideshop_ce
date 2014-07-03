@@ -66,7 +66,7 @@ class Unit_Core_oxUtilsFileTest extends OxidTestCase
     {
         oxUtilsFile::getInstance()->setConfig(null);
         $_FILES = $this->aFiles;
-        $sDir = oxConfig::getInstance()->getConfigParam( 'sShopDir' )."/$sOut/1/html/1";
+        $sDir = oxRegistry::getConfig()->getConfigParam( 'sShopDir' )."/$sOut/1/html/1";
         if (is_dir(realpath($sDir))) {
             oxUtilsFile::getInstance()->deleteDir($sDir);
         }
@@ -76,7 +76,7 @@ class Unit_Core_oxUtilsFileTest extends OxidTestCase
 
     public function testGetUniqueFileName()
     {
-        $sFilePath = oxConfig::getInstance()->getPictureDir(false) . "/master/product/1/";
+        $sFilePath = oxRegistry::getConfig()->getPictureDir(false) . "/master/product/1/";
 
         $oUtilsFile = new oxUtilsFile();
         $this->assertEquals( "2010_speed3_120_1(1).jpg", $oUtilsFile->UNITgetUniqueFileName( $sFilePath, "2010_speed3_120_1", "jpg" ) );
@@ -87,9 +87,9 @@ class Unit_Core_oxUtilsFileTest extends OxidTestCase
         $oUtilsFile = new oxUtilsFile();
 
         $aDetailImageSizes = array( "oxpic1" => "251*201", "oxpic2" => "252*202", "oxpic3" => "253*203" );
-        oxConfig::getInstance()->setConfigParam( "aDetailImageSizes", $aDetailImageSizes );
-        oxConfig::getInstance()->setConfigParam( "sZoomImageSize", '450*450' );
-        oxConfig::getInstance()->setConfigParam( "sThumbnailsize", '100*100' );
+        oxRegistry::getConfig()->setConfigParam( "aDetailImageSizes", $aDetailImageSizes );
+        oxRegistry::getConfig()->setConfigParam( "sZoomImageSize", '450*450' );
+        oxRegistry::getConfig()->setConfigParam( "sThumbnailsize", '100*100' );
 
         // details img size
         $this->assertEquals( array( 251, 201 ), $oUtilsFile->UNITgetImageSize( null, 1, 'aDetailImageSizes' ) );
@@ -138,14 +138,14 @@ class Unit_Core_oxUtilsFileTest extends OxidTestCase
         $oObject->testfield = $this->getMock( 'oxfield', array( 'setValue' ) );
         $oObject->testfield->expects( $this->once() )->method( 'setValue' )->with( $this->equalTo( 'testfilename' ) );
 
-        $sProcessPath = oxConfig::getInstance()->getConfigParam( "sCompileDir" );
+        $sProcessPath = oxRegistry::getConfig()->getConfigParam( "sCompileDir" );
 
         $aFiles = array();
         $aFiles['myfile']['name']['gif@testfield']     = 'testfilename.gif';
         $aFiles['myfile']['tmp_name']['gif@testfield'] = 'testimagesource/testfilename';
 
         $oUtilsFile = $this->getMock( 'oxutilsfile', array( '_prepareImageName', '_getImagePath', '_moveImage' ) );
-        $oUtilsFile->expects( $this->once() )->method( '_prepareImageName' )->with( $this->equalTo( 'testfilename.gif' ), $this->equalTo( 'gif' ), $this->equalTo( oxconfig::getInstance()->isDemoShop() ) )->will( $this->returnValue( 'testfilename' ) );
+        $oUtilsFile->expects( $this->once() )->method( '_prepareImageName' )->with( $this->equalTo( 'testfilename.gif' ), $this->equalTo( 'gif' ), $this->equalTo( oxRegistry::getConfig()->isDemoShop() ) )->will( $this->returnValue( 'testfilename' ) );
         $oUtilsFile->expects( $this->once() )->method( '_getImagePath' )->with( $this->equalTo( 'gif' ) )->will( $this->returnValue( 'testimagepath/' ) );
         $oUtilsFile->expects( $this->once() )->method( '_moveImage' )->with( $this->equalTo( 'testimagesource/testfilename' ), $this->equalTo( 'testimagepath/testfilename' ) )->will( $this->returnValue( true ) );
 

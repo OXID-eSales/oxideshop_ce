@@ -250,7 +250,7 @@ class Unit_Admin_ObjectSeoTest extends OxidTestCase
      */
     public function isEntryFixed()
     {
-        $ShopId = oxConfig::getInstance()->getShopId();
+        $ShopId = oxRegistry::getConfig()->getShopId();
         $iLang  = 0;
         $sQ = "insert into oxseo ( oxobjectid, oxident, oxshopid, oxlang, oxstdurl, oxseourl, oxtype, oxfixed ) values
                                  ( 'objectid', 'ident', '{$ShopId}', '{$iLang}', 'stdurl', 'seourl', 'type', 1 )";

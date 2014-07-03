@@ -70,7 +70,7 @@ class DbRestore
     public function getDumpFolderPath()
     {
         if (is_null($this->_sTmpFilePath)) {
-            $sDbName = oxConfig::getInstance()->getConfigParam('dbName');
+            $sDbName = oxRegistry::getConfig()->getConfigParam('dbName');
             $this->_sTmpFilePath = $this->_sTmpDir . '/' . $sDbName . '_dbdump/';
             if (!file_exists($this->_sTmpFilePath)) {
                 mkdir($this->_sTmpFilePath, 0777, true);
@@ -201,7 +201,7 @@ class DbRestore
         $sSelect = 'CHECKSUM TABLE ' . implode(", ", $aTables);
         $aResults = $oDb->getArray($sSelect);
 
-        $sDbName = oxConfig::getInstance()->getConfigParam('dbName');
+        $sDbName = oxRegistry::getConfig()->getConfigParam('dbName');
         $aChecksum = array();
         foreach ($aResults as $aResult) {
             $sTable = str_replace($sDbName . '.', '', $aResult['Table']);

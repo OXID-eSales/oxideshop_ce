@@ -282,7 +282,7 @@ class Unit_Core_oxuserpaymentTest extends OxidTestCase
                VALUES
                    (?, ?, ?, ?, ?, '', 'info@oxid-esales.com', 'Marc', 'Muster', 'Hauptstr.', '13', '', '', 'Freiburg', 'a7c40f631fc920687.20179984', 'BW', '79098', '', '', 'MR', '', '', '', '', '', '', '', '', '', '', '', '', '', ?, 'oxidinvoice', 1639.15, 2108.39, 1950.59, 19, 311.44, 0, 0, 0, 19, 0, 0, 0, 0, '', '', 157.8, 0, '', '', '0000-00-00 00:00:00', 'Hier können Sie uns noch etwas mitteilen.', 0, 'EUR', 1, 'ORDERFOLDER_NEW', '', '', '', '0000-00-00 00:00:00', 0, '', 'OK', 0, 0, 'oxidstandard')";
 
-        $sShopId = oxConfig::getInstance()->GetBaseShopId();
+        $sShopId = oxRegistry::getConfig()->GetBaseShopId();
         foreach ( $aUserPaymentId as $iCnt => $sUserPaymentId ) {
 
             $sOrderId = "_test" . ( time() + $iCnt );

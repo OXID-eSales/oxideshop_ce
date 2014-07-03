@@ -123,7 +123,7 @@ class Unit_Core_oxGbEntryTest extends OxidTestCase
     public function testGetAllEntries()
     {
         $myDB = oxDb::getDb();
-        $sSql = 'insert into oxgbentries (oxid,oxshopid,oxuserid,oxcontent)values("_test","'.oxConfig::getInstance()->getBaseShopId().'","oxdefaultadmin","AA test content")';
+        $sSql = 'insert into oxgbentries (oxid,oxshopid,oxuserid,oxcontent)values("_test","'.oxRegistry::getConfig()->getBaseShopId().'","oxdefaultadmin","AA test content")';
         $myDB->execute($sSql);
         $oObj = new oxGBEntry();
         $aEntries = $oObj->getAllEntries( 0, 10, 'oxcontent' );
@@ -136,7 +136,7 @@ class Unit_Core_oxGbEntryTest extends OxidTestCase
     {
         modConfig::getInstance()->setConfigParam( 'blGBModerate', 1);
         $myDB = oxDb::getDb();
-        $sSql = 'insert into oxgbentries (oxid,oxshopid,oxuserid,oxcontent)values("_test","'.oxConfig::getInstance()->getBaseShopId().'","oxdefaultadmin","AA test content")';
+        $sSql = 'insert into oxgbentries (oxid,oxshopid,oxuserid,oxcontent)values("_test","'.oxRegistry::getConfig()->getBaseShopId().'","oxdefaultadmin","AA test content")';
         $myDB->execute($sSql);
         $oObj = new oxGBEntry();
         $aEntries = $oObj->getAllEntries( 0, 10, null );

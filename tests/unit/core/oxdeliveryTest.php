@@ -199,7 +199,7 @@ class Unit_Core_oxdeliveryTest extends OxidTestCase
     {
         $oDelivery = new oxDelivery();
         $oDelivery->setId( '_testdelivery' );
-        $oDelivery->oxdelivery__oxshopid = new oxField(oxConfig::getInstance()->getBaseShopId(), oxField::T_RAW);
+        $oDelivery->oxdelivery__oxshopid = new oxField(oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW);
         $oDelivery->oxdelivery__oxshopincl = new oxField($oDelivery->oxdelivery__oxshopid->value, oxField::T_RAW);
         $oDelivery->oxdelivery__oxactive = new oxField(1, oxField::T_RAW);
         $oDelivery->oxdelivery__oxtitle = new oxField('_testdelivery', oxField::T_RAW);
@@ -239,7 +239,7 @@ class Unit_Core_oxdeliveryTest extends OxidTestCase
     {
         $oDelivery = new oxDelivery();
         $oDelivery->setId( '_testdelivery' );
-        $oDelivery->oxdelivery__oxshopid = new oxField(oxConfig::getInstance()->getBaseShopId(), oxField::T_RAW);
+        $oDelivery->oxdelivery__oxshopid = new oxField(oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW);
         $oDelivery->oxdelivery__oxshopincl = new oxField($oDelivery->oxdelivery__oxshopid->value, oxField::T_RAW);
         $oDelivery->oxdelivery__oxactive = new oxField(1, oxField::T_RAW);
         $oDelivery->oxdelivery__oxtitle = new oxField('_testdelivery', oxField::T_RAW);
@@ -281,7 +281,7 @@ class Unit_Core_oxdeliveryTest extends OxidTestCase
 
         $oDelivery = new oxDelivery();
         $oDelivery->setId( '_testdelivery' );
-        $oDelivery->oxdelivery__oxshopid = new oxField(oxConfig::getInstance()->getBaseShopId(), oxField::T_RAW);
+        $oDelivery->oxdelivery__oxshopid = new oxField(oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW);
         $oDelivery->oxdelivery__oxshopincl = new oxField($oDelivery->oxdelivery__oxshopid->value, oxField::T_RAW);
         $oDelivery->oxdelivery__oxactive = new oxField(1, oxField::T_RAW);
         $oDelivery->oxdelivery__oxtitle = new oxField('_testdelivery', oxField::T_RAW);
@@ -327,7 +327,7 @@ class Unit_Core_oxdeliveryTest extends OxidTestCase
 
         $oDelivery = new oxDelivery();
         $oDelivery->setId( '_testdelivery' );
-        $oDelivery->oxdelivery__oxshopid = new oxField(oxConfig::getInstance()->getBaseShopId(), oxField::T_RAW);
+        $oDelivery->oxdelivery__oxshopid = new oxField(oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW);
         $oDelivery->oxdelivery__oxshopincl = new oxField($oDelivery->oxdelivery__oxshopid->value, oxField::T_RAW);
         $oDelivery->oxdelivery__oxactive = new oxField(1, oxField::T_RAW);
         $oDelivery->oxdelivery__oxtitle = new oxField('_testdelivery', oxField::T_RAW);
@@ -365,7 +365,7 @@ class Unit_Core_oxdeliveryTest extends OxidTestCase
     {
         $oDelivery = new oxDelivery();
         $oDelivery->setId( '_testdelivery' );
-        $oDelivery->oxdelivery__oxshopid = new oxField(oxConfig::getInstance()->getBaseShopId(), oxField::T_RAW);
+        $oDelivery->oxdelivery__oxshopid = new oxField(oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW);
         $oDelivery->oxdelivery__oxshopincl = new oxField($oDelivery->oxdelivery__oxshopid->value, oxField::T_RAW);
         $oDelivery->oxdelivery__oxactive = new oxField(1, oxField::T_RAW);
         $oDelivery->oxdelivery__oxtitle = new oxField('_testdelivery', oxField::T_RAW);
@@ -395,7 +395,7 @@ class Unit_Core_oxdeliveryTest extends OxidTestCase
     {
         $oDelivery = new oxDelivery();
         $oDelivery->setId( '_testdelivery' );
-        $oDelivery->oxdelivery__oxshopid = new oxField(oxConfig::getInstance()->getBaseShopId(), oxField::T_RAW);
+        $oDelivery->oxdelivery__oxshopid = new oxField(oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW);
         $oDelivery->oxdelivery__oxshopincl = new oxField($oDelivery->oxdelivery__oxshopid->value, oxField::T_RAW);
         $oDelivery->oxdelivery__oxactive = new oxField(1, oxField::T_RAW);
         $oDelivery->oxdelivery__oxtitle = new oxField('_testdelivery', oxField::T_RAW);
@@ -420,7 +420,7 @@ class Unit_Core_oxdeliveryTest extends OxidTestCase
     {
         $oDelivery = new oxDelivery();
         $oDelivery->setId( '_testdelivery' );
-        $oDelivery->oxdelivery__oxshopid = new oxField(oxConfig::getInstance()->getBaseShopId(), oxField::T_RAW);
+        $oDelivery->oxdelivery__oxshopid = new oxField(oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW);
         $oDelivery->oxdelivery__oxshopincl = new oxField($oDelivery->oxdelivery__oxshopid->value, oxField::T_RAW);
         $oDelivery->oxdelivery__oxactive = new oxField(1, oxField::T_RAW);
         $oDelivery->oxdelivery__oxtitle = new oxField('_testdelivery', oxField::T_RAW);
@@ -451,7 +451,7 @@ class Unit_Core_oxdeliveryTest extends OxidTestCase
     {
         $oDelivery = new modOxDelivery();
         $oDelivery->setId( '_testdelivery' );
-        $oDelivery->oxdelivery__oxshopid = new oxField(oxConfig::getInstance()->getBaseShopId(), oxField::T_RAW);
+        $oDelivery->oxdelivery__oxshopid = new oxField(oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW);
         $oDelivery->oxdelivery__oxshopincl = new oxField($oDelivery->oxdelivery__oxshopid->value, oxField::T_RAW);
         $oDelivery->oxdelivery__oxactive = new oxField(1, oxField::T_RAW);
         $oDelivery->oxdelivery__oxtitle = new oxField('_testdelivery', oxField::T_RAW);

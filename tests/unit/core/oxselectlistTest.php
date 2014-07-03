@@ -37,7 +37,7 @@ class Unit_Core_oxselectlistTest extends OxidTestCase
     {
         parent::setUp();
         $myDB     = oxDb::getDB();
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $sShopId = $myConfig->getBaseShopId();
         $sVal = '&amp;&test1, 10!P!10__@@test2, 10!P!10__@@test3, 10!P!10__@@';

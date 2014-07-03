@@ -35,7 +35,7 @@ class Unit_Admin_ShopRDFaTest extends OxidTestCase
      */
     public function testGetContentList()
     {
-        modConfig::setRequestParameter( "oxid", oxConfig::getInstance()->getShopId() );
+        modConfig::setRequestParameter( "oxid", oxRegistry::getConfig()->getShopId() );
 
         $oView = oxNew("Shop_RDFA");
         $this->assertEquals( 4, $oView->getContentList()->count() );

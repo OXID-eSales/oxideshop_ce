@@ -375,7 +375,7 @@ class Unit_Core_oxmdvariantTest extends OxidTestCase
      */
     function testGetPriceNoPriceCalculate()
     {
-        oxConfig::getInstance()->setConfigParam( 'bl_perfLoadPrice', false );
+        oxRegistry::getConfig()->setConfigParam( 'bl_perfLoadPrice', false );
 
         $oSubj = new oxMdVariant();
         $sArtId = '';

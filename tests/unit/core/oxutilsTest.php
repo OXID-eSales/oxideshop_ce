@@ -63,7 +63,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
 
         clearstatcache();
         //removing test files from tmp dir
-        $sFilePath = oxConfig::getInstance()->getConfigParam( 'sCompileDir' ) . "*testFileCache*.txt";
+        $sFilePath = oxRegistry::getConfig()->getConfigParam( 'sCompileDir' ) . "*testFileCache*.txt";
         $aPathes   = glob( $sFilePath);
         if ( is_array($aPathes) ) {
             foreach ( $aPathes as $sFilename ) {
@@ -126,7 +126,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
         $oUtils = new oxUtils();
         $oUtils->writeToLog( $sLogMessage, $sLogFileName );
 
-        $this->_sTestLogFileName = oxConfig::getInstance()->getConfigParam( 'sShopDir' ).'log/'.$sLogFileName;
+        $this->_sTestLogFileName = oxRegistry::getConfig()->getConfigParam( 'sShopDir' ).'log/'.$sLogFileName;
 
         clearstatcache();
         $this->assertTrue( file_exists( $this->_sTestLogFileName ) );
@@ -203,7 +203,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
      */
     public function testValueCalculationBasedOnOptions( $blEnterNetPrice, $blShowNetPrice, $iVatModifier )
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         $oCurrency = $myConfig->getActShopCurrencyObject();
 
         modConfig::getInstance()->setConfigParam( 'bl_perfLoadSelectLists', true );
@@ -271,7 +271,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
      */
     public function testAssignValuesFromTextFull()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         $oCurrency = $myConfig->getActShopCurrencyObject();
 
         modConfig::getInstance()->setConfigParam( 'bl_perfLoadSelectLists', true );
@@ -318,7 +318,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
      */
     public function testAssignValuesFromTextFullIfPriceIsZero()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         $oCurrency = $myConfig->getActShopCurrencyObject();
 
         modConfig::getInstance()->setConfigParam( 'bl_perfLoadSelectLists', true );
@@ -350,7 +350,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
      */
     public function testAssignValuesFromTextFullWithVat()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         $oCurrency = $myConfig->getActShopCurrencyObject();
 
         modConfig::getInstance()->setConfigParam( 'bl_perfLoadSelectLists', true );
@@ -385,7 +385,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
      */
     public function testAssignValuesFromTextLite()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         $oCurrency = $myConfig->getActShopCurrencyObject();
 
         modConfig::getInstance()->setConfigParam( 'bl_perfLoadSelectLists', false );
@@ -431,7 +431,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
 
     public function testCurrency2Float()
     {
-        $oActCur = oxConfig::getInstance()->getActShopCurrencyObject();
+        $oActCur = oxRegistry::getConfig()->getActShopCurrencyObject();
         $fFloat = oxUtils::getInstance()->currency2Float("10.322,32", $oActCur);
         $this->assertEquals($fFloat, 10322.32);
         $fFloat = oxUtils::getInstance()->currency2Float("10,322.32", $oActCur);
@@ -470,7 +470,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
     public function testIsSearchEngineNonAdminNonSE()
     {
         // cleaning ..
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         modConfig::getInstance()->setConfigParam( 'iDebug', 1 );
         modConfig::getInstance()->setConfigParam( 'aRobots', array() );
@@ -485,7 +485,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
     public function testIsSearchEngineNonAdminSE()
     {
         // cleaning ..
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         modConfig::getInstance()->setConfigParam( 'iDebug', 0 );
         modConfig::getInstance()->setConfigParam( 'aRobots', array('googlebot', 'xxx') );
@@ -500,7 +500,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
     public function testIsSearchEngineAdminAndDebugOn()
     {
         // cleaning ..
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         modConfig::getInstance()->setConfigParam( 'iDebug', 1 );
         modConfig::getInstance()->setConfigParam( 'aRobots', array('googlebot', 'xxx') );
@@ -515,7 +515,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
     public function testIsSearchEngineAdminAndDebugOff()
     {
         // cleaning ..
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         modConfig::getInstance()->setConfigParam( 'iDebug', 1 );
         modConfig::getInstance()->setConfigParam( 'aRobots', array('googlebot', 'xxx') );
@@ -542,7 +542,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
     {
 
         $mySession = oxSession::getInstance();
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
 
         $aProfiles = oxUtils::getInstance()->loadAdminProfile(array('640x480', '14'));
@@ -557,7 +557,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
 
     public function testFRound()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $this->assertEquals('9.84', oxUtils::getInstance()->fRound('9.844'));
         $this->assertEquals('9.85', oxUtils::getInstance()->fRound('9.845'));
@@ -710,7 +710,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
 
     public function testOxResetFileCache()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         $sName = "testFileCache";
         $sInput = "test_test_test";
 
@@ -740,7 +740,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
 
     public function testOxResetFileCacheSkipsTablesFieldNames()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         $sName = "testFileCache";
         $sInput = "test_test_test";
 
@@ -781,7 +781,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
 
     public function testResetTemplateCache()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $oUtils  = oxUtils::getInstance();
         $oSmarty = oxUtilsview::getInstance()->getSmarty(true);
@@ -808,7 +808,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
 
     public function testResetLanguageCache()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $oUtils  = oxUtils::getInstance();
         $oSmarty = oxUtilsview::getInstance()->getSmarty(true);
@@ -838,7 +838,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
         $this->assertEquals('misc/actions_main.inc.php', oxUtils::getInstance()->GetRemoteCachePath('http://www.blafoo.null', 'misc/actions_main.inc.php'));
         //ensure that file is older than 24h
         touch('misc/actions_main.inc.php', time() - 90000, time() - 90000) ;
-        $this->assertEquals('misc/actions_main.inc.php', oxUtils::getInstance()->GetRemoteCachePath(oxConfig::getInstance()->getShopURL(), 'misc/actions_main.inc.php'));
+        $this->assertEquals('misc/actions_main.inc.php', oxUtils::getInstance()->GetRemoteCachePath(oxRegistry::getConfig()->getShopURL(), 'misc/actions_main.inc.php'));
         touch('misc/actions_main.inc.php', time() - 90000, time() - 90000) ;
         $this->assertEquals('misc/actions_main.inc.php', oxUtils::getInstance()->GetRemoteCachePath('http://www.blafoo.null', 'misc/actions_main.inc.php'));
         $this->assertEquals(false, oxUtils::getInstance()->GetRemoteCachePath('http://www.blafoo.null', 'misc/blafoo.test'));

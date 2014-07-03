@@ -51,7 +51,7 @@ class Unit_Views_VendorListTest extends OxidTestCase
             $sActVendor = "9437def212dc37c66f90cc249143510a";
 
         $oVendorTree = oxNew( 'oxvendorlist' );
-        $oVendorTree->buildVendorTree( 'vendorlist', $sActVendor, oxConfig::getInstance()->getShopHomeURL() );
+        $oVendorTree->buildVendorTree( 'vendorlist', $sActVendor, oxRegistry::getConfig()->getShopHomeURL() );
 
         $oVendor = oxNew( 'oxvendor' );
         $oVendor->load( $sActVendor );
@@ -77,7 +77,7 @@ class Unit_Views_VendorListTest extends OxidTestCase
             $sActVendor = "9437def212dc37c66f90cc249143510a";
 
         $oVendorTree = oxNew( 'oxvendorlist' );
-        $oVendorTree->buildVendorTree( 'vendorlist', $sActVendor, oxConfig::getInstance()->getShopHomeURL() );
+        $oVendorTree->buildVendorTree( 'vendorlist', $sActVendor, oxRegistry::getConfig()->getShopHomeURL() );
 
         $oVendor = oxNew( 'oxvendor' );
         $oVendor->load( $sActVendor );
@@ -109,7 +109,7 @@ class Unit_Views_VendorListTest extends OxidTestCase
             $sActVendor = "9437def212dc37c66f90cc249143510a";
 
         $oVendorTree = oxNew( 'oxvendorlist' );
-        $oVendorTree->buildVendorTree( 'vendorlist', $sActVendor, oxConfig::getInstance()->getShopHomeURL() );
+        $oVendorTree->buildVendorTree( 'vendorlist', $sActVendor, oxRegistry::getConfig()->getShopHomeURL() );
 
         $oVendor = oxNew( 'oxvendor' );
         $oVendor->setId( "123" );
@@ -176,7 +176,7 @@ class Unit_Views_VendorListTest extends OxidTestCase
 
         modConfig::setRequestParameter( 'cnid', 'v_root' );
         $oVendorTree = new oxvendorlist();
-        $oVendorTree->buildVendorTree( 'vendorlist', 'v_root', oxConfig::getInstance()->getShopHomeURL() );
+        $oVendorTree->buildVendorTree( 'vendorlist', 'v_root', oxRegistry::getConfig()->getShopHomeURL() );
 
         $oVendor = new vendorlist();
         $oVendor->setVendorTree( $oVendorTree );
@@ -192,7 +192,7 @@ class Unit_Views_VendorListTest extends OxidTestCase
 
         modConfig::setRequestParameter( 'cnid', 'v_root' );
         $oVendorTree = new oxvendorlist();
-        $oVendorTree->buildVendorTree( 'vendorlist', 'v_root', oxConfig::getInstance()->getShopHomeURL() );
+        $oVendorTree->buildVendorTree( 'vendorlist', 'v_root', oxRegistry::getConfig()->getShopHomeURL() );
 
         $oVendor = new vendorlist();
         $oVendor->setVendorTree( $oVendorTree );
@@ -211,7 +211,7 @@ class Unit_Views_VendorListTest extends OxidTestCase
         modConfig::setRequestParameter( 'cnid', $sVendorId );
         modConfig::getInstance()->setConfigParam( 'iNrofCatArticles', 20 );
        // $oVendorTree = new oxvendorlist();
-       // $oVendorTree->buildVendorTree( 'vendorlist', $sVendorId, oxConfig::getInstance()->getShopHomeURL() );
+       // $oVendorTree->buildVendorTree( 'vendorlist', $sVendorId, oxRegistry::getConfig()->getShopHomeURL() );
 
         $oVendor = new oxVendor();
         $oVendor->load( $sVendorId );
@@ -289,7 +289,7 @@ class Unit_Views_VendorListTest extends OxidTestCase
         oxTestModules::addFunction('oxUtilsServer', 'getServerVar', '{ if ( $aA[0] == "HTTP_HOST") { return "shop.com/"; } else { return "test.php";} }');
         modConfig::setRequestParameter( 'cnid', 'v_root' );
         $oVendorTree = new oxvendorlist();
-        $oVendorTree->buildVendorTree( 'vendorlist', 'v_root', oxConfig::getInstance()->getShopHomeURL() );
+        $oVendorTree->buildVendorTree( 'vendorlist', 'v_root', oxRegistry::getConfig()->getShopHomeURL() );
 
         $oVendor = $this->getProxyClass( "vendorlist" );
         $oVendor->setVendorTree( $oVendorTree );
@@ -321,9 +321,9 @@ class Unit_Views_VendorListTest extends OxidTestCase
 
     public function testAddPageNrParamIfSeo()
     {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxConfig::getInstance()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxRegistry::getConfig()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
             $sVendorId = '68342e2955d7401e6.18967838';
-            $sRez = oxConfig::getInstance()->getShopURL()."Nach-Lieferant/Haller-Stahlwaren/3/";
+            $sRez = oxRegistry::getConfig()->getShopURL()."Nach-Lieferant/Haller-Stahlwaren/3/";
 
         $oVendor = new oxVendor();
         $oVendor->load($sVendorId);

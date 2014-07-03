@@ -223,7 +223,7 @@ class Unit_Core_oxsessionTest extends OxidTestCase
      */
     public function testRegenerateSessionId()
     {
-        $myConfig  = oxConfig::getInstance();
+        $myConfig  = oxRegistry::getConfig();
 
         $oSession = $this->getMock( 'testSession', array( "_getNewSessionId" ) );
         $oSession->expects( $this->any() )->method( '_getNewSessionId')->will( $this->returnValue( "newSessionId" ) );
@@ -528,7 +528,7 @@ class Unit_Core_oxsessionTest extends OxidTestCase
         $oSession->start();
         $this->assertNotNull( $oSession->getId() );
         $this->assertEquals( $oSession->getName(), 'admin_sid' );
-        //oxConfig::getInstance()->blAdmin = false;
+        //oxRegistry::getConfig()->blAdmin = false;
     }
 
     /**
@@ -579,7 +579,7 @@ class Unit_Core_oxsessionTest extends OxidTestCase
 
         //set cookie
         oxUtilsServer::getInstance()->setOxCookie('sid', 'testSid2');
-        oxConfig::getInstance()->setConfigParam( 'blSessionUseCookies', true );
+        oxRegistry::getConfig()->setConfigParam( 'blSessionUseCookies', true );
         $this->oSession->start();
         $this->assertEquals($this->oSession->getId(), 'testSid2');
 
@@ -801,7 +801,7 @@ class Unit_Core_oxsessionTest extends OxidTestCase
      */
     function testIsSwappedClientCookieCheck()
     {
-        $myConfig  = oxConfig::getInstance();
+        $myConfig  = oxRegistry::getConfig();
         oxAddClassModule('Unit_oxsessionTest_oxUtilsServer', 'oxUtilsServer');
         $this->assertFalse( $this->oSession->UNITcheckCookies( null, null) );
         $this->assertEquals( "oxid", oxUtilsServer::getInstance()->getOxCookie( 'sid_key' ) );
@@ -864,7 +864,7 @@ class Unit_Core_oxsessionTest extends OxidTestCase
      */
     function testInitNewSession()
     {
-        $myConfig  = oxConfig::getInstance();
+        $myConfig  = oxRegistry::getConfig();
 
         $oSession = $this->getMock( 'testSession', array( "_getNewSessionId" ) );
         $oSession->expects( $this->any() )->method( '_getNewSessionId')->will( $this->returnValue( "newSessionId" ) );
@@ -910,7 +910,7 @@ class Unit_Core_oxsessionTest extends OxidTestCase
      */
     function testInitNewSessionWithPersParams()
     {
-        $myConfig  = oxConfig::getInstance();
+        $myConfig  = oxRegistry::getConfig();
 
         $oSession = $this->getMock( 'testSession', array( "_getNewSessionId" ) );
         $oSession->expects( $this->any() )->method( '_getNewSessionId')->will( $this->returnValue( "newSessionId" ) );
@@ -1077,7 +1077,7 @@ class Unit_Core_oxsessionTest extends OxidTestCase
      */
     /*function testCheckMandatoryCookieSupportNormal()
     {
-        oxConfig::getInstance()->setConfigParam( 'blSessionEnforceCookies', false );
+        oxRegistry::getConfig()->setConfigParam( 'blSessionEnforceCookies', false );
         $this->assertTrue($this->oSession->UNITcheckMandatoryCookieSupport( "account", "tobasket"));
     }*/
 
@@ -1086,7 +1086,7 @@ class Unit_Core_oxsessionTest extends OxidTestCase
      */
     /*function testCheckMandatoryCookieSupportCookiesSupported()
     {
-        oxConfig::getInstance()->setConfigParam( 'blSessionEnforceCookies', true );
+        oxRegistry::getConfig()->setConfigParam( 'blSessionEnforceCookies', true );
         $this->assertFalse($this->oSession->UNITcheckMandatoryCookieSupport( 'register', '' ));
         $this->assertFalse($this->oSession->UNITcheckMandatoryCookieSupport( 'account', ''));
         $this->assertFalse($this->oSession->UNITcheckMandatoryCookieSupport( 'alist', 'tobasket'));
@@ -1122,14 +1122,14 @@ class Unit_Core_oxsessionTest extends OxidTestCase
      */
     function testSidNormal()
     {
-        oxConfig::getInstance()->setConfigParam( 'blSessionUseCookies', false );
+        oxRegistry::getConfig()->setConfigParam( 'blSessionUseCookies', false );
         $oSession = $this->getMock( 'testSession', array( '_getCookieSid', 'isAdmin' ) );
         $oSession->expects( $this->any() )->method( '_getCookieSid')->will( $this->returnValue( 'admin_sid' ) );
         $oSession->expects( $this->any() )->method( 'isAdmin')->will( $this->returnValue( false ) );
         $oSession->UNITsetSessionId('testSid');
         $this->assertEquals('sid=testSid', $oSession->sid());
 
-        oxConfig::getInstance()->setConfigParam( 'blSessionUseCookies', true );
+        oxRegistry::getConfig()->setConfigParam( 'blSessionUseCookies', true );
         $oSession->UNITsetSessionId('testSid');
         $this->assertEquals('', $oSession->sid());
     }
@@ -1255,7 +1255,7 @@ class Unit_Core_oxsessionTest extends OxidTestCase
      */
     function testGetBasketNameblMallSharedBasket()
     {
-        $this->assertEquals($this->oSession->UNITgetBasketName(), oxConfig::getInstance()->getShopId() . '_basket');
+        $this->assertEquals($this->oSession->UNITgetBasketName(), oxRegistry::getConfig()->getShopId() . '_basket');
     }
 
     /**
@@ -1263,7 +1263,7 @@ class Unit_Core_oxsessionTest extends OxidTestCase
      */
     function testGetBasketName()
     {
-        oxConfig::getInstance()->setConfigParam( 'blMallSharedBasket', 1 );
+        oxRegistry::getConfig()->setConfigParam( 'blMallSharedBasket', 1 );
         $this->assertEquals( 'basket', $this->oSession->UNITgetBasketName());
     }
 

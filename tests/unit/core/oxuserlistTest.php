@@ -39,7 +39,7 @@ class Unit_Core_oxuserlistTest extends OxidTestCase
         $oUser = new oxuser();
         $oUser->setId( 'user1' );
         $oUser->oxuser__oxactive = new oxField(1, oxField::T_RAW);
-        $oUser->oxuser__oxshopid = new oxField(oxConfig::getInstance()->getBaseShopId(), oxField::T_RAW);
+        $oUser->oxuser__oxshopid = new oxField(oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW);
         $oUser->oxuser__oxusername = new oxField('user1', oxField::T_RAW);
         $oUser->save();
 

@@ -117,7 +117,7 @@ class Unit_Admin_OrderOverviewTest extends OxidTestCase
         // writing test order
         $oOrder = oxNew( "oxorder" );
         $oOrder->setId( $soxId );
-        $oOrder->oxorder__oxshopid        = new oxField( oxConfig::getInstance()->getBaseShopId() );
+        $oOrder->oxorder__oxshopid        = new oxField( oxRegistry::getConfig()->getBaseShopId() );
         $oOrder->oxorder__oxuserid        = new oxField( "oxdefaultadmin" );
         $oOrder->oxorder__oxbillcompany   = new oxField( "Ihr Firmenname" );
         $oOrder->oxorder__oxbillemail     = new oxField( oxADMIN_LOGIN );
@@ -217,7 +217,7 @@ class Unit_Admin_OrderOverviewTest extends OxidTestCase
         $oBase->oxorderarticles__oxorderid = new oxField( "testOrderId" );
         $oBase->oxorderarticles__oxamount  = new oxField( 1 );
         $oBase->oxorderarticles__oxartid   = new oxField( "1126" );
-        $oBase->oxorderarticles__oxordershopid = new oxField( oxConfig::getInstance()->getShopId() );
+        $oBase->oxorderarticles__oxordershopid = new oxField( oxRegistry::getConfig()->getShopId() );
         $oBase->save();
 
         // testing..
@@ -239,7 +239,7 @@ class Unit_Admin_OrderOverviewTest extends OxidTestCase
         // writing test order
         $oOrder = oxNew( "oxorder" );
         $oOrder->setId( $soxId );
-        $oOrder->oxorder__oxshopid        = new oxField( oxConfig::getInstance()->getBaseShopId() );
+        $oOrder->oxorder__oxshopid        = new oxField( oxRegistry::getConfig()->getBaseShopId() );
         $oOrder->oxorder__oxuserid        = new oxField( "oxdefaultadmin" );
         $oOrder->oxorder__oxbillcompany   = new oxField( "Ihr Firmenname" );
         $oOrder->oxorder__oxbillemail     = new oxField( oxADMIN_LOGIN );

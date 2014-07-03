@@ -174,7 +174,7 @@ class Unit_Views_inviteTest extends OxidTestCase
      */
     public function testSend_invitationNotActive()
     {
-        $oConfig = oxConfig::getInstance();
+        $oConfig = oxRegistry::getConfig();
         $oConfig->setConfigParam( "blInvitationsEnabled", false );
 
         $oUtils = $this->getMock('oxUtils', array( 'redirect' ) );
@@ -249,7 +249,7 @@ class Unit_Views_inviteTest extends OxidTestCase
      */
     public function testRender_invitationNotActive()
     {
-        $oConfig = oxConfig::getInstance();
+        $oConfig = oxRegistry::getConfig();
         $oConfig->setConfigParam( "blInvitationsEnabled", false );
 
         $oUtils = $this->getMock('oxUtils', array( 'redirect' ) );

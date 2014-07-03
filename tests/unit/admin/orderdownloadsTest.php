@@ -36,7 +36,7 @@ class Unit_Admin_OrderDownloadsTest extends OxidTestCase
     protected function setUp()
     {
         parent::setUp();
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         modConfig::getInstance()->setConfigParam( 'blPerfNoBasketSaving', true );
 

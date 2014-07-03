@@ -64,7 +64,7 @@ class Unit_oxdbTest_config_2
         if ( $sParam == 'blUseStock' )
             return true;
 
-        return oxConfig::getInstance()->getConfigParam( $sParam );
+        return oxRegistry::getConfig()->getConfigParam( $sParam );
     }
 }
 
@@ -112,7 +112,7 @@ class Unit_Core_oxdbTest extends OxidTestCase
         oxTestModules::addFunction('oxDb', 'cleanTblCache', '{oxDb::$_aTblDescCache = array();}');
         oxNew('oxDb')->cleanTblCache();
 
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         $rs = oxDb::getDb()->Execute( "show tables");
         $icount = 3;
         if ( $rs != false && $rs->RecordCount() > 0 ) {
@@ -168,9 +168,9 @@ class Unit_Core_oxdbTest extends OxidTestCase
 
         $oDb = $this->getProxyClass( 'oxdb' );
 
-        if ( 'mysql' == oxConfig::getInstance()->getConfigParam( "dbType" ))
+        if ( 'mysql' == oxRegistry::getConfig()->getConfigParam( "dbType" ))
             $sEscapedChars = mysql_real_escape_string( $sString, $oDb->UNITgetConnectionId() );
-        if ( 'mysqli' == oxConfig::getInstance()->getConfigParam( "dbType" ))
+        if ( 'mysqli' == oxRegistry::getConfig()->getConfigParam( "dbType" ))
            $sEscapedChars = mysqli_real_escape_string( $oDb->UNITgetConnectionId(), $sString );
 
         $this->assertEquals( bin2hex($sEscapedChars), bin2hex($oDb->escapeString( $sString )) );

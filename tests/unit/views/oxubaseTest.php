@@ -76,7 +76,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
         testOxViewComponent::resetComponentNames();
 
         // adding article to recommendList
-        $sQ = 'replace into oxrecommlists ( oxid, oxuserid, oxtitle, oxdesc, oxshopid ) values ( "testlist", "oxdefaultadmin", "oxtest", "oxtest", "'.oxConfig::getInstance()->getShopId().'" ) ';
+        $sQ = 'replace into oxrecommlists ( oxid, oxuserid, oxtitle, oxdesc, oxshopid ) values ( "testlist", "oxdefaultadmin", "oxtest", "oxtest", "'.oxRegistry::getConfig()->getShopId().'" ) ';
         oxDb::getDB()->Execute( $sQ );
 
         parent::setUp();
@@ -175,7 +175,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
     public function testGetActSearch()
     {
         $oSearch = new stdClass();
-        $oSearch->link = oxConfig::getInstance()->getShopHomeURL()."cl=search";
+        $oSearch->link = oxRegistry::getConfig()->getShopHomeURL()."cl=search";
 
         $oUBase = new oxUBase();
         $this->assertEquals( $oSearch, $oUBase->getActSearch() );
@@ -193,12 +193,12 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
             $sTag = "liebliche";
 
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxConfig::getInstance()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxRegistry::getConfig()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
         $this->setRequestParam( 'searchtag', $sTag );
 
         $oTag = new stdclass();
         $oTag->sTag = $sTag;
-        $oTag->link = oxConfig::getInstance()->getShopUrl(). "tag/{$sTag}/";
+        $oTag->link = oxRegistry::getConfig()->getShopUrl(). "tag/{$sTag}/";
 
         $oUBase = new oxUBase();
         $this->assertEquals( $oTag, $oUBase->getActTag() );
@@ -211,7 +211,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
 
         $oTag = new stdclass();
         $oTag->sTag = 'someTag';
-        $oTag->link = oxConfig::getInstance()->getShopHomeURL(). "cl=tag&amp;searchtag=someTag";
+        $oTag->link = oxRegistry::getConfig()->getShopHomeURL(). "cl=tag&amp;searchtag=someTag";
 
         $oUBase = new oxUBase();
         $this->assertEquals( $oTag, $oUBase->getActTag() );
@@ -330,7 +330,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
      */
     public function testGetViewId()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         $sShopURL = $myConfig->getShopUrl();
         $sShopID  = $myConfig->getShopId();
 
@@ -349,7 +349,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
      */
     public function testGetViewIdWithOtherParams()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         oxLang::getInstance()->setBaseLanguage( 1 );
         $this->setRequestParam( 'currency', '1' );
@@ -372,7 +372,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
      */
     public function testGetViewIdWithSSL()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         $myConfig->setIsSsl(true);
 
         $oView = new oxubase();
@@ -469,7 +469,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
      */
     public function testRender()
     {
-        oxConfig::getInstance()->setConfigParam( 'blDisableNavBars', true );
+        oxRegistry::getConfig()->setConfigParam( 'blDisableNavBars', true );
         $oView = $this->getMock( 'oxubase', array( 'getIsOrderStep') );
 
         $oView->expects( $this->once() )->method( 'getIsOrderStep' )->will( $this->returnValue( true ) );
@@ -482,7 +482,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
      */
     public function testSetNrOfArtPerPage()
     {
-        $myConfig  = oxConfig::getInstance();
+        $myConfig  = oxRegistry::getConfig();
         $myConfig->setConfigParam( 'iNrofCatArticles', 10 );
         $myConfig->setConfigParam( 'aNrofCatArticles', 'xxx' );
 
@@ -523,7 +523,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
     public function testSetNrOfArtPerPageWhenConfigParamIsMissing()
     {
 
-        $myConfig  = oxConfig::getInstance();
+        $myConfig  = oxRegistry::getConfig();
         $myConfig->setConfigParam( 'iNrofCatArticles', 10 );
         $myConfig->setConfigParam( 'aNrofCatArticles', null );
         $this->setSessionParam("_artperpage", 20);
@@ -541,7 +541,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
      */
     public function testSetNrOfArtPerPageToSession()
     {
-        $myConfig  = oxConfig::getInstance();
+        $myConfig  = oxRegistry::getConfig();
         $myConfig->setConfigParam( 'aNrofCatArticles', array( 0 => 30 ) );
         $this->setRequestParam( '_artperpage', 30 );
 
@@ -561,7 +561,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
      */
     public function testSetNrOfArtPerPageFromSession()
     {
-        $myConfig  = oxConfig::getInstance();
+        $myConfig  = oxRegistry::getConfig();
         $myConfig->setConfigParam( 'aNrofCatArticles', array( 0 => 26 ) );
         $this->setSessionParam("_artperpage", 26);
 
@@ -581,7 +581,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
      */
     public function testSetNrOfArtPerPageWithoutParams()
     {
-        $myConfig  = oxConfig::getInstance();
+        $myConfig  = oxRegistry::getConfig();
 
         $myConfig->setConfigParam( 'iNrofCatArticles', null );
         $myConfig->setConfigParam( 'aNrofCatArticles', null );
@@ -602,7 +602,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
      */
     public function testSetNrOfArtPerPageWithFirstParam()
     {
-        $myConfig  = oxConfig::getInstance();
+        $myConfig  = oxRegistry::getConfig();
 
         $myConfig->setConfigParam( 'iNrofCatArticles', null );
         $myConfig->setConfigParam( 'aNrofCatArticles', array( 0 => 2 ) );
@@ -622,7 +622,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
      */
     public function testSetNrOfArtPerPageWithArtPerPage()
     {
-        $myConfig  = oxConfig::getInstance();
+        $myConfig  = oxRegistry::getConfig();
 
         $myConfig->setConfigParam( 'iNrofCatArticles', null );
         $myConfig->setConfigParam( 'aNrofCatArticles', array( 0 => 2 ) );
@@ -642,7 +642,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
      */
     public function testSetNrOfArtPerPageWithWrongArtPerPage()
     {
-        $myConfig  = oxConfig::getInstance();
+        $myConfig  = oxRegistry::getConfig();
 
         $myConfig->setConfigParam( 'iNrofCatArticles', null );
         $myConfig->setConfigParam( 'aNrofCatArticles', array( 0 => 10 ) );
@@ -812,7 +812,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
      */
     public function testPrepareMetaKeywordsRemovesDefinedStrings()
     {
-        $myConfig  = oxConfig::getInstance();
+        $myConfig  = oxRegistry::getConfig();
         $myConfig->setConfigParam( 'aSkipTags', array('ccc') );
 
         $sDesc = 'aaa bbb ccc ddd';
@@ -1414,7 +1414,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
         try {
             $oUBase->UNITprocessRequest();
         } catch ( Exception $oEx ) {
-            $this->assertEquals( oxConfig::getInstance()->getShopURL() . 'mein-wunschzettel/', $oEx->getMessage(), 'error executing "testProcessRequest" test' );
+            $this->assertEquals( oxRegistry::getConfig()->getShopURL() . 'mein-wunschzettel/', $oEx->getMessage(), 'error executing "testProcessRequest" test' );
             return;
         }
 
@@ -1449,7 +1449,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
             $this->fail( 'error executing "testProcessRequestCantRedirect" test' );
         }
 
-        $sShopId = oxConfig::getInstance()->getShopId();
+        $sShopId = oxRegistry::getConfig()->getShopId();
         $sLangId = oxLang::getInstance()->getBaseLanguage();
         $sIdent  = md5( strtolower( str_replace( '&', '&amp;', $sUri ) ) . $sShopId . $sLangId );
 
@@ -1477,7 +1477,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
             $this->fail( 'error executing "testProcessRequestCantRedirect" test' );
         }
 
-        $sShopId = oxConfig::getInstance()->getShopId();
+        $sShopId = oxRegistry::getConfig()->getShopId();
         $sLangId = oxLang::getInstance()->getBaseLanguage();
         $sIdent  = md5( strtolower( str_replace( '&', '&amp;', $sUri ) ) . $sShopId . $sLangId );
 
@@ -1564,7 +1564,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
     public function testGetMinOrderPrice()
     {
         $this->setConfigParam( "iMinOrderPrice", 40 );
-        $oCur = oxConfig::getInstance()->getActShopCurrencyObject();
+        $oCur = oxRegistry::getConfig()->getActShopCurrencyObject();
 
         $sMinOrderPrice = oxLang::getInstance()->formatCurrency( 40 * $oCur->rate );
 
@@ -1991,7 +1991,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
     public function testGetNewBasketItemMsgType()
     {
         $oView = new oxUbase();
-        $this->assertEquals( (int) oxConfig::getInstance()->getConfigParam( "iNewBasketItemMessage" ), $oView->getNewBasketItemMsgType() );
+        $this->assertEquals( (int) oxRegistry::getConfig()->getConfigParam( "iNewBasketItemMessage" ), $oView->getNewBasketItemMsgType() );
     }
 
     /**
@@ -2033,7 +2033,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
     public function testIsEnabledDownloadableFiles()
     {
         $oView = new oxUbase();
-        $this->assertEquals( (bool) oxConfig::getInstance()->getConfigParam( "blEnableDownloads" ), $oView->isEnabledDownloadableFiles() );
+        $this->assertEquals( (bool) oxRegistry::getConfig()->getConfigParam( "blEnableDownloads" ), $oView->isEnabledDownloadableFiles() );
     }
 
     /**
@@ -2044,7 +2044,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
     public function testShowRememberMe()
     {
         $oView = new oxUbase();
-        $this->assertEquals((bool) oxConfig::getInstance()->getConfigParam( "blShowRememberMe" ),  $oView->showRememberMe() );
+        $this->assertEquals((bool) oxRegistry::getConfig()->getConfigParam( "blShowRememberMe" ),  $oView->showRememberMe() );
     }
 
     /**
@@ -2055,7 +2055,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
     public function testIsPriceCalculated()
     {
         $oView = new oxUbase();
-        $this->assertEquals( (bool) oxConfig::getInstance()->getConfigParam( "bl_perfLoadPrice" ), $oView->isPriceCalculated() );
+        $this->assertEquals( (bool) oxRegistry::getConfig()->getConfigParam( "bl_perfLoadPrice" ), $oView->isPriceCalculated() );
     }
     /* oxUBase::getCatMoreUrl() test case
      *
@@ -2430,7 +2430,7 @@ class Unit_Views_oxUBaseTest extends OxidTestCase
             $this->fail( 'error executing "testProcessRequestCantRedirect" test: '. $oEx->getMessage());
         }
 
-        $sShopId = oxConfig::getInstance()->getShopId();
+        $sShopId = oxRegistry::getConfig()->getShopId();
         $sLangId = oxLang::getInstance()->getBaseLanguage();
         $sIdent  = md5( strtolower( str_replace( '&', '&amp;', $sUri ) ) . $sShopId . $sLangId );
 

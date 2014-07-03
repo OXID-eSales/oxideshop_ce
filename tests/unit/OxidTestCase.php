@@ -461,7 +461,7 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      */
     public function cleanTmpDir()
     {
-        $sDirName = oxConfig::getInstance()->getConfigParam('sCompileDir');
+        $sDirName = oxRegistry::getConfig()->getConfigParam('sCompileDir');
         if (DIRECTORY_SEPARATOR == '\\') {
             $sDirName = str_replace('/', "\\", $sDirName);
             system("del $sDirName\\*.txt");

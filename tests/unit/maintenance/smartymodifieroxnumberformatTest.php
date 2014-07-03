@@ -22,7 +22,7 @@
 
 require_once realpath( "." ).'/unit/OxidTestCase.php';
 require_once realpath( "." ).'/unit/test_config.inc.php';
-require_once oxConfig::getInstance()->getConfigParam( 'sShopDir' ).'core/smarty/plugins/modifier.oxnumberformat.php';
+require_once oxRegistry::getConfig()->getConfigParam( 'sShopDir' ).'core/smarty/plugins/modifier.oxnumberformat.php';
 
 class Unit_Maintenance_smartyModifierOxNumberFormatTest extends OxidTestCase
 {

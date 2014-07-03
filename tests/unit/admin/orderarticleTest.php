@@ -69,7 +69,7 @@ class Unit_Admin_OrderArticleTest extends OxidTestCase
     protected function setUp()
     {
         parent::setUp();
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         modConfig::getInstance()->setConfigParam( 'blPerfNoBasketSaving', true );
 
@@ -130,7 +130,7 @@ class Unit_Admin_OrderArticleTest extends OxidTestCase
      */
     public function testAddThisArticle()
     {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxConfig::getInstance()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxRegistry::getConfig()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
         modConfig::setRequestParameter( "aid", '_testArticle' );
         modConfig::setRequestParameter( "am", 4 );
         modConfig::setRequestParameter( "oxid", '_testOrder');
@@ -155,7 +155,7 @@ class Unit_Admin_OrderArticleTest extends OxidTestCase
      */
     public function testAddThisArticle2()
     {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxConfig::getInstance()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxRegistry::getConfig()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
         oxAddClassModule( 'modOxOrder_orderArticle', 'oxorder' );
 
         modConfig::setRequestParameter( 'aid', '2000' );
@@ -177,7 +177,7 @@ class Unit_Admin_OrderArticleTest extends OxidTestCase
      */
     public function testDeleteThisArticle()
     {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxConfig::getInstance()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxRegistry::getConfig()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
         modConfig::setRequestParameter( "aid", '_testArticle' );
         modConfig::setRequestParameter( "am", 4 );
         modConfig::setRequestParameter( "oxid", '_testOrder');
@@ -213,7 +213,7 @@ class Unit_Admin_OrderArticleTest extends OxidTestCase
      */
     public function testStorno()
     {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxConfig::getInstance()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxRegistry::getConfig()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
         modConfig::setRequestParameter( "aid", '_testArticle' );
         modConfig::setRequestParameter( "am", 4 );
         modConfig::setRequestParameter( "oxid", '_testOrder');

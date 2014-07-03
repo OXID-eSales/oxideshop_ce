@@ -32,7 +32,7 @@ class Unit_Core_oxUtilsServerTest extends OxidTestCase
      */
     protected function tearDown()
     {
-        oxConfig::getInstance()->setConfigParam( "aTrustedIPs", array() );
+        oxRegistry::getConfig()->setConfigParam( "aTrustedIPs", array() );
         parent::tearDown();
     }
 
@@ -149,7 +149,7 @@ class Unit_Core_oxUtilsServerTest extends OxidTestCase
         $this->assertFalse( $oUtilsServer->isTrustedClientIp() );
 
         //
-        oxConfig::getInstance()->setConfigParam( "aTrustedIPs", array( "xxx" ));
+        oxRegistry::getConfig()->setConfigParam( "aTrustedIPs", array( "xxx" ));
         $oUtilsServer = $this->getMock( "oxUtilsServer", array( "getRemoteAddress" ));
         $oUtilsServer->expects( $this->once() )->method( 'getRemoteAddress' )->will( $this->returnValue( "xxx" ) );
         $this->assertTrue( $oUtilsServer->isTrustedClientIp() );
@@ -157,7 +157,7 @@ class Unit_Core_oxUtilsServerTest extends OxidTestCase
 
     public function testGetCookiePathWhenACookiePathsIsSetUp()
     {
-        $sShopId = oxConfig::getInstance()->getShopId();
+        $sShopId = oxRegistry::getConfig()->getShopId();
         modConfig::getInstance()->setConfigParam( "aCookiePaths", array( $sShopId => 'somepath' ) );
 
         $oUtilsServer = new oxUtilsServer();
@@ -166,7 +166,7 @@ class Unit_Core_oxUtilsServerTest extends OxidTestCase
 
     public function testGetCookieDomainWhenACookieDomainsIsSetUp()
     {
-        $sShopId = oxConfig::getInstance()->getShopId();
+        $sShopId = oxRegistry::getConfig()->getShopId();
         modConfig::getInstance()->setConfigParam( "aCookieDomains", array( $sShopId => 'somedomain' ) );
 
         $oUtilsServer = new oxUtilsServer();

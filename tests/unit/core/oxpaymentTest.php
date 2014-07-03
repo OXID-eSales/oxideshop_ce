@@ -151,7 +151,7 @@ class Unit_Core_oxpaymentTest extends OxidTestCase
      */
     public function testGetPaymentValueSpecCurrency()
     {
-        oxConfig::getInstance()->setActShopCurrency(2);
+        oxRegistry::getConfig()->setActShopCurrency(2);
         $oPayment = new oxPayment();
 
         $oPayment->load( 'oxidpayadvance' );
@@ -231,7 +231,7 @@ class Unit_Core_oxpaymentTest extends OxidTestCase
         $oUser = new oxuser();
         $oUser->Load( 'oxdefaultadmin' );
 
-        $blRes = $oPayment->isValidPayment( array(), oxConfig::getInstance()->getBaseShopId(), $oUser, 0.0, 'oxidstandard' );
+        $blRes = $oPayment->isValidPayment( array(), oxRegistry::getConfig()->getBaseShopId(), $oUser, 0.0, 'oxidstandard' );
         $this->assertFalse( $blRes );
         $this->assertEquals( -3, $oPayment->getPaymentErrorNumber() );
     }
@@ -249,7 +249,7 @@ class Unit_Core_oxpaymentTest extends OxidTestCase
         $oUser->expects($this->once())->method('getActiveCountry')->will($this->returnValue('otherCountry'));
         $oUser->Load( 'oxdefaultadmin' );
 
-        $blRes = $oPayment->isValidPayment( array(), oxConfig::getInstance()->getBaseShopId(), $oUser, 0.0, 'oxidstandard' );
+        $blRes = $oPayment->isValidPayment( array(), oxRegistry::getConfig()->getBaseShopId(), $oUser, 0.0, 'oxidstandard' );
         $this->assertTrue( $blRes );
     }
 
@@ -263,7 +263,7 @@ class Unit_Core_oxpaymentTest extends OxidTestCase
         $oPayment = new oxpayment();
         $oPayment->oxpayments__oxid = new oxField( 'oxempty' );
         $oPayment->oxpayments__oxactive = new oxField( 1 );
-        $this->assertFalse( $oPayment->isValidPayment( array(), oxConfig::getInstance()->getBaseShopId(), $oUser, 0.0, 'oxidstandard' ) );
+        $this->assertFalse( $oPayment->isValidPayment( array(), oxRegistry::getConfig()->getBaseShopId(), $oUser, 0.0, 'oxidstandard' ) );
         $this->assertEquals( -2, $oPayment->getPaymentErrorNumber() );
     }
 
@@ -276,7 +276,7 @@ class Unit_Core_oxpaymentTest extends OxidTestCase
         $oUser = new oxuser();
         $oUser->Load( 'oxdefaultadmin' );
 
-        $this->assertFalse( $oPayment->isValidPayment( array(), oxConfig::getInstance()->getBaseShopId(), $oUser, 0.0, 'oxidstandard' ) );
+        $this->assertFalse( $oPayment->isValidPayment( array(), oxRegistry::getConfig()->getBaseShopId(), $oUser, 0.0, 'oxidstandard' ) );
         $this->assertEquals( -2, $oPayment->getPaymentErrorNumber() );
     }
 
@@ -290,7 +290,7 @@ class Unit_Core_oxpaymentTest extends OxidTestCase
 
         $aDynvalue = $this->getDynValues();
         $aDynvalue['kknumber'] = ''; //wrong number
-        $blRes = $oPayment->isValidPayment($aDynvalue, oxConfig::getInstance()->getBaseShopId(), null, 0.0, 'oxidstandard');
+        $blRes = $oPayment->isValidPayment($aDynvalue, oxRegistry::getConfig()->getBaseShopId(), null, 0.0, 'oxidstandard');
         $this->assertFalse($blRes);
 
     }
@@ -323,7 +323,7 @@ class Unit_Core_oxpaymentTest extends OxidTestCase
         $oUser = new oxuser();
         $oUser->Load( 'oxdefaultadmin' );
 
-        $blRes = $oPayment->isValidPayment($this->getDynValues(), oxConfig::getInstance()->getBaseShopId(), $oUser, 0.0, 'nosuchvalue');
+        $blRes = $oPayment->isValidPayment($this->getDynValues(), oxRegistry::getConfig()->getBaseShopId(), $oUser, 0.0, 'nosuchvalue');
         $this->assertFalse($blRes);
     }
 
@@ -338,7 +338,7 @@ class Unit_Core_oxpaymentTest extends OxidTestCase
         $oUser = new oxuser();
         $oUser->Load( 'oxdefaultadmin' );
 
-        $blRes = $oPayment->isValidPayment($this->getDynValues(), oxConfig::getInstance()->getBaseShopId(), $oUser, 5.0, null);
+        $blRes = $oPayment->isValidPayment($this->getDynValues(), oxRegistry::getConfig()->getBaseShopId(), $oUser, 5.0, null);
         $this->assertFalse($blRes);
     }
 
@@ -355,7 +355,7 @@ class Unit_Core_oxpaymentTest extends OxidTestCase
         $oUser->Load( 'oxdefaultadmin' );
 
         $oUser->oxuser__oxboni = new oxField($oPayment->oxpayments__oxfromboni->value - 1, oxField::T_RAW);
-        $blRes = $oPayment->isValidPayment($this->getDynValues(), oxConfig::getInstance()->getBaseShopId(), $oUser, 0.0, 'oxidstandard');
+        $blRes = $oPayment->isValidPayment($this->getDynValues(), oxRegistry::getConfig()->getBaseShopId(), $oUser, 0.0, 'oxidstandard');
         $this->assertFalse($blRes);
     }
 
@@ -371,7 +371,7 @@ class Unit_Core_oxpaymentTest extends OxidTestCase
         $oUser->Load( 'oxdefaultadmin' );
 
         //oxpayments__oxfromamount = 0, so passing lower value price
-        $blRes = $oPayment->isValidPayment($this->getDynValues(), oxConfig::getInstance()->getBaseShopId(), $oUser, -1, 'oxidstandard');
+        $blRes = $oPayment->isValidPayment($this->getDynValues(), oxRegistry::getConfig()->getBaseShopId(), $oUser, -1, 'oxidstandard');
         $this->assertFalse($blRes);
     }
 
@@ -387,7 +387,7 @@ class Unit_Core_oxpaymentTest extends OxidTestCase
         $oUser->Load( 'oxdefaultadmin' );
 
         //oxpayments__oxtoamount is 1000000, so passing price that is greater
-        $blRes = $oPayment->isValidPayment($this->getDynValues(), oxConfig::getInstance()->getBaseShopId(), $oUser, 1000001, 'oxidstandard');
+        $blRes = $oPayment->isValidPayment($this->getDynValues(), oxRegistry::getConfig()->getBaseShopId(), $oUser, 1000001, 'oxidstandard');
         $this->assertFalse($blRes);
     }
 
@@ -403,7 +403,7 @@ class Unit_Core_oxpaymentTest extends OxidTestCase
         $oUser->Load( 'oxdefaultadmin' );
         $oUser->addToGroup( '_testGroupId' );
 
-        $blRes = $oPayment->isValidPayment($this->getDynValues(), oxConfig::getInstance()->getBaseShopId(), $oUser, 0.0, 'oxidstandard');
+        $blRes = $oPayment->isValidPayment($this->getDynValues(), oxRegistry::getConfig()->getBaseShopId(), $oUser, 0.0, 'oxidstandard');
         $this->assertFalse($blRes);
     }
 
@@ -419,7 +419,7 @@ class Unit_Core_oxpaymentTest extends OxidTestCase
         $oUser->Load( 'oxdefaultadmin' );
         $oUser->oxuser__oxboni = new oxField($oPayment->oxpayments__oxfromboni->value + 1, oxField::T_RAW);
 
-        $blRes = $oPayment->isValidPayment($this->getDynValues(), oxConfig::getInstance()->getBaseShopId(), $oUser, 5.0, 'oxidstandard');
+        $blRes = $oPayment->isValidPayment($this->getDynValues(), oxRegistry::getConfig()->getBaseShopId(), $oUser, 5.0, 'oxidstandard');
         $this->assertTrue($blRes);
     }
 
@@ -435,15 +435,15 @@ class Unit_Core_oxpaymentTest extends OxidTestCase
         $oUser->load( 'oxdefaultadmin' );
 
         //oxpayments__oxtoamount is 1000000, so passing price that is greater
-        $blRes = $oPayment->isValidPayment($this->getDynValues(), oxConfig::getInstance()->getBaseShopId(), $oUser, 1000001, 'oxidstandard');
+        $blRes = $oPayment->isValidPayment($this->getDynValues(), oxRegistry::getConfig()->getBaseShopId(), $oUser, 1000001, 'oxidstandard');
         $this->assertEquals(-3, $oPayment->getNonPublicVar('_iPaymentError') );
 
         //no shipping set id
-        $blRes = $oPayment->isValidPayment($this->getDynValues(), oxConfig::getInstance()->getBaseShopId(), $oUser, 1000001, null);
+        $blRes = $oPayment->isValidPayment($this->getDynValues(), oxRegistry::getConfig()->getBaseShopId(), $oUser, 1000001, null);
         $this->assertEquals(-2, $oPayment->getNonPublicVar('_iPaymentError') );
 
         //not valid input
-        $blRes = $oPayment->isValidPayment(null, oxConfig::getInstance()->getBaseShopId(), $oUser, 1000001, null);
+        $blRes = $oPayment->isValidPayment(null, oxRegistry::getConfig()->getBaseShopId(), $oUser, 1000001, null);
         $this->assertEquals(1, $oPayment->getNonPublicVar('_iPaymentError') );
     }
 
@@ -474,7 +474,7 @@ class Unit_Core_oxpaymentTest extends OxidTestCase
     {
             return; // EE only
 
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         $mySession = oxSession::getInstance();
 
         $myConfig->setConfigParam( 'iPayment_blLogPaymentActions', true );
@@ -492,7 +492,7 @@ class Unit_Core_oxpaymentTest extends OxidTestCase
         $aLogs = oxDb::getDb( oxDB::FETCH_MODE_ASSOC )->getAll( $sSql );
 
         $this->assertEquals( '_testIPaymentSessId', $aLogs[0]['OXSESSID'] );
-        $this->assertEquals( oxConfig::getInstance()->getBaseShopId(), $aLogs[0]['OXSHOPID'] );
+        $this->assertEquals( oxRegistry::getConfig()->getBaseShopId(), $aLogs[0]['OXSHOPID'] );
         $this->assertEquals( '_testPaymentId', $aLogs[0]['OXPAYID'] );
         $this->assertEquals( '1', $aLogs[0]['OXAMOUNT'] );
         $this->assertEquals( '2', $aLogs[0]['OXORDERID'] );
@@ -516,7 +516,7 @@ class Unit_Core_oxpaymentTest extends OxidTestCase
     {
             return; // EE only
 
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $myConfig->setConfigParam( 'iPayment_blLogPaymentActions', false );
 

@@ -68,14 +68,14 @@ class Unit_Core_oxVatSelectorTest extends OxidTestCase
         // assigning article to category
         $oO2Group = oxNew( 'oxbase' );
         $oO2Group->Init( 'oxobject2category' );
-        $oO2Group->oxobject2category__oxshopid = new oxField(oxConfig::getInstance()->getShopId(), oxField::T_RAW);
-        $oO2Group->oxobject2category__oxshopincl = new oxField(oxConfig::getInstance()->getShopId(), oxField::T_RAW);
+        $oO2Group->oxobject2category__oxshopid = new oxField(oxRegistry::getConfig()->getShopId(), oxField::T_RAW);
+        $oO2Group->oxobject2category__oxshopincl = new oxField(oxRegistry::getConfig()->getShopId(), oxField::T_RAW);
         $oO2Group->oxobject2category__oxobjectid = new oxField($this->oArticle->getId(), oxField::T_RAW);
         $oO2Group->oxobject2category__oxcatnid = new oxField($this->oCategory->getId(), oxField::T_RAW);
         $oO2Group->save();
 
-        $this->dDefaultVAT = oxConfig::getInstance()->getConfigParam( 'dDefaultVAT' );
-        oxConfig::getInstance()->setConfigParam( 'dDefaultVAT', '99' );
+        $this->dDefaultVAT = oxRegistry::getConfig()->getConfigParam( 'dDefaultVAT' );
+        oxRegistry::getConfig()->setConfigParam( 'dDefaultVAT', '99' );
     }
 
     /**
@@ -121,7 +121,7 @@ class Unit_Core_oxVatSelectorTest extends OxidTestCase
             // expected here
         }
 
-        $aHome = oxConfig::getInstance()->getConfigParam( 'aHomeCountry' );
+        $aHome = oxRegistry::getConfig()->getConfigParam( 'aHomeCountry' );
         $oUser->oxuser__oxcountryid = new oxField($aHome[0], oxField::T_RAW);
         $this->assertFalse($oVatSelector->getUserVat($oUser, true));
 

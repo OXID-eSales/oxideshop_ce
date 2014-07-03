@@ -38,7 +38,7 @@ class Unit_Core_oxUtilsPicTest extends OxidTestCase
 
             case "testDeletePictureExisting":
 
-                $myConfig = oxConfig::getInstance();
+                $myConfig = oxRegistry::getConfig();
 
                 // setup-> create a copy of a picture and delete this one for successful test
                 $sOrigTestPicFile   = "detail1_z3_ico_th.jpg";
@@ -68,7 +68,7 @@ class Unit_Core_oxUtilsPicTest extends OxidTestCase
 
             case "testDeletePictureExisting":
 
-                $myConfig = oxConfig::getInstance();
+                $myConfig = oxRegistry::getConfig();
 
                 // setup-> create a copy of a picture and delete this one for successful test
                 $sCloneTestPicFile  = "CC1672_th.jpg";
@@ -135,7 +135,7 @@ class Unit_Core_oxUtilsPicTest extends OxidTestCase
             $this->fail($sMsg);
         }
         //actual test
-        if ( !( oxUtilsPic::getInstance()->resizeImage( $sDir.$sTestImageFile, $sDir.$sTestImageFileResized, $iWidth, $iHeight, oxConfig::getInstance()->getConfigParam( 'iUseGDVersion' ), false ) ) ) {
+        if ( !( oxUtilsPic::getInstance()->resizeImage( $sDir.$sTestImageFile, $sDir.$sTestImageFileResized, $iWidth, $iHeight, oxRegistry::getConfig()->getConfigParam( 'iUseGDVersion' ), false ) ) ) {
             $this->fail("Failed to call resizeImage()");
         }
 
@@ -198,7 +198,7 @@ class Unit_Core_oxUtilsPicTest extends OxidTestCase
     public function testDeletePictureExisting()
     {
         $oUtilsPic = new oxutilspic();
-        $this->assertTrue( $oUtilsPic->UNITdeletePicture( 'CCdetail1_z3_ico_th.jpg', oxConfig::getInstance()->getPictureDir( false )."master/product/thumb/" ) );
+        $this->assertTrue( $oUtilsPic->UNITdeletePicture( 'CCdetail1_z3_ico_th.jpg', oxRegistry::getConfig()->getPictureDir( false )."master/product/thumb/" ) );
     }
 
     public function testIsPicDeletable()
@@ -309,7 +309,7 @@ class Unit_Core_oxUtilsPicTest extends OxidTestCase
     {
 
         $myUtils =new oxUtilsPic();
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         $sDir = "misc".DIRECTORY_SEPARATOR;
         $iWidth = 100;
         $iHeight = 48;

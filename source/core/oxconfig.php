@@ -155,13 +155,6 @@ class oxConfig extends oxSuperCfg
                                         'oxdeliveryset', 'oxdelivery', 'oxvendor', 'oxobject2category');
 
     /**
-     * oxConfig instance
-     *
-     * @var oxConfig
-     */
-    private static $_instance = null;
-
-    /**
      * Application starter instance
      *
      * @var oxStart
@@ -448,18 +441,6 @@ class oxConfig extends oxSuperCfg
             return $this->_handleCookieException( $oEx );
         }
 
-    }
-
-    /**
-     * Returns oxConfig instance
-     *
-     * @deprecated since v5.0 (2012-08-10); In order to get oxConfig instance use Registry functionality instead ( oxRegistry::getConfig() )
-     *
-     * @return oxConfig
-     */
-    public static function getInstance()
-    {
-        return oxRegistry::getConfig();
     }
 
     /**

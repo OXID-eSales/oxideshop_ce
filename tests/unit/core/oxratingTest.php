@@ -34,7 +34,7 @@ class Unit_Core_oxratingTest extends OxidTestCase
     {
         parent::setUp();
         $oDB = oxDb::getDb();
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         $sDate = date( 'Y-m-d', oxUtilsDate::getInstance()->getTime() - 5*24*60*60);
         $sInsert = "INSERT INTO `oxratings` (`OXID` ,`OXSHOPID` ,`OXUSERID` ,`OXOBJECTID` ,`OXRATING` ,`OXTIMESTAMP` ,
                     `OXTYPE`) VALUES ('test', '".$myConfig->getShopId()."', 'oxdefaultadmin', '1651', '5', '$sDate', 'oxarticle')";
@@ -49,7 +49,7 @@ class Unit_Core_oxratingTest extends OxidTestCase
     protected function tearDown()
     {
         $oDB = oxDb::getDb();
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         $sInsert = "DELETE from `oxratings` where OXID='test'";
         $oDB->Execute( $sInsert );
 

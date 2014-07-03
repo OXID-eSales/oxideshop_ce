@@ -88,7 +88,7 @@ class Unit_Core_oxSeoEncoderContentTest extends OxidTestCase
      */
     public function testGetContentUrlExisting()
     {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxConfig::getInstance()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxRegistry::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
 
         $sStdUrl = 'cl=content';
         $sSeoUrl = 'content-title/';
@@ -99,7 +99,7 @@ class Unit_Core_oxSeoEncoderContentTest extends OxidTestCase
         $oContent->oxcontents__oxtitle = new oxField('content title');
 
 
-        $sShopId   = oxConfig::getInstance()->getBaseShopId();
+        $sShopId   = oxRegistry::getConfig()->getBaseShopId();
         $iLang     = 1;
         $sObjectId = $oContent->getId();
         $sIdent    = md5(strtolower($sSeoUrl));;
@@ -111,7 +111,7 @@ class Unit_Core_oxSeoEncoderContentTest extends OxidTestCase
 
         $oEncoder = new oxSeoEncoderContent();
 
-        $sUrl    = oxConfig::getInstance()->getShopUrl() . $sSeoUrl;
+        $sUrl    = oxRegistry::getConfig()->getShopUrl() . $sSeoUrl;
         $sSeoUrl = $oEncoder->getContentUrl($oContent);
 
         $this->assertEquals($sUrl, $sSeoUrl);
@@ -119,7 +119,7 @@ class Unit_Core_oxSeoEncoderContentTest extends OxidTestCase
 
     public function testGetContentUrlExistingWithLangParam()
     {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxConfig::getInstance()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxRegistry::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
 
         $sStdUrl = 'cl=content';
         $sSeoUrl = 'content-title/';
@@ -130,7 +130,7 @@ class Unit_Core_oxSeoEncoderContentTest extends OxidTestCase
         $oContent->oxcontents__oxtitle = new oxField('content title');
 
 
-        $sShopId   = oxConfig::getInstance()->getBaseShopId();
+        $sShopId   = oxRegistry::getConfig()->getBaseShopId();
         $iLang     = 1;
         $sObjectId = $oContent->getId();
         $sIdent    = md5(strtolower($sSeoUrl));;
@@ -142,7 +142,7 @@ class Unit_Core_oxSeoEncoderContentTest extends OxidTestCase
 
         $oEncoder = new oxSeoEncoderContent();
 
-        $sUrl    = oxConfig::getInstance()->getShopUrl() . $sSeoUrl;
+        $sUrl    = oxRegistry::getConfig()->getShopUrl() . $sSeoUrl;
         $sSeoUrl = $oEncoder->getContentUrl($oContent, 1);
 
         $this->assertEquals($sUrl, $sSeoUrl);
@@ -153,7 +153,7 @@ class Unit_Core_oxSeoEncoderContentTest extends OxidTestCase
      */
     public function testGetContentUrlNotExisting()
     {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxConfig::getInstance()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '" . oxRegistry::getConfig()->getShopUrl() . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
 
         $oContent = new oxContent();
         $oContent->setId('contentid');
@@ -264,7 +264,7 @@ class Unit_Core_oxSeoEncoderContentTest extends OxidTestCase
 
     public function testonDeleteContent()
     {
-        $sShopId = oxConfig::getInstance()->getBaseShopId();
+        $sShopId = oxRegistry::getConfig()->getBaseShopId();
         $oDb     = oxDb::getDb();
         $sQ      = "insert into oxseo
                    ( oxobjectid, oxident, oxshopid, oxlang, oxstdurl, oxseourl, oxtype, oxfixed, oxexpired, oxparams )

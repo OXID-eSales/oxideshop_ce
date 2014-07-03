@@ -109,7 +109,7 @@ class Unit_Core_oxdeliverylistTest extends OxidTestCase
         oxArticleForOxdeliverylistTest::cleanup();
 
         // set to load full deliveries list
-        oxConfig::getInstance()->setConfigParam('bl_perfLoadDelivery', true);
+        oxRegistry::getConfig()->setConfigParam('bl_perfLoadDelivery', true);
 
         oxAddClassModule('oxDeliveryListTestClass', 'oxdeliverylist');
 
@@ -152,7 +152,7 @@ class Unit_Core_oxdeliverylistTest extends OxidTestCase
         $oCategory->setId('_testCategoryId');
         $oCategory->oxcategories__oxtitle = new oxField('_testCategoryTitle', oxField::T_RAW);
         $oCategory->oxcategories__oxactive = new oxField(1, oxField::T_RAW);
-        $oCategory->oxcategories__oxshopid = new oxField(oxConfig::getInstance()->getBaseShopId(), oxField::T_RAW);
+        $oCategory->oxcategories__oxshopid = new oxField(oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW);
         $oCategory->oxcategories__oxhidden = new oxField(0, oxField::T_RAW);
         $oCategory->oxcategories__oxdefsortmode = new oxField(0, oxField::T_RAW);
         $oCategory->oxcategories__oxparentid = new oxField('oxrootid', oxField::T_RAW);
@@ -179,7 +179,7 @@ class Unit_Core_oxdeliverylistTest extends OxidTestCase
             $oO2Cat->init( 'oxobject2category' );
             $oO2Cat->setId('_testO2CatId'.$i);
             $oO2Cat->oxobject2category__oxobjectid = new oxField($oArticle->getId(), oxField::T_RAW);
-            $oO2Cat->oxobject2category__oxshopid = new oxField(oxConfig::getInstance()->getShopId(), oxField::T_RAW);
+            $oO2Cat->oxobject2category__oxshopid = new oxField(oxRegistry::getConfig()->getShopId(), oxField::T_RAW);
             $oO2Cat->oxobject2category__oxcatnid = new oxField($oCategory->getId(), oxField::T_RAW);
 
 
@@ -318,7 +318,7 @@ class Unit_Core_oxdeliverylistTest extends OxidTestCase
         // test delivery
         $oDelivery = new oxDelivery();
         $oDelivery->setId( '_testdelivery' );
-        $oDelivery->oxdelivery__oxshopid = new oxField(oxConfig::getInstance()->getBaseShopId(), oxField::T_RAW);
+        $oDelivery->oxdelivery__oxshopid = new oxField(oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW);
         $oDelivery->oxdelivery__oxshopincl = new oxField($oDelivery->oxdelivery__oxshopid->value, oxField::T_RAW);
         $oDelivery->oxdelivery__oxactive = new oxField(1, oxField::T_RAW);
         $oDelivery->oxdelivery__oxtitle = new oxField('_testdelivery', oxField::T_RAW);

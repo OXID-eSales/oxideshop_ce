@@ -133,7 +133,7 @@ class Unit_Core_oxwrappingTest extends OxidTestCase
         $oWrapping->oxwrapping__oxactive_1 = new oxField(1);
         $oWrapping->save();
 
-        $this->_dDefaultVAT = oxConfig::getInstance()->getConfigParam( 'dDefaultVAT' );
+        $this->_dDefaultVAT = oxRegistry::getConfig()->getConfigParam( 'dDefaultVAT' );
     }
 
     /**
@@ -143,7 +143,7 @@ class Unit_Core_oxwrappingTest extends OxidTestCase
      */
     protected function tearDown()
     {
-        $myConfig  = oxConfig::getInstance();
+        $myConfig  = oxRegistry::getConfig();
         modConfig::getInstance()->setConfigParam( 'blEnterNetPrice', false );
 
         // card
@@ -255,7 +255,7 @@ class Unit_Core_oxwrappingTest extends OxidTestCase
         $oWrap->setWrappingVat( $this->_dDefaultVAT );
         $oWrapPrice = $oWrap->getWrappingPrice( 2 );
 
-        $dVat = 1+oxConfig::getInstance()->getConfigParam( 'dDefaultVAT' )/100;
+        $dVat = 1+oxRegistry::getConfig()->getConfigParam( 'dDefaultVAT' )/100;
         $this->assertEquals( 5.9 * $dVat, $oWrapPrice->getBruttoPrice(), '', 2 );
         $this->assertEquals( 5.9, $oWrapPrice->getNettoPrice() );
         $this->assertEquals('7,02', oxLang::getInstance()->formatCurrency( $oWrapPrice->getBruttoPrice() ) );
@@ -283,7 +283,7 @@ class Unit_Core_oxwrappingTest extends OxidTestCase
     public function testCalcFPriceInEUR()
     {
         $myUtils  = oxUtils::getInstance();
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $iTempCur = $myConfig->getActShopCurrencyObject()->id;
 
@@ -302,7 +302,7 @@ class Unit_Core_oxwrappingTest extends OxidTestCase
 
     public function testCalcFPriceInGBP()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         // setting active currency to GBP
         $myConfig->setActShopCurrency(1);
@@ -318,7 +318,7 @@ class Unit_Core_oxwrappingTest extends OxidTestCase
 
     public function testCalcFPriceInCHF()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         $myUtils  = oxUtils::getInstance();
 
         $iTempCur = $myConfig->getActShopCurrencyObject()->id;

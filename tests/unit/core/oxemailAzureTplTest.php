@@ -64,7 +64,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
 
         // set shop params for testing
         $this->_oShop = oxNew( "oxshop" );
-        $this->_oShop->load( oxConfig::getInstance()->getShopId() );
+        $this->_oShop->load( oxRegistry::getConfig()->getShopId() );
         $this->_oShop->oxshops__oxorderemail = new oxField('orderemail@orderemail.nl', oxField::T_RAW);
         $this->_oShop->oxshops__oxordersubject = new oxField('testOrderSubject', oxField::T_RAW);
         $this->_oShop->oxshops__oxsendednowsubject = new oxField('testSendedNowSubject', oxField::T_RAW);
@@ -86,7 +86,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         $this->_oArticle->setId('_testArticleId');
         $this->_oArticle->oxarticles__oxtitle = new oxField('testArticle', oxField::T_RAW);
         $this->_oArticle->oxarticles__oxartnum = new oxField('123456789', oxField::T_RAW);
-        $this->_oArticle->oxarticles__oxshopid = new oxField(oxConfig::getInstance()->getShopId(), oxField::T_RAW);
+        $this->_oArticle->oxarticles__oxshopid = new oxField(oxRegistry::getConfig()->getShopId(), oxField::T_RAW);
         //$this->_oArticle->oxarticles__oxamount = new oxField('12', oxField::T_RAW);
         $this->_oArticle->oxarticles__oxshortdesc = new oxField('testArticleDescription', oxField::T_RAW);
         $this->_oArticle->oxarticles__oxprice = new oxField('256', oxField::T_RAW);
@@ -112,7 +112,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
             // reload smarty
             oxUtilsView::getInstance()->getSmarty(true);
 
-            $oActShop = oxConfig::getInstance()->getActiveShop();
+            $oActShop = oxRegistry::getConfig()->getActiveShop();
             $oActShop->setLanguage(0);
             oxLang::getInstance()->setBaseLanguage(0);
             $this->cleanUpTable('oxuser');
@@ -173,7 +173,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
 
     protected function checkMailBody( $sFuncName, $sBody, $blWriteToTestFile = false )
     {
-        $sUtf = ( oxConfig::getInstance()->isUtf() ) ? '_utf8' : '';
+        $sUtf = ( oxRegistry::getConfig()->isUtf() ) ? '_utf8' : '';
 
         $sPath = getTestsBasePath().'/unit/email_templates/azure/'.$sFuncName.$sUtf.'.html';
         if ( !($sExpectedBody = file_get_contents($sPath)) ) {
@@ -201,7 +201,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         $sBody = str_replace("> <", "><", $sBody);
 
         $sExpectedShopUrl = "http://eshop/";
-        $sShopUrl = oxConfig::getInstance()->getConfigParam( 'sShopURL' );
+        $sShopUrl = oxRegistry::getConfig()->getConfigParam( 'sShopURL' );
 
         //remove shop url base path from links
         $sBody = str_replace($sShopUrl, $sExpectedShopUrl, $sBody);
@@ -366,7 +366,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
     public function testSendOrderEmailToOwner()
     {
 
-        oxConfig::getInstance()->setConfigParam( 'blSkipEuroReplace', true );
+        oxRegistry::getConfig()->setConfigParam( 'blSkipEuroReplace', true );
         modConfig::getInstance()->setConfigParam( 'blShowVATForDelivery', false );
 
         $oPrice = oxNew ( 'oxprice' );
@@ -478,7 +478,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
      */
     public function testSendOrderEMailToOwnerWhenShopLangIsDifferentFromAdminLang()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         oxLang::getInstance()->setTplLanguage( 1 );
         oxLang::getInstance()->setBaseLanguage( 1 );
 
@@ -575,7 +575,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
      */
     public function testSendForgotPwdEmail()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $oEmail = $this->getMock( 'oxEmail', array( "_sendMail", "_getShop", "_getUseInlineImages" ) );
         $oEmail->expects( $this->once() )->method( '_sendMail')->will( $this->returnValue( true ));
@@ -610,7 +610,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
      */
     public function testSendForgotPwdEmailToNotExistingUser()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $oEmail = $this->getMock( 'oxEmail', array( "_sendMail", "_getShop" ) );
         $oEmail->expects( $this->never() )->method( '_sendMail');
@@ -626,7 +626,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
      */
     public function testSendContactMail()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $sSubject   = 'testSubject';
         $sBody      = 'testBodyMessage';
@@ -771,7 +771,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
      */
     public function testSendSendedNowMail()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         $myConfig->setConfigParam( 'blAdmin', true );
         $myConfig->setAdminMode( true );
 
@@ -838,7 +838,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
      */
     public function testSendDownloadLinksMail()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         $myConfig->setConfigParam( 'blAdmin', true );
         $myConfig->setAdminMode( true );
 
@@ -891,7 +891,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
      */
     public function testSendBackupMail()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $aAttFiles    = array();
         $sAttPath     = null;
@@ -1065,7 +1065,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
      */
     public function testSendPriceAlarmToCustomer()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
         $myConfig->setConfigParam( 'blAdmin', true );
         $myConfig->setAdminMode( true );
         $oAlarm = oxNew( "oxpricealarm");
@@ -1111,7 +1111,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
 
         $oShop = $this->getMock( 'oxShop', array( 'getImageUrl' ) );
         $oShop->expects( $this->any() )->method( 'getImageUrl' );
-        //$oShop->loadInLang( 1, oxConfig::getinstance()->getBaseShopId() );
+        //$oShop->loadInLang( 1, oxRegistry::getConfig()->getBaseShopId() );
         $oShop->oxshops__oxorderemail = new oxField( 'order@oxid-esales.com' );
         $oShop->oxshops__oxname =  new oxField( 'test shop' );
 

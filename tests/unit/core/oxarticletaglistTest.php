@@ -213,7 +213,7 @@ class Unit_Core_oxarticletaglistTest extends OxidTestCase
             $this->assertEquals(9, count($aTags));
             $this->assertTrue( array_key_exists( 'fee', $aTags ) );
 
-        oxConfig::getInstance()->setConfigParam( 'blUseTimeCheck', $blParam) ;
+        oxRegistry::getConfig()->setConfigParam( 'blUseTimeCheck', $blParam) ;
         $oArticle->oxarticles__oxactive->value = 1;
         $oArticle->oxarticles__oxactivefrom->value = '0000-00-00 00:00:00';
         $oArticle->oxarticles__oxactiveto->value = '0000-00-00 00:00:00';

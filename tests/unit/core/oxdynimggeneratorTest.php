@@ -243,7 +243,7 @@ class Unit_Core_oxDynImgGeneratorTest extends OxidTestCase
      */
     public function testGetImagePath()
     {
-        $sDir = basename( oxConfig::getInstance()->getPictureDir(false) );
+        $sDir = basename( oxRegistry::getConfig()->getPictureDir(false) );
         $i = 0;
 
         $oGen = $this->getMock( "oxDynImgGenerator", array( "_getImageMasterPath", "_getImageName", "_getImageTarget", "_getNopicImageTarget", "_generateImage", "_getImageType", "_setHeader", "_getHeaders" ) );

@@ -82,7 +82,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
      */
     public function testDeleteArticleMasterPicture()
     {
-        $sAbsImageDir = oxConfig::getInstance()->getPictureDir(false);
+        $sAbsImageDir = oxRegistry::getConfig()->getPictureDir(false);
 
         $aDelPics = array();
         $aDelPics[] = array( "sField"    => "oxpic1",
@@ -123,7 +123,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
      */
     public function testDeleteArticleMasterPicture_skipsMasterPicture()
     {
-        $sAbsImageDir = oxConfig::getInstance()->getPictureDir(false);
+        $sAbsImageDir = oxRegistry::getConfig()->getPictureDir(false);
 
         $aDelPics[0] = array( "sField"    => "oxpic1",
                               "sDir"      => "generated/product/1/",
@@ -163,7 +163,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
      */
     public function testDeleteArticleMasterPicture_skipsIfDefinedCustomFields()
     {
-        $sAbsImageDir = oxConfig::getInstance()->getPictureDir(false);
+        $sAbsImageDir = oxRegistry::getConfig()->getPictureDir(false);
 
         $aDelPics[0] = array("sField"    => "oxpic1",
                              "sDir"      => "generated/product/1/",
@@ -217,7 +217,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
      */
     public function testDeleteArticleMasterPicture_emptyPic()
     {
-        $sAbsImageDir = oxConfig::getInstance()->getPictureDir(false);
+        $sAbsImageDir = oxRegistry::getConfig()->getPictureDir(false);
 
         //test article
         $oArticle = new oxArticle();
@@ -241,7 +241,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
      */
     public function testDeleteArticleMasterPicture_usesBasename()
     {
-        $sAbsImageDir = oxConfig::getInstance()->getPictureDir(false);
+        $sAbsImageDir = oxRegistry::getConfig()->getPictureDir(false);
 
         $sField    = "oxpic1";
         $sDir      = "master/product/1/";
@@ -270,7 +270,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
      */
     public function testDeleteMainIcon()
     {
-        $sAbsImageDir = oxConfig::getInstance()->getPictureDir(false);
+        $sAbsImageDir = oxRegistry::getConfig()->getPictureDir(false);
 
         $sField    = "oxicon";
         $sDir      = "master/product/icon/";
@@ -316,7 +316,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
      */
     public function testDeleteThumbnail()
     {
-        $sAbsImageDir = oxConfig::getInstance()->getPictureDir(false);
+        $sAbsImageDir = oxRegistry::getConfig()->getPictureDir(false);
 
         $sField    = "oxthumb";
         $sDir      = "master/product/thumb/";
@@ -361,7 +361,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
      */
     public function testDeleteZoomPicture_dbFieldExists()
     {
-        $sAbsImageDir = oxConfig::getInstance()->getPictureDir(false);
+        $sAbsImageDir = oxRegistry::getConfig()->getPictureDir(false);
         oxTestModules::addFunction('oxDbMetaDataHandler', 'fieldExists', '{ return true; }');
 
         $sField    = "oxzoom2";
@@ -430,7 +430,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
      */
     public function testDeleteZoomPicture_usingMasterImage()
     {
-        $sAbsImageDir = oxConfig::getInstance()->getPictureDir(false);
+        $sAbsImageDir = oxRegistry::getConfig()->getPictureDir(false);
         oxTestModules::addFunction('oxDbMetaDataHandler', 'fieldExists', '{ return false; }');
 
         $aDelPics[0] = array("sField"    => "oxpic2",
@@ -641,7 +641,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
      */
     public function testGetProductPicUrl()
     {
-        $oConfig = oxConfig::getInstance();
+        $oConfig = oxRegistry::getConfig();
         $sSize = $oConfig->getConfigParam( 'aDetailImageSizes' );
         $sPath = $oConfig->getPictureUrl( "" ) . 'generated/product/1/380_340_75/30-360-back_p1_z_f_th_665.jpg';
 
@@ -656,7 +656,7 @@ class Unit_Core_oxPictureHandlerTest extends OxidTestCase
      */
     public function testGetProductPicUrlNopic()
     {
-        $oConfig = oxConfig::getInstance();
+        $oConfig = oxRegistry::getConfig();
         $sSize = $oConfig->getConfigParam( 'aDetailImageSizes' );
         $sPath = $oConfig->getPictureUrl( "" ) . 'generated/product/1/380_340_75/nopic.jpg';
 

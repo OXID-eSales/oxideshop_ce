@@ -38,7 +38,7 @@ class Unit_Core_oxcontentTest extends OxidTestCase
         parent::setUp();
         $oContent = new oxContent();
         $oContent->oxcontents__oxtitle = new oxField( 'test', oxField::T_RAW );
-        $oContent->oxcontents__oxshopid = new oxField( oxConfig::getInstance()->getShopId(), oxField::T_RAW );
+        $oContent->oxcontents__oxshopid = new oxField( oxRegistry::getConfig()->getShopId(), oxField::T_RAW );
         $oContent->oxcontents__oxloadid = new oxField( '_testLoadId', oxField::T_RAW );
         $oContent->oxcontents__oxcontent = new oxField( "testcontentDE&, &, !@#$%^&*%$$&@'.,;p\"ss", oxField::T_RAW );
         $oContent->oxcontents__oxactive = new oxField( '1', oxField::T_RAW );
@@ -75,7 +75,7 @@ class Unit_Core_oxcontentTest extends OxidTestCase
      */
     public function testSaveAgb()
     {
-        $sShopId = oxConfig::getInstance()->getShopId();
+        $sShopId = oxRegistry::getConfig()->getShopId();
 
         $oDb = oxDb::getDb();
         $oDb->execute( "insert into oxacceptedterms (`OXUSERID`, `OXSHOPID`, `OXTERMVERSION`) values ('testuser', '{$sShopId}', '0')" );
@@ -158,7 +158,7 @@ class Unit_Core_oxcontentTest extends OxidTestCase
 
     public function testGetStdLink()
     {
-        $sUrl = oxConfig::getInstance()->getShopHomeURL() . "cl=content&amp;oxloadid=testLoadId&amp;oxcid=testts";
+        $sUrl = oxRegistry::getConfig()->getShopHomeURL() . "cl=content&amp;oxloadid=testLoadId&amp;oxcid=testts";
 
         $oContent = new oxContent();
         $oContent->setId( 'testts' );
@@ -211,7 +211,7 @@ class Unit_Core_oxcontentTest extends OxidTestCase
 
     public function testGetStdLinkWithLangParam()
     {
-        $sUrl = oxConfig::getInstance()->getShopHomeURL() . "cl=content&amp;oxloadid=testLoadId&amp;oxcid=testts";
+        $sUrl = oxRegistry::getConfig()->getShopHomeURL() . "cl=content&amp;oxloadid=testLoadId&amp;oxcid=testts";
         $oContent = new oxContent();
         $oContent->setId( 'testts' );
         $oContent->oxcontents__oxloadid = new oxField( 'testLoadId' );

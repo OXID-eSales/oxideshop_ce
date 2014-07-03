@@ -244,7 +244,7 @@ class Unit_Views_userTest extends OxidTestCase
         try {
             $oO->render();
         } catch (Exception $e) {
-            $this->assertEquals(oxConfig::getInstance()->getShopHomeURL().'cl=basket', $e->getMessage());
+            $this->assertEquals(oxRegistry::getConfig()->getShopHomeURL().'cl=basket', $e->getMessage());
             return;
         }
         $this->fail("no Exception thrown in redirect");
@@ -419,6 +419,6 @@ class Unit_Views_userTest extends OxidTestCase
         $this->setConfigParam('blnewssubscribed', true);
 
         $oUser = new User();
-        $this->assertEquals( oxConfig::getInstance()->getRequestParameter('blnewssubscribed'), $oUser->modifyBillAddress() );
+        $this->assertEquals( oxRegistry::getConfig()->getRequestParameter('blnewssubscribed'), $oUser->modifyBillAddress() );
     }
 }

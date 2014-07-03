@@ -104,7 +104,7 @@ class Unit_Admin_ArticlePicturesTest extends OxidTestCase
     {
         return;
 
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $sAbsDynImageDir = $myConfig->getPictureDir(false);
         $sActShopId = $myConfig->getBaseShopId();

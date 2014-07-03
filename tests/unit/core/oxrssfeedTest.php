@@ -127,10 +127,10 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
         oxTestModules::publicize('oxrssfeed', '_getCacheId');
         $oRss = oxNew('oxrssfeed');
 
-        $this->assertEquals('asd_'.oxConfig::getInstance()->getShopId().'_4_0', $oRss->p_getCacheId('asd'));
+        $this->assertEquals('asd_'.oxRegistry::getConfig()->getShopId().'_4_0', $oRss->p_getCacheId('asd'));
 
         modConfig::setRequestParameter('currency', 1);
-        $this->assertEquals('asd_'.oxConfig::getInstance()->getShopId().'_4_1', $oRss->p_getCacheId('asd'));
+        $this->assertEquals('asd_'.oxRegistry::getConfig()->getShopId().'_4_1', $oRss->p_getCacheId('asd'));
     }
     public function testLoadFromCache()
     {
@@ -960,7 +960,7 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
         $oLang->setBaseLanguage( 1 );
         oxRegistry::set( 'oxLang', $oLang );
 
-        $oConfig = oxConfig::getInstance();
+        $oConfig = oxRegistry::getConfig();
         $oConfig->setConfigParam( 'blSeoMode', false );
         $oConfig->setConfigParam( 'sShopURL', 'http://myshop/' );
 
@@ -982,7 +982,7 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
         $oLang->setBaseLanguage( 1 );
         oxRegistry::set( 'oxLang', $oLang );
 
-        $oConfig = oxConfig::getInstance();
+        $oConfig = oxRegistry::getConfig();
         $oConfig->setConfigParam( 'blSeoMode', true );
         $oConfig->setConfigParam( 'sShopURL', 'http://myshop/' );
 
@@ -1106,7 +1106,7 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
         $oLang->setBaseLanguage( 1 );
         oxRegistry::set( 'oxLang', $oLang );
 
-        $oConfig = oxConfig::getInstance();
+        $oConfig = oxRegistry::getConfig();
         $oConfig->setConfigParam( 'blSeoMode', false );
         $oConfig->setConfigParam( 'sShopURL', 'http://myshop/' );
 
@@ -1129,7 +1129,7 @@ class Unit_Core_oxrssfeedTest extends OxidTestCase
         $oLang->setBaseLanguage( 1 );
         oxRegistry::set( 'oxLang', $oLang );
 
-        $oConfig = oxConfig::getInstance();
+        $oConfig = oxRegistry::getConfig();
         $oConfig->setConfigParam( 'blSeoMode', true );
         $oConfig->setConfigParam( 'sShopURL', 'http://myshop/' );
 

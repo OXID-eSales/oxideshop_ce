@@ -118,7 +118,7 @@ class Unit_Modules_Oe_Invoicepdf_Models_InvoicePdfOxOrderTest extends OxidTestCa
      */
     private function _insertTestOrder()
     {
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         //set order
         $this->_oOrder = oxNew( "oxOrder" );
@@ -178,7 +178,7 @@ class Unit_Modules_Oe_Invoicepdf_Models_InvoicePdfOxOrderTest extends OxidTestCa
     private function _insertTestArticle()
     {
         $oDB = oxDb::getDb();
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $sInsert = "insert into oxarticles (`OXID`,`OXSHOPID`,`OXTITLE`,`OXSTOCKFLAG`,`OXSTOCK`,`OXPRICE`)
                     values ('_testArticleId','".$myConfig->getShopId()."','testArticleTitle','2','20','119')";
@@ -1037,7 +1037,7 @@ class Unit_Modules_Oe_Invoicepdf_Models_InvoicePdfOxOrderTest extends OxidTestCa
     public function testInvoicepdfOxOrder_getPaymentTerm($param, $expect)
     {
         $oInvoicepdfOxOrder = new InvoicepdfOxOrder();
-        oxConfig::getInstance()->setConfigParam('iPaymentTerm', $param);
+        oxRegistry::getConfig()->setConfigParam('iPaymentTerm', $param);
 
         $this->assertEquals( $expect, $oInvoicepdfOxOrder->getPaymentTerm() );
     }

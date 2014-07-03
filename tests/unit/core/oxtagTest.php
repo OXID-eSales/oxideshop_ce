@@ -144,10 +144,10 @@ class Unit_Core_oxtagTest extends OxidTestCase
 
 
         $oTag->set( "zauber" );
-        $this->assertEquals( oxConfig::getInstance()->getConfigParam("sShopURL")."tag/zauber/", $oTag->getLink() );
+        $this->assertEquals( oxRegistry::getConfig()->getConfigParam("sShopURL")."tag/zauber/", $oTag->getLink() );
 
         $oTag->set( "testTag" );
-        $this->assertEquals( oxConfig::getInstance()->getConfigParam("sShopURL")."tag/testtag/", $oTag->getLink() );
+        $this->assertEquals( oxRegistry::getConfig()->getConfigParam("sShopURL")."tag/testtag/", $oTag->getLink() );
     }
 
     /**
@@ -162,7 +162,7 @@ class Unit_Core_oxtagTest extends OxidTestCase
         $oTag = new oxTag();
 
         $oTag->set( "testTag" );
-        $this->assertEquals( oxConfig::getInstance()->getConfigParam("sShopURL")."index.php?cl=tag&amp;searchtag=testtag&amp;lang=0", $oTag->getLink() );
+        $this->assertEquals( oxRegistry::getConfig()->getConfigParam("sShopURL")."index.php?cl=tag&amp;searchtag=testtag&amp;lang=0", $oTag->getLink() );
     }
 
     /**

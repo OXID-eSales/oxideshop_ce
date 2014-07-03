@@ -35,7 +35,7 @@ class Unit_Views_oxCmpShopTest extends OxidTestCase
      */
     public function testRenderNoActiveShop()
     {
-        $sRedirUrl = oxConfig::getInstance()->getShopMainUrl().'offline.html';
+        $sRedirUrl = oxRegistry::getConfig()->getShopMainUrl().'offline.html';
         $this->setExpectedException('oxException', $sRedirUrl);
 
         $oView = $this->getMock( "oxView", array( "getClassName" ) );

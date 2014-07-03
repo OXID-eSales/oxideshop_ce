@@ -55,7 +55,7 @@ class Unit_Core_oxManufacturerlistTest extends OxidTestCase
      */
 /*    public function test_loadManufacturerList() {
         $myUtils = oxUtils::getInstance();
-        $myConfig= oxConfig::getInstance();
+        $myConfig= oxRegistry::getConfig();
         $myDB    = oxDb::getDB();
 
         $oManufacturerlist = oxNew( 'oxManufacturerlist' );
@@ -139,7 +139,7 @@ class Unit_Core_oxManufacturerlistTest extends OxidTestCase
      */
     public function testBuildManufacturerTree()
     {
-        $myConfig= oxConfig::getInstance();
+        $myConfig= oxRegistry::getConfig();
         $myDB    = oxDb::getDB();
 
         $oManufacturerlist = $this->getProxyClass("oxManufacturerList"); //oxNew('oxManufacturerlist', 'core');
@@ -177,7 +177,7 @@ class Unit_Core_oxManufacturerlistTest extends OxidTestCase
     public function testAddCategoryFields()
     {
         oxTestModules::addFunction("oxutils", "seoIsActive", "{return false;}");
-        $myConfig = oxConfig::getInstance();
+        $myConfig = oxRegistry::getConfig();
 
         $oManufacturerlist = new oxManufacturerlist();
         $oManufacturerlist->loadManufacturerList();

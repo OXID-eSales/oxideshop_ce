@@ -154,7 +154,7 @@ class DbRestore
     public function getDumpFilePath()
     {
         if (is_null($this->_sTmpFilePath)) {
-            $sDbName = oxConfig::getInstance()->getConfigParam('dbName');
+            $sDbName = oxRegistry::getConfig()->getConfigParam('dbName');
             $this->_sTmpFilePath = $this->_sTmpDir . '/tmp_db_dump_' . $sDbName;
         }
 
@@ -556,14 +556,14 @@ class DbRestore
         $aTables = $this->_getDbTables();
 
         if (empty($aTables)) {
-            $sDbName = oxConfig::getInstance()->getConfigParam('dbName');
+            $sDbName = oxRegistry::getConfig()->getConfigParam('dbName');
 
             throw new Exception("no tables on "
-                . oxConfig::getInstance()->getConfigParam('dbHost')
+                . oxRegistry::getConfig()->getConfigParam('dbHost')
                 . ":$sDbName, using "
-                . oxConfig::getInstance()->getConfigParam('dbUser')
+                . oxRegistry::getConfig()->getConfigParam('dbUser')
                 . ":"
-                . oxConfig::getInstance()->getConfigParam('dbPwd'));
+                . oxRegistry::getConfig()->getConfigParam('dbPwd'));
         }
 
         $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
@@ -644,7 +644,7 @@ class DbRestore
         $sSelect = 'CHECKSUM TABLE ' . implode(", ", $aTables);
         $aResults = $oDb->getArray($sSelect);
 
-        $sDbName = oxConfig::getInstance()->getConfigParam('dbName');
+        $sDbName = oxRegistry::getConfig()->getConfigParam('dbName');
         $aChecksum = array();
         foreach ($aResults as $aResult) {
             $sTable = str_replace($sDbName.'.', '', $aResult['Table']);

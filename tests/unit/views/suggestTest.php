@@ -79,7 +79,7 @@ class Unit_Views_suggestTest extends OxidTestCase
     public function testGetRecommList()
     {
         $myDB = oxDb::getDB();
-        $sShopId = oxConfig::getInstance()->getShopId();
+        $sShopId = oxRegistry::getConfig()->getShopId();
         // adding article to recommendlist
         $sQ = 'insert into oxrecommlists ( oxid, oxuserid, oxtitle, oxdesc, oxshopid ) values ( "testlist", "oxdefaultadmin", "oxtest", "oxtest", "'.$sShopId.'" ) ';
         $myDB->Execute( $sQ );
@@ -119,8 +119,8 @@ class Unit_Views_suggestTest extends OxidTestCase
 
     public function testGetLink()
     {
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxConfig::getInstance()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
-        $oCfg = oxConfig::getInstance();
+        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxRegistry::getConfig()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
+        $oCfg = oxRegistry::getConfig();
         $oV = $this->getMock( 'suggest', array( '_getRequestParams', '_getSeoRequestParams' ) );
         $oV->expects( $this->any() )->method( '_getRequestParams' )->will( $this->returnValue( 'cl=suggest' ) );
         $oV->expects( $this->any() )->method( '_getSeoRequestParams' )->will( $this->returnValue( 'cl=suggest' ) );

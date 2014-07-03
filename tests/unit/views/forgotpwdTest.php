@@ -178,7 +178,7 @@ class Unit_Views_forgotpwdTest extends OxidTestCase
         // adding test user
         $oUser = new oxuser();
         $oUser->setId( '_testArt' );
-        $oUser->oxuser__oxshopid = new oxfield( oxConfig::getInstance()->getShopId() );
+        $oUser->oxuser__oxshopid = new oxfield( oxRegistry::getConfig()->getShopId() );
         $oUser->setPassword( 'xxxxxx' );
         $oUser->setUpdateKey();
 

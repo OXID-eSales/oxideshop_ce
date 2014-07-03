@@ -226,7 +226,7 @@ class oxEmosAdapter extends oxSuperCfg
     {
         $myConfig = $this->getConfig();
         if (!$myConfig->isUtf()) {
-            $sContent = iconv(oxLang::getInstance()->translateString('charset'), 'UTF-8', $sContent);
+            $sContent = iconv(oxRegistry::getLang()->translateString('charset'), 'UTF-8', $sContent);
         }
         return $sContent;
     }

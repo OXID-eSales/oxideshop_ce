@@ -60,18 +60,6 @@ class oxFb extends Facebook
     }
 
     /**
-     * Returns object instance
-     *
-     * @deprecated since v5.0 (2012-08-10); Use oxRegistry::get("oxFb") instead.
-     *
-     * @return oxPictureHandler
-     */
-    public static function getInstance()
-    {
-        return oxRegistry::get("oxFb");
-    }
-
-    /**
      * Checks is user is connected using Facebook connect.
      *
      * @return bool

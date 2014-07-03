@@ -70,18 +70,6 @@ class Unit_Core_oxfbTest extends OxidTestCase
         parent::tearDown();
     }
 
-    /**
-     * Testing method getInstance()
-     *
-     * @return null
-     */
-    public function testGetInstance()
-    {
-        // cannot start session at this point, output already started
-        $oInstance = @oxFb::getInstance();
-        $this->assertTrue( $oInstance instanceof oxFb );
-    }
-
    /**
     * Testing method isConnected() - FB connect is disabled
     */

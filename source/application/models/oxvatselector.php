@@ -33,25 +33,6 @@ class oxVatSelector extends oxSuperCfg
     protected $_blCatVatSet = null;
 
     /**
-     * oxVatSelector instance
-     *
-     * @var oxVatSelector
-     */
-    protected static $_instance = null;
-
-    /**
-     * Returns singleton oxVatSelector object instance or create new if needed
-     *
-     * @deprecated since v5.0 (2012-08-10); Use oxRegistry::get("oxVatSelector") instead.
-     *
-     * @return oxVatSelector
-     */
-    public static function getInstance()
-    {
-        return oxRegistry::get("oxVatSelector");
-    }
-
-    /**
      * keeps loaded user Vats for later reusage
      *
      * @var array

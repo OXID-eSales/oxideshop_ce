@@ -2210,7 +2210,7 @@ class oxUser extends oxBase
     /**
      * Return user state id
      *
-     * @deprecated since next major version (2014-01-10); Naming changed use function getStateId()
+     * @deprecated since v5.2.0 (2014-01-10); Naming changed use function getStateId()
      *
      * @return string
      */

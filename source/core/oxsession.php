@@ -473,22 +473,6 @@ class oxSession extends oxSuperCfg
      * @param string $name  Name of parameter to store
      * @param mixed  $value Value of parameter
      *
-     * @deprecated since v5.0.0 (2012-08-27); Use public setVariable()
-     *
-     * @return null
-     */
-    public static function setVar( $name, $value )
-    {
-
-        return oxRegistry::getSession()->setVariable( $name, $value );
-    }
-
-    /**
-     * Sets parameter and its value to global session mixedvar array.
-     *
-     * @param string $name  Name of parameter to store
-     * @param mixed  $value Value of parameter
-     *
      * @return null
      */
     public function setVariable( $name, $value )

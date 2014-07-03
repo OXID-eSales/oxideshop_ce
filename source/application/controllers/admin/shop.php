@@ -48,7 +48,7 @@ class Shop extends oxAdminView
             }
 
             $this->_aViewData["currentadminshop"] = $sCurrentAdminShop;
-            oxSession::setVar("currentadminshop", $sCurrentAdminShop);
+            oxRegistry::getSession()->setVariable("currentadminshop", $sCurrentAdminShop);
 
 
         return "shop.tpl";

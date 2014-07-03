@@ -1106,7 +1106,7 @@ class Unit_Core_oxsessionTest extends OxidTestCase
     }
 
     /**
-     * oxsession::setVar() test
+     * oxRegistry::getSession()->setVariable() test
      */
     function testSetHasGetVar()
     {

@@ -916,7 +916,7 @@ class Unit_utf8Test extends OxidTestCase
     {
         $sValue = 'agentūrų Литовские für';
         $aDynVal = array("kktype" => "visa", "kknumber" => "12345", "kkmonth" => "11", "kkyear" => "2008", "kkname" => $sValue, "kkpruef" => "56789");
-        oxSession::setVar( 'dynvalue', $aDynVal );
+        oxRegistry::getSession()->setVariable( 'dynvalue', $aDynVal );
 
         $oOrder = $this->getProxyClass( "oxOrder" );
         $oOrder->oxorder__oxuserid = new oxField();

@@ -1261,7 +1261,7 @@ class oxUBase extends oxView
             // M45 Possibility to push any "Show articles per page" number parameter
             $iNrofCatArticles = ( in_array( $iNrofArticles, $aNrofCatArticles ) ) ? $iNrofArticles : $iNrofCatArticles;
             $oViewConf->setViewConfigParam( 'iartPerPage', $iNrofCatArticles );
-            oxSession::setVar( '_artperpage', $iNrofCatArticles );
+            oxRegistry::getSession()->setVariable( '_artperpage', $iNrofCatArticles );
         } elseif ( ( $iSessArtPerPage = oxRegistry::getSession()->getVariable( '_artperpage' ) )&& is_numeric( $iSessArtPerPage ) ) {
             // M45 Possibility to push any "Show articles per page" number parameter
             $iNrofCatArticles = ( in_array( $iSessArtPerPage, $aNrofCatArticles ) ) ? $iSessArtPerPage : $iNrofCatArticles;

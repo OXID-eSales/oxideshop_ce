@@ -184,7 +184,7 @@ class GenImport_Main extends oxAdminDetails
     protected function _getCsvFieldsNames()
     {
         $blCsvContainsHeader = $this->getConfig()->getRequestParameter( 'blContainsHeader' );
-        oxSession::setVar( 'blCsvContainsHeader', $blCsvContainsHeader );
+        oxRegistry::getSession()->setVariable( 'blCsvContainsHeader', $blCsvContainsHeader );
         $sCsvPath = $this->_getUploadedCsvFilePath();
 
         $aFirstRow = $this->_getCsvFirstRow();
@@ -232,8 +232,8 @@ class GenImport_Main extends oxAdminDetails
     protected function _resetUploadedCsvData()
     {
         $this->_sCsvFilePath = null;
-        oxSession::setVar( 'sCsvFilePath', null );
-        oxSession::setVar( 'blCsvContainsHeader', null );
+        oxRegistry::getSession()->setVariable( 'sCsvFilePath', null );
+        oxRegistry::getSession()->setVariable( 'blCsvContainsHeader', null );
     }
 
     /**
@@ -296,7 +296,7 @@ class GenImport_Main extends oxAdminDetails
         if ( isset( $aFile['name'] ) && $aFile['name'] ) {
             $this->_sCsvFilePath = $oConfig->getConfigParam( 'sCompileDir' ) . basename( $aFile['tmp_name'] );
             move_uploaded_file( $aFile['tmp_name'], $this->_sCsvFilePath );
-            oxSession::setVar( 'sCsvFilePath', $this->_sCsvFilePath );
+            oxRegistry::getSession()->setVariable( 'sCsvFilePath', $this->_sCsvFilePath );
             return $this->_sCsvFilePath;
         }
     }

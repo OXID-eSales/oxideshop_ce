@@ -529,7 +529,7 @@ class OxNavigationTree extends oxSuperCfg
                 }
 
                 // caching last load state
-                oxSession::setVar( "loadedremotexml", $sDynPath ? true : false );
+                oxRegistry::getSession()->setVariable( "loadedremotexml", $sDynPath ? true : false );
             }
         } else {
             if ( $sShopCountry ) {

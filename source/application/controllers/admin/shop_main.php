@@ -64,8 +64,8 @@ class Shop_Main extends oxAdminDetails
             $oShop->loadInLang( $isubjlang, $soxId );
 
             $this->_aViewData["edit"] =  $oShop;
-            //oxSession::setVar( "actshop", $soxId);//echo "<h2>$soxId</h2>";
-            oxSession::setVar( "shp", $soxId);
+            //oxRegistry::getSession()->setVariable( "actshop", $soxId);//echo "<h2>$soxId</h2>";
+            oxRegistry::getSession()->setVariable( "shp", $soxId);
         }
 
 
@@ -129,7 +129,7 @@ class Shop_Main extends oxAdminDetails
         $this->_aViewData["updatelist"] =  "1";
 
 
-        oxSession::setVar( "actshop", $soxId);
+        oxRegistry::getSession()->setVariable( "actshop", $soxId);
     }
 
     /**

@@ -182,7 +182,7 @@ class Payment extends oxUBase
         if ( !$this->getAllSetsCnt() ) {
             // no fitting shipping set found, setting default empty payment
             $this->_setDefaultEmptyPayment();
-            oxSession::setVar( 'sShipSet', null );
+            oxRegistry::getSession()->setVariable( 'sShipSet', null );
         }
 
         $this->_unsetPaymentErrors();
@@ -659,7 +659,7 @@ class Payment extends oxUBase
             $aDynData["kkmonth"] = null;
             $aDynData["kkyear"] = null;
             $aDynData["kkpruef"] = null;
-            oxSession::setVar("dynvalue", $aDynData);
+            oxRegistry::getSession()->setVariable("dynvalue", $aDynData);
         }
 
         if (  !$this->_checkArrValuesEmpty( $_REQUEST["dynvalue"], $aFields ) ||

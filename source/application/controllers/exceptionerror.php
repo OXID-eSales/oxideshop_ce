@@ -51,7 +51,7 @@ class ExceptionError extends oxUBase
         $oSmarty->assign_by_ref( "Errors", $aViewData["Errors"] );
 
         // resetting errors from session
-        oxSession::setVar( 'Errors', array() );
+        oxRegistry::getSession()->setVariable( 'Errors', array() );
     }
 
     /**

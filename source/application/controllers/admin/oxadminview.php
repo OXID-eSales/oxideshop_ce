@@ -577,8 +577,8 @@ class oxAdminView extends oxView
     public function chshp()
     {
         $sActShop = oxRegistry::getConfig()->getRequestParameter( 'shp' );
-        oxSession::setVar( "shp", $sActShop );
-        oxSession::setVar( 'currentadminshop', $sActShop );
+        oxRegistry::getSession()->setVariable( "shp", $sActShop );
+        oxRegistry::getSession()->setVariable( 'currentadminshop', $sActShop );
     }
 
     /**

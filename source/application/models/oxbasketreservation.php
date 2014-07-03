@@ -50,7 +50,7 @@ class oxBasketReservation extends oxSuperCfg
         $sId = oxSession::getVar('basketReservationToken');
         if (!$sId) {
             $sId = oxUtilsObject::getInstance()->generateUId();
-            oxSession::setVar( 'basketReservationToken', $sId );
+            oxRegistry::getSession()->setVariable( 'basketReservationToken', $sId );
         }
         return $sId;
     }
@@ -314,7 +314,7 @@ class oxBasketReservation extends oxSuperCfg
             $oRev = $this->getReservations();
             if ( $oRev && $oRev->getId() ) {
                 $iTimeout -= ( oxRegistry::get("oxUtilsDate")->getTime() - (int) $oRev->oxuserbaskets__oxupdate->value );
-                oxSession::setVar( "iBasketReservationTimeout", $oRev->oxuserbaskets__oxupdate->value );
+                oxRegistry::getSession()->setVariable( "iBasketReservationTimeout", $oRev->oxuserbaskets__oxupdate->value );
             } elseif ( ( $iSessionTimeout = oxSession::getVar( "iBasketReservationTimeout" ) ) ) {
                 $iTimeout -= ( oxRegistry::get("oxUtilsDate")->getTime() - (int) $iSessionTimeout );
             }

@@ -353,7 +353,7 @@ class aList extends oxUBase
             //and new filters for active language set.
             $aSessionFilter[$sActCat]         = null;
             $aSessionFilter[$sActCat][$iLang] = $aFilter;
-            oxSession::setVar('session_attrfilter', $aSessionFilter);
+            oxRegistry::getSession()->setVariable('session_attrfilter', $aSessionFilter);
         }
     }
 

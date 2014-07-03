@@ -87,7 +87,7 @@ class Wishlist extends oxUBase
                     $this->_oWishUser = $oUser;
 
                     // store this one to session
-                    oxSession::setVar( 'wishid', $sUserId );
+                    oxRegistry::getSession()->setVariable( 'wishid', $sUserId );
                 }
             }
         }

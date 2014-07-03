@@ -537,7 +537,7 @@ class oxUtilsFile extends oxSuperCfg
         }
 
         $aCheckCache[$sFile] = $blRet;
-        oxSession::setVar( "checkcache", $aCheckCache );
+        oxRegistry::getSession()->setVariable( "checkcache", $aCheckCache );
 
         return $blRet;
     }

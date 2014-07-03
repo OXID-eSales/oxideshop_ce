@@ -152,7 +152,7 @@ class oxcmp_basket extends oxView
                 $oNewItem->dBundledAmount = $oBasketItem->getdBundledAmount();
 
                 // passing article
-                oxSession::setVar('_newitem', $oNewItem);
+                oxRegistry::getSession()->setVariable('_newitem', $oNewItem);
             }
 
 
@@ -244,7 +244,7 @@ class oxcmp_basket extends oxView
         if ($this->getConfig()->getConfigParam('iNewBasketItemMessage') == 3) {
 
             // saving return to shop link to session
-            oxSession::setVar('_backtoshop', $sClass . $sPosition);
+            oxRegistry::getSession()->setVariable('_backtoshop', $sClass . $sPosition);
 
             // redirecting to basket
             $sClass = 'basket?';
@@ -391,7 +391,7 @@ class oxcmp_basket extends oxView
      */
     protected function _setLastCall($sCallName, $aProductInfo, $aBasketInfo)
     {
-        oxSession::setVar('aLastcall', array($sCallName => $aProductInfo));
+        oxRegistry::getSession()->setVariable('aLastcall', array($sCallName => $aProductInfo));
     }
 
     /**

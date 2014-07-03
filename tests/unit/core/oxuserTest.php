@@ -173,8 +173,8 @@ class Unit_Core_oxuserTest extends OxidTestCase
             $oActUser->logout();
         }
 
-        oxSession::setVar( 'usr', null );
-        oxSession::setVar( 'auth', null );
+        oxRegistry::getSession()->setVariable( 'usr', null );
+        oxRegistry::getSession()->setVariable( 'auth', null );
 
         // resetting globally admin mode
         $oUser = new oxUser();
@@ -1676,7 +1676,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
         $sUserID = $this->_aUsers[ $this->_aShops[ rand(0, count( $this->_aShops ) - 1 ) ] ][ rand( 0, count( $this->_aUsers[ 0 ] ) - 1 ) ];
         $sQ = 'select oxid from oxaddress where oxuserid = "'.$sUserID.'"';
         $sAddessId = $myDB->getOne( $sQ );
-        oxSession::setVar('deladrid', $sAddessId );
+        oxRegistry::getSession()->setVariable('deladrid', $sAddessId );
 
         // loading user
         $oUser = oxNew( 'oxuser' );
@@ -2989,10 +2989,10 @@ class Unit_Core_oxuserTest extends OxidTestCase
         $oUser = new oxuser();
         $oUser->login( oxADMIN_LOGIN, oxADMIN_PASSWD );
 
-        oxSession::setVar( 'dgr', 'test' );
-        oxSession::setVar( 'dynvalue', 'test' );
-        oxSession::setVar( 'paymentid', 'test' );
-        //oxSession::setVar( 'deladrid', 'test' );
+        oxRegistry::getSession()->setVariable( 'dgr', 'test' );
+        oxRegistry::getSession()->setVariable( 'dynvalue', 'test' );
+        oxRegistry::getSession()->setVariable( 'paymentid', 'test' );
+        //oxRegistry::getSession()->setVariable( 'deladrid', 'test' );
 
         $oUser = $oUser->getUser();
 
@@ -3018,7 +3018,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
     // trying to set empty address
     public function testAssignAddressNoAddressIsSet()
     {
-        oxSession::setVar( 'deladrid', 'xxx' );
+        oxRegistry::getSession()->setVariable( 'deladrid', 'xxx' );
         $aDelAddress = array();
 
         $oUser = new oxuser();
@@ -3116,7 +3116,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
 
         $oUser->UNITassignAddress( $aDelAddress );
 
-        oxSession::setVar( 'oxaddressid', null );
+        oxRegistry::getSession()->setVariable( 'oxaddressid', null );
         $oAddress = $oUser->getSelectedAddress();
         $this->assertEquals( 'xxx', $oAddress->getId() );
     }
@@ -3132,8 +3132,8 @@ class Unit_Core_oxuserTest extends OxidTestCase
         $oUser = new oxuser();
         $oUser->load( $sUserId );
 
-        oxSession::setVar( 'deladrid', null );
-        oxSession::setVar( 'oxaddressid', null );
+        oxRegistry::getSession()->setVariable( 'deladrid', null );
+        oxRegistry::getSession()->setVariable( 'oxaddressid', null );
         $oSelAddress = $oUser->getSelectedAddress();
         $oUser->oAddresses->rewind();
         $oAddress = $oUser->oAddresses->current();
@@ -3153,8 +3153,8 @@ class Unit_Core_oxuserTest extends OxidTestCase
         $oUser = new oxuser();
         $oUser->load( $sUserId );
 
-        oxSession::setVar( 'deladrid', null );
-        oxSession::setVar( 'oxaddressid', null );
+        oxRegistry::getSession()->setVariable( 'deladrid', null );
+        oxRegistry::getSession()->setVariable( 'oxaddressid', null );
 
         $oSelAddress = $oUser->getSelectedAddress( $sUserId );
         $this->assertEquals( 'test_user0', $oSelAddress->getId() );

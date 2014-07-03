@@ -35,8 +35,8 @@ class Unit_Views_GuestbookEntryTest extends OxidTestCase
      */
     protected function tearDown()
     {
-        oxSession::setVar( "gbSessionFormId", null );
-        oxSession::setVar( "Errors", null );
+        oxRegistry::getSession()->setVariable( "gbSessionFormId", null );
+        oxRegistry::getSession()->setVariable( "Errors", null );
         oxDb::getDB()->execute( 'delete from oxgbentries' );
 
         parent::tearDown();

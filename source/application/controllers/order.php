@@ -182,7 +182,7 @@ class order extends oxUBase
 
         // reload blocker
         if (!oxSession::getVar('sess_challenge')) {
-            oxSession::setVar('sess_challenge', oxUtilsObject::getInstance()->generateUID());
+            oxRegistry::getSession()->setVariable('sess_challenge', oxUtilsObject::getInstance()->generateUID());
         }
 
         return $this->_sThisTemplate;
@@ -548,18 +548,18 @@ class order extends oxUBase
                 break;
             case ($iSuccess === oxOrder::ORDER_STATE_PAYMENTERROR):
                 // no authentication, kick back to payment methods
-                oxSession::setVar('payerror', 2);
+                oxRegistry::getSession()->setVariable('payerror', 2);
                 $sNextStep = 'payment?payerror=2';
                 break;
             case ($iSuccess === oxOrder::ORDER_STATE_ORDEREXISTS):
                 break; // reload blocker activ
             case (is_numeric($iSuccess) && $iSuccess > 3):
-                oxSession::setVar('payerror', $iSuccess);
+                oxRegistry::getSession()->setVariable('payerror', $iSuccess);
                 $sNextStep = 'payment?payerror=' . $iSuccess;
                 break;
             case (!is_numeric($iSuccess) && $iSuccess):
                 //instead of error code getting error text and setting payerror to -1
-                oxSession::setVar('payerror', -1);
+                oxRegistry::getSession()->setVariable('payerror', -1);
                 $iSuccess = urlencode($iSuccess);
                 $sNextStep = 'payment?payerror=-1&payerrortext=' . $iSuccess;
                 break;

@@ -107,7 +107,7 @@ class Unit_Views_paymentTest extends OxidTestCase
         //basket name in session will be "basket"
         oxRegistry::getConfig()->setConfigParam( 'blMallSharedBasket', 1 );
         $mySession->setBasket( $oBasket );
-        //oxSession::setVar( 'basket', $oBasket );
+        //oxRegistry::getSession()->setVariable( 'basket', $oBasket );
 
         $oPayment = new Payment();
         $oPayment->setUser($oUser);
@@ -140,7 +140,7 @@ class Unit_Views_paymentTest extends OxidTestCase
 
         //basket name in session will be "basket"
         oxRegistry::getConfig()->setConfigParam( 'blMallSharedBasket', 1 );
-        //oxSession::setVar( 'basket', $oBasket );
+        //oxRegistry::getSession()->setVariable( 'basket', $oBasket );
         $mySession->setBasket( $oBasket );
 
         $oPayment = new Payment();
@@ -169,7 +169,7 @@ class Unit_Views_paymentTest extends OxidTestCase
 
         //basket name in session will be "basket"
         oxRegistry::getConfig()->setConfigParam( 'blMallSharedBasket', 1 );
-        //oxSession::setVar( 'basket', $oBasket );
+        //oxRegistry::getSession()->setVariable( 'basket', $oBasket );
         $mySession->setBasket( $oBasket );
 
         $oPayment = new Payment();
@@ -199,7 +199,7 @@ class Unit_Views_paymentTest extends OxidTestCase
 
         //basket name in session will be "basket"
         oxRegistry::getConfig()->setConfigParam( 'blMallSharedBasket', 1 );
-        //oxSession::setVar( 'basket', $oBasket );
+        //oxRegistry::getSession()->setVariable( 'basket', $oBasket );
         $mySession->setBasket( $oBasket );
 
         $oPayment = new Payment();

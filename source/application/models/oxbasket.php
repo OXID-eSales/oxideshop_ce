@@ -1894,7 +1894,7 @@ class oxBasket extends oxSuperCfg
     public function setShipping( $sShippingSetId = null )
     {
         $this->_sShippingSetId = $sShippingSetId;
-        oxSession::setVar( 'sShipSet', $sShippingSetId );
+        oxRegistry::getSession()->setVariable( 'sShipSet', $sShippingSetId );
     }
 
     /**
@@ -3126,7 +3126,7 @@ class oxBasket extends oxSuperCfg
     {
         if ( !$blOverride ) {
             $this->_blNewITemAdded = null;
-            oxSession::setVar( "blAddedNewItem", true );
+            oxRegistry::getSession()->setVariable( "blAddedNewItem", true );
         }
     }
 

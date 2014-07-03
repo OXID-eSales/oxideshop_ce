@@ -233,7 +233,7 @@ class Unit_Views_orderTest extends OxidTestCase
 
         //setting basket to session
         $mySession->setBasket( $oBasket );
-        //oxSession::setVar( 'basket', $oBasket );
+        //oxRegistry::getSession()->setVariable( 'basket', $oBasket );
 
         $oOrder = oxNew( "order" );
 
@@ -255,8 +255,8 @@ class Unit_Views_orderTest extends OxidTestCase
 
         //no basket, no user
         $mySession->setBasket( null );
-        //oxSession::setVar( 'basket', null );
-        oxSession::setVar( 'usr', null );
+        //oxRegistry::getSession()->setVariable( 'basket', null );
+        oxRegistry::getSession()->setVariable( 'usr', null );
 
         $oOrder = oxNew( "order" );
 
@@ -335,8 +335,8 @@ class Unit_Views_orderTest extends OxidTestCase
 
         $oBasket = oxNew( 'oxBasket' );
         $mySession->setBasket( $oBasket );
-        //oxSession::setVar( 'basket', $oBasket );
-        oxSession::setVar( 'usr', 'oxdefaultadmin' );
+        //oxRegistry::getSession()->setVariable( 'basket', $oBasket );
+        oxRegistry::getSession()->setVariable( 'usr', 'oxdefaultadmin' );
 
         $oOrder = oxNew( "order" );
 
@@ -365,8 +365,8 @@ class Unit_Views_orderTest extends OxidTestCase
         $oBasket->setNonPublicVar( '_iProductsCnt', 5 );
         $oBasket->setPayment( null );
         $mySession->setBasket( $oBasket );
-        //oxSession::setVar( 'basket', $oBasket );
-        oxSession::setVar( 'usr', 'oxdefaultadmin' );
+        //oxRegistry::getSession()->setVariable( 'basket', $oBasket );
+        oxRegistry::getSession()->setVariable( 'usr', 'oxdefaultadmin' );
 
         $oOrder = oxNew( "order" );
 
@@ -406,12 +406,12 @@ class Unit_Views_orderTest extends OxidTestCase
 
         //setting order info to session
         $oBasket->setPayment( 'oxidcashondel' );
-        oxSession::setVar( 'sShipSet', 'oxidstandard' );
+        oxRegistry::getSession()->setVariable( 'sShipSet', 'oxidstandard' );
         $mySession->setBasket( $oBasket );
-        //oxSession::setVar( 'basket', $oBasket );
-        oxSession::setVar( 'usr', 'oxdefaultadmin' );
-        oxSession::setVar( 'deladrid', 'null' );
-        oxSession::setVar( 'ordrem', 'testRemark' );
+        //oxRegistry::getSession()->setVariable( 'basket', $oBasket );
+        oxRegistry::getSession()->setVariable( 'usr', 'oxdefaultadmin' );
+        oxRegistry::getSession()->setVariable( 'deladrid', 'null' );
+        oxRegistry::getSession()->setVariable( 'ordrem', 'testRemark' );
 
         //setting some config data
         $oConfig->setConfigParam( 'blConfirmAGB', '1' );
@@ -513,7 +513,7 @@ class Unit_Views_orderTest extends OxidTestCase
         $oConfig->setConfigParam( 'blConfirmCustInfo', 0 );
 
         //setting active user
-        oxSession::setVar( 'usr', '_testUserId' );
+        oxRegistry::getSession()->setVariable( 'usr', '_testUserId' );
 
         //setting basket info
         $oBasket = $this->getProxyClass( 'oxBasket' );
@@ -524,7 +524,7 @@ class Unit_Views_orderTest extends OxidTestCase
         $oBasket->setNonPublicVar( '_oPrice', $oPrice );
         $oBasket->setNonPublicVar( '_iProductsCnt', 1 );
 
-        //oxSession::setVar( 'basket', $oBasket );
+        //oxRegistry::getSession()->setVariable( 'basket', $oBasket );
 
         $oUser = $this->getMock( 'oxuser', array('onOrderExecute') );
         $oUser->expects( $this->once() )->method( 'onOrderExecute' )->will( $this->returnValue( null ) );
@@ -704,7 +704,7 @@ class Unit_Views_orderTest extends OxidTestCase
 
         $oBasket = oxNew ('oxBasket');
         oxRegistry::getConfig()->setConfigParam( 'blMallSharedBasket', 1 );
-        //oxSession::setVar( 'basket', $oBasket );
+        //oxRegistry::getSession()->setVariable( 'basket', $oBasket );
         $mySession->setBasket( $oBasket );
         $oOrder = $this->getProxyClass( 'order' );
         $this->assertEquals( $oBasket, $oOrder->getBasket());
@@ -730,9 +730,9 @@ class Unit_Views_orderTest extends OxidTestCase
 
         $mySession->setBasket( $oBasket );
 
-        oxSession::setVar( 'sShipSet', 'oxidstandard' );
-        oxSession::setVar( 'usr', 'oxdefaultadmin' );
-        oxSession::setVar( 'deladrid', 'null' );
+        oxRegistry::getSession()->setVariable( 'sShipSet', 'oxidstandard' );
+        oxRegistry::getSession()->setVariable( 'usr', 'oxdefaultadmin' );
+        oxRegistry::getSession()->setVariable( 'deladrid', 'null' );
         $oOrder = $this->getProxyClass( 'order' );
         $this->assertEquals( 'oxidcashondel', $oOrder->getPayment()->getId());
     }
@@ -782,7 +782,7 @@ class Unit_Views_orderTest extends OxidTestCase
     public function testGetOrderRemark()
     {
         $oOrder = $this->getProxyClass( 'order' );
-        oxSession::setVar( 'ordrem', 'test' );
+        oxRegistry::getSession()->setVariable( 'ordrem', 'test' );
         $this->assertEquals( 'test', $oOrder->getOrderRemark());
     }
 
@@ -801,7 +801,7 @@ class Unit_Views_orderTest extends OxidTestCase
         //basket name in session will be "basket"
         oxRegistry::getConfig()->setConfigParam( 'blMallSharedBasket', 1 );
         //setting order info to session
-        //oxSession::setVar( 'basket', $oBasket );
+        //oxRegistry::getSession()->setVariable( 'basket', $oBasket );
         $mySession = oxRegistry::getSession();
         $mySession->setBasket( $oBasket );
 
@@ -849,8 +849,8 @@ class Unit_Views_orderTest extends OxidTestCase
         $mySession = oxRegistry::getSession();
         $mySession->setBasket( $oBasket );
 
-        //oxSession::setVar( 'basket', $oBasket );
-        oxSession::setVar( 'sShipSet', 'oxidstandard' );
+        //oxRegistry::getSession()->setVariable( 'basket', $oBasket );
+        oxRegistry::getSession()->setVariable( 'sShipSet', 'oxidstandard' );
         $oOrder = $this->getProxyClass("order");
 
         $this->assertEquals( 'oxidstandard', $oOrder->getShipSet()->getId() );
@@ -1083,7 +1083,7 @@ class Unit_Views_orderTest extends OxidTestCase
 
         $this->assertEquals( $oUser->getEncodedDeliveryAddress(), $oOrder->getDeliveryAddressMD5() );
 
-        oxSession::setVar( 'deladrid', _testDelAddrId );
+        oxRegistry::getSession()->setVariable( 'deladrid', _testDelAddrId );
 
         $this->assertEquals( $oUser->getEncodedDeliveryAddress().$oDelAddress->getEncodedDeliveryAddress(), $oOrder->getDeliveryAddressMD5() );
 

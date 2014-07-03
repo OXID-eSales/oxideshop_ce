@@ -267,7 +267,7 @@ class oxLang extends oxSuperCfg
                 $this->_iEditLanguageId = $this->validateLanguage( $iLang );
 
                 // writing to session
-                oxSession::setVar( 'editlanguage', $this->_iEditLanguageId );
+                oxRegistry::getSession()->setVariable( 'editlanguage', $this->_iEditLanguageId );
             }
         }
         return $this->_iEditLanguageId;
@@ -592,7 +592,7 @@ class oxLang extends oxSuperCfg
             modSession::getInstance();
         }
 
-        oxSession::setVar( 'language', $iLang );
+        oxRegistry::getSession()->setVariable( 'language', $iLang );
     }
 
     /**
@@ -616,7 +616,7 @@ class oxLang extends oxSuperCfg
             modSession::getInstance();
         }
 
-        oxSession::setVar( 'tpllanguage', $this->_iTplLanguageId );
+        oxRegistry::getSession()->setVariable( 'tpllanguage', $this->_iTplLanguageId );
         return $this->_iTplLanguageId;
     }
 

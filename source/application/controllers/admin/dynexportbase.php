@@ -192,7 +192,7 @@ class DynExportBase extends oxAdminDetails
 
             // prepare it
             $iEnd = $this->prepareExport();
-            oxSession::setVar( "iEnd", $iEnd );
+            oxRegistry::getSession()->setVariable( "iEnd", $iEnd );
             $this->_aViewData['iEnd'] = $iEnd;
         }
     }
@@ -757,7 +757,7 @@ class DynExportBase extends oxAdminDetails
         if ( isset( $dDelCost ) ) {
             $dDelCost = str_replace( array( ";", " ", "/", "'"), "", $dDelCost );
             $dDelCost = str_replace( ",", ".", $dDelCost );
-            oxSession::setVar( "sExportDelCost", $dDelCost );
+            oxRegistry::getSession()->setVariable( "sExportDelCost", $dDelCost );
         }
 
         oxSession::deleteVar( "sExportMinPrice" );
@@ -765,7 +765,7 @@ class DynExportBase extends oxAdminDetails
         if ( isset( $dMinPrice ) ) {
             $dMinPrice = str_replace( array( ";", " ", "/", "'"), "", $dMinPrice);
             $dMinPrice = str_replace( ",", ".", $dMinPrice);
-            oxSession::setVar( "sExportMinPrice", $dMinPrice);
+            oxRegistry::getSession()->setVariable( "sExportMinPrice", $dMinPrice);
         }
 
         // #827
@@ -773,7 +773,7 @@ class DynExportBase extends oxAdminDetails
         $sCampaign = oxRegistry::getConfig()->getRequestParameter( "sExportCampaign" );
         if ( isset( $sCampaign ) ) {
             $sCampaign = str_replace( array( ";", " ", "/", "'"), "", $sCampaign );
-            oxSession::setVar( "sExportCampaign", $sCampaign );
+            oxRegistry::getSession()->setVariable( "sExportCampaign", $sCampaign );
         }
 
         // reset it from session
@@ -781,15 +781,15 @@ class DynExportBase extends oxAdminDetails
         // now retrieve it from get or post.
         $blAppendCatToCampaign = oxRegistry::getConfig()->getRequestParameter( "blAppendCatToCampaign" );
         if ( $blAppendCatToCampaign ) {
-            oxSession::setVar( "blAppendCatToCampaign", $blAppendCatToCampaign );
+            oxRegistry::getSession()->setVariable( "blAppendCatToCampaign", $blAppendCatToCampaign );
         }
 
         // reset it from session
         oxSession::deleteVar("iExportLanguage" );
-        oxSession::setVar( "iExportLanguage", oxRegistry::getConfig()->getRequestParameter( "iExportLanguage" ) );
+        oxRegistry::getSession()->setVariable( "iExportLanguage", oxRegistry::getConfig()->getRequestParameter( "iExportLanguage" ) );
 
         //setting the custom header
-        oxSession::setVar("sExportCustomHeader", oxRegistry::getConfig()->getRequestParameter( "sExportCustomHeader" ));
+        oxRegistry::getSession()->setVariable("sExportCustomHeader", oxRegistry::getConfig()->getRequestParameter( "sExportCustomHeader" ));
     }
 
     /**

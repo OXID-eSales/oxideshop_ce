@@ -110,7 +110,7 @@ class List_Order extends Order_List
         $this->_iListSize = oxDb::getDb()->getOne( "select count(*) from ( $sSql ) as test", false, false );
 
         // set it into session that other frames know about size of DB
-        oxSession::setVar( 'iArtCnt', $this->_iListSize );
+        oxRegistry::getSession()->setVariable( 'iArtCnt', $this->_iListSize );
     }
 
     /**

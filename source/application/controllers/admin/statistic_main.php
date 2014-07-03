@@ -78,8 +78,8 @@ class Statistic_Main extends oxAdminDetails
         }
 
         // setting reports data
-        oxSession::setVar( "allstat_reports", $aAllreports);
-        oxSession::setVar( "stat_reports_$soxId", $aReports);
+        oxRegistry::getSession()->setVariable( "allstat_reports", $aAllreports);
+        oxRegistry::getSession()->setVariable( "stat_reports_$soxId", $aReports);
 
         // passing assigned reports count
         if ( is_array($aReports) ) {

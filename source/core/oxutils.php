@@ -374,7 +374,7 @@ class oxUtils extends oxSuperCfg
                 $aProfiles[$aPrevProfile[0]][2] = 1;
             }
 
-            oxSession::setVar("aAdminProfiles", $aProfiles);
+            oxRegistry::getSession()->setVariable("aAdminProfiles", $aProfiles);
             return $aProfiles;
         }
         return null;
@@ -948,8 +948,8 @@ class oxUtils extends oxSuperCfg
         $sUserID = oxSession::getVar( "auth");
 
         // deleting admin marker
-        oxSession::setVar( "malladmin", 0);
-        oxSession::setVar( "blIsAdmin", 0);
+        oxRegistry::getSession()->setVariable( "malladmin", 0);
+        oxRegistry::getSession()->setVariable( "blIsAdmin", 0);
         oxSession::deleteVar( "blIsAdmin" );
         $myConfig->setConfigParam( 'blMallAdmin', false );
         //#1552T
@@ -963,7 +963,7 @@ class oxUtils extends oxSuperCfg
             if ( $sRights != "user") {
                 // malladmin ?
                 if ( $sRights == "malladmin") {
-                    oxSession::setVar( "malladmin", 1);
+                    oxRegistry::getSession()->setVariable( "malladmin", 1);
                     $myConfig->setConfigParam( 'blMallAdmin', true );
 
                     //#1552T
@@ -972,7 +972,7 @@ class oxUtils extends oxSuperCfg
 
                     $sShop = oxSession::getVar( "actshop");
                     if ( !isset($sShop)) {
-                        oxSession::setVar( "actshop", $myConfig->getBaseShopId());
+                        oxRegistry::getSession()->setVariable( "actshop", $myConfig->getBaseShopId());
                     }
                     $blIsAuth = true;
                 } else {
@@ -981,9 +981,9 @@ class oxUtils extends oxSuperCfg
                     if ( isset( $sShopID) && $sShopID) {
                         // success, this shop exists
 
-                        oxSession::setVar( "actshop", $sRights);
-                        oxSession::setVar( "currentadminshop", $sRights);
-                        oxSession::setVar( "shp", $sRights);
+                        oxRegistry::getSession()->setVariable( "actshop", $sRights);
+                        oxRegistry::getSession()->setVariable( "currentadminshop", $sRights);
+                        oxRegistry::getSession()->setVariable( "shp", $sRights);
 
                         // check if this subshop admin is evil.
                         if ('chshp' == oxRegistry::getConfig()->getRequestParameter( 'fnc' )) {
@@ -1005,7 +1005,7 @@ class oxUtils extends oxSuperCfg
                     }
                 }
                 // marking user as admin
-                oxSession::setVar( "blIsAdmin", 1);
+                oxRegistry::getSession()->setVariable( "blIsAdmin", 1);
             }
         }
         return $blIsAuth;

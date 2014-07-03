@@ -40,7 +40,7 @@ class Category_Order extends oxAdminDetails
         $this->_aViewData['edit'] = $oCategory = oxNew( 'oxcategory' );
 
         // resetting
-        oxSession::setVar( 'neworder_sess', null );
+        oxRegistry::getSession()->setVariable( 'neworder_sess', null );
 
         $soxId = $this->getEditObjectId();
 

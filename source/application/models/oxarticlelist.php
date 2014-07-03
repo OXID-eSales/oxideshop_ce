@@ -109,7 +109,7 @@ class oxArticleList extends oxList
     public function setHistoryArticles($aArticlesIds)
     {
         if ($this->getSession()->getId()) {
-            oxSession::setVar('aHistoryArticles', $aArticlesIds);
+            oxRegistry::getSession()->setVariable('aHistoryArticles', $aArticlesIds);
             // clean cookie, if session started
             oxRegistry::get("oxUtilsServer")->setOxCookie('aHistoryArticles', '');
         } else {

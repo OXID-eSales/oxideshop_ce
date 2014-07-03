@@ -226,8 +226,8 @@ abstract class oxERPBase
         @$mySession->start();
 
 
-        oxSession::setVar( "lang", $iLanguage);
-        oxSession::setVar( "language", $iLanguage);
+        oxRegistry::getSession()->setVariable( "lang", $iLanguage);
+        oxRegistry::getSession()->setVariable( "language", $iLanguage);
 
         $oUser = oxNew('oxuser');
         try {

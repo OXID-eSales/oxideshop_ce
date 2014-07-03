@@ -140,7 +140,7 @@ class Register extends User
             $oUser->save();
 
             // forcing user login
-            oxSession::setVar( 'usr', $oUser->getId() );
+            oxRegistry::getSession()->setVariable( 'usr', $oUser->getId() );
 
             // redirecting to confirmation page
             return 'register?confirmstate=1';

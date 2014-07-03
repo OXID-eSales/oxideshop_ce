@@ -137,7 +137,7 @@ class oxcmp_utils extends oxView
                     unset($aItems[$sProductId]);
                 }
 
-                oxSession::setVar('aFiltcompproducts', $aItems);
+                oxRegistry::getSession()->setVariable('aFiltcompproducts', $aItems);
                 $oParentView = $this->getParent();
 
                 // #843C there was problem then field "blIsOnComparisonList" was not set to article object

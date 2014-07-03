@@ -250,7 +250,7 @@ class Compare extends oxUBase
     public function setCompareItems( $aItems)
     {
         $this->_aCompItems = $aItems;
-        oxSession::setVar( 'aFiltcompproducts', $aItems );
+        oxRegistry::getSession()->setVariable( 'aFiltcompproducts', $aItems );
     }
 
     /**

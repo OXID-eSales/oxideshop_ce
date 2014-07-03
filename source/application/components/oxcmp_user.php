@@ -315,7 +315,7 @@ class oxcmp_user extends oxView
         if ($oUser = $this->getUser()) {
             //updating user Facebook ID
             if ($oUser->updateFbId()) {
-                oxSession::setVar('_blFbUserIdUpdated', true);
+                oxRegistry::getSession()->setVariable('_blFbUserIdUpdated', true);
             }
         }
     }
@@ -520,7 +520,7 @@ class oxcmp_user extends oxView
 
         if (!$blActiveLogin) {
 
-            oxSession::setVar('usr', $oUser->getId());
+            oxRegistry::getSession()->setVariable('usr', $oUser->getId());
             $this->_afterLogin($oUser);
 
 
@@ -528,7 +528,7 @@ class oxcmp_user extends oxView
             //V #427: order remark for new users
             $sOrderRemark = oxRegistry::getConfig()->getRequestParameter('order_remark', true);
             if ($sOrderRemark) {
-                oxSession::setVar('ordrem', $sOrderRemark);
+                oxRegistry::getSession()->setVariable('ordrem', $sOrderRemark);
             }
         }
 
@@ -678,7 +678,7 @@ class oxcmp_user extends oxView
         $sOrderRemark = oxRegistry::getConfig()->getRequestParameter('order_remark', true);
 
         if ($sOrderRemark) {
-            oxSession::setVar('ordrem', $sOrderRemark);
+            oxRegistry::getSession()->setVariable('ordrem', $sOrderRemark);
         } else {
             oxSession::deleteVar('ordrem');
         }

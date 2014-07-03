@@ -782,7 +782,7 @@ class oxAdminList extends oxAdminView
 
             $oListObject = $this->_oList->getBaseObject();
 
-            oxSession::setVar( 'tabelle', $this->_sListClass );
+            oxRegistry::getSession()->setVariable( 'tabelle', $this->_sListClass );
             $this->_aViewData['listTable'] = getViewName( $oListObject->getCoreTableName() );
             $this->getConfig()->setGlobalParameter( 'ListCoreTable', $oListObject->getCoreTableName() );
 

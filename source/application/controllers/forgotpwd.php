@@ -117,7 +117,7 @@ class ForgotPwd extends oxUBase
             $oUser->save();
 
             // forcing user login
-            oxSession::setVar( 'usr', $oUser->getId() );
+            oxRegistry::getSession()->setVariable( 'usr', $oUser->getId() );
             return 'forgotpwd?success=1';
         } else {
             // expired reminder

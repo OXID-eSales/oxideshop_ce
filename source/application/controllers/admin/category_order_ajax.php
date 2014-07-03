@@ -123,7 +123,7 @@ class category_order_ajax extends ajaxListComponent
                     unset( $aSkipArt[$iKey] );
                 }
             }
-            oxSession::setVar( 'neworder_sess', $aSkipArt );
+            oxRegistry::getSession()->setVariable( 'neworder_sess', $aSkipArt );
 
             $sArticleTable = $this->_getViewName('oxarticles');
             $sO2CView      = $this->_getViewName('oxobject2category');
@@ -160,7 +160,7 @@ class category_order_ajax extends ajaxListComponent
                 if ( array_search( $sAdd, $aOrdArt ) === false )
                     $aOrdArt[] = $sAdd;
             }
-            oxSession::setVar( 'neworder_sess', $aOrdArt );
+            oxRegistry::getSession()->setVariable( 'neworder_sess', $aOrdArt );
 
             $sArticleTable = $this->_getViewName('oxarticles');
             $sO2CView      = $this->_getViewName('oxobject2category');
@@ -203,7 +203,7 @@ class category_order_ajax extends ajaxListComponent
                     }
                 }
 
-                oxSession::setVar( 'neworder_sess', null );
+                oxRegistry::getSession()->setVariable( 'neworder_sess', null );
             }
 
 
@@ -226,7 +226,7 @@ class category_order_ajax extends ajaxListComponent
             $sSelect = "update oxobject2category set oxpos = '0' where oxobject2category.oxcatnid=" . $oDb->quote( $oCategory->getId() );
             $oDb->execute( $sSelect );
 
-            oxSession::setVar( 'neworder_sess', null );
+            oxRegistry::getSession()->setVariable( 'neworder_sess', null );
 
         }
     }

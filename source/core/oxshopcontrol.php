@@ -586,7 +586,7 @@ class oxShopControl extends oxSuperCfg
                 oxRegistry::getUtils()->showMessageAndExit( $oSmarty->fetch( $sTpl ) );
             }
 
-            oxSession::setVar( 'blRunOnceExecuted', true );
+            oxRegistry::getSession()->setVariable( 'blRunOnceExecuted', true );
         }
     }
 

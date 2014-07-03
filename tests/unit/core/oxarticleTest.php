@@ -1430,7 +1430,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
     public function testIsOnComparisonList()
     {
         $oArticle = $this->_createArticle('_testArt');
-        oxSession::setVar('aFiltcompproducts', array('_testArt'=>'_testArt'));
+        oxRegistry::getSession()->setVariable('aFiltcompproducts', array('_testArt'=>'_testArt'));
 
         $oArticle->UNITassignComparisonListFlag();
         $this->assertTrue( $oArticle->isOnComparisonList());
@@ -1444,7 +1444,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
     public function testSetOnComparisonList()
     {
         $oArticle = $this->_createArticle('_testArt');
-        oxSession::setVar('aFiltcompproducts', array('_testArt'=>'_testArt'));
+        oxRegistry::getSession()->setVariable('aFiltcompproducts', array('_testArt'=>'_testArt'));
         $oArticle->UNITassignComparisonListFlag();
         $this->assertTrue( $oArticle->isOnComparisonList());
         $oArticle->setOnComparisonList( false );
@@ -1460,7 +1460,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
     {
         $oArticle = $this->_createArticle('_testArt');
         $aParam = array( '_testArt'=>'test1', '2001'=>'test2');
-        oxSession::setVar( 'persparam', $aParam);
+        oxRegistry::getSession()->setVariable( 'persparam', $aParam);
         $oArticle->UNITassignPersistentParam();
         $this->assertEquals('test1', $oArticle->getPersParams());
     }

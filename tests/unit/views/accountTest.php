@@ -324,7 +324,7 @@ class Unit_Views_accountTest extends OxidTestCase
      */
     public function testGetCompareItemsCnt()
     {
-        oxSession::setVar( 'aFiltcompproducts', array('1','2') );
+        oxRegistry::getSession()->setVariable( 'aFiltcompproducts', array('1','2') );
 
         $oAcc = new account();
         $this->assertEquals( 2, $oAcc->getCompareItemsCnt() );

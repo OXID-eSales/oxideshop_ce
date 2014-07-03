@@ -96,7 +96,7 @@ class SelectList_Main extends oxAdminDetails
             if (!$iErr)
                 $iErr = ERR_SUCCESS;
             $this->_aViewData["iErrorCode"] = $iErr;
-            oxSession::setVar("iErrorCode", ERR_SUCCESS);
+            oxRegistry::getSession()->setVariable("iErrorCode", ERR_SUCCESS);
 
         }
         if ( oxRegistry::getConfig()->getRequestParameter("aoc") ) {
@@ -235,7 +235,7 @@ class SelectList_Main extends oxAdminDetails
 
             $sAddField = oxRegistry::getConfig()->getRequestParameter("sAddField");
             if ( empty( $sAddField ) ) {
-                oxSession::setVar( "iErrorCode", ERR_REQUIREDMISSING );
+                oxRegistry::getSession()->setVariable( "iErrorCode", ERR_REQUIREDMISSING );
                 return;
             }
 
@@ -266,7 +266,7 @@ class SelectList_Main extends oxAdminDetails
     {
         $sAddField = oxRegistry::getConfig()->getRequestParameter( "sAddField" );
         if ( empty( $sAddField ) ) {
-            oxSession::setVar("iErrorCode", ERR_REQUIREDMISSING );
+            oxRegistry::getSession()->setVariable("iErrorCode", ERR_REQUIREDMISSING );
             return;
         }
 
@@ -314,7 +314,7 @@ class SelectList_Main extends oxAdminDetails
 
         $iFieldCount = count( $this->aFieldArray );
         if ( $iPos < 0 || $iPos >= $iFieldCount ) {
-            oxSession::setVar( "iErrorCode", ERR_POSOUTOFBOUNDS );
+            oxRegistry::getSession()->setVariable( "iErrorCode", ERR_POSOUTOFBOUNDS );
             return true;
         }
 

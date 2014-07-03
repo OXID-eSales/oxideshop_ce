@@ -100,8 +100,8 @@ class Login extends oxAdminView
             $oUser->login( $sUser, $sPass );
             $iSubshop = (int)$oUser->oxuser__oxrights->value;
             if ($iSubshop) {
-                oxSession::setVar( "shp", $iSubshop );
-                oxSession::setVar( 'currentadminshop', $iSubshop );
+                oxRegistry::getSession()->setVariable( "shp", $iSubshop );
+                oxRegistry::getSession()->setVariable( 'currentadminshop', $iSubshop );
                 oxRegistry::getConfig()->setShopId($iSubshop);
             }
         } catch ( oxUserException $oEx ) {
@@ -135,7 +135,7 @@ class Login extends oxAdminView
             if ( $aProfiles && isset($aProfiles[$sProfile])) {
                 // setting cookie to store last locally used profile
                 $myUtilsServer->setOxCookie ("oxidadminprofile", $sProfile."@".implode( "@", $aProfiles[$sProfile]), time()+31536000, "/" );
-                oxSession::setVar( "profile", $aProfiles[$sProfile] );
+                oxRegistry::getSession()->setVariable( "profile", $aProfiles[$sProfile] );
             }
         } else {
             //deleting cookie info, as setting profile to default
@@ -152,7 +152,7 @@ class Login extends oxAdminView
         $myUtilsServer->setOxCookie( "oxidadminlanguage", $aLanguages[$iLang]->abbr, time() + 31536000, "/" );
 
         //P
-        //oxSession::setVar( "blAdminTemplateLanguage", $iLang );
+        //oxRegistry::getSession()->setVariable( "blAdminTemplateLanguage", $iLang );
         oxRegistry::getLang()->setTplLanguage( $iLang );
 
         return "admin_start";

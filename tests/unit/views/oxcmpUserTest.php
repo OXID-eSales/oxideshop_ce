@@ -301,8 +301,8 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
         oxTestModules::addFunction( "oxuser", "changeUserData", "{ return true;}" );
         oxTestModules::addFunction( "oxuser", "setCreditPointsForRegistrant", "{ throw new Exception('setCreditPointsForRegistrant');}" );
 
-        oxSession::setVar( 'su', 'testUser' );
-        oxSession::setVar( 're', 'testUser' );
+        oxRegistry::getSession()->setVariable( 'su', 'testUser' );
+        oxRegistry::getSession()->setVariable( 're', 'testUser' );
         modConfig::getInstance()->setConfigParam( "blInvitationsEnabled", true );
 
         $oParent = $this->getMock( 'oxubase', array( "isEnabledPrivateSales" ) );
@@ -668,10 +668,10 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
      */
     public function testAfterLogout()
     {
-        oxSession::setVar( 'paymentid', 'test' );
-        oxSession::setVar( 'sShipSet', 'test' );
-        oxSession::setVar( 'deladrid', 'test' );
-        oxSession::setVar( 'dynvalue', 'test' );
+        oxRegistry::getSession()->setVariable( 'paymentid', 'test' );
+        oxRegistry::getSession()->setVariable( 'sShipSet', 'test' );
+        oxRegistry::getSession()->setVariable( 'deladrid', 'test' );
+        oxRegistry::getSession()->setVariable( 'dynvalue', 'test' );
         $oBasket = $this->getMock( 'oxBasket', array( 'onUpdate', 'resetUserInfo' ) );
         $oBasket->expects( $this->once() )->method( 'onUpdate');
         $oBasket->expects( $this->once() )->method( 'resetUserInfo');

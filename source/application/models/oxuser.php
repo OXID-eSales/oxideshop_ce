@@ -1266,10 +1266,10 @@ class oxUser extends oxBase
             $this->_aAddresses = null;
 
             // saving delivery Address for later use
-            oxSession::setVar( 'deladrid', $oAddress->getId() );
+            oxRegistry::getSession()->setVariable( 'deladrid', $oAddress->getId() );
         } else {
             // resetting
-            oxSession::setVar( 'deladrid', null );
+            oxRegistry::getSession()->setVariable( 'deladrid', null );
         }
     }
 

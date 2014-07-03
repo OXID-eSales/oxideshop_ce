@@ -1825,7 +1825,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
         $dDiscountesNettoPrice = 95;
         $aProductVats = array('10' => '50', '5'=>'25');
 
-        oxSession::setVar( 'ordrem', 'testValue' );
+        oxRegistry::getSession()->setVariable( 'ordrem', 'testValue' );
 
         $aMethods = array( 'getBruttoSum',
                            'getPrice',

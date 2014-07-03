@@ -129,7 +129,7 @@ class Unit_Core_oxdeliverylistTest extends OxidTestCase
         $oAdress->oxaddress__oxaddressuserid = new oxField($this->_oUser->getId(), oxField::T_RAW);
         $oAdress->oxaddress__oxcountryid = new oxField('a7c40f6323c4bfb36.59919433', oxField::T_RAW); //italien
         $oAdress->save();
-        oxSession::setVar( 'deladrid', '_testAddressId' );
+        oxRegistry::getSession()->setVariable( 'deladrid', '_testAddressId' );
 
         //add user to group
         $oO2Group = oxNew( 'oxbase' );

@@ -173,7 +173,7 @@ class oxUtilsServer extends oxSuperCfg
             $aSessionCookies = ( array ) oxSession::getVar( $this->_sSessionCookiesName );
             $aSessionCookies[$this->_getSessionCookieKey( false )][$sName] = $aCookieData;
 
-            oxSession::setVar( $this->_sSessionCookiesName, $aSessionCookies );
+            oxRegistry::getSession()->setVariable( $this->_sSessionCookiesName, $aSessionCookies );
         }
     }
 
@@ -195,7 +195,7 @@ class oxUtilsServer extends oxSuperCfg
 
                 // cleanup
                 unset( $aSessionCookies[$sKey] );
-                oxSession::setVar( $this->_sSessionCookiesName, $aSessionCookies );
+                oxRegistry::getSession()->setVariable( $this->_sSessionCookiesName, $aSessionCookies );
             }
         }
     }

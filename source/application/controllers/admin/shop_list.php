@@ -96,13 +96,13 @@ class Shop_List extends oxAdminList
 
         if ( $this->_aViewData['updatenav'] ) {
             //skipping requirements checking when reloading nav frame
-            oxSession::setVar( "navReload", true );
+            oxRegistry::getSession()->setVariable( "navReload", true );
         }
 
         //making sure we really change shops on low level
         if ( $soxId && $soxId != '-1' ) {
             $myConfig->setShopId( $soxId );
-            oxSession::setVar( 'currentadminshop', $soxId );
+            oxRegistry::getSession()->setVariable( 'currentadminshop', $soxId );
         }
 
         return 'shop_list.tpl';

@@ -47,7 +47,7 @@ class Unit_Views_thankyouTest extends OxidTestCase
         /** @var oxSession $mySession */
         $mySession = oxRegistry::getSession();
         $oBasket = oxNew ('oxBasket');
-        //oxSession::setVar( 'basket', $oBasket );
+        //oxRegistry::getSession()->setVariable( 'basket', $oBasket );
         $mySession->setBasket( $oBasket );
         $oThankyou = $this->getProxyClass( 'thankyou' );
         $oThankyou->init();
@@ -197,8 +197,8 @@ class Unit_Views_thankyouTest extends OxidTestCase
         $oThankyou->setNonPublicVar( '_oBasket', $oBasket );
         $oThankyou->setUser( $oUser );
         
-        oxSession::setVar( "usr", "testValue1");
-        oxSession::setVar( "dynvalue", "testValue2");
+        oxRegistry::getSession()->setVariable( "usr", "testValue1");
+        oxRegistry::getSession()->setVariable( "dynvalue", "testValue2");
         
         $oThankyou->render();
         

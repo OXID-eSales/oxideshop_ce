@@ -57,11 +57,6 @@ class oxSession extends oxSuperCfg
     protected static $_blIsNewSession = false;
 
     /**
-     * Singleton instance keeper.
-     */
-    protected static $_instance = null;
-
-    /**
      * Active session user object
      * @var object
      */
@@ -146,18 +141,6 @@ class oxSession extends oxSuperCfg
      * @var array
      */
     protected $_aPersistentParams = array("actshop", "lang", "currency", "language", "tpllanguage");
-
-    /**
-     * get oxSession object instance (create if needed)
-     *
-     * @deprecated since v5.0 (2012-08-10); Use oxRegistry::getSession() instead.
-     *
-     * @return oxSession
-     */
-    public static function getInstance()
-    {
-        return oxRegistry::getSession();
-    }
 
     /**
      * Returns session ID

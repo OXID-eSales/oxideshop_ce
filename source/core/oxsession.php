@@ -449,20 +449,6 @@ class oxSession extends oxSuperCfg
      *
      * @param string $name Name to check
      *
-     * @deprecated since v5.0.0 (2012-08-27); Use public hasVariable()
-     *
-     * @return bool
-     */
-    public static function hasVar( $name )
-    {
-        return oxRegistry::getSession()->hasVariable( $name );
-    }
-
-    /**
-     * Checks if variable is set in session. Returns true on success.
-     *
-     * @param string $name Name to check
-     *
      * @return bool
      */
     public function hasVariable( $name )

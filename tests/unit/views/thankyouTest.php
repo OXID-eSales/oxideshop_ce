@@ -202,8 +202,8 @@ class Unit_Views_thankyouTest extends OxidTestCase
         
         $oThankyou->render();
         
-        $this->assertFalse( oxSession::hasVar( "usr" ) );
-        $this->assertFalse( oxSession::hasVar( "dynvalue" ) );
+        $this->assertFalse( oxRegistry::getSession()->hasVariable( "usr" ) );
+        $this->assertFalse( oxRegistry::getSession()->hasVariable( "dynvalue" ) );
     }
 
     public function testGetActionClassName()

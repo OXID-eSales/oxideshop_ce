@@ -28,13 +28,6 @@
 class oxDiscountList extends oxList
 {
     /**
-     * Discount list inst.
-     *
-     * @var oxdiscountlist
-     */
-    static protected $_instance = null;
-
-    /**
      * Discount user id
      *
      * @var string User ID
@@ -64,18 +57,6 @@ class oxDiscountList extends oxList
     public function __construct()
     {
         parent::__construct('oxdiscount');
-    }
-
-    /**
-     * Returns discount list instance
-     *
-     * @deprecated since v5.0 (2012-08-10); Use Registry getter instead - oxRegistry::get("oxDiscountList");
-     *
-     * @return oxDiscountList
-     */
-    static public function getInstance()
-    {
-        return oxRegistry::get("oxDiscountList");
     }
 
     /**

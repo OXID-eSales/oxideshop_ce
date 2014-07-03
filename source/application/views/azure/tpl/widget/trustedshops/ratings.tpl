@@ -1,8 +1,3 @@
-<div class="box">
-    <a href="[{ $oViewConf->getTsInfoUrl() }]" target="_blank" title="[{ oxmultilang ident="TRUSTED_SHOPS_RATINGS" }]">
-    <img src="[{ $oViewConf->getTsWidgetUrl() }]" border="0" alt="[{ oxmultilang ident="TRUSTED_SHOPS_RATINGS" }]">
-    </a>
-</div>
 [{assign var="tsRatings" value=$oViewConf->getTsRatings()}]
 [{if !$tsRatings.empty}]
     <span class='hidden' xmlns:v="http://rdf.data-vocabulary.org/#" typeof="v:Review-aggregate">

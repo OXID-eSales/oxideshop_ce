@@ -647,9 +647,9 @@ class Unit_Core_oxsessionTest extends OxidTestCase
      */
     function testAllowSessionStartForSearchEngines()
     {
-        oxUtils::getInstance()->setSearchEngine(true);
+        oxRegistry::getUtils()->setSearchEngine(true);
         $this->assertFalse($this->oSession->UNITallowSessionStart());
-        oxUtils::getInstance()->setSearchEngine(false);
+        oxRegistry::getUtils()->setSearchEngine(false);
     }
 
     /**
@@ -675,9 +675,9 @@ class Unit_Core_oxsessionTest extends OxidTestCase
      */
     function testIsSwappedClientForSearchEngines()
     {
-        oxUtils::getInstance()->setSearchEngine(true);
+        oxRegistry::getUtils()->setSearchEngine(true);
         $this->assertFalse($this->oSession->UNITisSwappedClient());
-        oxUtils::getInstance()->setSearchEngine(false);
+        oxRegistry::getUtils()->setSearchEngine(false);
     }
 
     /**
@@ -1045,7 +1045,7 @@ class Unit_Core_oxsessionTest extends OxidTestCase
      */
     function testSetSessionIdSearchEngines()
     {
-        oxUtils::getInstance()->setSearchEngine(true);
+        oxRegistry::getUtils()->setSearchEngine(true);
 
         $oSession = $this->getMock( "oxsession", array( "_getNewSessionId", "_allowSessionStart" ) );
         $oSession->expects( $this->any() )->method( '_getNewSessionId');
@@ -1069,7 +1069,7 @@ class Unit_Core_oxsessionTest extends OxidTestCase
         $this->assertNotEquals( $oSession->getId(), 'testSid');
 
         //teardown
-        oxUtils::getInstance()->setSearchEngine(false);
+        oxRegistry::getUtils()->setSearchEngine(false);
     }
 
     /**

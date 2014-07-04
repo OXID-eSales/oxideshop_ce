@@ -81,7 +81,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         $this->_iSeoMode = oxRegistry::getConfig()->getActiveShop()->oxshops__oxseoactive->value;
         oxRegistry::getConfig()->getActiveShop()->oxshops__oxseoactive = new oxField(0, oxField::T_RAW);
 
-        oxUtils::getInstance()->seoIsActive( true );
+        oxRegistry::getUtils()->seoIsActive( true );
 
         modConfig::setRequestParameter( "listtype", null );
     }
@@ -103,7 +103,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
         // restoring
         oxRegistry::getConfig()->getActiveShop()->oxshops__oxseoactive = new oxField($this->_iSeoMode, oxField::T_RAW);
 
-        oxUtils::getInstance()->seoIsActive( true );
+        oxRegistry::getUtils()->seoIsActive( true );
         parent::tearDown();
     }
 
@@ -158,7 +158,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
 
             modConfig::getInstance()->setConfigParam( 'iNrofCatArticles', 10 );
 
-        oxUtils::getInstance()->seoIsActive( true );
+        oxRegistry::getUtils()->seoIsActive( true );
 
         $myConfig = oxRegistry::getConfig();
 
@@ -256,7 +256,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
     {
         // seo off
         $this->getConfig()->setConfigParam( 'blSeoMode', false );
-        oxUtils::getInstance()->seoIsActive( true );
+        oxRegistry::getUtils()->seoIsActive( true );
 
         $myConfig = oxRegistry::getConfig();
 
@@ -347,7 +347,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
     {
         // seo off
         modConfig::getInstance()->setConfigParam( 'blSeoMode', false );
-        oxUtils::getInstance()->seoIsActive( true );
+        oxRegistry::getUtils()->seoIsActive( true );
 
         $myConfig = oxRegistry::getConfig();
 
@@ -439,7 +439,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
     public function testSetSearchLocatorData()
     {
         modConfig::getInstance()->setConfigParam( 'blSeoMode', false );
-        oxUtils::getInstance()->seoIsActive( true );
+        oxRegistry::getUtils()->seoIsActive( true );
 
         $myConfig = oxRegistry::getConfig();
         $sPrevLink = $myConfig->getShopHomeUrl()."cl=details&amp;anid=1651&amp;searchparam=Bier&amp;listtype=search";
@@ -481,7 +481,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
     {
         // seo off
         modConfig::getInstance()->setConfigParam( 'blSeoMode', false );
-        oxUtils::getInstance()->seoIsActive( true );
+        oxRegistry::getUtils()->seoIsActive( true );
 
         $myConfig = oxRegistry::getConfig();
 
@@ -529,7 +529,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
     public function testSetSearchLocatorDataFromCat()
     {
         modConfig::getInstance()->setConfigParam( 'blSeoMode', false );
-        oxUtils::getInstance()->seoIsActive( true );
+        oxRegistry::getUtils()->seoIsActive( true );
 
         $myConfig = oxRegistry::getConfig();
 
@@ -572,7 +572,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
     {
         // seo off
         modConfig::getInstance()->setConfigParam( 'blSeoMode', false );
-        oxUtils::getInstance()->seoIsActive( true );
+        oxRegistry::getUtils()->seoIsActive( true );
 
         $myConfig = oxRegistry::getConfig();
 
@@ -612,7 +612,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
 
         // seo off
         $this->setConfigParam( 'blSeoMode', false );
-        oxUtils::getInstance()->seoIsActive( true );
+        oxRegistry::getUtils()->seoIsActive( true );
 
         $myDB = oxDb::getDB();
         $sShopId = $myConfig->getShopId();
@@ -658,7 +658,7 @@ class Unit_Views_oxlocatorTest extends OxidTestCase
 
         // seo off
         $this->setConfigParam( 'blSeoMode', false );
-        oxUtils::getInstance()->seoIsActive( true );
+        oxRegistry::getUtils()->seoIsActive( true );
 
         $myDB = oxDb::getDB();
         $sShopId = $myConfig->getShopId();

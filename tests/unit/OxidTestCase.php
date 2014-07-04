@@ -299,7 +299,7 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
         $this->setShopId(null);
         oxAddClassModule('modOxUtilsDate', 'oxUtilsDate');
 
-        oxUtils::getInstance()->cleanStaticCache();
+        oxRegistry::getUtils()->cleanStaticCache();
         error_reporting((E_ALL ^ E_NOTICE) | E_STRICT);
         ini_set('display_errors', true);
     }

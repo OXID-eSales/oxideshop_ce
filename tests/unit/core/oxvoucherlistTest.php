@@ -71,7 +71,7 @@ class Unit_Core_oxvoucherlistTest extends OxidTestCase
 
     public function testLoadVoucherList()
     {
-        $myUtils = oxUtils::getInstance();
+        $myUtils = oxRegistry::getUtils();
 
         $oVouchers = oxNew( 'oxvoucherlist' );
         $oVouchers->selectString( 'select * from oxvouchers where oxvouchers.oxvoucherserieid = "' . $this->_sOxid . '"');

@@ -54,7 +54,7 @@ class Unit_Core_oxManufacturerlistTest extends OxidTestCase
      * Test loading simple Manufacturer list
      */
 /*    public function test_loadManufacturerList() {
-        $myUtils = oxUtils::getInstance();
+        $myUtils = oxRegistry::getUtils();
         $myConfig= oxRegistry::getConfig();
         $myDB    = oxDb::getDB();
 
@@ -85,7 +85,7 @@ class Unit_Core_oxManufacturerlistTest extends OxidTestCase
      */
     public function testLoadManufacturerListByLanguage()
     {
-        $myUtils = oxUtils::getInstance();
+        $myUtils = oxRegistry::getUtils();
         $myConfig= modConfig::getInstance();
         $myDB    = oxDb::getDB();
 
@@ -120,7 +120,7 @@ class Unit_Core_oxManufacturerlistTest extends OxidTestCase
     public function testLoadManufacturerListAndCountManufacturerArticles()
     {
 
-        $myUtils = oxUtils::getInstance();
+        $myUtils = oxRegistry::getUtils();
 
         modConfig::getInstance()->setConfigParam( 'bl_perfShowActionCatArticleCnt', true );
 

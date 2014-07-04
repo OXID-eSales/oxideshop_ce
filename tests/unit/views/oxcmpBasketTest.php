@@ -110,7 +110,7 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
 
     public function testChangeBasketSearchEngine()
     {
-        oxUtils::getInstance()->setSearchEngine(true);
+        oxRegistry::getUtils()->setSearchEngine(true);
 
         $o = $this->getMock('oxcmp_basket', array('_getItems'));
         $o->expects($this->never())->method('_getItems');

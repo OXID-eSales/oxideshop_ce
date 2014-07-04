@@ -130,7 +130,7 @@ class Unit_Core_oxuserpaymentTest extends OxidTestCase
     public function testGetaDynValues()
     {
         $sDyn = 'kktype__visa@@kknumber__12345@@kkmonth__11@@kkyear__2008@@kkname__testName@@kkpruef__56789@@';
-        $aDynVal = oxUtils::getInstance()->assignValuesFromText( $sDyn );
+        $aDynVal = oxRegistry::getUtils()->assignValuesFromText( $sDyn );
         $oUserPayment = oxNew( 'oxUserPayment' );
         $oUserPayment->oxuserpayments__oxvalue = new oxField( $sDyn, oxField::T_RAW );
 
@@ -144,7 +144,7 @@ class Unit_Core_oxuserpaymentTest extends OxidTestCase
     {
         $oUpay = oxNew( 'oxuserpayment' );
         $this->assertEquals( 'oxuserpayment', $oUpay->getClassName() );
-        $this->assertEquals( oxUtils::getInstance()->strRot13( 'fq45QS09_fqyx09239QQ' ), $oUpay->getPaymentKey( '_sPaymentKey' ) );
+        $this->assertEquals( oxRegistry::getUtils()->strRot13( 'fq45QS09_fqyx09239QQ' ), $oUpay->getPaymentKey( '_sPaymentKey' ) );
     }
 
     /**
@@ -176,7 +176,7 @@ class Unit_Core_oxuserpaymentTest extends OxidTestCase
     public function testGetPaymentKey()
     {
         $oUpay = oxNew( 'oxuserpayment' );
-        $this->assertEquals( oxUtils::getInstance()->strRot13( 'fq45QS09_fqyx09239QQ' ), $oUpay->getPaymentKey() );
+        $this->assertEquals( oxRegistry::getUtils()->strRot13( 'fq45QS09_fqyx09239QQ' ), $oUpay->getPaymentKey() );
     }
 
     /**
@@ -354,7 +354,7 @@ class Unit_Core_oxuserpaymentTest extends OxidTestCase
     public function testGetDynValues()
     {
         $sDyn = 'kktype__visa@@kknumber__12345@@kkmonth__11@@kkyear__2008@@kkname__testName@@kkpruef__56789@@';
-        $aDynVal = oxUtils::getInstance()->assignValuesFromText( $sDyn );
+        $aDynVal = oxRegistry::getUtils()->assignValuesFromText( $sDyn );
         $oUserPayment = oxNew( 'oxUserPayment' );
         $oUserPayment->oxuserpayments__oxvalue = new oxField( $sDyn, oxField::T_RAW );
         $this->assertEquals( $aDynVal, $oUserPayment->getDynValues() );

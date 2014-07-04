@@ -91,7 +91,7 @@ class Unit_Modules_Oe_Invoicepdf_Controllers_Admin_InvoicepdfOrderOverviewTest e
         $oView = new InvoicepdfOrder_Overview();
         $oView->createPDF();
 
-        $aHeaders = oxUtils::getInstance()->getHeaders();
+        $aHeaders = oxRegistry::getUtils()->getHeaders();
         $this->assertEquals( "Pragma: public", $aHeaders[0] );
         $this->assertEquals( "Cache-Control: must-revalidate, post-check=0, pre-check=0", $aHeaders[1] );
         $this->assertEquals( "Expires: 0", $aHeaders[2] );

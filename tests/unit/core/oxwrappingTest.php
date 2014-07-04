@@ -213,7 +213,7 @@ class Unit_Core_oxwrappingTest extends OxidTestCase
 
     public function testGetCardPrice()
     {
-        $myUtils = oxUtils::getInstance();
+        $myUtils = oxRegistry::getUtils();
         $oCard = oxNew( 'oxwrapping' );
         if (!$oCard->Load($this->_sCardOxid)) {
             $this->fail('can not load wrapping');
@@ -229,7 +229,7 @@ class Unit_Core_oxwrappingTest extends OxidTestCase
 
     public function testGetWrapPrice()
     {
-        $myUtils = oxUtils::getInstance();
+        $myUtils = oxRegistry::getUtils();
 
         $oWrap = oxNew( 'oxwrapping' );
         if (!$oWrap->Load($this->_sWrapOxid)) {
@@ -268,7 +268,7 @@ class Unit_Core_oxwrappingTest extends OxidTestCase
      */
     public function testCalcDPriceInEUR()
     {
-        $myUtils  = oxUtils::getInstance();
+        $myUtils  = oxRegistry::getUtils();
 
         $oWrapping = oxNew( 'oxwrapping' );
         if (!$oWrapping->Load($this->_sWrapOxid)) {
@@ -282,7 +282,7 @@ class Unit_Core_oxwrappingTest extends OxidTestCase
 
     public function testCalcFPriceInEUR()
     {
-        $myUtils  = oxUtils::getInstance();
+        $myUtils  = oxRegistry::getUtils();
         $myConfig = oxRegistry::getConfig();
 
         $iTempCur = $myConfig->getActShopCurrencyObject()->id;
@@ -319,7 +319,7 @@ class Unit_Core_oxwrappingTest extends OxidTestCase
     public function testCalcFPriceInCHF()
     {
         $myConfig = oxRegistry::getConfig();
-        $myUtils  = oxUtils::getInstance();
+        $myUtils  = oxRegistry::getUtils();
 
         $iTempCur = $myConfig->getActShopCurrencyObject()->id;
 
@@ -340,7 +340,7 @@ class Unit_Core_oxwrappingTest extends OxidTestCase
 
     public function testGetWrappingListIfNotAllActive()
     {
-        $myUtils = oxUtils::getInstance();
+        $myUtils = oxRegistry::getUtils();
 
         $oWrap = oxNew( 'oxwrapping' );
         $oWrapList = $oWrap->getWrappingList( 'WRAP' );
@@ -371,7 +371,7 @@ class Unit_Core_oxwrappingTest extends OxidTestCase
 
     public function testGetWrappingList()
     {
-        $myUtils = oxUtils::getInstance();
+        $myUtils = oxRegistry::getUtils();
 
         $oWrap = oxNew( 'oxwrapping' );
         $oWrap->load( $this->_sWrapOxid );

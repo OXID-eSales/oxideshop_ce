@@ -957,7 +957,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $oArticle->setArticleLongDesc( 'best [{ $oViewConf->getImageUrl() }] best' );
         $oArticle->save();
 
-        oxUtils::getInstance()->oxResetFileCache();
+        oxRegistry::getUtils()->oxResetFileCache();
 
         $oArticle = new oxarticle();
         $oArticle->load( '_testArt' );
@@ -1179,7 +1179,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $this->assertEquals( oxRegistry::getLang()->formatCurrency( 6 ), $oP2A->fbrutprice );
 
         $oP2A = next( $oAmPriceList );
-        $dPrice = oxUtils::getInstance()->fRound($dArticlePrice - $dArticlePrice / 100 * 7 );
+        $dPrice = oxRegistry::getUtils()->fRound($dArticlePrice - $dArticlePrice / 100 * 7 );
         //$this->assertEquals( oxRegistry::getLang()->formatCurrency( $dPrice), $oP2A->oxprice2article__oxaddabs->value );
         //$this->assertEquals( oxRegistry::getLang()->formatCurrency( $dPrice / ( 1 + 19 / 100 ) ), $oP2A->fnetprice );
         $this->assertEquals( oxRegistry::getLang()->formatCurrency( $dPrice ), $oP2A->fbrutprice );

@@ -40,7 +40,7 @@ class Unit_Views_oxcmpLangTest extends OxidTestCase
 
         modConfig::getInstance();
         modSession::getInstance();
-        oxTestModules::addFunction('oxutils', 'setseoact', '{oxUtils::getInstance()->_blSeoIsActive = $aA[0];}');
+        oxTestModules::addFunction('oxutils', 'setseoact', '{oxRegistry::getUtils()->_blSeoIsActive = $aA[0];}');
         oxNew('oxutils')->setseoact(false);
     }
 
@@ -51,7 +51,7 @@ class Unit_Views_oxcmpLangTest extends OxidTestCase
      */
     protected function tearDown()
     {
-        oxUtils::getInstance()->seoIsActive(true);
+        oxRegistry::getUtils()->seoIsActive(true);
         modConfig::getInstance()->cleanup();
         modSession::getInstance()->cleanup();
         parent::tearDown();

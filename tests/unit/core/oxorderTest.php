@@ -3285,7 +3285,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
 
         $oOrder->UNITsetPayment( 'oxiddebitnote' );
 
-        $aDynVal = oxUtils::getInstance()->assignValuesFromText( $sDyn );
+        $aDynVal = oxRegistry::getUtils()->assignValuesFromText( $sDyn );
         $this->assertEquals( $aDynVal, $oOrder->getPaymentType()->aDynValues );
     }
 

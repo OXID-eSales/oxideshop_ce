@@ -36,7 +36,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
         parent::setUp();
 
         // cleanup
-        oxUtils::getInstance()->oxResetFileCache();
+        oxRegistry::getUtils()->oxResetFileCache();
 
         modConfig::getInstance();
         modSession::getInstance();
@@ -50,7 +50,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
     protected function tearDown()
     {
         // cleanup
-        oxUtils::getInstance()->oxResetFileCache();
+        oxRegistry::getUtils()->oxResetFileCache();
 
         modConfig::getInstance()->cleanup();
         modSession::getInstance()->cleanup();
@@ -1164,14 +1164,14 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
     public function testGetLangTranslationArrayModuleFile()
     {
-        oxUtils::getInstance()->oxResetFileCache();
+        oxRegistry::getUtils()->oxResetFileCache();
 
         //writing a test file
         $sFileContents = '<?php $aLang = array( "charset" => "testCharset", "TESTKEY" => "testVal");';
         $sFileName = getShopBasePath()."/application/views/azure/de/my_lang.php";
         $sShopId = modConfig::getInstance()->getShopId();
         $sCacheKey = "languagefiles__0_$sShopId";
-        oxUtils::getInstance()->toFileCache($sCacheKey, null);
+        oxRegistry::getUtils()->toFileCache($sCacheKey, null);
 
         file_put_contents($sFileName, $sFileContents);
         $oSubj = $this->getProxyClass("oxLang");
@@ -1186,7 +1186,7 @@ class Unit_Core_oxLangTest extends OxidTestCase
         unlink ($sFileName);
         $this->assertFalse(file_exists($sFileName));
 
-        oxUtils::getInstance()->toFileCache($sCacheKey, null);
+        oxRegistry::getUtils()->toFileCache($sCacheKey, null);
 
     }
 

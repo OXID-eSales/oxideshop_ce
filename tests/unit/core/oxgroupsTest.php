@@ -65,7 +65,7 @@ class Unit_Core_oxgroupsTest extends OxidTestCase
 
     public function testDelete()
     {
-        $myUtils  = oxUtils::getInstance();
+        $myUtils  = oxRegistry::getUtils();
         $myConfig = oxRegistry::getConfig();
         $myDB     = oxDb::getDb();
 

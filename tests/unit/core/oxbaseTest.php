@@ -548,7 +548,7 @@ class Unit_Core_oxbaseTest extends OxidTestCase
     public function testLazyLoadingIdIsAlwaysSet()
     {
         //cleaning cache
-        oxUtils::getInstance()->toFileCache('fieldnames_oxarticles_lazyloadingtest', null);
+        oxRegistry::getUtils()->toFileCache('fieldnames_oxarticles_lazyloadingtest', null);
 
         $oBase = new _oxBase();
         $oBase->setClassVar("_sCoreTable", "oxarticles");
@@ -570,7 +570,7 @@ class Unit_Core_oxbaseTest extends OxidTestCase
     public function testLazyLoading()
     {
         //cleaning cache
-        oxUtils::getInstance()->toFileCache('fieldnames_oxarticles_lazyloadingtest', null);
+        oxRegistry::getUtils()->toFileCache('fieldnames_oxarticles_lazyloadingtest', null);
 
         $oBase = new _oxBase();
         $oBase->setClassVar("_sCoreTable", "oxarticles");
@@ -2249,7 +2249,7 @@ class Unit_Core_oxbaseTest extends OxidTestCase
 
         //checking, should NOT be cached
         $sCacheKey = 'fieldnames_oxarticles_nonExistantFieldTest';
-        $aFieldNames = oxUtils::getInstance()->fromFileCache($sCacheKey);
+        $aFieldNames = oxRegistry::getUtils()->fromFileCache($sCacheKey);
 
         $this->assertFalse(isset($aFieldNames['nonexistantfield']));
     }

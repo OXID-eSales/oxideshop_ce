@@ -83,18 +83,6 @@ class oxUtils extends oxSuperCfg
     protected $_blIsSe = null;
 
     /**
-     * Return a single instance of this class
-     *
-     * @deprecated since v5.0 (2012-08-10); Use oxRegistry::getUtils() instead.
-     *
-     * @return oxUtils
-     */
-    public static function getInstance()
-    {
-        return oxRegistry::getUtils();
-    }
-
-    /**
      * Statically cached data
      *
      * @var array

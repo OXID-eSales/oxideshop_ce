@@ -54,7 +54,7 @@ class Unit_Core_oxvendorlistTest extends OxidTestCase
      * Test loading simple vendor list
      */
 /*    public function test_loadVendorList() {
-        $myUtils = oxUtils::getInstance();
+        $myUtils = oxRegistry::getUtils();
         $myConfig= oxRegistry::getConfig();
         $myDB    = oxDb::getDB();
 
@@ -85,7 +85,7 @@ class Unit_Core_oxvendorlistTest extends OxidTestCase
      */
     public function test_loadVendorListByLanguage()
     {
-        $myUtils = oxUtils::getInstance();
+        $myUtils = oxRegistry::getUtils();
         $myConfig= modConfig::getInstance();
         $myDB    = oxDb::getDB();
 
@@ -119,7 +119,7 @@ class Unit_Core_oxvendorlistTest extends OxidTestCase
      */
     public function test_loadVendorListAndCountVendorArticles()
     {
-        $myUtils = oxUtils::getInstance();
+        $myUtils = oxRegistry::getUtils();
 
         modConfig::getInstance()->setConfigParam( 'bl_perfShowActionCatArticleCnt', true );
 

@@ -125,7 +125,7 @@ class Unit_Core_oxpaymentTest extends OxidTestCase
         $oPayment = new oxPayment();
         $oPayment->load("oxidcreditcard");
 
-        $this->assertEquals( oxUtils::getInstance()->assignValuesFromText( $oPayment->oxpayments__oxvaldesc->value ), $oPayment->getDynValues() );
+        $this->assertEquals( oxRegistry::getUtils()->assignValuesFromText( $oPayment->oxpayments__oxvaldesc->value ), $oPayment->getDynValues() );
     }
 
     /**

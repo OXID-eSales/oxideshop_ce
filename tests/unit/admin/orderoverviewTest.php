@@ -94,7 +94,7 @@ class Unit_Admin_OrderOverviewTest extends OxidTestCase
         $oView = new Order_Overview();
         $oView->exportlex();
 
-        $aHeaders = oxUtils::getInstance()->getHeaders();
+        $aHeaders = oxRegistry::getUtils()->getHeaders();
         $this->assertEquals( "Pragma: public", $aHeaders[0] );
         $this->assertEquals( "Cache-Control: must-revalidate, post-check=0, pre-check=0", $aHeaders[1] );
         $this->assertEquals( "Expires: 0", $aHeaders[2] );
@@ -150,7 +150,7 @@ class Unit_Admin_OrderOverviewTest extends OxidTestCase
         $oView = new Order_Overview();
         $oView->exportDTAUS();
 
-        $aHeaders = oxUtils::getInstance()->getHeaders();
+        $aHeaders = oxRegistry::getUtils()->getHeaders();
         $this->assertEquals( "Content-Disposition: attachment; filename=\"dtaus0.txt\"", $aHeaders[0] );
         $this->assertEquals( "Content-type: text/plain", $aHeaders[1] );
         $this->assertEquals( "Cache-control: public", $aHeaders[2] );

@@ -80,7 +80,7 @@ class Unit_Views_basketTest extends OxidTestCase
      */
     public function testRenderNoSE()
     {
-        oxUtils::getInstance()->setSearchEngine(false);
+        oxRegistry::getUtils()->setSearchEngine(false);
 
         $oBasket = new basket();
 

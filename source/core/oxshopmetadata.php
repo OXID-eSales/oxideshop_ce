@@ -27,30 +27,11 @@
 class oxShopMetaData extends oxSuperCfg
 {
     /**
-     * oxShopMetaData class instance.
-     *
-     * @var oxutils instance
-     */
-    private static $_instance = null;
-
-    /**
      * Shop field set size, limited to 64bit by MySQL
      *
      * @var int
      */
     const SHOP_FIELD_SET_SIZE = 64;
-
-    /**
-     * resturns a single instance of this class
-     *
-     * @deprecated since v5.0 (2012-08-10); Use oxRegistry::get("oxShopMetaData") instead
-     *
-     * @return oxShopMetaData
-     */
-    public static function getInstance()
-    {
-        return oxRegistry::get("oxShopMetadata");
-    }
 
     /**
      * Returns integer number with bit set according to $iShopId.

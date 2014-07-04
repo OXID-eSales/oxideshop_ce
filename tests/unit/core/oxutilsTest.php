@@ -843,7 +843,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
     {
 
         $mySession = oxRegistry::getSession();
-        $backUpAuth = $mySession->getVar( "auth");
+        $backUpAuth = $mySession->getVariable( "auth");
 
         $mySession->setVariable( "auth", "oxdefaultadmin");
         $this->assertEquals(true, oxRegistry::getUtils()->checkAccessRights());
@@ -869,7 +869,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
     {
 
         $mySession = oxRegistry::getSession();
-        $backUpAuth = $mySession->getVar( "auth");
+        $backUpAuth = $mySession->getVariable( "auth");
 
         $e = null;
         try {

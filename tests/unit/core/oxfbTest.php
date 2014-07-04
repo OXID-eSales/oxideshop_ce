@@ -140,7 +140,7 @@ class Unit_Core_oxfbTest extends OxidTestCase
         $sSessKey = $oFb->UNITconstructSessionVariableName('access_token');
         $this->assertFalse($oSess->hasVariable($sSessKey));
         $oFb->UNITsetPersistentData('access_token', 'test1');
-        $this->assertSame('test1', $oSess->getVar($sSessKey));
+        $this->assertSame('test1', $oSess->getVariable($sSessKey));
     }
 
     /**

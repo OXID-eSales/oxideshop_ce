@@ -433,7 +433,7 @@ class Unit_Views_orderTest extends OxidTestCase
         $this->assertEquals( "execute", $oOrder->getExecuteFnc());
 
         //checking if new order id was generated
-        $this->assertEquals( 'testUID', $mySession->getVar( 'sess_challenge') );
+        $this->assertEquals( 'testUID', $mySession->getVariable( 'sess_challenge') );
     }
 
     /**

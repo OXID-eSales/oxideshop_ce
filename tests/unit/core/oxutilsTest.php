@@ -845,15 +845,15 @@ class Unit_Core_oxutilsTest extends OxidTestCase
         $mySession = oxRegistry::getSession();
         $backUpAuth = $mySession->getVar( "auth");
 
-        $mySession->setVar( "auth", "oxdefaultadmin");
+        $mySession->setVariable( "auth", "oxdefaultadmin");
         $this->assertEquals(true, oxUtils::getInstance()->checkAccessRights());
 
         //  self::$test_sql_used = null;
         modDB::getInstance()->addClassFunction('getOne', create_function('$sql', 'return 1;'));
 
-        $mySession->setVar( "auth", "oxdefaultadmin");
+        $mySession->setVariable( "auth", "oxdefaultadmin");
         $this->assertEquals(true, oxUtils::getInstance()->checkAccessRights());
-        $mySession->setVar( "auth", "blafooUser");
+        $mySession->setVariable( "auth", "blafooUser");
 
 
         //self::$test_sql_used = null;
@@ -861,7 +861,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
 
         $this->assertEquals(false, oxUtils::getInstance()->checkAccessRights());
 
-        $mySession->setVar( "auth", $backUpAuth);
+        $mySession->setVariable( "auth", $backUpAuth);
         modDB::getInstance()->cleanup();
     }
 
@@ -906,7 +906,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
         }
 
 
-        $mySession->setVar( "auth", $backUpAuth);
+        $mySession->setVariable( "auth", $backUpAuth);
         modDB::getInstance()->cleanup();
 
 

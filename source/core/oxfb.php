@@ -113,7 +113,7 @@ class oxFb extends Facebook
         }
 
         $sSessionVarName = $this->constructSessionVariableName($key);
-        oxRegistry::getSession()->setVar($sSessionVarName, $value);
+        oxRegistry::getSession()->setVariable($sSessionVarName, $value);
     }
 
     /**
@@ -132,7 +132,7 @@ class oxFb extends Facebook
         }
 
         $sSessionVarName = $this->constructSessionVariableName($key);
-        return (oxRegistry::getSession()->hasVar($sSessionVarName) ?
+        return (oxRegistry::getSession()->hasVariable($sSessionVarName) ?
             oxRegistry::getSession()->getVar($sSessionVarName) : $default);
     }
 

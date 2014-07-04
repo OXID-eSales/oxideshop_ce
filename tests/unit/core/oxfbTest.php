@@ -138,7 +138,7 @@ class Unit_Core_oxfbTest extends OxidTestCase
         $oFb = $this->getProxyClass('_oxFb');
 
         $sSessKey = $oFb->UNITconstructSessionVariableName('access_token');
-        $this->assertFalse($oSess->hasVar($sSessKey));
+        $this->assertFalse($oSess->hasVariable($sSessKey));
         $oFb->UNITsetPersistentData('access_token', 'test1');
         $this->assertSame('test1', $oSess->getVar($sSessKey));
     }
@@ -154,7 +154,7 @@ class Unit_Core_oxfbTest extends OxidTestCase
         $oFb = $this->getProxyClass('_oxFb');
 
         $sSessKey = $oFb->UNITconstructSessionVariableName('access_token');
-        $oSess->setVar($sSessKey, 'test2');
+        $oSess->setVariable($sSessKey, 'test2');
         $sVal = $oFb->UNITgetPersistentData('access_token');
         $this->assertSame('test2', $sVal);
     }
@@ -170,8 +170,8 @@ class Unit_Core_oxfbTest extends OxidTestCase
         $oFb = $this->getProxyClass('_oxFb');
 
         $sSessKey = $oFb->constructSessionVariableName('access_token');
-        $oSess->setVar($sSessKey, 'test3');
+        $oSess->setVariable($sSessKey, 'test3');
         $oFb->UNITclearPersistentData('access_token');
-        $this->assertFalse($oSess->hasVar($sSessKey));
+        $this->assertFalse($oSess->hasVariable($sSessKey));
     }
 }

@@ -874,7 +874,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
         $e = null;
         try {
             modDB::getInstance()->addClassFunction('getOne', create_function('$sql', 'return 1;'));
-            $mySession->setVar( "auth", "blafooUser");
+            $mySession->setVariable( "auth", "blafooUser");
             $this->assertEquals(true, oxUtils::getInstance()->checkAccessRights());
             modConfig::setRequestParameter('fnc', 'chshp');
             $this->assertEquals(false, oxUtils::getInstance()->checkAccessRights());

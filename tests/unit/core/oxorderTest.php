@@ -2363,7 +2363,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
         $this->assertEquals( $sValue, $oUserpayment->oxuserpayments__oxvalue->value );
         $this->assertEquals( 4, count($oUserpayment->aDynValues) );
 
-        modSession::getInstance()->deleteVar('dynvalue');
+        modSession::getInstance()->deleteVariable('dynvalue');
 
         $oUserpayment = $oOrder->UNITsetPayment( 'oxiddebitnote' );
         $this->assertEquals( $sValue, $oUserpayment->oxuserpayments__oxvalue->value );

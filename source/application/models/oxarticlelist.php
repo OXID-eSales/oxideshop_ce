@@ -92,7 +92,7 @@ class oxArticleList extends oxList
      */
     public function getHistoryArticles()
     {
-        if ($aArticlesIds = $this->getSession()->getVar('aHistoryArticles')) {
+        if ($aArticlesIds = $this->getSession()->getVariable('aHistoryArticles')) {
             return $aArticlesIds;
         } elseif ( $sArticlesIds = oxRegistry::get("oxUtilsServer")->getOxCookie('aHistoryArticles')) {
             return explode('|', $sArticlesIds);

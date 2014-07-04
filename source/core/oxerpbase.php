@@ -289,13 +289,13 @@ abstract class oxERPBase
             session_start();
         }
 
-        $sAuth = $mySession->getVar('auth');
+        $sAuth = $mySession->getVariable('auth');
 
         if (!isset($sAuth) || !$sAuth) {
             throw new Exception( "ERROR: Session ID not valid!");
         }
 
-        $this->_iLanguage   = $mySession->getVar('lang');
+        $this->_iLanguage   = $mySession->getVariable('lang');
         $this->_sUserID     = $sAuth;
 
 

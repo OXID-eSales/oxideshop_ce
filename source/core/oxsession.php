@@ -815,7 +815,7 @@ class oxSession extends oxSuperCfg
      */
     public function getRemoteAccessToken($blGenerateNew = true)
     {
-        $sToken = $this->getVar('_rtoken');
+        $sToken = $this->getVariable('_rtoken');
         if (!$sToken && $blGenerateNew) {
             $sToken = md5(rand() . $this->getId());
             $sToken = substr($sToken, 0, 8);

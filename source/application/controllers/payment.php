@@ -645,7 +645,7 @@ class Payment extends oxUBase
             return;
         }
 
-        $aDynData = $this->getSession()->getVar("dynvalue");
+        $aDynData = $this->getSession()->getVariable("dynvalue");
 
         $aFields = array("kktype", "kknumber", "kkname", "kkmonth", "kkyear", "kkpruef");
 

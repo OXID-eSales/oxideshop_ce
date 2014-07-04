@@ -329,7 +329,7 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
         $oConfig = $this->getMock( "oxConfig", array( "isDemoShop" ) );
         $oConfig->expects( $this->once() )->method( 'isDemoShop' )->will( $this->returnValue( true ) );
 
-        oxSession::deleteVar( "Errors" );
+        oxRegistry::getSession()->deleteVariable( "Errors" );
 
         $oView = $this->getProxyClass( "Category_Main" );
         $oView->setConfig( $oConfig );

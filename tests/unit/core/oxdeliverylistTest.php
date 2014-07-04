@@ -242,7 +242,7 @@ class Unit_Core_oxdeliverylistTest extends OxidTestCase
         $oDelList = new oxDeliverySet();
         $oDelList->delete('b3b46b74d3894f9f5.62965460');
 
-        oxSession::deleteVar('deladrid');
+        oxRegistry::getSession()->deleteVariable('deladrid');
 
         parent::tearDown();
     }

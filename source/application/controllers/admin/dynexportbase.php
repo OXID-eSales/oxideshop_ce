@@ -752,7 +752,7 @@ class DynExportBase extends oxAdminDetails
     protected function _setSessionParams()
     {
         // reset it from session
-        oxSession::deleteVar( "sExportDelCost" );
+        oxRegistry::getSession()->deleteVariable( "sExportDelCost" );
         $dDelCost = oxRegistry::getConfig()->getRequestParameter( "sExportDelCost");
         if ( isset( $dDelCost ) ) {
             $dDelCost = str_replace( array( ";", " ", "/", "'"), "", $dDelCost );
@@ -760,7 +760,7 @@ class DynExportBase extends oxAdminDetails
             oxRegistry::getSession()->setVariable( "sExportDelCost", $dDelCost );
         }
 
-        oxSession::deleteVar( "sExportMinPrice" );
+        oxRegistry::getSession()->deleteVariable( "sExportMinPrice" );
         $dMinPrice = oxRegistry::getConfig()->getRequestParameter( "sExportMinPrice" );
         if ( isset( $dMinPrice ) ) {
             $dMinPrice = str_replace( array( ";", " ", "/", "'"), "", $dMinPrice);
@@ -769,7 +769,7 @@ class DynExportBase extends oxAdminDetails
         }
 
         // #827
-        oxSession::deleteVar( "sExportCampaign" );
+        oxRegistry::getSession()->deleteVariable( "sExportCampaign" );
         $sCampaign = oxRegistry::getConfig()->getRequestParameter( "sExportCampaign" );
         if ( isset( $sCampaign ) ) {
             $sCampaign = str_replace( array( ";", " ", "/", "'"), "", $sCampaign );
@@ -777,7 +777,7 @@ class DynExportBase extends oxAdminDetails
         }
 
         // reset it from session
-        oxSession::deleteVar("blAppendCatToCampaign" );
+        oxRegistry::getSession()->deleteVariable("blAppendCatToCampaign" );
         // now retrieve it from get or post.
         $blAppendCatToCampaign = oxRegistry::getConfig()->getRequestParameter( "blAppendCatToCampaign" );
         if ( $blAppendCatToCampaign ) {
@@ -785,7 +785,7 @@ class DynExportBase extends oxAdminDetails
         }
 
         // reset it from session
-        oxSession::deleteVar("iExportLanguage" );
+        oxRegistry::getSession()->deleteVariable("iExportLanguage" );
         oxRegistry::getSession()->setVariable( "iExportLanguage", oxRegistry::getConfig()->getRequestParameter( "iExportLanguage" ) );
 
         //setting the custom header

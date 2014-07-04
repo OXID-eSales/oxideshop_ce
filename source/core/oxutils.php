@@ -950,7 +950,7 @@ class oxUtils extends oxSuperCfg
         // deleting admin marker
         oxRegistry::getSession()->setVariable( "malladmin", 0);
         oxRegistry::getSession()->setVariable( "blIsAdmin", 0);
-        oxSession::deleteVar( "blIsAdmin" );
+        oxRegistry::getSession()->deleteVariable( "blIsAdmin" );
         $myConfig->setConfigParam( 'blMallAdmin', false );
         //#1552T
         $myConfig->setConfigParam( 'blAllowInheritedEdit', false );

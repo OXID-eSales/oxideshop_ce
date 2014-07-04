@@ -170,7 +170,7 @@ class Newsletter_Send extends Newsletter_Selection
      */
     public function resetUserCount()
     {
-        oxSession::deleteVar( "iUserCount" );
+        oxRegistry::getSession()->deleteVariable( "iUserCount" );
         $this->_iUserCount = null;
     }
 

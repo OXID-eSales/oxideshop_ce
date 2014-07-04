@@ -547,8 +547,8 @@ class oxOrder extends oxBase
         }
 
         // deleting remark info only when order is finished
-        oxSession::deleteVar( 'ordrem' );
-        oxSession::deleteVar( 'stsprotection' );
+        oxRegistry::getSession()->deleteVariable( 'ordrem' );
+        oxRegistry::getSession()->deleteVariable( 'stsprotection' );
 
         if ( !$this->oxorder__oxordernr->value ) {
             $this->_setNumber();

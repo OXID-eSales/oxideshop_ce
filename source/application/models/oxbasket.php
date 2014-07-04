@@ -3150,7 +3150,7 @@ class oxBasket extends oxSuperCfg
     {
         if ( $this->_blNewITemAdded == null ) {
             $this->_blNewITemAdded = (bool) oxRegistry::getSession()->getVariable( "blAddedNewItem" );
-            oxSession::deleteVar( "blAddedNewItem" );
+            oxRegistry::getSession()->deleteVariable( "blAddedNewItem" );
         }
         return $this->_blNewITemAdded;
     }

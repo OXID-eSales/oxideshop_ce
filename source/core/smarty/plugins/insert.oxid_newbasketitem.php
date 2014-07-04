@@ -65,7 +65,7 @@ function smarty_insert_oxid_newbasketitem($params, &$smarty)
         $smarty->assign( '_newitem', $oNewItem );
 
         // deleting article object data
-        oxSession::deleteVar( '_newitem' );
+        oxRegistry::getSession()->deleteVariable( '_newitem' );
 
         $blRender = true;
     }

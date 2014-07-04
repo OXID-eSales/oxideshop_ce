@@ -55,7 +55,7 @@ function smarty_insert_oxid_fblogin($params, &$smarty)
         // checking, if Facebeook User Id was successfully added
         if ( oxRegistry::getSession()->getVariable( '_blFbUserIdUpdated' ) ) {
             $sTemplate = 'inc/popup_fblogin_msg.tpl';
-            oxSession::deleteVar( '_blFbUserIdUpdated' );
+            oxRegistry::getSession()->deleteVariable( '_blFbUserIdUpdated' );
         }
 
         return $smarty->fetch( $sTemplate );

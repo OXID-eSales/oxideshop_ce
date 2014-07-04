@@ -151,6 +151,6 @@ class oxFb extends Facebook
         }
 
         $sSessionVarName = $this->constructSessionVariableName($key);
-        oxRegistry::getSession()->deleteVar($sSessionVarName);
+        oxRegistry::getSession()->deleteVariable($sSessionVarName);
     }
 }

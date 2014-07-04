@@ -522,20 +522,6 @@ class oxSession extends oxSuperCfg
      *
      * @param string $name Name of parameter to destroy
      *
-     * @deprecated since v5.0.0 (2012-08-27); Use public deleteVariable()
-     *
-     * @return null
-     */
-    public static function deleteVar( $name )
-    {
-        oxRegistry::getSession()->deleteVariable( $name );
-    }
-
-    /**
-     * Destroys a single element (passed to method) of an session array.
-     *
-     * @param string $name Name of parameter to destroy
-     *
      * @return null
      */
     public function deleteVariable( $name )

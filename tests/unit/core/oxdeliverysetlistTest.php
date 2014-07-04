@@ -100,7 +100,7 @@ class Unit_Core_oxDeliverysetListTest extends OxidTestCase
         $this->cleanUpTable( 'oxobject2delivery' );
         $this->cleanUpTable( 'oxdel2delset' );
 
-        oxSession::deleteVar('deladrid');
+        oxRegistry::getSession()->deleteVariable('deladrid');
 
         parent::tearDown();
     }
@@ -325,7 +325,7 @@ class Unit_Core_oxDeliverysetListTest extends OxidTestCase
 
         $oUser = new oxuser();
         $oUser->load( 'oxdefaultadmin' );
-        oxSession::deleteVar('deladrid');
+        oxRegistry::getSession()->deleteVariable('deladrid');
 
         $oBasket = new oxBasket();
         modConfig::getInstance()->setConfigParam( 'blAllowUnevenAmounts', true );

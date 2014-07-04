@@ -330,10 +330,10 @@ class oxcmp_user extends oxView
      */
     protected function _afterLogout()
     {
-        oxSession::deleteVar('paymentid');
-        oxSession::deleteVar('sShipSet');
-        oxSession::deleteVar('deladrid');
-        oxSession::deleteVar('dynvalue');
+        oxRegistry::getSession()->deleteVariable('paymentid');
+        oxRegistry::getSession()->deleteVariable('sShipSet');
+        oxRegistry::getSession()->deleteVariable('deladrid');
+        oxRegistry::getSession()->deleteVariable('dynvalue');
 
         // resetting & recalc basket
         if (($oBasket = $this->getSession()->getBasket())) {
@@ -680,7 +680,7 @@ class oxcmp_user extends oxView
         if ($sOrderRemark) {
             oxRegistry::getSession()->setVariable('ordrem', $sOrderRemark);
         } else {
-            oxSession::deleteVar('ordrem');
+            oxRegistry::getSession()->deleteVariable('ordrem');
         }
 
         if ($oBasket = $this->getSession()->getBasket()) {

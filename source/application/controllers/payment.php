@@ -229,11 +229,11 @@ class Payment extends oxUBase
         }
 
         if ( $iPayError ) {
-            oxSession::deleteVar( 'payerror' );
+            oxRegistry::getSession()->deleteVariable( 'payerror' );
             $this->_sPaymentError = $iPayError;
         }
         if ( $sPayErrorText ) {
-            oxSession::deleteVar( 'payerrortext' );
+            oxRegistry::getSession()->deleteVariable( 'payerrortext' );
             $this->_sPaymentErrorText = $sPayErrorText;
         }
     }

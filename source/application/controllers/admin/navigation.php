@@ -68,7 +68,7 @@ class Navigation extends oxAdminView
                 }
             } else {
                 //removing reload param to force requirements checking next time
-                oxSession::deleteVar("navReload");
+                oxRegistry::getSession()->deleteVariable("navReload");
             }
 
             // favorite navigation

@@ -336,7 +336,7 @@ class oxBasketReservation extends oxSuperCfg
             $oReserved->oxuserbaskets__oxupdate = new oxField( $iTime );
             $oReserved->save();
 
-            oxSession::deleteVar( "iBasketReservationTimeout" );
+            oxRegistry::getSession()->deleteVariable( "iBasketReservationTimeout" );
         }
     }
 }

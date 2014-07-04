@@ -108,7 +108,7 @@ class Thankyou extends oxUBase
 
         // delete it from the session
         $oBasket->deleteBasket();
-        oxSession::deleteVar( 'sess_challenge' );
+        oxRegistry::getSession()->deleteVariable( 'sess_challenge' );
     }
 
     /**
@@ -130,8 +130,8 @@ class Thankyou extends oxUBase
 
         // removing also unregistered user info (#2580)
         if ( !$oUser || !$oUser->oxuser__oxpassword->value) {
-            oxSession::deleteVar( 'usr' );
-            oxSession::deleteVar( 'dynvalue' );
+            oxRegistry::getSession()->deleteVariable( 'usr' );
+            oxRegistry::getSession()->deleteVariable( 'dynvalue' );
         }
 
         // loading order sometimes needed in template

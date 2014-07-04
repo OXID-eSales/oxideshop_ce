@@ -49,7 +49,7 @@ class Unit_Views_contactTest extends OxidTestCase
      */
     public function testSave_withIncorectEmail()
     {
-        oxSession::deleteVar( 'Errors' );
+        oxRegistry::getSession()->deleteVariable( 'Errors' );
 
         $aParams['oxuser__oxusername'] = 'invalidEmail';
         modConfig::setRequestParameter( 'editval', $aParams );
@@ -73,7 +73,7 @@ class Unit_Views_contactTest extends OxidTestCase
      */
     public function testSave_withoutCaptcha()
     {
-        oxSession::deleteVar( 'Errors' );
+        oxRegistry::getSession()->deleteVariable( 'Errors' );
 
         $aParams['oxuser__oxusername'] = 'aaaa@aaa.com';
         modConfig::setRequestParameter( 'editval', $aParams );
@@ -97,7 +97,7 @@ class Unit_Views_contactTest extends OxidTestCase
      */
     public function testSave_withoutUserData()
     {
-        oxSession::deleteVar( 'Errors' );
+        oxRegistry::getSession()->deleteVariable( 'Errors' );
         oxTestModules::addFunction('oxCaptcha', 'pass', '{return true;}');
 
         $aParams['oxuser__oxusername'] = 'aaaa@aaa.com';

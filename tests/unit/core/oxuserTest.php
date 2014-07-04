@@ -179,7 +179,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
         // resetting globally admin mode
         $oUser = new oxUser();
         $oUser->setAdminMode( null );
-        oxSession::deleteVar('deladrid');
+        oxRegistry::getSession()->deleteVariable('deladrid');
 
         // removing email wrapper module
         oxRemClassModule( 'oxuserTest_oxnewssubscribed' );

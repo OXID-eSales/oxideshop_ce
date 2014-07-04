@@ -537,7 +537,7 @@ class Unit_Admin_ArticlePicturesTest extends OxidTestCase
         $oConfig = $this->getMock( "oxConfig", array( "isDemoShop" ) );
         $oConfig->expects( $this->once() )->method( 'isDemoShop' )->will( $this->returnValue( true ) );
 
-        oxSession::deleteVar( "Errors" );
+        oxRegistry::getSession()->deleteVariable( "Errors" );
 
         $oArtPic = $this->getProxyClass( "Article_Pictures" );
         $oArtPic->setConfig( $oConfig );
@@ -559,7 +559,7 @@ class Unit_Admin_ArticlePicturesTest extends OxidTestCase
         $oConfig = $this->getMock( "oxConfig", array( "isDemoShop" ) );
         $oConfig->expects( $this->once() )->method( 'isDemoShop' )->will( $this->returnValue( true ) );
 
-        oxSession::deleteVar( "Errors" );
+        oxRegistry::getSession()->deleteVariable( "Errors" );
 
         $oArtPic = $this->getProxyClass( "Article_Pictures" );
         $oArtPic->setConfig( $oConfig );

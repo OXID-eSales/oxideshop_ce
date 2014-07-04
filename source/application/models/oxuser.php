@@ -1064,7 +1064,7 @@ class oxUser extends oxBase
         }
 
         // cleanup
-        oxSession::deleteVar( 'dgr' );
+        oxRegistry::getSession()->deleteVariable( 'dgr' );
 
         return $blAdd;
     }
@@ -1413,12 +1413,12 @@ class oxUser extends oxBase
     public function logout()
     {
         // deleting session info
-        oxSession::deleteVar( 'usr' );  // for front end
-        oxSession::deleteVar( 'auth' ); // for back end
-        oxSession::deleteVar( 'dgr' );
-        oxSession::deleteVar( 'dynvalue' );
-        oxSession::deleteVar( 'paymentid' );
-        // oxSession::deleteVar( 'deladrid' );
+        oxRegistry::getSession()->deleteVariable( 'usr' );  // for front end
+        oxRegistry::getSession()->deleteVariable( 'auth' ); // for back end
+        oxRegistry::getSession()->deleteVariable( 'dgr' );
+        oxRegistry::getSession()->deleteVariable( 'dynvalue' );
+        oxRegistry::getSession()->deleteVariable( 'paymentid' );
+        // oxRegistry::getSession()->deleteVariable( 'deladrid' );
 
         // delete cookie
         oxRegistry::get("oxUtilsServer")->deleteUserCookie( $this->getConfig()->getShopID() );
@@ -2281,8 +2281,8 @@ class oxUser extends oxBase
                 }
             }
         }
-        oxSession::deleteVar( 'su' );
-        oxSession::deleteVar( 're' );
+        oxRegistry::getSession()->deleteVariable( 'su' );
+        oxRegistry::getSession()->deleteVariable( 're' );
 
         return $blSet;
     }

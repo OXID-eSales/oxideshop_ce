@@ -611,12 +611,12 @@ class Unit_Admin_DynExportBaseTest extends OxidTestCase
         $oView = new DynExportBase();
         $oView->UNITsetSessionParams();
 
-        $this->assertEquals( "123", oxSession::getVar( "sExportDelCost" ) );
-        $this->assertEquals( "123", oxSession::getVar( "sExportMinPrice" ) );
-        $this->assertEquals( "123", oxSession::getVar( "sExportCampaign" ) );
-        $this->assertEquals( "123", oxSession::getVar( "blAppendCatToCampaign" ) );
+        $this->assertEquals( "123", oxRegistry::getSession()->getVariable( "sExportDelCost" ) );
+        $this->assertEquals( "123", oxRegistry::getSession()->getVariable( "sExportMinPrice" ) );
+        $this->assertEquals( "123", oxRegistry::getSession()->getVariable( "sExportCampaign" ) );
+        $this->assertEquals( "123", oxRegistry::getSession()->getVariable( "blAppendCatToCampaign" ) );
         //#3611
-        $this->assertEquals( "testHeader", oxSession::getVar( "sExportCustomHeader" ) );
+        $this->assertEquals( "testHeader", oxRegistry::getSession()->getVariable( "sExportCustomHeader" ) );
     }
 
     /**

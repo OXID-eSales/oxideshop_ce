@@ -85,7 +85,7 @@ class Wrapping_Main extends oxAdminDetails
             $aParams['oxwrapping__oxactive'] = 0;
 
             // shopid
-            $aParams['oxwrapping__oxshopid'] = oxSession::getVar( "actshop" );
+            $aParams['oxwrapping__oxshopid'] = oxRegistry::getSession()->getVariable( "actshop" );
 
         $oWrapping = oxNew( "oxwrapping" );
 
@@ -124,7 +124,7 @@ class Wrapping_Main extends oxAdminDetails
             $aParams['oxwrapping__oxactive'] = 0;
 
             // shopid
-            $aParams['oxwrapping__oxshopid'] = oxSession::getVar( "actshop" );
+            $aParams['oxwrapping__oxshopid'] = oxRegistry::getSession()->getVariable( "actshop" );
 
         $oWrapping = oxNew( "oxwrapping" );
         if ( $soxId != "-1")

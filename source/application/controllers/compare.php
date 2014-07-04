@@ -232,7 +232,7 @@ class Compare extends oxUBase
     public function getCompareItems()
     {
         if ( $this->_aCompItems === null ) {
-            $aItems = oxSession::getVar( 'aFiltcompproducts' );
+            $aItems = oxRegistry::getSession()->getVariable( 'aFiltcompproducts' );
             if ( is_array($aItems) && count($aItems) ) {
                 $this->_aCompItems = $aItems;
             }

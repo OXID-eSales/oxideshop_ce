@@ -59,7 +59,7 @@ class Unit_Views_contactTest extends OxidTestCase
 
         //checking if warning was added to errors list
         $sErr = oxRegistry::getLang()->translateString( 'ERROR_MESSAGE_INPUT_NOVALIDEMAIL' );
-        $aEx = oxSession::getVar( 'Errors' );
+        $aEx = oxRegistry::getSession()->getVariable( 'Errors' );
         $oErr = unserialize( $aEx['default'][0] );
 
         $this->assertEquals( $sErr, $oErr->getOxMessage() );
@@ -83,7 +83,7 @@ class Unit_Views_contactTest extends OxidTestCase
 
         //checking if warning was added to errors list
         $sErr = oxRegistry::getLang()->translateString( 'MESSAGE_WRONG_VERIFICATION_CODE' );
-        $aEx = oxSession::getVar( 'Errors' );
+        $aEx = oxRegistry::getSession()->getVariable( 'Errors' );
         $oErr = unserialize( $aEx['default'][0] );
 
         $this->assertEquals( $sErr, $oErr->getOxMessage() );
@@ -108,7 +108,7 @@ class Unit_Views_contactTest extends OxidTestCase
 
         //checking if warning was added to errors list
         $sErr = oxRegistry::getLang()->translateString( 'ERROR_MESSAGE_INPUT_NOTALLFIELDS' );
-        $aEx = oxSession::getVar( 'Errors' );
+        $aEx = oxRegistry::getSession()->getVariable( 'Errors' );
         $oErr = unserialize( $aEx['default'][0] );
 
         $this->assertEquals( $sErr, $oErr->getOxMessage() );

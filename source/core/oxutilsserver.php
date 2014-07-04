@@ -170,7 +170,7 @@ class oxUtilsServer extends oxSuperCfg
         if ( $this->_mustSaveToSession() ) {
             $aCookieData = array( 'value' => $sValue, 'expire' => $iExpire, 'path' => $sPath, 'domain' => $sDomain );
 
-            $aSessionCookies = ( array ) oxSession::getVar( $this->_sSessionCookiesName );
+            $aSessionCookies = ( array ) oxRegistry::getSession()->getVariable( $this->_sSessionCookiesName );
             $aSessionCookies[$this->_getSessionCookieKey( false )][$sName] = $aCookieData;
 
             oxRegistry::getSession()->setVariable( $this->_sSessionCookiesName, $aSessionCookies );
@@ -184,7 +184,7 @@ class oxUtilsServer extends oxSuperCfg
      */
     public function loadSessionCookies()
     {
-        if ( ( $aSessionCookies = oxSession::getVar( $this->_sSessionCookiesName ) ) ) {
+        if ( ( $aSessionCookies = oxRegistry::getSession()->getVariable( $this->_sSessionCookiesName ) ) ) {
             $sKey = $this->_getSessionCookieKey( true );
             if ( isset( $aSessionCookies[$sKey] ) ) {
                 // writing session data to cookies

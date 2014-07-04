@@ -90,7 +90,7 @@ class Order_Main extends oxAdminDetails
         $aParams    = oxRegistry::getConfig()->getRequestParameter( "editval" );
 
             // shopid
-            $sShopID = oxSession::getVar( "actshop" );
+            $sShopID = oxRegistry::getSession()->getVariable( "actshop" );
             $aParams['oxorder__oxshopid'] = $sShopID;
 
         $oOrder = oxNew( "oxorder" );

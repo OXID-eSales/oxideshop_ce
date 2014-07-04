@@ -102,7 +102,7 @@ class Unit_Admin_ShopRDFaTest extends OxidTestCase
         modConfig::setRequestParameter('aSubmitUrl', null);
         $oView = $this->getProxyClass('Shop_RDFA');
         $oView->submitUrl();
-        $aErr = oxSession::getVar( 'Errors' );
+        $aErr = oxRegistry::getSession()->getVariable( 'Errors' );
         $oErr = unserialize($aErr['default'][0]);
         $this->assertNotNull( $oErr->getOxMessage());
     }
@@ -119,7 +119,7 @@ class Unit_Admin_ShopRDFaTest extends OxidTestCase
         $oView = $this->getMock( 'Shop_RDFa', array( "getHttpResponseCode" ) );
         $oView->expects( $this->any() )->method( 'getHttpResponseCode' )->will( $this->returnValue( $aHeaders ) );
         $oView->submitUrl();
-        $aErr = oxSession::getVar( 'Errors' );
+        $aErr = oxRegistry::getSession()->getVariable( 'Errors' );
         $oErr = unserialize($aErr['default'][0]);
         $this->assertEquals( 'To many times submited', $oErr->getOxMessage());
     }

@@ -145,7 +145,7 @@ class Unit_Admin_oxAdminViewTest extends OxidTestCase
         $oAdminView->expects( $this->once() )->method( '_authorize' )->will( $this->returnValue( true ) );
         $oAdminView->init();
 
-            $this->assertEquals( oxSession::getVar( 'malladmin' ), $oAdminView->getViewDataElement( 'malladmin' ) );
+            $this->assertEquals( oxRegistry::getSession()->getVariable( 'malladmin' ), $oAdminView->getViewDataElement( 'malladmin' ) );
     }
 
     /**

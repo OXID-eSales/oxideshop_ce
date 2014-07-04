@@ -91,7 +91,7 @@ class DeliverySet_Main extends oxAdminDetails
         $aParams = oxRegistry::getConfig()->getRequestParameter( "editval");
 
             // shopid
-            $sShopID = oxSession::getVar( "actshop");
+            $sShopID = oxRegistry::getSession()->getVariable( "actshop");
             $aParams['oxdeliveryset__oxshopid'] = $sShopID;
         $oDelSet = oxNew( "oxdeliveryset" );
 
@@ -129,7 +129,7 @@ class DeliverySet_Main extends oxAdminDetails
             $aParams['oxdeliveryset__oxactive'] = 0;
 
             // shopid
-            $sShopID = oxSession::getVar( "actshop");
+            $sShopID = oxRegistry::getSession()->getVariable( "actshop");
             $aParams['oxdeliveryset__oxshopid'] = $sShopID;
         $oDelSet = oxNew( "oxdeliveryset" );
 

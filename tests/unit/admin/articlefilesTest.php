@@ -128,7 +128,7 @@ class Unit_Admin_ArticleFilesTest extends OxidTestCase
         $oView->expects( $this->any() )->method( 'getConfig' )->will( $this->returnValue( $oConfig ) );
         $oView->deletefile();
 
-        $aErr = oxSession::getVar( 'Errors' );
+        $aErr = oxRegistry::getSession()->getVariable( 'Errors' );
         $oErr = unserialize($aErr['default'][0]);
         $this->assertEquals( 'ARTICLE_EXTEND_UPLOADISDISABLED', $oErr->getOxMessage());
     }
@@ -221,7 +221,7 @@ class Unit_Admin_ArticleFilesTest extends OxidTestCase
         $oView->expects( $this->any() )->method( 'getConfig' )->will( $this->returnValue( $oConfig ) );
         $oView->upload();
 
-        $aErr = oxSession::getVar( 'Errors' );
+        $aErr = oxRegistry::getSession()->getVariable( 'Errors' );
         $oErr = unserialize($aErr['default'][0]);
         $this->assertEquals( 'ARTICLE_EXTEND_UPLOADISDISABLED', $oErr->getOxMessage());
     }
@@ -238,7 +238,7 @@ class Unit_Admin_ArticleFilesTest extends OxidTestCase
         modConfig::setRequestParameter( "newfile", array("oxfiles__oxid" => "_testFileId", "oxfiles__oxpurchasedonly" => 1) );
         $oView = $this->getProxyClass( "Article_Files" );
         $oView->upload();
-        $aErr = oxSession::getVar( 'Errors' );
+        $aErr = oxRegistry::getSession()->getVariable( 'Errors' );
         $oErr = unserialize($aErr['default'][0]);
         $this->assertEquals( 'Keine Dateien hochgeladen', $oErr->getOxMessage());
 
@@ -264,7 +264,7 @@ class Unit_Admin_ArticleFilesTest extends OxidTestCase
         $oView->upload();
 
         $this->setAdminMode( true );
-        $aErr = oxSession::getVar( 'Errors' );
+        $aErr = oxRegistry::getSession()->getVariable( 'Errors' );
         $oErr = unserialize($aErr['default'][0]);
         $this->assertEquals( 'Keine Dateien hochgeladen', $oErr->getOxMessage());
 

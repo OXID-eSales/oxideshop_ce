@@ -98,7 +98,7 @@ class News_Main extends oxAdminDetails
             $aParams['oxnews__oxactive'] = 0;
 
             // shopid
-            $sShopID = oxSession::getVar( "actshop");
+            $sShopID = oxRegistry::getSession()->getVariable( "actshop");
             $aParams['oxnews__oxshopid'] = $sShopID;
         // creating fake object to save correct time value
         if (!$aParams['oxnews__oxdate'])
@@ -145,7 +145,7 @@ class News_Main extends oxAdminDetails
         parent::save();
 
             // shopid
-            $sShopID = oxSession::getVar( "actshop");
+            $sShopID = oxRegistry::getSession()->getVariable( "actshop");
             $aParams['oxnews__oxshopid'] = $sShopID;
         // creating fake object to save correct time value
         if (!$aParams['oxnews__oxdate'])

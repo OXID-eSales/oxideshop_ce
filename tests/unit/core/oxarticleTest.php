@@ -4278,7 +4278,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $oArticle->oxarticles__oxstockflag = new oxField(2, oxField::T_RAW);
         $oArticle->save();
         $this->assertFalse( $oArticle->checkForStock(4));
-        $blErr = oxSession::getVar( 'Errors');
+        $blErr = oxRegistry::getSession()->getVariable( 'Errors');
         $this->assertTrue( isset($blErr) );
     }
 

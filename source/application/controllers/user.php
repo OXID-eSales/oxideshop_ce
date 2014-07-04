@@ -152,7 +152,7 @@ class User extends oxUBase
             $sOrderRemark = false;
             // if already connected, we can use the session
             if ( $this->getUser() ) {
-                $sOrderRemark = oxSession::getVar( 'ordrem' );
+                $sOrderRemark = oxRegistry::getSession()->getVariable( 'ordrem' );
             } else {
                 // not connected so nowhere to save, we're gonna use what we get from post
                 $sOrderRemark = oxRegistry::getConfig()->getRequestParameter( 'order_remark', true );
@@ -194,7 +194,7 @@ class User extends oxUBase
      */
     public function showShipAddress()
     {
-        return oxSession::getVar( 'blshowshipaddress' );
+        return oxRegistry::getSession()->getVariable( 'blshowshipaddress' );
     }
 
     /**

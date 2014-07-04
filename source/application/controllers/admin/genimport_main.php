@@ -132,7 +132,7 @@ class GenImport_Main extends oxAdminDetails
             $oErpImport = new oxErpGenImport();
             $oErpImport->setImportTypePrefix( $sType );
             $oErpImport->setCsvFileFieldsOrder( $aCsvFields );
-            $oErpImport->setCsvContainsHeader( oxSession::getVar( 'blCsvContainsHeader' ) );
+            $oErpImport->setCsvContainsHeader( oxRegistry::getSession()->getVariable( 'blCsvContainsHeader' ) );
 
             $oErpImport->doImport( $this->_getUploadedCsvFilePath() );
             $this->_aViewData['iTotalRows'] = $oErpImport->getTotalImportedRowsNumber();
@@ -287,7 +287,7 @@ class GenImport_Main extends oxAdminDetails
         //try to get uploaded csv file path
         if ( $this->_sCsvFilePath !== null ) {
             return $this->_sCsvFilePath;
-        } elseif ( $this->_sCsvFilePath = oxSession::getVar( 'sCsvFilePath' ) ) {
+        } elseif ( $this->_sCsvFilePath = oxRegistry::getSession()->getVariable( 'sCsvFilePath' ) ) {
             return $this->_sCsvFilePath;
         }
 

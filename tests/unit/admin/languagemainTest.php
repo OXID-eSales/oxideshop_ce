@@ -323,7 +323,7 @@ class Unit_Admin_LanguageMainTest extends OxidTestCase
         $oView->UNITcheckLangTranslations( "en" );
 
         //no errors should be added to session
-        $aEx = oxSession::getVar("Errors");
+        $aEx = oxRegistry::getSession()->getVariable("Errors");
         $this->assertNull( $aEx );
     }
 
@@ -347,7 +347,7 @@ class Unit_Admin_LanguageMainTest extends OxidTestCase
 
         $oView->UNITcheckLangTranslations( "en" );
 
-        $aEx = oxSession::getVar( "Errors" );
+        $aEx = oxRegistry::getSession()->getVariable( "Errors" );
         $oEx = unserialize( $aEx["default"][0] );
         $sErrMsg = oxRegistry::getLang()->translateString( "LANGUAGE_NOTRANSLATIONS_WARNING" );
 
@@ -388,7 +388,7 @@ class Unit_Admin_LanguageMainTest extends OxidTestCase
         $oView->UNITaddNewMultilangFieldsToDb();
 
         //no errors should be added to session
-        $aEx = oxSession::getVar("Errors");
+        $aEx = oxRegistry::getSession()->getVariable("Errors");
         $this->assertNull( $aEx );
     }
 
@@ -406,7 +406,7 @@ class Unit_Admin_LanguageMainTest extends OxidTestCase
 
         $oView->UNITaddNewMultilangFieldsToDb();
 
-        $aEx = oxSession::getVar( "Errors" );
+        $aEx = oxRegistry::getSession()->getVariable( "Errors" );
         $oEx = unserialize( $aEx["default"][0] );
         $sErrMsg = oxRegistry::getLang()->translateString( "LANGUAGE_ERROR_ADDING_MULTILANG_FIELDS" );
 
@@ -462,7 +462,7 @@ class Unit_Admin_LanguageMainTest extends OxidTestCase
 
         $this->assertFalse( $oMainLang->UNITvalidateInput() );
 
-        $aEx = oxSession::getVar("Errors");
+        $aEx = oxRegistry::getSession()->getVariable("Errors");
         $oEx = unserialize( $aEx["default"][0] );
         $sErrMsg = oxRegistry::getLang()->translateString( "LANGUAGE_ALREADYEXISTS_ERROR" );
 
@@ -484,7 +484,7 @@ class Unit_Admin_LanguageMainTest extends OxidTestCase
 
         $this->assertFalse( $oMainLang->UNITvalidateInput() );
 
-        $aEx = oxSession::getVar("Errors");
+        $aEx = oxRegistry::getSession()->getVariable("Errors");
         $oEx = unserialize( $aEx["default"][0] );
         $sErrMsg = oxRegistry::getLang()->translateString( "LANGUAGE_EMPTYLANGUAGENAME_ERROR" );
 
@@ -506,7 +506,7 @@ class Unit_Admin_LanguageMainTest extends OxidTestCase
 
         $this->assertTrue( $oMainLang->UNITvalidateInput() );
 
-        $aEx = oxSession::getVar("Errors");
+        $aEx = oxRegistry::getSession()->getVariable("Errors");
         $this->assertNull( $aEx );
     }
 }

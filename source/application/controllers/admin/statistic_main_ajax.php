@@ -55,7 +55,7 @@ class statistic_main_ajax extends ajaxListComponent
         $aResponse['dir']  = $this->_getSortDir();
 
         // all possible reports
-        $aReports = oxSession::getVar( "allstat_reports" );
+        $aReports = oxRegistry::getSession()->getVariable( "allstat_reports" );
         $sSynchId = oxRegistry::getConfig()->getRequestParameter( "synchoxid" );
         $sOxId    = oxRegistry::getConfig()->getRequestParameter( "oxid" );
 
@@ -151,7 +151,7 @@ class statistic_main_ajax extends ajaxListComponent
      */
     public function removeReportFromList()
     {
-        $aReports = oxSession::getVar( "allstat_reports" );
+        $aReports = oxRegistry::getSession()->getVariable( "allstat_reports" );
         $soxId    = oxRegistry::getConfig()->getRequestParameter( 'oxid');
 
         // assigning all items
@@ -186,7 +186,7 @@ class statistic_main_ajax extends ajaxListComponent
      */
     public function addReportToList()
     {
-        $aReports = oxSession::getVar( "allstat_reports" );
+        $aReports = oxRegistry::getSession()->getVariable( "allstat_reports" );
         $soxId    = oxRegistry::getConfig()->getRequestParameter( 'synchoxid' );
 
         // assigning all items

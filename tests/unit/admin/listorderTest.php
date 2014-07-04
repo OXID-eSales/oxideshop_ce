@@ -87,7 +87,7 @@ class Unit_Admin_ListOrderTest extends OxidTestCase
         $oView = $this->getProxyClass( "List_Order" );
         $oView->UNITcalcListItemsCount( $sSql );
         $this->assertEquals( $iTotal, $oView->getNonPublicVar( "_iListSize" ) );
-        $this->assertEquals( $iTotal, oxSession::getVar( 'iArtCnt' ) );
+        $this->assertEquals( $iTotal, oxRegistry::getSession()->getVariable( 'iArtCnt' ) );
     }
 
     /**

@@ -4204,7 +4204,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     protected function _assignPersistentParam()
     {
         // Persistent Parameter Handling
-        $aPersParam     = oxSession::getVar( 'persparam');
+        $aPersParam     = oxRegistry::getSession()->getVariable( 'persparam');
         if ( isset( $aPersParam) && isset( $aPersParam[$this->getId()])) {
             $this->_aPersistParam = $aPersParam[$this->getId()];
         }
@@ -4236,7 +4236,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     {
         // #657 add a flag if article is on comparisonlist
 
-        $aItems = oxSession::getVar('aFiltcompproducts');
+        $aItems = oxRegistry::getSession()->getVariable('aFiltcompproducts');
         if ( isset( $aItems[$this->getId()])) {
             $this->_blIsOnComparisonList = true;
         }

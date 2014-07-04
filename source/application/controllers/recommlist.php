@@ -320,7 +320,7 @@ class RecommList extends aList
             $this->_blRate = false;
             if ( $this->isReviewActive() && ( $oActiveRecommList = $this->getActiveRecommList() ) ) {
                 $oRating = oxNew( 'oxrating' );
-                $this->_blRate = $oRating->allowRating( oxSession::getVar( 'usr' ), 'oxrecommlist', $oActiveRecommList->getId());
+                $this->_blRate = $oRating->allowRating( oxRegistry::getSession()->getVariable( 'usr' ), 'oxrecommlist', $oActiveRecommList->getId());
             }
         }
         return $this->_blRate;

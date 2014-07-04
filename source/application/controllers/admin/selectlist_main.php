@@ -92,7 +92,7 @@ class SelectList_Main extends oxAdminDetails
                 $this->_aViewData["otherlang"][$id] = clone $oLang;
             }
 
-            $iErr = oxSession::getVar( "iErrorCode");
+            $iErr = oxRegistry::getSession()->getVariable( "iErrorCode");
             if (!$iErr)
                 $iErr = ERR_SUCCESS;
             $this->_aViewData["iErrorCode"] = $iErr;
@@ -121,7 +121,7 @@ class SelectList_Main extends oxAdminDetails
         $aParams    = oxRegistry::getConfig()->getRequestParameter( "editval");
 
             // shopid
-            $sShopID = oxSession::getVar( "actshop");
+            $sShopID = oxRegistry::getSession()->getVariable( "actshop");
             $aParams['oxselectlist__oxshopid'] = $sShopID;
         $oAttr = oxNew( "oxselectlist" );
 
@@ -170,7 +170,7 @@ class SelectList_Main extends oxAdminDetails
         $aParams    = oxRegistry::getConfig()->getRequestParameter( "editval");
 
             // shopid
-            $sShopID = oxSession::getVar( "actshop");
+            $sShopID = oxRegistry::getSession()->getVariable( "actshop");
             $aParams['oxselectlist__oxshopid'] = $sShopID;
         $oObj = oxNew( "oxselectlist" );
 

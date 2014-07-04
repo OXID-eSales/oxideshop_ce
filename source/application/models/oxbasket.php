@@ -1824,7 +1824,7 @@ class oxBasket extends oxSuperCfg
             // ok, logged in
             if ( $sCountryId = $myConfig->getGlobalParameter( 'delcountryid' ) ) {
                 $sDeliveryCountry = $sCountryId;
-            } elseif ( $sAddressId = oxSession::getVar( 'deladrid' ) ) {
+            } elseif ( $sAddressId = oxRegistry::getSession()->getVariable( 'deladrid' ) ) {
 
                 $oDeliveryAddress = oxNew( 'oxAddress' );
                 if ( $oDeliveryAddress->load( $sAddressId ) ) {
@@ -1879,7 +1879,7 @@ class oxBasket extends oxSuperCfg
     public function getPaymentId()
     {
         if ( !$this->_sPaymentId ) {
-             $this->_sPaymentId = oxSession::getVar( 'paymentid' );
+             $this->_sPaymentId = oxRegistry::getSession()->getVariable( 'paymentid' );
         }
         return $this->_sPaymentId;
     }
@@ -1917,7 +1917,7 @@ class oxBasket extends oxSuperCfg
     public function getShippingId()
     {
         if ( !$this->_sShippingSetId ) {
-             $this->_sShippingSetId = oxSession::getVar( 'sShipSet' );
+             $this->_sShippingSetId = oxRegistry::getSession()->getVariable( 'sShipSet' );
         }
 
         $sActPaymentId = $this->getPaymentId();
@@ -3149,7 +3149,7 @@ class oxBasket extends oxSuperCfg
     public function isNewItemAdded()
     {
         if ( $this->_blNewITemAdded == null ) {
-            $this->_blNewITemAdded = (bool) oxSession::getVar( "blAddedNewItem" );
+            $this->_blNewITemAdded = (bool) oxRegistry::getSession()->getVariable( "blAddedNewItem" );
             oxSession::deleteVar( "blAddedNewItem" );
         }
         return $this->_blNewITemAdded;

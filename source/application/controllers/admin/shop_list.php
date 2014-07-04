@@ -117,9 +117,9 @@ class Shop_List extends oxAdminList
     {
         // we override this to add our shop if we are not malladmin
         $this->_aWhere = parent::buildWhere();
-        if ( !oxSession::getVar( 'malladmin' ) ) {
+        if ( !oxRegistry::getSession()->getVariable( 'malladmin' ) ) {
             // we only allow to see our shop
-            $this->_aWhere[ getViewName( "oxshops" ) . ".oxid" ] = oxSession::getVar( "actshop" );
+            $this->_aWhere[ getViewName( "oxshops" ) . ".oxid" ] = oxRegistry::getSession()->getVariable( "actshop" );
         }
 
         return $this->_aWhere;

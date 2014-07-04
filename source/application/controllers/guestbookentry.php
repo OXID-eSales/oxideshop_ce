@@ -49,7 +49,7 @@ class GuestbookEntry extends GuestBook
     {
         $sReviewText = trim( ( string ) oxRegistry::getConfig()->getRequestParameter( 'rvw_txt', true ) );
         $sShopId     = $this->getConfig()->getShopId();
-        $sUserId     = oxSession::getVar( 'usr' );
+        $sUserId     = oxRegistry::getSession()->getVariable( 'usr' );
 
         // guest book`s entry is validated
         if ( !$sUserId ) {

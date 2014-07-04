@@ -170,7 +170,7 @@ class oxAttributeList extends oxList
 
     public function getCategoryAttributes( $sCategoryId, $iLang )
     {
-        $aSessionFilter = oxSession::getVar( 'session_attrfilter' );
+        $aSessionFilter = oxRegistry::getSession()->getVariable( 'session_attrfilter' );
 
         $oArtList = oxNew( "oxarticlelist");
         $oArtList->loadCategoryIDs( $sCategoryId, $aSessionFilter );

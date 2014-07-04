@@ -164,7 +164,7 @@ class oxAdminList extends oxAdminView
     {
         if ( !$this->_iViewListSize ) {
             $myConfig = $this->getConfig();
-            if ( $aProfile = oxSession::getVar( 'profile' ) ) {
+            if ( $aProfile = oxRegistry::getSession()->getVariable( 'profile' ) ) {
                 if ( isset( $aProfile[1] ) ) {
                     $myConfig->setConfigParam( 'iAdminListSize', (int) $aProfile[1] );
                 }

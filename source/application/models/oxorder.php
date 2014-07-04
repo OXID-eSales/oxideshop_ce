@@ -490,7 +490,7 @@ class oxOrder extends oxBase
     public function finalizeOrder( oxBasket $oBasket, $oUser, $blRecalculatingOrder = false )
     {
         // check if this order is already stored
-        $sGetChallenge = oxSession::getVar( 'sess_challenge' );
+        $sGetChallenge = oxRegistry::getSession()->getVariable( 'sess_challenge' );
         if ( $this->_checkOrderExist( $sGetChallenge ) ) {
             oxRegistry::getUtils()->logger( 'BLOCKER' );
             // we might use this later, this means that somebody klicked like mad on order button
@@ -700,7 +700,7 @@ class oxOrder extends oxBase
 
         // user remark
         if ( !isset( $this->oxorder__oxremark ) || $this->oxorder__oxremark->value === null ) {
-            $this->oxorder__oxremark = new oxField(oxSession::getVar( 'ordrem' ), oxField::T_RAW);
+            $this->oxorder__oxremark = new oxField(oxRegistry::getSession()->getVariable( 'ordrem' ), oxField::T_RAW);
         }
 
         // currency
@@ -997,7 +997,7 @@ class oxOrder extends oxBase
     protected function _setPayment( $sPaymentid )
     {
         // copying payment info fields
-        $aDynvalue = oxSession::getVar( 'dynvalue' );
+        $aDynvalue = oxRegistry::getSession()->getVariable( 'dynvalue' );
         $aDynvalue = $aDynvalue ? $aDynvalue : oxRegistry::getConfig()->getRequestParameter( 'dynvalue' );
 
         // loading payment object
@@ -1201,7 +1201,7 @@ class oxOrder extends oxBase
     {
         $oDelAdress = null;
         if (! ($soxAddressId = oxRegistry::getConfig()->getRequestParameter( 'deladrid' ) ) ) {
-            $soxAddressId = oxSession::getVar( 'deladrid' );
+            $soxAddressId = oxRegistry::getSession()->getVariable( 'deladrid' );
         }
         if ( $soxAddressId ) {
             $oDelAdress = oxNew( 'oxaddress' );

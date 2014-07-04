@@ -348,7 +348,7 @@ class aList extends oxUBase
         $sActCat = oxRegistry::getConfig()->getRequestParameter('cnid');
 
         if (!empty($aFilter)) {
-            $aSessionFilter = oxSession::getVar('session_attrfilter');
+            $aSessionFilter = oxRegistry::getSession()->getVariable('session_attrfilter');
             //fix for #2904 - if language will be changed attributes of this category will be deleted from session
             //and new filters for active language set.
             $aSessionFilter[$sActCat]         = null;
@@ -382,7 +382,7 @@ class aList extends oxUBase
 
             $this->_iAllArtCnt = $oArtList->loadPriceArticles($dPriceFrom, $dPriceTo, $oCategory);
         } else {
-            $aSessionFilter = oxSession::getVar('session_attrfilter');
+            $aSessionFilter = oxRegistry::getSession()->getVariable('session_attrfilter');
 
             $sActCat           = oxRegistry::getConfig()->getRequestParameter('cnid');
             $this->_iAllArtCnt = $oArtList->loadCategoryArticles($sActCat, $aSessionFilter);

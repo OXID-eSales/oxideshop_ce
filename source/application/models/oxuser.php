@@ -392,7 +392,7 @@ class oxUser extends oxBase
 
         $sAddressId = oxRegistry::getConfig()->getRequestParameter( "oxaddressid");
         if ( !$sAddressId && !oxRegistry::getConfig()->getRequestParameter( 'reloadaddress' ) ) {
-            $sAddressId = oxSession::getVar( "deladrid" );
+            $sAddressId = oxRegistry::getSession()->getVariable( "deladrid" );
         }
         return $sAddressId;
     }
@@ -786,7 +786,7 @@ class oxUser extends oxBase
     public function getActiveCountry()
     {
         $sDeliveryCountry = '';
-        $soxAddressId = oxSession::getVar( 'deladrid' );
+        $soxAddressId = oxRegistry::getSession()->getVariable( 'deladrid' );
         if ( $soxAddressId ) {
             $oDelAddress = oxNew( 'oxaddress' );
             $oDelAddress->load( $soxAddressId );
@@ -1037,7 +1037,7 @@ class oxUser extends oxBase
      * (defined ar oxConfig::aDeniedDynGroups) and if not - adds user
      * to this group.
      *
-     * @param string $sDynGoup         deny group (oxSession::getVar( 'dgr' ))
+     * @param string $sDynGoup         deny group (oxRegistry::getSession()->getVariable( 'dgr' ))
      * @param array  $aDeniedDynGroups ($myConfig->getConfigParam( 'aDeniedDynGroups' ))
      *
      * @return bool
@@ -1636,8 +1636,8 @@ class oxUser extends oxBase
         $sAuthRights = null;
 
         // choosing possible user rights index
-        $sAuthUserID = $this->isAdmin()?oxSession::getVar( 'auth' ):null;
-        $sAuthUserID = $sAuthUserID?$sAuthUserID:oxSession::getVar( 'usr' );
+        $sAuthUserID = $this->isAdmin()?oxRegistry::getSession()->getVariable( 'auth' ):null;
+        $sAuthUserID = $sAuthUserID?$sAuthUserID:oxRegistry::getSession()->getVariable( 'usr' );
         if ( $sAuthUserID ) {
             $sAuthRights = $oDb->getOne( 'select oxrights from '.$this->getViewName().' where oxid='.$oDb->quote( $sAuthUserID ) );
         }

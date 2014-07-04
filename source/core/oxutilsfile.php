@@ -521,7 +521,7 @@ class oxUtilsFile extends oxSuperCfg
      */
     function checkFile( $sFile )
     {
-        $aCheckCache = oxSession::getVar("checkcache");
+        $aCheckCache = oxRegistry::getSession()->getVariable("checkcache");
 
         if ( isset( $aCheckCache[$sFile] ) ) {
             return $aCheckCache[$sFile];

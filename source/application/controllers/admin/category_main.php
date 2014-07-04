@@ -146,7 +146,7 @@ class Category_Main extends oxAdminDetails
             $aParams['oxcategories__oxvat'] = null;
 
             // shopId
-            $aParams['oxcategories__oxshopid'] = oxSession::getVar( "actshop" );
+            $aParams['oxcategories__oxshopid'] = oxRegistry::getSession()->getVariable( "actshop" );
 
         $oCategory = oxNew( "oxcategory" );
 

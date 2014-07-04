@@ -140,7 +140,7 @@ class Unit_Core_oxUtilsServerTest extends OxidTestCase
         $oUtilsServer->expects( $this->at( 2 ) )->method( 'setOxCookie' )->with( $this->equalTo( "var2" ), $this->equalTo( "val2" ), $this->equalTo( 321 ), $this->equalTo( "path2" ), $this->equalTo( "domain2" ), $this->equalTo( false ) );
         $oUtilsServer->loadSessionCookies();
 
-        $this->assertEquals( array(), oxSession::getVar( 'aSessionCookies' ) );
+        $this->assertEquals( array(), oxRegistry::getSession()->getVariable( 'aSessionCookies' ) );
     }
 
     public function testIsTrustedClientIp()

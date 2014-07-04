@@ -90,7 +90,7 @@ class Pricealarm extends oxUBase
         $dPrice = $myUtils->currency2Float( $aParams['price'] );
 
         $oAlarm = oxNew( "oxpricealarm" );
-        $oAlarm->oxpricealarm__oxuserid = new oxField( oxSession::getVar( 'usr' ));
+        $oAlarm->oxpricealarm__oxuserid = new oxField( oxRegistry::getSession()->getVariable( 'usr' ));
         $oAlarm->oxpricealarm__oxemail  = new oxField( $aParams['email']);
         $oAlarm->oxpricealarm__oxartid  = new oxField( $aParams['aid']);
         $oAlarm->oxpricealarm__oxprice  = new oxField( $myUtils->fRound( $dPrice, $oCur ));

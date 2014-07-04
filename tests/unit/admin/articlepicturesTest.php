@@ -543,7 +543,7 @@ class Unit_Admin_ArticlePicturesTest extends OxidTestCase
         $oArtPic->setConfig( $oConfig );
         $oArtPic->save();
 
-        $aEx = oxSession::getVar( "Errors" );
+        $aEx = oxRegistry::getSession()->getVariable( "Errors" );
         $oEx = unserialize( $aEx["default"][0] );
 
         $this->assertTrue( $oEx instanceof oxExceptionToDisplay );
@@ -565,7 +565,7 @@ class Unit_Admin_ArticlePicturesTest extends OxidTestCase
         $oArtPic->setConfig( $oConfig );
         $oArtPic->deletePicture();
 
-        $aEx = oxSession::getVar( "Errors" );
+        $aEx = oxRegistry::getSession()->getVariable( "Errors" );
         $oEx = unserialize( $aEx["default"][0] );
 
         $this->assertTrue( $oEx instanceof oxExceptionToDisplay );

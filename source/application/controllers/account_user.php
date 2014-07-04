@@ -64,7 +64,7 @@ class Account_User extends Account
      */
     public function showShipAddress()
     {
-        return oxSession::getVar( 'blshowshipaddress' );
+        return oxRegistry::getSession()->getVariable( 'blshowshipaddress' );
     }
 
     /**

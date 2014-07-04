@@ -224,8 +224,8 @@ class Payment extends oxUBase
         $sPayErrorText = oxRegistry::getConfig()->getRequestParameter( 'payerrortext' );
 
         if (!($iPayError || $sPayErrorText)) {
-            $iPayError     = oxSession::getVar( 'payerror' );
-            $sPayErrorText = oxSession::getVar( 'payerrortext' );
+            $iPayError     = oxRegistry::getSession()->getVariable( 'payerror' );
+            $sPayErrorText = oxRegistry::getSession()->getVariable( 'payerrortext' );
         }
 
         if ( $iPayError ) {
@@ -352,7 +352,7 @@ class Payment extends oxUBase
 
             $sActShipSet = oxRegistry::getConfig()->getRequestParameter( 'sShipSet' );
             if ( !$sActShipSet ) {
-                 $sActShipSet = oxSession::getVar( 'sShipSet' );
+                 $sActShipSet = oxRegistry::getSession()->getVariable( 'sShipSet' );
             }
 
             $oBasket = $this->getSession()->getBasket();
@@ -487,7 +487,7 @@ class Payment extends oxUBase
             $this->_aDynValue = false;
 
             // flyspray#1217 (sarunas)
-            if ( ( $aDynValue = oxSession::getVar( 'dynvalue' ) ) ) {
+            if ( ( $aDynValue = oxRegistry::getSession()->getVariable( 'dynvalue' ) ) ) {
                 $this->_aDynValue  = $aDynValue;
             } else {
                 $this->_aDynValue  = oxRegistry::getConfig()->getRequestParameter( "dynvalue");
@@ -537,11 +537,11 @@ class Payment extends oxUBase
     {
         if ( $this->_sCheckedPaymentId === null ) {
             if (! ($sPaymentID = oxRegistry::getConfig()->getRequestParameter( 'paymentid' ))) {
-                $sPaymentID = oxSession::getVar('paymentid');
+                $sPaymentID = oxRegistry::getSession()->getVariable('paymentid');
             }
             if ( $sPaymentID ) {
                 $sCheckedId = $sPaymentID;
-            } elseif ( ( $sSelectedPaymentID = oxSession::getVar( '_selected_paymentid' ) ) ) {
+            } elseif ( ( $sSelectedPaymentID = oxRegistry::getSession()->getVariable( '_selected_paymentid' ) ) ) {
                 $sCheckedId = $sSelectedPaymentID;
             } else {
                 // #1010A.

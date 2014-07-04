@@ -103,7 +103,7 @@ class Article_Stock extends oxAdminDetails
         $aParams = oxRegistry::getConfig()->getRequestParameter( "editval");
 
             // shopid
-            $sShopID = oxSession::getVar( "actshop");
+            $sShopID = oxRegistry::getSession()->getVariable( "actshop");
             $aParams['oxarticles__oxshopid'] = $sShopID;
 
         $oArticle = oxNew( "oxarticle");

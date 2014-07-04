@@ -175,7 +175,7 @@ class Unit_Views_compareTest extends OxidTestCase
         $oView = new compare();
         $oView->setCompareItems( array( "testItems2" ) );
         $this->assertEquals( array( "testItems2" ), $oView->getCompareItems() );
-        $this->assertEquals( array( "testItems2" ), oxSession::getVar( 'aFiltcompproducts' ) );
+        $this->assertEquals( array( "testItems2" ), oxRegistry::getSession()->getVariable( 'aFiltcompproducts' ) );
     }
 
     /**

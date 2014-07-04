@@ -93,10 +93,10 @@ class Navigation extends oxAdminView
         $oBaseShop = $oShoplist->getBaseObject();
 
         $sWhere = '';
-        $blisMallAdmin = oxSession::getVar( 'malladmin' );
+        $blisMallAdmin = oxRegistry::getSession()->getVariable( 'malladmin' );
         if (!$blisMallAdmin) {
             // we only allow to see our shop
-            $sShopID = oxSession::getVar("actshop");
+            $sShopID = oxRegistry::getSession()->getVariable("actshop");
             $sWhere = "where ".$oBaseShop->getViewName().".oxid = '$sShopID'";
         }
 

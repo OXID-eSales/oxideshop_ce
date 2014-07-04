@@ -67,7 +67,7 @@ class Unit_Views_GuestbookEntryTest extends OxidTestCase
         $oView = new GuestbookEntry();
         $this->assertNull( $oView->saveEntry() );
 
-        $aErrors = oxSession::getVar( "Errors" );
+        $aErrors = oxRegistry::getSession()->getVariable( "Errors" );
         $this->assertTrue( isset( $aErrors['default'] ) );
 
         $oExcp = unserialize( $aErrors['default'][0] );
@@ -92,7 +92,7 @@ class Unit_Views_GuestbookEntryTest extends OxidTestCase
         $oView->expects( $this->once() )->method( 'getConfig' )->will( $this->returnValue( $oConfig ) );
         $this->assertEquals( 'guestbookentry', $oView->saveEntry() );
 
-        $aErrors = oxSession::getVar( "Errors" );
+        $aErrors = oxRegistry::getSession()->getVariable( "Errors" );
         $this->assertTrue( isset( $aErrors['default'] ) );
 
         $oExcp = unserialize( $aErrors['default'][0] );
@@ -113,7 +113,7 @@ class Unit_Views_GuestbookEntryTest extends OxidTestCase
         $oView = new GuestbookEntry();
         $this->assertEquals( 'guestbookentry', $oView->saveEntry() );
 
-        $aErrors = oxSession::getVar( "Errors" );
+        $aErrors = oxRegistry::getSession()->getVariable( "Errors" );
         $this->assertTrue( isset( $aErrors['default'] ) );
 
         $oExcp = unserialize( $aErrors['default'][0] );
@@ -136,7 +136,7 @@ class Unit_Views_GuestbookEntryTest extends OxidTestCase
         $oView = new GuestbookEntry();
         $this->assertEquals( 'guestbookentry', $oView->saveEntry() );
 
-        $aErrors = oxSession::getVar( "Errors" );
+        $aErrors = oxRegistry::getSession()->getVariable( "Errors" );
         $this->assertTrue( isset( $aErrors['default'] ) );
 
         $oExcp = unserialize( $aErrors['default'][0] );

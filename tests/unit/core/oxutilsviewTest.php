@@ -209,10 +209,10 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
         $oxUtilsView->addErrorToDisplay("testMessage", false, true, "myDest");
 
 
-        $aErrors = oxSession::getVar('Errors');
+        $aErrors = oxRegistry::getSession()->getVariable('Errors');
         $oEx = unserialize($aErrors['myDest'][0]);
         $this->assertEquals("testMessage", $oEx->getOxMessage());
-        $this->assertNull(oxSession::getVar('ErrorController'));
+        $this->assertNull(oxRegistry::getSession()->getVariable('ErrorController'));
     }
 
     public function testAddErrorToDisplayCustomDestinationFromPost()
@@ -228,10 +228,10 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
         $oxUtilsView->expects( $this->once() )->method( 'getSession' )->will( $this->returnValue( $oSession ) );
 
         $oxUtilsView->addErrorToDisplay("testMessage", false, true, "");
-        $aErrors = oxSession::getVar('Errors');
+        $aErrors = oxRegistry::getSession()->getVariable('Errors');
         $oEx = unserialize($aErrors['myDest'][0]);
         $this->assertEquals("testMessage", $oEx->getOxMessage());
-        $aErrorController = oxSession::getVar('ErrorController');
+        $aErrorController = oxRegistry::getSession()->getVariable('ErrorController');
         $this->assertEquals("oxwminibasket", $aErrorController['myDest']);
     }
 
@@ -245,10 +245,10 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
         $oxUtilsView->expects( $this->once() )->method( 'getSession' )->will( $this->returnValue( $oSession ) );
 
         $oxUtilsView->addErrorToDisplay("testMessage", false, true, "");
-        $aErrors = oxSession::getVar('Errors');
+        $aErrors = oxRegistry::getSession()->getVariable('Errors');
         $oEx = unserialize($aErrors['default'][0]);
         $this->assertEquals("testMessage", $oEx->getOxMessage());
-        $aErrorController = oxSession::getVar('ErrorController');
+        $aErrorController = oxRegistry::getSession()->getVariable('ErrorController');
         $this->assertEquals("start", $aErrorController['default']);
     }
 
@@ -266,7 +266,7 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
 
         $oxUtilsView->addErrorToDisplay($oTest, false, false, "");
 
-        $aErrors = oxSession::getVar('Errors');
+        $aErrors = oxRegistry::getSession()->getVariable('Errors');
         $oEx = unserialize($aErrors['default'][0]);
         $this->assertEquals("testMessage", $oEx->getOxMessage());
     }
@@ -281,11 +281,11 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
 
         $oxUtilsView->addErrorToDisplay(null, false, false, "");
 
-        $aErrors = oxSession::getVar('Errors');
+        $aErrors = oxRegistry::getSession()->getVariable('Errors');
         //$oEx = unserialize($aErrors['default'][0]);
         //$this->assertEquals("", $oEx->getOxMessage());
         $this->assertFalse( isset( $aErrors['default'][0] ) );
-        $this->assertNull(oxSession::getVar('ErrorController'));
+        $this->assertNull(oxRegistry::getSession()->getVariable('ErrorController'));
     }
 
     public function testAddErrorToDisplay_startsSessionIfNotStarted()

@@ -662,7 +662,7 @@ class DynExportBase extends oxAdminDetails
 
         $iExpLang = oxRegistry::getConfig()->getRequestParameter( "iExportLanguage" );
         if (!isset($iExpLang)) {
-            $iExpLang = oxSession::getVar( "iExportLanguage" );
+            $iExpLang = oxRegistry::getSession()->getVariable( "iExportLanguage" );
         }
 
         $oArticle = oxNew( 'oxarticle' );
@@ -895,7 +895,7 @@ class DynExportBase extends oxAdminDetails
             $oArticle = oxNew( 'oxarticle' );
             $oArticle->setLoadParentData( true );
 
-            $oArticle->setLanguage( oxSession::getVar( "iExportLanguage" ) );
+            $oArticle->setLanguage( oxRegistry::getSession()->getVariable( "iExportLanguage" ) );
 
             if ( $oArticle->load( $oRs->fields[0] ) ) {
                 // if article exists, do not stop export

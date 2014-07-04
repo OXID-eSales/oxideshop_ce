@@ -496,20 +496,6 @@ class oxSession extends oxSuperCfg
      *
      * @param string $name Name of parameter
      *
-     * @deprecated since v5.0.0 (2012-08-27); Use public getVariable()
-     *
-     * @return mixed
-     */
-    public static function getVar( $name )
-    {
-        return oxRegistry::getSession()->getVariable( $name );
-    }
-
-    /**
-     * IF available returns value of parameter, stored in session array.
-     *
-     * @param string $name Name of parameter
-     *
      * @return mixed
      */
     public function getVariable( $name )

@@ -174,7 +174,7 @@ class oxLang extends oxSuperCfg
             if ( is_null( $this->_iBaseLanguageId ) ) {
                 $this->_iBaseLanguageId = oxRegistry::getConfig()->getRequestParameter( 'language' );
                 if (!isset($this->_iBaseLanguageId)) {
-                    $this->_iBaseLanguageId = oxSession::getVar('language');
+                    $this->_iBaseLanguageId = oxRegistry::getSession()->getVariable('language');
                 }
             }
 
@@ -234,7 +234,7 @@ class oxLang extends oxSuperCfg
     public function getTplLanguage()
     {
         if ( $this->_iTplLanguageId === null ) {
-            $iSessLang = oxSession::getVar( 'tpllanguage' );
+            $iSessLang = oxRegistry::getSession()->getVariable( 'tpllanguage' );
             $this->_iTplLanguageId = $this->isAdmin() ? $this->setTplLanguage( $iSessLang ) : $this->getBaseLanguage();
         }
         return $this->_iTplLanguageId;
@@ -260,7 +260,7 @@ class oxLang extends oxSuperCfg
                     $iLang = oxRegistry::getConfig()->getRequestParameter( "new_lang");
                 }
                 $iLang = ( $iLang === null ) ? oxRegistry::getConfig()->getRequestParameter( 'editlanguage' ) : $iLang;
-                $iLang = ( $iLang === null ) ? oxSession::getVar( 'editlanguage' ) : $iLang;
+                $iLang = ( $iLang === null ) ? oxRegistry::getSession()->getVariable( 'editlanguage' ) : $iLang;
                 $iLang = ( $iLang === null ) ? $this->getBaseLanguage() : $iLang;
 
                 // validating language

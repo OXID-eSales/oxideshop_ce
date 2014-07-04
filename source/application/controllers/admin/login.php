@@ -131,7 +131,7 @@ class Login extends oxAdminView
 
         // #533
         if ( isset( $sProfile ) ) {
-            $aProfiles = oxSession::getVar( "aAdminProfiles" );
+            $aProfiles = oxRegistry::getSession()->getVariable( "aAdminProfiles" );
             if ( $aProfiles && isset($aProfiles[$sProfile])) {
                 // setting cookie to store last locally used profile
                 $myUtilsServer->setOxCookie ("oxidadminprofile", $sProfile."@".implode( "@", $aProfiles[$sProfile]), time()+31536000, "/" );

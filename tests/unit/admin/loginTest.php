@@ -278,7 +278,7 @@ class Unit_Admin_loginTest extends OxidTestCase
 
         $oView = new Login();
         $this->assertEquals( "admin_start", $oView->checklogin() );
-        $this->assertEquals( array( "testValue" ), oxSession::getVar( "profile" ) );
+        $this->assertEquals( array( "testValue" ), oxRegistry::getSession()->getVariable( "profile" ) );
     }
 
     /**

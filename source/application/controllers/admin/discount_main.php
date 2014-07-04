@@ -160,7 +160,7 @@ class Discount_Main extends oxAdminDetails
         $aParams = oxRegistry::getConfig()->getRequestParameter( "editval");
 
             // shopid
-            $sShopID = oxSession::getVar( "actshop");
+            $sShopID = oxRegistry::getSession()->getVariable( "actshop");
             $aParams['oxdiscount__oxshopid'] = $sShopID;
         $oAttr = oxNew( "oxdiscount" );
         if ( $sOxId != "-1")

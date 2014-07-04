@@ -175,7 +175,7 @@ class oxUtilsView extends oxSuperCfg
             $oSession->start();
         }
 
-        $aEx = oxSession::getVar( 'Errors' );
+        $aEx = oxRegistry::getSession()->getVariable( 'Errors' );
         if ( $oEr instanceof oxException ) {
              $oEx = oxNew( 'oxExceptionToDisplay' );
              $oEx->setMessage( $oEr->getMessage() );

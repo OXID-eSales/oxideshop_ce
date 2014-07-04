@@ -126,7 +126,7 @@ class Unit_Core_oxUtilsFileTest extends OxidTestCase
         $this->assertTrue( $oUtilsFile->checkFile( $sName1 ) );
         $this->assertTrue( $oUtilsFile->checkFile( $sName2 ) );
 
-        $aCache = oxSession::getVar("checkcache");
+        $aCache = oxRegistry::getSession()->getVariable("checkcache");
         $this->assertTrue( $aCache[$sName1] );
         $this->assertTrue( $aCache[$sName1] );
         $this->assertTrue( $aCache[$sName2] );

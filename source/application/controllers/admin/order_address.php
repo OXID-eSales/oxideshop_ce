@@ -114,7 +114,7 @@ class Order_Address extends oxAdminDetails
         $aParams = (array) oxRegistry::getConfig()->getRequestParameter( "editval");
 
             //TODO check if shop id is realy necessary at this place.
-            $sShopID = oxSession::getVar( "actshop" );
+            $sShopID = oxRegistry::getSession()->getVariable( "actshop" );
             $aParams['oxorder__oxshopid'] = $sShopID;
 
         $oOrder = oxNew( "oxorder" );

@@ -77,7 +77,7 @@ class Adminguestbook_Main extends oxAdminDetails
         }
 
             // shopid
-            $aParams['oxgbentries__oxshopid'] = oxSession::getVar( "actshop");
+            $aParams['oxgbentries__oxshopid'] = oxRegistry::getSession()->getVariable( "actshop");
 
         $oLinks = oxNew( "oxgbentry" );
         if ( $soxId != "-1" ) {
@@ -86,7 +86,7 @@ class Adminguestbook_Main extends oxAdminDetails
             $aParams['oxgbentries__oxid'] = null;
 
             // author
-            $aParams['oxgbentries__oxuserid'] = oxSession::getVar( 'auth' );
+            $aParams['oxgbentries__oxuserid'] = oxRegistry::getSession()->getVariable( 'auth' );
         }
 
         $oLinks->assign( $aParams );

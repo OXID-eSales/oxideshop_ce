@@ -127,8 +127,8 @@ class Unit_Admin_GenImportMainTest extends OxidTestCase
         $oView->setNonPublicVar( "_sCsvFilePath", "testPath" );
         $oView->UNITresetUploadedCsvData();
 
-        $this->assertNull( oxSession::getVar( "sCsvFilePath" ) );
-        $this->assertNull( oxSession::getVar( "blCsvContainsHeader" ) );
+        $this->assertNull( oxRegistry::getSession()->getVariable( "sCsvFilePath" ) );
+        $this->assertNull( oxRegistry::getSession()->getVariable( "blCsvContainsHeader" ) );
         $this->assertNull( $oView->getNonPublicVar( "_sCsvFilePath" ) );
     }
 
@@ -230,7 +230,7 @@ class Unit_Admin_GenImportMainTest extends OxidTestCase
         $oView->expects( $this->once() )->method( 'getConfig' )->will( $this->returnValue( $oConfig ) );
 
         $this->assertEquals( oxRegistry::getConfig()->getConfigParam( "sCompileDir" ).$sFileName, $oView->UNITgetUploadedCsvFilePath() );
-        $this->assertEquals( oxRegistry::getConfig()->getConfigParam( "sCompileDir" ).$sFileName, oxSession::getVar( 'sCsvFilePath' ) );
+        $this->assertEquals( oxRegistry::getConfig()->getConfigParam( "sCompileDir" ).$sFileName, oxRegistry::getSession()->getVariable( 'sCsvFilePath' ) );
     }
 
     /**

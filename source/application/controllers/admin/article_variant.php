@@ -126,7 +126,7 @@ class Article_Variant extends oxAdminDetails
         }
 
             // shopid
-            $aParams['oxarticles__oxshopid'] = oxSession::getVar( "actshop" );
+            $aParams['oxarticles__oxshopid'] = oxRegistry::getSession()->getVariable( "actshop" );
 
         // varianthandling
         $soxparentId = $this->getEditObjectId();
@@ -237,7 +237,7 @@ class Article_Variant extends oxAdminDetails
 
 
             // shopid
-            $aParams['oxarticles__oxshopid'] = oxSession::getVar( "actshop" );
+            $aParams['oxarticles__oxshopid'] = oxRegistry::getSession()->getVariable( "actshop" );
 
         $oArticle = oxNew( "oxarticle" );
         if ( $soxId != "-1") {

@@ -141,7 +141,7 @@ class Content_Main extends oxAdminDetails
         }
 
             // shopid
-            $sShopID = oxSession::getVar( "actshop");
+            $sShopID = oxRegistry::getSession()->getVariable( "actshop");
             $aParams['oxcontents__oxshopid'] = $sShopID;
         $oContent = oxNew( "oxcontent" );
 
@@ -184,7 +184,7 @@ class Content_Main extends oxAdminDetails
             $aParams['oxcontents__oxactive'] = 0;
 
             // shopid
-            $sShopID = oxSession::getVar( "actshop");
+            $sShopID = oxRegistry::getSession()->getVariable( "actshop");
             $aParams['oxcontents__oxshopid'] = $sShopID;
 
         $oContent = oxNew( "oxcontent" );

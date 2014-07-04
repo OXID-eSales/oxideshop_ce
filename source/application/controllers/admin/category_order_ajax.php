@@ -66,13 +66,13 @@ class category_order_ajax extends ajaxListComponent
         // category selected or not ?
         if ( $sSynchOxid  = oxRegistry::getConfig()->getRequestParameter( 'synchoxid' ) ) {
             $sQAdd  = " from $sArtTable left join $sO2CView on $sArtTable.oxid=$sO2CView.oxobjectid where $sO2CView.oxcatnid = ".$oDb->quote( $sSynchOxid );
-            if ( $aSkipArt = oxSession::getVar( 'neworder_sess' ) ) {
+            if ( $aSkipArt = oxRegistry::getSession()->getVariable( 'neworder_sess' ) ) {
                 $sQAdd .= " and $sArtTable.oxid not in ( ".implode( ", ", oxDb::getInstance()->quoteArray( $aSkipArt ) )." ) ";
             }
         } else {
             // which fields to load ?
             $sQAdd  = " from $sArtTable where ";
-            if ( $aSkipArt = oxSession::getVar( 'neworder_sess') ) {
+            if ( $aSkipArt = oxRegistry::getSession()->getVariable( 'neworder_sess') ) {
                 $sQAdd .= " $sArtTable.oxid in ( ".implode( ", ", oxDb::getInstance()->quoteArray( $aSkipArt ) )." ) ";
             } else {
                 $sQAdd .= " 1 = 0 ";
@@ -92,7 +92,7 @@ class category_order_ajax extends ajaxListComponent
         $sOrder = '';
         if ( oxRegistry::getConfig()->getRequestParameter( 'synchoxid' ) ) {
             $sOrder = parent::_getSorting();
-        } elseif ( ( $aSkipArt = oxSession::getVar( 'neworder_sess' ) ) ) {
+        } elseif ( ( $aSkipArt = oxRegistry::getSession()->getVariable( 'neworder_sess' ) ) ) {
             $sOrderBy  = '';
             $sArtTable = $this->_getViewName( 'oxarticles' );
             $sSep = '';
@@ -115,7 +115,7 @@ class category_order_ajax extends ajaxListComponent
     {
         $aRemoveArt = $this->_getActionIds( 'oxarticles.oxid' );
         $soxId      = oxRegistry::getConfig()->getRequestParameter( 'oxid' );
-        $aSkipArt   = oxSession::getVar( 'neworder_sess' );
+        $aSkipArt   = oxRegistry::getSession()->getVariable( 'neworder_sess' );
 
         if ( is_array( $aRemoveArt ) && is_array( $aSkipArt  ) ) {
             foreach ( $aRemoveArt as $sRem ) {
@@ -148,7 +148,7 @@ class category_order_ajax extends ajaxListComponent
         $aAddArticle = $this->_getActionIds( 'oxarticles.oxid' );
         $soxId       = oxRegistry::getConfig()->getRequestParameter( 'synchoxid' );
 
-        $aOrdArt = oxSession::getVar( 'neworder_sess' );
+        $aOrdArt = oxRegistry::getSession()->getVariable( 'neworder_sess' );
         if ( !is_array( $aOrdArt ) )
             $aOrdArt = array();
 
@@ -187,7 +187,7 @@ class category_order_ajax extends ajaxListComponent
         if ( $oCategory->load( $sId ) ) {
 
 
-            $aNewOrder = oxSession::getVar( "neworder_sess" );
+            $aNewOrder = oxRegistry::getSession()->getVariable( "neworder_sess" );
             if ( is_array( $aNewOrder ) && count( $aNewOrder ) ) {
                 $sO2CView = $this->_getViewName('oxobject2category');
                 $sSelect =  "select * from $sO2CView where $sO2CView.oxcatnid='".$oCategory->getId()."' and $sO2CView.oxobjectid in (".implode( ", ", oxDb::getInstance()->quoteArray( $aNewOrder ) )." )";

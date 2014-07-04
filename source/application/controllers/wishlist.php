@@ -78,7 +78,7 @@ class Wishlist extends oxUBase
         if ( $this->_oWishUser === null) {
             $this->_oWishUser = false;
 
-            $sUserId = oxRegistry::getConfig()->getRequestParameter( 'wishid') ? oxRegistry::getConfig()->getRequestParameter( 'wishid' ): oxSession::getVar( 'wishid');
+            $sUserId = oxRegistry::getConfig()->getRequestParameter( 'wishid') ? oxRegistry::getConfig()->getRequestParameter( 'wishid' ): oxRegistry::getSession()->getVariable( 'wishid');
             if ( $sUserId ) {
                 $oUser = oxNew( 'oxuser' );
                 if ( $oUser->load( $sUserId ) ) {

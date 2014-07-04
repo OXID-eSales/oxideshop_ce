@@ -521,7 +521,7 @@ class OxNavigationTree extends oxSuperCfg
                 $sRemoteDynUrl = $this->_getDynMenuUrl( $sDynLang, $blLoadDynContents );
 
                 // loading remote file from server only once
-                $blLoadRemote = oxSession::getVar( "loadedremotexml" );
+                $blLoadRemote = oxRegistry::getSession()->getVariable( "loadedremotexml" );
 
                 // very basic check if its valid xml file
                 if ( ( !isset( $blLoadRemote ) || $blLoadRemote ) && ( $sDynPath = $myOxUtlis->getRemoteCachePath( $sRemoteDynUrl, $sLocalDynPath ) ) ) {

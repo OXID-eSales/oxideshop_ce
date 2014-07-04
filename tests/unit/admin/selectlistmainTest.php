@@ -140,7 +140,7 @@ class Unit_Admin_SelectListMainTest extends OxidTestCase
         // testing..
         $oView = new SelectList_Main();
         $this->assertNull( $oView->addField() );
-        $this->assertEquals( -1, oxSession::getVar( "iErrorCode" ) );
+        $this->assertEquals( -1, oxRegistry::getSession()->getVariable( "iErrorCode" ) );
     }
 
     /**
@@ -197,7 +197,7 @@ class Unit_Admin_SelectListMainTest extends OxidTestCase
         // testing..
         $oView = new SelectList_Main();
         $this->assertNull( $oView->changeField() );
-        $this->assertEquals( -1, oxSession::getVar( "iErrorCode" ) );
+        $this->assertEquals( -1, oxRegistry::getSession()->getVariable( "iErrorCode" ) );
     }
 
     /**
@@ -268,7 +268,7 @@ class Unit_Admin_SelectListMainTest extends OxidTestCase
         $oView = $this->getProxyClass( "SelectList_Main" );
         $oView->setNonPublicVar( "aFieldArray", array( 1 ) );
         $this->assertTrue( $oView->UNITrearrangeFields( "test", -1 ) );
-        $this->assertEquals( -2, oxSession::getVar( "iErrorCode" ) );
+        $this->assertEquals( -2, oxRegistry::getSession()->getVariable( "iErrorCode" ) );
     }
 
     /**
@@ -282,7 +282,7 @@ class Unit_Admin_SelectListMainTest extends OxidTestCase
         $oView = $this->getProxyClass( "SelectList_Main" );
         $oView->setNonPublicVar( "aFieldArray", array( 1 ) );
         $this->assertTrue( $oView->UNITrearrangeFields( "test", 1 ) );
-        $this->assertEquals( -2, oxSession::getVar( "iErrorCode" ) );
+        $this->assertEquals( -2, oxRegistry::getSession()->getVariable( "iErrorCode" ) );
     }
 
     /**

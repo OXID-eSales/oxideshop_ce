@@ -78,7 +78,7 @@ class Unit_Admin_VoucherSerieExportTest extends OxidTestCase
         $oView = new VoucherSerie_Export();
         $oView->UNITgetExportFileName();
 
-        $this->assertNotNull( oxSession::getVar( "sExportFileName" ) );
+        $this->assertNotNull( oxRegistry::getSession()->getVariable( "sExportFileName" ) );
     }
 
     /**

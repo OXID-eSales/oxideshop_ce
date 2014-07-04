@@ -107,7 +107,7 @@ class Statistic_Main extends oxAdminDetails
         $aParams = oxRegistry::getConfig()->getRequestParameter( "editval");
 
         // shopid
-        $sShopID = oxSession::getVar( "actshop");
+        $sShopID = oxRegistry::getSession()->getVariable( "actshop");
         $oStat = oxNew( "oxstatistic" );
         if ( $soxId != "-1")
             $oStat->load( $soxId);

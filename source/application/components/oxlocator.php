@@ -426,7 +426,7 @@ class oxLocator extends oxSuperCfg
             $oIdList->loadPriceIds($oCategory->oxcategories__oxpricefrom->value, $oCategory->oxcategories__oxpriceto->value);
         } else {
             $sActCat = $oCategory->getId();
-            $oIdList->loadCategoryIDs($sActCat, oxSession::getVar('session_attrfilter'));
+            $oIdList->loadCategoryIDs($sActCat, oxRegistry::getSession()->getVariable('session_attrfilter'));
             // if not found - reloading with empty filter
             if (!isset($oIdList[$oCurrArticle->getId()])) {
                 $oIdList->loadCategoryIDs($sActCat, null);

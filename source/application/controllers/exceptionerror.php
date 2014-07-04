@@ -61,7 +61,7 @@ class ExceptionError extends oxUBase
      */
     protected function _getErrors()
     {
-        $aErrors = oxSession::getVar( 'Errors' );
+        $aErrors = oxRegistry::getSession()->getVariable( 'Errors' );
 
         if (null === $aErrors) {
             $aErrors = array();

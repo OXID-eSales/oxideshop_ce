@@ -187,7 +187,7 @@ class GuestBook extends oxUBase
         if ( $this->_blFloodProtection === null ) {
             $this->_blFloodProtection = false;
             // is user logged in ?
-            $sUserId = oxSession::getVar( 'usr' );
+            $sUserId = oxRegistry::getSession()->getVariable( 'usr' );
             $sUserId = $sUserId ? $sUserId : 0;
 
             $oEntries = oxNew( 'oxgbentry' );
@@ -262,7 +262,7 @@ class GuestBook extends oxUBase
     {
         $sReviewText = trim( ( string ) oxRegistry::getConfig()->getRequestParameter( 'rvw_txt', true ) );
         $sShopId     = $this->getConfig()->getShopId();
-        $sUserId     = oxSession::getVar( 'usr' );
+        $sUserId     = oxRegistry::getSession()->getVariable( 'usr' );
 
         // guest book`s entry is validated
         if ( !$sUserId ) {

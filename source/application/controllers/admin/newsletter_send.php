@@ -155,7 +155,7 @@ class Newsletter_Send extends Newsletter_Selection
      */
     public function getUserCount()
     {
-        $iCnt = oxSession::getVar( "iUserCount" );
+        $iCnt = oxRegistry::getSession()->getVariable( "iUserCount" );
         if ( $iCnt === null ) {
             $iCnt = parent::getUserCount();
             oxRegistry::getSession()->setVariable( "iUserCount", $iCnt );

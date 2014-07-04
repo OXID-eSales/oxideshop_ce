@@ -259,7 +259,7 @@ class oxcmp_user extends oxView
         }
 
         // adding to dyn group
-        $oUser->addDynGroup(oxSession::getVar('dgr'), $myConfig->getConfigParam('aDeniedDynGroups'));
+        $oUser->addDynGroup(oxRegistry::getSession()->getVariable('dgr'), $myConfig->getConfigParam('aDeniedDynGroups'));
 
         // recalc basket
         if ($oBasket = $oSession->getBasket()) {
@@ -482,8 +482,8 @@ class oxcmp_user extends oxView
                 $oUser->acceptTerms();
             }
 
-            $sUserId = oxSession::getVar("su");
-            $sRecEmail = oxSession::getVar("re");
+            $sUserId = oxRegistry::getSession()->getVariable("su");
+            $sRecEmail = oxRegistry::getSession()->getVariable("re");
             if ($this->getConfig()->getConfigParam('blInvitationsEnabled') && $sUserId && $sRecEmail) {
                 // setting registration credit points..
                 $oUser->setCreditPointsForRegistrant($sUserId, $sRecEmail);
@@ -501,7 +501,7 @@ class oxcmp_user extends oxView
             }
 
             $oUser->addToGroup('oxidnotyetordered');
-            $oUser->addDynGroup(oxSession::getVar('dgr'), $oConfig->getConfigParam('aDeniedDynGroups'));
+            $oUser->addDynGroup(oxRegistry::getSession()->getVariable('dgr'), $oConfig->getConfigParam('aDeniedDynGroups'));
             $oUser->logout();
 
         } catch (oxUserException $oEx) {
@@ -699,7 +699,7 @@ class oxcmp_user extends oxView
     protected function _getDelAddressData()
     {
         // if user company name, user name and additional info has special chars
-        $aDelAdress = $aDeladr = (oxRegistry::getConfig()->getRequestParameter('blshowshipaddress') || oxSession::getVar('blshowshipaddress')) ? oxRegistry::getConfig()->getRequestParameter('deladr', true) : array();
+        $aDelAdress = $aDeladr = (oxRegistry::getConfig()->getRequestParameter('blshowshipaddress') || oxRegistry::getSession()->getVariable('blshowshipaddress')) ? oxRegistry::getConfig()->getRequestParameter('deladr', true) : array();
 
         if (is_array($aDeladr)) {
             // checking if data is filled

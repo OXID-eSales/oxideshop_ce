@@ -96,7 +96,7 @@ class Vendor_Main extends oxAdminDetails
         }
 
             // shopid
-            $aParams['oxvendor__oxshopid'] = oxSession::getVar( "actshop");
+            $aParams['oxvendor__oxshopid'] = oxRegistry::getSession()->getVariable( "actshop");
 
         $oVendor = oxNew( "oxvendor" );
         if ( $soxId != "-1" )
@@ -131,7 +131,7 @@ class Vendor_Main extends oxAdminDetails
         }
 
             // shopid
-            $aParams['oxvendor__oxshopid'] = oxSession::getVar( "actshop" );
+            $aParams['oxvendor__oxshopid'] = oxRegistry::getSession()->getVariable( "actshop" );
 
         $oVendor = oxNew( "oxvendor" );
 

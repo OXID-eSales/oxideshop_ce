@@ -67,7 +67,7 @@ class Unit_Views_wishlistTest extends OxidTestCase
         $oWishUser = $oWishList->getWishUser();
 
         $this->assertEquals( $this->_oUser->getId(), $oWishUser->getId() );
-        $this->assertEquals( '_testId', oxSession::getVar('wishid') );
+        $this->assertEquals( '_testId', oxRegistry::getSession()->getVariable('wishid') );
     }
 
     /*

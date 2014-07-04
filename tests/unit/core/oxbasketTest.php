@@ -4411,13 +4411,13 @@ class Unit_Core_oxbasketTest extends OxidTestCase
     {
         $oBasket = new oxBasket();
         $this->assertFalse( $oBasket->isNewItemAdded() );
-        $this->assertNull( oxSession::getVar( "blAddedNewItem" ) );
+        $this->assertNull( oxRegistry::getSession()->getVariable( "blAddedNewItem" ) );
 
         $oBasket = new oxBasket();
         $oBasket->UNITaddedNewItem( 0, 0, 0, 0, 0, 0, 0);
-        $this->assertTrue( oxSession::getVar( "blAddedNewItem" ) );
+        $this->assertTrue( oxRegistry::getSession()->getVariable( "blAddedNewItem" ) );
         $this->assertTrue( $oBasket->isNewItemAdded() );
-        $this->assertNull( oxSession::getVar( "blAddedNewItem" ) );
+        $this->assertNull( oxRegistry::getSession()->getVariable( "blAddedNewItem" ) );
 
     }
 

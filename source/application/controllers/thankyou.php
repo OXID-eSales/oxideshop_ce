@@ -101,7 +101,7 @@ class Thankyou extends oxUBase
 
         // get basket we might need some information from it here
         $oBasket = $this->getSession()->getBasket();
-        $oBasket->setOrderId( oxSession::getVar( 'sess_challenge' ) );
+        $oBasket->setOrderId( oxRegistry::getSession()->getVariable( 'sess_challenge' ) );
 
         // copying basket object
         $this->_oBasket = clone $oBasket;

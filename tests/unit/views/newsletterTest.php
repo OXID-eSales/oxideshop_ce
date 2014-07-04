@@ -403,7 +403,7 @@ class Unit_Views_newsletterTest extends OxidTestCase
         $this->setRequestParam( 'editval', $aParams );
 
         $oTestNews->send();
-        $aErrors = oxSession::getVar( 'Errors' );
+        $aErrors = oxRegistry::getSession()->getVariable( 'Errors' );
         $oErr = unserialize( $aErrors['default'][0] );
         $this->assertEquals( oxRegistry::getLang()->translateString('ERROR_MESSAGE_COMPLETE_FIELDS_CORRECTLY'), $oErr->getOxMessage() ) ;
 
@@ -415,7 +415,7 @@ class Unit_Views_newsletterTest extends OxidTestCase
         $this->setRequestParam( 'editval', $aParams );
         $oTestNews->send();
 
-        $aErrors = oxSession::getVar( 'Errors' );
+        $aErrors = oxRegistry::getSession()->getVariable( 'Errors' );
         $oErr = unserialize( $aErrors['default'][0] );
         $this->assertEquals( oxRegistry::getLang()->translateString('MESSAGE_INVALID_EMAIL'), $oErr->getOxMessage() ) ;
     }
@@ -440,7 +440,7 @@ class Unit_Views_newsletterTest extends OxidTestCase
         $this->setRequestParam( 'editval', $aParams );
         $oTestNews->send();
 
-        $aErrors = oxSession::getVar( 'Errors' );
+        $aErrors = oxRegistry::getSession()->getVariable( 'Errors' );
         $oErr = unserialize( $aErrors['default'][0] );
         $this->assertEquals( oxRegistry::getLang()->translateString('MESSAGE_NOT_ABLE_TO_SEND_EMAIL'), $oErr->getOxMessage() ) ;
     }

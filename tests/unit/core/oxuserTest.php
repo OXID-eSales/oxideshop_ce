@@ -371,8 +371,8 @@ class Unit_Core_oxuserTest extends OxidTestCase
         $oUser = $this->getMock( "oxuser", array( "save" ) );
         $oUser->expects( $this->once() )->method( 'save' )->will($this->returnValue( true ) );
         $this->assertFalse( $oUser->setCreditPointsForRegistrant( "oxdefaultadmin", md5('oxemail') ));
-        $this->assertNull( oxSession::getVar( 'su' ) );
-        $this->assertNull( oxSession::getVar( 're' ) );
+        $this->assertNull( oxRegistry::getSession()->getVariable( 'su' ) );
+        $this->assertNull( oxRegistry::getSession()->getVariable( 're' ) );
     }
 
     /**
@@ -2792,8 +2792,8 @@ class Unit_Core_oxuserTest extends OxidTestCase
     {
         $oUser = new oxuser();
         $oUser->login(oxADMIN_LOGIN, oxADMIN_PASSWD);
-        $this->assertEquals( oxSession::getVar( 'usr' ), 'oxdefaultadmin' );
-        $this->assertNull( oxSession::getVar( 'auth' ) );
+        $this->assertEquals( oxRegistry::getSession()->getVariable( 'usr' ), 'oxdefaultadmin' );
+        $this->assertNull( oxRegistry::getSession()->getVariable( 'auth' ) );
 
         $oUser = $oUser->getUser();
 
@@ -2802,8 +2802,8 @@ class Unit_Core_oxuserTest extends OxidTestCase
 
         $oUser->logout();
 
-        $this->assertNull( oxSession::getVar( 'usr' ) );
-        $this->assertNull( oxSession::getVar( 'auth' ) );
+        $this->assertNull( oxRegistry::getSession()->getVariable( 'usr' ) );
+        $this->assertNull( oxRegistry::getSession()->getVariable( 'auth' ) );
         $this->assertFalse( $oUser->getUser() );
     }
 
@@ -2842,8 +2842,8 @@ class Unit_Core_oxuserTest extends OxidTestCase
     {
         $oUser = new oxuser();
         $oUser->login( 1, oxADMIN_PASSWD);
-        $this->assertEquals( oxSession::getVar( 'usr' ), 'oxdefaultadmin' );
-        $this->assertNull( oxSession::getVar( 'auth' ) );
+        $this->assertEquals( oxRegistry::getSession()->getVariable( 'usr' ), 'oxdefaultadmin' );
+        $this->assertNull( oxRegistry::getSession()->getVariable( 'auth' ) );
 
         $oUser = $oUser->getUser();
 
@@ -2852,8 +2852,8 @@ class Unit_Core_oxuserTest extends OxidTestCase
 
         $oUser->logout();
 
-        $this->assertNull( oxSession::getVar( 'usr' ) );
-        $this->assertNull( oxSession::getVar( 'auth' ) );
+        $this->assertNull( oxRegistry::getSession()->getVariable( 'usr' ) );
+        $this->assertNull( oxRegistry::getSession()->getVariable( 'auth' ) );
         $this->assertFalse( $oUser->getUser() );
     }
 
@@ -3002,10 +3002,10 @@ class Unit_Core_oxuserTest extends OxidTestCase
 
             $oUser->logout();
 
-            $this->assertNull( oxSession::getVar( 'dgr' ) );
-            $this->assertNull( oxSession::getVar( 'dynvalue' ) );
-            $this->assertNull( oxSession::getVar( 'paymentid' ) );
-            //$this->assertNull( oxSession::getVar( 'deladrid' ) );
+            $this->assertNull( oxRegistry::getSession()->getVariable( 'dgr' ) );
+            $this->assertNull( oxRegistry::getSession()->getVariable( 'dynvalue' ) );
+            $this->assertNull( oxRegistry::getSession()->getVariable( 'paymentid' ) );
+            //$this->assertNull( oxRegistry::getSession()->getVariable( 'deladrid' ) );
             $this->assertFalse( $oUser->getUser() );
         } else {
             $this->fail( 'User not loaded' );
@@ -3024,7 +3024,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
         $oUser = new oxuser();
         $oUser->UNITassignAddress( $aDelAddress );
 
-        $this->assertNull( oxSession::getVar( 'deladrid' ) );
+        $this->assertNull( oxRegistry::getSession()->getVariable( 'deladrid' ) );
     }
 
     // trying to set non empty address
@@ -3048,7 +3048,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
         $sSelect = 'select oxaddress.oxcountry from oxaddress where oxaddress.oxid = "xxx" AND oxaddress.oxuserid = "'.$sUserId.'" ';
 
         $sCountry = $myDB->getOne( $sSelect);
-        $this->assertEquals( 'xxx', oxSession::getVar( 'deladrid' ) );
+        $this->assertEquals( 'xxx', oxRegistry::getSession()->getVariable( 'deladrid' ) );
         $this->assertEquals( 'Deutschland', $sCountry );
     }
 
@@ -3071,7 +3071,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
 
         $oUser->UNITassignAddress( $aDelAddress );
         $myDB = oxDb::getDB();
-        $this->assertEquals( 'xxx', oxSession::getVar( 'deladrid' ) );
+        $this->assertEquals( 'xxx', oxRegistry::getSession()->getVariable( 'deladrid' ) );
         $sSelect = 'select oxaddress.oxcompany from oxaddress where oxaddress.oxuserid = "'.$sUserId.'" AND oxid = "xxx" ';
 
         $sCompany = $myDB->getOne( $sSelect);

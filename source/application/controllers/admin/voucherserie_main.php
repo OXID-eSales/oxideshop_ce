@@ -137,7 +137,7 @@ class VoucherSerie_Main extends DynExportBase
         if ( $this->_oVoucherSerie == null ) {
             $oVoucherSerie = oxNew( "oxvoucherserie" );
             $sId = oxRegistry::getConfig()->getRequestParameter( "voucherid" );
-            if ( $oVoucherSerie->load( $sId ? $sId : oxSession::getVar( "voucherid" ) ) ) {
+            if ( $oVoucherSerie->load( $sId ? $sId : oxRegistry::getSession()->getVariable( "voucherid" ) ) ) {
                 $this->_oVoucherSerie = $oVoucherSerie;
             }
         }

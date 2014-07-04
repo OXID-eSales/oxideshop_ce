@@ -335,7 +335,7 @@ class Unit_Admin_CategoryMainTest extends OxidTestCase
         $oView->setConfig( $oConfig );
         $oView->deletePicture();
 
-        $aEx = oxSession::getVar( "Errors" );
+        $aEx = oxRegistry::getSession()->getVariable( "Errors" );
         $oEx = unserialize( $aEx["default"][0] );
         $sExpMsg = oxRegistry::getLang()->translateString('CATEGORY_PICTURES_UPLOADISDISABLED');
 

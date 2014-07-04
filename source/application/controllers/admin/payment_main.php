@@ -158,7 +158,7 @@ class Payment_Main extends oxAdminDetails
         $aParams    = oxRegistry::getConfig()->getRequestParameter( "editval");
 
             // shopid
-            $sShopID = oxSession::getVar( "actshop");
+            $sShopID = oxRegistry::getSession()->getVariable( "actshop");
             $aParams['oxpayments__oxshopid'] = $sShopID;
         $oObj = oxNew( "oxpayment" );
 

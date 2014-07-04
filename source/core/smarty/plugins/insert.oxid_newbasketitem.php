@@ -53,7 +53,7 @@ function smarty_insert_oxid_newbasketitem($params, &$smarty)
     $blRender = $params['ajax'] && ($iType == 2);
 
     //fetching article data
-    $oNewItem = oxSession::getVar( '_newitem' );
+    $oNewItem = oxRegistry::getSession()->getVariable( '_newitem' );
     $oBasket  = oxRegistry::getSession()->getBasket();
 
     if ( $oNewItem ) {

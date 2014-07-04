@@ -142,7 +142,7 @@ class Unit_Admin_NavigationTest extends OxidTestCase
         $this->assertTrue( isset( $aViewData["aFavorites"] ) );
         $this->assertTrue( isset( $aViewData["menuhistory"] ) );
         $this->assertTrue( isset( $aViewData["blOpenHistory"] ) );
-        $this->assertNull( oxSession::getVar( "navReload" ) );
+        $this->assertNull( oxRegistry::getSession()->getVariable( "navReload" ) );
     }
 
     /**
@@ -176,11 +176,11 @@ class Unit_Admin_NavigationTest extends OxidTestCase
         $oView->logout();
 
         // testing if these were unset from session
-        $this->assertNull( oxSession::getVar( 'usr' ) );
-        $this->assertNull( oxSession::getVar( 'auth' ) );
-        $this->assertNull( oxSession::getVar( 'dgr' ) );
-        $this->assertNull( oxSession::getVar( 'dynvalue' ) );
-        $this->assertNull( oxSession::getVar( 'paymentid' ) );
+        $this->assertNull( oxRegistry::getSession()->getVariable( 'usr' ) );
+        $this->assertNull( oxRegistry::getSession()->getVariable( 'auth' ) );
+        $this->assertNull( oxRegistry::getSession()->getVariable( 'dgr' ) );
+        $this->assertNull( oxRegistry::getSession()->getVariable( 'dynvalue' ) );
+        $this->assertNull( oxRegistry::getSession()->getVariable( 'paymentid' ) );
     }
 
     /**

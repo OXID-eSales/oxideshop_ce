@@ -945,7 +945,7 @@ class oxUtils extends oxSuperCfg
 
         $blIsAuth = false;
 
-        $sUserID = oxSession::getVar( "auth");
+        $sUserID = oxRegistry::getSession()->getVariable( "auth");
 
         // deleting admin marker
         oxRegistry::getSession()->setVariable( "malladmin", 0);
@@ -970,7 +970,7 @@ class oxUtils extends oxSuperCfg
                     //So far this blAllowSharedEdit is Equal to blMallAdmin but in future to be solved over rights and roles
                     $myConfig->setConfigParam( 'blAllowSharedEdit', true );
 
-                    $sShop = oxSession::getVar( "actshop");
+                    $sShop = oxRegistry::getSession()->getVariable( "actshop");
                     if ( !isset($sShop)) {
                         oxRegistry::getSession()->setVariable( "actshop", $myConfig->getBaseShopId());
                     }

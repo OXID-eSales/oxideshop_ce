@@ -176,7 +176,7 @@ class Unit_Views_basketTest extends OxidTestCase
         $o->expects($this->exactly(1))->method('getConfig')->will($this->returnValue($oConf));
         $this->assertSame('asd', $o->backToShop()  );
 
-        $this->assertSame(null, oxSession::getVar( '_backtoshop')  );
+        $this->assertSame(null, oxRegistry::getSession()->getVariable( '_backtoshop')  );
     }
 
     public function testBackToShopShowPageNoPage()
@@ -188,7 +188,7 @@ class Unit_Views_basketTest extends OxidTestCase
         $o->expects($this->exactly(1))->method('getConfig')->will($this->returnValue($oConf));
         $this->assertSame(null, $o->backToShop()  );
 
-        $this->assertSame('', oxSession::getVar( '_backtoshop')  );
+        $this->assertSame('', oxRegistry::getSession()->getVariable( '_backtoshop')  );
     }
 
     /**

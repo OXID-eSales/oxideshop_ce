@@ -128,7 +128,7 @@ class oxcmp_utils extends oxView
             if (($blAddCompare || $blRemoveCompare) && $sProductId) {
 
                 // toggle state in session array
-                $aItems = oxSession::getVar('aFiltcompproducts');
+                $aItems = oxRegistry::getSession()->getVariable('aFiltcompproducts');
                 if ($blAddCompare && !isset($aItems[$sProductId])) {
                     $aItems[$sProductId] = true;
                 }

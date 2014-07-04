@@ -104,7 +104,7 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
 
         $this->assertEquals('new url', $o->tobasket());
 
-        $oNewItem = oxSession::getVar( '_newitem' );
+        $oNewItem = oxRegistry::getSession()->getVariable( '_newitem' );
         $this->assertSame(null, $oNewItem);
     }
 
@@ -257,11 +257,11 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
         modConfig::setRequestParameter('pgNr', 'a123');
         $this->assertEquals('start?cnid=value:cnid:v&mnid=value:mnid:v&anid=value:anid:v&tpl=value:tpl:v&listtype=value:listtype:v&searchcnid=value:searchcnid:v&searchvendor=value:searchvendor:v&searchmanufacturer=value:searchmanufacturer:v&searchtag=value:searchtag:v&searchrecomm=value:searchrecomm:v&recommid=value:recommid:v&searchparam=search%26%26a&', $o->UNITgetRedirectUrl());
 
-        $this->assertEquals(null, oxSession::getVar('_backtoshop'));
+        $this->assertEquals(null, oxRegistry::getSession()->getVariable('_backtoshop'));
 
         modConfig::setRequestParameter('pgNr', '0');
         $this->assertEquals('basket?cnid=value:cnid:v&mnid=value:mnid:v&anid=value:anid:v&tpl=value:tpl:v&listtype=value:listtype:v&searchcnid=value:searchcnid:v&searchvendor=value:searchvendor:v&searchmanufacturer=value:searchmanufacturer:v&searchtag=value:searchtag:v&searchrecomm=value:searchrecomm:v&recommid=value:recommid:v&searchparam=search%26%26a&', $o->UNITgetRedirectUrl());
-        $this->assertEquals('start?cnid=value:cnid:v&mnid=value:mnid:v&anid=value:anid:v&tpl=value:tpl:v&listtype=value:listtype:v&searchcnid=value:searchcnid:v&searchvendor=value:searchvendor:v&searchmanufacturer=value:searchmanufacturer:v&searchtag=value:searchtag:v&searchrecomm=value:searchrecomm:v&recommid=value:recommid:v&searchparam=search%26%26a&', oxSession::getVar('_backtoshop'));
+        $this->assertEquals('start?cnid=value:cnid:v&mnid=value:mnid:v&anid=value:anid:v&tpl=value:tpl:v&listtype=value:listtype:v&searchcnid=value:searchcnid:v&searchvendor=value:searchvendor:v&searchmanufacturer=value:searchmanufacturer:v&searchtag=value:searchtag:v&searchrecomm=value:searchrecomm:v&recommid=value:recommid:v&searchparam=search%26%26a&', oxRegistry::getSession()->getVariable('_backtoshop'));
     }
 
     public function testGetItemsFromArgs()
@@ -649,7 +649,7 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
                         'basketitemid' => 'a_basketitemid',
                         'oldam' => 5,
                     )
-                ) ), oxSession::getVar('aLastcall'));
+                ) ), oxRegistry::getSession()->getVariable('aLastcall'));
     }
 
     public function testRender()
@@ -694,7 +694,7 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
         );
         $o = new oxcmp_basket();
         $this->assertSame(null, $o->UNITsetLastCall('sCallName', $aProductInfo, $aBasketInfo));
-        $this->assertEquals( array( 'sCallName' => $aProductInfo ), oxSession::getVar('aLastcall'));
+        $this->assertEquals( array( 'sCallName' => $aProductInfo ), oxRegistry::getSession()->getVariable('aLastcall'));
     }
 
     /**

@@ -1020,7 +1020,7 @@ class Unit_Core_oxCategoryTest extends OxidTestCase
        $sCacheId  = "Index";
 
        // forming a MD5 code as an index for the cache array
-       $sCacheIndex = md5( $sCacheId . serialize( oxSession::getVar( 'session_attrfilter' ) ) );
+       $sCacheIndex = md5( $sCacheId . serialize( oxRegistry::getSession()->getVariable( 'session_attrfilter' ) ) );
        $aCache = array( $sCacheIndex => $sCacheResult );
 
        $oCatAttributes = oxNew( "oxCategoryAttributeCacheTest" );

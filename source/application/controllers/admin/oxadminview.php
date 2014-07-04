@@ -171,7 +171,7 @@ class oxAdminView extends oxView
 
         parent::init();
 
-            $this->_aViewData['malladmin'] = oxSession::getVar( 'malladmin' );
+            $this->_aViewData['malladmin'] = oxRegistry::getSession()->getVariable( 'malladmin' );
     }
 
     /**
@@ -360,7 +360,7 @@ class oxAdminView extends oxView
         $this->_aViewData["shopid"]  = $myConfig->getShopId();
 
         // loading active shop
-        if ( $sActShopId = oxSession::getVar( 'actshop' ) ) {
+        if ( $sActShopId = oxRegistry::getSession()->getVariable( 'actshop' ) ) {
             // load object
             $this->_aViewData['actshopobj'] =  $this->_getEditShop( $sActShopId );
         }
@@ -620,7 +620,7 @@ class oxAdminView extends oxView
     {
         if ( null === ( $sId = $this->_sEditObjectId ) ) {
             if ( null === ( $sId = oxRegistry::getConfig()->getRequestParameter( "oxid" ) ) ) {
-                $sId = oxSession::getVar( "saved_oxid" );
+                $sId = oxRegistry::getSession()->getVariable( "saved_oxid" );
             }
         }
         return $sId;

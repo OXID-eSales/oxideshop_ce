@@ -135,7 +135,7 @@ class Adminlinks_Main extends oxAdminDetails
             $aParams['oxlinks__oxactive'] = 0;
 
             // shopid
-            $sShopID = oxSession::getVar( "actshop");
+            $sShopID = oxRegistry::getSession()->getVariable( "actshop");
             $aParams['oxlinks__oxshopid'] = $sShopID;
         $oLinks = oxNew( "oxlinks", getViewName( 'oxlinks'));
         $iEditLanguage = oxRegistry::getConfig()->getRequestParameter("editlanguage");

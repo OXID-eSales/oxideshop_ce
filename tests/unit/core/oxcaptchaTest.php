@@ -91,7 +91,7 @@ class Unit_Core_oxcaptchaTest extends OxidTestCase
         $sHash1 = $oCaptcha->getHash( 'test1' );
         $sHash2 = $oCaptcha->getHash( 'test2' );
 
-        $aCaptchaHash = oxSession::getVar( "aCaptchaHash" );
+        $aCaptchaHash = oxRegistry::getSession()->getVariable( "aCaptchaHash" );
         $this->assertNotNull( $aCaptchaHash );
         $this->assertTrue( isset( $aCaptchaHash[$sHash1] ) );
         $this->assertTrue( isset( $aCaptchaHash[$sHash2] ) );

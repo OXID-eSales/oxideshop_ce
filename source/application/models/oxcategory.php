@@ -717,7 +717,7 @@ class oxCategory extends oxI18n implements oxIUrl
     {
         $sActCat = $this->getId();
 
-        $sKey = md5( $sActCat . serialize( oxSession::getVar( 'session_attrfilter' ) ) );
+        $sKey = md5( $sActCat . serialize( oxRegistry::getSession()->getVariable( 'session_attrfilter' ) ) );
         if ( !isset( self::$_aCatAttributes[$sKey] ) ) {
             $oAttrList = oxNew( "oxAttributeList" );
             $oAttrList->getCategoryAttributes( $sActCat, $this->getLanguage() );

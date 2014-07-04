@@ -181,7 +181,7 @@ class order extends oxUBase
         parent::render();
 
         // reload blocker
-        if (!oxSession::getVar('sess_challenge')) {
+        if (!oxRegistry::getSession()->getVariable('sess_challenge')) {
             oxRegistry::getSession()->setVariable('sess_challenge', oxUtilsObject::getInstance()->generateUID());
         }
 
@@ -266,11 +266,11 @@ class order extends oxUBase
             $oPayment = oxNew('oxpayment');
 
             if ($sPaymentid && $oPayment->load($sPaymentid) &&
-                $oPayment->isValidPayment(oxSession::getVar('dynvalue'),
+                $oPayment->isValidPayment(oxRegistry::getSession()->getVariable('dynvalue'),
                     $this->getConfig()->getShopId(),
                     $oUser,
                     $oBasket->getPriceForPayment(),
-                    oxSession::getVar('sShipSet'))
+                    oxRegistry::getSession()->getVariable('sShipSet'))
             ) {
                 $this->_oPayment = $oPayment;
             }
@@ -313,7 +313,7 @@ class order extends oxUBase
     {
         if ($this->_sOrderRemark === null) {
             $this->_sOrderRemark = false;
-            if ($sRemark = oxSession::getVar('ordrem')) {
+            if ($sRemark = oxRegistry::getSession()->getVariable('ordrem')) {
                 $this->_sOrderRemark = oxRegistry::getConfig()->checkParamSpecialChars($sRemark);
             }
         }
@@ -499,9 +499,9 @@ class order extends oxUBase
         $sDelAddress = $oUser->getEncodedDeliveryAddress();
 
         // delivery address
-        if (oxSession::getVar('deladrid')) {
+        if (oxRegistry::getSession()->getVariable('deladrid')) {
             $oDelAdress = oxNew('oxaddress');
-            $oDelAdress->load(oxSession::getVar('deladrid'));
+            $oDelAdress->load(oxRegistry::getSession()->getVariable('deladrid'));
 
             $sDelAddress .= $oDelAdress->getEncodedDeliveryAddress();
         }

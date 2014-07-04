@@ -263,7 +263,7 @@ class Unit_Admin_ActionsMainTest extends OxidTestCase
         $aViewData = $oView->getViewData();
         $this->assertTrue( isset( $aViewData["updatelist"] ) );
         $this->assertEquals( 1, $aViewData["updatelist"] );
-        $this->assertNull( oxSession::getVar( "saved_oxid" ) );
+        $this->assertNull( oxRegistry::getSession()->getVariable( "saved_oxid" ) );
     }
 
     /**

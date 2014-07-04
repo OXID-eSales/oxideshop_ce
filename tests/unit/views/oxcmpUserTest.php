@@ -351,7 +351,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
     public function testCaseForBug1625()
     {
         modSession::getInstance()->setVar( 'dgr', 'oxidpricea' );
-        $this->assertNotNull( oxSession::getVar( 'dgr' ) );
+        $this->assertNotNull( oxRegistry::getSession()->getVariable( 'dgr' ) );
 
         modConfig::setRequestParameter( 'lgn_usr',  "test@oxideshop.com" );
         modConfig::setRequestParameter( 'lgn_pwd',  "testpass" );
@@ -383,7 +383,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
         //
         $sUserId = $oDb->getOne( "select oxid from oxuser where oxusername like 'test%'" );
         $this->assertTrue( ( bool ) $oDb->getOne( "select 1 from oxobject2group where oxobjectid = '$sUserId' and oxgroupsid = 'oxidpricea'" ) );
-        $this->assertNull( oxSession::getVar( 'dgr' ) );
+        $this->assertNull( oxRegistry::getSession()->getVariable( 'dgr' ) );
     }
 
     public function testSetAndGetLoginStatus()
@@ -680,10 +680,10 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
         $oUserView = $this->getMock( 'oxcmp_user', array( 'getSession' ) );
         $oUserView->expects( $this->once() )->method( 'getSession' )->will( $this->returnValue( $oSession ) );
         $oUserView->UNITafterLogout();
-        $this->assertNull( oxSession::getVar( 'paymentid' ) );
-        $this->assertNull( oxSession::getVar( 'sShipSet' ) );
-        $this->assertNull( oxSession::getVar( 'deladrid' ) );
-        $this->assertNull( oxSession::getVar( 'dynvalue' ) );
+        $this->assertNull( oxRegistry::getSession()->getVariable( 'paymentid' ) );
+        $this->assertNull( oxRegistry::getSession()->getVariable( 'sShipSet' ) );
+        $this->assertNull( oxRegistry::getSession()->getVariable( 'deladrid' ) );
+        $this->assertNull( oxRegistry::getSession()->getVariable( 'dynvalue' ) );
     }
 
     /**
@@ -794,7 +794,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
         $oUserView = $this->getMock( 'oxcmp_userPROXY', array( 'getParent' ) );
         $oUserView->expects( $this->any() )->method( 'getParent' )->will( $this->returnValue( $oParent ) );
         $this->assertEquals( 'payment?new_user=1&success=1', $oUserView->createUser() );
-        $this->assertEquals( 'TestRemark', oxSession::getVar( 'ordrem' ) );
+        $this->assertEquals( 'TestRemark', oxRegistry::getSession()->getVariable( 'ordrem' ) );
         $this->assertTrue( $oUserView->getNonPublicVar( '_blIsNewUser' ) );
     }
 
@@ -825,7 +825,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
         $oUserView->expects( $this->any() )->method( 'getParent' )->will( $this->returnValue( $oParent ) );
         $this->assertEquals( 'payment?new_user=1&success=1', $oUserView->createUser() );
         $this->assertTrue( $oUserView->getNonPublicVar( '_blIsNewUser' ) );
-        $this->assertNotNull( oxSession::getVar( 'usr' ) );
+        $this->assertNotNull( oxRegistry::getSession()->getVariable( 'usr' ) );
     }
 
     /**
@@ -967,7 +967,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
         $oUserView->expects( $this->any() )->method( 'getSession' )->will( $this->returnValue( $oSession ) );
         $oUserView->expects( $this->once() )->method( 'getUser' )->will( $this->returnValue( $oUser ) );
         $this->assertTrue( $oUserView->UNITchangeUser_noRedirect() );
-        $this->assertEquals( 'TestRemark', oxSession::getVar( 'ordrem' ) );
+        $this->assertEquals( 'TestRemark', oxRegistry::getSession()->getVariable( 'ordrem' ) );
         $this->assertEquals( 1, $oUserView->getNonPublicVar( '_blNewsSubscriptionStatus' ) );
     }
 

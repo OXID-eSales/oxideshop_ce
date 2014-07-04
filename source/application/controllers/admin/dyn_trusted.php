@@ -172,9 +172,6 @@ class dyn_trusted extends Shop_Config
      */
     protected function _checkTsId( $sConfStrs )
     {
-        if ( strlen( $sConfStrs ) != 33 || substr( $sConfStrs, 0, 1 ) != 'X' ) {
-            $blSave = false;
-        }
         $oTsProtection = oxNew("oxtsprotection");
         $oResults = $oTsProtection->checkCertificate( $sConfStrs, oxRegistry::getConfig()->getRequestParameter( "tsTestMode" ) );
         return $oResults;

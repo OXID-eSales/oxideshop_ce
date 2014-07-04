@@ -39,7 +39,7 @@
                 [{/if}]
             </div>
 
-            <div class="lineBox">
+            <div id="basketContainer" class="lineBox">
                 [{include file="page/checkout/inc/basketcontents.tpl" editable=true}]
 
                 [{if $oViewConf->getShowVouchers()}]

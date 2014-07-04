@@ -44,7 +44,7 @@
                 [{assign var="oArticle" value=$basketitem->getArticle()}]
                 [{assign var="oAttributes" value=$oArticle->getAttributesDisplayableInBasket()}]
 
-                <tr id="cartItem_[{$smarty.foreach.basketContents.iteration}]">
+                <tr class="basketItem" id="cartItem_[{$smarty.foreach.basketContents.iteration}]">
 
                     [{block name="checkout_basketcontents_basketitem_removecheckbox"}]
                         [{if $editable }]

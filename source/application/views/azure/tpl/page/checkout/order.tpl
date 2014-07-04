@@ -157,7 +157,7 @@
                     </form>
                 </div>
 
-                <div class="lineBox clear">
+                <div id="basketContent" class="lineBox clear">
                 [{block name="order_basket"}]
                     [{include file="page/checkout/inc/basketcontents.tpl" editable=false}]
                 [{/block}]

@@ -41,7 +41,7 @@ class Unit_Core_oxpricealarmTest extends OxidTestCase
     public function testInsert()
     {
         oxAddClassModule( 'modOxUtilsDate', 'oxUtilsDate' );
-        oxUtilsDate::getInstance()->UNITSetTime( 100 );
+        oxRegistry::get("oxUtilsDate")->UNITSetTime( 100 );
 
         $oAlarm = new oxpricealarm();
         $oAlarm->setId( 'testalarm' );

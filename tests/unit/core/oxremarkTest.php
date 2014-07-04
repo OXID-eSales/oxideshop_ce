@@ -39,7 +39,7 @@ class Unit_Core_oxremarkTest extends OxidTestCase
         parent::setUp();
         $this->_iNow = time();
         oxAddClassModule( 'modOxUtilsDate', 'oxUtilsDate' );
-        oxUtilsDate::getInstance()->UNITSetTime( $this->_iNow );
+        oxRegistry::get("oxUtilsDate")->UNITSetTime( $this->_iNow );
 
         $this->_oRemark = new oxremark();
         $this->_oRemark->oxremark__oxtext = new oxField('Test', oxField::T_RAW);
@@ -90,7 +90,7 @@ class Unit_Core_oxremarkTest extends OxidTestCase
         $iNow = time();
 
         oxAddClassModule( 'modOxUtilsDate', 'oxUtilsDate' );
-        oxUtilsDate::getInstance()->UNITSetTime( $iNow );
+        oxRegistry::get("oxUtilsDate")->UNITSetTime( $iNow );
 
         $oRemark = new oxremark();
         $oRemark->load( $this->_oRemark->oxremark__oxid->value );

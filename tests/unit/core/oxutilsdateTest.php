@@ -63,10 +63,10 @@ class Unit_Core_oxUtilsDateTest extends OxidTestCase
     public function testGetTime()
     {
         $this->setConfigParam('iServerTimeShift', null); //explicitly set timezone to null
-        $this->assertEquals(oxUtilsDate::getInstance()->getTime(), time());
+        $this->assertEquals(oxRegistry::get("oxUtilsDate")->getTime(), time());
         for ($iTimeZone = -12; $iTimeZone < 15; $iTimeZone++) {
             $this->setConfigParam('iServerTimeShift', $iTimeZone);
-            $this->assertEquals(oxUtilsDate::getInstance()->getTime(), (time() + ($this->getConfigParam('iServerTimeShift') * 3600)));
+            $this->assertEquals(oxRegistry::get("oxUtilsDate")->getTime(), (time() + ($this->getConfigParam('iServerTimeShift') * 3600)));
         }
     }
 
@@ -75,15 +75,15 @@ class Unit_Core_oxUtilsDateTest extends OxidTestCase
 
         $sTimeStamp = '1186052540'; // from 2007-08-02 -> week nr = 31;
 
-        $this->assertEquals(31, oxUtilsDate::getInstance()->getWeekNumber(0, $sTimeStamp));
-        $this->assertEquals(30, oxUtilsDate::getInstance()->getWeekNumber(0, $sTimeStamp, '%U'));
-        $this->assertEquals(31, oxUtilsDate::getInstance()->getWeekNumber(0, $sTimeStamp, '%W'));
+        $this->assertEquals(31, oxRegistry::get("oxUtilsDate")->getWeekNumber(0, $sTimeStamp));
+        $this->assertEquals(30, oxRegistry::get("oxUtilsDate")->getWeekNumber(0, $sTimeStamp, '%U'));
+        $this->assertEquals(31, oxRegistry::get("oxUtilsDate")->getWeekNumber(0, $sTimeStamp, '%W'));
 
-        $this->assertEquals(30, oxUtilsDate::getInstance()->getWeekNumber(1, $sTimeStamp));
+        $this->assertEquals(30, oxRegistry::get("oxUtilsDate")->getWeekNumber(1, $sTimeStamp));
 
         $sCurTimeStamp = time();
         $iCurWeekNr = (int) strftime( '%U', $sCurTimeStamp);
-        $this->assertEquals($iCurWeekNr, oxUtilsDate::getInstance()->getWeekNumber(1));
+        $this->assertEquals($iCurWeekNr, oxRegistry::get("oxUtilsDate")->getWeekNumber(1));
     }
 
     /**
@@ -91,9 +91,9 @@ class Unit_Core_oxUtilsDateTest extends OxidTestCase
      */
     public function testGerman2English()
     {
-        $this->assertEquals( '2008-05-25', oxUtilsDate::getInstance()->german2English( '25.05.2008' ) );
-        $this->assertEquals( '2008-05', oxUtilsDate::getInstance()->german2English( '05.2008' ) );
-        $this->assertEquals( '08-05-25', oxUtilsDate::getInstance()->german2English( '25.05.08' ) );
+        $this->assertEquals( '2008-05-25', oxRegistry::get("oxUtilsDate")->german2English( '25.05.2008' ) );
+        $this->assertEquals( '2008-05', oxRegistry::get("oxUtilsDate")->german2English( '05.2008' ) );
+        $this->assertEquals( '08-05-25', oxRegistry::get("oxUtilsDate")->german2English( '25.05.08' ) );
     }
 
     /**
@@ -101,15 +101,15 @@ class Unit_Core_oxUtilsDateTest extends OxidTestCase
      */
     public function testIsEmptyDate()
     {
-        $this->assertFalse( oxUtilsDate::getInstance()->isEmptyDate( '2008-05-08' ) );
-        $this->assertFalse( oxUtilsDate::getInstance()->isEmptyDate( '25.05.2008' ) );
-        $this->assertFalse( oxUtilsDate::getInstance()->isEmptyDate( '2008-06-18 00:00' ) );
-        $this->assertFalse( oxUtilsDate::getInstance()->isEmptyDate( '0000/00/00 00:01' ) );
-        $this->assertFalse( oxUtilsDate::getInstance()->isEmptyDate( 'Some Text' ) );
-        $this->assertTrue( oxUtilsDate::getInstance()->isEmptyDate( '' ) );
-        $this->assertTrue( oxUtilsDate::getInstance()->isEmptyDate( '0000-00-00' ) );
-        $this->assertTrue( oxUtilsDate::getInstance()->isEmptyDate( '0000/00/00' ) );
-        $this->assertTrue( oxUtilsDate::getInstance()->isEmptyDate( '0000-00-00 00:00:00' ) );
+        $this->assertFalse( oxRegistry::get("oxUtilsDate")->isEmptyDate( '2008-05-08' ) );
+        $this->assertFalse( oxRegistry::get("oxUtilsDate")->isEmptyDate( '25.05.2008' ) );
+        $this->assertFalse( oxRegistry::get("oxUtilsDate")->isEmptyDate( '2008-06-18 00:00' ) );
+        $this->assertFalse( oxRegistry::get("oxUtilsDate")->isEmptyDate( '0000/00/00 00:01' ) );
+        $this->assertFalse( oxRegistry::get("oxUtilsDate")->isEmptyDate( 'Some Text' ) );
+        $this->assertTrue( oxRegistry::get("oxUtilsDate")->isEmptyDate( '' ) );
+        $this->assertTrue( oxRegistry::get("oxUtilsDate")->isEmptyDate( '0000-00-00' ) );
+        $this->assertTrue( oxRegistry::get("oxUtilsDate")->isEmptyDate( '0000/00/00' ) );
+        $this->assertTrue( oxRegistry::get("oxUtilsDate")->isEmptyDate( '0000-00-00 00:00:00' ) );
     }
 
     /**
@@ -120,7 +120,7 @@ class Unit_Core_oxUtilsDateTest extends OxidTestCase
     {
         $oObject = new oxField('xxx', oxField::T_RAW);
 
-        $sReturn = oxUtilsDate::getInstance()->convertDBDateTime( $oObject, false, false );
+        $sReturn = oxRegistry::get("oxUtilsDate")->convertDBDateTime( $oObject, false, false );
 
         $this->assertEquals( 'xxx', $sReturn );
     }
@@ -128,7 +128,7 @@ class Unit_Core_oxUtilsDateTest extends OxidTestCase
     {
         $oObject = new oxField('2007-08-01', oxField::T_RAW);
 
-        $sReturn = oxUtilsDate::getInstance()->convertDBDateTime( $oObject, false, false );
+        $sReturn = oxRegistry::get("oxUtilsDate")->convertDBDateTime( $oObject, false, false );
 
         $this->assertEquals( '2007-08-01', $sReturn );
     }
@@ -204,7 +204,7 @@ class Unit_Core_oxUtilsDateTest extends OxidTestCase
             $oConvObject->fldmax_length = strlen($sInput);
             $oConvObject->fldtype = "datetime";
         }
-        oxUtilsDate::getInstance()->convertDBDateTime( $oConvObject, $blMysql, $blFormatDate );
+        oxRegistry::get("oxUtilsDate")->convertDBDateTime( $oConvObject, $blMysql, $blFormatDate );
         //echo "\nReturned: ->".$oConvObject->value."<-\nExpected: ->".$sExpected.'<-';
         if ($oConvObject->value == $sExpected) {
             return true;
@@ -294,7 +294,7 @@ class Unit_Core_oxUtilsDateTest extends OxidTestCase
             $oConvObject = new oxField($sInput, oxField::T_RAW);
         }
 
-        oxUtilsDate::getInstance()->convertDBTimestamp( $oConvObject, $blToTimeStamp );
+        oxRegistry::get("oxUtilsDate")->convertDBTimestamp( $oConvObject, $blToTimeStamp );
         if ( $oConvObject->value == $sExpected ) {
             return true;
         }
@@ -359,7 +359,7 @@ class Unit_Core_oxUtilsDateTest extends OxidTestCase
         if (!empty($sInput)) {
             $oConvObject = new oxField($sInput, oxField::T_RAW);
         }
-        oxUtilsDate::getInstance()->convertDBDate($oConvObject, $blToTimeStamp);
+        oxRegistry::get("oxUtilsDate")->convertDBDate($oConvObject, $blToTimeStamp);
         //echo "\nReturned: ->".$oConvObject->value."<-\nExpected: ->".$sExpected.'<-';
         if ($oConvObject->value == $sExpected) {
             return true;
@@ -424,6 +424,6 @@ class Unit_Core_oxUtilsDateTest extends OxidTestCase
     {
         $this->setTime( 157 );
         $this->assertEquals( 157, $this->getTime() );
-        $this->assertEquals( 157, oxUtilsDate::getInstance()->getTime() );
+        $this->assertEquals( 157, oxRegistry::get("oxUtilsDate")->getTime() );
     }
 }

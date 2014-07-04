@@ -359,7 +359,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
      */
     public function testSetCreditPointsForRegistrant()
     {
-        $sDate = oxUtilsDate::getInstance()->formatDBDate( date("Y-m-d"), true );
+        $sDate = oxRegistry::get("oxUtilsDate")->formatDBDate( date("Y-m-d"), true );
         $myDB = oxDb::getDB();
         $sSql = "INSERT INTO oxinvitations SET oxuserid = 'oxdefaultadmin', oxemail = 'oxemail',  oxdate='$sDate', oxpending = '1', oxaccepted = '0', oxtype = '1' ";
         $myDB->execute( $sSql );
@@ -1502,7 +1502,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
         $oUser->load( $sUserID );
 
         $sCreate = $myDB->getOne('select oxcreate from oxuser where oxid="'.$oUser->getId().'" ' );
-        $this->assertEquals( oxUtilsDate::getInstance()->formatDBDate( $sCreate ), $oUser->oxuser__oxcreate->value );
+        $this->assertEquals( oxRegistry::get("oxUtilsDate")->formatDBDate( $sCreate ), $oUser->oxuser__oxcreate->value );
     }
 
 

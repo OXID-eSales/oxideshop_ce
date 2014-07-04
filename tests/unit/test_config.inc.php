@@ -85,6 +85,11 @@ class modOxUtilsDate extends oxUtilsDate
 {
     protected $_sTime = null;
 
+    public static function getInstance()
+    {
+        return oxRegistry::get("oxUtilsDate");
+    }
+
     public function UNITSetTime($sTime)
     {
         $this->_sTime = $sTime;

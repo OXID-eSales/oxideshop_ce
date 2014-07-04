@@ -65,7 +65,7 @@ class Unit_Core_oxGbEntryTest extends OxidTestCase
         $iTime = time();
 
         oxAddClassModule( 'modOxUtilsDate', 'oxUtilsDate' );
-        oxUtilsDate::getInstance()->UNITSetTime( $iTime );
+        oxRegistry::get("oxUtilsDate")->UNITSetTime( $iTime );
 
         $this->_oObj->delete();
 

@@ -37,7 +37,7 @@ class Unit_Core_oxActionListTest extends OxidTestCase
     public function testLoadFinishedByCount()
     {
         oxTestModules::addFunction('oxUtilsDate', 'getTime', '{return '.time().';}');
-        $sNow  = (date( 'Y-m-d H:i:s', oxUtilsDate::getInstance()->getTime() ));
+        $sNow  = (date( 'Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime() ));
         $sShopId = modConfig::getInstance()->getShopId();
 
         $sView = getViewName('oxactions');
@@ -61,8 +61,8 @@ class Unit_Core_oxActionListTest extends OxidTestCase
     public function testLoadFinishedByTimespan()
     {
         oxTestModules::addFunction('oxUtilsDate', 'getTime', '{return '.time().';}');
-        $sNow  = (date( 'Y-m-d H:i:s', oxUtilsDate::getInstance()->getTime() ));
-        $sDateFrom = date( 'Y-m-d H:i:s', oxUtilsDate::getInstance()->getTime()-50 );
+        $sNow  = (date( 'Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime() ));
+        $sDateFrom = date( 'Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime()-50 );
         $sShopId = modConfig::getInstance()->getShopId();
 
         $sView = getViewName('oxactions');
@@ -84,7 +84,7 @@ class Unit_Core_oxActionListTest extends OxidTestCase
     public function testLoadCurrent()
     {
         oxTestModules::addFunction('oxUtilsDate', 'getTime', '{return '.time().';}');
-        $sNow  = (date( 'Y-m-d H:i:s', oxUtilsDate::getInstance()->getTime() ));
+        $sNow  = (date( 'Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime() ));
         $sShopId = modConfig::getInstance()->getShopId();
 
         $sView = getViewName('oxactions');
@@ -106,7 +106,7 @@ class Unit_Core_oxActionListTest extends OxidTestCase
     public function testLoadFutureByCount()
     {
         oxTestModules::addFunction('oxUtilsDate', 'getTime', '{return '.time().';}');
-        $sNow  = (date( 'Y-m-d H:i:s', oxUtilsDate::getInstance()->getTime() ));
+        $sNow  = (date( 'Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime() ));
         $sShopId = modConfig::getInstance()->getShopId();
 
         $sView = getViewName('oxactions');
@@ -128,8 +128,8 @@ class Unit_Core_oxActionListTest extends OxidTestCase
     public function testLoadFutureByTimespan()
     {
         oxTestModules::addFunction('oxUtilsDate', 'getTime', '{return '.time().';}');
-        $sFut  = (date( 'Y-m-d H:i:s', oxUtilsDate::getInstance()->getTime()+50 ));
-        $sNow  = (date( 'Y-m-d H:i:s', oxUtilsDate::getInstance()->getTime() ));
+        $sFut  = (date( 'Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime()+50 ));
+        $sNow  = (date( 'Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime() ));
         $sShopId = modConfig::getInstance()->getShopId();
 
         $sView = getViewName('oxactions');
@@ -233,7 +233,7 @@ class Unit_Core_oxActionListTest extends OxidTestCase
     public function testLoadBanners()
     {
         oxTestModules::addFunction('oxUtilsDate', 'getTime', '{return '.time().';}');
-        $sNow  = (date( 'Y-m-d H:i:s', oxUtilsDate::getInstance()->getTime() ));
+        $sNow  = (date( 'Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime() ));
         $sShopId = modConfig::getInstance()->getShopId();
 
         $sView = getViewName('oxactions');

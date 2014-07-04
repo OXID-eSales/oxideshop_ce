@@ -255,7 +255,7 @@ class Unit_Admin_OrderOverviewTest extends OxidTestCase
         modConfig::setRequestParameter( "oxid", $soxId );
         $this->assertFalse($oView->canResetShippingDate());
 
-        $oOrder->oxorder__oxsenddate      = new oxField( date( "Y-m-d H:i:s", oxUtilsDate::getInstance()->getTime()));
+        $oOrder->oxorder__oxsenddate      = new oxField( date( "Y-m-d H:i:s", oxRegistry::get("oxUtilsDate")->getTime()));
         $oOrder->save();
 
         $this->assertTrue($oView->canResetShippingDate());

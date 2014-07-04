@@ -798,7 +798,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
 
         $oOrder->recalculateOrder();// $oOrderArticles );
 
-        $this->assertEquals( date( 'Y-m-d h', $sOrderDate ), date( 'Y-m-d h', oxUtilsDate::getInstance()->formatDBDate( $oOrder->oxorder__oxorderdate->value ) ) );
+        $this->assertEquals( date( 'Y-m-d h', $sOrderDate ), date( 'Y-m-d h', oxRegistry::get("oxUtilsDate")->formatDBDate( $oOrder->oxorder__oxorderdate->value ) ) );
         $this->assertEquals( $sOrderFolder, $oOrder->oxorder__oxfolder->value );
         $this->assertEquals( $sOrderIp, $oOrder->oxorder__oxip->value );
         $this->assertEquals( $sOrderRemark, $oOrder->oxorder__oxremark->value );
@@ -1790,7 +1790,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
         $this->_insertTestOrder();
 
         oxAddClassModule( 'modOxUtilsDate', 'oxUtilsDate' );
-        oxUtilsDate::getInstance()->UNITSetTime(100);
+        oxRegistry::get("oxUtilsDate")->UNITSetTime(100);
 
         $sQ = "select oxorderdate from oxorder where oxid='_testOrderId' ";
         $sDate = oxDb::getDb()->getOne( $sQ );

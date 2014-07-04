@@ -720,13 +720,13 @@ class Unit_Core_oxsessionTest extends OxidTestCase
         $this->oSession = $this->getMock( 'testSession', array( 'isAdmin' ) );
         $this->oSession->expects( $this->any() )->method( 'isAdmin')->will( $this->returnValue( false ) );
         oxAddClassModule( 'modOxUtilsDate', 'oxUtilsDate' );
-        oxUtilsDate::getInstance()->UNITSetTime( 100 );
+        oxRegistry::get("oxUtilsDate")->UNITSetTime( 100 );
         modConfig::setConfigParam('iSessionTimeout', 10);
         $this->oSession->setVar( "sessiontimestamp", 10);
         $this->assertFalse($this->oSession->UNITcheckByTimeOut());
 
         //large delay
-        oxUtilsDate::getInstance()->UNITSetTime( 1000 );
+        oxRegistry::get("oxUtilsDate")->UNITSetTime( 1000 );
         $this->assertTrue($this->oSession->UNITcheckByTimeOut());
         modConfig::setConfigParam('iSessionTimeout', null);
     }*/
@@ -741,12 +741,12 @@ class Unit_Core_oxsessionTest extends OxidTestCase
         $this->oSession = $this->getMock( 'testSession', array( 'isAdmin' ) );
         $this->oSession->expects( $this->any() )->method( 'isAdmin')->will( $this->returnValue( false ) );
         oxAddClassModule( 'modOxUtilsDate', 'oxUtilsDate' );
-        oxUtilsDate::getInstance()->UNITSetTime( 60 );
+        oxRegistry::get("oxUtilsDate")->UNITSetTime( 60 );
         $this->oSession->setVar( "sessiontimestamp", 10);
         $this->assertFalse($this->oSession->UNITcheckByTimeOut());
 
         //large delay
-        oxUtilsDate::getInstance()->UNITSetTime( 4000 );
+        oxRegistry::get("oxUtilsDate")->UNITSetTime( 4000 );
         $this->assertTrue($this->oSession->UNITcheckByTimeOut());
     }*/
 
@@ -759,13 +759,13 @@ class Unit_Core_oxsessionTest extends OxidTestCase
         $this->oSession = $this->getMock( 'testSession', array( 'isAdmin' ) );
         $this->oSession->expects( $this->any() )->method( 'isAdmin')->will( $this->returnValue( true ) );
         oxAddClassModule( 'modOxUtilsDate', 'oxUtilsDate' );
-        oxUtilsDate::getInstance()->UNITSetTime( 60 );
+        oxRegistry::get("oxUtilsDate")->UNITSetTime( 60 );
         $this->oSession->setVar( "sessiontimestamp", 10);
         modConfig::setConfigParam('iSessionTimeoutAdmin', 10);
         $this->assertFalse($this->oSession->UNITcheckByTimeOut());
 
         //large delay
-        oxUtilsDate::getInstance()->UNITSetTime( 4000 );
+        oxRegistry::get("oxUtilsDate")->UNITSetTime( 4000 );
         $this->assertTrue($this->oSession->UNITcheckByTimeOut());
     }*/
 

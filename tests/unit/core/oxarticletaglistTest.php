@@ -201,8 +201,8 @@ class Unit_Core_oxarticletaglistTest extends OxidTestCase
         $oArticle = oxNew('oxarticle');
         $oArticle->load('1126');
         $oArticle->oxarticles__oxactive->value = 0;
-        $oArticle->oxarticles__oxactivefrom->value = date( 'Y-m-d H:i:s', oxUtilsDate::getInstance()->getTime() - 100 );
-        $oArticle->oxarticles__oxactiveto->value = date( 'Y-m-d H:i:s', oxUtilsDate::getInstance()->getTime() + 100 );
+        $oArticle->oxarticles__oxactivefrom->value = date( 'Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime() - 100 );
+        $oArticle->oxarticles__oxactiveto->value = date( 'Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime() + 100 );
         $oArticle->save();
 
         $oArticleTagList = new oxArticleTagList();

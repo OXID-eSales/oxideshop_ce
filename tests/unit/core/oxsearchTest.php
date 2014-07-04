@@ -706,7 +706,7 @@ class Unit_Core_oxsearchTest extends OxidTestCase
         modConfig::getInstance()->setConfigParam( 'blUseRightsRoles', 0 );
 
         oxAddClassModule( 'modOxUtilsDate', 'oxUtilsDate' );
-        oxUtilsDate::getInstance()->UNITSetTime( time() );
+        oxRegistry::get("oxUtilsDate")->UNITSetTime( time() );
 
         $iCurrTime = time();
         oxTestModules::addFunction( "oxUtilsDate", "getTime", "{ return $iCurrTime; }");

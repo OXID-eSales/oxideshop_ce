@@ -26,25 +26,6 @@
 class oxUtilsDate extends oxSuperCfg
 {
     /**
-     * oxUtils class instance.
-     *
-     * @var oxutils* instance
-     */
-    private static $_instance = null;
-
-    /**
-     * Returns object instance
-     *
-     * @deprecated since v5.0 (2012-08-10); Please use oxRegistry::get("oxUtilsDate") instead.
-     *
-     * @return oxUtilsDate
-     */
-    public static function getInstance()
-    {
-        return oxRegistry::get("oxUtilsDate");
-    }
-
-    /**
      * Format date to user defined format.
      *
      * @param string $sDBDateIn         Date to reformat

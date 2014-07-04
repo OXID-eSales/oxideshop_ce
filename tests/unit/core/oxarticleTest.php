@@ -483,7 +483,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
     {
         modConfig::getInstance()->setConfigParam( 'blUseTimeCheck', true );
         oxTestModules::addFunction("oxUtilsDate", "getTime", "{return 0;}");
-        $sDate = date( 'Y-m-d H:i:s', oxUtilsDate::getInstance()->getTime() );
+        $sDate = date( 'Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime() );
 
         $oArticle = new oxarticle();
         $sTable = $oArticle->getViewName();
@@ -503,7 +503,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         modConfig::getInstance()->setConfigParam( 'blVariantParentBuyable', false );
         modConfig::getInstance()->setConfigParam( 'blUseTimeCheck', true );
         oxTestModules::addFunction("oxUtilsDate", "getTime", "{return 0;}");
-        $sDate = date( 'Y-m-d H:i:s', oxUtilsDate::getInstance()->getTime() );
+        $sDate = date( 'Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime() );
 
         $oArticle = new oxarticle();
         $sTable = $oArticle->getViewName();
@@ -727,7 +727,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         modConfig::getInstance()->setConfigParam( "blUseStock", 0 );
         modConfig::getInstance()->setConfigParam( "blVariantParentBuyable", 0 );
 
-        $iCurrTime = oxUtilsDate::getInstance()->getTime();
+        $iCurrTime = oxRegistry::get("oxUtilsDate")->getTime();
 
         // regular active product by time range
         $oArticle->oxarticles__oxactive = new oxField( 0 );

@@ -281,7 +281,7 @@ class Unit_Core_oxmanufacturerTest extends OxidTestCase
         $oManufacturer->setNonPublicVar( "_blShowArticleCnt", true );
         $oManufacturer->load($sManufacturerId);
 
-        $this->assertEquals(oxUtilsCount::getInstance()->getManufacturerArticleCount( $sManufacturerId ), $oManufacturer->getNrOfArticles());
+        $this->assertEquals(oxRegistry::get("oxUtilsCount")->getManufacturerArticleCount( $sManufacturerId ), $oManufacturer->getNrOfArticles());
     }
 
     public function testGetNrOfArticlesDonotShow()

@@ -329,7 +329,7 @@ class Unit_Core_oxCategoryTest extends OxidTestCase
             $sCat = '8a142c3e4143562a5.46426637';
 
         $oObj->load($sCat);
-        oxUtilsCount::getInstance()->resetCatArticleCount($oObj->getId());
+        oxRegistry::get("oxUtilsCount")->resetCatArticleCount($oObj->getId());
 
             $this->assertEquals(32, $oObj->getNrOfArticles());
     }
@@ -339,7 +339,7 @@ class Unit_Core_oxCategoryTest extends OxidTestCase
         self::cleanUpTable('oxarticles');
 
         modConfig::getInstance()->setConfigParam( 'bl_perfShowActionCatArticleCnt', true );
-        oxUtilsCount::getInstance()->resetCatArticleCount($this->_oCategory->getId());
+        oxRegistry::get("oxUtilsCount")->resetCatArticleCount($this->_oCategory->getId());
         $this->_oCategory->oxcategories__oxpricefrom = new oxField('10', oxField::T_RAW);
         $this->_oCategory->oxcategories__oxpriceto = new oxField('50', oxField::T_RAW);
         $this->_oCategory->save();
@@ -784,7 +784,7 @@ class Unit_Core_oxCategoryTest extends OxidTestCase
         modConfig::getInstance()->setConfigParam( 'blDontShowEmptyCategories', true );
         $oCategory = $this->getProxyClass( "oxcategory" );
             $oCategory->load( '8a142c3e60a535f16.78077188' );
-            oxUtilsCount::getInstance()->resetCatArticleCount($oCategory->getId());
+            oxRegistry::get("oxUtilsCount")->resetCatArticleCount($oCategory->getId());
             $this->assertEquals( 6, $oCategory->getNrOfArticles() );
     }
 

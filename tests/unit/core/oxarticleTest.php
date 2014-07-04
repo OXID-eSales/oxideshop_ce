@@ -4141,8 +4141,6 @@ class Unit_Core_oxArticleTest extends OxidTestCase
             $sCat = "8a142c3e4143562a5.46426637";
             $sVend = "68342e2955d7401e6.18967838";
             $sMan = "fe07958b49de225bd1dbc7594fb9a6b0";
-            $sCatCnt = oxUtilsCount::getInstance()->getCatArticleCount( $sCat);
-            $sVendCnt = oxUtilsCount::getInstance()->getVendorArticleCount( $sVend);
             oxDb::getDB()->execute("insert into oxobject2category (oxid, oxobjectid, oxcatnid) values ('test', '_testArt', '$sCat' )");
 
             $oArticle = $this->_createArticle('_testArt');

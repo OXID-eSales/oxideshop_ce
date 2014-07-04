@@ -297,7 +297,7 @@ class Unit_Core_oxvendorTest extends OxidTestCase
         $oVendor->setNonPublicVar( "_blShowArticleCnt", true );
         $oVendor->load($sVendorId);
 
-        $this->assertEquals(oxUtilsCount::getInstance()->getVendorArticleCount( $sVendorId ), $oVendor->getNrOfArticles());
+        $this->assertEquals(oxRegistry::get("oxUtilsCount")->getVendorArticleCount( $sVendorId ), $oVendor->getNrOfArticles());
     }
 
     public function testGetNrOfArticlesDonotShow()

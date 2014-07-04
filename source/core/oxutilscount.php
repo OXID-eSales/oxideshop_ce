@@ -26,30 +26,11 @@
 class oxUtilsCount extends oxSuperCfg
 {
     /**
-     * oxUtils class instance.
-     *
-     * @var oxutils* instance
-     */
-    private static $_instance = null;
-
-    /**
      * Users view id, used to identify current state cache
      *
      * @var string
      */
     protected $_sUserViewId = null;
-
-    /**
-     * Returns object instance
-     *
-     * @deprecated since v5.0 (2012-08-10); Use oxRegistry::get("oxUtilsCount") instead.
-     *
-     * @return oxUtilsCount
-     */
-    public static function getInstance()
-    {
-        return oxRegistry::get("oxUtilsCount");
-    }
 
     /**
      * Returns category article count

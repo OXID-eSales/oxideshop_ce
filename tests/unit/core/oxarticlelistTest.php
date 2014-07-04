@@ -1503,7 +1503,7 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
         $oTest->expects($this->once())->method("selectString")->with('testRes');
 
 
-        $this->assertEquals(oxUtilsCount::getInstance()->getVendorArticleCount( $sVendorId ),
+        $this->assertEquals(oxRegistry::get("oxUtilsCount")->getVendorArticleCount( $sVendorId ),
                             $oTest->loadVendorArticles($sVendorId));
     }
 
@@ -1525,7 +1525,7 @@ class Unit_Core_oxarticlelistTest extends OxidTestCase
 
         $oTest->expects($this->once())->method("selectString")->with('testRes');
 
-        $this->assertEquals(oxUtilsCount::getInstance()->getManufacturerArticleCount( $sManId ),
+        $this->assertEquals(oxRegistry::get("oxUtilsCount")->getManufacturerArticleCount( $sManId ),
                             $oTest->loadManufacturerArticles($sManId));
     }
 

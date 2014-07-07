@@ -306,7 +306,9 @@ class oxModule extends oxSuperCfg
      */
     public function activate()
     {
+        /** @var oxModuleCache $oModuleCache */
         $oModuleCache = oxNew( 'oxModuleCache', $this );
+        /** @var oxModuleInstaller $oModuleInstaller */
         $oModuleInstaller = oxNew( 'oxModuleInstaller', $oModuleCache );
 
         return $oModuleInstaller->activate( $this );

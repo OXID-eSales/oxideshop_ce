@@ -25,14 +25,6 @@
  */
 class oxUtilsUrl extends oxSuperCfg
 {
-
-    /**
-     * oxUtilsUrl class instance.
-     *
-     * @var oxUtilsUrl
-     */
-    private static $_instance = null;
-
     /**
      * Additional url parameters which should be appended to seo/std urls
      *
@@ -40,17 +32,6 @@ class oxUtilsUrl extends oxSuperCfg
      */
     protected $_aAddUrlParams = null;
 
-    /**
-     * resturns a single instance of this class
-     *
-     * @deprecated since v5.0 (2012-08-10); Use oxRegistry::get("oxUtilsUrl") instead
-     *
-     * @return oxUtilsUrl
-     */
-    public static function getInstance()
-    {
-        return oxRegistry::get("oxUtilsUrl");
-    }
 
     /**
      * Returns core parameters which must be added to each url

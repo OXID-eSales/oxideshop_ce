@@ -41,11 +41,6 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
         parent::tearDown();
     }
 
-    public function testGetInstance()
-    {
-        $this->assertTrue( oxUtilsUrl::getInstance() instanceof oxUtilsUrl );
-    }
-
     /**
      * oxUtilsUrl::prepareCanonicalUrl() test case
      *
@@ -102,14 +97,14 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxUtils', 'seoIsActive', '{return true;}');
 
-        $this->assertEquals('http://example.com/', oxUtilsUrl::getInstance()->prepareUrlForNoSession('http://example.com/?sid=abc123'));
-        $this->assertEquals('http://example.com/', oxUtilsUrl::getInstance()->prepareUrlForNoSession('http://example.com/?force_sid=abc123'));
+        $this->assertEquals('http://example.com/', oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('http://example.com/?sid=abc123'));
+        $this->assertEquals('http://example.com/', oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('http://example.com/?force_sid=abc123'));
 
-        $this->assertEquals('http://example.com/?cl=test', oxUtilsUrl::getInstance()->prepareUrlForNoSession('http://example.com/?cl=test&amp;sid=abc123'));
-        $this->assertEquals('http://example.com/?cl=test', oxUtilsUrl::getInstance()->prepareUrlForNoSession('http://example.com/?cl=test&amp;force_sid=abc123'));
+        $this->assertEquals('http://example.com/?cl=test', oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('http://example.com/?cl=test&amp;sid=abc123'));
+        $this->assertEquals('http://example.com/?cl=test', oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('http://example.com/?cl=test&amp;force_sid=abc123'));
 
-        $this->assertEquals('http://example.com/?cl=test', oxUtilsUrl::getInstance()->prepareUrlForNoSession('http://example.com/?sid=abc123&amp;cl=test'));
-        $this->assertEquals('http://example.com/?cl=test', oxUtilsUrl::getInstance()->prepareUrlForNoSession('http://example.com/?force_sid=abc123&amp;cl=test'));
+        $this->assertEquals('http://example.com/?cl=test', oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('http://example.com/?sid=abc123&amp;cl=test'));
+        $this->assertEquals('http://example.com/?cl=test', oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('http://example.com/?force_sid=abc123&amp;cl=test'));
     }
 
     public function testPrepareUrlForNoSession()
@@ -119,35 +114,35 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
 
         $sShopId = '';
 
-        $this->assertEquals('sdf?lang=1' . $sShopId, oxUtilsUrl::getInstance()->prepareUrlForNoSession('sdf?sid=111&lang=1'));
-        $this->assertEquals('sdf?a&lang=1' . $sShopId, oxUtilsUrl::getInstance()->prepareUrlForNoSession('sdf?sid=111&a&lang=1'));
-        $this->assertEquals('sdf?a&amp;lang=1' . $sShopId, oxUtilsUrl::getInstance()->prepareUrlForNoSession('sdf?sid=111&a&amp;lang=1'));
-        $this->assertEquals('sdf?a&&amp;lang=3' . $sShopId, oxUtilsUrl::getInstance()->prepareUrlForNoSession('sdf?sid=111&a&'));
-        $this->assertEquals('sdf?lang=3' . $sShopId, oxUtilsUrl::getInstance()->prepareUrlForNoSession('sdf'));
+        $this->assertEquals('sdf?lang=1' . $sShopId, oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf?sid=111&lang=1'));
+        $this->assertEquals('sdf?a&lang=1' . $sShopId, oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf?sid=111&a&lang=1'));
+        $this->assertEquals('sdf?a&amp;lang=1' . $sShopId, oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf?sid=111&a&amp;lang=1'));
+        $this->assertEquals('sdf?a&&amp;lang=3' . $sShopId, oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf?sid=111&a&'));
+        $this->assertEquals('sdf?lang=3' . $sShopId, oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf'));
 
         $sShopId = '';
         $this->getConfig()->setShopId(5);
 
-        $this->assertEquals('sdf?lang=3'.$sShopId, oxUtilsUrl::getInstance()->prepareUrlForNoSession('sdf?sid=asd'));
-        $this->assertEquals('sdf?lang=2'.$sShopId, oxUtilsUrl::getInstance()->prepareUrlForNoSession('sdf?sid=das&lang=2'));
-        $this->assertEquals('sdf?lang=2&shp=3', oxUtilsUrl::getInstance()->prepareUrlForNoSession('sdf?lang=2&sid=fs&amp;shp=3'));
-        $this->assertEquals('sdf?shp=2&amp;lang=2', oxUtilsUrl::getInstance()->prepareUrlForNoSession('sdf?shp=2&amp;lang=2'));
-        $this->assertEquals('sdf?shp=2&amp;lang=3', oxUtilsUrl::getInstance()->prepareUrlForNoSession('sdf?shp=2'));
+        $this->assertEquals('sdf?lang=3'.$sShopId, oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf?sid=asd'));
+        $this->assertEquals('sdf?lang=2'.$sShopId, oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf?sid=das&lang=2'));
+        $this->assertEquals('sdf?lang=2&shp=3', oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf?lang=2&sid=fs&amp;shp=3'));
+        $this->assertEquals('sdf?shp=2&amp;lang=2', oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf?shp=2&amp;lang=2'));
+        $this->assertEquals('sdf?shp=2&amp;lang=3', oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf?shp=2'));
 
-        $this->assertEquals('sdf?lang=1'.$sShopId, oxUtilsUrl::getInstance()->prepareUrlForNoSession('sdf?force_sid=111&lang=1'));
-        $this->assertEquals('sdf?a&lang=1'.$sShopId, oxUtilsUrl::getInstance()->prepareUrlForNoSession('sdf?force_sid=111&a&lang=1'));
-        $this->assertEquals('sdf?a&amp;lang=1'.$sShopId, oxUtilsUrl::getInstance()->prepareUrlForNoSession('sdf?force_sid=111&a&amp;lang=1'));
-        $this->assertEquals('sdf?a&&amp;lang=3'.$sShopId, oxUtilsUrl::getInstance()->prepareUrlForNoSession('sdf?force_sid=111&a&'));
+        $this->assertEquals('sdf?lang=1'.$sShopId, oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf?force_sid=111&lang=1'));
+        $this->assertEquals('sdf?a&lang=1'.$sShopId, oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf?force_sid=111&a&lang=1'));
+        $this->assertEquals('sdf?a&amp;lang=1'.$sShopId, oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf?force_sid=111&a&amp;lang=1'));
+        $this->assertEquals('sdf?a&&amp;lang=3'.$sShopId, oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf?force_sid=111&a&'));
 
-        $this->assertEquals('sdf?bonusid=111&amp;lang=3'.$sShopId, oxUtilsUrl::getInstance()->prepareUrlForNoSession('sdf?bonusid=111'));
-        $this->assertEquals('sdf?a=1&bonusid=111&amp;lang=3'.$sShopId, oxUtilsUrl::getInstance()->prepareUrlForNoSession('sdf?a=1&bonusid=111'));
-        $this->assertEquals('sdf?a=1&amp;bonusid=111&amp;lang=3'.$sShopId, oxUtilsUrl::getInstance()->prepareUrlForNoSession('sdf?a=1&amp;bonusid=111&amp;force_admin_sid=111'));
+        $this->assertEquals('sdf?bonusid=111&amp;lang=3'.$sShopId, oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf?bonusid=111'));
+        $this->assertEquals('sdf?a=1&bonusid=111&amp;lang=3'.$sShopId, oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf?a=1&bonusid=111'));
+        $this->assertEquals('sdf?a=1&amp;bonusid=111&amp;lang=3'.$sShopId, oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf?a=1&amp;bonusid=111&amp;force_admin_sid=111'));
 
         modConfig::getInstance()->setRequestParameter('currency', 2);
-        $this->assertEquals('sdf?lang=3&amp;cur=2'.$sShopId, oxUtilsUrl::getInstance()->prepareUrlForNoSession('sdf'));
+        $this->assertEquals('sdf?lang=3&amp;cur=2'.$sShopId, oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf'));
 
         oxTestModules::addFunction('oxUtils', 'seoIsActive', '{return true;}');
-        $this->assertEquals('sdf', oxUtilsUrl::getInstance()->prepareUrlForNoSession('sdf'));
+        $this->assertEquals('sdf', oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf'));
     }
 
     public function testAppendUrl()
@@ -190,7 +185,7 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
         $sTestUrl = oxRegistry::getConfig()->getConfigParam('sShopURL') . 'index.php?&&&p1=v1&p2=v2&aTest[]=test1&aTest[]=test2&assoc[test]=t1&assoc[test]=t2&amp;amp;amp;&&p1=test1 space&p2=';
         $sExpUrl  = oxRegistry::getConfig()->getConfigParam('sShopURL') . 'index.php?p1=test1+space&amp;p2=&amp;aTest[0]=test1&amp;aTest[1]=test2&amp;assoc[test]=t2';
 
-        $oUtils = oxUtilsUrl::getInstance();
+        $oUtils = oxRegistry::get("oxUtilsUrl");
         $this->assertSame( $sExpUrl, $oUtils->cleanUrlParams( $sTestUrl ) );
     }
 

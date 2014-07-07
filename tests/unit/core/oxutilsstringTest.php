@@ -28,33 +28,33 @@ class Unit_Core_oxutilsstringTest extends OxidTestCase
 
     public function testPrepareCSVField()
     {
-          $this->assertEquals('"blafoo;wurst;suppe"', oxUtilsString::getInstance()->prepareCSVField("blafoo;wurst;suppe"));
-          $this->assertEquals('"bl""afoo;wurst;suppe"', oxUtilsString::getInstance()->prepareCSVField("bl\"afoo;wurst;suppe"));
-          $this->assertEquals('"blafoo;wu"";rst;suppe"', oxUtilsString::getInstance()->prepareCSVField("blafoo;wu\";rst;suppe"));
-          $this->assertEquals('', oxUtilsString::getInstance()->prepareCSVField(""));
-          $this->assertEquals('""""', oxUtilsString::getInstance()->prepareCSVField("\""));
-          $this->assertEquals('";"', oxUtilsString::getInstance()->prepareCSVField(";"));
+          $this->assertEquals('"blafoo;wurst;suppe"', oxRegistry::get("oxUtilsString")->prepareCSVField("blafoo;wurst;suppe"));
+          $this->assertEquals('"bl""afoo;wurst;suppe"', oxRegistry::get("oxUtilsString")->prepareCSVField("bl\"afoo;wurst;suppe"));
+          $this->assertEquals('"blafoo;wu"";rst;suppe"', oxRegistry::get("oxUtilsString")->prepareCSVField("blafoo;wu\";rst;suppe"));
+          $this->assertEquals('', oxRegistry::get("oxUtilsString")->prepareCSVField(""));
+          $this->assertEquals('""""', oxRegistry::get("oxUtilsString")->prepareCSVField("\""));
+          $this->assertEquals('";"', oxRegistry::get("oxUtilsString")->prepareCSVField(";"));
     }
 
     public function testMinimizeTruncateString()
     {
         $sTest = "myfooblatest";
-        $this->assertEquals("myf", oxUtilsString::getInstance()->minimizeTruncateString($sTest, 3));
-        $this->assertEquals("", oxUtilsString::getInstance()->minimizeTruncateString($sTest, 0));
-        $this->assertEquals("myfooblatest", oxUtilsString::getInstance()->minimizeTruncateString($sTest, 99));
+        $this->assertEquals("myf", oxRegistry::get("oxUtilsString")->minimizeTruncateString($sTest, 3));
+        $this->assertEquals("", oxRegistry::get("oxUtilsString")->minimizeTruncateString($sTest, 0));
+        $this->assertEquals("myfooblatest", oxRegistry::get("oxUtilsString")->minimizeTruncateString($sTest, 99));
 
         $sTest = "        my,f,,     o  o bl at  ,,  ,,est,  ";
-        $this->assertEquals("my", oxUtilsString::getInstance()->minimizeTruncateString($sTest, 3));
-        $this->assertEquals("my,f", oxUtilsString::getInstance()->minimizeTruncateString($sTest, 4));
-        $this->assertEquals("", oxUtilsString::getInstance()->minimizeTruncateString($sTest, 0));
-        $this->assertEquals("my,f,, o o bl at ,, ,,est", oxUtilsString::getInstance()->minimizeTruncateString($sTest, 99));
+        $this->assertEquals("my", oxRegistry::get("oxUtilsString")->minimizeTruncateString($sTest, 3));
+        $this->assertEquals("my,f", oxRegistry::get("oxUtilsString")->minimizeTruncateString($sTest, 4));
+        $this->assertEquals("", oxRegistry::get("oxUtilsString")->minimizeTruncateString($sTest, 0));
+        $this->assertEquals("my,f,, o o bl at ,, ,,est", oxRegistry::get("oxUtilsString")->minimizeTruncateString($sTest, 99));
     }
 
     public function testPrepareStrForSearch()
     {
-           $this->assertEquals(' &auml; &ouml; &uuml; &Auml; &Ouml; &Uuml; &szlig; &', oxUtilsString::getInstance()->prepareStrForSearch(' ä ö ü Ä Ö Ü ß &amp;'));
-           $this->assertEquals(' h&auml;user', oxUtilsString::getInstance()->prepareStrForSearch(' häuser'));
-           $this->assertEquals('', oxUtilsString::getInstance()->prepareStrForSearch('qwertz'));
-           $this->assertEquals('', oxUtilsString::getInstance()->prepareStrforSearch(''));
+           $this->assertEquals(' &auml; &ouml; &uuml; &Auml; &Ouml; &Uuml; &szlig; &', oxRegistry::get("oxUtilsString")->prepareStrForSearch(' ä ö ü Ä Ö Ü ß &amp;'));
+           $this->assertEquals(' h&auml;user', oxRegistry::get("oxUtilsString")->prepareStrForSearch(' häuser'));
+           $this->assertEquals('', oxRegistry::get("oxUtilsString")->prepareStrForSearch('qwertz'));
+           $this->assertEquals('', oxRegistry::get("oxUtilsString")->prepareStrforSearch(''));
     }
 }

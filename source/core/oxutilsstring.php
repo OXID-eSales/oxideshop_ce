@@ -25,13 +25,6 @@
  */
 class oxUtilsString
 {
-    /**
-     * oxUtils class instance.
-     *
-     * @var oxutils instance
-     */
-    private static $_instance = null;
-
    /**
      * Class constructor. The constructor is defined in order to be possible to call parent::__construct() in modules.
      *
@@ -40,19 +33,6 @@ class oxUtilsString
     public function __construct()
     {
     }
-
-    /**
-     * Returns string manipulation utility instance
-     *
-     * @deprecated since v5.0 (2012-08-10); Use oxRegistry::get("oxUtilsString") instead.
-     *
-     * @return oxUtilsString
-     */
-    public static function getInstance()
-    {
-        return oxRegistry::get("oxUtilsString");
-    }
-
 
     /**
      * Prepares passed string for CSV format

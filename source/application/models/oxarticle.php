@@ -4317,11 +4317,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
         $blRes = parent::_insert();
 
-        //copy parent subshop assignments for a new variant
-        if ($this->isVariant()) {
-            $oElement2ShopRelations = $this->_getElement2ShopRelations();
-            $oElement2ShopRelations->updateInheritanceFromParent($this->getId(), $this->oxarticles__oxparentid->value);
-        }
 
         return $blRes;
     }

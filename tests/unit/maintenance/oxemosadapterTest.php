@@ -159,11 +159,6 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
 
     }
 
-    public function testGetInstance()
-    {
-        $this->assertTrue( oxEmosAdapter::getInstance() instanceof oxEmosAdapter );
-    }
-
     public function testGetEmosPageTitle()
     {
         $oEmosCode = new oxEmosAdapter();

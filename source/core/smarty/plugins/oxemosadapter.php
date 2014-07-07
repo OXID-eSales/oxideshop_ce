@@ -130,25 +130,6 @@ class oxEmosAdapter extends oxSuperCfg
     );
 
     /**
-     * oxEmosAdapter class instance.
-     *
-     * @var oxEmosAdapter instance
-     */
-    private static $_instance = null;
-
-    /**
-     * Return a single instance of this class
-     *
-     * @deprecated since v5.0 (2012-08-10); Use oxRegistry::get("oxEmosAdapter") instead.
-     *
-     * @return oxUtils
-     */
-    public static function getInstance()
-    {
-        return oxRegistry::get("oxEmosAdapter");
-    }
-
-    /**
      * Returns new emos controller object
      *
      * @return emos

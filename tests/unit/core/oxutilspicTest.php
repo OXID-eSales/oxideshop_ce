@@ -135,7 +135,7 @@ class Unit_Core_oxUtilsPicTest extends OxidTestCase
             $this->fail($sMsg);
         }
         //actual test
-        if ( !( oxUtilsPic::getInstance()->resizeImage( $sDir.$sTestImageFile, $sDir.$sTestImageFileResized, $iWidth, $iHeight, oxRegistry::getConfig()->getConfigParam( 'iUseGDVersion' ), false ) ) ) {
+        if ( !( oxRegistry::get("oxUtilsPic")->resizeImage( $sDir.$sTestImageFile, $sDir.$sTestImageFileResized, $iWidth, $iHeight, oxRegistry::getConfig()->getConfigParam( 'iUseGDVersion' ), false ) ) ) {
             $this->fail("Failed to call resizeImage()");
         }
 

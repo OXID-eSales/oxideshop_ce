@@ -38,26 +38,6 @@ class oxUtilsPic extends oxSuperCfg
     protected $_aImageTypes = array("GIF" => IMAGETYPE_GIF, "JPG" => IMAGETYPE_JPEG, "PNG" => IMAGETYPE_PNG, "JPEG" => IMAGETYPE_JPEG);
 
     /**
-     * oxUtils class instance.
-     *
-     * @var oxutilspic
-     */
-    private static $_instance = null;
-
-    /**
-     * Returns image utils instance
-     *
-     * @deprecated since v5.0 (2012-08-10); Use oxRegistry::get("oxUtilsPic") instead
-     *
-     * @return oxUtilsPic
-     */
-    public static function getInstance()
-    {
-        return oxRegistry::get("oxUtilsPic");
-    }
-
-
-    /**
      * Resizes image to desired width and height, returns true on success.
      *
      * @param string $sSrc           Source of image file

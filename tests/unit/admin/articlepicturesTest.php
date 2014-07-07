@@ -169,7 +169,7 @@ class Unit_Admin_ArticlePicturesTest extends OxidTestCase
         $oView = new Article_Pictures();
         $oView->save();
 
-        $myUtilsPic = oxUtilsPic::getInstance();
+        $myUtilsPic = oxRegistry::get("oxUtilsPic");
         $this->assertEquals( $aTestData, $myUtilsPic->getTestData() );
     }
 

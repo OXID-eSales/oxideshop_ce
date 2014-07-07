@@ -867,6 +867,42 @@ class oxView extends oxSuperCfg
     }
 
     /**
+     * Returns active category set by categories component; if category is
+     * not set by component - will create category object and will try to
+     * load by id passed by request
+     *
+     * @return oxCategory
+     */
+    public function getActCategory()
+    {
+        // if active category is not set yet - trying to load it from request params
+        // this may be usefull when category component was unable to load active category
+        // and we still need some object to mount navigation info
+        if ( $this->_oClickCat === null ) {
+
+            $this->_oClickCat = false;
+            $oCategory = oxNew( 'oxcategory' );
+            if ( $oCategory->load( $this->getCategoryId() ) ) {
+                $this->_oClickCat = $oCategory;
+            }
+        }
+
+        return $this->_oClickCat;
+    }
+
+    /**
+     * Active category setter
+     *
+     * @param oxCategory $oCategory active category
+     *
+     * @return null
+     */
+    public function setActCategory( $oCategory )
+    {
+        $this->_oClickCat = $oCategory;
+    }
+
+    /**
      * Get category ID
      *
      * @return string

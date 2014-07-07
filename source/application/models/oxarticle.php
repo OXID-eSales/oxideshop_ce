@@ -4315,7 +4315,15 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             $this->oxarticles__oxsubclass = new oxField('oxarticle');
         }
 
-        return parent::_insert();
+        $blRes = parent::_insert();
+
+        //copy parent subshop assignments for a new variant
+        if ($this->isVariant()) {
+            $oElement2ShopRelations = $this->_getElement2ShopRelations();
+            $oElement2ShopRelations->updateInheritanceFromParent($this->getId(), $this->oxarticles__oxparentid->value);
+        }
+
+        return $blRes;
     }
 
     /**

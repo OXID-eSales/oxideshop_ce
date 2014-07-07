@@ -43,7 +43,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
         parent::setUp();
 
         // reload smarty
-        oxUtilsView::getInstance()->getSmarty(true);
+        oxRegistry::get("oxUtilsView")->getSmarty(true);
 
         $this->_oEmail = oxNew( "oxEmail");
 
@@ -110,7 +110,7 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
     protected function tearDown()
     {
             // reload smarty
-            oxUtilsView::getInstance()->getSmarty(true);
+            oxRegistry::get("oxUtilsView")->getSmarty(true);
 
             $oActShop = oxRegistry::getConfig()->getActiveShop();
             $oActShop->setLanguage(0);

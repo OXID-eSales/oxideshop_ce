@@ -779,7 +779,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
         $myConfig = oxRegistry::getConfig();
 
         $oUtils  = oxRegistry::getUtils();
-        $oSmarty = oxUtilsview::getInstance()->getSmarty(true);
+        $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty(true);
         $sTmpDir = $myConfig->getConfigParam( 'sCompileDir' ) . "/smarty/";
 
         $aTemplates = array('message/success.tpl', 'message/notice.tpl','message/errors.tpl',);
@@ -806,7 +806,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
         $myConfig = oxRegistry::getConfig();
 
         $oUtils  = oxRegistry::getUtils();
-        $oSmarty = oxUtilsview::getInstance()->getSmarty(true);
+        $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty(true);
         $sTmpDir = $myConfig->getConfigParam( 'sCompileDir' );
 
         $aFiles = array('langcache_1_a', 'langcache_1_b','langcache_1_c');
@@ -1220,14 +1220,14 @@ class Unit_Core_oxutilsTest extends OxidTestCase
 
         oxRegistry::getUtils()->handlePageNotFoundError();
         $this->assertGreaterThanOrEqual(1, count(oxRegistry::getUtils()->setHeaderCall));
-        $this->assertEquals(1, count(oxUtilsView::getInstance()->getTemplateOutputCall));
+        $this->assertEquals(1, count(oxRegistry::get("oxUtilsView")->getTemplateOutputCall));
         $this->assertEquals(1, count(oxRegistry::getUtils()->showMessageAndExitCall));
         $this->assertEquals("msg_1", oxRegistry::getUtils()->showMessageAndExitCall[0][0]);
         $this->assertEquals("HTTP/1.0 404 Not Found", oxRegistry::getUtils()->setHeaderCall[0][0]);
 
         oxRegistry::getUtils()->handlePageNotFoundError("url aa");
         $this->assertGreaterThanOrEqual(2, count(oxRegistry::getUtils()->setHeaderCall));
-        $this->assertEquals(2, count(oxUtilsView::getInstance()->getTemplateOutputCall));
+        $this->assertEquals(2, count(oxRegistry::get("oxUtilsView")->getTemplateOutputCall));
         $this->assertEquals(2, count(oxRegistry::getUtils()->showMessageAndExitCall));
         $this->assertEquals("msg_2", oxRegistry::getUtils()->showMessageAndExitCall[1][0]);
         $this->assertEquals("HTTP/1.0 404 Not Found", oxRegistry::getUtils()->setHeaderCall[1][0]);
@@ -1236,7 +1236,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
 
         oxRegistry::getUtils()->handlePageNotFoundError("url aa");
         $this->assertEquals(3, count(oxRegistry::getUtils()->setHeaderCall));
-        $this->assertEquals(2, count(oxUtilsView::getInstance()->getTemplateOutputCall));
+        $this->assertEquals(2, count(oxRegistry::get("oxUtilsView")->getTemplateOutputCall));
         $this->assertEquals(3, count(oxRegistry::getUtils()->showMessageAndExitCall));
         $this->assertEquals("Page not found.", oxRegistry::getUtils()->showMessageAndExitCall[2][0]);
     }

@@ -127,7 +127,7 @@ class Language_Main extends oxAdminDetails
             if ( (int) $this->_aLangData['params'][$sOxId]['baseId'] == 0 ) {
                 $oEx = oxNew( "oxExceptionToDisplay" );
                 $oEx->setMessage( 'LANGUAGE_ABBRCHANGEMAINLANG_WARNING' );
-                oxUtilsView::getInstance()->addErrorToDisplay( $oEx );
+                oxRegistry::get("oxUtilsView")->addErrorToDisplay( $oEx );
                 $aParams['abbr'] = $sOxId;
             } else {
                 $this->_updateAbbervation( $sOxId, $aParams['abbr'] );

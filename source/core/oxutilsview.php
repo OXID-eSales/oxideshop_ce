@@ -26,13 +26,6 @@
 class oxUtilsView extends oxSuperCfg
 {
     /**
-     * oxUtils class instance.
-     *
-     * @var oxUtils
-     */
-    private static $_instance = null;
-
-    /**
      * Template processor object (smarty)
      *
      * @var Smarty
@@ -59,18 +52,6 @@ class oxUtilsView extends oxSuperCfg
      * @var array
      */
     protected $_aActiveModuleInfo = null;
-
-    /**
-     * Utility instance getter
-     *
-     * @deprecated since v5.0 (2012-08-10); Use oxRegistry::get("oxUtilsView") instead.
-     *
-     * @return oxUtilsView
-     */
-    public static function getInstance()
-    {
-        return oxRegistry::get("oxUtilsView");
-    }
 
     /**
      * returns existing or creates smarty object

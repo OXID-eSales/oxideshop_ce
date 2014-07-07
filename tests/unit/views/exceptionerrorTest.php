@@ -55,7 +55,7 @@ class Unit_Views_exceptionErrorTest extends OxidTestCase
 
        $oErr->displayExceptionError();
 
-       $oSmarty = oxUtilsView::getInstance()->getSmarty();
+       $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
        $aTplVars = $oSmarty->get_template_vars("Errors");
        $oViewEx = $aTplVars["default"]["aaa"];
 

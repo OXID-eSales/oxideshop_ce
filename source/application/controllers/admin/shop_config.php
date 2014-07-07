@@ -163,6 +163,7 @@ class Shop_Config extends oxAdminDetails
         $this->saveConfVars();
 
         //saving additional fields ("oxshops__oxdefcat"") that goes directly to shop (not config)
+        /** @var oxShop $oShop */
         $oShop = oxNew( "oxshop" );
         if ( $oShop->load( $this->getEditObjectId() ) ) {
             $oShop->assign( oxRegistry::getConfig()->getRequestParameter( "editval" ) );

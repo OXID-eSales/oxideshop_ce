@@ -33,13 +33,6 @@ class oxUtilsFile extends oxSuperCfg
     const PROMO_PICTURE_DIR = 'promo';
 
     /**
-     * oxUtils class instance.
-     *
-     * @var oxutils
-     */
-    private static $_instance = null;
-
-    /**
      * Max pictures count
      *
      * @var int
@@ -128,18 +121,6 @@ class oxUtilsFile extends oxSuperCfg
      * @var integer
      */
     protected $_iNewFilesCounter = 0;
-
-    /**
-     * Returns object instance
-     *
-     * @deprecated since v5.0 (2012-08-10); Use oxRegistry::get("oxUtilsFile") instead.
-     *
-     * @return oxUtilsFile
-     */
-    public static function getInstance()
-    {
-        return oxRegistry::get("oxUtilsFile");
-    }
 
     /**
      * Class constructor, initailizes pictures count info (_iMaxPicImgCount/_iMaxZoomImgCount)

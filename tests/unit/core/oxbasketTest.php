@@ -2821,34 +2821,6 @@ class Unit_Core_oxbasketTest extends OxidTestCase
     }
 
     /**
-     * Testing products discounted net price getter
-     *
-     * @return null
-     */
-    public function testDiscountedNettoPrice()
-    {
-        $oProductsPriceList = $this->getMock( 'oxpricelist', array( 'getNettoSum' ) );
-        $oProductsPriceList->expects( $this->once() )->method( 'getNettoSum' )->will( $this->returnValue( 11 ) );
-
-        $oBasket = $this->getProxyClass( "oxBasket" );
-        $oBasket->setNonPublicVar( '_dDiscountedProductNettoPrice', 22 );
-        $oBasket->setNonPublicVar( '_oNotDiscountedProductsPriceList', $oProductsPriceList );
-
-        $this->assertEquals( 33, $oBasket->getDiscountedNettoPrice());
-    }
-
-    /**
-     * Testing products discounted net price getter
-     *
-     * @return null
-     */
-    public function testDiscountedNettoPriceIfNotSet()
-    {
-        $oBasket = $this->getProxyClass( "oxBasket" );
-        $this->assertFalse( $oBasket->getDiscountedNettoPrice());
-    }
-
-    /**
      * Testing gift card message getter/setter
      *
      * @return null

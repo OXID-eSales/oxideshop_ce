@@ -2151,21 +2151,6 @@ class oxBasket extends oxSuperCfg
     }
 
     /**
-     * Returns product netto price with applied discounts and vouchers
-     *
-     * @deprecated in v4.7.5/5.0.5 on 2013-04-15; not used in code, not needed. Use getNettoSum() method if needed.
-     *
-     * @return double
-     */
-    public function getDiscountedNettoPrice()
-    {
-        if ( $this->_oNotDiscountedProductsPriceList ) {
-            return $this->_dDiscountedProductNettoPrice + $this->_oNotDiscountedProductsPriceList->getNettoSum();
-        }
-        return false;
-    }
-
-    /**
      * Gift card message setter
      *
      * @param string $sMessage gift card message

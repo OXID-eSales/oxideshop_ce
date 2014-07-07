@@ -1197,7 +1197,7 @@ class Unit_Core_oxutilsTest extends OxidTestCase
     public function testGetPreviewId()
     {
 
-        $sAdminSid = oxUtilsServer::getInstance()->getOxCookie( 'admin_sid' );
+        $sAdminSid = oxRegistry::get("oxUtilsServer")->getOxCookie( 'admin_sid' );
         $sCompare = md5( $sAdminSid . "testID" . "testPass" . "tesrRights" );
 
         $oUser = $this->getMock( "oxUser", array( "getId" ) );

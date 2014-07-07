@@ -1866,7 +1866,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
         $this->assertEquals("19", $oOrder->oxorder__oxdelvat->value);
         $this->assertEquals("_testShippingId", $oOrder->oxorder__oxdeltype->value);
         $this->assertEquals("testValue", $oOrder->oxorder__oxremark->value);
-        $this->assertEquals( oxUtilsServer::getInstance()->getRemoteAddress(), $oOrder->oxorder__oxip->value);
+        $this->assertEquals( oxRegistry::get("oxUtilsServer")->getRemoteAddress(), $oOrder->oxorder__oxip->value);
 
         $oCur = $myConfig->getActShopCurrencyObject();
         $this->assertEquals($oCur->name, $oOrder->oxorder__oxcurrency->value);

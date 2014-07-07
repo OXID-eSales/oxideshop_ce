@@ -2755,7 +2755,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
 
         $sPassSalt = oxDb::getDb()->getOne('select OXPASSSALT from oxuser where OXID="oxdefaultadmin"');
         $sVal = oxADMIN_LOGIN . '@@@' . crypt( $oActUser->encodePassword( oxADMIN_PASSWD, $sPassSalt ), $sPassSalt );
-        oxUtilsServer::getInstance()->setOxCookie( 'oxid_'.$sShopId, $sVal );
+        oxRegistry::get("oxUtilsServer")->setOxCookie( 'oxid_'.$sShopId, $sVal );
 
         $oActUser->loadActiveUser();
         $testUser->logout();
@@ -2772,7 +2772,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
         oxAddClassModule('Unit_oxuserTest_oxUtilsServer2', 'oxUtilsServer');
         $oUser = $this->getMock( 'oxuser', array( 'isAdmin' ) );
         $oUser->expects( $this->any() )->method( 'isAdmin')->will( $this->returnValue( true ) );
-        oxUtilsServer::getInstance()->delOxCookie();
+        oxRegistry::get("oxUtilsServer")->delOxCookie();
         try
         {
             //should throw no cookie support exception

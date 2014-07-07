@@ -228,7 +228,7 @@ class Unit_Views_oxviewConfigTest extends OxidTestCase
         $aParams['admindir']       = $myConfig->getConfigParam( 'sAdminDir' );
         $aParams['id']             = $myConfig->getShopId();
         $aParams['isssl']          = $myConfig->isSsl();
-        $aParams['ip']             = oxUtilsServer::getInstance()->getRemoteAddress();
+        $aParams['ip']             = oxRegistry::get("oxUtilsServer")->getRemoteAddress();
         $aParams['popupident']     = md5( $myConfig->getShopURL() );
         $aParams['artperpageform'] = $myConfig->getShopCurrentURL();
         $aParams['buyableparent']  = $aParams['isbuyableparent'] = $myConfig->getConfigParam( 'blVariantParentBuyable' );

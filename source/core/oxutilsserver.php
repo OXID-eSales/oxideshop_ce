@@ -26,13 +26,6 @@
 class oxUtilsServer extends oxSuperCfg
 {
     /**
-     * oxUtils class instance.
-     *
-     * @var oxutils* instance
-     */
-    private static $_instance = null;
-
-    /**
      * user cookies
      *
      * @var array
@@ -52,18 +45,6 @@ class oxUtilsServer extends oxSuperCfg
      * @var array
      */
     protected $_sSessionCookies = array();
-
-    /**
-     * Returns server utils instance
-     *
-     * @deprecated since v5.0 (2012-08-10); Use oxRegistry::get("oxUtilsServer") instead.
-     *
-     * @return oxUtilsServer
-     */
-    public static function getInstance()
-    {
-        return oxRegistry::get("oxUtilsServer");
-    }
 
     /**
      * sets cookie

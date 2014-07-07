@@ -188,24 +188,24 @@ class Unit_Core_oxUtilsServerTest extends OxidTestCase
     {
         $sName = "someName";
         $sValue = "someValue";
-        $this->assertNull(oxUtilsServer::getInstance()->setOxCookie($sName, $sValue));
+        $this->assertNull(oxRegistry::get("oxUtilsServer")->setOxCookie($sName, $sValue));
     }
 
     public function testGetCookie()
     {
         // $sName = null
-      /*  $aCookie = oxUtilsServer::getInstance()->getOxCookie();
+      /*  $aCookie = oxRegistry::get("oxUtilsServer")->getOxCookie();
 var_dump($_COOKIE);
 var_dump($aCookie);
         $this->assertTrue((isset($aCookie) && ($aCookie[0] == null)));
-        $this->assertNull(oxUtilsServer::getInstance()->getOxCookie('test'));*/
+        $this->assertNull(oxRegistry::get("oxUtilsServer")->getOxCookie('test'));*/
 
         $aC = $_COOKIE;
         $e = null;
         try {
 
             $_COOKIE['test'] = "asd'\"\000aa";
-            $this->assertEquals("asd&#039;&quot;aa", oxUtilsServer::getInstance()->getOxCookie('test'));
+            $this->assertEquals("asd&#039;&quot;aa", oxRegistry::get("oxUtilsServer")->getOxCookie('test'));
         } catch (Exception $e) {
         }
 
@@ -225,17 +225,17 @@ var_dump($aCookie);
         unset($_SERVER["HTTP_X_FORWARDED_FOR"]);
         unset($_SERVER["HTTP_CLIENT_IP"]);
         if (isset($_SERVER["REMOTE_ADDR"])) {
-            $this->assertNull(oxUtilsServer::getInstance()->getRemoteAddress());
+            $this->assertNull(oxRegistry::get("oxUtilsServer")->getRemoteAddress());
         } else {
             $_SERVER["REMOTE_ADDR"] = $sIP;
-            $this->assertEquals(oxUtilsServer::getInstance()->getRemoteAddress(), $sIP);
+            $this->assertEquals(oxRegistry::get("oxUtilsServer")->getRemoteAddress(), $sIP);
         }
 
         $_SERVER["HTTP_X_FORWARDED_FOR"] = $sIP;
-        $this->assertEquals(oxUtilsServer::getInstance()->getRemoteAddress(), $sIP);
+        $this->assertEquals(oxRegistry::get("oxUtilsServer")->getRemoteAddress(), $sIP);
         unset($_SERVER["HTTP_X_FORWARDED_FOR"]);
         $_SERVER["HTTP_CLIENT_IP"] = $sIP;
-        $this->assertEquals(oxUtilsServer::getInstance()->getRemoteAddress(), $sIP);
+        $this->assertEquals(oxRegistry::get("oxUtilsServer")->getRemoteAddress(), $sIP);
         unset($_SERVER["HTTP_CLIENT_IP"]);
     }
 
@@ -245,7 +245,7 @@ var_dump($aCookie);
         $sProxy = '127.5.4.4';
         // in test mode, there are no remote adresses, thus null
         $_SERVER["HTTP_X_FORWARDED_FOR"] = $sIP.','.$sProxy;
-        $this->assertEquals(oxUtilsServer::getInstance()->getRemoteAddress(), $sIP);
+        $this->assertEquals(oxRegistry::get("oxUtilsServer")->getRemoteAddress(), $sIP);
         unset($_SERVER["HTTP_X_FORWARDED_FOR"]);
     }
 
@@ -255,8 +255,8 @@ var_dump($aCookie);
         $sValue = time();
 
         $_SERVER[$sName] = $sValue;;
-        $this->assertEquals( $sValue, oxUtilsServer::getInstance()->getServerVar( $sName ) );
-        $this->assertEquals( $_SERVER, oxUtilsServer::getInstance()->getServerVar() );
+        $this->assertEquals( $sValue, oxRegistry::get("oxUtilsServer")->getServerVar( $sName ) );
+        $this->assertEquals( $_SERVER, oxRegistry::get("oxUtilsServer")->getServerVar() );
     }
 
     /**

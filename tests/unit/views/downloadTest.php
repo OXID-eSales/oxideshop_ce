@@ -48,7 +48,6 @@ class Unit_Views_downloadTest extends OxidTestCase
         $oFile->expects( $this->any() )->method( 'load')->will( $this->returnValue( true ) );
         $oFile->expects( $this->any() )->method( 'exist')->will( $this->returnValue( true ) );
         $oFile->expects( $this->any() )->method( 'download');
-
         oxTestModules::addModuleObject( 'oxFile', $oFile );
 
         $oDownloads = new Download();
@@ -72,6 +71,8 @@ class Unit_Views_downloadTest extends OxidTestCase
             $this->assertEquals( 123, $oEx->getCode(), 'Error executing "testRenderWrongLink" test' );
             return;
         }
+
+        $this->fail('Redirect was not called');
     }
 
      /**
@@ -99,6 +100,8 @@ class Unit_Views_downloadTest extends OxidTestCase
             $this->assertEquals( 123, $oEx->getCode(), 'Error executing "testRenderWrongLink" test' );
             return;
         }
+
+        $this->fail('Redirect was not called');
     }
 
      /**
@@ -122,6 +125,8 @@ class Unit_Views_downloadTest extends OxidTestCase
             $this->assertEquals( 123, $oEx->getCode(), 'Error executing "testRenderWrongLink" test' );
             return;
         }
+
+        $this->fail('Redirect was not called');
     }
 
      /**
@@ -134,6 +139,24 @@ class Unit_Views_downloadTest extends OxidTestCase
         oxTestModules::addFunction( "oxUtils", "redirect", "{ throw new exception( 'testDownload', 123 );}" );
         $this->setRequestParam('sorderfileid', "_testOrderFile");
 
+        $oOrderFile = $this->getMock( 'oxOrderFile', array( 'load', 'processOrderFile', 'getFileId' ));
+        $oOrderFile->expects( $this->any() )->method( 'load')->will( $this->returnValue( true ) );
+        $oOrderFile->expects( $this->any() )->method( 'processOrderFile')->will( $this->returnValue( '_fileId' ) );
+        $oOrderFile->expects( $this->any() )->method( 'getFileId')->will( $this->returnValue( '_fileId' ) );
+        oxTestModules::addModuleObject( 'oxOrderFile', $oOrderFile );
+
+        $oFile = $this->getMock( 'oxFile', array( 'load', 'download', 'exist' ));
+        $oFile->expects( $this->any() )->method( 'load')->will( $this->returnValue( true ) );
+        $oFile->expects( $this->any() )->method( 'exist')->will( $this->returnValue( true ) );
+        $oFile->expects( $this->any() )->method( 'download')->will($this->throwException(new oxException));
+        oxTestModules::addModuleObject( 'oxFile', $oFile );
+
+        $oException = new oxExceptionToDisplay();
+        $oException->setMessage( "ERROR_MESSAGE_FILE_DOWNLOAD_FAILED" );
+        $oUtilsView = $this->getMock( 'oxUtilsView', array( 'addErrorToDisplay' ));
+        $oUtilsView->expects( $this->once() )->method( 'addErrorToDisplay')->with( $oException, false );
+        oxTestModules::addModuleObject( 'oxUtilsView', $oUtilsView );
+
         try {
             $oDownloads = new Download();
             $oDownloads->render();
@@ -141,6 +164,41 @@ class Unit_Views_downloadTest extends OxidTestCase
             $this->assertEquals( 123, $oEx->getCode(), 'Error executing "ERROR_MESSAGE_FILE_DOWNLOAD_FAILED" test' );
             return;
         }
+
+        $this->fail('Redirect was not called');
+    }
+
+    /**
+     * Test get article list.
+     *
+     * @return null
+     */
+    public function testRenderDownloadExpired()
+    {
+        oxTestModules::addFunction( "oxUtils", "redirect", "{ return;}" );
+
+        $this->setRequestParam('sorderfileid', "_testOrderFile");
+
+        $oOrderFile = $this->getMock( 'oxOrderFile', array( 'load', 'processOrderFile', 'getFileId' ));
+        $oOrderFile->expects( $this->any() )->method( 'load')->will( $this->returnValue( true ) );
+        $oOrderFile->expects( $this->any() )->method( 'getFileId')->will( $this->returnValue( '_fileId' ) );
+        $oOrderFile->expects( $this->any() )->method( 'processOrderFile')->will( $this->returnValue( false ) );
+        oxTestModules::addModuleObject( 'oxOrderFile', $oOrderFile );
+
+        $oFile = $this->getMock( 'oxFile', array( 'load', 'download', 'exist' ));
+        $oFile->expects( $this->any() )->method( 'load')->will( $this->returnValue( true ) );
+        $oFile->expects( $this->any() )->method( 'exist')->will( $this->returnValue( true ) );
+        $oFile->expects( $this->any() )->method( 'download');
+        oxTestModules::addModuleObject( 'oxFile', $oFile );
+
+        $oException = new oxExceptionToDisplay();
+        $oException->setMessage( "ERROR_MESSAGE_FILE_DOESNOT_EXIST" );
+        $oUtilsView = $this->getMock( 'oxUtilsView', array( 'addErrorToDisplay' ));
+        $oUtilsView->expects( $this->once() )->method( 'addErrorToDisplay')->with( $oException, false );
+        oxTestModules::addModuleObject( 'oxUtilsView', $oUtilsView );
+
+        $oDownloads = new Download();
+        $oDownloads->render();
     }
 
 }

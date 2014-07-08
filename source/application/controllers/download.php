@@ -50,11 +50,11 @@ class Download extends oxUBase
         if ( $sFileOrderId ) {
             $oArticleFile = oxNew('oxFile');
             try {
+                /** @var oxOrderFile $oOrderFile */
                 $oOrderFile = oxNew('oxOrderFile');
                 if ( $oOrderFile->load($sFileOrderId) ) {
                     $sFileId = $oOrderFile->getFileId();
-                    if ( $sFileId && $oArticleFile->load($sFileId) && $oArticleFile->exist() ) {
-                        $oOrderFile->processOrderFile();
+                    if ( $sFileId && $oArticleFile->load($sFileId) && $oArticleFile->exist() && $oOrderFile->processOrderFile() ) {
                         $oArticleFile->download();
                     } else {
                         $sError = "ERROR_MESSAGE_FILE_DOESNOT_EXIST";

@@ -2980,7 +2980,11 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
                 self::$_aLoadedParents[$sIndex] = oxNew( 'oxarticle' );
                 self::$_aLoadedParents[$sIndex]->_blLoadPrice    = false;
                 self::$_aLoadedParents[$sIndex]->_blLoadVariants = false;
-                self::$_aLoadedParents[$sIndex]->loadInLang( $this->getLanguage(), $sParentId );
+
+                if (!self::$_aLoadedParents[$sIndex]->loadInLang( $this->getLanguage(), $sParentId )) {
+                    //return false in case parent product failed to load
+                    self::$_aLoadedParents[$sIndex] = false;
+                }
             }
             return self::$_aLoadedParents[$sIndex];
         }

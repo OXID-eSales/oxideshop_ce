@@ -2080,7 +2080,9 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         } elseif ( $this->oxarticles__oxparentid->value) {
             // article is variant - should be updated this article parent amount
             $oUpdateArticle = $this->getParentArticle();
-            $oUpdateArticle->updateSoldAmount( $dAmount );
+            if ($oUpdateArticle) {
+                $oUpdateArticle->updateSoldAmount( $dAmount );
+            }
         }
 
         return $rs;
@@ -2367,7 +2369,10 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
                 $this->_oLongDesc->setValue( $sDbValue, oxField::T_RAW );
             } elseif ( $this->oxarticles__oxparentid->value ) {
                 if ( !$this->isAdmin() || $this->_blLoadParentData ) {
-                    $this->_oLongDesc->setValue( $this->getParentArticle()->getLongDescription()->getRawValue(), oxField::T_RAW );
+                    $oParent = $this->getParentArticle();
+                    if ($oParent) {
+                        $this->_oLongDesc->setValue( $oParent->getLongDescription()->getRawValue(), oxField::T_RAW );
+                    }
                 }
             }
         }
@@ -4623,7 +4628,9 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         if ( $sPicName == "nopic.jpg" || $sPicName == "" ) {
             return false;
         }
-        if ( $this->isVariant() && $this->getParentArticle()->{"oxarticles__oxpic".$iIndex}->value == $this->{"oxarticles__oxpic".$iIndex}->value ) {
+        if ( $this->isVariant() &&
+             $this->getParentArticle() &&
+             $this->getParentArticle()->{"oxarticles__oxpic".$iIndex}->value == $this->{"oxarticles__oxpic".$iIndex}->value ) {
             return false;
         }
 

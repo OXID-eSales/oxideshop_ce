@@ -22,8 +22,8 @@
             <directory suffix=".php">core</directory>
             <directory suffix=".php">application</directory>
             <exclude>
-                <directory suffix=".php">core/phpdtaus/</directory>;
-                <directory suffix=".php">core/jpgraph/</directory>;
+                <directory suffix=".php">core/phpdtaus/</directory>
+                <directory suffix=".php">core/jpgraph/</directory>
                 <directory suffix=".php">application/controllers/admin/reports/</directory>;
                 <directory suffix=".php">core/adodblite/</directory>
                 <directory suffix=".php">core/tcpdf/</directory>

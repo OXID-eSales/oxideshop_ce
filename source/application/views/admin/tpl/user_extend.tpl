@@ -89,16 +89,6 @@
                 [{$edit->oxuser__oxpoints->value}]
                 </td>
             </tr>
-            <tr>
-                <td class="edittext wrap">
-                [{ oxmultilang ident="USER_EXTEND_DISABLEAUTOGROUP" }]
-                </td>
-                <td class="edittext">
-                 <input type="hidden" name="editval[oxuser__oxdisableautogrp]" value='0'>
-                <input class="edittext" type="checkbox" name="editval[oxuser__oxdisableautogrp]" value='1' [{if $edit->oxuser__oxdisableautogrp->value == 1}]checked[{/if}] [{ $readonly}]>
-                [{ oxinputhelp ident="HELP_USER_EXTEND_DISABLEAUTOGROUP" }]
-                </td>
-            </tr>
         [{/block}]
         <tr>
             <td class="edittext">

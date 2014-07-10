@@ -100,7 +100,6 @@ class oxcmp_user extends oxView
         $this->_saveDeliveryAddressState();
         $this->_loadSessionUser();
         $this->_saveInvitor();
-        $this->_assignDynGroup();
 
         parent::init();
     }
@@ -108,9 +107,6 @@ class oxcmp_user extends oxView
     /**
      * Executes parent::render(), oxcmp_user::_loadSessionUser(), loads user delivery
      * info. Returns user object oxcmp_user::oUser.
-     *
-     * Session variables:
-     * <b>dgr</b>
      *
      * @return  object  user object
      */
@@ -228,10 +224,8 @@ class oxcmp_user extends oxView
     /**
      * Special functionality which is performed after user logs in (or user is created without pass).
      * Performes additional checking if user is not BLOCKED (oxuser::InGroup("oxidblocked")) - if
-     * yes - redirects to blocked user page ("cl=content&tpl=user_blocked.tpl"). If user status
-     * is OK - sets user ID to session, automatically assigns him to dynamic
-     * group (oxuser::addDynGroup(); if this directive is set (usually
-     * by URL)). Stores cookie info if user confirmed in login screen.
+     * yes - redirects to blocked user page ("cl=content&tpl=user_blocked.tpl").
+     * Stores cookie info if user confirmed in login screen.
      * Then loads delivery info and forces basket to recalculate
      * (oxsession::getBasket() + oBasket::blCalcNeeded = true). Returns
      * "payment" to redirect to payment screen. If problems occured loading
@@ -257,9 +251,6 @@ class oxcmp_user extends oxView
         if ($oUser->inGroup('oxidblocked')) {
             oxRegistry::getUtils()->redirect($myConfig->getShopHomeURL() . 'cl=content&tpl=user_blocked.tpl', true, 302);
         }
-
-        // adding to dyn group
-        $oUser->addDynGroup(oxRegistry::getSession()->getVariable('dgr'), $myConfig->getConfigParam('aDeniedDynGroups'));
 
         // recalc basket
         if ($oBasket = $oSession->getBasket()) {
@@ -344,7 +335,7 @@ class oxcmp_user extends oxView
 
     /**
      * Deletes user information from session:<br>
-     * "usr", "dgr", "dynvalue", "paymentid"<br>
+     * "usr", "dynvalue", "paymentid"<br>
      * also deletes cookie, unsets oxconfig::oUser,
      * oxcmp_user::oUser, forces basket to recalculate.
      *
@@ -415,9 +406,8 @@ class oxcmp_user extends oxView
      * First test if all MUST FILL fields were filled, then performed
      * additional checking oxcmp_user::CheckValues(). If no errors
      * occured - trying to create new user (oxuser::CreateUser()),
-     * logging him to shop (oxuser::Login() if user has entered password)
-     * or assigning him to dynamic group (oxuser::addDynGroup()).
-     * If oxuser::CreateUser() returns false - thsi means user is
+     * logging him to shop (oxuser::Login() if user has entered password).
+     * If oxuser::CreateUser() returns false - this means user is
      * allready created - we only logging him to shop (oxcmp_user::Login()).
      * If there is any error with missing data - function will return
      * false and set error code (oxcmp_user::iError). If user was
@@ -501,7 +491,6 @@ class oxcmp_user extends oxView
             }
 
             $oUser->addToGroup('oxidnotyetordered');
-            $oUser->addDynGroup(oxRegistry::getSession()->getVariable('dgr'), $oConfig->getConfigParam('aDeniedDynGroups'));
             $oUser->logout();
 
         } catch (oxUserException $oEx) {
@@ -598,17 +587,6 @@ class oxcmp_user extends oxView
         }
 
         $oSession->setVariable('blshowshipaddress', $blShow);
-    }
-
-    /**
-     * dyn_group feature: if you specify a user group id in URL,
-     *  the user will automatically be added to this group on registration or login
-     */
-    protected function _assignDynGroup()
-    {
-        if ($sDynGoup = oxRegistry::getConfig()->getRequestParameter('dgr')) {
-            oxRegistry::getSession()->setVariable('dgr', $sDynGoup);
-        }
     }
 
     /**

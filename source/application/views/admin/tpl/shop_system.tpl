@@ -232,17 +232,6 @@ function _groupExp(el) {
 
             <dl>
                 <dt>
-                    <textarea class="txtfield" name=confarrs[aDeniedDynGroups] [{ $readonly }]>[{$confarrs.aDeniedDynGroups}]</textarea>
-                    [{ oxinputhelp ident="HELP_SHOP_SYSTEM_DENIEDDYNGROUPS" }]
-                </dt>
-                <dd>
-                    [{ oxmultilang ident="SHOP_SYSTEM_DENIEDDYNGROUPS" }]
-                </dd>
-                <div class="spacer"></div>
-            </dl>
-
-            <dl>
-                <dt>
                     <input type=text class="txt" name=confstrs[iAttributesPercent] value="[{$confstrs.iAttributesPercent}]" [{ $readonly }]>
                     [{ oxinputhelp ident="HELP_SHOP_SYSTEM_ATTRIBUTESPERCENT" }]
                 </dt>

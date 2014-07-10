@@ -510,7 +510,6 @@ INSERT INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`, `OXVARNAME`, `OXVARTYPE`
 ('7044252b61dd44324.24181665', 'oxbaseshop', '', 'bl_perfParseLongDescinSmarty', 'bool', 0x07),
 ('77c425a29db68f0d9.00182375', 'oxbaseshop', '', 'bl_perfLoadManufacturerTree', 'bool', 0x07),
 ('79e417a4eaad1a593.54850808', 'oxbaseshop', '', 'blStoreIPs', 'bool', ''),
-('79e417a4eaad9dfa6.77588633', 'oxbaseshop', '', 'aDeniedDynGroups', 'arr', 0x4dba322c77e44ef7ced6acac1f35ea091294b94a7572f88ffe92),
 ('33341949f476b65e8.17282442', 'oxbaseshop', '', 'iAttributesPercent', 'str', 0x77c2),
 ('43141b9b252874600.34636487', 'oxbaseshop', '', 'sDecimalSeparator', 'str', 0xc9),
 ('bf041bd98dacd9021.61732877', 'oxbaseshop', '', 'aInterfaceProfiles', 'aarr', 0x4dbace29724a51b6af7d09aac117301142e91c3c5b7eed9a850f85c1e3d58739aa9ea92523f05320a95060d60d57fbb027bad88efdaa0b928ebcd6aacf58084d31dd6ed5e718b833f1079b3805d28203f284492955c82cea3405879ea7588ec610ccde56acede495),
@@ -2353,7 +2352,6 @@ CREATE TABLE `oxuser` (
   `OXMOBFON` varchar(64) NOT NULL default '' COMMENT 'Mobile phone number',
   `OXBIRTHDATE` date NOT NULL default '0000-00-00' COMMENT 'Birthday date',
   `OXURL` varchar(255) NOT NULL default '' COMMENT 'Url',
-  `OXDISABLEAUTOGRP` tinyint(1) NOT NULL default '0' COMMENT 'Deactivate automatic User Group Assignment',
   `OXUPDATEKEY` char( 32 ) NOT NULL default '' COMMENT 'Update key',
   `OXUPDATEEXP` int(11) NOT NULL default '0' COMMENT 'Update key expiration time',
   `OXPOINTS` double NOT NULL default '0' COMMENT 'User points (for registration, invitation, etc)',
@@ -2371,8 +2369,8 @@ CREATE TABLE `oxuser` (
 #
 # Data for table `oxuser`
 #
-INSERT INTO `oxuser` (`OXID`, `OXACTIVE`, `OXRIGHTS`, `OXSHOPID`, `OXUSERNAME`, `OXPASSWORD`, `OXPASSSALT`, `OXCUSTNR`, `OXUSTID`, `OXCOMPANY`, `OXFNAME`, `OXLNAME`, `OXSTREET`, `OXSTREETNR`, `OXADDINFO`, `OXCITY`, `OXCOUNTRYID`, `OXSTATEID`, `OXZIP`, `OXFON`, `OXFAX`, `OXSAL`, `OXBONI`, `OXCREATE`, `OXREGISTER`, `OXPRIVFON`, `OXMOBFON`, `OXBIRTHDATE`, `OXURL`, `OXDISABLEAUTOGRP`, `OXUPDATEKEY`, `OXUPDATEEXP`, `OXPOINTS`, `OXFBID`) VALUES
-('oxdefaultadmin', 1, 'malladmin', 'oxbaseshop', 'admin', 'f6fdffe48c908deb0f4c3bd36c032e72', '61646D696E', 1, '', 'Your Company Name', 'John', 'Doe', 'Maple Street', '2425', '', 'Any City', 'a7c40f631fc920687.20179984', '', '9041', '217-8918712', '217-8918713', 'MR', 1000, '2003-01-01 00:00:00', '2003-01-01 00:00:00', '', '', '0000-00-00', '', 0, '', 0, 0, 0);
+INSERT INTO `oxuser` (`OXID`, `OXACTIVE`, `OXRIGHTS`, `OXSHOPID`, `OXUSERNAME`, `OXPASSWORD`, `OXPASSSALT`, `OXCUSTNR`, `OXUSTID`, `OXCOMPANY`, `OXFNAME`, `OXLNAME`, `OXSTREET`, `OXSTREETNR`, `OXADDINFO`, `OXCITY`, `OXCOUNTRYID`, `OXSTATEID`, `OXZIP`, `OXFON`, `OXFAX`, `OXSAL`, `OXBONI`, `OXCREATE`, `OXREGISTER`, `OXPRIVFON`, `OXMOBFON`, `OXBIRTHDATE`, `OXURL`, `OXUPDATEKEY`, `OXUPDATEEXP`, `OXPOINTS`, `OXFBID`) VALUES
+('oxdefaultadmin', 1, 'malladmin', 'oxbaseshop', 'admin', 'f6fdffe48c908deb0f4c3bd36c032e72', '61646D696E', 1, '', 'Your Company Name', 'John', 'Doe', 'Maple Street', '2425', '', 'Any City', 'a7c40f631fc920687.20179984', '', '9041', '217-8918712', '217-8918713', 'MR', 1000, '2003-01-01 00:00:00', '2003-01-01 00:00:00', '', '', '0000-00-00', '', '', 0, 0, 0);
 #
 # Table structure for table `oxuserbaskets`
 #

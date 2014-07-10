@@ -911,23 +911,20 @@ class oxUser extends oxBase
 
         if ( is_numeric( $iSuccess ) && $iSuccess != 2 && $iSuccess <= 3 ) {
             //adding user to particular customer groups
-            if ( !$this->oxuser__oxdisableautogrp->value ) {
+            $myConfig = $this->getConfig();
+            $dMidlleCustPrice = (float) $myConfig->getConfigParam( 'sMidlleCustPrice' );
+            $dLargeCustPrice  = (float) $myConfig->getConfigParam( 'sLargeCustPrice' );
 
-                $myConfig = $this->getConfig();
-                $dMidlleCustPrice = (float) $myConfig->getConfigParam( 'sMidlleCustPrice' );
-                $dLargeCustPrice  = (float) $myConfig->getConfigParam( 'sLargeCustPrice' );
-
-                $this->addToGroup( 'oxidcustomer' );
-                $dBasketPrice = $oBasket->getPrice()->getBruttoPrice();
-                if ( $dBasketPrice < $dMidlleCustPrice ) {
-                    $this->addToGroup( 'oxidsmallcust' );
-                }
-                if ( $dBasketPrice >= $dMidlleCustPrice && $dBasketPrice < $dLargeCustPrice ) {
-                    $this->addToGroup( 'oxidmiddlecust' );
-                }
-                if ( $dBasketPrice >= $dLargeCustPrice ) {
-                    $this->addToGroup( 'oxidgoodcust' );
-                }
+            $this->addToGroup( 'oxidcustomer' );
+            $dBasketPrice = $oBasket->getPrice()->getBruttoPrice();
+            if ( $dBasketPrice < $dMidlleCustPrice ) {
+                $this->addToGroup( 'oxidsmallcust' );
+            }
+            if ( $dBasketPrice >= $dMidlleCustPrice && $dBasketPrice < $dLargeCustPrice ) {
+                $this->addToGroup( 'oxidmiddlecust' );
+            }
+            if ( $dBasketPrice >= $dLargeCustPrice ) {
+                $this->addToGroup( 'oxidgoodcust' );
             }
 
             if ( $this->inGroup( 'oxidnotyetordered' ) ) {
@@ -1028,45 +1025,6 @@ class oxUser extends oxBase
         }
 
         return $iBoni;
-    }
-
-    /**
-     * If there is a directove to add user to dynamic group (usually
-     * by URL - "dgr=any_group") - tries to add user to it. First
-     * checks if passed dynamic group is not in denied group list
-     * (defined ar oxConfig::aDeniedDynGroups) and if not - adds user
-     * to this group.
-     *
-     * @param string $sDynGoup         deny group (oxRegistry::getSession()->getVariable( 'dgr' ))
-     * @param array  $aDeniedDynGroups ($myConfig->getConfigParam( 'aDeniedDynGroups' ))
-     *
-     * @return bool
-     */
-    public function addDynGroup( $sDynGoup, $aDeniedDynGroups )
-    {
-        // preparing input
-        $sDynGoup = strtolower( trim( $sDynGoup ) );
-
-        // setting denied groups from admin settings also
-        $aDisabledDynGroups = array_merge( array( 'oxidadmin' ), (array) $aDeniedDynGroups );
-
-        // default state ..
-        $blAdd = false;
-
-        // user assignment to dyn group is not allowed
-        if ( $this->oxuser__oxdisableautogrp->value || !$sDynGoup ) {
-            $blAdd = false;
-        } elseif ( in_array( $sDynGoup, $aDisabledDynGroups ) ) {
-            // trying to add user to prohibited user group?
-            $blAdd = false;
-        } elseif ( $this->addToGroup( $sDynGoup ) ) {
-            $blAdd = true;
-        }
-
-        // cleanup
-        oxRegistry::getSession()->deleteVariable( 'dgr' );
-
-        return $blAdd;
     }
 
     /**
@@ -1409,7 +1367,6 @@ class oxUser extends oxBase
         // deleting session info
         oxRegistry::getSession()->deleteVariable( 'usr' );  // for front end
         oxRegistry::getSession()->deleteVariable( 'auth' ); // for back end
-        oxRegistry::getSession()->deleteVariable( 'dgr' );
         oxRegistry::getSession()->deleteVariable( 'dynvalue' );
         oxRegistry::getSession()->deleteVariable( 'paymentid' );
         // oxRegistry::getSession()->deleteVariable( 'deladrid' );
@@ -1848,13 +1805,11 @@ class oxUser extends oxBase
             }
         }
 
-        if ( !$this->oxuser__oxdisableautogrp->value ) {
-            if ( !$blForeignGroupExists && $blForeigner ) {
-                $this->addToGroup( 'oxidforeigncustomer' );
-            }
-            if ( !$blInlandGroupExists && !$blForeigner ) {
-                $this->addToGroup( 'oxidnewcustomer' );
-            }
+        if ( !$blForeignGroupExists && $blForeigner ) {
+            $this->addToGroup( 'oxidforeigncustomer' );
+        }
+        if ( !$blInlandGroupExists && !$blForeigner ) {
+            $this->addToGroup( 'oxidnewcustomer' );
         }
     }
 

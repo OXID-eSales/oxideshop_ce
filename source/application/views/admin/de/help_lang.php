@@ -49,8 +49,6 @@ $aLang =  array(
                                                  '<li>Oberhalb von ca. 80 kann man kaum eine Verbesserung der Bildqualität feststellen, während die Dateigröße enorm zunimmt.</li></ul><br>'.
                                                  'Die Standardeinstellung ist 75.',
 
-'HELP_SHOP_SYSTEM_DENIEDDYNGROUPS'            => 'Option aktivieren, um angegebene Benutzergruppen herauszufiltern, die über den URL-Parameter "dgr" zugeordnet werden sollen.',
-
 'HELP_SHOP_SYSTEM_LDAP'                       => 'Bitte Datei core/oxldap.php anpassen.',
 
 'HELP_SHOP_SYSTEM_SHOWVARIANTREVIEWS'         => 'Diese Einstellung beeinflusst das Verhalten, wenn Varianten bewertet werden: Wenn die Einstellung aktiv ist, dann werden die Bewertungen der Varianten auch beim Vater-Artikel angezeigt.',
@@ -542,8 +540,6 @@ $aLang =  array(
 'HELP_USER_EXTEND_NEWSLETTER'                 => 'Diese Einstellung zeigt an, ob der Benutzer den Newsletter abonniert hat oder nicht.',
 
 'HELP_USER_EXTEND_EMAILFAILED'                => 'Wenn an die E-Mail Adresse des Benutzers keine E-Mails versendet werden können (z. B. weil die Adresse falsch eingetragen ist), dann setzen Sie hier das Häkchen. Dann werden dem Benutzer keine Newsletter mehr zugesendet. Andere E-Mails werden weiterhin versendet.',
-
-'HELP_USER_EXTEND_DISABLEAUTOGROUP'           => 'Die Benutzer werden automatisch zu Benutzergruppen zugeordnet. Wenn Sie diese Einstellung aktivieren, wird dieser Benutzer nicht mehr automatisch zugeordnet.',
 
 'HELP_USER_EXTEND_BONI'                       => 'Hier können Sie einen Zahlenwert für die Bonität des Benutzers eingeben. Mit der Bonität können Sie beeinflussen, welche Zahlungsarten dem Benutzer zur Verfügung stehen.',
 

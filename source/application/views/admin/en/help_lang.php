@@ -50,8 +50,6 @@ $aLang =  array(
                                                  '<li>Above 80 hardly any quality improvement can be detected, but the filesize increases enormously.</li></ul><br>'.
                                                  'The default value is 75.',
 
-'HELP_SHOP_SYSTEM_DENIEDDYNGROUPS'            => 'Enable this option to filtering user groups, which are handled over "dgr" param in the URL.',
-
 'HELP_SHOP_SYSTEM_LDAP'                       => 'Please edit file core/oxldap.php.',
 
 'HELP_SHOP_SYSTEM_SHOWVARIANTREVIEWS'         => 'This setting affects how reviews for variants are handled: If the setting is checked, remarks from variants are also shown at the parent product.',
@@ -536,8 +534,6 @@ $aLang =  array(
 'HELP_USER_EXTEND_NEWSLETTER'                 => 'This setting shows if the user subscribed to the newsletter.',
 
 'HELP_USER_EXTEND_EMAILFAILED'                => 'If no e-mails can be sent to the e-mail address of this user, check this setting. Then no newsletters are sent to this user any more. Other e-mails are still sent.',
-
-'HELP_USER_EXTEND_DISABLEAUTOGROUP'           => 'Users are automatically assigned to certain user groups. This setting prevents this: If checked, the users isn\'t automatically added to any user group.',
 
 'HELP_USER_EXTEND_BONI'                       => 'Here you can enter a numerical value for the credit rating of the user. With the credit rating you can influence which payment methods are available to this user.',
 

@@ -202,10 +202,10 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         // ensure modules detached
         oxTestModules::cleanAllModules();
 
-        $myDB = oxDb::getDB();
-        $myDB->execute( 'delete from oxaccessoire2article where oxarticlenid="_testArt" ' );
+        $oDB = oxDb::getDB();
+        $oDB->execute( 'delete from oxaccessoire2article where oxarticlenid="_testArt" ' );
 
-        $myDB->execute( "update oxattribute set oxdisplayinbasket = 0 where oxid = '8a142c3f0b9527634.96987022' " );
+        $oDB->execute( "update oxattribute set oxdisplayinbasket = 0 where oxid = '8a142c3f0b9527634.96987022' " );
 
         $this->cleanUpTable('oxarticles');
         $this->cleanUpTable('oxartextends');
@@ -218,9 +218,9 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $this->cleanUpTable('oxreviews');
         $this->cleanUpTable('oxdiscount');
 
-        $myDB = oxDb::getDB();
-        $myDB->Execute( 'delete from oxselectlist where oxid = "_testoxsellist" ');
-        $myDB->Execute( 'delete from oxobject2selectlist where oxselnid = "_testoxsellist" ');
+        $oDB = oxDb::getDB();
+        $oDB->Execute( 'delete from oxselectlist where oxid = "_testoxsellist" ');
+        $oDB->Execute( 'delete from oxobject2selectlist where oxselnid = "_testoxsellist" ');
 
 
         oxDb::getInstance()->resetTblDescCache();
@@ -3770,7 +3770,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
      */
     public function testModifySelectListPrice()
     {
-        $myDB     = oxDb::getDB();
+        $oDb     = oxDb::getDB();
         $myConfig = oxRegistry::getConfig();
         $oCurrency = $myConfig->getActShopCurrencyObject();
 
@@ -3778,10 +3778,10 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $sVal = 'three!P!-5,99__threeValue@@two!P!-2__twoValue@@';
 
             $sQ = 'insert into oxselectlist (oxid, oxshopid, oxtitle, oxident, oxvaldesc) values ("_testoxsellist", "'.$sShopId.'", "_testoxsellist", "_testoxsellist", "'.$sVal.'")';
-        $myDB->Execute( $sQ );
+        $oDb->Execute( $sQ );
 
         $sQ = 'insert into oxobject2selectlist (oxid, oxobjectid, oxselnid, oxsort) values ("_testoxsellist", "1651", "_testoxsellist", 1) ';
-        $myDB->Execute( $sQ );
+        $oDb->Execute( $sQ );
 
         modConfig::getInstance()->setConfigParam( 'bl_perfLoadSelectLists', true );
         modConfig::getInstance()->setConfigParam( 'bl_perfUseSelectlistPrice', true );
@@ -3911,13 +3911,13 @@ class Unit_Core_oxArticleTest extends OxidTestCase
     {
         $oArticle = $this->_createArticle('_testArt');
 
-        $oDB = oxDb::getDB();
-        $oDB->getOne("update oxarticles set oxtimestamp = '2005-03-24 14:33:53' where oxid = '_testArt'");
-        $sTimeStamp = $oDB->getOne("select oxtimestamp from oxarticles where oxid = '_testArt'");
+        $oDb = oxDb::getDB();
+        $oDb->getOne("update oxarticles set oxtimestamp = '2005-03-24 14:33:53' where oxid = '_testArt'");
+        $sTimeStamp = $oDb->getOne("select oxtimestamp from oxarticles where oxid = '_testArt'");
         $rs = $oArticle->updateSoldAmount(1);
         $this->assertTrue( $rs->EOF );
-        $this->assertEquals( 1, $oDB->getOne("select oxsoldamount from oxarticles where oxid = '_testArt'") );
-        $this->assertNotEquals( $sTimeStamp, $oDB->getOne("select oxtimestamp from oxarticles where oxid = '_testArt'") );
+        $this->assertEquals( 1, $oDb->getOne("select oxsoldamount from oxarticles where oxid = '_testArt'") );
+        $this->assertNotEquals( $sTimeStamp, $oDb->getOne("select oxtimestamp from oxarticles where oxid = '_testArt'") );
     }
 
     /**
@@ -5128,7 +5128,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
      */
     public function testGetSelectList()
     {
-        $myDB     = oxDb::getDB();
+        $oDb     = oxDb::getDB();
         $myConfig = oxRegistry::getConfig();
         $oCurrency = $myConfig->getActShopCurrencyObject();
 
@@ -5136,10 +5136,10 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $sVal = 'three!P!-5,99__threeValue@@';
 
             $sQ = 'insert into oxselectlist (oxid, oxshopid, oxtitle, oxident, oxvaldesc) values ("_testoxsellist", "'.$sShopId.'", "_testoxsellist", "_testoxsellist", "'.$sVal.'")';
-        $myDB->Execute( $sQ );
+        $oDb->Execute( $sQ );
 
         $sQ = 'insert into oxobject2selectlist (oxid, oxobjectid, oxselnid, oxsort) values ("_testoxsellist", "1651", "_testoxsellist", 1) ';
-        $myDB->Execute( $sQ );
+        $oDb->Execute( $sQ );
 
         modConfig::getInstance()->setConfigParam( 'bl_perfLoadSelectLists', true );
         modConfig::getInstance()->setConfigParam( 'bl_perfUseSelectlistPrice', true );

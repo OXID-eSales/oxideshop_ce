@@ -1540,6 +1540,7 @@ $aLang = array(
 'USERGROUP_LIST_MENUSUBITEM'                               => 'User Groups',
 'USERGROUP_MAIN_MEMBERINGROUP'                             => 'User Group Members',
 'USERGROUP_MAIN_ALLMEMBERS'                                => 'All Users',
+'USERGROUP_ID'                                             => '[tr]Group id',
 'VENDOR_LIST_MENUITEM'                                     => 'Master Settings',
 'VENDOR_LIST_MENUSUBITEM'                                  => 'Distributors',
 'VENDOR_LIST_TITLE'                                        => '[OXID Vendor Administration]',
@@ -2048,6 +2049,7 @@ $aLang = array(
 'TOTAL_PLUS_PROPORTIONAL_VAT'                              => "plus VAT (proportionally calculated)",
 
 'BUTTON_DOWNLOAD'                                          => 'Download',
+'MESSAGE_FOR_NEWLY_CREATED_USER_GROUPS'                    => '[tr]Newly created user groups will be accessible for assignment via URL by users. If you want to disable this accessibility, you must go to: Master settings->Core settings->System->Other settings and add user group id to the "Prohibited User Groups for dynamic User Group assignment using dgr URL param" list.'
 );
 
 /*

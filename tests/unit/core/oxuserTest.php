@@ -1681,8 +1681,6 @@ class Unit_Core_oxUserTest extends OxidTestCase
         $sQ = 'insert into oxobject2group (oxid,oxshopid,oxobjectid,oxgroupsid) values ( "'.oxUtilsObject::getInstance()->generateUID().'", "'.$sShopId.'", "'.$sUserId.'", "oxidnotyetordered" )';
         $oDb->Execute( $sQ );
 
-        $oUser->oxuser__oxdisableautogrp = new oxField(false, oxField::T_RAW);
-
         $oBasket = $this->getProxyClass("oxBasket");
         $oPrice = new oxPrice();
         $oPrice->setPrice(9);
@@ -1815,54 +1813,8 @@ class Unit_Core_oxUserTest extends OxidTestCase
         $this->assertEquals( '1981-01-01', $oUser->convertBirthday( array( 'year'=> 1981 ) ) );
     }
 
-
     /**
-     * Testing automatical adding to dyn group
-     */
-    public function testAddDynGroupEmptyGroup()
-    {
-        $oUser = new oxUser();
-        $this->assertEquals( false, $oUser->addDynGroup(null, array()) );
-    }
-    public function testAddDynGroupDisabledAutoGrp()
-    {
-        $oUser = new oxUser();
-        $oUser->oxuser__oxdisableautogrp = new oxField(true, oxField::T_RAW);
-        $this->assertEquals( false, $oUser->addDynGroup("test", array()) );
-    }
-    public function testAddDynGroupTryingOxidadminGroup()
-    {
-        $oUser = new oxUser();
-        $this->assertFalse( $oUser->addDynGroup( "oxidadmin", array() ) );
-    }
-    public function testAddDynGroupTryingAllreadyAdded()
-    {
-        $oDb = $this->getDb();
-
-        // looking for not assigned group
-        $oUser = $this->createUser();
-        $sNewGroup = $oDb->getOne( 'select oxgroupsid from oxobject2group where oxobjectid="'.$oUser->getId().'" ' );
-
-        $this->assertEquals( false, $oUser->addDynGroup($sNewGroup, array()) );
-    }
-    public function testAddDynGroupTryingNotAdded()
-    {
-        // looking for not assigned group
-        $oUser = $this->createUser();
-        $sNewGroup = $this->getDb()->getOne( 'select oxid from oxgroups where oxid not in ( select oxgroupsid from oxobject2group where oxobjectid="'.$oUser->getId().'" ) and oxid != "oxidadmin"' );
-
-        $this->assertEquals( true, $oUser->addDynGroup($sNewGroup, array()) );
-    }
-
-    public function testAddDynGroupWithDeniedDynGroups()
-    {
-        // looking for not assigned group
-        $oUser = $this->createUser();
-        $this->assertEquals( false, $oUser->addDynGroup("testg", array("testg")) );
-    }
-
-    /**
-     * Testing if method detects duplicate records.
+     * Testing login validator
      */
     public function testCheckForAvailableEmailChangingData()
     {
@@ -2356,7 +2308,6 @@ class Unit_Core_oxUserTest extends OxidTestCase
         $oUser = new oxUser();
         $oUser->login( oxADMIN_LOGIN, oxADMIN_PASSWD );
 
-        oxRegistry::getSession()->setVariable( 'dgr', 'test' );
         oxRegistry::getSession()->setVariable( 'dynvalue', 'test' );
         oxRegistry::getSession()->setVariable( 'paymentid', 'test' );
 
@@ -2368,7 +2319,6 @@ class Unit_Core_oxUserTest extends OxidTestCase
 
             $oUser->logout();
 
-            $this->assertNull( oxRegistry::getSession()->getVariable( 'dgr' ) );
             $this->assertNull( oxRegistry::getSession()->getVariable( 'dynvalue' ) );
             $this->assertNull( oxRegistry::getSession()->getVariable( 'paymentid' ) );
             $this->assertFalse( $oUser->getUser() );

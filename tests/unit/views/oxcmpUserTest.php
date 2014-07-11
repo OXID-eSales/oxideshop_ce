@@ -81,19 +81,6 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
     }
 
     /**
-     * Test setting of dgr parameter on init
-     */
-    public function testInitDynGroupAssignment()
-    {
-        modConfig::setRequestParameter('dgr', 'testdgr');
-
-        $oView = new oxcmp_user();
-        $oView->init();
-
-        $this->assertEquals( 'testdgr', modSession::getInstance()->getVar( 'dgr' ) );
-    }
-
-    /**
      * Test view getInvitor().
      *
      * @return null
@@ -343,49 +330,6 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
         $this->assertNull( $oUserView->createUser() );
     }
 
-    /**
-     * Test case for bug #0001625: dgr not set when registering
-     *
-     * @return null
-     */
-    public function testCaseForBug1625()
-    {
-        modSession::getInstance()->setVar( 'dgr', 'oxidpricea' );
-        $this->assertNotNull( oxRegistry::getSession()->getVariable( 'dgr' ) );
-
-        modConfig::setRequestParameter( 'lgn_usr',  "test@oxideshop.com" );
-        modConfig::setRequestParameter( 'lgn_pwd',  "testpass" );
-        modConfig::setRequestParameter( 'lgn_pwd2', "testpass" );
-
-        $aInvAdr["oxuser__oxsal"]       = "MR";
-        $aInvAdr["oxuser__oxfname"]     = "testfname";
-        $aInvAdr["oxuser__oxlname"]     = "testlname";
-        $aInvAdr["oxuser__oxstreet"]    = "teststreet";
-        $aInvAdr["oxuser__oxstreetnr"]  = "teststreetnr";
-        $aInvAdr["oxuser__oxcountryid"] = "a7c40f6320aeb2ec2.72885259";
-        $aInvAdr["oxuser__oxzip"]       = "testzip";
-        $aInvAdr["oxuser__oxcity"]      = "testcity";
-
-        modConfig::setRequestParameter( 'invadr', $aInvAdr );
-        modConfig::setRequestParameter( 'deladr', null );
-        modConfig::getInstance()->setConfigParam( "blInvitationsEnabled", true );
-
-        $oParent = $this->getMock( 'oxubase', array( "isEnabledPrivateSales" ) );
-        $oParent->expects( $this->once() )->method( 'isEnabledPrivateSales' )->will( $this->returnValue( false ) );
-
-        $oCmp = $this->getMock( "oxcmp_user", array( "_afterLogin", 'getParent' ) );
-        $oCmp->expects( $this->once() )->method( '_afterLogin' );
-        $oCmp->expects( $this->any() )->method( 'getParent' )->will( $this->returnValue( $oParent ) );
-        $this->assertEquals( 'payment?new_user=1&success=1' , $oCmp->createUser() );
-
-        $oDb = oxDb::getDb();
-
-        //
-        $sUserId = $oDb->getOne( "select oxid from oxuser where oxusername like 'test%'" );
-        $this->assertTrue( ( bool ) $oDb->getOne( "select 1 from oxobject2group where oxobjectid = '$sUserId' and oxgroupsid = 'oxidpricea'" ) );
-        $this->assertNull( oxRegistry::getSession()->getVariable( 'dgr' ) );
-    }
-
     public function testSetAndGetLoginStatus()
     {
         $iStatus = 999;
@@ -613,9 +557,8 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
         $oSession->expects( $this->once() )->method( 'getBasket')->will( $this->returnValue( $oBasket ) );
         $oSession->expects( $this->once() )->method( 'regenerateSessionId');
 
-        $oUser = $this->getMock( 'oxcmp_user', array( 'inGroup', 'addDynGroup' ) );
+        $oUser = $this->getMock( 'oxcmp_user', array( 'inGroup' ) );
         $oUser->expects( $this->once() )->method( 'inGroup' )->will( $this->returnValue( false ) );
-        $oUser->expects( $this->once() )->method( 'addDynGroup' );
             $aMockFnc = array( 'getSession', "getLoginStatus" );
         $oUserView = $this->getMock( 'oxcmp_user', $aMockFnc );
         $oUserView->expects( $this->once() )->method( 'getSession' )->will( $this->returnValue( $oSession ) );

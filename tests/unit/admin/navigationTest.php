@@ -156,7 +156,6 @@ class Unit_Admin_NavigationTest extends OxidTestCase
 
         modSession::getInstance()->setVar( 'usr', "testUsr" );
         modSession::getInstance()->setVar( 'auth', "testAuth" );
-        modSession::getInstance()->setVar( 'dgr', "testDgr" );
         modSession::getInstance()->setVar( 'dynvalue', "testDynValue" );
         modSession::getInstance()->setVar( 'paymentid', "testPaymentId" );
 
@@ -178,7 +177,6 @@ class Unit_Admin_NavigationTest extends OxidTestCase
         // testing if these were unset from session
         $this->assertNull( oxRegistry::getSession()->getVariable( 'usr' ) );
         $this->assertNull( oxRegistry::getSession()->getVariable( 'auth' ) );
-        $this->assertNull( oxRegistry::getSession()->getVariable( 'dgr' ) );
         $this->assertNull( oxRegistry::getSession()->getVariable( 'dynvalue' ) );
         $this->assertNull( oxRegistry::getSession()->getVariable( 'paymentid' ) );
     }

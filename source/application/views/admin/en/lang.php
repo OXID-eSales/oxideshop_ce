@@ -1426,12 +1426,12 @@ $aLang = array(
 'TOOLTIPS_NEWNEWSLETTER'                                   => 'New Newsletter Sample',
 'TOOLTIPS_NEWSHOP'                                         => 'Create New Shop',
 'TOOLTIPS_NEWUSERGROUP'                                    => 'Create New User Group',
-'TOOLTIPS_NEWCATEGORY'                                     => 'Create New Category',
+'TOOLTIPS_NEWCATEGORY'                                     => 'Create New Cateogry',
 'TOOLTIPS_NEWCOUNTRY'                                      => 'Create New Country',
 'TOOLTIPS_NEWLANGUAGE'                                     => 'Create New Language',
 'TOOLTIPS_NEWWRAPPING'                                     => 'Create New Wrapping',
 'TOOLTIPS_NEWCONTENT'                                      => 'Create New Content',
-'TOOLTIPS_NEWMALLCAT'                                      => 'Create New Mall Category',
+'TOOLTIPS_NEWMALLCAT'                                      => 'Create New Mall Cateogry',
 'TOOLTIPS_NEWARTICLE'                                      => 'Create New Product',
 'TOOLTIPS_NEWITEMS'                                        => 'Create new Attribute',
 'TOOLTIPS_NEWVAR1'                                         => 'New',
@@ -1506,6 +1506,7 @@ $aLang = array(
 'USERGROUP_LIST_MENUSUBITEM'                               => 'User Groups',
 'USERGROUP_MAIN_MEMBERINGROUP'                             => 'User Group Members',
 'USERGROUP_MAIN_ALLMEMBERS'                                => 'All Users',
+'USERGROUP_ID'                                             => '[tr]Group id',
 'VENDOR_LIST_MENUITEM'                                     => 'Master Settings',
 'VENDOR_LIST_MENUSUBITEM'                                  => 'Distributors',
 'VENDOR_LIST_TITLE'                                        => '[OXID Vendor Administration]',
@@ -2134,6 +2135,7 @@ $aLang = array(
 
 'OMVN_ERROR_REQUEST_FAILED'                                => 'Service unavailable, try again later... If this persists, please check that your shop can make outgoing connections.',
 'VERSION_UPDATE_LINK'                                         => 'http://www.oxid-esales.com/en/support-services/documentation-and-help/oxid-eshop/installation/oxid-eshop-update-installation/preparing-update.html',
+'MESSAGE_FOR_NEWLY_CREATED_USER_GROUPS' => '[tr]Newly created user groups will be accessible for assignment via URL by users. If you want to disable this accessibility, you must go to: Master settings->Core settings->System->Other settings and add user group id to the "Prohibited User Groups for dynamic User Group assignment using dgr URL param" list.'
 );
 
 /*

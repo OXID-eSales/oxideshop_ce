@@ -215,7 +215,7 @@ class oxInputValidator extends oxSuperCfg
      * @param string $sConfPass     retyped user password
      * @param bool   $blCheckLength option to check password length
      *
-     * @return null
+     * @return oxException|null
      */
     public function checkPassword( $oUser, $sNewPass, $sConfPass, $blCheckLength = false )
     {

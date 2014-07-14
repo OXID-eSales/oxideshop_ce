@@ -211,16 +211,23 @@ class Unit_Views_forgotpwdTest extends OxidTestCase
      */
     public function testUpdatePassword_passwordSpecChars()
     {
+        $oRealInputValidator = oxRegistry::get('oxInputValidator');
+
         $sPass = '&quot;&#34;"o?p[]XfdKvA=#3K8tQ%';
         $this->setRequestParam( 'password_new', $sPass );
         $this->setRequestParam( 'password_new_confirm', $sPass );
 
         $oUser = $this->getMock( 'oxUser', array( 'checkPassword' ) );
-        $oUser->expects( $this->once() )->method( 'checkPassword' )->with( $this->equalTo( $sPass ), $this->equalTo( $sPass ), $this->equalTo( true ) )->will( $this->returnValue( new oxException() ) );
         oxTestModules::addModuleObject( 'oxuser', $oUser );
+
+        $oInputValidator = $this->getMock('oxInputValidator');
+        $oInputValidator->expects( $this->once() )->method( 'checkPassword' )->with(  $this->equalTo( $oUser ), $this->equalTo( $sPass ), $this->equalTo( $sPass ), $this->equalTo( true ) )->will( $this->returnValue( new oxException() ) );
+        oxRegistry::set('oxInputValidator', $oInputValidator);
 
         $oView = new ForgotPwd();
         $oView->updatePassword();
+
+        oxRegistry::set('oxInputValidator', $oRealInputValidator);
     }
 
     /**

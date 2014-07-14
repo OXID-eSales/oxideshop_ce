@@ -140,6 +140,8 @@ class oxInputValidator extends oxSuperCfg
      */
     public function checkLogin( $oUser, $sLogin, $aInvAddress )
     {
+        $sLogin = ( isset( $aInvAddress['oxuser__oxusername'] ) ) ? $aInvAddress['oxuser__oxusername'] : $sLogin;
+
         // check only for users with password during registration
         // if user wants to change user name - we must check if passwords are ok before changing
         if ( $oUser->oxuser__oxpassword->value && $sLogin != $oUser->oxuser__oxusername->value ) {
@@ -172,6 +174,8 @@ class oxInputValidator extends oxSuperCfg
 
             return $this->_addValidationError( "oxuser__oxusername", $oEx );
         }
+
+        return $sLogin;
     }
 
     /**

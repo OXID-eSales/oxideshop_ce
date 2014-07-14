@@ -1089,8 +1089,11 @@ class oxUser extends oxBase
      */
     public function checkValues( $sLogin, $sPassword, $sPassword2, $aInvAddress, $aDelAddress )
     {
+        /** @var oxInputValidator $oInputValidator */
+        $oInputValidator = oxRegistry::get('oxInputValidator');
+
         // 1. checking user name
-        $sLogin = $this->_checkLogin( $sLogin, $aInvAddress );
+        $sLogin = $oInputValidator->checkLogin( $this, $sLogin, $aInvAddress );
 
         // 2. cheking email
         $this->_checkEmail( $sLogin );
@@ -1707,28 +1710,6 @@ class oxUser extends oxBase
         }
 
         return $blUpdate;
-    }
-
-    /**
-     * Checks if user name does not break logics:
-     *  - if user wants to UPDATE his login name, performing check if
-     *    user entered correct password
-     *  - additionally checking for user name dublicates. This is usually
-     *    needed when creating new users.
-     * On any error exception is thrown.
-     *
-     * @param string $sLogin      user preferred login name
-     * @param array  $aInvAddress user information
-     *
-     * @depracated use oxInputValidator::checkLogin() instead
-     *
-     * @return string login name
-     */
-    protected function _checkLogin( $sLogin, $aInvAddress )
-    {
-        $sLogin = ( isset( $aInvAddress['oxuser__oxusername'] ) )?$aInvAddress['oxuser__oxusername'] : $sLogin;
-        oxRegistry::get("oxInputValidator")->checkLogin( $this, $sLogin, $aInvAddress );
-        return $sLogin;
     }
 
     /**

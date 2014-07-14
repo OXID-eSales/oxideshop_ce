@@ -819,22 +819,18 @@ class Unit_Core_oxuserTest extends OxidTestCase
                              'oxuser__oxzip'          => '22',
                              'oxuser__oxcity'         => 'ooo',
                              'oxuser__oxcountryid'    => 'a7c40f631fc920687.20179984' );
-    $this->_aUsers[$sShopId][] = '_testUser';
-        try {
-            $oUser = new oxuser();
-            $oUser->setId('_testUser');
-            $oUser->checkValues( 'aaa@bbb.lt', '', '', $aInvAdress, array() );
-            $oUser->oxuser__oxusername = new oxField('aaa@bbb.lt', oxField::T_RAW);
-            $oUser->oxuser__oxpassword = new oxField('', oxField::T_RAW);
-            $oUser->oxuser__oxactive = new oxField(1, oxField::T_RAW);
-            $oUser->createUser();
+        $this->_aUsers[$sShopId][] = '_testUser';
+        $oUser = new oxuser();
+        $oUser->setId('_testUser');
+        $oUser->checkValues( 'aaa@bbb.lt', '', '', $aInvAdress, array() );
+        $oUser->oxuser__oxusername = new oxField('aaa@bbb.lt', oxField::T_RAW);
+        $oUser->oxuser__oxpassword = new oxField('', oxField::T_RAW);
+        $oUser->oxuser__oxactive = new oxField(1, oxField::T_RAW);
+        $oUser->createUser();
 
-            $oUser->load( $oUser->oxuser__oxid->value );
-            $oUser->changeUserData( $oUser->oxuser__oxusername->value, $oUser->oxuser__oxpassword->value, $oUser->oxuser__oxpassword->value, $aInvAdress, array() );
-            $this->assertEquals( '1000', $oUser->oxuser__oxboni->value );
-        } catch ( Exception $oEx ) {
-            $this->fail('failed while runing testCheckValues test');
-        }
+        $oUser->load( $oUser->oxuser__oxid->value );
+        $oUser->changeUserData( $oUser->oxuser__oxusername->value, $oUser->oxuser__oxpassword->value, $oUser->oxuser__oxpassword->value, $aInvAdress, array() );
+        $this->assertEquals( '1000', $oUser->oxuser__oxboni->value );
     }
 
     /**
@@ -2138,98 +2134,8 @@ class Unit_Core_oxuserTest extends OxidTestCase
     }
 
     /**
-     * Testing login validator
+     * Testing if method detects duplicate records.
      */
-    // 1. testing if method detects dublicate records
-    public function testCheckLoginUserWithPassDublicateLogin()
-    {
-        $myUtils   = oxRegistry::getUtils();
-
-        // loading some demo user to test if dublicates possible
-        $sUserID = $this->_aUsers[ $this->_aShops[ rand(0, count( $this->_aShops ) - 1 ) ] ][ rand( 0, count( $this->_aUsers[ 0 ] ) - 1 ) ];
-        $oUser   = oxNew( 'oxuser' );
-        $oUser->load( $sUserID );
-
-        $aInvAdress['oxuser__oxusername'] = $oUser->oxuser__oxusername->value;
-
-        $oLang = oxRegistry::getLang();
-        $sMsg = sprintf( $oLang->translateString( 'EXCEPTION_USER_USEREXISTS', $oLang->getTplLanguage() ), $aInvAdress['oxuser__oxusername'] );
-        oxTestModules::addFunction( "oxInputValidator", "checkLogin", "{ throw new oxUserException('{$sMsg}'); }");
-
-        //
-        try {
-            $oUser = $this->getProxyClass("oxUser");
-            $oUser->UNITcheckLogin( '', $aInvAdress );
-        } catch ( oxUserException $oEx){
-            $this->assertEquals( $sMsg, $oEx->getMessage() );
-            return;
-        }
-        $this->fail( 'failed test__checkLogin_userWithouPassDublicateLogin test ' );
-    }
-    // 2. if user tries to change login password must be entered ...
-    public function testCheckLoginNewLoginNoPass()
-    {
-        oxTestModules::addFunction( "oxInputValidator", "checkLogin", "{ throw new oxInputException('EXCEPTION_INPUT_NOTALLFIELDS'); }");
-        //
-        try {
-            $oUser =  $this->getProxyClass("oxUser");
-
-            $oUser->oxuser__oxpassword = new oxField('b@b.b', oxField::T_RAW);
-            $oUser->oxuser__oxusername = new oxField('b@b.b', oxField::T_RAW);
-            $aInvAdress['oxuser__oxusername'] = 'a@a.a';
-            $aInvAdress['oxuser__oxpassword'] = '';
-
-            $oUser->UNITcheckLogin( true, $aInvAdress );
-        } catch ( oxInputException $oEx) {
-            $this->assertEquals( $oEx->getMessage(), 'EXCEPTION_INPUT_NOTALLFIELDS');
-            return;
-        }
-        $this->fail( 'failed test__checkLogin_userWithouPassDublicateLogin test ' );
-    }
-    // 3. if user tries to change login CORRECT password must be entered ...
-    public function testCheckLoginNewLoginWrongPass()
-    {
-        oxTestModules::addFunction( "oxInputValidator", "checkLogin", "{ throw new oxUserException('ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH'); }");
-        //
-        try {
-            $oUser =  $this->getProxyClass("oxUser");
-
-            $oUser->oxuser__oxpassword = new oxField('a@a.a', oxField::T_RAW);
-            $oUser->oxuser__oxusername = new oxField('b@b.b', oxField::T_RAW);
-            $aInvAdress['oxuser__oxusername'] = 'a@a.a';
-            $aInvAdress['oxuser__oxpassword'] = 'b@b.b';
-
-            $oUser->UNITcheckLogin( '', $aInvAdress );
-        } catch ( oxUserException $oEx){
-            $this->assertEquals( $oEx->getMessage(), 'ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH');
-            return;
-        }
-        $this->fail( 'failed test__checkLogin_userWithouPassDublicateLogin test ' );
-    }
-    // 4. if user deletes his name and saves...
-    public function testCheckLoginDeleteUserName()
-    {
-        oxTestModules::addFunction( "oxInputValidator", "checkLogin", "{ throw new oxInputException('EXCEPTION_INPUT_NOTALLFIELDS'); }");
-        $myUtils   = oxRegistry::getUtils();
-
-        // loading some demo user to test if dublicates possible
-        $sUserID = $this->_aUsers[ $this->_aShops[ rand(0, count( $this->_aShops ) - 1 ) ] ][0];
-        $oUser   = oxNew( 'oxuser' );
-        $oUser->load( $sUserID );
-        $aInvAdress['oxuser__oxusername'] = '';
-        $aInvAdress['oxuser__oxpassword'] = '';
-        $sLogin = $oUser->oxuser__oxusername->value;
-
-        //
-        try {
-            $oUser->UNITcheckLogin( $sLogin, $aInvAdress );
-        } catch ( oxInputException $oEx){
-            $this->assertEquals( 'EXCEPTION_INPUT_NOTALLFIELDS', $oEx->getMessage() );
-            return;
-        }
-        $this->fail( 'failed test__checkLogin_DeleteUserName test ' );
-    }
-    // 5. testing if method detects dublicate records
     public function testCheckForAvailableEmailChangingData()
     {
         // loading some demo user to test if dublicates possible
@@ -2243,7 +2149,10 @@ class Unit_Core_oxuserTest extends OxidTestCase
 
         $this->assertTrue( $oUser->checkIfEmailExists( $sUsername) );
     }
-    // 6. testing if method detects dublicate records
+
+    /**
+     * Testing if method detects duplicate records.
+     */
     public function testCheckForAvailableEmailIfNewEmail()
     {
         // loading some demo user to test if dublicates possible
@@ -2433,7 +2342,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
         try {
             $oUser->UNITcheckVatId( array('oxuser__oxustid' => 'DE123', 'oxuser__oxcountryid' => $aHome[0]) );
         } catch ( Exception $oException ) {
-            $this->fail( "while trying to check home country business user with vat id" );
+            $this->fail( "Checking home country failed: ".$oException->getMessage() );
         }
     }
 
@@ -2494,28 +2403,37 @@ class Unit_Core_oxuserTest extends OxidTestCase
      */
     public function testCheckValues()
     {
-        $oUser = $this->getMock("oxUser", array("_checkLogin", "_checkEmail", "checkPassword", "_checkRequiredFields", "_checkCountries", "_checkVatId"));
-        $oUser->expects($this->once())->method("_checkLogin");
-        $oUser->expects($this->once())->method("_checkEmail");
-        $oUser->expects($this->once())->method("checkPassword");
-        $oUser->expects($this->once())->method("_checkRequiredFields");
-        $oUser->expects($this->once())->method("_checkCountries");
-        $oUser->expects($this->once())->method("_checkVatId");
+        $oRealInputValidator = oxRegistry::get('oxInputValidator');
+
+        $oInputValidator = $this->getMock('oxInputValidator');
+        $oInputValidator->expects($this->once())->method('checkLogin');
+        $oInputValidator->expects($this->once())->method('checkEmail');
+        $oInputValidator->expects($this->once())->method('checkPassword');
+        $oInputValidator->expects($this->once())->method('checkRequiredFields');
+        $oInputValidator->expects($this->once())->method('checkCountries');
+        $oInputValidator->expects($this->once())->method('checkVatId');
+        oxRegistry::set('oxInputValidator', $oInputValidator);
+
+        $oUser = new oxUser();
         $oUser->checkValues("X", "X", "X", array(), array() );
 
-        $oUser = $this->getMock("oxUser", array("_checkLogin", "_checkEmail", "checkPassword", "_checkRequiredFields", "_checkCountries", "_checkVatId"));
-        $oUser->expects($this->once())->method("_checkLogin");
-        $oUser->expects($this->once())->method("_checkEmail");
-        $oUser->expects($this->once())->method("checkPassword");
-        $oUser->expects($this->once())->method("_checkRequiredFields");
-        $oUser->expects($this->once())->method("_checkCountries");
-        $oUser->expects($this->once())->method("_checkVatId")->will( $this->throwException(new oxInputException()));
-        try {
-            $oUser->checkValues("X", "X", "X", array(), array() );
-            $this->fail('exception not thrown');
-        } catch (oxInputException $e) {
-        }
+        oxRegistry::set('oxInputValidator', $oRealInputValidator);
+    }
 
+    public function testCheckValuesWithInputException()
+    {
+        $oRealInputValidator = oxRegistry::get('oxInputValidator');
+
+        $this->setExpectedException('oxInputException');
+
+        $oInputValidator = $this->getMock('oxInputValidator');
+        $oInputValidator->expects($this->once())->method("checkVatId")->will( $this->throwException(new oxInputException()));
+        oxRegistry::set('oxInputValidator', $oInputValidator);
+
+        $oUser = new oxUser();
+        $oUser->checkValues("X", "X", "X", array(), array() );
+
+        oxRegistry::set('oxInputValidator', $oRealInputValidator);
     }
 
 

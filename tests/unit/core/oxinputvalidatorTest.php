@@ -817,6 +817,40 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
     }
 
     /**
+     * Test case for oxInputValidator::checkLogin()
+     * If everything was fine, login name should be returned.
+     *
+     * @return null
+     */
+    public function testCheckLoginWithUserNameTakenFromParameters()
+    {
+        $oUser = new oxuser();
+        $oUser->setId("testlalaa_");
+
+        $oValidator = new oxInputValidator();
+
+        $this->assertEquals( 'a@a.a', $oValidator->checkLogin( $oUser, 'a@a.a', array() ));
+    }
+
+    /**
+     * Test case for oxInputValidator::checkLogin()
+     * If everything was fine, login name should be returned.
+     *
+     * @return null
+     */
+    public function testCheckLoginWithUserNameTakenFromAddress()
+    {
+        $oUser = new oxuser();
+        $oUser->setId("testlalaa_");
+
+        $aInvAdress['oxuser__oxusername'] = 'a@a.a';
+
+        $oValidator = new oxInputValidator();
+
+        $this->assertEquals( 'a@a.a', $oValidator->checkLogin( $oUser, null, $aInvAdress ));
+    }
+
+    /**
      * Testing validatePaymentInputData with SepaBankCodeCorrect and SepaAccountNumberCorrect
      * expecting NoError
      */

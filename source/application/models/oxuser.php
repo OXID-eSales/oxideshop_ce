@@ -1102,7 +1102,7 @@ class oxUser extends oxBase
         $oInputValidator->checkPassword( $this, $sPassword, $sPassword2, ((int) oxRegistry::getConfig()->getRequestParameter( 'option' ) == 3) );
 
         // 4. required fields
-        $this->_checkRequiredFields( $aInvAddress, $aDelAddress );
+        $oInputValidator->checkRequiredFields( $this, $aInvAddress, $aDelAddress );
 
         // 5. country check
         $this->_checkCountries( $aInvAddress, $aDelAddress );
@@ -1831,22 +1831,6 @@ class oxUser extends oxBase
     protected function _checkCountries( $aInvAddress, $aDelAddress )
     {
         oxRegistry::get("oxInputValidator")->checkCountries( $this, $aInvAddress, $aDelAddress );
-    }
-
-    /**
-     * Checking if all required fields were filled. In case of error
-     * exception is thrown
-     *
-     * @param array $aInvAddress billing address
-     * @param array $aDelAddress delivery address
-     *
-     * @depracated use oxInputValidator::checkRequiredFields() instead
-     *
-     * @return null
-     */
-    protected function _checkRequiredFields( $aInvAddress, $aDelAddress )
-    {
-        oxRegistry::get("oxInputValidator")->checkRequiredFields( $this, $aInvAddress, $aDelAddress );
     }
 
     /**

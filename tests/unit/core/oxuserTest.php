@@ -2164,58 +2164,6 @@ class Unit_Core_oxuserTest extends OxidTestCase
     }
 
     /**
-     * Testing required fields checker
-     */
-    // 1. defining required fields in aMustFillFields. While testing original
-    // function must throw an exception that not all required fields are filled
-    public function testCheckRequiredFieldsSomeMissingAccordingToaMustFillFields()
-    {
-
-        $aMustFillFields = array( 'oxuser__oxfname', 'oxuser__oxlname', 'oxuser__oxstreet',
-                                  'oxuser__oxstreetnr', 'oxuser__oxzip', 'oxuser__oxcity',
-                                  'oxuser__oxcountryid',
-                                  'oxaddress__oxfname', 'oxaddress__oxlname', 'oxaddress__oxstreet',
-                                  'oxaddress__oxstreetnr', 'oxaddress__oxzip', 'oxaddress__oxcity',
-                                  'oxaddress__oxcountryid'
-                                  );
-
-        oxTestModules::addFunction( "oxInputValidator", "checkRequiredFields", "{ throw new oxInputException('EXCEPTION_INPUT_NOTALLFIELDS'); }");
-        modConfig::getInstance()->setConfigParam( 'aMustFillFields', $aMustFillFields );
-
-        try {
-            $aInvAdress = array();
-            $aDelAdress = array();
-
-            $oUser = $this->getProxyClass("oxUser");
-            $oUser->UNITcheckRequiredFields( $aInvAdress, $aDelAdress);
-        } catch ( oxInputException $oEx ) {
-            $this->assertEquals( $oEx->getMessage(), 'EXCEPTION_INPUT_NOTALLFIELDS');
-            return;
-        }
-        $this->fail( 'failed test test_checkRequiredFields' );
-    }
-
-    // 2. defining required fields in aMustFillFields. While testing original
-    // function must not fail because all defined fields are filled with some values
-    public function testCheckRequiredFieldsAllFieldsAreFine()
-    {
-
-        $aMustFillFields = array( 'oxuser__oxfname', 'oxuser__oxlname', 'oxuser__oxbirthdate' );
-
-        modConfig::getInstance()->setConfigParam( 'aMustFillFields', $aMustFillFields );
-
-        try {
-            $aInvAdress = array( 'oxuser__oxfname' => 'xxx', 'oxuser__oxbirthdate' => array( 'year' => '123' ) );
-            $aDelAdress = array( 'oxuser__oxlname' => 'yyy' );
-
-            $oUser = $this->getProxyClass("oxUser");
-            $oUser->UNITcheckRequiredFields( $aInvAdress, $aDelAdress);
-        } catch ( oxExcpUserDataCheck $oException ) {
-            $this->fail( 'failed test test_checkRequiredFields' );
-        }
-    }
-
-    /**
      * Testing VAT id checker - no check if no vat id or company name in params list
      */
     public function testCheckVatIdWithoutVatIdOrCompanyName()

@@ -200,6 +200,8 @@ class Unit_Views_accountPasswordTest extends OxidTestCase
      */
     public function testLogin_setPasswordWithSpecChars()
     {
+        $oRealInputValidator = oxRegistry::get('oxInputValidator');
+
         $this->setExpectedException( 'oxException', 'ChangePass user test' );
 
         $sOldPass = '&quot;&#34;"o?p[]XfdKvA=#3K8tQ%_old';
@@ -208,10 +210,13 @@ class Unit_Views_accountPasswordTest extends OxidTestCase
         modConfig::setRequestParameter( 'password_new', $sPass );
         modConfig::setRequestParameter( 'password_new_confirm', $sPass );
 
-        $oUser = $this->getMock( 'oxUser', array( 'checkPassword', 'isSamePassword' ) );
-        $oUser->expects( $this->once() )
+        $oUser = $this->getMock( 'oxUser', array( 'isSamePassword' ) );
+
+        $oInputValidator = $this->getMock('oxInputValidator');
+        $oInputValidator->expects( $this->once() )
             ->method( 'checkPassword' )
-            ->with( $this->equalTo( $sPass ), $this->equalTo( $sPass ), $this->equalTo( true ) );
+            ->with( $this->equalTo( $oUser ), $this->equalTo( $sPass ), $this->equalTo( $sPass ), $this->equalTo( true ) );
+        oxRegistry::set('oxInputValidator', $oInputValidator);
 
         $oUser->expects( $this->once() )
             ->method( 'isSamePassword' )
@@ -221,5 +226,7 @@ class Unit_Views_accountPasswordTest extends OxidTestCase
         $oView = $this->getMock( 'Account_Password', array( 'getUser' ) );
         $oView->expects( $this->once() )->method( 'getUser' )->will( $this->returnValue( $oUser ) );
         $oView->changePassword();
+
+        oxRegistry::set('oxInputValidator', $oRealInputValidator);
     }
 }

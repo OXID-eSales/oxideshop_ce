@@ -83,7 +83,9 @@ class Account_Password extends Account
         $sNewPass  = oxRegistry::getConfig()->getRequestParameter( 'password_new', true );
         $sConfPass = oxRegistry::getConfig()->getRequestParameter( 'password_new_confirm', true );
 
-        if ( ( $oExcp = $oUser->checkPassword( $sNewPass, $sConfPass, true ) ) ) {
+        /** @var oxInputValidator $oInputValidator */
+        $oInputValidator = oxRegistry::get('oxInputValidator');
+        if ( ( $oExcp = $oInputValidator->checkPassword( $oUser, $sNewPass, $sConfPass, true ) ) ) {
             switch ( $oExcp->getMessage() ) {
                 case 'ERROR_MESSAGE_INPUT_EMPTYPASS':
                 case 'ERROR_MESSAGE_PASSWORD_TOO_SHORT':

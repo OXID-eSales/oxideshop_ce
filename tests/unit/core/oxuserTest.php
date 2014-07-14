@@ -35,19 +35,6 @@ class oxuserTestEmail extends oxemail
     }
 }
 
-
-class oxuserTestonlinevatidcheck
-{
-    public static $exception = null;
-    public function checkUID( $sParam1 )
-    {
-        if (self::$exception)
-            throw self::$exception;
-        else
-            throw new Exception( 'OK' );
-    }
-}
-
 class oxuserTest_oxnewssubscribed extends oxnewssubscribed
 {
     public $loadFromUserID;
@@ -141,8 +128,6 @@ class Unit_Core_oxuserTest extends OxidTestCase
     protected function setUp()
     {
         parent::setUp();
-
-        oxuserTestonlinevatidcheck::$exception = null;
         $oDb = oxDb::getDB();
 
         // selecting shop IDs
@@ -183,7 +168,6 @@ class Unit_Core_oxuserTest extends OxidTestCase
 
         // removing email wrapper module
         oxRemClassModule( 'oxuserTest_oxnewssubscribed' );
-        oxRemClassModule( 'oxuserTestonlinevatidcheck' );
         oxRemClassModule( 'Unit_oxuserTest_oxutils2' );
         oxRemClassModule( 'Unit_oxuserTest_oxUtilsServer' );
         oxRemClassModule( 'Unit_oxuserTest_oxUtilsServer2' );

@@ -1105,7 +1105,7 @@ class oxUser extends oxBase
         $oInputValidator->checkRequiredFields( $this, $aInvAddress, $aDelAddress );
 
         // 5. country check
-        $this->_checkCountries( $aInvAddress, $aDelAddress );
+        $oInputValidator->checkCountries( $this, $aInvAddress, $aDelAddress );
 
         // 6. vat id check.
             $this->_checkVatId( $aInvAddress );
@@ -1816,21 +1816,6 @@ class oxUser extends oxBase
             $this->_iCntRecommLists = $oDb->getOne( $sSelect );
         }
         return $this->_iCntRecommLists;
-    }
-
-    /**
-     * Checks if user defined countries (billing and delivery) are active
-     *
-     * @param array $aInvAddress billing address info
-     * @param array $aDelAddress delivery address info
-     *
-     * @depracated use oxInputValidator::checkCountries() instead
-     *
-     * @return null
-     */
-    protected function _checkCountries( $aInvAddress, $aDelAddress )
-    {
-        oxRegistry::get("oxInputValidator")->checkCountries( $this, $aInvAddress, $aDelAddress );
     }
 
     /**

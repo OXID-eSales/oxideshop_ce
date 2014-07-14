@@ -1349,20 +1349,6 @@ class Unit_utf8Test extends OxidTestCase
         $this->assertTrue( $oUser->login( $sValue, $sValue ) );
     }
 
-    public function testOxUserCheckPassword()
-    {
-        oxTestModules::addFunction( "oxInputValidator", "checkPassword", "{ throw new oxInputException('ERROR_MESSAGE_INPUT_EMPTYPASS'); }");
-        $sValue = 'ūЛü';
-
-        $oInputValidator = new oxInputValidator();
-        try {
-            $oInputValidator->checkPassword( new oxUser(), $sValue, $sValue, true );
-        } catch ( oxInputException $oExcp ) {
-            return;
-        }
-        $this->fail( 'Error in checkPassword function' );
-    }
-
     public function testOxInputValidatorCheckPassword()
     {
         $sValue = 'ūЛü';

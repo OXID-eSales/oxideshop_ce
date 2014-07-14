@@ -2164,56 +2164,6 @@ class Unit_Core_oxuserTest extends OxidTestCase
     }
 
     /**
-     * Testing password validator
-     */
-    // 1. for user without password - no checks
-    public function testCheckPasswordUserWithoutPasswordNothingMustHappen()
-    {
-        $oUser = $this->getProxyClass("oxuser");
-        $this->assertNull( $oUser->checkPassword( '', '' ) );
-    }
-    // 2. for user without password - and check if it is empty on
-    public function testCheckPasswordUserWithoutPassword()
-    {
-        oxTestModules::addFunction( "oxInputValidator", "checkPassword", "{ throw new oxInputException('ERROR_MESSAGE_INPUT_EMPTYPASS'); }");
-        try {
-            $oUser = $this->getProxyClass("oxuser");
-            $oUser->checkPassword( '', '', true );
-        } catch ( oxInputException $oEx ) {
-            $this->assertEquals( $oEx->getMessage(), 'ERROR_MESSAGE_INPUT_EMPTYPASS');
-            return;
-        }
-        $this->fail( 'failed test__checkPassword_passIsEmpty test ' );
-    }
-    // 3. for user without password - no checks
-    public function testCheckPasswordPassTooShort()
-    {
-        oxTestModules::addFunction( "oxInputValidator", "checkPassword", "{ throw new oxInputException('ERROR_MESSAGE_PASSWORD_TOO_SHORT'); }");
-        try {
-            $oUser = $this->getProxyClass("oxuser");
-            $oUser->checkPassword( 'xxx', '', true );
-        } catch ( oxInputException $oEx ) {
-            $this->assertEquals( $oEx->getMessage(), 'ERROR_MESSAGE_PASSWORD_TOO_SHORT');
-            return;
-        }
-        $this->fail( 'failed test__checkPassword_passTooShort test ' );
-    }
-    // 4. for user without password - no checks
-    public function testCheckPasswordPassDoNotMatch()
-    {
-        oxTestModules::addFunction( "oxInputValidator", "checkPassword", "{ throw new oxUserException('ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH'); }");
-        try {
-            $oUser = $this->getProxyClass("oxuser");
-            $oUser->checkPassword( 'xxxxxx', 'yyyyyy', $blCheckLenght = false  );
-        } catch ( oxUserException $oEx ) {
-            $this->assertEquals( $oEx->getMessage(), 'ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH');
-            return;
-        }
-        $this->fail( 'failed test__checkPassword_passDoNotMatch test ' );
-    }
-
-
-    /**
      * Testing required fields checker
      */
     // 1. defining required fields in aMustFillFields. While testing original

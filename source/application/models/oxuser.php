@@ -1095,11 +1095,11 @@ class oxUser extends oxBase
         // 1. checking user name
         $sLogin = $oInputValidator->checkLogin( $this, $sLogin, $aInvAddress );
 
-        // 2. cheking email
+        // 2. checking email
         $oInputValidator->checkEmail( $this, $sLogin, $aInvAddress );
 
         // 3. password
-        $this->checkPassword( $sPassword, $sPassword2, ((int) oxRegistry::getConfig()->getRequestParameter( 'option' ) == 3) );
+        $oInputValidator->checkPassword( $this, $sPassword, $sPassword2, ((int) oxRegistry::getConfig()->getRequestParameter( 'option' ) == 3) );
 
         // 4. required fields
         $this->_checkRequiredFields( $aInvAddress, $aDelAddress );
@@ -1816,23 +1816,6 @@ class oxUser extends oxBase
             $this->_iCntRecommLists = $oDb->getOne( $sSelect );
         }
         return $this->_iCntRecommLists;
-    }
-
-    /**
-     * Checking if user password is fine. In case of error
-     * exception is thrown
-     *
-     * @param string $sNewPass      new user password
-     * @param string $sConfPass     retyped user password
-     * @param bool   $blCheckLenght option to check password lenght
-     *
-     * @depracated use oxInputValidator::checkPassword() instead
-     *
-     * @return mixed
-     */
-    public function checkPassword( $sNewPass, $sConfPass, $blCheckLenght = false )
-    {
-        return oxRegistry::get("oxInputValidator")->checkPassword( $this, $sNewPass, $sConfPass, $blCheckLenght );
     }
 
     /**

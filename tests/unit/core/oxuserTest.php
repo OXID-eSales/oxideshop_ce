@@ -2164,39 +2164,6 @@ class Unit_Core_oxuserTest extends OxidTestCase
     }
 
     /**
-     * Testing email validator
-     */
-    // 1. user forgot to pass user login - must fail
-    public function testCheckEmailNoEmail()
-    {
-        oxTestModules::addFunction( "oxInputValidator", "checkEmail", "{ throw new oxInputException('EXCEPTION_INPUT_NOTALLFIELDS'); }");
-        try {
-            $oUser = $this->getProxyClass("oxuser");
-            $oUser->UNITcheckEmail( '', 1 );
-        } catch ( oxInputException $oEx ) {
-            $this->assertEquals( $oEx->getMessage(), 'EXCEPTION_INPUT_NOTALLFIELDS');
-            return;
-        }
-        $this->fail( 'failed test__checkLogin_userWithouPassDublicateLogin test ' );
-    }
-    // 2. checking is email validation is executed
-    public function testCheckEmailEmailValidation()
-    {
-        oxAddClassModule( 'Unit_oxuserTest_oxutils2', 'oxUtils' );
-        oxTestModules::addFunction( "oxInputValidator", "checkEmail", "{ throw new oxInputException('EXCEPTION_INPUT_NOVALIDEMAIL'); }");
-
-        try {
-            $oUser = $this->getProxyClass("oxuser");
-            $oUser->UNITcheckEmail( 'a@a.a', 1 );
-        } catch ( oxInputException $oEx ) {
-            $this->assertEquals( $oEx->getMessage(), 'EXCEPTION_INPUT_NOVALIDEMAIL' );
-            return;
-        }
-        $this->fail( 'failed test__checkLogin_userWithouPassDublicateLogin test ' );
-    }
-
-
-    /**
      * Testing password validator
      */
     // 1. for user without password - no checks

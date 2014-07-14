@@ -173,7 +173,7 @@ class oxSuperCfg
     /**
      * Active user getter
      *
-     * @return oxuser
+     * @return oxUser
      */
     public function getUser()
     {

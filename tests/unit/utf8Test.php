@@ -1354,13 +1354,13 @@ class Unit_utf8Test extends OxidTestCase
         oxTestModules::addFunction( "oxInputValidator", "checkPassword", "{ throw new oxInputException('ERROR_MESSAGE_INPUT_EMPTYPASS'); }");
         $sValue = 'ūЛü';
 
-        $oUser = oxNew( 'oxuser' );
+        $oInputValidator = new oxInputValidator();
         try {
-            $oUser->checkPassword( $sValue, $sValue, true );
+            $oInputValidator->checkPassword( new oxUser(), $sValue, $sValue, true );
         } catch ( oxInputException $oExcp ) {
             return;
         }
-        $this->fail( 'Error in _checkPassword function' );
+        $this->fail( 'Error in checkPassword function' );
     }
 
     public function testOxInputValidatorCheckPassword()

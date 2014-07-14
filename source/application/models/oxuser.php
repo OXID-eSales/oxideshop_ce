@@ -1810,21 +1810,6 @@ class oxUser extends oxBase
     }
 
     /**
-     * Checks if all values are filled up
-     *
-     * @param string $sFieldName   checking field name
-     * @param array  $aFieldValues field values
-     *
-     * @depracated use oxInputValidator::checkRequiredArrayFields() instead
-     *
-     * @return null
-     */
-    protected function _checkRequiredArrayFields( $sFieldName, $aFieldValues )
-    {
-        oxRegistry::get("oxInputValidator")->checkRequiredArrayFields( $this, $sFieldName, $aFieldValues );
-    }
-
-    /**
      * Automatically assigns user to specific groups
      * according to users country information
      *

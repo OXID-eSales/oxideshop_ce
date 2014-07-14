@@ -478,29 +478,6 @@ class Unit_Core_oxuserTest extends OxidTestCase
     }
 
 
-    public function testCheckRequiredArrayFieldsEmptyField()
-    {
-        oxTestModules::addFunction( "oxInputValidator", "checkRequiredArrayFields", "{ throw new oxInputException; }");
-
-        try {
-            $oUser = new oxuser();
-            $oUser->UNITcheckRequiredArrayFields( 'xxx', array( 'aaa' => ' ' ) );
-        } catch ( oxInputException $oEx ) {
-            return;
-        } catch ( Exception $oEx ) {
-        }
-        $this->fail('failed while runing testCheckRequiredArrayFields');
-    }
-    public function testCheckRequiredArrayFieldsFilledField()
-    {
-        try {
-            $oUser = new oxuser();
-            $oUser->UNITcheckRequiredArrayFields( 'xxx', array( 'aaa' => 'xxx' ) );
-        } catch ( Exception $oEx ) {
-            $this->fail('failed while runing testCheckRequiredArrayFields');
-        }
-    }
-
     public function testPrepareSaltDecodeSalt()
     {
         $sSalt = '123456789';

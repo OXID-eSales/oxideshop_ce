@@ -471,30 +471,6 @@ class Unit_Core_oxuserTest extends OxidTestCase
         $this->assertEquals( $sAddressId, $oUser->getSelectedAddressId() );
     }
 
-    public function testCheckCountriesWrongCountries()
-    {
-        oxTestModules::addFunction( "oxInputValidator", "checkCountries", "{ throw new oxUserException; }");
-
-        try {
-            $oUser = new oxuser();
-            $oUser->UNITcheckCountries( array( "oxuser__oxcountryid" => "xxx" ), array( "oxaddress__oxcountryid" => "yyy" ) );
-        } catch ( oxUserException $oExcp ) {
-            return;
-        }
-        $this->fail( "error in oxUser::_checkCountries()" );
-    }
-
-    public function testCheckCountriesGoodCountries()
-    {
-        try {
-            $oUser = new oxuser();
-            $oUser->UNITcheckCountries( array( "oxuser__oxcountryid" => "a7c40f631fc920687.20179984" ), array( "oxaddress__oxcountryid" => "a7c40f6320aeb2ec2.72885259" ) );
-        } catch ( oxUserException $oExcp ) {
-            $this->fail( "error in oxUser::_checkCountries()" );
-        }
-    }
-
-
     public function testAllowDerivedUpdate()
     {
         $oUser = new oxuser();
@@ -2164,106 +2140,6 @@ class Unit_Core_oxuserTest extends OxidTestCase
     }
 
     /**
-     * Testing VAT id checker - no check if no vat id or company name in params list
-     */
-    public function testCheckVatIdWithoutVatIdOrCompanyName()
-    {
-        $oUser = $this->getProxyClass("oxUser");
-
-        try {
-            $oUser->UNITcheckVatId( array('oxuser__oxustid' => 1 ) );
-        } catch ( Exception $oException ) {
-            $this->fail( 'Check performed when company name param is empty' );
-        }
-
-        try {
-            $oUser->UNITcheckVatId( array('oxuser__oxustid' => 0) );
-        } catch ( Exception $oException ) {
-            $this->fail( 'Check performed when vat id param is empty' );
-        }
-    }
-
-    /**
-     * Testing VAT id checker - with vat id, company name, but without or bad country id
-     */
-    public function testCheckVatIdWithBadCountryId()
-    {
-        try {
-            $oUser = $this->getProxyClass("oxUser");
-            $oUser->UNITcheckVatId( array( 'oxuser__oxustid' => 1, 'oxuser__oxcountryid' => null ) );
-        } catch ( Exception $oException ) {
-            $this->fail( 'Vat Id should not be checked without country id' );
-        }
-    }
-
-    /**
-     * Testing VAT id checker - with home country id
-     */
-    public function testCheckVatIdWithHomeCountryId()
-    {
-        $oUser = $this->getProxyClass("oxUser");
-        $aHome = oxRegistry::getConfig()->getConfigParam( 'aHomeCountry' );
-
-        try {
-            $oUser->UNITcheckVatId( array('oxuser__oxustid' => 'DE123', 'oxuser__oxcountryid' => $aHome[0]) );
-        } catch ( Exception $oException ) {
-            $this->fail( "Checking home country failed: ".$oException->getMessage() );
-        }
-    }
-
-    /**
-     * Testing VAT id checker - with foreign country id in which disabled vat checking
-     */
-    public function testCheckVatIdWithForeignCountryWithDisabledVatChecking()
-    {
-        $oUser = $this->getProxyClass("oxUser");
-
-        $sForeignCountryId = "a7c40f6321c6f6109.43859248"; //Switzerland
-
-        try {
-            $oUser->UNITcheckVatId( array('oxuser__oxustid' => 1, 'oxuser__oxcountryid' => $sForeignCountryId) );
-        } catch ( Exception $oException ) {
-            $this->fail( "while trying to check foreign country business user with vat id, but country does not allow checking" );
-        }
-    }
-
-    /**
-     * Testing VAT id checker - with foreign country id and bad vat id
-     */
-    public function testCheckVatIdWithForeignCountryIdAndBadVatId()
-    {
-        oxTestModules::addFunction('oxInputValidator', 'checkVatId', '{$oEx = oxNew("oxInputException"); $oEx->setMessage("VAT_MESSAGE_ID_NOT_VALID"); throw $oEx;}');
-
-        $sForeignCountryId = "a7c40f6320aeb2ec2.72885259"; //Austria
-
-        try {
-            $oUser = oxNew( "oxUser" );
-            $oUser->UNITcheckVatId( array('oxuser__oxustid' => 1, 'oxuser__oxcountryid' => $sForeignCountryId) );
-            $this->fail( "while trying to check foreign country business user with bad vat id" );
-        } catch ( oxInputException $oException ) {
-                $this->assertEquals( 'VAT_MESSAGE_ID_NOT_VALID', $oException->getMessage() );
-        }
-    }
-
-    /**
-     * Testing VAT id checker - with foreign country id and good vat id
-     */
-    public function testCheckVatId()
-    {
-
-        $oUser = $this->getProxyClass("oxUser");
-
-        $sForeignCountryId = "a7c40f6320aeb2ec2.72885259"; //Austria
-
-        try {
-            $oUser->UNITcheckVatId( array('oxuser__oxustid' => 'AT123', 'oxuser__oxcountryid' => $sForeignCountryId) );
-        } catch ( oxInputException $oException ) {
-            $this->fail( "while trying to check foreign country business user with good vat id" );
-        }
-    }
-
-
-    /**
      * Testing if method checkValues performs all defined actions
      */
     public function testCheckValues()
@@ -2468,16 +2344,19 @@ class Unit_Core_oxuserTest extends OxidTestCase
     // 1. all data "is fine" (emulated), just checking if all necessary methods were called
     public function testChangeUserDataAllDataIsFine()
     {
-        //modConfig::getInstance()->addClassFunction( 'hasModule', create_function( '$sModule', 'return true;' ) );
-            $oUser = $this->getMock("oxUser", array("checkValues", "assign", "save", "_setAutoGroups"));
+        $oRealInputValidator = oxRegistry::get('oxInputValidator');
 
+        $oUser = $this->getMock("oxUser", array("checkValues", "assign", "save", "_setAutoGroups"));
         $oUser->expects( $this->once() )->method( 'checkValues' );
         $oUser->expects( $this->once() )->method( 'assign' );
         $oUser->expects( $this->once() )->method( 'save' )->will($this->returnValue(true));
         $oUser->expects( $this->once() )->method( '_setAutoGroups' );
 
+
         $oUser->changeUserData( null, null, null, null, null, null, null, null, null, null );
 
+
+        oxRegistry::set('oxInputValidator', $oRealInputValidator);
     }
 
     /**

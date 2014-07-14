@@ -1108,7 +1108,7 @@ class oxUser extends oxBase
         $oInputValidator->checkCountries( $this, $aInvAddress, $aDelAddress );
 
         // 6. vat id check.
-            $this->_checkVatId( $aInvAddress );
+            $oInputValidator->checkVatId( $this, $aInvAddress );
 
 
         // throwing first validation error
@@ -1188,24 +1188,15 @@ class oxUser extends oxBase
      */
     public function changeUserData( $sUser, $sPassword, $sPassword2, $aInvAddress, $aDelAddress )
     {
-
         // validating values before saving. If validation fails - exception is thrown
         $this->checkValues( $sUser, $sPassword, $sPassword2, $aInvAddress, $aDelAddress );
         // input data is fine - lets save updated user info
 
-
-
         $this->assign( $aInvAddress );
-
-
-
 
 
         // update old or add new delivery address
         $this->_assignAddress( $aDelAddress );
-
-
-
 
         // saving new values
         if ( $this->save() ) {
@@ -1831,21 +1822,6 @@ class oxUser extends oxBase
     protected function _checkRequiredArrayFields( $sFieldName, $aFieldValues )
     {
         oxRegistry::get("oxInputValidator")->checkRequiredArrayFields( $this, $sFieldName, $aFieldValues );
-    }
-
-    /**
-     * Checks if user passed VAT id is valid. Exception is thrown
-     * if id is not valid
-     *
-     * @param array $aInvAddress user input array
-     *
-     * @depracated use oxInputValidator::checkVatId() instead
-     *
-     * @return null
-     */
-    protected function _checkVatId( $aInvAddress )
-    {
-        oxRegistry::get("oxInputValidator")->checkVatId( $this, $aInvAddress );
     }
 
     /**

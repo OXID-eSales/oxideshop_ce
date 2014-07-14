@@ -1096,7 +1096,7 @@ class oxUser extends oxBase
         $sLogin = $oInputValidator->checkLogin( $this, $sLogin, $aInvAddress );
 
         // 2. cheking email
-        $this->_checkEmail( $sLogin );
+        $oInputValidator->checkEmail( $this, $sLogin, $aInvAddress );
 
         // 3. password
         $this->checkPassword( $sPassword, $sPassword2, ((int) oxRegistry::getConfig()->getRequestParameter( 'option' ) == 3) );
@@ -1816,21 +1816,6 @@ class oxUser extends oxBase
             $this->_iCntRecommLists = $oDb->getOne( $sSelect );
         }
         return $this->_iCntRecommLists;
-    }
-
-    /**
-     * Checks if email (used as login) is not empty and is
-     * valid. On any error exception is thrown.
-     *
-     * @param string $sEmail user email/login
-     *
-     * @depracated use oxInputValidator::checkEmail() instead
-     *
-     * @return null
-     */
-    protected function _checkEmail( $sEmail )
-    {
-        oxRegistry::get("oxInputValidator")->checkEmail( $this, $sEmail );
     }
 
     /**

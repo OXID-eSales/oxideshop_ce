@@ -307,8 +307,8 @@ class Unit_Core_oxUserTest extends OxidTestCase
         $oDb->execute( $sSql );
         $this->getConfig()->setConfigParam( "dPointsForRegistration", 10 );
         $this->getConfig()->setConfigParam( "dPointsForInvitation", false );
-        modSession::getInstance()->setVar( 'su', 'oxdefaultadmin' );
-        modSession::getInstance()->setVar( 're', md5('oxemail') );
+        $this->getSession()->setVar( 'su', 'oxdefaultadmin' );
+        $this->getSession()->setVar( 're', md5('oxemail') );
 
         $oUser = $this->getMock( "oxuser", array( "save" ) );
         $oUser->expects( $this->once() )->method( 'save' )->will($this->returnValue( true ) );
@@ -1136,7 +1136,7 @@ class Unit_Core_oxUserTest extends OxidTestCase
     // 2. user initial rights are malladmin
     public function testGetUserRightsInitialAdminRightsSessionUserIsAdmin()
     {
-        modSession::getInstance()->setVar("usr", "oxdefaultadmin");
+        $this->getSession()->setVar("usr", "oxdefaultadmin");
 
         $oUser = $this->getProxyClass("oxUser");
         $oUser->oxuser__oxrights = new oxField('malladmin', oxField::T_RAW);
@@ -1145,7 +1145,7 @@ class Unit_Core_oxUserTest extends OxidTestCase
     // 3. user initial rights are "user"
     public function testGetUserRightsInitialAdminRightsSessionUserIsSimpleUser()
     {
-        modSession::getInstance()->setVar("usr", null);
+        $this->getSession()->setVar("usr", null);
         $oUser = $this->getProxyClass("oxUser");
         $oUser->oxuser__oxrights = new oxField('malladmin', oxField::T_RAW);
         $this->assertEquals( 'user', $oUser->UNITgetUserRights() );
@@ -1162,7 +1162,7 @@ class Unit_Core_oxUserTest extends OxidTestCase
         $oUser->oxuser__oxrights = new oxField(oxRegistry::getConfig()->GetShopId(), oxField::T_RAW);
         $oUser->save();
 
-        modSession::getInstance()->setVar("usr", $oUser->oxuser__oxid->value);
+        $this->getSession()->setVar("usr", $oUser->oxuser__oxid->value);
 
         $oUser = $this->getProxyClass("oxUser");
         $oUser->oxuser__oxrights = new oxField(oxRegistry::getConfig()->GetShopId(), oxField::T_RAW);
@@ -1504,7 +1504,7 @@ class Unit_Core_oxUserTest extends OxidTestCase
 
         $oUser = $this->createUser();
         $sUserId = $oUser->getId();
-        modSession::getInstance()->addClassFunction( 'getUser', create_function( '', '$oUser = oxNew( "oxuser" ); $oUser->load( "'.$sUserId.'" ); return $oUser;' ) );
+        $this->getSession()->addClassFunction( 'getUser', create_function( '', '$oUser = oxNew( "oxuser" ); $oUser->load( "'.$sUserId.'" ); return $oUser;' ) );
 
         // checking user country
         $sQ = 'select oxcountryid from oxuser where oxid = "'.$sUserId.'" ';

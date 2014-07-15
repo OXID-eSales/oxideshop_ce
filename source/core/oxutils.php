@@ -97,22 +97,6 @@ class oxUtils extends oxSuperCfg
     protected $_blSeoIsActive = null;
 
     /**
-     * Strips magic quotes
-     *
-     * @return null
-     */
-    public function stripGpcMagicQuotes()
-    {
-        if (!get_magic_quotes_gpc()) {
-            return;
-        }
-        $_REQUEST = self::_stripQuotes($_REQUEST);
-        $_POST = self::_stripQuotes($_POST);
-        $_GET = self::_stripQuotes($_GET);
-        $_COOKIE = self::_stripQuotes($_COOKIE);
-    }
-
-    /**
      * OXID specific string manipulation method
      *
      * @param string $sVal string
@@ -1316,18 +1300,6 @@ class oxUtils extends oxSuperCfg
             $this->writeToLog( $sLogMsg, "log.txt" );
         }
 
-    }
-
-    /**
-     * Recursively removes slashes from arrays
-     *
-     * @param mixed $mInput the input from which the slashes should be removed
-     *
-     * @return mixed
-     */
-    protected function _stripQuotes($mInput)
-    {
-        return is_array($mInput) ? array_map( array( $this, '_stripQuotes' ), $mInput) : stripslashes( $mInput );
     }
 
     /**

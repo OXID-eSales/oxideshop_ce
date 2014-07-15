@@ -42,9 +42,6 @@ require_once OX_BASE_PATH . 'core/oxfunctions.php';
 //sets default PHP ini params
 setPhpIniParams();
 
-//strips magics quote if any is set
-stripGpcMagicQuotes();
-
 //init config.inc.php file reader
 $oConfigFile = new oxConfigFile( OX_BASE_PATH . "config.inc.php" );
 

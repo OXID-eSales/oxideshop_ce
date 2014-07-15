@@ -28,7 +28,6 @@ ini_set('session.name', 'sid' );
 ini_set('session.use_cookies', 0 );
 ini_set('session.use_trans_sid', 0);
 ini_set('url_rewriter.tags', '');
-ini_set('magic_quotes_runtime', 0);
 
 /**
  * Includes core setup file

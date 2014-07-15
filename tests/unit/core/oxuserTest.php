@@ -2192,7 +2192,6 @@ class Unit_Core_oxUserTest extends OxidTestCase
         $this->assertEquals( $oActUser->oxuser__oxusername->value, oxADMIN_LOGIN );
     }
 
-
     /**
      * oxuser::login() test. Checks if login process throws an exception when cookies are not
      * supported for admin.

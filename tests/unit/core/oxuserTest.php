@@ -24,17 +24,20 @@ require_once realpath( "." ).'/unit/OxidTestCase.php';
 require_once realpath( "." ).'/unit/test_config.inc.php';
 
 /**
- * Extending mailer
+ * Mocks sendNewsletterDBOptInMail in oxEmail class.
  */
 class oxuserTestEmail extends oxemail
 {
-    static $blSend = true;
+    public static $blSend = true;
     public function sendNewsletterDBOptInMail( $oUser, $sSubject = null )
     {
        return self::$blSend;
     }
 }
 
+/**
+ * Mocks loadFromUserID and loadFromEMail in oxNewsSubscribed class.
+ */
 class oxuserTest_oxnewssubscribed extends oxnewssubscribed
 {
     public $loadFromUserID;
@@ -52,14 +55,9 @@ class oxuserTest_oxnewssubscribed extends oxnewssubscribed
     }
 }
 
-
-class Unit_oxuserTest_oxutils2 extends oxutils
-{
-    public function isValidEmail( $sEmail )
-    {
-        return false;
-    }
-}
+/**
+ * Mocks getOxCookie in oxUtilsServer class.
+ */
 class Unit_oxuserTest_oxUtilsServer extends oxUtilsServer
 {
     public function getOxCookie( $sName = null )
@@ -67,6 +65,10 @@ class Unit_oxuserTest_oxUtilsServer extends oxUtilsServer
         return true;
     }
 }
+
+/**
+ * Mocks setOxCookie, getOxCookie and delOxCookie in oxUtilsServer class.
+ */
 class Unit_oxuserTest_oxUtilsServer2 extends oxUtilsServer
 {
 
@@ -108,9 +110,9 @@ class Unit_oxuserTest_oxUtilsServer2 extends oxUtilsServer
 /**
  * Testing oxuser class
  */
-class Unit_Core_oxuserTest extends OxidTestCase
+class Unit_Core_oxUserTest extends OxidTestCase
 {
-    protected $_aShops = array();
+    protected $_aShops = array(1);
     protected $_aUsers = array();
 
     protected $_aDynPaymentFields = array( 'kktype'  => 'Test Bank',
@@ -119,32 +121,6 @@ class Unit_Core_oxuserTest extends OxidTestCase
                                           'kkyear'  => 'Test User',
                                           'kkname'  => 'Test Name',
                                           'kkpruef' => '123456');
-
-    /**
-     * Initialize the fixture.
-     *
-     * @return null
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-        $oDb = oxDb::getDB();
-
-        // selecting shop IDs
-        $sQ = 'select oxid from oxshops order by oxid';
-        $rs = $oDb->Execute( $sQ );
-        if ( $rs != false && $rs->RecordCount() > 0 ) {
-            while ( !$rs->EOF ) {
-                $this->_aShops[] = $rs->fields[0];
-                $rs->MoveNext();
-            }
-        }
-
-        // setting up users
-        foreach ( $this->_aShops as $sShopID ) {
-            $this->setupUsers( $sShopID );
-        }
-    }
 
     /**
      * Tear down the fixture.
@@ -168,7 +144,6 @@ class Unit_Core_oxuserTest extends OxidTestCase
 
         // removing email wrapper module
         oxRemClassModule( 'oxuserTest_oxnewssubscribed' );
-        oxRemClassModule( 'Unit_oxuserTest_oxutils2' );
         oxRemClassModule( 'Unit_oxuserTest_oxUtilsServer' );
         oxRemClassModule( 'Unit_oxuserTest_oxUtilsServer2' );
         oxRemClassModule( 'oxuserTestEmail' );
@@ -179,9 +154,8 @@ class Unit_Core_oxuserTest extends OxidTestCase
         $oGroup = new oxgroups();
         $oGroup->delete( '_testGroup' );
 
-        $oUser = oxNew( 'oxuser' );
-
         // removing users
+        $oUser = oxNew( 'oxuser' );
         foreach ( $this->_aUsers as $aShopUsers ) {
             foreach ( $aShopUsers as $sUserId ) {
                 $oUser->delete( $sUserId );
@@ -196,96 +170,84 @@ class Unit_Core_oxuserTest extends OxidTestCase
     }
 
     /**
-     * Setting up users
+     * Creates user.
+     *
+     * @param string $sUserName
+     * @param int $iActive
+     * @param string $sRights either user or malladmin
+     * @return oxUser
      */
-    protected function setupUsers( $sShopID )
+    protected function createUser($sUserName = null, $iActive = 1, $sRights = 'user')
     {
-        $myUtils  = oxRegistry::getUtils();
-        $myConfig = oxRegistry::getConfig();
+        $oUtils  = oxRegistry::getUtils();
         $oDb     = oxDb::getDB();
 
+        $iLastNr = count($this->_aUsers);
+        $sShopID = 1;
+
+        $oUser = oxNew( 'oxuser' );
+        $oUser->oxuser__oxshopid = new oxField($sShopID, oxField::T_RAW);
+        $oUser->oxuser__oxactive = new oxField($iActive, oxField::T_RAW);
+        $oUser->oxuser__oxrights = new oxField($sRights, oxField::T_RAW);
+
+        // setting name
+        $sUserName = $sUserName ? $sUserName : 'test'.$iLastNr.'@oxid-esales.com';
+        $oUser->oxuser__oxusername = new oxField($sUserName, oxField::T_RAW);
+        $oUser->oxuser__oxpassword = new oxField(crc32($sUserName), oxField::T_RAW);
+        $oUser->oxuser__oxcountryid = new oxField("testCountry", oxField::T_RAW);
+        $oUser->save();
+
+        $sUserId = $oUser->getId();
+        $sId = oxUtilsObject::getInstance()->generateUID();
+
         // loading user groups
-        $sQ = 'select oxid from oxgroups';
-        $rs = $oDb->Execute( $sQ );
-        if ( $rs != false && $rs->RecordCount() > 0 ) {
-            while ( !$rs->EOF ) {
-                $this->aGroupIds[] = $rs->fields[0];
-                $rs->MoveNext();
-            }
-        }
+        $sGroupId  = $oDb->getOne( 'select oxid from oxgroups order by rand() ' );
+        $sQ = 'insert into oxobject2group (oxid,oxshopid,oxobjectid,oxgroupsid) values ( "'.$sUserId.'", "'.$sShopID.'", "'.$sUserId.'", "'.$sGroupId.'" )';
+        $oDb->Execute( $sQ );
 
-        $aActives = array( '0', '1' );
-        $aRights  = array( 'user', 'malladmin' );
-        $sTable   = getViewName( 'oxuser' );
-        $iLastCustNr = 0;//( int ) $oDb->getOne( 'select max( oxcustnr ) from '.$sTable ) + 1;
+        $sQ = 'insert into oxorder ( oxid, oxshopid, oxuserid, oxorderdate ) values ( "'.$sId.'", "'.$sShopID.'", "'.$sUserId.'", "'.date( 'Y-m-d  H:i:s', time() + 3600 ).'" ) ';
+        $oDb->Execute( $sQ );
+
+        // adding article to order
+        $sArticleID = $oDb->getOne( 'select oxid from oxarticles order by rand() ' );
+        $sQ = 'insert into oxorderarticles ( oxid, oxorderid, oxamount, oxartid, oxartnum ) values ( "'.$sId.'", "'.$sId.'", 1, "'.$sArticleID.'", "'.$sArticleID.'" ) ';
+        $oDb->Execute( $sQ );
+
+        // adding article to basket
+        $sQ = 'insert into oxuserbaskets ( oxid, oxuserid, oxtitle ) values ( "'.$sUserId.'", "'.$sUserId.'", "oxtest" ) ';
+        $oDb->Execute( $sQ );
+
+        $sArticleID = $oDb->getOne( 'select oxid from oxarticles order by rand() ' );
+        $sQ = 'insert into oxuserbasketitems ( oxid, oxbasketid, oxartid, oxamount ) values ( "'.$sUserId.'", "'.$sUserId.'", "'.$sArticleID.'", "1" ) ';
+        $oDb->Execute( $sQ );
+
+        // creating test address
         $sCountryId  = $oDb->getOne( 'select oxid from oxcountry where oxactive = "1"' );
+        $sQ = 'insert into oxaddress ( oxid, oxuserid, oxaddressuserid, oxcountryid ) values ( "test_user'.$iLastNr.'", "'.$sUserId.'", "'.$sUserId.'", "'.$sCountryId.'" ) ';
+        $oDb->Execute( $sQ );
 
-        for ( $iCnt = 0; $iCnt < 5; $iCnt++ ) {
-            $oUser = oxNew( 'oxuser' );
-            $oUser->oxuser__oxshopid = new oxField($sShopID, oxField::T_RAW);
-
-            // marking as active
-            $iActive = $aActives[ rand( 0, count( $aActives ) - 1 ) ];
-            $oUser->oxuser__oxactive = new oxField($iActive, oxField::T_RAW);
-
-            // setting rights
-            $sRights = $aRights[ rand( 0, count( $aRights ) - 1 ) ];
-            $oUser->oxuser__oxrights = new oxField($sRights, oxField::T_RAW);
-
-            // setting name
-            $iLastCustNr++;
-            $oUser->oxuser__oxusername = new oxField('test'.$iLastCustNr.'@oxid-esales.com', oxField::T_RAW);
-            $oUser->oxuser__oxpassword = new oxField(crc32( 'Test'.$sRights. ''.$sShopID.'@oxid-esales.com' ), oxField::T_RAW);
-            //$oUser->oxuser__oxcustnr = new oxField($iLastCustNr, oxField::T_RAW);
-            $oUser->oxuser__oxcountryid = new oxField("testCountry", oxField::T_RAW);
-            $oUser->save();
-
-            $this->_aUsers[ $sShopID ][] = $oUser->getId();
-
-            $sGroupId = $this->aGroupIds[ rand( 0, count( $this->aGroupIds ) - 1 ) ];
-            $sQ = 'insert into oxobject2group (oxid,oxshopid,oxobjectid,oxgroupsid) values ( "'.$oUser->getId().'", "'.$sShopID.'", "'.$oUser->getId().'", "'.$sGroupId.'" )';
-            $oDb->Execute( $sQ );
-
-             $sId = oxUtilsObject::getInstance()->generateUID();
-
-            $sQ = 'insert into oxorder ( oxid, oxshopid, oxuserid, oxorderdate ) values ( "'.$sId.'", "'.$sShopID.'", "'.$oUser->getId().'", "'.date( 'Y-m-d  H:i:s', time() + 3600 ).'" ) ';
-            $oDb->Execute( $sQ );
-
-            // adding article to order
-            $sArticleID = $oDb->getOne( 'select oxid from oxarticles order by rand() ' );
-            $sQ = 'insert into oxorderarticles ( oxid, oxorderid, oxamount, oxartid, oxartnum ) values ( "'.$sId.'", "'.$sId.'", 1, "'.$sArticleID.'", "'.$sArticleID.'" ) ';
-            $oDb->Execute( $sQ );
-
-            // adding article to basket
-            $sQ = 'insert into oxuserbaskets ( oxid, oxuserid, oxtitle ) values ( "'.$oUser->getId().'", "'.$oUser->getId().'", "oxtest" ) ';
-            $oDb->Execute( $sQ );
-
-            $sArticleID = $oDb->getOne( 'select oxid from oxarticles order by rand() ' );
-            $sQ = 'insert into oxuserbasketitems ( oxid, oxbasketid, oxartid, oxamount ) values ( "'.$oUser->getId().'", "'.$oUser->getId().'", "'.$sArticleID.'", "1" ) ';
-            $oDb->Execute( $sQ );
-
-            // creating test address
-            $sQ = 'insert into oxaddress ( oxid, oxuserid, oxaddressuserid, oxcountryid ) values ( "test_user'.$iCnt.'", "'.$oUser->getId().'", "'.$oUser->getId().'", "'.$sCountryId.'" ) ';
-            $oDb->Execute( $sQ );
-
-            // creating test executed user payment
-            $aDynvalue = $this->_aDynPaymentFields;
-            $oPayment = oxNew( 'oxpayment' );
-            $oPayment->load( 'oxidcreditcard');
-            $oPayment->setDynValues($myUtils->assignValuesFromText( $oPayment->oxpayments__oxvaldesc->value, true, true, true));
-            $aDynValues = $oPayment->getDynValues();
-            while (list($key, $oVal) = each($aDynValues )) {
-                $oVal = new oxField($aDynvalue[$oVal->name], oxField::T_RAW);
-                $oPayment->setDynValue($key, $oVal);
-                $aDynVal[$oVal->name] = $oVal->value;
-            }
-            $sDynValues = '';
-            if( isset( $aDynVal))
-                $sDynValues = $myUtils->assignValuesToText( $aDynVal);
-
-            $sQ = 'insert into oxuserpayments ( oxid, oxuserid, oxpaymentsid, oxvalue ) values ( "'.$sId.'", "'.$oUser->oxuser__oxid->value.'", "oxidcreditcard", "'.$sDynValues.'" ) ';
-            $oDb->Execute( $sQ );
+        // creating test executed user payment
+        $aDynvalue = $this->_aDynPaymentFields;
+        $oPayment = oxNew( 'oxpayment' );
+        $oPayment->load( 'oxidcreditcard');
+        $oPayment->setDynValues($oUtils->assignValuesFromText( $oPayment->oxpayments__oxvaldesc->value, true, true, true));
+        $aDynValues = $oPayment->getDynValues();
+        while (list($key, $oVal) = each($aDynValues )) {
+            $oVal = new oxField($aDynvalue[$oVal->name], oxField::T_RAW);
+            $oPayment->setDynValue($key, $oVal);
+            $aDynVal[$oVal->name] = $oVal->value;
         }
+        $sDynValues = '';
+        if( isset( $aDynVal)) {
+            $sDynValues = $oUtils->assignValuesToText( $aDynVal);
+        }
+
+        $sQ = 'insert into oxuserpayments ( oxid, oxuserid, oxpaymentsid, oxvalue ) values ( "'.$sId.'", "'.$sUserId.'", "oxidcreditcard", "'.$sDynValues.'" ) ';
+        $oDb->Execute( $sQ );
+
+        $this->_aUsers[$sUserId] = $oUser;
+
+        return $oUser;
     }
 
     /**
@@ -295,20 +257,16 @@ class Unit_Core_oxuserTest extends OxidTestCase
      */
     public function testGetOrdersWhenPagingIsOn()
     {
-        $myUtils  = oxUtilsObject::getInstance();
+        $oUtils  = oxUtilsObject::getInstance();
         $oDb     = oxDb::getDB();
 
-        $aUsers  = current( $this->_aUsers );
-        $sUserId = current( $aUsers );
-
-        $oUser = new oxuser();
-        $oUser->load( $sUserId );
-
+        $oUser = $this->createUser();
+        $sUserId = $oUser->getId();
         $sShopID = $oUser->getShopId();
 
         // adding some more orders..
         for ( $i = 0; $i < 21; $i++ ) {
-            $sId = $myUtils->generateUID();
+            $sId = $oUtils->generateUID();
 
             $sQ = 'insert into oxorder ( oxid, oxshopid, oxuserid, oxorderdate ) values ( "'.$sId.'", "'.$sShopID.'", "'.$oUser->getId().'", "'.date( 'Y-m-d  H:i:s', time() + 3600 ).'" ) ';
             $oDb->Execute( $sQ );
@@ -2708,7 +2666,7 @@ class Unit_Core_oxuserTest extends OxidTestCase
     {
         reset( $this->_aShops );
         $sShopId = reset( $this->_aShops );
-        $sUserId = $this->_aUsers[$sShopId][1];
+        $sUserId = $this->_aUsers[$sShopId][0];
         $oUser = new oxuser();
         $oUser->load( $sUserId );
 

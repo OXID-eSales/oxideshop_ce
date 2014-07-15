@@ -1683,10 +1683,10 @@ class Unit_Core_oxUserTest extends OxidTestCase
 
         $oUser->oxuser__oxdisableautogrp = new oxField(false, oxField::T_RAW);
 
-        $oBasket = new oxBasket();
+        $oBasket = $this->getProxyClass("oxBasket");
         $oPrice = oxNew("oxPrice");
         $oPrice->setPrice(9);
-        $oBasket->UNIToPrice = $oPrice;
+        $oBasket->setNonPublicVar("_oPrice", $oPrice);
 
         $iSuccess  = 1;
         $oUser->onOrderExecute( $oBasket, $iSuccess );
@@ -1715,10 +1715,10 @@ class Unit_Core_oxUserTest extends OxidTestCase
         $sQ = 'insert into oxobject2group (oxid,oxshopid,oxobjectid,oxgroupsid) values ( "'.oxUtilsObject::getInstance()->generateUID().'", "'.$sShopId.'", "'.$sUserId.'", "oxidnotyetordered" )';
         $oDb->Execute( $sQ );
 
-        $oBasket = new oxBasket();
+        $oBasket = $this->getProxyClass("oxBasket");
         $oPrice = oxNew("oxPrice");
         $oPrice->setPrice(699);
-        $oBasket->UNIToPrice = $oPrice;
+        $oBasket->setNonPublicVar("_oPrice", $oPrice);
 
         $iSuccess = 1;
         $oUser->onOrderExecute( $oBasket, $iSuccess );
@@ -2426,7 +2426,7 @@ class Unit_Core_oxUserTest extends OxidTestCase
         $aDelAddress['oxaddress__oxcountryid'] = 'a7c40f631fc920687.20179984';
         $aDelAddress['oxaddress__oxcompany'] = 'xxx & CO.';
 
-        modConfig::setRequestParameter( 'oxaddressid', 'xxx' );
+        $this->getConfig()->setRequestParameter( 'oxaddressid', 'xxx' );
 
         $oUser->UNITassignAddress( $aDelAddress );
         $oDb = $this->getDb();
@@ -2444,8 +2444,8 @@ class Unit_Core_oxUserTest extends OxidTestCase
     {
         $oUser = $this->createUser();
 
-        modConfig::setRequestParameter( 'deladrid', null );
-        modConfig::setRequestParameter( 'oxaddressid', 'test_user1' );
+        $this->getConfig()->setRequestParameter( 'deladrid', null );
+        $this->getConfig()->setRequestParameter( 'oxaddressid', 'test_user1' );
 
         $oAddress = $oUser->getSelectedAddress();
         $this->assertEquals( 'test_user1', $oAddress->getId() );
@@ -2462,8 +2462,8 @@ class Unit_Core_oxUserTest extends OxidTestCase
         $aDelAddress['oxaddress__oxfname'] = 'xxx';
         $aDelAddress['oxaddress__oxlname'] = 'xxx';
 
-        modConfig::setRequestParameter( 'deladrid', null );
-        modConfig::setRequestParameter( 'oxaddressid', 'xxx' );
+        $this->getConfig()->setRequestParameter( 'deladrid', null );
+        $this->getConfig()->setRequestParameter( 'oxaddressid', 'xxx' );
 
         $oUser->UNITassignAddress( $aDelAddress );
 

@@ -344,7 +344,7 @@ class oxUser extends oxBase
      *
      * @param string $sUserId object ID (default is null)
      *
-     * @return object
+     * @return array
      */
     public function getUserAddresses( $sUserId = null )
     {

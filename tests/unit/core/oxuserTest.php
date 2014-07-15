@@ -129,18 +129,17 @@ class Unit_Core_oxUserTest extends OxidTestCase
      */
     protected function tearDown()
     {
-        $oActUser = new oxuser();
-        if ( $oActUser->loadActiveUser() ) {
-            $oActUser->logout();
+        $oUser = new oxuser();
+        if ( $oUser->loadActiveUser() ) {
+            $oUser->logout();
         }
+        $oUser->setAdminMode( null );
+        oxRegistry::getSession()->deleteVariable('deladrid');
 
         oxRegistry::getSession()->setVariable( 'usr', null );
         oxRegistry::getSession()->setVariable( 'auth', null );
 
         // resetting globally admin mode
-        $oUser = new oxUser();
-        $oUser->setAdminMode( null );
-        oxRegistry::getSession()->deleteVariable('deladrid');
 
         // removing email wrapper module
         oxRemClassModule( 'oxuserTest_oxnewssubscribed' );
@@ -151,11 +150,9 @@ class Unit_Core_oxUserTest extends OxidTestCase
         $oGroup = new oxgroups();
         $oGroup->delete( '_testGroup' );
 
-        $oGroup = new oxgroups();
-        $oGroup->delete( '_testGroup' );
-
         // removing users
         foreach ( $this->_aUsers as $sUserId => $oUser ) {
+            /** @var oxUser $oUser */
             $oUser->delete( $sUserId );
             unset($this->_aUsers[$sUserId]);
         }

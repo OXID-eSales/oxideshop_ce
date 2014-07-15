@@ -305,8 +305,8 @@ class Unit_Core_oxUserTest extends OxidTestCase
         $oDb = oxDb::getDB();
         $sSql = "INSERT INTO oxinvitations SET oxuserid = 'oxdefaultadmin', oxemail = 'oxemail',  oxdate='$sDate', oxpending = '1', oxaccepted = '0', oxtype = '1' ";
         $oDb->execute( $sSql );
-        modConfig::getInstance()->setConfigParam( "dPointsForRegistration", 10 );
-        modConfig::getInstance()->setConfigParam( "dPointsForInvitation", false );
+        $this->getConfig()->setConfigParam( "dPointsForRegistration", 10 );
+        $this->getConfig()->setConfigParam( "dPointsForInvitation", false );
         modSession::getInstance()->setVar( 'su', 'oxdefaultadmin' );
         modSession::getInstance()->setVar( 're', md5('oxemail') );
 
@@ -324,7 +324,7 @@ class Unit_Core_oxUserTest extends OxidTestCase
      */
     public function testSetCreditPointsForInviter()
     {
-        modConfig::getInstance()->setConfigParam( "dPointsForInvitation", 10 );
+        $this->getConfig()->setConfigParam( "dPointsForInvitation", 10 );
 
         $oUser = $this->getMock( "oxuser", array( "save" ) );
         $oUser->expects( $this->once() )->method( 'save' )->will($this->returnValue( true ) );
@@ -1307,7 +1307,7 @@ class Unit_Core_oxUserTest extends OxidTestCase
     {
         $oDb = oxDb::getDB();
         $iLastCustNr = ( int ) $oDb->getOne( 'select max( oxcustnr ) from oxuser' ) + 1;
-        $sShopId = modConfig::getInstance()->getShopId();
+        $sShopId = $this->getConfig()->getShopId();
         $sQ  = 'insert into oxuser (oxid, oxshopid, oxactive, oxrights, oxusername, oxpassword, oxcustnr, oxcountryid) ';
         $sQ .= 'values ( "oxtestuser", "'.$sShopId.'", "1", "user", "testuser", "", "'.$iLastCustNr.'", "testCountry" )';
         $oDb->Execute( $sQ );
@@ -1547,7 +1547,7 @@ class Unit_Core_oxUserTest extends OxidTestCase
     {
         $oDb     = oxDb::getDB();
 
-        modConfig::getInstance()->addClassVar('blMallUsers', true );
+        $this->getConfig()->addClassVar('blMallUsers', true );
 
         $oUser = $this->createUser();
         $oUser->delete();
@@ -1702,8 +1702,8 @@ class Unit_Core_oxUserTest extends OxidTestCase
      */
     public function testOnOrderExecute0()
     {
-        modConfig::getInstance()->setConfigParam( 'sMidlleCustPrice', 99 );
-        modConfig::getInstance()->setConfigParam( 'sLargeCustPrice', 999 );
+        $this->getConfig()->setConfigParam( 'sMidlleCustPrice', 99 );
+        $this->getConfig()->setConfigParam( 'sLargeCustPrice', 999 );
 
         $oDb = oxDb::getDB();
 
@@ -1738,8 +1738,8 @@ class Unit_Core_oxUserTest extends OxidTestCase
     }
     public function testOnOrderExecute1()
     {
-        modConfig::getInstance()->setConfigParam( 'sMidlleCustPrice', 99 );
-        modConfig::getInstance()->setConfigParam( 'sLargeCustPrice', 999 );
+        $this->getConfig()->setConfigParam( 'sMidlleCustPrice', 99 );
+        $this->getConfig()->setConfigParam( 'sLargeCustPrice', 999 );
 
         $oDb    = oxDb::getDB();
 
@@ -1773,8 +1773,8 @@ class Unit_Core_oxUserTest extends OxidTestCase
 
     public function testOnOrderExecute2()
     {
-        modConfig::getInstance()->setConfigParam( 'sMidlleCustPrice', 99 );
-        modConfig::getInstance()->setConfigParam( 'sLargeCustPrice', 999 );
+        $this->getConfig()->setConfigParam( 'sMidlleCustPrice', 99 );
+        $this->getConfig()->setConfigParam( 'sLargeCustPrice', 999 );
 
         $oDb    = oxDb::getDB();
 
@@ -1982,7 +1982,7 @@ class Unit_Core_oxUserTest extends OxidTestCase
     public function testSetAutoGroupsNative()
     {
         $oUser = $this->getMock( "oxUser", array( "ingroup", "removefromgroup", "addtogroup" ) );
-        modConfig::getInstance()->setConfigParam('aHomeCountry', 'xxx');
+        $this->getConfig()->setConfigParam('aHomeCountry', 'xxx');
         $oUser->expects( $this->once() )->method( "removeFromGroup" );
         $oUser->expects( $this->once() )->method( "addToGroup" );
         $oUser->expects( $this->any() )->method( 'inGroup' )->will($this->onConsecutiveCalls( $this->returnValue( true ), $this->returnValue( false ) ) );
@@ -1994,7 +1994,7 @@ class Unit_Core_oxUserTest extends OxidTestCase
     public function testSetAutoGroupsNativeMultiple()
     {
         $oUser = $this->getMock( "oxUser", array( "ingroup", "removefromgroup", "addtogroup" ) );
-        modConfig::getInstance()->setConfigParam('aHomeCountry', array('asd', 'xxx', 'ad'));
+        $this->getConfig()->setConfigParam('aHomeCountry', array('asd', 'xxx', 'ad'));
         $oUser->expects( $this->once() )->method( "removeFromGroup" );
         $oUser->expects( $this->once() )->method( "addToGroup" );
         $oUser->expects( $this->any() )->method( 'inGroup' )->will($this->onConsecutiveCalls( $this->returnValue( true ), $this->returnValue( false ) ) );
@@ -2310,8 +2310,8 @@ class Unit_Core_oxUserTest extends OxidTestCase
      */
     public function testLoginOxidNotSet()
     {
-        modConfig::getInstance()->setConfigParam( 'blUseLDAP', 1 );
-        modConfig::getInstance()->setConfigParam( 'blMallUsers', 1 );
+        $this->getConfig()->setConfigParam( 'blUseLDAP', 1 );
+        $this->getConfig()->setConfigParam( 'blMallUsers', 1 );
 
         $oUser = $this->getMock( 'oxuser', array( 'load', '_ldapLogin' ));
         $oUser->expects( $this->atLeastOnce() )->method( 'load' )->will( $this->returnValue( true ) );
@@ -2348,7 +2348,7 @@ class Unit_Core_oxUserTest extends OxidTestCase
     public function testLoginCookie_disabled()
     {
         oxTestModules::addFunction('oxUtilsServer', 'setUserCookie', '{ throw new Exception( "cookie is set" ); }');
-        modConfig::getInstance()->setConfigParam( 'blShowRememberMe', 0 );
+        $this->getConfig()->setConfigParam( 'blShowRememberMe', 0 );
 
         $oUser = new oxuser();
         try {
@@ -2365,7 +2365,7 @@ class Unit_Core_oxUserTest extends OxidTestCase
     public function testLoginIsDemoAndAdminButNonAdminUser_Logout()
     {
         oxTestModules::addFunction('oxUtilsServer', 'getOxCookie', '{ return ""; }');
-        modConfig::getInstance()->setConfigParam( 'blDemoShop', 1 );
+        $this->getConfig()->setConfigParam( 'blDemoShop', 1 );
 
         $oUser = $this->getMock( 'oxuser', array( 'isAdmin' ));
         $oUser->expects( $this->any() )->method( 'isAdmin' )->will( $this->returnValue( true ) );
@@ -2690,7 +2690,7 @@ class Unit_Core_oxUserTest extends OxidTestCase
     {
         oxTestModules::addFunction( "oxFb", "isConnected", "{return true;}" );
         oxTestModules::addFunction( "oxFb", "getUser", "{return 123456;}" );
-        modConfig::getInstance()->setConfigParam( "bl_showFbConnect", false );
+        $this->getConfig()->setConfigParam( "bl_showFbConnect", false );
 
         // FB connect is disabled so no value should be saved
         $oUser = $this->createUser();
@@ -2700,7 +2700,7 @@ class Unit_Core_oxUserTest extends OxidTestCase
         $this->assertEquals( 0, oxDb::getDb()->getOne("select oxfbid from oxuser where oxid='$sUserId' ")  );
 
         // FB connect is eanbled, FB ID is expected
-        modConfig::getInstance()->setConfigParam( "bl_showFbConnect", true );
+        $this->getConfig()->setConfigParam( "bl_showFbConnect", true );
         $oUser->save();
 
         $this->assertEquals( 123456, oxDb::getDb()->getOne("select oxfbid from oxuser where oxid='$sUserId' ")  );
@@ -2713,7 +2713,7 @@ class Unit_Core_oxUserTest extends OxidTestCase
     {
         oxTestModules::addFunction( "oxFb", "isConnected", "{return false;}" );
         oxTestModules::addFunction( "oxFb", "getUser", "{return 123456;}" );
-        modConfig::getInstance()->setConfigParam( "bl_showFbConnect", true );
+        $this->getConfig()->setConfigParam( "bl_showFbConnect", true );
 
         // FB connect is disabled so no value should be saved
         $oUser = $this->createUser();
@@ -2731,7 +2731,7 @@ class Unit_Core_oxUserTest extends OxidTestCase
     {
         oxTestModules::addFunction( "oxFb", "isConnected", "{return true;}" );
         oxTestModules::addFunction( "oxFb", "getUser", "{return 123456;}" );
-        modConfig::getInstance()->setConfigParam( "bl_showFbConnect", true );
+        $this->getConfig()->setConfigParam( "bl_showFbConnect", true );
 
         $oUser = $this->createUser();
         $sUserId = $oUser->getId();
@@ -2754,7 +2754,7 @@ class Unit_Core_oxUserTest extends OxidTestCase
     {
         oxTestModules::addFunction( "oxFb", "isConnected", "{return true;}" );
         oxTestModules::addFunction( "oxFb", "getUser", "{return 123456;}" );
-        modConfig::getInstance()->setConfigParam( "bl_showFbConnect", true );
+        $this->getConfig()->setConfigParam( "bl_showFbConnect", true );
 
         $oUser = $this->createUser();
         $sUserId = $oUser->getId();
@@ -2776,7 +2776,7 @@ class Unit_Core_oxUserTest extends OxidTestCase
     {
         oxTestModules::addFunction( "oxFb", "isConnected", "{return false;}" );
         oxTestModules::addFunction( "oxFb", "getUser", "{return 123456;}" );
-        modConfig::getInstance()->setConfigParam( "bl_showFbConnect", true );
+        $this->getConfig()->setConfigParam( "bl_showFbConnect", true );
 
         $oUser = $this->createUser();
         $sUserId = $oUser->getId();
@@ -2798,7 +2798,7 @@ class Unit_Core_oxUserTest extends OxidTestCase
     {
         oxTestModules::addFunction( "oxFb", "isConnected", "{return true;}" );
         oxTestModules::addFunction( "oxFb", "getUser", "{return 123456;}" );
-        modConfig::getInstance()->setConfigParam( "bl_showFbConnect", false );
+        $this->getConfig()->setConfigParam( "bl_showFbConnect", false );
 
         $oUser = $this->createUser();
         $sUserId = $oUser->getId();
@@ -2818,7 +2818,7 @@ class Unit_Core_oxUserTest extends OxidTestCase
      */
     public function testLoadActiveUser_CookieLogin()
     {
-        modConfig::getInstance()->setConfigParam( "blShowRememberMe", true );
+        $this->getConfig()->setConfigParam( "blShowRememberMe", true );
 
         $oUser = $this->createUser();
         $sUserId = $oUser->getId();
@@ -2850,7 +2850,7 @@ class Unit_Core_oxUserTest extends OxidTestCase
      */
     public function testLoadActiveUser_CookieResetting()
     {
-        modConfig::getInstance()->setConfigParam( "blShowRememberMe", true );
+        $this->getConfig()->setConfigParam( "blShowRememberMe", true );
 
         oxRegistry::get("oxUtilsServer")->setUserCookie( 'RandomUserId', 'RandomPassword');
 
@@ -2874,7 +2874,7 @@ class Unit_Core_oxUserTest extends OxidTestCase
         $oDb       = oxDb::getDb();
         $oUser = new oxUser();
         // case if mall users set to true should not change shopselect
-        modConfig::getInstance()->setConfigParam( "blMallUsers", true );
+        $this->getConfig()->setConfigParam( "blMallUsers", true );
         $blAdmin = true;
 
         $sWhat = "oxid";
@@ -3073,11 +3073,11 @@ class Unit_Core_oxUserTest extends OxidTestCase
 
         $oU = new oxUser();
 
-        modConfig::getInstance()->setConfigParam( 'blMallUsers', false );
+        $this->getConfig()->setConfigParam( 'blMallUsers', false );
         $this->assertEquals('_testId_1', $oU->getIdByUserName( 'aaa@bbb.lt' ) );
         $this->assertFalse($oU->getIdByUserName( 'bbb@ccc.lt' ) );
 
-        modConfig::getInstance()->setConfigParam( 'blMallUsers', true );
+        $this->getConfig()->setConfigParam( 'blMallUsers', true );
         $this->assertEquals('_testId_1', $oU->getIdByUserName( 'aaa@bbb.lt' ) );
         $this->assertEquals('_testId_2', $oU->getIdByUserName( 'bbb@ccc.lt' ) );
     }

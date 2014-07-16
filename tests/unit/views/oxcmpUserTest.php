@@ -336,7 +336,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
      */
     public function testCaseForBug1625()
     {
-        modSession::getInstance()->setVar( 'dgr', 'oxidpricea' );
+        modSession::getInstance()->setVar( 'dgr', 'oxidnewsletter' );
         $this->assertNotNull( oxSession::getVar( 'dgr' ) );
 
         modConfig::setParameter( 'lgn_usr',  "test@oxideshop.com" );
@@ -368,7 +368,7 @@ class Unit_Views_oxcmpUserTest extends OxidTestCase
 
         //
         $sUserId = $oDb->getOne( "select oxid from oxuser where oxusername like 'test%'" );
-        $this->assertTrue( ( bool ) $oDb->getOne( "select 1 from oxobject2group where oxobjectid = '$sUserId' and oxgroupsid = 'oxidpricea'" ) );
+        $this->assertTrue( ( bool ) $oDb->getOne( "select 1 from oxobject2group where oxobjectid = '$sUserId' and oxgroupsid = 'oxidnewsletter'" ) );
         $this->assertNull( oxSession::getVar( 'dgr' ) );
     }
 

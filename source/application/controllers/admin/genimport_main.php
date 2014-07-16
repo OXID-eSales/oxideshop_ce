@@ -101,8 +101,8 @@ class GenImport_Main extends oxAdminDetails
         $sNavStep = $this->_checkErrors( $sNavStep );
 
         if ( $sNavStep == 1 ) {
-            $this->_aViewData['sGiCsvFieldTerminator'] = htmlentities( $this->_getCsvFieldsTerminator() );
-            $this->_aViewData['sGiCsvFieldEncloser']   = htmlentities( $this->_getCsvFieldsEncolser() );
+            $this->_aViewData['sGiCsvFieldTerminator'] = oxStr::getStr()->htmlentities( $this->_getCsvFieldsTerminator() );
+            $this->_aViewData['sGiCsvFieldEncloser']   = oxStr::getStr()->htmlentities( $this->_getCsvFieldsEncolser() );
         }
 
         if ( $sNavStep == 2 ) {

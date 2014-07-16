@@ -40,6 +40,37 @@ class Unit_Admin_GenImportMainTest extends OxidTestCase
         $this->assertEquals( 'genimport_main.tpl', $oView->render() );
     }
 
+
+    /**
+     * Checks if values was converted to HTML entities.
+     *
+     * @return array
+     */
+    public function providerRenderIfConvertedViewData()
+    {
+        return array(
+            array('sGiCsvFieldTerminator', "'<b>", "&#039;&lt;b&gt;"),
+            array('sGiCsvFieldEncloser', "'<b>", "&#039;&lt;b&gt;")
+        );
+    }
+
+    /**
+     * @param $sParameter
+     * @param $sValue
+     * @param $sResult
+     *
+     * @dataProvider providerRenderIfConvertedViewData
+     */
+    public function testRenderIfConvertedViewData($sParameter, $sValue, $sResult)
+    {
+        $oView = new GenImport_Main();
+        $this->getConfig()->setConfigParam($sParameter, $sValue);
+        $oView->render();
+        $aData = $oView->getViewData();
+
+        $this->assertSame($sResult, $aData[$sParameter]);
+    }
+
     /**
      * GenImport_Main::DeleteCsvFile() test case
      *

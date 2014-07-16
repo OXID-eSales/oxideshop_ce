@@ -40,6 +40,6 @@ class Unit_Admin_ModuleListTest extends OxidTestCase
 
             $aViewData = $oView->getViewData();
             $this->assertTrue( isset( $aViewData['mylist'] ) );
-            $this->assertEquals( 1, count($aViewData['mylist']) );
+            $this->assertEquals( 1, count($aViewData['mylist']), 'Installed modules are: ' . serialize($aViewData['mylist']));
     }
 }

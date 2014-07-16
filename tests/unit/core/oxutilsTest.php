@@ -962,17 +962,6 @@ class Unit_Core_oxutilsTest extends OxidTestCase
         $this->assertEquals( false, $oUtils->oxMimeContentType( '' ) );
     }
 
-    public function testStripQuotes()
-    {
-        $myUtilsTest = $this->getProxyClass("oxUtils"); //new testOxUtils();
-
-        $test = array('a\\\"a', "b\\b", 'cc');
-        $r = $myUtilsTest->UNITstripQuotes($test);
-        $this->assertEquals( 'a\"a', $r[0]);
-        $this->assertEquals( "bb", $r[1]);
-        $this->assertEquals( 'cc', $r[2]);
-    }
-
     public function testStrManStrRem()
     {
         $sTests = "myblaaFooString!";

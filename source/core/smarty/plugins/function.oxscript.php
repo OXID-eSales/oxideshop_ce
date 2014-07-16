@@ -90,7 +90,7 @@ function smarty_function_oxscript($params, &$smarty)
         // File not found ?
         if (!$sScript) {
             if ($myConfig->getConfigParam( 'iDebug' ) != 0) {
-                $sError = "{oxscript} resource not found: ".htmlspecialchars($params['include']);
+                $sError = "{oxscript} resource not found: ".getStr()->htmlspecialchars($params['include']);
                 trigger_error($sError, E_USER_WARNING);
             }
             return;

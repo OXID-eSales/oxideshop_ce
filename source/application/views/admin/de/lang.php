@@ -1504,7 +1504,7 @@ $aLang = array(
 'USERGROUP_LIST_MENUSUBITEM'                               => 'Benutzergruppen',
 'USERGROUP_MAIN_MEMBERINGROUP'                             => 'Mitglieder der Benutzergruppe',
 'USERGROUP_MAIN_ALLMEMBERS'                                => 'Alle Benutzer',
-'USERGROUP_ID'                                             => '[tr]Group id',
+'USERGROUP_ID'                                             => 'Gruppen-ID',
 'VENDOR_LIST_MENUITEM'                                     => 'Stammdaten',
 'VENDOR_LIST_MENUSUBITEM'                                  => 'Lieferanten',
 'VENDOR_LIST_TITLE'                                        => '[OXID Lieferantenverwaltung]',
@@ -2137,8 +2137,8 @@ $aLang = array(
 
 'OMVN_ERROR_REQUEST_FAILED'                                => 'Dienst nicht verfügbar. Bitte versuchen Sie es später noch einmal. Falls das Problem weiterhin bestehen sollte, überprüfen Sie bitte, dass Ihr Shop ausgehende Verbindungen aufbauen kann.',
 
-'VERSION_UPDATE_LINK'                                         => 'http://www.oxid-esales.com/de/support-services/dokumentation-und-hilfe/oxid-eshop/installation/oxid-eshop-aktualisieren/update-vorbereiten.html',
-'MESSAGE_FOR_NEWLY_CREATED_USER_GROUPS'                    => '[tr]Newly created user groups will be accessible for assignment via URL by users. If you want to disable this accessibility, you must go to: Master settings->Core settings->System->Other settings and add user group id to the "Prohibited User Groups for dynamic User Group assignment using dgr URL param" list.'
+'VERSION_UPDATE_LINK'                                      => 'http://www.oxid-esales.com/de/support-services/dokumentation-und-hilfe/oxid-eshop/installation/oxid-eshop-aktualisieren/update-vorbereiten.html',
+'MESSAGE_FOR_NEWLY_CREATED_USER_GROUPS'                    => 'Falls ein Nutzer den Shop mittels einer bestimmten URL erreicht, welche die Gruppen-ID einer Benutzer-Gruppe beinhaltet, so wird er automatisch der Benutzergruppe zugeordnet, deren ID mit der in der URL Enthaltenen korrespondiert.<br> Sollten Sie dieses Verhalten deaktivieren wollen, navigieren Sie bitte zu "Stammdaten->Grundeinstellungen->System->Weitere Einstellungen" und fügen Sie die ID der Benutzergruppe der Liste "Benutzergruppen, für welche die Dynamische Nutzer Gruppen Zuordnung durch DGR URL Parameter nicht erlaubt sind" hinzu.'
 );
 
 /*

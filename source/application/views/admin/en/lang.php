@@ -1506,7 +1506,7 @@ $aLang = array(
 'USERGROUP_LIST_MENUSUBITEM'                               => 'User Groups',
 'USERGROUP_MAIN_MEMBERINGROUP'                             => 'User Group Members',
 'USERGROUP_MAIN_ALLMEMBERS'                                => 'All Users',
-'USERGROUP_ID'                                             => '[tr]Group id',
+'USERGROUP_ID'                                             => 'Group id',
 'VENDOR_LIST_MENUITEM'                                     => 'Master Settings',
 'VENDOR_LIST_MENUSUBITEM'                                  => 'Distributors',
 'VENDOR_LIST_TITLE'                                        => '[OXID Vendor Administration]',
@@ -2135,7 +2135,7 @@ $aLang = array(
 
 'OMVN_ERROR_REQUEST_FAILED'                                => 'Service unavailable, try again later... If this persists, please check that your shop can make outgoing connections.',
 'VERSION_UPDATE_LINK'                                         => 'http://www.oxid-esales.com/en/support-services/documentation-and-help/oxid-eshop/installation/oxid-eshop-update-installation/preparing-update.html',
-'MESSAGE_FOR_NEWLY_CREATED_USER_GROUPS' => '[tr]Newly created user groups will be accessible for assignment via URL by users. If you want to disable this accessibility, you must go to: Master settings->Core settings->System->Other settings and add user group id to the "Prohibited User Groups for dynamic User Group assignment using dgr URL param" list.'
+'MESSAGE_FOR_NEWLY_CREATED_USER_GROUPS' => 'If a user accesses the shop via a certain URL, which contains the ID of a user group, and then registers or logs into the shop, he will then be automatically assigned to the user group corresponding to the user group id contained in the original URL.<br> If you want to disable this behaviour for a user group, please navigate to Master settings->Core settings->System->Other settings and add the user group id to the "Prohibited User Groups for dynamic User Group assignment using DGR URL param" list.',
 );
 
 /*

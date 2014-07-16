@@ -89,7 +89,7 @@ class Tools_List extends oxAdminList
                         $sUpdateSQL = trim( $sUpdateSQL );
 
                         if ( $oStr->strlen( $sUpdateSQL ) > 0 ) {
-                            $aPassedQueries[$iQueriesCounter] = nl2br( htmlentities( $sUpdateSQL ) );
+                            $aPassedQueries[$iQueriesCounter] = nl2br(oxStr::getStr()->htmlentities($sUpdateSQL));
                             if ( $oStr->strlen( $aPassedQueries[$iQueriesCounter] ) > 200 )
                                 $aPassedQueries[$iQueriesCounter] = $oStr->substr( $aPassedQueries[$iQueriesCounter], 0, 200 )."...";
 
@@ -112,8 +112,8 @@ class Tools_List extends oxAdminList
                             if ( $iAffectedRows = $oDB->affected_Rows() !== false && $iErrorNum == 0 ) {
                                 $aQAffectedRows[$iQueriesCounter] =  $iAffectedRows;
                             } else {
-                                $aQErrorMessages[$iQueriesCounter] = htmlentities( $oDB->errorMsg() );
-                                $aQErrorNumbers[$iQueriesCounter]  = htmlentities( $iErrorNum );
+                                $aQErrorMessages[$iQueriesCounter] = oxStr::getStr()->htmlentities( $oDB->errorMsg() );
+                                $aQErrorNumbers[$iQueriesCounter]  = oxStr::getStr()->htmlentities( $iErrorNum );
                             }
                             $iQueriesCounter++;
 

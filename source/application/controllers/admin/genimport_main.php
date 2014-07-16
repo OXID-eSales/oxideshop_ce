@@ -196,7 +196,7 @@ class GenImport_Main extends oxAdminDetails
             }
         } else {
             foreach ( $aFirstRow as $sKey => $sValue ) {
-                $aFirstRow[$sKey] = oxStr::getStr()->htmlentities( $sValue );
+                $aFirstRow[$sKey] = htmlentities( $sValue );
             }
 
             $aCsvFields = $aFirstRow;

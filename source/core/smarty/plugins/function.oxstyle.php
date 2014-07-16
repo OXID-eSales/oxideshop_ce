@@ -81,7 +81,7 @@ function smarty_function_oxstyle($params, &$smarty)
         // File not found ?
         if (!$sStyle) {
             if ($myConfig->getConfigParam( 'iDebug' ) != 0) {
-                $sError = "{oxstyle} resource not found: ".htmlspecialchars($params['include']);
+                $sError = "{oxstyle} resource not found: ".getStr()->htmlspecialchars($params['include']);
                 trigger_error($sError, E_USER_WARNING);
             }
             return;

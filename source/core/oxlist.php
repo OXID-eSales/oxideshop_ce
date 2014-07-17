@@ -373,6 +373,16 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
     }
 
     /**
+     * Sets base object for list.
+     *
+     * @param object $oObject Base object
+     */
+    public function setBaseObject($oObject)
+    {
+        $this->_oBaseObject = $oObject;
+    }
+
+    /**
      * Selects and SQL, creates objects and assign them
      *
      * @param string $sSql SQL select statement

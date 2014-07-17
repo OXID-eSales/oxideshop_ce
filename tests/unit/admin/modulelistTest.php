@@ -39,7 +39,13 @@ class Unit_Admin_ModuleListTest extends OxidTestCase
         $this->assertEquals( 'module_list.tpl', $oView->render() );
 
             $aViewData = $oView->getViewData();
-            $this->assertTrue( isset( $aViewData['mylist'] ) );
-            $this->assertEquals( 1, count($aViewData['mylist']) );
+            $aModulesNames = array_keys($aViewData['mylist']);
+            if (count($aViewData['mylist']) == 1) {
+                $this->assertSame('invoicepdf', current($aModulesNames));
+            } else {
+                $this->assertSame('invoicepdf', $aModulesNames[0]);
+                $this->assertSame('oepaypal', $aModulesNames[1]);
+                $this->assertSame('oethemeswitcher', $aModulesNames[2]);
+            }
     }
 }

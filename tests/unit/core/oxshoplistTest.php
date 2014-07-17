@@ -66,4 +66,16 @@ class Unit_Core_oxshoplistTest extends OxidTestCase
         $oShopList->getAll();
         $this->assertEquals(4, $oShopList->count());
     }
+
+    /**
+     * Tests method getOne for returning shop list
+     */
+    public function testGetIdTitleList()
+    {
+        /** @var oxShopList $oShopList */
+        $oShopList = $this->getMock('oxShopList', array('selectString', 'setBaseObject'));
+        $oShopList->expects($this->once())->method('setBaseObject');
+        $oShopList->expects($this->once())->method('selectString')->with('SELECT `OXID`, `OXNAME` FROM `oxshops`');
+        $oShopList->getIdTitleList();
+    }
 }

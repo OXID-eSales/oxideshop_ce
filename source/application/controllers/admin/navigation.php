@@ -88,19 +88,23 @@ class Navigation extends oxAdminView
             // open history node ?
             $this->_aViewData["blOpenHistory"] = oxRegistry::getConfig()->getRequestParameter('openHistory');
         }
-        /** @var oxSimpleShopList $oShoplist */
-        $oShoplist = oxNew('oxSimpleShopList');
 
         $sWhere = '';
         $blisMallAdmin = oxRegistry::getSession()->getVariable('malladmin');
+        /** @var oxShopList $oShoplist */
+        $oShoplist = oxNew('oxShopList');
         if (!$blisMallAdmin) {
             // we only allow to see our shop
-            $sShopID = oxRegistry::getSession()->getVariable("actshop");
-            $sWhere = "oxid = '$sShopID'";
+            $iShopId = oxRegistry::getSession()->getVariable("actshop");
+            /** @var oxShop $oShop */
+            $oShop = oxNew('oxShop');
+            $oShop->load($iShopId);
+            $oShoplist->assign(array($oShop));
+        } else {
+            $oShoplist->getIdTitleList();
         }
-        $aShopList = $oShoplist->getList($sWhere);
-        $this->_aViewData['shoplist'] = $aShopList;
 
+        $this->_aViewData['shoplist'] = $oShoplist;
         return $sItem;
     }
 

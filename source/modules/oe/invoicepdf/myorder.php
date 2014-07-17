@@ -864,7 +864,7 @@ class MyOrder extends MyOrder_parent
         }
         // setting invoice date
         if ( $this->oxorder__oxbilldate->value == '0000-00-00' ) {
-            $this->oxorder__oxbilldate->setValue( date( 'd.m.Y', mktime( 0, 0, 0, date ( 'm' ), date ( 'd' ), date( 'Y' ) ) ) );
+            $this->oxorder__oxbilldate->setValue( date( 'Y-m-d', mktime( 0, 0, 0, date ( 'm' ), date ( 'd' ), date( 'Y' ) ) ) );
             $blIsNewOrder = 1;
         }
         // saving order if new number or date

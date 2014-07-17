@@ -936,33 +936,27 @@ class oxConfig extends oxSuperCfg
      * Returns config sShopURL or sMallShopURL if secondary shop
      *
      * @param int  $iLang   language
-     * @param bool $blAdmin if admin
+     * @param bool $blAdmin if set true, function returns shop url without checking language/subshops for different url.
      *
      * @return string
      */
-    public function getShopUrl( $iLang = null, $blAdmin = null )
+    public function getShopUrl($iLang = null, $blAdmin = null)
     {
-        $blAdmin = isset( $blAdmin ) ? $blAdmin : $this->isAdmin();
-        if ( $blAdmin ) {
-            return $this->getConfigParam( 'sShopURL' );
+        $sUrl = null;
+        $blAdmin = isset($blAdmin) ? $blAdmin : $this->isAdmin();
+
+        if (!$blAdmin) {
+            $sUrl = $this->getShopUrlByLanguage($iLang);
+            if (!$sUrl) {
+                $sUrl = $this->getMallShopUrl();
+            }
         }
 
-        // #680 per language another URL
-        $iLang = isset( $iLang ) ? $iLang : oxRegistry::getLang()->getBaseLanguage();
-        $aLanguageURLs = $this->getConfigParam( 'aLanguageURLs' );
-        if ( isset( $iLang ) && isset( $aLanguageURLs[$iLang] ) && !empty( $aLanguageURLs[$iLang] ) ) {
-            $aLanguageURLs[$iLang] = oxRegistry::getUtils()->checkUrlEndingSlash( $aLanguageURLs[$iLang] );
-            return $aLanguageURLs[$iLang];
+        if (!$sUrl) {
+            $sUrl = $this->getConfigParam('sShopURL');
         }
 
-        //normal section
-        $sMallShopURL = $this->getConfigParam( 'sMallShopURL' );
-        if ( $sMallShopURL ) {
-            $sMallShopURL = oxRegistry::getUtils()->checkUrlEndingSlash( $sMallShopURL );
-            return $sMallShopURL;
-        }
-
-        return $this->getConfigParam( 'sShopURL' );
+        return $sUrl;
     }
 
     /**
@@ -972,33 +966,32 @@ class oxConfig extends oxSuperCfg
      *
      * @return string
      */
-    public function getSslShopUrl( $iLang = null )
+    public function getSslShopUrl($iLang = null)
     {
-        // #680 per language another URL
-        $iLang = isset( $iLang ) ? $iLang : oxRegistry::getLang()->getBaseLanguage();
-        $aLanguageSSLURLs = $this->getConfigParam( 'aLanguageSSLURLs' );
-        if ( isset( $iLang ) && isset( $aLanguageSSLURLs[$iLang] ) && !empty( $aLanguageSSLURLs[$iLang] ) ) {
-            $aLanguageSSLURLs[$iLang] = oxRegistry::getUtils()->checkUrlEndingSlash( $aLanguageSSLURLs[$iLang] );
-            return $aLanguageSSLURLs[$iLang];
+        $sUrl = null;
+
+        if(!$sUrl) {
+            $sUrl = $this->getShopUrlByLanguage($iLang, true);
         }
 
-        //mall mode
-        if ( ( $sMallSSLShopURL = $this->getConfigParam( 'sMallSSLShopURL' ) ) ) {
-            $sMallSSLShopURL = oxRegistry::getUtils()->checkUrlEndingSlash( $sMallSSLShopURL );
-            return $sMallSSLShopURL;
+        if(!$sUrl) {
+            $sUrl = $this->getMallShopUrl(true);
         }
 
-        if ( ( $sMallShopURL = $this->getConfigParam( 'sMallShopURL' ) ) ) {
-            $sMallShopURL = oxRegistry::getUtils()->checkUrlEndingSlash( $sMallShopURL );
-            return $sMallShopURL;
+        if(!$sUrl) {
+            $sUrl = $this->getMallShopUrl();
         }
 
         //normal section
-        if ( ( $sSSLShopURL = $this->getConfigParam( 'sSSLShopURL' ) ) ) {
-            return $sSSLShopURL;
+        if (!$sUrl) {
+            $sUrl = $this->getConfigParam('sSSLShopURL');
         }
 
-        return $this->getShopUrl( $iLang );
+        if (!$sUrl) {
+            $sUrl = $this->getShopUrl($iLang);
+        }
+
+        return $sUrl;
     }
 
     /**
@@ -1081,7 +1074,9 @@ class oxConfig extends oxSuperCfg
      */
     public function getWidgetUrl( $iLang = null, $blAdmin = null )
     {
-        return oxRegistry::get("oxUtilsUrl")->processUrl($this->getShopUrl( $iLang, $blAdmin).'widget.php', false );
+        $sUrl = $this->isSsl() ? $this->getSslShopUrl($iLang) : $this->getShopUrl($iLang, $blAdmin);
+
+        return oxRegistry::get('oxUtilsUrl')->processUrl($sUrl.'widget.php', false);
     }
 
     /**
@@ -2192,6 +2187,49 @@ class oxConfig extends oxSuperCfg
     public function getShopIds()
     {
         return oxDb::getDb()->getCol( "SELECT `oxid` FROM `oxshops`" );
+    }
+
+    /**
+     * Function returns shop url by given language.
+     * #680 per language another URL
+     *
+     * @param $iLang
+     * @param $blSSL
+     *
+     * @return null|string
+     */
+    public function getShopUrlByLanguage($iLang, $blSSL = false)
+    {
+        $sLanguageUrl = null;
+        $sConfigParameter = $blSSL ? 'aLanguageSSLURLs' : 'aLanguageURLs';
+        $iLang = isset($iLang) ? $iLang : oxRegistry::getLang()->getBaseLanguage();
+        $aLanguageURLs = $this->getConfigParam($sConfigParameter);
+        if (isset($iLang) && isset($aLanguageURLs[$iLang]) && !empty($aLanguageURLs[$iLang])) {
+            $aLanguageURLs[$iLang] = oxRegistry::getUtils()->checkUrlEndingSlash($aLanguageURLs[$iLang]);
+            $sLanguageUrl = $aLanguageURLs[$iLang];
+        }
+
+        return $sLanguageUrl;
+    }
+
+    /**
+     * Function returns mall shop url.
+     *
+     * @param bool $blSSL
+     *
+     * @return null|string
+     */
+    public function getMallShopUrl($blSSL = false)
+    {
+        $sUrl = null;
+        $sConfigParameter = $blSSL ? 'sMallSSLShopURL' : 'sMallShopURL';
+        $sMallShopURL = $this->getConfigParam($sConfigParameter);
+        if ($sMallShopURL) {
+            $sMallShopURL = oxRegistry::getUtils()->checkUrlEndingSlash($sMallShopURL);
+            $sUrl = $sMallShopURL;
+        }
+
+        return $sUrl;
     }
 
     /**

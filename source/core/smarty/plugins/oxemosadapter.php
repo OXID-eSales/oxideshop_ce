@@ -388,6 +388,9 @@ class oxEmosAdapter extends oxSuperCfg
             case 'payment':
                 $oEmos->addContent( 'Shop/Kaufprozess/Zahlungsoptionen' );
                 $oEmos->addOrderProcess( '3_Zahlungsoptionen' );
+                if ($this->getConfig()->getRequestParameter('new_user')) {
+                    $this->_setUserRegistration($oEmos, $oUser);
+                }
                 break;
             case 'order':
                 $oEmos->addContent( 'Shop/Kaufprozess/Bestelluebersicht' );
@@ -550,20 +553,8 @@ class oxEmosAdapter extends oxSuperCfg
                 }
                 break;
             case 'register':
-
                 $oEmos->addContent( 'Service/Register' );
-
-                $iError   = oxConfig::getParameter( 'newslettererror' );
-                $iSuccess = oxConfig::getParameter( 'success' );
-
-                if ( $iError && $iError < 0 ) {
-                    $oEmos->addRegister( $oUser ? $oUser->getId() : 'NULL', abs( $iError ) );
-                }
-
-                if ( $iSuccess && $iSuccess > 0 && $oUser ) {
-                    $oEmos->addRegister( $oUser->getId(), 0 );
-                }
-
+                $this->_setUserRegistration($oEmos, $oUser);
                 break;
             default:
                 $oEmos->addContent( 'Content/'.$oStr->preg_replace( '/\.tpl$/', '', $sTplName ) );
@@ -617,5 +608,25 @@ class oxEmosAdapter extends oxSuperCfg
         }
 
         return "\n".$oEmos->toString();
+    }
+
+    /**
+     * Sets user registration action to Emos.
+     *
+     * @param Emos $oEmos
+     * @param oxUser $oUser
+     */
+    private function _setUserRegistration($oEmos, $oUser)
+    {
+        $iError   = oxConfig::getParameter( 'newslettererror' );
+        $iSuccess = oxConfig::getParameter( 'success' );
+
+        if ( $iError && $iError < 0 ) {
+            $oEmos->addRegister( $oUser ? $oUser->getId() : 'NULL', abs( $iError ) );
+        }
+
+        if ( $iSuccess && $iSuccess > 0 && $oUser ) {
+            $oEmos->addRegister( $oUser->getId(), 0 );
+        }
     }
 }

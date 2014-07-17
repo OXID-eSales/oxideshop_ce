@@ -327,6 +327,45 @@ class Unit_Maintenance_oxemosadapterTest extends OxidTestCase
         $oEmos->getCode( $aParams, $oSmarty );
     }
 
+    public function testGetCodeForPaymentAfterRegistrationSuccess()
+    {
+        $aParams = null;
+        $oSmarty = null;
+
+        modConfig::setParameter( 'new_user', 1 );
+        modConfig::setParameter( 'success', 1 );
+        modSession::getInstance()->setVar( 'usr', 'oxdefaultadmin' );
+
+        $oFormatter = $this->getMock( 'EMOS', array( 'addContent', 'addOrderProcess', 'addRegister' ) );
+        $oFormatter->expects( $this->once() )->method( 'addContent')->with( $this->equalTo( 'Shop/Kaufprozess/Zahlungsoptionen' ) );
+        $oFormatter->expects( $this->once() )->method( 'addOrderProcess')->with( $this->equalTo( '3_Zahlungsoptionen' ) );
+        $oFormatter->expects( $this->once() )->method( 'addRegister')->with( $this->equalTo( 'oxdefaultadmin' ), $this->equalTo( 0 ) );
+
+        $oEmos = $this->getMock( 'oxEmosAdapter', array( 'getEmos', '_getEmosCl' ) );
+        $oEmos->expects( $this->once() )->method( 'getEmos')->will( $this->returnValue( $oFormatter ) );
+        $oEmos->expects( $this->once() )->method( '_getEmosCl')->will( $this->returnValue( 'payment' ) );
+        $oEmos->getCode( $aParams, $oSmarty );
+    }
+
+    public function testGetCodeForPaymentAfterRegistrationError()
+    {
+        $aParams = null;
+        $oSmarty = null;
+
+        modConfig::setParameter( 'new_user', 1 );
+        modConfig::setParameter( 'newslettererror', -1 );
+
+        $oFormatter = $this->getMock( 'EMOS', array( 'addContent', 'addOrderProcess', 'addRegister' ) );
+        $oFormatter->expects( $this->once() )->method( 'addContent')->with( $this->equalTo( 'Shop/Kaufprozess/Zahlungsoptionen' ) );
+        $oFormatter->expects( $this->once() )->method( 'addOrderProcess')->with( $this->equalTo( '3_Zahlungsoptionen' ) );
+        $oFormatter->expects( $this->once() )->method( 'addRegister')->with( $this->equalTo( 'NULL' ), $this->equalTo( 1 ) );
+
+        $oEmos = $this->getMock( 'oxEmosAdapter', array( 'getEmos', '_getEmosCl' ) );
+        $oEmos->expects( $this->once() )->method( 'getEmos')->will( $this->returnValue( $oFormatter ) );
+        $oEmos->expects( $this->once() )->method( '_getEmosCl')->will( $this->returnValue( 'payment' ) );
+        $oEmos->getCode( $aParams, $oSmarty );
+    }
+
     public function testGetCodeForOrder()
     {
         $aParams = null;

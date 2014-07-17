@@ -295,7 +295,7 @@ class mysql_perfmon_ADOConnection extends mysql_perfmon_EXTENDER
 		$save = $ADODB_FETCH_MODE;
 		$ADODB_FETCH_MODE = ADODB_FETCH_NUM;
 
-		$rs = $this->Execute('show innodb status');
+		$rs = $this->Execute('show engine innodb status');
 ;
 		$ADODB_FETCH_MODE = $save;
 		

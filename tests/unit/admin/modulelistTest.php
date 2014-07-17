@@ -44,8 +44,8 @@ class Unit_Admin_ModuleListTest extends OxidTestCase
                 $this->assertSame('invoicepdf', current($aModulesNames));
             } else {
                 $this->assertSame('invoicepdf', $aModulesNames[0]);
-                $this->assertSame('oepaypal', $aModulesNames[1]);
-                $this->assertSame('oethemeswitcher', $aModulesNames[2]);
+                $this->assertSame('oethemeswitcher', $aModulesNames[1]);
+                $this->assertSame('oepaypal', $aModulesNames[2]);
             }
     }
 }

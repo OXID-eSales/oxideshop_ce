@@ -47,17 +47,15 @@ class oxStrMb
 
     /**
      * Class constructor. The constructor is defined in order to be possible to call parent::__construct() in modules.
-     *
-     * @return null;
      */
     public function __construct()
     {
     }
 
     /**
-     * PHP  multibute compliant strlen() function wrapper
+     * PHP  multi byte compliant strlen() function wrapper
      *
-     * @param string $sStr strint to mesure its length
+     * @param string $sStr string to measure its length
      *
      * @return int
      */
@@ -67,7 +65,7 @@ class oxStrMb
     }
 
     /**
-     * PHP multibute compliant substr() function wrapper
+     * PHP multi byte compliant substr() function wrapper
      *
      * @param string $sStr    value to truncate
      * @param int    $iStart  start position
@@ -82,7 +80,7 @@ class oxStrMb
     }
 
     /**
-     * PHP multibyte compliant strpos() function wrapper
+     * PHP multi byte compliant strpos() function wrapper
      *
      * @param string $sHaystack value to search in
      * @param string $sNeedle   value to search for
@@ -101,7 +99,7 @@ class oxStrMb
     }
 
     /**
-     * PHP multibute compliant strstr() function wrapper
+     * PHP multi byte compliant strstr() function wrapper
      *
      * @param string $sHaystack value to search in
      * @param string $sNeedle   value to search for
@@ -118,9 +116,9 @@ class oxStrMb
     }
 
     /**
-     * PHP multibute compliant strtolower() function wrapper
+     * PHP multi byte compliant strtolower() function wrapper
      *
-     * @param string $sString string being lowercased
+     * @param string $sString string being lower cased
      *
      * @return string
      */
@@ -130,9 +128,9 @@ class oxStrMb
     }
 
     /**
-     * PHP multibute compliant strtoupper() function wrapper
+     * PHP multi byte compliant strtoupper() function wrapper
      *
-     * @param string $sString string being lowercased
+     * @param string $sString string being lower cased
      *
      * @return string
      */
@@ -145,36 +143,39 @@ class oxStrMb
      * PHP htmlspecialchars() function wrapper
      *
      * @param string $sString string being converted
+     * @param int $iQuotStyle quoting rule
      *
      * @return string
      */
-    public function htmlspecialchars($sString)
+    public function htmlspecialchars($sString, $iQuotStyle=ENT_QUOTES)
     {
-        return htmlspecialchars($sString, ENT_QUOTES, $this->_sEncoding);
+        return htmlspecialchars($sString, $iQuotStyle, $this->_sEncoding);
     }
 
     /**
      * PHP htmlentities() function wrapper
      *
      * @param string $sString string being converted
+     * @param int $iQuotStyle quoting rule
      *
      * @return string
      */
-    public function htmlentities($sString)
+    public function htmlentities($sString, $iQuotStyle=ENT_QUOTES)
     {
-        return htmlentities($sString, ENT_QUOTES, $this->_sEncoding);
+        return htmlentities($sString, $iQuotStyle, $this->_sEncoding);
     }
 
     /**
      * PHP html_entity_decode() function wrapper
      *
      * @param string $sString string being converted
+     * @param int $iQuotStyle quoting rule
      *
      * @return string
      */
-    public function html_entity_decode($sString)
+    public function html_entity_decode($sString, $iQuotStyle=ENT_QUOTES )
     {
-        return html_entity_decode( $sString, ENT_QUOTES, $this->_sEncoding );
+        return html_entity_decode( $sString, $iQuotStyle, $this->_sEncoding );
     }
 
     /**
@@ -182,7 +183,7 @@ class oxStrMb
      *
      * @param string $sPattern pattern to search for, as a string
      * @param string $sString  input string
-     * @param int    $iLimit   (optional) only substrings up to limit are returned
+     * @param int    $iLimit   (optional) only sub strings up to limit are returned
      * @param int    $iFlag    flags
      *
      * @return string
@@ -340,7 +341,7 @@ class oxStrMb
      * Special chars are: \n \r \t \xc2\x95 \xc2\xa0 ;
      *
      * @param string $sStr      string to cleanup
-     * @param object $sCleanChr which character should be used as a replacement (default is empty space)
+     * @param string $sCleanChr which character should be used as a replacement (default is empty space)
      *
      * @return string
      */

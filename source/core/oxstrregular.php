@@ -57,7 +57,7 @@ class oxStrRegular
     /**
      * PHP strlen() function wrapper
      *
-     * @param string $sStr strint to mesure its length
+     * @param string $sStr string to measure its length
      *
      * @return int
      */
@@ -120,9 +120,9 @@ class oxStrRegular
     }
 
     /**
-     * PHP multibute compliant strtolower() function wrapper
+     * PHP multi byte compliant strtolower() function wrapper
      *
-     * @param string $sString string being lowercased
+     * @param string $sString string being lower cased
      *
      * @return string
      */
@@ -134,7 +134,7 @@ class oxStrRegular
     /**
      * PHP strtolower() function wrapper
      *
-     * @param string $sString string being lowercased
+     * @param string $sString string being lower cased
      *
      * @return string
      */
@@ -147,36 +147,39 @@ class oxStrRegular
      * PHP htmlspecialchars() function wrapper
      *
      * @param string $sString string being converted
+     * @param int $iQuotStyle quoting rule
      *
      * @return string
      */
-    public function htmlspecialchars($sString)
+    public function htmlspecialchars($sString, $iQuotStyle=ENT_QUOTES)
     {
-        return htmlspecialchars( $sString, ENT_QUOTES, $this->_sEncoding );
+        return htmlspecialchars( $sString, $iQuotStyle, $this->_sEncoding );
     }
 
     /**
      * PHP htmlentities() function wrapper
      *
      * @param string $sString string being converted
+     * @param int $iQuotStyle quoting rule
      *
      * @return string
      */
-    public function htmlentities($sString)
+    public function htmlentities($sString, $iQuotStyle=ENT_QUOTES)
     {
-        return htmlentities( $sString, ENT_QUOTES, $this->_sEncoding );
+        return htmlentities( $sString, $iQuotStyle, $this->_sEncoding );
     }
 
     /**
      * PHP html_entity_decode() function wrapper
      *
      * @param string $sString string being converted
+     * @param int $iQuotStyle quoting rule
      *
      * @return string
      */
-    public function html_entity_decode($sString)
+    public function html_entity_decode($sString, $iQuotStyle=ENT_QUOTES)
     {
-        return html_entity_decode( $sString, ENT_QUOTES, $this->_sEncoding );
+        return html_entity_decode( $sString, $iQuotStyle, $this->_sEncoding );
     }
 
     /**

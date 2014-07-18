@@ -1,6 +1,6 @@
 [{include file="headitem.tpl" title="[OXID Benutzerverwaltung]"}]
 
-[{ if $readonly }]
+[{if $readonly }]
     [{assign var="readonly" value="readonly disabled"}]
 [{else}]
     [{assign var="readonly" value=""}]
@@ -21,8 +21,8 @@
             [{block name="admin_order_overview_billingaddress"}]
                 <b>[{ oxmultilang ident="GENERAL_BILLADDRESS" }]</b><br>
                 <br>
-                [{ if $edit->oxorder__oxbillcompany->value }][{ oxmultilang ident="GENERAL_COMPANY" }] [{$edit->oxorder__oxbillcompany->value }]<br>[{/if}]
-                [{ if $edit->oxorder__oxbilladdinfo->value }][{$edit->oxorder__oxbilladdinfo->value }]<br>[{/if}]
+                [{if $edit->oxorder__oxbillcompany->value }][{ oxmultilang ident="GENERAL_COMPANY" }] [{$edit->oxorder__oxbillcompany->value }]<br>[{/if}]
+                [{if $edit->oxorder__oxbilladdinfo->value }][{$edit->oxorder__oxbilladdinfo->value }]<br>[{/if}]
                 [{$edit->oxorder__oxbillsal->value|oxmultilangsal}] [{$edit->oxorder__oxbillfname->value }] [{$edit->oxorder__oxbilllname->value }]<br>
                 [{$edit->oxorder__oxbillstreet->value }] [{$edit->oxorder__oxbillstreetnr->value }]<br>
                 [{$edit->oxorder__oxbillstateid->value}]
@@ -43,8 +43,8 @@
                 [{block name="admin_order_overview_deliveryaddress"}]
                     <b>[{ oxmultilang ident="GENERAL_DELIVERYADDRESS" }]:</b><br>
                     <br>
-                    [{ if $edit->oxorder__oxdelcompany->value }]Firma [{$edit->oxorder__oxdelcompany->value }]<br>[{/if}]
-                    [{ if $edit->oxorder__oxdeladdinfo->value }][{$edit->oxorder__oxdeladdinfo->value }]<br>[{/if}]
+                    [{if $edit->oxorder__oxdelcompany->value }]Firma [{$edit->oxorder__oxdelcompany->value }]<br>[{/if}]
+                    [{if $edit->oxorder__oxdeladdinfo->value }][{$edit->oxorder__oxdeladdinfo->value }]<br>[{/if}]
                     [{$edit->oxorder__oxdelsal->value|oxmultilangsal }] [{$edit->oxorder__oxdelfname->value }] [{$edit->oxorder__oxdellname->value }]<br>
                     [{$edit->oxorder__oxdelstreet->value }] [{$edit->oxorder__oxdelstreetnr->value }]<br>
                     [{$edit->oxorder__oxdelstateid->value }]
@@ -70,7 +70,7 @@
                     [{else}]
                         <td valign="top" class="edittext">&nbsp;&nbsp;[{ $listitem->getTotalBrutPriceFormated() }] [{ $edit->oxorder__oxcurrency->value }]</td>
                     [{/if}]
-                    [{ if $listitem->getPersParams() }]
+                    [{if $listitem->getPersParams() }]
                     <td valign="top" class="edittext">
                         [{foreach key=sVar from=$listitem->getPersParams() item=aParam name=persparams}]
                             &nbsp;&nbsp;,&nbsp;<em>
@@ -204,7 +204,7 @@
             </table>
 
             <br>
-            [{ if $paymentType->aDynValues }]
+            [{if $paymentType->aDynValues }]
                 <table cellspacing="0" cellpadding="0" border="0">
                 [{block name="admin_order_overview_dynamic"}]
                     [{foreach from=$paymentType->aDynValues item=value}]
@@ -235,7 +235,7 @@
         <td>&nbsp;&nbsp;
         </td>
         <td valign="top" class="edittext">
-            [{ if $edit }]
+            [{if $edit }]
             <b>[{ oxmultilang ident="GENERAL_ORDERNUM" }]: </b>[{ $edit->oxorder__oxordernr->value }]<br>
             [{assign var="user" value=$edit->getOrderUser() }]
             <b>[{ oxmultilang ident="CUSTOMERNUM" }]: </b>[{ $user->oxuser__oxcustnr->value }]<br>
@@ -250,7 +250,7 @@
                     [{ oxmultilang ident="ORDER_OVERVIEW_INFOLDER" }]:&nbsp;
                     <select name="setfolder" class="folderselect" onChange="document.myedit.submit();" [{ $readonly }]>
                     [{foreach from=$afolder key=field item=color}]
-                    <option value="[{ $field }]" [{ if $edit->oxorder__oxfolder->value == $field || ($field|oxmultilangassign == $edit->oxorder__oxfolder->value)}]SELECTED[{/if}] style="color: [{ $color }];">[{ oxmultilang ident=$field noerror=true }]</option>
+                    <option value="[{ $field }]" [{if $edit->oxorder__oxfolder->value == $field || ($field|oxmultilangassign == $edit->oxorder__oxfolder->value)}]SELECTED[{/if}] style="color: [{ $color }];">[{ oxmultilang ident=$field noerror=true }]</option>
                     [{/foreach}]
                     </select>
                     [{ oxinputhelp ident="HELP_ORDER_OVERVIEW_INFOLDER" }]
@@ -258,7 +258,7 @@
                 [{/block}]
                 </form>
             [{/if}]
-            [{ if $edit && $edit->oxorder__oxtransstatus->value }]
+            [{if $edit && $edit->oxorder__oxtransstatus->value }]
                 [{block name="admin_order_overview_status"}]
                     [{ oxmultilang ident="ORDER_OVERVIEW_INTSTATUS" }]:&nbsp;<b>[{ $edit->oxorder__oxtransstatus->value }]</b><br>
                 [{/block}]
@@ -303,7 +303,7 @@
             [{/block}]
             </table>
         <br>
-        [{ if $edit }]
+        [{if $edit }]
         <table cellspacing="0" cellpadding="0" border="0">
         <form name="sendorder" id="sendorder" action="[{ $oViewConf->getSelfLink() }]" method="post">
         [{ $oViewConf->getHiddenSid() }]
@@ -325,7 +325,7 @@
                 <td class="edittext">
                 </td>
                 <td class="edittext" valign="bottom"><br>
-                [{ if $oView->canResetShippingDate() }]
+                [{if $oView->canResetShippingDate() }]
                     <b>[{ oxmultilang ident="GENERAL_SENDON" }]</b><b>[{$edit->oxorder__oxsenddate|oxformdate:'datetime':true }]</b>
                 [{else}]
                     <b>[{ oxmultilang ident="GENERAL_NOSENT" }]</b>
@@ -333,7 +333,7 @@
                 </td>
             </tr>
         [{/block}]
-        [{ if $oView->canResetShippingDate() }]
+        [{if $oView->canResetShippingDate() }]
         <form name="resetorder" id="resetorder" action="[{ $oViewConf->getSelfLink() }]" method="post">
         [{ $oViewConf->getHiddenSid() }]
         <input type="hidden" name="cl" value="order_overview">
@@ -377,31 +377,10 @@
                   </tr>
                   </table>
                   </form>
-
-                  <br>
-                  <table cellspacing="0" cellpadding="0" style="padding-top: 5px; padding-left: 5px; padding-right: 5px; padding-bottom: 5px; border : 1px #A9A9A9; border-style : solid solid solid solid;" width="220">
-                  <form name="myedit2" id="myedit2" action="[{ $oViewConf->getSelfLink() }]" method="post" >
-                  [{ $oViewConf->getHiddenSid() }]
-                  <input type="hidden" name="cl" value="order_overview">
-                  <input type="hidden" name="fnc" value="exportDTAUS">
-                  <input type="hidden" name="oxid" value="[{ $oxid }]">
-                  <tr>
-                    <td valign="top">
-                      <img src="[{$oViewConf->getImageUrl()}]/dtaus_logo.jpg" width="71" height="40" alt="" border="0" hspace="0" vspace="0" align="absmiddle">
-                    </td>
-                    <td valign="top" class="edittext">
-                      [{ oxmultilang ident="ORDER_OVERVIEW_FROMORDERNUM" }]<br>
-                      <input type="text" class="editinput" size="15" maxlength="15" name="ordernr" value=""><br><br>
-                      <input type="submit" class="edittext" name="save" value="[{ oxmultilang ident="ORDER_OVERVIEW_MAKE" }]">
-                    </td>
-                  </tr>
-                  </table>
-                  </form>
           [{/block}]
         </td>
     </tr>
     </table>
-
 [{include file="bottomnaviitem.tpl"}]
 </table>
 [{include file="bottomitem.tpl"}]

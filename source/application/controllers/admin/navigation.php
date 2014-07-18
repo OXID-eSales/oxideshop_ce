@@ -99,7 +99,7 @@ class Navigation extends oxAdminView
             /** @var oxShop $oShop */
             $oShop = oxNew('oxShop');
             $oShop->load($iShopId);
-            $oShoplist->assign(array($oShop));
+            $oShoplist->add($oShop);
         } else {
             $oShoplist->getIdTitleList();
         }

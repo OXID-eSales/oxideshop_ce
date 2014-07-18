@@ -3190,7 +3190,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
 
         // assigning article to category
         $oArt2Cat = oxNew( "oxobject2category" );
-        $oArt2Cat->oxobject2category__oxobjectid = new oxField($this->oArticle->oxarticles__oxid->value, oxField::T_RAW);
+        $oArt2Cat->oxobject2category__oxobjectid = new oxField($oArticle->oxarticles__oxid->value, oxField::T_RAW);
         $oArt2Cat->oxobject2category__oxcatnid = new oxField('_testCat', oxField::T_RAW);
         $oArt2Cat->save();
 
@@ -3236,7 +3236,7 @@ class Unit_Core_oxArticleTest extends OxidTestCase
 
         // assigning article to category
         $oArt2Cat = oxNew( "oxobject2category" );
-        $oArt2Cat->oxobject2category__oxobjectid = new oxField($this->oArticle->oxarticles__oxid->value, oxField::T_RAW);
+        $oArt2Cat->oxobject2category__oxobjectid = new oxField($oArticle->oxarticles__oxid->value, oxField::T_RAW);
         $oArt2Cat->oxobject2category__oxcatnid = new oxField('_testCat', oxField::T_RAW);
         $oArt2Cat->save();
 

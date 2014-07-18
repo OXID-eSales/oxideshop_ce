@@ -1563,8 +1563,9 @@ class Unit_Core_oxArticleTest extends OxidTestCase
     {
         $aSkipFields = array( 'oxtimestamp', 'oxinsert', 'oxmapid' );
             $aSkipFields = array( 'oxtimestamp', 'oxinsert' );
-        $this->oArticle2->UNITskipSaveFields();
-        $this->assertEquals( $aSkipFields, $this->oArticle2->getNonPublicVar('_aSkipSaveFields'));
+        $oVariant = $this->_createVariant();
+        $oVariant->UNITskipSaveFields();
+        $this->assertEquals( $aSkipFields, $oVariant->getNonPublicVar('_aSkipSaveFields'));
     }
 
     /**

@@ -410,17 +410,26 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
 
                 $this->_assignElement($oListObject, $rs->fields);
 
-                if ($oListObject->getId()) {
-                    $this->_aArray[$oListObject->getId()] = $oListObject;
-                } else {
-                    $this->_aArray[] = $oListObject;
-                }
+                $this->add($oObject);
 
                 $rs->moveNext();
             }
         }
     }
 
+    /**
+     * Add an entry to object array.
+     *
+     * @param object $oObject Object to be added.
+     */
+    public function add($oObject)
+    {
+        if ($oObject->getId()) {
+            $this->_aArray[$oObject->getId()] = $oObject;
+        } else {
+            $this->_aArray[] = $oObject;
+        }
+    }
 
     /**
      * Assign data from array to list

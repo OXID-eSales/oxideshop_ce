@@ -3801,26 +3801,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         $oPrice->multiply($oCur->rate);
     }
 
-    /**
-     * Gets attributes string
-     *
-     * @param object $oArticle Article object
-     *
-     * @return null
-     */
-    protected function _setShopValues( $oArticle )
-    {
-        $myConfig = $this->getConfig();
-        $sShopId  = $myConfig->getShopID();
-        $aMultishopArticleFields = $myConfig->getConfigParam( 'aMultishopArticleFields');
-        if ( $myConfig->getConfigParam( 'blMallCustomPrice' ) && $sShopId != $oArticle->oxarticles__oxshopid->value && is_array( $aMultishopArticleFields ) ) {
-            $oField2Shop = oxNew( "oxfield2shop" );
-            $oField2Shop->setEnableMultilang( $this->_blEmployMultilanguage );
-            $oField2Shop->setLanguage( $this->getLanguage() );
-            $oField2Shop->setProductData( $this );
-        }
-    }
-    /* endif; */
 
     /**
      * gets attribs string

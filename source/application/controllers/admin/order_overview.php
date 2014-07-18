@@ -166,62 +166,6 @@ class Order_Overview extends oxAdminDetails
     }
 
     /**
-     * Performs DTAUS export to user (outputs file to save).
-     */
-    public function exportDTAUS()
-    {
-        $oOrderList = oxNew( "oxList" );
-        $oOrderList->init( "oxOrder" );
-        $sSelect =  "select * from oxorder where oxpaymenttype = 'oxiddebitnote'";
-
-        if ( ( $iFromOrderNr = oxRegistry::getConfig()->getRequestParameter( "ordernr") ) ) {
-            $sSelect .= " and oxordernr >= $iFromOrderNr";
-        }
-
-        $oOrderList->selectString( $sSelect );
-        if ( count( $oOrderList ) ) {
-            $oUserPayment = oxNew( "oxUserPayment" );
-            $oUtils = oxRegistry::getUtils();
-            $oShop  = $this->getConfig()->getActiveShop();
-
-            $sCompany   = $oShop->oxshops__oxcompany->value;
-            $sRoutingNr = $this->_cleanup( $oShop->oxshops__oxbankcode->value ) + 1 - 1;
-            $sAccountNr = $this->_cleanup( $oShop->oxshops__oxbanknumber->value );
-            $sSubject   = oxRegistry::getLang()->translateString( "order" );
-
-            // can't be called with oxnew, as it only supports single constructor parameter
-            $oDtaus = oxNew( "oxDtausBuilder", $sCompany, $sRoutingNr, $sAccountNr );
-            foreach ( $oOrderList as $oOrder ) {
-                $oUserPayment->load( $oOrder->oxorder__oxpaymentid->value );
-                $aDynValues = $oUtils->assignValuesFromText( $oUserPayment->oxuserpayments__oxvalue->value );
-
-                $sCustName  = $aDynValues[3]->value;
-                $sRoutingNr = $this->_cleanup( $aDynValues[1]->value );
-                $sAccountNr = $this->_cleanup( $aDynValues[2]->value );
-
-                $oDtaus->add( $sCustName, $sRoutingNr, $sAccountNr, $oOrder->getTotalOrderSum(), array( $oShop->oxshops__oxname->getRawValue(), $sSubject . " " . $oOrder->oxorder__oxordernr->value ) );
-            }
-
-            $oUtils->setHeader( "Content-Disposition: attachment; filename=\"dtaus0.txt\"" );
-            $oUtils->setHeader( "Content-type: text/plain" );
-            $oUtils->setHeader( "Cache-control: public" );
-            $oUtils->showMessageAndExit( $oDtaus->create() );
-        }
-    }
-
-    /**
-     * Removes white spaces from given string
-     *
-     * @param string $sValue value to clean
-     *
-     * @return string
-     */
-    protected function _cleanup( $sValue )
-    {
-        return str_replace( " ", "", $sValue );
-    }
-
-    /**
      * Sends order.
      */
     public function sendorder()

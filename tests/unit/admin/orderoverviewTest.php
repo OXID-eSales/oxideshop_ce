@@ -104,7 +104,6 @@ class Unit_Admin_OrderOverviewTest extends OxidTestCase
         $this->assertEquals( "testExportData", $aHeaders[6] );
     }
 
-
     /**
      * Order_Overview::Sendorder() test case
      *

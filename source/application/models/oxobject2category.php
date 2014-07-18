@@ -42,4 +42,43 @@ class oxObject2Category extends oxBase
     }
 
 
+    /**
+     * Returns assigned product id
+     *
+     * @return string
+     */
+    public function getProductId()
+    {
+        return $this->oxobject2category__oxobjectid->value;
+    }
+
+    /**
+     * Returns assigned product id
+     *
+     * @param string $sId assigned product id
+     */
+    public function setProductId($sId)
+    {
+        $this->oxobject2category__oxobjectid = new oxField($sId);
+    }
+
+    /**
+     * Returns assigned category id
+     *
+     * @return string
+     */
+    public function getCategoryId()
+    {
+        return $this->oxobject2category__oxcatnid->value;
+    }
+
+    /**
+     * Returns assigned category id
+     *
+     * @param string $sId assigned category id
+     */
+    public function setCategoryId($sId)
+    {
+        $this->oxobject2category__oxcatnid = new oxField($sId);
+    }
 }

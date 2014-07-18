@@ -26,16 +26,6 @@ require_once realpath( "." ).'/unit/test_config.inc.php';
 class Unit_Core_oxobject2CategoryTest extends OxidTestCase
 {
     /**
-     * Initialize the fixture.
-     *
-     * @return null
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-    }
-
-    /**
      * Tear down the fixture.
      *
      * @return null
@@ -66,42 +56,6 @@ class Unit_Core_oxobject2CategoryTest extends OxidTestCase
         $oObject2Category->setCategoryId('_testProduct');
         $this->assertEquals('_testProduct', $oObject2Category->getCategoryId());
         $this->assertEquals('_testProduct', $oObject2Category->oxobject2category__oxcatnid->value);
-    }
-
-    /**
-     * Tests if category assignment is added for inherited subshops
-     */
-    public function testAddElement2ShopRelations()
-    {
-        $oElement2ShopRelations = $this->getMock("oxElement2ShopRelations", array('setShopIds', 'addObjectToShop'), array('oxobject2category'));
-        $oElement2ShopRelations->expects($this->once())->method('setShopIds')->with(array(3));
-        $oElement2ShopRelations->expects($this->once())->method('addObjectToShop');
-
-        $oObject2Category = $this->getMock("oxObject2Category", array('_getInheritanceGroup', '_getElement2ShopRelations'));
-        $oObject2Category->expects($this->once())->method('_getInheritanceGroup')->will($this->returnValue(array(2,3)));
-        $oObject2Category->expects($this->once())->method('_getElement2ShopRelations')->will($this->returnValue($oElement2ShopRelations));
-        $oObject2Category->setId('_testId');
-        $oObject2Category->setCategoryId('_testProduct');
-        $oObject2Category->setProductId('_testProduct');
-        $oObject2Category->save();
-    }
-
-    /**
-     * Tests if category assignment has no subshops
-     */
-    public function testAddElement2ShopRelationsNoSubShops()
-    {
-        $oElement2ShopRelations = $this->getMock("oxElement2ShopRelations", array('setShopIds', 'addObjectToShop'), array('oxobject2category'));
-        $oElement2ShopRelations->expects($this->never())->method('setShopIds');
-        $oElement2ShopRelations->expects($this->never())->method('addObjectToShop');
-
-        $oObject2Category = $this->getMock("oxObject2Category", array('_getInheritanceGroup', '_getElement2ShopRelations'));
-        $oObject2Category->expects($this->once())->method('_getInheritanceGroup')->will($this->returnValue(array(1)));
-        $oObject2Category->expects($this->never())->method('_getElement2ShopRelations')->will($this->returnValue($oElement2ShopRelations));
-        $oObject2Category->setId('_testId');
-        $oObject2Category->setCategoryId('_testProduct');
-        $oObject2Category->setProductId('_testProduct');
-        $oObject2Category->save();
     }
 
 }

@@ -28,43 +28,15 @@ require_once realpath(".") . '/unit/test_config.inc.php';
  */
 class Unit_Core_oxshoplistTest extends OxidTestCase
 {
-
-    /**
-     * Initialize the fixture.
-     *
-     * @return null
-     */
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $oDb = oxDb::getDb();
-
-        for ($i = 2; $i < 5; $i++) {
-                $oDb->execute("INSERT INTO `oxshops` (OXID, OXACTIVE, OXNAME) VALUES ($i, 1, 'Test Shop $i')");
-        }
-    }
-
-    /**
-     * Executed after test is down
-     *
-     */
-    protected function tearDown()
-    {
-        $oDb = oxDb::getDb();
-        $oDb->execute("DELETE FROM `oxshops` WHERE `oxid` > 1");
-
-        parent::tearDown();
-    }
-
     /**
      * All shop list test
      */
     public function testGetAll()
     {
-        $oShopList = new oxShopList();
+        /** @var oxShopList $oShopList */
+        $oShopList = $this->getMock('oxShopList', array('selectString', 'setBaseObject'));
+        $oShopList->expects($this->once())->method('selectString');
         $oShopList->getAll();
-        $this->assertEquals(4, $oShopList->count());
     }
 
     /**
@@ -75,7 +47,7 @@ class Unit_Core_oxshoplistTest extends OxidTestCase
         /** @var oxShopList $oShopList */
         $oShopList = $this->getMock('oxShopList', array('selectString', 'setBaseObject'));
         $oShopList->expects($this->once())->method('setBaseObject');
-        $oShopList->expects($this->once())->method('selectString')->with('SELECT `OXID`, `OXNAME` FROM `oxshops`');
+        $oShopList->expects($this->once())->method('selectString');
         $oShopList->getIdTitleList();
     }
 }

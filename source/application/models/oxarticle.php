@@ -2926,19 +2926,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     }
 
     /**
-     * retrieve article VAT (cached)
-     *
-     * @return double
-     */
-    public function getArticleVat()
-    {
-        if (!isset($this->_dArticleVat)) {
-            $this->_dArticleVat = oxRegistry::get("oxVatSelector")->getArticleVat( $this );
-        }
-        return $this->_dArticleVat;
-    }
-
-    /**
      * apply article and article use
      *
      * @param oxPrice $oPrice target price
@@ -3773,8 +3760,9 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     public function getArticleVat()
     {
         if (!isset($this->_dArticleVat)) {
-            $this->_dArticleVat = oxRegistry::get("oxVatSelector")->getArticleVat( $this );
+            $this->_dArticleVat = oxRegistry::get("oxVatSelector")->getArticleVat($this);
         }
+
         return $this->_dArticleVat;
     }
 

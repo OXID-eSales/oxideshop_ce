@@ -59,8 +59,8 @@ class  Integration_Models_oxshoplistTest extends OxidTestCase
     public function testGetIdTitleList()
     {
         /** @var oxShopList $oShopList */
-        $oShopList = $this->getMock('oxShopList', array('selectString', 'setBaseObject'));
+        $oShopList = new oxShopList();
         $oShopList->getIdTitleList();
-        $this->assertEquals();
+        $this->assertEquals(4, $oShopList->count());
     }
 }

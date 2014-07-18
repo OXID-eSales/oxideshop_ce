@@ -1118,8 +1118,11 @@ class oxCategory extends oxI18n implements oxIUrl
      * Default is set to 'OXID'
      *
      * @param string $sField field to be retrieved from each subcategory
+     * @param string $sOXID  Cetegory ID
+     *
+     * @return array
      */
-    public function getFieldFromSubCategories($sField = 'OXID')
+    public function getFieldFromSubCategories($sField = 'OXID', $sOXID = null)
     {
         if (!$sOXID) {
             $sOXID = $this->getId();

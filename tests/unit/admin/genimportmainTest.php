@@ -100,7 +100,7 @@ class Unit_Admin_GenImportMainTest extends OxidTestCase
      */
     public function testGetCsvFieldsNamesContainsNoHeader()
     {
-        modConfig::getInstance()->setRequestParameter( 'blContainsHeader', false );
+        $this->setRequestParam( 'blContainsHeader', false );
 
         $oView = $this->getMock( "GenImport_Main", array( "_getUploadedCsvFilePath", "_getCsvFirstRow" ) );
         $oView->expects( $this->once() )->method( '_getUploadedCsvFilePath' )->will( $this->returnValue( false ) );
@@ -115,7 +115,7 @@ class Unit_Admin_GenImportMainTest extends OxidTestCase
      */
     public function testGetCsvFieldsNamesContainsHeader()
     {
-        modConfig::getInstance()->setRequestParameter( 'blContainsHeader', true );
+        $this->setRequestParam( 'blContainsHeader', true );
 
         $oView = $this->getMock( "GenImport_Main", array( "_getUploadedCsvFilePath", "_getCsvFirstRow" ) );
         $oView->expects( $this->once() )->method( '_getUploadedCsvFilePath' )->will( $this->returnValue( false ) );
@@ -151,8 +151,8 @@ class Unit_Admin_GenImportMainTest extends OxidTestCase
      */
     public function testResetUploadedCsvData()
     {
-        modSession::getInstance()->setVar( "sCsvFilePath", "sCsvFilePath" );
-        modSession::getInstance()->setVar( "blCsvContainsHeader", "blCsvContainsHeader" );
+        $this->getSession()->setVar( "sCsvFilePath", "sCsvFilePath" );
+        $this->getSession()->setVar( "blCsvContainsHeader", "blCsvContainsHeader" );
 
         $oView = $this->getProxyClass( "GenImport_Main" );
         $oView->setNonPublicVar( "_sCsvFilePath", "testPath" );
@@ -187,7 +187,7 @@ class Unit_Admin_GenImportMainTest extends OxidTestCase
      */
     public function testCheckErrorsStep3EmptyCsvFields()
     {
-        modConfig::getInstance()->setRequestParameter( 'aCsvFields', array() );
+        $this->setRequestParam( 'aCsvFields', array() );
 
         // defining parameters
         $iNavStep = 3;
@@ -204,7 +204,7 @@ class Unit_Admin_GenImportMainTest extends OxidTestCase
     public function testCheckErrorsStep3()
     {
         oxTestModules::addFunction( 'oxUtilsView', 'addErrorToDisplay', '{}');
-        modConfig::getInstance()->setRequestParameter( 'aCsvFields', array( "sTestField" ) );
+        $this->setRequestParam( 'aCsvFields', array( "sTestField" ) );
 
         // defining parameters
         $iNavStep = 3;
@@ -220,7 +220,7 @@ class Unit_Admin_GenImportMainTest extends OxidTestCase
      */
     public function testGetUploadedCsvFilePathDefinedAsClassParam()
     {
-        modSession::getInstance()->setVar( "sCsvFilePath", null );
+        $this->getSession()->setVar( "sCsvFilePath", null );
 
         // testing..
         $oView = $this->getProxyClass( "GenImport_Main" );
@@ -235,7 +235,7 @@ class Unit_Admin_GenImportMainTest extends OxidTestCase
      */
     public function testGetUploadedCsvFilePathDefinedAsSessionParam()
     {
-        modSession::getInstance()->setVar( "sCsvFilePath", "sCsvFilePath" );
+        $this->getSession()->setVar( "sCsvFilePath", "sCsvFilePath" );
 
         // testing..
         $oView = $this->getProxyClass( "GenImport_Main" );
@@ -249,7 +249,7 @@ class Unit_Admin_GenImportMainTest extends OxidTestCase
      */
     public function testGetUploadedCsvFilePath()
     {
-        modSession::getInstance()->setVar( "sCsvFilePath", null );
+        $this->getSession()->setVar( "sCsvFilePath", null );
         $sFileName = md5( time() );
 
         // testing..
@@ -294,7 +294,7 @@ class Unit_Admin_GenImportMainTest extends OxidTestCase
      */
     public function testGetCsvFieldsTerminator()
     {
-        modConfig::getInstance()->setConfigParam( "sGiCsvFieldTerminator", ";" );
+        $this->getConfig()->setConfigParam( "sGiCsvFieldTerminator", ";" );
 
         // testing..
         $oView = new GenImport_Main();
@@ -309,7 +309,7 @@ class Unit_Admin_GenImportMainTest extends OxidTestCase
      */
     public function testGetCsvFieldsEncolser()
     {
-        modConfig::getInstance()->setConfigParam( "sGiCsvFieldEncloser", "\"" );
+        $this->getConfig()->setConfigParam( "sGiCsvFieldEncloser", "\"" );
 
         // testing..
         $oView = new GenImport_Main();

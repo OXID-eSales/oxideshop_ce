@@ -410,7 +410,7 @@ class oxList extends oxSuperCfg implements ArrayAccess, Iterator, Countable
 
                 $this->_assignElement($oListObject, $rs->fields);
 
-                $this->add($oObject);
+                $this->add($oListObject);
 
                 $rs->moveNext();
             }

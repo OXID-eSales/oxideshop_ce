@@ -47,4 +47,13 @@ class oxShopList extends oxList
         $this->selectString( 'SELECT `oxshops`.* FROM `oxshops`' );
     }
 
+    /**
+     * Gets shop list into object
+     */
+    public function getIdTitleList()
+    {
+        $this->setBaseObject(oxNew('oxListObject', 'oxshops'));
+        $this->selectString('SELECT `OXID`, `OXNAME` FROM `oxshops`');
+    }
+
 }

@@ -667,14 +667,13 @@ class Unit_Core_oxorderTest extends OxidTestCase
 
     private function _insertTestArticle()
     {
-        $oDB = oxDb::getDb();
         $myConfig = oxRegistry::getConfig();
 
         // insert test article
         $sInsert = "insert into oxarticles (`OXID`,`OXSHOPID`,`OXTITLE`,`OXSTOCKFLAG`,`OXSTOCK`,`OXPRICE`)
                     values ('_testArticleId','".$myConfig->getShopId()."','testArticleTitle','2','20','119'), ('_testArticleId2','".$myConfig->getShopId()."','testArticleTitle','2','20','119')";
 
-        $oDB->Execute( $sInsert );
+        $this->addToDatabase( $sInsert, 'oxarticles' );
     }
 
     public function testAddOrderArticlesToBasket()
@@ -919,7 +918,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
         $this->assertEquals( "1196.9", $oOrder->oxorder__oxtotalordersum->value );
 
         $sInsert = "update oxorderarticles set oxstorno='1' where oxartid='_testArticleId' or oxartid='_testArticleId2'";
-        oxDb::getDb()->Execute( $sInsert );
+        $this->addToDatabase( $sInsert, 'oxarticles' );
 
         $oUpdatedOrder = oxNew( 'oxorder' );
         $oUpdatedOrder->load( '_testOrderId' );
@@ -963,7 +962,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
         $sInsert = "insert into oxarticles (`OXID`,`OXSHOPID`,`OXTITLE`,`OXSTOCKFLAG`,`OXSTOCK`,`OXPRICE`)
                     values ('_testArticleId3','".$myConfig->getShopId()."','testArticleTitle2','2','20','238')";
 
-        $oDB->Execute( $sInsert );
+        $this->addToDatabase( $sInsert, 'oxarticles' );
 
         $oOrderArticle2 = new oxorderarticle();
         $oOrderArticle2->oxorderarticles__oxartid = new oxField('_testArticleId3', oxField::T_RAW);
@@ -1500,7 +1499,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
             $sInsert = "insert into oxarticles (`OXID`,`OXSHOPID`,`OXTITLE`,`OXSTOCKFLAG`,`OXSTOCK`,`OXPRICE`)
                         values ('_testArticleId','".$myConfig->getShopId()."','testArticleTitle','2','20','119')";
 
-        $oDB->Execute( $sInsert );
+        $this->addToDatabase( $sInsert, 'oxarticles' );
 
         $oOrder = new oxOrder();
         $oOrder->setId( '_testOrderId' );

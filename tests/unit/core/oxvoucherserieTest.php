@@ -47,8 +47,6 @@ class Unit_Core_oxvoucherserieTest extends OxidTestCase
         $oSerie->oxvoucherseries__oxserienr      = new oxField( 'Test Mod Voucher Serie', oxField::T_RAW );
         $oSerie->oxvoucherseries__oxdiscount     = new oxField( 50, oxField::T_RAW );
         $oSerie->oxvoucherseries__oxdiscounttype = new oxField( 'percent', oxField::T_RAW );
-        $oSerie->oxvoucherseries__oxstartdate    = new oxField( '0000-00-00 00:00:00', oxField::T_RAW );
-        $oSerie->oxvoucherseries__oxreleasedate  = new oxField( '0000-00-00 00:00:00', oxField::T_RAW );
         $oSerie->oxvoucherseries__oxbegindate    = new oxField( '0000-00-00 00:00:00', oxField::T_RAW );
         $oSerie->oxvoucherseries__oxenddate      = new oxField( '0000-00-00 00:00:00', oxField::T_RAW );
         $oSerie->oxvoucherseries__oxallowsameseries  = new oxField( 0, oxField::T_RAW );
@@ -63,8 +61,6 @@ class Unit_Core_oxvoucherserieTest extends OxidTestCase
         $oSerie->oxvoucherseries__oxserienr      = new oxField( 'Test Mod Voucher Serie', oxField::T_RAW );
         $oSerie->oxvoucherseries__oxdiscount     = new oxField( 0.999, oxField::T_RAW );
         $oSerie->oxvoucherseries__oxdiscounttype = new oxField( 'absolute', oxField::T_RAW );
-        $oSerie->oxvoucherseries__oxstartdate    = new oxField( '0000-00-00 00:00:00', oxField::T_RAW );
-        $oSerie->oxvoucherseries__oxreleasedate  = new oxField( '0000-00-00 00:00:00', oxField::T_RAW );
         $oSerie->oxvoucherseries__oxbegindate    = new oxField( '0000-00-00 00:00:00', oxField::T_RAW );
         $oSerie->oxvoucherseries__oxenddate      = new oxField( '0000-00-00 00:00:00', oxField::T_RAW );
         $oSerie->oxvoucherseries__oxallowsameseries  = new oxField( 0, oxField::T_RAW );

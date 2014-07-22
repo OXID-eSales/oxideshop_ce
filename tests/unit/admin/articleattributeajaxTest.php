@@ -47,10 +47,9 @@ class Unit_Admin_ArticleAttributeAjaxTest extends OxidTestCase
         oxDb::getDb()->execute( "insert into oxobject2attribute set oxid='_testAttribute4', oxobjectid='_testObjectId2', oxattrid='_testAttribute', oxvalue='_testValue4', oxpos=0" );
         oxDb::getDb()->execute( "insert into oxobject2attribute set oxid='_testAttribute5', oxobjectid='_testObjectId2', oxattrid='_testAttribute', oxvalue='_testValue5', oxpos=0" );
         
-
-            oxDb::getDb()->execute( "insert into oxattribute set oxid='_testAttribute', oxshopid=1, oxtitle='_testAttributeTitle'" );
-            oxDb::getDb()->execute( "insert into oxarticles set oxid='_testAttributeArticle', oxshopid='1', oxtitle='_testAttributeArticle'" );
-            oxDb::getDb()->execute( "insert into oxattribute set oxid='_testAttributeSaveAttr', oxshopid=1, oxtitle='_testAttributeSaveAttrTitle'" );
+        $this->addToDatabase( "insert into oxattribute set oxid='_testAttribute', oxshopid=1, oxtitle='_testAttributeTitle'", 'oxattribute' );
+        $this->addToDatabase( "insert into oxarticles set oxid='_testAttributeArticle', oxshopid='1', oxtitle='_testAttributeArticle'", 'oxarticles' );
+        $this->addToDatabase( "insert into oxattribute set oxid='_testAttributeSaveAttr', oxshopid=1, oxtitle='_testAttributeSaveAttrTitle'", 'oxattribute' );
             
             $this->setAttributeViewTable( 'oxv_oxattribute_de' );
             $this->setObject2AttributeViewTable( 'oxv_oxobject2attribute_de' );
@@ -73,10 +72,6 @@ class Unit_Admin_ArticleAttributeAjaxTest extends OxidTestCase
         
         oxDb::getDb()->execute( "delete from oxobject2attribute where oxobjectid='_testObjectIdAdd1'" );
         
-        oxDb::getDb()->execute( "delete from oxattribute where oxid='_testAttribute'" );
-        
-        oxDb::getDb()->execute( "delete from oxarticles where oxid='_testAttributeArticle'" );
-        oxDb::getDb()->execute( "delete from oxattribute where oxid='_testAttributeSaveAttr'" );
         oxDb::getDb()->execute( "delete from oxobject2attribute where oxid='_testAttribute6'" );
         oxDb::getDb()->execute( "delete from oxobject2attribute where oxvalue='_testAttrValue'" );
         

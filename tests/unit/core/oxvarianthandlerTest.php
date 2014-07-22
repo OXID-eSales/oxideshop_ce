@@ -41,11 +41,14 @@ class Unit_Core_oxvarianthandlerTest extends OxidTestCase
      */
     protected function tearDown()
     {
-        $this->addTableForCleanup('oxselectlist');
-        $this->addTableForCleanup('oxattribute');
-        $this->addTableForCleanup('oxobject2attribute');
-        $this->addTableForCleanup('oxarticles');
+        $this->cleanUpTable('oxselectlist');
+        $this->cleanUpTable('oxattribute', 'oxtitle');
+        $this->cleanUpTable('oxobject2attribute', 'oxobjectid');
+        $this->cleanUpTable('oxarticles');
 
+        $myDB = oxDb::getDB();
+        $sQ = 'delete from oxarticles where oxparentid = "2000" ';
+        $myDB->Execute( $sQ );
         parent::tearDown();
     }
 
@@ -150,7 +153,6 @@ class Unit_Core_oxvarianthandlerTest extends OxidTestCase
     public function testGenVariantFromSellOxVarCountUpdated()
     {
         oxRegistry::getConfig()->setConfigParam('blUseMultidimensionVariants', 1);
-        $myDB     = oxDb::getDB();
         $sVal = 'red!P!10__@@blue!P!10__@@black!P!10__@@';
 
         $sShopId = 'oxbaseshop';

@@ -43,7 +43,7 @@ class Unit_Core_oxselectlistTest extends OxidTestCase
         $sVal = '&amp;&test1, 10!P!10__@@test2, 10!P!10__@@test3, 10!P!10__@@';
 
             $sQ = 'insert into oxselectlist (oxid, oxshopid, oxtitle, oxident, oxvaldesc) values ("oxsellisttest", "'.$sShopId.'", "oxsellisttest", "oxsellisttest", "'.$sVal.'")';
-        $myDB->Execute( $sQ );
+        $this->addToDatabase($sQ, 'oxselectlist');
 
         $sQ = 'insert into oxobject2selectlist (OXID,OXOBJECTID,OXSELNID,OXSORT) values ("oxsellisttest", "oxsellisttest", "oxsellisttest", 1) ';
         $myDB->Execute( $sQ );

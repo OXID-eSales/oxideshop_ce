@@ -38,29 +38,17 @@ class Unit_Core_oxvoucherserieExcludeTest extends OxidTestCase
         $this->_insertData();
     }
 
-    /**
-     * Restoring environment
-     */
-    protected function tearDown()
-    {
-        $this->_removeData();
-        parent::tearDown();
-    }
-
     protected function _insertData()
     {
 
             $sShopIdFields = "`OXSHOPID`";
             $sShopIdValues = "'oxbaseshop'";
 
-        //$sShopIdFields = "`OXSHOPID`, `OXSHOPINCL`, `OXSHOPEXCL`";
-        //$sShopIdValues = "1,'1','0'";
-
         $sInsertSeries = "
         INSERT INTO `oxvoucherseries`
-        (`OXID`, $sShopIdFields, `OXSERIENR`, `OXSERIEDESCRIPTION`, `OXDISCOUNT`, `OXDISCOUNTTYPE`,`OXBEGINDATE`, `OXENDDATE`, `OXALLOWSAMESERIES`, `OXALLOWOTHERSERIES`, `OXALLOWUSEANOTHER`, `OXMINIMUMVALUE`, `OXCALCULATEONCE`)
+        (`OXID`, $sShopIdFields, `OXSERIENR`, `OXSERIEDESCRIPTION`, `OXDISCOUNT`, `OXDISCOUNTTYPE`, `OXSTARTDATE`, `OXRELEASEDATE`, `OXBEGINDATE`, `OXENDDATE`, `OXALLOWSAMESERIES`, `OXALLOWOTHERSERIES`, `OXALLOWUSEANOTHER`, `OXMINIMUMVALUE`, `OXCALCULATEONCE`)
         VALUES
-        ('test_s1',$sShopIdValues,'s1','regular   ','20','absolute','0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,0,'0',0);";
+        ('test_s1',$sShopIdValues,'s1','regular   ','20','absolute','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00',0,0,0,'0',0);";
 
         $sInsertVouchers = "
         INSERT INTO `oxvouchers`
@@ -74,20 +62,9 @@ class Unit_Core_oxvoucherserieExcludeTest extends OxidTestCase
         VALUES
         ('test_r1','test_s1','1771','oxarticles');";
 
-        oxDb::getDb()->execute($sInsertSeries);
-        oxDb::getDb()->execute($sInsertVouchers);
-        oxDb::getDb()->execute($sInsertReleations);
-    }
-
-    protected function _removeData()
-    {
-        $sDeleteSeries    = "DELETE FROM `oxvoucherseries`   WHERE `OXID` LIKE 'test_%';";
-        $sDeleteVouchers  = "DELETE FROM `oxvouchers`        WHERE `OXID` LIKE 'test_%';";
-        $sDeleteRelations = "DELETE FROM `oxobject2discount` WHERE `OXID` LIKE 'test_%';";
-
-        oxDb::getDb()->execute($sDeleteSeries);
-        oxDb::getDb()->execute($sDeleteVouchers);
-        oxDb::getDb()->execute($sDeleteRelations);
+        $this->addToDatabase($sInsertSeries, 'oxvoucherseries');
+        $this->addToDatabase($sInsertVouchers, 'oxvouchers');
+        $this->addToDatabase($sInsertReleations, 'oxobject2discount');
     }
 
     public function testDelete ()

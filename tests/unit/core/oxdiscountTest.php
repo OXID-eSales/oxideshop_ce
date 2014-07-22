@@ -416,7 +416,7 @@ class Unit_Core_oxDiscountTest extends OxidTestCase
             $sQ = "insert into oxdiscount ( oxid, oxshopid, oxactive, oxtitle, oxamount, oxamountto, oxpriceto, oxaddsumtype, oxaddsum )
                    values ( '{$sDiscountId}', '".oxRegistry::getConfig()->getBaseShopId()."', '1', 'Test', '5', '10', '0', 'abs', '10' )";
 
-        oxDb::getDb()->Execute( $sQ );
+        $this->addToDatabase($sQ, 'oxdiscount');
 
         // inserting test discount
         $sQ = "insert into oxobject2discount ( oxid, oxdiscountid, oxobjectid, oxtype )
@@ -461,7 +461,7 @@ class Unit_Core_oxDiscountTest extends OxidTestCase
             $sQ = "insert into oxdiscount ( oxid, oxshopid, oxactive, oxtitle, oxamount, oxamountto, oxpriceto, oxprice, oxaddsumtype, oxaddsum )
                    values ( '{$sDiscountId}', '".oxRegistry::getConfig()->getBaseShopId()."', '1', 'Test', '0', '0', '1000', '500', 'abs', '10' )";
 
-        oxDb::getDb()->Execute( $sQ );
+        $this->addToDatabase($sQ, 'oxdiscount');
 
         // inserting test discount
         $sQ = "insert into oxobject2discount ( oxid, oxdiscountid, oxobjectid, oxtype )
@@ -1013,7 +1013,7 @@ class Unit_Core_oxDiscountTest extends OxidTestCase
             $sQ = "insert into oxdiscount ( oxid, oxshopid, oxactive, oxtitle, oxamount, oxamountto, oxpriceto, oxaddsumtype, oxaddsum )
                    values ( '{$sDiscountId}', '".oxRegistry::getConfig()->getBaseShopId()."', '1', 'Test', '5', '10', '0', 'itm', '10' )";
 
-        oxDb::getDb()->Execute( $sQ );
+        $this->addToDatabase($sQ, 'oxdiscount');
 
         // assigning test discount
         $sQ = "insert into oxobject2discount ( oxid, oxdiscountid, oxobjectid, oxtype )

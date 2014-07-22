@@ -53,7 +53,7 @@ class oxObject2Category extends oxBase
     }
 
     /**
-     * Returns assigned product id
+     * Sets assigned product id
      *
      * @param string $sId assigned product id
      */
@@ -73,7 +73,7 @@ class oxObject2Category extends oxBase
     }
 
     /**
-     * Returns assigned category id
+     * Sets assigned category id
      *
      * @param string $sId assigned category id
      */

@@ -21,7 +21,7 @@ class Integration_Price_BasketTest extends OxidTestCase
     );
     /* Specified test cases (optional) */
     private $_aTestCases = array(
-            "ccase81.php",
+            //"testCase.php",
     );
 
     /**

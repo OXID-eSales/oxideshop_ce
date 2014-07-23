@@ -670,10 +670,13 @@ class Unit_Core_oxorderTest extends OxidTestCase
         $myConfig = oxRegistry::getConfig();
 
         // insert test article
-        $sInsert = "insert into oxarticles (`OXID`,`OXSHOPID`,`OXTITLE`,`OXSTOCKFLAG`,`OXSTOCK`,`OXPRICE`)
-                    values ('_testArticleId','".$myConfig->getShopId()."','testArticleTitle','2','20','119'), ('_testArticleId2','".$myConfig->getShopId()."','testArticleTitle','2','20','119')";
+        $sInsert  = "insert into oxarticles (`OXID`,`OXSHOPID`,`OXTITLE`,`OXSTOCKFLAG`,`OXSTOCK`,`OXPRICE`)
+                    values ('_testArticleId','".$myConfig->getShopId()."','testArticleTitle','2','20','119')";
+        $sInsert2 = "insert into oxarticles (`OXID`,`OXSHOPID`,`OXTITLE`,`OXSTOCKFLAG`,`OXSTOCK`,`OXPRICE`)
+                    values ('_testArticleId2','".$myConfig->getShopId()."','testArticleTitle','2','20','119')";
 
         $this->addToDatabase( $sInsert, 'oxarticles' );
+        $this->addToDatabase( $sInsert2, 'oxarticles' );
     }
 
     public function testAddOrderArticlesToBasket()
@@ -918,7 +921,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
         $this->assertEquals( "1196.9", $oOrder->oxorder__oxtotalordersum->value );
 
         $sInsert = "update oxorderarticles set oxstorno='1' where oxartid='_testArticleId' or oxartid='_testArticleId2'";
-        $this->addToDatabase( $sInsert, 'oxarticles' );
+        oxDb::getDb()->Execute( $sInsert );
 
         $oUpdatedOrder = oxNew( 'oxorder' );
         $oUpdatedOrder->load( '_testOrderId' );

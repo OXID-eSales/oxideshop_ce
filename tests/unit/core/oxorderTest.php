@@ -918,7 +918,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
         $this->assertEquals( "1196.9", $oOrder->oxorder__oxtotalordersum->value );
 
         $sInsert = "update oxorderarticles set oxstorno='1' where oxartid='_testArticleId' or oxartid='_testArticleId2'";
-        $this->addToDatabase( $sInsert, 'oxarticles' );
+        oxDb::getDb()->Execute( $sInsert );
 
         $oUpdatedOrder = oxNew( 'oxorder' );
         $oUpdatedOrder->load( '_testOrderId' );
@@ -1333,7 +1333,11 @@ class Unit_Core_oxorderTest extends OxidTestCase
         $oOrder->load( '_testOrderId2' );
         $this->assertEquals( 'a7c40f6321c6f6109.43859248', $oOrder->oxorder__oxbillcountryid->value );
         $aRet = $oOrder->getShippingSetList();
-        $this->assertEquals( array('oxidstandard','1b842e732a23255b1.91207750', '1b842e732a23255b1.91207751'), array_keys($aRet) );
+        $aResult = array_keys($aRet);
+        $aExpectResult = array('oxidstandard','1b842e732a23255b1.91207750', '1b842e732a23255b1.91207751');
+        sort($aExpectResult);
+        sort($aResult);
+        $this->assertEquals($aExpectResult, $aResult);
 
         $oOrder->oxorder__oxbillcountryid = new oxField( 'aaaaa' );
         $oOrder->save();

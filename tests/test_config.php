@@ -54,6 +54,11 @@ $sSeleniumScreenShotsPath = null; //$sShopPath . '/selenium_screenshots/';
 // Url, where selenium screen shots should be available.
 $sSeleniumScreenShotsUrl = null; //$sShopUrl . '/selenium_screenshots/';
 
+// What are we testing, 'admin' or 'frontend'. demodata_EE_2_{domain}.sql is used by default.
+// For custom file, rename whole $sDemoDataFileName
+$sDomain = 'admin';
+$sDemoDataFileName = "demodata_EE_2_{$sDomain}.sql";
+
 // Browser name which will be used for testing.
 // Possible values: *iexplore, *iehta, *firefox, *chrome, *piiexplore, *pifirefox, *safari, *opera
 // make sure that path to browser executable is known for the system

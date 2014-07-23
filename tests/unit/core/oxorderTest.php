@@ -918,7 +918,7 @@ class Unit_Core_oxorderTest extends OxidTestCase
         $this->assertEquals( "1196.9", $oOrder->oxorder__oxtotalordersum->value );
 
         $sInsert = "update oxorderarticles set oxstorno='1' where oxartid='_testArticleId' or oxartid='_testArticleId2'";
-        oxDb::getDb()->Execute( $sInsert );
+        $this->addToDatabase( $sInsert, 'oxarticles' );
 
         $oUpdatedOrder = oxNew( 'oxorder' );
         $oUpdatedOrder->load( '_testOrderId' );

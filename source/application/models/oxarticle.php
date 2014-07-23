@@ -1600,7 +1600,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
             }
         }
 
-        return self::$_aArticleCats[$this->getId()] = $aRet;
+        return self::$_aArticleCats[$this->getId()] = array_unique($aRet);
     }
 
     /**

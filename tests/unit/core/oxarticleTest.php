@@ -6618,6 +6618,14 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $oA2C->setId( $testAid );
         $oA2C->save();
 
+        // assigning articles to category
+        $oA2C = new oxbase();
+        $oA2C->init( 'oxobject2category' );
+        $oA2C->oxobject2category__oxobjectid = new oxField( $testParentid );
+        $oA2C->oxobject2category__oxcatnid = new oxField( $testCatId );
+        $oA2C->setId( $testParentid );
+        $oA2C->save();
+
         $this->assertEquals( array( $testCatId ), $oArticle->getCategoryIds( false, true) );
     }
 

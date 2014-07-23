@@ -21,7 +21,7 @@ class Integration_Price_BasketTest extends OxidTestCase
     );
     /* Specified test cases (optional) */
     private $_aTestCases = array(
-            //"testCase.php",
+            "ccase81.php",
     );
 
     /**
@@ -276,7 +276,11 @@ class Integration_Price_BasketTest extends OxidTestCase
             }
             print( count( $aFiles) . " test files found\r\n" );
             foreach ( $aFiles as $sFilename ) {
-                include( $sFilename );
+                if (!file_exists($sFilename)) {
+                    throw new Exception("Test case {$sFilename} does not exist!");
+                }
+                include($sFilename);
+
                 $aGlobal["{$sFilename}"] = array($aData);
             }
         }

@@ -18,7 +18,7 @@ class Integration_Price_PriceTest extends OxidTestCase
     );
     /* Specified test cases (optional) */
     private $_aTestCases = array(
-            //"testclass.php",
+            //"testCase.php",
     );
 
     /**

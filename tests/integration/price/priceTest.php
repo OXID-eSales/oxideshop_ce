@@ -185,6 +185,9 @@ class Integration_Price_PriceTest extends OxidTestCase
             }
             print( count( $aFiles) . " test files found\r\n" );
             foreach ( $aFiles as $sFilename ) {
+                if (!file_exists($sFilename)) {
+                    throw new Exception("Test case {$sFilename} does not exist!");
+                }
                 include( $sFilename );
                 if ( $aData ) {
                     $aGlobal["{$sFilename}"] = array($aData);

@@ -197,6 +197,9 @@ class Integration_Price_OrderTest extends OxidTestCase
             }
         }
         foreach ( $aFiles as $sFilename ) {
+            if (!file_exists($sFilename)) {
+                throw new Exception("Test case {$sFilename} does not exist!");
+            }
             include( $sFilename );
             $aGlobal["{$sFilename}"] = array($aData);
         }

@@ -522,6 +522,7 @@ class oxLang extends oxSuperCfg
     {
         $iDecPos = 0;
         $sValue  = ( string ) $dValue;
+        /** @var oxStrRegular $oStr */
         $oStr = getStr();
         if ( ( $iDotPos = $oStr->strpos( $sValue, '.' ) ) !== false ) {
             $iDecPos = $oStr->strlen( $oStr->substr( $sValue, $iDotPos + 1 ) );
@@ -1071,6 +1072,7 @@ class oxLang extends oxSuperCfg
     public function processUrl( $sUrl, $iLang = null )
     {
         $iLang = isset( $iLang ) ? $iLang : $this->getBaseLanguage();
+        /** @var oxStrRegular $oStr */
         $oStr = getStr();
 
         if ( !$this->isAdmin() ) {
@@ -1085,7 +1087,7 @@ class oxLang extends oxSuperCfg
                 }
                 $sUrl .= $sParam."&amp;";
             } else {
-                $sUrl = getStr()->preg_replace('/(\?|&(amp;)?)lang=[0-9]+/', '\1'.$sParam, $sUrl);
+                $sUrl = $oStr->preg_replace('/(\?|&(amp;)?)lang=[0-9]+/', '\1'.$sParam, $sUrl);
             }
         }
 

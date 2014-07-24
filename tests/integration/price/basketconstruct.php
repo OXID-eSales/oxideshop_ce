@@ -211,7 +211,7 @@ class BasketConstruct
 
     /**
      * Creates price 2 article connection needed for scale prices
-     * @param array $oArt Article data
+     * @param object $oArt Article data
      * @param array $aOptions Options
      */
     protected function _createField2Shop( $oArt, $aOptions )

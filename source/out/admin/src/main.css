@@ -482,3 +482,39 @@ a#linkToUpdate:hover,
 	width: 45%;
     border-collapse: collapse;
 }
+.mallAssignment {
+    border: 1px solid #999;
+    /* auto height */
+    overflow:auto;
+    min-height: 300px;
+    max-height: 300px;
+    height:90%;
+    overflow-y: scroll;
+    /* Columns */
+    -webkit-column-count: 3; /* Chrome, Safari, Opera */
+    -moz-column-count: 3; /* Firefox */
+    column-count: 3;
+}
+.mallAssignment {
+    border: 1px solid #999;
+    /* auto height */
+    overflow:auto;
+    min-height: 300px;
+    max-height: 300px;
+    height:90%;
+    overflow-y: scroll;
+    /* Columns */
+    -webkit-column-count: 3; /* Chrome, Safari, Opera */
+    -moz-column-count: 3; /* Firefox */
+    column-count: 3;
+}
+.mallAssignment2 {
+    width:200px;
+    height:300px;
+    border:1px solid #000000;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+a.checkAll {
+    color: blue;
+}

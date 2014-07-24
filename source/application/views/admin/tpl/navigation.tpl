@@ -46,24 +46,7 @@
 <body>
     <table>
     <tr><td class="main">
-    <ul>
-      <li class="">
-        [{if $oView->isMall() }]
-          <form name="search" id="search" action="[{ $oViewConf->getSelfLink() }]" method="post">
-            [{ $oViewConf->getHiddenSid() }]
-            <input type="hidden" name="cl" value="[{$oViewConf->getActiveClassName()}]">
-            <input type="hidden" name="item" value="navigation.tpl">
-            <input type="hidden" name="fnc" value="chshp">
-            <select id="selectshop" class="folderselect" onChange="selectShop( this.value );">
-            [{foreach from=$shoplist item=oShop}]
-              <option value="[{ $oShop->oxshops__oxid->value|default:$oViewConf->getActiveShopId() }]" [{ if $oViewConf->getActiveShopId() == $oShop->oxshops__oxid->value|default:$oViewConf->getActiveShopId() }]SELECTED[{/if}] >[{$oShop->oxshops__oxname->value|default:$actshop}]</option>
-            [{/foreach}]
-            </select>
-          </form>
-        [{/if}]
-      </li>
-    </ul>
-
+    [{include file="navigation_shopselect.tpl"}]
     [{assign var='mh' value=0 }]
     [{foreach from=$menustructure item=menuholder }]
     [{if $menuholder->nodeType == XML_ELEMENT_NODE && $menuholder->childNodes->length }]

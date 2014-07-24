@@ -336,11 +336,12 @@ class oxBasketItem extends oxSuperCfg
      * Sets item amount and weight which depends on amount
      * ( oxbasketitem::dAmount, oxbasketitem::dWeight )
      *
-     * @param double $dAmount    amount
-     * @param bool   $blOverride overide current amoutn or not
-     * @param string $sItemKey   item key
+     * @param double $dAmount
+     * @param bool   $blOverride Whether to override current amount.
+     * @param string $sItemKey
      *
-     * @throws oxOutOfStockException, oxArticleInputException
+     * @throws oxArticleInputException
+     * @throws oxOutOfStockException
      *
      * @return null
      */
@@ -352,7 +353,7 @@ class oxBasketItem extends oxSuperCfg
         } catch( oxArticleInputException $oEx ) {
             $oEx->setArticleNr( $this->getProductId() );
             $oEx->setProductId( $this->getProductId() );
-            // setting additional information for excp and then rethrowing
+            // setting additional information for exception and then rethrowing
             throw $oEx;
         }
 
@@ -388,6 +389,7 @@ class oxBasketItem extends oxSuperCfg
         $this->_dWeight = $oArticle->oxarticles__oxweight->value * $this->_dAmount;
 
         if ( $iOnStock !== true ) {
+            /** @var oxOutOfStockException $oEx */
             $oEx = oxNew( 'oxOutOfStockException' );
             $oEx->setMessage( 'ERROR_MESSAGE_OUTOFSTOCK_OUTOFSTOCK' );
             $oEx->setArticleNr( $oArticle->oxarticles__oxartnum->value );
@@ -428,7 +430,7 @@ class oxBasketItem extends oxSuperCfg
     }
 
     /**
-     * Retrieves the article .Throws an execption if article does not exist,
+     * Retrieves the article .Throws an exception if article does not exist,
      * is not buyable or visible.
      *
      * @param bool   $blCheckProduct       checks if product is buyable and visible
@@ -445,6 +447,7 @@ class oxBasketItem extends oxSuperCfg
             $sProductId = $sProductId ? $sProductId : $this->_sProductId;
             if ( !$sProductId ) {
                 //this excpetion may not be caught, anyhow this is a critical exception
+                /** @var oxArticleException $oEx */
                 $oEx = oxNew( 'oxArticleException' );
                 $oEx->setMessage( 'EXCEPTION_ARTICLE_NOPRODUCTID' );
                 throw $oEx;
@@ -464,6 +467,7 @@ class oxBasketItem extends oxSuperCfg
             $this->_oArticle->setNoVariantLoading( true );
             $this->_oArticle->setLoadParentData( true );
             if ( !$this->_oArticle->load( $sProductId ) ) {
+                /** @var oxNoArticleException $oEx */
                 $oEx = oxNew( 'oxNoArticleException' );
                 $oLang = oxRegistry::getLang();
                 $oEx->setMessage( sprintf($oLang->translateString( 'ERROR_MESSAGE_ARTICLE_ARTICLE_DOES_NOT_EXIST', $oLang->getBaseLanguage() ), $sProductId) );
@@ -474,6 +478,7 @@ class oxBasketItem extends oxSuperCfg
 
             // cant put not visible product to basket (M:1286)
             if ( $blCheckProduct && !$this->_oArticle->isVisible() ) {
+                /** @var oxNoArticleException $oEx */
                 $oEx = oxNew( 'oxNoArticleException' );
                 $oLang = oxRegistry::getLang();
                 $oEx->setMessage( sprintf($oLang->translateString( 'ERROR_MESSAGE_ARTICLE_ARTICLE_DOES_NOT_EXIST', $oLang->getBaseLanguage() ), $this->_oArticle->oxarticles__oxartnum->value) );
@@ -484,6 +489,7 @@ class oxBasketItem extends oxSuperCfg
 
             // cant put not buyable product to basket
             if ( $blCheckProduct && !$this->_oArticle->isBuyable() ) {
+                /** @var oxArticleInputException $oEx */
                 $oEx = oxNew( 'oxArticleInputException' );
                 $oEx->setMessage( 'ERROR_MESSAGE_ARTICLE_ARTICLE_NOT_BUYABLE' );
                 $oEx->setArticleNr( $sProductId );

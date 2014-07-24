@@ -145,22 +145,133 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
         $this->assertEquals('sdf', oxRegistry::get("oxUtilsUrl")->prepareUrlForNoSession('sdf'));
     }
 
-    public function testAppendUrl()
+    public function providerAppendUrl()
     {
-        $sTestUrl = '';
-        $aBaseUrlParams = array( "param1" => "value1", "param2" => "value2" );
-
-        $oUtils = new oxUtilsUrl();
-        $this->assertEquals( '?param1=value1&amp;param2=value2&amp;', $oUtils->appendUrl( $sTestUrl, $aBaseUrlParams ) );
+        return array(
+            array('testUrl', array(), 'testUrl?'),
+            array('testUrl', array('p1' => 'v1', 'p2' => 'v2'), 'testUrl?p1=v1&amp;p2=v2&amp;'),
+            array('testUrl?', array(), 'testUrl?'),
+            array('testUrl?', array('p1' => 'v1', 'p2' => 'v2'), 'testUrl?p1=v1&amp;p2=v2&amp;'),
+            array('testUrl?p1=v1', array('p2' => 'v2'), 'testUrl?p1=v1&amp;p2=v2&amp;'),
+            array('testUrl?p1=v1&amp;', array('p2' => 'v2'), 'testUrl?p1=v1&amp;p2=v2&amp;'),
+            array('testUrl?p1=v1&amp;', array(), 'testUrl?p1=v1&amp;'),
+            array('testUrl?p1=v1&amp;', array('p1' => 'v1'), 'testUrl?p1=v1&amp;'),
+        );
     }
 
-    public function testProcessUrl()
+    /**
+     * @param string $sUrl
+     * @param array $aParams
+     * @param string $sExtectedUrl
+     * @dataProvider providerAppendUrl
+     */
+    public function testAppendUrl($sUrl, $aParams, $sExtectedUrl)
     {
-        $oUtils = $this->getMock( "oxUtilsUrl", array( "appendUrl", "getBaseAddUrlParams" ) );
-        $oUtils->expects( $this->once() )->method( 'getBaseAddUrlParams' );
-        $oUtils->expects( $this->once() )->method( 'appendUrl' )->will( $this->returnValue( "appendedUrl" ) );
+        $oUtils = new oxUtilsUrl();
+        $this->assertEquals( $sExtectedUrl, $oUtils->appendUrl( $sUrl, $aParams ) );
+    }
 
-        $this->assertEquals( "appendedUrl", $oUtils->processUrl( "" ) );
+    public function providerAppendUrlWithFinalUrlForming()
+    {
+        return array(
+            array('testUrl', array(), 'testUrl'),
+            array('testUrl', array('p1' => 'v1', 'p2' => 'v2'), 'testUrl?p1=v1&amp;p2=v2'),
+            array('testUrl?p1=v1', array('p2' => 'v2'), 'testUrl?p1=v1&amp;p2=v2'),
+        );
+    }
+
+    /**
+     * @param string $sUrl
+     * @param array $aParams
+     * @param string $sExtectedUrl
+     * @dataProvider providerAppendUrlWithFinalUrlForming
+     */
+    public function testAppendUrlWithFinalUrlForming($sUrl, $aParams, $sExtectedUrl)
+    {
+        $oUtils = new oxUtilsUrl();
+        $this->assertEquals( $sExtectedUrl, $oUtils->appendUrl( $sUrl, $aParams, true ) );
+    }
+
+    public function testProcessUrlWithParametersAdded()
+    {
+        $oUtils = new oxUtilsUrl();
+
+        $aParameters = array('param1' => 'value1', 'param2' => 'value2');
+
+        $sExpectedUrl = "http://some-url/?param1=value1&amp;param2=value2";
+        $this->assertEquals( $sExpectedUrl, $oUtils->processUrl( "http://some-url/", true, $aParameters ) );
+    }
+
+    public function testProcessUrlWithAdditionalParametersAddedToLocalUrl()
+    {
+        $aParameters = array('param1' => 'value1', 'param2' => 'value2');
+
+        $oUtils = $this->getMock('oxUtilsUrl', array('getBaseAddUrlParams'));
+        $oUtils->expects( $this->any() )->method( 'getBaseAddUrlParams' )->will( $this->returnValue( $aParameters ) );
+
+        $sShopUrl = $this->getConfig()->getSslShopUrl();
+        $sExpectedUrl = $sShopUrl."?param1=value1&amp;param2=value2";
+        $this->assertEquals( $sExpectedUrl, $oUtils->processUrl( $sShopUrl ) );
+    }
+
+    public function testProcessUrlWithAdditionalParametersNotAddedToExternalUrl()
+    {
+        $aParameters = array('param1' => 'value1', 'param2' => 'value2');
+
+        $oUtils = $this->getMock('oxUtilsUrl', array('getBaseAddUrlParams'));
+        $oUtils->expects( $this->any() )->method( 'getBaseAddUrlParams' )->will( $this->returnValue( $aParameters ) );
+
+        $this->assertEquals( "http://some-url/", $oUtils->processUrl( "http://some-url/" ) );
+    }
+
+    public function testProcessUrlWhenNoHostSetShopUrlShouldBeAdded()
+    {
+        $oUtils = new oxUtilsUrl();
+
+        $sShopUrl = $this->getConfig()->getShopUrl();
+        $this->assertEquals( "{$sShopUrl}anyUrl", $oUtils->processUrl( "anyUrl" ) );
+    }
+
+    public function testProcessUrlWithLocalUrlLanguageShouldBeAdded()
+    {
+        $this->getConfig()->setConfigParam( 'sDefaultLang', 0 );
+        $this->setLanguage(1);
+
+        $oUtils = new oxUtilsUrl();
+
+        $sShopUrl = $this->getConfig()->getShopUrl();
+        $this->assertEquals( "$sShopUrl/anyUrl?lang=1", $oUtils->processUrl( "$sShopUrl/anyUrl" ) );
+    }
+
+    public function testProcessUrlWithLocalUrlSIDShouldBeAdded()
+    {
+        $this->getSession()->setVariable( 'blSidNeeded', true );
+        $this->getSession()->setId( 'SID' );
+
+        $oUtils = new oxUtilsUrl();
+
+        $sShopUrl = $this->getConfig()->getShopUrl();
+        $this->assertEquals( "$sShopUrl/anyUrl?force_sid=SID", $oUtils->processUrl( "$sShopUrl/anyUrl" ) );
+    }
+
+    public function testProcessUrlWithExternalUrlNoLanguageShouldBeAdded()
+    {
+        $this->getConfig()->setConfigParam( 'sDefaultLang', 0 );
+        $this->setLanguage(1);
+
+        $oUtils = new oxUtilsUrl();
+
+        $this->assertEquals( "http://www.external-url.com/anyUrl", $oUtils->processUrl( "http://www.external-url.com/anyUrl" ) );
+    }
+
+    public function testProcessUrlWithExternalUrlNoSIDShouldBeAdded()
+    {
+        $this->getSession()->setVariable( 'blSidNeeded', true );
+        $this->getSession()->setId( 'SID' );
+
+        $oUtils = new oxUtilsUrl();
+
+        $this->assertEquals( "http://www.external-url.com/anyUrl", $oUtils->processUrl( "http://www.external-url.com/anyUrl" ) );
     }
 
     public function testAppendParamSeparator()
@@ -255,6 +366,27 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
         oxTestModules::addModuleObject( 'oxUtilsServer', $oUtilsServer );
 
         $this->assertEquals( $sResult, $oUtils->getCurrentUrl() );
+    }
+
+    public function providerIsCurrentShopHost()
+    {
+        $sShopUrl = $this->getConfig()->getShopUrl();
+
+        return array(
+            array('http://external-host.com', false),
+            array('http://external-host.com?param=value', false),
+            array($sShopUrl, true),
+            array($sShopUrl.'?param=value', true),
+        );
+    }
+
+    /**
+     * @dataProvider providerIsCurrentShopHost
+     */
+    public function testIsCurrentShopHost($sUrl, $blResult)
+    {
+        $oUtils = new oxUtilsUrl();
+        $this->assertSame($blResult, $oUtils->isCurrentShopHost($sUrl));
     }
 
     /**

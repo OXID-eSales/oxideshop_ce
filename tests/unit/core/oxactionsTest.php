@@ -441,37 +441,16 @@ class Unit_Core_oxactionsTest extends OxidTestCase
      */
     public function testGetBannerLink()
     {
+        $sUrl = "http://www.oxid-esales.com";
+
+        $oUtilsUrl = $this->getMock('oxUtilsUrl');
+        $oUtilsUrl->expects($this->any())->method('processUrl')->with($sUrl)->will($this->returnValue($sUrl.'/with-params'));
+        oxRegistry::set("oxUtilsUrl", $oUtilsUrl);
+
         $oPromo = new oxactions();
-        $oPromo->oxactions__oxlink = new oxField( "http://www.oxid-esales.com" );
+        $oPromo->oxactions__oxlink = new oxField( $sUrl );
 
-        $this->assertEquals( "http://www.oxid-esales.com", $oPromo->getBannerLink() );
-    }
-
-    /**
-     * test
-     */
-    public function testGetBannerLinkHttps()
-    {
-        $oPromo = new oxactions();
-        $oPromo->oxactions__oxlink = new oxField( "https://www.oxid-esales.com" );
-
-        $this->assertEquals( "https://www.oxid-esales.com", $oPromo->getBannerLink() );
-    }
-
-    /**
-     * test
-     */
-    public function testGetBannerLinkNoHttp()
-    {
-        $oConfig = $this->getMock('oxConfig',array('getShopUrl'), array(), '', false);
-        $oConfig->expects( $this->once() )->method( 'getShopUrl' )->will( $this->returnValue( "http://myeshop/" ) );
-
-        $oActions = $this->getMock( 'oxActions', array( 'getConfig' ), array(), '', false );
-        $oActions->expects( $this->once() )->method( 'getConfig' )->will( $this->returnValue( $oConfig ) );
-
-        $oActions->oxactions__oxlink = new oxField( "wakeboarding/wakeboards" );
-
-        $this->assertEquals( "http://myeshop/wakeboarding/wakeboards", $oActions->getBannerLink() );
+        $this->assertEquals( $sUrl.'/with-params', $oPromo->getBannerLink() );
     }
 
     /**
@@ -502,6 +481,5 @@ class Unit_Core_oxactionsTest extends OxidTestCase
 
         $this->assertEquals( "testLinkToArticle", $oPromo->getBannerLink() );
     }
-
 
 }

@@ -254,18 +254,18 @@ class oxActions extends oxI18n
      */
     public function getBannerLink()
     {
+        $sUrl = null;
+
         if ( isset( $this->oxactions__oxlink ) && $this->oxactions__oxlink->value ) {
-           $sUrl = $this->oxactions__oxlink->value ;
-            if ( !preg_match( "#^https?://#i", $sUrl) ) {
-                 $sUrl =  $this->getConfig()->getShopUrl() . $sUrl ;
-            }
-            return  oxRegistry::get("oxUtilsUrl")->processUrl( $sUrl );
-        } else {
+            /** @var oxUtilsUrl $oUtilsUlr */
+            $oUtilsUlr = oxRegistry::get("oxUtilsUrl");
+            $sUrl = $oUtilsUlr->processUrl( $this->oxactions__oxlink->value );
+        } else if ( $oArticle = $this->getBannerArticle() ) {
             // if article is assigned to banner, getting article link
-            if ( $oArticle = $this->getBannerArticle() ) {
-                return $oArticle->getLink();
-            }
+            $sUrl = $oArticle->getLink();
         }
+
+        return $sUrl;
     }
 
 

@@ -23,7 +23,7 @@ var oxShopSelect = (function($) {
 
   return {
     options: {
-      'width': '150px',
+      'width': '165px',
       'disable_search_threshold': 9,
       'no_results_text': '-'
     },

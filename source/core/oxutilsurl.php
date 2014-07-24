@@ -211,23 +211,6 @@ class oxUtilsUrl extends oxSuperCfg
         return trim($sUrl, "?");
     }
 
-
-    /**
-     * Adds shop host if url does not start with it.
-     *
-     * @param string $sUrl
-     * @return string
-     */
-    public function addShopHost($sUrl)
-    {
-        if ( !preg_match( "#^https?://#i", $sUrl) ) {
-            $sShopUrl = $this->getConfig()->getSslShopUrl();
-            $sUrl = $sShopUrl . $sUrl ;
-        }
-
-        return $sUrl;
-    }
-
     /**
      * Performs base url processing - adds required parameters to given url.
      *
@@ -240,6 +223,7 @@ class oxUtilsUrl extends oxSuperCfg
      */
     public function processUrl($sUrl, $blFinalUrl = true, $aParams = null, $iLang = null)
     {
+        $sUrl = $this->_addBaseUrl($sUrl);
         $sUrl = $this->appendUrl($sUrl, $aParams, $blFinalUrl);
 
         if ( $this->isCurrentShopHost($sUrl) ) {
@@ -283,11 +267,10 @@ class oxUtilsUrl extends oxSuperCfg
     public function isCurrentShopHost($sUrl)
     {
         $blCurrent = false;
-        $sUrlHost = @parse_url($sUrl, PHP_URL_HOST);
-        // checks if it is relative url.
-        if (is_null($sUrlHost)) {
-            $blCurrent = true;
-        } else {
+        if ($sUrl) {
+            // host of given url
+            $sUrlHost = @parse_url($sUrl, PHP_URL_HOST);
+
             $aHosts = $this->_getHosts();
             if (is_null($aHosts)) {
                 $aHosts = array($this->_getShopHostName());
@@ -470,6 +453,22 @@ class oxUtilsUrl extends oxSuperCfg
         }
 
         return $sSeparator;
+    }
+
+    /**
+     * Adds base shop url if url does not start with it.
+     *
+     * @param string $sUrl
+     * @return string
+     */
+    private function _addBaseUrl($sUrl)
+    {
+        if ( !preg_match( "#^https?://#i", $sUrl) ) {
+            $sShopUrl = $this->getConfig()->getSslShopUrl();
+            $sUrl = $sShopUrl . $sUrl ;
+        }
+
+        return $sUrl;
     }
 
     /**

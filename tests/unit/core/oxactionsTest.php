@@ -441,11 +441,10 @@ class Unit_Core_oxactionsTest extends OxidTestCase
      */
     public function testGetBannerLink()
     {
-        $sUrl = "action-link";
+        $sUrl = "http://www.oxid-esales.com";
 
-        $oUtilsUrl = $this->getMock('oxUtilsUrl', array('processUrl', 'addShopHost'));
-        $oUtilsUrl->expects($this->any())->method('addShopHost')->with($sUrl)->will($this->returnValue('http://with-url/'.$sUrl));
-        $oUtilsUrl->expects($this->any())->method('processUrl')->with('http://with-url/'.$sUrl)->will($this->returnValue($sUrl.'/with-params'));
+        $oUtilsUrl = $this->getMock('oxUtilsUrl');
+        $oUtilsUrl->expects($this->any())->method('processUrl')->with($sUrl)->will($this->returnValue($sUrl.'/with-params'));
         oxRegistry::set("oxUtilsUrl", $oUtilsUrl);
 
         $oPromo = new oxactions();

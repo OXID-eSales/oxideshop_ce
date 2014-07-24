@@ -259,8 +259,7 @@ class oxActions extends oxI18n
         if ( isset( $this->oxactions__oxlink ) && $this->oxactions__oxlink->value ) {
             /** @var oxUtilsUrl $oUtilsUlr */
             $oUtilsUlr = oxRegistry::get("oxUtilsUrl");
-            $sUrl = $oUtilsUlr->addShopHost( $this->oxactions__oxlink->value );
-            $sUrl = $oUtilsUlr->processUrl( $sUrl );
+            $sUrl = $oUtilsUlr->processUrl( $this->oxactions__oxlink->value );
         } else if ( $oArticle = $this->getBannerArticle() ) {
             // if article is assigned to banner, getting article link
             $sUrl = $oArticle->getLink();

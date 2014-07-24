@@ -283,26 +283,22 @@ class oxUtilsUrl extends oxSuperCfg
     public function isCurrentShopHost($sUrl)
     {
         $blCurrent = false;
-        if ($sUrl) {
-            $sUrlHost = @parse_url($sUrl, PHP_URL_HOST);
-
-            // checks if it is relative url.
-            if (is_null($sUrlHost)) {
-                $blCurrent = true;
-            } else {
-                $aHosts = $this->_getHosts();
-                if (is_null($aHosts)) {
-                    $aHosts = array($this->_getShopHostName());
-                }
-
-                foreach ($aHosts as $sHost) {
-                    if ($sHost === $sUrlHost) {
-                        $blCurrent = true;
-                        break;
-                    }
-                }
+        $sUrlHost = @parse_url($sUrl, PHP_URL_HOST);
+        // checks if it is relative url.
+        if (is_null($sUrlHost)) {
+            $blCurrent = true;
+        } else {
+            $aHosts = $this->_getHosts();
+            if (is_null($aHosts)) {
+                $aHosts = array($this->_getShopHostName());
             }
 
+            foreach ($aHosts as $sHost) {
+                if ($sHost === $sUrlHost) {
+                    $blCurrent = true;
+                    break;
+                }
+            }
         }
 
         return $blCurrent;

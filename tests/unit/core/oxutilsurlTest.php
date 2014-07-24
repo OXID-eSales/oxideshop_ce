@@ -269,6 +269,18 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
         $this->assertEquals( "$sShopUrl/anyUrl?force_sid=SID", $oUtils->processUrl( "$sShopUrl/anyUrl" ) );
     }
 
+    public function testProcessUrlWithRelativeUrlShouldActLikeLocal()
+    {
+        $this->getSession()->setVariable( 'blSidNeeded', true );
+        $this->getSession()->setId( 'SID' );
+        $this->getConfig()->setConfigParam( 'sDefaultLang', 0 );
+        $this->setLanguage(1);
+
+        $oUtils = new oxUtilsUrl();
+
+        $this->assertEquals( "anyUrl?lang=1&amp;force_sid=SID", $oUtils->processUrl( "anyUrl" ) );
+    }
+
     public function testProcessUrlWithExternalUrlNoLanguageShouldBeAdded()
     {
         $this->getConfig()->setConfigParam( 'sDefaultLang', 0 );
@@ -287,6 +299,16 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
         $oUtils = new oxUtilsUrl();
 
         $this->assertEquals( "http://www.external-url.com/anyUrl", $oUtils->processUrl( "http://www.external-url.com/anyUrl" ) );
+    }
+
+    public function testProcessUrlWithNonFinalUrl()
+    {
+        $this->getConfig()->setConfigParam( 'sDefaultLang', 0 );
+        $this->setLanguage(1);
+
+        $oUtils = new oxUtilsUrl();
+
+        $this->assertEquals( "anyUrl?param=val1&amp;lang=1&amp;", $oUtils->processUrl( "anyUrl", false, array('param' => 'val1') ) );
     }
 
     public function testAppendParamSeparator()

@@ -92,7 +92,7 @@ class oxBasketItem extends oxSuperCfg
     /**
      * Basket item select lists
      *
-     * @var string
+     * @var array
      */
     protected $_aSelList = array();
 
@@ -446,7 +446,7 @@ class oxBasketItem extends oxSuperCfg
         if ( $this->_oArticle === null || ( !$this->_oArticle->isOrderArticle() && $blDisableLazyLoading ) ) {
             $sProductId = $sProductId ? $sProductId : $this->_sProductId;
             if ( !$sProductId ) {
-                //this excpetion may not be caught, anyhow this is a critical exception
+                //this exception may not be caught, anyhow this is a critical exception
                 /** @var oxArticleException $oEx */
                 $oEx = oxNew( 'oxArticleException' );
                 $oEx->setMessage( 'EXCEPTION_ARTICLE_NOPRODUCTID' );
@@ -992,7 +992,7 @@ class oxBasketItem extends oxSuperCfg
      *
      * @param integer $iLanguageId language id
      *
-     * @return none
+     * @return null
      */
     public function setLanguageId( $iLanguageId )
     {

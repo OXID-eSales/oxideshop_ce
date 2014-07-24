@@ -21,20 +21,19 @@
  */
 
 /**
- * Maintenance task handler. Maintenance tasks are called periodically, by crontab
- * or by random visitor.
+ * Maintenance task handler. Maintenance tasks are called periodically, by cronTab (configure on your needs)
  *
  */
 class oxMaintenance
 {
     /**
-     * Executes maintenance tasks. Currently calls oxarticlelist::updateUpcomingPrices()
+     * Executes maintenance tasks. Currently calls oxArticleList::updateUpcomingPrices()
      *
      * @return null
      */
     public function execute()
     {
-        // updating uncomming prices
-        oxNew("oxarticlelist")->updateUpcomingPrices( true );
+        // updating upcoming prices
+        oxNew("oxArticleList")->updateUpcomingPrices( true );
     }
 }

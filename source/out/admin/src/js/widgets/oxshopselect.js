@@ -19,34 +19,24 @@
  * @version   OXID eShop CE
  */
 
-var oxShopSelect = (function ($) {
+var oxShopSelect = (function($) {
 
-    /**
-     * local variables
-     */
-    var test;
-
-    /**
-     * local variable initiation
-     */
-    var obj = {
-
-        /**
-         * Initiate
-         */
-        init: function () {
-            jQuery('#selectshop').chosen({
-                "width": "150px"
-            });
-        }
+  return {
+    options: {
+      'width': '150px',
+      'disable_search_threshold': 9,
+      'no_results_text': '-'
+    },
+    init: function() {
+      var oSelectShop = $('#selectshop');
+      oSelectShop.chosen(oxShopSelect.options);
     }
-
-    return obj;
+  };
 
 })(jQuery);
 
 jQuery.noConflict();
 
-jQuery(document).ready(function () {
-    oxShopSelect.init();
+jQuery(document).ready(function() {
+  oxShopSelect.init();
 });

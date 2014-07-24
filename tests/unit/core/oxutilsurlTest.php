@@ -192,6 +192,29 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
         $this->assertEquals( $sExtectedUrl, $oUtils->appendUrl( $sUrl, $aParams, true ) );
     }
 
+    public function providerAddBaseUrl()
+    {
+        $sShopUrl = $this->getConfig()->getSslShopUrl();
+
+        return array(
+            array('http://external-url', 'http://external-url'),
+            array('local-url', $sShopUrl.'local-url'),
+            array('?param1=value=1', $sShopUrl.'?param1=value=1'),
+            array($sShopUrl, $sShopUrl),
+            array($sShopUrl.'?param1=value1', $sShopUrl.'?param1=value1')
+        );
+    }
+
+    /**
+     * @dataProvider providerAddBaseUrl
+     */
+    public function testAddBaseUrl($sUrl, $sExpectedUrl)
+    {
+        $oUtils = new oxUtilsUrl();
+
+        $this->assertEquals( $sExpectedUrl, $oUtils->addShopHost( $sUrl ) );
+    }
+
     public function testProcessUrlWithParametersAdded()
     {
         $oUtils = new oxUtilsUrl();
@@ -222,14 +245,6 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
         $oUtils->expects( $this->any() )->method( 'getBaseAddUrlParams' )->will( $this->returnValue( $aParameters ) );
 
         $this->assertEquals( "http://some-url/", $oUtils->processUrl( "http://some-url/" ) );
-    }
-
-    public function testProcessUrlWhenNoHostSetShopUrlShouldBeAdded()
-    {
-        $oUtils = new oxUtilsUrl();
-
-        $sShopUrl = $this->getConfig()->getShopUrl();
-        $this->assertEquals( "{$sShopUrl}anyUrl", $oUtils->processUrl( "anyUrl" ) );
     }
 
     public function testProcessUrlWithLocalUrlLanguageShouldBeAdded()

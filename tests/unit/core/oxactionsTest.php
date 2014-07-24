@@ -439,12 +439,19 @@ class Unit_Core_oxactionsTest extends OxidTestCase
     /**
      * test
      */
-    public function testGetBannerLink()
+    public function testGetBannerLinkWithProcessedUrl()
     {
-        $oPromo = new oxactions();
-        $oPromo->oxactions__oxlink = new oxField( "http://www.oxid-esales.com" );
+        $sUrl = "action-link";
+        $sShopUrl = $this->getConfig()->getShopUrl();
 
-        $this->assertEquals( "http://www.oxid-esales.com", $oPromo->getBannerLink() );
+        $oUtilsUrl = $this->getMock('oxUtilsUrl', array('processUrl'));
+        $oUtilsUrl->expects($this->any())->method('processUrl')->with($sShopUrl.$sUrl)->will($this->returnValue($sUrl.'/with-params'));
+        oxRegistry::set("oxUtilsUrl", $oUtilsUrl);
+
+        $oPromo = new oxactions();
+        $oPromo->oxactions__oxlink = new oxField( $sUrl );
+
+        $this->assertEquals( $sUrl.'/with-params', $oPromo->getBannerLink() );
     }
 
     /**

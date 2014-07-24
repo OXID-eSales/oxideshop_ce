@@ -327,6 +327,8 @@ class Unit_Views_oxviewTest extends OxidTestCase
      */
     public function testExecuteNewActionNonSsl()
     {
+        $this->getSession()->setId( 'SID' );
+
         oxAddClassModule( "oxUtilsRedirectForoxviewTest", "oxutils" );
 
         $oConfig = $this->getMock( 'oxconfig', array( 'getConfigParam', 'isSsl', 'getSslShopUrl', 'getShopUrl' ) );
@@ -357,6 +359,8 @@ class Unit_Views_oxviewTest extends OxidTestCase
 
     public function testExecuteNewActionSsl()
     {
+        $this->getSession()->setId( 'SID' );
+
         oxAddClassModule( "oxUtilsRedirectForoxviewTest", "oxutils" );
 
         $oConfig = $this->getMock( 'oxconfig', array( 'getConfigParam', 'isSsl', 'getSslShopUrl', 'getShopUrl' ) );
@@ -374,6 +378,8 @@ class Unit_Views_oxviewTest extends OxidTestCase
 
     public function testExecuteNewActionSslIsAdmin()
     {
+        $this->getSession()->setId( 'SID' );
+
         oxAddClassModule( "oxUtilsRedirectForoxviewTest", "oxutils" );
 
         $oConfig = $this->getMock( 'oxconfig', array( 'isSsl', 'getSslShopUrl', 'getShopUrl' ) );

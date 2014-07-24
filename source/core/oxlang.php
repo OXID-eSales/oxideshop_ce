@@ -110,13 +110,6 @@ class oxLang extends oxSuperCfg
     protected $_blIsTranslated = true;
 
     /**
-     * Template language id.
-     *
-     * @var int
-     */
-    protected $_iObjectTplLanguageId = null;
-
-    /**
      * Set translation state
      */
     public function setIsTranslated( $blIsTranslated = true )

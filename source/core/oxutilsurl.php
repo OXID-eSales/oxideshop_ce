@@ -213,7 +213,7 @@ class oxUtilsUrl extends oxSuperCfg
 
 
     /**
-     * Adds base shop url if url does not start with it.
+     * Adds shop host if url does not start with it.
      *
      * @param string $sUrl
      * @return string

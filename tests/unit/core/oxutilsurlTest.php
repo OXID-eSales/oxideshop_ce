@@ -410,10 +410,13 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
         $sShopUrl = $this->getConfig()->getShopUrl();
 
         return array(
-            array('http://external-host.com', false),
-            array('http://external-host.com?param=value', false),
+            array('', true),
+            array('relative-url', true),
             array($sShopUrl, true),
             array($sShopUrl.'?param=value', true),
+            array('http://external-host.com', false),
+            array('https://external-host.com', false),
+            array('http://external-host.com?param=value', false),
         );
     }
 
@@ -424,6 +427,39 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
     {
         $oUtils = new oxUtilsUrl();
         $this->assertSame($blResult, $oUtils->isCurrentShopHost($sUrl));
+    }
+
+    public function testIsCurrentShopHostWithMallShopURL()
+    {
+        $this->getConfig()->setConfigParam("sMallShopURL", 'http://shopHost');
+        $this->getConfig()->setConfigParam("sShopURL", '');
+        $this->getConfig()->setConfigParam("aLanguageURLs", array());
+
+        $oUtils = new oxUtilsUrl();
+        $this->assertSame(true, $oUtils->isCurrentShopHost('http://shopHost'));
+    }
+
+    public function testIsCurrentShopHostWithShopURL()
+    {
+        $this->getConfig()->setConfigParam("sMallShopURL", '');
+        $this->getConfig()->setConfigParam("sShopURL", 'http://shopHost');
+        $this->getConfig()->setConfigParam("aLanguageURLs", array());
+
+        $oUtils = new oxUtilsUrl();
+        $this->assertSame(true, $oUtils->isCurrentShopHost('http://shopHost'));
+    }
+
+    public function testIsCurrentShopHostWithLanguageURLs()
+    {
+        $this->setLanguage(1);
+
+        $this->getConfig()->setConfigParam("sMallShopURL", '');
+        $this->getConfig()->setConfigParam("sShopURL", '');
+        $this->getConfig()->setConfigParam("aLanguageURLs", array(0 => 'http://german.shopHost', 1 => 'http://english.shopHost'));
+
+        $oUtils = new oxUtilsUrl();
+        $this->assertSame(true, $oUtils->isCurrentShopHost('http://english.shopHost'));
+        $this->assertSame(false, $oUtils->isCurrentShopHost('http://german.shopHost'));
     }
 
     /**

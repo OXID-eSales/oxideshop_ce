@@ -230,13 +230,14 @@ class oxUtilsUrl extends oxSuperCfg
 
         $sUrlHost = @parse_url($sUrl, PHP_URL_HOST);
         $sShopHost = @parse_url($this->getConfig()->getShopUrl(), PHP_URL_HOST);
+        $isCurrentShop = is_null($sUrlHost) || $sShopHost == $sUrlHost;
 
-        if ( is_null($sUrlHost) || $sShopHost == $sUrlHost ) {
-            $aParams = array_merge($aParams, $this->getAddUrlParams());
+        if ( $isCurrentShop ) {
+            $aParams = array_merge($this->getAddUrlParams(), $aParams);
         }
         $sUrl = $this->appendUrl( $sUrl, $aParams );
 
-        if ( is_null($sUrlHost) || $sShopHost == $sUrlHost ) {
+        if ( $isCurrentShop ) {
             $sUrl = oxRegistry::getSession()->processUrl(
                 oxRegistry::getLang()->processUrl(
                     $sUrl,

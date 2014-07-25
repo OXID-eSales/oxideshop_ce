@@ -42,4 +42,16 @@ class oxModuleMetadataValidator
     {
         $this->_oModule = $oModule;
     }
+
+    /**
+     * Validates module metadata.
+     * Return true if module metadata is valid.
+     * Return false if module metadata is not valid, or if metadata file does not exist.
+     *
+     * @return bool
+     */
+    public function validate()
+    {
+        return false;
+    }
 } 

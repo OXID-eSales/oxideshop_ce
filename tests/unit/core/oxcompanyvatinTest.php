@@ -40,7 +40,7 @@ class Unit_Core_oxCompanyVatInTest extends OxidTestCase
     }
 
     /**
-     * @dataProvider vatInProvider
+     * @dataProvider vatInProviderForCountryCode
      */
     public function testGetVatInCountryCode( $sVatIn, $sExpectCode )
     {
@@ -48,13 +48,32 @@ class Unit_Core_oxCompanyVatInTest extends OxidTestCase
         $this->assertSame($sExpectCode, $oVatIn->getCountryCode());
     }
 
-    public function vatInProvider()
+    public function vatInProviderForCountryCode()
     {
         return array(
             array('LT12345', 'LT'),
             array('', ''),
             array('1111', '11'),
             array('abcd', 'ab')
+        );
+    }
+
+    /**
+     * @dataProvider vatInProviderForNumbers
+     */
+    public function testGetVatInNumbers( $sVatIn, $sExpectCode )
+    {
+        $oVatIn = new oxCompanyVatIn($sVatIn);
+        $this->assertSame($sExpectCode, $oVatIn->getNumbers());
+    }
+
+    public function vatInProviderForNumbers()
+    {
+        return array(
+            array('LT12345', '12345'),
+            array('', ''),
+            array('1111', '11'),
+            array('abcd', 'cd')
         );
     }
 }

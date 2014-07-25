@@ -40,7 +40,7 @@ class Unit_Core_oxCompanyVatInTest extends OxidTestCase
     }
 
     /**
-     * @dataProvider vatInProviderForCountryCode
+     * @dataProvider vatInProvider
      */
     public function testGetVatInCountryCode( $sVatIn, $sExpectCode )
     {
@@ -48,48 +48,13 @@ class Unit_Core_oxCompanyVatInTest extends OxidTestCase
         $this->assertSame($sExpectCode, $oVatIn->getCountryCode());
     }
 
-    public function vatInProviderForCountryCode()
+    public function vatInProvider()
     {
         return array(
             array('LT12345', 'LT'),
-            array(' LT12345', 'LT'),
-            array('lt12345', 'LT'),
-            array('LT 12345', 'LT'),
-            array('LT-12 345', 'LT'),
-            array('LT.123.45', 'LT'),
-            array('LT,123,45', 'LT'),
-            array('', ''),
-            array(null, ''),
-            array(1, '1'),
-            array('1111', '11'),
-            array('abcd', 'AB')
-        );
-    }
-
-    /**
-     * @dataProvider vatInProviderForNumbers
-     */
-    public function testGetVatInNumbers( $sVatIn, $sExpectCode )
-    {
-        $oVatIn = new oxCompanyVatIn($sVatIn);
-        $this->assertSame($sExpectCode, $oVatIn->getNumbers());
-    }
-
-    public function vatInProviderForNumbers()
-    {
-        return array(
-            array('LT12345', '12345'),
-            array(' LT12345', '12345'),
-            array('LT12345 ', '12345'),
-            array(' LT12345 ', '12345'),
             array('', ''),
             array('1111', '11'),
-            array('abcd', 'cd'),
-            array('LT 12345', '12345'),
-            array('LT-12 345', '12345'),
-            array('LT.123.45', '.123.45'),
-            array('LT,123,45', ',123,45'),
+            array('abcd', 'ab')
         );
     }
-
 }

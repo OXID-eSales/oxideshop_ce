@@ -75,20 +75,6 @@ class Unit_Core_oxCompanyVatInCountryCheckerTest extends OxidTestCase
         );
     }
 
-    /**
-     * Test for bug #4212
-     */
-    public function testValidateGreece()
-    {
-        $oVatIn = new oxCompanyVatIn('EL123');
-        $oCountry = new oxCountry();
-        $oCountry->load('a7c40f633114e8fc6.25257477');
-
-        $oChecker = new oxCompanyVatInCountryChecker();
-        $oChecker->setCountry($oCountry);
-        $this->assertTrue( $oChecker->validate($oVatIn) );
-    }
-
     public function testValidate_notValid_errorMessage()
     {
         $oVatIn = new oxCompanyVatIn('LT12345');
@@ -99,20 +85,7 @@ class Unit_Core_oxCompanyVatInCountryCheckerTest extends OxidTestCase
         $oChecker->setCountry($oCountry);
         $oChecker->validate($oVatIn);
 
-        $this->assertSame(oxCompanyVatInCountryChecker::ERROR_ID_NOT_VALID, $oChecker->getError());
-    }
-
-    public function testValidate_notValidWrongDataType_errorMessage()
-    {
-        $oVatIn = new oxCompanyVatIn('LT12345');
-        $oCountry = new oxCountry();
-        $oCountry->oxcountry__oxvatinprefix = new oxField( 1 );
-
-        $oChecker = new oxCompanyVatInCountryChecker();
-        $oChecker->setCountry($oCountry);
-        $oChecker->validate($oVatIn);
-
-        $this->assertSame(oxCompanyVatInCountryChecker::ERROR_ID_NOT_VALID, $oChecker->getError());
+        $this->assertSame(oxCompanyVatInCountryChecker::ERROR_DIFFERENT_COUNTRY, $oChecker->getError());
     }
 
     public function testValidate_valid_noErrorMessage()
@@ -127,6 +100,4 @@ class Unit_Core_oxCompanyVatInCountryCheckerTest extends OxidTestCase
 
         $this->assertSame('', $oChecker->getError());
     }
-
-
 }

@@ -54,6 +54,16 @@ class oxCompanyVatIn
     }
 
     /**
+     * Returns country code from number.
+     *
+     * @return string
+     */
+    public function getNumbers()
+    {
+        return (string) substr( $this->_sCompanyVatNumber, 2 );
+    }
+
+    /**
      * Cast to string
      *
      * @return string

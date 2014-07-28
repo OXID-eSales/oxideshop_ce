@@ -71,7 +71,12 @@ class oxOnlineVatIdCheck extends oxCompanyVatInChecker
         $oCheckVat->countryCode = $oVatIn->getCountryCode();
         $oCheckVat->vatNumber   = $oVatIn->getNumbers();
 
-        return $this->_checkOnline( $oCheckVat );
+        $blResult = $this->_checkOnline( $oCheckVat );
+        if( !$blResult ) {
+            $this->setError('ID_NOT_VALID');
+        }
+
+        return $blResult;
     }
 
     /**

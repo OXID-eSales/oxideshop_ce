@@ -371,17 +371,8 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      */
     public function markTestSkippedUntil($sDate, $sMessage = '')
     {
-        if (method_exists('DateTime', 'createFromFormat')) {
-            $oDate = DateTime::createFromFormat('Y-m-d', $sDate);
-        } else {
-            $aDate = strptime($sDate, '%Y-%m-%d');
-            $ymd = sprintf(
-                '%04d-%02d-%02d 05:00:00', $aDate['tm_year'] + 1900, $aDate['tm_mon']+1, $aDate['tm_mday']
-            );
-            $oDate = new DateTime($ymd);
-        }
-
-        if (time() < ((int) $oDate->format('U'))) {
+        $oDate = DateTime::createFromFormat('Y-m-d', $sDate);
+        if (time() < $oDate->getTimestamp()) {
             $this->markTestSkipped($sMessage);
         }
     }
@@ -480,6 +471,24 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
             system("rm -f $sDirName/ox*.tmp");
             system("rm -f $sDirName/*.tpl.php");
         }
+    }
+
+    /**
+     * Change to virtual file with vfstream when available.
+     *
+     * @usage Create file from file name and file content to oxCCTempDir.
+     *
+     * @param $sFileName
+     * @param $sFileContent
+     * @return string path to file
+     */
+    public function createFile($sFileName, $sFileContent)
+    {
+        $sPathToFile = oxCCTempDir .'/'. $sFileName;
+
+        file_put_contents($sPathToFile, $sFileContent);
+
+        return $sPathToFile;
     }
 
     protected static function _getDbRestore()

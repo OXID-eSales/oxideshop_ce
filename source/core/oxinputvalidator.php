@@ -372,12 +372,11 @@ class oxInputValidator extends oxSuperCfg
      */
     public function checkVatId( $oUser, $aInvAddress )
     {
-        if ( $aInvAddress['oxuser__oxustid'] && $aInvAddress['oxuser__oxcountryid']  ) {
+        if ( $this->_hasRequiredParametersForVatInCheck( $aInvAddress ) ) {
 
-            $sCountryId = $aInvAddress['oxuser__oxcountryid'];
-            $oCountry = oxNew('oxCountry');
+            $oCountry = $this->_getCountry($aInvAddress['oxuser__oxcountryid']);
 
-            if ( $oCountry->load( $sCountryId ) && $oCountry->isInEU() ) {
+            if ( $oCountry && $oCountry->isInEU() ) {
 
                 $oVatInValidator = $this->getCompanyVatInValidator( $oCountry );
 
@@ -392,6 +391,22 @@ class oxInputValidator extends oxSuperCfg
                 }
             }
         }
+    }
+
+
+    /**
+     * Load and return oxCountry
+     *
+     * @param string $sCountryId
+     *
+     * @return oxCountry
+     */
+    protected function _getCountry( $sCountryId )
+    {
+        $oCountry = oxNew('oxCountry');
+        $oCountry->load( $sCountryId );
+
+        return $oCountry;
     }
 
     /**
@@ -579,6 +594,18 @@ class oxInputValidator extends oxSuperCfg
     }
 
     /**
+     * Check if all need parameters entered
+     *
+     * @param $aInvAddress
+     *
+     * @return bool
+     */
+    protected function _hasRequiredParametersForVatInCheck( $aInvAddress )
+    {
+        return $aInvAddress['oxuser__oxustid'] && $aInvAddress['oxuser__oxcountryid'] && $aInvAddress['oxuser__oxcompany'];
+    }
+
+    /**
      * Compares country VAT identification number with it's prefix.
      *
      * @param array $aInvAddress
@@ -625,13 +652,14 @@ class oxInputValidator extends oxSuperCfg
      */
     public function getCompanyVatInValidator( $oCountry )
     {
-        if( is_null($this->_oCompanyVatInValidator)){
+        if( is_null($this->_oCompanyVatInValidator) ){
 
             /** @var oxCompanyVatInValidator $oVatInValidator */
             $oVatInValidator = oxNew('oxCompanyVatInValidator', $oCountry);
 
             /** @var  oxCompanyVatInCompanyChecker $oValidator */
-            $oValidator = oxNew( 'oxCompanyVatInCompanyChecker' );
+            $oValidator = oxNew( 'oxCompanyVatInCountryChecker' );
+
             $oVatInValidator->addChecker( $oValidator );
 
             /** @var oxOnlineVatIdCheck $oOnlineValidator */
@@ -640,8 +668,9 @@ class oxInputValidator extends oxSuperCfg
                 $oVatInValidator->addChecker( $oOnlineValidator );
             }
 
-            $this->setCompanyVatInValidator($oValidator);
+            $this->setCompanyVatInValidator($oVatInValidator);
         }
+
         return $this->_oCompanyVatInValidator;
     }
 }

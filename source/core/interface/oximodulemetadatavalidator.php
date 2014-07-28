@@ -35,9 +35,7 @@ interface oxIModuleMetadataValidator
     public function setModule($oModule);
 
     /**
-     * Validates module metadata.
-     * Return true if module metadata is valid.
-     * Return false if module metadata is not valid, or if metadata file does not exist.
+     * Validates module information.
      *
      * @return bool
      */

@@ -52,6 +52,9 @@ class oxModuleMetadataValidator
      */
     public function validate()
     {
-        return false;
+        $oModule = $this->getModule();
+        $sMetadataPath = $oModule->getMetadataPath();
+
+        return file_exists($sMetadataPath);
     }
 } 

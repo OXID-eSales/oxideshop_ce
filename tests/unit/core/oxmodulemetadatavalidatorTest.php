@@ -45,6 +45,6 @@ class Unit_Core_oxModuleMetadataValidatorTest extends OxidTestCase
 
         $oMetadataValidator = new oxModuleMetadataValidator();
         $oMetadataValidator->setModule($oModule);
-        $this->assertSame(false, $oMetadataValidator->validate(), 'Metadata validator should return false if metadata file does not exist.');
+        $this->assertSame(false, $oMetadataValidator->validate());
     }
 }

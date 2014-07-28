@@ -20,28 +20,19 @@
  * @version   OXID eShop CE
  */
 
-class oxModuleMetadataValidator implements oxIModuleMetadataValidator
+interface oxIModuleMetadataValidator
 {
     /**
-     * @var oxModule
-     */
-    private $_oModule = null;
-
-    /**
+     * Return oxModule object which would metadata would be validated.
      * @return oxModule
      */
-    public function getModule()
-    {
-        return $this->_oModule;
-    }
+    public function getModule();
 
     /**
+     * Set oxModule object to validate metadata.
      * @param oxModule $oModule
      */
-    public function setModule($oModule)
-    {
-        $this->_oModule = $oModule;
-    }
+    public function setModule($oModule);
 
     /**
      * Validates module metadata.
@@ -50,11 +41,5 @@ class oxModuleMetadataValidator implements oxIModuleMetadataValidator
      *
      * @return bool
      */
-    public function validate()
-    {
-        $oModule = $this->getModule();
-        $sMetadataPath = $oModule->getMetadataPath();
-
-        return file_exists($sMetadataPath);
-    }
-} 
+    public function validate();
+}

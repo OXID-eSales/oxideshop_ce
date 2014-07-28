@@ -354,18 +354,5 @@ class Unit_Core_oxOnlineVatIdCheckTest extends OxidTestCase
         $oOnlineVatCheck->validate($oVatIn);
     }
 
-    public function testValidateOnFailSetError()
-    {
-        $oVatIn = new oxCompanyVatIn('LT1212');
 
-        $oExpect = new stdClass();
-        $oExpect->countryCode = 'LT';
-        $oExpect->vatNumber = '1212';
-
-        $oOnlineVatCheck = $this->getMock( 'oxOnlineVatIdCheck', array('_checkOnline') );
-        $oOnlineVatCheck->expects( $this->once() )->method( '_checkOnline')->with( $this->equalTo( $oExpect ) )->will( $this->returnValue( false ) );
-
-        $this->assertFalse($oOnlineVatCheck->validate($oVatIn));
-        $this->assertSame('ID_NOT_VALID', $oOnlineVatCheck->getError());
-    }
 }

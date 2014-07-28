@@ -570,7 +570,28 @@ function showInvitations()
                 <div class="spacer"></div>
             </dl>
 
+            <dl>
+                <dt>
+                    <input type=hidden name=confbools[blVatIdCheckDisabled] value=false>
+                    <input type=checkbox name=confbools[blVatIdCheckDisabled] value=true  [{if ($confbools.blVatIdCheckDisabled)}]checked[{/if}] [{ $readonly}]>
+                    [{ oxinputhelp ident="HELP_SHOP_CONFIG_DISABLEONLINEVATIDCHECK" }]
+                </dt>
+                <dd>
+                    [{ oxmultilang ident="SHOP_CONFIG_DISABLEONLINEVATIDCHECK" }]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
 
+            <dl>
+                <dt>
+                    <input type=text class="editinput" size="35" name=confstrs[sVatIdCheckInterfaceWsdl] value="[{$confstrs.sVatIdCheckInterfaceWsdl}]" [{ $readonly}]>
+                    [{ oxinputhelp ident="HELP_SHOP_CONFIG_ALTVATIDCHECKINTERFACEWSDL" }]
+                </dt>
+                <dd>
+                    [{ oxmultilang ident="SHOP_CONFIG_ALTVATIDCHECKINTERFACEWSDL" }]
+                </dd>
+                <div class="spacer"></div>
+            </dl>
          </div>
     </div>
 

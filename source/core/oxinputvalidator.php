@@ -58,6 +58,9 @@ class oxInputValidator extends oxSuperCfg
      */
     protected $_aInputValidationErrors = array();
 
+
+    protected $_oCompanyVatInValidator = null;
+
     /**
      * Possible credit card types
      *
@@ -84,7 +87,7 @@ class oxInputValidator extends oxSuperCfg
                                            'lsktoinhaber'
                                          );
 
-   /**
+    /**
      * Class constructor. The constructor is defined in order to be possible to call parent::__construct() in modules.
      *
      */
@@ -369,22 +372,24 @@ class oxInputValidator extends oxSuperCfg
      */
     public function checkVatId( $oUser, $aInvAddress )
     {
-        if ( $aInvAddress['oxuser__oxustid'] ) {
+        if ( $aInvAddress['oxuser__oxustid'] && $aInvAddress['oxuser__oxcountryid']  ) {
 
-            if (!($sCountryId = $aInvAddress['oxuser__oxcountryid'])) {
-                // no country
-                return;
-            }
+            $sCountryId = $aInvAddress['oxuser__oxcountryid'];
             $oCountry = oxNew('oxCountry');
 
             if ( $oCountry->load( $sCountryId ) && $oCountry->isInEU() ) {
 
-                    if ( $this->_isVATIdentificationNumberInvalid( $aInvAddress, $oCountry ) ) {
-                        $oEx = oxNew( 'oxInputException' );
-                        $oEx->setMessage(oxRegistry::getLang()->translateString( 'VAT_MESSAGE_ID_NOT_VALID' ));
-                        return $this->_addValidationError( "oxuser__oxustid", $oEx );
-                    }
+                $oVatInValidator = $this->getCompanyVatInValidator( $oCountry );
 
+                /** @var oxCompanyVatId $oVatIn */
+                $oVatIn = oxNew('oxCompanyVatIn', $aInvAddress['oxuser__oxustid']);
+
+                if ( !$oVatInValidator->validate( $oVatIn ) ) {
+                    /** @var oxInputException $oEx */
+                    $oEx = oxNew( 'oxInputException' );
+                    $oEx->setMessage(oxRegistry::getLang()->translateString( 'VAT_MESSAGE_'.$oVatInValidator->getError() ));
+                    return $this->_addValidationError( "oxuser__oxustid", $oEx );
+                }
             }
         }
     }
@@ -579,6 +584,8 @@ class oxInputValidator extends oxSuperCfg
      * @param array $aInvAddress
      * @param oxCountry $oCountry
      *
+     * @deprecated v5.2
+     *
      * @return bool
      */
     private function _isVATIdentificationNumberInvalid( $aInvAddress, $oCountry )
@@ -588,11 +595,53 @@ class oxInputValidator extends oxSuperCfg
 
     /**
      * @return oxOnlineVatIdCheck
+     *
+     * @deprecated v5.2
+     *
      */
     protected function _getVatIdValidator()
     {
         $oVatCheck = oxNew( 'oxOnlineVatIdCheck' );
-
         return $oVatCheck;
+    }
+
+    /**
+     * VATIN validator setter
+     *
+     *
+     * @param oxCompanyVatInValidator $oCompanyVatInValidator
+     */
+    public function setCompanyVatInValidator( $oCompanyVatInValidator )
+    {
+        $this->_oCompanyVatInValidator = $oCompanyVatInValidator;
+    }
+
+    /**
+     * Return VATIN validator
+     *
+     * @param oxCountry $oCountry
+     *
+     * @return oxCompanyVatInValidator
+     */
+    public function getCompanyVatInValidator( $oCountry )
+    {
+        if( is_null($this->_oCompanyVatInValidator)){
+
+            /** @var oxCompanyVatInValidator $oVatInValidator */
+            $oVatInValidator = oxNew('oxCompanyVatInValidator', $oCountry);
+
+            /** @var  oxCompanyVatInCompanyChecker $oValidator */
+            $oValidator = oxNew( 'oxCompanyVatInCompanyChecker' );
+            $oVatInValidator->addChecker( $oValidator );
+
+            /** @var oxOnlineVatIdCheck $oOnlineValidator */
+            if (!oxRegistry::getConfig()->getConfigParam( "blVatIdCheckDisabled" )) {
+                $oOnlineValidator = oxNew( 'oxOnlineVatIdCheck' );
+                $oVatInValidator->addChecker( $oOnlineValidator );
+            }
+
+            $this->setCompanyVatInValidator($oValidator);
+        }
+        return $this->_oCompanyVatInValidator;
     }
 }

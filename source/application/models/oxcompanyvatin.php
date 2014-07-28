@@ -31,7 +31,7 @@ class oxCompanyVatIn
      *
      * @var string
      */
-    private $_sCompanyVatNumber = '';
+    private $_sCompanyVatNumber;
 
     /**
      * Constructor

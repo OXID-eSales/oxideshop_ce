@@ -68,7 +68,7 @@ class oxCompanyVatInCountryChecker extends oxCompanyVatInChecker implements oxIC
         $blResult = false;
         $oCountry = $this->getCountry();
         if(!is_null($oCountry)){
-            $blResult = ($oCountry->getVATIdentificationNumberPrefix() == $oVatIn->getCountryCode());
+            $blResult = ($oCountry->getVATIdentificationNumberPrefix() === $oVatIn->getCountryCode());
             if(!$blResult){
                 $this->setError( self::ERROR_ID_NOT_VALID );
             }

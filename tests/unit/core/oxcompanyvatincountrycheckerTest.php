@@ -102,6 +102,19 @@ class Unit_Core_oxCompanyVatInCountryCheckerTest extends OxidTestCase
         $this->assertSame(oxCompanyVatInCountryChecker::ERROR_ID_NOT_VALID, $oChecker->getError());
     }
 
+    public function testValidate_notValidWrongDataType_errorMessage()
+    {
+        $oVatIn = new oxCompanyVatIn('LT12345');
+        $oCountry = new oxCountry();
+        $oCountry->oxcountry__oxvatinprefix = new oxField( 1 );
+
+        $oChecker = new oxCompanyVatInCountryChecker();
+        $oChecker->setCountry($oCountry);
+        $oChecker->validate($oVatIn);
+
+        $this->assertSame(oxCompanyVatInCountryChecker::ERROR_ID_NOT_VALID, $oChecker->getError());
+    }
+
     public function testValidate_valid_noErrorMessage()
     {
         $oVatIn = new oxCompanyVatIn('LT12345');
@@ -114,4 +127,6 @@ class Unit_Core_oxCompanyVatInCountryCheckerTest extends OxidTestCase
 
         $this->assertSame('', $oChecker->getError());
     }
+
+
 }

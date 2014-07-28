@@ -390,25 +390,6 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
     }
 
     /**
-     * Greece has different VAT identification number, test checks this exception.
-     * Test for bug #4212
-     */
-    public function testCheckVatId_ExceptionForGreece()
-    {
-
-        //TODO: move to oxcompanyvatidcountry validator class
-
-        $oUser = oxNew( 'oxUser' );
-
-        $oValidator = $this->getMock( 'oxinputvalidator', array( '_addValidationError' ) );
-        $oValidator->expects( $this->never() )->method( '_addValidationError' );
-
-        $sCountryId = 'a7c40f633114e8fc6.25257477'; //Greece
-
-        $oValidator->checkVatId( $oUser, array( 'oxuser__oxustid' => 'EL123', 'oxuser__oxcountryid' => $sCountryId ) );
-    }
-
-    /**
      * Test case for oxinputvalidator::checkCountries()
      * @return null
      */

@@ -52,4 +52,25 @@ class Unit_Core_oxModuleMetadataValidatorTest extends OxidTestCase
         $oMetadataValidator->setModule($oModule);
         $this->assertSame(false, $oMetadataValidator->validate());
     }
+
+    public function testValidateModuleWithInvalidMetadataFile()
+    {
+        $sMetadataFileName = 'metadata.php';
+        $sMetadataContent = '<?php php syntax error';
+
+        $sPathToMetadata = $this->createFile($sMetadataFileName, $sMetadataContent);
+
+        $oModuleStub = $this->getMock('oxModule', array('getMetadataPath'));
+        $oModuleStub->expects($this->any())
+            ->method('getMetadataPath')
+            ->will($this->returnValue($sPathToMetadata));
+
+        /** @var oxModule $oModule */
+        $oModule = $oModuleStub;
+
+        $oMetadataValidator = new oxModuleMetadataValidator();
+        $oMetadataValidator->setModule($oModule);
+
+        $this->assertSame(false, $oMetadataValidator->validate());
+    }
 }

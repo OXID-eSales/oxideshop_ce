@@ -31,7 +31,7 @@ abstract class oxCompanyVatInChecker
      *
      * @var string
      */
-    private $_sError = '';
+    protected $_sError = '';
 
     /**
      * Error message setter

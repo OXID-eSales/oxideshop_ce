@@ -29,7 +29,7 @@ class oxCompanyVatInCountryChecker extends oxCompanyVatInChecker implements oxIC
     /**
      * Error string if country mismatch
      */
-    const ERROR_DIFFERENT_COUNTRY = 'DIFFERENT_COUNTRY';
+    const ERROR_ID_NOT_VALID = 'ID_NOT_VALID';
 
     /**
      * Country
@@ -70,7 +70,7 @@ class oxCompanyVatInCountryChecker extends oxCompanyVatInChecker implements oxIC
         if(!is_null($oCountry)){
             $blResult = ($oCountry->getVATIdentificationNumberPrefix() == $oVatIn->getCountryCode());
             if(!$blResult){
-                $this->setError( self::ERROR_DIFFERENT_COUNTRY );
+                $this->setError( self::ERROR_ID_NOT_VALID );
             }
         }
 

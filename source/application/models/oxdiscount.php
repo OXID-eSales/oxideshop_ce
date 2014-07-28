@@ -192,7 +192,7 @@ class oxDiscount extends oxI18n
         $sQ .= $this->_getProductCheckQuery( $oArticle );
         if ( !( $blOk = ( bool ) $oDb->getOne( $sQ ) ) ) {
 
-            // checkin article cateogry
+            // checking article category
             $blOk = $this->_checkForArticleCategories( $oArticle );
         }
 

@@ -75,6 +75,20 @@ class Unit_Core_oxCompanyVatInCountryCheckerTest extends OxidTestCase
         );
     }
 
+    /**
+     * Test for bug #4212
+     */
+    public function testValidateGreece()
+    {
+        $oVatIn = new oxCompanyVatIn('EL123');
+        $oCountry = new oxCountry();
+        $oCountry->load('a7c40f633114e8fc6.25257477');
+
+        $oChecker = new oxCompanyVatInCountryChecker();
+        $oChecker->setCountry($oCountry);
+        $this->assertTrue( $oChecker->validate($oVatIn) );
+    }
+
     public function testValidate_notValid_errorMessage()
     {
         $oVatIn = new oxCompanyVatIn('LT12345');

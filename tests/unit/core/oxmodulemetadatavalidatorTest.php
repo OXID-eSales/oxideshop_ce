@@ -41,7 +41,7 @@ class Unit_Core_oxModuleMetadataValidatorTest extends OxidTestCase
     {
         $sPathToMetadata = '';
         $oModuleStub = $this->getMock('oxModule', array('getMetadataPath'));
-        $oModuleStub->expect($this->any())
+        $oModuleStub->expects($this->any())
             ->method('getMetadataPath')
             ->will($this->returnValue($sPathToMetadata));
 

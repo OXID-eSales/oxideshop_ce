@@ -326,113 +326,67 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
      * (Check performed when company name param is empty)
      * (Check performed when vat id param is empty)
      *
-     * @return null
+     * @dataProvider formValuesDataProviderWithMissingFields
      */
-    public function testCheckVatIdWithoutVatIdOrCompanyName()
+    public function testCheckVatIdWithMissingParametersForCheck( $aValuesFromForm )
     {
         $oUser = oxNew( "oxUser" );
 
-        $oValidator = $this->getMock('oxinputvalidator', array('_addValidationError'));
-        $oValidator->expects($this->never())->method('_addValidationError');
+        $oValidator = $this->getMock('oxInputValidator', array('getCompanyVatInValidator'));
+        $oValidator->expects($this->never())->method('getCompanyVatInValidator');
 
-        $oValidator->checkVatId( $oUser, array('oxuser__oxustid' => 1 ) );
+        $oValidator->checkVatId( $oUser, $aValuesFromForm );
+    }
 
-        $oValidator->checkVatId( $oUser, array('oxuser__oxustid' => 0) );
+    public function formValuesDataProviderWithMissingFields()
+    {
+        return array(
+            array(array()),
+            array(array('oxuser__oxustid' => 1)),
+            array(array('oxuser__oxustid' => 1, 'oxuser__oxcountryid' => 1)),
+            array(array('oxuser__oxcountryid' => 1 )),
+            array(array('oxuser__oxcountryid' => 1, 'oxuser__oxcompany' => 1 )),
+            array(array('oxuser__oxcompany' => 1, 'oxuser__oxustid' => 1)),
+        );
     }
 
     /**
-     * Testing VAT id checker - with vat id, company name, but without or bad country id
-     * (Vat Id should not be checked without country id)
-     *
-     * @return null
+     * Testing VAT id checker: company, country, vat in set
      */
-    public function testCheckVatIdWithBadCountryId()
+    public function testCheckVatIdWithAllFieldSet( )
     {
         $oUser = oxNew( "oxUser" );
 
-        $oValidator = $this->getMock('oxinputvalidator', array('_addValidationError'));
-        $oValidator->expects($this->never())->method('_addValidationError');
+        $oValidator = $this->getMock('oxInputValidator', array('getCompanyVatInValidator'));
+        $oValidator->expects($this->any())->method('getCompanyVatInValidator')->will($this->returnValue( new oxCompanyVatInValidator( new oxCountry() ) ));
 
-        $oValidator->checkVatId( $oUser, array('oxuser__oxustid' => 1, 'oxuser__oxcountryid' => null) );
+        $oValidator->checkVatId( $oUser, array('oxuser__oxustid' => 'AT123', 'oxuser__oxcountryid' => 'a7c40f6320aeb2ec2.72885259', 'oxuser__oxcompany' => 'Company') );
     }
 
     /**
-     * Testing VAT id checker - with home country id
-     * (while trying to check home country business user with vat id)
-     *
-     * @return null
+     * Testing VAT id checker: company, country, vat in set
      */
-    public function testCheckVatIdWithHomeCountryId()
+    public function testCheckVatIdWithEuCountry( )
     {
         $oUser = oxNew( "oxUser" );
 
-        $oValidator = $this->getMock('oxInputValidator', array('_addValidationError', '_getVatIdValidator'));
-        $oValidator->expects($this->never())->method('_addValidationError');
+        $oValidator = $this->getMock('oxInputValidator', array('getCompanyVatInValidator'));
+        $oValidator->expects($this->any())->method('getCompanyVatInValidator')->will($this->returnValue( new oxCompanyVatInValidator( new oxCountry() ) ));
 
-
-        $aHome = $this->getConfig()->getConfigParam( 'aHomeCountry' );
-        $oValidator->checkVatId( $oUser, array('oxuser__oxustid' => 'DE123', 'oxuser__oxcountryid' => $aHome[0]) );
+        $oValidator->checkVatId( $oUser, array('oxuser__oxustid' => 'AT123', 'oxuser__oxcountryid' => 'a7c40f6320aeb2ec2.72885259', 'oxuser__oxcompany' => 'Company') );
     }
 
     /**
-     * Testing VAT id checker - with foreign country id in which disabled vat checking
-     * (while trying to check foreign country business user with vat id, but country does not allow checking)
-     *
-     * @return null
+     * Testing VAT id checker: company, country, VATIN is set
      */
-    public function testCheckVatIdWithForeignCountryWithDisabledVatChecking()
+    public function testCheckVatIdWithNotEuCountry( )
     {
         $oUser = oxNew( "oxUser" );
 
-        $oValidator = $this->getMock('oxinputvalidator', array('_addValidationError'));
-        $oValidator->expects($this->never())->method('_addValidationError');
+        $oValidator = $this->getMock('oxInputValidator', array('getCompanyVatInValidator'));
+        $oValidator->expects($this->never())->method('getCompanyVatInValidator');
 
-        $sForeignCountryId = "a7c40f6321c6f6109.43859248"; //Switzerland
-
-        $oValidator->checkVatId( $oUser, array('oxuser__oxustid' => 1, 'oxuser__oxcountryid' => $sForeignCountryId ) );
-    }
-
-    /**
-     * Testing VAT id checker - with foreign country id and bad vat id
-     * (while trying to check foreign country business user with bad vat id)
-     *
-     * @return null
-     */
-    public function testCheckVatIdWithForeignCountryIdAndBadVatId()
-    {
-
-        $oUser = oxNew( "oxUser" );
-        $oUser->setId("testlalaa_");
-
-        $oValidator = $this->getMock('oxinputvalidator', array('_addValidationError'));
-        $oValidator->expects($this->once())->method('_addValidationError')
-                ->with(
-                        $this->equalTo('oxuser__oxustid'),
-                        $this->attributeEqualTo('message', oxRegistry::getLang()->translateString('VAT_MESSAGE_ID_NOT_VALID'))
-                );
-
-        $sForeignCountryId = "a7c40f6320aeb2ec2.72885259"; //Austria
-
-        $oValidator->checkVatId( $oUser, array('oxuser__oxustid' => 1, 'oxuser__oxcountryid' => $sForeignCountryId ) );
-    }
-
-    /**
-     * Testing VAT id checker - with foreign country id and good vat id
-     * (while trying to check foreign country business user with good vat id)
-     *
-     * @return null
-     */
-    public function testCheckVatId()
-    {
-
-        $oUser = oxNew( "oxUser" );
-
-        $oValidator = $this->getMock('oxinputvalidator', array('_addValidationError'));
-        $oValidator->expects($this->never())->method('_addValidationError');
-
-        $sForeignCountryId = "a7c40f6320aeb2ec2.72885259"; //Austria
-
-        $oValidator->checkVatId( $oUser, array('oxuser__oxustid' => 'AT123', 'oxuser__oxcountryid' => $sForeignCountryId ) );
+        $oValidator->checkVatId( $oUser, array('oxuser__oxustid' => 'AT123', 'oxuser__oxcountryid' => 'a7c40f6321c6f6109.43859248', 'oxuser__oxcompany' => 'Company') );
     }
 
     /**
@@ -441,6 +395,9 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
      */
     public function testCheckVatId_ExceptionForGreece()
     {
+
+        //TODO: move to oxcompanyvatidcountry validator class
+
         $oUser = oxNew( 'oxUser' );
 
         $oValidator = $this->getMock( 'oxinputvalidator', array( '_addValidationError' ) );
@@ -450,7 +407,6 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
 
         $oValidator->checkVatId( $oUser, array( 'oxuser__oxustid' => 'EL123', 'oxuser__oxcountryid' => $sCountryId ) );
     }
-
 
     /**
      * Test case for oxinputvalidator::checkCountries()
@@ -1196,25 +1152,28 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
 
     public function testGetCompanyVatInValidator_Set()
     {
+        $oCountry = new oxCountry();
         $oInputValidator = new oxInputValidator();
-        $oVatInValidator = new oxCompanyVatInValidator( new oxCompany() );
+        $oVatInValidator = new oxCompanyVatInValidator( $oCountry );
 
         $oInputValidator->setCompanyVatInValidator($oVatInValidator);
 
-        $this->assertSame($oVatInValidator, $oInputValidator->getCompanyVatInValidator( new oxCompany() ) );
+        $this->assertSame($oVatInValidator, $oInputValidator->getCompanyVatInValidator( $oCountry ) );
     }
 
     public function testGetCompanyVatInValidator_Default()
     {
         $oInputValidator = new oxInputValidator();
-        $oVatInValidator = $oInputValidator->getCompanyVatInValidator( new oxCompany() );
+
+        $oVatInValidator = $oInputValidator->getCompanyVatInValidator( new oxCountry() );
 
         $this->assertTrue($oVatInValidator instanceof oxCompanyVatInValidator );
         $aCheckers = $oVatInValidator->getCheckers();
 
         $this->assertSame(2, count($aCheckers) );
-        $this->assertFalse($aCheckers[0] instanceof oxCompanyVatInCompanyChecker);
-        $this->assertFalse($aCheckers[1] instanceof oxOnlineVatIdCheck);
+
+        $this->assertTrue($aCheckers[0] instanceof oxCompanyVatInCountryChecker);
+        $this->assertTrue($aCheckers[1] instanceof oxOnlineVatIdCheck);
     }
 
     public function testGetCompanyVatInValidator_DefaultTurnedOffOnline()
@@ -1222,7 +1181,7 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
         $this->getConfig()->setConfigParam('blVatIdCheckDisabled', true);
 
         $oInputValidator = new oxInputValidator();
-        $oVatInValidator = $oInputValidator->getCompanyVatInValidator( new oxCompany() );
+        $oVatInValidator = $oInputValidator->getCompanyVatInValidator( new oxCountry() );
 
         $this->assertTrue($oVatInValidator instanceof oxCompanyVatInValidator );
 

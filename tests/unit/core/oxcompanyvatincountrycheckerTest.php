@@ -99,7 +99,7 @@ class Unit_Core_oxCompanyVatInCountryCheckerTest extends OxidTestCase
         $oChecker->setCountry($oCountry);
         $oChecker->validate($oVatIn);
 
-        $this->assertSame(oxCompanyVatInCountryChecker::ERROR_DIFFERENT_COUNTRY, $oChecker->getError());
+        $this->assertSame(oxCompanyVatInCountryChecker::ERROR_ID_NOT_VALID, $oChecker->getError());
     }
 
     public function testValidate_valid_noErrorMessage()

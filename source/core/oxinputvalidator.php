@@ -584,7 +584,7 @@ class oxInputValidator extends oxSuperCfg
      * @param array $aInvAddress
      * @param oxCountry $oCountry
      *
-     * @deprecated v5.2
+     * @deprecated since v5.2 (2014-07-28); This logic was moved to oxCompanyVatInValidator
      *
      * @return bool
      */
@@ -596,7 +596,7 @@ class oxInputValidator extends oxSuperCfg
     /**
      * @return oxOnlineVatIdCheck
      *
-     * @deprecated v5.2
+     * @deprecated since v5.2 (2014-07-28); This logic was moved to oxCompanyVatInValidator
      *
      */
     protected function _getVatIdValidator()

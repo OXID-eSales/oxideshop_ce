@@ -50,7 +50,7 @@ class Unit_Core_oxModuleMetadataValidatorTest extends OxidTestCase
 
         $oMetadataValidator = new oxModuleMetadataValidator();
         $oMetadataValidator->setModule($oModule);
-        $this->assertSame(false, $oMetadataValidator->validate());
+        $this->assertFalse($oMetadataValidator->validate());
     }
 
     public function testValidateModuleWithValidMetadataFile()
@@ -71,6 +71,6 @@ class Unit_Core_oxModuleMetadataValidatorTest extends OxidTestCase
         $oMetadataValidator = new oxModuleMetadataValidator();
         $oMetadataValidator->setModule($oModule);
 
-        $this->assertSame(true, $oMetadataValidator->validate());
+        $this->assertTrue($oMetadataValidator->validate());
     }
 }

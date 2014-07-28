@@ -39,9 +39,14 @@ class Unit_Core_oxModuleMetadataValidatorTest extends OxidTestCase
 
     public function testValidateModuleWithoutMetadataFile()
     {
-        $aModuleInformation = array('id' => 'notExistingModule');
-        $oModule = new oxModule();
-        $oModule->setModuleData($aModuleInformation);
+        $sPathToMetadata = '';
+        $oModuleStub = $this->getMock('oxModule', array('getMetadataPath'));
+        $oModuleStub->expect($this->any())
+            ->method('getMetadataPath')
+            ->will($this->returnValue($sPathToMetadata));
+
+        /** @var oxModule $oModule */
+        $oModule = $oModuleStub;
 
         $oMetadataValidator = new oxModuleMetadataValidator();
         $oMetadataValidator->setModule($oModule);

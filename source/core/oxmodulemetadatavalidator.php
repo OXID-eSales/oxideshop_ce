@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-class oxModuleMetadataValidator implements oxIModuleMetadataValidator
+class oxModuleMetadataValidator implements oxIModuleValidator
 {
     /**
      * @var oxModule

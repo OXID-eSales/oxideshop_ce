@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-interface oxIModuleMetadataValidator
+interface oxIModuleValidator
 {
     /**
      * Return oxModule object which would metadata would be validated.

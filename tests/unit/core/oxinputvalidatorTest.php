@@ -1193,4 +1193,42 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
     {
         return -4;
     }
+
+    public function testGetCompanyVatInValidator_Set()
+    {
+        $oInputValidator = new oxInputValidator();
+        $oVatInValidator = new oxCompanyVatInValidator( new oxCompany() );
+
+        $oInputValidator->setCompanyVatInValidator($oVatInValidator);
+
+        $this->assertSame($oVatInValidator, $oInputValidator->getCompanyVatInValidator( new oxCompany() ) );
+    }
+
+    public function testGetCompanyVatInValidator_Default()
+    {
+        $oInputValidator = new oxInputValidator();
+        $oVatInValidator = $oInputValidator->getCompanyVatInValidator( new oxCompany() );
+
+        $this->assertTrue($oVatInValidator instanceof oxCompanyVatInValidator );
+        $aCheckers = $oVatInValidator->getCheckers();
+
+        $this->assertSame(2, count($aCheckers) );
+        $this->assertFalse($aCheckers[0] instanceof oxCompanyVatInCompanyChecker);
+        $this->assertFalse($aCheckers[1] instanceof oxOnlineVatIdCheck);
+    }
+
+    public function testGetCompanyVatInValidator_DefaultTurnedOffOnline()
+    {
+        $this->getConfig()->setConfigParam('blVatIdCheckDisabled', true);
+
+        $oInputValidator = new oxInputValidator();
+        $oVatInValidator = $oInputValidator->getCompanyVatInValidator( new oxCompany() );
+
+        $this->assertTrue($oVatInValidator instanceof oxCompanyVatInValidator );
+
+        $aCheckers = $oVatInValidator->getCheckers();
+        $this->assertSame(1, count($aCheckers) );
+        $this->assertFalse($aCheckers[0] instanceof oxOnlineVatIdCheck);
+    }
+
 }

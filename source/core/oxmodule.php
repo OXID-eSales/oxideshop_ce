@@ -426,7 +426,11 @@ class oxModule extends oxSuperCfg
      * @return string
      */
     public function getMetadataPath() {
-        return $this->getModuleFullPath() .'metadata.php';
+        $sModulePath = $this->getModuleFullPath();
+        if (substr($sModulePath, -1) != DIRECTORY_SEPARATOR) {
+            $sModulePath .= DIRECTORY_SEPARATOR;
+        }
+        return $sModulePath .'metadata.php';
     }
 
     /**

@@ -65,6 +65,7 @@ class Unit_Core_oxModuleFilesValidatorTest extends OxidTestCase
         return array(
             array($aExtendedFileNotExist, array()),
             array(array(), $aFilesNotExist),
+            array($aExtendedFileNotExist, $aFilesNotExist),
         );
     }
 

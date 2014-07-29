@@ -37,6 +37,13 @@ class oxModuleFilesValidator implements oxIModuleValidator
     private $_aMissingFiles = array();
 
     /**
+     * Shop directory where modules are stored.
+     *
+     * @var string
+     */
+    private $_sPathToModuleDirectory = null;
+
+    /**
      * Return module which files are validating.
      *
      * @return oxModule
@@ -54,6 +61,25 @@ class oxModuleFilesValidator implements oxIModuleValidator
     public function setModule(oxModule $oModule)
     {
         $this->_oModule = $oModule;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPathToModuleDirectory()
+    {
+        if (is_null($this->_sPathToModuleDirectory)) {
+            $this->setPathToModuleDirectory(oxRegistry::getConfig()->getModulesDir());
+        }
+        return $this->_sPathToModuleDirectory;
+    }
+
+    /**
+     * @param string $sModuleDirectory
+     */
+    public function setPathToModuleDirectory($sModuleDirectory)
+    {
+        $this->_sPathToModuleDirectory = $sModuleDirectory;
     }
 
     /**
@@ -120,7 +146,7 @@ class oxModuleFilesValidator implements oxIModuleValidator
     {
         $blAllModuleFilesExists = true;
         foreach ($aModuleExtendedFiles as $sModuleName => $sModulePath) {
-            $sExtPath = $this->_getModuleDir() . $sModulePath;
+            $sExtPath = $this->getPathToModuleDirectory() . $sModulePath;
             if ($blAddExtension) {
                 $sExtPath .= '.php';
             }
@@ -130,15 +156,5 @@ class oxModuleFilesValidator implements oxIModuleValidator
             }
         }
         return $blAllModuleFilesExists;
-    }
-
-    /**
-     * Return path to module directory.
-     *
-     * @return string
-     */
-    private function _getModuleDir()
-    {
-        return oxRegistry::getConfig()->getModulesDir();
     }
 }

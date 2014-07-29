@@ -50,8 +50,7 @@ class oxCompanyVatIn
      */
     public function getCountryCode()
     {
-
-        return (string) oxStr::getStr()->strtoupper(oxStr::getStr()->substr( $this->_sCompanyVatNumber, 0, 2 ));
+        return (string) oxStr::getStr()->strtoupper(oxStr::getStr()->substr( $this->_cleanUp($this->_sCompanyVatNumber), 0, 2 ));
     }
 
     /**
@@ -61,8 +60,21 @@ class oxCompanyVatIn
      */
     public function getNumbers()
     {
-        return (string) oxStr::getStr()->preg_replace( "/\s|-|,|\.|/", '', oxStr::getStr()->substr( $this->_sCompanyVatNumber, 2 ));
+        return (string) oxStr::getStr()->substr( $this->_cleanUp($this->_sCompanyVatNumber), 2 );
     }
+
+    /**
+     * Removes spaces and symbols: '-',',','.' from string
+     *
+     * @param $sValue - string
+     *
+     * @return string
+     */
+    protected function _cleanUp( $sValue )
+    {
+        return (string) oxStr::getStr()->preg_replace( "/\s|-|,|\.|/", '', $sValue);
+    }
+
 
     /**
      * Cast to string

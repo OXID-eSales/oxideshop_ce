@@ -50,7 +50,8 @@ class oxCompanyVatIn
      */
     public function getCountryCode()
     {
-        return (string) substr( $this->_sCompanyVatNumber, 0, 2 );
+
+        return (string) oxStr::getStr()->strtoupper(oxStr::getStr()->substr( $this->_sCompanyVatNumber, 0, 2 ));
     }
 
     /**
@@ -60,7 +61,7 @@ class oxCompanyVatIn
      */
     public function getNumbers()
     {
-        return (string) substr( $this->_sCompanyVatNumber, 2 );
+        return (string) oxStr::getStr()->preg_replace( "/\s|-|,|\.|/", '', oxStr::getStr()->substr( $this->_sCompanyVatNumber, 2 ));
     }
 
     /**

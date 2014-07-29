@@ -52,11 +52,16 @@ class Unit_Core_oxCompanyVatInTest extends OxidTestCase
     {
         return array(
             array('LT12345', 'LT'),
+            array('lt12345', 'LT'),
+            array('LT 12345', 'LT'),
+            array('LT-12 345', 'LT'),
+            array('LT.123.45', 'LT'),
+            array('LT,123,45', 'LT'),
             array('', ''),
             array(null, ''),
             array(1, '1'),
             array('1111', '11'),
-            array('abcd', 'ab')
+            array('abcd', 'AB')
         );
     }
 
@@ -75,7 +80,11 @@ class Unit_Core_oxCompanyVatInTest extends OxidTestCase
             array('LT12345', '12345'),
             array('', ''),
             array('1111', '11'),
-            array('abcd', 'cd')
+            array('abcd', 'cd'),
+            array('LT 12345', '12345'),
+            array('LT-12 345', '12345'),
+            array('LT.123.45', '12345'),
+            array('LT,123,45', '12345'),
         );
     }
 

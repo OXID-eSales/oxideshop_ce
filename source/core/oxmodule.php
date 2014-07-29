@@ -421,6 +421,15 @@ class oxModule extends oxSuperCfg
     }
 
     /**
+     * Get full path to module metadata file.
+     *
+     * @return string
+     */
+    public function getMetadataPath() {
+        return $this->getModuleFullPath() .'metadata.php';
+    }
+
+    /**
      * Get module dir
      *
      * @param string $sModuleId Module ID

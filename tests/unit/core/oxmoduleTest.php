@@ -580,6 +580,40 @@ class Unit_Core_oxModuleTest extends OxidTestCase
     }
 
     /**
+     * Return full path to module metadata.
+     *
+     * @return bool
+     */
+    public function testGetMetadataPath()
+    {
+        $sModId = "testModule";
+
+        $oConfig = $this->getMock('oxconfig', array('getModulesDir'));
+        $oConfig->expects( $this->any() )
+            ->method( 'getModulesDir' )
+            ->will($this->returnValue( "/var/path/to/modules/" ));
+
+        $oModuleStub = $this->getMock('oxmodule', array('getModulePath', 'getConfig'));
+        $oModuleStub->expects( $this->any() )
+            ->method( 'getModulePath' )
+            ->with( $this->equalTo($sModId) )
+            ->will( $this->returnValue( "oe/module/" ) );
+
+        $oModuleStub->expects( $this->any() )
+            ->method( 'getConfig' )
+            ->will( $this->returnValue( $oConfig ) );
+
+        $aModule  = array('id' => $sModId);
+        /** @var oxModule $oModule */
+        $oModule = $oModuleStub;
+        $oModule->setModuleData( $aModule );
+
+        $this->assertEquals( "/var/path/to/modules/oe/module/metadata.php", $oModule->getMetadataPath() );
+
+        return true;
+    }
+
+    /**
      * oxModule::getModulePaths() test case
      */
     public function testGetModulePaths()

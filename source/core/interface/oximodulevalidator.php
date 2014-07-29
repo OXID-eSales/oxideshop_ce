@@ -32,7 +32,7 @@ interface oxIModuleValidator
      * Set oxModule object to validate metadata.
      * @param oxModule $oModule
      */
-    public function setModule($oModule);
+    public function setModule(oxModule $oModule);
 
     /**
      * Validates module information.

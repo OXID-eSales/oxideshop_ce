@@ -52,6 +52,7 @@ class Unit_Core_oxCompanyVatInTest extends OxidTestCase
     {
         return array(
             array('LT12345', 'LT'),
+            array(' LT12345', 'LT'),
             array('lt12345', 'LT'),
             array('LT 12345', 'LT'),
             array('LT-12 345', 'LT'),
@@ -78,6 +79,9 @@ class Unit_Core_oxCompanyVatInTest extends OxidTestCase
     {
         return array(
             array('LT12345', '12345'),
+            array(' LT12345', '12345'),
+            array('LT12345 ', '12345'),
+            array(' LT12345 ', '12345'),
             array('', ''),
             array('1111', '11'),
             array('abcd', 'cd'),

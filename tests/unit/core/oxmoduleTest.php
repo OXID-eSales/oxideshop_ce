@@ -579,12 +579,24 @@ class Unit_Core_oxModuleTest extends OxidTestCase
         $this->assertEquals( $aDisabledModules, $oModule->getDisabledModules() );
     }
 
+    public function providerGetMetadataPath()
+    {
+        return array(
+            array("oe/module/"),
+            array("oe/module"),
+        );
+    }
+
     /**
      * Return full path to module metadata.
      *
+     * @parameter string $sModuleId
+     *
+     * @dataProvider providerGetMetadataPath
+     *
      * @return bool
      */
-    public function testGetMetadataPath()
+    public function testGetMetadataPath($sModuleId)
     {
         $sModId = "testModule";
 
@@ -596,8 +608,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
         $oModuleStub = $this->getMock('oxmodule', array('getModulePath', 'getConfig'));
         $oModuleStub->expects( $this->any() )
             ->method( 'getModulePath' )
-            ->with( $this->equalTo($sModId) )
-            ->will( $this->returnValue( "oe/module/" ) );
+            ->will( $this->returnValue( $sModuleId ) );
 
         $oModuleStub->expects( $this->any() )
             ->method( 'getConfig' )

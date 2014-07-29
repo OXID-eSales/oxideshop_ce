@@ -146,7 +146,11 @@ class oxModuleFilesValidator implements oxIModuleValidator
     {
         $blAllModuleFilesExists = true;
         foreach ($aModuleExtendedFiles as $sModuleName => $sModulePath) {
-            $sExtPath = $this->getPathToModuleDirectory() . $sModulePath;
+            $sPathToModuleDirectory = $this->getPathToModuleDirectory();
+            if (substr($sPathToModuleDirectory, -1) !== '/') {
+                $sPathToModuleDirectory .= '/';
+            }
+            $sExtPath = $sPathToModuleDirectory . $sModulePath;
             if ($blAddExtension) {
                 $sExtPath .= '.php';
             }

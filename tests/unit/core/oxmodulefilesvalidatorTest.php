@@ -62,6 +62,7 @@ class Unit_Core_oxModuleFilesValidatorTest extends OxidTestCase
     {
         $aExtendedFileNotExist = array('class' => 'vendor/module/path/class');
         $aFilesNotExist = array('class' => 'vendor/module/path/class.php');
+
         return array(
             array($aExtendedFileNotExist, array()),
             array(array(), $aFilesNotExist),
@@ -91,6 +92,51 @@ class Unit_Core_oxModuleFilesValidatorTest extends OxidTestCase
         $oModuleFilesValidator = new oxModuleFilesValidator();
         $oModuleFilesValidator->setModule($oModule);
         $this->assertFalse($oModuleFilesValidator->validate());
+    }
+
+    public function providerValidateWhenFilesExists()
+    {
+        $sFileContent = '<?php ';
+        $sExtendFileName = 'class1';
+        $sFileName = 'class2.php';
+
+        $sExtendFilePath = $this->createFile($sExtendFileName.'.php', $sFileContent);
+        $sFilesPath = $this->createFile($sFileName, $sFileContent);
+        $sPathToModules = dirname($sFilesPath);
+
+        $aExtendedFile = array('class1' => $sExtendFileName);
+        $aFiles = array('class2' => $sFileName);
+        return array(
+            array($aExtendedFile, array(), $sPathToModules),
+            array(array(), $aFiles, $sPathToModules),
+            array($aExtendedFile, $aFiles, $sPathToModules),
+        );
+    }
+
+    /**
+     * @param $aExtended
+     * @param $aFiles
+     * @param $sPathToModules
+     *
+     * @dataProvider providerValidateWhenFilesExists
+     */
+    public function testValidateWhenFilesExists($aExtended, $aFiles, $sPathToModules)
+    {
+        $oModuleStub = $this->getMock('oxModule', array('getExtensions', 'getFiles'));
+        $oModuleStub->expects($this->any())
+            ->method('getExtensions')
+            ->will($this->returnValue($aExtended));
+        $oModuleStub->expects($this->any())
+            ->method('getFiles')
+            ->will($this->returnValue($aFiles));
+
+        /** @var oxModule $oModule */
+        $oModule = $oModuleStub;
+
+        $oModuleFilesValidator = new oxModuleFilesValidator();
+        $oModuleFilesValidator->setModule($oModule);
+        $oModuleFilesValidator->setPathToModuleDirectory($sPathToModules);
+        $this->assertTrue($oModuleFilesValidator->validate());
     }
 
     public function providerGetMissingFilesAfterValidate()

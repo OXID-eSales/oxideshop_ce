@@ -628,6 +628,36 @@ class Unit_Core_oxModuleTest extends OxidTestCase
      *
      * @return null
      */
+    public function testGetModuleFullPathWhenModuleIdNotGiven()
+    {
+        $sModId = "testModule";
+
+        $oConfig = $this->getMock('oxconfig', array('getModulesDir'));
+        $oConfig->expects( $this->any() )
+            ->method( 'getModulesDir' )
+            ->will($this->returnValue( "/var/path/to/modules/" ));
+
+        $oModule = $this->getMock('oxmodule', array('getModulePath', 'getConfig'));
+        $oModule->expects( $this->any() )
+            ->method( 'getModulePath' )
+            ->with( $this->equalTo($sModId) )
+            ->will( $this->returnValue( "oe/module/" ) );
+
+        $oModule->expects( $this->any() )
+            ->method( 'getConfig' )
+            ->will( $this->returnValue( $oConfig ) );
+
+        $aModule  = array('id' => $sModId);
+        $oModule->setModuleData( $aModule );
+
+        $this->assertEquals( "/var/path/to/modules/oe/module/", $oModule->getModuleFullPath() );
+    }
+
+    /**
+     * oxModule::testGetModuleFullPaths() test case
+     *
+     * @return null
+     */
     public function testGetModuleFullPathWhenNoModulePathExists()
     {
         $sModId = "testModule";

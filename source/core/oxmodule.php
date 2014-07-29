@@ -451,8 +451,12 @@ class oxModule extends oxSuperCfg
      *
      * @return string
      */
-    public function getModuleFullPath( $sModuleId )
+    public function getModuleFullPath( $sModuleId = null )
     {
+        if ( !$sModuleId ) {
+            $sModuleId = $this->getId();
+        }
+
         if ( $sModuleDir = $this->getModulePath( $sModuleId ) ) {
             return $this->getConfig()->getModulesDir() . $sModuleDir;
         }

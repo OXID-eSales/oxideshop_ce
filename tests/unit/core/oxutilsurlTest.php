@@ -260,23 +260,30 @@ class Unit_Core_oxUtilsUrlTest extends OxidTestCase
 
     public function testProcessUrlWithLocalUrlSIDShouldBeAdded()
     {
-        $this->getSession()->setVariable( 'blSidNeeded', true );
-        $this->getSession()->setId( 'SID' );
+        /** @var oxSession $oSession */
+        $oSession = $this->getMock('oxSession', array('isSidNeeded'));
+        $oSession->expects( $this->any() )->method( 'isSidNeeded' )->will( $this->returnValue( true ) );
+        $oSession->setId('SID');
 
         $oUtils = new oxUtilsUrl();
-
+        oxRegistry::set('oxSession', $oSession);
         $sShopUrl = $this->getConfig()->getShopUrl();
+
         $this->assertEquals( "$sShopUrl/anyUrl?force_sid=SID", $oUtils->processUrl( "$sShopUrl/anyUrl" ) );
     }
 
     public function testProcessUrlWithRelativeUrlShouldActLikeLocal()
     {
-        $this->getSession()->setVariable( 'blSidNeeded', true );
-        $this->getSession()->setId( 'SID' );
+        /** @var oxSession $oSession */
+        $oSession = $this->getMock('oxSession', array('isSidNeeded'));
+        $oSession->expects( $this->any() )->method( 'isSidNeeded' )->will( $this->returnValue( true ) );
+        $oSession->setId('SID');
+
         $this->getConfig()->setConfigParam( 'sDefaultLang', 0 );
         $this->setLanguage(1);
 
         $oUtils = new oxUtilsUrl();
+        oxRegistry::set('oxSession', $oSession);
 
         $this->assertEquals( "anyUrl?lang=1&amp;force_sid=SID", $oUtils->processUrl( "anyUrl" ) );
     }

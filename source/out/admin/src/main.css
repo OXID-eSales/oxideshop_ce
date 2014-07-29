@@ -488,10 +488,15 @@ a#linkToUpdate:hover,
     overflow: scroll;
     min-height: 300px;
     max-height: 300px;
-    width:100%;
-    padding-bottom: -300px;
-    /* Columns */
-    -webkit-column-count: 4; /* Chrome, Safari, Opera */
-    -moz-column-count: 4; /* Firefox */
-    column-count: 4;
+}
+.shopList {
+    float: left;
+}
+.shopList li {
+    list-style: none;
+    padding: 0px 5px 0 0;
+    background: none;
+}
+.assignmentContainer {
+    width: 100%;
 }

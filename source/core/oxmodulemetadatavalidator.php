@@ -38,7 +38,7 @@ class oxModuleMetadataValidator implements oxIModuleValidator
     /**
      * @param oxModule $oModule
      */
-    public function setModule($oModule)
+    public function setModule(oxModule $oModule)
     {
         $this->_oModule = $oModule;
     }

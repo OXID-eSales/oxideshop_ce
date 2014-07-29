@@ -662,10 +662,11 @@ class Unit_Core_oxemailAzureTplTest extends OxidTestCase
     {
         modSession::getInstance()->setId('xsessx');
 
-        $oEmail = $this->getMock( 'oxEmail', array( "_sendMail", "_getShop", "_getUseInlineImages" ) );
+        $oEmail = $this->getMock( 'oxEmail', array( "_sendMail", "_getShop", "_getUseInlineImages", "isSessionStarted" ) );
         $oEmail->expects( $this->once() )->method( '_sendMail')->will( $this->returnValue( true ));
         $oEmail->expects( $this->any() )->method( '_getShop')->will( $this->returnValue( $this->_oShop ));
         $oEmail->expects( $this->any() )->method( '_getUseInlineImages')->will( $this->returnValue( true ));
+        $oEmail->expects( $this->any() )->method( 'isSessionStarted')->will( $this->returnValue( true ));
 
         $blRet = $oEmail->sendNewsletterDbOptInMail( $this->_oUser );
         $this->assertTrue( $blRet, 'Newsletter confirmation mail was not sent to user' );

@@ -91,4 +91,41 @@ class Unit_Core_oxModuleFilesValidatorTest extends OxidTestCase
         $oModuleFilesValidator->setModule($oModule);
         $this->assertFalse($oModuleFilesValidator->validate());
     }
+
+    public function providerGetMissingFilesAfterValidate()
+    {
+        $aExtendedFileNotExist = array('class1' => 'vendor/module/path/class');
+        $aFilesNotExist = array('class2' => 'vendor/module/path/class.php');
+        return array(
+            array($aExtendedFileNotExist, array(), $aExtendedFileNotExist),
+            array(array(), $aFilesNotExist, $aFilesNotExist),
+            array($aExtendedFileNotExist, $aFilesNotExist, array_merge($aExtendedFileNotExist, $aFilesNotExist)),
+            array(array(), array(), array()),
+        );
+    }
+
+    /**
+     * @param $aExtended
+     * @param $aFiles
+     *
+     * @dataProvider providerGetMissingFilesAfterValidate
+     */
+    public function testGetMissingFilesAfterValidate($aExtended, $aFiles, $aMissingFiles)
+    {
+        $oModuleStub = $this->getMock('oxModule', array('getExtensions', 'getFiles'));
+        $oModuleStub->expects($this->any())
+            ->method('getExtensions')
+            ->will($this->returnValue($aExtended));
+        $oModuleStub->expects($this->any())
+            ->method('getFiles')
+            ->will($this->returnValue($aFiles));
+
+        /** @var oxModule $oModule */
+        $oModule = $oModuleStub;
+
+        $oModuleFilesValidator = new oxModuleFilesValidator();
+        $oModuleFilesValidator->setModule($oModule);
+        $oModuleFilesValidator->validate();
+        $this->assertSame($aMissingFiles, $oModuleFilesValidator->getMissingFiles());
+    }
 }

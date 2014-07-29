@@ -1526,7 +1526,7 @@ class oxEmail extends PHPMailer
 
     /**
      * Set mail body. If second parameter (default value is true) is set to true,
-     * performs search for "sid", replaces sid by sid=x and adds shop id to string
+     * performs search for "sid", removes it and adds shop id to string.
      *
      * @param string $sBody      mail body
      * @param bool   $blClearSid clear sid in mail body
@@ -1536,7 +1536,7 @@ class oxEmail extends PHPMailer
     public function setBody( $sBody = null, $blClearSid = true )
     {
         if ( $blClearSid ) {
-            $sBody = getStr()->preg_replace('/((\?|&(amp;)?)(force_)?(admin_)?)sid=[A-Z0-9\.]+/i', '\1sid=x&amp;shp=' . $this->getConfig()->getShopId(), $sBody);
+            $sBody = $this->_clearSidFromBody($sBody);
         }
 
         $this->set( "Body", $sBody );
@@ -1554,7 +1554,7 @@ class oxEmail extends PHPMailer
 
     /**
      * Sets text-only body of the message. If second parameter is set to true,
-     * performs search for "sid", replaces sid by sid=x and adds shop id to string
+     * performs search for "sid", removes it and adds shop id to string.
      *
      * @param string $sAltBody   mail subject
      * @param bool   $blClearSid clear sid in mail body (default value is true)
@@ -1564,7 +1564,7 @@ class oxEmail extends PHPMailer
     public function setAltBody( $sAltBody = null, $blClearSid = true )
     {
         if ( $blClearSid ) {
-            $sAltBody = getStr()->preg_replace('/((\?|&(amp;)?)(force_)?(admin_)?)sid=[A-Z0-9\.]+/i', '\1sid=x&amp;shp=' . $this->getConfig()->getShopId(), $sAltBody);
+            $sAltBody = $this->_clearSidFromBody($sAltBody);
         }
 
         // A. alt body is used for plain text emails so we should eliminate HTML entities
@@ -2282,4 +2282,15 @@ class oxEmail extends PHPMailer
         return false;
     }
 
+    /**
+     * Performs search for "sid", removes it and adds shop id to string.
+     *
+     * @param $sAltBody
+     *
+     * @return string
+     */
+    private function _clearSidFromBody($sAltBody)
+    {
+        return getStr()->preg_replace('/(\?|&(amp;)?)(force_)?(admin_)?sid=[A-Z0-9\.]+/i', '\1shp=' . $this->getConfig()->getShopId(), $sAltBody);
+    }
 }

@@ -30,6 +30,13 @@ class oxModuleFilesValidator implements oxIModuleValidator
     private $_oModule = null;
 
     /**
+     * Missing module files list.
+     *
+     * @var array
+     */
+    private $_aMissingFiles = array();
+
+    /**
      * Return module which files are validating.
      *
      * @return oxModule
@@ -59,10 +66,19 @@ class oxModuleFilesValidator implements oxIModuleValidator
     public function validate()
     {
         $blModuleValid = $this->_allModuleExtensionsExists();
-        if ($blModuleValid) {
-            $blModuleValid = $this->_allModuleFilesExists();
-        }
+        $blModuleValid = $this->_allModuleFilesExists() && $blModuleValid;
+
         return $blModuleValid;
+    }
+
+    /**
+     * Get missing files which result to invalid module.
+     *
+     * @return array
+     */
+    public function getMissingFiles()
+    {
+        return $this->_aMissingFiles;
     }
 
     /**
@@ -95,20 +111,22 @@ class oxModuleFilesValidator implements oxIModuleValidator
     /**
      * Return true if all requested file exists.
      *
-     * @param $aModuleExtendedFiles array of files which must exist.
+     * @param array $aModuleExtendedFiles of files which must exist.
+     * @param bool $blAddExtension if add .php extension to checked files.
      *
      * @return bool
      */
     private function _allFilesExists($aModuleExtendedFiles, $blAddExtension = false)
     {
         $blAllModuleFilesExists = true;
-        foreach ($aModuleExtendedFiles as $sModulePath) {
+        foreach ($aModuleExtendedFiles as $sModuleName => $sModulePath) {
             $sExtPath = $this->_getModuleDir() . $sModulePath;
             if ($blAddExtension) {
                 $sExtPath .= '.php';
             }
             if (!file_exists($sExtPath)) {
                 $blAllModuleFilesExists = false;
+                $this->_aMissingFiles[$sModuleName] = $sModulePath;
             }
         }
         return $blAllModuleFilesExists;

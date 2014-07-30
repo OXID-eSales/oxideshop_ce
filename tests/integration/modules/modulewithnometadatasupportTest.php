@@ -28,8 +28,7 @@ class Integration_Modules_ModuleWithNoMetadataSupportTest extends BaseModuleTest
     {
         // modules to be activated during test preparation
         $aInstallModules = array(
-            'extending_1_class', 'with_2_templates', 'with_2_files', 'with_2_settings',
-            'extending_3_blocks', 'with_everything', 'with_events'
+            'extending_1_class'
         );
 
         $oEnvironment = new Environment();
@@ -51,8 +50,7 @@ class Integration_Modules_ModuleWithNoMetadataSupportTest extends BaseModuleTest
     {
         // modules to be activated during test preparation
         $aInstallModules = array(
-            'extending_1_class', 'with_2_templates', 'with_2_files', 'with_2_settings',
-            'extending_3_blocks', 'with_everything', 'with_events'
+            'extending_1_class'
         );
 
         $oEnvironment = new Environment();

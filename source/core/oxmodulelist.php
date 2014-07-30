@@ -328,7 +328,7 @@ class oxModuleList extends oxSuperCfg
         foreach ($aModulesIds as $sModuleId) {
             $oModule->setModuleData(array('id'=>$sModuleId));
             if (!$oModuleMetadataValidator->validate($oModule)) {
-                $aDeletedExt[$sModuleId][] = $sModuleId.'/metadata.php';
+                $aDeletedExt[$sModuleId]['files'] = array($sModuleId.'/metadata.php');
             }
             $oModule->load($sModuleId);
             if (!$oModuleFilesValidator->validate($oModule)) {

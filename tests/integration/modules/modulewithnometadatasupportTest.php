@@ -43,7 +43,7 @@ class Integration_Modules_ModuleWithNoMetadataSupportTest extends BaseModuleTest
         $oModuleList = new oxModuleList();
         $aGarbage = $oModuleList->getDeletedExtensions();
 
-        $this->assertSame(  array('no_metadata'=>array('no_metadata/metadata.php')), $aGarbage );
+        $this->assertSame(  array('no_metadata'=>array('files' => array('no_metadata/metadata.php'))), $aGarbage );
     }
 
     public function testModulesWithoutMetadataShouldBeAddToCleanupAllModulesWithMetadata()
@@ -105,10 +105,13 @@ class Integration_Modules_ModuleWithNoMetadataSupportTest extends BaseModuleTest
         $aGarbage = $oModuleList->getDeletedExtensions();
 
         $aExpect = array(
-            'with_1_extension' => array('oxarticle' =>'with_1_extension/mybaseclass'),
+            'with_1_extension' => array(
+                'extensions' => array('oxarticle' =>'with_1_extension/mybaseclass')),
             'with_2_files' => array(
-                'myexception'  => 'with_2_files/core/exception/myexception.php',
-                'myconnection' => 'with_2_files/core/exception/myconnection.php',
+                'files' => array(
+                    'myexception'  => 'with_2_files/core/exception/myexception.php',
+                    'myconnection' => 'with_2_files/core/exception/myconnection.php',
+                )
             ),
         );
 

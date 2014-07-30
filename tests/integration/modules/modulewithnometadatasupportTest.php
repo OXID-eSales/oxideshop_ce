@@ -66,7 +66,7 @@ class Integration_Modules_ModuleWithNoMetadataSupportTest extends BaseModuleTest
     {
         // modules to be activated during test preparation
         $aInstallModules = array(
-            'extending_1_class', 'with_2_Files'
+            'extending_1_class', 'with_2_files'
         );
 
         $oEnvironment = new Environment();

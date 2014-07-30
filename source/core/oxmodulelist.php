@@ -314,13 +314,13 @@ class oxModuleList extends oxSuperCfg
         $aDeletedExt = array();
 
         foreach ($aModulesIds as $sModuleId) {
-            $oModule->load($sModuleId);
-            if (!$oModuleFilesValidator->validate($oModule)) {
-                $aDeletedExt[$sModuleId] = $oModuleFilesValidator->getMissingFiles();
-            }
             $oModule->setModuleData(array('id'=>$sModuleId));
             if (!$oModuleMetadataValidator->validate($oModule)) {
                 $aDeletedExt[$sModuleId][] = $sModuleId.'/metadata.php';
+            }
+            $oModule->load($sModuleId);
+            if (!$oModuleFilesValidator->validate($oModule)) {
+                $aDeletedExt[$sModuleId] = $oModuleFilesValidator->getMissingFiles();
             }
         }
 

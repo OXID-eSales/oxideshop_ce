@@ -43,7 +43,6 @@ class Integration_Modules_ModuleRemoveTest extends BaseModuleTestCase
         $oEnvironment = new Environment();
         $oEnvironment->prepare( $aInstallModules );
 
-        /** @var oxModuleList $oModuleList */
         $oModuleList = $this->getMock( 'oxModuleList', array( 'getDeletedExtensions' ) );
         $oModuleList->expects( $this->any() )->method( 'getDeletedExtensions')->will( $this->returnValue( $aRemovedExtensions ) );
 
@@ -80,7 +79,8 @@ class Integration_Modules_ModuleRemoveTest extends BaseModuleTestCase
                     array( 'template' => 'page/checkout/payment.tpl', 'block' => 'select_payment', 'file' => '/views/blocks/page/checkout/mypaymentselector.tpl' ),
                 ),
                 'extend'          => array(
-                    'oxorder'   => 'extending_1_class/myorder',
+                    'oxorder'   => 'extending_1_class/myorder&with_everything/myorder1&with_everything/myorder2&with_everything/myorder3',
+                    'oxarticle' => 'with_everything/myarticle',
                 ),
                 'files'           => array(
                     'with_2_files' => array(

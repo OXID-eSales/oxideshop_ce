@@ -28,18 +28,20 @@
                             <tr>
                                 <td valign="top" class="[{ $listclass}]">[{$sModuleId}]</td>
                                 <td valign="top" class="[{ $listclass}]">
-                                [{foreach from=$aModules.extensions item=mFile key=sClassName}]
-                                    [{if is_array($mFile)}]
-                                        [{foreach from=$mFile item=sFile}]
-                                            [{if !is_int($sClassName)}][{$sClassName}] =&gt; [{/if}][{$sFile}]</br>
-                                        [{/foreach}]
-                                    [{else}]
-                                        [{if !is_int($sClassName)}][{$sClassName}] =&gt; [{/if}][{$mFile}]</br>
-                                    [{/if}]
-                                [{/foreach}]
-                                [{foreach from=$aModules.files item=sFile key=sClassName}]
-                                    [{if !is_int($sClassName)}][{$sClassName}] =&gt; [{/if}][{$sFile}]</br>
-                                [{/foreach}]
+                                    <ul>
+                                    [{foreach from=$aModules.extensions item=mFile key=sClassName}]
+                                        [{if is_array($mFile)}]
+                                            [{foreach from=$mFile item=sFile}]
+                                                <li>[{if !is_int($sClassName)}][{$sClassName}] =&gt; [{/if}][{$sFile}]</li>
+                                            [{/foreach}]
+                                        [{else}]
+                                        <li>[{if !is_int($sClassName)}][{$sClassName}] =&gt; [{/if}][{$mFile}]</li>
+                                        [{/if}]
+                                    [{/foreach}]
+                                    [{foreach from=$aModules.files item=sFile key=sClassName}]
+                                        <li>[{if !is_int($sClassName)}][{$sClassName}] =&gt; [{/if}][{$sFile}]</li>
+                                    [{/foreach}]
+                                    </ul>
                                 </td>
                             </tr>
                             [{if $blWhite == "2"}]

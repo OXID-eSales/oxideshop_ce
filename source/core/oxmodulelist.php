@@ -316,14 +316,11 @@ class oxModuleList extends oxSuperCfg
         foreach ($aModulesIds as $sModuleId) {
             $oModule->load($sModuleId);
             if (!$oModuleFilesValidator->validate($oModule)) {
-                $aDeletedExt = array_merge($aDeletedExt, $oModuleFilesValidator->getMissingFiles());
+                $aDeletedExt[$sModuleId] = $oModuleFilesValidator->getMissingFiles();
             }
             $oModule->setModuleData(array('id'=>$sModuleId));
             if (!$oModuleMetadataValidator->validate($oModule)) {
-                if (!is_array($aDeletedExt['modules_without_metadata'])) {
-                    $aDeletedExt['modules_without_metadata'] = array();
-                }
-                $aDeletedExt['modules_without_metadata'][] = $sModuleId;
+                $aDeletedExt[$sModuleId] = $sModuleId.'/metadata.php';
             }
         }
 
@@ -629,6 +626,7 @@ class oxModuleList extends oxSuperCfg
                 $aModuleIds[] = $sModuleId;
             }
         }
+
         return $aModuleIds;
     }
 

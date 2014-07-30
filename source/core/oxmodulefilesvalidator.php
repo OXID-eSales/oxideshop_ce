@@ -66,6 +66,7 @@ class oxModuleFilesValidator implements oxIModuleValidator
      */
     public function validate(oxModule $oModule)
     {
+        $this->_resetMissingFiles();
         $blModuleValid = $this->_allModuleExtensionsExists($oModule);
         $blModuleValid = $this->_allModuleFilesExists($oModule) && $blModuleValid;
 
@@ -80,6 +81,14 @@ class oxModuleFilesValidator implements oxIModuleValidator
     public function getMissingFiles()
     {
         return $this->_aMissingFiles;
+    }
+
+    /**
+     * Resets missing files array.
+     */
+    protected function _resetMissingFiles()
+    {
+        $this->_aMissingFiles = array();
     }
 
     /**

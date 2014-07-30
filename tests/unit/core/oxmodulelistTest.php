@@ -811,15 +811,19 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
         $this->assertEquals($aDeletedExt, $aDeletedExtRes);
     }
 
-    public function testGetModulesIds()
+    public function testGetModuleIds()
     {
         $oModuleList = new oxModuleList();
-        $aModules = array(
+        $aModuleExtensions = array(
             'oxarticle' => 'mod/testModule&mod2/testModule2/',
             'oxorder' => 'oe/invoicepdf/models/invoicepdfoxorder'
         );
-        $aModuleIds = array('mod', 'mod2', 'invoicepdf');
-        $this->setConfigParam('aModules', $aModules);
+        $aModuleFiles = array(
+            'moduleClass' => 'module/moduleclass.php'
+        );
+        $aModuleIds = array('mod', 'mod2', 'invoicepdf', 'module');
+        $this->setConfigParam('aModules', $aModuleExtensions);
+        $this->setConfigParam('aModuleFiles', $aModuleFiles);
         $this->setConfigParam('aModulePaths', array('invoicepdf'=>'oe/invoicepdf'));
 
         $this->assertSame($aModuleIds, $oModuleList->getModuleIds());
@@ -868,5 +872,4 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
 
         $this->assertSame(array(), $oModuleList->getModuleFiles());
     }
-
 }

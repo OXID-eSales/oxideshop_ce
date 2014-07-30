@@ -631,11 +631,8 @@ class oxModuleList extends oxSuperCfg
      */
     public function getModuleIds()
     {
-        $aExtensions = $this->getModulesWithExtendedClass();
-        $aModuleFiles = $this->getModuleFiles();
-
-        $aModuleIdsFromExtensions = $this->_getModulesIdsFromExtensions($aExtensions);
-        $aModuleIdsFromFiles = $this->_getModuleIdsFromFiles($aModuleFiles);
+        $aModuleIdsFromExtensions = $this->_getModulesIdsFromExtensions();
+        $aModuleIdsFromFiles = $this->_getModuleIdsFromFiles();
 
         return array_unique(array_merge($aModuleIdsFromExtensions, $aModuleIdsFromFiles));
     }
@@ -643,15 +640,13 @@ class oxModuleList extends oxSuperCfg
     /**
      * Returns module ids which have extensions.
      *
-     * @param $aExtensions
-     *
      * @return array
      */
-    public function _getModulesIdsFromExtensions($aExtensions)
+    public function _getModulesIdsFromExtensions()
     {
         $aModuleIds = array();
         $oModule = oxNew('oxModule');
-        foreach ($aExtensions as $aExtensionsList) {
+        foreach ($this->getModulesWithExtendedClass() as $aExtensionsList) {
             foreach ($aExtensionsList as $sExtensionPath) {
                 $sModuleId = $oModule->getIdByPath($sExtensionPath);
                 $aModuleIds[] = $sModuleId;
@@ -664,17 +659,17 @@ class oxModuleList extends oxSuperCfg
     /**
      * Returns module ids which have files.
      *
-     * @param $aModuleFiles
-     *
      * @return array
      */
-    public function _getModuleIdsFromFiles($aModuleFiles)
+    public function _getModuleIdsFromFiles()
     {
         $aModuleIds = array();
         $oModule = oxNew('oxModule');
-        foreach ($aModuleFiles as $sFilePath) {
-            $sModuleId = $oModule->getIdByPath($sFilePath);
-            $aModuleIds[] = $sModuleId;
+        foreach ($this->getModuleFiles() as $aModule) {
+            foreach($aModule as $sFilePath) {
+                $sModuleId = $oModule->getIdByPath($sFilePath);
+                $aModuleIds[] = $sModuleId;
+            }
         }
 
         return $aModuleIds;

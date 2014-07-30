@@ -28,31 +28,16 @@ class oxModuleMetadataValidator implements oxIModuleValidator
     private $_oModule = null;
 
     /**
-     * @return oxModule
-     */
-    public function getModule()
-    {
-        return $this->_oModule;
-    }
-
-    /**
-     * @param oxModule $oModule
-     */
-    public function setModule(oxModule $oModule)
-    {
-        $this->_oModule = $oModule;
-    }
-
-    /**
      * Validates module metadata.
      * Return true if module metadata is valid.
      * Return false if module metadata is not valid, or if metadata file does not exist.
      *
+     * @param oxModule $oModule object to validate metadata.
+     *
      * @return bool
      */
-    public function validate()
+    public function validate(oxModule $oModule)
     {
-        $oModule = $this->getModule();
         $sMetadataPath = $oModule->getMetadataPath();
 
         return file_exists($sMetadataPath);

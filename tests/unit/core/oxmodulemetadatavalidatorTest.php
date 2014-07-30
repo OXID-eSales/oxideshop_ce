@@ -25,18 +25,6 @@ require_once realpath( "." ).'/unit/test_config.inc.php';
 
 class Unit_Core_oxModuleMetadataValidatorTest extends OxidTestCase
 {
-    public function testSetModuleGetModule()
-    {
-        $aModuleInformation = array('id' => 'notExistingModule');
-        $oModule = new oxModule();
-        $oModule->setModuleData($aModuleInformation);
-
-        $oMetadataValidator = new oxModuleMetadataValidator();
-        $oMetadataValidator->setModule($oModule);
-
-        $this->assertSame($oModule, $oMetadataValidator->getModule(), 'Module from getter should be same as set in setter.');
-    }
-
     public function testValidateModuleWithoutMetadataFile()
     {
         $sPathToMetadata = '';
@@ -49,8 +37,7 @@ class Unit_Core_oxModuleMetadataValidatorTest extends OxidTestCase
         $oModule = $oModuleStub;
 
         $oMetadataValidator = new oxModuleMetadataValidator();
-        $oMetadataValidator->setModule($oModule);
-        $this->assertFalse($oMetadataValidator->validate());
+        $this->assertFalse($oMetadataValidator->validate($oModule));
     }
 
     public function testValidateModuleWithValidMetadataFile()
@@ -69,8 +56,6 @@ class Unit_Core_oxModuleMetadataValidatorTest extends OxidTestCase
         $oModule = $oModuleStub;
 
         $oMetadataValidator = new oxModuleMetadataValidator();
-        $oMetadataValidator->setModule($oModule);
-
-        $this->assertTrue($oMetadataValidator->validate());
+        $this->assertTrue($oMetadataValidator->validate($oModule));
     }
 }

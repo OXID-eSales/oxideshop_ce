@@ -26,7 +26,7 @@ class oxModuleValidatorFactory
      * Return module validator by provided type.
      * Returned validator implements interface oxIModuleValidator.
      *
-     * @return oxIModuleValidator
+     * @return oxModuleMetadataValidator
      */
     public function getModuleMetadataValidator()
     {
@@ -38,7 +38,7 @@ class oxModuleValidatorFactory
      * Return module validator by provided type.
      * Returned validator implements interface oxIModuleValidator.
      *
-     * @return oxIModuleValidator
+     * @return oxModuleFilesValidator
      */
     public function getModuleFilesValidator()
     {

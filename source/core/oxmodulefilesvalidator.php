@@ -23,13 +23,6 @@
 class oxModuleFilesValidator implements oxIModuleValidator
 {
     /**
-     * Module which files are validating.
-     *
-     * @var oxModule
-     */
-    private $_oModule = null;
-
-    /**
      * Missing module files list.
      *
      * @var array
@@ -42,26 +35,6 @@ class oxModuleFilesValidator implements oxIModuleValidator
      * @var string
      */
     private $_sPathToModuleDirectory = null;
-
-    /**
-     * Return module which files are validating.
-     *
-     * @return oxModule
-     */
-    public function getModule()
-    {
-        return $this->_oModule;
-    }
-
-    /**
-     * Set module to validate.
-     *
-     * @param oxModule $oModule
-     */
-    public function setModule(oxModule $oModule)
-    {
-        $this->_oModule = $oModule;
-    }
 
     /**
      * @return string
@@ -87,12 +60,14 @@ class oxModuleFilesValidator implements oxIModuleValidator
      * Return true if module files exists.
      * Return false if at least one module file does not exist.
      *
+     * @param oxModule $oModule object to validate metadata.
+     *
      * @return bool
      */
-    public function validate()
+    public function validate(oxModule $oModule)
     {
-        $blModuleValid = $this->_allModuleExtensionsExists();
-        $blModuleValid = $this->_allModuleFilesExists() && $blModuleValid;
+        $blModuleValid = $this->_allModuleExtensionsExists($oModule);
+        $blModuleValid = $this->_allModuleFilesExists($oModule) && $blModuleValid;
 
         return $blModuleValid;
     }
@@ -110,11 +85,12 @@ class oxModuleFilesValidator implements oxIModuleValidator
     /**
      * Return true if all module files which extends shop class exists.
      *
+     * @param oxModule $oModule object to validate metadata.
+     *
      * @return bool
      */
-    protected function _allModuleExtensionsExists()
+    protected function _allModuleExtensionsExists($oModule)
     {
-        $oModule = $this->getModule();
         $aModuleExtendedFiles = $oModule->getExtensions();
         $blAllModuleExtensionsExists = $this->_allFilesExists($aModuleExtendedFiles, true);
         return $blAllModuleExtensionsExists;
@@ -123,11 +99,12 @@ class oxModuleFilesValidator implements oxIModuleValidator
     /**
      * Return true if all module independent PHP files exist.
      *
+     * @param oxModule $oModule object to validate metadata.
+     *
      * @return mixed
      */
-    protected function _allModuleFilesExists()
+    protected function _allModuleFilesExists($oModule)
     {
-        $oModule = $this->getModule();
         $aModuleExtendedFiles = $oModule->getFiles();
         $blAllModuleFilesExists = $this->_allFilesExists($aModuleExtendedFiles);
         return $blAllModuleFilesExists;

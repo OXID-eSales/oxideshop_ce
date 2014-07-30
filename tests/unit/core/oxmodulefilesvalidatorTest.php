@@ -129,9 +129,9 @@ class Unit_Core_oxModuleFilesValidatorTest extends OxidTestCase
         $aExtendedFileNotExist = array('class1' => 'vendor/module/path/class');
         $aFilesNotExist = array('class2' => 'vendor/module/path/class.php');
         return array(
-            array($aExtendedFileNotExist, array(), $aExtendedFileNotExist),
-            array(array(), $aFilesNotExist, $aFilesNotExist),
-            array($aExtendedFileNotExist, $aFilesNotExist, array_merge($aExtendedFileNotExist, $aFilesNotExist)),
+            array($aExtendedFileNotExist, array(), array('extensions' => $aExtendedFileNotExist)),
+            array(array(), $aFilesNotExist, array('files' => $aFilesNotExist)),
+            array($aExtendedFileNotExist, $aFilesNotExist, array( 'extensions' => $aExtendedFileNotExist, 'files' => $aFilesNotExist)),
             array(array(), array(), array()),
         );
     }

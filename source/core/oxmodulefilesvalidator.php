@@ -92,7 +92,7 @@ class oxModuleFilesValidator implements oxIModuleValidator
     protected function _allModuleExtensionsExists($oModule)
     {
         $aModuleExtendedFiles = $oModule->getExtensions();
-        $blAllModuleExtensionsExists = $this->_allFilesExists($aModuleExtendedFiles, true);
+        $blAllModuleExtensionsExists = $this->_allFilesExists($aModuleExtendedFiles, true, 'extensions');
         return $blAllModuleExtensionsExists;
     }
 
@@ -116,10 +116,11 @@ class oxModuleFilesValidator implements oxIModuleValidator
      *
      * @param array $aModuleExtendedFiles of files which must exist.
      * @param bool $blAddExtension if add .php extension to checked files.
+     * @param string $sListName if add .php extension to checked files.
      *
      * @return bool
      */
-    private function _allFilesExists($aModuleExtendedFiles, $blAddExtension = false)
+    private function _allFilesExists($aModuleExtendedFiles, $blAddExtension = false, $sListName = 'files')
     {
         $blAllModuleFilesExists = true;
         foreach ($aModuleExtendedFiles as $sModuleName => $sModulePath) {
@@ -131,7 +132,7 @@ class oxModuleFilesValidator implements oxIModuleValidator
             }
             if (!file_exists($sExtPath)) {
                 $blAllModuleFilesExists = false;
-                $this->_aMissingFiles[$sModuleName] = $sModulePath;
+                $this->_aMissingFiles[$sListName][$sModuleName] = $sModulePath;
             }
         }
         return $blAllModuleFilesExists;

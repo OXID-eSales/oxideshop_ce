@@ -777,7 +777,7 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
         );
         $aDeletedExt = array(
             'moduleWhichHasNoMetadata' => array(
-                'moduleWhichHasNoMetadata/metadata.php'
+                'files' => array('moduleWhichHasNoMetadata/metadata.php')
             ),
         );
         $this->setConfigParam("aModules", $aModules);

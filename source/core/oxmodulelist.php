@@ -306,15 +306,24 @@ class oxModuleList extends oxSuperCfg
      */
     public function getDeletedExtensions()
     {
-        $aModules = $this->getModulesWithExtendedClass();
+        $oModuleValidatorFactory = $this->getModuleValidatorFactory();
+        $oModuleFilesValidator = $oModuleValidatorFactory->getModuleFilesValidator();
+        $oModuleMetadataValidator = $oModuleValidatorFactory->getModuleMetadataValidator();
+        $aModulesIds = $this->getModuleIds();
+        $oModule = oxNew('oxModule');
         $aDeletedExt = array();
 
-        foreach ( $aModules as $sOxClass => $aModulesList ) {
-            foreach ( $aModulesList as $sModulePath ) {
-                $sExtPath = $this->getConfig()->getModulesDir() . $sModulePath.'.php';
-                if ( !file_exists( $sExtPath ) ) {
-                    $aDeletedExt[$sOxClass][] = $sModulePath;
+        foreach ($aModulesIds as $sModuleId) {
+            $oModule->load($sModuleId);
+            if (!$oModuleFilesValidator->validate($oModule)) {
+                $aDeletedExt = array_merge($aDeletedExt, $oModuleFilesValidator->getMissingFiles());
+            }
+            $oModule->setModuleData(array('id'=>$sModuleId));
+            if (!$oModuleMetadataValidator->validate($oModule)) {
+                if (!is_array($aDeletedExt['modules_without_metadata'])) {
+                    $aDeletedExt['modules_without_metadata'] = array();
                 }
+                $aDeletedExt['modules_without_metadata'][] = $sModuleId;
             }
         }
 
@@ -596,6 +605,31 @@ class oxModuleList extends oxSuperCfg
         }
 
         return $this->_aModules;
+    }
+
+    /**
+     * @return oxModuleValidatorFactory
+     */
+    public function getModuleValidatorFactory()
+    {
+        return oxNew('oxModuleValidatorFactory');
+    }
+
+    /**
+     * @return array
+     */
+    public function getModuleIds()
+    {
+        $aModules = $this->getModulesWithExtendedClass();
+        $oModule = oxNew('oxModule');
+        $aModulesList = array();
+        foreach ($aModules as $aModulesList) {
+            foreach ($aModulesList as $sModulePath) {
+                $sModuleId = $oModule->getIdByPath($sModulePath);
+                $aModulesList[] = $sModuleId;
+            }
+        }
+        return $aModulesList;
     }
 
     /**

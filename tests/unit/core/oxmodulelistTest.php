@@ -819,8 +819,10 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
             'oxorder' => 'oe/invoicepdf/models/invoicepdfoxorder'
         );
         $aModuleFiles = array(
-            'moduleClass' => 'module/moduleclass.php',
-            'moduleClass2' => 'module/moduleclass2.php'
+            'module' => array(
+                'moduleClass' => 'module/moduleclass.php',
+                'moduleClass2' => 'module/moduleclass2.php'
+            ),
         );
         $aModuleIds = array('mod', 'mod2', 'invoicepdf', 'module');
         $this->setConfigParam('aModules', $aModuleExtensions);

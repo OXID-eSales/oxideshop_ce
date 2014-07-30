@@ -84,8 +84,32 @@ class Integration_Modules_ModuleWithNoMetadataSupportTest extends BaseModuleTest
         $aGarbage = $oModuleList->getDeletedExtensions();
 
         $aExpect = array(
-            'extending_1_class' => array('extending_1_class/myClass'),
-            'with_2_files' => array('with_2_files/core/exception/myconnectionwrong.php'),
+            'extending_1_class' => array('oxClass' =>'extending_1_class/myClass'),
+            'with_2_files' => array('myconnection' => 'with_2_files/core/exception/myconnectionwrong.php'),
+        );
+
+        $this->assertSame( $aExpect, $aGarbage );
+    }
+
+    public function testModulesWithMissingFiles()
+    {
+        // modules to be activated during test preparation
+        $aInstallModules = array(
+            'with_1_extension', 'with_2_files'
+        );
+
+        $oEnvironment = new Environment();
+        $oEnvironment->prepare( $aInstallModules );
+
+        $oModuleList = new oxModuleList();
+        $aGarbage = $oModuleList->getDeletedExtensions();
+
+        $aExpect = array(
+            'with_1_extension' => array('oxarticle' =>'with_1_extension/mybaseclass'),
+            'with_2_files' => array(
+                'myexception'  => 'with_2_files/core/exception/myexception.php',
+                'myconnection' => 'with_2_files/core/exception/myconnection.php',
+            ),
         );
 
         $this->assertSame( $aExpect, $aGarbage );

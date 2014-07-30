@@ -91,7 +91,7 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
         $this->assertEquals($aModules, $oModuleList->buildModuleChains($aModulesArray));
     }
 
-    /**
+   /**
      * oxmodulelist::diffModuleArrays() test case, empty
      *
      * @return null
@@ -301,7 +301,7 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
         $this->assertEquals( $aResult, $oModuleList->getDisabledModuleInfo() );
     }
 
-    /**
+     /**
      * oxmodulelist::getDisabledModules() test case
      *
      * @return null
@@ -320,7 +320,7 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
         $this->assertEquals( $aDisabledModules, $oModuleList->getDisabledModules() );
     }
 
-    /**
+     /**
      * oxmodulelist::getDisabledModules() test case
      *
      * @return null
@@ -339,7 +339,7 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
         $this->assertEquals( $aModulePaths, $oModuleList->getModulePaths() );
     }
 
-    /**
+     /**
      * oxmodulelist::getDisabledModuleClasses() test case
      *
      * @return null
@@ -374,7 +374,7 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
         $this->assertEquals( $aDisabledModuleClasses, $oModuleList->getDisabledModuleClasses() );
     }
 
-    /**
+     /**
      * oxmodulelist::getDisabledModuleClasses() test case
      *
      * @return null
@@ -408,29 +408,38 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
         $this->assertEquals( $aDisabledModuleClasses, $oModuleList->getDisabledModuleClasses() );
     }
 
-    public function testRemoveExtensions()
+     /**
+     * oxmodulelist::_removeFromModulesArray() test case
+     *
+     * @return null
+     */
+    public function testRemoveFromModulesArray()
     {
         $aModules = array(
-            'oxarticle' => 'mod/testExtension&mod7/testExtension2/&mod3/dir3/testExtension3',
-            'oxorder'   => 'mod7/testModuleOrder&mod3/myextclass',
-            'oxaddress' => 'mod/testExtension4'
-        );
-        $aModuleIdsToRemove = array('mod', 'mod7');
-        $aModuleResult = array(
-            'oxarticle' => 'mod3/dir3/testExtension3',
-            'oxorder' => 'mod3/myextclass'
+            'oxorder'  => 'testExt1/module1',
+            'oxnews'   => 'testExt2/module2'
         );
 
-        $this->getConfig()->saveShopConfVar('aarr', 'aModules', $aModules);
-        /** @var oxModuleList $oModuleList */
-        $oModuleList = $this->getMock('oxModuleList', array('getDeletedExtensions'));
-        $oModuleList->expects($this->any())->method('getDeletedExtensions')->will($this->returnValue($aModuleIdsToRemove));
-        $oModuleList->_removeExtensions($aModuleIdsToRemove);
+        $aDeletedExt = array(
+            'oxnews'   => 'testExt2/module2'
+        );
 
-        $this->assertSame($aModuleResult, $this->getConfigParam('aModules'));
+        $aResult = array(
+            'oxorder'  => 'testExt1/module1'
+        );
+
+        $oConfig = $this->getMock( "oxConfig", array( "saveShopConfVar" ) );
+        $oConfig->expects($this->once())->method('saveShopConfVar')->with( $this->equalTo( 'aarr' ), $this->equalTo( 'aModules' ), $this->equalTo( $aResult ) );
+
+        $oModuleList = $this->getMock( 'oxmodulelist', array('getConfig', 'getModulesWithExtendedClass') );
+        $oModuleList->expects($this->once())->method('getConfig')->will( $this->returnValue($oConfig) );
+        $oModuleList->expects($this->once())->method('getModulesWithExtendedClass')->will( $this->returnValue($aModules) );
+
+
+        $oModuleList->_removeFromModulesArray( $aDeletedExt );
     }
 
-    /**
+     /**
      * oxmodulelist::_removeFromDisabledModulesArray() test case
      *
      * @return null
@@ -637,69 +646,22 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
         $oModuleList->_removeFromDatabase( $aDeletedExtIds );
     }
 
-    /**
+     /**
      * oxmodulelist::cleanup() test case
+     *
+     * @return null
      */
-    public function testCleanupMethodsCalledWithCorrectIds()
+    public function testCleanup()
     {
-        $aModuleInformation = array(
-            'moduleId' => array(
-                'extensions' => array(
-                    'ClassName' => 'moduleId/classPath',
-                )
-            ),
-            'moduleId2' => array(
-                'extensions' => array(
-                    'ClassName' => 'moduleId/classPath1',
-                    'ClassName2' => 'moduleId/classPath2',
-                ),
-                'files' => array(
-                    'metadata.php'
-                )
-            )
-        );
-
-        $aModuleIds = array('moduleId', 'moduleId2');
-
-        $oModuleList = $this->getMock( 'oxmodulelist', array('getDeletedExtensions', '_removeExtensions', '_removeFromDisabledModulesArray', '_removeFromLegacyModulesArray', '_removeFromModulesPathsArray', '_removeFromModulesTemplatesArray', '_removeFromModulesVersionsArray', '_removeFromModulesEventsArray', '_removeFromModulesFilesArray', '_removeFromDatabase') );
-        $oModuleList->expects($this->once())->method('getDeletedExtensions')->will($this->returnValue($aModuleInformation));
-        $oModuleList->expects($this->once())->method('_removeExtensions')->with($aModuleIds);
-        $oModuleList->expects($this->once())->method('_removeFromDisabledModulesArray')->with($aModuleIds);
-        $oModuleList->expects($this->once())->method('_removeFromModulesPathsArray')->with($aModuleIds);
-        $oModuleList->expects($this->once())->method('_removeFromModulesVersionsArray')->with($aModuleIds);
-        $oModuleList->expects($this->once())->method('_removeFromModulesEventsArray')->with($aModuleIds);
-        $oModuleList->expects($this->once())->method('_removeFromModulesFilesArray')->with($aModuleIds);
-        $oModuleList->expects($this->once())->method('_removeFromModulesTemplatesArray')->with($aModuleIds);
-        $oModuleList->expects($this->once())->method('_removeFromDatabase')->with($aModuleIds);
-
-        $oModuleList->cleanup();
-    }
-
-    /**
-     * oxmodulelist::cleanup() test case
-     */
-    public function testCleanupWithNoExtensions()
-    {
-        $aModuleInformation = array(
-            'moduleId' => array(
-                'files' => array(
-                    'metadata.php'
-                )
-            )
-        );
-
-        $aModuleIds = array('moduleId');
-
-        $oModuleList = $this->getMock( 'oxmodulelist', array('getDeletedExtensions', '_removeExtensions', '_removeFromDisabledModulesArray', '_removeFromLegacyModulesArray', '_removeFromModulesPathsArray', '_removeFromModulesTemplatesArray', '_removeFromModulesVersionsArray', '_removeFromModulesEventsArray', '_removeFromModulesFilesArray', '_removeFromDatabase') );
-        $oModuleList->expects($this->once())->method('getDeletedExtensions')->will($this->returnValue($aModuleInformation));
-        $oModuleList->expects($this->once())->method('_removeExtensions')->with($aModuleIds);
-        $oModuleList->expects($this->once())->method('_removeFromDisabledModulesArray')->with($aModuleIds);
-        $oModuleList->expects($this->once())->method('_removeFromModulesPathsArray')->with($aModuleIds);
-        $oModuleList->expects($this->once())->method('_removeFromModulesVersionsArray')->with($aModuleIds);
-        $oModuleList->expects($this->once())->method('_removeFromModulesEventsArray')->with($aModuleIds);
-        $oModuleList->expects($this->once())->method('_removeFromModulesFilesArray')->with($aModuleIds);
-        $oModuleList->expects($this->once())->method('_removeFromModulesTemplatesArray')->with($aModuleIds);
-        $oModuleList->expects($this->once())->method('_removeFromDatabase')->with($aModuleIds);
+        $oModuleList = $this->getMock( 'oxmodulelist', array('_removeFromModulesArray', '_removeFromDisabledModulesArray', '_removeFromLegacyModulesArray', '_removeFromModulesPathsArray', '_removeFromModulesTemplatesArray', '_removeFromModulesVersionsArray', '_removeFromModulesEventsArray', '_removeFromModulesFilesArray', '_removeFromDatabase') );
+        $oModuleList->expects($this->once())->method('_removeFromModulesArray');
+        $oModuleList->expects($this->once())->method('_removeFromDisabledModulesArray');
+        $oModuleList->expects($this->once())->method('_removeFromModulesPathsArray');
+        $oModuleList->expects($this->once())->method('_removeFromModulesVersionsArray');
+        $oModuleList->expects($this->once())->method('_removeFromModulesEventsArray');
+        $oModuleList->expects($this->once())->method('_removeFromModulesFilesArray');
+        $oModuleList->expects($this->once())->method('_removeFromModulesTemplatesArray');
+        $oModuleList->expects($this->once())->method('_removeFromDatabase');
 
         $oModuleList->cleanup();
     }
@@ -784,11 +746,11 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
     public function testGetDeletedExtensionsForModuleWithNoMetadata()
     {
         $aModules = array(
-            'oxAddress' => 'moduleWhichHasNoMetadata/anyExtension',
+            'oxAddress' => 'moduleWhichHasNoMetadata/moduleWhichHasNoMetadataAnyFile',
         );
         $aDeletedExt = array(
             'moduleWhichHasNoMetadata' => array(
-                'files' => array('moduleWhichHasNoMetadata/metadata.php')
+                'moduleWhichHasNoMetadata/metadata.php'
             ),
         );
         $this->setConfigParam("aModules", $aModules);
@@ -798,114 +760,68 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
         $this->assertEquals($aDeletedExt, $aDeletedExtRes);
     }
 
-    public function testGetDeletedExtensionsWithMissingExtensions()
+    public function testGetDeletedExtensionsWithMissingFiles()
     {
         $aModules = array(
-            'oxArticle' => 'mod1/testExtension1&mod2/testExtension2/',
-            'oxOrder' => 'mod2/testExtension2/models/test'
+            'oxarticle' => 'mod/testModule',
         );
         $aDeletedExt = array(
-            'mod1' => array(
-                'extensions' => array(
-                    'oxArticle' => array (
-                        'mod1/testExtension1',
-                    ),
-                ),
-            ),
-            'mod2' => array(
-                'extensions' => array(
-                    'oxArticle' => array (
-                        'mod2/testExtension2/',
-                    ),
-                    'oxOrder' => array(
-                        'mod2/testExtension2/models/test'
-                    )
-                ),
-            ),
+            'mod' => array(
+                'oxarticle' => 'mod/testModule'
+            )
         );
+        $oModuleFilesValidator = $this->getMock('oxModuleFilesValidator', array('validate', 'getMissingFiles'));
+        $oModuleFilesValidator->expects($this->once())->method('validate')->will($this->returnValue(false));
+        $oModuleFilesValidator->expects($this->once())->method('getMissingFiles')->will($this->returnValue($aModules));
+        $oModuleValidatorFactory = $this->getMock('oxModuleValidatorFactory', array('getModuleFilesValidator'));
+        $oModuleValidatorFactory->expects($this->once())->method('getModuleFilesValidator')->will( $this->returnValue($oModuleFilesValidator) );
         $this->setConfigParam("aModules", $aModules);
-
-        $oModuleMetadataValidator = $this->getMock('oxModuleMetadataValidator', array('validate'));
-        $oModuleMetadataValidator->expects( $this->any() )->method('validate')->will($this->returnValue(true));
-
-        $oModuleValidatorFactory = $this->getMock('oxModuleValidatorFactory', array('getModuleMetadataValidator'));
-        $oModuleValidatorFactory->expects( $this->any() )->method('getModuleMetadataValidator')->will($this->returnValue($oModuleMetadataValidator));
-
+        /** @var oxModuleList $oModuleList */
         $oModuleList = $this->getMock('oxModuleList', array('getModuleValidatorFactory'));
-        $oModuleList->expects( $this->any() )->method('getModuleValidatorFactory')->will($this->returnValue($oModuleValidatorFactory));
+        $oModuleList->expects($this->once())->method('getModuleValidatorFactory')->will($this->returnValue($oModuleValidatorFactory));
+        $aDeletedExtRes = $oModuleList->getDeletedExtensions();
 
-        $aDeletedExtensions = $oModuleList->getDeletedExtensions();
-        $this->assertEquals($aDeletedExt, $aDeletedExtensions);
+        $this->assertEquals($aDeletedExt, $aDeletedExtRes);
     }
 
-    public function testGetModuleIds()
+    public function testGetModulesIds()
     {
         $oModuleList = new oxModuleList();
-        $aModuleExtensions = array(
+        $aModules = array(
             'oxarticle' => 'mod/testModule&mod2/testModule2/',
             'oxorder' => 'oe/invoicepdf/models/invoicepdfoxorder'
         );
-        $aModuleFiles = array(
-            'module' => array(
-                'moduleClass' => 'module/moduleclass.php',
-                'moduleClass2' => 'module/moduleclass2.php'
-            ),
-        );
-        $aModuleIds = array('mod', 'mod2', 'invoicepdf', 'module');
-        $this->setConfigParam('aModules', $aModuleExtensions);
-        $this->setConfigParam('aModuleFiles', $aModuleFiles);
+        $aModuleIds = array('mod', 'mod2', 'invoicepdf');
+        $this->setConfigParam('aModules', $aModules);
         $this->setConfigParam('aModulePaths', array('invoicepdf'=>'oe/invoicepdf'));
 
         $this->assertSame($aModuleIds, $oModuleList->getModuleIds());
     }
 
-    public function testGetModuleFilesWhenFileWasSet()
+    /**
+     * oxmodulelist::getDeletedExtensionIds() test case
+     *
+     * @return null
+     */
+    public function testGetDeletedExtensionIds()
     {
-        $aModuleFiles = array(
-            'myext1'  => array( "title" => "test title 1")
+        $aModulePaths = array(
+            'mod3' => 'mod',
         );
-        $this->getConfig()->setConfigParam('aModuleFiles', $aModuleFiles);
-        $oModuleList = new oxModuleList();
+        modConfig::getInstance()->setConfigParam( "aModulePaths", $aModulePaths );
 
-        $this->assertSame($aModuleFiles, $oModuleList->getModuleFiles());
-    }
-
-    public function testGetModuleFilesWhenFileWasNotSet()
-    {
-        $oModuleList = new oxModuleList();
-
-        $this->assertSame(array(), $oModuleList->getModuleFiles());
-    }
-
-    public function testGetModuleExtensionsWithMultipleExtensions()
-    {
-        $oModuleList = new oxModuleList();
-        $aModuleExtensions = array(
-            'oxArticle' => 'mod/articleExtension1&mod/articleExtension2&mod2/articleExtension3',
-            'oxOrder' => 'mod2/oxOrder',
-            'oxBasket' => 'mod/basketExtension',
+        $aDeletedExt = array(
+            'oxarticle' => array ('mod/testModule',
+                                  'mod2/testModule2/',
+                                  'testModule3')
         );
+        $aDeletedIds = array ('mod3',
+                              'mod2',
+                              'testModule3');
 
-        $this->getConfig()->setConfigParam('aModules', $aModuleExtensions);
-        $aExtensions = array(
-            'oxArticle' => array(
-                'mod/articleExtension1',
-                'mod/articleExtension2'
-            ),
-            'oxBasket' => array(
-                'mod/basketExtension'
-            )
-        );
-
-        $this->assertSame($aExtensions, $oModuleList->getModuleExtensions('mod'));
+        $oModuleList = $this->getProxyClass( 'oxModuleList' );
+        $aDeletedExtIds = $oModuleList->getDeletedExtensionIds($aDeletedExt);
+        $this->assertEquals( $aDeletedIds, $aDeletedExtIds );
     }
 
-    public function testGetModuleExtensionsWithNoExtensions()
-    {
-        $oModuleList = new oxModuleList();
-
-        $this->getConfig()->setConfigParam('aModules', array());
-
-        $this->assertSame(array(), $oModuleList->getModuleExtensions('mod'));
-    }
 }

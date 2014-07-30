@@ -62,4 +62,33 @@ class Integration_Modules_ModuleWithNoMetadataSupportTest extends BaseModuleTest
         $this->assertSame(  array(), $aGarbage );
     }
 
+    public function testModuleMisMatchMetadata()
+    {
+        // modules to be activated during test preparation
+        $aInstallModules = array(
+            'extending_1_class', 'with_2_Files'
+        );
+
+        $oEnvironment = new Environment();
+        $oEnvironment->prepare( $aInstallModules );
+
+        $aModules = $this->getConfig()->getConfigParam('aModules');
+        $aModules['oxClass'] = 'extending_1_class/myClass';
+
+        $aModuleFiles = $this->getConfig()->getConfigParam('aModuleFiles');
+        $aModuleFiles['with_2_files']['myconnection'] = 'with_2_files/core/exception/myconnectionwrong.php';
+
+        $this->getConfig()->setConfigParam('aModuleFiles', $aModuleFiles );
+
+        $oModuleList = new oxModuleList();
+        $aGarbage = $oModuleList->getDeletedExtensions();
+
+        $aExpect = array(
+            'extending_1_class' => array('extending_1_class/myClass'),
+            'with_2_files' => array('with_2_files/core/exception/myconnectionwrong.php'),
+        );
+
+        $this->assertSame( $aExpect, $aGarbage );
+    }
 }
+ 

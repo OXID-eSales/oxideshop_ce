@@ -824,4 +824,22 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
         $this->assertEquals( $aDeletedIds, $aDeletedExtIds );
     }
 
+    public function testGetModuleFilesWhenFileWasSet()
+    {
+        $aModuleFiles = array(
+            'myext1'  => array( "title" => "test title 1")
+        );
+        $this->getConfig()->setConfigParam('aModuleFiles', $aModuleFiles);
+        $oModuleList = new oxModuleList();
+
+        $this->assertSame($aModuleFiles, $oModuleList->getModuleFiles());
+    }
+
+    public function testGetModuleFilesWhenFileWasNotSet()
+    {
+        $oModuleList = new oxModuleList();
+
+        $this->assertSame(array(), $oModuleList->getModuleFiles());
+    }
+
 }

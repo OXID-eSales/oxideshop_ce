@@ -188,7 +188,7 @@ class oxModuleList extends oxSuperCfg
      */
     public function getModuleFiles()
     {
-        return $this->getConfig()->getConfigParam('aModuleFiles');
+        return (array)$this->getConfig()->getConfigParam('aModuleFiles');
     }
 
     /**

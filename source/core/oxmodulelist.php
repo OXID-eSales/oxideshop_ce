@@ -286,7 +286,7 @@ class oxModuleList extends oxSuperCfg
         $oModuleFilesValidator = $oModuleValidatorFactory->getModuleFilesValidator();
         $oModuleMetadataValidator = $oModuleValidatorFactory->getModuleMetadataValidator();
         $aModulesIds = $this->getModuleIds();
-        $oModule = oxNew('oxModule');
+        $oModule = $this->getModule();
         $aDeletedExt = array();
 
         foreach ($aModulesIds as $sModuleId) {
@@ -576,7 +576,7 @@ class oxModuleList extends oxSuperCfg
                 $this->getModulesFromDir( $sModuleDirPath, basename( $sModuleDirPath ) );
             } else {
                 // loading module info
-                $oModule = oxNew( 'oxModule' );
+                $oModule = $this->getModule();
                 $sModuleDirName = ( !empty($sVendorDir) ) ? $sVendorDir.'/'.$sModuleDirName : $sModuleDirName;
                 if ( $oModule->loadByDir( $sModuleDirName ) ) {
                     $sModuleId = $oModule->getId();
@@ -702,7 +702,7 @@ class oxModuleList extends oxSuperCfg
     private function _getModuleIdsFromExtensions($aData)
     {
         $aModuleIds = array();
-        $oModule = oxNew('oxModule');
+        $oModule = $this->getModule();
         foreach ($aData as $aModule) {
             foreach ($aModule as $sFilePath) {
                 $sModuleId = $oModule->getIdByPath($sFilePath);
@@ -713,4 +713,13 @@ class oxModuleList extends oxSuperCfg
         return $aModuleIds;
     }
 
+    /**
+     * Returns oxModule object.
+     *
+     * @return oxModule
+     */
+    private function getModule()
+    {
+        return oxNew('oxModule');
+    }
 }

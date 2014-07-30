@@ -631,48 +631,10 @@ class oxModuleList extends oxSuperCfg
      */
     public function getModuleIds()
     {
-        $aModuleIdsFromExtensions = $this->_getModulesIdsFromExtensions();
-        $aModuleIdsFromFiles = $this->_getModuleIdsFromFiles();
+        $aModuleIdsFromExtensions = $this->_getModuleIdsFromExtensions($this->getModulesWithExtendedClass());
+        $aModuleIdsFromFiles = array_keys($this->getModuleFiles());
 
         return array_unique(array_merge($aModuleIdsFromExtensions, $aModuleIdsFromFiles));
-    }
-
-    /**
-     * Returns module ids which have extensions.
-     *
-     * @return array
-     */
-    public function _getModulesIdsFromExtensions()
-    {
-        $aModuleIds = array();
-        $oModule = oxNew('oxModule');
-        foreach ($this->getModulesWithExtendedClass() as $aExtensionsList) {
-            foreach ($aExtensionsList as $sExtensionPath) {
-                $sModuleId = $oModule->getIdByPath($sExtensionPath);
-                $aModuleIds[] = $sModuleId;
-            }
-        }
-
-        return $aModuleIds;
-    }
-
-    /**
-     * Returns module ids which have files.
-     *
-     * @return array
-     */
-    public function _getModuleIdsFromFiles()
-    {
-        $aModuleIds = array();
-        $oModule = oxNew('oxModule');
-        foreach ($this->getModuleFiles() as $aModule) {
-            foreach($aModule as $sFilePath) {
-                $sModuleId = $oModule->getIdByPath($sFilePath);
-                $aModuleIds[] = $sModuleId;
-            }
-        }
-
-        return $aModuleIds;
     }
 
     /**
@@ -739,6 +701,27 @@ class oxModuleList extends oxSuperCfg
 
         $aModulePaths[$sModuleId] = $sModulePath;
         $this->getConfig()->saveShopConfVar( 'aarr', 'aModulePaths', $aModulePaths );
+    }
+
+    /**
+     * Returns module ids which have extensions.
+     *
+     * @param $aData
+     *
+     * @return array
+     */
+    private function _getModuleIdsFromExtensions($aData)
+    {
+        $aModuleIds = array();
+        $oModule = oxNew('oxModule');
+        foreach ($aData as $aModule) {
+            foreach ($aModule as $sFilePath) {
+                $sModuleId = $oModule->getIdByPath($sFilePath);
+                $aModuleIds[] = $sModuleId;
+            }
+        }
+
+        return $aModuleIds;
     }
 
 }

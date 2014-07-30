@@ -147,9 +147,7 @@ class oxModuleFilesValidator implements oxIModuleValidator
         $blAllModuleFilesExists = true;
         foreach ($aModuleExtendedFiles as $sModuleName => $sModulePath) {
             $sPathToModuleDirectory = $this->getPathToModuleDirectory();
-            if (substr($sPathToModuleDirectory, -1) !== '/') {
-                $sPathToModuleDirectory .= '/';
-            }
+            $sPathToModuleDirectory = $this->_addDirectorySeparatorAtTheEndIfNeeded($sPathToModuleDirectory);
             $sExtPath = $sPathToModuleDirectory . $sModulePath;
             if ($blAddExtension) {
                 $sExtPath .= '.php';
@@ -160,5 +158,21 @@ class oxModuleFilesValidator implements oxIModuleValidator
             }
         }
         return $blAllModuleFilesExists;
+    }
+
+    /**
+     * Check if path has directory separator at the end. Add it if needed.
+     *
+     * @param $sPathToModuleDirectory
+     *
+     * @return string
+     */
+    private function _addDirectorySeparatorAtTheEndIfNeeded($sPathToModuleDirectory)
+    {
+        if (substr($sPathToModuleDirectory, -1) != DIRECTORY_SEPARATOR) {
+            $sPathToModuleDirectory .= DIRECTORY_SEPARATOR;
+            return $sPathToModuleDirectory;
+        }
+        return $sPathToModuleDirectory;
     }
 }

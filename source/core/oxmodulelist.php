@@ -625,18 +625,56 @@ class oxModuleList extends oxSuperCfg
     }
 
     /**
+     * Returns module ids which have extensions or files.
+     *
      * @return array
      */
     public function getModuleIds()
     {
-        $aModules = $this->getModulesWithExtendedClass();
-        $oModule = oxNew('oxModule');
+        $aExtensions = $this->getModulesWithExtendedClass();
+        $aModuleFiles = $this->getModuleFiles();
+
+        $aModuleIdsFromExtensions = $this->_getModulesIdsFromExtensions($aExtensions);
+        $aModuleIdsFromFiles = $this->_getModuleIdsFromFiles($aModuleFiles);
+
+        return array_merge($aModuleIdsFromExtensions, $aModuleIdsFromFiles);
+    }
+
+    /**
+     * Returns module ids which have extensions.
+     *
+     * @param $aExtensions
+     *
+     * @return array
+     */
+    public function _getModulesIdsFromExtensions($aExtensions)
+    {
         $aModuleIds = array();
-        foreach ($aModules as $aModulesList) {
-            foreach ($aModulesList as $sModulePath) {
-                $sModuleId = $oModule->getIdByPath($sModulePath);
+        $oModule = oxNew('oxModule');
+        foreach ($aExtensions as $aExtensionsList) {
+            foreach ($aExtensionsList as $sExtensionPath) {
+                $sModuleId = $oModule->getIdByPath($sExtensionPath);
                 $aModuleIds[] = $sModuleId;
             }
+        }
+
+        return $aModuleIds;
+    }
+
+    /**
+     * Returns module ids which have files.
+     *
+     * @param $aModuleFiles
+     *
+     * @return array
+     */
+    public function _getModuleIdsFromFiles($aModuleFiles)
+    {
+        $aModuleIds = array();
+        $oModule = oxNew('oxModule');
+        foreach ($aModuleFiles as $sFilePath) {
+            $sModuleId = $oModule->getIdByPath($sFilePath);
+            $aModuleIds[] = $sModuleId;
         }
 
         return $aModuleIds;

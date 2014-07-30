@@ -64,7 +64,11 @@ class Integration_Modules_ModuleRemoveTest extends BaseModuleTestCase
 
             // extensions that will be removed
             array(
-                'oxuser' => array( 'with_everything/myuser' ),
+                'with_everything' => array(
+                    'extensions' => array(
+                        'oxuser' => 'with_everything/myuser',
+                    )
+                )
             ),
 
             // environment asserts
@@ -135,13 +139,17 @@ class Integration_Modules_ModuleRemoveTest extends BaseModuleTestCase
 
             // extensions that will be removed
             array(
-                'oxarticle' => array( 'with_everything/myarticle' ),
-                'oxorder' => array(
-                    'with_everything/myorder1',
-                    'with_everything/myorder2',
-                    'with_everything/myorder3',
-                ),
-                'oxuser' => array( 'with_everything/myuser' ),
+                'with_everything' => array(
+                    'extensions' => array(
+                        'oxarticle' => 'with_everything/myarticle',
+                        'oxorder' => array(
+                            'with_everything/myorder1',
+                            'with_everything/myorder2',
+                            'with_everything/myorder3',
+                        ),
+                        'oxuser' => 'with_everything/myuser',
+                    )
+                )
             ),
 
             // environment asserts

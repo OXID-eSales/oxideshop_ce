@@ -243,34 +243,46 @@ class oxModuleList extends oxSuperCfg
      */
     public function cleanup()
     {
-        $aDeletedExt = $this->getDeletedExtensions();
+        $aDeletedModules = $this->getDeletedExtensions();
 
         //collecting deleted extension IDs
-        $aDeletedExtIds = $this->getDeletedExtensionIds($aDeletedExt);
+        $aDeletedModuleIds = array_keys($aDeletedModules);
+
+        $aDeletedExt = array();
+        foreach ($aDeletedModules as $aModuleInformation) {
+            foreach ($aModuleInformation['extensions'] as $sClass => $mFiles) {
+                $aDeletedExt[$sClass] = is_array($aDeletedExt[$sClass])? $aDeletedExt[$sClass] : array();
+                if (is_array($mFiles)) {
+                    $aDeletedExt[$sClass] = array_merge($aDeletedExt[$sClass], $mFiles);
+                } else {
+                    $aDeletedExt[$sClass][] = $mFiles;
+                }
+            }
+        }
 
         // removing from aModules config array
         $this->_removeFromModulesArray( $aDeletedExt );
 
         // removing from aDisabledModules array
-        $this->_removeFromDisabledModulesArray( $aDeletedExtIds );
+        $this->_removeFromDisabledModulesArray( $aDeletedModuleIds );
 
         // removing from aModulePaths array
-        $this->_removeFromModulesPathsArray( $aDeletedExtIds );
+        $this->_removeFromModulesPathsArray( $aDeletedModuleIds );
 
         // removing from aModuleEvents array
-        $this->_removeFromModulesEventsArray( $aDeletedExtIds );
+        $this->_removeFromModulesEventsArray( $aDeletedModuleIds );
 
         // removing from aModuleVersions array
-        $this->_removeFromModulesVersionsArray( $aDeletedExtIds );
+        $this->_removeFromModulesVersionsArray( $aDeletedModuleIds );
 
         // removing from aModuleFiles array
-        $this->_removeFromModulesFilesArray( $aDeletedExtIds );
+        $this->_removeFromModulesFilesArray( $aDeletedModuleIds );
 
         // removing from aModuleTemplates array
-        $this->_removeFromModulesTemplatesArray( $aDeletedExtIds );
+        $this->_removeFromModulesTemplatesArray( $aDeletedModuleIds );
 
         //removing from config tables and templates blocks table
-        $this->_removeFromDatabase( $aDeletedExtIds );
+        $this->_removeFromDatabase( $aDeletedModuleIds );
     }
 
     /**

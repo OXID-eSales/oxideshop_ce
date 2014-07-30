@@ -320,7 +320,7 @@ class oxModuleList extends oxSuperCfg
             }
             $oModule->setModuleData(array('id'=>$sModuleId));
             if (!$oModuleMetadataValidator->validate($oModule)) {
-                $aDeletedExt[$sModuleId] = $sModuleId.'/metadata.php';
+                $aDeletedExt[$sModuleId][] = $sModuleId.'/metadata.php';
             }
         }
 

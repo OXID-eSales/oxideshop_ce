@@ -28,20 +28,9 @@
                             <tr>
                                 <td valign="top" class="[{ $listclass}]">[{$sModuleId}]</td>
                                 <td valign="top" class="[{ $listclass}]">
-                                    <ul>
-                                    [{foreach from=$aModules.extensions item=mFile key=sClassName}]
-                                        [{if is_array($mFile)}]
-                                            [{foreach from=$mFile item=sFile}]
-                                                <li>[{if !is_int($sClassName)}][{$sClassName}] =&gt; [{/if}][{$sFile}]</li>
-                                            [{/foreach}]
-                                        [{else}]
-                                        <li>[{if !is_int($sClassName)}][{$sClassName}] =&gt; [{/if}][{$mFile}]</li>
-                                        [{/if}]
-                                    [{/foreach}]
-                                    [{foreach from=$aModules.files item=sFile key=sClassName}]
-                                        <li>[{if !is_int($sClassName)}][{$sClassName}] =&gt; [{/if}][{$sFile}]</li>
-                                    [{/foreach}]
-                                    </ul>
+                                [{foreach from=$aModules item=sFile key=sClassName}]
+                                    [{if !is_int($sClassName)}][{$sClassName}] =&gt; [{/if}][{$sFile}]</br>
+                                [{/foreach}]
                                 </td>
                             </tr>
                             [{if $blWhite == "2"}]

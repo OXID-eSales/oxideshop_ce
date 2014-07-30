@@ -28,7 +28,16 @@
                             <tr>
                                 <td valign="top" class="[{ $listclass}]">[{$sModuleId}]</td>
                                 <td valign="top" class="[{ $listclass}]">
-                                [{foreach from=$aModules item=sFile key=sClassName}]
+                                [{foreach from=$aModules.extensions item=mFile key=sClassName}]
+                                    [{if is_array($mFile)}]
+                                        [{foreach from=$mFile item=sFile}]
+                                            [{if !is_int($sClassName)}][{$sClassName}] =&gt; [{/if}][{$sFile}]</br>
+                                        [{/foreach}]
+                                    [{else}]
+                                        [{if !is_int($sClassName)}][{$sClassName}] =&gt; [{/if}][{$mFile}]</br>
+                                    [{/if}]
+                                [{/foreach}]
+                                [{foreach from=$aModules.files item=sFile key=sClassName}]
                                     [{if !is_int($sClassName)}][{$sClassName}] =&gt; [{/if}][{$sFile}]</br>
                                 [{/foreach}]
                                 </td>

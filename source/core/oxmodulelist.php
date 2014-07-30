@@ -637,7 +637,7 @@ class oxModuleList extends oxSuperCfg
         $aModuleIdsFromExtensions = $this->_getModulesIdsFromExtensions($aExtensions);
         $aModuleIdsFromFiles = $this->_getModuleIdsFromFiles($aModuleFiles);
 
-        return array_merge($aModuleIdsFromExtensions, $aModuleIdsFromFiles);
+        return array_unique(array_merge($aModuleIdsFromExtensions, $aModuleIdsFromFiles));
     }
 
     /**

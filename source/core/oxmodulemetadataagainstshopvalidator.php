@@ -33,86 +33,38 @@ class oxModuleMetadataAgainstShopValidator implements oxIModuleValidator
      */
     public function validate(oxModule $oModule)
     {
-
-        $blModuleExtensionsMatchShopInformation = $this->_moduleExtensionsInformationExistsInShop($oModule);
-        $blModuleInformationMatchShopInformation = $blModuleExtensionsMatchShopInformation
-            && $this->_moduleFilesInformationExistInShop($oModule);
-        $blModuleInformationMatchShopInformation = $blModuleInformationMatchShopInformation
-            && $this->_moduleHasAllExtensions($oModule);
-        $blModuleInformationMatchShopInformation = $blModuleInformationMatchShopInformation
-            && $this->_moduleHasAllFiles($oModule);
-
-        return $blModuleInformationMatchShopInformation;
+        $aModuleInformation = array_merge($oModule->getExtensions(), $oModule->getFiles());
+        $aShopInformationAboutModuleFiles = $this->_getShopInformationAboutModuleFiles();
+        return $this->_ShopInformationMatchModuleInformation($aModuleInformation, $aShopInformationAboutModuleFiles);
     }
 
     /**
-     * Check if all module extensions exists in shop information.
-     *
-     * @param oxModule $oModule
-     *
-     * @return bool
+     * @return array
      */
-    private function _moduleExtensionsInformationExistsInShop(oxModule $oModule)
+    private function  _getShopInformationAboutModuleFiles()
     {
-        $aModuleExtensions = $oModule->getExtensions();
-
         /** @var oxModuleInstaller $oModuleInstaller */
         $oModuleInstaller = oxNew('oxModuleInstaller');
-        $aShopInformationAboutModulesExtendedClasses = $oModuleInstaller->getModulesWithExtendedClass();
-
-        foreach ($aModuleExtensions as $sExtendedClassName => $sModuleExtendedClassPath) {
-            $aExtendedClassInfo = $aShopInformationAboutModulesExtendedClasses[$sExtendedClassName];
-            if (is_null($aExtendedClassInfo) || !is_array($aExtendedClassInfo)) {
-                return false;
-            }
-            if (!in_array($sModuleExtendedClassPath, $aExtendedClassInfo)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * Check if all module files exists in shop.
-     *
-     * @param oxModule $oModule
-     *
-     * @return bool
-     */
-    private function _moduleFilesInformationExistInShop(oxModule $oModule)
-    {
-        $aModuleFiles = $oModule->getFiles();
+        $aExtendedClasses = $oModuleInstaller->getModulesWithExtendedClass();
 
         /** @var oxModuleList $oModuleList */
         $oModuleList = oxNew('oxModuleList');
-        $aShopInformationAboutModulesFiles = $oModuleList->getModuleFiles();
+        $aFilesClasses = $oModuleList->getModuleFiles();
 
-        $aMissingFiles = array_diff($aModuleFiles, $aShopInformationAboutModulesFiles);
+        $aShopInformation = array_merge($aExtendedClasses, $aFilesClasses);
+
+        return $aShopInformation;
+    }
+
+    /**
+     * @param array $aModuleInformation module files.
+     * @param array $aShopInformationAboutModuleFiles list of module files known by shop.
+     *
+     * @return bool
+     */
+    private function  _ShopInformationMatchModuleInformation($aModuleInformation, $aShopInformationAboutModuleFiles)
+    {
+        $aMissingFiles = array_diff($aModuleInformation, $aShopInformationAboutModuleFiles);
         return (count($aMissingFiles)) === 0;
-    }
-
-    /**
-     * Check if all module files exists by shop information.
-     *
-     * @param oxModule $oModule
-     *
-     * @return bool
-     */
-    private function _moduleHasAllExtensions(oxModule $oModule)
-    {
-        return true;
-    }
-
-    /**
-     * Check if all PHP files exists by shop information.
-     *
-     * @param oxModule $oModule
-     *
-     * @return bool
-     */
-    private function _moduleHasAllFiles(oxModule $oModule)
-    {
-        return true;
     }
 }

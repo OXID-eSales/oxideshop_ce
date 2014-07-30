@@ -743,30 +743,59 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
             $this->assertFalse( $oModuleList->_isVendorDir( $sModulesDir."/invoicepdf" ) );
     }
 
-    /**
-     * oxmodulelist::getDeletedExtensions() test case
-     *
-     * @return null
-     */
-    public function testGetDeletedExtensions()
+    public function testGetDeletedExtensionsForModuleWithNoMetadata()
     {
         $aModules = array(
-            'oxarticle' => 'mod/testModule&mod2/testModule2/',
+            'oxAddress' => 'moduleWhichHasNoMetadata/moduleWhichHasNoMetadataAnyFile',
         );
-            $aModules = array(
-                'oxarticle' => 'mod/testModule&mod2/testModule2/',
-                'oxorder' => 'oe/invoicepdf/models/invoicepdfoxorder'
-            );
         $aDeletedExt = array(
-            'oxarticle' => array ('mod/testModule',
-                                  'mod2/testModule2/',)
+            'moduleWhichHasNoMetadata' => array(
+                'moduleWhichHasNoMetadata/metadata.php'
+            ),
         );
-
-        modConfig::getInstance()->setConfigParam( "aModules", $aModules );
-
-        $oModuleList = $this->getProxyClass( 'oxModuleList' );
+        $this->setConfigParam("aModules", $aModules);
+        $oModuleList = new oxModuleList();
         $aDeletedExtRes = $oModuleList->getDeletedExtensions();
-        $this->assertEquals( $aDeletedExt, $aDeletedExtRes );
+
+        $this->assertEquals($aDeletedExt, $aDeletedExtRes);
+    }
+
+    public function testGetDeletedExtensionsWithMissingFiles()
+    {
+        $aModules = array(
+            'oxarticle' => 'mod/testModule',
+        );
+        $aDeletedExt = array(
+            'mod' => array(
+                'oxarticle' => 'mod/testModule'
+            )
+        );
+        $oModuleFilesValidator = $this->getMock('oxModuleFilesValidator', array('validate', 'getMissingFiles'));
+        $oModuleFilesValidator->expects($this->once())->method('validate')->will($this->returnValue(false));
+        $oModuleFilesValidator->expects($this->once())->method('getMissingFiles')->will($this->returnValue($aModules));
+        $oModuleValidatorFactory = $this->getMock('oxModuleValidatorFactory', array('getModuleFilesValidator'));
+        $oModuleValidatorFactory->expects($this->once())->method('getModuleFilesValidator')->will( $this->returnValue($oModuleFilesValidator) );
+        $this->setConfigParam("aModules", $aModules);
+        /** @var oxModuleList $oModuleList */
+        $oModuleList = $this->getMock('oxModuleList', array('getModuleValidatorFactory'));
+        $oModuleList->expects($this->once())->method('getModuleValidatorFactory')->will($this->returnValue($oModuleValidatorFactory));
+        $aDeletedExtRes = $oModuleList->getDeletedExtensions();
+
+        $this->assertEquals($aDeletedExt, $aDeletedExtRes);
+    }
+
+    public function testGetModulesIds()
+    {
+        $oModuleList = new oxModuleList();
+        $aModules = array(
+            'oxarticle' => 'mod/testModule&mod2/testModule2/',
+            'oxorder' => 'oe/invoicepdf/models/invoicepdfoxorder'
+        );
+        $aModuleIds = array('mod', 'mod2', 'invoicepdf');
+        $this->setConfigParam('aModules', $aModules);
+        $this->setConfigParam('aModulePaths', array('invoicepdf'=>'oe/invoicepdf'));
+
+        $this->assertSame($aModuleIds, $oModuleList->getModuleIds());
     }
 
     /**

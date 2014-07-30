@@ -127,11 +127,11 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      * Set parameter to config object.
      *
      * @param string $sParam parameter name.
-     * @param object $oVal any parameter value, default null.
+     * @param mixed $mxVal any parameter value, default null.
      */
-    public function setConfigParam($sParam, $oVal = null)
+    public function setConfigParam($sParam, $mxVal = null)
     {
-        $this->getConfig()->setConfigParam($sParam, $oVal);
+        $this->getConfig()->setConfigParam($sParam, $mxVal);
     }
 
     /**

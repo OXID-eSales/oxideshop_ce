@@ -24,9 +24,6 @@ require_once realpath(dirname(__FILE__)) . '/basemoduleTestCase.php';
 
 class Integration_Modules_ModuleWithNoMetadataSupportTest extends BaseModuleTestCase
 {
-    /**
-     * Tests if module was activated.
-     */
     public function testModulesWithoutMetadataShouldBeAddToCleanup()
     {
         // modules to be activated during test preparation
@@ -50,9 +47,6 @@ class Integration_Modules_ModuleWithNoMetadataSupportTest extends BaseModuleTest
         $this->assertSame(  array('no_metadata'), $aGarbage['modules_without_metadata'] );
     }
 
-    /**
-     * Tests if module was activated.
-     */
     public function testModulesWithoutMetadataShouldBeAddToCleanupAllModulesWithMetadata()
     {
         // modules to be activated during test preparation

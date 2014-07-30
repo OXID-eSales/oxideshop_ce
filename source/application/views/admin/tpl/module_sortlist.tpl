@@ -17,13 +17,29 @@
                 <div class="info">
                     <p>[{ oxmultilang ident="MODULE_EXTENSIONISDELETED" }]</p>
                     <p>[{ oxmultilang ident="MODULE_DELETEEXTENSION" }]</p>
-                    <ul>
-                        [{foreach from=$aDeletedExt item=aModules key=sOxClass }]
-                            [{foreach from=$aModules item=sModule }]
-                            <li>[{$sOxClass}]=&gt;[{$sModule}]</li>
-                            [{/foreach}]
+
+                    <table cellspacing="0" cellpadding="0" border="0" width="98%">
+                        <tr>
+                            <td class="listheader first">[{oxmultilang ident="MODULE_ID"}]</td>
+                            <td class="listheader">[{oxmultilang ident="MODULE_PROBLEMATIC_FILES"}]</td>
+                        </tr>
+                        [{foreach from=$aDeletedExt item=aModules key=sModuleId}]
+                            [{assign var="listclass" value=listitem$blWhite}]
+                            <tr>
+                                <td valign="top" class="[{ $listclass}]">[{$sModuleId}]</td>
+                                <td valign="top" class="[{ $listclass}]">
+                                [{foreach from=$aModules item=sFile key=sClassName}]
+                                    [{if !is_int($sClassName)}][{$sClassName}] =&gt; [{/if}][{$sFile}]</br>
+                                [{/foreach}]
+                                </td>
+                            </tr>
+                            [{if $blWhite == "2"}]
+                                [{assign var="blWhite" value=""}]
+                            [{else}]
+                                [{assign var="blWhite" value="2"}]
+                            [{/if}]
                         [{/foreach}]
-                    </ul>
+                    </table>
                 </div>
 
                 <div>

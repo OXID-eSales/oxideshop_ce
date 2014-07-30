@@ -44,7 +44,7 @@ class Integration_Modules_ModuleWithNoMetadataSupportTest extends BaseModuleTest
         $oModuleList = new oxModuleList();
         $aGarbage = $oModuleList->getDeletedExtensions();
 
-        $this->assertSame(  array('no_metadata'), $aGarbage['modules_without_metadata'] );
+        $this->assertSame(  array('no_metadata'=>array('no_metadata/metadata.php')), $aGarbage );
     }
 
     public function testModulesWithoutMetadataShouldBeAddToCleanupAllModulesWithMetadata()
@@ -61,7 +61,7 @@ class Integration_Modules_ModuleWithNoMetadataSupportTest extends BaseModuleTest
         $oModuleList = new oxModuleList();
         $aGarbage = $oModuleList->getDeletedExtensions();
 
-        $this->assertSame(  array(), $aGarbage['modules_without_metadata'] );
+        $this->assertSame(  array(), $aGarbage );
     }
 
 }

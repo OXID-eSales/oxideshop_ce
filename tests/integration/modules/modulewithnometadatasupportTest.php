@@ -24,11 +24,15 @@ require_once realpath(dirname(__FILE__)) . '/basemoduleTestCase.php';
 
 class Integration_Modules_ModuleWithNoMetadataSupportTest extends BaseModuleTestCase
 {
+    /**
+     * Tests if module was activated.
+     */
     public function testModulesWithoutMetadataShouldBeAddToCleanup()
     {
         // modules to be activated during test preparation
         $aInstallModules = array(
-            'extending_1_class'
+            'extending_1_class', 'with_2_templates', 'with_2_files', 'with_2_settings',
+            'extending_3_blocks', 'with_everything', 'with_events'
         );
 
         $oEnvironment = new Environment();
@@ -43,14 +47,18 @@ class Integration_Modules_ModuleWithNoMetadataSupportTest extends BaseModuleTest
         $oModuleList = new oxModuleList();
         $aGarbage = $oModuleList->getDeletedExtensions();
 
-        $this->assertSame(  array('no_metadata'=>array('files' => array('no_metadata/metadata.php'))), $aGarbage );
+        $this->assertSame(  array('no_metadata'), $aGarbage['modules_without_metadata'] );
     }
 
+    /**
+     * Tests if module was activated.
+     */
     public function testModulesWithoutMetadataShouldBeAddToCleanupAllModulesWithMetadata()
     {
         // modules to be activated during test preparation
         $aInstallModules = array(
-            'extending_1_class'
+            'extending_1_class', 'with_2_templates', 'with_2_files', 'with_2_settings',
+            'extending_3_blocks', 'with_everything', 'with_events'
         );
 
         $oEnvironment = new Environment();
@@ -59,65 +67,8 @@ class Integration_Modules_ModuleWithNoMetadataSupportTest extends BaseModuleTest
         $oModuleList = new oxModuleList();
         $aGarbage = $oModuleList->getDeletedExtensions();
 
-        $this->assertSame(  array(), $aGarbage );
+        $this->assertSame(  array(), $aGarbage['modules_without_metadata'] );
     }
 
-    public function testModuleMissMatchMetadata()
-    {
-        $this->markTestSkipped('Currently we are not checking if metadata matches configs.');
-        // modules to be activated during test preparation
-        $aInstallModules = array(
-            'extending_1_class', 'with_2_files'
-        );
-
-        $oEnvironment = new Environment();
-        $oEnvironment->prepare( $aInstallModules );
-
-        $aModules = $this->getConfig()->getConfigParam('aModules');
-        $aModules['oxClass'] = 'extending_1_class/myClass';
-
-        $aModuleFiles = $this->getConfig()->getConfigParam('aModuleFiles');
-        $aModuleFiles['with_2_files']['myconnection'] = 'with_2_files/core/exception/myconnectionwrong.php';
-
-        $this->getConfig()->setConfigParam('aModuleFiles', $aModuleFiles );
-
-        $oModuleList = new oxModuleList();
-        $aGarbage = $oModuleList->getDeletedExtensions();
-
-        $aExpect = array(
-            'extending_1_class' => array('oxClass' =>'extending_1_class/myClass'),
-            'with_2_files' => array('myconnection' => 'with_2_files/core/exception/myconnectionwrong.php'),
-        );
-
-        $this->assertSame( $aExpect, $aGarbage );
-    }
-
-    public function testModulesWithMissingFiles()
-    {
-        $this->markTestSkipped('Currently we are not checking module files.');
-        // modules to be activated during test preparation
-        $aInstallModules = array(
-            'with_1_extension', 'with_2_files'
-        );
-
-        $oEnvironment = new Environment();
-        $oEnvironment->prepare( $aInstallModules );
-
-        $oModuleList = new oxModuleList();
-        $aGarbage = $oModuleList->getDeletedExtensions();
-
-        $aExpect = array(
-            'with_1_extension' => array(
-                'extensions' => array('oxarticle' =>'with_1_extension/mybaseclass')),
-            'with_2_files' => array(
-                'files' => array(
-                    'myexception'  => 'with_2_files/core/exception/myexception.php',
-                    'myconnection' => 'with_2_files/core/exception/myconnection.php',
-                )
-            ),
-        );
-
-        $this->assertSame( $aExpect, $aGarbage );
-    }
 }
  

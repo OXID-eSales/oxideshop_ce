@@ -522,7 +522,8 @@ class oxDiagnostics
      */
     protected function _getMySqlServerInfo()
     {
-        return mysql_get_server_info();
+        $aResult = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getRow("SHOW VARIABLES LIKE 'version'");
+        return $aResult['Value'];
     }
 
 

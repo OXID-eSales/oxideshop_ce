@@ -28,47 +28,19 @@ class Unit_Core_oxModuleValidatorFactoryTest extends OxidTestCase
     public function testModuleValidatorReturnInterface()
     {
         $oModuleValidatorFactory = new oxModuleValidatorFactory();
-        $this->assertInstanceOf('oxIModuleValidator', $oModuleValidatorFactory->getModuleValidator('metadata'));
+        $this->assertInstanceOf('oxIModuleValidator', $oModuleValidatorFactory->getModuleMetadataValidator());
+        $this->assertInstanceOf('oxIModuleValidator', $oModuleValidatorFactory->getModuleFilesValidator());
     }
 
-    public function providerModuleValidatorReturnCorrectInterface()
-    {
-        return array(
-            array('metadata', 'oxModuleMetadataValidator'),
-            array('files', 'oxModuleFilesValidator'),
-        );
-    }
-
-    /**
-     * @param $sRequestedType
-     * @param $sExpectedReturnType
-     *
-     * @dataProvider providerModuleValidatorReturnCorrectInterface
-     */
-    public function testModuleValidatorReturnCorrectInterface($sRequestedType, $sExpectedReturnType)
+    public function testModuleValidatorReturnCorrectInterfaceForMetadata()
     {
         $oModuleValidatorFactory = new oxModuleValidatorFactory();
-        $this->assertInstanceOf($sExpectedReturnType, $oModuleValidatorFactory->getModuleValidator($sRequestedType));
+        $this->assertInstanceOf('oxModuleMetadataValidator', $oModuleValidatorFactory->getModuleMetadataValidator());
     }
 
-    public function providerModuleValidatorThrowsExceptionWithUnknownType()
+    public function testModuleValidatorReturnCorrectInterfaceForFiles()
     {
-        return array(
-            array(''),
-            array('someUnknownType'),
-        );
-    }
-
-    /**
-     * @param $sRequestedType
-     *
-     * @dataProvider providerModuleValidatorThrowsExceptionWithUnknownType
-     */
-    public function testModuleValidatorThrowsExceptionWithUnknownType($sRequestedType)
-    {
-        $this->setExpectedException('oxSystemComponentException', 'ERROR_MESSAGE_SYSTEMCOMPONENT_FUNCTIONNOTFOUND');
-
-        $oModuleValidatorFactory = new oxModuleValidatorFactory($sRequestedType);
-        $oModuleValidatorFactory->getModuleValidator($sRequestedType);
+        $oModuleValidatorFactory = new oxModuleValidatorFactory();
+        $this->assertInstanceOf('oxModuleFilesValidator', $oModuleValidatorFactory->getModuleFilesValidator());
     }
 }

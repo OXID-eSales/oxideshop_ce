@@ -23,37 +23,26 @@
 class oxModuleValidatorFactory 
 {
     /**
-     * List of available validators.
+     * Return module validator by provided type.
+     * Returned validator implements interface oxIModuleValidator.
      *
-     * @var array
+     * @return oxIModuleValidator
      */
-    private $_aAvailableValidators = array(
-        'files' => 'oxModuleFilesValidator',
-        'metadata' => 'oxModuleMetadataValidator',
-    );
+    public function getModuleMetadataValidator()
+    {
+        $oModuleValidator = oxNew('oxModuleMetadataValidator');
+        return $oModuleValidator;
+    }
 
     /**
      * Return module validator by provided type.
      * Returned validator implements interface oxIModuleValidator.
      *
-     * @param string $sValidatorType
-     *
-     * @throws oxSystemComponentException
-     *
      * @return oxIModuleValidator
      */
-    public function getModuleValidator($sValidatorType)
+    public function getModuleFilesValidator()
     {
-        if (isset($this->_aAvailableValidators[$sValidatorType])) {
-            /** @var oxIModuleValidator $oModuleValidator */
-            $oModuleValidator = oxNew($this->_aAvailableValidators[$sValidatorType]);
-        } else {
-            /** @var oxSystemComponentException $oEx */
-            $oEx = oxNew( 'oxSystemComponentException' );
-            $oEx->setMessage( 'ERROR_MESSAGE_SYSTEMCOMPONENT_FUNCTIONNOTFOUND' );
-            $oEx->setComponent( $sValidatorType );
-            throw $oEx;
-        }
+        $oModuleValidator = oxNew('oxModuleFilesValidator');
         return $oModuleValidator;
     }
 }

@@ -160,4 +160,29 @@ class Unit_Core_oxModuleFilesValidatorTest extends OxidTestCase
         $oModuleFilesValidator->validate($oModule);
         $this->assertSame($aMissingFiles, $oModuleFilesValidator->getMissingFiles());
     }
+
+    public function testResettingOfMissingFilesAfterValidation()
+    {
+        /** @var oxModule $oModuleStub1 */
+        $oModuleStub1 = $this->getMock('oxModule', array('getExtensions'));
+        $oModuleStub1->expects($this->any())
+            ->method('getExtensions')
+            ->will($this->returnValue(array('class1' => 'vendor/module/path/class1')));
+
+        /** @var oxModule $oModuleStub2 */
+        $oModuleStub2 = $this->getMock('oxModule', array('getExtensions'));
+        $oModuleStub2->expects($this->any())
+            ->method('getExtensions')
+            ->will($this->returnValue(array('class2' => 'vendor/module/path/class2')));
+
+        $oModuleFilesValidator = new oxModuleFilesValidator();
+        $oModuleFilesValidator->validate($oModuleStub1);
+        $oModuleFilesValidator->validate($oModuleStub2);
+
+        $this->assertSame(
+            array('extensions' =>
+                array('class2' => 'vendor/module/path/class2')
+            ), $oModuleFilesValidator->getMissingFiles()
+        );
+    }
 }

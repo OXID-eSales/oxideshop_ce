@@ -87,8 +87,8 @@ class Unit_Core_oxCompanyVatInTest extends OxidTestCase
             array('abcd', 'cd'),
             array('LT 12345', '12345'),
             array('LT-12 345', '12345'),
-            array('LT.123.45', '12345'),
-            array('LT,123,45', '12345'),
+            array('LT.123.45', '.123.45'),
+            array('LT,123,45', ',123,45'),
         );
     }
 

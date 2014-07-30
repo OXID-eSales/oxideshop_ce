@@ -72,7 +72,7 @@ class oxCompanyVatIn
      */
     protected function _cleanUp( $sValue )
     {
-        return (string) oxStr::getStr()->preg_replace( "/\s|-|,|\.|/", '', $sValue);
+        return (string) oxStr::getStr()->preg_replace( "/\s|-/", '', $sValue);
     }
 
 

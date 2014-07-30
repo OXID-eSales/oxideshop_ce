@@ -371,8 +371,17 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      */
     public function markTestSkippedUntil($sDate, $sMessage = '')
     {
-        $oDate = DateTime::createFromFormat('Y-m-d', $sDate);
-        if (time() < $oDate->getTimestamp()) {
+        if (method_exists('DateTime', 'createFromFormat')) {
+            $oDate = DateTime::createFromFormat('Y-m-d', $sDate);
+        } else {
+            $aDate = strptime($sDate, '%Y-%m-%d');
+            $ymd = sprintf(
+                '%04d-%02d-%02d 05:00:00', $aDate['tm_year'] + 1900, $aDate['tm_mon']+1, $aDate['tm_mday']
+            );
+            $oDate = new DateTime($ymd);
+        }
+
+        if (time() < ((int) $oDate->format('U'))) {
             $this->markTestSkipped($sMessage);
         }
     }

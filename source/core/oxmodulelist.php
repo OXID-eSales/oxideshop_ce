@@ -622,14 +622,14 @@ class oxModuleList extends oxSuperCfg
     {
         $aModules = $this->getModulesWithExtendedClass();
         $oModule = oxNew('oxModule');
-        $aModulesList = array();
+        $aModuleIds = array();
         foreach ($aModules as $aModulesList) {
             foreach ($aModulesList as $sModulePath) {
                 $sModuleId = $oModule->getIdByPath($sModulePath);
-                $aModulesList[] = $sModuleId;
+                $aModuleIds[] = $sModuleId;
             }
         }
-        return $aModulesList;
+        return $aModuleIds;
     }
 
     /**

@@ -248,17 +248,7 @@ class oxModuleList extends oxSuperCfg
         //collecting deleted extension IDs
         $aDeletedModuleIds = array_keys($aDeletedModules);
 
-        $aDeletedExt = array();
-        foreach ($aDeletedModules as $aModuleInformation) {
-            foreach ($aModuleInformation['extensions'] as $sClass => $mFiles) {
-                $aDeletedExt[$sClass] = is_array($aDeletedExt[$sClass])? $aDeletedExt[$sClass] : array();
-                if (is_array($mFiles)) {
-                    $aDeletedExt[$sClass] = array_merge($aDeletedExt[$sClass], $mFiles);
-                } else {
-                    $aDeletedExt[$sClass][] = $mFiles;
-                }
-            }
-        }
+        $aDeletedExt = $this->_formExtensionsArray($aDeletedModules);
 
         // removing from aModules config array
         $this->_removeFromModulesArray( $aDeletedExt );
@@ -283,32 +273,6 @@ class oxModuleList extends oxSuperCfg
 
         //removing from config tables and templates blocks table
         $this->_removeFromDatabase( $aDeletedModuleIds );
-    }
-
-    /**
-     * Returns deleted extension Ids
-     *
-     * @param array $aDeletedExt deleted extensions
-     *
-     * @return array
-     */
-    public function getDeletedExtensionIds($aDeletedExt)
-    {
-        $aDeletedExtIds = array();
-        if ( !empty($aDeletedExt) ) {
-            $oModule = oxNew('oxModule');
-            foreach ( $aDeletedExt as $aDeletedModules ) {
-                foreach ( $aDeletedModules as $sModulePath ) {
-                    $aDeletedExtIds[] = $oModule->getIdByPath($sModulePath);
-                }
-            }
-        }
-
-        if ( !empty( $aDeletedExtIds ) ) {
-            $aDeletedExtIds = array_unique( $aDeletedExtIds );
-        }
-
-        return $aDeletedExtIds;
     }
 
     /**
@@ -393,6 +357,31 @@ class oxModuleList extends oxSuperCfg
             }
         }
         return $aModules;
+    }
+
+    /**
+     * Returns deleted extension Ids
+     *
+     * @param array $aDeletedModules deleted extensions
+     *
+     * @return array
+     */
+    private function _formExtensionsArray($aDeletedModules)
+    {
+        $aDeletedExt = array();
+        foreach ($aDeletedModules as $aModuleFiles) {
+            $aModuleFiles['extensions'] = is_array($aModuleFiles['extensions'])? $aModuleFiles['extensions'] : array();
+            foreach ($aModuleFiles['extensions'] as $sClass => $mFiles) {
+                $aDeletedExt[$sClass] = is_array($aDeletedExt[$sClass])? $aDeletedExt[$sClass] : array();
+                if (is_array($mFiles)) {
+                    $aDeletedExt[$sClass] = array_merge($aDeletedExt[$sClass], $mFiles);
+                } else {
+                    $aDeletedExt[$sClass][] = $mFiles;
+                }
+            }
+        }
+
+        return $aDeletedExt;
     }
 
     /**

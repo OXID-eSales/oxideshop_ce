@@ -154,6 +154,7 @@ class Unit_Core_oxModuleFilesValidatorTest extends OxidTestCase
     /**
      * @param $aExtended
      * @param $aFiles
+     * @param $aMissingFiles
      *
      * @dataProvider providerGetMissingFilesAfterValidate
      */

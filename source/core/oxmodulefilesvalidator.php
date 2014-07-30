@@ -75,11 +75,11 @@ class oxModuleFilesValidator implements oxIModuleValidator
     }
 
     /**
-     * @param string $sModuleDirectory
+     * @param string $sPathToModuleDirectory
      */
-    public function setPathToModuleDirectory($sModuleDirectory)
+    public function setPathToModuleDirectory($sPathToModuleDirectory)
     {
-        $this->_sPathToModuleDirectory = $sModuleDirectory;
+        $this->_sPathToModuleDirectory = $sPathToModuleDirectory;
     }
 
     /**

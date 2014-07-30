@@ -25,18 +25,6 @@ require_once realpath( "." ).'/unit/test_config.inc.php';
 
 class Unit_Core_oxModuleFilesValidatorTest extends OxidTestCase
 {
-    public function testSetModuleGetModule()
-    {
-        $aModuleInformation = array('id' => 'notExistingModule');
-        $oModule = new oxModule();
-        $oModule->setModuleData($aModuleInformation);
-
-        $oMetadataValidator = new oxModuleMetadataValidator();
-        $oMetadataValidator->setModule($oModule);
-
-        $this->assertSame($oModule, $oMetadataValidator->getModule(), 'Module from getter should be same as set in setter.');
-    }
-
     /**
      * Module without any file is valid.
      */
@@ -54,8 +42,7 @@ class Unit_Core_oxModuleFilesValidatorTest extends OxidTestCase
         $oModule = $oModuleStub;
 
         $oModuleFilesValidator = new oxModuleFilesValidator();
-        $oModuleFilesValidator->setModule($oModule);
-        $this->assertTrue($oModuleFilesValidator->validate());
+        $this->assertTrue($oModuleFilesValidator->validate($oModule));
     }
 
     public function providerValidateWhenFilesMissing()
@@ -90,8 +77,7 @@ class Unit_Core_oxModuleFilesValidatorTest extends OxidTestCase
         $oModule = $oModuleStub;
 
         $oModuleFilesValidator = new oxModuleFilesValidator();
-        $oModuleFilesValidator->setModule($oModule);
-        $this->assertFalse($oModuleFilesValidator->validate());
+        $this->assertFalse($oModuleFilesValidator->validate($oModule));
     }
 
     public function providerValidateWhenFilesExists()
@@ -134,9 +120,8 @@ class Unit_Core_oxModuleFilesValidatorTest extends OxidTestCase
         $oModule = $oModuleStub;
 
         $oModuleFilesValidator = new oxModuleFilesValidator();
-        $oModuleFilesValidator->setModule($oModule);
         $oModuleFilesValidator->setPathToModuleDirectory($sPathToModules);
-        $this->assertTrue($oModuleFilesValidator->validate());
+        $this->assertTrue($oModuleFilesValidator->validate($oModule));
     }
 
     public function providerGetMissingFilesAfterValidate()
@@ -172,8 +157,7 @@ class Unit_Core_oxModuleFilesValidatorTest extends OxidTestCase
         $oModule = $oModuleStub;
 
         $oModuleFilesValidator = new oxModuleFilesValidator();
-        $oModuleFilesValidator->setModule($oModule);
-        $oModuleFilesValidator->validate();
+        $oModuleFilesValidator->validate($oModule);
         $this->assertSame($aMissingFiles, $oModuleFilesValidator->getMissingFiles());
     }
 }

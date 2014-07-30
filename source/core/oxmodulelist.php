@@ -331,7 +331,7 @@ class oxModuleList extends oxSuperCfg
                 $aDeletedExt[$sModuleId]['files'] = array($sModuleId.'/metadata.php');
             }
             $oModule->load($sModuleId);
-            if (!$oModuleFilesValidator->validate($oModule)) {
+            if ($oModule->isActive() && !$oModuleFilesValidator->validate($oModule)) {
                 $aDeletedExt[$sModuleId] = $oModuleFilesValidator->getMissingFiles();
             }
         }

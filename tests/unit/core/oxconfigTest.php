@@ -1888,14 +1888,12 @@ class Unit_Core_oxconfigTest extends OxidTestCase
     public function testGetRevision_FileExists()
     {
         $oConfig = new oxConfig();
-        $sDir = oxRegistry::getConfig()->getConfigParam('sShopDir').'/out/downloads/';
         $sFileName = 'pkg.rev';
         $iRevisionNum = 12345;
-        $sPkgFile = $sDir . $sFileName;
-        $oConfig->setConfigParam( 'sShopDir', $sDir );
-        $this->createFile( $sDir, $sFileName, $iRevisionNum );
-        $this->assertEquals( $iRevisionNum, $oConfig->getRevision() );
-        unlink( $sPkgFile );
+        $sFilePath = $this->createFile($sFileName, $iRevisionNum);
+        $oConfig->setConfigParam('sShopDir', dirname($sFilePath));
+        $this->assertEquals($iRevisionNum, $oConfig->getRevision());
+        unlink($sFilePath);
     }
 
     public function testGetRevision_NoFile()
@@ -1909,14 +1907,12 @@ class Unit_Core_oxconfigTest extends OxidTestCase
     public function testGetPackageInfo_FileExists()
     {
         $oConfig = new oxConfig();
-        $sDir = oxRegistry::getConfig()->getConfigParam('sShopDir').'/out/downloads/';
         $sFileName = 'pkg.info';
         $sFileContent = 'Inserting test string';
-        $oConfig->setConfigParam( 'sShopDir', $sDir);
-        $sPkgFile = $sDir . $sFileName;
-        $this->createFile( $sDir, $sFileName, $sFileContent );
-        $this->assertEquals( $sFileContent, $oConfig->getPackageInfo() );
-        unlink( $sPkgFile );
+        $sFilePath = $this->createFile($sFileName, $sFileContent);
+        $oConfig->setConfigParam('sShopDir', dirname($sFilePath));
+        $this->assertEquals($sFileContent, $oConfig->getPackageInfo());
+        unlink($sFilePath);
     }
 
     public function testGetPackageInfo_NoFile()
@@ -1925,14 +1921,6 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $sDir = oxRegistry::getConfig()->getConfigParam('sShopDir').'/out/downloads/';
         $oConfig->setConfigParam( 'sShopDir', $sDir);
         $this->assertFalse( $oConfig->getPackageInfo() );
-    }
-
-    protected function createFile($sDir, $sFileName, $sContent)
-    {
-        $sFile = $sDir . $sFileName;
-        $handle = fopen( $sFile, "w" );
-        chmod( $sFile, 0777 );
-        fwrite( $handle, $sContent );
     }
 
     public function testGetEditionNotEmpty()

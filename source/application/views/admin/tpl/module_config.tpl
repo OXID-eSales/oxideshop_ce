@@ -83,8 +83,10 @@ function _groupExp(el) {
                             [{elseif $var_type == 'password'}]
                                 [{block name="admin_module_config_var_type_password"}]
                                 <span>
-                                    <input type=password class="password_input" style="width: 250px;" name="confpassword[[{$module_var}]]" value="[{$confpassword.$module_var}]" disabled="true" [{ $readonly }]>
+                                    <input type=password class="password_input" style="width: 250px;" name="confpassword[[{$module_var}]]" value="" [{if $confpassword.$module_var}] disabled="true" [{/if}] [{ $readonly }]>
+                                    [{if $confpassword.$module_var}]
                                     <input type=checkbox class="password_change_enable" name="confbools[[{$module_var}]]" value=true onclick="changePasswordEditability(this)"  [{if ($confbools.$module_var)}]checked[{/if}] [{ $readonly }]>
+                                    [{/if}]
                                 </span>
                                 [{/block}]
                             [{/if}]

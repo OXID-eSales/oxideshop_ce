@@ -166,20 +166,20 @@ class Module_Config extends Shop_Config
      */
     public function saveConfVars()
     {
-        $myConfig = $this->getConfig();
+        $oConfig = $this->getConfig();
 
 
         $sModuleId  = $this->_sModuleId = $this->getEditObjectId();
-        $sShopId = $myConfig->getShopId();
+        $sShopId = $oConfig->getShopId();
 
         $sModuleId = $this->_getModuleForConfigVars();
 
         foreach ($this->_aConfParams as $sType => $sParam) {
-            $aConfVars = oxRegistry::getConfig()->getRequestParameter($sParam);
+            $aConfVars = $oConfig->getRequestParameter($sParam);
             if (is_array($aConfVars)) {
                 foreach ( $aConfVars as $sName => $sValue ) {
                     $sDbType = $this->_getDbName($sType);
-                    $myConfig->saveShopConfVar(
+                    $oConfig->saveShopConfVar(
                             $sType,
                             $sName,
                             $this->_serializeConfVar($sDbType, $sName, $sValue),
@@ -201,7 +201,6 @@ class Module_Config extends Shop_Config
         $sDbType = $sType;
         if ($sType === 'password') {
             $sDbType = 'str';
-            return $sDbType;
         }
         return $sDbType;
     }

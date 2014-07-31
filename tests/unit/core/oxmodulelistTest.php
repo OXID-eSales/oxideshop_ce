@@ -411,13 +411,13 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
     public function testRemoveExtensions()
     {
         $aModules = array(
-            'oxarticle' => 'mod/testExtension&mod2/testExtension2/&mod3/dir3/testExtension3',
+            'oxarticle' => 'mod/testExtension&mod7/testExtension2/&mod3/dir3/testExtension3',
             'oxorder'   => 'mod7/testModuleOrder&mod3/myextclass',
             'oxaddress' => 'mod/testExtension4'
         );
         $aModuleIdsToRemove = array('mod', 'mod7');
         $aModuleResult = array(
-            'oxarticle' => 'mod2/testExtension2/&mod3/dir3/testExtension3',
+            'oxarticle' => 'mod3/dir3/testExtension3',
             'oxorder' => 'mod3/myextclass'
         );
 

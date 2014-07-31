@@ -381,7 +381,7 @@ class oxModuleList extends oxSuperCfg
         $aModuleExtensions = $this->getModulesWithExtendedClass();
         $aExtensionsToDelete = array();
         foreach ($aModuleIds as $sModuleId) {
-            $aExtensionsToDelete = array_merge($aExtensionsToDelete, $this->getModuleExtensions($sModuleId));
+            $aExtensionsToDelete = array_merge_recursive($aExtensionsToDelete, $this->getModuleExtensions($sModuleId));
         }
 
         $aUpdatedExtensions = $this->diffModuleArrays($aModuleExtensions, $aExtensionsToDelete);

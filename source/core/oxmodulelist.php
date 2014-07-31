@@ -287,7 +287,7 @@ class oxModuleList extends oxSuperCfg
      */
     public function getDeletedExtensions()
     {
-        $aDeletedExt = $this->_getInvalidExtenions();
+        $aDeletedExt = $this->_getInvalidExtensions();
         $oModuleValidatorFactory = $this->getModuleValidatorFactory();
         $oModuleMetadataValidator = $oModuleValidatorFactory->getModuleMetadataValidator();
         $aModulesIds = $this->getModuleIds();
@@ -730,7 +730,7 @@ class oxModuleList extends oxSuperCfg
     /**
      * @return array
      */
-    private function _getInvalidExtenions()
+    private function _getInvalidExtensions()
     {
         $aModules = $this->getModulesWithExtendedClass();
         $aDeletedExt = array();

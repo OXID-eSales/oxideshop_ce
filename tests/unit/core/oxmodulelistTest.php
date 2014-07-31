@@ -784,11 +784,11 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
     public function testGetDeletedExtensionsForModuleWithNoMetadata()
     {
         $aModules = array(
-            'oxAddress' => 'moduleWhichHasNoMetadata/moduleWhichHasNoMetadataAnyFile',
+            'oxAddress' => 'moduleWhichHasNoMetadata/anyExtension',
         );
         $aDeletedExt = array(
             'oxAddress' => array(
-                'moduleWhichHasNoMetadata/moduleWhichHasNoMetadataAnyFile',
+                'moduleWhichHasNoMetadata/anyExtension',
             ),
             'moduleWhichHasNoMetadata' => array(
                 'files' => array('moduleWhichHasNoMetadata/metadata.php')

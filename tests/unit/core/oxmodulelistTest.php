@@ -960,4 +960,13 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
 
         $this->assertSame($aExtensions, $oModuleList->getModuleExtensions('mod'));
     }
+
+    public function testGetModuleExtensionsWithNoExtensions()
+    {
+        $oModuleList = new oxModuleList();
+
+        $this->getConfig()->setConfigParam('aModules', array());
+
+        $this->assertSame(array(), $oModuleList->getModuleExtensions('mod'));
+    }
 }

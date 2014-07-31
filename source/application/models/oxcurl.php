@@ -126,16 +126,8 @@ class oxCurl
     /**
      * Set query like "param1=value1&param2=values2.."
      */
-    public function setQuery( $sQuery = null )
+    public function setQuery( $sQuery  )
     {
-        if ( is_null($sQuery) ) {
-            $sQuery = "";
-            if ( $aParams = $this->getParameters() ) {
-                $aParams = $this->_prepareQueryParameters( $aParams );
-                $sQuery = http_build_query( $aParams, "", "&" );
-            }
-        }
-
         $this->_sQuery = $sQuery;
     }
 
@@ -147,7 +139,12 @@ class oxCurl
     public function getQuery()
     {
         if ( is_null( $this->_sQuery ) ) {
-            $this->setQuery();
+            $sQuery = "";
+            if ( $aParams = $this->getParameters() ) {
+                $aParams = $this->_prepareQueryParameters( $aParams );
+                $sQuery = http_build_query( $aParams, "", "&" );
+            }
+            $this->setQuery($sQuery);
         }
 
         return $this->_sQuery;
@@ -160,6 +157,7 @@ class oxCurl
      */
     public function setParameters( $aParameters )
     {
+        $this->setQuery( null );
         $this->_aParameters = $aParameters;
     }
 

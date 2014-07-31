@@ -34,8 +34,8 @@ class oxModuleMetadataAgainstShopValidator implements oxIModuleValidator
     public function validate(oxModule $oModule)
     {
 
-        $blModuleExtensionsMatchShopInformation = $this->_moduleExtensionsMatchShopInformation($oModule);
-        $blModuleFilesMatchShopInformation = $this->_moduleFilesMatchShopInformation($oModule);
+        $blModuleExtensionsMatchShopInformation = $this->_moduleExtensionsInformationExistsInShop($oModule);
+        $blModuleFilesMatchShopInformation = $this->_moduleFilesInformationExistInShop($oModule);
 
         return $blModuleExtensionsMatchShopInformation && $blModuleFilesMatchShopInformation;
     }
@@ -47,7 +47,7 @@ class oxModuleMetadataAgainstShopValidator implements oxIModuleValidator
      *
      * @return bool
      */
-    private function _moduleExtensionsMatchShopInformation(oxModule $oModule)
+    private function _moduleExtensionsInformationExistsInShop(oxModule $oModule)
     {
         $aModuleExtensions = $oModule->getExtensions();
 
@@ -75,7 +75,7 @@ class oxModuleMetadataAgainstShopValidator implements oxIModuleValidator
      *
      * @return bool
      */
-    private function _moduleFilesMatchShopInformation(oxModule $oModule)
+    private function _moduleFilesInformationExistInShop(oxModule $oModule)
     {
         $aModuleFiles = $oModule->getFiles();
 

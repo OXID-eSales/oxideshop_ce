@@ -787,9 +787,6 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
             'oxAddress' => 'moduleWhichHasNoMetadata/anyExtension',
         );
         $aDeletedExt = array(
-            'oxAddress' => array(
-                'moduleWhichHasNoMetadata/anyExtension',
-            ),
             'moduleWhichHasNoMetadata' => array(
                 'files' => array('moduleWhichHasNoMetadata/metadata.php')
             ),

@@ -35,6 +35,13 @@ class oxModuleList extends oxSuperCfg
     protected $_aModules = array();
 
     /**
+     * All module extensions.
+     *
+     * @var array
+     */
+    protected $_aModuleExtensions = null;
+
+    /**
      * List of files that should be skipped while scanning module dir.
      *
      * @var array
@@ -608,21 +615,29 @@ class oxModuleList extends oxSuperCfg
         return array_unique(array_merge($aModuleIdsFromExtensions, $aModuleIdsFromFiles));
     }
 
+    /**
+     * Returns module extensions.
+     *
+     * @param string $sModuleId
+     * @return array
+     */
     public function getModuleExtensions($sModuleId)
     {
-        $aModuleExtension = $this->getConfig()->getModulesWithExtendedClass();
-        $oModule = $this->getModule();
-        $aExtension = array();
-        foreach ( $aModuleExtension as $sOxClass => $aFiles ) {
-            foreach ( $aFiles as $sFilePath ) {
-                $sId = $oModule->getIdByPath($sFilePath);
-                if ($sId == $sModuleId) {
-                    $aExtension[$sOxClass][] = $sFilePath;
+        if (!isset($this->_aModuleExtensions)) {
+            $aModuleExtension = $this->getConfig()->getModulesWithExtendedClass();
+            $oModule = $this->getModule();
+            $aExtension = array();
+            foreach ( $aModuleExtension as $sOxClass => $aFiles ) {
+                foreach ( $aFiles as $sFilePath ) {
+                    $sId = $oModule->getIdByPath($sFilePath);
+                    $aExtension[$sId][$sOxClass][] = $sFilePath;
                 }
             }
+
+            $this->_aModuleExtensions = $aExtension;
         }
 
-        return $aExtension;
+        return $this->_aModuleExtensions[$sModuleId]? $this->_aModuleExtensions[$sModuleId] : array();
     }
 
     /**

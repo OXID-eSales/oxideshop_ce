@@ -938,38 +938,24 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
         $this->assertSame(array(), $oModuleList->getModuleFiles());
     }
 
-    public function testGetModuleExtensions()
+    public function testGetModuleExtensionsWithMultipleExtensions()
     {
         $oModuleList = new oxModuleList();
         $aModuleExtensions = array(
-            'oxarticle' => 'mod/testModule&mod2/testModule2/',
-            'oxorder' => 'oe/invoicepdf/models/invoicepdfoxorder'
+            'oxArticle' => 'mod/articleExtension1&mod/articleExtension2&mod2/articleExtension3',
+            'oxOrder' => 'mod2/oxOrder',
+            'oxBasket' => 'mod/basketExtension',
         );
 
         $this->getConfig()->setConfigParam('aModules', $aModuleExtensions);
         $aExtensions = array(
-            'oxarticle' => array(
-                'mod/testModule',
+            'oxArticle' => array(
+                'mod/articleExtension1',
+                'mod/articleExtension2'
             ),
-        );
-
-        $this->assertSame($aExtensions, $oModuleList->getModuleExtensions('mod'));
-    }
-
-    public function testGetModuleExtensionsWhenModuleExtendsOneClassWithMultipleFiles()
-    {
-        $oModuleList = new oxModuleList();
-        $aModuleExtensions = array(
-            'oxarticle' => 'mod/testModule&mod/testModule2&mod2/testModule2/',
-            'oxorder' => 'oe/invoicepdf/models/invoicepdfoxorder'
-        );
-
-        $this->getConfig()->setConfigParam('aModules', $aModuleExtensions);
-        $aExtensions = array(
-            'oxarticle' => array(
-                'mod/testModule',
-                'mod/testModule2'
-            ),
+            'oxBasket' => array(
+                'mod/basketExtension'
+            )
         );
 
         $this->assertSame($aExtensions, $oModuleList->getModuleExtensions('mod'));

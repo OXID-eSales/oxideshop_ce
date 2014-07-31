@@ -256,7 +256,7 @@ class oxModuleList extends oxSuperCfg
         $aDeletedModuleIds = array_keys($aDeletedModules);
 
         // removing from aModules config array
-        $this->_removeFromModulesArray( $aDeletedModuleIds );
+        $this->_removeExtensionsFromConfig( $aDeletedModuleIds );
 
         // removing from aDisabledModules array
         $this->_removeFromDisabledModulesArray( $aDeletedModuleIds );
@@ -376,7 +376,7 @@ class oxModuleList extends oxSuperCfg
      *
      * @return null
      */
-    protected function _removeFromModulesArray($aModuleIds)
+    protected function _removeExtensionsFromConfig($aModuleIds)
     {
         $aUpdatedExt = $this->getModulesWithExtendedClass();
         foreach ($aModuleIds as $sModuleId) {

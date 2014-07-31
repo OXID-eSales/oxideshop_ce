@@ -167,4 +167,26 @@ class Unit_Core_oxshopTest extends OxidTestCase
         $oShop = new oxShop();
         $this->assertFalse($oShop->delete(null));
     }
+
+    /**
+     * Test getter for is multishop type shop
+     */
+    public function testIsMultiShop()
+    {
+        $oShop = new oxShop();
+        $oShop->load($this->_sOXID);
+        $oShop->oxshops__oxismultishop = new oxField(1);
+        $this->assertEquals(1, $oShop->isMultiShop());
+    }
+
+    /**
+     * Test getter for is multishop type shop
+     */
+    public function testIsSuperShop()
+    {
+        $oShop = new oxShop();
+        $oShop->load($this->_sOXID);
+        $oShop->oxshops__oxissupershop = new oxField(1);
+        $this->assertEquals(1, $oShop->isSuperShop());
+    }
 }

@@ -48,4 +48,26 @@ class Unit_Admin_ModuleConfigTest extends OxidTestCase
         $this->assertEquals( 'module:testModuleId', $oView->UNITgetModuleForConfigVars() );
     }
 
+    public function testSaveConfVars()
+    {
+        $aStrRequest = array(
+            'stringParameterName1' => '',
+            'stringParameterName2' => 'stringParameterValue2',
+        );
+        $aPasswordRequest = array(
+            'passwordParameterName1' => '',
+            'passwordParameterName2' => 'passwordParameterValue',
+        );
+
+        $this->setRequestParam('confstrs', $aStrRequest);
+        $this->setRequestParam('confpassword', $aPasswordRequest);
+
+        $oModuleConfig = new Module_Config();
+        $oModuleConfig->saveConfVars();
+
+        $this->assertSame('', $this->getConfigParam('stringParameterName1'), 'First string parameter is not as expected.');
+        $this->assertSame('stringParameterValue2', $this->getConfigParam('stringParameterName2'), 'Second string parameter is not as expected.');
+        $this->assertSame('', $this->getConfigParam('passwordParameterName1'), 'First password parameter is not as expected.');
+        $this->assertSame('passwordParameterValue', $this->getConfigParam('passwordParameterName2'), 'Second pasword parameter is not as expected.');
+    }
 }

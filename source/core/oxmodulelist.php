@@ -248,10 +248,8 @@ class oxModuleList extends oxSuperCfg
         //collecting deleted extension IDs
         $aDeletedModuleIds = array_keys($aDeletedModules);
 
-        $aDeletedExt = $this->_formExtensionsArray($aDeletedModules);
-
         // removing from aModules config array
-        $this->_removeFromModulesArray( $aDeletedExt );
+        $this->_removeFromModulesArray( $aDeletedModuleIds );
 
         // removing from aDisabledModules array
         $this->_removeFromDisabledModulesArray( $aDeletedModuleIds );
@@ -282,21 +280,16 @@ class oxModuleList extends oxSuperCfg
      */
     public function getDeletedExtensions()
     {
+        $aDeletedExt = $this->_getInvalidExtenions();
         $oModuleValidatorFactory = $this->getModuleValidatorFactory();
-        $oModuleFilesValidator = $oModuleValidatorFactory->getModuleFilesValidator();
         $oModuleMetadataValidator = $oModuleValidatorFactory->getModuleMetadataValidator();
         $aModulesIds = $this->getModuleIds();
         $oModule = $this->getModule();
-        $aDeletedExt = array();
 
         foreach ($aModulesIds as $sModuleId) {
             $oModule->setModuleData(array('id'=>$sModuleId));
             if (!$oModuleMetadataValidator->validate($oModule)) {
                 $aDeletedExt[$sModuleId]['files'] = array($sModuleId.'/metadata.php');
-            }
-            $oModule->load($sModuleId);
-            if ($oModule->isActive() && !$oModuleFilesValidator->validate($oModule)) {
-                $aDeletedExt[$sModuleId] = $oModuleFilesValidator->getMissingFiles();
             }
         }
 
@@ -360,41 +353,30 @@ class oxModuleList extends oxSuperCfg
     }
 
     /**
-     * Returns deleted extension Ids
+     * Returns oxModule object.
      *
-     * @param array $aDeletedModules deleted extensions
-     *
-     * @return array
+     * @return oxModule
      */
-    private function _formExtensionsArray($aDeletedModules)
+    public function getModule()
     {
-        $aDeletedExt = array();
-        foreach ($aDeletedModules as $aModuleFiles) {
-            $aModuleFiles['extensions'] = is_array($aModuleFiles['extensions'])? $aModuleFiles['extensions'] : array();
-            foreach ($aModuleFiles['extensions'] as $sClass => $mFiles) {
-                $aDeletedExt[$sClass] = is_array($aDeletedExt[$sClass])? $aDeletedExt[$sClass] : array();
-                if (is_array($mFiles)) {
-                    $aDeletedExt[$sClass] = array_merge($aDeletedExt[$sClass], $mFiles);
-                } else {
-                    $aDeletedExt[$sClass][] = $mFiles;
-                }
-            }
-        }
-
-        return $aDeletedExt;
+        return oxNew('oxModule');
     }
 
     /**
      * Removes extension from modules array
      *
-     * @param array $aDeletedExt Deleted extension array
+     * @param array $aModuleIds Deleted extension array
      *
      * @return null
      */
-    protected function _removeFromModulesArray( $aDeletedExt )
+    protected function _removeFromModulesArray($aModuleIds)
     {
-        $aExt = $this->getModulesWithExtendedClass();
-        $aUpdatedExt = $this->diffModuleArrays( $aExt, $aDeletedExt );
+        $aUpdatedExt = $this->getModulesWithExtendedClass();
+        foreach ($aModuleIds as $sModuleId) {
+            $aDeletedExt = $this->getModuleExtensions($sModuleId);
+            $aUpdatedExt = $this->diffModuleArrays( $aUpdatedExt, $aDeletedExt );
+        }
+
         $aUpdatedExt = $this->buildModuleChains( $aUpdatedExt );
 
         $this->getConfig()->saveShopConfVar( 'aarr', 'aModules', $aUpdatedExt );
@@ -626,6 +608,23 @@ class oxModuleList extends oxSuperCfg
         return array_unique(array_merge($aModuleIdsFromExtensions, $aModuleIdsFromFiles));
     }
 
+    public function getModuleExtensions($sModuleId)
+    {
+        $aModuleExtension = $this->getConfig()->getModulesWithExtendedClass();
+        $oModule = $this->getModule();
+        $aExtension = array();
+        foreach ( $aModuleExtension as $sOxClass => $aFiles ) {
+            foreach ( $aFiles as $sFilePath ) {
+                $sId = $oModule->getIdByPath($sFilePath);
+                if ($sId == $sModuleId) {
+                    $aExtension[$sOxClass][] = $sFilePath;
+                }
+            }
+        }
+
+        return $aExtension;
+    }
+
     /**
      * Callback function for sorting module objects by name.
      *
@@ -714,12 +713,21 @@ class oxModuleList extends oxSuperCfg
     }
 
     /**
-     * Returns oxModule object.
-     *
-     * @return oxModule
+     * @return array
      */
-    private function getModule()
+    private function _getInvalidExtenions()
     {
-        return oxNew('oxModule');
+        $aModules = $this->getModulesWithExtendedClass();
+        $aDeletedExt = array();
+
+        foreach ($aModules as $sOxClass => $aModulesList) {
+            foreach ($aModulesList as $sModulePath) {
+                $sExtPath = $this->getConfig()->getModulesDir() . $sModulePath . '.php';
+                if (!file_exists($sExtPath)) {
+                    $aDeletedExt[$sOxClass][] = $sModulePath;
+                }
+            }
+        }
+        return $aDeletedExt;
     }
 }

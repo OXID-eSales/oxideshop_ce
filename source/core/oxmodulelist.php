@@ -287,16 +287,18 @@ class oxModuleList extends oxSuperCfg
      */
     public function getDeletedExtensions()
     {
-        $aDeletedExt = $this->_getInvalidExtensions();
         $oModuleValidatorFactory = $this->getModuleValidatorFactory();
         $oModuleMetadataValidator = $oModuleValidatorFactory->getModuleMetadataValidator();
         $aModulesIds = $this->getModuleIds();
         $oModule = $this->getModule();
+        $aDeletedExt = array();
 
         foreach ($aModulesIds as $sModuleId) {
             $oModule->setModuleData(array('id'=>$sModuleId));
             if (!$oModuleMetadataValidator->validate($oModule)) {
                 $aDeletedExt[$sModuleId]['files'] = array($sModuleId.'/metadata.php');
+            } else {
+                $aDeletedExt[$sModuleId]['extensions'] = $this->_getInvalidExtensions($sModuleId);
             }
         }
 
@@ -729,11 +731,15 @@ class oxModuleList extends oxSuperCfg
     }
 
     /**
+     * Returns invalid extensions array by module id.
+     *
+     * @param $sModuleId
+     *
      * @return array
      */
-    private function _getInvalidExtensions()
+    private function _getInvalidExtensions($sModuleId)
     {
-        $aModules = $this->getModulesWithExtendedClass();
+        $aModules = $this->getModuleExtensions($sModuleId);
         $aDeletedExt = array();
 
         foreach ($aModules as $sOxClass => $aModulesList) {
@@ -744,6 +750,7 @@ class oxModuleList extends oxSuperCfg
                 }
             }
         }
+
         return $aDeletedExt;
     }
 }

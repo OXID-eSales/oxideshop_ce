@@ -808,15 +808,25 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
             'oxOrder' => 'mod2/testExtension2/models/test'
         );
         $aDeletedExt = array(
-            'oxArticle' => array (
-                'mod1/testExtension1',
-                'mod2/testExtension2/',
+            'mod1' => array(
+                'extensions' => array(
+                    'oxArticle' => array (
+                        'mod1/testExtension1',
+                    ),
+                ),
             ),
-            'oxOrder' => array(
-                'mod2/testExtension2/models/test'
-            )
+            'mod2' => array(
+                'extensions' => array(
+                    'oxArticle' => array (
+                        'mod2/testExtension2/',
+                    ),
+                    'oxOrder' => array(
+                        'mod2/testExtension2/models/test'
+                    )
+                ),
+            ),
         );
-        $this->setConfigParam( "aModules", $aModules );
+        $this->setConfigParam("aModules", $aModules);
 
         $oModuleMetadataValidator = $this->getMock('oxModuleMetadataValidator', array('validate'));
         $oModuleMetadataValidator->expects( $this->any() )->method('validate')->will($this->returnValue(true));

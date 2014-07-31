@@ -83,7 +83,10 @@ class Unit_Core_oxModuleMetadataAgainstShopValidatorTest extends OxidTestCase
 
     public function providerValidateModuleAnsShopInformationMatch()
     {
-        $aExtended = array('shop_class1' => 'vendor/module/path/module_class1');
+        $aExtended = array(
+            'shop_class1' => 'vendor/module/path/module_class1',
+            'shop_class3' => 'vendor/module/path/module_class3',
+        );
         $aFiles = array('module_class2' => 'vendor/module/path/module_class2.php');
 
         return array(

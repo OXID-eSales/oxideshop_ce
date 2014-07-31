@@ -33,38 +33,43 @@ class oxModuleMetadataAgainstShopValidator implements oxIModuleValidator
      */
     public function validate(oxModule $oModule)
     {
-        $aModuleInformation = array_merge($oModule->getExtensions(), $oModule->getFiles());
-        $aShopInformationAboutModuleFiles = $this->_getShopInformationAboutModuleFiles();
-        return $this->_ShopInformationMatchModuleInformation($aModuleInformation, $aShopInformationAboutModuleFiles);
+
+        $blModuleExtensionsMatchShopInformation = $this->_moduleExtensionsMatchShopInformation($oModule);
+        $blModuleFilesMatchShopInformation = $this->_moduleFilesMatchShopInformation($oModule);
+
+        return $blModuleExtensionsMatchShopInformation && $blModuleFilesMatchShopInformation;
     }
 
-    /**
-     * @return array
-     */
-    private function  _getShopInformationAboutModuleFiles()
+    private function _moduleExtensionsMatchShopInformation(oxModule $oModule)
     {
+        $aModuleExtensions = $oModule->getExtensions();
+
         /** @var oxModuleInstaller $oModuleInstaller */
         $oModuleInstaller = oxNew('oxModuleInstaller');
-        $aExtendedClasses = $oModuleInstaller->getModulesWithExtendedClass();
+        $aShopInformationAboutModulesExtendedClasses = $oModuleInstaller->getModulesWithExtendedClass();
+
+        foreach ($aModuleExtensions as $sExtendedClassName => $sModuleExtendedClassPath) {
+            $aExtendedClassInfo = $aShopInformationAboutModulesExtendedClasses[$sExtendedClassName];
+            if (is_null($aExtendedClassInfo) || !is_array($aExtendedClassInfo)) {
+                return false;
+            }
+            if (!in_array($sModuleExtendedClassPath, $aExtendedClassInfo)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private function _moduleFilesMatchShopInformation(oxModule $oModule)
+    {
+        $aModuleFiles = $oModule->getFiles();
 
         /** @var oxModuleList $oModuleList */
         $oModuleList = oxNew('oxModuleList');
-        $aFilesClasses = $oModuleList->getModuleFiles();
+        $aShopInformationAboutModulesFiles = $oModuleList->getModuleFiles();
 
-        $aShopInformation = array_merge($aExtendedClasses, $aFilesClasses);
-
-        return $aShopInformation;
-    }
-
-    /**
-     * @param array $aModuleInformation module files.
-     * @param array $aShopInformationAboutModuleFiles list of module files known by shop.
-     *
-     * @return bool
-     */
-    private function  _ShopInformationMatchModuleInformation($aModuleInformation, $aShopInformationAboutModuleFiles)
-    {
-        $aMissingFiles = array_diff($aModuleInformation, $aShopInformationAboutModuleFiles);
+        $aMissingFiles = array_diff($aModuleFiles, $aShopInformationAboutModulesFiles);
         return (count($aMissingFiles)) === 0;
     }
 }

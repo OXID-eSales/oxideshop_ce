@@ -64,6 +64,7 @@ class Integration_Modules_ModuleWithNoMetadataSupportTest extends BaseModuleTest
 
     public function testModuleMissMatchMetadata()
     {
+        $this->markTestSkipped('Currently we are not checking if metadata matches configs.');
         // modules to be activated during test preparation
         $aInstallModules = array(
             'extending_1_class', 'with_2_files'
@@ -93,6 +94,7 @@ class Integration_Modules_ModuleWithNoMetadataSupportTest extends BaseModuleTest
 
     public function testModulesWithMissingFiles()
     {
+        $this->markTestSkipped('Currently we are not checking module files.');
         // modules to be activated during test preparation
         $aInstallModules = array(
             'with_1_extension', 'with_2_files'

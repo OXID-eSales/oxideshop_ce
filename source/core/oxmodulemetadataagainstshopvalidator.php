@@ -35,7 +35,12 @@ class oxModuleMetadataAgainstShopValidator implements oxIModuleValidator
     {
 
         $blModuleExtensionsMatchShopInformation = $this->_moduleExtensionsInformationExistsInShop($oModule);
-        $blModuleInformationMatchShopInformation = $blModuleExtensionsMatchShopInformation && $this->_moduleFilesInformationExistInShop($oModule);
+        $blModuleInformationMatchShopInformation = $blModuleExtensionsMatchShopInformation
+            && $this->_moduleFilesInformationExistInShop($oModule);
+        $blModuleInformationMatchShopInformation = $blModuleInformationMatchShopInformation
+            && $this->_moduleHasAllExtensions($oModule);
+        $blModuleInformationMatchShopInformation = $blModuleInformationMatchShopInformation
+            && $this->_moduleHasAllFiles($oModule);
 
         return $blModuleInformationMatchShopInformation;
     }
@@ -85,5 +90,29 @@ class oxModuleMetadataAgainstShopValidator implements oxIModuleValidator
 
         $aMissingFiles = array_diff($aModuleFiles, $aShopInformationAboutModulesFiles);
         return (count($aMissingFiles)) === 0;
+    }
+
+    /**
+     * Check if all module files exists by shop information.
+     *
+     * @param oxModule $oModule
+     *
+     * @return bool
+     */
+    private function _moduleHasAllExtensions(oxModule $oModule)
+    {
+        return true;
+    }
+
+    /**
+     * Check if all PHP files exists by shop information.
+     *
+     * @param oxModule $oModule
+     *
+     * @return bool
+     */
+    private function _moduleHasAllFiles(oxModule $oModule)
+    {
+        return true;
     }
 }

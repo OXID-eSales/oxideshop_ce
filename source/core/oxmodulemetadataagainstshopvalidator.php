@@ -40,6 +40,13 @@ class oxModuleMetadataAgainstShopValidator implements oxIModuleValidator
         return $blModuleExtensionsMatchShopInformation && $blModuleFilesMatchShopInformation;
     }
 
+    /**
+     * Check if all module extensions exists in shop information.
+     *
+     * @param oxModule $oModule
+     *
+     * @return bool
+     */
     private function _moduleExtensionsMatchShopInformation(oxModule $oModule)
     {
         $aModuleExtensions = $oModule->getExtensions();
@@ -61,6 +68,13 @@ class oxModuleMetadataAgainstShopValidator implements oxIModuleValidator
         return true;
     }
 
+    /**
+     * Check if all module files exists in shop.
+     *
+     * @param oxModule $oModule
+     *
+     * @return bool
+     */
     private function _moduleFilesMatchShopInformation(oxModule $oModule)
     {
         $aModuleFiles = $oModule->getFiles();

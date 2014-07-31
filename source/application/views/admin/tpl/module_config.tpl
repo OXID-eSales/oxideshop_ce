@@ -74,11 +74,18 @@ function _groupExp(el) {
                                 [{/block}]
                             [{elseif $var_type == 'select'}]
                                 [{block name="admin_module_config_var_type_select"}]
-                                <select class="select" name=confselects[[{$module_var}]] [{ $readonly }]>
+                                <select class="select" name="confselects[[{$module_var}]]" [{ $readonly }]>
                                     [{foreach from=$var_constraints.$module_var item='_field'}]
                                         <option value="[{$_field|escape}]"  [{if ($confselects.$module_var==$_field)}]selected[{/if}]>[{ oxmultilang ident="SHOP_MODULE_`$module_var`_`$_field`" }]</option>
                                     [{/foreach}]
                                 </select>
+                                [{/block}]
+                            [{elseif $var_type == 'password'}]
+                                [{block name="admin_module_config_var_type_password"}]
+                                <span>
+                                    <input type=password class="password_input" style="width: 250px;" name="confpassword[[{$module_var}]]" value="[{$confpassword.$module_var}]" disabled="true" [{ $readonly }]>
+                                    <input type=checkbox class="password_change_enable" name="confbools[[{$module_var}]]" value=true onclick="changePasswordEditability(this)"  [{if ($confbools.$module_var)}]checked[{/if}] [{ $readonly }]>
+                                </span>
                                 [{/block}]
                             [{/if}]
                             
@@ -100,6 +107,16 @@ function _groupExp(el) {
 [{if $var_grouping}]
     <input type="submit" class="confinput" name="save" value="[{ oxmultilang ident="GENERAL_SAVE" }]" onClick="Javascript:document.myedit.fnc.value='save'" [{ $readonly }]>
 [{/if}]
+
+<script type="text/javascript">
+    function changePasswordEditability(element) {
+        if (element.checked) {
+            element.parentNode.childNodes[1].disabled = false;
+        } else {
+            element.parentNode.childNodes[1].disabled = true;
+        }
+    }
+</script
 
 [{/block}]
 

@@ -38,7 +38,6 @@ class Shop_Config extends oxAdminDetails
         "aarr"     => 'confaarrs',
         "select"   => 'confselects',
         "num"      => 'confnum',
-        "password" => 'confpassword',
     );
 
     /**

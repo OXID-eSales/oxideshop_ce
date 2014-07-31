@@ -31,6 +31,15 @@ class Module_Config extends Shop_Config
     protected $_sModule = 'shop_config.tpl';
 
     /**
+     * Add additional config type for modules.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->_aConfParams['password'] = 'confpassword';
+    }
+
+    /**
      * Executes parent method parent::render(), creates deliveryset category tree,
      * passes data to Smarty engine and returns name of template file "deliveryset_main.tpl".
      *

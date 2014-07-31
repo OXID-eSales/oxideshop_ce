@@ -413,30 +413,26 @@ class Unit_Core_oxmodulelistTest extends OxidTestCase
      *
      * @return null
      */
-    public function testRemoveFromModulesArray()
+    public function testRemoveExtensionsFromConfig()
     {
         $aModules = array(
-            'oxorder'  => 'testExt1/module1',
-            'oxnews'   => 'testExt2/module2'
+            'oxarticle' => 'mod/testExtension&mod2/testExtension2/&mod3/dir3/testExtension3',
+            'oxorder'   => 'mod7/testModuleOrder&mod3/myextclass',
+            'oxaddress' => 'mod/testExtension4'
+        );
+        $aModuleIdsToRemove = array('mod', 'mod7');
+        $aModuleResult = array(
+            'oxarticle' => 'mod2/testExtension2/&mod3/dir3/testExtension3',
+            'oxorder' => 'mod3/myextclass'
         );
 
-        $aDeletedExt = array(
-            'oxnews'   => 'testExt2/module2'
-        );
+        $this->getConfig()->saveShopConfVar('aarr', 'aModules', $aModules);
+        /** @var oxModuleList $oModuleList */
+        $oModuleList = $this->getMock('oxModuleList', array('getDeletedExtensions'));
+        $oModuleList->expects($this->any())->method('getDeletedExtensions')->will($this->returnValue($aModuleIdsToRemove));
+        $oModuleList->_removeExtensionsFromConfig($aModuleIdsToRemove);
 
-        $aResult = array(
-            'oxorder'  => 'testExt1/module1'
-        );
-
-        $oConfig = $this->getMock( "oxConfig", array( "saveShopConfVar" ) );
-        $oConfig->expects($this->once())->method('saveShopConfVar')->with( $this->equalTo( 'aarr' ), $this->equalTo( 'aModules' ), $this->equalTo( $aResult ) );
-
-        $oModuleList = $this->getMock( 'oxmodulelist', array('getConfig', 'getModulesWithExtendedClass') );
-        $oModuleList->expects($this->once())->method('getConfig')->will( $this->returnValue($oConfig) );
-        $oModuleList->expects($this->once())->method('getModulesWithExtendedClass')->will( $this->returnValue($aModules) );
-
-
-        $oModuleList->_removeExtensionsFromConfig( $aDeletedExt );
+        $this->assertSame($aModuleResult, $this->getConfigParam('aModules'));
     }
 
     /**

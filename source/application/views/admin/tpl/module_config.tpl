@@ -53,24 +53,24 @@ function _groupExp(el) {
                             
                             [{if $var_type == 'bool'}]
                                 [{block name="admin_module_config_var_type_bool"}]
-                                <input type=hidden name="confbools[[{$module_var}]]" value=false>
-                                <input type=checkbox name="confbools[[{$module_var}]]" value=true  [{if ($confbools.$module_var)}]checked[{/if}] [{ $readonly }]>
+                                <input type=hidden name=confbools[[{$module_var}]] value=false>
+                                <input type=checkbox name=confbools[[{$module_var}]] value=true  [{if ($confbools.$module_var)}]checked[{/if}] [{ $readonly }]>
                                 [{/block}]
                             [{elseif $var_type == 'str'}]
                                 [{block name="admin_module_config_var_type_str"}]
-                                <input type=text  class="txt" style="width: 250px;" name="confstrs[[{$module_var}]]" value="[{$confstrs.$module_var}]" [{ $readonly }]>
+                                <input type=text  class="txt" style="width: 250px;" name=confstrs[[{$module_var}]] value="[{$confstrs.$module_var}]" [{ $readonly }]>
                                 [{/block}]
                             [{elseif $var_type == 'num'}]
                                 [{block name="admin_module_config_var_type_num"}]
-                                <input type=text  class="txt" style="width: 50px;" name="confnum[[{$module_var}]]" value="[{$confnum.$module_var}]" [{ $readonly }]>
+                                <input type=text  class="txt" style="width: 50px;" name=confnum[[{$module_var}]] value="[{$confnum.$module_var}]" [{ $readonly }]>
                                 [{/block}]
                             [{elseif $var_type == 'arr'}]
                                 [{block name="admin_module_config_var_type_arr"}]
-                                <textarea class="txtfield" name="confarrs[[{$module_var}]]" [{ $readonly }]>[{$confarrs.$module_var}]</textarea>
+                                <textarea class="txtfield" name=confarrs[[{$module_var}]] [{ $readonly }]>[{$confarrs.$module_var}]</textarea>
                                 [{/block}]
                             [{elseif $var_type == 'aarr'}]
                                 [{block name="admin_module_config_var_type_aarr"}]
-                                <textarea class="txtfield" style="width: 430px;" name="confaarrs[[{$module_var}]]" wrap="off" [{ $readonly }]>[{$confaarrs.$module_var}]</textarea>
+                                <textarea class="txtfield" style="width: 430px;" name=confaarrs[[{$module_var}]] wrap="off" [{ $readonly }]>[{$confaarrs.$module_var}]</textarea>
                                 [{/block}]
                             [{elseif $var_type == 'select'}]
                                 [{block name="admin_module_config_var_type_select"}]
@@ -83,10 +83,8 @@ function _groupExp(el) {
                             [{elseif $var_type == 'password'}]
                                 [{block name="admin_module_config_var_type_password"}]
                                 <span>
-                                    <input type=password class="password_input" style="width: 250px;" name="confpassword[[{$module_var}]]" value="" [{if $confpassword.$module_var}] disabled="true" [{/if}] [{ $readonly }]>
-                                    [{if $confpassword.$module_var}]
+                                    <input type=password class="password_input" style="width: 250px;" name="confpassword[[{$module_var}]]" value="[{$confpassword.$module_var}]" disabled="true" [{ $readonly }]>
                                     <input type=checkbox class="password_change_enable" name="confbools[[{$module_var}]]" value=true onclick="changePasswordEditability(this)"  [{if ($confbools.$module_var)}]checked[{/if}] [{ $readonly }]>
-                                    [{/if}]
                                 </span>
                                 [{/block}]
                             [{/if}]

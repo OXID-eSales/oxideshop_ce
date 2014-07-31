@@ -135,7 +135,7 @@ class Module_Config extends Shop_Config
                     }
                     $sValue = getStr()->htmlentities( $sValue );
                 } else {
-                    $sDbType = $this->_getDbName($sType);
+                    $sDbType = $this->_getDbConfigTypeName($sType);
                     $sValue = $aDbVariables['vars'][$sDbType][$sName];
                 }
                 
@@ -187,7 +187,7 @@ class Module_Config extends Shop_Config
             $aConfVars = $oConfig->getRequestParameter($sParam);
             if (is_array($aConfVars)) {
                 foreach ( $aConfVars as $sName => $sValue ) {
-                    $sDbType = $this->_getDbName($sType);
+                    $sDbType = $this->_getDbConfigTypeName($sType);
                     $oConfig->saveShopConfVar(
                             $sDbType,
                             $sName,
@@ -205,7 +205,7 @@ class Module_Config extends Shop_Config
      * @param $sType
      * @return string
      */
-    private function _getDbName($sType)
+    private function _getDbConfigTypeName($sType)
     {
         $sDbType = $sType;
         if ($sType === 'password') {

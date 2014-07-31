@@ -370,23 +370,24 @@ class oxModuleList extends oxSuperCfg
     }
 
     /**
-     * Removes extension from modules array
+     * Removes extension by given modules ids.
      *
-     * @param array $aModuleIds Deleted extension array
+     * @param array $aModuleIds Modules ids which must be deleted from config.
      *
      * @return null
      */
     protected function _removeExtensionsFromConfig($aModuleIds)
     {
-        $aUpdatedExt = $this->getModulesWithExtendedClass();
+        $aModuleExtensions = $this->getModulesWithExtendedClass();
+        $aExtensionsToDelete = array();
         foreach ($aModuleIds as $sModuleId) {
-            $aDeletedExt = $this->getModuleExtensions($sModuleId);
-            $aUpdatedExt = $this->diffModuleArrays( $aUpdatedExt, $aDeletedExt );
+            $aExtensionsToDelete = array_merge($aExtensionsToDelete, $this->getModuleExtensions($sModuleId));
         }
 
-        $aUpdatedExt = $this->buildModuleChains( $aUpdatedExt );
+        $aUpdatedExtensions = $this->diffModuleArrays($aModuleExtensions, $aExtensionsToDelete);
+        $aUpdatedExtensionsChains = $this->buildModuleChains($aUpdatedExtensions);
 
-        $this->getConfig()->saveShopConfVar( 'aarr', 'aModules', $aUpdatedExt );
+        $this->getConfig()->saveShopConfVar('aarr', 'aModules', $aUpdatedExtensionsChains);
     }
 
     /**

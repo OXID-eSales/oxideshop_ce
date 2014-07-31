@@ -62,7 +62,7 @@ class Integration_Modules_ModuleWithNoMetadataSupportTest extends BaseModuleTest
         $this->assertSame(  array(), $aGarbage );
     }
 
-    public function testModuleMisMatchMetadata()
+    public function testModuleMissMatchMetadata()
     {
         // modules to be activated during test preparation
         $aInstallModules = array(

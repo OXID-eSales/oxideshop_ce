@@ -81,7 +81,7 @@ class Unit_Core_oxModuleMetadataAgainstShopValidatorTest extends OxidTestCase
     }
 
 
-    public function providerValidateModuleAnsShopInformationMatch()
+    public function providerValidateModuleAndShopInformationMatch()
     {
         $aExtended = array(
             'shop_class1' => 'vendor/module/path/module_class1',
@@ -100,9 +100,9 @@ class Unit_Core_oxModuleMetadataAgainstShopValidatorTest extends OxidTestCase
      * @param $aExtended
      * @param $aFiles
      *
-     * @dataProvider providerValidateModuleAnsShopInformationMatch
+     * @dataProvider providerValidateModuleAndShopInformationMatch
      */
-    public function testValidateModuleAnsShopInformationMatch($aExtended, $aFiles)
+    public function testValidateModuleAndShopInformationMatch($aExtended, $aFiles)
     {
         $this->setConfigParam('aModules', $aExtended);
         $this->setConfigParam('aModuleFiles', $aFiles);

@@ -95,11 +95,12 @@ class Module_Config extends Shop_Config
         $oConfig  = $this->getConfig();
 
         $aConfVars = array(
-            "bool"    => array(),
-            "str"     => array(),
-            "arr"     => array(),
-            "aarr"    => array(),
-            "select"  => array(),
+            "bool"     => array(),
+            "str"      => array(),
+            "arr"      => array(),
+            "aarr"     => array(),
+            "select"   => array(),
+            "password" => array(),
         );
         $aVarConstraints = array();
         $aGrouping       = array();
@@ -117,15 +118,16 @@ class Module_Config extends Shop_Config
                 if (is_null($oConfig->getConfigParam($sName)) ) {
                     switch ($aValue["type"]){
                         case "arr":
-                            $sValue = $this->_arrayToMultiline( (is_array($aValue["value"])) ? $aValue["value"] : unserialize( $aValue["value"] ) );
+                            $sValue = $this->_arrayToMultiline( unserialize( $aValue["value"] ) );
                             break;
                         case "aarr":
-                            $sValue = $this->_aarrayToMultiline( (is_array($aValue["value"])) ? $aValue["value"] : unserialize( $aValue["value"] ) );
+                            $sValue = $this->_aarrayToMultiline( unserialize( $aValue["value"] ) );
                             break;
                     }
                     $sValue = getStr()->htmlentities( $sValue );
                 } else {
-                    $sValue = $aDbVariables['vars'][$sType][$sName];
+                    $sDbType = $this->_getDbName($sType);
+                    $sValue = $aDbVariables['vars'][$sDbType][$sName];
                 }
                 
                 $sGroup      = $aValue["group"];
@@ -176,16 +178,32 @@ class Module_Config extends Shop_Config
             $aConfVars = oxRegistry::getConfig()->getRequestParameter($sParam);
             if (is_array($aConfVars)) {
                 foreach ( $aConfVars as $sName => $sValue ) {
+                    $sDbType = $this->_getDbName($sType);
                     $myConfig->saveShopConfVar(
                             $sType,
                             $sName,
-                            $this->_serializeConfVar($sType, $sName, $sValue),
+                            $this->_serializeConfVar($sDbType, $sName, $sValue),
                             $sShopId,
                             $sModuleId
                     );
                 }
             }
         }
+    }
+
+    /**
+     * Convert metadata type to DB type.
+     * @param $sType
+     * @return string
+     */
+    private function _getDbName($sType)
+    {
+        $sDbType = $sType;
+        if ($sType === 'password') {
+            $sDbType = 'str';
+            return $sDbType;
+        }
+        return $sDbType;
     }
 
 }

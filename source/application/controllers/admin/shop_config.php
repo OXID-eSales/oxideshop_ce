@@ -32,12 +32,13 @@ class Shop_Config extends oxAdminDetails
     protected $_aParseFloat = array('iMinOrderPrice');
 
     protected $_aConfParams = array(
-        "bool"   => 'confbools',
-        "str"    => 'confstrs',
-        "arr"    => 'confarrs',
-        "aarr"   => 'confaarrs',
-        "select" => 'confselects',
-        "num"    => 'confnum',
+        "bool"     => 'confbools',
+        "str"      => 'confstrs',
+        "arr"      => 'confarrs',
+        "aarr"     => 'confaarrs',
+        "select"   => 'confselects',
+        "num"      => 'confnum',
+        "password" => 'confpassword',
     );
 
     /**
@@ -51,7 +52,6 @@ class Shop_Config extends oxAdminDetails
         $myConfig  = $this->getConfig();
 
         parent::render();
-
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if ( $soxId != "-1" && isset( $soxId)) {

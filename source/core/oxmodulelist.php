@@ -298,7 +298,10 @@ class oxModuleList extends oxSuperCfg
             if (!$oModuleMetadataValidator->validate($oModule)) {
                 $aDeletedExt[$sModuleId]['files'] = array($sModuleId.'/metadata.php');
             } else {
-                $aDeletedExt[$sModuleId]['extensions'] = $this->_getInvalidExtensions($sModuleId);
+                $aInvalidExtensions = $this->_getInvalidExtensions($sModuleId);
+                if ($aInvalidExtensions) {
+                    $aDeletedExt[$sModuleId]['extensions'] = $aInvalidExtensions;
+                }
             }
         }
 

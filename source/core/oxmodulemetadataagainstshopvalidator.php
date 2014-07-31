@@ -35,9 +35,9 @@ class oxModuleMetadataAgainstShopValidator implements oxIModuleValidator
     {
 
         $blModuleExtensionsMatchShopInformation = $this->_moduleExtensionsInformationExistsInShop($oModule);
-        $blModuleFilesMatchShopInformation = $this->_moduleFilesInformationExistInShop($oModule);
+        $blModuleInformationMatchShopInformation = $blModuleExtensionsMatchShopInformation && $this->_moduleFilesInformationExistInShop($oModule);
 
-        return $blModuleExtensionsMatchShopInformation && $blModuleFilesMatchShopInformation;
+        return $blModuleInformationMatchShopInformation;
     }
 
     /**

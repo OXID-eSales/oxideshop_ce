@@ -180,7 +180,7 @@ class Module_Config extends Shop_Config
                 foreach ( $aConfVars as $sName => $sValue ) {
                     $sDbType = $this->_getDbName($sType);
                     $oConfig->saveShopConfVar(
-                            $sType,
+                            $sDbType,
                             $sName,
                             $this->_serializeConfVar($sDbType, $sName, $sValue),
                             $sShopId,

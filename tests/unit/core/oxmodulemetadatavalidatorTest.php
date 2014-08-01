@@ -36,4 +36,15 @@ class Unit_Core_oxModuleMetadataValidatorTest extends OxidTestCase
 
         $this->assertSame($oModule, $oMetadataValidator->getModule(), 'Module from getter should be same as set in setter.');
     }
+
+    public function testValidateModuleWithoutMetadataFile()
+    {
+        $aModuleInformation = array('id' => 'notExistingModule');
+        $oModule = new oxModule();
+        $oModule->setModuleData($aModuleInformation);
+
+        $oMetadataValidator = new oxModuleMetadataValidator();
+        $oMetadataValidator->setModule($oModule);
+        $this->assertSame(false, $oMetadataValidator->validate(), 'Metadata validator should return false if metadata file does not exist.');
+    }
 }

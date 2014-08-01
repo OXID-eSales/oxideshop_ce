@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-class oxModuleMetadataValidator
+class oxModuleMetadataValidator 
 {
     /**
      * @var oxModule
@@ -54,4 +54,4 @@ class oxModuleMetadataValidator
     {
         return false;
     }
-}
+} 

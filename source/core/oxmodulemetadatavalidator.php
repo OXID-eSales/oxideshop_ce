@@ -54,4 +54,4 @@ class oxModuleMetadataValidator
     {
         return false;
     }
-} 
+}

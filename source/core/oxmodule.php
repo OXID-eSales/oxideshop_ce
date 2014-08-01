@@ -156,13 +156,23 @@ class oxModule extends oxSuperCfg
     }
 
     /**
-     * Returns array of module extensions
+     * Returns array of module extensions.
      *
      * @return array
      */
     public function getExtensions()
     {
         return isset( $this->_aModule['extend'] ) ? $this->_aModule['extend'] : array();
+    }
+
+    /**
+     * Returns array of module PHP files.
+     *
+     * @return array
+     */
+    public function getFiles()
+    {
+        return isset( $this->_aModule['files'] ) ? $this->_aModule['files'] : array();
     }
 
     /**
@@ -242,7 +252,7 @@ class oxModule extends oxSuperCfg
         if ( !is_null( $sId ) ) {
             $blActive = !$this->_isInDisabledList( $sId );
             if ( $blActive && $this->hasExtendClass() ) {
-                    $blActive = $this->_isExtensionsActive();
+                $blActive = $this->_isExtensionsActive();
             }
         }
 
@@ -273,8 +283,8 @@ class oxModule extends oxSuperCfg
     {
         $aExtensions = $this->getExtensions();
         return isset( $aExtensions )
-            && is_array( $aExtensions )
-            && !empty( $aExtensions );
+        && is_array( $aExtensions )
+        && !empty( $aExtensions );
     }
 
     /**

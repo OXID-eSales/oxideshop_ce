@@ -23,7 +23,7 @@
 require_once realpath( "." ).'/unit/OxidTestCase.php';
 require_once realpath( "." ).'/unit/test_config.inc.php';
 
-class Unit_Core_oxModuleMetadataValidatorTest extends OxidTestCase
+class Unit_Core_oxModuleFilesValidatorTest extends OxidTestCase
 {
     public function testSetModuleGetModule()
     {
@@ -37,40 +37,58 @@ class Unit_Core_oxModuleMetadataValidatorTest extends OxidTestCase
         $this->assertSame($oModule, $oMetadataValidator->getModule(), 'Module from getter should be same as set in setter.');
     }
 
-    public function testValidateModuleWithoutMetadataFile()
+    /**
+     * Module without any file is valid.
+     */
+    public function testValidateWhenModuleHasNoFiles()
     {
-        $sPathToMetadata = '';
-        $oModuleStub = $this->getMock('oxModule', array('getMetadataPath'));
+        $oModuleStub = $this->getMock('oxModule', array('getExtensions', 'getFiles'));
         $oModuleStub->expects($this->any())
-            ->method('getMetadataPath')
-            ->will($this->returnValue($sPathToMetadata));
+            ->method('getExtensions')
+            ->will($this->returnValue(array()));
+        $oModuleStub->expects($this->any())
+            ->method('getFiles')
+            ->will($this->returnValue(array()));
 
         /** @var oxModule $oModule */
         $oModule = $oModuleStub;
 
-        $oMetadataValidator = new oxModuleMetadataValidator();
-        $oMetadataValidator->setModule($oModule);
-        $this->assertFalse($oMetadataValidator->validate());
+        $oModuleFilesValidator = new oxModuleFilesValidator();
+        $oModuleFilesValidator->setModule($oModule);
+        $this->assertTrue($oModuleFilesValidator->validate());
     }
 
-    public function testValidateModuleWithValidMetadataFile()
+    public function providerValidateWhenFilesMissing()
     {
-        $sMetadataFileName = 'metadata.php';
-        $sMetadataContent = '<?php ';
+        $aExtendedFileNotExist = array('class' => 'vendor/module/path/class');
+        $aFilesNotExist = array('class' => 'vendor/module/path/class.php');
+        return array(
+            array($aExtendedFileNotExist, array()),
+            array(array(), $aFilesNotExist),
+        );
+    }
 
-        $sPathToMetadata = $this->createFile($sMetadataFileName, $sMetadataContent);
-
-        $oModuleStub = $this->getMock('oxModule', array('getMetadataPath'));
+    /**
+     * @param $aExtended
+     * @param $aFiles
+     *
+     * @dataProvider providerValidateWhenFilesMissing
+     */
+    public function testValidateWhenFilesMissing($aExtended, $aFiles)
+    {
+        $oModuleStub = $this->getMock('oxModule', array('getExtensions', 'getFiles'));
         $oModuleStub->expects($this->any())
-            ->method('getMetadataPath')
-            ->will($this->returnValue($sPathToMetadata));
+            ->method('getExtensions')
+            ->will($this->returnValue($aExtended));
+        $oModuleStub->expects($this->any())
+            ->method('getFiles')
+            ->will($this->returnValue($aFiles));
 
         /** @var oxModule $oModule */
         $oModule = $oModuleStub;
 
-        $oMetadataValidator = new oxModuleMetadataValidator();
-        $oMetadataValidator->setModule($oModule);
-
-        $this->assertTrue($oMetadataValidator->validate());
+        $oModuleFilesValidator = new oxModuleFilesValidator();
+        $oModuleFilesValidator->setModule($oModule);
+        $this->assertFalse($oModuleFilesValidator->validate());
     }
 }

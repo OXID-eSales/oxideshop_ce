@@ -110,18 +110,22 @@ class Module_Config extends Shop_Config
         if ( is_array($aModuleSettings) ) {
 
             foreach ( $aModuleSettings as $aValue ) {
-
                 $sName       = $aValue["name"];
                 $sType       = $aValue["type"];
                 $sValue = null;
-                //$sValue      = is_null($oConfig->getConfigParam($sName))?$aValue["value"]:$oConfig->getConfigParam($sName);
                 if (is_null($oConfig->getConfigParam($sName)) ) {
-                    switch ($aValue["type"]){
+                    switch ($aValue["type"]) {
                         case "arr":
-                            $sValue = $this->_arrayToMultiline( unserialize( $aValue["value"] ) );
+                            $sValue = $this->_arrayToMultiline( $aValue["value"] );
                             break;
                         case "aarr":
-                            $sValue = $this->_aarrayToMultiline( unserialize( $aValue["value"] ) );
+                            $sValue = $this->_aarrayToMultiline( $aValue["value"] );
+                            break;
+                        case "bool":
+                            $sValue = filter_var($aValue["value"], FILTER_VALIDATE_BOOLEAN);
+                            break;
+                        default:
+                            $sValue = $aValue["value"];
                             break;
                     }
                     $sValue = getStr()->htmlentities( $sValue );

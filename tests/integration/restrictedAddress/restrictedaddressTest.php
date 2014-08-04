@@ -77,6 +77,14 @@ class Integration_RestrictedAddress_RestrictedAddressTest extends OxidTestCase
         $this->assertContains( $sLocation, $sResult, 'User should be redirected to same URL without forbidden parameter.' );
     }
 
+    public function testAccessHtaccessFile()
+    {
+        $oConfig = $this->getConfig();
+        $sShopUrl = $oConfig->getShopMainUrl();
+        $sResult = $this->callPage($sShopUrl.'/.htaccess');
+        $this->assertContains( '403 Forbidden', $sResult, 'User should get forbidden page error.' );
+    }
+
     /**
      * @param string $sShopUrl shop url to call.
      * @return string

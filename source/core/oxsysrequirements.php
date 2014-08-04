@@ -139,6 +139,7 @@ class oxSysRequirements
         "zend_optimizer"     => "Zend_Optimizer",
         "bug53632"           => "Not_recommended_PHP_versions",
         "session_autostart"  => "session.auto_start_must_be_off",
+        "magic_quotes_gpc"   => "magic_quotes_must_be_off"
         // "zend_platform_or_server"
     );
 
@@ -243,6 +244,7 @@ class oxSysRequirements
                 'unicode_support',
                 'file_uploads',
                 'session_autostart',
+                'magic_quotes_gpc',
             );
 
             $aRequiredServerConfigs = array(
@@ -808,6 +810,20 @@ class oxSysRequirements
         $sGlobStatus = (strtolower((string) @ini_get('register_globals')));
 
         return in_array($sGlobStatus, array('on', '1')) ? 0 : 2;
+    }
+
+    /**
+     * Checks if magic_quotes_gpc are off/on. Should be off.
+     *
+     * @return integer
+     */
+    public function checkMagicQuotesGpc()
+    {
+        if (function_exists('get_magic_quotes_gpc')) {
+            return get_magic_quotes_gpc() ? 0 : 2;
+        } else {
+            return 2;
+        }
     }
 
     /**

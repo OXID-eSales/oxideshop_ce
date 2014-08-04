@@ -1383,6 +1383,7 @@ $aLang = array(
 'SYSREQ_MODULE_BLOCKS_MODNAME'                             => 'Modulname',
 'SYSREQ_MODULE_BLOCKS_BLOCKNAME'                           => 'Blockname',
 'SYSREQ_MODULE_BLOCKS_TPLFILE'                             => 'Template Dateiname',
+'SYSREQ_MAGIC_QUOTES_GPC'                                  => 'magic_quotes_gpc muss ausgeschaltet sein',
 'TOOLS_LIST_TITLE'                                         => '[OXID Tools]',
 'TOOLS_LIST_SECCESS'                                       => 'Backup data erfolgreich gemailt.',
 'TOOLS_LIST_ACTIONEND'                                     => 'Aktion beendet',

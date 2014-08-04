@@ -89,6 +89,7 @@ $aLang = array(
 'MOD_GD_INFO'                                   => 'GDlib v2 [v1] incl. JPEG support',
 'MOD_INI_SET'                                   => 'ini_set allowed',
 'MOD_REGISTER_GLOBALS'                          => 'register_globals must be off',
+'MOD_MAGIC_QUOTES_GPC'                          => 'magic_quotes_gpc must be off',
 'MOD_ZEND_OPTIMIZER'                            => 'Zend Optimizer or Zend Guard Loader installed',
 'MOD_ZEND_PLATFORM_OR_SERVER'                   => 'Zend Platform or Zend Server installed',
 'MOD_MB_STRING'                                 => 'mbstring',

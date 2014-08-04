@@ -2738,34 +2738,6 @@ class Unit_Core_oxUserTest extends OxidTestCase
     }
 
 
-    /**
-     * Testing getLoginQuery to return correct shop select sql for admin
-     *
-     * @return null
-     */
-    public function testGetLoginQueryShopSelectAdmin()
-    {
-        $this->markTestSkipped('should be removed');
-
-        $sShopID   = "shopid";
-        $oDb       = $this->getDb();
-        $oUser = new oxUser();
-        // case if mall users set to true should not change shopselect
-        $this->getConfig()->setConfigParam( "blMallUsers", true );
-        $blAdmin = true;
-
-        $sWhat = "oxid";
-
-        $sShopSelect = " and ( oxrights != 'user' ) ";
-
-        $sLoginQuery  = "select {$sWhat} from oxuser where oxuser.oxactive = 1 and  ";
-        $sLoginQuery .= "oxuser.oxpassword = BINARY MD5( CONCAT( ".$oDb->quote( oxADMIN_PASSWD ).", UNHEX( oxuser.oxpasssalt ) ) )  and ";
-        $sLoginQuery .= "oxuser.oxusername = " . $oDb->quote( oxADMIN_LOGIN ) . " ";
-        $sLoginQuery .= "$sShopSelect ";
-
-        $this->assertEquals( $sLoginQuery, $oUser->UNITgetLoginQuery( oxADMIN_LOGIN, oxADMIN_PASSWD, $sShopID, $blAdmin ) );
-    }
-
     public function testGetWishListId()
     {
         $oBasketItem = $this->getMock( 'oxBasketItem', array( 'getWishId' ) );
@@ -2805,51 +2777,6 @@ class Unit_Core_oxUserTest extends OxidTestCase
         $this->assertEquals( "1", $aRec[1]["OXPENDING"] );
         $this->assertEquals( "0", $aRec[1]["OXACCEPTED"] );
         $this->assertEquals( "1", $aRec[1]["OXTYPE"] );
-    }
-
-    /**
-     * Test case for oxUSer::_getLoginQuery()
-     *
-     * @return null
-     */
-    public function testGetLoginQuery()
-    {
-        $this->markTestSkipped( 'should be removed');
-
-        $sUser     = "user";
-        $sPassword = "password";
-        $sShopID   = "shopid";
-        $blAdmin   = false;
-        $oDb       = $this->getDb();
-
-        $sWhat = "oxid";
-
-        $oUser = new oxUser();
-
-        $sQ  = "select {$sWhat} from oxuser where oxuser.oxactive = 1 and  ";
-        $sQ .= "oxuser.oxpassword = BINARY MD5( CONCAT( ".$oDb->quote( $sPassword ).", UNHEX( oxuser.oxpasssalt ) ) )  and ";
-        $sQ .= "oxuser.oxusername = " . $oDb->quote( $sUser ) . " ";
-        $sQ .= "$sShopSelect ";
-
-        $this->assertEquals( $sQ, $oUser->UNITgetLoginQuery( $sUser, $sPassword, $sShopID, $blAdmin ) );
-
-        // numeric customer id
-        $sQ  = "select {$sWhat} from oxuser where oxuser.oxactive = 1 and  ";
-        $sQ .= "oxuser.oxpassword = BINARY MD5( CONCAT( ".$oDb->quote( $sPassword ).", UNHEX( oxuser.oxpasssalt ) ) )  and ";
-        $sQ .= "oxuser.oxcustnr = 1  ";
-        $sQ .= "$sShopSelect ";
-
-        $this->assertEquals( $sQ, $oUser->UNITgetLoginQuery( 1, $sPassword, $sShopID, $blAdmin ) );
-
-        // admin
-        //
-
-        $sQ  = "select {$sWhat} from oxuser where oxuser.oxactive = 1 and  ";
-        $sQ .= "oxuser.oxpassword = BINARY MD5( CONCAT( ".$oDb->quote( $sPassword ).", UNHEX( oxuser.oxpasssalt ) ) )  and ";
-        $sQ .= "oxuser.oxusername = " . $oDb->quote( $sUser ) . " ";
-        $sQ .= " and ( oxrights != 'user' )  ";
-        $this->assertEquals( $sQ, $oUser->UNITgetLoginQuery( $sUser, $sPassword, $sShopID, true ) );
-
     }
 
     /**

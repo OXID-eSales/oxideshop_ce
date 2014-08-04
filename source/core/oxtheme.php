@@ -71,14 +71,10 @@ class oxTheme extends oxSuperCfg
         if ($sError) {
             throw oxNew( "oxException", $sError );
         }
-        $sParent = $this->getInfo('parentTheme');
-        if ($sParent) {
-            $this->getConfig()->saveShopConfVar("str", 'sTheme', $sParent);
-            $this->getConfig()->saveShopConfVar("str", 'sCustomTheme', $this->getId());
-        } else {
-            $this->getConfig()->saveShopConfVar("str", 'sTheme', $this->getId());
-            $this->getConfig()->saveShopConfVar("str", 'sCustomTheme', '');
-        }
+        
+        $oThemeInstaller = oxNew( 'oxThemeInstaller' );
+
+        return $oThemeInstaller->activate( $this );
     }
 
     /**

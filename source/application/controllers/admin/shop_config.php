@@ -252,6 +252,85 @@ class Shop_Config extends oxAdminDetails
     }
 
     /**
+     * Load and parse config vars from metadata.
+     * Return value is a map:
+     *      'vars'        => config variable values as array[type][name] = value
+     *      'constraints' => constraints list as array[name] = constraint
+     *      'grouping'    => grouping info as array[name] = grouping
+     *
+     * @param array $aThemeSettings settings array from theme metadata
+     *
+     * @return array
+     */
+    public function _loadMetadataConfVars($aThemeSettings)
+    {
+        $oConfig  = $this->getConfig();
+
+        $aConfVars = array(
+            "bool"    => array(),
+            "str"     => array(),
+            "arr"     => array(),
+            "aarr"    => array(),
+            "select"  => array(),
+        );
+        $aVarConstraints = array();
+        $aGrouping       = array();
+        
+        $aDbVariables = $this->loadConfVars($oConfig->getShopId(), $this->_getModuleForConfigVars());
+        
+        if ( is_array($aThemeSettings) ) {
+
+            foreach ( $aThemeSettings as $aValue ) {
+
+                $sName       = $aValue["name"];
+                $sType       = $aValue["type"];
+                $sValue = null;
+                
+                // Use getShopConfVar() instead of getConfigParam() to ensure we are fetching from the correct them.
+                // If two themes have a variable with the same name, getConfigParam() might return the wrong one.
+                if ( is_null($oConfig->getShopConfVar($sName, $oConfig->getShopId(), $this->_getModuleForConfigVars())) ) {
+                    switch ($aValue["type"]){
+                        case "arr":
+                            $sValue = $this->_arrayToMultiline( @unserialize( $aValue["value"] ) );
+                            break;
+                        case "aarr":
+                            $sValue = $this->_aarrayToMultiline( @unserialize( $aValue["value"] ) );
+                            break;
+                    }
+                    $sValue = getStr()->htmlentities( $sValue );
+                } else {
+                    $sValue = $aDbVariables['vars'][$sType][$sName];
+                }
+                
+                $sGroup      = $aValue["group"];
+
+                $sConstraints = "";
+                if ( $aValue["constraints"] ) {
+                    $sConstraints = $aValue["constraints"];
+                } elseif ( $aValue["constrains"] ) {
+                    $sConstraints = $aValue["constrains"];
+                }
+
+                $aConfVars[$sType][$sName] = $sValue;
+                $aVarConstraints[$sName]   = $this->_parseConstraint( $sType, $sConstraints );
+                if ($sGroup) {
+                    if (!isset($aGrouping[$sGroup])) {
+                        $aGrouping[$sGroup] = array($sName=>$sType);
+                    } else {
+                        $aGrouping[$sGroup][$sName] = $sType;
+                    }
+                }
+            }
+        }
+
+        return array(
+            'vars'        => $aConfVars,
+            'constraints' => $aVarConstraints,
+            'grouping'    => $aGrouping,
+        );
+    }
+    
+    /**
      * serialize constraint from type and value
      *
      * @param string $sType       variable type

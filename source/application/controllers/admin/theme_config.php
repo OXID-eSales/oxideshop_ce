@@ -52,7 +52,7 @@ class Theme_Config extends Shop_Config
             $this->_aViewData["oTheme"] =  $oTheme;
 
             try {
-                $aDbVariables = $this->loadConfVars($sShopId, $this->_getModuleForConfigVars());
+                $aDbVariables = $this->_loadMetadataConfVars($oTheme->getInfo("settings"));
                 $this->_aViewData["var_constraints"] = $aDbVariables['constraints'];
                 $this->_aViewData["var_grouping"]    = $aDbVariables['grouping'];
                 foreach ($this->_aConfParams as $sType => $sParam) {

@@ -84,6 +84,8 @@ class Integration_RestrictedAddress_RestrictedAddressTest extends OxidTestCase
             array('/application/views/azure/tpl/widget/rss.tpl'),
             array('/pkg.info'),
             array('/op.ini'),
+            array('/.htaccess'),
+            array('/.ht'),
         );
     }
 

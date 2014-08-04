@@ -117,10 +117,10 @@ class Module_Config extends Shop_Config
                 if (is_null($oConfig->getConfigParam($sName)) ) {
                     switch ($aValue["type"]){
                         case "arr":
-                            $sValue = $this->_arrayToMultiline( unserialize( $aValue["value"] ) );
+                            $sValue = $this->_arrayToMultiline( (is_array($aValue["value"])) ? $aValue["value"] : unserialize( $aValue["value"] ) );
                             break;
                         case "aarr":
-                            $sValue = $this->_aarrayToMultiline( unserialize( $aValue["value"] ) );
+                            $sValue = $this->_aarrayToMultiline( (is_array($aValue["value"])) ? $aValue["value"] : unserialize( $aValue["value"] ) );
                             break;
                     }
                     $sValue = getStr()->htmlentities( $sValue );

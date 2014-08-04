@@ -80,7 +80,6 @@ class Integration_User_loginTest extends OxidTestCase
         $oUser->load($oUser->getId());
 
         $this->assertSame($oUser->getId(), oxRegistry::getSession()->getVariable('usr'), 'User ID is missing in session.');
-        $this->assertNull(oxRegistry::getSession()->getVariable('Errors'), 'User did not logged in successfully.');
         $this->assertNotSame($this->_sOldEncodedPassword, $oUser->oxuser__oxpassword->value, 'Old and new passwords must not match.');
         $this->assertNotSame($this->_sOldSalt, $oUser->oxuser__oxpasssalt->value, 'Old and new salt must not match.');
     }
@@ -97,7 +96,6 @@ class Integration_User_loginTest extends OxidTestCase
         $oUser->load($oUser->getId());
 
         $this->assertSame($oUser->getId(), oxRegistry::getSession()->getVariable('usr'), 'User ID is missing in session.');
-        $this->assertNull(oxRegistry::getSession()->getVariable('Errors'), 'User did not logged in successfully.');
         $this->assertSame($this->_sNewEncodedPassword, $oUser->oxuser__oxpassword->value, 'Password in database must match with new password.');
         $this->assertSame($this->_sNewSalt, $oUser->oxuser__oxpasssalt->value, 'Salt in database must match with new salt.');
     }
@@ -126,7 +124,6 @@ class Integration_User_loginTest extends OxidTestCase
         $oUser->load($oUser->getId());
 
         $this->assertNull(oxRegistry::getSession()->getVariable('usr'), 'User ID should be null in session.');
-        $this->assertNotNull(oxRegistry::getSession()->getVariable('Errors'), 'Errors should be set in session.');
         $this->assertSame($sEncodedPassword, $oUser->oxuser__oxpassword->value, 'Password must be same.');
         $this->assertSame($sSalt, $oUser->oxuser__oxpasssalt->value, 'Salt must be same.');
     }

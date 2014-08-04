@@ -518,12 +518,11 @@ class oxDbMetaDataHandler extends oxSuperCfg
             $oShop = oxNew( 'oxshop' );
             $oShop->load( $sShopId );
             $oShop->setMultiShopTables( $aTables );
-            $blMultishopInherit = $oConfig->getShopConfVar( 'blMultishopInherit_oxcategories', $sShopId );
             $aMallInherit = array();
             foreach ( $aTables as $sTable ) {
                 $aMallInherit[$sTable] = $oConfig->getShopConfVar( 'blMallInherit_' . $sTable, $sShopId );
             }
-            if ( !$oShop->generateViews( $blMultishopInherit, $aMallInherit ) && $bSuccess ) {
+            if ( !$oShop->generateViews( false, $aMallInherit ) && $bSuccess ) {
                 $bSuccess = false;
             }
         }

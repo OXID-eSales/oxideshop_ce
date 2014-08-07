@@ -335,18 +335,6 @@ class oxModule extends oxSuperCfg
     }
 
     /**
-     * Get parsed modules
-     *
-     * @deprecated since v5.1.2 (2013-12-10);
-     *
-     * @return array
-     */
-    public function getAllModules()
-    {
-        return $this->getConfig()->getModulesWithExtendedClass();
-    }
-
-    /**
      * Get disabled module id's
      *
      * @deprecated since v5.1.2 (2013-12-10);
@@ -495,7 +483,8 @@ class oxModule extends oxSuperCfg
     protected function _isExtensionsActive()
     {
         $aModuleExtensions = $this->getExtensions();
-        $aInstalledExtensions = $this->getAllModules();
+
+        $aInstalledExtensions =  $this->getConfig()->getModulesWithExtendedClass();
         $iModuleExtensionsCount = $this->_countExtensions( $aModuleExtensions );
         $iActivatedModuleExtensionsCount = $this->_countActivatedExtensions( $aModuleExtensions, $aInstalledExtensions );
         $blActive = $iModuleExtensionsCount > 0 && $iActivatedModuleExtensionsCount == $iModuleExtensionsCount;

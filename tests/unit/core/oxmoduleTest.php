@@ -381,11 +381,14 @@ class Unit_Core_oxModuleTest extends OxidTestCase
      */
     public function testIsActive_shopClassExtendedByMoreThanOneClass( $aAlreadyActivatedModule, $aModuleToActivate, $blResult )
     {
-        $oModuleHandler = $this->getMock( 'oxModule', array( 'getAllModules' ) );
-        $oModuleHandler->expects( $this->once() )->method( 'getAllModules')->will( $this->returnValue( $aAlreadyActivatedModule ) );
-        $oModuleHandler->setModuleData( $aModuleToActivate );
+        $oConfig = $this->getMock('oxConfig', array('getModulesWithExtendedClass'));
+        $oConfig->expects( $this->any() )->method( 'getModulesWithExtendedClass')->will( $this->returnValue( $aAlreadyActivatedModule ) );
 
-        $this->assertSame( $blResult, $oModuleHandler->isActive(), 'Module extends shop class, so methods should return true.' );
+        $oModule = new oxModule();
+        $oModule->setModuleData( $aModuleToActivate );
+        $oModule->setConfig( $oConfig );
+
+        $this->assertSame( $blResult, $oModule->isActive(), 'Module extends shop class, so methods should return true.' );
     }
 
     public function testHasExtendClass_hasExtendedClass_true()

@@ -22,6 +22,9 @@
 
 /**
  * Object Factory implementation (oxNew() method is implemented in this class).
+ *
+ * @internal Do not make a module extension for this class.
+ * @see http://wiki.oxidforge.org/Tutorials/Do_not_extend_class_list
  */
 class oxUtilsObject
 {

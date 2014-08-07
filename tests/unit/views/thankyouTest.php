@@ -166,7 +166,6 @@ class Unit_Views_thankyouTest extends OxidTestCase
         $this->oArticle->setId('_testArt');
         $this->oArticle->oxarticles__oxprice = new oxField(15.5, oxField::T_RAW);
         $this->oArticle->oxarticles__oxshopid = new oxField(oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW);
-//        $this->oArticle->oxarticles__oxshopincl = new oxField(oxRegistry::getConfig()->getBaseShopId(), oxField::T_RAW);
         $this->oArticle->oxarticles__oxtitle = new oxField("test", oxField::T_RAW);
         $this->oArticle->oxarticles__oxstock = new oxField(0, oxField::T_RAW);
         $this->oArticle->oxarticles__oxstockflag = new oxField(2, oxField::T_RAW);

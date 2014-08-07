@@ -136,7 +136,6 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         $this->oDelSet = new oxDeliverySet();
         $this->oDelSet->setId($this->_getUId());
         $this->oDelSet->oxdeliveryset__oxshopid = new oxField($this->getConfig()->getShopId(), oxField::T_RAW);
-//        $this->oDelSet->oxdeliveryset__oxshopincl = new oxField($this->getConfig()->getShopId(), oxField::T_RAW);
         $this->oDelSet->oxdeliveryset__oxactive = new oxField(1, oxField::T_RAW);
         $this->oDelSet->oxdeliveryset__oxtitle = new oxField("Test delivery set", oxField::T_RAW);
         $this->oDelSet->save();
@@ -477,7 +476,6 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         $oDelSet = new oxDeliverySet();
         $oDelSet->setId('_'.md5(time()));
         $oDelSet->oxdeliveryset__oxshopid = new oxField( $iShopId );
-//        $oDelSet->oxdeliveryset__oxshopincl = new oxField( $iShopId );
         $oDelSet->oxdeliveryset__oxactive = new oxField( 1 );
         $oDelSet->oxdeliveryset__oxtitle  = new oxField( "UPS Standard (CH)" );
         $oDelSet->oxdeliveryset__oxpos    = new oxField( 0 );
@@ -515,7 +513,6 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         $oDelSet = new oxDeliverySet();
         $oDelSet->setId($this->_getUId());
         $oDelSet->oxdeliveryset__oxshopid = new oxField( $iShopId );
-//        $oDelSet->oxdeliveryset__oxshopincl = new oxField( $iShopId );
         $oDelSet->oxdeliveryset__oxactive = new oxField( 1 );
         $oDelSet->oxdeliveryset__oxtitle  = new oxField( "deutschland_test" );
         $oDelSet->oxdeliveryset__oxpos    = new oxField( 0 );
@@ -561,7 +558,6 @@ class Unit_Core_oxpaymentlistTest extends OxidTestCase
         $oDelSet = new oxDeliverySet();
         $oDelSet->load( 'oxidstandard' );
         $oDelSet->oxdeliveryset__oxshopid = new oxField( $iShopId );
-//        $oDelSet->oxdeliveryset__oxshopincl = new oxField( $iShopId );
         $oDelSet->oxdeliveryset__oxactive = new oxField( 1 );
         $oDelSet->oxdeliveryset__oxtitle  = new oxField( "UPS Standard (Inland)" );
         $oDelSet->oxdeliveryset__oxpos    = new oxField( 1 );

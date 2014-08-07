@@ -395,7 +395,6 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
         $oPriceCategory->oxcategories__oxrootid    = $oPriceCategory->getId();
         $oPriceCategory->oxcategories__oxactive    = new oxField( 1 );
         $oPriceCategory->oxcategories__oxshopid    = new oxField( $myConfig->getBaseShopId() );
-//        $oPriceCategory->oxcategories__oxshopincl  = new oxField( $myConfig->getBaseShopId() );
         $oPriceCategory->oxcategories__oxtitle     = new oxField( "Test Price Category DE" );
         $oPriceCategory->oxcategories__oxpricefrom = new oxField( 0 );
         $oPriceCategory->oxcategories__oxpriceto   = new oxField( 999 );
@@ -487,7 +486,6 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
         $oPriceCategory->oxcategories__oxrootid    = $oPriceCategory->getId();
         $oPriceCategory->oxcategories__oxactive    = new oxField( 1 );
         $oPriceCategory->oxcategories__oxshopid    = new oxField( $myConfig->getBaseShopId() );
-//        $oPriceCategory->oxcategories__oxshopincl  = new oxField( $myConfig->getBaseShopId() );
         $oPriceCategory->oxcategories__oxtitle     = new oxField( "Test Price Category DE" );
         $oPriceCategory->oxcategories__oxpricefrom = new oxField( 0 );
         $oPriceCategory->oxcategories__oxpriceto   = new oxField( 999 );

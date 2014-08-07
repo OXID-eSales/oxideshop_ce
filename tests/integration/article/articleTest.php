@@ -45,20 +45,17 @@ class Integration_Article_ArticleTest extends OxidTestCase
         $oProduct = new oxArticle();
         $oProduct->setId('_testArticleParent');
         $oProduct->oxarticles__oxshopid = new oxField( 1 );
-//        $oProduct->oxarticles__oxshopincl = new oxField( 1 );
         $oProduct->save();
 
         $oProduct = new oxArticle();
         $oProduct->setId('_testArticleChild1');
         $oProduct->oxarticles__oxshopid = new oxField( 1 );
-//        $oProduct->oxarticles__oxshopincl = new oxField( 1 );
         $oProduct->oxarticles__oxparentid = new oxField( '_testArticleParent' );
         $oProduct->save();
 
         $oProduct = new oxArticle();
         $oProduct->setId('_testArticleChild2');
         $oProduct->oxarticles__oxshopid = new oxField( 1 );
-//        $oProduct->oxarticles__oxshopincl = new oxField( 1 );
         $oProduct->oxarticles__oxparentid = new oxField( '_testArticleParent' );
         $oProduct->save();
 
@@ -90,7 +87,6 @@ class Integration_Article_ArticleTest extends OxidTestCase
         $oProduct = new oxArticle();
         $oProduct->setId('_testArticleParent');
         $oProduct->oxarticles__oxshopid = new oxField( 1 );
-//        $oProduct->oxarticles__oxshopincl = new oxField( 1 );
         foreach( $aParentFields as $sField ) {
             $oProduct->$sField = new oxField(1);
         }
@@ -99,7 +95,6 @@ class Integration_Article_ArticleTest extends OxidTestCase
         $oProduct = new oxArticle();
         $oProduct->setId('_testArticleChild');
         $oProduct->oxarticles__oxshopid = new oxField( 1 );
-//        $oProduct->oxarticles__oxshopincl = new oxField( 1 );
         $oProduct->oxarticles__oxparentid = new oxField( '_testArticleParent' );
         $oProduct->save();
 
@@ -121,7 +116,6 @@ class Integration_Article_ArticleTest extends OxidTestCase
         $oProduct = new oxArticle();
         $oProduct->setId('_testArticleParent');
         $oProduct->oxarticles__oxshopid = new oxField( 1 );
-//        $oProduct->oxarticles__oxshopincl = new oxField( 1 );
         foreach( $aParentFields as $sField ) {
             $oProduct->$sField = new oxField(1);
         }
@@ -130,7 +124,6 @@ class Integration_Article_ArticleTest extends OxidTestCase
         $oProduct = new oxArticle();
         $oProduct->setId('_testArticleChild');
         $oProduct->oxarticles__oxshopid = new oxField( 1 );
-//        $oProduct->oxarticles__oxshopincl = new oxField( 1 );
         $oProduct->oxarticles__oxparentid = new oxField( '_testArticleParent' );
         $oProduct->save();
 

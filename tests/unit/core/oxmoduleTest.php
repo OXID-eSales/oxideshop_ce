@@ -424,23 +424,6 @@ class Unit_Core_oxModuleTest extends OxidTestCase
         $this->assertFalse( $oModuleHandler->hasExtendClass(), 'Module has no extended class, so methods should return false.' );
     }
 
-    /**
-     * oxModule::getDisabledModules() test case
-     */
-    public function testGetDisabledModules()
-    {
-        $aDisabledModules = array(
-            'testExt1',
-            'testExt2'
-        );
-
-        $this->getConfig()->setConfigParam( "aDisabledModules", $aDisabledModules );
-
-        $oModule = new oxModule();
-
-        $this->assertEquals( $aDisabledModules, $oModule->getDisabledModules() );
-    }
-
     public function providerGetMetadataPath()
     {
         return array(

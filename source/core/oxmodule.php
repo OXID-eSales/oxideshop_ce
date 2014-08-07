@@ -335,75 +335,13 @@ class oxModule extends oxSuperCfg
     }
 
     /**
-     * Get disabled module id's
-     *
-     * @deprecated since v5.1.2 (2013-12-10);
-     *
-     * @return array
-     */
-    public function getDisabledModules()
-    {
-        return $this->getConfig()->getConfigParam('aDisabledModules');
-    }
-
-    /**
      * Get module id's with path
-     *
-     * @deprecated since v5.1.2 (2013-12-10);
      *
      * @return array
      */
     public function getModulePaths()
     {
         return $this->getConfig()->getConfigParam('aModulePaths');
-    }
-
-    /**
-     * Get module template files
-     *
-     * @deprecated since v5.2.0 (2014-02-06);
-     *
-     * @return array
-     */
-    public function getModuleTemplates()
-    {
-        return (array) $this->getConfig()->getConfigParam('aModuleTemplates');
-    }
-
-    /**
-     * Get module files
-     *
-     * @deprecated since v5.2.0 (2014-02-06);
-     *
-     * @return array
-     */
-    public function getModuleFiles()
-    {
-        return (array) $this->getConfig()->getConfigParam('aModuleFiles');
-    }
-
-    /**
-     * Get module versions
-     *
-     * @deprecated since v5.2.0 (2014-02-06);
-     *
-     * @return array
-     */
-    public function getModuleVersions()
-    {
-        return (array) $this->getConfig()->getConfigParam('aModuleVersions');
-    }
-
-    /**
-     * Get module events
-     *
-     * @deprecated since v5.2.0 (2014-02-06);
-     *
-     * @return array
-     */
-    public function getModuleEvents()
-    {
-        return (array) $this->getConfig()->getConfigParam('aModuleEvents');
     }
 
     /**

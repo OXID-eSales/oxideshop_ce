@@ -441,6 +441,7 @@ class oxUtilsObject
                         $this->_disableModule( $sModule );
                     } else {
                         //to avoid problems with unitest and only throw a exception if class does not exists MAFI
+                        /** @var oxSystemComponentException $oEx */
                         $oEx = oxNew( "oxSystemComponentException" );
                         $oEx->setMessage("EXCEPTION_SYSTEMCOMPONENT_CLASSNOTFOUND");
                         $oEx->setComponent( $sModuleClass );

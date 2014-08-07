@@ -557,10 +557,12 @@ class oxERPType
      */
     protected function _preAssignObject($oShopObject, $aData, $blAllowCustomShopId)
     {
+        /*
             if (isset($aData['OXSHOPID'])) {
                 $aData['OXSHOPID'] = 'oxbaseshop';
             }
 
+        */
 
         if (isset($aData['OXSHOPID'])) {
             $aData['OXSHOPID'] = oxRegistry::getConfig()->getShopId();

@@ -388,51 +388,6 @@ class Unit_Core_oxModuleTest extends OxidTestCase
         $this->assertSame( $blResult, $oModuleHandler->isActive(), 'Module extends shop class, so methods should return true.' );
     }
 
-    /**
-     * oxModule::isExtended() test case,
-     *
-     * @return null
-     */
-    public function testIsExtendedNot()
-    {
-        $oModule = $this->getProxyClass('oxmodule');
-        $aExtend  = array('extend' => array());
-        $oModule->setNonPublicVar( "_aModule", $aExtend );
-        $oModule->setNonPublicVar( "_blMetadata", true );
-
-        $this->assertFalse($oModule->isExtended());
-    }
-
-    /**
-     * oxModule::isExtended() test case,
-     *
-     * @return null
-     */
-    public function testIsExtendedYes()
-    {
-        $oModule = $this->getProxyClass('oxmodule');
-        $aExtend  = array('extend' => array('oxtest1' => 'test1/mytest1',));
-        $oModule->setNonPublicVar( "_aModule", $aExtend );
-        $oModule->setNonPublicVar( "_blMetadata", true );
-
-        $this->assertTrue($oModule->isExtended());
-    }
-
-    /**
-     * oxModule::isExtended() test case,no metadata
-     *
-     * @return null
-     */
-    public function testIsExtendedNotNoMeadata()
-    {
-        $oModule = $this->getProxyClass('oxmodule');
-        $aExtend  = array('extend' => array());
-        $oModule->setNonPublicVar( "_aModule", $aExtend );
-        $oModule->setNonPublicVar( "_blMetadata", false );
-
-        $this->assertFalse($oModule->isExtended());
-    }
-
     public function testHasExtendClass_hasExtendedClass_true()
     {
         $oModuleHandler = $this->getProxyClass( 'oxmodule') ;

@@ -278,23 +278,6 @@ class oxModule extends oxSuperCfg
         return $this->_blMetadata;
     }
 
-
-    /**
-     * Build module chains from nested array
-     *
-     * @param array $aModuleArray Module array (nested format)
-     *
-     * @deprecated since v5.2.0 (2014-02-06); use oxModuleInstaller::buildModuleChains().
-     *
-     * @return array
-     */
-    public function buildModuleChains($aModuleArray)
-    {
-        $oModuleInstaller = oxNew( 'oxModuleInstaller' );
-
-        return $oModuleInstaller->buildModuleChains( $aModuleArray );
-    }
-
     /**
      * Merge two nested module arrays together so that the values of
      * $aAddModuleArray are appended to the end of the $aAllModuleArray

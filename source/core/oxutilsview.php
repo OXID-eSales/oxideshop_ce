@@ -453,7 +453,9 @@ class oxUtilsView extends oxSuperCfg
         if ( file_exists($sFileName) && is_readable($sFileName) ) {
             return file_get_contents($sFileName);
         } else {
-            throw oxNew( "oxException", "Template block file ($sFileName) not found for '$sModule' module." );
+            /** @var oxException $oException */
+            $oException = oxNew( "oxException", "Template block file ($sFileName) not found for '$sModule' module." );
+            throw $oException;
         }
     }
 

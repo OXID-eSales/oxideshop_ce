@@ -110,20 +110,6 @@ class oxModule extends oxSuperCfg
     }
 
     /**
-     * Load Extension from metadata
-     *
-     * @param string $sModuleId Module ID
-     *
-     * @deprecated since v5.2.0 (2014-02-06); Use oxModule::load().
-     *
-     * @return bool
-     */
-    public function loadModule( $sModuleId )
-    {
-        return $this->load( $sModuleId );
-    }
-
-    /**
      * Get module description
      *
      * @return string
@@ -259,23 +245,6 @@ class oxModule extends oxSuperCfg
         }
 
         return $blActive;
-    }
-
-    /**
-     * Check if extension has any extended classes
-     *
-     * @deprecated since v5.1.2 (2013-12-10); Naming changed use function hasExtendClass().
-     * @deprecated use together with hasMetadata if needed.
-     *
-     * @return bool
-     */
-    public function isExtended()
-    {
-        if ( $this->hasMetadata() && $this->hasExtendClass() ) {
-            return true;
-        }
-
-        return false;
     }
 
     /**

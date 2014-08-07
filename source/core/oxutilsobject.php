@@ -179,9 +179,7 @@ class oxUtilsObject
             $sActionClassName = $this->getClassName( $sClassName );
             //expect __autoload() (oxfunctions.php) to do its job when class_exists() is called
             if ( !class_exists( $sActionClassName ) ) {
-                /**
-                * @var $oEx oxSystemComponentException
-                */
+                /** @var $oEx oxSystemComponentException */
                 $oEx = oxNew( "oxSystemComponentException" );
                 $oEx->setMessage('EXCEPTION_SYSTEMCOMPONENT_CLASSNOTFOUND');
                 $oEx->setComponent($sClassName);
@@ -235,9 +233,7 @@ class oxUtilsObject
                     $oObj = $oRo->newInstanceArgs( $aParams );
                 } catch ( ReflectionException $oRefExcp ) {
                     // something went wrong?
-                    /**
-                     * @var $oEx oxSystemComponentException
-                     */
+                    /** @var $oEx oxSystemComponentException */
                     $oEx = oxNew( "oxSystemComponentException" );
                     $oEx->setMessage( $oRefExcp->getMessage() );
                     $oEx->setComponent( $sClassName );

@@ -279,62 +279,6 @@ class oxModule extends oxSuperCfg
     }
 
     /**
-     * Merge two nested module arrays together so that the values of
-     * $aAddModuleArray are appended to the end of the $aAllModuleArray
-     *
-     * @param array $aAllModuleArray All Module array (nested format)
-     * @param array $aAddModuleArray Added Module array (nested format)
-     *
-     * @deprecated since v5.2.0 (2014-02-06); Moved to oxModuleInstaller
-     *
-     * @return array
-     */
-    public function mergeModuleArrays($aAllModuleArray, $aAddModuleArray)
-    {
-        if ( is_array( $aAllModuleArray ) && is_array( $aAddModuleArray ) ) {
-            foreach ( $aAddModuleArray as $sClass => $aModuleChain ) {
-                if ( !is_array( $aModuleChain ) ) {
-                    $aModuleChain = array( $aModuleChain );
-                }
-                if ( isset( $aAllModuleArray[$sClass] ) ) {
-                    foreach ( $aModuleChain as $sModule ) {
-                        if ( !in_array( $sModule, $aAllModuleArray[$sClass] ) ) {
-                            $aAllModuleArray[$sClass][] = $sModule;
-                        }
-                    }
-                } else {
-                    $aAllModuleArray[$sClass] = $aModuleChain;
-                }
-            }
-        }
-
-        return $aAllModuleArray;
-    }
-
-    /**
-     * Filter module array using module id
-     *
-     * @param array  $aModules  Module array (nested format)
-     * @param string $sModuleId Module id/folder name
-     *
-     * @deprecated since v5.2.0 (2014-02-06);
-     *
-     * @return array
-     */
-    public function filterModuleArray( $aModules, $sModuleId )
-    {
-        $aFilteredModules = array();
-        foreach ($aModules as $sClass => $aExtend) {
-            foreach ($aExtend as $sExtendPath) {
-                if ( strpos($sExtendPath, $sModuleId."/" ) === 0 ) {
-                    $aFilteredModules[$sClass][] = $sExtendPath;
-                }
-            }
-        }
-        return $aFilteredModules;
-    }
-
-    /**
      * Get full path to module metadata file.
      *
      * @return string

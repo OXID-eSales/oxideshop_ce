@@ -45,10 +45,6 @@ class Unit_Admin_CategoryMainAjaxTest extends OxidTestCase
             $this->setObject2CategoryViewTable('oxobject2category');
             $this->setShopIdTest('oxbaseshop');
 
-            // oxDb::getDb()->execute( "insert into oxcategories set oxid='_testCategory', oxtitle='_testCategory', oxshopid='".$this->getShopIdTest()."'" );
-            // oxDb::getDb()->execute( "insert into oxobject2category set oxid='_testObject2Category', oxcatnid='_testCategory', oxobjectid = '_testObject'" );
-
-
         $this->addToDatabase("insert into oxarticles set oxid='_testObjectRemove1', oxtitle='_testArticle1', oxshopid='" . $this->getShopIdTest() . "'", 'oxarticles');
         $this->addToDatabase("insert into oxarticles set oxid='_testObjectRemove2', oxtitle='_testArticle2', oxshopid='" . $this->getShopIdTest() . "'", 'oxarticles');
         $this->addToDatabase("insert into oxarticles set oxid='_testObjectRemove3', oxtitle='_testArticle3', oxshopid='" . $this->getShopIdTest() . "'", 'oxarticles');
@@ -56,10 +52,6 @@ class Unit_Admin_CategoryMainAjaxTest extends OxidTestCase
         $this->addToDatabase("insert into oxobject2category set oxid='_testObject2CategoryRemove1', oxcatnid='_testCategory', oxobjectid = '_testObjectRemove1'", 'oxcategories');
         $this->addToDatabase("insert into oxobject2category set oxid='_testObject2CategoryRemove2', oxcatnid='_testCategory', oxobjectid = '_testObjectRemove2'", 'oxcategories');
         $this->addToDatabase("insert into oxobject2category set oxid='_testObject2CategoryRemove3', oxcatnid='_testCategory', oxobjectid = '_testObjectRemove3'", 'oxcategories');
-
-        //     oxDb::getDb()->execute( "insert into oxobject2category set oxid='_testObject2CategoryUpdateDate', oxcatnid='_testCategory', oxobjectid = '_testObjectUpdateDate'" );
-        //    oxDb::getDb()->execute( "insert into oxobject2category set oxid='_testObject2CategoryDefault1', oxcatnid='_testCategory1', oxobjectid = '_testObjectDefault'" );
-        //    oxDb::getDb()->execute( "insert into oxobject2category set oxid='_testObject2CategoryDefault2', oxcatnid='_testCategory2', oxobjectid = '_testObjectDefault'" );
     }
 
     /**

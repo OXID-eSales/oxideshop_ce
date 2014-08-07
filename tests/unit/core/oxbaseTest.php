@@ -2337,4 +2337,52 @@ class Unit_Core_oxbaseTest extends OxidTestCase
         $this->assertTrue( in_array( "oxtitle", $aFieldNames ) );
     }
 
+
+    /**
+     * With #4536 bug fix access to any article from any subshop was added,
+     * but it should only be accessible when shared basket is enabled.
+     *
+     * Tests if item is loaded from another subshop.
+     * This test is important for certain cases when item is loaded from different subshops
+     */
+    public function testLoadItemFromAnyShopWhenSharedBasketEnabled()
+    {
+        $iShopId = 2;
+
+        $oConfig = $this->getConfig();
+        $oConfig->setConfigParam('blMallSharedBasket', true);
+        $oConfig->setShopId( $iShopId );
+
+        $oBaseObject = oxNew("oxI18n");
+        $oBaseObject->init("oxarticles");
+
+        $this->assertTrue($oBaseObject->load( "1126" ));
+        $this->assertEquals("Bar-Set ABSINTH", $oBaseObject->oxarticles__oxtitle->value);
+    }
+
+    /**
+     * Test use Master DB
+     */
+    public function testUseMaster()
+    {
+            return;
+
+        $oBase = new oxBase();
+
+        //default false
+        $this->assertFalse( $oBase->getUseMaster() );
+
+        //set master
+        $oBase->setUseMaster();
+        $this->assertTrue( $oBase->getUseMaster() );
+
+        //set slave
+        $oBase->setUseMaster( false );
+        $this->assertFalse( $oBase->getUseMaster() );
+
+        //set master
+        $oBase->setUseMaster( true );
+        $this->assertTrue( $oBase->getUseMaster() );
+    }
+    /* endif; */
 }

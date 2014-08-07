@@ -374,6 +374,7 @@ class Unit_Core_oxUtilsViewTest extends OxidTestCase
                                                     9 => 'false',
                                                     10 => 'null',
                                                     11 => 'XML_ELEMENT_NODE',
+                                                    12 => 'is_int',
                                                   ),
                                                   'INCLUDE_ANY' => false,
                                                   'PHP_TAGS' => false,

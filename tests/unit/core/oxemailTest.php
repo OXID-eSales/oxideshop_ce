@@ -86,7 +86,6 @@ class Unit_Core_oxemailTest extends OxidTestCase
         $this->_oArticle->oxarticles__oxremindactive = new oxField('1', oxField::T_RAW);
         $this->_oArticle->oxarticles__oxstock = new oxField('9', oxField::T_RAW);
 
-
         $this->_oArticle->save();
 
         oxDb::getDb()->Execute( "Insert into oxorderarticles (`oxid`, `oxartid`, `oxamount`, `oxtitle`, `oxartnum`)

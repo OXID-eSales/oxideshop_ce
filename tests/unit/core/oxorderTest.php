@@ -3369,7 +3369,6 @@ class Unit_Core_oxorderTest extends OxidTestCase
         $oDiscount->setAdminMode( false );
         $oDiscount->setId( "_testDiscountId" );
         $oDiscount->oxdiscount__oxshopid   = new oxField( $sShopId );
-//        $oDiscount->oxdiscount__oxshopincl = new oxField( 1 );
         $oDiscount->oxdiscount__oxactive   = new oxField( 1 );
         $oDiscount->oxdiscount__oxtitle    = new oxField( "Test discount" );
         $oDiscount->oxdiscount__oxamount   = new oxField( 1 );

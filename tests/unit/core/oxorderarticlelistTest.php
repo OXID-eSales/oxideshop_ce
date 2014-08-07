@@ -53,7 +53,6 @@ class Unit_Core_oxorderarticlelistTest extends OxidTestCase
         $oArticle->oxarticles__oxstock = new oxField('10', oxField::T_RAW);
         $oArticle->oxarticles__oxshopid = new oxField(oxRegistry::getConfig()->getShopId(), oxField::T_RAW);
 
-
         $oArticle->save();
     }
 

@@ -68,7 +68,6 @@ class Unit_Core_oxVatSelectorTest extends OxidTestCase
         // assigning article to category
         $oO2Group = oxNew( 'oxobject2category' );
         $oO2Group->oxobject2category__oxshopid = new oxField(oxRegistry::getConfig()->getShopId(), oxField::T_RAW);
-//        $oO2Group->oxobject2category__oxshopincl = new oxField(oxRegistry::getConfig()->getShopId(), oxField::T_RAW);
         $oO2Group->oxobject2category__oxobjectid = new oxField($this->oArticle->getId(), oxField::T_RAW);
         $oO2Group->oxobject2category__oxcatnid = new oxField($this->oCategory->getId(), oxField::T_RAW);
         $oO2Group->save();

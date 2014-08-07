@@ -83,8 +83,8 @@ class Integration_Modules_ModuleExtensionSortTest extends BaseModuleTestCase
         $oModule = new oxModule();
         $oModule->load( $sModule );
 
-        $oModule->deactivate();
-        $oModule->activate();
+        $this->_deactivateModule($oModule);
+        $this->_activateModule($oModule);
 
         $oValidator = new Validator( oxRegistry::getConfig() );
 

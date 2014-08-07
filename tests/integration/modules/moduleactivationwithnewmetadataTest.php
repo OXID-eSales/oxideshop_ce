@@ -50,9 +50,12 @@ class Integration_Modules_ModuleActivationWithNewMetaDataTest extends BaseModule
 
         $oModule = new oxModule();
         $oModule->load( $sModule );
-        $oModule->deactivate();
+
+        $this->_deactivateModule($oModule);
+
         $oModule->setModuleData( $aMetaData );
-        $oModule->activate();
+
+        $this->_activateModule($oModule);
 
         $this->_runAsserts( $aResultToAsserts, $sModule );
     }

@@ -49,8 +49,7 @@ class Integration_Modules_ModuleDeactivationTest extends BaseModuleTestCase
         $oEnvironment->prepare( $aInstallModules );
 
         $oModule = new oxModule();
-        $oModule->load( $sModuleId );
-        $oModule->deactivate();
+        $this->_deactivateModule($oModule, $sModuleId);
 
         $this->_runAsserts( $aResultToAssert, $sModuleId );
     }

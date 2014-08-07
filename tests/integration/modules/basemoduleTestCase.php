@@ -37,6 +37,44 @@ class BaseModuleTestCase extends OxidTestCase
     }
 
     /**
+     * Activates module.
+     *
+     * @param oxModule $oModule
+     * @param string $sModuleId
+     */
+    protected function _activateModule($oModule, $sModuleId = null)
+    {
+        if ($sModuleId) {
+            $oModule->load($sModuleId);
+        }
+        /** @var oxModuleCache $oModuleCache */
+        $oModuleCache = oxNew( 'oxModuleCache', $oModule );
+        /** @var oxModuleInstaller $oModuleInstaller */
+        $oModuleInstaller = oxNew( 'oxModuleInstaller', $oModuleCache );
+
+        $oModuleInstaller->activate($oModule);
+    }
+
+    /**
+     * Deactivates module.
+     *
+     * @param oxModule $oModule
+     * @param string $sModuleId
+     */
+    protected function _deactivateModule($oModule, $sModuleId = null)
+    {
+        if ($sModuleId) {
+            $oModule->load($sModuleId);
+        }
+        /** @var oxModuleCache $oModuleCache */
+        $oModuleCache = oxNew( 'oxModuleCache', $oModule );
+        /** @var oxModuleInstaller $oModuleInstaller */
+        $oModuleInstaller = oxNew( 'oxModuleInstaller', $oModuleCache );
+
+        $oModuleInstaller->deactivate($oModule);
+    }
+
+    /**
      * Runs all asserts
      *
      * @param $aExpectedResult

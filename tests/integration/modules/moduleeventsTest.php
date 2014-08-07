@@ -56,10 +56,10 @@ class Integration_Modules_ModuleEventsTest extends BaseModuleTestCase
         $oModule = new oxModule();
         $oModule->load( 'with_events' );
 
-        $oModule->deactivate();
+        $this->_deactivateModule($oModule);
         $oConfig->setConfigParam('sTestActivateEvent', '_removed_');
 
-        $oModule->activate();
+        $this->_activateModule($oModule);
 
         $sState = $oConfig->getConfigParam('sTestActivateEvent');
         $this->assertEquals( "Activate", $sState, 'onActivate event was not called on second activation.');
@@ -81,7 +81,7 @@ class Integration_Modules_ModuleEventsTest extends BaseModuleTestCase
         $oModule = new oxModule();
         $oModule->load( 'with_events' );
 
-        $oModule->deactivate();
+        $this->_deactivateModule($oModule);
 
         $sState = $oConfig->getConfigParam('sTestDeactivateEvent');
         $this->assertEquals( "Deactivate", $sState, 'onDeactivate event was not called.');

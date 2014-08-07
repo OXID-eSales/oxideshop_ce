@@ -100,9 +100,19 @@ class Environment
     {
         $oModule = new oxModule();
         foreach ( $aModules as $sModuleId ) {
-            if ( !$oModule->load( $sModuleId ) || !$oModule->activate() ) {
+            if ($oModule->load( $sModuleId ) ) {
+                /** @var oxModuleCache $oModuleCache */
+                $oModuleCache = oxNew( 'oxModuleCache', $oModule );
+                /** @var oxModuleInstaller $oModuleInstaller */
+                $oModuleInstaller = oxNew( 'oxModuleInstaller', $oModuleCache );
+
+                if ( !$oModuleInstaller->activate($oModule) ) {
+                    throw new Exception( "Module $sModuleId was not activated." );
+                }
+            } else {
                 throw new Exception( "Module $sModuleId was not activated." );
             }
+
         }
     }
 

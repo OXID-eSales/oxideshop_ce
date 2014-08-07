@@ -96,8 +96,7 @@ class Integration_Modules_ModuleIsActiveTest extends BaseModuleTestCase
         $oModule = new oxModule();
 
         foreach( $aDeactivateModules as $sModule){
-            $oModule->load( $sModule );
-            $oModule->deactivate();
+            $this->_deactivateModule($oModule, $sModule);
         }
 
         //assertion

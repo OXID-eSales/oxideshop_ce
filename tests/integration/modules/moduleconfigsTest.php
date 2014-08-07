@@ -68,8 +68,8 @@ class Integration_Modules_ModuleConfigsTest extends BaseModuleTestCase
 
         $this->_changeConfiguration( $sModuleId, $aConfigsToChange );
 
-        $oModule->deactivate();
-        $oModule->activate();
+        $this->_deactivateModule($oModule);
+        $this->_activateModule($oModule);
 
         $this->_runAsserts( $aResultToAsserts, $sModuleId );
     }

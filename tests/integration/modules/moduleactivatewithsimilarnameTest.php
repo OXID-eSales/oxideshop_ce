@@ -45,13 +45,11 @@ class Integration_Modules_ModuleActivateWithSimilarNameTest extends BaseModuleTe
 
         foreach ( $aInstallModules as $sModule ){
             $oModule = new oxModule();
-            $oModule->load( $sModule );
-            $oModule->deactivate();
+            $this->_deactivateModule($oModule, $sModule);
         }
 
         $oModule = new oxModule();
-        $oModule->load( $sReactivateModule );
-        $oModule->activate();
+        $this->_activateModule($oModule, $sReactivateModule);
 
         $this->_runAsserts( $aResultToAssert );
     }

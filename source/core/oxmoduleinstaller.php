@@ -21,8 +21,10 @@
  */
 
 /**
- * Class handling shop module list.
+ * Modules installer class.
  *
+ * @internal Do not make a module extension for this class.
+ * @see http://wiki.oxidforge.org/Tutorials/Do_not_extend_class_list
  */
 class oxModuleInstaller extends oxSuperCfg
 {

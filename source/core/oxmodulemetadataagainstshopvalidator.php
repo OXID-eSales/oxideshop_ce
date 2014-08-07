@@ -20,6 +20,13 @@
  * @version   OXID eShop CE
  */
 
+/**
+ * Module metadata equivalence with saved shop configuration validator class.
+ * Validates metadata contents and checks if it was not changed after module activation.
+ *
+ * @internal Do not make a module extension for this class.
+ * @see http://wiki.oxidforge.org/Tutorials/Do_not_extend_class_list
+ */
 class oxModuleMetadataAgainstShopValidator implements oxIModuleValidator
 {
     /**

@@ -1482,7 +1482,6 @@ class oxBase extends oxSuperCfg
         $this->_aFieldNames[$sName] = 0;
     }
 
-
     /**
      * Returns -1, means object is not multi language
      *

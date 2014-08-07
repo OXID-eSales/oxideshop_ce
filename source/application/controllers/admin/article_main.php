@@ -454,9 +454,10 @@ class Article_Main extends oxAdminDetails
     protected function _copyCategories( $sOldId, $sNewId )
     {
         $myUtilsObject = oxUtilsObject::getInstance();
-        $oShopMetaData = oxRegistry::get("oxShopMetaData");
         $oDb = oxDb::getDb();
 
+        $myConfig  = $this->getConfig();
+        $sShopId   = $myConfig->getShopId();
 
         $sO2CView = getViewName( 'oxobject2category' );
         $sQ = "select oxcatnid, oxtime from {$sO2CView} where oxobjectid = ".$oDb->quote( $sOldId );

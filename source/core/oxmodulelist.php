@@ -53,18 +53,6 @@ class oxModuleList extends oxSuperCfg
     /**
      * Get parsed modules
      *
-     * @deprecated since v5.1.2 (2013-12-10); Naming changed use function getModulesWithExtendedClass().
-     *
-     * @return array
-     */
-    public function getAllModules()
-    {
-        return $this->getModulesWithExtendedClass();
-    }
-
-    /**
-     * Get parsed modules
-     *
      * @return array
      */
     public function getModulesWithExtendedClass()

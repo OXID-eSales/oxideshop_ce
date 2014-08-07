@@ -278,46 +278,6 @@ class oxModule extends oxSuperCfg
         return $this->_blMetadata;
     }
 
-    /**
-     * Activate extension by merging module class inheritance information with shop module array
-     *
-     * @deprecated since v5.2.0 (2014-02-06); Use oxModuleInstaller::activate().
-     *
-     * @return bool
-     */
-    public function activate()
-    {
-        /** @var oxModuleCache $oModuleCache */
-        $oModuleCache = oxNew( 'oxModuleCache', $this );
-        /** @var oxModuleInstaller $oModuleInstaller */
-        $oModuleInstaller = oxNew( 'oxModuleInstaller', $oModuleCache );
-
-        return $oModuleInstaller->activate( $this );
-    }
-
-    /**
-     * Deactivate extension by adding disable module class information to disabled module array
-     *
-     * @param string $sModuleId Module Id
-     *
-     * @deprecated since v5.2.0 (2014-02-06); Use oxModuleInstaller::deactivate().
-     *
-     * @return bool
-     */
-    public function deactivate( $sModuleId = null )
-    {
-        if ( !is_null( $sModuleId ) ) {
-            $oModule = oxNew( 'oxModule' );
-            $oModule->load( $sModuleId );
-        } else {
-            $oModule = $this;
-        }
-        $oModuleCache = oxNew( 'oxModuleCache', $oModule );
-        $oModuleInstaller = oxNew( 'oxModuleInstaller', $oModuleCache );
-
-        return $oModuleInstaller->deactivate( $oModule );
-    }
-
 
     /**
      * Build module chains from nested array

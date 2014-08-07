@@ -375,7 +375,14 @@ class oxUtilsObject
         $oModule = oxNew("oxModule");
         $sModuleId = $oModule->getIdByPath( $sModule );
         $oModule->load( $sModuleId );
-        $oModule->deactivate();
+
+        /** @var oxModuleCache $oModuleCache */
+        $oModuleCache = oxNew( 'oxModuleCache', $oModule );
+        /** @var oxModuleInstaller $oModuleInstaller */
+        $oModuleInstaller = oxNew( 'oxModuleInstaller', $oModuleCache );
+
+        $oModuleInstaller->deactivate($oModule);
+
     }
     /**
      * Creates middle classes if needed.

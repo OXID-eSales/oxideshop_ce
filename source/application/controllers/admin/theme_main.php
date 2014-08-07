@@ -85,6 +85,7 @@ class Theme_Main extends oxAdminDetails
     public function setTheme()
     {
         $sTheme = $this->getEditObjectId();
+        /** @var oxTheme $oTheme */
         $oTheme = oxNew('oxtheme');
         if (!$oTheme->load($sTheme)) {
             oxRegistry::get("oxUtilsView")->addErrorToDisplay( oxNew( "oxException", 'EXCEPTION_THEME_NOT_LOADED') );

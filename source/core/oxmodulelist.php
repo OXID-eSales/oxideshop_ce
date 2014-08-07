@@ -588,7 +588,13 @@ class oxModuleList extends oxSuperCfg
                         //checking if this is new module and if it extends any eshop class
                         if ( !$this->_extendsClasses( $sModuleDirName ) ) {
                             // if not - marking it as disabled by default
-                            $oModule->deactivate();
+
+                            /** @var oxModuleCache $oModuleCache */
+                            $oModuleCache = oxNew( 'oxModuleCache', $oModule );
+                            /** @var oxModuleInstaller $oModuleInstaller */
+                            $oModuleInstaller = oxNew( 'oxModuleInstaller', $oModuleCache );
+
+                            $oModuleInstaller->deactivate($oModule);
                         }
                     }
                 }

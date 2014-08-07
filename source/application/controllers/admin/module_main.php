@@ -70,13 +70,19 @@ class Module_Main extends oxAdminDetails
     public function activateModule()
     {
         $sModule = $this->getEditObjectId();
+        /** @var oxModule $oModule */
         $oModule = oxNew('oxModule');
         if (!$oModule->load($sModule)) {
             oxRegistry::get("oxUtilsView")->addErrorToDisplay( new oxException('EXCEPTION_MODULE_NOT_LOADED') );
             return;
         }
         try {
-            if ( $oModule->activate() ) {
+            /** @var oxModuleCache $oModuleCache */
+            $oModuleCache = oxNew( 'oxModuleCache', $oModule );
+            /** @var oxModuleInstaller $oModuleInstaller */
+            $oModuleInstaller = oxNew( 'oxModuleInstaller', $oModuleCache );
+
+            if ( $oModuleInstaller->activate( $oModule ) ) {
                 $this->_aViewData["updatenav"] = "1";
             }
         } catch (oxException $oEx) {
@@ -93,13 +99,19 @@ class Module_Main extends oxAdminDetails
     public function deactivateModule()
     {
         $sModule = $this->getEditObjectId();
+        /** @var oxModule $oModule */
         $oModule = oxNew('oxModule');
         if (!$oModule->load($sModule)) {
             oxRegistry::get("oxUtilsView")->addErrorToDisplay( new oxException('EXCEPTION_MODULE_NOT_LOADED') );
             return;
         }
         try {
-            if ( $oModule->deactivate() ) {
+            /** @var oxModuleCache $oModuleCache */
+            $oModuleCache = oxNew( 'oxModuleCache', $oModule );
+            /** @var oxModuleInstaller $oModuleInstaller */
+            $oModuleInstaller = oxNew( 'oxModuleInstaller', $oModuleCache );
+
+            if ( $oModuleInstaller->deactivate($oModule) ) {
                 $this->_aViewData["updatenav"] = "1";
             }
         } catch (oxException $oEx) {

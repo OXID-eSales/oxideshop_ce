@@ -545,6 +545,7 @@ class oxView extends oxSuperCfg
             } else {
                 // was not executed on any level ?
                 if ( !$this->_blIsComponent ) {
+                    /** @var oxSystemComponentException $oEx */
                     $oEx = oxNew( 'oxSystemComponentException' );
                     $oEx->setMessage( 'ERROR_MESSAGE_SYSTEMCOMPONENT_FUNCTIONNOTFOUND' );
                     $oEx->setComponent( $sFunction );

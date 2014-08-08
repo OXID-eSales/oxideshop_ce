@@ -20,6 +20,12 @@
  * @version   OXID eShop CE
  */
 
+/**
+ * Class oxElement2ShopRelationsService. Acts as a service for shop relations.
+ *
+ * @internal Do not make a module extension for this class.
+ * @see http://wiki.oxidforge.org/Tutorials/Do_not_extend_class_list
+ */
 class oxElement2ShopRelationsService
 {
     /**

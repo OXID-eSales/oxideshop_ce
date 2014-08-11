@@ -1235,13 +1235,61 @@ class oxUser extends oxBase
      *
      * @return string
      */
-    protected function _getLoginQuery( $sUser, $sPassword, $sShopID, $blAdmin )
+    protected function _getLegacyLoginQuery( $sUser, $sPassword, $sShopID, $blAdmin )
     {
         $myConfig = $this->getConfig();
         $oDb = oxDb::getDb();
 
         $sUserSelect = is_numeric( $sUser ) ? "oxuser.oxcustnr = {$sUser} " : "oxuser.oxusername = " . $oDb->quote( $sUser );
         $sPassSelect = " oxuser.oxpassword = BINARY MD5( CONCAT( ".$oDb->quote( $sPassword ).", UNHEX( oxuser.oxpasssalt ) ) ) ";
+        $sShopSelect = "";
+
+
+        // admin view: can only login with higher than 'user' rights
+        if ( $blAdmin ) {
+            $sShopSelect = " and ( oxrights != 'user' ) ";
+        }
+
+        $blStagingMode = false;
+        $blDemoMode = false;
+        $sWhat = "oxid";
+            if ($myConfig->isDemoShop()) {
+                $blDemoMode = true;
+            }
+
+        $sSelect = "select $sWhat from oxuser where oxuser.oxactive = 1 and {$sPassSelect} and {$sUserSelect} {$sShopSelect} ";
+        if ( ( $blDemoMode || $blStagingMode ) && $blAdmin ) {
+            if ( $sPassword == "admin" && $sUser == "admin" ) {
+                $sSelect = "select $sWhat from oxuser where oxrights = 'malladmin' ";
+            } elseif ( $blDemoMode ) {
+                $oEx = oxNew( 'oxUserException' );
+                $oEx->setMessage( 'ERROR_MESSAGE_USER_NOVALIDLOGIN' );
+                throw $oEx;
+            }
+        }
+
+        return $sSelect;
+    }
+
+    /**
+     * Builds and returns user login query
+     *
+     * @param string $sUser     login name
+     * @param string $sPassword login password
+     * @param string $sShopID   shopid
+     * @param bool   $blAdmin   admin/non admin mode
+     *
+     * @return string
+     */
+    protected function _getLoginQuery( $sUser, $sPassword, $sShopID, $blAdmin )
+    {
+        $myConfig = $this->getConfig();
+        $oDb = oxDb::getDb();
+
+        $sSalt = $oDb->getOne("SELECT `oxpasssalt` FROM `oxuser` WHERE `oxusername` = " . $oDb->quote($sUser));
+
+        $sUserSelect = is_numeric( $sUser ) ? "oxuser.oxcustnr = {$sUser} " : "oxuser.oxusername = " . $oDb->quote( $sUser );
+        $sPassSelect = " oxuser.oxpassword = " . $oDb->quote($this->encodePassword($sPassword, $sSalt) );
         $sShopSelect = "";
 
 
@@ -1305,6 +1353,8 @@ class oxUser extends oxBase
      */
     public function login( $sUser, $sPassword, $blCookie = false)
     {
+
+
         if ( $this->isAdmin() && !count( oxRegistry::get("oxUtilsServer")->getOxCookie() ) ) {
             $oEx = oxNew( 'oxCookieException' );
             $oEx->setMessage( 'ERROR_MESSAGE_COOKIE_NOCOOKIE' );
@@ -1315,10 +1365,13 @@ class oxUser extends oxBase
         if ( $sPassword ) {
 
             $sShopID = $oConfig->getShopId();
-            $sSelect = $this->_getLoginQuery( $sUser, $sPassword, $sShopID, $this->isAdmin() );
+            $this->_dbLogin( $sUser, $sPassword, $sShopID );
+
+            /*$sSelect = $this->_getLegacyLoginQuery( $sUser, $sPassword, $sShopID, $this->isAdmin() );
 
             // load from DB
             $aData = oxDb::getDb()->getAll( $sSelect );
+
             $sOXID = @$aData[0][0];
             if ( isset( $sOXID ) && $sOXID && !@$aData[0][1] ) {
 
@@ -1327,12 +1380,16 @@ class oxUser extends oxBase
                     $oEx->setMessage( 'ERROR_MESSAGE_USER_NOVALIDLOGIN' );
                     throw $oEx;
                 }
-            }
+            }*/
         }
+
+
+
 
 
         //login successful?
         if ( $this->oxuser__oxid->value ) {
+
             // yes, successful login
 
             //resetting active user
@@ -2202,7 +2259,6 @@ class oxUser extends oxBase
         }
 
         return $oDb->getOne( $sQ );
-
     }
 
     /**
@@ -2225,5 +2281,39 @@ class oxUser extends oxBase
     public function isPriceViewModeNetto()
     {
         return (bool) $this->getConfig()->getConfigParam('blShowNetPrice');
+    }
+
+    /**
+     * @param $sUser
+     * @param $sPassword
+     * @param $sShopID
+     *
+     * @throws object
+     */
+    protected function _dbLogin( $sUser, $sPassword, $sShopID )
+    {
+        $blOldHash = false;
+        $sUserOxId = $this->_getLoginUserId( $this->_getLoginQuery( $sUser, $sPassword, $sShopID, $this->isAdmin() ) );
+
+        if( !$sUserOxId ){
+            $sUserOxId = $this->_getLoginUserId( $this->_getLegacyLoginQuery( $sUser, $sPassword, $sShopID, $this->isAdmin() ) );
+            $blOldHash = true;
+        }
+
+        if ( $sUserOxId ) {
+            if ( !$this->load( $sUserOxId ) ) {
+                $oEx = oxNew( 'oxUserException' );
+                $oEx->setMessage( 'ERROR_MESSAGE_USER_NOVALIDLOGIN' );
+                throw $oEx;
+            }elseif($blOldHash){
+                $this->setPassword($sPassword);
+                $this->save();
+            }
+        }
+    }
+
+    protected function _getLoginUserId( $sSql )
+    {
+        return oxDB::getDb()->getOne($sSql);
     }
 }

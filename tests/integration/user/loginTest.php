@@ -51,14 +51,14 @@ class Integration_User_loginTest extends OxidTestCase
      *
      * @var string
      */
-    private $_sNewEncodedPassword = 'INSERT NEW PASSWORD HERE';
+    private $_sNewEncodedPassword = 'b016e37ac8ec71449b475e84a941e3c39a27fb8f0710d4b47d6116ad6a6afcaa0c17006a4c01ffc67f3db95772fe001584cb4ce7e5bacd74198c24d1851841d5';
 
     /**
      * Salt generated with new algorithm.
      *
      * @var string
      */
-    private $_sNewSalt = 'INSERT NEW SALT HERE';
+    private $_sNewSalt = '56784f8ffc657fff84915b93e12a626e';
 
 
     public function tearDown()

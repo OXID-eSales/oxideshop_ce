@@ -32,10 +32,11 @@ class Integration_User_registrationTest extends OxidTestCase
     {
         $sUserName = $this->_sUserName;
         $sUserPassword = $this->_sUserPassword;
+
         $oCmpUser = $this->_createCmpUserObject();
 
         $this->_setUserRegistrationParametersToRequest($sUserName, $sUserPassword);
-        $this->assertSame('register?success=1', $oCmpUser->registeruser());
+        $this->assertSame('register?success=1', $oCmpUser->registerUser());
 
         return $oCmpUser->getUser()->getId();
     }
@@ -47,13 +48,17 @@ class Integration_User_registrationTest extends OxidTestCase
      */
     public function testLoginWithNewUser($sUserId)
     {
+
         $sUserName = $this->_sUserName;
         $sUserPassword = $this->_sUserPassword;
-        $oCmpUser = $this->_createCmpUserObject();
 
-        $this->assertNotSame($sUserId, oxRegistry::getSession()->getVariable('usr'), 'User ID should not be in session after logout.');
+        $oCmpUser = $this->_createCmpUserObject();
+        $oCmpUser->logout();
+        $this->assertNull(oxRegistry::getSession()->getVariable('usr'), 'User ID should not be in session after logout.');
+
         $this->_setLoginParametersToRequest($sUserName, $sUserPassword);
         $oCmpUser->login();
+
         $this->assertSame($sUserId, oxRegistry::getSession()->getVariable('usr'), 'User ID is missing in session after log in.');
     }
 
@@ -101,10 +106,9 @@ class Integration_User_registrationTest extends OxidTestCase
      */
     private function _createCmpUserObject()
     {
-        $oRegister = new register();
+        $oRegister = new Register();
         $oCmpUser = new oxcmp_user();
         $oCmpUser->setParent($oRegister);
-        $oCmpUser->logout();
 
         return $oCmpUser;
     }

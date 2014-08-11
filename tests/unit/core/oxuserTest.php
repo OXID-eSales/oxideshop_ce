@@ -2745,6 +2745,8 @@ class Unit_Core_oxUserTest extends OxidTestCase
      */
     public function testGetLoginQueryShopSelectAdmin()
     {
+        $this->markTestSkipped('should be removed');
+
         $sShopID   = "shopid";
         $oDb       = $this->getDb();
         $oUser = new oxUser();
@@ -2812,6 +2814,8 @@ class Unit_Core_oxUserTest extends OxidTestCase
      */
     public function testGetLoginQuery()
     {
+        $this->markTestSkipped( 'should be removed');
+
         $sUser     = "user";
         $sPassword = "password";
         $sShopID   = "shopid";

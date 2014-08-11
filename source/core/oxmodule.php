@@ -421,19 +421,6 @@ class oxModule extends oxSuperCfg
     }
 
     /**
-     * Get full path to module metadata file.
-     *
-     * @return string
-     */
-    public function getMetadataPath() {
-        $sModulePath = $this->getModuleFullPath();
-        if (substr($sModulePath, -1) != DIRECTORY_SEPARATOR) {
-            $sModulePath .= DIRECTORY_SEPARATOR;
-        }
-        return $sModulePath .'metadata.php';
-    }
-
-    /**
      * Get module dir
      *
      * @param string $sModuleId Module ID
@@ -464,12 +451,8 @@ class oxModule extends oxSuperCfg
      *
      * @return string
      */
-    public function getModuleFullPath( $sModuleId = null )
+    public function getModuleFullPath( $sModuleId )
     {
-        if ( !$sModuleId ) {
-            $sModuleId = $this->getId();
-        }
-
         if ( $sModuleDir = $this->getModulePath( $sModuleId ) ) {
             return $this->getConfig()->getModulesDir() . $sModuleDir;
         }

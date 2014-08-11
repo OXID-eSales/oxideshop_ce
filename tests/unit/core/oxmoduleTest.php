@@ -56,34 +56,34 @@ class Unit_Core_oxModuleTest extends OxidTestCase
      */
     public function testLoad()
     {
-        $aModule = array(
-            'id'           => 'invoicepdf',
-            'title'        => 'Invoice PDF',
-            'description'  => 'Module to export invoice PDF files.',
-            'thumbnail'    => 'picture.png',
-            'version'      => '1.0',
-            'author'       => 'OXID eSales AG',
-            'extend'       => array(
-                'oxorder' => 'oe/invoicepdf/models/invoicepdfoxorder',
-                'order_overview' => 'oe/invoicepdf/controllers/admin/invoicepdforder_overview'
-            ),
-            'files' => array(
-                'InvoicepdfBlock' => 'oe/invoicepdf/models/invoicepdfblock.php',
-                'InvoicepdfArticleSummary' => 'oe/invoicepdf/models/invoicepdfarticlesummary.php'
-            ),
-            'blocks' => array(
-                array(
-                    'template' => 'order_overview.tpl',
-                    'block'=>'admin_order_overview_export',
-                    'file'=>'views/admin/blocks/order_overview.tpl'
+            $aModule = array(
+                'id'           => 'invoicepdf',
+                'title'        => 'Invoice PDF',
+                'description'  => 'Module to export invoice PDF files.',
+                'thumbnail'    => 'picture.png',
+                'version'      => '1.0',
+                'author'       => 'OXID eSales AG',
+                'extend'       => array(
+                    'oxorder' => 'oe/invoicepdf/models/invoicepdfoxorder',
+                    'order_overview' => 'oe/invoicepdf/controllers/admin/invoicepdforder_overview'
                 ),
-            ),
-            'active' => ''
-        );
+                'files' => array(
+                    'InvoicepdfBlock' => 'oe/invoicepdf/models/invoicepdfblock.php',
+                    'InvoicepdfArticleSummary' => 'oe/invoicepdf/models/invoicepdfarticlesummary.php'
+                ),
+                'blocks' => array(
+                    array(
+                        'template' => 'order_overview.tpl',
+                        'block'=>'admin_order_overview_export',
+                        'file'=>'views/admin/blocks/order_overview.tpl'
+                    ),
+                ),
+                'active' => ''
+            );
 
-        $oModule = $this->getProxyClass( 'oxmodule' );
-        $this->assertTrue( $oModule->load( 'oe/invoicepdf' ) );
-        $this->assertEquals( $aModule, $oModule->getNonPublicVar( "_aModule" ) );
+            $oModule = $this->getProxyClass( 'oxmodule' );
+            $this->assertTrue( $oModule->load( 'oe/invoicepdf' ) );
+            $this->assertEquals( $aModule, $oModule->getNonPublicVar( "_aModule" ) );
     }
 
     /**
@@ -93,21 +93,21 @@ class Unit_Core_oxModuleTest extends OxidTestCase
      */
     public function testLoadNoExtend()
     {
-        $aModule = array(
-            'id'           => 'invoicepdf',
-            'title'        => 'Invoice PDF',
-            'description'  => 'Module for making invoice PDF files.',
-            'thumbnail'    => 'picture.png',
-            'version'      => '1.0',
-            'author'       => 'OXID eSales AG',
-            'active'       => true,
-            'extend'       => array ()
-        );
+            $aModule = array(
+                'id'           => 'invoicepdf',
+                'title'        => 'Invoice PDF',
+                'description'  => 'Module for making invoice PDF files.',
+                'thumbnail'    => 'picture.png',
+                'version'      => '1.0',
+                'author'       => 'OXID eSales AG',
+                'active'       => true,
+                'extend'       => array ()
+            );
 
-        $oModule = $this->getProxyClass( 'oxmodule' );
-        $oModule->setNonPublicVar( "_aModule", $aModule );
-        $this->assertTrue( $oModule->isActive() );
-        $this->assertFalse( $oModule->isExtended() );
+            $oModule = $this->getProxyClass( 'oxmodule' );
+            $oModule->setNonPublicVar( "_aModule", $aModule );
+            $this->assertTrue( $oModule->isActive() );
+            $this->assertFalse( $oModule->isExtended() );
     }
 
     /**
@@ -579,51 +579,6 @@ class Unit_Core_oxModuleTest extends OxidTestCase
         $this->assertEquals( $aDisabledModules, $oModule->getDisabledModules() );
     }
 
-    public function providerGetMetadataPath()
-    {
-        return array(
-            array("oe/module/"),
-            array("oe/module"),
-        );
-    }
-
-    /**
-     * Return full path to module metadata.
-     *
-     * @parameter string $sModuleId
-     *
-     * @dataProvider providerGetMetadataPath
-     *
-     * @return bool
-     */
-    public function testGetMetadataPath($sModuleId)
-    {
-        $sModId = "testModule";
-
-        $oConfig = $this->getMock('oxconfig', array('getModulesDir'));
-        $oConfig->expects( $this->any() )
-            ->method( 'getModulesDir' )
-            ->will($this->returnValue( "/var/path/to/modules/" ));
-
-        $oModuleStub = $this->getMock('oxmodule', array('getModulePath', 'getConfig'));
-        $oModuleStub->expects( $this->any() )
-            ->method( 'getModulePath' )
-            ->will( $this->returnValue( $sModuleId ) );
-
-        $oModuleStub->expects( $this->any() )
-            ->method( 'getConfig' )
-            ->will( $this->returnValue( $oConfig ) );
-
-        $aModule  = array('id' => $sModId);
-        /** @var oxModule $oModule */
-        $oModule = $oModuleStub;
-        $oModule->setModuleData( $aModule );
-
-        $this->assertEquals( "/var/path/to/modules/oe/module/metadata.php", $oModule->getMetadataPath() );
-
-        return true;
-    }
-
     /**
      * oxModule::getModulePaths() test case
      */
@@ -666,36 +621,6 @@ class Unit_Core_oxModuleTest extends OxidTestCase
             ->will( $this->returnValue( $oConfig ) );
 
         $this->assertEquals( "/var/path/to/modules/oe/module/", $oModule->getModuleFullPath( $sModId ) );
-    }
-
-    /**
-     * oxModule::testGetModuleFullPaths() test case
-     *
-     * @return null
-     */
-    public function testGetModuleFullPathWhenModuleIdNotGiven()
-    {
-        $sModId = "testModule";
-
-        $oConfig = $this->getMock('oxconfig', array('getModulesDir'));
-        $oConfig->expects( $this->any() )
-            ->method( 'getModulesDir' )
-            ->will($this->returnValue( "/var/path/to/modules/" ));
-
-        $oModule = $this->getMock('oxmodule', array('getModulePath', 'getConfig'));
-        $oModule->expects( $this->any() )
-            ->method( 'getModulePath' )
-            ->with( $this->equalTo($sModId) )
-            ->will( $this->returnValue( "oe/module/" ) );
-
-        $oModule->expects( $this->any() )
-            ->method( 'getConfig' )
-            ->will( $this->returnValue( $oConfig ) );
-
-        $aModule  = array('id' => $sModId);
-        $oModule->setModuleData( $aModule );
-
-        $this->assertEquals( "/var/path/to/modules/oe/module/", $oModule->getModuleFullPath() );
     }
 
     /**

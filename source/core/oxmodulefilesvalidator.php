@@ -23,11 +23,15 @@
 class oxModuleFilesValidator implements oxIModuleValidator
 {
     /**
+     * Module which files are validating.
+     *
      * @var oxModule
      */
     private $_oModule = null;
 
     /**
+     * Return module which files are validating.
+     *
      * @return oxModule
      */
     public function getModule()
@@ -36,6 +40,8 @@ class oxModuleFilesValidator implements oxIModuleValidator
     }
 
     /**
+     * Set module to validate.
+     *
      * @param oxModule $oModule
      */
     public function setModule($oModule)
@@ -52,6 +58,69 @@ class oxModuleFilesValidator implements oxIModuleValidator
      */
     public function validate()
     {
-        return true;
+        $blModuleValid = $this->_allModuleExtensionsExists();
+        if ($blModuleValid) {
+            $blModuleValid = $this->_allModuleFilesExists();
+        }
+        return $blModuleValid;
+    }
+
+    /**
+     * Return true if all module files which extends shop class exists.
+     *
+     * @return bool
+     */
+    protected function _allModuleExtensionsExists()
+    {
+        $oModule = $this->getModule();
+        $aModuleExtendedFiles = $oModule->getExtensions();
+        $blAllModuleExtensionsExists = $this->_allFilesExists($aModuleExtendedFiles, true);
+        return $blAllModuleExtensionsExists;
+    }
+
+    /**
+     * Return true if all module independent PHP files exist.
+     *
+     * @return mixed
+     */
+    protected function _allModuleFilesExists()
+    {
+        $oModule = $this->getModule();
+        $aModuleExtendedFiles = $oModule->getFiles();
+        $blAllModuleFilesExists = $this->_allFilesExists($aModuleExtendedFiles);
+        return $blAllModuleFilesExists;
+
+    }
+
+    /**
+     * Return true if all requested file exists.
+     *
+     * @param $aModuleExtendedFiles array of files which must exist.
+     *
+     * @return bool
+     */
+    private function _allFilesExists($aModuleExtendedFiles, $blAddExtension = false)
+    {
+        $blAllModuleFilesExists = true;
+        foreach ($aModuleExtendedFiles as $sModulePath) {
+            $sExtPath = $this->_getModuleDir() . $sModulePath;
+            if ($blAddExtension) {
+                $sExtPath .= '.php';
+            }
+            if (!file_exists($sExtPath)) {
+                $blAllModuleFilesExists = false;
+            }
+        }
+        return $blAllModuleFilesExists;
+    }
+
+    /**
+     * Return path to module directory.
+     *
+     * @return string
+     */
+    private function _getModuleDir()
+    {
+        return oxRegistry::getConfig()->getModulesDir();
     }
 }

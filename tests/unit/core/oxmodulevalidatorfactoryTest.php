@@ -28,19 +28,47 @@ class Unit_Core_oxModuleValidatorFactoryTest extends OxidTestCase
     public function testModuleValidatorReturnInterface()
     {
         $oModuleValidatorFactory = new oxModuleValidatorFactory();
-        $this->assertInstanceOf('oxIModuleValidator', $oModuleValidatorFactory->getModuleMetadataValidator());
-        $this->assertInstanceOf('oxIModuleValidator', $oModuleValidatorFactory->getModuleFilesValidator());
+        $this->assertInstanceOf('oxIModuleValidator', $oModuleValidatorFactory->getModuleValidator('metadata'));
     }
 
-    public function testModuleValidatorReturnCorrectInterfaceForMetadata()
+    public function providerModuleValidatorReturnCorrectInterface()
     {
-        $oModuleValidatorFactory = new oxModuleValidatorFactory();
-        $this->assertInstanceOf('oxModuleMetadataValidator', $oModuleValidatorFactory->getModuleMetadataValidator());
+        return array(
+            array('metadata', 'oxModuleMetadataValidator'),
+            array('files', 'oxModuleFilesValidator'),
+        );
     }
 
-    public function testModuleValidatorReturnCorrectInterfaceForFiles()
+    /**
+     * @param $sRequestedType
+     * @param $sExpectedReturnType
+     *
+     * @dataProvider providerModuleValidatorReturnCorrectInterface
+     */
+    public function testModuleValidatorReturnCorrectInterface($sRequestedType, $sExpectedReturnType)
     {
         $oModuleValidatorFactory = new oxModuleValidatorFactory();
-        $this->assertInstanceOf('oxModuleFilesValidator', $oModuleValidatorFactory->getModuleFilesValidator());
+        $this->assertInstanceOf($sExpectedReturnType, $oModuleValidatorFactory->getModuleValidator($sRequestedType));
+    }
+
+    public function providerModuleValidatorThrowsExceptionWithUnknownType()
+    {
+        return array(
+            array(''),
+            array('someUnknownType'),
+        );
+    }
+
+    /**
+     * @param $sRequestedType
+     *
+     * @dataProvider providerModuleValidatorThrowsExceptionWithUnknownType
+     */
+    public function testModuleValidatorThrowsExceptionWithUnknownType($sRequestedType)
+    {
+        $this->setExpectedException('oxSystemComponentException', 'ERROR_MESSAGE_SYSTEMCOMPONENT_FUNCTIONNOTFOUND');
+
+        $oModuleValidatorFactory = new oxModuleValidatorFactory($sRequestedType);
+        $oModuleValidatorFactory->getModuleValidator($sRequestedType);
     }
 }

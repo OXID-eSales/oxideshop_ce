@@ -42,9 +42,12 @@ class Unit_Core_oxModuleFilesValidatorTest extends OxidTestCase
      */
     public function testValidateWhenModuleHasNoFiles()
     {
-        $oModuleStub = $this->getMock('oxModule', array('getMetadataPath'));
+        $oModuleStub = $this->getMock('oxModule', array('getExtensions', 'getFiles'));
         $oModuleStub->expects($this->any())
             ->method('getExtensions')
+            ->will($this->returnValue(array()));
+        $oModuleStub->expects($this->any())
+            ->method('getFiles')
             ->will($this->returnValue(array()));
 
         /** @var oxModule $oModule */
@@ -53,5 +56,39 @@ class Unit_Core_oxModuleFilesValidatorTest extends OxidTestCase
         $oModuleFilesValidator = new oxModuleFilesValidator();
         $oModuleFilesValidator->setModule($oModule);
         $this->assertTrue($oModuleFilesValidator->validate());
+    }
+
+    public function providerValidateWhenFilesMissing()
+    {
+        $aExtendedFileNotExist = array('class' => 'vendor/module/path/class');
+        $aFilesNotExist = array('class' => 'vendor/module/path/class.php');
+        return array(
+            array($aExtendedFileNotExist, array()),
+            array(array(), $aFilesNotExist),
+        );
+    }
+
+    /**
+     * @param $aExtended
+     * @param $aFiles
+     *
+     * @dataProvider providerValidateWhenFilesMissing
+     */
+    public function testValidateWhenFilesMissing($aExtended, $aFiles)
+    {
+        $oModuleStub = $this->getMock('oxModule', array('getExtensions', 'getFiles'));
+        $oModuleStub->expects($this->any())
+            ->method('getExtensions')
+            ->will($this->returnValue($aExtended));
+        $oModuleStub->expects($this->any())
+            ->method('getFiles')
+            ->will($this->returnValue($aFiles));
+
+        /** @var oxModule $oModule */
+        $oModule = $oModuleStub;
+
+        $oModuleFilesValidator = new oxModuleFilesValidator();
+        $oModuleFilesValidator->setModule($oModule);
+        $this->assertFalse($oModuleFilesValidator->validate());
     }
 }

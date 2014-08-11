@@ -20,29 +20,40 @@
  * @version   OXID eShop CE
  */
 
-class oxModuleValidatorFactory
+class oxModuleValidatorFactory 
 {
     /**
-     * Return module validator by provided type.
-     * Returned validator implements interface oxIModuleValidator.
+     * List of available validators.
      *
-     * @return oxModuleMetadataValidator
+     * @var array
      */
-    public function getModuleMetadataValidator()
-    {
-        $oModuleValidator = oxNew('oxModuleMetadataValidator');
-        return $oModuleValidator;
-    }
+    private $_aAvailableValidators = array(
+        'files' => 'oxModuleFilesValidator',
+        'metadata' => 'oxModuleMetadataValidator',
+    );
 
     /**
      * Return module validator by provided type.
      * Returned validator implements interface oxIModuleValidator.
      *
-     * @return oxModuleFilesValidator
+     * @param string $sValidatorType
+     *
+     * @throws oxSystemComponentException
+     *
+     * @return oxIModuleValidator
      */
-    public function getModuleFilesValidator()
+    public function getModuleValidator($sValidatorType)
     {
-        $oModuleValidator = oxNew('oxModuleFilesValidator');
+        if (isset($this->_aAvailableValidators[$sValidatorType])) {
+            /** @var oxIModuleValidator $oModuleValidator */
+            $oModuleValidator = oxNew($this->_aAvailableValidators[$sValidatorType]);
+        } else {
+            /** @var oxSystemComponentException $oEx */
+            $oEx = oxNew( 'oxSystemComponentException' );
+            $oEx->setMessage( 'ERROR_MESSAGE_SYSTEMCOMPONENT_FUNCTIONNOTFOUND' );
+            $oEx->setComponent( $sValidatorType );
+            throw $oEx;
+        }
         return $oModuleValidator;
     }
 }

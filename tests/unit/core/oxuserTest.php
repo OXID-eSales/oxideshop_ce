@@ -429,8 +429,6 @@ class Unit_Core_oxUserTest extends OxidTestCase
 
     public function testGetPasswordHash()
     {
-        $this->markTestSkipped('skip for user login');
-
         $oUser1 = new oxUser();
         $oUser1->oxuser__oxpassword = new oxField( str_repeat( "*", 32 ) );
 

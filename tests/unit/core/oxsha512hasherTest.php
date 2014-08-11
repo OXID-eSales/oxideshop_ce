@@ -20,14 +20,13 @@
  * @version   OXID eShop CE
  */
 
-class Unit_Core_oxSha512EncryptorTest extends OxidTestCase
+class Unit_Core_oxSha512HasherTest extends OxidTestCase
 {
     public function testEncrypt()
     {
         $sHash = 'b32e441399b4601e11846563bea5c6597b7fbeeb8d443a05cdaf0c5615f6bd9c168eac63856945c2b188f933db330f8202bbd4a2a4abadef0ed96f6247970622';
+        $oHasher = new oxSha512Hasher();
 
-        $oEncryptor = new oxSha512Encryptor();
-
-        $this->assertSame($sHash, $oEncryptor->encrypt('somestring05853e9aba10b9c25a3b8af5618ec9fa'));
+        $this->assertSame($sHash, $oHasher->hash('somestring05853e9aba10b9c25a3b8af5618ec9fa'));
     }
 } 

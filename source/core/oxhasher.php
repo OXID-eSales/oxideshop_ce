@@ -21,22 +21,16 @@
  */
 
 /**
- * Encrypt string with sha512 algorithm.
+ * Hasher abstract class
  */
-class oxSha512Encryptor
+abstract class oxHasher
 {
-    /** Algorithm name. */
-    const ENCRYPTION_ALGORITHM = 'sha512';
-
     /**
-     * Encrypt string.
+     * Hash string.
      *
-     * @param string $sString
+     * @param string $sString string for hashing.
      *
      * @return string
      */
-    public function encrypt($sString)
-    {
-        return hash(self::ENCRYPTION_ALGORITHM, $sString);
-    }
+    abstract public function hash($sString);
 }

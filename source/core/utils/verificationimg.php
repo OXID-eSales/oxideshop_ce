@@ -78,6 +78,9 @@ if ( !function_exists( 'generateVerificationImg' ) ) {
 }
 
 if ( !function_exists( 'strRem' ) ) {
+
+    require_once '../oxdecryptor.php';
+
     /**
      * OXID specific string manipulation method
      *
@@ -87,7 +90,7 @@ if ( !function_exists( 'strRem' ) ) {
      */
     function strRem( $sVal)
     {
-        $oDecryptor = oxNew('oxDecryptor');
+        $oDecryptor = new oxDecryptor;
 
         $oCfg = new oxConfKey();
         $sKey = $oCfg->sConfigKey;

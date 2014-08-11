@@ -1901,14 +1901,20 @@ class oxUser extends oxBase
      */
     public function encodePassword( $sPassword, $sSalt )
     {
-        $oDb = oxDb::getDb();
-        return $oDb->getOne( "select MD5( CONCAT( ".$oDb->quote( $sPassword ).", UNHEX( '{$sSalt}' ) ) )" );
+        /** @var oxSha512Hasher $oSha512Hasher */
+        $oSha512Hasher  = oxNew('oxSha512Hasher');
+        /** @var oxPasswordHasher $oHasher */
+        $oHasher = oxNew('oxPasswordHasher', $oSha512Hasher );
+
+        return $oHasher->hash($sPassword, $sSalt);
     }
 
     /**
      * Returns safe salt value (heximal representation)
      *
      * @param string $sSalt any unique string value
+     *
+     * @deprecated
      *
      * @return string
      */
@@ -1921,6 +1927,8 @@ class oxUser extends oxBase
      * Returns plains password salt representation
      *
      * @param string $sSaltHex heximal representation of password salt value
+     *
+     * @deprecated
      *
      * @return string
      */
@@ -1939,7 +1947,10 @@ class oxUser extends oxBase
     public function setPassword( $sPassword = null )
     {
         // setting salt if password is not empty
-        $sSalt = $sPassword ? $this->prepareSalt( oxUtilsObject::getInstance()->generateUID() ) : '';
+        /** @var  oxPasswordSaltGenerator $oSaltGenerator */
+        $oSaltGenerator = oxNew('oxPasswordSaltGenerator');
+
+        $sSalt = $sPassword ? $oSaltGenerator->generate() : '';
 
         // encoding only if password was not empty (e.g. user registration without pass)
         $sPassword = $sPassword ? $this->encodePassword( $sPassword, $sSalt ) : '';

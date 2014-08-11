@@ -87,18 +87,12 @@ if ( !function_exists( 'strRem' ) ) {
      */
     function strRem( $sVal)
     {
+        $oDecryptor = oxNew('oxDecryptor');
+
         $oCfg = new oxConfKey();
-
         $sKey = $oCfg->sConfigKey;
-        $sKey = str_repeat( $sKey, strlen( $sVal ) / strlen( $sKey ) + 5 );
 
-        $sVal = substr( $sVal, 3 );
-        $sVal = str_replace( '!', '=', $sVal );
-        $sVal = base64_decode( $sVal );
-        $sVal = $sVal ^ $sKey;
-        $sVal = str_rot13($sVal);
-
-        return substr( $sVal, 2, -2 );
+        return $oDecryptor->decrypt($sVal, $sKey);
     }
 }
 

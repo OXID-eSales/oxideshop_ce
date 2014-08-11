@@ -29,7 +29,7 @@ function _groupExp(el) {
     <input type="hidden" name="editlanguage" value="[{ $editlanguage }]">
 </form>
 
-<form name="myedit" id="myedit" action="[{ $oViewConf->getSelfLink() }]" method="post">
+<form name="module_configuration" id="moduleConfiguration" action="[{ $oViewConf->getSelfLink() }]" method="post">
 [{ $oViewConf->getHiddenSid() }]
 <input type="hidden" name="cl" value="module_config">
 <input type="hidden" name="fnc" value="save">
@@ -82,12 +82,7 @@ function _groupExp(el) {
                                 [{/block}]
                             [{elseif $var_type == 'password'}]
                                 [{block name="admin_module_config_var_type_password"}]
-                                <span>
-                                    <input type=password class="password_input" style="width: 250px;" name="confpassword[[{$module_var}]]" value="" [{if $confpassword.$module_var}] disabled="true" [{/if}] [{ $readonly }]>
-                                    [{if $confpassword.$module_var}]
-                                    <input type=checkbox class="password_change_enable" name="confbools[[{$module_var}]]" value=true onclick="changePasswordEditability(this)"  [{if ($confbools.$module_var)}]checked[{/if}] [{ $readonly }]>
-                                    [{/if}]
-                                </span>
+                                <input class="password_input" type="password" style="width: 250px;" name="confpassword[[{$module_var}]]" data-empty="[{if $confpassword.$module_var}]false[{else}]true[{/if}]" data-errorMessage="[{oxinputhelp ident="HELP_SHOP_MODULE_PASSWORDS_DO_NOT_MATCH"}]Passwords do not match!" [{ $readonly }]>
                                 [{/block}]
                             [{/if}]
                             
@@ -107,18 +102,15 @@ function _groupExp(el) {
     [{/foreach}]
 <br>
 [{if $var_grouping}]
-    <input type="submit" class="confinput" name="save" value="[{ oxmultilang ident="GENERAL_SAVE" }]" onClick="Javascript:document.myedit.fnc.value='save'" [{ $readonly }]>
+    <input type="submit" class="confinput" name="save" value="[{ oxmultilang ident="GENERAL_SAVE" }]" onClick="Javascript:document.module_configuration.fnc.value='save'" [{ $readonly }]>
 [{/if}]
 
-<script type="text/javascript">
-    function changePasswordEditability(element) {
-        if (element.checked) {
-            element.parentNode.childNodes[1].disabled = false;
-        } else {
-            element.parentNode.childNodes[1].disabled = true;
-        }
-    }
-</script
+[{oxscript include="js/libs/jquery.min.js"}]
+[{oxscript include="js/libs/jquery-ui.min.js"}]
+[{oxscript include="js/widgets/oxmoduleconfiguration.js"}]
+
+[{oxscript add="$('#moduleConfiguration').oxModuleConfiguration();" priority=10}]
+
 
 [{/block}]
 

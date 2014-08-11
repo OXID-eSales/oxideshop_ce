@@ -102,20 +102,16 @@ class oxUtils extends oxSuperCfg
      * @param string $sVal string
      * @param string $sKey key
      *
+     * @deprecated since v5.2 (2014-08-11); use oxEncryptor::encrypt() instead.
+     *
      * @return string
      */
     public function strMan( $sVal, $sKey = null )
     {
+        $oEncryptor = oxNew('oxEncryptor');
         $sKey = $sKey ? $sKey : $this->getConfig()->getConfigParam('sConfigKey');
-        $sVal = "ox{$sVal}id";
 
-        $sKey = str_repeat( $sKey, strlen( $sVal ) / strlen( $sKey ) + 5 );
-        $sVal = $this->strRot13( $sVal );
-        $sVal = $sVal ^ $sKey;
-        $sVal = base64_encode ( $sVal );
-        $sVal = str_replace( "=", "!", $sVal );
-
-        return "ox_$sVal";
+        return $oEncryptor->encrypt($sVal, $sKey);
     }
 
     /**
@@ -124,20 +120,16 @@ class oxUtils extends oxSuperCfg
      * @param string $sVal string
      * @param string $sKey key
      *
+     * @deprecated since v5.2 (2014-08-11); use oxDecryptor::decrypt() instead.
+     *
      * @return string
      */
     public function strRem( $sVal, $sKey = null )
     {
+        $oDecryptor = oxNew('oxDecryptor');
         $sKey = $sKey ? $sKey : $this->getConfig()->getConfigParam('sConfigKey');
-        $sKey = str_repeat( $sKey, strlen( $sVal ) / strlen( $sKey ) + 5 );
 
-        $sVal = substr( $sVal, 3 );
-        $sVal = str_replace( '!', '=', $sVal );
-        $sVal = base64_decode( $sVal );
-        $sVal = $sVal ^ $sKey;
-        $sVal = $this->strRot13( $sVal );
-
-        return substr( $sVal, 2, -2 );
+        return $oDecryptor->decrypt($sVal, $sKey);
     }
 
     /**

@@ -1985,19 +1985,14 @@ class oxUser extends oxBase
      * Returns password hash. In case password in db is plain or decodable
      * password is processed and hash returned
      *
+     * @deprecated since v5.2 (2014-08-11); was used for eFire downloader, not used anymore.
+     *
      * @return string
      */
     public function getPasswordHash()
     {
         $sHash = null;
         if ( $this->oxuser__oxpassword->value ) {
-            if ( strpos( $this->oxuser__oxpassword->value, 'ox_' ) === 0 ) {
-                // decodable pass ?
-                $this->setPassword( oxRegistry::getUtils()->strRem( $this->oxuser__oxpassword->value ) );
-            } elseif ( strlen( $this->oxuser__oxpassword->value ) < 32 ) {
-                // plain pass ?
-                $this->setPassword( $this->oxuser__oxpassword->value );
-            }
             $sHash = $this->oxuser__oxpassword->value;
         }
         return $sHash;

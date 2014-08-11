@@ -432,26 +432,14 @@ class Unit_Core_oxUserTest extends OxidTestCase
         $this->markTestSkipped('skip for user login');
 
         $oUser1 = new oxUser();
-        $oUser1->oxuser__oxpassword = new oxField( "******" );
+        $oUser1->oxuser__oxpassword = new oxField( str_repeat( "*", 32 ) );
 
         $oUser2 = new oxUser();
-        $oUser2->oxuser__oxpassword = new oxField( oxRegistry::getUtils()->strMan( "******" ) );
-
-        $oUser3 = new oxUser();
-        $oUser3->oxuser__oxpassword = new oxField( str_repeat( "*", 32 ) );
-
-        $oUser5 = new oxUser();
 
         $sHash = $oUser1->getPasswordHash();
-        $this->assertEquals( MD5( "******" . $this->getDb()->getOne( "select UNHEX( '{$oUser1->oxuser__oxpasssalt->value}' )" ) ), $sHash );
-
-        $sHash = $oUser2->getPasswordHash();
-        $this->assertEquals( MD5( "******" . $this->getDb()->getOne( "select UNHEX( '{$oUser2->oxuser__oxpasssalt->value}' )" ) ), $sHash );
-
-        $sHash = $oUser3->getPasswordHash();
         $this->assertEquals( str_repeat( "*", 32 ), $sHash );
 
-        $this->assertNull( $oUser5->getPasswordHash() );
+        $this->assertNull( $oUser2->getPasswordHash() );
     }
 
 

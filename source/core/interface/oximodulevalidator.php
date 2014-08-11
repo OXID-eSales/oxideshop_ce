@@ -23,11 +23,21 @@
 interface oxIModuleValidator
 {
     /**
+     * Return oxModule object which would metadata would be validated.
+     * @return oxModule
+     */
+    public function getModule();
+
+    /**
+     * Set oxModule object to validate metadata.
+     * @param oxModule $oModule
+     */
+    public function setModule($oModule);
+
+    /**
      * Validates module information.
-     *
-     * @param oxModule $oModule object to validate metadata.
      *
      * @return bool
      */
-    public function validate(oxModule $oModule);
+    public function validate();
 } 

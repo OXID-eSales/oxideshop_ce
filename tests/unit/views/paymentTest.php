@@ -175,9 +175,12 @@ class Unit_Views_paymentTest extends OxidTestCase
         $oPayment = new Payment();
         $oPayment->setUser($oUser);
         $aAllSets = $oPayment->getAllSets();
+        $aResultSets = array_keys($aAllSets);
         $aSetsIds = array ( 0 => 'oxidstandard', 1 => '1b842e732a23255b1.91207750', 2 => '1b842e732a23255b1.91207751');
+        asort($aSetsIds);
+        asort($aResultSets);
 
-        $this->assertEquals( $aSetsIds, array_keys($aAllSets) );
+        $this->assertEquals( $aSetsIds, $aResultSets );
     }
 
     public function testGetAllSetsCnt()

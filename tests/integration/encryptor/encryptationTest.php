@@ -33,6 +33,7 @@ class Unit_Core_oxEncryptorTest extends OxidTestCase
             array('testString', 1),
             array('testString', 'shortKey'),
             array('testString', 'longKeyLongKey_LongKeyLongKey'),
+            array('', 'testKey'),
         );
     }
 

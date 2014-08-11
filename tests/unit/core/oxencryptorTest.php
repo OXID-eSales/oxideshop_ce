@@ -29,14 +29,23 @@ class Unit_Core_oxEncryptorTest extends OxidTestCase
     public function providerEncodingAndDecoding()
     {
         return array(
+            // string encrypted with empty key
             array('testString', '', 'ox_MCcrOiwrDCstNjE4Njs!'),
+            // string encrypted with numeric key
             array('testString', 1, 'ox_MEkrVCxFDEUtWDFWNlU!'),
+            // string encrypted with not empty key
             array('testString', 'testKey', 'ox_MAwRFgc/Ng0tHQsUHS8!'),
+            // empty string encrypted with not empty key
+            array('', 'testKey', 'ox_MAwMFw!!'),
         );
     }
 
     /**
      * @dataProvider providerEncodingAndDecoding
+     *
+     * @param $sString
+     * @param $sKey
+     * @param $sEncodedString
      */
     public function testEncodingAndDecoding($sString, $sKey, $sEncodedString)
     {

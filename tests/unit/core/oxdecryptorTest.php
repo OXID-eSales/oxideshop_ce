@@ -29,9 +29,14 @@ class Unit_Core_oxDecryptorTest extends OxidTestCase
     public function providerDecodingOfStringWithCorrectKey()
     {
         return array(
+            // string encrypted with empty key
             array('ox_MCcrOiwrDCstNjE4Njs!', '', 'testString'),
+            // string encrypted with numeric key
             array('ox_MEkrVCxFDEUtWDFWNlU!', 1, 'testString' ),
+            // string encrypted with not empty key
             array('ox_MAwRFgc/Ng0tHQsUHS8!', 'testKey', 'testString'),
+            // empty string encrypted with not empty key
+            array('', 'testKey', 'ox_MAwMFw!!'),
         );
     }
 

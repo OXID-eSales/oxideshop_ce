@@ -21,7 +21,7 @@
  */
 
 /**
- * Encrypts password together with salt, using setted encrypter
+ * Encrypts password together with salt, using set encrypter
  */
 class oxPasswordEncryptor
 {
@@ -35,10 +35,7 @@ class oxPasswordEncryptor
      */
     public function setEncryptor( $oEncryptor )
     {
-
-
         $this->_oEncryptor = $oEncryptor;
-
     }
 
     /**

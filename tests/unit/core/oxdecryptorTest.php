@@ -36,7 +36,7 @@ class Unit_Core_oxDecryptorTest extends OxidTestCase
             // string encrypted with not empty key
             array('ox_MAwRFgc/Ng0tHQsUHS8!', 'testKey', 'testString'),
             // empty string encrypted with not empty key
-            array('', 'testKey', 'ox_MAwMFw!!'),
+            array('ox_MAwMFw!!', 'testKey', ''),
         );
     }
 

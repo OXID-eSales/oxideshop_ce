@@ -36,4 +36,22 @@ class Unit_Core_oxModuleFilesValidatorTest extends OxidTestCase
 
         $this->assertSame($oModule, $oMetadataValidator->getModule(), 'Module from getter should be same as set in setter.');
     }
+
+    /**
+     * Module without any file is valid.
+     */
+    public function testValidateWhenModuleHasNoFiles()
+    {
+        $oModuleStub = $this->getMock('oxModule', array('getMetadataPath'));
+        $oModuleStub->expects($this->any())
+            ->method('getExtensions')
+            ->will($this->returnValue(array()));
+
+        /** @var oxModule $oModule */
+        $oModule = $oModuleStub;
+
+        $oModuleFilesValidator = new oxModuleFilesValidator();
+        $oModuleFilesValidator->setModule($oModule);
+        $this->assertTrue($oModuleFilesValidator->validate());
+    }
 }

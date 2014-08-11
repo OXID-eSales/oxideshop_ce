@@ -52,6 +52,6 @@ class oxModuleFilesValidator implements oxIModuleValidator
      */
     public function validate()
     {
-        return false;
+        return true;
     }
 }

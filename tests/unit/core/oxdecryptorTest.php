@@ -30,8 +30,8 @@ class Unit_Core_oxDecryptorTest extends OxidTestCase
     {
         return array(
             array('ox_MCcrOiwrDCstNjE4Njs!', '', 'testString'),
-            array('ox_XidFOkIrYitDNl84WDs!', 1, 'testString' ),
-            array('ox_Gx0HETgRKisGDB0TIgE!', 'testKey', 'testString'),
+            array('ox_MEkrVCxFDEUtWDFWNlU!', 1, 'testString' ),
+            array('ox_MAwRFgc/Ng0tHQsUHS8!', 'testKey', 'testString'),
         );
     }
 

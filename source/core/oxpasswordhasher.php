@@ -21,51 +21,41 @@
  */
 
 /**
- * Encrypts password together with salt, using set encrypter
+ * Hash password together with salt, using set hash algorithm
  */
-class oxPasswordEncryptor
+class oxPasswordHasher
 {
     /**
-     * @var oxSha512Encryptor
+     * @var oxHasher
      */
-    private $_oEncryptor = null;
+    private $_ohasher = null;
 
     /**
-     * @param oxSha512Encryptor $oEncryptor encryptor
+     * @return oxHasher
      */
-    public function setEncryptor( $oEncryptor )
+    protected function _getHasher()
     {
-        $this->_oEncryptor = $oEncryptor;
+        return $this->_ohasher;
     }
 
     /**
-     * @return oxSha512Encryptor
+     * @param oxHasher $oHasher hasher.
      */
-    public function getEncryptor()
+    public function __construct($oHasher)
     {
-        return $this->_oEncryptor;
+        $this->_ohasher = $oHasher;
     }
 
     /**
-     * @param oxSha512Encryptor $oEncryptor - encryptor
-     */
-    public function __construct( $oEncryptor = null )
-    {
-        if (is_null($oEncryptor)) {
-            $oEncryptor = oxNew('oxSha512Encryptor');
-        }
-
-        $this->setEncryptor( $oEncryptor );
-    }
-
-    /**
-     * @param $sPassword
-     * @param $sSalt
+     * Hash password with a salt.
      *
-     * @return oxSha512Encryptor
+     * @param string $sPassword not hashed password.
+     * @param string $sSalt salt string.
+     *
+     * @return string
      */
-    public function encrypt($sPassword, $sSalt)
+    public function hash($sPassword, $sSalt)
     {
-        return $this->getEncryptor()->encrypt($sPassword . $sSalt);
+        return $this->_getHasher()->hash($sPassword . $sSalt);
     }
 }

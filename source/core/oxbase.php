@@ -751,7 +751,7 @@ class oxBase extends oxSuperCfg
         }
 
 
-        $this->_removeElement2ShopRelations();
+        $this->_removeElement2ShopRelations($sOxId);
 
         $oDB = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
         $sCoreTable = $this->getCoreTableName();
@@ -766,8 +766,10 @@ class oxBase extends oxSuperCfg
 
     /**
      * Removes relevant mapping data for selected object if it is a multishop inheritable table
+     *
+     * @param string $sOxId Object ID
      */
-    protected function _removeElement2ShopRelations()
+    protected function _removeElement2ShopRelations($sOxId)
     {
     }
 

@@ -422,13 +422,11 @@ class Unit_Core_oxUserTest extends OxidTestCase
     public function testGetPasswordHash()
     {
         $oUser1 = new oxUser();
-        $oUser1->oxuser__oxpassword = new oxField( str_repeat( "*", 32 ) );
+        $oUser1->oxuser__oxpassword = new oxField( 'passwordHash' );
+
+        $this->assertEquals( 'passwordHash', $oUser1->getPasswordHash() );
 
         $oUser2 = new oxUser();
-
-        $sHash = $oUser1->getPasswordHash();
-        $this->assertEquals( str_repeat( "*", 32 ), $sHash );
-
         $this->assertNull( $oUser2->getPasswordHash() );
     }
 
@@ -2141,8 +2139,6 @@ class Unit_Core_oxUserTest extends OxidTestCase
      */
     public function testLoginByPassingCustomerNumber_Logout()
     {
-
-
         $oUser = new oxUser();
         $oUser->login( 1, oxADMIN_PASSWD);
         $this->assertEquals( oxRegistry::getSession()->getVariable( 'usr' ), 'oxdefaultadmin' );

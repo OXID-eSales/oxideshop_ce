@@ -2281,11 +2281,12 @@ class oxUser extends oxBase
      */
     protected function _dbLogin( $sUser, $sPassword, $sShopID )
     {
+        $oDb = oxDb::getDb();
         $blOldHash = false;
-        $sUserOxId = $this->_getLoginUserId( $this->_getLoginQuery( $sUser, $sPassword, $sShopID, $this->isAdmin() ) );
+        $sUserOxId = $oDb->getOne( $this->_getLoginQuery( $sUser, $sPassword, $sShopID, $this->isAdmin() ) );
 
         if( !$sUserOxId ){
-            $sUserOxId = $this->_getLoginUserId( $this->_getLegacyLoginQuery( $sUser, $sPassword, $sShopID, $this->isAdmin() ) );
+            $sUserOxId = $oDb->getOne( $this->_getLegacyLoginQuery( $sUser, $sPassword, $sShopID, $this->isAdmin() ) );
             $blOldHash = true;
         }
 
@@ -2300,10 +2301,5 @@ class oxUser extends oxBase
                 $this->save();
             }
         }
-    }
-
-    protected function _getLoginUserId( $sSql )
-    {
-        return oxDB::getDb()->getOne($sSql);
     }
 }

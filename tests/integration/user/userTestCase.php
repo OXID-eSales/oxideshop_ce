@@ -45,4 +45,10 @@ class UserTestCase extends OxidTestCase
 
         return $oUser;
     }
+
+    protected function _createSecondSubShop()
+    {
+        $oShop = new oxShop();
+        $oShop->save();
+    }
 }

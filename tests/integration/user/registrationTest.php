@@ -23,10 +23,10 @@
 class Integration_User_registrationTest extends OxidTestCase
 {
     /** @var string */
-    private $_sUserName = 'someTestName@oxid-esales.com';
+    private $_sUserName = '_testUserName@oxid-esales.com';
 
     /** @var string */
-    private $_sUserPassword = 'someTestPassword';
+    private $_sUserPassword = '_testPassword';
 
     public function testRegisterNewUser()
     {
@@ -48,7 +48,6 @@ class Integration_User_registrationTest extends OxidTestCase
      */
     public function testLoginWithNewUser($sUserId)
     {
-
         $sUserName = $this->_sUserName;
         $sUserPassword = $this->_sUserPassword;
 
@@ -74,9 +73,9 @@ class Integration_User_registrationTest extends OxidTestCase
         $this->setRequestParam('lgn_usr', $sUserName);
 
         $this->setRequestParam('lgn_pwd', $sUserPassword);
-        $this->setRequestParam('lgn_pwd2', 'someTestPassword');
-        $this->setRequestParam('passwordLength', 'someTestPassword');
-        $this->setRequestParam('userPasswordConfirm', 'someTestPassword');
+        $this->setRequestParam('lgn_pwd2', $sUserPassword);
+        $this->setRequestParam('passwordLength', $sUserPassword);
+        $this->setRequestParam('userPasswordConfirm', $sUserPassword);
 
         $this->setRequestParam('invadr',
             array(

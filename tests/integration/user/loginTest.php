@@ -30,7 +30,7 @@ class Integration_User_loginTest extends OxidTestCase
     /**
      * @var string
      */
-    private $_sPassword = '_testPassword';
+    private $_sUserPassword = '_testPassword';
 
     /**
      * Password encoded with old algorithm.
@@ -75,7 +75,7 @@ class Integration_User_loginTest extends OxidTestCase
     public function testLoginWithOldPassword()
     {
         $oUser = $this->_createUser($this->_sUserName, $this->_sOldEncodedPassword, $this->_sOldSalt);
-        $this->_login($this->_sUserName, $this->_sPassword);
+        $this->_login($this->_sUserName, $this->_sUserPassword);
 
         $oUser->load($oUser->getId());
 
@@ -91,7 +91,7 @@ class Integration_User_loginTest extends OxidTestCase
     public function testLoginWithNewPassword()
     {
         $oUser = $this->_createUser($this->_sUserName, $this->_sNewEncodedPassword, $this->_sNewSalt);
-        $this->_login($this->_sUserName, $this->_sPassword);
+        $this->_login($this->_sUserName, $this->_sUserPassword);
 
         $oUser->load($oUser->getId());
 

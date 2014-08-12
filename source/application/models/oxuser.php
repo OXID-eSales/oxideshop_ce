@@ -1343,19 +1343,20 @@ class oxUser extends oxBase
      * Performs user login by username and password. Fetches user data from DB.
      * Registers in session. Returns true on success, FALSE otherwise.
      *
-     * @param string $sUser     User username
+     * @param string $sUser User username
      * @param string $sPassword User password
-     * @param bool   $blCookie  (default false)
+     * @param bool $blCookie (default false)
      *
-     * @throws oxConnectionException, oxCookieException, oxUserException
+     * @throws object
+     * @throws oxCookieException
+     * @throws oxUserException
      *
      * @return bool
      */
     public function login( $sUser, $sPassword, $blCookie = false)
     {
-
-
         if ( $this->isAdmin() && !count( oxRegistry::get("oxUtilsServer")->getOxCookie() ) ) {
+            /** @var oxCookieException $oEx */
             $oEx = oxNew( 'oxCookieException' );
             $oEx->setMessage( 'ERROR_MESSAGE_COOKIE_NOCOOKIE' );
             throw $oEx;
@@ -2302,6 +2303,7 @@ class oxUser extends oxBase
 
         if ( $sUserOxId ) {
             if ( !$this->load( $sUserOxId ) ) {
+                /** @var oxUserException $oEx */
                 $oEx = oxNew( 'oxUserException' );
                 $oEx->setMessage( 'ERROR_MESSAGE_USER_NOVALIDLOGIN' );
                 throw $oEx;

@@ -830,6 +830,7 @@ class oxUser extends oxBase
             // must be sure if there is no dublicate user
             $sQ = "select oxid from oxuser where oxusername = " . $oDb->quote( $this->oxuser__oxusername->value ) . " and oxusername != '' ";
             if ( $oDb->getOne( $sQ, false, false ) ) {
+                /** @var oxUserException $oEx */
                 $oEx = oxNew( 'oxUserException' );
                 $oLang = oxRegistry::getLang();
                 $oEx->setMessage( sprintf( $oLang->translateString( 'ERROR_MESSAGE_USER_USEREXISTS', $oLang->getTplLanguage() ), $this->oxuser__oxusername->value ) );
@@ -843,6 +844,7 @@ class oxUser extends oxBase
             $oDb->execute( "delete from oxaddress where oxaddress.oxuserid = " . $oDb->quote( $this->oxuser__oxid->value ) . " " );
             $oDb->execute( "update oxuserpayments set oxuserpayments.oxuserid = " . $oDb->quote( $this->oxuser__oxusername->value ) . " where oxuserpayments.oxuserid = " . $oDb->quote( $this->oxuser__oxid->value ) . " " );
         } else {
+            /** @var oxUserException $oEx */
             $oEx = oxNew( 'oxUserException' );
             $oEx->setMessage( 'EXCEPTION_USER_USERCREATIONFAILED' );
             throw $oEx;
@@ -1262,6 +1264,7 @@ class oxUser extends oxBase
             if ( $sPassword == "admin" && $sUser == "admin" ) {
                 $sSelect = "select $sWhat from oxuser where oxrights = 'malladmin' ";
             } elseif ( $blDemoMode ) {
+                /** @var oxUserException $oEx */
                 $oEx = oxNew( 'oxUserException' );
                 $oEx->setMessage( 'ERROR_MESSAGE_USER_NOVALIDLOGIN' );
                 throw $oEx;
@@ -1274,10 +1277,12 @@ class oxUser extends oxBase
     /**
      * Builds and returns user login query
      *
-     * @param string $sUser     login name
+     * @param string $sUser login name
      * @param string $sPassword login password
-     * @param string $sShopID   shopid
-     * @param bool   $blAdmin   admin/non admin mode
+     * @param string $sShopID shopid
+     * @param bool $blAdmin admin/non admin mode
+     *
+     * @throws object
      *
      * @return string
      */
@@ -1310,6 +1315,7 @@ class oxUser extends oxBase
             if ( $sPassword == "admin" && $sUser == "admin" ) {
                 $sSelect = "select $sWhat from oxuser where oxrights = 'malladmin' ";
             } elseif ( $blDemoMode ) {
+                /** @var oxUserException $oEx */
                 $oEx = oxNew( 'oxUserException' );
                 $oEx->setMessage( 'ERROR_MESSAGE_USER_NOVALIDLOGIN' );
                 throw $oEx;
@@ -1395,6 +1401,7 @@ class oxUser extends oxBase
 
             return true;
         } else {
+            /** @var oxUserException $oEx */
             $oEx = oxNew( 'oxUserException' );
             $oEx->setMessage( 'ERROR_MESSAGE_USER_NOVALIDLOGIN' );
             throw $oEx;
@@ -1608,6 +1615,7 @@ class oxUser extends oxBase
             }
 
         } else {
+            /** @var oxUserException $oEx */
             $oEx = oxNew( 'oxUserException' );
             $oEx->setMessage('EXCEPTION_USER_NOVALUES');
             throw $oEx;

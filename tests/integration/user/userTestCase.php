@@ -54,17 +54,17 @@ class UserTestCase extends OxidTestCase
 
     /**
      * @param string $sUserName
-     * @param string $sPassword
+     * @param string $sUserPassword
      */
-    protected function _login($sUserName = null, $sPassword = null)
+    protected function _login($sUserName = null, $sUserPassword = null)
     {
         if (is_null($sUserName)) {
             $sUserName = $this->_sDefaultUserName;
         }
-        if (is_null($sPassword)) {
-            $sPassword = $this->_sDefaultUserPassword;
+        if (is_null($sUserPassword)) {
+            $sUserPassword = $this->_sDefaultUserPassword;
         }
-        $this->_setLoginParametersToRequest($sUserName, $sPassword);
+        $this->_setLoginParametersToRequest($sUserName, $sUserPassword);
         $oCmpUser = new oxcmp_user();
         $oCmpUser->login();
     }

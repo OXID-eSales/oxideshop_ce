@@ -52,14 +52,6 @@ class Integration_User_loginTest extends UserTestCase
      */
     private $_sNewSalt = '56784f8ffc657fff84915b93e12a626e';
 
-
-    public function tearDown()
-    {
-        parent::tearDown();
-        $oDbRestore = $this->_getDbRestore();
-        $oDbRestore->restoreTable('oxuser');
-    }
-
     /**
      * Tries to login with password which is generated with old algorithm
      * and checks if password and salt were regenerated.

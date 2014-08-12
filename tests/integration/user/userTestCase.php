@@ -28,6 +28,14 @@ class UserTestCase extends OxidTestCase
     /** @var string */
     protected $_sDefaultUserPassword = '_testPassword';
 
+    public function tearDown()
+    {
+        $oDbRestore = $this->_getDbRestore();
+        $oDbRestore->restoreTable('oxuser');
+        $oDbRestore->restoreTable('oxshops');
+        parent::tearDown();
+    }
+
     protected function _createDefaultUser($sRight, $iShopId)
     {
         $oUser = new oxUser();

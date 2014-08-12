@@ -51,4 +51,31 @@ class UserTestCase extends OxidTestCase
         $oShop = new oxShop();
         $oShop->save();
     }
+
+    /**
+     * @param string $sUserName
+     * @param string $sPassword
+     */
+    protected function _login($sUserName = null, $sPassword = null)
+    {
+        if (is_null($sUserName)) {
+            $sUserName = $this->_sDefaultUserName;
+        }
+        if (is_null($sPassword)) {
+            $sPassword = $this->_sDefaultUserPassword;
+        }
+        $this->_setLoginParametersToRequest($sUserName, $sPassword);
+        $oCmpUser = new oxcmp_user();
+        $oCmpUser->login();
+    }
+
+    /**
+     * @param string $sUserName
+     * @param string $sUserPassword
+     */
+    private function _setLoginParametersToRequest($sUserName, $sUserPassword)
+    {
+        $this->setRequestParam('lgn_usr', $sUserName);
+        $this->setRequestParam('lgn_pwd', $sUserPassword);
+    }
 }

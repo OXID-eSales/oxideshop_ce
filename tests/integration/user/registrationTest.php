@@ -44,15 +44,11 @@ class Integration_User_registrationTest extends UserTestCase
      */
     public function testLoginWithNewUser($sUserId)
     {
-        $sUserName = $this->_sDefaultUserName;
-        $sUserPassword = $this->_sDefaultUserPassword;
-
         $oCmpUser = $this->_createCmpUserObject();
         $oCmpUser->logout();
         $this->assertNull(oxRegistry::getSession()->getVariable('usr'), 'User ID should not be in session after logout.');
 
-        $this->_setLoginParametersToRequest($sUserName, $sUserPassword);
-        $oCmpUser->login();
+        $this->_login();
 
         $this->assertSame($sUserId, oxRegistry::getSession()->getVariable('usr'), 'User ID is missing in session after log in.');
     }
@@ -84,16 +80,6 @@ class Integration_User_registrationTest extends UserTestCase
                 'oxuser__oxcity' => 'SomeTestCoty',
                 'oxuser__oxcountryid' => $sGermanyId
             ));
-    }
-
-    /**
-     * @param string $sUserName
-     * @param string $sUserPassword
-     */
-    private function _setLoginParametersToRequest($sUserName, $sUserPassword)
-    {
-        $this->setRequestParam('lgn_usr', $sUserName);
-        $this->setRequestParam('lgn_pwd', $sUserPassword);
     }
 
     /**

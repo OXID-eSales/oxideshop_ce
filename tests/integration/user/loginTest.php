@@ -83,7 +83,7 @@ class Integration_User_loginTest extends UserTestCase
     public function testLoginWithNewPassword()
     {
         $oUser = $this->_createUser($this->_sDefaultUserName, $this->_sNewEncodedPassword, $this->_sNewSalt);
-        $this->_login($this->_sDefaultUserName, $this->_sDefaultUserPassword);
+        $this->_login();
 
         $oUser->load($oUser->getId());
 
@@ -104,6 +104,10 @@ class Integration_User_loginTest extends UserTestCase
 
     /**
      * Tries to login with wrong password and checks if password and salt were not changed.
+     *
+     * @param string $sUserName
+     * @param string $sEncodedPassword
+     * @param string $sSalt
      *
      * @dataProvider providerNotSuccessfulLogin
      */
@@ -136,17 +140,5 @@ class Integration_User_loginTest extends UserTestCase
         $oUser->save();
 
         return $oUser;
-    }
-
-    /**
-     * @param string $sUserName
-     * @param string $sPassword
-     */
-    private function _login($sUserName, $sPassword)
-    {
-        $this->setRequestParam('lgn_usr', $sUserName);
-        $this->setRequestParam('lgn_pwd', $sPassword);
-        $oCmpUser = new oxcmp_user();
-        $oCmpUser->login();
     }
 }

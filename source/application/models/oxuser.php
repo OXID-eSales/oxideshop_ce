@@ -1252,24 +1252,8 @@ class oxUser extends oxBase
             $sShopSelect = " and ( oxrights != 'user' ) ";
         }
 
-        $blStagingMode = false;
-        $blDemoMode = false;
-        $sWhat = "oxid";
-            if ($myConfig->isDemoShop()) {
-                $blDemoMode = true;
-            }
+        $sSelect = "select `oxid` from oxuser where oxuser.oxactive = 1 and {$sPassSelect} and {$sUserSelect} {$sShopSelect} ";
 
-        $sSelect = "select $sWhat from oxuser where oxuser.oxactive = 1 and {$sPassSelect} and {$sUserSelect} {$sShopSelect} ";
-        if ( ( $blDemoMode || $blStagingMode ) && $blAdmin ) {
-            if ( $sPassword == "admin" && $sUser == "admin" ) {
-                $sSelect = "select $sWhat from oxuser where oxrights = 'malladmin' ";
-            } elseif ( $blDemoMode ) {
-                /** @var oxUserException $oEx */
-                $oEx = oxNew( 'oxUserException' );
-                $oEx->setMessage( 'ERROR_MESSAGE_USER_NOVALIDLOGIN' );
-                throw $oEx;
-            }
-        }
 
         return $sSelect;
     }
@@ -1303,24 +1287,8 @@ class oxUser extends oxBase
             $sShopSelect = " and ( oxrights != 'user' ) ";
         }
 
-        $blStagingMode = false;
-        $blDemoMode = false;
-        $sWhat = "oxid";
-            if ($myConfig->isDemoShop()) {
-                $blDemoMode = true;
-            }
+        $sSelect = "select `oxid` from oxuser where oxuser.oxactive = 1 and {$sPassSelect} and {$sUserSelect} {$sShopSelect} ";
 
-        $sSelect = "select $sWhat from oxuser where oxuser.oxactive = 1 and {$sPassSelect} and {$sUserSelect} {$sShopSelect} ";
-        if ( ( $blDemoMode || $blStagingMode ) && $blAdmin ) {
-            if ( $sPassword == "admin" && $sUser == "admin" ) {
-                $sSelect = "select $sWhat from oxuser where oxrights = 'malladmin' ";
-            } elseif ( $blDemoMode ) {
-                /** @var oxUserException $oEx */
-                $oEx = oxNew( 'oxUserException' );
-                $oEx->setMessage( 'ERROR_MESSAGE_USER_NOVALIDLOGIN' );
-                throw $oEx;
-            }
-        }
 
         return $sSelect;
     }
@@ -1369,6 +1337,7 @@ class oxUser extends oxBase
         }
 
         $oConfig = $this->getConfig();
+
         if ( $sPassword ) {
 
             $sShopID = $oConfig->getShopId();
@@ -2289,18 +2258,22 @@ class oxUser extends oxBase
      */
     protected function _dbLogin( $sUser, $sPassword, $sShopID )
     {
-        $oDb = oxDb::getDb();
         $blOldHash = false;
-        $sUserOxId = $oDb->getOne( $this->_getLoginQuery( $sUser, $sPassword, $sShopID, $this->isAdmin() ) );
+        $oDb = oxDb::getDb();
 
-        if( !$sUserOxId ){
-            $sUserOxId = $oDb->getOne( $this->_getLegacyLoginQuery( $sUser, $sPassword, $sShopID, $this->isAdmin() ) );
-            $blOldHash = true;
+        if ($this->_isDemoShop() && $this->isAdmin()) {
+            $sUserOxId = $oDb->getOne( $this->_getDemoShopLoginQuery( $sUser, $sPassword ));
+        } else {
+            $sUserOxId = $oDb->getOne( $this->_getLoginQuery( $sUser, $sPassword, $sShopID, $this->isAdmin() ) );
+            if( !$sUserOxId ){
+                $sUserOxId = $oDb->getOne( $this->_getLegacyLoginQuery( $sUser, $sPassword, $sShopID, $this->isAdmin() ) );
+                $blOldHash = true;
+            }
         }
 
         if ( $sUserOxId ) {
             if ( !$this->load( $sUserOxId ) ) {
-                /** @var oxUserException $oEx */
+                /** @var oxUserException  $oEx */
                 $oEx = oxNew( 'oxUserException' );
                 $oEx->setMessage( 'ERROR_MESSAGE_USER_NOVALIDLOGIN' );
                 throw $oEx;
@@ -2309,5 +2282,30 @@ class oxUser extends oxBase
                 $this->save();
             }
         }
+    }
+
+    protected function _isDemoShop()
+    {
+        $blDemoMode = false;
+
+            if ($this->getConfig()->isDemoShop()) {
+                $blDemoMode = true;
+            }
+
+        return $blDemoMode;
+    }
+
+    protected function _getDemoShopLoginQuery( $sUser, $sPassword )
+    {
+        if ( $sPassword == "admin" && $sUser == "admin" ) {
+            $sSelect = "SELECT `oxid` FROM `oxuser` WHERE `oxrights` = 'malladmin' ";
+        } else {
+            /** @var oxUserException $oEx */
+            $oEx = oxNew( 'oxUserException' );
+            $oEx->setMessage( 'ERROR_MESSAGE_USER_NOVALIDLOGIN' );
+            throw $oEx;
+        }
+
+        return $sSelect;
     }
 }

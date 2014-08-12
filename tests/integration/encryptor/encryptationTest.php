@@ -23,7 +23,7 @@
 /**
  * Class Unit_Core_oxEncryptorTest
  */
-class Unit_Core_oxEncryptorTest extends OxidTestCase
+class Integration_Encryptor_EncryptationTest extends OxidTestCase
 {
 
     public function providerEncodingAndDecodingGivesSameResultWithCorrectKey()

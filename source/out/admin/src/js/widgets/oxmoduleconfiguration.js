@@ -21,77 +21,115 @@
 
 ( function( $ ) {
 
-    oxModuleConfiguration = {
+    oxModuleConfiguration = (function() {
+        /**
+         *
+         * @type {{_create: Function}}
+         */
+        var obj = {
+            _create: function () {
+                var form = this.element;
 
-        _create: function()
-        {
-            var self = this,
-                form      = self.element;
+                $('.password_input', form).each(handlePassword);
+                form.submit(handleSubmit);
+            }
+        };
 
-            $('.password_input', form).each(function(i, password) { self.handlePassword(password)});
-            form.submit(self.handleSubmit);
-        },
+        /**
+         * All password fields in the form.
+         * @type {Array}
+         */
+        var passwordFields = [];
 
-        handlePassword : function(password)
+        /**
+         * Handles password field actions.
+         * @param position
+         * @param password
+         */
+        function handlePassword(position, password)
         {
             password = $(password);
-            var confirmPassword = password.clone().attr('name', '');
+            var passwordConfirm = password.clone().attr('name', '');
 
-            password.before(confirmPassword).before($('</br>'));
+            passwordFields.push({original: password, confirmation: passwordConfirm});
+
+            password.before(passwordConfirm).before($('</br>'));
 
             if (!password.data('empty')) {
-                confirmPassword.attr('value', '*****');
-                password.hide().attr('disabled', true);
-
-                confirmPassword.bind("change paste keyup", function() {
-                    console.log();
-                    if (!password.is(":visible")) {
-                        password.show();
-                        password.attr('disabled', false);
-                    }
-                })
+                hidePassword(password, passwordConfirm);
             }
 
-            password.add(confirmPassword).change(function() {
-                if (password.attr('value') != '' || confirmPassword.attr('value') == '') {
-                    if (password.attr('value') != confirmPassword.attr('value')) {
-                        if (password.errorBox == undefined) {
-                            password.errorBox = $('<div class="errorbox"></div>').text(password.data('errorMessage'));
-                            password.after(password.errorBox);
-                        } else {
-                            password.errorBox.show();
-                        }
-                    } else {
-                        if (password.errorBox != undefined) {
-                            password.errorBox.hide();
-                        }
-                    }
+            password.add(passwordConfirm).change(function () {
+                if (password.attr('value') != '' || passwordConfirm.attr('value') == '') {
+                    checkPassword(password, passwordConfirm);
                 }
             });
-        },
+        }
 
-        handleSubmit : function(event)
+        /**
+         * Handle form submit action.
+         * @param event
+         * @returns {boolean}
+         */
+        function handleSubmit(event)
         {
-            var errors = $('.errorbox');
-            if (errors.length > 0) {
-                var invalid = false;
-                errors.each(function(i, errorBox) {
-                    errorBox = $(errorBox);
-                    if (errorBox.css('display') != 'none') {
-                        $('div:first-child', $(errorBox).parents('div.groupExp')).addClass('exp');
-                        invalid = true;
-                    }
-                });
-
-                if (invalid) {
-                    event.stopPropagation();
-                    return false;
+            var invalid = false;
+            $(passwordFields).each(function (position, element) {
+                if (!checkPassword(element.original, element.confirmation)) {
+                    $('div:first-child', element.original.parents('div.groupExp')).addClass('exp');
+                    invalid = true;
                 }
+            });
+
+            if (invalid) {
+                event.stopPropagation();
+                return false;
             }
         }
 
+        /**
+         * Hides original password, sets value to confirmation password and shows original password on event.
+         * @param password
+         * @param passwordConfirm
+         */
+        function hidePassword(password, passwordConfirm)
+        {
+            passwordConfirm.attr('value', '*****');
+            password.hide().attr('disabled', true);
 
-    };
+            passwordConfirm.bind("change paste keyup", function () {
+                if (!password.is(":visible")) {
+                    password.show().attr('disabled', false);
+                }
+            })
+        }
+
+        /**
+         * Checks whether passwords matches.
+         * @param original
+         * @param confirm
+         * @returns {boolean}
+         */
+        function checkPassword(original, confirm)
+        {
+            var result = true;
+            if (original.attr('disabled') == false && original.attr('value') != confirm.attr('value')) {
+                if (original.errorBox == undefined) {
+                    original.errorBox = $('<div class="errorbox"></div>').text(original.data('errorMessage'));
+                    original.after(original.errorBox);
+                } else {
+                    original.errorBox.show();
+                }
+                result = false;
+            } else if (original.errorBox != undefined) {
+                original.errorBox.hide();
+            }
+
+            return result;
+        }
+
+        return obj;
+    })();
 
     $.widget( "ui.oxModuleConfiguration", oxModuleConfiguration );
 

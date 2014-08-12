@@ -20,18 +20,10 @@
  * @version   OXID eShop CE
  */
 
-class Integration_User_loginTest extends OxidTestCase
+require_once 'userTestCase.php';
+
+class Integration_User_loginTest extends UserTestCase
 {
-    /**
-     * @var string
-     */
-    private $_sUserName = '_testUserName@oxid-esales.com';
-
-    /**
-     * @var string
-     */
-    private $_sUserPassword = '_testPassword';
-
     /**
      * Password encoded with old algorithm.
      *
@@ -74,8 +66,8 @@ class Integration_User_loginTest extends OxidTestCase
      */
     public function testLoginWithOldPassword()
     {
-        $oUser = $this->_createUser($this->_sUserName, $this->_sOldEncodedPassword, $this->_sOldSalt);
-        $this->_login($this->_sUserName, $this->_sUserPassword);
+        $oUser = $this->_createUser($this->_sDefaultUserName, $this->_sOldEncodedPassword, $this->_sOldSalt);
+        $this->_login($this->_sDefaultUserName, $this->_sDefaultUserPassword);
 
         $oUser->load($oUser->getId());
 
@@ -90,8 +82,8 @@ class Integration_User_loginTest extends OxidTestCase
      */
     public function testLoginWithNewPassword()
     {
-        $oUser = $this->_createUser($this->_sUserName, $this->_sNewEncodedPassword, $this->_sNewSalt);
-        $this->_login($this->_sUserName, $this->_sUserPassword);
+        $oUser = $this->_createUser($this->_sDefaultUserName, $this->_sNewEncodedPassword, $this->_sNewSalt);
+        $this->_login($this->_sDefaultUserName, $this->_sDefaultUserPassword);
 
         $oUser->load($oUser->getId());
 
@@ -104,9 +96,9 @@ class Integration_User_loginTest extends OxidTestCase
     {
         return array(
             // Not successful login with old password
-            array($this->_sUserName, $this->_sOldEncodedPassword, $this->_sOldSalt),
+            array($this->_sDefaultUserName, $this->_sOldEncodedPassword, $this->_sOldSalt),
             // Not successful login with new password
-            array($this->_sUserName, $this->_sNewEncodedPassword, $this->_sNewSalt),
+            array($this->_sDefaultUserName, $this->_sNewEncodedPassword, $this->_sNewSalt),
         );
     }
 

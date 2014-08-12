@@ -20,18 +20,14 @@
  * @version   OXID eShop CE
  */
 
-class Integration_User_registrationTest extends OxidTestCase
+require_once 'userTestCase.php';
+
+class Integration_User_registrationTest extends UserTestCase
 {
-    /** @var string */
-    private $_sUserName = '_testUserName@oxid-esales.com';
-
-    /** @var string */
-    private $_sUserPassword = '_testPassword';
-
     public function testRegisterNewUser()
     {
-        $sUserName = $this->_sUserName;
-        $sUserPassword = $this->_sUserPassword;
+        $sUserName = $this->_sDefaultUserName;
+        $sUserPassword = $this->_sDefaultUserPassword;
 
         $oCmpUser = $this->_createCmpUserObject();
 
@@ -48,8 +44,8 @@ class Integration_User_registrationTest extends OxidTestCase
      */
     public function testLoginWithNewUser($sUserId)
     {
-        $sUserName = $this->_sUserName;
-        $sUserPassword = $this->_sUserPassword;
+        $sUserName = $this->_sDefaultUserName;
+        $sUserPassword = $this->_sDefaultUserPassword;
 
         $oCmpUser = $this->_createCmpUserObject();
         $oCmpUser->logout();

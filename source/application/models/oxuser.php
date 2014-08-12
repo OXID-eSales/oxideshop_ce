@@ -1368,20 +1368,6 @@ class oxUser extends oxBase
             $sShopID = $oConfig->getShopId();
             $this->_dbLogin( $sUser, $sPassword, $sShopID );
 
-            /*$sSelect = $this->_getLegacyLoginQuery( $sUser, $sPassword, $sShopID, $this->isAdmin() );
-
-            // load from DB
-            $aData = oxDb::getDb()->getAll( $sSelect );
-
-            $sOXID = @$aData[0][0];
-            if ( isset( $sOXID ) && $sOXID && !@$aData[0][1] ) {
-
-                if ( !$this->load( $sOXID ) ) {
-                    $oEx = oxNew( 'oxUserException' );
-                    $oEx->setMessage( 'ERROR_MESSAGE_USER_NOVALIDLOGIN' );
-                    throw $oEx;
-                }
-            }*/
         }
 
 
@@ -1972,13 +1958,15 @@ class oxUser extends oxBase
      *
      * @param string $sSalt any unique string value
      *
-     * @deprecated
+     * @deprecated since v5.2 (2014-08-12); Use oxPasswordSaltGenerator
      *
      * @return string
      */
     public function prepareSalt( $sSalt )
     {
-        return ( $sSalt ? oxDb::getDb()->getOne( "select HEX( '{$sSalt}' )" ) : '' );
+        /** @var var oxPasswordSaltGenerator $oGenerator */
+        $oGenerator = oxNew('oxPasswordSaltGenerator');
+        return $oGenerator->generate();
     }
 
     /**
@@ -1986,7 +1974,7 @@ class oxUser extends oxBase
      *
      * @param string $sSaltHex heximal representation of password salt value
      *
-     * @deprecated
+     * @deprecated since v5.2 (2014-08-12); No need after introducing oxPasswordSaltGenerator
      *
      * @return string
      */

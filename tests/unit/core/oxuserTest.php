@@ -419,14 +419,6 @@ class Unit_Core_oxUserTest extends OxidTestCase
     }
 
 
-    public function testPrepareSaltDecodeSalt()
-    {
-        $sSalt = '123456789';
-
-        $oUser = new oxUser();
-        $this->assertEquals( $sSalt, $oUser->decodeSalt( $oUser->prepareSalt( $sSalt ) ) );
-    }
-
     public function testGetPasswordHash()
     {
         $oUser1 = new oxUser();
@@ -2149,6 +2141,8 @@ class Unit_Core_oxUserTest extends OxidTestCase
      */
     public function testLoginByPassingCustomerNumber_Logout()
     {
+
+
         $oUser = new oxUser();
         $oUser->login( 1, oxADMIN_PASSWD);
         $this->assertEquals( oxRegistry::getSession()->getVariable( 'usr' ), 'oxdefaultadmin' );

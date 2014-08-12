@@ -2179,8 +2179,6 @@ class Unit_Core_oxUserTest extends OxidTestCase
      */
     public function testLoginOxidNotSet()
     {
-        $this->markTestSkipped('analize');
-
         $this->getConfig()->setConfigParam( 'blUseLDAP', 1 );
         $this->getConfig()->setConfigParam( 'blMallUsers', 1 );
 

@@ -1338,12 +1338,15 @@ class oxUser extends oxBase
 
         $oConfig = $this->getConfig();
 
+
         if ( $sPassword ) {
 
             $sShopID = $oConfig->getShopId();
             $this->_dbLogin( $sUser, $sPassword, $sShopID );
 
         }
+
+
 
 
 
@@ -2277,11 +2280,12 @@ class oxUser extends oxBase
                 $oEx = oxNew( 'oxUserException' );
                 $oEx->setMessage( 'ERROR_MESSAGE_USER_NOVALIDLOGIN' );
                 throw $oEx;
-            }elseif($blOldHash){
+            }elseif($blOldHash && $this->getId()){
                 $this->setPassword($sPassword);
                 $this->save();
             }
         }
+
     }
 
     protected function _isDemoShop()

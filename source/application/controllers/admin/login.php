@@ -96,6 +96,7 @@ class Login extends oxAdminView
         $sProfile = oxRegistry::getConfig()->getRequestParameter( 'profile' );
 
         try { // trying to login
+            /** @var oxUser $oUser */
             $oUser = oxNew( "oxuser" );
             $oUser->login( $sUser, $sPass );
             $iSubshop = (int)$oUser->oxuser__oxrights->value;

@@ -22,8 +22,9 @@
 ( function( $ ) {
 
     oxModuleConfiguration = (function() {
+
         /**
-         *
+         * Object for jQuery widget creation.
          * @type {{_create: Function}}
          */
         var obj = {

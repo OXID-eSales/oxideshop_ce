@@ -24,11 +24,8 @@ require_once 'userTestCase.php';
 
 class Integration_User_registrationTest extends UserTestCase
 {
-    /**
-     * Tear down can not be performed because of dependencies between tests.
-     * Tests are cleaned after each test case.
-     */
-    public function tearDown() {}
+    /** @var bool */
+    protected $_blSkipCustomTearDown = true;
 
     public function testRegisterNewUser()
     {

@@ -74,9 +74,9 @@ class Integration_User_loginTest extends OxidTestCase
     }
 
     /**
-     * @param $sUserName
-     * @param $sEncodedPassword
-     * @param $sSalt
+     * @param string $sUserName
+     * @param string $sEncodedPassword
+     * @param string $sSalt
      *
      * @return oxUser
      */
@@ -92,8 +92,8 @@ class Integration_User_loginTest extends OxidTestCase
     }
 
     /**
-     * @param $sUserName
-     * @param $sPassword
+     * @param string $sUserName
+     * @param string $sPassword
      */
     private function _login($sUserName, $sPassword)
     {

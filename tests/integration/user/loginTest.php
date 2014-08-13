@@ -22,6 +22,12 @@
 
 class Integration_User_loginTest extends OxidTestCase
 {
+    public function tearDown()
+    {
+        parent::tearDown();
+        $oDbRestore = $this->_getDbRestore();
+        $oDbRestore->restoreTable('oxuser');
+    }
 
     /**
      * Tries to login with password which is generated with old algorithm
@@ -29,14 +35,15 @@ class Integration_User_loginTest extends OxidTestCase
      */
     public function testLoginWithOldPassword()
     {
-        $sUser = '_testUserName@oxid-esales.com';
+        $sUserName = '_testUserName@oxid-esales.com';
         $sPassword = '_testPassword';
         // Password encoded with old algorithm
         $sOldEncodedPassword = '4bb11fbb0c6bf332517a7ec397e49f1c';
         $sOldSalt = '3262383936333839303439393466346533653733366533346137326666393632';
 
-        $oUser = $this->_createUser($sUser, $sOldEncodedPassword, $sOldSalt);
-        $this->_login($sUser, $sPassword);
+        $oUser = $this->_createUser($sUserName, $sOldEncodedPassword, $sOldSalt);
+        $this->_login($sUserName, $sPassword);
+        $oUser->load($oUser->getId());
 
         $this->assertSame($oUser->getId(), oxRegistry::getSession()->getVariable('usr'), 'User ID is missing in session.');
         $this->assertNull(oxRegistry::getSession()->getVariable('Errors'), 'User did not logged in successfully.');
@@ -53,11 +60,12 @@ class Integration_User_loginTest extends OxidTestCase
         $sUserName = '_testUserName@oxid-esales.com';
         $sPassword = '_testPassword';
         // Password encoded with new algorithm
-        $sNewSalt = substr( base64_encode(openssl_random_pseudo_bytes(100)), 0, 128 );
-        $sNewEncodedPassword = hash('sha256', $sPassword.$sNewSalt);
+        $sNewSalt = 'INSERT NEW SALT HERE';
+        $sNewEncodedPassword = 'INSERT NEW PASSWORD HERE';
 
         $oUser = $this->_createUser($sUserName, $sNewEncodedPassword, $sNewSalt);
         $this->_login($sUserName, $sPassword);
+        $oUser->load($oUser->getId());
 
         $this->assertSame($oUser->getId(), oxRegistry::getSession()->getVariable('usr'), 'User ID is missing in session.');
         $this->assertNull(oxRegistry::getSession()->getVariable('Errors'), 'User did not logged in successfully.');
@@ -74,15 +82,11 @@ class Integration_User_loginTest extends OxidTestCase
      */
     private function _createUser($sUserName, $sEncodedPassword, $sSalt)
     {
-        $oDbRestore = $this->_getDbRestore();
-        $oDbRestore->restoreTable('oxuser');
         $oUser = new oxUser();
-        $oUser->oxuser__oxid = new oxField('_test', oxField::T_RAW);
         $oUser->oxuser__oxusername = new oxField($sUserName, oxField::T_RAW);
         $oUser->oxuser__oxpassword = new oxField($sEncodedPassword, oxField::T_RAW);
         $oUser->oxuser__oxpasssalt = new oxField($sSalt, oxField::T_RAW);
         $oUser->save();
-        $oUser->load($oUser->getId());
 
         return $oUser;
     }

@@ -21,23 +21,22 @@
  */
 
 /**
- * Class oxPasswordSha512Encryptor encrypt password with sha512 algorithm.
+ * Encrypt string with sha512 algorithm.
  */
-class oxPasswordSha512Encryptor
+class oxSha512Encrypter
 {
     /** Algorithm name. */
     const ENCRYPTION_ALGORITHM = 'sha512';
 
     /**
-     * Encode password with salt.
+     * Encrypt string.
      *
-     * @param string $sPassword
-     * @param string $sSalt
+     * @param string $sString
      *
      * @return string
      */
-    public function encryptPassword($sPassword, $sSalt)
+    public function encrypt($sString)
     {
-        return hash(self::ENCRYPTION_ALGORITHM, $sPassword . $sSalt);
+        return hash(self::ENCRYPTION_ALGORITHM, $sString);
     }
 }

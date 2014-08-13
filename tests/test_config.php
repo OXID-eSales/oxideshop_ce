@@ -37,7 +37,7 @@ $blVarnish = false;
 $blIsSubShop = false;
 
 // If set to true, copies testData to eShop and resets the database.
-$blInstallShop = true;
+$blInstallShop = false;
 // Whether to skip addition of default demo data (used when testing modules)
 $blSkipShopSetup = false;
 // Whether to skip restoring of shop data after running tests. If this is set to true, shop will be left

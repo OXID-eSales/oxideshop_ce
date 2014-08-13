@@ -22,6 +22,45 @@
 
 class Integration_User_loginTest extends OxidTestCase
 {
+    /**
+     * @var string
+     */
+    private $_sUserName = '_testUserName@oxid-esales.com';
+
+    /**
+     * @var string
+     */
+    private $_sPassword = '_testPassword';
+
+    /**
+     * Password encoded with old algorithm.
+     *
+     * @var string
+     */
+    private $_sOldEncodedPassword = '4bb11fbb0c6bf332517a7ec397e49f1c';
+
+    /**
+     * Salt generated with old algorithm.
+     *
+     * @var string
+     */
+    private $_sOldSalt = '3262383936333839303439393466346533653733366533346137326666393632';
+
+    /**
+     * Password encoded with new algorithm.
+     *
+     * @var string
+     */
+    private $_sNewEncodedPassword = 'INSERT NEW PASSWORD HERE';
+
+    /**
+     * Salt generated with new algorithm.
+     *
+     * @var string
+     */
+    private $_sNewSalt = 'INSERT NEW SALT HERE';
+
+
     public function tearDown()
     {
         parent::tearDown();
@@ -35,21 +74,15 @@ class Integration_User_loginTest extends OxidTestCase
      */
     public function testLoginWithOldPassword()
     {
-        $sUserName = '_testUserName@oxid-esales.com';
-        $sPassword = '_testPassword';
-        // Password encoded with old algorithm
-        $sOldEncodedPassword = '4bb11fbb0c6bf332517a7ec397e49f1c';
-        $sOldSalt = '3262383936333839303439393466346533653733366533346137326666393632';
-
-        $oUser = $this->_createUser($sUserName, $sOldEncodedPassword, $sOldSalt);
-        $this->_login($sUserName, $sPassword);
+        $oUser = $this->_createUser($this->_sUserName, $this->_sOldEncodedPassword, $this->_sOldSalt);
+        $this->_login($this->_sUserName, $this->_sPassword);
 
         $oUser->load($oUser->getId());
 
         $this->assertSame($oUser->getId(), oxRegistry::getSession()->getVariable('usr'), 'User ID is missing in session.');
         $this->assertNull(oxRegistry::getSession()->getVariable('Errors'), 'User did not logged in successfully.');
-        $this->assertNotSame($sOldEncodedPassword, $oUser->oxuser__oxpassword->value, 'Old and new passwords must not match.');
-        $this->assertNotSame($sOldSalt, $oUser->oxuser__oxpasssalt->value, 'Old and new salt must not match.');
+        $this->assertNotSame($this->_sOldEncodedPassword, $oUser->oxuser__oxpassword->value, 'Old and new passwords must not match.');
+        $this->assertNotSame($this->_sOldSalt, $oUser->oxuser__oxpasssalt->value, 'Old and new salt must not match.');
     }
 
     /**
@@ -58,30 +91,24 @@ class Integration_User_loginTest extends OxidTestCase
      */
     public function testLoginWithNewPassword()
     {
-        $sUserName = '_testUserName@oxid-esales.com';
-        $sPassword = '_testPassword';
-        // Password encoded with new algorithm
-        $sNewSalt = 'INSERT NEW SALT HERE';
-        $sNewEncodedPassword = 'INSERT NEW PASSWORD HERE';
-
-        $oUser = $this->_createUser($sUserName, $sNewEncodedPassword, $sNewSalt);
-        $this->_login($sUserName, $sPassword);
+        $oUser = $this->_createUser($this->_sUserName, $this->_sNewEncodedPassword, $this->_sNewSalt);
+        $this->_login($this->_sUserName, $this->_sPassword);
 
         $oUser->load($oUser->getId());
 
         $this->assertSame($oUser->getId(), oxRegistry::getSession()->getVariable('usr'), 'User ID is missing in session.');
         $this->assertNull(oxRegistry::getSession()->getVariable('Errors'), 'User did not logged in successfully.');
-        $this->assertSame($sNewEncodedPassword, $oUser->oxuser__oxpassword->value, 'Password in database must match with new password.');
-        $this->assertSame($sNewSalt, $oUser->oxuser__oxpasssalt->value, 'Salt in database must match with new salt.');
+        $this->assertSame($this->_sNewEncodedPassword, $oUser->oxuser__oxpassword->value, 'Password in database must match with new password.');
+        $this->assertSame($this->_sNewSalt, $oUser->oxuser__oxpasssalt->value, 'Salt in database must match with new salt.');
     }
 
     public function providerNotSuccessfulLogin()
     {
         return array(
             // Not successful login with old password
-            array('_testUserName@oxid-esales.com', '4bb11fbb0c6bf332517a7ec397e49f1c', '3262383936333839303439393466346533653733366533346137326666393632'),
+            array($this->_sUserName, $this->_sOldEncodedPassword, $this->_sOldSalt),
             // Not successful login with new password
-            array('_testUserName@oxid-esales.com', 'INSERT NEW PASSWORD HERE', 'INSERT NEW SALT HERE'),
+            array($this->_sUserName, $this->_sNewEncodedPassword, $this->_sNewSalt),
         );
     }
 

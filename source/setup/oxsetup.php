@@ -1173,9 +1173,10 @@ class OxSetupDb extends oxSetupCore
     public function writeAdminLoginData( $sLoginName, $sPassword )
     {
         $sPassSalt = $this->getInstance( "OxSetupUtils" )->generateUID();
-        $sPassword = md5( $sPassword . $sPassSalt );
 
-        $sQ = "update oxuser set oxusername='{$sLoginName}', oxpassword='{$sPassword}', oxpasssalt=HEX('{$sPassSalt}') where oxid='oxdefaultadmin'";
+        $sPassword = hash('sha512', $sPassword . $sPassSalt );
+
+        $sQ = "update oxuser set oxusername='{$sLoginName}', oxpassword='{$sPassword}', oxpasssalt='{$sPassSalt}' where oxid='oxdefaultadmin'";
         $this->execSql( $sQ );
 
         $sQ = "update oxnewssubscribed set oxemail='{$sLoginName}' where oxuserid='oxdefaultadmin'";

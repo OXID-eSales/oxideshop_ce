@@ -430,7 +430,6 @@ class Unit_Core_oxUserTest extends OxidTestCase
         $this->assertNull( $oUser2->getPasswordHash() );
     }
 
-
     public function testisExpiredUpdateId()
     {
         $oUser = $this->createUser();
@@ -2059,8 +2058,6 @@ class Unit_Core_oxUserTest extends OxidTestCase
      */
     public function testGetUserNotAdmin()
     {
-        $this->markTestSkipped('skip for user login');
-
         oxAddClassModule( 'Unit_oxuserTest_oxUtilsServer2', 'oxutilsserver' );
         $sShopId = oxRegistry::getConfig()->getShopId();
 
@@ -2770,58 +2767,12 @@ class Unit_Core_oxUserTest extends OxidTestCase
     }
 
     /**
-     * Test case for oxUSer::_getLoginQuery() - demoshop + admin mode
-     *
-     * @return null
-     */
-    public function testGetLoginQuery_demoShopAdminMode()
-    {
-        $this->markTestSkipped('replace with integration test');
-
-        // demoshop + admin
-
-            $oConfig = $this->getMock( "oxConfig", array( "isDemoShop" ) );
-            $oConfig->expects( $this->once() )->method( 'isDemoShop')->will( $this->returnValue( true ) );
-            $sWhat = "`oxid`";
-
-        $oUser = $this->getMock( "oxUser", array( "getConfig" ), array(), '', false );
-        $oUser->expects( $this->once() )->method( 'getConfig')->will( $this->returnValue( $oConfig ) );
-
-        $sQ = "select $sWhat from oxuser where oxrights = 'malladmin' ";
-
-        $this->assertEquals( $sQ, $oUser->UNITgetLoginQuery( "admin", "admin", "testShopId", true ) );
-    }
-
-    /**
-     * Test case for oxUSer::_getLoginQuery() - staging mode
-     *
-     * @return null
-     */
-    public function testGetLoginQuery_demoShopAdminMode_InvalidLogin()
-    {
-        $this->markTestSkipped('replace with integration');
-
-        // demoshop + admin
-
-            $oConfig = $this->getMock( "oxConfig", array( "isDemoShop" ) );
-            $oConfig->expects( $this->once() )->method( 'isDemoShop')->will( $this->returnValue( true ) );
-
-        $oUser = $this->getMock( "oxUser", array( "getConfig" ), array(), '', false );
-        $oUser->expects( $this->once() )->method( 'getConfig')->will( $this->returnValue( $oConfig ) );
-
-        $this->setExpectedException( 'oxUserException' );
-        $oUser->UNITgetLoginQuery( "notadmin", "notadmin", "testShopId", true );
-    }
-
-    /**
      * Test case for oxUSer::_getLoginQuery() - staging mode
      *
      * @return null
      */
     public function testGetLoginQuery_stagingMode()
     {
-        $this->markTestSkipped('repalce with integration');
-
     }
 
     /**
@@ -2831,8 +2782,6 @@ class Unit_Core_oxUserTest extends OxidTestCase
      */
     public function testGetLoginQuery_stagingMode_InvalidLogin()
     {
-        $this->markTestSkipped('replace with integrations');
-
     }
 
     /**

@@ -43,6 +43,7 @@ class Integration_User_loginTest extends OxidTestCase
 
         $oUser = $this->_createUser($sUserName, $sOldEncodedPassword, $sOldSalt);
         $this->_login($sUserName, $sPassword);
+
         $oUser->load($oUser->getId());
 
         $this->assertSame($oUser->getId(), oxRegistry::getSession()->getVariable('usr'), 'User ID is missing in session.');
@@ -65,6 +66,7 @@ class Integration_User_loginTest extends OxidTestCase
 
         $oUser = $this->_createUser($sUserName, $sNewEncodedPassword, $sNewSalt);
         $this->_login($sUserName, $sPassword);
+
         $oUser->load($oUser->getId());
 
         $this->assertSame($oUser->getId(), oxRegistry::getSession()->getVariable('usr'), 'User ID is missing in session.');
@@ -93,6 +95,7 @@ class Integration_User_loginTest extends OxidTestCase
         $oUser = $this->_createUser($sUserName, $sEncodedPassword, $sSalt);
         $sPasswordWrong = 'wrong_password';
         $this->_login($sUserName, $sPasswordWrong);
+
         $oUser->load($oUser->getId());
 
         $this->assertNull(oxRegistry::getSession()->getVariable('usr'), 'User ID should be null in session.');

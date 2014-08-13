@@ -73,6 +73,34 @@ class Integration_User_loginTest extends OxidTestCase
         $this->assertSame($sNewSalt, $oUser->oxuser__oxpasssalt->value, 'Salt in database must match with new salt.');
     }
 
+    public function providerNotSuccessfulLogin()
+    {
+        return array(
+            // Not successful login with old password
+            array('_testUserName@oxid-esales.com', '4bb11fbb0c6bf332517a7ec397e49f1c', '3262383936333839303439393466346533653733366533346137326666393632'),
+            // Not successful login with new password
+            array('_testUserName@oxid-esales.com', 'INSERT NEW PASSWORD HERE', 'INSERT NEW SALT HERE'),
+        );
+    }
+
+    /**
+     * Tries to login with wrong password and checks if password and salt were not changed.
+     *
+     * @dataProvider providerNotSuccessfulLogin
+     */
+    public function testNotSuccessfulLogin($sUserName, $sEncodedPassword, $sSalt)
+    {
+        $oUser = $this->_createUser($sUserName, $sEncodedPassword, $sSalt);
+        $sPasswordWrong = 'wrong_password';
+        $this->_login($sUserName, $sPasswordWrong);
+        $oUser->load($oUser->getId());
+
+        $this->assertNull(oxRegistry::getSession()->getVariable('usr'), 'User ID should be null in session.');
+        $this->assertNotNull(oxRegistry::getSession()->getVariable('Errors'), 'Errors should be set in session.');
+        $this->assertSame($sEncodedPassword, $oUser->oxuser__oxpassword->value, 'Password must be same.');
+        $this->assertSame($sSalt, $oUser->oxuser__oxpasssalt->value, 'Salt must be same.');
+    }
+
     /**
      * @param string $sUserName
      * @param string $sEncodedPassword

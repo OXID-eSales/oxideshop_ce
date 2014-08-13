@@ -1237,7 +1237,7 @@ class oxUser extends oxBase
      *
      * @return string
      */
-    protected function _getLegacyLoginQuery( $sUser, $sPassword, $sShopID, $blAdmin )
+    protected function _getLoginQueryHashedWithMD5( $sUser, $sPassword, $sShopID, $blAdmin )
     {
         $myConfig = $this->getConfig();
         $oDb = oxDb::getDb();
@@ -2269,7 +2269,7 @@ class oxUser extends oxBase
         } else {
             $sUserOxId = $oDb->getOne( $this->_getLoginQuery( $sUser, $sPassword, $sShopID, $this->isAdmin() ) );
             if( !$sUserOxId ){
-                $sUserOxId = $oDb->getOne( $this->_getLegacyLoginQuery( $sUser, $sPassword, $sShopID, $this->isAdmin() ) );
+                $sUserOxId = $oDb->getOne( $this->_getLoginQueryHashedWithMD5( $sUser, $sPassword, $sShopID, $this->isAdmin() ) );
                 $blOldHash = true;
             }
         }

@@ -1275,9 +1275,10 @@ class oxUser extends oxBase
         $myConfig = $this->getConfig();
         $oDb = oxDb::getDb();
 
-        $sSalt = $oDb->getOne("SELECT `oxpasssalt` FROM `oxuser` WHERE `oxusername` = " . $oDb->quote($sUser));
-
         $sUserSelect = is_numeric( $sUser ) ? "oxuser.oxcustnr = {$sUser} " : "oxuser.oxusername = " . $oDb->quote( $sUser );
+
+        $sSalt = $oDb->getOne("SELECT `oxpasssalt` FROM `oxuser` WHERE  " . $sUserSelect);
+
         $sPassSelect = " oxuser.oxpassword = " . $oDb->quote($this->encodePassword($sPassword, $sSalt) );
         $sShopSelect = "";
 
@@ -2267,9 +2268,14 @@ class oxUser extends oxBase
         if ($this->_isDemoShop() && $this->isAdmin()) {
             $sUserOxId = $oDb->getOne( $this->_getDemoShopLoginQuery( $sUser, $sPassword ));
         } else {
+
             $sUserOxId = $oDb->getOne( $this->_getLoginQuery( $sUser, $sPassword, $sShopID, $this->isAdmin() ) );
+
+            //var_dump($sUserOxId);
             if( !$sUserOxId ){
+
                 $sUserOxId = $oDb->getOne( $this->_getLoginQueryHashedWithMD5( $sUser, $sPassword, $sShopID, $this->isAdmin() ) );
+              //  var_dump($sUserOxId);
                 $blOldHash = true;
             }
         }

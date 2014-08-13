@@ -24,15 +24,42 @@ class Integration_User_registrationTest extends OxidTestCase
 {
     public function testRegisterNewUserAndLoginAfterwards()
     {
-        $sGermanyId = 'a7c40f631fc920687.20179984';
-        $this->setRequestParam('userLoginName', 'someTestName@oxid-esales.com');
-        $this->setRequestParam('lgn_usr', 'someTestName@oxid-esales.com');
+        $sUserName = 'someTestName@oxid-esales.com';
+        $sUserPassword = 'someTestPassword';
 
-        $this->setRequestParam('lgn_pwd', 'someTestPassword');
+        $this->_setUserRegistrationParametersToRequest($sUserName, $sUserPassword);
+
+        $oRegister = new register();
+        $oCmpUser = new oxcmp_user();
+        $oCmpUser->setParent($oRegister);
+        $this->assertSame('register?success=1', $oCmpUser->registeruser());
+
+        $oUser = $oCmpUser->getUser();
+        $oCmpUser->logout();
+        $this->assertNotSame($oUser->getId(), oxRegistry::getSession()->getVariable('usr'), 'User ID should not be in session after logout.');
+
+        $this->_setLoginParametersToRequest($sUserName, $sUserPassword);
+
+        $oCmpUser = new oxcmp_user();
+        $oCmpUser->login();
+        $this->assertSame($oUser->getId(), oxRegistry::getSession()->getVariable('usr'), 'User ID is missing in session after log in.');
+    }
+
+    /**
+     * @param string $sUserName
+     * @param string $sUserPassword
+     */
+    private function _setUserRegistrationParametersToRequest($sUserName, $sUserPassword)
+    {
+        $sGermanyId = 'a7c40f631fc920687.20179984';
+
+        $this->setRequestParam('userLoginName', $sUserName);
+        $this->setRequestParam('lgn_usr', $sUserName);
+
+        $this->setRequestParam('lgn_pwd', $sUserPassword);
         $this->setRequestParam('lgn_pwd2', 'someTestPassword');
         $this->setRequestParam('passwordLength', 'someTestPassword');
         $this->setRequestParam('userPasswordConfirm', 'someTestPassword');
-
 
         $this->setRequestParam('invadr',
             array(
@@ -45,10 +72,15 @@ class Integration_User_registrationTest extends OxidTestCase
                 'oxuser__oxcity' => 'SomeTestCoty',
                 'oxuser__oxcountryid' => $sGermanyId
             ));
+    }
 
-        $oRegister = new register();
-        $oCmpUser = new oxcmp_user();
-        $oCmpUser->setParent($oRegister);
-        $this->assertSame('register?success=1', $oCmpUser->registeruser());
+    /**
+     * @param string $sUserName
+     * @param string $sUserPassword
+     */
+    private function _setLoginParametersToRequest($sUserName, $sUserPassword)
+    {
+        $this->setRequestParam('lgn_usr', $sUserName);
+        $this->setRequestParam('lgn_pwd', $sUserPassword);
     }
 }

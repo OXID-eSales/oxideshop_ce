@@ -105,11 +105,11 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     /**
      * Set parameter to config request object.
      * @param string $sParam parameter name.
-     * @param object $oVal any parameter value, default null.
+     * @param mixed $mxVal any parameter value, default null.
      */
-    public function setRequestParam($sParam, $oVal = null)
+    public function setRequestParam($sParam, $mxVal = null)
     {
-        $this->getConfig()->setRequestParameter($sParam, $oVal);
+        $this->getConfig()->setRequestParameter($sParam, $mxVal);
     }
 
     /**
@@ -583,7 +583,7 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      * @var $_aMultiShopTables array multishop tables used in shop
      */
     protected $_aMultiShopTables= array('oxarticles', 'oxcategories', 'oxattribute', 'oxdelivery',
-                                        'oxdeliveryset', 'oxdiscount', 'oxmanufacturers', 'oxselectlist', 'oxvendor', 'oxvoucherseries', 'oxwrapping' );
+        'oxdeliveryset', 'oxdiscount', 'oxmanufacturers', 'oxselectlist', 'oxvendor', 'oxvoucherseries', 'oxwrapping' );
 
     /**
      * @var $_aTeardownSqls array variable

@@ -176,9 +176,8 @@ class Unit_Views_paymentTest extends OxidTestCase
         $oPayment->setUser($oUser);
         $aAllSets = $oPayment->getAllSets();
         $aResultSets = array_keys($aAllSets);
-        $aSetsIds = array ( 0 => 'oxidstandard', 1 => '1b842e732a23255b1.91207750', 2 => '1b842e732a23255b1.91207751');
-        asort($aSetsIds);
-        asort($aResultSets);
+        $aSetsIds = array ('1b842e732a23255b1.91207750', '1b842e732a23255b1.91207751', 'oxidstandard');
+        sort($aResultSets);
 
         $this->assertEquals( $aSetsIds, $aResultSets );
     }

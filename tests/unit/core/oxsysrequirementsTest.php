@@ -37,7 +37,7 @@ class Unit_Core_oxSysRequirementsTest extends OxidTestCase
     {
         $oSysReq = new oxSysRequirements();
         $aRequiredModules = $oSysReq->getRequiredModules();
-            $sCnt = 24;
+            $sCnt = 25;
         if ( isAdmin() ) {
             $sCnt++;
         }
@@ -60,7 +60,7 @@ class Unit_Core_oxSysRequirementsTest extends OxidTestCase
         $this->assertEquals( 3, count($aSysInfo));
         $sCnt = 13;
         $this->assertEquals( $sCnt, count($aSysInfo['php_extennsions']));
-        $this->assertEquals( 9, count($aSysInfo['php_config']));
+        $this->assertEquals( 10, count($aSysInfo['php_config']));
         $sCnt = 4;
             $sCnt = 2;
         if ( isAdmin() ) {

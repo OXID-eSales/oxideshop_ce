@@ -364,7 +364,7 @@ class Unit_Setup_oxSetupDbTest extends OxidTestCase
         $iAt = 0;
         $oDb = $this->getMock( "OxSetupDb", array( "getInstance", "execSql" ) );
         $oDb->expects( $this->at( $iAt++ ) )->method( "getInstance" )->with( $this->equalTo( "OxSetupUtils" ) )->will( $this->returnValue( $oUtils ) );
-        $oDb->expects( $this->at( $iAt++ ) )->method( "execSql" )->with( $this->equalTo( "update oxuser set oxusername='{$sLoginName}', oxpassword='".md5( $sPassword . $sPassSalt )."', oxpasssalt=HEX('{$sPassSalt}') where oxid='oxdefaultadmin'" ) );
+        $oDb->expects( $this->at( $iAt++ ) )->method( "execSql" )->with( $this->equalTo( "update oxuser set oxusername='{$sLoginName}', oxpassword='".hash('sha512', $sPassword . $sPassSalt )."', oxpasssalt='{$sPassSalt}' where oxid='oxdefaultadmin'" ) );
         $oDb->expects( $this->at( $iAt++ ) )->method( "execSql" )->with( $this->equalTo( "update oxnewssubscribed set oxemail='{$sLoginName}' where oxuserid='oxdefaultadmin'" ) );
         $oDb->writeAdminLoginData( $sLoginName, $sPassword );
     }

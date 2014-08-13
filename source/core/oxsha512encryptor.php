@@ -23,7 +23,7 @@
 /**
  * Encrypt string with sha512 algorithm.
  */
-class oxSha512Encrypter
+class oxSha512Encryptor
 {
     /** Algorithm name. */
     const ENCRYPTION_ALGORITHM = 'sha512';

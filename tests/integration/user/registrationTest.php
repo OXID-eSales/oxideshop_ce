@@ -37,8 +37,7 @@ class Integration_User_registrationTest extends OxidTestCase
         $this->_setUserRegistrationParametersToRequest($sUserName, $sUserPassword);
         $this->assertSame('register?success=1', $oCmpUser->registeruser());
 
-        $oUser = $oCmpUser->getUser();
-        return $oUser->getId();
+        return $oCmpUser->getUser()->getId();
     }
 
     /**
@@ -106,6 +105,7 @@ class Integration_User_registrationTest extends OxidTestCase
         $oCmpUser = new oxcmp_user();
         $oCmpUser->setParent($oRegister);
         $oCmpUser->logout();
+
         return $oCmpUser;
     }
 }

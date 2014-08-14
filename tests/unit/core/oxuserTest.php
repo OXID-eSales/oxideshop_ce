@@ -2134,23 +2134,16 @@ class Unit_Core_oxUserTest extends OxidTestCase
     /**
      * oxuser::login() and oxuser::logout() test
      */
-    public function testLoginByPassingCustomerNumber_Logout()
+    public function testLoginByPassingCustomerNumberNotAllowed()
     {
         $oUser = new oxUser();
-        $oUser->login( 1, oxADMIN_PASSWD);
-        $this->assertEquals( oxRegistry::getSession()->getVariable( 'usr' ), 'oxdefaultadmin' );
-        $this->assertNull( oxRegistry::getSession()->getVariable( 'auth' ) );
-
-        $oUser = $oUser->getUser();
-
-        $this->assertNotNull( $oUser );
-        $this->assertEquals( 'oxdefaultadmin', $oUser->getId() );
-
-        $oUser->logout();
-
-        $this->assertNull( oxRegistry::getSession()->getVariable( 'usr' ) );
-        $this->assertNull( oxRegistry::getSession()->getVariable( 'auth' ) );
-        $this->assertFalse( $oUser->getUser() );
+        try {
+            $oUser->login( 1, oxADMIN_PASSWD);
+        } catch ( Exception $oExcp ) {
+            $this->assertEquals( 'ERROR_MESSAGE_USER_NOVALIDLOGIN', $oExcp->getMessage() );
+            return;
+        }
+        $this->fail( 'exception must be thrown' );
     }
 
     /**

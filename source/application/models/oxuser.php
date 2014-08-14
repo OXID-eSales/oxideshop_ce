@@ -1242,7 +1242,7 @@ class oxUser extends oxBase
         $myConfig = $this->getConfig();
         $oDb = oxDb::getDb();
 
-        $sUserSelect = is_numeric( $sUser ) ? "oxuser.oxcustnr = {$sUser} " : "oxuser.oxusername = " . $oDb->quote( $sUser );
+        $sUserSelect = "oxuser.oxusername = " . $oDb->quote( $sUser );
         $sPassSelect = " oxuser.oxpassword = BINARY MD5( CONCAT( ".$oDb->quote( $sPassword ).", UNHEX( oxuser.oxpasssalt ) ) ) ";
         $sShopSelect = "";
 
@@ -1275,7 +1275,7 @@ class oxUser extends oxBase
         $myConfig = $this->getConfig();
         $oDb = oxDb::getDb();
 
-        $sUserSelect = is_numeric( $sUser ) ? "oxuser.oxcustnr = {$sUser} " : "oxuser.oxusername = " . $oDb->quote( $sUser );
+        $sUserSelect = "oxuser.oxusername = " . $oDb->quote( $sUser );
 
         $sSalt = $oDb->getOne("SELECT `oxpasssalt` FROM `oxuser` WHERE  " . $sUserSelect);
 
@@ -2273,14 +2273,9 @@ class oxUser extends oxBase
         if ($this->_isDemoShop() && $this->isAdmin()) {
             $sUserOxId = $oDb->getOne( $this->_getDemoShopLoginQuery( $sUser, $sPassword ));
         } else {
-
             $sUserOxId = $oDb->getOne( $this->_getLoginQuery( $sUser, $sPassword, $sShopID, $this->isAdmin() ) );
-
-            //var_dump($sUserOxId);
             if( !$sUserOxId ){
-
                 $sUserOxId = $oDb->getOne( $this->_getLoginQueryHashedWithMD5( $sUser, $sPassword, $sShopID, $this->isAdmin() ) );
-              //  var_dump($sUserOxId);
                 $blOldHash = true;
             }
         }

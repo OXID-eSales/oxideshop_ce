@@ -82,6 +82,7 @@ if (!is_dir(oxCCTempDir)) {
 
 
 require_once 'unit/test_config.inc.php';
+require_once "unit/OxidTestCase.php";
 
 define('oxADMIN_LOGIN', oxDb::getDb()->getOne("select OXUSERNAME from oxuser where oxid='oxdefaultadmin'"));
 if (getenv('oxADMIN_PASSWD')) {

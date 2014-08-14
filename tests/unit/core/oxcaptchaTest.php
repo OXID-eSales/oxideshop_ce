@@ -105,7 +105,7 @@ class Unit_Core_oxcaptchaTest extends OxidTestCase
     public function testGetImageUrl()
     {
         $this->_oCaptcha->setNonPublicVar('_sText', 'test1');
-        $this->assertEquals(modConfig::getInstance()->getShopUrl()."core/utils/verificationimg.php?e_mac=ox_BBpTRzc0AU8u", $this->_oCaptcha->getImageUrl());
+        $this->assertEquals(modConfig::getInstance()->getShopUrl()."core/utils/verificationimg.php?e_mac=ox_MB4FUUYlYlld", $this->_oCaptcha->getImageUrl());
     }
 
     /**

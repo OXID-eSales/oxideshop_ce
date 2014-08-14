@@ -25,15 +25,35 @@ require_once realpath( "." ).'/unit/test_config.inc.php';
 
 class Unit_Core_oxPasswordSaltGeneratorTest extends OxidTestCase
 {
-    public function testSaltLength()
+    public function providerOpenSslRandomBytesGeneratorAvailability()
     {
-        $oGenerator = new oxPasswordSaltGenerator();
+        return array(
+            array(true),
+            array(false)
+        );
+    }
+
+    /**
+     * @dataProvider providerOpenSslRandomBytesGeneratorAvailability
+     */
+    public function testSaltLength($blIsOpenSslRandomBytesGeneratorAvailable)
+    {
+        /** @var oxOpenSSLFunctionalityChecker $oOpenSSLFunctionalityChecker */
+        $oOpenSSLFunctionalityChecker = $this->getMock('oxOpenSSLFunctionalityChecker', array('isOpenSslRandomBytesGeneratorAvailable'));
+        $oOpenSSLFunctionalityChecker->expects($this->any())->method('isOpenSslRandomBytesGeneratorAvailable')->will($this->returnValue($blIsOpenSslRandomBytesGeneratorAvailable));
+        $oGenerator = new oxPasswordSaltGenerator($oOpenSSLFunctionalityChecker);
         $this->assertSame(32, strlen($oGenerator->generate()));
     }
 
-    public function testGeneratedSaltShouldBeUnique()
+    /**
+     * @dataProvider providerOpenSslRandomBytesGeneratorAvailability
+     */
+    public function testGeneratedSaltShouldBeUnique($blIsOpenSslRandomBytesGeneratorAvailable)
     {
-        $oGenerator = new oxPasswordSaltGenerator();
+        /** @var oxOpenSSLFunctionalityChecker $oOpenSSLFunctionalityChecker */
+        $oOpenSSLFunctionalityChecker = $this->getMock('oxOpenSSLFunctionalityChecker', array('isOpenSslRandomBytesGeneratorAvailable'));
+        $oOpenSSLFunctionalityChecker->expects($this->any())->method('isOpenSslRandomBytesGeneratorAvailable')->will($this->returnValue($blIsOpenSslRandomBytesGeneratorAvailable));
+        $oGenerator = new oxPasswordSaltGenerator($oOpenSSLFunctionalityChecker);
         $aSalts = array();
 
         for($i=1; $i<=100; $i++)

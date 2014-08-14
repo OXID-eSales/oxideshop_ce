@@ -2120,8 +2120,11 @@ class oxUser extends oxBase
      */
     public function prepareSalt( $sSalt )
     {
+        /** @var oxOpenSSLFunctionalityChecker $oOpenSSLFunctionalityChecker */
+        $oOpenSSLFunctionalityChecker = oxNew('oxOpenSSLFunctionalityChecker');
         /** @var oxPasswordSaltGenerator $oGenerator */
-        $oGenerator = oxNew('oxPasswordSaltGenerator');
+        $oGenerator = oxNew('oxPasswordSaltGenerator', $oOpenSSLFunctionalityChecker);
+
         return $oGenerator->generate();
     }
 
@@ -2148,9 +2151,11 @@ class oxUser extends oxBase
      */
     public function setPassword( $sPassword = null )
     {
+        /** @var oxOpenSSLFunctionalityChecker $oOpenSSLFunctionalityChecker */
+        $oOpenSSLFunctionalityChecker = oxNew('oxOpenSSLFunctionalityChecker');
         // setting salt if password is not empty
         /** @var  oxPasswordSaltGenerator $oSaltGenerator */
-        $oSaltGenerator = oxNew('oxPasswordSaltGenerator');
+        $oSaltGenerator = oxNew('oxPasswordSaltGenerator', $oOpenSSLFunctionalityChecker);
 
         $sSalt = $sPassword ? $oSaltGenerator->generate() : '';
 

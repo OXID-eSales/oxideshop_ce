@@ -47,7 +47,7 @@ class oxPasswordSaltGenerator
      */
     public function generate()
     {
-        if ($this->getOpenSSLFunctionalityChecker()->isOpenSslRandomBytesGeneratorAvailable()) {
+        if ($this->_getOpenSSLFunctionalityChecker()->isOpenSslRandomBytesGeneratorAvailable()) {
             $sSalt = bin2hex(openssl_random_pseudo_bytes(16));
         } else {
             $sSalt = $this->_customSaltGenerator();
@@ -59,7 +59,7 @@ class oxPasswordSaltGenerator
     /**
      * @return oxOpenSSLFunctionalityChecker
      */
-    public function getOpenSSLFunctionalityChecker()
+    protected function _getOpenSSLFunctionalityChecker()
     {
         return $this->_openSSLFunctionalityChecker;
     }

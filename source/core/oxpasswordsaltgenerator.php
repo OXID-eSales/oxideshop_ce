@@ -27,13 +27,55 @@
 class oxPasswordSaltGenerator
 {
     /**
-     * Generate salt
+     * @var oxOpenSSLFunctionalityChecker
+     */
+    private $_openSSLFunctionalityChecker;
+
+    /**
+     * @param oxOpenSSLFunctionalityChecker $openSSLFunctionalityChecker
+     */
+    public function __construct(oxOpenSSLFunctionalityChecker $openSSLFunctionalityChecker)
+    {
+        $this->_openSSLFunctionalityChecker = $openSSLFunctionalityChecker;
+    }
+
+    /**
+     * Generates salt. If openssl_random_pseudo_bytes function is not available,
+     * than fallback to custom salt generator.
      *
      * @return string
      */
     public function generate()
     {
-        $sSalt = bin2hex(openssl_random_pseudo_bytes(16));
+        if ($this->getOpenSSLFunctionalityChecker()->isOpenSslRandomBytesGeneratorAvailable()) {
+            $sSalt = bin2hex(openssl_random_pseudo_bytes(16));
+        } else {
+            $sSalt = $this->_customSaltGenerator();
+        }
+
+        return $sSalt;
+    }
+
+    /**
+     * @return oxOpenSSLFunctionalityChecker
+     */
+    public function getOpenSSLFunctionalityChecker()
+    {
+        return $this->_openSSLFunctionalityChecker;
+    }
+
+    /**
+     * @return string
+     */
+    protected function _customSaltGenerator()
+    {
+        $sHash = '';
+        $sSalt = '';
+        for ($i = 0; $i < 32; $i++) {
+            $sHash = hash('sha256', $sHash . mt_rand());
+            $iPosition = mt_rand(0, 62);
+            $sSalt .= $sHash[$iPosition];
+        }
 
         return $sSalt;
     }

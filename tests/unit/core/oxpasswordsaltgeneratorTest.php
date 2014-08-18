@@ -38,9 +38,7 @@ class Unit_Core_oxPasswordSaltGeneratorTest extends OxidTestCase
      */
     public function testSaltLength($blIsOpenSslRandomBytesGeneratorAvailable)
     {
-        /** @var oxOpenSSLFunctionalityChecker $oOpenSSLFunctionalityChecker */
-        $oOpenSSLFunctionalityChecker = $this->getMock('oxOpenSSLFunctionalityChecker', array('isOpenSslRandomBytesGeneratorAvailable'));
-        $oOpenSSLFunctionalityChecker->expects($this->any())->method('isOpenSslRandomBytesGeneratorAvailable')->will($this->returnValue($blIsOpenSslRandomBytesGeneratorAvailable));
+        $oOpenSSLFunctionalityChecker = $this->_getOpenSSLFunctionalityChecker($blIsOpenSslRandomBytesGeneratorAvailable);
         $oGenerator = new oxPasswordSaltGenerator($oOpenSSLFunctionalityChecker);
         $this->assertSame(32, strlen($oGenerator->generate()));
     }
@@ -50,9 +48,7 @@ class Unit_Core_oxPasswordSaltGeneratorTest extends OxidTestCase
      */
     public function testGeneratedSaltShouldBeUnique($blIsOpenSslRandomBytesGeneratorAvailable)
     {
-        /** @var oxOpenSSLFunctionalityChecker $oOpenSSLFunctionalityChecker */
-        $oOpenSSLFunctionalityChecker = $this->getMock('oxOpenSSLFunctionalityChecker', array('isOpenSslRandomBytesGeneratorAvailable'));
-        $oOpenSSLFunctionalityChecker->expects($this->any())->method('isOpenSslRandomBytesGeneratorAvailable')->will($this->returnValue($blIsOpenSslRandomBytesGeneratorAvailable));
+        $oOpenSSLFunctionalityChecker = $this->_getOpenSSLFunctionalityChecker($blIsOpenSslRandomBytesGeneratorAvailable);
         $oGenerator = new oxPasswordSaltGenerator($oOpenSSLFunctionalityChecker);
         $aSalts = array();
 
@@ -62,5 +58,28 @@ class Unit_Core_oxPasswordSaltGeneratorTest extends OxidTestCase
         }
 
         $this->assertSame(100, count(array_unique($aSalts)));
+    }
+
+    /**
+     * Returns oxOpenSSLFunctionalityChecker object dependent on condition. It can return mocked object or not.
+     * This is needed because of environment. For example on php 5.2 there is no such function like openssl_random_pseudo_bytes
+     * so in that case we don't want to mock checker.
+     *
+     * @param $blIsOpenSslRandomBytesGeneratorAvailable
+     *
+     * @return oxOpenSSLFunctionalityChecker
+     */
+    private function _getOpenSSLFunctionalityChecker($blIsOpenSslRandomBytesGeneratorAvailable)
+    {
+        if ($blIsOpenSslRandomBytesGeneratorAvailable) {
+            $oOpenSSLFunctionalityChecker = new oxOpenSSLFunctionalityChecker();
+        } else {
+            /** @var oxOpenSSLFunctionalityChecker $oOpenSSLFunctionalityChecker */
+            $oOpenSSLFunctionalityChecker = $this->getMock('oxOpenSSLFunctionalityChecker', array('isOpenSslRandomBytesGeneratorAvailable'));
+            $oOpenSSLFunctionalityChecker->expects($this->any())->method('isOpenSslRandomBytesGeneratorAvailable')->will($this->returnValue($blIsOpenSslRandomBytesGeneratorAvailable));
+        }
+
+
+        return $oOpenSSLFunctionalityChecker;
     }
 }

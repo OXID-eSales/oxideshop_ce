@@ -134,7 +134,7 @@ class oxModuleList extends oxSuperCfg
      */
     public function getDisabledModules()
     {
-        return $this->getConfig()->getConfigParam('aDisabledModules');
+        return (array) $this->getConfig()->getConfigParam('aDisabledModules');
     }
 
     /**

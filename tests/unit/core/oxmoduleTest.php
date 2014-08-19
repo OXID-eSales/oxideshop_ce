@@ -78,7 +78,7 @@ class Unit_Core_oxModuleTest extends OxidTestCase
                         'file'=>'views/admin/blocks/order_overview.tpl'
                     ),
                 ),
-                'active' => ''
+                'active' => true
             );
 
             $oModule = $this->getProxyClass( 'oxmodule' );

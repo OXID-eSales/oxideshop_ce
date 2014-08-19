@@ -379,6 +379,7 @@ class oxUtilsView extends oxSuperCfg
             $oSmarty->php_handling = SMARTY_PHP_REMOVE;
             $oSmarty->security     = true;
             $oSmarty->security_settings['IF_FUNCS'][] = 'XML_ELEMENT_NODE';
+            $oSmarty->security_settings['IF_FUNCS'][] = 'is_int';
             $oSmarty->security_settings['MODIFIER_FUNCS'][] = 'round';
             $oSmarty->security_settings['MODIFIER_FUNCS'][] = 'floor';
             $oSmarty->security_settings['MODIFIER_FUNCS'][] = 'trim';

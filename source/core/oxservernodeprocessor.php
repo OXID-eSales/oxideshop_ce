@@ -22,19 +22,51 @@
 
 class oxServerNodeProcessor
 {
+    /** @var oxServerNodesManager */
+    private $_oServerNodesManager;
+
+    /** @var oxServerNodeChecker */
+    private $_oServerNodeChecker;
+
+    /**
+     * @return oxServerNodeChecker
+     */
+    protected function _getServerNodeChecker()
+    {
+        return $this->_oServerNodeChecker;
+    }
+
+    /**
+     * @return oxServerNodesManager
+     */
+    protected function _getServerNodesManager()
+    {
+        return $this->_oServerNodesManager;
+    }
+
+    /**
+     * @param oxServerNodesManager $oServerNodesManager
+     * @param oxServerNodeChecker $oServerNodeChecker
+     */
+    public function __construct($oServerNodesManager, $oServerNodeChecker)
+    {
+        $this->_oServerNodesManager = $oServerNodesManager;
+        $this->_oServerNodeChecker = $oServerNodeChecker;
+    }
+
     /**
      * Renew frontend server node information if it is outdated or it does not exist.
      */
     public function process()
     {
         $sIP = $this->_getIPAddress();
-        $oNodeList = $this->getNodeManager();
-        $oNode = $oNodeList->getNode($sIP);
+        $oNodesManager = $this->_getServerNodesManager();
+        $oNode = $oNodesManager->getNode($sIP);
 
-        $oNodeChecker = $this->getNodeChecker();
-        if (!$oNodeChecker->needToSave($oNode)) {
+        $oNodeChecker = $this->_getServerNodeChecker();
+        if (!$oNodeChecker->check($oNode)) {
             $this->_updateNodeInformation($oNode);
-            $oNodeList->saveNode($oNode);
+            $oNodesManager->saveNode($oNode);
         }
     }
 }

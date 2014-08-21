@@ -48,9 +48,16 @@ class oxServerNodeProcessor
      * @param oxServerNodesManager $oServerNodesManager
      * @param oxServerNodeChecker $oServerNodeChecker
      */
-    public function __construct($oServerNodesManager, $oServerNodeChecker)
+    public function __construct($oServerNodesManager = null, $oServerNodeChecker = null)
     {
+        if (is_null($oServerNodesManager)) {
+            $oServerNodesManager = oxNew('oxServerNodesManager');
+        }
         $this->_oServerNodesManager = $oServerNodesManager;
+
+        if (is_null($oServerNodeChecker)) {
+            $oServerNodeChecker = oxNew('oxServerNodeChecker');
+        }
         $this->_oServerNodeChecker = $oServerNodeChecker;
     }
 

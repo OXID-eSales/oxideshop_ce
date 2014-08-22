@@ -34,6 +34,9 @@ class oxServerNodeProcessor
     /** @var oxServerNodeChecker */
     private $_oServerNodeChecker;
 
+    /** @var oxUtilsServer  */
+    private $_oUtilsServer;
+
     /**
      * @return oxServerNodeChecker
      */
@@ -51,22 +54,36 @@ class oxServerNodeProcessor
     }
 
     /**
+     * @return oxUtilsServer
+     */
+    protected function _getUtilsServer()
+    {
+        return $this->_oUtilsServer;
+    }
+
+    /**
      * @param oxServerNodesManager $oServerNodesManager
      * @param oxServerNodeChecker $oServerNodeChecker
+     * @param oxUtilsServer $oUtilsServer
      */
-    public function __construct(oxServerNodesManager $oServerNodesManager = null, oxServerNodeChecker $oServerNodeChecker = null)
+    public function __construct(oxServerNodesManager $oServerNodesManager = null,
+                                oxServerNodeChecker $oServerNodeChecker = null,
+                                oxUtilsServer $oUtilsServer = null)
     {
         if (is_null($oServerNodesManager)) {
-            /** @var oxServerNodesManager $oServerNodesManager */
             $oServerNodesManager = oxNew('oxServerNodesManager');
         }
         $this->_oServerNodesManager = $oServerNodesManager;
 
         if (is_null($oServerNodeChecker)) {
-            /** @var oxServerNodeChecker $oServerNodeChecker */
             $oServerNodeChecker = oxNew('oxServerNodeChecker');
         }
         $this->_oServerNodeChecker = $oServerNodeChecker;
+
+        if (is_null($oUtilsServer)) {
+            $oUtilsServer = oxNew('oxUtilsServer');
+        }
+        $this->_oUtilsServer = $oUtilsServer;
     }
 
     /**
@@ -75,7 +92,8 @@ class oxServerNodeProcessor
     public function process()
     {
         $oNodesManager = $this->_getServerNodesManager();
-        $oNode = $oNodesManager->getNode($this->_getServerNodeId());
+        $sServerNodeId = $this->_getUtilsServer()->getServerNodeId();
+        $oNode = $oNodesManager->getNode($sServerNodeId);
 
         $oNodeChecker = $this->_getServerNodeChecker();
         if (!$oNodeChecker->check($oNode)) {
@@ -85,19 +103,15 @@ class oxServerNodeProcessor
     }
 
     /**
-     * @return string
+     * @param oxServerNode $oNode
      */
-    private function _getServerNodeId()
-    {
-        return md5(php_uname());
-    }
-
     private function _updateNodeInformation($oNode)
     {
-        $sServerNodeId = $this->_getServerNodeId();
+        $sServerNodeId = $this->_getUtilsServer()->getServerNodeId();
         $oUtilsDate = oxRegistry::get('oxUtilsDate');
 
-        $oNode->setIp($sServerNodeId);
+        $oNode->setId($sServerNodeId);
+        $oNode->setIp('');
         $oNode->setTimestamp($oUtilsDate->getTime());
         $oNode->setId('');
         $oNode->setLastFrontendUsage('');

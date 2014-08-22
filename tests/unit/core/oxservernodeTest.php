@@ -21,41 +21,41 @@
  */
 
 /**
- * @covers oxServerNode
+ * @covers oxApplicationServer
  */
-class Unit_Core_oxServerNodeTest extends OxidTestCase
+class Unit_Core_oxApplicationServerTest extends OxidTestCase
 {
     public function testSetGetId()
     {
-        $oServerNode = new oxServerNode();
+        $oServerNode = new oxApplicationServer();
         $oServerNode->setId('ThisIsServerId');
         $this->assertSame('ThisIsServerId', $oServerNode->getId());
     }
 
     public function testSetGetIp()
     {
-        $oServerNode = new oxServerNode();
+        $oServerNode = new oxApplicationServer();
         $oServerNode->setIp('11.11.11.11');
         $this->assertSame('11.11.11.11', $oServerNode->getIp());
     }
 
     public function testSetGetTimeStamp()
     {
-        $oServerNode = new oxServerNode();
+        $oServerNode = new oxApplicationServer();
         $oServerNode->setTimestamp(123456789);
         $this->assertSame(123456789, $oServerNode->getTimestamp());
     }
 
     public function testSetGetLastFrontendUsage()
     {
-        $oServerNode = new oxServerNode();
+        $oServerNode = new oxApplicationServer();
         $oServerNode->setLastFrontendUsage(123456789);
         $this->assertSame(123456789, $oServerNode->getLastFrontendUsage());
     }
 
     public function testSetGetLastAdminUsage()
     {
-        $oServerNode = new oxServerNode();
+        $oServerNode = new oxApplicationServer();
         $oServerNode->setLastAdminUsage(123456789);
         $this->assertSame(123456789, $oServerNode->getLastAdminUsage());
     }

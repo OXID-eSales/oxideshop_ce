@@ -31,7 +31,7 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
         $aNodes = array('serverNameHash1' => array('timestamp' => 'timestamp'));
         $this->getConfig()->setConfigParam('aServerNodesData', $aNodes);
 
-        $oExpectedNode = new oxServerNode();
+        $oExpectedNode = new oxApplicationServer();
         $oExpectedNode->setId('serverNameHash1');
         $oExpectedNode->setTimestamp('timestamp');
 
@@ -48,7 +48,7 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
         );
         $this->getConfig()->setConfigParam('aServerNodesData', $aNodes);
 
-        $oExpectedNode = new oxServerNode();
+        $oExpectedNode = new oxApplicationServer();
         $oExpectedNode->setId('serverNameHash2');
         $oExpectedNode->setTimestamp('timestamp2');
 
@@ -60,7 +60,7 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
     {
         $this->getConfig()->setConfigParam('aServerNodesData', null);
 
-        $oExpectedNode = new oxServerNode();
+        $oExpectedNode = new oxApplicationServer();
         $oExpectedNode->setId('serverNameHash1');
 
         $oNodeList = new oxServersManager();
@@ -71,7 +71,7 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
     {
         oxRegistry::getConfig()->setConfigParam('aServerNodesData', null);
 
-        $oNode = new oxServerNode();
+        $oNode = new oxApplicationServer();
         $oNode->setId('serverNameHash1');
         $oNode->setTimestamp('timestamp');
         $oNode->setIp('127.0.0.1');
@@ -105,7 +105,7 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
             'serverNameHash3' => array(),
         ));
 
-        $oNode = new oxServerNode();
+        $oNode = new oxApplicationServer();
         $oNode->setId('serverNameHash2');
         $oNode->setTimeStamp('timestampUpdated');
         $oNode->setIp('127.0.0.255');
@@ -134,7 +134,7 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
             'serverNameHash1' => array(),
         ));
 
-        $oNode = new oxServerNode();
+        $oNode = new oxApplicationServer();
         $oNode->setId('serverNameHash1');
         $oNode->setTimeStamp('timestampUpdated');
         $oNode->setIp('127.0.0.1');

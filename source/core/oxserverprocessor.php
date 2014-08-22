@@ -120,7 +120,7 @@ class oxServerProcessor extends oxSuperCfg
     }
 
     /**
-     * @param oxServerNode $oNode
+     * @param oxApplicationServer $oNode
      */
     private function _updateNodeInformation($oNode)
     {

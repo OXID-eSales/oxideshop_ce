@@ -38,11 +38,11 @@ class oxServerChecker
     /**
      * Checks if server node is valid.
      *
-     * @param oxServerNode $oServerNode
+     * @param oxApplicationServer $oServerNode
      *
      * @return bool
      */
-    public function check(oxServerNode $oServerNode)
+    public function check(oxApplicationServer $oServerNode)
     {
         $iServerNodeTime = $oServerNode->getTimestamp();
         $iCurrentTime = oxRegistry::get("oxUtilsDate")->getTime();

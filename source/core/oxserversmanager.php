@@ -45,7 +45,7 @@ class oxServersManager
      * Returns not based on server ip address.
      *
      * @param string $sNodeId
-     * @return oxServerNode
+     * @return oxApplicationServer
      */
     public function getNode($sNodeId)
     {
@@ -54,7 +54,7 @@ class oxServersManager
     }
 
     /**
-     * @param oxServerNode $oNode
+     * @param oxApplicationServer $oNode
      */
     public function saveNode($oNode)
     {
@@ -90,16 +90,16 @@ class oxServersManager
     }
 
     /**
-     * Creates oxServerNode from given ip address and data.
+     * Creates oxApplicationServer from given ip address and data.
      *
      * @param $sNodeId
      * @param $aData
-     * @return oxServerNode
+     * @return oxApplicationServer
      */
     protected function _createNode($sNodeId, $aData = array())
     {
-        /** @var oxServerNode $oNode */
-        $oNode = oxNew('oxServerNode');
+        /** @var oxApplicationServer $oNode */
+        $oNode = oxNew('oxApplicationServer');
 
         $oNode->setId($sNodeId);
         $oNode->setTimestamp($this->_getNodeParameter($aData, 'timestamp'));

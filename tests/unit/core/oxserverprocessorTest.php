@@ -21,11 +21,9 @@
  */
 
 /**
- * Class Unit_Core_oxServerNodeProcessorTest
- *
  * @covers oxServerNodeProcessor
  */
-class Unit_Core_oxServerNodeProcessorTest extends OxidTestCase
+class Unit_Core_oxServerProcessorTest extends OxidTestCase
 {
     public function testConstructorCreatesDefaultObjectServerNodesManager()
     {

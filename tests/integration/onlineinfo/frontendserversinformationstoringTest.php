@@ -24,7 +24,7 @@
  * Class Integration_OnlineInfo_FrontendServersInformationStoringTest
  *
  * @covers oxServerProcessor
- * @covers oxServerNode
+ * @covers oxApplicationServer
  * @covers oxServerChecker
  * @covers oxServerManager
  */

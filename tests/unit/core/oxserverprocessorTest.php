@@ -51,7 +51,7 @@ class Unit_Core_oxServerProcessorTest extends OxidTestCase
 
     public function testNodeInformationNotUpdatedIfNotNeed0()
     {
-        $oNode = $this->getMock('oxServerNode');
+        $oNode = $this->getMock('oxApplicationServer');
 
         /** @var oxServersManager $oServerNodesManager */
         $oServerNodesManager = $this->getMock('oxServersManager');
@@ -71,7 +71,7 @@ class Unit_Core_oxServerProcessorTest extends OxidTestCase
 
     public function testNodeInformationNotUpdatedIfNotNeed()
     {
-        $oNode = $this->getMock('oxServerNode');
+        $oNode = $this->getMock('oxApplicationServer');
 
         /** @var oxServersManager $oServerNodesManager */
         $oServerNodesManager = $this->getMock('oxServersManager');
@@ -97,7 +97,7 @@ class Unit_Core_oxServerProcessorTest extends OxidTestCase
         $sIP = '192.168.1.7';
         $sServerId = 'a45sdas5d4as564d56asd4';
 
-        $oNode = new oxServerNode();
+        $oNode = new oxApplicationServer();
         $oNode->setId($sServerId);
         $oNode->setIp($sIP);
         $oNode->setTimestamp($sCurrentTime);
@@ -116,7 +116,7 @@ class Unit_Core_oxServerProcessorTest extends OxidTestCase
 
     /**
      * @param bool $blAdmin
-     * @param oxServerNode $aNode
+     * @param oxApplicationServer $aNode
      * @param string $sCurrentTime
      * @param string $sIP
      *
@@ -126,7 +126,7 @@ class Unit_Core_oxServerProcessorTest extends OxidTestCase
     {
         $this->setAdminMode($blAdmin);
 
-        $oNode = new oxServerNode();
+        $oNode = new oxApplicationServer();
         /** @var oxServersManager $oServerNodesManager */
         $oServerNodesManager = $this->getMock('oxServersManager');
         // Test that node manager was called with correct values.

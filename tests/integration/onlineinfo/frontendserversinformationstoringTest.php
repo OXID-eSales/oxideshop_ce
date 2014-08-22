@@ -43,6 +43,7 @@ class Integration_OnlineInfo_FrontendServersInformationStoringTest extends OxidT
             '7da43ed884a1ad1d6035d4c1d630fc4e' => array(
                 'timestamp' => time(),
                 'serverId' => '',
+                'serverIp' => '',
                 'lastFrontendUsage' => '',
                 'lastAdminUsage' => '',
             ),

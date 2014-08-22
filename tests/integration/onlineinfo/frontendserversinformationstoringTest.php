@@ -22,12 +22,15 @@
 
 class Integration_OnlineInfo_FrontendServersInformationStoringTest extends OxidTestCase
 {
+    /** @var string server id. */
+    private $_sServerId = '7da43ed884a1zd1d6035d4c1d630fc4e';
+
     /**
      * @return array
      */
     public function providerFrontendServerFirstAccess()
     {
-        $sServerId = '7da43ed884a1zd1d6035d4c1d630fc4e';
+        $sServerId = $this->_sServerId;
         $sServerIp = '192.168.0.5';
         $sCurrentTime = time();
         $aExpectedFrontendServerNodesData = array(
@@ -63,7 +66,7 @@ class Integration_OnlineInfo_FrontendServersInformationStoringTest extends OxidT
     {
         $this->setAdminMode($blIsAdmin);
 
-        $sServerId = '7da43ed884a1zd1d6035d4c1d630fc4e';
+        $sServerId = $this->_sServerId;
         $sServerIp = $aExpectedServerNodesData[$sServerId]['serverIp'];
 
         $oUtilsDateMock = $this->getMock('oxUtilsDate', array('getTime'));

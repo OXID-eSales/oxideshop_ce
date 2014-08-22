@@ -444,4 +444,12 @@ class oxUtilsServer extends oxSuperCfg
     {
         return md5(php_uname());
     }
+
+    /**
+     * Return local machine ip.
+     */
+    public function getServerIp()
+    {
+        return $this->getServerVar('SERVER_ADDR');
+    }
 }

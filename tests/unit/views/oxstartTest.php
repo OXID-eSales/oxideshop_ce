@@ -85,4 +85,16 @@ class Unit_Views_oxstartTest extends OxidTestCase
         $this->assertEquals( null, $oStart->pageClose() );
     }
 
+
+    public function testProcessingOfServerNodes()
+    {
+        $oProcessor = $this->getMock('oxServerNodeProcessor');
+        $oProcessor->expects($this->once())->method('process')->will($this->returnValue(null));
+
+        $oStart = $this->getMock('oxStart', array('_getServerNodeProcessor', 'pageStart'));
+        $oStart->expects($this->any())->method('_getServerNodeProcessor')->will($this->returnValue($oProcessor));
+        $oStart->expects($this->any())->method('pageStart')->will($this->returnValue(null));
+
+        $oStart->appInit();
+    }
 }

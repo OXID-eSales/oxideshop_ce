@@ -49,6 +49,24 @@ class Unit_Core_oxServerProcessorTest extends OxidTestCase
         $this->assertInstanceOf('oxUtilsDate', $oServerNodeProcessor->UNITgetUtilsDate());
     }
 
+    public function testNodeInformationNotUpdatedIfNotNeed0()
+    {
+        $oNode = $this->getMock('oxServerNode');
+
+        $oServerNodesManager = $this->getMock('oxServerNodesManager');
+        $oServerNodesManager->expects($this->any())->method('getNode')->will($this->returnValue($oNode));
+
+        $oServerNodeChecker = $this->getMock('oxServerNodeChecker');
+        // Test that check is called with object got from server node manager.
+        $oServerNodeChecker->expects($this->any())->method('check')->with($oNode)->will($this->returnValue(false));
+
+        $oUtilsServer = $this->getMock('oxUtilsServer');
+        $oUtilsDate = $this->getMock('oxUtilsDate');
+
+        $oServerNodesProcessor = new oxServerNodeProcessor($oServerNodesManager, $oServerNodeChecker, $oUtilsServer, $oUtilsDate);
+        $oServerNodesProcessor->process();
+    }
+
     public function testNodeInformationNotUpdatedIfNotNeed()
     {
         $oNode = $this->getMock('oxServerNode');
@@ -60,7 +78,7 @@ class Unit_Core_oxServerProcessorTest extends OxidTestCase
 
         $oServerNodeChecker = $this->getMock('oxServerNodeChecker');
         // Test that check is called with object got from server node manager.
-        $oServerNodeChecker->expects($this->any())->method('check')->with($oNode)->will($this->returnValue(true));
+        $oServerNodeChecker->expects($this->any())->method('check')->will($this->returnValue(true));
 
         $oUtilsServer = $this->getMock('oxUtilsServer');
         $oUtilsDate = $this->getMock('oxUtilsDate');
@@ -73,22 +91,22 @@ class Unit_Core_oxServerProcessorTest extends OxidTestCase
     {
         $sCurrentTime = '14000000000000';
         $sIP = '192.168.1.7';
+        $sServerId = 'a45sdas5d4as564d56asd4';
 
-        $oNodeFrontend = $this->getMock('oxServerNode');
-        $oNodeFrontend->expects($this->atLeastOnce())->method('setTimestamp')->with($sCurrentTime);
-        $oNodeFrontend->expects($this->atLeastOnce())->method('setIp')->with($sIP);
-        $oNodeFrontend->expects($this->atLeastOnce())->method('setLastFrontendUsage')->with($sCurrentTime);
-        $oNodeFrontend->expects($this->never())->method('setLastAdminUsage');
+        $oNode = new oxServerNode();
+        $oNode->setId($sServerId);
+        $oNode->setIp($sIP);
+        $oNode->setTimestamp($sCurrentTime);
 
-        $oNodeAdmin = $this->getMock('oxServerNode');
-        $oNodeAdmin->expects($this->atLeastOnce())->method('setTimestamp')->with($sCurrentTime);
-        $oNodeAdmin->expects($this->atLeastOnce())->method('setIp')->with($sIP);
-        $oNodeAdmin->expects($this->never())->method('setLastFrontendUsage');
-        $oNodeAdmin->expects($this->atLeastOnce())->method('setLastAdminUsage')->with($sCurrentTime);
+        $oNodeFrontend = clone($oNode);
+        $oNodeFrontend->setLastFrontendUsage($sCurrentTime);
+
+        $oNodeAdmin = clone($oNode);
+        $oNodeAdmin->setLastAdminUsage($sCurrentTime);
 
         return array(
-            array(false, $oNodeFrontend, $sCurrentTime, $sIP),
-            array(true, $oNodeAdmin, $sCurrentTime, $sIP),
+            array(false, $oNodeFrontend, $sServerId, $sCurrentTime, $sIP),
+            array(true, $oNodeAdmin, $sServerId, $sCurrentTime, $sIP),
         );
     }
 
@@ -100,21 +118,22 @@ class Unit_Core_oxServerProcessorTest extends OxidTestCase
      *
      * @dataProvider providerNodeInformationUpdatedWhenNeed
      */
-    public function testNodeInformationUpdatedWhenNeed($blAdmin, $oNode, $sCurrentTime, $sIP)
+    public function testNodeInformationUpdatedWhenNeed($blAdmin, $oExpectedNode, $sServerId, $sCurrentTime, $sIP)
     {
         $this->setAdminMode($blAdmin);
 
+        $oNode = new oxServerNode();
         $oServerNodesManager = $this->getMock('oxServerNodesManager');
         // Test that node manager was called with correct values.
-        $oServerNodesManager->expects($this->atLeastOnce())->method('saveNode')->with($this->equalTo($oNode));
+        $oServerNodesManager->expects($this->atLeastOnce())->method('saveNode')->with($this->equalTo($oExpectedNode));
         $oServerNodesManager->expects($this->any())->method('getNode')->will($this->returnValue($oNode));
 
         $oServerNodeChecker = $this->getMock('oxServerNodeChecker');
-        // Test that check is called with object got from server node manager.
-        $oServerNodeChecker->expects($this->atLeastOnce())->method('check')->with($this->equalTo($oNode))->will($this->returnValue(false));
+        $oServerNodeChecker->expects($this->any())->method('check')->will($this->returnValue(false));
 
         $oUtilsServer = $this->getMock('oxUtilsServer');
         $oUtilsServer->expects($this->any())->method('getServerIp')->will($this->returnValue($sIP));
+        $oUtilsServer->expects($this->any())->method('getServerNodeId')->will($this->returnValue($sServerId));
 
         $oUtilsDate = $this->getMock('oxUtilsDate');
         $oUtilsDate->expects($this->any())->method('getTime')->will($this->returnValue($sCurrentTime));

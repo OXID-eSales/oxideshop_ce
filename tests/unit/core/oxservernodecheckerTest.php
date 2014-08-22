@@ -25,7 +25,7 @@
  *
  * @covers oxServerNodeChecker
  */
-class Unit_Core_oxServerNodeCheckerTest extends OxidTestCase
+class Unit_Core_oxServerCheckerTest extends OxidTestCase
 {
     public function tearDown()
     {

@@ -25,6 +25,8 @@
  *
  * @internal Do not make a module extension for this class.
  * @see http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
+ *
+ * @ignore This class will not be included in documentation.
  */
 class oxServerNode
 {

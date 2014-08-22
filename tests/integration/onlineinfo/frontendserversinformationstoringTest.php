@@ -38,11 +38,11 @@ class Integration_OnlineInfo_FrontendServersInformationStoringTest extends OxidT
     }
 
     public function testFrontendServerDoesNotExist()
-    {
+    {var_dump(getenv(SERVER_ADDR));return;
         $aExpectedServerNodesData = array(
-            '0' => array(
+            '172.168.1.50' => array(
                 'timestamp' => time(),
-                'serverId' => '172.168.1.50',
+                'serverId' => '',
                 'lastFrontendUsage' => '',
                 'lastAdminUsage' => '',
             ),
@@ -53,22 +53,14 @@ class Integration_OnlineInfo_FrontendServersInformationStoringTest extends OxidT
         $oServerNodeProcessor->process();
         $aServerNodesData = $this->getConfigParam('aServerNodesData');
 
-        $this->assertServerInformationSame($aExpectedServerNodesData, $aServerNodesData);
-    }
-
-    private function assertServerInformationSame($aExpectedServerNodesData, $aActualServerNodesData)
-    {
-        sort($aExpectedServerNodesData);
-        sort($aActualServerNodesData);
-
-        $this->assertEquals($aExpectedServerNodesData, $aActualServerNodesData);
+        $this->assertEquals($aExpectedServerNodesData, $aServerNodesData);
     }
 
     private function mockServerInformation($aServerInformation)
     {
         $oUtilsDate = $this->getMock('oxUtilsDate', array('getTime'));
-        $oUtilsDate->expects($this->any())->method('getTime')->will($this->returnValue($aServerInformation['0']['timestamp']));
+        $oUtilsDate->expects($this->any())->method('getTime')->will($this->returnValue($aServerInformation['172.168.1.50']['timestamp']));
         /** @var oxUtilsDate $oUtils */
         oxRegistry::set('oxUtilsDate', $oUtilsDate);
     }
-} 
+}

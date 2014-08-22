@@ -434,4 +434,14 @@ class oxUtilsServer extends oxSuperCfg
 
         return false;
     }
+
+    /**
+     * Return server id by server system information.
+     *
+     * @return string
+     */
+    public function getServerNodeId()
+    {
+        return md5(php_uname());
+    }
 }

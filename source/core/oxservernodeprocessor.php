@@ -70,7 +70,7 @@ class oxServerNodeProcessor
     {
         $sIP = $this->_getIPAddress();
         $oNodesManager = $this->_getServerNodesManager();
-        $oNode = $oNodesManager->getNodeByIp($sIP);
+        $oNode = $oNodesManager->getNode($sIP);
 
         $oNodeChecker = $this->_getServerNodeChecker();
         if (!$oNodeChecker->check($oNode)) {

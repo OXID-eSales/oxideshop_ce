@@ -191,16 +191,17 @@ class category_main_ajax extends ajaxListComponent
     {
         if ($sProdIds) {
             $sO2CView = $this->_getViewName('oxobject2category');
+            $sShopId = $this->getConfig()->getShopId();
             $sQ = "update oxobject2category set oxtime = 0 where oxid in (
                       select _tmp.oxid from (
                           select oxobject2category.oxid from (
                               select min(oxtime) as oxtime, oxobjectid from {$sO2CView}
-                              where oxobjectid in ( {$sProdIds} ) group by oxobjectid
+                              where oxobjectid in ( {$sProdIds} ) and oxshopid = {$sShopId} group by oxobjectid
                           ) as _subtmp
                           left join oxobject2category on oxobject2category.oxtime = _subtmp.oxtime
                            and oxobject2category.oxobjectid = _subtmp.oxobjectid
                       ) as _tmp
-                   )";
+                   ) and oxshopid = {$sShopId} ";
 
             oxDb::getDb()->execute($sQ);
         }

@@ -212,11 +212,11 @@ class article_extend_ajax extends ajaxListComponent
         $oDb = oxDb::getDb();
         $sO2CView = $this->_getViewName('oxobject2category');
         $soxId = $oDb->quote($soxId);
-
+        $sShopId = $this->getConfig()->getShopId();
         // updating oxtime values
-        $sQ = "update oxobject2category set oxtime = 0 where oxobjectid = {$soxId} and oxid = (
+        $sQ = "update oxobject2category set oxtime = 0 where oxobjectid = {$soxId} and oxshopid = {$sShopId} and oxid = (
                     select oxid from (
-                        select oxid from {$sO2CView} where oxobjectid = {$soxId} order by oxtime limit 1
+                        select oxid from {$sO2CView} where oxobjectid = {$soxId} and oxshopid = {$sShopId} order by oxtime limit 1
                     ) as _tmp
                 )";
         $oDb->execute($sQ);
@@ -233,15 +233,15 @@ class article_extend_ajax extends ajaxListComponent
         $sShopId = $myConfig->getShopId();
         $oDb = oxDb::getDb();
 
-        $sShopCheck = "";
-
+        $sQuotedOxId = $oDb->quote($soxId);
+        $sShopId = $this->getConfig()->getShopId();
+        $sShopCheck = "and oxshopid = {$sShopId}";
         // #0003650: increment all product references independent to active shop
-        $sQ = "update oxobject2category set oxtime = oxtime + 10 where oxobjectid = " . $oDb->quote($soxId);
+        $sQ = "update oxobject2category set oxtime = oxtime + 10 where oxobjectid = {$sQuotedOxId} {$sShopCheck}";
         oxDb::getInstance()->getDb()->Execute($sQ);
 
         // set main category for active shop
-        $sQ = "update oxobject2category set oxtime = 0 where oxobjectid = "
-              . $oDb->quote($soxId) . " and oxcatnid = " . $oDb->quote($sDefCat) . " $sShopCheck ";
+        $sQ = "update oxobject2category set oxtime = 0 where oxobjectid = {$sQuotedOxId} and oxcatnid = " . $oDb->quote($sDefCat) . " $sShopCheck ";
         oxDb::getInstance()->getDb()->Execute($sQ);
         //echo "\n$sQ\n";
 

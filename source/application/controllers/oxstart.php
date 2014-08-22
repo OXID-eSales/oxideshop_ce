@@ -107,6 +107,15 @@ class oxStart extends oxUBase
     }
 
     /**
+     * @return oxServerNodeProcessor
+     */
+    protected function _getServerNodeProcessor()
+    {
+        /** @var oxServerNodeProcessor $oProcessor */
+        return oxNew('oxServerNodeProcessor');
+    }
+
+    /**
      * Performance - run these checks only each 5 times statistically.
      *
      * @return bool

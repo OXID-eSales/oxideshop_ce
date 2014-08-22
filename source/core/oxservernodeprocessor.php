@@ -99,7 +99,7 @@ class oxServerNodeProcessor
         $this->_oUtilsServer = $oUtilsServer;
 
         if (is_null($oUtilsDate)) {
-            $oUtilsDate = oxRegistry::get('oxUtilsDate');;
+            $oUtilsDate = oxRegistry::get('oxUtilsDate');
         }
         $this->_oUtilsDate = $oUtilsDate;
     }
@@ -131,7 +131,6 @@ class oxServerNodeProcessor
         $oNode->setId($sServerNodeId);
         $oNode->setIp('');
         $oNode->setTimestamp($oUtilsDate->getTime());
-        $oNode->setId('');
         $oNode->setLastFrontendUsage('');
         $oNode->setLastAdminUsage('');
     }

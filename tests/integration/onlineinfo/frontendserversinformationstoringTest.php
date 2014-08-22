@@ -22,25 +22,58 @@
 
 class Integration_OnlineInfo_FrontendServersInformationStoringTest extends OxidTestCase
 {
-    public function testFrontendServerDoesNotExist()
+    /**
+     * @return array
+     */
+    public function providerFrontendServerFirstAccess()
     {
         $sServerId = '7da43ed884a1zd1d6035d4c1d630fc4e';
-        $aExpectedServerNodesData = array(
+        $sServerIp = '192.168.0.5';
+        $sCurrentTime = time();
+        $aExpectedFrontendServerNodesData = array(
             $sServerId => array(
-                'timestamp' => time(),
-                'serverIp' => '',
-                'lastFrontendUsage' => '',
+                'timestamp' => $sCurrentTime,
+                'serverIp' => $sServerIp,
+                'lastFrontendUsage' => $sCurrentTime,
                 'lastAdminUsage' => '',
             ),
         );
+        $aExpectedAdminServerNodesData = array(
+            $sServerId => array(
+                'timestamp' => $sCurrentTime,
+                'serverIp' => $sServerIp,
+                'lastFrontendUsage' => '',
+                'lastAdminUsage' => $sCurrentTime,
+            ),
+        );
+
+        return array(
+            array(false, $aExpectedFrontendServerNodesData),
+            array(true, $aExpectedAdminServerNodesData),
+        );
+    }
+
+    /**
+     * @param bool $blIsAdmin
+     * @param array $aExpectedServerNodesData
+     *
+     * @dataProvider providerFrontendServerFirstAccess
+     */
+    public function testFrontendServerFirstAccess($blIsAdmin, $aExpectedServerNodesData)
+    {
+        $this->setAdminMode($blIsAdmin);
+
+        $sServerId = '7da43ed884a1zd1d6035d4c1d630fc4e';
+        $sServerIp = $aExpectedServerNodesData[$sServerId]['serverIp'];
 
         $oUtilsDateMock = $this->getMock('oxUtilsDate', array('getTime'));
         $oUtilsDateMock->expects($this->any())->method('getTime')->will($this->returnValue($aExpectedServerNodesData[$sServerId]['timestamp']));
         /** @var oxUtilsDate $oUtilsDate */
         $oUtilsDate = $oUtilsDateMock;
 
-        $oUtilsServerMock = $this->getMock('oxUtilsServer', array('getServerNodeId'));
+        $oUtilsServerMock = $this->getMock('oxUtilsServer', array('getServerNodeId', 'getServerIp'));
         $oUtilsServerMock->expects($this->any())->method('getServerNodeId')->will($this->returnValue($sServerId));
+        $oUtilsServerMock->expects($this->any())->method('getServerIp')->will($this->returnValue($sServerIp));
         /** @var oxUtilsServer $oUtilsDate */
         $oUtilsServer = $oUtilsServerMock;
 

@@ -40,10 +40,12 @@ class Integration_OnlineInfo_FrontendServersInformationStoringTest extends OxidT
     public function testFrontendServerDoesNotExist()
     {
         $aExpectedServerNodesData = array(
-            'timestamp' => time(),
-            'serverId' => '172.168.1.50',
-            'lastFrontendUsage' => '',
-            'lastAdminUsage' => '',
+            '0' => array(
+                'timestamp' => time(),
+                'serverId' => '172.168.1.50',
+                'lastFrontendUsage' => '',
+                'lastAdminUsage' => '',
+            ),
         );
         $this->mockServerInformation($aExpectedServerNodesData);
 
@@ -65,7 +67,7 @@ class Integration_OnlineInfo_FrontendServersInformationStoringTest extends OxidT
     private function mockServerInformation($aServerInformation)
     {
         $oUtilsDate = $this->getMock('oxUtilsDate', array('getTime'));
-        $oUtilsDate->expects($this->any())->method('getTime')->will($this->returnValue($aServerInformation['timestamp']));
+        $oUtilsDate->expects($this->any())->method('getTime')->will($this->returnValue($aServerInformation['0']['timestamp']));
         /** @var oxUtilsDate $oUtils */
         oxRegistry::set('oxUtilsDate', $oUtilsDate);
     }

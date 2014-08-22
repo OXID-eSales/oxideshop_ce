@@ -89,7 +89,7 @@ class oxServerNodeProcessor extends oxSuperCfg
         $this->_oServerNodesManager = $oServerNodesManager;
 
         if (is_null($oServerNodeChecker)) {
-            $oServerNodeChecker = oxNew('oxServerNodeChecker');
+            $oServerNodeChecker = oxNew('oxServerChecker');
         }
         $this->_oServerNodeChecker = $oServerNodeChecker;
 

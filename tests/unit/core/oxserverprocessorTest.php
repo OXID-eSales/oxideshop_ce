@@ -34,7 +34,7 @@ class Unit_Core_oxServerProcessorTest extends OxidTestCase
     public function testConstructorCreatesDefaultObjectServerNodeChecker()
     {
         $oServerNodeProcessor = new oxServerNodeProcessor();
-        $this->assertInstanceOf('oxServerNodeChecker', $oServerNodeProcessor->UNITgetServerNodeChecker());
+        $this->assertInstanceOf('oxServerChecker', $oServerNodeProcessor->UNITgetServerNodeChecker());
     }
 
     public function testConstructorCreatesDefaultObjectUtilsServer()
@@ -56,7 +56,8 @@ class Unit_Core_oxServerProcessorTest extends OxidTestCase
         $oServerNodesManager = $this->getMock('oxServerNodesManager');
         $oServerNodesManager->expects($this->any())->method('getNode')->will($this->returnValue($oNode));
 
-        $oServerNodeChecker = $this->getMock('oxServerNodeChecker');
+        /** @var oxServerChecker $oServerNodeChecker */
+        $oServerNodeChecker = $this->getMock('oxServerChecker');
         // Test that check is called with object got from server node manager.
         $oServerNodeChecker->expects($this->any())->method('check')->with($oNode)->will($this->returnValue(false));
 
@@ -76,7 +77,8 @@ class Unit_Core_oxServerProcessorTest extends OxidTestCase
         $oServerNodesManager->expects($this->never())->method('saveNode');
         $oServerNodesManager->expects($this->any())->method('getNode')->will($this->returnValue($oNode));
 
-        $oServerNodeChecker = $this->getMock('oxServerNodeChecker');
+        /** @var oxServerChecker $oServerNodeChecker */
+        $oServerNodeChecker = $this->getMock('oxServerChecker');
         // Test that check is called with object got from server node manager.
         $oServerNodeChecker->expects($this->any())->method('check')->will($this->returnValue(true));
 
@@ -128,7 +130,8 @@ class Unit_Core_oxServerProcessorTest extends OxidTestCase
         $oServerNodesManager->expects($this->atLeastOnce())->method('saveNode')->with($this->equalTo($oExpectedNode));
         $oServerNodesManager->expects($this->any())->method('getNode')->will($this->returnValue($oNode));
 
-        $oServerNodeChecker = $this->getMock('oxServerNodeChecker');
+        /** @var oxServerChecker $oServerNodeChecker */
+        $oServerNodeChecker = $this->getMock('oxServerChecker');
         $oServerNodeChecker->expects($this->any())->method('check')->will($this->returnValue(false));
 
         $oUtilsServer = $this->getMock('oxUtilsServer');

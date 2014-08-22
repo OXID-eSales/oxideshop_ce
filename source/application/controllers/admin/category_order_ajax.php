@@ -223,8 +223,9 @@ class category_order_ajax extends ajaxListComponent
 
 
             $oDb = oxDb::getDb();
-            $sSelect = "update oxobject2category set oxpos = '0' where oxobject2category.oxcatnid=" . $oDb->quote( $oCategory->getId() );
-            $oDb->execute( $sSelect );
+            $sShopId = $this->getConfig()->getShopId();
+            $sSelect = "update oxobject2category set oxpos = '0' where oxshopid = {$sShopId} and oxobject2category.oxcatnid=" . $oDb->quote($oCategory->getId());
+            $oDb->execute($sSelect);
 
             oxRegistry::getSession()->setVariable( 'neworder_sess', null );
 

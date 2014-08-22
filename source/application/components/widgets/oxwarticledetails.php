@@ -358,8 +358,10 @@ class oxwArticleDetails extends oxWidget
      */
     public function getTagCloudManager()
     {
+        /** @var oxArticleTagList $oTagList */
         $oTagList = oxNew("oxArticleTagList");
-        $oTagList->load($this->getProduct()->getId());
+        //$oTagList->load($this->getProduct()->getId());
+        $oTagList->setArticleId($this->getProduct()->getId());
         $oTagCloud = oxNew("oxTagCloud");
         $oTagCloud->setTagList($oTagList);
         $oTagCloud->setExtendedMode(true);

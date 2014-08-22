@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-class Integration_OnlineInfo_FrontendServersInformationStoringTest extends UserTestCase
+class Integration_OnlineInfo_FrontendServersInformationStoringTest extends OxidTestCase
 {
     /** @var oxUtilsDate  */
     private $_oUtilsDate;

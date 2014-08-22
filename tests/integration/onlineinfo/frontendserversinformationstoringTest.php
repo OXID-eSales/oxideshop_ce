@@ -24,8 +24,9 @@ class Integration_OnlineInfo_FrontendServersInformationStoringTest extends OxidT
 {
     public function testFrontendServerDoesNotExist()
     {
+        $sServerId = '7da43ed884a1zd1d6035d4c1d630fc4e';
         $aExpectedServerNodesData = array(
-            '7da43ed884a1ad1d6035d4c1d630fc4e' => array(
+            $sServerId => array(
                 'timestamp' => time(),
                 'serverIp' => '',
                 'lastFrontendUsage' => '',
@@ -34,11 +35,18 @@ class Integration_OnlineInfo_FrontendServersInformationStoringTest extends OxidT
         );
 
         $oUtilsDateMock = $this->getMock('oxUtilsDate', array('getTime'));
-        $oUtilsDateMock->expects($this->any())->method('getTime')->will($this->returnValue($aExpectedServerNodesData['7da43ed884a1ad1d6035d4c1d630fc4e']['timestamp']));
+        $oUtilsDateMock->expects($this->any())->method('getTime')->will($this->returnValue($aExpectedServerNodesData[$sServerId]['timestamp']));
         /** @var oxUtilsDate $oUtilsDate */
         $oUtilsDate = $oUtilsDateMock;
 
-        $oServerNodeProcessor = new oxServerNodeProcessor(null, null, null, $oUtilsDate);
+        $oUtilsServerMock = $this->getMock('oxUtilsServer', array('getServerNodeId'));
+        $oUtilsServerMock->expects($this->any())->method('getServerNodeId')->will($this->returnValue($sServerId));
+        /** @var oxUtilsServer $oUtilsDate */
+        $oUtilsServer = $oUtilsServerMock;
+
+        $this->getConfig()->saveShopConfVar('arr', 'aServerNodesData', null);
+
+        $oServerNodeProcessor = new oxServerNodeProcessor(null, null, $oUtilsServer, $oUtilsDate);
         $oServerNodeProcessor->process();
         $aServerNodesData = $this->getConfigParam('aServerNodesData');
 

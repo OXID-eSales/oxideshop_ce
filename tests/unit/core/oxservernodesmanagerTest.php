@@ -21,10 +21,9 @@
  */
 
 /**
- * Class Unit_Core_oxservernodesmanagerTest
- * @covers oxServerNodesManager
+ * @covers oxServersManager
  */
-class Unit_Core_oxservernodesmanagerTest extends OxidTestCase
+class Unit_Core_oxServersManagerTest extends OxidTestCase
 {
 
     public function testGettingExistingNodeByServerIpAddress()
@@ -36,7 +35,7 @@ class Unit_Core_oxservernodesmanagerTest extends OxidTestCase
         $oExpectedNode->setId('serverNameHash1');
         $oExpectedNode->setTimestamp('timestamp');
 
-        $oNodeList = new oxServerNodesManager();
+        $oNodeList = new oxServersManager();
         $this->assertEquals($oExpectedNode, $oNodeList->getNode('serverNameHash1'));
     }
 
@@ -53,7 +52,7 @@ class Unit_Core_oxservernodesmanagerTest extends OxidTestCase
         $oExpectedNode->setId('serverNameHash2');
         $oExpectedNode->setTimestamp('timestamp2');
 
-        $oNodeList = new oxServerNodesManager();
+        $oNodeList = new oxServersManager();
         $this->assertEquals($oExpectedNode, $oNodeList->getNode('serverNameHash2'));
     }
 
@@ -64,7 +63,7 @@ class Unit_Core_oxservernodesmanagerTest extends OxidTestCase
         $oExpectedNode = new oxServerNode();
         $oExpectedNode->setId('serverNameHash1');
 
-        $oNodeList = new oxServerNodesManager();
+        $oNodeList = new oxServersManager();
         $this->assertEquals($oExpectedNode, $oNodeList->getNode('serverNameHash1'));
     }
 
@@ -79,7 +78,7 @@ class Unit_Core_oxservernodesmanagerTest extends OxidTestCase
         $oNode->setLastFrontendUsage('frontendUsageTimestamp');
         $oNode->setLastAdminUsage('adminUsageTimestamp');
 
-        $oNodeList = new oxServerNodesManager();
+        $oNodeList = new oxServersManager();
         $oNodeList->saveNode($oNode);
 
         $aExpectedNodeData = array(
@@ -113,7 +112,7 @@ class Unit_Core_oxservernodesmanagerTest extends OxidTestCase
         $oNode->setLastFrontendUsage('frontendUsageTimestampUpdated');
         $oNode->setLastAdminUsage('adminUsageTimestampUpdated');
 
-        $oNodeList = new oxServerNodesManager();
+        $oNodeList = new oxServersManager();
         $oNodeList->saveNode($oNode);
 
         $aExpectedNodeData = array(
@@ -142,7 +141,7 @@ class Unit_Core_oxservernodesmanagerTest extends OxidTestCase
         $oNode->setLastFrontendUsage('frontendUsageTimestampUpdated');
         $oNode->setLastAdminUsage('adminUsageTimestampUpdated');
 
-        $oNodeList = new oxServerNodesManager();
+        $oNodeList = new oxServersManager();
         $oNodeList->saveNode($oNode);
 
         $aExpectedNodeData = array(

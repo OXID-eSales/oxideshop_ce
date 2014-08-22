@@ -26,7 +26,7 @@
  */
 class oxServerProcessor extends oxSuperCfg
 {
-    /** @var oxServerNodesManager */
+    /** @var oxServersManager */
     private $_oServerNodesManager;
 
     /** @var oxServerChecker */
@@ -47,7 +47,7 @@ class oxServerProcessor extends oxSuperCfg
     }
 
     /**
-     * @return oxServerNodesManager
+     * @return oxServersManager
      */
     protected function _getServerNodesManager()
     {
@@ -71,18 +71,19 @@ class oxServerProcessor extends oxSuperCfg
     }
 
     /**
-     * @param oxServerNodesManager $oServerNodesManager
+     * @param oxServersManager $oServerNodesManager
      * @param oxServerChecker $oServerNodeChecker
      * @param oxUtilsServer $oUtilsServer
      * @param oxUtilsDate $oUtilsDate
      */
-    public function __construct(oxServerNodesManager $oServerNodesManager = null,
+    public function __construct(oxServersManager $oServerNodesManager = null,
                                 oxServerChecker $oServerNodeChecker = null,
                                 oxUtilsServer $oUtilsServer = null,
                                 oxUtilsDate $oUtilsDate = null)
     {
         if (is_null($oServerNodesManager)) {
-            $oServerNodesManager = oxNew('oxServerNodesManager');
+            /** @var oxServersManager $oServerNodesManager */
+            $oServerNodesManager = oxNew('oxServersManager');
         }
         $this->_oServerNodesManager = $oServerNodesManager;
 

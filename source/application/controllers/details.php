@@ -463,7 +463,8 @@ class Details extends oxUBase
         $aAddedTags = $aTaggedProducts? $aTaggedProducts[$oProduct->getId()] : array();
 
         $oArticleTagList = oxNew( "oxArticleTagList" );
-        $oArticleTagList->load( $oProduct->getId() );
+        //$oArticleTagList->load( $oProduct->getId() );
+        $oArticleTagList->setArticleId($oProduct->getId());
         $sSeparator = $oArticleTagList->get()->getSeparator();
         $aTags = array_unique( explode( $sSeparator, $sTags ) );
 
@@ -524,7 +525,8 @@ class Details extends oxUBase
             return;
         }
         $oArticleTagList = oxNew("oxArticleTagList");
-        $oArticleTagList->load( $this->getProduct()->getId() );
+        //$oArticleTagList->load( $this->getProduct()->getId() );
+        $oArticleTagList->setArticleId($this->getProduct()->getId());
         $oTagSet = $oArticleTagList->get();
         $this->_aTags = $oTagSet->get();
         $this->_blEditTags = true;
@@ -548,7 +550,8 @@ class Details extends oxUBase
     public function cancelTags()
     {
         $oArticleTagList = oxNew("oxArticleTagList");
-        $oArticleTagList->load( $this->getProduct()->getId() );
+        //$oArticleTagList->load( $this->getProduct()->getId() );
+        $oArticleTagList->setArticleId($this->getProduct()->getId());
         $oTagSet = $oArticleTagList->get();
         $this->_aTags = $oTagSet->get();
         $this->_blEditTags = false;

@@ -26,7 +26,7 @@
  * @internal Do not make a module extension for this class.
  * @see http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
  */
-class oxServerNodeProcessor
+class oxServerNodeProcessor extends oxSuperCfg
 {
     /** @var oxServerNodesManager */
     private $_oServerNodesManager;
@@ -125,13 +125,17 @@ class oxServerNodeProcessor
      */
     private function _updateNodeInformation($oNode)
     {
-        $sServerNodeId = $this->_getUtilsServer()->getServerNodeId();
+        $oUtilsServer = $this->_getUtilsServer();
+        $sServerNodeId = $oUtilsServer->getServerNodeId();
         $oUtilsDate = $this->_getUtilsDate();
 
         $oNode->setId($sServerNodeId);
-        $oNode->setIp('');
+        $oNode->setIp($oUtilsServer->getServerIp());
         $oNode->setTimestamp($oUtilsDate->getTime());
-        $oNode->setLastFrontendUsage('');
-        $oNode->setLastAdminUsage('');
+        if ($this->isAdmin()) {
+            $oNode->setLastAdminUsage($oUtilsDate->getTime());
+        } else {
+            $oNode->setLastFrontendUsage($oUtilsDate->getTime());
+        }
     }
 }

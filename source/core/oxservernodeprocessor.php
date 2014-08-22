@@ -20,6 +20,12 @@
  * @version   OXID eShop CE
  */
 
+/**
+ * oxServerNodeProcessor
+ *
+ * @internal Do not make a module extension for this class.
+ * @see http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
+ */
 class oxServerNodeProcessor
 {
     /** @var oxServerNodesManager */
@@ -68,7 +74,7 @@ class oxServerNodeProcessor
      */
     public function process()
     {
-        $sIP = $this->_getIPAddress();
+        $sServerNodeId = $this->_getServerNodeId();
         $oNodesManager = $this->_getServerNodesManager();
         $oNode = $oNodesManager->getNode($sIP);
 
@@ -84,17 +90,17 @@ class oxServerNodeProcessor
      *
      * @return string
      */
-    private function _getIPAddress()
+    private function _getServerNodeId()
     {
-        return '172.168.1.50';
+        return md5(php_uname());
     }
 
     private function _updateNodeInformation($oNode)
     {
-        $sIP = $this->_getIPAddress();
+        $sServerNodeId = $this->_getServerNodeId();
         $oUtilsDate = oxRegistry::get('oxUtilsDate');
 
-        $oNode->setIp($sIP);
+        $oNode->setIp($sServerNodeId);
         $oNode->setTimestamp($oUtilsDate->getTime());
         $oNode->setId('');
         $oNode->setLastFrontendUsage('');

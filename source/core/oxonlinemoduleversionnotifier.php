@@ -28,6 +28,10 @@
  * Will be used by the upcoming online one click installer.
  * Is still under development - still changes at the remote server are necessary - therefore ignoring the results for now
  *
+ * @internal Do not make a module extension for this class.
+ * @see http://www.oxid-forge.com/do_not_extend_classes_list/
+ *
+ * @ignore This class will not be included in documentation.
  */
 class oxOnlineModuleVersionNotifier
 {

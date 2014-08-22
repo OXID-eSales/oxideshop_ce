@@ -31,7 +31,7 @@ class oxServerNodeProcessor extends oxSuperCfg
     /** @var oxServerNodesManager */
     private $_oServerNodesManager;
 
-    /** @var oxServerNodeChecker */
+    /** @var oxServerChecker */
     private $_oServerNodeChecker;
 
     /** @var oxUtilsServer  */
@@ -41,7 +41,7 @@ class oxServerNodeProcessor extends oxSuperCfg
     private $_oUtilsDate;
 
     /**
-     * @return oxServerNodeChecker
+     * @return oxServerChecker
      */
     protected function _getServerNodeChecker()
     {
@@ -74,12 +74,12 @@ class oxServerNodeProcessor extends oxSuperCfg
 
     /**
      * @param oxServerNodesManager $oServerNodesManager
-     * @param oxServerNodeChecker $oServerNodeChecker
+     * @param oxServerChecker $oServerNodeChecker
      * @param oxUtilsServer $oUtilsServer
      * @param oxUtilsDate $oUtilsDate
      */
     public function __construct(oxServerNodesManager $oServerNodesManager = null,
-                                oxServerNodeChecker $oServerNodeChecker = null,
+                                oxServerChecker $oServerNodeChecker = null,
                                 oxUtilsServer $oUtilsServer = null,
                                 oxUtilsDate $oUtilsDate = null)
     {

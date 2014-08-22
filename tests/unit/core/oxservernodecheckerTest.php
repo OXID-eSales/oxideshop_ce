@@ -55,7 +55,7 @@ class Unit_Core_oxServerNodeCheckerTest extends OxidTestCase
     public function testCheckWhenNodeIsValid($iCurrentTime)
     {
         $this->_prepareCurrentTime($iCurrentTime);
-        $oServerNodeChecker = new oxServerNodeChecker();
+        $oServerNodeChecker = new oxServerChecker();
 
         $this->assertTrue($oServerNodeChecker->check($this->_getMockedNode()), 'Server node must be valid.');
     }
@@ -85,14 +85,14 @@ class Unit_Core_oxServerNodeCheckerTest extends OxidTestCase
     public function testCheckIfNodeIsNotValid($iCurrentTime)
     {
         $this->_prepareCurrentTime($iCurrentTime);
-        $oServerNodeChecker = new oxServerNodeChecker();
+        $oServerNodeChecker = new oxServerChecker();
 
         $this->assertFalse($oServerNodeChecker->check($this->_getMockedNode()), 'Server node must be not valid.');
     }
 
     public function testCheckWhenNodeDoesNotReturnTimestamp()
     {
-        $oServerNodeChecker = new oxServerNodeChecker();
+        $oServerNodeChecker = new oxServerChecker();
         /** @var oxServerNode $oNode */
         $oNode = $this->getMock('oxServerNode', array('getTimestamp'));
         $oNode->expects($this->any())->method('getTimestamp')->will($this->returnValue(null));

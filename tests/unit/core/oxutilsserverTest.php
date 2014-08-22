@@ -341,4 +341,18 @@ var_dump($aCookie);
            $this->assertTrue( $oUtils->processUserAgentInfo( $sKey ) == $oUtils->processUserAgentInfo( $sVal ) );
         }
     }
+
+    public function testGetServerIp()
+    {
+        $sOldServerIp = $_SERVER['SERVER_ADDR'];
+
+        $sExpectedIP = '192.168.0.9';
+        $_SERVER['SERVER_ADDR'] = $sExpectedIP;
+        $oUtils = new oxUtilsServer();
+        $sServerIp = $oUtils->getServerIp();
+
+        $_SERVER['SERVER_ADDR'] = $sOldServerIp;
+
+        $this->assertSame($sExpectedIP, $sServerIp);
+    }
 }

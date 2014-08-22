@@ -20,6 +20,14 @@
  * @version   OXID eShop CE
  */
 
+/**
+ * Class Integration_OnlineInfo_FrontendServersInformationStoringTest
+ *
+ * @covers oxServerNodeProcessor
+ * @covers oxServerNode
+ * @covers oxServerNodeChecker
+ * @covers oxServerNodesManager
+ */
 class Integration_OnlineInfo_FrontendServersInformationStoringTest extends OxidTestCase
 {
     /** @var string server id. */

@@ -28,7 +28,7 @@ class Unit_Core_oxServerProcessorTest extends OxidTestCase
     public function testConstructorCreatesDefaultObjectServerNodesManager()
     {
         $oServerProcessor = new oxServerProcessor();
-        $this->assertInstanceOf('oxServerNodesManager', $oServerProcessor->UNITgetServerNodesManager());
+        $this->assertInstanceOf('oxServersManager', $oServerProcessor->UNITgetServerNodesManager());
     }
 
     public function testConstructorCreatesDefaultObjectServerNodeChecker()
@@ -53,7 +53,8 @@ class Unit_Core_oxServerProcessorTest extends OxidTestCase
     {
         $oNode = $this->getMock('oxServerNode');
 
-        $oServerNodesManager = $this->getMock('oxServerNodesManager');
+        /** @var oxServersManager $oServerNodesManager */
+        $oServerNodesManager = $this->getMock('oxServersManager');
         $oServerNodesManager->expects($this->any())->method('getNode')->will($this->returnValue($oNode));
 
         /** @var oxServerChecker $oServerNodeChecker */
@@ -72,7 +73,8 @@ class Unit_Core_oxServerProcessorTest extends OxidTestCase
     {
         $oNode = $this->getMock('oxServerNode');
 
-        $oServerNodesManager = $this->getMock('oxServerNodesManager');
+        /** @var oxServersManager $oServerNodesManager */
+        $oServerNodesManager = $this->getMock('oxServersManager');
         // Test that processor do not update node information if not needed.
         $oServerNodesManager->expects($this->never())->method('saveNode');
         $oServerNodesManager->expects($this->any())->method('getNode')->will($this->returnValue($oNode));
@@ -125,7 +127,8 @@ class Unit_Core_oxServerProcessorTest extends OxidTestCase
         $this->setAdminMode($blAdmin);
 
         $oNode = new oxServerNode();
-        $oServerNodesManager = $this->getMock('oxServerNodesManager');
+        /** @var oxServersManager $oServerNodesManager */
+        $oServerNodesManager = $this->getMock('oxServersManager');
         // Test that node manager was called with correct values.
         $oServerNodesManager->expects($this->atLeastOnce())->method('saveNode')->with($this->equalTo($oExpectedNode));
         $oServerNodesManager->expects($this->any())->method('getNode')->will($this->returnValue($oNode));

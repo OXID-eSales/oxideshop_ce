@@ -23,10 +23,10 @@
 /**
  * Class Integration_OnlineInfo_FrontendServersInformationStoringTest
  *
- * @covers oxServerNodeProcessor
+ * @covers oxServerProcessor
  * @covers oxServerNode
- * @covers oxServerNodeChecker
- * @covers oxServerNodesManager
+ * @covers oxServerChecker
+ * @covers oxServerManager
  */
 class Integration_OnlineInfo_FrontendServersInformationStoringTest extends OxidTestCase
 {
@@ -80,8 +80,8 @@ class Integration_OnlineInfo_FrontendServersInformationStoringTest extends OxidT
 
         $this->getConfig()->saveShopConfVar('arr', 'aServerNodesData', null);
 
-        $oServerNodeProcessor = new oxServerNodeProcessor(null, null, $oUtilsServer, $oUtilsDate);
-        $oServerNodeProcessor->process();
+        $oServerProcessor = new oxServerProcessor(null, null, $oUtilsServer, $oUtilsDate);
+        $oServerProcessor->process();
         $aServerNodesData = $this->getConfigParam('aServerNodesData');
 
         $this->assertEquals($aExpectedServerNodesData, $aServerNodesData);

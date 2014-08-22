@@ -37,7 +37,7 @@ class oxStart extends oxUBase
         if ( 'oxstart' == oxRegistry::getConfig()->getRequestParameter( 'cl' )  || $this->isAdmin() )
             return;
 
-        $oProcessor = $this->_getServerNodeProcessor();
+        $oProcessor = $this->_getServerProcessor();
         $oProcessor->process();
     }
 
@@ -109,12 +109,12 @@ class oxStart extends oxUBase
     }
 
     /**
-     * @return oxServerNodeProcessor
+     * @return oxServerProcessor
      */
-    protected function _getServerNodeProcessor()
+    protected function _getServerProcessor()
     {
-        /** @var oxServerNodeProcessor $oProcessor */
-        return oxNew('oxServerNodeProcessor');
+        /** @var oxServerProcessor $oProcessor */
+        return oxNew('oxServerProcessor');
     }
 
     /**

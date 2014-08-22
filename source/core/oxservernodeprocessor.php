@@ -37,6 +37,9 @@ class oxServerNodeProcessor
     /** @var oxUtilsServer  */
     private $_oUtilsServer;
 
+    /** @var oxUtilsDate  */
+    private $_oUtilsDate;
+
     /**
      * @return oxServerNodeChecker
      */
@@ -62,13 +65,23 @@ class oxServerNodeProcessor
     }
 
     /**
+     * @return oxUtilsDate
+     */
+    protected function _getUtilsDate()
+    {
+        return $this->_oUtilsDate;
+    }
+
+    /**
      * @param oxServerNodesManager $oServerNodesManager
      * @param oxServerNodeChecker $oServerNodeChecker
      * @param oxUtilsServer $oUtilsServer
+     * @param oxUtilsDate $oUtilsDate
      */
     public function __construct(oxServerNodesManager $oServerNodesManager = null,
                                 oxServerNodeChecker $oServerNodeChecker = null,
-                                oxUtilsServer $oUtilsServer = null)
+                                oxUtilsServer $oUtilsServer = null,
+                                oxUtilsDate $oUtilsDate = null)
     {
         if (is_null($oServerNodesManager)) {
             $oServerNodesManager = oxNew('oxServerNodesManager');
@@ -84,6 +97,11 @@ class oxServerNodeProcessor
             $oUtilsServer = oxNew('oxUtilsServer');
         }
         $this->_oUtilsServer = $oUtilsServer;
+
+        if (is_null($oUtilsDate)) {
+            $oUtilsDate = oxRegistry::get('oxUtilsDate');;
+        }
+        $this->_oUtilsDate = $oUtilsDate;
     }
 
     /**
@@ -108,7 +126,7 @@ class oxServerNodeProcessor
     private function _updateNodeInformation($oNode)
     {
         $sServerNodeId = $this->_getUtilsServer()->getServerNodeId();
-        $oUtilsDate = oxRegistry::get('oxUtilsDate');
+        $oUtilsDate = $this->_getUtilsDate();
 
         $oNode->setId($sServerNodeId);
         $oNode->setIp('');

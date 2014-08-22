@@ -21,9 +21,7 @@
  */
 
 /**
- * Class Unit_Core_oxServerNodeCheckerTest
- *
- * @covers oxServerNodeChecker
+ * @covers oxServerChecker
  */
 class Unit_Core_oxServerCheckerTest extends OxidTestCase
 {

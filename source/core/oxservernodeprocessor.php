@@ -74,9 +74,8 @@ class oxServerNodeProcessor
      */
     public function process()
     {
-        $sServerNodeId = $this->_getServerNodeId();
         $oNodesManager = $this->_getServerNodesManager();
-        $oNode = $oNodesManager->getNode($sIP);
+        $oNode = $oNodesManager->getNode($this->_getServerNodeId());
 
         $oNodeChecker = $this->_getServerNodeChecker();
         if (!$oNodeChecker->check($oNode)) {
@@ -86,8 +85,6 @@ class oxServerNodeProcessor
     }
 
     /**
-     * @todo return real IP address.
-     *
      * @return string
      */
     private function _getServerNodeId()

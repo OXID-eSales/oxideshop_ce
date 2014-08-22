@@ -21,32 +21,32 @@
  */
 
 /**
- * @covers oxServerNodeProcessor
+ * @covers oxServerProcessor
  */
 class Unit_Core_oxServerProcessorTest extends OxidTestCase
 {
     public function testConstructorCreatesDefaultObjectServerNodesManager()
     {
-        $oServerNodeProcessor = new oxServerNodeProcessor();
-        $this->assertInstanceOf('oxServerNodesManager', $oServerNodeProcessor->UNITgetServerNodesManager());
+        $oServerProcessor = new oxServerProcessor();
+        $this->assertInstanceOf('oxServerNodesManager', $oServerProcessor->UNITgetServerNodesManager());
     }
 
     public function testConstructorCreatesDefaultObjectServerNodeChecker()
     {
-        $oServerNodeProcessor = new oxServerNodeProcessor();
-        $this->assertInstanceOf('oxServerChecker', $oServerNodeProcessor->UNITgetServerNodeChecker());
+        $oServerProcessor = new oxServerProcessor();
+        $this->assertInstanceOf('oxServerChecker', $oServerProcessor->UNITgetServerNodeChecker());
     }
 
     public function testConstructorCreatesDefaultObjectUtilsServer()
     {
-        $oServerNodeProcessor = new oxServerNodeProcessor();
-        $this->assertInstanceOf('oxUtilsServer', $oServerNodeProcessor->UNITgetUtilsServer());
+        $oServerProcessor = new oxServerProcessor();
+        $this->assertInstanceOf('oxUtilsServer', $oServerProcessor->UNITgetUtilsServer());
     }
 
     public function testConstructorCreatesDefaultObjectUtilsDate()
     {
-        $oServerNodeProcessor = new oxServerNodeProcessor();
-        $this->assertInstanceOf('oxUtilsDate', $oServerNodeProcessor->UNITgetUtilsDate());
+        $oServerProcessor = new oxServerProcessor();
+        $this->assertInstanceOf('oxUtilsDate', $oServerProcessor->UNITgetUtilsDate());
     }
 
     public function testNodeInformationNotUpdatedIfNotNeed0()
@@ -64,7 +64,7 @@ class Unit_Core_oxServerProcessorTest extends OxidTestCase
         $oUtilsServer = $this->getMock('oxUtilsServer');
         $oUtilsDate = $this->getMock('oxUtilsDate');
 
-        $oServerNodesProcessor = new oxServerNodeProcessor($oServerNodesManager, $oServerNodeChecker, $oUtilsServer, $oUtilsDate);
+        $oServerNodesProcessor = new oxServerProcessor($oServerNodesManager, $oServerNodeChecker, $oUtilsServer, $oUtilsDate);
         $oServerNodesProcessor->process();
     }
 
@@ -85,7 +85,7 @@ class Unit_Core_oxServerProcessorTest extends OxidTestCase
         $oUtilsServer = $this->getMock('oxUtilsServer');
         $oUtilsDate = $this->getMock('oxUtilsDate');
 
-        $oServerNodesProcessor = new oxServerNodeProcessor($oServerNodesManager, $oServerNodeChecker, $oUtilsServer, $oUtilsDate);
+        $oServerNodesProcessor = new oxServerProcessor($oServerNodesManager, $oServerNodeChecker, $oUtilsServer, $oUtilsDate);
         $oServerNodesProcessor->process();
     }
 
@@ -141,7 +141,7 @@ class Unit_Core_oxServerProcessorTest extends OxidTestCase
         $oUtilsDate = $this->getMock('oxUtilsDate');
         $oUtilsDate->expects($this->any())->method('getTime')->will($this->returnValue($sCurrentTime));
 
-        $oServerNodesProcessor = new oxServerNodeProcessor($oServerNodesManager, $oServerNodeChecker, $oUtilsServer, $oUtilsDate);
+        $oServerNodesProcessor = new oxServerProcessor($oServerNodesManager, $oServerNodeChecker, $oUtilsServer, $oUtilsDate);
         $oServerNodesProcessor->process();
     }
 }

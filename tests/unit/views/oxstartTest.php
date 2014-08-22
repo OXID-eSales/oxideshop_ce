@@ -88,11 +88,12 @@ class Unit_Views_oxstartTest extends OxidTestCase
 
     public function testProcessingOfServerNodes()
     {
-        $oProcessor = $this->getMock('oxServerNodeProcessor');
+        /** @var oxServerProcessor $oProcessor */
+        $oProcessor = $this->getMock('oxServerProcessor');
         $oProcessor->expects($this->once())->method('process')->will($this->returnValue(null));
 
-        $oStart = $this->getMock('oxStart', array('_getServerNodeProcessor', 'pageStart'));
-        $oStart->expects($this->any())->method('_getServerNodeProcessor')->will($this->returnValue($oProcessor));
+        $oStart = $this->getMock('oxStart', array('_getServerProcessor', 'pageStart'));
+        $oStart->expects($this->any())->method('_getServerProcessor')->will($this->returnValue($oProcessor));
         $oStart->expects($this->any())->method('pageStart')->will($this->returnValue(null));
 
         $oStart->appInit();

@@ -70,12 +70,34 @@ class oxServerNodeProcessor
     {
         $sIP = $this->_getIPAddress();
         $oNodesManager = $this->_getServerNodesManager();
-        $oNode = $oNodesManager->getNode($sIP);
+        $oNode = $oNodesManager->getNodeByIp($sIP);
 
         $oNodeChecker = $this->_getServerNodeChecker();
         if (!$oNodeChecker->check($oNode)) {
             $this->_updateNodeInformation($oNode);
             $oNodesManager->saveNode($oNode);
         }
+    }
+
+    /**
+     * @todo return real IP address.
+     *
+     * @return string
+     */
+    private function _getIPAddress()
+    {
+        return '172.168.1.50';
+    }
+
+    private function _updateNodeInformation($oNode)
+    {
+        $sIP = $this->_getIPAddress();
+        $oUtilsDate = oxRegistry::get('oxUtilsDate');
+
+        $oNode->setIp($sIP);
+        $oNode->setTimestamp($oUtilsDate->getTime());
+        $oNode->setId('');
+        $oNode->setLastFrontendUsage('');
+        $oNode->setLastAdminUsage('');
     }
 }

@@ -34,8 +34,6 @@ class oxDebugDb
 
    /**
      * Class constructor. The constructor is defined in order to be possible to call parent::__construct() in modules.
-     *
-     * @return null;
      */
     public function __construct()
     {
@@ -54,7 +52,7 @@ class oxDebugDb
     }
 
     /**
-     * Checks if query is allready in log file
+     * Checks if query is already in log file
      *
      * @param string $sSql sql query to check
      *

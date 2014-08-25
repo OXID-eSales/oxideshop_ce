@@ -25,6 +25,8 @@ require_once realpath( "." ).'/unit/test_config.inc.php';
 
 /**
  * Testing oxAccessRightException class.
+ *
+ * @covers oxSystemEventHandler
  */
 class Unit_Core_oxSystemEventHandlerTest extends OxidTestCase
 {
@@ -59,7 +61,7 @@ class Unit_Core_oxSystemEventHandlerTest extends OxidTestCase
 
     public function testOnShopStartSendShopInformationByConfig()
     {
-        $sOnlineLicenseCheckValidityTime = 25 * 60 * 60;
+        $sOnlineLicenseCheckValidityTime = 24 * 60 * 60;
         $sOnlineLicenseInvalidTime = time() - $sOnlineLicenseCheckValidityTime - 1 * 60 * 60;
         $this->setConfigParam('sOnlineLicenseCheckTime', $sOnlineLicenseInvalidTime);
 
@@ -109,7 +111,38 @@ class Unit_Core_oxSystemEventHandlerTest extends OxidTestCase
         $oSystemEventHandler->onShopStart();
 
         $sOnlineLicenseCheckTime = $this->getConfigParam('sOnlineLicenseCheckTime');
-        $this->assertSame($iCurrentTime, $sOnlineLicenseCheckTime);
+        // We add mocked time plus white noise to config as this is first request.
+        // Without white noise current time would be equal to license check time.
+        $this->assertTrue($iCurrentTime <= $sOnlineLicenseCheckTime, "$iCurrentTime <= $sOnlineLicenseCheckTime");
+        // Check that white noise is in four hour range.
+        $iCurrentTimeWithWhiteNoise = $iCurrentTime + 12 * 60 * 60;
+        $this->assertTrue($iCurrentTimeWithWhiteNoise > $sOnlineLicenseCheckTime, "$iCurrentTimeWithWhiteNoise > $sOnlineLicenseCheckTime");
+    }
+
+    public function testOnShopStartWhiteNoiseAddedToLastCheckTime()
+    {
+        $iCurrentTime = 1400000000;
+        $this->_prepareCurrentTime($iCurrentTime);
+        $oSystemEventHandler = new oxSystemEventHandler();
+
+        $oOnlineLicenseCheckMock = $this->getMock("oxOnlineLicenseCheck");
+        $oOnlineLicenseCheckMock->expects($this->any())->method("validate");
+
+        /** @var oxOnlineLicenseCheck $oOnlineLicenseCheck */
+        $oOnlineLicenseCheck = $oOnlineLicenseCheckMock;
+        $oSystemEventHandler->setOnlineLicenseCheck( $oOnlineLicenseCheck );
+
+        $oSystemEventHandler->onShopStart();
+
+        $sOnlineLicenseCheckTime1 = $this->getConfigParam('sOnlineLicenseCheckTime');
+
+        $this->getConfig()->saveShopConfVar('arr', 'sOnlineLicenseCheckTime', null);
+
+        $oSystemEventHandler->onShopStart();
+
+        $sOnlineLicenseCheckTime2 = $this->getConfigParam('sOnlineLicenseCheckTime');
+
+        $this->assertNotSame($sOnlineLicenseCheckTime1, $sOnlineLicenseCheckTime2);
     }
 
     /**

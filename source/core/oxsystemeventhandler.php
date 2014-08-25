@@ -130,18 +130,40 @@ class oxSystemEventHandler
         $oConfig = $this->_getConfig();
         $oUtilsDate = $this->_getDate();
         $sOnlineLicenseCheckTime = $oConfig->getConfigParam('sOnlineLicenseCheckTime');
-        if (($sOnlineLicenseCheckTime + 25 * 60 * 60) < $oUtilsDate->getTime()) {
+        if (($sOnlineLicenseCheckTime + $this->_getLicenseValidityTime()) < $oUtilsDate->getTime()) {
             $blNeedToSend = true;
         }
 
         return $blNeedToSend;
     }
 
+    /**
+     * License check is done after 24 hours from last check.
+     *
+     * @return int
+     */
+    private function _getLicenseValidityTime()
+    {
+        return 24 * 60 * 60;
+    }
+
     private function _updateInformationSentTimeStamp()
     {
         $oUtilsDate = $this->_getDate();
-        $sOnlineLicenseInvalidTime = $oUtilsDate->getTime();
+        $sOnlineLicenseInvalidTime = $oUtilsDate->getTime() + $this->_getWhiteNoise();
         $this->_getConfig()->setConfigParam('sOnlineLicenseCheckTime', $sOnlineLicenseInvalidTime);
+    }
+
+    /**
+     * Get white noise so each license check would be performed in different time.
+     *
+     * @return int
+     */
+    private function _getWhiteNoise()
+    {
+        $iWhiteNoiseMinTime = 0;
+        $iWhiteNoiseMaxTime = 12 * 60 * 60;
+        return rand($iWhiteNoiseMinTime, $iWhiteNoiseMaxTime);
     }
 
     /**

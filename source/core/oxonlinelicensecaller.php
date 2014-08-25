@@ -31,8 +31,14 @@
 class oxOnlineLicenseCaller
 {
 
+    /**
+     * Online License Check service name.
+     */
     const SERVICE_ONLINE_LICENSE_CHECK = 'OLC';
 
+    /**
+     * Online Module Version Notifier service name.
+     */
     const SERVICE_MODULE_VERSION_NOTIFIER = 'OMVN';
 
     /**

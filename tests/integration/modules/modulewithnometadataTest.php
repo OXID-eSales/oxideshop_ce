@@ -36,7 +36,7 @@ class Integration_Modules_ModuleWithNoMetadataTest extends OxidTestCase
 
         $oModuleList = new oxModuleList();
 
-        $this->assertEquals( null, $oModuleList->getDisabledModules() );
+        $this->assertEquals(array(), $oModuleList->getDisabledModules());
 
         $oModuleList->getModulesFromDir( $sShopDir . 'modules/' );
 

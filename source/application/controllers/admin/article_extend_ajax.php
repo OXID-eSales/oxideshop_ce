@@ -232,6 +232,8 @@ class article_extend_ajax extends ajaxListComponent
         $oDb = oxDb::getDb();
 
         $sQuotedOxId = $oDb->quote($soxId);
+        $sQuotedDefCat = $oDb->quote($sDefCat);
+
         $sSqlShopFilter = "";
 
         // #0003650: increment all product references independent to active shop
@@ -239,7 +241,7 @@ class article_extend_ajax extends ajaxListComponent
         oxDb::getInstance()->getDb()->Execute($sQ);
 
         // set main category for active shop
-        $sQ = "update oxobject2category set oxtime = 0 where oxobjectid = {$sQuotedOxId} and oxcatnid = " . $oDb->quote($sDefCat) . " {$sSqlShopFilter}";
+        $sQ = "update oxobject2category set oxtime = 0 where oxobjectid = {$sQuotedOxId} and oxcatnid = {$sQuotedDefCat} {$sSqlShopFilter}";
         oxDb::getInstance()->getDb()->Execute($sQ);
         //echo "\n$sQ\n";
 

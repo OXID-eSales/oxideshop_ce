@@ -33,6 +33,36 @@ class oxSystemEventHandler
      */
     private $_oOnlineModuleVersionNotifier = null;
 
+    /**
+     * @Var oxOnlineLicenseCheck
+     */
+    private $_oOnlineLicenseCheck = null;
+
+    /**
+     * OLC dependency setter
+     *
+     * @param oxOnlineLicenseCheck $oOnlineLicenseCheck
+     */
+    public function setOnlineLicenseCheck(oxOnlineLicenseCheck $oOnlineLicenseCheck)
+    {
+        $this->_oOnlineLicenseCheck = $oOnlineLicenseCheck;
+    }
+
+    /**
+     * OLC dependency getter
+     *
+     * @return oxOnlineLicenseCheck
+     */
+    public function getOnlineLicenseCheck()
+    {
+        if (!$this->_oOnlineLicenseCheck) {
+            /** @var oxOnlineLicenseCheck $oOLC */
+            $oOLC = oxNew("oxOnlineLicenseCheck");
+            $this->setOnlineLicenseCheck( $oOLC );
+        }
+
+        return $this->_oOnlineLicenseCheck;
+    }
 
     /**
      * oxOnlineModuleVersionNotifier dependency setter
@@ -67,11 +97,66 @@ class oxSystemEventHandler
      */
     public function onAdminLogin( $sActiveShop )
     {
-        //Checks if newer versions of modules are available.
-        //Will be used by the upcoming online one click installer.
-        //Is still under development - still changes at the remote server are necessary - therefore ignoring the results for now
+        // Checks if newer versions of modules are available.
+        // Will be used by the upcoming online one click installer.
+        // Is still under development - still changes at the remote server are necessary - therefore ignoring the results for now
         try {
             $this->getOnlineModuleVersionNotifier()->versionNotify();
         } catch (Exception $o) { }
+    }
+
+    /**
+     * Perform shop startup related actions, like license check.
+     */
+    public function onShopStart()
+    {
+        if($this->_needToSendShopInformation()) {
+            $this->_updateInformationSentTimeStamp();
+            $oOnlineLicenseCheck = $this->getOnlineLicenseCheck();
+            $oOnlineLicenseCheck->validate();
+        }
+    }
+
+    /**
+     * Check if need to send information.
+     * We will not send information on each request due to possible performance drop.
+     *
+     * @return bool
+     */
+    private function _needToSendShopInformation()
+    {
+        $blNeedToSend = false;
+
+        $oConfig = $this->_getConfig();
+        $oUtilsDate = $this->_getDate();
+        $sOnlineLicenseCheckTime = $oConfig->getConfigParam('sOnlineLicenseCheckTime');
+        if (($sOnlineLicenseCheckTime + 25 * 60 * 60) < $oUtilsDate->getTime()) {
+            $blNeedToSend = true;
+        }
+
+        return $blNeedToSend;
+    }
+
+    private function _updateInformationSentTimeStamp()
+    {
+        $oUtilsDate = $this->_getDate();
+        $sOnlineLicenseInvalidTime = $oUtilsDate->getTime();
+        $this->_getConfig()->setConfigParam('sOnlineLicenseCheckTime', $sOnlineLicenseInvalidTime);
+    }
+
+    /**
+     * @return oxConfig
+     */
+    private function _getConfig()
+    {
+        return oxRegistry::getConfig();
+    }
+
+    /**
+     * @return oxUtilsDate
+     */
+    private function _getDate()
+    {
+        return oxRegistry::get('oxUtilsDate');
     }
 }

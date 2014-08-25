@@ -25,13 +25,36 @@
  */
 class oxOnlineLicenseServerRequest
 {
+    /**
+     * OXID eShop edition.
+     *
+     * @var string
+     */
     public $edition;
 
+    /**
+     * Shops version number.
+     *
+     * @var string
+     */
     public $version;
 
+    /**
+     * @var string
+     */
     public $shopurl;
 
+    /**
+     * Web service protocol version.
+     *
+     * @var string
+     */
     public $pversion;
 
+    /**
+     * Product ID. Intended for possible partner modules in future.
+     *
+     * @var string
+     */
     public $productid;
 }

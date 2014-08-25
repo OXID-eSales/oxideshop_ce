@@ -31,42 +31,44 @@ class oxServersManager
      * Nodes data array.
      * @var array
      */
-    private $_aNodesData = array();
+    private $_aServersData = array();
 
     /**
      * Initiates nodes array with content from configuration.
      */
     public function __construct()
     {
-        $this->_aNodesData = (array) oxRegistry::getConfig()->getConfigParam('aServerNodesData');
+        $this->_aServersData = (array) oxRegistry::getConfig()->getConfigParam('aServerNodesData');
     }
 
     /**
-     * Returns not based on server ip address.
+     * Returns server node based on server id.
      *
      * @param string $sNodeId
      * @return oxApplicationServer
      */
     public function getNode($sNodeId)
     {
-        $aNodeData = $this->_getNodeData($sNodeId);
-        return $this->_createNode($sNodeId, $aNodeData);
+        $aNodeData = $this->_getServerData($sNodeId);
+        return $this->_createServer($sNodeId, $aNodeData);
     }
 
     /**
+     * Saves given node information to config.
+     *
      * @param oxApplicationServer $oNode
      */
     public function saveNode($oNode)
     {
-        $aNodes = $this->_getNodesData();
-        $aNodes[$oNode->getId()] = array(
+        $aServersData = $this->_getServersData();
+        $aServersData[$oNode->getId()] = array(
             'timestamp' => $oNode->getTimestamp(),
             'serverIp' => $oNode->getIp(),
             'lastFrontendUsage' => $oNode->getLastFrontendUsage(),
             'lastAdminUsage' => $oNode->getLastAdminUsage(),
         );
 
-        oxRegistry::getConfig()->setConfigParam('aServerNodesData', $aNodes);
+        oxRegistry::getConfig()->setConfigParam('aServerNodesData', $aServersData);
     }
 
     /**
@@ -74,48 +76,52 @@ class oxServersManager
      *
      * @return array
      */
-    protected function _getNodesData()
+    protected function _getServersData()
     {
-        return $this->_aNodesData;
+        return $this->_aServersData;
     }
 
     /**
-     * @param $sIpAddress
+     * Returns node information from configuration.
+     *
+     * @param string $sId
      * @return array
      */
-    protected function _getNodeData($sIpAddress)
+    protected function _getServerData($sId)
     {
-        $aNodes = $this->_getNodesData();
-        return array_key_exists($sIpAddress, $aNodes) ? $aNodes[$sIpAddress] : array();
+        $aNodes = $this->_getServersData();
+        return array_key_exists($sId, $aNodes) ? $aNodes[$sId] : array();
     }
 
     /**
-     * Creates oxApplicationServer from given ip address and data.
+     * Creates oxApplicationServer from given server id and data.
      *
-     * @param $sNodeId
-     * @param $aData
+     * @param string $sServerId
+     * @param array $aData
      * @return oxApplicationServer
      */
-    protected function _createNode($sNodeId, $aData = array())
+    protected function _createServer($sServerId, $aData = array())
     {
-        /** @var oxApplicationServer $oNode */
-        $oNode = oxNew('oxApplicationServer');
+        /** @var oxApplicationServer $oAppServer */
+        $oAppServer = oxNew('oxApplicationServer');
 
-        $oNode->setId($sNodeId);
-        $oNode->setTimestamp($this->_getNodeParameter($aData, 'timestamp'));
-        $oNode->setIp($this->_getNodeParameter($aData, 'serverIp'));
-        $oNode->setLastFrontendUsage($this->_getNodeParameter($aData, 'lastFrontendUsage'));
-        $oNode->setLastAdminUsage($this->_getNodeParameter($aData, 'lastAdminUsage'));
+        $oAppServer->setId($sServerId);
+        $oAppServer->setTimestamp($this->_getServerParameter($aData, 'timestamp'));
+        $oAppServer->setIp($this->_getServerParameter($aData, 'serverIp'));
+        $oAppServer->setLastFrontendUsage($this->_getServerParameter($aData, 'lastFrontendUsage'));
+        $oAppServer->setLastAdminUsage($this->_getServerParameter($aData, 'lastAdminUsage'));
 
-        return $oNode;
+        return $oAppServer;
     }
 
     /**
+     *
+     *
      * @param $aData
      * @param $sName
      * @return mixed
      */
-    protected function _getNodeParameter($aData, $sName)
+    protected function _getServerParameter($aData, $sName)
     {
         return array_key_exists($sName, $aData)? $aData[$sName] : null;
     }

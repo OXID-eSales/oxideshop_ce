@@ -456,9 +456,6 @@ class Article_Main extends oxAdminDetails
         $myUtilsObject = oxUtilsObject::getInstance();
         $oDb = oxDb::getDb();
 
-        $myConfig  = $this->getConfig();
-        $sShopId   = $myConfig->getShopId();
-
         $sO2CView = getViewName( 'oxobject2category' );
         $sQ = "select oxcatnid, oxtime from {$sO2CView} where oxobjectid = ".$oDb->quote( $sOldId );
         $oRs = $oDb->execute( $sQ );

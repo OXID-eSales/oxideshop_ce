@@ -41,4 +41,85 @@ class Unit_Core_oxSystemEventHandlerTest extends OxidTestCase
 
         $oSystemEventHandler->onAdminLogin(1);
     }
+
+    public function testOnShopStartSendShopInformationForFirstTime()
+    {
+        $oSystemEventHandler = new oxSystemEventHandler();
+
+        $oOnlineLicenseCheckMock = $this->getMock("oxOnlineLicenseCheck");
+        // Test that shop online validation was performed.
+        $oOnlineLicenseCheckMock->expects($this->once())->method("validate");
+
+        /** @var oxOnlineLicenseCheck $oOnlineLicenseCheck */
+        $oOnlineLicenseCheck = $oOnlineLicenseCheckMock;
+        $oSystemEventHandler->setOnlineLicenseCheck( $oOnlineLicenseCheck );
+
+        $oSystemEventHandler->onShopStart();
+    }
+
+    public function testOnShopStartSendShopInformationByConfig()
+    {
+        $sOnlineLicenseCheckValidityTime = 25 * 60 * 60;
+        $sOnlineLicenseInvalidTime = time() - $sOnlineLicenseCheckValidityTime - 1 * 60 * 60;
+        $this->setConfigParam('sOnlineLicenseCheckTime', $sOnlineLicenseInvalidTime);
+
+        $oSystemEventHandler = new oxSystemEventHandler();
+
+        $oOnlineLicenseCheckMock = $this->getMock("oxOnlineLicenseCheck");
+        // Test that shop online validation was performed.
+        $oOnlineLicenseCheckMock->expects($this->once())->method("validate");
+
+        /** @var oxOnlineLicenseCheck $oOnlineLicenseCheck */
+        $oOnlineLicenseCheck = $oOnlineLicenseCheckMock;
+        $oSystemEventHandler->setOnlineLicenseCheck( $oOnlineLicenseCheck );
+
+        $oSystemEventHandler->onShopStart();
+    }
+
+    public function testOnShopStartDoNotSendShopInformationByConfig()
+    {
+        $this->setConfigParam('sOnlineLicenseCheckTime', time());
+
+        $oSystemEventHandler = new oxSystemEventHandler();
+
+        $oOnlineLicenseCheckMock = $this->getMock("oxOnlineLicenseCheck");
+        // Test that shop online validation was not performed.
+        $oOnlineLicenseCheckMock->expects($this->never())->method("validate");
+
+        /** @var oxOnlineLicenseCheck $oOnlineLicenseCheck */
+        $oOnlineLicenseCheck = $oOnlineLicenseCheckMock;
+        $oSystemEventHandler->setOnlineLicenseCheck( $oOnlineLicenseCheck );
+
+        $oSystemEventHandler->onShopStart();
+    }
+
+    public function testOnShopStartLicenseCheckTimeStampUpdated()
+    {
+        $iCurrentTime = 1400000000;
+        $this->_prepareCurrentTime($iCurrentTime);
+        $oSystemEventHandler = new oxSystemEventHandler();
+
+        $oOnlineLicenseCheckMock = $this->getMock("oxOnlineLicenseCheck");
+        $oOnlineLicenseCheckMock->expects($this->any())->method("validate");
+
+        /** @var oxOnlineLicenseCheck $oOnlineLicenseCheck */
+        $oOnlineLicenseCheck = $oOnlineLicenseCheckMock;
+        $oSystemEventHandler->setOnlineLicenseCheck( $oOnlineLicenseCheck );
+
+        $oSystemEventHandler->onShopStart();
+
+        $sOnlineLicenseCheckTime = $this->getConfigParam('sOnlineLicenseCheckTime');
+        $this->assertSame($iCurrentTime, $sOnlineLicenseCheckTime);
+    }
+
+    /**
+     * @param int $iCurrentTime
+     */
+    private function _prepareCurrentTime($iCurrentTime)
+    {
+        $oUtilsDate = $this->getMock('oxUtilsDate', array('getTime'));
+        $oUtilsDate->expects($this->any())->method('getTime')->will($this->returnValue($iCurrentTime));
+        /** @var oxUtilsDate $oUtils */
+        oxRegistry::set('oxUtilsDate', $oUtilsDate);
+    }
 }

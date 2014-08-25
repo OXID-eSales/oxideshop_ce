@@ -35,7 +35,6 @@
  */
 class oxOnlineModuleVersionNotifier
 {
-
     /**
      * Web service protocol version.
      *
@@ -43,112 +42,14 @@ class oxOnlineModuleVersionNotifier
      */
     protected $_sProtocolversion = '1.0';
 
+    private $_oCaller = null;
 
-    /**
-     * Online Module Version Notifier web service url.
-     *
-     * @var string
-     */
-    protected $_sWebServiceUrl = 'https://omvn.oxid-esales.com/check.php';
+    private $_oModuleList = null;
 
-    /**
-     * Raw response message received from Online Module Version Notifier web service.
-     *
-     * @var string
-     */
-    protected $_sRawResponseMessage = '';
-
-    /**
-     * List of modules.
-     *
-     * @var array
-     */
-    protected $_aModules = array();
-
-    /**
-     * Indicates exception event
-     *
-     * @var bool
-     */
-    protected $_blIsException = false;
-
-    /**
-     * Set modules array.
-     *
-     * @param $aModules array
-     */
-    public function setModules($aModules)
+    function __construct( oxOnlineModuleVersionNotifierCaller $oCaller, oxModuleList $oModuleList )
     {
-        $this->_aModules = $aModules;
-    }
-
-    /**
-     * Get modules array.
-     *
-     * @return array
-     */
-    public function getModules()
-    {
-        return $this->_aModules;
-    }
-
-    /**
-     * Set raw response message received from Online Module Version Notifier web service.
-     *
-     * @param $sRawResponseMessage string
-     */
-    public function setRawResponseMessage($sRawResponseMessage)
-    {
-        $this->_sRawResponseMessage = $sRawResponseMessage;
-    }
-
-    /**
-     * Get raw response message received from Online Module Version Notifier web service.
-     *
-     * @return string
-     */
-    public function getRawResponseMessage()
-    {
-        return $this->_sRawResponseMessage;
-    }
-
-    /**
-     * Set Online Module Version Notifier web service url.
-     *
-     * @param $sWebServiceUrl string
-     */
-    public function setWebServiceUrl($sWebServiceUrl)
-    {
-        $this->_sWebServiceUrl = $sWebServiceUrl;
-    }
-
-    /**
-     * Get Online Module Version Notifier web service url.
-     *
-     * @return string
-     */
-    public function getWebServiceUrl()
-    {
-        return $this->_sWebServiceUrl;
-    }
-
-    /**
-     * Indicates whether the exception was thrown
-     *
-     * @return bool
-     */
-    public function isException() {
-        return $this->_blIsException;
-    }
-
-    /**
-     * Sets exception flag
-     *
-     * @param $blIsException Exception flag
-     */
-    protected function _setIsException($blIsException)
-    {
-        $this->_blIsException = $blIsException;
+        $this->_oCaller = $oCaller;
+        $this->_oModuleList = $oModuleList;
     }
 
     /**
@@ -160,16 +61,9 @@ class oxOnlineModuleVersionNotifier
     {
         $aPreparedModules = array();
 
-        $aModules = oxRegistry::getConfig()->getConfigParam('aModulePaths');
-        if( !is_array($aModules) ) {
-            return;
-        }
+        $aModules = $this->_getModuleList();
 
-        foreach( $aModules as $sModule ) {
-            $oModule = oxNew('oxModule');
-            if (!$oModule->load($sModule)) {
-                continue;
-            }
+        foreach( $aModules as $oModule ) {
 
             $oPreparedModule = new stdClass();
             $oPreparedModule->id = $oModule->getId();
@@ -181,52 +75,21 @@ class oxOnlineModuleVersionNotifier
             $aPreparedModules[] = $oPreparedModule;
         }
 
-        $this->setModules($aPreparedModules);
-    }
-
-    /**
-     * Performs Web service request
-     *
-     * @param object $oRequestParams Object with request parameters
-     *
-     * @throws oxException
-     *
-     * @return string
-     */
-    protected function _doRequest($oRequestParams)
-    {
-        $sOutput = "";
-
-        $oXml = oxNew('oxSimpleXml');
-        $sXml = $oXml->objectToXml($oRequestParams, 'omvnRequest');
-
-        // send request to web service
-        try {
-            $oCurl = oxNew( 'oxCurl' );
-            $oCurl->setMethod( 'POST' );
-            $oCurl->setUrl( $this->getWebServiceUrl() );
-            $oCurl->setParameters( array("xmlRequest" => $sXml) );
-            $sOutput = $oCurl->execute();
-        } catch (Exception $oEx) {
-            throw new oxException('OMVN_ERROR_REQUEST_FAILED');
-        }
-        return $sOutput;
+        return $aPreparedModules;
     }
 
     /**
      * Send request message to Online Module Version Notifier web service.
      *
-     * @throws oxException
+     * @return oxOnlineModuleNotifierRequest
      */
-    protected function _sendRequestMessage()
+    protected function _formRequest()
     {
-        $this->_prepareModulesInformation();
-
         // build request parameters
-        $oRequestParams = new stdClass();
+        $oRequestParams = new oxOnlineModulesNotifierRequest();
 
         $oRequestParams->modules = new stdClass();
-        $oRequestParams->modules->module = $this->getModules();
+        $oRequestParams->modules->module = $this->_prepareModulesInformation();
 
         $oRequestParams->edition = oxRegistry::getConfig()->getEdition();
         $oRequestParams->version = oxRegistry::getConfig()->getVersion();
@@ -234,10 +97,7 @@ class oxOnlineModuleVersionNotifier
         $oRequestParams->pversion = $this->_sProtocolversion;
 
 
-        if ( !$sOutput = $this->_doRequest($oRequestParams) ){
-            throw new oxException('OMVN_ERROR_REQUEST_FAILED');
-        }
-        $this->setRawResponseMessage($sOutput);
+        return $oRequestParams;
     }
 
     /**
@@ -247,15 +107,25 @@ class oxOnlineModuleVersionNotifier
      */
     public function versionNotify()
     {
-        $this->_setIsException(false);
-
-        try {
-            $this->_sendRequestMessage();
-            return true;
-
-        } catch ( oxException $oEx ) {
-            $this->_setIsException(true);
-            return false;
-        }
+        $oOMNCaller = $this->_getOnlineModuleNotifierCaller();
+        $oOMNCaller->doRequest($this->_formRequest());
     }
+
+    /**
+     *
+     * @return oxOnlineModuleVersionNotifierCaller
+     */
+    protected function _getOnlineModuleNotifierCaller()
+    {
+        return $this->_oCaller;
+    }
+
+    /**
+     * @return array
+     */
+    protected function _getModuleList()
+    {
+        return $this->_oModuleList->getList();
+    }
+
 }

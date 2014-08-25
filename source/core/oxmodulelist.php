@@ -51,6 +51,16 @@ class oxModuleList extends oxSuperCfg
     protected $_aSkipFiles = array( 'functions.php', 'vendormetadata.php' );
 
     /**
+     * Return array of modules
+     *
+     * @return array
+     */
+    public function getList()
+    {
+        return $this->_aModules;
+    }
+
+    /**
      * Get parsed modules
      *
      * @return array

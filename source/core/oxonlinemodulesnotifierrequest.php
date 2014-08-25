@@ -26,7 +26,9 @@
 class oxOnlineModulesNotifierRequest extends oxOnlineLicenseServerRequest
 {
     /**
-     * @var
+     * Modules array.
+     *
+     * @var array
      */
     public $modules;
 }

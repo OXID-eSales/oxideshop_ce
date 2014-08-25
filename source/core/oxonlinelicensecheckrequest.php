@@ -25,7 +25,17 @@
  */
 class oxOnlineLicenseCheckRequest extends oxOnlineLicenseServerRequest
 {
+    /**
+     * Serial keys.
+     *
+     * @var string
+     */
     public $keys;
 
+    /**
+     * Build revision number.
+     *
+     * @var string
+     */
     public $revision;
 }

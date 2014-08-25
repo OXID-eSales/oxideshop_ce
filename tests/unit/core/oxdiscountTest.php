@@ -831,6 +831,7 @@ class Unit_Core_oxDiscountTest extends OxidTestCase
         $sQ .= "('testdid', '$sShopId', '1', 'test for shop $sShopId', '0', '9999', '0', '9999', 'abs', '10') ";
         $myDB->Execute( $sQ );
         // EE version changes
+
         $oDiscount = oxNew( 'oxDiscount' );
         $oDiscount->load( 'testdid' );
         $oDiscount->oxdiscount__oxactive = new oxField( '1', oxField::T_RAW );

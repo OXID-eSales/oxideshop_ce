@@ -30,13 +30,15 @@ class Unit_Core_oxSystemEventHandlerTest extends OxidTestCase
 {
     public function testOnAdminLoginOMVN()
     {
-        $oSEHandler = new oxSystemEventHandler();
+        $oSystemEventHandler = new oxSystemEventHandler();
 
-        $oOMVNMock = $this->getMock("oxOnlineModuleVersionNotifier");
-        $oOMVNMock->expects($this->once())->method("versionNotify");
+        $oModuleNotifierMock = $this->getMock("oxOnlineModuleVersionNotifier");
+        $oModuleNotifierMock->expects($this->once())->method("versionNotify");
 
-        $oSEHandler->setOMVN( $oOMVNMock );
+        /** @var oxOnlineModuleVersionNotifier $oModuleNotifier */
+        $oModuleNotifier = $oModuleNotifierMock;
+        $oSystemEventHandler->setOnlineModuleVersionNotifier( $oModuleNotifier );
 
-        $oSEHandler->onAdminLogin(1);
+        $oSystemEventHandler->onAdminLogin(1);
     }
 }

@@ -21,6 +21,8 @@
  */
 
 /**
+ * Manages application servers information.
+ *
  * @internal Do not make a module extension for this class.
  * @see http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
  */
@@ -28,13 +30,13 @@ class oxServersManager
 {
 
     /**
-     * Nodes data array.
+     * Servers data array.
      * @var array
      */
     private $_aServersData = array();
 
     /**
-     * Initiates nodes array with content from configuration.
+     * Initiates servers array with content from configuration.
      */
     public function __construct()
     {
@@ -42,7 +44,7 @@ class oxServersManager
     }
 
     /**
-     * Returns server node based on server id.
+     * Returns server based on server id.
      *
      * @param string $sNodeId
      * @return oxApplicationServer
@@ -54,7 +56,7 @@ class oxServersManager
     }
 
     /**
-     * Saves given node information to config.
+     * Saves given server information to config.
      *
      * @param oxApplicationServer $oNode
      */
@@ -72,7 +74,7 @@ class oxServersManager
     }
 
     /**
-     * Returns server nodes information array.
+     * Returns servers information array.
      *
      * @return array
      */
@@ -82,7 +84,7 @@ class oxServersManager
     }
 
     /**
-     * Returns node information from configuration.
+     * Returns server information from configuration.
      *
      * @param string $sId
      * @return array

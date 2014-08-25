@@ -31,32 +31,33 @@ class oxSystemEventHandler
     /**
      * @Var oxOnlineModuleVersionNotifier
      */
-    private $_oOMVN = null;
+    private $_oOnlineModuleVersionNotifier = null;
 
 
     /**
-     * OMVN dependency setter
+     * oxOnlineModuleVersionNotifier dependency setter
      *
-     * @param oxOnlineModuleVersionNotifier $oOLC
+     * @param oxOnlineModuleVersionNotifier $oOnlineModuleVersionNotifier
      */
-    public function setOMVN($oOMVN)
+    public function setOnlineModuleVersionNotifier(oxOnlineModuleVersionNotifier $oOnlineModuleVersionNotifier)
     {
-        $this->_oOMVN = $oOMVN;
+        $this->_oOnlineModuleVersionNotifier = $oOnlineModuleVersionNotifier;
     }
 
     /**
-     * OMVN dependency getter
+     * oxOnlineModuleVersionNotifier dependency getter
      *
      * @return oxOnlineModuleVersionNotifier
      */
-    public function getOMVN()
+    public function getOnlineModuleVersionNotifier()
     {
-        if (!$this->_oOMVN) {
-            $oOMVN = oxNew("oxOnlineModuleVersionNotifier");
-            $this->setOMVN( $oOMVN );
+        if (!$this->_oOnlineModuleVersionNotifier) {
+            /** @var oxOnlineModuleVersionNotifier $oOnlineModuleVersionNotifier */
+            $oOnlineModuleVersionNotifier = oxNew("oxOnlineModuleVersionNotifier");
+            $this->setOnlineModuleVersionNotifier( $oOnlineModuleVersionNotifier );
         }
 
-        return $this->_oOMVN;
+        return $this->_oOnlineModuleVersionNotifier;
     }
 
     /**
@@ -70,7 +71,7 @@ class oxSystemEventHandler
         //Will be used by the upcoming online one click installer.
         //Is still under development - still changes at the remote server are necessary - therefore ignoring the results for now
         try {
-            $this->getOMVN()->versionNotify();
+            $this->getOnlineModuleVersionNotifier()->versionNotify();
         } catch (Exception $o) { }
     }
 }

@@ -199,6 +199,49 @@ class Unit_Core_oxLangTest extends OxidTestCase
 
     }
 
+    public function testGetLangFilesPathForModulesWithApplicationFolder()
+    {
+        $sFilePath = oxRegistry::getConfig()->getConfigParam('sShopDir').'modules/oxlangTestModule/application/translations/de/';
+
+        if( !is_dir($sFilePath) ){
+            mkdir( $sFilePath, 0755, true);
+        }
+
+        file_put_contents( $sFilePath."/test_lang.php", 'langfile' );
+
+        $sPath = oxRegistry::getConfig()->getAppDir( );
+        $sShopPath = oxRegistry::getConfig()->getConfigParam('sShopDir');
+        $aPathArray = array(
+            $sPath . "translations/de/lang.php"
+        , $sPath . "translations/de/translit_lang.php"
+        , $sPath . "views/azure/de/lang.php"
+        , $sPath . "views/azure/1/de/lang.php"
+        , $sShopPath . "modules/oxlangTestModule/application/translations/de/test_lang.php"
+        , $sPath . "views/azure/de/cust_lang.php"
+        );
+
+            $aPathArray = array(
+                $sPath . "translations/de/lang.php"
+            , $sPath . "translations/de/translit_lang.php"
+            , $sPath . "views/azure/de/lang.php"
+            , $sShopPath . "modules/oxlangTestModule/application/translations/de/test_lang.php"
+            , $sPath . "views/azure/de/cust_lang.php"
+            );
+
+        $aInfo = array( 'oxlangTestModule' => 'oxlangTestModule' );
+
+        $oLang = $this->getMock( "oxLang", array( "_getActiveModuleInfo") );
+        $oLang->expects( $this->any() )->method( '_getActiveModuleInfo' )->will( $this->returnValue( $aInfo ) );
+
+        $this->assertEquals( $aPathArray, $oLang->UNITgetLangFilesPathArray( 0 ) );
+
+        unlink( $sShopPath . "modules/oxlangTestModule/application/translations/de/test_lang.php" );
+        rmdir( $sShopPath . "modules/oxlangTestModule/application/translations/de/" );
+        rmdir( $sShopPath . "modules/oxlangTestModule/application/translations/" );
+        rmdir( $sShopPath . "modules/oxlangTestModule/application/" );
+
+    }
+
 
     public function testGetLangFilesPathForAdmin()
     {

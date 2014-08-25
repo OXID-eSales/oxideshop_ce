@@ -110,12 +110,12 @@ class oxServerProcessor extends oxSuperCfg
     {
         $oNodesManager = $this->_getServerNodesManager();
         $sServerNodeId = $this->_getUtilsServer()->getServerNodeId();
-        $oNode = $oNodesManager->getNode($sServerNodeId);
+        $oNode = $oNodesManager->getServer($sServerNodeId);
 
         $oNodeChecker = $this->_getServerNodeChecker();
         if (!$oNodeChecker->check($oNode)) {
             $this->_updateNodeInformation($oNode);
-            $oNodesManager->saveNode($oNode);
+            $oNodesManager->saveServer($oNode);
         }
     }
 

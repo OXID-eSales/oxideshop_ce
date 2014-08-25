@@ -38,7 +38,7 @@ class oxServersManager
      */
     public function __construct()
     {
-        $this->_aServersData = (array) oxRegistry::getConfig()->getConfigParam('aServerNodesData');
+        $this->_aServersData = (array) oxRegistry::getConfig()->getConfigParam('aServersData');
     }
 
     /**
@@ -47,7 +47,7 @@ class oxServersManager
      * @param string $sNodeId
      * @return oxApplicationServer
      */
-    public function getNode($sNodeId)
+    public function getServer($sNodeId)
     {
         $aNodeData = $this->_getServerData($sNodeId);
         return $this->_createServer($sNodeId, $aNodeData);
@@ -58,7 +58,7 @@ class oxServersManager
      *
      * @param oxApplicationServer $oNode
      */
-    public function saveNode($oNode)
+    public function saveServer($oNode)
     {
         $aServersData = $this->_getServersData();
         $aServersData[$oNode->getId()] = array(
@@ -68,7 +68,7 @@ class oxServersManager
             'lastAdminUsage' => $oNode->getLastAdminUsage(),
         );
 
-        oxRegistry::getConfig()->setConfigParam('aServerNodesData', $aServersData);
+        oxRegistry::getConfig()->setConfigParam('aServersData', $aServersData);
     }
 
     /**

@@ -26,62 +26,62 @@
 class Unit_Core_oxServersManagerTest extends OxidTestCase
 {
 
-    public function testGettingExistingNodeByServerIpAddress()
+    public function testGettingExistingServerByServerId()
     {
-        $aNodes = array('serverNameHash1' => array('timestamp' => 'timestamp'));
-        $this->getConfig()->setConfigParam('aServerNodesData', $aNodes);
+        $aServers = array('serverNameHash1' => array('timestamp' => 'timestamp'));
+        $this->getConfig()->setConfigParam('aServersData', $aServers);
 
-        $oExpectedNode = new oxApplicationServer();
-        $oExpectedNode->setId('serverNameHash1');
-        $oExpectedNode->setTimestamp('timestamp');
+        $oExpectedServer = new oxApplicationServer();
+        $oExpectedServer->setId('serverNameHash1');
+        $oExpectedServer->setTimestamp('timestamp');
 
-        $oNodeList = new oxServersManager();
-        $this->assertEquals($oExpectedNode, $oNodeList->getNode('serverNameHash1'));
+        $oServerList = new oxServersManager();
+        $this->assertEquals($oExpectedServer, $oServerList->getServer('serverNameHash1'));
     }
 
-    public function testGettingExistingNodeByServerIpAddressWhenMultipleNodesExists()
+    public function testGettingExistingServerByServerIdWhenMultipleServersExists()
     {
-        $aNodes = array(
+        $aServers = array(
             'serverNameHash1' => array('timestamp' => 'timestamp1'),
             'serverNameHash2' => array('timestamp' => 'timestamp2'),
             'serverNameHash3' => array('timestamp' => 'timestamp3'),
         );
-        $this->getConfig()->setConfigParam('aServerNodesData', $aNodes);
+        $this->getConfig()->setConfigParam('aServersData', $aServers);
 
-        $oExpectedNode = new oxApplicationServer();
-        $oExpectedNode->setId('serverNameHash2');
-        $oExpectedNode->setTimestamp('timestamp2');
+        $oExpectedServer = new oxApplicationServer();
+        $oExpectedServer->setId('serverNameHash2');
+        $oExpectedServer->setTimestamp('timestamp2');
 
-        $oNodeList = new oxServersManager();
-        $this->assertEquals($oExpectedNode, $oNodeList->getNode('serverNameHash2'));
+        $oServerList = new oxServersManager();
+        $this->assertEquals($oExpectedServer, $oServerList->getServer('serverNameHash2'));
     }
 
-    public function testGettingNotExistingNodeByServerIpAddress()
+    public function testGettingNotExistingServerByServerId()
     {
-        $this->getConfig()->setConfigParam('aServerNodesData', null);
+        $this->getConfig()->setConfigParam('aServersData', null);
 
-        $oExpectedNode = new oxApplicationServer();
-        $oExpectedNode->setId('serverNameHash1');
+        $oExpectedServer = new oxApplicationServer();
+        $oExpectedServer->setId('serverNameHash1');
 
-        $oNodeList = new oxServersManager();
-        $this->assertEquals($oExpectedNode, $oNodeList->getNode('serverNameHash1'));
+        $oServerList = new oxServersManager();
+        $this->assertEquals($oExpectedServer, $oServerList->getServer('serverNameHash1'));
     }
 
-    public function testNodeSavingWhenNoNodesExists()
+    public function testServerSavingWhenNoServersExists()
     {
-        oxRegistry::getConfig()->setConfigParam('aServerNodesData', null);
+        oxRegistry::getConfig()->setConfigParam('aServersData', null);
 
-        $oNode = new oxApplicationServer();
-        $oNode->setId('serverNameHash1');
-        $oNode->setTimestamp('timestamp');
-        $oNode->setIp('127.0.0.1');
-        $oNode->setLastFrontendUsage('frontendUsageTimestamp');
-        $oNode->setLastAdminUsage('adminUsageTimestamp');
+        $oServer = new oxApplicationServer();
+        $oServer->setId('serverNameHash1');
+        $oServer->setTimestamp('timestamp');
+        $oServer->setIp('127.0.0.1');
+        $oServer->setLastFrontendUsage('frontendUsageTimestamp');
+        $oServer->setLastAdminUsage('adminUsageTimestamp');
 
-        $oNodeList = new oxServersManager();
-        $oNodeList->saveNode($oNode);
+        $oServerList = new oxServersManager();
+        $oServerList->saveServer($oServer);
 
-        $aExpectedNodeData = array(
+        $aExpectedServerData = array(
             'serverNameHash1' => array(
                 'timestamp' => 'timestamp',
                 'serverIp' => '127.0.0.1',
@@ -89,12 +89,12 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
                 'lastAdminUsage' => 'adminUsageTimestamp',
             ),
         );
-        $this->assertEquals($aExpectedNodeData, $this->getConfig()->getConfigParam('aServerNodesData'));
+        $this->assertEquals($aExpectedServerData, $this->getConfig()->getConfigParam('aServersData'));
     }
 
-    public function testUpdatingNode()
+    public function testUpdatingServer()
     {
-        oxRegistry::getConfig()->setConfigParam('aServerNodesData', array(
+        oxRegistry::getConfig()->setConfigParam('aServersData', array(
             'serverNameHash1' => array(),
             'serverNameHash2' => array(
                 'timestamp' => 'timestamp',
@@ -105,17 +105,17 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
             'serverNameHash3' => array(),
         ));
 
-        $oNode = new oxApplicationServer();
-        $oNode->setId('serverNameHash2');
-        $oNode->setTimeStamp('timestampUpdated');
-        $oNode->setIp('127.0.0.255');
-        $oNode->setLastFrontendUsage('frontendUsageTimestampUpdated');
-        $oNode->setLastAdminUsage('adminUsageTimestampUpdated');
+        $oServer = new oxApplicationServer();
+        $oServer->setId('serverNameHash2');
+        $oServer->setTimeStamp('timestampUpdated');
+        $oServer->setIp('127.0.0.255');
+        $oServer->setLastFrontendUsage('frontendUsageTimestampUpdated');
+        $oServer->setLastAdminUsage('adminUsageTimestampUpdated');
 
-        $oNodeList = new oxServersManager();
-        $oNodeList->saveNode($oNode);
+        $oServerList = new oxServersManager();
+        $oServerList->saveServer($oServer);
 
-        $aExpectedNodeData = array(
+        $aExpectedServerData = array(
             'serverNameHash1' => array(),
             'serverNameHash2' => array(
                 'timestamp' => 'timestampUpdated',
@@ -125,26 +125,26 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
             ),
             'serverNameHash3' => array(),
         );
-        $this->assertEquals($aExpectedNodeData, $this->getConfig()->getConfigParam('aServerNodesData'));
+        $this->assertEquals($aExpectedServerData, $this->getConfig()->getConfigParam('aServersData'));
     }
 
-    public function testUpdatingEmptyNode()
+    public function testUpdatingEmptyServer()
     {
-        oxRegistry::getConfig()->setConfigParam('aServerNodesData', array(
+        oxRegistry::getConfig()->setConfigParam('aServersData', array(
             'serverNameHash1' => array(),
         ));
 
-        $oNode = new oxApplicationServer();
-        $oNode->setId('serverNameHash1');
-        $oNode->setTimeStamp('timestampUpdated');
-        $oNode->setIp('127.0.0.1');
-        $oNode->setLastFrontendUsage('frontendUsageTimestampUpdated');
-        $oNode->setLastAdminUsage('adminUsageTimestampUpdated');
+        $oServer = new oxApplicationServer();
+        $oServer->setId('serverNameHash1');
+        $oServer->setTimeStamp('timestampUpdated');
+        $oServer->setIp('127.0.0.1');
+        $oServer->setLastFrontendUsage('frontendUsageTimestampUpdated');
+        $oServer->setLastAdminUsage('adminUsageTimestampUpdated');
 
-        $oNodeList = new oxServersManager();
-        $oNodeList->saveNode($oNode);
+        $oServerList = new oxServersManager();
+        $oServerList->saveServer($oServer);
 
-        $aExpectedNodeData = array(
+        $aExpectedServerData = array(
             'serverNameHash1' => array(
                 'timestamp' => 'timestampUpdated',
                 'serverIp' => '127.0.0.1',
@@ -152,6 +152,6 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
                 'lastAdminUsage' => 'adminUsageTimestampUpdated',
             ),
         );
-        $this->assertEquals($aExpectedNodeData, $this->getConfig()->getConfigParam('aServerNodesData'));
+        $this->assertEquals($aExpectedServerData, $this->getConfig()->getConfigParam('aServersData'));
     }
 }

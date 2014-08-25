@@ -126,9 +126,6 @@ class Shop_License extends Shop_Config
         $aResult = explode("<br>", $sOutput);
         if ( strstr( $aResult[5], "update" ) ) {
             $sUpdateLink = 'http://wiki.oxidforge.org/Category:Downloads';
-            if ( !OXID_VERSION_PE_CE ) {
-                $sUpdateLink = oxRegistry::getLang()->translateString( "VERSION_UPDATE_LINK" );
-            }
             $aResult[5] = "<a id='linkToUpdate' href='$sUpdateLink' target='_blank'>" . $aResult[5] . "</a>";
         }
         $sOutput = implode("<br>", $aResult);

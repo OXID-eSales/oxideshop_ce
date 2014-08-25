@@ -525,8 +525,7 @@ class Details extends oxUBase
             return;
         }
         $oArticleTagList = oxNew("oxArticleTagList");
-        //$oArticleTagList->load( $this->getProduct()->getId() );
-        $oArticleTagList->setArticleId($this->getProduct()->getId());
+        $oArticleTagList->load( $this->getProduct()->getId() );
         $oTagSet = $oArticleTagList->get();
         $this->_aTags = $oTagSet->get();
         $this->_blEditTags = true;

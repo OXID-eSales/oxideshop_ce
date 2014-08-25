@@ -808,11 +808,12 @@ class oxLang extends oxSuperCfg
     protected function _appendModuleLangFiles( $aLangFiles, $aModulePaths, $sLang, $blForAdmin = false )
     {
         if ( is_array( $aModulePaths ) ) {
-
             $oConfig = $this->getConfig();
-
             foreach ( $aModulePaths as $sPath ) {
                 $sFullPath  = $oConfig->getModulesDir() . $sPath;
+                if( file_exists($sFullPath.'/application/') ){
+                    $sFullPath .= '/application';
+                }
                 $sFullPath .= ($blForAdmin) ? '/views/admin/' : '/translations/';
                 $sFullPath .= $sLang;
                 $aLangFiles = $this->_appendLangFile( $aLangFiles, $sFullPath );

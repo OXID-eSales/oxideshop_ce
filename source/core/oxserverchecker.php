@@ -21,7 +21,7 @@
  */
 
 /**
- * Checks if server node is valid.
+ * Checks if server node is valid, information is not outdated.
  *
  * @internal Do not make a module extension for this class.
  * @see http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
@@ -31,26 +31,34 @@
 class oxServerChecker
 {
     /**
-     * Time in seconds which shows how long server node is valid.
+     * Time in seconds, server node information life time.
      */
     CONST NODE_VALIDITY_TIME = 82800;
 
     /**
+     * Current checking time - timestamp.
+     *
+     * @var int
+     */
+    private $_iCurrentTime = 0;
+
+    public function __construct()
+    {
+        $this->_iCurrentTime = oxRegistry::get("oxUtilsDate")->getTime();
+    }
+
+    /**
      * Checks if server node is valid.
      *
-     * @param oxApplicationServer $oServerNode
+     * @param oxApplicationServer $oServer
      *
      * @return bool
      */
-    public function check(oxApplicationServer $oServerNode)
+    public function check(oxApplicationServer $oServer)
     {
-        $iServerNodeTime = $oServerNode->getTimestamp();
-        $iCurrentTime = oxRegistry::get("oxUtilsDate")->getTime();
-
-        $iTimeToLive = $this->_getLeftTimeTillNodeIsValid($iServerNodeTime, $iCurrentTime);
-
         $blResult = false;
-        if ($iTimeToLive > 0 && $this->_isServerTimeValid($iCurrentTime, $iServerNodeTime)) {
+
+        if ($this->_isValid($oServer) && $this->_isServerTimeValid($oServer->getTimestamp())) {
             $blResult = true;
         }
 
@@ -58,27 +66,36 @@ class oxServerChecker
     }
 
     /**
-     * Returns left time till server node is valid.
+     * Check is server information out dated.
      *
-     * @param $iServerNodeTime
-     * @param $iCurrentTime
-     * @return int
-     */
-    private function _getLeftTimeTillNodeIsValid($iServerNodeTime, $iCurrentTime)
-    {
-        return $iServerNodeTime - $iCurrentTime + self::NODE_VALIDITY_TIME;
-    }
-
-    /**
-     * Method checks if server time was not changed till last node update.
-     *
-     * @param $iCurrentTime
-     * @param $iServerNodeTime
+     * @param oxApplicationServer $oServer
      *
      * @return bool
      */
-    private function _isServerTimeValid($iCurrentTime, $iServerNodeTime)
+    private function _isValid($oServer)
     {
-        return ($iCurrentTime - $iServerNodeTime) >= 0;
+        return ($oServer->getTimestamp()- $this->_getCurrentTime() + self::NODE_VALIDITY_TIME) > 0;
+    }
+
+    /**
+     * Method checks if server time was not rolled back.
+     *
+     * @param int $iServerTimeInPast timestamp of time in past
+     *
+     * @return bool
+     */
+    private function _isServerTimeValid($iServerTimeInPast)
+    {
+        return ($this->_getCurrentTime() - $iServerTimeInPast) >= 0;
+    }
+
+    /**
+     * Returns current time - timestamp.
+     *
+     * @return int
+     */
+    private function _getCurrentTime()
+    {
+        return $this->_iCurrentTime;
     }
 }

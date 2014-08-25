@@ -20,24 +20,131 @@
  * @version   OXID eShop CE
  */
 
+/**
+ * Class Unit_Core_oxOnlineLicenseCallerTest
+ *
+ * @covers oxOnlineLicenseCaller
+ * @covers oxOnlineLicenseCheckRequest
+ * @covers oxOnlineModulesNotifierRequest
+ */
 class Unit_Core_oxOnlineLicenseCallerTest extends OxidTestCase
 {
-    public function testDoRequest()
+    public function providerDoRequestWithAllSetXmlValues()
+    {
+        $sOnlineLicenseCheckXml = '<?xml version="1.0" encoding="utf-8"?>'.PHP_EOL;
+        $sOnlineLicenseCheckXml.= '<olcRequest>';
+        $sOnlineLicenseCheckXml.= '<keys><key>_testKey</key></keys>';
+        $sOnlineLicenseCheckXml.= '<revision>_testRevision</revision>';
+        $sOnlineLicenseCheckXml.= '<edition>_testEdition</edition>';
+        $sOnlineLicenseCheckXml.= '<version>_testVersion</version>';
+        $sOnlineLicenseCheckXml.= '<shopurl>_testShopUrl</shopurl>';
+        $sOnlineLicenseCheckXml.= '<pversion>_testPVersion</pversion>';
+        $sOnlineLicenseCheckXml.= '<productid>_testProductId</productid>';
+        $sOnlineLicenseCheckXml.= '</olcRequest>'.PHP_EOL;
+
+        $sModuleNotifierXml = '<?xml version="1.0" encoding="utf-8"?>'.PHP_EOL;
+        $sModuleNotifierXml.= '<olcRequest>';
+        $sModuleNotifierXml.= '<modules>_testModule</modules>';
+        $sModuleNotifierXml.= '<edition>_testEdition</edition>';
+        $sModuleNotifierXml.= '<version>_testVersion</version>';
+        $sModuleNotifierXml.= '<shopurl>_testShopUrl</shopurl>';
+        $sModuleNotifierXml.= '<pversion>_testPVersion</pversion>';
+        $sModuleNotifierXml.= '<productid>_testProductId</productid>';
+        $sModuleNotifierXml.= '</olcRequest>'.PHP_EOL;
+
+
+        return array(
+            array('OLC', 'https://olc.oxid-esales.com/check.php', $sOnlineLicenseCheckXml),
+            array('OMVN', 'https://omvn.oxid-esales.com/check.php', $sModuleNotifierXml)
+        );
+    }
+
+    /**
+     * @param string $sWebServiceUrlType
+     * @param string $sWebServiceUrl
+     * @param string $sXml
+     *
+     * @dataProvider providerDoRequestWithAllSetXmlValues
+     */
+    public function testDoRequestWithAllSetXmlValues($sWebServiceUrlType, $sWebServiceUrl, $sXml)
     {
         /** @var oxCurl $oCurl */
         $oCurl = $this->getMock('oxCurl', array('execute'));
         $oCurl->expects($this->any())->method('execute')->will($this->returnValue(true));
 
-        $oOnlineLicenseCheckRequest = new oxOnlineLicenseCheckRequest();
-        $oOnlineLicenseCheckRequest->edition = "edition";
-        $oOnlineLicenseCheckRequest->version = "version";
-        $oOnlineLicenseCheckRequest->revision = "revision";
-        $oOnlineLicenseCheckRequest->shopurl = "shopUrl";
-        $oOnlineLicenseCheckRequest->pversion = "pVersion";
-        $oOnlineLicenseCheckRequest->productid = "productId";
+        $oOnlineLicenseCheckRequest = $this->_getRequestByServiceType($sWebServiceUrlType);
+        if ($sWebServiceUrlType == 'OLC') {
+            $oOnlineLicenseCheckRequest->keys = new stdClass();
+            $oOnlineLicenseCheckRequest->keys->key = '_testKey';
+            $oOnlineLicenseCheckRequest->revision = '_testRevision';
+        } else {
+            $oOnlineLicenseCheckRequest->modules = '_testModule';
+        }
+        $oOnlineLicenseCheckRequest->version = '_testVersion';
+        $oOnlineLicenseCheckRequest->edition = '_testEdition';
+        $oOnlineLicenseCheckRequest->shopurl = '_testShopUrl';
+        $oOnlineLicenseCheckRequest->pversion = '_testPVersion';
+        $oOnlineLicenseCheckRequest->productid = '_testProductId';
 
         $oOnlineLicenseCaller = new oxOnlineLicenseCaller($oCurl);
+        $oOnlineLicenseCaller->doRequest($oOnlineLicenseCheckRequest, $sWebServiceUrlType);
 
+        $this->assertSame($sWebServiceUrl, $oCurl->getUrl());
+        $this->assertSame('POST', $oCurl->getMethod());
+        $this->assertEquals(array('xmlRequest' => $sXml), $oCurl->getParameters());
+    }
+
+    public function providerDoRequestWithKeys()
+    {
+        return array(
+            // When keys are in array.
+            array(array('first key', 'second key')),
+            // When one key is given.
+            array('one key')
+        );
+    }
+
+    /**
+     * @param $mxKeys
+     *
+     * @dataProvider providerDoRequestWithKeys
+     */
+    public function testDoRequestWithKeys($mxKeys)
+    {
+        /** @var oxCurl $oCurl */
+        $oCurl = $this->getMock('oxCurl', array('execute'));
+        $oCurl->expects($this->any())->method('execute')->will($this->returnValue(true));
+
+        $oOnlineLicenseCheckRequest = $this->_getRequestByServiceType('OLC');
+        $oOnlineLicenseCheckRequest->keys = new stdClass();
+        $oOnlineLicenseCheckRequest->keys->key = $mxKeys;
+
+        //expected xml file source
+        $sXml = '<?xml version="1.0" encoding="utf-8"?>'.PHP_EOL;
+        $sXml.= '<olcRequest>';
+        if (is_array($mxKeys)) {
+            $sXml.= '<keys><key>first key</key><key>second key</key></keys>';
+        } else {
+            $sXml.= '<keys><key>one key</key></keys>';
+        }
+        $sXml.= '<revision/><edition/><version/><shopurl/><pversion/><productid/>';
+        $sXml.= '</olcRequest>'.PHP_EOL;
+
+        $oOnlineLicenseCaller = new oxOnlineLicenseCaller($oCurl);
+        $oOnlineLicenseCaller->doRequest($oOnlineLicenseCheckRequest, 'OLC');
+
+        $this->assertEquals(array('xmlRequest' => $sXml), $oCurl->getParameters());
+    }
+
+    public function testDoRequestWhenExceptionIsThrown()
+    {
+        $oCurl = $this->getMock('oxCurl', array('execute'));
+        $oCurl->expects($this->any())->method('execute')->will($this->throwException(new Exception()));
+        $oOnlineLicenseCheckRequest = new oxOnlineModulesNotifierRequest();
+        $oOnlineLicenseCaller = new oxOnlineLicenseCaller($oCurl);
+
+        $this->setExpectedException('oxException', oxRegistry::getLang()->translateString('OMVN_ERROR_REQUEST_FAILED'));
+        $oOnlineLicenseCaller->doRequest($oOnlineLicenseCheckRequest, 'OMVN');
     }
 
     /**
@@ -80,6 +187,23 @@ class Unit_Core_oxOnlineLicenseCallerTest extends OxidTestCase
     }
 
     /**
+     * Test parse response with exception when unable to load xml.
+     */
+    public function testGetResponseExceptionWhenUnableToLoad()
+    {
+        $oOnlineLicenseCaller = new oxOnlineLicenseCaller();
+
+        $sRawResponseMessage = '<?xml versio';
+        $sRawResponseMessage .= '<olc>';
+        $sRawResponseMessage .= '</olc>';
+
+        $oOnlineLicenseCaller->setRawResponseMessage( $sRawResponseMessage );
+
+        $this->setExpectedException( 'oxException', oxRegistry::getLang()->translateString( 'OLC_ERROR_RESPONSE_NOT_VALID' ) );
+        $oOnlineLicenseCaller->getParsedResponseMessage();
+    }
+
+    /**
      * Test parse response with exception when response is unexpected.
      */
     public function testGetResponseExceptionResponseUnexpected()
@@ -96,68 +220,19 @@ class Unit_Core_oxOnlineLicenseCallerTest extends OxidTestCase
         $oOnlineLicenseCaller->getParsedResponseMessage();
     }
 
-    public function testGenerateXml_whenPassingTwoKeysThroughParameters()
+    /**
+     * @param $sServiceType
+     *
+     * @return oxOnlineLicenseCheckRequest|oxOnlineModulesNotifierRequest
+     */
+    private function _getRequestByServiceType($sServiceType)
     {
-        $aKeys[] = 'first key';
-        $aKeys[] = 'second key';
+        if ($sServiceType === 'OLC') {
+            $oRequest = new oxOnlineLicenseCheckRequest();
+        } else {
+            $oRequest = new oxOnlineModulesNotifierRequest();
+        }
 
-        $oOnlineLicenseCheckRequest = new oxOnlineLicenseCheckRequest();
-        $oOnlineLicenseCheckRequest->edition = "edition";
-        $oOnlineLicenseCheckRequest->version = "version";
-        $oOnlineLicenseCheckRequest->shopurl = "shopUrl";
-        $oOnlineLicenseCheckRequest->pversion = "pVersion";
-        $oOnlineLicenseCheckRequest->productid = "productId";
-        $oOnlineLicenseCheckRequest->revision = "revision";
-
-        $oOnlineLicenseCheckRequest->keys = new stdClass();
-        $oOnlineLicenseCheckRequest->keys->key = $aKeys;
-
-        //expected xml file source
-        $sXml = '<?xml version="1.0" encoding="utf-8"?>'.PHP_EOL;
-        $sXml.= '<olcRequest>';
-        $sXml.= '<keys><key>'.$aKeys[0].'</key><key>'.$aKeys[1].'</key></keys>';
-        $sXml.= '<revision>'.$oOnlineLicenseCheckRequest->revision.'</revision>';
-        $sXml.= '<edition>'.$oOnlineLicenseCheckRequest->edition.'</edition>';
-        $sXml.= '<version>'.$oOnlineLicenseCheckRequest->version.'</version>';
-        $sXml.= '<shopurl>'.$oOnlineLicenseCheckRequest->shopurl.'</shopurl>';
-        $sXml.= '<pversion>'.$oOnlineLicenseCheckRequest->pversion.'</pversion>';
-        $sXml.= '<productid>'.$oOnlineLicenseCheckRequest->productid.'</productid>';
-        $sXml.= '</olcRequest>'.PHP_EOL;
-
-        $oOnlineLicenseCaller = new oxOnlineLicenseCaller();
-
-        $this->assertEquals($sXml, $oOnlineLicenseCaller->generateXml($oOnlineLicenseCheckRequest));
-    }
-
-    public function testGenerateXml_whenPassingOneKeyThroughParameters()
-    {
-        $sKey = 'first key';
-
-        $oRequestParams = new stdClass();
-        $oRequestParams->edition = "edition";
-        $oRequestParams->version = "version";
-        $oRequestParams->revision = "revision";
-        $oRequestParams->shopurl = "shopUrl";
-        $oRequestParams->pversion = "pVersion";
-        $oRequestParams->productid = "productId";
-
-        $oRequestParams->keys = new stdClass();
-        $oRequestParams->keys->key = $sKey;
-
-        //expected xml file source
-        $sXml = '<?xml version="1.0" encoding="utf-8"?>'.PHP_EOL;
-        $sXml.= '<olcRequest>';
-        $sXml.= '<edition>'.$oRequestParams->edition.'</edition>';
-        $sXml.= '<version>'.$oRequestParams->version.'</version>';
-        $sXml.= '<revision>'.$oRequestParams->revision.'</revision>';
-        $sXml.= '<shopurl>'.$oRequestParams->shopurl.'</shopurl>';
-        $sXml.= '<pversion>'.$oRequestParams->pversion.'</pversion>';
-        $sXml.= '<productid>'.$oRequestParams->productid.'</productid>';
-        $sXml.= '<keys><key>'.$sKey.'</key></keys>';
-        $sXml.= '</olcRequest>'.PHP_EOL;
-
-        $oOlc = $this->getProxyClass( 'oxOnlineLicenseCheck' );
-
-        $this->assertEquals($sXml, $oOlc->UNITgenerateXml($oRequestParams));
+        return $oRequest;
     }
 }

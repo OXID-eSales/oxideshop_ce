@@ -26,44 +26,26 @@ require_once getShopBasePath() . '/setup/oxsetup.php';
 
 class Unit_Core_oxonlinemoduleversionnotifierTest extends OxidTestCase
 {
-
-    /**
-     * Test set/get Online Module Version Notifier web service url.
-     */
-    public function testSetGetWebServiceUrl()
+    public function testVersionNotifyWithoutModulesInShop()
     {
-        $oOmvn = new oxOnlineModuleVersionNotifier();
+        $oCaller = $this->getMock('oxOnlineModuleVersionNotifierCaller');
+        $oCaller->expects($this->never())->method('doRequest');
+        $oModuleList = $this->getMock('oxModuleList');
+        $oModuleList->expects($this->any())->method('getModules')->will( $this->returnValue( '' ) );
 
-        $sExpectedWebServiceUrl = 'https://omvn.oxid-esales.com/check.php';
-        $sExpectedNewWebServiceUrl = 'new.webservice.url';
-
-        $this->assertEquals( $sExpectedWebServiceUrl, $oOmvn->getWebServiceUrl() );
-
-        $oOmvn->setWebServiceUrl( $sExpectedNewWebServiceUrl );
-        $this->assertEquals( $sExpectedNewWebServiceUrl, $oOmvn->getWebServiceUrl() );
+        $oNotifier = new oxOnlineModuleVersionNotifier($oCaller, $oModuleList);
+        $oNotifier->versionNotify();
     }
 
-    /**
-     * Test set/get raw response received from Online Module Version Notifier web service.
-     */
-    public function testSetGetRawResponseMessage()
+    public function testVersionNotifyWithModulesInShop()
     {
-        $oOmvn = new oxOnlineModuleVersionNotifier();
+        $oCaller = $this->getMock('oxOnlineModuleVersionNotifierCaller');
+        $oCaller->expects($this->any())->method('doRequest');
 
-        $sExpectedRawResponseMessage = 'raw response message';
+        $oModuleList = $this->getMock('oxModuleList');
+        $oModuleList->expects($this->any())->method('getModules')->will( $this->returnValue( array() ) );
 
-        $oOmvn->setRawResponseMessage( $sExpectedRawResponseMessage );
-        $this->assertEquals( $sExpectedRawResponseMessage, $oOmvn->getRawResponseMessage() );
-    }
-
-    /**
-     * Test if module notification was without exceptions.
-     */
-    public function testVersionNotify()
-    {
-        $oOmvn = new oxOnlineModuleVersionNotifier();
-
-        $this->assertTrue($oOmvn->versionNotify());
-        $this->assertFalse($oOmvn->isException());
+        $oNotifier = new oxOnlineModuleVersionNotifier($oCaller, $oModuleList);
+        $oNotifier->versionNotify();
     }
 }

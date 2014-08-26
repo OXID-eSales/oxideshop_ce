@@ -30,17 +30,6 @@
  */
 class oxOnlineLicenseCheckCaller
 {
-
-    /**
-     * Online License Check service name.
-     */
-    const SERVICE_ONLINE_LICENSE_CHECK = 'OLC';
-
-    /**
-     * Online Module Version Notifier service name.
-     */
-    const SERVICE_MODULE_VERSION_NOTIFIER = 'OMVN';
-
     /**
      * Raw response message received from Online License Key Check web service.
      *
@@ -53,14 +42,7 @@ class oxOnlineLicenseCheckCaller
      *
      * @var string
      */
-    protected $_sOnlineLicenseCheckWebServiceUrl = 'https://olc.oxid-esales.com/check.php';
-
-    /**
-     * Online Module Version Notifier web service url.
-     *
-     * @var string
-     */
-    protected $_sModuleVersionNotifierWebServiceUrl = 'https://omvn.oxid-esales.com/check.php';
+    protected $_sServiceUrl = 'https://olc.oxid-esales.com/check.php';
 
     /**
      * Expected response element in the XML response message fom web service.
@@ -69,14 +51,10 @@ class oxOnlineLicenseCheckCaller
      */
     protected $_sResponseElement = 'olc';
 
-    private $_oCurl;
-
     /**
-     * Parsed response object.
-     *
-     * @var object
+     * @var oxCurl
      */
-    protected $_oResponse = null;
+    private $_oCurl;
 
     /**
      * OLC or OMVN.
@@ -86,6 +64,9 @@ class oxOnlineLicenseCheckCaller
     private $_sWebServiceUrlType;
 
 
+    /**
+     * @param oxCurl $oCurl
+     */
     public function __construct(oxCurl $oCurl = null)
     {
         if (is_null($oCurl)) {
@@ -121,38 +102,7 @@ class oxOnlineLicenseCheckCaller
      */
     public function getWebServiceUrl()
     {
-        if ($this->_sWebServiceUrlType != self::SERVICE_ONLINE_LICENSE_CHECK) {
-            $sWebServiceUrl = $this->_sModuleVersionNotifierWebServiceUrl;
-        } else {
-            $sWebServiceUrl = $this->_sOnlineLicenseCheckWebServiceUrl;
-        }
-
-        return $sWebServiceUrl;
-
-    }
-
-    /**
-     * Set response object.
-     *
-     * @param $oResponse object
-     */
-    public function setResponse( $oResponse )
-    {
-        $this->_oResponse = $oResponse;
-    }
-
-    /**
-     * Get response object.
-     *
-     * @return object
-     */
-    public function getResponse()
-    {
-        if ( is_null( $this->_oResponse ) ) {
-            $this->setResponse( new stdClass() );
-        }
-
-        return $this->_oResponse;
+        return $this->_sServiceUrl;
     }
 
     /**
@@ -160,26 +110,47 @@ class oxOnlineLicenseCheckCaller
      *
      * @param oxOnlineLicenseServerRequest $oRequest Object with request parameters
      *
-     * @param string $sWebServiceUrlType This is used to select web service url, possible options:
-     * OLC, OMVN.
      * @throws oxException
      * @return string
      */
-    public function doRequest(oxOnlineLicenseServerRequest $oRequest, $sWebServiceUrlType)
+    public function doRequest(oxOnlineLicenseServerRequest $oRequest)
     {
-        $this->_sWebServiceUrlType = $sWebServiceUrlType;
-        $sXml = $this->_generateXml($oRequest);
-        // send request to web service
+        $sRequestXml = $this->_generateXml($oRequest);
+        $sResponse = $this->_sendRequest($sRequestXml);
+
+        return $this->_formResponse($sResponse);
+    }
+
+    /**
+     * Generates Xml from passed object parameters
+     *
+     * @param object $oRequestParams Object with request parameters
+     * @return string
+     */
+    protected function _generateXml($oRequestParams)
+    {
+        $oXml = oxNew('oxSimpleXml');
+        $sXml = $oXml->objectToXml($oRequestParams, 'olcRequest');
+
+        return $sXml;
+    }
+
+    /**
+     * @param $sRequestXml
+     * @return string
+     * @throws oxException
+     */
+    protected function _sendRequest($sRequestXml)
+    {
         try {
             $oCurl = $this->_getCurl();
             $oCurl->setMethod( 'POST' );
             $oCurl->setUrl( $this->getWebServiceUrl() );
-            $oCurl->setParameters( array("xmlRequest" => $sXml) );
+            $oCurl->setParameters( array("xmlRequest" => $sRequestXml) );
             $sOutput = $oCurl->execute();
         } catch (Exception $oEx) {
             throw new oxException($this->_sWebServiceUrlType.'_ERROR_REQUEST_FAILED');
         }
-
         return $sOutput;
     }
 
@@ -188,7 +159,7 @@ class oxOnlineLicenseCheckCaller
      *
      * @throws oxException
      */
-    public function getParsedResponseMessage()
+    protected function _formResponse()
     {
         $sRawResponse = $this->getRawResponseMessage();
         $oUtilsXml = oxRegistry::get( "oxUtilsXml" );
@@ -218,20 +189,6 @@ class oxOnlineLicenseCheckCaller
         }
 
         return $oResponse;
-    }
-
-    /**
-     * Generates Xml from passed object parameters
-     *
-     * @param object $oRequestParams Object with request parameters
-     * @return string
-     */
-    protected function _generateXml($oRequestParams)
-    {
-        $oXml = oxNew('oxSimpleXml');
-        $sXml = $oXml->objectToXml($oRequestParams, 'olcRequest');
-
-        return $sXml;
     }
 
     /**

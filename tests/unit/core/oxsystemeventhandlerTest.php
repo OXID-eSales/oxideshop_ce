@@ -109,14 +109,16 @@ class Unit_Core_oxSystemEventHandlerTest extends OxidTestCase
 
         $oSystemEventHandler->onShopStart();
 
-        $sOnlineLicenseCheckTime = $this->getConfigParam('sOnlineLicenseCheckTime');
-        // We add mocked time plus white noise to config as this is first request.
-        // Without white noise current time would be equal to license check time.
-        $this->assertTrue($iCurrentTime <= $sOnlineLicenseCheckTime, "$iCurrentTime <= $sOnlineLicenseCheckTime");
+        $sCheckTimeWithWhiteNoise = $this->getConfigParam('sOnlineLicenseCheckTime');
+        $iCheckActiveTime = 24 * 60 * 60;
+        $this->assertTrue($iCurrentTime + ($iCheckActiveTime) <= $sCheckTimeWithWhiteNoise,
+            "Without white noise current time would be equal to license check time:
+            $iCurrentTime + ($iCheckActiveTime) <= $sCheckTimeWithWhiteNoise");
 
-        // Check that white noise is in four hour range.
-        $iCurrentTimeWithWhiteNoise = $iCurrentTime + (12 * 60 * 60) + (24 * 60 * 60);
-        $this->assertTrue($iCurrentTimeWithWhiteNoise > $sOnlineLicenseCheckTime, "$iCurrentTimeWithWhiteNoise > $sOnlineLicenseCheckTime");
+        $iMaximumWhiteNoiseTime = 12 * 60 * 60;
+        $iCurrentTimeWithWhiteNoise = $iCurrentTime + $iMaximumWhiteNoiseTime + $iCheckActiveTime;
+        $this->assertTrue($iCurrentTimeWithWhiteNoise > $sCheckTimeWithWhiteNoise,
+            "Check white noise. Time should be different because of white noise: $iCurrentTimeWithWhiteNoise > $sCheckTimeWithWhiteNoise");
     }
 
     public function testOnShopStartWhiteNoiseAddedToNextCheckTime()

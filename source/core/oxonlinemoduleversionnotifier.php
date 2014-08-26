@@ -35,69 +35,16 @@
  */
 class oxOnlineModuleVersionNotifier
 {
-    /**
-     * Web service protocol version.
-     *
-     * @var string
-     */
-    protected $_sProtocolversion = '1.0';
-
+    /** @var oxOnlineModuleVersionNotifierCaller  */
     private $_oCaller = null;
 
+    /** @var oxModuleList  */
     private $_oModuleList = null;
 
     function __construct( oxOnlineModuleVersionNotifierCaller $oCaller, oxModuleList $oModuleList )
     {
         $this->_oCaller = $oCaller;
         $this->_oModuleList = $oModuleList;
-    }
-
-    /**
-     * Collects only required modules information and returns as array.
-     *
-     * @return null
-     */
-    protected function _prepareModulesInformation()
-    {
-        $aPreparedModules = array();
-
-        $aModules = $this->_getModuleList();
-
-        foreach( $aModules as $oModule ) {
-
-            $oPreparedModule = new stdClass();
-            $oPreparedModule->id = $oModule->getId();
-            $oPreparedModule->version = $oModule->getInfo('version');
-
-            $oPreparedModule->activeInShops = new stdClass();
-            $oPreparedModule->activeInShops->activeInShop = array( ($oModule->isActive() ? oxRegistry::getConfig()->getShopUrl() : null) );
-
-            $aPreparedModules[] = $oPreparedModule;
-        }
-
-        return $aPreparedModules;
-    }
-
-    /**
-     * Send request message to Online Module Version Notifier web service.
-     *
-     * @return oxOnlineModuleNotifierRequest
-     */
-    protected function _formRequest()
-    {
-        // build request parameters
-        $oRequestParams = new oxOnlineModulesNotifierRequest();
-
-        $oRequestParams->modules = new stdClass();
-        $oRequestParams->modules->module = $this->_prepareModulesInformation();
-
-        $oRequestParams->edition = oxRegistry::getConfig()->getEdition();
-        $oRequestParams->version = oxRegistry::getConfig()->getVersion();
-        $oRequestParams->shopurl = oxRegistry::getConfig()->getShopUrl();
-        $oRequestParams->pversion = $this->_sProtocolversion;
-
-
-        return $oRequestParams;
     }
 
     /**
@@ -112,6 +59,55 @@ class oxOnlineModuleVersionNotifier
     }
 
     /**
+     * Collects only required modules information and returns as array.
+     *
+     * @return null
+     */
+    protected function _prepareModulesInformation()
+    {
+        $aPreparedModules = array();
+        $aModules = $this->_getModules();
+        foreach( $aModules as $oModule ) {
+
+            $oPreparedModule = new stdClass();
+            $oPreparedModule->id = $oModule->getId();
+            $oPreparedModule->version = $oModule->getInfo('version');
+
+            $oPreparedModule->activeInShops = new stdClass();
+            $oPreparedModule->activeInShops->activeInShop = array();
+            if ($oModule->isActive()) {
+                $oPreparedModule->activeInShops->activeInShop[] = oxRegistry::getConfig()->getShopUrl();
+            }
+            $aPreparedModules[] = $oPreparedModule;
+        }
+
+        return $aPreparedModules;
+    }
+
+    /**
+     * Send request message to Online Module Version Notifier web service.
+     *
+     * @return oxOnlineModuleNotifierRequest
+     */
+    protected function _formRequest()
+    {
+        $oRequestParams = new oxOnlineModulesNotifierRequest();
+
+        $oRequestParams->edition = oxRegistry::getConfig()->getEdition();
+        $oRequestParams->version = oxRegistry::getConfig()->getVersion();
+        $oRequestParams->shopurl = oxRegistry::getConfig()->getShopUrl();
+        $oRequestParams->pversion = '1.0';
+        $oRequestParams->productid = 'eShop';
+
+        $oRequestParams->modules = new stdClass();
+        $oRequestParams->modules->module = $this->_prepareModulesInformation();
+
+
+        return $oRequestParams;
+    }
+
+    /**
+     * Returns caller.
      *
      * @return oxOnlineModuleVersionNotifierCaller
      */
@@ -121,19 +117,25 @@ class oxOnlineModuleVersionNotifier
     }
 
     /**
+     * Returns shops array of modules.
+     *
      * @return array
      */
-    protected function _getModuleList()
+    protected function _getModules()
     {
-        return $this->_oModuleList->getList();
+        $aModules = $this->_oModuleList->getList();
+        ksort($aModules);
+
+        return $aModules;
     }
 
     /**
+     * Returns true if shop has modules.
+     *
      * @return bool
      */
     protected function _hasModules()
     {
-        return (is_array($this->_getModuleList()) && count($this->_getModuleList()));
+        return (is_array($this->_getModules()) && count($this->_getModules()));
     }
-
 }

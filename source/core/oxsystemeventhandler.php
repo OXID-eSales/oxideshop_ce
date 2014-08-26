@@ -111,9 +111,9 @@ class oxSystemEventHandler
     public function onShopStart()
     {
         if($this->_needToSendShopInformation()) {
-            $this->_updateInformationSentTimeStamp();
             $oOnlineLicenseCheck = $this->getOnlineLicenseCheck();
             $oOnlineLicenseCheck->validate();
+            $this->_updateNextCheckTime();
         }
     }
 
@@ -127,10 +127,7 @@ class oxSystemEventHandler
     {
         $blNeedToSend = false;
 
-        $oConfig = $this->_getConfig();
-        $oUtilsDate = $this->_getDate();
-        $sOnlineLicenseCheckTime = $oConfig->getConfigParam('sOnlineLicenseCheckTime');
-        if (($sOnlineLicenseCheckTime + $this->_getLicenseValidityTime()) < $oUtilsDate->getTime()) {
+        if ($this->_getLastCheckTime() < $this->_getCurrentTime()) {
             $blNeedToSend = true;
         }
 
@@ -138,20 +135,33 @@ class oxSystemEventHandler
     }
 
     /**
+     * Return time stamp when shop was checked last with white noise from config.
+     *
+     * @return int
+     */
+    private function _getLastCheckTime()
+    {
+        return (int) $this->_getConfig()->getConfigParam('sOnlineLicenseCheckTime');
+    }
+
+    /**
+     * Update when shop was checked last time with white noise.
+     * White noise is used to separate call time for different shop.
+     */
+    private function _updateNextCheckTime()
+    {
+        $this->_getConfig()->saveShopConfVar('arr', 'sOnlineLicenseCheckTime',
+            $this->_getCurrentTime() + $this->_getWhiteNoise() + $this->_getLicenseCheckValidityTime());
+    }
+
+    /**
      * License check is done after 24 hours from last check.
      *
      * @return int
      */
-    private function _getLicenseValidityTime()
+    private function _getLicenseCheckValidityTime()
     {
         return 24 * 60 * 60;
-    }
-
-    private function _updateInformationSentTimeStamp()
-    {
-        $oUtilsDate = $this->_getDate();
-        $sOnlineLicenseInvalidTime = $oUtilsDate->getTime() + $this->_getWhiteNoise();
-        $this->_getConfig()->setConfigParam('sOnlineLicenseCheckTime', $sOnlineLicenseInvalidTime);
     }
 
     /**
@@ -163,22 +173,30 @@ class oxSystemEventHandler
     {
         $iWhiteNoiseMinTime = 0;
         $iWhiteNoiseMaxTime = 12 * 60 * 60;
+
         return rand($iWhiteNoiseMinTime, $iWhiteNoiseMaxTime);
     }
 
     /**
+     * Return current time - time stamp.
+     *
+     * @return int
+     */
+    private function _getCurrentTime()
+    {
+        $oUtilsDate = oxRegistry::get('oxUtilsDate');
+        $iCurrentTime = $oUtilsDate->getTime();
+
+        return $iCurrentTime;
+    }
+
+    /**
+     * Return oxConfig from registry.
+     *
      * @return oxConfig
      */
     private function _getConfig()
     {
         return oxRegistry::getConfig();
-    }
-
-    /**
-     * @return oxUtilsDate
-     */
-    private function _getDate()
-    {
-        return oxRegistry::get('oxUtilsDate');
     }
 }

@@ -57,10 +57,11 @@ class Unit_Core_oxSystemEventHandlerTest extends OxidTestCase
         $oSystemEventHandler->onShopStart();
     }
 
-    public function testOnShopStartSendShopInformationByConfig()
+    public function testOnShopStartSendShopInformationNotFirstTime()
     {
         $sOnlineLicenseCheckValidityTime = 24 * 60 * 60;
-        $sOnlineLicenseInvalidTime = time() - $sOnlineLicenseCheckValidityTime - 1 * 60 * 60;
+        $sMaximumWhiteNoiseTime = 12 * 60 * 60;
+        $sOnlineLicenseInvalidTime = time() - $sOnlineLicenseCheckValidityTime - $sMaximumWhiteNoiseTime - 1 * 60 * 60;
         $this->setConfigParam('sOnlineLicenseCheckTime', $sOnlineLicenseInvalidTime);
 
         $oSystemEventHandler = new oxSystemEventHandler();
@@ -76,7 +77,7 @@ class Unit_Core_oxSystemEventHandlerTest extends OxidTestCase
         $oSystemEventHandler->onShopStart();
     }
 
-    public function testOnShopStartDoNotSendShopInformationByConfig()
+    public function testOnShopStartDoNotSendShopInformationTimeNotExpired()
     {
         $this->setConfigParam('sOnlineLicenseCheckTime', time());
 
@@ -93,7 +94,7 @@ class Unit_Core_oxSystemEventHandlerTest extends OxidTestCase
         $oSystemEventHandler->onShopStart();
     }
 
-    public function testOnShopStartLicenseCheckTimeStampUpdated()
+    public function testOnShopStartLicenseCheckNextSendTimeUpdated()
     {
         $iCurrentTime = 1400000000;
         $this->_prepareCurrentTime($iCurrentTime);
@@ -112,12 +113,13 @@ class Unit_Core_oxSystemEventHandlerTest extends OxidTestCase
         // We add mocked time plus white noise to config as this is first request.
         // Without white noise current time would be equal to license check time.
         $this->assertTrue($iCurrentTime <= $sOnlineLicenseCheckTime, "$iCurrentTime <= $sOnlineLicenseCheckTime");
+
         // Check that white noise is in four hour range.
-        $iCurrentTimeWithWhiteNoise = $iCurrentTime + 12 * 60 * 60;
+        $iCurrentTimeWithWhiteNoise = $iCurrentTime + (12 * 60 * 60) + (24 * 60 * 60);
         $this->assertTrue($iCurrentTimeWithWhiteNoise > $sOnlineLicenseCheckTime, "$iCurrentTimeWithWhiteNoise > $sOnlineLicenseCheckTime");
     }
 
-    public function testOnShopStartWhiteNoiseAddedToLastCheckTime()
+    public function testOnShopStartWhiteNoiseAddedToNextCheckTime()
     {
         $iCurrentTime = 1400000000;
         $this->_prepareCurrentTime($iCurrentTime);

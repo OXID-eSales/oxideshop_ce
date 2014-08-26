@@ -28,7 +28,7 @@ class Unit_Core_oxOnlineModuleVersionNotifierTest extends OxidTestCase
 {
     public function testVersionNotifyWithoutModulesInShop()
     {
-        $oCaller = $this->getMock('oxOnlineModuleVersionNotifierCaller', array('doRequest'));
+        $oCaller = $this->getMock('oxOnlineModuleVersionNotifierCaller', array('doRequest'), array(),'',false);
         $oCaller->expects($this->never())->method('doRequest');
 
         $oModuleList = $this->getMock('oxModuleList', array('getList'));
@@ -40,7 +40,7 @@ class Unit_Core_oxOnlineModuleVersionNotifierTest extends OxidTestCase
 
     public function testVersionNotifyWithModulesInShop()
     {
-        $oCaller = $this->getMock('oxOnlineModuleVersionNotifierCaller', array('doRequest'));
+        $oCaller = $this->getMock('oxOnlineModuleVersionNotifierCaller', array('doRequest'), array(),'',false);
         $oCaller->expects($this->any())->method('doRequest');
 
         $oModule = $this->getMock('oxModule');

@@ -86,7 +86,7 @@ class Unit_Core_oxOnlineLicenseCallerTest extends OxidTestCase
         $oOnlineLicenseCheckRequest->pversion = '_testPVersion';
         $oOnlineLicenseCheckRequest->productid = '_testProductId';
 
-        $oOnlineLicenseCaller = new oxOnlineLicenseCaller($oCurl);
+        $oOnlineLicenseCaller = new oxOnlineLicenseCheckCaller($oCurl);
         $oOnlineLicenseCaller->doRequest($oOnlineLicenseCheckRequest, $sWebServiceUrlType);
 
         $this->assertSame($sWebServiceUrl, $oCurl->getUrl());
@@ -130,7 +130,7 @@ class Unit_Core_oxOnlineLicenseCallerTest extends OxidTestCase
         $sXml.= '<revision/><edition/><version/><shopurl/><pversion/><productid/>';
         $sXml.= '</olcRequest>'.PHP_EOL;
 
-        $oOnlineLicenseCaller = new oxOnlineLicenseCaller($oCurl);
+        $oOnlineLicenseCaller = new oxOnlineLicenseCheckCaller($oCurl);
         $oOnlineLicenseCaller->doRequest($oOnlineLicenseCheckRequest, 'OLC');
 
         $this->assertEquals(array('xmlRequest' => $sXml), $oCurl->getParameters());
@@ -141,7 +141,7 @@ class Unit_Core_oxOnlineLicenseCallerTest extends OxidTestCase
         $oCurl = $this->getMock('oxCurl', array('execute'));
         $oCurl->expects($this->any())->method('execute')->will($this->throwException(new Exception()));
         $oOnlineLicenseCheckRequest = new oxOnlineModulesNotifierRequest();
-        $oOnlineLicenseCaller = new oxOnlineLicenseCaller($oCurl);
+        $oOnlineLicenseCaller = new oxOnlineLicenseCheckCaller($oCurl);
 
         $this->setExpectedException('oxException', oxRegistry::getLang()->translateString('OMVN_ERROR_REQUEST_FAILED'));
         $oOnlineLicenseCaller->doRequest($oOnlineLicenseCheckRequest, 'OMVN');
@@ -160,7 +160,7 @@ class Unit_Core_oxOnlineLicenseCallerTest extends OxidTestCase
         $sRawResponseMessage .= '<message>' . $sExpectedResponseStatusMessage . '</message>';
         $sRawResponseMessage .= '</olc>';
 
-        $oOnlineLicenseCaller = new oxOnlineLicenseCaller();
+        $oOnlineLicenseCaller = new oxOnlineLicenseCheckCaller();
         $oOnlineLicenseCaller->setRawResponseMessage($sRawResponseMessage);
 
         $oResponse = $oOnlineLicenseCaller->getParsedResponseMessage();
@@ -174,7 +174,7 @@ class Unit_Core_oxOnlineLicenseCallerTest extends OxidTestCase
      */
     public function testGetResponseExceptionNoParameters()
     {
-        $oOnlineLicenseCaller = new oxOnlineLicenseCaller();
+        $oOnlineLicenseCaller = new oxOnlineLicenseCheckCaller();
 
         $sRawResponseMessage = '<?xml version="1.0" encoding="utf-8"?>';
         $sRawResponseMessage .= '<olc>';
@@ -191,7 +191,7 @@ class Unit_Core_oxOnlineLicenseCallerTest extends OxidTestCase
      */
     public function testGetResponseExceptionWhenUnableToLoad()
     {
-        $oOnlineLicenseCaller = new oxOnlineLicenseCaller();
+        $oOnlineLicenseCaller = new oxOnlineLicenseCheckCaller();
 
         $sRawResponseMessage = '<?xml versio';
         $sRawResponseMessage .= '<olc>';
@@ -208,7 +208,7 @@ class Unit_Core_oxOnlineLicenseCallerTest extends OxidTestCase
      */
     public function testGetResponseExceptionResponseUnexpected()
     {
-        $oOnlineLicenseCaller = new oxOnlineLicenseCaller();
+        $oOnlineLicenseCaller = new oxOnlineLicenseCheckCaller();
 
         $sRawResponseMessage = '<?xml version="1.0" encoding="utf-8"?>';
         $sRawResponseMessage .= '<anything>';

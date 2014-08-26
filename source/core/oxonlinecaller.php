@@ -55,7 +55,7 @@ class oxOnlineCaller
     /**
      * Resets config parameter iFailedOnlineCallsCount if it's bigger than 0.
      *
-     * @param $iFailedOnlineCallsCount
+     * @param int $iFailedOnlineCallsCount
      */
     private function _resetFailedCallsCount($iFailedOnlineCallsCount)
     {
@@ -67,8 +67,8 @@ class oxOnlineCaller
     /**
      * Executes CURL call with given parameters.
      *
-     * @param $sUrl
-     * @param $sXml
+     * @param string $sUrl
+     * @param string $sXml
      *
      * @return string
      */
@@ -84,7 +84,7 @@ class oxOnlineCaller
     }
 
     /**
-     * @param $iFailedOnlineCallsCount
+     * @param int $iFailedOnlineCallsCount
      */
     private function _increaseFailedCallsCount($iFailedOnlineCallsCount)
     {

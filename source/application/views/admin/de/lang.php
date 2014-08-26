@@ -793,6 +793,8 @@ $aLang = array(
 'MODULE_ENTERMODULEEXTENDSCLASSES'                         => 'Klassen, die erweitert werden',
 'MODULE_EXTENSIONISDELETED'                                => 'Es wurden ungültige Module erkannt.',
 'MODULE_DELETEEXTENSION'                                   => 'Möchten Sie alle registrierten Modulinformationen und gespeicherten Konfigurationseinstellungen löschen?',
+'MODULE_PASSWORDS_DO_NOT_MATCH'                            => 'Passwörter stimmen nicht überein!',
+'MODULE_REPEAT_PASSWORD'                                   => 'Passwort bestätigen',
 'LANGUAGE_ERRORGENERATEVIEWS'                              => "Bitte aktualisieren Sie die Datenbank-Views unter Service -> Tools",
 'LANGUAGE_ACTIVE'                                          => 'Im Frontend aktiv',
 'LANGUAGE_LIST_MENUITEM'                                   => 'Stammdaten',
@@ -1383,6 +1385,7 @@ $aLang = array(
 'SYSREQ_MODULE_BLOCKS_MODNAME'                             => 'Modulname',
 'SYSREQ_MODULE_BLOCKS_BLOCKNAME'                           => 'Blockname',
 'SYSREQ_MODULE_BLOCKS_TPLFILE'                             => 'Template Dateiname',
+'SYSREQ_MAGIC_QUOTES_GPC'                                  => 'magic_quotes_gpc muss ausgeschaltet sein',
 'TOOLS_LIST_TITLE'                                         => '[OXID Tools]',
 'TOOLS_LIST_SECCESS'                                       => 'Backup data erfolgreich gemailt.',
 'TOOLS_LIST_ACTIONEND'                                     => 'Aktion beendet',
@@ -2124,6 +2127,7 @@ $aLang = array(
 'OXDIAG_SERVERINFO_COMPONENT'       =>    'Komponente',
 'OXDIAG_CHKVERSION'                 =>    'Oxchkversion-Ausgabe',
 'OXDIAG_CHKVERS_FULLREP'            =>    'Vollst&auml;ndige Auswertung von <i>Oxchkversion</i> durchf&uuml;hlren',
+'SUBJECT_UNABLE_TO_SEND_VIA_CURL'  =>    '[tr]OXID eShop was unable to send servers information via CURL',
 
 //final note
 'OXDIAG_FINALNOTE'                  =>    'Ende der Auswertung',

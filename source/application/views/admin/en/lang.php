@@ -795,6 +795,8 @@ $aLang = array(
 'MODULE_ENTERMODULEEXTENDSCLASSES'                         => 'Extended classes',
 'MODULE_EXTENSIONISDELETED'                                => 'Invalid modules were detected.',
 'MODULE_DELETEEXTENSION'                                   => 'Do you want to delete all registered module information and saved configurations?',
+'MODULE_PASSWORDS_DO_NOT_MATCH'                            => 'Passwords do not match!',
+'MODULE_REPEAT_PASSWORD'                                   => 'Confirm password',
 'LANGUAGE_ERRORGENERATEVIEWS'                              => "Please don't forget to update the database views under Service->Tools",
 'LANGUAGE_ACTIVE'                                          => 'Active in frontend',
 'LANGUAGE_LIST_MENUITEM'                                   => 'Master Settings',
@@ -1385,6 +1387,7 @@ $aLang = array(
 'SYSREQ_MODULE_BLOCKS_MODNAME'                             => 'Module name',
 'SYSREQ_MODULE_BLOCKS_BLOCKNAME'                           => 'Block name',
 'SYSREQ_MODULE_BLOCKS_TPLFILE'                             => 'Template file',
+'SYSREQ_MAGIC_QUOTES_GPC'                                  => 'magic_quotes_gpc must be off',
 'TOOLS_LIST_TITLE'                                         => '[OXID Tools]',
 'TOOLS_LIST_SECCESS'                                       => 'Backup data mailed successfully.',
 'TOOLS_LIST_ACTIONEND'                                     => 'Action completed',
@@ -2122,6 +2125,7 @@ $aLang = array(
 'OXDIAG_SERVERINFO_COMPONENT'      =>    'Component',
 'OXDIAG_CHKVERSION'                =>    'Output of Version check',
 'OXDIAG_CHKVERS_FULLREP'           =>    'Run Version check for full report',
+'SUBJECT_UNABLE_TO_SEND_VIA_CURL'  =>    '[tr]OXID eShop was unable to send servers information via CURL',
 
 //final note
 'OXDIAG_FINALNOTE'                 =>    'End of analysis.',

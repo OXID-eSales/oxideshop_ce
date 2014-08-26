@@ -110,7 +110,13 @@ class oxSystemEventHandler
      */
     public function onShopStart()
     {
-        if($this->_needToSendShopInformation()) {
+        $this->_validateOffline();
+        $this->_sendShopInformation();
+    }
+
+    protected function _sendShopInformation()
+    {
+        if ($this->_needToSendShopInformation()) {
             $oOnlineLicenseCheck = $this->getOnlineLicenseCheck();
             $oOnlineLicenseCheck->validate();
             $this->_updateNextCheckTime();
@@ -191,11 +197,28 @@ class oxSystemEventHandler
     }
 
     /**
+     * Check if shop valid.
+     * Redirect offline if not valid.
+     */
+    private function _validateOffline()
+    {
+    }
+
+    /**
+     * Performance - run these checks only each 5 times statistically.
+     *
+     * @return bool
+     */
+    private function _needValidateShop()
+    {
+    }
+
+    /**
      * Return oxConfig from registry.
      *
      * @return oxConfig
      */
-    private function _getConfig()
+    protected function _getConfig()
     {
         return oxRegistry::getConfig();
     }

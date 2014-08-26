@@ -28,6 +28,15 @@ require_once realpath( "." ).'/unit/test_config.inc.php';
  */
 class Unit_Core_oxSystemEventHandlerTest extends OxidTestCase
 {
+    /**
+     * @return null|void
+     */
+    public function setUp()
+    {
+        parent::setUp();
+        $this->getConfig()->saveShopConfVar('arr', 'sOnlineLicenseCheckTime', null);
+    }
+
     public function testOnAdminLoginOnlineModuleVersionNotifier()
     {
         $oSystemEventHandler = new oxSystemEventHandler();

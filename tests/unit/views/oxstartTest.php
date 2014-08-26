@@ -23,16 +23,6 @@
 require_once realpath( "." ).'/unit/OxidTestCase.php';
 require_once realpath( "." ).'/unit/test_config.inc.php';
 
-class oxUtilsRedirect extends oxUtils
-{
-    public $sRedirectUrl = null;
-
-    public function redirect($sUrl, $blAddRedirectParam = true, $iHeaderCode = 301 )
-    {
-        $this->sRedirectUrl = $sUrl;
-    }
-}
-
 /**
  * Testing oxstart class
  */
@@ -84,7 +74,6 @@ class Unit_Views_oxstartTest extends OxidTestCase
         oxTestModules::addModuleObject('oxUtils', $oUtils);
         $this->assertEquals( null, $oStart->pageClose() );
     }
-
 
     public function testProcessingOfServerNodes()
     {

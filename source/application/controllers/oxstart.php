@@ -34,8 +34,9 @@ class oxStart extends oxUBase
     {
         $this->pageStart();
 
-        if ( 'oxstart' == oxRegistry::getConfig()->getRequestParameter( 'cl' )  || $this->isAdmin() )
+        if ( 'oxstart' == oxRegistry::getConfig()->getRequestParameter( 'cl' )  || $this->isAdmin() ) {
             return;
+        }
 
         $oProcessor = $this->_getServerProcessor();
         $oProcessor->process();
@@ -109,17 +110,6 @@ class oxStart extends oxUBase
     public function getErrorNumber()
     {
         return oxRegistry::getConfig()->getRequestParameter( 'errornr' );
-    }
-
-    /**
-     * Performance - run these checks only each 5 times statistically.
-     *
-     * @return bool
-     */
-    private function _needValidateShop()
-    {
-        $oConfig = $this->getConfig();
-        return !$oConfig->isProductiveMode() || !( ( oxRegistry::get( "oxUtilsDate" )->getTime() ) % 5 ) || $oConfig->getConfigParam( 'blShopStopped' );
     }
 
     /**

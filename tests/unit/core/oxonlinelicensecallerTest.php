@@ -21,13 +21,13 @@
  */
 
 /**
- * Class Unit_Core_oxOnlineLicenseCallerTest
+ * Class Unit_Core_oxOnlineLicenseCheckCallerTest
  *
- * @covers oxOnlineLicenseCaller
+ * @covers oxOnlineLicenseCheckCaller
  * @covers oxOnlineLicenseCheckRequest
  * @covers oxOnlineModulesNotifierRequest
  */
-class Unit_Core_oxOnlineLicenseCallerTest extends OxidTestCase
+class Unit_Core_oxOnlineLicenseCheckCallerTest extends OxidTestCase
 {
     public function providerDoRequestWithAllSetXmlValues()
     {

@@ -24,14 +24,15 @@ require_once realpath( "." ) . '/unit/OxidTestCase.php';
 require_once realpath( "." ) . '/unit/test_config.inc.php';
 require_once getShopBasePath() . '/setup/oxsetup.php';
 
-class Unit_Core_oxonlinemoduleversionnotifierTest extends OxidTestCase
+class Unit_Core_oxOnlineModuleVersionNotifierTest extends OxidTestCase
 {
     public function testVersionNotifyWithoutModulesInShop()
     {
-        $oCaller = $this->getMock('oxOnlineModuleVersionNotifierCaller');
+        $oCaller = $this->getMock('oxOnlineModuleVersionNotifierCaller', array('doRequest'));
         $oCaller->expects($this->never())->method('doRequest');
-        $oModuleList = $this->getMock('oxModuleList');
-        $oModuleList->expects($this->any())->method('getModules')->will( $this->returnValue( '' ) );
+
+        $oModuleList = $this->getMock('oxModuleList', array('getList'));
+        $oModuleList->expects($this->any())->method('getList')->will( $this->returnValue( array() ) );
 
         $oNotifier = new oxOnlineModuleVersionNotifier($oCaller, $oModuleList);
         $oNotifier->versionNotify();
@@ -39,11 +40,13 @@ class Unit_Core_oxonlinemoduleversionnotifierTest extends OxidTestCase
 
     public function testVersionNotifyWithModulesInShop()
     {
-        $oCaller = $this->getMock('oxOnlineModuleVersionNotifierCaller');
+        $oCaller = $this->getMock('oxOnlineModuleVersionNotifierCaller', array('doRequest'));
         $oCaller->expects($this->any())->method('doRequest');
 
-        $oModuleList = $this->getMock('oxModuleList');
-        $oModuleList->expects($this->any())->method('getModules')->will( $this->returnValue( array() ) );
+        $oModule = $this->getMock('oxModule');
+
+        $oModuleList = $this->getMock('oxModuleList', array('getList') );
+        $oModuleList->expects($this->any())->method('getList')->will( $this->returnValue( array($oModule) ) );
 
         $oNotifier = new oxOnlineModuleVersionNotifier($oCaller, $oModuleList);
         $oNotifier->versionNotify();

@@ -10,6 +10,8 @@
  */
 class oxOnlineCaller
 {
+    const ALLOWED_HTTP_FAILED_CALLS_COUNT = 4;
+
     /**
      * @var oxCurl
      */
@@ -24,40 +26,30 @@ class oxOnlineCaller
     }
 
     /**
-     * @param $sUrl
-     * @param $aCurlParameters
+     * Makes curl call with given parameters to given url.
      *
-     * @return null|string
+     * @param string $sUrl
+     * @param array $aCurlParameters
      *
-     * @throws oxException
+     * @return null|string In XML format.
+     *
+     * @throws oxException When calls count is bigger than allowed calls count.
      */
     public function call($sUrl, $aCurlParameters)
     {
-        $sOutput = null;
-        $iFailedOnlineCallsCount = oxRegistry::getConfig()->getConfigParam('iFailedOnlineCallsCount');
+        $sOutputXml = null;
+        $iFailedCallsCount = oxRegistry::getConfig()->getConfigParam('iFailedOnlineCallsCount');
         try {
-            $oCurl = $this->_getCurl();
-            $oCurl->setMethod('POST');
-            $oCurl->setUrl($sUrl);
-            $oCurl->setParameters($aCurlParameters);
-            $sOutput = $oCurl->execute();
-            $this->_resetFailedCallsCount($iFailedOnlineCallsCount);
+            $sOutputXml = $this->_executeCurlCall($sUrl, $aCurlParameters);
+            $this->_resetFailedCallsCount($iFailedCallsCount);
         } catch (Exception $oEx) {
-            if ($iFailedOnlineCallsCount >= 5) {
+            if ($iFailedCallsCount > self::ALLOWED_HTTP_FAILED_CALLS_COUNT) {
                 throw new oxException('OLC_ERROR_REQUEST_FAILED');
             }
-            oxRegistry::getConfig()->setConfigParam('iFailedOnlineCallsCount', ++$iFailedOnlineCallsCount);
+            $this->_increaseFailedCallsCount($iFailedCallsCount);
         }
 
-        return $sOutput;
-    }
-
-    /**
-     * @return oxCurl
-     */
-    protected function _getCurl()
-    {
-        return $this->_oCurl;
+        return $sOutputXml;
     }
 
     /**
@@ -70,5 +62,29 @@ class oxOnlineCaller
         if ($iFailedOnlineCallsCount > 0) {
             oxRegistry::getConfig()->setConfigParam('iFailedOnlineCallsCount', 0);
         }
+    }
+
+    /**
+     * @param $sUrl
+     * @param $aCurlParameters
+     * @return string
+     */
+    private function _executeCurlCall($sUrl, $aCurlParameters)
+    {
+        $oCurl = $this->_oCurl;
+        $oCurl->setMethod('POST');
+        $oCurl->setUrl($sUrl);
+        $oCurl->setParameters($aCurlParameters);
+        $sOutput = $oCurl->execute();
+
+        return $sOutput;
+    }
+
+    /**
+     * @param $iFailedOnlineCallsCount
+     */
+    private function _increaseFailedCallsCount($iFailedOnlineCallsCount)
+    {
+        oxRegistry::getConfig()->setConfigParam('iFailedOnlineCallsCount', ++$iFailedOnlineCallsCount);
     }
 }

@@ -102,13 +102,13 @@ class oxOnlineModuleVersionNotifier
 
     /**
      * Perform Online Module version Notification. Returns result
-     *
-     * @return bool
      */
     public function versionNotify()
     {
-        $oOMNCaller = $this->_getOnlineModuleNotifierCaller();
-        $oOMNCaller->doRequest($this->_formRequest());
+        if ($this->_hasModules()) {
+            $oOMNCaller = $this->_getOnlineModuleNotifierCaller();
+            $oOMNCaller->doRequest($this->_formRequest());
+        }
     }
 
     /**
@@ -126,6 +126,14 @@ class oxOnlineModuleVersionNotifier
     protected function _getModuleList()
     {
         return $this->_oModuleList->getList();
+    }
+
+    /**
+     * @return bool
+     */
+    protected function _hasModules()
+    {
+        return (is_array($this->_getModuleList()) && count($this->_getModuleList()));
     }
 
 }

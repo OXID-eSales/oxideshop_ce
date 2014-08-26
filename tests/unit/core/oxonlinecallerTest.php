@@ -32,9 +32,8 @@ class Unit_Core_oxoOnlineCallerTest extends OxidTestCase
         $oCurl = $this->_getMockedCurl();
         $oCaller = new oxOnlineCaller($oCurl);
         $sUrl = 'http://oxid-esales.com';
-        $aCurlParameters = array('xmlRequest' => '_testXml');
 
-        $this->assertSame('_testResult', $oCaller->call($sUrl, $aCurlParameters));
+        $this->assertSame('_testResult', $oCaller->call($sUrl, '_testXml'));
         $this->assertSame($sUrl, $oCurl->getUrl());
         $this->assertSame(array('xmlRequest' => '_testXml'), $oCurl->getParameters('xmlRequest'));
     }
@@ -43,10 +42,9 @@ class Unit_Core_oxoOnlineCallerTest extends OxidTestCase
     {
         $oCaller = new oxOnlineCaller($this->_getMockedCurl());
         $sUrl = 'http://oxid-esales.com';
-        $aCurlParameters = array('xmlRequest' => '_testXml');
         oxRegistry::getConfig()->setConfigParam('iFailedOnlineCallsCount', 4);
 
-        $this->assertSame('_testResult', $oCaller->call($sUrl, $aCurlParameters));
+        $this->assertSame('_testResult', $oCaller->call($sUrl, '_testXml'));
         $this->assertSame(0, oxRegistry::getConfig()->getConfigParam('iFailedOnlineCallsCount'));
     }
 
@@ -54,10 +52,9 @@ class Unit_Core_oxoOnlineCallerTest extends OxidTestCase
     {
         $oCaller = new oxOnlineCaller($this->_getMockedCurlWhichThrowsException());
         $sUrl = 'http://oxid-esales.com';
-        $aCurlParameters = array('xmlRequest' => '_testXml');
         oxRegistry::getConfig()->setConfigParam('iFailedOnlineCallsCount', 4);
 
-        $this->assertNull($oCaller->call($sUrl, $aCurlParameters));
+        $this->assertNull($oCaller->call($sUrl, '_testXml'));
         $this->assertSame(5, oxRegistry::getConfig()->getConfigParam('iFailedOnlineCallsCount'));
     }
 
@@ -65,11 +62,10 @@ class Unit_Core_oxoOnlineCallerTest extends OxidTestCase
     {
         $oCaller = new oxOnlineCaller($this->_getMockedCurlWhichThrowsException());
         $sUrl = 'http://oxid-esales.com';
-        $aCurlParameters = array('xmlRequest' => '_testXml');
         oxRegistry::getConfig()->setConfigParam('iFailedOnlineCallsCount', 5);
 
         $this->setExpectedException('oxException', oxRegistry::getLang()->translateString( 'OLC_ERROR_REQUEST_FAILED' ));
-        $oCaller->call($sUrl, $aCurlParameters);
+        $oCaller->call($sUrl, '_testXml');
     }
 
     /**

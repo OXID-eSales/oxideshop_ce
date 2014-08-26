@@ -39,6 +39,9 @@ class oxStart extends oxUBase
 
         $oProcessor = $this->_getServerProcessor();
         $oProcessor->process();
+
+        $oSystemEventHandler = $this->_getSystemEventHandler();
+        $oSystemEventHandler->onShopStart();
     }
 
     /**
@@ -109,6 +112,17 @@ class oxStart extends oxUBase
     }
 
     /**
+     * Performance - run these checks only each 5 times statistically.
+     *
+     * @return bool
+     */
+    private function _needValidateShop()
+    {
+        $oConfig = $this->getConfig();
+        return !$oConfig->isProductiveMode() || !( ( oxRegistry::get( "oxUtilsDate" )->getTime() ) % 5 ) || $oConfig->getConfigParam( 'blShopStopped' );
+    }
+
+    /**
      * @return oxServerProcessor
      */
     protected function _getServerProcessor()
@@ -118,14 +132,11 @@ class oxStart extends oxUBase
     }
 
     /**
-     * Performance - run these checks only each 5 times statistically.
-     *
-     * @return bool
+     * @return oxSystemEventHandler
      */
-    private function _needValidateShop()
+    protected function _getSystemEventHandler()
     {
-        $oConfig = $this->getConfig();
-        return !$oConfig->isProductiveMode() || !( ( oxRegistry::get( "oxUtilsDate" )->getTime() ) % 5 ) || $oConfig->getConfigParam( 'blShopStopped' );
+        return oxNew('oxSystemEventHandler');
     }
 
 }

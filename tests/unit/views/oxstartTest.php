@@ -98,4 +98,20 @@ class Unit_Views_oxstartTest extends OxidTestCase
 
         $oStart->appInit();
     }
+
+    public function testAppInitOnShopStartEventCalled()
+    {
+        $oSystemEventHandler = $this->getMock('oxSystemEventHandler');
+        $oSystemEventHandler->expects($this->once())->method('onShopStart')->will($this->returnValue(null));
+
+        $oServerProcessor = $this->getMock('oxServerProcessor');
+        $oServerProcessor->expects($this->any())->method('process')->will($this->returnValue(null));
+
+        $oStart = $this->getMock('oxStart', array('_getSystemEventHandler', '_getServerProcessor', '_needValidateShop'));
+        $oStart->expects($this->any())->method('_getSystemEventHandler')->will($this->returnValue($oSystemEventHandler));
+        $oStart->expects($this->any())->method('_getServerProcessor')->will($this->returnValue($oServerProcessor));
+        $oStart->expects($this->any())->method('_needValidateShop')->will($this->returnValue(false));
+
+        $oStart->appInit();
+    }
 }

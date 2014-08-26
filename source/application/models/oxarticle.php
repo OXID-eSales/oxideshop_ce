@@ -3310,9 +3310,6 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
                     " order by $sArticleTable.oxsort";
                 $oVariants->selectString( $sSelect );
 
-
-                $oVariants->selectString( $sSelect );
-
                 //if this is multidimensional variants, make additional processing
                 if ( $myConfig->getConfigParam( 'blUseMultidimensionVariants' ) ) {
                     $oMdVariants = oxNew( "oxVariantHandler" );

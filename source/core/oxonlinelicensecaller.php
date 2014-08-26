@@ -21,14 +21,14 @@
  */
 
 /**
- * Class oxOnlineLicenseCaller
+ * Class oxOnlineLicenseCheckCaller
  *
  * @internal Do not make a module extension for this class.
  * @see http://www.oxid-forge.com/do_not_extend_classes_list/
  *
  * @ignore This class will not be included in documentation.
  */
-class oxOnlineLicenseCaller
+class oxOnlineLicenseCheckCaller
 {
 
     /**

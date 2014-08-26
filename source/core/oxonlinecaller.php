@@ -29,18 +29,18 @@ class oxOnlineCaller
      * Makes curl call with given parameters to given url.
      *
      * @param string $sUrl
-     * @param array $aCurlParameters
+     * @param string $sXml
      *
      * @return null|string In XML format.
      *
      * @throws oxException When calls count is bigger than allowed calls count.
      */
-    public function call($sUrl, $aCurlParameters)
+    public function call($sUrl, $sXml)
     {
         $sOutputXml = null;
         $iFailedCallsCount = oxRegistry::getConfig()->getConfigParam('iFailedOnlineCallsCount');
         try {
-            $sOutputXml = $this->_executeCurlCall($sUrl, $aCurlParameters);
+            $sOutputXml = $this->_executeCurlCall($sUrl, $sXml);
             $this->_resetFailedCallsCount($iFailedCallsCount);
         } catch (Exception $oEx) {
             if ($iFailedCallsCount > self::ALLOWED_HTTP_FAILED_CALLS_COUNT) {
@@ -65,16 +65,19 @@ class oxOnlineCaller
     }
 
     /**
+     * Executes CURL call with given parameters.
+     *
      * @param $sUrl
-     * @param $aCurlParameters
+     * @param $sXml
+     *
      * @return string
      */
-    private function _executeCurlCall($sUrl, $aCurlParameters)
+    private function _executeCurlCall($sUrl, $sXml)
     {
         $oCurl = $this->_oCurl;
         $oCurl->setMethod('POST');
         $oCurl->setUrl($sUrl);
-        $oCurl->setParameters($aCurlParameters);
+        $oCurl->setParameters(array('xmlRequest' => $sXml));
         $sOutput = $oCurl->execute();
 
         return $sOutput;

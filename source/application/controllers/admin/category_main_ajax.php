@@ -192,6 +192,7 @@ class category_main_ajax extends ajaxListComponent
         if ($sProdIds) {
             $sO2CView = $this->_getViewName('oxobject2category');
             $sSqlShopFilter = "";
+            $sSqlWhereShopFilter = "";
             $sQ = "update oxobject2category set oxtime = 0 where oxid in (
                       select _tmp.oxid from (
                           select oxobject2category.oxid from (
@@ -200,6 +201,7 @@ class category_main_ajax extends ajaxListComponent
                           ) as _subtmp
                           left join oxobject2category on oxobject2category.oxtime = _subtmp.oxtime
                            and oxobject2category.oxobjectid = _subtmp.oxobjectid
+                           {$sSqlWhereShopFilter}
                       ) as _tmp
                    ) {$sSqlShopFilter}";
 

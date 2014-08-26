@@ -163,7 +163,7 @@ class Unit_Core_oxOnlineLicenseCheckCallerTest extends OxidTestCase
         $oOnlineLicenseCaller = new oxOnlineLicenseCheckCaller();
         $oOnlineLicenseCaller->setRawResponseMessage($sRawResponseMessage);
 
-        $oResponse = $oOnlineLicenseCaller->getParsedResponseMessage();
+        $oResponse = $oOnlineLicenseCaller->_formResponse();
 
         $this->assertEquals( $sExpectedResponseStatusCode, $oResponse->code );
         $this->assertEquals( $sExpectedResponseStatusMessage, $oResponse->message );
@@ -183,7 +183,7 @@ class Unit_Core_oxOnlineLicenseCheckCallerTest extends OxidTestCase
         $oOnlineLicenseCaller->setRawResponseMessage( $sRawResponseMessage );
 
         $this->setExpectedException( 'oxException', oxRegistry::getLang()->translateString( 'OLC_ERROR_RESPONSE_NOT_VALID' ) );
-        $oOnlineLicenseCaller->getParsedResponseMessage();
+        $oOnlineLicenseCaller->_formResponse();
     }
 
     /**
@@ -200,7 +200,7 @@ class Unit_Core_oxOnlineLicenseCheckCallerTest extends OxidTestCase
         $oOnlineLicenseCaller->setRawResponseMessage( $sRawResponseMessage );
 
         $this->setExpectedException( 'oxException', oxRegistry::getLang()->translateString( 'OLC_ERROR_RESPONSE_NOT_VALID' ) );
-        $oOnlineLicenseCaller->getParsedResponseMessage();
+        $oOnlineLicenseCaller->_formResponse();
     }
 
     /**
@@ -217,7 +217,7 @@ class Unit_Core_oxOnlineLicenseCheckCallerTest extends OxidTestCase
         $oOnlineLicenseCaller->setRawResponseMessage( $sRawResponseMessage );
 
         $this->setExpectedException( 'oxException', oxRegistry::getLang()->translateString( 'OLC_ERROR_RESPONSE_UNEXPECTED' ) );
-        $oOnlineLicenseCaller->getParsedResponseMessage();
+        $oOnlineLicenseCaller->_formResponse();
     }
 
     /**

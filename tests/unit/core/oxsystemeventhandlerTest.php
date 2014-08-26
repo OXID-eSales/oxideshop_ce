@@ -30,7 +30,7 @@ require_once realpath( "." ).'/unit/test_config.inc.php';
  */
 class Unit_Core_oxSystemEventHandlerTest extends OxidTestCase
 {
-    public function testOnAdminLoginOMVN()
+    public function testOnAdminLoginOnlineModuleVersionNotifier()
     {
         $oSystemEventHandler = new oxSystemEventHandler();
 

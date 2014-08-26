@@ -55,7 +55,9 @@ class Shop_License extends Shop_Config
     {
         $myConfig   = $this->getConfig();
         if ($myConfig->isDemoShop()) {
-            throw oxNew( "oxSystemComponentException", "license" );
+            /** @var oxSystemComponentException $oSystemComponentException */
+            $oSystemComponentException = oxNew( "oxSystemComponentException", "license" );
+            throw $oSystemComponentException;
         }
 
         parent::render();

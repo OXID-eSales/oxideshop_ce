@@ -68,6 +68,7 @@ class oxOnlineModuleVersionNotifierCaller
      */
     public function doRequest( $oRequest )
     {
+        /** @var oxSimpleXml $oXml */
         $oXml = oxNew('oxSimpleXml');
         $sXml = $oXml->objectToXml($oRequest, 'omvnRequest');
 

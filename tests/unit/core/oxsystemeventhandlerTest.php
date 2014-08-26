@@ -24,8 +24,6 @@ require_once realpath( "." ).'/unit/OxidTestCase.php';
 require_once realpath( "." ).'/unit/test_config.inc.php';
 
 /**
- * Testing oxAccessRightException class.
- *
  * @covers oxSystemEventHandler
  */
 class Unit_Core_oxSystemEventHandlerTest extends OxidTestCase

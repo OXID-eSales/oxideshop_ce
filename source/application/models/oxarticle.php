@@ -4439,26 +4439,30 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      */
     protected function _onChangeResetCounts( $sOxid, $sVendorId = null, $sManufacturerId = null )
     {
+        $aCategoryIds = $this->getCategoryIds();
+        $blClearCacheNow = $sVendorId == null;
 
+
+        /** @var oxUtilsCount $myUtilsCount */
         $myUtilsCount = oxRegistry::get("oxUtilsCount");
 
-        if ( $sVendorId ) {
-            $myUtilsCount->resetVendorArticleCount( $sVendorId );
+        if ($sVendorId) {
+            $blClearCacheNow = $sManufacturerId == null;
+            $myUtilsCount->resetVendorArticleCount($sVendorId, $blClearCacheNow);
         }
 
-        if ( $sManufacturerId ) {
-            $myUtilsCount->resetManufacturerArticleCount( $sManufacturerId );
+        if ($sManufacturerId) {
+            $blClearCacheNow = count($aCategoryIds) == 0;
+            $myUtilsCount->resetManufacturerArticleCount($sManufacturerId, $blClearCacheNow);
         }
 
         //also reseting category counts
-        $oDb = oxDb::getDb();
-        $sQ = "select distinct oxcatnid from oxobject2category where oxobjectid = ".$oDb->quote($sOxid);
-        $oRs = $oDb->select( $sQ, false, false );
-        if ( $oRs !== false && $oRs->recordCount() > 0) {
-            while ( !$oRs->EOF ) {
-                $myUtilsCount->resetCatArticleCount( $oRs->fields[0] );
-                $oRs->moveNext();
+        if (count($aCategoryIds) > 0) {
+            $sLastCategory = array_pop($aCategoryIds);
+            foreach ($aCategoryIds as $sCatId){
+                $myUtilsCount->resetCatArticleCount($sCatId, false);
             }
+            $myUtilsCount->resetCatArticleCount($sCatId);
         }
     }
 

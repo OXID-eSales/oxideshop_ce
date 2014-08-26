@@ -2127,6 +2127,7 @@ $aLang = array(
 'OXDIAG_SERVERINFO_COMPONENT'       =>    'Komponente',
 'OXDIAG_CHKVERSION'                 =>    'Oxchkversion-Ausgabe',
 'OXDIAG_CHKVERS_FULLREP'            =>    'Vollst&auml;ndige Auswertung von <i>Oxchkversion</i> durchf&uuml;hlren',
+'SUBJECT_UNABLE_TO_SEND_VIA_CURL'  =>    '[tr]OXID eShop was unable to send servers information via CURL',
 
 //final note
 'OXDIAG_FINALNOTE'                  =>    'Ende der Auswertung',

@@ -82,8 +82,25 @@ class oxSystemEventHandler
     public function getOnlineModuleVersionNotifier()
     {
         if (!$this->_oOnlineModuleVersionNotifier) {
+            /** @var oxCurl $oCurl */
+            $oCurl = oxNew('oxCurl');
+
+            /** @var  oxOnlineServerEmailBuilder $oMailBuilder */
+            $oMailBuilder = oxNew('oxOnlineServerEmailBuilder');
+
+            /** @var oxOnlineCaller $oOnlineCaller */
+            $oOnlineCaller = oxNew('oxOnlineCaller', $oCurl, $oMailBuilder);
+
+            /** @var oxOnlineModuleVersionNotifierCaller $oOnlineModuleVersionNotifierCaller */
+            $oOnlineModuleVersionNotifierCaller = oxNew("oxOnlineModuleVersionNotifierCaller", $oOnlineCaller);
+
+            /** @var oxModuleList $oModuleList */
+            $oModuleList = oxNew('oxModuleList');
+            $oModuleList->getModulesFromDir(oxRegistry::getConfig()->getModulesDir());
+
             /** @var oxOnlineModuleVersionNotifier $oOnlineModuleVersionNotifier */
-            $oOnlineModuleVersionNotifier = oxNew("oxOnlineModuleVersionNotifier");
+            $oOnlineModuleVersionNotifier = oxNew("oxOnlineModuleVersionNotifier", $oOnlineModuleVersionNotifierCaller, $oModuleList);
+
             $this->setOnlineModuleVersionNotifier( $oOnlineModuleVersionNotifier );
         }
 

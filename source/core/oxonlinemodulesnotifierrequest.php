@@ -30,7 +30,7 @@ class oxOnlineModulesNotifierRequest extends oxOnlineLicenseServerRequest
      *
      * @var string
      */
-    public $pversion = '1.0';
+    public $pVersion = '1.0';
 
     /**
      * Modules array.

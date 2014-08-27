@@ -69,7 +69,8 @@ class oxOnlineLicenseCheckCaller
     {
         if (is_null($oOnlineCaller)) {
             $oCurl = oxNew('oxCurl');
-            $oOnlineCaller = oxNew('oxOnlineCaller', $oCurl);
+            $oEmailBuilder = oxNew('oxOnlineServerEmailBuilder');
+            $oOnlineCaller = oxNew('oxOnlineCaller', $oCurl, $oEmailBuilder);
         }
         $this->_oOnlineCaller = $oOnlineCaller;
 

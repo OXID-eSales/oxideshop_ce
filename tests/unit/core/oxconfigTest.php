@@ -1476,6 +1476,20 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $this->assertTrue( $oConfig->isCurrentUrl( $sUrl ) );
     }
 
+    /**
+     * Bug fix 0005685: Varnish issues on balanced system
+     * Force sid is added on each link if proxy is in between client and Shop server.
+     */
+    public function testIsCurrentUrlWithLoadBalancer()
+    {
+        $sUrl = 'https://www.example.com.ru';
+        $oConfig = new oxConfig();
+        $oConfig->init();
+        $_SERVER['HTTP_HOST'] = 'www.loadbalancer.de';
+        $_SERVER['SCRIPT_NAME'] = '';
+        $_SERVER['HTTP_X_FORWARDED_HOST'] = 'www.example.com.ru';
+        $this->assertTrue( $oConfig->isCurrentUrl( $sUrl ) );
+    }
 
     /**
      * Testing getImageDir getter

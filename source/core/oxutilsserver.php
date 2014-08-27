@@ -403,28 +403,48 @@ class oxUtilsServer extends oxSuperCfg
      *
      * @return bool true if $sURL is equal to current page URL
      */
-    public function isCurrentUrl( $sURL )
+    public function isCurrentUrl($sURL)
     {
         // Missing protocol, cannot proceed, assuming true.
-        if ( !$sURL || (strpos( $sURL, "http" ) !== 0)) {
+        if (!$sURL || (strpos($sURL, "http") !== 0)) {
             return true;
         }
 
+        $sServerHost = $this->getServerVar('HTTP_HOST');
+        $blIsCurrentUrl = $this->_isCurrentUrl($sURL, $sServerHost);
+        if (!$blIsCurrentUrl) {
+            $sServerHost = $this->getServerVar('HTTP_X_FORWARDED_HOST');
+            if ($sServerHost) {
+                $blIsCurrentUrl = $this->_isCurrentUrl($sURL, $sServerHost);
+            }
+        }
+
+        return $blIsCurrentUrl;
+    }
+
+    /**
+     * Check if URL is same as used for request.
+     *
+     * @param string $sURL URL to check if is same as request.
+     * @param string $sServerHost request URL.
+     *
+     * @return bool true if $sURL is equal to current page URL
+     */
+    public function _isCurrentUrl($sURL, $sServerHost)
+    {
         // #4010: force_sid added in https to every link
         preg_match("/^(https?:\/\/)?(www\.)?([^\/]+)/i", $sURL, $matches);
         $sUrlHost = $matches[3];
 
-        // #4010: force_sid added in https to every link
-        preg_match("/^(https?:\/\/)?(www\.)?([^\/]+)/i", $this->getServerVar( 'HTTP_HOST' ), $matches);
+        preg_match("/^(https?:\/\/)?(www\.)?([^\/]+)/i", $sServerHost, $matches);
         $sRealHost = $matches[3];
 
-        $sCurrentHost = preg_replace( '/\/\w*\.php.*/', '', $this->getServerVar( 'HTTP_HOST' ) . $this->getServerVar( 'SCRIPT_NAME' ) );
+        $sCurrentHost = preg_replace( '/\/\w*\.php.*/', '', $sServerHost . $this->getServerVar( 'SCRIPT_NAME' ) );
 
         //remove double slashes all the way
         $sCurrentHost = str_replace( '/', '', $sCurrentHost );
         $sURL = str_replace( '/', '', $sURL );
 
-        //var_dump($sURL,$sCurrentHost, $sRealHost);
         if ( $sURL && $sCurrentHost && strpos( $sURL, $sCurrentHost ) !== false ) {
             //bug fix #0002991
             if ( $sUrlHost == $sRealHost ) {

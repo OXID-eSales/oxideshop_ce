@@ -156,6 +156,12 @@ class Unit_Core_oxSystemEventHandlerTest extends OxidTestCase
         $this->assertNotSame($sOnlineLicenseCheckTime1, $sOnlineLicenseCheckTime2);
     }
 
+    public function testFormationOfOnlineLicenseCheckObjectWhenNotSet()
+    {
+        $oSystemEventHandler = new oxSystemEventHandler();
+        $this->assertInstanceOf('oxOnlineLicenseCheck', $oSystemEventHandler->getOnlineLicenseCheck());
+    }
+
     /**
      * @param int $iCurrentTime
      */

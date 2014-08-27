@@ -65,18 +65,9 @@ class oxOnlineLicenseCheckCaller
      * @param oxOnlineCaller $oOnlineCaller
      * @param oxSimpleXml $oSimpleXml
      */
-    public function __construct(oxOnlineCaller $oOnlineCaller = null, oxSimpleXml $oSimpleXml = null)
+    public function __construct(oxOnlineCaller $oOnlineCaller, oxSimpleXml $oSimpleXml)
     {
-        if (is_null($oOnlineCaller)) {
-            $oCurl = oxNew('oxCurl');
-            $oEmailBuilder = oxNew('oxOnlineServerEmailBuilder');
-            $oOnlineCaller = oxNew('oxOnlineCaller', $oCurl, $oEmailBuilder);
-        }
         $this->_oOnlineCaller = $oOnlineCaller;
-
-        if (is_null($oSimpleXml)) {
-            $oSimpleXml = oxNew('oxSimpleXml');
-        }
         $this->_oSimpleXml = $oSimpleXml;
     }
 

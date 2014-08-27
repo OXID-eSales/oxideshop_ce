@@ -26,6 +26,13 @@
 class oxOnlineLicenseServerRequest
 {
     /**
+     * OXID eShop servers cluster id.
+     *
+     * @var string
+     */
+    public $clusterId;
+
+    /**
      * OXID eShop edition.
      *
      * @var string

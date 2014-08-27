@@ -55,7 +55,7 @@ class Unit_Core_oxServerProcessorTest extends OxidTestCase
 
         /** @var oxServersManager $oServerNodesManager */
         $oServerNodesManager = $this->getMock('oxServersManager');
-        $oServerNodesManager->expects($this->any())->method('getNode')->will($this->returnValue($oNode));
+        $oServerNodesManager->expects($this->any())->method('getServer')->will($this->returnValue($oNode));
 
         /** @var oxServerChecker $oServerNodeChecker */
         $oServerNodeChecker = $this->getMock('oxServerChecker');
@@ -76,8 +76,8 @@ class Unit_Core_oxServerProcessorTest extends OxidTestCase
         /** @var oxServersManager $oServerNodesManager */
         $oServerNodesManager = $this->getMock('oxServersManager');
         // Test that processor do not update node information if not needed.
-        $oServerNodesManager->expects($this->never())->method('saveNode');
-        $oServerNodesManager->expects($this->any())->method('getNode')->will($this->returnValue($oNode));
+        $oServerNodesManager->expects($this->never())->method('saveServer');
+        $oServerNodesManager->expects($this->any())->method('getServer')->will($this->returnValue($oNode));
 
         /** @var oxServerChecker $oServerNodeChecker */
         $oServerNodeChecker = $this->getMock('oxServerChecker');
@@ -116,7 +116,8 @@ class Unit_Core_oxServerProcessorTest extends OxidTestCase
 
     /**
      * @param bool $blAdmin
-     * @param oxApplicationServer $aNode
+     * @param oxApplicationServer $oExpectedNode
+     * @param string $sServerId
      * @param string $sCurrentTime
      * @param string $sIP
      *
@@ -130,8 +131,8 @@ class Unit_Core_oxServerProcessorTest extends OxidTestCase
         /** @var oxServersManager $oServerNodesManager */
         $oServerNodesManager = $this->getMock('oxServersManager');
         // Test that node manager was called with correct values.
-        $oServerNodesManager->expects($this->atLeastOnce())->method('saveNode')->with($this->equalTo($oExpectedNode));
-        $oServerNodesManager->expects($this->any())->method('getNode')->will($this->returnValue($oNode));
+        $oServerNodesManager->expects($this->atLeastOnce())->method('saveServer')->with($this->equalTo($oExpectedNode));
+        $oServerNodesManager->expects($this->any())->method('getServer')->will($this->returnValue($oNode));
 
         /** @var oxServerChecker $oServerNodeChecker */
         $oServerNodeChecker = $this->getMock('oxServerChecker');

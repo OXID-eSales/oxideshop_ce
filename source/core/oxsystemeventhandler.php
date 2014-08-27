@@ -56,8 +56,23 @@ class oxSystemEventHandler
     public function getOnlineLicenseCheck()
     {
         if (!$this->_oOnlineLicenseCheck) {
+            /** @var oxCurl $oCurl */
+            $oCurl = oxNew('oxCurl');
+
+            /** @var oxOnlineServerEmailBuilder $oEmailBuilder */
+            $oEmailBuilder = oxNew('oxOnlineServerEmailBuilder');
+
+            /** @var oxOnlineCaller $oOnlineCaller */
+            $oOnlineCaller = oxNew('oxOnlineCaller', $oCurl, $oEmailBuilder);
+
+            /** @var oxSimpleXml $oSimpleXml */
+            $oSimpleXml = oxNew('oxSimpleXml');
+
+            /** @var oxOnlineLicenseCheckCaller $oLicenseCaller */
+            $oLicenseCaller = oxNew('oxOnlineLicenseCheckCaller', $oOnlineCaller, $oSimpleXml);
+
             /** @var oxOnlineLicenseCheck $oOLC */
-            $oOLC = oxNew("oxOnlineLicenseCheck");
+            $oOLC = oxNew("oxOnlineLicenseCheck", $oLicenseCaller);
             $this->setOnlineLicenseCheck( $oOLC );
         }
 

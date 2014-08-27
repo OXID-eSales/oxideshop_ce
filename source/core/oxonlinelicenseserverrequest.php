@@ -27,15 +27,7 @@ class oxOnlineLicenseServerRequest
 {
     public function __construct()
     {
-        $oConfig = oxRegistry::getConfig();
-        $sClusterId = $oConfig->getConfigParam('sClusterId');
-        if (!$sClusterId) {
-            $oUUIDGenerator = oxNew('oxUniversallyUniqueIdGenerator');
-            $sClusterId = $oUUIDGenerator->generate();
-            $oConfig->setConfigParam('sClusterId', $sClusterId);
-        }
-
-        $this->clusterId = $sClusterId;
+        $this->clusterId = $this->_getClusterId();
     }
 
     /**
@@ -77,4 +69,23 @@ class oxOnlineLicenseServerRequest
      * @var string
      */
     public $productId = 'eShop';
+
+    /**
+     * Returns cluster id.
+     * Takes cluster id from configuration if set, otherwise generates it.
+     *
+     * @return string
+     */
+    private function _getClusterId()
+    {
+        $oConfig = oxRegistry::getConfig();
+        $sClusterId = $oConfig->getConfigParam('sClusterId');
+        if (!$sClusterId) {
+            $oUUIDGenerator = oxNew('oxUniversallyUniqueIdGenerator');
+            $sClusterId = $oUUIDGenerator->generate();
+            $oConfig->setConfigParam('sClusterId', $sClusterId);
+        }
+
+        return $sClusterId;
+    }
 }

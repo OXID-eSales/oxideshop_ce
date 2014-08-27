@@ -42,20 +42,20 @@ class Unit_Core_oxOnlineCallerTest extends OxidTestCase
     {
         $oCaller = new oxOnlineCaller($this->_getMockedCurl(), $this->_getMockedEmailBuilder());
         $sUrl = 'http://oxid-esales.com';
-        oxRegistry::getConfig()->setConfigParam('iFailedOnlineCallsCount', 4);
+        oxRegistry::getConfig()->saveSystemConfigParameter('int','iFailedOnlineCallsCount', 4);
 
         $this->assertSame('_testResult', $oCaller->call($sUrl, '_testXml'));
-        $this->assertSame(0, oxRegistry::getConfig()->getConfigParam('iFailedOnlineCallsCount'));
+        $this->assertSame(0, oxRegistry::getConfig()->getSystemConfigParameter('iFailedOnlineCallsCount'));
     }
 
     public function testCallWhenFailsButItsFifthCall()
     {
         $oCaller = new oxOnlineCaller($this->_getMockedCurlWhichThrowsException(), $this->_getMockedEmailBuilder());
         $sUrl = 'http://oxid-esales.com';
-        oxRegistry::getConfig()->setConfigParam('iFailedOnlineCallsCount', 4);
+        oxRegistry::getConfig()->saveSystemConfigParameter('int','iFailedOnlineCallsCount', 4);
 
         $this->assertNull($oCaller->call($sUrl, '_testXml'));
-        $this->assertSame(5, oxRegistry::getConfig()->getConfigParam('iFailedOnlineCallsCount'));
+        $this->assertSame(5, oxRegistry::getConfig()->getSystemConfigParameter('iFailedOnlineCallsCount'));
     }
 
     public function testCallWhenFailsFromNotAllowedCallsCount()
@@ -68,10 +68,10 @@ class Unit_Core_oxOnlineCallerTest extends OxidTestCase
 
         $oCaller = new oxOnlineCaller($this->_getMockedCurlWhichThrowsException(), $oEmailBuilder);
         $sUrl = 'http://oxid-esales.com';
-        oxRegistry::getConfig()->setConfigParam('iFailedOnlineCallsCount', 5);
+        oxRegistry::getConfig()->saveSystemConfigParameter('int','iFailedOnlineCallsCount', 5);
 
         $oCaller->call($sUrl, '_testXml');
-        $this->assertSame(0, oxRegistry::getConfig()->getConfigParam('iFailedOnlineCallsCount'));
+        $this->assertSame(0, oxRegistry::getConfig()->getSystemConfigParameter('iFailedOnlineCallsCount'));
     }
 
     /**

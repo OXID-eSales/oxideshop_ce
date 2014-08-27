@@ -43,7 +43,7 @@ class oxOnlineCaller
     public function call($sUrl, $sXml)
     {
         $sOutputXml = null;
-        $iFailedCallsCount = oxRegistry::getConfig()->getConfigParam('iFailedOnlineCallsCount');
+        $iFailedCallsCount = oxRegistry::getConfig()->getSystemConfigParameter('iFailedOnlineCallsCount');
         try {
             $sOutputXml = $this->_executeCurlCall($sUrl, $sXml);
             $this->_resetFailedCallsCount($iFailedCallsCount);
@@ -67,7 +67,7 @@ class oxOnlineCaller
     private function _resetFailedCallsCount($iFailedOnlineCallsCount)
     {
         if ($iFailedOnlineCallsCount > 0) {
-            oxRegistry::getConfig()->setConfigParam('iFailedOnlineCallsCount', 0);
+            oxRegistry::getConfig()->saveSystemConfigParameter('int', 'iFailedOnlineCallsCount', 0);
         }
     }
 
@@ -95,7 +95,7 @@ class oxOnlineCaller
      */
     private function _increaseFailedCallsCount($iFailedOnlineCallsCount)
     {
-        oxRegistry::getConfig()->setConfigParam('iFailedOnlineCallsCount', ++$iFailedOnlineCallsCount);
+        oxRegistry::getConfig()->saveSystemConfigParameter('int', 'iFailedOnlineCallsCount', ++$iFailedOnlineCallsCount);
     }
 
     /**

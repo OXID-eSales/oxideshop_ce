@@ -77,9 +77,9 @@ class Unit_Core_oxOnlineModuleVersionNotifierCallerTest extends OxidTestCase
         $oRequest            = new oxOnlineModulesNotifierRequest();
         $oRequest->edition   = 'CE';
         $oRequest->version   = '5.6.5';
-        $oRequest->shopurl   = 'myshop.com';
-        $oRequest->pversion  = '1.0';
-        $oRequest->productid = 'eShop';
+        $oRequest->shopUrl   = 'myshop.com';
+        $oRequest->pVersion  = '1.0';
+        $oRequest->productId = 'eShop';
 
         $modules                             = new stdClass();
         $modules->module                     = array();

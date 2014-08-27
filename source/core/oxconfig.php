@@ -2250,4 +2250,28 @@ class oxConfig extends oxSuperCfg
         oxRegistry::get("oxUtilsView")->addErrorToDisplay( $oEx );
         oxRegistry::getUtils()->redirect( $this->getShopHomeURL() .'cl=start', true, 302 );
     }
+
+    /**
+     * Save system configuration parameters, which is the same for sub-shops.
+     *
+     * @param string $sParameterType Type
+     * @param string $sParameterName Name
+     * @param mixed  $sParameterValue Value (can be string, integer or array)
+     */
+    public function saveSystemConfigParameter($sParameterType, $sParameterName, $sParameterValue)
+    {
+        $this->saveShopConfVar($sParameterType, $sParameterName, $sParameterValue, $this->getBaseShopId());
+    }
+
+    /**
+     * Retrieves system configuration parameters, which is the same for sub-shops.
+     *
+     * @param string $sParameterName Variable name
+     *
+     * @return mixed
+     */
+    public function getSystemConfigParameter($sParameterName)
+    {
+        return $this->getShopConfVar($sParameterName, $this->getBaseShopId());
+    }
 }

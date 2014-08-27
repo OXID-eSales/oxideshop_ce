@@ -58,7 +58,7 @@ class Unit_Core_oxoOnlineCallerTest extends OxidTestCase
         $this->assertSame(5, oxRegistry::getConfig()->getConfigParam('iFailedOnlineCallsCount'));
     }
 
-    public function testCallWhenFailsFromSixthCall()
+    public function testCallWhenFailsFromNotAllowedCallsCount()
     {
         $oEmail = $this->getMock('oxEmail', array('send'));
         // Email send function must be called.
@@ -71,6 +71,7 @@ class Unit_Core_oxoOnlineCallerTest extends OxidTestCase
         oxRegistry::getConfig()->setConfigParam('iFailedOnlineCallsCount', 5);
 
         $oCaller->call($sUrl, '_testXml');
+        $this->assertSame(0, oxRegistry::getConfig()->getConfigParam('iFailedOnlineCallsCount'));
     }
 
     /**

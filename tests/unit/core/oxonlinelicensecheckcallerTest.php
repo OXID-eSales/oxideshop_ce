@@ -65,24 +65,11 @@ class Unit_Core_oxOnlineLicenseCheckCallerTest extends OxidTestCase
         $oOnlineLicenseCaller->doRequest($oRequest);
     }
 
-    public function testResponseFormedWithCorrectParameters()
-    {
-        $oSimpleXml = $this->getMock('oxSimpleXml');
-        /** @var oxSimpleXml $oSimpleXml */
-
-        $oCaller = $this->getMock('oxOnlineCaller', array('call'), array(), '', false);
-        $oCaller->expects($this->once())->method('call')->will($this->returnValue($this->_getValidResponseXml()));
-        /** @var oxOnlineCaller $oCaller */
-
-        $oOnlineLicenseCaller = new oxOnlineLicenseCheckCaller($oCaller, $oSimpleXml);
-        $oRequest = new oxOnlineLicenseCheckRequest();
-        $oOnlineLicenseCaller->doRequest($oRequest);
-    }
-
     public function providerUnexpectedExceptionIsThrownOnIncorrectResponse()
     {
         return array(
             array('OLC_ERROR_RESPONSE_NOT_VALID', ''),
+            array('OLC_ERROR_RESPONSE_NOT_VALID', 'any random non xml text'),
             array('OLC_ERROR_RESPONSE_NOT_VALID', '<?xml version="1.0" encoding="utf-8"?>',),
             array('OLC_ERROR_RESPONSE_UNEXPECTED', '<?xml version="1.0" encoding="utf-8"?><test></test>'),
             array('OLC_ERROR_RESPONSE_UNEXPECTED', '<?xml version="1.0" encoding="utf-8"?><invalid_license><code>123</code></invalid_license>'),

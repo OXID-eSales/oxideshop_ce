@@ -71,7 +71,7 @@ class oxServersManager
             'lastAdminUsage' => $oNode->getLastAdminUsage(),
         );
 
-        oxRegistry::getConfig()->setConfigParam('aServersData', $aServersData);
+        oxRegistry::getConfig()->saveSystemConfigParameter('arr', 'aServersData', $aServersData);
     }
 
     /**

@@ -179,7 +179,7 @@ class oxSystemEventHandler
      */
     private function _getLastCheckTime()
     {
-        return (int) $this->_getConfig()->getConfigParam('sOnlineLicenseCheckTime');
+        return (int) $this->_getConfig()->getSystemConfigParameter('sOnlineLicenseCheckTime');
     }
 
     /**
@@ -188,7 +188,7 @@ class oxSystemEventHandler
      */
     private function _updateNextCheckTime()
     {
-        $this->_getConfig()->saveShopConfVar('arr', 'sOnlineLicenseCheckTime',
+        $this->_getConfig()->saveSystemConfigParameter('arr', 'sOnlineLicenseCheckTime',
             $this->_getCurrentTime() + $this->_getWhiteNoise() + $this->_getLicenseCheckValidityTime());
     }
 

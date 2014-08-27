@@ -36,6 +36,8 @@ class Unit_Core_oxOnlineModuleVersionNotifierCallerTest extends OxidTestCase
 
     public function testDoRequest()
     {
+        $this->getConfig()->setConfigParam('sClusterId', 'generated_unique_cluster_id');
+
         $oCaller = $this->getMock('oxOnlineCaller', array('call'), array(),'',false);
         $oCaller->expects($this->any())
             ->method('call')
@@ -54,14 +56,15 @@ class Unit_Core_oxOnlineModuleVersionNotifierCallerTest extends OxidTestCase
     {
         $sXml = '<?xml version="1.0" encoding="utf-8"?>' . PHP_EOL;
         $sXml .= '<omvnRequest>';
+        $sXml .= '<pVersion>1.0</pVersion>';
         $sXml .= '<modules>';
         $sXml .= '<module><id>modId</id><version>modVersion</version><activeInShops><activeInShop>myshop.com</activeInShop></activeInShops></module>';
         $sXml .= '</modules>';
+        $sXml .= '<clusterId>generated_unique_cluster_id</clusterId>';
         $sXml .= '<edition>CE</edition>';
         $sXml .= '<version>5.6.5</version>';
-        $sXml .= '<shopurl>myshop.com</shopurl>';
-        $sXml .= '<pversion>1.0</pversion>';
-        $sXml .= '<productid>eShop</productid>';
+        $sXml .= '<shopUrl>myshop.com</shopUrl>';
+        $sXml .= '<productId>eShop</productId>';
         $sXml .= '</omvnRequest>' . PHP_EOL;
 
         return $sXml;

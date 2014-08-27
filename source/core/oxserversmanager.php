@@ -64,8 +64,9 @@ class oxServersManager
     {
         $aServersData = $this->_getServersData();
         $aServersData[$oNode->getId()] = array(
+            'id' => $oNode->getId(),
             'timestamp' => $oNode->getTimestamp(),
-            'serverIp' => $oNode->getIp(),
+            'ip' => $oNode->getIp(),
             'lastFrontendUsage' => $oNode->getLastFrontendUsage(),
             'lastAdminUsage' => $oNode->getLastAdminUsage(),
         );

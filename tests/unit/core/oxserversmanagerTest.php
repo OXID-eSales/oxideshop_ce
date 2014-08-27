@@ -83,8 +83,9 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
 
         $aExpectedServerData = array(
             'serverNameHash1' => array(
+                'id' => 'serverNameHash1',
                 'timestamp' => 'timestamp',
-                'serverIp' => '127.0.0.1',
+                'ip' => '127.0.0.1',
                 'lastFrontendUsage' => 'frontendUsageTimestamp',
                 'lastAdminUsage' => 'adminUsageTimestamp',
             ),
@@ -97,8 +98,9 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
         oxRegistry::getConfig()->setConfigParam('aServersData', array(
             'serverNameHash1' => array(),
             'serverNameHash2' => array(
+                'id' => 'serverNameHash2',
                 'timestamp' => 'timestamp',
-                'serverIp' => '127.0.0.1',
+                'ip' => '127.0.0.1',
                 'lastFrontendUsage' => 'frontendUsageTimestamp',
                 'lastAdminUsage' => 'adminUsageTimestamp',
             ),
@@ -118,8 +120,9 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
         $aExpectedServerData = array(
             'serverNameHash1' => array(),
             'serverNameHash2' => array(
+                'id' => 'serverNameHash2',
                 'timestamp' => 'timestampUpdated',
-                'serverIp' => '127.0.0.255',
+                'ip' => '127.0.0.255',
                 'lastFrontendUsage' => 'frontendUsageTimestampUpdated',
                 'lastAdminUsage' => 'adminUsageTimestampUpdated',
             ),
@@ -146,8 +149,9 @@ class Unit_Core_oxServersManagerTest extends OxidTestCase
 
         $aExpectedServerData = array(
             'serverNameHash1' => array(
+                'id' => 'serverNameHash1',
                 'timestamp' => 'timestampUpdated',
-                'serverIp' => '127.0.0.1',
+                'ip' => '127.0.0.1',
                 'lastFrontendUsage' => 'frontendUsageTimestampUpdated',
                 'lastAdminUsage' => 'adminUsageTimestampUpdated',
             ),

@@ -52,47 +52,31 @@ class oxOnlineLicenseCheckCaller
     protected $_sResponseElement = 'olc';
 
     /**
-     * @var oxCurl
+     * @var oxOnlineCaller
      */
-    private $_oCurl;
+    private $_oOnlineCaller;
 
     /**
-     * OLC or OMVN.
-     *
-     * @var string
+     * @var oxSimpleXml
      */
-    private $_sWebServiceUrlType;
-
+    private $_oSimpleXml;
 
     /**
-     * @param oxCurl $oCurl
+     * @param oxOnlineCaller $oOnlineCaller
+     * @param oxSimpleXml $oSimpleXml
      */
-    public function __construct(oxCurl $oCurl = null)
+    public function __construct(oxOnlineCaller $oOnlineCaller = null, oxSimpleXml $oSimpleXml = null)
     {
-        if (is_null($oCurl)) {
+        if (is_null($oOnlineCaller)) {
             $oCurl = oxNew('oxCurl');
+            $oOnlineCaller = oxNew('oxOnlineCaller', $oCurl);
         }
-        $this->_oCurl = $oCurl;
-    }
+        $this->_oOnlineCaller = $oOnlineCaller;
 
-    /**
-     * Set raw response message received from Online License Key Check web service.
-     *
-     * @param $sRawResponseMessage string
-     */
-    public function setRawResponseMessage( $sRawResponseMessage )
-    {
-        $this->_sRawResponseMessage = $sRawResponseMessage;
-    }
-
-    /**
-     * Get raw response message received from Online License Key Check web service.
-     *
-     * @return string
-     */
-    public function getRawResponseMessage()
-    {
-        return $this->_sRawResponseMessage;
+        if (is_null($oSimpleXml)) {
+            $oSimpleXml = oxNew('oxSimpleXml');
+        }
+        $this->_oSimpleXml = $oSimpleXml;
     }
 
     /**
@@ -111,59 +95,47 @@ class oxOnlineLicenseCheckCaller
      * @param oxOnlineLicenseServerRequest $oRequest Object with request parameters
      *
      * @throws oxException
-     * @return string
+     * @return oxOnlineLicenseCheckResponse
      */
     public function doRequest(oxOnlineLicenseServerRequest $oRequest)
     {
-        $sRequestXml = $this->_generateXml($oRequest);
-        $sResponse = $this->_sendRequest($sRequestXml);
+        $oSimpleXml = $this->_getSimpleXml();
+        $sRequest = $oSimpleXml->objectToXml($oRequest, 'olcRequest');
+
+        $oCaller = $this->_getOnlineCaller();
+        $sResponse = $oCaller->call($sRequest, $this->getWebServiceUrl());
 
         return $this->_formResponse($sResponse);
     }
 
     /**
-     * Generates Xml from passed object parameters
-     *
-     * @param object $oRequestParams Object with request parameters
-     * @return string
+     * @return oxOnlineCaller
      */
-    protected function _generateXml($oRequestParams)
+    protected function _getOnlineCaller()
     {
-        $oXml = oxNew('oxSimpleXml');
-        $sXml = $oXml->objectToXml($oRequestParams, 'olcRequest');
-
-        return $sXml;
+        return $this->_oOnlineCaller;
     }
 
     /**
-     * @param $sRequestXml
-     * @return string
-     * @throws oxException
+     * @return oxSimpleXml
      */
-    protected function _sendRequest($sRequestXml)
+    protected function _getSimpleXml()
     {
-        try {
-            $oCurl = $this->_getCurl();
-            $oCurl->setMethod( 'POST' );
-            $oCurl->setUrl( $this->getWebServiceUrl() );
-            $oCurl->setParameters( array("xmlRequest" => $sRequestXml) );
-            $sOutput = $oCurl->execute();
-        } catch (Exception $oEx) {
-            throw new oxException($this->_sWebServiceUrlType.'_ERROR_REQUEST_FAILED');
-        }
-        return $sOutput;
+        return $this->_oSimpleXml;
     }
 
     /**
      * Parse response message received from Online License Key Check web service and save it to response object.
      *
+     * @param string $sRawResponse
      * @throws oxException
+     * @return oxOnlineLicenseCheckResponse
      */
-    protected function _formResponse()
+    protected function _formResponse($sRawResponse)
     {
-        $sRawResponse = $this->getRawResponseMessage();
+        /** @var oxUtilsXml $oUtilsXml */
         $oUtilsXml = oxRegistry::get( "oxUtilsXml" );
-        if ( !($oDomDoc = $oUtilsXml->loadXml( $sRawResponse )) ) {
+        if ( empty($sRawResponse) || !($oDomDoc = $oUtilsXml->loadXml( $sRawResponse )) ) {
             throw new oxException('OLC_ERROR_RESPONSE_NOT_VALID');
         }
 
@@ -179,7 +151,8 @@ class oxOnlineLicenseCheckCaller
 
         $oNodes = $oResponseNode->childNodes;
 
-        $oResponse = $this->getResponse();
+        /** @var oxOnlineLicenseCheckResponse $oResponse */
+        $oResponse = oxNew('oxOnlineLicenseCheckResponse');
 
         // iterate through response node to get response parameters
         for ( $i = 0; $i < $oNodes->length; $i++ ) {
@@ -189,13 +162,5 @@ class oxOnlineLicenseCheckCaller
         }
 
         return $oResponse;
-    }
-
-    /**
-     * @return oxCurl
-     */
-    protected function _getCurl()
-    {
-        return $this->_oCurl;
     }
 }

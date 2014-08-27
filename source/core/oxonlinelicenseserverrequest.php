@@ -21,9 +21,9 @@
  */
 
 /**
- * Class oxOnlineLicenseServerRequest
+ * Class oxOnlineRequest
  */
-class oxOnlineLicenseServerRequest
+class oxOnlineRequest
 {
     public function __construct()
     {

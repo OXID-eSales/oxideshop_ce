@@ -34,14 +34,14 @@ class Unit_Core_oxOnlineLicenseServerRequestTest extends OxidTestCase
     public function testClusterIdGenerationWhenNotSet()
     {
         $this->getConfig()->setConfigParam('sClusterId', '');
-        $oRequest = new oxOnlineLicenseServerRequest();
+        $oRequest = new oxOnlineRequest();
         $this->assertNotEquals('', $oRequest->clusterId);
     }
 
     public function testClusterIdIsNotRegenerationWhenAlreadySet()
     {
         $this->getConfig()->setConfigParam('sClusterId', 'generated_unique_cluster_id');
-        $oRequest = new oxOnlineLicenseServerRequest();
+        $oRequest = new oxOnlineRequest();
         $this->assertSame('generated_unique_cluster_id', $oRequest->clusterId);
     }
 
@@ -53,7 +53,7 @@ class Unit_Core_oxOnlineLicenseServerRequestTest extends OxidTestCase
 
         $this->setShopId(9);
         $oConfig->setConfigParam('sClusterId', '');
-        $oRequest = new oxOnlineLicenseServerRequest();
+        $oRequest = new oxOnlineRequest();
         $this->assertSame('generated_unique_cluster_id', $oRequest->clusterId);
     }
 
@@ -62,7 +62,7 @@ class Unit_Core_oxOnlineLicenseServerRequestTest extends OxidTestCase
         $oConfig = $this->getConfig();
 
         $oConfig->setConfigParam('sClusterId', 'generated_unique_cluster_id');
-        $oRequest = new oxOnlineLicenseServerRequest();
+        $oRequest = new oxOnlineRequest();
 
         $this->assertSame('generated_unique_cluster_id', $oRequest->clusterId);
         $this->assertSame($oConfig->getEdition(), $oRequest->edition);

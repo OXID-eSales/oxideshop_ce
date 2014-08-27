@@ -21,7 +21,7 @@
  */
 
 /**
- * Class oxOnlineLicenseServerRequest
+ * Class oxOnlineLicenseServerResponse
  */
 class oxOnlineLicenseServerResponse
 {

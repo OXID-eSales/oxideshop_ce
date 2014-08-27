@@ -23,7 +23,7 @@
 /**
  * Class oxOnlineModuleNotifierRequest
  */
-class oxOnlineModulesNotifierRequest extends oxOnlineLicenseServerRequest
+class oxOnlineModulesNotifierRequest extends oxOnlineRequest
 {
     /**
      * Web service protocol version.

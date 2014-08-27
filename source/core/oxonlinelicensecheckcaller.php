@@ -84,12 +84,12 @@ class oxOnlineLicenseCheckCaller
     /**
      * Performs Web service request
      *
-     * @param oxOnlineLicenseServerRequest $oRequest Object with request parameters
+     * @param oxOnlineLicenseCheckRequest $oRequest Object with request parameters
      *
      * @throws oxException
      * @return oxOnlineLicenseCheckResponse
      */
-    public function doRequest(oxOnlineLicenseServerRequest $oRequest)
+    public function doRequest(oxOnlineLicenseCheckRequest $oRequest)
     {
         $oSimpleXml = $this->_getSimpleXml();
         $sRequest = $oSimpleXml->objectToXml($oRequest, 'olcRequest');

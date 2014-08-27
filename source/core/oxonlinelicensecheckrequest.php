@@ -23,7 +23,7 @@
 /**
  * Class oxOnlineLicenseCheckRequest
  */
-class oxOnlineLicenseCheckRequest extends oxOnlineLicenseServerRequest
+class oxOnlineLicenseCheckRequest extends oxOnlineRequest
 {
 
     /**

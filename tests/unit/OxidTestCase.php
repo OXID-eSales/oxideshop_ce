@@ -242,7 +242,9 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      */
     public function setLanguage($iLangId)
     {
-        oxRegistry::getLang()->setBaseLanguage($iLangId);
+        $oxLang = oxRegistry::getLang();
+        $oxLang->setBaseLanguage($iLangId);
+        $oxLang->setTplLanguage($iLangId);
     }
 
     /**

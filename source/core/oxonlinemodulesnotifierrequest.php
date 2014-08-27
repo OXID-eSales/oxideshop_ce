@@ -26,6 +26,13 @@
 class oxOnlineModulesNotifierRequest extends oxOnlineLicenseServerRequest
 {
     /**
+     * Web service protocol version.
+     *
+     * @var string
+     */
+    public $pversion = '1.0';
+
+    /**
      * Modules array.
      *
      * @var array

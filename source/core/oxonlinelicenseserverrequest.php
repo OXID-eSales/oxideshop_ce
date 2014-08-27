@@ -56,5 +56,5 @@ class oxOnlineLicenseServerRequest
      *
      * @var string
      */
-    public $productid;
+    public $productid = 'eShop';
 }

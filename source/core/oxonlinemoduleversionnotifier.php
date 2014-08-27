@@ -96,8 +96,6 @@ class oxOnlineModuleVersionNotifier
         $oRequestParams->edition = oxRegistry::getConfig()->getEdition();
         $oRequestParams->version = oxRegistry::getConfig()->getVersion();
         $oRequestParams->shopurl = oxRegistry::getConfig()->getShopUrl();
-        $oRequestParams->pversion = '1.0';
-        $oRequestParams->productid = 'eShop';
 
         $oRequestParams->modules = new stdClass();
         $oRequestParams->modules->module = $this->_prepareModulesInformation();

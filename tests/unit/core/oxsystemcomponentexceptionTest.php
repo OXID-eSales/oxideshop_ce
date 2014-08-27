@@ -23,7 +23,7 @@
 require_once realpath( "." ).'/unit/OxidTestCase.php';
 require_once realpath( "." ).'/unit/test_config.inc.php';
 
-class Unit_Core_oxsystemcomponentexceptionTest extends OxidTestCase
+class Unit_Core_oxSystemComponentExceptionTest extends OxidTestCase
 {
     public function testSetGetComponent()
     {

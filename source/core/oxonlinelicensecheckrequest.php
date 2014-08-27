@@ -21,7 +21,12 @@
  */
 
 /**
- * Class oxOnlineLicenseCheckRequest
+ * Online license check request class
+ *
+ * @internal Do not make a module extension for this class.
+ * @see http://www.oxid-forge.com/do_not_extend_classes_list/
+ *
+ * @ignore This class will not be included in documentation.
  */
 class oxOnlineLicenseCheckRequest extends oxOnlineRequest
 {

@@ -27,7 +27,11 @@ class oxOnlineLicenseServerRequest
 {
     public function __construct()
     {
+        $oConfig = oxRegistry::getConfig();
         $this->clusterId = $this->_getClusterId();
+        $this->edition = $oConfig->getEdition();
+        $this->version = $oConfig->getVersion();
+        $this->shopUrl = $oConfig->getShopUrl();
     }
 
     /**

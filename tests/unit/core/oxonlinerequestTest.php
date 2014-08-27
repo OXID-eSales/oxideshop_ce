@@ -25,10 +25,10 @@ require_once realpath( "." ) . '/unit/test_config.inc.php';
 require_once getShopBasePath() . '/setup/oxsetup.php';
 
 /**
- * Class Unit_Core_oxOnlineLicenseServerRequestTest
- * @covers oxOnlineLicenseServerRequest
+ * Class Unit_Core_oxOnlineRequestTest
+ * @covers oxOnlineRequest
  */
-class Unit_Core_oxOnlineLicenseServerRequestTest extends OxidTestCase
+class Unit_Core_oxOnlineRequestTest extends OxidTestCase
 {
 
     public function testClusterIdGenerationWhenNotSet()

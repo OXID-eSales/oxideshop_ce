@@ -33,7 +33,7 @@ class oxOnlineServerEmailBuilder
     /**
      * Created oxEmail object and sets values.
      *
-     * @param string $sBody
+     * @param string $sBody Email body in XML format.
      *
      * @return oxEmail
      */

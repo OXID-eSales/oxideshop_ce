@@ -18,11 +18,18 @@ class oxOnlineCaller
     private $_oCurl;
 
     /**
-     * @param oxCurl $oCurl
+     * @var oxOnlineServerEmailBuilder
      */
-    public function __construct(oxCurl $oCurl)
+    private $_oEmailBuilder;
+
+    /**
+     * @param oxCurl $oCurl
+     * @param oxOnlineServerEmailBuilder $oEmailBuilder
+     */
+    public function __construct(oxCurl $oCurl, oxOnlineServerEmailBuilder $oEmailBuilder)
     {
         $this->_oCurl = $oCurl;
+        $this->_oEmailBuilder = $oEmailBuilder;
     }
 
     /**
@@ -44,7 +51,7 @@ class oxOnlineCaller
             $this->_resetFailedCallsCount($iFailedCallsCount);
         } catch (Exception $oEx) {
             if ($iFailedCallsCount > self::ALLOWED_HTTP_FAILED_CALLS_COUNT) {
-                throw new oxException('OLC_ERROR_REQUEST_FAILED');
+                $this->_sendEmail($sXml);
             }
             $this->_increaseFailedCallsCount($iFailedCallsCount);
         }
@@ -89,5 +96,16 @@ class oxOnlineCaller
     private function _increaseFailedCallsCount($iFailedOnlineCallsCount)
     {
         oxRegistry::getConfig()->setConfigParam('iFailedOnlineCallsCount', ++$iFailedOnlineCallsCount);
+    }
+
+    /**
+     * Sends an email with server information.
+     *
+     * @param string $sBody
+     */
+    private function _sendEmail($sBody)
+    {
+        $oEmail = $this->_oEmailBuilder->build($sBody);
+        $oEmail->send();
     }
 }

@@ -83,11 +83,11 @@ class oxOnlineLicenseServerRequest
     private function _getClusterId()
     {
         $oConfig = oxRegistry::getConfig();
-        $sClusterId = $oConfig->getShopConfVar('sClusterId', $oConfig->getBaseShopId());
+        $sBaseShop = $oConfig->getBaseShopId();
+        $sClusterId = $oConfig->getShopConfVar('sClusterId', $sBaseShop);
         if (!$sClusterId) {
             $oUUIDGenerator = oxNew('oxUniversallyUniqueIdGenerator');
             $sClusterId = $oUUIDGenerator->generate();
-            $sBaseShop = oxRegistry::getConfig()->getBaseShopId();
             $oConfig->saveShopConfVar("str", 'sClusterId', $sClusterId, $sBaseShop);
         }
 

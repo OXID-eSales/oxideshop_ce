@@ -25,6 +25,19 @@
  */
 class oxOnlineLicenseServerRequest
 {
+    public function __construct()
+    {
+        $oConfig = oxRegistry::getConfig();
+        $sClusterId = $oConfig->getConfigParam('sClusterId');
+        if (!$sClusterId) {
+            $oUUIDGenerator = oxNew('oxUniversallyUniqueIdGenerator');
+            $sClusterId = $oUUIDGenerator->generate();
+            $oConfig->setConfigParam('sClusterId', $sClusterId);
+        }
+
+        $this->clusterId = $sClusterId;
+    }
+
     /**
      * OXID eShop servers cluster id.
      *

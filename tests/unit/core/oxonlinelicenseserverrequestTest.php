@@ -45,6 +45,18 @@ class Unit_Core_oxOnlineLicenseServerRequestTest extends OxidTestCase
         $this->assertSame('generated_unique_cluster_id', $oRequest->clusterId);
     }
 
+    public function testClusterIdTakenFromBaseShopInsteadOfSubShop()
+    {
+            return;
+        $oConfig = $this->getConfig();
+        $oConfig->saveShopConfVar("str", 'sClusterId', 'generated_unique_cluster_id', 1);
+
+        $this->setShopId(9);
+        $oConfig->setConfigParam('sClusterId', '');
+        $oRequest = new oxOnlineLicenseServerRequest();
+        $this->assertSame('generated_unique_cluster_id', $oRequest->clusterId);
+    }
+
     public function testDefaultParametersSetOnConstruct()
     {
         $oConfig = $this->getConfig();

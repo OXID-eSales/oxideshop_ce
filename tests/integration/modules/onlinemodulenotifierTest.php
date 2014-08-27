@@ -27,7 +27,7 @@ class Integration_Modules_OnlineModuleNotifierTest extends BaseModuleTestCase
     /**
      * Tests if module was activated.
      */
-    public function testIsActive()
+    public function testVersionNotify()
     {
         $oEnvironment = new Environment();
         $oEnvironment->prepare( array( 'extending_1_class', 'extending_1_class_3_extensions', 'with_everything' ) );

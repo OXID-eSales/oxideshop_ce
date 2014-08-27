@@ -26,6 +26,14 @@ require_once getShopBasePath() . '/setup/oxsetup.php';
 
 class Unit_Core_oxOnlineModuleVersionNotifierCallerTest extends OxidTestCase
 {
+    public function testGetWebServiceUrl()
+    {
+        $oCaller = $this->getMock('oxOnlineCaller', array(), array(),'',false);
+
+        $oNotifier = new oxOnlineModuleVersionNotifierCaller($oCaller);
+        $this->assertSame('https://omvn.oxid-esales.com/check.php', $oNotifier->getWebServiceUrl());
+    }
+
     public function testDoRequest()
     {
         $oCaller = $this->getMock('oxOnlineCaller', array('call'), array(),'',false);
@@ -35,14 +43,6 @@ class Unit_Core_oxOnlineModuleVersionNotifierCallerTest extends OxidTestCase
 
         $oNotifier = new oxOnlineModuleVersionNotifierCaller($oCaller);
         $oNotifier->doRequest($this->_getRequest());
-    }
-
-    public function testGetWebServiceUrl()
-    {
-        $oCaller = $this->getMock('oxOnlineCaller', array(), array(),'',false);
-
-        $oNotifier = new oxOnlineModuleVersionNotifierCaller($oCaller);
-        $this->assertSame('https://omvn.oxid-esales.com/check.php', $oNotifier->getWebServiceUrl());
     }
 
     /**

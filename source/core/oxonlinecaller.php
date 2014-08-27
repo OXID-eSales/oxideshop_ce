@@ -39,8 +39,6 @@ class oxOnlineCaller
      * @param string $sXml
      *
      * @return null|string In XML format.
-     *
-     * @throws oxException When calls count is bigger than allowed calls count.
      */
     public function call($sUrl, $sXml)
     {
@@ -52,8 +50,10 @@ class oxOnlineCaller
         } catch (Exception $oEx) {
             if ($iFailedCallsCount > self::ALLOWED_HTTP_FAILED_CALLS_COUNT) {
                 $this->_sendEmail($sXml);
+                $this->_resetFailedCallsCount($iFailedCallsCount);
+            } else {
+                $this->_increaseFailedCallsCount($iFailedCallsCount);
             }
-            $this->_increaseFailedCallsCount($iFailedCallsCount);
         }
 
         return $sOutputXml;

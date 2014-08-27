@@ -41,7 +41,7 @@ class Unit_Core_oxSystemEventHandlerTest extends OxidTestCase
     {
         $oSystemEventHandler = new oxSystemEventHandler();
 
-        $oModuleNotifierMock = $this->getMock("oxOnlineModuleVersionNotifier");
+        $oModuleNotifierMock = $this->getMock("oxOnlineModuleVersionNotifier", array(), array(), '', false);
         $oModuleNotifierMock->expects($this->once())->method("versionNotify");
 
         /** @var oxOnlineModuleVersionNotifier $oModuleNotifier */

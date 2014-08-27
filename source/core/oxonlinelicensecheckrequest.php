@@ -46,4 +46,11 @@ class oxOnlineLicenseCheckRequest extends oxOnlineLicenseServerRequest
      * @var string
      */
     public $revision;
+
+    /**
+     * Shop Servers information.
+     *
+     * @var string
+     */
+    public $servers;
 }

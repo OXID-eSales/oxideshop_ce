@@ -2527,5 +2527,51 @@ class Unit_Core_oxconfigTest extends OxidTestCase
         $this->assertFalse( $oConfig->init() );
     }
 
+    /**
+     * @dataProvider getSystemConfigurationParameters
+     */
+    public function testSaveSystemConfigurationParameterInMainShop($sType, $sName, $sValue)
+    {
+        $oConfig = new oxConfig();
+        $oConfig->saveSystemConfigParameter($sType, $sName, $sValue);
 
+        if( $sType == 'num'){
+            $this->assertEquals((float) $sValue, $oConfig->getSystemConfigParameter($sName));
+        }else{
+            $this->assertEquals($sValue, $oConfig->getSystemConfigParameter($sName));
+        }
+    }
+
+    /**
+     * @dataProvider getSystemConfigurationParameters
+     */
+    public function testSaveSystemConfigurationParameterInSubshop($sType, $sName, $sValue)
+    {
+        $this->getConfig()->setShopId(2);
+
+        $oConfig = new oxConfig();
+        $oConfig->saveSystemConfigParameter($sType, $sName, $sValue);
+
+        if( $sType == 'num'){
+            $this->assertEquals((float) $sValue, $oConfig->getSystemConfigParameter($sName));
+        }else{
+            $this->assertEquals($sValue, $oConfig->getSystemConfigParameter($sName));
+        }
+
+    }
+
+    /**
+     * Data provider for testSaveSystemConfigurationParameter
+     */
+    public function getSystemConfigurationParameters()
+    {
+        return array(
+            array('arr', 'aPraram', array(1,3)),
+            array('aarr', 'aAParam', array('a'=>1) ),
+            array('bool', 'blParam', true),
+            array('num', 'iNum', 2),
+            array('int', 'iNum', 0),
+            array('int', 'iNum', 4),
+        );
+    }
 }

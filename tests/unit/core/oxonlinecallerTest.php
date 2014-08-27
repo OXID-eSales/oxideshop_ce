@@ -25,7 +25,7 @@
  *
  * @covers oxOnlineCaller
  */
-class Unit_Core_oxoOnlineCallerTest extends OxidTestCase
+class Unit_Core_oxOnlineCallerTest extends OxidTestCase
 {
     public function testCallWhenSucceedsAndAllValuesWereSet()
     {

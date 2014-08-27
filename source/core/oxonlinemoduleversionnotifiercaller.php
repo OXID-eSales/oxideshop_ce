@@ -64,9 +64,9 @@ class oxOnlineModuleVersionNotifierCaller
     /**
      * Performs Web service request
      *
-     * @param oxOnlineModuleNotifierRequest $oRequest Object with request parameters
+     * @param oxOnlineModulesNotifierRequest $oRequest Object with request parameters
      */
-    public function doRequest( $oRequest )
+    public function doRequest( oxOnlineModulesNotifierRequest $oRequest )
     {
         /** @var oxSimpleXml $oXml */
         $oXml = oxNew('oxSimpleXml');

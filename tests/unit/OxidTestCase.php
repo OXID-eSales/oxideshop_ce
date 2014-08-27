@@ -520,6 +520,7 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     private function _createRegistryCache()
     {
         if (is_null(self::$_aRegistryCache)) {
+            oxRegistry::getUtils()->commitFileCache();
             self::$_aRegistryCache = array();
             foreach (oxRegistry::getKeys() as $class) {
                 $instance = oxRegistry::get($class);

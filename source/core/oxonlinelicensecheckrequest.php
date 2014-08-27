@@ -25,6 +25,14 @@
  */
 class oxOnlineLicenseCheckRequest extends oxOnlineLicenseServerRequest
 {
+
+    /**
+     * Web service protocol version.
+     *
+     * @var string
+     */
+    public $pVersion = '1.0';
+
     /**
      * Serial keys.
      *

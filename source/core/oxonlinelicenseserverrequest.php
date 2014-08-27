@@ -42,19 +42,19 @@ class oxOnlineLicenseServerRequest
     /**
      * @var string
      */
-    public $shopurl;
+    public $shopUrl;
 
     /**
      * Web service protocol version.
      *
      * @var string
      */
-    public $pversion;
+    public $pVersion;
 
     /**
      * Product ID. Intended for possible partner modules in future.
      *
      * @var string
      */
-    public $productid = 'eShop';
+    public $productId = 'eShop';
 }

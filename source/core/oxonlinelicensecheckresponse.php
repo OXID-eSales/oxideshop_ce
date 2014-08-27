@@ -23,7 +23,7 @@
 /**
  * Class oxOnlineLicenseCheckRequest
  */
-class oxOnlineLicenseCheckResponse extends oxOnlineLicenseServerResponse
+class oxOnlineLicenseCheckResponse
 {
     /**
      * Serial keys.

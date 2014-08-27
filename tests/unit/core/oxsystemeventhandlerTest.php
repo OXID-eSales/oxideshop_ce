@@ -55,7 +55,7 @@ class Unit_Core_oxSystemEventHandlerTest extends OxidTestCase
     {
         $oSystemEventHandler = new oxSystemEventHandler();
 
-        $oOnlineLicenseCheckMock = $this->getMock("oxOnlineLicenseCheck");
+        $oOnlineLicenseCheckMock = $this->getMock("oxOnlineLicenseCheck", array(), array(), '', false);
         // Test that shop online validation was performed.
         $oOnlineLicenseCheckMock->expects($this->once())->method("validate");
 
@@ -75,7 +75,7 @@ class Unit_Core_oxSystemEventHandlerTest extends OxidTestCase
 
         $oSystemEventHandler = new oxSystemEventHandler();
 
-        $oOnlineLicenseCheckMock = $this->getMock("oxOnlineLicenseCheck");
+        $oOnlineLicenseCheckMock = $this->getMock("oxOnlineLicenseCheck", array(), array(), '', false);
         // Test that shop online validation was performed.
         $oOnlineLicenseCheckMock->expects($this->once())->method("validate");
 
@@ -92,7 +92,7 @@ class Unit_Core_oxSystemEventHandlerTest extends OxidTestCase
 
         $oSystemEventHandler = new oxSystemEventHandler();
 
-        $oOnlineLicenseCheckMock = $this->getMock("oxOnlineLicenseCheck");
+        $oOnlineLicenseCheckMock = $this->getMock("oxOnlineLicenseCheck", array(), array(), '', false);
         // Test that shop online validation was not performed.
         $oOnlineLicenseCheckMock->expects($this->never())->method("validate");
 
@@ -109,7 +109,7 @@ class Unit_Core_oxSystemEventHandlerTest extends OxidTestCase
         $this->_prepareCurrentTime($iCurrentTime);
         $oSystemEventHandler = new oxSystemEventHandler();
 
-        $oOnlineLicenseCheckMock = $this->getMock("oxOnlineLicenseCheck");
+        $oOnlineLicenseCheckMock = $this->getMock("oxOnlineLicenseCheck", array(), array(), '', false);
         $oOnlineLicenseCheckMock->expects($this->any())->method("validate");
 
         /** @var oxOnlineLicenseCheck $oOnlineLicenseCheck */
@@ -136,7 +136,7 @@ class Unit_Core_oxSystemEventHandlerTest extends OxidTestCase
         $this->_prepareCurrentTime($iCurrentTime);
         $oSystemEventHandler = new oxSystemEventHandler();
 
-        $oOnlineLicenseCheckMock = $this->getMock("oxOnlineLicenseCheck");
+        $oOnlineLicenseCheckMock = $this->getMock("oxOnlineLicenseCheck", array(), array(), '', false);
         $oOnlineLicenseCheckMock->expects($this->any())->method("validate");
 
         /** @var oxOnlineLicenseCheck $oOnlineLicenseCheck */

@@ -4436,26 +4436,20 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      */
     protected function _onChangeResetCounts( $sOxid, $sVendorId = null, $sManufacturerId = null )
     {
-
         $myUtilsCount = oxRegistry::get("oxUtilsCount");
 
-        if ( $sVendorId ) {
-            $myUtilsCount->resetVendorArticleCount( $sVendorId );
+        if ($sVendorId) {
+            $myUtilsCount->resetVendorArticleCount($sVendorId);
         }
 
-        if ( $sManufacturerId ) {
-            $myUtilsCount->resetManufacturerArticleCount( $sManufacturerId );
+        if ($sManufacturerId) {
+            $myUtilsCount->resetManufacturerArticleCount($sManufacturerId);
         }
 
+        $aCategoryIds = $this->getCategoryIds();
         //also reseting category counts
-        $oDb = oxDb::getDb();
-        $sQ = "select distinct oxcatnid from oxobject2category where oxobjectid = ".$oDb->quote($sOxid);
-        $oRs = $oDb->select( $sQ, false, false );
-        if ( $oRs !== false && $oRs->recordCount() > 0) {
-            while ( !$oRs->EOF ) {
-                $myUtilsCount->resetCatArticleCount( $oRs->fields[0] );
-                $oRs->moveNext();
-            }
+        foreach ($aCategoryIds as $sCatId){
+            $myUtilsCount->resetCatArticleCount($sCatId, false);
         }
     }
 

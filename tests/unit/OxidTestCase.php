@@ -363,6 +363,7 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     {
         $oxLang = oxRegistry::getLang();
         $oxLang->setBaseLanguage($iLangId);
+        $oxLang->setTplLanguage($iLangId);
     }
 
     /**

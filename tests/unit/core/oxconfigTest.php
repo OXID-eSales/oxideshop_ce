@@ -2545,7 +2545,7 @@ class Unit_Core_oxconfigTest extends OxidTestCase
     /**
      * @dataProvider getSystemConfigurationParameters
      */
-    public function testSaveSystemConfigurationParameterInSubshop($sType, $sName, $sValue)
+    public function testSaveSystemConfigurationParameterInSubShop($sType, $sName, $sValue)
     {
         $this->getConfig()->setShopId(2);
 
@@ -2569,9 +2569,9 @@ class Unit_Core_oxconfigTest extends OxidTestCase
             array('arr', 'aPraram', array(1,3)),
             array('aarr', 'aAParam', array('a'=>1) ),
             array('bool', 'blParam', true),
-            array('num', 'iNum', 2),
-            array('int', 'iNum', 0),
-            array('int', 'iNum', 4),
+            array('num', 'numNum', 2),
+            array('int', 'iNum1', 0),
+            array('int', 'iNum2', 4),
         );
     }
 }

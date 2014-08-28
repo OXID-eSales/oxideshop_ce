@@ -247,16 +247,13 @@ class oxUtilsCount extends oxSuperCfg
     }
 
     /**
-     * Resets category (all categories) article count.
-     * This method can be executed several times in a row for different category,
-     * and clearing cache on each call can be avoided by passing true only for the last call.
+     * Resets category (all categories) article count
      *
-     * @param string $sCatId       Category/vendor/manufacturer ID
-     * @param bool   $blResetCache Flag whether to reset cache during execution
+     * @param string $sCatId Category/vendor/manufacturer ID
      *
      * @return null
      */
-    public function resetCatArticleCount($sCatId = null, $blResetCache = true)
+    public function resetCatArticleCount( $sCatId = null )
     {
         if ( !$sCatId ) {
             $this->getConfig()->setGlobalParameter( 'aLocalCatCache', null );
@@ -270,16 +267,6 @@ class oxUtilsCount extends oxSuperCfg
             }
         }
 
-        $this->_resetCache($blResetCache);
-    }
-
-    /**
-     * Resets cache. By default it will clear cache but it's possible to override that.
-     *
-     * @param bool $blResetCache Flag whether to reset cache or not
-     */
-    protected function _resetCache($blResetCache = true)
-    {
     }
 
     /**
@@ -310,7 +297,6 @@ class oxUtilsCount extends oxSuperCfg
                 $this->_setCatCache( $aCatData );
             }
 
-            $this->_resetCache();
         }
     }
 
@@ -342,11 +328,10 @@ class oxUtilsCount extends oxSuperCfg
      * Resets vendor (all vendors) article count
      *
      * @param string $sVendorId Category/vendor ID
-     * @param bool   $blResetCache Flag whether to reset cache during execution
      *
      * @return null
      */
-    public function resetVendorArticleCount($sVendorId = null, $blResetCache = true)
+    public function resetVendorArticleCount( $sVendorId = null )
     {
         if ( !$sVendorId ) {
             $this->getConfig()->setGlobalParameter( 'aLocalVendorCache', null );
@@ -360,18 +345,16 @@ class oxUtilsCount extends oxSuperCfg
             }
         }
 
-        $this->_resetCache($blResetCache);
     }
 
     /**
      * Resets Manufacturer (all Manufacturers) article count
      *
      * @param string $sManufacturerId Category/Manufacturer ID
-     * @param bool   $blResetCache Flag whether to reset cache during execution
      *
      * @return null
      */
-    public function resetManufacturerArticleCount($sManufacturerId = null, $blResetCache = true)
+    public function resetManufacturerArticleCount( $sManufacturerId = null )
     {
         if ( !$sManufacturerId ) {
             $this->getConfig()->setGlobalParameter( 'aLocalManufacturerCache', null );
@@ -385,7 +368,6 @@ class oxUtilsCount extends oxSuperCfg
             }
         }
 
-        $this->_resetCache($blResetCache);
     }
 
     /**

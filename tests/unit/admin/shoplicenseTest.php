@@ -162,5 +162,4 @@ class Unit_Admin_ShopLicenseTest extends OxidTestCase
 
         $this->assertFalse($oView->UNITcanUpdate());
     }
-
 }

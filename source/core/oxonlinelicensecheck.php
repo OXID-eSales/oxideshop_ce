@@ -110,11 +110,9 @@ class oxOnlineLicenseCheck
      */
     public function validateShopSerials()
     {
-        $oConfig = oxRegistry::getConfig();
-        $aSerials = $oConfig->getConfigParam("aSerials");
+        $aSerials = oxRegistry::getConfig()->getConfigParam("aSerials");
         if (!$this->validate($aSerials) && !$this->isException()) {
-            $oConfig->saveShopConfVar( 'bool', 'blShopStopped', 'true', $oConfig->getBaseShopId() );
-            $oConfig->saveShopConfVar( 'str', 'sShopVar', 'unlc', $oConfig->getBaseShopId() );
+            $this->_startGracePeriod();
         }
     }
 
@@ -241,5 +239,9 @@ class oxOnlineLicenseCheck
     protected function _setIsException($blIsException)
     {
         $this->_blIsException = $blIsException;
+    }
+
+    protected function _startGracePeriod()
+    {
     }
 }

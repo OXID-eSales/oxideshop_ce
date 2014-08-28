@@ -28,7 +28,6 @@
  */
 class oxServersManager
 {
-
     /**
      * Servers data array.
      * @var array

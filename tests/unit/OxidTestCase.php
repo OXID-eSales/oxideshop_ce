@@ -50,16 +50,33 @@ class OxidMockStubFunc implements PHPUnit_Framework_MockObject_Stub
 
 class OxidTestCase extends PHPUnit_Framework_TestCase
 {
+    /** @var array Request parameters backup.  */
     protected $_aBackup = array();
+
+    /** @var array Registry cache.  */
     private static $_aRegistryCache = null;
 
-    /**
-     * @var DbRestore
-     */
+    /** @var bool Registry cache.  */
+    private static $_blSetupBeforeTestSuiteDone = false;
+
+    /** @var DbRestore Database restorer object */
     protected static $_oDbRestore = null;
 
+    /** @var array multishop tables used in shop */
+    protected $_aMultiShopTables= array(
+        'oxarticles', 'oxcategories', 'oxattribute', 'oxdelivery',
+        'oxdeliveryset', 'oxdiscount', 'oxmanufacturers', 'oxselectlist',
+        'oxvendor', 'oxvoucherseries', 'oxwrapping'
+    );
+
+    /** @var array variable */
+    protected $_aTeardownSqls = array();
+
+    /** @var array tables for cleaning */
+    protected $_aTableForCleanups = array();
+
     /**
-     * Calling parent constructor, to fix possible problems with dataprovider
+     * Running setUpBeforeTestSuite action.
      *
      * @param  string $name
      * @param  array $data
@@ -67,8 +84,110 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
      */
     public function __construct($name = NULL, array $data = array(), $dataName = '')
     {
-        $this->_createRegistryCache();
+        $this->setUpBeforeTestSuite();
         parent::__construct($name, $data, $dataName);
+    }
+
+    /**
+     * Runs necessary things before running tests suite.
+     */
+    public function setUpBeforeTestSuite()
+    {
+        if (!self::$_blSetupBeforeTestSuiteDone) {
+            oxRegistry::getUtils()->commitFileCache();
+
+            $oxLang = oxRegistry::getLang();
+            $oxLang->resetBaseLanguage();
+
+            $this->_createRegistryCache();
+
+            self::$_blSetupBeforeTestSuiteDone = true;
+        }
+    }
+
+    /**
+     * Initialize the fixture.
+     *
+     * @return null
+     */
+    protected function setUp()
+    {
+        $this->_aBackup['_SERVER'] = $_SERVER;
+        $this->_aBackup['_POST'] = $_POST;
+        $this->_aBackup['_GET'] = $_GET;
+        $this->_aBackup['_SESSION'] = $_SESSION;
+        $this->_aBackup['_COOKIE'] = $_COOKIE;
+
+        parent::setUp();
+        error_reporting((E_ALL ^ E_NOTICE) | E_STRICT);
+        ini_set('display_errors', true);
+
+        $this->getConfig();
+        $this->getSession();
+        $this->setAdminMode(false);
+        $this->setShopId(null);
+        oxAddClassModule('modOxUtilsDate', 'oxUtilsDate');
+
+        oxRegistry::getUtils()->cleanStaticCache();
+        error_reporting((E_ALL ^ E_NOTICE) | E_STRICT);
+        ini_set('display_errors', true);
+    }
+
+    /**
+     * @param PHPUnit_Framework_TestResult $result
+     * @return PHPUnit_Framework_TestResult
+     */
+    public function run(PHPUnit_Framework_TestResult $result = null)
+    {
+        $result = parent::run($result);
+
+        oxTestModules::cleanUp();
+        return $result;
+    }
+
+    /**
+     * Executed after test is down
+     */
+    protected function tearDown()
+    {
+        $this->cleanUpDatabase();
+        modDb::getInstance()->modAttach(modDb::getInstance()->getRealInstance());
+        oxTestsStaticCleaner::clean('oxUtilsObject', '_aInstanceCache');
+        oxTestsStaticCleaner::clean('oxArticle', '_aLoadedParents');
+
+        modInstances::cleanup();
+        oxTestModules::cleanUp();
+        modOxid::globalCleanup();
+        modDB::getInstance()->cleanup();
+
+        $this->getSession()->cleanup();
+        $this->getConfig()->cleanup();
+
+        $_SERVER = $this->_aBackup['_SERVER'];
+        $_POST = $this->_aBackup['_POST'];
+        $_GET = $this->_aBackup['_GET'];
+        $_SESSION = $this->_aBackup['_SESSION'];
+        $_COOKIE = $this->_aBackup['_COOKIE'];
+
+        $this->_resetRegistry();
+
+        oxUtilsObject::resetClassInstances();
+        oxUtilsObject::resetModuleVars();
+
+        parent::tearDown();
+    }
+
+    /**
+     * This method is called after the last test of this test class is run.
+     */
+    public static function tearDownAfterClass()
+    {
+        $oDbRestore = self::_getDbRestore();
+        $oDbRestore->restoreDB();
+
+        if (function_exists('memory_get_usage')) {
+            echo "\n" . round(memory_get_usage(1) / 1024 / 1024) . 'M (' . round(memory_get_peak_usage(1) / 1024 / 1024) . 'M)' . "\n";
+        }
     }
 
     /**
@@ -244,7 +363,6 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     {
         $oxLang = oxRegistry::getLang();
         $oxLang->setBaseLanguage($iLangId);
-        $oxLang->setTplLanguage($iLangId);
     }
 
     /**
@@ -279,88 +397,55 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Initialize the fixture.
+     * Set sqls to be executed on tearDown
      *
-     * @return null
+     * @param array $aRevertSqls
      */
-    protected function setUp()
+    public function setTeardownSqls($aRevertSqls)
     {
-        $this->_aBackup['_SERVER'] = $_SERVER;
-        $this->_aBackup['_POST'] = $_POST;
-        $this->_aBackup['_GET'] = $_GET;
-        $this->_aBackup['_SESSION'] = $_SESSION;
-        $this->_aBackup['_COOKIE'] = $_COOKIE;
-
-        parent::setUp();
-        error_reporting((E_ALL ^ E_NOTICE) | E_STRICT);
-        ini_set('display_errors', true);
-
-        $this->getConfig();
-        $this->getSession();
-        $this->setAdminMode(false);
-        $this->setShopId(null);
-        oxAddClassModule('modOxUtilsDate', 'oxUtilsDate');
-
-        oxRegistry::getUtils()->cleanStaticCache();
-        error_reporting((E_ALL ^ E_NOTICE) | E_STRICT);
-        ini_set('display_errors', true);
+        $this->_aTeardownSqls = $aRevertSqls;
     }
 
     /**
-     * @param PHPUnit_Framework_TestResult $result
-     * @return PHPUnit_Framework_TestResult
+     * Get teardown sqls containing delete information
+     *
+     * @return array
      */
-    public function run(PHPUnit_Framework_TestResult $result = null)
+    public function getTeardownSqls()
     {
-        $result = parent::run($result);
-
-        oxTestModules::cleanUp();
-        return $result;
+        return $this->_aTeardownSqls;
     }
 
     /**
-     * Executed after test is down
+     * Add single teardown sql
+     *
+     * @param string $sSql teardown sql
      */
-    protected function tearDown()
+    public function addTeardownSql($sSql)
     {
-        $this->cleanUpDatabase();
-        modDb::getInstance()->modAttach(modDb::getInstance()->getRealInstance());
-        oxTestsStaticCleaner::clean('oxUtilsObject', '_aInstanceCache');
-        oxTestsStaticCleaner::clean('oxArticle', '_aLoadedParents');
-
-        modInstances::cleanup();
-        oxTestModules::cleanUp();
-        modOxid::globalCleanup();
-        modDB::getInstance()->cleanup();
-
-        $this->getSession()->cleanup();
-        $this->getConfig()->cleanup();
-
-        $_SERVER = $this->_aBackup['_SERVER'];
-        $_POST = $this->_aBackup['_POST'];
-        $_GET = $this->_aBackup['_GET'];
-        $_SESSION = $this->_aBackup['_SESSION'];
-        $_COOKIE = $this->_aBackup['_COOKIE'];
-
-        $this->_resetRegistry();
-
-        oxUtilsObject::resetClassInstances();
-        oxUtilsObject::resetModuleVars();
-
-        parent::tearDown();
-    }
-
-    /**
-     * This method is called after the last test of this test class is run.
-     */
-    public static function tearDownAfterClass()
-    {
-        $oDbRestore = self::_getDbRestore();
-        $oDbRestore->restoreDB();
-
-        if (function_exists('memory_get_usage')) {
-            echo "\n" . round(memory_get_usage(1) / 1024 / 1024) . 'M (' . round(memory_get_peak_usage(1) / 1024 / 1024) . 'M)' . "\n";
+        if (!in_array($sSql, $this->_aTeardownSqls)) {
+            $this->_aTeardownSqls[] = $sSql;
         }
+    }
+
+    /**
+     * Set multishop tables array, in case some custom tables need to be used
+     *
+     * @param array $aMultiShopTables
+     */
+    public function setMultiShopTables($aMultiShopTables)
+    {
+        $this->_aMultiShopTables = $aMultiShopTables;
+    }
+
+    /**
+     * Get multishop tables array
+     *
+     * @return array
+     */
+    public function getMultiShopTables()
+    {
+        return $this->_aMultiShopTables;
     }
 
     /**
@@ -387,6 +472,80 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
         if (time() < ((int) $oDate->format('U'))) {
             $this->markTestSkipped($sMessage);
         }
+    }
+
+    /**
+     * Executes SQL and adds table to clean up after test.
+     * For EE version elements are added to map table for specified shops.
+     *
+     * @param string $sSql     Sql to be executed.
+     * @param string $sTable   Table name.
+     * @param array  $aShopIds List of shop IDs.
+     * @param null   $sMapId   Map ID.
+     */
+    public function addToDatabase($sSql, $sTable, $aShopIds = null, $sMapId = null)
+    {
+        oxDb::getDb()->execute($sSql);
+        $this->addTableForCleanup($sTable);
+
+    }
+
+    /**
+     * Calls all the queries stored in $_aTeardownSqls
+     * Cleans all the tables that were set
+     */
+    public function cleanUpDatabase()
+    {
+        if ($aSqls = $this->getTeardownSqls()) {
+            if (!is_array($aSqls)) {
+                $aSqls = array($aSqls);
+            }
+            foreach ($aSqls as $sSql) {
+                oxDb::getDb()->execute($sSql);
+            }
+        }
+        if ($aTablesForCleanup = $this->getTablesForCleanup()) {
+            $oDbRestore = self::_getDbRestore();
+            if (!is_array($aTablesForCleanup)) {
+                $aTablesForCleanup = array($aTablesForCleanup);
+            }
+            foreach ($aTablesForCleanup as $sTable) {
+                $oDbRestore->restoreTable($sTable);
+            }
+        }
+    }
+
+    /**
+     * Gets dirty tables for cleaning
+     *
+     * @param array $aTablesForCleanup
+     */
+    public function setTablesForCleanup($aTablesForCleanup)
+    {
+        $this->_aTableForCleanups = $aTablesForCleanup;
+    }
+
+    /**
+     * Sets dirty tables for cleaning
+     *
+     * @return array
+     */
+    public function getTablesForCleanup()
+    {
+        return $this->_aTableForCleanups;
+    }
+
+    /**
+     * Adds table to be cleaned on teardown
+     *
+     * @param $sTable
+     */
+    public function addTableForCleanup($sTable)
+    {
+        if (!in_array($sTable, $this->_aTableForCleanups)) {
+            $this->_aTableForCleanups[] = $sTable;
+        }
+
     }
 
     /**
@@ -513,19 +672,15 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
         return self::$_oDbRestore;
     }
 
-
     /**
      * Creates registry clone
      */
-    private function _createRegistryCache()
+    protected function _createRegistryCache()
     {
-        if (is_null(self::$_aRegistryCache)) {
-            oxRegistry::getUtils()->commitFileCache();
-            self::$_aRegistryCache = array();
-            foreach (oxRegistry::getKeys() as $class) {
-                $instance = oxRegistry::get($class);
-                self::$_aRegistryCache[$class] = clone $instance;
-            }
+        self::$_aRegistryCache = array();
+        foreach (oxRegistry::getKeys() as $class) {
+            $instance = oxRegistry::get($class);
+            self::$_aRegistryCache[$class] = clone $instance;
         }
     }
 
@@ -580,147 +735,5 @@ class OxidTestCase extends PHPUnit_Framework_TestCase
     protected function _2Utf($sVal)
     {
         return iconv("ISO-8859-1", "UTF-8", $sVal);
-    }
-
-    /**
-     * @var $_aMultiShopTables array multishop tables used in shop
-     */
-    protected $_aMultiShopTables= array('oxarticles', 'oxcategories', 'oxattribute', 'oxdelivery',
-        'oxdeliveryset', 'oxdiscount', 'oxmanufacturers', 'oxselectlist', 'oxvendor', 'oxvoucherseries', 'oxwrapping' );
-
-    /**
-     * @var $_aTeardownSqls array variable
-     */
-    protected $_aTeardownSqls = array();
-
-    /**
-     * Set sqls to be executed on tearDown
-     *
-     * @param array $aTeardownSqls
-     */
-    public function setTeardownSqls($aRevertSqls)
-    {
-        $this->_aTeardownSqls = $aRevertSqls;
-    }
-
-    /**
-     * Get teardown sqls containing delete information
-     *
-     * @return array
-     */
-    public function getTeardownSqls()
-    {
-        return $this->_aTeardownSqls;
-    }
-
-    /**
-     * Add single teardown sql
-     *
-     * @param string $sSql teardown sql
-     */
-    public function addTeardownSql($sSql)
-    {
-        if (!in_array($sSql, $this->_aTeardownSqls)) {
-            $this->_aTeardownSqls[] = $sSql;
-        }
-    }
-
-    /**
-     * Set multishop tables array, in case some custom tables need to be used
-     *
-     * @param array $aMultiShopTables
-     */
-    public function setMultiShopTables($aMultiShopTables)
-    {
-        $this->_aMultiShopTables = $aMultiShopTables;
-    }
-
-    /**
-     * Get multishop tables array
-     *
-     * @return array
-     */
-    public function getMultiShopTables()
-    {
-        return $this->_aMultiShopTables;
-    }
-
-    /**
-     * Executes SQL and adds table to clean up after test.
-     * For EE version elements are added to map table for specified shops.
-     *
-     * @param string $sSql     Sql to be executed.
-     * @param string $sTable   Table name.
-     * @param array  $aShopIds List of shop IDs.
-     * @param null   $sMapId   Map ID.
-     */
-    public function addToDatabase($sSql, $sTable, $aShopIds = null, $sMapId = null)
-    {
-        oxDb::getDb()->execute($sSql);
-        $this->addTableForCleanup($sTable);
-
-    }
-
-    /**
-     * Calls all the queries stored in $_aTeardownSqls
-     * Cleans all the tables that were set
-     */
-    public function cleanUpDatabase()
-    {
-        if ($aSqls = $this->getTeardownSqls()) {
-            if (!is_array($aSqls)) {
-                $aSqls = array($aSqls);
-            }
-            foreach ($aSqls as $sSql) {
-                oxDb::getDb()->execute($sSql);
-            }
-        }
-        if ($aTablesForCleanup = $this->getTablesForCleanup()) {
-            $oDbRestore = self::_getDbRestore();
-            if (!is_array($aTablesForCleanup)) {
-                $aTablesForCleanup = array($aTablesForCleanup);
-            }
-            foreach ($aTablesForCleanup as $sTable) {
-                $oDbRestore->restoreTable($sTable);
-            }
-        }
-    }
-
-    /**
-     * @var $_aTablesForCleanup array tables for cleaning
-     */
-    protected $_aTableForCleanups = array();
-
-    /**
-     * Gets dirty tables for cleaning
-     *
-     * @param array $aTablesForCleanup
-     */
-    public function setTablesForCleanup($aTablesForCleanup)
-    {
-        $this->_aTableForCleanups = $aTablesForCleanup;
-    }
-
-    /**
-     * Sets dirty tables for cleaning
-     *
-     * @return array
-     */
-    public function getTablesForCleanup()
-    {
-        return $this->_aTableForCleanups;
-    }
-
-    /**
-     * Adds table to be cleaned on teardown
-     *
-     * @param $sTable
-     */
-    public function addTableForCleanup($sTable)
-    {
-        if (!in_array($sTable, $this->_aTableForCleanups)) {
-            $this->_aTableForCleanups[] = $sTable;
-        }
-
     }
 }

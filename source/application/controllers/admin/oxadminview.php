@@ -476,7 +476,15 @@ class oxAdminView extends oxView
                     $myUtilsCount->resetManufacturerArticleCount( $sValue );
                     break;
             }
+            $this->_resetCache();
         }
+    }
+
+    /**
+     * Resets cache.
+     */
+    protected function _resetCache()
+    {
     }
 
     /**

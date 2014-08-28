@@ -690,7 +690,16 @@ class ajaxListComponent extends oxSuperCfg
                     $myUtilsCount->resetManufacturerArticleCount( $sValue );
                     break;
             }
+
+            $this->_resetCache();
         }
+    }
+
+    /**
+     * Resets cache.
+     */
+    protected function _resetCache()
+    {
     }
 
 }

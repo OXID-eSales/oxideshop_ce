@@ -38,7 +38,7 @@ class Unit_Core_oxOnlineCallerTest extends OxidTestCase
         $this->assertSame(array('xmlRequest' => '_testXml'), $oCurl->getParameters('xmlRequest'));
     }
 
-    public function testCallWhenSucceedsFromFifthCall()
+    public function testCallWhenSucceedsOnTheLastAllowedCall()
     {
         $oCaller = new oxOnlineCaller($this->_getMockedCurl(), $this->_getMockedEmailBuilder());
         $sUrl = 'http://oxid-esales.com';
@@ -48,7 +48,7 @@ class Unit_Core_oxOnlineCallerTest extends OxidTestCase
         $this->assertSame(0, oxRegistry::getConfig()->getSystemConfigParameter('iFailedOnlineCallsCount'));
     }
 
-    public function testCallWhenFailsButItsFifthCall()
+    public function testCallWhenFailsAndItsLastAllowedCall()
     {
         $oCaller = new oxOnlineCaller($this->_getMockedCurlWhichThrowsException(), $this->_getMockedEmailBuilder());
         $sUrl = 'http://oxid-esales.com';
@@ -58,7 +58,7 @@ class Unit_Core_oxOnlineCallerTest extends OxidTestCase
         $this->assertSame(5, oxRegistry::getConfig()->getSystemConfigParameter('iFailedOnlineCallsCount'));
     }
 
-    public function testCallWhenFailsFromNotAllowedCallsCount()
+    public function testCallWhenFailsAndThereAreNotAllowedCallsCount()
     {
         $oEmail = $this->getMock('oxEmail', array('send'));
         // Email send function must be called.

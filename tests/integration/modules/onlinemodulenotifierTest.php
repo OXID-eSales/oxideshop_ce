@@ -41,25 +41,25 @@ class Integration_Modules_OnlineModuleNotifierTest extends BaseModuleTestCase
 
         $oNotifier = new oxOnlineModuleVersionNotifier($oCaller, $oModuleList);
         $oNotifier->versionNotify();
-
     }
 
     protected function _getExpectedRequest()
     {
         $oRequest = new oxOnlineModulesNotifierRequest();
 
+        $sShopUrl = $this->getConfig()->getShopUrl();
         $oRequest->edition = $this->getConfig()->getEdition();
         $oRequest->version = $this->getConfig()->getVersion();
-        $oRequest->shopurl = $this->getConfig()->getShopUrl();
-        $oRequest->pversion = '1.0';
-        $oRequest->productid = 'eShop';
+        $oRequest->shopUrl = $sShopUrl;
+        $oRequest->pVersion = '1.0';
+        $oRequest->productId = 'eShop';
 
         $modules = new stdClass();
         $modules->module = array();
 
         $aModulesInfo = array();
-        $aModulesInfo[] = array('id' => 'extending_1_class', 'version' => '1.0', 'activeInShop' => array('http://eshop/') );
-        $aModulesInfo[] = array('id' => 'extending_1_class_3_extensions', 'version' => '1.0', 'activeInShop' => array('http://eshop/') );
+        $aModulesInfo[] = array('id' => 'extending_1_class', 'version' => '1.0', 'activeInShop' => array($sShopUrl) );
+        $aModulesInfo[] = array('id' => 'extending_1_class_3_extensions', 'version' => '1.0', 'activeInShop' => array($sShopUrl) );
         $aModulesInfo[] = array('id' => 'extending_3_blocks', 'version' => '1.0', 'activeInShop' => array() );
         $aModulesInfo[] = array('id' => 'extending_3_classes', 'version' => '1.0', 'activeInShop' => array() );
         $aModulesInfo[] = array('id' => 'extending_3_classes_with_1_extension', 'version' => '1.0', 'activeInShop' => array() );
@@ -69,7 +69,7 @@ class Integration_Modules_OnlineModuleNotifierTest extends BaseModuleTestCase
         $aModulesInfo[] = array('id' => 'with_2_settings', 'version' => '1.0', 'activeInShop' => array() );
         $aModulesInfo[] = array('id' => 'with_2_templates', 'version' => '1.0', 'activeInShop' => array() );
         $aModulesInfo[] = array('id' => 'with_events', 'version' => '1.0', 'activeInShop' => array() );
-        $aModulesInfo[] = array('id' => 'with_everything', 'version' => '1.0', 'activeInShop' => array('http://eshop/') );
+        $aModulesInfo[] = array('id' => 'with_everything', 'version' => '1.0', 'activeInShop' => array($sShopUrl) );
 
         foreach ($aModulesInfo as $aModuleInfo){
             $module = new stdClass();

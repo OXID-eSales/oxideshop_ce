@@ -691,14 +691,14 @@ class ajaxListComponent extends oxSuperCfg
                     break;
             }
 
-            $this->_resetCache();
+            $this->_resetContentCache();
         }
     }
 
     /**
      * Resets cache.
      */
-    protected function _resetCache()
+    protected function _resetContentCache()
     {
     }
 

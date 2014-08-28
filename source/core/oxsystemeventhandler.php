@@ -142,8 +142,8 @@ class oxSystemEventHandler
      */
     public function onShopStart()
     {
-        $this->_validateOffline();
         $this->_sendShopInformation();
+        $this->_validateOffline();
     }
 
     protected function _sendShopInformation()

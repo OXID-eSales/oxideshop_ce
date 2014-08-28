@@ -123,63 +123,6 @@ class Unit_Core_oxonlinelicensecheckTest extends OxidTestCase
         $oLicenseCheck->validateShopSerials();
     }
 
-    public function testShopGoesToGracePeriodWhenShopSerialInvalid()
-    {
-        $oConfig = oxRegistry::getConfig();
-        $oConfig->setConfigParam('blShopStopped', false);
-        $oConfig->setConfigParam('sShopVar', '');
-
-        $oResponse = new oxOnlineLicenseCheckResponse();
-        $oResponse->code = '1';
-        $oResponse->message = 'NACK';
-
-        $oCaller = $this->getMock('oxOnlineLicenseCheckCaller', array('doRequest'), array(), '', false);
-        $oCaller->expects($this->once())->method('doRequest')->will($this->returnValue($oResponse));
-
-        $oLicenseCheck = new oxOnlineLicenseCheck($oCaller);
-        $oLicenseCheck->validateShopSerials();
-
-        $this->assertTrue($this->getConfig()->getConfigParam('blShopStopped'));
-        $this->assertEquals('unlc', $this->getConfig()->getConfigParam('sShopVar'));
-    }
-
-    public function testShopDoesNotGoToGracePeriodWhenLicensingServerIsDown()
-    {
-        $oConfig = oxRegistry::getConfig();
-        $oConfig->setConfigParam('blShopStopped', false);
-        $oConfig->setConfigParam('sShopVar', '');
-
-        $oException = new oxException();
-
-        $oCaller = $this->getMock('oxOnlineLicenseCheckCaller', array('doRequest'), array(), '', false);
-        $oCaller->expects($this->once())->method('doRequest')->will($this->throwException($oException));
-
-        $oLicenseCheck = new oxOnlineLicenseCheck($oCaller);
-        $oLicenseCheck->validateShopSerials();
-
-        $this->assertFalse($oConfig->getConfigParam('blShopStopped'));
-        $this->assertEquals('', $oConfig->getConfigParam('sShopVar'));
-    }
-
-    public function testShopDoesNotGoToGracePeriodWhenSerialValid()
-    {
-        $oConfig = oxRegistry::getConfig();
-        $oConfig->setConfigParam('blShopStopped', false);
-        $oConfig->setConfigParam('sShopVar', '');
-
-        $oResponse = new oxOnlineLicenseCheckResponse();
-        $oResponse->code = '0';
-        $oResponse->message = 'ACK';
-
-        $oCaller = $this->getMock('oxOnlineLicenseCheckCaller', array('doRequest'), array(), '', false);
-        $oCaller->expects($this->once())->method('doRequest')->will($this->returnValue($oResponse));
-
-        $oLicenseCheck = new oxOnlineLicenseCheck($oCaller);
-        $oLicenseCheck->validateShopSerials();
-
-        $this->assertFalse($this->getConfig()->getConfigParam('blShopStopped'));
-        $this->assertEquals('', $this->getConfig()->getConfigParam('sShopVar'));
-    }
 
     public function testIsExceptionWhenExceptionWasThrown()
     {

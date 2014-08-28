@@ -50,13 +50,6 @@ class oxOnlineLicenseCheck
     protected $_sValidResponseMessage = 'ACK';
 
     /**
-     * License key validation result.
-     *
-     * @var bool
-     */
-    protected $_blValidationResult = null;
-
-    /**
      * List of serial keys to validate.
      *
      * @var array
@@ -101,16 +94,6 @@ class oxOnlineLicenseCheck
     }
 
     /**
-     * Get license key validation result.
-     *
-     * @return bool
-     */
-    public function getValidationResult()
-    {
-        return $this->_blValidationResult;
-    }
-
-    /**
      * Indicates whether the exception was thrown
      *
      * @return bool
@@ -121,27 +104,38 @@ class oxOnlineLicenseCheck
     }
 
     /**
+     * Takes active serial key and performs online license check in case it has never been performed before.
+     * In case of invalid license key, eShop is declared as unlicensed.
+     * In case of validation exception (eg. service can not be reached) the check is postponed until the next call.
+     */
+    public function validateShopSerials()
+    {
+        $oConfig = oxRegistry::getConfig();
+        $aSerials = $oConfig->getConfigParam("aSerials");
+        if (!$this->validate($aSerials) && !$this->isException()) {
+            $oConfig->saveShopConfVar( 'bool', 'blShopStopped', 'true', $oConfig->getBaseShopId() );
+            $oConfig->saveShopConfVar( 'str', 'sShopVar', 'unlc', $oConfig->getBaseShopId() );
+        }
+    }
+
+    /**
      * The Online check is performed. Returns check result
      *
-     * @param string $sSerial Serial key to be checked
+     * @param array|string $mSerials Serial key to be checked
      *
      * @return bool
      */
-    public function validate($sSerial = null)
+    public function validate($mSerials)
     {
-        if ( is_null( $sSerial ) ) {
-            $oConfig = oxRegistry::getConfig();
-            $sSerial = $oConfig->getConfigParam("aSerials");
-        }
-        $aSerial = (array) $sSerial;
+        $aSerials = (array) $mSerials;
         $this->_setIsException(false);
 
         $blResult = false;
         try {
-            $oRequest = $this->_formRequest($aSerial);
+            $oRequest = $this->_formRequest($aSerials);
 
             $oCaller = $this->_getCaller();
-            $oResponse = $oCaller->doRequest($oRequest, 'OLC');
+            $oResponse = $oCaller->doRequest($oRequest);
 
             $blResult = $this->_validateResponse($oResponse);
 
@@ -189,18 +183,18 @@ class oxOnlineLicenseCheck
                 $oResponse->message == $this->_sValidResponseMessage
             ) {
                 // serial keys are valid
-                $this->_blValidationResult = true;
+                $blValid = true;
             } else {
                 // serial keys are not valid
                 $this->_setErrorMessage(oxRegistry::getLang()->translateString('OLC_ERROR_SERIAL_NOT_VALID'));
-                $this->_blValidationResult = false;
+                $blValid = false;
             }
         } else {
             // validation result is unknown
             throw new oxException('OLC_ERROR_RESPONSE_NOT_VALID');
         }
 
-        return $this->_blValidationResult;
+        return $blValid;
     }
 
     /**

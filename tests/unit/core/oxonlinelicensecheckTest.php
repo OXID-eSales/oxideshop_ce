@@ -67,15 +67,6 @@ class Unit_Core_oxonlinelicensecheckTest extends OxidTestCase
      * @depends testValidationPassed
      * @param oxOnlineLicenseCheck $oLicenseCheck
      */
-    public function testValidationResultOnSuccess($oLicenseCheck)
-    {
-        $this->assertEquals(true, $oLicenseCheck->getValidationResult());
-    }
-
-    /**
-     * @depends testValidationPassed
-     * @param oxOnlineLicenseCheck $oLicenseCheck
-     */
     public function testErrorMessageEmptyOnSuccess($oLicenseCheck)
     {
         $this->assertEquals('', $oLicenseCheck->getErrorMessage());
@@ -104,21 +95,12 @@ class Unit_Core_oxonlinelicensecheckTest extends OxidTestCase
      * @depends testValidationFailed
      * @param oxOnlineLicenseCheck $oLicenseCheck
      */
-    public function testValidationResultOnFailure($oLicenseCheck)
-    {
-        $this->assertEquals(false, $oLicenseCheck->getValidationResult());
-    }
-
-    /**
-     * @depends testValidationFailed
-     * @param oxOnlineLicenseCheck $oLicenseCheck
-     */
     public function testErrorMessageSetOnFailure($oLicenseCheck)
     {
         $this->assertEquals(oxRegistry::getLang()->translateString('OLC_ERROR_SERIAL_NOT_VALID'), $oLicenseCheck->getErrorMessage());
     }
 
-    public function testSerialsAreTakenFromConfigWhenNotPassed()
+    public function testSerialsAreTakenFromConfigInShopSerialsValidation()
     {
         $oRequest = new oxOnlineLicenseCheckRequest();
         $oRequest->edition = oxRegistry::getConfig()->getEdition();
@@ -135,10 +117,48 @@ class Unit_Core_oxonlinelicensecheckTest extends OxidTestCase
         $this->getConfig()->setConfigParam("aSerials", array('key1', 'key2'));
 
         $oCaller = $this->getMock('oxOnlineLicenseCheckCaller', array('doRequest'), array(), '', false);
-        $oCaller->expects($this->once())->method('doRequest')->with($oRequest, 'OLC');
+        $oCaller->expects($this->once())->method('doRequest')->with($oRequest);
 
         $oLicenseCheck = new oxOnlineLicenseCheck($oCaller);
-        $oLicenseCheck->validate();
+        $oLicenseCheck->validateShopSerials();
+    }
+
+    public function testShopGoesToGracePeriodWhenShopSerialInvalid()
+    {
+        $oConfig = oxRegistry::getConfig();
+        $oConfig->setConfigParam('blShopStopped', false);
+        $oConfig->setConfigParam('sShopVar', '');
+
+        $oResponse = new oxOnlineLicenseCheckResponse();
+        $oResponse->code = '1';
+        $oResponse->message = 'NACK';
+
+        $oCaller = $this->getMock('oxOnlineLicenseCheckCaller', array('doRequest'), array(), '', false);
+        $oCaller->expects($this->once())->method('doRequest')->will($this->returnValue($oResponse));
+
+        $oLicenseCheck = new oxOnlineLicenseCheck($oCaller);
+        $oLicenseCheck->validateShopSerials();
+
+        $this->assertTrue($this->getConfig()->getConfigParam('blShopStopped'));
+        $this->assertEquals('unlc', $this->getConfig()->getConfigParam('sShopVar'));
+    }
+
+    public function testShopDoesNotGoToGracePeriodWhenLicensingServerIsDown()
+    {
+        $oConfig = oxRegistry::getConfig();
+        $oConfig->setConfigParam('blShopStopped', false);
+        $oConfig->setConfigParam('sShopVar', '');
+
+        $oException = new oxException();
+
+        $oCaller = $this->getMock('oxOnlineLicenseCheckCaller', array('doRequest'), array(), '', false);
+        $oCaller->expects($this->once())->method('doRequest')->will($this->throwException($oException));
+
+        $oLicenseCheck = new oxOnlineLicenseCheck($oCaller);
+        $oLicenseCheck->validateShopSerials();
+
+        $this->assertFalse($oConfig->getConfigParam('blShopStopped'));
+        $this->assertEquals('', $oConfig->getConfigParam('sShopVar'));
     }
 
     public function testIsExceptionWhenExceptionWasThrown()

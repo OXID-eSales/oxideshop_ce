@@ -150,7 +150,7 @@ class oxSystemEventHandler
     {
         if ($this->_needToSendShopInformation()) {
             $oOnlineLicenseCheck = $this->getOnlineLicenseCheck();
-            $oOnlineLicenseCheck->validate();
+            $oOnlineLicenseCheck->validateShopSerials();
             $this->_updateNextCheckTime();
         }
     }

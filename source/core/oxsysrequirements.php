@@ -21,9 +21,6 @@
  */
 
 /**
- *
- */
-/**
  * System requirements class.
  *
  * @internal Do not make a module extension for this class.

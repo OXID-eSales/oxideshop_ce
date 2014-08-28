@@ -29,7 +29,7 @@
  * Is still under development - still changes at the remote server are necessary - therefore ignoring the results for now
  *
  * @internal Do not make a module extension for this class.
- * @see http://www.oxid-forge.com/do_not_extend_classes_list/
+ * @see http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
  *
  * @ignore This class will not be included in documentation.
  */

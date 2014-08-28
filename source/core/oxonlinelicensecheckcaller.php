@@ -95,7 +95,7 @@ class oxOnlineLicenseCheckCaller
         $sRequest = $oSimpleXml->objectToXml($oRequest, 'olcRequest');
 
         $oCaller = $this->_getOnlineCaller();
-        $sResponse = $oCaller->call($sRequest, $this->getWebServiceUrl());
+        $sResponse = $oCaller->call($this->getWebServiceUrl(), $sRequest);
 
         return $this->_formResponse($sResponse);
     }

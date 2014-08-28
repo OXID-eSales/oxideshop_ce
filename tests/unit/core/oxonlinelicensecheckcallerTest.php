@@ -57,7 +57,7 @@ class Unit_Core_oxOnlineLicenseCheckCallerTest extends OxidTestCase
         /** @var oxSimpleXml $oSimpleXml */
 
         $oCaller = $this->getMock('oxOnlineCaller', array('call'), array(), '', false);
-        $oCaller->expects($this->once())->method('call')->with('formed_xml', $sWebServiceUrl)->will($this->returnValue($this->_getValidResponseXml()));
+        $oCaller->expects($this->once())->method('call')->with($sWebServiceUrl, 'formed_xml')->will($this->returnValue($this->_getValidResponseXml()));
         /** @var oxOnlineCaller $oCaller */
 
         $oOnlineLicenseCaller = new oxOnlineLicenseCheckCaller($oCaller, $oSimpleXml);

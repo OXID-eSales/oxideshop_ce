@@ -266,7 +266,6 @@ class oxUtilsCount extends oxSuperCfg
                 $this->_setCatCache( $aCatData );
             }
         }
-
     }
 
     /**
@@ -296,7 +295,6 @@ class oxUtilsCount extends oxSuperCfg
                 // writing back to cache
                 $this->_setCatCache( $aCatData );
             }
-
         }
     }
 
@@ -344,7 +342,6 @@ class oxUtilsCount extends oxSuperCfg
                 $this->_setVendorCache( $aVendorData );
             }
         }
-
     }
 
     /**
@@ -367,7 +364,6 @@ class oxUtilsCount extends oxSuperCfg
                 $this->_setManufacturerCache( $aManufacturerData );
             }
         }
-
     }
 
     /**

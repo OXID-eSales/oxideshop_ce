@@ -20,17 +20,53 @@
  * @version   OXID eShop CE
  */
 
-class Integration_OnlineInfo_FrontendServersInformationStoringTest extends UserTestCase
+class Integration_OnlineInfo_FrontendServersInformationStoringTest extends OxidTestCase
 {
+    /** @var oxUtilsDate  */
+    private $_oUtilsDate;
+
+    public function setUp()
+    {
+        parent::setUp();
+        $this->_oUtilsDate = oxRegistry::get('oxUtilsDate');
+    }
+
+    public function tearDown()
+    {
+        oxRegistry::set('oxUtilsDate', $this->_oUtilsDate);
+        parent::tearDown();
+    }
+
     public function testFrontendServerDoesNotExist()
     {
-        $aServerInformation = array();
-        $this->mockServerInformation($aServerInformation);
+        $aExpectedServerNodesData = array(
+            'timestamp' => time(),
+            'serverId' => '172.168.1.50',
+            'lastFrontendUsage' => '',
+            'lastAdminUsage' => '',
+        );
+        $this->mockServerInformation($aExpectedServerNodesData);
 
         $oServerNodeProcessor = new oxServerNodeProcessor();
         $oServerNodeProcessor->process();
         $aServerNodesData = $this->getConfigParam('aServerNodesData');
 
-        $this->assertServerInformationSame($aServerInformation, $aServerNodesData);
+        $this->assertServerInformationSame($aExpectedServerNodesData, $aServerNodesData);
+    }
+
+    private function assertServerInformationSame($aExpectedServerNodesData, $aActualServerNodesData)
+    {
+        sort($aExpectedServerNodesData);
+        sort($aActualServerNodesData);
+
+        $this->assertEquals($aExpectedServerNodesData, $aActualServerNodesData);
+    }
+
+    private function mockServerInformation($aServerInformation)
+    {
+        $oUtilsDate = $this->getMock('oxUtilsDate', array('getTime'));
+        $oUtilsDate->expects($this->any())->method('getTime')->will($this->returnValue($aServerInformation['timestamp']));
+        /** @var oxUtilsDate $oUtils */
+        oxRegistry::set('oxUtilsDate', $oUtilsDate);
     }
 }

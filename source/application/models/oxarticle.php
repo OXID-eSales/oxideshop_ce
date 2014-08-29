@@ -322,6 +322,13 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     protected $_iStockStatusOnLoad = null;
 
     /**
+     * Article original parameters when loaded.
+     *
+     * @var array
+     */
+    protected $_aSortingFieldsOnLoad = array();
+
+    /**
      * Stock status
      *
      * @var integer
@@ -1069,7 +1076,12 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
 
         if ( $aData ) {
             $this->assign( $aData );
-            // convert date's to international format
+
+            $aSoringFields = oxRegistry::getConfig()->getConfigParam('aSortCols');
+            foreach ($aSoringFields as $sField) {
+                $sFullField = $this->_getFieldLongName( $sField );
+                $this->_aSortingFieldsOnLoad[$sFullField] = $this->$sFullField->value;
+            }
 
             $this->_iStockStatusOnLoad = $this->_iStockStatus;
 
@@ -1078,6 +1090,26 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         }
 
         return false;
+    }
+
+    /**
+     * Checks whether sorting fields changed from last article loading.
+     *
+     * @return bool
+     */
+    public function hasSortingFieldsChanged()
+    {
+        $aSoringFields = oxRegistry::getConfig()->getConfigParam('aSortCols');
+        $blChanged = false;
+        foreach ($aSoringFields as $sField) {
+            $sParameterName = 'oxarticles__'.$sField;
+            if ($this->$sParameterName->value !== $this->_aSortingFieldsOnLoad[$sParameterName]) {
+                $blChanged = true;
+                break;
+            }
+        }
+
+        return $blChanged;
     }
 
 

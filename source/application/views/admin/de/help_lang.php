@@ -621,7 +621,7 @@ $aLang =  array(
 'HELP_SHOP_CONFIG_VIEWNETPRICE'               => 'Im Shop werden Artikelpreise als Nettopreise angezeigt.',
 'HELP_SHOP_CONFIG_ENTERNETPRICE'              => 'Im Administrationsbereich müssen Artikelpreise als Nettopreise eingegeben werden.',
 
-'HELP_REVERSE_PROXY_GET_FRONTEND'             => 'Überprüft, ob der Reverse Proxy für das Frontend verfügbar ist. Geprüft wird der Header der Startseite des Shops.',
+'HELP_REVERSE_PROXY_GET_FRONTEND'             => '[tr]Überprüft, ob der Reverse Proxy für das Frontend verfügbar ist. Geprüft wird der Header der Startseite des Shops.<br>Test could fail because of different domains in admin and frontend and also because of different protocols for example admin uses https protocol and frontent uses http.',
 'HELP_REVERSE_PROXY_GET_BACKEND'              => 'Der Administrationsbereich wird ohne Reverse Proxy angezeigt. Varnish Header konnte nicht empfangen werden.',
 
 'HELP_SHOP_CONFIG_DEBIT_OLD_BANK_INFORMATION_NOT_ALLOWED' => 'Im Bestellprozess können nur IBAN und BIC angegeben werden. Die Eingabe von Kontonummer und BLZ ist nur möglich, wenn das Kontrollkästchen nicht aktiviert ist.',

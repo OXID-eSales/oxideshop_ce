@@ -3348,6 +3348,7 @@ h3.section button {
 
 .social span {
     float: left;
+    z-index: 66;
 }
 
 .fb_share_count_hidden {
@@ -3568,7 +3569,7 @@ a.fb_button_simple {
     top: 0;
     left: 0;
     display: none;
-    z-index: 99;
+    z-index: 33;
 }
 
 .marker img {

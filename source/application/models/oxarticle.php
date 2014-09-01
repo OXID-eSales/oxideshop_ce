@@ -1095,9 +1095,10 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      */
     public function hasSortingFieldsChanged()
     {
-        $aSoringFields = oxRegistry::getConfig()->getConfigParam('aSortCols');
+        $aSortingFields = oxRegistry::getConfig()->getConfigParam('aSortCols');
+        $aSortingFields = !empty($aSortingFields)? (array) $aSortingFields : array();
         $blChanged = false;
-        foreach ($aSoringFields as $sField) {
+        foreach ($aSortingFields as $sField) {
             $sParameterName = 'oxarticles__'.$sField;
             if ($this->$sParameterName->value !== $this->_aSortingFieldsOnLoad[$sParameterName]) {
                 $blChanged = true;
@@ -4963,9 +4964,10 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      */
     protected function _saveSortingFieldValuesOnLoad()
     {
-        $aSoringFields = oxRegistry::getConfig()->getConfigParam('aSortCols');
+        $aSortingFields = oxRegistry::getConfig()->getConfigParam('aSortCols');
+        $aSortingFields = !empty($aSortingFields)? (array) $aSortingFields : array();
 
-        foreach ($aSoringFields as $sField) {
+        foreach ($aSortingFields as $sField) {
             $sFullField = $this->_getFieldLongName( $sField );
             $this->_aSortingFieldsOnLoad[$sFullField] = $this->$sFullField->value;
         }

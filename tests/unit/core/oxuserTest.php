@@ -2054,12 +2054,15 @@ class Unit_Core_oxUserTest extends OxidTestCase
     }
 
     /**
-     * oxuser::getUser() test
+     * oxuser::getUser() test.
+     * Will set 'oxdefaultadmin' password to oxADMIN_PASSWD variable value,
+     * and will reset it back after the test.
      */
     public function testGetUserNotAdmin()
     {
         oxAddClassModule( 'Unit_oxuserTest_oxUtilsServer2', 'oxutilsserver' );
         $sShopId = oxRegistry::getConfig()->getShopId();
+        $sTempPassword = oxADMIN_PASSWD;
 
         //not logged in
         $oActUser = new oxUser();
@@ -2067,12 +2070,21 @@ class Unit_Core_oxUserTest extends OxidTestCase
         $testUser = $this->getMock( 'oxuser', array( 'isAdmin' ) );
         $testUser->expects( $this->any() )->method( 'isAdmin')->will( $this->returnValue( false ) );
 
-        $sPassSalt = $this->getDb()->getOne('select OXPASSSALT from oxuser where OXID="oxdefaultadmin"');
-        $sVal = oxADMIN_LOGIN . '@@@' . crypt( $oActUser->encodePassword( oxADMIN_PASSWD, $sPassSalt ), $sPassSalt );
+        $aResults = $this->getDb(oxDb::FETCH_MODE_ASSOC)->getAll('select OXPASSSALT, OXPASSWORD from oxuser where OXID="oxdefaultadmin"');
+        $sPassSalt = $aResults[0]['OXPASSSALT'];
+        $sOriginalPassword = $aResults[0]['OXPASSWORD'];
+        $sTemporaryPassword = $oActUser->encodePassword($sOriginalPassword, $sPassSalt);
+        $sSql = "update oxuser set OXPASSWORD = '{$sTemporaryPassword}'  where OXID='oxdefaultadmin'";
+        $this->addToDatabase($sSql, 'oxuser');
+        $sVal = oxADMIN_LOGIN . '@@@' . crypt($sTemporaryPassword, $sPassSalt);
         oxRegistry::get("oxUtilsServer")->setOxCookie( 'oxid_'.$sShopId, $sVal );
 
         $oActUser->loadActiveUser();
         $testUser->logout();
+
+        $sSql = "update oxuser set OXPASSWORD = '{$sOriginalPassword}' where OXID='oxdefaultadmin'";
+        $this->addToDatabase($sSql, 'oxuser');
+
         $this->assertEquals( $oActUser->oxuser__oxusername->value, oxADMIN_LOGIN );
     }
 

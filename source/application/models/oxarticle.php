@@ -1077,11 +1077,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
         if ( $aData ) {
             $this->assign( $aData );
 
-            $aSoringFields = oxRegistry::getConfig()->getConfigParam('aSortCols');
-            foreach ($aSoringFields as $sField) {
-                $sFullField = $this->_getFieldLongName( $sField );
-                $this->_aSortingFieldsOnLoad[$sFullField] = $this->$sFullField->value;
-            }
+            $this->_saveSortingFieldValuesOnLoad();
 
             $this->_iStockStatusOnLoad = $this->_iStockStatus;
 
@@ -4961,4 +4957,17 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
     }
 
 
+
+    /**
+     * Saves values of sorting fields on article load.
+     */
+    protected function _saveSortingFieldValuesOnLoad()
+    {
+        $aSoringFields = oxRegistry::getConfig()->getConfigParam('aSortCols');
+
+        foreach ($aSoringFields as $sField) {
+            $sFullField = $this->_getFieldLongName( $sField );
+            $this->_aSortingFieldsOnLoad[$sFullField] = $this->$sFullField->value;
+        }
+    }
 }

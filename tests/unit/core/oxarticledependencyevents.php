@@ -88,4 +88,21 @@ class Unit_Core_oxArticleTest extends OxidTestCase
         $oArticle->oxarticles__oxtitle = new oxField("changed title");
         $this->assertFalse($oArticle->hasSortingFieldsChanged());
     }
+
+    public function testHasSortingFieldsChangedWhenNoSortingFieldsSet()
+    {
+        $this->getConfig()->setConfigParam('aSortCols', '');
+
+        $oArticle = new oxArticle();
+        $oArticle->setId('_testArticleId');
+        $oArticle->oxarticles__oxprice = new oxField(10, oxField::T_RAW);
+        $oArticle->oxarticles__oxtitle = new oxField("title", oxField::T_RAW);
+        $oArticle->save();
+
+        $oArticle = new oxArticle();
+        $oArticle->load('_testArticleId');
+        $oArticle->oxarticles__oxprice = new oxField(100, oxField::T_RAW);
+        $this->assertFalse($oArticle->hasSortingFieldsChanged());
+    }
 }
+

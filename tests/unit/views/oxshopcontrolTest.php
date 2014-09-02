@@ -347,7 +347,6 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
     {
         oxTestModules::addFunction( 'oxUtils', 'isSearchEngine', '{ return false; }' );
         oxTestModules::addFunction( 'oxUtils', 'setHeader', '{}' );
-        oxTestModules::addFunction( 'oxReverseProxyHeader', 'sendHeader', '{}' );
 
         $sTplPath  = modConfig::getInstance()->getConfigParam( 'sShopDir' )."/application/views/";
         $sTplPath .= modConfig::getInstance()->getConfigParam( 'sTheme' )."/tpl/page/checkout/basket.tpl";
@@ -386,7 +385,6 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
     {
         oxTestModules::addFunction( 'oxUtils', 'isSearchEngine', '{ return false; }' );
         oxTestModules::addFunction( 'oxUtils', 'setHeader', '{}' );
-        oxTestModules::addFunction( 'oxReverseProxyHeader', 'sendHeader', '{}' );
 
         modConfig::setRequestParameter('renderPartial', 'asd');
 

@@ -117,14 +117,14 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
             $oArticle->delete( '_testArticle' );
         }
 
-        $myConfig = oxRegistry::getConfig();
+        $oConfig = oxRegistry::getConfig();
 
         // restore..
         $cl = oxTestModules::addFunction('oxSeoEncoder', 'clean_aReservedEntryKeys', '{oxSeoEncoder::$_aReservedEntryKeys = null;}');
         $oEncoder = new $cl();
-        $oEncoder->setSeparator( $myConfig->getConfigParam( 'sSEOSeparator' ) );
-        $oEncoder->setPrefix( $myConfig->getConfigParam( 'sSEOuprefix' ) );
-        $oEncoder->setReservedWords( $myConfig->getConfigParam( 'aSEOReservedWords' ) );
+        $oEncoder->setSeparator( $oConfig->getConfigParam( 'sSEOSeparator' ) );
+        $oEncoder->setPrefix( $oConfig->getConfigParam( 'sSEOuprefix' ) );
+        $oEncoder->setReservedWords( $oConfig->getConfigParam( 'aSEOReservedWords' ) );
         $oEncoder->clean_aReservedEntryKeys();
 
         parent::tearDown();

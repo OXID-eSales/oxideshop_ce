@@ -457,8 +457,8 @@ class Unit_Core_oxCategoryTest extends OxidTestCase
 
     public function testUpdateMarkRelatedAsExpired()
     {
-        $oObj2 = $this->getMock( 'oxcategory', array( 'isAdmin' ) );
-        $oObj2->expects( $this->any() )->method( 'isAdmin' )->will( $this->returnValue( true ) );
+        $this->setAdminMode(true);
+        $oObj2 = new oxCategory();
         $oObj2->oxcategories__oxparentid = new oxField("oxrootid", oxField::T_RAW);
         $oObj2->save(); // call update
         $this->assertEquals("oxrootid", $oObj2->oxcategories__oxparentid->value);

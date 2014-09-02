@@ -386,7 +386,7 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
     public function testLanguagePrefixForSeoUrlForDe()
     {
         oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxRegistry::getConfig()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
-        $myConfig = oxRegistry::getConfig();
+        $oConfig = oxRegistry::getConfig();
 
         // inserting price category for test
         $oPriceCategory = new oxCategory();
@@ -394,13 +394,13 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
         $oPriceCategory->oxcategories__oxparentid  = new oxField( "oxrootid" );
         $oPriceCategory->oxcategories__oxrootid    = $oPriceCategory->getId();
         $oPriceCategory->oxcategories__oxactive    = new oxField( 1 );
-        $oPriceCategory->oxcategories__oxshopid    = new oxField( $myConfig->getBaseShopId() );
+        $oPriceCategory->oxcategories__oxshopid    = new oxField( $oConfig->getBaseShopId() );
         $oPriceCategory->oxcategories__oxtitle     = new oxField( "Test Price Category DE" );
         $oPriceCategory->oxcategories__oxpricefrom = new oxField( 0 );
         $oPriceCategory->oxcategories__oxpriceto   = new oxField( 999 );
         $oPriceCategory->save();
 
-        $sShopUrl = $myConfig->getShopUrl( 0 );
+        $sShopUrl = $oConfig->getShopUrl( 0 );
 
             $sArticleId                 = "1964";
             $sArticleSeoUrl             = $sShopUrl."Geschenke/Original-BUSH-Beach-Radio.html";
@@ -429,7 +429,8 @@ class Unit_Core_oxSeoEncoderTest extends OxidTestCase
         $oView->expects( $this->at( 0 ) )->method('getActiveCategory')->will( $this->returnValue( $oCategory ) );
         $oView->expects( $this->at( 1 ) )->method('getActiveCategory')->will( $this->returnValue( $oPriceCategory ) );
 
-        $myConfig->setActiveView( $oView );
+        $oConfig->dropLastActiveView();
+        $oConfig->setActiveView( $oView );
 
         $oArticle = new oxArticle();
         $oArticle->load( $sArticleId );

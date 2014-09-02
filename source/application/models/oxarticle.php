@@ -2495,6 +2495,7 @@ class oxArticle extends oxI18n implements oxIArticle, oxIUrl
      */
     public function getBaseSeoLink( $iLang, $blMain = false )
     {
+        /** @var oxSeoEncoderArticle $oEncoder */
         $oEncoder = oxRegistry::get("oxSeoEncoderArticle");
         if ( !$blMain ) {
             return $oEncoder->getArticleUrl( $this, $iLang, $this->getLinkType() );

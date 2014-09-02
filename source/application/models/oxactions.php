@@ -79,9 +79,10 @@ class oxActions extends oxI18n
         $oDb = oxDb::getDb();
         $sDelete = "delete from oxactions2article where oxactionid = ".$oDb->quote( $this->getId() )." and oxartid = ".$oDb->quote($sOxId)." and oxshopid = '" . $this->getShopId() . "'";
         $oDb->execute( $sDelete );
+        $iRemovedArticles = $oDb->affected_Rows();
 
 
-        return ( bool ) $oDb->affected_Rows();
+        return (bool) $iRemovedArticles;
     }
 
     /**

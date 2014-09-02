@@ -689,8 +689,8 @@ a.viewAllHover,
 }
 
 /* start commented backslash hack \*/ * html .clear, * html .basketFlyout li a, * html .basketFlyout .totals, * html .basketFlyout .title, * html .lineView li, * html .wrappingData li, * html .form li {
-    height: 1%;
-}
+                                          height: 1%;
+                                      }
 
 .clear, .basketFlyout li a, .basketFlyout .totals, .basketFlyout .title, .lineView li, .wrappingData li, .form li {
     display: block;
@@ -1494,8 +1494,8 @@ a.submitButton {
 }
 
 .loginForm p {
-  margin-bottom: 5px;
-  position: relative;
+    margin-bottom: 5px;
+    position: relative;
 }
 
 .loginForm p.errorMsg {
@@ -1508,9 +1508,9 @@ a.submitButton {
 
 .loginForm .checkbox,
 .loginForm p.checkFields label {
-  float: left;
-  text-transform: none;
-  line-height: 14px;
+    float: left;
+    text-transform: none;
+    line-height: 14px;
 }
 
 .loginForm p.checkFields label {
@@ -1522,11 +1522,11 @@ a.submitButton {
 }
 
 .loginForm .checkbox {
-  margin-right: 5px;
+    margin-right: 5px;
 }
 
 .loginForm .textbox {
-  width: 128px;
+    width: 128px;
 }
 
 .loginForm .textbox:focus {
@@ -1534,12 +1534,12 @@ a.submitButton {
 }
 
 .loginForm .passwordbox {
-  width: 118px;
-  margin-right: 3px;
+    width: 118px;
+    margin-right: 3px;
 }
 
 .loginForm label.innerLabel{
-  margin-top: 2px;
+    margin-top: 2px;
 }
 
 .altLoginBox {
@@ -1564,7 +1564,7 @@ a.submitButton {
 }
 
 .login {
-  position: relative;
+    position: relative;
 }
 
 .logged, #topMenu li.logged {
@@ -1572,11 +1572,11 @@ a.submitButton {
 }
 
 .loginBox {
-  position: absolute;
-  right: -1px;
-  top: -2px;
-  display: none;
-  z-index:9;
+    position: absolute;
+    right: -1px;
+    top: -2px;
+    display: none;
+    z-index:9;
 }
 
 #topMenu .flyout strong a  {
@@ -1603,9 +1603,9 @@ a.submitButton {
 }
 
 .flyout h4 {
-  text-align: right;
-  margin-bottom: 5px;
-  color: #1d7e96;
+    text-align: right;
+    margin-bottom: 5px;
+    color: #1d7e96;
 }
 
 .topPopList {
@@ -1671,16 +1671,16 @@ a.submitButton {
 #currencies a,
 #languages a,
 .flyoutMenu a {
-  display: block;
-  zoom: 1;
-  min-width: 25px;
-  box-shadow: none;
-  text-decoration: none;
-  padding: 2px 5px;
-  line-height: 16px;
-  font-weight:700;
-  padding-left:8px;
-  color:#29373C;
+    display: block;
+    zoom: 1;
+    min-width: 25px;
+    box-shadow: none;
+    text-decoration: none;
+    padding: 2px 5px;
+    line-height: 16px;
+    font-weight:700;
+    padding-left:8px;
+    color:#29373C;
 }
 
 #languages a {
@@ -1693,7 +1693,7 @@ a.submitButton {
 #languages a.selected ,
 .flyoutMenu a:hover,
 .flyoutMenu a.selected{
-  color: #fff;
+    color: #fff;
 }
 
 #languages a span,
@@ -1720,7 +1720,7 @@ a.submitButton {
 }
 
 #languages li.active a {
-   background:#fff url(../../img/arrow-down.png) no-repeat 27px 8px;
+    background:#fff url(../../img/arrow-down.png) no-repeat 27px 8px;
 }
 
 
@@ -1807,8 +1807,8 @@ div.searchBox input.textbox:focus {
 
 /* --- Footer ----------------------------- */
 #footer #panel {
- margin: 0 10px;
- border:1px solid #3799B1;
+    margin: 0 10px;
+    border:1px solid #3799B1;
 }
 
 #footer .bar {color:#000; padding:10px 10px 10px 20px; border-bottom:1px solid #3799B1; height:20px;}
@@ -1817,21 +1817,21 @@ div.searchBox input.textbox:focus {
 #footer .bar .deliveryinfo a {font-size:10px; color:#515353;}
 
 #footer dl {
- float:left;
- width: 233px;
- margin:10px 0;
- color:#465256;
- height: auto;
- border-right: 1px solid #3799b1;
- border-left: 1px solid #ffffff;
+    float:left;
+    width: 233px;
+    margin:10px 0;
+    color:#465256;
+    height: auto;
+    border-right: 1px solid #3799b1;
+    border-left: 1px solid #ffffff;
 }
 
 #footer dl.services {
- border-left: none;
+    border-left: none;
 }
 
 #footer dl:last-child {
- border-right: none;
+    border-right: none;
 }
 
 #footer ul {
@@ -1851,9 +1851,9 @@ div.searchBox input.textbox:focus {
 
 #footer .list a  { line-height: 100%; display:block; padding:4px 20px; color: #29373c; text-shadow: 0 1px 2px #fff;}
 #footer .list a:hover  {
- text-decoration: none;
- color: #FFF;
- text-shadow: none;
+    text-decoration: none;
+    color: #FFF;
+    text-shadow: none;
 }
 
 #footer .tree ul {margin: 0; margin-left:10px;}
@@ -1919,13 +1919,13 @@ div.searchBox input.textbox:focus {
 
 
 a.readMore {
- color: #1d7e96;
+    color: #1d7e96;
 }
 
 .box li a.readMore:hover
 a.readMore:hover {
- color: #1d7e96;
- text-decoration: underline;
+    color: #1d7e96;
+    text-decoration: underline;
 }
 
 /* --- Tags --------------------------------- */
@@ -2023,12 +2023,12 @@ a.compare.remove {display:none}
 }
 
 .gridView li .titleBlock .gridPicture{
-   display:block;
-   margin: 20px -10px 0;
-   top:40px;
-   width: 185px;
-   height: 150px;
-   text-align: center;
+    display:block;
+    margin: 20px -10px 0;
+    top:40px;
+    width: 185px;
+    height: 150px;
+    text-align: center;
 }
 
 .gridView li:hover .titleBlock{
@@ -2094,19 +2094,19 @@ a.compare.remove {display:none}
 }
 
 .titleBox{
- width: 187px;
+    width: 187px;
 }
 
 .titleBox a{
- display: block;
- padding: 10px;
- font-size: 14px;
- font-weight: 700;
+    display: block;
+    padding: 10px;
+    font-size: 14px;
+    font-weight: 700;
 }
 
 .priceBox {
- padding: 10px;
- width: 167px;
+    padding: 10px;
+    width: 167px;
 }
 
 .priceBox .toCart {
@@ -2116,8 +2116,8 @@ a.compare.remove {display:none}
 }
 
 .priceBox strong {
- font-size: 14px;
- padding-right: 5px;
+    font-size: 14px;
+    padding-right: 5px;
 }
 
 /* --- InfoGrid -------------------------------- */
@@ -2202,15 +2202,15 @@ a.compare.remove {display:none}
 }
 
 .infogridView .priceBox .oldPrice {
-     font-size: 9px;
+    font-size: 9px;
 }
 .infogridView .priceBox .price {
-     font-size: 14px;
-     font-weight: bold;
+    font-size: 14px;
+    font-weight: bold;
 }
 .infogridView .priceBox .pricePerUnit {
-     font-size: 9px;
-     white-space:nowrap;
+    font-size: 9px;
+    white-space:nowrap;
 }
 
 .infogridView .priceBox .content {
@@ -2284,17 +2284,17 @@ a.compare.remove {display:none}
 }
 
 .lineView .functions .oldPrice {
-     font-size: 10px;
+    font-size: 10px;
 }
 
 .lineView .functions .price {
-     font-size: 18px;
-     font-weight: bold;
-     line-height: 23px;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 23px;
 }
 .lineView .functions .pricePerUnit {
-     font-size: 9px;
-     white-space:nowrap;
+    font-size: 9px;
+    white-space:nowrap;
 }
 
 .infoBox {width: 558px; position: relative;}
@@ -2302,7 +2302,7 @@ a.compare.remove {display:none}
 .lineView .description {width: 268px;    padding: 7px 0 0 20px;    font-size: 14px;    line-height: 18px;}
 .lineView .functions {padding: 0 0 0 10px; position: absolute; bottom: 10px; clear: right; float:left; left: 190px; width:550px;}
 .lineView .functions label.price {
-     margin: 10px;
+    margin: 10px;
 }
 
 .pictureBox {
@@ -2704,12 +2704,12 @@ a.compare.remove {display:none}
 }
 
 .etrustTsRatingButton {
-   margin: 7px 0;
+    margin: 7px 0;
 }
 
 /* --- Checkout - than kyou page --------------------- */
 #thankyouPage h3.blockHead:first-child {
-   color: #ec6105;
+    color: #ec6105;
 }
 
 #thankyouPage .lightHead {
@@ -2920,12 +2920,12 @@ a.next {
 
 
 #overviewLink a{
-   font-size: 11px;
-   font-weight: 700;
-   text-transform: uppercase;
-   position:absolute;
-   right:10px;
-   top:115px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    position:absolute;
+    right:10px;
+    top:115px;
 }
 
 .listFilter {
@@ -2942,8 +2942,8 @@ a.next {
 
 /* --- Wrapping ----------------------------- */
 .wrapping {
-   border-color: #666;
-   overflow: hidden;
+    border-color: #666;
+    overflow: hidden;
 }
 
 .wrappingIntro img,
@@ -3135,10 +3135,10 @@ a.next {
 }
 
 .checkoutSteps li.step1 {
-   z-index: 5;
-   width: 210px;
-   margin-left: 0;
-   padding-left: 0;
+    z-index: 5;
+    width: 210px;
+    margin-left: 0;
+    padding-left: 0;
 }
 
 .checkoutSteps li.step2 {
@@ -3268,7 +3268,7 @@ h3.section button {
 }
 
 /* --- Article action select ------ */
- .actionLinks {
+.actionLinks {
     display: none;
     position: absolute;
     z-index: 16;
@@ -3756,12 +3756,12 @@ ul.rating li.s5 a:hover {
 
 .rating li.ratingValue a,
 .rating li.ratingValue a:hover {
-       width: auto;
-       height: auto;
-       left: 90px;
-       white-space: nowrap;
-       padding-top: 3px;
-       background: none;
+    width: auto;
+    height: auto;
+    left: 90px;
+    white-space: nowrap;
+    padding-top: 3px;
+    background: none;
 }
 
 /* ---- Reviews ------------------------ */
@@ -3954,8 +3954,8 @@ dl.review .param {
 }
 
 .form .oxDate .innerLabel {
-     margin-top: 1px;
-     text-transform: none;
+    margin-top: 1px;
+    text-transform: none;
 }
 
 .form input[type="password"],
@@ -3964,7 +3964,7 @@ dl.review .param {
 }
 
 .form select[data-fieldsize="normal"] {
-  width: 202px;
+    width: 202px;
 }
 
 .form input[data-fieldsize="xsmall"] {
@@ -4131,16 +4131,16 @@ span.verificationCode {
 }
 
 label.innerLabel{
-  display:block;
-  position:absolute;
-  color:#B4B8B8;
-  margin: 3px 0 0 5px;
-  font-weight: normal;
-  text-transform: uppercase;
+    display:block;
+    position:absolute;
+    color:#B4B8B8;
+    margin: 3px 0 0 5px;
+    font-weight: normal;
+    text-transform: uppercase;
 }
 
 label.innerLabel.textArea{
-  text-transform: none;
+    text-transform: none;
 }
 
 .oxValidateError {
@@ -4502,17 +4502,17 @@ a.sliderHover {
 .ui-helper-reset { margin: 0; padding: 0; border: 0; outline: 0; line-height: 1.3; text-decoration: none; font-size: 100%; list-style: none; }
 .ui-helper-clearfix:after { content: "."; display: block; height: 0; clear: both; visibility: hidden; }
 .ui-helper-clearfix { display: inline-block; }
-    /* required comment for clearfix to work in Opera \*/
+/* required comment for clearfix to work in Opera \*/
 * html .ui-helper-clearfix { height:1%; }
 .ui-helper-clearfix { display:block; }
-    /* end clearfix */
+/* end clearfix */
 .ui-helper-zfix { width: 100%; height: 100%; top: 0; left: 0; position: absolute; opacity: 0; filter:Alpha(Opacity=0); }
 
 
 /* --- Interaction Cues ----------------------------------*/
 .ui-state-disabled { cursor: default !important; }
 
-    /* Overlays */
+/* Overlays */
 .ui-widget-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 .ui-widget-overlay { background: #000; opacity: .50;filter:Alpha(Opacity=50); }
 
@@ -4532,7 +4532,7 @@ a.sliderHover {
 
 
 /* --- ZOOM CLOUD ----------------------------- */
-    /* This is the moving lens square underneath the mouse pointer. */
+/* This is the moving lens square underneath the mouse pointer. */
 .cloud-zoom-lens {
     border: 2px solid #EB6005;
     margin:-2px;    /* Set this to minus the border thickness. */
@@ -4540,7 +4540,7 @@ a.sliderHover {
     cursor:move;
 }
 
-    /* This is for the title text. */
+/* This is for the title text. */
 .cloud-zoom-title {
     font-family:Arial, Helvetica, sans-serif;
     position:absolute !important;
@@ -4554,7 +4554,7 @@ a.sliderHover {
     top:0;
 }
 
-    /* This is the zoom window. */
+/* This is the zoom window. */
 .cloud-zoom-big {
     border:2px solid #51A8BC;
     overflow:hidden;
@@ -4562,7 +4562,7 @@ a.sliderHover {
     background-color: #fff;
 }
 
-    /* This is the loading message. */
+/* This is the loading message. */
 .cloud-zoom-loading {
     color: #000;
     background: #fff;
@@ -4763,18 +4763,18 @@ a.sliderHover {
 /* --- Account Dashboard ----------------- */
 
 .accountDashboardView .col {
-   float: left;
-   width: 374px;
- /*  height: 250px;*/
- /* padding-right: 20px; */
+    float: left;
+    width: 374px;
+    /*  height: 250px;*/
+    /* padding-right: 20px; */
 }
 
 .accountDashboardView dl {
-   margin-bottom: 15px;
+    margin-bottom: 15px;
 }
 
 .accountDashboardView dd {
-   margin-top: 2px;
+    margin-top: 2px;
 }
 
 /* --- Compare List ----------------------- */
@@ -4919,8 +4919,8 @@ td.alignTop{
 
 /* --- Login form ------------------------ */
 .accountLoginView .col {
-   float: left;
-   width: 50%;
+    float: left;
+    width: 50%;
 }
 
 /* --- right corner message ---------------- */

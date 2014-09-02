@@ -338,11 +338,12 @@ class Unit_Core_oxCategoryTest extends OxidTestCase
         self::cleanUpTable('oxarticles');
 
         modConfig::getInstance()->setConfigParam( 'bl_perfShowActionCatArticleCnt', true );
-        oxRegistry::get("oxUtilsCount")->resetCatArticleCount($this->_oCategory->getId());
         $this->_oCategory->oxcategories__oxpricefrom = new oxField('10', oxField::T_RAW);
         $this->_oCategory->oxcategories__oxpriceto = new oxField('50', oxField::T_RAW);
         $this->_oCategory->save();
         $this->reload(); // call assign
+
+        oxRegistry::get("oxUtilsCount")->resetCatArticleCount($this->_oCategory->getId());
 
             $this->assertEquals(24, $this->_oCategory->getNrOfArticles());
     }

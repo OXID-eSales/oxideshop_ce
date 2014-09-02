@@ -429,7 +429,6 @@ class Unit_Views_oxShopControlTest extends OxidTestCase
     {
         oxTestModules::addFunction( 'oxUtils', 'isSearchEngine', '{ return false; }' );
         oxTestModules::addFunction( 'oxUtils', 'setHeader', '{}' );
-        oxTestModules::addFunction( 'oxReverseProxyHeader', 'sendHeader', '{}' );
 
         modConfig::setRequestParameter('renderPartial', 'asd');
 

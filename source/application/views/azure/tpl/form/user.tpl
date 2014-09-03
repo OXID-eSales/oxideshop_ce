@@ -17,6 +17,7 @@
                     [{ oxmultilang ident="BILLING_ADDRESS" }]
                     <button id="userChangeAddress" class="submitButton largeButton" [{if !empty($aErrors)}]style="display: none;"[{/if}] name="changeBillAddress" type="submit">[{ oxmultilang ident="CHANGE" }]</button>
                 </h3>
+                [{oxscript add="$('#userChangeAddress').click( function() { $('#addressForm').show();$('#addressText').hide();return false;});"}]
                 <ul class="form clear" [{if empty($aErrors)}]style="display: none;"[{/if}] id="addressForm">
                     [{ include file="form/fieldset/user_email.tpl" }]
                     [{ include file="form/fieldset/user_billing.tpl" noFormSubmit=true }]
@@ -26,7 +27,6 @@
                         [{ include file="widget/address/billing_address.tpl"}]
                     </li>
                 </ul>
-                [{oxscript add="$('#userChangeAddress').click( function() { $('#addressForm').show();$('#addressText').hide();return false;});"}]
             </div>
             <div class="collumn">
                 <h3 id="addShippingAddress" class="blockHead">
@@ -36,10 +36,10 @@
                 <p>
                     <input type="checkbox" name="blshowshipaddress" id="showShipAddress" [{if !$oView->showShipAddress()}]checked[{/if}] value="0"><label for="showShipAddress">[{ oxmultilang ident="USE_BILLINGADDRESS_FOR_SHIPPINGADDRESS" }]</label>
                 </p>
+                [{oxscript add="$('#showShipAddress').change( function() { $('#userChangeShippingAddress').toggle($(this).is(':not(:checked)') &&  $('#addressId').val() != -1 ); $('#shippingAddress').toggle($(this).is(':not(:checked)')); });"}]
                 <ul id="shippingAddress" class="form clear" [{if !$oView->showShipAddress()}] style="display: none;" [{/if}]>
                     [{ include file="form/fieldset/user_shipping.tpl" noFormSubmit=true}]
                 </ul>
-                [{oxscript add="$('#showShipAddress').change( function() { $('#userChangeShippingAddress').toggle($(this).is(':not(:checked)') &&  $('#addressId').val() != -1 ); $('#shippingAddress').toggle($(this).is(':not(:checked)')); });"}]
                 [{oxscript add="$('#addressId').change(function() { $('#userChangeShippingAddress').toggle($('#addressId').val() != -1 ); }); "}]
             </div>
         </div>

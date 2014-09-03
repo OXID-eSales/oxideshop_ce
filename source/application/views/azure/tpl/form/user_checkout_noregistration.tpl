@@ -17,10 +17,10 @@
             <input type="hidden" id="reloadAddress" name="reloadaddress" value="">
             <input type="hidden" name="blshowshipaddress" value="1">
             [{block name="user_checkout_noregistration_next_step_top"}]
-            <div class="lineBox clear">
-                <a href="[{ oxgetseourl ident=$oViewConf->getBasketLink() }]" class="prevStep submitButton largeButton" id="userBackStepTop">[{ oxmultilang ident="PREVIOUS_STEP" }]</a>
-                <button id="userNextStepTop" class="submitButton largeButton nextStep" name="userform" type="submit">[{ oxmultilang ident="CONTINUE_TO_NEXT_STEP" }]</button>
-            </div>
+                <div class="lineBox clear">
+                    <a href="[{ oxgetseourl ident=$oViewConf->getBasketLink() }]" class="prevStep submitButton largeButton" id="userBackStepTop">[{ oxmultilang ident="PREVIOUS_STEP" }]</a>
+                    <button id="userNextStepTop" class="submitButton largeButton nextStep" name="userform" type="submit">[{ oxmultilang ident="CONTINUE_TO_NEXT_STEP" }]</button>
+                </div>
             [{/block}]
             <div class="checkoutCollumns clear">
                 <div class="row">
@@ -37,6 +37,7 @@
                 </div>
                 <div class="collumn">
                     <h3 class="blockHead">[{ oxmultilang ident="SHIPPING_ADDRESS" }]</h3>
+
                     <p>
                         <input type="checkbox" name="blshowshipaddress" id="showShipAddress" [{if !$oView->showShipAddress()}]checked[{/if}] value="0"><label for="showShipAddress">[{ oxmultilang ident="USE_BILLINGADDRESS_FOR_SHIPPINGADDRESS" }]</label>
                     </p>
@@ -52,10 +53,10 @@
             </div>
             [{oxscript add="$('#showShipAddress').change( function() { $('#shippingAddress').toggle($(this).is(':not(:checked)'));});"}]
             [{block name="user_checkout_noregistration_next_step_bottom"}]
-            <div class="lineBox clear">
-                <a href="[{ oxgetseourl ident=$oViewConf->getBasketLink() }]" class="prevStep submitButton largeButton" id="userBackStepBottom">[{ oxmultilang ident="PREVIOUS_STEP" }]</a>
-                <button id="userNextStepBottom" class="submitButton largeButton nextStep" name="userform" type="submit">[{ oxmultilang ident="CONTINUE_TO_NEXT_STEP" }]</button>
-            </div>
+                <div class="lineBox clear">
+                    <a href="[{ oxgetseourl ident=$oViewConf->getBasketLink() }]" class="prevStep submitButton largeButton" id="userBackStepBottom">[{ oxmultilang ident="PREVIOUS_STEP" }]</a>
+                    <button id="userNextStepBottom" class="submitButton largeButton nextStep" name="userform" type="submit">[{ oxmultilang ident="CONTINUE_TO_NEXT_STEP" }]</button>
+                </div>
             [{/block}]
         [{/block}]
     </form>

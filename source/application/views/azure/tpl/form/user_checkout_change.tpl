@@ -12,10 +12,10 @@
             <input type="hidden" name="lgn_cook" value="0">
             <input type="hidden" name="blshowshipaddress" value="1">
             [{block name="user_checkout_change_next_step_top"}]
-            <div class="lineBox clear">
-                <a href="[{ oxgetseourl ident=$oViewConf->getBasketLink() }]" class="prevStep submitButton largeButton" id="userBackStepTop">[{ oxmultilang ident="PREVIOUS_STEP" }]</a>
-                <button id="userNextStepTop" class="submitButton largeButton nextStep" name="userform" type="submit">[{ oxmultilang ident="CONTINUE_TO_NEXT_STEP" }]</button>
-            </div>
+                <div class="lineBox clear">
+                    <a href="[{ oxgetseourl ident=$oViewConf->getBasketLink() }]" class="prevStep submitButton largeButton" id="userBackStepTop">[{ oxmultilang ident="PREVIOUS_STEP" }]</a>
+                    <button id="userNextStepTop" class="submitButton largeButton nextStep" name="userform" type="submit">[{ oxmultilang ident="CONTINUE_TO_NEXT_STEP" }]</button>
+                </div>
             [{/block}]
             <div class="checkoutCollumns clear">
                 <div class="collumn">
@@ -76,10 +76,10 @@
                 </div>
             </div>
             [{block name="user_checkout_change_next_step_bottom"}]
-            <div class="lineBox clear">
-                <a href="[{ oxgetseourl ident=$oViewConf->getBasketLink() }]" class="prevStep submitButton largeButton" id="userBackStepBottom">[{ oxmultilang ident="PREVIOUS_STEP" }]</a>
-                <button id="userNextStepBottom" class="submitButton largeButton nextStep" name="userform" type="submit">[{ oxmultilang ident="CONTINUE_TO_NEXT_STEP" }]</button>
-            </div>
+                <div class="lineBox clear">
+                    <a href="[{ oxgetseourl ident=$oViewConf->getBasketLink() }]" class="prevStep submitButton largeButton" id="userBackStepBottom">[{ oxmultilang ident="PREVIOUS_STEP" }]</a>
+                    <button id="userNextStepBottom" class="submitButton largeButton nextStep" name="userform" type="submit">[{ oxmultilang ident="CONTINUE_TO_NEXT_STEP" }]</button>
+                </div>
             [{/block}]
         [{/block}]
     </form>

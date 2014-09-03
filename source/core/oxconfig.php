@@ -145,7 +145,7 @@ class oxConfig extends oxSuperCfg
     protected $blNativeImages = true;
 
     /**
-     * Names of tables what are multi-shop
+     * Names of tables which are multi-shop
      *
      * @var array
      */

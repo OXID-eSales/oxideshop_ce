@@ -7,14 +7,14 @@
     [{oxscript include="js/widgets/oxusershipingaddressselect.js" priority=10 }]
     [{oxscript add="$( '#addressId' ).oxUserShipingAddressSelect();"}]
     [{block name="form_user_shipping_address_select"}]
-    <select id="addressId" name="oxaddressid">
-        <option value="-1">[{ oxmultilang ident="NEW_ADDRESS" }]</option>
-        [{if $oxcmp_user }]
-            [{foreach from=$oxcmp_user->getUserAddresses() item=address }]
-                <option value="[{$address->oxaddress__oxid->value}]" [{if $address->isSelected()}]SELECTED[{/if}]>[{$address}]</option>
-            [{/foreach }]
-        [{/if}]
-    </select>
+        <select id="addressId" name="oxaddressid">
+            <option value="-1">[{ oxmultilang ident="NEW_ADDRESS" }]</option>
+            [{if $oxcmp_user }]
+                [{foreach from=$oxcmp_user->getUserAddresses() item=address }]
+                    <option value="[{$address->oxaddress__oxid->value}]" [{if $address->isSelected()}]SELECTED[{/if}]>[{$address}]</option>
+                [{/foreach }]
+            [{/if}]
+        </select>
     [{/block}]
 </li>
 [{if $delivadr }]

@@ -6,6 +6,7 @@
     <input type="hidden" name="changeClass" value="[{$onChangeClass|default:'account_user'}]">
     [{oxscript include="js/widgets/oxusershipingaddressselect.js" priority=10 }]
     [{oxscript add="$( '#addressId' ).oxUserShipingAddressSelect();"}]
+    [{block name="form_user_shipping_address_select"}]
     <select id="addressId" name="oxaddressid">
         <option value="-1">[{ oxmultilang ident="NEW_ADDRESS" }]</option>
         [{if $oxcmp_user }]
@@ -14,6 +15,7 @@
             [{/foreach }]
         [{/if}]
     </select>
+    [{/block}]
 </li>
 [{if $delivadr }]
     <li class="form" id="shippingAddressText">

@@ -3,6 +3,7 @@
         <dt>[{oxmultilang ident="SERVICES" }]</dt>
         <dd>
             <ul class="list services">
+                [{block name="footer_services_items"}]
                 <li><a href="[{ oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=contact" }]">[{ oxmultilang ident="CONTACT" }]</a></li>
                 [{if $oViewConf->getHelpPageLink() }]
                     <li><a href="[{ $oViewConf->getHelpPageLink() }]">[{ oxmultilang ident="HELP" }]</a></li>
@@ -24,6 +25,7 @@
                 [{if $oView->isEnabledDownloadableFiles()}]
                     <li><a href="[{ oxgetseourl ident=$oViewConf->getSelfLink()|cat:"cl=account_downloads" }]" rel="nofollow">[{ oxmultilang ident="MY_DOWNLOADS" }]</a></li>
                 [{/if}]
+                [{/block}]
             </ul>
         </dd>
     </dl>

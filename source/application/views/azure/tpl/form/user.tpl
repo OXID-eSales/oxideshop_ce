@@ -3,16 +3,16 @@
 <form class="js-oxValidate" action="[{ $oViewConf->getSelfActionLink() }]" name="order" method="post">
     [{block name="user_form"}]
         [{assign var="aErrors" value=$oView->getFieldValidationErrors()}]
+        <div>
+            [{ $oViewConf->getHiddenSid() }]
+            [{ $oViewConf->getNavFormParams() }]
+            <input type="hidden" name="fnc" value="changeuser_testvalues">
+            <input type="hidden" name="cl" value="account_user">
+            <input type="hidden" name="CustomError" value='user'>
+            <input type="hidden" name="blshowshipaddress" value="1">
+        </div>
         <div class="addressCollumns clear">
             <div class="collumn">
-                <div>
-                    [{ $oViewConf->getHiddenSid() }]
-                    [{ $oViewConf->getNavFormParams() }]
-                    <input type="hidden" name="fnc" value="changeuser_testvalues">
-                    <input type="hidden" name="cl" value="account_user">
-                    <input type="hidden" name="CustomError" value='user'>
-                    <input type="hidden" name="blshowshipaddress" value="1">
-                </div>
                 <h3 class="blockHead">
                     [{ oxmultilang ident="BILLING_ADDRESS" }]
                     <button id="userChangeAddress" class="submitButton largeButton" [{if !empty($aErrors)}]style="display: none;"[{/if}] name="changeBillAddress" type="submit">[{ oxmultilang ident="CHANGE" }]</button>

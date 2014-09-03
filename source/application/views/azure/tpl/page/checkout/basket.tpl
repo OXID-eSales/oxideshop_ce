@@ -10,6 +10,7 @@
                 <div class="status corners error">[{ oxmultilang ident="BASKET_EMPTY" }]</div>
             [{/block}]
         [{else }]
+            [{block name="checkout_basket_next_step_top"}]
             <div class="lineBox clear">
                 [{if $oView->showBackToShop()}]
                     [{block name="checkout_basket_backtoshop_top"}]
@@ -38,6 +39,7 @@
                     [{/block}]
                 [{/if}]
             </div>
+            [{/block}]
 
             <div id="basketContainer" class="lineBox">
                 [{include file="page/checkout/inc/basketcontents.tpl" editable=true}]
@@ -75,7 +77,7 @@
                 [{/if}]
             </div>
 
-
+            [{block name="checkout_basket_next_step_bottom"}]
             <div class="lineBox clear">
                 [{if $oView->showBackToShop()}]
                     [{block name="checkout_basket_backtoshop_bottom"}]
@@ -104,6 +106,7 @@
                     [{/block}]
                 [{/if}]
             </div>
+            [{/block}]
         [{/if}]
         [{if $oView->isWrapping() }]
            [{include file="page/checkout/inc/wrapping.tpl"}]

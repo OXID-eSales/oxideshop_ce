@@ -1,6 +1,7 @@
 [{oxscript include="js/widgets/oxinputvalidator.js" priority=10 }]
 [{oxscript add="$('form.js-oxValidate').oxInputValidator();"}]
 <form class="js-oxValidate" action="[{ $oViewConf->getSelfActionLink() }]" name="order" method="post">
+    [{block name="user_form"}]
     [{assign var="aErrors" value=$oView->getFieldValidationErrors()}]
     <div class="addressCollumns clear">
         <div class="collumn">
@@ -45,4 +46,5 @@
     <div class="lineBox clear">
         <button id="accUserSaveTop" class="submitButton largeButton nextStep" name="userform" type="submit">[{ oxmultilang ident="SAVE" }]</button>
     </div>
+    [{/block}]
 </form>

@@ -1262,14 +1262,14 @@ class Unit_Views_detailsTest extends OxidTestCase
      */
     public function testAddToRecommIfOff()
     {
-        $oCfg = $this->getMock( "stdClass", array( "getShowListmania" ) );
-        $oCfg->expects( $this->once() )->method( 'getShowListmania')->will($this->returnValue( false ) );
+        $oCfg = $this->getMock("stdClass", array("getShowListmania"));
+        $oCfg->expects($this->once())->method('getShowListmania')->will($this->returnValue(false));
 
-        $oRecomm = $this->getMock( "details", array( "getViewConfig", 'getArticleList' ) );
-        $oRecomm->expects( $this->once() )->method( 'getViewConfig')->will($this->returnValue( $oCfg ) );
-        $oRecomm->expects( $this->never() )->method( 'getArticleList');
+        $oRecomm = $this->getMock("details", array("getViewConfig", 'getArticleList'));
+        $oRecomm->expects($this->once())->method('getViewConfig')->will($this->returnValue($oCfg));
+        $oRecomm->expects($this->never())->method('getArticleList');
 
-        $this->setRequestParam( 'anid' , 'asd');
+        $this->setRequestParam('anid', 'asd');
         oxTestModules::addFunction('oxrecommlist', 'load', '{throw new Exception("should not come here");}');
 
         $this->assertSame(null, $oRecomm->addToRecomm());
@@ -1282,22 +1282,22 @@ class Unit_Views_detailsTest extends OxidTestCase
      */
     public function testAddToRecommIfOn()
     {
-        $oCfg = $this->getMock( "stdClass", array( "getShowListmania" ) );
-        $oCfg->expects( $this->once() )->method( 'getShowListmania')->will($this->returnValue( true ) );
+        $oCfg = $this->getMock("stdClass", array("getShowListmania"));
+        $oCfg->expects($this->once())->method('getShowListmania')->will($this->returnValue(true));
 
-        $oProduct = $this->getMock( 'oxArticle', array( 'getId' ) );
-        $oProduct->expects( $this->once() )->method( 'getId' )->will( $this->returnValue( 'test_artid' ) );
+        $oProduct = $this->getMock('oxArticle', array('getId'));
+        $oProduct->expects($this->once())->method('getId')->will($this->returnValue('test_artid'));
 
-        $this->setRequestParam( 'recomm', 'test_recomm' );
-        $this->setRequestParam( 'recomm_txt', 'test_recommtext' );
+        $this->setRequestParam('recomm', 'test_recomm');
+        $this->setRequestParam('recomm_txt', 'test_recommtext');
 
-        $oRecommList = $this->getMock( 'oxRecommList', array( 'load', 'addArticle' ) );
-        $oRecommList->expects( $this->once() )->method( 'load' )->with( $this->equalTo('test_recomm') );
-        $oRecommList->expects( $this->once() )->method( 'addArticle' )->with( $this->equalTo('test_artid'), $this->equalTo('test_recommtext') );
+        $oRecommList = $this->getMock('oxRecommList', array('load', 'addArticle'));
+        $oRecommList->expects($this->once())->method('load')->with($this->equalTo('test_recomm'));
+        $oRecommList->expects($this->once())->method('addArticle')->with($this->equalTo('test_artid'), $this->equalTo('test_recommtext'));
 
-        $oRecomm = $this->getMock( "details", array( "getViewConfig", 'getProduct' ) );
-        $oRecomm->expects( $this->once() )->method( 'getViewConfig' )->will( $this->returnValue( $oCfg ) );
-        $oRecomm->expects( $this->once() )->method( 'getProduct' )->will( $this->returnValue( $oProduct ) );
+        $oRecomm = $this->getMock("details", array("getViewConfig", 'getProduct'));
+        $oRecomm->expects($this->once())->method('getViewConfig')->will($this->returnValue($oCfg));
+        $oRecomm->expects($this->once())->method('getProduct')->will($this->returnValue($oProduct));
 
         oxTestModules::addModuleObject('oxrecommlist', $oRecommList);
 

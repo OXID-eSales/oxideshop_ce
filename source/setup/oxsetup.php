@@ -1203,9 +1203,9 @@ class OxSetupDb extends oxSetupCore
         $oSession = $this->getInstance( "oxSetupSession" );
         $blSendShopDataToOxid  = isset( $aParams["blSendShopDataToOxid"] ) ? $aParams["blSendShopDataToOxid"] : $oSession->getSessionParam( 'blSendShopDataToOxid' );
 
-        $sID4 = $oUtils->generateUid();
+        $sID = $oUtils->generateUid();
         $this->execSql("insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue)
-                                 values('$sID4', '$sBaseShopId', 'blSendShopDataToOxid', 'bool', ENCODE( '$blSendShopDataToOxid', '" . $oConfk->sConfigKey . "'))");
+                                 values('$sID', '$sBaseShopId', 'blSendShopDataToOxid', 'bool', ENCODE( '$blSendShopDataToOxid', '" . $oConfk->sConfigKey . "'))");
     }
 }
 

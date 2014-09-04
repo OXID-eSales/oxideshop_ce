@@ -131,11 +131,11 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
      */
     public function testSaveRecommListNoUser()
     {
-        $oRecomm = $this->getMock( "account_recommlist", array( "getUser" ) );
-        $oRecomm->expects( $this->once() )->method( 'getUser')->will( $this->returnValue( false ) );
+        $oRecomm = $this->getMock("account_recommlist", array("getUser"));
+        $oRecomm->expects($this->once())->method('getUser')->will($this->returnValue(false));
         $oRecomm->saveRecommList();
 
-        $this->assertFalse( $oRecomm->isSavedList() );
+        $this->assertFalse($oRecomm->isSavedList());
     }
 
     /**
@@ -147,12 +147,12 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
     {
         modConfig::setParameter(  'recommid', 'testlist' );
 
-        $oRecomm = $this->getMock( "account_recommlist", array( "getUser", "getActiveRecommList" ) );
-        $oRecomm->expects( $this->once() )->method( 'getUser')->will( $this->returnValue( false ) );
-        $oRecomm->expects( $this->any() )->method( 'getActiveRecommList');
+        $oRecomm = $this->getMock("account_recommlist", array("getUser", "getActiveRecommList"));
+        $oRecomm->expects($this->once())->method('getUser')->will($this->returnValue(false));
+        $oRecomm->expects($this->any())->method('getActiveRecommList');
         $oRecomm->saveRecommList();
 
-        $this->assertFalse( $oRecomm->isSavedList() );
+        $this->assertFalse($oRecomm->isSavedList());
     }
 
     /**
@@ -163,19 +163,19 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
     public function testSaveRecommList()
     {
         $oUser = new oxuser();
-        $oUser->load( "oxdefaultadmin" );
+        $oUser->load("oxdefaultadmin");
 
         modConfig::setParameter( 'recomm_title', 'testtitle' );
         modConfig::setParameter( 'recomm_author', 'testauthor' );
         modConfig::setParameter( 'recomm_desc', 'testdesc' );
 
-        $oRecomm = $this->getMock( "account_recommlist", array( "getUser", "getActiveRecommList" ) );
-        $oRecomm->expects( $this->once() )->method( 'getUser')->will( $this->returnValue( $oUser ) );
-        $oRecomm->expects( $this->once() )->method( 'getActiveRecommList')->will( $this->returnValue( false ) );
+        $oRecomm = $this->getMock("account_recommlist", array("getUser", "getActiveRecommList"));
+        $oRecomm->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
+        $oRecomm->expects($this->once())->method('getActiveRecommList')->will($this->returnValue(false));
         $oRecomm->saveRecommList();
 
-        $this->assertTrue( $oRecomm->isSavedList() );
-        $this->assertEquals( "1", oxDb::getDB()->getOne( "select 1 from oxrecommlists where oxtitle = 'testtitle' and oxauthor =  'testauthor'and oxdesc = 'testdesc'" ) );
+        $this->assertTrue($oRecomm->isSavedList());
+        $this->assertEquals("1", oxDb::getDB()->getOne("select 1 from oxrecommlists where oxtitle = 'testtitle' and oxauthor =  'testauthor'and oxdesc = 'testdesc'"));
     }
 
     /**
@@ -186,7 +186,7 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
     public function testSaveRecommListUpdating()
     {
         $oUser = new oxuser();
-        $oUser->load( "oxdefaultadmin" );
+        $oUser->load("oxdefaultadmin");
 
         $oRecommList = oxNew( 'oxrecommlist' );
         $oRecommList->oxrecommlists__oxuserid = new oxField( $oUser->getId() );
@@ -198,20 +198,20 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
         modConfig::setParameter( 'recomm_author', 'testauthor' );
         modConfig::setParameter( 'recomm_desc', 'testdesc' );
 
-        $oRecomm = $this->getMock( "account_recommlist", array( "getUser", "getActiveRecommList" ) );
-        $oRecomm->expects( $this->once() )->method( 'getUser')->will( $this->returnValue( $oUser ) );
-        $oRecomm->expects( $this->once() )->method( 'getActiveRecommList')->will( $this->returnValue( $oRecommList ) );
+        $oRecomm = $this->getMock("account_recommlist", array("getUser", "getActiveRecommList"));
+        $oRecomm->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
+        $oRecomm->expects($this->once())->method('getActiveRecommList')->will($this->returnValue($oRecommList));
         $oRecomm->saveRecommList();
 
-        $this->assertTrue( $oRecomm->isSavedList() );
-        $this->assertEquals( "1", oxDb::getDB()->getOne( "select 1 from oxrecommlists where oxid='".$oRecommList->getId()."' and oxtitle = 'testtitle' and oxauthor =  'testauthor'and oxdesc = 'testdesc'" ) );
+        $this->assertTrue($oRecomm->isSavedList());
+        $this->assertEquals("1", oxDb::getDB()->getOne("select 1 from oxrecommlists where oxid='" . $oRecommList->getId() . "' and oxtitle = 'testtitle' and oxauthor =  'testauthor'and oxdesc = 'testdesc'"));
     }
 
     // #1428: xss possible while saving recomm list
     public function testSaveRecommListXSS()
     {
         $oUser = new oxuser();
-        $oUser->load( "oxdefaultadmin" );
+        $oUser->load("oxdefaultadmin");
 
         $oRecommList = oxNew( 'oxrecommlist' );
         $oRecommList->oxrecommlists__oxuserid = new oxField( $oUser->getId() );
@@ -223,13 +223,13 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
         modConfig::setParameter( 'recomm_author', 'testauthor' );
         modConfig::setParameter( 'recomm_desc', 'testdesc' );
 
-        $oRecomm = $this->getMock( "account_recommlist", array( "getUser", "getActiveRecommList" ) );
-        $oRecomm->expects( $this->once() )->method( 'getUser')->will( $this->returnValue( $oUser ) );
-        $oRecomm->expects( $this->once() )->method( 'getActiveRecommList')->will( $this->returnValue( $oRecommList ) );
+        $oRecomm = $this->getMock("account_recommlist", array("getUser", "getActiveRecommList"));
+        $oRecomm->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
+        $oRecomm->expects($this->once())->method('getActiveRecommList')->will($this->returnValue($oRecommList));
         $oRecomm->saveRecommList();
 
-        $this->assertTrue( $oRecomm->isSavedList() );
-        $this->assertEquals( '&quot;&lt;script&gt;alert(&#039;xss&#039;);&lt;/script&gt;', $oRecommList->oxrecommlists__oxtitle->value );
+        $this->assertTrue($oRecomm->isSavedList());
+        $this->assertEquals('&quot;&lt;script&gt;alert(&#039;xss&#039;);&lt;/script&gt;', $oRecommList->oxrecommlists__oxtitle->value);
     }
 
     /**
@@ -240,7 +240,7 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
     public function testSaveRecommListAddsErrorOnException()
     {
         $oUser = new oxuser();
-        $oUser->load( "oxdefaultadmin" );
+        $oUser->load("oxdefaultadmin");
 
         modConfig::setParameter( 'recomm_title', 'testtitle' );
         modConfig::setParameter( 'recomm_author', 'testauthor' );
@@ -249,14 +249,15 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
         oxTestModules::addFunction('oxrecommlist', 'save', '{throw new oxObjectException("lalala");}');
         oxTestModules::addFunction('oxUtilsView', 'addErrorToDisplay', '{throw new Exception($aA[0]->getMessage().(int)$aA[1].(int)$aA[2].$aA[3]);}');
 
-        $oRecomm = $this->getMock( "account_recommlist", array( "getUser", "getActiveRecommList" ) );
-        $oRecomm->expects( $this->once() )->method( 'getUser')->will( $this->returnValue( $oUser ) );
-        $oRecomm->expects( $this->once() )->method( 'getActiveRecommList');
+        $oRecomm = $this->getMock("account_recommlist", array("getUser", "getActiveRecommList"));
+        $oRecomm->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
+        $oRecomm->expects($this->once())->method('getActiveRecommList');
         try {
             $oRecomm->saveRecommList();
         } catch (Exception $e) {
             // this excp should be thrown at oxUtilsView::addErrorToDisplay check it:
             $this->assertEquals('lalala01user', $e->getMessage());
+
             return;
         }
         $this->fail('oxUtilsView::addErrorToDisplay was not called');
@@ -344,12 +345,12 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
      */
     public function testSaveRecommListIfOff()
     {
-        $oCfg = $this->getMock( "stdClass", array( "getShowListmania" ) );
-        $oCfg->expects( $this->once() )->method( 'getShowListmania')->will($this->returnValue( false ) );
+        $oCfg = $this->getMock("stdClass", array("getShowListmania"));
+        $oCfg->expects($this->once())->method('getShowListmania')->will($this->returnValue(false));
 
-        $oRecomm = $this->getMock( "account_recommlist", array( "getViewConfig", 'getUser' ) );
-        $oRecomm->expects( $this->once() )->method( 'getViewConfig')->will($this->returnValue( $oCfg ) );
-        $oRecomm->expects( $this->never() )->method( 'getUser');
+        $oRecomm = $this->getMock("account_recommlist", array("getViewConfig", 'getUser'));
+        $oRecomm->expects($this->once())->method('getViewConfig')->will($this->returnValue($oCfg));
+        $oRecomm->expects($this->never())->method('getUser');
 
         $this->assertSame(null, $oRecomm->saveRecommList());
     }

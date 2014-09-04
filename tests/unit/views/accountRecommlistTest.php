@@ -131,6 +131,7 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
      */
     public function testSaveRecommListNoUser()
     {
+        /** @var Account_Recommlist|PHPUnit_Framework_MockObject_MockObject $oRecomm */
         $oRecomm = $this->getMock("account_recommlist", array("getUser"));
         $oRecomm->expects($this->once())->method('getUser')->will($this->returnValue(false));
         $oRecomm->saveRecommList();
@@ -147,6 +148,7 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
     {
         modConfig::setParameter(  'recommid', 'testlist' );
 
+        /** @var Account_Recommlist|PHPUnit_Framework_MockObject_MockObject $oRecomm */
         $oRecomm = $this->getMock("account_recommlist", array("getUser", "getActiveRecommList"));
         $oRecomm->expects($this->once())->method('getUser')->will($this->returnValue(false));
         $oRecomm->expects($this->any())->method('getActiveRecommList');
@@ -169,6 +171,7 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
         modConfig::setParameter( 'recomm_author', 'testauthor' );
         modConfig::setParameter( 'recomm_desc', 'testdesc' );
 
+        /** @var Account_Recommlist|PHPUnit_Framework_MockObject_MockObject $oRecomm */
         $oRecomm = $this->getMock("account_recommlist", array("getUser", "getActiveRecommList"));
         $oRecomm->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
         $oRecomm->expects($this->once())->method('getActiveRecommList')->will($this->returnValue(false));
@@ -198,6 +201,7 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
         modConfig::setParameter( 'recomm_author', 'testauthor' );
         modConfig::setParameter( 'recomm_desc', 'testdesc' );
 
+        /** @var Account_Recommlist|PHPUnit_Framework_MockObject_MockObject $oRecomm */
         $oRecomm = $this->getMock("account_recommlist", array("getUser", "getActiveRecommList"));
         $oRecomm->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
         $oRecomm->expects($this->once())->method('getActiveRecommList')->will($this->returnValue($oRecommList));
@@ -223,6 +227,7 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
         modConfig::setParameter( 'recomm_author', 'testauthor' );
         modConfig::setParameter( 'recomm_desc', 'testdesc' );
 
+        /** @var Account_Recommlist|PHPUnit_Framework_MockObject_MockObject $oRecomm */
         $oRecomm = $this->getMock("account_recommlist", array("getUser", "getActiveRecommList"));
         $oRecomm->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
         $oRecomm->expects($this->once())->method('getActiveRecommList')->will($this->returnValue($oRecommList));
@@ -249,6 +254,7 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
         oxTestModules::addFunction('oxrecommlist', 'save', '{throw new oxObjectException("lalala");}');
         oxTestModules::addFunction('oxUtilsView', 'addErrorToDisplay', '{throw new Exception($aA[0]->getMessage().(int)$aA[1].(int)$aA[2].$aA[3]);}');
 
+        /** @var Account_Recommlist|PHPUnit_Framework_MockObject_MockObject $oRecomm */
         $oRecomm = $this->getMock("account_recommlist", array("getUser", "getActiveRecommList"));
         $oRecomm->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
         $oRecomm->expects($this->once())->method('getActiveRecommList');
@@ -348,6 +354,7 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
         $oCfg = $this->getMock("stdClass", array("getShowListmania"));
         $oCfg->expects($this->once())->method('getShowListmania')->will($this->returnValue(false));
 
+        /** @var Account_Recommlist|PHPUnit_Framework_MockObject_MockObject $oRecomm */
         $oRecomm = $this->getMock("account_recommlist", array("getViewConfig", 'getUser'));
         $oRecomm->expects($this->once())->method('getViewConfig')->will($this->returnValue($oCfg));
         $oRecomm->expects($this->never())->method('getUser');

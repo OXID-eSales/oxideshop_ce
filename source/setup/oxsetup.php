@@ -716,6 +716,12 @@ class OxSetupSession extends oxSetupCore
             if ( isset( $iEula ) ) {
                 $this->setSessionParam( 'eula', $iEula  );
             }
+
+        // store anonymous information config
+        $blSendShopDataToOxid = $oUtils->getRequestVar( "blSendShopDataToOxid", "post" );
+        if ( isset( $blSendShopDataToOxid ) ) {
+            $this->setSessionParam( 'blSendShopDataToOxid', $blSendShopDataToOxid  );
+        }
     }
 
     /**
@@ -1008,6 +1014,9 @@ class OxSetupDb extends oxSetupCore
         $this->execSql( "insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue)
                                  values('$sID3', '$sBaseShopId', 'blCheckForUpdates', 'bool', ENCODE( '$blCheckForUpdates', '".$oConfk->sConfigKey."'))" );
 
+
+        $this->_addConfigValueIfShopInfoShouldBeSent($oUtils, $sBaseShopId, $aParams, $oConfk);
+
         //set only one active language
         $aRes = $this->execSql( "select oxvarname, oxvartype, DECODE( oxvarvalue, '".$oConfk->sConfigKey."') AS oxvarvalue from oxconfig where oxvarname='aLanguageParams'" );
         if ($aRes) {
@@ -1181,6 +1190,22 @@ class OxSetupDb extends oxSetupCore
 
         $sQ = "update oxnewssubscribed set oxemail='{$sLoginName}' where oxuserid='oxdefaultadmin'";
         $this->execSql( $sQ );
+    }
+
+    /**
+     * @param $oUtils
+     * @param $sBaseShopId
+     * @param $aParams
+     * @param $oConfk
+     */
+    private function _addConfigValueIfShopInfoShouldBeSent($oUtils, $sBaseShopId, $aParams, $oConfk)
+    {
+        $oSession = $this->getInstance( "oxSetupSession" );
+        $blSendShopDataToOxid  = isset( $aParams["blSendShopDataToOxid"] ) ? $aParams["blSendShopDataToOxid"] : $oSession->getSessionParam( 'blSendShopDataToOxid' );
+
+        $sID4 = $oUtils->generateUid();
+        $this->execSql("insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue)
+                                 values('$sID4', '$sBaseShopId', 'blSendShopDataToOxid', 'bool', ENCODE( '$blSendShopDataToOxid', '" . $oConfk->sConfigKey . "'))");
     }
 }
 

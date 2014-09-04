@@ -963,13 +963,13 @@ class OxSetupDb extends oxSetupCore
     }
 
     /**
-     * Saves dyn pages settings parameters
+     * Saves shop settings.
      *
      * @param array $aParams parameters to save to db
      *
      * @return null
      */
-    public function saveDynPagesSettings( $aParams )
+    public function saveShopSettings( $aParams )
     {
         $oUtils   = $this->getInstance( "oxSetupUtils" );
         $oSession = $this->getInstance( "oxSetupSession" );
@@ -2298,7 +2298,7 @@ class oxSetupController extends oxSetupCore
         }
 
         //update dyn pages / shop country config options (from first step)
-        $oDb->saveDynPagesSettings( array() );
+        $oDb->saveShopSettings( array() );
 
         //applying utf-8 specific queries
 
@@ -2606,7 +2606,7 @@ class oxSetupAps extends oxSetupCore
         }
 
         //update dyn pages / shop country config options (from first step)
-        $oDb->saveDynPagesSettings( $aParams );
+        $oDb->saveShopSettings( $aParams );
 
         //applying utf-8 specific queries
         if ( $iUtfMode ) {

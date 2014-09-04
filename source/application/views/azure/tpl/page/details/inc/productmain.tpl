@@ -245,9 +245,7 @@
                 [{/oxhasrights}]
             [{/block}]
 
-            [{* OXPS Watchlist start *}]
             [{block name="details_productmain_watchlist"}][{/block}]
-            [{* OXPS Watchlist end *}]
 
             <div class="tobasketFunction clear">
                 [{block name="details_productmain_price"}]

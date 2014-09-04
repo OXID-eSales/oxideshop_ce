@@ -119,23 +119,23 @@ class Unit_Views_oxCmpUtilsTest extends OxidTestCase
      */
     public function testToCompareListAdding()
     {
-        modConfig::getInstance()->setConfigParam( "bl_showCompareList", true );
-        oxTestModules::addFunction( 'oxUtils', 'isSearchEngine', '{ return false; }' );
+        modConfig::getInstance()->setConfigParam("bl_showCompareList", true);
+        oxTestModules::addFunction('oxUtils', 'isSearchEngine', '{ return false; }');
 
         modConfig::setParameter( "addcompare", true );
         modConfig::setParameter( 'removecompare', null );
 
-        $oProduct = $this->getMock( "oxArticle", array( "getId", "setOnComparisonList" ) );
-        $oProduct->expects( $this->exactly( 2 ) )->method( 'getId' )->will( $this->returnValue( "1126" ) );
-        $oProduct->expects( $this->exactly( 2 ) )->method( 'setOnComparisonList' )->with( $this->equalTo( true ) );
+        $oProduct = $this->getMock("oxArticle", array("getId", "setOnComparisonList"));
+        $oProduct->expects($this->exactly(2))->method('getId')->will($this->returnValue("1126"));
+        $oProduct->expects($this->exactly(2))->method('setOnComparisonList')->with($this->equalTo(true));
 
-        $oParentView = $this->getMock( "oxView", array( "getViewProduct", "getViewProductList" ) );
-        $oParentView->expects( $this->once() )->method('getViewProduct')->will( $this->returnValue( $oProduct ) );
-        $oParentView->expects( $this->once() )->method('getViewProductList')->will( $this->returnValue( array( $oProduct ) ) );
+        $oParentView = $this->getMock("oxView", array("getViewProduct", "getViewProductList"));
+        $oParentView->expects($this->once())->method('getViewProduct')->will($this->returnValue($oProduct));
+        $oParentView->expects($this->once())->method('getViewProductList')->will($this->returnValue(array($oProduct)));
 
-        $oCmp = $this->getMock( "oxcmp_utils", array( "getParent" ) );
-        $oCmp->expects( $this->once() )->method('getParent')->will( $this->returnValue( $oParentView ) );
-        $oCmp->toCompareList( "1126" );
+        $oCmp = $this->getMock("oxcmp_utils", array("getParent"));
+        $oCmp->expects($this->once())->method('getParent')->will($this->returnValue($oParentView));
+        $oCmp->toCompareList("1126");
     }
 
     /**
@@ -145,24 +145,24 @@ class Unit_Views_oxCmpUtilsTest extends OxidTestCase
      */
     public function testToCompareListRemoving()
     {
-        modConfig::getInstance()->setConfigParam( "bl_showCompareList", true );
-        oxTestModules::addFunction( 'oxUtils', 'isSearchEngine', '{ return false; }' );
+        modConfig::getInstance()->setConfigParam("bl_showCompareList", true);
+        oxTestModules::addFunction('oxUtils', 'isSearchEngine', '{ return false; }');
 
         modConfig::setParameter( "addcompare", null );
         modConfig::setParameter( 'removecompare', true );
         modConfig::setParameter( 'aFiltcompproducts', array( "1126" ) );
 
-        $oProduct = $this->getMock( "oxArticle", array( "getId", "setOnComparisonList" ) );
-        $oProduct->expects( $this->exactly( 2 ) )->method( 'getId' )->will( $this->returnValue( "1126" ) );
-        $oProduct->expects( $this->exactly( 2 ) )->method( 'setOnComparisonList' )->with( $this->equalTo( false ) );
+        $oProduct = $this->getMock("oxArticle", array("getId", "setOnComparisonList"));
+        $oProduct->expects($this->exactly(2))->method('getId')->will($this->returnValue("1126"));
+        $oProduct->expects($this->exactly(2))->method('setOnComparisonList')->with($this->equalTo(false));
 
-        $oParentView = $this->getMock( "oxView", array( "getViewProduct", "getViewProductList" ) );
-        $oParentView->expects( $this->once() )->method('getViewProduct')->will( $this->returnValue( $oProduct ) );
-        $oParentView->expects( $this->once() )->method('getViewProductList')->will( $this->returnValue( array( $oProduct ) ) );
+        $oParentView = $this->getMock("oxView", array("getViewProduct", "getViewProductList"));
+        $oParentView->expects($this->once())->method('getViewProduct')->will($this->returnValue($oProduct));
+        $oParentView->expects($this->once())->method('getViewProductList')->will($this->returnValue(array($oProduct)));
 
-        $oCmp = $this->getMock( "oxcmp_utils", array( "getParent" ) );
-        $oCmp->expects( $this->once() )->method('getParent')->will( $this->returnValue( $oParentView ) );
-        $oCmp->toCompareList( "1126" );
+        $oCmp = $this->getMock("oxcmp_utils", array("getParent"));
+        $oCmp->expects($this->once())->method('getParent')->will($this->returnValue($oParentView));
+        $oCmp->toCompareList("1126");
     }
 
     /**
@@ -172,9 +172,9 @@ class Unit_Views_oxCmpUtilsTest extends OxidTestCase
      */
     public function testToNoticeList()
     {
-        $oCmp = $this->getMock( "oxcmp_utils", array( "_toList" ) );
-        $oCmp->expects( $this->once() )->method('_toList')->with( $this->equalTo( 'noticelist' ), $this->equalTo( '1126' ), $this->equalTo( 999 ), $this->equalTo( 'sel' ) );
-        $oCmp->toNoticeList( '1126', 999, 'sel' );
+        $oCmp = $this->getMock("oxcmp_utils", array("_toList"));
+        $oCmp->expects($this->once())->method('_toList')->with($this->equalTo('noticelist'), $this->equalTo('1126'), $this->equalTo(999), $this->equalTo('sel'));
+        $oCmp->toNoticeList('1126', 999, 'sel');
     }
 
     /**
@@ -184,17 +184,17 @@ class Unit_Views_oxCmpUtilsTest extends OxidTestCase
      */
     public function testToWishList()
     {
-        modConfig::getInstance()->setConfigParam( "bl_showWishlist", false );
+        modConfig::getInstance()->setConfigParam("bl_showWishlist", false);
 
-        $oCmp = $this->getMock( "oxcmp_utils", array( "_toList" ) );
-        $oCmp->expects( $this->never() )->method('_toList');
-        $oCmp->toWishList( '1126', 999, 'sel' );
+        $oCmp = $this->getMock("oxcmp_utils", array("_toList"));
+        $oCmp->expects($this->never())->method('_toList');
+        $oCmp->toWishList('1126', 999, 'sel');
 
-        modConfig::getInstance()->setConfigParam( "bl_showWishlist", true );
+        modConfig::getInstance()->setConfigParam("bl_showWishlist", true);
 
-        $oCmp = $this->getMock( "oxcmp_utils", array( "_toList" ) );
-        $oCmp->expects( $this->once() )->method('_toList')->with( $this->equalTo( 'wishlist' ), $this->equalTo( '1126' ), $this->equalTo( 999 ), $this->equalTo( 'sel' ) );
-        $oCmp->toWishList( '1126', 999, 'sel' );
+        $oCmp = $this->getMock("oxcmp_utils", array("_toList"));
+        $oCmp->expects($this->once())->method('_toList')->with($this->equalTo('wishlist'), $this->equalTo('1126'), $this->equalTo(999), $this->equalTo('sel'));
+        $oCmp->toWishList('1126', 999, 'sel');
     }
 
     /**

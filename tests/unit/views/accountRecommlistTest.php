@@ -71,6 +71,7 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
     {
         modConfig::setRequestParameter('aid', null);
 
+        /** @var Account_Recommlist|PHPUnit_Framework_MockObject_MockObject $oRecomm */
         $oRecomm = $this->getMock("account_recommlist", array("getActiveRecommList"));
         $oRecomm->expects($this->never())->method('getActiveRecommList');
         $oRecomm->removeArticle();
@@ -84,9 +85,12 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
     public function testRemoveArticle()
     {
         modConfig::setRequestParameter('aid', "1");
+
+        /** @var oxRecommList|PHPUnit_Framework_MockObject_MockObject $oRecommList */
         $oRecommList = $this->getMock("oxRecommList", array("removeArticle"));
         $oRecommList->expects($this->once())->method('removeArticle');
 
+        /** @var Account_Recommlist|PHPUnit_Framework_MockObject_MockObject $oRecomm */
         $oRecomm = $this->getMock("account_recommlist", array("getActiveRecommList"));
         $oRecomm->expects($this->once())->method('getActiveRecommList')->will($this->returnValue($oRecommList));
         $oRecomm->removeArticle();
@@ -101,6 +105,7 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
     {
         modConfig::setRequestParameter('deleteList', null);
 
+        /** @var Account_Recommlist|PHPUnit_Framework_MockObject_MockObject $oRecomm */
         $oRecomm = $this->getMock("account_recommlist", array("getActiveRecommList", "setActiveRecommList"));
         $oRecomm->expects($this->never())->method('getActiveRecommList');
         $oRecomm->expects($this->never())->method('setActiveRecommList');
@@ -115,9 +120,12 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
     public function testEditList()
     {
         modConfig::setRequestParameter('deleteList', "1");
+
+        /** @var oxRecommList|PHPUnit_Framework_MockObject_MockObject $oRecommList */
         $oRecommList = $this->getMock("oxRecommList", array("delete"));
         $oRecommList->expects($this->once())->method('delete');
 
+        /** @var Account_Recommlist|PHPUnit_Framework_MockObject_MockObject $oRecomm */
         $oRecomm = $this->getMock("account_recommlist", array("getActiveRecommList", "setActiveRecommList"));
         $oRecomm->expects($this->once())->method('getActiveRecommList')->will($this->returnValue($oRecommList));
         $oRecomm->expects($this->once())->method('setActiveRecommList')->with($this->equalTo(false));
@@ -409,6 +417,7 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
         $oCfg = $this->getMock("stdClass", array("getShowListmania"));
         $oCfg->expects($this->once())->method('getShowListmania')->will($this->returnValue(false));
 
+        /** @var Account_Recommlist|PHPUnit_Framework_MockObject_MockObject $oRecomm */
         $oRecomm = $this->getMock("account_recommlist", array("getViewConfig", 'getActiveRecommList'));
         $oRecomm->expects($this->once())->method('getViewConfig')->will($this->returnValue($oCfg));
         $oRecomm->expects($this->never())->method('getActiveRecommList');
@@ -428,6 +437,7 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
         $oCfg = $this->getMock("stdClass", array("getShowListmania"));
         $oCfg->expects($this->once())->method('getShowListmania')->will($this->returnValue(false));
 
+        /** @var Account_Recommlist|PHPUnit_Framework_MockObject_MockObject $oRecomm */
         $oRecomm = $this->getMock("account_recommlist", array("getViewConfig", 'getActiveRecommList'));
         $oRecomm->expects($this->once())->method('getViewConfig')->will($this->returnValue($oCfg));
         $oRecomm->expects($this->never())->method('getActiveRecommList');

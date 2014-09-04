@@ -417,6 +417,11 @@ class Unit_Views_detailsTest extends OxidTestCase
 
         $this->setRequestParam('newTags', "newTag");
 
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
+
         $oArt = new oxarticle();
         $oArt->load('2000');
         $oArt->setId('_testArt');
@@ -440,6 +445,11 @@ class Unit_Views_detailsTest extends OxidTestCase
     public function testAddTags()
     {
         $this->setRequestParam('newTags', "tag1,tag2,tag3,tag3,tag3");
+
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
 
         $oArticle = new oxArticle();
         $oArticle->setId("_testArt");
@@ -471,6 +481,11 @@ class Unit_Views_detailsTest extends OxidTestCase
         $this->setRequestParam('blAjax', true);
         $this->setRequestParam('newTags', "admin,tag1,tag2,tag3,tag3,tag3");
 
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
+
         $oArticle = new oxArticle();
         $oArticle->setId("_testArt");
 
@@ -501,6 +516,11 @@ class Unit_Views_detailsTest extends OxidTestCase
      */
     public function testAddTagsHighlight()
     {
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
+
         $oArticleTagList = new oxArticleTagList();
         $oArticleTagList->load('_testArt');
         $oArticleTagList->addTag('tag1');

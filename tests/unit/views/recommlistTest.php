@@ -107,6 +107,11 @@ class Unit_Views_recommlistTest extends OxidTestCase
     {
         modConfig::setRequestParameter("recommlistrating", 3);
 
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
+
         /** @var oxRecommList|PHPUnit_Framework_MockObject_MockObject $oRecommList */
         $oRecommList = $this->getMock("oxRecommList", array("addToRatingAverage"));
         $oRecommList->expects($this->never())->method('addToRatingAverage');
@@ -128,6 +133,11 @@ class Unit_Views_recommlistTest extends OxidTestCase
     {
         modConfig::setRequestParameter("recommlistrating", 3);
         modConfig::setRequestParameter("rvw_txt", "testRecommId");
+
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
 
         /** @var oxRecommList|PHPUnit_Framework_MockObject_MockObject $oRecommList */
         $oRecommList = $this->getMock("oxRecommList", array("addToRatingAverage", "getId"));

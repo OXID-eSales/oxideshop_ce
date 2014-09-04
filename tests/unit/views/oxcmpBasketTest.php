@@ -25,6 +25,7 @@ require_once realpath( "." ).'/unit/test_config.inc.php';
 
 class Unit_Views_oxcmpBasketTest extends OxidTestCase
 {
+
     public function testToBasketReturnsNull()
     {
         $o = $this->getMock('oxcmp_basket', array('_getItems'));
@@ -40,10 +41,10 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
     {
         $aProducts = array(
             'sProductId' => array(
-                'am' => 10,
-                'sel' => null,
-                'persparam' => null,
-                'override'  => 0,
+                'am'           => 10,
+                'sel'          => null,
+                'persparam'    => null,
+                'override'     => 0,
                 'basketitemid' => ''
             )
         );
@@ -64,9 +65,9 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
         $o->expects($this->once())->method('_addItems')->with($this->equalTo($aProducts))->will($this->returnValue($oBItem));
         $o->expects($this->exactly(2))->method('getConfig')->will($this->returnValue($oConfig));
 
-        $this->assertEquals( "start?", $o->tobasket());
+        $this->assertEquals("start?", $o->tobasket());
 
-        $oNewItem = $this->getSessionParam( '_newitem' );
+        $oNewItem = $this->getSessionParam('_newitem');
         $this->assertTrue($oNewItem instanceof stdClass);
         $this->assertEquals('ret:getTitle', $oNewItem->sTitle);
         $this->assertEquals('ret:getProductId', $oNewItem->sId);
@@ -78,10 +79,10 @@ class Unit_Views_oxcmpBasketTest extends OxidTestCase
     {
         $aProducts = array(
             'sProductId' => array(
-                'am' => 10,
-                'sel' => null,
-                'persparam' => null,
-                'override'  => 0,
+                'am'           => 10,
+                'sel'          => null,
+                'persparam'    => null,
+                'override'     => 0,
                 'basketitemid' => ''
             )
         );

@@ -404,9 +404,17 @@ class Unit_Views_detailsTest extends OxidTestCase
     public function testGetTagCloudManagerAfterAddTags()
     {
         oxTestModules::addFunction('oxSeoEncoderTag', '_saveToDb', '{return null;}');
-        oxTestModules::addFunction("oxutilsserver", "getServerVar", "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '".oxRegistry::getConfig()->getShopUrl()."'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }");
-        oxTestModules::addFunction( "oxutils", "seoIsActive", "{return true;}" );
-        $this->setRequestParam( 'newTags', "newTag" );
+        oxTestModules::addFunction(
+            "oxutilsserver",
+            "getServerVar",
+            "{ \$aArgs = func_get_args(); if ( \$aArgs[0] === 'HTTP_HOST' ) { return '"
+            . oxRegistry::getConfig()->getShopUrl()
+            . "'; } elseif ( \$aArgs[0] === 'SCRIPT_NAME' ) { return ''; } else { return \$_SERVER[\$aArgs[0]]; } }"
+        );
+        oxTestModules::addFunction("oxutils", "seoIsActive", "{return true;}");
+
+        $this->setRequestParam('newTags', "newTag");
+
         $oArt = new oxarticle();
         $oArt->load('2000');
         $oArt->setId('_testArt');
@@ -415,10 +423,11 @@ class Unit_Views_detailsTest extends OxidTestCase
         $oArticle = new oxArticle();
         $oArticle->load('_testArt');
 
-        $oDetails = $this->getProxyClass( 'details' );
-        $oDetails->setNonPublicVar( "_oProduct", $oArticle );
+        $oDetails = $this->getProxyClass('details');
+        $oDetails->setNonPublicVar("_oProduct", $oArticle);
         $oDetails->addTags();
-        $this->assertTrue( $oDetails->getTagCloudManager() instanceof oxTagCloud );
+
+        $this->assertTrue($oDetails->getTagCloudManager() instanceof oxTagCloud);
     }
 
     /**
@@ -428,13 +437,13 @@ class Unit_Views_detailsTest extends OxidTestCase
      */
     public function testAddTags()
     {
-        $this->setRequestParam( 'newTags', "tag1,tag2,tag3,tag3,tag3" );
+        $this->setRequestParam('newTags', "tag1,tag2,tag3,tag3,tag3");
+
         $oArticle = new oxArticle();
         $oArticle->setId("_testArt");
 
-        $oDetails = $this->getMock( 'details', array( 'getProduct' ));
-        $oDetails->expects( $this->any() )->method( 'getProduct')->will($this->returnValue( $oArticle ));
-
+        $oDetails = $this->getMock('details', array('getProduct'));
+        $oDetails->expects($this->any())->method('getProduct')->will($this->returnValue($oArticle));
         $oDetails->addTags();
 
         $oArticleTagList = new oxArticleTagList();
@@ -446,7 +455,7 @@ class Unit_Views_detailsTest extends OxidTestCase
             'tag3' => new oxTag('tag3'),
         );
 
-        $this->assertEquals( $aTags, $oArticleTagList->getArray() );
+        $this->assertEquals($aTags, $oArticleTagList->getArray());
     }
 
     /**
@@ -456,25 +465,25 @@ class Unit_Views_detailsTest extends OxidTestCase
      */
     public function testAddTagsErrorAjax()
     {
-        $this->setRequestParam( 'blAjax', true );
-        $this->setRequestParam( 'newTags', "admin,tag1,tag2,tag3,tag3,tag3" );
+        $this->setRequestParam('blAjax', true);
+        $this->setRequestParam('newTags', "admin,tag1,tag2,tag3,tag3,tag3");
 
         $oArticle = new oxArticle();
         $oArticle->setId("_testArt");
 
-        $oDetails = $this->getMock( 'details', array( 'getProduct' ));
-        $oDetails->expects( $this->any() )
-                 ->method( 'getProduct')
-                 ->will($this->returnValue( $oArticle ));
+        $oDetails = $this->getMock('details', array('getProduct'));
+        $oDetails->expects($this->any())
+            ->method('getProduct')
+            ->will($this->returnValue($oArticle));
 
         $sResult = '{"tags":["tag1","tag2","tag3"],"invalid":["admin"],"inlist":[]}';
 
         $oUtils = $this->getMock('oxUtils', array('showMessageAndExit'));
-        $oUtils->expects( $this->any() )
-               ->method( 'showMessageAndExit')
-               ->with( $this->equalTo( $sResult ) );
+        $oUtils->expects($this->any())
+            ->method('showMessageAndExit')
+            ->with($this->equalTo($sResult));
 
-        oxRegistry::set( "oxUtils", $oUtils );
+        oxRegistry::set("oxUtils", $oUtils);
 
         $oDetails->addTags();
     }
@@ -492,23 +501,23 @@ class Unit_Views_detailsTest extends OxidTestCase
         $oArticleTagList->addTag('tag1');
         $oArticleTagList->save();
 
-        $this->setRequestParam( 'highTags', "tag1,tag1,tag2,tag2" );
+        $this->setRequestParam('highTags', "tag1,tag1,tag2,tag2");
+
         $oArticle = new oxArticle();
         $oArticle->setId("_testArt");
 
-        $oDetails = $this->getMock( 'details', array( 'getProduct' ));
-        $oDetails->expects( $this->any() )->method( 'getProduct')->will($this->returnValue( $oArticle ));
-
+        $oDetails = $this->getMock('details', array('getProduct'));
+        $oDetails->expects($this->any())->method('getProduct')->will($this->returnValue($oArticle));
         $oDetails->addTags();
 
         $oArticleTagList->load('_testArt');
 
-        $oTag =  new oxTag('tag1');
+        $oTag = new oxTag('tag1');
         $oTag->setHitCount(2);
 
-        $aTags = array( 'tag1' => $oTag, 'tag2' => new oxTag('tag2') );
+        $aTags = array('tag1' => $oTag, 'tag2' => new oxTag('tag2'));
 
-        $this->assertEquals( $aTags, $oArticleTagList->getArray() );
+        $this->assertEquals($aTags, $oArticleTagList->getArray());
     }
 
     /**

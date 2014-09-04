@@ -85,9 +85,11 @@ class Unit_Views_GuestbookEntryTest extends OxidTestCase
     {
         modSession::getInstance()->setVar('usr', 'xxx');
 
+        /** @var oxConfig|PHPUnit_Framework_MockObject_MockObject $oConfig */
         $oConfig = $this->getMock("oxconfig", array("getShopId"));
         $oConfig->expects($this->once())->method('getShopId')->will($this->returnValue(null));
 
+        /** @var GuestbookEntry|PHPUnit_Framework_MockObject_MockObject $oView */
         $oView = $this->getMock("GuestbookEntry", array("init", "getConfig"));
         $oView->expects($this->any())->method('init');
         $oView->expects($this->once())->method('getConfig')->will($this->returnValue($oConfig));
@@ -177,6 +179,7 @@ class Unit_Views_GuestbookEntryTest extends OxidTestCase
         modConfig::setRequestParameter('rvw_txt', 'xxx');
         modConfig::setRequestParameter('gbFormId', 'xxx');
 
+        /** @var GuestbookEntry|PHPUnit_Framework_MockObject_MockObject $oView */
         $oView = $this->getMock("guestbookEntry", array("canAcceptFormData"));
         $oView->expects($this->any())->method('canAcceptFormData')->will($this->returnValue(true));
         $this->assertEquals('guestbook', $oView->saveEntry());

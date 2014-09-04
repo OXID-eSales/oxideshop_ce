@@ -256,6 +256,11 @@ class Unit_Views_reviewTest extends OxidTestCase
         modConfig::setRequestParameter('artrating', '4');
         modConfig::setRequestParameter('anid', 'test');
 
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
+
         /** @var oxArticle|PHPUnit_Framework_MockObject_MockObject $oProduct */
         $oProduct = $this->getMock('oxarticle', array('getId', 'addToRatingAverage'));
         $oProduct->expects($this->any())->method('getId')->will($this->returnValue('test'));
@@ -278,6 +283,11 @@ class Unit_Views_reviewTest extends OxidTestCase
 
     public function testSaveReviewIfUserNotSet()
     {
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
+
         /** @var Review|PHPUnit_Framework_MockObject_MockObject $oReview */
         $oReview = $this->getMock('review', array('getReviewUser', '_getActiveObject', 'canAcceptFormData', "_getActiveType"));
         $oReview->expects($this->once())->method('getReviewUser')->will($this->returnValue(false));
@@ -295,6 +305,11 @@ class Unit_Views_reviewTest extends OxidTestCase
         modConfig::setRequestParameter('rvw_txt', 'review test');
         modConfig::setRequestParameter('artrating', null);
         modConfig::setRequestParameter('anid', 'test');
+
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
 
         $oUser = new oxUser();
         $oUser->load("oxdefaultadmin");
@@ -322,6 +337,11 @@ class Unit_Views_reviewTest extends OxidTestCase
         modConfig::setRequestParameter('artrating', 6);
         modConfig::setRequestParameter('anid', 'test');
 
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
+
         $oUser = new oxUser();
         $oUser->load("oxdefaultadmin");
 
@@ -347,6 +367,11 @@ class Unit_Views_reviewTest extends OxidTestCase
         modConfig::setRequestParameter('rvw_txt', null);
         modConfig::setRequestParameter('artrating', '4');
         modConfig::setRequestParameter('anid', 'test');
+
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
 
         $oUser = new oxUser();
         $oUser->load("oxdefaultadmin");

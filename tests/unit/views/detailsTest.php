@@ -1067,6 +1067,11 @@ class Unit_Views_detailsTest extends OxidTestCase
         $this->setRequestParam('anid', 'test');
         $this->setSessionParam('usr', 'oxdefaultadmin');
 
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
+
         /** @var oxArticle|PHPUnit_Framework_MockObject_MockObject $oProduct */
         $oProduct = $this->getMock('oxArticle', array('getId', 'addToRatingAverage'));
         $oProduct->expects($this->any())->method('getId')->will($this->returnValue('test'));
@@ -1094,6 +1099,11 @@ class Unit_Views_detailsTest extends OxidTestCase
         $this->setRequestParam('anid', 'test');
         $this->setSessionParam('usr', null);
 
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
+
         /** @var oxArticle|PHPUnit_Framework_MockObject_MockObject $oProduct */
         $oProduct = $this->getMock('oxArticle', array('getId', 'addToRatingAverage'));
         $oProduct->expects($this->any())->method('getId')->will($this->returnValue('test'));
@@ -1118,6 +1128,11 @@ class Unit_Views_detailsTest extends OxidTestCase
         $this->setRequestParam('rvw_txt', 'review test');
         $this->setRequestParam('artrating', null);
         $this->setRequestParam('anid', 'test');
+
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
 
         /** @var oxArticle|PHPUnit_Framework_MockObject_MockObject $oProduct */
         $oProduct = $this->getMock('oxarticle', array('getId', 'addToRatingAverage'));
@@ -1149,6 +1164,11 @@ class Unit_Views_detailsTest extends OxidTestCase
         $this->setRequestParam('artrating', 6);
         $this->setRequestParam('anid', 'test');
 
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
+
         /** @var oxArticle|PHPUnit_Framework_MockObject_MockObject $oProduct */
         $oProduct = $this->getMock('oxarticle', array('getId', 'addToRatingAverage'));
         $oProduct->expects($this->any())->method('getId')->will($this->returnValue('test'));
@@ -1179,6 +1199,11 @@ class Unit_Views_detailsTest extends OxidTestCase
         $this->setRequestParam('artrating', 3);
         $this->setRequestParam('anid', 'test');
         $this->setSessionParam('usr', 'oxdefaultadmin');
+
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
 
         /** @var oxArticle|PHPUnit_Framework_MockObject_MockObject $oProduct */
         $oProduct = $this->getMock('oxarticle', array('getId', 'addToRatingAverage'));

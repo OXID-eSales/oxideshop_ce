@@ -20,15 +20,14 @@
  * @version   OXID eShop CE
  */
 
-require_once realpath(".") . '/unit/OxidTestCase.php';
-require_once realpath(".") . '/unit/test_config.inc.php';
+require_once realpath( "." ).'/unit/OxidTestCase.php';
+require_once realpath( "." ).'/unit/test_config.inc.php';
 
 /**
  * oxcmp_utils tests
  */
 class Unit_Views_oxCmpUtilsTest extends OxidTestCase
 {
-
     /**
      * Testing oxcmp_utils::getArticle()
      *
@@ -36,24 +35,23 @@ class Unit_Views_oxCmpUtilsTest extends OxidTestCase
      */
     public function testGetArticleNoProduct()
     {
-        modConfig::getInstance()->setConfigParam('blAllowRemoteArticleInfo', 1);
+         modConfig::getInstance()->setConfigParam( 'blAllowRemoteArticleInfo', 1 );
 
-        oxTestModules::addFunction('oxUtils', 'showMessageAndExit', '{ throw new Exception( $aA[0] ); }');
-        oxTestModules::addFunction('oxarticlelist', 'loadActionArticles', '{}');
-        oxTestModules::addFunction('oxarticlelist', 'current', '{}');
+        oxTestModules::addFunction( 'oxUtils', 'showMessageAndExit', '{ throw new Exception( $aA[0] ); }' );
+        oxTestModules::addFunction( 'oxarticlelist', 'loadActionArticles', '{}' );
+        oxTestModules::addFunction( 'oxarticlelist', 'current', '{}' );
 
-        modConfig::setRequestParameter('oxid', false);
-        modConfig::getInstance()->setConfigParam("bl_perfLoadAktion", true);
+        modConfig::setRequestParameter( 'oxid', false );
+        modConfig::getInstance()->setConfigParam( "bl_perfLoadAktion", true );
 
         try {
             $oCmp = new oxcmp_utils();
             $oCmp->getArticle();
-        } catch (Exception $oExcp) {
-            $this->assertEquals('OXID__Problem : no valid oxid !', $oExcp->getMessage(), "Error running testGetArticleNoProduct()");
-
+        } catch ( Exception $oExcp ) {
+            $this->assertEquals( 'OXID__Problem : no valid oxid !', $oExcp->getMessage(), "Error running testGetArticleNoProduct()" );
             return;
         }
-        $this->fail("Error running testGetArticleNoProduct()");
+        $this->fail( "Error running testGetArticleNoProduct()" );
     }
 
     /**
@@ -63,25 +61,24 @@ class Unit_Views_oxCmpUtilsTest extends OxidTestCase
      */
     public function testGetArticle()
     {
-        modConfig::getInstance()->setConfigParam('blAllowRemoteArticleInfo', 1);
-        oxTestModules::addFunction('oxUtils', 'showMessageAndExit', '{ throw new Exception( $aA[0] ); }');
+        modConfig::getInstance()->setConfigParam( 'blAllowRemoteArticleInfo', 1 );
+        oxTestModules::addFunction( 'oxUtils', 'showMessageAndExit', '{ throw new Exception( $aA[0] ); }' );
 
-        modConfig::setRequestParameter('oxid', "1126");
-        modConfig::getInstance()->setConfigParam("bl_perfLoadAktion", true);
+        modConfig::setRequestParameter( 'oxid', "1126" );
+        modConfig::getInstance()->setConfigParam( "bl_perfLoadAktion", true );
 
         try {
             $oCmp = new oxcmp_utils();
             $oCmp->getArticle();
-        } catch (Exception $oExcp) {
+        } catch ( Exception $oExcp ) {
             $sData = $oExcp->getMessage();
-            $this->assertNotNull($sData, "Error running testGetArticle()");
-            $aData = @unserialize($sData);
-            $this->assertTrue((( bool ) $aData), "Error running testGetArticle()");
-            $this->assertTrue(is_array($aData), "Error running testGetArticle()");
-
+            $this->assertNotNull( $sData, "Error running testGetArticle()" );
+            $aData = @unserialize( $sData );
+            $this->assertTrue( ( ( bool ) $aData ), "Error running testGetArticle()" );
+            $this->assertTrue( is_array( $aData ), "Error running testGetArticle()" );
             return;
         }
-        $this->fail("Error running testGetArticle()");
+        $this->fail( "Error running testGetArticle()" );
     }
 
     /**
@@ -91,11 +88,11 @@ class Unit_Views_oxCmpUtilsTest extends OxidTestCase
      */
     public function testGetArticleDisabled()
     {
-        modConfig::getInstance()->setConfigParam('blAllowRemoteArticleInfo', false);
-        oxTestModules::addFunction('oxUtils', 'showMessageAndExit', '{ throw new Exception( $aA[0] ); }');
+        modConfig::getInstance()->setConfigParam( 'blAllowRemoteArticleInfo', false );
+        oxTestModules::addFunction( 'oxUtils', 'showMessageAndExit', '{ throw new Exception( $aA[0] ); }' );
 
-        modConfig::setRequestParameter('oxid', "1126");
-        modConfig::getInstance()->setConfigParam("bl_perfLoadAktion", true);
+        modConfig::setRequestParameter( 'oxid', "1126" );
+        modConfig::getInstance()->setConfigParam( "bl_perfLoadAktion", true );
 
         try {
             $oCmp = new oxcmp_utils();
@@ -103,16 +100,14 @@ class Unit_Views_oxCmpUtilsTest extends OxidTestCase
 
             //correct case:
             $this->assertFalse($blRes);
-
             return;
 
-        } catch (Exception $oExcp) {
+        } catch ( Exception $oExcp ) {
             $sData = $oExcp->getMessage();
-            $this->assertNotNull($sData, "Error running testGetArticle()");
-            $aData = @unserialize($sData);
-            $this->assertTrue((( bool ) $aData), "Error running testGetArticle()");
-            $this->assertTrue(is_array($aData), "Error running testGetArticle()");
-
+            $this->assertNotNull( $sData, "Error running testGetArticle()" );
+            $aData = @unserialize( $sData );
+            $this->assertTrue( ( ( bool ) $aData ), "Error running testGetArticle()" );
+            $this->assertTrue( is_array( $aData ), "Error running testGetArticle()" );
             return;
         }
     }
@@ -209,18 +204,18 @@ class Unit_Views_oxCmpUtilsTest extends OxidTestCase
      */
     public function testToList()
     {
-        modConfig::getInstance()->setConfigParam("blAllowUnevenAmounts", false);
+        modConfig::getInstance()->setConfigParam( "blAllowUnevenAmounts", false );
 
-        $oBasket = $this->getMock("oxBasket", array("addItemToBasket", "getItemCount"));
-        $oBasket->expects($this->once())->method('addItemToBasket')->with($this->equalTo("1126"), $this->equalTo(999), $this->equalTo('sel'));
-        $oBasket->expects($this->once())->method('getItemCount');
+        $oBasket = $this->getMock( "oxBasket", array( "addItemToBasket", "getItemCount" ) );
+        $oBasket->expects( $this->once() )->method('addItemToBasket')->with( $this->equalTo( "1126" ), $this->equalTo( 999 ), $this->equalTo( 'sel' ) );
+        $oBasket->expects( $this->once() )->method('getItemCount');
 
-        $oUser = $this->getMock("oxUser", array("getBasket"));
-        $oUser->expects($this->once())->method('getBasket')->with($this->equalTo('testList'))->will($this->returnValue($oBasket));
+        $oUser = $this->getMock( "oxUser", array( "getBasket" ) );
+        $oUser->expects( $this->once() )->method('getBasket')->with( $this->equalTo( 'testList' ) )->will( $this->returnValue( $oBasket ) );
 
-        $oCmp = $this->getMock("oxcmp_utils", array("getUser"));
-        $oCmp->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
-        $oCmp->UNITtoList('testList', '1126', 999, 'sel');
+        $oCmp = $this->getMock( "oxcmp_utils", array( "getUser" ) );
+        $oCmp->expects( $this->once() )->method('getUser')->will( $this->returnValue( $oUser ) );
+        $oCmp->UNITtoList( 'testList', '1126', 999, 'sel' );
     }
 
     /**
@@ -230,16 +225,16 @@ class Unit_Views_oxCmpUtilsTest extends OxidTestCase
      */
     public function testRenderCompareIsOff()
     {
-        modConfig::getInstance()->setConfigParam("bl_showCompareList", false);
-        modConfig::setRequestParameter('wishid', "testWishId");
-        oxTestModules::addFunction('oxuser', 'load', '{ return true; }');
+        modConfig::getInstance()->setConfigParam( "bl_showCompareList", false );
+        modConfig::setRequestParameter( 'wishid', "testWishId" );
+        oxTestModules::addFunction( 'oxuser', 'load', '{ return true; }' );
 
-        $oParentView = $this->getMock("oxView", array("setMenueList"));
-        $oParentView->expects($this->at(0))->method('setMenueList');
+        $oParentView = $this->getMock( "oxView", array( "setMenueList" ) );
+        $oParentView->expects( $this->at( 0 ) )->method('setMenueList');
 
-        $oCmp = $this->getMock("oxcmp_utils", array("getParent"));
-        $oCmp->expects($this->once())->method('getParent')->will($this->returnValue($oParentView));
-        $this->assertNull($oCmp->render());
+        $oCmp = $this->getMock( "oxcmp_utils", array( "getParent" ) );
+        $oCmp->expects( $this->once() )->method('getParent')->will( $this->returnValue( $oParentView ) );
+        $this->assertNull( $oCmp->render() );
     }
 
     /**
@@ -249,19 +244,19 @@ class Unit_Views_oxCmpUtilsTest extends OxidTestCase
      */
     public function testRender()
     {
-        modConfig::getInstance()->setConfigParam("bl_showCompareList", true);
-        modConfig::getInstance()->setConfigParam("blDisableNavBars", false);
+        modConfig::getInstance()->setConfigParam( "bl_showCompareList", true );
+        modConfig::getInstance()->setConfigParam( "blDisableNavBars", false );
 
-        modSession::getInstance()->setVar('wishid', "testWishId");
-        modSession::getInstance()->setVar('aFiltcompproducts', array("1126"));
+        modSession::getInstance()->setVar( 'wishid', "testWishId" );
+        modSession::getInstance()->setVar( 'aFiltcompproducts', array( "1126" ) );
 
-        oxTestModules::addFunction('oxuser', 'load', '{ return true; }');
+        oxTestModules::addFunction( 'oxuser', 'load', '{ return true; }' );
 
-        $oParentView = $this->getMock("oxView", array("setMenueList"));
-        $oParentView->expects($this->at(0))->method('setMenueList');
+        $oParentView = $this->getMock( "oxView", array( "setMenueList" ) );
+        $oParentView->expects( $this->at( 0 ) )->method( 'setMenueList' );
 
-        $oCmp = $this->getMock("oxcmp_utils", array("getParent"));
-        $oCmp->expects($this->once())->method('getParent')->will($this->returnValue($oParentView));
+        $oCmp = $this->getMock( "oxcmp_utils", array( "getParent" ) );
+        $oCmp->expects( $this->once() )->method('getParent')->will( $this->returnValue( $oParentView ) );
         $oCmp->render();
     }
 }

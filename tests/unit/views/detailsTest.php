@@ -1265,6 +1265,7 @@ class Unit_Views_detailsTest extends OxidTestCase
         $oCfg = $this->getMock("stdClass", array("getShowListmania"));
         $oCfg->expects($this->once())->method('getShowListmania')->will($this->returnValue(false));
 
+        /** @var Details|PHPUnit_Framework_MockObject_MockObject $oRecomm */
         $oRecomm = $this->getMock("details", array("getViewConfig", 'getArticleList'));
         $oRecomm->expects($this->once())->method('getViewConfig')->will($this->returnValue($oCfg));
         $oRecomm->expects($this->never())->method('getArticleList');
@@ -1285,16 +1286,19 @@ class Unit_Views_detailsTest extends OxidTestCase
         $oCfg = $this->getMock("stdClass", array("getShowListmania"));
         $oCfg->expects($this->once())->method('getShowListmania')->will($this->returnValue(true));
 
+        /** @var oxArticle|PHPUnit_Framework_MockObject_MockObject $oProduct */
         $oProduct = $this->getMock('oxArticle', array('getId'));
         $oProduct->expects($this->once())->method('getId')->will($this->returnValue('test_artid'));
 
         $this->setRequestParam('recomm', 'test_recomm');
         $this->setRequestParam('recomm_txt', 'test_recommtext');
 
+        /** @var oxRecommList|PHPUnit_Framework_MockObject_MockObject $oRecommList */
         $oRecommList = $this->getMock('oxRecommList', array('load', 'addArticle'));
         $oRecommList->expects($this->once())->method('load')->with($this->equalTo('test_recomm'));
         $oRecommList->expects($this->once())->method('addArticle')->with($this->equalTo('test_artid'), $this->equalTo('test_recommtext'));
 
+        /** @var Details|PHPUnit_Framework_MockObject_MockObject $oRecomm */
         $oRecomm = $this->getMock("details", array("getViewConfig", 'getProduct'));
         $oRecomm->expects($this->once())->method('getViewConfig')->will($this->returnValue($oCfg));
         $oRecomm->expects($this->once())->method('getProduct')->will($this->returnValue($oProduct));

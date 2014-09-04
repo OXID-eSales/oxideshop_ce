@@ -86,12 +86,12 @@ class Unit_Setup_oxSetupApsTest extends OxidTestCase
         $oUtils->expects( $this->at( $iAt++ ) )->method( "updateHtaccessFile" );
 
         $iAt = 0;
-        $oDb = $this->getMock( "oxSetupDb", array( "openDatabase", "setMySqlCollation", "queryFile", "saveDynPagesSettings", "convertConfigTableToUtf", "writeAdminLoginData" ) );
+        $oDb = $this->getMock( "oxSetupDb", array( "openDatabase", "setMySqlCollation", "queryFile", "saveShopSettings", "convertConfigTableToUtf", "writeAdminLoginData" ) );
         $oDb->expects( $this->at( $iAt++ ) )->method( "openDatabase" );
         $oDb->expects( $this->at( $iAt++ ) )->method( "setMySqlCollation" );
         $oDb->expects( $this->at( $iAt++ ) )->method( "queryFile" );
         $oDb->expects( $this->at( $iAt++ ) )->method( "queryFile" );
-        $oDb->expects( $this->at( $iAt++ ) )->method( "saveDynPagesSettings" );
+        $oDb->expects( $this->at( $iAt++ ) )->method( "saveShopSettings" );
         $oDb->expects( $this->at( $iAt++ ) )->method( "queryFile" );
         $oDb->expects( $this->at( $iAt++ ) )->method( "setMySqlCollation" );
         $oDb->expects( $this->at( $iAt++ ) )->method( "convertConfigTableToUtf" );

@@ -202,9 +202,6 @@ class Unit_Views_accountWishlistTest extends OxidTestCase
     {
         $aParams = array( "rec_name" => "someVal1", "rec_email" => "someVal2" );
         $oObj = ( object ) $aParams;
-        //$oObj->send_email = "testName";
-        //$oObj->send_name  = "testFName testLName";
-        //$oObj->send_id    = "testId";
 
         modConfig::setParameter( "editval", $aParams );
         oxTestModules::addFunction( 'oxUtilsView', 'addErrorToDisplay', '{ return "addErrorToDisplay"; }' );

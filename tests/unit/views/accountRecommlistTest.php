@@ -131,6 +131,11 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
      */
     public function testSaveRecommListNoUser()
     {
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
+
         /** @var Account_Recommlist|PHPUnit_Framework_MockObject_MockObject $oRecomm */
         $oRecomm = $this->getMock("account_recommlist", array("getUser"));
         $oRecomm->expects($this->once())->method('getUser')->will($this->returnValue(false));
@@ -147,6 +152,11 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
     public function testSaveRecommListTryingToSaveForDifferentUser()
     {
         modConfig::setParameter(  'recommid', 'testlist' );
+
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
 
         /** @var Account_Recommlist|PHPUnit_Framework_MockObject_MockObject $oRecomm */
         $oRecomm = $this->getMock("account_recommlist", array("getUser", "getActiveRecommList"));
@@ -170,6 +180,11 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
         modConfig::setParameter( 'recomm_title', 'testtitle' );
         modConfig::setParameter( 'recomm_author', 'testauthor' );
         modConfig::setParameter( 'recomm_desc', 'testdesc' );
+
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
 
         /** @var Account_Recommlist|PHPUnit_Framework_MockObject_MockObject $oRecomm */
         $oRecomm = $this->getMock("account_recommlist", array("getUser", "getActiveRecommList"));
@@ -201,6 +216,11 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
         modConfig::setParameter( 'recomm_author', 'testauthor' );
         modConfig::setParameter( 'recomm_desc', 'testdesc' );
 
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
+
         /** @var Account_Recommlist|PHPUnit_Framework_MockObject_MockObject $oRecomm */
         $oRecomm = $this->getMock("account_recommlist", array("getUser", "getActiveRecommList"));
         $oRecomm->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
@@ -226,6 +246,11 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
         modConfig::setParameter( 'recomm_title', '"<script>alert(\'xss\');</script>' );
         modConfig::setParameter( 'recomm_author', 'testauthor' );
         modConfig::setParameter( 'recomm_desc', 'testdesc' );
+
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
 
         /** @var Account_Recommlist|PHPUnit_Framework_MockObject_MockObject $oRecomm */
         $oRecomm = $this->getMock("account_recommlist", array("getUser", "getActiveRecommList"));
@@ -253,6 +278,11 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
 
         oxTestModules::addFunction('oxrecommlist', 'save', '{throw new oxObjectException("lalala");}');
         oxTestModules::addFunction('oxUtilsView', 'addErrorToDisplay', '{throw new Exception($aA[0]->getMessage().(int)$aA[1].(int)$aA[2].$aA[3]);}');
+
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
 
         /** @var Account_Recommlist|PHPUnit_Framework_MockObject_MockObject $oRecomm */
         $oRecomm = $this->getMock("account_recommlist", array("getUser", "getActiveRecommList"));
@@ -353,6 +383,11 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
     {
         $oCfg = $this->getMock("stdClass", array("getShowListmania"));
         $oCfg->expects($this->once())->method('getShowListmania')->will($this->returnValue(false));
+
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
 
         /** @var Account_Recommlist|PHPUnit_Framework_MockObject_MockObject $oRecomm */
         $oRecomm = $this->getMock("account_recommlist", array("getViewConfig", 'getUser'));

@@ -36,6 +36,7 @@ class Unit_Views_accountPasswordTest extends OxidTestCase
      */
     public function testChangePasswordNoUser()
     {
+        /** @var Account_Password|PHPUnit_Framework_MockObject_MockObject $oView */
         $oView = $this->getMock("Account_Password", array("getUser"));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue(false));
 
@@ -53,9 +54,11 @@ class Unit_Views_accountPasswordTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxUtilsView', 'addErrorToDisplay', '{ return "ERROR_MESSAGE_INPUT_EMPTYPASS"; }');
 
+        /** @var oxUser|PHPUnit_Framework_MockObject_MockObject $oUser */
         $oUser = $this->getMock("oxUser", array("checkPassword"));
         $oUser->expects($this->any())->method('checkPassword')->will($this->returnValue(new Exception("ERROR_MESSAGE_INPUT_EMPTYPASS")));
 
+        /** @var Account_Password|PHPUnit_Framework_MockObject_MockObject $oView */
         $oView = $this->getMock("Account_Password", array("getUser"));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
 
@@ -72,9 +75,11 @@ class Unit_Views_accountPasswordTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxUtilsView', 'addErrorToDisplay', '{ return "ERROR_MESSAGE_PASSWORD_TOO_SHORT"; }');
 
+        /** @var oxUser|PHPUnit_Framework_MockObject_MockObject $oUser */
         $oUser = $this->getMock("oxUser", array("checkPassword"));
         $oUser->expects($this->any())->method('checkPassword')->will($this->returnValue(new Exception("ERROR_MESSAGE_PASSWORD_TOO_SHORT")));
 
+        /** @var Account_Password|PHPUnit_Framework_MockObject_MockObject $oView */
         $oView = $this->getMock("Account_Password", array("getUser"));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
 
@@ -91,9 +96,11 @@ class Unit_Views_accountPasswordTest extends OxidTestCase
     {
         oxTestModules::addFunction('oxUtilsView', 'addErrorToDisplay', '{ return "ACCOUNT_PASSWORD_ERRPASSWDONOTMATCH"; }');
 
+        /** @var oxUser|PHPUnit_Framework_MockObject_MockObject $oUser */
         $oUser = $this->getMock("oxUser", array("checkPassword"));
         $oUser->expects($this->any())->method('checkPassword')->will($this->returnValue(new Exception("ACCOUNT_PASSWORD_ERRPASSWDONOTMATCH")));
 
+        /** @var Account_Password|PHPUnit_Framework_MockObject_MockObject $oView */
         $oView = $this->getMock("Account_Password", array("getUser"));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
 
@@ -111,10 +118,12 @@ class Unit_Views_accountPasswordTest extends OxidTestCase
         modConfig::setRequestParameter('password_old', null);
         oxTestModules::addFunction('oxUtilsView', 'addErrorToDisplay', '{ return "ACCOUNT_PASSWORD_ERRINCORRECTCURRENTPASSW"; }');
 
+        /** @var oxUser|PHPUnit_Framework_MockObject_MockObject $oUser */
         $oUser = $this->getMock("oxUser", array("checkPassword", "isSamePassword"));
         $oUser->expects($this->any())->method('checkPassword');
         $oUser->expects($this->any())->method('isSamePassword')->will($this->returnValue(false));
 
+        /** @var Account_Password|PHPUnit_Framework_MockObject_MockObject $oView */
         $oView = $this->getMock("Account_Password", array("getUser"));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
 
@@ -133,12 +142,14 @@ class Unit_Views_accountPasswordTest extends OxidTestCase
         modConfig::setRequestParameter('password_new', "newpassword");
         modConfig::setRequestParameter('password_new_confirm', "newpassword");
 
+        /** @var oxUser|PHPUnit_Framework_MockObject_MockObject $oUser */
         $oUser = $this->getMock("oxUser", array("checkPassword", "isSamePassword", "setPassword", "save"));
         $oUser->expects($this->any())->method('checkPassword');
         $oUser->expects($this->any())->method('isSamePassword')->with($this->equalTo("oldpassword"))->will($this->returnValue(true));
         $oUser->expects($this->any())->method('setPassword')->with($this->equalTo("newpassword"));
         $oUser->expects($this->any())->method('save')->will($this->returnValue(true));
 
+        /** @var Account_Password|PHPUnit_Framework_MockObject_MockObject $oView */
         $oView = $this->getMock("Account_Password", array("getUser"));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
 
@@ -167,6 +178,7 @@ class Unit_Views_accountPasswordTest extends OxidTestCase
      */
     public function testRenderNoUser()
     {
+        /** @var Account_Password|PHPUnit_Framework_MockObject_MockObject $oView */
         $oView = $this->getMock("Account_Password", array("getUser"));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue(false));
 
@@ -183,6 +195,7 @@ class Unit_Views_accountPasswordTest extends OxidTestCase
         $oUser                     = new oxuser;
         $oUser->oxuser__oxpassword = new oxField("testPassword");
 
+        /** @var Account_Password|PHPUnit_Framework_MockObject_MockObject $oView */
         $oView = $this->getMock("Account_Password", array("getUser"));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
 
@@ -219,8 +232,10 @@ class Unit_Views_accountPasswordTest extends OxidTestCase
         modConfig::setRequestParameter('password_new', $sPass);
         modConfig::setRequestParameter('password_new_confirm', $sPass);
 
+        /** @var oxUser|PHPUnit_Framework_MockObject_MockObject $oUser */
         $oUser = $this->getMock('oxUser', array('isSamePassword'));
 
+        /** @var oxInputValidator|PHPUnit_Framework_MockObject_MockObject $oInputValidator */
         $oInputValidator = $this->getMock('oxInputValidator');
         $oInputValidator->expects($this->once())
             ->method('checkPassword')
@@ -232,6 +247,7 @@ class Unit_Views_accountPasswordTest extends OxidTestCase
             ->with($this->equalTo($sOldPass))
             ->will($this->throwException(new oxException('ChangePass user test')));
 
+        /** @var Account_Password|PHPUnit_Framework_MockObject_MockObject $oView */
         $oView = $this->getMock('Account_Password', array('getUser'));
         $oView->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
 

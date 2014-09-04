@@ -90,8 +90,6 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
     public function testRemoveArticle()
     {
         modConfig::setParameter( 'aid', "1" );
-        $oRecommList = $this->getMock( "oxRecommList", array( "removeArticle" ) );
-        $oRecommList->expects( $this->once() )->method( 'removeArticle');
 
         /** @var oxRecommList|PHPUnit_Framework_MockObject_MockObject $oRecommList */
         $oRecommList = $this->getMock("oxRecommList", array("removeArticle"));
@@ -137,8 +135,6 @@ class Unit_Views_accountRecommlistTest extends OxidTestCase
     public function testEditList()
     {
         modConfig::setParameter( 'deleteList', "1" );
-        $oRecommList = $this->getMock( "oxRecommList", array( "delete" ) );
-        $oRecommList->expects( $this->once() )->method( 'delete');
 
         /** @var oxRecommList|PHPUnit_Framework_MockObject_MockObject $oRecommList */
         $oRecommList = $this->getMock("oxRecommList", array("delete"));

@@ -207,12 +207,14 @@ class Unit_Views_accountWishlistTest extends OxidTestCase
         oxTestModules::addFunction('oxUtilsView', 'addErrorToDisplay', '{ return "addErrorToDisplay"; }');
         oxTestModules::addFunction('oxemail', 'sendWishlistMail', '{ return false; }');
 
+        /** @var oxUser|PHPUnit_Framework_MockObject_MockObject $oUser */
         $oUser = $this->getMock("oxUser", array("getId"));
         $oUser->expects($this->once())->method('getId')->will($this->returnValue("testId"));
         $oUser->oxuser__oxusername = new oxField("testName");
         $oUser->oxuser__oxfname = new oxField("testFName");
         $oUser->oxuser__oxlname = new oxField("testLName");
 
+        /** @var Account_Wishlist|PHPUnit_Framework_MockObject_MockObject $oView */
         $oView = $this->getMock("Account_Wishlist", array("getUser"));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
 
@@ -230,12 +232,15 @@ class Unit_Views_accountWishlistTest extends OxidTestCase
     {
         modConfig::setRequestParameter("blpublic", 1);
 
+        /** @var oxBasket|PHPUnit_Framework_MockObject_MockObject $oBasket */
         $oBasket = $this->getMock("oxBasket", array("save"));
         $oBasket->expects($this->once())->method('save');
 
+        /** @var oxUser|PHPUnit_Framework_MockObject_MockObject $oUser */
         $oUser = $this->getMock("oxUser", array("getBasket"));
         $oUser->expects($this->once())->method('getBasket')->with($this->equalTo("wishlist"))->will($this->returnValue($oBasket));
 
+        /** @var Account_Wishlist|PHPUnit_Framework_MockObject_MockObject $oView */
         $oView = $this->getMock("Account_Wishlist", array("getUser"));
         $oView->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
         $oView->togglePublic();

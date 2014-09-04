@@ -1067,10 +1067,12 @@ class Unit_Views_detailsTest extends OxidTestCase
         $this->setRequestParam('anid', 'test');
         $this->setSessionParam('usr', 'oxdefaultadmin');
 
+        /** @var oxArticle|PHPUnit_Framework_MockObject_MockObject $oProduct */
         $oProduct = $this->getMock('oxArticle', array('getId', 'addToRatingAverage'));
         $oProduct->expects($this->any())->method('getId')->will($this->returnValue('test'));
         $oProduct->expects($this->any())->method('addToRatingAverage');
 
+        /** @var Details|PHPUnit_Framework_MockObject_MockObject $oDetails */
         $oDetails = $this->getMock('Details', array('getProduct', 'canAcceptFormData'));
         $oDetails->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));
         $oDetails->expects($this->any())->method('canAcceptFormData')->will($this->returnValue(true));
@@ -1091,11 +1093,13 @@ class Unit_Views_detailsTest extends OxidTestCase
         $this->setRequestParam('artrating', '4');
         $this->setRequestParam('anid', 'test');
         $this->setSessionParam('usr', null);
+
+        /** @var oxArticle|PHPUnit_Framework_MockObject_MockObject $oProduct */
         $oProduct = $this->getMock('oxArticle', array('getId', 'addToRatingAverage'));
         $oProduct->expects($this->any())->method('getId')->will($this->returnValue('test'));
         $oProduct->expects($this->any())->method('addToRatingAverage');
 
-        $oDetails = $this->getProxyClass('details');
+        /** @var Details|PHPUnit_Framework_MockObject_MockObject $oDetails */
         $oDetails = $this->getMock('Details', array('getProduct'));
         $oDetails->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));
         $oDetails->saveReview();
@@ -1115,6 +1119,7 @@ class Unit_Views_detailsTest extends OxidTestCase
         $this->setRequestParam('artrating', null);
         $this->setRequestParam('anid', 'test');
 
+        /** @var oxArticle|PHPUnit_Framework_MockObject_MockObject $oProduct */
         $oProduct = $this->getMock('oxarticle', array('getId', 'addToRatingAverage'));
         $oProduct->expects($this->any())->method('getId')->will($this->returnValue('test'));
         $oProduct->expects($this->any())->method('addToRatingAverage');
@@ -1122,7 +1127,7 @@ class Unit_Views_detailsTest extends OxidTestCase
         $oUser = new oxUser();
         $oUser->load('oxdefaultadmin');
 
-        $oDetails = $this->getProxyClass('details');
+        /** @var Details|PHPUnit_Framework_MockObject_MockObject $oDetails */
         $oDetails = $this->getMock('details', array('getProduct', 'getUser', 'canAcceptFormData'));
         $oDetails->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));
         $oDetails->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
@@ -1144,6 +1149,7 @@ class Unit_Views_detailsTest extends OxidTestCase
         $this->setRequestParam('artrating', 6);
         $this->setRequestParam('anid', 'test');
 
+        /** @var oxArticle|PHPUnit_Framework_MockObject_MockObject $oProduct */
         $oProduct = $this->getMock('oxarticle', array('getId', 'addToRatingAverage'));
         $oProduct->expects($this->any())->method('getId')->will($this->returnValue('test'));
         $oProduct->expects($this->any())->method('addToRatingAverage');
@@ -1151,7 +1157,7 @@ class Unit_Views_detailsTest extends OxidTestCase
         $oUser = new oxUser();
         $oUser->load('oxdefaultadmin');
 
-        $oDetails = $this->getProxyClass('details');
+        /** @var Details|PHPUnit_Framework_MockObject_MockObject $oDetails */
         $oDetails = $this->getMock('details', array('getProduct', 'getUser', 'canAcceptFormData'));
         $oDetails->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));
         $oDetails->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
@@ -1173,10 +1179,13 @@ class Unit_Views_detailsTest extends OxidTestCase
         $this->setRequestParam('artrating', 3);
         $this->setRequestParam('anid', 'test');
         $this->setSessionParam('usr', 'oxdefaultadmin');
+
+        /** @var oxArticle|PHPUnit_Framework_MockObject_MockObject $oProduct */
         $oProduct = $this->getMock('oxarticle', array('getId', 'addToRatingAverage'));
         $oProduct->expects($this->any())->method('getId')->will($this->returnValue('test'));
         $oProduct->expects($this->any())->method('addToRatingAverage');
 
+        /** @var Details|PHPUnit_Framework_MockObject_MockObject $oDetails */
         $oDetails = $this->getMock('details', array('getProduct', 'canAcceptFormData'));
         $oDetails->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));
         $oDetails->expects($this->any())->method('canAcceptFormData')->will($this->returnValue(true));

@@ -1247,22 +1247,22 @@ class Unit_Views_detailsTest extends OxidTestCase
      */
     public function testSaveReview()
     {
-        $this->setRequestParam( 'rvw_txt', 'review test' );
-        $this->setRequestParam( 'artrating', '4' );
-        $this->setRequestParam( 'anid', 'test' );
-        $this->setSessionParam( 'usr', 'oxdefaultadmin' );
+        $this->setRequestParam('rvw_txt', 'review test');
+        $this->setRequestParam('artrating', '4');
+        $this->setRequestParam('anid', 'test');
+        $this->setSessionParam('usr', 'oxdefaultadmin');
 
-        $oProduct = $this->getMock( 'oxArticle', array( 'getId', 'addToRatingAverage' ) );
-        $oProduct->expects( $this->any() )->method( 'getId')->will( $this->returnValue( 'test' ) );
-        $oProduct->expects( $this->any() )->method( 'addToRatingAverage');
+        $oProduct = $this->getMock('oxArticle', array('getId', 'addToRatingAverage'));
+        $oProduct->expects($this->any())->method('getId')->will($this->returnValue('test'));
+        $oProduct->expects($this->any())->method('addToRatingAverage');
 
-        $oDetails = $this->getMock( 'Details', array( 'getProduct', 'canAcceptFormData' ) );
-        $oDetails->expects( $this->any() )->method( 'getProduct')->will( $this->returnValue( $oProduct ) );
-        $oDetails->expects( $this->any() )->method( 'canAcceptFormData')->will( $this->returnValue( true ) );
+        $oDetails = $this->getMock('Details', array('getProduct', 'canAcceptFormData'));
+        $oDetails->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));
+        $oDetails->expects($this->any())->method('canAcceptFormData')->will($this->returnValue(true));
         $oDetails->saveReview();
 
-        $this->assertEquals( "test", oxDb::getDB()->getOne('select oxobjectid from oxreviews where oxobjectid = "test"') );
-        $this->assertEquals( "test", oxDb::getDB()->getOne('select oxobjectid from oxratings where oxobjectid = "test"') );
+        $this->assertEquals("test", oxDb::getDB()->getOne('select oxobjectid from oxreviews where oxobjectid = "test"'));
+        $this->assertEquals("test", oxDb::getDB()->getOne('select oxobjectid from oxratings where oxobjectid = "test"'));
     }
 
     /**
@@ -1272,21 +1272,21 @@ class Unit_Views_detailsTest extends OxidTestCase
      */
     public function testSaveReviewIfUserNotSet()
     {
-        $this->setRequestParam( 'rvw_txt', 'review test' );
-        $this->setRequestParam( 'artrating', '4' );
-        $this->setRequestParam( 'anid', 'test' );
-        $this->setSessionParam( 'usr', null );
-        $oProduct = $this->getMock( 'oxArticle', array( 'getId', 'addToRatingAverage' ) );
-        $oProduct->expects( $this->any() )->method( 'getId')->will( $this->returnValue( 'test' ) );
-        $oProduct->expects( $this->any() )->method( 'addToRatingAverage');
+        $this->setRequestParam('rvw_txt', 'review test');
+        $this->setRequestParam('artrating', '4');
+        $this->setRequestParam('anid', 'test');
+        $this->setSessionParam('usr', null);
+        $oProduct = $this->getMock('oxArticle', array('getId', 'addToRatingAverage'));
+        $oProduct->expects($this->any())->method('getId')->will($this->returnValue('test'));
+        $oProduct->expects($this->any())->method('addToRatingAverage');
 
-        $oDetails = $this->getProxyClass( 'details' );
-        $oDetails = $this->getMock( 'Details', array( 'getProduct' ) );
-        $oDetails->expects( $this->any() )->method( 'getProduct')->will( $this->returnValue( $oProduct ) );
+        $oDetails = $this->getProxyClass('details');
+        $oDetails = $this->getMock('Details', array('getProduct'));
+        $oDetails->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));
         $oDetails->saveReview();
 
-        $this->assertFalse( oxDb::getDB()->getOne('select oxobjectid from oxreviews where oxobjectid = "test"') );
-        $this->assertFalse( oxDb::getDB()->getOne('select oxobjectid from oxratings where oxobjectid = "test"') );
+        $this->assertFalse(oxDb::getDB()->getOne('select oxobjectid from oxreviews where oxobjectid = "test"'));
+        $this->assertFalse(oxDb::getDB()->getOne('select oxobjectid from oxratings where oxobjectid = "test"'));
     }
 
     /**
@@ -1296,26 +1296,26 @@ class Unit_Views_detailsTest extends OxidTestCase
      */
     public function testSaveReviewIfOnlyReviewIsSet()
     {
-        $this->setRequestParam( 'rvw_txt', 'review test' );
-        $this->setRequestParam( 'artrating', null );
-        $this->setRequestParam( 'anid', 'test' );
+        $this->setRequestParam('rvw_txt', 'review test');
+        $this->setRequestParam('artrating', null);
+        $this->setRequestParam('anid', 'test');
 
-        $oProduct = $this->getMock( 'oxarticle', array( 'getId', 'addToRatingAverage' ) );
-        $oProduct->expects( $this->any() )->method( 'getId')->will( $this->returnValue( 'test' ) );
-        $oProduct->expects( $this->any() )->method( 'addToRatingAverage');
+        $oProduct = $this->getMock('oxarticle', array('getId', 'addToRatingAverage'));
+        $oProduct->expects($this->any())->method('getId')->will($this->returnValue('test'));
+        $oProduct->expects($this->any())->method('addToRatingAverage');
 
         $oUser = new oxUser();
-        $oUser->load( 'oxdefaultadmin' );
+        $oUser->load('oxdefaultadmin');
 
-        $oDetails = $this->getProxyClass( 'details' );
-        $oDetails = $this->getMock( 'details', array( 'getProduct', 'getUser', 'canAcceptFormData' ) );
-        $oDetails->expects( $this->any() )->method( 'getProduct')->will( $this->returnValue( $oProduct ) );
-        $oDetails->expects( $this->any() )->method( 'getUser')->will( $this->returnValue( $oUser ) );
-        $oDetails->expects( $this->any() )->method( 'canAcceptFormData')->will( $this->returnValue( true ) );
+        $oDetails = $this->getProxyClass('details');
+        $oDetails = $this->getMock('details', array('getProduct', 'getUser', 'canAcceptFormData'));
+        $oDetails->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));
+        $oDetails->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
+        $oDetails->expects($this->any())->method('canAcceptFormData')->will($this->returnValue(true));
         $oDetails->saveReview();
 
-        $this->assertEquals( "test", oxDb::getDB()->getOne('select oxobjectid from oxreviews where oxobjectid = "test"') );
-        $this->assertFalse( oxDb::getDB()->getOne('select 1 from oxratings where oxobjectid = "test"') );
+        $this->assertEquals("test", oxDb::getDB()->getOne('select oxobjectid from oxreviews where oxobjectid = "test"'));
+        $this->assertFalse(oxDb::getDB()->getOne('select 1 from oxratings where oxobjectid = "test"'));
     }
 
     /**
@@ -1325,26 +1325,26 @@ class Unit_Views_detailsTest extends OxidTestCase
      */
     public function testSaveReviewIfWrongRating()
     {
-        $this->setRequestParam( 'rvw_txt', 'review test' );
-        $this->setRequestParam( 'artrating', 6 );
-        $this->setRequestParam( 'anid', 'test' );
+        $this->setRequestParam('rvw_txt', 'review test');
+        $this->setRequestParam('artrating', 6);
+        $this->setRequestParam('anid', 'test');
 
-        $oProduct = $this->getMock( 'oxarticle', array( 'getId', 'addToRatingAverage' ) );
-        $oProduct->expects( $this->any() )->method( 'getId')->will( $this->returnValue( 'test' ) );
-        $oProduct->expects( $this->any() )->method( 'addToRatingAverage');
+        $oProduct = $this->getMock('oxarticle', array('getId', 'addToRatingAverage'));
+        $oProduct->expects($this->any())->method('getId')->will($this->returnValue('test'));
+        $oProduct->expects($this->any())->method('addToRatingAverage');
 
         $oUser = new oxUser();
-        $oUser->load( 'oxdefaultadmin' );
+        $oUser->load('oxdefaultadmin');
 
-        $oDetails = $this->getProxyClass( 'details' );
-        $oDetails = $this->getMock( 'details', array( 'getProduct', 'getUser', 'canAcceptFormData' ) );
-        $oDetails->expects( $this->any() )->method( 'getProduct')->will( $this->returnValue( $oProduct ) );
-        $oDetails->expects( $this->any() )->method( 'getUser')->will( $this->returnValue( $oUser ) );
-        $oDetails->expects( $this->any() )->method( 'canAcceptFormData')->will( $this->returnValue( true ) );
+        $oDetails = $this->getProxyClass('details');
+        $oDetails = $this->getMock('details', array('getProduct', 'getUser', 'canAcceptFormData'));
+        $oDetails->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));
+        $oDetails->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
+        $oDetails->expects($this->any())->method('canAcceptFormData')->will($this->returnValue(true));
         $oDetails->saveReview();
 
-        $this->assertEquals( "test", oxDb::getDB()->getOne('select oxobjectid from oxreviews where oxobjectid = "test"') );
-        $this->assertFalse( oxDb::getDB()->getOne('select oxobjectid from oxratings where oxobjectid = "test"') );
+        $this->assertEquals("test", oxDb::getDB()->getOne('select oxobjectid from oxreviews where oxobjectid = "test"'));
+        $this->assertFalse(oxDb::getDB()->getOne('select oxobjectid from oxratings where oxobjectid = "test"'));
     }
 
     /**
@@ -1354,21 +1354,21 @@ class Unit_Views_detailsTest extends OxidTestCase
      */
     public function testSaveReviewIfOnlyRatingIsSet()
     {
-        $this->setRequestParam( 'rvw_txt', null );
-        $this->setRequestParam( 'artrating', 3 );
-        $this->setRequestParam( 'anid', 'test' );
-        $this->setSessionParam( 'usr', 'oxdefaultadmin' );
-        $oProduct = $this->getMock( 'oxarticle', array( 'getId', 'addToRatingAverage' ) );
-        $oProduct->expects( $this->any() )->method( 'getId')->will( $this->returnValue( 'test' ) );
-        $oProduct->expects( $this->any() )->method( 'addToRatingAverage');
+        $this->setRequestParam('rvw_txt', null);
+        $this->setRequestParam('artrating', 3);
+        $this->setRequestParam('anid', 'test');
+        $this->setSessionParam('usr', 'oxdefaultadmin');
+        $oProduct = $this->getMock('oxarticle', array('getId', 'addToRatingAverage'));
+        $oProduct->expects($this->any())->method('getId')->will($this->returnValue('test'));
+        $oProduct->expects($this->any())->method('addToRatingAverage');
 
-        $oDetails = $this->getMock( 'details', array( 'getProduct', 'canAcceptFormData' ) );
-        $oDetails->expects( $this->any() )->method( 'getProduct')->will( $this->returnValue( $oProduct ) );
-        $oDetails->expects( $this->any() )->method( 'canAcceptFormData')->will( $this->returnValue( true ) );
+        $oDetails = $this->getMock('details', array('getProduct', 'canAcceptFormData'));
+        $oDetails->expects($this->any())->method('getProduct')->will($this->returnValue($oProduct));
+        $oDetails->expects($this->any())->method('canAcceptFormData')->will($this->returnValue(true));
         $oDetails->saveReview();
 
-        $this->assertFalse( oxDb::getDB()->getOne('select oxobjectid from oxreviews where oxobjectid = "test"') );
-        $this->assertEquals( "test", oxDb::getDB()->getOne('select oxobjectid from oxratings where oxobjectid = "test"') );
+        $this->assertFalse(oxDb::getDB()->getOne('select oxobjectid from oxreviews where oxobjectid = "test"'));
+        $this->assertEquals("test", oxDb::getDB()->getOne('select oxobjectid from oxratings where oxobjectid = "test"'));
     }
 
     /**

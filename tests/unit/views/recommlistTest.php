@@ -107,9 +107,11 @@ class Unit_Views_recommlistTest extends OxidTestCase
     {
         modConfig::setRequestParameter("recommlistrating", 3);
 
+        /** @var oxRecommList|PHPUnit_Framework_MockObject_MockObject $oRecommList */
         $oRecommList = $this->getMock("oxRecommList", array("addToRatingAverage"));
         $oRecommList->expects($this->never())->method('addToRatingAverage');
 
+        /** @var RecommList|PHPUnit_Framework_MockObject_MockObject $oView */
         $oView = $this->getMock("RecommList", array("getActiveRecommList", "getUser"));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue(false));
         $oView->expects($this->any())->method('getActiveRecommList')->will($this->returnValue($oRecommList));
@@ -127,13 +129,16 @@ class Unit_Views_recommlistTest extends OxidTestCase
         modConfig::setRequestParameter("recommlistrating", 3);
         modConfig::setRequestParameter("rvw_txt", "testRecommId");
 
+        /** @var oxRecommList|PHPUnit_Framework_MockObject_MockObject $oRecommList */
         $oRecommList = $this->getMock("oxRecommList", array("addToRatingAverage", "getId"));
         $oRecommList->expects($this->once())->method('addToRatingAverage');
         $oRecommList->expects($this->any())->method('getId')->will($this->returnValue("testRecommListId"));
 
+        /** @var oxUser|PHPUnit_Framework_MockObject_MockObject $oUser */
         $oUser = $this->getMock("oxuser", array("getId"));
         $oUser->expects($this->any())->method('getId')->will($this->returnValue("testUserId"));
 
+        /** @var RecommList|PHPUnit_Framework_MockObject_MockObject $oView */
         $oView = $this->getMock("RecommList", array("getActiveRecommList", "getUser", "canAcceptFormData"));
         $oView->expects($this->any())->method('canAcceptFormData')->will($this->returnValue(true));
         $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));

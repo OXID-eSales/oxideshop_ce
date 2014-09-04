@@ -256,35 +256,35 @@ class Unit_Views_reviewTest extends OxidTestCase
         modConfig::setParameter( 'artrating', '4' );
         modConfig::setParameter( 'anid', 'test' );
 
-        $oProduct = $this->getMock( 'oxarticle', array( 'getId', 'addToRatingAverage' ) );
-        $oProduct->expects( $this->any() )->method( 'getId')->will( $this->returnValue( 'test' ) );
-        $oProduct->expects( $this->once() )->method( 'addToRatingAverage');
+        $oProduct = $this->getMock('oxarticle', array('getId', 'addToRatingAverage'));
+        $oProduct->expects($this->any())->method('getId')->will($this->returnValue('test'));
+        $oProduct->expects($this->once())->method('addToRatingAverage');
 
         $oUser = new oxUser();
-        $oUser->load( "oxdefaultadmin" );
+        $oUser->load("oxdefaultadmin");
 
-        $oReview = $this->getMock( 'review', array( 'getReviewUser', '_getActiveObject', 'canAcceptFormData', "_getActiveType" ) );
-        $oReview->expects( $this->once() )->method( 'getReviewUser')->will( $this->returnValue( $oUser ) );
-        $oReview->expects( $this->once() )->method( 'canAcceptFormData')->will( $this->returnValue( true ) );
-        $oReview->expects( $this->once() )->method( '_getActiveObject')->will( $this->returnValue( $oProduct ) );
-        $oReview->expects( $this->once() )->method( '_getActiveType')->will( $this->returnValue( "oxarticle" ) );
+        $oReview = $this->getMock('review', array('getReviewUser', '_getActiveObject', 'canAcceptFormData', "_getActiveType"));
+        $oReview->expects($this->once())->method('getReviewUser')->will($this->returnValue($oUser));
+        $oReview->expects($this->once())->method('canAcceptFormData')->will($this->returnValue(true));
+        $oReview->expects($this->once())->method('_getActiveObject')->will($this->returnValue($oProduct));
+        $oReview->expects($this->once())->method('_getActiveType')->will($this->returnValue("oxarticle"));
         $oReview->saveReview();
 
-        $this->assertEquals( "test", oxDb::getDB()->getOne('select oxobjectid from oxreviews where oxobjectid = "test"') );
-        $this->assertEquals( "test", oxDb::getDB()->getOne('select oxobjectid from oxratings where oxobjectid = "test"') );
+        $this->assertEquals("test", oxDb::getDB()->getOne('select oxobjectid from oxreviews where oxobjectid = "test"'));
+        $this->assertEquals("test", oxDb::getDB()->getOne('select oxobjectid from oxratings where oxobjectid = "test"'));
     }
 
     public function testSaveReviewIfUserNotSet()
     {
-        $oReview = $this->getMock( 'review', array( 'getReviewUser', '_getActiveObject', 'canAcceptFormData', "_getActiveType" ) );
-        $oReview->expects( $this->once() )->method( 'getReviewUser')->will( $this->returnValue( false ) );
-        $oReview->expects( $this->never() )->method( 'canAcceptFormData');
-        $oReview->expects( $this->never() )->method( '_getActiveObject');
-        $oReview->expects( $this->never() )->method( '_getActiveType');
+        $oReview = $this->getMock('review', array('getReviewUser', '_getActiveObject', 'canAcceptFormData', "_getActiveType"));
+        $oReview->expects($this->once())->method('getReviewUser')->will($this->returnValue(false));
+        $oReview->expects($this->never())->method('canAcceptFormData');
+        $oReview->expects($this->never())->method('_getActiveObject');
+        $oReview->expects($this->never())->method('_getActiveType');
         $oReview->saveReview();
 
-        $this->assertFalse( oxDb::getDB()->getOne('select oxobjectid from oxreviews where oxobjectid = "test"') );
-        $this->assertFalse( oxDb::getDB()->getOne('select oxobjectid from oxratings where oxobjectid = "test"') );
+        $this->assertFalse(oxDb::getDB()->getOne('select oxobjectid from oxreviews where oxobjectid = "test"'));
+        $this->assertFalse(oxDb::getDB()->getOne('select oxobjectid from oxratings where oxobjectid = "test"'));
     }
 
     public function testSaveReviewIfOnlyReviewIsSet()
@@ -294,21 +294,21 @@ class Unit_Views_reviewTest extends OxidTestCase
         modConfig::setParameter( 'anid', 'test' );
 
         $oUser = new oxUser();
-        $oUser->load( "oxdefaultadmin" );
+        $oUser->load("oxdefaultadmin");
 
-        $oProduct = $this->getMock( 'oxarticle', array( 'getId', 'addToRatingAverage' ) );
-        $oProduct->expects( $this->any() )->method( 'getId')->will( $this->returnValue( 'test' ) );
-        $oProduct->expects( $this->never() )->method( 'addToRatingAverage');
+        $oProduct = $this->getMock('oxarticle', array('getId', 'addToRatingAverage'));
+        $oProduct->expects($this->any())->method('getId')->will($this->returnValue('test'));
+        $oProduct->expects($this->never())->method('addToRatingAverage');
 
-        $oReview = $this->getMock( 'review', array( 'getReviewUser', '_getActiveObject', 'canAcceptFormData', "_getActiveType" ) );
-        $oReview->expects( $this->once() )->method( 'getReviewUser')->will( $this->returnValue( $oUser ) );
-        $oReview->expects( $this->once() )->method( 'canAcceptFormData')->will( $this->returnValue( true ) );
-        $oReview->expects( $this->once() )->method( '_getActiveObject')->will( $this->returnValue( $oProduct ) );
-        $oReview->expects( $this->once() )->method( '_getActiveType')->will( $this->returnValue( "oxarticle" ) );
+        $oReview = $this->getMock('review', array('getReviewUser', '_getActiveObject', 'canAcceptFormData', "_getActiveType"));
+        $oReview->expects($this->once())->method('getReviewUser')->will($this->returnValue($oUser));
+        $oReview->expects($this->once())->method('canAcceptFormData')->will($this->returnValue(true));
+        $oReview->expects($this->once())->method('_getActiveObject')->will($this->returnValue($oProduct));
+        $oReview->expects($this->once())->method('_getActiveType')->will($this->returnValue("oxarticle"));
         $oReview->saveReview();
 
-        $this->assertEquals( "test", oxDb::getDB()->getOne('select oxobjectid from oxreviews where oxobjectid = "test"') );
-        $this->assertFalse( oxDb::getDB()->getOne('select 1 from oxratings where oxobjectid = "test"') );
+        $this->assertEquals("test", oxDb::getDB()->getOne('select oxobjectid from oxreviews where oxobjectid = "test"'));
+        $this->assertFalse(oxDb::getDB()->getOne('select 1 from oxratings where oxobjectid = "test"'));
     }
 
     public function testSaveReviewIfWrongRating()
@@ -318,21 +318,21 @@ class Unit_Views_reviewTest extends OxidTestCase
         modConfig::setParameter( 'anid', 'test' );
 
         $oUser = new oxUser();
-        $oUser->load( "oxdefaultadmin" );
+        $oUser->load("oxdefaultadmin");
 
-        $oProduct = $this->getMock( 'oxarticle', array( 'getId', 'addToRatingAverage' ) );
-        $oProduct->expects( $this->any() )->method( 'getId')->will( $this->returnValue( 'test' ) );
-        $oProduct->expects( $this->never() )->method( 'addToRatingAverage');
+        $oProduct = $this->getMock('oxarticle', array('getId', 'addToRatingAverage'));
+        $oProduct->expects($this->any())->method('getId')->will($this->returnValue('test'));
+        $oProduct->expects($this->never())->method('addToRatingAverage');
 
-        $oReview = $this->getMock( 'review', array( 'getReviewUser', '_getActiveObject', 'canAcceptFormData', "_getActiveType" ) );
-        $oReview->expects( $this->once() )->method( 'getReviewUser')->will( $this->returnValue( $oUser ) );
-        $oReview->expects( $this->once() )->method( 'canAcceptFormData')->will( $this->returnValue( true ) );
-        $oReview->expects( $this->once() )->method( '_getActiveObject')->will( $this->returnValue( $oProduct ) );
-        $oReview->expects( $this->once() )->method( '_getActiveType')->will( $this->returnValue( "oxarticle" ) );
+        $oReview = $this->getMock('review', array('getReviewUser', '_getActiveObject', 'canAcceptFormData', "_getActiveType"));
+        $oReview->expects($this->once())->method('getReviewUser')->will($this->returnValue($oUser));
+        $oReview->expects($this->once())->method('canAcceptFormData')->will($this->returnValue(true));
+        $oReview->expects($this->once())->method('_getActiveObject')->will($this->returnValue($oProduct));
+        $oReview->expects($this->once())->method('_getActiveType')->will($this->returnValue("oxarticle"));
         $oReview->saveReview();
 
-        $this->assertEquals( "test", oxDb::getDB()->getOne('select oxobjectid from oxreviews where oxobjectid = "test"') );
-        $this->assertFalse( oxDb::getDB()->getOne('select oxobjectid from oxratings where oxobjectid = "test"') );
+        $this->assertEquals("test", oxDb::getDB()->getOne('select oxobjectid from oxreviews where oxobjectid = "test"'));
+        $this->assertFalse(oxDb::getDB()->getOne('select oxobjectid from oxratings where oxobjectid = "test"'));
     }
 
     public function testSaveReviewIfOnlyRatingIsSet()
@@ -342,21 +342,21 @@ class Unit_Views_reviewTest extends OxidTestCase
         modConfig::setParameter( 'anid', 'test' );
 
         $oUser = new oxUser();
-        $oUser->load( "oxdefaultadmin" );
+        $oUser->load("oxdefaultadmin");
 
-        $oProduct = $this->getMock( 'oxarticle', array( 'getId', 'addToRatingAverage' ) );
-        $oProduct->expects( $this->any() )->method( 'getId')->will( $this->returnValue( 'test' ) );
-        $oProduct->expects( $this->once() )->method( 'addToRatingAverage');
+        $oProduct = $this->getMock('oxarticle', array('getId', 'addToRatingAverage'));
+        $oProduct->expects($this->any())->method('getId')->will($this->returnValue('test'));
+        $oProduct->expects($this->once())->method('addToRatingAverage');
 
-        $oReview = $this->getMock( 'review', array( 'getReviewUser', '_getActiveObject', 'canAcceptFormData', "_getActiveType" ) );
-        $oReview->expects( $this->once() )->method( 'getReviewUser')->will( $this->returnValue( $oUser ) );
-        $oReview->expects( $this->once() )->method( 'canAcceptFormData')->will( $this->returnValue( true ) );
-        $oReview->expects( $this->once() )->method( '_getActiveObject')->will( $this->returnValue( $oProduct ) );
-        $oReview->expects( $this->once() )->method( '_getActiveType')->will( $this->returnValue( "oxarticle" ) );
+        $oReview = $this->getMock('review', array('getReviewUser', '_getActiveObject', 'canAcceptFormData', "_getActiveType"));
+        $oReview->expects($this->once())->method('getReviewUser')->will($this->returnValue($oUser));
+        $oReview->expects($this->once())->method('canAcceptFormData')->will($this->returnValue(true));
+        $oReview->expects($this->once())->method('_getActiveObject')->will($this->returnValue($oProduct));
+        $oReview->expects($this->once())->method('_getActiveType')->will($this->returnValue("oxarticle"));
         $oReview->saveReview();
 
-        $this->assertFalse( oxDb::getDB()->getOne('select oxobjectid from oxreviews where oxobjectid = "test"') );
-        $this->assertEquals( "test", oxDb::getDB()->getOne('select oxobjectid from oxratings where oxobjectid = "test"') );
+        $this->assertFalse(oxDb::getDB()->getOne('select oxobjectid from oxreviews where oxobjectid = "test"'));
+        $this->assertEquals("test", oxDb::getDB()->getOne('select oxobjectid from oxratings where oxobjectid = "test"'));
     }
 
     public function testGetDynUrlParams()

@@ -353,6 +353,18 @@ class Unit_Core_oxInputValidatorTest extends OxidTestCase
     /**
      * Testing VAT id checker: company, country, vat in set
      */
+    public function testCheckVatIdWithMissingParametersForCheckCountryMissingError( )
+    {
+        $oUser = oxNew( "oxUser" );
+        $oValidator = new oxInputValidator();
+        $oValidator->checkVatId( $oUser, array('oxuser__oxustid' => 'AT123', 'oxuser__oxcountryid' => 'a7c40f6320aeb2ec2.72885259') );
+
+        $this->assertNotNull( $oValidator->getFirstValidationError() );
+    }
+
+    /**
+     * Testing VAT id checker: company, country, vat in set
+     */
     public function testCheckVatIdWithAllFieldSet( )
     {
         $oUser = oxNew( "oxUser" );

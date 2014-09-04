@@ -380,7 +380,7 @@ class oxInputValidator extends oxSuperCfg
 
                 $oVatInValidator = $this->getCompanyVatInValidator( $oCountry );
 
-                /** @var oxCompanyVatId $oVatIn */
+                /** @var oxCompanyVatIn $oVatIn */
                 $oVatIn = oxNew('oxCompanyVatIn', $aInvAddress['oxuser__oxustid']);
 
                 if ( !$oVatInValidator->validate( $oVatIn ) ) {
@@ -390,6 +390,11 @@ class oxInputValidator extends oxSuperCfg
                     return $this->_addValidationError( "oxuser__oxustid", $oEx );
                 }
             }
+        } elseif (!$aInvAddress['oxuser__oxcompany']) {
+            /** @var oxInputException $oEx */
+            $oEx = oxNew( 'oxInputException' );
+            $oEx->setMessage(oxRegistry::getLang()->translateString('VAT_MESSAGE_COMPANY_MISSING'));
+            return $this->_addValidationError( "oxuser__oxcompany", $oEx );
         }
     }
 

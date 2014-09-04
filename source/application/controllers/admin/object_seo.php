@@ -25,6 +25,7 @@
  */
 class Object_Seo extends oxAdminDetails
 {
+
     /**
      * Executes parent method parent::render(),
      * and returns name of template file
@@ -36,24 +37,24 @@ class Object_Seo extends oxAdminDetails
     {
         parent::render();
 
-        if ( $sType = $this->_getType() ) {
-            $oObject = oxNew( $sType );
-            if ( $oObject->load( $this->getEditObjectId() ) ) {
+        if ($sType = $this->_getType()) {
+            $oObject = oxNew($sType);
+            if ($oObject->load($this->getEditObjectId())) {
                 $oOtherLang = $oObject->getAvailableInLangs();
-                if ( !isset( $oOtherLang[$iLang] ) ) {
-                    $oObject->loadInLang( key( $oOtherLang ), $this->getEditObjectId() );
+                if (!isset($oOtherLang[$iLang])) {
+                    $oObject->loadInLang(key($oOtherLang), $this->getEditObjectId());
                 }
                 $this->_aViewData['edit'] = $oObject;
             }
 
         }
 
-        $iLang  = $this->getEditLang();
+        $iLang = $this->getEditLang();
         $aLangs = oxRegistry::getLang()->getLanguageNames();
-        foreach ( $aLangs as $sLangId => $sLanguage ) {
+        foreach ($aLangs as $sLangId => $sLanguage) {
             $oLang = new stdClass();
             $oLang->sLangDesc = $sLanguage;
-            $oLang->selected  = ( $sLangId == $iLang );
+            $oLang->selected = ($sLangId == $iLang);
             $this->_aViewData['otherlang'][$sLangId] = clone $oLang;
         }
 
@@ -68,25 +69,27 @@ class Object_Seo extends oxAdminDetails
     public function save()
     {
         // saving/updating seo params
-        if ( ( $sOxid = $this->_getSaveObjectId() ) ) {
-            $aSeoData = oxRegistry::getConfig()->getRequestParameter( 'aSeoData' );
-            $iShopId  = $this->getConfig()->getShopId();
-            $iLang    = $this->getEditLang();
+        if (($sOxid = $this->_getSaveObjectId())) {
+            $aSeoData = oxRegistry::getConfig()->getRequestParameter('aSeoData');
+            $iShopId = $this->getConfig()->getShopId();
+            $iLang = $this->getEditLang();
 
             // checkbox handling
-            if ( !isset( $aSeoData['oxfixed'] ) ) {
+            if (!isset($aSeoData['oxfixed'])) {
                 $aSeoData['oxfixed'] = 0;
             }
 
             $oEncoder = $this->_getEncoder();
 
             // marking self and page links as expired
-            $oEncoder->markAsExpired( $sOxid, $iShopId, 1, $iLang );
+            $oEncoder->markAsExpired($sOxid, $iShopId, 1, $iLang);
 
             // saving
-            $oEncoder->addSeoEntry( $sOxid, $iShopId, $iLang, $this->_getStdUrl( $sOxid ),
-                                    $aSeoData['oxseourl'], $this->_getSeoEntryType(), $aSeoData['oxfixed'],
-                                    trim( $aSeoData['oxkeywords'] ), trim( $aSeoData['oxdescription'] ), $this->processParam( $aSeoData['oxparams'] ), true, $this->_getAltSeoEntryId() );
+            $oEncoder->addSeoEntry(
+                $sOxid, $iShopId, $iLang, $this->_getStdUrl($sOxid),
+                $aSeoData['oxseourl'], $this->_getSeoEntryType(), $aSeoData['oxfixed'],
+                trim($aSeoData['oxkeywords']), trim($aSeoData['oxdescription']), $this->processParam($aSeoData['oxparams']), true, $this->_getAltSeoEntryId()
+            );
         }
     }
 
@@ -107,9 +110,9 @@ class Object_Seo extends oxAdminDetails
      *
      * @return string
      */
-    public function getEntryMetaData( $sMetaType )
+    public function getEntryMetaData($sMetaType)
     {
-        return $this->_getEncoder()->getMetaData( $this->getEditObjectId(), $sMetaType, $this->getConfig()->getShopId(), $this->getEditLang() );
+        return $this->_getEncoder()->getMetaData($this->getEditObjectId(), $sMetaType, $this->getConfig()->getShopId(), $this->getEditLang());
     }
 
     /**
@@ -119,13 +122,14 @@ class Object_Seo extends oxAdminDetails
      */
     public function isEntryFixed()
     {
-        $iLang   = (int) $this->getEditLang();
+        $iLang = (int) $this->getEditLang();
         $iShopId = $this->getConfig()->getShopId();
 
         $sQ = "select oxfixed from oxseo where
-                   oxseo.oxobjectid = ".oxDb::getDb()->quote( $this->getEditObjectId() )." and
+                   oxseo.oxobjectid = " . oxDb::getDb()->quote($this->getEditObjectId()) . " and
                    oxseo.oxshopid = '{$iShopId}' and oxseo.oxlang = {$iLang} and oxparams = '' ";
-        return (bool) oxDb::getDb()->getOne( $sQ, false, false );
+
+        return (bool) oxDb::getDb()->getOne($sQ, false, false);
     }
 
     /**
@@ -144,12 +148,12 @@ class Object_Seo extends oxAdminDetails
      *
      * @return string
      */
-    protected function _getStdUrl( $sOxid )
+    protected function _getStdUrl($sOxid)
     {
-        if ( $sType = $this->_getType() ) {
-            $oObject = oxNew( $sType );
-            if ( $oObject->load( $sOxid ) ) {
-               return $oObject->getBaseStdLink( $this->getEditLang(), true, false );
+        if ($sType = $this->_getType()) {
+            $oObject = oxNew($sType);
+            if ($oObject->load($sOxid)) {
+                return $oObject->getBaseStdLink($this->getEditLang(), true, false);
             }
         }
     }
@@ -190,7 +194,7 @@ class Object_Seo extends oxAdminDetails
      *
      * @return string
      */
-    public function processParam( $sParam )
+    public function processParam($sParam)
     {
         return $sParam;
     }

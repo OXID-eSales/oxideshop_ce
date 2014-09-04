@@ -30,6 +30,7 @@
  */
 class oxStr
 {
+
     /**
      * Specific string handler
      *

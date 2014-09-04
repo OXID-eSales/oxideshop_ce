@@ -26,6 +26,7 @@
  */
 class oxSepaValidator
 {
+
     /**
      * @var array IBAN Code Length array
      */
@@ -103,11 +104,11 @@ class oxSepaValidator
      *
      * @return bool
      */
-    public function isValidBIC( $sBIC )
+    public function isValidBIC($sBIC)
     {
-        $oBICValidator = oxNew( 'oxSepaBICValidator' );
+        $oBICValidator = oxNew('oxSepaBICValidator');
 
-        return $oBICValidator->isValid( $sBIC );
+        return $oBICValidator->isValid($sBIC);
     }
 
     /**
@@ -117,31 +118,32 @@ class oxSepaValidator
      *
      * @return bool
      */
-    public function isValidIBAN( $sIBAN )
+    public function isValidIBAN($sIBAN)
     {
-        $oIBANValidator = oxNew( 'oxSepaIBANValidator' );
-        $oIBANValidator->setCodeLengths( $this->getIBANCodeLengths() );
+        $oIBANValidator = oxNew('oxSepaIBANValidator');
+        $oIBANValidator->setCodeLengths($this->getIBANCodeLengths());
 
-        return $oIBANValidator->isValid( $sIBAN );
+        return $oIBANValidator->isValid($sIBAN);
     }
 
     /**
-    * Validation of IBAN registry
-    *
-    * @param array $aIBANRegistry
-    * @deprecated since v5.1.2 (2013-12-11); Use oxSepaIBANValidator::isCodeLengthsValid().
-    *
-    * @return bool
-    */
-    public function isValidIBANRegistry( $aIBANRegistry = null )
+     * Validation of IBAN registry
+     *
+     * @param array $aIBANRegistry
+     *
+     * @deprecated since v5.1.2 (2013-12-11); Use oxSepaIBANValidator::isCodeLengthsValid().
+     *
+     * @return bool
+     */
+    public function isValidIBANRegistry($aIBANRegistry = null)
     {
-        $oIBANValidator = oxNew( 'oxSepaIBANValidator' );
+        $oIBANValidator = oxNew('oxSepaIBANValidator');
 
-        if ( is_null( $aIBANRegistry ) ) {
+        if (is_null($aIBANRegistry)) {
             $aIBANRegistry = $this->getIBANCodeLengths();
         }
 
-        return $oIBANValidator->isCodeLengthsValid( $aIBANRegistry );
+        return $oIBANValidator->isCodeLengthsValid($aIBANRegistry);
     }
 
 
@@ -149,13 +151,14 @@ class oxSepaValidator
      * Set IBAN Registry
      *
      * @param array $aIBANRegistry
+     *
      * @deprecated since v5.1.2 (2013-12-11); Use oxSepaIBANValidator::setCodeLengths().
      *
      * @return bool
      */
-    public function setIBANRegistry( $aIBANRegistry )
+    public function setIBANRegistry($aIBANRegistry)
     {
-        if ( $this->isValidIBANRegistry( $aIBANRegistry ) ) {
+        if ($this->isValidIBANRegistry($aIBANRegistry)) {
             $this->_aIBANCodeLengths = $aIBANRegistry;
 
             return true;
@@ -166,6 +169,7 @@ class oxSepaValidator
 
     /**
      * Get IBAN length by country data
+     *
      * @deprecated since v5.1.2 (2013-12-11); Use oxSepaValidator::getIBANCodeLengths().
      *
      * @return array

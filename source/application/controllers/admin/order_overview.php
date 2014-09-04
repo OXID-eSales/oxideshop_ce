@@ -27,6 +27,7 @@
  */
 class Order_Overview extends oxAdminDetails
 {
+
     /**
      * Executes parent method parent::render(), creates oxOrder, passes
      * it's data to Smarty engine and returns name of template file
@@ -39,36 +40,36 @@ class Order_Overview extends oxAdminDetails
         $myConfig = $this->getConfig();
         parent::render();
 
-        $oOrder = oxNew( "oxOrder" );
-        $oCur  = $myConfig->getActShopCurrencyObject();
+        $oOrder = oxNew("oxOrder");
+        $oCur = $myConfig->getActShopCurrencyObject();
         $oLang = oxRegistry::getLang();
 
         $soxId = $this->getEditObjectId();
-        if ( $soxId != "-1" && isset( $soxId)) {
+        if ($soxId != "-1" && isset($soxId)) {
             // load object
-            $oOrder->load( $soxId);
+            $oOrder->load($soxId);
 
-            $this->_aViewData["edit"]          = $oOrder;
-            $this->_aViewData["aProductVats"]  = $oOrder->getProductVats();
+            $this->_aViewData["edit"] = $oOrder;
+            $this->_aViewData["aProductVats"] = $oOrder->getProductVats();
             $this->_aViewData["orderArticles"] = $oOrder->getOrderArticles();
-            $this->_aViewData["giftCard"]      = $oOrder->getGiftCard();
-            $this->_aViewData["paymentType"]   = $this->_getPaymentType( $oOrder );
-            $this->_aViewData["deliveryType"]  = $oOrder->getDelSet();
-            if ( $oOrder->oxorder__oxtsprotectcosts->value ) {
-                $this->_aViewData["tsprotectcosts"]  = $oLang->formatCurrency( $oOrder->oxorder__oxtsprotectcosts->value, $oCur);
+            $this->_aViewData["giftCard"] = $oOrder->getGiftCard();
+            $this->_aViewData["paymentType"] = $this->_getPaymentType($oOrder);
+            $this->_aViewData["deliveryType"] = $oOrder->getDelSet();
+            if ($oOrder->oxorder__oxtsprotectcosts->value) {
+                $this->_aViewData["tsprotectcosts"] = $oLang->formatCurrency($oOrder->oxorder__oxtsprotectcosts->value, $oCur);
             }
         }
 
         // orders today
-        $dSum  = $oOrder->getOrderSum(true);
+        $dSum = $oOrder->getOrderSum(true);
         $this->_aViewData["ordersum"] = $oLang->formatCurrency($dSum, $oCur);
         $this->_aViewData["ordercnt"] = $oOrder->getOrderCnt(true);
 
         // ALL orders
         $dSum = $oOrder->getOrderSum();
-        $this->_aViewData["ordertotalsum"] = $oLang->formatCurrency( $dSum, $oCur);
+        $this->_aViewData["ordertotalsum"] = $oLang->formatCurrency($dSum, $oCur);
         $this->_aViewData["ordertotalcnt"] = $oOrder->getOrderCnt();
-        $this->_aViewData["afolder"] = $myConfig->getConfigParam( 'aOrderfolder' );
+        $this->_aViewData["afolder"] = $myConfig->getConfigParam('aOrderfolder');
             $this->_aViewData["alangs"] = $oLang->getLanguageNames();
 
         $this->_aViewData["currency"] = $oCur;
@@ -85,14 +86,14 @@ class Order_Overview extends oxAdminDetails
      *
      * @return oxUserPayment
      */
-    protected function _getPaymentType( $oOrder )
+    protected function _getPaymentType($oOrder)
     {
-        if ( !( $oUserPayment = $oOrder->getPaymentType() ) && $oOrder->oxorder__oxpaymenttype->value ) {
-            $oPayment = oxNew( "oxPayment" );
-            if ( $oPayment->load( $oOrder->oxorder__oxpaymenttype->value ) ) {
+        if (!($oUserPayment = $oOrder->getPaymentType()) && $oOrder->oxorder__oxpaymenttype->value) {
+            $oPayment = oxNew("oxPayment");
+            if ($oPayment->load($oOrder->oxorder__oxpaymenttype->value)) {
                 // in case due to security reasons payment info was not kept in db
-                $oUserPayment = oxNew( "oxUserPayment" );
-                $oUserPayment->oxpayments__oxdesc = new oxField( $oPayment->oxpayments__oxdesc->value );
+                $oUserPayment = oxNew("oxUserPayment");
+                $oUserPayment->oxpayments__oxdesc = new oxField($oPayment->oxpayments__oxdesc->value);
             }
         }
 
@@ -104,18 +105,18 @@ class Order_Overview extends oxAdminDetails
      */
     public function exportlex()
     {
-        $sOrderNr   = oxRegistry::getConfig()->getRequestParameter( "ordernr");
-        $sToOrderNr = oxRegistry::getConfig()->getRequestParameter( "toordernr");
-        $oImex = oxNew( "oximex" );
-        if ( ( $sLexware = $oImex->exportLexwareOrders( $sOrderNr, $sToOrderNr ) ) ) {
+        $sOrderNr = oxRegistry::getConfig()->getRequestParameter("ordernr");
+        $sToOrderNr = oxRegistry::getConfig()->getRequestParameter("toordernr");
+        $oImex = oxNew("oximex");
+        if (($sLexware = $oImex->exportLexwareOrders($sOrderNr, $sToOrderNr))) {
             $oUtils = oxRegistry::getUtils();
-            $oUtils->setHeader( "Pragma: public" );
-            $oUtils->setHeader( "Cache-Control: must-revalidate, post-check=0, pre-check=0" );
-            $oUtils->setHeader( "Expires: 0" );
-            $oUtils->setHeader( "Content-type: application/x-download" );
-            $oUtils->setHeader( "Content-Length: ".strlen( $sLexware ) );
-            $oUtils->setHeader( "Content-Disposition: attachment; filename=intern.xml" );
-            $oUtils->showMessageAndExit( $sLexware );
+            $oUtils->setHeader("Pragma: public");
+            $oUtils->setHeader("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+            $oUtils->setHeader("Expires: 0");
+            $oUtils->setHeader("Content-type: application/x-download");
+            $oUtils->setHeader("Content-Length: " . strlen($sLexware));
+            $oUtils->setHeader("Content-Disposition: attachment; filename=intern.xml");
+            $oUtils->showMessageAndExit($sLexware);
         }
     }
 
@@ -130,6 +131,7 @@ class Order_Overview extends oxAdminDetails
     {
         $sFilename = preg_replace('/[\s]+/', '_', $sFilename);
         $sFilename = preg_replace('/[^a-zA-Z0-9_\.-]/', '', $sFilename);
+
         return str_replace(' ', '_', $sFilename);
     }
 
@@ -143,24 +145,24 @@ class Order_Overview extends oxAdminDetails
     public function createPDF()
     {
         $soxId = $this->getEditObjectId();
-        if ( $soxId != "-1" && isset( $soxId ) ) {
+        if ($soxId != "-1" && isset($soxId)) {
             // load object
-            $oOrder = oxNew( "oxorder" );
-            if ( $oOrder->load( $soxId ) ) {
+            $oOrder = oxNew("oxorder");
+            if ($oOrder->load($soxId)) {
                 $oUtils = oxRegistry::getUtils();
                 $sTrimmedBillName = trim($oOrder->oxorder__oxbilllname->getRawValue());
                 $sFilename = $oOrder->oxorder__oxordernr->value . "_" . $sTrimmedBillName . ".pdf";
                 $sFilename = $this->makeValidFileName($sFilename);
                 ob_start();
-                $oOrder->genPDF( $sFilename, oxRegistry::getConfig()->getRequestParameter( "pdflanguage" ) );
+                $oOrder->genPDF($sFilename, oxRegistry::getConfig()->getRequestParameter("pdflanguage"));
                 $sPDF = ob_get_contents();
                 ob_end_clean();
-                $oUtils->setHeader( "Pragma: public" );
-                $oUtils->setHeader( "Cache-Control: must-revalidate, post-check=0, pre-check=0" );
-                $oUtils->setHeader( "Expires: 0" );
-                $oUtils->setHeader( "Content-type: application/pdf" );
-                $oUtils->setHeader( "Content-Disposition: attachment; filename=".$sFilename );
-                oxRegistry::getUtils()->showMessageAndExit( $sPDF );
+                $oUtils->setHeader("Pragma: public");
+                $oUtils->setHeader("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+                $oUtils->setHeader("Expires: 0");
+                $oUtils->setHeader("Content-type: application/pdf");
+                $oUtils->setHeader("Content-Disposition: attachment; filename=" . $sFilename);
+                oxRegistry::getUtils()->showMessageAndExit($sPDF);
             }
         }
     }
@@ -171,24 +173,24 @@ class Order_Overview extends oxAdminDetails
      */
     public function sendorder()
     {
-        $oOrder = oxNew( "oxorder" );
-        if ( $oOrder->load( $this->getEditObjectId() ) ) {
-            $oOrder->oxorder__oxsenddate = new oxField( date( "Y-m-d H:i:s", oxRegistry::get("oxUtilsDate")->getTime() ) );
+        $oOrder = oxNew("oxorder");
+        if ($oOrder->load($this->getEditObjectId())) {
+            $oOrder->oxorder__oxsenddate = new oxField(date("Y-m-d H:i:s", oxRegistry::get("oxUtilsDate")->getTime()));
             $oOrder->save();
 
             // #1071C
             $oOrderArticles = $oOrder->getOrderArticles();
-            foreach ( $oOrderArticles as $sOxid => $oArticle ) {
+            foreach ($oOrderArticles as $sOxid => $oArticle) {
                 // remove canceled articles from list
-                if ( $oArticle->oxorderarticles__oxstorno->value == 1 ) {
-                    $oOrderArticles->offsetUnset( $sOxid );
+                if ($oArticle->oxorderarticles__oxstorno->value == 1) {
+                    $oOrderArticles->offsetUnset($sOxid);
                 }
             }
 
-            if ( ( $blMail = oxRegistry::getConfig()->getRequestParameter( "sendmail" ) ) ) {
+            if (($blMail = oxRegistry::getConfig()->getRequestParameter("sendmail"))) {
                 // send eMail
-                $oEmail = oxNew( "oxemail" );
-                $oEmail->sendSendedNowMail( $oOrder );
+                $oEmail = oxNew("oxemail");
+                $oEmail->sendSendedNowMail($oOrder);
             }
         }
     }
@@ -198,9 +200,9 @@ class Order_Overview extends oxAdminDetails
      */
     public function resetorder()
     {
-        $oOrder = oxNew( "oxorder" );
-        if ( $oOrder->load( $this->getEditObjectId() ) ) {
-            $oOrder->oxorder__oxsenddate = new oxField( "0000-00-00 00:00:00" );
+        $oOrder = oxNew("oxorder");
+        if ($oOrder->load($this->getEditObjectId())) {
+            $oOrder->oxorder__oxsenddate = new oxField("0000-00-00 00:00:00");
             $oOrder->save();
         }
     }
@@ -216,13 +218,14 @@ class Order_Overview extends oxAdminDetails
         //V #529: check if PDF invoice module is active
         $oModule = oxNew('oxmodule');
         $oModule->load('invoicepdf');
-        if ( $oModule->isActive() ) {
+        if ($oModule->isActive()) {
             $oDb = oxDb::getDb();
             $sOrderId = $this->getEditObjectId();
-            $sTable = getViewName( "oxorderarticles" );
-            $sQ = "select count(oxid) from {$sTable} where oxorderid = ".$oDb->quote( $sOrderId )." and oxstorno = 0";
-            $blCan = (bool) $oDb->getOne( $sQ, false, false );
+            $sTable = getViewName("oxorderarticles");
+            $sQ = "select count(oxid) from {$sTable} where oxorderid = " . $oDb->quote($sOrderId) . " and oxstorno = 0";
+            $blCan = (bool) $oDb->getOne($sQ, false, false);
         }
+
         return $blCan;
     }
 
@@ -233,12 +236,13 @@ class Order_Overview extends oxAdminDetails
      */
     public function canResetShippingDate()
     {
-        $oOrder = oxNew( "oxorder" );
+        $oOrder = oxNew("oxorder");
         $blCan = false;
-        if ( $oOrder->load( $this->getEditObjectId() ) ) {
+        if ($oOrder->load($this->getEditObjectId())) {
             $blCan = $oOrder->oxorder__oxstorno->value == "0" &&
-                     !( $oOrder->oxorder__oxsenddate->value == "0000-00-00 00:00:00" || $oOrder->oxorder__oxsenddate->value == "-" );
+                     !($oOrder->oxorder__oxsenddate->value == "0000-00-00 00:00:00" || $oOrder->oxorder__oxsenddate->value == "-");
         }
+
         return $blCan;
     }
 }

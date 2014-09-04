@@ -25,6 +25,7 @@
  */
 class Manufacturer_Seo extends Object_Seo
 {
+
     /**
      * Updating showsuffix field
      *
@@ -32,10 +33,10 @@ class Manufacturer_Seo extends Object_Seo
      */
     public function save()
     {
-        $oManufacturer = oxNew( 'oxbase' );
-        $oManufacturer->init( 'oxmanufacturers' );
-        if ( $oManufacturer->load( $this->getEditObjectId() ) ) {
-            $oManufacturer->oxmanufacturers__oxshowsuffix = new oxField( (int) oxRegistry::getConfig()->getRequestParameter( 'blShowSuffix' ) );
+        $oManufacturer = oxNew('oxbase');
+        $oManufacturer->init('oxmanufacturers');
+        if ($oManufacturer->load($this->getEditObjectId())) {
+            $oManufacturer->oxmanufacturers__oxshowsuffix = new oxField((int) oxRegistry::getConfig()->getRequestParameter('blShowSuffix'));
             $oManufacturer->save();
         }
 
@@ -79,8 +80,8 @@ class Manufacturer_Seo extends Object_Seo
      */
     public function isEntrySuffixed()
     {
-        $oManufacturer = oxNew( 'oxmanufacturer' );
-        if ( $oManufacturer->load( $this->getEditObjectId() ) ) {
+        $oManufacturer = oxNew('oxmanufacturer');
+        if ($oManufacturer->load($this->getEditObjectId())) {
             return (bool) $oManufacturer->oxmanufacturers__oxshowsuffix->value;
         }
     }
@@ -92,9 +93,9 @@ class Manufacturer_Seo extends Object_Seo
      */
     public function getEntryUri()
     {
-        $oManufacturer = oxNew( 'oxmanufacturer' );
-        if ( $oManufacturer->load( $this->getEditObjectId() ) ) {
-            return $this->_getEncoder()->getManufacturerUri( $oManufacturer, $this->getEditLang() );
+        $oManufacturer = oxNew('oxmanufacturer');
+        if ($oManufacturer->load($this->getEditObjectId())) {
+            return $this->_getEncoder()->getManufacturerUri($oManufacturer, $this->getEditLang());
         }
     }
 }

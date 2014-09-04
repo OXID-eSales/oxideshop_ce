@@ -2,6 +2,7 @@
 
 class oxRequiredAddressFields
 {
+
     /**
      * Default required fields for use when not set in config.
      *
@@ -63,6 +64,7 @@ class oxRequiredAddressFields
     public function getBillingFields()
     {
         $aRequiredFields = $this->getRequiredFields();
+
         return $this->_filterFields($aRequiredFields, 'oxuser__');
     }
 
@@ -72,14 +74,16 @@ class oxRequiredAddressFields
     public function getDeliveryFields()
     {
         $aRequiredFields = $this->getRequiredFields();
+
         return $this->_filterFields($aRequiredFields, 'oxaddress__');
     }
 
     /**
      * Removes delivery fields from fields list.
      *
-     * @param array $aFields
+     * @param array  $aFields
      * @param string $sPrefix
+     *
      * @return mixed
      */
     private function _filterFields($aFields, $sPrefix)

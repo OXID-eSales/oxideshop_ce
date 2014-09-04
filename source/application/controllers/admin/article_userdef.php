@@ -25,6 +25,7 @@
  */
 class Article_Userdef extends oxAdminDetails
 {
+
     /**
      * Loads article data from DB, passes it to Smarty engine, returns name
      * of template file "article_userdef.tpl".
@@ -35,14 +36,14 @@ class Article_Userdef extends oxAdminDetails
     {
         parent::render();
 
-        $oArticle = oxNew( "oxarticle" );
-        $this->_aViewData["edit"] =  $oArticle;
+        $oArticle = oxNew("oxarticle");
+        $this->_aViewData["edit"] = $oArticle;
 
         $soxId = $this->getEditObjectId();
-        if ( $soxId != "-1" && isset( $soxId ) ) {
+        if ($soxId != "-1" && isset($soxId)) {
 
             // load object
-            $oArticle->load( $soxId );
+            $oArticle->load($soxId);
         }
 
         return "article_userdef.tpl";

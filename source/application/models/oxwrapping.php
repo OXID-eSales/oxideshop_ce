@@ -27,6 +27,7 @@
  */
 class oxWrapping extends oxI18n
 {
+
     /**
      * Class name
      *
@@ -64,10 +65,10 @@ class oxWrapping extends oxI18n
     public function __construct()
     {
         $oConfig = $this->getConfig();
-        $this->setWrappingVat( $oConfig->getConfigParam( 'dDefaultVAT' ) );
-        $this->setWrappingVatOnTop( $oConfig->getConfigParam( 'blWrappingVatOnTop' ) );
+        $this->setWrappingVat($oConfig->getConfigParam('dDefaultVAT'));
+        $this->setWrappingVatOnTop($oConfig->getConfigParam('blWrappingVatOnTop'));
         parent::__construct();
-        $this->init( 'oxwrapping' );
+        $this->init('oxwrapping');
     }
 
     /**
@@ -77,7 +78,7 @@ class oxWrapping extends oxI18n
      *
      * @return null
      */
-    public function setWrappingVat( $dVat )
+    public function setWrappingVat($dVat)
     {
         $this->_dVat = $dVat;
     }
@@ -89,7 +90,7 @@ class oxWrapping extends oxI18n
      *
      * @return null
      */
-    public function setWrappingVatOnTop( $blOnTop )
+    public function setWrappingVatOnTop($blOnTop)
     {
         $this->_blWrappingVatOnTop = $blOnTop;
     }
@@ -101,20 +102,20 @@ class oxWrapping extends oxI18n
      *
      * @return object
      */
-    public function getWrappingPrice( $dAmount = 1 )
+    public function getWrappingPrice($dAmount = 1)
     {
-        if ( $this->_oPrice === null ) {
-            $this->_oPrice = oxNew( 'oxprice' );
+        if ($this->_oPrice === null) {
+            $this->_oPrice = oxNew('oxprice');
 
-            if ( !$this->_blWrappingVatOnTop ) {
+            if (!$this->_blWrappingVatOnTop) {
                 $this->_oPrice->setBruttoPriceMode();
             } else {
                 $this->_oPrice->setNettoPriceMode();
             }
 
             $oCur = $this->getConfig()->getActShopCurrencyObject();
-            $this->_oPrice->setPrice( $this->oxwrapping__oxprice->value * $oCur->rate, $this->_dVat );
-            $this->_oPrice->multiply( $dAmount );
+            $this->_oPrice->setPrice($this->oxwrapping__oxprice->value * $oCur->rate, $this->_dVat);
+            $this->_oPrice->multiply($dAmount);
         }
 
         return $this->_oPrice;
@@ -127,14 +128,14 @@ class oxWrapping extends oxI18n
      *
      * @return array $oEntries wrapping list
      */
-    public function getWrappingList( $sWrapType )
+    public function getWrappingList($sWrapType)
     {
         // load wrapping
-        $oEntries = oxNew( 'oxlist' );
-        $oEntries->init( 'oxwrapping' );
-        $sWrappingViewName = getViewName( 'oxwrapping' );
-        $sSelect =  "select * from $sWrappingViewName where $sWrappingViewName.oxactive = '1' and $sWrappingViewName.oxtype = " . oxDb::getDb()->quote( $sWrapType );
-        $oEntries->selectString( $sSelect );
+        $oEntries = oxNew('oxlist');
+        $oEntries->init('oxwrapping');
+        $sWrappingViewName = getViewName('oxwrapping');
+        $sSelect = "select * from $sWrappingViewName where $sWrappingViewName.oxactive = '1' and $sWrappingViewName.oxtype = " . oxDb::getDb()->quote($sWrapType);
+        $oEntries->selectString($sSelect);
 
         return $oEntries;
     }
@@ -146,12 +147,13 @@ class oxWrapping extends oxI18n
      *
      * @return int
      */
-    public function getWrappingCount( $sWrapType )
+    public function getWrappingCount($sWrapType)
     {
-        $sWrappingViewName = getViewName( 'oxwrapping' );
+        $sWrappingViewName = getViewName('oxwrapping');
         $oDb = oxDb::getDb();
-        $sQ = "select count(*) from $sWrappingViewName where $sWrappingViewName.oxactive = '1' and $sWrappingViewName.oxtype = " . $oDb->quote( $sWrapType );
-        return (int) $oDb->getOne( $sQ );
+        $sQ = "select count(*) from $sWrappingViewName where $sWrappingViewName.oxactive = '1' and $sWrappingViewName.oxtype = " . $oDb->quote($sWrapType);
+
+        return (int) $oDb->getOne($sQ);
     }
 
     /**
@@ -163,7 +165,7 @@ class oxWrapping extends oxI18n
     {
         $blResult = (bool) $this->getConfig()->getConfigParam('blShowNetPrice');
         $oUser = $this->getUser();
-        if ( $oUser ) {
+        if ($oUser) {
             $blResult = $oUser->isPriceViewModeNetto();
         }
 
@@ -181,7 +183,7 @@ class oxWrapping extends oxI18n
     {
         $dPrice = $this->getPrice();
 
-        return oxRegistry::getLang()->formatCurrency( $dPrice, $this->getConfig()->getActShopCurrencyObject() );
+        return oxRegistry::getLang()->formatCurrency($dPrice, $this->getConfig()->getActShopCurrencyObject());
     }
 
     /**
@@ -189,7 +191,7 @@ class oxWrapping extends oxI18n
      */
     public function getPrice()
     {
-        if ( $this->_isPriceViewModeNetto() ) {
+        if ($this->_isPriceViewModeNetto()) {
             $dPrice = $this->getWrappingPrice()->getNettoPrice();
         } else {
             $dPrice = $this->getWrappingPrice()->getBruttoPrice();
@@ -215,8 +217,8 @@ class oxWrapping extends oxI18n
      */
     public function getPictureUrl()
     {
-        if ( $this->oxwrapping__oxpic->value ) {
-           return $this->getConfig()->getPictureUrl( "master/wrapping/".$this->oxwrapping__oxpic->value, false, $this->getConfig()->isSsl(), null, $this->oxwrapping__oxshopid->value );
+        if ($this->oxwrapping__oxpic->value) {
+            return $this->getConfig()->getPictureUrl("master/wrapping/" . $this->oxwrapping__oxpic->value, false, $this->getConfig()->isSsl(), null, $this->oxwrapping__oxshopid->value);
         }
     }
 }

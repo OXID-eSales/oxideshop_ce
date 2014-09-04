@@ -27,6 +27,7 @@
  */
 class User_Article extends oxAdminDetails
 {
+
     /**
      * Executes parent method parent::render(), creates oxlist object and returns name
      * of template file "user_article.tpl".
@@ -38,12 +39,12 @@ class User_Article extends oxAdminDetails
         parent::render();
 
         $soxId = $this->getEditObjectId();
-        if ( $soxId && $soxId != '-1' ) {
+        if ($soxId && $soxId != '-1') {
             // load object
-            $oArticlelist = oxNew( 'oxorderarticlelist' );
+            $oArticlelist = oxNew('oxorderarticlelist');
             $oArticlelist->loadOrderArticlesForUser($soxId);
 
-            $this->_aViewData['oArticlelist'] =  $oArticlelist;
+            $this->_aViewData['oArticlelist'] = $oArticlelist;
         }
 
         return 'user_article.tpl';

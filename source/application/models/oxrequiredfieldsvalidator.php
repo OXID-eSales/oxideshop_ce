@@ -30,18 +30,21 @@ class oxRequiredFieldsValidator
 
     /**
      * Required fields array.
+     *
      * @var array
      */
     private $_aRequiredFields = array();
 
     /**
      * Invalid fields array.
+     *
      * @var array
      */
     private $_aInvalidFields = array();
 
     /**
      * Required Field validator.
+     *
      * @var oxRequiredFieldValidator
      */
     private $_oFieldValidator = array();

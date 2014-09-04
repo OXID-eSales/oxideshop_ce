@@ -24,10 +24,11 @@
  * Module files validator class.
  *
  * @internal Do not make a module extension for this class.
- * @see http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
+ * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
  */
 class oxModuleFilesValidator implements oxIModuleValidator
 {
+
     /**
      * Missing module files list.
      *
@@ -50,6 +51,7 @@ class oxModuleFilesValidator implements oxIModuleValidator
         if (is_null($this->_sPathToModuleDirectory)) {
             $this->setPathToModuleDirectory(oxRegistry::getConfig()->getModulesDir());
         }
+
         return $this->_sPathToModuleDirectory;
     }
 
@@ -108,6 +110,7 @@ class oxModuleFilesValidator implements oxIModuleValidator
     {
         $aModuleExtendedFiles = $oModule->getExtensions();
         $blAllModuleExtensionsExists = $this->_allFilesExists($aModuleExtendedFiles, true, 'extensions');
+
         return $blAllModuleExtensionsExists;
     }
 
@@ -122,6 +125,7 @@ class oxModuleFilesValidator implements oxIModuleValidator
     {
         $aModuleExtendedFiles = $oModule->getFiles();
         $blAllModuleFilesExists = $this->_allFilesExists($aModuleExtendedFiles);
+
         return $blAllModuleFilesExists;
 
     }
@@ -129,9 +133,9 @@ class oxModuleFilesValidator implements oxIModuleValidator
     /**
      * Return true if all requested file exists.
      *
-     * @param array $aModuleExtendedFiles of files which must exist.
-     * @param bool $blAddExtension if add .php extension to checked files.
-     * @param string $sListName if add .php extension to checked files.
+     * @param array  $aModuleExtendedFiles of files which must exist.
+     * @param bool   $blAddExtension       if add .php extension to checked files.
+     * @param string $sListName            if add .php extension to checked files.
      *
      * @return bool
      */
@@ -150,6 +154,7 @@ class oxModuleFilesValidator implements oxIModuleValidator
                 $this->_aMissingFiles[$sListName][$sModuleName] = $sModulePath;
             }
         }
+
         return $blAllModuleFilesExists;
     }
 
@@ -164,8 +169,10 @@ class oxModuleFilesValidator implements oxIModuleValidator
     {
         if (substr($sPathToModuleDirectory, -1) != DIRECTORY_SEPARATOR) {
             $sPathToModuleDirectory .= DIRECTORY_SEPARATOR;
+
             return $sPathToModuleDirectory;
         }
+
         return $sPathToModuleDirectory;
     }
 }

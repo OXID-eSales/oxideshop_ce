@@ -27,6 +27,7 @@
  */
 class payment_rdfa extends oxAdminDetails
 {
+
     /**
      * Current class template name.
      *
@@ -41,20 +42,20 @@ class payment_rdfa extends oxAdminDetails
      * @var array
      */
     protected $_aRDFaPayments = array("ByBankTransferInAdvance" => 0,
-                                      "ByInvoice" => 0,
-                                      "Cash" => 0,
-                                      "CheckInAdvance" => 0,
-                                      "COD" => 0,
-                                      "DirectDebit" => 0,
-                                      "GoogleCheckout" => 0,
-                                      "PayPal" => 0,
-                                      "PaySwarm" => 0,
-                                      "AmericanExpress" => 1,
-                                      "DinersClub" => 1,
-                                      "Discover" => 1,
-                                      "JCB" => 1,
-                                      "MasterCard" => 1,
-                                      "VISA" => 1);
+                                      "ByInvoice"               => 0,
+                                      "Cash"                    => 0,
+                                      "CheckInAdvance"          => 0,
+                                      "COD"                     => 0,
+                                      "DirectDebit"             => 0,
+                                      "GoogleCheckout"          => 0,
+                                      "PayPal"                  => 0,
+                                      "PaySwarm"                => 0,
+                                      "AmericanExpress"         => 1,
+                                      "DinersClub"              => 1,
+                                      "Discover"                => 1,
+                                      "JCB"                     => 1,
+                                      "MasterCard"              => 1,
+                                      "VISA"                    => 1);
 
     /**
      * Saves changed mapping configurations
@@ -68,10 +69,10 @@ class payment_rdfa extends oxAdminDetails
 
         // Delete old mappings
         $oDb = oxDb::getDb();
-        $oDb->execute("DELETE FROM oxobject2payment WHERE oxpaymentid = '".oxRegistry::getConfig()->getRequestParameter("oxid")."' AND OXTYPE = 'rdfapayment'");
+        $oDb->execute("DELETE FROM oxobject2payment WHERE oxpaymentid = '" . oxRegistry::getConfig()->getRequestParameter("oxid") . "' AND OXTYPE = 'rdfapayment'");
 
         // Save new mappings
-        foreach ( $aRDFaPayments as $sPayment ) {
+        foreach ($aRDFaPayments as $sPayment) {
             $oMapping = oxNew("oxbase");
             $oMapping->init("oxobject2payment");
             $oMapping->assign($aParams);
@@ -96,6 +97,7 @@ class payment_rdfa extends oxAdminDetails
             $oPayment->checked = in_array($sName, $aAssignedRDFaPayments);
             $aRDFaPayments[] = $oPayment;
         }
+
         return $aRDFaPayments;
     }
 
@@ -108,14 +110,15 @@ class payment_rdfa extends oxAdminDetails
     {
         $oDb = oxDb::getDb();
         $aRDFaPayments = array();
-        $sSelect = 'select oxobjectid from oxobject2payment where oxpaymentid='.$oDb->quote( oxRegistry::getConfig()->getRequestParameter("oxid") ).' and oxtype = "rdfapayment" ';
-        $rs = $oDb->execute( $sSelect );
-        if ( $rs && $rs->recordCount()) {
-            while ( !$rs->EOF ) {
+        $sSelect = 'select oxobjectid from oxobject2payment where oxpaymentid=' . $oDb->quote(oxRegistry::getConfig()->getRequestParameter("oxid")) . ' and oxtype = "rdfapayment" ';
+        $rs = $oDb->execute($sSelect);
+        if ($rs && $rs->recordCount()) {
+            while (!$rs->EOF) {
                 $aRDFaPayments[] = $rs->fields[0];
                 $rs->moveNext();
             }
         }
+
         return $aRDFaPayments;
     }
 

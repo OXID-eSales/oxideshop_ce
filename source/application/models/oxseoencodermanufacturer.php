@@ -26,6 +26,7 @@
  */
 class oxSeoEncoderManufacturer extends oxSeoEncoder
 {
+
     /**
      * Root manufacturer uri cache
      *
@@ -52,36 +53,37 @@ class oxSeoEncoderManufacturer extends oxSeoEncoder
      *
      * @return string
      */
-    public function getManufacturerUri( $oManufacturer, $iLang = null, $blRegenerate = false )
+    public function getManufacturerUri($oManufacturer, $iLang = null, $blRegenerate = false)
     {
         if (!isset($iLang)) {
             $iLang = $oManufacturer->getLanguage();
         }
         // load from db
-        if ( $blRegenerate || !( $sSeoUrl = $this->_loadFromDb( 'oxmanufacturer', $oManufacturer->getId(), $iLang ) ) ) {
+        if ($blRegenerate || !($sSeoUrl = $this->_loadFromDb('oxmanufacturer', $oManufacturer->getId(), $iLang))) {
 
-            if ( $iLang != $oManufacturer->getLanguage() ) {
+            if ($iLang != $oManufacturer->getLanguage()) {
                 $sId = $oManufacturer->getId();
                 $oManufacturer = oxNew('oxmanufacturer');
-                $oManufacturer->loadInLang( $iLang, $sId );
+                $oManufacturer->loadInLang($iLang, $sId);
             }
 
             $sSeoUrl = '';
-            if ( $oManufacturer->getId() != 'root' ) {
-                if ( !isset( $this->_aRootManufacturerUri[$iLang] ) ) {
+            if ($oManufacturer->getId() != 'root') {
+                if (!isset($this->_aRootManufacturerUri[$iLang])) {
                     $oRootManufacturer = oxNew('oxmanufacturer');
-                    $oRootManufacturer->loadInLang( $iLang, 'root' );
-                    $this->_aRootManufacturerUri[$iLang] = $this->getManufacturerUri( $oRootManufacturer, $iLang );
+                    $oRootManufacturer->loadInLang($iLang, 'root');
+                    $this->_aRootManufacturerUri[$iLang] = $this->getManufacturerUri($oRootManufacturer, $iLang);
                 }
                 $sSeoUrl .= $this->_aRootManufacturerUri[$iLang];
             }
 
-            $sSeoUrl .= $this->_prepareTitle( $oManufacturer->oxmanufacturers__oxtitle->value, false, $oManufacturer->getLanguage() ) .'/';
-            $sSeoUrl  = $this->_processSeoUrl( $sSeoUrl, $oManufacturer->getId(), $iLang );
+            $sSeoUrl .= $this->_prepareTitle($oManufacturer->oxmanufacturers__oxtitle->value, false, $oManufacturer->getLanguage()) . '/';
+            $sSeoUrl = $this->_processSeoUrl($sSeoUrl, $oManufacturer->getId(), $iLang);
 
             // save to db
-            $this->_saveToDb( 'oxmanufacturer', $oManufacturer->getId(), $oManufacturer->getBaseStdLink($iLang), $sSeoUrl, $iLang );
+            $this->_saveToDb('oxmanufacturer', $oManufacturer->getId(), $oManufacturer->getBaseStdLink($iLang), $sSeoUrl, $iLang);
         }
+
         return $sSeoUrl;
     }
 
@@ -95,7 +97,7 @@ class oxSeoEncoderManufacturer extends oxSeoEncoder
      *
      * @return string
      */
-    public function getManufacturerPageUrl( $oManufacturer, $iPage, $iLang = null, $blFixed = null )
+    public function getManufacturerPageUrl($oManufacturer, $iPage, $iLang = null, $blFixed = null)
     {
         if (!isset($iLang)) {
             $iLang = $oManufacturer->getLanguage();
@@ -103,13 +105,14 @@ class oxSeoEncoderManufacturer extends oxSeoEncoder
         $sStdUrl = $oManufacturer->getBaseStdLink($iLang) . '&amp;pgNr=' . $iPage;
         $sParams = $sParams = (int) ($iPage + 1);
 
-        $sStdUrl = $this->_trimUrl( $sStdUrl, $iLang );
-        $sSeoUrl = $this->getManufacturerUri( $oManufacturer, $iLang ) . $sParams . "/";
+        $sStdUrl = $this->_trimUrl($sStdUrl, $iLang);
+        $sSeoUrl = $this->getManufacturerUri($oManufacturer, $iLang) . $sParams . "/";
 
-        if ( $blFixed === null ) {
-            $blFixed = $this->_isFixed( 'oxmanufacturers', $oManufacturer->getId(), $iLang );
+        if ($blFixed === null) {
+            $blFixed = $this->_isFixed('oxmanufacturers', $oManufacturer->getId(), $iLang);
         }
-        return $this->_getFullUrl( $this->_getPageUri( $oManufacturer, 'oxmanufacturers', $sStdUrl, $sSeoUrl, $sParams, $iLang, $blFixed ), $iLang );
+
+        return $this->_getFullUrl($this->_getPageUri($oManufacturer, 'oxmanufacturers', $sStdUrl, $sSeoUrl, $sParams, $iLang, $blFixed), $iLang);
     }
 
     /**
@@ -120,12 +123,13 @@ class oxSeoEncoderManufacturer extends oxSeoEncoder
      *
      * @return null
      */
-    public function getManufacturerUrl( $oManufacturer, $iLang = null )
+    public function getManufacturerUrl($oManufacturer, $iLang = null)
     {
         if (!isset($iLang)) {
             $iLang = $oManufacturer->getLanguage();
         }
-        return $this->_getFullUrl( $this->getManufacturerUri( $oManufacturer, $iLang ), $iLang );
+
+        return $this->_getFullUrl($this->getManufacturerUri($oManufacturer, $iLang), $iLang);
     }
 
     /**
@@ -135,10 +139,10 @@ class oxSeoEncoderManufacturer extends oxSeoEncoder
      *
      * @return null
      */
-    public function onDeleteManufacturer( $oManufacturer )
+    public function onDeleteManufacturer($oManufacturer)
     {
         $oDb = oxDb::getDb();
-        $sIdQuoted = $oDb->quote( $oManufacturer->getId() );
+        $sIdQuoted = $oDb->quote($oManufacturer->getId());
         $oDb->execute("delete from oxseo where oxobjectid = $sIdQuoted and oxtype = 'oxmanufacturer'");
         $oDb->execute("delete from oxobject2seodata where oxobjectid = $sIdQuoted");
     }
@@ -151,13 +155,14 @@ class oxSeoEncoderManufacturer extends oxSeoEncoder
      *
      * @return string
      */
-    protected function _getAltUri( $sObjectId, $iLang )
+    protected function _getAltUri($sObjectId, $iLang)
     {
         $sSeoUrl = null;
-        $oManufacturer = oxNew( "oxmanufacturer" );
-        if ( $oManufacturer->loadInLang( $iLang, $sObjectId ) ) {
-            $sSeoUrl = $this->getManufacturerUri( $oManufacturer, $iLang, true );
+        $oManufacturer = oxNew("oxmanufacturer");
+        if ($oManufacturer->loadInLang($iLang, $sObjectId)) {
+            $sSeoUrl = $this->getManufacturerUri($oManufacturer, $iLang, true);
         }
+
         return $sSeoUrl;
     }
 }

@@ -26,6 +26,7 @@
  */
 class oxTsProduct extends oxSuperCfg
 {
+
     /**
      * Id of TS protection product
      *
@@ -87,13 +88,13 @@ class oxTsProduct extends oxSuperCfg
      *
      * @var array
      */
-    protected $_sTsProtectProducts = array( "TS080501_500_30_EUR"   => array( "netto" => "0.82", "amount" => "500" ),
-                                       "TS080501_1500_30_EUR"  => array( "netto" => "2.47", "amount" => "1500" ),
-                                       "TS080501_2500_30_EUR"  => array( "netto" => "4.12", "amount" => "2500" ),
-                                       "TS080501_5000_30_EUR"  => array( "netto" => "8.24", "amount" => "5000" ),
-                                       "TS080501_10000_30_EUR" => array( "netto" => "16.47", "amount" => "10000" ),
-                                       "TS080501_20000_30_EUR" => array( "netto" => "32.94", "amount" => "20000" )
-                                );
+    protected $_sTsProtectProducts = array("TS080501_500_30_EUR"   => array("netto" => "0.82", "amount" => "500"),
+                                           "TS080501_1500_30_EUR"  => array("netto" => "2.47", "amount" => "1500"),
+                                           "TS080501_2500_30_EUR"  => array("netto" => "4.12", "amount" => "2500"),
+                                           "TS080501_5000_30_EUR"  => array("netto" => "8.24", "amount" => "5000"),
+                                           "TS080501_10000_30_EUR" => array("netto" => "16.47", "amount" => "10000"),
+                                           "TS080501_20000_30_EUR" => array("netto" => "32.94", "amount" => "20000")
+    );
 
     /**
      * Return protection vat
@@ -112,7 +113,7 @@ class oxTsProduct extends oxSuperCfg
      *
      * @return null
      */
-    public function setVat( $dVat )
+    public function setVat($dVat)
     {
         $this->_dVat = $dVat;
     }
@@ -134,7 +135,7 @@ class oxTsProduct extends oxSuperCfg
      *
      * @return null
      */
-    public function setTsId( $sTsId )
+    public function setTsId($sTsId)
     {
         $this->_sTsId = $sTsId;
     }
@@ -146,14 +147,15 @@ class oxTsProduct extends oxSuperCfg
      */
     public function getAmount()
     {
-        if ( $this->_iAmount == null ) {
-            if ( $sTsId = $this->getTsId() ) {
+        if ($this->_iAmount == null) {
+            if ($sTsId = $this->getTsId()) {
                 $aTsProducts = $this->getAllTsProducts();
-                if ( $aTsProducts[$sTsId] && is_array($aTsProducts[$sTsId]) ) {
+                if ($aTsProducts[$sTsId] && is_array($aTsProducts[$sTsId])) {
                     $this->_iAmount = $aTsProducts[$sTsId]['amount'];
                 }
             }
         }
+
         return $this->_iAmount;
     }
 
@@ -166,11 +168,12 @@ class oxTsProduct extends oxSuperCfg
      */
     public function getFPrice()
     {
-        if ( $this->_fPrice == null ) {
-            if ( $oPrice = $this->getPrice() ) {
-                $this->_fPrice = oxRegistry::getLang()->formatCurrency( $oPrice->getBruttoPrice() );
+        if ($this->_fPrice == null) {
+            if ($oPrice = $this->getPrice()) {
+                $this->_fPrice = oxRegistry::getLang()->formatCurrency($oPrice->getBruttoPrice());
             }
         }
+
         return $this->_fPrice;
     }
 
@@ -183,11 +186,12 @@ class oxTsProduct extends oxSuperCfg
      */
     public function getFNettoPrice()
     {
-        if ( $this->_fNettoPrice == null ) {
-            if ( $oPrice = $this->getPrice() ) {
-                $this->_fNettoPrice = oxRegistry::getLang()->formatCurrency( $oPrice->getNettoPrice() );
+        if ($this->_fNettoPrice == null) {
+            if ($oPrice = $this->getPrice()) {
+                $this->_fNettoPrice = oxRegistry::getLang()->formatCurrency($oPrice->getNettoPrice());
             }
         }
+
         return $this->_fNettoPrice;
     }
 
@@ -200,34 +204,36 @@ class oxTsProduct extends oxSuperCfg
      */
     public function getFVatValue()
     {
-        if ( $this->_fVatValue == null ) {
-            if ( $oPrice = $this->getPrice() ) {
-                $this->_fVatValue = oxRegistry::getLang()->formatCurrency( $oPrice->getVatValue() );
+        if ($this->_fVatValue == null) {
+            if ($oPrice = $this->getPrice()) {
+                $this->_fVatValue = oxRegistry::getLang()->formatCurrency($oPrice->getVatValue());
             }
         }
+
         return $this->_fVatValue;
     }
 
-     /**
+    /**
      * Returns price of TS protection product
      *
      * @return oxPrice
      */
     public function getPrice()
     {
-        if ( $this->_oPrice == null ) {
-            if ( $sTsId = $this->getTsId() ) {
+        if ($this->_oPrice == null) {
+            if ($sTsId = $this->getTsId()) {
                 $aTsProducts = $this->getAllTsProducts();
-                if ( $aTsProducts[$sTsId] && is_array($aTsProducts[$sTsId]) ) {
-                    $dPrice   = $aTsProducts[$sTsId]['netto'];
-                    $oPrice = oxNew( 'oxPrice' );
+                if ($aTsProducts[$sTsId] && is_array($aTsProducts[$sTsId])) {
+                    $dPrice = $aTsProducts[$sTsId]['netto'];
+                    $oPrice = oxNew('oxPrice');
                     $oPrice->setNettoPriceMode();
-                    $oPrice->setPrice( $dPrice );
-                    $oPrice->setVat( $this->getVat() );
+                    $oPrice->setPrice($dPrice);
+                    $oPrice->setVat($this->getVat());
                     $this->_oPrice = $oPrice;
                 }
             }
         }
+
         return $this->_oPrice;
     }
 

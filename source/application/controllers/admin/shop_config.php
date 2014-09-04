@@ -27,17 +27,18 @@
  */
 class Shop_Config extends oxAdminDetails
 {
+
     protected $_sThisTemplate = 'shop_config.tpl';
     protected $_aSkipMultiline = array('aHomeCountry', 'iShopID_TrustedShops', 'aTsUser', 'aTsPassword');
     protected $_aParseFloat = array('iMinOrderPrice');
 
     protected $_aConfParams = array(
-        "bool"     => 'confbools',
-        "str"      => 'confstrs',
-        "arr"      => 'confarrs',
-        "aarr"     => 'confaarrs',
-        "select"   => 'confselects',
-        "num"      => 'confnum',
+        "bool"   => 'confbools',
+        "str"    => 'confstrs',
+        "arr"    => 'confarrs',
+        "aarr"   => 'confaarrs',
+        "select" => 'confselects',
+        "num"    => 'confnum',
     );
 
     /**
@@ -48,33 +49,33 @@ class Shop_Config extends oxAdminDetails
      */
     public function render()
     {
-        $myConfig  = $this->getConfig();
+        $myConfig = $this->getConfig();
 
         parent::render();
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
-        if ( $soxId != "-1" && isset( $soxId)) {
+        if ($soxId != "-1" && isset($soxId)) {
             // load object
-            $this->_aViewData["edit"] = $oShop = $this->_getEditShop( $soxId );
+            $this->_aViewData["edit"] = $oShop = $this->_getEditShop($soxId);
 
             try {
                 // category choosen as default
                 $this->_aViewData["defcat"] = null;
                 if ($oShop->oxshops__oxdefcat->value) {
-                    $oCat = oxNew( "oxCategory" );
+                    $oCat = oxNew("oxCategory");
                     if ($oCat->load($oShop->oxshops__oxdefcat->value)) {
                         $this->_aViewData["defcat"] = $oCat;
                     }
                 }
-            } catch ( Exception $oExcp ) {
+            } catch (Exception $oExcp) {
                 // on most cases this means that views are broken, so just
                 // outputting notice and keeping functionality flow ..
                 $this->_aViewData["updateViews"] = 1;
             }
 
             $iAoc = oxRegistry::getConfig()->getRequestParameter("aoc");
-            if ( $iAoc == 1 ) {
-                $oShopDefaultCategoryAjax = oxNew( 'shop_default_category_ajax' );
+            if ($iAoc == 1) {
+                $oShopDefaultCategoryAjax = oxNew('shop_default_category_ajax');
                 $this->_aViewData['oxajax'] = $oShopDefaultCategoryAjax->getColumns();
 
                 return "popups/shop_default_category.tpl";
@@ -84,28 +85,29 @@ class Shop_Config extends oxAdminDetails
 
         $aDbVariables = $this->loadConfVars($soxId, $this->_getModuleForConfigVars());
         $aConfVars = $aDbVariables['vars'];
-        $aConfVars['str']['sVersion'] = $myConfig->getConfigParam( 'sVersion' );
+        $aConfVars['str']['sVersion'] = $myConfig->getConfigParam('sVersion');
 
         $this->_aViewData["var_constraints"] = $aDbVariables['constraints'];
-        $this->_aViewData["var_grouping"]    = $aDbVariables['grouping'];
+        $this->_aViewData["var_grouping"] = $aDbVariables['grouping'];
         foreach ($this->_aConfParams as $sType => $sParam) {
             $this->_aViewData[$sParam] = $aConfVars[$sType];
         }
 
         // #251A passing country list
-        $oCountryList = oxNew( "oxCountryList" );
-        $oCountryList->loadActiveCountries( oxRegistry::getLang()->getObjectTplLanguage() );
-        if ( isset($aConfVars['arr']["aHomeCountry"]) && count($aConfVars['arr']["aHomeCountry"]) && count($oCountryList)) {
-            foreach ( $oCountryList as $sCountryId => $oCountry) {
-                if ( in_array($oCountry->oxcountry__oxid->value, $aConfVars['arr']["aHomeCountry"]))
+        $oCountryList = oxNew("oxCountryList");
+        $oCountryList->loadActiveCountries(oxRegistry::getLang()->getObjectTplLanguage());
+        if (isset($aConfVars['arr']["aHomeCountry"]) && count($aConfVars['arr']["aHomeCountry"]) && count($oCountryList)) {
+            foreach ($oCountryList as $sCountryId => $oCountry) {
+                if (in_array($oCountry->oxcountry__oxid->value, $aConfVars['arr']["aHomeCountry"])) {
                     $oCountryList[$sCountryId]->selected = "1";
+                }
             }
         }
 
         $this->_aViewData["countrylist"] = $oCountryList;
 
         // checking if cUrl is enabled
-        $this->_aViewData["blCurlIsActive"] = ( !function_exists('curl_init') ) ? false : true;
+        $this->_aViewData["blCurlIsActive"] = (!function_exists('curl_init')) ? false : true;
 
         return $this->_sThisTemplate;
     }
@@ -135,15 +137,15 @@ class Shop_Config extends oxAdminDetails
         foreach ($this->_aConfParams as $sType => $sParam) {
             $aConfVars = oxRegistry::getConfig()->getRequestParameter($sParam);
             if (is_array($aConfVars)) {
-                foreach ( $aConfVars as $sName => $sValue ) {
-                    $oldValue = $myConfig->getConfigParam( $sName );
-                    if ( $sValue !== $oldValue  ) {
+                foreach ($aConfVars as $sName => $sValue) {
+                    $oldValue = $myConfig->getConfigParam($sName);
+                    if ($sValue !== $oldValue) {
                         $myConfig->saveShopConfVar(
-                                $sType,
-                                $sName,
-                                $this->_serializeConfVar($sType, $sName, $sValue),
-                                $sShopId,
-                                $sModule
+                            $sType,
+                            $sName,
+                            $this->_serializeConfVar($sType, $sName, $sValue),
+                            $sShopId,
+                            $sModule
                         );
                     }
                 }
@@ -163,9 +165,9 @@ class Shop_Config extends oxAdminDetails
 
         //saving additional fields ("oxshops__oxdefcat"") that goes directly to shop (not config)
         /** @var oxShop $oShop */
-        $oShop = oxNew( "oxshop" );
-        if ( $oShop->load( $this->getEditObjectId() ) ) {
-            $oShop->assign( oxRegistry::getConfig()->getRequestParameter( "editval" ) );
+        $oShop = oxNew("oxshop");
+        if ($oShop->load($this->getEditObjectId())) {
+            $oShop->assign(oxRegistry::getConfig()->getRequestParameter("editval"));
             $oShop->save();
         }
     }
@@ -184,28 +186,28 @@ class Shop_Config extends oxAdminDetails
      */
     public function loadConfVars($sShopId, $sModule)
     {
-        $myConfig  = $this->getConfig();
+        $myConfig = $this->getConfig();
         $aConfVars = array(
-            "bool"    => array(),
-            "str"     => array(),
-            "arr"     => array(),
-            "aarr"    => array(),
-            "select"  => array(),
+            "bool"   => array(),
+            "str"    => array(),
+            "arr"    => array(),
+            "aarr"   => array(),
+            "select" => array(),
         );
         $aVarConstraints = array();
-        $aGrouping       = array();
+        $aGrouping = array();
         $oDb = oxDb::getDb();
         $rs = $oDb->Execute(
-                "select cfg.oxvarname,
-                        cfg.oxvartype,
-                        DECODE( cfg.oxvarvalue, ".$oDb->quote( $myConfig->getConfigParam( 'sConfigKey' ) ).") as oxvarvalue,
+            "select cfg.oxvarname,
+                    cfg.oxvartype,
+                    DECODE( cfg.oxvarvalue, " . $oDb->quote($myConfig->getConfigParam('sConfigKey')) . ") as oxvarvalue,
                         disp.oxvarconstraint,
                         disp.oxgrouping
                 from oxconfig as cfg
                     left join oxconfigdisplay as disp
                         on cfg.oxmodule=disp.oxcfgmodule and cfg.oxvarname=disp.oxcfgvarname
                 where cfg.oxshopid = '$sShopId'
-                    and cfg.oxmodule=".$oDb->quote($sModule)."
+                    and cfg.oxmodule=" . $oDb->quote($sModule) . "
                 order by disp.oxpos, cfg.oxvarname"
         );
 
@@ -213,10 +215,10 @@ class Shop_Config extends oxAdminDetails
             while (!$rs->EOF) {
                 list($sName, $sType, $sValue, $sConstraint, $sGrouping) = $rs->fields;
                 $aConfVars[$sType][$sName] = $this->_unserializeConfVar($sType, $sName, $sValue);
-                $aVarConstraints[$sName]   = $this->_parseConstraint( $sType, $sConstraint );
+                $aVarConstraints[$sName] = $this->_parseConstraint($sType, $sConstraint);
                 if ($sGrouping) {
                     if (!isset($aGrouping[$sGrouping])) {
-                        $aGrouping[$sGrouping] = array($sName=>$sType);
+                        $aGrouping[$sGrouping] = array($sName => $sType);
                     } else {
                         $aGrouping[$sGrouping][$sName] = $sType;
                     }
@@ -291,28 +293,29 @@ class Shop_Config extends oxAdminDetails
             case "select":
             case "num":
             case "int":
-                $mData = $oStr->htmlentities( $sValue );
+                $mData = $oStr->htmlentities($sValue);
                 if (in_array($sName, $this->_aParseFloat)) {
-                    $mData = str_replace( ',', '.', $mData );
+                    $mData = str_replace(',', '.', $mData);
                 }
                 break;
 
             case "arr":
                 if (in_array($sName, $this->_aSkipMultiline)) {
-                    $mData = unserialize( $sValue );
+                    $mData = unserialize($sValue);
                 } else {
-                    $mData = $oStr->htmlentities( $this->_arrayToMultiline( unserialize( $sValue ) ) );
+                    $mData = $oStr->htmlentities($this->_arrayToMultiline(unserialize($sValue)));
                 }
                 break;
 
             case "aarr":
                 if (in_array($sName, $this->_aSkipMultiline)) {
-                    $mData = unserialize( $sValue );
+                    $mData = unserialize($sValue);
                 } else {
-                    $mData = $oStr->htmlentities( $this->_aarrayToMultiline( unserialize( $sValue ) ) );
+                    $mData = $oStr->htmlentities($this->_aarrayToMultiline(unserialize($sValue)));
                 }
                 break;
         }
+
         return $mData;
     }
 
@@ -337,20 +340,21 @@ class Shop_Config extends oxAdminDetails
             case "select":
             case "int":
                 if (in_array($sName, $this->_aParseFloat)) {
-                    $sData = str_replace( ',', '.', $sData );
+                    $sData = str_replace(',', '.', $sData);
                 }
                 break;
 
             case "arr":
-                if ( !is_array( $mValue ) ) {
-                    $sData = $this->_multilineToArray( $mValue );
+                if (!is_array($mValue)) {
+                    $sData = $this->_multilineToArray($mValue);
                 }
                 break;
 
             case "aarr":
-                $sData = $this->_multilineToAarray( $mValue );
+                $sData = $this->_multilineToAarray($mValue);
                 break;
         }
+
         return $sData;
     }
 
@@ -361,12 +365,13 @@ class Shop_Config extends oxAdminDetails
      *
      * @return string
      */
-    protected function _arrayToMultiline( $aInput )
+    protected function _arrayToMultiline($aInput)
     {
         $sVal = '';
-        if ( is_array( $aInput ) ) {
-            $sVal = implode( "\n", $aInput );
+        if (is_array($aInput)) {
+            $sVal = implode("\n", $aInput);
         }
+
         return $sVal;
     }
 
@@ -377,16 +382,17 @@ class Shop_Config extends oxAdminDetails
      *
      * @return array
      */
-    protected function _multilineToArray( $sMultiline )
+    protected function _multilineToArray($sMultiline)
     {
-        $aArr = explode( "\n", $sMultiline );
-        if ( is_array( $aArr ) ) {
-            foreach ( $aArr as $sKey => $sVal ) {
-                $aArr[$sKey] = trim( $sVal );
-                if ( $aArr[$sKey] == "" ) {
-                    unset( $aArr[$sKey] );
+        $aArr = explode("\n", $sMultiline);
+        if (is_array($aArr)) {
+            foreach ($aArr as $sKey => $sVal) {
+                $aArr[$sKey] = trim($sVal);
+                if ($aArr[$sKey] == "") {
+                    unset($aArr[$sKey]);
                 }
             }
+
             return $aArr;
         }
     }
@@ -398,16 +404,17 @@ class Shop_Config extends oxAdminDetails
      *
      * @return string
      */
-    protected function _aarrayToMultiline( $aInput )
+    protected function _aarrayToMultiline($aInput)
     {
-        if ( is_array( $aInput ) ) {
+        if (is_array($aInput)) {
             $sMultiline = '';
-            foreach ( $aInput as $sKey => $sVal ) {
-                if ( $sMultiline ) {
+            foreach ($aInput as $sKey => $sVal) {
+                if ($sMultiline) {
                     $sMultiline .= "\n";
                 }
-                $sMultiline .= $sKey." => ".$sVal;
+                $sMultiline .= $sKey . " => " . $sVal;
             }
+
             return $sMultiline;
         }
     }
@@ -419,17 +426,17 @@ class Shop_Config extends oxAdminDetails
      *
      * @return array
      */
-    protected function _multilineToAarray( $sMultiline )
+    protected function _multilineToAarray($sMultiline)
     {
         $oStr = getStr();
         $aArr = array();
-        $aLines = explode( "\n", $sMultiline );
-        foreach ( $aLines as $sLine ) {
-            $sLine = trim( $sLine );
-            if ( $sLine != "" && $oStr->preg_match( "/(.+)=>(.+)/", $sLine, $aRegs ) ) {
-                $sKey = trim( $aRegs[1] );
-                $sVal = trim( $aRegs[2] );
-                if ( $sKey != "" && $sVal != "" ) {
+        $aLines = explode("\n", $sMultiline);
+        foreach ($aLines as $sLine) {
+            $sLine = trim($sLine);
+            if ($sLine != "" && $oStr->preg_match("/(.+)=>(.+)/", $sLine, $aRegs)) {
+                $sKey = trim($aRegs[1]);
+                $sVal = trim($aRegs[2]);
+                if ($sKey != "" && $sVal != "") {
                     $aArr[$sKey] = $sVal;
                 }
             }
@@ -446,7 +453,7 @@ class Shop_Config extends oxAdminDetails
     public function getEditObjectId()
     {
         $sEditId = parent::getEditObjectId();
-        if ( !$sEditId ) {
+        if (!$sEditId) {
             return $this->getConfig()->getShopId();
         } else {
             return $sEditId;

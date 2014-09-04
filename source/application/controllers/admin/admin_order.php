@@ -28,8 +28,10 @@
  */
 class Admin_Order extends oxAdminView
 {
+
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'order.tpl';

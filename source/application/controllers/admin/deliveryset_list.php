@@ -28,6 +28,7 @@
  */
 class DeliverySet_List extends oxAdminList
 {
+
     /**
      * Name of chosen object class (default null).
      *
@@ -44,6 +45,7 @@ class DeliverySet_List extends oxAdminList
 
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'deliveryset_list.tpl';

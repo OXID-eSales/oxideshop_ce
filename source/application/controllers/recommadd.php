@@ -27,6 +27,7 @@
  */
 class RecommAdd extends Details
 {
+
     /**
      * Template name
      *
@@ -49,6 +50,7 @@ class RecommAdd extends Details
     public function render()
     {
         oxUBase::render();
+
         return $this->_sThisTemplate;
     }
 
@@ -59,18 +61,20 @@ class RecommAdd extends Details
      */
     public function getRecommLists()
     {
-        if ( $this->_aUserRecommList === null ) {
-            $oUser   = $this->getUser();
-            if ( $oUser) {
+        if ($this->_aUserRecommList === null) {
+            $oUser = $this->getUser();
+            if ($oUser) {
                 $this->_aUserRecommList = $oUser->getUserRecommLists();
             }
         }
+
         return $this->_aUserRecommList;
     }
 
     public function getTitle()
     {
         $oProduct = $this->getProduct();
+
         return $oProduct->oxarticles__oxtitle->value . ' ' . $oProduct->oxarticles__oxvarselect->value;
     }
 

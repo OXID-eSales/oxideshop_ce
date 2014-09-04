@@ -26,6 +26,7 @@
  */
 class oxExceptionToDisplay implements oxIDisplayError
 {
+
     /**
      * Language const of a Message
      *
@@ -90,7 +91,7 @@ class oxExceptionToDisplay implements oxIDisplayError
      *
      * @return null
      */
-    public function setValues( $aValues )
+    public function setValues($aValues)
     {
         $this->_aValues = $aValues;
     }
@@ -103,7 +104,7 @@ class oxExceptionToDisplay implements oxIDisplayError
      *
      * @return null
      */
-    public function addValue( $sName, $sValue )
+    public function addValue($sName, $sValue)
     {
         $this->_aValues[$sName] = $sValue;
     }
@@ -115,7 +116,7 @@ class oxExceptionToDisplay implements oxIDisplayError
      *
      * @return null
      */
-    public function setExceptionType( $sType )
+    public function setExceptionType($sType)
     {
         $this->_sType = $sType;
     }
@@ -137,7 +138,7 @@ class oxExceptionToDisplay implements oxIDisplayError
      *
      * @return  mixed
      */
-    public function getValue( $sName )
+    public function getValue($sName)
     {
         return $this->_aValues[$sName];
     }
@@ -149,7 +150,7 @@ class oxExceptionToDisplay implements oxIDisplayError
      *
      * @return null
      */
-    public function setDebug( $bl )
+    public function setDebug($bl)
     {
         $this->_blDebug = $bl;
     }
@@ -184,16 +185,16 @@ class oxExceptionToDisplay implements oxIDisplayError
      */
     public function getOxMessage()
     {
-        if ( $this->_blDebug ) {
+        if ($this->_blDebug) {
             return $this;
         } else {
-             $sString = oxRegistry::getLang()->translateString($this->_sMessage);
+            $sString = oxRegistry::getLang()->translateString($this->_sMessage);
 
-             if ( !empty( $this->_aMessageArgs ) ) {
-                 $sString = vsprintf( $sString, $this->_aMessageArgs );
-             }
+            if (!empty($this->_aMessageArgs)) {
+                $sString = vsprintf($sString, $this->_aMessageArgs);
+            }
 
-             return $sString;
+            return $sString;
         }
     }
 
@@ -205,9 +206,10 @@ class oxExceptionToDisplay implements oxIDisplayError
     public function __toString()
     {
         $sRes = $this->getErrorClassType() . " (time: " . date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime()) . "): " . $this->getOxMessage() . " \n Stack Trace: " . $this->getStackTrace() . "\n";
-        foreach ( $this->_aValues as $key => $value ) {
-            $sRes .= $key. " => ". $value . "\n";
+        foreach ($this->_aValues as $key => $value) {
+            $sRes .= $key . " => " . $value . "\n";
         }
+
         return $sRes;
     }
 }

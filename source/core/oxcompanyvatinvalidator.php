@@ -25,6 +25,7 @@
  */
 class oxCompanyVatInValidator
 {
+
     /**
      * @var oxCountry
      */
@@ -49,7 +50,7 @@ class oxCompanyVatInValidator
      *
      * @param oxCountry $oCountry
      */
-    public function setCountry( oxCountry $oCountry )
+    public function setCountry(oxCountry $oCountry)
     {
         $this->_oCountry = $oCountry;
     }
@@ -69,7 +70,7 @@ class oxCompanyVatInValidator
      *
      * @param string $sError
      */
-    public function setError( $sError )
+    public function setError($sError)
     {
         $this->_sError = $sError;
     }
@@ -89,9 +90,9 @@ class oxCompanyVatInValidator
      *
      * @param oxCountry $oCountry
      */
-    function __construct( oxCountry $oCountry )
+    function __construct(oxCountry $oCountry)
     {
-        $this->setCountry( $oCountry );
+        $this->setCountry($oCountry);
     }
 
     /**
@@ -99,7 +100,7 @@ class oxCompanyVatInValidator
      *
      * @param oxCompanyVatInChecker $oValidator
      */
-    public function addChecker( oxCompanyVatInChecker $oValidator )
+    public function addChecker(oxCompanyVatInChecker $oValidator)
     {
         $this->_aCheckers[] = $oValidator;
     }
@@ -121,20 +122,20 @@ class oxCompanyVatInValidator
      *
      * @return bool
      */
-    public function validate( oxCompanyVatIn $oCompanyVatNumber )
+    public function validate(oxCompanyVatIn $oCompanyVatNumber)
     {
         $blResult = false;
         $aValidators = $this->getCheckers();
 
-        foreach($aValidators as $oValidator){
+        foreach ($aValidators as $oValidator) {
             $blResult = true;
-            if ($oValidator instanceof oxICountryAware){
+            if ($oValidator instanceof oxICountryAware) {
                 $oValidator->setCountry($this->getCountry());
             }
 
-            if (!$oValidator->validate($oCompanyVatNumber)){
+            if (!$oValidator->validate($oCompanyVatNumber)) {
                 $blResult = false;
-                $this->setError($oValidator->getError() );
+                $this->setError($oValidator->getError());
                 break;
             }
         }

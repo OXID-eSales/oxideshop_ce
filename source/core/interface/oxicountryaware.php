@@ -25,12 +25,13 @@
  */
 interface oxICountryAware
 {
+
     /**
      * Country setter
      *
      * @param oxCountry $oCountry
      */
-    public function setCountry( oxCountry $oCountry );
+    public function setCountry(oxCountry $oCountry);
 
     /**
      * Country getter

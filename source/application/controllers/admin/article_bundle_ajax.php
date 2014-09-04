@@ -25,6 +25,7 @@
  */
 class article_bundle_ajax extends ajaxListComponent
 {
+
     /**
      * If true extended column selection will be build
      *
@@ -37,16 +38,16 @@ class article_bundle_ajax extends ajaxListComponent
      * 
      * @var array 
      */
-    protected $_aColumns = array( 'container1' => array(    // field , table,         visible, multilanguage, ident
-                                        array( 'oxartnum', 'oxarticles', 1, 0, 0 ),
-                                        array( 'oxtitle',  'oxarticles', 1, 1, 0 ),
-                                        array( 'oxean',    'oxarticles', 1, 0, 0 ),
-                                        array( 'oxmpn',    'oxarticles', 0, 0, 0 ),
-                                        array( 'oxprice',  'oxarticles', 0, 0, 0 ),
-                                        array( 'oxstock',  'oxarticles', 0, 0, 0 ),
-                                        array( 'oxid',     'oxarticles', 0, 0, 1 )
-                                        )
-                                );
+    protected $_aColumns = array('container1' => array( // field , table,         visible, multilanguage, ident
+        array('oxartnum', 'oxarticles', 1, 0, 0),
+        array('oxtitle', 'oxarticles', 1, 1, 0),
+        array('oxean', 'oxarticles', 1, 0, 0),
+        array('oxmpn', 'oxarticles', 0, 0, 0),
+        array('oxprice', 'oxarticles', 0, 0, 0),
+        array('oxstock', 'oxarticles', 0, 0, 0),
+        array('oxid', 'oxarticles', 0, 0, 1)
+    )
+    );
 
     /**
      * Returns SQL query for data to fetc
@@ -55,31 +56,31 @@ class article_bundle_ajax extends ajaxListComponent
      */
     protected function _getQuery()
     {
-        $myConfig      = $this->getConfig();
-        $oDb           = oxDb::getDb();
-        $sArticleTable = $this->_getViewName( 'oxarticles' );
-        $sO2CView      = $this->_getViewName( 'oxobject2category' );
+        $myConfig = $this->getConfig();
+        $oDb = oxDb::getDb();
+        $sArticleTable = $this->_getViewName('oxarticles');
+        $sO2CView = $this->_getViewName('oxobject2category');
 
-        $sSelId      = oxRegistry::getConfig()->getRequestParameter( 'oxid' );
-        $sSynchSelId = oxRegistry::getConfig()->getRequestParameter( 'synchoxid' );
+        $sSelId = oxRegistry::getConfig()->getRequestParameter('oxid');
+        $sSynchSelId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
 
         // category selected or not ?
-        if ( !$sSelId ) {
-            $sQAdd  = " from $sArticleTable where 1 ";
-            $sQAdd .= $myConfig->getConfigParam( 'blVariantsSelection' )?'':" and $sArticleTable.oxparentid = '' ";
+        if (!$sSelId) {
+            $sQAdd = " from $sArticleTable where 1 ";
+            $sQAdd .= $myConfig->getConfigParam('blVariantsSelection') ? '' : " and $sArticleTable.oxparentid = '' ";
         } else {
             // selected category ?
-            if ( $sSynchSelId ) {
-                $sQAdd  = " from $sO2CView as oxobject2category left join $sArticleTable on ";
-                $sQAdd .= $myConfig->getConfigParam( 'blVariantsSelection' )?" ($sArticleTable.oxid=oxobject2category.oxobjectid or $sArticleTable.oxparentid=oxobject2category.oxobjectid)":" $sArticleTable.oxid=oxobject2category.oxobjectid ";
-                $sQAdd .= " where oxobject2category.oxcatnid = " . $oDb->quote( $sSelId ) . " ";
+            if ($sSynchSelId) {
+                $sQAdd = " from $sO2CView as oxobject2category left join $sArticleTable on ";
+                $sQAdd .= $myConfig->getConfigParam('blVariantsSelection') ? " ($sArticleTable.oxid=oxobject2category.oxobjectid or $sArticleTable.oxparentid=oxobject2category.oxobjectid)" : " $sArticleTable.oxid=oxobject2category.oxobjectid ";
+                $sQAdd .= " where oxobject2category.oxcatnid = " . $oDb->quote($sSelId) . " ";
             }
         }
         // #1513C/#1826C - skip references, to not existing articles
         $sQAdd .= " and $sArticleTable.oxid IS NOT NULL ";
 
         // skipping self from list
-        $sQAdd .= " and $sArticleTable.oxid != " . $oDb->quote( $sSynchSelId ) . " ";
+        $sQAdd .= " and $sArticleTable.oxid != " . $oDb->quote($sSynchSelId) . " ";
 
         return $sQAdd;
     }
@@ -91,13 +92,14 @@ class article_bundle_ajax extends ajaxListComponent
      *
      * @return string
      */
-    protected function _addFilter( $sQ )
+    protected function _addFilter($sQ)
     {
         $sArtTable = $this->_getViewName('oxarticles');
-        $sQ = parent::_addFilter( $sQ );
+        $sQ = parent::_addFilter($sQ);
 
         // display variants or not ?
-        $sQ .= $this->getConfig()->getConfigParam( 'blVariantsSelection' ) ? ' group by '.$sArtTable.'.oxid ' : '';
+        $sQ .= $this->getConfig()->getConfigParam('blVariantsSelection') ? ' group by ' . $sArtTable . '.oxid ' : '';
+
         return $sQ;
     }
 
@@ -108,11 +110,11 @@ class article_bundle_ajax extends ajaxListComponent
      */
     public function removeArticleBundle()
     {
-        $aChosenArt = oxRegistry::getConfig()->getRequestParameter( 'oxid');
-        $oDb        = oxDb::getDb();
+        $aChosenArt = oxRegistry::getConfig()->getRequestParameter('oxid');
+        $oDb = oxDb::getDb();
 
-        $sQ = "update oxarticles set oxarticles.oxbundleid = '' where oxarticles.oxid  =  " . $oDb->quote( $aChosenArt ) . " ";
-        $oDb->Execute( $sQ );
+        $sQ = "update oxarticles set oxarticles.oxbundleid = '' where oxarticles.oxid  =  " . $oDb->quote($aChosenArt) . " ";
+        $oDb->Execute($sQ);
     }
 
     /**
@@ -122,11 +124,11 @@ class article_bundle_ajax extends ajaxListComponent
      */
     public function addArticleBundle()
     {
-        $sChosenArt = oxRegistry::getConfig()->getRequestParameter( 'oxbundleid' );
-        $soxId      = oxRegistry::getConfig()->getRequestParameter( 'oxid' );
-        $oDb        = oxDb::getDb();
+        $sChosenArt = oxRegistry::getConfig()->getRequestParameter('oxbundleid');
+        $soxId = oxRegistry::getConfig()->getRequestParameter('oxid');
+        $oDb = oxDb::getDb();
 
-        $sQ = "update oxarticles set oxarticles.oxbundleid =  " . $oDb->quote( $sChosenArt ) . " where oxarticles.oxid  =  " . $oDb->quote( $soxId ) . " ";
-        $oDb->Execute( $sQ );
+        $sQ = "update oxarticles set oxarticles.oxbundleid =  " . $oDb->quote($sChosenArt) . " where oxarticles.oxid  =  " . $oDb->quote($soxId) . " ";
+        $oDb->Execute($sQ);
     }
 }

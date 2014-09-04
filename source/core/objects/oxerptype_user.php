@@ -27,6 +27,7 @@ require_once 'oxerptype.php';
  */
 class oxERPType_User extends oxERPType
 {
+
     /**
      * class constructor
      *
@@ -36,7 +37,7 @@ class oxERPType_User extends oxERPType
     {
         parent::__construct();
 
-        $this->_sTableName      = 'oxuser';
+        $this->_sTableName = 'oxuser';
         $this->_sShopObjectName = 'oxuser';
     }
 
@@ -49,12 +50,12 @@ class oxERPType_User extends oxERPType
      *
      * @return string
      */
-    public function getSQL( $sWhere, $iLanguage = 0,$iShopId = 1)
+    public function getSQL($sWhere, $iLanguage = 0, $iShopId = 1)
     {
         $myConfig = oxRegistry::getConfig();
 
         // add type 'user' for security reasons
-        if (strstr( $sWhere, 'where')) {
+        if (strstr($sWhere, 'where')) {
             $sWhere .= ' and ';
         } else {
             $sWhere .= ' where ';
@@ -63,7 +64,8 @@ class oxERPType_User extends oxERPType
         $sWhere .= ' oxrights = \'user\'';
         //MAFI also check for shopid to restrict access
 
-        return parent::getSQL( $sWhere, $iLanguage, $iShopId);
+
+        return parent::getSQL($sWhere, $iLanguage, $iShopId);
     }
 
     /**

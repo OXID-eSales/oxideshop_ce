@@ -26,21 +26,22 @@
  *
  */
 
-class oxFileChecker {
+class oxFileChecker
+{
 
     /**
      * error tag
      *
      * @var boolean
      */
-    protected $_blError          = false;
+    protected $_blError = false;
 
     /**
      * error message
      *
      * @var string
      */
-    protected $_sErrorMessage   = null;
+    protected $_sErrorMessage = null;
 
     /**
      * Web service script
@@ -97,9 +98,9 @@ class oxFileChecker {
      *
      * @param $sDir string
      */
-    public function setBaseDirectory( $sDir )
+    public function setBaseDirectory($sDir)
     {
-        if ( !empty( $sDir ) ) {
+        if (!empty($sDir)) {
             $this->_sBaseDirectory = $sDir;
         }
     }
@@ -119,9 +120,9 @@ class oxFileChecker {
      *
      * @param $sVersion string
      */
-    public function setVersion( $sVersion )
+    public function setVersion($sVersion)
     {
-        if ( !empty( $sVersion ) ) {
+        if (!empty($sVersion)) {
             $this->_sVersion = $sVersion;
         }
     }
@@ -141,9 +142,9 @@ class oxFileChecker {
      *
      * @param $sEdition string
      */
-    public function setEdition( $sEdition )
+    public function setEdition($sEdition)
     {
-        if ( !empty( $sEdition ) ) {
+        if (!empty($sEdition)) {
             $this->_sEdition = $sEdition;
         }
     }
@@ -163,9 +164,9 @@ class oxFileChecker {
      *
      * @param $sRevision string
      */
-    public function setRevision( $sRevision )
+    public function setRevision($sRevision)
     {
-        if ( !empty( $sRevision ) ) {
+        if (!empty($sRevision)) {
             $this->_sRevision = $sRevision;
         }
     }
@@ -185,9 +186,9 @@ class oxFileChecker {
      *
      * @param $sRevision string
      */
-    public function setWebServiceUrl( $sUrl )
+    public function setWebServiceUrl($sUrl)
     {
-        if ( !empty( $sUrl ) ) {
+        if (!empty($sUrl)) {
             $this->_sWebServiceUrl = $sUrl;
         }
     }
@@ -229,17 +230,17 @@ class oxFileChecker {
      */
     public function init()
     {
-        $this->_oCurlHandler = oxNew( "oxCurl" );
+        $this->_oCurlHandler = oxNew("oxCurl");
 
-        if ( !$this->checkSystemRequirements() ) {
+        if (!$this->checkSystemRequirements()) {
             $this->_blError = true;
             $this->_sErrorMessage .= "Error: requirements are not met.";
+
             return false;
         }
 
         return true;
     }
-
 
 
     /**
@@ -254,6 +255,7 @@ class oxFileChecker {
 
     /**
      * in case if a general error is thrown by webservice
+     *
      * @return string error
      */
     protected function _isWebServiceOnline()
@@ -263,27 +265,27 @@ class oxFileChecker {
             'job' => 'ping',
         );
 
-        $this->_oCurlHandler->setUrl( $this->_sWebServiceUrl );
+        $this->_oCurlHandler->setUrl($this->_sWebServiceUrl);
         $this->_oCurlHandler->setMethod("GET");
         $this->_oCurlHandler->setOption("CURLOPT_CONNECTTIMEOUT", 30);
-        $this->_oCurlHandler->setParameters(  $aParams );
+        $this->_oCurlHandler->setParameters($aParams);
         $sXML = $this->_oCurlHandler->execute();
 
-        if (empty( $sXML ) ) {
+        if (empty($sXML)) {
             $this->_blError = true;
-            $this->_sErrorMessage = oxRegistry::getLang()->translateString( 'OXDIAG_ERRORMESSAGEWEBSERVICEISNOTREACHABLE' );
+            $this->_sErrorMessage = oxRegistry::getLang()->translateString('OXDIAG_ERRORMESSAGEWEBSERVICEISNOTREACHABLE');
         }
 
         try {
-            $oXML = new SimpleXMLElement( $sXML );
+            $oXML = new SimpleXMLElement($sXML);
         } catch (Exception $ex) {
             $this->_blError = true;
-            $this->_sErrorMessage .= oxRegistry::getLang()->translateString( 'OXDIAG_ERRORMESSAGEWEBSERVICERETURNEDNOXML' );
+            $this->_sErrorMessage .= oxRegistry::getLang()->translateString('OXDIAG_ERRORMESSAGEWEBSERVICERETURNEDNOXML');
         }
 
-        if (!is_object( $oXML ) ) {
+        if (!is_object($oXML)) {
             $this->_blError = true;
-            $this->_sErrorMessage .= oxRegistry::getLang()->translateString( 'OXDIAG_ERRORMESSAGEVERSIONDOESNOTEXIST' );
+            $this->_sErrorMessage .= oxRegistry::getLang()->translateString('OXDIAG_ERRORMESSAGEVERSIONDOESNOTEXIST');
         }
 
         return !$this->_blError;
@@ -292,6 +294,7 @@ class oxFileChecker {
 
     /**
      * asks the webservice, if the shop version is known.
+     *
      * @return boolean
      */
     protected function _isShopVersionIsKnown()
@@ -303,20 +306,22 @@ class oxFileChecker {
             'edi' => $this->getEdition(),
         );
 
-        $sURL = $this->_sWebServiceUrl . "?" . http_build_query( $aParams );
+        $sURL = $this->_sWebServiceUrl . "?" . http_build_query($aParams);
 
-        if ( $sXML = @file_get_contents( $sURL ) ) {
-            $oXML = new SimpleXMLElement( $sXML );
-            if ( is_object( $oXML ) ) {
-                if ( $oXML->exists == 1) {
+        if ($sXML = @file_get_contents($sURL)) {
+            $oXML = new SimpleXMLElement($sXML);
+            if (is_object($oXML)) {
+                if ($oXML->exists == 1) {
                     return true;
                 }
             }
         }
 
         $this->_blError = true;
-        $sError = sprintf( oxRegistry::getLang()->translateString( 'OXDIAG_ERRORMESSAGEVERSIONDOESNOTEXIST' ),
-            $this->getEdition(), $this->getVersion(), $this->getRevision() );
+        $sError = sprintf(
+            oxRegistry::getLang()->translateString('OXDIAG_ERRORMESSAGEVERSIONDOESNOTEXIST'),
+            $this->getEdition(), $this->getVersion(), $this->getRevision()
+        );
 
         $this->_sErrorMessage .= $sError;
 
@@ -328,9 +333,10 @@ class oxFileChecker {
      * variable $sResultOutput.
      *
      * @param $sFile
+     *
      * @return mixed
      */
-    public function checkFile( $sFile )
+    public function checkFile($sFile)
     {
         $aResult = array();
 
@@ -338,56 +344,56 @@ class oxFileChecker {
             return $aResult;
         }
 
-        if ( !file_exists( $this->_sBaseDirectory . $sFile ) ) {
+        if (!file_exists($this->_sBaseDirectory . $sFile)) {
             return $aResult;
         }
 
-        $sMD5 = md5_file ( $this->_sBaseDirectory . $sFile );
+        $sMD5 = md5_file($this->_sBaseDirectory . $sFile);
 
-        usleep( 10 );
-        $oXML = $this->_getFileVersion( $sMD5, $sFile );
+        usleep(10);
+        $oXML = $this->_getFileVersion($sMD5, $sFile);
         $sColor = "blue";
         $blOk = true;
-        $sMessage = oxRegistry::getLang()->translateString( 'OXDIAG_ERRORVERSIONCOMPARE' );
+        $sMessage = oxRegistry::getLang()->translateString('OXDIAG_ERRORVERSIONCOMPARE');
 
-        if (is_object( $oXML ) ) {
+        if (is_object($oXML)) {
 
-            if ( $oXML->res == 'OK' ) {
+            if ($oXML->res == 'OK') {
                 // If recognized, still can be source or snapshot
                 $aMatch = array();
 
-                if (preg_match ('/(SOURCE|SNAPSHOT)/', $oXML->pkg, $aMatch ) ) {
+                if (preg_match('/(SOURCE|SNAPSHOT)/', $oXML->pkg, $aMatch)) {
                     $blOk = false;
                     $sMessage = 'SOURCE|SNAPSHOT';
                     $sColor = 'red';
                 } else {
-                    $sMessage = oxRegistry::getLang()->translateString( 'OXDIAG_OK' );
+                    $sMessage = oxRegistry::getLang()->translateString('OXDIAG_OK');
                     $sColor = "green";
                 }
-            } elseif ( $oXML->res == 'VERSIONMISMATCH' ) {
-                $sMessage = oxRegistry::getLang()->translateString( 'OXDIAG_VERSION_MISMATCH' );
+            } elseif ($oXML->res == 'VERSIONMISMATCH') {
+                $sMessage = oxRegistry::getLang()->translateString('OXDIAG_VERSION_MISMATCH');
                 $sColor = 'red';
                 $blOk = false;
-            } elseif ( $oXML->res == 'MODIFIED' ) {
-                $sMessage = oxRegistry::getLang()->translateString( 'OXDIAG_MODIFIED' );
+            } elseif ($oXML->res == 'MODIFIED') {
+                $sMessage = oxRegistry::getLang()->translateString('OXDIAG_MODIFIED');
                 $sColor = 'red';
                 $blOk = false;
-            } elseif ( $oXML->res == 'OBSOLETE' ) {
-                $sMessage = oxRegistry::getLang()->translateString( 'OXDIAG_OBSOLETE' );
+            } elseif ($oXML->res == 'OBSOLETE') {
+                $sMessage = oxRegistry::getLang()->translateString('OXDIAG_OBSOLETE');
                 $sColor = 'red';
                 $blOk = false;
-            } elseif ( $oXML->res == 'UNKNOWN' ) {
-                $sMessage = oxRegistry::getLang()->translateString( 'OXDIAG_UNKNOWN' );
+            } elseif ($oXML->res == 'UNKNOWN') {
+                $sMessage = oxRegistry::getLang()->translateString('OXDIAG_UNKNOWN');
                 $sColor = "green";
             }
         }
 
-        if ( $sMessage ) {
+        if ($sMessage) {
             $aResult = array(
-                "result" => strval( $oXML->res),
-                "ok" => $blOk,
-                "file" => $sFile,
-                "color" => $sColor,
+                "result"  => strval($oXML->res),
+                "ok"      => $blOk,
+                "file"    => $sFile,
+                "color"   => $sColor,
                 "message" => $sMessage
             );
         }
@@ -403,7 +409,7 @@ class oxFileChecker {
      *
      * @return SimpleXMLElement
      */
-    protected function _getFileVersion( $sMD5, $sFile)
+    protected function _getFileVersion($sMD5, $sFile)
     {
         $aParams = array(
             'job' => 'md5check',
@@ -414,17 +420,18 @@ class oxFileChecker {
             'md5' => $sMD5,
         );
 
-        $this->_oCurlHandler->setUrl( $this->_sWebServiceUrl );
+        $this->_oCurlHandler->setUrl($this->_sWebServiceUrl);
         $this->_oCurlHandler->setMethod("GET");
         $this->_oCurlHandler->setOption("CURLOPT_CONNECTTIMEOUT", 30);
-        $this->_oCurlHandler->setParameters( $aParams );
+        $this->_oCurlHandler->setParameters($aParams);
         $sXML = $this->_oCurlHandler->execute();
         $oXML = null;
         try {
-            $oXML = new SimpleXMLElement( $sXML );
+            $oXML = new SimpleXMLElement($sXML);
         } catch (Exception $ex) {
             $oXML = null;
         }
+
         return $oXML;
     }
 

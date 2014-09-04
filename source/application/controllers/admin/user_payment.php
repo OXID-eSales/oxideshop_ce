@@ -27,8 +27,10 @@
  */
 class User_Payment extends oxAdminDetails
 {
+
     /**
      * (default false).
+     *
      * @var bool
      */
     protected $_blDelete = false;
@@ -77,15 +79,16 @@ class User_Payment extends oxAdminDetails
     public function render()
     {
         parent::render();
-        $this->_aViewData["edit"]         = $this->getSelUserPayment();
-        $this->_aViewData["oxpaymentid"]  = $this->getPaymentId();
+        $this->_aViewData["edit"] = $this->getSelUserPayment();
+        $this->_aViewData["oxpaymentid"] = $this->getPaymentId();
         $this->_aViewData["paymenttypes"] = $this->getPaymentTypes();
-        $this->_aViewData["edituser"]     = $this->getUser();
+        $this->_aViewData["edituser"] = $this->getUser();
         $this->_aViewData["userpayments"] = $this->getUserPayments();
         $sOxId = $this->getEditObjectId();
 
-        if (!$this->_allowAdminEdit($sOxId))
+        if (!$this->_allowAdminEdit($sOxId)) {
             $this->_aViewData['readonly'] = true;
+        }
 
 
         return "user_payment.tpl";
@@ -101,22 +104,22 @@ class User_Payment extends oxAdminDetails
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        if ( $this->_allowAdminEdit( $soxId ) ) {
+        if ($this->_allowAdminEdit($soxId)) {
 
-            $aParams    = oxRegistry::getConfig()->getRequestParameter( "editval");
-            $aDynvalues = oxRegistry::getConfig()->getRequestParameter( "dynvalue");
+            $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+            $aDynvalues = oxRegistry::getConfig()->getRequestParameter("dynvalue");
 
-            if ( isset( $aDynvalues ) ) {
+            if (isset($aDynvalues)) {
                 // store the dynvalues
-                $aParams['oxuserpayments__oxvalue'] = oxRegistry::getUtils()->assignValuesToText( $aDynvalues );
+                $aParams['oxuserpayments__oxvalue'] = oxRegistry::getUtils()->assignValuesToText($aDynvalues);
             }
 
-            if ( $aParams['oxuserpayments__oxid'] == "-1" ) {
+            if ($aParams['oxuserpayments__oxid'] == "-1") {
                 $aParams['oxuserpayments__oxid'] = null;
             }
 
-            $oAdress = oxNew( "oxuserpayment" );
-            $oAdress->assign( $aParams );
+            $oAdress = oxNew("oxuserpayment");
+            $oAdress->assign($aParams);
             $oAdress->save();
         }
     }
@@ -128,12 +131,12 @@ class User_Payment extends oxAdminDetails
      */
     public function delPayment()
     {
-        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval" );
+        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
         $soxId = $this->getEditObjectId();
-        if ( $this->_allowAdminEdit( $soxId )) {
-            if ( $aParams['oxuserpayments__oxid'] != "-1") {
-                $oAdress = oxNew( "oxuserpayment" );
-                if ( $oAdress->load( $aParams['oxuserpayments__oxid'] ) ) {
+        if ($this->_allowAdminEdit($soxId)) {
+            if ($aParams['oxuserpayments__oxid'] != "-1") {
+                $oAdress = oxNew("oxuserpayment");
+                if ($oAdress->load($aParams['oxuserpayments__oxid'])) {
                     $this->_blDelete = ( bool ) $oAdress->delete();
                 }
             }
@@ -147,15 +150,16 @@ class User_Payment extends oxAdminDetails
      */
     public function getUser()
     {
-        if ( $this->_oActiveUser == null ) {
+        if ($this->_oActiveUser == null) {
             $this->_oActiveUser = false;
             $sOxId = $this->getEditObjectId();
-            if ( $sOxId != "-1" && isset( $sOxId)) {
+            if ($sOxId != "-1" && isset($sOxId)) {
                 // load object
-                $this->_oActiveUser = oxNew( "oxuser" );
-                $this->_oActiveUser->load( $sOxId);
+                $this->_oActiveUser = oxNew("oxuser");
+                $this->_oActiveUser->load($sOxId);
             }
         }
+
         return $this->_oActiveUser;
     }
 
@@ -166,20 +170,21 @@ class User_Payment extends oxAdminDetails
      */
     public function getPaymentId()
     {
-        if ( $this->_sPaymentId == null ) {
-            $this->_sPaymentId = oxRegistry::getConfig()->getRequestParameter( "oxpaymentid");
-            if ( !$this->_sPaymentId || $this->_blDelete ) {
-                if ( $oUser = $this->getUser() ) {
+        if ($this->_sPaymentId == null) {
+            $this->_sPaymentId = oxRegistry::getConfig()->getRequestParameter("oxpaymentid");
+            if (!$this->_sPaymentId || $this->_blDelete) {
+                if ($oUser = $this->getUser()) {
                     $oUserPayments = $oUser->getUserPayments();
-                    if ( isset( $oUserPayments[0]) ) {
+                    if (isset($oUserPayments[0])) {
                         $this->_sPaymentId = $oUserPayments[0]->oxuserpayments__oxid->value;
                     }
                 }
             }
-            if ( !$this->_sPaymentId ) {
+            if (!$this->_sPaymentId) {
                 $this->_sPaymentId = "-1";
             }
         }
+
         return $this->_sPaymentId;
     }
 
@@ -190,15 +195,16 @@ class User_Payment extends oxAdminDetails
      */
     public function getPaymentTypes()
     {
-        if ( $this->_oPaymentTypes == null ) {
+        if ($this->_oPaymentTypes == null) {
 
             // all paymenttypes
-            $this->_oPaymentTypes = oxNew( "oxlist" );
-            $this->_oPaymentTypes->init( "oxpayment");
+            $this->_oPaymentTypes = oxNew("oxlist");
+            $this->_oPaymentTypes->init("oxpayment");
             $oListObject = $this->_oPaymentTypes->getBaseObject();
-            $oListObject->setLanguage( oxRegistry::getLang()->getObjectTplLanguage() );
+            $oListObject->setLanguage(oxRegistry::getLang()->getObjectTplLanguage());
             $this->_oPaymentTypes->getList();
         }
+
         return $this->_oPaymentTypes;
     }
 
@@ -209,28 +215,30 @@ class User_Payment extends oxAdminDetails
      */
     public function getSelUserPayment()
     {
-        if ( $this->_oUserPayment == null ) {
+        if ($this->_oUserPayment == null) {
             $this->_oUserPayment = false;
             $sPaymentId = $this->getPaymentId();
-            if ( $sPaymentId != "-1" && isset( $sPaymentId ) ) {
-                $this->_oUserPayment = oxNew( "oxuserpayment" );
-                $this->_oUserPayment->load( $sPaymentId );
+            if ($sPaymentId != "-1" && isset($sPaymentId)) {
+                $this->_oUserPayment = oxNew("oxuserpayment");
+                $this->_oUserPayment->load($sPaymentId);
                 $sTemplate = $this->_oUserPayment->oxuserpayments__oxvalue->value;
 
                 // generate selected paymenttype
                 $oPaymentTypes = $this->getPaymentTypes();
-                foreach ( $oPaymentTypes as $oPayment ) {
-                    if ( $oPayment->oxpayments__oxid->value == $this->_oUserPayment->oxuserpayments__oxpaymentsid->value) {
+                foreach ($oPaymentTypes as $oPayment) {
+                    if ($oPayment->oxpayments__oxid->value == $this->_oUserPayment->oxuserpayments__oxpaymentsid->value) {
                         $oPayment->selected = 1;
                         // if there are no values assigned we set default from paymenttype
-                        if ( !$sTemplate )
+                        if (!$sTemplate) {
                             $sTemplate = $oPayment->oxpayments__oxvaldesc->value;
+                        }
                         break;
                     }
                 }
-                $this->_oUserPayment->setDynValues( oxRegistry::getUtils()->assignValuesFromText( $sTemplate ) );
+                $this->_oUserPayment->setDynValues(oxRegistry::getUtils()->assignValuesFromText($sTemplate));
             }
         }
+
         return $this->_oUserPayment;
     }
 
@@ -241,25 +249,26 @@ class User_Payment extends oxAdminDetails
      */
     public function getUserPayments()
     {
-        if ( $this->_oUserPayments == null ) {
+        if ($this->_oUserPayments == null) {
             $this->_oUserPayments = false;
-            if ( $oUser = $this->getUser() ) {
+            if ($oUser = $this->getUser()) {
                 $sTplLang = oxRegistry::getLang()->getObjectTplLanguage();
                 $sPaymentId = $this->getPaymentId();
                 $this->_oUserPayments = $oUser->getUserPayments();
                 // generate selected
-                foreach ( $this->_oUserPayments as $oUserPayment ) {
-                    $oPayment = oxNew( 'oxpayment' );
-                    $oPayment->setLanguage( $sTplLang );
-                    $oPayment->load( $oUserPayment->oxuserpayments__oxpaymentsid->value );
+                foreach ($this->_oUserPayments as $oUserPayment) {
+                    $oPayment = oxNew('oxpayment');
+                    $oPayment->setLanguage($sTplLang);
+                    $oPayment->load($oUserPayment->oxuserpayments__oxpaymentsid->value);
                     $oUserPayment->oxpayments__oxdesc = clone $oPayment->oxpayments__oxdesc;
-                    if ( $oUserPayment->oxuserpayments__oxid->value == $sPaymentId ) {
+                    if ($oUserPayment->oxuserpayments__oxid->value == $sPaymentId) {
                         $oUserPayment->selected = 1;
                         break;
                     }
                 }
             }
         }
+
         return $this->_oUserPayments;
     }
 

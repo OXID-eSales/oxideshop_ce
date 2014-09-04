@@ -25,22 +25,23 @@
  */
 class actions_groups_ajax extends ajaxListComponent
 {
+
     /**
      * Columns array
      *
      * @var array
      */
-    protected $_aColumns = array( 'container1' => array(    // field , table,  visible, multilanguage, ident
-                                        array( 'oxtitle',  'oxgroups', 1, 0, 0 ),
-                                        array( 'oxid',     'oxgroups', 0, 0, 0 ),
-                                        array( 'oxid',     'oxgroups', 0, 0, 1 ),
-                                        ),
-                                'container2' => array(
-                                        array( 'oxtitle',  'oxgroups', 1, 0, 0 ),
-                                        array( 'oxid',     'oxgroups', 0, 0, 0 ),
-                                        array( 'oxid',     'oxobject2action', 0, 0, 1 ),
-                                        )
-                                );
+    protected $_aColumns = array('container1' => array( // field , table,  visible, multilanguage, ident
+        array('oxtitle', 'oxgroups', 1, 0, 0),
+        array('oxid', 'oxgroups', 0, 0, 0),
+        array('oxid', 'oxgroups', 0, 0, 1),
+    ),
+                                 'container2' => array(
+                                     array('oxtitle', 'oxgroups', 1, 0, 0),
+                                     array('oxid', 'oxgroups', 0, 0, 0),
+                                     array('oxid', 'oxobject2action', 0, 0, 1),
+                                 )
+    );
 
     /**
      * Returns SQL query for data to fetc
@@ -50,23 +51,23 @@ class actions_groups_ajax extends ajaxListComponent
     protected function _getQuery()
     {
         // active AJAX component
-        $sGroupTable = $this->_getViewName( 'oxgroups' );
+        $sGroupTable = $this->_getViewName('oxgroups');
         $oDb = oxDb::getDb();
 
-        $sId      = oxRegistry::getConfig()->getRequestParameter( 'oxid' );
-        $sSynchId = oxRegistry::getConfig()->getRequestParameter( 'synchoxid' );
+        $sId = oxRegistry::getConfig()->getRequestParameter('oxid');
+        $sSynchId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
 
         // category selected or not ?
-        if ( !$sId ) {
-            $sQAdd  = " from $sGroupTable where 1 ";
+        if (!$sId) {
+            $sQAdd = " from $sGroupTable where 1 ";
         } else {
             $sQAdd .= " from oxobject2action, $sGroupTable where $sGroupTable.oxid=oxobject2action.oxobjectid ";
-            $sQAdd .= " and oxobject2action.oxactionid = ".$oDb->quote( $sId )." and oxobject2action.oxclass = 'oxgroups' ";
+            $sQAdd .= " and oxobject2action.oxactionid = " . $oDb->quote($sId) . " and oxobject2action.oxclass = 'oxgroups' ";
         }
 
-        if ( $sSynchId && $sSynchId != $sId) {
+        if ($sSynchId && $sSynchId != $sId) {
             $sQAdd .= " and $sGroupTable.oxid not in ( select $sGroupTable.oxid from oxobject2action, $sGroupTable where $sGroupTable.oxid=oxobject2action.oxobjectid ";
-            $sQAdd .= " and oxobject2action.oxactionid = ".$oDb->quote( $sSynchId )." and oxobject2action.oxclass = 'oxgroups' ) ";
+            $sQAdd .= " and oxobject2action.oxactionid = " . $oDb->quote($sSynchId) . " and oxobject2action.oxclass = 'oxgroups' ) ";
         }
 
         return $sQAdd;
@@ -79,13 +80,13 @@ class actions_groups_ajax extends ajaxListComponent
      */
     public function removePromotionGroup()
     {
-        $aRemoveGroups = $this->_getActionIds( 'oxobject2action.oxid' );
-        if ( oxRegistry::getConfig()->getRequestParameter( 'all' ) ) {
-            $sQ = $this->_addFilter( "delete oxobject2action.* ".$this->_getQuery() );
-            oxDb::getDb()->Execute( $sQ );
-        } elseif ( $aRemoveGroups && is_array( $aRemoveGroups ) ) {
-            $sQ = "delete from oxobject2action where oxobject2action.oxid in (" . implode( ", ", oxDb::getInstance()->quoteArray( $aRemoveGroups ) ) . ") ";
-            oxDb::getDb()->Execute( $sQ );
+        $aRemoveGroups = $this->_getActionIds('oxobject2action.oxid');
+        if (oxRegistry::getConfig()->getRequestParameter('all')) {
+            $sQ = $this->_addFilter("delete oxobject2action.* " . $this->_getQuery());
+            oxDb::getDb()->Execute($sQ);
+        } elseif ($aRemoveGroups && is_array($aRemoveGroups)) {
+            $sQ = "delete from oxobject2action where oxobject2action.oxid in (" . implode(", ", oxDb::getInstance()->quoteArray($aRemoveGroups)) . ") ";
+            oxDb::getDb()->Execute($sQ);
         }
     }
 
@@ -96,20 +97,20 @@ class actions_groups_ajax extends ajaxListComponent
      */
     public function addPromotionGroup()
     {
-        $aChosenGroup = $this->_getActionIds( 'oxgroups.oxid' );
-        $soxId        = oxRegistry::getConfig()->getRequestParameter( 'synchoxid' );
+        $aChosenGroup = $this->_getActionIds('oxgroups.oxid');
+        $soxId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
 
-        if ( oxRegistry::getConfig()->getRequestParameter( 'all' ) ) {
-            $sGroupTable  = $this->_getViewName('oxgroups');
-            $aChosenGroup = $this->_getAll( $this->_addFilter( "select $sGroupTable.oxid ".$this->_getQuery() ) );
+        if (oxRegistry::getConfig()->getRequestParameter('all')) {
+            $sGroupTable = $this->_getViewName('oxgroups');
+            $aChosenGroup = $this->_getAll($this->_addFilter("select $sGroupTable.oxid " . $this->_getQuery()));
         }
-        if ( $soxId && $soxId != "-1" && is_array( $aChosenGroup ) ) {
-            foreach ( $aChosenGroup as $sChosenGroup) {
-                $oObject2Promotion = oxNew( "oxbase" );
-                $oObject2Promotion->init( 'oxobject2action' );
-                $oObject2Promotion->oxobject2action__oxactionid = new oxField( $soxId );
-                $oObject2Promotion->oxobject2action__oxobjectid = new oxField( $sChosenGroup );
-                $oObject2Promotion->oxobject2action__oxclass    = new oxField( "oxgroups" );
+        if ($soxId && $soxId != "-1" && is_array($aChosenGroup)) {
+            foreach ($aChosenGroup as $sChosenGroup) {
+                $oObject2Promotion = oxNew("oxbase");
+                $oObject2Promotion->init('oxobject2action');
+                $oObject2Promotion->oxobject2action__oxactionid = new oxField($soxId);
+                $oObject2Promotion->oxobject2action__oxobjectid = new oxField($sChosenGroup);
+                $oObject2Promotion->oxobject2action__oxclass = new oxField("oxgroups");
                 $oObject2Promotion->save();
             }
         }

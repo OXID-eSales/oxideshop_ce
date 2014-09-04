@@ -27,6 +27,7 @@
  */
 class Article_Variant extends oxAdminDetails
 {
+
     /**
      * Variant parent product object
      *
@@ -48,57 +49,58 @@ class Article_Variant extends oxAdminDetails
         $sSLViewName = getViewName('oxselectlist');
 
         // all selectlists
-        $oAllSel = oxNew( "oxlist");
-        $oAllSel->init( "oxselectlist");
+        $oAllSel = oxNew("oxlist");
+        $oAllSel->init("oxselectlist");
         $sQ = "select * from $sSLViewName";
-        $oAllSel->selectString( $sQ);
+        $oAllSel->selectString($sQ);
         $this->_aViewData["allsel"] = $oAllSel;
 
-        $oArticle = oxNew( "oxarticle");
-        $this->_aViewData["edit"] =  $oArticle;
+        $oArticle = oxNew("oxarticle");
+        $this->_aViewData["edit"] = $oArticle;
 
-        if ( $soxId != "-1" && isset( $soxId)) {
+        if ($soxId != "-1" && isset($soxId)) {
             // load object
-            $oArticle->loadInLang( $this->_iEditLang, $soxId );
+            $oArticle->loadInLang($this->_iEditLang, $soxId);
 
 
             $_POST["language"] = $_GET["language"] = $this->_iEditLang;
-            $oVariants = $oArticle->getAdminVariants( $this->_iEditLang);
+            $oVariants = $oArticle->getAdminVariants($this->_iEditLang);
 
-            $this->_aViewData["mylist"] =  $oVariants;
+            $this->_aViewData["mylist"] = $oVariants;
 
             // load object in other languages
             $oOtherLang = $oArticle->getAvailableInLangs();
-            if (!isset($oOtherLang[ $this->_iEditLang])) {
+            if (!isset($oOtherLang[$this->_iEditLang])) {
                 // echo "language entry doesn't exist! using: ".key($oOtherLang);
-                $oArticle->loadInLang( key($oOtherLang), $soxId );
+                $oArticle->loadInLang(key($oOtherLang), $soxId);
             }
 
-            foreach ( $oOtherLang as $id => $language) {
-                $oLang= new stdClass();
+            foreach ($oOtherLang as $id => $language) {
+                $oLang = new stdClass();
                 $oLang->sLangDesc = $language;
                 $oLang->selected = ($id == $this->_iEditLang);
-                $this->_aViewData["otherlang"][$id] =  clone $oLang;
+                $this->_aViewData["otherlang"][$id] = clone $oLang;
             }
 
-            if ( $oArticle->oxarticles__oxparentid->value) {
-                $this->_aViewData["parentarticle"] =  $this->_getProductParent( $oArticle->oxarticles__oxparentid->value );
-                $this->_aViewData["oxparentid"]    =  $oArticle->oxarticles__oxparentid->value;
-                $this->_aViewData["issubvariant"]  = 1;
+            if ($oArticle->oxarticles__oxparentid->value) {
+                $this->_aViewData["parentarticle"] = $this->_getProductParent($oArticle->oxarticles__oxparentid->value);
+                $this->_aViewData["oxparentid"] = $oArticle->oxarticles__oxparentid->value;
+                $this->_aViewData["issubvariant"] = 1;
                 // A. disable variant information editing for variant
                 $this->_aViewData["readonly"] = 1;
             }
             $this->_aViewData["editlanguage"] = $this->_iEditLang;
 
-            $aLang = array_diff (oxRegistry::getLang()->getLanguageNames(), $oOtherLang);
-            if ( count( $aLang))
+            $aLang = array_diff(oxRegistry::getLang()->getLanguageNames(), $oOtherLang);
+            if (count($aLang)) {
                 $this->_aViewData["posslang"] = $aLang;
+            }
 
-            foreach ( $oOtherLang as $id => $language) {
-                $oLang= new stdClass();
+            foreach ($oOtherLang as $id => $language) {
+                $oLang = new stdClass();
                 $oLang->sLangDesc = $language;
                 $oLang->selected = ($id == $this->_iEditLang);
-                $this->_aViewData["otherlang"][$id] =  $oLang;
+                $this->_aViewData["otherlang"][$id] = $oLang;
             }
         }
 
@@ -184,6 +186,7 @@ class Article_Variant extends oxAdminDetails
                 return true;
             }
         }
+
         return false;
     }
 
@@ -194,16 +197,18 @@ class Article_Variant extends oxAdminDetails
      *
      * @return oxarticle
      */
-    protected function _getProductParent( $sParentId )
+    protected function _getProductParent($sParentId)
     {
-        if ( $this->_oProductParent === null ||
-             ( $this->_oProductParent !== false && $this->_oProductParent->getId() != $sParentId ) ) {
+        if ($this->_oProductParent === null ||
+            ($this->_oProductParent !== false && $this->_oProductParent->getId() != $sParentId)
+        ) {
             $this->_oProductParent = false;
-            $oProduct = oxNew( "oxarticle" );
-            if ( $oProduct->load( $sParentId ) ) {
+            $oProduct = oxNew("oxarticle");
+            if ($oProduct->load($sParentId)) {
                 $this->_oProductParent = $oProduct;
             }
         }
+
         return $this->_oProductParent;
     }
 
@@ -215,10 +220,10 @@ class Article_Variant extends oxAdminDetails
     public function savevariants()
     {
 
-        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval" );
-        if ( is_array( $aParams ) ) {
-            foreach ( $aParams as $soxId => $aVarParams ) {
-                $this->savevariant( $soxId, $aVarParams );
+        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+        if (is_array($aParams)) {
+            foreach ($aParams as $soxId => $aVarParams) {
+                $this->savevariant($soxId, $aVarParams);
             }
         }
 
@@ -233,9 +238,9 @@ class Article_Variant extends oxAdminDetails
     {
 
 
-        $soxId = oxRegistry::getConfig()->getRequestParameter( "voxid" );
-        $oDelete = oxNew( "oxarticle" );
-        $oDelete->delete( $soxId );
+        $soxId = oxRegistry::getConfig()->getRequestParameter("voxid");
+        $oDelete = oxNew("oxarticle");
+        $oDelete->delete($soxId);
     }
 
     /**
@@ -246,20 +251,20 @@ class Article_Variant extends oxAdminDetails
     public function changename()
     {
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval");
+        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
 
             // shopid
-            $aParams['oxarticles__oxshopid'] = oxRegistry::getSession()->getVariable( "actshop" );
+            $aParams['oxarticles__oxshopid'] = oxRegistry::getSession()->getVariable("actshop");
 
-        $oArticle = oxNew( "oxarticle" );
-        if ( $soxId != "-1") {
-            $oArticle->loadInLang( $this->_iEditLang, $soxId );
+        $oArticle = oxNew("oxarticle");
+        if ($soxId != "-1") {
+            $oArticle->loadInLang($this->_iEditLang, $soxId);
         }
 
-        $oArticle->setLanguage( 0 );
-        $oArticle->assign( $aParams);
-        $oArticle->setLanguage( $this->_iEditLang );
+        $oArticle->setLanguage(0);
+        $oArticle->assign($aParams);
+        $oArticle->setLanguage($this->_iEditLang);
         $oArticle->save();
     }
 
@@ -274,13 +279,13 @@ class Article_Variant extends oxAdminDetails
         $oArticle = oxNew("oxarticle");
         //#3644
         //$oArticle->setEnableMultilang( false );
-        if ( $oArticle->load( $this->getEditObjectId() ) ) {
+        if ($oArticle->load($this->getEditObjectId())) {
 
 
 
-            if ( $aSels = oxRegistry::getConfig()->getRequestParameter( "allsel" ) ) {
-                $oVariantHandler = oxNew( "oxVariantHandler" );
-                $oVariantHandler->genVariantFromSell( $aSels, $oArticle );
+            if ($aSels = oxRegistry::getConfig()->getRequestParameter("allsel")) {
+                $oVariantHandler = oxNew("oxVariantHandler");
+                $oVariantHandler->genVariantFromSell($aSels, $oArticle);
             }
         }
     }

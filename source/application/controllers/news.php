@@ -26,19 +26,23 @@
  */
 class News extends oxUBase
 {
+
     /**
      * Newslist
+     *
      * @var object
      */
     protected $_oNewsList = null;
     /**
      * Current class login template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'page/info/news.tpl';
 
     /**
      * Sign if to load and show bargain action
+     *
      * @var bool
      */
     protected $_blBargainAction = true;
@@ -46,12 +50,14 @@ class News extends oxUBase
 
     /**
      * Page navigation
+     *
      * @var object
      */
     protected $_oPageNavigation = null;
 
     /**
      * Number of possible pages.
+     *
      * @var integer
      */
     protected $_iCntPages = null;
@@ -63,20 +69,20 @@ class News extends oxUBase
      */
     public function getNews()
     {
-        if ( $this->_oNewsList === null ) {
+        if ($this->_oNewsList === null) {
             $this->_oNewsList = false;
 
-            $iPerPage = (int) $this->getConfig()->getConfigParam( 'iNrofCatArticles' );
+            $iPerPage = (int) $this->getConfig()->getConfigParam('iNrofCatArticles');
             $iPerPage = $iPerPage ? $iPerPage : 10;
 
-            $oActNews = oxNew( 'oxnewslist' );
+            $oActNews = oxNew('oxnewslist');
 
-            if ( $iCnt = $oActNews->getCount() ) {
+            if ($iCnt = $oActNews->getCount()) {
 
-                 $this->_iCntPages = round( $iCnt / $iPerPage + 0.49 );
+                $this->_iCntPages = round($iCnt / $iPerPage + 0.49);
 
-                 $oActNews->loadNews( $this->getActPage() * $iPerPage, $iPerPage );
-                 $this->_oNewsList = $oActNews;
+                $oActNews->loadNews($this->getActPage() * $iPerPage, $iPerPage);
+                $this->_oNewsList = $oActNews;
             }
         }
 
@@ -92,10 +98,10 @@ class News extends oxUBase
     public function getBreadCrumb()
     {
         $aPaths = array();
-        $aPath  = array();
+        $aPath = array();
 
-        $aPath['title'] = oxRegistry::getLang()->translateString( 'LATEST_NEWS_AND_UPDATES_AT', oxRegistry::getLang()->getBaseLanguage(), false ) . ' ' . $this->getConfig()->getActiveShop()->oxshops__oxname->value;
-        $aPath['link']  = $this->getLink();
+        $aPath['title'] = oxRegistry::getLang()->translateString('LATEST_NEWS_AND_UPDATES_AT', oxRegistry::getLang()->getBaseLanguage(), false) . ' ' . $this->getConfig()->getActiveShop()->oxshops__oxname->value;
+        $aPath['link'] = $this->getLink();
 
         $aPaths[] = $aPath;
 
@@ -109,7 +115,7 @@ class News extends oxUBase
      */
     public function getPageNavigation()
     {
-        if ( $this->_oPageNavigation === null ) {
+        if ($this->_oPageNavigation === null) {
             $this->_oPageNavigation = false;
             $this->_oPageNavigation = $this->generatePageNavigation();
         }
@@ -124,6 +130,6 @@ class News extends oxUBase
      */
     public function getTitle()
     {
-        return oxRegistry::getLang()->translateString( 'LATEST_NEWS_AND_UPDATES_AT', oxRegistry::getLang()->getBaseLanguage(), false ) . ' ' . $this->getConfig()->getActiveShop()->oxshops__oxname->value;
+        return oxRegistry::getLang()->translateString('LATEST_NEWS_AND_UPDATES_AT', oxRegistry::getLang()->getBaseLanguage(), false) . ' ' . $this->getConfig()->getActiveShop()->oxshops__oxname->value;
     }
 }

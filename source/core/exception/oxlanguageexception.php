@@ -25,6 +25,7 @@
  */
 class oxLanguageException extends oxException
 {
+
     /**
      * Language constant
      *
@@ -39,16 +40,16 @@ class oxLanguageException extends oxException
      *
      * @return null
      */
-    public function setLangConstant( $sLangConstant )
+    public function setLangConstant($sLangConstant)
     {
         $this->_sLangConstant = $sLangConstant;
     }
 
     /**
-    * Get language constant
-    *
-    * @return string
-    */
+     * Get language constant
+     *
+     * @return string
+     */
     public function getLangConstant()
     {
         return $this->_sLangConstant;
@@ -62,7 +63,7 @@ class oxLanguageException extends oxException
      */
     public function getString()
     {
-        return __CLASS__.'-'.parent::getString()." Faulty Constant --> ".$this->_sLangConstant."\n";
+        return __CLASS__ . '-' . parent::getString() . " Faulty Constant --> " . $this->_sLangConstant . "\n";
     }
 
     /**
@@ -77,6 +78,7 @@ class oxLanguageException extends oxException
     {
         $aRes = parent::getValues();
         $aRes['langConstant'] = $this->getLangConstant();
+
         return $aRes;
     }
 }

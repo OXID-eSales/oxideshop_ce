@@ -26,6 +26,7 @@
  */
 abstract class oxCompanyVatInChecker
 {
+
     /**
      * Error message
      *
@@ -38,7 +39,7 @@ abstract class oxCompanyVatInChecker
      *
      * @param string $sError
      */
-    public function setError( $sError )
+    public function setError($sError)
     {
         $this->_sError = $sError;
     }
@@ -60,5 +61,5 @@ abstract class oxCompanyVatInChecker
      *
      * @return mixed
      */
-    abstract public function validate( oxCompanyVatIn $oVatIn );
+    abstract public function validate(oxCompanyVatIn $oVatIn);
 }

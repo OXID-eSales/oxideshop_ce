@@ -28,6 +28,7 @@
  */
 class Details extends oxUBase
 {
+
     /**
      * Current class default template name.
      *
@@ -44,78 +45,91 @@ class Details extends oxUBase
 
     /**
      * If tags will be changed
+     *
      * @var bool
      */
     protected $_blEditTags = null;
 
     /**
      * All tags
+     *
      * @var array
      */
     protected $_aTags = null;
 
     /**
      * Class handling CAPTCHA image.
+     *
      * @var object
      */
     protected $_oCaptcha = null;
 
     /**
      * Parent article name
+     *
      * @var string
      */
     protected $_sParentName = null;
 
     /**
      * Parent article url
+     *
      * @var string
      */
     protected $_sParentUrl = null;
 
     /**
      * Picture gallery
+     *
      * @var array
      */
     protected $_aPicGallery = null;
 
     /**
      * Select lists
+     *
      * @var array
      */
     protected $_aSelectLists = null;
 
     /**
      * Reviews of current article
+     *
      * @var array
      */
     protected $_aReviews = null;
 
     /**
      * CrossSelling article list
+     *
      * @var object
      */
     protected $_oCrossSelling = null;
 
     /**
      * Similar products article list
+     *
      * @var object
      */
     protected $_oSimilarProducts = null;
 
     /**
      * Accessories of current article
+     *
      * @var object
      */
     protected $_oAccessoires = null;
 
     /**
      * List of customer also bought these products
+     *
      * @var object
      */
     protected $_aAlsoBoughtArts = null;
 
     /**
      * Search title
+     *
      * @var string
      */
     protected $_sSearchTitle = null;
@@ -123,6 +137,7 @@ class Details extends oxUBase
     /**
      * Marker if active product was fully initialized before returning it
      * (see details::getProduct())
+     *
      * @var bool
      */
     protected $_blIsInitialized = false;
@@ -136,18 +151,21 @@ class Details extends oxUBase
 
     /**
      * Bid price.
+     *
      * @var string
      */
     protected $_sBidPrice = null;
 
     /**
      * Price alarm status.
+     *
      * @var integer
      */
     protected $_iPriceAlarmStatus = null;
 
     /**
      * Search parameter for Html
+     *
      * @var string
      */
     protected $_sSearchParamForHtml = null;
@@ -162,6 +180,7 @@ class Details extends oxUBase
 
     /**
      * Marked which defines if current view is sortable or not
+     *
      * @var bool
      */
     protected $_blShowSorting = true;
@@ -173,16 +192,17 @@ class Details extends oxUBase
      *
      * @return oxArticle
      */
-    protected function _getParentProduct( $sParentId )
+    protected function _getParentProduct($sParentId)
     {
-        if ( $sParentId && $this->_oParentProd === null ) {
+        if ($sParentId && $this->_oParentProd === null) {
             $this->_oParentProd = false;
-            $oProduct = oxNew( 'oxArticle' );
-            if ( ( $oProduct->load( $sParentId ) ) ) {
-                $this->_processProduct( $oProduct );
+            $oProduct = oxNew('oxArticle');
+            if (($oProduct->load($sParentId))) {
+                $this->_processProduct($oProduct);
                 $this->_oParentProd = $oProduct;
             }
         }
+
         return $this->_oParentProd;
     }
 
@@ -193,7 +213,7 @@ class Details extends oxUBase
      */
     protected function _getAddUrlParams()
     {
-        if ( $this->getListType() == "search" ) {
+        if ($this->getListType() == "search") {
             return $this->getDynUrlParams();
         }
     }
@@ -210,23 +230,24 @@ class Details extends oxUBase
     {
         $aParams = parent::getNavigationParams();
 
-        $aVarSelParams = oxRegistry::getConfig()->getRequestParameter( 'varselid' );
-        $aSelectListParams = oxRegistry::getConfig()->getRequestParameter( 'sel' );
-        if ( !$aVarSelParams && !$aSelectListParams ) {
+        $aVarSelParams = oxRegistry::getConfig()->getRequestParameter('varselid');
+        $aSelectListParams = oxRegistry::getConfig()->getRequestParameter('sel');
+        if (!$aVarSelParams && !$aSelectListParams) {
             return $aParams;
         }
 
-        if ( $aVarSelParams ) {
-            foreach ( $aVarSelParams as $iKey => $sValue ) {
+        if ($aVarSelParams) {
+            foreach ($aVarSelParams as $iKey => $sValue) {
                 $aParams["varselid[$iKey]"] = $sValue;
             }
         }
 
-        if ( $aSelectListParams ) {
-            foreach ( $aSelectListParams as $iKey => $sValue ) {
+        if ($aSelectListParams) {
+            foreach ($aSelectListParams as $iKey => $sValue) {
                 $aParams["sel[$iKey]"] = $sValue;
             }
         }
+
         return $aParams;
     }
 
@@ -238,11 +259,11 @@ class Details extends oxUBase
      *
      * @return null
      */
-    protected function _processProduct( $oProduct )
+    protected function _processProduct($oProduct)
     {
-        $oProduct->setLinkType( $this->getLinkType() );
-        if ( $sAddParams = $this->_getAddUrlParams() ) {
-            $oProduct->appendLink( $sAddParams );
+        $oProduct->setLinkType($this->getLinkType());
+        if ($sAddParams = $this->_getAddUrlParams()) {
+            $oProduct->appendLink($sAddParams);
         }
     }
 
@@ -253,11 +274,11 @@ class Details extends oxUBase
      */
     public function getViewId()
     {
-        if ( isset( $this->_sViewId )) {
+        if (isset($this->_sViewId)) {
             return $this->_sViewId;
         }
 
-            $sViewId = parent::getViewId().'|'.$this->getConfig()->getRequestParameter( 'anid' ).'|';
+            $sViewId = parent::getViewId() . '|' . $this->getConfig()->getRequestParameter('anid') . '|';
 
 
         return $this->_sViewId = $sViewId;
@@ -282,17 +303,17 @@ class Details extends oxUBase
         $oProduct = $this->getProduct();
 
         // assign template name
-        if ( $oProduct->oxarticles__oxtemplate->value ) {
+        if ($oProduct->oxarticles__oxtemplate->value) {
             $this->_sThisTemplate = $oProduct->oxarticles__oxtemplate->value;
         }
 
-        if ( ( $sTplName = oxRegistry::getConfig()->getRequestParameter( 'tpl' ) ) ) {
-            $this->_sThisTemplate = 'custom/'.basename ( $sTplName );
+        if (($sTplName = oxRegistry::getConfig()->getRequestParameter('tpl'))) {
+            $this->_sThisTemplate = 'custom/' . basename($sTplName);
         }
 
         parent::render();
 
-        $sPartial = $this->getConfig()->getRequestParameter( 'renderPartial' );
+        $sPartial = $this->getConfig()->getRequestParameter('renderPartial');
         $this->addTplParam('renderPartial', $sPartial);
 
         switch ($sPartial) {
@@ -304,12 +325,12 @@ class Details extends oxUBase
                 break;
             default:
                 // can not be removed, as it is used for breadcrumb loading
-                $oLocator = oxNew( 'oxLocator', $this->getListType() );
-                $oLocator->setLocatorData( $oProduct, $this );
+                $oLocator = oxNew('oxLocator', $this->getListType());
+                $oLocator->setLocatorData($oProduct, $this);
 
-                if ($myConfig->getConfigParam( 'bl_rssRecommLists' ) && $this->getSimilarRecommListIds()) {
+                if ($myConfig->getConfigParam('bl_rssRecommLists') && $this->getSimilarRecommListIds()) {
                     $oRss = oxNew('oxRssFeed');
-                    $this->addRssFeed($oRss->getRecommListsTitle( $oProduct ), $oRss->getRecommListsUrl( $oProduct ), 'recommlists');
+                    $this->addRssFeed($oRss->getRecommListsTitle($oProduct), $oRss->getRecommListsUrl($oProduct), 'recommlists');
                 }
 
                 return $this->_sThisTemplate;
@@ -327,22 +348,23 @@ class Details extends oxUBase
      *
      * @return string
      */
-    protected function _prepareMetaDescription( $sMeta, $iLength = 200, $blDescTag = false )
+    protected function _prepareMetaDescription($sMeta, $iLength = 200, $blDescTag = false)
     {
-        if ( !$sMeta ) {
+        if (!$sMeta) {
             $oProduct = $this->getProduct();
 
-            if ( $this->getConfig()->getConfigParam( 'bl_perfParseLongDescinSmarty' ) ) {
+            if ($this->getConfig()->getConfigParam('bl_perfParseLongDescinSmarty')) {
                 $sMeta = $oProduct->getLongDesc();
             } else {
                 $sMeta = $oProduct->getLongDescription()->value;
             }
-            if ( $sMeta == '' ) {
+            if ($sMeta == '') {
                 $sMeta = $oProduct->oxarticles__oxshortdesc->value;
             }
-            $sMeta = $oProduct->oxarticles__oxtitle->value.' - '.$sMeta;
+            $sMeta = $oProduct->oxarticles__oxtitle->value . ' - ' . $sMeta;
         }
-        return parent::_prepareMetaDescription( $sMeta, $iLength, $blDescTag );
+
+        return parent::_prepareMetaDescription($sMeta, $iLength, $blDescTag);
     }
 
     /**
@@ -355,24 +377,24 @@ class Details extends oxUBase
      *
      * @return string
      */
-    protected function _prepareMetaKeyword( $sKeywords, $blRemoveDuplicatedWords = true )
+    protected function _prepareMetaKeyword($sKeywords, $blRemoveDuplicatedWords = true)
     {
-        if ( !$sKeywords ) {
+        if (!$sKeywords) {
             $oProduct = $this->getProduct();
-            $sKeywords = trim( $this->getTitle() );
+            $sKeywords = trim($this->getTitle());
 
-            if ( $oCatTree = $this->getCategoryTree() ) {
-                foreach ( $oCatTree->getPath() as $oCat ) {
-                    $sKeywords .= ", " . trim( $oCat->oxcategories__oxtitle->value );
+            if ($oCatTree = $this->getCategoryTree()) {
+                foreach ($oCatTree->getPath() as $oCat) {
+                    $sKeywords .= ", " . trim($oCat->oxcategories__oxtitle->value);
                 }
             }
 
             //adding search keys info
-            if ( $sSearchKeys = trim( $oProduct->oxarticles__oxsearchkeys->value ) ) {
-                $sKeywords .= ", ". $sSearchKeys;
+            if ($sSearchKeys = trim($oProduct->oxarticles__oxsearchkeys->value)) {
+                $sKeywords .= ", " . $sSearchKeys;
             }
 
-            $sKeywords = parent::_prepareMetaKeyword( $sKeywords, $blRemoveDuplicatedWords );
+            $sKeywords = parent::_prepareMetaKeyword($sKeywords, $blRemoveDuplicatedWords);
         }
 
         return $sKeywords;
@@ -385,35 +407,36 @@ class Details extends oxUBase
      */
     public function saveReview()
     {
-        if ( $this->canAcceptFormData() &&
-             ( $oUser = $this->getUser() ) && ( $oProduct = $this->getProduct() ) ) {
+        if ($this->canAcceptFormData() &&
+            ($oUser = $this->getUser()) && ($oProduct = $this->getProduct())
+        ) {
 
-            $dRating = $this->getConfig()->getRequestParameter( 'artrating' );
-            if ( $dRating !== null ) {
+            $dRating = $this->getConfig()->getRequestParameter('artrating');
+            if ($dRating !== null) {
                 $dRating = (int) $dRating;
             }
 
             //save rating
-            if ( $dRating !== null && $dRating >= 1 && $dRating <= 5 ) {
-                $oRating = oxNew( 'oxrating' );
-                if ( $oRating->allowRating( $oUser->getId(), 'oxarticle', $oProduct->getId() ) ) {
-                    $oRating->oxratings__oxuserid   = new oxField( $oUser->getId() );
-                    $oRating->oxratings__oxtype     = new oxField( 'oxarticle' );
-                    $oRating->oxratings__oxobjectid = new oxField( $oProduct->getId() );
-                    $oRating->oxratings__oxrating   = new oxField( $dRating );
+            if ($dRating !== null && $dRating >= 1 && $dRating <= 5) {
+                $oRating = oxNew('oxrating');
+                if ($oRating->allowRating($oUser->getId(), 'oxarticle', $oProduct->getId())) {
+                    $oRating->oxratings__oxuserid = new oxField($oUser->getId());
+                    $oRating->oxratings__oxtype = new oxField('oxarticle');
+                    $oRating->oxratings__oxobjectid = new oxField($oProduct->getId());
+                    $oRating->oxratings__oxrating = new oxField($dRating);
                     $oRating->save();
-                    $oProduct->addToRatingAverage( $dRating );
+                    $oProduct->addToRatingAverage($dRating);
                 }
             }
 
-            if ( ( $sReviewText = trim( ( string ) $this->getConfig()->getRequestParameter( 'rvw_txt', true ) ) ) ) {
-                $oReview = oxNew( 'oxReview' );
-                $oReview->oxreviews__oxobjectid = new oxField( $oProduct->getId() );
-                $oReview->oxreviews__oxtype     = new oxField( 'oxarticle' );
-                $oReview->oxreviews__oxtext     = new oxField( $sReviewText, oxField::T_RAW );
-                $oReview->oxreviews__oxlang     = new oxField( oxRegistry::getLang()->getBaseLanguage() );
-                $oReview->oxreviews__oxuserid   = new oxField( $oUser->getId() );
-                $oReview->oxreviews__oxrating   = new oxField( ( $dRating !== null ) ? $dRating : 0);
+            if (($sReviewText = trim(( string ) $this->getConfig()->getRequestParameter('rvw_txt', true)))) {
+                $oReview = oxNew('oxReview');
+                $oReview->oxreviews__oxobjectid = new oxField($oProduct->getId());
+                $oReview->oxreviews__oxtype = new oxField('oxarticle');
+                $oReview->oxreviews__oxtext = new oxField($sReviewText, oxField::T_RAW);
+                $oReview->oxreviews__oxlang = new oxField(oxRegistry::getLang()->getBaseLanguage());
+                $oReview->oxreviews__oxuserid = new oxField($oUser->getId());
+                $oReview->oxreviews__oxrating = new oxField(($dRating !== null) ? $dRating : 0);
                 $oReview->save();
             }
         }
@@ -430,14 +453,14 @@ class Details extends oxUBase
             return;
         }
 
-        $sRecommText = trim( ( string ) $this->getConfig()->getRequestParameter( 'recomm_txt' ) );
-        $sRecommList = $this->getConfig()->getRequestParameter( 'recomm' );
-        $sArtId      = $this->getProduct()->getId();
+        $sRecommText = trim(( string ) $this->getConfig()->getRequestParameter('recomm_txt'));
+        $sRecommList = $this->getConfig()->getRequestParameter('recomm');
+        $sArtId = $this->getProduct()->getId();
 
-        if ( $sArtId ) {
-            $oRecomm = oxNew( 'oxrecommlist' );
-            $oRecomm->load( $sRecommList);
-            $oRecomm->addArticle( $sArtId, $sRecommText );
+        if ($sArtId) {
+            $oRecomm = oxNew('oxrecommlist');
+            $oRecomm->load($sRecommList);
+            $oRecomm->addArticle($sArtId, $sRecommText);
         }
     }
 
@@ -448,38 +471,38 @@ class Details extends oxUBase
      */
     public function addTags()
     {
-        $sTags  = $this->getConfig()->getRequestParameter('newTags', true );
-        $sHighTag  = $this->getConfig()->getRequestParameter( 'highTags', true );
-        if ( !$sTags && !$sHighTag) {
+        $sTags = $this->getConfig()->getRequestParameter('newTags', true);
+        $sHighTag = $this->getConfig()->getRequestParameter('highTags', true);
+        if (!$sTags && !$sHighTag) {
             return;
         }
-        if ( $sHighTag ) {
-            $sTags = getStr()->html_entity_decode( $sHighTag );
+        if ($sHighTag) {
+            $sTags = getStr()->html_entity_decode($sHighTag);
         }
         $oProduct = $this->getProduct();
 
         // set current user added tags for this article for later checking
         $aTaggedProducts = oxRegistry::getSession()->getVariable("aTaggedProducts");
-        $aAddedTags = $aTaggedProducts? $aTaggedProducts[$oProduct->getId()] : array();
+        $aAddedTags = $aTaggedProducts ? $aTaggedProducts[$oProduct->getId()] : array();
 
-        $oArticleTagList = oxNew( "oxArticleTagList" );
-        $oArticleTagList->load( $oProduct->getId() );
+        $oArticleTagList = oxNew("oxArticleTagList");
+        $oArticleTagList->load($oProduct->getId());
         $sSeparator = $oArticleTagList->get()->getSeparator();
-        $aTags = array_unique( explode( $sSeparator, $sTags ) );
+        $aTags = array_unique(explode($sSeparator, $sTags));
 
-        $aResult = $this->_addTagsToList( $oArticleTagList, $aTags, $aAddedTags);
+        $aResult = $this->_addTagsToList($oArticleTagList, $aTags, $aAddedTags);
 
-        if ( !empty( $aResult['tags'] ) ) {
+        if (!empty($aResult['tags'])) {
             $oArticleTagList->save();
-            foreach ( $aResult['tags'] as $sTag) {
-                $aAddedTags[ $sTag ] = 1;
+            foreach ($aResult['tags'] as $sTag) {
+                $aAddedTags[$sTag] = 1;
             }
             $aTaggedProducts[$oProduct->getId()] = $aAddedTags;
-            oxRegistry::getSession()->setVariable( 'aTaggedProducts', $aTaggedProducts);
+            oxRegistry::getSession()->setVariable('aTaggedProducts', $aTaggedProducts);
         }
         // for ajax call
-        if ( $this->getConfig()->getRequestParameter( 'blAjax', true ) ) {
-            oxRegistry::getUtils()->showMessageAndExit( json_encode( $aResult ) );
+        if ($this->getConfig()->getRequestParameter('blAjax', true)) {
+            oxRegistry::getUtils()->showMessageAndExit(json_encode($aResult));
         }
     }
 
@@ -492,15 +515,15 @@ class Details extends oxUBase
      *
      * @return array
      */
-    protected function _addTagsToList( $oArticleTagList, $aTags, $aAddedTags)
+    protected function _addTagsToList($oArticleTagList, $aTags, $aAddedTags)
     {
-        $aResult = array( 'tags' => array(), 'invalid' => array(), 'inlist' => array() );
+        $aResult = array('tags' => array(), 'invalid' => array(), 'inlist' => array());
 
-        foreach ( $aTags as $sTag ) {
-            $oTag = oxNew( "oxtag", $sTag );
-            if ( $aAddedTags[$oTag->get()] != 1 ) {
-                if ( $oTag->isValid() ) {
-                    $oArticleTagList->addTag( $oTag );
+        foreach ($aTags as $sTag) {
+            $oTag = oxNew("oxtag", $sTag);
+            if ($aAddedTags[$oTag->get()] != 1) {
+                if ($oTag->isValid()) {
+                    $oArticleTagList->addTag($oTag);
                     $aResult['tags'][] = $oTag->get();
                 } else {
                     $aResult['invalid'][] = $oTag->get();
@@ -520,23 +543,23 @@ class Details extends oxUBase
      */
     public function editTags()
     {
-        if ( !$this->getUser() ) {
+        if (!$this->getUser()) {
             return;
         }
         $oArticleTagList = oxNew("oxArticleTagList");
-        $oArticleTagList->load( $this->getProduct()->getId() );
+        $oArticleTagList->load($this->getProduct()->getId());
         $oTagSet = $oArticleTagList->get();
         $this->_aTags = $oTagSet->get();
         $this->_blEditTags = true;
 
         // for ajax call
-        if ( $this->getConfig()->getRequestParameter( 'blAjax', true ) ) {
-            oxRegistry::getUtils()->setHeader( "Content-Type: text/html; charset=".oxRegistry::getLang()->translateString( 'charset' ) );
-            $oActView = oxNew( 'oxubase' );
+        if ($this->getConfig()->getRequestParameter('blAjax', true)) {
+            oxRegistry::getUtils()->setHeader("Content-Type: text/html; charset=" . oxRegistry::getLang()->translateString('charset'));
+            $oActView = oxNew('oxubase');
             $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
-            $oSmarty->assign('oView', $this );
-            $oSmarty->assign('oViewConf', $this->getViewConfig() );
-            oxRegistry::getUtils()->showMessageAndExit( $oSmarty->fetch( 'page/details/inc/editTags.tpl', $this->getViewId() ) );
+            $oSmarty->assign('oView', $this);
+            $oSmarty->assign('oViewConf', $this->getViewConfig());
+            oxRegistry::getUtils()->showMessageAndExit($oSmarty->fetch('page/details/inc/editTags.tpl', $this->getViewId()));
         }
     }
 
@@ -548,19 +571,19 @@ class Details extends oxUBase
     public function cancelTags()
     {
         $oArticleTagList = oxNew("oxArticleTagList");
-        $oArticleTagList->load( $this->getProduct()->getId() );
+        $oArticleTagList->load($this->getProduct()->getId());
         $oTagSet = $oArticleTagList->get();
         $this->_aTags = $oTagSet->get();
         $this->_blEditTags = false;
 
         // for ajax call
-        if ( oxRegistry::getConfig()->getRequestParameter( 'blAjax', true ) ) {
-            oxRegistry::getUtils()->setHeader( "Content-Type: text/html; charset=".oxRegistry::getLang()->translateString( 'charset' ) );
-            $oActView = oxNew( 'oxubase' );
+        if (oxRegistry::getConfig()->getRequestParameter('blAjax', true)) {
+            oxRegistry::getUtils()->setHeader("Content-Type: text/html; charset=" . oxRegistry::getLang()->translateString('charset'));
+            $oActView = oxNew('oxubase');
             $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
-            $oSmarty->assign('oView', $this );
-            $oSmarty->assign('oViewConf', $this->getViewConfig() );
-            oxRegistry::getUtils()->showMessageAndExit( $oSmarty->fetch( 'page/details/inc/tags.tpl', $this->getViewId() ) );
+            $oSmarty->assign('oView', $this);
+            $oSmarty->assign('oViewConf', $this->getViewConfig());
+            oxRegistry::getUtils()->showMessageAndExit($oSmarty->fetch('page/details/inc/tags.tpl', $this->getViewId()));
         }
     }
 
@@ -571,7 +594,7 @@ class Details extends oxUBase
      */
     protected function _getSeoObjectId()
     {
-        if ( $oProduct = $this->getProduct() ) {
+        if ($oProduct = $this->getProduct()) {
             return $oProduct->getId();
         }
     }
@@ -606,30 +629,30 @@ class Details extends oxUBase
         $oConfig = $this->getConfig();
         $oUtils = oxRegistry::getUtils();
 
-        if ( $this->_oProduct === null ) {
+        if ($this->_oProduct === null) {
 
             //this option is only for lists and we must reset value
             //as blLoadVariants = false affect "ab price" functionality
-            $oConfig->setConfigParam( 'blLoadVariants', true );
+            $oConfig->setConfigParam('blLoadVariants', true);
 
-            $sOxid = $this->getConfig()->getRequestParameter( 'anid' );
+            $sOxid = $this->getConfig()->getRequestParameter('anid');
 
             // object is not yet loaded
-            $this->_oProduct = oxNew( 'oxarticle' );
+            $this->_oProduct = oxNew('oxarticle');
 
-            if ( !$this->_oProduct->load( $sOxid ) ) {
-                $oUtils->redirect( $oConfig->getShopHomeURL() );
-                $oUtils->showMessageAndExit( '' );
+            if (!$this->_oProduct->load($sOxid)) {
+                $oUtils->redirect($oConfig->getShopHomeURL());
+                $oUtils->showMessageAndExit('');
             }
 
-            $aVariantSelections = $this->_oProduct->getVariantSelections( $this->getConfig()->getRequestParameter( "varselid" ) );
+            $aVariantSelections = $this->_oProduct->getVariantSelections($this->getConfig()->getRequestParameter("varselid"));
             if ($aVariantSelections && $aVariantSelections['oActiveVariant'] && $aVariantSelections['blPerfectFit']) {
                 $this->_oProduct = $aVariantSelections['oActiveVariant'];
             }
         }
 
         // additional checks
-        if ( !$this->_blIsInitialized ) {
+        if (!$this->_blIsInitialized) {
             $this->_additionalChecksForArticle();
         }
 
@@ -672,21 +695,21 @@ class Details extends oxUBase
      */
     public function getLinkType()
     {
-        if ( $this->_iLinkType === null ) {
-            $sListType = $this->getConfig()->getRequestParameter( 'listtype' );
-            if ( 'vendor' == $sListType ) {
+        if ($this->_iLinkType === null) {
+            $sListType = $this->getConfig()->getRequestParameter('listtype');
+            if ('vendor' == $sListType) {
                 $this->_iLinkType = OXARTICLE_LINKTYPE_VENDOR;
-            } elseif ( 'manufacturer' == $sListType ) {
-                    $this->_iLinkType = OXARTICLE_LINKTYPE_MANUFACTURER;
-            } elseif ( 'tag' == $sListType ) {
-                    $this->_iLinkType = OXARTICLE_LINKTYPE_TAG;
-            } elseif ( 'recommlist' == $sListType ) {
-                    $this->_iLinkType = OXARTICLE_LINKTYPE_RECOMM;
+            } elseif ('manufacturer' == $sListType) {
+                $this->_iLinkType = OXARTICLE_LINKTYPE_MANUFACTURER;
+            } elseif ('tag' == $sListType) {
+                $this->_iLinkType = OXARTICLE_LINKTYPE_TAG;
+            } elseif ('recommlist' == $sListType) {
+                $this->_iLinkType = OXARTICLE_LINKTYPE_RECOMM;
             } else {
                 $this->_iLinkType = OXARTICLE_LINKTYPE_CATEGORY;
 
                 // price category has own type..
-                if ( ( $oCat = $this->getActiveCategory() ) && $oCat->isPriceCategory() ) {
+                if (($oCat = $this->getActiveCategory()) && $oCat->isPriceCategory()) {
                     $this->_iLinkType = OXARTICLE_LINKTYPE_PRICECATEGORY;
                 }
             }
@@ -714,12 +737,13 @@ class Details extends oxUBase
      */
     public function getParentName()
     {
-        if ( $this->_sParentName === null ) {
+        if ($this->_sParentName === null) {
             $this->_sParentName = false;
-            if ( ( $oParent = $this->_getParentProduct( $this->getProduct()->oxarticles__oxparentid->value ) ) ) {
+            if (($oParent = $this->_getParentProduct($this->getProduct()->oxarticles__oxparentid->value))) {
                 $this->_sParentName = $oParent->oxarticles__oxtitle->value;
             }
         }
+
         return $this->_sParentName;
     }
 
@@ -732,12 +756,13 @@ class Details extends oxUBase
      */
     public function getParentUrl()
     {
-        if ( $this->_sParentUrl === null ) {
+        if ($this->_sParentUrl === null) {
             $this->_sParentUrl = false;
-            if ( ( $oParent = $this->_getParentProduct( $this->getProduct()->oxarticles__oxparentid->value ) ) ) {
+            if (($oParent = $this->_getParentProduct($this->getProduct()->oxarticles__oxparentid->value))) {
                 $this->_sParentUrl = $oParent->getLink();
             }
         }
+
         return $this->_sParentUrl;
     }
 
@@ -748,10 +773,11 @@ class Details extends oxUBase
      */
     public function getPictureGallery()
     {
-        if ( $this->_aPicGallery === null ) {
+        if ($this->_aPicGallery === null) {
             //get picture gallery
             $this->_aPicGallery = $this->getPicturesProduct()->getPictureGallery();
         }
+
         return $this->_aPicGallery;
     }
 
@@ -763,6 +789,7 @@ class Details extends oxUBase
     public function getActPictureId()
     {
         $aPicGallery = $this->getPictureGallery();
+
         return $aPicGallery['ActPicID'];
     }
 
@@ -774,6 +801,7 @@ class Details extends oxUBase
     public function getActPicture()
     {
         $aPicGallery = $this->getPictureGallery();
+
         return $aPicGallery['ActPic'];
     }
 
@@ -785,6 +813,7 @@ class Details extends oxUBase
     public function getPictures()
     {
         $aPicGallery = $this->getPictureGallery();
+
         return $aPicGallery['Pics'];
     }
 
@@ -795,9 +824,10 @@ class Details extends oxUBase
      *
      * @return string
      */
-    public function getArtPic( $sPicNr )
+    public function getArtPic($sPicNr)
     {
         $aPicGallery = $this->getPictureGallery();
+
         return $aPicGallery['Pics'][$sPicNr];
     }
 
@@ -808,12 +838,13 @@ class Details extends oxUBase
      */
     public function getSelectLists()
     {
-        if ( $this->_aSelectLists === null ) {
+        if ($this->_aSelectLists === null) {
             $this->_aSelectLists = false;
-            if ( $this->getConfig()->getConfigParam( 'bl_perfLoadSelectLists' ) ) {
+            if ($this->getConfig()->getConfigParam('bl_perfLoadSelectLists')) {
                 $this->_aSelectLists = $this->getProduct()->getSelectLists();
             }
         }
+
         return $this->_aSelectLists;
     }
 
@@ -824,12 +855,13 @@ class Details extends oxUBase
      */
     public function getReviews()
     {
-        if ( $this->_aReviews === null ) {
+        if ($this->_aReviews === null) {
             $this->_aReviews = false;
-            if ( $this->getConfig()->getConfigParam( 'bl_perfLoadReviews' ) ) {
+            if ($this->getConfig()->getConfigParam('bl_perfLoadReviews')) {
                 $this->_aReviews = $this->getProduct()->getReviews();
             }
         }
+
         return $this->_aReviews;
     }
 
@@ -840,12 +872,13 @@ class Details extends oxUBase
      */
     public function getCrossSelling()
     {
-        if ( $this->_oCrossSelling === null ) {
+        if ($this->_oCrossSelling === null) {
             $this->_oCrossSelling = false;
-            if ( $oProduct = $this->getProduct() ) {
+            if ($oProduct = $this->getProduct()) {
                 $this->_oCrossSelling = $oProduct->getCrossSelling();
             }
         }
+
         return $this->_oCrossSelling;
     }
 
@@ -856,12 +889,13 @@ class Details extends oxUBase
      */
     public function getSimilarProducts()
     {
-        if ( $this->_oSimilarProducts === null ) {
+        if ($this->_oSimilarProducts === null) {
             $this->_oSimilarProducts = false;
-            if ( $oProduct = $this->getProduct() ) {
+            if ($oProduct = $this->getProduct()) {
                 $this->_oSimilarProducts = $oProduct->getSimilarProducts();
             }
         }
+
         return $this->_oSimilarProducts;
     }
 
@@ -872,13 +906,14 @@ class Details extends oxUBase
      */
     public function getSimilarRecommListIds()
     {
-        if ( $this->_aSimilarRecommListIds === null ) {
+        if ($this->_aSimilarRecommListIds === null) {
             $this->_aSimilarRecommListIds = false;
 
-            if ( $oProduct = $this->getProduct() ) {
-                $this->_aSimilarRecommListIds = array( $oProduct->getId() );
+            if ($oProduct = $this->getProduct()) {
+                $this->_aSimilarRecommListIds = array($oProduct->getId());
             }
         }
+
         return $this->_aSimilarRecommListIds;
     }
 
@@ -889,12 +924,13 @@ class Details extends oxUBase
      */
     public function getAccessoires()
     {
-        if ( $this->_oAccessoires === null ) {
+        if ($this->_oAccessoires === null) {
             $this->_oAccessoires = false;
-            if ( $oProduct = $this->getProduct() ) {
+            if ($oProduct = $this->getProduct()) {
                 $this->_oAccessoires = $oProduct->getAccessoires();
             }
         }
+
         return $this->_oAccessoires;
     }
 
@@ -905,12 +941,13 @@ class Details extends oxUBase
      */
     public function getAlsoBoughtTheseProducts()
     {
-        if ( $this->_aAlsoBoughtArts === null ) {
+        if ($this->_aAlsoBoughtArts === null) {
             $this->_aAlsoBoughtArts = false;
-            if ( $oProduct = $this->getProduct() ) {
+            if ($oProduct = $this->getProduct()) {
                 $this->_aAlsoBoughtArts = $oProduct->getCustomerAlsoBoughtThisProducts();
             }
         }
+
         return $this->_aAlsoBoughtArts;
     }
 
@@ -923,9 +960,10 @@ class Details extends oxUBase
     {
         // #419 disabling price alarm if article has fixed price
         $oProduct = $this->getProduct();
-        if ( isset( $oProduct->oxarticles__oxblfixedprice->value ) && $oProduct->oxarticles__oxblfixedprice->value ) {
+        if (isset($oProduct->oxarticles__oxblfixedprice->value) && $oProduct->oxarticles__oxblfixedprice->value) {
             return 0;
         }
+
         return 1;
     }
 
@@ -937,7 +975,7 @@ class Details extends oxUBase
      *
      * @return object
      */
-    protected function _getSubject( $iLang )
+    protected function _getSubject($iLang)
     {
         return $this->getProduct();
     }
@@ -959,7 +997,7 @@ class Details extends oxUBase
      *
      * @return null
      */
-    public function setSearchTitle( $sTitle )
+    public function setSearchTitle($sTitle)
     {
         $this->_sSearchTitle = $sTitle;
     }
@@ -971,7 +1009,7 @@ class Details extends oxUBase
      *
      * @return string
      */
-    public function setCatTreePath( $sActCatPath )
+    public function setCatTreePath($sActCatPath)
     {
         $this->_sCatTreePath = $sActCatPath;
     }
@@ -984,10 +1022,11 @@ class Details extends oxUBase
      */
     public function noIndex()
     {
-        $sListType = $this->getConfig()->getRequestParameter( 'listtype' );
-        if ( $sListType && ( 'vendor' == $sListType || 'manufacturer' == $sListType ) ) {
+        $sListType = $this->getConfig()->getRequestParameter('listtype');
+        if ($sListType && ('vendor' == $sListType || 'manufacturer' == $sListType)) {
             return $this->_iViewIndexState = VIEW_INDEXSTATE_NOINDEXFOLLOW;
         }
+
         return parent::noIndex();
     }
 
@@ -998,9 +1037,10 @@ class Details extends oxUBase
      */
     public function getTitle()
     {
-        if ( $oProduct = $this->getProduct() ) {
+        if ($oProduct = $this->getProduct()) {
             $sTag = $this->getTag();
-            return $oProduct->oxarticles__oxtitle->value . ( $oProduct->oxarticles__oxvarselect->value ? ' ' . $oProduct->oxarticles__oxvarselect->value : '' ) . (!empty($sTag) ? ' - '.$sTag : '');
+
+            return $oProduct->oxarticles__oxtitle->value . ($oProduct->oxarticles__oxvarselect->value ? ' ' . $oProduct->oxarticles__oxvarselect->value : '') . (!empty($sTag) ? ' - ' . $sTag : '');
         }
     }
     
@@ -1013,8 +1053,8 @@ class Details extends oxUBase
     {
         $sMeta = parent::getMetaDescription();
 
-        if($sTag = $this->getTag()) {
-            $sMeta = $sTag.' - ' . $sMeta;
+        if ($sTag = $this->getTag()) {
+            $sMeta = $sTag . ' - ' . $sMeta;
         }
 
         return $sMeta;
@@ -1037,17 +1077,18 @@ class Details extends oxUBase
      */
     public function getCanonicalUrl()
     {
-        if ( ( $oProduct = $this->getProduct() ) ) {
-            if ( $oProduct->oxarticles__oxparentid->value ) {
-                $oProduct = $this->_getParentProduct( $oProduct->oxarticles__oxparentid->value );
+        if (($oProduct = $this->getProduct())) {
+            if ($oProduct->oxarticles__oxparentid->value) {
+                $oProduct = $this->_getParentProduct($oProduct->oxarticles__oxparentid->value);
             }
 
             $oUtils = oxRegistry::get("oxUtilsUrl");
-            if ( oxRegistry::getUtils()->seoIsActive() ) {
-                $sUrl = $oUtils->prepareCanonicalUrl( $oProduct->getBaseSeoLink( $oProduct->getLanguage(), true ) );
+            if (oxRegistry::getUtils()->seoIsActive()) {
+                $sUrl = $oUtils->prepareCanonicalUrl($oProduct->getBaseSeoLink($oProduct->getLanguage(), true));
             } else {
-                $sUrl = $oUtils->prepareCanonicalUrl( $oProduct->getBaseStdLink( $oProduct->getLanguage() ) );
+                $sUrl = $oUtils->prepareCanonicalUrl($oProduct->getBaseStdLink($oProduct->getLanguage()));
             }
+
             return $sUrl;
         }
     }
@@ -1059,17 +1100,18 @@ class Details extends oxUBase
      */
     public function getBreadCrumb()
     {
-        if ( 'search' == $this->getListType() ) {
+        if ('search' == $this->getListType()) {
             $aPaths = $this->_getSearchBreadCrumb();
-        } elseif ( 'tag' == $this->getListType() ) {
+        } elseif ('tag' == $this->getListType()) {
             $aPaths = $this->_getTagBreadCrumb();
-        } elseif ( 'recommlist' == $this->getListType() ) {
+        } elseif ('recommlist' == $this->getListType()) {
             $aPaths = $this->_getRecommendationListBredCrumb();
-        } elseif ( 'vendor' == $this->getListType() ) {
+        } elseif ('vendor' == $this->getListType()) {
             $aPaths = $this->_getVendorBreadCrumb();
         } else {
             $aPaths = $this->_getCategoryBreadCrumb();
         }
+
         return $aPaths;
     }
 
@@ -1080,9 +1122,10 @@ class Details extends oxUBase
      */
     public function getCaptcha()
     {
-        if ( $this->_oCaptcha === null ) {
+        if ($this->_oCaptcha === null) {
             $this->_oCaptcha = oxNew('oxCaptcha');
         }
+
         return $this->_oCaptcha;
     }
 
@@ -1098,42 +1141,44 @@ class Details extends oxUBase
     public function addme()
     {
         $myConfig = $this->getConfig();
-        $myUtils  = oxRegistry::getUtils();
+        $myUtils = oxRegistry::getUtils();
 
         //control captcha
-        $sMac     = $this->getConfig()->getRequestParameter( 'c_mac' );
-        $sMacHash = $this->getConfig()->getRequestParameter( 'c_mach' );
+        $sMac = $this->getConfig()->getRequestParameter('c_mac');
+        $sMacHash = $this->getConfig()->getRequestParameter('c_mach');
         $oCaptcha = $this->getCaptcha();
-        if ( !$oCaptcha->pass( $sMac, $sMacHash ) ) {
+        if (!$oCaptcha->pass($sMac, $sMacHash)) {
             $this->_iPriceAlarmStatus = 2;
+
             return;
         }
 
-        $aParams = $this->getConfig()->getRequestParameter( 'pa' );
-        if ( !isset( $aParams['email'] ) || !$myUtils->isValidEmail( $aParams['email'] ) ) {
+        $aParams = $this->getConfig()->getRequestParameter('pa');
+        if (!isset($aParams['email']) || !$myUtils->isValidEmail($aParams['email'])) {
             $this->_iPriceAlarmStatus = 0;
+
             return;
         }
         $aParams['aid'] = $this->getProduct()->getId();
         $oCur = $myConfig->getActShopCurrencyObject();
         // convert currency to default
-        $dPrice = $myUtils->currency2Float( $aParams['price'] );
+        $dPrice = $myUtils->currency2Float($aParams['price']);
 
-        $oAlarm = oxNew( "oxPriceAlarm" );
-        $oAlarm->oxpricealarm__oxuserid = new oxField( oxRegistry::getSession()->getVariable( 'usr' ));
-        $oAlarm->oxpricealarm__oxemail  = new oxField( $aParams['email']);
-        $oAlarm->oxpricealarm__oxartid  = new oxField( $aParams['aid']);
-        $oAlarm->oxpricealarm__oxprice  = new oxField( $myUtils->fRound( $dPrice, $oCur ));
-        $oAlarm->oxpricealarm__oxshopid = new oxField( $myConfig->getShopId());
-        $oAlarm->oxpricealarm__oxcurrency = new oxField( $oCur->name);
+        $oAlarm = oxNew("oxPriceAlarm");
+        $oAlarm->oxpricealarm__oxuserid = new oxField(oxRegistry::getSession()->getVariable('usr'));
+        $oAlarm->oxpricealarm__oxemail = new oxField($aParams['email']);
+        $oAlarm->oxpricealarm__oxartid = new oxField($aParams['aid']);
+        $oAlarm->oxpricealarm__oxprice = new oxField($myUtils->fRound($dPrice, $oCur));
+        $oAlarm->oxpricealarm__oxshopid = new oxField($myConfig->getShopId());
+        $oAlarm->oxpricealarm__oxcurrency = new oxField($oCur->name);
 
         $oAlarm->oxpricealarm__oxlang = new oxField(oxRegistry::getLang()->getBaseLanguage());
 
         $oAlarm->save();
 
         // Send Email
-        $oEmail = oxNew( 'oxEmail' );
-        $this->_iPriceAlarmStatus = (int) $oEmail->sendPricealarmNotification( $aParams, $oAlarm );
+        $oEmail = oxNew('oxEmail');
+        $this->_iPriceAlarmStatus = (int) $oEmail->sendPricealarmNotification($aParams, $oAlarm);
     }
 
     /**
@@ -1153,14 +1198,15 @@ class Details extends oxUBase
      */
     public function getBidPrice()
     {
-        if ( $this->_sBidPrice === null ) {
+        if ($this->_sBidPrice === null) {
             $this->_sBidPrice = false;
 
-            $aParams = $this->getConfig()->getRequestParameter( 'pa' );
+            $aParams = $this->getConfig()->getRequestParameter('pa');
             $oCur = $this->getConfig()->getActShopCurrencyObject();
-            $iPrice = oxRegistry::getUtils()->currency2Float( $aParams['price'] );
-            $this->_sBidPrice = oxRegistry::getLang()->formatCurrency( $iPrice, $oCur );
+            $iPrice = oxRegistry::getUtils()->currency2Float($aParams['price']);
+            $this->_sBidPrice = oxRegistry::getLang()->formatCurrency($iPrice, $oCur);
         }
+
         return $this->_sBidPrice;
     }
 
@@ -1173,11 +1219,11 @@ class Details extends oxUBase
     {
         // finding parent
         $oProduct = $this->getProduct();
-        if ( ( $oParent = $this->_getParentProduct( $oProduct->oxarticles__oxparentid->value ) ) ) {
-            return $oParent->getVariantSelections( $this->getConfig()->getRequestParameter( "varselid" ), $oProduct->getId() );
+        if (($oParent = $this->_getParentProduct($oProduct->oxarticles__oxparentid->value))) {
+            return $oParent->getVariantSelections($this->getConfig()->getRequestParameter("varselid"), $oProduct->getId());
         }
 
-        return $oProduct->getVariantSelections( $this->getConfig()->getRequestParameter( "varselid" ) );
+        return $oProduct->getVariantSelections($this->getConfig()->getRequestParameter("varselid"));
     }
 
     /**
@@ -1191,19 +1237,21 @@ class Details extends oxUBase
         if ($aVariantSelections && $aVariantSelections['oActiveVariant'] && !$aVariantSelections['blPerfectFit']) {
             return $aVariantSelections['oActiveVariant'];
         }
+
         return $this->getProduct();
     }
 
-     /**
+    /**
      * Template variable getter. Returns search parameter for Html
      *
      * @return string
      */
     public function getSearchParamForHtml()
     {
-        if ( $this->_sSearchParamForHtml === null ) {
-            $this->_sSearchParamForHtml = $this->getConfig()->getRequestParameter( 'searchparam' );
+        if ($this->_sSearchParamForHtml === null) {
+            $this->_sSearchParamForHtml = $this->getConfig()->getRequestParameter('searchparam');
         }
+
         return $this->_sSearchParamForHtml;
     }
 
@@ -1214,7 +1262,7 @@ class Details extends oxUBase
      */
     public function showRdfa()
     {
-        return $this->getConfig()->getConfigParam( 'blRDFaEmbedding' );
+        return $this->getConfig()->getConfigParam('blRDFaEmbedding');
     }
 
     /**
@@ -1230,13 +1278,15 @@ class Details extends oxUBase
 
         $oProduct = $this->getProduct();
         $iCount = $oProduct->oxarticles__oxratingcnt->value;
-        if ( isset($iMin) && isset($iMax) && $iMax != '' && $iMin != '' && $iCount > 0 ) {
+        if (isset($iMin) && isset($iMax) && $iMax != '' && $iMin != '' && $iCount > 0) {
             $aNormalizedRating = array();
-            $iValue = ((4*($oProduct->oxarticles__oxrating->value - $iMin)/($iMax - $iMin)))+1;
+            $iValue = ((4 * ($oProduct->oxarticles__oxrating->value - $iMin) / ($iMax - $iMin))) + 1;
             $aNormalizedRating["count"] = $iCount;
             $aNormalizedRating["value"] = round($iValue, 2);
+
             return $aNormalizedRating;
         }
+
         return false;
     }
 
@@ -1249,17 +1299,18 @@ class Details extends oxUBase
      */
     public function getRDFaValidityPeriod($sShopConfVar)
     {
-        if ( $sShopConfVar ) {
+        if ($sShopConfVar) {
             $aValidity = array();
             $iDays = $this->getConfig()->getConfigParam($sShopConfVar);
             $iFrom = oxRegistry::get("oxUtilsDate")->getTime();
 
             $iThrough = $iFrom + ($iDays * 24 * 60 * 60);
-            $aValidity["from"] = date('Y-m-d\TH:i:s', $iFrom)."Z";
-            $aValidity["through"] = date('Y-m-d\TH:i:s', $iThrough)."Z";
+            $aValidity["from"] = date('Y-m-d\TH:i:s', $iFrom) . "Z";
+            $aValidity["through"] = date('Y-m-d\TH:i:s', $iThrough) . "Z";
 
             return $aValidity;
         }
+
         return false;
     }
 
@@ -1311,13 +1362,16 @@ class Details extends oxUBase
     public function getBundleArticle()
     {
         $oProduct = $this->getProduct();
-        if ( $oProduct && $oProduct->oxarticles__oxbundleid->value ) {
+        if ($oProduct && $oProduct->oxarticles__oxbundleid->value) {
             $oArticle = oxNew("oxArticle");
             $oArticle->load($oProduct->oxarticles__oxbundleid->value);
+
             return $oArticle;
         }
+
         return false;
     }
+
 
     /**
      * Gets accepted payment methods
@@ -1329,6 +1383,7 @@ class Details extends oxUBase
         $iPrice = $this->getProduct()->getPrice()->getBruttoPrice();
         $oPayments = oxNew("oxPaymentList");
         $oPayments->loadRDFaPaymentList($iPrice);
+
         return $oPayments;
     }
 
@@ -1341,6 +1396,7 @@ class Details extends oxUBase
     {
         $oDelSets = oxNew("oxDeliverySetList");
         $oDelSets->loadRDFaDeliverySetList();
+
         return $oDelSets;
     }
 
@@ -1352,8 +1408,9 @@ class Details extends oxUBase
     public function getProductsDeliveryList()
     {
         $oProduct = $this->getProduct();
-        $oDelList = oxNew( "oxDeliveryList" );
-        $oDelList->loadDeliveryListForProduct( $oProduct );
+        $oDelList = oxNew("oxDeliveryList");
+        $oDelList->loadDeliveryListForProduct($oProduct);
+
         return $oDelList;
     }
 
@@ -1404,10 +1461,11 @@ class Details extends oxUBase
      */
     public function canChangeTags()
     {
-        if ( $oUser = $this->getUser() ) {
+        if ($oUser = $this->getUser()) {
 
             return true;
         }
+
         return false;
     }
 
@@ -1437,6 +1495,7 @@ class Details extends oxUBase
     public function showZoomPics()
     {
         $aPicGallery = $this->getPictureGallery();
+
         return $aPicGallery['ZoomPic'];
     }
 
@@ -1447,7 +1506,7 @@ class Details extends oxUBase
      */
     public function isReviewActive()
     {
-        return $this->getConfig()->getConfigParam( 'bl_perfLoadReviews' );
+        return $this->getConfig()->getConfigParam('bl_perfLoadReviews');
     }
 
     /**
@@ -1460,10 +1519,10 @@ class Details extends oxUBase
         $aSorting = parent::getDefaultSorting();
         $oCategory = $this->getActiveCategory();
 
-        if ( $this->getListType() != 'search' &&  $oCategory && $oCategory instanceof oxCategory ) {
-            if ( $sSortBy = $oCategory->getDefaultSorting() ) {
-                $sSortDir = ( $oCategory->getDefaultSortingMode() ) ? "desc" : "asc";
-                $aSorting = array ( 'sortby' => $sSortBy, 'sortdir' => $sSortDir );
+        if ($this->getListType() != 'search' && $oCategory && $oCategory instanceof oxCategory) {
+            if ($sSortBy = $oCategory->getDefaultSorting()) {
+                $sSortDir = ($oCategory->getDefaultSortingMode()) ? "desc" : "asc";
+                $aSorting = array('sortby' => $sSortBy, 'sortdir' => $sSortDir);
             }
         }
 
@@ -1477,11 +1536,12 @@ class Details extends oxUBase
      */
     public function getSortingParameters()
     {
-        $aSorting = $this->getSorting( $this->getSortIdent() );
-        if ( !is_array( $aSorting ) ) {
+        $aSorting = $this->getSorting($this->getSortIdent());
+        if (!is_array($aSorting)) {
             return null;
         }
-        return implode( '|', $aSorting);
+
+        return implode('|', $aSorting);
     }
 
     /**
@@ -1494,8 +1554,8 @@ class Details extends oxUBase
         $aPaths = array();
         $aCatPath = array();
 
-        $oCat = oxNew( 'oxVendor' );
-        $oCat->load( 'root' );
+        $oCat = oxNew('oxVendor');
+        $oCat->load('root');
 
         $aCatPath['link'] = $oCat->getLink();
         $aCatPath['title'] = $oCat->oxvendor__oxtitle->value;
@@ -1518,8 +1578,9 @@ class Details extends oxUBase
     {
         $aPaths = array();
         $aCatPath = array();
-        $aCatPath['title'] = oxRegistry::getLang()->translateString( 'LISTMANIA', oxRegistry::getLang()->getBaseLanguage(), false );
+        $aCatPath['title'] = oxRegistry::getLang()->translateString('LISTMANIA', oxRegistry::getLang()->getBaseLanguage(), false);
         $aPaths[] = $aCatPath;
+
         return $aPaths;
     }
 
@@ -1534,14 +1595,15 @@ class Details extends oxUBase
 
         $aCatPath = array();
 
-        $aCatPath['title'] = oxRegistry::getLang()->translateString( 'TAGS', oxRegistry::getLang()->getBaseLanguage(), false );
-        $aCatPath['link'] = oxRegistry::get( "oxSeoEncoder" )->getStaticUrl( $this->getViewConfig()->getSelfLink() . 'cl=tags' );
+        $aCatPath['title'] = oxRegistry::getLang()->translateString('TAGS', oxRegistry::getLang()->getBaseLanguage(), false);
+        $aCatPath['link'] = oxRegistry::get("oxSeoEncoder")->getStaticUrl($this->getViewConfig()->getSelfLink() . 'cl=tags');
         $aPaths[] = $aCatPath;
 
         $oStr = getStr();
-        $aCatPath['title'] = $oStr->ucfirst( oxRegistry::getConfig()->getRequestParameter( 'searchtag' ) );
-        $aCatPath['link'] = oxRegistry::get( "oxSeoEncoderTag" )->getTagUrl( oxRegistry::getConfig()->getRequestParameter( 'searchtag' ) );
+        $aCatPath['title'] = $oStr->ucfirst(oxRegistry::getConfig()->getRequestParameter('searchtag'));
+        $aCatPath['link'] = oxRegistry::get("oxSeoEncoderTag")->getTagUrl(oxRegistry::getConfig()->getRequestParameter('searchtag'));
         $aPaths[] = $aCatPath;
+
         return $aPaths;
     }
 
@@ -1555,8 +1617,8 @@ class Details extends oxUBase
         $aPaths = array();
         $aCatPath = array();
 
-        $aCatPath['title'] = sprintf( oxRegistry::getLang()->translateString( 'SEARCH_RESULT', oxRegistry::getLang()->getBaseLanguage(), false ), $this->getSearchParamForHtml());
-        $aCatPath['link'] = $this->getViewConfig()->getSelfLink() . 'stoken=' . oxRegistry::getSession()->getVariable( 'sess_stoken' ) . "&amp;cl=search&amp;searchparam=" . $this->getSearchParamForHtml();
+        $aCatPath['title'] = sprintf(oxRegistry::getLang()->translateString('SEARCH_RESULT', oxRegistry::getLang()->getBaseLanguage(), false), $this->getSearchParamForHtml());
+        $aCatPath['link'] = $this->getViewConfig()->getSelfLink() . 'stoken=' . oxRegistry::getSession()->getVariable('sess_stoken') . "&amp;cl=search&amp;searchparam=" . $this->getSearchParamForHtml();
 
         $aPaths[] = $aCatPath;
 
@@ -1574,9 +1636,9 @@ class Details extends oxUBase
 
         $oCatTree = $this->getCatTreePath();
 
-        if ( $oCatTree ) {
+        if ($oCatTree) {
 
-            foreach ( $oCatTree as $oCat ) {
+            foreach ($oCatTree as $oCat) {
                 $aCatPath = array();
 
                 $aCatPath['link'] = $oCat->getLink();
@@ -1584,8 +1646,10 @@ class Details extends oxUBase
 
                 $aPaths[] = $aCatPath;
             }
+
             return $aPaths;
         }
+
         return $aPaths;
     }
 }

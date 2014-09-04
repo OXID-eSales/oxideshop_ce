@@ -28,6 +28,7 @@
  */
 class Article_Attribute extends oxAdminDetails
 {
+
     /**
      * Collects article attributes and selection lists, passes them to Smarty engine,
      * returns name of template file "article_attribute.tpl".
@@ -38,26 +39,26 @@ class Article_Attribute extends oxAdminDetails
     {
         parent::render();
 
-        $this->_aViewData['edit'] = $oArticle = oxNew( 'oxarticle' );
+        $this->_aViewData['edit'] = $oArticle = oxNew('oxarticle');
 
         $soxId = $this->getEditObjectId();
-        if ( $soxId != "-1" && isset( $soxId)) {
+        if ($soxId != "-1" && isset($soxId)) {
             // load object
-            $oArticle->load( $soxId);
+            $oArticle->load($soxId);
 
-            if ( $oArticle->isDerived() ) {
+            if ($oArticle->isDerived()) {
                 $this->_aViewData["readonly"] = true;
             }
         }
 
         $iAoc = oxRegistry::getConfig()->getRequestParameter("aoc");
-        if ( $iAoc == 1 ) {
-            $oArticleAttributeAjax = oxNew( 'article_attribute_ajax' );
+        if ($iAoc == 1) {
+            $oArticleAttributeAjax = oxNew('article_attribute_ajax');
             $this->_aViewData['oxajax'] = $oArticleAttributeAjax->getColumns();
 
             return "popups/article_attribute.tpl";
-        } elseif ( $iAoc == 2 ) {            
-            $oArticleSelectionAjax = oxNew( 'article_selection_ajax' );
+        } elseif ($iAoc == 2) {
+            $oArticleSelectionAjax = oxNew('article_selection_ajax');
             $this->_aViewData['oxajax'] = $oArticleSelectionAjax->getColumns();
 
             return "popups/article_selection.tpl";

@@ -27,6 +27,7 @@
  */
 class Tools_Main extends oxAdminDetails
 {
+
     /**
      * Executes parent method parent::render(), passes data to Smarty engine
      * and returns name of template file "imex_export.tpl".
@@ -36,17 +37,17 @@ class Tools_Main extends oxAdminDetails
     public function render()
     {
         if ($this->getConfig()->isDemoShop()) {
-            oxRegistry::getUtils()->showMessageAndExit( "Access denied !" );
+            oxRegistry::getUtils()->showMessageAndExit("Access denied !");
         }
 
         parent::render();
 
-        $oAuthUser = oxNew( 'oxuser' );
+        $oAuthUser = oxNew('oxuser');
         $oAuthUser->loadAdminUser();
         $this->_aViewData["blIsMallAdmin"] = $oAuthUser->oxuser__oxrights->value == "malladmin";
         
-        $blShowUpdateViews = $this->getConfig()->getConfigParam( 'blShowUpdateViews' );
-        $this->_aViewData['showViewUpdate'] = ( isset( $blShowUpdateViews ) && !$blShowUpdateViews ) ? false : true;
+        $blShowUpdateViews = $this->getConfig()->getConfigParam('blShowUpdateViews');
+        $this->_aViewData['showViewUpdate'] = (isset($blShowUpdateViews) && !$blShowUpdateViews) ? false : true;
 
         return "tools_main.tpl";
     }

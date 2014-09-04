@@ -29,6 +29,7 @@ require_once 'oxerptype.php';
  */
 class oxERPType_Article2Attribute extends oxERPType
 {
+
     /**
      * class constructor
      *

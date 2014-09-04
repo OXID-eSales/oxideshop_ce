@@ -53,7 +53,7 @@ class oxTagList extends oxI18n implements oxITagList
     public function __construct()
     {
         parent::__construct();
-        $this->_oTagSet = oxNew( 'oxtagset' );
+        $this->_oTagSet = oxNew('oxtagset');
     }
 
     /**
@@ -63,7 +63,7 @@ class oxTagList extends oxI18n implements oxITagList
      */
     public function getCacheId()
     {
-        return 'tag_list_'.$this->getLanguage();
+        return 'tag_list_' . $this->getLanguage();
     }
 
     /**
@@ -73,29 +73,29 @@ class oxTagList extends oxI18n implements oxITagList
      */
     public function loadList()
     {
-        $oDb = oxDb::getDb( oxDb::FETCH_MODE_ASSOC );
+        $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
 
         $iLang = $this->getLanguage();
 
-        $sArtView  = getViewName( 'oxarticles', $iLang );
-        $sViewName = getViewName( 'oxartextends', $iLang );
+        $sArtView = getViewName('oxarticles', $iLang);
+        $sViewName = getViewName('oxartextends', $iLang);
 
         // check if article is still active
-        $oArticle   = oxNew( 'oxarticle' );
-        $oArticle->setLanguage( $iLang );
-        $sArtActive = $oArticle->getActiveCheckQuery( true );
+        $oArticle = oxNew('oxarticle');
+        $oArticle->setLanguage($iLang);
+        $sArtActive = $oArticle->getActiveCheckQuery(true);
 
         $sQ = "SELECT {$sViewName}.`oxtags` AS `oxtags`
             FROM {$sArtView} AS `oxarticles`
                 LEFT JOIN {$sViewName} ON `oxarticles`.`oxid` = {$sViewName}.`oxid`
             WHERE `oxarticles`.`oxactive` = 1 AND $sArtActive";
 
-        $oDb->setFetchMode( oxDb::FETCH_MODE_ASSOC );
-        $oRs = $oDb->select( $sQ );
+        $oDb->setFetchMode(oxDb::FETCH_MODE_ASSOC);
+        $oRs = $oDb->select($sQ);
 
         $this->get()->clear();
-        while ( $oRs && $oRs->recordCount() && !$oRs->EOF ) {
-            $this->_addTagsFromDb( $oRs->fields['oxtags'] );
+        while ($oRs && $oRs->recordCount() && !$oRs->EOF) {
+            $this->_addTagsFromDb($oRs->fields['oxtags']);
             $oRs->moveNext();
         }
 
@@ -119,9 +119,9 @@ class oxTagList extends oxI18n implements oxITagList
      *
      * @return void
      */
-    public function addTag( $mTag )
+    public function addTag($mTag)
     {
-        $this->_oTagSet->addTag( $mTag );
+        $this->_oTagSet->addTag($mTag);
     }
 
     /**
@@ -131,18 +131,18 @@ class oxTagList extends oxI18n implements oxITagList
      *
      * @return void
      */
-    protected function _addTagsFromDb( $sTags )
+    protected function _addTagsFromDb($sTags)
     {
-        if ( empty( $sTags ) ) {
+        if (empty($sTags)) {
             return;
         }
         $sSeparator = $this->get()->getSeparator();
-        $aTags = explode( $sSeparator, $sTags );
-        foreach ( $aTags as $sTag ) {
-            $oTag = oxNew( "oxtag" );
-            $oTag->set( $sTag, false );
+        $aTags = explode($sSeparator, $sTags);
+        foreach ($aTags as $sTag) {
+            $oTag = oxNew("oxtag");
+            $oTag->set($sTag, false);
             $oTag->removeUnderscores();
-            $this->addTag( $oTag );
+            $this->addTag($oTag);
         }
     }
 }

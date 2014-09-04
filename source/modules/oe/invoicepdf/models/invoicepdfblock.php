@@ -15,10 +15,10 @@
  *    You should have received a copy of the GNU General Public License
  *    along with OXID eShop Community Edition.  If not, see <http://www.gnu.org/licenses/>.
  *
- * @link      http://www.oxid-esales.com
- * @package   modules
+ * @link          http://www.oxid-esales.com
+ * @package       modules
  * @copyright (C) OXID eSales AG 2003-2013
- * @version OXID eShop CE
+ * @version       OXID eShop CE
  */
 
 /**
@@ -26,14 +26,17 @@
  */
 class InvoicepdfBlock
 {
+
     /**
      * array of data to render
+     *
      * @var array
      */
     protected $_aCache = array();
 
     /**
      * string default Font
+     *
      * @var array
      */
     protected $_sFont = 'Arial';
@@ -44,12 +47,12 @@ class InvoicepdfBlock
      * @param string $sFunc   cacheable function name
      * @param array  $aParams cacheable parameters
      */
-    protected function _toCache( $sFunc, $aParams )
+    protected function _toCache($sFunc, $aParams)
     {
         $oItem = new stdClass();
-        $oItem->sFunc   = $sFunc;
+        $oItem->sFunc = $sFunc;
         $oItem->aParams = $aParams;
-        $this->_aCache[]  = $oItem;
+        $this->_aCache[] = $oItem;
     }
 
     /**
@@ -57,25 +60,25 @@ class InvoicepdfBlock
      *
      * @param object $oPdf object which methods will be executed
      */
-    public function run( $oPdf )
+    public function run($oPdf)
     {
-        foreach ( $this->_aCache as $oItem ) {
+        foreach ($this->_aCache as $oItem) {
             $sFn = $oItem->sFunc;
-            switch ( count( $oItem->aParams ) ) {
+            switch (count($oItem->aParams)) {
                 case 0:
                     $oPdf->$sFn();
                     break;
                 case 1:
-                    $oPdf->$sFn( $oItem->aParams[0]);
+                    $oPdf->$sFn($oItem->aParams[0]);
                     break;
                 case 2:
-                    $oPdf->$sFn( $oItem->aParams[0], $oItem->aParams[1] );
+                    $oPdf->$sFn($oItem->aParams[0], $oItem->aParams[1]);
                     break;
                 case 3:
-                    $oPdf->$sFn( $oItem->aParams[0], $oItem->aParams[1], $oItem->aParams[2]);
+                    $oPdf->$sFn($oItem->aParams[0], $oItem->aParams[1], $oItem->aParams[2]);
                     break;
                 case 4:
-                    $oPdf->$sFn( $oItem->aParams[0], $oItem->aParams[1], $oItem->aParams[2], $oItem->aParams[3]);
+                    $oPdf->$sFn($oItem->aParams[0], $oItem->aParams[1], $oItem->aParams[2], $oItem->aParams[3]);
                     break;
             }
         }
@@ -89,9 +92,9 @@ class InvoicepdfBlock
      * @param int $iRPos    right position
      * @param int $iRHeight right height
      */
-    public function line( $iLPos, $iLHeight, $iRPos, $iRHeight )
+    public function line($iLPos, $iLHeight, $iRPos, $iRHeight)
     {
-        $this->_toCache( 'Line', array( $iLPos, $iLHeight, $iRPos, $iRHeight ) );
+        $this->_toCache('Line', array($iLPos, $iLHeight, $iRPos, $iRHeight));
     }
 
     /**
@@ -101,9 +104,9 @@ class InvoicepdfBlock
      * @param int    $iLHeight height
      * @param string $sString  string to write
      */
-    public function text( $iLPos, $iLHeight, $sString )
+    public function text($iLPos, $iLHeight, $sString)
     {
-        $this->_toCache( 'Text', array( $iLPos, $iLHeight, $sString ) );
+        $this->_toCache('Text', array($iLPos, $iLHeight, $sString));
     }
 
     /**
@@ -115,9 +118,9 @@ class InvoicepdfBlock
      *
      * @return null
      */
-    public function font( $sType, $sWeight, $sSize )
+    public function font($sType, $sWeight, $sSize)
     {
-        $this->_toCache( 'SetFont', array( $sType, $sWeight, $sSize ) );
+        $this->_toCache('SetFont', array($sType, $sWeight, $sSize));
     }
 
     /**
@@ -125,10 +128,10 @@ class InvoicepdfBlock
      *
      * @param int $iDelta new height
      */
-    public function ajustHeight( $iDelta )
+    public function ajustHeight($iDelta)
     {
-        foreach ( $this->_aCache as $key => $oItem ) {
-            switch ( $oItem->sFunc ) {
+        foreach ($this->_aCache as $key => $oItem) {
+            switch ($oItem->sFunc) {
                 case 'Line':
                     $this->_aCache[$key]->aParams[3] += $iDelta;
                     $this->_aCache[$key]->aParams[1] += $iDelta;

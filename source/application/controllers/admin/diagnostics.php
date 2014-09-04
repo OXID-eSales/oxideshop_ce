@@ -26,8 +26,10 @@
  */
 class Diagnostics extends oxAdminView
 {
+
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'diagnostics.tpl';

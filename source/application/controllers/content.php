@@ -25,85 +25,97 @@
  */
 class Content extends oxUBase
 {
+
     /**
      * Content id.
+     *
      * @var string
      */
     protected $_sContentId = null;
 
     /**
      * Content object
+     *
      * @var object
      */
     protected $_oContent = null;
 
     /**
      * Current view template
+     *
      * @var string
      */
     protected $_sThisTemplate = 'page/info/content.tpl';
 
     /**
      * Current view plain template
+     *
      * @var string
      */
     protected $_sThisPlainTemplate = 'page/info/content_plain.tpl';
 
     /**
      * Current view content category (if available)
+     *
      * @var oxcontent
      */
-     protected $_oContentCat = null;
+    protected $_oContentCat = null;
 
-     /**
-      * Ids of contents which can be accessed without any restrictions when private sales is ON
-      * @var array
-      */
-     protected $_aPsAllowedContents = array( "oxagb", "oxrightofwithdrawal", "oximpressum" );
+    /**
+     * Ids of contents which can be accessed without any restrictions when private sales is ON
+     *
+     * @var array
+     */
+    protected $_aPsAllowedContents = array("oxagb", "oxrightofwithdrawal", "oximpressum");
 
-     /**
+    /**
      * Current view content title
+     *
      * @var sting
      */
     protected $_sContentTitle = null;
 
     /**
      * Sign if to load and show bargain action
+     *
      * @var bool
      */
     protected $_blBargainAction = true;
 
     /**
      * Business entity data template
+     *
      * @var string
      */
     protected $_sBusinessTemplate = 'rdfa/content/inc/business_entity.tpl';
 
     /**
      * Delivery charge data template
+     *
      * @var string
      */
     protected $_sDeliveryTemplate = 'rdfa/content/inc/delivery_charge.tpl';
 
     /**
      * Payment charge data template
+     *
      * @var string
      */
     protected $_sPaymentTemplate = 'rdfa/content/inc/payment_charge.tpl';
 
     /**
-    * An array including all ShopConfVars which are used to extend business
-    * entity data
-    *
-    * @var array
-    */
-    protected $_aBusinessEntityExtends = array(    "sRDFaLogoUrl",
-                                                "sRDFaLongitude",
-                                                "sRDFaLatitude",
-                                                "sRDFaGLN",
-                                                "sRDFaNAICS",
-                                                "sRDFaISIC",
-                                                "sRDFaDUNS");
+     * An array including all ShopConfVars which are used to extend business
+     * entity data
+     *
+     * @var array
+     */
+    protected $_aBusinessEntityExtends = array("sRDFaLogoUrl",
+                                               "sRDFaLongitude",
+                                               "sRDFaLatitude",
+                                               "sRDFaGLN",
+                                               "sRDFaNAICS",
+                                               "sRDFaISIC",
+                                               "sRDFaDUNS");
 
     /**
      * Returns prefix ID used by template engine.
@@ -112,9 +124,10 @@ class Content extends oxUBase
      */
     public function getViewId()
     {
-        if ( !isset( $this->_sViewId ) ) {
-            $this->_sViewId = parent::getViewId().'|'.oxRegistry::getConfig()->getRequestParameter( 'oxcid' );
+        if (!isset($this->_sViewId)) {
+            $this->_sViewId = parent::getViewId() . '|' . oxRegistry::getConfig()->getRequestParameter('oxcid');
         }
+
         return $this->_sViewId;
     }
 
@@ -130,28 +143,28 @@ class Content extends oxUBase
         parent::render();
 
         $oContent = $this->getContent();
-        if ( $oContent && !$this->_canShowContent( $oContent->oxcontents__oxloadid->value ) ) {
-            oxRegistry::getUtils()->redirect( $this->getConfig()->getShopHomeURL() . 'cl=account' );
+        if ($oContent && !$this->_canShowContent($oContent->oxcontents__oxloadid->value)) {
+            oxRegistry::getUtils()->redirect($this->getConfig()->getShopHomeURL() . 'cl=account');
         }
 
         $sTpl = false;
-        if ( $sTplName = $this->_getTplName() ) {
+        if ($sTplName = $this->_getTplName()) {
             $this->_sThisTemplate = $sTpl = $sTplName;
-        } elseif ( $oContent ) {
+        } elseif ($oContent) {
             $sTpl = $oContent->getId();
         }
 
-        if ( !$sTpl ) {
+        if (!$sTpl) {
             error_404_handler();
         }
 
         // sometimes you need to display plain templates (e.g. when showing popups)
-        if ( $this->showPlainTemplate() ) {
+        if ($this->showPlainTemplate()) {
             $this->_sThisTemplate = $this->_sThisPlainTemplate;
         }
 
-        if ( $oContent ) {
-            $this->getViewConfig()->setViewConfigParam( 'oxloadid', $oContent->getLoadId() );
+        if ($oContent) {
+            $this->getViewConfig()->setViewConfigParam('oxloadid', $oContent->getLoadId());
         }
 
         return $this->_sThisTemplate;
@@ -164,13 +177,15 @@ class Content extends oxUBase
      *
      * @return bool
      */
-    protected function _canShowContent( $sContentIdent )
+    protected function _canShowContent($sContentIdent)
     {
         $blCan = true;
-        if ( $this->isEnabledPrivateSales() &&
-             !$this->getUser() && !in_array( $sContentIdent, $this->_aPsAllowedContents ) ) {
+        if ($this->isEnabledPrivateSales() &&
+            !$this->getUser() && !in_array($sContentIdent, $this->_aPsAllowedContents)
+        ) {
             $blCan = false;
         }
+
         return $blCan;
     }
 
@@ -184,12 +199,13 @@ class Content extends oxUBase
      *
      * @return string
      */
-    protected function _prepareMetaDescription( $sMeta, $iLength = 200, $blDescTag = false )
+    protected function _prepareMetaDescription($sMeta, $iLength = 200, $blDescTag = false)
     {
-        if ( !$sMeta ) {
+        if (!$sMeta) {
             $sMeta = $this->getContent()->oxcontents__oxtitle->value;
         }
-        return parent::_prepareMetaDescription( $sMeta, $iLength, $blDescTag );
+
+        return parent::_prepareMetaDescription($sMeta, $iLength, $blDescTag);
     }
 
     /**
@@ -201,12 +217,13 @@ class Content extends oxUBase
      *
      * @return string
      */
-    protected function _prepareMetaKeyword( $sKeywords, $blRemoveDuplicatedWords = true )
+    protected function _prepareMetaKeyword($sKeywords, $blRemoveDuplicatedWords = true)
     {
-        if ( !$sKeywords ) {
+        if (!$sKeywords) {
             $sKeywords = $this->getContent()->oxcontents__oxtitle->value;
         }
-        return parent::_prepareMetaKeyword( $sKeywords, $blRemoveDuplicatedWords );
+
+        return parent::_prepareMetaKeyword($sKeywords, $blRemoveDuplicatedWords);
     }
 
     /**
@@ -216,13 +233,14 @@ class Content extends oxUBase
      */
     public function getContentCategory()
     {
-        if ( $this->_oContentCat === null ) {
+        if ($this->_oContentCat === null) {
             // setting default status ..
             $this->_oContentCat = false;
-            if ( ( $oContent = $this->getContent() ) && $oContent->oxcontents__oxtype->value == 2 ) {
+            if (($oContent = $this->getContent()) && $oContent->oxcontents__oxtype->value == 2) {
                 $this->_oContentCat = $oContent;
             }
         }
+
         return $this->_oContentCat;
     }
 
@@ -234,11 +252,12 @@ class Content extends oxUBase
      */
     public function showPlainTemplate()
     {
-        $blPlain = (bool) oxRegistry::getConfig()->getRequestParameter( 'plain' );
-        if ( $blPlain === false ) {
+        $blPlain = (bool) oxRegistry::getConfig()->getRequestParameter('plain');
+        if ($blPlain === false) {
             $oUser = $this->getUser();
-            if ( $this->isEnabledPrivateSales() &&
-                 ( !$oUser || ( $oUser && !$oUser->isTermsAccepted() ) ) ) {
+            if ($this->isEnabledPrivateSales() &&
+                (!$oUser || ($oUser && !$oUser->isTermsAccepted()))
+            ) {
                 $blPlain = true;
             }
         }
@@ -253,7 +272,7 @@ class Content extends oxUBase
      */
     protected function _getSeoObjectId()
     {
-        return oxRegistry::getConfig()->getRequestParameter( 'oxcid' );
+        return oxRegistry::getConfig()->getRequestParameter('oxcid');
     }
 
     /**
@@ -264,25 +283,25 @@ class Content extends oxUBase
      */
     public function getContentId()
     {
-        if ( $this->_sContentId === null ) {
+        if ($this->_sContentId === null) {
 
-            $sContentId = oxRegistry::getConfig()->getRequestParameter( 'oxcid' );
-            $sLoadId = oxRegistry::getConfig()->getRequestParameter( 'oxloadid' );
+            $sContentId = oxRegistry::getConfig()->getRequestParameter('oxcid');
+            $sLoadId = oxRegistry::getConfig()->getRequestParameter('oxloadid');
 
             $this->_sContentId = false;
-            $oContent = oxNew( 'oxContent' );
+            $oContent = oxNew('oxContent');
             $blRes = false;
 
-            if ( $sLoadId ) {
-               $blRes = $oContent->loadByIdent( $sLoadId );
-            } elseif ( $sContentId ) {
-               $blRes = $oContent->load( $sContentId );
+            if ($sLoadId) {
+                $blRes = $oContent->loadByIdent($sLoadId);
+            } elseif ($sContentId) {
+                $blRes = $oContent->load($sContentId);
             } else {
                 //get default content (impressum)
-               $blRes = $oContent->loadByIdent( 'oximpressum' );
+                $blRes = $oContent->loadByIdent('oximpressum');
             }
 
-            if ( $blRes && $oContent->oxcontents__oxactive->value ) {
+            if ($blRes && $oContent->oxcontents__oxactive->value) {
                 $this->_sContentId = $oContent->oxcontents__oxid->value;
                 $this->_oContent = $oContent;
             }
@@ -298,12 +317,13 @@ class Content extends oxUBase
      */
     public function getContent()
     {
-        if ( $this->_oContent === null ) {
+        if ($this->_oContent === null) {
             $this->_oContent = false;
-            if ( $this->getContentId() ) {
+            if ($this->getContentId()) {
                 return $this->_oContent;
             }
         }
+
         return $this->_oContent;
     }
 
@@ -315,7 +335,7 @@ class Content extends oxUBase
      *
      * @return object
      */
-    protected function _getSubject( $iLang )
+    protected function _getSubject($iLang)
     {
         return $this->getContent();
     }
@@ -328,17 +348,17 @@ class Content extends oxUBase
     protected function _getTplName()
     {
         // assign template name
-        $sTplName = oxRegistry::getConfig()->getRequestParameter( 'tpl');
+        $sTplName = oxRegistry::getConfig()->getRequestParameter('tpl');
 
-        if ( $sTplName ) {
+        if ($sTplName) {
             // security fix so that you cant access files from outside template dir
-            $sTplName = basename( $sTplName );
+            $sTplName = basename($sTplName);
 
             //checking if it is template name, not content id
-            if ( !getStr()->preg_match("/\.tpl$/", $sTplName) ) {
+            if (!getStr()->preg_match("/\.tpl$/", $sTplName)) {
                 $sTplName = null;
             } else {
-                $sTplName = 'message/'.$sTplName;
+                $sTplName = 'message/' . $sTplName;
             }
         }
 
@@ -358,7 +378,7 @@ class Content extends oxUBase
         $aPath = array();
 
         $aPath['title'] = $oContent->oxcontents__oxtitle->value;
-        $aPath['link']  = $this->getLink();
+        $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;
 
         return $aPaths;
@@ -371,7 +391,7 @@ class Content extends oxUBase
      */
     public function getTitle()
     {
-        if ( $this->_sContentTitle === null ) {
+        if ($this->_sContentTitle === null) {
             $oContent = $this->getContent();
             $this->_sContentTitle = $oContent->oxcontents__oxtitle->value;
         }
@@ -386,7 +406,7 @@ class Content extends oxUBase
      */
     public function showRdfa()
     {
-        return $this->getConfig()->getConfigParam( 'blRDFaEmbedding' );
+        return $this->getConfig()->getConfigParam('blRDFaEmbedding');
     }
 
     /**
@@ -397,18 +417,19 @@ class Content extends oxUBase
      */
     public function getContentPageTpl()
     {
-        $aTemplate  = array();
+        $aTemplate = array();
         $sContentId = $this->getContent()->oxcontents__oxloadid->value;
-        $myConfig   = $this->getConfig();
-        if ( $sContentId == $myConfig->getConfigParam( 'sRDFaBusinessEntityLoc' )) {
+        $myConfig = $this->getConfig();
+        if ($sContentId == $myConfig->getConfigParam('sRDFaBusinessEntityLoc')) {
             $aTemplate[] = $this->_sBusinessTemplate;
         }
-        if ( $sContentId == $myConfig->getConfigParam( 'sRDFaDeliveryChargeSpecLoc' )) {
+        if ($sContentId == $myConfig->getConfigParam('sRDFaDeliveryChargeSpecLoc')) {
             $aTemplate[] = $this->_sDeliveryTemplate;
         }
-        if ( $sContentId == $myConfig->getConfigParam( 'sRDFaPaymentChargeSpecLoc' )) {
+        if ($sContentId == $myConfig->getConfigParam('sRDFaPaymentChargeSpecLoc')) {
             $aTemplate[] = $this->_sPaymentTemplate;
         }
+
         return $aTemplate;
     }
 
@@ -422,7 +443,7 @@ class Content extends oxUBase
         $myConfig = $this->getConfig();
         $aExtends = array();
 
-        foreach ( $this->_aBusinessEntityExtends as $sExtend ) {
+        foreach ($this->_aBusinessEntityExtends as $sExtend) {
             $aExtends[$sExtend] = $myConfig->getConfigParam($sExtend);
         }
 
@@ -430,16 +451,17 @@ class Content extends oxUBase
     }
 
     /**
-    * Returns an object including all payments which are not mapped to a
-    * predefined GoodRelations payment method. This object is used for
-    * defining new instances of gr:PaymentMethods at content pages.
-    *
-    * @return object
-    */
+     * Returns an object including all payments which are not mapped to a
+     * predefined GoodRelations payment method. This object is used for
+     * defining new instances of gr:PaymentMethods at content pages.
+     *
+     * @return object
+     */
     public function getNotMappedToRDFaPayments()
     {
         $oPayments = oxNew("oxPaymentList");
         $oPayments->loadNonRDFaPaymentList();
+
         return $oPayments;
     }
 
@@ -454,6 +476,7 @@ class Content extends oxUBase
     {
         $oDelSets = oxNew("oxDeliverySetList");
         $oDelSets->loadNonRDFaDeliverySetList();
+
         return $oDelSets;
     }
 
@@ -474,6 +497,7 @@ class Content extends oxUBase
                 $aDeliveryChargeSpecs[] = $oDeliveryChargeSpec;
             }
         }
+
         return $aDeliveryChargeSpecs;
     }
 
@@ -484,10 +508,11 @@ class Content extends oxUBase
      */
     public function getDeliveryList()
     {
-        if ( $this->_oDelList === null ) {
-            $this->_oDelList = oxNew( 'oxDeliveryList' );
+        if ($this->_oDelList === null) {
+            $this->_oDelList = oxNew('oxDeliveryList');
             $this->_oDelList->getList();
         }
+
         return $this->_oDelList;
     }
 
@@ -498,7 +523,7 @@ class Content extends oxUBase
      */
     public function getRdfaVAT()
     {
-        return $this->getConfig()->getConfigParam( 'iRDFaVAT' );
+        return $this->getConfig()->getConfigParam('iRDFaVAT');
     }
 
     /**
@@ -508,12 +533,13 @@ class Content extends oxUBase
      */
     public function getRdfaPriceValidity()
     {
-        $iDays = $this->getConfig()->getConfigParam( 'iRDFaPriceValidity' );
+        $iDays = $this->getConfig()->getConfigParam('iRDFaPriceValidity');
         $iFrom = oxRegistry::get("oxUtilsDate")->getTime();
         $iThrough = $iFrom + ($iDays * 24 * 60 * 60);
         $oPriceValidity = array();
-        $oPriceValidity['validfrom'] = date('Y-m-d\TH:i:s', $iFrom)."Z";
-        $oPriceValidity['validthrough'] = date('Y-m-d\TH:i:s', $iThrough)."Z";
+        $oPriceValidity['validfrom'] = date('Y-m-d\TH:i:s', $iFrom) . "Z";
+        $oPriceValidity['validthrough'] = date('Y-m-d\TH:i:s', $iThrough) . "Z";
+
         return $oPriceValidity;
     }
 
@@ -524,7 +550,7 @@ class Content extends oxUBase
      */
     public function getParsedContent()
     {
-        return oxRegistry::get("oxUtilsView")->parseThroughSmarty( $this->getContent()->oxcontents__oxcontent->value, $this->getContent()->getId() );
+        return oxRegistry::get("oxUtilsView")->parseThroughSmarty($this->getContent()->oxcontents__oxcontent->value, $this->getContent()->getId());
     }
 
 }

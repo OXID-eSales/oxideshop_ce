@@ -43,13 +43,13 @@ class oxInputValidator extends oxSuperCfg
      *
      * @var array
      */
-    protected $_aRequiredCCFields = array( 'kktype',
-                                           'kknumber',
-                                           'kkmonth',
-                                           'kkyear',
-                                           'kkname',
-                                           'kkpruef'
-                                          );
+    protected $_aRequiredCCFields = array('kktype',
+                                          'kknumber',
+                                          'kkmonth',
+                                          'kkyear',
+                                          'kkname',
+                                          'kkpruef'
+    );
 
     /**
      * Input validation errors
@@ -66,26 +66,26 @@ class oxInputValidator extends oxSuperCfg
      *
      * @var array
      */
-    protected $_aPossibleCCType = array( 'mcd', // Master Card
-                                         'vis', // Visa
-                                         'amx', // American Express
-                                         'dsc', // Discover
-                                         'dnc', // Diners Club
-                                         'jcb', // JCB
-                                         'swi', // Switch
-                                         'dlt', // Delta
-                                         'enr'  // EnRoute
-                                        );
+    protected $_aPossibleCCType = array('mcd', // Master Card
+                                        'vis', // Visa
+                                        'amx', // American Express
+                                        'dsc', // Discover
+                                        'dnc', // Diners Club
+                                        'jcb', // JCB
+                                        'swi', // Switch
+                                        'dlt', // Delta
+                                        'enr' // EnRoute
+    );
 
     /**
      * Required fields for debit cards
      *
      * @var array
      */
-    protected $_aRequiredDCFields = array( 'lsbankname',
-                                           'lsktonr',
-                                           'lsktoinhaber'
-                                         );
+    protected $_aRequiredDCFields = array('lsbankname',
+                                          'lsktonr',
+                                          'lsktoinhaber'
+    );
 
     /**
      * Class constructor. The constructor is defined in order to be possible to call parent::__construct() in modules.
@@ -104,21 +104,21 @@ class oxInputValidator extends oxSuperCfg
      *
      * @return float
      */
-    public function validateBasketAmount( $dAmount )
+    public function validateBasketAmount($dAmount)
     {
-        $dAmount = str_replace( ',', '.', $dAmount );
+        $dAmount = str_replace(',', '.', $dAmount);
 
-        if ( !is_numeric( $dAmount ) || $dAmount < 0) {
+        if (!is_numeric($dAmount) || $dAmount < 0) {
             /**
              * @var oxArticleInputException $oEx
              */
-            $oEx = oxNew( 'oxArticleInputException' );
+            $oEx = oxNew('oxArticleInputException');
             $oEx->setMessage(oxRegistry::getLang()->translateString('ERROR_MESSAGE_INPUT_INVALIDAMOUNT'));
             throw $oEx;
         }
 
-        if ( !oxRegistry::getConfig()->getConfigParam( 'blAllowUnevenAmounts' ) ) {
-            $dAmount = round( ( string ) $dAmount );
+        if (!oxRegistry::getConfig()->getConfigParam('blAllowUnevenAmounts')) {
+            $dAmount = round(( string ) $dAmount);
         }
 
         //negative amounts are not allowed
@@ -141,41 +141,41 @@ class oxInputValidator extends oxSuperCfg
      *
      * @return string login name
      */
-    public function checkLogin( $oUser, $sLogin, $aInvAddress )
+    public function checkLogin($oUser, $sLogin, $aInvAddress)
     {
-        $sLogin = ( isset( $aInvAddress['oxuser__oxusername'] ) ) ? $aInvAddress['oxuser__oxusername'] : $sLogin;
+        $sLogin = (isset($aInvAddress['oxuser__oxusername'])) ? $aInvAddress['oxuser__oxusername'] : $sLogin;
 
         // check only for users with password during registration
         // if user wants to change user name - we must check if passwords are ok before changing
-        if ( $oUser->oxuser__oxpassword->value && $sLogin != $oUser->oxuser__oxusername->value ) {
+        if ($oUser->oxuser__oxpassword->value && $sLogin != $oUser->oxuser__oxusername->value) {
 
             // on this case password must be taken directly from request
-            $sNewPass = (isset( $aInvAddress['oxuser__oxpassword']) && $aInvAddress['oxuser__oxpassword'] )?$aInvAddress['oxuser__oxpassword']:oxRegistry::getConfig()->getRequestParameter( 'user_password' );
-            if ( !$sNewPass ) {
+            $sNewPass = (isset($aInvAddress['oxuser__oxpassword']) && $aInvAddress['oxuser__oxpassword']) ? $aInvAddress['oxuser__oxpassword'] : oxRegistry::getConfig()->getRequestParameter('user_password');
+            if (!$sNewPass) {
 
                 // 1. user forgot to enter password
-                $oEx = oxNew( 'oxInputException' );
-                $oEx->setMessage( oxRegistry::getLang()->translateString('ERROR_MESSAGE_INPUT_NOTALLFIELDS'));
+                $oEx = oxNew('oxInputException');
+                $oEx->setMessage(oxRegistry::getLang()->translateString('ERROR_MESSAGE_INPUT_NOTALLFIELDS'));
 
-                return $this->_addValidationError( "oxuser__oxpassword", $oEx );
+                return $this->_addValidationError("oxuser__oxpassword", $oEx);
             } else {
 
                 // 2. entered wrong password
-                if ( !$oUser->isSamePassword( $sNewPass ) ) {
-                    $oEx = oxNew( 'oxUserException' );
-                    $oEx->setMessage( oxRegistry::getLang()->translateString('ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH') );
+                if (!$oUser->isSamePassword($sNewPass)) {
+                    $oEx = oxNew('oxUserException');
+                    $oEx->setMessage(oxRegistry::getLang()->translateString('ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH'));
 
-                    return $this->_addValidationError( "oxuser__oxpassword", $oEx );
+                    return $this->_addValidationError("oxuser__oxpassword", $oEx);
                 }
             }
         }
 
-        if ( $oUser->checkIfEmailExists( $sLogin ) ) {
+        if ($oUser->checkIfEmailExists($sLogin)) {
             //if exists then we do now allow to do that
-            $oEx = oxNew( 'oxUserException' );
-            $oEx->setMessage( sprintf( oxRegistry::getLang()->translateString( 'ERROR_MESSAGE_USER_USEREXISTS' ), $sLogin ) );
+            $oEx = oxNew('oxUserException');
+            $oEx->setMessage(sprintf(oxRegistry::getLang()->translateString('ERROR_MESSAGE_USER_USEREXISTS'), $sLogin));
 
-            return $this->_addValidationError( "oxuser__oxusername", $oEx );
+            return $this->_addValidationError("oxuser__oxusername", $oEx);
         }
 
         return $sLogin;
@@ -190,22 +190,22 @@ class oxInputValidator extends oxSuperCfg
      *
      * @return null
      */
-    public function checkEmail(  $oUser, $sEmail )
+    public function checkEmail($oUser, $sEmail)
     {
         // missing email address (user login name) ?
-        if ( !$sEmail ) {
-            $oEx = oxNew( 'oxInputException' );
-            $oEx->setMessage( oxRegistry::getLang()->translateString('ERROR_MESSAGE_INPUT_NOTALLFIELDS'));
+        if (!$sEmail) {
+            $oEx = oxNew('oxInputException');
+            $oEx->setMessage(oxRegistry::getLang()->translateString('ERROR_MESSAGE_INPUT_NOTALLFIELDS'));
 
-            return $this->_addValidationError( "oxuser__oxusername", $oEx );
+            return $this->_addValidationError("oxuser__oxusername", $oEx);
         }
 
         // invalid email address ?
-        if ( !oxRegistry::getUtils()->isValidEmail( $sEmail ) ) {
-            $oEx = oxNew( 'oxInputException' );
-            $oEx->setMessage( oxRegistry::getLang()->translateString('ERROR_MESSAGE_INPUT_NOVALIDEMAIL'));
+        if (!oxRegistry::getUtils()->isValidEmail($sEmail)) {
+            $oEx = oxNew('oxInputException');
+            $oEx->setMessage(oxRegistry::getLang()->translateString('ERROR_MESSAGE_INPUT_NOVALIDEMAIL'));
 
-            return $this->_addValidationError( "oxuser__oxusername", $oEx );
+            return $this->_addValidationError("oxuser__oxusername", $oEx);
         }
     }
 
@@ -220,30 +220,30 @@ class oxInputValidator extends oxSuperCfg
      *
      * @return oxException|null
      */
-    public function checkPassword( $oUser, $sNewPass, $sConfPass, $blCheckLength = false )
+    public function checkPassword($oUser, $sNewPass, $sConfPass, $blCheckLength = false)
     {
         //  no password at all
-        if ( $blCheckLength && getStr()->strlen( $sNewPass ) == 0 ) {
-            $oEx = oxNew( 'oxInputException' );
+        if ($blCheckLength && getStr()->strlen($sNewPass) == 0) {
+            $oEx = oxNew('oxInputException');
             $oEx->setMessage(oxRegistry::getLang()->translateString('ERROR_MESSAGE_INPUT_EMPTYPASS'));
 
-            return $this->_addValidationError( "oxuser__oxpassword", $oEx );
+            return $this->_addValidationError("oxuser__oxpassword", $oEx);
         }
 
         //  password is too short ?
-        if ( $blCheckLength &&  getStr()->strlen( $sNewPass ) < 6 ) {
-            $oEx = oxNew( 'oxInputException' );
+        if ($blCheckLength && getStr()->strlen($sNewPass) < 6) {
+            $oEx = oxNew('oxInputException');
             $oEx->setMessage(oxRegistry::getLang()->translateString('ERROR_MESSAGE_PASSWORD_TOO_SHORT'));
 
-            return $this->_addValidationError( "oxuser__oxpassword", $oEx );
+            return $this->_addValidationError("oxuser__oxpassword", $oEx);
         }
 
         //  passwords do not match ?
-        if ( $sNewPass != $sConfPass ) {
-            $oEx = oxNew( 'oxUserException' );
+        if ($sNewPass != $sConfPass) {
+            $oEx = oxNew('oxUserException');
             $oEx->setMessage(oxRegistry::getLang()->translateString('ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH'));
 
-            return $this->_addValidationError( "oxuser__oxpassword", $oEx );
+            return $this->_addValidationError("oxuser__oxpassword", $oEx);
         }
     }
 
@@ -251,13 +251,13 @@ class oxInputValidator extends oxSuperCfg
      * Checking if all required fields were filled. In case of error
      * exception is thrown
      *
-     * @param oxUser $oUser       active user
-     * @param array  $aBillingAddress billing address
+     * @param oxUser $oUser            active user
+     * @param array  $aBillingAddress  billing address
      * @param array  $aDeliveryAddress delivery address
      *
      * @return null
      */
-    public function checkRequiredFields( $oUser, $aBillingAddress, $aDeliveryAddress )
+    public function checkRequiredFields($oUser, $aBillingAddress, $aDeliveryAddress)
     {
         /** @var oxRequiredAddressFields $oRequiredAddressFields */
         $oRequiredAddressFields = oxNew('oxRequiredAddressFields');
@@ -280,11 +280,11 @@ class oxInputValidator extends oxSuperCfg
             $aInvalidFields = array_merge($aInvalidFields, $oFieldsValidator->getInvalidFields());
         }
 
-        foreach ( $aInvalidFields as $sField ) {
-           $oEx = oxNew( 'oxInputException' );
-           $oEx->setMessage(oxRegistry::getLang()->translateString('ERROR_MESSAGE_INPUT_NOTALLFIELDS'));
+        foreach ($aInvalidFields as $sField) {
+            $oEx = oxNew('oxInputException');
+            $oEx->setMessage(oxRegistry::getLang()->translateString('ERROR_MESSAGE_INPUT_NOTALLFIELDS'));
 
-           $this->_addValidationError( $sField, $oEx );
+            $this->_addValidationError($sField, $oEx);
         }
     }
 
@@ -292,15 +292,17 @@ class oxInputValidator extends oxSuperCfg
      * Creates oxAddress object from given array.
      *
      * @param oxUser|oxAddress $oObject
-     * @param array $aFields
+     * @param array            $aFields
+     *
      * @return oxUser|oxAddress
      */
     private function _setFields($oObject, $aFields)
     {
-        $aFields = is_array($aFields)? $aFields : array();
+        $aFields = is_array($aFields) ? $aFields : array();
         foreach ($aFields as $sKey => $sValue) {
             $oObject->$sKey = oxNew('oxField', $sValue);
         }
+
         return $oObject;
     }
 
@@ -315,14 +317,14 @@ class oxInputValidator extends oxSuperCfg
      *
      * @return null
      */
-    public function checkRequiredArrayFields( $oUser, $sFieldName, $aFieldValues )
+    public function checkRequiredArrayFields($oUser, $sFieldName, $aFieldValues)
     {
-        foreach ( $aFieldValues as $sValue ) {
-            if ( !trim( $sValue ) ) {
-                $oEx = oxNew( 'oxInputException' );
+        foreach ($aFieldValues as $sValue) {
+            if (!trim($sValue)) {
+                $oEx = oxNew('oxInputException');
                 $oEx->setMessage(oxRegistry::getLang()->translateString('ERROR_MESSAGE_INPUT_NOTALLFIELDS'));
 
-                $this->_addValidationError( $sFieldName, $oEx );
+                $this->_addValidationError($sFieldName, $oEx);
             }
         }
     }
@@ -336,27 +338,27 @@ class oxInputValidator extends oxSuperCfg
      *
      * @return null
      */
-    public function checkCountries( $oUser, $aInvAddress, $aDelAddress )
+    public function checkCountries($oUser, $aInvAddress, $aDelAddress)
     {
-        $sBillCtry = isset( $aInvAddress['oxuser__oxcountryid'] ) ? $aInvAddress['oxuser__oxcountryid'] : null;
-        $sDelCtry  = isset( $aDelAddress['oxaddress__oxcountryid'] ) ? $aDelAddress['oxaddress__oxcountryid'] : null;
+        $sBillCtry = isset($aInvAddress['oxuser__oxcountryid']) ? $aInvAddress['oxuser__oxcountryid'] : null;
+        $sDelCtry = isset($aDelAddress['oxaddress__oxcountryid']) ? $aDelAddress['oxaddress__oxcountryid'] : null;
 
-        if ( $sBillCtry || $sDelCtry ) {
+        if ($sBillCtry || $sDelCtry) {
             $oDb = oxDb::getDb();
 
-            if ( ( $sBillCtry == $sDelCtry ) || ( !$sBillCtry && $sDelCtry ) || ( $sBillCtry && !$sDelCtry ) ) {
+            if (($sBillCtry == $sDelCtry) || (!$sBillCtry && $sDelCtry) || ($sBillCtry && !$sDelCtry)) {
                 $sBillCtry = $sBillCtry ? $sBillCtry : $sDelCtry;
-                $sQ = "select oxactive from oxcountry where oxid = ".$oDb->quote( $sBillCtry )." ";
+                $sQ = "select oxactive from oxcountry where oxid = " . $oDb->quote($sBillCtry) . " ";
             } else {
-                $sQ = "select ( select oxactive from oxcountry where oxid = ".$oDb->quote( $sBillCtry )." ) and
-                              ( select oxactive from oxcountry where oxid = ".$oDb->quote( $sDelCtry )." ) ";
+                $sQ = "select ( select oxactive from oxcountry where oxid = " . $oDb->quote($sBillCtry) . " ) and
+                              ( select oxactive from oxcountry where oxid = " . $oDb->quote($sDelCtry) . " ) ";
             }
 
-            if ( !$oDb->getOne( $sQ ) ) {
-                $oEx = oxNew( 'oxUserException' );
+            if (!$oDb->getOne($sQ)) {
+                $oEx = oxNew('oxUserException');
                 $oEx->setMessage(oxRegistry::getLang()->translateString('ERROR_MESSAGE_INPUT_NOTALLFIELDS'));
 
-                $this->_addValidationError( "oxuser__oxpassword", $oEx );
+                $this->_addValidationError("oxuser__oxpassword", $oEx);
             }
         }
     }
@@ -370,31 +372,27 @@ class oxInputValidator extends oxSuperCfg
      *
      * @return null
      */
-    public function checkVatId( $oUser, $aInvAddress )
+    public function checkVatId($oUser, $aInvAddress)
     {
-        if ( $this->_hasRequiredParametersForVatInCheck( $aInvAddress ) ) {
+        if ($this->_hasRequiredParametersForVatInCheck($aInvAddress)) {
 
             $oCountry = $this->_getCountry($aInvAddress['oxuser__oxcountryid']);
 
-            if ( $oCountry && $oCountry->isInEU() ) {
+            if ($oCountry && $oCountry->isInEU()) {
 
-                $oVatInValidator = $this->getCompanyVatInValidator( $oCountry );
+                $oVatInValidator = $this->getCompanyVatInValidator($oCountry);
 
-                /** @var oxCompanyVatIn $oVatIn */
+                /** @var oxCompanyVatId $oVatIn */
                 $oVatIn = oxNew('oxCompanyVatIn', $aInvAddress['oxuser__oxustid']);
 
-                if ( !$oVatInValidator->validate( $oVatIn ) ) {
+                if (!$oVatInValidator->validate($oVatIn)) {
                     /** @var oxInputException $oEx */
-                    $oEx = oxNew( 'oxInputException' );
-                    $oEx->setMessage(oxRegistry::getLang()->translateString( 'VAT_MESSAGE_'.$oVatInValidator->getError() ));
-                    return $this->_addValidationError( "oxuser__oxustid", $oEx );
+                    $oEx = oxNew('oxInputException');
+                    $oEx->setMessage(oxRegistry::getLang()->translateString('VAT_MESSAGE_' . $oVatInValidator->getError()));
+
+                    return $this->_addValidationError("oxuser__oxustid", $oEx);
                 }
             }
-        } elseif ($aInvAddress['oxuser__oxustid'] &&  !$aInvAddress['oxuser__oxcompany']) {
-            /** @var oxInputException $oEx */
-            $oEx = oxNew( 'oxInputException' );
-            $oEx->setMessage(oxRegistry::getLang()->translateString('VAT_MESSAGE_COMPANY_MISSING'));
-            return $this->_addValidationError( "oxuser__oxcompany", $oEx );
         }
     }
 
@@ -406,10 +404,10 @@ class oxInputValidator extends oxSuperCfg
      *
      * @return oxCountry
      */
-    protected function _getCountry( $sCountryId )
+    protected function _getCountry($sCountryId)
     {
         $oCountry = oxNew('oxCountry');
-        $oCountry->load( $sCountryId );
+        $oCountry->load($sCountryId);
 
         return $oCountry;
     }
@@ -432,10 +430,11 @@ class oxInputValidator extends oxSuperCfg
     public function getFirstValidationError()
     {
         $oErr = null;
-        $aErr = reset( $this->_aInputValidationErrors );
-        if ( is_array( $aErr ) ) {
-            $oErr = reset( $aErr );
+        $aErr = reset($this->_aInputValidationErrors);
+        if (is_array($aErr)) {
+            $oErr = reset($aErr);
         }
+
         return $oErr;
     }
 
@@ -447,23 +446,23 @@ class oxInputValidator extends oxSuperCfg
      *
      * @return bool
      */
-    public function validatePaymentInputData( $sPaymentId, & $aDynValue )
+    public function validatePaymentInputData($sPaymentId, & $aDynValue)
     {
         $mxValidationResult = true;
 
-        switch( $sPaymentId ) {
+        switch ($sPaymentId) {
             case 'oxidcreditcard':
                 $mxValidationResult = false;
 
-                $blAllCreditCardInformationSet = $this->_isAllBankInformationSet( $this->_aRequiredCCFields, $aDynValue );
-                $blCreditCardTypeExist = in_array( $aDynValue['kktype'], $this->_aPossibleCCType );
+                $blAllCreditCardInformationSet = $this->_isAllBankInformationSet($this->_aRequiredCCFields, $aDynValue);
+                $blCreditCardTypeExist = in_array($aDynValue['kktype'], $this->_aPossibleCCType);
 
-                if ( $blAllCreditCardInformationSet && $blCreditCardTypeExist ) {
-                    $oCardValidator = oxNew( "oxccvalidator" );
+                if ($blAllCreditCardInformationSet && $blCreditCardTypeExist) {
+                    $oCardValidator = oxNew("oxccvalidator");
                     $mxValidationResult = $oCardValidator->isValidCard(
-                                                    $aDynValue['kknumber'],
-                                                    $aDynValue['kktype'],
-                                                    $aDynValue['kkmonth'].substr( $aDynValue['kkyear'], 2, 2 )
+                        $aDynValue['kknumber'],
+                        $aDynValue['kktype'],
+                        $aDynValue['kkmonth'] . substr($aDynValue['kkyear'], 2, 2)
                     );
                 }
                 break;
@@ -471,8 +470,8 @@ class oxInputValidator extends oxSuperCfg
             case "oxiddebitnote":
                 $mxValidationResult = false;
 
-                if ( $this->_isAllBankInformationSet( $this->_aRequiredDCFields, $aDynValue ) ) {
-                    $mxValidationResult = $this->_validateDebitNote( $aDynValue );
+                if ($this->_isAllBankInformationSet($this->_aRequiredDCFields, $aDynValue)) {
+                    $mxValidationResult = $this->_validateDebitNote($aDynValue);
                 }
 
                 break;
@@ -490,7 +489,7 @@ class oxInputValidator extends oxSuperCfg
      *
      * @return exception
      */
-    protected function _addValidationError( $sFieldName, $oErr )
+    protected function _addValidationError($sFieldName, $oErr)
     {
         return $this->_aInputValidationErrors[$sFieldName][] = $oErr;
     }
@@ -500,22 +499,22 @@ class oxInputValidator extends oxSuperCfg
      *
      * @return bool|int
      */
-    protected function _validateDebitNote( $aDebitInformation )
+    protected function _validateDebitNote($aDebitInformation)
     {
-        $aDebitInformation = $this->_cleanDebitInformation( $aDebitInformation );
+        $aDebitInformation = $this->_cleanDebitInformation($aDebitInformation);
         $sBankCode = $aDebitInformation['lsblz'];
         $sAccountNumber = $aDebitInformation['lsktonr'];
-        $oSepaValidator = oxNew( "oxSepaValidator" );
+        $oSepaValidator = oxNew("oxSepaValidator");
 
-        if ( empty( $sBankCode ) || $oSepaValidator->isValidBIC( $sBankCode ) ) {
+        if (empty($sBankCode) || $oSepaValidator->isValidBIC($sBankCode)) {
             $mxValidationResult = true;
-            if ( !$oSepaValidator->isValidIBAN( $sAccountNumber ) ) {
+            if (!$oSepaValidator->isValidIBAN($sAccountNumber)) {
                 $mxValidationResult = self::INVALID_ACCOUNT_NUMBER;
             }
         } else {
             $mxValidationResult = self::INVALID_BANK_CODE;
-            if ( !oxRegistry::getConfig()->getConfigParam( 'blSkipDebitOldBankInfo' ) ) {
-                $mxValidationResult = $this->_validateOldDebitInfo( $aDebitInformation );
+            if (!oxRegistry::getConfig()->getConfigParam('blSkipDebitOldBankInfo')) {
+                $mxValidationResult = $this->_validateOldDebitInfo($aDebitInformation);
             }
         }
 
@@ -524,21 +523,22 @@ class oxInputValidator extends oxSuperCfg
 
     /**
      * @param $aDebitInfo
+     *
      * @return bool|int
      */
-    protected function _validateOldDebitInfo( $aDebitInfo )
+    protected function _validateOldDebitInfo($aDebitInfo)
     {
-        $oStr       = getStr();
-        $aDebitInfo = $this->_fixAccountNumber( $aDebitInfo );
+        $oStr = getStr();
+        $aDebitInfo = $this->_fixAccountNumber($aDebitInfo);
 
         $mxValidationResult = true;
 
-        if ( !$oStr->preg_match( "/^\d{5,8}$/", $aDebitInfo['lsblz'] ) ) {
+        if (!$oStr->preg_match("/^\d{5,8}$/", $aDebitInfo['lsblz'])) {
             // Bank code is invalid
             $mxValidationResult = self::INVALID_BANK_CODE;
         }
 
-        if ( true === $mxValidationResult && !$oStr->preg_match( "/^\d{10,12}$/", $aDebitInfo['lsktonr'] ) ) {
+        if (true === $mxValidationResult && !$oStr->preg_match("/^\d{10,12}$/", $aDebitInfo['lsktonr'])) {
             // Account number is invalid
             $mxValidationResult = self::INVALID_ACCOUNT_NUMBER;
         }
@@ -549,16 +549,18 @@ class oxInputValidator extends oxSuperCfg
 
     /**
      * If account number is shorter than 10, add zeros in front of number.
+     *
      * @param $aDebitInfo
+     *
      * @return array
      */
-    protected function _fixAccountNumber( $aDebitInfo )
+    protected function _fixAccountNumber($aDebitInfo)
     {
         $oStr = getStr();
 
-        if ( $oStr->strlen( $aDebitInfo['lsktonr'] ) < 10 ) {
+        if ($oStr->strlen($aDebitInfo['lsktonr']) < 10) {
             $sNewNum = str_repeat(
-                           '0', 10 - $oStr->strlen( $aDebitInfo['lsktonr'] )
+                           '0', 10 - $oStr->strlen($aDebitInfo['lsktonr'])
                        ) . $aDebitInfo['lsktonr'];
             $aDebitInfo['lsktonr'] = $sNewNum;
         }
@@ -567,16 +569,16 @@ class oxInputValidator extends oxSuperCfg
     }
 
     /**
-     * @param array $aRequiredFields fields must be set.
+     * @param array $aRequiredFields  fields must be set.
      * @param array $aBankInformation actual information.
      *
      * @return bool
      */
-    protected function _isAllBankInformationSet( $aRequiredFields, $aBankInformation )
+    protected function _isAllBankInformationSet($aRequiredFields, $aBankInformation)
     {
         $blResult = true;
-        foreach ( $aRequiredFields as $sFieldName ) {
-            if ( !isset( $aBankInformation[$sFieldName] ) || !trim( $aBankInformation[$sFieldName] ) ) {
+        foreach ($aRequiredFields as $sFieldName) {
+            if (!isset($aBankInformation[$sFieldName]) || !trim($aBankInformation[$sFieldName])) {
                 $blResult = false;
                 break;
             }
@@ -587,13 +589,15 @@ class oxInputValidator extends oxSuperCfg
 
     /**
      * Clean up spaces.
+     *
      * @param $aDebitInformation
+     *
      * @return mixed
      */
-    protected function _cleanDebitInformation( $aDebitInformation )
+    protected function _cleanDebitInformation($aDebitInformation)
     {
-        $aDebitInformation['lsblz']   = str_replace( ' ', '', $aDebitInformation['lsblz'] );
-        $aDebitInformation['lsktonr'] = str_replace( ' ', '', $aDebitInformation['lsktonr'] );
+        $aDebitInformation['lsblz'] = str_replace(' ', '', $aDebitInformation['lsblz']);
+        $aDebitInformation['lsktonr'] = str_replace(' ', '', $aDebitInformation['lsktonr']);
 
         return $aDebitInformation;
     }
@@ -605,7 +609,7 @@ class oxInputValidator extends oxSuperCfg
      *
      * @return bool
      */
-    protected function _hasRequiredParametersForVatInCheck( $aInvAddress )
+    protected function _hasRequiredParametersForVatInCheck($aInvAddress)
     {
         return $aInvAddress['oxuser__oxustid'] && $aInvAddress['oxuser__oxcountryid'] && $aInvAddress['oxuser__oxcompany'];
     }
@@ -613,16 +617,16 @@ class oxInputValidator extends oxSuperCfg
     /**
      * Compares country VAT identification number with it's prefix.
      *
-     * @param array $aInvAddress
+     * @param array     $aInvAddress
      * @param oxCountry $oCountry
      *
      * @deprecated since v5.2 (2014-07-28); This logic was moved to oxCompanyVatInValidator
      *
      * @return bool
      */
-    private function _isVATIdentificationNumberInvalid( $aInvAddress, $oCountry )
+    private function _isVATIdentificationNumberInvalid($aInvAddress, $oCountry)
     {
-        return (bool) strncmp( $aInvAddress['oxuser__oxustid'], $oCountry->getVATIdentificationNumberPrefix(), 2 );
+        return (bool) strncmp($aInvAddress['oxuser__oxustid'], $oCountry->getVATIdentificationNumberPrefix(), 2);
     }
 
     /**
@@ -633,7 +637,8 @@ class oxInputValidator extends oxSuperCfg
      */
     protected function _getVatIdValidator()
     {
-        $oVatCheck = oxNew( 'oxOnlineVatIdCheck' );
+        $oVatCheck = oxNew('oxOnlineVatIdCheck');
+
         return $oVatCheck;
     }
 
@@ -643,7 +648,7 @@ class oxInputValidator extends oxSuperCfg
      *
      * @param oxCompanyVatInValidator $oCompanyVatInValidator
      */
-    public function setCompanyVatInValidator( $oCompanyVatInValidator )
+    public function setCompanyVatInValidator($oCompanyVatInValidator)
     {
         $this->_oCompanyVatInValidator = $oCompanyVatInValidator;
     }
@@ -655,22 +660,22 @@ class oxInputValidator extends oxSuperCfg
      *
      * @return oxCompanyVatInValidator
      */
-    public function getCompanyVatInValidator( $oCountry )
+    public function getCompanyVatInValidator($oCountry)
     {
-        if( is_null($this->_oCompanyVatInValidator) ){
+        if (is_null($this->_oCompanyVatInValidator)) {
 
             /** @var oxCompanyVatInValidator $oVatInValidator */
             $oVatInValidator = oxNew('oxCompanyVatInValidator', $oCountry);
 
             /** @var  oxCompanyVatInCompanyChecker $oValidator */
-            $oValidator = oxNew( 'oxCompanyVatInCountryChecker' );
+            $oValidator = oxNew('oxCompanyVatInCountryChecker');
 
-            $oVatInValidator->addChecker( $oValidator );
+            $oVatInValidator->addChecker($oValidator);
 
             /** @var oxOnlineVatIdCheck $oOnlineValidator */
-            if (!oxRegistry::getConfig()->getConfigParam( "blVatIdCheckDisabled" )) {
-                $oOnlineValidator = oxNew( 'oxOnlineVatIdCheck' );
-                $oVatInValidator->addChecker( $oOnlineValidator );
+            if (!oxRegistry::getConfig()->getConfigParam("blVatIdCheckDisabled")) {
+                $oOnlineValidator = oxNew('oxOnlineVatIdCheck');
+                $oVatInValidator->addChecker($oOnlineValidator);
             }
 
             $this->setCompanyVatInValidator($oVatInValidator);

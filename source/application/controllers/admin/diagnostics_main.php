@@ -32,14 +32,14 @@ class Diagnostics_Main extends oxAdminDetails
      *
      * @var boolean
      */
-    protected $_blError          = false;
+    protected $_blError = false;
 
     /**
      * error message
      *
      * @var string
      */
-    protected $_sErrorMessage   = null;
+    protected $_sErrorMessage = null;
 
     /**
      * Diagnostic check object
@@ -90,7 +90,6 @@ class Diagnostics_Main extends oxAdminDetails
     }
 
 
-
     /**
      * Calls parent costructor and initializes checker object
      *
@@ -99,9 +98,9 @@ class Diagnostics_Main extends oxAdminDetails
     {
         parent::__construct();
 
-        $this->_sShopDir = $this->getConfig()->getConfigParam( 'sShopDir' );
-        $this->_oOutput = oxNew ( "oxDiagnosticsOutput" );
-        $this->_oRenderer = oxNew ( "oxSmartyRenderer" );
+        $this->_sShopDir = $this->getConfig()->getConfigParam('sShopDir');
+        $this->_oOutput = oxNew("oxDiagnosticsOutput");
+        $this->_oRenderer = oxNew("oxSmartyRenderer");
     }
 
     /**
@@ -113,7 +112,7 @@ class Diagnostics_Main extends oxAdminDetails
     {
         parent::render();
 
-        if ( $this->_hasError() ) {
+        if ($this->_hasError()) {
             $this->_aViewData['sErrorMessage'] = $this->_getErrorMessage();
         }
 
@@ -127,19 +126,18 @@ class Diagnostics_Main extends oxAdminDetails
      */
     protected function _getFilesToCheck()
     {
-        $oDiagnostics = oxNew( 'oxDiagnostics' );
+        $oDiagnostics = oxNew('oxDiagnostics');
         $aFilePathList = $oDiagnostics->getFileCheckerPathList();
         $aFileExtensionList = $oDiagnostics->getFileCheckerExtensionList();
 
-        $oFileCollector = oxNew ( "oxFileCollector" );
-        $oFileCollector->setBaseDirectory( $this->_sShopDir );
+        $oFileCollector = oxNew("oxFileCollector");
+        $oFileCollector->setBaseDirectory($this->_sShopDir);
 
-        foreach ( $aFilePathList as $sPath ) {
-            if ( is_file( $this->_sShopDir . $sPath ) ) {
-                $oFileCollector->addFile( $sPath );
-            }
-            elseif ( is_dir( $this->_sShopDir . $sPath ) ) {
-                $oFileCollector->addDirectoryFiles( $sPath, $aFileExtensionList, true );
+        foreach ($aFilePathList as $sPath) {
+            if (is_file($this->_sShopDir . $sPath)) {
+                $oFileCollector->addFile($sPath);
+            } elseif (is_dir($this->_sShopDir . $sPath)) {
+                $oFileCollector->addDirectoryFiles($sPath, $aFileExtensionList, true);
             }
         }
 
@@ -150,30 +148,32 @@ class Diagnostics_Main extends oxAdminDetails
      * Checks versions for list of oxid files
      *
      * @param $aFileList array list of files to be checked
+     *
      * @return null|object
      */
-    protected function _checkOxidFiles( $aFileList )
+    protected function _checkOxidFiles($aFileList)
     {
-        $oFileChecker = oxNew ( "oxFileChecker" );
-        $oFileChecker->setBaseDirectory( $this->_sShopDir );
-        $oFileChecker->setVersion( $this->getConfig()->getVersion() );
-        $oFileChecker->setEdition( $this->getConfig()->getEdition() );
-        $oFileChecker->setRevision( $this->getConfig()->getRevision() );
+        $oFileChecker = oxNew("oxFileChecker");
+        $oFileChecker->setBaseDirectory($this->_sShopDir);
+        $oFileChecker->setVersion($this->getConfig()->getVersion());
+        $oFileChecker->setEdition($this->getConfig()->getEdition());
+        $oFileChecker->setRevision($this->getConfig()->getRevision());
 
-        if ( !$oFileChecker->init() ) {
+        if (!$oFileChecker->init()) {
             $this->_blError = true;
             $this->_sErrorMessage = $oFileChecker->getErrorMessage();
+
             return null;
         }
 
-        $oFileCheckerResult = oxNew( "oxFileCheckerResult" );
+        $oFileCheckerResult = oxNew("oxFileCheckerResult");
 
-        $blListAllFiles = ( $this->getParam( 'listAllFiles' ) == 'listAllFiles' );
-        $oFileCheckerResult->setListAllFiles( $blListAllFiles );
+        $blListAllFiles = ($this->getParam('listAllFiles') == 'listAllFiles');
+        $oFileCheckerResult->setListAllFiles($blListAllFiles);
 
-        foreach ( $aFileList as $sFile ) {
-            $aCheckResult = $oFileChecker->checkFile( $sFile );
-            $oFileCheckerResult->addResult( $aCheckResult );
+        foreach ($aFileList as $sFile) {
+            $aCheckResult = $oFileChecker->checkFile($sFile);
+            $oFileCheckerResult->addResult($aCheckResult);
         }
 
         return $oFileCheckerResult;
@@ -183,19 +183,20 @@ class Diagnostics_Main extends oxAdminDetails
      * Returns body of file check report
      *
      * @param  $oFileCheckerResult mixed file checker result object
+     *
      * @return string body of report
      */
-    protected function _getFileCheckReport( $oFileCheckerResult )
+    protected function _getFileCheckReport($oFileCheckerResult)
     {
         $aViewData = array(
-            "sVersion" => $this->getConfig()->getVersion(),
-            "sEdition" => $this->getConfig()->getEdition(),
-            "sRevision" => $this->getConfig()->getRevision(),
+            "sVersion"       => $this->getConfig()->getVersion(),
+            "sEdition"       => $this->getConfig()->getEdition(),
+            "sRevision"      => $this->getConfig()->getRevision(),
             "aResultSummary" => $oFileCheckerResult->getResultSummary(),
-            "aResultOutput" => $oFileCheckerResult->getResult(),
+            "aResultOutput"  => $oFileCheckerResult->getResult(),
         );
 
-        return $this->_oRenderer->renderTemplate( "version_checker_result.tpl", $aViewData );
+        return $this->_oRenderer->renderTemplate("version_checker_result.tpl", $aViewData);
     }
 
     /**
@@ -208,21 +209,20 @@ class Diagnostics_Main extends oxAdminDetails
         $sReport = "";
 
         $aDiagnosticsResult = $this->_runBasicDiagnostics();
-        $sReport .= $this->_oRenderer->renderTemplate( "diagnostics_main.tpl", $aDiagnosticsResult );
+        $sReport .= $this->_oRenderer->renderTemplate("diagnostics_main.tpl", $aDiagnosticsResult);
 
-        if ( $this->getParam('oxdiag_frm_chkvers' ) )
-        {
+        if ($this->getParam('oxdiag_frm_chkvers')) {
             $aFileList = $this->_getFilesToCheck();
-            $oFileCheckerResult = $this->_checkOxidFiles( $aFileList );
+            $oFileCheckerResult = $this->_checkOxidFiles($aFileList);
 
-            if ( $this->_hasError() ) {
+            if ($this->_hasError()) {
                 return;
             }
 
-            $sReport .= $this->_getFileCheckReport( $oFileCheckerResult );
+            $sReport .= $this->_getFileCheckReport($oFileCheckerResult);
         }
 
-        $this->_oOutput->storeResult( $sReport );
+        $this->_oOutput->storeResult($sReport);
 
         $sResult = $this->_oOutput->readResultFile();
         $this->_aViewData['sResult'] = $sResult;
@@ -232,17 +232,17 @@ class Diagnostics_Main extends oxAdminDetails
     protected function _runBasicDiagnostics()
     {
         $aViewData = array();
-        $oDiagnostics = oxNew( 'oxDiagnostics' );
+        $oDiagnostics = oxNew('oxDiagnostics');
 
-        $oDiagnostics->setShopLink( oxRegistry::getConfig()->getConfigParam( 'sShopURL' ) );
-        $oDiagnostics->setEdition( oxRegistry::getConfig()->getFullEdition() );
-        $oDiagnostics->setVersion( oxRegistry::getConfig()->getVersion() );
-        $oDiagnostics->setRevision( oxRegistry::getConfig()->getRevision() );
+        $oDiagnostics->setShopLink(oxRegistry::getConfig()->getConfigParam('sShopURL'));
+        $oDiagnostics->setEdition(oxRegistry::getConfig()->getFullEdition());
+        $oDiagnostics->setVersion(oxRegistry::getConfig()->getVersion());
+        $oDiagnostics->setRevision(oxRegistry::getConfig()->getRevision());
 
         /**
          * Shop
          */
-        if ( $this->getParam( 'runAnalysis' ) ) {
+        if ($this->getParam('runAnalysis')) {
             $aViewData['runAnalysis'] = true;
             $aViewData['aShopDetails'] = $oDiagnostics->getShopDetails();
         }
@@ -250,11 +250,11 @@ class Diagnostics_Main extends oxAdminDetails
         /**
          * Modules
          */
-        if ( $this->getParam('oxdiag_frm_modules' ) ) {
+        if ($this->getParam('oxdiag_frm_modules')) {
 
             $sModulesDir = $this->getConfig()->getModulesDir();
             $oModuleList = oxNew('oxModuleList');
-            $aModules = $oModuleList->getModulesFromDir( $sModulesDir);
+            $aModules = $oModuleList->getModulesFromDir($sModulesDir);
 
             $aViewData['oxdiag_frm_modules'] = true;
             $aViewData['mylist'] = $aModules;
@@ -263,7 +263,7 @@ class Diagnostics_Main extends oxAdminDetails
         /**
          * Health
          */
-        if ( $this->getParam('oxdiag_frm_health' ) ) {
+        if ($this->getParam('oxdiag_frm_health')) {
 
             $oSysReq = new oxSysRequirements();
             $aViewData['oxdiag_frm_health'] = true;
@@ -275,7 +275,7 @@ class Diagnostics_Main extends oxAdminDetails
          * PHP info
          * Fetches a hand full of php configuration parameters and collects their values.
          */
-        if ( $this->getParam('oxdiag_frm_php' ) ) {
+        if ($this->getParam('oxdiag_frm_php')) {
             $aViewData['oxdiag_frm_php'] = true;
             $aViewData['aPhpConfigparams'] = $oDiagnostics->getPhpSelection();
             $aViewData['sPhpDecoder'] = $oDiagnostics->getPhpDecoder();
@@ -284,13 +284,13 @@ class Diagnostics_Main extends oxAdminDetails
         /**
          * Server info
          */
-        if ( $this->getParam('oxdiag_frm_server' ) ) {
+        if ($this->getParam('oxdiag_frm_server')) {
             $aViewData['isExecAllowed'] = $oDiagnostics->isExecAllowed();
             $aViewData['oxdiag_frm_server'] = true;
             $aViewData['aServerInfo'] = $oDiagnostics->getServerInfo();
         }
 
-        if ( $this->getParam('oxdiag_frm_chkvers' ) ) {
+        if ($this->getParam('oxdiag_frm_chkvers')) {
             $aViewData['oxdiag_frm_chkvers'] = true;
         }
 
@@ -325,8 +325,9 @@ class Diagnostics_Main extends oxAdminDetails
         $iLangId = $oLang->getTplLanguage();
         $sLangCode = $aLanguages[$iLangId]->abbr;
 
-        if (!array_key_exists( $sLangCode, $aLinks))
+        if (!array_key_exists($sLangCode, $aLinks)) {
             $sLangCode = "de";
+        }
 
         return $aLinks[$sLangCode];
     }
@@ -335,11 +336,12 @@ class Diagnostics_Main extends oxAdminDetails
      * Request parameter getter
      *
      * @param string $sParam
+     *
      * @return string
      */
-    public function getParam( $sParam )
+    public function getParam($sParam)
     {
-        return $this->getConfig()->getRequestParameter( $sParam );
+        return $this->getConfig()->getRequestParameter($sParam);
     }
 
 }

@@ -25,6 +25,7 @@
  */
 class User_Overview extends oxAdminDetails
 {
+
     /**
      * Executes parent method parent::render(), passes data to Smarty engine and
      * returns name of template file "user_overview.tpl".
@@ -36,11 +37,11 @@ class User_Overview extends oxAdminDetails
         parent::render();
 
         $soxId = $this->getEditObjectId();
-        if ( $soxId != "-1" && isset( $soxId ) ) {
+        if ($soxId != "-1" && isset($soxId)) {
             // load object
-            $oUser = oxNew( "oxuser" );
-            $oUser->load( $soxId );
-            $this->_aViewData["edit"] =  $oUser;
+            $oUser = oxNew("oxuser");
+            $oUser->load($soxId);
+            $this->_aViewData["edit"] = $oUser;
         }
 
         return "user_overview.tpl";

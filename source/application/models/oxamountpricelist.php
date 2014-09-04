@@ -26,6 +26,7 @@
  */
 class oxAmountPriceList extends oxList
 {
+
     /**
      * List Object class name
      *
@@ -57,7 +58,7 @@ class oxAmountPriceList extends oxList
      *
      * @return null
      */
-    public function setArticle( $oArticle )
+    public function setArticle($oArticle)
     {
         $this->_oArticle = $oArticle;
     }
@@ -69,11 +70,11 @@ class oxAmountPriceList extends oxList
      */
     public function __construct()
     {
-        parent::__construct( 'oxbase' );
-        $this->init( 'oxbase', 'oxprice2article' );
+        parent::__construct('oxbase');
+        $this->init('oxbase', 'oxprice2article');
     }
 
-     /**
+    /**
      * Get data from db
      *
      * @return array
@@ -82,19 +83,19 @@ class oxAmountPriceList extends oxList
     {
         $sArticleId = $this->getArticle()->getId();
 
-        if ( !$this->isAdmin() && $this->getConfig()->getConfigParam( 'blVariantInheritAmountPrice' ) && $this->getArticle()->getParentId() ) {
+        if (!$this->isAdmin() && $this->getConfig()->getConfigParam('blVariantInheritAmountPrice') && $this->getArticle()->getParentId()) {
             $sArticleId = $this->getArticle()->getParentId();
         }
 
-        if ( $this->getConfig()->getConfigParam( 'blMallInterchangeArticles' ) ) {
+        if ($this->getConfig()->getConfigParam('blMallInterchangeArticles')) {
             $sShopSelect = '1';
         } else {
-            $sShopSelect = " `oxshopid` = " . oxDb::getDb()->quote( $this->getConfig()->getShopId() ) . " ";
+            $sShopSelect = " `oxshopid` = " . oxDb::getDb()->quote($this->getConfig()->getShopId()) . " ";
         }
 
-        $sSql =  "SELECT * FROM `oxprice2article` WHERE `oxartid` = " . oxDb::getDb()->quote( $sArticleId ) . " AND $sShopSelect ORDER BY `oxamount` ";
+        $sSql = "SELECT * FROM `oxprice2article` WHERE `oxartid` = " . oxDb::getDb()->quote($sArticleId) . " AND $sShopSelect ORDER BY `oxamount` ";
 
-        $aData = oxDb::getDb( oxDb::FETCH_MODE_ASSOC )->getAll( $sSql );
+        $aData = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getAll($sSql);
 
         return $aData;
     }
@@ -107,14 +108,14 @@ class oxAmountPriceList extends oxList
      *
      * @return null
      */
-    public function load( $oArticle )
+    public function load($oArticle)
     {
-        $this->setArticle( $oArticle );
+        $this->setArticle($oArticle);
 
 
-           $aData = $this->_loadFromDb();
+            $aData = $this->_loadFromDb();
 
-        $this->assignArray( $aData );
+        $this->assignArray($aData);
     }
 
 }

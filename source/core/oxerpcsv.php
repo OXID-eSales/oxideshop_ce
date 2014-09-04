@@ -25,62 +25,73 @@
  */
 class oxErpCsv extends oxERPBase
 {
+
     /**
      * Supported versions by current interface
+     *
      * @var array
      */
     protected $_aSupportedVersions = array("0.1", "1.0", "1.1", "2.0");
 
     /**
      * Csv importer version mapping data
+     *
      * @var string
      */
-    protected $_aCsv2BaseVersionsMap = array("0.1" => "1", "1.0" => "1", "1.1"=>"1.1", "2.0" => "2");
+    protected $_aCsv2BaseVersionsMap = array("0.1" => "1", "1.0" => "1", "1.1" => "1.1", "2.0" => "2");
 
     /**
      * version of the file which is imported right now
+     *
      * @var string
      */
     protected $_sCurrVersion = "";
 
     /**
      * Imported data array
+     *
      * @var array
      */
     protected $_aData = array();
 
     /**
      * count of import rows
+     *
      * @var int
      */
     protected $_iRetryRows = 0;
 
     /**
      * Return message after import
+     *
      * @var string
      */
     protected $_sReturn;
 
     /**
      * Import file location
+     *
      * @var string
      */
     protected $_sPath;
 
     /**
      * Imported Actions to Article data array
+     *
      * @var array
      */
     protected $_aImportedActions2Article = array();
 
     /**
      * Imported Object to Category data array
+     *
      * @var array
      */
     protected $_aImportedObject2Category = array();
 
     /**
      * Imported Accessoire to Article data array
+     *
      * @var array
      */
     protected $_aImportedAccessoire2Article = array();
@@ -114,7 +125,7 @@ class oxErpCsv extends oxERPBase
      *
      * @return null
      */
-    protected function _getImportType( &$aData )
+    protected function _getImportType(&$aData)
     {
     }
 
@@ -125,7 +136,7 @@ class oxErpCsv extends oxERPBase
      *
      * @return null
      */
-    protected function _getImportMode( $aData )
+    protected function _getImportMode($aData)
     {
     }
 
@@ -148,7 +159,7 @@ class oxErpCsv extends oxERPBase
      *
      * @return null
      */
-    public function loadSessionData( $sSessionID )
+    public function loadSessionData($sSessionID)
     {
     }
 
@@ -160,15 +171,15 @@ class oxErpCsv extends oxERPBase
      *
      * @return string
      */
-    protected function _csvTextConvert( $sText, $blMode )
+    protected function _csvTextConvert($sText, $blMode)
     {
-        $aSearch  = array( chr(13), chr(10), '\'', '"' );
-        $aReplace = array( '&#13;', '&#10;', '&#39;', '&#34;' );
+        $aSearch = array(chr(13), chr(10), '\'', '"');
+        $aReplace = array('&#13;', '&#10;', '&#39;', '&#34;');
 
-        if ( $blMode ) {
-            $sText = str_replace( $aSearch, $aReplace, $sText );
+        if ($blMode) {
+            $sText = str_replace($aSearch, $aReplace, $sText);
         } else {
-            $sText = str_replace( $aReplace, $aSearch, $sText );
+            $sText = str_replace($aReplace, $aSearch, $sText);
         }
 
         return $sText;
@@ -184,8 +195,10 @@ class oxErpCsv extends oxERPBase
         $this->_beforeImport();
 
         do {
-            while( $this->_importOne() );
-        } while ( !$this->_afterImport() );
+            while ($this->_importOne()) {
+                ;
+            }
+        } while (!$this->_afterImport());
     }
 
     /**
@@ -195,7 +208,7 @@ class oxErpCsv extends oxERPBase
      */
     protected function _beforeImport()
     {
-        if ( !$this->_iRetryRows ) {
+        if (!$this->_iRetryRows) {
             //convert all text
             foreach ($this->_aData as $key => $value) {
                 $this->_aData[$key] = $this->_csvTextConvert($value, false);
@@ -213,19 +226,19 @@ class oxErpCsv extends oxERPBase
     {
         //check if there have been no errors or failures
         $aStatistics = $this->getStatistics();
-        $iRetryRows  = 0;
+        $iRetryRows = 0;
 
-        foreach ( $aStatistics as $key => $value) {
-            if ( $value['r'] == false ) {
+        foreach ($aStatistics as $key => $value) {
+            if ($value['r'] == false) {
                 $iRetryRows++;
-                $this->_sReturn .= "File[".$this->_sPath."] - dataset number: $key - Error: ".$value['m']." ---<br> ".PHP_EOL;
+                $this->_sReturn .= "File[" . $this->_sPath . "] - dataset number: $key - Error: " . $value['m'] . " ---<br> " . PHP_EOL;
             }
         }
 
-        if ( $iRetryRows != $this->_iRetryRows && $iRetryRows>0 ) {
+        if ($iRetryRows != $this->_iRetryRows && $iRetryRows > 0) {
             $this->_resetIdx();
             $this->_iRetryRows = $iRetryRows;
-            $this->_sReturn    = '';
+            $this->_sReturn = '';
 
             return false;
         }
@@ -269,7 +282,7 @@ class oxErpCsv extends oxERPBase
             'OXBPRICE'      => 'OXBPRICE',
             'OXTPRICE'      => 'OXTPRICE',
             'OXWRAPID'      => 'OXWRAPID',
-            'OXSTOCK'       =>  'OXSTOCK',
+            'OXSTOCK'       => 'OXSTOCK',
             'OXORDERSHOPID' => 'OXORDERSHOPID',
             'OXTOTALVAT'    => 'OXTOTALVAT'
         );
@@ -285,61 +298,61 @@ class oxErpCsv extends oxERPBase
      */
     private function getOldOrderFielsList()
     {
-         $aFieldList = array(
-            'OXID'             => 'OXID',
-            'OXSHOPID'         => 'OXSHOPID',
-            'OXUSERID'         => 'OXUSERID',
-            'OXORDERDATE'     => 'OXORDERDATE',
+        $aFieldList = array(
+            'OXID'              => 'OXID',
+            'OXSHOPID'          => 'OXSHOPID',
+            'OXUSERID'          => 'OXUSERID',
+            'OXORDERDATE'       => 'OXORDERDATE',
             'OXORDERNR'         => 'OXORDERNR',
             'OXBILLCOMPANY'     => 'OXBILLCOMPANY',
-            'OXBILLEMAIL'     => 'OXBILLEMAIL',
-            'OXBILLFNAME'     => 'OXBILLFNAME',
-            'OXBILLLNAME'     => 'OXBILLLNAME',
-            'OXBILLSTREET'     => 'OXBILLSTREET',
-            'OXBILLSTREETNR' => 'OXBILLSTREETNR',
+            'OXBILLEMAIL'       => 'OXBILLEMAIL',
+            'OXBILLFNAME'       => 'OXBILLFNAME',
+            'OXBILLLNAME'       => 'OXBILLLNAME',
+            'OXBILLSTREET'      => 'OXBILLSTREET',
+            'OXBILLSTREETNR'    => 'OXBILLSTREETNR',
             'OXBILLADDINFO'     => 'OXBILLADDINFO',
-            'OXBILLUSTID'     => 'OXBILLUSTID',
-            'OXBILLCITY'     => 'OXBILLCITY',
+            'OXBILLUSTID'       => 'OXBILLUSTID',
+            'OXBILLCITY'        => 'OXBILLCITY',
             'OXBILLCOUNTRY'     => 'OXBILLCOUNTRY',
             'OXBILLZIP'         => 'OXBILLZIP',
             'OXBILLFON'         => 'OXBILLFON',
             'OXBILLFAX'         => 'OXBILLFAX',
             'OXBILLSAL'         => 'OXBILLSAL',
-            'OXDELCOMPANY'     => 'OXDELCOMPANY',
-            'OXDELFNAME'     => 'OXDELFNAME',
-            'OXDELLNAME'     => 'OXDELLNAME',
-            'OXDELSTREET'     => 'OXDELSTREET',
+            'OXDELCOMPANY'      => 'OXDELCOMPANY',
+            'OXDELFNAME'        => 'OXDELFNAME',
+            'OXDELLNAME'        => 'OXDELLNAME',
+            'OXDELSTREET'       => 'OXDELSTREET',
             'OXDELSTREETNR'     => 'OXDELSTREETNR',
-            'OXDELADDINFO'     => 'OXDELADDINFO',
+            'OXDELADDINFO'      => 'OXDELADDINFO',
             'OXDELCITY'         => 'OXDELCITY',
-            'OXDELCOUNTRY'     => 'OXDELCOUNTRY',
-            'OXDELZIP'         => 'OXDELZIP',
-            'OXDELFON'         => 'OXDELFON',
-            'OXDELFAX'         => 'OXDELFAX',
-            'OXDELSAL'         => 'OXDELSAL',
+            'OXDELCOUNTRY'      => 'OXDELCOUNTRY',
+            'OXDELZIP'          => 'OXDELZIP',
+            'OXDELFON'          => 'OXDELFON',
+            'OXDELFAX'          => 'OXDELFAX',
+            'OXDELSAL'          => 'OXDELSAL',
             'OXDELCOST'         => 'OXDELCOST',
-            'OXDELVAT'         => 'OXDELVAT',
+            'OXDELVAT'          => 'OXDELVAT',
             'OXPAYCOST'         => 'OXPAYCOST',
-            'OXPAYVAT'         => 'OXPAYVAT',
-            'OXWRAPCOST'     => 'OXWRAPCOST',
+            'OXPAYVAT'          => 'OXPAYVAT',
+            'OXWRAPCOST'        => 'OXWRAPCOST',
             'OXWRAPVAT'         => 'OXWRAPVAT',
-            'OXCARDID'         => 'OXCARDID',
-            'OXCARDTEXT'     => 'OXCARDTEXT',
-            'OXDISCOUNT'     => 'OXDISCOUNT',
-            'OXBILLNR'         => 'OXBILLNR',
-            'OXREMARK'         => 'OXREMARK',
-            'OXVOUCHERDISCOUNT'         => 'OXVOUCHERDISCOUNT',
-            'OXCURRENCY'     => 'OXCURRENCY',
+            'OXCARDID'          => 'OXCARDID',
+            'OXCARDTEXT'        => 'OXCARDTEXT',
+            'OXDISCOUNT'        => 'OXDISCOUNT',
+            'OXBILLNR'          => 'OXBILLNR',
+            'OXREMARK'          => 'OXREMARK',
+            'OXVOUCHERDISCOUNT' => 'OXVOUCHERDISCOUNT',
+            'OXCURRENCY'        => 'OXCURRENCY',
             'OXCURRATE'         => 'OXCURRATE',
             'OXTRANSID'         => 'OXTRANSID',
-            'OXPAID'         => 'OXPAID',
-            'OXIP'             => 'OXIP',
+            'OXPAID'            => 'OXPAID',
+            'OXIP'              => 'OXIP',
             'OXTRANSSTATUS'     => 'OXTRANSSTATUS',
-            'OXLANG'         => 'OXLANG',
+            'OXLANG'            => 'OXLANG',
             'OXDELTYPE'         => 'OXDELTYPE'
-            );
+        );
 
-            return $aFieldList;
+        return $aFieldList;
     }
 
     /**
@@ -349,12 +362,12 @@ class oxErpCsv extends oxERPBase
      *
      * @return null
      */
-    protected  function _checkIDField( $sID )
+    protected function _checkIDField($sID)
     {
-        if ( !isset( $sID ) || !$sID ) {
+        if (!isset($sID) || !$sID) {
             throw new Exception("ERROR: Articlenumber/ID missing!");
-        } elseif ( strlen( $sID) > 32 ) {
-            throw new Exception( "ERROR: Articlenumber/ID longer then allowed (32 chars max.)!");
+        } elseif (strlen($sID) > 32) {
+            throw new Exception("ERROR: Articlenumber/ID longer then allowed (32 chars max.)!");
         }
     }
 
@@ -365,21 +378,21 @@ class oxErpCsv extends oxERPBase
      *
      * @return object
      */
-    protected function _getInstanceOfType( $sType)
+    protected function _getInstanceOfType($sType)
     {
         //due to backward compatibility
-        if ( $sType == 'oldOrder' ) {
+        if ($sType == 'oldOrder') {
             $oType = parent::_getInstanceOfType('order');
             $oType->setFieldList($this->getOldOrderFielsList());
             $oType->setFunctionSuffix('OldOrder');
-        } elseif ( $sType == 'oldOrderArticle' ) {
+        } elseif ($sType == 'oldOrderArticle') {
             $oType = parent::_getInstanceOfType('orderarticle');
             $oType->setFieldList($this->getOldOrderArticleFieldList());
             $oType->setFunctionSuffix('OldOrderArticle');
-        } elseif ( $sType == 'article2vendor' ) {
+        } elseif ($sType == 'article2vendor') {
             $oType = parent::_getInstanceOfType('article');
             $oType->setFieldList(array("OXID", "OXVENDORID"));
-        } elseif ( $sType == 'mainarticle2categroy') {
+        } elseif ($sType == 'mainarticle2categroy') {
             $oType = parent::_getInstanceOfType('article2category');
             $oType->setFieldList(array("OXOBJECTID", "OXCATNID", "OXTIME"));
             $oType->setFunctionSuffix('mainarticle2category');
@@ -405,15 +418,15 @@ class oxErpCsv extends oxERPBase
      *
      * @return string $oxid on success, bool FALSE on failure
      */
-    protected function _importArticle( oxERPType $oType, $aRow)
+    protected function _importArticle(oxERPType $oType, $aRow)
     {
-        if ( $this->_sCurrVersion == "0.1" ) {
+        if ($this->_sCurrVersion == "0.1") {
             $myConfig = oxRegistry::getConfig();
             //to allow different shopid without consequences (ignored fields)
             $myConfig->setConfigParam('blMallCustomPrice', false);
         }
 
-        if ( isset($aRow['OXID'] ) ) {
+        if (isset($aRow['OXID'])) {
             $this->_checkIDField($aRow['OXID']);
         }
         // #0004426
@@ -422,7 +435,7 @@ class oxErpCsv extends oxERPBase
             $aRow['OXID'] = $aRow['OXARTNUM'];
         }*/
 
-        $sResult = $this->_save( $oType, $aRow, $this->_sCurrVersion == "0.1"); // V0.1 allowes the shopid to be set no matter which login
+        $sResult = $this->_save($oType, $aRow, $this->_sCurrVersion == "0.1"); // V0.1 allowes the shopid to be set no matter which login
         return $sResult;
     }
 
@@ -434,17 +447,18 @@ class oxErpCsv extends oxERPBase
      *
      * @return string $oxid on success, bool FALSE on failure
      */
-    protected function _importAccessoire( oxERPType $oType, $aRow)
+    protected function _importAccessoire(oxERPType $oType, $aRow)
     {
         // deleting old relations before import in V0.1
-        if ( $this->_sCurrVersion == "0.1" && !isset($this->_aImportedAccessoire2Article[$aRow['OXARTICLENID']] ) ) {
+        if ($this->_sCurrVersion == "0.1" && !isset($this->_aImportedAccessoire2Article[$aRow['OXARTICLENID']])) {
             $myConfig = oxRegistry::getConfig();
             $oDb = oxDb::getDb();
-            $oDb->execute( "delete from oxaccessoire2article where oxarticlenid = ".$oDb->quote( $aRow['OXARTICLENID'] ) );
+            $oDb->execute("delete from oxaccessoire2article where oxarticlenid = " . $oDb->quote($aRow['OXARTICLENID']));
             $this->_aImportedAccessoire2Article[$aRow['OXARTICLENID']] = 1;
         }
 
-        $sResult = $this->_save( $oType, $aRow);
+        $sResult = $this->_save($oType, $aRow);
+
         return $sResult;
     }
 
@@ -456,18 +470,19 @@ class oxErpCsv extends oxERPBase
      *
      * @return string $oxid on success, bool FALSE on failure
      */
-    protected function _importArticle2Action( oxERPType $oType, $aRow)
+    protected function _importArticle2Action(oxERPType $oType, $aRow)
     {
 
-        if ( $this->_sCurrVersion == "0.1" && !isset( $this->_aImportedActions2Article[$aRow['OXARTID']] ) ) {
+        if ($this->_sCurrVersion == "0.1" && !isset($this->_aImportedActions2Article[$aRow['OXARTID']])) {
             //only in V0.1 and only once per import/article
             $myConfig = oxRegistry::getConfig();
             $oDb = oxDb::getDb();
-            $oDb->execute( "delete from oxactions2article where oxartid = ".$oDb->quote( $aRow['OXARTID'] ) );
+            $oDb->execute("delete from oxactions2article where oxartid = " . $oDb->quote($aRow['OXARTID']));
             $this->_aImportedActions2Article[$aRow['OXARTID']] = 1;
         }
 
-        $sResult = $this->_save( $oType, $aRow, $this->_sCurrVersion == "0.1");
+        $sResult = $this->_save($oType, $aRow, $this->_sCurrVersion == "0.1");
+
         return $sResult;
     }
 
@@ -479,17 +494,18 @@ class oxErpCsv extends oxERPBase
      *
      * @return string $oxid on success, bool FALSE on failure
      */
-    protected function _importArticle2Category( oxERPType $oType, $aRow)
+    protected function _importArticle2Category(oxERPType $oType, $aRow)
     {
         // deleting old relations before import in V0.1
-        if ( $this->_sCurrVersion == "0.1" && !isset( $this->_aImportedObject2Category[$aRow['OXOBJECTID']] ) ) {
+        if ($this->_sCurrVersion == "0.1" && !isset($this->_aImportedObject2Category[$aRow['OXOBJECTID']])) {
             $myConfig = oxRegistry::getConfig();
             $oDb = oxDb::getDb();
-            $oDb->execute( "delete from oxobject2category where oxobjectid = ".$oDb->quote( $aRow['OXOBJECTID'] ) );
+            $oDb->execute("delete from oxobject2category where oxobjectid = " . $oDb->quote($aRow['OXOBJECTID']));
             $this->_aImportedObject2Category[$aRow['OXOBJECTID']] = 1;
         }
 
-        $sResult = $this->_save( $oType, $aRow);
+        $sResult = $this->_save($oType, $aRow);
+
         return $sResult;
     }
 
@@ -501,19 +517,19 @@ class oxErpCsv extends oxERPBase
      *
      * @return string $oxid on success, bool FALSE on failure
      */
-    protected function _importMainArticle2Category( oxERPType $oType, $aRow)
+    protected function _importMainArticle2Category(oxERPType $oType, $aRow)
     {
         $aRow['OXTIME'] = 0;
 
         $myConfig = oxRegistry::getConfig();
         $oDb = oxDb::getDb();
 
-        $sSql = "select OXID from oxobject2category where oxobjectid = ".$oDb->quote( $aRow['OXOBJECTID'] )." and OXCATNID = ".$oDb->quote( $aRow['OXCATNID'] );
-        $aRow['OXID'] = $oDb->getOne( $sSql, false, false );
+        $sSql = "select OXID from oxobject2category where oxobjectid = " . $oDb->quote($aRow['OXOBJECTID']) . " and OXCATNID = " . $oDb->quote($aRow['OXCATNID']);
+        $aRow['OXID'] = $oDb->getOne($sSql, false, false);
 
-        $sResult = $this->_save( $oType, $aRow);
+        $sResult = $this->_save($oType, $aRow);
         if ((boolean) $sResult) {
-            $sSql = "Update oxobject2category set oxtime = oxtime+10 where oxobjectid = ".$oDb->quote( $aRow['OXOBJECTID'] ) ." and oxcatnid != ".$oDb->quote( $aRow['OXCATNID'] ) ." and oxshopid = '".$myConfig->getShopId()."'";
+            $sSql = "Update oxobject2category set oxtime = oxtime+10 where oxobjectid = " . $oDb->quote($aRow['OXOBJECTID']) . " and oxcatnid != " . $oDb->quote($aRow['OXCATNID']) . " and oxshopid = '" . $myConfig->getShopId() . "'";
             $oDb->Execute($sSql);
         }
 
@@ -528,9 +544,10 @@ class oxErpCsv extends oxERPBase
      *
      * @return string $oxid on success, bool FALSE on failure
      */
-    protected function _importCategory( oxERPType $oType, $aRow)
+    protected function _importCategory(oxERPType $oType, $aRow)
     {
-        $sResult = $this->_save( $oType, $aRow, $this->_sCurrVersion == "0.1");
+        $sResult = $this->_save($oType, $aRow, $this->_sCurrVersion == "0.1");
+
         return $sResult;
     }
 
@@ -542,17 +559,18 @@ class oxErpCsv extends oxERPBase
      *
      * @return string $oxid on success, bool FALSE on failure
      */
-    protected function _importCrossselling( oxERPType $oType, $aRow)
+    protected function _importCrossselling(oxERPType $oType, $aRow)
     {
         // deleting old relations before import in V0.1
-        if ( $this->_sCurrVersion == "0.1" && !isset($this->_aImportedObject2Article[$aRow['OXARTICLENID']] ) ) {
+        if ($this->_sCurrVersion == "0.1" && !isset($this->_aImportedObject2Article[$aRow['OXARTICLENID']])) {
             $myConfig = oxRegistry::getConfig();
             $oDb = oxDb::getDb();
-            $oDb->Execute( "delete from oxobject2article where oxarticlenid = ".$oDb->quote( $aRow['OXARTICLENID'] ) );
+            $oDb->Execute("delete from oxobject2article where oxarticlenid = " . $oDb->quote($aRow['OXARTICLENID']));
             $this->aImportedObject2Article[$aRow['OXARTICLENID']] = 1;
         }
 
-        $sResult = $this->_save( $oType, $aRow);
+        $sResult = $this->_save($oType, $aRow);
+
         return $sResult;
     }
 
@@ -564,9 +582,10 @@ class oxErpCsv extends oxERPBase
      *
      * @return string $oxid on success, bool FALSE on failure
      */
-    protected function _importScaleprice( oxERPType $oType, $aRow)
+    protected function _importScaleprice(oxERPType $oType, $aRow)
     {
-        $sResult = $this->_save( $oType, $aRow, $this->_sCurrVersion == "0.1");
+        $sResult = $this->_save($oType, $aRow, $this->_sCurrVersion == "0.1");
+
         return $sResult;
     }
 
@@ -578,9 +597,10 @@ class oxErpCsv extends oxERPBase
      *
      * @return string $oxid on success, bool FALSE on failure
      */
-    protected function _importOrder( oxERPType $oType, $aRow)
+    protected function _importOrder(oxERPType $oType, $aRow)
     {
-        $sResult = $this->_save( $oType, $aRow);
+        $sResult = $this->_save($oType, $aRow);
+
         return $sResult;
         //MAFI a unavoidable hack as oxorder->update() does always return null !!! a hotfix is needed
         //hotfix was added? since it's working with proper return now
@@ -594,9 +614,10 @@ class oxErpCsv extends oxERPBase
      *
      * @return string $oxid on success, bool FALSE on failure
      */
-    protected function _importOrderArticle( oxERPType $oType, $aRow)
+    protected function _importOrderArticle(oxERPType $oType, $aRow)
     {
-        $sResult = $this->_save( $oType, $aRow);
+        $sResult = $this->_save($oType, $aRow);
+
         return $sResult;
     }
 
@@ -608,20 +629,20 @@ class oxErpCsv extends oxERPBase
      *
      * @return bool
      */
-    protected function _importOrderStatus( oxERPType $oType, $aRow)
+    protected function _importOrderStatus(oxERPType $oType, $aRow)
     {
-        $oOrderArt = oxNew( "oxorderarticle", "core");
-        $oOrderArt->load( $aRow['OXID']);
+        $oOrderArt = oxNew("oxorderarticle", "core");
+        $oOrderArt->load($aRow['OXID']);
 
-        if ( $oOrderArt->getId()) {
+        if ($oOrderArt->getId()) {
 
             try {
-                if ( $this->_sCurrVersion != "0.1") {
+                if ($this->_sCurrVersion != "0.1") {
                     $oType->checkWriteAccess($oOrderArt->getId());
                 }
 
-                    // store status
-                $aStatuses = unserialize( $oOrderArt->oxorderarticles__oxerpstatus->value );
+                // store status
+                $aStatuses = unserialize($oOrderArt->oxorderarticles__oxerpstatus->value);
 
                 $oStatus = new stdClass();
                 $oStatus->STATUS = $aRow['OXERPSTATUS_STATUS'];
@@ -629,8 +650,9 @@ class oxErpCsv extends oxERPBase
                 $oStatus->trackingid = $aRow['OXERPSTATUS_TRACKID'];
 
                 $aStatuses[$aRow['OXERPSTATUS_TIME']] = $oStatus;
-                $oOrderArt->oxorderarticles__oxerpstatus = new oxField(serialize( $aStatuses), oxField::T_RAW);
+                $oOrderArt->oxorderarticles__oxerpstatus = new oxField(serialize($aStatuses), oxField::T_RAW);
                 $oOrderArt->save();
+
                 return true;
             } catch (Exception $ex) {
                 return false;
@@ -648,25 +670,26 @@ class oxErpCsv extends oxERPBase
      *
      * @return string $oxid on success, bool FALSE on failure
      */
-    protected function _importUser( oxERPType $oType, $aRow)
+    protected function _importUser(oxERPType $oType, $aRow)
     {
         //Speciall check for user
-        if ( isset($aRow['OXUSERNAME'] ) ) {
+        if (isset($aRow['OXUSERNAME'])) {
             $sID = $aRow['OXID'];
             $sUserName = $aRow['OXUSERNAME'];
 
-            $oUser = oxNew( "oxuser", "core");
+            $oUser = oxNew("oxuser", "core");
             $oUser->oxuser__oxusername = new oxField($sUserName, oxField::T_RAW);
 
             //If user exists with and modifies OXID, throw an axception
             //throw new Exception( "USER {$sUserName} already exists!");
-            if ( $oUser->exists( $sID) && $sID != $oUser->getId() ) {
-                throw new Exception( "USER $sUserName already exists!");
+            if ($oUser->exists($sID) && $sID != $oUser->getId()) {
+                throw new Exception("USER $sUserName already exists!");
             }
 
         }
 
-        $sResult  = $this->_save( $oType, $aRow);
+        $sResult = $this->_save($oType, $aRow);
+
         return $sResult;
     }
 
@@ -678,9 +701,10 @@ class oxErpCsv extends oxERPBase
      *
      * @return bool
      */
-    protected function _importVendor( oxERPType $oType, $aRow)
+    protected function _importVendor(oxERPType $oType, $aRow)
     {
-        $sResult = $this->_save( $oType, $aRow, $this->_sCurrVersion == "0.1");
+        $sResult = $this->_save($oType, $aRow, $this->_sCurrVersion == "0.1");
+
         return $sResult;
     }
 
@@ -692,12 +716,13 @@ class oxErpCsv extends oxERPBase
      *
      * @return bool
      */
-    protected function _importArtextends( oxERPType $oType, $aRow)
+    protected function _importArtextends(oxERPType $oType, $aRow)
     {
-        if ( oxERPBase::getRequestedVersion() < 2 ) {
+        if (oxERPBase::getRequestedVersion() < 2) {
             return false;
         }
-        $sResult = $this->_save( $oType, $aRow);
+        $sResult = $this->_save($oType, $aRow);
+
         return $sResult;
     }
 
@@ -709,9 +734,10 @@ class oxErpCsv extends oxERPBase
      *
      * @return string $oxid on success, bool FALSE on failure
      */
-    protected function _importCountry( oxERPType $oType, $aRow)
+    protected function _importCountry(oxERPType $oType, $aRow)
     {
-        $sResult = $this->_save( $oType, $aRow);
+        $sResult = $this->_save($oType, $aRow);
+
         return $sResult;
     }
 
@@ -723,9 +749,10 @@ class oxErpCsv extends oxERPBase
      *
      * @return string $oxid on success, bool FALSE on failure
      */
-    protected function _importArticleStock( oxERPType $oType, $aRow )
+    protected function _importArticleStock(oxERPType $oType, $aRow)
     {
-        $sResult = $this->_save( $oType, $aRow);
+        $sResult = $this->_save($oType, $aRow);
+
         return $sResult;
     }
 
@@ -735,7 +762,7 @@ class oxErpCsv extends oxERPBase
      */
     public function getImportedRowCount()
     {
-        return count ( $this->_aImportedIds );
+        return count($this->_aImportedIds);
     }
 
     /** adds true to $_aImportedIds where key is given
@@ -744,9 +771,10 @@ class oxErpCsv extends oxERPBase
      *
      * @return null
      */
-    public function setImportedIds( $key )
+    public function setImportedIds($key)
     {
-        if ( !array_key_exists( $key, $this->_aImportedIds ) )
+        if (!array_key_exists($key, $this->_aImportedIds)) {
             $this->_aImportedIds[$key] = true;
+        }
     }
 }

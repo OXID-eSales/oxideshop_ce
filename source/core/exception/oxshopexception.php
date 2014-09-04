@@ -26,6 +26,7 @@
  */
 class oxShopException extends oxException
 {
+
     /**
      * Get string dump
      * Overrides oxException::getString()
@@ -34,6 +35,6 @@ class oxShopException extends oxException
      */
     public function getString()
     {
-        return __CLASS__ .'-'.parent::getString();
+        return __CLASS__ . '-' . parent::getString();
     }
 }

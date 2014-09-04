@@ -28,8 +28,10 @@
  */
 class Actions_List extends oxAdminList
 {
+
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'actions_list.tpl';
@@ -58,7 +60,7 @@ class Actions_List extends oxAdminList
         parent::render();
 
         // passing display type back to view
-        $this->_aViewData["displaytype"] = oxRegistry::getConfig()->getRequestParameter( "displaytype" );
+        $this->_aViewData["displaytype"] = oxRegistry::getConfig()->getRequestParameter("displaytype");
 
         return $this->_sThisTemplate;
     }
@@ -71,18 +73,18 @@ class Actions_List extends oxAdminList
      *
      * @return $sQ
      */
-    protected function _prepareWhereQuery( $aWhere, $sqlFull )
+    protected function _prepareWhereQuery($aWhere, $sqlFull)
     {
-        $sQ = parent::_prepareWhereQuery( $aWhere, $sqlFull );
-        $sDisplayType = (int) oxRegistry::getConfig()->getRequestParameter( 'displaytype' );
-        $sTable = getViewName( "oxactions" );
+        $sQ = parent::_prepareWhereQuery($aWhere, $sqlFull);
+        $sDisplayType = (int) oxRegistry::getConfig()->getRequestParameter('displaytype');
+        $sTable = getViewName("oxactions");
 
         //searchong for empty oxfolder fields
-        if ( $sDisplayType ) {
+        if ($sDisplayType) {
 
-            $sNow   = date( 'Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime() );
+            $sNow = date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime());
 
-            switch ( $sDisplayType ) {
+            switch ($sDisplayType) {
                 case 1: // active
                     $sQ .= " and {$sTable}.oxactivefrom < '{$sNow}' and {$sTable}.oxactiveto > '{$sNow}' ";
                     break;

@@ -25,6 +25,7 @@
  */
 class oxBasketContentMarkGenerator
 {
+
     /**
      * Default value for explanation mark.
      */

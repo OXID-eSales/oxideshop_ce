@@ -26,6 +26,7 @@
  */
 class oxDeliverySetList extends oxList
 {
+
     /**
      * Session user Id
      *
@@ -72,10 +73,10 @@ class oxDeliverySetList extends oxList
      *
      * @return null
      */
-    public function setHomeCountry( $sHomeCountry )
+    public function setHomeCountry($sHomeCountry)
     {
-        if ( is_array( $sHomeCountry ) ) {
-            $this->_sHomeCountry = current( $sHomeCountry );
+        if (is_array($sHomeCountry)) {
+            $this->_sHomeCountry = current($sHomeCountry);
         } else {
             $this->_sHomeCountry = $sHomeCountry;
         }
@@ -94,31 +95,31 @@ class oxDeliverySetList extends oxList
      *
      * @return array
      */
-    protected function _getList( $oUser = null, $sCountryId = null )
+    protected function _getList($oUser = null, $sCountryId = null)
     {
         // checking for current session user which gives additional restrictions for user itself, users group and country
-        if ( $oUser === null ) {
+        if ($oUser === null) {
             $oUser = $this->getUser();
         } else {
             //set user
-            $this->setUser( $oUser );
+            $this->setUser($oUser);
         }
 
         $sUserId = $oUser ? $oUser->getId() : '';
 
-        if ( $sUserId !== $this->_sUserId || $sCountryId !== $this->_sCountryId) {
+        if ($sUserId !== $this->_sUserId || $sCountryId !== $this->_sCountryId) {
 
             // choosing delivery country if it is not set yet
-            if ( !$sCountryId ) {
+            if (!$sCountryId) {
 
-                if ( $oUser ) {
+                if ($oUser) {
                     $sCountryId = $oUser->getActiveCountry();
                 } else {
                     $sCountryId = $this->_sHomeCountry;
                 }
             }
 
-            $this->selectString( $this->_getFilterSelect( $oUser, $sCountryId ) );
+            $this->selectString($this->_getFilterSelect($oUser, $sCountryId));
             $this->_sUserId = $sUserId;
             $this->_sCountryId = $sCountryId;
         }
@@ -137,18 +138,18 @@ class oxDeliverySetList extends oxList
      *
      * @return string
      */
-    protected function _getFilterSelect( $oUser, $sCountryId )
+    protected function _getFilterSelect($oUser, $sCountryId)
     {
-        $sTable = getViewName( 'oxdeliveryset' );
-        $sQ  = "select $sTable.* from $sTable ";
-        $sQ .= "where ".$this->getBaseObject()->getSqlActiveSnippet().' ';
+        $sTable = getViewName('oxdeliveryset');
+        $sQ = "select $sTable.* from $sTable ";
+        $sQ .= "where " . $this->getBaseObject()->getSqlActiveSnippet() . ' ';
 
         // defining initial filter parameters
-        $sUserId    = null;
-        $aGroupIds  = null;
+        $sUserId = null;
+        $aGroupIds = null;
 
         // checking for current session user which gives additional restrictions for user itself, users group and country
-        if ( $oUser ) {
+        if ($oUser) {
 
             // user ID
             $sUserId = $oUser->getId();
@@ -158,21 +159,21 @@ class oxDeliverySetList extends oxList
         }
 
         $aIds = array();
-        if ( count( $aGroupIds ) ) {
-            foreach ( $aGroupIds as $oGroup ) {
+        if (count($aGroupIds)) {
+            foreach ($aGroupIds as $oGroup) {
                 $aIds[] = $oGroup->getId();
             }
         }
 
-        $sUserTable    = getViewName( 'oxuser' );
-        $sGroupTable   = getViewName( 'oxgroups' );
-        $sCountryTable = getViewName( 'oxcountry' );
+        $sUserTable = getViewName('oxuser');
+        $sGroupTable = getViewName('oxgroups');
+        $sCountryTable = getViewName('oxcountry');
 
         $oDb = oxDb::getDb();
 
-        $sCountrySql = $sCountryId?"EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxdelset' and oxobject2delivery.OXOBJECTID=".$oDb->quote($sCountryId).")":'0';
-        $sUserSql    = $sUserId   ?"EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxdelsetu' and oxobject2delivery.OXOBJECTID=".$oDb->quote($sUserId).")":'0';
-        $sGroupSql   = count( $aIds ) ?"EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxdelsetg' and oxobject2delivery.OXOBJECTID in (".implode(', ', oxDb::getInstance()->quoteArray($aIds) ).") )":'0';
+        $sCountrySql = $sCountryId ? "EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxdelset' and oxobject2delivery.OXOBJECTID=" . $oDb->quote($sCountryId) . ")" : '0';
+        $sUserSql = $sUserId ? "EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxdelsetu' and oxobject2delivery.OXOBJECTID=" . $oDb->quote($sUserId) . ")" : '0';
+        $sGroupSql = count($aIds) ? "EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxdelsetg' and oxobject2delivery.OXOBJECTID in (" . implode(', ', oxDb::getInstance()->quoteArray($aIds)) . ") )" : '0';
 
         $sQ .= "and (
             select
@@ -202,20 +203,21 @@ class oxDeliverySetList extends oxList
      *
      * @return array
      */
-    public function getDeliverySetList( $oUser, $sCountryId, $sDelSet = null )
+    public function getDeliverySetList($oUser, $sCountryId, $sDelSet = null)
     {
-        $this->_getList( $oUser, $sCountryId );
+        $this->_getList($oUser, $sCountryId);
 
         // if there is already chosen delivery set we must start checking from it
         $aList = $this->_aArray;
-        if ( $sDelSet && isset( $aList[$sDelSet] ) ) {
+        if ($sDelSet && isset($aList[$sDelSet])) {
 
             //set it as first element
             $oDelSet = $aList[$sDelSet];
-            unset( $aList[$sDelSet] );
+            unset($aList[$sDelSet]);
 
-            $aList = array_merge( array( $sDelSet => $oDelSet ), $aList );
+            $aList = array_merge(array($sDelSet => $oDelSet), $aList);
         }
+
         return $aList;
     }
 
@@ -233,23 +235,23 @@ class oxDeliverySetList extends oxList
      *
      * @return array
      */
-    public function getDeliverySetData( $sShipSet, $oUser, $oBasket )
+    public function getDeliverySetData($sShipSet, $oUser, $oBasket)
     {
         $sActShipSet = null;
-        $aActSets    = array();
+        $aActSets = array();
         $aActPaymentList = array();
 
         if (!$oUser) {
             return;
         }
 
-        $this->_getList( $oUser, $oUser->getActiveCountry() );
+        $this->_getList($oUser, $oUser->getActiveCountry());
 
         // if there are no shipping sets we don't need to load payments
-        if ( $this->count() ) {
+        if ($this->count()) {
 
             // one selected ?
-            if ( $sShipSet && !isset( $this->_aArray[$sShipSet] ) ) {
+            if ($sShipSet && !isset($this->_aArray[$sShipSet])) {
                 $sShipSet = null;
             }
 
@@ -260,16 +262,16 @@ class oxDeliverySetList extends oxList
             $dBasketPrice = $oBasket->getPriceForPayment() / $oCur->rate;
 
             // checking if these ship sets available (number of possible payment methods > 0)
-            foreach ( $this as $sShipSetId => $oShipSet ) {
+            foreach ($this as $sShipSetId => $oShipSet) {
 
-                $aPaymentList = $oPayList->getPaymentList( $sShipSetId, $dBasketPrice, $oUser );
-                if ( count( $aPaymentList ) ) {
+                $aPaymentList = $oPayList->getPaymentList($sShipSetId, $dBasketPrice, $oUser);
+                if (count($aPaymentList)) {
 
                     // now checking for deliveries
-                    if ( $oDelList->hasDeliveries( $oBasket, $oUser, $oUser->getActiveCountry(), $sShipSetId ) ) {
+                    if ($oDelList->hasDeliveries($oBasket, $oUser, $oUser->getActiveCountry(), $sShipSetId)) {
                         $aActSets[$sShipSetId] = $oShipSet;
 
-                        if ( !$sShipSet || ( $sShipSetId == $sShipSet ) ) {
+                        if (!$sShipSet || ($sShipSetId == $sShipSet)) {
                             $sActShipSet = $sShipSet = $sShipSetId;
                             $aActPaymentList = $aPaymentList;
                             $oShipSet->blSelected = true;
@@ -279,7 +281,7 @@ class oxDeliverySetList extends oxList
             }
         }
 
-        return array( $aActSets, $sActShipSet, $aActPaymentList );
+        return array($aActSets, $sActShipSet, $aActPaymentList);
     }
 
     /**
@@ -289,7 +291,7 @@ class oxDeliverySetList extends oxList
      */
     public function getUser()
     {
-        if ( !$this->_oUser ) {
+        if (!$this->_oUser) {
             $this->_oUser = parent::getUser();
         }
 
@@ -303,7 +305,7 @@ class oxDeliverySetList extends oxList
      *
      * @return null
      */
-    public function setUser( $oUser )
+    public function setUser($oUser)
     {
         $this->_oUser = $oUser;
     }
@@ -316,9 +318,9 @@ class oxDeliverySetList extends oxList
      */
     public function loadNonRDFaDeliverySetList()
     {
-        $sTable = getViewName( 'oxdeliveryset' );
+        $sTable = getViewName('oxdeliveryset');
         $sSubSql = "SELECT * FROM oxobject2delivery WHERE oxobject2delivery.OXDELIVERYID = $sTable.OXID AND oxobject2delivery.OXTYPE = 'rdfadeliveryset'";
-        $this->selectString( "SELECT $sTable.* FROM $sTable WHERE NOT EXISTS($sSubSql) AND $sTable.OXACTIVE = 1" );
+        $this->selectString("SELECT $sTable.* FROM $sTable WHERE NOT EXISTS($sSubSql) AND $sTable.OXACTIVE = 1");
     }
 
     /**
@@ -331,15 +333,15 @@ class oxDeliverySetList extends oxList
      */
     public function loadRDFaDeliverySetList($sDelId = null)
     {
-        $sTable = getViewName( 'oxdeliveryset' );
+        $sTable = getViewName('oxdeliveryset');
         if ($sDelId) {
             $oDb = oxDb::getDb();
-            $sSubSql = "( select $sTable.* from $sTable left join oxdel2delset on oxdel2delset.oxdelsetid=$sTable.oxid where ".$this->getBaseObject()->getSqlActiveSnippet()." and oxdel2delset.oxdelid = ".$oDb->quote($sDelId)." ) as $sTable";
+            $sSubSql = "( select $sTable.* from $sTable left join oxdel2delset on oxdel2delset.oxdelsetid=$sTable.oxid where " . $this->getBaseObject()->getSqlActiveSnippet() . " and oxdel2delset.oxdelid = " . $oDb->quote($sDelId) . " ) as $sTable";
         } else {
             $sSubSql = $sTable;
         }
-        $sQ  = "select $sTable.*, oxobject2delivery.oxobjectid from $sSubSql left join (select oxobject2delivery.* from oxobject2delivery where oxobject2delivery.oxtype = 'rdfadeliveryset' ) as oxobject2delivery on oxobject2delivery.oxdeliveryid=$sTable.oxid where ".$this->getBaseObject()->getSqlActiveSnippet()." ";
-        $this->selectString( $sQ );
+        $sQ = "select $sTable.*, oxobject2delivery.oxobjectid from $sSubSql left join (select oxobject2delivery.* from oxobject2delivery where oxobject2delivery.oxtype = 'rdfadeliveryset' ) as oxobject2delivery on oxobject2delivery.oxdeliveryid=$sTable.oxid where " . $this->getBaseObject()->getSqlActiveSnippet() . " ";
+        $this->selectString($sQ);
     }
 
 }

@@ -25,7 +25,8 @@
  * checks which views are valid / invalid
  *
  */
-class oxShopViewValidator {
+class oxShopViewValidator
+{
 
     protected $_aMultiLangTables = array();
 
@@ -46,13 +47,14 @@ class oxShopViewValidator {
     /**
      * @param null $aMultiLangTables
      */
-    public function setMultiLangTables( $aMultiLangTables )
+    public function setMultiLangTables($aMultiLangTables)
     {
         $this->_aMultiLangTables = $aMultiLangTables;
     }
 
     /**
      * Returns multi lang tables
+     *
      * @return array
      */
     public function getMultiLangTables()
@@ -64,13 +66,14 @@ class oxShopViewValidator {
     /**
      * @param array $aMultiShopTables
      */
-    public function setMultiShopTables( $aMultiShopTables )
+    public function setMultiShopTables($aMultiShopTables)
     {
         $this->_aMultiShopTables = $aMultiShopTables;
     }
 
     /**
      * Returns multi shop tables
+     *
      * @return array
      */
     public function getMultiShopTables()
@@ -80,9 +83,10 @@ class oxShopViewValidator {
 
     /**
      * Returns list of active languages in shop
+     *
      * @param array $aLanguages
      */
-    public function setLanguages( $aLanguages )
+    public function setLanguages($aLanguages)
     {
         $this->_aLanguages = $aLanguages;
     }
@@ -97,9 +101,10 @@ class oxShopViewValidator {
 
     /**
      * Returns list of active languages in shop
+     *
      * @param array $aAllShopLanguages
      */
-    public function setAllShopLanguages( $aAllShopLanguages )
+    public function setAllShopLanguages($aAllShopLanguages)
     {
         $this->_aAllShopLanguages = $aAllShopLanguages;
     }
@@ -116,13 +121,14 @@ class oxShopViewValidator {
     /**
      * @param integer $iShopId
      */
-    public function setShopId( $iShopId )
+    public function setShopId($iShopId)
     {
         $this->_iShopId = $iShopId;
     }
 
     /**
      * Returns list of available shops
+     *
      * @return integer
      */
     public function getShopId()
@@ -132,32 +138,36 @@ class oxShopViewValidator {
 
     /**
      * Returns list of all shop views
+     *
      * @return array
      */
     protected function _getAllViews()
     {
-        if ( empty( $this->_aAllViews ) ) {
-            $this->_aAllViews = oxDb::getDb()->getCol( "SHOW TABLES LIKE  'oxv_%'" );
+        if (empty($this->_aAllViews)) {
+            $this->_aAllViews = oxDb::getDb()->getCol("SHOW TABLES LIKE  'oxv_%'");
         }
 
-        return  $this->_aAllViews;
+        return $this->_aAllViews;
     }
 
     /**
      * Checks if given view name belongs to current subshop or is general view
+     *
      * @param $sViewName
+     *
      * @return bool
      */
-    protected function _isCurrentShopView( $sViewName )
+    protected function _isCurrentShopView($sViewName)
     {
         $blResult = false;
 
-        $blEndsWithShopId = preg_match( "/[_]([0-9]+)$/",$sViewName, $aMatchEndsWithShopId );
-        $blContainsShopId = preg_match( "/[_]([0-9]+)[_]/",$sViewName, $aMatchContainsShopId );
+        $blEndsWithShopId = preg_match("/[_]([0-9]+)$/", $sViewName, $aMatchEndsWithShopId);
+        $blContainsShopId = preg_match("/[_]([0-9]+)[_]/", $sViewName, $aMatchContainsShopId);
 
-        if ( ( !$blEndsWithShopId && !$blContainsShopId ) ||
-             ( $blEndsWithShopId && $aMatchEndsWithShopId[1] == $this->getShopId() ) ||
-             ( $blContainsShopId && $aMatchContainsShopId[1] == $this->getShopId() ) ) {
+        if ((!$blEndsWithShopId && !$blContainsShopId) ||
+            ($blEndsWithShopId && $aMatchEndsWithShopId[1] == $this->getShopId()) ||
+            ($blContainsShopId && $aMatchContainsShopId[1] == $this->getShopId())
+        ) {
 
             $blResult = true;
         }
@@ -168,18 +178,19 @@ class oxShopViewValidator {
 
     /**
      * Returns list of shop specific views currently in database
+     *
      * @return array
      */
     protected function _getShopViews()
     {
-        if ( empty( $this->_aShopViews ) ) {
+        if (empty($this->_aShopViews)) {
 
             $this->_aShopViews = array();
             $aAllViews = $this->_getAllViews();
 
-            foreach ( $aAllViews as $sView ) {
+            foreach ($aAllViews as $sView) {
 
-                if ( $this->_isCurrentShopView( $sView ) ){
+                if ($this->_isCurrentShopView($sView)) {
                     $this->_aShopViews[] = $sView;
                 }
             }
@@ -190,23 +201,24 @@ class oxShopViewValidator {
 
     /**
      * Returns list of valid shop views
+     *
      * @return array
      */
     protected function _getValidShopViews()
     {
-        if ( empty( $this->_aValidShopViews ) ) {
+        if (empty($this->_aValidShopViews)) {
 
             $aTables = $this->getMultilangTables();
 
 
             $this->_aValidShopViews = array();
 
-            foreach ( $aTables as $sTable ) {
-                $this->_aValidShopViews[] = 'oxv_'.$sTable;;
+            foreach ($aTables as $sTable) {
+                $this->_aValidShopViews[] = 'oxv_' . $sTable;;
 
-                if ( in_array( $sTable, $this->getMultiLangTables() ) ) {
-                    foreach ( $this->getAllShopLanguages() as $sLang ) {
-                        $this->_aValidShopViews[] ='oxv_'.$sTable.'_'.$sLang;
+                if (in_array($sTable, $this->getMultiLangTables())) {
+                    foreach ($this->getAllShopLanguages() as $sLang) {
+                        $this->_aValidShopViews[] = 'oxv_' . $sTable . '_' . $sLang;
                     }
                 }
 
@@ -218,15 +230,19 @@ class oxShopViewValidator {
 
     /**
      * Checks if view name is valid according to current config
+     *
      * @param $sViewName
+     *
      * @return bool
      */
-    protected function _isViewValid( $sViewName ){
-        return in_array( $sViewName, $this->_getValidShopViews() );
+    protected function _isViewValid($sViewName)
+    {
+        return in_array($sViewName, $this->_getValidShopViews());
     }
 
     /**
      * Returns list of invalid views
+     *
      * @return array
      */
     public function getInvalidViews()
@@ -234,8 +250,8 @@ class oxShopViewValidator {
         $aInvalidViews = array();
         $aShopViews = $this->_getShopViews();
 
-        foreach ( $aShopViews as $sView ) {
-            if ( !$this->_isViewValid( $sView ) ){
+        foreach ($aShopViews as $sView) {
+            if (!$this->_isViewValid($sView)) {
                 $aInvalidViews[] = $sView;
             }
         }

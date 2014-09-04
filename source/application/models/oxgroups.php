@@ -27,8 +27,10 @@
  */
 class oxGroups extends oxI18n
 {
+
     /**
      * Name of current class
+     *
      * @var string
      */
     protected $_sClassName = 'oxgroups';
@@ -39,7 +41,7 @@ class oxGroups extends oxI18n
     public function __construct()
     {
         parent::__construct();
-        $this->init( 'oxgroups' );
+        $this->init('oxgroups');
     }
 
 
@@ -50,34 +52,34 @@ class oxGroups extends oxI18n
      *
      * @return bool
      */
-    public function delete( $sOXID = null )
+    public function delete($sOXID = null)
     {
-        if ( !$sOXID ) {
+        if (!$sOXID) {
             $sOXID = $this->getId();
         }
-        if ( !$sOXID ) {
+        if (!$sOXID) {
             return false;
         }
 
 
 
-        parent::delete( $sOXID );
+        parent::delete($sOXID);
 
         $oDb = oxDb::getDb();
 
 
         // deleting related data records
-        $sDelete = 'delete from oxobject2group where oxobject2group.oxgroupsid = ' . $oDb->quote( $sOXID );
-        $rs = $oDb->execute( $sDelete );
+        $sDelete = 'delete from oxobject2group where oxobject2group.oxgroupsid = ' . $oDb->quote($sOXID);
+        $rs = $oDb->execute($sDelete);
 
-        $sDelete = 'delete from oxobject2delivery where oxobject2delivery.oxobjectid = ' . $oDb->quote( $sOXID );
-        $rs = $oDb->execute( $sDelete );
+        $sDelete = 'delete from oxobject2delivery where oxobject2delivery.oxobjectid = ' . $oDb->quote($sOXID);
+        $rs = $oDb->execute($sDelete);
 
-        $sDelete = 'delete from oxobject2discount where oxobject2discount.oxobjectid = ' . $oDb->quote( $sOXID );
-        $rs = $oDb->execute( $sDelete );
+        $sDelete = 'delete from oxobject2discount where oxobject2discount.oxobjectid = ' . $oDb->quote($sOXID);
+        $rs = $oDb->execute($sDelete);
 
-        $sDelete = 'delete from oxobject2payment where oxobject2payment.oxobjectid = ' . $oDb->quote( $sOXID );
-        $rs = $oDb->execute( $sDelete );
+        $sDelete = 'delete from oxobject2payment where oxobject2payment.oxobjectid = ' . $oDb->quote($sOXID);
+        $rs = $oDb->execute($sDelete);
 
         return $rs->EOF;
     }

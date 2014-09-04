@@ -22,6 +22,7 @@
 
 class oxUserAddressList extends oxList
 {
+
     /**
      * Call parent class constructor
      */
@@ -37,17 +38,17 @@ class oxUserAddressList extends oxList
      *
      * @return null
      */
-    public function load( $sUserId )
+    public function load($sUserId)
     {
-        $sViewName = getViewName( 'oxcountry' );
-        $oBaseObject   = $this->getBaseObject();
+        $sViewName = getViewName('oxcountry');
+        $oBaseObject = $this->getBaseObject();
         $sSelectFields = $oBaseObject->getSelectFields();
 
         $sSelect = "
                 SELECT {$sSelectFields}, `oxcountry`.`oxtitle` AS oxcountry
                 FROM oxaddress
                 LEFT JOIN {$sViewName} AS oxcountry ON oxaddress.oxcountryid = oxcountry.oxid
-                WHERE oxaddress.oxuserid = " . oxDb::getDb()->quote( $sUserId );
-        $this->selectString( $sSelect );
+                WHERE oxaddress.oxuserid = " . oxDb::getDb()->quote($sUserId);
+        $this->selectString($sSelect);
     }
 }

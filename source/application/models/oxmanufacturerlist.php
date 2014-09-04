@@ -27,6 +27,7 @@
  */
 class oxManufacturerList extends oxList
 {
+
     /**
      * Manufacturer root.
      *
@@ -73,7 +74,7 @@ class oxManufacturerList extends oxList
      *
      * @return null
      */
-    public function setShowManufacturerArticleCnt( $blShowManufacturerArticleCnt = false )
+    public function setShowManufacturerArticleCnt($blShowManufacturerArticleCnt = false)
     {
         $this->_blShowManufacturerArticleCnt = $blShowManufacturerArticleCnt;
     }
@@ -88,18 +89,18 @@ class oxManufacturerList extends oxList
         $oBaseObject = $this->getBaseObject();
 
         $sFieldList = $oBaseObject->getSelectFields();
-        $sViewName  = $oBaseObject->getViewName();
-        $this->getBaseObject()->setShowArticleCnt( $this->_blShowManufacturerArticleCnt );
+        $sViewName = $oBaseObject->getViewName();
+        $this->getBaseObject()->setShowArticleCnt($this->_blShowManufacturerArticleCnt);
 
         $sWhere = '';
-        if ( !$this->isAdmin() ) {
-            $sWhere  = $oBaseObject->getSqlActiveSnippet();
-            $sWhere  = $sWhere?" where $sWhere and ":' where ';
+        if (!$this->isAdmin()) {
+            $sWhere = $oBaseObject->getSqlActiveSnippet();
+            $sWhere = $sWhere ? " where $sWhere and " : ' where ';
             $sWhere .= "{$sViewName}.oxtitle != '' ";
         }
 
         $sSelect = "select {$sFieldList} from {$sViewName} {$sWhere} order by {$sViewName}.oxtitle";
-        $this->selectString( $sSelect );
+        $this->selectString($sSelect);
     }
 
     /**
@@ -111,29 +112,29 @@ class oxManufacturerList extends oxList
      *
      * @return null
      */
-    public function buildManufacturerTree( $sLinkTarget, $sActCat, $sShopHomeUrl )
+    public function buildManufacturerTree($sLinkTarget, $sActCat, $sShopHomeUrl)
     {
         //Load manufacturer list
         $this->loadManufacturerList();
 
 
         //Create fake manufacturer root category
-        $this->_oRoot = oxNew( "oxManufacturer" );
-        $this->_oRoot->load( "root" );
+        $this->_oRoot = oxNew("oxManufacturer");
+        $this->_oRoot->load("root");
 
         //category fields
-        $this->_addCategoryFields( $this->_oRoot );
+        $this->_addCategoryFields($this->_oRoot);
         $this->_aPath[] = $this->_oRoot;
 
-        foreach ( $this as $sVndId => $oManufacturer ) {
+        foreach ($this as $sVndId => $oManufacturer) {
 
             // storing active manufacturer object
-            if ( $sVndId == $sActCat ) {
-                $this->setClickManufacturer( $oManufacturer );
+            if ($sVndId == $sActCat) {
+                $this->setClickManufacturer($oManufacturer);
             }
 
-            $this->_addCategoryFields( $oManufacturer );
-            if ( $sActCat == $oManufacturer->oxmanufacturers__oxid->value ) {
+            $this->_addCategoryFields($oManufacturer);
+            if ($sActCat == $oManufacturer->oxmanufacturers__oxid->value) {
                 $this->_aPath[] = $oManufacturer;
             }
         }
@@ -168,15 +169,15 @@ class oxManufacturerList extends oxList
      *
      * @return null
      */
-    protected function _addCategoryFields( $oManufacturer )
+    protected function _addCategoryFields($oManufacturer)
     {
-        $oManufacturer->oxcategories__oxid    = new oxField( $oManufacturer->oxmanufacturers__oxid->value );
-        $oManufacturer->oxcategories__oxicon  = $oManufacturer->oxmanufacturers__oxicon;
+        $oManufacturer->oxcategories__oxid = new oxField($oManufacturer->oxmanufacturers__oxid->value);
+        $oManufacturer->oxcategories__oxicon = $oManufacturer->oxmanufacturers__oxicon;
         $oManufacturer->oxcategories__oxtitle = $oManufacturer->oxmanufacturers__oxtitle;
-        $oManufacturer->oxcategories__oxdesc  = $oManufacturer->oxmanufacturers__oxshortdesc;
+        $oManufacturer->oxcategories__oxdesc = $oManufacturer->oxmanufacturers__oxshortdesc;
 
-        $oManufacturer->setIsVisible( true );
-        $oManufacturer->setHasVisibleSubCats( false );
+        $oManufacturer->setIsVisible(true);
+        $oManufacturer->setHasVisibleSubCats(false);
     }
 
     /**
@@ -186,7 +187,7 @@ class oxManufacturerList extends oxList
      *
      * @return null
      */
-    public function setClickManufacturer( $oManufacturer )
+    public function setClickManufacturer($oManufacturer)
     {
         $this->_oClickedManufacturer = $oManufacturer;
     }
@@ -209,7 +210,7 @@ class oxManufacturerList extends oxList
     protected function _seoSetManufacturerData()
     {
         // only when SEO id on and in front end
-        if ( oxRegistry::getUtils()->seoIsActive() && !$this->isAdmin()) {
+        if (oxRegistry::getUtils()->seoIsActive() && !$this->isAdmin()) {
 
             $oEncoder = oxRegistry::get("oxSeoEncoderManufacturer");
 
@@ -220,7 +221,7 @@ class oxManufacturerList extends oxList
 
             // encoding manufacturer category
             foreach ($this as $sVndId => $value) {
-                $oEncoder->getManufacturerUrl( $this->_aArray[$sVndId] );
+                $oEncoder->getManufacturerUrl($this->_aArray[$sVndId]);
             }
         }
     }

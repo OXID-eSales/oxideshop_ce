@@ -28,6 +28,7 @@
  */
 class Article_Stock extends oxAdminDetails
 {
+
     /**
      * Loads article Inventory information, passes it to Smarty engine and
      * returns name of template file "article_stock.tpl".
@@ -40,38 +41,38 @@ class Article_Stock extends oxAdminDetails
 
         parent::render();
 
-        $this->_aViewData["edit"] = $oArticle = oxNew( "oxarticle");
+        $this->_aViewData["edit"] = $oArticle = oxNew("oxarticle");
 
         $soxId = $this->getEditObjectId();
-        if ( $soxId != "-1" && isset( $soxId)) {
+        if ($soxId != "-1" && isset($soxId)) {
 
             // load object
-            $oArticle->loadInLang( $this->_iEditLang, $soxId );
+            $oArticle->loadInLang($this->_iEditLang, $soxId);
 
             // load object in other languages
             $oOtherLang = $oArticle->getAvailableInLangs();
             if (!isset($oOtherLang[$this->_iEditLang])) {
                 // echo "language entry doesn't exist! using: ".key($oOtherLang);
-                $oArticle->loadInLang( key($oOtherLang), $soxId );
+                $oArticle->loadInLang(key($oOtherLang), $soxId);
             }
 
-            foreach ( $oOtherLang as $id => $language) {
-                $oLang= new stdClass();
+            foreach ($oOtherLang as $id => $language) {
+                $oLang = new stdClass();
                 $oLang->sLangDesc = $language;
                 $oLang->selected = ($id == $this->_iEditLang);
-                $this->_aViewData["otherlang"][$id] =  clone $oLang;
+                $this->_aViewData["otherlang"][$id] = clone $oLang;
             }
 
 
             // variant handling
-            if ( $oArticle->oxarticles__oxparentid->value) {
-                $oParentArticle = oxNew( "oxarticle");
-                $oParentArticle->load( $oArticle->oxarticles__oxparentid->value);
-                $this->_aViewData["parentarticle"] =  $oParentArticle;
-                $this->_aViewData["oxparentid"] =  $oArticle->oxarticles__oxparentid->value;
+            if ($oArticle->oxarticles__oxparentid->value) {
+                $oParentArticle = oxNew("oxarticle");
+                $oParentArticle->load($oArticle->oxarticles__oxparentid->value);
+                $this->_aViewData["parentarticle"] = $oParentArticle;
+                $this->_aViewData["oxparentid"] = $oArticle->oxarticles__oxparentid->value;
             }
 
-            if ( $myConfig->getConfigParam( 'blMallInterchangeArticles' ) ) {
+            if ($myConfig->getConfigParam('blMallInterchangeArticles')) {
                 $sShopSelect = '1';
             } else {
                 $sShopID = $myConfig->getShopID();
@@ -79,9 +80,9 @@ class Article_Stock extends oxAdminDetails
             }
 
             $oPriceList = oxNew("oxlist");
-            $oPriceList->init( 'oxbase', "oxprice2article" );
+            $oPriceList->init('oxbase', "oxprice2article");
             $sQ = "select * from oxprice2article where oxartid = '$soxId' and {$sShopSelect} and (oxamount > 0 or oxamountto > 0) order by oxamount ";
-            $oPriceList->selectstring( $sQ );
+            $oPriceList->selectstring($sQ);
 
             $this->_aViewData["amountprices"] = $oPriceList;
 
@@ -100,27 +101,27 @@ class Article_Stock extends oxAdminDetails
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval");
+        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
             // shopid
-            $sShopID = oxRegistry::getSession()->getVariable( "actshop");
+            $sShopID = oxRegistry::getSession()->getVariable("actshop");
             $aParams['oxarticles__oxshopid'] = $sShopID;
 
-        $oArticle = oxNew( "oxarticle");
-        $oArticle->loadInLang( $this->_iEditLang, $soxId );
+        $oArticle = oxNew("oxarticle");
+        $oArticle->loadInLang($this->_iEditLang, $soxId);
 
-        $oArticle->setLanguage( 0 );
+        $oArticle->setLanguage(0);
 
         // checkbox handling
-        if ( !$oArticle->oxarticles__oxparentid->value && !isset( $aParams['oxarticles__oxremindactive'])) {
+        if (!$oArticle->oxarticles__oxparentid->value && !isset($aParams['oxarticles__oxremindactive'])) {
             $aParams['oxarticles__oxremindactive'] = 0;
         }
 
-        $oArticle->assign( $aParams );
+        $oArticle->assign($aParams);
 
         //tells to article to save in different language
-        $oArticle->setLanguage( $this->_iEditLang );
-        $oArticle = oxRegistry::get("oxUtilsFile")->processFiles( $oArticle );
+        $oArticle->setLanguage($this->_iEditLang);
+        $oArticle = oxRegistry::get("oxUtilsFile")->processFiles($oArticle);
 
         $oArticle->resetRemindStatus();
 
@@ -129,15 +130,15 @@ class Article_Stock extends oxAdminDetails
         $oArticle->save();
     }
 
-     /**
+    /**
      * Adds or updates amount price to article
-      *
+     *
      * @param string $sOXID         Object ID
      * @param array  $aUpdateParams Parameters
-      *
+     *
      * @return null
      */
-    public function addprice( $sOXID = null, $aUpdateParams = null )
+    public function addprice($sOXID = null, $aUpdateParams = null)
     {
         $myConfig = $this->getConfig();
 
@@ -146,64 +147,64 @@ class Article_Stock extends oxAdminDetails
 
 
 
-        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval" );
+        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-        if ( !is_array($aParams) ) {
+        if (!is_array($aParams)) {
             return;
         }
 
-        if ( isset( $aUpdateParams ) && is_array( $aUpdateParams ) ) {
-            $aParams = array_merge( $aParams, $aUpdateParams );
+        if (isset($aUpdateParams) && is_array($aUpdateParams)) {
+            $aParams = array_merge($aParams, $aUpdateParams);
         }
 
         //replacing commas
-        foreach ( $aParams as $key => $sParam ) {
-            $aParams[$key] = str_replace( ",", ".", $sParam );
+        foreach ($aParams as $key => $sParam) {
+            $aParams[$key] = str_replace(",", ".", $sParam);
         }
 
         $aParams['oxprice2article__oxshopid'] = $myConfig->getShopID();
 
-        if ( isset( $sOXID ) ) {
+        if (isset($sOXID)) {
             $aParams['oxprice2article__oxid'] = $sOXID;
         }
 
         $aParams['oxprice2article__oxartid'] = $sOxArtId;
-        if ( !isset( $aParams['oxprice2article__oxamount'] ) || !$aParams['oxprice2article__oxamount'] ) {
+        if (!isset($aParams['oxprice2article__oxamount']) || !$aParams['oxprice2article__oxamount']) {
             $aParams['oxprice2article__oxamount'] = "1";
         }
 
-        if ( !$myConfig->getConfigParam( 'blAllowUnevenAmounts' ) ) {
-            $aParams['oxprice2article__oxamount']   = round( ( string ) $aParams['oxprice2article__oxamount'] );
-            $aParams['oxprice2article__oxamountto'] = round( ( string ) $aParams['oxprice2article__oxamountto'] );
+        if (!$myConfig->getConfigParam('blAllowUnevenAmounts')) {
+            $aParams['oxprice2article__oxamount'] = round(( string ) $aParams['oxprice2article__oxamount']);
+            $aParams['oxprice2article__oxamountto'] = round(( string ) $aParams['oxprice2article__oxamountto']);
         }
 
         $dPrice = $aParams['price'];
         $sType = $aParams['pricetype'];
 
-        $oArticlePrice = oxNew( "oxbase" );
-        $oArticlePrice->init( "oxprice2article" );
-        $oArticlePrice->assign( $aParams );
+        $oArticlePrice = oxNew("oxbase");
+        $oArticlePrice->init("oxprice2article");
+        $oArticlePrice->assign($aParams);
 
-        $oArticlePrice->$sType = new oxField( $dPrice );
+        $oArticlePrice->$sType = new oxField($dPrice);
 
         //validating
         if ($oArticlePrice->$sType->value &&
             $oArticlePrice->oxprice2article__oxamount->value &&
             $oArticlePrice->oxprice2article__oxamountto->value &&
-            is_numeric( $oArticlePrice->$sType->value ) &&
-            is_numeric( $oArticlePrice->oxprice2article__oxamount->value ) &&
-            is_numeric( $oArticlePrice->oxprice2article__oxamountto->value ) &&
+            is_numeric($oArticlePrice->$sType->value) &&
+            is_numeric($oArticlePrice->oxprice2article__oxamount->value) &&
+            is_numeric($oArticlePrice->oxprice2article__oxamountto->value) &&
             $oArticlePrice->oxprice2article__oxamount->value <= $oArticlePrice->oxprice2article__oxamountto->value
-            ) {
+        ) {
             $oArticlePrice->save();
         }
 
         // check if abs price is lower than base price
-        $oArticle = oxNew( "oxArticle");
-        $oArticle->loadInLang( $this->_iEditLang, $sOxArtId );
+        $oArticle = oxNew("oxArticle");
+        $oArticle->loadInLang($this->_iEditLang, $sOxArtId);
 
-        if ( ( $aParams['price'] >= $oArticle->oxarticles__oxprice->value) && ($aParams['pricetype'] == 'oxprice2article__oxaddabs' )  ) {
-            if ( is_null($sOXID) ) {
+        if (($aParams['price'] >= $oArticle->oxarticles__oxprice->value) && ($aParams['pricetype'] == 'oxprice2article__oxaddabs')) {
+            if (is_null($sOXID)) {
                 $sOXID = $oArticlePrice->getId();
             }
             $this->_aViewData["errorscaleprice"][] = $sOXID;
@@ -219,14 +220,13 @@ class Article_Stock extends oxAdminDetails
     public function updateprices()
     {
 
-        $aParams = oxRegistry::getConfig()->getRequestParameter( "updateval" );
-        if ( is_array( $aParams ) ) {
-            foreach ( $aParams as $soxId => $aStockParams ) {
-                $this->addprice( $soxId, $aStockParams );
+        $aParams = oxRegistry::getConfig()->getRequestParameter("updateval");
+        if (is_array($aParams)) {
+            foreach ($aParams as $soxId => $aStockParams) {
+                $this->addprice($soxId, $aStockParams);
             }
         }
     }
-
 
 
     /**
@@ -238,9 +238,9 @@ class Article_Stock extends oxAdminDetails
     {
 
         $oDb = oxDb::getDb();
-        $sPriceId = $oDb->quote( oxRegistry::getConfig()->getRequestParameter("priceid" ) );
-        $sId = $oDb->quote( $this->getEditObjectId() );
-        $oDb->execute( "delete from oxprice2article where oxid = {$sPriceId} and oxartid = {$sId}" );
+        $sPriceId = $oDb->quote(oxRegistry::getConfig()->getRequestParameter("priceid"));
+        $sId = $oDb->quote($this->getEditObjectId());
+        $oDb->execute("delete from oxprice2article where oxid = {$sPriceId} and oxartid = {$sId}");
     }
 
 }

@@ -22,12 +22,13 @@
 
 /**
  * @internal Do not make a module extension for this class.
- * @see http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
+ * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
  *
- * @ignore This class will not be included in documentation.
+ * @ignore   This class will not be included in documentation.
  */
 class oxApplicationServer
 {
+
     /**
      * @var string
      */
@@ -56,14 +57,6 @@ class oxApplicationServer
      * @var int
      */
     private $_iLastAdminUsage;
-
-
-    /**
-     * Flag - server is used or not
-     *
-     * @var bool
-     */
-    private $_blIsValid = false;
 
     /**
      * @param string $sId
@@ -143,18 +136,5 @@ class oxApplicationServer
     public function getLastFrontendUsage()
     {
         return $this->_iLastFrontendUsage;
-    }
-
-    public function setIsValid( $blValid=true )
-    {
-        $this->_blIsValid = $blValid;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isValid()
-    {
-        return $this->_blIsValid;
     }
 }

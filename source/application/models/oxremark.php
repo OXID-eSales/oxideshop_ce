@@ -26,19 +26,20 @@
  */
 class oxRemark extends oxBase
 {
+
     /**
      * Current class name
      *
      * @var string
      */
-    protected $_sClassName  = 'oxremark';
+    protected $_sClassName = 'oxremark';
 
     /**
      * Skip update fields
      *
      * @var array
      */
-    protected $_aSkipSaveFields = array( 'oxtimestamp' );
+    protected $_aSkipSaveFields = array('oxtimestamp');
 
     /**
      * Class constructor, initiates parent constructor (parent::oxBase()).
@@ -48,7 +49,7 @@ class oxRemark extends oxBase
     public function __construct()
     {
         parent::__construct();
-        $this->init( 'oxremark' );
+        $this->init('oxremark');
     }
 
     /**
@@ -58,11 +59,11 @@ class oxRemark extends oxBase
      *
      * @return bool
      */
-    public function load( $oxID )
+    public function load($oxID)
     {
-        if ( $blRet = parent::load( $oxID ) ) {
+        if ($blRet = parent::load($oxID)) {
             // convert date's to international format
-            $this->oxremark__oxcreate = new oxField(oxRegistry::get("oxUtilsDate")->formatDBDate( $this->oxremark__oxcreate->value ), oxField::T_RAW);
+            $this->oxremark__oxcreate = new oxField(oxRegistry::get("oxUtilsDate")->formatDBDate($this->oxremark__oxcreate->value), oxField::T_RAW);
         }
 
         return $blRet;
@@ -76,7 +77,7 @@ class oxRemark extends oxBase
     protected function _insert()
     {
         // set oxcreate
-        $sNow = date( 'Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime() );
+        $sNow = date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime());
         $this->oxremark__oxcreate = new oxField($sNow, oxField::T_RAW);
         $this->oxremark__oxheader = new oxField($sNow, oxField::T_RAW);
 

@@ -26,6 +26,7 @@
  */
 class Account_Downloads extends Account
 {
+
     /**
      * Current class template name.
      *
@@ -46,7 +47,6 @@ class Account_Downloads extends Account
     protected $_oOrderFilesList = null;
 
 
-
     /**
      * Returns Bread Crumb - you are here page1/page2/page3...
      *
@@ -55,14 +55,14 @@ class Account_Downloads extends Account
     public function getBreadCrumb()
     {
         $aPaths = array();
-        $aPath  = array();
+        $aPath = array();
 
-        $aPath['title'] = oxRegistry::getLang()->translateString( 'MY_ACCOUNT', oxRegistry::getLang()->getBaseLanguage(), false );
-        $aPath['link']  =  oxRegistry::get("oxSeoEncoder")->getStaticUrl( $this->getViewConfig()->getSelfLink() . "cl=account" );
+        $aPath['title'] = oxRegistry::getLang()->translateString('MY_ACCOUNT', oxRegistry::getLang()->getBaseLanguage(), false);
+        $aPath['link'] = oxRegistry::get("oxSeoEncoder")->getStaticUrl($this->getViewConfig()->getSelfLink() . "cl=account");
         $aPaths[] = $aPath;
 
-        $aPath['title'] = oxRegistry::getLang()->translateString( 'MY_DOWNLOADS', oxRegistry::getLang()->getBaseLanguage(), false );
-        $aPath['link']  = $this->getLink();
+        $aPath['title'] = oxRegistry::getLang()->translateString('MY_DOWNLOADS', oxRegistry::getLang()->getBaseLanguage(), false);
+        $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;
 
         return $aPaths;
@@ -75,14 +75,14 @@ class Account_Downloads extends Account
      */
     public function getOrderFilesList()
     {
-        if ( $this->_oOrderFilesList !== null ) {
+        if ($this->_oOrderFilesList !== null) {
             return $this->_oOrderFilesList;
         }
 
         $oOrderFileList = oxNew('oxOrderFileList');
-        $oOrderFileList->loadUserFiles( $this->getUser()->getId() );
+        $oOrderFileList->loadUserFiles($this->getUser()->getId());
 
-        $this->_oOrderFilesList = $this->_prepareForTemplate( $oOrderFileList );
+        $this->_oOrderFilesList = $this->_prepareForTemplate($oOrderFileList);
 
         return $this->_oOrderFilesList;
     }
@@ -94,11 +94,11 @@ class Account_Downloads extends Account
      *
      * @return array
      */
-    protected function _prepareForTemplate( $oOrderFileList )
+    protected function _prepareForTemplate($oOrderFileList)
     {
         $oOrderArticles = array();
 
-        foreach ( $oOrderFileList as $oOrderFile ) {
+        foreach ($oOrderFileList as $oOrderFile) {
             $sOrderArticleId = $oOrderFile->oxorderfiles__oxorderarticleid->value;
             $oOrderArticles[$sOrderArticleId]['oxordernr'] = $oOrderFile->oxorderfiles__oxordernr->value;
             $oOrderArticles[$sOrderArticleId]['oxorderdate'] = substr($oOrderFile->oxorderfiles__oxorderdate->value, 0, 16);
@@ -109,14 +109,14 @@ class Account_Downloads extends Account
         return $oOrderArticles;
     }
 
-     /**
+    /**
      * Returns error code.
      *
      * @return int
      */
     public function getDownloadError()
     {
-        return $this->getConfig()->getRequestParameter( 'download_error' );
+        return $this->getConfig()->getRequestParameter('download_error');
     }
 
 }

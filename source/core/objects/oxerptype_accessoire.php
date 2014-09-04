@@ -28,6 +28,7 @@ require_once 'oxerptype.php';
  */
 class oxERPType_Accessoire extends oxERPType
 {
+
     /**
      * class constructor
      *

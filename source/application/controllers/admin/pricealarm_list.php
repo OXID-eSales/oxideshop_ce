@@ -27,8 +27,10 @@
  */
 class PriceAlarm_List extends oxAdminList
 {
+
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'pricealarm_list.tpl';
@@ -54,10 +56,10 @@ class PriceAlarm_List extends oxAdminList
      *
      * @return string
      */
-    protected function _buildSelectString( $oListObject = null )
+    protected function _buildSelectString($oListObject = null)
     {
-        $sViewName = getViewName( "oxarticles", (int) $this->getConfig()->getConfigParam( "sDefaultLang" ) );
-        $sSql  = "select oxpricealarm.*, {$sViewName}.oxtitle AS articletitle, ";
+        $sViewName = getViewName("oxarticles", (int) $this->getConfig()->getConfigParam("sDefaultLang"));
+        $sSql = "select oxpricealarm.*, {$sViewName}.oxtitle AS articletitle, ";
         $sSql .= "oxuser.oxlname as userlname, oxuser.oxfname as userfname ";
         $sSql .= "from oxpricealarm left join {$sViewName} on {$sViewName}.oxid = oxpricealarm.oxartid ";
         $sSql .= "left join oxuser on oxuser.oxid = oxpricealarm.oxuserid WHERE 1 ";
@@ -73,18 +75,18 @@ class PriceAlarm_List extends oxAdminList
     public function buildWhere()
     {
         $this->_aWhere = parent::buildWhere();
-        $sViewName = getViewName( "oxpricealarm" );
-        $sArtViewName = getViewName( "oxarticles" );
+        $sViewName = getViewName("oxpricealarm");
+        $sArtViewName = getViewName("oxarticles");
 
         // updating price fields values for correct search in DB
-        if ( isset( $this->_aWhere[$sViewName.'.oxprice'] ) ) {
-            $sPriceParam = (double) str_replace( array( '%', ',' ), array( '', '.' ), $this->_aWhere[$sViewName.'.oxprice'] );
-            $this->_aWhere[$sViewName.'.oxprice'] = '%'. $sPriceParam. '%';
+        if (isset($this->_aWhere[$sViewName . '.oxprice'])) {
+            $sPriceParam = (double) str_replace(array('%', ','), array('', '.'), $this->_aWhere[$sViewName . '.oxprice']);
+            $this->_aWhere[$sViewName . '.oxprice'] = '%' . $sPriceParam . '%';
         }
 
-        if ( isset( $this->_aWhere[$sArtViewName.'.oxprice'] ) ) {
-            $sPriceParam = (double) str_replace( array( '%', ',' ), array( '', '.' ), $this->_aWhere[$sArtViewName.'.oxprice'] );
-            $this->_aWhere[$sArtViewName.'.oxprice'] = '%'. $sPriceParam. '%';
+        if (isset($this->_aWhere[$sArtViewName . '.oxprice'])) {
+            $sPriceParam = (double) str_replace(array('%', ','), array('', '.'), $this->_aWhere[$sArtViewName . '.oxprice']);
+            $this->_aWhere[$sArtViewName . '.oxprice'] = '%' . $sPriceParam . '%';
         }
 
 

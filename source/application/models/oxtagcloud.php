@@ -34,6 +34,7 @@ if (!defined('OXTAGCLOUD_MINFONT')) {
  */
 class oxTagCloud extends oxSuperCfg
 {
+
     /**
      * Cloud cache key
      *
@@ -95,7 +96,7 @@ class oxTagCloud extends oxSuperCfg
      *
      * @return null
      */
-    public function setExtendedMode( $blExtended )
+    public function setExtendedMode($blExtended)
     {
         $this->_blExtended = $blExtended;
     }
@@ -117,7 +118,7 @@ class oxTagCloud extends oxSuperCfg
      *
      * @return bool
      */
-    public function setTagList( oxITagList $oTagList )
+    public function setTagList(oxITagList $oTagList)
     {
         $this->_oTagList = $oTagList;
     }
@@ -139,7 +140,7 @@ class oxTagCloud extends oxSuperCfg
      *
      * @return void
      */
-    public function setCloudArray( $aTagCloudArray )
+    public function setCloudArray($aTagCloudArray)
     {
         $sCacheIdent = $this->_formCacheKey();
         $this->_aCloudArray[$sCacheIdent] = $aTagCloudArray;
@@ -153,11 +154,12 @@ class oxTagCloud extends oxSuperCfg
     public function getCloudArray()
     {
         $sCacheIdent = $this->_formCacheKey();
-        if ( !isset( $this->_aCloudArray[ $sCacheIdent ] ) ) {
+        if (!isset($this->_aCloudArray[$sCacheIdent])) {
             $oTagList = $this->getTagList();
 
-            $this->_aCloudArray[$sCacheIdent] = $this->formCloudArray( $oTagList );
+            $this->_aCloudArray[$sCacheIdent] = $this->formCloudArray($oTagList);
         }
+
         return $this->_aCloudArray[$sCacheIdent];
     }
 
@@ -168,29 +170,29 @@ class oxTagCloud extends oxSuperCfg
      *
      * @return array
      */
-    public function formCloudArray( oxITagList $oTagList )
+    public function formCloudArray(oxITagList $oTagList)
     {
         // checking if current data is already loaded
-        if ( $oTagList->getCacheId() ) {
-            $sCacheIdent = $this->_formCacheKey( $oTagList->getCacheId() );
+        if ($oTagList->getCacheId()) {
+            $sCacheIdent = $this->_formCacheKey($oTagList->getCacheId());
             $myUtils = oxRegistry::getUtils();
             // checking cache
-            $aCloudArray = $myUtils->fromFileCache( $sCacheIdent );
+            $aCloudArray = $myUtils->fromFileCache($sCacheIdent);
         }
 
         // loading cloud info
-        if ( $aCloudArray === null ) {
+        if ($aCloudArray === null) {
             $oTagList->loadList();
             $oTagSet = $oTagList->get();
-            if ( count( $oTagSet->get() ) > $this->getMaxAmount() ) {
+            if (count($oTagSet->get()) > $this->getMaxAmount()) {
                 $oTagSet->sortByHitCount();
-                $oTagSet->slice( 0, $this->getMaxAmount() );
+                $oTagSet->slice(0, $this->getMaxAmount());
             }
             $oTagSet->sort();
             $aCloudArray = $oTagSet->get();
             // updating cache
-            if ( $sCacheIdent ) {
-                $myUtils->toFileCache( $sCacheIdent, $aCloudArray );
+            if ($sCacheIdent) {
+                $myUtils->toFileCache($sCacheIdent, $aCloudArray);
             }
         }
 
@@ -204,16 +206,16 @@ class oxTagCloud extends oxSuperCfg
      *
      * @return int
      */
-    public function getTagSize( $sTag )
+    public function getTagSize($sTag)
     {
         $aCloudArray = $this->getCloudArray();
-        if ( is_null($aCloudArray[$sTag]) ) {
+        if (is_null($aCloudArray[$sTag])) {
             return 1;
         }
-        $iCurrSize = $this->_getFontSize( $aCloudArray[$sTag]->getHitCount(), $this->_getMaxHit() );
+        $iCurrSize = $this->_getFontSize($aCloudArray[$sTag]->getHitCount(), $this->_getMaxHit());
 
         // calculating min size
-        return floor( $iCurrSize / OXTAGCLOUD_MINFONT ) * OXTAGCLOUD_MINFONT;
+        return floor($iCurrSize / OXTAGCLOUD_MINFONT) * OXTAGCLOUD_MINFONT;
     }
 
     /**
@@ -223,7 +225,7 @@ class oxTagCloud extends oxSuperCfg
      */
     public function getMaxAmount()
     {
-        if ( $this->isExtended() ) {
+        if ($this->isExtended()) {
             return OXTAGCLOUD_EXTENDEDCOUNT;
         } else {
             return OXTAGCLOUD_STARTPAGECOUNT;
@@ -237,10 +239,10 @@ class oxTagCloud extends oxSuperCfg
      *
      * @return null
      */
-    public function resetTagCache( $iLang = null )
+    public function resetTagCache($iLang = null)
     {
-        if ( $iLang ) {
-            $this->setLanguageId( $iLang );
+        if ($iLang) {
+            $this->setLanguageId($iLang);
         }
         $this->resetCache();
     }
@@ -255,11 +257,11 @@ class oxTagCloud extends oxSuperCfg
         $myUtils = oxRegistry::getUtils();
 
         $sCacheId = null;
-        if ( ( $oTagList = $this->getTagList() ) !== null ) {
+        if (($oTagList = $this->getTagList()) !== null) {
             $sCacheId = $oTagList->getCacheId();
         }
 
-        $myUtils->toFileCache( $this->_formCacheKey( $sCacheId ), null );
+        $myUtils->toFileCache($this->_formCacheKey($sCacheId), null);
 
         $this->_aCloudArray = null;
     }
@@ -271,10 +273,11 @@ class oxTagCloud extends oxSuperCfg
      *
      * @return string formed cache key
      */
-    protected function _formCacheKey( $sTagListCacheId = null )
+    protected function _formCacheKey($sTagListCacheId = null)
     {
-        $sExtended = $this->isExtended()? '1' : '0';
-        return $this->_sCacheKey."_".$this->getConfig()->getShopId()."_".$sExtended."_".$sTagListCacheId;
+        $sExtended = $this->isExtended() ? '1' : '0';
+
+        return $this->_sCacheKey . "_" . $this->getConfig()->getShopId() . "_" . $sExtended . "_" . $sTagListCacheId;
     }
 
     /**
@@ -284,10 +287,11 @@ class oxTagCloud extends oxSuperCfg
      */
     protected function _getMaxHit()
     {
-        if ( $this->_iMaxHit === null ) {
-            $aHits = array_map( array($this, '_getTagHitCount'), $this->getCloudArray());
-            $this->_iMaxHit = max( $aHits );
+        if ($this->_iMaxHit === null) {
+            $aHits = array_map(array($this, '_getTagHitCount'), $this->getCloudArray());
+            $this->_iMaxHit = max($aHits);
         }
+
         return $this->_iMaxHit;
     }
 
@@ -298,7 +302,7 @@ class oxTagCloud extends oxSuperCfg
      *
      * @return int
      */
-    protected function _getTagHitCount( $oTag )
+    protected function _getTagHitCount($oTag)
     {
         return $oTag->getHitCount();
     }
@@ -311,7 +315,7 @@ class oxTagCloud extends oxSuperCfg
      *
      * @return int
      */
-    protected function _getFontSize( $iHit, $iMaxHit )
+    protected function _getFontSize($iHit, $iMaxHit)
     {
         //handling special case
         if ($iMaxHit <= OXTAGCLOUD_MINOCCURENCETOSHOW || !$iMaxHit) {

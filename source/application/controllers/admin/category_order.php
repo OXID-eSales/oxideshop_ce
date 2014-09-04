@@ -27,6 +27,7 @@
  */
 class Category_Order extends oxAdminDetails
 {
+
     /**
      * Loads article category ordering info, passes it to Smarty
      * engine and returns name of template file "category_order.tpl".
@@ -37,28 +38,29 @@ class Category_Order extends oxAdminDetails
     {
         parent::render();
 
-        $this->_aViewData['edit'] = $oCategory = oxNew( 'oxcategory' );
+        $this->_aViewData['edit'] = $oCategory = oxNew('oxcategory');
 
         // resetting
-        oxRegistry::getSession()->setVariable( 'neworder_sess', null );
+        oxRegistry::getSession()->setVariable('neworder_sess', null);
 
         $soxId = $this->getEditObjectId();
 
-        if ( $soxId != "-1" && isset( $soxId)) {
+        if ($soxId != "-1" && isset($soxId)) {
             // load object
-            $oCategory->load( $soxId );
+            $oCategory->load($soxId);
 
             //Disable editing for derived items
-            if ( $oCategory->isDerived() ) {
+            if ($oCategory->isDerived()) {
                 $this->_aViewData['readonly'] = true;
             }
         }
-        if ( oxRegistry::getConfig()->getRequestParameter("aoc") ) {
-            $oCategoryOrderAjax = oxNew( 'category_order_ajax' );
+        if (oxRegistry::getConfig()->getRequestParameter("aoc")) {
+            $oCategoryOrderAjax = oxNew('category_order_ajax');
             $this->_aViewData['oxajax'] = $oCategoryOrderAjax->getColumns();
 
             return "popups/category_order.tpl";
         }
+
         return "category_order.tpl";
     }
 }

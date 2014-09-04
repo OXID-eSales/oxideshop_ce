@@ -28,6 +28,7 @@
  */
 class Basket extends oxUBase
 {
+
     /**
      * Current class template name.
      *
@@ -45,21 +46,21 @@ class Basket extends oxUBase
     /**
      * all basket articles
      *
-     *@var object
+     * @var object
      */
     protected $_oBasketArticles = null;
 
     /**
      * Similar List
      *
-     *@var object
+     * @var object
      */
     protected $_oSimilarList = null;
 
     /**
      * Recomm List
      *
-     *@var object
+     * @var object
      */
     protected $_oRecommList = null;
 
@@ -109,7 +110,7 @@ class Basket extends oxUBase
      */
     public function render()
     {
-        if ($this->getConfig()->getConfigParam( 'blPsBasketReservationEnabled' )) {
+        if ($this->getConfig()->getConfigParam('blPsBasketReservationEnabled')) {
             $this->getSession()->getBasketReservations()->renewExpiration();
         }
 
@@ -125,14 +126,15 @@ class Basket extends oxUBase
      */
     public function getBasketArticles()
     {
-        if ( $this->_oBasketArticles === null) {
+        if ($this->_oBasketArticles === null) {
             $this->_oBasketArticles = false;
 
             // passing basket articles
-            if ( $oBasket = $this->getSession()->getBasket() ) {
+            if ($oBasket = $this->getSession()->getBasket()) {
                 $this->_oBasketArticles = $oBasket->getBasketArticles();
             }
         }
+
         return $this->_oBasketArticles;
     }
 
@@ -143,14 +145,15 @@ class Basket extends oxUBase
      */
     public function getFirstBasketProduct()
     {
-        if ( $this->_oFirstBasketProduct === null ) {
+        if ($this->_oFirstBasketProduct === null) {
             $this->_oFirstBasketProduct = false;
 
             $aBasketArticles = $this->getBasketArticles();
-            if ( is_array( $aBasketArticles ) && $oProduct = reset( $aBasketArticles ) ) {
+            if (is_array($aBasketArticles) && $oProduct = reset($aBasketArticles)) {
                 $this->_oFirstBasketProduct = $oProduct;
             }
         }
+
         return $this->_oFirstBasketProduct;
     }
 
@@ -161,14 +164,15 @@ class Basket extends oxUBase
      */
     public function getBasketSimilarList()
     {
-        if ( $this->_oSimilarList === null) {
+        if ($this->_oSimilarList === null) {
             $this->_oSimilarList = false;
 
             // similar product info
-            if ( $oProduct = $this->getFirstBasketProduct() ) {
+            if ($oProduct = $this->getFirstBasketProduct()) {
                 $this->_oSimilarList = $oProduct->getSimilarProducts();
             }
         }
+
         return $this->_oSimilarList;
     }
 
@@ -179,13 +183,14 @@ class Basket extends oxUBase
      */
     public function getSimilarRecommListIds()
     {
-        if ( $this->_aSimilarRecommListIds === null ) {
+        if ($this->_aSimilarRecommListIds === null) {
             $this->_aSimilarRecommListIds = false;
 
-            if ( $oProduct = $this->getFirstBasketProduct() ) {
-                $this->_aSimilarRecommListIds = array( $oProduct->getId() );
+            if ($oProduct = $this->getFirstBasketProduct()) {
+                $this->_aSimilarRecommListIds = array($oProduct->getId());
             }
         }
+
         return $this->_aSimilarRecommListIds;
     }
 
@@ -196,7 +201,7 @@ class Basket extends oxUBase
      */
     public function showBackToShop()
     {
-        return ( $this->getConfig()->getConfigParam( 'iNewBasketItemMessage' ) == 3 && oxRegistry::getSession()->getVariable( '_backtoshop' ) );
+        return ($this->getConfig()->getConfigParam('iNewBasketItemMessage') == 3 && oxRegistry::getSession()->getVariable('_backtoshop'));
     }
 
     /**
@@ -211,7 +216,7 @@ class Basket extends oxUBase
         }
 
         $oBasket = $this->getSession()->getBasket();
-        $oBasket->addVoucher( oxRegistry::getConfig()->getRequestParameter( 'voucherNr' ) );
+        $oBasket->addVoucher(oxRegistry::getConfig()->getRequestParameter('voucherNr'));
     }
 
     /**
@@ -226,7 +231,7 @@ class Basket extends oxUBase
         }
 
         $oBasket = $this->getSession()->getBasket();
-        $oBasket->removeVoucher( oxRegistry::getConfig()->getRequestParameter( 'voucherId' ) );
+        $oBasket->removeVoucher(oxRegistry::getConfig()->getRequestParameter('voucherId'));
     }
 
     /**
@@ -238,10 +243,11 @@ class Basket extends oxUBase
      */
     public function backToShop()
     {
-        if ( $this->getConfig()->getConfigParam( 'iNewBasketItemMessage' ) == 3 ) {
+        if ($this->getConfig()->getConfigParam('iNewBasketItemMessage') == 3) {
             $oSession = oxRegistry::getSession();
-            if ( $sBackLink = $oSession->getVariable( '_backtoshop' ) ) {
-                $oSession->deleteVariable( '_backtoshop' );
+            if ($sBackLink = $oSession->getVariable('_backtoshop')) {
+                $oSession->deleteVariable('_backtoshop');
+
                 return $sBackLink;
             }
         }
@@ -264,16 +270,16 @@ class Basket extends oxUBase
      */
     public function isWrapping()
     {
-        if (!$this->getViewConfig()->getShowGiftWrapping() ) {
+        if (!$this->getViewConfig()->getShowGiftWrapping()) {
             return false;
         }
 
-        if ( $this->_iWrapCnt === null ) {
+        if ($this->_iWrapCnt === null) {
             $this->_iWrapCnt = 0;
 
-            $oWrap = oxNew( 'oxwrapping' );
-            $this->_iWrapCnt += $oWrap->getWrappingCount( 'WRAP' );
-            $this->_iWrapCnt += $oWrap->getWrappingCount( 'CARD' );
+            $oWrap = oxNew('oxwrapping');
+            $this->_iWrapCnt += $oWrap->getWrappingCount('WRAP');
+            $this->_iWrapCnt += $oWrap->getWrappingCount('CARD');
         }
 
         return (bool) $this->_iWrapCnt;
@@ -286,14 +292,15 @@ class Basket extends oxUBase
      */
     public function getWrappingList()
     {
-        if ( $this->_oWrappings === null ) {
+        if ($this->_oWrappings === null) {
             $this->_oWrappings = new oxlist();
 
             // load wrapping papers
-            if ( $this->getViewConfig()->getShowGiftWrapping() ) {
-                $this->_oWrappings = oxNew( 'oxwrapping' )->getWrappingList( 'WRAP' );
+            if ($this->getViewConfig()->getShowGiftWrapping()) {
+                $this->_oWrappings = oxNew('oxwrapping')->getWrappingList('WRAP');
             }
         }
+
         return $this->_oWrappings;
     }
 
@@ -304,12 +311,12 @@ class Basket extends oxUBase
      */
     public function getCardList()
     {
-        if ( $this->_oCards === null ) {
+        if ($this->_oCards === null) {
             $this->_oCards = new oxlist();
 
             // load gift cards
-            if ( $this->getViewConfig()->getShowGiftWrapping() ) {
-                $this->_oCards = oxNew( 'oxwrapping' )->getWrappingList( 'CARD' );
+            if ($this->getViewConfig()->getShowGiftWrapping()) {
+                $this->_oCards = oxNew('oxwrapping')->getWrappingList('CARD');
             }
         }
 
@@ -330,13 +337,13 @@ class Basket extends oxUBase
     {
         $oConfig = oxRegistry::getConfig();
 
-        if ( $this->getViewConfig()->getShowGiftWrapping() ) {
+        if ($this->getViewConfig()->getShowGiftWrapping()) {
             $oBasket = $this->getSession()->getBasket();
 
-            $this->_setWrappingInfo($oBasket, $oConfig->getRequestParameter( 'wrapping' ));
+            $this->_setWrappingInfo($oBasket, $oConfig->getRequestParameter('wrapping'));
 
-            $oBasket->setCardMessage( $oConfig->getRequestParameter( 'giftmessage' ) );
-            $oBasket->setCardId( $oConfig->getRequestParameter( 'chosencard' ) );
+            $oBasket->setCardMessage($oConfig->getRequestParameter('giftmessage'));
+            $oBasket->setCardId($oConfig->getRequestParameter('chosencard'));
             $oBasket->onUpdate();
         }
     }
@@ -351,8 +358,8 @@ class Basket extends oxUBase
         $aPaths = array();
         $aPath = array();
 
-        $aPath['title'] = oxRegistry::getLang()->translateString( 'CART', oxRegistry::getLang()->getBaseLanguage(), false );
-        $aPath['link']  = $this->getLink();
+        $aPath['title'] = oxRegistry::getLang()->translateString('CART', oxRegistry::getLang()->getBaseLanguage(), false);
+        $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;
 
         return $aPaths;
@@ -375,14 +382,14 @@ class Basket extends oxUBase
      * Sets basket wrapping
      *
      * @param oxBasket $oBasket
-     * @param array $aWrapping
+     * @param array    $aWrapping
      */
     protected function _setWrappingInfo($oBasket, $aWrapping)
     {
-        if ( is_array( $aWrapping ) && count( $aWrapping ) ) {
-            foreach ( $oBasket->getContents() as $sKey => $oBasketItem ) {
-                if ( isset( $aWrapping[$sKey] ) ) {
-                    $oBasketItem->setWrapping( $aWrapping[$sKey] );
+        if (is_array($aWrapping) && count($aWrapping)) {
+            foreach ($oBasket->getContents() as $sKey => $oBasketItem) {
+                if (isset($aWrapping[$sKey])) {
+                    $oBasketItem->setWrapping($aWrapping[$sKey]);
                 }
             }
         }

@@ -27,61 +27,71 @@
  */
 class Invite extends oxUBase
 {
+
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'page/privatesales/invite.tpl';
 
     /**
      * Current class login template name.
+     *
      * @var string
      */
     protected $_sThisLoginTemplate = 'page/account/login.tpl';
 
     /**
      * Required fields to fill before sending suggest email
+     *
      * @var array
      */
-    protected $_aReqFields = array( 'rec_email', 'send_name', 'send_email', 'send_message', 'send_subject' );
+    protected $_aReqFields = array('rec_email', 'send_name', 'send_email', 'send_message', 'send_subject');
 
     /**
      * CrossSelling article list
+     *
      * @var object
      */
     protected $_oCrossSelling = null;
 
     /**
      * Similar products article list
+     *
      * @var object
      */
     protected $_oSimilarProducts = null;
 
     /**
      * Recommlist
+     *
      * @var object
      */
     protected $_oRecommList = null;
 
     /**
      * Invition data
+     *
      * @var object
      */
     protected $_aInviteData = null;
 
     /**
      * Class handling CAPTCHA image.
+     *
      * @var object
      */
     protected $_oCaptcha = null;
 
     /**
      * Email sent status status.
+     *
      * @var integer
      */
     protected $_iMailStatus = null;
 
-   /**
+    /**
      * Executes parent::render(), if invitation is disabled - redirects to main page
      *
      * @return string
@@ -90,8 +100,9 @@ class Invite extends oxUBase
     {
         $oConfig = $this->getConfig();
 
-        if ( !$oConfig->getConfigParam( "blInvitationsEnabled" ) ) {
-            oxRegistry::getUtils()->redirect( $oConfig->getShopHomeURL() );
+        if (!$oConfig->getConfigParam("blInvitationsEnabled")) {
+            oxRegistry::getUtils()->redirect($oConfig->getShopHomeURL());
+
             return;
         }
 
@@ -110,47 +121,49 @@ class Invite extends oxUBase
     {
         $oConfig = $this->getConfig();
 
-        if ( !$oConfig->getConfigParam( "blInvitationsEnabled" ) ) {
-            oxRegistry::getUtils()->redirect( $oConfig->getShopHomeURL() );
+        if (!$oConfig->getConfigParam("blInvitationsEnabled")) {
+            oxRegistry::getUtils()->redirect($oConfig->getShopHomeURL());
         }
 
-        $aParams = oxRegistry::getConfig()->getRequestParameter( 'editval', true );
+        $aParams = oxRegistry::getConfig()->getRequestParameter('editval', true);
         $oUser = $this->getUser();
-        if ( !is_array( $aParams ) || !$oUser ) {
+        if (!is_array($aParams) || !$oUser) {
             return;
         }
 
         // storing used written values
         $oParams = (object) $aParams;
-        $this->setInviteData( (object) oxRegistry::getConfig()->getRequestParameter( 'editval' ) );
+        $this->setInviteData((object) oxRegistry::getConfig()->getRequestParameter('editval'));
 
         // spam spider prevension
-        $sMac     = oxRegistry::getConfig()->getRequestParameter( 'c_mac' );
-        $sMacHash = oxRegistry::getConfig()->getRequestParameter( 'c_mach' );
+        $sMac = oxRegistry::getConfig()->getRequestParameter('c_mac');
+        $sMacHash = oxRegistry::getConfig()->getRequestParameter('c_mach');
         $oCaptcha = $this->getCaptcha();
 
-        if ( !$oCaptcha->pass( $sMac, $sMacHash ) ) {
+        if (!$oCaptcha->pass($sMac, $sMacHash)) {
             // even if there is no exception, use this as a default display method
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay( 'MESSAGE_WRONG_VERIFICATION_CODE' );
+            oxRegistry::get("oxUtilsView")->addErrorToDisplay('MESSAGE_WRONG_VERIFICATION_CODE');
+
             return;
         }
 
         $oUtilsView = oxRegistry::get("oxUtilsView");
 
         // filled not all fields ?
-        foreach ( $this->_aReqFields as $sFieldName ) {
+        foreach ($this->_aReqFields as $sFieldName) {
             //checking if any email was entered
-            if ( $sFieldName == "rec_email" ) {
-                foreach ( $aParams[$sFieldName] as $sKey => $sEmail ) {
+            if ($sFieldName == "rec_email") {
+                foreach ($aParams[$sFieldName] as $sKey => $sEmail) {
                     //removing empty emails fields from eMails array
-                    if ( empty( $sEmail ) ) {
-                        unset( $aParams[$sFieldName][$sKey] );
+                    if (empty($sEmail)) {
+                        unset($aParams[$sFieldName][$sKey]);
                     }
                 }
 
                 //counting entered eMails
-                if ( count( $aParams[$sFieldName] ) < 1 ) {
+                if (count($aParams[$sFieldName]) < 1) {
                     $oUtilsView->addErrorToDisplay('ERROR_MESSAGE_COMPLETE_FIELDS_CORRECTLY');
+
                     return;
                 }
 
@@ -158,8 +171,9 @@ class Invite extends oxUBase
                 $oParams->rec_email = $aParams[$sFieldName];
             }
 
-            if ( !isset( $aParams[$sFieldName] ) || !$aParams[$sFieldName] ) {
+            if (!isset($aParams[$sFieldName]) || !$aParams[$sFieldName]) {
                 $oUtilsView->addErrorToDisplay('ERROR_MESSAGE_COMPLETE_FIELDS_CORRECTLY');
+
                 return;
             }
         }
@@ -167,29 +181,31 @@ class Invite extends oxUBase
         $oUtils = oxRegistry::getUtils();
 
         //validating entered emails
-        foreach ( $aParams["rec_email"] as $sRecipientEmail ) {
-            if ( !$oUtils->isValidEmail( $sRecipientEmail ) ) {
+        foreach ($aParams["rec_email"] as $sRecipientEmail) {
+            if (!$oUtils->isValidEmail($sRecipientEmail)) {
                 $oUtilsView->addErrorToDisplay('ERROR_MESSAGE_INVITE_INCORRECTEMAILADDRESS');
+
                 return;
             }
         }
 
-        if ( !$oUtils->isValidEmail( $aParams["send_email"] ) ) {
+        if (!$oUtils->isValidEmail($aParams["send_email"])) {
             $oUtilsView->addErrorToDisplay('ERROR_MESSAGE_INVITE_INCORRECTEMAILADDRESS');
+
             return;
         }
 
         // sending invite email
-        $oEmail = oxNew( 'oxemail' );
+        $oEmail = oxNew('oxemail');
 
-        if ( $oEmail->sendInviteMail( $oParams ) ) {
+        if ($oEmail->sendInviteMail($oParams)) {
             $this->_iMailStatus = 1;
 
             //getting active user
             $oUser = $this->getUser();
 
             //saving statistics for sent emails
-            $oUser->updateInvitationStatistics( $aParams["rec_email"] );
+            $oUser->updateInvitationStatistics($aParams["rec_email"]);
         } else {
             oxRegistry::get("oxUtilsView")->addErrorToDisplay('ERROR_MESSAGE_CHECK_EMAIL');
         }
@@ -203,9 +219,10 @@ class Invite extends oxUBase
     public function getInviteSendStatus()
     {
         //checking if email was sent
-        if ( $this->_iMailStatus == 1 ) {
+        if ($this->_iMailStatus == 1) {
             return true;
         }
+
         return false;
     }
 
@@ -216,7 +233,7 @@ class Invite extends oxUBase
      *
      * @return null
      */
-    public function setInviteData( $oData )
+    public function setInviteData($oData)
     {
         $this->_aInviteData = $oData;
     }
@@ -238,9 +255,10 @@ class Invite extends oxUBase
      */
     public function getCaptcha()
     {
-        if ( $this->_oCaptcha === null ) {
+        if ($this->_oCaptcha === null) {
             $this->_oCaptcha = oxNew('oxCaptcha');
         }
+
         return $this->_oCaptcha;
     }
 
@@ -254,8 +272,8 @@ class Invite extends oxUBase
         $aPaths = array();
         $aPath = array();
 
-        $aPath['title'] = oxRegistry::getLang()->translateString( 'INVITE_YOUR_FRIENDS', oxRegistry::getLang()->getBaseLanguage(), false );
-        $aPath['link']  = $this->getLink();
+        $aPath['title'] = oxRegistry::getLang()->translateString('INVITE_YOUR_FRIENDS', oxRegistry::getLang()->getBaseLanguage(), false);
+        $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;
 
         return $aPaths;

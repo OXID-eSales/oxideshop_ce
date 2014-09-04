@@ -26,6 +26,7 @@
  */
 class VoucherSerie_Generate extends VoucherSerie_Main
 {
+
     /**
      * Voucher generator class name
      *
@@ -68,9 +69,9 @@ class VoucherSerie_Generate extends VoucherSerie_Main
      *
      * @return bool
      */
-    public function nextTick( $iCnt )
+    public function nextTick($iCnt)
     {
-        if ( $iGeneratedItems = $this->generateVoucher( $iCnt ) ) {
+        if ($iGeneratedItems = $this->generateVoucher($iCnt)) {
             return $iGeneratedItems;
         }
 
@@ -84,23 +85,23 @@ class VoucherSerie_Generate extends VoucherSerie_Main
      *
      * @return int saved record count
      */
-    public function generateVoucher( $iCnt )
+    public function generateVoucher($iCnt)
     {
-        $iAmount = abs( (int) oxRegistry::getSession()->getVariable( "voucherAmount" ) );
+        $iAmount = abs((int) oxRegistry::getSession()->getVariable("voucherAmount"));
 
         // creating new vouchers
-        if ( $iCnt < $iAmount && ( $oVoucherSerie = $this->_getVoucherSerie() ) ) {
+        if ($iCnt < $iAmount && ($oVoucherSerie = $this->_getVoucherSerie())) {
 
-            if ( !$this->_iGenerated ) {
+            if (!$this->_iGenerated) {
                 $this->_iGenerated = $iCnt;
             }
 
-            $blRandomNr = ( bool ) oxRegistry::getSession()->getVariable( "randomVoucherNr" );
-            $sVoucherNr = $blRandomNr ? oxUtilsObject::getInstance()->generateUID() : oxRegistry::getSession()->getVariable( "voucherNr" );
+            $blRandomNr = ( bool ) oxRegistry::getSession()->getVariable("randomVoucherNr");
+            $sVoucherNr = $blRandomNr ? oxUtilsObject::getInstance()->generateUID() : oxRegistry::getSession()->getVariable("voucherNr");
 
-            $oNewVoucher = oxNew( "oxvoucher" );
-            $oNewVoucher->oxvouchers__oxvoucherserieid = new oxField( $oVoucherSerie->getId() );
-            $oNewVoucher->oxvouchers__oxvouchernr = new oxField( $sVoucherNr );
+            $oNewVoucher = oxNew("oxvoucher");
+            $oNewVoucher->oxvouchers__oxvoucherserieid = new oxField($oVoucherSerie->getId());
+            $oNewVoucher->oxvouchers__oxvouchernr = new oxField($sVoucherNr);
             $oNewVoucher->save();
 
             $this->_iGenerated++;
@@ -122,19 +123,19 @@ class VoucherSerie_Generate extends VoucherSerie_Main
         // file is open
         $iStart = oxRegistry::getConfig()->getRequestParameter("iStart");
 
-        for ( $i = $iStart; $i < $iStart + $this->iGeneratePerTick; $i++) {
-            if ( ( $iExportedItems = $this->nextTick( $i ) ) === false ) {
+        for ($i = $iStart; $i < $iStart + $this->iGeneratePerTick; $i++) {
+            if (($iExportedItems = $this->nextTick($i)) === false) {
                 // end reached
-                $this->stop( ERR_SUCCESS );
+                $this->stop(ERR_SUCCESS);
                 $blContinue = false;
                 break;
             }
         }
 
-        if ( $blContinue) {
+        if ($blContinue) {
             // make ticker continue
             $this->_aViewData['refresh'] = 0;
-            $this->_aViewData['iStart']  = $i;
+            $this->_aViewData['iStart'] = $i;
             $this->_aViewData['iExpItems'] = $iExportedItems;
         }
     }

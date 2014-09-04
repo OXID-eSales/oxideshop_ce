@@ -34,6 +34,7 @@ class oxVoucher extends oxBase
     /**
      * Vouchers does not need shop id check as this causes problems with
      * inherited vouchers. Voucher validity check is made by oxVoucher::getVoucherByNr()
+     *
      * @var bool
      */
     protected $_blDisableShopCheck = true;
@@ -49,7 +50,7 @@ class oxVoucher extends oxBase
     public function __construct()
     {
         parent::__construct();
-        $this->init( 'oxvouchers' );
+        $this->init('oxvouchers');
     }
 
     /**
@@ -63,39 +64,39 @@ class oxVoucher extends oxBase
      *
      * @return mixed
      */
-    public function getVoucherByNr( $sVoucherNr, $aVouchers = array(), $blCheckavalability = false )
+    public function getVoucherByNr($sVoucherNr, $aVouchers = array(), $blCheckavalability = false)
     {
         $oRet = null;
-        if ( !is_null( $sVoucherNr ) ) {
+        if (!is_null($sVoucherNr)) {
 
             $sViewName = $this->getViewName();
-            $sSeriesViewName = getViewName( 'oxvoucherseries' );
+            $sSeriesViewName = getViewName('oxvoucherseries');
             $oDb = oxDb::getDb();
 
-            $sQ  = "select {$sViewName}.* from {$sViewName}, {$sSeriesViewName} where
+            $sQ = "select {$sViewName}.* from {$sViewName}, {$sSeriesViewName} where
                         {$sSeriesViewName}.oxid = {$sViewName}.oxvoucherserieid and
-                        {$sViewName}.oxvouchernr = " . $oDb->quote( $sVoucherNr ) . " and ";
+                        {$sViewName}.oxvouchernr = " . $oDb->quote($sVoucherNr) . " and ";
 
-            if ( is_array( $aVouchers ) ) {
-                foreach ( $aVouchers as $sVoucherId => $sSkipVoucherNr ) {
-                    $sQ .= "{$sViewName}.oxid != " . $oDb->quote( $sVoucherId ) . " and ";
+            if (is_array($aVouchers)) {
+                foreach ($aVouchers as $sVoucherId => $sSkipVoucherNr) {
+                    $sQ .= "{$sViewName}.oxid != " . $oDb->quote($sVoucherId) . " and ";
                 }
             }
             $sQ .= "( {$sViewName}.oxorderid is NULL || {$sViewName}.oxorderid = '' ) ";
             $sQ .= " and ( {$sViewName}.oxdateused is NULL || {$sViewName}.oxdateused = 0 ) ";
 
             //voucher timeout for 3 hours
-            if ( $blCheckavalability ) {
+            if ($blCheckavalability) {
                 $iTime = time() - $this->_getVoucherTimeout();
                 $sQ .= " and {$sViewName}.oxreserved < '{$iTime}' ";
             }
 
             $sQ .= " limit 1";
 
-            if ( ! ( $oRet = $this->assignRecord( $sQ ) ) ) {
-                $oEx = oxNew( 'oxVoucherException' );
-                $oEx->setMessage( 'ERROR_MESSAGE_VOUCHER_NOVOUCHER' );
-                $oEx->setVoucherNr( $sVoucherNr );
+            if (!($oRet = $this->assignRecord($sQ))) {
+                $oEx = oxNew('oxVoucherException');
+                $oEx->setMessage('ERROR_MESSAGE_VOUCHER_NOVOUCHER');
+                $oEx->setVoucherNr($sVoucherNr);
                 throw $oEx;
             }
         }
@@ -112,14 +113,14 @@ class oxVoucher extends oxBase
      *
      * @return null
      */
-    public function markAsUsed( $sOrderId, $sUserId, $dDiscount )
+    public function markAsUsed($sOrderId, $sUserId, $dDiscount)
     {
         //saving oxreserved field
-        if ( $this->oxvouchers__oxid->value ) {
+        if ($this->oxvouchers__oxid->value) {
             $this->oxvouchers__oxorderid->setValue($sOrderId);
             $this->oxvouchers__oxuserid->setValue($sUserId);
             $this->oxvouchers__oxdiscount->setValue($dDiscount);
-            $this->oxvouchers__oxdateused->setValue(date( "Y-m-d", oxRegistry::get("oxUtilsDate")->getTime() ));
+            $this->oxvouchers__oxdateused->setValue(date("Y-m-d", oxRegistry::get("oxUtilsDate")->getTime()));
             $this->save();
         }
     }
@@ -134,10 +135,10 @@ class oxVoucher extends oxBase
         //saving oxreserved field
         $sVoucherID = $this->oxvouchers__oxid->value;
 
-        if ( $sVoucherID ) {
+        if ($sVoucherID) {
             $oDb = oxDb::getDb();
-            $sQ = "update oxvouchers set oxreserved = " . time() . " where oxid = " . $oDb->quote( $sVoucherID );
-            $oDb->Execute( $sQ );
+            $sQ = "update oxvouchers set oxreserved = " . time() . " where oxid = " . $oDb->quote($sVoucherID);
+            $oDb->Execute($sQ);
         }
     }
 
@@ -151,9 +152,9 @@ class oxVoucher extends oxBase
         //saving oxreserved field
         $sVoucherID = $this->oxvouchers__oxid->value;
 
-        if ( $sVoucherID ) {
+        if ($sVoucherID) {
             $oDb = oxDb::getDb();
-            $sQ = "update oxvouchers set oxreserved = 0 where oxid = " . $oDb->quote( $sVoucherID );
+            $sQ = "update oxvouchers set oxreserved = 0 where oxid = " . $oDb->quote($sVoucherID);
             $oDb->Execute($sQ);
         }
     }
@@ -167,14 +168,14 @@ class oxVoucher extends oxBase
      *
      * @return double
      */
-    public function getDiscountValue( $dPrice )
+    public function getDiscountValue($dPrice)
     {
         if ($this->_isProductVoucher()) {
-            return $this->_getProductDiscoutValue( (double) $dPrice );
+            return $this->_getProductDiscoutValue((double) $dPrice);
         } elseif ($this->_isCategoryVoucher()) {
-            return $this->_getCategoryDiscoutValue( (double) $dPrice );
+            return $this->_getCategoryDiscoutValue((double) $dPrice);
         } else {
-            return $this->_getGenericDiscoutValue( (double) $dPrice );
+            return $this->_getGenericDiscoutValue((double) $dPrice);
         }
     }
 
@@ -189,12 +190,12 @@ class oxVoucher extends oxBase
      *
      * @return array
      */
-    public function checkVoucherAvailability( $aVouchers, $dPrice )
+    public function checkVoucherAvailability($aVouchers, $dPrice)
     {
-        $this->_isAvailableWithSameSeries( $aVouchers );
-        $this->_isAvailableWithOtherSeries( $aVouchers );
+        $this->_isAvailableWithSameSeries($aVouchers);
+        $this->_isAvailableWithOtherSeries($aVouchers);
         $this->_isValidDate();
-        $this->_isAvailablePrice( $dPrice );
+        $this->_isAvailablePrice($dPrice);
         $this->_isNotReserved();
 
         // returning true - no exception was thrown
@@ -212,12 +213,12 @@ class oxVoucher extends oxBase
      *
      * @return array
      */
-    public function checkBasketVoucherAvailability( $aVouchers, $dPrice )
+    public function checkBasketVoucherAvailability($aVouchers, $dPrice)
     {
-        $this->_isAvailableWithSameSeries( $aVouchers );
-        $this->_isAvailableWithOtherSeries( $aVouchers );
+        $this->_isAvailableWithSameSeries($aVouchers);
+        $this->_isAvailableWithOtherSeries($aVouchers);
         $this->_isValidDate();
-        $this->_isAvailablePrice( $dPrice );
+        $this->_isAvailablePrice($dPrice);
 
         // returning true - no exception was thrown
         return true;
@@ -232,12 +233,12 @@ class oxVoucher extends oxBase
      *
      * @return array
      */
-    protected function _isAvailablePrice( $dPrice )
+    protected function _isAvailablePrice($dPrice)
     {
         $oSeries = $this->getSerie();
         $oCur = $this->getConfig()->getActShopCurrencyObject();
-        if ( $oSeries->oxvoucherseries__oxminimumvalue->value && $dPrice < ($oSeries->oxvoucherseries__oxminimumvalue->value*$oCur->rate) ) {
-            $oEx = oxNew( 'oxVoucherException' );
+        if ($oSeries->oxvoucherseries__oxminimumvalue->value && $dPrice < ($oSeries->oxvoucherseries__oxminimumvalue->value * $oCur->rate)) {
+            $oEx = oxNew('oxVoucherException');
             $oEx->setMessage('ERROR_MESSAGE_VOUCHER_INCORRECTPRICE');
             $oEx->setVoucherNr($this->oxvouchers__oxvouchernr->value);
             throw $oEx;
@@ -257,23 +258,23 @@ class oxVoucher extends oxBase
      * @return bool
      *
      */
-    protected function _isAvailableWithSameSeries( $aVouchers )
+    protected function _isAvailableWithSameSeries($aVouchers)
     {
-        if ( is_array( $aVouchers ) ) {
+        if (is_array($aVouchers)) {
             $sId = $this->getId();
             if (isset($aVouchers[$sId])) {
                 unset($aVouchers[$sId]);
             }
             $oSeries = $this->getSerie();
             if (!$oSeries->oxvoucherseries__oxallowsameseries->value) {
-                foreach ( $aVouchers as $voucherId => $voucherNr ) {
-                    $oVoucher = oxNew( 'oxVoucher' );
+                foreach ($aVouchers as $voucherId => $voucherNr) {
+                    $oVoucher = oxNew('oxVoucher');
                     $oVoucher->load($voucherId);
-                    if ( $this->oxvouchers__oxvoucherserieid->value == $oVoucher->oxvouchers__oxvoucherserieid->value ) {
-                            $oEx = oxNew( 'oxVoucherException' );
-                            $oEx->setMessage('ERROR_MESSAGE_VOUCHER_NOTALLOWEDSAMESERIES');
-                            $oEx->setVoucherNr( $this->oxvouchers__oxvouchernr->value );
-                            throw $oEx;
+                    if ($this->oxvouchers__oxvoucherserieid->value == $oVoucher->oxvouchers__oxvoucherserieid->value) {
+                        $oEx = oxNew('oxVoucherException');
+                        $oEx->setMessage('ERROR_MESSAGE_VOUCHER_NOTALLOWEDSAMESERIES');
+                        $oEx->setVoucherNr($this->oxvouchers__oxvouchernr->value);
+                        throw $oEx;
                     }
                 }
             }
@@ -292,30 +293,30 @@ class oxVoucher extends oxBase
      *
      * @return bool
      */
-    protected function _isAvailableWithOtherSeries( $aVouchers )
+    protected function _isAvailableWithOtherSeries($aVouchers)
     {
-        if ( is_array( $aVouchers ) && count($aVouchers) ) {
+        if (is_array($aVouchers) && count($aVouchers)) {
             $oSeries = $this->getSerie();
-            $sIds = implode(',', oxDb::getInstance()->quoteArray( array_keys( $aVouchers ) ) );
+            $sIds = implode(',', oxDb::getInstance()->quoteArray(array_keys($aVouchers)));
             $blAvailable = true;
             $oDb = oxDb::getDb();
             if (!$oSeries->oxvoucherseries__oxallowotherseries->value) {
                 // just search for vouchers with different series
-                $sSql  = "select 1 from oxvouchers where oxvouchers.oxid in ($sIds) and ";
-                $sSql .= "oxvouchers.oxvoucherserieid != " . $oDb->quote( $this->oxvouchers__oxvoucherserieid->value ) ;
+                $sSql = "select 1 from oxvouchers where oxvouchers.oxid in ($sIds) and ";
+                $sSql .= "oxvouchers.oxvoucherserieid != " . $oDb->quote($this->oxvouchers__oxvoucherserieid->value);
                 $blAvailable &= !$oDb->getOne($sSql);
             } else {
                 // search for vouchers with different series and those vouchers do not allow other series
-                $sSql  = "select 1 from oxvouchers left join oxvoucherseries on oxvouchers.oxvoucherserieid=oxvoucherseries.oxid ";
-                $sSql .= "where oxvouchers.oxid in ($sIds) and oxvouchers.oxvoucherserieid != " . $oDb->quote( $this->oxvouchers__oxvoucherserieid->value );
+                $sSql = "select 1 from oxvouchers left join oxvoucherseries on oxvouchers.oxvoucherserieid=oxvoucherseries.oxid ";
+                $sSql .= "where oxvouchers.oxid in ($sIds) and oxvouchers.oxvoucherserieid != " . $oDb->quote($this->oxvouchers__oxvoucherserieid->value);
                 $sSql .= "and not oxvoucherseries.oxallowotherseries";
                 $blAvailable &= !$oDb->getOne($sSql);
             }
-            if ( !$blAvailable ) {
-                    $oEx = oxNew( 'oxVoucherException' );
-                    $oEx->setMessage('ERROR_MESSAGE_VOUCHER_NOTALLOWEDOTHERSERIES');
-                    $oEx->setVoucherNr($this->oxvouchers__oxvouchernr->value);
-                    throw $oEx;
+            if (!$blAvailable) {
+                $oEx = oxNew('oxVoucherException');
+                $oEx->setMessage('ERROR_MESSAGE_VOUCHER_NOTALLOWEDOTHERSERIES');
+                $oEx->setVoucherNr($this->oxvouchers__oxvouchernr->value);
+                throw $oEx;
             }
         }
 
@@ -335,27 +336,27 @@ class oxVoucher extends oxBase
         $iTime = time();
 
         // If date is not set will add day before and day after to check if voucher valid today.
-        $iTomorrow = mktime( 0, 0, 0, date( "m" ), date( "d" )+1, date( "Y" ) );
-        $iYesterday = mktime( 0, 0, 0, date( "m" ), date( "d" )-1, date( "Y" ) );
+        $iTomorrow = mktime(0, 0, 0, date("m"), date("d") + 1, date("Y"));
+        $iYesterday = mktime(0, 0, 0, date("m"), date("d") - 1, date("Y"));
 
         // Checks if beginning date is set, if not set $iFrom to yesterday so it will be valid.
-        $iFrom = ( (int)$oSeries->oxvoucherseries__oxbegindate->value ) ?
-                   strtotime( $oSeries->oxvoucherseries__oxbegindate->value ) : $iYesterday;
+        $iFrom = ((int) $oSeries->oxvoucherseries__oxbegindate->value) ?
+            strtotime($oSeries->oxvoucherseries__oxbegindate->value) : $iYesterday;
 
         // Checks if end date is set, if no set $iTo to tomorrow so it will be valid.
-        $iTo = ( (int)$oSeries->oxvoucherseries__oxenddate->value ) ?
-                   strtotime( $oSeries->oxvoucherseries__oxenddate->value ) : $iTomorrow;
+        $iTo = ((int) $oSeries->oxvoucherseries__oxenddate->value) ?
+            strtotime($oSeries->oxvoucherseries__oxenddate->value) : $iTomorrow;
 
-        if ( $iFrom < $iTime && $iTo > $iTime ) {
+        if ($iFrom < $iTime && $iTo > $iTime) {
             return true;
         }
 
-        $oEx = oxNew( 'oxVoucherException' );
+        $oEx = oxNew('oxVoucherException');
         $oEx->setMessage('MESSAGE_COUPON_EXPIRED');
-        if ( $iFrom > $iTime && $iTo > $iTime ) {
-            $oEx->setMessage('ERROR_MESSAGE_VOUCHER_NOVOUCHER' );
+        if ($iFrom > $iTime && $iTo > $iTime) {
+            $oEx->setMessage('ERROR_MESSAGE_VOUCHER_NOVOUCHER');
         }
-        $oEx->setVoucherNr( $this->oxvouchers__oxvouchernr->value );
+        $oEx->setVoucherNr($this->oxvouchers__oxvouchernr->value);
         throw $oEx;
     }
 
@@ -369,13 +370,13 @@ class oxVoucher extends oxBase
     protected function _isNotReserved()
     {
 
-        if ( $this->oxvouchers__oxreserved->value < time() - $this->_getVoucherTimeout() ) {
+        if ($this->oxvouchers__oxreserved->value < time() - $this->_getVoucherTimeout()) {
             return true;
         }
 
-        $oEx = oxNew( 'oxVoucherException' );
+        $oEx = oxNew('oxVoucherException');
         $oEx->setMessage('EXCEPTION_VOUCHER_ISRESERVED');
-        $oEx->setVoucherNr( $this->oxvouchers__oxvouchernr->value );
+        $oEx->setVoucherNr($this->oxvouchers__oxvouchernr->value);
         throw $oEx;
     }
 
@@ -389,11 +390,11 @@ class oxVoucher extends oxBase
      *
      * @return array
      */
-    public function checkUserAvailability( $oUser )
+    public function checkUserAvailability($oUser)
     {
 
-        $this->_isAvailableInOtherOrder( $oUser );
-        $this->_isValidUserGroup( $oUser );
+        $this->_isAvailableInOtherOrder($oUser);
+        $this->_isValidUserGroup($oUser);
 
         // returning true if no exception was thrown
         return true;
@@ -408,18 +409,18 @@ class oxVoucher extends oxBase
      *
      * @return boolean
      */
-    protected function _isAvailableInOtherOrder( $oUser )
+    protected function _isAvailableInOtherOrder($oUser)
     {
         $oSeries = $this->getSerie();
-        if ( !$oSeries->oxvoucherseries__oxallowuseanother->value ) {
+        if (!$oSeries->oxvoucherseries__oxallowuseanother->value) {
 
             $oDb = oxDb::getDb();
-            $sSelect  = 'select count(*) from '.$this->getViewName().' where oxuserid = '. $oDb->quote( $oUser->oxuser__oxid->value ) . ' and ';
-            $sSelect .= 'oxvoucherserieid = ' . $oDb->quote( $this->oxvouchers__oxvoucherserieid->value ) . ' and ';
+            $sSelect = 'select count(*) from ' . $this->getViewName() . ' where oxuserid = ' . $oDb->quote($oUser->oxuser__oxid->value) . ' and ';
+            $sSelect .= 'oxvoucherserieid = ' . $oDb->quote($this->oxvouchers__oxvoucherserieid->value) . ' and ';
             $sSelect .= '((oxorderid is not NULL and oxorderid != "") or (oxdateused is not NULL and oxdateused != 0)) ';
 
-            if ( $oDb->getOne( $sSelect )) {
-                $oEx = oxNew( 'oxVoucherException' );
+            if ($oDb->getOne($sSelect)) {
+                $oEx = oxNew('oxVoucherException');
                 $oEx->setMessage('ERROR_MESSAGE_VOUCHER_NOTALLOWEDSAMESERIES');
                 $oEx->setVoucherNr($this->oxvouchers__oxvouchernr->value);
                 throw $oEx;
@@ -438,26 +439,26 @@ class oxVoucher extends oxBase
      *
      * @return bool
      */
-    protected function _isValidUserGroup( $oUser )
+    protected function _isValidUserGroup($oUser)
     {
         $oVoucherSeries = $this->getSerie();
         $oUserGroups = $oVoucherSeries->setUserGroups();
 
-        if ( !$oUserGroups->count() ) {
+        if (!$oUserGroups->count()) {
             return true;
         }
 
-        if ( $oUser ) {
-            foreach ( $oUserGroups as $oGroup ) {
-                if ( $oUser->inGroup( $oGroup->getId() ) ) {
+        if ($oUser) {
+            foreach ($oUserGroups as $oGroup) {
+                if ($oUser->inGroup($oGroup->getId())) {
                     return true;
                 }
             }
         }
 
-        $oEx = oxNew( 'oxVoucherException' );
-        $oEx->setMessage( 'ERROR_MESSAGE_VOUCHER_NOTVALIDUSERGROUP' );
-        $oEx->setVoucherNr( $this->oxvouchers__oxvouchernr->value );
+        $oEx = oxNew('oxVoucherException');
+        $oEx->setMessage('ERROR_MESSAGE_VOUCHER_NOTVALIDUSERGROUP');
+        $oEx->setVoucherNr($this->oxvouchers__oxvouchernr->value);
         throw $oEx;
     }
 
@@ -471,6 +472,7 @@ class oxVoucher extends oxBase
         $oVoucher = new stdClass();
         $oVoucher->sVoucherId = $this->getId();
         $oVoucher->sVoucherNr = $this->oxvouchers__oxvouchernr->value;
+
         // R. set in oxBasket : $oVoucher->fVoucherdiscount = oxRegistry::getLang()->formatCurrency( $this->oxvouchers__oxdiscount->value );
 
         return $oVoucher;
@@ -488,9 +490,10 @@ class oxVoucher extends oxBase
         }
         $oSeries = oxNew('oxVoucherSerie');
         if (!$oSeries->load($this->oxvouchers__oxvoucherserieid->value)) {
-            throw oxNew( "oxObjectException" );
+            throw oxNew("oxObjectException");
         }
         $this->_oSerie = $oSeries;
+
         return $oSeries;
     }
 
@@ -501,10 +504,10 @@ class oxVoucher extends oxBase
      */
     protected function _isProductVoucher()
     {
-        $oDb    = oxDb::getDb();
-        $oSeries  = $this->getSerie();
-        $sSelect = "select 1 from oxobject2discount where oxdiscountid = ".$oDb->quote( $oSeries->getId() )." and oxtype = 'oxarticles'";
-        $blOk    = ( bool ) $oDb->getOne( $sSelect );
+        $oDb = oxDb::getDb();
+        $oSeries = $this->getSerie();
+        $sSelect = "select 1 from oxobject2discount where oxdiscountid = " . $oDb->quote($oSeries->getId()) . " and oxtype = 'oxarticles'";
+        $blOk = ( bool ) $oDb->getOne($sSelect);
 
         return $blOk;
     }
@@ -516,10 +519,10 @@ class oxVoucher extends oxBase
      */
     protected function _isCategoryVoucher()
     {
-        $oDb    = oxDb::getDb();
-        $oSeries  = $this->getSerie();
-        $sSelect = "select 1 from oxobject2discount where oxdiscountid = ". $oDb->quote( $oSeries->getId() )." and oxtype = 'oxcategories'";
-        $blOk    = ( bool ) $oDb->getOne( $sSelect );
+        $oDb = oxDb::getDb();
+        $oSeries = $this->getSerie();
+        $sSelect = "select 1 from oxobject2discount where oxdiscountid = " . $oDb->quote($oSeries->getId()) . " and oxtype = 'oxcategories'";
+        $blOk = ( bool ) $oDb->getOne($sSelect);
 
         return $blOk;
     }
@@ -529,25 +532,25 @@ class oxVoucher extends oxBase
      *
      * @return object
      */
-    protected function _getSerieDiscount( )
+    protected function _getSerieDiscount()
     {
-        $oSeries    = $this->getSerie();
+        $oSeries = $this->getSerie();
         $oDiscount = oxNew('oxDiscount');
 
         $oDiscount->setId($oSeries->getId());
-        $oDiscount->oxdiscount__oxshopid      = new oxField($oSeries->oxvoucherseries__oxshopid->value);
-        $oDiscount->oxdiscount__oxactive      = new oxField(true);
-        $oDiscount->oxdiscount__oxactivefrom  = new oxField($oSeries->oxvoucherseries__oxbegindate->value);
-        $oDiscount->oxdiscount__oxactiveto    = new oxField($oSeries->oxvoucherseries__oxenddate->value);
-        $oDiscount->oxdiscount__oxtitle       = new oxField($oSeries->oxvoucherseries__oxserienr->value);
-        $oDiscount->oxdiscount__oxamount      = new oxField(1);
-        $oDiscount->oxdiscount__oxamountto    = new oxField(MAX_64BIT_INTEGER);
-        $oDiscount->oxdiscount__oxprice       = new oxField(0);
-        $oDiscount->oxdiscount__oxpriceto     = new oxField(MAX_64BIT_INTEGER);
-        $oDiscount->oxdiscount__oxaddsumtype  = new oxField($oSeries->oxvoucherseries__oxdiscounttype->value=='percent'?'%':'abs');
-        $oDiscount->oxdiscount__oxaddsum      = new oxField($oSeries->oxvoucherseries__oxdiscount->value);
-        $oDiscount->oxdiscount__oxitmartid    = new oxField();
-        $oDiscount->oxdiscount__oxitmamount   = new oxField();
+        $oDiscount->oxdiscount__oxshopid = new oxField($oSeries->oxvoucherseries__oxshopid->value);
+        $oDiscount->oxdiscount__oxactive = new oxField(true);
+        $oDiscount->oxdiscount__oxactivefrom = new oxField($oSeries->oxvoucherseries__oxbegindate->value);
+        $oDiscount->oxdiscount__oxactiveto = new oxField($oSeries->oxvoucherseries__oxenddate->value);
+        $oDiscount->oxdiscount__oxtitle = new oxField($oSeries->oxvoucherseries__oxserienr->value);
+        $oDiscount->oxdiscount__oxamount = new oxField(1);
+        $oDiscount->oxdiscount__oxamountto = new oxField(MAX_64BIT_INTEGER);
+        $oDiscount->oxdiscount__oxprice = new oxField(0);
+        $oDiscount->oxdiscount__oxpriceto = new oxField(MAX_64BIT_INTEGER);
+        $oDiscount->oxdiscount__oxaddsumtype = new oxField($oSeries->oxvoucherseries__oxdiscounttype->value == 'percent' ? '%' : 'abs');
+        $oDiscount->oxdiscount__oxaddsum = new oxField($oSeries->oxvoucherseries__oxdiscount->value);
+        $oDiscount->oxdiscount__oxitmartid = new oxField();
+        $oDiscount->oxdiscount__oxitmamount = new oxField();
         $oDiscount->oxdiscount__oxitmmultiple = new oxField();
 
         return $oDiscount;
@@ -564,7 +567,7 @@ class oxVoucher extends oxBase
     {
         if ($this->oxvouchers__oxorderid->value) {
             return $this->_getOrderBasketItems($oDiscount);
-        } elseif ( $this->getSession()->getBasket() ) {
+        } elseif ($this->getSession()->getBasket()) {
             return $this->_getSessionBasketItems($oDiscount);
         } else {
             return array();
@@ -587,10 +590,10 @@ class oxVoucher extends oxBase
         $oOrder = oxNew('oxOrder');
         $oOrder->load($this->oxvouchers__oxorderid->value);
 
-        $aItems  = array();
-        $iCount  = 0;
+        $aItems = array();
+        $iCount = 0;
 
-        foreach ( $oOrder->getOrderArticles(true) as $oOrderArticle ) {
+        foreach ($oOrder->getOrderArticles(true) as $oOrderArticle) {
             if (!$oOrderArticle->skipDiscounts() && $oDiscount->isForBasketItem($oOrderArticle)) {
                 $aItems[$iCount] = array(
                     'oxid'     => $oOrderArticle->getProductId(),
@@ -598,7 +601,7 @@ class oxVoucher extends oxBase
                     'discount' => $oDiscount->getAbsValue($oOrderArticle->oxorderarticles__oxbprice->value),
                     'amount'   => $oOrderArticle->oxorderarticles__oxamount->value,
                 );
-                $iCount ++;
+                $iCount++;
             }
         }
 
@@ -619,20 +622,20 @@ class oxVoucher extends oxBase
         }
 
         $oBasket = $this->getSession()->getBasket();
-        $aItems  = array();
-        $iCount  = 0;
+        $aItems = array();
+        $iCount = 0;
 
-        foreach ( $oBasket->getContents() as $oBasketItem ) {
-            if ( !$oBasketItem->isDiscountArticle() && ( $oArticle = $oBasketItem->getArticle() ) && !$oArticle->skipDiscounts() && $oDiscount->isForBasketItem($oArticle) ) {
+        foreach ($oBasket->getContents() as $oBasketItem) {
+            if (!$oBasketItem->isDiscountArticle() && ($oArticle = $oBasketItem->getArticle()) && !$oArticle->skipDiscounts() && $oDiscount->isForBasketItem($oArticle)) {
 
                 $aItems[$iCount] = array(
                     'oxid'     => $oArticle->getId(),
-                    'price'    => $oArticle->getBasketPrice( $oBasketItem->getAmount(), $oBasketItem->getSelList(), $oBasket )->getPrice(),
-                    'discount' => $oDiscount->getAbsValue($oArticle->getBasketPrice( $oBasketItem->getAmount(), $oBasketItem->getSelList(), $oBasket )->getPrice()),
+                    'price'    => $oArticle->getBasketPrice($oBasketItem->getAmount(), $oBasketItem->getSelList(), $oBasket)->getPrice(),
+                    'discount' => $oDiscount->getAbsValue($oArticle->getBasketPrice($oBasketItem->getAmount(), $oBasketItem->getSelList(), $oBasket)->getPrice()),
                     'amount'   => $oBasketItem->getAmount(),
                 );
 
-                $iCount ++;
+                $iCount++;
             }
         }
 
@@ -648,17 +651,17 @@ class oxVoucher extends oxBase
      *
      * @return double
      */
-    protected function _getGenericDiscoutValue( $dPrice )
+    protected function _getGenericDiscoutValue($dPrice)
     {
         $oSeries = $this->getSerie();
-        if ( $oSeries->oxvoucherseries__oxdiscounttype->value == 'absolute' ) {
+        if ($oSeries->oxvoucherseries__oxdiscounttype->value == 'absolute') {
             $oCur = $this->getConfig()->getActShopCurrencyObject();
             $dDiscount = $oSeries->oxvoucherseries__oxdiscount->value * $oCur->rate;
         } else {
             $dDiscount = $oSeries->oxvoucherseries__oxdiscount->value / 100 * $dPrice;
         }
 
-        if ( $dDiscount > $dPrice ) {
+        if ($dDiscount > $dPrice) {
             $dDiscount = $dPrice;
         }
 
@@ -667,13 +670,14 @@ class oxVoucher extends oxBase
 
 
     /**
-    * Return discount value
+     * Return discount value
      *
      * @return double
      */
     public function getDiscount()
     {
         $oSeries = $this->getSerie();
+
         return $oSeries->oxvoucherseries__oxdiscount->value;
     }
 
@@ -685,6 +689,7 @@ class oxVoucher extends oxBase
     public function getDiscountType()
     {
         $oSeries = $this->getSerie();
+
         return $oSeries->oxvoucherseries__oxdiscounttype->value;
     }
 
@@ -698,33 +703,33 @@ class oxVoucher extends oxBase
      *
      * @return double
      */
-    protected function _getProductDiscoutValue( $dPrice )
+    protected function _getProductDiscoutValue($dPrice)
     {
-        $oDiscount    = $this->_getSerieDiscount();
+        $oDiscount = $this->_getSerieDiscount();
         $aBasketItems = $this->_getBasketItems($oDiscount);
 
         // Basket Item Count and isAdmin check (unble to access property $oOrder->_getOrderBasket()->_blSkipVouchersAvailabilityChecking)
-        if (!count($aBasketItems) && !$this->isAdmin() ) {
-            $oEx = oxNew( 'oxVoucherException' );
+        if (!count($aBasketItems) && !$this->isAdmin()) {
+            $oEx = oxNew('oxVoucherException');
             $oEx->setMessage('ERROR_MESSAGE_VOUCHER_NOVOUCHER');
             $oEx->setVoucherNr($this->oxvouchers__oxvouchernr->value);
             throw $oEx;
         }
 
-        $oSeries    = $this->getSerie();
+        $oSeries = $this->getSerie();
 
-        $oVoucherPrice  = oxNew('oxPrice');
+        $oVoucherPrice = oxNew('oxPrice');
         $oDiscountPrice = oxNew('oxPrice');
-        $oProductPrice  = oxNew('oxPrice');
-        $oProductTotal  = oxNew('oxPrice');
+        $oProductPrice = oxNew('oxPrice');
+        $oProductTotal = oxNew('oxPrice');
 
         // Is the voucher discount applied to at least one basket item
         $blDiscountApplied = false;
 
-        foreach ( $aBasketItems as $aBasketItem ) {
+        foreach ($aBasketItems as $aBasketItem) {
 
             // If discount was already applied for the voucher to at least one basket items, then break
-            if ( $blDiscountApplied and !empty( $oSeries->oxvoucherseries__oxcalculateonce->value ) ) {
+            if ($blDiscountApplied and !empty($oSeries->oxvoucherseries__oxcalculateonce->value)) {
                 break;
             }
 
@@ -740,7 +745,7 @@ class oxVoucher extends oxBase
             $oVoucherPrice->add($oDiscountPrice->getBruttoPrice());
             $oProductTotal->add($oProductPrice->getBruttoPrice());
 
-            if ( !empty( $aBasketItem['discount'] ) ) {
+            if (!empty($aBasketItem['discount'])) {
                 $blDiscountApplied = true;
             }
         }
@@ -748,7 +753,7 @@ class oxVoucher extends oxBase
         $dVoucher = $oVoucherPrice->getBruttoPrice();
         $dProduct = $oProductTotal->getBruttoPrice();
 
-        if ( $dVoucher > $dProduct ) {
+        if ($dVoucher > $dProduct) {
             return $dProduct;
         }
 
@@ -764,14 +769,14 @@ class oxVoucher extends oxBase
      *
      * @return double
      */
-    protected function _getCategoryDiscoutValue( $dPrice )
+    protected function _getCategoryDiscoutValue($dPrice)
     {
-        $oDiscount    = $this->_getSerieDiscount();
-        $aBasketItems = $this->_getBasketItems( $oDiscount );
+        $oDiscount = $this->_getSerieDiscount();
+        $aBasketItems = $this->_getBasketItems($oDiscount);
 
         // Basket Item Count and isAdmin check (unable to access property $oOrder->_getOrderBasket()->_blSkipVouchersAvailabilityChecking)
-        if ( !count( $aBasketItems ) && !$this->isAdmin() ) {
-            $oEx = oxNew( 'oxVoucherException' );
+        if (!count($aBasketItems) && !$this->isAdmin()) {
+            $oEx = oxNew('oxVoucherException');
             $oEx->setMessage('ERROR_MESSAGE_VOUCHER_NOVOUCHER');
             $oEx->setVoucherNr($this->oxvouchers__oxvouchernr->value);
             throw $oEx;
@@ -780,15 +785,16 @@ class oxVoucher extends oxBase
         $oProductPrice = oxNew('oxPrice');
         $oProductTotal = oxNew('oxPrice');
 
-        foreach ( $aBasketItems as $aBasketItem ) {
-            $oProductPrice->setPrice( $aBasketItem['price'] );
-            $oProductPrice->multiply( $aBasketItem['amount'] );
-            $oProductTotal->add( $oProductPrice->getBruttoPrice() );
+        foreach ($aBasketItems as $aBasketItem) {
+            $oProductPrice->setPrice($aBasketItem['price']);
+            $oProductPrice->multiply($aBasketItem['amount']);
+            $oProductTotal->add($oProductPrice->getBruttoPrice());
         }
 
         $dProduct = $oProductTotal->getBruttoPrice();
-        $dVoucher = $oDiscount->getAbsValue( $dProduct );
-        return ( $dVoucher > $dProduct ) ? $dProduct : $dVoucher;
+        $dVoucher = $oDiscount->getAbsValue($dProduct);
+
+        return ($dVoucher > $dProduct) ? $dProduct : $dVoucher;
     }
 
     /**
@@ -798,9 +804,9 @@ class oxVoucher extends oxBase
      *
      * @return string
      */
-    public function __get( $sName )
+    public function __get($sName)
     {
-        switch ( $sName ) {
+        switch ($sName) {
 
             // simple voucher mapping
             case 'sVoucherId':
@@ -824,9 +830,10 @@ class oxVoucher extends oxBase
      */ 
     protected function _getVoucherTimeout() 
     {
-        $iVoucherTimeout =  intval(oxRegistry::getConfig()->getConfigParam( 'iVoucherTimeout' )) ? 
-            intval(oxRegistry::getConfig()->getConfigParam( 'iVoucherTimeout' )) : 
-            3 *3600;
+        $iVoucherTimeout = intval(oxRegistry::getConfig()->getConfigParam('iVoucherTimeout')) ?
+            intval(oxRegistry::getConfig()->getConfigParam('iVoucherTimeout')) :
+            3 * 3600;
+
         return $iVoucherTimeout;
     }    
 }

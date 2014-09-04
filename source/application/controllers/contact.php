@@ -29,38 +29,45 @@
  */
 class Contact extends oxUBase
 {
+
     /**
      * Entered user data.
+     *
      * @var array
      */
     protected $_aUserData = null;
 
     /**
      * Entered contact subject.
+     *
      * @var string
      */
     protected $_sContactSubject = null;
 
     /**
      * Entered conatct message.
+     *
      * @var string
      */
     protected $_sContactMessage = null;
 
     /**
      * Class handling CAPTCHA image.
+     *
      * @var object
      */
     protected $_oCaptcha = null;
 
     /**
      * Contact email send status.
+     *
      * @var object
      */
     protected $_blContactSendStatus = null;
 
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'page/info/contact.tpl';
@@ -80,41 +87,44 @@ class Contact extends oxUBase
      */
     public function send()
     {
-        $aParams = oxRegistry::getConfig()->getRequestParameter( 'editval' );
+        $aParams = oxRegistry::getConfig()->getRequestParameter('editval');
 
         // checking email address
-        if ( !oxRegistry::getUtils()->isValidEmail( $aParams['oxuser__oxusername'] ) ) {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay( 'ERROR_MESSAGE_INPUT_NOVALIDEMAIL' );
+        if (!oxRegistry::getUtils()->isValidEmail($aParams['oxuser__oxusername'])) {
+            oxRegistry::get("oxUtilsView")->addErrorToDisplay('ERROR_MESSAGE_INPUT_NOVALIDEMAIL');
+
             return false;
         }
 
         // spam spider prevension
-        $sMac     = oxRegistry::getConfig()->getRequestParameter( 'c_mac' );
-        $sMacHash = oxRegistry::getConfig()->getRequestParameter( 'c_mach' );
+        $sMac = oxRegistry::getConfig()->getRequestParameter('c_mac');
+        $sMacHash = oxRegistry::getConfig()->getRequestParameter('c_mach');
         $oCaptcha = $this->getCaptcha();
 
-        if ( !$oCaptcha->pass( $sMac, $sMacHash ) ) {
+        if (!$oCaptcha->pass($sMac, $sMacHash)) {
             // even if there is no exception, use this as a default display method
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay( 'MESSAGE_WRONG_VERIFICATION_CODE' );
+            oxRegistry::get("oxUtilsView")->addErrorToDisplay('MESSAGE_WRONG_VERIFICATION_CODE');
+
             return false;
         }
 
-        $sSubject = oxRegistry::getConfig()->getRequestParameter( 'c_subject' );
-        if ( !$aParams['oxuser__oxfname'] || !$aParams['oxuser__oxlname'] || !$aParams['oxuser__oxusername'] || !$sSubject ) {
+        $sSubject = oxRegistry::getConfig()->getRequestParameter('c_subject');
+        if (!$aParams['oxuser__oxfname'] || !$aParams['oxuser__oxlname'] || !$aParams['oxuser__oxusername'] || !$sSubject) {
             // even if there is no exception, use this as a default display method
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay( 'ERROR_MESSAGE_INPUT_NOTALLFIELDS' );
+            oxRegistry::get("oxUtilsView")->addErrorToDisplay('ERROR_MESSAGE_INPUT_NOTALLFIELDS');
+
             return false;
         }
 
         $oLang = oxRegistry::getLang();
-        $sMessage  = $oLang->translateString( 'MESSAGE_FROM' ) . " " .
-                     $oLang->translateString( $aParams['oxuser__oxsal'] ) ." " .
-                     $aParams['oxuser__oxfname'] . " " .
-                     $aParams['oxuser__oxlname'] . "(" .$aParams['oxuser__oxusername'] . ")<br /><br />" .
-                     nl2br( oxRegistry::getConfig()->getRequestParameter( 'c_message' ) );
+        $sMessage = $oLang->translateString('MESSAGE_FROM') . " " .
+                    $oLang->translateString($aParams['oxuser__oxsal']) . " " .
+                    $aParams['oxuser__oxfname'] . " " .
+                    $aParams['oxuser__oxlname'] . "(" . $aParams['oxuser__oxusername'] . ")<br /><br />" .
+                    nl2br(oxRegistry::getConfig()->getRequestParameter('c_message'));
 
-        $oEmail = oxNew( 'oxemail' );
-        if ( $oEmail->sendContactMail( $aParams['oxuser__oxusername'], $sSubject, $sMessage ) ) {
+        $oEmail = oxNew('oxemail');
+        if ($oEmail->sendContactMail($aParams['oxuser__oxusername'], $sSubject, $sMessage)) {
             $this->_blContactSendStatus = 1;
         } else {
             oxRegistry::get("oxUtilsView")->addErrorToDisplay('ERROR_MESSAGE_CHECK_EMAIL');
@@ -128,9 +138,10 @@ class Contact extends oxUBase
      */
     public function getUserData()
     {
-        if ( $this->_oUserData === null ) {
-            $this->_oUserData = oxRegistry::getConfig()->getRequestParameter( 'editval' );
+        if ($this->_oUserData === null) {
+            $this->_oUserData = oxRegistry::getConfig()->getRequestParameter('editval');
         }
+
         return $this->_oUserData;
     }
 
@@ -141,9 +152,10 @@ class Contact extends oxUBase
      */
     public function getContactSubject()
     {
-        if ( $this->_sContactSubject === null ) {
-            $this->_sContactSubject = oxRegistry::getConfig()->getRequestParameter( 'c_subject' );
+        if ($this->_sContactSubject === null) {
+            $this->_sContactSubject = oxRegistry::getConfig()->getRequestParameter('c_subject');
         }
+
         return $this->_sContactSubject;
     }
 
@@ -154,9 +166,10 @@ class Contact extends oxUBase
      */
     public function getContactMessage()
     {
-        if ( $this->_sContactMessage === null ) {
-            $this->_sContactMessage = oxRegistry::getConfig()->getRequestParameter( 'c_message' );
+        if ($this->_sContactMessage === null) {
+            $this->_sContactMessage = oxRegistry::getConfig()->getRequestParameter('c_message');
         }
+
         return $this->_sContactMessage;
     }
 
@@ -167,9 +180,10 @@ class Contact extends oxUBase
      */
     public function getCaptcha()
     {
-        if ( $this->_oCaptcha === null ) {
+        if ($this->_oCaptcha === null) {
             $this->_oCaptcha = oxNew('oxCaptcha');
         }
+
         return $this->_oCaptcha;
     }
 
@@ -193,8 +207,8 @@ class Contact extends oxUBase
         $aPaths = array();
         $aPath = array();
 
-        $aPath['title'] = oxRegistry::getLang()->translateString( 'CONTACT', oxRegistry::getLang()->getBaseLanguage(), false );
-        $aPath['link']  = $this->getLink();
+        $aPath['title'] = oxRegistry::getLang()->translateString('CONTACT', oxRegistry::getLang()->getBaseLanguage(), false);
+        $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;
 
         return $aPaths;

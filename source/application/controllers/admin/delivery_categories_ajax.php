@@ -25,25 +25,26 @@
  */
 class delivery_categories_ajax extends ajaxListComponent
 {
+
     /**
      * Columns array
      * 
      * @var array 
      */
-    protected $_aColumns = array( 'container1' => array(    // field , table,         visible, multilanguage, ident
-                                        array( 'oxtitle', 'oxcategories', 1, 1, 0 ),
-                                        array( 'oxdesc',  'oxcategories', 1, 1, 0 ),
-                                        array( 'oxid',    'oxcategories', 0, 0, 0 ),
-                                        array( 'oxid',    'oxcategories', 0, 0, 1 )
-                                        ),
-                                'container2' => array(
-                                        array( 'oxtitle', 'oxcategories', 1, 1, 0 ),
-                                        array( 'oxdesc',  'oxcategories', 1, 1, 0 ),
-                                        array( 'oxid',    'oxcategories', 0, 0, 0 ),
-                                        array( 'oxid',    'oxobject2delivery', 0, 0, 1 ),
-                                        array( 'oxid',    'oxcategories',      0, 0, 1 )
-                                        ),
-                                );
+    protected $_aColumns = array('container1' => array( // field , table,         visible, multilanguage, ident
+        array('oxtitle', 'oxcategories', 1, 1, 0),
+        array('oxdesc', 'oxcategories', 1, 1, 0),
+        array('oxid', 'oxcategories', 0, 0, 0),
+        array('oxid', 'oxcategories', 0, 0, 1)
+    ),
+                                 'container2' => array(
+                                     array('oxtitle', 'oxcategories', 1, 1, 0),
+                                     array('oxdesc', 'oxcategories', 1, 1, 0),
+                                     array('oxid', 'oxcategories', 0, 0, 0),
+                                     array('oxid', 'oxobject2delivery', 0, 0, 1),
+                                     array('oxid', 'oxcategories', 0, 0, 1)
+                                 ),
+    );
 
     /**
      * Returns SQL query for data to fetc
@@ -55,25 +56,26 @@ class delivery_categories_ajax extends ajaxListComponent
         // looking for table/view
         $sCatTable = $this->_getViewName('oxcategories');
         $oDb = oxDb::getDb();
-        $sDelId      = $this->getConfig()->getRequestParameter( 'oxid' );
-        $sSynchDelId = $this->getConfig()->getRequestParameter( 'synchoxid' );
+        $sDelId = $this->getConfig()->getRequestParameter('oxid');
+        $sSynchDelId = $this->getConfig()->getRequestParameter('synchoxid');
 
         // category selected or not ?
-        if ( !$sDelId) {
-            $sQAdd  = " from $sCatTable ";
+        if (!$sDelId) {
+            $sQAdd = " from $sCatTable ";
         } else {
-            $sQAdd  = " from oxobject2delivery left join $sCatTable on $sCatTable.oxid=oxobject2delivery.oxobjectid ";
-            $sQAdd .= " where oxobject2delivery.oxdeliveryid = ".$oDb->quote( $sDelId )." and oxobject2delivery.oxtype = 'oxcategories' ";
+            $sQAdd = " from oxobject2delivery left join $sCatTable on $sCatTable.oxid=oxobject2delivery.oxobjectid ";
+            $sQAdd .= " where oxobject2delivery.oxdeliveryid = " . $oDb->quote($sDelId) . " and oxobject2delivery.oxtype = 'oxcategories' ";
         }
 
-        if ( $sSynchDelId && $sSynchDelId != $sDelId) {
+        if ($sSynchDelId && $sSynchDelId != $sDelId) {
             // performance
-            $sSubSelect  = " select $sCatTable.oxid from oxobject2delivery left join $sCatTable on $sCatTable.oxid=oxobject2delivery.oxobjectid ";
-            $sSubSelect .= " where oxobject2delivery.oxdeliveryid = ".$oDb->quote( $sSynchDelId )." and oxobject2delivery.oxtype = 'oxcategories' ";
-            if ( stristr( $sQAdd, 'where' ) === false )
+            $sSubSelect = " select $sCatTable.oxid from oxobject2delivery left join $sCatTable on $sCatTable.oxid=oxobject2delivery.oxobjectid ";
+            $sSubSelect .= " where oxobject2delivery.oxdeliveryid = " . $oDb->quote($sSynchDelId) . " and oxobject2delivery.oxtype = 'oxcategories' ";
+            if (stristr($sQAdd, 'where') === false) {
                 $sQAdd .= ' where ';
-            else
+            } else {
                 $sQAdd .= ' and ';
+            }
             $sQAdd .= " $sCatTable.oxid not in ( $sSubSelect ) ";
         }
 
@@ -87,17 +89,17 @@ class delivery_categories_ajax extends ajaxListComponent
      */
     public function removeCatFromDel()
     {
-        $aChosenCat = $this->_getActionIds( 'oxobject2delivery.oxid' );
+        $aChosenCat = $this->_getActionIds('oxobject2delivery.oxid');
 
         // removing all
-        if ( $this->getConfig()->getRequestParameter( 'all' ) ) {
+        if ($this->getConfig()->getRequestParameter('all')) {
 
-            $sQ = $this->_addFilter( "delete oxobject2delivery.* ".$this->_getQuery() );
-            oxDb::getDb()->Execute( $sQ );
+            $sQ = $this->_addFilter("delete oxobject2delivery.* " . $this->_getQuery());
+            oxDb::getDb()->Execute($sQ);
 
-        } elseif ( is_array( $aChosenCat ) ) {
-            $sQ = "delete from oxobject2delivery where oxobject2delivery.oxid in (" . implode( ", ", oxDb::getInstance()->quoteArray( $aChosenCat ) ) . ") ";
-            oxDb::getDb()->Execute( $sQ );
+        } elseif (is_array($aChosenCat)) {
+            $sQ = "delete from oxobject2delivery where oxobject2delivery.oxid in (" . implode(", ", oxDb::getInstance()->quoteArray($aChosenCat)) . ") ";
+            oxDb::getDb()->Execute($sQ);
         }
     }
 
@@ -108,22 +110,22 @@ class delivery_categories_ajax extends ajaxListComponent
      */
     public function addCatToDel()
     {
-        $aChosenCat = $this->_getActionIds( 'oxcategories.oxid' );
-        $soxId      = $this->getConfig()->getRequestParameter( 'synchoxid');
+        $aChosenCat = $this->_getActionIds('oxcategories.oxid');
+        $soxId = $this->getConfig()->getRequestParameter('synchoxid');
 
         // adding
-        if ( $this->getConfig()->getRequestParameter( 'all' ) ) {
+        if ($this->getConfig()->getRequestParameter('all')) {
             $sCatTable = $this->_getViewName('oxcategories');
-            $aChosenCat = $this->_getAll( $this->_addFilter( "select $sCatTable.oxid ".$this->_getQuery() ) );
+            $aChosenCat = $this->_getAll($this->_addFilter("select $sCatTable.oxid " . $this->_getQuery()));
         }
 
-        if ( isset( $soxId) && $soxId != "-1" && isset( $aChosenCat) && $aChosenCat) {
-            foreach ( $aChosenCat as $sChosenCat) {
-                $oObject2Delivery = oxNew( 'oxbase' );
-                $oObject2Delivery->init( 'oxobject2delivery' );
+        if (isset($soxId) && $soxId != "-1" && isset($aChosenCat) && $aChosenCat) {
+            foreach ($aChosenCat as $sChosenCat) {
+                $oObject2Delivery = oxNew('oxbase');
+                $oObject2Delivery->init('oxobject2delivery');
                 $oObject2Delivery->oxobject2delivery__oxdeliveryid = new oxField($soxId);
-                $oObject2Delivery->oxobject2delivery__oxobjectid   = new oxField($sChosenCat);
-                $oObject2Delivery->oxobject2delivery__oxtype       = new oxField("oxcategories");
+                $oObject2Delivery->oxobject2delivery__oxobjectid = new oxField($sChosenCat);
+                $oObject2Delivery->oxobject2delivery__oxtype = new oxField("oxcategories");
                 $oObject2Delivery->save();
             }
         }

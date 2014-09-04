@@ -26,26 +26,31 @@
  */
 class oxSelection
 {
+
     /**
      * Selection name
+     *
      * @var string
      */
     protected $_sName = null;
 
     /**
      * Selection value
+     *
      * @var string
      */
     protected $_sValue = null;
 
     /**
      * Selection state: active
+     *
      * @var bool
      */
     protected $_blActive = null;
 
     /**
      * Selection state: disabled
+     *
      * @var bool
      */
     protected $_blDisabled = null;
@@ -60,12 +65,12 @@ class oxSelection
      *
      * @return null
      */
-    public function __construct( $sName, $sValue, $blDisabled, $blActive )
+    public function __construct($sName, $sValue, $blDisabled, $blActive)
     {
-        $this->_sName      = $sName;
-        $this->_sValue     = $sValue;
+        $this->_sName = $sName;
+        $this->_sValue = $sValue;
         $this->_blDisabled = $blDisabled;
-        $this->_blActive   = $blActive;
+        $this->_blActive = $blActive;
     }
 
     /**
@@ -85,7 +90,7 @@ class oxSelection
      */
     public function getName()
     {
-        return getStr()->htmlspecialchars( $this->_sName );
+        return getStr()->htmlspecialchars($this->_sName);
     }
 
     /**
@@ -115,7 +120,7 @@ class oxSelection
      *
      * @return null
      */
-    public function setActiveState( $blActive )
+    public function setActiveState($blActive)
     {
         $this->_blActive = $blActive;
     }
@@ -127,7 +132,7 @@ class oxSelection
      *
      * @return null
      */
-    public function setDisabled( $blDisabled )
+    public function setDisabled($blDisabled)
     {
         $this->_blDisabled = $blDisabled;
     }

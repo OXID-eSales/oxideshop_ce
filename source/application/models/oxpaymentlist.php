@@ -25,6 +25,7 @@
  */
 class oxPaymentList extends oxList
 {
+
     /**
      * Home country id
      *
@@ -50,10 +51,10 @@ class oxPaymentList extends oxList
      *
      * @return null
      */
-    public function setHomeCountry( $sHomeCountry )
+    public function setHomeCountry($sHomeCountry)
     {
-        if ( is_array( $sHomeCountry ) ) {
-            $this->_sHomeCountry = current( $sHomeCountry );
+        if (is_array($sHomeCountry)) {
+            $this->_sHomeCountry = current($sHomeCountry);
         } else {
             $this->_sHomeCountry = $sHomeCountry;
         }
@@ -68,38 +69,38 @@ class oxPaymentList extends oxList
      *
      * @return string
      */
-    protected function _getFilterSelect( $sShipSetId, $dPrice, $oUser )
+    protected function _getFilterSelect($sShipSetId, $dPrice, $oUser)
     {
         $oDb = oxDb::getDb();
-        $sBoni = ($oUser && $oUser->oxuser__oxboni->value )?$oUser->oxuser__oxboni->value:0;
+        $sBoni = ($oUser && $oUser->oxuser__oxboni->value) ? $oUser->oxuser__oxboni->value : 0;
 
-        $sTable = getViewName( 'oxpayments' );
-        $sQ  = "select {$sTable}.* from ( select distinct {$sTable}.* from {$sTable} ";
+        $sTable = getViewName('oxpayments');
+        $sQ = "select {$sTable}.* from ( select distinct {$sTable}.* from {$sTable} ";
         $sQ .= "left join oxobject2group ON oxobject2group.oxobjectid = {$sTable}.oxid ";
-		$sQ .= "inner join oxobject2payment ON oxobject2payment.oxobjectid = ".$oDb->quote( $sShipSetId )." and oxobject2payment.oxpaymentid = {$sTable}.oxid ";
+        $sQ .= "inner join oxobject2payment ON oxobject2payment.oxobjectid = " . $oDb->quote($sShipSetId) . " and oxobject2payment.oxpaymentid = {$sTable}.oxid ";
         $sQ .= "where {$sTable}.oxactive='1' ";
-        $sQ .= " and {$sTable}.oxfromboni <= ".$oDb->quote( $sBoni ) ." and {$sTable}.oxfromamount <= ".$oDb->quote( $dPrice ) ." and {$sTable}.oxtoamount >= ".$oDb->quote( $dPrice );
+        $sQ .= " and {$sTable}.oxfromboni <= " . $oDb->quote($sBoni) . " and {$sTable}.oxfromamount <= " . $oDb->quote($dPrice) . " and {$sTable}.oxtoamount >= " . $oDb->quote($dPrice);
 
         // defining initial filter parameters
-        $sGroupIds  = '';
-        $sCountryId = $this->getCountryId( $oUser );
+        $sGroupIds = '';
+        $sCountryId = $this->getCountryId($oUser);
 
         // checking for current session user which gives additional restrictions for user itself, users group and country
-        if ( $oUser ) {
+        if ($oUser) {
             // user groups ( maybe would be better to fetch by function oxuser::getUserGroups() ? )
-            foreach ( $oUser->getUserGroups() as $oGroup ) {
-                if ( $sGroupIds ) {
+            foreach ($oUser->getUserGroups() as $oGroup) {
+                if ($sGroupIds) {
                     $sGroupIds .= ', ';
                 }
-                $sGroupIds .= "'".$oGroup->getId()."'";
+                $sGroupIds .= "'" . $oGroup->getId() . "'";
             }
         }
 
-        $sGroupTable   = getViewName( 'oxgroups' );
-        $sCountryTable = getViewName( 'oxcountry' );
+        $sGroupTable = getViewName('oxgroups');
+        $sCountryTable = getViewName('oxcountry');
 
-        $sCountrySql = $sCountryId ? "exists( select 1 from oxobject2payment as s1 where s1.oxpaymentid={$sTable}.OXID and s1.oxtype='oxcountry' and s1.OXOBJECTID=".$oDb->quote( $sCountryId )." limit 1 )":'0';
-        $sGroupSql   = $sGroupIds ? "exists( select 1 from oxobject2group as s3 where s3.OXOBJECTID={$sTable}.OXID and s3.OXGROUPSID in ( {$sGroupIds} ) limit 1 )":'0';
+        $sCountrySql = $sCountryId ? "exists( select 1 from oxobject2payment as s1 where s1.oxpaymentid={$sTable}.OXID and s1.oxtype='oxcountry' and s1.OXOBJECTID=" . $oDb->quote($sCountryId) . " limit 1 )" : '0';
+        $sGroupSql = $sGroupIds ? "exists( select 1 from oxobject2group as s3 where s3.OXOBJECTID={$sTable}.OXID and s3.OXGROUPSID in ( {$sGroupIds} ) limit 1 )" : '0';
 
         $sQ .= " ) as $sTable where (
             select
@@ -110,6 +111,7 @@ class oxPaymentList extends oxList
                     {$sGroupSql},
                     1)
                 )  order by {$sTable}.oxsort asc ";
+
         return $sQ;
     }
 
@@ -120,14 +122,14 @@ class oxPaymentList extends oxList
      *
      * @return string
      */
-    public function getCountryId( $oUser )
+    public function getCountryId($oUser)
     {
         $sCountryId = null;
-        if ( $oUser ) {
+        if ($oUser) {
             $sCountryId = $oUser->getActiveCountry();
         }
 
-        if ( !$sCountryId ) {
+        if (!$sCountryId) {
             $sCountryId = $this->_sHomeCountry;
         }
 
@@ -143,9 +145,10 @@ class oxPaymentList extends oxList
      *
      * @return array
      */
-    public function getPaymentList( $sShipSetId, $dPrice, $oUser = null )
+    public function getPaymentList($sShipSetId, $dPrice, $oUser = null)
     {
-        $this->selectString( $this->_getFilterSelect( $sShipSetId, $dPrice, $oUser ) );
+        $this->selectString($this->_getFilterSelect($sShipSetId, $dPrice, $oUser));
+
         return $this->_aArray;
     }
 
@@ -157,9 +160,9 @@ class oxPaymentList extends oxList
      */
     public function loadNonRDFaPaymentList()
     {
-        $sTable = getViewName( 'oxpayments' );
+        $sTable = getViewName('oxpayments');
         $sSubSql = "SELECT * FROM oxobject2payment WHERE oxobject2payment.OXPAYMENTID = $sTable.OXID AND oxobject2payment.OXTYPE = 'rdfapayment'";
-        $this->selectString( "SELECT $sTable.* FROM $sTable WHERE NOT EXISTS($sSubSql) AND $sTable.OXACTIVE = 1" );
+        $this->selectString("SELECT $sTable.* FROM $sTable WHERE NOT EXISTS($sSubSql) AND $sTable.OXACTIVE = 1");
     }
 
     /**
@@ -172,14 +175,14 @@ class oxPaymentList extends oxList
      */
     public function loadRDFaPaymentList($dPrice = null)
     {
-        $oDb = oxDb::getDb( oxDb::FETCH_MODE_ASSOC );
-        $sTable = getViewName( 'oxpayments' );
-        $sQ  = "select $sTable.*, oxobject2payment.oxobjectid from $sTable left join (select oxobject2payment.* from oxobject2payment where oxobject2payment.oxtype = 'rdfapayment') as oxobject2payment on oxobject2payment.oxpaymentid=$sTable.oxid ";
+        $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+        $sTable = getViewName('oxpayments');
+        $sQ = "select $sTable.*, oxobject2payment.oxobjectid from $sTable left join (select oxobject2payment.* from oxobject2payment where oxobject2payment.oxtype = 'rdfapayment') as oxobject2payment on oxobject2payment.oxpaymentid=$sTable.oxid ";
         $sQ .= "where $sTable.oxactive = 1 ";
-        if ( $dPrice !== null ) {
-            $sQ .= "and $sTable.oxfromamount <= ".$oDb->quote( $dPrice ) ." and $sTable.oxtoamount >= ".$oDb->quote( $dPrice );
+        if ($dPrice !== null) {
+            $sQ .= "and $sTable.oxfromamount <= " . $oDb->quote($dPrice) . " and $sTable.oxtoamount >= " . $oDb->quote($dPrice);
         }
-        $rs = $oDb->select( $sQ );
+        $rs = $oDb->select($sQ);
         if ($rs != false && $rs->recordCount() > 0) {
             $oSaved = clone $this->getBaseObject();
             while (!$rs->EOF) {

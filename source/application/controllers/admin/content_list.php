@@ -28,6 +28,7 @@
  */
 class Content_List extends oxAdminList
 {
+
     /**
      * Name of chosen object class (default null).
      *
@@ -52,11 +53,12 @@ class Content_List extends oxAdminList
     {
         parent::render();
 
-        $sFolder = oxRegistry::getConfig()->getRequestParameter( "folder" );
+        $sFolder = oxRegistry::getConfig()->getRequestParameter("folder");
         $sFolder = $sFolder ? $sFolder : -1;
 
-        $this->_aViewData["folder"]  = $sFolder;
-        $this->_aViewData["afolder"] = $this->getConfig()->getConfigParam( 'aCMSfolder' );
+        $this->_aViewData["folder"] = $sFolder;
+        $this->_aViewData["afolder"] = $this->getConfig()->getConfigParam('aCMSfolder');
+
         return "content_list.tpl";
     }
 
@@ -68,17 +70,17 @@ class Content_List extends oxAdminList
      *
      * @return $sQ
      */
-    protected function _prepareWhereQuery( $aWhere, $sqlFull )
+    protected function _prepareWhereQuery($aWhere, $sqlFull)
     {
-        $sQ = parent::_prepareWhereQuery( $aWhere, $sqlFull );
-        $sFolder = oxRegistry::getConfig()->getRequestParameter( 'folder' );
-        $sViewName = getviewName( "oxcontents" );
+        $sQ = parent::_prepareWhereQuery($aWhere, $sqlFull);
+        $sFolder = oxRegistry::getConfig()->getRequestParameter('folder');
+        $sViewName = getviewName("oxcontents");
 
         //searchong for empty oxfolder fields
-        if ( $sFolder == 'CMSFOLDER_NONE' || $sFolder == 'CMSFOLDER_NONE_RR') {
+        if ($sFolder == 'CMSFOLDER_NONE' || $sFolder == 'CMSFOLDER_NONE_RR') {
             $sQ .= " and {$sViewName}.oxfolder = '' ";
-        } elseif ( $sFolder && $sFolder != '-1' ) {
-            $sFolder = oxDb::getDb()->quote( $sFolder );
+        } elseif ($sFolder && $sFolder != '-1') {
+            $sFolder = oxDb::getDb()->quote($sFolder);
             $sQ .= " and {$sViewName}.oxfolder = {$sFolder}";
         }
 

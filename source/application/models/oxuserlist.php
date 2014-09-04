@@ -26,6 +26,7 @@
  */
 class oxUserList extends oxList
 {
+
     /**
      * Class constructor
      *
@@ -44,14 +45,14 @@ class oxUserList extends oxList
      *
      * @return null;
      */
-    public function loadWishlistUsers( $sSearchStr)
+    public function loadWishlistUsers($sSearchStr)
     {
         $sSearchStr = oxDb::getInstance()->escapeString($sSearchStr);
         if (!$sSearchStr) {
             return;
         }
 
-        $sSelect  = "select oxuser.oxid, oxuser.oxfname, oxuser.oxlname from oxuser ";
+        $sSelect = "select oxuser.oxid, oxuser.oxfname, oxuser.oxlname from oxuser ";
         $sSelect .= "left join oxuserbaskets on oxuserbaskets.oxuserid = oxuser.oxid ";
         $sSelect .= "where oxuserbaskets.oxid is not null and oxuserbaskets.oxtitle = 'wishlist' ";
         $sSelect .= "and oxuserbaskets.oxpublic = 1 ";

@@ -27,6 +27,7 @@
  */
 interface OxIConfigurable
 {
+
     /**
      * Sets configuration object
      *

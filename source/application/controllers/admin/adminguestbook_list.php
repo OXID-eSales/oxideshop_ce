@@ -27,8 +27,10 @@
  */
 class AdminGuestbook_List extends oxAdminList
 {
+
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'adminguestbook_list.tpl';
@@ -65,18 +67,19 @@ class AdminGuestbook_List extends oxAdminList
         parent::render();
 
         $oList = $this->getItemList();
-        if ( $oList && $oList->count() ) {
+        if ($oList && $oList->count()) {
 
             $oDb = oxDb::getDb();
-            foreach ( $oList as $oEntry ) {
+            foreach ($oList as $oEntry) {
                 // preloading user info ..
-                if ( isset( $oEntry->oxgbentries__oxuserid ) && $oEntry->oxgbentries__oxuserid->value ) {
-                    $oEntry->oxuser__oxlname = new oxField( $oDb->getOne( "select oxlname from oxuser where oxid=".$oDb->quote( $oEntry->oxgbentries__oxuserid->value ), false, false ));
+                if (isset($oEntry->oxgbentries__oxuserid) && $oEntry->oxgbentries__oxuserid->value) {
+                    $oEntry->oxuser__oxlname = new oxField($oDb->getOne("select oxlname from oxuser where oxid=" . $oDb->quote($oEntry->oxgbentries__oxuserid->value), false, false));
                 }
             }
         }
 
         $this->_aViewData["mylist"] = $oList;
+
         return $this->_sThisTemplate;
     }
 

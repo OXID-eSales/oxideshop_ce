@@ -35,21 +35,22 @@ class oxUtilsXml extends oxSuperCfg
      *
      * @return DOMDocument|bool
      */
-    public function loadXml( $sXml, $oDomDocument = null )
+    public function loadXml($sXml, $oDomDocument = null)
     {
-        if ( !$oDomDocument ) {
+        if (!$oDomDocument) {
             $oDomDocument = new DOMDocument('1.0', 'utf-8');
         }
 
-        libxml_use_internal_errors( true );
-        $oDomDocument->loadXML( $sXml );
+        libxml_use_internal_errors(true);
+        $oDomDocument->loadXML($sXml);
         $errors = libxml_get_errors();
-        $blLoaded = empty( $errors );
+        $blLoaded = empty($errors);
         libxml_clear_errors();
 
-        if ( $blLoaded ) {
+        if ($blLoaded) {
             return $oDomDocument;
         }
+
         return false;
     }
 

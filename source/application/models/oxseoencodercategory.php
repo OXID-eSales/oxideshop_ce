@@ -26,6 +26,7 @@
  */
 class oxSeoEncoderCategory extends oxSeoEncoder
 {
+
     /**
      * _aCatCache cache for categories
      *
@@ -55,16 +56,16 @@ class oxSeoEncoderCategory extends oxSeoEncoder
      *
      * @return boolean
      */
-    protected function _categoryUrlLoader( $oCat, $iLang )
+    protected function _categoryUrlLoader($oCat, $iLang)
     {
         $sSeoUrl = false;
 
-        $sCacheId = $this->_getCategoryCacheId( $oCat, $iLang );
-        if ( isset( $this->_aCatCache[$sCacheId] ) ) {
-            $sSeoUrl = $this->_aCatCache[ $sCacheId ];
-        } elseif ( ( $sSeoUrl = $this->_loadFromDb( 'oxcategory', $oCat->getId(), $iLang ) ) ) {
+        $sCacheId = $this->_getCategoryCacheId($oCat, $iLang);
+        if (isset($this->_aCatCache[$sCacheId])) {
+            $sSeoUrl = $this->_aCatCache[$sCacheId];
+        } elseif (($sSeoUrl = $this->_loadFromDb('oxcategory', $oCat->getId(), $iLang))) {
             // caching
-            $this->_aCatCache[ $sCacheId ] = $sSeoUrl;
+            $this->_aCatCache[$sCacheId] = $sSeoUrl;
         }
 
         return $sSeoUrl;
@@ -80,9 +81,9 @@ class oxSeoEncoderCategory extends oxSeoEncoder
      *
      * @return string
      */
-    private function _getCategoryCacheId( $oCat, $iLang )
+    private function _getCategoryCacheId($oCat, $iLang)
     {
-        return $oCat->getId() . '_' . ( (int) $iLang );
+        return $oCat->getId() . '_' . ((int) $iLang);
     }
 
     /**
@@ -94,13 +95,13 @@ class oxSeoEncoderCategory extends oxSeoEncoder
      *
      * @return string
      */
-    public function getCategoryUri( $oCat, $iLang = null, $blRegenerate = false  )
+    public function getCategoryUri($oCat, $iLang = null, $blRegenerate = false)
     {
         startProfile(__FUNCTION__);
         $sCatId = $oCat->getId();
 
         // skipping external category URLs
-        if ( $oCat->oxcategories__oxextlink->value ) {
+        if ($oCat->oxcategories__oxextlink->value) {
             $sSeoUrl = null;
         } else {
             // not found in cache, process it from the top
@@ -111,7 +112,7 @@ class oxSeoEncoderCategory extends oxSeoEncoder
             $aCacheMap = array();
             $aStdLinks = array();
 
-            while ( $oCat && !($sSeoUrl = $this->_categoryUrlLoader( $oCat, $iLang ) )) {
+            while ($oCat && !($sSeoUrl = $this->_categoryUrlLoader($oCat, $iLang))) {
 
                 if ($iLang != $oCat->getLanguage()) {
                     $sId = $oCat->getId();
@@ -120,9 +121,9 @@ class oxSeoEncoderCategory extends oxSeoEncoder
                 }
 
                 // prepare oCat title part
-                $sTitle = $this->_prepareTitle( $oCat->oxcategories__oxtitle->value, false, $oCat->getLanguage() );
+                $sTitle = $this->_prepareTitle($oCat->oxcategories__oxtitle->value, false, $oCat->getLanguage());
 
-                foreach ( array_keys( $aCacheMap ) as $id ) {
+                foreach (array_keys($aCacheMap) as $id) {
                     $aCacheMap[$id] = $sTitle . '/' . $aCacheMap[$id];
                 }
 
@@ -133,12 +134,12 @@ class oxSeoEncoderCategory extends oxSeoEncoder
                 $oCat = $oCat->getParentCategory();
             }
 
-            foreach ( $aCacheMap as $sId => $sUri ) {
-                $this->_aCatCache[$sId.'_'.$iLang] = $this->_processSeoUrl( $sSeoUrl.$sUri.'/', $sId, $iLang );
-                $this->_saveToDb( 'oxcategory', $sId, $aStdLinks[$sId], $this->_aCatCache[$sId.'_'.$iLang], $iLang );
+            foreach ($aCacheMap as $sId => $sUri) {
+                $this->_aCatCache[$sId . '_' . $iLang] = $this->_processSeoUrl($sSeoUrl . $sUri . '/', $sId, $iLang);
+                $this->_saveToDb('oxcategory', $sId, $aStdLinks[$sId], $this->_aCatCache[$sId . '_' . $iLang], $iLang);
             }
 
-            $sSeoUrl = $this->_aCatCache[$sCatId.'_'.$iLang];
+            $sSeoUrl = $this->_aCatCache[$sCatId . '_' . $iLang];
         }
 
         stopProfile(__FUNCTION__);
@@ -157,7 +158,7 @@ class oxSeoEncoderCategory extends oxSeoEncoder
      *
      * @return string
      */
-    public function getCategoryPageUrl( $oCategory, $iPage, $iLang = null, $blFixed = null )
+    public function getCategoryPageUrl($oCategory, $iPage, $iLang = null, $blFixed = null)
     {
         if (!isset($iLang)) {
             $iLang = $oCategory->getLanguage();
@@ -165,13 +166,14 @@ class oxSeoEncoderCategory extends oxSeoEncoder
         $sStdUrl = $oCategory->getBaseStdLink($iLang) . '&amp;pgNr=' . $iPage;
         $sParams = (int) ($iPage + 1);
 
-        $sStdUrl = $this->_trimUrl( $sStdUrl, $iLang );
-        $sSeoUrl = $this->getCategoryUri( $oCategory, $iLang ) . $sParams . "/";
+        $sStdUrl = $this->_trimUrl($sStdUrl, $iLang);
+        $sSeoUrl = $this->getCategoryUri($oCategory, $iLang) . $sParams . "/";
 
-        if ( $blFixed === null ) {
-            $blFixed = $this->_isFixed( 'oxcategory', $oCategory->getId(), $iLang );
+        if ($blFixed === null) {
+            $blFixed = $this->_isFixed('oxcategory', $oCategory->getId(), $iLang);
         }
-        return $this->_getFullUrl( $this->_getPageUri( $oCategory, 'oxcategory', $sStdUrl, $sSeoUrl, $sParams, $iLang, $blFixed ), $iLang );
+
+        return $this->_getFullUrl($this->_getPageUri($oCategory, 'oxcategory', $sStdUrl, $sSeoUrl, $sParams, $iLang, $blFixed), $iLang);
     }
 
     /**
@@ -185,16 +187,17 @@ class oxSeoEncoderCategory extends oxSeoEncoder
      *
      * @return string
      */
-    public function getCategoryUrl( $oCategory, $iLang = null )
+    public function getCategoryUrl($oCategory, $iLang = null)
     {
         $sUrl = '';
         if (!isset($iLang)) {
             $iLang = $oCategory->getLanguage();
         }
         // category may have specified url
-        if ( ( $sSeoUrl = $this->getCategoryUri( $oCategory, $iLang ) ) ) {
-            $sUrl = $this->_getFullUrl( $sSeoUrl, $iLang );
+        if (($sSeoUrl = $this->getCategoryUri($oCategory, $iLang))) {
+            $sUrl = $this->_getFullUrl($sSeoUrl, $iLang);
         }
+
         return $sUrl;
     }
 
@@ -205,7 +208,7 @@ class oxSeoEncoderCategory extends oxSeoEncoder
      *
      * @return null
      */
-    public function markRelatedAsExpired( $oCategory )
+    public function markRelatedAsExpired($oCategory)
     {
         $oDb = oxDb::getDb();
         $sIdQuoted = $oDb->quote($oCategory->getId());
@@ -214,15 +217,15 @@ class oxSeoEncoderCategory extends oxSeoEncoder
         // this is because this method is usually called inside update,
         // where object may already be carrying changed id
         $aCatInfo = $oDb->getAll("select oxrootid, oxleft, oxright from oxcategories where oxid = $sIdQuoted limit 1");
-        $sCatRootIdQuoted = $oDb->quote( $aCatInfo[0][0] );
+        $sCatRootIdQuoted = $oDb->quote($aCatInfo[0][0]);
 
         // update sub cats
-        $sQ = "update oxseo as seo1, (select oxid from oxcategories where oxrootid={$sCatRootIdQuoted} and oxleft > ".((int) $aCatInfo[0][1] )." and oxright < ".((int) $aCatInfo[0][2] ).") as seo2 set seo1.oxexpired = '1' where seo1.oxtype = 'oxcategory' and seo1.oxobjectid = seo2.oxid";
-        $oDb->execute( $sQ );
+        $sQ = "update oxseo as seo1, (select oxid from oxcategories where oxrootid={$sCatRootIdQuoted} and oxleft > " . ((int) $aCatInfo[0][1]) . " and oxright < " . ((int) $aCatInfo[0][2]) . ") as seo2 set seo1.oxexpired = '1' where seo1.oxtype = 'oxcategory' and seo1.oxobjectid = seo2.oxid";
+        $oDb->execute($sQ);
 
         // update subarticles
-        $sQ = "update oxseo as seo1, (select o2c.oxobjectid as id from oxcategories as cat left join oxobject2category as o2c on o2c.oxcatnid=cat.oxid where cat.oxrootid={$sCatRootIdQuoted} and cat.oxleft >= ".((int) $aCatInfo[0][1] )." and cat.oxright <= ".((int) $aCatInfo[0][2] ).") as seo2 set seo1.oxexpired = '1' where seo1.oxtype = 'oxarticle' and seo1.oxobjectid = seo2.id";
-        $oDb->execute( $sQ );
+        $sQ = "update oxseo as seo1, (select o2c.oxobjectid as id from oxcategories as cat left join oxobject2category as o2c on o2c.oxcatnid=cat.oxid where cat.oxrootid={$sCatRootIdQuoted} and cat.oxleft >= " . ((int) $aCatInfo[0][1]) . " and cat.oxright <= " . ((int) $aCatInfo[0][2]) . ") as seo2 set seo1.oxexpired = '1' where seo1.oxtype = 'oxarticle' and seo1.oxobjectid = seo2.id";
+        $oDb->execute($sQ);
     }
 
 
@@ -233,12 +236,12 @@ class oxSeoEncoderCategory extends oxSeoEncoder
      *
      * @return null
      */
-    public function onDeleteCategory( $oCategory )
+    public function onDeleteCategory($oCategory)
     {
         $oDb = oxDb::getDb();
         $sIdQuoted = $oDb->quote($oCategory->getId());
         $oDb->execute("update oxseo, (select oxseourl from oxseo where oxobjectid = $sIdQuoted and oxtype = 'oxcategory') as test set oxseo.oxexpired=1 where oxseo.oxseourl like concat(test.oxseourl, '%') and (oxtype = 'oxcategory' or oxtype = 'oxarticle')");
-        $oDb->execute("delete from oxseo where oxseo.oxtype = 'oxarticle' and oxseo.oxparams = $sIdQuoted" );
+        $oDb->execute("delete from oxseo where oxseo.oxtype = 'oxarticle' and oxseo.oxparams = $sIdQuoted");
         $oDb->execute("delete from oxseo where oxobjectid = $sIdQuoted and oxtype = 'oxcategory'");
         $oDb->execute("delete from oxobject2seodata where oxobjectid = $sIdQuoted");
     }
@@ -251,13 +254,14 @@ class oxSeoEncoderCategory extends oxSeoEncoder
      *
      * @return string
      */
-    protected function _getAltUri( $sObjectId, $iLang )
+    protected function _getAltUri($sObjectId, $iLang)
     {
         $sSeoUrl = null;
-        $oCat = oxNew( "oxcategory" );
-        if ( $oCat->loadInLang( $iLang, $sObjectId ) ) {
-            $sSeoUrl = $this->getCategoryUri( $oCat, $iLang );
+        $oCat = oxNew("oxcategory");
+        if ($oCat->loadInLang($iLang, $sObjectId)) {
+            $sSeoUrl = $this->getCategoryUri($oCat, $iLang);
         }
+
         return $sSeoUrl;
     }
 }

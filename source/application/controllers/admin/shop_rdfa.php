@@ -28,6 +28,7 @@
  */
 class shop_rdfa extends Shop_Config
 {
+
     /**
      * Template name
      *
@@ -40,10 +41,10 @@ class shop_rdfa extends Shop_Config
      *
      * @var array
      */
-    protected $_aCustomers = array(	"Enduser" => 0,
-                                    "Reseller" => 0,
-                                    "Business" => 0,
-                                    "PublicInstitution"	=> 0);
+    protected $_aCustomers = array("Enduser"           => 0,
+                                   "Reseller"          => 0,
+                                   "Business"          => 0,
+                                   "PublicInstitution" => 0);
 
     /**
      * Gets list of content pages which could be used for embedding
@@ -55,9 +56,11 @@ class shop_rdfa extends Shop_Config
     {
         $oContentList = oxNew("oxcontentlist");
         $sTable = getViewName("oxcontents", $this->_iEditLang);
-        $oContentList->selectString("SELECT * FROM {$sTable} WHERE OXACTIVE = 1 AND OXTYPE = 0
+        $oContentList->selectString(
+            "SELECT * FROM {$sTable} WHERE OXACTIVE = 1 AND OXTYPE = 0
                                         AND OXLOADID IN ('oxagb', 'oxdeliveryinfo', 'oximpressum', 'oxrightofwithdrawal')
-                                        AND OXSHOPID = '".oxRegistry::getConfig()->getRequestParameter("oxid")."'");				// $this->getEditObjectId()
+                                        AND OXSHOPID = '" . oxRegistry::getConfig()->getRequestParameter("oxid") . "'"
+        ); // $this->getEditObjectId()
         return $oContentList;
     }
 
@@ -76,6 +79,7 @@ class shop_rdfa extends Shop_Config
         } else {
             $aCustomers = array();
         }
+
         return $aCustomers;
     }
 
@@ -86,11 +90,11 @@ class shop_rdfa extends Shop_Config
      */
     public function submitUrl()
     {
-        $aParams = oxRegistry::getConfig()->getRequestParameter( "aSubmitUrl" );
+        $aParams = oxRegistry::getConfig()->getRequestParameter("aSubmitUrl");
         if ($aParams['url']) {
-            $sNotificationUrl = "http://gr-notify.appspot.com/submit?uri=".urlencode($aParams['url'])."&agent=oxid";
-            if ( $aParams['email'] ) {
-                $sNotificationUrl .= "&contact=".urlencode($aParams['email']);
+            $sNotificationUrl = "http://gr-notify.appspot.com/submit?uri=" . urlencode($aParams['url']) . "&agent=oxid";
+            if ($aParams['email']) {
+                $sNotificationUrl .= "&contact=" . urlencode($aParams['email']);
             }
             $aHeaders = $this->getHttpResponseCode($sNotificationUrl);
             if (substr($aHeaders[2], -4) === "True") {
@@ -110,7 +114,7 @@ class shop_rdfa extends Shop_Config
      *
      * @return array
      */
-    function getHttpResponseCode( $sURL )
+    function getHttpResponseCode($sURL)
     {
         return get_headers($sURL);
     }

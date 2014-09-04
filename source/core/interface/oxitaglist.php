@@ -26,6 +26,7 @@
  */
 interface oxITagList
 {
+
     /**
      * Returns cache id, on which tagcloud should cache content.
      * If null is returned, content will not be cached.

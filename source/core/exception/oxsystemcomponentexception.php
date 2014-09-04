@@ -29,6 +29,7 @@
  */
 class oxSystemComponentException extends oxException
 {
+
     /**
      * Component causing the exception.
      *
@@ -43,7 +44,7 @@ class oxSystemComponentException extends oxException
      *
      * @return null
      */
-    public function setComponent( $sComponent )
+    public function setComponent($sComponent)
     {
         $this->_sComponent = $sComponent;
     }
@@ -66,7 +67,7 @@ class oxSystemComponentException extends oxException
      */
     public function getString()
     {
-        return __CLASS__.'-'.parent::getString()." Faulty component --> ".$this->_sComponent;
+        return __CLASS__ . '-' . parent::getString() . " Faulty component --> " . $this->_sComponent;
     }
 
     /**
@@ -81,6 +82,7 @@ class oxSystemComponentException extends oxException
     {
         $aRes = parent::getValues();
         $aRes['component'] = $this->getComponent();
+
         return $aRes;
     }
 }

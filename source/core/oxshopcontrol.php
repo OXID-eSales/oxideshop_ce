@@ -28,6 +28,7 @@
 class oxShopControl extends oxSuperCfg
 {
 
+
     /**
      * Used to force handling, it allows other place like widget controller to skip it.
      *
@@ -113,7 +114,7 @@ class oxShopControl extends oxSuperCfg
      *
      * @return null
      */
-    public function start( $sClass = null, $sFunction = null, $aParams = null, $aViewsChain = null )
+    public function start($sClass = null, $sFunction = null, $aParams = null, $aViewsChain = null)
     {
         //sets default exception handler
         $this->_setDefaultExceptionHandler();
@@ -121,19 +122,18 @@ class oxShopControl extends oxSuperCfg
         try {
             $this->_runOnce();
 
-            $sFunction = !is_null( $sFunction ) ? $sFunction : oxRegistry::getConfig()->getRequestParameter( 'fnc' );
-            $sClass = !is_null( $sClass ) ? $sClass : $this->_getStartController( $sClass );
+            $sFunction = !is_null($sFunction) ? $sFunction : oxRegistry::getConfig()->getRequestParameter('fnc');
+            $sClass = !is_null($sClass) ? $sClass : $this->_getStartController($sClass);
 
-            $this->_process( $sClass, $sFunction, $aParams, $aViewsChain );
-        } catch( oxSystemComponentException $oEx ) {
-            $this->_handleSystemException( $oEx );
-        } catch ( oxCookieException $oEx ) {
-            $this->_handleCookieException( $oEx );
-        }
-        catch ( oxConnectionException $oEx) {
-            $this->_handleDbConnectionException( $oEx );
-        } catch ( oxException $oEx) {
-            $this->_handleBaseException( $oEx );
+            $this->_process($sClass, $sFunction, $aParams, $aViewsChain);
+        } catch (oxSystemComponentException $oEx) {
+            $this->_handleSystemException($oEx);
+        } catch (oxCookieException $oEx) {
+            $this->_handleCookieException($oEx);
+        catch (oxConnectionException $oEx) {
+            $this->_handleDbConnectionException($oEx);
+        } catch (oxException $oEx) {
+            $this->_handleBaseException($oEx);
         }
     }
 
@@ -161,36 +161,36 @@ class oxShopControl extends oxSuperCfg
      *
      * @return null
      */
-    protected function _log( $sClass, $sFnc )
+    protected function _log($sClass, $sFnc)
     {
         $oDb = oxDb::getDb();
         $oConfig = $this->getConfig();
         $oSession = $this->getSession();
 
-        $sShopID = $oSession->getVariable( 'actshop' );
-        $sTime   = date( 'Y-m-d H:i:s' );
-        $sSidQuoted    = $oDb->quote( $oSession->getId() );
-        $sUserIDQuoted = $oDb->quote( $oSession->getVariable( 'usr' ) );
+        $sShopID = $oSession->getVariable('actshop');
+        $sTime = date('Y-m-d H:i:s');
+        $sSidQuoted = $oDb->quote($oSession->getId());
+        $sUserIDQuoted = $oDb->quote($oSession->getVariable('usr'));
 
-        $sCnid = $oConfig->getRequestParameter( 'cnid' );
-        $sAnid = $oConfig->getRequestParameter( 'aid' ) ? $oConfig->getRequestParameter( 'aid' ) : $oConfig->getRequestParameter( 'anid' );
+        $sCnid = $oConfig->getRequestParameter('cnid');
+        $sAnid = $oConfig->getRequestParameter('aid') ? $oConfig->getRequestParameter('aid') : $oConfig->getRequestParameter('anid');
 
         $sParameter = '';
 
-        if ( $sClass == 'content' ) {
-            $sParameter = str_replace( '.tpl', '', $oConfig->getRequestParameter('tpl') );
-        } elseif ( $sClass == 'search' ) {
-            $sParameter = $oConfig->getRequestParameter( 'searchparam' );
+        if ($sClass == 'content') {
+            $sParameter = str_replace('.tpl', '', $oConfig->getRequestParameter('tpl'));
+        } elseif ($sClass == 'search') {
+            $sParameter = $oConfig->getRequestParameter('searchparam');
         }
 
-        $sFncQuoted = $oDb->quote( $sFnc );
-        $sClassQuoted = $oDb->quote( $sClass );
-        $sParameterQuoted = $oDb->quote( $sParameter );
+        $sFncQuoted = $oDb->quote($sFnc);
+        $sClassQuoted = $oDb->quote($sClass);
+        $sParameterQuoted = $oDb->quote($sParameter);
 
-        $sQ = "insert into oxlogs (oxtime, oxshopid, oxuserid, oxsessid, oxclass, oxfnc, oxcnid, oxanid, oxparameter) ".
-              "values( '$sTime', '$sShopID', $sUserIDQuoted, $sSidQuoted, $sClassQuoted, $sFncQuoted, ".$oDb->quote( $sCnid ).", ".$oDb->quote( $sAnid ).", $sParameterQuoted )";
+        $sQ = "insert into oxlogs (oxtime, oxshopid, oxuserid, oxsessid, oxclass, oxfnc, oxcnid, oxanid, oxparameter) " .
+              "values( '$sTime', '$sShopID', $sUserIDQuoted, $sSidQuoted, $sClassQuoted, $sFncQuoted, " . $oDb->quote($sCnid) . ", " . $oDb->quote($sAnid) . ", $sParameterQuoted )";
 
-        $oDb->execute( $sQ );
+        $oDb->execute($sQ);
     }
 
     // OXID : add timing
@@ -201,7 +201,7 @@ class oxShopControl extends oxSuperCfg
      */
     protected function _startMonitor()
     {
-        if ( $this->_isDebugMode() ) {
+        if ($this->_isDebugMode()) {
             $this->_dTimeStart = microtime(true);
         }
     }
@@ -216,25 +216,25 @@ class oxShopControl extends oxSuperCfg
      *
      * @return null
      */
-    protected function _stopMonitor( $blIsCache = false, $blIsCached = false, $sViewID = null, $aViewData = array() )
+    protected function _stopMonitor($blIsCache = false, $blIsCached = false, $sViewID = null, $aViewData = array())
     {
-        if ( $this->_isDebugMode() && !$this->isAdmin() ) {
+        if ($this->_isDebugMode() && !$this->isAdmin()) {
             /* @var $oDebugInfo oxDebugInfo */
-            $iDebug = $this->getConfig()->getConfigParam( 'iDebug' );
+            $iDebug = $this->getConfig()->getConfigParam('iDebug');
             $oDebugInfo = oxNew('oxDebugInfo');
 
             $blHidden = ($iDebug == -1);
 
             $sLog = '';
-            $sLogId = md5(time().rand().rand());
+            $sLogId = md5(time() . rand() . rand());
             $sLog .= "<div id='oxidDebugInfo_$sLogId'>";
 
-            $sLog .= "<div style='color:#630;margin:15px 0 0;cursor:pointer' onclick='var el=document.getElementById(\"debugInfoBlock_$sLogId\"); if (el.style.display==\"block\")el.style.display=\"none\"; else el.style.display = \"block\";'> ".$oDebugInfo->formatGeneralInfo()."(show/hide)</div>";
-            $sLog .= "<div id='debugInfoBlock_$sLogId' style='display:".($blHidden?'none':'block')."' class='debugInfoBlock' align='left'>";
+            $sLog .= "<div style='color:#630;margin:15px 0 0;cursor:pointer' onclick='var el=document.getElementById(\"debugInfoBlock_$sLogId\"); if (el.style.display==\"block\")el.style.display=\"none\"; else el.style.display = \"block\";'> " . $oDebugInfo->formatGeneralInfo() . "(show/hide)</div>";
+            $sLog .= "<div id='debugInfoBlock_$sLogId' style='display:" . ($blHidden ? 'none' : 'block') . "' class='debugInfoBlock' align='left'>";
 
 
             // outputting template params
-            if ( $iDebug == 4 ) {
+            if ($iDebug == 4) {
                 $sLog .= $oDebugInfo->formatTemplateData($aViewData);
             }
 
@@ -249,11 +249,11 @@ class oxShopControl extends oxSuperCfg
 
             $sLog .= $oDebugInfo->formatExecutionTime($this->getTotalTime());
 
-            if ( $iDebug == 7 ) {
+            if ($iDebug == 7) {
                 $sLog .= $oDebugInfo->formatDbInfo();
             }
 
-            if ( $iDebug == 2 || $iDebug == 3 || $iDebug == 4 ) {
+            if ($iDebug == 2 || $iDebug == 3 || $iDebug == 4) {
                 $sLog .= $oDebugInfo->formatAdoDbPerf();
             }
 
@@ -318,7 +318,7 @@ class oxShopControl extends oxSuperCfg
      *
      * @return null
      */
-    protected function _process( $sClass, $sFunction, $aParams = null, $aViewsChain = null )
+    protected function _process($sClass, $sFunction, $aParams = null, $aViewsChain = null)
     {
         startProfile('process');
         $myConfig = $this->getConfig();
@@ -326,37 +326,38 @@ class oxShopControl extends oxSuperCfg
         // executing maintenance tasks
         $this->_executeMaintenanceTasks();
 
-        $oUtils  = oxRegistry::getUtils();
+        $oUtils = oxRegistry::getUtils();
         $sViewID = null;
 
-        if ( !$oUtils->isSearchEngine() &&
-             !( $this->isAdmin() || !$myConfig->getConfigParam( 'blLogging' ) ) ) {
-            $this->_log( $sClass, $sFunction );
+        if (!$oUtils->isSearchEngine() &&
+            !($this->isAdmin() || !$myConfig->getConfigParam('blLogging'))
+        ) {
+            $this->_log($sClass, $sFunction);
         }
 
         // starting resource monitor
         $this->_startMonitor();
 
         // caching params ...
-        $sOutput      = null;
-        $blIsCached   = false;
+        $sOutput = null;
+        $blIsCached = false;
 
         // Initialize view object and it's components.
         $oViewObject = $this->_initializeViewObject($sClass, $sFunction, $aParams, $aViewsChain);
 
-        if ( !$this->_canExecuteFunction( $oViewObject, $oViewObject->getFncName() ) ) {
+        if (!$this->_canExecuteFunction($oViewObject, $oViewObject->getFncName())) {
             /** @var oxSystemComponentException $oException */
-            $oException = oxNew( 'oxSystemComponentException', 'Non public method cannot be accessed' );
+            $oException = oxNew('oxSystemComponentException', 'Non public method cannot be accessed');
             throw $oException;
         }
 
         // executing user defined function
-        $oViewObject->executeFunction( $oViewObject->getFncName() );
+        $oViewObject->executeFunction($oViewObject->getFncName());
 
 
 
         // if no cache was stored before we should generate it
-        if ( !$blIsCached ) {
+        if (!$blIsCached) {
             $sOutput = $this->_render($oViewObject);
         }
 
@@ -366,10 +367,10 @@ class oxShopControl extends oxSuperCfg
 
         if (oxRegistry::getConfig()->getRequestParameter('renderPartial')) {
             $oOutput->setOutputFormat(oxOutput::OUTPUT_FORMAT_JSON);
-            $oOutput->output('errors', $this->_getFormattedErrors( $oViewObject->getClassName() ));
+            $oOutput->output('errors', $this->_getFormattedErrors($oViewObject->getClassName()));
         }
 
-       $oOutput->sendHeaders();
+        $oOutput->sendHeaders();
 
 
         $oOutput->output('content', $sOutput);
@@ -379,7 +380,7 @@ class oxShopControl extends oxSuperCfg
         stopProfile('process');
 
         // stopping resource monitor
-        $this->_stopMonitor( $oViewObject->getIsCallForCache(), $blIsCached, $sViewID, $oViewObject->getViewData() );
+        $this->_stopMonitor($oViewObject->getIsCallForCache(), $blIsCached, $sViewID, $oViewObject->getViewData());
 
         // flush output (finalize)
         $oOutput->flushOutput();
@@ -400,14 +401,14 @@ class oxShopControl extends oxSuperCfg
         $myConfig = $this->getConfig();
 
         // creating current view object
-        $oViewObject = oxNew( $sClass );
+        $oViewObject = oxNew($sClass);
 
         // store this call
-        $oViewObject->setClassName( $sClass );
-        $oViewObject->setFncName( $sFunction );
-        $oViewObject->setViewParameters( $aParams );
+        $oViewObject->setClassName($sClass);
+        $oViewObject->setFncName($sFunction);
+        $oViewObject->setViewParameters($aParams);
 
-        $myConfig->setActiveView( $oViewObject );
+        $myConfig->setActiveView($oViewObject);
 
 
         // init class
@@ -419,20 +420,22 @@ class oxShopControl extends oxSuperCfg
     /**
      * Check if method can be executed.
      *
-     * @param object $oClass object to check if its method can be executed.
+     * @param object $oClass    object to check if its method can be executed.
      * @param string $sFunction method to check if it can be executed.
+     *
      * @return bool
      */
-    protected function _canExecuteFunction( $oClass, $sFunction )
+    protected function _canExecuteFunction($oClass, $sFunction)
     {
         $blCanExecute = true;
 
-        if ( method_exists( $oClass, $sFunction ) ) {
-            $oReflectionMethod = new ReflectionMethod( $oClass, $sFunction );
-            if ( !$oReflectionMethod->isPublic() ) {
+        if (method_exists($oClass, $sFunction)) {
+            $oReflectionMethod = new ReflectionMethod($oClass, $sFunction);
+            if (!$oReflectionMethod->isPublic()) {
                 $blCanExecute = false;
             }
         }
+
         return $blCanExecute;
     }
 
@@ -444,18 +447,19 @@ class oxShopControl extends oxSuperCfg
      *
      * @return array
      */
-    protected function _getFormattedErrors( $sControllerName )
+    protected function _getFormattedErrors($sControllerName)
     {
-        $aErrors = $this->_getErrors( $sControllerName );
+        $aErrors = $this->_getErrors($sControllerName);
         $aFmtErrors = array();
-        if ( is_array($aErrors) && count($aErrors) ) {
-            foreach ( $aErrors as $sLocation => $aEx2 ) {
-                foreach ( $aEx2 as $sKey => $oEr ) {
-                    $oErr = unserialize( $oEr );
+        if (is_array($aErrors) && count($aErrors)) {
+            foreach ($aErrors as $sLocation => $aEx2) {
+                foreach ($aEx2 as $sKey => $oEr) {
+                    $oErr = unserialize($oEr);
                     $aFmtErrors[$sLocation][$sKey] = $oErr->getOxMessage();
                 }
             }
         }
+
         return $aFmtErrors;
     }
 
@@ -475,45 +479,46 @@ class oxShopControl extends oxSuperCfg
         $sTemplateName = $oViewObject->render();
 
         // check if template dir exists
-        $sTemplateFile = $this->getConfig()->getTemplatePath( $sTemplateName, $this->isAdmin() ) ;
-        if ( !file_exists( $sTemplateFile)) {
+        $sTemplateFile = $this->getConfig()->getTemplatePath($sTemplateName, $this->isAdmin());
+        if (!file_exists($sTemplateFile)) {
 
-            $oEx = oxNew( 'oxSystemComponentException' );
-            $oEx->setMessage( 'EXCEPTION_SYSTEMCOMPONENT_TEMPLATENOTFOUND' );
-            $oEx->setComponent( $sTemplateName );
+            $oEx = oxNew('oxSystemComponentException');
+            $oEx->setMessage('EXCEPTION_SYSTEMCOMPONENT_TEMPLATENOTFOUND');
+            $oEx->setComponent($sTemplateName);
 
             $sTemplateName = "message/exception.tpl";
 
-            if ( $this->_isDebugMode() ) {
-                oxRegistry::get("oxUtilsView")->addErrorToDisplay( $oEx );
+            if ($this->_isDebugMode()) {
+                oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
             }
             $oEx->debugOut();
         }
 
         // Output processing. This is useful for modules. As sometimes you may want to process output manually.
         $oOutput = $this->_getOutputManager();
-        $aViewData = $oOutput->processViewArray( $oViewObject->getViewData(), $oViewObject->getClassName() );
-        $oViewObject->setViewData( $aViewData );
+        $aViewData = $oOutput->processViewArray($oViewObject->getViewData(), $oViewObject->getClassName());
+        $oViewObject->setViewData($aViewData);
 
         //add all exceptions to display
-        $aErrors = $this->_getErrors( $oViewObject->getClassName() );
-        if ( is_array($aErrors) && count($aErrors) ) {
-            oxRegistry::get("oxUtilsView")->passAllErrorsToView( $aViewData, $aErrors );
+        $aErrors = $this->_getErrors($oViewObject->getClassName());
+        if (is_array($aErrors) && count($aErrors)) {
+            oxRegistry::get("oxUtilsView")->passAllErrorsToView($aViewData, $aErrors);
         }
 
-        foreach ( array_keys( $aViewData ) as $sViewName ) {
-            $oSmarty->assign_by_ref( $sViewName, $aViewData[$sViewName] );
+        foreach (array_keys($aViewData) as $sViewName) {
+            $oSmarty->assign_by_ref($sViewName, $aViewData[$sViewName]);
         }
 
         // passing current view object to smarty
         $oSmarty->oxobject = $oViewObject;
 
 
-        $sOutput = $oSmarty->fetch( $sTemplateName, $oViewObject->getViewId() );
+        $sOutput = $oSmarty->fetch($sTemplateName, $oViewObject->getViewId());
 
         //Output processing - useful for modules as sometimes you may want to process output manually.
-        $sOutput = $oOutput->process( $sOutput, $oViewObject->getClassName() );
-        return $oOutput->addVersionTags( $sOutput );
+        $sOutput = $oOutput->process($sOutput, $oViewObject->getClassName());
+
+        return $oOutput->addVersionTags($sOutput);
     }
 
     /**
@@ -526,6 +531,7 @@ class oxShopControl extends oxSuperCfg
         if (!$this->_oOutput) {
             $this->_oOutput = oxNew('oxOutput');
         }
+
         return $this->_oOutput;
     }
 
@@ -536,29 +542,30 @@ class oxShopControl extends oxSuperCfg
      *
      * @return array
      */
-    protected function _getErrors( $sCurrentControllerName )
+    protected function _getErrors($sCurrentControllerName)
     {
-        if ( null === $this->_aErrors ) {
-            $this->_aErrors = oxRegistry::getSession()->getVariable( 'Errors' );
-            $this->_aControllerErrors = oxRegistry::getSession()->getVariable( 'ErrorController' );
-            if ( null === $this->_aErrors ) {
+        if (null === $this->_aErrors) {
+            $this->_aErrors = oxRegistry::getSession()->getVariable('Errors');
+            $this->_aControllerErrors = oxRegistry::getSession()->getVariable('ErrorController');
+            if (null === $this->_aErrors) {
                 $this->_aErrors = array();
             }
             $this->_aAllErrors = $this->_aErrors;
         }
         // resetting errors of current controller or widget from session
-        if ( is_array($this->_aControllerErrors) && !empty($this->_aControllerErrors) ) {
-            foreach ( $this->_aControllerErrors as $sErrorName => $sControllerName ) {
-                if ( $sControllerName == $sCurrentControllerName ) {
-                    unset( $this->_aAllErrors[$sErrorName] );
-                    unset( $this->_aControllerErrors[$sErrorName] );
+        if (is_array($this->_aControllerErrors) && !empty($this->_aControllerErrors)) {
+            foreach ($this->_aControllerErrors as $sErrorName => $sControllerName) {
+                if ($sControllerName == $sCurrentControllerName) {
+                    unset($this->_aAllErrors[$sErrorName]);
+                    unset($this->_aControllerErrors[$sErrorName]);
                 }
             }
         } else {
             $this->_aAllErrors = array();
         }
-        oxRegistry::getSession()->setVariable( 'ErrorController', $this->_aControllerErrors );
-        oxRegistry::getSession()->setVariable( 'Errors', $this->_aAllErrors );
+        oxRegistry::getSession()->setVariable('ErrorController', $this->_aControllerErrors);
+        oxRegistry::getSession()->setVariable('Errors', $this->_aAllErrors);
+
         return $this->_aErrors;
     }
 
@@ -572,23 +579,23 @@ class oxShopControl extends oxSuperCfg
     {
         $oConfig = $this->getConfig();
 
-        error_reporting( $this->_getErrorReportingLevel() );
+        error_reporting($this->_getErrorReportingLevel());
 
 
-        $blRunOnceExecuted = oxRegistry::getSession()->getVariable( 'blRunOnceExecuted' );
-        if ( !$blRunOnceExecuted && !$this->isAdmin() && $oConfig->isProductiveMode() ) {
+        $blRunOnceExecuted = oxRegistry::getSession()->getVariable('blRunOnceExecuted');
+        if (!$blRunOnceExecuted && !$this->isAdmin() && $oConfig->isProductiveMode()) {
 
             // check if setup is still there
-            if ( file_exists( $oConfig->getConfigParam( 'sShopDir' ) . '/setup/index.php' ) ) {
+            if (file_exists($oConfig->getConfigParam('sShopDir') . '/setup/index.php')) {
                 $sTpl = 'message/err_setup.tpl';
-                $oActView = oxNew( 'oxubase' );
+                $oActView = oxNew('oxubase');
                 $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
-                $oSmarty->assign('oView', $oActView );
-                $oSmarty->assign('oViewConf', $oActView->getViewConfig() );
-                oxRegistry::getUtils()->showMessageAndExit( $oSmarty->fetch( $sTpl ) );
+                $oSmarty->assign('oView', $oActView);
+                $oSmarty->assign('oViewConf', $oActView->getViewConfig());
+                oxRegistry::getUtils()->showMessageAndExit($oSmarty->fetch($sTpl));
             }
 
-            oxRegistry::getSession()->setVariable( 'blRunOnceExecuted', true );
+            oxRegistry::getSession()->setVariable('blRunOnceExecuted', true);
         }
     }
 
@@ -604,11 +611,11 @@ class oxShopControl extends oxSuperCfg
 
         $iErrorReporting = E_ALL ^ E_NOTICE;
         // some 3rd party libraries still use deprecated functions
-        if ( defined( 'E_DEPRECATED' ) ) {
+        if (defined('E_DEPRECATED')) {
             $iErrorReporting = $iErrorReporting ^ E_DEPRECATED;
         }
 
-        if ( $this->getConfig()->isProductiveMode() && !ini_get( 'log_errors' ) ) {
+        if ($this->getConfig()->isProductiveMode() && !ini_get('log_errors')) {
             $iErrorReporting = 0;
         }
 
@@ -623,7 +630,7 @@ class oxShopControl extends oxSuperCfg
      */
     protected function _isDebugMode()
     {
-        if ( OxRegistry::get("OxConfigFile")->getVar('iDebug') ) {
+        if (OxRegistry::get("OxConfigFile")->getVar('iDebug')) {
             return true;
         }
 
@@ -638,15 +645,15 @@ class oxShopControl extends oxSuperCfg
      *
      * @param oxException $oEx
      */
-    protected function _handleSystemException( $oEx )
+    protected function _handleSystemException($oEx)
     {
         $oEx->debugOut();
 
-        if ( $this->_isDebugMode() ) {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay( $oEx );
-            $this->_process( 'exceptionError', 'displayExceptionError' );
+        if ($this->_isDebugMode()) {
+            oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
+            $this->_process('exceptionError', 'displayExceptionError');
         } else {
-            oxRegistry::getUtils()->redirect( $this->getConfig()->getShopHomeUrl() .'cl=start', true, 302 );
+            oxRegistry::getUtils()->redirect($this->getConfig()->getShopHomeUrl() . 'cl=start', true, 302);
         }
     }
 
@@ -655,12 +662,12 @@ class oxShopControl extends oxSuperCfg
      *
      * @param $oEx
      */
-    protected function _handleCookieException( $oEx )
+    protected function _handleCookieException($oEx)
     {
-        if ( $this->_isDebugMode() ) {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay( $oEx );
+        if ($this->_isDebugMode()) {
+            oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
         }
-        oxRegistry::getUtils()->redirect( $this->getConfig()->getShopHomeUrl() .'cl=start', true, 302 );
+        oxRegistry::getUtils()->redirect($this->getConfig()->getShopHomeUrl() . 'cl=start', true, 302);
     }
 
     /**
@@ -668,9 +675,9 @@ class oxShopControl extends oxSuperCfg
      *
      * @param $oEx
      */
-    protected function _handleAccessRightsException( $oEx )
+    protected function _handleAccessRightsException($oEx)
     {
-        oxRegistry::getUtils()->redirect( $this->getConfig()->getShopHomeUrl() .'cl=content&tpl=err_accessdenied.tpl', true, 302 );
+        oxRegistry::getUtils()->redirect($this->getConfig()->getShopHomeUrl() . 'cl=content&tpl=err_accessdenied.tpl', true, 302);
     }
 
     /**
@@ -678,12 +685,12 @@ class oxShopControl extends oxSuperCfg
      *
      * @param oxConnectionException $oEx message to show on exit
      */
-    protected function _handleDbConnectionException( $oEx )
+    protected function _handleDbConnectionException($oEx)
     {
         $oEx->debugOut();
 
-        if ( $this->_isDebugMode() ) {
-            oxRegistry::getUtils()->showMessageAndExit( $oEx->getString() );
+        if ($this->_isDebugMode()) {
+            oxRegistry::getUtils()->showMessageAndExit($oEx->getString());
         }
         oxRegistry::getUtils()->redirectOffline();
     }
@@ -693,13 +700,13 @@ class oxShopControl extends oxSuperCfg
      *
      * @param oxException $oEx
      */
-    protected function _handleBaseException( $oEx )
+    protected function _handleBaseException($oEx)
     {
         $oEx->debugOut();
 
-        if ( $this->_isDebugMode() ) {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay( $oEx );
-            $this->_process( 'exceptionError', 'displayExceptionError' );
+        if ($this->_isDebugMode()) {
+            oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
+            $this->_process('exceptionError', 'displayExceptionError');
         }
     }
 
@@ -710,11 +717,11 @@ class oxShopControl extends oxSuperCfg
      */
     protected function _getStartController()
     {
-        $sClass = oxRegistry::getConfig()->getRequestParameter( 'cl' );
+        $sClass = oxRegistry::getConfig()->getRequestParameter('cl');
 
-        if ( !$sClass ) {
-            $sClass = $this->isAdmin()? 'login' : $this->_getFrontendStartController();
-            oxRegistry::getSession()->setVariable( 'cl', $sClass );
+        if (!$sClass) {
+            $sClass = $this->isAdmin() ? 'login' : $this->_getFrontendStartController();
+            oxRegistry::getSession()->setVariable('cl', $sClass);
         }
 
         return $sClass;
@@ -729,7 +736,7 @@ class oxShopControl extends oxSuperCfg
     protected function _getFrontendStartController()
     {
         $sClass = 'start';
-        if ( $this->getConfig()->isMall() ) {
+        if ($this->getConfig()->isMall()) {
             $sClass = $this->_getFrontendMallStartController();
         }
 
@@ -744,12 +751,12 @@ class oxShopControl extends oxSuperCfg
      */
     protected function _getFrontendMallStartController()
     {
-        $iShopCount = oxDb::getDb()->getOne( 'select count(*) from oxshops where oxactive = 1' );
+        $iShopCount = oxDb::getDb()->getOne('select count(*) from oxshops where oxactive = 1');
 
-        $sMallShopURL = $this->getConfig()->getConfigParam( 'sMallShopURL' );
+        $sMallShopURL = $this->getConfig()->getConfigParam('sMallShopURL');
 
         $sClass = 'start';
-        if ( $iShopCount && $iShopCount > 1 && $this->getConfig()->getConfigParam( 'iMallMode' ) != 0 && !$sMallShopURL ) {
+        if ($iShopCount && $iShopCount > 1 && $this->getConfig()->getConfigParam('iMallMode') != 0 && !$sMallShopURL) {
             $sClass = 'mallstart';
         }
 

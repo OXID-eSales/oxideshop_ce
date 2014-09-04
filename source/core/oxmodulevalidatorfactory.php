@@ -24,10 +24,11 @@
  * Module validators factory class.
  *
  * @internal Do not make a module extension for this class.
- * @see http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
+ * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
  */
 class oxModuleValidatorFactory 
 {
+
     /**
      * Return module validator by provided type.
      * Returned validator implements interface oxIModuleValidator.
@@ -37,6 +38,7 @@ class oxModuleValidatorFactory
     public function getModuleMetadataValidator()
     {
         $oModuleValidator = oxNew('oxModuleMetadataValidator');
+
         return $oModuleValidator;
     }
 
@@ -49,6 +51,7 @@ class oxModuleValidatorFactory
     public function getModuleFilesValidator()
     {
         $oModuleValidator = oxNew('oxModuleFilesValidator');
+
         return $oModuleValidator;
     }
 }

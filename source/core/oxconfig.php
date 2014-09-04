@@ -150,9 +150,9 @@ class oxConfig extends oxSuperCfg
      * @var array
      */
     protected $aMultiShopTables = array('oxarticles', 'oxdiscount', 'oxcategories', 'oxattribute',
-                                         'oxlinks', 'oxvoucherseries', 'oxmanufacturers',
-                                         'oxnews', 'oxselectlist', 'oxwrapping',
-                                         'oxdeliveryset', 'oxdelivery', 'oxvendor', 'oxobject2category');
+                                        'oxlinks', 'oxvoucherseries', 'oxmanufacturers',
+                                        'oxnews', 'oxselectlist', 'oxwrapping',
+                                        'oxdeliveryset', 'oxdelivery', 'oxvendor', 'oxobject2category');
 
     /**
      * Application starter instance
@@ -396,14 +396,14 @@ class oxConfig extends oxSuperCfg
             $sShopID = $this->getShopId();
 
 
-            $blConfigLoaded = $this->_loadVarsFromDb( $sShopID );
+            $blConfigLoaded = $this->_loadVarsFromDb($sShopID);
             // loading shop config
-           if ( empty($sShopID) || !$blConfigLoaded ) {
+            if (empty($sShopID) || !$blConfigLoaded) {
                 // if no config values where loaded (some problems with DB), throwing an exception
                 $oEx = new oxConnectionException();
-                $oEx->setMessage( "Unable to load shop config values from database" );
+                $oEx->setMessage("Unable to load shop config values from database");
                 throw $oEx;
-           }
+            }
 
             // loading theme config options
             $this->_loadVarsFromDb($sShopID, null, oxConfig::OXMODULE_THEME_PREFIX . $this->getConfigParam('sTheme'));
@@ -435,10 +435,10 @@ class oxConfig extends oxSuperCfg
             //application initialization
             $this->_oStart = new oxStart();
             $this->_oStart->appInit();
-        } catch ( oxConnectionException $oEx ) {
-            return $this->_handleDbConnectionException( $oEx );
-        } catch ( oxCookieException $oEx ) {
-            return $this->_handleCookieException( $oEx );
+        } catch (oxConnectionException $oEx) {
+            return $this->_handleDbConnectionException($oEx);
+        } catch (oxCookieException $oEx) {
+            return $this->_handleCookieException($oEx);
         }
 
     }
@@ -454,11 +454,11 @@ class oxConfig extends oxSuperCfg
         include getShopBasePath() . '/config.inc.php';
 
         //adding trailing slashes
-        $oFileUtils         = oxRegistry::get("oxUtilsFile");
-        $this->sShopDir     = $oFileUtils->normalizeDir($this->sShopDir);
-        $this->sCompileDir  = $oFileUtils->normalizeDir($this->sCompileDir);
-        $this->sShopURL     = $oFileUtils->normalizeDir($this->sShopURL);
-        $this->sSSLShopURL  = $oFileUtils->normalizeDir($this->sSSLShopURL);
+        $oFileUtils = oxRegistry::get("oxUtilsFile");
+        $this->sShopDir = $oFileUtils->normalizeDir($this->sShopDir);
+        $this->sCompileDir = $oFileUtils->normalizeDir($this->sCompileDir);
+        $this->sShopURL = $oFileUtils->normalizeDir($this->sShopURL);
+        $this->sSSLShopURL = $oFileUtils->normalizeDir($this->sSSLShopURL);
         $this->sAdminSSLURL = $oFileUtils->normalizeDir($this->sAdminSSLURL);
 
         $this->_loadCustomConfig();
@@ -542,7 +542,7 @@ class oxConfig extends oxSuperCfg
     {
         $oDb = oxDb::getDb();
 
-        $sModuleSql   = $sModule ? " oxmodule LIKE " . $oDb->quote($sModule . "%") : " oxmodule='' ";
+        $sModuleSql = $sModule ? " oxmodule LIKE " . $oDb->quote($sModule . "%") : " oxmodule='' ";
         $sOnlyVarsSql = $this->_getConfigParamsSelectSnippet($aOnlyVars);
 
         $sSelect = "select
@@ -555,7 +555,7 @@ class oxConfig extends oxSuperCfg
         foreach ($aResult as $aValue) {
             $sVarName = $aValue[0];
             $sVarType = $aValue[1];
-            $sVarVal  = $aValue[2];
+            $sVarVal = $aValue[2];
 
             $this->_setConfVarFromDb($sVarName, $sVarType, $sVarVal);
 
@@ -819,8 +819,8 @@ class oxConfig extends oxSuperCfg
      */
     protected function _checkSsl()
     {
-        $myUtilsServer   = oxRegistry::get("oxUtilsServer");
-        $aServerVars     = $myUtilsServer->getServerVar();
+        $myUtilsServer = oxRegistry::get("oxUtilsServer");
+        $aServerVars = $myUtilsServer->getServerVar();
         $aHttpsServerVar = $myUtilsServer->getServerVar('HTTPS');
 
         $this->setIsSsl();
@@ -930,15 +930,15 @@ class oxConfig extends oxSuperCfg
     {
         $sUrl = null;
 
-        if(!$sUrl) {
+        if (!$sUrl) {
             $sUrl = $this->getShopUrlByLanguage($iLang, true);
         }
 
-        if(!$sUrl) {
+        if (!$sUrl) {
             $sUrl = $this->getMallShopUrl(true);
         }
 
-        if(!$sUrl) {
+        if (!$sUrl) {
             $sUrl = $this->getMallShopUrl();
         }
 
@@ -1037,7 +1037,7 @@ class oxConfig extends oxSuperCfg
     {
         $sUrl = $this->isSsl() ? $this->getSslShopUrl($iLang) : $this->getShopUrl($iLang, $blAdmin);
 
-        return oxRegistry::get('oxUtilsUrl')->processUrl($sUrl.'widget.php', false);
+        return oxRegistry::get('oxUtilsUrl')->processUrl($sUrl . 'widget.php', false);
     }
 
     /**
@@ -1082,7 +1082,7 @@ class oxConfig extends oxSuperCfg
             }
         }
 
-        $iCur        = $this->getShopCurrency();
+        $iCur = $this->getShopCurrency();
         $aCurrencies = $this->getCurrencyArray();
         if (!isset($aCurrencies[$iCur])) {
             return $this->_oActCurrencyObject = reset($aCurrencies); // reset() returns the first element
@@ -1186,7 +1186,7 @@ class oxConfig extends oxSuperCfg
      */
     public function getOutUrl($blSSL = null, $blAdmin = null, $blNativeImg = false)
     {
-        $blSSL   = is_null($blSSL) ? $this->isSsl() : $blSSL;
+        $blSSL = is_null($blSSL) ? $this->isSsl() : $blSSL;
         $blAdmin = is_null($blAdmin) ? $this->isAdmin() : $blAdmin;
 
         if ($blSSL) {
@@ -1230,10 +1230,10 @@ class oxConfig extends oxSuperCfg
         }
 
         if ($sDir != $this->_sTemplateDir) {
-            $sBase    = $this->getOutDir($blAbsolute);
+            $sBase = $this->getOutDir($blAbsolute);
             $sAbsBase = $this->getOutDir();
         } else {
-            $sBase    = $this->getViewsDir($blAbsolute);
+            $sBase = $this->getViewsDir($blAbsolute);
             $sAbsBase = $this->getViewsDir();
         }
 
@@ -1254,7 +1254,7 @@ class oxConfig extends oxSuperCfg
         }
 
         //Load from
-        $sPath     = "{$sTheme}/{$iShop}/{$sLang}/{$sDir}/{$sFile}";
+        $sPath = "{$sTheme}/{$iShop}/{$sLang}/{$sDir}/{$sFile}";
         $sCacheKey = $sPath . "_{$blIgnoreCust}{$blAbsolute}";
 
         if (($sReturn = oxRegistry::getUtils()->fromStaticCache($sCacheKey)) !== null) {
@@ -1442,7 +1442,7 @@ class oxConfig extends oxSuperCfg
         }
 
         $blNativeImg = $this->getConfigParam('blNativeImages');
-        $sUrl        = $this->getUrl($sFile, $this->_sPictureDir, $blAdmin, $blSSL, $blNativeImg, $iLang, $iShopId);
+        $sUrl = $this->getUrl($sFile, $this->_sPictureDir, $blAdmin, $blSSL, $blNativeImg, $iLang, $iShopId);
 
         //anything is better than empty name, because <img src=""> calls shop once more = x2 SLOW.
         if (!$sUrl && $sDefPic) {
@@ -1477,10 +1477,10 @@ class oxConfig extends oxSuperCfg
         $sTemplatePath = $this->getDir($sFile, $this->_sTemplateDir, $blAdmin);
 
         if (!$sTemplatePath) {
-            $sBasePath        = getShopBasePath();
+            $sBasePath = getShopBasePath();
             $aModuleTemplates = $this->getConfigParam('aModuleTemplates');
 
-            $oModulelist       = oxNew('oxmodulelist');
+            $oModulelist = oxNew('oxmodulelist');
             $aActiveModuleInfo = $oModulelist->getActiveModuleInfo();
             if (is_array($aModuleTemplates) && is_array($aActiveModuleInfo)) {
                 foreach ($aModuleTemplates as $sModuleId => $aTemplates) {
@@ -1628,15 +1628,15 @@ class oxConfig extends oxSuperCfg
         reset($aConfCurrencies);
         while (list($key, $val) = each($aConfCurrencies)) {
             if ($val) {
-                $oCur           = new stdClass();
-                $oCur->id       = $key;
-                $sCur           = explode('@', $val);
-                $oCur->name     = trim($sCur[0]);
-                $oCur->rate     = trim($sCur[1]);
-                $oCur->dec      = trim($sCur[2]);
+                $oCur = new stdClass();
+                $oCur->id = $key;
+                $sCur = explode('@', $val);
+                $oCur->name = trim($sCur[0]);
+                $oCur->rate = trim($sCur[1]);
+                $oCur->dec = trim($sCur[2]);
                 $oCur->thousand = trim($sCur[3]);
-                $oCur->sign     = trim($sCur[4]);
-                $oCur->decimal  = trim($sCur[5]);
+                $oCur->sign = trim($sCur[4]);
+                $oCur->decimal = trim($sCur[5]);
 
                 // change for US version
                 if (isset($sCur[6])) {
@@ -1739,7 +1739,7 @@ class oxConfig extends oxSuperCfg
     public function getRevision()
     {
         $sFileName = $this->getConfigParam('sShopDir') . "/pkg.rev";
-        $sRev      = trim(@file_get_contents($sFileName));
+        $sRev = trim(@file_get_contents($sFileName));
 
         if (!$sRev) {
             return false;
@@ -1756,8 +1756,8 @@ class oxConfig extends oxSuperCfg
     public function getPackageInfo()
     {
         $sFileName = $this->getConfigParam('sShopDir') . "/pkg.info";
-        $sRev      = @file_get_contents($sFileName);
-        $sRev      = str_replace("\n", "<br>", $sRev);
+        $sRev = @file_get_contents($sFileName);
+        $sRev = str_replace("\n", "<br>", $sRev);
 
         if (!$sRev) {
             return false;
@@ -1766,18 +1766,6 @@ class oxConfig extends oxSuperCfg
         return $sRev;
     }
 
-    /**
-     * Counts OXID mandates
-     *
-     * @return int
-     */
-    public function getMandateCount()
-    {
-        $iShopCount = 1;
-
-
-        return $iShopCount;
-    }
 
     /**
      * Checks if shop is MALL. Returns true on success.
@@ -1833,7 +1821,7 @@ class oxConfig extends oxSuperCfg
             case 'num':
                 //config param
                 $sVarVal = $sVarVal != '' ? oxRegistry::getUtils()->string2Float($sVarVal) : '';
-                $sValue  = $sVarVal;
+                $sValue = $sVarVal;
                 break;
             default:
                 $sValue = $sVarVal;
@@ -1851,13 +1839,13 @@ class oxConfig extends oxSuperCfg
 
         $oDb = oxDb::getDb();
 
-        $sShopIdQuoted    = $oDb->quote($sShopId);
-        $sModuleQuoted    = $oDb->quote($sModule);
-        $sVarNameQuoted   = $oDb->quote($sVarName);
-        $sVarTypeQuoted   = $oDb->quote($sVarType);
-        $sVarValueQuoted  = $oDb->quote($sValue);
+        $sShopIdQuoted = $oDb->quote($sShopId);
+        $sModuleQuoted = $oDb->quote($sModule);
+        $sVarNameQuoted = $oDb->quote($sVarName);
+        $sVarTypeQuoted = $oDb->quote($sVarType);
+        $sVarValueQuoted = $oDb->quote($sValue);
         $sConfigKeyQuoted = $oDb->quote($this->getConfigParam('sConfigKey'));
-        $sNewOXIDdQuoted  = $oDb->quote(oxUtilsObject::getInstance()->generateUID());
+        $sNewOXIDdQuoted = $oDb->quote(oxUtilsObject::getInstance()->generateUID());
 
         $sQ = "delete from oxconfig where oxshopid = $sShopIdQuoted and oxvarname = $sVarNameQuoted and oxmodule = $sModuleQuoted";
         $oDb->execute($sQ);
@@ -1895,7 +1883,7 @@ class oxConfig extends oxSuperCfg
 
         $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
 
-        $sQ  = "select oxvartype, " . $this->getDecodeValueQuery() . " as oxvarvalue from oxconfig where oxshopid = '{$sShopId}' and oxmodule = '{$sModule}' and oxvarname = " . $oDb->quote($sVarName);
+        $sQ = "select oxvartype, " . $this->getDecodeValueQuery() . " as oxvarvalue from oxconfig where oxshopid = '{$sShopId}' and oxmodule = '{$sModule}' and oxvarname = " . $oDb->quote($sVarName);
         $oRs = $oDb->select($sQ);
 
         $sValue = null;
@@ -1951,7 +1939,7 @@ class oxConfig extends oxSuperCfg
     {
         $blProductive = $this->getConfigParam('blProductive');
         if (!isset($blProductive)) {
-            $sQ           = 'select oxproductive from oxshops where oxid = "' . $this->getShopId() . '"';
+            $sQ = 'select oxproductive from oxshops where oxid = "' . $this->getShopId() . '"';
             $blProductive = ( bool ) oxDb::getDb()->getOne($sQ);
             $this->setConfigParam('blProductive', $blProductive);
         }
@@ -2002,7 +1990,7 @@ class oxConfig extends oxSuperCfg
             $oActView = end($this->_aActiveViews);
         }
         if (!isset($oActView) || $oActView == null) {
-            $oActView              = oxNew('oxubase');
+            $oActView = oxNew('oxubase');
             $this->_aActiveViews[] = $oActView;
         }
 
@@ -2229,19 +2217,20 @@ class oxConfig extends oxSuperCfg
      * Shows exception message if debug mode is enabled, redirects otherwise.
      *
      * @param oxException $oEx message to show on exit
+     *
      * @return bool
      */
-    protected function _handleDbConnectionException( $oEx )
+    protected function _handleDbConnectionException($oEx)
     {
         $oEx->debugOut();
-        if ( defined( 'OXID_PHP_UNIT' ) ) {
+        if (defined('OXID_PHP_UNIT')) {
             return false;
-        } elseif ( 0 != $this->iDebug ) {
-            oxRegistry::getUtils()->showMessageAndExit( $oEx->getString() );
+        } elseif (0 != $this->iDebug) {
+            oxRegistry::getUtils()->showMessageAndExit($oEx->getString());
         } else {
-            header( "HTTP/1.1 500 Internal Server Error");
-            header( "Location: offline.html");
-            header( "Connection: close");
+            header("HTTP/1.1 500 Internal Server Error");
+            header("Location: offline.html");
+            header("Connection: close");
         }
     }
 
@@ -2249,9 +2238,10 @@ class oxConfig extends oxSuperCfg
      * Redirect to start page and display the error
      *
      * @param oxException $oEx message to show on exit
+     *
      * @return bool
      */
-    protected function _handleCookieException( $oEx )
+    protected function _handleCookieException($oEx)
     {
         $this->_processSeoCall();
 
@@ -2259,15 +2249,15 @@ class oxConfig extends oxSuperCfg
         $this->getSession()->start();
 
         // redirect to start page and display the error
-        oxRegistry::get("oxUtilsView")->addErrorToDisplay( $oEx );
-        oxRegistry::getUtils()->redirect( $this->getShopHomeURL() .'cl=start', true, 302 );
+        oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
+        oxRegistry::getUtils()->redirect($this->getShopHomeURL() . 'cl=start', true, 302);
     }
 
     /**
      * Save system configuration parameters, which is the same for sub-shops.
      *
-     * @param string $sParameterType Type
-     * @param string $sParameterName Name
+     * @param string $sParameterType  Type
+     * @param string $sParameterName  Name
      * @param mixed  $sParameterValue Value (can be string, integer or array)
      */
     public function saveSystemConfigParameter($sParameterType, $sParameterName, $sParameterValue)

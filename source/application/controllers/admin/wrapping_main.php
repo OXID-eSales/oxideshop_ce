@@ -27,6 +27,7 @@
  */
 class Wrapping_Main extends oxAdminDetails
 {
+
     /**
      * Executes parent method parent::render(), creates oxwrapping, oxshops and oxlist
      * objects, passes data to Smarty engine and returns name of template
@@ -39,26 +40,27 @@ class Wrapping_Main extends oxAdminDetails
         parent::render();
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
-        if ( $soxId != "-1" && isset( $soxId)) {
+        if ($soxId != "-1" && isset($soxId)) {
             // load object
-            $oWrapping = oxNew( "oxwrapping" );
-            $oWrapping->loadInLang( $this->_iEditLang, $soxId );
+            $oWrapping = oxNew("oxwrapping");
+            $oWrapping->loadInLang($this->_iEditLang, $soxId);
 
             $oOtherLang = $oWrapping->getAvailableInLangs();
             if (!isset($oOtherLang[$this->_iEditLang])) {
                 // echo "language entry doesn't exist! using: ".key($oOtherLang);
-                $oWrapping->loadInLang( key($oOtherLang), $soxId );
+                $oWrapping->loadInLang(key($oOtherLang), $soxId);
             }
-            $this->_aViewData["edit"] =  $oWrapping;
+            $this->_aViewData["edit"] = $oWrapping;
 
 
             // remove already created languages
-            $aLang = array_diff ( oxRegistry::getLang()->getLanguageNames(), $oOtherLang );
-            if ( count( $aLang))
+            $aLang = array_diff(oxRegistry::getLang()->getLanguageNames(), $oOtherLang);
+            if (count($aLang)) {
                 $this->_aViewData["posslang"] = $aLang;
+            }
 
-            foreach ( $oOtherLang as $id => $language) {
-                $oLang= new stdClass();
+            foreach ($oOtherLang as $id => $language) {
+                $oLang = new stdClass();
                 $oLang->sLangDesc = $language;
                 $oLang->selected = ($id == $this->_iEditLang);
                 $this->_aViewData["otherlang"][$id] = clone $oLang;
@@ -78,35 +80,35 @@ class Wrapping_Main extends oxAdminDetails
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval");
+        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
         // checkbox handling
-        if ( !isset( $aParams['oxwrapping__oxactive']))
+        if (!isset($aParams['oxwrapping__oxactive']))
             $aParams['oxwrapping__oxactive'] = 0;
 
             // shopid
-            $aParams['oxwrapping__oxshopid'] = oxRegistry::getSession()->getVariable( "actshop" );
+            $aParams['oxwrapping__oxshopid'] = oxRegistry::getSession()->getVariable("actshop");
 
-        $oWrapping = oxNew( "oxwrapping" );
+        $oWrapping = oxNew("oxwrapping");
 
-        if ( $soxId != "-1") {
-            $oWrapping->loadInLang( $this->_iEditLang, $soxId );
+        if ($soxId != "-1") {
+            $oWrapping->loadInLang($this->_iEditLang, $soxId);
                 // #1173M - not all pic are deleted, after article is removed
-                oxRegistry::get("oxUtilsPic")->overwritePic( $oWrapping, 'oxwrapping', 'oxpic', 'WP', '0', $aParams, $this->getConfig()->getPictureDir(false) );
+                oxRegistry::get("oxUtilsPic")->overwritePic($oWrapping, 'oxwrapping', 'oxpic', 'WP', '0', $aParams, $this->getConfig()->getPictureDir(false));
         } else
             $aParams['oxwrapping__oxid'] = null;
         //$aParams = $oWrapping->ConvertNameArray2Idx( $aParams);
 
 
         $oWrapping->setLanguage(0);
-        $oWrapping->assign( $aParams);
+        $oWrapping->assign($aParams);
         $oWrapping->setLanguage($this->_iEditLang);
 
-        $oWrapping = oxRegistry::get("oxUtilsFile")->processFiles( $oWrapping );
+        $oWrapping = oxRegistry::get("oxUtilsFile")->processFiles($oWrapping);
         $oWrapping->save();
 
         // set oxid if inserted
-        $this->setEditObjectId( $oWrapping->getId() );
+        $this->setEditObjectId($oWrapping->getId());
     }
 
     /**
@@ -117,31 +119,31 @@ class Wrapping_Main extends oxAdminDetails
     public function saveinnlang()
     {
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval");
+        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
         // checkbox handling
-        if ( !isset( $aParams['oxwrapping__oxactive']))
+        if (!isset($aParams['oxwrapping__oxactive']))
             $aParams['oxwrapping__oxactive'] = 0;
 
             // shopid
-            $aParams['oxwrapping__oxshopid'] = oxRegistry::getSession()->getVariable( "actshop" );
+            $aParams['oxwrapping__oxshopid'] = oxRegistry::getSession()->getVariable("actshop");
 
-        $oWrapping = oxNew( "oxwrapping" );
-        if ( $soxId != "-1")
-            $oWrapping->load( $soxId);
+        $oWrapping = oxNew("oxwrapping");
+        if ($soxId != "-1")
+            $oWrapping->load($soxId);
         else
             $aParams['oxwrapping__oxid'] = null;
         //$aParams = $oWrapping->ConvertNameArray2Idx( $aParams);
 
 
         $oWrapping->setLanguage(0);
-        $oWrapping->assign( $aParams);
+        $oWrapping->assign($aParams);
         $oWrapping->setLanguage($this->_iEditLang);
 
-        $oWrapping = oxRegistry::get("oxUtilsFile")->processFiles( $oWrapping );
+        $oWrapping = oxRegistry::get("oxUtilsFile")->processFiles($oWrapping);
         $oWrapping->save();
 
         // set oxid if inserted
-        $this->setEditObjectId( $oWrapping->getId() );
+        $this->setEditObjectId($oWrapping->getId());
     }
 }

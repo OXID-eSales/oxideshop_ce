@@ -1,5 +1,5 @@
 <?php
-/**
+    /**
  * This file is part of OXID eShop Community Edition.
  *
  * OXID eShop Community Edition is free software: you can redistribute it and/or modify
@@ -18,33 +18,34 @@
  * @link      http://www.oxid-esales.com
  * @copyright (C) OXID eSales AG 2003-2014
  * @version   OXID eShop CE
- */
-
-/**
- * Admin order package manager.
- * Collects order package information, updates it on user submit, etc.
- * Admin Menu: Orders -> Display Orders.
- */
-class Order_Package extends oxAdminDetails
-{
-    /**
-     * Executes parent method parent::render(), fetches order info from DB,
-     * passes it to Smarty engine and returns name of template file.
-     * "order_package.tpl"
-     *
-     * @return string
      */
-    public function render()
+
+    /**
+     * Admin order package manager.
+     * Collects order package information, updates it on user submit, etc.
+     * Admin Menu: Orders -> Display Orders.
+     */
+    class Order_Package extends oxAdminDetails
     {
-        $myConfig = $this->getConfig();
-        parent::render();
 
-        $aOrders = oxNew('oxlist');
-        $aOrders->init('oxorder');
-        $aOrders->selectString( "select * from oxorder where oxorder.oxsenddate = '0000-00-00 00:00:00' and oxorder.oxshopid = '".$myConfig->getShopId()."' order by oxorder.oxorderdate asc limit 5000" );
+        /**
+         * Executes parent method parent::render(), fetches order info from DB,
+         * passes it to Smarty engine and returns name of template file.
+         * "order_package.tpl"
+         *
+         * @return string
+         */
+        public function render()
+        {
+            $myConfig = $this->getConfig();
+            parent::render();
 
-        $this->_aViewData['resultset'] = $aOrders;
+            $aOrders = oxNew('oxlist');
+            $aOrders->init('oxorder');
+            $aOrders->selectString("select * from oxorder where oxorder.oxsenddate = '0000-00-00 00:00:00' and oxorder.oxshopid = '" . $myConfig->getShopId() . "' order by oxorder.oxorderdate asc limit 5000");
 
-        return "order_package.tpl";
+            $this->_aViewData['resultset'] = $aOrders;
+
+            return "order_package.tpl";
+        }
     }
-}

@@ -27,6 +27,7 @@
  */
 class Discount_Main extends oxAdminDetails
 {
+
     /**
      * Executes parent method parent::render(), creates article category tree, passes
      * data to Smarty engine and returns name of template file "discount_main.tpl".
@@ -39,51 +40,52 @@ class Discount_Main extends oxAdminDetails
         parent::render();
 
         $sOxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
-        if ( $sOxId != "-1" && isset( $sOxId)) {
+        if ($sOxId != "-1" && isset($sOxId)) {
             // load object
-            $oDiscount = oxNew( "oxdiscount" );
-            $oDiscount->loadInLang( $this->_iEditLang, $sOxId );
+            $oDiscount = oxNew("oxdiscount");
+            $oDiscount->loadInLang($this->_iEditLang, $sOxId);
 
             $oOtherLang = $oDiscount->getAvailableInLangs();
             if (!isset($oOtherLang[$this->_iEditLang])) {
                 // echo "language entry doesn't exist! using: ".key($oOtherLang);
-                $oDiscount->loadInLang( key( $oOtherLang ), $sOxId );
+                $oDiscount->loadInLang(key($oOtherLang), $sOxId);
             }
 
-            $this->_aViewData["edit"] =  $oDiscount;
+            $this->_aViewData["edit"] = $oDiscount;
 
 
             // remove already created languages
-            $aLang = array_diff ( oxRegistry::getLang()->getLanguageNames(), $oOtherLang );
+            $aLang = array_diff(oxRegistry::getLang()->getLanguageNames(), $oOtherLang);
 
-            if ( count( $aLang ) ) {
+            if (count($aLang)) {
                 $this->_aViewData["posslang"] = $aLang;
             }
 
-            foreach ( $oOtherLang as $id => $language) {
-                $oLang= new stdClass();
+            foreach ($oOtherLang as $id => $language) {
+                $oLang = new stdClass();
                 $oLang->sLangDesc = $language;
                 $oLang->selected = ($id == $this->_iEditLang);
                 $this->_aViewData["otherlang"][$id] = clone $oLang;
             }
         }
 
-        if ( ( $iAoc = oxRegistry::getConfig()->getRequestParameter("aoc") ) ) {
-            if ( $iAoc == "1" ) {
-                $oDiscountMainAjax = oxNew( 'discount_main_ajax' );
+        if (($iAoc = oxRegistry::getConfig()->getRequestParameter("aoc"))) {
+            if ($iAoc == "1") {
+                $oDiscountMainAjax = oxNew('discount_main_ajax');
                 $this->_aViewData['oxajax'] = $oDiscountMainAjax->getColumns();
 
                 return "popups/discount_main.tpl";
-            } elseif ( $iAoc == "2" ) {
+            } elseif ($iAoc == "2") {
                 // generating category tree for artikel choose select list
-                $this->_createCategoryTree( "artcattree" );
+                $this->_createCategoryTree("artcattree");
 
-                $oDiscountItemAjax = oxNew( 'discount_item_ajax' );
+                $oDiscountItemAjax = oxNew('discount_item_ajax');
                 $this->_aViewData['oxajax'] = $oDiscountItemAjax->getColumns();
 
                 return "popups/discount_item.tpl";
             }
         }
+
         return "discount_main.tpl";
     }
 
@@ -96,13 +98,13 @@ class Discount_Main extends oxAdminDetails
     {
         $sTitle = false;
         $sOxId = $this->getEditObjectId();
-        if ( $sOxId != "-1" && isset( $sOxId)) {
-            $sViewName = getViewName( "oxarticles", $this->_iEditLang );
+        if ($sOxId != "-1" && isset($sOxId)) {
+            $sViewName = getViewName("oxarticles", $this->_iEditLang);
             $oDb = oxDb::getDb();
             $sQ = "select concat( $sViewName.oxartnum, ' ', $sViewName.oxtitle ) from oxdiscount
                    left join $sViewName on $sViewName.oxid=oxdiscount.oxitmartid
-                   where oxdiscount.oxitmartid != '' and oxdiscount.oxid=" . $oDb->quote( $sOxId );
-            $sTitle = $oDb->getOne( $sQ, false, false );
+                   where oxdiscount.oxitmartid != '' and oxdiscount.oxid=" . $oDb->quote($sOxId);
+            $sTitle = $oDb->getOne($sQ, false, false);
         }
 
         return $sTitle ? $sTitle : " -- ";
@@ -118,33 +120,33 @@ class Discount_Main extends oxAdminDetails
         parent::save();
 
         $sOxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval");
+        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-            $sShopID = oxRegistry::getSession()->getVariable( "actshop");
+            $sShopID = oxRegistry::getSession()->getVariable("actshop");
             $aParams['oxdiscount__oxshopid'] = $sShopID;
 
-        $oDiscount = oxNew( "oxDiscount" );
-        if ( $sOxId != "-1") {
-            $oDiscount->load( $sOxId );
+        $oDiscount = oxNew("oxDiscount");
+        if ($sOxId != "-1") {
+            $oDiscount->load($sOxId);
         } else {
             $aParams['oxdiscount__oxid'] = null;
         }
 
         // checkbox handling
-        if ( !isset( $aParams['oxdiscount__oxactive'])) {
+        if (!isset($aParams['oxdiscount__oxactive'])) {
             $aParams['oxdiscount__oxactive'] = 0;
         }
 
 
         //$aParams = $oAttr->ConvertNameArray2Idx( $aParams);
         $oDiscount->setLanguage(0);
-        $oDiscount->assign( $aParams );
+        $oDiscount->assign($aParams);
         $oDiscount->setLanguage($this->_iEditLang);
-        $oDiscount = oxRegistry::get("oxUtilsFile")->processFiles( $oDiscount );
+        $oDiscount = oxRegistry::get("oxUtilsFile")->processFiles($oDiscount);
         $oDiscount->save();
 
         // set oxid if inserted
-        $this->setEditObjectId( $oDiscount->getId() );
+        $this->setEditObjectId($oDiscount->getId());
     }
 
     /**
@@ -157,29 +159,30 @@ class Discount_Main extends oxAdminDetails
         parent::save();
 
         $sOxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval");
+        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
             // shopid
-            $sShopID = oxRegistry::getSession()->getVariable( "actshop");
+            $sShopID = oxRegistry::getSession()->getVariable("actshop");
             $aParams['oxdiscount__oxshopid'] = $sShopID;
-        $oAttr = oxNew( "oxdiscount" );
-        if ( $sOxId != "-1")
-            $oAttr->load( $sOxId);
-        else
+        $oAttr = oxNew("oxdiscount");
+        if ($sOxId != "-1")
+            $oAttr->load($sOxId);
+        else {
             $aParams['oxdiscount__oxid'] = null;
+        }
         // checkbox handling
-        if ( !isset( $aParams['oxdiscount__oxactive']))
+        if (!isset($aParams['oxdiscount__oxactive']))
             $aParams['oxdiscount__oxactive'] = 0;
 
 
         //$aParams = $oAttr->ConvertNameArray2Idx( $aParams);
         $oAttr->setLanguage(0);
-        $oAttr->assign( $aParams);
+        $oAttr->assign($aParams);
         $oAttr->setLanguage($this->_iEditLang);
-        $oAttr = oxRegistry::get("oxUtilsFile")->processFiles( $oAttr );
+        $oAttr = oxRegistry::get("oxUtilsFile")->processFiles($oAttr);
         $oAttr->save();
 
         // set oxid if inserted
-        $this->setEditObjectId( $oAttr->getId() );
+        $this->setEditObjectId($oAttr->getId());
     }
 }

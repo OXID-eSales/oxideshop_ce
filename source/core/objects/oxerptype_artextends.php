@@ -28,6 +28,7 @@ require_once 'oxerptype.php';
  */
 class oxERPType_Artextends extends oxERPType
 {
+
     /**
      * class constructor
      *
@@ -36,7 +37,7 @@ class oxERPType_Artextends extends oxERPType
     public function __construct()
     {
         parent::__construct();
-        $this->_sTableName      = 'oxartextends';
+        $this->_sTableName = 'oxartextends';
     }
     
     /**
@@ -65,7 +66,7 @@ class oxERPType_Artextends extends oxERPType
     {
         $oShopObject = oxNew('oxi18n');
         $oShopObject->init('oxartextends');
-        $oShopObject->setLanguage( 0 );
+        $oShopObject->setLanguage(0);
         $oShopObject->setEnableMultilang(false);
 
         foreach ($aData as $key => $value) {
@@ -80,10 +81,10 @@ class oxERPType_Artextends extends oxERPType
 
         $blLoaded = false;
         if ($aData['OXID']) {
-            $blLoaded = $oShopObject->load( $aData['OXID']);
+            $blLoaded = $oShopObject->load($aData['OXID']);
         }
 
-        $aData = $this->_preAssignObject( $oShopObject, $aData, $blAllowCustomShopId );
+        $aData = $this->_preAssignObject($oShopObject, $aData, $blAllowCustomShopId);
 
         if ($blLoaded) {
             $this->checkWriteAccess($oShopObject, $aData);
@@ -91,7 +92,7 @@ class oxERPType_Artextends extends oxERPType
             $this->checkCreateAccess($aData);
         }
 
-        $oShopObject->assign( $aData );
+        $oShopObject->assign($aData);
 
         if ($blAllowCustomShopId) {
             $oShopObject->setIsDerived(false);
@@ -99,7 +100,7 @@ class oxERPType_Artextends extends oxERPType
 
         if ($this->_preSaveObject($oShopObject, $aData)) {
             // store
-            if ( $oShopObject->save()) {
+            if ($oShopObject->save()) {
                 return $this->_postSaveObject($oShopObject, $aData);
             }
         }

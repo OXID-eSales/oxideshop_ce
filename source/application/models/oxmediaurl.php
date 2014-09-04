@@ -26,6 +26,7 @@
  */
 class oxMediaUrl extends oxI18n
 {
+
     /**
      * Current class name
      *
@@ -39,7 +40,7 @@ class oxMediaUrl extends oxI18n
     public function __construct()
     {
         parent::__construct();
-        $this->init( 'oxmediaurls' );
+        $this->init('oxmediaurls');
     }
 
     /**
@@ -51,7 +52,7 @@ class oxMediaUrl extends oxI18n
     {
         $sUrl = $this->oxmediaurls__oxurl->value;
         //youtube link
-        if (  strpos( $sUrl, 'youtube.com' ) || strpos( $sUrl, 'youtu.be' ) ) {
+        if (strpos($sUrl, 'youtube.com') || strpos($sUrl, 'youtu.be')) {
             return $this->_getYoutubeHtml();
         }
 
@@ -66,7 +67,7 @@ class oxMediaUrl extends oxI18n
      *
      * @return string
      */
-    public function getHtmlLink( $blNewPage = true )
+    public function getHtmlLink($blNewPage = true)
     {
         $sForceBlank = $blNewPage ? ' target="_blank"' : '';
         $sDesc = $this->oxmediaurls__oxdesc->value;
@@ -84,7 +85,7 @@ class oxMediaUrl extends oxI18n
      */
     public function getLink()
     {
-        if ( $this->oxmediaurls__oxisuploaded->value ) {
+        if ($this->oxmediaurls__oxisuploaded->value) {
             $sUrl = $this->getConfig()->isSsl() ? $this->getConfig()->getSslShopUrl() : $this->getConfig()->getShopUrl();
             $sUrl .= 'out/media/';
             $sUrl .= basename($this->oxmediaurls__oxurl->value);
@@ -112,7 +113,7 @@ class oxMediaUrl extends oxI18n
      *
      * @return bool
      */
-    public function delete( $sOXID = null )
+    public function delete($sOXID = null)
     {
         $sFilePath = $this->getConfig()->getConfigParam('sShopDir') . "/out/media/" .
                      basename($this->oxmediaurls__oxurl->value);
@@ -123,7 +124,7 @@ class oxMediaUrl extends oxI18n
             }
         }
 
-        return parent::delete( $sOXID );
+        return parent::delete($sOXID);
     }
 
     /**
@@ -136,16 +137,16 @@ class oxMediaUrl extends oxI18n
         $sUrl = $this->oxmediaurls__oxurl->value;
         $sDesc = $this->oxmediaurls__oxdesc->value;
         
-        if ( strpos( $sUrl, 'youtube.com' ) ) {
-            $sYoutubeUrl = str_replace( "www.youtube.com/watch?v=", "www.youtube.com/embed/", $sUrl );
-            $sYoutubeUrl = preg_replace( '/&amp;/', '?', $sYoutubeUrl, 1 );
+        if (strpos($sUrl, 'youtube.com')) {
+            $sYoutubeUrl = str_replace("www.youtube.com/watch?v=", "www.youtube.com/embed/", $sUrl);
+            $sYoutubeUrl = preg_replace('/&amp;/', '?', $sYoutubeUrl, 1);
         }
-        if ( strpos( $sUrl, 'youtu.be' ) ) {
-            $sYoutubeUrl = str_replace( "youtu.be/", "www.youtube.com/embed/", $sUrl );
+        if (strpos($sUrl, 'youtu.be')) {
+            $sYoutubeUrl = str_replace("youtu.be/", "www.youtube.com/embed/", $sUrl);
         }
 
         $sYoutubeTemplate = '%s<br><iframe width="425" height="344" src="%s" frameborder="0" allowfullscreen></iframe>';
-        $sYoutubeHtml = sprintf( $sYoutubeTemplate, $sDesc, $sYoutubeUrl, $sYoutubeUrl );
+        $sYoutubeHtml = sprintf($sYoutubeTemplate, $sDesc, $sYoutubeUrl, $sYoutubeUrl);
 
         return $sYoutubeHtml;
     }

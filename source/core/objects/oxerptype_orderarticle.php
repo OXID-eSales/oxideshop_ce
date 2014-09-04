@@ -27,6 +27,7 @@ require_once 'oxerptype.php';
  */
 class oxERPType_OrderArticle extends oxERPType
 {
+
     /**
      * class constructor
      *
@@ -51,15 +52,15 @@ class oxERPType_OrderArticle extends oxERPType
      *
      * @return string
      */
-    public function getSQL( $sWhere, $iLanguage = 0, $iShopID = 1)
+    public function getSQL($sWhere, $iLanguage = 0, $iShopID = 1)
     {
-        if ( strstr( $sWhere, 'where')) {
+        if (strstr($sWhere, 'where')) {
             $sWhere .= ' and ';
         } else {
             $sWhere .= ' where ';
         }
 
-        $sWhere .= 'oxordershopid = \''.$iShopID.'\'';
+        $sWhere .= 'oxordershopid = \'' . $iShopID . '\'';
 
         return parent::getSQL($sWhere, $iLanguage, $iShopID);
     }
@@ -79,7 +80,7 @@ class oxERPType_OrderArticle extends oxERPType
             return;
 
         if ($oObj->oxorderarticles__oxordershopid->value != oxRegistry::getConfig()->getShopId()) {
-            throw new Exception( oxERPBase::$ERROR_USER_NO_RIGHTS);
+            throw new Exception(oxERPBase::$ERROR_USER_NO_RIGHTS);
         }
 
         parent::checkWriteAccess($oObj, $aData);

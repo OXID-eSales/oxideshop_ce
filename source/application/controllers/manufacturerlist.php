@@ -28,26 +28,31 @@
  */
 class ManufacturerList extends aList
 {
+
     /**
      * List type
+     *
      * @var string
      */
     protected $_sListType = 'manufacturer';
 
     /**
      * List type
+     *
      * @var string
      */
     protected $_blVisibleSubCats = null;
 
     /**
      * List type
+     *
      * @var string
      */
     protected $_oSubCatList = null;
 
     /**
      * Recommlist
+     *
      * @var object
      */
     protected $_oRecommList = null;
@@ -68,12 +73,14 @@ class ManufacturerList extends aList
 
     /**
      * Page navigation
+     *
      * @var object
      */
     protected $_oPageNavigation = null;
 
     /**
      * Marked which defines if current view is sortable or not
+     *
      * @var bool
      */
     protected $_blShowSorting = true;
@@ -100,9 +107,9 @@ class ManufacturerList extends aList
         oxUBase::render();
 
         // load Manufacturer
-        if ( $this->getManufacturerTree() ) {
-            if ( ( $oManufacturer = $this->getActManufacturer() ) ) {
-                if ( $oManufacturer->getId() != 'root' ) {
+        if ($this->getManufacturerTree()) {
+            if (($oManufacturer = $this->getActManufacturer())) {
+                if ($oManufacturer->getId() != 'root') {
                     // load the articles
                     $this->getArticleList();
 
@@ -135,25 +142,25 @@ class ManufacturerList extends aList
      *
      * @return array
      */
-    protected function _loadArticles( $oManufacturer )
+    protected function _loadArticles($oManufacturer)
     {
         $sManufacturerId = $oManufacturer->getId();
 
         // load only articles which we show on screen
-        $iNrofCatArticles = (int) $this->getConfig()->getConfigParam( 'iNrofCatArticles' );
+        $iNrofCatArticles = (int) $this->getConfig()->getConfigParam('iNrofCatArticles');
         $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 1;
 
-        $oArtList = oxNew( 'oxarticlelist' );
-        $oArtList->setSqlLimit( $iNrofCatArticles * $this->_getRequestPageNr(), $iNrofCatArticles );
-        $oArtList->setCustomSorting( $this->getSortingSql( $this->getSortIdent() ) );
+        $oArtList = oxNew('oxarticlelist');
+        $oArtList->setSqlLimit($iNrofCatArticles * $this->_getRequestPageNr(), $iNrofCatArticles);
+        $oArtList->setCustomSorting($this->getSortingSql($this->getSortIdent()));
 
         // load the articles
-        $this->_iAllArtCnt = $oArtList->loadManufacturerArticles( $sManufacturerId, $oManufacturer );
+        $this->_iAllArtCnt = $oArtList->loadManufacturerArticles($sManufacturerId, $oManufacturer);
 
         // counting pages
-        $this->_iCntPages = round( $this->_iAllArtCnt / $iNrofCatArticles + 0.49 );
+        $this->_iCntPages = round($this->_iAllArtCnt / $iNrofCatArticles + 0.49);
 
-        return array( $oArtList, $this->_iAllArtCnt );
+        return array($oArtList, $this->_iAllArtCnt);
     }
 
     /**
@@ -164,9 +171,10 @@ class ManufacturerList extends aList
     protected function _getSeoObjectId()
     {
         $sId = null;
-        if ( ( $oManufacturer = $this->getActManufacturer() ) ) {
+        if (($oManufacturer = $this->getActManufacturer())) {
             $sId = $oManufacturer->getId();
         }
+
         return $sId;
     }
 
@@ -180,16 +188,17 @@ class ManufacturerList extends aList
      *
      * @return string
      */
-    protected function _addPageNrParam( $sUrl, $iPage, $iLang = null)
+    protected function _addPageNrParam($sUrl, $iPage, $iLang = null)
     {
-        if ( oxRegistry::getUtils()->seoIsActive() && ( $oManufacturer = $this->getActManufacturer() ) ) {
-            if ( $iPage ) {
+        if (oxRegistry::getUtils()->seoIsActive() && ($oManufacturer = $this->getActManufacturer())) {
+            if ($iPage) {
                 // only if page number > 0
-                $sUrl = $oManufacturer->getBaseSeoLink( $iLang, $iPage );
+                $sUrl = $oManufacturer->getBaseSeoLink($iLang, $iPage);
             }
         } else {
-            $sUrl = parent::_addPageNrParam( $sUrl, $iPage, $iLang );
+            $sUrl = parent::_addPageNrParam($sUrl, $iPage, $iLang);
         }
+
         return $sUrl;
     }
 
@@ -200,10 +209,10 @@ class ManufacturerList extends aList
      */
     public function generatePageNavigationUrl()
     {
-        if ( ( oxRegistry::getUtils()->seoIsActive() && ( $oManufacturer = $this->getActManufacturer() ) ) ) {
+        if ((oxRegistry::getUtils()->seoIsActive() && ($oManufacturer = $this->getActManufacturer()))) {
             return $oManufacturer->getLink();
         } else {
-            return parent::generatePageNavigationUrl( );
+            return parent::generatePageNavigationUrl();
         }
     }
 
@@ -214,17 +223,18 @@ class ManufacturerList extends aList
      */
     public function hasVisibleSubCats()
     {
-        if ( $this->_blVisibleSubCats === null ) {
+        if ($this->_blVisibleSubCats === null) {
             $this->_blVisibleSubCats = false;
-            if ( ( $oManufacturerTree = $this->getManufacturerTree() ) ) {
-                if ( ( $oManufacturer = $this->getActManufacturer() ) ) {
-                    if ( $oManufacturer->getId() == 'root' ) {
+            if (($oManufacturerTree = $this->getManufacturerTree())) {
+                if (($oManufacturer = $this->getActManufacturer())) {
+                    if ($oManufacturer->getId() == 'root') {
                         $this->_blVisibleSubCats = $oManufacturerTree->count();
                         $this->_oSubCatList = $oManufacturerTree;
                     }
                 }
             }
         }
+
         return $this->_blVisibleSubCats;
     }
 
@@ -235,9 +245,10 @@ class ManufacturerList extends aList
      */
     public function getSubCatList()
     {
-        if ( $this->_oSubCatList === null ) {
+        if ($this->_oSubCatList === null) {
             $this->_oSubCatList = $this->hasVisibleSubCats() ? $this->_oSubCatList : array();
         }
+
         return $this->_oSubCatList;
     }
 
@@ -248,17 +259,18 @@ class ManufacturerList extends aList
      */
     public function getArticleList()
     {
-        if ( $this->_aArticleList === null ) {
+        if ($this->_aArticleList === null) {
             $this->_aArticleList = array();
-            if ( ( $oManufacturerTree = $this->getManufacturerTree() ) ) {
-                if ( ( $oManufacturer = $this->getActManufacturer() ) && ( $oManufacturer->getId() != 'root' ) && $oManufacturer->getIsVisible() ) {
-                    list( $aArticleList, $iAllArtCnt ) = $this->_loadArticles( $oManufacturer );
-                    if ( $iAllArtCnt ) {
+            if (($oManufacturerTree = $this->getManufacturerTree())) {
+                if (($oManufacturer = $this->getActManufacturer()) && ($oManufacturer->getId() != 'root') && $oManufacturer->getIsVisible()) {
+                    list($aArticleList, $iAllArtCnt) = $this->_loadArticles($oManufacturer);
+                    if ($iAllArtCnt) {
                         $this->_aArticleList = $aArticleList;
                     }
                 }
             }
         }
+
         return $this->_aArticleList;
     }
 
@@ -269,14 +281,15 @@ class ManufacturerList extends aList
      */
     public function getTitle()
     {
-        if ( $this->_sCatTitle === null ) {
+        if ($this->_sCatTitle === null) {
             $this->_sCatTitle = '';
-            if ( $oManufacturerTree = $this->getManufacturerTree() ) {
-                if ( $oManufacturer = $this->getActManufacturer() ) {
+            if ($oManufacturerTree = $this->getManufacturerTree()) {
+                if ($oManufacturer = $this->getActManufacturer()) {
                     $this->_sCatTitle = $oManufacturer->oxmanufacturers__oxtitle->value;
                 }
             }
         }
+
         return $this->_sCatTitle;
     }
 
@@ -288,9 +301,10 @@ class ManufacturerList extends aList
     public function getTreePath()
     {
         $aPath = null;
-        if ( $oManufacturerTree = $this->getManufacturerTree() ) {
+        if ($oManufacturerTree = $this->getManufacturerTree()) {
             $aPath = $oManufacturerTree->getPath();
         }
+
         return $aPath;
     }
 
@@ -301,14 +315,15 @@ class ManufacturerList extends aList
      */
     public function getActiveCategory()
     {
-        if ( $this->_oActCategory === null ) {
+        if ($this->_oActCategory === null) {
             $this->_oActCategory = false;
-            if ( ( $oManufacturerTree = $this->getManufacturerTree() ) ) {
-                if ( $oManufacturer = $this->getActManufacturer() ) {
+            if (($oManufacturerTree = $this->getManufacturerTree())) {
+                if ($oManufacturer = $this->getActManufacturer()) {
                     $this->_oActCategory = $oManufacturer;
                 }
             }
         }
+
         return $this->_oActCategory;
     }
 
@@ -319,12 +334,13 @@ class ManufacturerList extends aList
      */
     public function getCatTreePath()
     {
-        if ( $this->_sCatTreePath === null ) {
+        if ($this->_sCatTreePath === null) {
             $this->_sCatTreePath = false;
-            if ( ( $oManufacturerTree = $this->getManufacturerTree() ) ) {
-                $this->_sCatTreePath  = $oManufacturerTree->getPath();
+            if (($oManufacturerTree = $this->getManufacturerTree())) {
+                $this->_sCatTreePath = $oManufacturerTree->getPath();
             }
         }
+
         return $this->_sCatTreePath;
     }
 
@@ -336,9 +352,10 @@ class ManufacturerList extends aList
     public function getTitleSuffix()
     {
         $sSuffix = null;
-        if ( $this->getActManufacturer()->oxmanufacturers__oxshowsuffix->value ) {
+        if ($this->getActManufacturer()->oxmanufacturers__oxshowsuffix->value) {
             $sSuffix = $this->getConfig()->getActiveShop()->oxshops__oxtitlesuffix->value;
         }
+
         return $sSuffix;
     }
 
@@ -350,9 +367,9 @@ class ManufacturerList extends aList
      *
      * @return string
      */
-    protected function _prepareMetaKeyword( $aCatPath, $blRemoveDuplicatedWords = true )
+    protected function _prepareMetaKeyword($aCatPath, $blRemoveDuplicatedWords = true)
     {
-        return parent::_collectMetaKeyword( $aCatPath );
+        return parent::_collectMetaKeyword($aCatPath);
     }
 
     /**
@@ -367,9 +384,9 @@ class ManufacturerList extends aList
      *
      * @return  string  $sString    converted string
      */
-    protected function _prepareMetaDescription( $aCatPath, $iLength = 1024, $blDescTag = false )
+    protected function _prepareMetaDescription($aCatPath, $iLength = 1024, $blDescTag = false)
     {
-        return parent::_collectMetaDescription( $aCatPath, $iLength, $blDescTag );
+        return parent::_collectMetaDescription($aCatPath, $iLength, $blDescTag);
     }
 
     /**
@@ -380,7 +397,7 @@ class ManufacturerList extends aList
      *
      * @return object
      */
-    protected function _getSubject( $iLang )
+    protected function _getSubject($iLang)
     {
         return $this->getActManufacturer();
     }
@@ -392,11 +409,12 @@ class ManufacturerList extends aList
      */
     public function getAddUrlParams()
     {
-        $sAddParams  = parent::getAddUrlParams();
-        $sAddParams .= ($sAddParams?'&amp;':'') . "listtype={$this->_sListType}";
-        if ( $oManufacturer = $this->getActManufacturer() ) {
+        $sAddParams = parent::getAddUrlParams();
+        $sAddParams .= ($sAddParams ? '&amp;' : '') . "listtype={$this->_sListType}";
+        if ($oManufacturer = $this->getActManufacturer()) {
             $sAddParams .= "&amp;mnid=" . $oManufacturer->getId();
         }
+
         return $sAddParams;
     }
 
@@ -411,8 +429,8 @@ class ManufacturerList extends aList
 
         $oCatTree = $this->getManufacturerTree();
 
-        if ( $oCatTree ) {
-            foreach ( $oCatTree->getPath() as $oCat ) {
+        if ($oCatTree) {
+            foreach ($oCatTree->getPath() as $oCat) {
                 $aCatPath = array();
                 $aCatPath['link'] = $oCat->getLink();
                 $aCatPath['title'] = $oCat->oxmanufacturers__oxtitle->value;

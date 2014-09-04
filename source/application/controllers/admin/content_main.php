@@ -27,6 +27,7 @@
  */
 class Content_Main extends oxAdminDetails
 {
+
     /**
      * Loads contents info, passes it to Smarty engine and
      * returns name of template file "content_main.tpl".
@@ -42,53 +43,54 @@ class Content_Main extends oxAdminDetails
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
 
         // categorie tree
-        $oCatTree = oxNew( "oxCategoryList" );
+        $oCatTree = oxNew("oxCategoryList");
         $oCatTree->loadList();
 
-        $oContent = oxNew( "oxcontent" );
-        if ( $soxId != "-1" && isset( $soxId)) {
+        $oContent = oxNew("oxcontent");
+        if ($soxId != "-1" && isset($soxId)) {
             // load object
-            $oContent->loadInLang( $this->_iEditLang, $soxId );
+            $oContent->loadInLang($this->_iEditLang, $soxId);
 
             $oOtherLang = $oContent->getAvailableInLangs();
             if (!isset($oOtherLang[$this->_iEditLang])) {
                 // echo "language entry doesn't exist! using: ".key($oOtherLang);
-                $oContent->loadInLang( key($oOtherLang), $soxId );
+                $oContent->loadInLang(key($oOtherLang), $soxId);
             }
 
             // remove already created languages
-            $aLang = array_diff ( oxRegistry::getLang()->getLanguageNames(), $oOtherLang );
-            if ( count( $aLang))
+            $aLang = array_diff(oxRegistry::getLang()->getLanguageNames(), $oOtherLang);
+            if (count($aLang)) {
                 $this->_aViewData["posslang"] = $aLang;
-            foreach ( $oOtherLang as $id => $language) {
-                $oLang= new stdClass();
+            }
+            foreach ($oOtherLang as $id => $language) {
+                $oLang = new stdClass();
                 $oLang->sLangDesc = $language;
                 $oLang->selected = ($id == $this->_iEditLang);
-                $this->_aViewData["otherlang"][$id] =  clone $oLang;
+                $this->_aViewData["otherlang"][$id] = clone $oLang;
             }
             // mark selected
-            if (  $oContent->oxcontents__oxcatid->value && isset( $oCatTree[$oContent->oxcontents__oxcatid->value] ) ) {
+            if ($oContent->oxcontents__oxcatid->value && isset($oCatTree[$oContent->oxcontents__oxcatid->value])) {
                 $oCatTree[$oContent->oxcontents__oxcatid->value]->selected = 1;
             }
 
         } else {
-                // create ident to make life easier
-                $sUId = oxUtilsObject::getInstance()->generateUId();
-                $oContent->oxcontents__oxloadid = new oxField( $sUId );
+            // create ident to make life easier
+            $sUId = oxUtilsObject::getInstance()->generateUId();
+            $oContent->oxcontents__oxloadid = new oxField($sUId);
         }
 
         $this->_aViewData["edit"] = $oContent;
-        $this->_aViewData["link"] = "[{ oxgetseourl ident=&quot;".$oContent->oxcontents__oxloadid->value."&quot; type=&quot;oxcontent&quot; }]";
+        $this->_aViewData["link"] = "[{ oxgetseourl ident=&quot;" . $oContent->oxcontents__oxloadid->value . "&quot; type=&quot;oxcontent&quot; }]";
         $this->_aViewData["cattree"] = $oCatTree;
 
         // generate editor
         $sCSS = "content.tpl.css";
-        if ( $oContent->oxcontents__oxsnippet->value == '1') {
+        if ($oContent->oxcontents__oxsnippet->value == '1') {
             $sCSS = null;
         }
 
-        $this->_aViewData["editor"]  = $this->_generateTextEditor( "100%", 300, $oContent, "oxcontents__oxcontent", $sCSS);
-        $this->_aViewData["afolder"] = $myConfig->getConfigParam( 'aCMSfolder' );
+        $this->_aViewData["editor"] = $this->_generateTextEditor("100%", 300, $oContent, "oxcontents__oxcontent", $sCSS);
+        $this->_aViewData["afolder"] = $myConfig->getConfigParam('aCMSfolder');
 
         return "content_main.tpl";
     }
@@ -105,60 +107,62 @@ class Content_Main extends oxAdminDetails
         $myConfig = $this->getConfig();
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval");
+        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-        if ( isset( $aParams['oxcontents__oxloadid'] ) ) {
-            $aParams['oxcontents__oxloadid'] = $this->_prepareIdent( $aParams['oxcontents__oxloadid'] );
+        if (isset($aParams['oxcontents__oxloadid'])) {
+            $aParams['oxcontents__oxloadid'] = $this->_prepareIdent($aParams['oxcontents__oxloadid']);
         }
 
         // check if loadid is unique
-        if ( $this->_checkIdent( $aParams['oxcontents__oxloadid'], $soxId ) ) {
+        if ($this->_checkIdent($aParams['oxcontents__oxloadid'], $soxId)) {
             // loadid already used, display error message
             $this->_aViewData["blLoadError"] = true;
 
-            $oContent = oxNew( "oxcontent" );
-            if ( $soxId != '-1') {
-                $oContent->load( $soxId );
+            $oContent = oxNew("oxcontent");
+            if ($soxId != '-1') {
+                $oContent->load($soxId);
             }
-            $oContent->assign( $aParams );
+            $oContent->assign($aParams);
             $this->_aViewData["edit"] = $oContent;
+
             return;
         }
 
         // checkbox handling
-        if ( !isset( $aParams['oxcontents__oxactive']))
+        if (!isset($aParams['oxcontents__oxactive'])) {
             $aParams['oxcontents__oxactive'] = 0;
+        }
 
         // special treatment
-        if ( $aParams['oxcontents__oxtype'] == 0)
+        if ($aParams['oxcontents__oxtype'] == 0)
             $aParams['oxcontents__oxsnippet'] = 1;
         else
             $aParams['oxcontents__oxsnippet'] = 0;
 
         //Updates object folder parameters
-        if ( $aParams['oxcontents__oxfolder'] == 'CMSFOLDER_NONE' ) {
+        if ($aParams['oxcontents__oxfolder'] == 'CMSFOLDER_NONE') {
             $aParams['oxcontents__oxfolder'] = '';
         }
 
             // shopid
-            $sShopID = oxRegistry::getSession()->getVariable( "actshop");
+            $sShopID = oxRegistry::getSession()->getVariable("actshop");
             $aParams['oxcontents__oxshopid'] = $sShopID;
-        $oContent = oxNew( "oxcontent" );
+        $oContent = oxNew("oxcontent");
 
-        if ( $soxId != "-1")
-            $oContent->loadInLang( $this->_iEditLang, $soxId );
+        if ($soxId != "-1")
+            $oContent->loadInLang($this->_iEditLang, $soxId);
         else
             $aParams['oxcontents__oxid'] = null;
 
         //$aParams = $oContent->ConvertNameArray2Idx( $aParams);
 
         $oContent->setLanguage(0);
-        $oContent->assign( $aParams);
+        $oContent->assign($aParams);
         $oContent->setLanguage($this->_iEditLang);
         $oContent->save();
 
         // set oxid if inserted
-        $this->setEditObjectId( $oContent->getId() );
+        $this->setEditObjectId($oContent->getId());
     }
 
     /**
@@ -170,39 +174,39 @@ class Content_Main extends oxAdminDetails
     {
         parent::save();
 
-        $myConfig  = $this->getConfig();
+        $myConfig = $this->getConfig();
 
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval");
+        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
-        if ( isset( $aParams['oxcontents__oxloadid'] ) ) {
-            $aParams['oxcontents__oxloadid'] = $this->_prepareIdent( $aParams['oxcontents__oxloadid'] );
+        if (isset($aParams['oxcontents__oxloadid'])) {
+            $aParams['oxcontents__oxloadid'] = $this->_prepareIdent($aParams['oxcontents__oxloadid']);
         }
 
         // checkbox handling
-        if ( !isset( $aParams['oxcontents__oxactive']))
+        if (!isset($aParams['oxcontents__oxactive']))
             $aParams['oxcontents__oxactive'] = 0;
 
             // shopid
-            $sShopID = oxRegistry::getSession()->getVariable( "actshop");
+            $sShopID = oxRegistry::getSession()->getVariable("actshop");
             $aParams['oxcontents__oxshopid'] = $sShopID;
 
-        $oContent = oxNew( "oxcontent" );
+        $oContent = oxNew("oxcontent");
 
-        if ( $soxId != "-1")
-            $oContent->loadInLang( $this->_iEditLang, $soxId );
+        if ($soxId != "-1")
+            $oContent->loadInLang($this->_iEditLang, $soxId);
         else
             $aParams['oxcontents__oxid'] = null;
 
         $oContent->setLanguage(0);
-        $oContent->assign( $aParams);
+        $oContent->assign($aParams);
 
         // apply new language
-        $oContent->setLanguage( oxRegistry::getConfig()->getRequestParameter( "new_lang" ) );
+        $oContent->setLanguage(oxRegistry::getConfig()->getRequestParameter("new_lang"));
         $oContent->save();
 
         // set oxid if inserted
-        $this->setEditObjectId( $oContent->getId() );
+        $this->setEditObjectId($oContent->getId());
     }
 
     /**
@@ -212,31 +216,32 @@ class Content_Main extends oxAdminDetails
      *
      * @return string
      */
-    protected function _prepareIdent( $sIdent )
+    protected function _prepareIdent($sIdent)
     {
-        if ( $sIdent ) {
-            return getStr()->preg_replace( "/[^a-zA-Z0-9_]*/", "", $sIdent );
+        if ($sIdent) {
+            return getStr()->preg_replace("/[^a-zA-Z0-9_]*/", "", $sIdent);
         }
     }
 
     /**
-    * Check if ident is unique
-    *
-    * @param string $sIdent ident
-    * @param string $sOxId  Object id
-    *
-    * @return null
-    */
-    protected function _checkIdent( $sIdent, $sOxId )
+     * Check if ident is unique
+     *
+     * @param string $sIdent ident
+     * @param string $sOxId  Object id
+     *
+     * @return null
+     */
+    protected function _checkIdent($sIdent, $sOxId)
     {
         $blAllow = false;
         $oDb = oxDb::getDb();
         // null not allowed
-        if ( !strlen( $sIdent ) ) {
+        if (!strlen($sIdent)) {
             $blAllow = true;
-        } elseif ( $oDb->getOne( "select oxid from oxcontents where oxloadid = ".$oDb->quote( $sIdent ) ." and oxid != ".$oDb->quote( $sOxId ) ." and oxshopid = '".$this->getConfig()->getShopId()."'", false, false ) ) {
+        } elseif ($oDb->getOne("select oxid from oxcontents where oxloadid = " . $oDb->quote($sIdent) . " and oxid != " . $oDb->quote($sOxId) . " and oxshopid = '" . $this->getConfig()->getShopId() . "'", false, false)) {
             $blAllow = true;
         }
+
         return $blAllow;
     }
 }

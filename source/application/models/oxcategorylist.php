@@ -29,6 +29,7 @@
  */
 class oxCategoryList extends oxList
 {
+
     /**
      * List Object class name
      *
@@ -62,7 +63,7 @@ class oxCategoryList extends oxList
      *
      * @var string
      */
-    protected $_sActCat     = null;
+    protected $_sActCat = null;
 
     /**
      * Active category path array
@@ -85,10 +86,10 @@ class oxCategoryList extends oxList
      *
      * @return null
      */
-    public function __construct( $sObjectsInListName = 'oxcategory')
+    public function __construct($sObjectsInListName = 'oxcategory')
     {
         $this->_blHideEmpty = $this->getConfig()->getConfigParam('blDontShowEmptyCategories');
-        parent::__construct( $sObjectsInListName );
+        parent::__construct($sObjectsInListName);
     }
 
     /**
@@ -98,7 +99,7 @@ class oxCategoryList extends oxList
      *
      * @return null
      */
-    public function setLoadFull( $blForceFull )
+    public function setLoadFull($blForceFull)
     {
         $this->_blForceFull = $blForceFull;
     }
@@ -120,11 +121,11 @@ class oxCategoryList extends oxList
      *
      * @return null
      */
-    public function setLoadLevel( $iForceLevel )
+    public function setLoadLevel($iForceLevel)
     {
-        if ( $iForceLevel > 2 ) {
+        if ($iForceLevel > 2) {
             $iForceLevel = 2;
-        } elseif ( $iForceLevel < 1 ) {
+        } elseif ($iForceLevel < 1) {
             $iForceLevel = 0;
         }
         $this->_iForceLevel = $iForceLevel;
@@ -151,23 +152,24 @@ class oxCategoryList extends oxList
     protected function _getSqlSelectFieldsForTree($sTable, $aColumns = null)
     {
         if ($aColumns && count($aColumns)) {
-            foreach ($aColumns as $key=>$val) {
-                $aColumns[$key].=' as '.$val;
+            foreach ($aColumns as $key => $val) {
+                $aColumns[$key] .= ' as ' . $val;
             }
-            return "$sTable.".implode(", $sTable.", $aColumns);
+
+            return "$sTable." . implode(", $sTable.", $aColumns);
         }
 
         $sFieldList = "$sTable.oxid as oxid, $sTable.oxactive as oxactive,"
-            ." $sTable.oxhidden as oxhidden, $sTable.oxparentid as oxparentid,"
-            ." $sTable.oxdefsort as oxdefsort, $sTable.oxdefsortmode as oxdefsortmode,"
-            ." $sTable.oxleft as oxleft, $sTable.oxright as oxright,"
-            ." $sTable.oxrootid as oxrootid, $sTable.oxsort as oxsort,"
-            ." $sTable.oxtitle as oxtitle, $sTable.oxdesc as oxdesc,"
-            ." $sTable.oxpricefrom as oxpricefrom, $sTable.oxpriceto as oxpriceto,"
-            ." $sTable.oxicon as oxicon, $sTable.oxextlink as oxextlink,"
-            ." $sTable.oxthumb as oxthumb, $sTable.oxpromoicon as oxpromoicon";
+                      . " $sTable.oxhidden as oxhidden, $sTable.oxparentid as oxparentid,"
+                      . " $sTable.oxdefsort as oxdefsort, $sTable.oxdefsortmode as oxdefsortmode,"
+                      . " $sTable.oxleft as oxleft, $sTable.oxright as oxright,"
+                      . " $sTable.oxrootid as oxrootid, $sTable.oxsort as oxsort,"
+                      . " $sTable.oxtitle as oxtitle, $sTable.oxdesc as oxdesc,"
+                      . " $sTable.oxpricefrom as oxpricefrom, $sTable.oxpriceto as oxpriceto,"
+                      . " $sTable.oxicon as oxicon, $sTable.oxextlink as oxextlink,"
+                      . " $sTable.oxthumb as oxthumb, $sTable.oxpromoicon as oxpromoicon";
 
-            $sFieldList.= ",not $sTable.oxactive as oxppremove";
+            $sFieldList .= ",not $sTable.oxactive as oxppremove";
 
 
         return $sFieldList;
@@ -184,12 +186,12 @@ class oxCategoryList extends oxList
      */
     protected function _getSelectString($blReverse = false, $aColumns = null, $sOrder = null)
     {
-        $sViewName  = $this->getBaseObject()->getViewName();
+        $sViewName = $this->getBaseObject()->getViewName();
         $sFieldList = $this->_getSqlSelectFieldsForTree($sViewName, $aColumns);
 
         //excluding long desc
         if (!$this->isAdmin() && !$this->_blHideEmpty && !$this->getLoadFull()) {
-            $oCat = oxNew( 'oxCategory' );
+            $oCat = oxNew('oxCategory');
             if (!($this->_sActCat && $oCat->load($this->_sActCat) && $oCat->oxcategories__oxrootid->value)) {
                 $oCat = null;
                 $this->_sActCat = null;
@@ -203,8 +205,8 @@ class oxCategoryList extends oxList
         }
 
         if (!$sOrder) {
-            $sOrdDir    = $blReverse?'desc':'asc';
-            $sOrder     = "oxrootid $sOrdDir, oxleft $sOrdDir";
+            $sOrdDir = $blReverse ? 'desc' : 'asc';
+            $sOrder = "oxrootid $sOrdDir, oxleft $sOrdDir";
         }
 
         return "select $sFieldList from $sViewName where $sWhere $sUnion order by $sOrder";
@@ -220,13 +222,13 @@ class oxCategoryList extends oxList
      */
     protected function _getDepthSqlSnippet($oCat)
     {
-        $sViewName  = $this->getBaseObject()->getViewName();
+        $sViewName = $this->getBaseObject()->getViewName();
         $sDepthSnippet = ' ( 0';
 
         // load complete tree of active category, if it exists
         if ($oCat) {
             // select children here, siblings will be selected from union
-            $sDepthSnippet .= " or ($sViewName.oxparentid = ".oxDb::getDb()->quote($oCat->oxcategories__oxid->value).")";
+            $sDepthSnippet .= " or ($sViewName.oxparentid = " . oxDb::getDb()->quote($oCat->oxcategories__oxid->value) . ")";
         }
 
         // load 1'st category level (roots)
@@ -240,6 +242,7 @@ class oxCategoryList extends oxList
         }
 
         $sDepthSnippet .= ' ) ';
+
         return $sDepthSnippet;
     }
 
@@ -261,12 +264,12 @@ class oxCategoryList extends oxList
 
         $sViewName = $this->getBaseObject()->getViewName();
 
-        return "UNION SELECT ".$this->_getSqlSelectFieldsForTree('maincats', $aColumns)
-                ." FROM oxcategories AS subcats"
-                ." LEFT JOIN $sViewName AS maincats on maincats.oxparentid = subcats.oxparentid"
-                ." WHERE subcats.oxrootid = ".oxDb::getDb()->quote($oCat->oxcategories__oxrootid->value)
-                ." AND subcats.oxleft <= ". (int)$oCat->oxcategories__oxleft->value
-                ." AND subcats.oxright >= ".(int)$oCat->oxcategories__oxright->value;
+        return "UNION SELECT " . $this->_getSqlSelectFieldsForTree('maincats', $aColumns)
+               . " FROM oxcategories AS subcats"
+               . " LEFT JOIN $sViewName AS maincats on maincats.oxparentid = subcats.oxparentid"
+               . " WHERE subcats.oxrootid = " . oxDb::getDb()->quote($oCat->oxcategories__oxrootid->value)
+               . " AND subcats.oxleft <= " . (int) $oCat->oxcategories__oxleft->value
+               . " AND subcats.oxright >= " . (int) $oCat->oxcategories__oxright->value;
     }
 
 
@@ -279,7 +282,7 @@ class oxCategoryList extends oxList
     protected function _loadFromDb()
     {
         $sSql = $this->_getSelectString(false, null, 'oxparentid, oxsort, oxtitle');
-        $aData = oxDb::getDb( oxDb::FETCH_MODE_ASSOC )->getAll( $sSql );
+        $aData = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getAll($sSql);
 
         return $aData;
     }
@@ -292,9 +295,9 @@ class oxCategoryList extends oxList
     public function load()
     {
 
-           $aData = $this->_loadFromDb();
+            $aData = $this->_loadFromDb();
 
-        $this->assignArray( $aData );
+        $this->assignArray($aData);
     }
 
 
@@ -307,7 +310,7 @@ class oxCategoryList extends oxList
      *
      * @return null
      */
-    public function buildTree( $sActCat  )
+    public function buildTree($sActCat)
     {
         startProfile("buildTree");
 
@@ -315,13 +318,13 @@ class oxCategoryList extends oxList
         $this->load();
 
         // PostProcessing
-        if ( !$this->isAdmin() ) {
+        if (!$this->isAdmin()) {
 
             // remove inactive categories
             $this->_ppRemoveInactiveCategories();
 
             // add active cat as full object
-            $this->_ppLoadFullCategory( $sActCat );
+            $this->_ppLoadFullCategory($sActCat);
 
             // builds navigation path
             $this->_ppAddPathInfo();
@@ -343,11 +346,11 @@ class oxCategoryList extends oxList
      *
      * @return null
      */
-    protected function _ppLoadFullCategory( $sId )
+    protected function _ppLoadFullCategory($sId)
     {
-        if ( isset($this->_aArray[$sId])) {
-            $oNewCat = oxNew( 'oxCategory' );
-            if ( $oNewCat->load($sId)) {
+        if (isset($this->_aArray[$sId])) {
+            $oNewCat = oxNew('oxCategory');
+            if ($oNewCat->load($sId)) {
                 // replace aArray object with fully loaded category
                 $this->_aArray[$sId] = $oNewCat;
             }
@@ -438,7 +441,7 @@ class oxCategoryList extends oxList
                     $aRemoveList[$oCat->oxcategories__oxrootid->value] = array();
                 }
                 $aRemoveList[$oCat->oxcategories__oxrootid->value][$oCat->oxcategories__oxleft->value] = $oCat->oxcategories__oxright->value;
-                unset( $this->_aArray[$sId] );
+                unset($this->_aArray[$sId]);
             } else {
                 unset($oCat->oxcategories__oxppremove);
             }
@@ -446,15 +449,16 @@ class oxCategoryList extends oxList
 
         // Remove collected item's children from the list too (in the ranges).
         foreach ($this->_aArray as $sId => $oCat) {
-            if ( isset( $aRemoveList[$oCat->oxcategories__oxrootid->value] ) &&
-                 is_array( $aRemoveList[$oCat->oxcategories__oxrootid->value] ) ) {
-                foreach ( $aRemoveList[$oCat->oxcategories__oxrootid->value] as $iLeft => $iRight ) {
+            if (isset($aRemoveList[$oCat->oxcategories__oxrootid->value]) &&
+                is_array($aRemoveList[$oCat->oxcategories__oxrootid->value])
+            ) {
+                foreach ($aRemoveList[$oCat->oxcategories__oxrootid->value] as $iLeft => $iRight) {
                     if (
-                            ($iLeft  <= $oCat->oxcategories__oxleft->value)
-                         && ($iRight >= $oCat->oxcategories__oxleft->value)
-                       ) {
+                        ($iLeft <= $oCat->oxcategories__oxleft->value)
+                        && ($iRight >= $oCat->oxcategories__oxleft->value)
+                    ) {
                         // this is a child in an inactive range (parent already gone)
-                        unset( $this->_aArray[$sId] );
+                        unset($this->_aArray[$sId]);
                         break 1;
                     }
                 }
@@ -474,11 +478,11 @@ class oxCategoryList extends oxList
         }
 
         $aPath = array();
-        $sCurrentCat  = $this->_sActCat;
+        $sCurrentCat = $this->_sActCat;
 
         while ($sCurrentCat != 'oxrootid' && isset($this[$sCurrentCat])) {
             $oCat = $this[$sCurrentCat];
-            $oCat->setExpanded( true );
+            $oCat->setExpanded(true);
             $aPath[$sCurrentCat] = $oCat;
             $sCurrentCat = $oCat->oxcategories__oxparentid->value;
         }
@@ -494,7 +498,7 @@ class oxCategoryList extends oxList
     protected function _ppAddContentCategories()
     {
         // load content pages for adding them into menu tree
-        $oContentList = oxNew( "oxContentList" );
+        $oContentList = oxNew("oxContentList");
         $oContentList->loadCatMenues();
 
         foreach ($oContentList as $sCatId => $aContent) {
@@ -515,9 +519,9 @@ class oxCategoryList extends oxList
         $aTree = array();
         foreach ($this->_aArray as $oCat) {
             $sParentId = $oCat->oxcategories__oxparentid->value;
-            if ( $sParentId != 'oxrootid') {
+            if ($sParentId != 'oxrootid') {
                 if (isset($this->_aArray[$sParentId])) {
-                    $this->_aArray[$sParentId]->setSubCat( $oCat, $oCat->getId() );
+                    $this->_aArray[$sParentId]->setSubCat($oCat, $oCat->getId());
                 }
             } else {
                 $aTree[$oCat->getId()] = $oCat;
@@ -544,7 +548,7 @@ class oxCategoryList extends oxList
 
             $aTree[$oCat->getId()] = $oCat;
             $aSubCats = $oCat->getSubCats();
-            if ( count($aSubCats) > 0 ) {
+            if (count($aSubCats) > 0) {
                 foreach ($aSubCats as $oSubCat) {
                     $aTree = $this->_addDepthInfo($aTree, $oSubCat);
                 }
@@ -565,16 +569,18 @@ class oxCategoryList extends oxList
     protected function _addDepthInfo($aTree, $oCat, $sDepth = "")
     {
         $sDepth .= "-";
-        $oCat->oxcategories__oxtitle->setValue($sDepth.' '.$oCat->oxcategories__oxtitle->value);
+        $oCat->oxcategories__oxtitle->setValue($sDepth . ' ' . $oCat->oxcategories__oxtitle->value);
         $aTree[$oCat->getId()] = $oCat;
         $aSubCats = $oCat->getSubCats();
-        if ( count($aSubCats) > 0 ) {
+        if (count($aSubCats) > 0) {
             foreach ($aSubCats as $oSubCat) {
                 $aTree = $this->_addDepthInfo($aTree, $oSubCat, $sDepth);
             }
         }
+
         return $aTree;
     }
+
     /**
      * Rebuilds nested sets information by updating oxLeft and oxRight category attributes, from oxParentId
      *
@@ -593,12 +599,12 @@ class oxCategoryList extends oxList
         $oDb->execute("update oxcategories set oxleft = 1, oxright = 2 where oxparentid = 'oxrootid' and $sWhere");
 
         // Get all root categories
-        $rs = $oDb->select("select oxid, oxtitle from oxcategories where oxparentid = 'oxrootid' and $sWhere order by oxsort", false, false );
+        $rs = $oDb->select("select oxid, oxtitle from oxcategories where oxparentid = 'oxrootid' and $sWhere order by oxsort", false, false);
         if ($rs != false && $rs->recordCount() > 0) {
             while (!$rs->EOF) {
-                $this->_aUpdateInfo[] = "<b>Processing : ".$rs->fields[1]."</b>(".$rs->fields[0].")<br>";
-                if ( $blVerbose ) {
-                    echo next( $this->_aUpdateInfo );
+                $this->_aUpdateInfo[] = "<b>Processing : " . $rs->fields[1] . "</b>(" . $rs->fields[0] . ")<br>";
+                if ($blVerbose) {
+                    echo next($this->_aUpdateInfo);
                 }
                 $oxRootId = $rs->fields[0];
 
@@ -636,8 +642,8 @@ class oxCategoryList extends oxList
         }
 
         // Get sub categories of root categories
-        $rs = $oDb->execute("update oxcategories set oxrootid = ".$oDb->quote($thisRoot)." where oxparentid = ".$oDb->quote($oxRootId));
-        $rs = $oDb->select("select oxid, oxparentid from oxcategories where oxparentid = ".$oDb->quote($oxRootId)." order by oxsort", false, false);
+        $rs = $oDb->execute("update oxcategories set oxrootid = " . $oDb->quote($thisRoot) . " where oxparentid = " . $oDb->quote($oxRootId));
+        $rs = $oDb->select("select oxid, oxparentid from oxcategories where oxparentid = " . $oDb->quote($oxRootId) . " order by oxsort", false, false);
         // If there are sub categories
         if ($rs != false && $rs->recordCount() > 0) {
             while (!$rs->EOF) {
@@ -646,10 +652,10 @@ class oxCategoryList extends oxList
                 $sActOxidQuoted = $oDb->quote($actOxid);
 
                 // Get the data of the parent category to the current Cat
-                $rs3 = $oDb->select("select oxrootid, oxright from oxcategories where oxid = ".$oDb->quote($parentId), false, false );
+                $rs3 = $oDb->select("select oxrootid, oxright from oxcategories where oxid = " . $oDb->quote($parentId), false, false);
                 while (!$rs3->EOF) {
                     $parentOxRootId = $rs3->fields[0];
-                    $parentRight    = (int)$rs3->fields[1];
+                    $parentRight = (int) $rs3->fields[1];
                     $rs3->moveNext();
                 }
                 $sParentOxRootIdQuoted = $oDb->quote($parentOxRootId);

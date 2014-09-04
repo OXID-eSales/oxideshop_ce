@@ -25,6 +25,7 @@
  */
 class oxUniversallyUniqueIdGenerator
 {
+
     /**
      * @var oxOpenSSLFunctionalityChecker
      */
@@ -49,6 +50,7 @@ class oxUniversallyUniqueIdGenerator
     public function generate()
     {
         $sSeed = $this->generateV4();
+
         return $this->generateV5($sSeed, php_uname('n'));
     }
 
@@ -73,6 +75,7 @@ class oxUniversallyUniqueIdGenerator
      *
      * @param string $sSeed
      * @param string $sSalt
+     *
      * @return string
      */
     public function generateV5($sSeed, $sSalt)
@@ -83,12 +86,14 @@ class oxUniversallyUniqueIdGenerator
             $sBinarySeed .= chr(hexdec($sSeed[$i] . $sSeed[$i + 1]));
         }
         $sHash = sha1($sBinarySeed . $sSalt);
-        $sUUID = sprintf('%08s-%04s-%04x-%04x-%12s',
+        $sUUID = sprintf(
+            '%08s-%04s-%04x-%04x-%12s',
             substr($sHash, 0, 8), substr($sHash, 8, 4),
             (hexdec(substr($sHash, 12, 4)) & 0x0fff) | 0x3000,
             (hexdec(substr($sHash, 16, 4)) & 0x3fff) | 0x8000,
             substr($sHash, 20, 12)
         );
+
         return $sUUID;
     }
 
@@ -121,12 +126,13 @@ class oxUniversallyUniqueIdGenerator
      */
     protected function _generateBasedOnMtRand()
     {
-        return sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
-            mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ),
-            mt_rand( 0, 0xffff ),
-            mt_rand( 0, 0x0fff ) | 0x4000,
-            mt_rand( 0, 0x3fff ) | 0x8000,
-            mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff )
+        return sprintf(
+            '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+            mt_rand(0, 0xffff), mt_rand(0, 0xffff),
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0x0fff) | 0x4000,
+            mt_rand(0, 0x3fff) | 0x8000,
+            mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff)
         );
     }
 }

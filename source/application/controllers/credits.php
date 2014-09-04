@@ -25,8 +25,10 @@
  */
 class Credits extends Content
 {
+
     /**
      * Content id.
+     *
      * @var string
      */
     protected $_sContentId = "oxcredits";
@@ -48,10 +50,10 @@ class Credits extends Content
      */
     public function getContent()
     {
-        if ( $this->_oContent === null ) {
+        if ($this->_oContent === null) {
             $this->_oContent = false;
-            $oContent = oxNew( 'oxcontent' );
-            if ( $oContent->loadByIdent( $this->getContentId() ) ) {
+            $oContent = oxNew('oxcontent');
+            if ($oContent->loadByIdent($this->getContentId())) {
                 $this->_oContent = $oContent;
             }
         }

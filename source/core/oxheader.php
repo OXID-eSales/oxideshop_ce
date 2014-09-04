@@ -27,6 +27,7 @@
  */
 class oxHeader
 {
+
     protected $_aHeader = array();
 
     /**
@@ -36,10 +37,10 @@ class oxHeader
      *
      * @return void
      */
-    public function setHeader( $sHeader )
+    public function setHeader($sHeader)
     {
-        $sHeader = str_replace( array( "\n", "\r" ), '', $sHeader );
-        $this->_aHeader[] = (string) $sHeader."\r\n";
+        $sHeader = str_replace(array("\n", "\r"), '', $sHeader);
+        $this->_aHeader[] = (string) $sHeader . "\r\n";
     }
 
     /**
@@ -60,8 +61,8 @@ class oxHeader
     public function sendHeader()
     {
         foreach ($this->_aHeader as $sHeader) {
-            if ( isset( $sHeader ) ) {
-                header( $sHeader );
+            if (isset($sHeader)) {
+                header($sHeader);
             }
         }
     }
@@ -76,6 +77,6 @@ class oxHeader
     public function setNonCacheable()
     {
         $sHeader = "Cache-Control: no-cache;";
-        $this->setHeader( $sHeader );
+        $this->setHeader($sHeader);
     }
 }

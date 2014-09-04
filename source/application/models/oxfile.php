@@ -26,6 +26,7 @@
  */
 class oxFile extends oxBase
 {
+
     /**
      * No active user exception code.
      */
@@ -98,18 +99,18 @@ class oxFile extends oxBase
      *
      * @return void
      */
-    public function processFile( $sFileIndex )
+    public function processFile($sFileIndex)
     {
-        $aFileInfo = $this->getConfig()->getUploadedFile( $sFileIndex );
+        $aFileInfo = $this->getConfig()->getUploadedFile($sFileIndex);
 
-        $this->_checkArticleFile( $aFileInfo );
+        $this->_checkArticleFile($aFileInfo);
 
-        $sFileHash = $this->_getFileHash( $aFileInfo['tmp_name'] );
-        $this->oxfiles__oxstorehash = new oxField( $sFileHash, oxField::T_RAW );
+        $sFileHash = $this->_getFileHash($aFileInfo['tmp_name']);
+        $this->oxfiles__oxstorehash = new oxField($sFileHash, oxField::T_RAW);
         $sUploadTo = $this->getStoreLocation();
 
-        if ( !$this->_uploadFile( $aFileInfo['tmp_name'], $sUploadTo ) ) {
-            throw new oxException( 'EXCEPTION_COULDNOTWRITETOFILE' );
+        if (!$this->_uploadFile($aFileInfo['tmp_name'], $sUploadTo)) {
+            throw new oxException('EXCEPTION_COULDNOTWRITETOFILE');
         }
 
     }
@@ -121,16 +122,16 @@ class oxFile extends oxBase
      *
      * @return void
      */
-    protected function _checkArticleFile( $aFileInfo )
+    protected function _checkArticleFile($aFileInfo)
     {
         //checking params
-        if ( !isset( $aFileInfo['name'] ) || !isset( $aFileInfo['tmp_name'] ) ) {
-            throw new oxException( 'EXCEPTION_NOFILE' );
+        if (!isset($aFileInfo['name']) || !isset($aFileInfo['tmp_name'])) {
+            throw new oxException('EXCEPTION_NOFILE');
         }
 
         // error uploading file ?
-        if ( isset( $aFileInfo['error'] ) && $aFileInfo['error'] ) {
-            throw new oxException( 'EXCEPTION_FILEUPLOADERROR_'.( (int) $aFileInfo['error'] ) );
+        if (isset($aFileInfo['error']) && $aFileInfo['error']) {
+            throw new oxException('EXCEPTION_FILEUPLOADERROR_' . ((int) $aFileInfo['error']));
         }
 
     }
@@ -142,21 +143,23 @@ class oxFile extends oxBase
      */
     protected function _getBaseDownloadDirPath()
     {
-        $sConfigValue = oxRegistry::getConfig()->getConfigParam( 'sDownloadsDir' );
+        $sConfigValue = oxRegistry::getConfig()->getConfigParam('sDownloadsDir');
 
         //Unix full path is set
-        if ( $sConfigValue && $sConfigValue[0] == DIR_SEP) {
+        if ($sConfigValue && $sConfigValue[0] == DIR_SEP) {
             return $sConfigValue;
         }
 
         //relative path is set
-        if ( $sConfigValue ) {
+        if ($sConfigValue) {
             $sPath = getShopBasePath() . DIR_SEP . $sConfigValue;
+
             return $sPath;
         }
 
         //no path is set
         $sPath = getShopBasePath() . "/out/downloads/";
+
         return $sPath;
     }
 
@@ -169,8 +172,9 @@ class oxFile extends oxBase
      */
     public function getStoreLocation()
     {
-        $sPath  = $this->_getBaseDownloadDirPath();
-        $sPath .= DIR_SEP .  $this->_getFileLocation();
+        $sPath = $this->_getBaseDownloadDirPath();
+        $sPath .= DIR_SEP . $this->_getFileLocation();
+
         return $sPath;
     }
 
@@ -191,8 +195,8 @@ class oxFile extends oxBase
         }
 
         if ($this->isUploaded()) {
-            $this->_sRelativeFilePath  = $this->_getHashedFileDir($sFileHash);
-            $this->_sRelativeFilePath .= DIR_SEP .  $sFileHash;
+            $this->_sRelativeFilePath = $this->_getHashedFileDir($sFileHash);
+            $this->_sRelativeFilePath .= DIR_SEP . $sFileHash;
         } else {
             $this->_sRelativeFilePath = DIR_SEP . $this->_sManualUploadDir . DIR_SEP . $sFileName;
         }
@@ -209,7 +213,7 @@ class oxFile extends oxBase
      *
      * @return string
      */
-    protected function _getHashedFileDir( $sFileHash )
+    protected function _getHashedFileDir($sFileHash)
     {
         $sDir = substr($sFileHash, 0, 2);
         $sAbsDir = $this->_getBaseDownloadDirPath() . DIR_SEP . $sDir;
@@ -217,6 +221,7 @@ class oxFile extends oxBase
         if (!is_dir($sAbsDir)) {
             mkdir($sAbsDir, 0755);
         }
+
         return $sDir;
     }
 
@@ -228,9 +233,9 @@ class oxFile extends oxBase
      *
      * @return string
      */
-    protected function _getFileHash( $sFileName )
+    protected function _getFileHash($sFileName)
     {
-        return md5_file( $sFileName );
+        return md5_file($sFileName);
     }
 
     /**
@@ -242,12 +247,12 @@ class oxFile extends oxBase
      *
      * @return bool
      */
-    protected function _uploadFile( $sSource, $sTarget )
+    protected function _uploadFile($sSource, $sTarget)
     {
-        $blDone = move_uploaded_file( $sSource, $sTarget );
+        $blDone = move_uploaded_file($sSource, $sTarget);
 
-        if ( $blDone ) {
-            $blDone = @chmod( $sTarget, 0644 );
+        if ($blDone) {
+            $blDone = @chmod($sTarget, 0644);
         }
 
         return $blDone;
@@ -267,6 +272,7 @@ class oxFile extends oxBase
         if ($this->oxfiles__oxstorehash->value) {
             $blHashed = true;
         }
+
         return $blHashed;
     }
 
@@ -277,14 +283,14 @@ class oxFile extends oxBase
      *
      * @return bool
      */
-    public function delete( $sOxId = null )
+    public function delete($sOxId = null)
     {
         $sOxId = $sOxId ? $sOxId : $this->getId();
 
         $this->load($sOxId);
         // if record cannot be delete, abort deletion
-        if ($blDeleted = parent::delete( $sOxId ) ) {
-            $this->_deleteFile( );
+        if ($blDeleted = parent::delete($sOxId)) {
+            $this->_deleteFile();
         }
 
         return $blDeleted;
@@ -304,9 +310,10 @@ class oxFile extends oxBase
         $sHash = $this->oxfiles__oxstorehash->value;
         $oDb = oxDb::getDb();
         $iCount = $oDb->getOne(
-            'SELECT COUNT(*) FROM `oxfiles` WHERE `OXSTOREHASH` = ' . $oDb->quote( $sHash ), false, false );
+            'SELECT COUNT(*) FROM `oxfiles` WHERE `OXSTOREHASH` = ' . $oDb->quote($sHash), false, false
+        );
         if (!$iCount) {
-            $sPath  = $this->getStoreLocation();
+            $sPath = $this->getStoreLocation();
             unlink($sPath);
         }
     }
@@ -331,8 +338,8 @@ class oxFile extends oxBase
         $sFileName = $this->_getFilenameForUrl();
         $sFileLocations = $this->getStoreLocation();
 
-        if (  !$this->exist() ) {
-            throw new oxException( 'EXCEPTION_NOFILE' );
+        if (!$this->exist()) {
+            throw new oxException('EXCEPTION_NOFILE');
         }
 
         $oUtils->setHeader("Pragma: public");
@@ -340,11 +347,11 @@ class oxFile extends oxBase
         $oUtils->setHeader("Cache-Control: must-revalidate, post-check=0, pre-check=0, private");
         $oUtils->setHeader('Content-Disposition: attachment;filename=' . $sFileName);
         $oUtils->setHeader("Content-Type: application/octet-stream");
-        if ( $iFileSize = $this->getSize() ) {
+        if ($iFileSize = $this->getSize()) {
             $oUtils->setHeader("Content-Length: " . $iFileSize);
         }
-        readfile( $sFileLocations );
-        $oUtils->showMessageAndExit( null );
+        readfile($sFileLocations);
+        $oUtils->showMessageAndExit(null);
     }
 
     /**
@@ -354,7 +361,7 @@ class oxFile extends oxBase
      */
     public function exist()
     {
-        return file_exists( $this->getStoreLocation() );
+        return file_exists($this->getStoreLocation());
     }
 
     /**
@@ -364,9 +371,9 @@ class oxFile extends oxBase
      */
     public function hasValidDownloads()
     {
-        if ( $this->_blHasValidDownloads == null ) {
+        if ($this->_blHasValidDownloads == null) {
             $this->_blHasValidDownloads = false;
-            $sNow   = date( 'Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime() );
+            $sNow = date('Y-m-d H:i:s', oxRegistry::get("oxUtilsDate")->getTime());
             $sFileId = $this->getId();
 
             $oDb = oxDb::getDb();
@@ -382,10 +389,11 @@ class oxFile extends oxBase
                         AND `oxorder`.`oxstorno` = 0
                         AND `oxorderarticles`.`oxstorno` = 0";
 
-            if ( $oDb->getOne( $sSql ) ) {
+            if ($oDb->getOne($sSql)) {
                 $this->_blHasValidDownloads = true;
             }
         }
+
         return $this->_blHasValidDownloads;
     }
 
@@ -398,9 +406,10 @@ class oxFile extends oxBase
     {
         $iMaxCount = $this->oxfiles__oxmaxdownloads->value;
         //if value is -1, takes global options
-        if ( $iMaxCount < 0) {
-            $iMaxCount = $this->getConfig()->getConfigParam( "iMaxDownloadsCount" );
+        if ($iMaxCount < 0) {
+            $iMaxCount = $this->getConfig()->getConfigParam("iMaxDownloadsCount");
         }
+
         return $iMaxCount;
     }
 
@@ -413,9 +422,10 @@ class oxFile extends oxBase
     {
         $iMaxCount = $this->oxfiles__oxmaxunregdownloads->value;
         //if value is -1, takes global options
-        if ( $iMaxCount < 0) {
-            $iMaxCount = $this->getConfig()->getConfigParam( "iMaxDownloadsCountUnregistered" );
+        if ($iMaxCount < 0) {
+            $iMaxCount = $this->getConfig()->getConfigParam("iMaxDownloadsCountUnregistered");
         }
+
         return $iMaxCount;
     }
 
@@ -428,9 +438,10 @@ class oxFile extends oxBase
     {
         $iExpTime = $this->oxfiles__oxlinkexptime->value;
         //if value is -1, takes global options
-        if ( $iExpTime < 0) {
-            $iExpTime = $this->getConfig()->getConfigParam( "iLinkExpirationTime" );
+        if ($iExpTime < 0) {
+            $iExpTime = $this->getConfig()->getConfigParam("iLinkExpirationTime");
         }
+
         return $iExpTime;
     }
 
@@ -443,9 +454,10 @@ class oxFile extends oxBase
     {
         $iExpTime = $this->oxfiles__oxdownloadexptime->value;
         //if value is -1, takes global options
-        if ( $iExpTime < 0) {
-            $iExpTime = $this->getConfig()->getConfigParam( "iDownloadExpirationTime" );
+        if ($iExpTime < 0) {
+            $iExpTime = $this->getConfig()->getConfigParam("iDownloadExpirationTime");
         }
+
         return $iExpTime;
     }
 
@@ -457,9 +469,10 @@ class oxFile extends oxBase
     public function getSize()
     {
         $iSize = 0;
-        if ( $this->exist() ) {
-            $iSize = filesize( $this->getStoreLocation() );
+        if ($this->exist()) {
+            $iSize = filesize($this->getStoreLocation());
         }
+
         return $iSize;
     }
 

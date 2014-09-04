@@ -27,8 +27,10 @@
  */
 class Admin_Content extends oxAdminView
 {
+
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'content.tpl';

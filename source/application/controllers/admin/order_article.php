@@ -27,6 +27,7 @@
  */
 class Order_Article extends oxAdminDetails
 {
+
     /**
      * Product which was currently found by search
      *
@@ -68,7 +69,7 @@ class Order_Article extends oxAdminDetails
     {
         parent::render();
 
-        if ( $oOrder = $this->getEditObject() ) {
+        if ($oOrder = $this->getEditObject()) {
             $this->_aViewData["edit"] = $oOrder;
             $this->_aViewData["aProductVats"] = $oOrder->getProductVats(true);
         }
@@ -84,10 +85,11 @@ class Order_Article extends oxAdminDetails
     public function getEditObject()
     {
         $soxId = $this->getEditObjectId();
-        if ( $this->_oEditObject === null && isset( $soxId ) && $soxId != "-1" ) {
-            $this->_oEditObject = oxNew( "oxorder" );
-            $this->_oEditObject->load( $soxId );
+        if ($this->_oEditObject === null && isset($soxId) && $soxId != "-1") {
+            $this->_oEditObject = oxNew("oxorder");
+            $this->_oEditObject->load($soxId);
         }
+
         return $this->_oEditObject;
     }
 
@@ -98,7 +100,7 @@ class Order_Article extends oxAdminDetails
      */
     public function getSearchProductArtNr()
     {
-        return oxRegistry::getConfig()->getRequestParameter( 'sSearchArtNum' );
+        return oxRegistry::getConfig()->getRequestParameter('sSearchArtNum');
     }
 
     /**
@@ -108,12 +110,12 @@ class Order_Article extends oxAdminDetails
      */
     public function getSearchProduct()
     {
-        if ( $this->_oSearchProduct === null ) {
+        if ($this->_oSearchProduct === null) {
             $this->_oSearchProduct = false;
             $sSearchArtNum = $this->getSearchProductArtNr();
 
-            foreach ( $this->getProductList() as $oProduct ) {
-                if ( $oProduct->oxarticles__oxartnum->value == $sSearchArtNum ) {
+            foreach ($this->getProductList() as $oProduct) {
+                if ($oProduct->oxarticles__oxartnum->value == $sSearchArtNum) {
                     $this->_oSearchProduct = $oProduct;
                     break;
                 }
@@ -130,21 +132,21 @@ class Order_Article extends oxAdminDetails
      */
     public function getMainProduct()
     {
-        if ( $this->_oMainSearchProduct === null && ( $sArtNum = $this->getSearchProductArtNr() ) ) {
+        if ($this->_oMainSearchProduct === null && ($sArtNum = $this->getSearchProductArtNr())) {
             $this->_oMainSearchProduct = false;
             $sArtId = null;
 
             //get article id
-            $oDb = oxDb::getDb( oxDB::FETCH_MODE_ASSOC );
-            $sTable = getViewName( "oxarticles" );
-            $sQ  = "select oxid, oxparentid from $sTable where oxartnum = ".$oDb->quote( $sArtNum )." limit 1";
+            $oDb = oxDb::getDb(oxDB::FETCH_MODE_ASSOC);
+            $sTable = getViewName("oxarticles");
+            $sQ = "select oxid, oxparentid from $sTable where oxartnum = " . $oDb->quote($sArtNum) . " limit 1";
 
-            $rs  = $oDb->execute( $sQ );
+            $rs = $oDb->execute($sQ);
             if ($rs != false && $rs->recordCount() > 0) {
                 $sArtId = $rs->fields['OXPARENTID'] ? $rs->fields['OXPARENTID'] : $rs->fields['OXID'];
 
-                $oProduct = oxNew( "oxarticle" );
-                if ( $oProduct->load( $sArtId ) ) {
+                $oProduct = oxNew("oxarticle");
+                if ($oProduct->load($sArtId)) {
                     $this->_oMainSearchProduct = $oProduct;
                 }
             }
@@ -160,17 +162,17 @@ class Order_Article extends oxAdminDetails
      */
     public function getProductList()
     {
-        if ( $this->_oSearchProductList === null ) {
-            $this->_oSearchProductList = oxNew( "oxlist" );
+        if ($this->_oSearchProductList === null) {
+            $this->_oSearchProductList = oxNew("oxlist");
 
             // main search product is found?
-            if ( $oMainSearchProduct = $this->getMainProduct() ) {
+            if ($oMainSearchProduct = $this->getMainProduct()) {
                 // storing self to first list position
-                $this->_oSearchProductList->offsetSet( $oMainSearchProduct->getId(), $oMainSearchProduct );
+                $this->_oSearchProductList->offsetSet($oMainSearchProduct->getId(), $oMainSearchProduct);
 
                 // adding variants..
-                foreach ( $oMainSearchProduct->getVariants() as $oVariant ) {
-                    $this->_oSearchProductList->offsetSet( $oVariant->getId(), $oVariant );
+                foreach ($oMainSearchProduct->getVariants() as $oVariant) {
+                    $this->_oSearchProductList->offsetSet($oVariant->getId(), $oVariant);
                 }
             }
         }
@@ -185,21 +187,21 @@ class Order_Article extends oxAdminDetails
      */
     public function addThisArticle()
     {
-        $sOxid    = oxRegistry::getConfig()->getRequestParameter( 'aid' );
-        $dAmount  = oxRegistry::getConfig()->getRequestParameter( 'am' );
-        $oProduct = oxNew( "oxarticle" );
+        $sOxid = oxRegistry::getConfig()->getRequestParameter('aid');
+        $dAmount = oxRegistry::getConfig()->getRequestParameter('am');
+        $oProduct = oxNew("oxarticle");
 
-        if ( $sOxid && $dAmount && $oProduct->load( $sOxid ) ) {
+        if ($sOxid && $dAmount && $oProduct->load($sOxid)) {
 
             $sOrderId = $this->getEditObjectId();
-            $oOrder   = oxNew( 'oxorder' );
-            if ( $sOrderId && $oOrder->load( $sOrderId ) ) {
-                $oOrderArticle = oxNew( 'oxorderArticle' );
-                $oOrderArticle->oxorderarticles__oxartid  = new oxField( $oProduct->getId() );
-                $oOrderArticle->oxorderarticles__oxartnum = new oxField( $oProduct->oxarticles__oxartnum->value );
-                $oOrderArticle->oxorderarticles__oxamount = new oxField( $dAmount );
-                $oOrderArticle->oxorderarticles__oxselvariant = new oxField( oxRegistry::getConfig()->getRequestParameter( 'sel' ) );
-                $oOrder->recalculateOrder( array( $oOrderArticle ) );
+            $oOrder = oxNew('oxorder');
+            if ($sOrderId && $oOrder->load($sOrderId)) {
+                $oOrderArticle = oxNew('oxorderArticle');
+                $oOrderArticle->oxorderarticles__oxartid = new oxField($oProduct->getId());
+                $oOrderArticle->oxorderarticles__oxartnum = new oxField($oProduct->oxarticles__oxartnum->value);
+                $oOrderArticle->oxorderarticles__oxamount = new oxField($dAmount);
+                $oOrderArticle->oxorderarticles__oxselvariant = new oxField(oxRegistry::getConfig()->getRequestParameter('sel'));
+                $oOrder->recalculateOrder(array($oOrderArticle));
             }
         }
     }
@@ -212,14 +214,14 @@ class Order_Article extends oxAdminDetails
     public function deleteThisArticle()
     {
         // get article id
-        $sOrderArtId = oxRegistry::getConfig()->getRequestParameter( 'sArtID' );
+        $sOrderArtId = oxRegistry::getConfig()->getRequestParameter('sArtID');
         $sOrderId = $this->getEditObjectId();
 
-        $oOrderArticle = oxNew( 'oxorderarticle' );
-        $oOrder = oxNew( 'oxorder' );
+        $oOrderArticle = oxNew('oxorderarticle');
+        $oOrder = oxNew('oxorder');
 
         // order and order article exits?
-        if ( $oOrderArticle->load( $sOrderArtId ) && $oOrder->load( $sOrderId ) ) {
+        if ($oOrderArticle->load($sOrderArtId) && $oOrder->load($sOrderId)) {
             $myConfig = $this->getConfig();
 
             // deleting record
@@ -239,32 +241,32 @@ class Order_Article extends oxAdminDetails
     {
         $myConfig = $this->getConfig();
 
-        $sOrderArtId = oxRegistry::getConfig()->getRequestParameter( 'sArtID' );
-        $oArticle = oxNew( 'oxorderarticle' );
-        $oArticle->load( $sOrderArtId );
+        $sOrderArtId = oxRegistry::getConfig()->getRequestParameter('sArtID');
+        $oArticle = oxNew('oxorderarticle');
+        $oArticle->load($sOrderArtId);
 
-        if ( $oArticle->oxorderarticles__oxstorno->value == 1 ) {
-            $oArticle->oxorderarticles__oxstorno->setValue( 0 );
+        if ($oArticle->oxorderarticles__oxstorno->value == 1) {
+            $oArticle->oxorderarticles__oxstorno->setValue(0);
             $sStockSign = -1;
         } else {
-            $oArticle->oxorderarticles__oxstorno->setValue( 1 );
+            $oArticle->oxorderarticles__oxstorno->setValue(1);
             $sStockSign = 1;
         }
 
         // stock information
-        if ( $myConfig->getConfigParam( 'blUseStock' ) ) {
-            $oArticle->updateArticleStock( $oArticle->oxorderarticles__oxamount->value * $sStockSign, $myConfig->getConfigParam('blAllowNegativeStock') );
+        if ($myConfig->getConfigParam('blUseStock')) {
+            $oArticle->updateArticleStock($oArticle->oxorderarticles__oxamount->value * $sStockSign, $myConfig->getConfigParam('blAllowNegativeStock'));
         }
 
         $oDb = oxDb::getDb();
-        $sQ = "update oxorderarticles set oxstorno = ".$oDb->quote( $oArticle->oxorderarticles__oxstorno->value )." where oxid = ".$oDb->quote( $sOrderArtId );
-        $oDb->execute( $sQ );
+        $sQ = "update oxorderarticles set oxstorno = " . $oDb->quote($oArticle->oxorderarticles__oxstorno->value) . " where oxid = " . $oDb->quote($sOrderArtId);
+        $oDb->execute($sQ);
 
         //get article id
-        $sQ = "select oxartid from oxorderarticles where oxid = ".$oDb->quote( $sOrderArtId );
-        if ( ( $sArtId = oxDb::getDb()->getOne( $sQ, false, false ) ) ) {
-            $oOrder = oxNew( 'oxorder' );
-            if ( $oOrder->load( $this->getEditObjectId() ) ) {
+        $sQ = "select oxartid from oxorderarticles where oxid = " . $oDb->quote($sOrderArtId);
+        if (($sArtId = oxDb::getDb()->getOne($sQ, false, false))) {
+            $oOrder = oxNew('oxorder');
+            if ($oOrder->load($this->getEditObjectId())) {
                 $oOrder->recalculateOrder();
             }
         }
@@ -277,24 +279,24 @@ class Order_Article extends oxAdminDetails
      */
     public function updateOrder()
     {
-        $aOrderArticles = oxRegistry::getConfig()->getRequestParameter( 'aOrderArticles' );
+        $aOrderArticles = oxRegistry::getConfig()->getRequestParameter('aOrderArticles');
 
-        $oOrder = oxNew( 'oxorder' );
-        if ( is_array( $aOrderArticles ) && $oOrder->load( $this->getEditObjectId() ) ) {
+        $oOrder = oxNew('oxorder');
+        if (is_array($aOrderArticles) && $oOrder->load($this->getEditObjectId())) {
 
             $myConfig = $this->getConfig();
-            $oOrderArticles = $oOrder->getOrderArticles( true );
+            $oOrderArticles = $oOrder->getOrderArticles(true);
 
-            $blUseStock = $myConfig->getConfigParam( 'blUseStock' );
-            foreach ( $oOrderArticles as $oOrderArticle ) {
+            $blUseStock = $myConfig->getConfigParam('blUseStock');
+            foreach ($oOrderArticles as $oOrderArticle) {
                 $sItemId = $oOrderArticle->getId();
-                if ( isset( $aOrderArticles[$sItemId] ) ) {
+                if (isset($aOrderArticles[$sItemId])) {
 
                     // update stock
-                    if ( $blUseStock ) {
-                        $oOrderArticle->setNewAmount( $aOrderArticles[$sItemId]['oxamount'] );
+                    if ($blUseStock) {
+                        $oOrderArticle->setNewAmount($aOrderArticles[$sItemId]['oxamount']);
                     } else {
-                        $oOrderArticle->assign( $aOrderArticles[$sItemId] );
+                        $oOrderArticle->assign($aOrderArticles[$sItemId]);
                         $oOrderArticle->save();
                     }
                 }

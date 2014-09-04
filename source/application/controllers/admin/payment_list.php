@@ -27,8 +27,10 @@
  */
 class Payment_List extends oxAdminList
 {
+
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'payment_list.tpl';

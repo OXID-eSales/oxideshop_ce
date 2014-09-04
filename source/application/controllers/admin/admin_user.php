@@ -28,8 +28,10 @@
  */
 class Admin_User extends oxAdminView
 {
+
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'user.tpl';

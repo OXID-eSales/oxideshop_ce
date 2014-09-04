@@ -25,6 +25,7 @@
  */
 class Content_Seo extends Object_Seo
 {
+
     /**
      * Returns url type
      *
@@ -52,9 +53,9 @@ class Content_Seo extends Object_Seo
      */
     public function getEntryUri()
     {
-        $oContent = oxNew( 'oxcontent' );
-        if ( $oContent->load( $this->getEditObjectId() ) ) {
-            return $this->_getEncoder()->getContentUri( $oContent, $this->getEditLang() );
+        $oContent = oxNew('oxcontent');
+        if ($oContent->load($this->getEditObjectId())) {
+            return $this->_getEncoder()->getContentUri($oContent, $this->getEditLang());
         }
     }
 }

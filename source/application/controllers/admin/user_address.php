@@ -27,6 +27,7 @@
  */
 class User_Address extends oxAdminDetails
 {
+
     /**
      * If true, means that address was deleted
      *
@@ -46,16 +47,16 @@ class User_Address extends oxAdminDetails
         parent::render();
 
         $soxId = $this->getEditObjectId();
-        if ( $soxId != "-1" && isset( $soxId)) {
+        if ($soxId != "-1" && isset($soxId)) {
             // load object
-            $oUser = oxNew( "oxuser" );
-            $oUser->load( $soxId);
+            $oUser = oxNew("oxuser");
+            $oUser->load($soxId);
 
             // load adress
-            $soxAddressId = isset($this->sSavedOxid)?$this->sSavedOxid:oxRegistry::getConfig()->getRequestParameter( "oxaddressid");
-            if ( $soxAddressId != "-1" && isset( $soxAddressId ) ) {
-                $oAdress = oxNew( "oxaddress" );
-                $oAdress->load( $soxAddressId );
+            $soxAddressId = isset($this->sSavedOxid) ? $this->sSavedOxid : oxRegistry::getConfig()->getRequestParameter("oxaddressid");
+            if ($soxAddressId != "-1" && isset($soxAddressId)) {
+                $oAdress = oxNew("oxaddress");
+                $oAdress->load($soxAddressId);
                 $this->_aViewData["edit"] = $oAdress;
             }
 
@@ -63,8 +64,8 @@ class User_Address extends oxAdminDetails
 
             // generate selected
             $oAddressList = $oUser->getUserAddresses();
-            foreach ( $oAddressList as $oAddress ) {
-                if ( $oAddress->oxaddress__oxid->value == $soxAddressId ) {
+            foreach ($oAddressList as $oAddress) {
+                if ($oAddress->oxaddress__oxid->value == $soxAddressId) {
                     $oAddress->selected = 1;
                     break;
                 }
@@ -73,13 +74,14 @@ class User_Address extends oxAdminDetails
             $this->_aViewData["edituser"] = $oUser;
         }
 
-        $oCountryList = oxNew( "oxCountryList" );
-        $oCountryList->loadActiveCountries( oxRegistry::getLang()->getObjectTplLanguage() );
+        $oCountryList = oxNew("oxCountryList");
+        $oCountryList->loadActiveCountries(oxRegistry::getLang()->getObjectTplLanguage());
 
         $this->_aViewData["countrylist"] = $oCountryList;
 
-        if (!$this->_allowAdminEdit($soxId))
+        if (!$this->_allowAdminEdit($soxId)) {
             $this->_aViewData['readonly'] = true;
+        }
 
         return "user_address.tpl";
     }
@@ -93,16 +95,16 @@ class User_Address extends oxAdminDetails
     {
         parent::save();
 
-        if ( $this->_allowAdminEdit( $this->getEditObjectId() ) ) {
-            $aParams = oxRegistry::getConfig()->getRequestParameter( "editval" );
-            $oAdress = oxNew( "oxaddress" );
-            if ( isset( $aParams['oxaddress__oxid'] ) && $aParams['oxaddress__oxid'] == "-1" ) {
+        if ($this->_allowAdminEdit($this->getEditObjectId())) {
+            $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+            $oAdress = oxNew("oxaddress");
+            if (isset($aParams['oxaddress__oxid']) && $aParams['oxaddress__oxid'] == "-1") {
                 $aParams['oxaddress__oxid'] = null;
             } else {
-                $oAdress->load( $aParams['oxaddress__oxid'] );
+                $oAdress->load($aParams['oxaddress__oxid']);
             }
 
-            $oAdress->assign( $aParams );
+            $oAdress->assign($aParams);
             $oAdress->save();
 
             $this->sSavedOxid = $oAdress->getId();
@@ -117,11 +119,11 @@ class User_Address extends oxAdminDetails
     public function delAddress()
     {
         $this->_blDelete = false;
-        if ( $this->_allowAdminEdit( $this->getEditObjectId() ) ) {
-            $aParams = oxRegistry::getConfig()->getRequestParameter( "editval" );
-            if ( isset( $aParams['oxaddress__oxid'] ) && $aParams['oxaddress__oxid'] != "-1" ) {
-                $oAdress = oxNew( "oxaddress" );
-                $this->_blDelete = $oAdress->delete( $aParams['oxaddress__oxid'] );
+        if ($this->_allowAdminEdit($this->getEditObjectId())) {
+            $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
+            if (isset($aParams['oxaddress__oxid']) && $aParams['oxaddress__oxid'] != "-1") {
+                $oAdress = oxNew("oxaddress");
+                $this->_blDelete = $oAdress->delete($aParams['oxaddress__oxid']);
             }
         }
     }

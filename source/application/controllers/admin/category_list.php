@@ -28,6 +28,7 @@
  */
 class Category_List extends oxAdminList
 {
+
     /**
      * Name of chosen object class (default null).
      *
@@ -49,11 +50,11 @@ class Category_List extends oxAdminList
      */
     public function getListSorting()
     {
-        if ( $this->_aCurrSorting === null && !oxRegistry::getConfig()->getRequestParameter( 'sort' )  && ( $oBaseObject = $this->getItemListBaseObject() ) ) {
+        if ($this->_aCurrSorting === null && !oxRegistry::getConfig()->getRequestParameter('sort') && ($oBaseObject = $this->getItemListBaseObject())) {
             $sCatView = $oBaseObject->getCoreTableName();
 
             $this->_aCurrSorting[$sCatView]["oxrootid"] = "desc";
-            $this->_aCurrSorting[$sCatView]["oxleft"]   = "asc";
+            $this->_aCurrSorting[$sCatView]["oxleft"] = "asc";
 
             return $this->_aCurrSorting;
         } else {
@@ -77,31 +78,31 @@ class Category_List extends oxAdminList
         $iLang = $oLang->getTplLanguage();
 
         // parent category tree
-        $oCatTree = oxNew( "oxCategoryList" );
+        $oCatTree = oxNew("oxCategoryList");
         $oCatTree->loadList();
 
         // add Root as fake category
         // rebuild list as we need the root entry at the first position
         $aNewList = array();
         $oRoot = new stdClass();
-        $oRoot->oxcategories__oxid    = new oxField( null, oxField::T_RAW );
-        $oRoot->oxcategories__oxtitle = new oxField( $oLang->translateString("viewAll", $iLang ), oxField::T_RAW );
+        $oRoot->oxcategories__oxid = new oxField(null, oxField::T_RAW);
+        $oRoot->oxcategories__oxtitle = new oxField($oLang->translateString("viewAll", $iLang), oxField::T_RAW);
         $aNewList[] = $oRoot;
 
         $oRoot = new stdClass();
-        $oRoot->oxcategories__oxid    = new oxField( "oxrootid", oxField::T_RAW );
-        $oRoot->oxcategories__oxtitle = new oxField( "-- ".$oLang->translateString("mainCategory", $iLang )." --", oxField::T_RAW );
+        $oRoot->oxcategories__oxid = new oxField("oxrootid", oxField::T_RAW);
+        $oRoot->oxcategories__oxtitle = new oxField("-- " . $oLang->translateString("mainCategory", $iLang) . " --", oxField::T_RAW);
         $aNewList[] = $oRoot;
 
-        foreach ( $oCatTree as $oCategory ) {
+        foreach ($oCatTree as $oCategory) {
             $aNewList[] = $oCategory;
         }
 
-        $oCatTree->assign( $aNewList );
+        $oCatTree->assign($aNewList);
         $aFilter = $this->getListFilter();
-        if ( is_array( $aFilter ) && isset( $aFilter["oxcategories"]["oxparentid"] ) ) {
-            foreach ( $oCatTree as $oCategory ) {
-                if ( $oCategory->oxcategories__oxid->value == $aFilter["oxcategories"]["oxparentid"] ) {
+        if (is_array($aFilter) && isset($aFilter["oxcategories"]["oxparentid"])) {
+            foreach ($oCatTree as $oCategory) {
+                if ($oCategory->oxcategories__oxid->value == $aFilter["oxcategories"]["oxparentid"]) {
                     $oCategory->selected = 1;
                     break;
                 }
@@ -109,6 +110,7 @@ class Category_List extends oxAdminList
         }
 
         $this->_aViewData["cattree"] = $oCatTree;
+
         return "category_list.tpl";
     }
 }

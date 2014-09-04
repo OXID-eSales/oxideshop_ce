@@ -28,6 +28,7 @@
  */
 class oxObjectException extends oxException
 {
+
     /**
      * Object causing exception.
      *
@@ -42,7 +43,7 @@ class oxObjectException extends oxException
      *
      * @return null
      */
-    public function setObject( $oObject )
+    public function setObject($oObject)
     {
         $this->_oObject = $oObject;
     }
@@ -65,6 +66,6 @@ class oxObjectException extends oxException
      */
     public function getString()
     {
-        return __CLASS__.'-'.parent::getString()." Faulty Object --> ".get_class($this->_oObject)."\n";
+        return __CLASS__ . '-' . parent::getString() . " Faulty Object --> " . get_class($this->_oObject) . "\n";
     }
 }

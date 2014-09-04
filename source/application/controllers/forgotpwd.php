@@ -29,14 +29,17 @@
  */
 class ForgotPwd extends oxUBase
 {
+
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'page/account/forgotpwd.tpl';
 
     /**
      * Send forgot E-Mail.
+     *
      * @var string
      */
     protected $_sForgotEmail = null;
@@ -57,6 +60,7 @@ class ForgotPwd extends oxUBase
 
     /**
      * Sign if to load and show bargain action
+     *
      * @var bool
      */
     protected $_blBargainAction = true;
@@ -72,17 +76,17 @@ class ForgotPwd extends oxUBase
      */
     public function forgotPassword()
     {
-        $sEmail = oxRegistry::getConfig()->getRequestParameter( 'lgn_usr' );
+        $sEmail = oxRegistry::getConfig()->getRequestParameter('lgn_usr');
         $this->_sForgotEmail = $sEmail;
-        $oEmail = oxNew( 'oxemail' );
+        $oEmail = oxNew('oxemail');
 
         // problems sending passwd reminder ?
         $iSuccess = false;
-        if ( $sEmail ) {
-            $iSuccess = $oEmail->sendForgotPwdEmail( $sEmail );
+        if ($sEmail) {
+            $iSuccess = $oEmail->sendForgotPwdEmail($sEmail);
         }
-        if ( $iSuccess !== true ) {
-            $sError = ($iSuccess === false)? 'ERROR_MESSAGE_PASSWORD_EMAIL_INVALID' : 'MESSAGE_NOT_ABLE_TO_SEND_EMAIL';
+        if ($iSuccess !== true) {
+            $sError = ($iSuccess === false) ? 'ERROR_MESSAGE_PASSWORD_EMAIL_INVALID' : 'MESSAGE_NOT_ABLE_TO_SEND_EMAIL';
             oxRegistry::get("oxUtilsView")->addErrorToDisplay($sError, false, true);
             $this->_sForgotEmail = false;
         }
@@ -96,35 +100,36 @@ class ForgotPwd extends oxUBase
      */
     public function updatePassword()
     {
-        $sNewPass  = oxRegistry::getConfig()->getRequestParameter( 'password_new', true );
-        $sConfPass = oxRegistry::getConfig()->getRequestParameter( 'password_new_confirm', true );
+        $sNewPass = oxRegistry::getConfig()->getRequestParameter('password_new', true);
+        $sConfPass = oxRegistry::getConfig()->getRequestParameter('password_new_confirm', true);
 
-        $oUser = oxNew( 'oxuser' );
+        $oUser = oxNew('oxuser');
 
         /** @var oxInputValidator $oInputValidator */
         $oInputValidator = oxRegistry::get('oxInputValidator');
-        if ( ( $oExcp = $oInputValidator->checkPassword( $oUser, $sNewPass, $sConfPass, true ) ) ) {
-            return oxRegistry::get("oxUtilsView")->addErrorToDisplay( $oExcp->getMessage(), false, true );
+        if (($oExcp = $oInputValidator->checkPassword($oUser, $sNewPass, $sConfPass, true))) {
+            return oxRegistry::get("oxUtilsView")->addErrorToDisplay($oExcp->getMessage(), false, true);
         }
 
         // passwords are fine - updating and loggin user in
-        if ( $oUser->loadUserByUpdateId( $this->getUpdateId() ) ) {
+        if ($oUser->loadUserByUpdateId($this->getUpdateId())) {
 
             // setting new pass ..
-            $oUser->setPassword( $sNewPass );
+            $oUser->setPassword($sNewPass);
 
             // resetting update pass params
-            $oUser->setUpdateKey( true );
+            $oUser->setUpdateKey(true);
 
             // saving ..
             $oUser->save();
 
             // forcing user login
-            oxRegistry::getSession()->setVariable( 'usr', $oUser->getId() );
+            oxRegistry::getSession()->setVariable('usr', $oUser->getId());
+
             return 'forgotpwd?success=1';
         } else {
             // expired reminder
-            return oxRegistry::get("oxUtilsView")->addErrorToDisplay( 'ERROR_MESSAGE_PASSWORD_LINK_EXPIRED', false, true );
+            return oxRegistry::get("oxUtilsView")->addErrorToDisplay('ERROR_MESSAGE_PASSWORD_LINK_EXPIRED', false, true);
         }
     }
 
@@ -135,7 +140,7 @@ class ForgotPwd extends oxUBase
      */
     public function updateSuccess()
     {
-        return (bool) oxRegistry::getConfig()->getRequestParameter( 'success' );
+        return (bool) oxRegistry::getConfig()->getRequestParameter('success');
     }
 
     /**
@@ -155,7 +160,7 @@ class ForgotPwd extends oxUBase
      */
     public function getUpdateId()
     {
-        return oxRegistry::getConfig()->getRequestParameter( 'uid' );
+        return oxRegistry::getConfig()->getRequestParameter('uid');
     }
 
     /**
@@ -165,8 +170,8 @@ class ForgotPwd extends oxUBase
      */
     public function isExpiredLink()
     {
-        if ( ( $sKey = $this->getUpdateId() ) ) {
-            $blExpired = oxNew( 'oxuser' )->isExpiredUpdateId( $sKey );
+        if (($sKey = $this->getUpdateId())) {
+            $blExpired = oxNew('oxuser')->isExpiredUpdateId($sKey);
         }
 
         return $blExpired;
@@ -192,8 +197,8 @@ class ForgotPwd extends oxUBase
         $aPaths = array();
         $aPath = array();
 
-        $aPath['title'] = oxRegistry::getLang()->translateString( 'FORGOT_PASSWORD', oxRegistry::getLang()->getBaseLanguage(), false );
-        $aPath['link']  = $this->getLink();
+        $aPath['title'] = oxRegistry::getLang()->translateString('FORGOT_PASSWORD', oxRegistry::getLang()->getBaseLanguage(), false);
+        $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;
 
         return $aPaths;
@@ -203,13 +208,13 @@ class ForgotPwd extends oxUBase
     {
         $sTitle = 'FORGOT_PASSWORD';
 
-        if ( $this->showUpdateScreen() ){
+        if ($this->showUpdateScreen()) {
             $sTitle = 'NEW_PASSWORD';
-        } elseif ( $this->updateSuccess() ){
+        } elseif ($this->updateSuccess()) {
             $sTitle = 'CHANGE_PASSWORD';
         }
 
-        return oxRegistry::getLang()->translateString( $sTitle, oxRegistry::getLang()->getBaseLanguage(), false );
+        return oxRegistry::getLang()->translateString($sTitle, oxRegistry::getLang()->getBaseLanguage(), false);
     }
 
 }

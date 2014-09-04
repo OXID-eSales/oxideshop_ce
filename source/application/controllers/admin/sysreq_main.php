@@ -26,6 +26,7 @@
  */
 class sysreq_main extends oxAdminDetails
 {
+
     /**
      * Loads article Mercators info, passes it to Smarty engine and
      * returns name of template file "Mercator_main.tpl".
@@ -51,9 +52,9 @@ class sysreq_main extends oxAdminDetails
      *
      * @return string
      */
-    public function getModuleClass( $iModuleState )
+    public function getModuleClass($iModuleState)
     {
-        switch ( $iModuleState ) {
+        switch ($iModuleState) {
             case 2:
                 $sClass = 'pass';
                 break;
@@ -95,6 +96,7 @@ class sysreq_main extends oxAdminDetails
     public function getMissingTemplateBlocks()
     {
         $oSysReq = oxNew('oxSysRequirements');
+
         return $oSysReq->getMissingTemplateBlocks();
     }
 }

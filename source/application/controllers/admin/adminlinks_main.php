@@ -27,6 +27,7 @@
  */
 class Adminlinks_Main extends oxAdminDetails
 {
+
     /**
      * Sets link information data (or leaves empty), returns name of template
      * file "adminlinks_main.tpl".
@@ -35,36 +36,36 @@ class Adminlinks_Main extends oxAdminDetails
      */
     public function render()
     {
-        $myConfig  = $this->getConfig();
+        $myConfig = $this->getConfig();
 
         parent::render();
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
-        if ( $soxId != "-1" && isset( $soxId)) {
+        if ($soxId != "-1" && isset($soxId)) {
             // load object
-            $oLinks = oxNew( "oxlinks", getViewName( 'oxlinks'));
-            $oLinks->loadInLang( $this->_iEditLang, $soxId );
+            $oLinks = oxNew("oxlinks", getViewName('oxlinks'));
+            $oLinks->loadInLang($this->_iEditLang, $soxId);
 
             $oOtherLang = $oLinks->getAvailableInLangs();
             if (!isset($oOtherLang[$this->_iEditLang])) {
                 // echo "language entry doesn't exist! using: ".key($oOtherLang);
-                $oLinks->loadInLang( key($oOtherLang), $soxId );
+                $oLinks->loadInLang(key($oOtherLang), $soxId);
             }
-            $this->_aViewData["edit"] =  $oLinks;
+            $this->_aViewData["edit"] = $oLinks;
 
             // remove already created languages
-            $this->_aViewData["posslang"] =  array_diff (oxRegistry::getLang()->getLanguageNames(), $oOtherLang);
+            $this->_aViewData["posslang"] = array_diff(oxRegistry::getLang()->getLanguageNames(), $oOtherLang);
 
-            foreach ( $oOtherLang as $id => $language) {
-                $oLang= new stdClass();
+            foreach ($oOtherLang as $id => $language) {
+                $oLang = new stdClass();
                 $oLang->sLangDesc = $language;
                 $oLang->selected = ($id == $this->_iEditLang);
-                $this->_aViewData["otherlang"][$id] =  clone $oLang;
+                $this->_aViewData["otherlang"][$id] = clone $oLang;
             }
         }
 
         // generate editor
-        $this->_aViewData["editor"] = $this->_generateTextEditor( "100%", 255, $oLinks, "oxlinks__oxurldesc", "links.tpl.css");
+        $this->_aViewData["editor"] = $this->_generateTextEditor("100%", 255, $oLinks, "oxlinks__oxurldesc", "links.tpl.css");
 
         return "adminlinks_main.tpl";
     }
@@ -77,32 +78,33 @@ class Adminlinks_Main extends oxAdminDetails
     public function save()
     {
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval");
+        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
         // checkbox handling
-        if ( !isset( $aParams['oxlinks__oxactive']))
+        if (!isset($aParams['oxlinks__oxactive'])) {
             $aParams['oxlinks__oxactive'] = 0;
+        }
 
         // adds space to the end of URL description to keep new added links visible
         // if URL description left empty
         if (isset($aParams['oxlinks__oxurldesc']) && strlen($aParams['oxlinks__oxurldesc']) == 0)
             $aParams['oxlinks__oxurldesc'] .= " ";
 
-        if ( !$aParams['oxlinks__oxinsert']) {
+        if (!$aParams['oxlinks__oxinsert']) {
             // sets default (?) date format to output
             // else if possible - changes date format to system compatible
-            $sDate = date(oxRegistry::getLang()->translateString( "simpleDateFormat"));
+            $sDate = date(oxRegistry::getLang()->translateString("simpleDateFormat"));
             if ($sDate == "simpleDateFormat")
-                $aParams['oxlinks__oxinsert'] = date( "Y-m-d");
+                $aParams['oxlinks__oxinsert'] = date("Y-m-d");
             else
                 $aParams['oxlinks__oxinsert'] = $sDate;
         }
 
         $iEditLanguage = oxRegistry::getConfig()->getRequestParameter("editlanguage");
-        $oLinks = oxNew( "oxlinks", getViewName( 'oxlinks'));
+        $oLinks = oxNew("oxlinks", getViewName('oxlinks'));
 
-        if ( $soxId != "-1") {
+        if ($soxId != "-1") {
             //$oLinks->load( $soxId );
-            $oLinks->loadInLang( $iEditLanguage, $soxId );
+            $oLinks->loadInLang($iEditLanguage, $soxId);
 
         } else {
             $aParams['oxlinks__oxid'] = null;
@@ -111,14 +113,14 @@ class Adminlinks_Main extends oxAdminDetails
         //$aParams = $oLinks->ConvertNameArray2Idx( $aParams);
 
         $oLinks->setLanguage(0);
-        $oLinks->assign( $aParams);
-        $oLinks->setLanguage( $iEditLanguage );
+        $oLinks->assign($aParams);
+        $oLinks->setLanguage($iEditLanguage);
         $oLinks->save();
 
         parent::save();
 
         // set oxid if inserted
-        $this->setEditObjectId( $oLinks->getId() );
+        $this->setEditObjectId($oLinks->getId());
     }
 
     /**
@@ -129,19 +131,19 @@ class Adminlinks_Main extends oxAdminDetails
     public function saveinnlang()
     {
         $soxId = $this->getEditObjectId();
-        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval");
+        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
         // checkbox handling
-        if ( !isset( $aParams['oxlinks__oxactive']))
+        if (!isset($aParams['oxlinks__oxactive']))
             $aParams['oxlinks__oxactive'] = 0;
 
             // shopid
-            $sShopID = oxRegistry::getSession()->getVariable( "actshop");
+            $sShopID = oxRegistry::getSession()->getVariable("actshop");
             $aParams['oxlinks__oxshopid'] = $sShopID;
-        $oLinks = oxNew( "oxlinks", getViewName( 'oxlinks'));
+        $oLinks = oxNew("oxlinks", getViewName('oxlinks'));
         $iEditLanguage = oxRegistry::getConfig()->getRequestParameter("editlanguage");
 
-        if( $soxId != "-1")
-            $oLinks->loadInLang( $iEditLanguage, $soxId );
+        if ($soxId != "-1")
+            $oLinks->loadInLang($iEditLanguage, $soxId);
         else
             $aParams['oxlinks__oxid'] = null;
         //$aParams = $oLinks->ConvertNameArray2Idx( $aParams);
@@ -149,14 +151,14 @@ class Adminlinks_Main extends oxAdminDetails
 
 
         $oLinks->setLanguage(0);
-        $oLinks->assign( $aParams);
+        $oLinks->assign($aParams);
 
         // apply new language
-        $oLinks->setLanguage( oxRegistry::getConfig()->getRequestParameter( "new_lang" ) );
+        $oLinks->setLanguage(oxRegistry::getConfig()->getRequestParameter("new_lang"));
         $oLinks->save();
 
         // set oxid if inserted
-        $this->setEditObjectId( $oLinks->getId() );
+        $this->setEditObjectId($oLinks->getId());
     }
 
     /**

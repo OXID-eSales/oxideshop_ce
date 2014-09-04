@@ -26,12 +26,14 @@
  */
 class PriceAlarm_Send extends oxAdminList
 {
+
     /**
      * Default tab number
      *
      * @var int
      */
     protected $_iDefEdit = 1;
+
     /**
      * Executes parent method parent::render(), creates oxpricealarm object,
      * sends pricealarm to iAllCnts of chosen groups and returns name of template
@@ -43,53 +45,54 @@ class PriceAlarm_Send extends oxAdminList
     {
         parent::render();
 
-        $myConfig  = $this->getConfig();
+        $myConfig = $this->getConfig();
         $oDB = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
 
         ini_set("session.gc_maxlifetime", 36000);
 
-        $iStart     = oxRegistry::getConfig()->getRequestParameter( "iStart");
-        $iAllCnt    = oxRegistry::getConfig()->getRequestParameter( "iAllCnt");
+        $iStart = oxRegistry::getConfig()->getRequestParameter("iStart");
+        $iAllCnt = oxRegistry::getConfig()->getRequestParameter("iAllCnt");
             // #1140 R
             $sSelect = "select oxpricealarm.oxid, oxpricealarm.oxemail, oxpricealarm.oxartid, oxpricealarm.oxprice from oxpricealarm, oxarticles where oxarticles.oxid = oxpricealarm.oxartid and oxpricealarm.oxsended = '0000-00-00 00:00:00'";
             if (isset($iStart)) {
-                $rs = $oDB->SelectLimit( $sSelect, $myConfig->getConfigParam( 'iCntofMails' ), $iStart);
+                $rs = $oDB->SelectLimit($sSelect, $myConfig->getConfigParam('iCntofMails'), $iStart);
             } else {
-                $rs = $oDB->Execute( $sSelect);
+                $rs = $oDB->Execute($sSelect);
             }
 
-            $iAllCntTmp=0;
+            $iAllCntTmp = 0;
 
             if ($rs != false && $rs->recordCount() > 0) {
                 while (!$rs->EOF) {
-                    $oArticle = oxNew("oxarticle" );
+                    $oArticle = oxNew("oxarticle");
                     $oArticle->load($rs->fields['oxid']);
                     if ($oArticle->getPrice()->getBruttoPrice() <= $rs->fields['oxprice']) {
-                        $this->sendeMail( $rs->fields['oxemail'], $rs->fields['oxartid'], $rs->fields['oxid'], $rs->fields['oxprice']);
+                        $this->sendeMail($rs->fields['oxemail'], $rs->fields['oxartid'], $rs->fields['oxid'], $rs->fields['oxprice']);
                         $iAllCntTmp++;
                     }
                     $rs->moveNext();
                 }
             }
-            if ( !isset( $iStart)) {
+            if (!isset($iStart)) {
                 // first call
-                $iStart     = 0;
-                $iAllCnt    = $iAllCntTmp;
+                $iStart = 0;
+                $iAllCnt = $iAllCntTmp;
             }
 
 
         // adavance mail pointer and set parameter
-        $iStart += $myConfig->getConfigParam( 'iCntofMails' );
+        $iStart += $myConfig->getConfigParam('iCntofMails');
 
-        $this->_aViewData["iStart"]  =  $iStart;
-        $this->_aViewData["iAllCnt"] =  $iAllCnt;
+        $this->_aViewData["iStart"] = $iStart;
+        $this->_aViewData["iAllCnt"] = $iAllCnt;
         $this->_aViewData["actlang"] = oxRegistry::getLang()->getBaseLanguage();
 
         // end ?
-        if ( $iStart < $iAllCnt)
+        if ($iStart < $iAllCnt)
             $sPage = "pricealarm_send.tpl";
-        else
+        else {
             $sPage = "pricealarm_done.tpl";
+        }
 
         return $sPage;
     }
@@ -101,9 +104,9 @@ class PriceAlarm_Send extends oxAdminList
      *
      * @return null
      */
-    protected function _setupNavigation( $sId )
+    protected function _setupNavigation($sId)
     {
-        parent::_setupNavigation( 'pricealarm_list' );
+        parent::_setupNavigation('pricealarm_list');
     }
 
     /**
@@ -116,25 +119,25 @@ class PriceAlarm_Send extends oxAdminList
      *
      * @return null
      */
-    public function sendeMail( $sEMail, $sProductID, $sPricealarmID, $sBidPrice )
+    public function sendeMail($sEMail, $sProductID, $sPricealarmID, $sBidPrice)
     {
         $myConfig = $this->getConfig();
-        $oAlarm = oxNew( "oxpricealarm" );
-        $oAlarm->load( $sPricealarmID );
+        $oAlarm = oxNew("oxpricealarm");
+        $oAlarm->load($sPricealarmID);
 
         $oLang = oxRegistry::getLang();
         $iLang = (int) $oAlarm->oxpricealarm__oxlang->value;
 
         $iOldLangId = $oLang->getTplLanguage();
-        $oLang->setTplLanguage( $iLang );
+        $oLang->setTplLanguage($iLang);
 
-        $oEmail = oxNew( 'oxemail' );
-        $blSuccess = (int) $oEmail->sendPricealarmToCustomer( $sEMail, $oAlarm );
+        $oEmail = oxNew('oxemail');
+        $blSuccess = (int) $oEmail->sendPricealarmToCustomer($sEMail, $oAlarm);
 
-        $oLang->setTplLanguage( $iOldLangId );
+        $oLang->setTplLanguage($iOldLangId);
 
-        if ( $blSuccess ) {
-            $oAlarm->oxpricealarm__oxsended = new oxField( date( "Y-m-d H:i:s" ) );
+        if ($blSuccess) {
+            $oAlarm->oxpricealarm__oxsended = new oxField(date("Y-m-d H:i:s"));
             $oAlarm->save();
         }
 

@@ -34,6 +34,7 @@ eval("class oxErpArticle450_parent extends $sArticleClass {};");
  */
 class oxErpArticle450 extends oxErpArticle450_parent
 {
+
     /**
      * Sets article parameter
      *
@@ -102,13 +103,13 @@ $sArticleClass = 'oxErpArticle450';
 eval("class oxErpArticle_parent extends $sArticleClass {};");
 
 
-
 /**
  * article class, used inside erp
  * includes variants loading disabling functionality
  */
 class oxErpArticle extends oxErpArticle_parent
 {
+
     /**
      * disable variant loading
      *
@@ -123,6 +124,7 @@ class oxErpArticle extends oxErpArticle_parent
  */
 class oxERPType_Article extends oxERPType
 {
+
     /**
      * class constructor
      *
@@ -132,7 +134,7 @@ class oxERPType_Article extends oxERPType
     {
         parent::__construct();
 
-        $this->_sTableName      = 'oxarticles';
+        $this->_sTableName = 'oxarticles';
         $this->_sShopObjectName = 'oxErpArticle';
     }
 
@@ -148,7 +150,7 @@ class oxERPType_Article extends oxERPType
     protected function _preAssignObject($oShopObject, $aData, $blAllowCustomShopId)
     {
         if (!isset($aData['OXSTOCKFLAG'])) {
-            if (!$aData['OXID'] || !$oShopObject->exists( $aData['OXID'] )) {
+            if (!$aData['OXID'] || !$oShopObject->exists($aData['OXID'])) {
                 // default value is 1 according to eShop admin functionality
                 $aData['OXSTOCKFLAG'] = 1;
             }

@@ -25,6 +25,7 @@
  */
 class Category_Seo extends Object_Seo
 {
+
     /**
      * Updating showsuffix field
      *
@@ -33,12 +34,12 @@ class Category_Seo extends Object_Seo
     public function save()
     {
         $sOxid = $this->getEditObjectId();
-        $oCategory = oxNew( 'oxCategory' );
-        if ( $oCategory->load( $sOxid ) ) {
-            $oCategory->oxcategories__oxshowsuffix = new oxField( (int) oxRegistry::getConfig()->getRequestParameter( 'blShowSuffix' ) );
+        $oCategory = oxNew('oxCategory');
+        if ($oCategory->load($sOxid)) {
+            $oCategory->oxcategories__oxshowsuffix = new oxField((int) oxRegistry::getConfig()->getRequestParameter('blShowSuffix'));
             $oCategory->save();
 
-            $this->_getEncoder()->markRelatedAsExpired( $oCategory );
+            $this->_getEncoder()->markRelatedAsExpired($oCategory);
         }
 
         return parent::save();
@@ -81,8 +82,8 @@ class Category_Seo extends Object_Seo
      */
     public function isEntrySuffixed()
     {
-        $oCategory = oxNew( 'oxcategory' );
-        if ( $oCategory->load( $this->getEditObjectId() ) ) {
+        $oCategory = oxNew('oxcategory');
+        if ($oCategory->load($this->getEditObjectId())) {
             return (bool) $oCategory->oxcategories__oxshowsuffix->value;
         }
     }
@@ -94,9 +95,9 @@ class Category_Seo extends Object_Seo
      */
     public function getEntryUri()
     {
-        $oCategory = oxNew( 'oxcategory' );
-        if ( $oCategory->load( $this->getEditObjectId() ) ) {
-            return $this->_getEncoder()->getCategoryUri( $oCategory, $this->getEditLang() );
+        $oCategory = oxNew('oxcategory');
+        if ($oCategory->load($this->getEditObjectId())) {
+            return $this->_getEncoder()->getCategoryUri($oCategory, $this->getEditLang());
         }
     }
 }

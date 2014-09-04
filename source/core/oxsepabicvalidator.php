@@ -40,11 +40,11 @@ class oxSepaBICValidator
      *
      * @return bool
      */
-    public function isValid( $sBIC )
+    public function isValid($sBIC)
     {
-        $sBIC = strtoupper( trim( $sBIC ) );
+        $sBIC = strtoupper(trim($sBIC));
 
-        return (bool) getStr()->preg_match( "(^[A-Z]{4}[A-Z]{2}[A-Z0-9]{2}([A-Z0-9]{3})?$)", $sBIC );
+        return (bool) getStr()->preg_match("(^[A-Z]{4}[A-Z]{2}[A-Z0-9]{2}([A-Z0-9]{3})?$)", $sBIC);
     }
 
 }

@@ -25,6 +25,7 @@
  */
 class oxDisplayError implements oxIDisplayError
 {
+
     /**
      * Error message
      *
@@ -39,7 +40,7 @@ class oxDisplayError implements oxIDisplayError
      */
     public function getOxMessage()
     {
-        return oxRegistry::getLang()->translateString( $this->_sMessage );
+        return oxRegistry::getLang()->translateString($this->_sMessage);
     }
 
     /**
@@ -49,7 +50,7 @@ class oxDisplayError implements oxIDisplayError
      *
      * @return null
      */
-    public function setMessage( $sMessage )
+    public function setMessage($sMessage)
     {
         $this->_sMessage = $sMessage;
     }
@@ -71,7 +72,7 @@ class oxDisplayError implements oxIDisplayError
      *
      * @return empty string
      */
-    public function getValue( $sName )
+    public function getValue($sName)
     {
         return '';
     }

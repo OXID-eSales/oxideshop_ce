@@ -26,6 +26,7 @@
  */
 class oxCompanyVatIn
 {
+
     /**
      * VATIN
      *
@@ -38,7 +39,7 @@ class oxCompanyVatIn
      *
      * @param string $sCompanyVatNumber - company vat identification number.
      */
-    function __construct( $sCompanyVatNumber )
+    function __construct($sCompanyVatNumber)
     {
         $this->_sCompanyVatNumber = $sCompanyVatNumber;
     }
@@ -50,7 +51,7 @@ class oxCompanyVatIn
      */
     public function getCountryCode()
     {
-        return (string) oxStr::getStr()->strtoupper(oxStr::getStr()->substr( $this->_cleanUp($this->_sCompanyVatNumber), 0, 2 ));
+        return (string) oxStr::getStr()->strtoupper(oxStr::getStr()->substr($this->_cleanUp($this->_sCompanyVatNumber), 0, 2));
     }
 
     /**
@@ -60,7 +61,7 @@ class oxCompanyVatIn
      */
     public function getNumbers()
     {
-        return (string) oxStr::getStr()->substr( $this->_cleanUp($this->_sCompanyVatNumber), 2 );
+        return (string) oxStr::getStr()->substr($this->_cleanUp($this->_sCompanyVatNumber), 2);
     }
 
     /**
@@ -70,9 +71,9 @@ class oxCompanyVatIn
      *
      * @return string
      */
-    protected function _cleanUp( $sValue )
+    protected function _cleanUp($sValue)
     {
-        return (string) oxStr::getStr()->preg_replace( "/\s|-/", '', $sValue);
+        return (string) oxStr::getStr()->preg_replace("/\s|-/", '', $sValue);
     }
 
 

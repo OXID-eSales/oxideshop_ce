@@ -25,10 +25,11 @@
  * Validates metadata contents and checks if it was not changed after module activation.
  *
  * @internal Do not make a module extension for this class.
- * @see http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
+ * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
  */
 class oxModuleMetadataAgainstShopValidator implements oxIModuleValidator
 {
+
     /**
      * Validates module metadata.
      * Return true if module metadata is valid.
@@ -43,11 +44,11 @@ class oxModuleMetadataAgainstShopValidator implements oxIModuleValidator
 
         $blModuleExtensionsMatchShopInformation = $this->_moduleExtensionsInformationExistsInShop($oModule);
         $blModuleInformationMatchShopInformation = $blModuleExtensionsMatchShopInformation
-            && $this->_moduleFilesInformationExistInShop($oModule);
+                                                   && $this->_moduleFilesInformationExistInShop($oModule);
         $blModuleInformationMatchShopInformation = $blModuleInformationMatchShopInformation
-            && $this->_moduleHasAllExtensions($oModule);
+                                                   && $this->_moduleHasAllExtensions($oModule);
         $blModuleInformationMatchShopInformation = $blModuleInformationMatchShopInformation
-            && $this->_moduleHasAllFiles($oModule);
+                                                   && $this->_moduleHasAllFiles($oModule);
 
         return $blModuleInformationMatchShopInformation;
     }
@@ -96,6 +97,7 @@ class oxModuleMetadataAgainstShopValidator implements oxIModuleValidator
         $aShopInformationAboutModulesFiles = $oModuleList->getModuleFiles();
 
         $aMissingFiles = array_diff($aModuleFiles, $aShopInformationAboutModulesFiles);
+
         return (count($aMissingFiles)) === 0;
     }
 

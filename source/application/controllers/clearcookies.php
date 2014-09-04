@@ -25,8 +25,10 @@
  */
 class ClearCookies extends oxUBase
 {
+
     /**
      * Current view template
+     *
      * @var string
      */
     protected $_sThisTemplate = 'page/info/clearcookies.tpl';
@@ -55,15 +57,15 @@ class ClearCookies extends oxUBase
     protected function _removeCookies()
     {
         $oUtilsServer = oxRegistry::get("oxUtilsServer");
-        if ( isset( $_SERVER['HTTP_COOKIE'] ) ) {
-            $aCookies = explode( ';', $_SERVER['HTTP_COOKIE'] );
-            foreach ( $aCookies as $sCookie ) {
+        if (isset($_SERVER['HTTP_COOKIE'])) {
+            $aCookies = explode(';', $_SERVER['HTTP_COOKIE']);
+            foreach ($aCookies as $sCookie) {
                 $sRawCookie = explode('=', $sCookie);
-                $oUtilsServer->setOxCookie( trim( $sRawCookie[0] ), '', time() - 10000, '/' );
+                $oUtilsServer->setOxCookie(trim($sRawCookie[0]), '', time() - 10000, '/');
             }
         }
-        $oUtilsServer->setOxCookie( 'language', '', time() - 10000, '/' );
-        $oUtilsServer->setOxCookie( 'displayedCookiesNotification', '', time() - 10000, '/' );
+        $oUtilsServer->setOxCookie('language', '', time() - 10000, '/');
+        $oUtilsServer->setOxCookie('displayedCookiesNotification', '', time() - 10000, '/');
     }
 
     /**
@@ -76,8 +78,8 @@ class ClearCookies extends oxUBase
         $aPaths = array();
         $aPath = array();
 
-        $aPath['title'] = oxRegistry::getLang()->translateString( 'INFO_ABOUT_COOKIES', oxRegistry::getLang()->getBaseLanguage(), false );
-        $aPath['link']  = $this->getLink();
+        $aPath['title'] = oxRegistry::getLang()->translateString('INFO_ABOUT_COOKIES', oxRegistry::getLang()->getBaseLanguage(), false);
+        $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;
 
         return $aPaths;

@@ -28,6 +28,7 @@
  */
 class Article_Review extends oxAdminDetails
 {
+
     /**
      * Loads selected article review information, returns name of template
      * file "article_review.tpl".
@@ -40,38 +41,38 @@ class Article_Review extends oxAdminDetails
 
         parent::render();
 
-        $this->_aViewData["edit"] = $oArticle = oxNew( "oxarticle" );
+        $this->_aViewData["edit"] = $oArticle = oxNew("oxarticle");
 
-        $soxId    = $this->getEditObjectId();
-        $sRevoxId = oxRegistry::getConfig()->getRequestParameter( 'rev_oxid' );
-        if ( $soxId != "-1" && isset( $soxId)) {
+        $soxId = $this->getEditObjectId();
+        $sRevoxId = oxRegistry::getConfig()->getRequestParameter('rev_oxid');
+        if ($soxId != "-1" && isset($soxId)) {
 
             // load object
-            $oArticle->load( $soxId);
+            $oArticle->load($soxId);
 
 
             $oRevs = $this->_getReviewList($oArticle);
 
-            foreach ( $oRevs as $oRev ) {
-                if ( $oRev->oxreviews__oxid->value == $sRevoxId ) {
+            foreach ($oRevs as $oRev) {
+                if ($oRev->oxreviews__oxid->value == $sRevoxId) {
                     $oRev->selected = 1;
                     break;
                 }
             }
-            $this->_aViewData["allreviews"]   = $oRevs;
+            $this->_aViewData["allreviews"] = $oRevs;
             $this->_aViewData["editlanguage"] = $this->_iEditLang;
 
-            if ( isset( $sRevoxId ) ) {
-                $oReview = oxNew( "oxreview" );
-                $oReview->load( $sRevoxId );
+            if (isset($sRevoxId)) {
+                $oReview = oxNew("oxreview");
+                $oReview->load($sRevoxId);
                 $this->_aViewData["editreview"] = $oReview;
 
-                $oUser = oxNew( "oxuser" );
-                $oUser->load( $oReview->oxreviews__oxuserid->value);
+                $oUser = oxNew("oxuser");
+                $oUser->load($oReview->oxreviews__oxuserid->value);
                 $this->_aViewData["user"] = $oUser;
             }
             //show "active" checkbox if moderating is active
-            $this->_aViewData["blShowActBox"] = $myConfig->getConfigParam( 'blGBModerate' );
+            $this->_aViewData["blShowActBox"] = $myConfig->getConfigParam('blGBModerate');
 
         }
 
@@ -88,17 +89,17 @@ class Article_Review extends oxAdminDetails
     protected function _getReviewList($oArticle)
     {
         $oDb = oxDb::getDb();
-        $sSelect  = "select oxreviews.* from oxreviews
-                     where oxreviews.OXOBJECTID = ".$oDb->quote( $oArticle->oxarticles__oxid->value ) ."
+        $sSelect = "select oxreviews.* from oxreviews
+                     where oxreviews.OXOBJECTID = " . $oDb->quote($oArticle->oxarticles__oxid->value) . "
                      and oxreviews.oxtype = 'oxarticle'";
 
         $aVariantList = $oArticle->getVariants();
 
-        if ( $this->getConfig()->getConfigParam( 'blShowVariantReviews' ) && count( $aVariantList )) {
+        if ($this->getConfig()->getConfigParam('blShowVariantReviews') && count($aVariantList)) {
 
             // verifying rights
-            foreach ( $aVariantList as $oVariant ) {
-                $sSelect .= "or oxreviews.oxobjectid = ".$oDb->quote( $oVariant->oxarticles__oxid->value )." ";
+            foreach ($aVariantList as $oVariant) {
+                $sSelect .= "or oxreviews.oxobjectid = " . $oDb->quote($oVariant->oxarticles__oxid->value) . " ";
             }
 
         }
@@ -108,9 +109,9 @@ class Article_Review extends oxAdminDetails
         $sSelect .= "and oxreviews.oxtext != '' ";
 
         // all reviews
-        $oRevs = oxNew( "oxlist" );
-        $oRevs->init( "oxreview" );
-        $oRevs->selectString( $sSelect );
+        $oRevs = oxNew("oxlist");
+        $oRevs->init("oxreview");
+        $oRevs->selectString($sSelect);
 
         return $oRevs;
     }
@@ -124,15 +125,15 @@ class Article_Review extends oxAdminDetails
     {
         parent::save();
 
-        $aParams = oxRegistry::getConfig()->getRequestParameter( "editval");
+        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
         // checkbox handling
-        if ( $this->getConfig()->getConfigParam( 'blGBModerate' ) && !isset( $aParams['oxreviews__oxactive'] ) ) {
+        if ($this->getConfig()->getConfigParam('blGBModerate') && !isset($aParams['oxreviews__oxactive'])) {
             $aParams['oxreviews__oxactive'] = 0;
         }
 
-        $oReview = oxNew( "oxreview" );
-        $oReview->load( oxRegistry::getConfig()->getRequestParameter( "rev_oxid" ) );
-        $oReview->assign( $aParams );
+        $oReview = oxNew("oxreview");
+        $oReview->load(oxRegistry::getConfig()->getRequestParameter("rev_oxid"));
+        $oReview->assign($aParams);
         $oReview->save();
     }
 
@@ -144,20 +145,20 @@ class Article_Review extends oxAdminDetails
     public function delete()
     {
 
-        $sRevoxId = oxRegistry::getConfig()->getRequestParameter( "rev_oxid" );
-        $oReview  = oxNew( "oxreview" );
-        $oReview->load( $sRevoxId );
+        $sRevoxId = oxRegistry::getConfig()->getRequestParameter("rev_oxid");
+        $oReview = oxNew("oxreview");
+        $oReview->load($sRevoxId);
         $oReview->delete();
 
         // recalculating article average rating
-        $oRating = oxNew( "oxRating" );
+        $oRating = oxNew("oxRating");
         $sArticleId = $this->getEditObjectId();
 
-        $oArticle = oxNew( 'oxArticle' );
-        $oArticle->load( $sArticleId );
+        $oArticle = oxNew('oxArticle');
+        $oArticle->load($sArticleId);
 
-        $oArticle->setRatingAverage( $oRating->getRatingAverage( $sArticleId, 'oxarticle' ) );
-        $oArticle->setRatingCount( $oRating->getRatingCount( $sArticleId, 'oxarticle' ) );
+        $oArticle->setRatingAverage($oRating->getRatingAverage($sArticleId, 'oxarticle'));
+        $oArticle->setRatingCount($oRating->getRatingCount($sArticleId, 'oxarticle'));
         $oArticle->save();
 
     }

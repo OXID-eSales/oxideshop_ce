@@ -37,17 +37,17 @@ class Module_SortList extends oxAdminDetails
     {
         parent::render();
 
-        $oModuleList = oxNew( "oxModuleList" );
+        $oModuleList = oxNew("oxModuleList");
 
         $this->_aViewData["aExtClasses"] = $this->getConfig()->getModulesWithExtendedClass();
         $this->_aViewData["aDisabledModules"] = $oModuleList->getDisabledModuleClasses();
 
         // checking if there are any deleted extensions
-        if ( oxRegistry::getSession()->getVariable( "blSkipDeletedExtChecking" ) == false ) {
+        if (oxRegistry::getSession()->getVariable("blSkipDeletedExtChecking") == false) {
             $aDeletedExt = $oModuleList->getDeletedExtensions();
         }
 
-        if ( !empty($aDeletedExt) ) {
+        if (!empty($aDeletedExt)) {
             $this->_aViewData["aDeletedExt"] = $aDeletedExt;
         }
 
@@ -61,14 +61,14 @@ class Module_SortList extends oxAdminDetails
      */
     public function save()
     {
-        $aModule = oxRegistry::getConfig()->getRequestParameter( "aModules" );
+        $aModule = oxRegistry::getConfig()->getRequestParameter("aModules");
 
-        $aModules = json_decode( $aModule, true );
+        $aModules = json_decode($aModule, true);
 
-        $oModuleInstaller = oxNew( 'oxModuleInstaller' );
-        $aModules = $oModuleInstaller->buildModuleChains( $aModules );
+        $oModuleInstaller = oxNew('oxModuleInstaller');
+        $aModules = $oModuleInstaller->buildModuleChains($aModules);
 
-        $this->getConfig()->saveShopConfVar( "aarr", "aModules", $aModules );
+        $this->getConfig()->saveShopConfVar("aarr", "aModules", $aModules);
 
     }
 
@@ -80,12 +80,13 @@ class Module_SortList extends oxAdminDetails
     public function remove()
     {
         //if user selected not to update modules, skipping all updates
-        if ( oxRegistry::getConfig()->getRequestParameter( "noButton" )) {
-            oxRegistry::getSession()->setVariable( "blSkipDeletedExtChecking", true );
+        if (oxRegistry::getConfig()->getRequestParameter("noButton")) {
+            oxRegistry::getSession()->setVariable("blSkipDeletedExtChecking", true);
+
             return;
         }
 
-        $oModuleList = oxNew( "oxModuleList" );
+        $oModuleList = oxNew("oxModuleList");
         $oModuleList->cleanup();
     }
 

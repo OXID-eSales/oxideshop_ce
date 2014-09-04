@@ -27,6 +27,7 @@
  */
 class Tpl extends oxUBase
 {
+
     /**
      * Executes parent method parent::render(), returns name of template file.
      *
@@ -37,9 +38,9 @@ class Tpl extends oxUBase
         parent::render();
 
         // security fix so that you cant access files from outside template dir
-        $sTplName = basename( (string) oxRegistry::getConfig()->getRequestParameter( "tpl" ) );
+        $sTplName = basename((string) oxRegistry::getConfig()->getRequestParameter("tpl"));
         if ($sTplName) {
-            $sTplName = 'custom/'.$sTplName;
+            $sTplName = 'custom/' . $sTplName;
         }
 
         return $sTplName;

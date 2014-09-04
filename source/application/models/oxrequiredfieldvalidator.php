@@ -30,6 +30,7 @@ class oxRequiredFieldValidator
 
     /**
      * @param $sFieldValue
+     *
      * @return bool
      */
     public function validateFieldValue($sFieldValue)
@@ -37,8 +38,10 @@ class oxRequiredFieldValidator
         $blValid = true;
         if (is_array($sFieldValue)) {
             $blValid = $this->_validateFieldValueArray($sFieldValue);
-        } else if (!trim($sFieldValue)) {
-            $blValid = false;
+        } else {
+            if (!trim($sFieldValue)) {
+                $blValid = false;
+            }
         }
 
         return $blValid;
@@ -60,6 +63,7 @@ class oxRequiredFieldValidator
                 break;
             }
         }
+
         return $blValid;
     }
 

@@ -27,6 +27,7 @@
  */
 class Order_Main extends oxAdminDetails
 {
+
     /**
      * Executes parent method parent::render(), creates oxorder and
      * oxuserpayment objects, passes data to Smarty engine and returns
@@ -39,41 +40,42 @@ class Order_Main extends oxAdminDetails
         parent::render();
 
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
-        if ( $soxId != "-1" && isset( $soxId ) ) {
+        if ($soxId != "-1" && isset($soxId)) {
             // load object
-            $oOrder = oxNew( "oxorder" );
-            $oOrder->load( $soxId);
+            $oOrder = oxNew("oxorder");
+            $oOrder->load($soxId);
 
 
             // paid ?
-            if ( $oOrder->oxorder__oxpaid->value != "0000-00-00 00:00:00") {
+            if ($oOrder->oxorder__oxpaid->value != "0000-00-00 00:00:00") {
                 $oOrder->blIsPaid = true;
-                $oOrder->oxorder__oxpaid = new oxField( oxRegistry::get("oxUtilsDate")->formatDBDate( $oOrder->oxorder__oxpaid->value ) );
+                $oOrder->oxorder__oxpaid = new oxField(oxRegistry::get("oxUtilsDate")->formatDBDate($oOrder->oxorder__oxpaid->value));
             }
 
 
-            $this->_aViewData["edit"] =  $oOrder;
-            $this->_aViewData["paymentType"] =  $oOrder->getPaymentType();
-            $this->_aViewData["oShipSet"] =  $oOrder->getShippingSetList();
+            $this->_aViewData["edit"] = $oOrder;
+            $this->_aViewData["paymentType"] = $oOrder->getPaymentType();
+            $this->_aViewData["oShipSet"] = $oOrder->getShippingSetList();
 
 
-            if ( $oOrder->oxorder__oxdeltype->value ) {
+            if ($oOrder->oxorder__oxdeltype->value) {
 
                 // order user
-                $oUser = oxNew( 'oxuser' );
-                $oUser->load( $oOrder->oxorder__oxuserid->value );
+                $oUser = oxNew('oxuser');
+                $oUser->load($oOrder->oxorder__oxuserid->value);
 
                 // order sum in default currency
                 $dPrice = $oOrder->oxorder__oxtotalbrutsum->value / $oOrder->oxorder__oxcurrate->value;
 
-                $this->_aViewData["oPayments"] = oxRegistry::get("oxPaymentList")->getPaymentList( $oOrder->oxorder__oxdeltype->value, $dPrice, $oUser );
+                $this->_aViewData["oPayments"] = oxRegistry::get("oxPaymentList")->getPaymentList($oOrder->oxorder__oxdeltype->value, $dPrice, $oUser);
             }
 
             // any voucher used ?
-            $this->_aViewData["aVouchers"] =  $oOrder->getVoucherNrList();
+            $this->_aViewData["aVouchers"] = $oOrder->getVoucherNrList();
         }
 
         $this->_aViewData["sNowValue"] = date("Y-m-d H:i:s", oxRegistry::get("oxUtilsDate")->getTime());
+
         return "order_main.tpl";
     }
 
@@ -87,53 +89,52 @@ class Order_Main extends oxAdminDetails
         parent::save();
 
         $soxId = $this->getEditObjectId();
-        $aParams    = oxRegistry::getConfig()->getRequestParameter( "editval" );
+        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
             // shopid
-            $sShopID = oxRegistry::getSession()->getVariable( "actshop" );
+            $sShopID = oxRegistry::getSession()->getVariable("actshop");
             $aParams['oxorder__oxshopid'] = $sShopID;
 
-        $oOrder = oxNew( "oxorder" );
-        if ( $soxId != "-1") {
-            $oOrder->load( $soxId);
+        $oOrder = oxNew("oxorder");
+        if ($soxId != "-1") {
+            $oOrder->load($soxId);
         } else {
             $aParams['oxorder__oxid'] = null;
         }
 
         //change payment
-        $sPayId = oxRegistry::getConfig()->getRequestParameter( "setPayment");
+        $sPayId = oxRegistry::getConfig()->getRequestParameter("setPayment");
         if ($sPayId != $oOrder->oxorder__oxpaymenttype->value) {
             $aParams['oxorder__oxpaymenttype'] = $sPayId;
         }
 
-        $oOrder->assign( $aParams);
+        $oOrder->assign($aParams);
 
-        $aDynvalues = oxRegistry::getConfig()->getRequestParameter( "dynvalue" );
-        if ( isset( $aDynvalues ) ) {
-            $oPayment = oxNew( "oxuserpayment" );
-            $oPayment->load( $oOrder->oxorder__oxpaymentid->value);
-            $oPayment->oxuserpayments__oxvalue->setValue(oxRegistry::getUtils()->assignValuesToText( $aDynvalues));
+        $aDynvalues = oxRegistry::getConfig()->getRequestParameter("dynvalue");
+        if (isset($aDynvalues)) {
+            $oPayment = oxNew("oxuserpayment");
+            $oPayment->load($oOrder->oxorder__oxpaymentid->value);
+            $oPayment->oxuserpayments__oxvalue->setValue(oxRegistry::getUtils()->assignValuesToText($aDynvalues));
             $oPayment->save();
         }
         //change delivery set
-        $sDelSetId = oxRegistry::getConfig()->getRequestParameter( "setDelSet");
+        $sDelSetId = oxRegistry::getConfig()->getRequestParameter("setDelSet");
         if ($sDelSetId != $oOrder->oxorder__oxdeltype->value) {
-            $oOrder->oxorder__oxpaymenttype->setValue( "oxempty" );
-            $oOrder->setDelivery( $sDelSetId );
+            $oOrder->oxorder__oxpaymenttype->setValue("oxempty");
+            $oOrder->setDelivery($sDelSetId);
         } else {
             // keeps old delivery cost
-            $oOrder->reloadDelivery( false );
+            $oOrder->reloadDelivery(false);
         }
 
         // keeps old discount
-        $oOrder->reloadDiscount( false );
+        $oOrder->reloadDiscount(false);
 
         $oOrder->recalculateOrder();
 
 
-
         // set oxid if inserted
-        $this->setEditObjectId( $oOrder->getId() );
+        $this->setEditObjectId($oOrder->getId());
     }
 
     /**
@@ -144,19 +145,19 @@ class Order_Main extends oxAdminDetails
     public function sendorder()
     {
         $soxId = $this->getEditObjectId();
-        $oOrder = oxNew( "oxorder" );
-        if ( $oOrder->load( $soxId ) ) {
+        $oOrder = oxNew("oxorder");
+        if ($oOrder->load($soxId)) {
 
             // #632A
-            $oOrder->oxorder__oxsenddate = new oxField( date( "Y-m-d H:i:s", oxRegistry::get("oxUtilsDate")->getTime() ) );
+            $oOrder->oxorder__oxsenddate = new oxField(date("Y-m-d H:i:s", oxRegistry::get("oxUtilsDate")->getTime()));
             $oOrder->save();
 
             // #1071C
-            $oOrderArticles = $oOrder->getOrderArticles( true );
-            if ( oxRegistry::getConfig()->getRequestParameter( "sendmail" ) ) {
+            $oOrderArticles = $oOrder->getOrderArticles(true);
+            if (oxRegistry::getConfig()->getRequestParameter("sendmail")) {
                 // send eMail
-                $oEmail = oxNew( "oxemail" );
-                $oEmail->sendSendedNowMail( $oOrder );
+                $oEmail = oxNew("oxemail");
+                $oEmail->sendSendedNowMail($oOrder);
             }
 
         }
@@ -170,10 +171,10 @@ class Order_Main extends oxAdminDetails
     public function senddownloadlinks()
     {
         $soxId = $this->getEditObjectId();
-        $oOrder = oxNew( "oxorder" );
-        if ( $oOrder->load( $soxId ) ) {
-            $oEmail = oxNew( "oxemail" );
-            $oEmail->sendDownloadLinksMail( $oOrder );
+        $oOrder = oxNew("oxorder");
+        if ($oOrder->load($soxId)) {
+            $oEmail = oxNew("oxemail");
+            $oEmail->sendDownloadLinksMail($oOrder);
         }
     }
 
@@ -184,8 +185,8 @@ class Order_Main extends oxAdminDetails
      */
     public function resetorder()
     {
-        $oOrder = oxNew( "oxorder" );
-        if ( $oOrder->load( $this->getEditObjectId() ) ) {
+        $oOrder = oxNew("oxorder");
+        if ($oOrder->load($this->getEditObjectId())) {
 
             $oOrder->oxorder__oxsenddate = new oxField("0000-00-00 00:00:00");
             $oOrder->save();

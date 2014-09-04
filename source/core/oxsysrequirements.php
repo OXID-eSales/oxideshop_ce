@@ -24,7 +24,7 @@
  * System requirements class.
  *
  * @internal Do not make a module extension for this class.
- * @see http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
+ * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
  */
 class oxSysRequirements
 {
@@ -261,8 +261,8 @@ class oxSysRequirements
                 $aRequiredServerConfigs[] = 'mysql_version';
             }
             $this->_aRequiredModules = array_fill_keys($aRequiredPHPExtensions, 'php_extennsions') +
-                array_fill_keys($aRequiredPHPConfigs, 'php_config') +
-                array_fill_keys($aRequiredServerConfigs, 'server_config');
+                                       array_fill_keys($aRequiredPHPConfigs, 'php_config') +
+                                       array_fill_keys($aRequiredServerConfigs, 'server_config');
         }
 
         return $this->_aRequiredModules;
@@ -355,8 +355,8 @@ class oxSysRequirements
             $sPath . "log/",
             $sTmp
         );
-        $iModStat      = 2;
-        $sPathToCheck  = reset($aPathsToCheck);
+        $iModStat = 2;
+        $sPathToCheck = reset($aPathsToCheck);
         while ($sPathToCheck) {
             // missing file/folder?
             if (!file_exists($sPathToCheck)) {
@@ -455,8 +455,8 @@ class oxSysRequirements
     {
         // got here from setup dir
         $sScript = $_SERVER['SCRIPT_NAME'];
-        $iPort   = (int) $_SERVER['SERVER_PORT'];
-        $blSsl   = (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on'));
+        $iPort = (int) $_SERVER['SERVER_PORT'];
+        $blSsl = (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on'));
         if (!$iPort) {
             $iPort = $blSsl ? 443 : 80;
         }
@@ -507,9 +507,9 @@ class oxSysRequirements
      */
     public function checkModRewrite()
     {
-        $iModStat  = null;
+        $iModStat = null;
         $aHostInfo = $this->_getShopHostInfo();
-        $iModStat  = $this->_checkModRewrite($aHostInfo);
+        $iModStat = $this->_checkModRewrite($aHostInfo);
 
         $aSSLHostInfo = $this->_getShopSSLHostInfo();
         // Don't need to check if mod status is already failed.
@@ -578,7 +578,7 @@ class oxSysRequirements
         $iModStat = @ini_get('allow_url_fopen');
         $iModStat = ($iModStat && strcasecmp('1', $iModStat)) ? 2 : 1;
         if ($iModStat == 1) {
-            $iErrNo  = 0;
+            $iErrNo = 0;
             $sErrStr = '';
             if ($oRes = @fsockopen('www.example.com', 80, $iErrNo, $sErrStr, 10)) {
                 $iModStat = 2;
@@ -735,12 +735,12 @@ class oxSysRequirements
                     $iModStat = 0;
                 }
             } elseif (version_compare($sClientVersion, '5.0.36', '>=') &&
-                version_compare($sClientVersion, '5.0.38', '<')
+                      version_compare($sClientVersion, '5.0.38', '<')
             ) {
                 // mantis#0001003: Problems with MySQL version 5.0.37
                 $iModStat = 0;
             } elseif (version_compare($sClientVersion, '5.0.40', '>') &&
-                version_compare($sClientVersion, '5.0.42', '<')
+                      version_compare($sClientVersion, '5.0.42', '<')
             ) {
                 // mantis#0001877: Exclude MySQL 5.0.41 from system requirements as not fitting
                 $iModStat = 0;
@@ -843,8 +843,8 @@ class oxSysRequirements
 
 
             $iMemLimit = $this->_getBytes($sMemLimit);
-            $iModStat  = ($iMemLimit >= $this->_getBytes($sDefLimit)) ? 1 : 0;
-            $iModStat  = $iModStat ? (($iMemLimit >= $this->_getBytes($sRecLimit)) ? 2 : $iModStat) : $iModStat;
+            $iModStat = ($iMemLimit >= $this->_getBytes($sDefLimit)) ? 1 : 0;
+            $iModStat = $iModStat ? (($iMemLimit >= $this->_getBytes($sRecLimit)) ? 2 : $iModStat) : $iModStat;
 
         } else {
             $iModStat = -1;
@@ -861,8 +861,8 @@ class oxSysRequirements
     protected function _getAdditionalCheck()
     {
         $sSelect = '';
-        foreach ( $this->_aException as $sTable => $sColumn ) {
-            $sSelect .= 'and ( TABLE_NAME != "'.$sTable.'" and COLUMN_NAME != "'.$sColumn.'" ) ';
+        foreach ($this->_aException as $sTable => $sColumn) {
+            $sSelect .= 'and ( TABLE_NAME != "' . $sTable . '" and COLUMN_NAME != "' . $sColumn . '" ) ';
         }
 
         return $sSelect;
@@ -880,9 +880,9 @@ class oxSysRequirements
         $aCollations = array();
         $sCollation = '';
         $sSelect = 'select TABLE_NAME, COLUMN_NAME, COLLATION_NAME from INFORMATION_SCHEMA.columns
-                    where TABLE_NAME not like "oxv\_%" and table_schema = "'.$myConfig->getConfigParam( 'dbName' ).'"
-                    and COLUMN_NAME in ("'.implode('", "', $this->_aColumns).'") ' . $this->_getAdditionalCheck() .
-            'ORDER BY TABLE_NAME, COLUMN_NAME DESC;';
+                    where TABLE_NAME not like "oxv\_%" and table_schema = "' . $myConfig->getConfigParam('dbName') . '"
+                    and COLUMN_NAME in ("' . implode('", "', $this->_aColumns) . '") ' . $this->_getAdditionalCheck() .
+                   'ORDER BY TABLE_NAME, COLUMN_NAME DESC;';
         $aRez = oxDb::getDb()->getAll($sSelect);
         foreach ($aRez as $aRetTable) {
             if (!$sCollation) {
@@ -931,7 +931,7 @@ class oxSysRequirements
      */
     public function checkFileUploads()
     {
-        $dUploadFile  = -1;
+        $dUploadFile = -1;
         $sFileUploads = @ini_get('file_uploads');
         if ($sFileUploads !== false) {
             if ($sFileUploads && ($sFileUploads == '1' || strtolower($sFileUploads) == 'on')) {
@@ -976,16 +976,16 @@ class oxSysRequirements
      */
     public function getSystemInfo()
     {
-        $aSysInfo              = array();
-        $aRequiredModules      = $this->getRequiredModules();
+        $aSysInfo = array();
+        $aRequiredModules = $this->getRequiredModules();
         $this->_blSysReqStatus = true;
         foreach ($aRequiredModules as $sModule => $sGroup) {
             if (isset($aSysInfo[$sGroup]) && !$aSysInfo[$sGroup]) {
                 $aSysInfo[$sGroup] = array();
             }
-            $iModuleState                = $this->getModuleInfo($sModule);
+            $iModuleState = $this->getModuleInfo($sModule);
             $aSysInfo[$sGroup][$sModule] = $iModuleState;
-            $this->_blSysReqStatus       = $this->_blSysReqStatus && ( bool ) abs($iModuleState);
+            $this->_blSysReqStatus = $this->_blSysReqStatus && ( bool ) abs($iModuleState);
         }
 
         return $aSysInfo;
@@ -1001,9 +1001,9 @@ class oxSysRequirements
     public function getModuleInfo($sModule = null)
     {
         if ($sModule) {
-            $iModStat       = null;
+            $iModStat = null;
             $sCheckFunction = "check" . str_replace(" ", "", ucwords(str_replace("_", " ", $sModule)));
-            $iModStat       = $this->$sCheckFunction();
+            $iModStat = $this->$sCheckFunction();
 
             return $iModStat;
         }
@@ -1018,7 +1018,7 @@ class oxSysRequirements
      */
     public function getReqInfoUrl($sIdent)
     {
-        $sUrl     = $this->_sReqInfoUrl;
+        $sUrl = $this->_sReqInfoUrl;
         $aInfoMap = $this->_aInfoMap;
 
         // only known will be anchored
@@ -1039,7 +1039,7 @@ class oxSysRequirements
     protected function _getBytes($sBytes)
     {
         $sBytes = trim($sBytes);
-        $sLast  = strtolower($sBytes[strlen($sBytes) - 1]);
+        $sLast = strtolower($sBytes[strlen($sBytes) - 1]);
         switch ($sLast) {
             // The 'G' modifier is available since PHP 5.1.0
             // gigabytes
@@ -1078,7 +1078,7 @@ class oxSysRequirements
             }
         }
 
-        $sFile            = file_get_contents($sTplFile);
+        $sFile = file_get_contents($sTplFile);
         $sBlockNameQuoted = preg_quote($sBlockName, '/');
 
         return (bool) preg_match('/\[\{\s*block\s+name\s*=\s*([\'"])' . $sBlockNameQuoted . '\1\s*\}\]/is', $sFile);
@@ -1095,13 +1095,13 @@ class oxSysRequirements
      */
     public function getMissingTemplateBlocks()
     {
-        $oDb     = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
-        $aCache  = array();
+        $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+        $aCache = array();
         $oConfig = $this->getConfig();
 
         $sShpIdParam = $oDb->quote($oConfig->getShopId());
-        $sSql        = "select * from oxtplblocks where oxactive=1 and oxshopid=$sShpIdParam";
-        $rs          = $oDb->execute($sSql);
+        $sSql = "select * from oxtplblocks where oxactive=1 and oxshopid=$sShpIdParam";
+        $rs = $oDb->execute($sSql);
 
 
         $aRet = array();

@@ -26,6 +26,7 @@
  */
 class oxSepaIBANValidator
 {
+
     const IBAN_ALGORITHM_MOD_VALUE = 97;
 
     protected $_aCodeLengths = array();
@@ -40,13 +41,13 @@ class oxSepaIBANValidator
      *
      * @return bool
      */
-    public function isValid( $sIBAN )
+    public function isValid($sIBAN)
     {
         $blValid = false;
-        $sIBAN = strtoupper( trim( $sIBAN ) );
+        $sIBAN = strtoupper(trim($sIBAN));
 
-        if ( $this->_isLengthValid( $sIBAN ) ) {
-            $blValid = $this->_isAlgorithmValid( $sIBAN );
+        if ($this->_isLengthValid($sIBAN)) {
+            $blValid = $this->_isAlgorithmValid($sIBAN);
         }
 
         return $blValid;
@@ -59,13 +60,12 @@ class oxSepaIBANValidator
      *
      * @return bool
      */
-    public function isValidCodeLengths( $aCodeLengths )
+    public function isValidCodeLengths($aCodeLengths)
     {
         $blValid = false;
 
-        if ( $this->_isNotEmptyArray( $aCodeLengths ) )
-        {
-            $blValid = $this->_isEachCodeLengthValid( $aCodeLengths );
+        if ($this->_isNotEmptyArray($aCodeLengths)) {
+            $blValid = $this->_isEachCodeLengthValid($aCodeLengths);
         }
 
         return $blValid;
@@ -78,9 +78,9 @@ class oxSepaIBANValidator
      *
      * @return bool
      */
-    public function setCodeLengths( $aCodeLengths )
+    public function setCodeLengths($aCodeLengths)
     {
-        if ( $this->isValidCodeLengths( $aCodeLengths ) ) {
+        if ($this->isValidCodeLengths($aCodeLengths)) {
             $this->_aCodeLengths = $aCodeLengths;
 
             return true;
@@ -103,17 +103,18 @@ class oxSepaIBANValidator
 
     /**
      * Check if the total IBAN length is correct as per country. If not, the IBAN is invalid.
+     *
      * @param $sIBAN
      *
      * @return bool
      */
-    protected function _isLengthValid( $sIBAN )
+    protected function _isLengthValid($sIBAN)
     {
-        $iActualLength = getStr()->strlen( $sIBAN );
+        $iActualLength = getStr()->strlen($sIBAN);
 
-        $iCorrectLength = $this->_getLengthForCountry( $sIBAN );
+        $iCorrectLength = $this->_getLengthForCountry($sIBAN);
 
-        return !is_null( $iCorrectLength ) && $iActualLength === $iCorrectLength;
+        return !is_null($iCorrectLength) && $iActualLength === $iCorrectLength;
     }
 
 
@@ -122,56 +123,59 @@ class oxSepaIBANValidator
      *
      * @return null
      */
-    protected function _getLengthForCountry( $sIBAN )
+    protected function _getLengthForCountry($sIBAN)
     {
         $aIBANRegistry = $this->getCodeLengths();
 
-        $sCountryCode   = getStr()->substr( $sIBAN, 0, 2 );
+        $sCountryCode = getStr()->substr($sIBAN, 0, 2);
 
-        $iCorrectLength = ( isset ( $aIBANRegistry[$sCountryCode] ) ) ? $aIBANRegistry[$sCountryCode] : null;
+        $iCorrectLength = (isset ($aIBANRegistry[$sCountryCode])) ? $aIBANRegistry[$sCountryCode] : null;
 
         return $iCorrectLength;
     }
 
     /**
      * Checks if IBAN is valid according to checksum algorithm
+     *
      * @param $sIBAN
      *
      * @return bool
      */
-    protected function _isAlgorithmValid( $sIBAN )
+    protected function _isAlgorithmValid($sIBAN)
     {
-        $sIBAN = $this->_moveInitialCharactersToEnd( $sIBAN );
+        $sIBAN = $this->_moveInitialCharactersToEnd($sIBAN);
 
-        $sIBAN = $this->_replaceLettersToNumbers( $sIBAN );
+        $sIBAN = $this->_replaceLettersToNumbers($sIBAN);
 
-        return $this->_isIBANChecksumValid( $sIBAN );
+        return $this->_isIBANChecksumValid($sIBAN);
     }
 
     /**
      * Move the four initial characters to the end of the string.
+     *
      * @param $sIBAN
      *
      * @return string
      */
-    protected function _moveInitialCharactersToEnd( $sIBAN )
+    protected function _moveInitialCharactersToEnd($sIBAN)
     {
-        $oStr          = getStr();
+        $oStr = getStr();
 
-        $sInitialChars = $oStr->substr( $sIBAN, 0, 4 );
-        $sIBAN         = $oStr->substr( $sIBAN, 4 );
-        $sIBAN         = $sIBAN . $sInitialChars;
+        $sInitialChars = $oStr->substr($sIBAN, 0, 4);
+        $sIBAN = $oStr->substr($sIBAN, 4);
+        $sIBAN = $sIBAN . $sInitialChars;
 
         return $sIBAN;
     }
 
     /**
      * Replace each letter in the string with two digits, thereby expanding the string, where A = 10, B = 11, ..., Z = 35.
+     *
      * @param $sIBAN
      *
      * @return string
      */
-    protected function _replaceLettersToNumbers( $sIBAN )
+    protected function _replaceLettersToNumbers($sIBAN)
     {
         $aReplaceArray = array(
             'A' => 10,
@@ -203,7 +207,7 @@ class oxSepaIBANValidator
         );
 
         $sIBAN = str_replace(
-            array_keys( $aReplaceArray ),
+            array_keys($aReplaceArray),
             $aReplaceArray,
             $sIBAN
         );
@@ -213,16 +217,17 @@ class oxSepaIBANValidator
 
     /**
      * Interpret the string as a decimal integer and compute the remainder of that number on division by 97.
+     *
      * @param $sIBAN
      *
      * @return bool
      */
-    protected function _isIBANChecksumValid( $sIBAN )
+    protected function _isIBANChecksumValid($sIBAN)
     {
         $blValid = true;
 
-        $sModulus = bcmod( $sIBAN, self::IBAN_ALGORITHM_MOD_VALUE );
-        if ( (int) $sModulus != 1 ) {
+        $sModulus = bcmod($sIBAN, self::IBAN_ALGORITHM_MOD_VALUE);
+        if ((int) $sModulus != 1) {
             $blValid = false;
         }
 
@@ -231,13 +236,14 @@ class oxSepaIBANValidator
 
     /**
      * Checks if Code length is non empty array
+     *
      * @param $aCodeLengths
      *
      * @return bool
      */
-    protected function _isNotEmptyArray( $aCodeLengths )
+    protected function _isNotEmptyArray($aCodeLengths)
     {
-        return is_array( $aCodeLengths ) && !empty( $aCodeLengths );
+        return is_array($aCodeLengths) && !empty($aCodeLengths);
     }
 
     /**
@@ -245,14 +251,15 @@ class oxSepaIBANValidator
      *
      * @return bool
      */
-    protected function _isEachCodeLengthValid( $aCodeLengths )
+    protected function _isEachCodeLengthValid($aCodeLengths)
     {
         $blValid = true;
 
-        foreach ( $aCodeLengths as $sCountryAbbr => $iLength ) {
+        foreach ($aCodeLengths as $sCountryAbbr => $iLength) {
 
-            if ( !$this->_isCodeLengthKeyValid( $sCountryAbbr ) ||
-                 !$this->_isCodeLengthValueValid( $iLength ) ) {
+            if (!$this->_isCodeLengthKeyValid($sCountryAbbr) ||
+                !$this->_isCodeLengthValueValid($iLength)
+            ) {
 
                 $blValid = false;
                 break;
@@ -270,9 +277,9 @@ class oxSepaIBANValidator
      *
      * @return bool
      */
-    protected function _isCodeLengthKeyValid( $sCountryAbbr )
+    protected function _isCodeLengthKeyValid($sCountryAbbr)
     {
-        return (int) preg_match( "/^[A-Z]{2}$/", $sCountryAbbr ) !== 0;
+        return (int) preg_match("/^[A-Z]{2}$/", $sCountryAbbr) !== 0;
     }
 
     /**
@@ -282,9 +289,9 @@ class oxSepaIBANValidator
      *
      * @return bool
      */
-    protected function _isCodeLengthValueValid( $iLength )
+    protected function _isCodeLengthValueValid($iLength)
     {
-        return is_numeric( $iLength ) && (int) preg_match( "/\./", $iLength ) !== 1;
+        return is_numeric($iLength) && (int) preg_match("/\./", $iLength) !== 1;
     }
 
 }

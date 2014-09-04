@@ -28,8 +28,10 @@
  */
 class Admin_Start extends oxAdminView
 {
+
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'start.tpl';

@@ -21,7 +21,7 @@
  */
 
 // mod_rewrite check
-if ( isset( $_REQUEST['mod_rewrite_module_is'] ) ) {
+if (isset($_REQUEST['mod_rewrite_module_is'])) {
     $sMode = $_REQUEST['mod_rewrite_module_is'];
     if ($sMode == 'on') {
         die("mod_rewrite_on");

@@ -26,6 +26,7 @@
  */
 class oxLinks extends oxI18n
 {
+
     /**
      * Current class name
      *
@@ -53,7 +54,7 @@ class oxLinks extends oxI18n
      *
      * @return null
      */
-    protected function _setFieldData( $sFieldName, $sValue, $iDataType = oxField::T_TEXT)
+    protected function _setFieldData($sFieldName, $sValue, $iDataType = oxField::T_TEXT)
     {
         if ('oxurldesc' === strtolower($sFieldName) || 'oxlinks__oxurldesc' === strtolower($sFieldName)) {
             $iDataType = oxField::T_RAW;

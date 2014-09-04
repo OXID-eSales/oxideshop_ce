@@ -25,6 +25,7 @@
  */
 class oxOutOfStockException extends oxArticleException
 {
+
     /**
      * Maximal possible amount (e.g. 2 if two items of the article are left).
      *
@@ -46,7 +47,7 @@ class oxOutOfStockException extends oxArticleException
      *
      * @return null
      */
-    public function setRemainingAmount( $iRemainingAmount )
+    public function setRemainingAmount($iRemainingAmount)
     {
         $this->_iRemainingAmount = (int) $iRemainingAmount;
     }
@@ -68,7 +69,7 @@ class oxOutOfStockException extends oxArticleException
      *
      * @return null
      */
-    public function setBasketIndex( $sBasketIndex )
+    public function setBasketIndex($sBasketIndex)
     {
         $this->_sBasketIndex = $sBasketIndex;
     }
@@ -91,7 +92,7 @@ class oxOutOfStockException extends oxArticleException
      */
     public function getString()
     {
-        return __CLASS__.'-'.parent::getString()." Remaining Amount --> ".$this->_iRemainingAmount;
+        return __CLASS__ . '-' . parent::getString() . " Remaining Amount --> " . $this->_iRemainingAmount;
     }
 
     /**
@@ -107,6 +108,7 @@ class oxOutOfStockException extends oxArticleException
         $aRes = parent::getValues();
         $aRes['remainingAmount'] = $this->getRemainingAmount();
         $aRes['basketIndex'] = $this->getBasketIndex();
+
         return $aRes;
     }
 
@@ -124,13 +126,13 @@ class oxOutOfStockException extends oxArticleException
      *
      * @return null
      */
-    public function setDestination( $sDestination )
+    public function setDestination($sDestination)
     {
         // in case destination not set, overriding default error message
-        if ( !$sDestination ) {
-            $this->message = oxRegistry::getLang()->translateString( $this->getMessage() ) . ": " . $this->getRemainingAmount();
+        if (!$sDestination) {
+            $this->message = oxRegistry::getLang()->translateString($this->getMessage()) . ": " . $this->getRemainingAmount();
         } else {
-            $this->message = oxRegistry::getLang()->translateString( $this->getMessage() ) . ": ";
+            $this->message = oxRegistry::getLang()->translateString($this->getMessage()) . ": ";
         }
     }
 }

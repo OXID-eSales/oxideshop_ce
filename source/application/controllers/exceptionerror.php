@@ -25,8 +25,10 @@
  */
 class ExceptionError extends oxUBase
 {
+
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'message/exception.tpl';
@@ -43,15 +45,15 @@ class ExceptionError extends oxUBase
         //add all exceptions to display
         $aErrors = $this->_getErrors();
         
-        if ( is_array( $aErrors ) && count( $aErrors ) ) {
-            oxRegistry::get("oxUtilsView")->passAllErrorsToView( $aViewData, $aErrors );
+        if (is_array($aErrors) && count($aErrors)) {
+            oxRegistry::get("oxUtilsView")->passAllErrorsToView($aViewData, $aErrors);
         }
 
         $oSmarty = oxRegistry::get("oxUtilsView")->getSmarty();
-        $oSmarty->assign_by_ref( "Errors", $aViewData["Errors"] );
+        $oSmarty->assign_by_ref("Errors", $aViewData["Errors"]);
 
         // resetting errors from session
-        oxRegistry::getSession()->setVariable( 'Errors', array() );
+        oxRegistry::getSession()->setVariable('Errors', array());
     }
 
     /**
@@ -61,7 +63,7 @@ class ExceptionError extends oxUBase
      */
     protected function _getErrors()
     {
-        $aErrors = oxRegistry::getSession()->getVariable( 'Errors' );
+        $aErrors = oxRegistry::getSession()->getVariable('Errors');
 
         if (null === $aErrors) {
             $aErrors = array();

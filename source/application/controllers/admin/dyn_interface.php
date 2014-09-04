@@ -22,10 +22,12 @@
 
 /**
  * Admin dyn manager.
+ *
  * @subpackage dyn
  */
 class dyn_interface extends oxAdminDetails
 {
+
     /**
      * Returns view id
      *

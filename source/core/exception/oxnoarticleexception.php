@@ -25,6 +25,7 @@
  */
 class oxNoArticleException extends oxArticleException
 {
+
     /**
      * Get string dump
      * Overrides oxException::getString()
@@ -33,6 +34,6 @@ class oxNoArticleException extends oxArticleException
      */
     public function getString()
     {
-        return __CLASS__ .'-'.parent::getString();
+        return __CLASS__ . '-' . parent::getString();
     }
 }

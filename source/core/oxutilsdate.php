@@ -25,6 +25,7 @@
  */
 class oxUtilsDate extends oxSuperCfg
 {
+
     /**
      * Format date to user defined format.
      *
@@ -33,58 +34,58 @@ class oxUtilsDate extends oxSuperCfg
      *
      * @return string
      */
-    public function formatDBDate( $sDBDateIn, $blForceEnglishRet = false )
+    public function formatDBDate($sDBDateIn, $blForceEnglishRet = false)
     {
         // convert english format to output format
-        if ( !$sDBDateIn ) {
+        if (!$sDBDateIn) {
             return null;
         }
 
         $oStr = getStr();
-        if ( $blForceEnglishRet && $oStr->strstr( $sDBDateIn, '-' ) ) {
+        if ($blForceEnglishRet && $oStr->strstr($sDBDateIn, '-')) {
             return $sDBDateIn;
         }
 
-        if ( $this->isEmptyDate( $sDBDateIn ) && $sDBDateIn != '-' ) {
+        if ($this->isEmptyDate($sDBDateIn) && $sDBDateIn != '-') {
             return '-';
-        } elseif ( $sDBDateIn == '-' ) {
+        } elseif ($sDBDateIn == '-') {
             return '0000-00-00 00:00:00';
         }
 
         // is it a timestamp ?
-        if ( is_numeric( $sDBDateIn ) ) {
+        if (is_numeric($sDBDateIn)) {
             // db timestamp : 20030322100409
-            $sNew  = substr( $sDBDateIn, 0, 4 ).'-'.substr( $sDBDateIn, 4, 2 ).'-'.substr( $sDBDateIn, 6, 2 ).' ';
+            $sNew = substr($sDBDateIn, 0, 4) . '-' . substr($sDBDateIn, 4, 2) . '-' . substr($sDBDateIn, 6, 2) . ' ';
             // check if it is a timestamp or wrong data: 20030322
-            if ( strlen($sDBDateIn) > 8 ) {
-                $sNew .= substr( $sDBDateIn, 8, 2 ).':'.substr( $sDBDateIn, 10, 2 ).':'.substr( $sDBDateIn, 12, 2 );
+            if (strlen($sDBDateIn) > 8) {
+                $sNew .= substr($sDBDateIn, 8, 2) . ':' . substr($sDBDateIn, 10, 2) . ':' . substr($sDBDateIn, 12, 2);
             }
             // convert it to english format
             $sDBDateIn = $sNew;
         }
 
         // remove time as it is same in english as in german
-        $aData = explode( ' ', trim( $sDBDateIn ) );
+        $aData = explode(' ', trim($sDBDateIn));
 
         // preparing time array
-        $sTime = ( isset( $aData[1] ) && $oStr->strstr( $aData[1], ':' ) )?$aData[1]:'';
-        $aTime = $sTime?explode( ':', $sTime ):array( 0, 0, 0 );
+        $sTime = (isset($aData[1]) && $oStr->strstr($aData[1], ':')) ? $aData[1] : '';
+        $aTime = $sTime ? explode(':', $sTime) : array(0, 0, 0);
 
         // preparing date array
-        $sDate = isset( $aData[0] )?$aData[0]:'';
-        $aDate = preg_split( '/[\/.-]/', $sDate );
+        $sDate = isset($aData[0]) ? $aData[0] : '';
+        $aDate = preg_split('/[\/.-]/', $sDate);
 
         // choosing format..
-        if ( $sTime ) {
-            $sFormat = $blForceEnglishRet ? 'Y-m-d H:i:s' : oxRegistry::getLang()->translateString( 'fullDateFormat' );
+        if ($sTime) {
+            $sFormat = $blForceEnglishRet ? 'Y-m-d H:i:s' : oxRegistry::getLang()->translateString('fullDateFormat');
         } else {
-            $sFormat = $blForceEnglishRet ? 'Y-m-d' : oxRegistry::getLang()->translateString( 'simpleDateFormat' );
+            $sFormat = $blForceEnglishRet ? 'Y-m-d' : oxRegistry::getLang()->translateString('simpleDateFormat');
         }
 
-        if ( count( $aDate ) != 3 ) {
-            return date( $sFormat );
+        if (count($aDate) != 3) {
+            return date($sFormat);
         } else {
-            return $this->_processDate( $aTime, $aDate, $oStr->strstr( $sDate, '.' ), $sFormat );
+            return $this->_processDate($aTime, $aDate, $oStr->strstr($sDate, '.'), $sFormat);
         }
     }
 
@@ -97,13 +98,13 @@ class oxUtilsDate extends oxSuperCfg
      *
      * @return string
      */
-    public function convertDBDateTime( $oObject, $blToTimeStamp = false, $blOnlyDate = false )
+    public function convertDBDateTime($oObject, $blToTimeStamp = false, $blOnlyDate = false)
     {
         $sDate = $oObject->value;
 
         // defining time format
-        $sLocalDateFormat = $this->_defineAndCheckDefaultDateValues( $blToTimeStamp );
-        $sLocalTimeFormat = $this->_defineAndCheckDefaultTimeValues( $blToTimeStamp );
+        $sLocalDateFormat = $this->_defineAndCheckDefaultDateValues($blToTimeStamp);
+        $sLocalTimeFormat = $this->_defineAndCheckDefaultTimeValues($blToTimeStamp);
 
         // default date/time patterns
         $aDefDatePatterns = $this->_defaultDatePattern();
@@ -113,12 +114,13 @@ class oxUtilsDate extends oxSuperCfg
         $aTimePatterns = $this->_regexp2ValidateTimeInput();
 
         // date/time formatting rules
-        $aDFormats  = $this->_defineDateFormattingRules();
-        $aTFormats  = $this->_defineTimeFormattingRules();
+        $aDFormats = $this->_defineDateFormattingRules();
+        $aTFormats = $this->_defineTimeFormattingRules();
 
         // empty date field value ? setting default value
-        if ( !$sDate) {
+        if (!$sDate) {
             $this->_setDefaultDateTimeValue($oObject, $sLocalDateFormat, $sLocalTimeFormat, $blOnlyDate);
+
             return $oObject->value;
         }
 
@@ -126,16 +128,17 @@ class oxUtilsDate extends oxSuperCfg
         $oStr = getStr();
 
         // looking for default values that are formatted by MySQL
-        foreach ( array_keys( $aDefDatePatterns ) as $sDefDatePattern ) {
-            if ( $oStr->preg_match( $sDefDatePattern, $sDate)) {
+        foreach (array_keys($aDefDatePatterns) as $sDefDatePattern) {
+            if ($oStr->preg_match($sDefDatePattern, $sDate)) {
                 $blDefDateFound = true;
                 break;
             }
         }
 
         // default value is set ?
-        if ( $blDefDateFound) {
+        if ($blDefDateFound) {
             $this->_setDefaultFormatedValue($oObject, $sDate, $sLocalDateFormat, $sLocalTimeFormat, $blOnlyDate);
+
             return $oObject->value;
         }
 
@@ -145,44 +148,45 @@ class oxUtilsDate extends oxSuperCfg
         $aTimeMatches = array();
 
         // looking for date field
-        foreach ( $aDatePatterns as $sPattern => $sType) {
-            if ( $oStr->preg_match( $sPattern, $sDate, $aDateMatches)) {
+        foreach ($aDatePatterns as $sPattern => $sType) {
+            if ($oStr->preg_match($sPattern, $sDate, $aDateMatches)) {
                 $blDateFound = true;
 
                 // now we know the type of passed date
                 $sDateFormat = $aDFormats[$sLocalDateFormat][0];
-                $aDFields    = $aDFormats[$sType][1];
+                $aDFields = $aDFormats[$sType][1];
                 break;
             }
         }
 
         // no such date field available ?
-        if ( !$blDateFound) {
+        if (!$blDateFound) {
             return $sDate;
         }
 
-        if ( $blOnlyDate) {
+        if ($blOnlyDate) {
             $this->_setDate($oObject, $sDateFormat, $aDFields, $aDateMatches);
+
             return $oObject->value;
         }
 
         // looking for time field
-        foreach ( $aTimePatterns as $sPattern => $sType) {
-            if ( $oStr->preg_match( $sPattern, $sDate, $aTimeMatches)) {
+        foreach ($aTimePatterns as $sPattern => $sType) {
+            if ($oStr->preg_match($sPattern, $sDate, $aTimeMatches)) {
                 $blTimeFound = true;
 
                 // now we know the type of passed time
                 $sTimeFormat = $aTFormats[$sLocalTimeFormat][0];
-                $aTFields    = $aTFormats[$sType][1];
+                $aTFields = $aTFormats[$sType][1];
 
                 //
-                if ( $sType == "USA" && isset($aTimeMatches[4])) {
+                if ($sType == "USA" && isset($aTimeMatches[4])) {
                     $iIntVal = (int) $aTimeMatches[1];
-                    if ( $aTimeMatches[4] == "PM") {
-                        if ( $iIntVal < 13) {
+                    if ($aTimeMatches[4] == "PM") {
+                        if ($iIntVal < 13) {
                             $iIntVal += 12;
                         }
-                    } elseif ( $aTimeMatches[4] == "AM" && $aTimeMatches[1] == "12") {
+                    } elseif ($aTimeMatches[4] == "AM" && $aTimeMatches[1] == "12") {
                         $iIntVal = 0;
                     }
 
@@ -193,21 +197,24 @@ class oxUtilsDate extends oxSuperCfg
             }
         }
 
-        if ( !$blTimeFound) {
+        if (!$blTimeFound) {
             //return $sDate;
             // #871A. trying to keep date as possible correct
             $this->_setDate($oObject, $sDateFormat, $aDFields, $aDateMatches);
+
             return $oObject->value;
         }
 
         $this->_formatCorrectTimeValue($oObject, $sDateFormat, $sTimeFormat, $aDateMatches, $aTimeMatches, $aTFields, $aDFields);
 
         // on some cases we get empty value
-        if ( !$oObject->fldmax_length) {
-            return $this->convertDBDateTime( $oObject, $blToTimeStamp, $blOnlyDate);
+        if (!$oObject->fldmax_length) {
+            return $this->convertDBDateTime($oObject, $blToTimeStamp, $blOnlyDate);
         }
+
         return $oObject->value;
     }
+
     /**
      * Bidirectional converter for timestamp field
      *
@@ -217,7 +224,7 @@ class oxUtilsDate extends oxSuperCfg
      * @return string
      */
 
-    public function convertDBTimestamp( $oObject, $blToTimeStamp = false )
+    public function convertDBTimestamp($oObject, $blToTimeStamp = false)
     {
         // on this case usually means that we gonna save value, and value is formatted, not plain
         $sSQLTimeStampPattern = "/^([0-9]{4})([0-9]{2})([0-9]{2})([0-9]{2})([0-9]{2})([0-9]{2})$/";
@@ -226,34 +233,38 @@ class oxUtilsDate extends oxSuperCfg
         $oStr = getStr();
 
         // preparing value to save
-        if ( $blToTimeStamp) {
+        if ($blToTimeStamp) {
             // reformatting value to ISO
-            $this->convertDBDateTime( $oObject, $blToTimeStamp );
+            $this->convertDBDateTime($oObject, $blToTimeStamp);
 
-            if ( $oStr->preg_match( $sISOTimeStampPattern, $oObject->value, $aMatches)) {
+            if ($oStr->preg_match($sISOTimeStampPattern, $oObject->value, $aMatches)) {
                 // changing layout
-                $oObject->setValue($aMatches[1].$aMatches[2].$aMatches[3].$aMatches[4].$aMatches[5].$aMatches[6]);
-                $oObject->fldmax_length = strlen( $oObject->value);
+                $oObject->setValue($aMatches[1] . $aMatches[2] . $aMatches[3] . $aMatches[4] . $aMatches[5] . $aMatches[6]);
+                $oObject->fldmax_length = strlen($oObject->value);
+
                 return $oObject->value;
             }
         } else {
             // loading and formatting value
             // checking and parsing SQL timestamp value
             //$sSQLTimeStampPattern = "/^([0-9]{4})([0-9]{2})([0-9]{2})([0-9]{2})([0-9]{2})([0-9]{2})$/";
-            if ( $oStr->preg_match( $sSQLTimeStampPattern, $oObject->value, $aMatches ) ) {
-                $iTimestamp = mktime( $aMatches[4], //h
+            if ($oStr->preg_match($sSQLTimeStampPattern, $oObject->value, $aMatches)) {
+                $iTimestamp = mktime(
+                    $aMatches[4], //h
                     $aMatches[5], //m
                     $aMatches[6], //s
                     $aMatches[2], //M
                     $aMatches[3], //d
-                    $aMatches[1]); //y
-                if ( !$iTimestamp ) {
+                    $aMatches[1]
+                ); //y
+                if (!$iTimestamp) {
                     $iTimestamp = "0";
                 }
 
-                $oObject->setValue(trim( date( "Y-m-d H:i:s", $iTimestamp)));
-                $oObject->fldmax_length = strlen( $oObject->value);
-                $this->convertDBDateTime( $oObject, $blToTimeStamp );
+                $oObject->setValue(trim(date("Y-m-d H:i:s", $iTimestamp)));
+                $oObject->fldmax_length = strlen($oObject->value);
+                $this->convertDBDateTime($oObject, $blToTimeStamp);
+
                 return $oObject->value;
             }
         }
@@ -267,9 +278,9 @@ class oxUtilsDate extends oxSuperCfg
      *
      * @return string
      */
-    public function convertDBDate( $oObject, $blToTimeStamp = false )
+    public function convertDBDate($oObject, $blToTimeStamp = false)
     {
-        return $this->convertDBDateTime( $oObject, $blToTimeStamp, true );
+        return $this->convertDBDateTime($oObject, $blToTimeStamp, true);
     }
 
     /**
@@ -283,32 +294,34 @@ class oxUtilsDate extends oxSuperCfg
      *
      * @return null
      */
-    protected function _setDefaultFormatedValue( $oObject, $sDate, $sLocalDateFormat, $sLocalTimeFormat, $blOnlyDate )
+    protected function _setDefaultFormatedValue($oObject, $sDate, $sLocalDateFormat, $sLocalTimeFormat, $blOnlyDate)
     {
         $aDefTimePatterns = $this->_defaultTimePattern();
-        $aDFormats  = $this->_defineDateFormattingRules();
-        $aTFormats  = $this->_defineTimeFormattingRules();
+        $aDFormats = $this->_defineDateFormattingRules();
+        $aTFormats = $this->_defineTimeFormattingRules();
         $oStr = getStr();
 
-        foreach ( array_keys( $aDefTimePatterns ) as $sDefTimePattern ) {
-            if ( $oStr->preg_match( $sDefTimePattern, $sDate ) ) {
+        foreach (array_keys($aDefTimePatterns) as $sDefTimePattern) {
+            if ($oStr->preg_match($sDefTimePattern, $sDate)) {
                 $blDefTimeFound = true;
                 break;
             }
         }
 
         // setting and returning default formatted value
-        if ( $blOnlyDate) {
-            $oObject->setValue(trim( $aDFormats[$sLocalDateFormat][2] ));// . " " . @$aTFormats[$sLocalTimeFormat][2]);
+        if ($blOnlyDate) {
+            $oObject->setValue(trim($aDFormats[$sLocalDateFormat][2])); // . " " . @$aTFormats[$sLocalTimeFormat][2]);
             // increasing(decreasing) field length
-            $oObject->fldmax_length = strlen( $oObject->value );
-            return ;
-        } elseif ( $blDefTimeFound ) {
+            $oObject->fldmax_length = strlen($oObject->value);
+
+            return;
+        } elseif ($blDefTimeFound) {
             // setting value
-            $oObject->setValue(trim( $aDFormats[$sLocalDateFormat][2] . " " . $aTFormats[$sLocalTimeFormat][2] ));
+            $oObject->setValue(trim($aDFormats[$sLocalDateFormat][2] . " " . $aTFormats[$sLocalTimeFormat][2]));
             // increasing(decreasing) field length
-            $oObject->fldmax_length = strlen( $oObject->value );
-            return ;
+            $oObject->fldmax_length = strlen($oObject->value);
+
+            return;
         }
     }
 
@@ -319,14 +332,15 @@ class oxUtilsDate extends oxSuperCfg
      *
      * @return string
      */
-    protected function _defineAndCheckDefaultTimeValues( $blToTimeStamp )
+    protected function _defineAndCheckDefaultTimeValues($blToTimeStamp)
     {
         // defining time format
         // checking for default values
-        $sLocalTimeFormat = oxRegistry::getConfig()->getConfigParam( 'sLocalTimeFormat' );
-        if ( !$sLocalTimeFormat || $blToTimeStamp) {
+        $sLocalTimeFormat = oxRegistry::getConfig()->getConfigParam('sLocalTimeFormat');
+        if (!$sLocalTimeFormat || $blToTimeStamp) {
             $sLocalTimeFormat = "ISO";
         }
+
         return $sLocalTimeFormat;
     }
 
@@ -337,14 +351,15 @@ class oxUtilsDate extends oxSuperCfg
      *
      * @return string
      */
-    protected function _defineAndCheckDefaultDateValues( $blToTimeStamp )
+    protected function _defineAndCheckDefaultDateValues($blToTimeStamp)
     {
         // defining time format
         // checking for default values
-        $sLocalDateFormat = oxRegistry::getConfig()->getConfigParam( 'sLocalDateFormat' );
-        if ( !$sLocalDateFormat || $blToTimeStamp) {
+        $sLocalDateFormat = oxRegistry::getConfig()->getConfigParam('sLocalDateFormat');
+        if (!$sLocalDateFormat || $blToTimeStamp) {
             $sLocalDateFormat = "ISO";
         }
+
         return $sLocalDateFormat;
     }
 
@@ -360,6 +375,7 @@ class oxUtilsDate extends oxSuperCfg
                                   "/^00\.00\.0000/" => "EUR",
                                   "/^00\/00\/0000/" => "USA"
         );
+
         return $aDefDatePatterns;
     }
 
@@ -375,6 +391,7 @@ class oxUtilsDate extends oxSuperCfg
                                   "/00\.00\.00$/"  => "EUR",
                                   "/00:00:00 AM$/" => "USA"
         );
+
         return $aDefTimePatterns;
     }
 
@@ -390,6 +407,7 @@ class oxUtilsDate extends oxSuperCfg
                                "/^([0-9]{2})\.([0-9]{2})\.([0-9]{4})/" => "EUR",
                                "/^([0-9]{2})\/([0-9]{2})\/([0-9]{4})/" => "USA"
         );
+
         return $aDatePatterns;
     }
 
@@ -401,10 +419,11 @@ class oxUtilsDate extends oxSuperCfg
     protected function _regexp2ValidateTimeInput()
     {
         // regexps to validate input
-        $aTimePatterns = array("/([0-9]{2}):([0-9]{2}):([0-9]{2})$/"   => "ISO",
-                               "/([0-9]{2})\.([0-9]{2})\.([0-9]{2})$/" => "EUR",
+        $aTimePatterns = array("/([0-9]{2}):([0-9]{2}):([0-9]{2})$/"                 => "ISO",
+                               "/([0-9]{2})\.([0-9]{2})\.([0-9]{2})$/"               => "EUR",
                                "/([0-9]{2}):([0-9]{2}):([0-9]{2}) ([AP]{1}[M]{1})$/" => "USA"
         );
+
         return $aTimePatterns;
     }
 
@@ -416,10 +435,11 @@ class oxUtilsDate extends oxSuperCfg
     protected function _defineDateFormattingRules()
     {
         // date formatting rules
-        $aDFormats  = array("ISO" => array("Y-m-d", array(2, 3, 1), "0000-00-00"),
-                            "EUR" => array("d.m.Y", array(2, 1, 3), "00.00.0000"),
-                            "USA" => array("m/d/Y", array(1, 2, 3), "00/00/0000")
+        $aDFormats = array("ISO" => array("Y-m-d", array(2, 3, 1), "0000-00-00"),
+                           "EUR" => array("d.m.Y", array(2, 1, 3), "00.00.0000"),
+                           "USA" => array("m/d/Y", array(1, 2, 3), "00/00/0000")
         );
+
         return $aDFormats;
     }
 
@@ -431,10 +451,11 @@ class oxUtilsDate extends oxSuperCfg
     protected function _defineTimeFormattingRules()
     {
         // time formatting rules
-        $aTFormats  = array("ISO" => array("H:i:s",   array(1, 2, 3 ), "00:00:00"),
-                            "EUR" => array("H.i.s",   array(1, 2, 3 ), "00.00.00"),
-                            "USA" => array("h:i:s A", array(1, 2, 3 ), "00:00:00 AM")
+        $aTFormats = array("ISO" => array("H:i:s", array(1, 2, 3), "00:00:00"),
+                           "EUR" => array("H.i.s", array(1, 2, 3), "00.00.00"),
+                           "USA" => array("h:i:s A", array(1, 2, 3), "00:00:00 AM")
         );
+
         return $aTFormats;
     }
 
@@ -448,14 +469,14 @@ class oxUtilsDate extends oxSuperCfg
      *
      * @return null
      */
-    protected function _setDefaultDateTimeValue( $oObject, $sLocalDateFormat, $sLocalTimeFormat, $blOnlyDate )
+    protected function _setDefaultDateTimeValue($oObject, $sLocalDateFormat, $sLocalTimeFormat, $blOnlyDate)
     {
-        $aDFormats  = $this->_defineDateFormattingRules();
-        $aTFormats  = $this->_defineTimeFormattingRules();
+        $aDFormats = $this->_defineDateFormattingRules();
+        $aTFormats = $this->_defineTimeFormattingRules();
 
         $sReturn = $aDFormats[$sLocalDateFormat][2];
-        if ( !$blOnlyDate) {
-            $sReturn .= " ".$aTFormats[$sLocalTimeFormat][2];
+        if (!$blOnlyDate) {
+            $sReturn .= " " . $aTFormats[$sLocalTimeFormat][2];
         }
 
         if ($oObject instanceof oxField) {
@@ -464,7 +485,7 @@ class oxUtilsDate extends oxSuperCfg
             $oObject->value = trim($sReturn);
         }
         // increasing(decreasing) field lenght
-        $oObject->fldmax_length = strlen( $oObject->value);
+        $oObject->fldmax_length = strlen($oObject->value);
     }
 
     /**
@@ -477,20 +498,22 @@ class oxUtilsDate extends oxSuperCfg
      *
      * @return null
      */
-    protected function _setDate( $oObject, $sDateFormat, $aDFields, $aDateMatches )
+    protected function _setDate($oObject, $sDateFormat, $aDFields, $aDateMatches)
     {
         // formatting correct time value
-        $iTimestamp = mktime( 0, 0, 0, $aDateMatches[$aDFields[0]],
+        $iTimestamp = mktime(
+            0, 0, 0, $aDateMatches[$aDFields[0]],
             $aDateMatches[$aDFields[1]],
-            $aDateMatches[$aDFields[2]]);
+            $aDateMatches[$aDFields[2]]
+        );
 
         if ($oObject instanceof oxField) {
-            $oObject->setValue(@date( $sDateFormat, $iTimestamp ));
+            $oObject->setValue(@date($sDateFormat, $iTimestamp));
         } else {
-            $oObject->value = @date( $sDateFormat, $iTimestamp );
+            $oObject->value = @date($sDateFormat, $iTimestamp);
         }
         // we should increase (decrease) field lenght
-        $oObject->fldmax_length = strlen( $oObject->value );
+        $oObject->fldmax_length = strlen($oObject->value);
     }
 
     /**
@@ -506,24 +529,26 @@ class oxUtilsDate extends oxSuperCfg
      *
      * @return null
      */
-    protected function _formatCorrectTimeValue( $oObject, $sDateFormat, $sTimeFormat, $aDateMatches, $aTimeMatches, $aTFields, $aDFields )
+    protected function _formatCorrectTimeValue($oObject, $sDateFormat, $sTimeFormat, $aDateMatches, $aTimeMatches, $aTFields, $aDFields)
     {
         // formatting correct time value
-        $iTimestamp = @mktime( (int) $aTimeMatches[$aTFields[0]],
+        $iTimestamp = @mktime(
+            (int) $aTimeMatches[$aTFields[0]],
             (int) $aTimeMatches[$aTFields[1]],
             (int) $aTimeMatches[$aTFields[2]],
             (int) $aDateMatches[$aDFields[0]],
             (int) $aDateMatches[$aDFields[1]],
-            (int) $aDateMatches[$aDFields[2]] );
+            (int) $aDateMatches[$aDFields[2]]
+        );
 
         if ($oObject instanceof oxField) {
-            $oObject->setValue(trim( @date( $sDateFormat." ".$sTimeFormat, $iTimestamp ) ));
+            $oObject->setValue(trim(@date($sDateFormat . " " . $sTimeFormat, $iTimestamp)));
         } else {
-            $oObject->value = trim( @date( $sDateFormat." ".$sTimeFormat, $iTimestamp ) );
+            $oObject->value = trim(@date($sDateFormat . " " . $sTimeFormat, $iTimestamp));
         }
 
         // we should increase (decrease) field lenght
-        $oObject->fldmax_length = strlen( $oObject->value );
+        $oObject->fldmax_length = strlen($oObject->value);
     }
 
     /**
@@ -534,12 +559,12 @@ class oxUtilsDate extends oxSuperCfg
      */
     public function getTime()
     {
-        $iServerTimeShift = $this->getConfig()->getConfigParam( 'iServerTimeShift' );
-        if ( !$iServerTimeShift ) {
+        $iServerTimeShift = $this->getConfig()->getConfigParam('iServerTimeShift');
+        if (!$iServerTimeShift) {
             return time();
         }
 
-        return ( time() + ( (int) $iServerTimeShift * 3600 ) );
+        return (time() + ((int) $iServerTimeShift * 3600));
     }
 
     /**
@@ -553,18 +578,19 @@ class oxUtilsDate extends oxSuperCfg
      *
      * @return int
      */
-    public function getWeekNumber( $iFirstWeekDay,  $sTimestamp = null, $sFormat = null )
+    public function getWeekNumber($iFirstWeekDay, $sTimestamp = null, $sFormat = null)
     {
-        if ( $sTimestamp == null ) {
+        if ($sTimestamp == null) {
             $sTimestamp = time();
         }
-        if ( $sFormat == null ) {
+        if ($sFormat == null) {
             $sFormat = '%W';
-            if ( $iFirstWeekDay ) {
+            if ($iFirstWeekDay) {
                 $sFormat = '%U';
             }
         }
-        return (int) strftime( $sFormat, $sTimestamp );
+
+        return (int) strftime($sFormat, $sTimestamp);
     }
 
     /**
@@ -574,15 +600,15 @@ class oxUtilsDate extends oxSuperCfg
      *
      * @return string
      */
-    public function german2English( $sDate )
+    public function german2English($sDate)
     {
-        $aDate = explode( ".", $sDate);
+        $aDate = explode(".", $sDate);
 
-        if ( isset( $aDate ) && count( $aDate) > 1) {
-            if ( count( $aDate) == 2) {
-                $sDate = $aDate[1]."-".$aDate[0];
+        if (isset($aDate) && count($aDate) > 1) {
+            if (count($aDate) == 2) {
+                $sDate = $aDate[1] . "-" . $aDate[0];
             } else {
-                $sDate = $aDate[2]."-".$aDate[1]."-".$aDate[0];
+                $sDate = $aDate[2] . "-" . $aDate[1] . "-" . $aDate[0];
             }
         }
 
@@ -599,12 +625,12 @@ class oxUtilsDate extends oxSuperCfg
      *
      * @return string formatted string
      */
-    protected function _processDate( $aTime, $aDate, $blGerman, $sFormat )
+    protected function _processDate($aTime, $aDate, $blGerman, $sFormat)
     {
-        if ( $blGerman ) {
-            return date( $sFormat, mktime( $aTime[0], $aTime[1], $aTime[2], $aDate[1], $aDate[0], $aDate[2] ) );
+        if ($blGerman) {
+            return date($sFormat, mktime($aTime[0], $aTime[1], $aTime[2], $aDate[1], $aDate[0], $aDate[2]));
         } else {
-            return date( $sFormat, mktime( $aTime[0], $aTime[1], $aTime[2], $aDate[1], $aDate[2], $aDate[0] ) );
+            return date($sFormat, mktime($aTime[0], $aTime[1], $aTime[2], $aDate[1], $aDate[2], $aDate[0]));
         }
     }
 
@@ -616,13 +642,13 @@ class oxUtilsDate extends oxSuperCfg
      *
      * @return bool
      */
-    public function isEmptyDate( $sDate )
+    public function isEmptyDate($sDate)
     {
         $blIsEmpty = true;
 
-        if ( !empty( $sDate ) ) {
+        if (!empty($sDate)) {
             $sDate = preg_replace("/[^0-9a-z]/i", "", $sDate);
-            if ( is_numeric( $sDate ) && $sDate == 0 ) {
+            if (is_numeric($sDate) && $sDate == 0) {
                 $blIsEmpty = true;
             } else {
                 $blIsEmpty = false;

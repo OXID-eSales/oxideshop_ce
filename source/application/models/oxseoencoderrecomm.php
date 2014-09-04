@@ -26,6 +26,7 @@
  */
 class oxSeoEncoderRecomm extends oxSeoEncoder
 {
+
     /**
      * Returns SEO uri for tag.
      *
@@ -34,25 +35,25 @@ class oxSeoEncoderRecomm extends oxSeoEncoder
      *
      * @return string
      */
-    public function getRecommUri( $oRecomm, $iLang = null )
+    public function getRecommUri($oRecomm, $iLang = null)
     {
-        if ( !( $sSeoUrl = $this->_loadFromDb( 'dynamic', $oRecomm->getId(), $iLang ) ) ) {
+        if (!($sSeoUrl = $this->_loadFromDb('dynamic', $oRecomm->getId(), $iLang))) {
             $myConfig = $this->getConfig();
 
             // fetching part of base url
             $sSeoUrl = $this->_getStaticUri(
-                        $oRecomm->getBaseStdLink( $iLang, false ),
-                        $myConfig->getShopId(),
-                        $iLang
-                    )
-                    .
-                    $this->_prepareTitle( $oRecomm->oxrecommlists__oxtitle->value, false, $iLang );
+                           $oRecomm->getBaseStdLink($iLang, false),
+                           $myConfig->getShopId(),
+                           $iLang
+                       )
+                       .
+                       $this->_prepareTitle($oRecomm->oxrecommlists__oxtitle->value, false, $iLang);
 
             // creating unique
-            $sSeoUrl = $this->_processSeoUrl( $sSeoUrl, $oRecomm->getId(), $iLang );
+            $sSeoUrl = $this->_processSeoUrl($sSeoUrl, $oRecomm->getId(), $iLang);
 
             // inserting
-            $this->_saveToDb( 'dynamic', $oRecomm->getId(), $oRecomm->getBaseStdLink( $iLang ), $sSeoUrl, $iLang, $myConfig->getShopId() );
+            $this->_saveToDb('dynamic', $oRecomm->getId(), $oRecomm->getBaseStdLink($iLang), $sSeoUrl, $iLang, $myConfig->getShopId());
         }
 
         return $sSeoUrl;
@@ -66,12 +67,13 @@ class oxSeoEncoderRecomm extends oxSeoEncoder
      *
      * @return string
      */
-    public function getRecommUrl( $oRecomm, $iLang = null)
+    public function getRecommUrl($oRecomm, $iLang = null)
     {
         if (!isset($iLang)) {
             $iLang = oxRegistry::getLang()->getBaseLanguage();
         }
-        return $this->_getFullUrl( $this->getRecommUri( $oRecomm, $iLang ), $iLang );
+
+        return $this->_getFullUrl($this->getRecommUri($oRecomm, $iLang), $iLang);
     }
 
     /**
@@ -84,17 +86,17 @@ class oxSeoEncoderRecomm extends oxSeoEncoder
      *
      * @return string
      */
-    public function getRecommPageUrl( $oRecomm, $iPage, $iLang = null, $blFixed = false )
+    public function getRecommPageUrl($oRecomm, $iPage, $iLang = null, $blFixed = false)
     {
         if (!isset($iLang)) {
             $iLang = oxRegistry::getLang()->getBaseLanguage();
         }
-        $sStdUrl = $oRecomm->getBaseStdLink( $iLang ) . '&amp;pgNr=' . $iPage;
+        $sStdUrl = $oRecomm->getBaseStdLink($iLang) . '&amp;pgNr=' . $iPage;
         $sParams = (int) ($iPage + 1);
 
-        $sStdUrl = $this->_trimUrl( $sStdUrl, $iLang );
-        $sSeoUrl = $this->getRecommUri( $oRecomm, $iLang ) . $sParams . "/";
+        $sStdUrl = $this->_trimUrl($sStdUrl, $iLang);
+        $sSeoUrl = $this->getRecommUri($oRecomm, $iLang) . $sParams . "/";
 
-        return $this->_getFullUrl( $this->_getPageUri( $oRecomm, 'dynamic', $sStdUrl, $sSeoUrl, $sParams, $iLang, $blFixed ), $iLang );
+        return $this->_getFullUrl($this->_getPageUri($oRecomm, 'dynamic', $sStdUrl, $sSeoUrl, $sParams, $iLang, $blFixed), $iLang);
     }
 }

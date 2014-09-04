@@ -27,6 +27,7 @@
  */
 class oxContent extends oxI18n implements oxIUrl
 {
+
     /**
      * Current class name.
      *
@@ -76,14 +77,14 @@ class oxContent extends oxI18n implements oxIUrl
      *
      * @return mixed
      */
-    public function __get( $sName )
+    public function __get($sName)
     {
-        switch ( $sName ) {
+        switch ($sName) {
             case 'expanded':
                 return $this->getExpanded();
                 break;
         }
-        return parent::__get( $sName );
+        return parent::__get($sName);
     }
 
     /**
@@ -92,7 +93,7 @@ class oxContent extends oxI18n implements oxIUrl
     public function __construct()
     {
         parent::__construct();
-        $this->init( 'oxcontents' );
+        $this->init('oxcontents');
     }
 
     /**
@@ -102,9 +103,10 @@ class oxContent extends oxI18n implements oxIUrl
      */
     public function getExpanded()
     {
-        if ( !isset( $this->_blExpanded ) ) {
-            $this->_blExpanded = ( $this->getId() == oxRegistry::getConfig()->getRequestParameter( 'oxcid' ) );
+        if (!isset($this->_blExpanded)) {
+            $this->_blExpanded = ($this->getId() == oxRegistry::getConfig()->getRequestParameter('oxcid'));
         }
+
         return $this->_blExpanded;
     }
 
@@ -113,9 +115,9 @@ class oxContent extends oxI18n implements oxIUrl
      *
      * @param string $sCategoryId
      */
-    public function setCategoryId( $sCategoryId )
+    public function setCategoryId($sCategoryId)
     {
-        $this->oxcontents__oxcatid = new oxField( $sCategoryId );
+        $this->oxcontents__oxcatid = new oxField($sCategoryId);
     }
 
     /**
@@ -136,36 +138,36 @@ class oxContent extends oxI18n implements oxIUrl
      *
      * @return array
      */
-    protected function _loadFromDb( $sLoadId )
+    protected function _loadFromDb($sLoadId)
     {
         $sTable = $this->getViewName();
         $sShopId = $this->getShopId();
-        $aParams = array( $sTable . '.oxloadid' => $sLoadId, $sTable . '.oxshopid' => $sShopId );
+        $aParams = array($sTable . '.oxloadid' => $sLoadId, $sTable . '.oxshopid' => $sShopId);
 
-        $sSelect = $this->buildSelectString( $aParams );
+        $sSelect = $this->buildSelectString($aParams);
 
         //Loads "credits" content object and its text (first available)
-        if ( $sLoadId == 'oxcredits' ) {
+        if ($sLoadId == 'oxcredits') {
 
             // fetching column names
             $sColQ = "SHOW COLUMNS FROM oxcontents WHERE field LIKE  'oxcontent%'";
-            $aCols = oxDb::getDb()->getAll( $sColQ );
+            $aCols = oxDb::getDb()->getAll($sColQ);
 
             // building subquery
             $sPattern = "IF ( %s != '', %s, %s ) ";
-            $iCount = count( $aCols ) - 1;
+            $iCount = count($aCols) - 1;
 
             $sContQ = "SELECT {$sPattern}";
-            foreach ( $aCols as $iKey => $aCol ) {
-                $sContQ = sprintf( $sContQ, $aCol[0], $aCol[0], $iCount != $iKey ? $sPattern : "''" );
+            foreach ($aCols as $iKey => $aCol) {
+                $sContQ = sprintf($sContQ, $aCol[0], $aCol[0], $iCount != $iKey ? $sPattern : "''");
             }
             $sContQ .= " FROM oxcontents WHERE oxloadid = '{$sLoadId}' AND oxshopid = '{$sShopId}'";
 
-            $sSelect = $this->buildSelectString( $aParams );
-            $sSelect = str_replace( "`{$sTable}`.`oxcontent`", "( $sContQ ) as oxcontent", $sSelect );
+            $sSelect = $this->buildSelectString($aParams);
+            $sSelect = str_replace("`{$sTable}`.`oxcontent`", "( $sContQ ) as oxcontent", $sSelect);
         }
 
-        $aData = oxDb::getDb( oxDb::FETCH_MODE_ASSOC )->getRow( $sSelect );
+        $aData = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getRow($sSelect);
 
         return $aData;
     }
@@ -177,13 +179,14 @@ class oxContent extends oxI18n implements oxIUrl
      *
      * @return bool
      */
-    public function loadByIdent( $sLoadId )
+    public function loadByIdent($sLoadId)
     {
 
-            $aData = $this->_loadFromDb( $sLoadId );
+            $aData = $this->_loadFromDb($sLoadId);
 
-        if ( $aData ) {
-            $this->assign( $aData );
+        if ($aData) {
+            $this->assign($aData);
+
             return true;
         }
 
@@ -218,14 +221,14 @@ class oxContent extends oxI18n implements oxIUrl
      *
      * @return null
      */
-    public function assign( $dbRecord )
+    public function assign($dbRecord)
     {
 
-        parent::assign( $dbRecord );
+        parent::assign($dbRecord);
         // workaround for firefox showing &lang= as &9001;= entity, mantis#0001272
 
-        if ( $this->oxcontents__oxcontent ) {
-            $this->oxcontents__oxcontent->setValue( str_replace( '&lang=', '&amp;lang=', $this->oxcontents__oxcontent->value ), oxField::T_RAW );
+        if ($this->oxcontents__oxcontent) {
+            $this->oxcontents__oxcontent->setValue(str_replace('&lang=', '&amp;lang=', $this->oxcontents__oxcontent->value), oxField::T_RAW);
         }
     }
 
@@ -236,9 +239,9 @@ class oxContent extends oxI18n implements oxIUrl
      *
      * @return string
      */
-    public function getBaseSeoLink( $iLang )
+    public function getBaseSeoLink($iLang)
     {
-        return oxRegistry::get( "oxSeoEncoderContent" )->getContentUrl( $this, $iLang );
+        return oxRegistry::get("oxSeoEncoderContent")->getContentUrl($this, $iLang);
     }
 
     /**
@@ -248,18 +251,18 @@ class oxContent extends oxI18n implements oxIUrl
      *
      * @return string
      */
-    public function getLink( $iLang = null )
+    public function getLink($iLang = null)
     {
-        if ( !oxRegistry::getUtils()->seoIsActive() ) {
-            return $this->getStdLink( $iLang );
+        if (!oxRegistry::getUtils()->seoIsActive()) {
+            return $this->getStdLink($iLang);
         }
 
-        if ( $iLang === null ) {
+        if ($iLang === null) {
             $iLang = $this->getLanguage();
         }
 
-        if ( !isset( $this->_aSeoUrls[$iLang] ) ) {
-            $this->_aSeoUrls[$iLang] = $this->getBaseSeoLink( $iLang );
+        if (!isset($this->_aSeoUrls[$iLang])) {
+            $this->_aSeoUrls[$iLang] = $this->getBaseSeoLink($iLang);
         }
 
         return $this->_aSeoUrls[$iLang];
@@ -268,42 +271,42 @@ class oxContent extends oxI18n implements oxIUrl
     /**
      * Returns base dynamic url: shopurl/index.php?cl=details
      *
-     * @param int $iLang language id
+     * @param int  $iLang   language id
      * @param bool $blAddId add current object id to url or not
-     * @param bool $blFull return full including domain name [optional]
+     * @param bool $blFull  return full including domain name [optional]
      *
      * @return string
      */
-    public function getBaseStdLink( $iLang, $blAddId = true, $blFull = true )
+    public function getBaseStdLink($iLang, $blAddId = true, $blFull = true)
     {
         $sUrl = '';
-        if ( $blFull ) {
+        if ($blFull) {
             //always returns shop url, not admin
-            $sUrl = $this->getConfig()->getShopUrl( $iLang, false );
+            $sUrl = $this->getConfig()->getShopUrl($iLang, false);
         }
 
-        if ( $this->oxcontents__oxloadid->value === 'oxcredits' ) {
+        if ($this->oxcontents__oxloadid->value === 'oxcredits') {
             $sUrl .= "index.php?cl=credits";
         } else {
             $sUrl .= "index.php?cl=content";
         }
         $sUrl .= '&amp;oxloadid=' . $this->getLoadId();
 
-        if ( $blAddId ) {
+        if ($blAddId) {
             $sUrl .= "&amp;oxcid=" . $this->getId();
             // adding parent category if if available
-            if ( $this->_sParentCatId !== false && $this->oxcontents__oxcatid->value && $this->oxcontents__oxcatid->value != 'oxrootid' ) {
+            if ($this->_sParentCatId !== false && $this->oxcontents__oxcatid->value && $this->oxcontents__oxcatid->value != 'oxrootid') {
 
-                if ( $this->_sParentCatId === null ) {
+                if ($this->_sParentCatId === null) {
                     $this->_sParentCatId = false;
                     $oDb = oxDb::getDb();
-                    $sParentId = $oDb->getOne( "select oxparentid from oxcategories where oxid = " . $oDb->quote( $this->oxcontents__oxcatid->value ) );
-                    if ( $sParentId && 'oxrootid' != $sParentId ) {
+                    $sParentId = $oDb->getOne("select oxparentid from oxcategories where oxid = " . $oDb->quote($this->oxcontents__oxcatid->value));
+                    if ($sParentId && 'oxrootid' != $sParentId) {
                         $this->_sParentCatId = $sParentId;
                     }
                 }
 
-                if ( $this->_sParentCatId ) {
+                if ($this->_sParentCatId) {
                     $sUrl .= "&amp;cnid=" . $this->_sParentCatId;
                 }
             }
@@ -316,36 +319,36 @@ class oxContent extends oxI18n implements oxIUrl
     /**
      * Returns standard URL to product.
      *
-     * @param integer $iLang language
-     * @param array $aParams additional params to use [optional]
+     * @param integer $iLang   language
+     * @param array   $aParams additional params to use [optional]
      *
      * @return string
      */
-    public function getStdLink( $iLang = null, $aParams = array() )
+    public function getStdLink($iLang = null, $aParams = array())
     {
-        if ( $iLang === null ) {
+        if ($iLang === null) {
             $iLang = $this->getLanguage();
         }
 
-        return oxRegistry::get( "oxUtilsUrl" )->processUrl( $this->getBaseStdLink( $iLang ), true, $aParams, $iLang );
+        return oxRegistry::get("oxUtilsUrl")->processUrl($this->getBaseStdLink($iLang), true, $aParams, $iLang);
     }
 
     /**
      * Sets data field value.
      *
      * @param string $sFieldName index OR name (eg. 'oxarticles__oxtitle') of a data field to set
-     * @param string $sValue value of data field
-     * @param int $iDataType field type
+     * @param string $sValue     value of data field
+     * @param int    $iDataType  field type
      *
      * @return null
      */
-    protected function _setFieldData( $sFieldName, $sValue, $iDataType = oxField::T_TEXT )
+    protected function _setFieldData($sFieldName, $sValue, $iDataType = oxField::T_TEXT)
     {
-        if ( 'oxcontent' === strtolower( $sFieldName ) || 'oxcontents__oxcontent' === strtolower( $sFieldName ) ) {
+        if ('oxcontent' === strtolower($sFieldName) || 'oxcontents__oxcontent' === strtolower($sFieldName)) {
             $iDataType = oxField::T_RAW;
         }
 
-        return parent::_setFieldData( $sFieldName, $sValue, $iDataType );
+        return parent::_setFieldData($sFieldName, $sValue, $iDataType);
     }
 
     /**
@@ -367,16 +370,18 @@ class oxContent extends oxI18n implements oxIUrl
      *
      * @return bool
      */
-    public function delete( $sOXID = null )
+    public function delete($sOXID = null)
     {
-        if ( !$sOXID ) {
+        if (!$sOXID) {
             $sOXID = $this->getId();
         }
 
-        if ( parent::delete( $sOXID ) ) {
-            oxRegistry::get( "oxSeoEncoderContent" )->onDeleteContent( $sOXID );
+        if (parent::delete($sOXID)) {
+            oxRegistry::get("oxSeoEncoderContent")->onDeleteContent($sOXID);
+
             return true;
         }
+
         return false;
     }
 
@@ -388,14 +393,15 @@ class oxContent extends oxI18n implements oxIUrl
     public function save()
     {
         $blSaved = parent::save();
-        if ( $blSaved && $this->oxcontents__oxloadid->value === 'oxagb' ) {
+        if ($blSaved && $this->oxcontents__oxloadid->value === 'oxagb') {
             $sShopId = $this->getConfig()->getShopId();
             $sVersion = $this->oxcontents__oxtermversion->value;
 
             $oDb = oxDb::getDb();
             // dropping expired..
-            $oDb->execute( "delete from oxacceptedterms where oxshopid='{$sShopId}' and oxtermversion != " . $oDb->quote( $sVersion ) );
+            $oDb->execute("delete from oxacceptedterms where oxshopid='{$sShopId}' and oxtermversion != " . $oDb->quote($sVersion));
         }
+
         return $blSaved;
     }
 
@@ -406,7 +412,7 @@ class oxContent extends oxI18n implements oxIUrl
      */
     public function getTermsVersion()
     {
-        if ( $this->loadByIdent( 'oxagb' ) ) {
+        if ($this->loadByIdent('oxagb')) {
             return $this->oxcontents__oxtermversion->value;
         }
     }

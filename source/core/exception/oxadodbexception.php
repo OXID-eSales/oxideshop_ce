@@ -29,13 +29,13 @@
 class oxAdoDbException extends oxConnectionException
 {
 
-    function __construct( $sDbDriver, $sFunction, $iErrorNr, $sErrorMsg, $sParam1, $sParam2, $oConnection )
+    function __construct($sDbDriver, $sFunction, $iErrorNr, $sErrorMsg, $sParam1, $sParam2, $oConnection)
     {
         $sUser = $oConnection->username;
-        $iErrorNr = is_numeric($iErrorNr)? $iErrorNr : -1;
+        $iErrorNr = is_numeric($iErrorNr) ? $iErrorNr : -1;
 
         $sMessage = "$sDbDriver error: [$iErrorNr: $sErrorMsg] in $sFunction ($sParam1, $sParam2) with user $sUser\n";
 
-        parent::__construct( $sMessage, $iErrorNr );
+        parent::__construct($sMessage, $iErrorNr);
     }
 }

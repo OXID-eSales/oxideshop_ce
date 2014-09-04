@@ -26,50 +26,59 @@
  */
 class User extends oxUBase
 {
+
     /**
      * Current class template.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'page/checkout/user.tpl';
 
     /**
      * Order step marker
+     *
      * @var bool
      */
     protected $_blIsOrderStep = true;
 
     /**
      * Revers of option blOrderDisWithoutReg
+     *
      * @var array
      */
     protected $_blShowNoRegOpt = null;
 
     /**
      * Selected Address
+     *
      * @var object
      */
     protected $_sSelectedAddress = null;
 
     /**
      * Login option
+     *
      * @var integer
      */
     protected $_iOption = null;
 
     /**
      * Country list
+     *
      * @var object
      */
     protected $_oCountryList = null;
 
     /**
      * Order remark
+     *
      * @var string
      */
     protected $_sOrderRemark = null;
 
     /**
      * Wishlist user id
+     *
      * @var string
      */
     protected $_sWishId = null;
@@ -89,21 +98,21 @@ class User extends oxUBase
     {
         $myConfig = $this->getConfig();
 
-        if ( $this->getIsOrderStep() ) {
-            if ($myConfig->getConfigParam( 'blPsBasketReservationEnabled' )) {
+        if ($this->getIsOrderStep()) {
+            if ($myConfig->getConfigParam('blPsBasketReservationEnabled')) {
                 $this->getSession()->getBasketReservations()->renewExpiration();
             }
 
             $oBasket = $this->getSession()->getBasket();
-            if ( $this->_blIsOrderStep && $myConfig->getConfigParam( 'blPsBasketReservationEnabled' ) && (!$oBasket || ( $oBasket && !$oBasket->getProductsCount() )) ) {
-                oxRegistry::getUtils()->redirect( $myConfig->getShopHomeURL() .'cl=basket', true, 302 );
+            if ($this->_blIsOrderStep && $myConfig->getConfigParam('blPsBasketReservationEnabled') && (!$oBasket || ($oBasket && !$oBasket->getProductsCount()))) {
+                oxRegistry::getUtils()->redirect($myConfig->getShopHomeURL() . 'cl=basket', true, 302);
             }
         }
 
         parent::render();
 
-        if ( $myConfig->getConfigParam( "bl_showFbConnect" ) && !$this->getUser() ) {
-             $this->_fillFormWithFacebookData();
+        if ($myConfig->getConfigParam("bl_showFbConnect") && !$this->getUser()) {
+            $this->_fillFormWithFacebookData();
         }
 
         return $this->_sThisTemplate;
@@ -116,9 +125,10 @@ class User extends oxUBase
      */
     public function getShowNoRegOption()
     {
-        if ( $this->_blShowNoRegOpt === null ) {
-            $this->_blShowNoRegOpt = !$this->getConfig()->getConfigParam( 'blOrderDisWithoutReg' );
+        if ($this->_blShowNoRegOpt === null) {
+            $this->_blShowNoRegOpt = !$this->getConfig()->getConfigParam('blOrderDisWithoutReg');
         }
+
         return $this->_blShowNoRegOpt;
     }
 
@@ -129,15 +139,16 @@ class User extends oxUBase
      */
     public function getLoginOption()
     {
-        if ( $this->_iOption === null ) {
+        if ($this->_iOption === null) {
             // passing user chosen option value to display correct content
-            $iOption = oxRegistry::getConfig()->getRequestParameter( 'option' );
+            $iOption = oxRegistry::getConfig()->getRequestParameter('option');
             // if user chosen "Option 2"" - we should show user details only if he is authorized
-            if ( $iOption == 2 && !$this->getUser() ) {
+            if ($iOption == 2 && !$this->getUser()) {
                 $iOption = 0;
             }
             $this->_iOption = $iOption;
         }
+
         return $this->_iOption;
     }
 
@@ -148,18 +159,19 @@ class User extends oxUBase
      */
     public function getOrderRemark()
     {
-        if ( $this->_sOrderRemark === null ) {
+        if ($this->_sOrderRemark === null) {
             $sOrderRemark = false;
             // if already connected, we can use the session
-            if ( $this->getUser() ) {
-                $sOrderRemark = oxRegistry::getSession()->getVariable( 'ordrem' );
+            if ($this->getUser()) {
+                $sOrderRemark = oxRegistry::getSession()->getVariable('ordrem');
             } else {
                 // not connected so nowhere to save, we're gonna use what we get from post
-                $sOrderRemark = oxRegistry::getConfig()->getRequestParameter( 'order_remark', true );
+                $sOrderRemark = oxRegistry::getConfig()->getRequestParameter('order_remark', true);
             }
 
-            $this->_sOrderRemark = $sOrderRemark ? oxRegistry::getConfig()->checkParamSpecialChars( $sOrderRemark ) : false;
+            $this->_sOrderRemark = $sOrderRemark ? oxRegistry::getConfig()->checkParamSpecialChars($sOrderRemark) : false;
         }
+
         return $this->_sOrderRemark;
     }
 
@@ -170,21 +182,22 @@ class User extends oxUBase
      */
     public function isNewsSubscribed()
     {
-        if ( $this->_blNewsSubscribed === null ) {
+        if ($this->_blNewsSubscribed === null) {
             $blNews = false;
-            if ( ( $blNews = oxRegistry::getConfig()->getRequestParameter( 'blnewssubscribed' ) ) === null ) {
+            if (($blNews = oxRegistry::getConfig()->getRequestParameter('blnewssubscribed')) === null) {
                 $blNews = false;
             }
-            if ( ( $oUser = $this->getUser() ) ) {
+            if (($oUser = $this->getUser())) {
                 $blNews = $oUser->getNewsSubscription()->getOptInStatus();
             }
             $this->_blNewsSubscribed = $blNews;
         }
 
-        if (is_null($this->_blNewsSubscribed))
+        if (is_null($this->_blNewsSubscribed)) {
             $this->_blNewsSubscribed = false;
+        }
 
-        return  $this->_blNewsSubscribed;
+        return $this->_blNewsSubscribed;
     }
 
     /**
@@ -194,7 +207,7 @@ class User extends oxUBase
      */
     public function showShipAddress()
     {
-        return oxRegistry::getSession()->getVariable( 'blshowshipaddress' );
+        return oxRegistry::getSession()->getVariable('blshowshipaddress');
     }
 
     /**
@@ -207,24 +220,24 @@ class User extends oxUBase
         // Create our Application instance.
         $oFacebook = oxRegistry::get("oxFb");
 
-        if ( $oFacebook->isConnected() ) {
-            $aMe  = $oFacebook->api('/me');
+        if ($oFacebook->isConnected()) {
+            $aMe = $oFacebook->api('/me');
 
             $aInvAdr = $this->getInvoiceAddress();
-            $sCharset = oxRegistry::getLang()->translateString( "charset" );
+            $sCharset = oxRegistry::getLang()->translateString("charset");
 
             // do not stop converting on error - just try to translit unknown symbols
             $sCharset .= '//TRANSLIT';
 
-            if ( !$aInvAdr["oxuser__oxfname"] ) {
-                $aInvAdr["oxuser__oxfname"] = iconv( 'UTF-8', $sCharset, $aMe["first_name"] );
+            if (!$aInvAdr["oxuser__oxfname"]) {
+                $aInvAdr["oxuser__oxfname"] = iconv('UTF-8', $sCharset, $aMe["first_name"]);
             }
 
-            if ( !$aInvAdr["oxuser__oxlname"] ) {
-                $aInvAdr["oxuser__oxlname"] = iconv( 'UTF-8', $sCharset, $aMe["last_name"] );
+            if (!$aInvAdr["oxuser__oxlname"]) {
+                $aInvAdr["oxuser__oxlname"] = iconv('UTF-8', $sCharset, $aMe["last_name"]);
             }
 
-            $this->setInvoiceAddress( $aInvAdr );
+            $this->setInvoiceAddress($aInvAdr);
         }
     }
 
@@ -235,7 +248,7 @@ class User extends oxUBase
      */
     public function modifyBillAddress()
     {
-        return oxRegistry::getConfig()->getRequestParameter( 'blnewssubscribed' );
+        return oxRegistry::getConfig()->getRequestParameter('blnewssubscribed');
     }
 
     /**
@@ -248,8 +261,8 @@ class User extends oxUBase
         $aPaths = array();
         $aPath = array();
 
-        $aPath['title'] = oxRegistry::getLang()->translateString( 'ADDRESS', oxRegistry::getLang()->getBaseLanguage(), false );
-        $aPath['link']  = $this->getLink();
+        $aPath['title'] = oxRegistry::getLang()->translateString('ADDRESS', oxRegistry::getLang()->getBaseLanguage(), false);
+        $aPath['link'] = $this->getLink();
 
         $aPaths[] = $aPath;
 
@@ -264,11 +277,12 @@ class User extends oxUBase
     public function isDownloadableProductWarning()
     {
         $oBasket = $this->getSession()->getBasket();
-        if ( $oBasket && $this->getConfig()->getConfigParam( "blEnableDownloads" ) ) {
-            if ( $oBasket->hasDownloadableProducts() ) {
+        if ($oBasket && $this->getConfig()->getConfigParam("blEnableDownloads")) {
+            if ($oBasket->hasDownloadableProducts()) {
                 return true;
             }
         }
+
         return false;
     }
 }

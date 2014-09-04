@@ -27,6 +27,7 @@
  */
 class oxCaptcha extends oxSuperCfg
 {
+
     /**
      * CAPTCHA length
      *
@@ -46,7 +47,7 @@ class oxCaptcha extends oxSuperCfg
      *
      * @var string
      */
-    private $_sMacChars  = 'abcdefghijkmnpqrstuvwxyz23456789';
+    private $_sMacChars = 'abcdefghijkmnpqrstuvwxyz23456789';
 
     /**
      * Captcha timeout 60 * 5 = 5 minutes
@@ -62,10 +63,10 @@ class oxCaptcha extends oxSuperCfg
      */
     public function getText()
     {
-        if ( !$this->_sText ) {
+        if (!$this->_sText) {
             $this->_sText = '';
-            for ( $i=0; $i < $this->_iMacLength; $i++ ) {
-                $this->_sText .= strtolower( $this->_sMacChars{ rand( 0, strlen( $this->_sMacChars ) - 1 ) } );
+            for ($i = 0; $i < $this->_iMacLength; $i++) {
+                $this->_sText .= strtolower($this->_sMacChars{rand(0, strlen($this->_sMacChars) - 1)});
             }
         }
 
@@ -83,21 +84,22 @@ class oxCaptcha extends oxSuperCfg
     {
         // inserting captcha record
         $iTime = time() + $this->_iTimeout;
-        $sTextHash = $this->getTextHash( $sText );
+        $sTextHash = $this->getTextHash($sText);
 
         // if session is started - storing captcha info here
         $session = $this->getSession();
-        if ( $session->isSessionStarted() ) {
+        if ($session->isSessionStarted()) {
             $sHash = oxUtilsObject::getInstance()->generateUID();
-            $aHash = $session->getVariable( "aCaptchaHash" );
-            $aHash[$sHash] = array( $sTextHash => $iTime );
-            $session->setVariable( "aCaptchaHash", $aHash );
+            $aHash = $session->getVariable("aCaptchaHash");
+            $aHash[$sHash] = array($sTextHash => $iTime);
+            $session->setVariable("aCaptchaHash", $aHash);
         } else {
             $oDb = oxDb::getDb();
             $sQ = "insert into oxcaptcha ( oxhash, oxtime ) values ( '{$sTextHash}', '{$iTime}' )";
-            $oDb->execute( $sQ );
-            $sHash = $oDb->getOne( "select LAST_INSERT_ID()", false, false );
+            $oDb->execute($sQ);
+            $sHash = $oDb->getOne("select LAST_INSERT_ID()", false, false);
         }
+
         return $sHash;
     }
 
@@ -108,14 +110,15 @@ class oxCaptcha extends oxSuperCfg
      *
      * @return string
      */
-    public function getTextHash( $sText )
+    public function getTextHash($sText)
     {
         if (!$sText) {
             $sText = $this->getText();
         }
 
         $sText = strtolower($sText);
-        return md5( "ox{$sText}" );
+
+        return md5("ox{$sText}");
     }
 
     /**
@@ -126,7 +129,7 @@ class oxCaptcha extends oxSuperCfg
     public function getImageUrl()
     {
         $sUrl = $this->getConfig()->getCoreUtilsURL() . "verificationimg.php?e_mac=";
-        $sUrl .= oxRegistry::getUtils()->strMan( $this->getText() );
+        $sUrl .= oxRegistry::getUtils()->strMan($this->getText());
 
         return $sUrl;
     }
@@ -138,7 +141,7 @@ class oxCaptcha extends oxSuperCfg
      */
     public function isImageVisible()
     {
-        return ( ( function_exists( 'imagecreatetruecolor' ) || function_exists( 'imagecreate' ) ) && $this->getConfig()->getConfigParam( 'iUseGDVersion' ) > 1 );
+        return ((function_exists('imagecreatetruecolor') || function_exists('imagecreate')) && $this->getConfig()->getConfigParam('iUseGDVersion') > 1);
     }
 
     /**
@@ -150,19 +153,20 @@ class oxCaptcha extends oxSuperCfg
      *
      * @return bool
      */
-    protected function _passFromSession( $sMacHash, $sHash, $iTime )
+    protected function _passFromSession($sMacHash, $sHash, $iTime)
     {
         $blPass = null;
         $oSession = $this->getSession();
-        if ( ( $aHash = $oSession->getVariable( "aCaptchaHash" ) ) ) {
-            $blPass = ( isset( $aHash[$sMacHash][$sHash] ) && $aHash[$sMacHash][$sHash] >= $iTime ) ? true : false;
-            unset( $aHash[$sMacHash] );
-            if ( !empty( $aHash ) ) {
-                $oSession->setVariable( "aCaptchaHash", $aHash );
+        if (($aHash = $oSession->getVariable("aCaptchaHash"))) {
+            $blPass = (isset($aHash[$sMacHash][$sHash]) && $aHash[$sMacHash][$sHash] >= $iTime) ? true : false;
+            unset($aHash[$sMacHash]);
+            if (!empty($aHash)) {
+                $oSession->setVariable("aCaptchaHash", $aHash);
             } else {
-                $oSession->deleteVariable( "aCaptchaHash" );
+                $oSession->deleteVariable("aCaptchaHash");
             }
         }
+
         return $blPass;
     }
 
@@ -175,21 +179,21 @@ class oxCaptcha extends oxSuperCfg
      *
      * @return bool
      */
-    protected function _passFromDb( $iMacHash, $sHash, $iTime )
+    protected function _passFromDb($iMacHash, $sHash, $iTime)
     {
         $blPass = false;
 
         $oDb = oxDb::getDb();
-        $sQ  = "select 1 from oxcaptcha where oxid = {$iMacHash} and oxhash = '{$sHash}'";
-        if ( ( $blPass = (bool) $oDb->getOne( $sQ, false, false ) ) ) {
+        $sQ = "select 1 from oxcaptcha where oxid = {$iMacHash} and oxhash = '{$sHash}'";
+        if (($blPass = (bool) $oDb->getOne($sQ, false, false))) {
             // cleanup
             $sQ = "delete from oxcaptcha where oxid = {$iMacHash} and oxhash = '{$sHash}'";
-            $oDb->execute( $sQ );
+            $oDb->execute($sQ);
         }
 
         // garbage cleanup
         $sQ = "delete from oxcaptcha where oxtime < $iTime";
-        $oDb->execute( $sQ );
+        $oDb->execute($sQ);
 
         return $blPass;
     }
@@ -202,16 +206,16 @@ class oxCaptcha extends oxSuperCfg
      *
      * @return bool
      */
-    public function pass( $sMac, $sMacHash )
+    public function pass($sMac, $sMacHash)
     {
         $iTime = time();
-        $sHash = $this->getTextHash( $sMac );
+        $sHash = $this->getTextHash($sMac);
 
-        $blPass = $this->_passFromSession( $sMacHash, $sHash, $iTime );
+        $blPass = $this->_passFromSession($sMacHash, $sHash, $iTime);
 
         // if captha info was NOT stored in session
-        if ( $blPass === null ) {
-            $blPass = $this->_passFromDb( (int) $sMacHash, $sHash, $iTime );
+        if ($blPass === null) {
+            $blPass = $this->_passFromDb((int) $sMacHash, $sHash, $iTime);
         }
 
         return (bool) $blPass;

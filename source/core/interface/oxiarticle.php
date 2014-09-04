@@ -26,6 +26,7 @@
  */
 interface oxIArticle
 {
+
     /**
      * Checks if stock configuration allows to buy user chosen amount $dAmount
      *
@@ -34,7 +35,7 @@ interface oxIArticle
      *
      * @return mixed
      */
-    public function checkForStock( $dAmount, $dArtStockAmount = 0 );
+    public function checkForStock($dAmount, $dArtStockAmount = 0);
 
     /**
      * Returns all selectlists this article has.
@@ -43,7 +44,7 @@ interface oxIArticle
      *
      * @return array
      */
-    public function getSelectLists( $sKeyPrefix = null );
+    public function getSelectLists($sKeyPrefix = null);
 
     /**
      * Creates, calculates and returns oxprice object for basket product.
@@ -54,7 +55,7 @@ interface oxIArticle
      *
      * @return oxPrice
      */
-    public function getBasketPrice( $dAmount, $aSelList, $oBasket );
+    public function getBasketPrice($dAmount, $aSelList, $oBasket);
 
     /**
      * Checks if discount should be skipped for this article in basket. Returns true if yes.
@@ -71,7 +72,7 @@ interface oxIArticle
      *
      * @return array
      */
-    public function getCategoryIds( $blActCats = false, $blSkipCache = false );
+    public function getCategoryIds($blActCats = false, $blSkipCache = false);
 
     /**
      * Calculates and returns price of article (adds taxes and discounts).
@@ -94,7 +95,7 @@ interface oxIArticle
      *
      * @return double
      */
-    public function getBasePrice( $dAmount = 1 );
+    public function getBasePrice($dAmount = 1);
 
     /**
      * Returns true if object is derived from oxorderarticle class

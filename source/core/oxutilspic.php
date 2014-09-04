@@ -30,6 +30,7 @@ require_once getShopBasePath() . "core/utils/oxpicgenerator.php";
  */
 class oxUtilsPic extends oxSuperCfg
 {
+
     /**
      * Image types 'enum'
      *
@@ -47,18 +48,20 @@ class oxUtilsPic extends oxSuperCfg
      *
      * @return bool
      */
-    public function resizeImage( $sSrc, $sTarget, $iDesiredWidth, $iDesiredHeight )
+    public function resizeImage($sSrc, $sTarget, $iDesiredWidth, $iDesiredHeight)
     {
         $blResize = false;
 
         // use this GD Version
-        if ( ( $iUseGDVersion = getGdVersion() ) && function_exists( 'imagecreate' ) &&
-             file_exists( $sSrc ) && ( $aImageInfo = @getimagesize( $sSrc ) ) ) {
+        if (($iUseGDVersion = getGdVersion()) && function_exists('imagecreate') &&
+            file_exists($sSrc) && ($aImageInfo = @getimagesize($sSrc))
+        ) {
 
             $myConfig = $this->getConfig();
-            list( $iWidth, $iHeight ) = calcImageSize( $iDesiredWidth, $iDesiredHeight, $aImageInfo[0], $aImageInfo[1] );
-            $blResize = $this->_resize( $aImageInfo, $sSrc, null, $sTarget, $iWidth, $iHeight, $iUseGDVersion, $myConfig->getConfigParam( 'blDisableTouch' ), $myConfig->getConfigParam( 'sDefaultImageQuality' ) );
+            list($iWidth, $iHeight) = calcImageSize($iDesiredWidth, $iDesiredHeight, $aImageInfo[0], $aImageInfo[1]);
+            $blResize = $this->_resize($aImageInfo, $sSrc, null, $sTarget, $iWidth, $iHeight, $iUseGDVersion, $myConfig->getConfigParam('blDisableTouch'), $myConfig->getConfigParam('sDefaultImageQuality'));
         }
+
         return $blResize;
     }
 
@@ -73,12 +76,13 @@ class oxUtilsPic extends oxSuperCfg
      *
      * @return bool
      */
-    public function safePictureDelete( $sPicName, $sAbsDynImageDir, $sTable, $sField )
+    public function safePictureDelete($sPicName, $sAbsDynImageDir, $sTable, $sField)
     {
         $blDelete = false;
-        if ( $this->_isPicDeletable( $sPicName, $sTable, $sField ) ) {
-            $blDelete = $this->_deletePicture( $sPicName, $sAbsDynImageDir );
+        if ($this->_isPicDeletable($sPicName, $sTable, $sField)) {
+            $blDelete = $this->_deletePicture($sPicName, $sAbsDynImageDir);
         }
+
         return $blDelete;
     }
 
@@ -90,31 +94,33 @@ class oxUtilsPic extends oxSuperCfg
      *
      * @return null
      */
-    protected function _deletePicture( $sPicName, $sAbsDynImageDir )
+    protected function _deletePicture($sPicName, $sAbsDynImageDir)
     {
         $blDeleted = false;
-        $myConfig  = $this->getConfig();
+        $myConfig = $this->getConfig();
 
-        if ( !$myConfig->isDemoShop() && ( strpos( $sPicName, 'nopic.jpg' ) === false ||
-             strpos( $sPicName, 'nopic_ico.jpg' ) === false ) ) {
+        if (!$myConfig->isDemoShop() && (strpos($sPicName, 'nopic.jpg') === false ||
+                                         strpos($sPicName, 'nopic_ico.jpg') === false)
+        ) {
 
             $sFile = "$sAbsDynImageDir/$sPicName";
 
-            if ( file_exists( $sFile ) && is_file( $sFile ) ) {
-                $blDeleted = unlink( $sFile );
+            if (file_exists($sFile) && is_file($sFile)) {
+                $blDeleted = unlink($sFile);
             }
 
-            if ( !$myConfig->getConfigParam( 'sAltImageUrl' ) ) {
+            if (!$myConfig->getConfigParam('sAltImageUrl')) {
                 // deleting various size generated images
-                $sGenPath = str_replace( '/master/', '/generated/', $sAbsDynImageDir );
-                $aFiles = glob( "{$sGenPath}*/{$sPicName}" );
-                if ( is_array($aFiles) ) {
-                    foreach ( $aFiles as $sFile ) {
-                        $blDeleted = unlink( $sFile );
+                $sGenPath = str_replace('/master/', '/generated/', $sAbsDynImageDir);
+                $aFiles = glob("{$sGenPath}*/{$sPicName}");
+                if (is_array($aFiles)) {
+                    foreach ($aFiles as $sFile) {
+                        $blDeleted = unlink($sFile);
                     }
                 }
             }
         }
+
         return $blDeleted;
     }
 
@@ -129,14 +135,15 @@ class oxUtilsPic extends oxSuperCfg
      *
      * @return bool
      */
-    protected function _isPicDeletable( $sPicName, $sTable, $sField )
+    protected function _isPicDeletable($sPicName, $sTable, $sField)
     {
-        if ( !$sPicName || strpos( $sPicName, 'nopic.jpg' ) !== false || strpos( $sPicName, 'nopic_ico.jpg' ) !== false ) {
+        if (!$sPicName || strpos($sPicName, 'nopic.jpg') !== false || strpos($sPicName, 'nopic_ico.jpg') !== false) {
             return false;
         }
 
         $oDb = oxDb::getDb();
-        $iCountUsed = $oDb->getOne( "select count(*) from $sTable where $sField = ".$oDb->quote( $sPicName ). " group by $sField ", false, false);
+        $iCountUsed = $oDb->getOne("select count(*) from $sTable where $sField = " . $oDb->quote($sPicName) . " group by $sField ", false, false);
+
         return $iCountUsed > 1 ? false : true;
     }
 
@@ -153,15 +160,16 @@ class oxUtilsPic extends oxSuperCfg
      *
      * @return null
      */
-    public function overwritePic( $oObject, $sPicTable, $sPicField, $sPicType, $sPicDir, $aParams, $sAbsDynImageDir )
+    public function overwritePic($oObject, $sPicTable, $sPicField, $sPicType, $sPicDir, $aParams, $sAbsDynImageDir)
     {
         $blDelete = false;
-        $sPic = $sPicTable.'__'.$sPicField;
-        if ( isset( $oObject->{$sPic} ) &&
-             ( $_FILES['myfile']['size'][$sPicType.'@'.$sPic] > 0 || $aParams[$sPic] != $oObject->{$sPic}->value ) ) {
+        $sPic = $sPicTable . '__' . $sPicField;
+        if (isset($oObject->{$sPic}) &&
+            ($_FILES['myfile']['size'][$sPicType . '@' . $sPic] > 0 || $aParams[$sPic] != $oObject->{$sPic}->value)
+        ) {
 
             $sImgDir = $sAbsDynImageDir . oxRegistry::get("oxUtilsFile")->getImageDirByType($sPicType);
-            $blDelete = $this->safePictureDelete($oObject->{$sPic}->value, $sImgDir, $sPicTable, $sPicField );
+            $blDelete = $this->safePictureDelete($oObject->{$sPic}->value, $sImgDir, $sPicTable, $sPicField);
         }
 
         return $blDelete;
@@ -181,9 +189,9 @@ class oxUtilsPic extends oxSuperCfg
      *
      * @return bool
      */
-    protected function _resizeGif( $sSrc, $sTarget, $iNewWidth, $iNewHeight, $iOriginalWidth, $iOriginalHeigth, $iGDVer, $blDisableTouch )
+    protected function _resizeGif($sSrc, $sTarget, $iNewWidth, $iNewHeight, $iOriginalWidth, $iOriginalHeigth, $iGDVer, $blDisableTouch)
     {
-        return resizeGif( $sSrc, $sTarget, $iNewWidth, $iNewHeight, $iOriginalWidth, $iOriginalHeigth, $iGDVer, $blDisableTouch );
+        return resizeGif($sSrc, $sTarget, $iNewWidth, $iNewHeight, $iOriginalWidth, $iOriginalHeigth, $iGDVer, $blDisableTouch);
     }
 
     /**
@@ -201,29 +209,29 @@ class oxUtilsPic extends oxSuperCfg
      *
      * @return bool
      */
-    protected function _resize( $aImageInfo, $sSrc, $hDestinationImage, $sTarget, $iNewWidth, $iNewHeight, $iGdVer, $blDisableTouch, $iDefQuality )
+    protected function _resize($aImageInfo, $sSrc, $hDestinationImage, $sTarget, $iNewWidth, $iNewHeight, $iGdVer, $blDisableTouch, $iDefQuality)
     {
         startProfile("PICTURE_RESIZE");
 
         $blSuccess = false;
-        switch ( $aImageInfo[2] ) { //Image type
-            case ( $this->_aImageTypes["GIF"] ):
+        switch ($aImageInfo[2]) { //Image type
+            case ($this->_aImageTypes["GIF"]):
                 //php does not process gifs until 7th July 2004 (see lzh licensing)
-                if ( function_exists( "imagegif" ) ) {
-                    $blSuccess = resizeGif( $sSrc, $sTarget, $iNewWidth, $iNewHeight, $aImageInfo[0], $aImageInfo[1], $iGdVer );
+                if (function_exists("imagegif")) {
+                    $blSuccess = resizeGif($sSrc, $sTarget, $iNewWidth, $iNewHeight, $aImageInfo[0], $aImageInfo[1], $iGdVer);
                 }
                 break;
-            case ( $this->_aImageTypes["JPEG"] ):
-            case ( $this->_aImageTypes["JPG"] ):
-                $blSuccess = resizeJpeg( $sSrc, $sTarget, $iNewWidth, $iNewHeight, $aImageInfo, $iGdVer, $hDestinationImage, $iDefQuality );
+            case ($this->_aImageTypes["JPEG"]):
+            case ($this->_aImageTypes["JPG"]):
+                $blSuccess = resizeJpeg($sSrc, $sTarget, $iNewWidth, $iNewHeight, $aImageInfo, $iGdVer, $hDestinationImage, $iDefQuality);
                 break;
-            case ( $this->_aImageTypes["PNG"] ):
-                $blSuccess = resizePng( $sSrc, $sTarget, $iNewWidth, $iNewHeight, $aImageInfo, $iGdVer, $hDestinationImage );
+            case ($this->_aImageTypes["PNG"]):
+                $blSuccess = resizePng($sSrc, $sTarget, $iNewWidth, $iNewHeight, $aImageInfo, $iGdVer, $hDestinationImage);
                 break;
         }
 
-        if ( $blSuccess && !$blDisableTouch ) {
-            @touch( $sTarget );
+        if ($blSuccess && !$blDisableTouch) {
+            @touch($sTarget);
         }
 
         stopProfile("PICTURE_RESIZE");
@@ -245,12 +253,13 @@ class oxUtilsPic extends oxSuperCfg
      *
      * @return null
      */
-    protected function _copyAlteredImage( $sDestinationImage, $sSourceImage, $iNewWidth, $iNewHeight, $aImageInfo, $sTarget, $iGdVer, $blDisableTouch )
+    protected function _copyAlteredImage($sDestinationImage, $sSourceImage, $iNewWidth, $iNewHeight, $aImageInfo, $sTarget, $iGdVer, $blDisableTouch)
     {
-        $blSuccess = copyAlteredImage( $sDestinationImage, $sSourceImage, $iNewWidth, $iNewHeight, $aImageInfo, $sTarget, $iGdVer );
-        if ( !$blDisableTouch && $blSuccess ) {
-            @touch( $sTarget );
+        $blSuccess = copyAlteredImage($sDestinationImage, $sSourceImage, $iNewWidth, $iNewHeight, $aImageInfo, $sTarget, $iGdVer);
+        if (!$blDisableTouch && $blSuccess) {
+            @touch($sTarget);
         }
+
         return $blSuccess;
     }
 

@@ -74,7 +74,7 @@ class oxI18n extends oxBase
      *
      * @return null;
      */
-    public function setLanguage( $iLang = null )
+    public function setLanguage($iLang = null)
     {
         $this->_iLanguage = (int) $iLang;
         // reset
@@ -88,9 +88,10 @@ class oxI18n extends oxBase
      */
     public function getLanguage()
     {
-        if ( $this->_iLanguage === null ) {
+        if ($this->_iLanguage === null) {
             $this->_iLanguage = oxRegistry::getLang()->getBaseLanguage();
         }
+
         return $this->_iLanguage;
     }
 
@@ -102,7 +103,7 @@ class oxI18n extends oxBase
      *
      * @return null;
      */
-    public function setEnableMultilang( $blEmployMultilanguage )
+    public function setEnableMultilang($blEmployMultilanguage)
     {
         if ($this->_blEmployMultilanguage != $blEmployMultilanguage) {
             $this->_blEmployMultilanguage = $blEmployMultilanguage;
@@ -126,18 +127,19 @@ class oxI18n extends oxBase
      *
      * @return bool
      */
-    public function isMultilingualField( $sFieldName )
+    public function isMultilingualField($sFieldName)
     {
-        $sFieldName = strtolower( $sFieldName );
-        if ( isset( $this->_aFieldNames[$sFieldName] ) ) {
+        $sFieldName = strtolower($sFieldName);
+        if (isset($this->_aFieldNames[$sFieldName])) {
             return (bool) $this->_aFieldNames[$sFieldName];
         }
 
         //not inited field yet
         //and note that this is should be called only in first call after tmp dir is empty
         startProfile('!__CACHABLE2__!');
-        $blIsMultilang = (bool) $this->_getFieldStatus( $sFieldName );
+        $blIsMultilang = (bool) $this->_getFieldStatus($sFieldName);
         stopProfile('!__CACHABLE2__!');
+
         return (bool) $blIsMultilang;
     }
 
@@ -160,13 +162,14 @@ class oxI18n extends oxBase
      *
      * @return bool
      */
-    public function loadInLang( $iLanguage, $sOxid)
+    public function loadInLang($iLanguage, $sOxid)
     {
         // set new lang to this object
         $this->setLanguage($iLanguage);
         // reset
         $this->_sViewTable = false;
-        return $this->load( $sOxid );
+
+        return $this->load($sOxid);
     }
 
     /**
@@ -177,10 +180,10 @@ class oxI18n extends oxBase
      *
      * @return null;
      */
-    public function modifyCacheKey( $sCacheKey, $blOverride = false )
+    public function modifyCacheKey($sCacheKey, $blOverride = false)
     {
         if ($blOverride) {
-            $this->_sCacheKey = $sCacheKey."|i18n";
+            $this->_sCacheKey = $sCacheKey . "|i18n";
         } else {
             $this->_sCacheKey .= $sCacheKey;
         }
@@ -207,50 +210,50 @@ class oxI18n extends oxBase
         $aMultiLangFields = array();
 
         //selecting all object multilang fields
-        foreach ($aObjFields as $sKey => $sValue ) {
+        foreach ($aObjFields as $sKey => $sValue) {
 
             //skipping oxactive field
-            if ( preg_match('/^oxactive(_(\d{1,2}))?$/', $sKey) ) {
+            if (preg_match('/^oxactive(_(\d{1,2}))?$/', $sKey)) {
                 continue;
             }
 
-            $iFieldLang = $this->_getFieldLang( $sKey );
+            $iFieldLang = $this->_getFieldLang($sKey);
 
             //checking, if field is multilanguage
-            if ( $this->isMultilingualField($sKey) || $iFieldLang >  0 ) {
+            if ($this->isMultilingualField($sKey) || $iFieldLang > 0) {
                 $sNewKey = preg_replace('/_(\d{1,2})$/', '', $sKey);
                 $aMultiLangFields[$sNewKey][] = (int) $iFieldLang;
             }
         }
 
         // if no multilanguage fields, return default languages array
-        if ( count($aMultiLangFields) < 1 ) {
+        if (count($aMultiLangFields) < 1) {
             return $aLanguages;
         }
 
         // select from non-multilanguage core view (all ml tables joined to one)
-        $oDb = oxDb::getDb( oxDb::FETCH_MODE_ASSOC );
-        $query = "select * from ".getViewName($this->_sCoreTable, -1, -1)." where oxid = " . $oDb->quote( $this->getId() );
+        $oDb = oxDb::getDb(oxDb::FETCH_MODE_ASSOC);
+        $query = "select * from " . getViewName($this->_sCoreTable, -1, -1) . " where oxid = " . $oDb->quote($this->getId());
         $rs = $oDb->getAll($query);
 
         $aNotInLang = $aLanguages;
 
         // checks if object field data is not empty in all available languages
         // and formats not available in languages array
-        if ( is_array($rs) && count($rs[0]) ) {
-            foreach ( $aMultiLangFields as $sFieldId => $aMultiLangIds ) {
+        if (is_array($rs) && count($rs[0])) {
+            foreach ($aMultiLangFields as $sFieldId => $aMultiLangIds) {
 
-                foreach ( $aMultiLangIds as $sMultiLangId ) {
-                    $sFieldName = ( $sMultiLangId == 0 ) ? $sFieldId : $sFieldId.'_'.$sMultiLangId;
-                    if ( $rs['0'][strtoupper($sFieldName)] ) {
-                        unset( $aNotInLang[$sMultiLangId] );
+                foreach ($aMultiLangIds as $sMultiLangId) {
+                    $sFieldName = ($sMultiLangId == 0) ? $sFieldId : $sFieldId . '_' . $sMultiLangId;
+                    if ($rs['0'][strtoupper($sFieldName)]) {
+                        unset($aNotInLang[$sMultiLangId]);
                         continue;
                     }
                 }
             }
         }
 
-        $aIsInLang = array_diff( $aLanguages, $aNotInLang );
+        $aIsInLang = array_diff($aLanguages, $aNotInLang);
 
         return $aIsInLang;
     }
@@ -263,12 +266,13 @@ class oxI18n extends oxBase
      *
      * @return int
      */
-    protected function _getFieldStatus( $sFieldName )
+    protected function _getFieldStatus($sFieldName)
     {
-        $aAllField = $this->_getAllFields( true );
-        if ( isset( $aAllField[strtolower( $sFieldName ) . "_1"] ) ) {
+        $aAllField = $this->_getAllFields(true);
+        if (isset($aAllField[strtolower($sFieldName) . "_1"])) {
             return 1;
         }
+
         return 0;
     }
 
@@ -296,10 +300,10 @@ class oxI18n extends oxBase
         //lets do some pointer manipulation
         if ($aFields) {
             //non admin fields
-            $aWorkingFields = &$aFields;
+            $aWorkingFields = & $aFields;
         } else {
             //most likely admin fields so we remove another language
-            $aWorkingFields = &$this->_aFieldNames;
+            $aWorkingFields = & $this->_aFieldNames;
         }
 
         //we have an array of fields, lets remove multilanguage fields
@@ -323,7 +327,7 @@ class oxI18n extends oxBase
      */
     protected function _getFieldLang($sFieldName)
     {
-        if ( false === strpos($sFieldName, '_')) {
+        if (false === strpos($sFieldName, '_')) {
             return 0;
         }
         if (preg_match('/_(\d{1,2})$/', $sFieldName, $aRegs)) {
@@ -358,24 +362,24 @@ class oxI18n extends oxBase
      *
      * @return string
      */
-    protected function _getUpdateFieldsForTable( $sTable, $blUseSkipSaveFields = true )
+    protected function _getUpdateFieldsForTable($sTable, $blUseSkipSaveFields = true)
     {
         $sCoreTable = $this->getCoreTableName();
 
         $blSkipMultilingual = false;
         $blSkipCoreFields = false;
 
-        if ($sTable != $sCoreTable ) {
+        if ($sTable != $sCoreTable) {
             $blSkipCoreFields = true;
         }
         if ($this->_blEmployMultilanguage) {
-            if ( $sTable != getLangTableName($sCoreTable, $this->getLanguage() ) ) {
+            if ($sTable != getLangTableName($sCoreTable, $this->getLanguage())) {
                 $blSkipMultilingual = true;
             }
         }
 
         $sSql = '';
-        $blSep  = false;
+        $blSep = false;
         foreach (array_keys($this->_aFieldNames) as $sKey) {
             $sKeyLowercase = strtolower($sKey);
             if ($sKeyLowercase != 'oxid') {
@@ -402,9 +406,9 @@ class oxI18n extends oxBase
             $sLongName = $this->_getFieldLongName($sKey);
             $oField = $this->$sLongName;
 
-            if ( !$blUseSkipSaveFields || ($blUseSkipSaveFields && !in_array($sKeyLowercase, $this->_aSkipSaveFields)) ) {
+            if (!$blUseSkipSaveFields || ($blUseSkipSaveFields && !in_array($sKeyLowercase, $this->_aSkipSaveFields))) {
                 $sKey = $this->getUpdateSqlFieldName($sKey);
-                $sSql .= (( $blSep) ? ',':'' ).$sKey." = ".$this->_getUpdateFieldValue($sKey, $oField);
+                $sSql .= (($blSep) ? ',' : '') . $sKey . " = " . $this->_getUpdateFieldValue($sKey, $oField);
                 $blSep = true;
             }
         }
@@ -421,9 +425,9 @@ class oxI18n extends oxBase
      *
      * @return string
      */
-    protected function _getUpdateFields( $blUseSkipSaveFields = true )
+    protected function _getUpdateFields($blUseSkipSaveFields = true)
     {
-        return $this->_getUpdateFieldsForTable( $this->getCoreTableName(), $blUseSkipSaveFields );
+        return $this->_getUpdateFieldsForTable($this->getCoreTableName(), $blUseSkipSaveFields);
     }
 
     /**
@@ -445,7 +449,7 @@ class oxI18n extends oxBase
             $aUpdateTables = array();
             if ($this->_blEmployMultilanguage) {
                 $sCoreTable = $this->getCoreTableName();
-                $sLangTable = getLangTableName($sCoreTable, $this->getLanguage() );
+                $sLangTable = getLangTableName($sCoreTable, $this->getLanguage());
                 if ($sCoreTable != $sLangTable) {
                     $aUpdateTables[] = $sLangTable;
                 }
@@ -453,18 +457,18 @@ class oxI18n extends oxBase
                 $aUpdateTables = $this->_getLanguageSetTables();
             }
             foreach ($aUpdateTables as $sLangTable) {
-                $sUpdate= "insert into $sLangTable set ".$this->_getUpdateFieldsForTable( $sLangTable, $this->getUseSkipSaveFields() ) .
-                          " on duplicate key update ".$this->_getUpdateFieldsForTable( $sLangTable );
+                $sUpdate = "insert into $sLangTable set " . $this->_getUpdateFieldsForTable($sLangTable, $this->getUseSkipSaveFields()) .
+                           " on duplicate key update " . $this->_getUpdateFieldsForTable($sLangTable);
 
-                $blRet = (bool) oxDb::getDb()->execute( $sUpdate);
+                $blRet = (bool) oxDb::getDb()->execute($sUpdate);
             }
         }
 
         // currently only multilanguage objects are SEO
         // if current object is managed by SEO and SEO is ON
-        if ( $blRet && $this->_blIsSeoObject && $this->isAdmin() ) {
+        if ($blRet && $this->_blIsSeoObject && $this->isAdmin()) {
             // marks all object db entries as expired
-            oxRegistry::get("oxSeoEncoder")->markAsExpired( $this->getId(), null, 1, $this->getLanguage() );
+            oxRegistry::get("oxSeoEncoder")->markAsExpired($this->getId(), null, 1, $this->getLanguage());
         }
 
         return $blRet;
@@ -477,10 +481,11 @@ class oxI18n extends oxBase
      *
      * @return array
      */
-    protected function _getLanguageSetTables( $sCoreTableName = null )
+    protected function _getLanguageSetTables($sCoreTableName = null)
     {
         $sCoreTableName = $sCoreTableName ? $sCoreTableName : $this->getCoreTableName();
-        return oxNew('oxDbMetaDataHandler')->getAllMultiTables( $sCoreTableName );
+
+        return oxNew('oxDbMetaDataHandler')->getAllMultiTables($sCoreTableName);
     }
 
     /**
@@ -497,8 +502,8 @@ class oxI18n extends oxBase
         if ($blRet) {
             //also insert to multilang tables if it is separate
             foreach ($this->_getLanguageSetTables() as $sTable) {
-                $sSq = "insert into $sTable set ".$this->_getUpdateFieldsForTable( $sTable, $this->getUseSkipSaveFields() );
-                $blRet = $blRet && (bool) oxDb::getDb()->execute( $sSq );
+                $sSq = "insert into $sTable set " . $this->_getUpdateFieldsForTable($sTable, $this->getUseSkipSaveFields());
+                $blRet = $blRet && (bool) oxDb::getDb()->execute($sSq);
             }
         }
 
@@ -513,12 +518,13 @@ class oxI18n extends oxBase
      *
      * @return string
      */
-    protected function _getObjectViewName( $sTable, $sShopID = null)
+    protected function _getObjectViewName($sTable, $sShopID = null)
     {
         if (!$this->_blEmployMultilanguage) {
             return parent::_getObjectViewName($sTable, $sShopID);
         }
-        return getViewName( $sTable, $this->getLanguage(), $sShopID);
+
+        return getViewName($sTable, $this->getLanguage(), $sShopID);
     }
 
     /**
@@ -532,16 +538,17 @@ class oxI18n extends oxBase
      *
      * @return array
      */
-    protected function _getAllFields( $blReturnSimple = false )
+    protected function _getAllFields($blReturnSimple = false)
     {
-        if ( $this->_blEmployMultilanguage ) {
-            return parent::_getAllFields( $blReturnSimple );
+        if ($this->_blEmployMultilanguage) {
+            return parent::_getAllFields($blReturnSimple);
         } else {
             $sViewName = $this->getViewName();
-            if ( !$sViewName ) {
+            if (!$sViewName) {
                 return array();
             }
-            return $this->_getTableFields( $sViewName, $blReturnSimple );
+
+            return $this->_getTableFields($sViewName, $blReturnSimple);
         }
     }
 
@@ -575,10 +582,11 @@ class oxI18n extends oxBase
      *
      * @return bool
      */
-    protected function _canFieldBeNull( $sFieldName )
+    protected function _canFieldBeNull($sFieldName)
     {
-        $sFieldName = preg_replace( '/_\d{1,2}$/', '', $sFieldName );
-        return parent::_canFieldBeNull( $sFieldName );
+        $sFieldName = preg_replace('/_\d{1,2}$/', '', $sFieldName);
+
+        return parent::_canFieldBeNull($sFieldName);
     }
 
     /**
@@ -588,18 +596,19 @@ class oxI18n extends oxBase
      *
      * @return bool
      */
-    public function delete( $sOXID = null )
+    public function delete($sOXID = null)
     {
-        $blDeleted = parent::delete( $sOXID );
-        if ( $blDeleted ) {
+        $blDeleted = parent::delete($sOXID);
+        if ($blDeleted) {
             $oDB = oxDb::getDb();
-            $sOXID = $oDB->quote( $sOXID );
+            $sOXID = $oDB->quote($sOXID);
 
             //delete the record
-            foreach ( $this->_getLanguageSetTables() as $sSetTbl ) {
-                $oDB->execute( "delete from {$sSetTbl} where oxid = {$sOXID}" );
+            foreach ($this->_getLanguageSetTables() as $sSetTbl) {
+                $oDB->execute("delete from {$sSetTbl} where oxid = {$sOXID}");
             }
         }
+
         return $blDeleted;
     }
 }

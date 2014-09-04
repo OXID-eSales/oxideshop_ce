@@ -29,12 +29,13 @@
  * Is still under development - still changes at the remote server are necessary - therefore ignoring the results for now
  *
  * @internal Do not make a module extension for this class.
- * @see http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
+ * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
  *
- * @ignore This class will not be included in documentation.
+ * @ignore   This class will not be included in documentation.
  */
 class oxOnlineModuleVersionNotifierCaller
 {
+
     /**
      * Online Module Version Notifier web service url.
      *
@@ -42,7 +43,7 @@ class oxOnlineModuleVersionNotifierCaller
      */
     protected $_sWebServiceUrl = 'https://omvn.oxid-esales.com/check.php';
 
-    /** @var oxOnlineCaller  */
+    /** @var oxOnlineCaller */
     private $_oCaller = null;
 
 
@@ -66,7 +67,7 @@ class oxOnlineModuleVersionNotifierCaller
      *
      * @param oxOnlineModulesNotifierRequest $oRequest Object with request parameters
      */
-    public function doRequest( oxOnlineModulesNotifierRequest $oRequest )
+    public function doRequest(oxOnlineModulesNotifierRequest $oRequest)
     {
         /** @var oxSimpleXml $oXml */
         $oXml = oxNew('oxSimpleXml');

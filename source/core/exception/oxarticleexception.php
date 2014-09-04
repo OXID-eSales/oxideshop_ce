@@ -25,6 +25,7 @@
  */
 class oxArticleException extends oxException
 {
+
     /**
      * Article number who caused this exception
      *
@@ -68,7 +69,7 @@ class oxArticleException extends oxException
      *
      * @return null
      */
-    public function setProductId( $sProductId )
+    public function setProductId($sProductId)
     {
         $this->_sProductId = $sProductId;
     }
@@ -91,7 +92,7 @@ class oxArticleException extends oxException
      */
     public function getString()
     {
-        return __CLASS__ .'-'.parent::getString()." Faulty Article --> ".$this->_sArticleNr . "\n";
+        return __CLASS__ . '-' . parent::getString() . " Faulty Article --> " . $this->_sArticleNr . "\n";
     }
 
 
@@ -105,6 +106,7 @@ class oxArticleException extends oxException
         $aRes = parent::getValues();
         $aRes['articleNr'] = $this->getArticleNr();
         $aRes['productId'] = $this->getProductId();
+
         return $aRes;
     }
 }

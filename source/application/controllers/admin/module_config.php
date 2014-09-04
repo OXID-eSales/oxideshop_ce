@@ -28,6 +28,7 @@
  */
 class Module_Config extends Shop_Config
 {
+
     protected $_sModule = 'shop_config.tpl';
 
     /**
@@ -47,33 +48,33 @@ class Module_Config extends Shop_Config
      */
     public function render()
     {
-        $myConfig  = $this->getConfig();
+        $myConfig = $this->getConfig();
 
-        $sModuleId  = $this->_sModuleId = $this->getEditObjectId();
+        $sModuleId = $this->_sModuleId = $this->getEditObjectId();
         $sShopId = $myConfig->getShopId();
 
-        $oModule = oxNew( 'oxModule' );
+        $oModule = oxNew('oxModule');
 
-        if ( $sModuleId && $oModule->load( $sModuleId ) ) {
+        if ($sModuleId && $oModule->load($sModuleId)) {
             try {
                 $aDbVariables = $this->_loadMetadataConfVars($oModule->getInfo("settings"));
 
                 $this->_aViewData["var_constraints"] = $aDbVariables['constraints'];
-                $this->_aViewData["var_grouping"]    = $aDbVariables['grouping'];
+                $this->_aViewData["var_grouping"] = $aDbVariables['grouping'];
                 $iCount = 0;
                 foreach ($this->_aConfParams as $sType => $sParam) {
                     $this->_aViewData[$sParam] = $aDbVariables['vars'][$sType];
                     $iCount += count($aDbVariables['vars'][$sType]);
                 }
             } catch (oxException $oEx) {
-                oxRegistry::get("oxUtilsView")->addErrorToDisplay( $oEx );
+                oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
                 $oEx->debugOut();
             }
         } else {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay( new oxException('EXCEPTION_MODULE_NOT_LOADED') );
+            oxRegistry::get("oxUtilsView")->addErrorToDisplay(new oxException('EXCEPTION_MODULE_NOT_LOADED'));
         }
 
-        $this->_aViewData["oModule"] =  $oModule;
+        $this->_aViewData["oModule"] = $oModule;
 
         return 'module_config.tpl';
     }
@@ -101,7 +102,7 @@ class Module_Config extends Shop_Config
      */
     public function _loadMetadataConfVars($aModuleSettings)
     {
-        $oConfig  = $this->getConfig();
+        $oConfig = $this->getConfig();
 
         $aConfVars = array(
             "bool"     => array(),
@@ -112,23 +113,23 @@ class Module_Config extends Shop_Config
             "password" => array(),
         );
         $aVarConstraints = array();
-        $aGrouping       = array();
+        $aGrouping = array();
         
         $aDbVariables = $this->loadConfVars($oConfig->getShopId(), $this->_getModuleForConfigVars());
 
-        if ( is_array($aModuleSettings) ) {
+        if (is_array($aModuleSettings)) {
 
-            foreach ( $aModuleSettings as $aValue ) {
-                $sName       = $aValue["name"];
-                $sType       = $aValue["type"];
+            foreach ($aModuleSettings as $aValue) {
+                $sName = $aValue["name"];
+                $sType = $aValue["type"];
                 $sValue = null;
-                if (is_null($oConfig->getConfigParam($sName)) ) {
+                if (is_null($oConfig->getConfigParam($sName))) {
                     switch ($aValue["type"]) {
                         case "arr":
-                            $sValue = $this->_arrayToMultiline( $aValue["value"] );
+                            $sValue = $this->_arrayToMultiline($aValue["value"]);
                             break;
                         case "aarr":
-                            $sValue = $this->_aarrayToMultiline( $aValue["value"] );
+                            $sValue = $this->_aarrayToMultiline($aValue["value"]);
                             break;
                         case "bool":
                             $sValue = filter_var($aValue["value"], FILTER_VALIDATE_BOOLEAN);
@@ -137,26 +138,26 @@ class Module_Config extends Shop_Config
                             $sValue = $aValue["value"];
                             break;
                     }
-                    $sValue = getStr()->htmlentities( $sValue );
+                    $sValue = getStr()->htmlentities($sValue);
                 } else {
                     $sDbType = $this->_getDbConfigTypeName($sType);
                     $sValue = $aDbVariables['vars'][$sDbType][$sName];
                 }
                 
-                $sGroup      = $aValue["group"];
+                $sGroup = $aValue["group"];
 
                 $sConstraints = "";
-                if ( $aValue["constraints"] ) {
+                if ($aValue["constraints"]) {
                     $sConstraints = $aValue["constraints"];
-                } elseif ( $aValue["constrains"] ) {
+                } elseif ($aValue["constrains"]) {
                     $sConstraints = $aValue["constrains"];
                 }
 
                 $aConfVars[$sType][$sName] = $sValue;
-                $aVarConstraints[$sName]   = $this->_parseConstraint( $sType, $sConstraints );
+                $aVarConstraints[$sName] = $this->_parseConstraint($sType, $sConstraints);
                 if ($sGroup) {
                     if (!isset($aGrouping[$sGroup])) {
-                        $aGrouping[$sGroup] = array($sName=>$sType);
+                        $aGrouping[$sGroup] = array($sName => $sType);
                     } else {
                         $aGrouping[$sGroup][$sName] = $sType;
                     }
@@ -182,7 +183,7 @@ class Module_Config extends Shop_Config
         $oConfig = $this->getConfig();
 
 
-        $sModuleId  = $this->_sModuleId = $this->getEditObjectId();
+        $sModuleId = $this->_sModuleId = $this->getEditObjectId();
         $sShopId = $oConfig->getShopId();
 
         $sModuleId = $this->_getModuleForConfigVars();
@@ -190,14 +191,14 @@ class Module_Config extends Shop_Config
         foreach ($this->_aConfParams as $sType => $sParam) {
             $aConfVars = $oConfig->getRequestParameter($sParam);
             if (is_array($aConfVars)) {
-                foreach ( $aConfVars as $sName => $sValue ) {
+                foreach ($aConfVars as $sName => $sValue) {
                     $sDbType = $this->_getDbConfigTypeName($sType);
                     $oConfig->saveShopConfVar(
-                            $sDbType,
-                            $sName,
-                            $this->_serializeConfVar($sDbType, $sName, $sValue),
-                            $sShopId,
-                            $sModuleId
+                        $sDbType,
+                        $sName,
+                        $this->_serializeConfVar($sDbType, $sName, $sValue),
+                        $sShopId,
+                        $sModuleId
                     );
                 }
             }
@@ -206,7 +207,9 @@ class Module_Config extends Shop_Config
 
     /**
      * Convert metadata type to DB type.
+     *
      * @param $sType
+     *
      * @return string
      */
     private function _getDbConfigTypeName($sType)
@@ -215,6 +218,7 @@ class Module_Config extends Shop_Config
         if ($sType === 'password') {
             $sDbType = 'str';
         }
+
         return $sDbType;
     }
 

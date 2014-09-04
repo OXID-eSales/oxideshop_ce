@@ -25,11 +25,13 @@
  */
 class oxEncryptor
 {
+
     /**
      * Encrypts string with given key.
      *
      * @param string $sString
      * @param string $sKey
+     *
      * @return string
      */
     public function encrypt($sString, $sKey)
@@ -39,8 +41,8 @@ class oxEncryptor
         $sKey = $this->_formKey($sKey, $sString);
 
         $sString = $sString ^ $sKey;
-        $sString = base64_encode ( $sString );
-        $sString = str_replace( "=", "!", $sString );
+        $sString = base64_encode($sString);
+        $sString = str_replace("=", "!", $sString);
 
         return "ox_$sString";
     }
@@ -50,14 +52,15 @@ class oxEncryptor
      *
      * @param string $sKey
      * @param string $sString
+     *
      * @return string
      */
     protected function _formKey($sKey, $sString)
     {
         $sKey = '_' . $sKey;
-        $iKeyLength = (strlen( $sString ) / strlen( $sKey )) + 5;
+        $iKeyLength = (strlen($sString) / strlen($sKey)) + 5;
 
-        return str_repeat( $sKey, $iKeyLength );
+        return str_repeat($sKey, $iKeyLength);
     }
 
 }

@@ -21,10 +21,10 @@
  */
 
 /**
-     * Class dedicated to article tags handling.
-     * Is responsible for saving, returning and adding tags for given article.
-     *
-     */
+ * Class dedicated to article tags handling.
+ * Is responsible for saving, returning and adding tags for given article.
+ *
+ */
 class oxArticleTagList extends oxI18n implements oxITagList
 {
 
@@ -41,7 +41,7 @@ class oxArticleTagList extends oxI18n implements oxITagList
     public function __construct()
     {
         parent::__construct();
-        $this->_oTagSet = oxNew( 'oxTagSet' );
+        $this->_oTagSet = oxNew('oxTagSet');
     }
 
     /**
@@ -51,9 +51,9 @@ class oxArticleTagList extends oxI18n implements oxITagList
      *
      * @return null
      */
-    public function setArticleId( $sArticleId )
+    public function setArticleId($sArticleId)
     {
-        $this->setId( $sArticleId );
+        $this->setId($sArticleId);
     }
 
     /**
@@ -83,22 +83,23 @@ class oxArticleTagList extends oxI18n implements oxITagList
      *
      * @return bool
      */
-    public function load( $sArticleId )
+    public function load($sArticleId)
     {
-        $this->setArticleId( $sArticleId );
+        $this->setArticleId($sArticleId);
         $oDb = oxDb::getDb();
-        $sViewName = getViewName( "oxartextends", $this->getLanguage() );
-        $sQ = "select oxtags from {$sViewName} where oxid = ".$oDb->quote( $sArticleId );
+        $sViewName = getViewName("oxartextends", $this->getLanguage());
+        $sQ = "select oxtags from {$sViewName} where oxid = " . $oDb->quote($sArticleId);
 
-        $this->set( "" );
+        $this->set("");
         // adding tags to list. Tags does not need to be checked again, but dashes needs to be removed
-        $aTags = explode( $this->get()->getSeparator(), $oDb->getOne( $sQ ) );
-        foreach ( $aTags as $sTag ) {
-            $oTag = oxNew( "oxtag" );
-            $oTag->set( $sTag, false );
+        $aTags = explode($this->get()->getSeparator(), $oDb->getOne($sQ));
+        foreach ($aTags as $sTag) {
+            $oTag = oxNew("oxtag");
+            $oTag->set($sTag, false);
             $oTag->removeUnderscores();
-            $this->addTag( $oTag );
+            $this->addTag($oTag);
         }
+
         return $this->_isLoaded = true;
     }
 
@@ -109,12 +110,13 @@ class oxArticleTagList extends oxI18n implements oxITagList
      *
      * @return bool
      */
-    public function loadList( $sArticleId = null )
+    public function loadList($sArticleId = null)
     {
-        if ( $sArticleId === null && ( $sArticleId = $this->getArticleId() ) === null) {
+        if ($sArticleId === null && ($sArticleId = $this->getArticleId()) === null) {
             return false;
         }
-        return $this->load( $sArticleId );
+
+        return $this->load($sArticleId);
     }
 
     /**
@@ -124,26 +126,28 @@ class oxArticleTagList extends oxI18n implements oxITagList
      */
     public function save()
     {
-        if ( !$this->getArticleId() ) {
+        if (!$this->getArticleId()) {
             return false;
         }
         $oTagSet = $this->get();
-        foreach ( $oTagSet as $oTag ) {
+        foreach ($oTagSet as $oTag) {
             $oTag->addUnderscores();
         }
-        $sTags = oxDb::getInstance()->escapeString( $oTagSet );
+        $sTags = oxDb::getInstance()->escapeString($oTagSet);
         $oDb = oxDb::getDb();
 
-        $sTable = getLangTableName( 'oxartextends', $this->getLanguage() );
+        $sTable = getLangTableName('oxartextends', $this->getLanguage());
         $sLangSuffix = oxRegistry::getLang()->getLanguageTag($this->getLanguage());
 
-        $sQ = "insert into {$sTable} (oxid, oxtags$sLangSuffix) value (".$oDb->quote( $this->getArticleId() ).", '{$sTags}')
+        $sQ = "insert into {$sTable} (oxid, oxtags$sLangSuffix) value (" . $oDb->quote($this->getArticleId()) . ", '{$sTags}')
                on duplicate key update oxtags$sLangSuffix = '{$sTags}'";
 
-        if ( $oDb->execute( $sQ ) ) {
+        if ($oDb->execute($sQ)) {
             $this->executeDependencyEvent();
+
             return true;
         }
+
         return false;
     }
 
@@ -155,9 +159,9 @@ class oxArticleTagList extends oxI18n implements oxITagList
      *
      * @return bool
      */
-    public function set( $sTags )
+    public function set($sTags)
     {
-        return $this->_oTagSet->set( $sTags );
+        return $this->_oTagSet->set($sTags);
     }
 
     /**
@@ -187,9 +191,9 @@ class oxArticleTagList extends oxI18n implements oxITagList
      *
      * @return bool
      */
-    public function addTag( $mTag )
+    public function addTag($mTag)
     {
-        return $this->_oTagSet->addTag( $mTag );
+        return $this->_oTagSet->addTag($mTag);
     }
 
     /**
@@ -199,10 +203,11 @@ class oxArticleTagList extends oxI18n implements oxITagList
      *
      * @return string
      */
-    public function getStdTagLink( $sTag )
+    public function getStdTagLink($sTag)
     {
-        $sStdTagLink = $this->getConfig()->getShopHomeURL( $this->getLanguage(), false );
-        return $sStdTagLink . "cl=details&amp;anid=".$this->getId()."&amp;listtype=tag&amp;searchtag=".rawurlencode( $sTag );
+        $sStdTagLink = $this->getConfig()->getShopHomeURL($this->getLanguage(), false);
+
+        return $sStdTagLink . "cl=details&amp;anid=" . $this->getId() . "&amp;listtype=tag&amp;searchtag=" . rawurlencode($sTag);
     }
 
     /**
@@ -212,14 +217,15 @@ class oxArticleTagList extends oxI18n implements oxITagList
      *
      * @return bool
      */
-    public function canBeTagged( $sTagTitle )
+    public function canBeTagged($sTagTitle)
     {
         $aProducts = oxRegistry::getSession()->getVariable("aTaggedProducts");
-        if ( isset($aProducts) && $aTags = $aProducts[$this->getArticleId()] ) {
-            if ( $aTags[$sTagTitle] == 1 ) {
+        if (isset($aProducts) && $aTags = $aProducts[$this->getArticleId()]) {
+            if ($aTags[$sTagTitle] == 1) {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -242,9 +248,9 @@ class oxArticleTagList extends oxI18n implements oxITagList
     protected function _updateTagDependency()
     {
         // reset tags cloud cache
-        $oTagList = oxNew( "oxTagList" );
-        $oTagList->setLanguage( $this->getLanguage() );
-        $oTagCloud = oxNew( "oxTagCloud" );
+        $oTagList = oxNew("oxTagList");
+        $oTagList->setLanguage($this->getLanguage());
+        $oTagCloud = oxNew("oxTagCloud");
         $oTagCloud->setTagList($oTagList);
         $oTagCloud->resetCache();
     }

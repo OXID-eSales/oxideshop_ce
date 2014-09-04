@@ -25,6 +25,7 @@
  */
 class oxPasswordHasher
 {
+
     /**
      * @var oxHasher
      */
@@ -50,7 +51,7 @@ class oxPasswordHasher
      * Hash password with a salt.
      *
      * @param string $sPassword not hashed password.
-     * @param string $sSalt salt string.
+     * @param string $sSalt     salt string.
      *
      * @return string
      */

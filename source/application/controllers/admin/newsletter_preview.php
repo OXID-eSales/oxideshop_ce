@@ -1,5 +1,5 @@
 <?php
-/**
+    /**
  * This file is part of OXID eShop Community Edition.
  *
  * OXID eShop Community Edition is free software: you can redistribute it and/or modify
@@ -18,43 +18,44 @@
  * @link      http://www.oxid-esales.com
  * @copyright (C) OXID eSales AG 2003-2014
  * @version   OXID eShop CE
- */
-
-/**
- * Newsletter preview manager.
- * Creates plaintext and HTML format newsletter preview.
- * Admin Menu: Customer News -> Newsletter -> Preview.
- */
-class Newsletter_Preview extends oxAdminDetails
-{
-    /**
-     * Executes parent method parent::render(), creates oxnewsletter object
-     * and passes it's data to Smarty engine, returns name of template file
-     * "newsletter_preview.tpl".
-     *
-     * @return string
      */
-    public function render()
+
+    /**
+     * Newsletter preview manager.
+     * Creates plaintext and HTML format newsletter preview.
+     * Admin Menu: Customer News -> Newsletter -> Preview.
+     */
+    class Newsletter_Preview extends oxAdminDetails
     {
-        parent::render();
 
-        $soxId = $this->getEditObjectId();
-        if ( $soxId != "-1" && isset( $soxId)) {
-            // load object
-            $oNewsletter = oxNew( "oxnewsletter" );
-            $oNewsletter->load( $soxId);
-            $this->_aViewData["edit"] =  $oNewsletter;
+        /**
+         * Executes parent method parent::render(), creates oxnewsletter object
+         * and passes it's data to Smarty engine, returns name of template file
+         * "newsletter_preview.tpl".
+         *
+         * @return string
+         */
+        public function render()
+        {
+            parent::render();
 
-            // user
-            $sUserID = oxRegistry::getSession()->getVariable( "auth");
+            $soxId = $this->getEditObjectId();
+            if ($soxId != "-1" && isset($soxId)) {
+                // load object
+                $oNewsletter = oxNew("oxnewsletter");
+                $oNewsletter->load($soxId);
+                $this->_aViewData["edit"] = $oNewsletter;
 
-            // assign values to the newsletter and show it
-            $oNewsletter->prepare( $sUserID, $this->getConfig()->getConfigParam( 'bl_perfLoadAktion' ) );
+                // user
+                $sUserID = oxRegistry::getSession()->getVariable("auth");
 
-            $this->_aViewData["previewhtml"] =  $oNewsletter->getHtmlText();
-            $this->_aViewData["previewtext"] =  $oNewsletter->getPlainText();
+                // assign values to the newsletter and show it
+                $oNewsletter->prepare($sUserID, $this->getConfig()->getConfigParam('bl_perfLoadAktion'));
+
+                $this->_aViewData["previewhtml"] = $oNewsletter->getHtmlText();
+                $this->_aViewData["previewtext"] = $oNewsletter->getPlainText();
+            }
+
+            return "newsletter_preview.tpl";
         }
-
-        return "newsletter_preview.tpl";
     }
-}

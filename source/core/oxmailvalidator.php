@@ -22,6 +22,7 @@
 
 class oxMailValidator
 {
+
     /**
      * @var string
      */
@@ -29,6 +30,7 @@ class oxMailValidator
 
     /**
      * Get mail validation rule.
+     *
      * @return string
      */
     public function getMailValidationRule()
@@ -36,11 +38,13 @@ class oxMailValidator
         if (is_null($this->_sMailValidationRule)) {
             $this->_sMailValidationRule = "/^([\w+\-.])+\@([\w\-.])+\.([A-Za-z]{2,64})$/i";
         }
+
         return $this->_sMailValidationRule;
     }
 
     /**
      * Override mail validation rule.
+     *
      * @param string $sMailValidationRule
      */
     public function setMailValidationRule($sMailValidationRule)
@@ -69,10 +73,10 @@ class oxMailValidator
      *
      * @return bool
      */
-    public function isValidEmail( $sEmail )
+    public function isValidEmail($sEmail)
     {
         $sEmailRule = $this->getMailValidationRule();
-        $blValid = ( getStr()->preg_match( $sEmailRule, $sEmail ) != 0 );
+        $blValid = (getStr()->preg_match($sEmailRule, $sEmail) != 0);
 
         return $blValid;
     }

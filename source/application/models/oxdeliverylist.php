@@ -26,26 +26,31 @@
  */
 class oxDeliveryList extends oxList
 {
+
     /**
      * Session user Id
+     *
      * @var string
      */
     protected $_sUserId = null;
 
     /**
      * Performance - load or not delivery list
+     *
      * @var bool
      */
     protected $_blPerfLoadDelivery = null;
 
     /**
      * Deliveries list
+     *
      * @var array
      */
     protected $_aDeliveries = array();
 
     /**
      * User object
+     *
      * @var oxUser
      */
     protected $_oUser = null;
@@ -60,6 +65,7 @@ class oxDeliveryList extends oxList
     /**
      * Collect fitting deliveries sets instead of fitting deliveries
      * Default is false
+     *
      * @var bool
      */
     protected $_blCollectFittingDeliveriesSets = false;
@@ -85,10 +91,10 @@ class oxDeliveryList extends oxList
      *
      * @return null
      */
-    public function setHomeCountry( $sHomeCountry )
+    public function setHomeCountry($sHomeCountry)
     {
-        if ( is_array( $sHomeCountry ) ) {
-            $this->_sHomeCountry = current( $sHomeCountry );
+        if (is_array($sHomeCountry)) {
+            $this->_sHomeCountry = current($sHomeCountry);
         } else {
             $this->_sHomeCountry = $sHomeCountry;
         }
@@ -108,31 +114,31 @@ class oxDeliveryList extends oxList
      *
      * @return array
      */
-    protected function _getList( $oUser = null, $sCountryId = null, $sDelSet = null )
+    protected function _getList($oUser = null, $sCountryId = null, $sDelSet = null)
     {
         // checking for current session user which gives additional restrictions for user itself, users group and country
-        if ( $oUser === null ) {
+        if ($oUser === null) {
             $oUser = $this->getUser();
         } else {
             //set user
-            $this->setUser( $oUser );
+            $this->setUser($oUser);
         }
 
         $sUserId = $oUser ? $oUser->getId() : '';
 
         // choosing delivery country if it is not set yet
-        if ( !$sCountryId ) {
-            if ( $oUser ) {
+        if (!$sCountryId) {
+            if ($oUser) {
                 $sCountryId = $oUser->getActiveCountry();
             } else {
                 $sCountryId = $this->_sHomeCountry;
             }
         }
 
-        if ( ( $sUserId.$sCountryId.$sDelSet ) !== $this->_sUserId ) {
+        if (($sUserId . $sCountryId . $sDelSet) !== $this->_sUserId) {
 
-            $this->selectString( $this->_getFilterSelect( $oUser, $sCountryId, $sDelSet ) );
-            $this->_sUserId = $sUserId.$sCountryId.$sDelSet;
+            $this->selectString($this->_getFilterSelect($oUser, $sCountryId, $sDelSet));
+            $this->_sUserId = $sUserId . $sCountryId . $sDelSet;
         }
 
         $this->rewind();
@@ -149,20 +155,20 @@ class oxDeliveryList extends oxList
      *
      * @return string
      */
-    protected function _getFilterSelect( $oUser, $sCountryId, $sDelSet )
+    protected function _getFilterSelect($oUser, $sCountryId, $sDelSet)
     {
         $oDb = oxDb::getDb();
 
-        $sTable = getViewName( 'oxdelivery' );
-        $sQ  = "select $sTable.* from ( select $sTable.* from $sTable left join oxdel2delset on oxdel2delset.oxdelid=$sTable.oxid ";
-        $sQ .= "where ".$this->getBaseObject()->getSqlActiveSnippet()." and oxdel2delset.oxdelsetid = ".$oDb->quote($sDelSet)." ";
+        $sTable = getViewName('oxdelivery');
+        $sQ = "select $sTable.* from ( select $sTable.* from $sTable left join oxdel2delset on oxdel2delset.oxdelid=$sTable.oxid ";
+        $sQ .= "where " . $this->getBaseObject()->getSqlActiveSnippet() . " and oxdel2delset.oxdelsetid = " . $oDb->quote($sDelSet) . " ";
 
         // defining initial filter parameters
-        $sUserId    = null;
-        $aGroupIds  = null;
+        $sUserId = null;
+        $aGroupIds = null;
 
         // checking for current session user which gives additional restrictions for user itself, users group and country
-        if ( $oUser ) {
+        if ($oUser) {
 
             // user ID
             $sUserId = $oUser->getId();
@@ -172,19 +178,19 @@ class oxDeliveryList extends oxList
         }
 
         $aIds = array();
-        if ( count( $aGroupIds ) ) {
-            foreach ( $aGroupIds as $oGroup ) {
+        if (count($aGroupIds)) {
+            foreach ($aGroupIds as $oGroup) {
                 $aIds[] = $oGroup->getId();
             }
         }
 
-        $sUserTable    = getViewName( 'oxuser' );
-        $sGroupTable   = getViewName( 'oxgroups' );
-        $sCountryTable = getViewName( 'oxcountry' );
+        $sUserTable = getViewName('oxuser');
+        $sGroupTable = getViewName('oxgroups');
+        $sCountryTable = getViewName('oxcountry');
 
-        $sCountrySql = $sCountryId ? "EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxcountry' and oxobject2delivery.OXOBJECTID=".$oDb->quote($sCountryId).")" : '0';
-        $sUserSql    = $sUserId    ? "EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxuser' and oxobject2delivery.OXOBJECTID=".$oDb->quote($sUserId).")"   : '0';
-        $sGroupSql   = count( $aIds ) ? "EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxgroups' and oxobject2delivery.OXOBJECTID in (".implode(', ', oxDb::getInstance()->quoteArray($aIds) ).") )"  : '0';
+        $sCountrySql = $sCountryId ? "EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxcountry' and oxobject2delivery.OXOBJECTID=" . $oDb->quote($sCountryId) . ")" : '0';
+        $sUserSql = $sUserId ? "EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxuser' and oxobject2delivery.OXOBJECTID=" . $oDb->quote($sUserId) . ")" : '0';
+        $sGroupSql = count($aIds) ? "EXISTS(select oxobject2delivery.oxid from oxobject2delivery where oxobject2delivery.oxdeliveryid=$sTable.OXID and oxobject2delivery.oxtype='oxgroups' and oxobject2delivery.OXOBJECTID in (" . implode(', ', oxDb::getInstance()->quoteArray($aIds)) . ") )" : '0';
 
         $sQ .= ") as $sTable where (
             select
@@ -235,59 +241,60 @@ class oxDeliveryList extends oxList
      *
      * @return array
      */
-    public function getDeliveryList( $oBasket, $oUser = null, $sDelCountry = null, $sDelSet = null )
+    public function getDeliveryList($oBasket, $oUser = null, $sDelCountry = null, $sDelSet = null)
     {
         // ids of deliveries that does not fit for us to skip double check
         $aSkipDeliveries = array();
-        $aDelSetList = oxRegistry::get("oxDeliverySetList")->getDeliverySetList( $oUser, $sDelCountry, $sDelSet );
+        $aDelSetList = oxRegistry::get("oxDeliverySetList")->getDeliverySetList($oUser, $sDelCountry, $sDelSet);
 
         // must choose right delivery set to use its delivery list
-        foreach ( $aDelSetList as $sDeliverySetId => $oDeliverySet ) {
+        foreach ($aDelSetList as $sDeliverySetId => $oDeliverySet) {
 
             // loading delivery list to check if some of them fits
-            $aDeliveries = $this->_getList( $oUser, $sDelCountry, $sDeliverySetId );
+            $aDeliveries = $this->_getList($oUser, $sDelCountry, $sDeliverySetId);
             $blDelFound = false;
 
-            foreach ( $aDeliveries as $sDeliveryId => $oDelivery ) {
+            foreach ($aDeliveries as $sDeliveryId => $oDelivery) {
 
                 // skipping that was checked and didn't fit before
-                if ( in_array( $sDeliveryId, $aSkipDeliveries ) ) {
+                if (in_array($sDeliveryId, $aSkipDeliveries)) {
                     continue;
                 }
 
                 $aSkipDeliveries[] = $sDeliveryId;
 
-                if ( $oDelivery->isForBasket( $oBasket ) ) {
+                if ($oDelivery->isForBasket($oBasket)) {
 
                     // delivery fits conditions
                     $this->_aDeliveries[$sDeliveryId] = $aDeliveries[$sDeliveryId];
                     $blDelFound = true;
 
                     // removing from unfitting list
-                    array_pop( $aSkipDeliveries );
+                    array_pop($aSkipDeliveries);
 
                     // maybe checked "Stop processing after first match" ?
-                    if ( $oDelivery->oxdelivery__oxfinalize->value ) {
+                    if ($oDelivery->oxdelivery__oxfinalize->value) {
                         break;
                     }
                 }
             }
 
             // found delivery set and deliveries that fits
-            if ( $blDelFound ) {
-                if ( $this->_blCollectFittingDeliveriesSets ) {
+            if ($blDelFound) {
+                if ($this->_blCollectFittingDeliveriesSets) {
                     // collect only deliveries sets that fits deliveries
                     $aFittingDelSets[$sDeliverySetId] = $oDeliverySet;
                 } else {
                     // return collected fitting deliveries
-                    oxRegistry::getSession()->setVariable('sShipSet', $sDeliverySetId );
+                    oxRegistry::getSession()->setVariable('sShipSet', $sDeliverySetId);
+
                     return $this->_aDeliveries;
                 }
             }
         }
 
         //return deliveries sets if found
-        if ( $this->_blCollectFittingDeliveriesSets && count($aFittingDelSets) ) {
+        if ($this->_blCollectFittingDeliveriesSets && count($aFittingDelSets)) {
 
             //resetting getting delivery sets list instead of deliveries before return
             $this->_blCollectFittingDeliveriesSets = false;
@@ -313,14 +320,14 @@ class oxDeliveryList extends oxList
      *
      * @return bool
      */
-    public function hasDeliveries( $oBasket, $oUser, $sDelCountry, $sDeliverySetId )
+    public function hasDeliveries($oBasket, $oUser, $sDelCountry, $sDeliverySetId)
     {
         $blHas = false;
 
         // loading delivery list to check if some of them fits
-        $this->_getList( $oUser, $sDelCountry, $sDeliverySetId );
-        foreach ( $this as $oDelivery ) {
-            if ( $oDelivery->isForBasket( $oBasket ) ) {
+        $this->_getList($oUser, $sDelCountry, $sDeliverySetId);
+        foreach ($this as $oDelivery) {
+            if ($oDelivery->isForBasket($oBasket)) {
                 $blHas = true;
                 break;
             }
@@ -328,6 +335,7 @@ class oxDeliveryList extends oxList
 
         return $blHas;
     }
+
     /**/
 
     /**
@@ -337,7 +345,7 @@ class oxDeliveryList extends oxList
      */
     public function getUser()
     {
-        if ( !$this->_oUser ) {
+        if (!$this->_oUser) {
             $this->_oUser = parent::getUser();
         }
 
@@ -351,7 +359,7 @@ class oxDeliveryList extends oxList
      *
      * @return null
      */
-    public function setUser( $oUser )
+    public function setUser($oUser)
     {
         $this->_oUser = $oUser;
     }
@@ -364,7 +372,7 @@ class oxDeliveryList extends oxList
      *
      * @return null
      */
-    public function setCollectFittingDeliveriesSets( $blCollectFittingDeliveriesSets = false )
+    public function setCollectFittingDeliveriesSets($blCollectFittingDeliveriesSets = false)
     {
         $this->_blCollectFittingDeliveriesSets = $blCollectFittingDeliveriesSets;
     }
@@ -376,17 +384,17 @@ class oxDeliveryList extends oxList
      *
      * @return null
      */
-    public function loadDeliveryListForProduct( $oProduct )
+    public function loadDeliveryListForProduct($oProduct)
     {
         $oDb = oxDb::getDb();
-        $dPrice  = $oDb->quote( $oProduct->getPrice()->getBruttoPrice() );
-        $dSize   = $oDb->quote( $oProduct->getSize() );
-        $dWeight = $oDb->quote( $oProduct->getWeight() );
+        $dPrice = $oDb->quote($oProduct->getPrice()->getBruttoPrice());
+        $dSize = $oDb->quote($oProduct->getSize());
+        $dWeight = $oDb->quote($oProduct->getWeight());
 
-        $sTable  = getViewName( 'oxdelivery' );
+        $sTable = getViewName('oxdelivery');
 
         $sQ = "select $sTable.* from $sTable";
-        $sQ .= " where ".$this->getBaseObject()->getSqlActiveSnippet();
+        $sQ .= " where " . $this->getBaseObject()->getSqlActiveSnippet();
         $sQ .= " and ($sTable.oxdeltype != 'a' || ( $sTable.oxparam <= 1 && $sTable.oxparamend >= 1))";
         if ($dPrice) {
             $sQ .= " and ($sTable.oxdeltype != 'p' || ( $sTable.oxparam <= $dPrice && $sTable.oxparamend >= $dPrice))";

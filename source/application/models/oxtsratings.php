@@ -31,7 +31,7 @@ class oxTsRatings extends oxSuperCfg
     /**
      * data id for cache
      */
-    const TS_RATINGS    = 'TS_RATINGS';
+    const TS_RATINGS = 'TS_RATINGS';
 
     /**
      * _aChannel channel data to be passed to view
@@ -63,7 +63,7 @@ class oxTsRatings extends oxSuperCfg
      *
      * @param $sId
      */
-    public function setTsId( $sId )
+    public function setTsId($sId)
     {
         $this->_sTsId = $sId;
     }
@@ -75,7 +75,7 @@ class oxTsRatings extends oxSuperCfg
      *
      * @return string curl response text
      */
-    protected function _executeCurl( $sUrl )
+    protected function _executeCurl($sUrl)
     {
         $oCurl = oxNew('oxCurl');
         $oCurl->setMethod("GET");
@@ -95,33 +95,34 @@ class oxTsRatings extends oxSuperCfg
      */
     public function getRatings()
     {
-        if ( ( $this->_aChannel = oxRegistry::getUtils()->fromFileCache( self::TS_RATINGS ) ) ) {
+        if (($this->_aChannel = oxRegistry::getUtils()->fromFileCache(self::TS_RATINGS))) {
             return $this->_aChannel;
         }
         $sTsId = $this->getTsId();
 
         $sUrl = "https://www.trustedshops.com/bewertung/show_xml.php?tsid=" . $sTsId;
-        $sOutput = $this->_executeCurl( $sUrl );
+        $sOutput = $this->_executeCurl($sUrl);
 
         $this->_aChannel['empty'] = true;
 
         try {
-            $oDomFile = oxNew( "oxSimpleXml" );
-            if ( $oXml = $oDomFile->xmlToObject( $sOutput ) ) {
+            $oDomFile = oxNew("oxSimpleXml");
+            if ($oXml = $oDomFile->xmlToObject($sOutput)) {
                 $aResult = $oXml->ratings->xpath('//result[@name="average"]');
 
                 $this->_aChannel['empty'] = false;
-                $this->_aChannel['result'] = (float)$aResult[0];
+                $this->_aChannel['result'] = (float) $aResult[0];
                 $this->_aChannel['max'] = "5.00";
-                $this->_aChannel['count'] = (int)$oXml->ratings["amount"];
-                $this->_aChannel['shopName'] = (string)$oXml->name;
-                oxRegistry::getUtils()->toFileCache( self::TS_RATINGS, $this->_aChannel, self::CACHE_TTL );
+                $this->_aChannel['count'] = (int) $oXml->ratings["amount"];
+                $this->_aChannel['shopName'] = (string) $oXml->name;
+                oxRegistry::getUtils()->toFileCache(self::TS_RATINGS, $this->_aChannel, self::CACHE_TTL);
             }
-        } catch ( Exception $oEx ) {
-            $oEx = oxNew( "oxException" );
-            $oEx->setMessage( $oEx->getMessage() );
+        } catch (Exception $oEx) {
+            $oEx = oxNew("oxException");
+            $oEx->setMessage($oEx->getMessage());
             $oEx->debugOut();
         }
+
         return $this->_aChannel;
     }
 }

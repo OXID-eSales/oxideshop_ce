@@ -1,5 +1,5 @@
 <?php
-    /**
+/**
  * This file is part of OXID eShop Community Edition.
  *
  * OXID eShop Community Edition is free software: you can redistribute it and/or modify
@@ -21,11 +21,11 @@
  */
 
 
-    /**
-     * Class dedicated to article tags handling.
-     * Is responsible for saving, returning and adding tags for given article.
-     *
-     */
+/**
+ * Class dedicated to article tags handling.
+ * Is responsible for saving, returning and adding tags for given article.
+ *
+ */
 class oxTagSet extends oxSuperCfg implements Iterator
 {
 
@@ -57,7 +57,7 @@ class oxTagSet extends oxSuperCfg implements Iterator
      *
      * @return mixed
      */
-    public function setSeparator( $sSeparator )
+    public function setSeparator($sSeparator)
     {
         $this->_sSeparator = $sSeparator;
     }
@@ -80,10 +80,10 @@ class oxTagSet extends oxSuperCfg implements Iterator
      *
      * @return null
      */
-    public function set( $sTags, $blPrepare = true )
+    public function set($sTags, $blPrepare = true)
     {
         $this->clear();
-        $this->add( $sTags, $blPrepare );
+        $this->add($sTags, $blPrepare);
     }
 
     /**
@@ -114,11 +114,11 @@ class oxTagSet extends oxSuperCfg implements Iterator
      *
      * @return bool
      */
-    public function add( $sTags, $blPrepare = true )
+    public function add($sTags, $blPrepare = true)
     {
-        $aTags = explode( $this->getSeparator(), $sTags );
-        foreach ( $aTags as $sTag ) {
-            $this->addTag( $sTag, $blPrepare );
+        $aTags = explode($this->getSeparator(), $sTags);
+        foreach ($aTags as $sTag) {
+            $this->addTag($sTag, $blPrepare);
         }
     }
 
@@ -130,21 +130,23 @@ class oxTagSet extends oxSuperCfg implements Iterator
      *
      * @return bool
      */
-    public function addTag( $mTag, $blPrepare = true )
+    public function addTag($mTag, $blPrepare = true)
     {
-        $oTag = $this->_formTag( $mTag, $blPrepare );
+        $oTag = $this->_formTag($mTag, $blPrepare);
         $sTagName = $oTag->get();
-        if ( !$oTag->isValid() ) {
-            if ( $sTagName !== "" ) {
+        if (!$oTag->isValid()) {
+            if ($sTagName !== "") {
                 $this->_aInvalidTags[$sTagName] = $oTag;
             }
+
             return false;
         }
-        if ( $this->_aTags[$sTagName] === null ) {
+        if ($this->_aTags[$sTagName] === null) {
             $this->_aTags[$sTagName] = $oTag;
         } else {
             $this->_aTags[$sTagName]->increaseHitCount();
         }
+
         return true;
     }
 
@@ -167,9 +169,10 @@ class oxTagSet extends oxSuperCfg implements Iterator
     {
         $aTags = array();
         foreach ($this->get() as $oTag) {
-            $aTags = array_merge($aTags, array_fill(0, $oTag->getHitCount(), $oTag->get() ) );
+            $aTags = array_merge($aTags, array_fill(0, $oTag->getHitCount(), $oTag->get()));
         }
-        return implode($this->getSeparator(), $aTags );
+
+        return implode($this->getSeparator(), $aTags);
     }
 
     /**
@@ -190,9 +193,10 @@ class oxTagSet extends oxSuperCfg implements Iterator
      *
      * @return array
      */
-    public function slice( $offset, $length )
+    public function slice($offset, $length)
     {
-        $this->_aTags = array_slice( $this->get(), $offset, $length, true );
+        $this->_aTags = array_slice($this->get(), $offset, $length, true);
+
         return $this->_aTags;
     }
 
@@ -204,7 +208,7 @@ class oxTagSet extends oxSuperCfg implements Iterator
     public function sort()
     {
         $oStr = getStr();
-        uksort( $this->_aTags, array($oStr, 'strrcmp') );
+        uksort($this->_aTags, array($oStr, 'strrcmp'));
     }
 
     /**
@@ -214,7 +218,7 @@ class oxTagSet extends oxSuperCfg implements Iterator
      */
     public function sortByHitCount()
     {
-        uasort( $this->_aTags, array($this, '_tagHitsCmp') );
+        uasort($this->_aTags, array($this, '_tagHitsCmp'));
     }
 
     /**
@@ -224,7 +228,7 @@ class oxTagSet extends oxSuperCfg implements Iterator
      */
     public function current()
     {
-        return current( $this->_aTags );
+        return current($this->_aTags);
     }
 
     /**
@@ -234,7 +238,7 @@ class oxTagSet extends oxSuperCfg implements Iterator
      */
     public function next()
     {
-        next( $this->_aTags );
+        next($this->_aTags);
     }
 
     /**
@@ -244,7 +248,7 @@ class oxTagSet extends oxSuperCfg implements Iterator
      */
     public function key()
     {
-        return key( $this->_aTags );
+        return key($this->_aTags);
     }
 
     /**
@@ -254,7 +258,7 @@ class oxTagSet extends oxSuperCfg implements Iterator
      */
     public function valid()
     {
-        return isset( $this->_aTags[ $this->key() ] );
+        return isset($this->_aTags[$this->key()]);
     }
 
     /**
@@ -264,7 +268,7 @@ class oxTagSet extends oxSuperCfg implements Iterator
      */
     public function rewind()
     {
-        reset( $this->_aTags );
+        reset($this->_aTags);
     }
 
     /**
@@ -275,14 +279,15 @@ class oxTagSet extends oxSuperCfg implements Iterator
      *
      * @return oxTag
      */
-    protected function _formTag( $mTag, $blPrepare = true )
+    protected function _formTag($mTag, $blPrepare = true)
     {
-        if ( $mTag instanceof oxTag ) {
+        if ($mTag instanceof oxTag) {
             $oTag = $mTag;
         } else {
-            $oTag = oxNew( "oxTag" );
-            $oTag->set( $mTag, $blPrepare );
+            $oTag = oxNew("oxTag");
+            $oTag->set($mTag, $blPrepare);
         }
+
         return $oTag;
     }
 
@@ -294,7 +299,7 @@ class oxTagSet extends oxSuperCfg implements Iterator
      *
      * @return int < 0 if tag1 is less than tag2; > 0 if tag1 is greater than tag2, and 0 if they are equal.
      */
-    protected function _tagHitsCmp( $oTag1, $oTag2 )
+    protected function _tagHitsCmp($oTag1, $oTag2)
     {
         return $oTag2->getHitCount() - $oTag1->getHitCount();
     }

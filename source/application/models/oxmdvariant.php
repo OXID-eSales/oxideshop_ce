@@ -26,6 +26,7 @@
  */
 class oxMdVariant extends oxSuperCfg
 {
+
     /**
      * MD variant identifier
      *
@@ -129,7 +130,7 @@ class oxMdVariant extends oxSuperCfg
     /**
      * Sets MD subvariants
      *
-     * @param array[string]OxMdVariant $aSubvariants Subvariants
+     * @param array [string]OxMdVariant $aSubvariants Subvariants
      *
      * @return null
      */
@@ -156,8 +157,9 @@ class oxMdVariant extends oxSuperCfg
     public function getFirstMdSubvariant()
     {
         $aMdSubvariants = $this->getMdSubvariants();
-        if (count($aMdSubvariants))
+        if (count($aMdSubvariants)) {
             return reset($aMdSubvariants);
+        }
 
         return null;
     }
@@ -173,13 +175,14 @@ class oxMdVariant extends oxSuperCfg
     {
         $aSubvariants = $this->getMdSubvariants();
         foreach ($aSubvariants as $oMdSubvariant) {
-            if (strcasecmp($oMdSubvariant->getName(), $sName) == 0)
+            if (strcasecmp($oMdSubvariant->getName(), $sName) == 0) {
                 return $oMdSubvariant;
+            }
         }
 
         $oNewSubvariant = oxNew("oxMdVariant");
         $oNewSubvariant->setName($sName);
-        $oNewSubvariant->setId(md5($sName.$this->getId()));
+        $oNewSubvariant->setId(md5($sName . $this->getId()));
         $oNewSubvariant->setParentId($this->getId());
         $this->_addMdSubvariant($oNewSubvariant);
 
@@ -194,8 +197,9 @@ class oxMdVariant extends oxSuperCfg
     public function getLink()
     {
         $oFirstSubvariant = $this->getFirstMdSubvariant();
-        if ($oFirstSubvariant)
+        if ($oFirstSubvariant) {
             return $oFirstSubvariant->getLink();
+        }
 
         return $this->_sUrl;
     }
@@ -250,6 +254,7 @@ class oxMdVariant extends oxSuperCfg
                 $dMinPrice = $dMinVariantPrice;
             }
         }
+
         return $dMinPrice;
 
     }
@@ -263,8 +268,9 @@ class oxMdVariant extends oxSuperCfg
     {
         $aSubvariants = $this->getMdSubvariants();
 
-        if (!count($aSubvariants))
+        if (!count($aSubvariants)) {
             return 0;
+        }
 
         $iMaxDepth = 0;
         foreach ($aSubvariants as $oSubvariant) {
@@ -285,12 +291,13 @@ class oxMdVariant extends oxSuperCfg
     {
         $myConfig = $this->getConfig();
         // 0002030 No need to return price if it disabled for better performance.
-        if ( !$myConfig->getConfigParam( 'bl_perfLoadPrice' ) ) {
+        if (!$myConfig->getConfigParam('bl_perfLoadPrice')) {
             return;
         }
 
-        if ($this->_sFPrice)
+        if ($this->_sFPrice) {
             return $this->_sFPrice;
+        }
 
         $sFromPrefix = '';
 
@@ -299,8 +306,8 @@ class oxMdVariant extends oxSuperCfg
         }
 
         $dMinPrice = $this->getMinDPrice();
-        $sFMinPrice = oxRegistry::getLang()->formatCurrency( $dMinPrice );
-        $sCurrency = ' '.$this->getConfig()->getActShopCurrencyObject()->sign;
+        $sFMinPrice = oxRegistry::getLang()->formatCurrency($dMinPrice);
+        $sCurrency = ' ' . $this->getConfig()->getActShopCurrencyObject()->sign;
         $this->_sFPrice = $sFromPrefix . $sFMinPrice . $sCurrency;
 
         return $this->_sFPrice;
@@ -309,10 +316,10 @@ class oxMdVariant extends oxSuperCfg
     /**
      * Inits MD variant by name. In case $aNames parameter has more than one element addNames recursively adds names for subvariants.
      *
-     * @param string     $sArtId Article ID
-     * @param array[int] $aNames Expected array of $sKey=>$sName pairs.
-     * @param double     $dPrice Price as double
-     * @param string     $sUrl   Article URL
+     * @param string $sArtId Article ID
+     * @param        array   [int] $aNames Expected array of $sKey=>$sName pairs.
+     * @param double $dPrice Price as double
+     * @param string $sUrl   Article URL
      *
      * @return null
      */
@@ -343,8 +350,9 @@ class oxMdVariant extends oxSuperCfg
     {
         $oFirstSubvariant = $this->getFirstMdSubvariant();
 
-        if ($oFirstSubvariant)
+        if ($oFirstSubvariant) {
             return $oFirstSubvariant->getArticleId();
+        }
 
         return $this->_sArticleId;
     }
@@ -358,13 +366,15 @@ class oxMdVariant extends oxSuperCfg
      */
     public function hasArticleId($sArtId)
     {
-        if ($this->getArticleId() == $sArtId)
+        if ($this->getArticleId() == $sArtId) {
             return true;
+        }
 
         $aSubvariants = $this->getMdSubvariants();
         foreach ($aSubvariants as $oSubvariant) {
-            if ($oSubvariant->hasArticleId($sArtId))
+            if ($oSubvariant->hasArticleId($sArtId)) {
                 return true;
+            }
         }
 
         return false;
@@ -403,6 +413,7 @@ class oxMdVariant extends oxSuperCfg
                 return false;
             }
         }
+
         return true;
     }
 

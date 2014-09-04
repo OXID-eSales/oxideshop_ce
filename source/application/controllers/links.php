@@ -28,14 +28,17 @@
  */
 class Links extends oxUBase
 {
+
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'page/info/links.tpl';
 
     /**
      * Links list.
+     *
      * @var object
      */
     protected $_oLinksList = null;
@@ -47,14 +50,15 @@ class Links extends oxUBase
      */
     public function getLinksList()
     {
-        if ( $this->_oLinksList === null ) {
+        if ($this->_oLinksList === null) {
             $this->_oLinksList = false;
             // Load links
-            $oLinksList = oxNew( "oxlist" );
-            $oLinksList->init( "oxlinks" );
+            $oLinksList = oxNew("oxlist");
+            $oLinksList->init("oxlinks");
             $oLinksList->getList();
             $this->_oLinksList = $oLinksList;
         }
+
         return $this->_oLinksList;
     }
 
@@ -66,9 +70,9 @@ class Links extends oxUBase
     public function getBreadCrumb()
     {
         $aPaths = array();
-        $aPath  = array();
-        $aPath['title'] = oxRegistry::getLang()->translateString( 'LINKS', oxRegistry::getLang()->getBaseLanguage(), false );
-        $aPath['link']  = $this->getLink();
+        $aPath = array();
+        $aPath['title'] = oxRegistry::getLang()->translateString('LINKS', oxRegistry::getLang()->getBaseLanguage(), false);
+        $aPath['link'] = $this->getLink();
         
         $aPaths[] = $aPath;
         

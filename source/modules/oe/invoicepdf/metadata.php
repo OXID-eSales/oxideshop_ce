@@ -29,25 +29,25 @@ $sMetadataVersion = '1.0';
  * Module information
  */
 $aModule = array(
-    'id'           => 'invoicepdf',
-    'title'        => 'Invoice PDF',
-    'description'  => 'Module to export invoice PDF files.',
-    'thumbnail'    => 'picture.png',
-    'version'      => '1.0',
-    'author'       => 'OXID eSales AG',
-    'extend'       => array(
-        'oxorder' => 'oe/invoicepdf/models/invoicepdfoxorder',
+    'id'          => 'invoicepdf',
+    'title'       => 'Invoice PDF',
+    'description' => 'Module to export invoice PDF files.',
+    'thumbnail'   => 'picture.png',
+    'version'     => '1.0',
+    'author'      => 'OXID eSales AG',
+    'extend'      => array(
+        'oxorder'        => 'oe/invoicepdf/models/invoicepdfoxorder',
         'order_overview' => 'oe/invoicepdf/controllers/admin/invoicepdforder_overview'
     ),
-    'files' => array(
-        'InvoicepdfBlock' => 'oe/invoicepdf/models/invoicepdfblock.php',
+    'files'       => array(
+        'InvoicepdfBlock'          => 'oe/invoicepdf/models/invoicepdfblock.php',
         'InvoicepdfArticleSummary' => 'oe/invoicepdf/models/invoicepdfarticlesummary.php'
     ),
-    'blocks' => array(
-                    array(
-                        'template' => 'order_overview.tpl',
-                        'block'=>'admin_order_overview_export',
-                        'file'=>'views/admin/blocks/order_overview.tpl'
-                    ),
+    'blocks'      => array(
+        array(
+            'template' => 'order_overview.tpl',
+            'block'    => 'admin_order_overview_export',
+            'file'     => 'views/admin/blocks/order_overview.tpl'
+        ),
     ),
 );

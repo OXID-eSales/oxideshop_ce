@@ -24,12 +24,15 @@
  * Admin dynscreen manager.
  * Returns template, that arranges two other templates ("dynscreen_list.tpl"
  * and "dyn_affiliates_about.tpl") to frame.
+ *
  * @subpackage dyn
  */
 class Dynscreen extends oxAdminList
 {
+
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'dynscreen.tpl';
@@ -41,43 +44,43 @@ class Dynscreen extends oxAdminList
      *
      * @return null
      */
-    protected function _setupNavigation( $sNode )
+    protected function _setupNavigation($sNode)
     {
         $myAdminNavig = $this->getNavigation();
-        $sNode = oxRegistry::getConfig()->getRequestParameter( "menu" );
+        $sNode = oxRegistry::getConfig()->getRequestParameter("menu");
 
         // active tab
-        $iActTab = oxRegistry::getConfig()->getRequestParameter( 'actedit' );
-        $iActTab = $iActTab?$iActTab:$this->_iDefEdit;
+        $iActTab = oxRegistry::getConfig()->getRequestParameter('actedit');
+        $iActTab = $iActTab ? $iActTab : $this->_iDefEdit;
 
-        $sActTab = $iActTab?"&actedit=$iActTab":'';
+        $sActTab = $iActTab ? "&actedit=$iActTab" : '';
 
         // list url
-        $this->_aViewData['listurl'] = $myAdminNavig->getListUrl( $sNode ).$sActTab;
+        $this->_aViewData['listurl'] = $myAdminNavig->getListUrl($sNode) . $sActTab;
 
         // edit url
-        $sEditUrl = $myAdminNavig->getEditUrl( $sNode, $iActTab ).$sActTab;
-        if ( !getStr()->preg_match( "/^http(s)?:\/\//", $sEditUrl ) ) {
+        $sEditUrl = $myAdminNavig->getEditUrl($sNode, $iActTab) . $sActTab;
+        if (!getStr()->preg_match("/^http(s)?:\/\//", $sEditUrl)) {
             //internal link, adding path
-            $sEditUrl = oxRegistry::get("oxUtilsUrl")->appendParamSeparator($this->getViewConfig()->getViewConfigParam( 'selflink' )) . $sEditUrl;
+            $sEditUrl = oxRegistry::get("oxUtilsUrl")->appendParamSeparator($this->getViewConfig()->getViewConfigParam('selflink')) . $sEditUrl;
         }
 
         $this->_aViewData['editurl'] = $sEditUrl;
 
         // tabs
-        $this->_aViewData['editnavi'] = $myAdminNavig->getTabs( $sNode, $iActTab );
+        $this->_aViewData['editnavi'] = $myAdminNavig->getTabs($sNode, $iActTab);
 
         // active tab
-        $this->_aViewData['actlocation'] = $myAdminNavig->getActiveTab( $sNode, $iActTab );
+        $this->_aViewData['actlocation'] = $myAdminNavig->getActiveTab($sNode, $iActTab);
 
         // default tab
-        $this->_aViewData['default_edit'] = $myAdminNavig->getActiveTab( $sNode, $this->_iDefEdit );
+        $this->_aViewData['default_edit'] = $myAdminNavig->getActiveTab($sNode, $this->_iDefEdit);
 
         // passign active tab number
         $this->_aViewData['actedit'] = $iActTab;
 
         // buttons
-        $this->_aViewData['bottom_buttons'] = $myAdminNavig->getBtn( $sNode );
+        $this->_aViewData['bottom_buttons'] = $myAdminNavig->getBtn($sNode);
     }
 
     /**

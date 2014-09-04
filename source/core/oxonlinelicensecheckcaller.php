@@ -24,12 +24,13 @@
  * Class oxOnlineLicenseCheckCaller
  *
  * @internal Do not make a module extension for this class.
- * @see http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
+ * @see      http://wiki.oxidforge.org/Tutorials/Core_OXID_eShop_classes:_must_not_be_extended
  *
- * @ignore This class will not be included in documentation.
+ * @ignore   This class will not be included in documentation.
  */
 class oxOnlineLicenseCheckCaller
 {
+
     /**
      * Raw response message received from Online License Key Check web service.
      *
@@ -63,7 +64,7 @@ class oxOnlineLicenseCheckCaller
 
     /**
      * @param oxOnlineCaller $oOnlineCaller
-     * @param oxSimpleXml $oSimpleXml
+     * @param oxSimpleXml    $oSimpleXml
      */
     public function __construct(oxOnlineCaller $oOnlineCaller, oxSimpleXml $oSimpleXml)
     {
@@ -120,24 +121,25 @@ class oxOnlineLicenseCheckCaller
      * Parse response message received from Online License Key Check web service and save it to response object.
      *
      * @param string $sRawResponse
+     *
      * @throws oxException
      * @return oxOnlineLicenseCheckResponse
      */
     protected function _formResponse($sRawResponse)
     {
         /** @var oxUtilsXml $oUtilsXml */
-        $oUtilsXml = oxRegistry::get( "oxUtilsXml" );
-        if ( empty($sRawResponse) || !($oDomDoc = $oUtilsXml->loadXml( $sRawResponse )) ) {
+        $oUtilsXml = oxRegistry::get("oxUtilsXml");
+        if (empty($sRawResponse) || !($oDomDoc = $oUtilsXml->loadXml($sRawResponse))) {
             throw new oxException('OLC_ERROR_RESPONSE_NOT_VALID');
         }
 
-        if ( $oDomDoc->documentElement->nodeName != $this->_sResponseElement ) {
+        if ($oDomDoc->documentElement->nodeName != $this->_sResponseElement) {
             throw new oxException('OLC_ERROR_RESPONSE_UNEXPECTED');
         }
 
         $oResponseNode = $oDomDoc->firstChild;
 
-        if ( !$oResponseNode->hasChildNodes() ) {
+        if (!$oResponseNode->hasChildNodes()) {
             throw new oxException('OLC_ERROR_RESPONSE_NOT_VALID');
         }
 
@@ -147,9 +149,9 @@ class oxOnlineLicenseCheckCaller
         $oResponse = oxNew('oxOnlineLicenseCheckResponse');
 
         // iterate through response node to get response parameters
-        for ( $i = 0; $i < $oNodes->length; $i++ ) {
-            $sNodeName = $oNodes->item( $i )->nodeName;
-            $sNodeValue = $oNodes->item( $i )->nodeValue;
+        for ($i = 0; $i < $oNodes->length; $i++) {
+            $sNodeName = $oNodes->item($i)->nodeName;
+            $sNodeValue = $oNodes->item($i)->nodeValue;
             $oResponse->$sNodeName = $sNodeValue;
         }
 

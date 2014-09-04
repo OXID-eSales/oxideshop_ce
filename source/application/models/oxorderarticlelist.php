@@ -26,6 +26,7 @@
  */
 class oxOrderArticleList extends oxList
 {
+
     /**
      * Class constructor, initiates class constructor (parent::oxbase()).
      */
@@ -41,19 +42,20 @@ class oxOrderArticleList extends oxList
      *
      * @return null
      */
-    public function loadOrderArticlesForUser( $sOxId )
+    public function loadOrderArticlesForUser($sOxId)
     {
         if (!$sOxId) {
             $this->clear();
+
             return;
         }
 
-        $sSelect  = "SELECT oxorderarticles.* FROM oxorder ";
+        $sSelect = "SELECT oxorderarticles.* FROM oxorder ";
         $sSelect .= "left join oxorderarticles on oxorderarticles.oxorderid = oxorder.oxid ";
         $sSelect .= "left join oxarticles on oxorderarticles.oxartid = oxarticles.oxid ";
-        $sSelect .= "WHERE oxorder.oxuserid = ".oxDb::getDb()->quote( $sOxId );
+        $sSelect .= "WHERE oxorder.oxuserid = " . oxDb::getDb()->quote($sOxId);
 
-        $this->selectString( $sSelect );
+        $this->selectString($sSelect);
 
     }
 

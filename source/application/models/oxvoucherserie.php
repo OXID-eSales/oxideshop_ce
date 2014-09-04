@@ -30,6 +30,7 @@ class oxVoucherSerie extends oxBase
 
     /**
      * User groups array (default null).
+     *
      * @var object
      */
     protected $_oGroups = null;
@@ -55,9 +56,9 @@ class oxVoucherSerie extends oxBase
      *
      * @return null
      */
-    public function delete( $sOxId = null )
+    public function delete($sOxId = null)
     {
-        if ( !$sOxId ) {
+        if (!$sOxId) {
             $sOxId = $this->getId();
         }
 
@@ -65,7 +66,8 @@ class oxVoucherSerie extends oxBase
         $this->unsetDiscountRelations();
         $this->unsetUserGroups();
         $this->deleteVoucherList();
-        return parent::delete( $sOxId );
+
+        return parent::delete($sOxId);
     }
 
     /**
@@ -75,13 +77,13 @@ class oxVoucherSerie extends oxBase
      */
     public function setUserGroups()
     {
-        if ( $this->_oGroups === null ) {
-            $this->_oGroups = oxNew( 'oxlist' );
-            $this->_oGroups->init( 'oxgroups' );
-            $sViewName = getViewName( "oxgroups" );
-            $sSelect  = "select gr.* from {$sViewName} as gr, oxobject2group as o2g where
-                         o2g.oxobjectid = ". oxDb::getDb()->quote( $this->getId() ) ." and gr.oxid = o2g.oxgroupsid ";
-            $this->_oGroups->selectString( $sSelect );
+        if ($this->_oGroups === null) {
+            $this->_oGroups = oxNew('oxlist');
+            $this->_oGroups->init('oxgroups');
+            $sViewName = getViewName("oxgroups");
+            $sSelect = "select gr.* from {$sViewName} as gr, oxobject2group as o2g where
+                         o2g.oxobjectid = " . oxDb::getDb()->quote($this->getId()) . " and gr.oxid = o2g.oxgroupsid ";
+            $this->_oGroups->selectString($sSelect);
         }
 
         return $this->_oGroups;
@@ -95,8 +97,8 @@ class oxVoucherSerie extends oxBase
     public function unsetUserGroups()
     {
         $oDb = oxDb::getDb();
-        $sDelete = 'delete from oxobject2group where oxobjectid = ' . $oDb->quote( $this->getId() );
-        $oDb->execute( $sDelete );
+        $sDelete = 'delete from oxobject2group where oxobjectid = ' . $oDb->quote($this->getId());
+        $oDb->execute($sDelete);
     }
 
     /**
@@ -107,8 +109,8 @@ class oxVoucherSerie extends oxBase
     public function unsetDiscountRelations()
     {
         $oDb = oxDb::getDb();
-        $sDelete = 'delete from oxobject2discount where oxobject2discount.oxdiscountid = ' . $oDb->quote( $this->getId() );
-        $oDb->execute( $sDelete );
+        $sDelete = 'delete from oxobject2discount where oxobject2discount.oxdiscountid = ' . $oDb->quote($this->getId());
+        $oDb->execute($sDelete);
     }
 
     /**
@@ -118,9 +120,10 @@ class oxVoucherSerie extends oxBase
      */
     public function getVoucherList()
     {
-        $oVoucherList = oxNew( 'oxvoucherlist' );
-        $sSelect = 'select * from oxvouchers where oxvoucherserieid = ' . oxDb::getDb()->quote( $this->getId() );
-        $oVoucherList->selectString( $sSelect );
+        $oVoucherList = oxNew('oxvoucherlist');
+        $sSelect = 'select * from oxvouchers where oxvoucherserieid = ' . oxDb::getDb()->quote($this->getId());
+        $oVoucherList->selectString($sSelect);
+
         return $oVoucherList;
     }
 
@@ -132,8 +135,8 @@ class oxVoucherSerie extends oxBase
     public function deleteVoucherList()
     {
         $oDb = oxDb::getDb();
-        $sDelete = 'delete from oxvouchers where oxvoucherserieid = ' . $oDb->quote( $this->getId() );
-        $oDb->execute( $sDelete );
+        $sDelete = 'delete from oxvouchers where oxvoucherserieid = ' . $oDb->quote($this->getId());
+        $oDb->execute($sDelete);
     }
 
     /**
@@ -146,11 +149,11 @@ class oxVoucherSerie extends oxBase
         $aStatus = array();
 
         $oDb = oxDb::getDb();
-        $sQuery = 'select count(*) as total from oxvouchers where oxvoucherserieid = ' .$oDb->quote( $this->getId() );
-        $aStatus['total'] = $oDb->getOne( $sQuery );
+        $sQuery = 'select count(*) as total from oxvouchers where oxvoucherserieid = ' . $oDb->quote($this->getId());
+        $aStatus['total'] = $oDb->getOne($sQuery);
 
-        $sQuery = 'select count(*) as used from oxvouchers where oxvoucherserieid = ' . $oDb->quote( $this->getId() ) . ' and ((oxorderid is not NULL and oxorderid != "") or (oxdateused is not NULL and oxdateused != 0))';
-        $aStatus['used'] = $oDb->getOne( $sQuery );
+        $sQuery = 'select count(*) as used from oxvouchers where oxvoucherserieid = ' . $oDb->quote($this->getId()) . ' and ((oxorderid is not NULL and oxorderid != "") or (oxdateused is not NULL and oxdateused != 0))';
+        $aStatus['used'] = $oDb->getOne($sQuery);
 
         $aStatus['available'] = $aStatus['total'] - $aStatus['used'];
 
@@ -159,32 +162,35 @@ class oxVoucherSerie extends oxBase
     
     /**
      * Get voucher status base on given date (if nothing was passed, current datetime will be used as a measure).
+     *
      * @param string 
      */
-    public function getVoucherStatusByDatetime($sNow = null) {
-    	//return content
-    	$iActive = 1;
-    	$iInactive  = 0;
-    	
-    	$oUtilsDate =   oxRegistry::get("oxUtilsDate");
-    	//current object datetime
-    	$sBeginDate = $this->oxvoucherseries__oxbegindate->value;
-    	$sEndDate = $this->oxvoucherseries__oxenddate->value;
-    	 
-    	//If nothing pass, use current server time
-    	if($sNow == null) {
-    		$sNow   = date( 'Y-m-d H:i:s', $oUtilsDate->getTime() );
-    	}
-    	
-    	//Check for active status.
-    	if ( ($sBeginDate == '0000-00-00 00:00:00'  && $sEndDate == '0000-00-00 00:00:00' ) || //If both dates are empty => treat it as always active
-    			($sBeginDate == '0000-00-00 00:00:00'  && $sNow <= $sEndDate) || //check for end date without start date
-    			($sBeginDate <= $sNow  && $sEndDate == '0000-00-00 00:00:00' ) || //check for start date without end date
-    			($sBeginDate <= $sNow && $sNow <= $sEndDate) ) { //check for both start date and end date.
-    		return $iActive;
-    	} 
-    	
-    	//If active status code was reached, return as inactive
-    	return $iInactive;    	 
+    public function getVoucherStatusByDatetime($sNow = null)
+    {
+        //return content
+        $iActive = 1;
+        $iInactive = 0;
+
+        $oUtilsDate = oxRegistry::get("oxUtilsDate");
+        //current object datetime
+        $sBeginDate = $this->oxvoucherseries__oxbegindate->value;
+        $sEndDate = $this->oxvoucherseries__oxenddate->value;
+
+        //If nothing pass, use current server time
+        if ($sNow == null) {
+            $sNow = date('Y-m-d H:i:s', $oUtilsDate->getTime());
+        }
+
+        //Check for active status.
+        if (($sBeginDate == '0000-00-00 00:00:00' && $sEndDate == '0000-00-00 00:00:00') || //If both dates are empty => treat it as always active
+            ($sBeginDate == '0000-00-00 00:00:00' && $sNow <= $sEndDate) || //check for end date without start date
+            ($sBeginDate <= $sNow && $sEndDate == '0000-00-00 00:00:00') || //check for start date without end date
+            ($sBeginDate <= $sNow && $sNow <= $sEndDate)
+        ) { //check for both start date and end date.
+            return $iActive;
+        }
+
+        //If active status code was reached, return as inactive
+        return $iInactive;
     }
 }

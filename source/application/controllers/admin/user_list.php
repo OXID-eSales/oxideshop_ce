@@ -27,6 +27,7 @@
  */
 class User_List extends oxAdminList
 {
+
     /**
      * Name of chosen object class (default null).
      *
@@ -50,6 +51,7 @@ class User_List extends oxAdminList
 
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'user_list.tpl';
@@ -65,12 +67,12 @@ class User_List extends oxAdminList
         parent::init();
 
         // set mark for blacklists
-        foreach ( $this->getItemList() as $sId => $oUser ) {
-            if ( $oUser->inGroup( "oxidblacklist" ) || $oUser->inGroup( "oxidblocked" ) ) {
+        foreach ($this->getItemList() as $sId => $oUser) {
+            if ($oUser->inGroup("oxidblacklist") || $oUser->inGroup("oxidblocked")) {
                 $oUser->blacklist = "1";
             }
             $oUser->blPreventDelete = false;
-            if ( !$this->_allowAdminEdit( $sId ) ) {
+            if (!$this->_allowAdminEdit($sId)) {
                 $oUser->blPreventDelete = true;
             }
         }
@@ -83,7 +85,7 @@ class User_List extends oxAdminList
      */
     public function deleteEntry()
     {
-        if ( $this->_allowAdminEdit( $this->getEditObjectId() ) ) {
+        if ($this->_allowAdminEdit($this->getEditObjectId())) {
             return parent::deleteEntry();
         }
     }
@@ -98,45 +100,45 @@ class User_List extends oxAdminList
      *
      * @return string
      */
-    public function _prepareWhereQuery( $aWhere, $sQueryFull )
+    public function _prepareWhereQuery($aWhere, $sQueryFull)
     {
         $aNameWhere = null;
-        if ( isset( $aWhere['oxuser.oxlname'] ) && ( $sName = $aWhere['oxuser.oxlname'] ) ) {
+        if (isset($aWhere['oxuser.oxlname']) && ($sName = $aWhere['oxuser.oxlname'])) {
             // check if this is search string (contains % sign at begining and end of string)
-            $blIsSearchValue = $this->_isSearchValue( $sName );
-            $sName = $this->_processFilter( $sName );
+            $blIsSearchValue = $this->_isSearchValue($sName);
+            $sName = $this->_processFilter($sName);
             $aNameWhere['oxuser.oxfname'] = $aNameWhere['oxuser.oxlname'] = $sName;
 
             // unsetting..
-            unset( $aWhere['oxuser.oxlname'] );
+            unset($aWhere['oxuser.oxlname']);
         }
-        $sQ = parent::_prepareWhereQuery( $aWhere, $sQueryFull );
+        $sQ = parent::_prepareWhereQuery($aWhere, $sQueryFull);
 
-        if ( $aNameWhere ) {
+        if ($aNameWhere) {
 
-            $aVal = explode( ' ', $sName );
+            $aVal = explode(' ', $sName);
             $sQ .= ' and (';
             $sSqlBoolAction = '';
             $myUtilsString = oxRegistry::get("oxUtilsString");
 
-            foreach ( $aNameWhere as $sFieldName => $sValue ) {
+            foreach ($aNameWhere as $sFieldName => $sValue) {
 
                 //for each search field using AND anction
-                foreach ( $aVal as $sVal ) {
+                foreach ($aVal as $sVal) {
 
                     $sQ .= " {$sSqlBoolAction} {$sFieldName} ";
 
                     //for search in same field for different values using AND
                     $sSqlBoolAction = ' or ';
 
-                    $sQ .= $this->_buildFilter( $sVal, $blIsSearchValue );
+                    $sQ .= $this->_buildFilter($sVal, $blIsSearchValue);
 
                     // trying to search spec chars in search value
                     // if found, add cleaned search value to search sql
-                    $sUml = $myUtilsString->prepareStrForSearch( $sVal );
-                    if ( $sUml ) {
+                    $sUml = $myUtilsString->prepareStrForSearch($sVal);
+                    if ($sUml) {
                         $sQ .= " or {$sFieldName} ";
-                        $sQ .= $this->_buildFilter( $sUml, $blIsSearchValue );
+                        $sQ .= $this->_buildFilter($sUml, $blIsSearchValue);
                     }
                 }
             }

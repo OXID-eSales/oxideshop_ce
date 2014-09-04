@@ -25,18 +25,19 @@
  */
 class shop_default_category_ajax extends ajaxListComponent
 {
+
     /**
      * Columns array
      * 
      * @var array 
      */
-    protected $_aColumns = array( 'container1' => array(    // field , table,         visible, multilanguage, ident
-                                        array( 'oxtitle',  'oxcategories', 1, 1, 0 ),
-                                        array( 'oxdesc',   'oxcategories', 1, 1, 0 ),
-                                        array( 'oxid',     'oxcategories', 0, 0, 0 ),
-                                        array( 'oxid',     'oxcategories', 0, 0, 1 )
-                                        )
-                                );
+    protected $_aColumns = array('container1' => array( // field , table,         visible, multilanguage, ident
+        array('oxtitle', 'oxcategories', 1, 1, 0),
+        array('oxdesc', 'oxcategories', 1, 1, 0),
+        array('oxid', 'oxcategories', 0, 0, 0),
+        array('oxid', 'oxcategories', 0, 0, 1)
+    )
+    );
 
     /**
      * Returns SQL query for data to fetc
@@ -46,10 +47,11 @@ class shop_default_category_ajax extends ajaxListComponent
     protected function _getQuery()
     {
         $oCat = oxNew('oxcategory');
-        $oCat->setLanguage( oxRegistry::getConfig()->getRequestParameter('editlanguage') );
+        $oCat->setLanguage(oxRegistry::getConfig()->getRequestParameter('editlanguage'));
 
         $sCategoriesTable = $oCat->getViewName();
-        return " from $sCategoriesTable where ".$oCat->getSqlActiveSnippet();
+
+        return " from $sCategoriesTable where " . $oCat->getSqlActiveSnippet();
     }
 
     /**
@@ -59,7 +61,7 @@ class shop_default_category_ajax extends ajaxListComponent
      */
     public function unassignCat()
     {
-        $sShopId = oxRegistry::getConfig()->getRequestParameter( 'oxid');
+        $sShopId = oxRegistry::getConfig()->getRequestParameter('oxid');
         $oShop = oxNew('oxshop');
         if ($oShop->load($sShopId)) {
             $oShop->oxshops__oxdefcat = new oxField('');
@@ -74,8 +76,8 @@ class shop_default_category_ajax extends ajaxListComponent
      */
     public function assignCat()
     {
-        $sChosenCat = oxRegistry::getConfig()->getRequestParameter( 'oxcatid' );
-        $sShopId    = oxRegistry::getConfig()->getRequestParameter( 'oxid');
+        $sChosenCat = oxRegistry::getConfig()->getRequestParameter('oxcatid');
+        $sShopId = oxRegistry::getConfig()->getRequestParameter('oxid');
         $oShop = oxNew('oxshop');
         if ($oShop->load($sShopId)) {
             $oShop->oxshops__oxdefcat = new oxField($sChosenCat);

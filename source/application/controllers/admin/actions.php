@@ -27,8 +27,10 @@
  */
 class Actions extends oxAdminView
 {
+
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'actions.tpl';

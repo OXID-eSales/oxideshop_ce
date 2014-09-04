@@ -26,8 +26,10 @@
  */
 class sysreq extends oxAdminView
 {
+
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'sysreq.tpl';

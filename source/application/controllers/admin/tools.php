@@ -27,6 +27,7 @@
  */
 class Tools extends oxAdminView
 {
+
     /**
      * Executes parent method parent::render(), prints shop and
      * PHP configuration information.
@@ -35,11 +36,12 @@ class Tools extends oxAdminView
      */
     public function render()
     {
-        if ( $this->getConfig()->isDemoShop() ) {
-            return oxRegistry::getUtils()->showMessageAndExit( "Access denied !" );
+        if ($this->getConfig()->isDemoShop()) {
+            return oxRegistry::getUtils()->showMessageAndExit("Access denied !");
         }
 
         parent::render();
+
         return "tools.tpl";
     }
 }

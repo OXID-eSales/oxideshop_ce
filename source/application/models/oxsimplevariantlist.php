@@ -26,6 +26,7 @@
  */
 class oxSimpleVariantList extends oxList
 {
+
     /**
      * Parent article for list variants
      */

@@ -26,68 +26,80 @@
  */
 class order extends oxUBase
 {
+
     /**
      * Payment object
+     *
      * @var object
      */
     protected $_oPayment = null;
 
     /**
      * Active basket
+     *
      * @var oxBasket
      */
     protected $_oBasket = null;
 
     /**
      * Order user remark
+     *
      * @var string
      */
     protected $_sOrderRemark = null;
 
     /**
      * Basket articlelist
+     *
      * @var object
      */
     protected $_oBasketArtList = null;
 
     /**
      * Remote Address
+     *
      * @var string
      */
     protected $_sRemoteAddress = null;
 
     /**
      * Delivery address
+     *
      * @var object
      */
     protected $_oDelAddress = null;
 
     /**
      * Shipping set
+     *
      * @var object
      */
     protected $_oShipSet = null;
 
     /**
      * Config option "blConfirmAGB"
+     *
      * @var bool
      */
     protected $_blConfirmAGB = null;
 
     /**
      * Config option "blShowOrderButtonOnTop"
+     *
      * @var bool
      */
     protected $_blShowOrderButtonOnTop = null;
 
     /**
      * Boolean of option "blConfirmAGB" error
+     *
      * @var bool
      */
     protected $_blConfirmAGBError = null;
 
     /**
      * Config option "blConfirmCustInfo". Will be removed later
+     *
      * @deprecated since v5.1.6 (2014-05-28); Not used anymore
      * @var bool
      */
@@ -95,6 +107,7 @@ class order extends oxUBase
 
     /**
      * Boolean of option "blConfirmCustInfo" error
+     *
      * @deprecated since v5.1.6 (2014-05-28); Not used anymore
      * @var bool
      */
@@ -207,6 +220,7 @@ class order extends oxUBase
 
         if (!$this->_validateTermsAndConditions()) {
             $this->_blConfirmAGBError = 1;
+
             return;
         }
 
@@ -214,6 +228,7 @@ class order extends oxUBase
         $oConfig = $this->getConfig();
         if ($oConfig->getRequestParameter('ord_custinfo') !== null && !$oConfig->getRequestParameter('ord_custinfo') && $this->isConfirmCustInfoActive()) {
             $this->_blConfirmCustInfoError = 1;
+
             return;
         }
 
@@ -266,15 +281,18 @@ class order extends oxUBase
             $oPayment = oxNew('oxpayment');
 
             if ($sPaymentid && $oPayment->load($sPaymentid) &&
-                $oPayment->isValidPayment(oxRegistry::getSession()->getVariable('dynvalue'),
+                $oPayment->isValidPayment(
+                    oxRegistry::getSession()->getVariable('dynvalue'),
                     $this->getConfig()->getShopId(),
                     $oUser,
                     $oBasket->getPriceForPayment(),
-                    oxRegistry::getSession()->getVariable('sShipSet'))
+                    oxRegistry::getSession()->getVariable('sShipSet')
+                )
             ) {
                 $this->_oPayment = $oPayment;
             }
         }
+
         return $this->_oPayment;
     }
 
@@ -291,6 +309,7 @@ class order extends oxUBase
                 $this->_oBasket = $oBasket;
             }
         }
+
         return $this->_oBasket;
     }
 
@@ -317,6 +336,7 @@ class order extends oxUBase
                 $this->_sOrderRemark = oxRegistry::getConfig()->checkParamSpecialChars($sRemark);
             }
         }
+
         return $this->_sOrderRemark;
     }
 
@@ -333,6 +353,7 @@ class order extends oxUBase
                 $this->_oBasketArtList = $oBasket->getBasketArticles();
             }
         }
+
         return $this->_oBasketArtList;
     }
 
@@ -348,6 +369,7 @@ class order extends oxUBase
             $oOrder = oxNew('oxorder');
             $this->_oDelAddress = $oOrder->getDelAddressInfo();
         }
+
         return $this->_oDelAddress;
     }
 
@@ -367,6 +389,7 @@ class order extends oxUBase
                 }
             }
         }
+
         return $this->_oShipSet;
     }
 
@@ -381,11 +404,13 @@ class order extends oxUBase
             $this->_blConfirmAGB = false;
             $this->_blConfirmAGB = $this->getConfig()->getConfigParam('blConfirmAGB');
         }
+
         return $this->_blConfirmAGB;
     }
 
     /**
      * Template variable getter. Returns if option "blConfirmCustInfo" is on.
+     *
      * @deprecated since v5.1.6 (2014-05-28); Not used anymore
      *
      * @return bool
@@ -399,6 +424,7 @@ class order extends oxUBase
                 $this->_blConfirmCustInfo = $this->getConfig()->getConfigParam('blConfirmCustInfo');
             }
         }
+
         return $this->_blConfirmCustInfo;
     }
 
@@ -414,6 +440,7 @@ class order extends oxUBase
 
     /**
      * Template variable getter. Returns if option "blConfirmCustInfo" was not set.
+     *
      * @deprecated since v5.1.6 (2014-05-28); Not used anymore
      *
      * @return bool
@@ -434,6 +461,7 @@ class order extends oxUBase
             $this->_blShowOrderButtonOnTop = false;
             $this->_blShowOrderButtonOnTop = $this->getConfig()->getConfigParam('blShowOrderButtonOnTop');
         }
+
         return $this->_blShowOrderButtonOnTop;
     }
 
@@ -456,7 +484,7 @@ class order extends oxUBase
             $this->_iWrapCnt += $oWrap->getWrappingCount('CARD');
         }
 
-        return (bool)$this->_iWrapCnt;
+        return (bool) $this->_iWrapCnt;
     }
 
     /**

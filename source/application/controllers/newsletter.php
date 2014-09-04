@@ -28,38 +28,45 @@
  */
 class Newsletter extends oxUBase
 {
+
     /**
      * Action articlelist
+     *
      * @var object
      */
     protected $_oActionArticles = null;
 
     /**
      * Top start article
+     *
      * @var object
      */
     protected $_oTopArticle = null;
 
     /**
      * Home country id
+     *
      * @var string
      */
     protected $_sHomeCountryId = null;
 
     /**
      * Newletter status.
+     *
      * @var integer
      */
     protected $_iNewsletterStatus = null;
 
     /**
      * User newsletter registration data.
+     *
      * @var object
      */
     protected $_aRegParams = null;
 
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'page/info/newsletter.tpl';
@@ -82,7 +89,7 @@ class Newsletter extends oxUBase
     public function fill()
     {
         // loads submited values
-        $this->_aRegParams = oxRegistry::getConfig()->getRequestParameter( "editval" );
+        $this->_aRegParams = oxRegistry::getConfig()->getRequestParameter("editval");
     }
 
     /**
@@ -97,62 +104,64 @@ class Newsletter extends oxUBase
      */
     public function send()
     {
-        $aParams  = oxRegistry::getConfig()->getRequestParameter("editval");
+        $aParams = oxRegistry::getConfig()->getRequestParameter("editval");
 
         // loads submited values
         $this->_aRegParams = $aParams;
 
-        if ( !$aParams['oxuser__oxusername'] ) {
+        if (!$aParams['oxuser__oxusername']) {
             oxRegistry::get("oxUtilsView")->addErrorToDisplay('ERROR_MESSAGE_COMPLETE_FIELDS_CORRECTLY');
+
             return;
-        } elseif ( !oxRegistry::getUtils()->isValidEmail( $aParams['oxuser__oxusername'] ) ) {
+        } elseif (!oxRegistry::getUtils()->isValidEmail($aParams['oxuser__oxusername'])) {
             // #1052C - eMail validation added
             oxRegistry::get("oxUtilsView")->addErrorToDisplay('MESSAGE_INVALID_EMAIL');
+
             return;
         }
 
         $blSubscribe = oxRegistry::getConfig()->getRequestParameter("subscribeStatus");
 
-        $oUser = oxNew( 'oxuser' );
+        $oUser = oxNew('oxuser');
         $oUser->oxuser__oxusername = new oxField($aParams['oxuser__oxusername'], oxField::T_RAW);
 
         $blUserLoaded = false;
 
         // if such user does not exist
-        if ( !$oUser->exists() ) {
+        if (!$oUser->exists()) {
 
             // and subscribe is off - error, on - create
-            if ( !$blSubscribe ) {
+            if (!$blSubscribe) {
 
                 oxRegistry::get("oxUtilsView")->addErrorToDisplay('NEWSLETTER_EMAIL_NOT_EXIST');
+
                 return;
 
             } else {
-                $oUser->oxuser__oxactive    = new oxField(1, oxField::T_RAW);
-                $oUser->oxuser__oxrights    = new oxField('user', oxField::T_RAW);
-                $oUser->oxuser__oxshopid    = new oxField($this->getConfig()->getShopId(), oxField::T_RAW);
-                $oUser->oxuser__oxfname     = new oxField($aParams['oxuser__oxfname'], oxField::T_RAW);
-                $oUser->oxuser__oxlname     = new oxField($aParams['oxuser__oxlname'], oxField::T_RAW);
-                $oUser->oxuser__oxsal       = new oxField($aParams['oxuser__oxsal'], oxField::T_RAW);
+                $oUser->oxuser__oxactive = new oxField(1, oxField::T_RAW);
+                $oUser->oxuser__oxrights = new oxField('user', oxField::T_RAW);
+                $oUser->oxuser__oxshopid = new oxField($this->getConfig()->getShopId(), oxField::T_RAW);
+                $oUser->oxuser__oxfname = new oxField($aParams['oxuser__oxfname'], oxField::T_RAW);
+                $oUser->oxuser__oxlname = new oxField($aParams['oxuser__oxlname'], oxField::T_RAW);
+                $oUser->oxuser__oxsal = new oxField($aParams['oxuser__oxsal'], oxField::T_RAW);
                 $oUser->oxuser__oxcountryid = new oxField($aParams['oxuser__oxcountryid'], oxField::T_RAW);
                 $blUserLoaded = $oUser->save();
             }
 
         } else {
-            $blUserLoaded = $oUser->load( $oUser->getId() );
+            $blUserLoaded = $oUser->load($oUser->getId());
         }
 
 
-
         // if user was added/loaded successfully and subscribe is on - subscribing to newsletter
-        if ( $blSubscribe && $blUserLoaded ) {
+        if ($blSubscribe && $blUserLoaded) {
             //removing user from subscribe list before adding
-            $oUser->setNewsSubscription( false, false );
+            $oUser->setNewsSubscription(false, false);
 
-            $blOrderOptInEmail = $this->getConfig()->getConfigParam( 'blOrderOptInEmail' );
-            if ( $oUser->setNewsSubscription( true, $blOrderOptInEmail ) ) {
+            $blOrderOptInEmail = $this->getConfig()->getConfigParam('blOrderOptInEmail');
+            if ($oUser->setNewsSubscription(true, $blOrderOptInEmail)) {
                 // done, confirmation required?
-                if ( $blOrderOptInEmail ) {
+                if ($blOrderOptInEmail) {
                     $this->_iNewsletterStatus = 1;
                 } else {
                     $this->_iNewsletterStatus = 2;
@@ -160,9 +169,9 @@ class Newsletter extends oxUBase
             } else {
                 oxRegistry::get("oxUtilsView")->addErrorToDisplay('MESSAGE_NOT_ABLE_TO_SEND_EMAIL');
             }
-        } elseif ( !$blSubscribe && $blUserLoaded ) {
+        } elseif (!$blSubscribe && $blUserLoaded) {
             // unsubscribing user
-            $oUser->setNewsSubscription( false, false );
+            $oUser->setNewsSubscription(false, false);
             $this->_iNewsletterStatus = 3;
         }
     }
@@ -178,13 +187,13 @@ class Newsletter extends oxUBase
     public function addme()
     {
         // user exists ?
-        $oUser = oxNew( 'oxuser' );
-        if ( $oUser->load( oxRegistry::getConfig()->getRequestParameter( 'uid' ) ) ) {
-            $sConfirmCode = md5($oUser->oxuser__oxusername->value.$oUser->oxuser__oxpasssalt->value);
+        $oUser = oxNew('oxuser');
+        if ($oUser->load(oxRegistry::getConfig()->getRequestParameter('uid'))) {
+            $sConfirmCode = md5($oUser->oxuser__oxusername->value . $oUser->oxuser__oxpasssalt->value);
             // is confirm code ok?
-            if ( oxRegistry::getConfig()->getRequestParameter( 'confirm' ) == $sConfirmCode ) {
-                $oUser->getNewsSubscription()->setOptInStatus( 1 );
-                $oUser->addToGroup( 'oxidnewsletter' );
+            if (oxRegistry::getConfig()->getRequestParameter('confirm') == $sConfirmCode) {
+                $oUser->getNewsSubscription()->setOptInStatus(1);
+                $oUser->addToGroup('oxidnewsletter');
                 $this->_iNewsletterStatus = 2;
             }
         }
@@ -198,12 +207,12 @@ class Newsletter extends oxUBase
     public function removeme()
     {
         // existing user ?
-        $oUser = oxNew( 'oxuser' );
-        if ( $oUser->load( oxRegistry::getConfig()->getRequestParameter( 'uid' ) ) ) {
-            $oUser->getNewsSubscription()->setOptInStatus( 0 );
+        $oUser = oxNew('oxuser');
+        if ($oUser->load(oxRegistry::getConfig()->getRequestParameter('uid'))) {
+            $oUser->getNewsSubscription()->setOptInStatus(0);
 
             // removing from group ..
-            $oUser->removeFromGroup( 'oxidnewsletter' );
+            $oUser->removeFromGroup('oxidnewsletter');
 
             $this->_iNewsletterStatus = 3;
         }
@@ -226,17 +235,18 @@ class Newsletter extends oxUBase
      */
     public function getTopStartActionArticles()
     {
-        if ( $this->_oActionArticles === null ) {
+        if ($this->_oActionArticles === null) {
             $this->_oActionArticles = false;
-            if ( $this->getConfig()->getConfigParam( 'bl_perfLoadAktion' ) ) {
-                $oArtList = oxNew( 'oxarticlelist' );
-                $oArtList->loadActionArticles( 'OXTOPSTART' );
-                if ( $oArtList->count() ) {
-                    $this->_oTopArticle     = $oArtList->current();
+            if ($this->getConfig()->getConfigParam('bl_perfLoadAktion')) {
+                $oArtList = oxNew('oxarticlelist');
+                $oArtList->loadActionArticles('OXTOPSTART');
+                if ($oArtList->count()) {
+                    $this->_oTopArticle = $oArtList->current();
                     $this->_oActionArticles = $oArtList;
                 }
             }
         }
+
         return $this->_oActionArticles;
     }
 
@@ -247,12 +257,13 @@ class Newsletter extends oxUBase
      */
     public function getTopStartArticle()
     {
-        if ( $this->_oTopArticle === null ) {
+        if ($this->_oTopArticle === null) {
             $this->_oTopArticle = false;
-            if ( $this->getTopStartActionArticles() ) {
+            if ($this->getTopStartActionArticles()) {
                 return $this->_oTopArticle;
             }
         }
+
         return $this->_oTopArticle;
     }
 
@@ -263,13 +274,14 @@ class Newsletter extends oxUBase
      */
     public function getHomeCountryId()
     {
-        if ( $this->_sHomeCountryId === null ) {
+        if ($this->_sHomeCountryId === null) {
             $this->_sHomeCountryId = false;
-            $aHomeCountry = $this->getConfig()->getConfigParam( 'aHomeCountry' );
-            if ( is_array( $aHomeCountry ) ) {
-                $this->_sHomeCountryId = current( $aHomeCountry );
+            $aHomeCountry = $this->getConfig()->getConfigParam('aHomeCountry');
+            if (is_array($aHomeCountry)) {
+                $this->_sHomeCountryId = current($aHomeCountry);
             }
         }
+
         return $this->_sHomeCountryId;
     }
 
@@ -301,11 +313,12 @@ class Newsletter extends oxUBase
     public function getBreadCrumb()
     {
         $aPaths = array();
-        $aPath  = array();
-        $aPath['title'] = oxRegistry::getLang()->translateString( 'STAY_INFORMED', oxRegistry::getLang()->getBaseLanguage(), false );
-        $aPath['link']  = $this->getLink();
+        $aPath = array();
+        $aPath['title'] = oxRegistry::getLang()->translateString('STAY_INFORMED', oxRegistry::getLang()->getBaseLanguage(), false);
+        $aPath['link'] = $this->getLink();
 
         $aPaths[] = $aPath;
+
         return $aPaths;
     }
 
@@ -326,7 +339,7 @@ class Newsletter extends oxUBase
             $sConstant = 'SUCCESS';
         }
 
-        return oxRegistry::getLang()->translateString( $sConstant, oxRegistry::getLang()->getBaseLanguage(), false );
+        return oxRegistry::getLang()->translateString($sConstant, oxRegistry::getLang()->getBaseLanguage(), false);
     }
 
 }

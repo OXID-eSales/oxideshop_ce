@@ -25,30 +25,31 @@
  */
 class attribute_category_ajax extends ajaxListComponent
 {
+
     /**
      * Columns array
      *
      * @var array
      */
-    protected $_aColumns = array( 'container1' => array(    // field , table,         visible, multilanguage, ident
-                                        array( 'oxtitle', 'oxcategories', 1, 1, 0 ),
-                                        array( 'oxdesc',  'oxcategories', 1, 1, 0 ),
-                                        array( 'oxid',    'oxcategories', 0, 0, 0 ),
-                                        array( 'oxid',    'oxcategories', 0, 0, 1 )
-                                        ),
-                                'container2' => array(
-                                        array( 'oxtitle', 'oxcategories', 1, 1, 0 ),
-                                        array( 'oxdesc',  'oxcategories', 1, 1, 0 ),
-                                        array( 'oxid',    'oxcategories', 0, 0, 0 ),
-                                        array( 'oxid',    'oxcategory2attribute', 0, 0, 1 ),
-                                        array( 'oxid',    'oxcategories', 0, 0, 1 )
-                                        ),
-                                'container3' => array(
-                                        array( 'oxtitle', 'oxattribute', 1, 1, 0 ),
-                                        array( 'oxsort',  'oxcategory2attribute', 1, 0, 0 ),
-                                        array( 'oxid',    'oxcategory2attribute', 0, 0, 1 )
-                                        )
-                                );
+    protected $_aColumns = array('container1' => array( // field , table,         visible, multilanguage, ident
+        array('oxtitle', 'oxcategories', 1, 1, 0),
+        array('oxdesc', 'oxcategories', 1, 1, 0),
+        array('oxid', 'oxcategories', 0, 0, 0),
+        array('oxid', 'oxcategories', 0, 0, 1)
+    ),
+                                 'container2' => array(
+                                     array('oxtitle', 'oxcategories', 1, 1, 0),
+                                     array('oxdesc', 'oxcategories', 1, 1, 0),
+                                     array('oxid', 'oxcategories', 0, 0, 0),
+                                     array('oxid', 'oxcategory2attribute', 0, 0, 1),
+                                     array('oxid', 'oxcategories', 0, 0, 1)
+                                 ),
+                                 'container3' => array(
+                                     array('oxtitle', 'oxattribute', 1, 1, 0),
+                                     array('oxsort', 'oxcategory2attribute', 1, 0, 0),
+                                     array('oxid', 'oxcategory2attribute', 0, 0, 1)
+                                 )
+    );
 
     /**
      * Returns SQL query for data to fetc
@@ -58,25 +59,25 @@ class attribute_category_ajax extends ajaxListComponent
     protected function _getQuery()
     {
         $myConfig = $this->getConfig();
-        $oDb      = oxDb::getDb();
+        $oDb = oxDb::getDb();
 
         $sCatTable = $this->_getViewName('oxcategories');
-        $sDiscountId      = oxRegistry::getConfig()->getRequestParameter( 'oxid' );
-        $sSynchDiscountId = oxRegistry::getConfig()->getRequestParameter( 'synchoxid' );
+        $sDiscountId = oxRegistry::getConfig()->getRequestParameter('oxid');
+        $sSynchDiscountId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
 
         // category selected or not ?
-        if ( !$sDiscountId) {
-            $sQAdd  = " from $sCatTable where $sCatTable.oxshopid = '".$myConfig->getShopId()."' ";
+        if (!$sDiscountId) {
+            $sQAdd = " from $sCatTable where $sCatTable.oxshopid = '" . $myConfig->getShopId() . "' ";
             $sQAdd .= " and $sCatTable.oxactive = '1' ";
         } else {
-            $sQAdd  = " from $sCatTable left join oxcategory2attribute on $sCatTable.oxid=oxcategory2attribute.oxobjectid ";
-            $sQAdd .= " where oxcategory2attribute.oxattrid = " . $oDb->quote( $sDiscountId ) . " and $sCatTable.oxshopid = '".$myConfig->getShopId()."' ";
+            $sQAdd = " from $sCatTable left join oxcategory2attribute on $sCatTable.oxid=oxcategory2attribute.oxobjectid ";
+            $sQAdd .= " where oxcategory2attribute.oxattrid = " . $oDb->quote($sDiscountId) . " and $sCatTable.oxshopid = '" . $myConfig->getShopId() . "' ";
             $sQAdd .= " and $sCatTable.oxactive = '1' ";
         }
 
-        if ( $sSynchDiscountId && $sSynchDiscountId != $sDiscountId) {
+        if ($sSynchDiscountId && $sSynchDiscountId != $sDiscountId) {
             $sQAdd .= " and $sCatTable.oxid not in ( select $sCatTable.oxid from $sCatTable left join oxcategory2attribute on $sCatTable.oxid=oxcategory2attribute.oxobjectid ";
-            $sQAdd .= " where oxcategory2attribute.oxattrid = " . $oDb->quote( $sSynchDiscountId ) . " and $sCatTable.oxshopid = '".$myConfig->getShopId()."' ";
+            $sQAdd .= " where oxcategory2attribute.oxattrid = " . $oDb->quote($sSynchDiscountId) . " and $sCatTable.oxshopid = '" . $myConfig->getShopId() . "' ";
             $sQAdd .= " and $sCatTable.oxactive = '1' ) ";
         }
 
@@ -90,18 +91,17 @@ class attribute_category_ajax extends ajaxListComponent
      */
     public function removeCatFromAttr()
     {
-        $aChosenCat = $this->_getActionIds( 'oxcategory2attribute.oxid' );
+        $aChosenCat = $this->_getActionIds('oxcategory2attribute.oxid');
 
 
 
-        if ( oxRegistry::getConfig()->getRequestParameter( 'all' ) ) {
-            $sQ = $this->_addFilter( "delete oxcategory2attribute.* ".$this->_getQuery() );
-            oxDb::getDb()->Execute( $sQ );
-        } elseif ( is_array( $aChosenCat ) ) {
-            $sQ = "delete from oxcategory2attribute where oxcategory2attribute.oxid in (" . implode( ", ", oxDb::getInstance()->quoteArray( $aChosenCat ) ) . ") ";
-            oxDb::getDb()->Execute( $sQ );
+        if (oxRegistry::getConfig()->getRequestParameter('all')) {
+            $sQ = $this->_addFilter("delete oxcategory2attribute.* " . $this->_getQuery());
+            oxDb::getDb()->Execute($sQ);
+        } elseif (is_array($aChosenCat)) {
+            $sQ = "delete from oxcategory2attribute where oxcategory2attribute.oxid in (" . implode(", ", oxDb::getInstance()->quoteArray($aChosenCat)) . ") ";
+            oxDb::getDb()->Execute($sQ);
         }
-
 
 
         $this->resetContentCache();
@@ -115,24 +115,24 @@ class attribute_category_ajax extends ajaxListComponent
      */
     public function addCatToAttr()
     {
-        $aAddCategory = $this->_getActionIds( 'oxcategories.oxid' );
-        $soxId        = oxRegistry::getConfig()->getRequestParameter( 'synchoxid');
+        $aAddCategory = $this->_getActionIds('oxcategories.oxid');
+        $soxId = oxRegistry::getConfig()->getRequestParameter('synchoxid');
 
-        $oAttribute   = oxNew( "oxattribute" );
+        $oAttribute = oxNew("oxattribute");
         // adding
-        if ( oxRegistry::getConfig()->getRequestParameter( 'all' ) ) {
+        if (oxRegistry::getConfig()->getRequestParameter('all')) {
             $sCatTable = $this->_getViewName('oxcategories');
-            $aAddCategory = $this->_getAll( $this->_addFilter( "select $sCatTable.oxid ".$this->_getQuery() ) );
+            $aAddCategory = $this->_getAll($this->_addFilter("select $sCatTable.oxid " . $this->_getQuery()));
         }
 
-        if ( $oAttribute->load( $soxId ) && is_array( $aAddCategory ) ) {
+        if ($oAttribute->load($soxId) && is_array($aAddCategory)) {
             $oDb = oxDb::getDb();
             foreach ($aAddCategory as $sAdd) {
-                $oNewGroup = oxNew( "oxbase" );
-                $oNewGroup->init( "oxcategory2attribute" );
+                $oNewGroup = oxNew("oxbase");
+                $oNewGroup->init("oxcategory2attribute");
                 $oNewGroup->oxcategory2attribute__oxobjectid = new oxField($sAdd);
                 $oNewGroup->oxcategory2attribute__oxattrid = new oxField($oAttribute->oxattribute__oxid->value);
-                $oNewGroup->oxcategory2attribute__oxsort   = new oxField( ( int ) $oDb->getOne( "select max(oxsort) + 1 from oxcategory2attribute where oxobjectid = '$sAdd' ", false, false ) );
+                $oNewGroup->oxcategory2attribute__oxsort = new oxField(( int ) $oDb->getOne("select max(oxsort) + 1 from oxcategory2attribute where oxobjectid = '$sAdd' ", false, false));
                 $oNewGroup->save();
             }
         }

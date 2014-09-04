@@ -28,6 +28,7 @@
  */
 class VoucherSerie_List extends oxAdminList
 {
+
     /**
      * Name of chosen object class (default null).
      *
@@ -37,6 +38,7 @@ class VoucherSerie_List extends oxAdminList
 
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'voucherserie_list.tpl';
@@ -49,8 +51,8 @@ class VoucherSerie_List extends oxAdminList
     public function deleteEntry()
     {
         // first we remove vouchers
-        $oVoucherSerie = oxNew( "oxvoucherserie" );
-        $oVoucherSerie->load( $this->getEditObjectId() );
+        $oVoucherSerie = oxNew("oxvoucherserie");
+        $oVoucherSerie->load($this->getEditObjectId());
         $oVoucherSerie->deleteVoucherList();
 
         parent::deleteEntry();

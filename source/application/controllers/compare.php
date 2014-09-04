@@ -26,68 +26,80 @@
  */
 class Compare extends oxUBase
 {
+
     /**
      * Number of possible compare pages.
+     *
      * @var integer
      */
     protected $_iCntPages = 1;
 
     /**
      * Number of user's orders.
+     *
      * @var integer
      */
     protected $_iOrderCnt = null;
 
     /**
      * Number of articles per page.
+     *
      * @var integer
      */
     protected $_iArticlesPerPage = 3;
 
     /**
      * Number of user's orders.
+     *
      * @var integer
      */
     protected $_iCompItemsCnt = null;
 
     /**
      * Items which are currently to show in comparison.
+     *
      * @var array
      */
     protected $_aCompItems = null;
 
     /**
      * Article list in comparison.
+     *
      * @var object
      */
     protected $_oArtList = null;
 
     /**
      * Article attribute list in comparison.
+     *
      * @var object
      */
     protected $_oAttributeList = null;
 
     /**
      * Recomendation list
+     *
      * @var object
      */
     protected $_oRecommList = null;
 
     /**
      * Page navigation
+     *
      * @var object
      */
     protected $_oPageNavigation = null;
 
     /**
      * Sign if to load and show bargain action
+     *
      * @var bool
      */
     protected $_blBargainAction = true;
 
     /**
      * Show tags cloud
+     *
      * @var bool
      */
     protected $_blShowTagCloud = false;
@@ -95,6 +107,7 @@ class Compare extends oxUBase
 
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'page/compare/compare.tpl';
@@ -114,27 +127,27 @@ class Compare extends oxUBase
      */
     public function moveLeft() //#777C
     {
-        $sArticleId = oxRegistry::getConfig()->getRequestParameter( 'aid' );
-        if ( $sArticleId && ( $aItems = $this->getCompareItems() ) ) {
+        $sArticleId = oxRegistry::getConfig()->getRequestParameter('aid');
+        if ($sArticleId && ($aItems = $this->getCompareItems())) {
             $sPrevArticleId = null;
 
             $blFound = false;
-            foreach ( $aItems as $sOxid => $sVal ) {
-                if ( $sOxid == $sArticleId ) {
+            foreach ($aItems as $sOxid => $sVal) {
+                if ($sOxid == $sArticleId) {
                     $blFound = true;
                 }
-                if ( !$blFound ) {
+                if (!$blFound) {
                     $sPrevArticleId = $sOxid;
                 }
             }
 
-            if ( $sPrevArticleId ) {
+            if ($sPrevArticleId) {
 
                 $aNewItems = array();
-                foreach ( $aItems as $sOxid => $sVal ) {
-                    if ( $sOxid == $sPrevArticleId ) {
+                foreach ($aItems as $sOxid => $sVal) {
+                    if ($sOxid == $sPrevArticleId) {
                         $aNewItems[$sArticleId] = true;
-                    } elseif ( $sOxid == $sArticleId ) {
+                    } elseif ($sOxid == $sArticleId) {
                         $aNewItems[$sPrevArticleId] = true;
                     } else {
                         $aNewItems[$sOxid] = true;
@@ -151,30 +164,30 @@ class Compare extends oxUBase
      *
      * @return null
      */
-    public function moveRight()  //#777C
+    public function moveRight() //#777C
     {
-        $sArticleId = oxRegistry::getConfig()->getRequestParameter( 'aid' );
-        if ( $sArticleId && ( $aItems = $this->getCompareItems() ) ) {
+        $sArticleId = oxRegistry::getConfig()->getRequestParameter('aid');
+        if ($sArticleId && ($aItems = $this->getCompareItems())) {
             $sNextArticleId = 0;
 
             $blFound = false;
-            foreach ( $aItems as $sOxid => $sVal ) {
-                if ( $blFound ) {
+            foreach ($aItems as $sOxid => $sVal) {
+                if ($blFound) {
                     $sNextArticleId = $sOxid;
                     $blFound = false;
                 }
-                if ( $sOxid == $sArticleId ) {
+                if ($sOxid == $sArticleId) {
                     $blFound = true;
                 }
             }
 
-            if ( $sNextArticleId ) {
+            if ($sNextArticleId) {
 
                 $aNewItems = array();
-                foreach ( $aItems as $sOxid => $sVal ) {
-                    if ( $sOxid == $sArticleId ) {
+                foreach ($aItems as $sOxid => $sVal) {
+                    if ($sOxid == $sArticleId) {
                         $aNewItems[$sNextArticleId] = true;
-                    } elseif ( $sOxid == $sNextArticleId ) {
+                    } elseif ($sOxid == $sNextArticleId) {
                         $aNewItems[$sArticleId] = true;
                     } else {
                         $aNewItems[$sOxid] = true;
@@ -203,7 +216,7 @@ class Compare extends oxUBase
      *
      * @return integer
      */
-    public function setCompareItemsCnt( $iCount )
+    public function setCompareItemsCnt($iCount)
     {
         $this->_iCompItemsCnt = $iCount;
     }
@@ -215,12 +228,13 @@ class Compare extends oxUBase
      */
     public function getCompareItemsCnt()
     {
-        if ( $this->_iCompItemsCnt === null ) {
+        if ($this->_iCompItemsCnt === null) {
             $this->_iCompItemsCnt = 0;
-            if ( $aItems = $this->getCompareItems() ) {
-                $this->_iCompItemsCnt = count( $aItems );
+            if ($aItems = $this->getCompareItems()) {
+                $this->_iCompItemsCnt = count($aItems);
             }
         }
+
         return $this->_iCompItemsCnt;
     }
 
@@ -231,12 +245,13 @@ class Compare extends oxUBase
      */
     public function getCompareItems()
     {
-        if ( $this->_aCompItems === null ) {
-            $aItems = oxRegistry::getSession()->getVariable( 'aFiltcompproducts' );
-            if ( is_array($aItems) && count($aItems) ) {
+        if ($this->_aCompItems === null) {
+            $aItems = oxRegistry::getSession()->getVariable('aFiltcompproducts');
+            if (is_array($aItems) && count($aItems)) {
                 $this->_aCompItems = $aItems;
             }
         }
+
         return $this->_aCompItems;
     }
 
@@ -247,10 +262,10 @@ class Compare extends oxUBase
      *
      * @return null
      */
-    public function setCompareItems( $aItems)
+    public function setCompareItems($aItems)
     {
         $this->_aCompItems = $aItems;
-        oxRegistry::getSession()->setVariable( 'aFiltcompproducts', $aItems );
+        oxRegistry::getSession()->setVariable('aFiltcompproducts', $aItems);
     }
 
     /**
@@ -260,7 +275,7 @@ class Compare extends oxUBase
      *
      * @return null
      */
-    protected function _setArticlesPerPage( $iNumber)
+    protected function _setArticlesPerPage($iNumber)
     {
         $this->_iArticlesPerPage = $iNumber;
     }
@@ -284,19 +299,19 @@ class Compare extends oxUBase
      */
     public function getCompArtList()
     {
-        if ( $this->_oArtList === null ) {
-            if ( ( $aItems = $this->getCompareItems() ) ) {
+        if ($this->_oArtList === null) {
+            if (($aItems = $this->getCompareItems())) {
                 // counts how many pages
-                $oList = oxNew( 'oxarticlelist' );
-                $oList->loadIds( array_keys( $aItems ) );
+                $oList = oxNew('oxarticlelist');
+                $oList->loadIds(array_keys($aItems));
 
                 // cut page articles
-                if ( $this->_iArticlesPerPage > 0 ) {
-                    $this->_iCntPages = round( $oList->count() / $this->_iArticlesPerPage + 0.49 );
-                    $aItems = $this->_removeArticlesFromPage( $aItems, $oList );
+                if ($this->_iArticlesPerPage > 0) {
+                    $this->_iCntPages = round($oList->count() / $this->_iArticlesPerPage + 0.49);
+                    $aItems = $this->_removeArticlesFromPage($aItems, $oList);
                 }
 
-                $this->_oArtList = $this->_changeArtListOrder( $aItems, $oList );
+                $this->_oArtList = $this->_changeArtListOrder($aItems, $oList);
             }
         }
 
@@ -310,13 +325,14 @@ class Compare extends oxUBase
      */
     public function getAttributeList()
     {
-        if ( $this->_oAttributeList === null ) {
+        if ($this->_oAttributeList === null) {
             $this->_oAttributeList = false;
-            if ( $oArtList = $this->getCompArtList()) {
-                $oAttributeList = oxNew( 'oxattributelist' );
-                $this->_oAttributeList = $oAttributeList->loadAttributesByIds( array_keys( $oArtList ) );
+            if ($oArtList = $this->getCompArtList()) {
+                $oAttributeList = oxNew('oxattributelist');
+                $this->_oAttributeList = $oAttributeList->loadAttributesByIds(array_keys($oArtList));
             }
         }
+
         return $this->_oAttributeList;
     }
 
@@ -327,13 +343,14 @@ class Compare extends oxUBase
      */
     public function getSimilarRecommListIds()
     {
-        if ( $this->_aSimilarRecommListIds === null ) {
+        if ($this->_aSimilarRecommListIds === null) {
             $this->_aSimilarRecommListIds = false;
 
-            if ( $oArtList = $this->getCompArtList() ) {
-                $this->_aSimilarRecommListIds = array_keys( $oArtList );
+            if ($oArtList = $this->getCompArtList()) {
+                $this->_aSimilarRecommListIds = array_keys($oArtList);
             }
         }
+
         return $this->_aSimilarRecommListIds;
     }
 
@@ -344,10 +361,11 @@ class Compare extends oxUBase
      */
     public function getPageNavigation()
     {
-        if ( $this->_oPageNavigation === null ) {
+        if ($this->_oPageNavigation === null) {
             $this->_oPageNavigation = false;
             $this->_oPageNavigation = $this->generatePageNavigation();
         }
+
         return $this->_oPageNavigation;
     }
 
@@ -359,21 +377,22 @@ class Compare extends oxUBase
      *
      * @return array $aNewItems
      */
-    protected function _removeArticlesFromPage( $aItems, $oList )
+    protected function _removeArticlesFromPage($aItems, $oList)
     {
         //#1106S $aItems changed to $oList.
         //2006-08-10 Alfonsas, compare arrows fixed, array position is very important here, preserve it.
         $aListKeys = $oList->arrayKeys();
         $aItemKeys = array_keys($aItems);
-        $aKeys = array_intersect( $aItemKeys, $aListKeys );
+        $aKeys = array_intersect($aItemKeys, $aListKeys);
         $aNewItems = array();
         $iActPage = $this->getActPage();
-        for ( $i = $this->_iArticlesPerPage * $iActPage; $i < $this->_iArticlesPerPage * $iActPage + $this->_iArticlesPerPage; $i++ ) {
-            if ( !isset($aKeys[$i])) {
+        for ($i = $this->_iArticlesPerPage * $iActPage; $i < $this->_iArticlesPerPage * $iActPage + $this->_iArticlesPerPage; $i++) {
+            if (!isset($aKeys[$i])) {
                 break;
             }
             $aNewItems[$aKeys[$i]] = & $aItems[$aKeys[$i]];
         }
+
         return $aNewItems;
     }
 
@@ -385,16 +404,16 @@ class Compare extends oxUBase
      *
      * @return array $oNewList
      */
-    protected function _changeArtListOrder( $aItems, $oList )
+    protected function _changeArtListOrder($aItems, $oList)
     {
         // #777C changing order of list elements, according to $aItems
         $oNewList = array();
         $iCnt = 0;
         $iActPage = $this->getActPage();
-        foreach ( $aItems as $sOxid => $sVal ) {
+        foreach ($aItems as $sOxid => $sVal) {
 
             //#4391T, skipping non loaded products
-            if (!isset ($oList[$sOxid]) ) {
+            if (!isset ($oList[$sOxid])) {
                 continue;
             }
 
@@ -403,16 +422,17 @@ class Compare extends oxUBase
 
             // hide arrow if article is first in the list
             $oNewList[$sOxid]->hidePrev = false;
-            if ( $iActPage == 0 && $iCnt==1 ) {
+            if ($iActPage == 0 && $iCnt == 1) {
                 $oNewList[$sOxid]->hidePrev = true;
             }
 
             // hide arrow if article is last in the list
             $oNewList[$sOxid]->hideNext = false;
-            if ( ( $iActPage + 1 ) == $this->_iCntPages && $iCnt == count( $aItems ) ) {
+            if (($iActPage + 1) == $this->_iCntPages && $iCnt == count($aItems)) {
                 $oNewList[$sOxid]->hideNext = true;
             }
         }
+
         return $oNewList;
     }
 
@@ -423,12 +443,13 @@ class Compare extends oxUBase
      */
     public function getOrderCnt()
     {
-        if ( $this->_iOrderCnt === null ) {
+        if ($this->_iOrderCnt === null) {
             $this->_iOrderCnt = 0;
-            if ( $oUser = $this->getUser() ) {
+            if ($oUser = $this->getUser()) {
                 $this->_iOrderCnt = $oUser->getOrderCount();
             }
         }
+
         return $this->_iOrderCnt;
     }
 
@@ -442,12 +463,12 @@ class Compare extends oxUBase
         $aPaths = array();
         $aPath = array();
 
-        $aPath['title'] = oxRegistry::getLang()->translateString( 'MY_ACCOUNT', oxRegistry::getLang()->getBaseLanguage(), false );
-        $aPath['link']  = oxRegistry::get("oxSeoEncoder")->getStaticUrl( $this->getViewConfig()->getSelfLink() . 'cl=account' );
+        $aPath['title'] = oxRegistry::getLang()->translateString('MY_ACCOUNT', oxRegistry::getLang()->getBaseLanguage(), false);
+        $aPath['link'] = oxRegistry::get("oxSeoEncoder")->getStaticUrl($this->getViewConfig()->getSelfLink() . 'cl=account');
         $aPaths[] = $aPath;
 
-        $aPath['title'] = oxRegistry::getLang()->translateString( 'PRODUCT_COMPARISON', oxRegistry::getLang()->getBaseLanguage(), false );
-        $aPath['link']  = $this->getLink();
+        $aPath['title'] = oxRegistry::getLang()->translateString('PRODUCT_COMPARISON', oxRegistry::getLang()->getBaseLanguage(), false);
+        $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;
 
         return $aPaths;

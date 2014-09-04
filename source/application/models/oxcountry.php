@@ -27,6 +27,7 @@
  */
 class oxCountry extends oxI18n
 {
+
     /**
      * Current class name
      *
@@ -47,7 +48,7 @@ class oxCountry extends oxI18n
     public function __construct()
     {
         parent::__construct();
-        $this->init( 'oxcountry' );
+        $this->init('oxcountry');
     }
 
     /**
@@ -57,7 +58,7 @@ class oxCountry extends oxI18n
      */
     public function isForeignCountry()
     {
-        return !in_array($this->getId(), $this->getConfig()->getConfigParam( 'aHomeCountry' ));
+        return !in_array($this->getId(), $this->getConfig()->getConfigParam('aHomeCountry'));
     }
 
     /**
@@ -77,11 +78,12 @@ class oxCountry extends oxI18n
      */
     public function getStates()
     {
-        if (!is_null($this->_aStates))
+        if (!is_null($this->_aStates)) {
             return $this->_aStates;
+        }
 
         $sCountryId = $this->getId();
-        $sViewName = getViewName( "oxstates", $this->getLanguage() );
+        $sViewName = getViewName("oxstates", $this->getLanguage());
         $sQ = "select * from {$sViewName} where `oxcountryid` = '$sCountryId' order by `oxtitle`  ";
         $this->_aStates = oxNew("oxlist");
         $this->_aStates->init("oxstate");
@@ -97,10 +99,11 @@ class oxCountry extends oxI18n
      *
      * @return string
      */
-    public function getIdByCode( $sCode )
+    public function getIdByCode($sCode)
     {
         $oDb = oxDb::getDb();
-        return $oDb->getOne( "select oxid from oxcountry where oxisoalpha2 = " . $oDb->quote( $sCode ) );
+
+        return $oDb->getOne("select oxid from oxcountry where oxisoalpha2 = " . $oDb->quote($sCode));
     }
 
     /**

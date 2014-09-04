@@ -27,6 +27,7 @@
  */
 class Attribute extends oxAdminView
 {
+
     /**
      * Current class template name.
      *

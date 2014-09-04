@@ -27,6 +27,7 @@ require_once 'oxerptype.php';
  */
 class oxERPType_Crossselling extends oxERPType
 {
+
     /**
      * class constructor
      *

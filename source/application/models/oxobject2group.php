@@ -24,6 +24,7 @@
  */
 class oxObject2Group extends oxBase
 {
+
     /**
      * Load the relation even if from other shop
      *
@@ -44,7 +45,7 @@ class oxObject2Group extends oxBase
     public function __construct()
     {
         parent::__construct();
-        $this->init( 'oxobject2group' );
+        $this->init('oxobject2group');
         $this->oxobject2group__oxshopid = new oxField($this->getConfig()->getShopId(), oxField::T_RAW);
     }
 
@@ -56,11 +57,11 @@ class oxObject2Group extends oxBase
     public function save()
     {
         $oDb = oxDb::getDb();
-        $sQ  = "select 1 from oxobject2group where oxgroupsid = ".$oDb->quote( $this->oxobject2group__oxgroupsid->value );
-        $sQ .= " and oxobjectid = ". $oDb->quote( $this->oxobject2group__oxobjectid->value );
+        $sQ = "select 1 from oxobject2group where oxgroupsid = " . $oDb->quote($this->oxobject2group__oxgroupsid->value);
+        $sQ .= " and oxobjectid = " . $oDb->quote($this->oxobject2group__oxobjectid->value);
 
         // does not exist
-        if ( !$oDb->getOne( $sQ, false, false ) ) {
+        if (!$oDb->getOne($sQ, false, false)) {
             return parent::save();
         }
     }

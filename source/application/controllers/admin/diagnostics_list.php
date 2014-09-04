@@ -26,8 +26,10 @@
  */
 class Diagnostics_List extends oxAdminList
 {
+
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'diagnostics_list.tpl';

@@ -25,30 +25,31 @@
  */
 class delivery_articles_ajax extends ajaxListComponent
 {
+
     /**
      * Columns array
      * 
      * @var array 
      */
-    protected $_aColumns = array( 'container1' => array(    // field , table,         visible, multilanguage, ident
-                                        array( 'oxartnum', 'oxarticles', 1, 0, 0 ),
-                                        array( 'oxtitle',  'oxarticles', 1, 1, 0 ),
-                                        array( 'oxean',    'oxarticles', 1, 0, 0 ),
-                                        array( 'oxmpn',    'oxarticles', 0, 0, 0 ),
-                                        array( 'oxprice',  'oxarticles', 0, 0, 0 ),
-                                        array( 'oxstock',  'oxarticles', 0, 0, 0 ),
-                                        array( 'oxid',     'oxarticles', 0, 0, 1 )
-                                        ),
-                                'container2' => array(
-                                        array( 'oxartnum', 'oxarticles', 1, 0, 0 ),
-                                        array( 'oxtitle',  'oxarticles', 1, 1, 0 ),
-                                        array( 'oxean',    'oxarticles', 1, 0, 0 ),
-                                        array( 'oxmpn',    'oxarticles', 0, 0, 0 ),
-                                        array( 'oxprice',  'oxarticles', 0, 0, 0 ),
-                                        array( 'oxstock',  'oxarticles', 0, 0, 0 ),
-                                        array( 'oxid',     'oxobject2delivery', 0, 0, 1 )
-                                        )
-                                );
+    protected $_aColumns = array('container1' => array( // field , table,         visible, multilanguage, ident
+        array('oxartnum', 'oxarticles', 1, 0, 0),
+        array('oxtitle', 'oxarticles', 1, 1, 0),
+        array('oxean', 'oxarticles', 1, 0, 0),
+        array('oxmpn', 'oxarticles', 0, 0, 0),
+        array('oxprice', 'oxarticles', 0, 0, 0),
+        array('oxstock', 'oxarticles', 0, 0, 0),
+        array('oxid', 'oxarticles', 0, 0, 1)
+    ),
+                                 'container2' => array(
+                                     array('oxartnum', 'oxarticles', 1, 0, 0),
+                                     array('oxtitle', 'oxarticles', 1, 1, 0),
+                                     array('oxean', 'oxarticles', 1, 0, 0),
+                                     array('oxmpn', 'oxarticles', 0, 0, 0),
+                                     array('oxprice', 'oxarticles', 0, 0, 0),
+                                     array('oxstock', 'oxarticles', 0, 0, 0),
+                                     array('oxid', 'oxobject2delivery', 0, 0, 1)
+                                 )
+    );
 
     /**
      * If true extended column selection will be build
@@ -70,32 +71,32 @@ class delivery_articles_ajax extends ajaxListComponent
         // looking for table/view
         $sArtTable = $this->_getViewName('oxarticles');
         $sCatTable = $this->_getViewName('oxcategories');
-        $sO2CView  = $this->_getViewName('oxobject2category');
+        $sO2CView = $this->_getViewName('oxobject2category');
 
-        $sDelId      = $this->getConfig()->getRequestParameter( 'oxid' );
-        $sSynchDelId = $this->getConfig()->getRequestParameter( 'synchoxid' );
+        $sDelId = $this->getConfig()->getRequestParameter('oxid');
+        $sSynchDelId = $this->getConfig()->getRequestParameter('synchoxid');
 
         // category selected or not ?
-        if ( !$sDelId) {
+        if (!$sDelId) {
             // performance
-            $sQAdd  = " from $sArtTable where 1 ";
-            $sQAdd .= $myConfig->getConfigParam( 'blVariantsSelection' )?'':"and $sArtTable.oxparentid = '' ";
+            $sQAdd = " from $sArtTable where 1 ";
+            $sQAdd .= $myConfig->getConfigParam('blVariantsSelection') ? '' : "and $sArtTable.oxparentid = '' ";
         } else {
             // selected category ?
-            if ( $sSynchDelId && $sDelId != $sSynchDelId ) {
-                $sQAdd  = " from $sO2CView left join $sArtTable on ";
-                $sQAdd .= $myConfig->getConfigParam( 'blVariantsSelection' )?" ( $sArtTable.oxid=$sO2CView.oxobjectid or $sArtTable.oxparentid=$sO2CView.oxobjectid)":" $sArtTable.oxid=$sO2CView.oxobjectid ";
-                $sQAdd .= "where $sO2CView.oxcatnid = ". $oDb->quote( $sDelId );
+            if ($sSynchDelId && $sDelId != $sSynchDelId) {
+                $sQAdd = " from $sO2CView left join $sArtTable on ";
+                $sQAdd .= $myConfig->getConfigParam('blVariantsSelection') ? " ( $sArtTable.oxid=$sO2CView.oxobjectid or $sArtTable.oxparentid=$sO2CView.oxobjectid)" : " $sArtTable.oxid=$sO2CView.oxobjectid ";
+                $sQAdd .= "where $sO2CView.oxcatnid = " . $oDb->quote($sDelId);
             } else {
-                $sQAdd  = ' from oxobject2delivery left join '.$sArtTable.' on '.$sArtTable.'.oxid=oxobject2delivery.oxobjectid ';
-                $sQAdd .= 'where oxobject2delivery.oxdeliveryid = '.$oDb->quote( $sDelId ).' and oxobject2delivery.oxtype = "oxarticles" ';
+                $sQAdd = ' from oxobject2delivery left join ' . $sArtTable . ' on ' . $sArtTable . '.oxid=oxobject2delivery.oxobjectid ';
+                $sQAdd .= 'where oxobject2delivery.oxdeliveryid = ' . $oDb->quote($sDelId) . ' and oxobject2delivery.oxtype = "oxarticles" ';
             }
         }
 
-        if ( $sSynchDelId && $sSynchDelId != $sDelId) {
-            $sQAdd .= 'and '.$sArtTable.'.oxid not in ( ';
+        if ($sSynchDelId && $sSynchDelId != $sDelId) {
+            $sQAdd .= 'and ' . $sArtTable . '.oxid not in ( ';
             $sQAdd .= 'select oxobject2delivery.oxobjectid from oxobject2delivery ';
-            $sQAdd .= 'where oxobject2delivery.oxdeliveryid = '.$oDb->quote( $sSynchDelId ).' and oxobject2delivery.oxtype = "oxarticles" ) ';
+            $sQAdd .= 'where oxobject2delivery.oxdeliveryid = ' . $oDb->quote($sSynchDelId) . ' and oxobject2delivery.oxtype = "oxarticles" ) ';
         }
 
         return $sQAdd;
@@ -125,16 +126,16 @@ class delivery_articles_ajax extends ajaxListComponent
      */
     public function removeArtFromDel()
     {
-        $aChosenArt = $this->_getActionIds( 'oxobject2delivery.oxid' );
+        $aChosenArt = $this->_getActionIds('oxobject2delivery.oxid');
         // removing all
-        if ( $this->getConfig()->getRequestParameter( 'all' ) ) {
+        if ($this->getConfig()->getRequestParameter('all')) {
 
-            $sQ = parent::_addFilter( "delete oxobject2delivery.* ".$this->_getQuery() );
-            oxDb::getDb()->Execute( $sQ );
+            $sQ = parent::_addFilter("delete oxobject2delivery.* " . $this->_getQuery());
+            oxDb::getDb()->Execute($sQ);
 
-        } elseif ( is_array( $aChosenArt ) ) {
-            $sQ = "delete from oxobject2delivery where oxobject2delivery.oxid in (" . implode( ", ", oxDb::getInstance()->quoteArray( $aChosenArt ) ) . ") ";
-            oxDb::getDb()->Execute( $sQ );
+        } elseif (is_array($aChosenArt)) {
+            $sQ = "delete from oxobject2delivery where oxobject2delivery.oxid in (" . implode(", ", oxDb::getInstance()->quoteArray($aChosenArt)) . ") ";
+            oxDb::getDb()->Execute($sQ);
         }
     }
 
@@ -145,22 +146,22 @@ class delivery_articles_ajax extends ajaxListComponent
      */
     public function addArtToDel()
     {
-        $aChosenArt = $this->_getActionIds( 'oxarticles.oxid' );
-        $soxId      = $this->getConfig()->getRequestParameter( 'synchoxid');
+        $aChosenArt = $this->_getActionIds('oxarticles.oxid');
+        $soxId = $this->getConfig()->getRequestParameter('synchoxid');
 
         // adding
-        if ( $this->getConfig()->getRequestParameter( 'all' ) ) {
+        if ($this->getConfig()->getRequestParameter('all')) {
             $sArtTable = $this->_getViewName('oxarticles');
-            $aChosenArt = $this->_getAll( $this->_addFilter( "select $sArtTable.oxid ".$this->_getQuery() ) );
+            $aChosenArt = $this->_getAll($this->_addFilter("select $sArtTable.oxid " . $this->_getQuery()));
         }
 
-        if ( $soxId && $soxId != "-1" && is_array( $aChosenArt ) ) {
-            foreach ( $aChosenArt as $sChosenArt) {
-                $oObject2Delivery = oxNew( 'oxbase' );
-                $oObject2Delivery->init( 'oxobject2delivery' );
+        if ($soxId && $soxId != "-1" && is_array($aChosenArt)) {
+            foreach ($aChosenArt as $sChosenArt) {
+                $oObject2Delivery = oxNew('oxbase');
+                $oObject2Delivery->init('oxobject2delivery');
                 $oObject2Delivery->oxobject2delivery__oxdeliveryid = new oxField($soxId);
-                $oObject2Delivery->oxobject2delivery__oxobjectid   = new oxField($sChosenArt);
-                $oObject2Delivery->oxobject2delivery__oxtype       = new oxField("oxarticles");
+                $oObject2Delivery->oxobject2delivery__oxobjectid = new oxField($sChosenArt);
+                $oObject2Delivery->oxobject2delivery__oxtype = new oxField("oxarticles");
                 $oObject2Delivery->save();
             }
         }

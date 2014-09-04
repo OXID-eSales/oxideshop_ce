@@ -20,7 +20,7 @@
  * @version   OXID eShop CE
  */
 
-if ( !function_exists( 'isAdmin' ) ) {
+if (!function_exists('isAdmin')) {
     /**
      * Returns false, marking non admin state
      *
@@ -32,7 +32,7 @@ if ( !function_exists( 'isAdmin' ) ) {
     }
 }
 
-if ( !function_exists( 'getShopBasePath' ) ) {
+if (!function_exists('getShopBasePath')) {
     /**
      * Returns class responsible for system requirements check
      *
@@ -40,11 +40,11 @@ if ( !function_exists( 'getShopBasePath' ) ) {
      */
     function getShopBasePath()
     {
-        return dirname(__FILE__).'/../';
+        return dirname(__FILE__) . '/../';
     }
 }
 
-if ( !function_exists( 'getInstallPath' ) ) {
+if (!function_exists('getInstallPath')) {
     /**
      * Returns shop installation directory
      *
@@ -52,7 +52,7 @@ if ( !function_exists( 'getInstallPath' ) ) {
      */
     function getInstallPath()
     {
-        if ( defined( 'OXID_PHP_UNIT' ) ) {
+        if (defined('OXID_PHP_UNIT')) {
             return getShopBasePath();
         } else {
             return "../";
@@ -60,7 +60,7 @@ if ( !function_exists( 'getInstallPath' ) ) {
     }
 }
 
-if ( !function_exists( 'getSystemReqCheck' ) ) {
+if (!function_exists('getSystemReqCheck')) {
     /**
      * Returns class responsible for system requirements check
      *
@@ -68,16 +68,17 @@ if ( !function_exists( 'getSystemReqCheck' ) ) {
      */
     function getSystemReqCheck()
     {
-        if ( defined( 'OXID_PHP_UNIT' ) ) {
-            include_once getShopBasePath()."core/oxsysrequirements.php";
+        if (defined('OXID_PHP_UNIT')) {
+            include_once getShopBasePath() . "core/oxsysrequirements.php";
         } else {
-            include_once getInstallPath()."core/oxsysrequirements.php";
+            include_once getInstallPath() . "core/oxsysrequirements.php";
         }
+
         return new oxSysRequirements();
     }
 }
 
-if ( !function_exists( 'getCountryList' ) ) {
+if (!function_exists('getCountryList')) {
     /**
      * Includes country list for setup
      *
@@ -86,16 +87,17 @@ if ( !function_exists( 'getCountryList' ) ) {
     function getCountryList()
     {
         $aCountries = array();
-        if ( defined( 'OXID_PHP_UNIT' ) ) {
-            include getShopBasePath()."application/controllers/admin/shop_countries.php";
+        if (defined('OXID_PHP_UNIT')) {
+            include getShopBasePath() . "application/controllers/admin/shop_countries.php";
         } else {
-            include getInstallPath()."application/controllers/admin/shop_countries.php";
+            include getInstallPath() . "application/controllers/admin/shop_countries.php";
         }
+
         return $aCountries;
     }
 }
 
-if ( !function_exists( 'getLocation' ) ) {
+if (!function_exists('getLocation')) {
     /**
      * Includes country list for setup
      *
@@ -104,16 +106,17 @@ if ( !function_exists( 'getLocation' ) ) {
     function getLocation()
     {
         $aLocationCountries = array();
-        if ( defined( 'OXID_PHP_UNIT' ) ) {
-            include getShopBasePath()."application/controllers/admin/shop_countries.php";
+        if (defined('OXID_PHP_UNIT')) {
+            include getShopBasePath() . "application/controllers/admin/shop_countries.php";
         } else {
-            include getInstallPath()."application/controllers/admin/shop_countries.php";
+            include getInstallPath() . "application/controllers/admin/shop_countries.php";
         }
+
         return $aLocationCountries;
     }
 }
 
-if ( !function_exists( 'getLanguages' ) ) {
+if (!function_exists('getLanguages')) {
     /**
      * Includes country list for setup
      *
@@ -122,16 +125,17 @@ if ( !function_exists( 'getLanguages' ) ) {
     function getLanguages()
     {
         $aLanguages = array();
-        if ( defined( 'OXID_PHP_UNIT' ) ) {
-            include getShopBasePath()."application/controllers/admin/shop_countries.php";
+        if (defined('OXID_PHP_UNIT')) {
+            include getShopBasePath() . "application/controllers/admin/shop_countries.php";
         } else {
-            include getInstallPath()."application/controllers/admin/shop_countries.php";
+            include getInstallPath() . "application/controllers/admin/shop_countries.php";
         }
+
         return $aLanguages;
     }
 }
 
-if ( !function_exists( 'getDefaultFileMode' ) ) {
+if (!function_exists('getDefaultFileMode')) {
     /**
      * Returns mode which must be set for files or folders
      *
@@ -143,7 +147,7 @@ if ( !function_exists( 'getDefaultFileMode' ) ) {
     }
 }
 
-if ( !function_exists( 'getDefaultConfigFileMode' ) ) {
+if (!function_exists('getDefaultConfigFileMode')) {
     /**
      * Returns mode which must be set for config file
      *
@@ -151,49 +155,52 @@ if ( !function_exists( 'getDefaultConfigFileMode' ) ) {
      */
     function getDefaultConfigFileMode()
     {
+
         return 0444;
     }
 }
 
 
-if ( !class_exists( "Config" ) ) {
-/**
- * Config file loader class
- */
-class Config
-{
+if (!class_exists("Config")) {
     /**
-     * Class constructor, loads config file data
-     *
-     * @return null
+     * Config file loader class
      */
-    public function __construct()
+    class Config
     {
-        include getInstallPath()."config.inc.php";;
-    }
-}
-}
 
-if ( !class_exists( "Conf" ) ) {
-/**
- * Config key loader class
- */
-class Conf
-{
-    /**
-     * Class constructor, loads config key
-     *
-     * @return null
-     */
-    public function __construct()
-    {
-        if ( defined( 'OXID_PHP_UNIT' ) ) {
-            include getShopBasePath()."core/oxconfk.php";
-        } else {
-            include getInstallPath()."core/oxconfk.php";
+        /**
+         * Class constructor, loads config file data
+         *
+         * @return null
+         */
+        public function __construct()
+        {
+            include getInstallPath() . "config.inc.php";;
         }
     }
 }
+
+if (!class_exists("Conf")) {
+    /**
+     * Config key loader class
+     */
+    class Conf
+    {
+
+        /**
+         * Class constructor, loads config key
+         *
+         * @return null
+         */
+        public function __construct()
+        {
+            if (defined('OXID_PHP_UNIT')) {
+                include getShopBasePath() . "core/oxconfk.php";
+            } else {
+                include getInstallPath() . "core/oxconfk.php";
+            }
+        }
+    }
 }
 
 /**
@@ -201,6 +208,7 @@ class Conf
  */
 class oxSetupCore
 {
+
     /**
      * Keeps instance cache
      *
@@ -215,12 +223,13 @@ class oxSetupCore
      *
      * @return oxSetupCore
      */
-    public function getInstance( $sInstanceName )
+    public function getInstance($sInstanceName)
     {
-        $sInstanceName = strtolower( $sInstanceName );
-        if ( !isset( oxSetupCore::$_aInstances[$sInstanceName] ) ) {
+        $sInstanceName = strtolower($sInstanceName);
+        if (!isset(oxSetupCore::$_aInstances[$sInstanceName])) {
             oxSetupCore::$_aInstances[$sInstanceName] = new $sInstanceName();
         }
+
         return oxSetupCore::$_aInstances[$sInstanceName];
     }
 
@@ -235,18 +244,18 @@ class oxSetupCore
      *
      * @return string
      */
-    public function __call( $sMethod, $aArgs )
+    public function __call($sMethod, $aArgs)
     {
-        if ( defined( 'OXID_PHP_UNIT' ) ) {
-            if ( substr( $sMethod, 0, 4) == "UNIT" ) {
-                $sMethod = str_replace( "UNIT", "_", $sMethod );
+        if (defined('OXID_PHP_UNIT')) {
+            if (substr($sMethod, 0, 4) == "UNIT") {
+                $sMethod = str_replace("UNIT", "_", $sMethod);
             }
-            if ( method_exists( $this, $sMethod)) {
-                return call_user_func_array( array( & $this, $sMethod ), $aArgs );
+            if (method_exists($this, $sMethod)) {
+                return call_user_func_array(array(& $this, $sMethod), $aArgs);
             }
         }
 
-        throw new oxSystemComponentException( "Function '$sMethod' does not exist or is not accessible! (" . get_class($this) . ")".PHP_EOL);
+        throw new oxSystemComponentException("Function '$sMethod' does not exist or is not accessible! (" . get_class($this) . ")" . PHP_EOL);
     }
 }
 
@@ -255,6 +264,7 @@ class oxSetupCore
  */
 class OxSetup extends oxSetupCore
 {
+
     /**
      * Current setup step title
      *
@@ -282,16 +292,17 @@ class OxSetup extends oxSetupCore
      * @var array
      */
     protected $_aSetupSteps = array(
-                                    'STEP_SYSTEMREQ'   => 100,  // 0
-                                    'STEP_WELCOME'     => 200,  // 1
-                                    'STEP_LICENSE'     => 300,  // 2
-                                    'STEP_DB_INFO'     => 400,  // 3
-                                    'STEP_DB_CONNECT'  => 410,  // 31
-                                    'STEP_DB_CREATE'   => 420,  // 32
-                                    'STEP_DIRS_INFO'   => 500,  // 4
-                                    'STEP_DIRS_WRITE'  => 510,  // 41
-                                    'STEP_FINISH'      => 700,  // 6
-                                   );
+        'STEP_SYSTEMREQ'   => 100, // 0
+        'STEP_WELCOME'     => 200, // 1
+        'STEP_LICENSE'     => 300, // 2
+        'STEP_DB_INFO'     => 400, // 3
+        'STEP_DB_CONNECT'  => 410, // 31
+        'STEP_DB_CREATE'   => 420, // 32
+        'STEP_DIRS_INFO'   => 500, // 4
+        'STEP_DIRS_WRITE'  => 510, // 41
+        'STEP_FINISH'      => 700, // 6
+    );
+
 
     /**
      * Returns current setup step title
@@ -310,7 +321,7 @@ class OxSetup extends oxSetupCore
      *
      * @return null
      */
-    public function setTitle( $sTitle )
+    public function setTitle($sTitle)
     {
         $this->_sTitle = $sTitle;
     }
@@ -332,7 +343,7 @@ class OxSetup extends oxSetupCore
      *
      * @return null
      */
-    public function setMessage( $sMsg )
+    public function setMessage($sMsg)
     {
         $this->_sMessage = $sMsg;
     }
@@ -344,12 +355,13 @@ class OxSetup extends oxSetupCore
      */
     public function getCurrentStep()
     {
-        if ( $this->_iCurrStep === null ) {
-            if ( ( $this->_iCurrStep = $this->getInstance( "oxSetupUtils" )->getRequestVar( "istep" ) ) === null ) {
-                $this->_iCurrStep = $this->getStep( 'STEP_SYSTEMREQ' );
+        if ($this->_iCurrStep === null) {
+            if (($this->_iCurrStep = $this->getInstance("oxSetupUtils")->getRequestVar("istep")) === null) {
+                $this->_iCurrStep = $this->getStep('STEP_SYSTEMREQ');
             }
             $this->_iCurrStep = (int) $this->_iCurrStep;
         }
+
         return $this->_iCurrStep;
     }
 
@@ -370,7 +382,7 @@ class OxSetup extends oxSetupCore
      *
      * @return null
      */
-    public function setNextStep( $iStep )
+    public function setNextStep($iStep)
     {
         $this->_iNextStep = $iStep;
     }
@@ -384,10 +396,11 @@ class OxSetup extends oxSetupCore
     public function alreadySetUp()
     {
         $blSetUp = false;
-        $sConfig = join( "", file( getInstallPath() . "config.inc.php" ) );
-        if ( strpos( $sConfig, "<dbHost".$this->getVersionPrefix().">" ) === false ) {
+        $sConfig = join("", file(getInstallPath() . "config.inc.php"));
+        if (strpos($sConfig, "<dbHost" . $this->getVersionPrefix() . ">") === false) {
             $blSetUp = true;
         }
+
         return $blSetUp;
     }
 
@@ -421,9 +434,9 @@ class OxSetup extends oxSetupCore
      *
      * @return int
      */
-    public function getStep( $sStepId )
+    public function getStep($sStepId)
     {
-        return isset( $this->_aSetupSteps[$sStepId] ) ? $this->_aSetupSteps[$sStepId] : null;
+        return isset($this->_aSetupSteps[$sStepId]) ? $this->_aSetupSteps[$sStepId] : null;
     }
 
     /**
@@ -449,9 +462,9 @@ class OxSetup extends oxSetupCore
      *
      * @return string
      */
-    public function getModuleClass( $iModuleState )
+    public function getModuleClass($iModuleState)
     {
-        switch ( $iModuleState ) {
+        switch ($iModuleState) {
             case 2:
                 $sClass = 'pass';
                 break;
@@ -474,6 +487,7 @@ class OxSetup extends oxSetupCore
  */
 class OxSetupLang extends oxSetupCore
 {
+
     /**
      * Language translations array
      *
@@ -488,26 +502,26 @@ class OxSetupLang extends oxSetupCore
      */
     public function getSetupLang()
     {
-        $oSession = $this->getInstance( "oxSetupSession" );
-        $oUtils   = $this->getInstance( "oxSetupUtils" );
+        $oSession = $this->getInstance("oxSetupSession");
+        $oUtils = $this->getInstance("oxSetupUtils");
 
-        $iSetupLang = $oUtils->getRequestVar( "setup_lang", "post" );
+        $iSetupLang = $oUtils->getRequestVar("setup_lang", "post");
 
-        if ( isset( $iSetupLang ) ) {
-            $oSession->setSessionParam( 'setup_lang', $iSetupLang );
-            $iSetupLangSubmit = $oUtils->getRequestVar( "setup_lang_submit", "post" );
-            if ( isset( $iSetupLangSubmit ) ) {
+        if (isset($iSetupLang)) {
+            $oSession->setSessionParam('setup_lang', $iSetupLang);
+            $iSetupLangSubmit = $oUtils->getRequestVar("setup_lang_submit", "post");
+            if (isset($iSetupLangSubmit)) {
                 //updating setup language, so disabling redirect to next step, just reloading same step
-                $_GET['istep'] = $_POST['istep'] = $this->getInstance( "oxSetup" )->getStep( 'STEP_WELCOME' );
+                $_GET['istep'] = $_POST['istep'] = $this->getInstance("oxSetup")->getStep('STEP_WELCOME');
             }
-        } elseif ( $oSession->getSessionParam('setup_lang' ) === null ) {
-            $aLangs = array( 'en', 'de' );
-            $sBrowserLang = strtolower( substr( $_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2 ) );
-            $sBrowserLang = ( in_array($sBrowserLang, $aLangs) ) ? $sBrowserLang : $aLangs[0];
-            $oSession->setSessionParam( 'setup_lang', $sBrowserLang );
+        } elseif ($oSession->getSessionParam('setup_lang') === null) {
+            $aLangs = array('en', 'de');
+            $sBrowserLang = strtolower(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2));
+            $sBrowserLang = (in_array($sBrowserLang, $aLangs)) ? $sBrowserLang : $aLangs[0];
+            $oSession->setSessionParam('setup_lang', $sBrowserLang);
         }
 
-        return $oSession->getSessionParam( 'setup_lang' );
+        return $oSession->getSessionParam('setup_lang');
     }
 
     /**
@@ -517,18 +531,18 @@ class OxSetupLang extends oxSetupCore
      *
      * @return string
      */
-    public function getText( $sTextIdent )
+    public function getText($sTextIdent)
     {
-        if ( $this->_aLangData === null ) {
+        if ($this->_aLangData === null) {
             $this->_aLangData = array();
-            $sLangFilePath  = getInstallPath()."setup/".$this->getSetupLang() . '/lang.php';
-            if ( file_exists( $sLangFilePath ) && is_readable( $sLangFilePath ) ) {
+            $sLangFilePath = getInstallPath() . "setup/" . $this->getSetupLang() . '/lang.php';
+            if (file_exists($sLangFilePath) && is_readable($sLangFilePath)) {
                 include $sLangFilePath;
                 $this->_aLangData = $aLang;
             }
         }
 
-        return isset( $this->_aLangData[ $sTextIdent ] ) ? $this->_aLangData[ $sTextIdent ] : null;
+        return isset($this->_aLangData[$sTextIdent]) ? $this->_aLangData[$sTextIdent] : null;
     }
 
     /**
@@ -538,9 +552,9 @@ class OxSetupLang extends oxSetupCore
      *
      * @return string
      */
-    public function getModuleName( $sModuleName )
+    public function getModuleName($sModuleName)
     {
-        return $this->getText( 'MOD_'.strtoupper( $sModuleName ) );
+        return $this->getText('MOD_' . strtoupper($sModuleName));
     }
 }
 
@@ -549,6 +563,7 @@ class OxSetupLang extends oxSetupCore
  */
 class OxSetupSession extends oxSetupCore
 {
+
     /**
      * Session data array
      *
@@ -600,7 +615,7 @@ class OxSetupSession extends oxSetupCore
     {
         session_name($this->_sSessionName);
 
-        $oUtils = $this->getInstance( "oxSetupUtils" );
+        $oUtils = $this->getInstance("oxSetupUtils");
         $sSid = $oUtils->getRequestVar('sid', 'get');
 
         if (empty($sSid)) {
@@ -646,6 +661,7 @@ class OxSetupSession extends oxSetupCore
     {
         session_regenerate_id(false);
         $this->_blNewSession = true;
+
         return session_id();
     }
 
@@ -679,48 +695,42 @@ class OxSetupSession extends oxSetupCore
      */
     protected function _initSessionData()
     {
-        $oUtils = $this->getInstance( "oxSetupUtils" );
+        $oUtils = $this->getInstance("oxSetupUtils");
 
         //storring country value settings to session
-        $sLocationLang = $oUtils->getRequestVar( "location_lang", "post" );
-        if ( isset( $sLocationLang ) ) {
-            $this->setSessionParam( 'location_lang', $sLocationLang );
+        $sLocationLang = $oUtils->getRequestVar("location_lang", "post");
+        if (isset($sLocationLang)) {
+            $this->setSessionParam('location_lang', $sLocationLang);
         }
 
         //storring country value settings to session
-        $sCountryLang = $oUtils->getRequestVar( "country_lang", "post" );
-        if ( isset( $sCountryLang ) ) {
-            $this->setSessionParam( 'country_lang', $sCountryLang );
+        $sCountryLang = $oUtils->getRequestVar("country_lang", "post");
+        if (isset($sCountryLang)) {
+            $this->setSessionParam('country_lang', $sCountryLang);
         }
 
         //storring shop language value settings to session
-        $sShopLang = $oUtils->getRequestVar( "sShopLang", "post" );
-        if ( isset( $sShopLang ) ) {
-            $this->setSessionParam( 'sShopLang', $sShopLang );
+        $sShopLang = $oUtils->getRequestVar("sShopLang", "post");
+        if (isset($sShopLang)) {
+            $this->setSessionParam('sShopLang', $sShopLang);
         }
 
         //storring dyn pages settings to session
-        $blUseDynPages = $oUtils->getRequestVar( "use_dynamic_pages", "post" );
-        if ( isset( $blUseDynPages ) ) {
-            $this->setSessionParam( 'use_dynamic_pages', $blUseDynPages  );
+        $blUseDynPages = $oUtils->getRequestVar("use_dynamic_pages", "post");
+        if (isset($blUseDynPages)) {
+            $this->setSessionParam('use_dynamic_pages', $blUseDynPages);
         }
 
         //storring dyn pages settings to session
-        $blCheckForUpdates = $oUtils->getRequestVar( "check_for_updates", "post" );
-        if ( isset( $blCheckForUpdates ) ) {
-            $this->setSessionParam( 'check_for_updates', $blCheckForUpdates  );
+        $blCheckForUpdates = $oUtils->getRequestVar("check_for_updates", "post");
+        if (isset($blCheckForUpdates)) {
+            $this->setSessionParam('check_for_updates', $blCheckForUpdates);
         }
 
         // store eula to session
-        $iEula = $oUtils->getRequestVar( "iEula", "post" );
-        if ( isset( $iEula ) ) {
-            $this->setSessionParam( 'eula', $iEula  );
-        }
-
-        // store anonymous information config
-        $blSendShopDataToOxid = $oUtils->getRequestVar( "blSendShopDataToOxid", "post" );
-        if ( isset( $blSendShopDataToOxid ) ) {
-            $this->setSessionParam( 'blSendShopDataToOxid', $blSendShopDataToOxid  );
+        $iEula = $oUtils->getRequestVar("iEula", "post");
+        if (isset($iEula)) {
+            $this->setSessionParam('eula', $iEula);
         }
     }
 
@@ -741,10 +751,10 @@ class OxSetupSession extends oxSetupCore
      *
      * @return mixed
      */
-    public function getSessionParam( $sParamName )
+    public function getSessionParam($sParamName)
     {
         $aSessionData = & $this->_getSessionData();
-        if ( isset( $aSessionData[$sParamName] ) ) {
+        if (isset($aSessionData[$sParamName])) {
             return $aSessionData[$sParamName];
         }
     }
@@ -757,7 +767,7 @@ class OxSetupSession extends oxSetupCore
      *
      * @return null
      */
-    public function setSessionParam( $sParamName, $sParamValue  )
+    public function setSessionParam($sParamName, $sParamValue)
     {
         $aSessionData = & $this->_getSessionData();
         $aSessionData[$sParamName] = $sParamValue;
@@ -769,6 +779,7 @@ class OxSetupSession extends oxSetupCore
  */
 class OxSetupDb extends oxSetupCore
 {
+
     /**
      * Connection resource object
      *
@@ -813,12 +824,13 @@ class OxSetupDb extends oxSetupCore
      *
      * @return object
      */
-    public function execSql( $sQ )
+    public function execSql($sQ)
     {
-        $rReturn = mysql_query( $sQ, $this->getConnection() );
-        if ( $rReturn === false ) {
-            throw new Exception( $this->getInstance( "oxSetupLang" )->getText('ERROR_BAD_SQL' ) . "( $sQ ): " . mysql_error( $this->getConnection() ) . "\n" );
+        $rReturn = mysql_query($sQ, $this->getConnection());
+        if ($rReturn === false) {
+            throw new Exception($this->getInstance("oxSetupLang")->getText('ERROR_BAD_SQL') . "( $sQ ): " . mysql_error($this->getConnection()) . "\n");
         }
+
         return $rReturn;
     }
 
@@ -833,23 +845,23 @@ class OxSetupDb extends oxSetupCore
     {
         // testing creation
         $sQ = "create or replace view oxviewtest as select 1";
-        $rReturn = mysql_query( $sQ, $this->getConnection() );
-        if ( $rReturn === false ) {
-            throw new Exception( $this->getInstance( "oxSetupLang" )->getText('ERROR_VIEWS_CANT_CREATE' ) . " " . mysql_error( $this->getConnection() ) . "\n" );
+        $rReturn = mysql_query($sQ, $this->getConnection());
+        if ($rReturn === false) {
+            throw new Exception($this->getInstance("oxSetupLang")->getText('ERROR_VIEWS_CANT_CREATE') . " " . mysql_error($this->getConnection()) . "\n");
         }
 
         // testing data selection
         $sQ = "select * from oxviewtest";
-        $rReturn = mysql_query( $sQ, $this->getConnection() );
-        if ( $rReturn === false ) {
-            throw new Exception( $this->getInstance( "oxSetupLang" )->getText('ERROR_VIEWS_CANT_SELECT' ) . " " . mysql_error( $this->getConnection() ) . "\n" );
+        $rReturn = mysql_query($sQ, $this->getConnection());
+        if ($rReturn === false) {
+            throw new Exception($this->getInstance("oxSetupLang")->getText('ERROR_VIEWS_CANT_SELECT') . " " . mysql_error($this->getConnection()) . "\n");
         }
 
         // testing view dropping
         $sQ = "drop view oxviewtest";
-        $rReturn = mysql_query( $sQ, $this->getConnection() );
-        if ( $rReturn === false ) {
-            throw new Exception( $this->getInstance( "oxSetupLang" )->getText('ERROR_VIEWS_CANT_DROP' ) . " " . mysql_error( $this->getConnection() ) . "\n" );
+        $rReturn = mysql_query($sQ, $this->getConnection());
+        if ($rReturn === false) {
+            throw new Exception($this->getInstance("oxSetupLang")->getText('ERROR_VIEWS_CANT_DROP') . " " . mysql_error($this->getConnection()) . "\n");
         }
     }
 
@@ -860,27 +872,27 @@ class OxSetupDb extends oxSetupCore
      *
      * @return null
      */
-    public function queryFile( $sFilename )
+    public function queryFile($sFilename)
     {
-        $fp = @fopen( $sFilename, "r" );
-        if ( !$fp ) {
-            $oSetup = $this->getInstance( "oxSetup" );
+        $fp = @fopen($sFilename, "r");
+        if (!$fp) {
+            $oSetup = $this->getInstance("oxSetup");
             // problems with file
-            $oSetup->setNextStep( $oSetup->getStep( 'STEP_DB_INFO' ) );
-            throw new Exception( sprintf( $this->getInstance( "oxSetupLang" )->getText( 'ERROR_OPENING_SQL_FILE' ), $sFilename ), oxSetupDb::ERROR_OPENING_SQL_FILE );
+            $oSetup->setNextStep($oSetup->getStep('STEP_DB_INFO'));
+            throw new Exception(sprintf($this->getInstance("oxSetupLang")->getText('ERROR_OPENING_SQL_FILE'), $sFilename), oxSetupDb::ERROR_OPENING_SQL_FILE);
         }
 
-        $sQuery = fread( $fp, filesize( $sFilename ) );
-        fclose( $fp );
+        $sQuery = fread($fp, filesize($sFilename));
+        fclose($fp);
 
-        if ( version_compare( $this->getDatabaseVersion(), "5" ) > 0 ) {
+        if (version_compare($this->getDatabaseVersion(), "5") > 0) {
             //disable STRICT db mode if there are set any (mysql >= 5).
-            $this->execSql( "SET @@session.sql_mode = ''" );
+            $this->execSql("SET @@session.sql_mode = ''");
         }
 
-        $aQueries = $this->parseQuery( $sQuery );
-        foreach ( $aQueries as $sQuery) {
-            $this->execSql( $sQuery );
+        $aQueries = $this->parseQuery($sQuery);
+        foreach ($aQueries as $sQuery) {
+            $this->execSql($sQuery);
         }
     }
 
@@ -891,8 +903,8 @@ class OxSetupDb extends oxSetupCore
      */
     function getDatabaseVersion()
     {
-        $rRecords = $this->execSql( "SHOW VARIABLES LIKE 'version'" );
-        $aRow = mysql_fetch_row( $rRecords );
+        $rRecords = $this->execSql("SHOW VARIABLES LIKE 'version'");
+        $aRow = mysql_fetch_row($rRecords);
 
         return $aRow[1];
     }
@@ -904,9 +916,10 @@ class OxSetupDb extends oxSetupCore
      */
     public function getConnection()
     {
-        if ( $this->_oConn === null ) {
-            $this->_oConn = $this->openDatabase( null );
+        if ($this->_oConn === null) {
+            $this->_oConn = $this->openDatabase(null);
         }
+
         return $this->_oConn;
     }
 
@@ -919,27 +932,28 @@ class OxSetupDb extends oxSetupCore
      *
      * @return object
      */
-    public function openDatabase( $aParams )
+    public function openDatabase($aParams)
     {
-        $aParams = ( is_array( $aParams ) && count( $aParams ) ) ? $aParams : $this->getInstance( "oxSetupSession" )->getSessionParam( 'aDB' );
-        if ( $this->_oConn === null) {
+        $aParams = (is_array($aParams) && count($aParams)) ? $aParams : $this->getInstance("oxSetupSession")->getSessionParam('aDB');
+        if ($this->_oConn === null) {
             // ok open DB
-            $this->_oConn = @mysql_connect( $aParams['dbHost'], $aParams['dbUser'], $aParams['dbPwd'] );
-            if ( !$this->_oConn ) {
-                $oSetup = $this->getInstance( "oxSetup" );
-                $oSetup->setNextStep( $oSetup->getStep( 'STEP_DB_INFO' ) );
-                throw new Exception( $this->getInstance( "oxSetupLang" )->getText( 'ERROR_DB_CONNECT' ) . " - " . mysql_error(), oxSetupDb::ERROR_DB_CONNECT );
+            $this->_oConn = @mysql_connect($aParams['dbHost'], $aParams['dbUser'], $aParams['dbPwd']);
+            if (!$this->_oConn) {
+                $oSetup = $this->getInstance("oxSetup");
+                $oSetup->setNextStep($oSetup->getStep('STEP_DB_INFO'));
+                throw new Exception($this->getInstance("oxSetupLang")->getText('ERROR_DB_CONNECT') . " - " . mysql_error(), oxSetupDb::ERROR_DB_CONNECT);
             }
 
             // testing version
             $oSysReq = getSystemReqCheck();
-            if ( !$oSysReq->checkMysqlVersion( $this->getDatabaseVersion() ) ) {
-                throw new Exception( $this->getInstance( "oxSetupLang" )->getText( 'ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS' ), oxSetupDb::ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS );
+            if (!$oSysReq->checkMysqlVersion($this->getDatabaseVersion())) {
+                throw new Exception($this->getInstance("oxSetupLang")->getText('ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS'), oxSetupDb::ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS);
             }
-            if ( !( @mysql_select_db( $aParams['dbName'], $this->_oConn ) ) ) {
-                throw new Exception( $this->getInstance( "oxSetupLang" )->getText( 'ERROR_COULD_NOT_CREATE_DB' ) . " - " . mysql_error(), oxSetupDb::ERROR_COULD_NOT_CREATE_DB );
+            if (!(@mysql_select_db($aParams['dbName'], $this->_oConn))) {
+                throw new Exception($this->getInstance("oxSetupLang")->getText('ERROR_COULD_NOT_CREATE_DB') . " - " . mysql_error(), oxSetupDb::ERROR_COULD_NOT_CREATE_DB);
             }
         }
+
         return $this->_oConn;
     }
 
@@ -952,77 +966,80 @@ class OxSetupDb extends oxSetupCore
      *
      * @return null
      */
-    public function createDb( $sDbName )
+    public function createDb($sDbName)
     {
-        if ( !$this->execSql( "create database `". $sDbName . "`" ) ) {
+        if (!$this->execSql("create database `" . $sDbName . "`")) {
             // no success !
-            $oSetup = $this->getInstance( "oxSetup" );
-            $oSetup->setNextStep( $oSetup->getStep( 'STEP_DB_INFO' ) );
-            throw new Exception( sprintf( $this->getInstance( "oxSetupLang" )->getText('ERROR_COULD_NOT_CREATE_DB'), $sDbName) . " - ". mysql_error() );
+            $oSetup = $this->getInstance("oxSetup");
+            $oSetup->setNextStep($oSetup->getStep('STEP_DB_INFO'));
+            throw new Exception(sprintf($this->getInstance("oxSetupLang")->getText('ERROR_COULD_NOT_CREATE_DB'), $sDbName) . " - " . mysql_error());
         }
     }
 
     /**
-     * Saves shop settings.
+     * Saves dyn pages settings parameters
      *
      * @param array $aParams parameters to save to db
      *
      * @return null
      */
-    public function saveShopSettings( $aParams )
+    public function saveDynPagesSettings($aParams)
     {
-        $oUtils   = $this->getInstance( "oxSetupUtils" );
-        $oSession = $this->getInstance( "oxSetupSession" );
+        $oUtils = $this->getInstance("oxSetupUtils");
+        $oSession = $this->getInstance("oxSetupSession");
 
         $oConfk = new Conf();
 
             $sBaseOut = 'oxbaseshop';
             // disabling usage of dynamic pages if shop country is international
-            if ( $oSession->getSessionParam( 'location_lang') === null ) {
-                $oSession->setSessionParam( 'use_dynamic_pages', 'false' );
+            if ($oSession->getSessionParam('location_lang') === null) {
+                $oSession->setSessionParam('use_dynamic_pages', 'false');
             }
 
-        $blUseDynPages = isset( $aParams["use_dyn_pages"] ) ? $aParams["use_dyn_pages"] : $oSession->getSessionParam( 'use_dynamic_pages' );
-        $sLocationLang  = isset( $aParams["location_lang"] ) ? $aParams["location_lang"] : $oSession->getSessionParam( 'location_lang' );
-        $blCheckForUpdates = isset( $aParams["check_for_updates"] ) ? $aParams["check_for_updates"] : $oSession->getSessionParam( 'check_for_updates' );
-        $sCountryLang  = isset( $aParams["country_lang"] ) ? $aParams["country_lang"] : $oSession->getSessionParam( 'country_lang' );
-        $sShopLang  = isset( $aParams["sShopLang"] ) ? $aParams["sShopLang"] : $oSession->getSessionParam( 'sShopLang' );
-        $sBaseShopId = $this->getInstance( "oxSetup" )->getShopId();
+        $blUseDynPages = isset($aParams["use_dyn_pages"]) ? $aParams["use_dyn_pages"] : $oSession->getSessionParam('use_dynamic_pages');
+        $sLocationLang = isset($aParams["location_lang"]) ? $aParams["location_lang"] : $oSession->getSessionParam('location_lang');
+        $blCheckForUpdates = isset($aParams["check_for_updates"]) ? $aParams["check_for_updates"] : $oSession->getSessionParam('check_for_updates');
+        $sCountryLang = isset($aParams["country_lang"]) ? $aParams["country_lang"] : $oSession->getSessionParam('country_lang');
+        $sShopLang = isset($aParams["sShopLang"]) ? $aParams["sShopLang"] : $oSession->getSessionParam('sShopLang');
+        $sBaseShopId = $this->getInstance("oxSetup")->getShopId();
 
-        $this->execSql( "update oxcountry set oxactive = '0'" );
-        $this->execSql( "update oxcountry set oxactive = '1' where oxid = '$sCountryLang'" );
+        $this->execSql("update oxcountry set oxactive = '0'");
+        $this->execSql("update oxcountry set oxactive = '1' where oxid = '$sCountryLang'");
 
         // if it is international eshop, setting admin user country to selected one
-        if ( $oSession->getSessionParam('location_lang') != "de" ) {
-             $this->execSql( "UPDATE oxuser SET oxcountryid = '$sCountryLang' where oxid='oxdefaultadmin'" );
+        if ($oSession->getSessionParam('location_lang') != "de") {
+            $this->execSql("UPDATE oxuser SET oxcountryid = '$sCountryLang' where oxid='oxdefaultadmin'");
         }
 
-        $this->execSql( "delete from oxconfig where oxvarname = 'blLoadDynContents'" );
-        $this->execSql( "delete from oxconfig where oxvarname = 'sShopCountry'" );
-        $this->execSql( "delete from oxconfig where oxvarname = 'blCheckForUpdates'" );
-       // $this->execSql( "delete from oxconfig where oxvarname = 'aLanguageParams'" );
+        $this->execSql("delete from oxconfig where oxvarname = 'blLoadDynContents'");
+        $this->execSql("delete from oxconfig where oxvarname = 'sShopCountry'");
+        $this->execSql("delete from oxconfig where oxvarname = 'blCheckForUpdates'");
+        // $this->execSql( "delete from oxconfig where oxvarname = 'aLanguageParams'" );
 
         $sID1 = $oUtils->generateUid();
-        $this->execSql( "insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue)
-                                 values('$sID1', '$sBaseShopId', 'blLoadDynContents', 'bool', ENCODE( '$blUseDynPages', '".$oConfk->sConfigKey."'))" );
+        $this->execSql(
+            "insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue)
+                                 values('$sID1', '$sBaseShopId', 'blLoadDynContents', 'bool', ENCODE( '$blUseDynPages', '" . $oConfk->sConfigKey . "'))"
+        );
 
         $sID2 = $oUtils->generateUid();
-        $this->execSql( "insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue)
-                                 values('$sID2', '$sBaseShopId', 'sShopCountry', 'str', ENCODE( '$sLocationLang', '".$oConfk->sConfigKey."'))" );
+        $this->execSql(
+            "insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue)
+                                 values('$sID2', '$sBaseShopId', 'sShopCountry', 'str', ENCODE( '$sLocationLang', '" . $oConfk->sConfigKey . "'))"
+        );
 
         $sID3 = $oUtils->generateUid();
-        $this->execSql( "insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue)
-                                 values('$sID3', '$sBaseShopId', 'blCheckForUpdates', 'bool', ENCODE( '$blCheckForUpdates', '".$oConfk->sConfigKey."'))" );
-
-
-        $this->_addConfigValueIfShopInfoShouldBeSent($oUtils, $sBaseShopId, $aParams, $oConfk);
+        $this->execSql(
+            "insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue)
+                                 values('$sID3', '$sBaseShopId', 'blCheckForUpdates', 'bool', ENCODE( '$blCheckForUpdates', '" . $oConfk->sConfigKey . "'))"
+        );
 
         //set only one active language
-        $aRes = $this->execSql( "select oxvarname, oxvartype, DECODE( oxvarvalue, '".$oConfk->sConfigKey."') AS oxvarvalue from oxconfig where oxvarname='aLanguageParams'" );
+        $aRes = $this->execSql("select oxvarname, oxvartype, DECODE( oxvarvalue, '" . $oConfk->sConfigKey . "') AS oxvarvalue from oxconfig where oxvarname='aLanguageParams'");
         if ($aRes) {
-            if ( $aRow = mysql_fetch_assoc( $aRes ) ) {
-                if ( $aRow['oxvartype'] == 'arr' || $aRow['oxvartype'] == 'aarr' ) {
-                    $aRow['oxvarvalue'] = unserialize( $aRow['oxvarvalue'] );
+            if ($aRow = mysql_fetch_assoc($aRes)) {
+                if ($aRow['oxvartype'] == 'arr' || $aRow['oxvartype'] == 'aarr') {
+                    $aRow['oxvarvalue'] = unserialize($aRow['oxvarvalue']);
                 }
                 $aLanguageParams = $aRow['oxvarvalue'];
             }
@@ -1031,10 +1048,12 @@ class OxSetupDb extends oxSetupCore
             }
             $aLanguageParams[$sShopLang]["active"] = "1";
 
-            $sValue = serialize( $aLanguageParams );
+            $sValue = serialize($aLanguageParams);
             $sID4 = $oUtils->generateUid();
-            $this->execSql( "insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue)
-                                     values('$sID4', '$sBaseShopId', 'aLanguageParams', 'aarr', ENCODE( '$sValue', '".$oConfk->sConfigKey."'))" );
+            $this->execSql(
+                "insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue)
+                                     values('$sID4', '$sBaseShopId', 'aLanguageParams', 'aarr', ENCODE( '$sValue', '" . $oConfk->sConfigKey . "'))"
+            );
         }
     }
 
@@ -1047,34 +1066,34 @@ class OxSetupDb extends oxSetupCore
     public function convertConfigTableToUtf()
     {
         $oConfk = new Conf();
-        $oUtils = $this->getInstance( "oxSetupUtils" );
+        $oUtils = $this->getInstance("oxSetupUtils");
 
-        $sSql = "SELECT oxvarname, oxvartype, DECODE( oxvarvalue, '".$oConfk->sConfigKey."') AS oxvarvalue FROM oxconfig WHERE oxvartype IN ('str', 'arr', 'aarr') ";
-        $aRes = $this->execSql( $sSql );
+        $sSql = "SELECT oxvarname, oxvartype, DECODE( oxvarvalue, '" . $oConfk->sConfigKey . "') AS oxvarvalue FROM oxconfig WHERE oxvartype IN ('str', 'arr', 'aarr') ";
+        $aRes = $this->execSql($sSql);
 
         $aConverted = array();
 
-        while ( $aRow = mysql_fetch_assoc( $aRes ) ) {
+        while ($aRow = mysql_fetch_assoc($aRes)) {
 
-            if ( $aRow['oxvartype'] == 'arr' || $aRow['oxvartype'] == 'aarr' ) {
-                $aRow['oxvarvalue'] = unserialize( $aRow['oxvarvalue'] );
+            if ($aRow['oxvartype'] == 'arr' || $aRow['oxvartype'] == 'aarr') {
+                $aRow['oxvarvalue'] = unserialize($aRow['oxvarvalue']);
             }
 
-            $aRow['oxvarvalue'] = $oUtils->convertToUtf8( $aRow['oxvarvalue'] );
+            $aRow['oxvarvalue'] = $oUtils->convertToUtf8($aRow['oxvarvalue']);
             $aConverted[] = $aRow;
         }
 
         $oConn = $this->getConnection();
-        foreach ( $aConverted as $sKey => $sValue ) {
+        foreach ($aConverted as $sKey => $sValue) {
 
-            if ( is_array( $sValue['oxvarvalue'] ) ) {
-                $sVarValue = mysql_real_escape_string( serialize( $sValue['oxvarvalue'] ), $oConn );
+            if (is_array($sValue['oxvarvalue'])) {
+                $sVarValue = mysql_real_escape_string(serialize($sValue['oxvarvalue']), $oConn);
             } else {
-                $sVarValue = is_string( $sValue['oxvarvalue'] ) ? mysql_real_escape_string( $sValue['oxvarvalue'], $oConn ) : $sValue['oxvarvalue'];
+                $sVarValue = is_string($sValue['oxvarvalue']) ? mysql_real_escape_string($sValue['oxvarvalue'], $oConn) : $sValue['oxvarvalue'];
             }
 
-            $sSql = "UPDATE oxconfig SET oxvarvalue = ENCODE( '".$sVarValue."', '".$oConfk->sConfigKey."') WHERE oxvarname = '" . $sValue['oxvarname'] . "'; ";
-            $this->execSql( $sSql );
+            $sSql = "UPDATE oxconfig SET oxvarvalue = ENCODE( '" . $sVarValue . "', '" . $oConfk->sConfigKey . "') WHERE oxvarname = '" . $sValue['oxvarname'] . "'; ";
+            $this->execSql($sSql);
         }
     }
 
@@ -1085,48 +1104,48 @@ class OxSetupDb extends oxSetupCore
      *
      * @return array
      */
-    public function parseQuery( $sSQL )
+    public function parseQuery($sSQL)
     {
         // parses query into single pieces
-        $aRet       = array();
-        $blComment  = false;
-        $blQuote    = false;
-        $sThisSQL   = "";
+        $aRet = array();
+        $blComment = false;
+        $blQuote = false;
+        $sThisSQL = "";
 
-        $aLines = explode( "\n", $sSQL);
+        $aLines = explode("\n", $sSQL);
 
         // parse it
-        foreach ( $aLines as $sLine) {
-            $iLen = strlen( $sLine);
-            for ( $i = 0; $i < $iLen; $i++) {
-                if ( !$blQuote && ( $sLine[$i] == '#' || ( $sLine[0] == '-' && $sLine[1] == '-'))) {
+        foreach ($aLines as $sLine) {
+            $iLen = strlen($sLine);
+            for ($i = 0; $i < $iLen; $i++) {
+                if (!$blQuote && ($sLine[$i] == '#' || ($sLine[0] == '-' && $sLine[1] == '-'))) {
                     $blComment = true;
                 }
 
                 // add this char to current command
-                if ( !$blComment) {
+                if (!$blComment) {
                     $sThisSQL .= $sLine[$i];
                 }
 
                 // test if quote on
-                if ( ($sLine[$i] == '\'' && $sLine[$i-1] != '\\') ) {
-                    $blQuote = !$blQuote;   // toggle
+                if (($sLine[$i] == '\'' && $sLine[$i - 1] != '\\')) {
+                    $blQuote = !$blQuote; // toggle
                 }
 
                 // now test if command end is reached
-                if ( !$blQuote && $sLine[$i] == ';') {
+                if (!$blQuote && $sLine[$i] == ';') {
                     // add this
-                    $sThisSQL = trim( $sThisSQL);
-                    if ( $sThisSQL) {
-                        $sThisSQL = str_replace( "\r", "", $sThisSQL);
+                    $sThisSQL = trim($sThisSQL);
+                    if ($sThisSQL) {
+                        $sThisSQL = str_replace("\r", "", $sThisSQL);
                         $aRet[] = $sThisSQL;
                     }
                     $sThisSQL = "";
                 }
             }
             // comments and quotes can't run over newlines
-            $blComment  = false;
-            $blQuote    = false;
+            $blComment = false;
+            $blQuote = false;
         }
 
         return $aRet;
@@ -1139,19 +1158,19 @@ class OxSetupDb extends oxSetupCore
      *
      * @return null
      */
-    public function setMySqlCollation( $iUtfMode )
+    public function setMySqlCollation($iUtfMode)
     {
-        if ( $iUtfMode ) {
-            $this->execSql( "ALTER SCHEMA CHARACTER SET utf8 COLLATE utf8_general_ci" );
-            $this->execSql( "set names 'utf8'" );
-            $this->execSql( "set character_set_database=utf8" );
-            $this->execSql( "SET CHARACTER SET latin1" );
-            $this->execSql( "SET CHARACTER_SET_CONNECTION = utf8" );
-            $this->execSql( "SET character_set_results = utf8" );
-            $this->execSql( "SET character_set_server = utf8" );
+        if ($iUtfMode) {
+            $this->execSql("ALTER SCHEMA CHARACTER SET utf8 COLLATE utf8_general_ci");
+            $this->execSql("set names 'utf8'");
+            $this->execSql("set character_set_database=utf8");
+            $this->execSql("SET CHARACTER SET latin1");
+            $this->execSql("SET CHARACTER_SET_CONNECTION = utf8");
+            $this->execSql("SET character_set_results = utf8");
+            $this->execSql("SET character_set_server = utf8");
         } else {
-            $this->execSql( "ALTER SCHEMA CHARACTER SET latin1 COLLATE latin1_general_ci" );
-            $this->execSql( "SET CHARACTER SET latin1" );
+            $this->execSql("ALTER SCHEMA CHARACTER SET latin1 COLLATE latin1_general_ci");
+            $this->execSql("SET CHARACTER SET latin1");
         }
     }
 
@@ -1162,13 +1181,13 @@ class OxSetupDb extends oxSetupCore
      *
      * @return null
      */
-    public function writeUtfMode( $iUtfMode )
+    public function writeUtfMode($iUtfMode)
     {
-        $sBaseShopId = $this->getInstance( "oxSetup" )->getShopId();
+        $sBaseShopId = $this->getInstance("oxSetup")->getShopId();
         $oConfk = new Conf();
-        $sQ = "insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue) values('iSetUtfMode', '$sBaseShopId', 'iSetUtfMode', 'str', ENCODE( '{$iUtfMode}', '".$oConfk->sConfigKey."') )";
+        $sQ = "insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue) values('iSetUtfMode', '$sBaseShopId', 'iSetUtfMode', 'str', ENCODE( '{$iUtfMode}', '" . $oConfk->sConfigKey . "') )";
 
-        $this->execSql( $sQ );
+        $this->execSql($sQ);
     }
 
     /**
@@ -1179,33 +1198,17 @@ class OxSetupDb extends oxSetupCore
      *
      * @return null
      */
-    public function writeAdminLoginData( $sLoginName, $sPassword )
+    public function writeAdminLoginData($sLoginName, $sPassword)
     {
-        $sPassSalt = $this->getInstance( "OxSetupUtils" )->generateUID();
+        $sPassSalt = $this->getInstance("OxSetupUtils")->generateUID();
 
-        $sPassword = hash('sha512', $sPassword . $sPassSalt );
+        $sPassword = hash('sha512', $sPassword . $sPassSalt);
 
         $sQ = "update oxuser set oxusername='{$sLoginName}', oxpassword='{$sPassword}', oxpasssalt='{$sPassSalt}' where oxid='oxdefaultadmin'";
-        $this->execSql( $sQ );
+        $this->execSql($sQ);
 
         $sQ = "update oxnewssubscribed set oxemail='{$sLoginName}' where oxuserid='oxdefaultadmin'";
-        $this->execSql( $sQ );
-    }
-
-    /**
-     * @param $oUtils
-     * @param $sBaseShopId
-     * @param $aParams
-     * @param $oConfk
-     */
-    private function _addConfigValueIfShopInfoShouldBeSent($oUtils, $sBaseShopId, $aParams, $oConfk)
-    {
-        $oSession = $this->getInstance( "oxSetupSession" );
-        $blSendShopDataToOxid  = isset( $aParams["blSendShopDataToOxid"] ) ? $aParams["blSendShopDataToOxid"] : $oSession->getSessionParam( 'blSendShopDataToOxid' );
-
-        $sID = $oUtils->generateUid();
-        $this->execSql("insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue)
-                                 values('$sID', '$sBaseShopId', 'blSendShopDataToOxid', 'bool', ENCODE( '$blSendShopDataToOxid', '" . $oConfk->sConfigKey . "'))");
+        $this->execSql($sQ);
     }
 }
 
@@ -1214,6 +1217,7 @@ class OxSetupDb extends oxSetupCore
  */
 class OxSetupUtils extends oxSetupCore
 {
+
     /**
      * Unable to find file
      *
@@ -1249,36 +1253,36 @@ class OxSetupUtils extends oxSetupCore
      *
      * @return array
      */
-    public function convertToUtf8( $aData )
+    public function convertToUtf8($aData)
     {
-        if ( is_array( $aData ) ) {
+        if (is_array($aData)) {
 
-            $aKeys = array_keys( $aData );
-            $aValues = array_values( $aData );
+            $aKeys = array_keys($aData);
+            $aValues = array_values($aData);
 
             //converting keys
-            if ( count( $aData ) > 1 ) {
-                foreach ( $aKeys as $sKeyIndex => $sKeyValue ) {
-                    if ( is_string( $sKeyValue ) ) {
-                        $aKeys[$sKeyIndex] = iconv( 'iso-8859-15', 'utf-8', $sKeyValue );
+            if (count($aData) > 1) {
+                foreach ($aKeys as $sKeyIndex => $sKeyValue) {
+                    if (is_string($sKeyValue)) {
+                        $aKeys[$sKeyIndex] = iconv('iso-8859-15', 'utf-8', $sKeyValue);
                     }
                 }
 
-                $aData = array_combine( $aKeys, $aValues );
+                $aData = array_combine($aKeys, $aValues);
 
                 //converting values
-                foreach ( $aData as $sKey => $sValue ) {
-                    if ( is_array( $sValue ) ) {
-                        $this->convertToUtf8( $sValue );
+                foreach ($aData as $sKey => $sValue) {
+                    if (is_array($sValue)) {
+                        $this->convertToUtf8($sValue);
                     }
 
-                    if ( is_string( $sValue ) ) {
-                        $aData[$sKey] = iconv( 'iso-8859-15', 'utf-8', $sValue );
+                    if (is_string($sValue)) {
+                        $aData[$sKey] = iconv('iso-8859-15', 'utf-8', $sValue);
                     }
                 }
             }
         } else {
-            $aData = iconv( 'iso-8859-15', 'utf-8', $aData );
+            $aData = iconv('iso-8859-15', 'utf-8', $aData);
         }
 
         return $aData;
@@ -1291,7 +1295,7 @@ class OxSetupUtils extends oxSetupCore
      */
     public function generateUID()
     {
-        return md5( uniqid( rand(), true ) );
+        return md5(uniqid(rand(), true));
     }
 
     /**
@@ -1305,26 +1309,26 @@ class OxSetupUtils extends oxSetupCore
      *
      * @return bool
      */
-    public function removeDir( $sPath, $blDeleteSuccess, $iMode = 0, $aSkipFiles = array(), $aSkipFolders = array() )
+    public function removeDir($sPath, $blDeleteSuccess, $iMode = 0, $aSkipFiles = array(), $aSkipFolders = array())
     {
 
-        if ( is_file( $sPath ) || is_dir( $sPath ) ) {
+        if (is_file($sPath) || is_dir($sPath)) {
             // setting path to remove
-            $d = dir( $sPath );
+            $d = dir($sPath);
             $d->handle;
-            while ( false !== ( $sEntry = $d->read() ) ) {
-                if ( $sEntry != "." &&  $sEntry != ".." ) {
+            while (false !== ($sEntry = $d->read())) {
+                if ($sEntry != "." && $sEntry != "..") {
 
-                    $sFilePath = $sPath."/".$sEntry;
-                    if ( is_file( $sFilePath ) ) {
-                        if ( !in_array( basename( $sFilePath ), $aSkipFiles ) ) {
-                            $blDeleteSuccess = $blDeleteSuccess * @unlink ( $sFilePath );
+                    $sFilePath = $sPath . "/" . $sEntry;
+                    if (is_file($sFilePath)) {
+                        if (!in_array(basename($sFilePath), $aSkipFiles)) {
+                            $blDeleteSuccess = $blDeleteSuccess * @unlink($sFilePath);
                         }
-                    } elseif ( is_dir( $sFilePath ) ) {
+                    } elseif (is_dir($sFilePath)) {
                         // removing direcotry contents
-                        $this->removeDir( $sFilePath, $blDeleteSuccess, $iMode, $aSkipFiles, $aSkipFolders );
-                        if ( $iMode === 0 && !in_array( basename( $sFilePath ), $aSkipFolders ) ) {
-                            $blDeleteSuccess = $blDeleteSuccess * @rmdir ( $sFilePath );
+                        $this->removeDir($sFilePath, $blDeleteSuccess, $iMode, $aSkipFiles, $aSkipFolders);
+                        if ($iMode === 0 && !in_array(basename($sFilePath), $aSkipFolders)) {
+                            $blDeleteSuccess = $blDeleteSuccess * @rmdir($sFilePath);
                         }
                     } else {
                         // there are some other objects ?
@@ -1349,23 +1353,23 @@ class OxSetupUtils extends oxSetupCore
      *
      * @return null
      */
-    public function checkFileOrDirectory( $sPath )
+    public function checkFileOrDirectory($sPath)
     {
-        $oLang  = $this->getInstance( "oxSetupLang" );
-        $oSetup = $this->getInstance( "oxSetup" );
+        $oLang = $this->getInstance("oxSetupLang");
+        $oSetup = $this->getInstance("oxSetup");
 
-        if ( !file_exists( $sPath ) ) {
-            $oSetup->setNextStep( $oSetup->getStep( 'STEP_DIRS_INFO' ) );
-            throw new Exception( sprintf( $oLang->getText( 'ERROR_NOT_AVAILABLE' ), $sPath ) );
+        if (!file_exists($sPath)) {
+            $oSetup->setNextStep($oSetup->getStep('STEP_DIRS_INFO'));
+            throw new Exception(sprintf($oLang->getText('ERROR_NOT_AVAILABLE'), $sPath));
         }
-        if ( !is_writable( $sPath ) || !is_readable( $sPath ) ) {
+        if (!is_writable($sPath) || !is_readable($sPath)) {
             // try to set permissions and check again
-            @chmod( $sPath, getDefaultFileMode() );
+            @chmod($sPath, getDefaultFileMode());
             clearstatcache();
         }
-        if ( !is_writable( $sPath ) || !is_readable( $sPath ) ) {
-            $oSetup->setNextStep( $oSetup->getStep( 'STEP_DIRS_INFO' ) );
-            throw new Exception( sprintf( $oLang->getText( 'ERROR_NOT_WRITABLE' ), $sPath ) );
+        if (!is_writable($sPath) || !is_readable($sPath)) {
+            $oSetup->setNextStep($oSetup->getStep('STEP_DIRS_INFO'));
+            throw new Exception(sprintf($oLang->getText('ERROR_NOT_WRITABLE'), $sPath));
         }
     }
 
@@ -1376,19 +1380,20 @@ class OxSetupUtils extends oxSetupCore
      *
      * @return string
      */
-    protected function _extractPath( $aPath )
+    protected function _extractPath($aPath)
     {
         $sExtPath = '';
         $blBuildPath = false;
-        for ( $i = count( $aPath ); $i > 0; $i-- ) {
-            $sDir = $aPath[$i-1];
-            if ( $blBuildPath ) {
+        for ($i = count($aPath); $i > 0; $i--) {
+            $sDir = $aPath[$i - 1];
+            if ($blBuildPath) {
                 $sExtPath = $sDir . '/' . $sExtPath;
             }
-            if ( stristr( $sDir, "setup" ) ) {
+            if (stristr($sDir, "setup")) {
                 $blBuildPath = true;
             }
         }
+
         return $sExtPath;
     }
 
@@ -1404,21 +1409,21 @@ class OxSetupUtils extends oxSetupCore
         $aParams['sShopURL'] = "";
 
         // try path translated
-        if ( isset( $_SERVER['PATH_TRANSLATED']) && ($_SERVER['PATH_TRANSLATED'] != '')) {
+        if (isset($_SERVER['PATH_TRANSLATED']) && ($_SERVER['PATH_TRANSLATED'] != '')) {
             $sFilepath = $_SERVER['PATH_TRANSLATED'];
         } else {
             $sFilepath = $_SERVER['SCRIPT_FILENAME'];
         }
 
-        $aParams['sShopDir'] = str_replace( "\\", "/", $this->_extractPath( preg_split( "/\\\|\//", $sFilepath ) ) );
+        $aParams['sShopDir'] = str_replace("\\", "/", $this->_extractPath(preg_split("/\\\|\//", $sFilepath)));
         $aParams['sCompileDir'] = $aParams['sShopDir'] . "tmp/";
 
         // try referer
         $sFilepath = @$_SERVER['HTTP_REFERER'];
-        if ( !isset( $sFilepath ) || !$sFilepath ) {
+        if (!isset($sFilepath) || !$sFilepath) {
             $sFilepath = "http://" . @$_SERVER['HTTP_HOST'] . @$_SERVER['SCRIPT_NAME'];
         }
-        $aParams['sShopURL'] = ltrim( $this->_extractPath( explode( "/", $sFilepath) ), "/" );
+        $aParams['sShopURL'] = ltrim($this->_extractPath(explode("/", $sFilepath)), "/");
 
         return $aParams;
     }
@@ -1442,66 +1447,66 @@ class OxSetupUtils extends oxSetupCore
      *
      * @return null
      */
-    public function checkPaths( $aParams )
+    public function checkPaths($aParams)
     {
         $sBasePic = $this->getBasePictureDir();
         $aPaths = array(
-            $aParams['sShopDir']."/config.inc.php",
-            $aParams['sShopDir']."/log",
+            $aParams['sShopDir'] . "/config.inc.php",
+            $aParams['sShopDir'] . "/log",
             $aParams['sCompileDir'],
 
             // promo & media
-            $aParams['sShopDir']."/$sBasePic/promo",
-            $aParams['sShopDir']."/$sBasePic/media", // @deprecated, use out/media instead
-            $aParams['sShopDir']."/out/media",
+            $aParams['sShopDir'] . "/$sBasePic/promo",
+            $aParams['sShopDir'] . "/$sBasePic/media", // @deprecated, use out/media instead
+            $aParams['sShopDir'] . "/out/media",
 
             // Master
-                // product required paths
-                $aParams['sShopDir']."/$sBasePic/master/product/1",
-                $aParams['sShopDir']."/$sBasePic/master/product/2",
-                $aParams['sShopDir']."/$sBasePic/master/product/3",
-                $aParams['sShopDir']."/$sBasePic/master/product/4",
-                $aParams['sShopDir']."/$sBasePic/master/product/5",
-                $aParams['sShopDir']."/$sBasePic/master/product/6",
-                $aParams['sShopDir']."/$sBasePic/master/product/7",
-                $aParams['sShopDir']."/$sBasePic/master/product/8",
-                $aParams['sShopDir']."/$sBasePic/master/product/9",
-                $aParams['sShopDir']."/$sBasePic/master/product/10",
-                $aParams['sShopDir']."/$sBasePic/master/product/11",
-                $aParams['sShopDir']."/$sBasePic/master/product/12",
-                $aParams['sShopDir']."/$sBasePic/master/product/icon",
-                $aParams['sShopDir']."/$sBasePic/master/product/thumb",
-                // category required paths
-                $aParams['sShopDir']."/$sBasePic/master/category/icon",
-                $aParams['sShopDir']."/$sBasePic/master/category/promo_icon",
-                $aParams['sShopDir']."/$sBasePic/master/category/thumb",
-                // manufacturer required paths
-                $aParams['sShopDir']."/$sBasePic/master/manufacturer/icon",
-                // vendor required paths
-                $aParams['sShopDir']."/$sBasePic/master/vendor/icon",
-                // wrapping required paths
-                $aParams['sShopDir']."/$sBasePic/master/wrapping",
+            // product required paths
+            $aParams['sShopDir'] . "/$sBasePic/master/product/1",
+            $aParams['sShopDir'] . "/$sBasePic/master/product/2",
+            $aParams['sShopDir'] . "/$sBasePic/master/product/3",
+            $aParams['sShopDir'] . "/$sBasePic/master/product/4",
+            $aParams['sShopDir'] . "/$sBasePic/master/product/5",
+            $aParams['sShopDir'] . "/$sBasePic/master/product/6",
+            $aParams['sShopDir'] . "/$sBasePic/master/product/7",
+            $aParams['sShopDir'] . "/$sBasePic/master/product/8",
+            $aParams['sShopDir'] . "/$sBasePic/master/product/9",
+            $aParams['sShopDir'] . "/$sBasePic/master/product/10",
+            $aParams['sShopDir'] . "/$sBasePic/master/product/11",
+            $aParams['sShopDir'] . "/$sBasePic/master/product/12",
+            $aParams['sShopDir'] . "/$sBasePic/master/product/icon",
+            $aParams['sShopDir'] . "/$sBasePic/master/product/thumb",
+            // category required paths
+            $aParams['sShopDir'] . "/$sBasePic/master/category/icon",
+            $aParams['sShopDir'] . "/$sBasePic/master/category/promo_icon",
+            $aParams['sShopDir'] . "/$sBasePic/master/category/thumb",
+            // manufacturer required paths
+            $aParams['sShopDir'] . "/$sBasePic/master/manufacturer/icon",
+            // vendor required paths
+            $aParams['sShopDir'] . "/$sBasePic/master/vendor/icon",
+            // wrapping required paths
+            $aParams['sShopDir'] . "/$sBasePic/master/wrapping",
 
             // Generated
-                // product required paths
-                $aParams['sShopDir']."/$sBasePic/generated/product/1",
-                $aParams['sShopDir']."/$sBasePic/generated/product/2",
-                $aParams['sShopDir']."/$sBasePic/generated/product/3",
-                $aParams['sShopDir']."/$sBasePic/generated/product/4",
-                $aParams['sShopDir']."/$sBasePic/generated/product/5",
-                $aParams['sShopDir']."/$sBasePic/generated/product/6",
-                $aParams['sShopDir']."/$sBasePic/generated/product/icon",
-                $aParams['sShopDir']."/$sBasePic/generated/product/thumb",
-                // category required paths
-                $aParams['sShopDir']."/$sBasePic/generated/category/icon",
-                $aParams['sShopDir']."/$sBasePic/generated/category/promo_icon",
-                $aParams['sShopDir']."/$sBasePic/generated/category/thumb",
-                // manufacturer required paths
-                $aParams['sShopDir']."/$sBasePic/generated/manufacturer/icon",
-           );
+            // product required paths
+            $aParams['sShopDir'] . "/$sBasePic/generated/product/1",
+            $aParams['sShopDir'] . "/$sBasePic/generated/product/2",
+            $aParams['sShopDir'] . "/$sBasePic/generated/product/3",
+            $aParams['sShopDir'] . "/$sBasePic/generated/product/4",
+            $aParams['sShopDir'] . "/$sBasePic/generated/product/5",
+            $aParams['sShopDir'] . "/$sBasePic/generated/product/6",
+            $aParams['sShopDir'] . "/$sBasePic/generated/product/icon",
+            $aParams['sShopDir'] . "/$sBasePic/generated/product/thumb",
+            // category required paths
+            $aParams['sShopDir'] . "/$sBasePic/generated/category/icon",
+            $aParams['sShopDir'] . "/$sBasePic/generated/category/promo_icon",
+            $aParams['sShopDir'] . "/$sBasePic/generated/category/thumb",
+            // manufacturer required paths
+            $aParams['sShopDir'] . "/$sBasePic/generated/manufacturer/icon",
+        );
 
-        foreach ( $aPaths as $sPath) {
-            $this->checkFileOrDirectory( $sPath );
+        foreach ($aPaths as $sPath) {
+            $this->checkFileOrDirectory($sPath);
         }
     }
 
@@ -1514,38 +1519,38 @@ class OxSetupUtils extends oxSetupCore
      *
      * @return null
      */
-    public function updateConfigFile( $aParams )
+    public function updateConfigFile($aParams)
     {
-        $sConfPath  = $aParams['sShopDir']."/config.inc.php";
-        $sVerPrefix = $this->getInstance( "oxSetup" )->getVersionPrefix();
+        $sConfPath = $aParams['sShopDir'] . "/config.inc.php";
+        $sVerPrefix = $this->getInstance("oxSetup")->getVersionPrefix();
 
-        $oLang  = $this->getInstance( "oxSetupLang" );
+        $oLang = $this->getInstance("oxSetupLang");
 
         clearstatcache();
-        @chmod( $sConfPath, getDefaultFileMode() );
-        if ( ( $fp = fopen( $sConfPath, "r" ) ) ) {
-            $sConfFile = fread( $fp, filesize( $sConfPath ) );
-            fclose( $fp );
+        @chmod($sConfPath, getDefaultFileMode());
+        if (($fp = fopen($sConfPath, "r"))) {
+            $sConfFile = fread($fp, filesize($sConfPath));
+            fclose($fp);
         } else {
-            throw new Exception( sprintf( $oLang->getText('ERROR_COULD_NOT_OPEN_CONFIG_FILE'), $sConfPath ) );
+            throw new Exception(sprintf($oLang->getText('ERROR_COULD_NOT_OPEN_CONFIG_FILE'), $sConfPath));
         }
 
         // overwriting settings
-        foreach ( $aParams as $sParamName => $sParamValue ) {
+        foreach ($aParams as $sParamName => $sParamValue) {
             // non integer type variables must be surrounded by quotes
-            if ( $sParamName[0] != 'i' ) {
+            if ($sParamName[0] != 'i') {
                 $sParamValue = "'{$sParamValue}'";
             }
-            $sConfFile = preg_replace( "/(this->{$sParamName}).*". preg_quote( $sVerPrefix ) .".*;/", "\\1 = ".$sParamValue.";", $sConfFile );
+            $sConfFile = preg_replace("/(this->{$sParamName}).*" . preg_quote($sVerPrefix) . ".*;/", "\\1 = " . $sParamValue . ";", $sConfFile);
         }
 
-        if ( ( $fp = fopen( $sConfPath, "w" ) ) ) {
-            fwrite( $fp, $sConfFile );
-            fclose( $fp );
-            @chmod( $sConfPath, getDefaultConfigFileMode() );
+        if (($fp = fopen($sConfPath, "w"))) {
+            fwrite($fp, $sConfFile);
+            fclose($fp);
+            @chmod($sConfPath, getDefaultConfigFileMode());
         } else {
             // error ? strange !?
-            throw new Exception( sprintf($oLang->getText('ERROR_CONFIG_FILE_IS_NOT_WRITABLE'), $aParams['sShopDir'] ) );
+            throw new Exception(sprintf($oLang->getText('ERROR_CONFIG_FILE_IS_NOT_WRITABLE'), $aParams['sShopDir']));
         }
     }
 
@@ -1557,45 +1562,45 @@ class OxSetupUtils extends oxSetupCore
      *
      * @return null
      */
-    public function updateHtaccessFile( $aParams, $sSubFolder = "" )
+    public function updateHtaccessFile($aParams, $sSubFolder = "")
     {
-        $oLang  = $this->getInstance( "oxSetupLang" );
+        $oLang = $this->getInstance("oxSetupLang");
 
         // preparing rewrite base param
-        if ( !isset( $aParams["sBaseUrlPath"] ) || !$aParams["sBaseUrlPath"] ) {
+        if (!isset($aParams["sBaseUrlPath"]) || !$aParams["sBaseUrlPath"]) {
             $aParams["sBaseUrlPath"] = "";
         }
 
-        if ( $sSubFolder ) {
-            $sSubFolder = $this->preparePath( "/".$sSubFolder );
+        if ($sSubFolder) {
+            $sSubFolder = $this->preparePath("/" . $sSubFolder);
         }
 
-        $aParams["sBaseUrlPath"] = trim( $aParams["sBaseUrlPath"].$sSubFolder, "/" );
-        $aParams["sBaseUrlPath"] = "/".$aParams["sBaseUrlPath"];
+        $aParams["sBaseUrlPath"] = trim($aParams["sBaseUrlPath"] . $sSubFolder, "/");
+        $aParams["sBaseUrlPath"] = "/" . $aParams["sBaseUrlPath"];
 
-        $sHtaccessPath = $this->preparePath( $aParams["sShopDir"] ).$sSubFolder."/.htaccess";
+        $sHtaccessPath = $this->preparePath($aParams["sShopDir"]) . $sSubFolder . "/.htaccess";
 
         clearstatcache();
-        if ( !file_exists( $sHtaccessPath ) ) {
-            throw new Exception( sprintf( $oLang->getText('ERROR_COULD_NOT_FIND_FILE'), $sHtaccessPath ), OxSetupUtils::ERROR_COULD_NOT_FIND_FILE );
+        if (!file_exists($sHtaccessPath)) {
+            throw new Exception(sprintf($oLang->getText('ERROR_COULD_NOT_FIND_FILE'), $sHtaccessPath), OxSetupUtils::ERROR_COULD_NOT_FIND_FILE);
         }
 
-        @chmod( $sHtaccessPath, getDefaultFileMode() );
-        if ( is_readable( $sHtaccessPath ) && ( $fp = fopen( $sHtaccessPath, "r" ) ) ) {
-            $sHtaccessFile = fread( $fp, filesize( $sHtaccessPath ) );
-            fclose( $fp );
+        @chmod($sHtaccessPath, getDefaultFileMode());
+        if (is_readable($sHtaccessPath) && ($fp = fopen($sHtaccessPath, "r"))) {
+            $sHtaccessFile = fread($fp, filesize($sHtaccessPath));
+            fclose($fp);
         } else {
-            throw new Exception( sprintf( $oLang->getText('ERROR_COULD_NOT_READ_FILE'), $sHtaccessPath ), OxSetupUtils::ERROR_COULD_NOT_READ_FILE );
+            throw new Exception(sprintf($oLang->getText('ERROR_COULD_NOT_READ_FILE'), $sHtaccessPath), OxSetupUtils::ERROR_COULD_NOT_READ_FILE);
         }
 
         // overwriting settings
-        $sHtaccessFile = preg_replace( "/RewriteBase.*/", "RewriteBase ".$aParams["sBaseUrlPath"], $sHtaccessFile );
-        if ( is_writable( $sHtaccessPath ) && ( $fp = fopen( $sHtaccessPath, "w" ) ) ) {
-            fwrite( $fp, $sHtaccessFile );
-            fclose( $fp );
+        $sHtaccessFile = preg_replace("/RewriteBase.*/", "RewriteBase " . $aParams["sBaseUrlPath"], $sHtaccessFile);
+        if (is_writable($sHtaccessPath) && ($fp = fopen($sHtaccessPath, "w"))) {
+            fwrite($fp, $sHtaccessFile);
+            fclose($fp);
         } else {
             // error ? strange !?
-            throw new Exception( sprintf($oLang->getText('ERROR_COULD_NOT_WRITE_TO_FILE'), $sHtaccessPath ), OxSetupUtils::ERROR_COULD_NOT_WRITE_TO_FILE );
+            throw new Exception(sprintf($oLang->getText('ERROR_COULD_NOT_WRITE_TO_FILE'), $sHtaccessPath), OxSetupUtils::ERROR_COULD_NOT_WRITE_TO_FILE);
         }
     }
 
@@ -1606,9 +1611,9 @@ class OxSetupUtils extends oxSetupCore
      *
      * @return mixed
      */
-    public function getEnvVar( $sVarName )
+    public function getEnvVar($sVarName)
     {
-        if ( ( $sVarVal = getenv( $sVarName ) ) !== false ) {
+        if (($sVarVal = getenv($sVarName)) !== false) {
             return $sVarVal;
         }
     }
@@ -1621,22 +1626,22 @@ class OxSetupUtils extends oxSetupCore
      *
      * @return mixed
      */
-    public function getRequestVar( $sVarName, $sRequestType = null )
+    public function getRequestVar($sVarName, $sRequestType = null)
     {
         $sValue = null;
-        switch ( $sRequestType ) {
+        switch ($sRequestType) {
             case 'post':
-                if ( isset( $_POST[$sVarName] ) ) {
+                if (isset($_POST[$sVarName])) {
                     $sValue = $_POST[$sVarName];
                 }
                 break;
             case 'get':
-                if ( isset( $_GET[$sVarName] ) ) {
+                if (isset($_GET[$sVarName])) {
                     $sValue = $_GET[$sVarName];
                 }
                 break;
             case 'cookie':
-                if ( isset( $_COOKIE[$sVarName] ) ) {
+                if (isset($_COOKIE[$sVarName])) {
                     $sValue = $_COOKIE[$sVarName];
                 }
                 break;
@@ -1654,6 +1659,7 @@ class OxSetupUtils extends oxSetupCore
                 }
                 break;
         }
+
         return $sValue;
     }
 
@@ -1667,9 +1673,9 @@ class OxSetupUtils extends oxSetupCore
      *
      * @return null
      */
-    public function setCookie( $sName, $sValue, $iExpireDate, $sPath )
+    public function setCookie($sName, $sValue, $iExpireDate, $sPath)
     {
-        setcookie( $sName, $sValue, $iExpireDate, $sPath );
+        setcookie($sName, $sValue, $iExpireDate, $sPath);
     }
 
     /**
@@ -1679,12 +1685,13 @@ class OxSetupUtils extends oxSetupCore
      *
      * @return string | mixed
      */
-    public function getFileContents( $sFile )
+    public function getFileContents($sFile)
     {
         $sContents = null;
-        if ( file_exists( $sFile ) && is_readable( $sFile ) ) {
-            $sContents = file_get_contents( $sFile );
+        if (file_exists($sFile) && is_readable($sFile)) {
+            $sContents = file_get_contents($sFile);
         }
+
         return $sContents;
     }
 
@@ -1695,9 +1702,9 @@ class OxSetupUtils extends oxSetupCore
      *
      * @return string
      */
-    public function preparePath( $sPath )
+    public function preparePath($sPath)
     {
-        return rtrim( str_replace( "\\", "/", $sPath ), "/" );
+        return rtrim(str_replace("\\", "/", $sPath), "/");
     }
 
     /**
@@ -1707,16 +1714,16 @@ class OxSetupUtils extends oxSetupCore
      *
      * @return string
      */
-    public function extractRewriteBase( $sUrl )
+    public function extractRewriteBase($sUrl)
     {
-         $sPath = "/";
-         if ( ( $aPathInfo = @parse_url( $sUrl ) ) !== false ) {
-             if ( isset( $aPathInfo["path"] ) ) {
-                 $sPath = $this->preparePath( $aPathInfo["path"] );
-             }
-         }
+        $sPath = "/";
+        if (($aPathInfo = @parse_url($sUrl)) !== false) {
+            if (isset($aPathInfo["path"])) {
+                $sPath = $this->preparePath($aPathInfo["path"]);
+            }
+        }
 
-         return $sPath;
+        return $sPath;
     }
 
     /**
@@ -1727,9 +1734,9 @@ class OxSetupUtils extends oxSetupCore
      *
      * @return bool
      */
-    public function isValidEmail( $sEmail )
+    public function isValidEmail($sEmail)
     {
-        return preg_match( $this->_sEmailTpl, $sEmail ) != 0;
+        return preg_match($this->_sEmailTpl, $sEmail) != 0;
     }
 }
 
@@ -1738,6 +1745,7 @@ class OxSetupUtils extends oxSetupCore
  */
 class oxSetupView extends oxSetupCore
 {
+
     /**
      * View title
      *
@@ -1767,7 +1775,7 @@ class oxSetupView extends oxSetupCore
      *
      * @return null
      */
-    public function display( $sTemplate )
+    public function display($sTemplate)
     {
         ob_start();
         include "tpl/{$sTemplate}";
@@ -1781,7 +1789,7 @@ class oxSetupView extends oxSetupCore
      */
     public function getTitle()
     {
-        return $this->getText( $this->_sTitle, false );
+        return $this->getText($this->_sTitle, false);
     }
 
     /**
@@ -1791,7 +1799,7 @@ class oxSetupView extends oxSetupCore
      *
      * @return null
      */
-    public function setTitle( $sTitleId )
+    public function setTitle($sTitleId)
     {
         $this->_sTitle = $sTitleId;
     }
@@ -1814,9 +1822,9 @@ class oxSetupView extends oxSetupCore
      *
      * @return null
      */
-    public function setMessage( $sMessage, $blOverride = false )
+    public function setMessage($sMessage, $blOverride = false)
     {
-        if ( $blOverride ) {
+        if ($blOverride) {
             $this->_aMessages = array();
         }
 
@@ -1831,10 +1839,11 @@ class oxSetupView extends oxSetupCore
      *
      * @return string
      */
-    public function getText( $sTextId, $blPrint = true )
+    public function getText($sTextId, $blPrint = true)
     {
-        $sText = $this->getInstance( "oxSetupLang" )->getText( $sTextId );;
-        return $blPrint ? print( $sText ) : $sText;
+        $sText = $this->getInstance("oxSetupLang")->getText($sTextId);;
+
+        return $blPrint ? print($sText) : $sText;
     }
 
     /**
@@ -1844,10 +1853,11 @@ class oxSetupView extends oxSetupCore
      *
      * @return null
      */
-    public function getSid( $blPrint = true )
+    public function getSid($blPrint = true)
     {
-        $sSid = $this->getInstance( "oxSetupSession" )->getSid();
-        return $blPrint ? print( $sSid ) : $sSid;
+        $sSid = $this->getInstance("oxSetupSession")->getSid();
+
+        return $blPrint ? print($sSid) : $sSid;
     }
 
     /**
@@ -1858,7 +1868,7 @@ class oxSetupView extends oxSetupCore
      *
      * @return null
      */
-    public function setViewParam( $sName, $sValue )
+    public function setViewParam($sName, $sValue)
     {
         $this->_aViewParams[$sName] = $sValue;
     }
@@ -1870,12 +1880,13 @@ class oxSetupView extends oxSetupCore
      *
      * @return mixed
      */
-    public function getViewParam( $sName )
+    public function getViewParam($sName)
     {
         $sValue = null;
-        if ( isset( $this->_aViewParams[$sName] ) ) {
+        if (isset($this->_aViewParams[$sName])) {
             $sValue = $this->_aViewParams[$sName];
         }
+
         return $sValue;
     }
 
@@ -1887,10 +1898,11 @@ class oxSetupView extends oxSetupCore
      *
      * @return int
      */
-    public function getSetupStep( $sStepId, $blPrint = true )
+    public function getSetupStep($sStepId, $blPrint = true)
     {
-        $sStep = $this->getInstance( "oxSetup" )->getStep( $sStepId );
-        return $blPrint ? print( $sStep ) : $sStep;
+        $sStep = $this->getInstance("oxSetup")->getStep($sStepId);
+
+        return $blPrint ? print($sStep) : $sStep;
     }
 
     /**
@@ -1900,7 +1912,7 @@ class oxSetupView extends oxSetupCore
      */
     public function getNextSetupStep()
     {
-        return $this->getInstance( "oxSetup" )->getNextStep();
+        return $this->getInstance("oxSetup")->getNextStep();
     }
 
     /**
@@ -1910,7 +1922,7 @@ class oxSetupView extends oxSetupCore
      */
     public function getCurrentSetupStep()
     {
-        return $this->getInstance( "oxSetup" )->getCurrentStep();
+        return $this->getInstance("oxSetup")->getCurrentStep();
     }
 
     /**
@@ -1920,7 +1932,7 @@ class oxSetupView extends oxSetupCore
      */
     public function getSetupSteps()
     {
-        return $this->getInstance( "oxSetup" )->getSteps();
+        return $this->getInstance("oxSetup")->getSteps();
     }
 
     /**
@@ -1930,7 +1942,7 @@ class oxSetupView extends oxSetupCore
      */
     public function getImageDir()
     {
-        return getInstallPath().'out/admin/img';
+        return getInstallPath() . 'out/admin/img';
     }
 
     /**
@@ -1944,26 +1956,27 @@ class oxSetupView extends oxSetupCore
     {
         //finalizing installation
         $blDeleted = true;
-        $oSession  = $this->getInstance( "OxSetupSession" );
-        $oUtils    = $this->getInstance( "oxSetupUtils" );
-        $sPath    = getInstallPath();
+        $oSession = $this->getInstance("OxSetupSession");
+        $oUtils = $this->getInstance("oxSetupUtils");
+        $sPath = getInstallPath();
 
-        $aDemoConfig = $oSession->getSessionParam( "aDB" );
-        if ( !isset( $aDemoConfig['dbiDemoData'] ) || $aDemoConfig['dbiDemoData'] != '1' ) {
-            $sPrfx  = $this->getInstance( "oxSetup" )->getVersionPrefix();
+        $aDemoConfig = $oSession->getSessionParam("aDB");
+        if (!isset($aDemoConfig['dbiDemoData']) || $aDemoConfig['dbiDemoData'] != '1') {
+            $sPrfx = $this->getInstance("oxSetup")->getVersionPrefix();
 
             // "/generated" cleanup
-            $oUtils->removeDir( $sPath . "out/pictures{$sPrfx}/generated", true );
+            $oUtils->removeDir($sPath . "out/pictures{$sPrfx}/generated", true);
 
             // "/master" cleanup, leaving nopic
-            $oUtils->removeDir( $sPath . "out/pictures{$sPrfx}/master", true, 1, array( "nopic.jpg" ) );
+            $oUtils->removeDir($sPath . "out/pictures{$sPrfx}/master", true, 1, array("nopic.jpg"));
         }
 
-        $aSetupConfig = $oSession->getSessionParam( "aSetupConfig" );
-        if ( isset( $aSetupConfig['blDelSetupDir'] ) && $aSetupConfig['blDelSetupDir'] ) {
+        $aSetupConfig = $oSession->getSessionParam("aSetupConfig");
+        if (isset($aSetupConfig['blDelSetupDir']) && $aSetupConfig['blDelSetupDir']) {
             // removing setup files
-            $blDeleted = $oUtils->removeDir( $sPath . "setup", true );
+            $blDeleted = $oUtils->removeDir($sPath . "setup", true);
         }
+
         return $blDeleted;
     }
 
@@ -1975,12 +1988,12 @@ class oxSetupView extends oxSetupCore
      *
      * @return mixed
      */
-    public function getReqInfoUrl( $sIdent, $blPrint = true )
+    public function getReqInfoUrl($sIdent, $blPrint = true)
     {
         $oSysReq = getSystemReqCheck();
         $sUrl = $oSysReq->getReqInfoUrl($sIdent);
 
-        return $blPrint ? print( $sUrl ) : $sUrl;
+        return $blPrint ? print($sUrl) : $sUrl;
     }
 }
 
@@ -1989,6 +2002,7 @@ class oxSetupView extends oxSetupCore
  */
 class oxSetupController extends oxSetupCore
 {
+
     /**
      * Returns view object
      *
@@ -1996,9 +2010,10 @@ class oxSetupController extends oxSetupCore
      */
     public function getView()
     {
-        if ( $this->_oView == null ) {
+        if ($this->_oView == null) {
             $this->_oView = new oxSetupView();
         }
+
         return $this->_oView;
     }
 
@@ -2010,10 +2025,10 @@ class oxSetupController extends oxSetupCore
      */
     public function systemReq()
     {
-        $oSetup     = $this->getInstance( "oxSetup" );
-        $oSetupLang = $this->getInstance( "oxSetupLang" );
-        $oUtils     = $this->getInstance( "oxSetupUtils" );
-        $oView      = $this->getView();
+        $oSetup = $this->getInstance("oxSetup");
+        $oSetupLang = $this->getInstance("oxSetupLang");
+        $oUtils = $this->getInstance("oxSetupUtils");
+        $oView = $this->getView();
 
         $blContinue = true;
         $aGroupModuleInfo = array();
@@ -2021,41 +2036,42 @@ class oxSetupController extends oxSetupCore
         $blHtaccessUpdateError = false;
         try {
             $aPath = $oUtils->getDefaultPathParams();
-            $aPath['sBaseUrlPath'] = $oUtils->extractRewriteBase( $aPath['sShopURL'] );
+            $aPath['sBaseUrlPath'] = $oUtils->extractRewriteBase($aPath['sShopURL']);
             //$oUtils->updateHtaccessFile( $aPath, "admin" );
-            $oUtils->updateHtaccessFile( $aPath );
-        } catch ( Exception $oExcp ) {
+            $oUtils->updateHtaccessFile($aPath);
+        } catch (Exception $oExcp) {
             //$oView->setMessage( $oExcp->getMessage() );
             $blHtaccessUpdateError = true;
         }
 
         $oSysReq = getSystemReqCheck();
         $aInfo = $oSysReq->getSystemInfo();
-        foreach ( $aInfo as $sGroup => $aModules ) {
+        foreach ($aInfo as $sGroup => $aModules) {
             // translating
-            $sGroupName = $oSetupLang->getModuleName( $sGroup );
-            foreach ( $aModules as $sModule => $iModuleState ) {
+            $sGroupName = $oSetupLang->getModuleName($sGroup);
+            foreach ($aModules as $sModule => $iModuleState) {
                 // translating
-                $blContinue = $blContinue && ( bool ) abs( $iModuleState );
+                $blContinue = $blContinue && ( bool ) abs($iModuleState);
 
                 // was unable to update htaccess file for mod_rewrite check
-                if ( $blHtaccessUpdateError && $sModule == 'server_permissions') {
-                    $sClass = $oSetup->getModuleClass( 0 );
+                if ($blHtaccessUpdateError && $sModule == 'server_permissions') {
+                    $sClass = $oSetup->getModuleClass(0);
                     $blContinue = false;
                 } else {
-                    $sClass = $oSetup->getModuleClass( $iModuleState );
+                    $sClass = $oSetup->getModuleClass($iModuleState);
                 }
-                $aGroupModuleInfo[$sGroupName][] = array( 'module' => $sModule,
-                                                          'class'  => $sClass,
-                                                          'modulename' => $oSetupLang->getModuleName( $sModule ) );
+                $aGroupModuleInfo[$sGroupName][] = array('module'     => $sModule,
+                                                         'class'      => $sClass,
+                                                         'modulename' => $oSetupLang->getModuleName($sModule));
             }
         }
 
-        $oView->setTitle( 'STEP_0_TITLE' );
-        $oView->setViewParam( "blContinue", $blContinue );
-        $oView->setViewParam( "aGroupModuleInfo", $aGroupModuleInfo );
-        $oView->setViewParam( "aLanguages", getLanguages() );
-        $oView->setViewParam( "sSetupLang", $this->getInstance( "oxSetupSession" )->getSessionParam( 'setup_lang' ) );
+        $oView->setTitle('STEP_0_TITLE');
+        $oView->setViewParam("blContinue", $blContinue);
+        $oView->setViewParam("aGroupModuleInfo", $aGroupModuleInfo);
+        $oView->setViewParam("aLanguages", getLanguages());
+        $oView->setViewParam("sSetupLang", $this->getInstance("oxSetupSession")->getSessionParam('setup_lang'));
+
         return "systemreq.php";
     }
 
@@ -2066,21 +2082,22 @@ class oxSetupController extends oxSetupCore
      */
     public function welcome()
     {
-        $oSession = $this->getInstance( "oxSetupSession" );
+        $oSession = $this->getInstance("oxSetupSession");
 
         //setting admin area default language
         $sAdminLang = $oSession->getSessionParam('setup_lang');
-        $this->getInstance( "oxSetupUtils" )->setCookie( "oxidadminlanguage", $sAdminLang, time() + 31536000, "/" );
+        $this->getInstance("oxSetupUtils")->setCookie("oxidadminlanguage", $sAdminLang, time() + 31536000, "/");
 
         $oView = $this->getView();
-        $oView->setTitle( 'STEP_1_TITLE' );
-        $oView->setViewParam( "aCountries", getCountryList() );
-        $oView->setViewParam( "aLocations", getLocation() );
-        $oView->setViewParam( "aLanguages", getLanguages() );
-        $oView->setViewParam( "sShopLang", $oSession->getSessionParam( 'sShopLang' ) );
-        $oView->setViewParam( "sSetupLang", $this->getInstance( "oxSetupLang" )->getSetupLang() );
-        $oView->setViewParam( "sLocationLang", $oSession->getSessionParam('location_lang') );
-        $oView->setViewParam( "sCountryLang", $oSession->getSessionParam('country_lang') );
+        $oView->setTitle('STEP_1_TITLE');
+        $oView->setViewParam("aCountries", getCountryList());
+        $oView->setViewParam("aLocations", getLocation());
+        $oView->setViewParam("aLanguages", getLanguages());
+        $oView->setViewParam("sShopLang", $oSession->getSessionParam('sShopLang'));
+        $oView->setViewParam("sSetupLang", $this->getInstance("oxSetupLang")->getSetupLang());
+        $oView->setViewParam("sLocationLang", $oSession->getSessionParam('location_lang'));
+        $oView->setViewParam("sCountryLang", $oSession->getSessionParam('country_lang'));
+
         return "welcome.php";
     }
 
@@ -2094,8 +2111,9 @@ class oxSetupController extends oxSetupCore
         $sLicenseFile = "lizenz.txt";
 
         $oView = $this->getView();
-        $oView->setTitle( 'STEP_2_TITLE' );
-        $oView->setViewParam( "aLicenseText", $this->getInstance( "oxSetupUtils" )->getFileContents( $this->getInstance( "oxSetupLang" )->getSetupLang() . "/" . $sLicenseFile ) );
+        $oView->setTitle('STEP_2_TITLE');
+        $oView->setViewParam("aLicenseText", $this->getInstance("oxSetupUtils")->getFileContents($this->getInstance("oxSetupLang")->getSetupLang() . "/" . $sLicenseFile));
+
         return "license.php";
     }
 
@@ -2106,34 +2124,35 @@ class oxSetupController extends oxSetupCore
      */
     public function dbInfo()
     {
-        $oView    = $this->getView();
-        $oSession = $this->getInstance( "oxSetupSession" );
+        $oView = $this->getView();
+        $oSession = $this->getInstance("oxSetupSession");
 
-        $iEula = $this->getInstance( "oxSetupUtils" )->getRequestVar( "iEula", "post" );
-        $iEula = (int) ( $iEula ? $iEula : $oSession->getSessionParam( "eula" ) );
-        if ( !$iEula ) {
-            $oSetup = $this->getInstance( "oxSetup" );
-            $oSetup->setNextStep( $oSetup->getStep( "STEP_WELCOME" ) );
-            $oView->setMessage( $this->getInstance( "oxSetupLang" )->getText( "ERROR_SETUP_CANCELLED" ) );
+        $iEula = $this->getInstance("oxSetupUtils")->getRequestVar("iEula", "post");
+        $iEula = (int) ($iEula ? $iEula : $oSession->getSessionParam("eula"));
+        if (!$iEula) {
+            $oSetup = $this->getInstance("oxSetup");
+            $oSetup->setNextStep($oSetup->getStep("STEP_WELCOME"));
+            $oView->setMessage($this->getInstance("oxSetupLang")->getText("ERROR_SETUP_CANCELLED"));
+
             return "licenseerror.php";
         }
 
-        $oView->setTitle( 'STEP_3_TITLE' );
-        $aDB = $oSession->getSessionParam( 'aDB' );
-        if ( !isset( $aDB ) ) {
+        $oView->setTitle('STEP_3_TITLE');
+        $aDB = $oSession->getSessionParam('aDB');
+        if (!isset($aDB)) {
             // default values
             $aDB['dbHost'] = "localhost";
             $aDB['dbUser'] = "";
-            $aDB['dbPwd']  = "";
+            $aDB['dbPwd'] = "";
             $aDB['dbName'] = "";
             $aDB['dbiDemoData'] = 1;
         }
-        $oView->setViewParam( "aDB", $aDB );
+        $oView->setViewParam("aDB", $aDB);
 
         // mb string library info
         $oSysReq = getSystemReqCheck();
-        $oView->setViewParam( "blMbStringOn", $oSysReq->getModuleInfo( 'mb_string' ) );
-        $oView->setViewParam( "blUnicodeSupport", $oSysReq->getModuleInfo( 'unicode_support' ) );
+        $oView->setViewParam("blMbStringOn", $oSysReq->getModuleInfo('mb_string'));
+        $oView->setViewParam("blUnicodeSupport", $oSysReq->getModuleInfo('unicode_support'));
 
         return "dbinfo.php";
     }
@@ -2145,12 +2164,13 @@ class oxSetupController extends oxSetupCore
      */
     public function dirsInfo()
     {
-        $oSession = $this->getInstance( "oxSetupSession" );
-        $oView    = $this->getView();
-        $oView->setTitle( 'STEP_4_TITLE' );
-        $oView->setViewParam( "aSetupConfig", $oSession->getSessionParam('aSetupConfig') );
-        $oView->setViewParam( "aAdminData", $oSession->getSessionParam('aAdminData') );
-        $oView->setViewParam( "aPath", $this->getInstance( "oxSetupUtils" )->getDefaultPathParams() );
+        $oSession = $this->getInstance("oxSetupSession");
+        $oView = $this->getView();
+        $oView->setTitle('STEP_4_TITLE');
+        $oView->setViewParam("aSetupConfig", $oSession->getSessionParam('aSetupConfig'));
+        $oView->setViewParam("aAdminData", $oSession->getSessionParam('aAdminData'));
+        $oView->setViewParam("aPath", $this->getInstance("oxSetupUtils")->getDefaultPathParams());
+
         return "dirsinfo.php";
     }
 
@@ -2161,54 +2181,59 @@ class oxSetupController extends oxSetupCore
      */
     public function dbConnect()
     {
-        $oSetup   = $this->getInstance( "oxSetup" );
-        $oSession = $this->getInstance( "oxSetupSession" );
-        $oLang    = $this->getInstance( "oxSetupLang" );
+        $oSetup = $this->getInstance("oxSetup");
+        $oSession = $this->getInstance("oxSetupSession");
+        $oLang = $this->getInstance("oxSetupLang");
 
         $oView = $this->getView();
-        $oView->setTitle( 'STEP_3_1_TITLE' );
+        $oView->setTitle('STEP_3_1_TITLE');
 
-        $aDB = $this->getInstance( "oxSetupUtils" )->getRequestVar( "aDB", "post" );
-        if ( !isset( $aDB['iUtfMode'] ) ) {
+        $aDB = $this->getInstance("oxSetupUtils")->getRequestVar("aDB", "post");
+        if (!isset($aDB['iUtfMode'])) {
             $aDB['iUtfMode'] = 0;
         }
-        $oSession->setSessionParam( 'aDB', $aDB );
+        $oSession->setSessionParam('aDB', $aDB);
 
         // check if iportant parameters are set
-        if ( !$aDB['dbHost'] || !$aDB['dbName'] ) {
-            $oSetup->setNextStep( $oSetup->getStep( 'STEP_DB_INFO' ) );
-            $oView->setMessage( $oLang->getText( 'ERROR_FILL_ALL_FIELDS' ) );
+        if (!$aDB['dbHost'] || !$aDB['dbName']) {
+            $oSetup->setNextStep($oSetup->getStep('STEP_DB_INFO'));
+            $oView->setMessage($oLang->getText('ERROR_FILL_ALL_FIELDS'));
+
             return "default.php";
         }
 
         try {
             // ok check DB Connection
-            $oDb = $this->getInstance( "oxSetupDb" );
-            $oDb->openDatabase( $aDB );
-        } catch ( Exception $oExcp ) {
-            if ( $oExcp->getCode() === oxSetupDb::ERROR_DB_CONNECT ) {
-                $oSetup->setNextStep( $oSetup->getStep( 'STEP_DB_INFO' ) );
-                $oView->setMessage( $oLang->getText( 'ERROR_DB_CONNECT' ) . " - ". mysql_error() );
+            $oDb = $this->getInstance("oxSetupDb");
+            $oDb->openDatabase($aDB);
+        } catch (Exception $oExcp) {
+            if ($oExcp->getCode() === oxSetupDb::ERROR_DB_CONNECT) {
+                $oSetup->setNextStep($oSetup->getStep('STEP_DB_INFO'));
+                $oView->setMessage($oLang->getText('ERROR_DB_CONNECT') . " - " . mysql_error());
+
                 return "default.php";
-            } elseif ( $oExcp->getCode() === oxSetupDb::ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS ) {
-                $oSetup->setNextStep( $oSetup->getStep( 'STEP_DB_INFO' ) );
-                $oView->setMessage( $oExcp->getMessage() );
+            } elseif ($oExcp->getCode() === oxSetupDb::ERROR_MYSQL_VERSION_DOES_NOT_FIT_REQUIREMENTS) {
+                $oSetup->setNextStep($oSetup->getStep('STEP_DB_INFO'));
+                $oView->setMessage($oExcp->getMessage());
+
                 return "default.php";
             } else {
                 try {
                     // if database is not there, try to create it
-                    $oDb->createDb( $aDB['dbName'] );
-                } catch ( Exception $oExcp ) {
-                    $oSetup->setNextStep( $oSetup->getStep( 'STEP_DB_INFO' ) );
-                    $oView->setMessage( $oExcp->getMessage() );
+                    $oDb->createDb($aDB['dbName']);
+                } catch (Exception $oExcp) {
+                    $oSetup->setNextStep($oSetup->getStep('STEP_DB_INFO'));
+                    $oView->setMessage($oExcp->getMessage());
+
                     return "default.php";
                 }
-                $oView->setViewParam( "blCreated", 1 );
+                $oView->setViewParam("blCreated", 1);
             }
         }
 
-        $oView->setViewParam( "aDB", $aDB );
-        $oSetup->setNextStep( $oSetup->getStep( 'STEP_DB_CREATE' ) );
+        $oView->setViewParam("aDB", $aDB);
+        $oSetup->setNextStep($oSetup->getStep('STEP_DB_CREATE'));
+
         return "dbconnect.php";
     }
 
@@ -2219,46 +2244,50 @@ class oxSetupController extends oxSetupCore
      */
     public function dbCreate()
     {
-        $oSetup   = $this->getInstance( "oxSetup" );
-        $oSession = $this->getInstance( "oxSetupSession" );
-        $oLang    = $this->getInstance( "oxSetupLang" );
+        $oSetup = $this->getInstance("oxSetup");
+        $oSession = $this->getInstance("oxSetupSession");
+        $oLang = $this->getInstance("oxSetupLang");
 
         $oView = $this->getView();
-        $oView->setTitle( 'STEP_3_2_TITLE' );
+        $oView->setTitle('STEP_3_2_TITLE');
 
         $aDB = $oSession->getSessionParam('aDB');
-        $blOverwrite = $this->getInstance( "oxSetupUtils" )->getRequestVar( "ow", "get" );
-        if ( !isset( $blOverwrite ) ) {
+        $blOverwrite = $this->getInstance("oxSetupUtils")->getRequestVar("ow", "get");
+        if (!isset($blOverwrite)) {
             $blOverwrite = false;
         }
 
-        $oDb = $this->getInstance( "oxSetupDb" );
-        $oDb->openDatabase( $aDB );
+        $oDb = $this->getInstance("oxSetupDb");
+        $oDb->openDatabase($aDB);
 
         // testing if views can be created
         try {
             $oDb->testCreateView();
-        } catch ( Exception $oExcp ) {
+        } catch (Exception $oExcp) {
             // Views can not be created
-            $oView->setMessage( $oExcp->getMessage() );
-            $oSetup->setNextStep( $oSetup->getStep( 'STEP_DB_INFO' ) );
+            $oView->setMessage($oExcp->getMessage());
+            $oSetup->setNextStep($oSetup->getStep('STEP_DB_INFO'));
+
             return "default.php";
         }
 
         // check if DB is already UP and running
-        if ( !$blOverwrite ) {
+        if (!$blOverwrite) {
 
             try {
                 $blDbExists = true;
-                $oDb->execSql( "select * from oxconfig" );
-            } catch ( Exception $oExcp ) {
+                $oDb->execSql("select * from oxconfig");
+            } catch (Exception $oExcp) {
                 $blDbExists = false;
             }
 
-            if ( $blDbExists ) {
+            if ($blDbExists) {
                 // DB already UP ?
-                $oView->setMessage( sprintf( $oLang->getText('ERROR_DB_ALREADY_EXISTS'), $aDB['dbName'] ) .
-                                    "<br><br>" . $oLang->getText('STEP_3_2_CONTINUE_INSTALL_OVER_EXISTING_DB') . " <a href=\"index.php?sid=".$oSession->getSid()."&istep=".$oSetup->getStep('STEP_DB_CREATE')."&ow=1\" id=\"step3Continue\" style=\"text-decoration: underline;\">" . $oLang->getText('HERE') . "</a>" );
+                $oView->setMessage(
+                    sprintf($oLang->getText('ERROR_DB_ALREADY_EXISTS'), $aDB['dbName']) .
+                    "<br><br>" . $oLang->getText('STEP_3_2_CONTINUE_INSTALL_OVER_EXISTING_DB') . " <a href=\"index.php?sid=" . $oSession->getSid() . "&istep=" . $oSetup->getStep('STEP_DB_CREATE') . "&ow=1\" id=\"step3Continue\" style=\"text-decoration: underline;\">" . $oLang->getText('HERE') . "</a>"
+                );
+
                 return "default.php";
             }
         }
@@ -2266,52 +2295,56 @@ class oxSetupController extends oxSetupCore
         $sqlDir = 'sql';
 
         //settting database collation
-        $iUtfMode = isset( $aDB['iUtfMode'] )?( (int) $aDB['iUtfMode'] ):0;
-        $oDb->setMySqlCollation( $iUtfMode );
+        $iUtfMode = isset($aDB['iUtfMode']) ? ((int) $aDB['iUtfMode']) : 0;
+        $oDb->setMySqlCollation($iUtfMode);
 
         try {
-            $oDb->queryFile( "$sqlDir/database.sql" );
-        } catch ( Exception $oExcp ) {
-            $oView->setMessage( $oExcp->getMessage() );
+            $oDb->queryFile("$sqlDir/database.sql");
+        } catch (Exception $oExcp) {
+            $oView->setMessage($oExcp->getMessage());
+
             return "default.php";
         }
 
-        if ( $aDB['dbiDemoData'] == '1') {
+        if ($aDB['dbiDemoData'] == '1') {
             // install demodata
             try {
-                $oDb->queryFile( "$sqlDir/demodata.sql" );
-            } catch ( Exception $oExcp ) {
+                $oDb->queryFile("$sqlDir/demodata.sql");
+            } catch (Exception $oExcp) {
                 // there where problems with queries
-                $oView->setMessage( $oLang->getText('ERROR_BAD_DEMODATA') . "<br><br>".$oExcp->getMessage() );
+                $oView->setMessage($oLang->getText('ERROR_BAD_DEMODATA') . "<br><br>" . $oExcp->getMessage());
+
                 return "default.php";
             }
         }
 
         //swap database to english
-        if ( $oSession->getSessionParam('location_lang') != "de" ) {
+        if ($oSession->getSessionParam('location_lang') != "de") {
             try {
-                $oDb->queryFile( "$sqlDir/en.sql" );
-            } catch ( Exception $oExcp ) {
-                $oView->setMessage( $oLang->getText('ERROR_BAD_DEMODATA') . "<br><br>".$oExcp->getMessage() );
+                $oDb->queryFile("$sqlDir/en.sql");
+            } catch (Exception $oExcp) {
+                $oView->setMessage($oLang->getText('ERROR_BAD_DEMODATA') . "<br><br>" . $oExcp->getMessage());
+
                 return "default.php";
             }
         }
 
         //update dyn pages / shop country config options (from first step)
-        $oDb->saveShopSettings( array() );
+        $oDb->saveDynPagesSettings(array());
 
         //applying utf-8 specific queries
 
-        if ( $iUtfMode ) {
-            $oDb->queryFile(  "$sqlDir/latin1_to_utf8.sql" );
+        if ($iUtfMode) {
+            $oDb->queryFile("$sqlDir/latin1_to_utf8.sql");
 
             //converting oxconfig table field 'oxvarvalue' values to utf
-            $oDb->setMySqlCollation( 0 );
+            $oDb->setMySqlCollation(0);
             $oDb->convertConfigTableToUtf();
         }
 
-        $oSetup->setNextStep( $oSetup->getStep( 'STEP_DIRS_INFO' ) );
-        $oView->setMessage( $oLang->getText('STEP_3_2_CREATING_DATA') );
+        $oSetup->setNextStep($oSetup->getStep('STEP_DIRS_INFO'));
+        $oView->setMessage($oLang->getText('STEP_3_2_CREATING_DATA'));
+
         return "default.php";
     }
 
@@ -2324,96 +2357,104 @@ class oxSetupController extends oxSetupCore
     {
         $oView = $this->getView();
 
-        $oSetup   = $this->getInstance( "oxSetup" );
-        $oSession = $this->getInstance( "oxSetupSession" );
-        $oLang    = $this->getInstance( "oxSetupLang" );
-        $oUtils   = $this->getInstance( "oxSetupUtils" );
+        $oSetup = $this->getInstance("oxSetup");
+        $oSession = $this->getInstance("oxSetupSession");
+        $oLang = $this->getInstance("oxSetupLang");
+        $oUtils = $this->getInstance("oxSetupUtils");
 
-        $oView->setTitle( 'STEP_4_1_TITLE' );
+        $oView->setTitle('STEP_4_1_TITLE');
 
-        $aPath = $oUtils->getRequestVar( "aPath", "post" );
-        $aSetupConfig = $oUtils->getRequestVar( "aSetupConfig", "post" );
-        $aAdminData   = $oUtils->getRequestVar( "aAdminData", "post" );
+        $aPath = $oUtils->getRequestVar("aPath", "post");
+        $aSetupConfig = $oUtils->getRequestVar("aSetupConfig", "post");
+        $aAdminData = $oUtils->getRequestVar("aAdminData", "post");
 
         // correct them
-        $aPath['sShopURL'] = $oUtils->preparePath( $aPath['sShopURL'] );
-        $aPath['sShopDir'] = $oUtils->preparePath( $aPath['sShopDir'] );
-        $aPath['sCompileDir'] = $oUtils->preparePath( $aPath['sCompileDir'] );
-        $aPath['sBaseUrlPath'] = $oUtils->extractRewriteBase( $aPath['sShopURL'] );
+        $aPath['sShopURL'] = $oUtils->preparePath($aPath['sShopURL']);
+        $aPath['sShopDir'] = $oUtils->preparePath($aPath['sShopDir']);
+        $aPath['sCompileDir'] = $oUtils->preparePath($aPath['sCompileDir']);
+        $aPath['sBaseUrlPath'] = $oUtils->extractRewriteBase($aPath['sShopURL']);
 
         // using same array to pass additional setup variable
-        if ( isset( $aSetupConfig['blDelSetupDir']) && $aSetupConfig['blDelSetupDir'] ) {
+        if (isset($aSetupConfig['blDelSetupDir']) && $aSetupConfig['blDelSetupDir']) {
             $aSetupConfig['blDelSetupDir'] = 1;
         } else {
             $aSetupConfig['blDelSetupDir'] = 0;
         }
 
-        $oSession->setSessionParam('aPath', $aPath );
-        $oSession->setSessionParam('aSetupConfig', $aSetupConfig );
-        $oSession->setSessionParam( 'aAdminData', $aAdminData );
+        $oSession->setSessionParam('aPath', $aPath);
+        $oSession->setSessionParam('aSetupConfig', $aSetupConfig);
+        $oSession->setSessionParam('aAdminData', $aAdminData);
 
         // check if important parameters are set
-        if ( !$aPath['sShopURL'] || !$aPath['sShopDir'] || !$aPath['sCompileDir'] ||
-             !$aAdminData['sLoginName'] || !$aAdminData['sPassword'] || !$aAdminData['sPasswordConfirm'] ) {
-            $oSetup->setNextStep( $oSetup->getStep( 'STEP_DIRS_INFO' ) );
-            $oView->setMessage( $oLang->getText('ERROR_FILL_ALL_FIELDS') );
+        if (!$aPath['sShopURL'] || !$aPath['sShopDir'] || !$aPath['sCompileDir'] ||
+            !$aAdminData['sLoginName'] || !$aAdminData['sPassword'] || !$aAdminData['sPasswordConfirm']
+        ) {
+            $oSetup->setNextStep($oSetup->getStep('STEP_DIRS_INFO'));
+            $oView->setMessage($oLang->getText('ERROR_FILL_ALL_FIELDS'));
+
             return "default.php";
         }
 
         // check if passwords match
-        if ( strlen( $aAdminData['sPassword'] ) < 6 ) {
-            $oSetup->setNextStep( $oSetup->getStep( 'STEP_DIRS_INFO' ) );
-            $oView->setMessage( $oLang->getText('ERROR_PASSWORD_TOO_SHORT') );
+        if (strlen($aAdminData['sPassword']) < 6) {
+            $oSetup->setNextStep($oSetup->getStep('STEP_DIRS_INFO'));
+            $oView->setMessage($oLang->getText('ERROR_PASSWORD_TOO_SHORT'));
+
             return "default.php";
         }
 
         // check if passwords match
-        if ( $aAdminData['sPassword'] != $aAdminData['sPasswordConfirm'] ) {
-            $oSetup->setNextStep( $oSetup->getStep( 'STEP_DIRS_INFO' ) );
-            $oView->setMessage( $oLang->getText('ERROR_PASSWORDS_DO_NOT_MATCH') );
+        if ($aAdminData['sPassword'] != $aAdminData['sPasswordConfirm']) {
+            $oSetup->setNextStep($oSetup->getStep('STEP_DIRS_INFO'));
+            $oView->setMessage($oLang->getText('ERROR_PASSWORDS_DO_NOT_MATCH'));
+
             return "default.php";
         }
 
         // check if email matches pattern
-        if ( !$oUtils->isValidEmail( $aAdminData['sLoginName'] ) ) {
-            $oSetup->setNextStep( $oSetup->getStep( 'STEP_DIRS_INFO' ) );
-            $oView->setMessage( $oLang->getText('ERROR_USER_NAME_DOES_NOT_MATCH_PATTERN') );
+        if (!$oUtils->isValidEmail($aAdminData['sLoginName'])) {
+            $oSetup->setNextStep($oSetup->getStep('STEP_DIRS_INFO'));
+            $oView->setMessage($oLang->getText('ERROR_USER_NAME_DOES_NOT_MATCH_PATTERN'));
+
             return "default.php";
         }
 
         try {
             // creating admin user
-            $this->getInstance( "oxSetupDb" )->writeAdminLoginData( $aAdminData['sLoginName'], $aAdminData['sPassword'] );
-            $oUtils->checkPaths( $aPath );
-        } catch ( Exception $oExcp ) {
-            $oView->setMessage( $oExcp->getMessage() );
+            $this->getInstance("oxSetupDb")->writeAdminLoginData($aAdminData['sLoginName'], $aAdminData['sPassword']);
+            $oUtils->checkPaths($aPath);
+        } catch (Exception $oExcp) {
+            $oView->setMessage($oExcp->getMessage());
+
             return "default.php";
         }
 
         // write it now
         try {
-            $aParams = array_merge( ( array ) $oSession->getSessionParam('aDB'), $aPath );
+            $aParams = array_merge(( array ) $oSession->getSessionParam('aDB'), $aPath);
 
             // updating config file
-            $oUtils->updateConfigFile( $aParams );
+            $oUtils->updateConfigFile($aParams);
 
             // updating regular htaccess file
-            $oUtils->updateHtaccessFile( $aParams );
+            $oUtils->updateHtaccessFile($aParams);
 
             // updating admin htaccess file
             //$oUtils->updateHtaccessFile( $aParams, "admin" );
-        } catch ( Exception $oExcp ) {
-            $oSetup->setNextStep( $oSetup->getStep( 'STEP_DIRS_INFO' ) );
-            $oView->setMessage( $oExcp->getMessage() );
+        } catch (Exception $oExcp) {
+            $oSetup->setNextStep($oSetup->getStep('STEP_DIRS_INFO'));
+            $oView->setMessage($oExcp->getMessage());
+
             return "default.php";
         }
 
 
-            $oSetup->setNextStep( $oSetup->getStep( 'STEP_FINISH' ) );
+            $oSetup->setNextStep($oSetup->getStep('STEP_FINISH'));
 
-        $oView->setMessage( $oLang->getText('STEP_4_1_DATA_WAS_WRITTEN' ) );
-        $oView->setViewParam( "aPath", $aPath );
-        $oView->setViewParam( "aSetupConfig", $aSetupConfig );
+        $oView->setMessage($oLang->getText('STEP_4_1_DATA_WAS_WRITTEN'));
+        $oView->setViewParam("aPath", $aPath);
+        $oView->setViewParam("aSetupConfig", $aSetupConfig);
+
         return "default.php";
     }
 
@@ -2425,14 +2466,15 @@ class oxSetupController extends oxSetupCore
      */
     public function finish()
     {
-        $oSession = $this->getInstance( "oxSetupSession" );
-        $aPath = $oSession->getSessionParam( "aPath" );
+        $oSession = $this->getInstance("oxSetupSession");
+        $aPath = $oSession->getSessionParam("aPath");
 
         $oView = $this->getView();
-        $oView->setTitle( "STEP_6_TITLE" );
-        $oView->setViewParam( "aPath", $aPath );
-        $oView->setViewParam( "aSetupConfig", $oSession->getSessionParam( "aSetupConfig" ) );
-        $oView->setViewParam( "blWritableConfig", is_writable( $aPath['sShopDir']."/config.inc.php" ) );
+        $oView->setTitle("STEP_6_TITLE");
+        $oView->setViewParam("aPath", $aPath);
+        $oView->setViewParam("aSetupConfig", $oSession->getSessionParam("aSetupConfig"));
+        $oView->setViewParam("blWritableConfig", is_writable($aPath['sShopDir'] . "/config.inc.php"));
+
         return "finish.php";
     }
 }
@@ -2442,6 +2484,7 @@ class oxSetupController extends oxSetupCore
  */
 class oxSetupDispatcher extends oxSetupCore
 {
+
     /**
      * Executes current controller action
      *
@@ -2453,10 +2496,10 @@ class oxSetupDispatcher extends oxSetupCore
         $sAction = $this->_chooseCurrentAction();
 
         // executing action which returns name of template to render
-        $oController = $this->getInstance( "oxSetupController" );
+        $oController = $this->getInstance("oxSetupController");
 
         // displaying output
-        $oController->getView()->display( $oController->$sAction() );
+        $oController->getView()->display($oController->$sAction());
     }
 
     /**
@@ -2466,17 +2509,18 @@ class oxSetupDispatcher extends oxSetupCore
      */
     protected function _chooseCurrentAction()
     {
-        $oSetup = $this->getInstance( "oxSetup" );
+        $oSetup = $this->getInstance("oxSetup");
         $iCurrStep = $oSetup->getCurrentStep();
 
         $sName = null;
-        foreach ( $oSetup->getSteps() as $sStepName => $sStepId ) {
-            if ( $sStepId == $iCurrStep ) {
-                $sActionName = str_ireplace( "step_", "", $sStepName );
-                $sName = str_replace( "_", "", $sActionName );
+        foreach ($oSetup->getSteps() as $sStepName => $sStepId) {
+            if ($sStepId == $iCurrStep) {
+                $sActionName = str_ireplace("step_", "", $sStepName);
+                $sName = str_replace("_", "", $sActionName);
                 break;
             }
         }
+
         return $sName;
     }
 }
@@ -2486,6 +2530,7 @@ class oxSetupDispatcher extends oxSetupCore
  */
 class oxSetupAps extends oxSetupCore
 {
+
     /**
      * Unknown setup command
      *
@@ -2500,9 +2545,9 @@ class oxSetupAps extends oxSetupCore
      *
      * @return null
      */
-    public function execute( $sCommand )
+    public function execute($sCommand)
     {
-        switch ( $sCommand ) {
+        switch ($sCommand) {
             case "install":
                 $this->install();
                 break;
@@ -2516,7 +2561,7 @@ class oxSetupAps extends oxSetupCore
                 $this->upgrade();
                 break;
             default:
-                throw new Exception( "Error: unknown command $sCommand.\n", oxSetupAps::ERROR_UNKNOWN_COMMAND );
+                throw new Exception("Error: unknown command $sCommand.\n", oxSetupAps::ERROR_UNKNOWN_COMMAND);
                 break;
         }
     }
@@ -2528,107 +2573,107 @@ class oxSetupAps extends oxSetupCore
      */
     public function install()
     {
-        $oUtils = $this->getInstance( "oxSetupUtils" );
+        $oUtils = $this->getInstance("oxSetupUtils");
 
         // --
         // collecting data
 
         // db host
-        $sDbPort = $oUtils->getEnvVar( "DB_main_PORT" );
-        $aParams['dbHost'] = $oUtils->getEnvVar( "DB_main_HOST" ) . ( $sDbPort ? ":".$sDbPort : "" );
+        $sDbPort = $oUtils->getEnvVar("DB_main_PORT");
+        $aParams['dbHost'] = $oUtils->getEnvVar("DB_main_HOST") . ($sDbPort ? ":" . $sDbPort : "");
 
         // db user
-        $aParams['dbUser'] = $oUtils->getEnvVar( "DB_main_LOGIN" );
+        $aParams['dbUser'] = $oUtils->getEnvVar("DB_main_LOGIN");
 
         // db pass
-        $aParams['dbPwd']  = $oUtils->getEnvVar( "DB_main_PASSWORD" );
+        $aParams['dbPwd'] = $oUtils->getEnvVar("DB_main_PASSWORD");
 
         // db name
-        $aParams['dbName'] = $oUtils->getEnvVar( "DB_main_NAME" );
+        $aParams['dbName'] = $oUtils->getEnvVar("DB_main_NAME");
 
         // install demo data ?
-        $blInstallDemoData = $oUtils->getEnvVar( "SETTINGS_install_demodata" );
+        $blInstallDemoData = $oUtils->getEnvVar("SETTINGS_install_demodata");
 
         // utf mode?
-        $aParams['iUtfMode'] = $iUtfMode = (int) $oUtils->getEnvVar( "SETTINGS_utf8_mode" );
+        $aParams['iUtfMode'] = $iUtfMode = (int) $oUtils->getEnvVar("SETTINGS_utf8_mode");
 
         // shop url
-        $aParams["sShopURL"] = rtrim( $oUtils->getEnvVar( "BASE_URL_HOST" ), "/" );
-        if ( ( strpos( $aParams["sShopURL"], 'http://' ) || strpos( $aParams["sShopURL"], 'https://' ) ) === false ) {
-            $aParams["sShopURL"] = rtrim( $oUtils->getEnvVar( "BASE_URL_SCHEME" ), "://" )."://".$aParams["sShopURL"];
+        $aParams["sShopURL"] = rtrim($oUtils->getEnvVar("BASE_URL_HOST"), "/");
+        if ((strpos($aParams["sShopURL"], 'http://') || strpos($aParams["sShopURL"], 'https://')) === false) {
+            $aParams["sShopURL"] = rtrim($oUtils->getEnvVar("BASE_URL_SCHEME"), "://") . "://" . $aParams["sShopURL"];
         }
 
-        $aParams["sBaseUrlPath"] = $oUtils->getEnvVar( "BASE_URL_PATH" );
-        if ( $aParams["sBaseUrlPath"] && ( $aParams["sBaseUrlPath"] = trim( $aParams["sBaseUrlPath"] ) ) ) {
-            $aParams["sShopURL"] .= "/".rtrim( $aParams["sBaseUrlPath"], "/" );
+        $aParams["sBaseUrlPath"] = $oUtils->getEnvVar("BASE_URL_PATH");
+        if ($aParams["sBaseUrlPath"] && ($aParams["sBaseUrlPath"] = trim($aParams["sBaseUrlPath"]))) {
+            $aParams["sShopURL"] .= "/" . rtrim($aParams["sBaseUrlPath"], "/");
         }
 
         // install path
         $aParams["sShopDir"] = getInstallPath();
 
         // temp file folder
-        $aParams["sCompileDir"] = $aParams["sShopDir"]."tmp";
+        $aParams["sCompileDir"] = $aParams["sShopDir"] . "tmp";
 
         // check for updates?
-        $aParams["check_for_updates"] = $oUtils->getEnvVar( "SETTINGS_check_for_updates" );
+        $aParams["check_for_updates"] = $oUtils->getEnvVar("SETTINGS_check_for_updates");
 
         // default country language
-        $aParams["setup_lang"] = $oUtils->getEnvVar( "SETTINGS_location_lang" );
-        $aParams["location_lang"] = $oUtils->getEnvVar( "SETTINGS_location_lang" );
-        $aParams["country_lang"] = $oUtils->getEnvVar( "SETTINGS_country_lang" );
+        $aParams["setup_lang"] = $oUtils->getEnvVar("SETTINGS_location_lang");
+        $aParams["location_lang"] = $oUtils->getEnvVar("SETTINGS_location_lang");
+        $aParams["country_lang"] = $oUtils->getEnvVar("SETTINGS_country_lang");
 
         // enable dyn content?
-        $aParams["use_dyn_pages"] = (int) $oUtils->getEnvVar( "SETTINGS_use_dynamic_pages" );
+        $aParams["use_dyn_pages"] = (int) $oUtils->getEnvVar("SETTINGS_use_dynamic_pages");
 
         // --
         // installing
 
         // db connection instance
-        $oDb = $this->getInstance( "oxSetupDb" );
+        $oDb = $this->getInstance("oxSetupDb");
 
         // initializing connection
-        $oDb->openDatabase( $aParams );
+        $oDb->openDatabase($aParams);
 
         // setting connection collation
-        $oDb->setMySqlCollation( $iUtfMode );
+        $oDb->setMySqlCollation($iUtfMode);
 
         // setupping db
-        $oDb->queryFile( "database.sql" );
+        $oDb->queryFile("database.sql");
 
         // install demo data?
-        if ( $blInstallDemoData ) {
-            $oDb->queryFile( "demodata.sql" );
+        if ($blInstallDemoData) {
+            $oDb->queryFile("demodata.sql");
         }
 
         //swap database to english
-        if ( $aParams["location_lang"] != "de" ) {
-            $oDb->queryFile( "en.sql" );
+        if ($aParams["location_lang"] != "de") {
+            $oDb->queryFile("en.sql");
         }
 
         //update dyn pages / shop country config options (from first step)
-        $oDb->saveShopSettings( $aParams );
+        $oDb->saveDynPagesSettings($aParams);
 
         //applying utf-8 specific queries
-        if ( $iUtfMode ) {
-            $oDb->queryFile(  "latin1_to_utf8.sql" );
+        if ($iUtfMode) {
+            $oDb->queryFile("latin1_to_utf8.sql");
 
             // setting connection collation
-            $oDb->setMySqlCollation( 0 );
+            $oDb->setMySqlCollation(0);
 
             //converting oxconfig table field 'oxvarvalue' values to utf
             $oDb->convertConfigTableToUtf();
         }
 
         // updating admin user
-        $oDb->writeAdminLoginData( $oUtils->getEnvVar( "SETTINGS_admin_user_name" ), $oUtils->getEnvVar( "SETTINGS_admin_user_password" ) );
+        $oDb->writeAdminLoginData($oUtils->getEnvVar("SETTINGS_admin_user_name"), $oUtils->getEnvVar("SETTINGS_admin_user_password"));
 
         // testing install paths
-        $oUtils->checkPaths( $aParams );
+        $oUtils->checkPaths($aParams);
 
         // updating config file
-        $oUtils->updateConfigFile( $aParams );
+        $oUtils->updateConfigFile($aParams);
 
-        $oUtils->updateHtaccessFile( $aParams );
+        $oUtils->updateHtaccessFile($aParams);
 
     }
 
@@ -2640,11 +2685,11 @@ class oxSetupAps extends oxSetupCore
     public function remove()
     {
         // cleanup and remove tmp folder
-        $oUtils = $this->getInstance( "oxSetupUtils" );
+        $oUtils = $this->getInstance("oxSetupUtils");
 
-        $sCompileDir = getInstallPath()."tmp/";
+        $sCompileDir = getInstallPath() . "tmp/";
 
-        $oUtils->removeDir( $sCompileDir, true );
+        $oUtils->removeDir($sCompileDir, true);
 
         // seems like APS removes rest of files/db itself
         return;
@@ -2686,7 +2731,7 @@ class oxSetupAps extends oxSetupCore
      */
     public function configure()
     {
-        $oUtils = $this->getInstance( "oxSetupUtils" );
+        $oUtils = $this->getInstance("oxSetupUtils");
 
         // --
         // collecting data
@@ -2703,41 +2748,45 @@ class oxSetupAps extends oxSetupCore
         //
         // db host
         $sDbPort = $oUtils->getEnvVar("DB_main_PORT");
-        $aDbParams['dbHost'] = $oUtils->getEnvVar( "DB_main_HOST" ) . ( $sDbPort ? ":".$sDbPort : "" );
+        $aDbParams['dbHost'] = $oUtils->getEnvVar("DB_main_HOST") . ($sDbPort ? ":" . $sDbPort : "");
 
         // db user
-        $aDbParams['dbUser'] = $oUtils->getEnvVar( "DB_main_LOGIN" );
+        $aDbParams['dbUser'] = $oUtils->getEnvVar("DB_main_LOGIN");
 
         // db pass
-        $aDbParams['dbPwd']  = $oUtils->getEnvVar( "DB_main_PASSWORD" );
+        $aDbParams['dbPwd'] = $oUtils->getEnvVar("DB_main_PASSWORD");
 
         // db name
-        $aDbParams['dbName'] = $oUtils->getEnvVar( "DB_main_NAME" );
+        $aDbParams['dbName'] = $oUtils->getEnvVar("DB_main_NAME");
 
         // db connection instance
-        $oDb = $this->getInstance( "oxSetupDb" );
+        $oDb = $this->getInstance("oxSetupDb");
 
         // initializing connection
-        $oDb->openDatabase( $aDbParams );
+        $oDb->openDatabase($aDbParams);
 
         // check for updates?
-        $blCheckForUpdates = ( bool ) $oUtils->getEnvVar( "SETTINGS_check_for_updates" );
+        $blCheckForUpdates = ( bool ) $oUtils->getEnvVar("SETTINGS_check_for_updates");
 
         // enable dyn content?
-        $blUseDynPages = (int) $oUtils->getEnvVar( "SETTINGS_use_dynamic_pages" );
+        $blUseDynPages = (int) $oUtils->getEnvVar("SETTINGS_use_dynamic_pages");
 
-        $sBaseShopId = $this->getInstance( "oxSetup" )->getShopId();
+        $sBaseShopId = $this->getInstance("oxSetup")->getShopId();
         $oConfk = new Conf();
 
-        $oDb->execSql( "delete from oxconfig where oxvarname = 'blCheckForUpdates'" );
-        $oDb->execSql( "delete from oxconfig where oxvarname = 'blLoadDynContents'" );
+        $oDb->execSql("delete from oxconfig where oxvarname = 'blCheckForUpdates'");
+        $oDb->execSql("delete from oxconfig where oxvarname = 'blLoadDynContents'");
         $sUid = $oUtils->generateUid();
-        $oDb->execSql( "insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue)
-                                 values('$sUid', '$sBaseShopId', 'blCheckForUpdates', 'bool', ENCODE( '$blCheckForUpdates', '".$oConfk->sConfigKey."'))" );
+        $oDb->execSql(
+            "insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue)
+                                 values('$sUid', '$sBaseShopId', 'blCheckForUpdates', 'bool', ENCODE( '$blCheckForUpdates', '" . $oConfk->sConfigKey . "'))"
+        );
 
         $sUid = $oUtils->generateUid();
-        $oDb->execSql( "insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue)
-                                 values('$sUid', '$sBaseShopId', 'blLoadDynContents', 'bool', ENCODE( '$blUseDynPages', '".$oConfk->sConfigKey."'))" );
+        $oDb->execSql(
+            "insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue)
+                                 values('$sUid', '$sBaseShopId', 'blLoadDynContents', 'bool', ENCODE( '$blUseDynPages', '" . $oConfk->sConfigKey . "'))"
+        );
         // updating config file
         //$oUtils->updateConfigFile( $aParams );
     }

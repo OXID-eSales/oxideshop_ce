@@ -46,15 +46,15 @@ class Theme_Main extends oxAdminDetails
         }
 
         if ($oTheme->load($soxId)) {
-            $this->_aViewData["oTheme"] =  $oTheme;
+            $this->_aViewData["oTheme"] = $oTheme;
         } else {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay( oxNew( "oxException", 'EXCEPTION_THEME_NOT_LOADED') );
+            oxRegistry::get("oxUtilsView")->addErrorToDisplay(oxNew("oxException", 'EXCEPTION_THEME_NOT_LOADED'));
         }
 
         parent::render();
 
-        if ( $this->themeInConfigFile() ) {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay( 'EXCEPTION_THEME_SHOULD_BE_ONLY_IN_DATABASE' );
+        if ($this->themeInConfigFile()) {
+            oxRegistry::get("oxUtilsView")->addErrorToDisplay('EXCEPTION_THEME_SHOULD_BE_ONLY_IN_DATABASE');
         }
 
         return 'theme_main.tpl';
@@ -67,12 +67,13 @@ class Theme_Main extends oxAdminDetails
      */
     public function themeInConfigFile()
     {
-        $blThemeSet = isset( $this->getConfig()->sTheme );
-        $blCustomThemeSet = isset( $this->getConfig()->sCustomTheme );
+        $blThemeSet = isset($this->getConfig()->sTheme);
+        $blCustomThemeSet = isset($this->getConfig()->sCustomTheme);
         
-        if ( $blThemeSet || $blCustomThemeSet ) {
+        if ($blThemeSet || $blCustomThemeSet) {
             return true;
         }
+
         return false;
     }
 
@@ -88,14 +89,15 @@ class Theme_Main extends oxAdminDetails
         /** @var oxTheme $oTheme */
         $oTheme = oxNew('oxtheme');
         if (!$oTheme->load($sTheme)) {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay( oxNew( "oxException", 'EXCEPTION_THEME_NOT_LOADED') );
+            oxRegistry::get("oxUtilsView")->addErrorToDisplay(oxNew("oxException", 'EXCEPTION_THEME_NOT_LOADED'));
+
             return;
         }
         try {
             $oTheme->activate();
             $this->resetContentCache();
         } catch (oxException $oEx) {
-            oxRegistry::get("oxUtilsView")->addErrorToDisplay( $oEx );
+            oxRegistry::get("oxUtilsView")->addErrorToDisplay($oEx);
             $oEx->debugOut();
         }
     }

@@ -27,6 +27,7 @@
  */
 class oxContentList extends oxList
 {
+
     /**
      * Information content type
      *
@@ -60,14 +61,14 @@ class oxContentList extends oxList
      *
      * @var array
      */
-    protected $_aServiceKeys = array( 'oximpressum', 'oxagb', 'oxsecurityinfo', 'oxdeliveryinfo', 'oxrightofwithdrawal', 'oxorderinfo', 'oxcredits' );
+    protected $_aServiceKeys = array('oximpressum', 'oxagb', 'oxsecurityinfo', 'oxdeliveryinfo', 'oxrightofwithdrawal', 'oxorderinfo', 'oxcredits');
 
     /**
      * Sets service keys.
      *
      * @param array $aServiceKeys
      */
-    public function setServiceKeys( $aServiceKeys )
+    public function setServiceKeys($aServiceKeys)
     {
         $this->_aServiceKeys = $aServiceKeys;
     }
@@ -97,7 +98,7 @@ class oxContentList extends oxList
      */
     public function loadMainMenulist()
     {
-        $this->_load( self::TYPE_MAIN_MENU_LIST );
+        $this->_load(self::TYPE_MAIN_MENU_LIST);
     }
 
     /**
@@ -105,13 +106,13 @@ class oxContentList extends oxList
      */
     public function loadCatMenues()
     {
-        $this->_load( self::TYPE_CATEGORY_MENU );
+        $this->_load(self::TYPE_CATEGORY_MENU);
         $aArray = array();
 
-        if ( $this->count() ) {
-            foreach ( $this as $oContent ) {
+        if ($this->count()) {
+            foreach ($this as $oContent) {
                 // add into category tree
-                if ( !isset( $aArray[$oContent->getCategoryId()] ) ) {
+                if (!isset($aArray[$oContent->getCategoryId()])) {
                     $aArray[$oContent->getCategoryId()] = array();
                 }
 
@@ -130,10 +131,10 @@ class oxContentList extends oxList
      *
      * @return array
      */
-    protected function _loadFromDb( $iType )
+    protected function _loadFromDb($iType)
     {
-        $sSql = $this->_getSQLByType( $iType );
-        $aData = oxDb::getDb( oxDb::FETCH_MODE_ASSOC )->getAll( $sSql );
+        $sSql = $this->_getSQLByType($iType);
+        $aData = oxDb::getDb(oxDb::FETCH_MODE_ASSOC)->getAll($sSql);
 
         return $aData;
     }
@@ -145,12 +146,12 @@ class oxContentList extends oxList
      *
      * @return null
      */
-    protected function _load( $iType )
+    protected function _load($iType)
     {
 
-            $aData = $this->_loadFromDb( $iType );
+            $aData = $this->_loadFromDb($iType);
 
-        $this->assignArray( $aData );
+        $this->assignArray($aData);
     }
 
 
@@ -161,7 +162,7 @@ class oxContentList extends oxList
      */
     public function loadServices()
     {
-        $this->_load( self::TYPE_SERVICE_LIST );
+        $this->_load(self::TYPE_SERVICE_LIST);
         $this->_extractListToArray();
     }
 
@@ -171,7 +172,7 @@ class oxContentList extends oxList
     protected function _extractListToArray()
     {
         $aExtractedContents = array();
-        foreach ( $this as $oContent ) {
+        foreach ($this as $oContent) {
             $aExtractedContents[$oContent->getLoadId()] = $oContent;
         }
 
@@ -185,23 +186,23 @@ class oxContentList extends oxList
      *
      * @return string
      */
-    protected function _getSQLByType( $iType )
+    protected function _getSQLByType($iType)
     {
         $sSQLAdd = '';
         $oDb = oxDb::getDb();
-        $sSQLType = " AND `oxtype` = " . $oDb->quote( $iType );
+        $sSQLType = " AND `oxtype` = " . $oDb->quote($iType);
 
-        if ( $iType == self::TYPE_CATEGORY_MENU ) {
+        if ($iType == self::TYPE_CATEGORY_MENU) {
             $sSQLAdd = " AND `oxcatid` IS NOT NULL AND `oxsnippet` = '0'";
         }
 
-        if ( $iType == self::TYPE_SERVICE_LIST ) {
-            $sIdents = implode( ", ", oxDb::getInstance()->quoteArray( $this->getServiceKeys() ) );
+        if ($iType == self::TYPE_SERVICE_LIST) {
+            $sIdents = implode(", ", oxDb::getInstance()->quoteArray($this->getServiceKeys()));
             $sSQLAdd = " AND OXLOADID IN (" . $sIdents . ")";
             $sSQLType = '';
         }
         $sViewName = $this->getBaseObject()->getViewName();
-        $sSql = "SELECT * FROM {$sViewName} WHERE `oxactive` = '1' $sSQLType AND `oxshopid` = " . $oDb->quote( $this->_sShopID ) . " $sSQLAdd ORDER BY `oxloadid`";
+        $sSql = "SELECT * FROM {$sViewName} WHERE `oxactive` = '1' $sSQLType AND `oxshopid` = " . $oDb->quote($this->_sShopID) . " $sSQLAdd ORDER BY `oxloadid`";
 
         return $sSql;
     }

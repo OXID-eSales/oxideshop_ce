@@ -25,6 +25,7 @@
  */
 class oxOnlineVatIdCheck extends oxCompanyVatInChecker
 {
+
     /**
      * Keeps service check state
      *
@@ -65,14 +66,14 @@ class oxOnlineVatIdCheck extends oxCompanyVatInChecker
     {
     }
 
-    public function validate( oxCompanyVatIn $oVatIn )
+    public function validate(oxCompanyVatIn $oVatIn)
     {
         $oCheckVat = new stdClass();
         $oCheckVat->countryCode = $oVatIn->getCountryCode();
-        $oCheckVat->vatNumber   = $oVatIn->getNumbers();
+        $oCheckVat->vatNumber = $oVatIn->getNumbers();
 
-        $blResult = $this->_checkOnline( $oCheckVat );
-        if( !$blResult ) {
+        $blResult = $this->_checkOnline($oCheckVat);
+        if (!$blResult) {
             $this->setError('ID_NOT_VALID');
         }
 
@@ -86,19 +87,19 @@ class oxOnlineVatIdCheck extends oxCompanyVatInChecker
      *
      * @param string $sErrorMsg error message
      */
-    protected function _parseError( $sErrorMsg )
+    protected function _parseError($sErrorMsg)
     {
-        if ( !$sErrorMsg || $sErrorMsg == 'INVALID_INPUT') {
+        if (!$sErrorMsg || $sErrorMsg == 'INVALID_INPUT') {
             /** @var oxInputException $oEx */
-            $oEx = oxNew( 'oxInputException' );
-            $oEx->setMessage( 'VAT_MESSAGE_' . ( $sErrorMsg ? $sErrorMsg : 'ID_NOT_VALID' ) );
+            $oEx = oxNew('oxInputException');
+            $oEx->setMessage('VAT_MESSAGE_' . ($sErrorMsg ? $sErrorMsg : 'ID_NOT_VALID'));
             throw $oEx;
         }
 
         /** @var oxConnectionException $oEx */
-        $oEx = oxNew( 'oxConnectionException' );
-        $oEx->setAdress( $this->getWsdlUrl() );
-        $oEx->setMessage( 'VAT_MESSAGE_' . $sErrorMsg );
+        $oEx = oxNew('oxConnectionException');
+        $oEx->setAdress($this->getWsdlUrl());
+        $oEx->setMessage('VAT_MESSAGE_' . $sErrorMsg);
         $oEx->debugOut();
         throw $oEx;
     }
@@ -114,26 +115,27 @@ class oxOnlineVatIdCheck extends oxCompanyVatInChecker
      * @throws oxInputException, oxConnectionException
      * @return bool
      */
-    public function checkUid( $sCompVatId )
+    public function checkUid($sCompVatId)
     {
-        if ( isset( self::$_aVatCheckCache[$sCompVatId] ) ) {
-            if ( true === self::$_aVatCheckCache[$sCompVatId] ) {
+        if (isset(self::$_aVatCheckCache[$sCompVatId])) {
+            if (true === self::$_aVatCheckCache[$sCompVatId]) {
                 return true;
             }
-            if ( is_string( self::$_aVatCheckCache[$sCompVatId] ) ) {
-                $this->_parseError( self::$_aVatCheckCache[$sCompVatId] );
+            if (is_string(self::$_aVatCheckCache[$sCompVatId])) {
+                $this->_parseError(self::$_aVatCheckCache[$sCompVatId]);
             }
+
             return false;
         }
 
         $oCheckVat = new stdClass();
-        $oCheckVat->countryCode = substr( $sCompVatId, 0, 2);
-        $oCheckVat->vatNumber   = substr( $sCompVatId, 2);
+        $oCheckVat->countryCode = substr($sCompVatId, 0, 2);
+        $oCheckVat->vatNumber = substr($sCompVatId, 2);
 
-        if ( !$this->_checkOnline( $oCheckVat ) ) {
+        if (!$this->_checkOnline($oCheckVat)) {
             $sErrorMsg = $this->_getError();
             self::$_aVatCheckCache[$sCompVatId] = $sErrorMsg;
-            $this->_parseError( $sErrorMsg );
+            $this->_parseError($sErrorMsg);
         }
 
         return self::$_aVatCheckCache[$sCompVatId] = true;
@@ -150,17 +152,17 @@ class oxOnlineVatIdCheck extends oxCompanyVatInChecker
      *
      * @return bool
      */
-    public function catchWarning( $iErrNo, $sErrStr, $sErrFile, $iErrLine )
+    public function catchWarning($iErrNo, $sErrStr, $sErrFile, $iErrLine)
     {
         // message to write to exception log
         $sLogMessage = "Warning: $sErrStr in $sErrFile on line $iErrLine";
 
         // fetching exception log file name
-        $oEx = oxNew( "oxException" );
+        $oEx = oxNew("oxException");
         $sLogFileName = $oEx->getLogFileName();
 
         // logs error message
-        return oxRegistry::getUtils()->writeToLog( $sLogMessage, $sLogFileName );
+        return oxRegistry::getUtils()->writeToLog($sLogMessage, $sLogFileName);
     }
 
     /**
@@ -173,33 +175,34 @@ class oxOnlineVatIdCheck extends oxCompanyVatInChecker
      */
     protected function _isServiceAvailable()
     {
-        if ( $this->_blServiceIsOn === null ) {
-            $this->_blServiceIsOn = class_exists( 'SoapClient' ) ? true : false;
-            if ( $this->_blServiceIsOn ) {
-                $rFp = @fopen( $this->getWsdlUrl(), 'r' );
+        if ($this->_blServiceIsOn === null) {
+            $this->_blServiceIsOn = class_exists('SoapClient') ? true : false;
+            if ($this->_blServiceIsOn) {
+                $rFp = @fopen($this->getWsdlUrl(), 'r');
                 $this->_blServiceIsOn = $rFp !== false;
-                if ( $this->_blServiceIsOn ) {
+                if ($this->_blServiceIsOn) {
                     $sWsdl = '';
-                    while ( !feof( $rFp ) ) {
-                      $sWsdl .= fread( $rFp, 8192 );
+                    while (!feof($rFp)) {
+                        $sWsdl .= fread($rFp, 8192);
                     }
-                    fclose( $rFp );
+                    fclose($rFp);
 
                     // validating wsdl file
                     try {
                         $oDomDocument = new DOMDocument();
-                        $oDomDocument->loadXML( $sWsdl );
-                    } catch ( Exception $oExcp ) {
+                        $oDomDocument->loadXML($sWsdl);
+                    } catch (Exception $oExcp) {
                         // invalid xml
                         $this->_blServiceIsOn = false;
                     }
                 }
             }
         }
+
         return $this->_blServiceIsOn;
     }
 
-     /**
+    /**
      * Checks online if USt.ID number is valid.
      * Returns true on success. On error sets error value.
      *
@@ -207,9 +210,9 @@ class oxOnlineVatIdCheck extends oxCompanyVatInChecker
      *
      * @return bool
      */
-    protected function _checkOnline( $oCheckVat )
+    protected function _checkOnline($oCheckVat)
     {
-        if ( $this->_isServiceAvailable() ) {
+        if ($this->_isServiceAvailable()) {
             $iTryMoreCnt = self::BUSY_RETRY_CNT;
 
             //T2009-07-02
@@ -217,30 +220,32 @@ class oxOnlineVatIdCheck extends oxCompanyVatInChecker
             ini_set('default_socket_timeout', 5);
 
             // setting local error handler to catch possible soap errors
-            set_error_handler( array( $this, 'catchWarning' ), E_WARNING );
+            set_error_handler(array($this, 'catchWarning'), E_WARNING);
 
             do {
                 try {
                     //connection_timeout = how long we should wait to CONNECT to wsdl server
-                    $oSoapClient = new SoapClient( $this->getWsdlUrl(), array( "connection_timeout" =>5 ) );
+                    $oSoapClient = new SoapClient($this->getWsdlUrl(), array("connection_timeout" => 5));
                     $this->setError('');
-                    $oRes = $oSoapClient->checkVat( $oCheckVat );
+                    $oRes = $oSoapClient->checkVat($oCheckVat);
                     $iTryMoreCnt = 0;
-                } catch ( SoapFault $e ) {
+                } catch (SoapFault $e) {
                     $this->setError($e->faultstring);
-                    if ( $this->getError() == "SERVER_BUSY" ) {
-                        usleep( self::BUSY_RETRY_WAITUSEC );
+                    if ($this->getError() == "SERVER_BUSY") {
+                        usleep(self::BUSY_RETRY_WAITUSEC);
                     } else {
                         $iTryMoreCnt = 0;
                     }
                 }
-            } while ( 0 < $iTryMoreCnt-- );
+            } while (0 < $iTryMoreCnt--);
 
             // restoring previous error handler
             restore_error_handler();
+
             return (bool) $oRes->valid;
         } else {
             $this->setError("SERVICE_UNREACHABLE");
+
             return false;
         }
     }
@@ -255,11 +260,12 @@ class oxOnlineVatIdCheck extends oxCompanyVatInChecker
     protected function _getError()
     {
         $sError = '';
-        if ( $this->_sError ) {
+        if ($this->_sError) {
             $sRegex = '/\{ \'([A-Z_]*)\' \}/';
-            $n = preg_match( $sRegex, $this->_sError, $aMatches );
-            $sError = ( $aMatches[1] ) ? $aMatches[1] : 'SERVICE_UNAVAILABLE';
+            $n = preg_match($sRegex, $this->_sError, $aMatches);
+            $sError = ($aMatches[1]) ? $aMatches[1] : 'SERVICE_UNAVAILABLE';
         }
+
         return $sError;
     }
 
@@ -271,9 +277,10 @@ class oxOnlineVatIdCheck extends oxCompanyVatInChecker
     public function getWsdlUrl()
     {
         // overriding wsdl url
-        if ( ( $sWsdl = oxRegistry::getConfig()->getConfigParam( "sVatIdCheckInterfaceWsdl" ) ) ) {
+        if (($sWsdl = oxRegistry::getConfig()->getConfigParam("sVatIdCheckInterfaceWsdl"))) {
             $this->_sWsdl = $sWsdl;
         }
+
         return $this->_sWsdl;
     }
 
@@ -286,6 +293,6 @@ class oxOnlineVatIdCheck extends oxCompanyVatInChecker
      */
     public function isDisabled()
     {
-        return (bool) oxRegistry::getConfig()->getConfigParam( "blVatIdCheckDisabled" );
+        return (bool) oxRegistry::getConfig()->getConfigParam("blVatIdCheckDisabled");
     }
 }

@@ -30,20 +30,24 @@
  */
 class Account_Order extends Account
 {
+
     /**
      * Count of all articles in list.
+     *
      * @var integer
      */
     protected $_iAllArtCnt = 0;
 
     /**
      * Number of possible pages.
+     *
      * @var integer
      */
     protected $_iCntPages = null;
 
     /**
      * Current class template name.
+     *
      * @var string
      */
     protected $_sThisTemplate = 'page/account/order.tpl';
@@ -60,7 +64,7 @@ class Account_Order extends Account
      *
      * @var array
      */
-    protected $_aArticlesList  = null;
+    protected $_aArticlesList = null;
 
     /**
      * If user is not logged in - returns name of template account_order::_sThisLoginTemplate,
@@ -75,7 +79,7 @@ class Account_Order extends Account
 
         // is logged in ?
         $oUser = $this->getUser();
-        if ( !$oUser ) {
+        if (!$oUser) {
             return $this->_sThisTemplate = $this->_sThisLoginTemplate;
         }
 
@@ -89,20 +93,21 @@ class Account_Order extends Account
      */
     public function getOrderList()
     {
-        if ( $this->_aOrderList === null ) {
+        if ($this->_aOrderList === null) {
             $this->_aOrderList = array();
 
             // Load user Orderlist
-            if ( $oUser = $this->getUser() ) {
-                $iNrofCatArticles = (int) $this->getConfig()->getConfigParam( 'iNrofCatArticles' );
-                $iNrofCatArticles = $iNrofCatArticles?$iNrofCatArticles:1;
+            if ($oUser = $this->getUser()) {
+                $iNrofCatArticles = (int) $this->getConfig()->getConfigParam('iNrofCatArticles');
+                $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 1;
                 $this->_iAllArtCnt = $oUser->getOrderCount();
-                if ( $this->_iAllArtCnt && $this->_iAllArtCnt > 0 ) {
-                    $this->_aOrderList = $oUser->getOrders( $iNrofCatArticles, $this->getActPage() );
-                    $this->_iCntPages  = round( $this->_iAllArtCnt/$iNrofCatArticles + 0.49 );
+                if ($this->_iAllArtCnt && $this->_iAllArtCnt > 0) {
+                    $this->_aOrderList = $oUser->getOrders($iNrofCatArticles, $this->getActPage());
+                    $this->_iCntPages = round($this->_iAllArtCnt / $iNrofCatArticles + 0.49);
                 }
             }
         }
+
         return $this->_aOrderList;
     }
 
@@ -113,16 +118,17 @@ class Account_Order extends Account
      */
     public function getOrderArticleList()
     {
-        if ( $this->_aArticlesList === null ) {
+        if ($this->_aArticlesList === null) {
 
             // marking as set
             $this->_aArticlesList = false;
             $oOrdersList = $this->getOrderList();
-            if ( $oOrdersList && $oOrdersList->count() ) {
-                $this->_aArticlesList = oxNew( 'oxarticlelist' );
-                $this->_aArticlesList->loadOrderArticles( $oOrdersList );
+            if ($oOrdersList && $oOrdersList->count()) {
+                $this->_aArticlesList = oxNew('oxarticlelist');
+                $this->_aArticlesList->loadOrderArticles($oOrdersList);
             }
         }
+
         return $this->_aArticlesList;
     }
 
@@ -133,9 +139,10 @@ class Account_Order extends Account
      */
     public function getPageNavigation()
     {
-        if ( $this->_oPageNavigation === null ) {
+        if ($this->_oPageNavigation === null) {
             $this->_oPageNavigation = $this->generatePageNavigation();
         }
+
         return $this->_oPageNavigation;
     }
 
@@ -148,12 +155,12 @@ class Account_Order extends Account
     {
         $aPaths = array();
         $aPath = array();        
-        $aPath['title'] = oxRegistry::getLang()->translateString( 'MY_ACCOUNT', oxRegistry::getLang()->getBaseLanguage(), false );
-        $aPath['link']  = oxRegistry::get("oxSeoEncoder")->getStaticUrl( $this->getViewConfig()->getSelfLink() . 'cl=account' );
+        $aPath['title'] = oxRegistry::getLang()->translateString('MY_ACCOUNT', oxRegistry::getLang()->getBaseLanguage(), false);
+        $aPath['link'] = oxRegistry::get("oxSeoEncoder")->getStaticUrl($this->getViewConfig()->getSelfLink() . 'cl=account');
         $aPaths[] = $aPath;
 
-        $aPath['title'] = oxRegistry::getLang()->translateString( 'ORDER_HISTORY', oxRegistry::getLang()->getBaseLanguage(), false );
-        $aPath['link']  = $this->getLink();
+        $aPath['title'] = oxRegistry::getLang()->translateString('ORDER_HISTORY', oxRegistry::getLang()->getBaseLanguage(), false);
+        $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;
 
         return $aPaths;

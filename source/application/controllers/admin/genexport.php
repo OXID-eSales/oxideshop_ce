@@ -25,12 +25,13 @@
  */
 class GenExport extends DynExportBase
 {
+
     /**
      * Export class name
      *
      * @var string
      */
-    public $sClassDo   = 'genexport_do';
+    public $sClassDo = 'genexport_do';
 
     /**
      * Export ui class name

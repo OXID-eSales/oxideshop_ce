@@ -25,6 +25,7 @@
  */
 class oxSha512Hasher extends oxHasher
 {
+
     /** Algorithm name. */
     const HASHING_ALGORITHM_SHA512 = 'sha512';
 

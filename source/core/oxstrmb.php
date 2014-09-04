@@ -25,6 +25,7 @@
  */
 class oxStrMb
 {
+
     /**
      * The character encoding.
      *
@@ -37,13 +38,14 @@ class oxStrMb
      *
      * @var array
      */
-    protected $_aUmls = array( "\xc3\xa4", "\xc3\xb6", "\xc3\xbc", "\xC3\x84", "\xC3\x96", "\xC3\x9C", "\xC3\x9F" );
+    protected $_aUmls = array("\xc3\xa4", "\xc3\xb6", "\xc3\xbc", "\xC3\x84", "\xC3\x96", "\xC3\x9C", "\xC3\x9F");
 
     /**
      * oxUtilsString::$_aUmls equivalent in entities form
+     *
      * @var array
      */
-    protected $_aUmlEntities = array('&auml;', '&ouml;', '&uuml;', '&Auml;', '&Ouml;', '&Uuml;', '&szlig;' );
+    protected $_aUmlEntities = array('&auml;', '&ouml;', '&uuml;', '&Auml;', '&Ouml;', '&Uuml;', '&szlig;');
 
     /**
      * Class constructor. The constructor is defined in order to be possible to call parent::__construct() in modules.
@@ -73,10 +75,11 @@ class oxStrMb
      *
      * @return string
      */
-    public function substr( $sStr, $iStart, $iLength = null )
+    public function substr($sStr, $iStart, $iLength = null)
     {
-        $iLength = is_null( $iLength ) ? $this->strlen( $sStr ) : $iLength;
-        return mb_substr( $sStr, $iStart, $iLength, $this->_sEncoding );
+        $iLength = is_null($iLength) ? $this->strlen($sStr) : $iLength;
+
+        return mb_substr($sStr, $iStart, $iLength, $this->_sEncoding);
     }
 
     /**
@@ -88,13 +91,14 @@ class oxStrMb
      *
      * @return string
      */
-    public function strpos( $sHaystack, $sNeedle, $iOffset = null )
+    public function strpos($sHaystack, $sNeedle, $iOffset = null)
     {
         $iPos = false;
-        if ( $sHaystack && $sNeedle ) {
-            $iOffset = is_null( $iOffset ) ? 0 : $iOffset;
-            $iPos = mb_strpos( $sHaystack, $sNeedle, $iOffset, $this->_sEncoding );
+        if ($sHaystack && $sNeedle) {
+            $iOffset = is_null($iOffset) ? 0 : $iOffset;
+            $iPos = mb_strpos($sHaystack, $sNeedle, $iOffset, $this->_sEncoding);
         }
+
         return $iPos;
     }
 
@@ -106,12 +110,13 @@ class oxStrMb
      *
      * @return string
      */
-    public function strstr( $sHaystack, $sNeedle )
+    public function strstr($sHaystack, $sNeedle)
     {
         // additional check according to bug in PHP 5.2.0 version
-        if ( !$sHaystack ) {
+        if (!$sHaystack) {
             return false;
         }
+
         return mb_strstr($sHaystack, $sNeedle, false, $this->_sEncoding);
     }
 
@@ -142,12 +147,12 @@ class oxStrMb
     /**
      * PHP htmlspecialchars() function wrapper
      *
-     * @param string $sString string being converted
-     * @param int $iQuotStyle quoting rule
+     * @param string $sString    string being converted
+     * @param int    $iQuotStyle quoting rule
      *
      * @return string
      */
-    public function htmlspecialchars($sString, $iQuotStyle=ENT_QUOTES)
+    public function htmlspecialchars($sString, $iQuotStyle = ENT_QUOTES)
     {
         return htmlspecialchars($sString, $iQuotStyle, $this->_sEncoding);
     }
@@ -155,12 +160,12 @@ class oxStrMb
     /**
      * PHP htmlentities() function wrapper
      *
-     * @param string $sString string being converted
-     * @param int $iQuotStyle quoting rule
+     * @param string $sString    string being converted
+     * @param int    $iQuotStyle quoting rule
      *
      * @return string
      */
-    public function htmlentities($sString, $iQuotStyle=ENT_QUOTES)
+    public function htmlentities($sString, $iQuotStyle = ENT_QUOTES)
     {
         return htmlentities($sString, $iQuotStyle, $this->_sEncoding);
     }
@@ -168,14 +173,14 @@ class oxStrMb
     /**
      * PHP html_entity_decode() function wrapper
      *
-     * @param string $sString string being converted
-     * @param int $iQuotStyle quoting rule
+     * @param string $sString    string being converted
+     * @param int    $iQuotStyle quoting rule
      *
      * @return string
      */
-    public function html_entity_decode($sString, $iQuotStyle=ENT_QUOTES )
+    public function html_entity_decode($sString, $iQuotStyle = ENT_QUOTES)
     {
-        return html_entity_decode( $sString, $iQuotStyle, $this->_sEncoding );
+        return html_entity_decode($sString, $iQuotStyle, $this->_sEncoding);
     }
 
     /**
@@ -190,7 +195,7 @@ class oxStrMb
      */
     public function preg_split($sPattern, $sString, $iLimit = -1, $iFlag = 0)
     {
-        return preg_split( $sPattern.'u', $sString, $iLimit, $iFlag );
+        return preg_split($sPattern . 'u', $sString, $iLimit, $iFlag);
     }
 
     /**
@@ -206,14 +211,15 @@ class oxStrMb
      */
     public function preg_replace($aPattern, $sString, $sSubject, $iLimit = -1, $iCount = null)
     {
-        if ( is_array($aPattern) ) {
-            foreach ( $aPattern as &$sPattern) {
-                $sPattern = $sPattern.'u';
+        if (is_array($aPattern)) {
+            foreach ($aPattern as &$sPattern) {
+                $sPattern = $sPattern . 'u';
             }
         } else {
-            $aPattern = $aPattern.'u';
+            $aPattern = $aPattern . 'u';
         }
-        return preg_replace( $aPattern, $sString, $sSubject, $iLimit, $iCount);
+
+        return preg_replace($aPattern, $sString, $sSubject, $iLimit, $iCount);
     }
 
     /**
@@ -229,7 +235,7 @@ class oxStrMb
      */
     public function preg_match($sPattern, $sSubject, &$aMatches = null, $iFlags = null, $iOffset = null)
     {
-        return preg_match( $sPattern.'u', $sSubject, $aMatches, $iFlags, $iOffset);
+        return preg_match($sPattern . 'u', $sSubject, $aMatches, $iFlags, $iOffset);
     }
 
     /**
@@ -245,7 +251,7 @@ class oxStrMb
      */
     public function preg_match_all($sPattern, $sSubject, &$aMatches = null, $iFlags = null, $iOffset = null)
     {
-        return preg_match_all( $sPattern.'u', $sSubject, $aMatches, $iFlags, $iOffset);
+        return preg_match_all($sPattern . 'u', $sSubject, $aMatches, $iFlags, $iOffset);
     }
 
     /**
@@ -258,6 +264,7 @@ class oxStrMb
     public function ucfirst($sSubject)
     {
         $sString = $this->strtoupper($this->substr($sSubject, 0, 1));
+
         return $sString . $this->substr($sSubject, 1);
     }
 
@@ -271,37 +278,38 @@ class oxStrMb
      *
      * @return string
      */
-    public function wordwrap( $sString, $iLength = 75, $sBreak = "\n", $blCut = null )
+    public function wordwrap($sString, $iLength = 75, $sBreak = "\n", $blCut = null)
     {
-        if ( !$blCut ) {
+        if (!$blCut) {
             $sRegexp = "/^(.{1,{$iLength}}\r?(\s|$|\n)|.{1,{$iLength}}[^\r\s\n]*\r?(\n|\s|$))/u";
         } else {
             $sRegexp = "/^([^\s]{{$iLength}}|.{1,{$iLength}}\s)/u";
         }
 
-        $iStrLen = mb_strlen( $sString, $this->_sEncoding );
-        $iWraps = floor( $iStrLen / $iLength );
+        $iStrLen = mb_strlen($sString, $this->_sEncoding);
+        $iWraps = floor($iStrLen / $iLength);
 
         $i = $iWraps;
         $sReturn = '';
         $aMatches = array();
-        while ( $i > 0 ) {
-            $iWraps = floor( mb_strlen( $sString, $this->_sEncoding ) / $iLength );
+        while ($i > 0) {
+            $iWraps = floor(mb_strlen($sString, $this->_sEncoding) / $iLength);
 
             $i = $iWraps;
-            if ( preg_match( $sRegexp, $sString, $aMatches ) ) {
+            if (preg_match($sRegexp, $sString, $aMatches)) {
                 $sStr = $aMatches[0];
-                $sReturn .= preg_replace( '/\s$/s', '', $sStr ) . $sBreak;
-                $sString = $this->substr( $sString, mb_strlen( $sStr, $this->_sEncoding ) );
+                $sReturn .= preg_replace('/\s$/s', '', $sStr) . $sBreak;
+                $sString = $this->substr($sString, mb_strlen($sStr, $this->_sEncoding));
             } else {
                 break;
             }
             $i--;
         }
-        $sReturn = preg_replace( "/$sBreak$/", '', $sReturn );
+        $sReturn = preg_replace("/$sBreak$/", '', $sReturn);
         if ($sString) {
-            $sReturn .= $sBreak.$sString;
+            $sReturn .= $sBreak . $sString;
         }
+
         return $sReturn;
     }
 
@@ -317,11 +325,12 @@ class oxStrMb
      *
      * @return string
      */
-    public function recodeEntities( $sInput, $blToHtmlEntities = false, $aUmls = array(), $aUmlEntities = array() )
+    public function recodeEntities($sInput, $blToHtmlEntities = false, $aUmls = array(), $aUmlEntities = array())
     {
-        $aUmls = ( count( $aUmls ) > 0 ) ? array_merge( $this->_aUmls, $aUmls) : $this->_aUmls;
-        $aUmlEntities = ( count( $aUmlEntities ) > 0 ) ? array_merge( $this->_aUmlEntities, $aUmlEntities) : $this->_aUmlEntities;
-        return $blToHtmlEntities ? str_replace( $aUmls, $aUmlEntities, $sInput ) : str_replace( $aUmlEntities, $aUmls, $sInput );
+        $aUmls = (count($aUmls) > 0) ? array_merge($this->_aUmls, $aUmls) : $this->_aUmls;
+        $aUmlEntities = (count($aUmlEntities) > 0) ? array_merge($this->_aUmlEntities, $aUmlEntities) : $this->_aUmlEntities;
+
+        return $blToHtmlEntities ? str_replace($aUmls, $aUmlEntities, $sInput) : str_replace($aUmlEntities, $aUmls, $sInput);
     }
 
     /**
@@ -331,9 +340,9 @@ class oxStrMb
      *
      * @return bool
      */
-    public function hasSpecialChars( $sStr )
+    public function hasSpecialChars($sStr)
     {
-        return $this->preg_match( "/(".implode( "|", $this->_aUmls  )."|(&amp;))/", $sStr );
+        return $this->preg_match("/(" . implode("|", $this->_aUmls) . "|(&amp;))/", $sStr);
     }
 
     /**
@@ -345,9 +354,9 @@ class oxStrMb
      *
      * @return string
      */
-    public function cleanStr( $sStr, $sCleanChr = ' ' )
+    public function cleanStr($sStr, $sCleanChr = ' ')
     {
-        return $this->preg_replace( "/\n|\r|\t|\xc2\x95|\xc2\xa0|;/", $sCleanChr, $sStr );
+        return $this->preg_replace("/\n|\r|\t|\xc2\x95|\xc2\xa0|;/", $sCleanChr, $sStr);
     }
 
     /**
@@ -370,13 +379,14 @@ class oxStrMb
      *
      * @return string
      */
-    public function strip_tags( $sString, $sAllowableTags = '' )
+    public function strip_tags($sString, $sAllowableTags = '')
     {
-        if ( stripos( $sAllowableTags, '<style>' ) === false ) {
+        if (stripos($sAllowableTags, '<style>') === false) {
             // strip style tags with definitions within
-            $sString = $this->preg_replace( "'<style[^>]*>.*</style>'siU", '', $sString );
+            $sString = $this->preg_replace("'<style[^>]*>.*</style>'siU", '', $sString);
         }
-        return strip_tags( $sString, $sAllowableTags );
+
+        return strip_tags($sString, $sAllowableTags);
     }
 
     /**
@@ -388,8 +398,8 @@ class oxStrMb
      *
      * @return int > 0 if str1 is less than str2; < 0 if str1 is greater than str2, and 0 if they are equal.
      */
-    public function strrcmp( $sStr1, $sStr2 )
+    public function strrcmp($sStr1, $sStr2)
     {
-        return -strcmp( $sStr1, $sStr2 );
+        return -strcmp($sStr1, $sStr2);
     }
 }

@@ -84,7 +84,7 @@ class Suggest extends oxUBase
             return;
         }
 
-        $aParams = oxRegistry::getConfig()->getRequestParameter( 'editval', true );
+        $aParams = oxConfig::getParameter( 'editval', true );
         if ( !is_array( $aParams ) ) {
             return;
         }

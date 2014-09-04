@@ -103,6 +103,11 @@ class Unit_Views_suggestTest extends OxidTestCase
         oxTestModules::addFunction('oxCaptcha', 'pass', '{return true;}');
         modConfig::setRequestParameter('editval', array('name' => 'test', 'value' => 'testvalue'));
 
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
+
         /** @var Suggest $oSuggest */
         $oSuggest = $this->getProxyClass("suggest");
         $oSuggest->send();
@@ -116,6 +121,11 @@ class Unit_Views_suggestTest extends OxidTestCase
     public function testSendSuggestWithoutCaptcha()
     {
         modConfig::setRequestParameter('editval', array('name' => 'test', 'value' => 'testvalue'));
+
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
 
         /** @var Suggest $oSuggest */
         $oSuggest = $this->getProxyClass("suggest");
@@ -171,6 +181,12 @@ class Unit_Views_suggestTest extends OxidTestCase
     public function testSendNoEditval()
     {
         modConfig::setRequestParameter('editval', null);
+
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
+
         /** @var Suggest $oSuggest */
         $oSuggest = oxnew('Suggest');
         $this->assertSame(null, $oSuggest->send());
@@ -209,6 +225,11 @@ class Unit_Views_suggestTest extends OxidTestCase
         $oSuggest = $this->getMock("suggest", array("getProduct", 'getCaptcha'));
         $oSuggest->expects($this->once())->method('getProduct')->will($this->returnValue($oProduct));
         $oSuggest->expects($this->once())->method('getCaptcha')->will($this->returnValue($oCaptcha));
+
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
 
         modConfig::setRequestParameter('searchparam', "searchparam&&A");
         modConfig::setRequestParameter('searchcnid', "searchcnid&&A");
@@ -256,6 +277,11 @@ class Unit_Views_suggestTest extends OxidTestCase
         $oUtilsView->expects($this->once())->method('addErrorToDisplay');
 
         oxTestModules::addModuleObject('oxUtilsView', $oUtilsView);
+
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
 
         $this->assertEquals('', $oSuggest->send());
     }

@@ -183,14 +183,14 @@ class Unit_Views_accountWishlistTest extends OxidTestCase
      */
     public function testSendWishListMissingParameters()
     {
-        $aParams = array( "someVar1" => "someVal1", "someVar2" => "someVal2" );
+        $aParams = array("someVar1" => "someVal1", "someVar2" => "someVal2");
 
-        modConfig::setRequestParameter( "editval", $aParams );
-        oxTestModules::addFunction( 'oxUtilsView', 'addErrorToDisplay', '{ return "addErrorToDisplay"; }' );
+        modConfig::setRequestParameter("editval", $aParams);
+        oxTestModules::addFunction('oxUtilsView', 'addErrorToDisplay', '{ return "addErrorToDisplay"; }');
 
         $oView = new Account_Wishlist();
-        $this->assertEquals( "addErrorToDisplay", $oView->sendWishList() );
-        $this->assertEquals( ( object ) $aParams, $oView->getEnteredData() );
+        $this->assertEquals("addErrorToDisplay", $oView->sendWishList());
+        $this->assertEquals(( object ) $aParams, $oView->getEnteredData());
     }
 
     /**
@@ -200,24 +200,25 @@ class Unit_Views_accountWishlistTest extends OxidTestCase
      */
     public function testSendWishList()
     {
-        $aParams = array( "rec_name" => "someVal1", "rec_email" => "someVal2" );
+        $aParams = array("rec_name" => "someVal1", "rec_email" => "someVal2");
         $oObj = ( object ) $aParams;
 
-        modConfig::setRequestParameter( "editval", $aParams );
-        oxTestModules::addFunction( 'oxUtilsView', 'addErrorToDisplay', '{ return "addErrorToDisplay"; }' );
-        oxTestModules::addFunction( 'oxemail', 'sendWishlistMail', '{ return false; }' );
+        modConfig::setRequestParameter("editval", $aParams);
+        oxTestModules::addFunction('oxUtilsView', 'addErrorToDisplay', '{ return "addErrorToDisplay"; }');
+        oxTestModules::addFunction('oxemail', 'sendWishlistMail', '{ return false; }');
 
-        $oUser = $this->getMock( "oxUser", array( "getId" ) );
-        $oUser->expects( $this->once() )->method( 'getId')->will( $this->returnValue( "testId" ) );
-        $oUser->oxuser__oxusername = new oxField( "testName" );
-        $oUser->oxuser__oxfname    = new oxField( "testFName" );
-        $oUser->oxuser__oxlname    = new oxField( "testLName" );
+        $oUser = $this->getMock("oxUser", array("getId"));
+        $oUser->expects($this->once())->method('getId')->will($this->returnValue("testId"));
+        $oUser->oxuser__oxusername = new oxField("testName");
+        $oUser->oxuser__oxfname = new oxField("testFName");
+        $oUser->oxuser__oxlname = new oxField("testLName");
 
-        $oView = $this->getMock( "Account_Wishlist", array( "getUser" ) );
-        $oView->expects( $this->any() )->method( 'getUser')->will( $this->returnValue( $oUser ) );
-        $this->assertEquals( "addErrorToDisplay", $oView->sendWishList() );
-        $this->assertEquals( $oObj, $oView->getEnteredData() );
-        $this->assertFalse( $oView->isWishListEmailSent() );
+        $oView = $this->getMock("Account_Wishlist", array("getUser"));
+        $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
+
+        $this->assertEquals("addErrorToDisplay", $oView->sendWishList());
+        $this->assertEquals($oObj, $oView->getEnteredData());
+        $this->assertFalse($oView->isWishListEmailSent());
     }
 
     /**
@@ -227,16 +228,16 @@ class Unit_Views_accountWishlistTest extends OxidTestCase
      */
     public function testTogglePublic()
     {
-        modConfig::setRequestParameter( "blpublic", 1 );
+        modConfig::setRequestParameter("blpublic", 1);
 
-        $oBasket = $this->getMock( "oxBasket", array( "save" ) );
-        $oBasket->expects( $this->once() )->method( 'save');
+        $oBasket = $this->getMock("oxBasket", array("save"));
+        $oBasket->expects($this->once())->method('save');
 
-        $oUser = $this->getMock( "oxUser", array( "getBasket" ) );
-        $oUser->expects( $this->once() )->method( 'getBasket')->with( $this->equalTo( "wishlist" ) )->will( $this->returnValue( $oBasket ) );
+        $oUser = $this->getMock("oxUser", array("getBasket"));
+        $oUser->expects($this->once())->method('getBasket')->with($this->equalTo("wishlist"))->will($this->returnValue($oBasket));
 
-        $oView = $this->getMock( "Account_Wishlist", array( "getUser" ) );
-        $oView->expects( $this->once() )->method( 'getUser')->will( $this->returnValue( $oUser ) );
+        $oView = $this->getMock("Account_Wishlist", array("getUser"));
+        $oView->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
         $oView->togglePublic();
     }
 

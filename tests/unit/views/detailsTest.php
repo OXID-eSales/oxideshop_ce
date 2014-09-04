@@ -1560,7 +1560,7 @@ class Unit_Views_detailsTest extends OxidTestCase
 
     public function testAddme_invalidCaptcha()
     {
-        $oCaptcha = $this->getMock('oxCapche', array('pass'));
+        $oCaptcha = $this->getMock('oxCaptcha', array('pass'));
         $oCaptcha->expects($this->once())->method('pass')->will($this->returnValue(false));
 
         $oEmail = $this->getMock('oxEmail', array('sendPricealarmNotification'));
@@ -1576,7 +1576,7 @@ class Unit_Views_detailsTest extends OxidTestCase
 
     public function testAddme_invalidEmail()
     {
-        $oCaptcha = $this->getMock('oxCapche', array('pass'));
+        $oCaptcha = $this->getMock('oxCaptcha', array('pass'));
         $oCaptcha->expects($this->once())->method('pass')->will($this->returnValue(true));
 
         $oEmail = $this->getMock('oxEmail', array('sendPricealarmNotification'));

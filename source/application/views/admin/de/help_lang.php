@@ -144,6 +144,7 @@ $aLang =  array(
 
 'HELP_SHOP_CONFIG_LOAD_DYNAMIC_PAGES'         => 'Wenn diese Einstellung aktiv ist, werden zusätzliche Informationen zu anderen OXID Produkten im Administrationsbereich angezeigt, z. B. zu OXID eFire. Welche Informationen geladen werden, hängt von der Region ab, die für den Shop gewählt wurde.',
 
+'HELP_SHOP_CONFIG_SEND_SHOP_DATA_TO_OXID'     => '[TR]If this setting is checked, information about shop will be provided to oxid. This information will help to improve our services.',
 
 'HELP_SHOP_CONFIG_DELETERATINGLOGS'           => 'Wenn Benutzer einen Artikel bewerten, können Sie den Artikel nicht erneut bewerten. Hier können Sie einstellen, dass die Benutzer nach einer bestimmten Anzahl von Tagen den Artikel erneut bewerten können.',
 

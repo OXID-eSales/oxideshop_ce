@@ -1229,6 +1229,7 @@ $aLang = array(
 'SHOP_CONFIG_RSSARTRECOMMLISTS'                            => 'Listmania (overview)',
 'SHOP_CONFIG_RSSRECOMMLISTARTS'                            => 'Listmania (products)',
 'SHOP_CONFIG_LOAD_DYNAMIC_PAGES'                           => 'Load additional Information from OXID server',
+'SHOP_CONFIG_SEND_SHOP_DATA_TO_OXID'                       => '[TR]Send shop information to oxid',
 'SHOP_CONFIG_CHECK_UPDATES'                                => 'Check for available updates regularly',
 'SHOP_CONFIG_SELECTSHOPCOMPONENTS'                         => 'Select eShop components',
 'SHOP_CONFIG_DISABLEONLINEVATIDCHECK'                      => 'Disable online VAT ID check',

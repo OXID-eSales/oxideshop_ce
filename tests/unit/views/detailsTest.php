@@ -374,6 +374,7 @@ class Unit_Views_detailsTest extends OxidTestCase
         $oArt = new oxarticle();
         $oArt->load('2000');
 
+        /** @var Details|PHPUnit_Framework_MockObject_MockObject $oDetails */
         $oDetails = $this->getMock( 'details', array( 'getUser', 'getProduct' ) );
         $oDetails->expects( $this->once() )->method( 'getUser')->will( $this->returnValue( true ) );
         $oDetails->expects( $this->once() )->method( 'getProduct')->will( $this->returnValue( $oArt ) );
@@ -394,6 +395,7 @@ class Unit_Views_detailsTest extends OxidTestCase
         $oArt = new oxarticle();
         $oArt->load('2000');
 
+        /** @var Details|PHPUnit_Framework_MockObject_MockObject $oDetails */
         $oDetails = $this->getMock( 'details', array( 'getUser', 'getProduct' ) );
         $oDetails->expects( $this->once() )->method( 'getUser')->will( $this->returnValue( true ) );
         $oDetails->expects( $this->once() )->method( 'getProduct')->will( $this->returnValue( $oArt ) );
@@ -440,6 +442,7 @@ class Unit_Views_detailsTest extends OxidTestCase
         $oArticle = new oxArticle();
         $oArticle->setId("_testArt");
 
+        /** @var Details|PHPUnit_Framework_MockObject_MockObject $oDetails */
         $oDetails = $this->getMock('details', array('getProduct'));
         $oDetails->expects($this->any())->method('getProduct')->will($this->returnValue($oArticle));
         $oDetails->addTags();
@@ -469,6 +472,7 @@ class Unit_Views_detailsTest extends OxidTestCase
         $oArticle = new oxArticle();
         $oArticle->setId("_testArt");
 
+        /** @var Details|PHPUnit_Framework_MockObject_MockObject $oDetails */
         $oDetails = $this->getMock('details', array('getProduct'));
         $oDetails->expects($this->any())
             ->method('getProduct')
@@ -476,6 +480,7 @@ class Unit_Views_detailsTest extends OxidTestCase
 
         $sResult = '{"tags":["tag1","tag2","tag3"],"invalid":["admin"],"inlist":[]}';
 
+        /** @var oxUtils|PHPUnit_Framework_MockObject_MockObject $oUtils */
         $oUtils = $this->getMock('oxUtils', array('showMessageAndExit'));
         $oUtils->expects($this->any())
             ->method('showMessageAndExit')
@@ -504,6 +509,7 @@ class Unit_Views_detailsTest extends OxidTestCase
         $oArticle = new oxArticle();
         $oArticle->setId("_testArt");
 
+        /** @var Details|PHPUnit_Framework_MockObject_MockObject $oDetails */
         $oDetails = $this->getMock('details', array('getProduct'));
         $oDetails->expects($this->any())->method('getProduct')->will($this->returnValue($oArticle));
         $oDetails->addTags();

@@ -191,14 +191,14 @@ class Unit_Views_suggestTest extends OxidTestCase
 
         oxTestModules::addModuleObject('oxemail', $oEmail);
 
-        //T20120724
-        //$oProduct = $this->getMock( "stdclass", array( 'getId' ) );
+        /** @var oxArticle|PHPUnit_Framework_MockObject_MockObject $oProduct */
         $oProduct = $this->getMock("oxarticle", array('getId'));
         $oProduct->expects($this->once())->method('getId')->will($this->returnValue('XProduct'));
 
         $oCaptcha = $this->getMock("stdclass", array('pass'));
         $oCaptcha->expects($this->once())->method('pass')->will($this->returnValue(true));
 
+        /** @var Suggest|PHPUnit_Framework_MockObject_MockObject $oSuggest */
         $oSuggest = $this->getMock("suggest", array("getProduct", 'getCaptcha'));
         $oSuggest->expects($this->once())->method('getProduct')->will($this->returnValue($oProduct));
         $oSuggest->expects($this->once())->method('getCaptcha')->will($this->returnValue($oCaptcha));
@@ -239,6 +239,7 @@ class Unit_Views_suggestTest extends OxidTestCase
         $oCaptcha = $this->getMock("stdclass", array('pass'));
         $oCaptcha->expects($this->once())->method('pass')->will($this->returnValue(true));
 
+        /** @var Suggest|PHPUnit_Framework_MockObject_MockObject $oSuggest */
         $oSuggest = $this->getMock("suggest", array("getProduct", 'getCaptcha'));
         $oSuggest->expects($this->never())->method('getProduct')->will($this->returnValue($oProduct));
         $oSuggest->expects($this->once())->method('getCaptcha')->will($this->returnValue($oCaptcha));

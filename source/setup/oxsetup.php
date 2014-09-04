@@ -681,41 +681,41 @@ class OxSetupSession extends oxSetupCore
     {
         $oUtils = $this->getInstance( "oxSetupUtils" );
 
-            //storring country value settings to session
-            $sLocationLang = $oUtils->getRequestVar( "location_lang", "post" );
-            if ( isset( $sLocationLang ) ) {
-                $this->setSessionParam( 'location_lang', $sLocationLang );
-            }
+        //storring country value settings to session
+        $sLocationLang = $oUtils->getRequestVar( "location_lang", "post" );
+        if ( isset( $sLocationLang ) ) {
+            $this->setSessionParam( 'location_lang', $sLocationLang );
+        }
 
-            //storring country value settings to session
-            $sCountryLang = $oUtils->getRequestVar( "country_lang", "post" );
-            if ( isset( $sCountryLang ) ) {
-                $this->setSessionParam( 'country_lang', $sCountryLang );
-            }
+        //storring country value settings to session
+        $sCountryLang = $oUtils->getRequestVar( "country_lang", "post" );
+        if ( isset( $sCountryLang ) ) {
+            $this->setSessionParam( 'country_lang', $sCountryLang );
+        }
 
-            //storring shop language value settings to session
-            $sShopLang = $oUtils->getRequestVar( "sShopLang", "post" );
-            if ( isset( $sShopLang ) ) {
-                $this->setSessionParam( 'sShopLang', $sShopLang );
-            }
+        //storring shop language value settings to session
+        $sShopLang = $oUtils->getRequestVar( "sShopLang", "post" );
+        if ( isset( $sShopLang ) ) {
+            $this->setSessionParam( 'sShopLang', $sShopLang );
+        }
 
-            //storring dyn pages settings to session
-            $blUseDynPages = $oUtils->getRequestVar( "use_dynamic_pages", "post" );
-            if ( isset( $blUseDynPages ) ) {
-                $this->setSessionParam( 'use_dynamic_pages', $blUseDynPages  );
-            }
+        //storring dyn pages settings to session
+        $blUseDynPages = $oUtils->getRequestVar( "use_dynamic_pages", "post" );
+        if ( isset( $blUseDynPages ) ) {
+            $this->setSessionParam( 'use_dynamic_pages', $blUseDynPages  );
+        }
 
-            //storring dyn pages settings to session
-            $blCheckForUpdates = $oUtils->getRequestVar( "check_for_updates", "post" );
-            if ( isset( $blCheckForUpdates ) ) {
-                $this->setSessionParam( 'check_for_updates', $blCheckForUpdates  );
-            }
+        //storring dyn pages settings to session
+        $blCheckForUpdates = $oUtils->getRequestVar( "check_for_updates", "post" );
+        if ( isset( $blCheckForUpdates ) ) {
+            $this->setSessionParam( 'check_for_updates', $blCheckForUpdates  );
+        }
 
-            // store eula to session
-            $iEula = $oUtils->getRequestVar( "iEula", "post" );
-            if ( isset( $iEula ) ) {
-                $this->setSessionParam( 'eula', $iEula  );
-            }
+        // store eula to session
+        $iEula = $oUtils->getRequestVar( "iEula", "post" );
+        if ( isset( $iEula ) ) {
+            $this->setSessionParam( 'eula', $iEula  );
+        }
 
         // store anonymous information config
         $blSendShopDataToOxid = $oUtils->getRequestVar( "blSendShopDataToOxid", "post" );

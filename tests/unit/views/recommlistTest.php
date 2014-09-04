@@ -107,12 +107,12 @@ class Unit_Views_recommlistTest extends OxidTestCase
     {
         modConfig::setParameter( "recommlistrating", 3 );
 
-        $oRecommList = $this->getMock( "oxRecommList", array( "addToRatingAverage" ) );
-        $oRecommList->expects( $this->never() )->method( 'addToRatingAverage');
+        $oRecommList = $this->getMock("oxRecommList", array("addToRatingAverage"));
+        $oRecommList->expects($this->never())->method('addToRatingAverage');
 
-        $oView = $this->getMock( "RecommList", array( "getActiveRecommList", "getUser" ) );
-        $oView->expects( $this->any() )->method( 'getUser')->will($this->returnValue( false ) );
-        $oView->expects( $this->any() )->method( 'getActiveRecommList')->will($this->returnValue( $oRecommList ) );
+        $oView = $this->getMock("RecommList", array("getActiveRecommList", "getUser"));
+        $oView->expects($this->any())->method('getUser')->will($this->returnValue(false));
+        $oView->expects($this->any())->method('getActiveRecommList')->will($this->returnValue($oRecommList));
 
         $oView->saveReview();
     }
@@ -127,27 +127,26 @@ class Unit_Views_recommlistTest extends OxidTestCase
         modConfig::setParameter( "recommlistrating", 3 );
         modConfig::setParameter( "rvw_txt", "testRecommId" );
 
-        $oRecommList = $this->getMock( "oxRecommList", array( "addToRatingAverage", "getId" ) );
-        $oRecommList->expects( $this->once() )->method( 'addToRatingAverage');
-        $oRecommList->expects( $this->any() )->method( 'getId')->will( $this->returnValue( "testRecommListId" ) );
+        $oRecommList = $this->getMock("oxRecommList", array("addToRatingAverage", "getId"));
+        $oRecommList->expects($this->once())->method('addToRatingAverage');
+        $oRecommList->expects($this->any())->method('getId')->will($this->returnValue("testRecommListId"));
 
-        $oUser = $this->getMock( "oxuser", array( "getId" ) );
-        $oUser->expects( $this->any() )->method( 'getId')->will( $this->returnValue( "testUserId" ) );
+        $oUser = $this->getMock("oxuser", array("getId"));
+        $oUser->expects($this->any())->method('getId')->will($this->returnValue("testUserId"));
 
-        $oView = $this->getMock( "RecommList", array( "getActiveRecommList", "getUser", "canAcceptFormData" ) );
-        $oView->expects( $this->any() )->method( 'canAcceptFormData')->will( $this->returnValue( true ) );
-        $oView->expects( $this->any() )->method( 'getUser')->will($this->returnValue( $oUser ) );
-        $oView->expects( $this->any() )->method( 'getActiveRecommList')->will($this->returnValue( $oRecommList ) );
+        $oView = $this->getMock("RecommList", array("getActiveRecommList", "getUser", "canAcceptFormData"));
+        $oView->expects($this->any())->method('canAcceptFormData')->will($this->returnValue(true));
+        $oView->expects($this->any())->method('getUser')->will($this->returnValue($oUser));
+        $oView->expects($this->any())->method('getActiveRecommList')->will($this->returnValue($oRecommList));
 
         $oView->saveReview();
 
         $oDb = oxDb::getDb();
 
         // testing db for records
-        $this->assertTrue( "1" === $oDb->getOne( "select 1 from oxratings where oxuserid='testUserId' and oxrating = '3' and oxobjectid = 'testRecommListId'" ) );
-        $this->assertTrue( "1" === $oDb->getOne( "select 1 from oxreviews where oxuserid='testUserId' and oxobjectid = 'testRecommListId'" ) );
+        $this->assertTrue("1" === $oDb->getOne("select 1 from oxratings where oxuserid='testUserId' and oxrating = '3' and oxobjectid = 'testRecommListId'"));
+        $this->assertTrue("1" === $oDb->getOne("select 1 from oxreviews where oxuserid='testUserId' and oxobjectid = 'testRecommListId'"));
     }
-
 
     public function testAddPageNrParam()
     {

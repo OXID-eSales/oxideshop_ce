@@ -104,10 +104,11 @@ class Unit_Views_suggestTest extends OxidTestCase
         modConfig::setParameter( 'editval', array( 'name'=>'test', 'value'=>'testvalue' ) );
         $oSuggest = $this->getProxyClass( "suggest" );
         $oSuggest->send();
+
         $oParam = $oSuggest->getSuggestData();
 
-        $this->assertEquals( 'test', $oParam->name );
-        $this->assertEquals( 'testvalue', $oParam->value );
+        $this->assertEquals('test', $oParam->name);
+        $this->assertEquals('testvalue', $oParam->value);
     }
 
     public function testSendSuggestWithoutCaptcha()
@@ -184,23 +185,23 @@ class Unit_Views_suggestTest extends OxidTestCase
                     )
             );
 
-        $oEmail = $this->getMock( "stdclass", array( 'sendSuggestMail' ) );
-        $oEmail->expects( $this->once() )->method( 'sendSuggestMail')
-                ->will($this->returnValue( 1 ) );
+        $oEmail = $this->getMock("stdclass", array('sendSuggestMail'));
+        $oEmail->expects($this->once())->method('sendSuggestMail')
+            ->will($this->returnValue(1));
 
-        oxTestModules::addModuleObject('oxemail', $oEmail );
+        oxTestModules::addModuleObject('oxemail', $oEmail);
 
         //T20120724
         //$oProduct = $this->getMock( "stdclass", array( 'getId' ) );
-        $oProduct = $this->getMock( "oxarticle", array( 'getId' ) );
-        $oProduct->expects( $this->once() )->method( 'getId')->will($this->returnValue( 'XProduct' ) );
+        $oProduct = $this->getMock("oxarticle", array('getId'));
+        $oProduct->expects($this->once())->method('getId')->will($this->returnValue('XProduct'));
 
-        $oCaptcha = $this->getMock( "stdclass", array( 'pass' ) );
-        $oCaptcha->expects( $this->once() )->method( 'pass')->will($this->returnValue( true ) );
+        $oCaptcha = $this->getMock("stdclass", array('pass'));
+        $oCaptcha->expects($this->once())->method('pass')->will($this->returnValue(true));
 
-        $oSuggest = $this->getMock( "suggest", array( "getProduct", 'getCaptcha' ) );
-        $oSuggest->expects( $this->once() )->method( 'getProduct')->will($this->returnValue( $oProduct ) );
-        $oSuggest->expects( $this->once() )->method( 'getCaptcha')->will($this->returnValue( $oCaptcha ) );
+        $oSuggest = $this->getMock("suggest", array("getProduct", 'getCaptcha'));
+        $oSuggest->expects($this->once())->method('getProduct')->will($this->returnValue($oProduct));
+        $oSuggest->expects($this->once())->method('getCaptcha')->will($this->returnValue($oCaptcha));
 
         modConfig::setParameter( 'searchparam', "searchparam&&A" );
         modConfig::setParameter( 'searchcnid', "searchcnid&&A" );
@@ -209,7 +210,7 @@ class Unit_Views_suggestTest extends OxidTestCase
         modConfig::setParameter( 'listtype', "listtype&&A" );
 
         $sExpected = 'details?anid=XProduct&searchparam=searchparam%26%26A&searchcnid=searchcnid&amp;&amp;A&searchvendor=searchvendor&amp;&amp;A&searchmanufacturer=searchmanufacturer&amp;&amp;A&listtype=listtype&amp;&amp;A';
-        $this->assertEquals( $sExpected ,$oSuggest->send() );
+        $this->assertEquals($sExpected, $oSuggest->send());
     }
 
     public function testSendPassInvalidMail()
@@ -227,27 +228,27 @@ class Unit_Views_suggestTest extends OxidTestCase
                     )
             );
 
-        $oEmail = $this->getMock( "stdclass", array( 'sendSuggestMail' ) );
-        $oEmail->expects( $this->never() )->method( 'sendSuggestMail');
+        $oEmail = $this->getMock("stdclass", array('sendSuggestMail'));
+        $oEmail->expects($this->never())->method('sendSuggestMail');
 
         oxTestModules::addModuleObject('oxemail', $oEmail);
 
-        $oProduct = $this->getMock( "stdclass", array( 'getId' ) );
-        $oProduct->expects( $this->never() )->method( 'getId');
+        $oProduct = $this->getMock("stdclass", array('getId'));
+        $oProduct->expects($this->never())->method('getId');
 
-        $oCaptcha = $this->getMock( "stdclass", array( 'pass' ) );
-        $oCaptcha->expects( $this->once() )->method( 'pass')->will($this->returnValue( true ) );
+        $oCaptcha = $this->getMock("stdclass", array('pass'));
+        $oCaptcha->expects($this->once())->method('pass')->will($this->returnValue(true));
 
-        $oSuggest = $this->getMock( "suggest", array( "getProduct", 'getCaptcha' ) );
-        $oSuggest->expects( $this->never() )->method( 'getProduct')->will($this->returnValue( $oProduct ) );
-        $oSuggest->expects( $this->once() )->method( 'getCaptcha')->will($this->returnValue( $oCaptcha ) );
+        $oSuggest = $this->getMock("suggest", array("getProduct", 'getCaptcha'));
+        $oSuggest->expects($this->never())->method('getProduct')->will($this->returnValue($oProduct));
+        $oSuggest->expects($this->once())->method('getCaptcha')->will($this->returnValue($oCaptcha));
 
-        $oUtilsView = $this->getMock( "stdclass", array( 'addErrorToDisplay' ) );
-        $oUtilsView->expects( $this->once() )->method( 'addErrorToDisplay');
+        $oUtilsView = $this->getMock("stdclass", array('addErrorToDisplay'));
+        $oUtilsView->expects($this->once())->method('addErrorToDisplay');
 
         oxTestModules::addModuleObject('oxUtilsView', $oUtilsView);
 
-        $this->assertEquals( '', $oSuggest->send() );
+        $this->assertEquals('', $oSuggest->send());
     }
 
     /**

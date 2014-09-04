@@ -256,6 +256,7 @@ class Unit_Views_reviewTest extends OxidTestCase
         modConfig::setRequestParameter('artrating', '4');
         modConfig::setRequestParameter('anid', 'test');
 
+        /** @var oxArticle|PHPUnit_Framework_MockObject_MockObject $oProduct */
         $oProduct = $this->getMock('oxarticle', array('getId', 'addToRatingAverage'));
         $oProduct->expects($this->any())->method('getId')->will($this->returnValue('test'));
         $oProduct->expects($this->once())->method('addToRatingAverage');
@@ -263,6 +264,7 @@ class Unit_Views_reviewTest extends OxidTestCase
         $oUser = new oxUser();
         $oUser->load("oxdefaultadmin");
 
+        /** @var Review|PHPUnit_Framework_MockObject_MockObject $oReview */
         $oReview = $this->getMock('review', array('getReviewUser', '_getActiveObject', 'canAcceptFormData', "_getActiveType"));
         $oReview->expects($this->once())->method('getReviewUser')->will($this->returnValue($oUser));
         $oReview->expects($this->once())->method('canAcceptFormData')->will($this->returnValue(true));
@@ -276,6 +278,7 @@ class Unit_Views_reviewTest extends OxidTestCase
 
     public function testSaveReviewIfUserNotSet()
     {
+        /** @var Review|PHPUnit_Framework_MockObject_MockObject $oReview */
         $oReview = $this->getMock('review', array('getReviewUser', '_getActiveObject', 'canAcceptFormData', "_getActiveType"));
         $oReview->expects($this->once())->method('getReviewUser')->will($this->returnValue(false));
         $oReview->expects($this->never())->method('canAcceptFormData');
@@ -296,10 +299,12 @@ class Unit_Views_reviewTest extends OxidTestCase
         $oUser = new oxUser();
         $oUser->load("oxdefaultadmin");
 
+        /** @var oxArticle|PHPUnit_Framework_MockObject_MockObject $oProduct */
         $oProduct = $this->getMock('oxarticle', array('getId', 'addToRatingAverage'));
         $oProduct->expects($this->any())->method('getId')->will($this->returnValue('test'));
         $oProduct->expects($this->never())->method('addToRatingAverage');
 
+        /** @var Review|PHPUnit_Framework_MockObject_MockObject $oReview */
         $oReview = $this->getMock('review', array('getReviewUser', '_getActiveObject', 'canAcceptFormData', "_getActiveType"));
         $oReview->expects($this->once())->method('getReviewUser')->will($this->returnValue($oUser));
         $oReview->expects($this->once())->method('canAcceptFormData')->will($this->returnValue(true));
@@ -320,10 +325,12 @@ class Unit_Views_reviewTest extends OxidTestCase
         $oUser = new oxUser();
         $oUser->load("oxdefaultadmin");
 
+        /** @var oxArticle|PHPUnit_Framework_MockObject_MockObject $oProduct */
         $oProduct = $this->getMock('oxarticle', array('getId', 'addToRatingAverage'));
         $oProduct->expects($this->any())->method('getId')->will($this->returnValue('test'));
         $oProduct->expects($this->never())->method('addToRatingAverage');
 
+        /** @var Review|PHPUnit_Framework_MockObject_MockObject $oReview */
         $oReview = $this->getMock('review', array('getReviewUser', '_getActiveObject', 'canAcceptFormData', "_getActiveType"));
         $oReview->expects($this->once())->method('getReviewUser')->will($this->returnValue($oUser));
         $oReview->expects($this->once())->method('canAcceptFormData')->will($this->returnValue(true));
@@ -344,10 +351,12 @@ class Unit_Views_reviewTest extends OxidTestCase
         $oUser = new oxUser();
         $oUser->load("oxdefaultadmin");
 
+        /** @var oxArticle|PHPUnit_Framework_MockObject_MockObject $oProduct */
         $oProduct = $this->getMock('oxarticle', array('getId', 'addToRatingAverage'));
         $oProduct->expects($this->any())->method('getId')->will($this->returnValue('test'));
         $oProduct->expects($this->once())->method('addToRatingAverage');
 
+        /** @var Review|PHPUnit_Framework_MockObject_MockObject $oReview */
         $oReview = $this->getMock('review', array('getReviewUser', '_getActiveObject', 'canAcceptFormData', "_getActiveType"));
         $oReview->expects($this->once())->method('getReviewUser')->will($this->returnValue($oUser));
         $oReview->expects($this->once())->method('canAcceptFormData')->will($this->returnValue(true));

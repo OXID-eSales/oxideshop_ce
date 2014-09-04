@@ -124,10 +124,8 @@ class oxSystemEventHandler
 
     /**
      * onAdminLogin() is called on every successful login to the backend
-     *
-     * @param string $sActiveShop Active shop
      */
-    public function onAdminLogin( $sActiveShop )
+    public function onAdminLogin()
     {
         // Checks if newer versions of modules are available.
         // Will be used by the upcoming online one click installer.

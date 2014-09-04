@@ -47,6 +47,11 @@ class Unit_Views_accountNewsletterTest extends OxidTestCase
      */
     public function testSubscribeNoSessionUser()
     {
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
+
         /** @var Account_Newsletter|PHPUnit_Framework_MockObject_MockObject $oView */
         $oView = $this->getMock("Account_Newsletter", array("getUser"));
         $oView->expects($this->once())->method('getUser')->will($this->returnValue(false));
@@ -63,6 +68,11 @@ class Unit_Views_accountNewsletterTest extends OxidTestCase
     public function testSubscribeNoStatusDefined()
     {
         $this->setRequestParam("status", false);
+
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
 
         /** @var oxNewsSubscribed|PHPUnit_Framework_MockObject_MockObject $oSubscription */
         $oSubscription = $this->getMock("oxNewsSubscribed", array("setOptInStatus"));
@@ -89,6 +99,11 @@ class Unit_Views_accountNewsletterTest extends OxidTestCase
     public function testSubscribeCustomStatus()
     {
         $this->setRequestParam("status", true);
+
+        /** @var oxSession|PHPUnit_Framework_MockObject_MockObject $oSession */
+        $oSession = $this->getMock('oxSession', array('checkSessionChallenge'));
+        $oSession->expects($this->once())->method('checkSessionChallenge')->will($this->returnValue(true));
+        oxRegistry::set('oxSession', $oSession);
 
         /** @var oxUser|PHPUnit_Framework_MockObject_MockObject $oUser */
         $oUser = $this->getMock("oxUser", array("setNewsSubscription"));

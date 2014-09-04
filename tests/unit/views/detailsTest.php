@@ -1560,70 +1560,70 @@ class Unit_Views_detailsTest extends OxidTestCase
 
     public function testAddme_invalidCaptcha()
     {
-        $oCaptcha = $this->getMock( 'oxCapche', array( 'pass' ) );
-        $oCaptcha->expects( $this->once() )->method( 'pass' )->will( $this->returnValue( false ) );
+        $oCaptcha = $this->getMock('oxCapche', array('pass'));
+        $oCaptcha->expects($this->once())->method('pass')->will($this->returnValue(false));
 
-        $oEmail = $this->getMock( 'oxEmail', array( 'sendPricealarmNotification' ) );
-        $oEmail->expects( $this->never() )->method( 'sendPricealarmNotification' );
-        oxTestModules::addModuleObject( 'oxEmail', $oEmail );
+        $oEmail = $this->getMock('oxEmail', array('sendPricealarmNotification'));
+        $oEmail->expects($this->never())->method('sendPricealarmNotification');
+        oxTestModules::addModuleObject('oxEmail', $oEmail);
 
-        $oView = $this->getMock( $this->getProxyClassName( 'Details' ), array( 'getCaptcha' ) );
-        $oView->expects( $this->once() )->method( 'getCaptcha' )->will( $this->returnValue( $oCaptcha ) );
+        $oView = $this->getMock($this->getProxyClassName('Details'), array('getCaptcha'));
+        $oView->expects($this->once())->method('getCaptcha')->will($this->returnValue($oCaptcha));
 
         $oView->addme();
-        $this->assertSame( 2, $oView->getNonPublicVar( '_iPriceAlarmStatus' ) );
+        $this->assertSame(2, $oView->getNonPublicVar('_iPriceAlarmStatus'));
     }
 
     public function testAddme_invalidEmail()
     {
-        $oCaptcha = $this->getMock( 'oxCapche', array( 'pass' ) );
-        $oCaptcha->expects( $this->once() )->method( 'pass' )->will( $this->returnValue( true ) );
+        $oCaptcha = $this->getMock('oxCapche', array('pass'));
+        $oCaptcha->expects($this->once())->method('pass')->will($this->returnValue(true));
 
-        $oEmail = $this->getMock( 'oxEmail', array( 'sendPricealarmNotification' ) );
-        $oEmail->expects( $this->never() )->method( 'sendPricealarmNotification' );
-        oxTestModules::addModuleObject( 'oxEmail', $oEmail );
+        $oEmail = $this->getMock('oxEmail', array('sendPricealarmNotification'));
+        $oEmail->expects($this->never())->method('sendPricealarmNotification');
+        oxTestModules::addModuleObject('oxEmail', $oEmail);
 
-        $oPriceAlarm = $this->getMock( 'oxpricealarm', array( 'save' ) );
-        $oPriceAlarm->expects( $this->never() )->method( 'save' );
-        oxTestModules::addModuleObject( 'oxpricealarm', $oPriceAlarm );
+        $oPriceAlarm = $this->getMock('oxpricealarm', array('save'));
+        $oPriceAlarm->expects($this->never())->method('save');
+        oxTestModules::addModuleObject('oxpricealarm', $oPriceAlarm);
 
-        $oView = $this->getMock( $this->getProxyClassName( 'Details' ), array( 'getCaptcha' ) );
-        $oView->expects( $this->once() )->method( 'getCaptcha' )->will( $this->returnValue( $oCaptcha ) );
+        $oView = $this->getMock($this->getProxyClassName('Details'), array('getCaptcha'));
+        $oView->expects($this->once())->method('getCaptcha')->will($this->returnValue($oCaptcha));
 
-        $aParams = array();
+        $aParams          = array();
         $aParams['email'] = 'test_email';
 
-        $this->setRequestParam( 'pa', $aParams );
+        $this->setRequestParam('pa', $aParams);
         $oView->addme();
-        $this->assertSame( 0, $oView->getNonPublicVar( '_iPriceAlarmStatus' ) );
+        $this->assertSame(0, $oView->getNonPublicVar('_iPriceAlarmStatus'));
     }
 
     public function testAddme_mailsent()
     {
-        $oCaptcha = $this->getMock( 'oxCapcha', array( 'pass' ) );
-        $oCaptcha->expects( $this->once() )->method( 'pass' )->will( $this->returnValue( true ) );
+        $oCaptcha = $this->getMock('oxCapcha', array('pass'));
+        $oCaptcha->expects($this->once())->method('pass')->will($this->returnValue(true));
 
-        $oEmail = $this->getMock( 'oxEmail', array( 'sendPricealarmNotification' ) );
-        $oEmail->expects( $this->once() )->method( 'sendPricealarmNotification' )->will( $this->returnValue( 123 ) );
-        oxTestModules::addModuleObject( 'oxEmail', $oEmail );
+        $oEmail = $this->getMock('oxEmail', array('sendPricealarmNotification'));
+        $oEmail->expects($this->once())->method('sendPricealarmNotification')->will($this->returnValue(123));
+        oxTestModules::addModuleObject('oxEmail', $oEmail);
 
-        $oPriceAlarm = $this->getMock( 'oxPriceAlarm', array( 'save' ) );
-        $oPriceAlarm->expects( $this->once() )->method( 'save' );
-        oxTestModules::addModuleObject( 'oxpricealarm', $oPriceAlarm );
+        $oPriceAlarm = $this->getMock('oxPriceAlarm', array('save'));
+        $oPriceAlarm->expects($this->once())->method('save');
+        oxTestModules::addModuleObject('oxpricealarm', $oPriceAlarm);
 
-        $oProduct = $this->getMock( 'oxArticle', array( 'getId' ) );
-        $oProduct->expects( $this->once() )->method( 'getId' )->will( $this->returnValue( 'test_artid' ) );
+        $oProduct = $this->getMock('oxArticle', array('getId'));
+        $oProduct->expects($this->once())->method('getId')->will($this->returnValue('test_artid'));
 
-        $oView = $this->getMock( $this->getProxyClassName( 'Details' ), array( 'getCaptcha', 'getProduct' ) );
-        $oView->expects( $this->once() )->method( 'getCaptcha' )->will( $this->returnValue( $oCaptcha ) );
-        $oView->expects( $this->once() )->method( 'getProduct' )->will( $this->returnValue( $oProduct ) );
+        $oView = $this->getMock($this->getProxyClassName('Details'), array('getCaptcha', 'getProduct'));
+        $oView->expects($this->once())->method('getCaptcha')->will($this->returnValue($oCaptcha));
+        $oView->expects($this->once())->method('getProduct')->will($this->returnValue($oProduct));
 
-        $aParams = array();
+        $aParams          = array();
         $aParams['email'] = 'test_email@eshop.com';
-        $this->setRequestParam( 'pa', $aParams );
+        $this->setRequestParam('pa', $aParams);
 
         $oView->addme();
-        $this->assertSame( 123, $oView->getNonPublicVar( '_iPriceAlarmStatus' ) );
+        $this->assertSame(123, $oView->getNonPublicVar('_iPriceAlarmStatus'));
     }
 
     public function testGetPriceAlarmStatus()

@@ -47,6 +47,7 @@ class Unit_Views_accountNewsletterTest extends OxidTestCase
      */
     public function testSubscribeNoSessionUser()
     {
+        /** @var Account_Newsletter|PHPUnit_Framework_MockObject_MockObject $oView */
         $oView = $this->getMock("Account_Newsletter", array("getUser"));
         $oView->expects($this->once())->method('getUser')->will($this->returnValue(false));
 
@@ -63,13 +64,16 @@ class Unit_Views_accountNewsletterTest extends OxidTestCase
     {
         $this->setRequestParam("status", false);
 
+        /** @var oxNewsSubscribed|PHPUnit_Framework_MockObject_MockObject $oSubscription */
         $oSubscription = $this->getMock("oxNewsSubscribed", array("setOptInStatus"));
         $oSubscription->expects($this->once())->method('setOptInStatus')->with($this->equalTo(0));
 
+        /** @var oxUser|PHPUnit_Framework_MockObject_MockObject $oUser */
         $oUser = $this->getMock("oxUser", array("removeFromGroup", "getNewsSubscription"));
         $oUser->expects($this->once())->method('removeFromGroup')->with($this->equalTo('oxidnewsletter'));
         $oUser->expects($this->once())->method('getNewsSubscription')->will($this->returnValue($oSubscription));
 
+        /** @var Account_Newsletter|PHPUnit_Framework_MockObject_MockObject $oView */
         $oView = $this->getMock("Account_Newsletter", array("getUser"));
         $oView->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
 
@@ -86,9 +90,11 @@ class Unit_Views_accountNewsletterTest extends OxidTestCase
     {
         $this->setRequestParam("status", true);
 
+        /** @var oxUser|PHPUnit_Framework_MockObject_MockObject $oUser */
         $oUser = $this->getMock("oxUser", array("setNewsSubscription"));
         $oUser->expects($this->atLeastOnce())->method('setNewsSubscription')->will($this->returnValue(true));
 
+        /** @var Account_Newsletter|PHPUnit_Framework_MockObject_MockObject $oView */
         $oView = $this->getMock("Account_Newsletter", array("getUser"));
         $oView->expects($this->once())->method('getUser')->will($this->returnValue($oUser));
         $this->assertNull($oView->subscribe());
